@@ -13,7 +13,6 @@
 #include <QQuickItem>
 #include <QChart>
 #include <QGraphicsSceneHoverEvent>
-#include <QLineSeries>
 #include <QLocale>
 #include <QPieSeries>
 
@@ -89,6 +88,8 @@ void StatsView::plotAreaChanged(const QRectF &)
 	for (auto &series: boxSeries)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
+		marker.updatePosition();
+	for (LineMarker &marker: lineMarkers)
 		marker.updatePosition();
 	if (legend)
 		legend->resize();
@@ -231,6 +232,7 @@ void StatsView::reset()
 	barSeries.clear();
 	boxSeries.clear();
 	quartileMarkers.clear();
+	lineMarkers.clear();
 	chart->removeAllSeries();
 	axes.clear();
 }
@@ -755,23 +757,6 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	}
 }
 
-void StatsView::addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal)
-{
-	using QtCharts::QLineSeries;
-
-	QLineSeries *series = addSeries<QLineSeries>(QString());
-	if(!series)
-		return;
-	if (isHorizontal) {
-		series->append(low, pos);
-		series->append(high, pos);
-	} else {
-		series->append(pos, low);
-		series->append(pos, high);
-	}
-	series->setPen(pen);
-}
-
 StatsView::QuartileMarker::QuartileMarker(double pos, double value, QtCharts::QAbstractSeries *series) :
 	item(new QGraphicsLineItem(series->chart())),
 	series(series),
@@ -789,6 +774,34 @@ void StatsView::QuartileMarker::updatePosition()
 	QPointF center = chart->mapToPosition(QPointF(pos, value), series);
 	item->setLine(center.x() - quartileMarkerSize / 2.0, center.y(),
 		      center.x() + quartileMarkerSize / 2.0, center.y());
+}
+
+StatsView::LineMarker::LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::QAbstractSeries *series) :
+	item(new QGraphicsLineItem(series->chart())),
+	series(series), from(from), to(to)
+{
+	item->setZValue(10.0); // ? What is a sensible value here ?
+	item->setPen(pen);
+	updatePosition();
+}
+
+void StatsView::LineMarker::updatePosition()
+{
+	QtCharts::QChart *chart = series->chart();
+	item->setLine(QLineF(chart->mapToPosition(from, series),
+			     chart->mapToPosition(to, series)));
+}
+
+void StatsView::addLinearRegression(double a, double b, double minX, double maxX, QtCharts::QAbstractSeries *series)
+{
+	lineMarkers.emplace_back(QPointF(minX, a * minX + b), QPointF(maxX, a * maxX + b), QPen(Qt::red), series);
+}
+
+void StatsView::addHistogramMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal, QtCharts::QAbstractSeries *series)
+{
+	QPointF from = isHorizontal ? QPointF(low, pos) : QPointF(pos, low);
+	QPointF to = isHorizontal ? QPointF(high, pos) : QPointF(pos, high);
+	lineMarkers.emplace_back(from, to, pen, series);
 }
 
 // Yikes, we get our data in different kinds of (bin, value) pairs.
@@ -861,14 +874,14 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 			QPen meanPen(Qt::green);
 			meanPen.setWidth(2);
 			if (!std::isnan(mean))
-				addLineMarker(mean, 0.0, chartHeight, meanPen, isHorizontal);
+				addHistogramMarker(mean, 0.0, chartHeight, meanPen, isHorizontal, series);
 		}
 		if (showMedian) {
 			double median = categoryType->quartiles(dives).q2;
 			QPen medianPen(Qt::red);
 			medianPen.setWidth(2);
 			if (!std::isnan(median))
-				addLineMarker(median, 0.0, chartHeight, medianPen, isHorizontal);
+				addHistogramMarker(median, 0.0, chartHeight, medianPen, isHorizontal, series);
 		}
 	}
 }
@@ -1051,8 +1064,6 @@ static std::pair<double, double> linear_regression(const std::vector<StatsScatte
 
 void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *categoryType, const StatsType *valueType)
 {
-	using QtCharts::QLineSeries;
-
 	setTitle(StatsTranslations::tr("%1 vs. %2").arg(valueType->name(), categoryType->name()));
 
 	std::vector<StatsScatterItem> points = categoryType->scatter(*valueType, dives);
@@ -1081,9 +1092,6 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	auto [a, b] = linear_regression(points);
 	if (!std::isnan(a)) {
 		auto [minx, maxx] = axisX->minMax();
-		QLineSeries *series = addSeries<QLineSeries>(QString());
-		series->setPen(QPen(Qt::red));
-		series->append(minx, a * minx + b);
-		series->append(maxx, a * maxx + b);
+		addLinearRegression(a, b, minx, maxx, series);
 	}
 }

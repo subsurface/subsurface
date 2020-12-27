@@ -109,6 +109,18 @@ private:
 		void updatePosition();
 	};
 
+	// A general line marker
+	struct LineMarker {
+		std::unique_ptr<QGraphicsLineItem> item;
+		QtCharts::QAbstractSeries *series; // In case we ever support charts with multiple axes
+		QPointF from, to; // In local coordinates
+		void updatePosition();
+		LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::QAbstractSeries *series);
+	};
+
+	void addLinearRegression(double a, double b, double minX, double maxX, QtCharts::QAbstractSeries *series);
+	void addHistogramMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal, QtCharts::QAbstractSeries *series);
+
 	StatsState state;
 	QtCharts::QChart *chart;
 	std::vector<std::unique_ptr<StatsAxis>> axes;
@@ -117,6 +129,7 @@ private:
 	std::vector<std::unique_ptr<BoxSeries>> boxSeries;
 	std::unique_ptr<Legend> legend;
 	std::vector<QuartileMarker> quartileMarkers;
+	std::vector<LineMarker> lineMarkers;
 	ScatterSeries *highlightedScatterSeries;	// scatter series with highlighted element
 	BarSeries *highlightedBarSeries;		// bar series with highlighted element
 	BoxSeries *highlightedBoxSeries;		// box series with highlighted element
