@@ -9,9 +9,9 @@ set -e
 export PATH=$QT_ROOT/bin:$PATH # Make sure correct qmake is found on the $PATH for linuxdeployqt
 export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
 
-echo "--------------------------------------------------------------"
-echo "install missing packages"
-apt install -y libbluetooth-dev libmtp-dev
+# echo "--------------------------------------------------------------"
+# echo "install missing packages"
+# apt install -y libbluetooth-dev libmtp-dev
 
 # the container currently has things under / that need to be under /__w/subsurface/subsurface instead
 cp -a /appdir /__w/subsurface/
@@ -34,7 +34,7 @@ export QT_DEBUG_PLUGINS=1
 mkdir -p appdir/usr/plugins/
 
 # mv googlemaps plugins into place
-mv appdir/usr/usr/local/Qt/5.12.4/gcc_64/plugins/* appdir/usr/plugins  # the usr/usr is not a typo, that's where it ends up
+mv appdir/usr/usr/local/Qt/5.*/gcc_64/plugins/* appdir/usr/plugins  # the usr/usr is not a typo, that's where it ends up
 rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
 rm -rf appdir/usr/usr appdir/usr/lib/cmake appdir/usr/lib/pkgconfig
 cp /ssllibs/libssl.so appdir/usr/lib/libssl.so.1.1
