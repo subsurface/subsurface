@@ -11,7 +11,6 @@
 #include <QString>
 #include <QImageReader>
 #include <QDataStream>
-#include <QSvgRenderer>
 #include <QPainter>
 
 #include <QtConcurrent>
@@ -154,33 +153,11 @@ Thumbnailer::Thumbnail Thumbnailer::getHashedImage(const QString &filename, bool
 	return thumbnail;
 }
 
-static QImage renderIcon(const char *id, int size)
-{
-	QImage res(size, size, QImage::Format_RGB32);
-	res.fill(Qt::white);
-	QSvgRenderer svg{QString(id)};
-	QPainter painter(&res);
-	svg.render(&painter);
-	return res;
-}
-
-// As renderIcon, but render to a fixed width and scale height accordingly
-// and have a transparent background.
-static QImage renderIconWidth(const char *id, int size)
-{
-	QSvgRenderer svg{QString(id)};
-	QSize svgSize = svg.defaultSize();
-	QImage res(size, size * svgSize.height() / svgSize.width(), QImage::Format_ARGB32);
-	QPainter painter(&res);
-	svg.render(&painter);
-	return res;
-}
-
-Thumbnailer::Thumbnailer() : failImage(renderIcon(":filter-close", maxThumbnailSize())), // TODO: Don't misuse filter close icon
-			     dummyImage(renderIcon(":camera-icon", maxThumbnailSize())),
-			     videoImage(renderIcon(":video-icon", maxThumbnailSize())),
-			     videoOverlayImage(renderIconWidth(":video-overlay", maxThumbnailSize())),
-			     unknownImage(renderIcon(":unknown-icon", maxThumbnailSize()))
+Thumbnailer::Thumbnailer() : failImage(renderSVGIcon(":filter-close", maxThumbnailSize())), // TODO: Don't misuse filter close icon
+			     dummyImage(renderSVGIcon(":camera-icon", maxThumbnailSize())),
+			     videoImage(renderSVGIcon(":video-icon", maxThumbnailSize())),
+			     videoOverlayImage(renderSVGIconWidth(":video-overlay", maxThumbnailSize())),
+			     unknownImage(renderSVGIcon(":unknown-icon", maxThumbnailSize()))
 {
 	// Currently, we only process one image at a time. Stefan Fuchs reported problems when
 	// calculating multiple thumbnails at once and this hopefully helps.
