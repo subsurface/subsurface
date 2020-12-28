@@ -4,6 +4,7 @@
 #include <QNetworkProxy>
 #include <QLibraryInfo>
 #include <QTextCodec>
+#include <QTranslator>
 #include "qthelper.h"
 #include "errorhelper.h"
 #include "core/settings/qPref.h"

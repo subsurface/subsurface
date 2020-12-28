@@ -4,7 +4,7 @@
 #include "core/qthelper.h"
 #include "core/settings/qPrefLanguage.h"
 
-#include <QApplication>
+#include <QDir>
 #include <QMessageBox>
 #include <QSortFilterProxyModel>
 

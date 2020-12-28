@@ -290,19 +290,6 @@ bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_te
 }
 #endif
 
-QList<int> getDivesInTrip(dive_trip_t *trip)
-{
-	QList<int> ret;
-	int i;
-	struct dive *d;
-	for_each_dive (i, d) {
-		if (d->divetrip == trip) {
-			ret.push_back(get_divenr(d));
-		}
-	}
-	return ret;
-}
-
 static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
 {
 	QFile f(QLatin1String(":/xslt/") + (const char *)uri);

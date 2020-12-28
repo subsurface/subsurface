@@ -19,15 +19,12 @@ enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYP
 
 #ifdef __cplusplus
 
-#include <QMultiMap>
 #include <QString>
-#include <QTranslator>
-#include <QDir>
 #include "core/gettextfromc.h"
+
 QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
-QList<int> getDivesInTrip(struct dive_trip *trip);
 QString get_gas_string(struct gasmix gas);
 QString get_taglist_string(struct tag_entry *tag_list);
 QStringList stringToList(const QString &s);

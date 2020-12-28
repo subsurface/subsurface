@@ -5,6 +5,7 @@
 #include "qthelper.h"
 #include <QString>
 #include <QFile>
+#include <QFileInfo>
 #include <QDateTime>
 
 // Weirdly, android builds fail owing to undefined UINT64_MAX
