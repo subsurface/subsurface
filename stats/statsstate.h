@@ -31,7 +31,8 @@ enum class ChartSubType {
 	HorizontalStacked,
 	Dots,
 	Box,
-	Pie
+	Pie,
+	Count
 };
 
 struct StatsType;
@@ -55,6 +56,7 @@ public:
 	struct Chart {
 		QString name;
 		QString subtypeName;
+		ChartSubType subtype;
 		int id;
 		bool warning;		// Not recommended for that combination
 	};

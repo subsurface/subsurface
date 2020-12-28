@@ -1704,10 +1704,10 @@ extern "C" void emit_reset_signal()
 	emit diveListNotifier.dataReset();
 }
 
-QImage renderSVGIcon(const char *id, int size)
+QImage renderSVGIcon(const char *id, int size, bool transparent)
 {
-	QImage res(size, size, QImage::Format_RGB32);
-	res.fill(Qt::white);
+	QImage res(size, size, transparent ? QImage::Format_ARGB32 : QImage::Format_RGB32);
+	res.fill(transparent ? Qt::transparent : Qt::white);
 	QSvgRenderer svg{QString(id)};
 	QPainter painter(&res);
 	svg.render(&painter);

@@ -23,6 +23,9 @@ static int indent(const QFontMetrics &fm)
 #endif
 }
 
+static const int iconSpace = 2; // Number of pixels between icon and text
+static const int topSpace = 2; // Number of pixels above icon
+
 void ChartItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 			      const QModelIndex &index) const
 {
@@ -39,14 +42,13 @@ void ChartItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
 		painter->restore();
 	}
 	bool isHeader = index.data(ChartListModel::IsHeaderRole).value<bool>();
-	if (!isHeader) {
-		QFontMetrics fm(font);
+	if (!isHeader)
 		rect.translate(indent(fm), 0);
-	}
-	QPixmap icon = index.data(ChartListModel::PixmapRole).value<QPixmap>();
+	QPixmap icon = index.data(ChartListModel::IconRole).value<QPixmap>();
 	if (!icon.isNull()) {
+		rect.translate(0, topSpace);
 		painter->drawPixmap(rect.topLeft(), icon);
-		rect.setX(rect.x() + icon.size().width());
+		rect.translate(icon.size().width() + iconSpace, (icon.size().height() - fm.height()) / 2);
 	}
 
 	painter->drawText(rect, name);
@@ -57,17 +59,15 @@ QSize ChartItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
 	QFont font = index.data(Qt::FontRole).value<QFont>();
 	QFontMetrics fm(font);
 	QString name = index.data(ChartListModel::ChartNameRole).value<QString>();
-	QPixmap icon = index.data(ChartListModel::PixmapRole).value<QPixmap>();
+	QSize iconSize = index.data(ChartListModel::IconSizeRole).value<QSize>();
 	QSize size = fm.size(Qt::TextSingleLine, name);
 	bool isHeader = index.data(ChartListModel::IsHeaderRole).value<bool>();
 	if (!isHeader)
 		size += QSize(indent(fm), 0);
-	if (!icon.isNull()) {
-		QSize iconSize = icon.size();
-		size = QSize(size.width() + iconSize.width(),
-			     std::min(size.height(), iconSize.height()));
-	}
-	return fm.size(Qt::TextSingleLine, name);
+	if (iconSize.isValid())
+		size = QSize(size.width() + iconSize.width() + iconSpace,
+			     std::max(size.height(), iconSize.height()) + 2 * topSpace);
+	return size;
 }
 
 StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)

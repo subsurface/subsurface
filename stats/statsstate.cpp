@@ -268,7 +268,7 @@ static StatsState::ChartList createChartList(const StatsType *var1, const StatsT
 			if (selectedType == desc.id && selectedSubType == subtype)
 				res.selected = id;
 			QString subtypeName = StatsTranslations::tr(chart_subtype_names[(int)subtype]);
-			res.charts.push_back({ name, subtypeName, toInt(desc.id, subtype), warn });
+			res.charts.push_back({ name, subtypeName, subtype, toInt(desc.id, subtype), warn });
 		}
 	}
 

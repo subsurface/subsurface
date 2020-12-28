@@ -3,7 +3,7 @@
 #ifndef CHART_LIST_MODEL_H
 #define CHART_LIST_MODEL_H
 
-#include "statsstate.h" // Argh. Can't forward declare StatsState::ChartList. :-/
+#include "statsstate.h"
 #include <vector>
 #include <QAbstractListModel>
 #include <QString>
@@ -22,23 +22,33 @@ public:
 
 	static const constexpr int ChartNameRole = Qt::UserRole + 1;
 	static const constexpr int IsHeaderRole = Qt::UserRole + 2;
-	static const constexpr int PixmapRole = Qt::UserRole + 3;
+	static const constexpr int IconRole = Qt::UserRole + 3;
+	static const constexpr int IconSizeRole = Qt::UserRole + 4;
 private:
 	struct Item {
 		bool isHeader;
 		QString name;
 		QString fullName;
+		ChartSubType subtype;
 		int id;
 		bool warning;
 	};
+
+	struct SubTypeIcons {
+		QPixmap normal;
+		QPixmap warning;
+	};
+	QPixmap warningPixmap;
+	SubTypeIcons subTypeIcons[(size_t)ChartSubType::Count];
+
 	QFont itemFont;
 	QFont headerFont;
-	QIcon warningIcon;
-	QPixmap warningPixmap;
 	std::vector<Item> items;
 	int rowCount(const QModelIndex &parent) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
+	void initIcon(ChartSubType type, const char *name, int iconSize);
+	const QPixmap &getIcon(ChartSubType type, bool warning) const;
 };
 
 #endif

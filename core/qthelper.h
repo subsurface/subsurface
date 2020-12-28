@@ -87,7 +87,7 @@ QString getUserAgent();
 QString printGPSCoords(const location_t *loc);
 std::vector<int> get_cylinder_map_for_remove(int count, int n);
 std::vector<int> get_cylinder_map_for_add(int count, int n);
-QImage renderSVGIcon(const char *id, int size);
+QImage renderSVGIcon(const char *id, int size, bool transparent);
 
 extern QString (*changesCallback)();
 void uiNotification(const QString &msg);
