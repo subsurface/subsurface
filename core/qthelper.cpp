@@ -36,7 +36,9 @@
 #include <QFont>
 #include <QApplication>
 #include <QTextDocument>
+#include <QPainter>
 #include <QProgressDialog>	// TODO: remove with convertThumbnails()
+#include <QSvgRenderer>
 #include <cstdarg>
 #include <cstdint>
 #ifdef Q_OS_UNIX
@@ -1700,4 +1702,14 @@ std::vector<int> get_cylinder_map_for_add(int count, int n)
 extern "C" void emit_reset_signal()
 {
 	emit diveListNotifier.dataReset();
+}
+
+QImage renderSVGIcon(const char *id, int size)
+{
+	QImage res(size, size, QImage::Format_RGB32);
+	res.fill(Qt::white);
+	QSvgRenderer svg{QString(id)};
+	QPainter painter(&res);
+	svg.render(&painter);
+	return res;
 }

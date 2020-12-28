@@ -21,6 +21,7 @@ enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYP
 
 #include <QString>
 #include "core/gettextfromc.h"
+class QImage;
 
 QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
@@ -86,6 +87,7 @@ QString getUserAgent();
 QString printGPSCoords(const location_t *loc);
 std::vector<int> get_cylinder_map_for_remove(int count, int n);
 std::vector<int> get_cylinder_map_for_add(int count, int n);
+QImage renderSVGIcon(const char *id, int size);
 
 extern QString (*changesCallback)();
 void uiNotification(const QString &msg);
