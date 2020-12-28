@@ -10,6 +10,7 @@
 #include "core/dive.h"
 #include "core/gettextfromc.h"
 
+#include <QDir>
 #include <QLocale>
 
 Qt::ItemFlags GasSelectionModel::flags(const QModelIndex&) const

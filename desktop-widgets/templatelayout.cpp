@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
+#include <QDir>
+#include <QFile>
 #include <QFileDevice>
 #include <QRegularExpression>
 #include <QTextStream>
