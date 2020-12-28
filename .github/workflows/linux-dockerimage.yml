@@ -1,10 +1,10 @@
 name: Linux Qt 5.12 Docker Image CI
 
-on:
-  push:
-    paths:
-    - scripts/docker/trusty-qt512/Dockerfile
-    - .github/workflows/linux-docker*
+#on:
+#  push:
+#    paths:
+#    - scripts/docker/trusty-qt512/Dockerfile
+#    - .github/workflows/linux-docker*
 
 jobs:
   trusty-qt512:
