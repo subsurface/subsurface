@@ -36,7 +36,9 @@
 #include <QFont>
 #include <QApplication>
 #include <QTextDocument>
+#include <QPainter>
 #include <QProgressDialog>	// TODO: remove with convertThumbnails()
+#include <QSvgRenderer>
 #include <cstdarg>
 #include <cstdint>
 #ifdef Q_OS_UNIX
@@ -1701,3 +1703,26 @@ extern "C" void emit_reset_signal()
 {
 	emit diveListNotifier.dataReset();
 }
+
+QImage renderSVGIcon(const char *id, int size)
+{
+	QImage res(size, size, QImage::Format_RGB32);
+	res.fill(Qt::white);
+	QSvgRenderer svg{QString(id)};
+	QPainter painter(&res);
+	svg.render(&painter);
+	return res;
+}
+
+// As renderSVGIcon(), but render to a fixed width and scale height accordingly
+// and have a transparent background.
+QImage renderSVGIconWidth(const char *id, int size)
+{
+	QSvgRenderer svg{QString(id)};
+	QSize svgSize = svg.defaultSize();
+	QImage res(size, size * svgSize.height() / svgSize.width(), QImage::Format_ARGB32);
+	QPainter painter(&res);
+	svg.render(&painter);
+	return res;
+}
+
