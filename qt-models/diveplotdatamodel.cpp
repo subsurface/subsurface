@@ -223,8 +223,3 @@ double DivePlotDataModel::po2Max() const
 {
 	return max_gas(pInfo, &gas_pressures::o2);
 }
-
-void DivePlotDataModel::emitDataChanged()
-{
-	emit dataChanged(QModelIndex(), QModelIndex());
-}

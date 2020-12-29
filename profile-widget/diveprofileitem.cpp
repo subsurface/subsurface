@@ -17,10 +17,6 @@ AbstractProfilePolygonItem::AbstractProfilePolygonItem(const DivePlotDataModel &
 	hAxis(horizontal), vAxis(vertical), dataModel(model), hDataColumn(hColumn), vDataColumn(vColumn)
 {
 	setCacheMode(DeviceCoordinateCache);
-	connect(&dataModel, &DivePlotDataModel::dataChanged, this, &AbstractProfilePolygonItem::modelDataChanged);
-	connect(&hAxis, &DiveCartesianAxis::sizeChanged, this, &AbstractProfilePolygonItem::replot);
-	connect(&vAxis, &DiveCartesianAxis::sizeChanged, this, &AbstractProfilePolygonItem::replot);
-	connect(&vAxis, &DiveCartesianAxis::maxChanged, this, &AbstractProfilePolygonItem::replot);
 }
 
 void AbstractProfilePolygonItem::clear()
@@ -880,7 +876,6 @@ void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	//AbstractProfilePolygonItem::modelDataChanged();
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 
