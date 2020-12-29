@@ -199,20 +199,30 @@ unsigned int DivePlotDataModel::dcShown() const
 	return dcNr;
 }
 
-#define MAX_PPGAS_FUNC(GAS, GASFUNC)                                  \
-	double DivePlotDataModel::GASFUNC()                           \
-	{                                                             \
-		double ret = -1;                                      \
-		for (int i = 0, count = rowCount(); i < count; i++) { \
-			if (pInfo.entry[i].pressures.GAS > ret)       \
-				ret = pInfo.entry[i].pressures.GAS;   \
-		}                                                     \
-		return ret;                                           \
+static double max_gas(const plot_info &pi, double gas_pressures::*gas)
+{
+	double ret = -1;
+	for (int i = 0; i < pi.nr; ++i) {
+		if (pi.entry[i].pressures.*gas > ret)
+			ret = pi.entry[i].pressures.*gas;
 	}
+	return ret;
+}
 
-MAX_PPGAS_FUNC(he, pheMax);
-MAX_PPGAS_FUNC(n2, pn2Max);
-MAX_PPGAS_FUNC(o2, po2Max);
+double DivePlotDataModel::pheMax() const
+{
+	return max_gas(pInfo, &gas_pressures::he);
+}
+
+double DivePlotDataModel::pn2Max() const
+{
+	return max_gas(pInfo, &gas_pressures::n2);
+}
+
+double DivePlotDataModel::po2Max() const
+{
+	return max_gas(pInfo, &gas_pressures::o2);
+}
 
 void DivePlotDataModel::emitDataChanged()
 {
