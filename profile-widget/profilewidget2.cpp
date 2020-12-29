@@ -120,7 +120,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 #endif
 	isPlotZoomed(prefs.zoomed_plot),// no! bad use of prefs. 'PreferencesDialog::loadSettings' NOT CALLED yet.
 	profileYAxis(new DepthAxis(this)),
-	gasYAxis(new PartialGasPressureAxis(this)),
+	gasYAxis(new PartialGasPressureAxis(*dataModel, this)),
 	temperatureAxis(new TemperatureAxis(this)),
 	timeAxis(new TimeAxis(this)),
 	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0)),
@@ -288,7 +288,6 @@ void ProfileWidget2::setupItemOnScene()
 	gasYAxis->setTickInterval(1);
 	gasYAxis->setTickSize(1);
 	gasYAxis->setMinimum(0);
-	gasYAxis->setModel(dataModel);
 	gasYAxis->setFontLabelScale(0.7);
 	gasYAxis->setLineSize(96);
 
@@ -735,6 +734,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #endif
 	tankItem->setData(&plotInfo, &displayed_dive);
 
+	gasYAxis->update();
 	dataModel->emitDataChanged();
 	// The event items are a bit special since we don't know how many events are going to
 	// exist on a dive, so I cant create cache items for that. that's why they are here
@@ -837,7 +837,7 @@ void ProfileWidget2::settingsChanged()
 	else
 		needReplot = prefs.calcceiling;
 #ifndef SUBSURFACE_MOBILE
-	gasYAxis->settingsChanged();	// Initialize ticks of partial pressure graph
+	gasYAxis->update();	// Initialize ticks of partial pressure graph
 	if ((prefs.percentagegraph||prefs.hrgraph) && PP_GRAPHS_ENABLED) {
 		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
 		temperatureAxis->setPos(itemPos.temperatureAll.pos.on);

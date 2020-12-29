@@ -413,34 +413,27 @@ QString TemperatureAxis::textForValue(double value) const
 	return QString::number(mkelvin_to_C((int)value));
 }
 
-PartialGasPressureAxis::PartialGasPressureAxis(ProfileWidget2 *widget) :
+PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, ProfileWidget2 *widget) :
 	DiveCartesianAxis(widget),
-	model(NULL)
+	model(model)
 {
-	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &PartialGasPressureAxis::settingsChanged);
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &PartialGasPressureAxis::update);
 }
 
-void PartialGasPressureAxis::setModel(DivePlotDataModel *m)
-{
-	model = m;
-	connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(settingsChanged()));
-	settingsChanged();
-}
-
-void PartialGasPressureAxis::settingsChanged()
+void PartialGasPressureAxis::update()
 {
 	bool showPhe = prefs.pp_graphs.phe;
 	bool showPn2 = prefs.pp_graphs.pn2;
 	bool showPo2 = prefs.pp_graphs.po2;
 	setVisible(showPhe || showPn2 || showPo2);
-	if (!model->rowCount())
+	if (!model.rowCount())
 		return;
 
-	double max = showPhe ? model->pheMax() : -1;
-	if (showPn2 && model->pn2Max() > max)
-		max = model->pn2Max();
-	if (showPo2 && model->po2Max() > max)
-		max = model->po2Max();
+	double max = showPhe ? model.pheMax() : -1;
+	if (showPn2 && model.pn2Max() > max)
+		max = model.pn2Max();
+	if (showPo2 && model.po2Max() > max)
+		max = model.po2Max();
 
 	qreal pp = floor(max * 10.0) / 10.0 + 0.2;
 	if (IS_FP_SAME(maximum(), pp))

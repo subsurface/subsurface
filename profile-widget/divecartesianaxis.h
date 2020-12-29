@@ -109,13 +109,12 @@ private:
 class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	PartialGasPressureAxis(ProfileWidget2 *widget);
-	void setModel(DivePlotDataModel *model);
+	PartialGasPressureAxis(const DivePlotDataModel &model, ProfileWidget2 *widget);
 public
 slots:
-	void settingsChanged();
+	void update();
 private:
-	DivePlotDataModel *model;
+	const DivePlotDataModel &model;
 };
 
 #endif // DIVECARTESIANAXIS_H
