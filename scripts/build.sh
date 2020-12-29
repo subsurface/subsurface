@@ -15,11 +15,12 @@
 # ./subsurface/libdivecomputer/build (libdivecomputer build)
 # ./subsurface/build                  (desktop build)
 # ./subsurface/build-mobile           (mobile build)
+# ./subsurface/build-downloader       (headless downloader build)
 #
 # there is basic support for building from a shared directory, e.g., with
 # one subsurface source tree on a host computer, accessed from multiple
 # VMs as well as the host to build without stepping on each other - the
-# one exceptioin is running autotools for libdiveconputer which has to
+# one exception is running autotools for libdiveconputer which has to
 # happen in the shared libdivecomputer folder
 # one way to achieve this is to have ./subsurface be a symlink; in that
 # case the build directories are libdivecomputer/build, build, build-mobile
@@ -71,7 +72,7 @@ while [[ $# -gt 0 ]] ; do
 			SRC_DIR="$1"
 			;;			
 		-build-deps)
-			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
+			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those)
 			# call this script with -build-deps
 			BUILD_DEPS="1"
 			;;
@@ -101,7 +102,7 @@ while [[ $# -gt 0 ]] ; do
 			BUILD_DESKTOP="1"
 			;;
 		-downloader)
-			# we are building Subsurface
+			# we are building Subsurface-downloader
 			BUILD_DOWNLOADER="1"
 			;;
 		-both)
@@ -110,7 +111,7 @@ while [[ $# -gt 0 ]] ; do
 			BUILD_DESKTOP="1"
 			;;
 		-all)
-			# we are building Subsurface and Subsurface-mobile
+			# we are building Subsurface, Subsurface-mobile, and Subsurface-downloader
 			BUILD_MOBILE="1"
 			BUILD_DESKTOP="1"
 			BUILD_DOWNLOADER="1"
@@ -125,7 +126,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-mobile] [-desktop] [-downloader] [-both] [-all] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
