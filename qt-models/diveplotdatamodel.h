@@ -82,9 +82,9 @@ public:
 	void setDive(struct dive *d, const plot_info &pInfo);
 	const plot_info &data() const;
 	unsigned int dcShown() const;
-	double pheMax();
-	double pn2Max();
-	double po2Max();
+	double pheMax() const;
+	double pn2Max() const;
+	double po2Max() const;
 	void emitDataChanged();
 
 private:
