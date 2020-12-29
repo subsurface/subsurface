@@ -26,32 +26,12 @@ void AbstractProfilePolygonItem::clear()
 	texts.clear();
 }
 
-void AbstractProfilePolygonItem::replot()
-{
-	modelDataChanged();
-}
-
 void AbstractProfilePolygonItem::setVisible(bool visible)
 {
 	QGraphicsPolygonItem::setVisible(visible);
 }
 
-bool AbstractProfilePolygonItem::shouldCalculateStuff(const QModelIndex &topLeft, const QModelIndex &bottomRight)
-{
-	if (dataModel.rowCount() == 0)
-		return false;
-	if (hDataColumn == -1 || vDataColumn == -1)
-		return false;
-	if (topLeft.isValid() && bottomRight.isValid()) {
-		if ((topLeft.column() >= vDataColumn || topLeft.column() >= hDataColumn) &&
-		    (bottomRight.column() <= vDataColumn || topLeft.column() <= hDataColumn)) {
-			return true;
-		}
-	}
-	return true;
-}
-
-void AbstractProfilePolygonItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
+void AbstractProfilePolygonItem::replot()
 {
 	// Calculate the polygon. This is the polygon that will be painted on screen
 	// on the ::paint method. Here we calculate the correct position of the points
@@ -123,13 +103,11 @@ int DiveProfileItem::maxCeiling(int row)
 	return max;
 }
 
-void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DiveProfileItem::replot()
 {
 	bool eventAdded = false;
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
 
-	AbstractProfilePolygonItem::modelDataChanged(topLeft, bottomRight);
+	AbstractProfilePolygonItem::replot();
 	if (polygon().isEmpty())
 		return;
 
@@ -226,17 +204,13 @@ DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveC
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::hrgraphChanged, this, &DiveHeartrateItem::setVisible);
 }
 
-void DiveHeartrateItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DiveHeartrateItem::replot()
 {
 	int last = -300, last_printed_hr = 0, sec = 0;
 	struct {
 		int sec;
 		int hr;
 	} hist[3] = {};
-
-	// We don't have enougth data to calculate things, quit.
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
 
 	qDeleteAll(texts);
 	texts.clear();
@@ -309,13 +283,9 @@ DivePercentageItem::DivePercentageItem(const DivePlotDataModel &model, const Div
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraphChanged, this, &DivePercentageItem::setVisible);
 }
 
-void DivePercentageItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DivePercentageItem::replot()
 {
 	int sec = 0;
-
-	// We don't have enougth data to calculate things, quit.
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
 
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
@@ -389,13 +359,9 @@ DiveAmbPressureItem::DiveAmbPressureItem(const DivePlotDataModel &model, const D
 	setPen(pen);
 }
 
-void DiveAmbPressureItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DiveAmbPressureItem::replot()
 {
 	int sec = 0;
-
-	// We don't have enougth data to calculate things, quit.
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
 
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
@@ -434,13 +400,9 @@ DiveGFLineItem::DiveGFLineItem(const DivePlotDataModel &model, const DiveCartesi
 	setPen(pen);
 }
 
-void DiveGFLineItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DiveGFLineItem::replot()
 {
 	int sec = 0;
-
-	// We don't have enougth data to calculate things, quit.
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
 
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
@@ -479,12 +441,9 @@ DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const D
 	setPen(pen);
 }
 
-void DiveTemperatureItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DiveTemperatureItem::replot()
 {
 	int last = -300, last_printed_temp = 0, sec = 0, last_valid_temp = 0;
-	// We don't have enougth data to calculate things, quit.
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
 
 	qDeleteAll(texts);
 	texts.clear();
@@ -560,12 +519,9 @@ DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveC
 	lastRunningSum = 0.0;
 }
 
-void DiveMeanDepthItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DiveMeanDepthItem::replot()
 {
 	double meandepthvalue = 0.0;
-	// We don't have enougth data to calculate things, quit.
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
 
 	QPolygonF poly;
 	plot_data *entry = dataModel.data().entry;
@@ -610,12 +566,8 @@ void DiveMeanDepthItem::createTextItem()
 	texts.append(text);
 }
 
-void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DiveGasPressureItem::replot()
 {
-	// We don't have enougth data to calculate things, quit.
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
-
 	const struct plot_info *pInfo = &dataModel.data();
 	std::vector<int> plotted_cyl(pInfo->nr_cylinders, false);
 	std::vector<int> last_plotted(pInfo->nr_cylinders, 0);
@@ -787,12 +739,9 @@ DiveCalculatedCeiling::DiveCalculatedCeiling(const DivePlotDataModel &model, con
 	setVisible(prefs.calcceiling);
 }
 
-void DiveCalculatedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DiveCalculatedCeiling::replot()
 {
-	// We don't have enougth data to calculate things, quit.
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
-	AbstractProfilePolygonItem::modelDataChanged(topLeft, bottomRight);
+	AbstractProfilePolygonItem::replot();
 	// Add 2 points to close the polygon.
 	QPolygonF poly = polygon();
 	if (poly.isEmpty())
@@ -838,11 +787,8 @@ DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const D
 	setVisible(prefs.dcceiling);
 }
 
-void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void DiveReportedCeiling::replot()
 {
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
-
 	QPolygonF p;
 	p.append(QPointF(hAxis.posAtValue(0), vAxis.posAtValue(0)));
 	plot_data *entry = dataModel.data().entry;
@@ -874,11 +820,8 @@ void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-void PartialPressureGasItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void PartialPressureGasItem::replot()
 {
-	if (!shouldCalculateStuff(topLeft, bottomRight))
-		return;
-
 	plot_data *entry = dataModel.data().entry;
 	QPolygonF poly;
 	QPolygonF alertpoly;
