@@ -50,8 +50,6 @@ public:
 	void setLineSize(qreal lineSize);
 	void setLine(const QLineF& line);
 	int unitSystem;
-public
-slots:
 	virtual void updateTicks(color_index_t color = TIME_GRID);
 
 signals:
@@ -94,7 +92,7 @@ class TimeAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	TimeAxis(ProfileWidget2 *widget);
-	void updateTicks(color_index_t color = TIME_GRID);
+	void updateTicks(color_index_t color = TIME_GRID) override;
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
