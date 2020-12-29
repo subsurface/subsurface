@@ -118,7 +118,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
 #endif
-	isPlotZoomed(prefs.zoomed_plot),// no! bad use of prefs. 'PreferencesDialog::loadSettings' NOT CALLED yet.
 	profileYAxis(new DepthAxis(this)),
 	gasYAxis(new PartialGasPressureAxis(*dataModel, this)),
 	temperatureAxis(new TemperatureAxis(this)),
@@ -155,9 +154,6 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	shouldCalculateMaxDepth(true),
 	fontPrintScale(1.0)
 {
-	// would like to be able to ASSERT here that PreferencesDialog::loadSettings has been called.
-	isPlotZoomed = prefs.zoomed_plot; // now it seems that 'prefs' has loaded our preferences
-
 	init_plot_info(&plotInfo);
 
 	setupSceneAndFlags();
@@ -830,16 +826,6 @@ void ProfileWidget2::actionRequestedReplot(bool)
 
 void ProfileWidget2::settingsChanged()
 {
-	// if we are showing calculated ceilings then we have to replot()
-	// because the GF could have changed; otherwise we try to avoid replot()
-	// but always replot in PLAN/ADD/EDIT mode to avoid a bug of DiveHandlers not
-	// being redrawn on setting changes, causing them to become unattached
-	// to the profile
-	bool needReplot;
-	if (currentState == ADD || currentState == PLAN || currentState ==  EDIT)
-		needReplot = true;
-	else
-		needReplot = prefs.calcceiling;
 #ifndef SUBSURFACE_MOBILE
 	gasYAxis->update();	// Initialize ticks of partial pressure graph
 	if ((prefs.percentagegraph||prefs.hrgraph) && PP_GRAPHS_ENABLED) {
@@ -896,12 +882,7 @@ void ProfileWidget2::settingsChanged()
 	}
 
 	tankItem->setVisible(prefs.tankbar);
-	if (prefs.zoomed_plot != isPlotZoomed) {
-		isPlotZoomed = prefs.zoomed_plot;
-		needReplot = true;
-	}
-	if (needReplot)
-		replot();
+	replot();
 }
 
 void ProfileWidget2::resizeEvent(QResizeEvent *event)
