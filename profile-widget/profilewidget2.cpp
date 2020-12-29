@@ -735,7 +735,11 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	tankItem->setData(&plotInfo, &displayed_dive);
 
 	gasYAxis->update();
-	dataModel->emitDataChanged();
+
+	// Replot dive items
+	for (AbstractProfilePolygonItem *item: profileItems)
+		item->replot();
+
 	// The event items are a bit special since we don't know how many events are going to
 	// exist on a dive, so I cant create cache items for that. that's why they are here
 	// while all other items are up there on the constructor.

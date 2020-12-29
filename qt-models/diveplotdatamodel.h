@@ -85,7 +85,6 @@ public:
 	double pheMax() const;
 	double pn2Max() const;
 	double po2Max() const;
-	void emitDataChanged();
 
 private:
 	struct plot_info pInfo;
