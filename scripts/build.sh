@@ -210,6 +210,21 @@ else
 	[ -z $QMAKE ] && echo "cannot find qmake or qmake-qt5" && exit 1
 fi
 
+# it's not entirely clear why we only set this on macOS, but this appears to be what works
+if [ "$PLATFORM" = Darwin ] ; then
+	if [ -z "$CMAKE_PREFIX_PATH" ] ; then
+		# we already found qmake and can get the right path information from that
+		libdir=$($QMAKE -query QT_INSTALL_LIBS)
+		if [ $? -eq 0 ]; then
+			export CMAKE_PREFIX_PATH=$libdir/cmake
+		else
+			echo "something is broken with the Qt install"
+			exit 1
+		fi
+	fi
+fi
+
+
 # on Debian and Ubuntu based systems, the private QtLocation and
 # QtPositioning headers aren't bundled. Download them if necessary.
 if [ "$PLATFORM" = Linux ] ; then
@@ -469,19 +484,6 @@ make -j4
 make install
 # make sure we know where the libdivecomputer.a was installed - sometimes it ends up in lib64, sometimes in lib
 STATIC_LIBDC="$INSTALL_ROOT/$(grep ^libdir Makefile | cut -d/ -f2)/libdivecomputer.a"
-
-if [ "$PLATFORM" = Darwin ] ; then
-	if [ -z "$CMAKE_PREFIX_PATH" ] ; then
-		# we already found qmake and can get the right path information from that
-		libdir=$($QMAKE -query QT_INSTALL_LIBS)
-		if [ $? -eq 0 ]; then
-			export CMAKE_PREFIX_PATH=$libdir/cmake
-		else
-			echo "something is broken with the Qt install"
-			exit 1
-		fi
-	fi
-fi
 
 cd "$SRC"
 
