@@ -48,6 +48,13 @@ Item {
 	property int visibility
 	property var usedCyl: []
 
+	function focusReset() {
+		// set the focus explicitlt (to steal from any other field), then unset
+		editArea.focus = true
+		editArea.focus = false
+		Qt.inputMethod.hide()
+	}
+
 	function clearDetailsEdit() {
 		detailsEdit.dive_id = 0
 		detailsEdit.number = 0
