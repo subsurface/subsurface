@@ -175,11 +175,9 @@ Item {
 				}
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Coordinates:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtGps
@@ -187,12 +185,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Use current\nGPS location:")
 				visible: manager.locationServiceAvailable
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfCheckBox {
 				id: checkboxGPS
@@ -209,11 +205,9 @@ Item {
 				}
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Depth:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtDepth
@@ -221,11 +215,9 @@ Item {
 				validator: RegExpValidator { regExp: /[^-]*/ }
 				flickable: detailsEditFlickable
 			}
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Duration:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtDuration
@@ -234,11 +226,9 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Air Temp:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtAirTemp
@@ -246,11 +236,9 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Water Temp:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtWaterTemp
@@ -258,11 +246,9 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Suit:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			TemplateEditComboBox  {
 				id: suitBox
@@ -270,11 +256,9 @@ Item {
 					       manager.suitList : null
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Buddy:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			TemplateEditComboBox {
 				id: buddyBox
@@ -282,11 +266,9 @@ Item {
 					       manager.buddyList : null
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Divemaster:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			TemplateEditComboBox {
 				id: divemasterBox
@@ -294,11 +276,9 @@ Item {
 					       manager.divemasterList : null
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Weight:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtWeight
@@ -308,11 +288,9 @@ Item {
 			}
 // all cylinder info should be able to become dynamic instead of this blob of code.
 // first cylinder
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder1:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			TemplateComboBox {
 				id: cylinderBox0
@@ -323,11 +301,9 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtGasMix0
@@ -337,11 +313,9 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtStartPressure0
@@ -350,11 +324,9 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				id: txtEndPressure0
@@ -363,12 +335,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 //second cylinder
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[1] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder2:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			TemplateComboBox {
 				visible: usedCyl[1] != null ? true : false
@@ -380,12 +350,10 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[1] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[1] != null ? true : false
@@ -396,12 +364,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[1] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
-				color: subsurfaceTheme.textColor
-				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			SsrfTextField {
 				visible: usedCyl[1] != null ? true : false
@@ -411,12 +377,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[1] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
-				color: subsurfaceTheme.textColor
-				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			SsrfTextField {
 				visible: usedCyl[1] != null ? true : false
@@ -426,12 +390,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 // third cylinder
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[2] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder3:")
-				color: subsurfaceTheme.textColor
-				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TemplateComboBox {
 				visible: usedCyl[2] != null ? true : false
@@ -444,12 +406,10 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[2] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[2] != null ? true : false
@@ -459,12 +419,10 @@ Item {
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[2] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[2] != null ? true : false
@@ -474,12 +432,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[2] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[2] != null ? true : false
@@ -489,12 +445,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 // fourth cylinder
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[3] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder4:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			TemplateComboBox {
 				visible: usedCyl[3] != null ? true : false
@@ -507,12 +461,10 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[3] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[3] != null ? true : false
@@ -523,12 +475,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[3] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[3] != null ? true : false
@@ -538,12 +488,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[3] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[3] != null ? true : false
@@ -553,12 +501,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 // fifth cylinder
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[4] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder5:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			TemplateComboBox {
 				visible: usedCyl[4] != null ? true : false
@@ -571,12 +517,10 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[4] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[4] != null ? true : false
@@ -587,12 +531,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[4] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[4] != null ? true : false
@@ -602,12 +544,10 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				visible: usedCyl[4] != null ? true : false
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			SsrfTextField {
 				visible: usedCyl[4] != null ? true : false
@@ -617,11 +557,9 @@ Item {
 				flickable: detailsEditFlickable
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Rating:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			TemplateSpinBox {
 				id: ratingPicker
@@ -631,11 +569,9 @@ Item {
 				onValueChanged: rating = value
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Visibility:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			TemplateSpinBox {
 				id: visibilityPicker
@@ -645,12 +581,10 @@ Item {
 				onValueChanged: visibility = value
 			}
 
-			Controls.Label {
+			TemplateLabelSmall {
 				Layout.columnSpan: 2
 				Layout.alignment: Qt.AlignLeft
 				text: qsTr("Notes:")
-				font.pointSize: subsurfaceTheme.smallPointSize
-				color: subsurfaceTheme.textColor
 			}
 			Controls.TextArea {
 				Layout.columnSpan: 2
