@@ -19,6 +19,7 @@ Build-Depends: asciidoc,
                dpkg-dev (>= 1.16.1.1),
                libusb-1.0-0-dev,
                libbluetooth-dev,
+               libmtp-dev,
                dh-autoreconf,
                libz-dev,
                libssl-dev,
@@ -38,6 +39,8 @@ Build-Depends: asciidoc,
 	       qml-module-qtquick2,
                libcurl4-openssl-dev,
                qtconnectivity5-dev,
+               libqt5charts5-dev,
+               qml-module-qtcharts
                subsurface-qt-private-headers
 Standards-Version: 3.9.7
 Homepage: http://subsurface-divelog.org
