@@ -382,7 +382,7 @@ Kirigami.Page {
 		cylinderIndex4 = modelData.cylinderList.indexOf(usedCyl[4])
 		rating = modelData.rating
 		visibility = modelData.viz
-
+		detailsEdit.focusReset()
 		diveDetailsPage.state = "edit"
 	}
 
