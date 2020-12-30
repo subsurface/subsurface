@@ -126,7 +126,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Count,
 		false,
 		{ ChartSubType::Pie },
-		ChartFeatureLegend
+		ChartFeatureLabels | ChartFeatureLegend
 	},
 	{
 		ChartType::DiscreteBar,

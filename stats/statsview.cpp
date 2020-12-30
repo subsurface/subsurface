@@ -3,6 +3,7 @@
 #include "barseries.h"
 #include "boxseries.h"
 #include "legend.h"
+#include "pieseries.h"
 #include "scatterseries.h"
 #include "statsaxis.h"
 #include "statsstate.h"
@@ -11,10 +12,10 @@
 #include "core/divefilter.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include <QQuickItem>
+#include <QAbstractSeries>
 #include <QChart>
 #include <QGraphicsSceneHoverEvent>
 #include <QLocale>
-#include <QPieSeries>
 
 // Constants that control the graph layouts
 static const QColor quartileMarkerColor(Qt::red);
@@ -60,6 +61,7 @@ StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
 	highlightedScatterSeries(nullptr),
 	highlightedBarSeries(nullptr),
 	highlightedBoxSeries(nullptr),
+	highlightedPieSeries(nullptr),
 	eventFilter(this)
 {
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -86,6 +88,8 @@ void StatsView::plotAreaChanged(const QRectF &)
 	for (auto &series: barSeries)
 		series->updatePositions();
 	for (auto &series: boxSeries)
+		series->updatePositions();
+	for (auto &series: pieSeries)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
 		marker.updatePosition();
@@ -154,6 +158,7 @@ void StatsView::hover(QPointF pos)
 
 	handleHover(barSeries, highlightedBarSeries, pos);
 	handleHover(boxSeries, highlightedBoxSeries, pos);
+	handleHover(pieSeries, highlightedPieSeries, pos);
 }
 
 void StatsView::initSeries(QtCharts::QAbstractSeries *series, const QString &name)
@@ -179,6 +184,7 @@ ScatterSeries *StatsView::addScatterSeries(const QString &name, const StatsType 
 {
 	scatterSeries.emplace_back(new ScatterSeries(typeX, typeY));
 	initSeries(scatterSeries.back().get(), name);
+	scatterSeries.back()->updatePositions(); // TODO: generalize
 	return scatterSeries.back().get();
 }
 
@@ -189,6 +195,7 @@ BarSeries *StatsView::addBarSeries(const QString &name, bool horizontal, bool st
 	barSeries.emplace_back(new BarSeries(horizontal, stacked, categoryName, valueType,
 			       std::move(valueBinNames)));
 	initSeries(barSeries.back().get(), name);
+	barSeries.back()->updatePositions(); // TODO: generalize
 	return barSeries.back().get();
 }
 
@@ -196,7 +203,16 @@ BoxSeries *StatsView::addBoxSeries(const QString &name, const QString &unit, int
 {
 	boxSeries.emplace_back(new BoxSeries(name, unit, decimals));
 	initSeries(boxSeries.back().get(), name);
+	boxSeries.back()->updatePositions(); // TODO: generalize
 	return boxSeries.back().get();
+}
+
+PieSeries *StatsView::addPieSeries(const QString &name, const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels)
+{
+	pieSeries.emplace_back(new PieSeries(chart, name, data, keepOrder, labels));
+	initSeries(pieSeries.back().get(), name);
+	pieSeries.back()->updatePositions(); // TODO: generalize
+	return pieSeries.back().get();
 }
 
 void StatsView::setTitle(const QString &s)
@@ -227,10 +243,12 @@ void StatsView::reset()
 	highlightedScatterSeries = nullptr;
 	highlightedBarSeries = nullptr;
 	highlightedBoxSeries = nullptr;
+	highlightedPieSeries = nullptr;
 	legend.reset();
 	scatterSeries.clear();
 	barSeries.clear();
 	boxSeries.clear();
+	pieSeries.clear();
 	quartileMarkers.clear();
 	lineMarkers.clear();
 	chart->removeAllSeries();
@@ -255,7 +273,7 @@ void StatsView::plot(const StatsState &stateIn)
 	case ChartType::DiscreteCount:
 		return plotDiscreteCountChart(dives, state.subtype, state.var1, state.var1Binner, state.labels);
 	case ChartType::Pie:
-		return plotPieChart(dives, state.var1, state.var1Binner, state.legend);
+		return plotPieChart(dives, state.var1, state.var1Binner, state.labels, state.legend);
 	case ChartType::DiscreteBox:
 		return plotDiscreteBoxChart(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::DiscreteScatter:
@@ -544,16 +562,6 @@ static int getTotalCount(const std::vector<StatsBinCount> &bins)
 	return total;
 }
 
-static QString makePiePercentageLabel(const QString &bin, int count, int total)
-{
-	QLocale loc;
-	double percentage = count * 100.0 / total;
-	return QString("%1 (%2: %3\%)").arg(
-			bin,
-			loc.toString(count),
-			loc.toString(percentage, 'f', 1));
-}
-
 template<typename T>
 static int getMaxCount(const std::vector<T> &bins)
 {
@@ -607,11 +615,9 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 }
 
 void StatsView::plotPieChart(const std::vector<dive *> &dives,
-			     const StatsType *categoryType, const StatsBinner *categoryBinner, bool showLegend)
+			     const StatsType *categoryType, const StatsBinner *categoryBinner,
+			     bool labels, bool showLegend)
 {
-	using QtCharts::QPieSeries;
-	using QtCharts::QPieSlice;
-
 	if (!categoryBinner)
 		return;
 
@@ -623,62 +629,16 @@ void StatsView::plotPieChart(const std::vector<dive *> &dives,
 	if (categoryBins.empty())
 		return;
 
-	int total = getTotalCount(categoryBins);
-	QPieSeries *series = addSeries<QtCharts::QPieSeries>(categoryType->name());
+	std::vector<std::pair<QString, int>> data;
+	data.reserve(categoryBins.size());
+	for (auto const &[bin, count]: categoryBins)
+		data.emplace_back(categoryBinner->formatWithUnit(*bin), count);
 
-	// The Pie chart becomes very slow for a big number of slices.
-	// Moreover, it is unreadable. Therefore, subsume slices under a
-	// certain percentage as "other". But draw a minimum number of slices
-	// until we reach 50% so that we never get a pie only of "other".
-	// This is heuristics, which might have to be optimized.
-	const int smallest_slice_percentage = 2; // Smaller than 2% = others. That makes at most 50 slices.
-	const int min_slices = 10; // Try to draw at least 10 slices until we reach 50%
-	std::sort(categoryBins.begin(), categoryBins.end(),
-		  [](const StatsBinCount &item1, const StatsBinCount &item2)
-		  { return item1.value > item2.value; }); // Note: reverse sort.
-	auto it = std::find_if(categoryBins.begin(), categoryBins.end(),
-			       [total, smallest_slice_percentage](const StatsBinCount &item)
-			       { return item.value * 100 / total < smallest_slice_percentage; });
-	if (it - categoryBins.begin() < min_slices) {
-		// Take minimum amount of slices below 50%...
-		int sum = 0;
-		for (auto it2 = categoryBins.begin(); it2 != it; ++it2)
-			sum += it2->value;
-
-		while(it != categoryBins.end() &&
-		      sum * 2 < total &&
-		      it - categoryBins.begin() < min_slices) {
-			sum += it->value;
-			++it;
-		}
-	}
-
-	// Sum counts of "other" bins.
-	int otherCount = 0;
-	for (auto it2 = it; it2 != categoryBins.end(); ++it2)
-		otherCount += it2->value;
-
-	categoryBins.erase(it, categoryBins.end()); // Delete "other" bins
-
-	std::vector<QString> binNames;
-	binNames.reserve(categoryBins.size());
-	for (auto const &[bin, count]: categoryBins) {
-		QString name = categoryBinner->format(*bin);
-		binNames.push_back(name);
-		QString label = makePiePercentageLabel(name, count, total);
-		QPieSlice *slice = new QPieSlice(label, count);
-		slice->setLabelVisible(true);
-		series->append(slice);
-	}
-	if (otherCount) {
-		QString label = makePiePercentageLabel(StatsTranslations::tr("other"), otherCount, total);
-		QPieSlice *slice = new QPieSlice(label, otherCount);
-		slice->setLabelVisible(true);
-		series->append(slice);
-	}
+	bool keepOrder = categoryType->type() != StatsType::Type::Discrete;
+	PieSeries *series = addPieSeries(categoryType->name(), data, keepOrder, labels);
 
 	if (showLegend)
-		legend = std::make_unique<Legend>(chart, binNames);
+		legend = std::make_unique<Legend>(chart, series->binNames());
 }
 
 void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,

@@ -19,6 +19,7 @@ namespace QtCharts {
 class QGraphicsLineItem;
 class BarSeries;
 class BoxSeries;
+class PieSeries;
 class ScatterSeries;
 class CategoryAxis;
 class CountAxis;
@@ -54,7 +55,7 @@ private:
 				    ChartSubType subType,
 				    const StatsType *categoryType, const StatsBinner *categoryBinner, bool labels);
 	void plotPieChart(const std::vector<dive *> &dives,
-			  const StatsType *categoryType, const StatsBinner *categoryBinner, bool legend);
+			  const StatsType *categoryType, const StatsBinner *categoryBinner, bool labels, bool legend);
 	void plotDiscreteBoxChart(const std::vector<dive *> &dives,
 				  const StatsType *categoryType, const StatsBinner *categoryBinner, const StatsType *valueType);
 	void plotDiscreteScatter(const std::vector<dive *> &dives,
@@ -87,6 +88,7 @@ private:
 				const QString &categoryName, const StatsType *valueType,
 				std::vector<QString> valueBinNames);
 	BoxSeries *addBoxSeries(const QString &name, const QString &unit, int decimals);
+	PieSeries *addPieSeries(const QString &name, const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels);
 	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
 
 	template<typename T>
@@ -127,12 +129,14 @@ private:
 	std::vector<std::unique_ptr<ScatterSeries>> scatterSeries;
 	std::vector<std::unique_ptr<BarSeries>> barSeries;
 	std::vector<std::unique_ptr<BoxSeries>> boxSeries;
+	std::vector<std::unique_ptr<PieSeries>> pieSeries;
 	std::unique_ptr<Legend> legend;
 	std::vector<QuartileMarker> quartileMarkers;
 	std::vector<LineMarker> lineMarkers;
 	ScatterSeries *highlightedScatterSeries;	// scatter series with highlighted element
 	BarSeries *highlightedBarSeries;		// bar series with highlighted element
 	BoxSeries *highlightedBoxSeries;		// box series with highlighted element
+	PieSeries *highlightedPieSeries;		// pie series with highlighted element
 
 	// This is unfortunate: we can't derive from QChart, because the chart is allocated by QML.
 	// Therefore, we have to listen to hover events using an events-filter.
