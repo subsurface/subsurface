@@ -961,7 +961,6 @@ bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString loca
 	struct dive_site *ds = get_dive_site_for_dive(d);
 	bool changed = false;
 	QString oldLocation = get_dive_location(d);
-	qDebug() << "checkLocation" << location << "gps" << gps << "dive had" << oldLocation << "gps" << formatDiveGPS(d);
 	if (oldLocation != location) {
 		ds = get_dive_site_by_name(qPrintable(location), &dive_site_table);
 		if (!ds && !location.isEmpty()) {
@@ -1068,6 +1067,22 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	if (!orig) {
 		appendTextToLog("cannot commit changes: no dive");
 		return;
+	}
+	if (verbose) {
+		qDebug().noquote() << QStringLiteral("diveId  :'%1'\n").arg(diveId) <<
+				      QStringLiteral("number  :'%1'\n").arg(number) <<
+				      QStringLiteral("date    :'%1'\n").arg(date) <<
+				      QStringLiteral("location:'%1'\n").arg(location) <<
+				      QStringLiteral("gps     :'%1'\n").arg(gps) <<
+				      QStringLiteral("duration:'%1'\n").arg(duration) <<
+				      QStringLiteral("depth   :'%1'\n").arg(depth) <<
+				      QStringLiteral("airtemp :'%1'\n").arg(airtemp) <<
+				      QStringLiteral("watertmp:'%1'\n").arg(watertemp) <<
+				      QStringLiteral("suit    :'%1'\n").arg(suit) <<
+				      QStringLiteral("buddy   :'%1'\n").arg(buddy) <<
+				      QStringLiteral("diveMstr:'%1'\n").arg(diveMaster) <<
+				      QStringLiteral("weight  :'%1'\n").arg(weight) <<
+				      QStringLiteral("state   :'%1'\n").arg(state);
 	}
 
 	Command::OwningDivePtr d_ptr(alloc_dive()); // Automatically delete dive if we exit early!
