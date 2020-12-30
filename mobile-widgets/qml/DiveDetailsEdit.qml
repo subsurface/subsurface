@@ -80,6 +80,7 @@ Item {
 	}
 
 	function saveData() {
+		focusReset()
 		var state =  diveDetailsPage.state
 		diveDetailsPage.state = "view" // run the transition
 		// join cylinder info from separate string into a list.
