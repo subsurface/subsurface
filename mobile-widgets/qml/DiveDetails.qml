@@ -351,17 +351,7 @@ Kirigami.Page {
 		airtemp = modelData.airTemp
 		watertemp = modelData.waterTemp
 		suitIndex = manager.suitList.indexOf(modelData.suit)
-		if (modelData.buddy.indexOf(",") > 0) {
-			buddyIndex = manager.buddyList.indexOf(modelData.buddy.split(",", 1).toString())
-		} else {
-			buddyIndex = manager.buddyList.indexOf(modelData.buddy)
-		}
 		buddyText = modelData.buddy;
-		if (modelData.diveMaster.indexOf(",") > 0) {
-			divemasterIndex = manager.divemasterList.indexOf(modelData.diveMaster.split(",", 1).toString())
-		} else {
-			divemasterIndex = manager.divemasterList.indexOf(modelData.diveMaster)
-		}
 		divemasterText = modelData.diveMaster
 		notes = modelData.notes
 		if (modelData.singleWeight) {
