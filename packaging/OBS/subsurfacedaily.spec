@@ -4,9 +4,9 @@
 # Copyright (c) 2014-2020 Dirk Hohndel
 #
 
-%define latestVersion 4.9.7.6
+%define latestVersion 4.9.10.166
 
-%define gitVersion 6
+%define gitVersion 166
 
 
 Name:           subsurfacedaily
@@ -37,6 +37,7 @@ BuildRequires:	libxslt-devel
 BuildRequires:	libssh2-devel
 BuildRequires:	libcurl-devel
 BuildRequires:  libgit2-devel
+BuildRequires:  libmtp-devel
 %if  0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 BuildRequires:	netpbm-devel
 BuildRequires:	openssl-devel
@@ -56,6 +57,7 @@ BuildRequires:	qt5-qtbase-odbc
 BuildRequires:	qt5-qtbase-tds
 BuildRequires:	qt5-qtconnectivity-devel
 BuildRequires:	qt5-qtlocation-devel
+BuildRequires:	qt5-qtcharts-devel
 BuildRequires:  libappstream-glib
 %else
 BuildRequires:	update-desktop-files
@@ -75,6 +77,7 @@ BuildRequires:	libqt5-qtdeclarative-devel
 BuildRequires:	libqt5-qtconnectivity-devel
 BuildRequires:	libqt5-qtlocation-devel
 BuildRequires:	libqt5-qtlocation-private-headers-devel
+BuildRequires:	libQt5Charts5-devel
 %endif
 # Recommends Qt5 translations package
 %if 0%{?suse_version}
@@ -84,7 +87,7 @@ Recommends:     libqt5-qttranslations
 Recommends:     qt5-qttranslations
 %endif
 # Recommends debug info (and debug sources, for openSUSE) for daily build
-%if %{name} == "subsurfacedaily"
+%if "%{name}" == "subsurfacedaily"
 Recommends:     %{name}-debuginfo
 %if 0%{?suse_version}
 Recommends:     %{name}-debugsource
