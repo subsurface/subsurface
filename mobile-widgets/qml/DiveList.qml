@@ -47,8 +47,8 @@ Kirigami.ScrollablePage {
 			padding: 0
 			supportsMouseEvents: true
 			anchors {
-				left: parent.left
-				right: parent.right
+				left: parent ? parent.left : undefined
+				right: parent ? parent.right : undefined
 			}
 			height: isTrip ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing // delegateInnerItem.height
 
