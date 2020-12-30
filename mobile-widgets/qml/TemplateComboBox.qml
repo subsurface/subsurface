@@ -53,7 +53,7 @@ ComboBox {
 		anchors.left: cb.left
 		leftPadding: Kirigami.Units.smallSpacing
 		rightPadding: Kirigami.Units.smallSpacing
-		text: cb.displayText
+		text: readOnly ? cb.displayText : cb.editText
 		font: cb.font
 		color: subsurfaceTheme.textColor
 		verticalAlignment: Text.AlignVCenter
