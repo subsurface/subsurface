@@ -10,6 +10,7 @@ ComboBox {
 	Layout.preferredHeight: Kirigami.Units.gridUnit * 2.5
 	inputMethodHints: Qt.ImhNoPredictiveText
 	font.pointSize: subsurfaceTheme.regularPointSize
+	property var flickable // used to ensure the combobox is visible on screen
 	delegate: ItemDelegate {
 		width: cb.width
 		contentItem: Text {
@@ -47,10 +48,11 @@ ComboBox {
 		}
 	}
 
-	contentItem: TextField {
+	contentItem: SsrfTextField {
 		readOnly: !cb.editable
 		anchors.right: indicator.left
 		anchors.left: cb.left
+		flickable: cb.flickable
 		leftPadding: Kirigami.Units.smallSpacing
 		rightPadding: Kirigami.Units.smallSpacing
 		text: readOnly ? cb.displayText : cb.editText

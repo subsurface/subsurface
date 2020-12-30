@@ -164,6 +164,7 @@ Item {
 			}
 			TemplateEditComboBox {
 				id: locationBox
+				flickable: detailsEditFlickable
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					       manager.locationList : null
 				onAccepted: {
@@ -253,6 +254,7 @@ Item {
 			}
 			TemplateEditComboBox  {
 				id: suitBox
+				flickable: detailsEditFlickable
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					       manager.suitList : null
 			}
@@ -263,6 +265,7 @@ Item {
 			}
 			TemplateEditComboBox {
 				id: buddyBox
+				flickable: detailsEditFlickable
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					       manager.buddyList : null
 			}
@@ -273,6 +276,7 @@ Item {
 			}
 			TemplateEditComboBox {
 				id: divemasterBox
+				flickable: detailsEditFlickable
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					       manager.divemasterList : null
 			}
@@ -295,6 +299,7 @@ Item {
 			}
 			TemplateComboBox {
 				id: cylinderBox0
+				flickable: detailsEditFlickable
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.cylinderList : null
@@ -344,6 +349,7 @@ Item {
 			TemplateComboBox {
 				visible: usedCyl[1] != null ? true : false
 				id: cylinderBox1
+				flickable: detailsEditFlickable
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.cylinderList : null
@@ -399,6 +405,7 @@ Item {
 			TemplateComboBox {
 				visible: usedCyl[2] != null ? true : false
 				id: cylinderBox2
+				flickable: detailsEditFlickable
 				currentIndex: find(usedCyl[2])
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
@@ -454,6 +461,7 @@ Item {
 			TemplateComboBox {
 				visible: usedCyl[3] != null ? true : false
 				id: cylinderBox3
+				flickable: detailsEditFlickable
 				currentIndex: find(usedCyl[3])
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
@@ -510,6 +518,7 @@ Item {
 			TemplateComboBox {
 				visible: usedCyl[4] != null ? true : false
 				id: cylinderBox4
+				flickable: detailsEditFlickable
 				currentIndex: find(usedCyl[4])
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
