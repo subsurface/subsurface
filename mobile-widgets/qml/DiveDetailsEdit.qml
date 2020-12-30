@@ -154,14 +154,10 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Location:")
 			}
-			TemplateComboBox {
+			TemplateEditComboBox {
 				id: locationBox
-				editable: true
-				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					manager.locationList : null
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
+					       manager.locationList : null
 				onAccepted: {
 					focus = false
 					gpsText = manager.getGpsFromSiteName(editText)
@@ -261,20 +257,10 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			TemplateComboBox {
+			TemplateEditComboBox  {
 				id: suitBox
-				editable: true
-				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					manager.suitList : null
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
-				onActivated: {
-					focus = false
-				}
-				onAccepted: {
-					focus = false
-				}
+					       manager.suitList : null
 			}
 
 			Controls.Label {
@@ -283,19 +269,10 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			TemplateComboBox {
+			TemplateEditComboBox {
 				id: buddyBox
-				editable: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					manager.buddyList : null
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
-				onActivated: {
-					focus = false
-				}
-				onAccepted: {
-					focus = false
-				}
+					       manager.buddyList : null
 			}
 
 			Controls.Label {
@@ -304,19 +281,10 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
-			TemplateComboBox {
+			TemplateEditComboBox {
 				id: divemasterBox
-				editable: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					manager.divemasterList : null
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
-				onActivated: {
-					focus = false
-				}
-				onAccepted: {
-					focus = false
-				}
+					       manager.divemasterList : null
 			}
 
 			Controls.Label {
