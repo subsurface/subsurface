@@ -19,31 +19,55 @@ class InformationBox;
 
 class BarSeries : public StatsSeries {
 public:
+	// There are three versions of creating bar series: for value-based (mean, etc) charts, for counts
+	// based charts and for stacked bar charts with multiple items.
+	struct CountItem {
+		double lowerBound, upperBound;
+		int count;
+		std::vector<QString> label;
+		QString binName;
+		int total;
+	};
+	struct ValueItem {
+		double lowerBound, upperBound;
+		double value;
+		std::vector<QString> label;
+		QString binName;
+		StatsOperationResults res;
+	};
+	struct MultiItem {
+		double lowerBound, upperBound;
+		std::vector<std::pair<int, std::vector<QString>>> countLabels;
+		QString binName;
+	};
+
 	// If the horizontal flag is true, independent variable is plotted on the y-axis.
 	// A non-empty valueBinNames vector flags that this is a stacked bar chart.
 	// In that case, a valueType must also be provided.
 	// For count-based bar series in one variable, valueType is null.
+	// Note: this expects that all items are added with increasing pos
+	// and that no bar is inside another bar, i.e. lowerBound and upperBound
+	// are ordered identically.
+	BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		  bool horizontal, const QString &categoryName,
+		  const std::vector<CountItem> &items);
+	BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		  bool horizontal, const QString &categoryName, const StatsType *valueType,
+		  const std::vector<ValueItem> &items);
 	BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, bool stacked, const QString &categoryName, const StatsType *valueType,
-		  std::vector<QString> valueBinNames);
+		  std::vector<QString> valueBinNames,
+		  const std::vector<MultiItem> &items);
 	~BarSeries();
 
 	void updatePositions() override;
 	bool hover(QPointF pos) override;
 	void unhighlight() override;
-
-	// Note: this expects that all items are added with increasing pos
-	// and that no bar is inside another bar, i.e. lowerBound and upperBound
-	// are ordered identically.
-	// There are three versions: for value-based (mean, etc) charts, for counts
-	// based charts and for stacked bar charts with multiple items.
-	void append(double lowerBound, double upperBound, int count, const std::vector<QString> &label,
-		    const QString &binName, int total);
-	void append(double lowerBound, double upperBound, double value, const std::vector<QString> &label,
-		    const QString &binName, const StatsOperationResults);
-	void append(double lowerBound, double upperBound, std::vector<std::pair<int, std::vector<QString>>> countLabels,
-		    const QString &binName);
 private:
+	BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		  bool horizontal, bool stacked, const QString &categoryName, const StatsType *valueType,
+		  std::vector<QString> valueBinNames);
+
 	struct Index {
 		int bar;
 		int subitem;
@@ -73,7 +97,7 @@ private:
 		int bin_nr;
 		void updatePosition(QtCharts::QChart *chart, BarSeries *series, bool horizontal, bool stacked,
 				    double from, double to);
-		void highlight(bool highlight);
+		void highlight(bool highlight, int binCount);
 	};
 
 	struct Item {
@@ -88,7 +112,7 @@ private:
 		     const QString &binName, const StatsOperationResults &res, int total, bool horizontal,
 		     bool stacked, int binCount);
 		void updatePosition(QtCharts::QChart *chart, BarSeries *series, bool horizontal, bool stacked, int binCount);
-		void highlight(int subitem, bool highlight);
+		void highlight(int subitem, bool highlight, int binCount);
 		int getSubItemUnderMouse(const QPointF &f, bool horizontal, bool stacked) const;
 	};
 

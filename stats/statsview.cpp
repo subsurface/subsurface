@@ -336,15 +336,16 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	if (showLegend)
 		legend = std::make_unique<Legend>(chart, data.vbinNames);
 
-	BarSeries *series = createSeries<BarSeries>(isHorizontal, isStacked, categoryType->name(),
-						    valueType, std::move(data.vbinNames));
-
+	std::vector<BarSeries::MultiItem> items;
+	items.reserve(data.hbin_counts.size());
 	double pos = 0.0;
 	for (auto &[hbin, counts, total]: data.hbin_counts) {
-		series->append(pos - 0.5, pos + 0.5, makeCountLabels(counts, total, labels, isHorizontal),
-			       categoryBinner->formatWithUnit(*hbin));
+		items.push_back({ pos - 0.5, pos + 0.5, makeCountLabels(counts, total, labels, isHorizontal),
+				  categoryBinner->formatWithUnit(*hbin) });
 		pos += 1.0;
 	}
+
+	createSeries<BarSeries>(isHorizontal, isStacked, categoryType->name(), valueType, std::move(data.vbinNames), items);
 }
 
 const double NaN = std::numeric_limits<double>::quiet_NaN();
@@ -444,8 +445,9 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 	else
 		addAxes(catAxis, valAxis);
 
+	std::vector<BarSeries::ValueItem> items;
+	items.reserve(categoryBins.size());
 	double pos = 0.0;
-	BarSeries *series = createSeries<BarSeries>(isHorizontal, false, categoryType->name(), valueType, std::vector<QString>());
 	QString unit = valueType->unitSymbol();
 	for (auto &[bin, res]: categoryBins) {
 		if (res.isValid()) {
@@ -453,11 +455,13 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 			QString value = QString("%L1").arg(height, 0, 'f', decimals);
 			std::vector<QString> label = labels ? std::vector<QString> { value }
 							    : std::vector<QString>();
-			series->append(pos - 0.5, pos + 0.5, height, label,
-				       categoryBinner->formatWithUnit(*bin), res);
+			items.push_back({ pos - 0.5, pos + 0.5, height, label,
+					  categoryBinner->formatWithUnit(*bin), res });
 		}
 		pos += 1.0;
 	}
+
+	createSeries<BarSeries>(isHorizontal, categoryType->name(), valueType, items);
 }
 
 static int getTotalCount(const std::vector<StatsBinCount> &bins)
@@ -509,15 +513,18 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 	else
 		addAxes(catAxis, valAxis);
 
+	std::vector<BarSeries::CountItem> items;
+	items.reserve(categoryBins.size());
 	double pos = 0.0;
-	BarSeries *series = createSeries<BarSeries>(isHorizontal, false, categoryType->name(), nullptr, std::vector<QString>());
 	for (auto const &[bin, count]: categoryBins) {
 		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
 						    : std::vector<QString>();
-		series->append(pos - 0.5, pos + 0.5, count, label,
-			       categoryBinner->formatWithUnit(*bin), total);
+		items.push_back({ pos - 0.5, pos + 0.5, count, label,
+				  categoryBinner->formatWithUnit(*bin), total });
 		pos += 1.0;
 	}
+
+	createSeries<BarSeries>(isHorizontal, categoryType->name(), items);
 }
 
 void StatsView::plotPieChart(const std::vector<dive *> &dives,
@@ -723,16 +730,20 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	else
 		addAxes(catAxis, valAxis);
 
-	BarSeries *series = createSeries<BarSeries>(isHorizontal, false, categoryType->name(), nullptr, std::vector<QString>());
+	std::vector<BarSeries::CountItem> items;
+	items.reserve(categoryBins.size());
+
 	for (auto const &[bin, count]: categoryBins) {
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
 		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
 						    : std::vector<QString>();
 
-		series->append(lowerBound, upperBound, count, label,
-			       categoryBinner->formatWithUnit(*bin), total);
+		items.push_back({ lowerBound, upperBound, count, label,
+				  categoryBinner->formatWithUnit(*bin), total });
 	}
+
+	BarSeries *series = createSeries<BarSeries>(isHorizontal, categoryType->name(), items);
 
 	if (categoryType->type() == StatsType::Type::Numeric) {
 		if (showMean) {
@@ -784,7 +795,9 @@ void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 	else
 		addAxes(catAxis, valAxis);
 
-	BarSeries *series = createSeries<BarSeries>(isHorizontal, false, categoryType->name(), valueType, std::vector<QString>());
+	std::vector<BarSeries::ValueItem> items;
+	items.reserve(categoryBins.size());
+
 	QString unit = valueType->unitSymbol();
 	for (auto const &[bin, res]: categoryBins) {
 		if (!res.isValid())
@@ -795,9 +808,11 @@ void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 		QString value = QString("%L1").arg(height, 0, 'f', decimals);
 		std::vector<QString> label = labels ? std::vector<QString> { value }
 						    : std::vector<QString>();
-		series->append(lowerBound, upperBound, height, label,
-			       categoryBinner->formatWithUnit(*bin), res);
+		items.push_back({ lowerBound, upperBound, height, label,
+				  categoryBinner->formatWithUnit(*bin), res });
 	}
+
+	createSeries<BarSeries>(isHorizontal, categoryType->name(), valueType, items);
 }
 
 void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
@@ -828,15 +843,18 @@ void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 		addAxes(valAxis, catAxis);
 	else
 		addAxes(catAxis, valAxis);
-	BarSeries *series = createSeries<BarSeries>(isHorizontal, true, categoryType->name(),
-						    valueType, std::move(data.vbinNames));
+
+	std::vector<BarSeries::MultiItem> items;
+	items.reserve(data.hbin_counts.size());
 
 	for (auto &[hbin, counts, total]: data.hbin_counts) {
 		double lowerBound = categoryBinner->lowerBoundToFloat(*hbin);
 		double upperBound = categoryBinner->upperBoundToFloat(*hbin);
-		series->append(lowerBound, upperBound, makeCountLabels(counts, total, labels, isHorizontal),
-			       categoryBinner->formatWithUnit(*hbin));
+		items.push_back({ lowerBound, upperBound, makeCountLabels(counts, total, labels, isHorizontal),
+				  categoryBinner->formatWithUnit(*hbin) });
 	}
+
+	createSeries<BarSeries>(isHorizontal, true, categoryType->name(), valueType, std::move(data.vbinNames), items);
 }
 
 void StatsView::plotHistogramBoxChart(const std::vector<dive *> &dives,

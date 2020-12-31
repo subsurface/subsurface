@@ -35,6 +35,51 @@ BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis
 {
 }
 
+BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		     bool horizontal, const QString &categoryName,
+		     const std::vector<CountItem> &items) :
+	BarSeries(chart, xAxis, yAxis, horizontal, false, categoryName, nullptr, std::vector<QString>())
+{
+	for (const CountItem &item: items) {
+		StatsOperationResults res;
+		res.count = item.count;
+		double value = item.count;
+		add_item(item.lowerBound, item.upperBound, makeSubItems(value, item.label),
+			 item.binName, res, item.total, horizontal, stacked);
+	}
+}
+
+BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		     bool horizontal, const QString &categoryName, const StatsType *valueType,
+		     const std::vector<ValueItem> &items) :
+	BarSeries(chart, xAxis, yAxis, horizontal, false, categoryName, valueType, std::vector<QString>())
+{
+	for (const ValueItem &item: items) {
+		add_item(item.lowerBound, item.upperBound, makeSubItems(item.value, item.label),
+			 item.binName, item.res, -1, horizontal, stacked);
+	}
+}
+
+BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		     bool horizontal, bool stacked, const QString &categoryName, const StatsType *valueType,
+		     std::vector<QString> valueBinNames,
+		     const std::vector<MultiItem> &items) :
+	BarSeries(chart, xAxis, yAxis, horizontal, stacked, categoryName, valueType, std::move(valueBinNames))
+{
+	for (const MultiItem &item: items) {
+		StatsOperationResults res;
+		std::vector<std::pair<double, std::vector<QString>>> valuesLabels;
+		valuesLabels.reserve(item.countLabels.size());
+		int total = 0;
+		for (auto &[count, label]: item.countLabels) {
+			valuesLabels.push_back({ static_cast<double>(count), std::move(label) });
+			total += count;
+		}
+		add_item(item.lowerBound, item.upperBound, makeSubItems(valuesLabels),
+			 item.binName, res, total, horizontal, stacked);
+	}
+}
+
 BarSeries::~BarSeries()
 {
 }
@@ -131,19 +176,19 @@ BarSeries::Item::Item(QtCharts::QChart *chart, BarSeries *series, double lowerBo
 {
 	for (SubItem &item: subitems) {
 		item.item->setZValue(5.0); // ? What is a sensible value here ?
-		item.highlight(false);
+		item.highlight(false, binCount);
 	}
 	updatePosition(chart, series, horizontal, stacked, binCount);
 }
 
-void BarSeries::Item::highlight(int subitem, bool highlight)
+void BarSeries::Item::highlight(int subitem, bool highlight, int binCount)
 {
 	if (subitem < 0 || subitem >= (int)subitems.size())
 		return;
-	subitems[subitem].highlight(highlight);
+	subitems[subitem].highlight(highlight, binCount);
 }
 
-void BarSeries::SubItem::highlight(bool highlight)
+void BarSeries::SubItem::highlight(bool highlight, int binCount)
 {
 	if (highlight) {
 		item->setBrush(QBrush(highlightedColor));
@@ -235,38 +280,6 @@ void BarSeries::add_item(double lowerBound, double upperBound, std::vector<SubIt
 		return;
 	items.emplace_back(chart(), this, lowerBound, upperBound, std::move(subitems), binName, res,
 			   total, horizontal, stacked, binCount());
-}
-
-void BarSeries::append(double lowerBound, double upperBound, int count, const std::vector<QString> &label,
-		       const QString &binName, int total)
-{
-	StatsOperationResults res;
-	res.count = count;
-	double value = count;
-	add_item(lowerBound, upperBound, makeSubItems(value, label),
-		 binName, res, total, horizontal, stacked);
-}
-
-void BarSeries::append(double lowerBound, double upperBound, double value, const std::vector<QString> &label,
-		       const QString &binName, const StatsOperationResults res)
-{
-	add_item(lowerBound, upperBound, makeSubItems(value, label),
-		 binName, res, -1, horizontal, stacked);
-}
-
-void BarSeries::append(double lowerBound, double upperBound,
-		       std::vector<std::pair<int, std::vector<QString>>> countLabels, const QString &binName)
-{
-	StatsOperationResults res;
-	std::vector<std::pair<double, std::vector<QString>>> valuesLabels;
-	valuesLabels.reserve(countLabels.size());
-	int total = 0;
-	for (auto &[count, label]: countLabels) {
-		valuesLabels.push_back({ static_cast<double>(count), std::move(label) });
-		total += count;
-	}
-	add_item(lowerBound, upperBound, makeSubItems(valuesLabels),
-		 binName, res, total, horizontal, stacked);
 }
 
 void BarSeries::updatePositions()
@@ -375,7 +388,7 @@ bool BarSeries::hover(QPointF pos)
 	// Highlight new item (if any)
 	if (highlighted.bar >= 0 && highlighted.bar < (int)items.size()) {
 		Item &item = items[highlighted.bar];
-		item.highlight(index.subitem, true);
+		item.highlight(index.subitem, true, binCount());
 		if (!information)
 			information.reset(new InformationBox(chart()));
 		information->setText(makeInfo(item, highlighted.subitem), pos);
@@ -389,6 +402,6 @@ bool BarSeries::hover(QPointF pos)
 void BarSeries::unhighlight()
 {
 	if (highlighted.bar >= 0 && highlighted.bar < (int)items.size())
-		items[highlighted.bar].highlight(highlighted.subitem, false);
+		items[highlighted.bar].highlight(highlighted.subitem, false, binCount());
 	highlighted = Index();
 }
