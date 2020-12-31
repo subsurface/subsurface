@@ -84,13 +84,13 @@ BarSeries::~BarSeries()
 {
 }
 
-BarSeries::BarLabel::BarLabel(QtCharts::QChart *chart, const std::vector<QString> &labels) :
+BarSeries::BarLabel::BarLabel(QtCharts::QChart *chart, const std::vector<QString> &labels, int bin_nr, int numBins) :
 	totalWidth(0.0), totalHeight(0.0)
 {
 	items.reserve(labels.size());
 	for (const QString &label: labels) {
 		items.emplace_back(new QGraphicsSimpleTextItem(chart));
-		items.back()->setBrush(QBrush(labelColor));
+		items.back()->setBrush(QBrush(labelColor(bin_nr, numBins)));
 		items.back()->setText(label);
 		items.back()->setZValue(10.0); // ? What is a sensible value here ?
 		QRectF rect = items.back()->boundingRect();
@@ -252,7 +252,7 @@ std::vector<BarSeries::SubItem> BarSeries::makeSubItems(const std::vector<std::p
 		if (v > 0.0) {
 			res.push_back({ std::make_unique<QGraphicsRectItem>(chart()), {}, from, from + v, bin_nr });
 			if (!label.empty())
-				res.back().label = std::make_unique<BarLabel>(chart(), label);
+				res.back().label = std::make_unique<BarLabel>(chart(), label, bin_nr, binCount());
 		}
 		if (stacked)
 			from += v;

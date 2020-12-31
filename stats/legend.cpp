@@ -46,7 +46,7 @@ Legend::Entry::Entry(const QString &name, int idx, int numBins, QGraphicsItem *p
 	rect->setPen(QPen(legendBorderColor, legendBoxBorderSize));
 	rect->setBrush(QBrush(binColor(idx, numBins)));
 	text->setZValue(30.0);
-	text->setBrush(QBrush(labelColor));
+	text->setBrush(QBrush(darkLabelColor));
 }
 
 void Legend::hide()

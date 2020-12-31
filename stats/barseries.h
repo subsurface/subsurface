@@ -83,7 +83,7 @@ private:
 	struct BarLabel {
 		std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> items;
 		double totalWidth, totalHeight; // Size of the item
-		BarLabel(QtCharts::QChart *chart, const std::vector<QString> &labels);
+		BarLabel(QtCharts::QChart *chart, const std::vector<QString> &labels, int bin_nr, int numBins);
 		void setVisible(bool visible);
 		void updatePosition(QtCharts::QChart *chart, QtCharts::QAbstractSeries *series,
 				    bool horizontal, bool center, const QRectF &rect);

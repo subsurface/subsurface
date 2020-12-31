@@ -37,11 +37,11 @@ PieSeries::Item::Item(QtCharts::QChart *chart, const QString &name, int from, in
 		double percentage = count * 100.0 / totalCount;
 		QString innerLabelText = QStringLiteral("%1\%").arg(loc.toString(percentage, 'f', 1));
 		innerLabel.reset(new QGraphicsSimpleTextItem(innerLabelText, chart));
-		innerLabel->setBrush(QBrush(labelColor));
+		innerLabel->setBrush(QBrush(labelColor(bin_nr, numBins)));
 		innerLabel->setZValue(10.0); // ? What is a sensible value here ?
 
 		outerLabel.reset(new QGraphicsSimpleTextItem(name, chart));
-		innerLabel->setBrush(QBrush(labelColor));
+		innerLabel->setBrush(QBrush(labelColor(bin_nr, numBins)));
 		innerLabel->setZValue(10.0); // ? What is a sensible value here ?
 	}
 
@@ -109,7 +109,7 @@ PieSeries::PieSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis
 	std::sort(sorted.begin(), sorted.end(),
 		  [&data](int idx1, int idx2)
 		  { return std::make_tuple(-data[idx1].second, idx1) <
-		  	   std::make_tuple(-data[idx2].second, idx2); });
+			   std::make_tuple(-data[idx2].second, idx2); });
 	auto it = std::find_if(sorted.begin(), sorted.end(),
 			       [count=totalCount, &data, smallest_slice_percentage](int idx)
 			       { return data[idx].second * 100 / count < smallest_slice_percentage; });
