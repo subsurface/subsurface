@@ -42,15 +42,11 @@ Controls.TextField {
 				return
 			}
 			// make sure there's enough space for the input field above the keyboard and action button (and that it's not too far up, either)
-			if (stf.y + stf.height > flickable.contentY + flickable.height - 3 * Kirigami.Units.gridUnit || y < flickable.contentY)
-				ensureVisible(Math.max(0, 3 * Kirigami.Units.gridUnit + stf.y + stf.height - flickable.height))
+			var positionInFlickable = stf.mapToItem(flickable.contentItem, 0, 0)
+			var stfY = positionInFlickable.y
+			console.log("position check: lower edge of view is " + (0 + flickable.contentY + flickable.height) + " and text field is at " + stfY)
+			if (stfY + stf.height > flickable.contentY + flickable.height - 3 * Kirigami.Units.gridUnit || stfY < flickable.contentY)
+				flickable.contentY = Math.max(0, 3 * Kirigami.Units.gridUnit + stfY + stf.height - flickable.height)
 		}
-	}
-
-	// scroll the flickable to the desired position if the keyboard has shown up
-	// this didn't work when setting it from within the Timer, but calling this function works.
-	// go figure.
-	function ensureVisible(yDest) {
-		flickable.contentY = yDest
 	}
 }
