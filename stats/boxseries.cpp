@@ -10,17 +10,9 @@
 static const double boxWidth = 0.8; // 1.0 = full width of category
 static const int boxBorderWidth = 2;
 
-int BoxSeries::invalidIndex()
-{
-	return -1;
-}
-
-bool BoxSeries::isValidIndex(int idx)
-{
-	return idx >= 0;
-}
-
-BoxSeries::BoxSeries(const QString &variable, const QString &unit, int decimals) :
+BoxSeries::BoxSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		     const QString &variable, const QString &unit, int decimals) :
+	StatsSeries(chart, xAxis, yAxis),
 	variable(variable), unit(unit), decimals(decimals), highlighted(-1)
 {
 }
@@ -138,17 +130,16 @@ std::vector<QString> BoxSeries::formatInformation(const Item &item) const
 }
 
 // Highlight item when hovering over item
-void BoxSeries::highlight(int index, QPointF pos)
+bool BoxSeries::hover(QPointF pos)
 {
+	int index = getItemUnderMouse(pos);
 	if (index == highlighted) {
 		if (information)
 			information->setPos(pos);
-		return;
+		return index >= 0;
 	}
 
-	// Unhighlight old highlighted item (if any)
-	if (highlighted >= 0 && highlighted < (int)items.size())
-		items[highlighted]->highlight(false);
+	unhighlight();
 	highlighted = index;
 
 	// Highlight new item (if any)
@@ -161,4 +152,12 @@ void BoxSeries::highlight(int index, QPointF pos)
 	} else {
 		information.reset();
 	}
+	return highlighted >= 0;
+}
+
+void BoxSeries::unhighlight()
+{
+	if (highlighted >= 0 && highlighted < (int)items.size())
+		items[highlighted]->highlight(false);
+	highlighted = -1;
 }

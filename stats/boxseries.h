@@ -5,46 +5,36 @@
 #ifndef BOX_SERIES_H
 #define BOX_SERIES_H
 
+#include "statsseries.h"
 #include "statstypes.h" // for StatsQuartiles
 
 #include <memory>
 #include <vector>
-#include <QScatterSeries>
 #include <QGraphicsLineItem>
 #include <QGraphicsRectItem>
 
-namespace QtCharts {
-	class QAbstractAxis;
-	class QChart;
-}
 class InformationBox;
 class StatsType;
 
-// We derive from a proper scatter series to get access to the map-to
-// and map-from coordinates calls. But we don't use any of its functionality.
-// Can we avoid that?
-
-class BoxSeries : public QtCharts::QScatterSeries {
+class BoxSeries : public StatsSeries {
 public:
-	BoxSeries(const QString &variable, const QString &unit, int decimals);
+	BoxSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		  const QString &variable, const QString &unit, int decimals);
 	~BoxSeries();
 
-	// Call if chart geometry changed
-	void updatePositions();
+	void updatePositions() override;
+	bool hover(QPointF pos) override;
+	void unhighlight() override;
 
 	// Note: this expects that all items are added with increasing pos
 	// and that no bar is inside another bar, i.e. lowerBound and upperBound
 	// are ordered identically.
 	void append(double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName);
 
-	// Get item under mous pointer, or -1 if none
-	int getItemUnderMouse(const QPointF &f);
-	static int invalidIndex();
-	static bool isValidIndex(int idx);
-
-	// Highlight item when hovering over item
-	void highlight(int index, QPointF pos);
 private:
+	// Get item under mouse pointer, or -1 if none
+	int getItemUnderMouse(const QPointF &f);
+
 	struct Item {
 		QGraphicsRectItem box;
 		QGraphicsLineItem topWhisker, bottomWhisker;

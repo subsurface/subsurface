@@ -3,41 +3,35 @@
 #ifndef PIE_SERIES_H
 #define PIE_SERIES_H
 
+#include "statsseries.h"
+
 #include <memory>
 #include <vector>
 #include <QString>
-#include <QScatterSeries>
 
-namespace QtCharts {
-	class QChart;
-}
 class InformationBox;
 class QGraphicsEllipseItem;
 class QGraphicsSimpleTextItem;
 
-// For historical reasons, we currently have to derive from a series.
-// TODO: Remove in due course.
-class PieSeries : public QtCharts::QScatterSeries {
+class PieSeries : public StatsSeries {
 public:
 	// The pie series is initialized with (name, count) pairs.
 	// If keepOrder is false, bins will be sorted by size, otherwise the sorting
 	// of the shown bins will be retained. Small bins are omitted for clarity.
-	PieSeries(QtCharts::QChart *chart, const QString &categoryName,
+	PieSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
 		  const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels);
 	~PieSeries();
 
-	// Call if chart geometry changed
-	void updatePositions();
+	void updatePositions() override;
+	bool hover(QPointF pos) override;
+	void unhighlight() override;
 
 	std::vector<QString> binNames();
 
-	int getItemUnderMouse(const QPointF &f) const;
-	static int invalidIndex();
-	static bool isValidIndex(int);
-
-	// Highlight item when hovering over item
-	void highlight(int index, QPointF pos);
 private:
+	// Get item under mouse pointer, or -1 if none
+	int getItemUnderMouse(const QPointF &f) const;
+
 	QString categoryName;
 	std::vector<QString> makeInfo(int idx) const;
 

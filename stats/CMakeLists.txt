@@ -23,6 +23,8 @@ set(SUBSURFACE_STATS_SRCS
 	statsaxis.cpp
 	statsview.h
 	statsview.cpp
+	statsseries.h
+	statsseries.cpp
 	statsstate.h
 	statsstate.cpp
 	statstranslations.h

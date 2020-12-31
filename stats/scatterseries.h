@@ -4,46 +4,36 @@
 #ifndef SCATTER_SERIES_H
 #define SCATTER_SERIES_H
 
+#include "statsseries.h"
+
 #include <memory>
 #include <vector>
 #include <QGraphicsRectItem>
-#include <QScatterSeries>
 
-namespace QtCharts {
-	class QAbstractAxis;
-	class QChart;
-}
 class QGraphicsPixmapItem;
 class InformationBox;
 struct StatsType;
 struct dive;
 
-// We derive from a proper scatter series to get access to the map-to
-// and map-from coordinates calls. But we don't use any of its functionality.
-// Can we avoid that?
-
-class ScatterSeries : public QtCharts::QScatterSeries {
+class ScatterSeries : public StatsSeries {
 public:
-	ScatterSeries(const StatsType &typeX, const StatsType &typeY);
+	ScatterSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		      const StatsType &typeX, const StatsType &typeY);
 	~ScatterSeries();
 
-	// Call if chart geometry changed
-	void updatePositions();
+	void updatePositions() override;
+	bool hover(QPointF pos) override;
+	void unhighlight() override;
 
 	// Note: this expects that all items are added with increasing pos!
 	void append(dive *d, double pos, double value);
 
-	// Get closest item. Returns square of distance as double and item index.
-	// If the index is -1, no item is inside the range.
+private:
+	// Get closest item. If the return value is -1, no item is inside the range.
 	// Super weird: this function can't be const, because QChart::mapToValue takes
 	// a non-const reference!?
-	std::pair<double, int> getClosest(const QPointF &f);
+	int getItemUnderMouse(const QPointF &f);
 
-	// Highlight item when hovering over item
-	void highlight(int index);
-	static int invalidIndex();
-	static bool isValidIndex(int);
-private:
 	struct Item {
 		std::unique_ptr<QGraphicsPixmapItem> item;
 		dive *d;

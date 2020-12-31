@@ -12,25 +12,26 @@
 static const double barWidth = 0.8; // 1.0 = full width of category
 static const double subBarWidth = 0.9; // For grouped bar charts
 
-BarSeriesIndex BarSeries::invalidIndex()
+// Default constructor: invalid index.
+BarSeries::Index::Index() : bar(-1), subitem(-1)
 {
-	return { -1, -1};
 }
 
-bool BarSeries::isValidIndex(BarSeriesIndex idx)
+BarSeries::Index::Index(int bar, int subitem) : bar(bar), subitem(subitem)
 {
-	return idx.bar >= 0;
 }
 
-static bool operator==(const BarSeriesIndex &i1, const BarSeriesIndex &i2)
+bool BarSeries::Index::operator==(const Index &i2) const
 {
-	return std::tie(i1.bar, i1.subitem) == std::tie(i2.bar, i2.subitem);
+	return std::tie(bar, subitem) == std::tie(i2.bar, i2.subitem);
 }
 
-BarSeries::BarSeries(bool horizontal, bool stacked, const QString &categoryName,
+BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		     bool horizontal, bool stacked, const QString &categoryName,
 		     const StatsType *valueType, std::vector<QString> valueBinNames) :
+	StatsSeries(chart, xAxis, yAxis),
 	horizontal(horizontal), stacked(stacked), categoryName(categoryName),
-	valueType(valueType), valueBinNames(std::move(valueBinNames)), highlighted(invalidIndex())
+	valueType(valueType), valueBinNames(std::move(valueBinNames))
 {
 }
 
@@ -276,7 +277,7 @@ void BarSeries::updatePositions()
 }
 
 // Attention: this supposes that items are sorted by position and no bar is inside another bar!
-BarSeriesIndex BarSeries::getItemUnderMouse(const QPointF &point) const
+BarSeries::Index BarSeries::getItemUnderMouse(const QPointF &point) const
 {
 	// Search the first item whose "end" position is greater than the cursor position.
 	auto it = horizontal ? std::lower_bound(items.begin(), items.end(), point.y(),
@@ -284,9 +285,9 @@ BarSeriesIndex BarSeries::getItemUnderMouse(const QPointF &point) const
 			     : std::lower_bound(items.begin(), items.end(), point.x(),
 						[] (const Item &item, double x) { return item.rect.right() < x; });
 	if (it == items.end() || !it->rect.contains(point))
-		return invalidIndex();
+		return Index();
 	int subitem = it->getSubItemUnderMouse(point, horizontal, stacked);
-	return subitem >= 0 ? BarSeriesIndex{(int)(it - items.begin()), subitem} : invalidIndex();
+	return subitem >= 0 ? Index{(int)(it - items.begin()), subitem} : Index();
 }
 
 // Attention: this supposes that sub items are sorted by position and no subitem is inside another bar!
@@ -359,17 +360,16 @@ std::vector<QString> BarSeries::makeInfo(const Item &item, int subitem_idx) cons
 }
 
 // Highlight item when hovering over item
-void BarSeries::highlight(BarSeriesIndex index, QPointF pos)
+bool BarSeries::hover(QPointF pos)
 {
+	Index index = getItemUnderMouse(pos);
 	if (index == highlighted) {
 		if (information)
 			information->setPos(pos);
-		return;
+		return index.bar >= 0;
 	}
 
-	// Unhighlight old highlighted item (if any)
-	if (highlighted.bar >= 0 && highlighted.bar < (int)items.size())
-		items[highlighted.bar].highlight(highlighted.subitem, false);
+	unhighlight();
 	highlighted = index;
 
 	// Highlight new item (if any)
@@ -382,4 +382,13 @@ void BarSeries::highlight(BarSeriesIndex index, QPointF pos)
 	} else {
 		information.reset();
 	}
+
+	return highlighted.bar >= 0;
+}
+
+void BarSeries::unhighlight()
+{
+	if (highlighted.bar >= 0 && highlighted.bar < (int)items.size())
+		items[highlighted.bar].highlight(highlighted.subitem, false);
+	highlighted = Index();
 }

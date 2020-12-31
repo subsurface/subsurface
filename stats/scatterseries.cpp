@@ -15,18 +15,10 @@
 static const int scatterItemDiameter = 10;
 static const int scatterItemBorder = 1;
 
-int ScatterSeries::invalidIndex()
-{
-	return -1;
-}
-
-bool ScatterSeries::isValidIndex(int idx)
-{
-	return idx >= 0;
-}
-
-ScatterSeries::ScatterSeries(const StatsType &typeX, const StatsType &typeY)
-	: highlighted(-1), typeX(typeX), typeY(typeY)
+ScatterSeries::ScatterSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+			     const StatsType &typeX, const StatsType &typeY) :
+	StatsSeries(chart, xAxis, yAxis),
+	highlighted(-1), typeX(typeX), typeY(typeY)
 {
 }
 
@@ -110,7 +102,7 @@ static double squareDist(const QPointF &p1, const QPointF &p2)
 }
 
 // Attention: this supposes that items are sorted by x-position!
-std::pair<double, int> ScatterSeries::getClosest(const QPointF &point)
+int ScatterSeries::getItemUnderMouse(const QPointF &point)
 {
 	double x = point.x();
 
@@ -132,7 +124,7 @@ std::pair<double, int> ScatterSeries::getClosest(const QPointF &point)
 			minSquare = square;
 		}
 	}
-	return { minSquare, index };
+	return index;
 }
 
 static QString dataInfo(const StatsType &type, const dive *d)
@@ -155,14 +147,16 @@ static QString dataInfo(const StatsType &type, const dive *d)
 
 	return QString("%1: %2").arg(type.name(), val);
 }
+
 // Highlight item when hovering over item
-void ScatterSeries::highlight(int index)
+bool ScatterSeries::hover(QPointF pos)
 {
+	int index = getItemUnderMouse(pos);
+
 	if (index == highlighted)
-		return;
-	// Unhighlight old highlighted item (if any)
-	if (highlighted >= 0 && highlighted < (int)items.size())
-		items[highlighted].highlight(false);
+		return index >= 0;
+
+	unhighlight();
 	highlighted = index;
 
 	// Highlight new item (if any)
@@ -188,4 +182,12 @@ void ScatterSeries::highlight(int index)
 	} else {
 		information.reset();
 	}
+	return highlighted >= 0;
+}
+
+void ScatterSeries::unhighlight()
+{
+	if (highlighted >= 0 && highlighted < (int)items.size())
+		items[highlighted].highlight(false);
+	highlighted = -1;
 }

@@ -17,10 +17,7 @@ namespace QtCharts {
 	class QChart;
 }
 class QGraphicsLineItem;
-class BarSeries;
-class BoxSeries;
-class PieSeries;
-class ScatterSeries;
+class StatsSeries;
 class CategoryAxis;
 class CountAxis;
 class HistogramAxis;
@@ -79,17 +76,10 @@ private:
 	void setTitle(const QString &);
 
 	template <typename T, class... Args>
-	T *createAxis(const QString &title, Args&&... args);
+	T *createSeries(Args&&... args);
 
-	template <typename T>
-	T *addSeries(const QString &name);
-	ScatterSeries *addScatterSeries(const QString &name, const StatsType &typeX, const StatsType &typeY);
-	BarSeries *addBarSeries(const QString &name, bool horizontal, bool stacked,
-				const QString &categoryName, const StatsType *valueType,
-				std::vector<QString> valueBinNames);
-	BoxSeries *addBoxSeries(const QString &name, const QString &unit, int decimals);
-	PieSeries *addPieSeries(const QString &name, const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels);
-	void initSeries(QtCharts::QAbstractSeries *series, const QString &name);
+	template <typename T, class... Args>
+	T *createAxis(const QString &title, Args&&... args);
 
 	template<typename T>
 	CategoryAxis *createCategoryAxis(const QString &title, const StatsBinner &binner,
@@ -126,17 +116,11 @@ private:
 	StatsState state;
 	QtCharts::QChart *chart;
 	std::vector<std::unique_ptr<StatsAxis>> axes;
-	std::vector<std::unique_ptr<ScatterSeries>> scatterSeries;
-	std::vector<std::unique_ptr<BarSeries>> barSeries;
-	std::vector<std::unique_ptr<BoxSeries>> boxSeries;
-	std::vector<std::unique_ptr<PieSeries>> pieSeries;
+	std::vector<std::unique_ptr<StatsSeries>> series;
 	std::unique_ptr<Legend> legend;
 	std::vector<QuartileMarker> quartileMarkers;
 	std::vector<LineMarker> lineMarkers;
-	ScatterSeries *highlightedScatterSeries;	// scatter series with highlighted element
-	BarSeries *highlightedBarSeries;		// bar series with highlighted element
-	BoxSeries *highlightedBoxSeries;		// box series with highlighted element
-	PieSeries *highlightedPieSeries;		// pie series with highlighted element
+	StatsSeries *highlightedSeries;
 
 	// This is unfortunate: we can't derive from QChart, because the chart is allocated by QML.
 	// Therefore, we have to listen to hover events using an events-filter.
@@ -149,9 +133,6 @@ private:
 	} eventFilter;
 	friend EventFilter;
 	void hover(QPointF pos);
-	// Generic code to handle the highlighting of a series element
-	template<typename Series>
-	void handleHover(const std::vector<std::unique_ptr<Series>> &series, Series *&highlighted, QPointF pos);
 };
 
 #endif

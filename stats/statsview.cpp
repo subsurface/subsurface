@@ -58,10 +58,7 @@ bool StatsView::EventFilter::eventFilter(QObject *o, QEvent *event)
 }
 
 StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
-	highlightedScatterSeries(nullptr),
-	highlightedBarSeries(nullptr),
-	highlightedBoxSeries(nullptr),
-	highlightedPieSeries(nullptr),
+	highlightedSeries(nullptr),
 	eventFilter(this)
 {
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -83,13 +80,7 @@ void StatsView::plotAreaChanged(const QRectF &)
 {
 	for (auto &axis: axes)
 		axis->updateLabels(chart);
-	for (auto &series: scatterSeries)
-		series->updatePositions();
-	for (auto &series: barSeries)
-		series->updatePositions();
-	for (auto &series: boxSeries)
-		series->updatePositions();
-	for (auto &series: pieSeries)
+	for (auto &series: series)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
 		marker.updatePosition();
@@ -105,114 +96,35 @@ void StatsView::replotIfVisible()
 		plot(state);
 }
 
-// Generic code to handle the highlighting of a series element
-template<typename Series>
-void StatsView::handleHover(const std::vector<std::unique_ptr<Series>> &series, Series *&highlighted, QPointF pos)
-{
-	// For bar series, we simply take the first bar under the mouse, as
-	// bars shouldn't overlap.
-	auto nextItem = Series::invalidIndex();
-	Series *nextSeries = nullptr;
-	for (auto &series: series) {
-		nextItem = series->getItemUnderMouse(pos);
-		if (Series::isValidIndex(nextItem)) {
-			nextSeries = series.get();
-			break;
-		}
-	}
-
-	// If there was a different series with a highlighted item - unhighlight it
-	if (highlighted && nextSeries != highlighted)
-		highlighted->highlight(Series::invalidIndex(), pos);
-
-	highlighted = nextSeries;
-	if (highlighted)
-		highlighted->highlight(nextItem, pos);
-}
-
 void StatsView::hover(QPointF pos)
 {
-	// Currently, we don't use different series in the same plot.
-	// Therefore, treat these cases separately.
-
-	// Get closest scatter item
-	ScatterSeries *nextSeries = nullptr;
-	int nextItem = -1;
-	double nextDistance = 1e14;
-	for (auto &series: scatterSeries) {
-		auto [dist, index] = series->getClosest(pos);
-		if (index >= 0 && dist < nextDistance) {
-			nextSeries = series.get();
-			nextItem = index;
-			nextDistance = dist;
+	for (auto &series: series) {
+		if (series->hover(pos)) {
+			if (series.get() != highlightedSeries) {
+				if (highlightedSeries)
+					highlightedSeries->unhighlight();
+				highlightedSeries = series.get();
+			}
+			return;
 		}
 	}
 
-	// If there was a different series with a highlighted item - unhighlight it
-	if (highlightedScatterSeries && nextSeries != highlightedScatterSeries)
-		highlightedScatterSeries->highlight(-1);
-
-	highlightedScatterSeries = nextSeries;
-	if (highlightedScatterSeries)
-		highlightedScatterSeries->highlight(nextItem);
-
-	handleHover(barSeries, highlightedBarSeries, pos);
-	handleHover(boxSeries, highlightedBoxSeries, pos);
-	handleHover(pieSeries, highlightedPieSeries, pos);
-}
-
-void StatsView::initSeries(QtCharts::QAbstractSeries *series, const QString &name)
-{
-	series->setName(name);
-	chart->addSeries(series);
-	if (axes.size() >= 2) {
-		// Not all charts have axes (e.g. Pie charts)
-		series->attachAxis(axes[0]->qaxis());
-		series->attachAxis(axes[1]->qaxis());
+	// No series was highlighted -> unhighlight any previously highlighted series.
+	if (highlightedSeries) {
+		highlightedSeries->unhighlight();
+		highlightedSeries = nullptr;
 	}
 }
 
-template<typename Type>
-Type *StatsView::addSeries(const QString &name)
+template <typename T, class... Args>
+T *StatsView::createSeries(Args&&... args)
 {
-	Type *res = new Type;
-	initSeries(res, name);
+	StatsAxis *xAxis = axes.size() >= 2 ? axes[0].get() : nullptr;
+	StatsAxis *yAxis = axes.size() >= 2 ? axes[1].get() : nullptr;
+	T *res = new T(chart, xAxis, yAxis, std::forward<Args>(args)...);
+	series.emplace_back(res);
+	series.back()->updatePositions();
 	return res;
-}
-
-ScatterSeries *StatsView::addScatterSeries(const QString &name, const StatsType &typeX, const StatsType &typeY)
-{
-	scatterSeries.emplace_back(new ScatterSeries(typeX, typeY));
-	initSeries(scatterSeries.back().get(), name);
-	scatterSeries.back()->updatePositions(); // TODO: generalize
-	return scatterSeries.back().get();
-}
-
-BarSeries *StatsView::addBarSeries(const QString &name, bool horizontal, bool stacked,
-				   const QString &categoryName, const StatsType *valueType,
-				   std::vector<QString> valueBinNames)
-{
-	barSeries.emplace_back(new BarSeries(horizontal, stacked, categoryName, valueType,
-			       std::move(valueBinNames)));
-	initSeries(barSeries.back().get(), name);
-	barSeries.back()->updatePositions(); // TODO: generalize
-	return barSeries.back().get();
-}
-
-BoxSeries *StatsView::addBoxSeries(const QString &name, const QString &unit, int decimals)
-{
-	boxSeries.emplace_back(new BoxSeries(name, unit, decimals));
-	initSeries(boxSeries.back().get(), name);
-	boxSeries.back()->updatePositions(); // TODO: generalize
-	return boxSeries.back().get();
-}
-
-PieSeries *StatsView::addPieSeries(const QString &name, const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels)
-{
-	pieSeries.emplace_back(new PieSeries(chart, name, data, keepOrder, labels));
-	initSeries(pieSeries.back().get(), name);
-	pieSeries.back()->updatePositions(); // TODO: generalize
-	return pieSeries.back().get();
 }
 
 void StatsView::setTitle(const QString &s)
@@ -240,15 +152,9 @@ void StatsView::reset()
 {
 	if (!chart)
 		return;
-	highlightedScatterSeries = nullptr;
-	highlightedBarSeries = nullptr;
-	highlightedBoxSeries = nullptr;
-	highlightedPieSeries = nullptr;
+	highlightedSeries = nullptr;
 	legend.reset();
-	scatterSeries.clear();
-	barSeries.clear();
-	boxSeries.clear();
-	pieSeries.clear();
+	series.clear();
 	quartileMarkers.clear();
 	lineMarkers.clear();
 	chart->removeAllSeries();
@@ -430,8 +336,8 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	if (showLegend)
 		legend = std::make_unique<Legend>(chart, data.vbinNames);
 
-	BarSeries *series = addBarSeries(QString(), isHorizontal, isStacked, categoryType->name(),
-					 valueType, std::move(data.vbinNames));
+	BarSeries *series = createSeries<BarSeries>(isHorizontal, isStacked, categoryType->name(),
+						    valueType, std::move(data.vbinNames));
 
 	double pos = 0.0;
 	for (auto &[hbin, counts, total]: data.hbin_counts) {
@@ -539,7 +445,7 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 		addAxes(catAxis, valAxis);
 
 	double pos = 0.0;
-	BarSeries *series = addBarSeries(QString(), isHorizontal, false, categoryType->name(), valueType, {});
+	BarSeries *series = createSeries<BarSeries>(isHorizontal, false, categoryType->name(), valueType, std::vector<QString>());
 	QString unit = valueType->unitSymbol();
 	for (auto &[bin, res]: categoryBins) {
 		if (res.isValid()) {
@@ -604,7 +510,7 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 		addAxes(catAxis, valAxis);
 
 	double pos = 0.0;
-	BarSeries *series = addBarSeries(QString(), isHorizontal, false, categoryType->name(), nullptr, {});
+	BarSeries *series = createSeries<BarSeries>(isHorizontal, false, categoryType->name(), nullptr, std::vector<QString>());
 	for (auto const &[bin, count]: categoryBins) {
 		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
 						    : std::vector<QString>();
@@ -635,7 +541,7 @@ void StatsView::plotPieChart(const std::vector<dive *> &dives,
 		data.emplace_back(categoryBinner->formatWithUnit(*bin), count);
 
 	bool keepOrder = categoryType->type() != StatsType::Type::Discrete;
-	PieSeries *series = addPieSeries(categoryType->name(), data, keepOrder, labels);
+	PieSeries *series = createSeries<PieSeries>(categoryType->name(), data, keepOrder, labels);
 
 	if (showLegend)
 		legend = std::make_unique<Legend>(chart, series->binNames());
@@ -665,7 +571,7 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 
 	addAxes(catAxis, valueAxis);
 
-	BoxSeries *series = addBoxSeries(valueType->name(), valueType->unitSymbol(), valueType->decimals());
+	BoxSeries *series = createSeries<BoxSeries>(valueType->name(), valueType->unitSymbol(), valueType->decimals());
 
 	double pos = 0.0;
 	for (auto &[bin, q]: categoryBins) {
@@ -699,7 +605,7 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 						   minValue, maxValue, valueType->decimals(), false);
 
 	addAxes(catAxis, valAxis);
-	ScatterSeries *series = addScatterSeries(valueType->name(), *categoryType, *valueType);
+	ScatterSeries *series = createSeries<ScatterSeries>(*categoryType, *valueType);
 
 	double x = 0.0;
 	for (const auto &[bin, array]: categoryBins) {
@@ -817,7 +723,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	else
 		addAxes(catAxis, valAxis);
 
-	BarSeries *series = addBarSeries(QString(), isHorizontal, false, categoryType->name(), nullptr, {});
+	BarSeries *series = createSeries<BarSeries>(isHorizontal, false, categoryType->name(), nullptr, std::vector<QString>());
 	for (auto const &[bin, count]: categoryBins) {
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
@@ -878,7 +784,7 @@ void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 	else
 		addAxes(catAxis, valAxis);
 
-	BarSeries *series = addBarSeries(QString(), isHorizontal, false, categoryType->name(), valueType, {});
+	BarSeries *series = createSeries<BarSeries>(isHorizontal, false, categoryType->name(), valueType, std::vector<QString>());
 	QString unit = valueType->unitSymbol();
 	for (auto const &[bin, res]: categoryBins) {
 		if (!res.isValid())
@@ -922,8 +828,8 @@ void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 		addAxes(valAxis, catAxis);
 	else
 		addAxes(catAxis, valAxis);
-	BarSeries *series = addBarSeries(QString(), isHorizontal, true, categoryType->name(),
-					 valueType, std::move(data.vbinNames));
+	BarSeries *series = createSeries<BarSeries>(isHorizontal, true, categoryType->name(),
+						    valueType, std::move(data.vbinNames));
 
 	for (auto &[hbin, counts, total]: data.hbin_counts) {
 		double lowerBound = categoryBinner->lowerBoundToFloat(*hbin);
@@ -957,7 +863,7 @@ void StatsView::plotHistogramBoxChart(const std::vector<dive *> &dives,
 
 	addAxes(catAxis, valueAxis);
 
-	BoxSeries *series = addBoxSeries(valueType->name(), valueType->unitSymbol(), valueType->decimals());
+	BoxSeries *series = createSeries<BoxSeries>(valueType->name(), valueType->unitSymbol(), valueType->decimals());
 
 	for (auto &[bin, q]: categoryBins) {
 		if (!q.isValid())
@@ -1043,7 +949,7 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsType *c
 	StatsAxis *axisY = createAxis<ValueAxis>(valueType->nameWithUnit(), minY, maxY, valueType->decimals(), false);
 
 	addAxes(axisX, axisY);
-	ScatterSeries *series = addScatterSeries(valueType->name(), *categoryType, *valueType);
+	ScatterSeries *series = createSeries<ScatterSeries>(*categoryType, *valueType);
 
 	for (auto [x, y, dive]: points)
 		series->append(dive, x, y);

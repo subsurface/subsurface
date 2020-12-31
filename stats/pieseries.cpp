@@ -79,10 +79,11 @@ void PieSeries::Item::highlight(int bin_nr, bool highlight)
 	item->setPen(pen);
 }
 
-PieSeries::PieSeries(QtCharts::QChart *chart, const QString &categoryName,
+PieSeries::PieSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
 		     const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels) :
+	StatsSeries(chart, xAxis, yAxis),
 	categoryName(categoryName),
-	highlighted(invalidIndex())
+	highlighted(-1)
 {
 	// Pie charts with many slices are unreadable. Therefore, subsume slices under
 	// a certain percentage as "other". But draw a minimum number of slices
@@ -180,7 +181,7 @@ int PieSeries::getItemUnderMouse(const QPointF &f) const
 	QPointF delta = f - center;
 	double len = sqrt(QPointF::dotProduct(delta, delta));
 	if (len > radius)
-		return invalidIndex();
+		return -1;
 	delta /= len;
 	double angle = 0.25 - atan2(-delta.y(), delta.x()) / 2.0 / M_PI;
 	while (angle < 0.0)
@@ -188,18 +189,8 @@ int PieSeries::getItemUnderMouse(const QPointF &f) const
 	auto it = std::lower_bound(items.begin(), items.end(), angle,
 				   [](const Item &item, double angle) { return item.angleTo < angle; });
 	if (it == items.end())
-		return invalidIndex(); // Floating point rounding issues?
+		return -1; // Floating point rounding issues?
 	return it - items.begin();
-}
-
-int PieSeries::invalidIndex()
-{
-	return -1;
-}
-
-bool PieSeries::isValidIndex(int idx)
-{
-	return idx >= 0;
 }
 
 static QString makePercentageLine(int count, int total)
@@ -231,17 +222,16 @@ std::vector<QString> PieSeries::makeInfo(int idx) const
 	return res;
 }
 
-void PieSeries::highlight(int index, QPointF pos)
+bool PieSeries::hover(QPointF pos)
 {
+	int index = getItemUnderMouse(pos);
 	if (index == highlighted) {
 		if (information)
 			information->setPos(pos);
-		return;
+		return index >= 0;
 	}
 
-	// Unhighlight old highlighted item (if any)
-	if (highlighted >= 0 && highlighted < (int)items.size())
-		items[highlighted].highlight(highlighted, false);
+	unhighlight();
 	highlighted = index;
 
 	// Highlight new item (if any)
@@ -253,4 +243,12 @@ void PieSeries::highlight(int index, QPointF pos)
 	} else {
 		information.reset();
 	}
+	return highlighted >= 0;
+}
+
+void PieSeries::unhighlight()
+{
+	if (highlighted >= 0 && highlighted < (int)items.size())
+		items[highlighted].highlight(highlighted, false);
+	highlighted = -1;
 }

@@ -5,39 +5,32 @@
 #ifndef BAR_SERIES_H
 #define BAR_SERIES_H
 
-#include "stats/statstypes.h"
+#include "statsseries.h"
+#include "statstypes.h"
+
 #include <memory>
 #include <vector>
 #include <QGraphicsRectItem>
-#include <QScatterSeries>
 
 namespace QtCharts {
 	class QAbstractAxis;
-	class QChart;
 }
 class InformationBox;
 
-struct BarSeriesIndex {
-	int bar;
-	int subitem;
-};
-
-// We derive from a proper scatter series to get access to the map-to
-// and map-from coordinates calls. But we don't use any of its functionality.
-// Can we avoid that?
-
-class BarSeries : public QtCharts::QScatterSeries {
+class BarSeries : public StatsSeries {
 public:
 	// If the horizontal flag is true, independent variable is plotted on the y-axis.
 	// A non-empty valueBinNames vector flags that this is a stacked bar chart.
 	// In that case, a valueType must also be provided.
 	// For count-based bar series in one variable, valueType is null.
-	BarSeries(bool horizontal, bool stacked, const QString &categoryName, const StatsType *valueType,
+	BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+		  bool horizontal, bool stacked, const QString &categoryName, const StatsType *valueType,
 		  std::vector<QString> valueBinNames);
 	~BarSeries();
 
-	// Call if chart geometry changed
-	void updatePositions();
+	void updatePositions() override;
+	bool hover(QPointF pos) override;
+	void unhighlight() override;
 
 	// Note: this expects that all items are added with increasing pos
 	// and that no bar is inside another bar, i.e. lowerBound and upperBound
@@ -50,15 +43,18 @@ public:
 		    const QString &binName, const StatsOperationResults);
 	void append(double lowerBound, double upperBound, std::vector<std::pair<int, std::vector<QString>>> countLabels,
 		    const QString &binName);
+private:
+	struct Index {
+		int bar;
+		int subitem;
+		Index();
+		Index(int bar, int subitem);
+		bool operator==(const Index &i2) const;
+	};
 
 	// Get item under mouse pointer, or -1 if none
-	BarSeriesIndex getItemUnderMouse(const QPointF &f) const;
-	static BarSeriesIndex invalidIndex();
-	static bool isValidIndex(BarSeriesIndex);
+	Index getItemUnderMouse(const QPointF &f) const;
 
-	// Highlight item when hovering over item
-	void highlight(BarSeriesIndex index, QPointF pos);
-private:
 	// A label that is composed of multiple lines
 	struct BarLabel {
 		std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> items;
@@ -104,7 +100,7 @@ private:
 	QString categoryName;
 	const StatsType *valueType; // null: this is count based
 	std::vector<QString> valueBinNames;
-	BarSeriesIndex highlighted;
+	Index highlighted;
 	std::vector<SubItem> makeSubItems(double value, const std::vector<QString> &label) const;
 	std::vector<SubItem> makeSubItems(const std::vector<std::pair<double, std::vector<QString>>> &values) const;
 	void add_item(double lowerBound, double upperBound, std::vector<SubItem> subitems,
