@@ -401,7 +401,7 @@ Kirigami.Page {
 			Layout.fillWidth: true
 			Layout.topMargin: 0
 			spacing: Kirigami.Units.smallSpacing
-			SsrfCheckBox {
+			TemplateCheckBox {
 				id: forceAll
 				checked: manager.DC_forceDownload
 				enabled: forceAllLabel.visible

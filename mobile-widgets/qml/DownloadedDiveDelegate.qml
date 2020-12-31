@@ -34,7 +34,7 @@ Kirigami.AbstractListItem {
 			NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
 			NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
 		}
-		SsrfCheckBox {
+		TemplateCheckBox {
 			id: diveIsSelected
 			checked: innerListItem.selected;
 			width: childrenRect.width + 4 * Kirigami.Units.smallSpacing;

@@ -192,7 +192,7 @@ Item {
 				text: qsTr("Use current\nGPS location:")
 				visible: manager.locationServiceAvailable
 			}
-			SsrfCheckBox {
+			TemplateCheckBox {
 				id: checkboxGPS
 				visible: manager.locationServiceAvailable
 				onCheckedChanged: {
