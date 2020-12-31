@@ -24,8 +24,6 @@ Controls.TextField {
 	onPressed: {
 		if (flickable !== undefined) {
 			waitForKeyboard.start()
-		} else {
-			manager.appendTextToLog("flickable is undefined")
 		}
 	}
 
