@@ -6,23 +6,22 @@ import org.kde.kirigami 2.4 as Kirigami
 
 CheckBox {
 	id: cb
-
 	indicator: Rectangle {
 		implicitWidth: Kirigami.Units.gridUnit
 		implicitHeight: Kirigami.Units.gridUnit
 		x: cb.leftPadding
 		y: parent.height / 2 - height / 2
-		radius: 3
+		radius: 4
+		border.color: cb.down ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.primaryColor
+		border.width: 2
 		color: subsurfaceTheme.backgroundColor
-		border.color: subsurfaceTheme.textColor
-
 		Rectangle {
 			width: parent.width / 2
 			height: width
 			x: width / 2
 			y: width / 2
-			radius: 2
-			color: subsurfaceTheme.textColor
+			radius: 3
+			color: cb.down ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.primaryColor
 			visible: cb.checked
 		}
 	}
