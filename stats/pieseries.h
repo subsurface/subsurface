@@ -42,9 +42,10 @@ private:
 		double angleTo; // In fraction of total
 		int count;
 		QPointF innerLabelPos, outerLabelPos; // With respect to a (-1, -1)-(1, 1) rectangle.
-		Item(QtCharts::QChart *chart, const QString &name, int from, int count, int totalCount, int bin_nr, bool labels);
+		Item(QtCharts::QChart *chart, const QString &name, int from, int count, int totalCount,
+		     int bin_nr, int numBins, bool labels);
 		void updatePositions(const QRectF &rect, const QPointF &center, double radius);
-		void highlight(int bin_nr, bool highlight);
+		void highlight(int bin_nr, bool highlight, int numBins);
 	};
 	std::vector<Item> items;
 	int totalCount;

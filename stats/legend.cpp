@@ -20,7 +20,7 @@ Legend::Legend(QGraphicsWidget *chart, const std::vector<QString> &names) :
 	entries.reserve(names.size());
 	int idx = 0;
 	for (const QString &name: names)
-		entries.emplace_back(name, idx++, this);
+		entries.emplace_back(name, idx++, (int)names.size(), this);
 
 	// Calculate the height and width of the elements
 	if (!entries.empty()) {
@@ -38,13 +38,13 @@ Legend::Legend(QGraphicsWidget *chart, const std::vector<QString> &names) :
 	resize(); // Draw initial legend
 }
 
-Legend::Entry::Entry(const QString &name, int idx, QGraphicsItem *parent) :
+Legend::Entry::Entry(const QString &name, int idx, int numBins, QGraphicsItem *parent) :
 	rect(new QGraphicsRectItem(parent)),
 	text(new QGraphicsSimpleTextItem(name, parent))
 {
 	rect->setZValue(30.0);
 	rect->setPen(QPen(legendBorderColor, legendBoxBorderSize));
-	rect->setBrush(QBrush(binColor(idx)));
+	rect->setBrush(QBrush(binColor(idx, numBins)));
 	text->setZValue(30.0);
 	text->setBrush(QBrush(labelColor));
 }

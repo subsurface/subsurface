@@ -194,7 +194,7 @@ void BarSeries::SubItem::highlight(bool highlight, int binCount)
 		item->setBrush(QBrush(highlightedColor));
 		item->setPen(QPen(highlightedBorderColor));
 	} else {
-		item->setBrush(QBrush(binColor(bin_nr)));
+		item->setBrush(QBrush(binColor(bin_nr, binCount)));
 		item->setPen(QPen(::borderColor));
 	}
 }

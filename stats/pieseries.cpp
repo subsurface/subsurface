@@ -15,7 +15,8 @@ static const double pieBorderWidth = 1.0;
 static const double innerLabelRadius = 0.75; // 1.0 = at outer border of pie
 static const double outerLabelRadius = 1.01; // 1.0 = at outer border of pie
 
-PieSeries::Item::Item(QtCharts::QChart *chart, const QString &name, int from, int count, int totalCount, int bin_nr, bool labels) :
+PieSeries::Item::Item(QtCharts::QChart *chart, const QString &name, int from, int count, int totalCount,
+		      int bin_nr, int numBins, bool labels) :
 	item(new QGraphicsEllipseItem(chart)),
 	name(name),
 	count(count)
@@ -44,7 +45,7 @@ PieSeries::Item::Item(QtCharts::QChart *chart, const QString &name, int from, in
 		innerLabel->setZValue(10.0); // ? What is a sensible value here ?
 	}
 
-	highlight(bin_nr, false);
+	highlight(bin_nr, false, numBins);
 }
 
 void PieSeries::Item::updatePositions(const QRectF &rect, const QPointF &center, double radius)
@@ -71,9 +72,9 @@ void PieSeries::Item::updatePositions(const QRectF &rect, const QPointF &center,
 	}
 }
 
-void PieSeries::Item::highlight(int bin_nr, bool highlight)
+void PieSeries::Item::highlight(int bin_nr, bool highlight, int numBins)
 {
-	QBrush brush = highlight ? QBrush(highlightedColor) : QBrush(binColor(bin_nr));
+	QBrush brush = highlight ? QBrush(highlightedColor) : QBrush(binColor(bin_nr, numBins));
 	QPen pen = highlight ? QPen(highlightedBorderColor, pieBorderWidth) : QPen(::borderColor, pieBorderWidth);
 	item->setBrush(brush);
 	item->setPen(pen);
@@ -134,11 +135,14 @@ PieSeries::PieSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis
 		std::sort(it, sorted.end());
 	}
 
-	items.reserve(it - sorted.begin() + 1); // +1 in case that there is an "other" group.
+	int numBins = it - sorted.begin();
+	if (it != sorted.end())
+		++numBins;
+	items.reserve(numBins);
 	int act = 0;
 	for (auto it2 = sorted.begin(); it2 != it; ++it2) {
 		int count = data[*it2].second;
-		items.emplace_back(chart, data[*it2].first, act, count, totalCount, (int)items.size(), labels);
+		items.emplace_back(chart, data[*it2].first, act, count, totalCount, (int)items.size(), numBins, labels);
 		act += count;
 	}
 
@@ -148,7 +152,7 @@ PieSeries::PieSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis
 		for (auto it2 = it; it2 != sorted.end(); ++it2)
 			other.push_back({ data[*it2].first, data[*it2].second });
 		QString name = StatsTranslations::tr("other (%1 items)").arg(other.size());
-		items.emplace_back(chart, name, act, totalCount - act, totalCount, (int)items.size(), labels);
+		items.emplace_back(chart, name, act, totalCount - act, totalCount, (int)items.size(), numBins, labels);
 	}
 }
 
@@ -236,7 +240,7 @@ bool PieSeries::hover(QPointF pos)
 
 	// Highlight new item (if any)
 	if (highlighted >= 0 && highlighted < (int)items.size()) {
-		items[highlighted].highlight(highlighted, true);
+		items[highlighted].highlight(highlighted, true, (int)items.size());
 		if (!information)
 			information.reset(new InformationBox(chart()));
 		information->setText(makeInfo(highlighted), pos);
@@ -249,6 +253,6 @@ bool PieSeries::hover(QPointF pos)
 void PieSeries::unhighlight()
 {
 	if (highlighted >= 0 && highlighted < (int)items.size())
-		items[highlighted].highlight(highlighted, false);
+		items[highlighted].highlight(highlighted, false, (int)items.size());
 	highlighted = -1;
 }

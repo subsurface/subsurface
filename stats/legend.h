@@ -21,7 +21,7 @@ private:
 		std::unique_ptr<QGraphicsSimpleTextItem> text;
 		QPointF pos;
 		double width;
-		Entry(const QString &name, int idx, QGraphicsItem *parent);
+		Entry(const QString &name, int idx, int numBins, QGraphicsItem *parent);
 	};
 	QGraphicsWidget *chart;
 	int displayedItems;
