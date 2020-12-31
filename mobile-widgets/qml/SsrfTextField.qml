@@ -20,9 +20,10 @@ Controls.TextField {
 		firstTime = true
 	}
 
-	// that's when a user taps on the field to start entering text
-	onPressed: {
-		if (flickable !== undefined) {
+	// once a text input has focus, make sure it is visible
+	// we do this via a timer to give the OS time to show a virtual keyboard
+	onFocusChanged:	{
+		if (focus && flickable !== undefined) {
 			waitForKeyboard.start()
 		}
 	}
