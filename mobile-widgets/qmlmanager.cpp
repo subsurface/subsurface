@@ -289,12 +289,11 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 		connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
 			this, &QMLManager::btHostModeChange);
 	}
-	// create location manager service
-	locationProvider = GpsLocation::instance();
-	locationProvider->setLogCallBack(&appendTextToLogStandalone);
+	// add log call back to the location manager service singleton
+	GpsLocation::instance()->setLogCallBack(&appendTextToLogStandalone);
 	progress_callback = &progressCallback;
-	connect(locationProvider, SIGNAL(haveSourceChanged()), this, SLOT(hasLocationSourceChanged()));
-	setLocationServiceAvailable(locationProvider->hasLocationsSource());
+	connect(GpsLocation::instance(), &GpsLocation::haveSourceChanged, this, &QMLManager::hasLocationSourceChanged);
+	setLocationServiceAvailable(GpsLocation::instance()->hasLocationsSource());
 	set_git_update_cb(&gitProgressCB);
 
 	// present dive site lists sorted by name
@@ -1614,25 +1613,25 @@ int QMLManager::addDive()
 QString QMLManager::getCurrentPosition()
 {
 	static bool hasLocationSource = false;
-	if (locationProvider->hasLocationsSource() != hasLocationSource) {
+	if (GpsLocation::instance()->hasLocationsSource() != hasLocationSource) {
 		hasLocationSource = !hasLocationSource;
 		setLocationServiceAvailable(hasLocationSource);
 	}
 	if (!hasLocationSource)
 		return tr("Unknown GPS location");
 
-	QString positionResponse = locationProvider->currentPosition();
+	QString positionResponse = GpsLocation::instance()->currentPosition();
 	if (positionResponse == GPS_CURRENT_POS)
-		connect(locationProvider, &GpsLocation::acquiredPosition, this, &QMLManager::waitingForPositionChanged, Qt::UniqueConnection);
+		connect(GpsLocation::instance(), &GpsLocation::acquiredPosition, this, &QMLManager::waitingForPositionChanged, Qt::UniqueConnection);
 	else
-		disconnect(locationProvider, &GpsLocation::acquiredPosition, this, &QMLManager::waitingForPositionChanged);
+		disconnect(GpsLocation::instance(), &GpsLocation::acquiredPosition, this, &QMLManager::waitingForPositionChanged);
 	return positionResponse;
 }
 
 void QMLManager::applyGpsData()
 {
 	appendTextToLog("Applying GPS fiexs");
-	std::vector<DiveAndLocation> fixes = locationProvider->getLocations();
+	std::vector<DiveAndLocation> fixes = GpsLocation::instance()->getLocations();
 	Command::applyGPSFixes(fixes);
 	appendTextToLog(QString("Attached %1 GPS fixes").arg(fixes.size()));
 	if (fixes.size())
@@ -1647,19 +1646,19 @@ void QMLManager::populateGpsData()
 
 void QMLManager::clearGpsData()
 {
-	locationProvider->clearGpsData();
+	GpsLocation::instance()->clearGpsData();
 	populateGpsData();
 }
 
 void QMLManager::deleteGpsFix(quint64 when)
 {
-	locationProvider->deleteGpsFix(when);
+	GpsLocation::instance()->deleteGpsFix(when);
 	populateGpsData();
 }
 
 QString QMLManager::logText() const
 {
-	QString logText = m_logText + QString("\nNumer of GPS fixes: %1").arg(locationProvider->getGpsNum());
+	QString logText = m_logText + QString("\nNumer of GPS fixes: %1").arg(GpsLocation::instance()->getGpsNum());
 	return logText;
 }
 
@@ -1677,7 +1676,7 @@ void QMLManager::appendTextToLog(const QString &newText)
 void QMLManager::setLocationServiceEnabled(bool locationServiceEnabled)
 {
 	m_locationServiceEnabled = locationServiceEnabled;
-	locationProvider->serviceEnable(m_locationServiceEnabled);
+	GpsLocation::instance()->serviceEnable(m_locationServiceEnabled);
 	emit locationServiceEnabledChanged();
 }
 
@@ -1690,7 +1689,7 @@ void QMLManager::setLocationServiceAvailable(bool locationServiceAvailable)
 
 void QMLManager::hasLocationSourceChanged()
 {
-	setLocationServiceAvailable(locationProvider->hasLocationsSource());
+	setLocationServiceAvailable(GpsLocation::instance()->hasLocationsSource());
 }
 
 void QMLManager::setVerboseEnabled(bool verboseMode)
