@@ -22,7 +22,7 @@ bool isobaric_counterdiffusion(struct gasmix oldgasmix, struct gasmix newgasmix,
 	return get_he(oldgasmix) > 0 && results->dN2 > 0 && results->dHe < 0 && get_he(oldgasmix) && results->dN2 > 0 && 5 * results->dN2 > -results->dHe;
 }
 
-static bool gasmix_is_invalid(struct gasmix mix)
+bool gasmix_is_invalid(struct gasmix mix)
 {
 	return mix.o2.permille < 0;
 }
