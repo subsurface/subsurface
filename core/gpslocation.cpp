@@ -15,17 +15,12 @@
 #include <QApplication>
 #include <QTimer>
 
-GpsLocation *GpsLocation::m_Instance = NULL;
-
-GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) :
-	QObject(parent),
+GpsLocation::GpsLocation() :
 	m_GpsSource(0),
+	showMessageCB(0),
 	waitingForPosition(false),
 	haveSource(UNKNOWN)
 {
-	Q_ASSERT_X(m_Instance == NULL, "GpsLocation", "GpsLocation recreated");
-	m_Instance = this;
-	showMessageCB = showMsgCB;
 	// create a QSettings object that's separate from the main application settings
 	geoSettings = new QSettings(QSettings::NativeFormat, QSettings::UserScope,
 				    QStringLiteral("org.subsurfacedivelog"), QStringLiteral("subsurfacelocation"), this);
@@ -39,19 +34,17 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) :
 
 GpsLocation *GpsLocation::instance()
 {
-	Q_ASSERT(m_Instance != NULL);
-
-	return m_Instance;
-}
-
-bool GpsLocation::hasInstance()
-{
-	return m_Instance != NULL;
+	static GpsLocation self;
+	return &self;
 }
 
 GpsLocation::~GpsLocation()
 {
-	m_Instance = NULL;
+}
+
+void GpsLocation::setLogCallBack(void (*showMsgCB)(const char *))
+{
+	showMessageCB = showMsgCB;
 }
 
 void GpsLocation::setGpsTimeThreshold(int seconds)

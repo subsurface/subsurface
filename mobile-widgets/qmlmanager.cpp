@@ -290,7 +290,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 			this, &QMLManager::btHostModeChange);
 	}
 	// create location manager service
-	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
+	locationProvider = GpsLocation::instance();
+	locationProvider->setLogCallBack(&appendTextToLogStandalone);
 	progress_callback = &progressCallback;
 	connect(locationProvider, SIGNAL(haveSourceChanged()), this, SLOT(hasLocationSourceChanged()));
 	setLocationServiceAvailable(locationProvider->hasLocationsSource());
