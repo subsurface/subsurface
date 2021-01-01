@@ -209,7 +209,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	timer.start();
-	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
 	// make upload signals available in QML
 	// Remark: signal - signal connect
@@ -323,6 +322,9 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	// get updates to the undo/redo texts
 	connect(Command::getUndoStack(), &QUndoStack::undoTextChanged, this, &QMLManager::undoTextChanged);
 	connect(Command::getUndoStack(), &QUndoStack::redoTextChanged, this, &QMLManager::redoTextChanged);
+
+	// now that everything is setup, connect the application changed signal
+	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
 	// we start out with clean data
 	updateHaveLocalChanges(false);
