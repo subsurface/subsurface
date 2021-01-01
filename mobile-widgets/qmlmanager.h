@@ -254,7 +254,6 @@ private:
 	bool m_verboseEnabled;
 	bool m_diveListProcessing;
 	bool m_initialized;
-	GpsLocation *locationProvider;
 	bool m_loadFromCloud;
 	static QMLManager *m_instance;
 	QString m_notificationText;
