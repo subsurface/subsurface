@@ -7,6 +7,7 @@
 #include "qthelper.h"
 #include "tag.h"
 #include "trip.h"
+#include "string-format.h"
 #include "subsurface-string.h"
 #include "subsurface-time.h"
 #include <QDateTime>
@@ -409,17 +410,10 @@ QStringList filter_contraint_multiple_choice_translated(enum filter_constraint_t
 			types.append(gettextFromC::tr(divemode_text_ui[i]));
 		return types;
 	} else if (type == FILTER_CONSTRAINT_DAY_OF_WEEK) {
-		// I can't wrap my head around the fact that Sunday is the
-		// first day of the week, but that's how it is.
-		return QStringList {
-			gettextFromC::tr("Sunday"),
-			gettextFromC::tr("Monday"),
-			gettextFromC::tr("Tuesday"),
-			gettextFromC::tr("Wednesday"),
-			gettextFromC::tr("Thursday"),
-			gettextFromC::tr("Friday"),
-			gettextFromC::tr("Saturday"),
-		};
+		QStringList days;
+		for (int i = 0; i < 7; ++i)
+			days.push_back(formatDayOfWeek(i));
+		return days;
 	}
 	return QStringList();
 }

@@ -257,3 +257,19 @@ QString formatDiveDateTime(const dive *d)
 	return QStringLiteral("%1 %2").arg(localTime.date().toString(prefs.date_format_short),
 					   localTime.time().toString(prefs.time_format));
 }
+
+QString formatDayOfWeek(int day)
+{
+	// I can't wrap my head around the fact that Sunday is the
+	// first day of the week, but that's how it is.
+	switch (day) {
+	default:
+	case 0:	return gettextFromC::tr("Sunday");
+	case 1:	return gettextFromC::tr("Monday");
+	case 2:	return gettextFromC::tr("Tuesday");
+	case 3:	return gettextFromC::tr("Wednesday");
+	case 4:	return gettextFromC::tr("Thursday");
+	case 5:	return gettextFromC::tr("Friday");
+	case 6:	return gettextFromC::tr("Saturday");
+	}
+}
