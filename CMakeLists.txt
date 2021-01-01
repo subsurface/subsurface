@@ -320,6 +320,7 @@ if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 add_subdirectory(profile-widget)
 add_subdirectory(map-widget)
 add_subdirectory(mobile-widgets)
+add_subdirectory(stats)
 endif()
 add_subdirectory(backend-shared)
 
@@ -363,6 +364,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_models_mobile
 		subsurface_commands
 		subsurface_corelib
+		subsurface_stats
 		kirigamiplugin
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
