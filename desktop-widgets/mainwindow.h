@@ -20,7 +20,6 @@
 #include "desktop-widgets/notificationwidget.h"
 #include "desktop-widgets/filterwidget.h"
 #include "core/applicationstate.h"
-#include "core/gpslocation.h"
 #include "core/dive.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
@@ -230,7 +229,6 @@ private:
 	static void addWidgets(const Quadrant &, QStackedWidget *);
 	void registerApplicationState(ApplicationState state, Quadrants q);
 
-	GpsLocation *locationProvider;
 	QMenu *connections;
 	QAction *share_on_fb;
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
