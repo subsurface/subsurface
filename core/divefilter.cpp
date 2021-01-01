@@ -114,7 +114,9 @@ DiveFilter *DiveFilter::instance()
 	return &self;
 }
 
-DiveFilter::DiveFilter() : diveSiteRefCount(0)
+DiveFilter::DiveFilter() :
+	shown_dives(0),
+	diveSiteRefCount(0)
 {
 }
 
