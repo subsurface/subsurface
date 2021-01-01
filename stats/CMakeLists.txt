@@ -27,6 +27,8 @@ set(SUBSURFACE_STATS_SRCS
 	statsstate.cpp
 	statsvariables.h
 	statsvariables.cpp
+	statsview.h
+	statsview.cpp
 	zvalues.h
 )
 
