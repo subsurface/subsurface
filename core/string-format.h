@@ -25,5 +25,6 @@ QString formatDiveGPS(const dive *d);
 QString formatDiveDate(const dive *d);
 QString formatDiveTime(const dive *d);
 QString formatDiveDateTime(const dive *d);
+QString formatDayOfWeek(int day);
 
 #endif
