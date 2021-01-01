@@ -11,6 +11,8 @@ set(SUBSURFACE_STATS_SRCS
 	statsaxis.cpp
 	statscolors.h
 	statscolors.cpp
+	statsseries.h
+	statsseries.cpp
 	statsvariables.h
 	statsvariables.cpp
 	zvalues.h
