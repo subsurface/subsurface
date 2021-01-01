@@ -153,11 +153,11 @@ Thumbnailer::Thumbnail Thumbnailer::getHashedImage(const QString &filename, bool
 	return thumbnail;
 }
 
-Thumbnailer::Thumbnailer() : failImage(renderSVGIcon(":filter-close", maxThumbnailSize())), // TODO: Don't misuse filter close icon
-			     dummyImage(renderSVGIcon(":camera-icon", maxThumbnailSize())),
-			     videoImage(renderSVGIcon(":video-icon", maxThumbnailSize())),
+Thumbnailer::Thumbnailer() : failImage(renderSVGIcon(":filter-close", maxThumbnailSize(), false)), // TODO: Don't misuse filter close icon
+			     dummyImage(renderSVGIcon(":camera-icon", maxThumbnailSize(), false)),
+			     videoImage(renderSVGIcon(":video-icon", maxThumbnailSize(), false)),
 			     videoOverlayImage(renderSVGIconWidth(":video-overlay", maxThumbnailSize())),
-			     unknownImage(renderSVGIcon(":unknown-icon", maxThumbnailSize()))
+			     unknownImage(renderSVGIcon(":unknown-icon", maxThumbnailSize(), false))
 {
 	// Currently, we only process one image at a time. Stefan Fuchs reported problems when
 	// calculating multiple thumbnails at once and this hopefully helps.
