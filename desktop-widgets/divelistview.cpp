@@ -16,6 +16,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QMessageBox>
+#include <QNetworkReply>
 #include <QHeaderView>
 #include "commands/command.h"
 #include "commands/command_base.h"
