@@ -5,6 +5,8 @@ include_directories(.
 )
 
 set(SUBSURFACE_STATS_SRCS
+	informationbox.h
+	informationbox.cpp
 	legend.h
 	legend.cpp
 	statsaxis.h
