@@ -5,6 +5,8 @@ include_directories(.
 )
 
 set(SUBSURFACE_STATS_SRCS
+	legend.h
+	legend.cpp
 	statscolors.h
 	statscolors.cpp
 	statsvariables.h
