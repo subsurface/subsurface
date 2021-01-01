@@ -542,12 +542,17 @@ QString get_depth_string(depth_t depth, bool showunit, bool showdecimal)
 	return get_depth_string(depth.mm, showunit, showdecimal);
 }
 
-QString get_depth_unit()
+QString get_depth_unit(bool metric)
 {
-	if (prefs.units.length == units::METERS)
+	if (metric)
 		return gettextFromC::tr("m");
 	else
 		return gettextFromC::tr("ft");
+}
+
+QString get_depth_unit()
+{
+	return get_depth_unit(prefs.units.length == units::METERS);
 }
 
 QString get_weight_string(weight_t weight, bool showunit)
@@ -561,12 +566,17 @@ QString get_weight_string(weight_t weight, bool showunit)
 	return str;
 }
 
-QString get_weight_unit()
+QString get_weight_unit(bool metric)
 {
-	if (prefs.units.weight == units::KG)
+	if (metric)
 		return gettextFromC::tr("kg");
 	else
 		return gettextFromC::tr("lbs");
+}
+
+QString get_weight_unit()
+{
+	return get_weight_unit(prefs.units.weight == units::KG);
 }
 
 QString get_temperature_string(temperature_t temp, bool showunit)
@@ -582,12 +592,17 @@ QString get_temperature_string(temperature_t temp, bool showunit)
 	}
 }
 
+QString get_temp_unit(bool metric)
+{
+	if (metric)
+		return QStringLiteral("°C");
+	else
+		return QStringLiteral("°F");
+}
+
 QString get_temp_unit()
 {
-	if (prefs.units.temperature == units::CELSIUS)
-		return QString("°C");
-	else
-		return QString("°F");
+	return get_temp_unit(prefs.units.temperature == units::CELSIUS);
 }
 
 QString get_volume_string(int mliter, bool showunit)
@@ -603,11 +618,17 @@ QString get_volume_string(volume_t volume, bool showunit)
 	return get_volume_string(volume.mliter, showunit);
 }
 
+QString get_volume_unit(bool metric)
+{
+	if (metric)
+		return gettextFromC::tr("ℓ");
+	else
+		return gettextFromC::tr("cuft");
+}
+
 QString get_volume_unit()
 {
-	const char *unit;
-	(void) get_volume_units(0, NULL, &unit);
-	return QString(unit);
+	return get_volume_unit(prefs.units.volume == units::LITER);
 }
 
 QString get_pressure_string(pressure_t pressure, bool showunit)
