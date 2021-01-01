@@ -15,6 +15,8 @@ set(SUBSURFACE_STATS_SRCS
 	legend.cpp
 	pieseries.h
 	pieseries.cpp
+	scatterseries.h
+	scatterseries.cpp
 	statsaxis.h
 	statsaxis.cpp
 	statscolors.h
