@@ -301,7 +301,7 @@ endif()
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES} ${LIBMTP_LIBRARIES})
 if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
-	qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc)
+	qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc stats/qml/statsview.qrc)
 endif()
 
 # hack to build successfully on LGTM
@@ -391,6 +391,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface_models_desktop
 		subsurface_commands
 		subsurface_corelib
+		subsurface_stats
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
 	add_dependencies(subsurface_desktop_preferences subsurface_generated_ui)
