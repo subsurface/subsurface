@@ -842,7 +842,7 @@ static void save_units(void *_b)
 		put_format(b, "units PERSONALIZE %s %s %s %s %s %s\n",
 			   prefs.units.length == METERS ? "METERS" : "FEET",
 			   prefs.units.volume == LITER ? "LITER" : "CUFT",
-			   prefs.units.pressure == BAR ? "BAR" : prefs.units.pressure == PSI ? "PSI" : "PASCAL",
+			   prefs.units.pressure == BAR ? "BAR" : "PSI",
 			   prefs.units.temperature == CELSIUS ? "CELSIUS" : prefs.units.temperature == FAHRENHEIT ? "FAHRENHEIT" : "KELVIN",
 			   prefs.units.weight == KG ? "KG" : "LBS",
 			   prefs.units.vertical_speed_time == SECONDS ? "SECONDS" : "MINUTES");
