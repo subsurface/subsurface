@@ -9,6 +9,8 @@ set(SUBSURFACE_STATS_SRCS
 	barseries.cpp
 	boxseries.h
 	boxseries.cpp
+	chartlistmodel.h
+	chartlistmodel.cpp
 	informationbox.h
 	informationbox.cpp
 	legend.h
@@ -25,6 +27,7 @@ set(SUBSURFACE_STATS_SRCS
 	statsseries.cpp
 	statsstate.h
 	statsstate.cpp
+	statstranslations.h
 	statsvariables.h
 	statsvariables.cpp
 	statsview.h
