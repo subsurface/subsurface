@@ -93,7 +93,7 @@ void Legend::resize()
 			y += fontHeight;
 			++displayedItems;
 		}
-		x += nextX;
+		x = nextX;
 		width = nextX;
 		if (width >= size.width() / 2.0) // More than half the chart-width -> give up
 			break;
