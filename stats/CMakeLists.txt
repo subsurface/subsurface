@@ -11,6 +11,7 @@ set(SUBSURFACE_STATS_SRCS
 	statscolors.cpp
 	statsvariables.h
 	statsvariables.cpp
+	zvalues.h
 )
 
 source_group("Subsurface statistics sourcecode" FILES ${SUBSURFACE_STATS_SRCS})

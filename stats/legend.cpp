@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "legend.h"
 #include "statscolors.h"
+#include "zvalues.h"
+
 #include <QFontMetrics>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsWidget>
@@ -16,7 +18,7 @@ static const QColor legendBorderColor(Qt::black);
 Legend::Legend(QGraphicsWidget *chart, const std::vector<QString> &names) :
 	QGraphicsRectItem(chart), chart(chart), displayedItems(0), width(0.0), height(0.0)
 {
-	setZValue(30.0); // On top of everything else.
+	setZValue(ZValues::legend);
 	entries.reserve(names.size());
 	int idx = 0;
 	for (const QString &name: names)
@@ -42,10 +44,10 @@ Legend::Entry::Entry(const QString &name, int idx, int numBins, QGraphicsItem *p
 	rect(new QGraphicsRectItem(parent)),
 	text(new QGraphicsSimpleTextItem(name, parent))
 {
-	rect->setZValue(30.0);
+	rect->setZValue(ZValues::legend);
 	rect->setPen(QPen(legendBorderColor, legendBoxBorderSize));
 	rect->setBrush(QBrush(binColor(idx, numBins)));
-	text->setZValue(30.0);
+	text->setZValue(ZValues::legend);
 	text->setBrush(QBrush(darkLabelColor));
 }
 
