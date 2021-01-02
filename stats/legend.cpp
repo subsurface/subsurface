@@ -32,7 +32,9 @@ Legend::Legend(QGraphicsWidget *chart, const std::vector<QString> &names) :
 			e.width = fontHeight + 2.0 * legendBoxBorderSize +
 				  fm.size(Qt::TextSingleLine, e.text->text()).width();
 	} else {
-		fontHeight = 0.0;
+		// Set to an arbitrary non-zero value, because Coverity doesn't understand
+		// that we don't use the value as divisor below if entries is empty.
+		fontHeight = 10.0;
 	}
 	setPen(QPen(legendBorderColor, legendBorderSize));
 	setBrush(QBrush(legendColor));
@@ -42,7 +44,8 @@ Legend::Legend(QGraphicsWidget *chart, const std::vector<QString> &names) :
 
 Legend::Entry::Entry(const QString &name, int idx, int numBins, QGraphicsItem *parent) :
 	rect(new QGraphicsRectItem(parent)),
-	text(new QGraphicsSimpleTextItem(name, parent))
+	text(new QGraphicsSimpleTextItem(name, parent)),
+	width(0)
 {
 	rect->setZValue(ZValues::legend);
 	rect->setPen(QPen(legendBorderColor, legendBoxBorderSize));
