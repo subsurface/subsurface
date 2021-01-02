@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "units.h"
 #include "gettext.h"
+#include "pref.h"
 
 int get_pressure_units(int mb, const char **units)
 {
@@ -167,4 +168,9 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 	if (units)
 		*units = unit;
 	return value;
+}
+
+const struct units *get_units()
+{
+	return &prefs.units;
 }
