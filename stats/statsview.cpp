@@ -200,6 +200,8 @@ void StatsView::plot(const StatsState &stateIn)
 		return plotHistogramBoxChart(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::ScatterPlot:
 		return plotScatter(dives, state.var1, state.var2);
+	case ChartType::Invalid:
+		return;
 	default:
 		qWarning("Unknown chart type: %d", (int)state.type);
 		return;

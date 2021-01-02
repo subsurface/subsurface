@@ -19,7 +19,8 @@ enum class ChartType {
 	HistogramValue,
 	HistogramBox,
 	HistogramStacked,
-	ScatterPlot
+	ScatterPlot,
+	Invalid
 };
 
 enum class ChartSubType {
@@ -35,6 +36,7 @@ enum class ChartSubType {
 	Count
 };
 
+struct ChartTypeDesc; // Internal implementation detail
 struct StatsVariable;
 struct StatsBinner;
 enum class StatsOperation : int;
@@ -111,9 +113,6 @@ public:
 	StatsOperation var2Operation;
 private:
 	void validate(bool varChanged);
-	bool var1Binned;
-	bool var2Binned;
-	bool var2HasOperations;
 	int chartFeatures;
 };
 

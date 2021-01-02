@@ -89,43 +89,21 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 static void setVariableList(QComboBox *combo, const StatsState::VariableList &list)
 {
 	combo->clear();
+	combo->setEnabled(!list.variables.empty());
 	for (const StatsState::Variable &v: list.variables)
 		combo->addItem(v.name, QVariant(v.id));
 	combo->setCurrentIndex(list.selected);
 }
 
 // Initialize QComboBox and QLabel of binners. Hide if there are no binners.
-static void setBinList(QLabel *label, QComboBox *combo, const QString &varName, const StatsState::BinnerList &list)
+static void setBinList(QLabel *label, QComboBox *combo, const StatsState::BinnerList &list)
 {
 	combo->clear();
-	if (list.binners.empty()) {
-		label->hide();
-		combo->hide();
-		return;
-	}
-
-	label->show();
-	combo->show();
+	combo->setEnabled(!list.binners.empty());
 
 	for (const QString &s: list.binners)
 		combo->addItem(s);
 	combo->setCurrentIndex(list.selected);
-}
-
-// Initialize QComboBox and QLabel of operations. Hide if there are no operations.
-static void setOperationList(QLabel *label, QComboBox *combo, const QString &varName, const StatsState::VariableList &list)
-{
-	combo->clear();
-	if (list.variables.empty()) {
-		label->hide();
-		combo->hide();
-		return;
-	}
-
-	label->show();
-	combo->show();
-
-	setVariableList(combo, list);
 }
 
 void StatsWidget::updateUi()
@@ -136,9 +114,9 @@ void StatsWidget::updateUi()
 	int pos = charts.update(uiState.charts);
 	ui.chartType->setCurrentIndex(pos);
 	ui.chartType->setItemDelegate(new ChartItemDelegate);
-	setBinList(ui.var1BinnerLabel, ui.var1Binner, uiState.var1Name, uiState.binners1);
-	setBinList(ui.var2BinnerLabel, ui.var2Binner, uiState.var2Name, uiState.binners2);
-	setOperationList(ui.var2OperationLabel, ui.var2Operation, uiState.var2Name, uiState.operations2);
+	setBinList(ui.var1BinnerLabel, ui.var1Binner, uiState.binners1);
+	setBinList(ui.var2BinnerLabel, ui.var2Binner, uiState.binners2);
+	setVariableList(ui.var2Operation, uiState.operations2);
 
 	// Add checkboxes for additional features
 	features.clear();

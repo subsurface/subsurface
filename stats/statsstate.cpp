@@ -17,7 +17,7 @@ static const char *chart_subtype_names[] = {
 };
 
 enum class SupportedVariable {
-	Count,
+	None,
 	Categorical,		// Implies that the variable is binned
 	Continuous,		// Implies that the variable is binned
 	Numeric
@@ -34,7 +34,7 @@ static const struct ChartTypeDesc {
 	const char *name;
 	SupportedVariable var1;
 	SupportedVariable var2;
-	bool var2HasOperations;
+	bool var1Binned, var2Binned, var2HasOperations;
 	const std::vector<ChartSubType> subtypes;
 	int features;
 } chart_types[] = {
@@ -43,7 +43,7 @@ static const struct ChartTypeDesc {
 		QT_TRANSLATE_NOOP("StatsTranslations", "Scattergraph"),
 		SupportedVariable::Continuous,
 		SupportedVariable::Numeric,
-		false,
+		false, false, false,
 		{ ChartSubType::Dots },
 		0
 	},
@@ -51,8 +51,8 @@ static const struct ChartTypeDesc {
 		ChartType::HistogramCount,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram"),
 		SupportedVariable::Continuous,
-		SupportedVariable::Count,
-		false,
+		SupportedVariable::None,
+		true, false, false,
 		{ ChartSubType::Vertical, ChartSubType::Horizontal },
 		ChartFeatureLabels | ChartFeatureMedian | ChartFeatureMean
 	},
@@ -61,7 +61,7 @@ static const struct ChartTypeDesc {
 		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram"),
 		SupportedVariable::Continuous,
 		SupportedVariable::Numeric,
-		true,
+		true, false, true,
 		{ ChartSubType::Vertical, ChartSubType::Horizontal },
 		ChartFeatureLabels
 	},
@@ -70,7 +70,7 @@ static const struct ChartTypeDesc {
 		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram"),
 		SupportedVariable::Continuous,
 		SupportedVariable::Numeric,
-		false,
+		true, false, false,
 		{ ChartSubType::Box },
 		0
 	},
@@ -79,7 +79,7 @@ static const struct ChartTypeDesc {
 		QT_TRANSLATE_NOOP("StatsTranslations", "Histogram"),
 		SupportedVariable::Continuous,
 		SupportedVariable::Categorical,
-		false,
+		true, true, false,
 		{ ChartSubType::VerticalStacked, ChartSubType::HorizontalStacked },
 		ChartFeatureLabels | ChartFeatureLegend
 	},
@@ -88,7 +88,7 @@ static const struct ChartTypeDesc {
 		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical"),
 		SupportedVariable::Categorical,
 		SupportedVariable::Numeric,
-		false,
+		true, false, false,
 		{ ChartSubType::Dots },
 		ChartFeatureQuartiles
 	},
@@ -97,7 +97,7 @@ static const struct ChartTypeDesc {
 		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical"),
 		SupportedVariable::Categorical,
 		SupportedVariable::Numeric,
-		true,
+		true, false, true,
 		{ ChartSubType::Vertical, ChartSubType::Horizontal },
 		ChartFeatureLabels
 	},
@@ -105,8 +105,8 @@ static const struct ChartTypeDesc {
 		ChartType::DiscreteCount,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical"),
 		SupportedVariable::Categorical,
-		SupportedVariable::Count,
-		false,
+		SupportedVariable::None,
+		true, false, false,
 		{ ChartSubType::Vertical, ChartSubType::Horizontal },
 		ChartFeatureLabels
 	},
@@ -115,7 +115,7 @@ static const struct ChartTypeDesc {
 		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical"),
 		SupportedVariable::Categorical,
 		SupportedVariable::Numeric,
-		false,
+		true, false, false,
 		{ ChartSubType::Box },
 		0
 	},
@@ -123,8 +123,8 @@ static const struct ChartTypeDesc {
 		ChartType::Pie,
 		QT_TRANSLATE_NOOP("StatsTranslations", "Categorical"),
 		SupportedVariable::Categorical,
-		SupportedVariable::Count,
-		false,
+		SupportedVariable::None,
+		true, false, false,
 		{ ChartSubType::Pie },
 		ChartFeatureLabels | ChartFeatureLegend
 	},
@@ -133,7 +133,7 @@ static const struct ChartTypeDesc {
 		QT_TRANSLATE_NOOP("StatsTranslations", "Barchart"),
 		SupportedVariable::Categorical,
 		SupportedVariable::Categorical,
-		false,
+		true, true, false,
 		{ ChartSubType::VerticalGrouped, ChartSubType::VerticalStacked, ChartSubType::HorizontalGrouped, ChartSubType::HorizontalStacked },
 		ChartFeatureLabels | ChartFeatureLegend
 	}
@@ -149,7 +149,7 @@ enum ChartValidity {
 	Invalid
 };
 
-static const int count_idx = -1; // Special index for the count variable
+static const int none_idx = -1; // Special index meaning no second variable
 
 StatsState::StatsState() :
 	var1(stats_variables[0]),
@@ -163,23 +163,20 @@ StatsState::StatsState() :
 	quartiles(true),
 	var1Binner(nullptr),
 	var2Binner(nullptr),
-	var2Operation(StatsOperation::Invalid),
-	var1Binned(false),
-	var2Binned(false),
-	var2HasOperations(false)
+	var2Operation(StatsOperation::Invalid)
 {
 	validate(true);
 }
 
-static StatsState::VariableList createVariableList(const StatsVariable *selected, bool addCount, const StatsVariable *omit)
+static StatsState::VariableList createVariableList(const StatsVariable *selected, bool addNone, const StatsVariable *omit)
 {
 	StatsState::VariableList res;
-	res.variables.reserve(stats_variables.size() + addCount);
+	res.variables.reserve(stats_variables.size() + addNone);
 	res.selected = -1;
-	if (addCount) {
+	if (addNone) {
 		if (selected == nullptr)
 			res.selected = (int)res.variables.size();
-		res.variables.push_back({ StatsTranslations::tr("Count"), count_idx });
+		res.variables.push_back({ StatsTranslations::tr("none"), none_idx });
 	}
 	for (int i = 0; i < (int)stats_variables.size(); ++i) {
 		const StatsVariable *variable = stats_variables[i];
@@ -204,12 +201,14 @@ static std::pair<ChartType, ChartSubType> fromInt(int id)
 	return { (ChartType)(id >> 16), (ChartSubType)(id & 0xff) };
 }
 
-static ChartValidity variableValidity(StatsVariable::Type type, SupportedVariable var)
+static ChartValidity variableValidity(StatsVariable::Type type, const StatsBinner *binner, SupportedVariable var, bool binned)
 {
+	if (!!binner != binned)
+		return ChartValidity::Invalid;
 	switch (var) {
 	default:
-	case SupportedVariable::Count:
-		return ChartValidity::Invalid;	// Count has been special cased outside of this function
+	case SupportedVariable::None:
+		return ChartValidity::Invalid;	// None has been special cased outside of this function
 	case SupportedVariable::Categorical:
 		return type == StatsVariable::Type::Continuous || type == StatsVariable::Type::Numeric ?
 			ChartValidity::Undesired : ChartValidity::Good;
@@ -220,22 +219,29 @@ static ChartValidity variableValidity(StatsVariable::Type type, SupportedVariabl
 	}
 }
 
-static ChartValidity chartValidity(const ChartTypeDesc &desc, const StatsVariable *var1, const StatsVariable *var2)
+static ChartValidity chartValidity(const ChartTypeDesc &desc,
+				  const StatsVariable *var1, const StatsVariable *var2,
+				  const StatsBinner *binner1, const StatsBinner *binner2,
+				  StatsOperation operation)
 {
 	if (!var1)
-		return ChartValidity::Invalid; // Huh? We don't support count as independent variable
+		return ChartValidity::Invalid; // Huh? We don't support no independent variable
 
 	// Check the first variable
-	ChartValidity valid1 = variableValidity(var1->type(), desc.var1);
+	ChartValidity valid1 = variableValidity(var1->type(), binner1, desc.var1, desc.var1Binned);
 	if (valid1 == ChartValidity::Invalid)
 		return ChartValidity::Invalid;
 
 	// Then, check the second variable
-	if (var2 == nullptr) // Our special marker for "count"
-		return desc.var2 == SupportedVariable::Count ? valid1 : ChartValidity::Invalid;
+	if (var2 == nullptr) // Our special marker for "none"
+		return desc.var2 == SupportedVariable::None ? valid1 : ChartValidity::Invalid;
 
-	ChartValidity valid2 = variableValidity(var2->type(), desc.var2);
+	ChartValidity valid2 = variableValidity(var2->type(), binner2, desc.var2, desc.var2Binned);
 	if (valid2 == ChartValidity::Invalid)
+		return ChartValidity::Invalid;
+
+	// Check whether the chart supports operations.
+	if ((operation != StatsOperation::Invalid) != desc.var2HasOperations)
 		return ChartValidity::Invalid;
 
 	return valid1 == ChartValidity::Undesired || valid2 == ChartValidity::Undesired ? 
@@ -243,12 +249,14 @@ static ChartValidity chartValidity(const ChartTypeDesc &desc, const StatsVariabl
 }
 
 // Returns a list of (chart-type, warning) pairs
-const std::vector<std::pair<const ChartTypeDesc &, bool>> validCharts(const StatsVariable *var1, const StatsVariable *var2)
+const std::vector<std::pair<const ChartTypeDesc &, bool>> validCharts(const StatsVariable *var1, const StatsVariable *var2,
+								      const StatsBinner *binner1, const StatsBinner *binner2,
+								      StatsOperation operation)
 {
 	std::vector<std::pair<const ChartTypeDesc &, bool>> res;
 	res.reserve(std::size(chart_types));
 	for (const ChartTypeDesc &desc: chart_types) {
-		ChartValidity valid = chartValidity(desc, var1, var2);
+		ChartValidity valid = chartValidity(desc, var1, var2, binner1, binner2, operation);
 		if (valid == ChartValidity::Invalid)
 			continue;
 		res.emplace_back(desc, valid == ChartValidity::Undesired);
@@ -257,11 +265,14 @@ const std::vector<std::pair<const ChartTypeDesc &, bool>> validCharts(const Stat
 	return res;
 }
 
-static StatsState::ChartList createChartList(const StatsVariable *var1, const StatsVariable *var2, ChartType selectedType, ChartSubType selectedSubType)
+static StatsState::ChartList createChartList(const StatsVariable *var1, const StatsVariable *var2,
+					     const StatsBinner *binner1, const StatsBinner *binner2,
+					     StatsOperation operation,
+					     ChartType selectedType, ChartSubType selectedSubType)
 {
 	StatsState::ChartList res;
 	res.selected = -1;
-	for (auto [desc, warn]: validCharts(var1, var2)) {
+	for (auto [desc, warn]: validCharts(var1, var2, binner1, binner2, operation)) {
 		QString name = StatsTranslations::tr(desc.name);
 		for (ChartSubType subtype: desc.subtypes) {
 			int id = toInt(desc.id, subtype);
@@ -282,16 +293,33 @@ static StatsState::ChartList createChartList(const StatsVariable *var1, const St
 	return res;
 }
 
-static StatsState::BinnerList createBinnerList(bool binned, const StatsVariable *var, const StatsBinner *binner)
+// For non-discrete types propose a "no-binning" option unless this is
+// the second variable and has no operations (i.e. is numeric)
+static bool noBinningAllowed(const StatsVariable *var, bool second)
+{
+	if (var->type() == StatsVariable::Type::Discrete)
+		return false;
+	return !second || var->type() == StatsVariable::Type::Numeric;
+}
+
+static StatsState::BinnerList createBinnerList(const StatsVariable *var, const StatsBinner *binner, bool binningAllowed, bool second)
 {
 	StatsState::BinnerList res;
 	res.selected = -1;
-	if (!binned || !var)
+	if (!var || !binningAllowed)
 		return res;
 	std::vector<const StatsBinner *> binners = var->binners();
-	if (binners.size() <= 1)
-		return res; // Don't show combo boxes for single binners
-	res.binners.reserve(binners.size());
+	res.binners.reserve(binners.size() + 1);
+	if (var->type() == StatsVariable::Type::Discrete) {
+		if (binners.size() <= 1)
+			return res; // Don't show combo boxes for single binners
+	} else if (noBinningAllowed(var, second)) {
+		if (!second || var->type() == StatsVariable::Type::Numeric) {
+			if (!binner)
+				res.selected = (int)res.binners.size();
+			res.binners.push_back(StatsTranslations::tr("none"));
+		}
+	}
 	for (const StatsBinner *bin: binners) {
 		if (bin == binner)
 			res.selected = (int)res.binners.size();
@@ -300,14 +328,23 @@ static StatsState::BinnerList createBinnerList(bool binned, const StatsVariable 
 	return res;
 }
 
-static StatsState::VariableList createOperationsList(bool hasOperations, const StatsVariable *var, StatsOperation operation)
+static StatsState::VariableList createOperationsList(const StatsVariable *var, StatsOperation operation, const StatsBinner *var1Binner)
 {
 	StatsState::VariableList res;
 	res.selected = -1;
-	if (!hasOperations || !var)
+	// Operations only possible if the first variable is binned
+	if (!var || !var1Binner)
 		return res;
 	std::vector<StatsOperation> operations = var->supportedOperations();
-	res.variables.reserve(operations.size());
+	if (operations.empty())
+		return res;
+
+	res.variables.reserve(operations.size() + 1);
+
+	// Add a "none" entry
+	if (operation == StatsOperation::Invalid)
+		res.selected = (int)res.variables.size();
+	res.variables.push_back({ StatsTranslations::tr("none"), (int)StatsOperation::Invalid });
 	for (StatsOperation op: operations) {
 		if (op == operation)
 			res.selected = (int)res.variables.size();
@@ -339,18 +376,27 @@ StatsState::UIState StatsState::getUIState() const
 	res.var2 = createVariableList(var2, true, var1);
 	res.var1Name = var1 ? var1->name() : QString();
 	res.var2Name = var2 ? var2->name() : QString();
-	res.charts = createChartList(var1, var2, type, subtype);
-	res.binners1 = createBinnerList(var1Binned, var1, var1Binner);
-	res.binners2 = createBinnerList(var2Binned, var2, var2Binner);
-	res.operations2 = createOperationsList(var2HasOperations, var2, var2Operation);
+	res.charts = createChartList(var1, var2, var1Binner, var2Binner, var2Operation, type, subtype);
+	res.binners1 = createBinnerList(var1, var1Binner, true, false);
+	// Second variable can only be binned if first variable is binned.
+	res.binners2 = createBinnerList(var2, var2Binner, var1Binner != nullptr, true);
+	res.operations2 = createOperationsList(var2, var2Operation, var1Binner);
 	res.features = createFeaturesList(chartFeatures, labels, legend, median, mean, quartiles);
 	return res;
 }
 
-static const StatsBinner *idxToBinner(const StatsVariable *v, int idx)
+static const StatsBinner *idxToBinner(const StatsVariable *v, int idx, bool second)
 {
 	if (!v)
 		return nullptr;
+
+	// Special case: for non-discrete variables, the first entry means "none".
+	if (noBinningAllowed(v, second)) {
+		if (idx == 0)
+			return nullptr;
+		--idx;
+	}
+
 	auto binners = v->binners();
 	return idx >= 0 && idx < (int)binners.size() ? binners[idx] : 0;
 }
@@ -363,27 +409,47 @@ void StatsState::var1Changed(int id)
 
 void StatsState::binner1Changed(int idx)
 {
-	var1Binner = idxToBinner(var1, idx);
+	var1Binner = idxToBinner(var1, idx, false);
+
+	// If the first variable is not binned, the second variable must be of the "numeric" type.
+	if(!var1Binner && (!var2 || var2->type() != StatsVariable::Type::Numeric)) {
+		// Find first variable that is numeric, but not the same as the first
+		auto it = std::find_if(stats_variables.begin(), stats_variables.end(),
+				       [v1 = var1] (const StatsVariable *v)
+				       { return v != v1 && v->type() == StatsVariable::Type::Numeric; });
+		var2 = it != stats_variables.end() ? *it : nullptr;
+	}
+
 	validate(false);
 }
 
 void StatsState::var2Changed(int id)
 {
-	// The "count" variable is represented by a nullptr
-	var2 = id == count_idx ? nullptr
-			       : stats_variables[std::clamp(id, 0, (int)stats_variables.size())];
+	// The "none" variable is represented by a nullptr
+	var2 = id == none_idx ? nullptr
+			      : stats_variables[std::clamp(id, 0, (int)stats_variables.size())];
 	validate(true);
 }
 
 void StatsState::binner2Changed(int idx)
 {
-	var2Binner = idxToBinner(var2, idx);
+	var2Binner = idxToBinner(var2, idx, true);
+
+	// We do not support operations and binning at the same time.
+	if (var2Binner)
+		var2Operation = StatsOperation::Invalid;
+
 	validate(false);
 }
 
 void StatsState::var2OperationChanged(int id)
 {
 	var2Operation = (StatsOperation)id;
+
+	// We do not support operations and binning at the same time.
+	if (var2Operation != StatsOperation::Invalid)
+		var2Binner = nullptr;
+
 	validate(false);
 }
 
@@ -431,32 +497,49 @@ const ChartTypeDesc &newChartType(ChartType type, std::vector<std::pair<const Ch
 	return charts.empty() ? chart_types[0] : charts[0].first;
 }
 
-static void validateBinner(const StatsBinner *&binner, const StatsVariable *var, bool isBinned)
+static const StatsBinner *getFirstBinner(const StatsVariable *var)
 {
-	if (!var || !isBinned) {
+	if (!var)
+		return nullptr;
+	auto binners = var->binners();
+	return binners.empty() ? nullptr : binners.front();
+}
+
+static void validateBinner(const StatsBinner *&binner, const StatsVariable *var, bool second)
+{
+	if (!var) {
 		binner = nullptr;
 		return;
 	}
+
+	bool noneOk = noBinningAllowed(var, second);
+	if (noneOk & !binner)
+		return;
+
 	auto binners = var->binners();
 	if (std::find(binners.begin(), binners.end(), binner) != binners.end())
 		return;
 
-	// For now choose the first binner. However, we might try to be smarter here
-	// and adapt to the given screen size and the estimated number of bins.
-	binner = binners.empty() ? nullptr : binners[0];
+	// For now choose the first binner or no binner if this is a non-discrete
+	// variable. However, we might try to be smarter here and adapt to the
+	// given screen size and the estimated number of bins.
+	binner = binners.empty() || noneOk ? nullptr : binners[0];
 }
 
-static void validateOperation(StatsOperation &operation, const StatsVariable *var, bool hasOperation)
+static void validateOperation(StatsOperation &operation, const StatsVariable *var, const StatsBinner *var1Binner)
 {
-	if (!hasOperation) {
+	// 1) No variable, no operation.
+	// 2) We allow operations only if the first variable is binned.
+	if (!var) {
 		operation = StatsOperation::Invalid;
 		return;
 	}
+
 	std::vector<StatsOperation> ops = var->supportedOperations();
 	if (std::find(ops.begin(), ops.end(), operation) != ops.end())
 		return;
 
-	operation = ops.empty() ? StatsOperation::Invalid : ops[0];
+	operation = StatsOperation::Invalid;
 }
 
 // The var changed variable indicates whether this function is called
@@ -466,13 +549,37 @@ static void validateOperation(StatsOperation &operation, const StatsVariable *va
 // so let's use that.
 void StatsState::validate(bool varChanged)
 {
+	// We need at least one variable
+	if (!var1)
+		var1 = stats_variables[0];
+
 	// Take care that we don't plot a variable against itself.
-	// By default plot the count of the first variable. Is that sensible?
 	if (var1 == var2)
 		var2 = nullptr;
 
+	// If there is no second variable or the second variable is not
+	// "numeric", the first variable must be binned.
+	if (!var2 || var2->type() != StatsVariable::Type::Numeric)
+		var1Binner = getFirstBinner(var1);
+
+	// Check that the binners and operation are valid
+	if (!var1Binner) {
+		var2Binner = nullptr;	// Second variable can only be binned if first variable is binned.
+		var2Operation = StatsOperation::Invalid;
+	}
+	validateBinner(var1Binner, var1, false);
+	validateBinner(var2Binner, var2, true);
+	validateOperation(var2Operation, var2, var1Binner);
+
 	// Let's see if the currently selected chart is one of the valid charts
-	auto charts = validCharts(var1, var2);
+	auto charts = validCharts(var1, var2, var1Binner, var2Binner, var2Operation);
+
+	if (charts.empty()) {
+		// Ooops. No valid chart with these settings. The validation should be improved.
+		type = ChartType::Invalid;
+		return;
+	}
+
 	const ChartTypeDesc &desc = newChartType(type, charts, varChanged);
 	type = desc.id;
 
@@ -480,17 +587,8 @@ void StatsState::validate(bool varChanged)
 	if (std::find(desc.subtypes.begin(), desc.subtypes.end(), subtype) == desc.subtypes.end())
 		subtype = desc.subtypes.empty() ? ChartSubType::Horizontal : desc.subtypes[0];
 
-	var1Binned = type != ChartType::ScatterPlot;
-	var2Binned = desc.var2 == SupportedVariable::Categorical || desc.var2 == SupportedVariable::Continuous;
-	var2HasOperations = desc.var2HasOperations;
-
 	chartFeatures = desc.features;
-	// Median and mean currently only if first variable is numeric
+	// Median and mean currently only if the first variable is numeric
 	if (!var1 || var1->type() != StatsVariable::Type::Numeric)
 		chartFeatures &= ~(ChartFeatureMedian | ChartFeatureMean);
-
-	// Check that the binners and operation are valid
-	validateBinner(var1Binner, var1, var1Binned);
-	validateBinner(var2Binner, var2, var2Binned);
-	validateOperation(var2Operation, var2, var2HasOperations);
 }
