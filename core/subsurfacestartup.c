@@ -110,11 +110,6 @@ int quit, force_root, ignore_bt;
 char *testqml = NULL;
 #endif
 
-const struct units *get_units()
-{
-	return &prefs.units;
-}
-
 /*
  * track whether we switched to importing dives
  */
