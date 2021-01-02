@@ -46,6 +46,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/file.c \
 	core/fulltext.cpp \
 	core/subsurfacestartup.c \
+	core/pref.c \
 	core/profile.c \
 	core/device.cpp \
 	core/dive.c \
