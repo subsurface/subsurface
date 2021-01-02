@@ -820,8 +820,7 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 }
 
 DiveCalculatedCeiling::DiveCalculatedCeiling(ProfileWidget2 *widget) :
-	profileWidget(widget),
-	is3mIncrement(false)
+	profileWidget(widget)
 {
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcceilingChanged, this, &DiveCalculatedCeiling::setVisible);
 	setVisible(prefs.calcceiling);
@@ -830,8 +829,6 @@ DiveCalculatedCeiling::DiveCalculatedCeiling(ProfileWidget2 *widget) :
 
 void DiveCalculatedCeiling::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	connect(profileWidget, SIGNAL(dateTimeChangedItems()), this, SLOT(recalc()), Qt::UniqueConnection);
-
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
@@ -912,22 +909,6 @@ void DiveReportedCeiling::modelDataChanged(const QModelIndex &topLeft, const QMo
 	}
 	setPen(QPen(QBrush(Qt::NoBrush), 0));
 	setBrush(pat);
-}
-
-void DiveCalculatedCeiling::recalc()
-{
-#ifndef SUBSURFACE_MOBILE
-	dataModel->calculateDecompression();
-#endif
-}
-
-void DiveCalculatedCeiling::settingsChanged()
-{
-	if (dataModel && is3mIncrement != prefs.calcceiling3m) {
-		// recalculate that part.
-		recalc();
-	}
-	is3mIncrement = prefs.calcceiling3m;
 }
 
 void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
