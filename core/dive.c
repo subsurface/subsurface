@@ -2972,8 +2972,6 @@ void set_informational_units(const char *units)
 			git_prefs.units.pressure = BAR;
 		if (strstr(units, "PSI"))
 			git_prefs.units.pressure = PSI;
-		if (strstr(units, "PASCAL"))
-			git_prefs.units.pressure = PASCALS;
 		if (strstr(units, "CELSIUS"))
 			git_prefs.units.temperature = CELSIUS;
 		if (strstr(units, "FAHRENHEIT"))
