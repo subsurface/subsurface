@@ -177,15 +177,9 @@ public:
 	DiveCalculatedCeiling(ProfileWidget2 *profileWidget);
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
-	void settingsChanged() override;
-
-public
-slots:
-	void recalc();
 
 private:
 	ProfileWidget2 *profileWidget;
-	bool is3mIncrement;
 };
 
 class DiveReportedCeiling : public AbstractProfilePolygonItem {
