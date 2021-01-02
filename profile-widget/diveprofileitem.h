@@ -11,7 +11,7 @@
 /* This is the Profile Item, it should be used for quite a lot of things
  on the profile view. The usage should be pretty simple:
 
- DiveProfileItem *profile = new DiveProfileItem();
+ DiveProfileItem *profile = new DiveProfileItem( DiveDataModel );
  profile->setVerticalAxis( profileYAxis );
  profile->setHorizontalAxis( timeAxis );
  profile->setModel( DiveDataModel );
@@ -35,10 +35,9 @@ class AbstractProfilePolygonItem : public QObject, public QGraphicsPolygonItem {
 	Q_PROPERTY(qreal x WRITE setX READ x)
 	Q_PROPERTY(qreal y WRITE setY READ y)
 public:
-	AbstractProfilePolygonItem();
+	AbstractProfilePolygonItem(const DivePlotDataModel &model);
 	void setVerticalAxis(DiveCartesianAxis *vertical);
 	void setHorizontalAxis(DiveCartesianAxis *horizontal);
-	void setModel(DivePlotDataModel *model);
 	void setHorizontalDataColumn(int column);
 	void setVerticalDataColumn(int column);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) = 0;
@@ -61,7 +60,7 @@ protected:
 
 	DiveCartesianAxis *hAxis;
 	DiveCartesianAxis *vAxis;
-	DivePlotDataModel *dataModel;
+	const DivePlotDataModel &dataModel;
 	int hDataColumn;
 	int vDataColumn;
 	QList<DiveTextItem *> texts;
@@ -71,7 +70,7 @@ class DiveProfileItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
 public:
-	DiveProfileItem();
+	DiveProfileItem(const DivePlotDataModel &model);
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void settingsToggled(bool toggled);
@@ -88,7 +87,7 @@ private:
 class DiveMeanDepthItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	DiveMeanDepthItem();
+	DiveMeanDepthItem(const DivePlotDataModel &model);
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
@@ -101,7 +100,7 @@ private:
 class DiveTemperatureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	DiveTemperatureItem();
+	DiveTemperatureItem(const DivePlotDataModel &model);
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
@@ -112,7 +111,7 @@ private:
 class DiveHeartrateItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	DiveHeartrateItem();
+	DiveHeartrateItem(const DivePlotDataModel &model);
 	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
@@ -124,7 +123,7 @@ private:
 class DivePercentageItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	DivePercentageItem(int i);
+	DivePercentageItem(const DivePlotDataModel &model, int i);
 	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
@@ -138,7 +137,7 @@ private:
 class DiveAmbPressureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	DiveAmbPressureItem();
+	DiveAmbPressureItem(const DivePlotDataModel &model);
 	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
@@ -149,7 +148,7 @@ private:
 class DiveGFLineItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	DiveGFLineItem();
+	DiveGFLineItem(const DivePlotDataModel &model);
 	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
@@ -161,6 +160,7 @@ class DiveGasPressureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
 public:
+	using AbstractProfilePolygonItem::AbstractProfilePolygonItem;
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
@@ -174,7 +174,7 @@ class DiveCalculatedCeiling : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
 public:
-	DiveCalculatedCeiling(ProfileWidget2 *profileWidget);
+	DiveCalculatedCeiling(const DivePlotDataModel &model, ProfileWidget2 *profileWidget);
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
@@ -186,7 +186,7 @@ class DiveReportedCeiling : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
 public:
-	DiveReportedCeiling();
+	DiveReportedCeiling(const DivePlotDataModel &model);
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 };
@@ -194,7 +194,7 @@ public:
 class DiveCalculatedTissue : public DiveCalculatedCeiling {
 	Q_OBJECT
 public:
-	DiveCalculatedTissue(ProfileWidget2 *profileWidget);
+	DiveCalculatedTissue(const DivePlotDataModel &model, ProfileWidget2 *profileWidget);
 	void setVisible(bool visible);
 	void settingsChanged() override;
 };
@@ -202,7 +202,7 @@ public:
 class PartialPressureGasItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	PartialPressureGasItem();
+	PartialPressureGasItem(const DivePlotDataModel &model);
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void setThresholdSettingsKey(const double *prefPointerMin, const double *prefPointerMax);
