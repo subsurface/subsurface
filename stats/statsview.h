@@ -110,7 +110,7 @@ private:
 		LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::QAbstractSeries *series);
 	};
 
-	void addLinearRegression(double a, double b, double minX, double maxX, QtCharts::QAbstractSeries *series);
+	void addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, QtCharts::QAbstractSeries *series);
 	void addHistogramMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal, QtCharts::QAbstractSeries *series);
 
 	StatsState state;

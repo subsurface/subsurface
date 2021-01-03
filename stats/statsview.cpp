@@ -670,8 +670,25 @@ void StatsView::LineMarker::updatePosition()
 			     chart->mapToPosition(to, series)));
 }
 
-void StatsView::addLinearRegression(double a, double b, double minX, double maxX, QtCharts::QAbstractSeries *series)
+void StatsView::addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, QtCharts::QAbstractSeries *series)
 {
+	// Sanity check: line above or below chart
+	double y1 = a * minX + b;
+	double y2 = a * maxX + b;
+	if ((y1 <= minY && y2 <= minY) || (y1 >= maxY && y2 >= maxY))
+		return;
+
+	// If not fully inside drawing region, do clipping. With the check above this guarantees that a != 0,
+	// but owing to floating point imprecision, let's test again.
+	if ((y1 < minY || y1 > maxY || y2 < minY || y2 > maxY) && fabs(a) > 0.0001) {
+		// Intersections with y = minY and y = maxY lines
+		double intersect_x1 = minY / a - b;
+		double intersect_x2 = maxY / a - b;
+		if (intersect_x1 < intersect_x2)
+			std::swap(intersect_x1, intersect_x2);
+		minX = std::max(minX, intersect_x1);
+		maxX = std::min(maxX, intersect_x2);
+	}
 	lineMarkers.emplace_back(QPointF(minX, a * minX + b), QPointF(maxX, a * maxX + b), QPen(Qt::red), series);
 }
 
@@ -981,6 +998,7 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsVariabl
 	auto [a, b] = linear_regression(points);
 	if (!std::isnan(a)) {
 		auto [minx, maxx] = axisX->minMax();
-		addLinearRegression(a, b, minx, maxx, series);
+		auto [miny, maxy] = axisY->minMax();
+		addLinearRegression(a, b, minx, maxx, miny, maxy, series);
 	}
 }
