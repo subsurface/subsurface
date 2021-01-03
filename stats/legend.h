@@ -3,13 +3,14 @@
 #ifndef STATS_LEGEND_H
 #define STATS_LEGEND_H
 
+#include "backend-shared/roundrectitem.h"
+
 #include <memory>
 #include <vector>
-#include <QGraphicsRectItem>
 
 class QGraphicsSceneMouseEvent;
 
-class Legend : public QGraphicsRectItem {
+class Legend : public RoundRectItem {
 public:
 	Legend(QGraphicsWidget *chart, const std::vector<QString> &names);
 	void hover(QPointF pos);

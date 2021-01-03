@@ -8,9 +8,10 @@
 static const QColor informationBorderColor(Qt::black);
 static const QColor informationColor(0xff, 0xff, 0x00, 192); // Note: fourth argument is opacity
 static const int informationBorder = 2;
+static const double informationBorderRadius = 4.0; // Radius of rounded corners
 static const int distanceFromPointer = 10; // Distance to place box from mouse pointer or scatter item
 
-InformationBox::InformationBox(QtCharts::QChart *chart) : QGraphicsRectItem(chart), chart(chart)
+InformationBox::InformationBox(QtCharts::QChart *chart) : RoundRectItem(informationBorderRadius, chart), chart(chart)
 {
 	setPen(QPen(informationBorderColor, informationBorder));
 	setBrush(informationColor);
