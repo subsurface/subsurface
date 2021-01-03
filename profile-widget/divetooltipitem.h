@@ -2,12 +2,12 @@
 #ifndef DIVETOOLTIPITEM_H
 #define DIVETOOLTIPITEM_H
 
-#include <QGraphicsRectItem>
 #include <QVector>
 #include <QPair>
 #include <QRectF>
 #include <QIcon>
 #include <QElapsedTimer>
+#include "backend-shared/roundrectitem.h"
 #include "core/display.h"
 
 class DiveCartesianAxis;
@@ -18,7 +18,7 @@ class QGraphicsPixmapItem;
 /* To use a tooltip, simply ->setToolTip on the QGraphicsItem that you want
  * or, if it's a "global" tooltip, set it on the mouseMoveEvent of the ProfileGraphicsView.
  */
-class ToolTipItem : public QObject, public QGraphicsRectItem {
+class ToolTipItem : public QObject, public RoundRectItem {
 	Q_OBJECT
 	void updateTitlePosition();
 	Q_PROPERTY(QRectF rect READ rect WRITE setRect)
@@ -45,7 +45,6 @@ public:
 	void setTimeAxis(DiveCartesianAxis *axis);
 	void setPlotInfo(const plot_info &plot);
 	void clearPlotInfo();
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public
 slots:
 	void setRect(const QRectF &rect);
