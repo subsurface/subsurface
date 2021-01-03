@@ -278,14 +278,20 @@ DivePercentageItem::DivePercentageItem(const DivePlotDataModel &model, const Div
 
 void DivePercentageItem::replot()
 {
-	int sec = 0;
-
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
+	colors.clear();
 	for (int i = 0, modelDataCount = dataModel.rowCount(); i < modelDataCount; i++) {
-		sec = dataModel.index(i, hDataColumn).data().toInt();
+		int sec = dataModel.index(i, hDataColumn).data().toInt();
 		QPointF point(hAxis.posAtValue(sec), vAxis.posAtValue(64 - 4 * tissueIndex));
 		poly.append(point);
+
+		double value = dataModel.index(i, vDataColumn).data().toDouble();
+		struct gasmix gasmix = gasmix_air;
+		const struct event *ev = NULL;
+		gasmix = get_gasmix(&displayed_dive, displayed_dc, sec, &ev, gasmix);
+		int inert = get_n2(gasmix) + get_he(gasmix);
+		colors.push_back(ColorScale(value, inert));
 	}
 	setPolygon(poly);
 
@@ -326,18 +332,10 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 	mypen.setCapStyle(Qt::FlatCap);
 	mypen.setCosmetic(false);
 	QPolygonF poly = polygon();
-	for (int i = 1, modelDataCount = dataModel.rowCount(); i < modelDataCount; i++) {
-		if (i < poly.count()) {
-			double value = dataModel.index(i, vDataColumn).data().toDouble();
-			struct gasmix gasmix = gasmix_air;
-			const struct event *ev = NULL;
-			int sec = dataModel.index(i, DivePlotDataModel::TIME).data().toInt();
-			gasmix = get_gasmix(&displayed_dive, displayed_dc, sec, &ev, gasmix);
-			int inert = get_n2(gasmix) + get_he(gasmix);
-			mypen.setBrush(QBrush(ColorScale(value, inert)));
-			painter->setPen(mypen);
-			painter->drawLine(poly[i - 1], poly[i]);
-		}
+	for (int i = 1; i < poly.count(); i++) {
+		mypen.setBrush(QBrush(colors[i]));
+		painter->setPen(mypen);
+		painter->drawLine(poly[i - 1], poly[i]);
 	}
 	painter->restore();
 }
