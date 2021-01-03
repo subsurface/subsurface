@@ -122,6 +122,7 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
+	std::vector<QColor> colors;	// Must have same number of elements as the polygon
 	QString visibilityKey;
 	int tissueIndex;
 	QColor ColorScale(double value, int inert);
