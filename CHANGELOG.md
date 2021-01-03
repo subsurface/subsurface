@@ -1,3 +1,4 @@
+- desktop: complete rewrite of the statistics code, significantly expanding capabilities
 - desktop: add preferences option to disable default cylinder types
 - mobile: switch to newer version of Kirigami
 - mobile: change the way Kirigami is integrated into Subsurface, linking against static plugin
