@@ -557,9 +557,11 @@ void StatsState::validate(bool varChanged)
 	if (var1 == var2)
 		var2 = nullptr;
 
+	validateBinner(var1Binner, var1, false);
+
 	// If there is no second variable or the second variable is not
 	// "numeric", the first variable must be binned.
-	if (!var2 || var2->type() != StatsVariable::Type::Numeric)
+	if ((!var2 || var2->type() != StatsVariable::Type::Numeric) && !var1Binner)
 		var1Binner = getFirstBinner(var1);
 
 	// Check that the binners and operation are valid
@@ -567,7 +569,6 @@ void StatsState::validate(bool varChanged)
 		var2Binner = nullptr;	// Second variable can only be binned if first variable is binned.
 		var2Operation = StatsOperation::Invalid;
 	}
-	validateBinner(var1Binner, var1, false);
 	validateBinner(var2Binner, var2, true);
 	validateOperation(var2Operation, var2, var1Binner);
 
