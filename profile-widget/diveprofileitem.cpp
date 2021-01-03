@@ -569,7 +569,7 @@ void DiveGasPressureItem::replot()
 	const struct plot_info *pInfo = &dataModel.data();
 	std::vector<int> plotted_cyl(pInfo->nr_cylinders, false);
 	std::vector<int> last_plotted(pInfo->nr_cylinders, 0);
-	std::vector<QPolygonF> poly(pInfo->nr_cylinders);
+	std::vector<std::vector<Entry>> poly(pInfo->nr_cylinders);
 	QPolygonF boundingPoly;
 	polygons.clear();
 
@@ -586,29 +586,42 @@ void DiveGasPressureItem::replot()
 			QPointF point(hAxis.posAtValue(time), vAxis.posAtValue(mbar));
 			boundingPoly.push_back(point);
 
+			QColor color;
+			if (!in_planner()) {
+				if (entry->sac)
+					color = getSacColor(entry->sac, displayed_dive.sac);
+				else
+					color = MED_GRAY_HIGH_TRANS;
+			} else {
+				if (mbar < 0)
+					color = MAGENTA;
+				else
+					color = getPressureColor(entry->density);
+			}
+
 			if (plotted_cyl[cyl]) {
-				/* Have we used this culinder in the last two minutes? Continue */
+				/* Have we used this cylinder in the last two minutes? Continue */
 				if (time - last_plotted[cyl] <= 2*60) {
-					poly[cyl].push_back(point);
+					poly[cyl].push_back({ point, color });
 					last_plotted[cyl] = time;
 					continue;
 				}
 
 				/* Finish the previous one, start a new one */
-				polygons.append(poly[cyl]);
-				poly[cyl] = QPolygonF();
+				polygons.push_back(std::move(poly[cyl]));
+				poly[cyl].clear();
 			}
 
 			plotted_cyl[cyl] = true;
 			last_plotted[cyl] = time;
-			poly[cyl].push_back(point);
+			poly[cyl].push_back({ point, color });
 		}
 	}
 
 	for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
 		if (!plotted_cyl[cyl])
 			continue;
-		polygons.append(poly[cyl]);
+		polygons.push_back(poly[cyl]);
 	}
 
 	setPolygon(boundingPoly);
@@ -707,23 +720,11 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	painter->save();
-	struct plot_data *entry;
-	Q_FOREACH (const QPolygonF &poly, polygons) {
-		entry = dataModel.data().entry;
-		for (int i = 1, count = poly.count(); i < count; i++, entry++) {
-			if (!in_planner()) {
-				if (entry->sac)
-					pen.setBrush(getSacColor(entry->sac, displayed_dive.sac));
-				else
-					pen.setBrush(MED_GRAY_HIGH_TRANS);
-			} else {
-				if (vAxis.valueAt(poly[i]) < 0)
-					pen.setBrush(MAGENTA);
-				else
-					pen.setBrush(getPressureColor(entry->density));
-			}
+	for (const std::vector<Entry> &poly: polygons) {
+		for (size_t i = 1; i < poly.size(); i++) {
+			pen.setBrush(poly[i].col);
 			painter->setPen(pen);
-			painter->drawLine(poly[i - 1], poly[i]);
+			painter->drawLine(poly[i - 1].pos, poly[i].pos);
 		}
 	}
 	painter->restore();
