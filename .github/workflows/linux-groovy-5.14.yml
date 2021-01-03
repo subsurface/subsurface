@@ -8,7 +8,7 @@ on:
     - master
 
 jobs:
-  buildUbuntuFocal:
+  buildUbuntuGroovy:
     runs-on: ubuntu-latest
     container:
       image: ubuntu:20.10
