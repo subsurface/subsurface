@@ -33,21 +33,6 @@ TankItem::TankItem(const DiveCartesianAxis &axis) :
 	air = blue;
 }
 
-void TankItem::setData(struct plot_info *plotInfo, struct dive *d)
-{
-	// If there is nothing to plot, quit early.
-	if (plotInfo->nr <= 0) {
-		plotEndTime = -1;
-		return;
-	}
-
-	// Find correct end of the dive plot for correct end of the tankbar.
-	struct plot_data *last_entry = &plotInfo->entry[plotInfo->nr - 1];
-	plotEndTime = last_entry->sec;
-
-	replot();
-}
-
 void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 {
 	qreal x = hAxis.posAtValue(startTime);
@@ -76,8 +61,21 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 	label->setZValue(101);
 }
 
-void TankItem::replot()
+void TankItem::setData(struct plot_info *plotInfo, struct dive *d)
 {
+	if (!d)
+		return;
+
+	// If there is nothing to plot, quit early.
+	if (plotInfo->nr <= 0) {
+		plotEndTime = -1;
+		return;
+	}
+
+	// Find correct end of the dive plot for correct end of the tankbar.
+	struct plot_data *last_entry = &plotInfo->entry[plotInfo->nr - 1];
+	plotEndTime = last_entry->sec;
+
 	// We don't have enougth data to calculate things, quit.
 	if (plotEndTime < 0)
 		return;
@@ -87,15 +85,16 @@ void TankItem::replot()
 	rects.clear();
 
 	// Bail if there are no cylinders
-	if (displayed_dive.cylinders.nr <= 0)
+	if (d->cylinders.nr <= 0)
 		return;
 
-	// get the information directly from the displayed_dive (the dc always exists)
-	struct divecomputer *dc = get_dive_dc(&displayed_dive, dc_number);
+	// get the information directly from the displayed dive
+	// (get_dive_dc() always returns a valid dive computer)
+	struct divecomputer *dc = get_dive_dc(d, dc_number);
 
 	// start with the first gasmix and at the start of the dive
-	int cyl = explicit_first_cylinder(&displayed_dive, dc);
-	struct gasmix gasmix = get_cylinder(&displayed_dive, cyl)->gasmix;
+	int cyl = explicit_first_cylinder(d, dc);
+	struct gasmix gasmix = get_cylinder(d, cyl)->gasmix;
 	int startTime = 0;
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
@@ -103,7 +102,7 @@ void TankItem::replot()
 	while (ev && (int)ev->time.seconds < plotEndTime) {
 		createBar(startTime, ev->time.seconds, gasmix);
 		startTime = ev->time.seconds;
-		gasmix = get_gasmix_from_event(&displayed_dive, ev);
+		gasmix = get_gasmix_from_event(d, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}
 	createBar(startTime, plotEndTime, gasmix);
