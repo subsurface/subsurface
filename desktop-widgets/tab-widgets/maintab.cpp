@@ -66,7 +66,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	extraWidgets << new TabDiveInformation(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Information"));
 	extraWidgets << new TabDiveStatistics(this);
-	ui.tabWidget->addTab(extraWidgets.last(), tr("Statistics"));
+	ui.tabWidget->addTab(extraWidgets.last(), tr("Summary"));
 	extraWidgets << new TabDivePhotos(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Media"));
 	extraWidgets << new TabDiveExtraInfo(this);
