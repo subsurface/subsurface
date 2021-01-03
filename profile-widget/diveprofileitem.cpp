@@ -48,13 +48,6 @@ DiveProfileItem::DiveProfileItem(const DivePlotDataModel &model, const DiveCarte
 	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn),
 	show_reported_ceiling(0), reported_ceiling_in_red(0)
 {
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::dcceilingChanged, this, &DiveProfileItem::settingsToggled);
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::redceilingChanged, this, &DiveProfileItem::settingsToggled);
-}
-
-void DiveProfileItem::settingsToggled(bool)
-{
-	replot();
 }
 
 void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
