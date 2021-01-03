@@ -287,7 +287,7 @@ static std::vector<QString> makePercentageLabels(int count, int total, bool isHo
 	QString countString = QString("%L1").arg(count);
 	QString percentageString = QString("%L1%").arg(percentage, 0, 'f', 1);
 	if (isHorizontal)
-		return { QString("%1 %2").arg(countString, percentageString) };
+		return { QString("%1 (%2)").arg(countString, percentageString) };
 	else
 		return { countString, percentageString };
 }
