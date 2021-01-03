@@ -34,6 +34,7 @@
        height="99.800003"
        x="197.10001"
        y="-99.900002"
+       ry="9.0"
        transform="rotate(90)" />
     <ellipse
        style="fill:#ff6600;fill-opacity:1;stroke:#000000;stroke-width:0.499999"

@@ -34,6 +34,7 @@
        height="99.800003"
        x="197.10002"
        y="-99.900002"
+       ry="9.0"
        transform="rotate(90)" />
     <rect
        style="fill:#87aade;stroke:#000000;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
