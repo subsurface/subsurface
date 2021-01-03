@@ -7,7 +7,6 @@
 #include "core/settings/qPrefDisplay.h"
 #include <QPropertyAnimation>
 #include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
 #include "core/qthelper.h"
 
 void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QPixmap& pixmap)
@@ -133,7 +132,7 @@ void ToolTipItem::expand()
 	status = EXPANDED;
 }
 
-ToolTipItem::ToolTipItem(QGraphicsItem *parent) : QGraphicsRectItem(parent),
+ToolTipItem::ToolTipItem(QGraphicsItem *parent) : RoundRectItem(parent),
 	title(new QGraphicsSimpleTextItem(tr("Information"), this)),
 	status(COLLAPSED),
 	timeAxis(0),
@@ -192,16 +191,6 @@ void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	Q_FOREACH (QGraphicsItem *item, oldSelection) {
 		item->setSelected(true);
 	}
-}
-
-void ToolTipItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
-{
-	painter->save();
-	painter->setClipRect(option->rect);
-	painter->setPen(pen());
-	painter->setBrush(brush());
-	painter->drawRoundedRect(rect(), 8, 8, Qt::AbsoluteSize);
-	painter->restore();
 }
 
 void ToolTipItem::persistPos()

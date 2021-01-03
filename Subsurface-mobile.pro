@@ -126,6 +126,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/subsurface-qt/divelistnotifier.cpp \
 	backend-shared/exportfuncs.cpp \
 	backend-shared/plannershared.cpp \
+	backend-shared/roundrectitem.cpp \
 	mobile-widgets/qmlinterface.cpp \
 	mobile-widgets/qmlmanager.cpp \
 	mobile-widgets/themeinterface.cpp \
@@ -260,6 +261,7 @@ HEADERS += \
 	core/subsurface-qt/divelistnotifier.h \
 	backend-shared/exportfuncs.h \
 	backend-shared/plannershared.h \
+	backend-shared/roundrectitem.h \
 	mobile-widgets/qmlinterface.h \
 	mobile-widgets/qmlmanager.h \
 	mobile-widgets/themeinterface.h \
