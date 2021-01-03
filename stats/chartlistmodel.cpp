@@ -13,7 +13,7 @@ ChartListModel::ChartListModel() :
 	QFontMetrics fm(itemFont);
 	int fontHeight = fm.height();
 
-	int iconSize = fontHeight * 3;
+	int iconSize = fontHeight * 2;
 	warningPixmap = QPixmap::fromImage(renderSVGIcon(":chart-warning-icon", fontHeight, true));
 	initIcon(ChartSubType::Vertical, ":chart-bar-vertical-icon", iconSize);
 	initIcon(ChartSubType::VerticalGrouped, ":chart-bar-grouped-vertical-icon", iconSize);
