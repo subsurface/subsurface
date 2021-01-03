@@ -18,7 +18,6 @@ public:
 
 private:
 	void createBar(int startTime, int stopTime, struct gasmix gas);
-	void replot();
 	const DiveCartesianAxis &hAxis;
 	int plotEndTime;
 	QBrush air, nitrox, oxygen, trimix;
