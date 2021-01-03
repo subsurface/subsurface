@@ -161,7 +161,11 @@ public:
 private:
 	void plotPressureValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, double offset);
 	void plotGasValue(int mbar, int sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double offset);
-	QVector<QPolygonF> polygons;
+	struct Entry {
+		QPointF pos;
+		QColor col;
+	};
+	std::vector<std::vector<Entry>> polygons;
 };
 
 class DiveCalculatedCeiling : public AbstractProfilePolygonItem {
