@@ -132,7 +132,7 @@ void ToolTipItem::expand()
 	status = EXPANDED;
 }
 
-ToolTipItem::ToolTipItem(QGraphicsItem *parent) : RoundRectItem(parent),
+ToolTipItem::ToolTipItem(QGraphicsItem *parent) : RoundRectItem(8.0, parent),
 	title(new QGraphicsSimpleTextItem(tr("Information"), this)),
 	status(COLLAPSED),
 	timeAxis(0),

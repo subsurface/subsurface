@@ -4,9 +4,10 @@
 #ifndef INFORMATION_BOX_H
 #define INFORMATION_BOX_H
 
+#include "backend-shared/roundrectitem.h"
+
 #include <vector>
 #include <memory>
-#include <QGraphicsRectItem>
 #include <QFont>
 
 namespace QtCharts {
@@ -15,7 +16,7 @@ namespace QtCharts {
 struct dive;
 
 // Information window showing data of highlighted dive
-struct InformationBox : QGraphicsRectItem {
+struct InformationBox : RoundRectItem {
 	InformationBox(QtCharts::QChart *chart);
 	void setText(const std::vector<QString> &text, QPointF pos);
 	void setPos(QPointF pos);
