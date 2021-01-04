@@ -10,7 +10,7 @@
 #include <QFontMetrics>
 #include <QLocale>
 
-StatsAxis::StatsAxis(bool horizontal) : horizontal(horizontal)
+StatsAxis::StatsAxis(QtCharts::QChart *chart, bool horizontal) : chart(chart), horizontal(horizontal)
 {
 }
 
@@ -28,7 +28,7 @@ std::pair<double, double> StatsAxis::minMax() const
 // maximum-size strings especially, when using proportional fonts or for
 // categorical data. Therefore, try to err on the safe side by adding enough
 // margins.
-int StatsAxis::guessNumTicks(const QtCharts::QChart *chart, const QtCharts::QAbstractAxis *axis, const std::vector<QString> &strings) const
+int StatsAxis::guessNumTicks(const QtCharts::QAbstractAxis *axis, const std::vector<QString> &strings) const
 {
 	QFont font = axis->labelsFont();
 	QFontMetrics fm(font);
@@ -51,7 +51,8 @@ int StatsAxis::guessNumTicks(const QtCharts::QChart *chart, const QtCharts::QAbs
 	return std::max(numTicks, 2);
 }
 
-ValueAxis::ValueAxis(double min, double max, int decimals, bool horizontal) : StatsAxisTemplate(horizontal),
+ValueAxis::ValueAxis(QtCharts::QChart *chart, double min, double max, int decimals, bool horizontal) :
+	StatsAxisTemplate(chart, horizontal),
 	min(min), max(max), decimals(decimals)
 {
 }
@@ -66,7 +67,7 @@ static QString makeFormatString(int decimals)
 	return QStringLiteral("%.%1f").arg(decimals < 0 ? 0 : decimals);
 }
 
-void ValueAxis::updateLabels(const QtCharts::QChart *chart)
+void ValueAxis::updateLabels()
 {
 	using QtCharts::QValueAxis;
 
@@ -79,7 +80,7 @@ void ValueAxis::updateLabels(const QtCharts::QChart *chart)
 	QLocale loc;
 	QString minString = loc.toString(min, 'f', decimals);
 	QString maxString = loc.toString(max, 'f', decimals);
-	int numTicks = guessNumTicks(chart, this, { minString, maxString});
+	int numTicks = guessNumTicks(this, { minString, maxString});
 
 	// Use full decimal increments
 	double height = max - min;
@@ -105,16 +106,17 @@ void ValueAxis::updateLabels(const QtCharts::QChart *chart)
 	setTickCount(num + 1);
 }
 
-CountAxis::CountAxis(int count, bool horizontal) : ValueAxis(0.0, (double)count, 0, horizontal),
+CountAxis::CountAxis(QtCharts::QChart *chart, int count, bool horizontal) :
+	ValueAxis(chart, 0.0, (double)count, 0, horizontal),
 	count(count)
 {
 }
 
-void CountAxis::updateLabels(const QtCharts::QChart *chart)
+void CountAxis::updateLabels()
 {
 	QLocale loc;
 	QString countString = loc.toString(count);
-	int numTicks = guessNumTicks(chart, this, { countString });
+	int numTicks = guessNumTicks(this, { countString });
 
 	// Get estimate of step size
 	if (count <= 0)
@@ -150,13 +152,14 @@ void CountAxis::updateLabels(const QtCharts::QChart *chart)
 	setTickCount(numTicks);
 }
 
-CategoryAxis::CategoryAxis(const std::vector<QString> &labels, bool horizontal) : StatsAxisTemplate(horizontal)
+CategoryAxis::CategoryAxis(QtCharts::QChart *chart, const std::vector<QString> &labels, bool horizontal) :
+	StatsAxisTemplate(chart, horizontal)
 {
 	for (const QString &s: labels)
 		append(s);
 }
 
-void CategoryAxis::updateLabels(const QtCharts::QChart *)
+void CategoryAxis::updateLabels()
 {
 }
 
@@ -185,7 +188,8 @@ QString LabelDisambiguator::transmogrify(const QString &s)
 	}
 }
 
-HistogramAxis::HistogramAxis(std::vector<HistogramAxisEntry> bins, bool horizontal) : StatsAxisTemplate(horizontal),
+HistogramAxis::HistogramAxis(QtCharts::QChart *chart, std::vector<HistogramAxisEntry> bins, bool horizontal) :
+	StatsAxisTemplate(chart, horizontal),
 	bin_values(std::move(bins))
 {
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
@@ -223,7 +227,7 @@ std::pair<double, double> HistogramAxis::minMax() const
 // If labels are skipped, try to skip it in such a way that a recommended label is shown.
 // The one example where this is relevant is the quarterly bins, which are formated as (2019, q1, q2, q3, 2020, ...).
 // There, we obviously want to show the years and not the quarters.
-void HistogramAxis::updateLabels(const QtCharts::QChart *chart)
+void HistogramAxis::updateLabels()
 {
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
 		return;
@@ -238,7 +242,7 @@ void HistogramAxis::updateLabels(const QtCharts::QChart *chart)
 	strings.reserve(bin_values.size());
 	for (auto &[name, value, recommended]: bin_values)
 		strings.push_back(name);
-	int maxLabels = guessNumTicks(chart, this, strings);
+	int maxLabels = guessNumTicks(this, strings);
 
 	int step = ((int)bin_values.size() - 1) / maxLabels + 1;
 	if (step < preferred_step) {
@@ -388,7 +392,7 @@ static std::vector<HistogramAxisEntry> timeRangeToBins(double from, double to)
 	return res;
 }
 
-DateAxis::DateAxis(double from, double to, bool horizontal) :
-	HistogramAxis(timeRangeToBins(from, to), horizontal)
+DateAxis::DateAxis(QtCharts::QChart *chart, double from, double to, bool horizontal) :
+	HistogramAxis(chart, timeRangeToBins(from, to), horizontal)
 {
 }
