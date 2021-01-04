@@ -46,11 +46,11 @@ chmod a+x linuxdeployqt*.AppImage
 unset QTDIR
 unset QT_PLUGIN_PATH
 unset LD_LIBRARY_PATH
-./linuxdeployqt*.AppImage --appimage-extract-and-run ./appdir/usr/share/applications/*.desktop -exclude-libs=libdbus-1.so.3 -bundle-non-qt-libs -qmldir=./subsurface/map-widget/ -verbose=2
+./linuxdeployqt*.AppImage --appimage-extract-and-run ./appdir/usr/share/applications/*.desktop -exclude-libs=libdbus-1.so.3 -bundle-non-qt-libs -qmldir=./subsurface/stats -qmldir=./subsurface/map-widget/ -verbose=2
 
 # create the AppImage
 export VERSION=$(cd subsurface/scripts ; ./get-version linux) # linuxdeployqt uses this for naming the file
-./linuxdeployqt*.AppImage --appimage-extract-and-run ./appdir/usr/share/applications/*.desktop -exclude-libs=libdbus-1.so.3 -appimage -qmldir=./subsurface/map-widget/ -verbose=2
+./linuxdeployqt*.AppImage --appimage-extract-and-run ./appdir/usr/share/applications/*.desktop -exclude-libs=libdbus-1.so.3 -appimage -qmldir=./subsurface/stats -qmldir=./subsurface/map-widget/ -verbose=2
 
 # copy AppImage to the calling VM
 # with GitHub Actions the /${GITHUB_WORKSPACE} directory is the current working directory at the start of a step
