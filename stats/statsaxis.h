@@ -15,13 +15,14 @@ namespace QtCharts {
 class StatsAxis {
 public:
 	virtual ~StatsAxis();
-	virtual void updateLabels(const QtCharts::QChart *chart) = 0;
+	virtual void updateLabels() = 0;
 	virtual QtCharts::QAbstractAxis *qaxis() = 0;
 	// Returns minimum and maximum of shown range, not of data points.
 	virtual std::pair<double, double> minMax() const;
 protected:
-	StatsAxis(bool horizontal);
-	int guessNumTicks(const QtCharts::QChart *chart, const QtCharts::QAbstractAxis *axis, const std::vector<QString> &strings) const;
+	QtCharts::QChart *chart;
+	StatsAxis(QtCharts::QChart *chart, bool horizontal);
+	int guessNumTicks(const QtCharts::QAbstractAxis *axis, const std::vector<QString> &strings) const;
 	bool horizontal;
 };
 
@@ -38,27 +39,27 @@ class StatsAxisTemplate : public StatsAxis, public QAxis
 
 class ValueAxis : public StatsAxisTemplate<QtCharts::QValueAxis> {
 public:
-	ValueAxis(double min, double max, int decimals, bool horizontal);
+	ValueAxis(QtCharts::QChart *chart, double min, double max, int decimals, bool horizontal);
 private:
 	double min, max;
 	int decimals;
-	void updateLabels(const QtCharts::QChart *chart) override;
+	void updateLabels() override;
 	std::pair<double, double> minMax() const override;
 };
 
 class CountAxis : public ValueAxis {
 public:
-	CountAxis(int count, bool horizontal);
+	CountAxis(QtCharts::QChart *chart, int count, bool horizontal);
 private:
 	int count;
-	void updateLabels(const QtCharts::QChart *chart) override;
+	void updateLabels() override;
 };
 
 class CategoryAxis : public StatsAxisTemplate<QtCharts::QBarCategoryAxis> {
 public:
-	CategoryAxis(const std::vector<QString> &labels, bool horizontal);
+	CategoryAxis(QtCharts::QChart *chart, const std::vector<QString> &labels, bool horizontal);
 private:
-	void updateLabels(const QtCharts::QChart *chart);
+	void updateLabels();
 };
 
 struct HistogramAxisEntry {
@@ -69,9 +70,9 @@ struct HistogramAxisEntry {
 
 class HistogramAxis : public StatsAxisTemplate<QtCharts::QCategoryAxis> {
 public:
-	HistogramAxis(std::vector<HistogramAxisEntry> bin_values, bool horizontal);
+	HistogramAxis(QtCharts::QChart *chart, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
 private:
-	void updateLabels(const QtCharts::QChart *chart) override;
+	void updateLabels() override;
 	std::pair<double, double> minMax() const override;
 	std::vector<HistogramAxisEntry> bin_values;
 	int preferred_step;
@@ -79,7 +80,7 @@ private:
 
 class DateAxis : public HistogramAxis {
 public:
-	DateAxis(double from, double to, bool horizontal);
+	DateAxis(QtCharts::QChart *chart, double from, double to, bool horizontal);
 };
 
 #endif

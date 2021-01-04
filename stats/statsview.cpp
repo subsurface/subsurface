@@ -86,7 +86,7 @@ StatsView::~StatsView()
 void StatsView::plotAreaChanged(const QRectF &)
 {
 	for (auto &axis: axes)
-		axis->updateLabels(chart);
+		axis->updateLabels();
 	for (auto &series: series)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
@@ -142,9 +142,9 @@ void StatsView::setTitle(const QString &s)
 template <typename T, class... Args>
 T *StatsView::createAxis(const QString &title, Args&&... args)
 {
-	T *res = new T(std::forward<Args>(args)...);
+	T *res = new T(chart, std::forward<Args>(args)...);
 	axes.emplace_back(res);
-	axes.back()->updateLabels(chart);
+	axes.back()->updateLabels();
 	axes.back()->qaxis()->setTitleText(title);
 	return res;
 }
