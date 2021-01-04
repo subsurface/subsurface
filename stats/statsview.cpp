@@ -18,11 +18,14 @@
 #include <QAbstractSeries>
 #include <QChart>
 #include <QGraphicsSceneHoverEvent>
+#include <QGraphicsSimpleTextItem>
 #include <QLocale>
 
 // Constants that control the graph layouts
 static const QColor quartileMarkerColor(Qt::red);
-static const double quartileMarkerSize = 15;
+static const double quartileMarkerSize = 15.0;
+static const double sceneBorder = 5.0;			// Border between scene edges and statitistics view
+static const double titleBorder = 2.0;			// Border between title and chart
 
 static const QUrl urlStatsView = QUrl(QStringLiteral("qrc:/qml/statsview.qml"));
 
@@ -77,6 +80,9 @@ StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
 		chart->setAcceptHoverEvents(true);
 		chart->legend()->setVisible(false);
 	}
+
+	QFont font;
+	titleFont = QFont(font.family(), font.pointSize(), QFont::Light);	// Make configurable
 }
 
 StatsView::~StatsView()
@@ -95,6 +101,7 @@ void StatsView::plotAreaChanged(const QRectF &)
 		marker.updatePosition();
 	if (legend)
 		legend->resize();
+	updateTitlePos();
 }
 
 void StatsView::replotIfVisible()
@@ -136,7 +143,21 @@ T *StatsView::createSeries(Args&&... args)
 
 void StatsView::setTitle(const QString &s)
 {
-	chart->setTitle(s);
+	if (s.isEmpty()) {
+		title.reset();
+		return;
+	}
+	title = std::make_unique<QGraphicsSimpleTextItem>(s, chart);
+	title->setFont(titleFont);
+}
+
+void StatsView::updateTitlePos()
+{
+	if (!title)
+		return;
+	QRectF rect = chart->plotArea();
+	title->setPos((rect.width() - title->boundingRect().width()) / 2.0,
+		      sceneBorder);
 }
 
 template <typename T, class... Args>
@@ -166,11 +187,18 @@ void StatsView::reset()
 	lineMarkers.clear();
 	chart->removeAllSeries();
 	axes.clear();
+	title.reset();
 }
 
 void StatsView::plot(const StatsState &stateIn)
 {
 	state = stateIn;
+	plotChart();
+	plotAreaChanged(chart->plotArea());
+}
+
+void StatsView::plotChart()
+{
 	if (!chart || !state.var1)
 		return;
 	reset();

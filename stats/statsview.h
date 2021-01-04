@@ -4,6 +4,7 @@
 
 #include "statsstate.h"
 #include <memory>
+#include <QFont>
 #include <QQuickWidget>
 
 struct dive;
@@ -17,6 +18,7 @@ namespace QtCharts {
 	class QChart;
 }
 class QGraphicsLineItem;
+class QGraphicsSimpleTextItem;
 class StatsSeries;
 class CategoryAxis;
 class CountAxis;
@@ -74,6 +76,8 @@ private:
 				   const StatsVariable *categoryVariable, const StatsBinner *categoryBinner, const StatsVariable *valueVariable);
 	void plotScatter(const std::vector<dive *> &dives, const StatsVariable *categoryVariable, const StatsVariable *valueVariable);
 	void setTitle(const QString &);
+	void updateTitlePos(); // After resizing, set title to correct position
+	void plotChart();
 
 	template <typename T, class... Args>
 	T *createSeries(Args&&... args);
@@ -115,11 +119,13 @@ private:
 
 	StatsState state;
 	QtCharts::QChart *chart;
+	QFont titleFont;
 	std::vector<std::unique_ptr<StatsAxis>> axes;
 	std::vector<std::unique_ptr<StatsSeries>> series;
 	std::unique_ptr<Legend> legend;
 	std::vector<QuartileMarker> quartileMarkers;
 	std::vector<LineMarker> lineMarkers;
+	std::unique_ptr<QGraphicsSimpleTextItem> title;
 	StatsSeries *highlightedSeries;
 
 	// This is unfortunate: we can't derive from QChart, because the chart is allocated by QML.
