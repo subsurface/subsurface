@@ -88,6 +88,9 @@ Kirigami.ApplicationWindow {
 		for (var i=pageStack.depth; i>1; i--) {
 			pageStack.pop()
 		}
+		if (pageStack.currentItem !== diveList) {
+			showDiveList()
+		}
 		detailsWindow.endEditMode()
 	}
 
@@ -96,6 +99,15 @@ Kirigami.ApplicationWindow {
 	}
 
 	function showPage(page) {
+		if (page === statistics) {
+			manager.appendTextToLog("switching to statistics page, clearing out stack")
+			pageStack.clear()
+		}
+		if (pageStack.currentItem === statistics) {
+			manager.appendTextToLog("switching away from statistics page, clearing out stack")
+			pageStack.clear()
+		}
+
 		if (page !== mapPage)
 			hackToOpenMap = 0 // we really want a different page
 		if (globalDrawer.drawerOpen)
@@ -438,6 +450,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						}
 
 					}
+				}
+			},
+			Kirigami.Action {
+				text: qsTr("Statistics")
+				onTriggered: {
+					showPage(statistics)
 				}
 			},
 			Kirigami.Action {
@@ -859,9 +877,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		visible: false
 	}
 
+	StatisticsPage {
+		id: statistics
+		visible: false
+	}
+
 	Settings {
 		id: settingsWindow
-		visible: false
 	}
 
 	CopySettings {

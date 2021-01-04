@@ -37,6 +37,7 @@
 		<file>Log.qml</file>
 		<file>main.qml</file>
 		<file>MapPage.qml</file>
+		<file>StatisticsPage.qml</file>
 		<file>Settings.qml</file>
 		<file>CopySettings.qml</file>
 		<file>ThemeTest.qml</file>
