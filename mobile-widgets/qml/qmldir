@@ -9,3 +9,4 @@
 MapWidget ../../map-widget/qml/MapWidget.qml
 MapWidgetContextMenu ../../map-widget/qml/MapWidgetContextMenu.qml
 MapWidgetError ../../map-widget/qml/MapWidgetError.qml
+StatisticsWidget ../../stats/qml/statsview.qml
