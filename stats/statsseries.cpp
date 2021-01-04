@@ -4,7 +4,8 @@
 
 #include <QChart>
 
-StatsSeries::StatsSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis)
+StatsSeries::StatsSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
+	xAxis(xAxis), yAxis(yAxis)
 {
 	chart->addSeries(this);
 	if (xAxis && yAxis) {
