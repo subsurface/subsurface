@@ -1681,6 +1681,58 @@ struct DayOfWeekVariable : public StatsVariableTemplate<StatsVariable::Type::Dis
 	}
 };
 
+// ============ Rating ============
+struct RatingBinner : public SimpleBinner<RatingBinner, IntBin> {
+	QString format(const StatsBin &bin) const override {
+		return QString("🌟").repeated(derived_bin(bin).value);
+	}
+
+	int to_bin_value(const dive *d) const {
+		int res = (int)d->rating;
+		return res;
+	}
+};
+
+static RatingBinner rating_binner;
+struct RatingVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Rating");
+	}
+	QString diveCategories(const dive *d) const override {
+		int rating = (int)d->rating;
+		return QString("🌟").repeated(rating);
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &rating_binner };
+	}
+};
+
+// ============ Visibility ============
+struct VisibilityBinner : public SimpleBinner<VisibilityBinner, IntBin> {
+	QString format(const StatsBin &bin) const override {
+		return QString("🌟").repeated(derived_bin(bin).value);
+	}
+
+	int to_bin_value(const dive *d) const {
+		int res = (int)d->visibility;
+		return res;
+	}
+};
+
+static VisibilityBinner visibility_binner;
+struct VisibilityVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Visibility");
+	}
+	QString diveCategories(const dive *d) const override {
+		int viz = (int)d->visibility;
+		return QString("🌟").repeated(viz);
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &visibility_binner };
+	}
+};
+
 static DateVariable date_variable;
 static DepthVariable depth_variable;
 static DurationVariable duration_variable;
@@ -1699,10 +1751,14 @@ static WeightsystemVariable weightsystem_variable;
 static CylinderTypeVariable cylinder_type_variable;
 static LocationVariable location_variable;
 static DayOfWeekVariable day_of_week_variable;
+static RatingVariable rating_variable;
+static VisibilityVariable visibility_variable;
+
 const std::vector<const StatsVariable *> stats_variables = {
 	&date_variable, &depth_variable, &duration_variable, &sac_variable,
 	&water_temperature_variable, &air_temperature_variable, &weight_variable,
 	&gas_content_o2_variable, &gas_content_o2_he_max_variable, &gas_content_he_variable,
 	&dive_mode_variable, &buddy_variable, &gas_type_variable, &suit_variable,
-	&weightsystem_variable, &cylinder_type_variable, &location_variable, &day_of_week_variable
+	&weightsystem_variable, &cylinder_type_variable, &location_variable, &day_of_week_variable,
+	&rating_variable, &visibility_variable
 };
