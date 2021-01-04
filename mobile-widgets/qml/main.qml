@@ -441,6 +441,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				text: qsTr("Statistics")
+				onTriggered: {
+					showPage(statistics)
+				}
+			},
+			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_settings.svg"
 				}
@@ -857,6 +863,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	DiveList {
 		id: diveList
 		visible: false
+	}
+
+	StatisticsPage {
+		id: statistics
 	}
 
 	Settings {
