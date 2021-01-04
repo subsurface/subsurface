@@ -176,6 +176,7 @@ public:
 	void rememberOldStatus();
 
 	QString getSyncState() const;
+	void accessChart();
 
 public slots:
 	void appInitialized();

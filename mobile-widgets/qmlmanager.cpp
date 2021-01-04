@@ -2316,3 +2316,14 @@ QString QMLManager::getSyncState() const
 		return tr("(changes synced locally)");
 	return tr("(synced with cloud)");
 }
+
+void QMLManager::accessChart()
+{
+	QObject *chartView = qmlWindow->findChild<QObject *>("qmlChartView");
+	if (chartView != nullptr) {
+		qDebug() << "found the chartview";
+	} else {
+		qDebug() << "didn't find the chartview";
+	}
+
+}
