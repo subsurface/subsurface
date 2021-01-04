@@ -65,14 +65,18 @@ StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
 	eventFilter(this)
 {
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
+	// if we get a failure to load the QML file (e.g., when the QtCharts QML modules aren't found)
+	// the chart will be null
 	setSource(urlStatsView);
 	chart = getChart(rootObject());
-	connect(chart, &QtCharts::QChart::plotAreaChanged, this, &StatsView::plotAreaChanged);
-	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
+	if (chart) {
+		connect(chart, &QtCharts::QChart::plotAreaChanged, this, &StatsView::plotAreaChanged);
+		connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
 
-	chart->installEventFilter(&eventFilter);
-	chart->setAcceptHoverEvents(true);
-	chart->legend()->setVisible(false);
+		chart->installEventFilter(&eventFilter);
+		chart->setAcceptHoverEvents(true);
+		chart->legend()->setVisible(false);
+	}
 }
 
 StatsView::~StatsView()
