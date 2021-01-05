@@ -188,7 +188,7 @@ BarSeries::Item::Item(QtCharts::QChart *chart, BarSeries *series, double lowerBo
 	total(total)
 {
 	for (SubItem &item: subitems) {
-		item.item->setZValue(ZValues::seriesLabels);
+		item.item->setZValue(ZValues::series);
 		item.highlight(false, binCount);
 	}
 	updatePosition(chart, series, horizontal, stacked, binCount);
