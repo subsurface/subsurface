@@ -6,6 +6,7 @@
 #include "pieseries.h"
 #include "scatterseries.h"
 #include "statsaxis.h"
+#include "statsgrid.h"
 #include "statsstate.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
@@ -118,6 +119,8 @@ void StatsView::plotAreaChanged(const QRectF &r)
 		xAxis->setPos(QPointF(left, bottom));
 	}
 
+	if (grid)
+		grid->updatePositions();
 	for (auto &series: series)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
@@ -195,6 +198,8 @@ void StatsView::setAxes(StatsAxis *x, StatsAxis *y)
 {
 	xAxis = x;
 	yAxis = y;
+	if (x && y)
+		grid = std::make_unique<StatsGrid>(chart, *x, *y);
 }
 
 void StatsView::reset()
@@ -208,6 +213,7 @@ void StatsView::reset()
 	quartileMarkers.clear();
 	lineMarkers.clear();
 	chart->removeAllSeries();
+	grid.reset();
 	axes.clear();
 	title.reset();
 }

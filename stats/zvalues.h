@@ -6,6 +6,7 @@
 #ifndef ZVALUES_H
 
 struct ZValues {
+	static constexpr double grid = -1.0;
 	static constexpr double series = 0.0;
 	static constexpr double axes = 1.0;
 	static constexpr double seriesLabels = 2.0;
