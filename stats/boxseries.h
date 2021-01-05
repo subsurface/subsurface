@@ -45,7 +45,7 @@ private:
 		StatsQuartiles q;
 		QString binName;
 		Item(QtCharts::QChart *chart, BoxSeries *series, double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName);
-		void updatePosition(QtCharts::QChart *chart, BoxSeries *series);
+		void updatePosition(BoxSeries *series);
 		void highlight(bool highlight);
 	};
 

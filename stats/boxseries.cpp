@@ -39,7 +39,7 @@ BoxSeries::Item::Item(QtCharts::QChart *chart, BoxSeries *series, double lowerBo
 	bottomBar.setZValue(ZValues::series);
 	center.setZValue(ZValues::series);
 	highlight(false);
-	updatePosition(chart, series);
+	updatePosition(series);
 }
 
 BoxSeries::Item::~Item()
@@ -59,7 +59,7 @@ void BoxSeries::Item::highlight(bool highlight)
 	center.setPen(pen);
 }
 
-void BoxSeries::Item::updatePosition(QtCharts::QChart *chart, BoxSeries *series)
+void BoxSeries::Item::updatePosition(BoxSeries *series)
 {
 	double delta = (upperBound - lowerBound) * boxWidth;
 	double from = (lowerBound + upperBound - delta) / 2.0;
@@ -68,17 +68,17 @@ void BoxSeries::Item::updatePosition(QtCharts::QChart *chart, BoxSeries *series)
 
 	QPointF topLeft, bottomRight;
 	QMarginsF margins(boxBorderWidth / 2.0, boxBorderWidth / 2.0, boxBorderWidth / 2.0, boxBorderWidth / 2.0);
-	topLeft = chart->mapToPosition(QPointF(from, q.max), series);
-	bottomRight = chart->mapToPosition(QPointF(to, q.min), series);
+	topLeft = series->toScreen(QPointF(from, q.max));
+	bottomRight = series->toScreen(QPointF(to, q.min));
 	bounding = QRectF(topLeft, bottomRight).marginsAdded(margins);
 	double left = topLeft.x();
 	double right = bottomRight.x();
 	double width = right - left;
 	double top = topLeft.y();
 	double bottom = bottomRight.y();
-	QPointF q1 = chart->mapToPosition(QPointF(mid, q.q1), series);
-	QPointF q2 = chart->mapToPosition(QPointF(mid, q.q2), series);
-	QPointF q3 = chart->mapToPosition(QPointF(mid, q.q3), series);
+	QPointF q1 = series->toScreen(QPointF(mid, q.q1));
+	QPointF q2 = series->toScreen(QPointF(mid, q.q2));
+	QPointF q3 = series->toScreen(QPointF(mid, q.q3));
 	box.setRect(left, q3.y(), width, q1.y() - q3.y());
 	topWhisker.setLine(q3.x(), top, q3.x(), q3.y());
 	bottomWhisker.setLine(q1.x(), q1.y(), q1.x(), bottom);
@@ -89,15 +89,13 @@ void BoxSeries::Item::updatePosition(QtCharts::QChart *chart, BoxSeries *series)
 
 void BoxSeries::append(double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName)
 {
-	QtCharts::QChart *c = chart();
-	items.emplace_back(new Item(c, this, lowerBound, upperBound, q, binName));
+	items.emplace_back(new Item(chart, this, lowerBound, upperBound, q, binName));
 }
 
 void BoxSeries::updatePositions()
 {
-	QtCharts::QChart *c = chart();
 	for (auto &item: items)
-		item->updatePosition(c, this);
+		item->updatePosition(this);
 }
 
 // Attention: this supposes that items are sorted by position and no box is inside another box!
@@ -149,7 +147,7 @@ bool BoxSeries::hover(QPointF pos)
 		Item &item = *items[highlighted];
 		item.highlight(true);
 		if (!information)
-			information.reset(new InformationBox(chart()));
+			information.reset(new InformationBox(chart));
 		information->setText(formatInformation(item), pos);
 	} else {
 		information.reset();

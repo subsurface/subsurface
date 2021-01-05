@@ -30,16 +30,14 @@ public:
 
 private:
 	// Get items under mouse.
-	// Super weird: this function can't be const, because QChart::mapToValue takes
-	// a non-const reference!?
-	std::vector<int> getItemsUnderMouse(const QPointF &f);
+	std::vector<int> getItemsUnderMouse(const QPointF &f) const;
 
 	struct Item {
 		std::unique_ptr<QGraphicsPixmapItem> item;
 		dive *d;
 		double pos, value;
 		Item(QtCharts::QChart *chart, ScatterSeries *series, dive *d, double pos, double value);
-		void updatePosition(QtCharts::QChart *chart, ScatterSeries *series);
+		void updatePosition(ScatterSeries *series);
 		void highlight(bool highlight);
 	};
 

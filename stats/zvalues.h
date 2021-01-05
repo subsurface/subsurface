@@ -6,12 +6,12 @@
 #ifndef ZVALUES_H
 
 struct ZValues {
-	static constexpr double axes = 0.0;
-	static constexpr double series = 11.0;
-	static constexpr double seriesLabels = 12.0;
-	static constexpr double chartFeatures = 13.0;	// quartile markers and regression lines
-	static constexpr double informationBox = 14.0;
-	static constexpr double legend = 15.0;
+	static constexpr double series = 0.0;
+	static constexpr double axes = 1.0;
+	static constexpr double seriesLabels = 2.0;
+	static constexpr double chartFeatures = 3.0;	// quartile markers and regression lines
+	static constexpr double informationBox = 4.0;
+	static constexpr double legend = 5.0;
 };
 
 #endif

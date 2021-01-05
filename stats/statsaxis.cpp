@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsaxis.h"
+#include "statscolors.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
+#include "zvalues.h"
 #include "core/pref.h"
 #include "core/subsurface-time.h"
 #include <math.h> // for lrint
@@ -10,8 +12,28 @@
 #include <QFontMetrics>
 #include <QLocale>
 
-StatsAxis::StatsAxis(QtCharts::QChart *chart, bool horizontal) : chart(chart), horizontal(horizontal)
+// Define most constants for horizontal and vertical axes for more flexibility.
+// Note: *Horizontal means that this is for the horizontal axis, so a vertical space.
+static const double axisWidth = 0.5;
+static const double axisTickWidth = 0.3;
+static const double axisTickSizeHorizontal = 6.0;
+static const double axisTickSizeVertical = 6.0;
+static const double axisLabelSpaceHorizontal = 2.0;	// Space between axis or ticks and labels
+static const double axisLabelSpaceVertical = 2.0;	// Space between axis or ticks and labels
+static const double axisTitleSpaceHorizontal = 2.0;	// Space between labels and title
+static const double axisTitleSpaceVertical = 2.0;	// Space between labels and title
+
+StatsAxis::StatsAxis(QtCharts::QChart *chart, bool horizontal, bool labelsBetweenTicks) :
+	QGraphicsLineItem(chart),
+	chart(chart), horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
+	size(1.0), zeroOnScreen(0.0), min(0.0), max(1.0)
 {
+	// use a Light version of the application fond for both labels and title
+	labelFont = QFont();
+	labelFont.setWeight(QFont::Light);
+	titleFont = labelFont;
+	setPen(QPen(axisColor, axisWidth));
+	setZValue(ZValues::axes);
 }
 
 StatsAxis::~StatsAxis()
@@ -20,7 +42,13 @@ StatsAxis::~StatsAxis()
 
 std::pair<double, double> StatsAxis::minMax() const
 {
-	return { 0.0, 1.0 };
+	return { min, max };
+}
+
+void StatsAxis::setRange(double minIn, double maxIn)
+{
+	min = minIn;
+	max = maxIn;
 }
 
 // Guess the number of tick marks based on example strings.
@@ -28,14 +56,13 @@ std::pair<double, double> StatsAxis::minMax() const
 // maximum-size strings especially, when using proportional fonts or for
 // categorical data. Therefore, try to err on the safe side by adding enough
 // margins.
-int StatsAxis::guessNumTicks(const QtCharts::QAbstractAxis *axis, const std::vector<QString> &strings) const
+int StatsAxis::guessNumTicks(const std::vector<QString> &strings) const
 {
-	QFont font = axis->labelsFont();
-	QFontMetrics fm(font);
+	QFontMetrics fm(labelFont);
 	int minSize = fm.height();
 	for (const QString &s: strings) {
-		QSize size = fm.size(Qt::TextSingleLine, s);
-		int needed = horizontal ? size.width() : size.height();
+		QSize labelSize = fm.size(Qt::TextSingleLine, s);
+		int needed = horizontal ? labelSize.width() : labelSize.height();
 		if (needed > minSize)
 			minSize = needed;
 	}
@@ -45,31 +72,127 @@ int StatsAxis::guessNumTicks(const QtCharts::QAbstractAxis *axis, const std::vec
 		minSize = minSize * 3 / 2;
 	else
 		minSize *= 2;
-	QRectF chartSize = chart->plotArea();
-	double availableSpace = horizontal ? chartSize.width() : chartSize.height();
-	int numTicks = lrint(availableSpace / minSize);
+	int numTicks = lrint(size / minSize);
 	return std::max(numTicks, 2);
 }
 
+double StatsAxis::width() const
+{
+	if (horizontal)
+		return 0.0;	// Only supported for vertical axes
+	double labelWidth = 0.0;
+	for (const Label &label: labels) {
+		double w = label.label->boundingRect().width();
+		if (w > labelWidth)
+			labelWidth = w;
+	}
+	return labelWidth + axisLabelSpaceVertical +
+	       QFontMetrics(titleFont).height() + axisTitleSpaceVertical +
+	       (labelsBetweenTicks ? 0.0 : axisTickSizeVertical);
+}
+
+double StatsAxis::height() const
+{
+	if (!horizontal)
+		return 0.0;	// Only supported for horizontal axes
+	return QFontMetrics(labelFont).height() + axisLabelSpaceHorizontal +
+	       QFontMetrics(titleFont).height() + axisTitleSpaceHorizontal +
+	       (labelsBetweenTicks ? 0.0 : axisTickSizeHorizontal);
+}
+
+StatsAxis::Label::Label(const QString &name, double pos, QtCharts::QChart *chart, const QFont &font) :
+	label(new QGraphicsSimpleTextItem(name, chart)),
+	pos(pos)
+{
+	label->setBrush(QBrush(darkLabelColor));
+	label->setFont(font);
+	label->setZValue(ZValues::axes);
+}
+
+void StatsAxis::addLabel(const QString &label, double pos)
+{
+	labels.emplace_back(label, pos, chart, labelFont);
+}
+
+StatsAxis::Tick::Tick(double pos, QtCharts::QChart *chart) :
+	item(new QGraphicsLineItem(chart)),
+	pos(pos)
+{
+	item->setPen(QPen(axisColor, axisTickWidth));
+	item->setZValue(ZValues::axes);
+}
+
+void StatsAxis::addTick(double pos)
+{
+	ticks.emplace_back(pos, chart);
+}
+
+// Map x (horizontal) or y (vertical) coordinate to or from screen coordinate
+double StatsAxis::toScreen(double pos) const
+{
+	// Vertical is bottom-up
+	return horizontal ? (pos - min) / (max - min) * size + zeroOnScreen
+			  : (min - pos) / (max - min) * size + zeroOnScreen;
+}
+
+double StatsAxis::toValue(double pos) const
+{
+	// Vertical is bottom-up
+	return horizontal ? (pos - zeroOnScreen) / size * (max - min) + min
+			  : (zeroOnScreen - pos) / size * (max - min) + zeroOnScreen;
+}
+
+void StatsAxis::setSize(double sizeIn)
+{
+	size = sizeIn;
+	updateLabels();
+}
+
+void StatsAxis::setPos(QPointF pos)
+{
+	if (horizontal) {
+		zeroOnScreen = pos.x();
+		double labelY = pos.y() + axisLabelSpaceHorizontal +
+				(labelsBetweenTicks ? 0.0 : axisTickSizeHorizontal);
+		double y = pos.y();
+		for (Label &label: labels) {
+			double x = toScreen(label.pos) - label.label->boundingRect().width() / 2.0;
+			label.label->setPos(QPointF(x, labelY));
+		}
+		for (Tick &tick: ticks) {
+			double x = toScreen(tick.pos);
+			tick.item->setLine(x, y, x, y + axisTickSizeHorizontal);
+		}
+		setLine(zeroOnScreen, y, zeroOnScreen + size, y);
+	} else {
+		double fontHeight = QFontMetrics(labelFont).height();
+		zeroOnScreen = pos.y();
+		double x = pos.x();
+		double labelX = x - axisLabelSpaceVertical -
+				(labelsBetweenTicks ? 0.0 : axisTickSizeVertical);
+		for (Label &label: labels) {
+			double y = toScreen(label.pos) - fontHeight / 2.0;
+			label.label->setPos(QPointF(labelX - label.label->boundingRect().width(), y));
+		}
+		for (Tick &tick: ticks) {
+			double y = toScreen(tick.pos);
+			tick.item->setLine(x, y, x - axisTickSizeVertical, y);
+		}
+		setLine(x, zeroOnScreen, x, zeroOnScreen - size);
+	}
+}
+
 ValueAxis::ValueAxis(QtCharts::QChart *chart, double min, double max, int decimals, bool horizontal) :
-	StatsAxisTemplate(chart, horizontal),
+	StatsAxis(chart, horizontal, false),
 	min(min), max(max), decimals(decimals)
 {
-}
-
-std::pair<double, double> ValueAxis::minMax() const
-{
-	return { QValueAxis::min(), QValueAxis::max() };
-}
-
-static QString makeFormatString(int decimals)
-{
-	return QStringLiteral("%.%1f").arg(decimals < 0 ? 0 : decimals);
 }
 
 void ValueAxis::updateLabels()
 {
 	using QtCharts::QValueAxis;
+	labels.clear();
+	ticks.clear();
 
 	// Avoid degenerate cases
 	if (max - min < 0.0001) {
@@ -80,7 +203,7 @@ void ValueAxis::updateLabels()
 	QLocale loc;
 	QString minString = loc.toString(min, 'f', decimals);
 	QString maxString = loc.toString(max, 'f', decimals);
-	int numTicks = guessNumTicks(this, { minString, maxString});
+	int numTicks = guessNumTicks({ minString, maxString});
 
 	// Use full decimal increments
 	double height = max - min;
@@ -98,12 +221,20 @@ void ValueAxis::updateLabels()
 	if (-digits_int > decimals)
 		decimals = -digits_int;
 
-	setLabelFormat(makeFormatString(decimals));
 	double actMin = floor(min /  inc) * inc;
 	double actMax = ceil(max /  inc) * inc;
 	int num = lrint((actMax - actMin) / inc);
 	setRange(actMin, actMax);
-	setTickCount(num + 1);
+
+	double actStep = (actMax - actMin) / static_cast<double>(num);
+	double act = actMin;
+	labels.reserve(num + 1);
+	ticks.reserve(num + 1);
+	for (int i = 0; i <= num; ++i) {
+		addLabel(loc.toString(act, 'f', decimals), act);
+		addTick(act);
+		act += actStep;
+	}
 }
 
 CountAxis::CountAxis(QtCharts::QChart *chart, int count, bool horizontal) :
@@ -114,9 +245,12 @@ CountAxis::CountAxis(QtCharts::QChart *chart, int count, bool horizontal) :
 
 void CountAxis::updateLabels()
 {
+	labels.clear();
+	ticks.clear();
+
 	QLocale loc;
 	QString countString = loc.toString(count);
-	int numTicks = guessNumTicks(this, { countString });
+	int numTicks = guessNumTicks({ countString });
 
 	// Get estimate of step size
 	if (count <= 0)
@@ -145,59 +279,42 @@ void CountAxis::updateLabels()
 	// Make maximum an integer number of steps, equal or greater than the needed counts
 	int num = (count - 1) / step + 1;
 	int max = num * step;
-	numTicks = num + 1; // There is one more tick than steps
 
-	setLabelFormat("%.0f");
 	setRange(0, max);
-	setTickCount(numTicks);
+
+	labels.reserve(max + 1);
+	ticks.reserve(max + 1);
+	for (int i = 0; i <= max; i += step) {
+		addLabel(loc.toString(i), static_cast<double>(i));
+		addTick(static_cast<double>(i));
+	}
 }
 
-CategoryAxis::CategoryAxis(QtCharts::QChart *chart, const std::vector<QString> &labels, bool horizontal) :
-	StatsAxisTemplate(chart, horizontal)
+CategoryAxis::CategoryAxis(QtCharts::QChart *chart, const std::vector<QString> &labelsIn, bool horizontal) :
+	StatsAxis(chart, horizontal, true)
 {
-	for (const QString &s: labels)
-		append(s);
+	labels.reserve(labelsIn.size());
+	ticks.reserve(labelsIn.size() + 1);
+	double pos = 0.0;
+	addTick(-0.5);
+	for (const QString &s: labelsIn) {
+		addLabel(s, pos);
+		addTick(pos + 0.5);
+		pos += 1.0;
+	}
+	setRange(-0.5, static_cast<double>(labelsIn.size()) + 0.5);
 }
 
 void CategoryAxis::updateLabels()
 {
 }
 
-// A small helper class that makes strings unique. We need this,
-// because QCategoryAxis can only handle unique category names.
-// Disambiguate strings by adding unicode zero-width spaces.
-// Keep track of a list of strings and how many spaces have to
-// be added.
-class LabelDisambiguator {
-	using Pair = std::pair<QString, int>;
-	std::vector<Pair> entries;
-public:
-	QString transmogrify(const QString &s);
-};
-
-QString LabelDisambiguator::transmogrify(const QString &s)
-{
-	auto it = std::find_if(entries.begin(), entries.end(),
-			       [&s](const Pair &p) { return p.first == s; });
-	if (it == entries.end()) {
-		entries.emplace_back(s, 0);
-		return s;
-	}  else {
-		++(it->second);
-		return s + QString(it->second, QChar(0x200b));
-	}
-}
-
 HistogramAxis::HistogramAxis(QtCharts::QChart *chart, std::vector<HistogramAxisEntry> bins, bool horizontal) :
-	StatsAxisTemplate(chart, horizontal),
+	StatsAxis(chart, horizontal, false),
 	bin_values(std::move(bins))
 {
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
 		return;
-
-	LabelDisambiguator labeler;
-	for (HistogramAxisEntry &entry: bin_values)
-		entry.name = labeler.transmogrify(entry.name);
 
 	// The caller can declare some bin labels as preferred, when there are
 	// too many labels to show all. Try to infer the preferred step size
@@ -210,17 +327,7 @@ HistogramAxis::HistogramAxis(QtCharts::QChart *chart, std::vector<HistogramAxisE
 	auto it2 = std::find_if(next_it, bin_values.end(),
 				[](const HistogramAxisEntry &e) { return e.recommended; });
 	preferred_step = it2 == bin_values.end() ? 1 : it2 - it1;
-	setMin(bin_values.front().value);
-	setMax(bin_values.back().value);
-	setStartValue(bin_values.front().value);
-	setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
-}
-
-std::pair<double, double> HistogramAxis::minMax() const
-{
-	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
-		return { 0.0, 1.0 };
-	return { QValueAxis::min(), QValueAxis::max() };
+	setRange(bin_values.front().value, bin_values.back().value);
 }
 
 // Initialize a histogram axis with the given labels. Labels are specified as (name, value, recommended) triplets.
@@ -229,20 +336,17 @@ std::pair<double, double> HistogramAxis::minMax() const
 // There, we obviously want to show the years and not the quarters.
 void HistogramAxis::updateLabels()
 {
+	labels.clear();
+	ticks.clear();
+
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
 		return;
-
-	// There is no clear all labels function in QCategoryAxis!? You must be kidding.
-	for (const QString &label: categoriesLabels())
-		remove(label);
-	if (count() > 0)
-		qWarning("HistogramAxis::updateLabels(): labels left after clearing!?");
 
 	std::vector<QString> strings;
 	strings.reserve(bin_values.size());
 	for (auto &[name, value, recommended]: bin_values)
 		strings.push_back(name);
-	int maxLabels = guessNumTicks(this, strings);
+	int maxLabels = guessNumTicks(strings);
 
 	int step = ((int)bin_values.size() - 1) / maxLabels + 1;
 	if (step < preferred_step) {
@@ -268,9 +372,11 @@ void HistogramAxis::updateLabels()
 			}
 		}
 	}
+	labels.reserve((bin_values.size() - first) / step + 1);
 	for (int i = first; i < (int)bin_values.size(); i += step) {
 		const auto &[name, value, recommended] = bin_values[i];
-		append(name, value);
+		addLabel(name, value);
+		addTick(value);
 	}
 }
 

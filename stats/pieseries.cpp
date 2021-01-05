@@ -167,8 +167,7 @@ PieSeries::~PieSeries()
 
 void PieSeries::updatePositions()
 {
-	QtCharts::QChart *c = chart();
-	QRectF plotRect = c->plotArea();
+	QRectF plotRect = chart->plotArea();
 	center = plotRect.center();
 	radius = std::min(plotRect.width(), plotRect.height()) * pieSize / 2.0;
 	QRectF rect(center.x() - radius, center.y() - radius, 2.0 * radius, 2.0 * radius);
@@ -247,7 +246,7 @@ bool PieSeries::hover(QPointF pos)
 	if (highlighted >= 0 && highlighted < (int)items.size()) {
 		items[highlighted].highlight(highlighted, true, (int)items.size());
 		if (!information)
-			information.reset(new InformationBox(chart()));
+			information.reset(new InformationBox(chart));
 		information->setText(makeInfo(highlighted), pos);
 	} else {
 		information.reset();

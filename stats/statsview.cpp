@@ -65,6 +65,8 @@ bool StatsView::EventFilter::eventFilter(QObject *o, QEvent *event)
 
 StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
 	highlightedSeries(nullptr),
+	xAxis(nullptr),
+	yAxis(nullptr),
 	eventFilter(this)
 {
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -89,10 +91,33 @@ StatsView::~StatsView()
 {
 }
 
-void StatsView::plotAreaChanged(const QRectF &)
+void StatsView::plotAreaChanged(const QRectF &r)
 {
-	for (auto &axis: axes)
-		axis->updateLabels();
+	double left = r.x() + sceneBorder;
+	double top = r.y() + sceneBorder;
+	double right = r.right() - sceneBorder;
+	double bottom = r.bottom() - sceneBorder;
+	const double minSize = 30.0;
+
+	if (title)
+		top += title->boundingRect().height() + titleBorder;
+	// Currently, we only have either none, or an x- and a y-axis
+	if (xAxis)
+		bottom -= xAxis->height();
+	if (bottom - top < minSize)
+		return;
+	if (yAxis) {
+		yAxis->setSize(bottom - top);
+		left += yAxis->width();
+		yAxis->setPos(QPointF(left, bottom));
+	}
+	if (right - left < minSize)
+		return;
+	if (xAxis) {
+		xAxis->setSize(right - left);
+		xAxis->setPos(QPointF(left, bottom));
+	}
+
 	for (auto &series: series)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
@@ -133,8 +158,6 @@ void StatsView::hover(QPointF pos)
 template <typename T, class... Args>
 T *StatsView::createSeries(Args&&... args)
 {
-	StatsAxis *xAxis = axes.size() >= 2 ? axes[0].get() : nullptr;
-	StatsAxis *yAxis = axes.size() >= 2 ? axes[1].get() : nullptr;
 	T *res = new T(chart, xAxis, yAxis, std::forward<Args>(args)...);
 	series.emplace_back(res);
 	series.back()->updatePositions();
@@ -156,24 +179,23 @@ void StatsView::updateTitlePos()
 	if (!title)
 		return;
 	QRectF rect = chart->plotArea();
-	title->setPos((rect.width() - title->boundingRect().width()) / 2.0,
+	title->setPos(sceneBorder + (rect.width() - title->boundingRect().width()) / 2.0,
 		      sceneBorder);
 }
 
 template <typename T, class... Args>
 T *StatsView::createAxis(const QString &title, Args&&... args)
 {
+	// TODO: set title
 	T *res = new T(chart, std::forward<Args>(args)...);
 	axes.emplace_back(res);
-	axes.back()->updateLabels();
-	axes.back()->qaxis()->setTitleText(title);
 	return res;
 }
 
-void StatsView::addAxes(StatsAxis *x, StatsAxis *y)
+void StatsView::setAxes(StatsAxis *x, StatsAxis *y)
 {
-	chart->addAxis(x->qaxis(), Qt::AlignBottom);
-	chart->addAxis(y->qaxis(), Qt::AlignLeft);
+	xAxis = x;
+	yAxis = y;
 }
 
 void StatsView::reset()
@@ -181,6 +203,7 @@ void StatsView::reset()
 	if (!chart)
 		return;
 	highlightedSeries = nullptr;
+	xAxis = yAxis = nullptr;
 	legend.reset();
 	series.clear();
 	quartileMarkers.clear();
@@ -365,9 +388,9 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	CountAxis *valAxis = createCountAxis(maxVal, isHorizontal);
 
 	if (isHorizontal)
-		addAxes(valAxis, catAxis);
+		setAxes(valAxis, catAxis);
 	else
-		addAxes(catAxis, valAxis);
+		setAxes(catAxis, valAxis);
 
 	// Paint legend first, because the bin-names will be moved away from.
 	if (showLegend)
@@ -478,9 +501,9 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 						   0.0, maxValue, valueVariable->decimals(), isHorizontal);
 
 	if (isHorizontal)
-		addAxes(valAxis, catAxis);
+		setAxes(valAxis, catAxis);
 	else
-		addAxes(catAxis, valAxis);
+		setAxes(catAxis, valAxis);
 
 	std::vector<BarSeries::ValueItem> items;
 	items.reserve(categoryBins.size());
@@ -546,9 +569,9 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 	CountAxis *valAxis = createCountAxis(maxCount, isHorizontal);
 
 	if (isHorizontal)
-		addAxes(valAxis, catAxis);
+		setAxes(valAxis, catAxis);
 	else
-		addAxes(catAxis, valAxis);
+		setAxes(catAxis, valAxis);
 
 	std::vector<BarSeries::CountItem> items;
 	items.reserve(categoryBins.size());
@@ -613,7 +636,7 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 	ValueAxis *valueAxis = createAxis<ValueAxis>(valueVariable->nameWithUnit(),
 						     minY, maxY, valueVariable->decimals(), false);
 
-	addAxes(catAxis, valueAxis);
+	setAxes(catAxis, valueAxis);
 
 	BoxSeries *series = createSeries<BoxSeries>(valueVariable->name(), valueVariable->unitSymbol(), valueVariable->decimals());
 
@@ -648,7 +671,7 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	ValueAxis *valAxis = createAxis<ValueAxis>(valueVariable->nameWithUnit(),
 						   minValue, maxValue, valueVariable->decimals(), false);
 
-	addAxes(catAxis, valAxis);
+	setAxes(catAxis, valAxis);
 	ScatterSeries *series = createSeries<ScatterSeries>(*categoryVariable, *valueVariable);
 
 	double x = 0.0;
@@ -658,18 +681,18 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 		if (quartiles) {
 			StatsQuartiles quartiles = StatsVariable::quartiles(array);
 			if (quartiles.isValid()) {
-				quartileMarkers.emplace_back(x, quartiles.q1, series);
-				quartileMarkers.emplace_back(x, quartiles.q2, series);
-				quartileMarkers.emplace_back(x, quartiles.q3, series);
+				quartileMarkers.emplace_back(x, quartiles.q1, chart, catAxis, valAxis);
+				quartileMarkers.emplace_back(x, quartiles.q2, chart, catAxis, valAxis);
+				quartileMarkers.emplace_back(x, quartiles.q3, chart, catAxis, valAxis);
 			}
 		}
 		x += 1.0;
 	}
 }
 
-StatsView::QuartileMarker::QuartileMarker(double pos, double value, QtCharts::QAbstractSeries *series) :
-	item(new QGraphicsLineItem(series->chart())),
-	series(series),
+StatsView::QuartileMarker::QuartileMarker(double pos, double value, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
+	item(new QGraphicsLineItem(chart)),
+	xAxis(xAxis), yAxis(yAxis),
 	pos(pos),
 	value(value)
 {
@@ -680,15 +703,18 @@ StatsView::QuartileMarker::QuartileMarker(double pos, double value, QtCharts::QA
 
 void StatsView::QuartileMarker::updatePosition()
 {
-	QtCharts::QChart *chart = series->chart();
-	QPointF center = chart->mapToPosition(QPointF(pos, value), series);
-	item->setLine(center.x() - quartileMarkerSize / 2.0, center.y(),
-		      center.x() + quartileMarkerSize / 2.0, center.y());
+	if (!xAxis || !yAxis)
+		return;
+	double x = xAxis->toScreen(pos);
+	double y = yAxis->toScreen(value);
+	item->setLine(x - quartileMarkerSize / 2.0, y,
+		      x + quartileMarkerSize / 2.0, y);
 }
 
-StatsView::LineMarker::LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::QAbstractSeries *series) :
-	item(new QGraphicsLineItem(series->chart())),
-	series(series), from(from), to(to)
+StatsView::LineMarker::LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
+	item(new QGraphicsLineItem(chart)),
+	xAxis(xAxis), yAxis(yAxis),
+	from(from), to(to)
 {
 	item->setZValue(ZValues::chartFeatures);
 	item->setPen(pen);
@@ -697,12 +723,16 @@ StatsView::LineMarker::LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::
 
 void StatsView::LineMarker::updatePosition()
 {
-	QtCharts::QChart *chart = series->chart();
-	item->setLine(QLineF(chart->mapToPosition(from, series),
-			     chart->mapToPosition(to, series)));
+	if (!xAxis || !yAxis)
+		return;
+	double x1 = xAxis->toScreen(from.x());
+	double y1 = yAxis->toScreen(from.y());
+	double x2 = xAxis->toScreen(to.x());
+	double y2 = yAxis->toScreen(to.y());
+	item->setLine(x1, y1, x2, y2);
 }
 
-void StatsView::addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, QtCharts::QAbstractSeries *series)
+void StatsView::addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis)
 {
 	// Sanity check: line above or below chart
 	double y1 = a * minX + b;
@@ -721,14 +751,14 @@ void StatsView::addLinearRegression(double a, double b, double minX, double maxX
 		minX = std::max(minX, intersect_x1);
 		maxX = std::min(maxX, intersect_x2);
 	}
-	lineMarkers.emplace_back(QPointF(minX, a * minX + b), QPointF(maxX, a * maxX + b), QPen(Qt::red), series);
+	lineMarkers.emplace_back(QPointF(minX, a * minX + b), QPointF(maxX, a * maxX + b), QPen(Qt::red), chart, xAxis, yAxis);
 }
 
-void StatsView::addHistogramMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal, QtCharts::QAbstractSeries *series)
+void StatsView::addHistogramMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis)
 {
 	QPointF from = isHorizontal ? QPointF(low, pos) : QPointF(pos, low);
 	QPointF to = isHorizontal ? QPointF(high, pos) : QPointF(pos, high);
-	lineMarkers.emplace_back(from, to, pen, series);
+	lineMarkers.emplace_back(from, to, pen, chart, xAxis, yAxis);
 }
 
 // Yikes, we get our data in different kinds of (bin, value) pairs.
@@ -780,9 +810,9 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	double chartHeight = valAxis->minMax().second;
 
 	if (isHorizontal)
-		addAxes(valAxis, catAxis);
+		setAxes(valAxis, catAxis);
 	else
-		addAxes(catAxis, valAxis);
+		setAxes(catAxis, valAxis);
 
 	std::vector<BarSeries::CountItem> items;
 	items.reserve(categoryBins.size());
@@ -797,7 +827,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 				  categoryBinner->formatWithUnit(*bin), total });
 	}
 
-	BarSeries *series = createSeries<BarSeries>(isHorizontal, categoryVariable->name(), items);
+	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), items);
 
 	if (categoryVariable->type() == StatsVariable::Type::Numeric) {
 		if (showMean) {
@@ -805,14 +835,14 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 			QPen meanPen(Qt::green);
 			meanPen.setWidth(2);
 			if (!std::isnan(mean))
-				addHistogramMarker(mean, 0.0, chartHeight, meanPen, isHorizontal, series);
+				addHistogramMarker(mean, 0.0, chartHeight, meanPen, isHorizontal, xAxis, yAxis);
 		}
 		if (showMedian) {
 			double median = categoryVariable->quartiles(dives).q2;
 			QPen medianPen(Qt::red);
 			medianPen.setWidth(2);
 			if (!std::isnan(median))
-				addHistogramMarker(median, 0.0, chartHeight, medianPen, isHorizontal, series);
+				addHistogramMarker(median, 0.0, chartHeight, medianPen, isHorizontal, xAxis, yAxis);
 		}
 	}
 }
@@ -845,9 +875,9 @@ void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 						   0.0, maxValue, decimals, isHorizontal);
 
 	if (isHorizontal)
-		addAxes(valAxis, catAxis);
+		setAxes(valAxis, catAxis);
 	else
-		addAxes(catAxis, valAxis);
+		setAxes(catAxis, valAxis);
 
 	std::vector<BarSeries::ValueItem> items;
 	items.reserve(categoryBins.size());
@@ -894,9 +924,9 @@ void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 	CountAxis *valAxis = createCountAxis(data.maxCategoryCount, isHorizontal);
 
 	if (isHorizontal)
-		addAxes(valAxis, catAxis);
+		setAxes(valAxis, catAxis);
 	else
-		addAxes(catAxis, valAxis);
+		setAxes(catAxis, valAxis);
 
 	std::vector<BarSeries::MultiItem> items;
 	items.reserve(data.hbin_counts.size());
@@ -933,7 +963,7 @@ void StatsView::plotHistogramBoxChart(const std::vector<dive *> &dives,
 	ValueAxis *valueAxis = createAxis<ValueAxis>(valueVariable->nameWithUnit(),
 						     minY, maxY, valueVariable->decimals(), false);
 
-	addAxes(catAxis, valueAxis);
+	setAxes(catAxis, valueAxis);
 
 	BoxSeries *series = createSeries<BoxSeries>(valueVariable->name(), valueVariable->unitSymbol(), valueVariable->decimals());
 
@@ -1020,7 +1050,7 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsVariabl
 
 	StatsAxis *axisY = createAxis<ValueAxis>(valueVariable->nameWithUnit(), minY, maxY, valueVariable->decimals(), false);
 
-	addAxes(axisX, axisY);
+	setAxes(axisX, axisY);
 	ScatterSeries *series = createSeries<ScatterSeries>(*categoryVariable, *valueVariable);
 
 	for (auto [x, y, dive]: points)
@@ -1031,6 +1061,6 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsVariabl
 	if (!std::isnan(a)) {
 		auto [minx, maxx] = axisX->minMax();
 		auto [miny, maxy] = axisY->minMax();
-		addLinearRegression(a, b, minx, maxx, miny, maxy, series);
+		addLinearRegression(a, b, minx, maxx, miny, maxy, xAxis, yAxis);
 	}
 }
