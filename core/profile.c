@@ -909,7 +909,6 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	free(last);
 }
 
-#ifndef SUBSURFACE_MOBILE
 /* calculate DECO STOP / TTS / NDL */
 static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, struct plot_data *entry, struct gasmix gasmix, double surface_pressure,enum divemode_t divemode)
 {
@@ -1184,7 +1183,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 #endif
 	unlock_planner();
 }
-#endif
+
 
 /* Function calculate_ccr_po2: This function takes information from one plot_data structure (i.e. one point on
  * the dive profile), containing the oxygen sensor values of a CCR system and, for that plot_data structure,
@@ -1359,12 +1358,8 @@ void init_plot_info(struct plot_info *pi)
 void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds)
 {
 	int o2, he, o2max;
-#ifndef SUBSURFACE_MOBILE
 	struct deco_state plot_deco_state;
 	init_decompression(&plot_deco_state, dive);
-#else
-	UNUSED(planner_ds);
-#endif
 	free_plot_info_data(pi);
 	calculate_max_limits_new(dive, dc, pi, planner_ds != NULL);
 	get_dive_gas(dive, &o2, &he, &o2max);
@@ -1389,9 +1384,9 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	}
 	fill_o2_values(dive, dc, pi);			 /* .. and insert the O2 sensor data having 0 values. */
 	calculate_sac(dive, dc, pi);			 /* Calculate sac */
-#ifndef SUBSURFACE_MOBILE
+
 	calculate_deco_information(&plot_deco_state, planner_ds, dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */
-#endif
+
 	calculate_gas_information_new(dive, dc, pi);	 /* Calculate gas partial pressures */
 
 #ifdef DEBUG_GAS
