@@ -22,7 +22,6 @@ UpdateManager::UpdateManager(QObject *parent) :
 		return;
 
 	qPrefUpdateManager::set_last_version_used(subsurface_git_version());
-	qPrefUpdateManager::set_next_check(QDate::currentDate().addDays(14));
 
 	checkForUpdates(true);
 }
@@ -107,8 +106,7 @@ void UpdateManager::requestReceived()
 	}
 	if (isAutomaticCheck) {
 		auto update_settings = qPrefUpdateManager::instance();
-		if (!update_settings->dont_check_exists()) {
-
+		if (!update_settings->dont_check_for_updates() && update_settings->next_check() == QDate::fromJulianDay(0)) {
 			// we allow an opt out of future checks
 			QMessageBox response(MainWindow::instance());
 			QString message = tr("Subsurface is checking every two weeks if a new version is available. "
@@ -120,7 +118,7 @@ void UpdateManager::requestReceived()
 			response.setIcon(QMessageBox::Question);
 			response.setWindowModality(Qt::WindowModal);
 			update_settings->set_dont_check_for_updates(response.exec() != QMessageBox::Accepted);
-			update_settings->set_dont_check_exists(true);
 		}
 	}
+	qPrefUpdateManager::set_next_check(QDate::currentDate().addDays(14));
 }
