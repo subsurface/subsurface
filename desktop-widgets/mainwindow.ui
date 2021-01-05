@@ -687,6 +687,9 @@
    <property name="text">
     <string>Open c&amp;loud storage</string>
    </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+Shift+O</string>
+   </property>
   </action>
   <action name="actionCloudstoragesave">
    <property name="text">
