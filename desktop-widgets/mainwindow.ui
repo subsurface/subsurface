@@ -97,7 +97,6 @@
     <addaction name="actionAutoGroup"/>
     <addaction name="separator"/>
     <addaction name="actionFilterTags"/>
-    <addaction name="actionStats"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -108,8 +107,8 @@
     <addaction name="actionViewProfile"/>
     <addaction name="actionViewInfo"/>
     <addaction name="actionViewMap"/>
-    <addaction name="actionViewStats"/>
     <addaction name="separator"/>
+    <addaction name="actionStats"/>
     <addaction name="actionYearlyStatistics"/>
     <addaction name="actionPreviousDC"/>
     <addaction name="actionNextDC"/>
