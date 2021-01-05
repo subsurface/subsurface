@@ -186,8 +186,7 @@ void StatsView::updateTitlePos()
 template <typename T, class... Args>
 T *StatsView::createAxis(const QString &title, Args&&... args)
 {
-	// TODO: set title
-	T *res = new T(chart, std::forward<Args>(args)...);
+	T *res = new T(chart, title, std::forward<Args>(args)...);
 	axes.emplace_back(res);
 	return res;
 }
