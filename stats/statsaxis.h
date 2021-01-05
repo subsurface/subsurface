@@ -30,6 +30,8 @@ public:
 	// Map x (horizontal) or y (vertical) coordinate to or from screen coordinate
 	double toScreen(double) const;
 	double toValue(double) const;
+
+	std::vector<double> ticksPositions() const; // Positions in screen coordinates
 protected:
 	StatsAxis(QtCharts::QChart *chart, const QString &title, bool horizontal, bool labelsBetweenTicks);
 	QtCharts::QChart *chart;

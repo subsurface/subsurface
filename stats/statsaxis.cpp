@@ -135,6 +135,15 @@ void StatsAxis::addTick(double pos)
 	ticks.emplace_back(pos, chart);
 }
 
+std::vector<double> StatsAxis::ticksPositions() const
+{
+	std::vector<double> res;
+	res.reserve(ticks.size());
+	for (const Tick &tick: ticks)
+		res.push_back(toScreen(tick.pos));
+	return res;
+}
+
 // Map x (horizontal) or y (vertical) coordinate to or from screen coordinate
 double StatsAxis::toScreen(double pos) const
 {

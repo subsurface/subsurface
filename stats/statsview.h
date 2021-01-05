@@ -24,6 +24,7 @@ class CategoryAxis;
 class CountAxis;
 class HistogramAxis;
 class StatsAxis;
+class StatsGrid;
 class Legend;
 
 enum class ChartSubType : int;
@@ -121,6 +122,7 @@ private:
 	QtCharts::QChart *chart;
 	QFont titleFont;
 	std::vector<std::unique_ptr<StatsAxis>> axes;
+	std::unique_ptr<StatsGrid> grid;
 	std::vector<std::unique_ptr<StatsSeries>> series;
 	std::unique_ptr<Legend> legend;
 	std::vector<QuartileMarker> quartileMarkers;
