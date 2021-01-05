@@ -114,8 +114,7 @@ void BarSeries::BarLabel::highlight(bool highlight, int bin_nr, int binCount)
 		item->setBrush(brush);
 }
 
-void BarSeries::BarLabel::updatePosition(QtCharts::QChart *chart, QtCharts::QAbstractSeries *series,
-					 bool horizontal, bool center, const QRectF &rect,
+void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRectF &rect,
 					 int bin_nr, int binCount)
 {
 	if (!horizontal) {
@@ -191,7 +190,7 @@ BarSeries::Item::Item(QtCharts::QChart *chart, BarSeries *series, double lowerBo
 		item.item->setZValue(ZValues::series);
 		item.highlight(false, binCount);
 	}
-	updatePosition(chart, series, horizontal, stacked, binCount);
+	updatePosition(series, horizontal, stacked, binCount);
 }
 
 void BarSeries::Item::highlight(int subitem, bool highlight, int binCount)
@@ -214,7 +213,7 @@ void BarSeries::SubItem::highlight(bool highlight, int binCount)
 		label->highlight(highlight, bin_nr, binCount);
 }
 
-void BarSeries::Item::updatePosition(QtCharts::QChart *chart, BarSeries *series, bool horizontal, bool stacked, int binCount)
+void BarSeries::Item::updatePosition(BarSeries *series, bool horizontal, bool stacked, int binCount)
 {
 	if (subitems.empty())
 		return;
@@ -233,28 +232,28 @@ void BarSeries::Item::updatePosition(QtCharts::QChart *chart, BarSeries *series,
 	for (SubItem &item: subitems) {
 		int idx = stacked ? 0 : item.bin_nr;
 		double center = (idx + 0.5) * fullSubWidth + from;
-		item.updatePosition(chart, series, horizontal, stacked, center - subWidth / 2.0, center + subWidth / 2.0, binCount);
+		item.updatePosition(series, horizontal, stacked, center - subWidth / 2.0, center + subWidth / 2.0, binCount);
 	}
 	rect = subitems[0].item->rect();
 	for (auto it = std::next(subitems.begin()); it != subitems.end(); ++it)
 		rect = rect.united(it->item->rect());
 }
 
-void BarSeries::SubItem::updatePosition(QtCharts::QChart *chart, BarSeries *series, bool horizontal, bool stacked,
+void BarSeries::SubItem::updatePosition(BarSeries *series, bool horizontal, bool stacked,
 					double from, double to, int binCount)
 {
 	QPointF topLeft, bottomRight;
 	if (horizontal) {
-		topLeft = chart->mapToPosition(QPointF(value_from, to), series);
-		bottomRight = chart->mapToPosition(QPointF(value_to, from), series);
+		topLeft = series->toScreen(QPointF(value_from, to));
+		bottomRight = series->toScreen(QPointF(value_to, from));
 	} else {
-		topLeft = chart->mapToPosition(QPointF(from, value_to), series);
-		bottomRight = chart->mapToPosition(QPointF(to, value_from), series);
+		topLeft = series->toScreen(QPointF(from, value_to));
+		bottomRight = series->toScreen(QPointF(to, value_from));
 	}
 	QRectF rect(topLeft, bottomRight);
 	item->setRect(rect);
 	if (label)
-		label->updatePosition(chart, series, horizontal, stacked, rect, bin_nr, binCount);
+		label->updatePosition(horizontal, stacked, rect, bin_nr, binCount);
 }
 
 std::vector<BarSeries::SubItem> BarSeries::makeSubItems(const std::vector<std::pair<double, std::vector<QString>>> &values) const
@@ -265,9 +264,9 @@ std::vector<BarSeries::SubItem> BarSeries::makeSubItems(const std::vector<std::p
 	int bin_nr = 0;
 	for (auto &[v, label]: values) {
 		if (v > 0.0) {
-			res.push_back({ std::make_unique<QGraphicsRectItem>(chart()), {}, from, from + v, bin_nr });
+			res.push_back({ std::make_unique<QGraphicsRectItem>(chart), {}, from, from + v, bin_nr });
 			if (!label.empty())
-				res.back().label = std::make_unique<BarLabel>(chart(), label, bin_nr, binCount());
+				res.back().label = std::make_unique<BarLabel>(chart, label, bin_nr, binCount());
 		}
 		if (stacked)
 			from += v;
@@ -293,15 +292,14 @@ void BarSeries::add_item(double lowerBound, double upperBound, std::vector<SubIt
 	// Don't add empty items, as that messes with the "find item under mouse" routine.
 	if (subitems.empty())
 		return;
-	items.emplace_back(chart(), this, lowerBound, upperBound, std::move(subitems), binName, res,
+	items.emplace_back(chart, this, lowerBound, upperBound, std::move(subitems), binName, res,
 			   total, horizontal, stacked, binCount());
 }
 
 void BarSeries::updatePositions()
 {
-	QtCharts::QChart *c = chart();
 	for (Item &item: items)
-		item.updatePosition(c, this, horizontal, stacked, binCount());
+		item.updatePosition(this, horizontal, stacked, binCount());
 }
 
 // Attention: this supposes that items are sorted by position and no bar is inside another bar!
@@ -405,7 +403,7 @@ bool BarSeries::hover(QPointF pos)
 		Item &item = items[highlighted.bar];
 		item.highlight(index.subitem, true, binCount());
 		if (!information)
-			information.reset(new InformationBox(chart()));
+			information.reset(new InformationBox(chart));
 		information->setText(makeInfo(item, highlighted.subitem), pos);
 	} else {
 		information.reset();

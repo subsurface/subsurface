@@ -2,18 +2,17 @@
 #include "statsseries.h"
 #include "statsaxis.h"
 
-#include <QChart>
-
 StatsSeries::StatsSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
-	xAxis(xAxis), yAxis(yAxis)
+	chart(chart), xAxis(xAxis), yAxis(yAxis)
 {
-	chart->addSeries(this);
-	if (xAxis && yAxis) {
-		attachAxis(xAxis->qaxis());
-		attachAxis(yAxis->qaxis());
-	}
 }
 
 StatsSeries::~StatsSeries()
 {
+}
+
+QPointF StatsSeries::toScreen(QPointF p)
+{
+	return xAxis && yAxis ? QPointF(xAxis->toScreen(p.x()), yAxis->toScreen(p.y()))
+			      : QPointF(0.0, 0.0);
 }

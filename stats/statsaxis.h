@@ -1,50 +1,73 @@
 // SPDX-License-Identifier: GPL-2.0
-// Supported chart axes
 #ifndef STATS_AXIS_H
 #define STATS_AXIS_H
 
+#include <memory>
 #include <vector>
 #include <QBarCategoryAxis>
 #include <QCategoryAxis>
+#include <QFont>
+#include <QGraphicsSimpleTextItem>
+#include <QGraphicsLineItem>
 #include <QValueAxis>
 
 namespace QtCharts {
 	class QChart;
 }
 
-class StatsAxis {
+class StatsAxis : QGraphicsLineItem {
 public:
 	virtual ~StatsAxis();
-	virtual void updateLabels() = 0;
-	virtual QtCharts::QAbstractAxis *qaxis() = 0;
 	// Returns minimum and maximum of shown range, not of data points.
-	virtual std::pair<double, double> minMax() const;
+	std::pair<double, double> minMax() const;
+
+	double width() const;		// Only supported by vertical axes. Only valid after setSize().
+	double height() const;		// Only supported for horizontal axes. Always valid.
+	void setSize(double size);	// Width for horizontal and height for vertical.
+	void setPos(QPointF pos);	// Must be called after setSize().
+	void setRange(double, double);
+
+	// Map x (horizontal) or y (vertical) coordinate to or from screen coordinate
+	double toScreen(double) const;
+	double toValue(double) const;
 protected:
+	StatsAxis(QtCharts::QChart *chart, bool horizontal, bool labelsBetweenTicks);
 	QtCharts::QChart *chart;
-	StatsAxis(QtCharts::QChart *chart, bool horizontal);
-	int guessNumTicks(const QtCharts::QAbstractAxis *axis, const std::vector<QString> &strings) const;
+
+	struct Label {
+		std::unique_ptr<QGraphicsSimpleTextItem> label;
+		double pos;
+		Label(const QString &name, double pos, QtCharts::QChart *chart, const QFont &font);
+	};
+	std::vector<Label> labels;
+	void addLabel(const QString &label, double pos);
+	virtual void updateLabels() = 0;
+
+	struct Tick {
+		std::unique_ptr<QGraphicsLineItem> item;
+		double pos;
+		Tick(double pos, QtCharts::QChart *chart);
+	};
+	std::vector<Tick> ticks;
+	void addTick(double pos);
+
+	int guessNumTicks(const std::vector<QString> &strings) const;
 	bool horizontal;
+	bool labelsBetweenTicks;	// When labels are between ticks, they can be moved closer to the axis
+
+	QFont labelFont, titleFont;
+	double size;			// width for horizontal, height for vertical
+	double zeroOnScreen;
+	double min, max;
 };
 
-// Small template that derives from a QChart-axis and defines
-// the corresponding virtual axis() accessor.
-template<typename QAxis>
-class StatsAxisTemplate : public StatsAxis, public QAxis
-{
-	using StatsAxis::StatsAxis;
-	QtCharts::QAbstractAxis *qaxis() override final {
-		return this;
-	}
-};
-
-class ValueAxis : public StatsAxisTemplate<QtCharts::QValueAxis> {
+class ValueAxis : public StatsAxis {
 public:
 	ValueAxis(QtCharts::QChart *chart, double min, double max, int decimals, bool horizontal);
 private:
 	double min, max;
 	int decimals;
 	void updateLabels() override;
-	std::pair<double, double> minMax() const override;
 };
 
 class CountAxis : public ValueAxis {
@@ -55,7 +78,7 @@ private:
 	void updateLabels() override;
 };
 
-class CategoryAxis : public StatsAxisTemplate<QtCharts::QBarCategoryAxis> {
+class CategoryAxis : public StatsAxis {
 public:
 	CategoryAxis(QtCharts::QChart *chart, const std::vector<QString> &labels, bool horizontal);
 private:
@@ -68,12 +91,11 @@ struct HistogramAxisEntry {
 	bool recommended;
 };
 
-class HistogramAxis : public StatsAxisTemplate<QtCharts::QCategoryAxis> {
+class HistogramAxis : public StatsAxis {
 public:
 	HistogramAxis(QtCharts::QChart *chart, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
 private:
 	void updateLabels() override;
-	std::pair<double, double> minMax() const override;
 	std::vector<HistogramAxisEntry> bin_values;
 	int preferred_step;
 };

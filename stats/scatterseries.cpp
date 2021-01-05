@@ -65,12 +65,12 @@ ScatterSeries::Item::Item(QtCharts::QChart *chart, ScatterSeries *series, dive *
 	value(value)
 {
 	item->setZValue(ZValues::series);
-	updatePosition(chart, series);
+	updatePosition(series);
 }
 
-void ScatterSeries::Item::updatePosition(QtCharts::QChart *chart, ScatterSeries *series)
+void ScatterSeries::Item::updatePosition(ScatterSeries *series)
 {
-	QPointF center = chart->mapToPosition(QPointF(pos, value), series);
+	QPointF center = series->toScreen(QPointF(pos, value));
 	item->setPos(center.x() - scatterItemDiameter / 2.0,
 		     center.y() - scatterItemDiameter / 2.0);
 }
@@ -82,14 +82,13 @@ void ScatterSeries::Item::highlight(bool highlight)
 
 void ScatterSeries::append(dive *d, double pos, double value)
 {
-	items.emplace_back(chart(), this, d, pos, value);
+	items.emplace_back(chart, this, d, pos, value);
 }
 
 void ScatterSeries::updatePositions()
 {
-	QtCharts::QChart *c = chart();
 	for (Item &item: items)
-		item.updatePosition(c, this);
+		item.updatePosition(this);
 }
 
 static double sq(double f)
@@ -103,7 +102,7 @@ static double squareDist(const QPointF &p1, const QPointF &p2)
 	return QPointF::dotProduct(diff, diff);
 }
 
-std::vector<int> ScatterSeries::getItemsUnderMouse(const QPointF &point)
+std::vector<int> ScatterSeries::getItemsUnderMouse(const QPointF &point) const
 {
 	std::vector<int> res;
 	double x = point.x();
@@ -174,7 +173,7 @@ bool ScatterSeries::hover(QPointF pos)
 		return false;
 	} else {
 		if (!information)
-			information.reset(new InformationBox(chart()));
+			information.reset(new InformationBox(chart));
 
 		std::vector<QString> text;
 		text.reserve(highlighted.size() * 5);

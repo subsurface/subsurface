@@ -41,7 +41,7 @@ private slots:
 	void replotIfVisible();
 private:
 	void reset(); // clears all series and axes
-	void addAxes(StatsAxis *x, StatsAxis *y); // Add new x- and y-axis
+	void setAxes(StatsAxis *x, StatsAxis *y);
 	void plotBarChart(const std::vector<dive *> &dives,
 			  ChartSubType subType,
 			  const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
@@ -99,23 +99,23 @@ private:
 	// A short line used to mark quartiles
 	struct QuartileMarker {
 		std::unique_ptr<QGraphicsLineItem> item;
-		QtCharts::QAbstractSeries *series; // In case we ever support charts with multiple axes
+		StatsAxis *xAxis, *yAxis;
 		double pos, value;
-		QuartileMarker(double pos, double value, QtCharts::QAbstractSeries *series);
+		QuartileMarker(double pos, double value, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis);
 		void updatePosition();
 	};
 
 	// A general line marker
 	struct LineMarker {
 		std::unique_ptr<QGraphicsLineItem> item;
-		QtCharts::QAbstractSeries *series; // In case we ever support charts with multiple axes
+		StatsAxis *xAxis, *yAxis;
 		QPointF from, to; // In local coordinates
 		void updatePosition();
-		LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::QAbstractSeries *series);
+		LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis);
 	};
 
-	void addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, QtCharts::QAbstractSeries *series);
-	void addHistogramMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal, QtCharts::QAbstractSeries *series);
+	void addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis);
+	void addHistogramMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
 
 	StatsState state;
 	QtCharts::QChart *chart;
@@ -127,6 +127,7 @@ private:
 	std::vector<LineMarker> lineMarkers;
 	std::unique_ptr<QGraphicsSimpleTextItem> title;
 	StatsSeries *highlightedSeries;
+	StatsAxis *xAxis, *yAxis;
 
 	// This is unfortunate: we can't derive from QChart, because the chart is allocated by QML.
 	// Therefore, we have to listen to hover events using an events-filter.

@@ -87,8 +87,7 @@ private:
 		bool isOutside; // Is shown outside of bar
 		BarLabel(QtCharts::QChart *chart, const std::vector<QString> &labels, int bin_nr, int binCount);
 		void setVisible(bool visible);
-		void updatePosition(QtCharts::QChart *chart, QtCharts::QAbstractSeries *series,
-				    bool horizontal, bool center, const QRectF &rect, int bin_nr, int binCount);
+		void updatePosition(bool horizontal, bool center, const QRectF &rect, int bin_nr, int binCount);
 		void highlight(bool highlight, int bin_nr, int binCount);
 	};
 
@@ -98,7 +97,7 @@ private:
 		double value_from;
 		double value_to;
 		int bin_nr;
-		void updatePosition(QtCharts::QChart *chart, BarSeries *series, bool horizontal, bool stacked,
+		void updatePosition(BarSeries *series, bool horizontal, bool stacked,
 				    double from, double to, int binCount);
 		void highlight(bool highlight, int binCount);
 	};
@@ -114,7 +113,7 @@ private:
 		     std::vector<SubItem> subitems,
 		     const QString &binName, const StatsOperationResults &res, int total, bool horizontal,
 		     bool stacked, int binCount);
-		void updatePosition(QtCharts::QChart *chart, BarSeries *series, bool horizontal, bool stacked, int binCount);
+		void updatePosition(BarSeries *series, bool horizontal, bool stacked, int binCount);
 		void highlight(int subitem, bool highlight, int binCount);
 		int getSubItemUnderMouse(const QPointF &f, bool horizontal, bool stacked) const;
 	};

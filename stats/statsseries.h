@@ -23,7 +23,9 @@ public:
 	virtual bool hover(QPointF pos) = 0;	// Called on mouse movement. Return true if an item of this series is highlighted.
 	virtual void unhighlight() = 0;		// Unhighlight any highlighted item.
 protected:
+	QtCharts::QChart *chart;
 	StatsAxis *xAxis, *yAxis;		// May be zero for charts without axes (pie charts).
+	QPointF toScreen(QPointF p);
 };
 
 #endif
