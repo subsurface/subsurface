@@ -23,10 +23,10 @@ static const double axisLabelSpaceVertical = 2.0;	// Space between axis or ticks
 static const double axisTitleSpaceHorizontal = 2.0;	// Space between labels and title
 static const double axisTitleSpaceVertical = 2.0;	// Space between labels and title
 
-StatsAxis::StatsAxis(QtCharts::QChart *chart, bool horizontal, bool labelsBetweenTicks) :
+StatsAxis::StatsAxis(QtCharts::QChart *chart, const QString &titleIn, bool horizontal, bool labelsBetweenTicks) :
 	QGraphicsLineItem(chart),
 	chart(chart), horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
-	size(1.0), zeroOnScreen(0.0), min(0.0), max(1.0)
+	size(1.0), zeroOnScreen(0.0), min(0.0), max(1.0), labelWidth(0.0)
 {
 	// use a Light version of the application fond for both labels and title
 	labelFont = QFont();
@@ -34,6 +34,13 @@ StatsAxis::StatsAxis(QtCharts::QChart *chart, bool horizontal, bool labelsBetwee
 	titleFont = labelFont;
 	setPen(QPen(axisColor, axisWidth));
 	setZValue(ZValues::axes);
+	if (!titleIn.isEmpty()) {
+		title = std::make_unique<QGraphicsSimpleTextItem>(titleIn, chart);
+		title->setFont(titleFont);
+		title->setBrush(darkLabelColor);
+		if (!horizontal)
+			title->setRotation(-90.0);
+	}
 }
 
 StatsAxis::~StatsAxis()
@@ -76,18 +83,19 @@ int StatsAxis::guessNumTicks(const std::vector<QString> &strings) const
 	return std::max(numTicks, 2);
 }
 
+double StatsAxis::titleSpace() const
+{
+	if (!title)
+		return 0.0;
+	return horizontal ? QFontMetrics(titleFont).height() + axisTitleSpaceHorizontal
+			  : QFontMetrics(titleFont).height() + axisTitleSpaceVertical;
+}
+
 double StatsAxis::width() const
 {
 	if (horizontal)
 		return 0.0;	// Only supported for vertical axes
-	double labelWidth = 0.0;
-	for (const Label &label: labels) {
-		double w = label.label->boundingRect().width();
-		if (w > labelWidth)
-			labelWidth = w;
-	}
-	return labelWidth + axisLabelSpaceVertical +
-	       QFontMetrics(titleFont).height() + axisTitleSpaceVertical +
+	return labelWidth + axisLabelSpaceVertical + titleSpace() +
 	       (labelsBetweenTicks ? 0.0 : axisTickSizeVertical);
 }
 
@@ -96,7 +104,7 @@ double StatsAxis::height() const
 	if (!horizontal)
 		return 0.0;	// Only supported for horizontal axes
 	return QFontMetrics(labelFont).height() + axisLabelSpaceHorizontal +
-	       QFontMetrics(titleFont).height() + axisTitleSpaceHorizontal +
+	       titleSpace() +
 	       (labelsBetweenTicks ? 0.0 : axisTickSizeHorizontal);
 }
 
@@ -146,6 +154,12 @@ void StatsAxis::setSize(double sizeIn)
 {
 	size = sizeIn;
 	updateLabels();
+	labelWidth = 0.0;
+	for (const Label &label: labels) {
+		double w = label.label->boundingRect().width();
+		if (w > labelWidth)
+			labelWidth = w;
+	}
 }
 
 void StatsAxis::setPos(QPointF pos)
@@ -164,6 +178,9 @@ void StatsAxis::setPos(QPointF pos)
 			tick.item->setLine(x, y, x, y + axisTickSizeHorizontal);
 		}
 		setLine(zeroOnScreen, y, zeroOnScreen + size, y);
+		if (title)
+			title->setPos(zeroOnScreen + (size - title->boundingRect().width()) / 2.0,
+				      labelY + QFontMetrics(labelFont).height() + axisTitleSpaceHorizontal);
 	} else {
 		double fontHeight = QFontMetrics(labelFont).height();
 		zeroOnScreen = pos.y();
@@ -178,12 +195,18 @@ void StatsAxis::setPos(QPointF pos)
 			double y = toScreen(tick.pos);
 			tick.item->setLine(x, y, x - axisTickSizeVertical, y);
 		}
+		// This is very confusing: even though we need the height of the title, the correct
+		// size is stored in boundingRect().width(). Presumably because the item is rotated
+		// by -90°. Apparently, the boundingRect is in item-local coordinates?
+		if (title)
+			title->setPos(labelX - labelWidth - QFontMetrics(labelFont).height() - axisTitleSpaceVertical,
+				      zeroOnScreen - (size - title->boundingRect().width()) / 2.0);
 		setLine(x, zeroOnScreen, x, zeroOnScreen - size);
 	}
 }
 
-ValueAxis::ValueAxis(QtCharts::QChart *chart, double min, double max, int decimals, bool horizontal) :
-	StatsAxis(chart, horizontal, false),
+ValueAxis::ValueAxis(QtCharts::QChart *chart, const QString &title, double min, double max, int decimals, bool horizontal) :
+	StatsAxis(chart, title, horizontal, false),
 	min(min), max(max), decimals(decimals)
 {
 }
@@ -237,8 +260,8 @@ void ValueAxis::updateLabels()
 	}
 }
 
-CountAxis::CountAxis(QtCharts::QChart *chart, int count, bool horizontal) :
-	ValueAxis(chart, 0.0, (double)count, 0, horizontal),
+CountAxis::CountAxis(QtCharts::QChart *chart, const QString &title, int count, bool horizontal) :
+	ValueAxis(chart, title, 0.0, (double)count, 0, horizontal),
 	count(count)
 {
 }
@@ -290,8 +313,8 @@ void CountAxis::updateLabels()
 	}
 }
 
-CategoryAxis::CategoryAxis(QtCharts::QChart *chart, const std::vector<QString> &labelsIn, bool horizontal) :
-	StatsAxis(chart, horizontal, true)
+CategoryAxis::CategoryAxis(QtCharts::QChart *chart, const QString &title, const std::vector<QString> &labelsIn, bool horizontal) :
+	StatsAxis(chart, title, horizontal, true)
 {
 	labels.reserve(labelsIn.size());
 	ticks.reserve(labelsIn.size() + 1);
@@ -309,8 +332,8 @@ void CategoryAxis::updateLabels()
 {
 }
 
-HistogramAxis::HistogramAxis(QtCharts::QChart *chart, std::vector<HistogramAxisEntry> bins, bool horizontal) :
-	StatsAxis(chart, horizontal, false),
+HistogramAxis::HistogramAxis(QtCharts::QChart *chart, const QString &title, std::vector<HistogramAxisEntry> bins, bool horizontal) :
+	StatsAxis(chart, title, horizontal, false),
 	bin_values(std::move(bins))
 {
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
@@ -498,7 +521,7 @@ static std::vector<HistogramAxisEntry> timeRangeToBins(double from, double to)
 	return res;
 }
 
-DateAxis::DateAxis(QtCharts::QChart *chart, double from, double to, bool horizontal) :
-	HistogramAxis(chart, timeRangeToBins(from, to), horizontal)
+DateAxis::DateAxis(QtCharts::QChart *chart, const QString &title, double from, double to, bool horizontal) :
+	HistogramAxis(chart, title, timeRangeToBins(from, to), horizontal)
 {
 }

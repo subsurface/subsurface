@@ -31,7 +31,7 @@ public:
 	double toScreen(double) const;
 	double toValue(double) const;
 protected:
-	StatsAxis(QtCharts::QChart *chart, bool horizontal, bool labelsBetweenTicks);
+	StatsAxis(QtCharts::QChart *chart, const QString &title, bool horizontal, bool labelsBetweenTicks);
 	QtCharts::QChart *chart;
 
 	struct Label {
@@ -56,14 +56,18 @@ protected:
 	bool labelsBetweenTicks;	// When labels are between ticks, they can be moved closer to the axis
 
 	QFont labelFont, titleFont;
+	std::unique_ptr<QGraphicsSimpleTextItem> title;
 	double size;			// width for horizontal, height for vertical
 	double zeroOnScreen;
 	double min, max;
+	double labelWidth;		// Maximum width of labels
+private:
+	double titleSpace() const;	// Space needed for title
 };
 
 class ValueAxis : public StatsAxis {
 public:
-	ValueAxis(QtCharts::QChart *chart, double min, double max, int decimals, bool horizontal);
+	ValueAxis(QtCharts::QChart *chart, const QString &title, double min, double max, int decimals, bool horizontal);
 private:
 	double min, max;
 	int decimals;
@@ -72,7 +76,7 @@ private:
 
 class CountAxis : public ValueAxis {
 public:
-	CountAxis(QtCharts::QChart *chart, int count, bool horizontal);
+	CountAxis(QtCharts::QChart *chart, const QString &title, int count, bool horizontal);
 private:
 	int count;
 	void updateLabels() override;
@@ -80,7 +84,7 @@ private:
 
 class CategoryAxis : public StatsAxis {
 public:
-	CategoryAxis(QtCharts::QChart *chart, const std::vector<QString> &labels, bool horizontal);
+	CategoryAxis(QtCharts::QChart *chart, const QString &title, const std::vector<QString> &labels, bool horizontal);
 private:
 	void updateLabels();
 };
@@ -93,7 +97,7 @@ struct HistogramAxisEntry {
 
 class HistogramAxis : public StatsAxis {
 public:
-	HistogramAxis(QtCharts::QChart *chart, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
+	HistogramAxis(QtCharts::QChart *chart, const QString &title, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
 private:
 	void updateLabels() override;
 	std::vector<HistogramAxisEntry> bin_values;
@@ -102,7 +106,7 @@ private:
 
 class DateAxis : public HistogramAxis {
 public:
-	DateAxis(QtCharts::QChart *chart, double from, double to, bool horizontal);
+	DateAxis(QtCharts::QChart *chart, const QString &title, double from, double to, bool horizontal);
 };
 
 #endif
