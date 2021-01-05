@@ -740,7 +740,6 @@
  </customwidgets>
  <resources>
   <include location="../subsurface.qrc"/>
-  <include location="../subsurface.qrc"/>
  </resources>
  <connections/>
 </ui>
