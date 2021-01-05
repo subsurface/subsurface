@@ -134,9 +134,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	ccrsensor2GasItem(createPPGas(DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-#ifndef SUBSURFACE_MOBILE
 	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, this)),
 	decoModelParameters(new DiveTextItem()),
+#ifndef SUBSURFACE_MOBILE
 	heartBeatAxis(new DiveCartesianAxis(this)),
 	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1)),
 	percentageAxis(new DiveCartesianAxis(this)),
@@ -239,9 +239,9 @@ void ProfileWidget2::addItemsToScene()
 	diveComputerText->setData(SUBSURFACE_OBJ_DATA, SUBSURFACE_OBJ_DC_TEXT);
 	scene()->addItem(diveComputerText);
 	scene()->addItem(tankItem);
+	scene()->addItem(decoModelParameters);
 #ifndef SUBSURFACE_MOBILE
 	scene()->addItem(toolTipItem);
-	scene()->addItem(decoModelParameters);
 	scene()->addItem(percentageAxis);
 	scene()->addItem(heartBeatAxis);
 	scene()->addItem(rulerItem);
@@ -312,12 +312,13 @@ void ProfileWidget2::setupItemOnScene()
 
 #ifndef SUBSURFACE_MOBILE
 	rulerItem->setAxis(timeAxis, profileYAxis);
-
+#endif
 	// show the deco model parameters at the top in the center
 	decoModelParameters->setY(0);
 	decoModelParameters->setX(50);
 	decoModelParameters->setBrush(getColor(PRESSURE_TEXT));
 	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
+#ifndef SUBSURFACE_MOBILE
 	for (int i = 0; i < 16; i++) {
 		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, this);
 		allTissues.append(tissueItem);
@@ -519,10 +520,9 @@ void ProfileWidget2::resetZoom()
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPictures, bool instant)
 {
-#ifndef SUBSURFACE_MOBILE
 	QElapsedTimer measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
-#else
+#ifdef SUBSURFACE_MOBILE
 	Q_UNUSED(doClearPictures);
 #endif
 	if (currentState != ADD && currentState != PLAN) {
@@ -540,11 +540,12 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 
 		// this copies the dive and makes copies of all the relevant additional data
 		copy_dive(d, &displayed_dive);
-#ifndef SUBSURFACE_MOBILE
+
 		if (decoMode() == VPMB)
 			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.vpmb_conservatism));
 		else
 			decoModelParameters->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
+#ifndef SUBSURFACE_MOBILE
 	} else {
 		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 		plannerModel->createTemporaryPlan();
@@ -806,12 +807,13 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 
 	// OK, how long did this take us? Anything above the second is way too long,
 	// so if we are calculation TTS / NDL then let's force that off.
-#ifndef SUBSURFACE_MOBILE
-	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
+	qint64 elapsedTime = measureDuration.elapsed();
+	if (verbose)
+		qDebug() << "Profile calculation for dive " << d->number << "took" << elapsedTime << "ms" << " -- calculated ceiling preference is" << prefs.calcceiling;
+	if (elapsedTime > 1000 && prefs.calcndltts) {
 		qPrefTechnicalDetails::set_calcndltts(false);
 		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
-#endif
 }
 
 void ProfileWidget2::actionRequestedReplot(bool)
@@ -1090,11 +1092,11 @@ void ProfileWidget2::setEmptyState()
 	ccrsensor2GasItem->setVisible(false);
 	ccrsensor3GasItem->setVisible(false);
 	ocpo2GasItem->setVisible(false);
+	decoModelParameters->setVisible(false);
+	diveCeiling->setVisible(false);
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->clearPlotInfo();
 	toolTipItem->setVisible(false);
-	diveCeiling->setVisible(false);
-	decoModelParameters->setVisible(false);
 	rulerItem->setVisible(false);
 	ambPressureItem->setVisible(false);
 	gflineItem->setVisible(false);
@@ -1208,9 +1210,10 @@ void ProfileWidget2::setProfileState()
 	ocpo2GasItem->setVisible(current_dive && (current_dc->divemode == PSCR) && prefs.show_scr_ocpo2);
 
 	heartBeatItem->setVisible(prefs.hrgraph);
+#endif
 	diveCeiling->setVisible(prefs.calcceiling);
 	decoModelParameters->setVisible(prefs.calcceiling);
-
+#ifndef SUBSURFACE_MOBILE
 	if (prefs.calcalltissues) {
 		Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
 			tissue->setVisible(true);
@@ -1275,10 +1278,8 @@ void ProfileWidget2::setAddState()
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
 	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
-#ifndef SUBSURFACE_MOBILE
 	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
 	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
-#endif
 	/* show the same stuff that the profile shows. */
 	currentState = ADD; /* enable the add state. */
 	diveCeiling->setVisible(true);

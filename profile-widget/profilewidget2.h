@@ -209,9 +209,9 @@ private:
 	PartialPressureGasItem *ccrsensor2GasItem;
 	PartialPressureGasItem *ccrsensor3GasItem;
 	PartialPressureGasItem *ocpo2GasItem;
-#ifndef SUBSURFACE_MOBILE
 	DiveCalculatedCeiling *diveCeiling;
 	DiveTextItem *decoModelParameters;
+#ifndef SUBSURFACE_MOBILE
 	QList<DiveCalculatedTissue *> allTissues;
 	DiveCartesianAxis *heartBeatAxis;
 	DiveHeartrateItem *heartBeatItem;
