@@ -47,7 +47,6 @@ enum def_file_behavior {
 
 typedef struct {
 	bool dont_check_for_updates;
-	bool dont_check_exists;
 	const char *last_version_used;
 	int next_check;
 } update_manager_prefs_t;

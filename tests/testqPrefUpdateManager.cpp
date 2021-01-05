@@ -22,14 +22,12 @@ void TestQPrefUpdateManager::test_struct_get()
 	auto tst = qPrefUpdateManager::instance();
 
 	prefs.update_manager.dont_check_for_updates = true;
-	prefs.update_manager.dont_check_exists = true;
 	prefs.update_manager.last_version_used = copy_qstring("last_version");
 	prefs.update_manager.next_check = QDate::fromString("11/09/1957", "dd/MM/yyyy").toJulianDay();
 
 	QCOMPARE(tst->dont_check_for_updates(), true);
-	QCOMPARE(tst->dont_check_exists(), true);
 	QCOMPARE(tst->last_version_used(), QString("last_version"));
-	QCOMPARE(tst->next_check(), QDate::fromString("11/09/1957", "dd/MM/yyyy")); 
+	QCOMPARE(tst->next_check(), QDate::fromString("11/09/1957", "dd/MM/yyyy"));
 }
 
 void TestQPrefUpdateManager::test_set_struct()
@@ -39,15 +37,13 @@ void TestQPrefUpdateManager::test_set_struct()
 	auto tst = qPrefUpdateManager::instance();
 
 	tst->set_dont_check_for_updates(false);
-	tst->set_dont_check_exists(false);
 	tst->set_last_version_used("last_version2");
-	tst->set_next_check(QDate::fromString("11/09/1957", "dd/MM/yyyy")); 
+	tst->set_next_check(QDate::fromString("11/09/1957", "dd/MM/yyyy"));
 	tst->set_uuidString("uuid");
 
 	QCOMPARE(prefs.update_manager.dont_check_for_updates, false);
-	QCOMPARE(prefs.update_manager.dont_check_exists, false);
 	QCOMPARE(QString(prefs.update_manager.last_version_used), QString("last_version2"));
-	QCOMPARE(QDate::fromJulianDay(prefs.update_manager.next_check), QDate::fromString("11/09/1957", "dd/MM/yyyy")); 
+	QCOMPARE(QDate::fromJulianDay(prefs.update_manager.next_check), QDate::fromString("11/09/1957", "dd/MM/yyyy"));
 	QCOMPARE(tst->uuidString(), QString("uuid"));
 }
 
@@ -59,28 +55,22 @@ void TestQPrefUpdateManager::test_set_load_struct()
 
 	// secure set_ stores on disk
 	prefs.update_manager.dont_check_for_updates = true;
-	prefs.update_manager.dont_check_exists = true;
 	prefs.update_manager.next_check = 100;
 
 	tst->set_dont_check_for_updates(false);
-	tst->set_dont_check_exists(false);
 	tst->set_last_version_used("last_version2");
-	tst->set_next_check(QDate::fromString("11/09/1957", "dd/MM/yyyy")); 
+	tst->set_next_check(QDate::fromString("11/09/1957", "dd/MM/yyyy"));
 	tst->set_uuidString("uuid2");
 
 	prefs.update_manager.dont_check_for_updates = true;
-	prefs.update_manager.dont_check_exists = true;
 	prefs.update_manager.last_version_used = copy_qstring("last_version");
 	prefs.update_manager.next_check = 1000;
 
 	tst->load();
 	QCOMPARE(prefs.update_manager.dont_check_for_updates, false);
 	QCOMPARE(QString(prefs.update_manager.last_version_used), QString("last_version2"));
-	QCOMPARE(QDate::fromJulianDay(prefs.update_manager.next_check), QDate::fromString("11/09/1957", "dd/MM/yyyy")); 
+	QCOMPARE(QDate::fromJulianDay(prefs.update_manager.next_check), QDate::fromString("11/09/1957", "dd/MM/yyyy"));
 	QCOMPARE(tst->uuidString(), QString("uuid2"));
-
-	// dont_check_exists is NOT stored on disk
-	QCOMPARE(prefs.update_manager.dont_check_exists, true);
 }
 
 void TestQPrefUpdateManager::test_struct_disk()
@@ -90,13 +80,11 @@ void TestQPrefUpdateManager::test_struct_disk()
 	auto tst = qPrefUpdateManager::instance();
 
 	prefs.update_manager.dont_check_for_updates = true;
-	prefs.update_manager.dont_check_exists = true;
 	prefs.update_manager.last_version_used = copy_qstring("last_version");
 	prefs.update_manager.next_check = QDate::fromString("11/09/1957", "dd/MM/yyyy").toJulianDay();
 
 	tst->sync();
 	prefs.update_manager.dont_check_for_updates = false;
-	prefs.update_manager.dont_check_exists = false;
 	prefs.update_manager.last_version_used = copy_qstring("");
 	prefs.update_manager.next_check = 1000;
 
@@ -104,9 +92,6 @@ void TestQPrefUpdateManager::test_struct_disk()
 	QCOMPARE(tst->dont_check_for_updates(), true);
 	QCOMPARE(tst->last_version_used(), QString("last_version"));
 	QCOMPARE(tst->next_check(), QDate::fromString("11/09/1957", "dd/MM/yyyy"));
-
-	// dont_check_exists is NOT stored on disk
-	QCOMPARE(tst->dont_check_exists(), false);
 }
 
 void TestQPrefUpdateManager::test_multiple()
@@ -115,13 +100,10 @@ void TestQPrefUpdateManager::test_multiple()
 
 	prefs.update_manager.dont_check_for_updates = false;
 
-	prefs.update_manager.dont_check_exists = false;
 	auto tst = qPrefUpdateManager::instance();
 
 	QCOMPARE(tst->dont_check_for_updates(), qPrefUpdateManager::dont_check_for_updates());
 	QCOMPARE(tst->dont_check_for_updates(), false);
-	QCOMPARE(tst->dont_check_exists(), qPrefUpdateManager::dont_check_exists());
-	QCOMPARE(qPrefUpdateManager::dont_check_exists(), false);
 }
 
 void TestQPrefUpdateManager::test_next_check()
@@ -131,7 +113,7 @@ void TestQPrefUpdateManager::test_next_check()
 	prefs.update_manager.next_check = QDate::fromString("11/09/1957", "dd/MM/yyyy").toJulianDay();
 	prefs.update_manager.next_check++;
 
-	QCOMPARE(tst->next_check(), QDate::fromString("12/09/1957", "dd/MM/yyyy")); 
+	QCOMPARE(tst->next_check(), QDate::fromString("12/09/1957", "dd/MM/yyyy"));
 }
 
 #define TEST(METHOD, VALUE)      \
@@ -166,29 +148,24 @@ void TestQPrefUpdateManager::test_oldPreferences()
 void TestQPrefUpdateManager::test_signals()
 {
 	QSignalSpy spy1(qPrefUpdateManager::instance(), &qPrefUpdateManager::dont_check_for_updatesChanged);
-	QSignalSpy spy2(qPrefUpdateManager::instance(), &qPrefUpdateManager::dont_check_existsChanged);
 	QSignalSpy spy3(qPrefUpdateManager::instance(), &qPrefUpdateManager::last_version_usedChanged);
 	QSignalSpy spy4(qPrefUpdateManager::instance(), &qPrefUpdateManager::next_checkChanged);
 	QSignalSpy spy5(qPrefUpdateManager::instance(), &qPrefUpdateManager::uuidStringChanged);
 
 	prefs.update_manager.dont_check_for_updates = true;
 	qPrefUpdateManager::set_dont_check_for_updates(false);
-	prefs.update_manager.dont_check_exists = true;
-	qPrefUpdateManager::set_dont_check_exists(false);
 	qPrefUpdateManager::set_last_version_used("signal last_version2");
-	qPrefUpdateManager::set_next_check(QDate::fromString("11/09/1967", "dd/MM/yyyy")); 
+	qPrefUpdateManager::set_next_check(QDate::fromString("11/09/1967", "dd/MM/yyyy"));
 	qPrefUpdateManager::set_uuidString("signal uuid");
 
 	QCOMPARE(spy1.count(), 1);
-	QCOMPARE(spy2.count(), 1);
 	QCOMPARE(spy3.count(), 1);
 	QCOMPARE(spy4.count(), 1);
 	QCOMPARE(spy5.count(), 1);
 
 	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
-	QVERIFY(spy2.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy3.takeFirst().at(0).toString() == "signal last_version2");
-	QVERIFY(spy4.takeFirst().at(0).toDate() == QDate::fromString("11/09/1967", "dd/MM/yyyy")); 
+	QVERIFY(spy4.takeFirst().at(0).toDate() == QDate::fromString("11/09/1967", "dd/MM/yyyy"));
 	QVERIFY(spy5.takeFirst().at(0).toString() == "signal uuid");
 }
 

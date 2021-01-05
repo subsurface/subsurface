@@ -14,7 +14,6 @@ qPrefUpdateManager *qPrefUpdateManager::instance()
 	return self;
 }
 
-
 void qPrefUpdateManager::loadSync(bool doSync)
 {
 	disk_dont_check_for_updates(doSync);
@@ -25,21 +24,8 @@ void qPrefUpdateManager::loadSync(bool doSync)
 	}
 }
 
-
 HANDLE_PREFERENCE_BOOL_EXT(UpdateManager, "DontCheckForUpdates", dont_check_for_updates, update_manager.);
-
-void qPrefUpdateManager::set_dont_check_exists(bool value)
-{
-	if (value != prefs.update_manager.dont_check_exists) {
-		prefs.update_manager.dont_check_exists = value;
-		emit instance()->dont_check_existsChanged(value);
-	}
-	// DO NOT STORE ON DISK
-}
-
-
 HANDLE_PREFERENCE_TXT_EXT(UpdateManager, "LastVersionUsed", last_version_used, update_manager.);
-
 
 void qPrefUpdateManager::set_next_check(const QDate& value)
 {
