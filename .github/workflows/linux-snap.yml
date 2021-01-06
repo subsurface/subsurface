@@ -28,10 +28,35 @@ jobs:
         # Needed for version determination to work
         fetch-depth: 0
 
+    - name: Set up CCache
+      id: setup-ccache
+      run: |
+        sudo apt-get install ccache
+        ccache --max-size=2G
+        sg lxd -c '/snap/bin/lxc profile device add default ccache disk source=${HOME}/.ccache/ path=/root/.ccache'
+
+        # Patch snapcraft.yaml to enable ccache
+        patch -p1 < .github/workflows/linux-snap.patch
+
+        # Find common base between master and HEAD to use as cache key.
+        git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules origin master
+        echo "::set-output name=key::$( git merge-base origin/master ${{ github.sha }} )"
+
+    - name: CCache
+      uses: actions/cache@v2
+      with:
+        key: ccache-${{ runner.os }}-${{ steps.setup-ccache.outputs.key }}
+        restore-keys: |
+          ccache-${{ runner.os }}-
+        path: ~/.ccache/**
+
     - name: Build
       run: |
         # Build the `subsurface` part.
         sg lxd -c '/snap/bin/snapcraft build --use-lxd subsurface'
+
+    - name: Clear CCache stats
+      run: ccache --show-stats --zero-stats
 
     - name: Build and verify the snap
       id: build-snap
