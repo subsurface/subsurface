@@ -133,6 +133,7 @@ parts:
     - libcurl4-gnutls-dev
     - libftdi1-dev
     - libgit2-dev
+    - libqt5charts5-dev
     - libqt5svg5-dev
     - libqt5webkit5-dev
     - libsqlite3-dev
@@ -159,6 +160,7 @@ parts:
     - libftdi1-2
     - libgit2-26
     - libqt5bluetooth5
+    - libqt5charts5
     - libqt5concurrent5
     - libqt5core5a
     - libqt5gui5
