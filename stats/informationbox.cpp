@@ -40,11 +40,19 @@ void InformationBox::setPos(QPointF pos)
 	QRectF plotArea = chart->plotArea();
 
 	double x = pos.x() + distanceFromPointer;
-	if (x + width >= plotArea.right() && pos.x() - width >= plotArea.x())
-		x = pos.x() - width;
+	if (x + width >= plotArea.right()) {
+		if (pos.x() - width >= plotArea.x())
+			x = pos.x() - width;
+		else
+			x = pos.x() - width / 2.0;
+	}
 	double y = pos.y() + distanceFromPointer;
-	if (y + height >= plotArea.bottom() && pos.y() - height >= plotArea.y())
-		y = pos.y() - height;
+	if (y + height >= plotArea.bottom()) {
+		if (pos.y() - height >= plotArea.y())
+			y = pos.y() - height;
+		else
+			y = pos.y() - height / 2.0;
+	}
 
 	setRect(x, y, width, height);
 	double actY = y + 2.0 * informationBorder;
