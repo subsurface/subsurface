@@ -20,6 +20,7 @@ public:
 	virtual ~StatsAxis();
 	// Returns minimum and maximum of shown range, not of data points.
 	std::pair<double, double> minMax() const;
+	std::pair<double, double> minMaxScreen() const; // minimum and maximum in screen coordinates
 
 	double width() const;		// Only supported by vertical axes. Only valid after setSize().
 	double height() const;		// Only supported for horizontal axes. Always valid.

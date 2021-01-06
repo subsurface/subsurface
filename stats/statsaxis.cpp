@@ -52,6 +52,12 @@ std::pair<double, double> StatsAxis::minMax() const
 	return { min, max };
 }
 
+std::pair<double, double> StatsAxis::minMaxScreen() const
+{
+	return horizontal ? std::make_pair(zeroOnScreen, zeroOnScreen + size)
+			  : std::make_pair(zeroOnScreen, zeroOnScreen - size);
+}
+
 void StatsAxis::setRange(double minIn, double maxIn)
 {
 	min = minIn;

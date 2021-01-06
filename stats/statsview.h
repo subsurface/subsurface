@@ -106,17 +106,27 @@ private:
 		void updatePosition();
 	};
 
-	// A general line marker
-	struct LineMarker {
+	// A regression line
+	struct RegressionLine {
 		std::unique_ptr<QGraphicsLineItem> item;
 		StatsAxis *xAxis, *yAxis;
-		QPointF from, to; // In local coordinates
+		double a, b;			// y = ax + b
 		void updatePosition();
-		LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis);
+		RegressionLine(double a, double b, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis);
+	};
+
+	// A line marking median or mean in histograms
+	struct HistogramMarker {
+		std::unique_ptr<QGraphicsLineItem> item;
+		StatsAxis *xAxis, *yAxis;
+		double val;
+		bool horizontal;
+		void updatePosition();
+		HistogramMarker(double val, bool horizontal, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis);
 	};
 
 	void addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis);
-	void addHistogramMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
+	void addHistogramMarker(double pos, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
 
 	StatsState state;
 	QtCharts::QChart *chart;
@@ -126,7 +136,8 @@ private:
 	std::vector<std::unique_ptr<StatsSeries>> series;
 	std::unique_ptr<Legend> legend;
 	std::vector<QuartileMarker> quartileMarkers;
-	std::vector<LineMarker> lineMarkers;
+	std::vector<RegressionLine> regressionLines;
+	std::vector<HistogramMarker> histogramMarkers;
 	std::unique_ptr<QGraphicsSimpleTextItem> title;
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
