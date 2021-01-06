@@ -1,0 +1,44 @@
+--- a/snap/snapcraft.yaml
++++ b/snap/snapcraft.yaml
+@@ -32,6 +32,7 @@ parts:
+   googlemaps:
+     source: git://github.com/Subsurface/googlemaps.git
+     build-packages:
++    - ccache
+     - wget
+     override-pull: |
+       snapcraftctl pull
+@@ -75,6 +76,8 @@ parts:
+     plugin: qmake
+     options:
+     - INCLUDEPATH+=QtHeaders
++    - QMAKE_CC=ccache gcc
++    - QMAKE_CXX=ccache g++
+ 
+   desktop-qt5:
+     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+@@ -105,7 +108,11 @@ parts:
+     source: .
+     source-type: git
+     source-subdir: libdivecomputer
++    configflags:
++    - CC=ccache gcc
++    - CXX=ccache g++
+     build-packages:
++    - ccache
+     - libbluetooth-dev
+     - libhidapi-dev
+     - libusb-dev
+@@ -127,9 +134,12 @@ parts:
+     - -DLIBGIT2_DYNAMIC=ON
+     - -DFTDISUPPORT=ON
+     - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/lib/libdivecomputer.so
++    - -DCMAKE_C_COMPILER_LAUNCHER=ccache
++    - -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+     source-type: git
+     build-packages:
+     - build-essential
++    - ccache
+     - libcurl4-gnutls-dev
+     - libftdi1-dev
+     - libgit2-dev
