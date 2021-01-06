@@ -1,0 +1,54 @@
+name: Linux Snap
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  Snap:
+    runs-on: ubuntu-latest
+
+    env:
+      SNAPCRAFT_BUILD_INFO: 1
+
+    timeout-minutes: 60
+    steps:
+    - name: Install Snapcraft
+      uses: samuelmeuli/action-snapcraft@v1
+      with:
+        use_lxd: true
+
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        # Needed for version determination to work
+        fetch-depth: 0
+
+    - name: Build
+      run: |
+        # Build the `subsurface` part.
+        sg lxd -c '/snap/bin/snapcraft build --use-lxd subsurface'
+
+    - name: Build and verify the snap
+      id: build-snap
+      env:
+        SNAP_ENFORCE_RESQUASHFS: 0
+      run: |
+        # Actually build the snap.
+        sg lxd -c '/snap/bin/snapcraft --use-lxd'
+
+        sudo snap install review-tools
+        /snap/bin/review-tools.snap-review *.snap
+
+        echo "::set-output name=snap-file::$( ls *.snap )"
+
+    - name: Upload the snap
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ steps.build-snap.outputs.snap-file }}
+        path: ${{ steps.build-snap.outputs.snap-file }}
+        if-no-files-found: error
