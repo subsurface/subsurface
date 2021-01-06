@@ -14,8 +14,8 @@
 
 // Define most constants for horizontal and vertical axes for more flexibility.
 // Note: *Horizontal means that this is for the horizontal axis, so a vertical space.
-static const double axisWidth = 1.0;
-static const double axisTickWidth = 1.0;
+static const double axisWidth = 0.5;
+static const double axisTickWidth = 0.3;
 static const double axisTickSizeHorizontal = 6.0;
 static const double axisTickSizeVertical = 6.0;
 static const double axisLabelSpaceHorizontal = 2.0;	// Space between axis or ticks and labels
@@ -26,10 +26,12 @@ static const double axisTitleSpaceVertical = 2.0;	// Space between labels and ti
 StatsAxis::StatsAxis(QtCharts::QChart *chart, const QString &titleIn, bool horizontal, bool labelsBetweenTicks) :
 	QGraphicsLineItem(chart),
 	chart(chart), horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
-	labelFont(QFont()),	// make this configurable
-	titleFont(QFont(labelFont.family(), labelFont.pointSize(), QFont::Bold, false)), // same as label, but bold
 	size(1.0), zeroOnScreen(0.0), min(0.0), max(1.0), labelWidth(0.0)
 {
+	// use a Light version of the application fond for both labels and title
+	labelFont = QFont();
+	labelFont.setWeight(QFont::Light);
+	titleFont = labelFont;
 	setPen(QPen(axisColor, axisWidth));
 	setZValue(ZValues::axes);
 	if (!titleIn.isEmpty()) {

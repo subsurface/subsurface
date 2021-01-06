@@ -85,7 +85,7 @@ StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
 	}
 
 	QFont font;
-	titleFont = QFont(font.family(), font.pointSize(), QFont::Bold);	// Make configurable
+	titleFont = QFont(font.family(), font.pointSize(), QFont::Light);	// Make configurable
 }
 
 StatsView::~StatsView()
