@@ -125,7 +125,9 @@ void StatsView::plotAreaChanged(const QRectF &r)
 		series->updatePositions();
 	for (QuartileMarker &marker: quartileMarkers)
 		marker.updatePosition();
-	for (LineMarker &marker: lineMarkers)
+	for (RegressionLine &line: regressionLines)
+		line.updatePosition();
+	for (HistogramMarker &marker: histogramMarkers)
 		marker.updatePosition();
 	if (legend)
 		legend->resize();
@@ -211,7 +213,8 @@ void StatsView::reset()
 	legend.reset();
 	series.clear();
 	quartileMarkers.clear();
-	lineMarkers.clear();
+	regressionLines.clear();
+	histogramMarkers.clear();
 	chart->removeAllSeries();
 	grid.reset();
 	axes.clear();
@@ -716,37 +719,25 @@ void StatsView::QuartileMarker::updatePosition()
 		      x + quartileMarkerSize / 2.0, y);
 }
 
-StatsView::LineMarker::LineMarker(QPointF from, QPointF to, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
+StatsView::RegressionLine::RegressionLine(double a, double b, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
 	item(new QGraphicsLineItem(chart)),
 	xAxis(xAxis), yAxis(yAxis),
-	from(from), to(to)
+	a(a), b(b)
 {
 	item->setZValue(ZValues::chartFeatures);
 	item->setPen(pen);
-	updatePosition();
 }
 
-void StatsView::LineMarker::updatePosition()
+void StatsView::RegressionLine::updatePosition()
 {
 	if (!xAxis || !yAxis)
 		return;
-	double x1 = xAxis->toScreen(from.x());
-	double y1 = yAxis->toScreen(from.y());
-	double x2 = xAxis->toScreen(to.x());
-	double y2 = yAxis->toScreen(to.y());
-	item->setLine(x1, y1, x2, y2);
-}
-
-void StatsView::addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis)
-{
-	// Sanity check: line above or below chart
+	auto [minX, maxX] = xAxis->minMax();
+	auto [minY, maxY] = yAxis->minMax();
 	double y1 = a * minX + b;
 	double y2 = a * maxX + b;
-	if ((y1 <= minY && y2 <= minY) || (y1 >= maxY && y2 >= maxY))
-		return;
 
-	// If not fully inside drawing region, do clipping. With the check above this guarantees that a != 0,
-	// but owing to floating point imprecision, let's test again.
+	// If not fully inside drawing region, do clipping.
 	if ((y1 < minY || y1 > maxY || y2 < minY || y2 > maxY) && fabs(a) > 0.0001) {
 		// Intersections with y = minY and y = maxY lines
 		double intersect_x1 = (minY - b) / a;
@@ -756,14 +747,42 @@ void StatsView::addLinearRegression(double a, double b, double minX, double maxX
 		minX = std::max(minX, intersect_x1);
 		maxX = std::min(maxX, intersect_x2);
 	}
-	lineMarkers.emplace_back(QPointF(minX, a * minX + b), QPointF(maxX, a * maxX + b), QPen(Qt::red), chart, xAxis, yAxis);
+	item->setLine(xAxis->toScreen(minX), yAxis->toScreen(a * minX + b),
+		      xAxis->toScreen(maxX), yAxis->toScreen(a * maxX + b));
 }
 
-void StatsView::addHistogramMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis)
+StatsView::HistogramMarker::HistogramMarker(double val, bool horizontal, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
+	item(new QGraphicsLineItem(chart)),
+	xAxis(xAxis), yAxis(yAxis),
+	val(val), horizontal(horizontal)
 {
-	QPointF from = isHorizontal ? QPointF(low, pos) : QPointF(pos, low);
-	QPointF to = isHorizontal ? QPointF(high, pos) : QPointF(pos, high);
-	lineMarkers.emplace_back(from, to, pen, chart, xAxis, yAxis);
+	item->setZValue(ZValues::chartFeatures);
+	item->setPen(pen);
+}
+
+void StatsView::HistogramMarker::updatePosition()
+{
+	if (!xAxis || !yAxis)
+		return;
+	if (horizontal) {
+		double y = yAxis->toScreen(val);
+		auto [x1, x2] = xAxis->minMaxScreen();
+		item->setLine(x1, y, x2, y);
+	} else {
+		double x = xAxis->toScreen(val);
+		auto [y1, y2] = yAxis->minMaxScreen();
+		item->setLine(x, y1, x, y2);
+	}
+}
+
+void StatsView::addHistogramMarker(double pos, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis)
+{
+	histogramMarkers.emplace_back(pos, isHorizontal, pen, chart, xAxis, yAxis);
+}
+
+void StatsView::addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis)
+{
+	regressionLines.emplace_back(a, b, QPen(Qt::red), chart, xAxis, yAxis);
 }
 
 // Yikes, we get our data in different kinds of (bin, value) pairs.
@@ -812,7 +831,6 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	int total = getTotalCount(categoryBins);
 
 	StatsAxis *valAxis = createCountAxis(maxCategoryCount, isHorizontal);
-	double chartHeight = valAxis->minMax().second;
 
 	if (isHorizontal)
 		setAxes(valAxis, catAxis);
@@ -840,14 +858,14 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 			QPen meanPen(Qt::green);
 			meanPen.setWidth(2);
 			if (!std::isnan(mean))
-				addHistogramMarker(mean, 0.0, chartHeight, meanPen, isHorizontal, xAxis, yAxis);
+				addHistogramMarker(mean, meanPen, isHorizontal, xAxis, yAxis);
 		}
 		if (showMedian) {
 			double median = categoryVariable->quartiles(dives).q2;
 			QPen medianPen(Qt::red);
 			medianPen.setWidth(2);
 			if (!std::isnan(median))
-				addHistogramMarker(median, 0.0, chartHeight, medianPen, isHorizontal, xAxis, yAxis);
+				addHistogramMarker(median, medianPen, isHorizontal, xAxis, yAxis);
 		}
 	}
 }
