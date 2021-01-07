@@ -411,11 +411,20 @@ void HistogramAxis::updateLabels()
 		}
 	}
 	labels.reserve((bin_values.size() - first) / step + 1);
+	// Always add a tick at the beginning of the axis - this is
+	// important for the grid, which uses the ticks.
+	if (first != 0)
+		addTick(bin_values.front().value);
+	int last = first;
 	for (int i = first; i < (int)bin_values.size(); i += step) {
 		const auto &[name, value, recommended] = bin_values[i];
 		addLabel(name, value);
 		addTick(value);
+		last = i;
 	}
+	// Always add a tick at the end of the axis (see above).
+	if (last != (int)bin_values.size() - 1)
+		addTick(bin_values.back().value);
 }
 
 // Helper function to turn days since "Unix epoch" into a timestamp_t
