@@ -12,9 +12,7 @@
 #include <vector>
 #include <QGraphicsRectItem>
 
-namespace QtCharts {
-	class QAbstractAxis;
-}
+class QGraphicsScene;
 class InformationBox;
 class StatsVariable;
 
@@ -49,13 +47,13 @@ public:
 	// Note: this expects that all items are added with increasing pos
 	// and that no bar is inside another bar, i.e. lowerBound and upperBound
 	// are ordered identically.
-	BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+	BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, const QString &categoryName,
 		  const std::vector<CountItem> &items);
-	BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+	BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, const QString &categoryName, const StatsVariable *valueVariable,
 		  const std::vector<ValueItem> &items);
-	BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+	BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, bool stacked, const QString &categoryName, const StatsVariable *valueVariable,
 		  std::vector<QString> valueBinNames,
 		  const std::vector<MultiItem> &items);
@@ -65,7 +63,7 @@ public:
 	bool hover(QPointF pos) override;
 	void unhighlight() override;
 private:
-	BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+	BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, bool stacked, const QString &categoryName, const StatsVariable *valueVariable,
 		  std::vector<QString> valueBinNames);
 
@@ -85,7 +83,7 @@ private:
 		std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> items;
 		double totalWidth, totalHeight; // Size of the item
 		bool isOutside; // Is shown outside of bar
-		BarLabel(QtCharts::QChart *chart, const std::vector<QString> &labels, int bin_nr, int binCount);
+		BarLabel(QGraphicsScene *scene, const std::vector<QString> &labels, int bin_nr, int binCount);
 		void setVisible(bool visible);
 		void updatePosition(bool horizontal, bool center, const QRectF &rect, int bin_nr, int binCount);
 		void highlight(bool highlight, int bin_nr, int binCount);
@@ -109,7 +107,7 @@ private:
 		const QString binName;
 		StatsOperationResults res;
 		int total;
-		Item(QtCharts::QChart *chart, BarSeries *series, double lowerBound, double upperBound,
+		Item(QGraphicsScene *scene, BarSeries *series, double lowerBound, double upperBound,
 		     std::vector<SubItem> subitems,
 		     const QString &binName, const StatsOperationResults &res, int total, bool horizontal,
 		     bool stacked, int binCount);

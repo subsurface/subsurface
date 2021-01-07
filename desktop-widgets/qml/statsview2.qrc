@@ -1,5 +1,5 @@
 <RCC>
 	<qresource prefix="/qml">
-		<file>statsview.qml</file>
+		<file>statsview2.qml</file>
 	</qresource>
 </RCC>

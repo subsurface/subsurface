@@ -5,6 +5,7 @@
 
 #include <QColor>
 
+inline const QColor backgroundColor(Qt::white);
 inline const QColor fillColor(0x44, 0x76, 0xaa);
 inline const QColor borderColor(0x66, 0xb2, 0xff);
 inline const QColor highlightedColor(Qt::yellow);

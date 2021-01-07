@@ -2,8 +2,8 @@
 #include "statsseries.h"
 #include "statsaxis.h"
 
-StatsSeries::StatsSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
-	chart(chart), xAxis(xAxis), yAxis(yAxis)
+StatsSeries::StatsSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
+	scene(scene), xAxis(xAxis), yAxis(yAxis)
 {
 }
 

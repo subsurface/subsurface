@@ -4,8 +4,8 @@
 #include "zvalues.h"
 
 #include <QFontMetrics>
+#include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
-#include <QGraphicsWidget>
 #include <QPen>
 
 static const double legendBorderSize = 2.0;
@@ -16,8 +16,8 @@ static const double legendInternalBorderSize = 2.0;
 static const QColor legendColor(0x00, 0x8e, 0xcc, 192); // Note: fourth argument is opacity
 static const QColor legendBorderColor(Qt::black);
 
-Legend::Legend(QGraphicsWidget *chart, const std::vector<QString> &names) :
-	RoundRectItem(legendBoxBorderRadius, chart), chart(chart),
+Legend::Legend(const std::vector<QString> &names) :
+	RoundRectItem(legendBoxBorderRadius),
 	displayedItems(0), width(0.0), height(0.0)
 {
 	setZValue(ZValues::legend);
@@ -40,8 +40,6 @@ Legend::Legend(QGraphicsWidget *chart, const std::vector<QString> &names) :
 	}
 	setPen(QPen(legendBorderColor, legendBorderSize));
 	setBrush(QBrush(legendColor));
-
-	resize(); // Draw initial legend
 }
 
 Legend::Entry::Entry(const QString &name, int idx, int numBins, QGraphicsItem *parent) :
@@ -70,7 +68,7 @@ void Legend::resize()
 	if (entries.empty())
 		return hide();
 
-	QSizeF size = chart->size();
+	QSizeF size = scene()->sceneRect().size();
 
 	// Silly heuristics: make the legend at most half as high and half as wide as the chart.
 	// Not sure if that makes sense - this might need some optimization.
@@ -110,7 +108,7 @@ void Legend::updatePosition()
 	if (displayedItems <= 0)
 		return hide();
 	// For now, place the legend in the top right corner.
-	QPointF pos(chart->size().width() - width - 10.0, 10.0);
+	QPointF pos(scene()->sceneRect().width() - width - 10.0, 10.0);
 	setRect(QRectF(pos, QSizeF(width, height)));
 	for (int i = 0; i < displayedItems; ++i) {
 		QPointF itemPos = pos + entries[i].pos;

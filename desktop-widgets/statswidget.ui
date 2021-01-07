@@ -105,7 +105,7 @@
     </layout>
    </item>
    <item>
-    <widget class="StatsView" name="stats">
+    <widget class="QQuickWidget" name="stats">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -116,14 +116,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>StatsView</class>
-   <extends>QQuickWidget</extends>
-   <header>stats/statsview.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../subsurface.qrc"/>
  </resources>

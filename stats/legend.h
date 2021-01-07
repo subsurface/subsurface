@@ -8,11 +8,12 @@
 #include <memory>
 #include <vector>
 
+class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
 
 class Legend : public RoundRectItem {
 public:
-	Legend(QGraphicsWidget *chart, const std::vector<QString> &names);
+	Legend(const std::vector<QString> &names);
 	void hover(QPointF pos);
 	void resize(); // called when the chart size changes.
 private:
@@ -24,7 +25,6 @@ private:
 		double width;
 		Entry(const QString &name, int idx, int numBins, QGraphicsItem *parent);
 	};
-	QGraphicsWidget *chart;
 	int displayedItems;
 	double width;
 	double height;

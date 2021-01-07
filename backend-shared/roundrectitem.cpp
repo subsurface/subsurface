@@ -7,6 +7,10 @@ RoundRectItem::RoundRectItem(double radius, QGraphicsItem *parent) : QGraphicsRe
 {
 }
 
+RoundRectItem::RoundRectItem(double radius) : RoundRectItem(radius, nullptr)
+{
+}
+
 void RoundRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
 	painter->save();

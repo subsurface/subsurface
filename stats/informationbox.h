@@ -10,19 +10,16 @@
 #include <memory>
 #include <QFont>
 
-namespace QtCharts {
-	class QChart;
-}
 struct dive;
+class QGraphicsScene;
 
 // Information window showing data of highlighted dive
 struct InformationBox : RoundRectItem {
-	InformationBox(QtCharts::QChart *chart);
+	InformationBox();
 	void setText(const std::vector<QString> &text, QPointF pos);
 	void setPos(QPointF pos);
 	int recommendedMaxLines() const;
 private:
-	QtCharts::QChart *chart;
 	QFont font; // For future specialization.
 	double width, height;
 	void addLine(const QString &s);

@@ -9,6 +9,7 @@
 #include <memory>
 
 class QCheckBox;
+class StatsView;
 
 class StatsWidget : public QWidget {
 	Q_OBJECT
@@ -27,6 +28,7 @@ slots:
 private:
 	Ui::StatsWidget ui;
 	StatsState state;
+	StatsView *view;
 	void updateUi();
 	std::vector<std::unique_ptr<QCheckBox>> features;
 

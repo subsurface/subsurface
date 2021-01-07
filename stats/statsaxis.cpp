@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsaxis.h"
 #include "statscolors.h"
+#include "statshelper.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
 #include "zvalues.h"
@@ -23,9 +24,8 @@ static const double axisLabelSpaceVertical = 2.0;	// Space between axis or ticks
 static const double axisTitleSpaceHorizontal = 2.0;	// Space between labels and title
 static const double axisTitleSpaceVertical = 2.0;	// Space between labels and title
 
-StatsAxis::StatsAxis(QtCharts::QChart *chart, const QString &titleIn, bool horizontal, bool labelsBetweenTicks) :
-	QGraphicsLineItem(chart),
-	chart(chart), horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
+StatsAxis::StatsAxis(const QString &titleIn, bool horizontal, bool labelsBetweenTicks) :
+	horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
 	size(1.0), zeroOnScreen(0.0), min(0.0), max(1.0), labelWidth(0.0)
 {
 	// use a Light version of the application fond for both labels and title
@@ -35,7 +35,7 @@ StatsAxis::StatsAxis(QtCharts::QChart *chart, const QString &titleIn, bool horiz
 	setPen(QPen(axisColor, axisWidth));
 	setZValue(ZValues::axes);
 	if (!titleIn.isEmpty()) {
-		title = std::make_unique<QGraphicsSimpleTextItem>(titleIn, chart);
+		title.reset(new QGraphicsSimpleTextItem(titleIn, this));
 		title->setFont(titleFont);
 		title->setBrush(darkLabelColor);
 		if (!horizontal)
@@ -114,8 +114,8 @@ double StatsAxis::height() const
 	       (labelsBetweenTicks ? 0.0 : axisTickSizeHorizontal);
 }
 
-StatsAxis::Label::Label(const QString &name, double pos, QtCharts::QChart *chart, const QFont &font) :
-	label(new QGraphicsSimpleTextItem(name, chart)),
+StatsAxis::Label::Label(const QString &name, double pos, QGraphicsScene *scene, const QFont &font) :
+	label(createItem<QGraphicsSimpleTextItem>(scene, name)),
 	pos(pos)
 {
 	label->setBrush(QBrush(darkLabelColor));
@@ -125,11 +125,11 @@ StatsAxis::Label::Label(const QString &name, double pos, QtCharts::QChart *chart
 
 void StatsAxis::addLabel(const QString &label, double pos)
 {
-	labels.emplace_back(label, pos, chart, labelFont);
+	labels.emplace_back(label, pos, scene(), labelFont);
 }
 
-StatsAxis::Tick::Tick(double pos, QtCharts::QChart *chart) :
-	item(new QGraphicsLineItem(chart)),
+StatsAxis::Tick::Tick(double pos, QGraphicsScene *scene) :
+	item(createItemPtr<QGraphicsLineItem>(scene)),
 	pos(pos)
 {
 	item->setPen(QPen(axisColor, axisTickWidth));
@@ -138,7 +138,7 @@ StatsAxis::Tick::Tick(double pos, QtCharts::QChart *chart) :
 
 void StatsAxis::addTick(double pos)
 {
-	ticks.emplace_back(pos, chart);
+	ticks.emplace_back(pos, scene());
 }
 
 std::vector<double> StatsAxis::ticksPositions() const
@@ -220,8 +220,8 @@ void StatsAxis::setPos(QPointF pos)
 	}
 }
 
-ValueAxis::ValueAxis(QtCharts::QChart *chart, const QString &title, double min, double max, int decimals, bool horizontal) :
-	StatsAxis(chart, title, horizontal, false),
+ValueAxis::ValueAxis(const QString &title, double min, double max, int decimals, bool horizontal) :
+	StatsAxis(title, horizontal, false),
 	min(min), max(max), decimals(decimals)
 {
 }
@@ -275,8 +275,8 @@ void ValueAxis::updateLabels()
 	}
 }
 
-CountAxis::CountAxis(QtCharts::QChart *chart, const QString &title, int count, bool horizontal) :
-	ValueAxis(chart, title, 0.0, (double)count, 0, horizontal),
+CountAxis::CountAxis(const QString &title, int count, bool horizontal) :
+	ValueAxis(title, 0.0, (double)count, 0, horizontal),
 	count(count)
 {
 }
@@ -328,27 +328,31 @@ void CountAxis::updateLabels()
 	}
 }
 
-CategoryAxis::CategoryAxis(QtCharts::QChart *chart, const QString &title, const std::vector<QString> &labelsIn, bool horizontal) :
-	StatsAxis(chart, title, horizontal, true)
+CategoryAxis::CategoryAxis(const QString &title, const std::vector<QString> &labels, bool horizontal) :
+	StatsAxis(title, horizontal, true),
+	labelsText(labels)
 {
-	labels.reserve(labelsIn.size());
-	ticks.reserve(labelsIn.size() + 1);
-	double pos = 0.0;
-	addTick(-0.5);
-	for (const QString &s: labelsIn) {
-		addLabel(s, pos);
-		addTick(pos + 0.5);
-		pos += 1.0;
-	}
-	setRange(-0.5, static_cast<double>(labelsIn.size()) - 0.5);
+	setRange(-0.5, static_cast<double>(labels.size()) + 0.5);
 }
 
 void CategoryAxis::updateLabels()
 {
+	// TODO: paint ellipses if space too small
+	labels.clear();
+	ticks.clear();
+	labels.reserve(labelsText.size());
+	ticks.reserve(labelsText.size() + 1);
+	double pos = 0.0;
+	addTick(-0.5);
+	for (const QString &s: labelsText) {
+		addLabel(s, pos);
+		addTick(pos + 0.5);
+		pos += 1.0;
+	}
 }
 
-HistogramAxis::HistogramAxis(QtCharts::QChart *chart, const QString &title, std::vector<HistogramAxisEntry> bins, bool horizontal) :
-	StatsAxis(chart, title, horizontal, false),
+HistogramAxis::HistogramAxis(const QString &title, std::vector<HistogramAxisEntry> bins, bool horizontal) :
+	StatsAxis(title, horizontal, false),
 	bin_values(std::move(bins))
 {
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
@@ -545,7 +549,7 @@ static std::vector<HistogramAxisEntry> timeRangeToBins(double from, double to)
 	return res;
 }
 
-DateAxis::DateAxis(QtCharts::QChart *chart, const QString &title, double from, double to, bool horizontal) :
-	HistogramAxis(chart, title, timeRangeToBins(from, to), horizontal)
+DateAxis::DateAxis(const QString &title, double from, double to, bool horizontal) :
+	HistogramAxis(title, timeRangeToBins(from, to), horizontal)
 {
 }

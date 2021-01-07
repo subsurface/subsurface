@@ -4,6 +4,7 @@
 
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
+#include "stats/statsview.h"
 #include "core/qt-gui.h"
 #include "core/settings/qPref.h"
 #include "core/ssrf.h"
@@ -213,4 +214,5 @@ static void register_qml_types(QQmlEngine *engine)
 
 	register_qml_type<MapWidgetHelper>("MapWidgetHelper");
 	register_qml_type<MapLocationModel>("MapLocationModel");
+	register_qml_type<StatsView>("StatsView");
 }

@@ -14,10 +14,11 @@
 #include <QGraphicsRectItem>
 
 class InformationBox;
+class QGraphicsScene;
 
 class BoxSeries : public StatsSeries {
 public:
-	BoxSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+	BoxSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		  const QString &variable, const QString &unit, int decimals);
 	~BoxSeries();
 
@@ -44,7 +45,7 @@ private:
 		double lowerBound, upperBound;
 		StatsQuartiles q;
 		QString binName;
-		Item(QtCharts::QChart *chart, BoxSeries *series, double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName);
+		Item(QGraphicsScene *scene, BoxSeries *series, double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName);
 		void updatePosition(BoxSeries *series);
 		void highlight(bool highlight);
 	};
