@@ -301,7 +301,7 @@ endif()
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES} ${LIBMTP_LIBRARIES})
 if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
-	qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc stats/qml/statsview.qrc)
+	qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc desktop-widgets/qml/statsview2.qrc)
 endif()
 
 # hack to build successfully on LGTM

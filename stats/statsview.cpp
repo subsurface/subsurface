@@ -6,7 +6,9 @@
 #include "pieseries.h"
 #include "scatterseries.h"
 #include "statsaxis.h"
+#include "statscolors.h"
 #include "statsgrid.h"
+#include "statshelper.h"
 #include "statsstate.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
@@ -15,12 +17,35 @@
 #include "core/subsurface-qt/divelistnotifier.h"
 
 #include <cmath>
-#include <QQuickItem>
-#include <QAbstractSeries>
-#include <QChart>
+#include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsSimpleTextItem>
-#include <QLocale>
+#include <QQuickItem>
+#include <QQuickWindow>
+#include <QSGImageNode>
+#include <QSGTexture>
+
+QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
+{
+	// The QtQuick drawing interface is utterly bizzare with a distinct 1980ies-style memory management.
+	// This is just a copy of what is found in Qt's documentation.
+	QSGImageNode *n = static_cast<QSGImageNode *>(oldNode);
+	if (!n)
+		n = window()->createImageNode();
+
+	QRectF rect = boundingRect();
+	if (plotRect != rect) {
+		plotRect = rect;
+		plotAreaChanged(plotRect.size());
+	}
+
+	img->fill(backgroundColor);
+	scene.render(painter.get());
+	texture.reset(window()->createTextureFromImage(*img, QQuickWindow::TextureIsOpaque));
+	n->setTexture(texture.get());
+	n->setRect(rect);
+	return n;
+}
 
 // Constants that control the graph layouts
 static const QColor quartileMarkerColor(Qt::red);
@@ -28,76 +53,45 @@ static const double quartileMarkerSize = 15.0;
 static const double sceneBorder = 5.0;			// Border between scene edges and statitistics view
 static const double titleBorder = 2.0;			// Border between title and chart
 
-static const QUrl urlStatsView = QUrl(QStringLiteral("qrc:/qml/statsview.qml"));
-
-// We use QtQuick's ChartView so that we can show the statistics on mobile.
-// However, accessing the ChartView from C++ is maliciously cumbersome and
-// the full QChart interface is not exported. Fortunately, the interface
-// leaks the QChart object: We can create a dummy-series and access the chart
-// object via the chart() accessor function. By creating a "PieSeries", the
-// ChartView does not automatically add axes.
-static QtCharts::QChart *getChart(QQuickItem *item)
-{
-	QtCharts::QAbstractSeries *abstract_series;
-	if (!item)
-		return nullptr;
-	if (!QMetaObject::invokeMethod(item, "createSeries", Qt::AutoConnection,
-				       Q_RETURN_ARG(QtCharts::QAbstractSeries *, abstract_series),
-				       Q_ARG(int, QtCharts::QAbstractSeries::SeriesTypePie),
-				       Q_ARG(QString, QString()))) {
-		qWarning("Couldn't call createSeries()");
-		return nullptr;
-	}
-	QtCharts::QChart *res = abstract_series->chart();
-	res->removeSeries(abstract_series);
-	delete abstract_series;
-	return res;
-}
-
-bool StatsView::EventFilter::eventFilter(QObject *o, QEvent *event)
-{
-	if (event->type() == QEvent::GraphicsSceneHoverMove) {
-		QGraphicsSceneHoverEvent *hover = static_cast<QGraphicsSceneHoverEvent *>(event);
-		view->hover(hover->pos());
-		return true;
-	}
-	return QObject::eventFilter(o, event);
-}
-
-StatsView::StatsView(QWidget *parent) : QQuickWidget(parent),
+StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	highlightedSeries(nullptr),
 	xAxis(nullptr),
-	yAxis(nullptr),
-	eventFilter(this)
+	yAxis(nullptr)
 {
-	setResizeMode(QQuickWidget::SizeRootObjectToView);
-	// if we get a failure to load the QML file (e.g., when the QtCharts QML modules aren't found)
-	// the chart will be null
-	setSource(urlStatsView);
-	chart = getChart(rootObject());
-	if (chart) {
-		connect(chart, &QtCharts::QChart::plotAreaChanged, this, &StatsView::plotAreaChanged);
-		connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
+	setFlag(ItemHasContents, true);
 
-		chart->installEventFilter(&eventFilter);
-		chart->setAcceptHoverEvents(true);
-		chart->legend()->setVisible(false);
-	}
+	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
+
+	setAcceptHoverEvents(true);
 
 	QFont font;
 	titleFont = QFont(font.family(), font.pointSize(), QFont::Light);	// Make configurable
+}
+
+StatsView::StatsView() : StatsView(nullptr)
+{
 }
 
 StatsView::~StatsView()
 {
 }
 
-void StatsView::plotAreaChanged(const QRectF &r)
+void StatsView::plotAreaChanged(const QSizeF &s)
 {
-	double left = r.x() + sceneBorder;
-	double top = r.y() + sceneBorder;
-	double right = r.right() - sceneBorder;
-	double bottom = r.bottom() - sceneBorder;
+	// Make sure that image is at least one pixel wide / high, otherwise
+	// the painter starts acting up.
+	int w = std::max(1, static_cast<int>(floor(s.width())));
+	int h = std::max(1, static_cast<int>(floor(s.height())));
+	scene.setSceneRect(QRectF(0, 0, static_cast<double>(w), static_cast<double>(h)));
+	painter.reset();
+	img.reset(new QImage(w, h, QImage::Format_RGB32));
+	painter.reset(new QPainter(img.get()));
+	painter->setRenderHint(QPainter::Antialiasing);
+
+	double left = sceneBorder;
+	double top = sceneBorder;
+	double right = s.width() - sceneBorder;
+	double bottom = s.height() - sceneBorder;
 	const double minSize = 30.0;
 
 	if (title)
@@ -140,8 +134,13 @@ void StatsView::replotIfVisible()
 		plot(state);
 }
 
-void StatsView::hover(QPointF pos)
+void StatsView::hoverEnterEvent(QHoverEvent *)
 {
+}
+
+void StatsView::hoverMoveEvent(QHoverEvent *event)
+{
+	QPointF pos(event->pos());
 	for (auto &series: series) {
 		if (series->hover(pos)) {
 			if (series.get() != highlightedSeries) {
@@ -149,7 +148,7 @@ void StatsView::hover(QPointF pos)
 					highlightedSeries->unhighlight();
 				highlightedSeries = series.get();
 			}
-			return;
+			return update();
 		}
 	}
 
@@ -157,13 +156,14 @@ void StatsView::hover(QPointF pos)
 	if (highlightedSeries) {
 		highlightedSeries->unhighlight();
 		highlightedSeries = nullptr;
+		update();
 	}
 }
 
 template <typename T, class... Args>
 T *StatsView::createSeries(Args&&... args)
 {
-	T *res = new T(chart, xAxis, yAxis, std::forward<Args>(args)...);
+	T *res = new T(&scene, xAxis, yAxis, std::forward<Args>(args)...);
 	series.emplace_back(res);
 	series.back()->updatePositions();
 	return res;
@@ -175,7 +175,7 @@ void StatsView::setTitle(const QString &s)
 		title.reset();
 		return;
 	}
-	title = std::make_unique<QGraphicsSimpleTextItem>(s, chart);
+	title = createItemPtr<QGraphicsSimpleTextItem>(&scene, s);
 	title->setFont(titleFont);
 }
 
@@ -183,7 +183,7 @@ void StatsView::updateTitlePos()
 {
 	if (!title)
 		return;
-	QRectF rect = chart->plotArea();
+	QRectF rect = scene.sceneRect();
 	title->setPos(sceneBorder + (rect.width() - title->boundingRect().width()) / 2.0,
 		      sceneBorder);
 }
@@ -191,7 +191,7 @@ void StatsView::updateTitlePos()
 template <typename T, class... Args>
 T *StatsView::createAxis(const QString &title, Args&&... args)
 {
-	T *res = new T(chart, title, std::forward<Args>(args)...);
+	T *res = createItem<T>(&scene, title, std::forward<Args>(args)...);
 	axes.emplace_back(res);
 	return res;
 }
@@ -201,13 +201,11 @@ void StatsView::setAxes(StatsAxis *x, StatsAxis *y)
 	xAxis = x;
 	yAxis = y;
 	if (x && y)
-		grid = std::make_unique<StatsGrid>(chart, *x, *y);
+		grid = std::make_unique<StatsGrid>(&scene, *x, *y);
 }
 
 void StatsView::reset()
 {
-	if (!chart)
-		return;
 	highlightedSeries = nullptr;
 	xAxis = yAxis = nullptr;
 	legend.reset();
@@ -215,7 +213,6 @@ void StatsView::reset()
 	quartileMarkers.clear();
 	regressionLines.clear();
 	histogramMarkers.clear();
-	chart->removeAllSeries();
 	grid.reset();
 	axes.clear();
 	title.reset();
@@ -225,12 +222,13 @@ void StatsView::plot(const StatsState &stateIn)
 {
 	state = stateIn;
 	plotChart();
-	plotAreaChanged(chart->plotArea());
+	plotAreaChanged(scene.sceneRect().size());
+	update();
 }
 
 void StatsView::plotChart()
 {
-	if (!chart || !state.var1)
+	if (!state.var1)
 		return;
 	reset();
 
@@ -402,7 +400,7 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 
 	// Paint legend first, because the bin-names will be moved away from.
 	if (showLegend)
-		legend = std::make_unique<Legend>(chart, data.vbinNames);
+		legend = createItemPtr<Legend>(&scene, data.vbinNames);
 
 	std::vector<BarSeries::MultiItem> items;
 	items.reserve(data.hbin_counts.size());
@@ -619,7 +617,7 @@ void StatsView::plotPieChart(const std::vector<dive *> &dives,
 	PieSeries *series = createSeries<PieSeries>(categoryVariable->name(), data, keepOrder, labels);
 
 	if (showLegend)
-		legend = std::make_unique<Legend>(chart, series->binNames());
+		legend = createItemPtr<Legend>(&scene, series->binNames());
 }
 
 void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
@@ -689,17 +687,17 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 		if (quartiles) {
 			StatsQuartiles quartiles = StatsVariable::quartiles(array);
 			if (quartiles.isValid()) {
-				quartileMarkers.emplace_back(x, quartiles.q1, chart, catAxis, valAxis);
-				quartileMarkers.emplace_back(x, quartiles.q2, chart, catAxis, valAxis);
-				quartileMarkers.emplace_back(x, quartiles.q3, chart, catAxis, valAxis);
+				quartileMarkers.emplace_back(x, quartiles.q1, &scene, catAxis, valAxis);
+				quartileMarkers.emplace_back(x, quartiles.q2, &scene, catAxis, valAxis);
+				quartileMarkers.emplace_back(x, quartiles.q3, &scene, catAxis, valAxis);
 			}
 		}
 		x += 1.0;
 	}
 }
 
-StatsView::QuartileMarker::QuartileMarker(double pos, double value, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
-	item(new QGraphicsLineItem(chart)),
+StatsView::QuartileMarker::QuartileMarker(double pos, double value, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
+	item(createItemPtr<QGraphicsLineItem>(scene)),
 	xAxis(xAxis), yAxis(yAxis),
 	pos(pos),
 	value(value)
@@ -719,8 +717,8 @@ void StatsView::QuartileMarker::updatePosition()
 		      x + quartileMarkerSize / 2.0, y);
 }
 
-StatsView::RegressionLine::RegressionLine(double a, double b, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
-	item(new QGraphicsLineItem(chart)),
+StatsView::RegressionLine::RegressionLine(double a, double b, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
+	item(createItemPtr<QGraphicsLineItem>(scene)),
 	xAxis(xAxis), yAxis(yAxis),
 	a(a), b(b)
 {
@@ -751,8 +749,8 @@ void StatsView::RegressionLine::updatePosition()
 		      xAxis->toScreen(maxX), yAxis->toScreen(a * maxX + b));
 }
 
-StatsView::HistogramMarker::HistogramMarker(double val, bool horizontal, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis) :
-	item(new QGraphicsLineItem(chart)),
+StatsView::HistogramMarker::HistogramMarker(double val, bool horizontal, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
+	item(createItemPtr<QGraphicsLineItem>(scene)),
 	xAxis(xAxis), yAxis(yAxis),
 	val(val), horizontal(horizontal)
 {
@@ -777,12 +775,12 @@ void StatsView::HistogramMarker::updatePosition()
 
 void StatsView::addHistogramMarker(double pos, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis)
 {
-	histogramMarkers.emplace_back(pos, isHorizontal, pen, chart, xAxis, yAxis);
+	histogramMarkers.emplace_back(pos, isHorizontal, pen, &scene, xAxis, yAxis);
 }
 
 void StatsView::addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis)
 {
-	regressionLines.emplace_back(a, b, QPen(Qt::red), chart, xAxis, yAxis);
+	regressionLines.emplace_back(a, b, QPen(Qt::red), &scene, xAxis, yAxis);
 }
 
 // Yikes, we get our data in different kinds of (bin, value) pairs.
@@ -942,7 +940,7 @@ void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 
 	BarPlotData data(categoryBins, *valueBinner);
 	if (showLegend)
-		legend = std::make_unique<Legend>(chart, data.vbinNames);
+		legend = createItemPtr<Legend>(&scene, data.vbinNames);
 
 	CountAxis *valAxis = createCountAxis(data.maxCategoryCount, isHorizontal);
 

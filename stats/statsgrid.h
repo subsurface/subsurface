@@ -7,16 +7,14 @@
 #include <QGraphicsLineItem>
 
 class StatsAxis;
-namespace QtCharts {
-	class QChart;
-};
+class QGraphicsScene;
 
 class StatsGrid  {
 public:
-	StatsGrid(QtCharts::QChart *chart, const StatsAxis &xAxis, const StatsAxis &yAxis);
+	StatsGrid(QGraphicsScene *scene, const StatsAxis &xAxis, const StatsAxis &yAxis);
 	void updatePositions();
 private:
-	QtCharts::QChart *chart;
+	QGraphicsScene *scene;
 	const StatsAxis &xAxis, &yAxis;
 	std::vector<std::unique_ptr<QGraphicsLineItem>> lines;
 };

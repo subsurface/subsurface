@@ -2,6 +2,7 @@
 #include "boxseries.h"
 #include "informationbox.h"
 #include "statscolors.h"
+#include "statshelper.h"
 #include "statstranslations.h"
 #include "zvalues.h"
 
@@ -12,9 +13,9 @@
 static const double boxWidth = 0.8; // 1.0 = full width of category
 static const int boxBorderWidth = 2;
 
-BoxSeries::BoxSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+BoxSeries::BoxSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		     const QString &variable, const QString &unit, int decimals) :
-	StatsSeries(chart, xAxis, yAxis),
+	StatsSeries(scene, xAxis, yAxis),
 	variable(variable), unit(unit), decimals(decimals), highlighted(-1)
 {
 }
@@ -23,12 +24,8 @@ BoxSeries::~BoxSeries()
 {
 }
 
-BoxSeries::Item::Item(QtCharts::QChart *chart, BoxSeries *series, double lowerBound, double upperBound,
+BoxSeries::Item::Item(QGraphicsScene *scene, BoxSeries *series, double lowerBound, double upperBound,
 		      const StatsQuartiles &q, const QString &binName) :
-	box(chart),
-	topWhisker(chart), bottomWhisker(chart),
-	topBar(chart), bottomBar(chart),
-	center(chart),
 	lowerBound(lowerBound), upperBound(upperBound), q(q),
 	binName(binName)
 {
@@ -38,6 +35,12 @@ BoxSeries::Item::Item(QtCharts::QChart *chart, BoxSeries *series, double lowerBo
 	topBar.setZValue(ZValues::series);
 	bottomBar.setZValue(ZValues::series);
 	center.setZValue(ZValues::series);
+	scene->addItem(&box);
+	scene->addItem(&topWhisker);
+	scene->addItem(&bottomWhisker);
+	scene->addItem(&topBar);
+	scene->addItem(&bottomBar);
+	scene->addItem(&center);
 	highlight(false);
 	updatePosition(series);
 }
@@ -89,7 +92,7 @@ void BoxSeries::Item::updatePosition(BoxSeries *series)
 
 void BoxSeries::append(double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName)
 {
-	items.emplace_back(new Item(chart, this, lowerBound, upperBound, q, binName));
+	items.emplace_back(new Item(scene, this, lowerBound, upperBound, q, binName));
 }
 
 void BoxSeries::updatePositions()
@@ -147,7 +150,7 @@ bool BoxSeries::hover(QPointF pos)
 		Item &item = *items[highlighted];
 		item.highlight(true);
 		if (!information)
-			information.reset(new InformationBox(chart));
+			information = createItemPtr<InformationBox>(scene);
 		information->setText(formatInformation(item), pos);
 	} else {
 		information.reset();

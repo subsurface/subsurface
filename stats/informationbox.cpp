@@ -4,6 +4,7 @@
 
 #include <QChart>
 #include <QFontMetrics>
+#include <QGraphicsScene>
 
 static const QColor informationBorderColor(Qt::black);
 static const QColor informationColor(0xff, 0xff, 0x00, 192); // Note: fourth argument is opacity
@@ -11,7 +12,7 @@ static const int informationBorder = 2;
 static const double informationBorderRadius = 4.0; // Radius of rounded corners
 static const int distanceFromPointer = 10; // Distance to place box from mouse pointer or scatter item
 
-InformationBox::InformationBox(QtCharts::QChart *chart) : RoundRectItem(informationBorderRadius, chart), chart(chart)
+InformationBox::InformationBox() : RoundRectItem(informationBorderRadius, nullptr)
 {
 	setPen(QPen(informationBorderColor, informationBorder));
 	setBrush(informationColor);
@@ -37,7 +38,7 @@ void InformationBox::setText(const std::vector<QString> &text, QPointF pos)
 
 void InformationBox::setPos(QPointF pos)
 {
-	QRectF plotArea = chart->plotArea();
+	QRectF plotArea = scene()->sceneRect();
 
 	double x = pos.x() + distanceFromPointer;
 	if (x + width >= plotArea.right()) {
@@ -79,6 +80,6 @@ void InformationBox::addLine(const QString &s)
 int InformationBox::recommendedMaxLines() const
 {
 	QFontMetrics fm(font);
-	int maxHeight = static_cast<int>(chart->plotArea().height());
+	int maxHeight = static_cast<int>(scene()->sceneRect().height());
 	return maxHeight * 2 / fm.height() / 3;
 }

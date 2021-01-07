@@ -2,6 +2,7 @@
 #include "pieseries.h"
 #include "informationbox.h"
 #include "statscolors.h"
+#include "statshelper.h"
 #include "statstranslations.h"
 #include "zvalues.h"
 
@@ -16,9 +17,9 @@ static const double pieBorderWidth = 1.0;
 static const double innerLabelRadius = 0.75; // 1.0 = at outer border of pie
 static const double outerLabelRadius = 1.01; // 1.0 = at outer border of pie
 
-PieSeries::Item::Item(QtCharts::QChart *chart, const QString &name, int from, int count, int totalCount,
+PieSeries::Item::Item(QGraphicsScene *scene, const QString &name, int from, int count, int totalCount,
 		      int bin_nr, int numBins, bool labels) :
-	item(new QGraphicsEllipseItem(chart)),
+	item(createItemPtr<QGraphicsEllipseItem>(scene)),
 	name(name),
 	count(count)
 {
@@ -38,10 +39,10 @@ PieSeries::Item::Item(QtCharts::QChart *chart, const QString &name, int from, in
 	if (labels) {
 		double percentage = count * 100.0 / totalCount;
 		QString innerLabelText = QStringLiteral("%1\%").arg(loc.toString(percentage, 'f', 1));
-		innerLabel.reset(new QGraphicsSimpleTextItem(innerLabelText, chart));
+		innerLabel = createItemPtr<QGraphicsSimpleTextItem>(scene, innerLabelText);
 		innerLabel->setZValue(ZValues::seriesLabels);
 
-		outerLabel.reset(new QGraphicsSimpleTextItem(name, chart));
+		outerLabel = createItemPtr<QGraphicsSimpleTextItem>(scene, name);
 		outerLabel->setBrush(QBrush(darkLabelColor));
 		outerLabel->setZValue(ZValues::seriesLabels);
 	}
@@ -85,9 +86,9 @@ void PieSeries::Item::highlight(int bin_nr, bool highlight, int numBins)
 	}
 }
 
-PieSeries::PieSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
+PieSeries::PieSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
 		     const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels) :
-	StatsSeries(chart, xAxis, yAxis),
+	StatsSeries(scene, xAxis, yAxis),
 	categoryName(categoryName),
 	highlighted(-1)
 {
@@ -147,7 +148,7 @@ PieSeries::PieSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis
 	int act = 0;
 	for (auto it2 = sorted.begin(); it2 != it; ++it2) {
 		int count = data[*it2].second;
-		items.emplace_back(chart, data[*it2].first, act, count, totalCount, (int)items.size(), numBins, labels);
+		items.emplace_back(scene, data[*it2].first, act, count, totalCount, (int)items.size(), numBins, labels);
 		act += count;
 	}
 
@@ -157,7 +158,7 @@ PieSeries::PieSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis
 		for (auto it2 = it; it2 != sorted.end(); ++it2)
 			other.push_back({ data[*it2].first, data[*it2].second });
 		QString name = StatsTranslations::tr("other (%1 items)").arg(other.size());
-		items.emplace_back(chart, name, act, totalCount - act, totalCount, (int)items.size(), numBins, labels);
+		items.emplace_back(scene, name, act, totalCount - act, totalCount, (int)items.size(), numBins, labels);
 	}
 }
 
@@ -167,7 +168,7 @@ PieSeries::~PieSeries()
 
 void PieSeries::updatePositions()
 {
-	QRectF plotRect = chart->plotArea();
+	QRectF plotRect = scene->sceneRect();
 	center = plotRect.center();
 	radius = std::min(plotRect.width(), plotRect.height()) * pieSize / 2.0;
 	QRectF rect(center.x() - radius, center.y() - radius, 2.0 * radius, 2.0 * radius);
@@ -246,7 +247,7 @@ bool PieSeries::hover(QPointF pos)
 	if (highlighted >= 0 && highlighted < (int)items.size()) {
 		items[highlighted].highlight(highlighted, true, (int)items.size());
 		if (!information)
-			information.reset(new InformationBox(chart));
+			information = createItemPtr<InformationBox>(scene);
 		information->setText(makeInfo(highlighted), pos);
 	} else {
 		information.reset();

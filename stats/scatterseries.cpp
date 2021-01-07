@@ -2,6 +2,7 @@
 #include "scatterseries.h"
 #include "informationbox.h"
 #include "statscolors.h"
+#include "statshelper.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
 #include "zvalues.h"
@@ -16,9 +17,9 @@
 static const int scatterItemDiameter = 10;
 static const int scatterItemBorder = 1;
 
-ScatterSeries::ScatterSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+ScatterSeries::ScatterSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 			     const StatsVariable &varX, const StatsVariable &varY) :
-	StatsSeries(chart, xAxis, yAxis),
+	StatsSeries(scene, xAxis, yAxis),
 	varX(varX), varY(varY)
 {
 }
@@ -58,8 +59,8 @@ static const QPixmap &scatterPixmap(bool highlight)
 	return highlight ? *scatterPixmapHighlightedPtr : *scatterPixmapPtr;
 }
 
-ScatterSeries::Item::Item(QtCharts::QChart *chart, ScatterSeries *series, dive *d, double pos, double value) :
-	item(new QGraphicsPixmapItem(scatterPixmap(false), chart)),
+ScatterSeries::Item::Item(QGraphicsScene *scene, ScatterSeries *series, dive *d, double pos, double value) :
+	item(createItemPtr<QGraphicsPixmapItem>(scene, scatterPixmap(false))),
 	d(d),
 	pos(pos),
 	value(value)
@@ -82,7 +83,7 @@ void ScatterSeries::Item::highlight(bool highlight)
 
 void ScatterSeries::append(dive *d, double pos, double value)
 {
-	items.emplace_back(chart, this, d, pos, value);
+	items.emplace_back(scene, this, d, pos, value);
 }
 
 void ScatterSeries::updatePositions()
@@ -173,7 +174,7 @@ bool ScatterSeries::hover(QPointF pos)
 		return false;
 	} else {
 		if (!information)
-			information.reset(new InformationBox(chart));
+			information = createItemPtr<InformationBox>(scene);
 
 		std::vector<QString> text;
 		text.reserve(highlighted.size() * 5);

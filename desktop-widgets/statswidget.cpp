@@ -70,6 +70,7 @@ QSize ChartItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
 	return size;
 }
 
+static const QUrl urlStatsView = QUrl(QStringLiteral("qrc:/qml/statsview2.qml"));
 StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
@@ -83,6 +84,13 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 	connect(ui.var1Binner, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var1BinnerChanged);
 	connect(ui.var2Binner, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2BinnerChanged);
 	connect(ui.var2Operation, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2OperationChanged);
+
+	ui.stats->setSource(urlStatsView);
+	ui.stats->setResizeMode(QQuickWidget::SizeRootObjectToView);
+	QQuickItem *root = ui.stats->rootObject();
+	view = qobject_cast<StatsView *>(root);
+	if (!view)
+		qWarning("Oops. The root of the StatsView is not a StatsView.");
 }
 
 // Initialize QComboBox with list of variables
@@ -96,7 +104,7 @@ static void setVariableList(QComboBox *combo, const StatsState::VariableList &li
 }
 
 // Initialize QComboBox and QLabel of binners. Hide if there are no binners.
-static void setBinList(QLabel *label, QComboBox *combo, const StatsState::BinnerList &list)
+static void setBinList(QComboBox *combo, const StatsState::BinnerList &list)
 {
 	combo->clear();
 	combo->setEnabled(!list.binners.empty());
@@ -114,8 +122,8 @@ void StatsWidget::updateUi()
 	int pos = charts.update(uiState.charts);
 	ui.chartType->setCurrentIndex(pos);
 	ui.chartType->setItemDelegate(new ChartItemDelegate);
-	setBinList(ui.var1BinnerLabel, ui.var1Binner, uiState.binners1);
-	setBinList(ui.var2BinnerLabel, ui.var2Binner, uiState.binners2);
+	setBinList(ui.var1Binner, uiState.binners1);
+	setBinList(ui.var2Binner, uiState.binners2);
 	setVariableList(ui.var2Operation, uiState.operations2);
 
 	// Add checkboxes for additional features
@@ -129,7 +137,8 @@ void StatsWidget::updateUi()
 		ui.features->addWidget(check);
 	}
 
-	ui.stats->plot(state);
+	if (view)
+		view->plot(state);
 }
 
 void StatsWidget::closeStats()

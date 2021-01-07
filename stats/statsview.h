@@ -5,7 +5,10 @@
 #include "statsstate.h"
 #include <memory>
 #include <QFont>
-#include <QQuickWidget>
+#include <QGraphicsScene>
+#include <QImage>
+#include <QPainter>
+#include <QQuickItem>
 
 struct dive;
 struct StatsBinner;
@@ -13,10 +16,6 @@ struct StatsBin;
 struct StatsState;
 struct StatsVariable;
 
-namespace QtCharts {
-	class QAbstractSeries;
-	class QChart;
-}
 class QGraphicsLineItem;
 class QGraphicsSimpleTextItem;
 class StatsSeries;
@@ -26,21 +25,31 @@ class HistogramAxis;
 class StatsAxis;
 class StatsGrid;
 class Legend;
+class QSGTexture;
 
 enum class ChartSubType : int;
 enum class StatsOperation : int;
 
-class StatsView : public QQuickWidget {
+class StatsView : public QQuickItem {
 	Q_OBJECT
 public:
-	StatsView(QWidget *parent = NULL);
+	StatsView();
+	StatsView(QQuickItem *parent);
 	~StatsView();
 
 	void plot(const StatsState &state);
 private slots:
-	void plotAreaChanged(const QRectF &plotArea);
 	void replotIfVisible();
 private:
+	// QtQuick related things
+	QRectF plotRect;
+	QSGNode *updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
+	std::unique_ptr<QImage> img;
+	std::unique_ptr<QPainter> painter;
+	QGraphicsScene scene;
+	std::unique_ptr<QSGTexture> texture;
+
+	void plotAreaChanged(const QSizeF &size);
 	void reset(); // clears all series and axes
 	void setAxes(StatsAxis *x, StatsAxis *y);
 	void plotBarChart(const std::vector<dive *> &dives,
@@ -102,7 +111,7 @@ private:
 		std::unique_ptr<QGraphicsLineItem> item;
 		StatsAxis *xAxis, *yAxis;
 		double pos, value;
-		QuartileMarker(double pos, double value, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis);
+		QuartileMarker(double pos, double value, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
 		void updatePosition();
 	};
 
@@ -112,7 +121,7 @@ private:
 		StatsAxis *xAxis, *yAxis;
 		double a, b;			// y = ax + b
 		void updatePosition();
-		RegressionLine(double a, double b, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis);
+		RegressionLine(double a, double b, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
 	};
 
 	// A line marking median or mean in histograms
@@ -122,14 +131,13 @@ private:
 		double val;
 		bool horizontal;
 		void updatePosition();
-		HistogramMarker(double val, bool horizontal, QPen pen, QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis);
+		HistogramMarker(double val, bool horizontal, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
 	};
 
 	void addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis);
 	void addHistogramMarker(double pos, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
 
 	StatsState state;
-	QtCharts::QChart *chart;
 	QFont titleFont;
 	std::vector<std::unique_ptr<StatsAxis>> axes;
 	std::unique_ptr<StatsGrid> grid;
@@ -142,17 +150,8 @@ private:
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
 
-	// This is unfortunate: we can't derive from QChart, because the chart is allocated by QML.
-	// Therefore, we have to listen to hover events using an events-filter.
-	// Probably we should try to get rid of the QML ChartView.
-	struct EventFilter : public QObject {
-		StatsView *view;
-		EventFilter(StatsView *view) : view(view) {}
-	private:
-		bool eventFilter(QObject *o, QEvent *event);
-	} eventFilter;
-	friend EventFilter;
-	void hover(QPointF pos);
+	void hoverEnterEvent(QHoverEvent *event) override;
+	void hoverMoveEvent(QHoverEvent *event) override;
 };
 
 #endif

@@ -11,13 +11,14 @@
 #include <QGraphicsRectItem>
 
 class QGraphicsPixmapItem;
+class QGraphicsScene;
 class InformationBox;
 struct StatsVariable;
 struct dive;
 
 class ScatterSeries : public StatsSeries {
 public:
-	ScatterSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+	ScatterSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		      const StatsVariable &varX, const StatsVariable &varY);
 	~ScatterSeries();
 
@@ -36,7 +37,7 @@ private:
 		std::unique_ptr<QGraphicsPixmapItem> item;
 		dive *d;
 		double pos, value;
-		Item(QtCharts::QChart *chart, ScatterSeries *series, dive *d, double pos, double value);
+		Item(QGraphicsScene *scene, ScatterSeries *series, dive *d, double pos, double value);
 		void updatePosition(ScatterSeries *series);
 		void highlight(bool highlight);
 	};

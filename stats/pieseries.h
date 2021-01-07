@@ -11,14 +11,16 @@
 
 class InformationBox;
 class QGraphicsEllipseItem;
+class QGraphicsScene;
 class QGraphicsSimpleTextItem;
+class QRectF;
 
 class PieSeries : public StatsSeries {
 public:
 	// The pie series is initialized with (name, count) pairs.
 	// If keepOrder is false, bins will be sorted by size, otherwise the sorting
 	// of the shown bins will be retained. Small bins are omitted for clarity.
-	PieSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
+	PieSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
 		  const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels);
 	~PieSeries();
 
@@ -42,7 +44,7 @@ private:
 		double angleTo; // In fraction of total
 		int count;
 		QPointF innerLabelPos, outerLabelPos; // With respect to a (-1, -1)-(1, 1) rectangle.
-		Item(QtCharts::QChart *chart, const QString &name, int from, int count, int totalCount,
+		Item(QGraphicsScene *scene, const QString &name, int from, int count, int totalCount,
 		     int bin_nr, int numBins, bool labels);
 		void updatePositions(const QRectF &rect, const QPointF &center, double radius);
 		void highlight(int bin_nr, bool highlight, int numBins);

@@ -2,6 +2,7 @@
 #include "barseries.h"
 #include "informationbox.h"
 #include "statscolors.h"
+#include "statshelper.h"
 #include "statstranslations.h"
 #include "zvalues.h"
 
@@ -27,19 +28,19 @@ bool BarSeries::Index::operator==(const Index &i2) const
 	return std::tie(bar, subitem) == std::tie(i2.bar, i2.subitem);
 }
 
-BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+BarSeries::BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, bool stacked, const QString &categoryName,
 		     const StatsVariable *valueVariable, std::vector<QString> valueBinNames) :
-	StatsSeries(chart, xAxis, yAxis),
+	StatsSeries(scene, xAxis, yAxis),
 	horizontal(horizontal), stacked(stacked), categoryName(categoryName),
 	valueVariable(valueVariable), valueBinNames(std::move(valueBinNames))
 {
 }
 
-BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+BarSeries::BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, const QString &categoryName,
 		     const std::vector<CountItem> &items) :
-	BarSeries(chart, xAxis, yAxis, horizontal, false, categoryName, nullptr, std::vector<QString>())
+	BarSeries(scene, xAxis, yAxis, horizontal, false, categoryName, nullptr, std::vector<QString>())
 {
 	for (const CountItem &item: items) {
 		StatsOperationResults res;
@@ -50,10 +51,10 @@ BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis
 	}
 }
 
-BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+BarSeries::BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, const QString &categoryName, const StatsVariable *valueVariable,
 		     const std::vector<ValueItem> &items) :
-	BarSeries(chart, xAxis, yAxis, horizontal, false, categoryName, valueVariable, std::vector<QString>())
+	BarSeries(scene, xAxis, yAxis, horizontal, false, categoryName, valueVariable, std::vector<QString>())
 {
 	for (const ValueItem &item: items) {
 		add_item(item.lowerBound, item.upperBound, makeSubItems(item.value, item.label),
@@ -61,11 +62,11 @@ BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis
 	}
 }
 
-BarSeries::BarSeries(QtCharts::QChart *chart, StatsAxis *xAxis, StatsAxis *yAxis,
+BarSeries::BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, bool stacked, const QString &categoryName, const StatsVariable *valueVariable,
 		     std::vector<QString> valueBinNames,
 		     const std::vector<MultiItem> &items) :
-	BarSeries(chart, xAxis, yAxis, horizontal, stacked, categoryName, valueVariable, std::move(valueBinNames))
+	BarSeries(scene, xAxis, yAxis, horizontal, stacked, categoryName, valueVariable, std::move(valueBinNames))
 {
 	for (const MultiItem &item: items) {
 		StatsOperationResults res;
@@ -85,12 +86,12 @@ BarSeries::~BarSeries()
 {
 }
 
-BarSeries::BarLabel::BarLabel(QtCharts::QChart *chart, const std::vector<QString> &labels, int bin_nr, int binCount) :
+BarSeries::BarLabel::BarLabel(QGraphicsScene *scene, const std::vector<QString> &labels, int bin_nr, int binCount) :
 	totalWidth(0.0), totalHeight(0.0), isOutside(false)
 {
 	items.reserve(labels.size());
 	for (const QString &label: labels) {
-		items.emplace_back(new QGraphicsSimpleTextItem(chart));
+		items.emplace_back(createItem<QGraphicsSimpleTextItem>(scene));
 		items.back()->setText(label);
 		items.back()->setZValue(ZValues::seriesLabels);
 		QRectF rect = items.back()->boundingRect();
@@ -175,7 +176,7 @@ void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRe
 	highlight(false, bin_nr, binCount);
 }
 
-BarSeries::Item::Item(QtCharts::QChart *chart, BarSeries *series, double lowerBound, double upperBound,
+BarSeries::Item::Item(QGraphicsScene *scene, BarSeries *series, double lowerBound, double upperBound,
 		      std::vector<SubItem> subitemsIn,
 		      const QString &binName, const StatsOperationResults &res, int total,
 		      bool horizontal, bool stacked, int binCount) :
@@ -264,9 +265,9 @@ std::vector<BarSeries::SubItem> BarSeries::makeSubItems(const std::vector<std::p
 	int bin_nr = 0;
 	for (auto &[v, label]: values) {
 		if (v > 0.0) {
-			res.push_back({ std::make_unique<QGraphicsRectItem>(chart), {}, from, from + v, bin_nr });
+			res.push_back({ createItemPtr<QGraphicsRectItem>(scene), {}, from, from + v, bin_nr });
 			if (!label.empty())
-				res.back().label = std::make_unique<BarLabel>(chart, label, bin_nr, binCount());
+				res.back().label = std::make_unique<BarLabel>(scene, label, bin_nr, binCount());
 		}
 		if (stacked)
 			from += v;
@@ -292,7 +293,7 @@ void BarSeries::add_item(double lowerBound, double upperBound, std::vector<SubIt
 	// Don't add empty items, as that messes with the "find item under mouse" routine.
 	if (subitems.empty())
 		return;
-	items.emplace_back(chart, this, lowerBound, upperBound, std::move(subitems), binName, res,
+	items.emplace_back(scene, this, lowerBound, upperBound, std::move(subitems), binName, res,
 			   total, horizontal, stacked, binCount());
 }
 
@@ -403,7 +404,7 @@ bool BarSeries::hover(QPointF pos)
 		Item &item = items[highlighted.bar];
 		item.highlight(index.subitem, true, binCount());
 		if (!information)
-			information.reset(new InformationBox(chart));
+			information = createItemPtr<InformationBox>(scene);
 		information->setText(makeInfo(item, highlighted.subitem), pos);
 	} else {
 		information.reset();

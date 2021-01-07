@@ -11,11 +11,9 @@
 #include <QGraphicsLineItem>
 #include <QValueAxis>
 
-namespace QtCharts {
-	class QChart;
-}
+class QGraphicsScene;
 
-class StatsAxis : QGraphicsLineItem {
+class StatsAxis : public QGraphicsLineItem {
 public:
 	virtual ~StatsAxis();
 	// Returns minimum and maximum of shown range, not of data points.
@@ -34,13 +32,12 @@ public:
 
 	std::vector<double> ticksPositions() const; // Positions in screen coordinates
 protected:
-	StatsAxis(QtCharts::QChart *chart, const QString &title, bool horizontal, bool labelsBetweenTicks);
-	QtCharts::QChart *chart;
+	StatsAxis(const QString &title, bool horizontal, bool labelsBetweenTicks);
 
 	struct Label {
 		std::unique_ptr<QGraphicsSimpleTextItem> label;
 		double pos;
-		Label(const QString &name, double pos, QtCharts::QChart *chart, const QFont &font);
+		Label(const QString &name, double pos, QGraphicsScene *scene, const QFont &font);
 	};
 	std::vector<Label> labels;
 	void addLabel(const QString &label, double pos);
@@ -49,7 +46,7 @@ protected:
 	struct Tick {
 		std::unique_ptr<QGraphicsLineItem> item;
 		double pos;
-		Tick(double pos, QtCharts::QChart *chart);
+		Tick(double pos, QGraphicsScene *scene);
 	};
 	std::vector<Tick> ticks;
 	void addTick(double pos);
@@ -70,7 +67,7 @@ private:
 
 class ValueAxis : public StatsAxis {
 public:
-	ValueAxis(QtCharts::QChart *chart, const QString &title, double min, double max, int decimals, bool horizontal);
+	ValueAxis(const QString &title, double min, double max, int decimals, bool horizontal);
 private:
 	double min, max;
 	int decimals;
@@ -79,7 +76,7 @@ private:
 
 class CountAxis : public ValueAxis {
 public:
-	CountAxis(QtCharts::QChart *chart, const QString &title, int count, bool horizontal);
+	CountAxis(const QString &title, int count, bool horizontal);
 private:
 	int count;
 	void updateLabels() override;
@@ -87,8 +84,9 @@ private:
 
 class CategoryAxis : public StatsAxis {
 public:
-	CategoryAxis(QtCharts::QChart *chart, const QString &title, const std::vector<QString> &labels, bool horizontal);
+	CategoryAxis(const QString &title, const std::vector<QString> &labels, bool horizontal);
 private:
+	std::vector<QString> labelsText;
 	void updateLabels();
 };
 
@@ -100,7 +98,7 @@ struct HistogramAxisEntry {
 
 class HistogramAxis : public StatsAxis {
 public:
-	HistogramAxis(QtCharts::QChart *chart, const QString &title, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
+	HistogramAxis(const QString &title, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
 private:
 	void updateLabels() override;
 	std::vector<HistogramAxisEntry> bin_values;
@@ -109,7 +107,7 @@ private:
 
 class DateAxis : public HistogramAxis {
 public:
-	DateAxis(QtCharts::QChart *chart, const QString &title, double from, double to, bool horizontal);
+	DateAxis(const QString &title, double from, double to, bool horizontal);
 };
 
 #endif
