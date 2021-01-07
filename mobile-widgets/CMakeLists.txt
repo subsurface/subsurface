@@ -3,6 +3,7 @@
 set(SUBSURFACE_MOBILE_SRCS
 	qmlinterface.cpp
 	qmlmanager.cpp
+	statsmanager.cpp
 	themeinterface.cpp
 )
 
