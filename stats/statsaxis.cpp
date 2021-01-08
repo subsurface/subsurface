@@ -9,7 +9,6 @@
 #include "core/subsurface-time.h"
 #include <math.h> // for lrint
 #include <numeric>
-#include <QChart>
 #include <QFontMetrics>
 #include <QLocale>
 
@@ -228,7 +227,6 @@ ValueAxis::ValueAxis(const QString &title, double min, double max, int decimals,
 
 void ValueAxis::updateLabels()
 {
-	using QtCharts::QValueAxis;
 	labels.clear();
 	ticks.clear();
 

@@ -45,7 +45,7 @@ RUN apt-get update && sudo apt-get install -y python3.6
 RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py" && python3.6 get-pip.py
 RUN pip3 install aqtinstall
 RUN find /usr /home -name aqt -ls
-RUN /usr/local/bin/aqt install -O /usr/local/Qt 5.12.10 linux desktop -m qtcharts
+RUN /usr/local/bin/aqt install -O /usr/local/Qt 5.12.10 linux desktop
 RUN rm -rf /usr/local/Qt/Tools /usr/local/Qt/Docs /usr/local/Qt/Examples /usr/local/Qt/Maintenance* \
            /usr/local/Qt/5.12.10/gcc_64/bin/qgltf /usr/local/Qt/5.12.10/gcc_64/bin/qdoc
 ENV QT_ROOT /usr/local/Qt/5.12.10/gcc_64

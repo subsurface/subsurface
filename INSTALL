@@ -75,7 +75,7 @@ As of this writing, there is thankfully a thirdparty offline installer still
 available:
 
     pip3 install aqtinstall
-    aqt install -O <Qt Location> 5.15.2 mac desktop -m qtcharts
+    aqt install -O <Qt Location> 5.15.2 mac desktop
 
 (or whatever version / OS you need). This installer is surprisingly fast
 and seems well maintained - note that we don't use this for Windows as

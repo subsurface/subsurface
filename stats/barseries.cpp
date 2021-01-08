@@ -7,7 +7,6 @@
 #include "zvalues.h"
 
 #include <math.h> // for lrint()
-#include <QChart>
 #include <QLocale>
 
 // Constants that control the bar layout

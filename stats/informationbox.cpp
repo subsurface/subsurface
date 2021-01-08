@@ -2,7 +2,6 @@
 #include "statscolors.h"
 #include "zvalues.h"
 
-#include <QChart>
 #include <QFontMetrics>
 #include <QGraphicsScene>
 
