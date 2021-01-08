@@ -340,7 +340,7 @@ CategoryAxis::CategoryAxis(QtCharts::QChart *chart, const QString &title, const 
 		addTick(pos + 0.5);
 		pos += 1.0;
 	}
-	setRange(-0.5, static_cast<double>(labelsIn.size()) + 0.5);
+	setRange(-0.5, static_cast<double>(labelsIn.size()) - 0.5);
 }
 
 void CategoryAxis::updateLabels()
