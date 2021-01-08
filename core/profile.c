@@ -991,7 +991,8 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 
 /* Let's try to do some deco calculations.
  */
-void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_ds, const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool print_mode)
+static void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_ds, const struct dive *dive,
+				       const struct divecomputer *dc, struct plot_info *pi, bool print_mode)
 {
 	int i, count_iteration = 0;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
