@@ -353,7 +353,7 @@ static void check_setpoint_events(const struct dive *dive, struct divecomputer *
 }
 
 
-static void calculate_max_limits_new(struct dive *dive, struct divecomputer *given_dc, struct plot_info *pi)
+static void calculate_max_limits_new(struct dive *dive, struct divecomputer *given_dc, struct plot_info *pi, bool in_planner)
 {
 	struct divecomputer *dc = &(dive->dc);
 	bool seen = false;
@@ -418,7 +418,7 @@ static void calculate_max_limits_new(struct dive *dive, struct divecomputer *giv
 			/* Make sure that we get the first sample beyond the last event.
 			 * If maxtime is somewhere in the middle of the last segment,
 			 * populate_plot_entries() gets confused leading to display artifacts. */
-			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD || in_planner() || !found_sample_beyond_last_event) &&
+			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD || in_planner || !found_sample_beyond_last_event) &&
 			    s->time.seconds > maxtime) {
 				found_sample_beyond_last_event = true;
 				maxtime = s->time.seconds;
@@ -999,7 +999,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 	bool first_iteration = true;
 	int prev_deco_time = 10000000, time_deep_ceiling = 0;
 
-	if (!in_planner() || !planner_ds) {
+	if (!planner_ds) {
 		ds->deco_time = 0;
 		ds->first_ceiling_pressure.mbar = 0;
 	} else {
@@ -1056,7 +1056,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 					nuclear_regeneration(ds, t1);
 					vpmb_start_gradient(ds);
 					/* For CVA iterations, calculate next gradient */
-					if (!first_iteration || in_planner())
+					if (!first_iteration || !planner_ds)
 						vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0);
 				}
 				entry->ceiling = deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, !prefs.calcceiling3m);
@@ -1078,7 +1078,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 							/* For CVA calculations, deco time = dive time remaining is a good guess,
 							   but we want to over-estimate deco_time for the first iteration so it
 							   converges correctly, so add 30min*/
-							if (!in_planner())
+							if (!planner_ds)
 								ds->deco_time = pi->maxtime - t1 + 1800;
 							vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0);
 						}
@@ -1111,8 +1111,8 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			* We don't for print-mode because this info doesn't show up there
 			* If the ceiling hasn't cleared by the last data point, we need tts for VPM-B CVA calculation
 			* It is not necessary to do these calculation on the first VPMB iteration, except for the last data point */
-			if ((prefs.calcndltts && !print_mode && (decoMode() != VPMB || in_planner() || !first_iteration)) ||
-			    (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)) {
+			if ((prefs.calcndltts && !print_mode && (decoMode() != VPMB || !planner_ds || !first_iteration)) ||
+			    (decoMode() == VPMB && !planner_ds && i == pi->nr - 1)) {
 				/* only calculate ndl/tts on every 30 seconds */
 				if ((entry->sec - last_ndl_tts_calc_time) < 30 && i != pi->nr - 1) {
 					struct plot_data *prev_entry = (entry - 1);
@@ -1128,14 +1128,14 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				struct deco_state *cache_data = NULL;
 				cache_deco_state(ds, &cache_data);
 				calculate_ndl_tts(ds, dive, entry, gasmix, surface_pressure, current_divemode);
-				if (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)
+				if (decoMode() == VPMB && !planner_ds && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
 				restore_deco_state(cache_data, ds, decoMode() == VPMB);
 				free(cache_data);
 			}
 		}
-		if (decoMode() == VPMB && !in_planner()) {
+		if (decoMode() == VPMB && !planner_ds) {
 			int this_deco_time;
 			prev_deco_time = ds->deco_time;
 			// Do we need to update deco_time?
@@ -1350,7 +1350,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	UNUSED(planner_ds);
 #endif
 	free_plot_info_data(pi);
-	calculate_max_limits_new(dive, dc, pi);
+	calculate_max_limits_new(dive, dc, pi, planner_ds != NULL);
 	get_dive_gas(dive, &o2, &he, &o2max);
 	if (dc->divemode == FREEDIVE){
 		pi->dive_type = FREEDIVE;

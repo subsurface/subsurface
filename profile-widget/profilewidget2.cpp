@@ -598,6 +598,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	ccrsensor3GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 2));
 	ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
 
+
 	/* This struct holds all the data that's about to be plotted.
 	 * I'm not sure this is the best approach ( but since we are
 	 * interpolating some points of the Dive, maybe it is... )
@@ -608,7 +609,9 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 
 	// create_plot_info_new() automatically frees old plot data
 #ifndef SUBSURFACE_MOBILE
-	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth, &DivePlannerPointsModel::instance()->final_deco_state);
+	// A non-null planner_ds signals to create_plot_info_new that the dive is currently planned.
+	struct deco_state *planner_ds = currentState == PLAN ? &DivePlannerPointsModel::instance()->final_deco_state : nullptr;
+	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth, planner_ds);
 #else
 	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth, nullptr);
 #endif
