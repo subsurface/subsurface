@@ -127,6 +127,20 @@ SOURCES += subsurface-mobile-main.cpp \
 	backend-shared/exportfuncs.cpp \
 	backend-shared/plannershared.cpp \
 	backend-shared/roundrectitem.cpp \
+	stats/statsvariables.cpp \
+	stats/statsview.cpp \
+	stats/barseries.cpp \
+	stats/boxseries.cpp \
+	stats/chartlistmodel.cpp \
+	stats/informationbox.cpp \
+	stats/legend.cpp \
+	stats/pieseries.cpp \
+	stats/scatterseries.cpp \
+	stats/statsaxis.cpp \
+	stats/statscolors.cpp \
+	stats/statsgrid.cpp \
+	stats/statsseries.cpp \
+	stats/statsstate.cpp \
 	mobile-widgets/qmlinterface.cpp \
 	mobile-widgets/qmlmanager.cpp \
 	mobile-widgets/statsmanager.cpp \
@@ -263,6 +277,22 @@ HEADERS += \
 	backend-shared/exportfuncs.h \
 	backend-shared/plannershared.h \
 	backend-shared/roundrectitem.h \
+	stats/barseries.h \
+	stats/boxseries.h \
+	stats/chartlistmodel.h \
+	stats/informationbox.h \
+	stats/legend.h \
+	stats/pieseries.h \
+	stats/scatterseries.h \
+	stats/statsaxis.h \
+	stats/statscolors.h \
+	stats/statsgrid.h \
+	stats/statsseries.h \
+	stats/statsstate.h \
+	stats/statstranslations.h \
+	stats/statsvariables.h \
+	stats/statsview.h \
+	stats/zvalues.h \
 	mobile-widgets/qmlinterface.h \
 	mobile-widgets/qmlmanager.h \
 	mobile-widgets/statsmanager.h \

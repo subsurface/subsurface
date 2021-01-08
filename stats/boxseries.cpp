@@ -6,7 +6,6 @@
 #include "statstranslations.h"
 #include "zvalues.h"
 
-#include <QChart>
 #include <QLocale>
 
 // Constants that control the bar layout

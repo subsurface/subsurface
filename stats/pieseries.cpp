@@ -8,7 +8,6 @@
 
 #include <numeric>
 #include <math.h>
-#include <QChart>
 #include <QGraphicsEllipseItem>
 #include <QLocale>
 

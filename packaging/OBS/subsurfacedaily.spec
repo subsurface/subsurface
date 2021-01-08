@@ -57,7 +57,6 @@ BuildRequires:	qt5-qtbase-odbc
 BuildRequires:	qt5-qtbase-tds
 BuildRequires:	qt5-qtconnectivity-devel
 BuildRequires:	qt5-qtlocation-devel
-BuildRequires:	qt5-qtcharts-devel
 BuildRequires:  libappstream-glib
 %else
 BuildRequires:	update-desktop-files
@@ -77,7 +76,6 @@ BuildRequires:	libqt5-qtdeclarative-devel
 BuildRequires:	libqt5-qtconnectivity-devel
 BuildRequires:	libqt5-qtlocation-devel
 BuildRequires:	libqt5-qtlocation-private-headers-devel
-BuildRequires:	libQt5Charts5-devel
 %endif
 # Recommends Qt5 translations package
 %if 0%{?suse_version}

@@ -5,7 +5,6 @@
 #include "statshelper.h"
 #include "zvalues.h"
 
-#include <QChart>
 #include <QGraphicsLineItem>
 
 static const double gridWidth = 1.0;

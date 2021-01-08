@@ -260,7 +260,6 @@ done
 # next we need the QML modules
 QT_QML_MODULES="$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/qml/QtQuick.2 \
 $BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/qml/QtLocation \
-$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/qml/QtCharts \
 $BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/qml/QtPositioning"
 
 mkdir -p $STAGING_DIR/qml

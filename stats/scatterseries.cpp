@@ -10,7 +10,6 @@
 #include "core/divelist.h"
 #include "core/qthelper.h"
 
-#include <QChart>
 #include <QGraphicsPixmapItem>
 #include <QPainter>
 

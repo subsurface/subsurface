@@ -35,7 +35,6 @@ LOCAL_PKG_LIST := gcc \
                   qtmultimedia \
                   qtquickcontrols \
                   qtquickcontrols2 \
-                  qtcharts \
                   qtsvg \
                   qttools \
                   qttranslations \

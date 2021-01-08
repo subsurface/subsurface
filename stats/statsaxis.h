@@ -4,12 +4,9 @@
 
 #include <memory>
 #include <vector>
-#include <QBarCategoryAxis>
-#include <QCategoryAxis>
 #include <QFont>
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsLineItem>
-#include <QValueAxis>
 
 class QGraphicsScene;
 

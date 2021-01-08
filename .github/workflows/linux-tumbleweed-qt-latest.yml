@@ -28,8 +28,7 @@ jobs:
         libqt5-qtscript-devel libqt5-qtdeclarative-devel \
         libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel \
         libQt5QuickControls2-devel bluez-devel \
-        which libgit2-devel libssh2-devel libmtp-devel \
-        libQt5Charts5-devel
+        which libgit2-devel libssh2-devel libmtp-devel
 
 # if we want to run the tests below, add    xvfb-run
 
