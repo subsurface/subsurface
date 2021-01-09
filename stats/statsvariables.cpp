@@ -930,11 +930,18 @@ struct DateVariable : public StatsVariableTemplate<StatsVariable::Type::Continuo
 	}
 };
 
-// ============ Dive depth, binned in 5, 10, 20 m or 15, 30, 60 ft bins ============
+// ============ Dive depth (max and mean), binned in 5, 10, 20 m or 15, 30, 60 ft bins ============
+
+static int dive_depth_in_mm(const dive *d, bool mean)
+{
+	return mean ? d->meandepth.mm : d->maxdepth.mm;
+}
 
 struct DepthBinner : public IntRangeBinner<DepthBinner, IntBin> {
 	bool metric;
-	DepthBinner(int bin_size, bool metric) : IntRangeBinner(bin_size), metric(metric)
+	bool mean;
+	DepthBinner(int bin_size, bool metric, bool mean) :
+		IntRangeBinner(bin_size), metric(metric), mean(mean)
 	{
 	}
 	QString name() const override {
@@ -946,20 +953,21 @@ struct DepthBinner : public IntRangeBinner<DepthBinner, IntBin> {
 		return get_depth_unit(metric);
 	}
 	int to_bin_value(const dive *d) const {
-		return metric ? d->maxdepth.mm / 1000 / bin_size
-			      : lrint(mm_to_feet(d->maxdepth.mm)) / bin_size;
+		int depth = dive_depth_in_mm(d, mean);
+		return metric ? depth / 1000 / bin_size
+			      : lrint(mm_to_feet(depth)) / bin_size;
 	}
 };
 
-static DepthBinner meter_binner5(5, true);
-static DepthBinner meter_binner10(10, true);
-static DepthBinner meter_binner20(20, true);
-static DepthBinner feet_binner15(15, false);
-static DepthBinner feet_binner30(30, false);
-static DepthBinner feet_binner60(60, false);
-struct DepthVariable : public StatsVariableTemplate<StatsVariable::Type::Numeric> {
-	QString name() const override {
-		return StatsTranslations::tr("Max. Depth");
+struct DepthVariableBase : public StatsVariableTemplate<StatsVariable::Type::Numeric> {
+	bool mean;
+	DepthBinner meter5, meter10, meter20;
+	DepthBinner feet15, feet30, feet60;
+	DepthVariableBase(bool mean) :
+		mean(mean),
+		meter5(5, true, mean), meter10(10, true, mean), meter20(10, true, mean),
+		feet15(15, false, mean), feet30(30, false, mean), feet60(60, false, mean)
+	{
 	}
 	QString unitSymbol() const override {
 		return get_depth_unit();
@@ -969,16 +977,40 @@ struct DepthVariable : public StatsVariableTemplate<StatsVariable::Type::Numeric
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		if (prefs.units.length == units::METERS)
-			return { &meter_binner5, &meter_binner10, &meter_binner20 };
+			return { &meter5, &meter10, &meter20 };
 		else
-			return { &feet_binner15, &feet_binner30, &feet_binner60 };
+			return { &feet15, &feet30, &feet60 };
 	}
 	double toFloat(const dive *d) const override {
-		return prefs.units.length == units::METERS ? d->maxdepth.mm / 1000.0
-							   : mm_to_feet(d->maxdepth.mm);
+		int depth = dive_depth_in_mm(d, mean);
+		return prefs.units.length == units::METERS ? depth / 1000.0
+							   : mm_to_feet(depth);
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
 		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum };
+	}
+};
+
+struct MaxDepthVariable : public DepthVariableBase {
+	MaxDepthVariable() : DepthVariableBase(false) {
+	}
+	QString name() const override {
+		return StatsTranslations::tr("Max. Depth");
+	}
+	std::vector<StatsOperation> supportedOperations() const override {
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum };
+	}
+};
+
+struct MeanDepthVariable : public DepthVariableBase {
+	MeanDepthVariable() : DepthVariableBase(true)
+	{
+	}
+	QString name() const override {
+		return StatsTranslations::tr("Mean Depth");
+	}
+	std::vector<StatsOperation> supportedOperations() const override {
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean };
 	}
 };
 
@@ -1734,7 +1766,8 @@ struct VisibilityVariable : public StatsVariableTemplate<StatsVariable::Type::Di
 };
 
 static DateVariable date_variable;
-static DepthVariable depth_variable;
+static MaxDepthVariable max_depth_variable;
+static MeanDepthVariable mean_depth_variable;
 static DurationVariable duration_variable;
 static SACVariable sac_variable;
 static WaterTemperatureVariable water_temperature_variable;
@@ -1755,7 +1788,7 @@ static RatingVariable rating_variable;
 static VisibilityVariable visibility_variable;
 
 const std::vector<const StatsVariable *> stats_variables = {
-	&date_variable, &depth_variable, &duration_variable, &sac_variable,
+	&date_variable, &max_depth_variable, &mean_depth_variable, &duration_variable, &sac_variable,
 	&water_temperature_variable, &air_temperature_variable, &weight_variable,
 	&gas_content_o2_variable, &gas_content_o2_he_max_variable, &gas_content_he_variable,
 	&dive_mode_variable, &buddy_variable, &gas_type_variable, &suit_variable,
