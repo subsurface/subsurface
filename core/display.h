@@ -21,6 +21,7 @@ struct plot_info {
 	enum {AIR, NITROX, TRIMIX, FREEDIVING} dive_type;
 	double endtempcoord;
 	double maxpp;
+	bool waypoint_above_ceiling;
 	struct plot_data *entry;
 	struct plot_pressure_data *pressures; /* cylinders.nr blocks of nr entries. */
 };

@@ -85,49 +85,17 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	painter->restore();
 }
 
-int DiveProfileItem::maxCeiling(int row)
-{
-	int max = -1;
-	plot_data *entry = dataModel.data().entry + row;
-	for (int tissue = 0; tissue < 16; tissue++) {
-		if (max < entry->ceilings[tissue])
-			max = entry->ceilings[tissue];
-	}
-	return max;
-}
-
 void DiveProfileItem::replot()
 {
-	bool eventAdded = false;
-
 	AbstractProfilePolygonItem::replot();
 	if (polygon().isEmpty())
 		return;
 
 	show_reported_ceiling = prefs.dcceiling;
 	reported_ceiling_in_red = prefs.redceiling;
-	profileColor = getColor(DEPTH_BOTTOM);
+	profileColor = dataModel.data().waypoint_above_ceiling ? QColor(Qt::red)
+							       : getColor(DEPTH_BOTTOM);
 
-#ifdef SUBSURFACE_MOBILE
-	Q_UNUSED(eventAdded);
-#else
-	int currState = qobject_cast<ProfileWidget2 *>(scene()->views().first())->currentState;
-	if (currState == ProfileWidget2::PLAN) {
-		plot_data *entry = dataModel.data().entry;
-		for (int i = 0; i < dataModel.rowCount(); i++, entry++) {
-			int max = maxCeiling(i);
-			// Don't scream if we violate the ceiling by a few cm
-			if (entry->depth < max - 100 && entry->sec > 0) {
-				profileColor = QColor(Qt::red);
-				if (!eventAdded) {
-					add_event(&displayed_dive.dc, entry->sec, SAMPLE_EVENT_CEILING, -1, max / 1000, 
-						QT_TRANSLATE_NOOP("gettextFromC", "planned waypoint above ceiling"));
-					eventAdded = true;
-				}
-			}
-		}
-	}
-#endif
 	/* Show any ceiling we may have encountered */
 	if (prefs.dcceiling && !prefs.redceiling) {
 		QPolygonF p = polygon();
