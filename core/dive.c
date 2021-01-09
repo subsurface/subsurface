@@ -3316,6 +3316,11 @@ struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 	return dc;
 }
 
+const struct divecomputer *get_dive_dc_const(const struct dive *dive, int nr)
+{
+	return get_dive_dc((struct dive *)dive, nr);
+}
+
 struct dive *get_dive_by_uniq_id(int id)
 {
 	int i;

@@ -122,6 +122,7 @@ extern const char *get_dive_country(const struct dive *dive);
 extern const char *get_dive_location(const struct dive *dive);
 extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
+extern const struct divecomputer *get_dive_dc_const(const struct dive *dive, int nr);
 extern timestamp_t dive_endtime(const struct dive *dive);
 
 extern struct dive *make_first_dc(const struct dive *d, int dc_number);
