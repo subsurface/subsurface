@@ -9,6 +9,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QQuickItem>
+#include <QGraphicsPolygonItem>
 
 struct dive;
 struct StatsBinner;
@@ -117,11 +118,12 @@ private:
 
 	// A regression line
 	struct RegressionLine {
-		std::unique_ptr<QGraphicsLineItem> item;
+		std::unique_ptr<QGraphicsPolygonItem> item;
 		StatsAxis *xAxis, *yAxis;
 		double a, b;			// y = ax + b
+		double width;
 		void updatePosition();
-		RegressionLine(double a, double b, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
+		RegressionLine(double a, double b, double width, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
 	};
 
 	// A line marking median or mean in histograms
@@ -134,7 +136,7 @@ private:
 		HistogramMarker(double val, bool horizontal, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
 	};
 
-	void addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis);
+	void addLinearRegression(double a, double b, double res2, double r2, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis);
 	void addHistogramMarker(double pos, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
 
 	StatsState state;

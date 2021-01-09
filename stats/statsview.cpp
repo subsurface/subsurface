@@ -723,13 +723,14 @@ void StatsView::QuartileMarker::updatePosition()
 		      x + quartileMarkerSize / 2.0, y);
 }
 
-StatsView::RegressionLine::RegressionLine(double a, double b, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
-	item(createItemPtr<QGraphicsLineItem>(scene)),
+StatsView::RegressionLine::RegressionLine(double a, double b, double width, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
+	item(createItemPtr<QGraphicsPolygonItem>(scene)),
 	xAxis(xAxis), yAxis(yAxis),
-	a(a), b(b)
+	a(a), b(b), width(width)
 {
 	item->setZValue(ZValues::chartFeatures);
-	item->setPen(pen);
+	item->setPen(Qt::NoPen);
+	item->setBrush(brush);
 }
 
 void StatsView::RegressionLine::updatePosition()
@@ -738,21 +739,16 @@ void StatsView::RegressionLine::updatePosition()
 		return;
 	auto [minX, maxX] = xAxis->minMax();
 	auto [minY, maxY] = yAxis->minMax();
-	double y1 = a * minX + b;
-	double y2 = a * maxX + b;
 
-	// If not fully inside drawing region, do clipping.
-	if ((y1 < minY || y1 > maxY || y2 < minY || y2 > maxY) && fabs(a) > 0.0001) {
-		// Intersections with y = minY and y = maxY lines
-		double intersect_x1 = (minY - b) / a;
-		double intersect_x2 = (maxY - b) / a;
-		if (intersect_x1 > intersect_x2)
-			std::swap(intersect_x1, intersect_x2);
-		minX = std::max(minX, intersect_x1);
-		maxX = std::min(maxX, intersect_x2);
-	}
-	item->setLine(xAxis->toScreen(minX), yAxis->toScreen(a * minX + b),
-		      xAxis->toScreen(maxX), yAxis->toScreen(a * maxX + b));
+	QPolygonF poly;
+	poly << QPointF(xAxis->toScreen(minX), yAxis->toScreen(a * minX + b + width))
+	     << QPointF(xAxis->toScreen(maxX), yAxis->toScreen(a * maxX + b + width))
+	     << QPointF(xAxis->toScreen(maxX), yAxis->toScreen(a * maxX + b - width))
+	     << QPointF(xAxis->toScreen(minX), yAxis->toScreen(a * minX + b - width))
+	     << QPointF(xAxis->toScreen(minX), yAxis->toScreen(a * minX + b + width));
+	QRectF box(QPoint(xAxis->toScreen(minX), yAxis->toScreen(minY)), QPoint(xAxis->toScreen(maxX), yAxis->toScreen(maxY)));
+
+	item->setPolygon(poly.intersected(box));
 }
 
 StatsView::HistogramMarker::HistogramMarker(double val, bool horizontal, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
@@ -784,9 +780,15 @@ void StatsView::addHistogramMarker(double pos, const QPen &pen, bool isHorizonta
 	histogramMarkers.emplace_back(pos, isHorizontal, pen, &scene, xAxis, yAxis);
 }
 
-void StatsView::addLinearRegression(double a, double b, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis)
+void StatsView::addLinearRegression(double a, double b, double res2, double r2, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis)
 {
-	regressionLines.emplace_back(a, b, QPen(Qt::red), &scene, xAxis, yAxis);
+	QColor red = QColor(Qt::red);
+	red.setAlphaF(r2);
+	QPen pen(red);
+	QBrush brush(red);
+	brush.setStyle(Qt::SolidPattern);
+
+	regressionLines.emplace_back(a, b, sqrt(res2), brush, &scene, xAxis, yAxis);
 }
 
 // Yikes, we get our data in different kinds of (bin, value) pairs.
@@ -1025,12 +1027,21 @@ static bool is_linear_regression(int sample_size, double cov, double sx2, double
 	return true; // can't happen, as we tested for sample_size above.
 }
 
-// Returns the coefficients [a,b] of the line y = ax + b
-// If case of an undetermined regression or one with infinite slope, returns [nan, nan]
-static std::pair<double, double> linear_regression(const std::vector<StatsScatterItem> &v)
+struct regression_data {
+	double a,b;
+	double res2, r2;
+};
+
+// Returns the coefficients a,b of the line y = ax + b
+// as well as the variance of the residuals (averaged residual squared) as res2
+// and r^2 = 1.0 - variance of data / res2 which is the fraction of the variance of
+// the data that is explained by the linear regression.
+// If case of an undetermined regression or one with infinite slope, returns {nan, nan, 0.0, 0.0}
+
+static struct regression_data linear_regression(const std::vector<StatsScatterItem> &v)
 {
 	if (v.size() < 2)
-		return { NaN, NaN };
+		return { .a = NaN, .b = NaN, .res2 = 0.0, .r2 = 0.0};
 
 	// First, calculate the x and y average
 	double avg_x = 0.0, avg_y = 0.0;
@@ -1051,10 +1062,15 @@ static std::pair<double, double> linear_regression(const std::vector<StatsScatte
 	bool is_linear = is_linear_regression((int)v.size(), cov, sx2, sy2);
 
 	if (fabs(sx2) < 1e-10 || !is_linear) // If t is not statistically significant, do not plot the regression line.
-		return { NaN, NaN };
+		return { .a = NaN, .b = NaN, .res2 = 0.0, .r2 = 0.0};
 	double a = cov / sx2;
 	double b = avg_y - a * avg_x;
-	return { a, b };
+
+	double res2 = 0.0;
+	for (auto [x, y, d]: v)
+		res2 += (y - a * x - b) * (y - a * x - b);
+	double r2 = sy2 > 0.0 ? 1.0 - res2 / sy2 : 1.0;
+	return { .a = a, .b = b, .res2 = res2 / v.size(), .r2 = r2 };
 }
 
 void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsVariable *categoryVariable, const StatsVariable *valueVariable)
@@ -1084,10 +1100,10 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsVariabl
 		series->append(dive, x, y);
 
 	// y = ax + b
-	auto [a, b] = linear_regression(points);
-	if (!std::isnan(a)) {
+	struct regression_data reg = linear_regression(points);
+	if (!std::isnan(reg.a)) {
 		auto [minx, maxx] = axisX->minMax();
 		auto [miny, maxy] = axisY->minMax();
-		addLinearRegression(a, b, minx, maxx, miny, maxy, xAxis, yAxis);
+		addLinearRegression(reg.a, reg.b, reg.res2, reg.r2, minx, maxx, miny, maxy, xAxis, yAxis);
 	}
 }
