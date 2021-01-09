@@ -1302,6 +1302,65 @@ struct WeightVariable : public StatsVariableTemplate<StatsVariable::Type::Numeri
 	}
 };
 
+// ============ Dive number ============
+
+// Binning dive numbers can't use the IntRangeBinner,
+// because dive numbers start at 1, not 0! Since 0 means
+// "no number", these dives aren't registered.
+struct DiveNrBinner : public IntBinner<DiveNrBinner, IntBin> {
+	int bin_size;
+	DiveNrBinner(int bin_size) : bin_size(bin_size)
+	{
+	}
+	QString format(const StatsBin &bin) const override {
+		int value = derived_bin(bin).value;
+		QLocale loc;
+		return StatsTranslations::tr("%1–%2").arg(loc.toString(value * bin_size + 1),
+							  loc.toString((value + 1) * bin_size));
+	}
+	QString formatLowerBound(const StatsBin &bin) const override {
+		int value = derived_bin(bin).value;
+		return QStringLiteral("%L1").arg(value * bin_size + 1);
+	}
+	double lowerBoundToFloatBase(int value) const {
+		return static_cast<double>(value * bin_size + 1);
+	}
+	QString name() const override {
+		return StatsTranslations::tr("in %L2 steps").arg(bin_size);
+	}
+	int to_bin_value(const dive *d) const {
+		if (d->number <= 0)
+			return invalid_value<int>();
+		return (d->number - 1) / bin_size;
+	}
+};
+
+static DiveNrBinner dive_nr_binner_5(5);
+static DiveNrBinner dive_nr_binner_10(10);
+static DiveNrBinner dive_nr_binner_20(20);
+static DiveNrBinner dive_nr_binner_50(50);
+static DiveNrBinner dive_nr_binner_100(100);
+static DiveNrBinner dive_nr_binner_200(200);
+
+struct DiveNrVariable : public StatsVariableTemplate<StatsVariable::Type::Numeric> {
+	QString name() const override {
+		return StatsTranslations::tr("Dive #");
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		if (dive_table.nr > 1000)
+			return { &dive_nr_binner_20, &dive_nr_binner_50, &dive_nr_binner_100, &dive_nr_binner_200 };
+		else
+			return { &dive_nr_binner_5, &dive_nr_binner_10, &dive_nr_binner_20, &dive_nr_binner_50 };
+	}
+	double toFloat(const dive *d) const override {
+		return d->number >= 0 ? static_cast<double>(d->number)
+				      : invalid_value<double>();
+	}
+	std::vector<StatsOperation> supportedOperations() const override {
+		return { StatsOperation::Median, StatsOperation::Mean };
+	}
+};
+
 // ============ Dive mode ============
 
 struct DiveModeBinner : public SimpleBinner<DiveModeBinner, IntBin> {
@@ -1773,6 +1832,7 @@ static SACVariable sac_variable;
 static WaterTemperatureVariable water_temperature_variable;
 static AirTemperatureVariable air_temperature_variable;
 static WeightVariable weight_variable;
+static DiveNrVariable dive_nr_variable;
 static DiveModeVariable dive_mode_variable;
 static BuddyVariable buddy_variable;
 static GasTypeVariable gas_type_variable;
@@ -1789,7 +1849,7 @@ static VisibilityVariable visibility_variable;
 
 const std::vector<const StatsVariable *> stats_variables = {
 	&date_variable, &max_depth_variable, &mean_depth_variable, &duration_variable, &sac_variable,
-	&water_temperature_variable, &air_temperature_variable, &weight_variable,
+	&water_temperature_variable, &air_temperature_variable, &weight_variable, &dive_nr_variable,
 	&gas_content_o2_variable, &gas_content_o2_he_max_variable, &gas_content_he_variable,
 	&dive_mode_variable, &buddy_variable, &gas_type_variable, &suit_variable,
 	&weightsystem_variable, &cylinder_type_variable, &location_variable, &day_of_week_variable,
