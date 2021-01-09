@@ -13,7 +13,7 @@ class DiveEventItem : public DivePixmapItem {
 public:
 	DiveEventItem(QGraphicsItem *parent = 0);
 	~DiveEventItem();
-	void setEvent(struct event *ev, struct gasmix lastgasmix);
+	void setEvent(const struct dive *d, struct event *ev, struct gasmix lastgasmix);
 	struct event *getEvent();
 	void eventVisibilityChanged(const QString &eventName, bool visible);
 	void setVerticalAxis(DiveCartesianAxis *axis, int speed);
@@ -32,6 +32,7 @@ private:
 	DiveCartesianAxis *hAxis;
 	DivePlotDataModel *dataModel;
 	struct event *internalEvent;
+	const struct dive *dive;
 };
 
 #endif // DIVEEVENTITEM_H

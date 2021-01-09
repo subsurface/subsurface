@@ -768,7 +768,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 		item->setHorizontalAxis(timeAxis);
 		item->setVerticalAxis(profileYAxis, qPrefDisplay::animation_speed());
 		item->setModel(dataModel);
-		item->setEvent(event, lastgasmix);
+		item->setEvent(&displayed_dive, event, lastgasmix);
 		item->setZValue(2);
 #ifndef SUBSURFACE_MOBILE
 		item->setScale(printMode ? 4 :1);
