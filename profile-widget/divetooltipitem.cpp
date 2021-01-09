@@ -222,7 +222,7 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 	timeAxis = axis;
 }
 
-void ToolTipItem::refresh(const QPointF &pos)
+void ToolTipItem::refresh(const dive *d, const QPointF &pos)
 {
 	static QPixmap tissues(16,60);
 	static QPainter painter(&tissues);
@@ -238,7 +238,7 @@ void ToolTipItem::refresh(const QPointF &pos)
 	clear();
 
 	mb.len = 0;
-	int idx = get_plot_details_new(&pInfo, time, &mb);
+	int idx = get_plot_details_new(d, &pInfo, time, &mb);
 
 	tissues.fill();
 	painter.setPen(QColor(0, 0, 0, 0));
