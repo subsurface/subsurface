@@ -133,6 +133,11 @@ while [[ $# -gt 0 ]] ; do
 	shift
 done
 
+# recreate the old default behavior - no flag set implies build desktop
+if [ "$BUILD_MOBILE$BUILD_DOWNLOADER" = "" ] ; then
+	BUILD_DESKTOP="1"
+fi
+
 if [ "$BUILD_DEPS" = "1" ] && [ "$QUICK" = "1" ] ; then
 	echo "Conflicting options; cannot request combine -build-deps and -quick"
 	exit 1;
