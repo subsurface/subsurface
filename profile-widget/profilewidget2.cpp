@@ -809,7 +809,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	else
 		plotPicturesInternal(d, instant);
 
-	toolTipItem->refresh(mapToScene(mapFromGlobal(QCursor::pos())));
+	toolTipItem->refresh(&displayed_dive, mapToScene(mapFromGlobal(QCursor::pos())));
 #endif
 
 	// OK, how long did this take us? Anything above the second is way too long,
@@ -1025,7 +1025,7 @@ void ProfileWidget2::scrollViewTo(const QPoint &pos)
 void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 {
 	QPointF pos = mapToScene(event->pos());
-	toolTipItem->refresh(mapToScene(mapFromGlobal(QCursor::pos())));
+	toolTipItem->refresh(&displayed_dive, mapToScene(mapFromGlobal(QCursor::pos())));
 
 	if (zoomLevel == 0) {
 		QGraphicsView::mouseMoveEvent(event);

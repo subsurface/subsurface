@@ -1414,7 +1414,7 @@ struct divecomputer *select_dc(struct dive *dive)
 	return get_dive_dc(dive, i);
 }
 
-static void plot_string(const struct plot_info *pi, int idx, struct membuffer *b)
+static void plot_string(const struct dive *d, const struct plot_info *pi, int idx, struct membuffer *b)
 {
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
@@ -1429,7 +1429,7 @@ static void plot_string(const struct plot_info *pi, int idx, struct membuffer *b
 		int mbar = get_plot_pressure(pi, idx, cyl);
 		if (!mbar)
 			continue;
-		struct gasmix mix = get_cylinder(&displayed_dive, cyl)->gasmix;
+		struct gasmix mix = get_cylinder(d, cyl)->gasmix;
 		pressurevalue = get_pressure_units(mbar, &pressure_unit);
 		put_format_loc(b, translate("gettextFromC", "P: %d%s (%s)\n"), pressurevalue, pressure_unit, gasname(mix));
 	}
@@ -1569,7 +1569,7 @@ static void plot_string(const struct plot_info *pi, int idx, struct membuffer *b
 	strip_mb(b);
 }
 
-int get_plot_details_new(const struct plot_info *pi, int time, struct membuffer *mb)
+int get_plot_details_new(const struct dive *d, const struct plot_info *pi, int time, struct membuffer *mb)
 {
 	int i;
 
@@ -1580,7 +1580,7 @@ int get_plot_details_new(const struct plot_info *pi, int time, struct membuffer 
 		if (pi->entry[i].sec >= time)
 			break;
 	}
-	plot_string(pi, i, mb);
+	plot_string(d, pi, i, mb);
 	return i;
 }
 
