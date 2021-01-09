@@ -1026,7 +1026,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 		for (i = 1; i < pi->nr; i++) {
 			struct plot_data *entry = pi->entry + i;
 			int j, t0 = (entry - 1)->sec, t1 = entry->sec;
-			int time_stepsize = 20;
+			int time_stepsize = 20, max_ceiling = -1;
 
 			current_divemode = get_current_divemode(dc, entry->sec, &evd, &current_divemode);
 			gasmix = get_gasmix(dive, dc, t1, &ev, gasmix);
@@ -1096,6 +1096,8 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				double m_value = ds->buehlmann_inertgas_a[j] + entry->ambpressure / ds->buehlmann_inertgas_b[j];
 				double surface_m_value = ds->buehlmann_inertgas_a[j] + surface_pressure / ds->buehlmann_inertgas_b[j];
 				entry->ceilings[j] = deco_allowed_depth(ds->tolerated_by_tissue[j], surface_pressure, dive, 1);
+				if (entry->ceilings[j] > max_ceiling)
+					max_ceiling = entry->ceilings[j];
 				double current_gf = (ds->tissue_inertgas_saturation[j] - entry->ambpressure) / (m_value - entry->ambpressure);
 				entry->percentages[j] = ds->tissue_inertgas_saturation[j] < entry->ambpressure ?
 					lrint(ds->tissue_inertgas_saturation[j] / entry->ambpressure * AMB_PERCENTAGE) :
@@ -1105,6 +1107,20 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				double surface_gf = 100.0 * (ds->tissue_inertgas_saturation[j] - surface_pressure) / (surface_m_value - surface_pressure);
 				if (surface_gf > entry->surface_gf)
 					entry->surface_gf = surface_gf;
+			}
+
+			// In the planner, if the ceiling is violated, add an event.
+			// TODO: This *really* shouldn't be done here. This is a contract
+			// between the planner and the profile that the planner uses a dive
+			// that can be trampled upon. But ultimately, the ceiling-violation
+			// marker should be handled differently!
+			// Don't scream if we violate the ceiling by a few cm.
+			if (planner_ds && !pi->waypoint_above_ceiling &&
+			    entry->depth < max_ceiling - 100 && entry->sec > 0) {
+				struct dive *non_const_dive = (struct dive *)dive; // cast away const!
+				add_event(&non_const_dive->dc, entry->sec, SAMPLE_EVENT_CEILING, -1, max_ceiling / 1000,
+					  translate("gettextFromC", "planned waypoint above ceiling"));
+				pi->waypoint_above_ceiling = true;
 			}
 
 			/* should we do more calculations?
