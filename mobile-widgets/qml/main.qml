@@ -17,6 +17,9 @@ Kirigami.ApplicationWindow {
 	reachableModeEnabled: false // while it's a good idea, it seems to confuse more than help
 	wideScreen: false // workaround for probably Kirigami bug. See commits.
 
+	// ensure we get all information on screen rotation
+	Screen.orientationUpdateMask: Qt.LandscapeOrientation | Qt.PortraitOrientation | Qt.InvertedLandscapeOrientation | Qt.InvertedPortraitOrientation
+
 	// the documentation claims that the ApplicationWindow should pick up the font set on
 	// the C++ side. But as a matter of fact, it doesn't, unless you add this line:
 	font: Qt.application.font
@@ -688,35 +691,50 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		Component.onCompleted: {
 			// break the binding
 			initialWidth = initialWidth * 1
-			manager.appendTextToLog("screenSizeObject constructor completed, initial width " + initialWidth)
+			manager.appendTextToLog("[screensetup] screenSizeObject constructor completed, initial width " + initialWidth)
 			setupUnits()
 		}
 	}
 
 	onWidthChanged: {
-		manager.appendTextToLog("Window width changed to " + width + " orientation " + Screen.primaryOrientation)
-		if (screenSizeObject.initialWidth !== undefined) {
-			if (width !== screenSizeObject.initialWidth && screenSizeObject.firstChange) {
-				screenSizeObject.firstChange = false
-				screenSizeObject.lastOrientation = Screen.primaryOrientation
-				screenSizeObject.initialWidth = width
-				screenSizeObject.initialHeight = height
-				manager.appendTextToLog("first real change, so recalculating units and recording size as " + width + " x " + height)
-				setupUnits()
-			} else if (screenSizeObject.lastOrientation !== undefined && screenSizeObject.lastOrientation !== Screen.primaryOrientation) {
-				manager.appendTextToLog("Screen rotated, no action necessary")
-				screenSizeObject.lastOrientation = Screen.primaryOrientation
-				setupUnits()
-			} else {
-				manager.appendTextToLog("size change without rotation to " + width + " x " + height)
-				if ((Qt.platform.os === "android" || Qt.platform.os === "ios") && width > screenSizeObject.initialWidth) {
-					manager.appendTextToLog("resetting to initial width " + screenSizeObject.initialWidth + " and height " + screenSizeObject.initialHeight)
+		manager.appendTextToLog("[screensetup] width changed now " + width + " x " + height + " vs screen " + Screen.width + " x " + Screen.height)
+		if (screenSizeObject.lastOrientation === undefined) {
+			manager.appendTextToLog("[screensetup] found initial orientation " + Screen.orientation)
+			screenSizeObject.lastOrientation = Screen.orientation
+		}
+		manager.appendTextToLog("[screensetup] window width changed to " + width + " orientation " + Screen.orientation)
+		// on Android devices we often get incorrect size updates during startup from Kirigami and we need to ignore those,
+		// or more specifically, reset the Kirigami sizes when we notice them
+		if (Screen.orientation === screenSizeObject.lastOrientation) {
+			// not rotation
+			if (width > Screen.width || height > Screen.height) {
+				manager.appendTextToLog("[screensetup] received size update that exceeds screen size")
+				if (screenSizeObject.initialWidth !== undefined) {
+					manager.appendTextToLog("[screensetup] resetting to initial size " + screenSizeObject.initialWidth + " x " + screenSizeObject.initialHeight)
 					rootItem.width = screenSizeObject.initialWidth
 					rootItem.height = screenSizeObject.initialHeight
+				} else {
+					// we don't have a size that we believe, yet - using Screen size is almost certainly wrong
+					manager.appendTextToLog("[screensetup] restricting to screen size " + Screen.width + " x " + Screen.height)
+					rootItem.width = Screen.width
+					rootItem.heigh = Screen.height
+				}
+			} else {
+				// this could be a realistic size
+				if (screenSizeObject.initialWidth !== undefined) {
+					if (screenSizeObject.initialHeight < height) {
+						manager.appendTextToLog("[screensetup] remembering better height")
+						screenSizeObject.initialHeight = height
+					}
+					if (screenSizeObject.initialWidth < width) {
+						manager.appendTextToLog("[screensetup] remembering better height")
+						screenSizeObject.initialWidth = width
+					}
 				}
 			}
 		} else {
-			manager.appendTextToLog("width changed before initial width initialized, ignoring")
+			manager.appendTextToLog("[screensetup] remembering new orientation")
+			screenSizeObject.lastOrientation = Screen.orientation
 		}
 	}
 
