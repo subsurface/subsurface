@@ -1585,7 +1585,7 @@ int get_plot_details_new(const struct dive *d, const struct plot_info *pi, int t
 }
 
 /* Compare two plot_data entries and writes the results into a string */
-void compare_samples(struct plot_info *pi, int idx1, int idx2, char *buf, int bufsize, bool sum)
+void compare_samples(const struct dive *d, const struct plot_info *pi, int idx1, int idx2, char *buf, int bufsize, bool sum)
 {
 	struct plot_data *start, *stop, *data;
 	const char *depth_unit, *pressure_unit, *vertical_speed_unit;
@@ -1691,11 +1691,11 @@ void compare_samples(struct plot_info *pi, int idx1, int idx2, char *buf, int bu
 	memcpy(buf2, buf, bufsize);
 
 	/* Only print if gas has been used */
-	if (bar_used) {
+	if (bar_used && d->cylinders.nr > 0) {
 		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
 		snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ΔP:%d%s"), buf2, pressurevalue, pressure_unit);
-		cylinder_t *cyl = get_cylinder(&displayed_dive, 0);
+		cylinder_t *cyl = get_cylinder(d, 0);
 		/* if we didn't cross a tank change and know the cylidner size as well, show SAC rate */
 		if (!crossed_tankchange && cyl->type.size.mliter) {
 			double volume_value;
@@ -1713,7 +1713,7 @@ void compare_samples(struct plot_info *pi, int idx1, int idx2, char *buf, int bu
 			int volume_used = gas_volume(cyl, first_pressure) - gas_volume(cyl, stop_pressure);
 
 			/* Mean pressure in ATM */
-			double atm = depth_to_atm(avg_depth, &displayed_dive);
+			double atm = depth_to_atm(avg_depth, d);
 
 			/* milliliters per minute */
 			int sac = lrint(volume_used / atm * 60 / delta_time);

@@ -691,7 +691,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	cylinderPressureAxis->setMinimum(plotInfo.minpressure);
 	cylinderPressureAxis->setMaximum(plotInfo.maxpressure);
 #ifndef SUBSURFACE_MOBILE
-	rulerItem->setPlotInfo(plotInfo);
+	rulerItem->setPlotInfo(&displayed_dive, plotInfo);
 #endif
 
 #ifdef SUBSURFACE_MOBILE
