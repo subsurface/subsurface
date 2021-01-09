@@ -31,7 +31,7 @@ void AbstractProfilePolygonItem::setVisible(bool visible)
 	QGraphicsPolygonItem::setVisible(visible);
 }
 
-void AbstractProfilePolygonItem::replot()
+void AbstractProfilePolygonItem::replot(const dive *)
 {
 	// Calculate the polygon. This is the polygon that will be painted on screen
 	// on the ::paint method. Here we calculate the correct position of the points
@@ -85,9 +85,9 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	painter->restore();
 }
 
-void DiveProfileItem::replot()
+void DiveProfileItem::replot(const dive *d)
 {
-	AbstractProfilePolygonItem::replot();
+	AbstractProfilePolygonItem::replot(d);
 	if (polygon().isEmpty())
 		return;
 
@@ -165,7 +165,7 @@ DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveC
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::hrgraphChanged, this, &DiveHeartrateItem::setVisible);
 }
 
-void DiveHeartrateItem::replot()
+void DiveHeartrateItem::replot(const dive *)
 {
 	int last = -300, last_printed_hr = 0, sec = 0;
 	struct {
@@ -244,7 +244,7 @@ DivePercentageItem::DivePercentageItem(const DivePlotDataModel &model, const Div
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraphChanged, this, &DivePercentageItem::setVisible);
 }
 
-void DivePercentageItem::replot()
+void DivePercentageItem::replot(const dive *d)
 {
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
@@ -257,7 +257,7 @@ void DivePercentageItem::replot()
 		double value = dataModel.index(i, vDataColumn).data().toDouble();
 		struct gasmix gasmix = gasmix_air;
 		const struct event *ev = NULL;
-		gasmix = get_gasmix(&displayed_dive, displayed_dc, sec, &ev, gasmix);
+		gasmix = get_gasmix(d, get_dive_dc_const(d, dc_number), sec, &ev, gasmix);
 		int inert = get_n2(gasmix) + get_he(gasmix);
 		colors.push_back(ColorScale(value, inert));
 	}
@@ -318,7 +318,7 @@ DiveAmbPressureItem::DiveAmbPressureItem(const DivePlotDataModel &model, const D
 	setPen(pen);
 }
 
-void DiveAmbPressureItem::replot()
+void DiveAmbPressureItem::replot(const dive *)
 {
 	int sec = 0;
 
@@ -359,7 +359,7 @@ DiveGFLineItem::DiveGFLineItem(const DivePlotDataModel &model, const DiveCartesi
 	setPen(pen);
 }
 
-void DiveGFLineItem::replot()
+void DiveGFLineItem::replot(const dive *)
 {
 	int sec = 0;
 
@@ -400,7 +400,7 @@ DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const D
 	setPen(pen);
 }
 
-void DiveTemperatureItem::replot()
+void DiveTemperatureItem::replot(const dive *)
 {
 	int last = -300, last_printed_temp = 0, sec = 0, last_valid_temp = 0;
 
@@ -478,7 +478,7 @@ DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveC
 	lastRunningSum = 0.0;
 }
 
-void DiveMeanDepthItem::replot()
+void DiveMeanDepthItem::replot(const dive *)
 {
 	double meandepthvalue = 0.0;
 
@@ -525,7 +525,7 @@ void DiveMeanDepthItem::createTextItem()
 	texts.append(text);
 }
 
-void DiveGasPressureItem::replot()
+void DiveGasPressureItem::replot(const dive *d)
 {
 	const struct plot_info *pInfo = &dataModel.data();
 	std::vector<int> plotted_cyl(pInfo->nr_cylinders, false);
@@ -550,7 +550,7 @@ void DiveGasPressureItem::replot()
 			QColor color;
 			if (!in_planner()) {
 				if (entry->sac)
-					color = getSacColor(entry->sac, displayed_dive.sac);
+					color = getSacColor(entry->sac, d->sac);
 				else
 					color = MED_GRAY_HIGH_TRANS;
 			} else {
@@ -629,7 +629,7 @@ void DiveGasPressureItem::replot()
 					label_y_offset = -7 * axisLog;
 				}
 				plotPressureValue(mbar, entry->sec, alignVar, value_y_offset);
-				plotGasValue(mbar, entry->sec, get_cylinder(&displayed_dive, cyl)->gasmix, alignVar, label_y_offset);
+				plotGasValue(mbar, entry->sec, get_cylinder(d, cyl)->gasmix, alignVar, label_y_offset);
 				seen_cyl[cyl] = true;
 
 				/* Alternate alignment as we see cylinder use.. */
@@ -699,9 +699,9 @@ DiveCalculatedCeiling::DiveCalculatedCeiling(const DivePlotDataModel &model, con
 	setVisible(prefs.calcceiling);
 }
 
-void DiveCalculatedCeiling::replot()
+void DiveCalculatedCeiling::replot(const dive *d)
 {
-	AbstractProfilePolygonItem::replot();
+	AbstractProfilePolygonItem::replot(d);
 	// Add 2 points to close the polygon.
 	QPolygonF poly = polygon();
 	if (poly.isEmpty())
@@ -747,7 +747,7 @@ DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const D
 	setVisible(prefs.dcceiling);
 }
 
-void DiveReportedCeiling::replot()
+void DiveReportedCeiling::replot(const dive *)
 {
 	QPolygonF p;
 	p.append(QPointF(hAxis.posAtValue(0), vAxis.posAtValue(0)));
@@ -780,7 +780,7 @@ void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-void PartialPressureGasItem::replot()
+void PartialPressureGasItem::replot(const dive *)
 {
 	plot_data *entry = dataModel.data().entry;
 	QPolygonF poly;
