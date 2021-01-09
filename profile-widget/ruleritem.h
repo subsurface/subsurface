@@ -36,7 +36,7 @@ public:
 	explicit RulerItem2();
 	void recalculate();
 
-	void setPlotInfo(const struct plot_info &pInfo);
+	void setPlotInfo(const struct dive *d, const struct plot_info &pInfo);
 	RulerNodeItem2 *sourceNode() const;
 	RulerNodeItem2 *destNode() const;
 	void setAxis(DiveCartesianAxis *time, DiveCartesianAxis *depth);
@@ -47,6 +47,7 @@ slots:
 	void settingsChanged(bool toggled);
 
 private:
+	const struct dive *dive;
 	struct plot_info pInfo;
 	QPointF startPoint, endPoint;
 	RulerNodeItem2 *source, *dest;
