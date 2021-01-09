@@ -15,13 +15,21 @@ Kirigami.Page {
 	bottomPadding: 0
 	width: rootItem.width
 	implicitWidth: rootItem.width
-	property bool wide: width > height
+	property bool wide: width > rootItem.height
 	StatsManager {
 		id: statsManager
 	}
 	onVisibleChanged: {
+	       manager.appendTextToLog("StatisticsPage visible changed with width " + width + " with height " + rootItem.height + " we are " + (statisticsPage.wide ? "in" : "not in") + " wide mode")
 		if (visible)
 			statsManager.doit()
+	}
+	onWidthChanged: {
+		if (visible) {
+			manager.appendTextToLog("StatisticsPage width changed to " + width + " with height " + height + " we are " +
+						 (statisticsPage.wide ? "in" : "not in") + " wide mode - screen " + Screen.width + " x " + Screen.height )
+			statsManager.doit()
+		}
 	}
 
 	GridLayout {
@@ -30,7 +38,8 @@ Kirigami.Page {
 			id: i1
 			Layout.column: 0
 			Layout.row: 0
-			Layout.margins: Kirigami.Units.smallSpacing
+			Layout.leftMargin: Kirigami.Units.smallSpacing
+			Layout.topMargin: Kirigami.Units.smallSpacing
 			TemplateLabelSmall {
 				text: qsTr("Base variable")
 			}
@@ -48,7 +57,7 @@ Kirigami.Page {
 			id: i2
 			Layout.column: wide ? 0 : 1
 			Layout.row: wide ? 1 : 0
-			Layout.margins: Kirigami.Units.smallSpacing
+			Layout.leftMargin: Kirigami.Units.smallSpacing
 			TemplateLabelSmall {
 				text: qsTr("Binning")
 			}
@@ -64,9 +73,9 @@ Kirigami.Page {
 		}
 		ColumnLayout {
 			id: i3
-			Layout.column: wide ? 0 : 2
-			Layout.row: wide ? 2 : 0
-			Layout.margins: Kirigami.Units.smallSpacing
+			Layout.column: wide ? 0 : 0
+			Layout.row: wide ? 2 : 1
+			Layout.leftMargin: Kirigami.Units.smallSpacing
 			TemplateLabelSmall {
 				text: qsTr("Data")
 			}
@@ -82,9 +91,9 @@ Kirigami.Page {
 		}
 		ColumnLayout {
 			id: i4
-			Layout.column: wide ? 0 : 3
-			Layout.row: wide ? 3 : 0
-			Layout.margins: Kirigami.Units.smallSpacing
+			Layout.column: wide ? 0 : 1
+			Layout.row: wide ? 3 : 1
+			Layout.leftMargin: Kirigami.Units.smallSpacing
 			TemplateLabelSmall {
 				text: qsTr("Binning")
 			}
@@ -100,9 +109,9 @@ Kirigami.Page {
 		}
 		ColumnLayout {
 			id: i5
-			Layout.column: wide ? 0 : 2
-			Layout.row: wide ? 4 : 1
-			Layout.margins: Kirigami.Units.smallSpacing
+			Layout.column: wide ? 0 : 0
+			Layout.row: wide ? 4 : 2
+			Layout.leftMargin: Kirigami.Units.smallSpacing
 			TemplateLabelSmall {
 				text: qsTr("Operation")
 			}
@@ -117,21 +126,30 @@ Kirigami.Page {
 			}
 		}
 		Item {
-			Layout.column: wide ? 0 : 4
-			Layout.row: wide ? 4 : 0
+			Layout.column: wide ? 0 : 1
+			Layout.row: wide ? 5 : 2
 			Layout.preferredHeight: wide ? parent.height - Kirigami.Units.gridUnit * 16 : Kirigami.Units.gridUnit
 			Layout.preferredWidth: wide ? parent.width - i1.implicitWidt - i2.implicitWidt - i3.implicitWidt - i4.implicitWidth : Kirigami.Units.gridUnit
 			// just used for spacing
 		}
 
 		StatsView {
-			Layout.row: wide ? 0 : 1
 			Layout.column: wide ? 1 : 0
+			Layout.row: wide ? 0 : 3
+			Layout.columnSpan: wide ? 1 : 3
 			Layout.rowSpan: wide ? 5 : 1
-			Layout.columnSpan: wide ? 1 : 5
 			id: statsView
+			Layout.margins: Kirigami.Units.smallSpacing
 			Layout.fillWidth: true
 			Layout.fillHeight: true
+			Layout.maximumHeight: wide ? statisticsPage.height - 2 * Kirigami.Units.gridUnit :
+						     statisticsPage.height - 2 * Kirigami.Units.gridUnit - i4.height
+			Layout.maximumWidth: wide ? statisticsPage.width - 2 * Kirigami.Units.gridUnit - i4.width :
+						     statisticsPage.width - 2 * Kirigami.Units.smallSpacing
+
+			onWidthChanged: {
+				console.log("StatsView widget width is " + width + " on page with width " + statisticsPage.width)
+			}
 		}
 	}
 	Component.onCompleted: {
