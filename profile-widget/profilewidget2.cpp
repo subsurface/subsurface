@@ -51,9 +51,6 @@
 
 #define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 
-// a couple of helpers we need
-extern bool haveFilesOnCommandLine();
-
 /* This is the global 'Item position' variable.
  * it should tell you where to position things up
  * on the canvas.
@@ -522,7 +519,6 @@ void ProfileWidget2::resetZoom()
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPictures, bool instant)
 {
-	static bool firstCall = true;
 #ifndef SUBSURFACE_MOBILE
 	QElapsedTimer measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
@@ -564,12 +560,8 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #endif
 	}
 
-	// special handling for the first time we display things
-	animSpeed = instant ? 0 : qPrefDisplay::animation_speed();
-	if (firstCall && haveFilesOnCommandLine()) {
-		animSpeed = 0;
-		firstCall = false;
-	}
+	// special handling when switching from empty state
+	animSpeed = instant || currentState == EMPTY ? 0 : qPrefDisplay::animation_speed();
 
 	// restore default zoom level
 	resetZoom();

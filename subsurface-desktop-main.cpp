@@ -120,11 +120,6 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-bool haveFilesOnCommandLine()
-{
-	return filesOnCommandLine;
-}
-
 #define VALIDATE_GL_PREFIX "validateGL(): "
 
 void validateGL()

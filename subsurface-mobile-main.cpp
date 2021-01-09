@@ -104,8 +104,3 @@ void set_non_bt_addresses()
 	connectionListModel.addAddress("FTDI");
 #endif
 }
-
-bool haveFilesOnCommandLine()
-{
-	return false;
-}
