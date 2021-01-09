@@ -1274,6 +1274,23 @@ QString get_gas_string(struct gasmix gas)
 	return result;
 }
 
+QStringList get_dive_gas_list(const struct dive *d)
+{
+	QStringList list;
+	for (int i = 0; i < d->cylinders.nr; i++) {
+		const cylinder_t *cyl = get_cylinder(d, i);
+		/* Check if we have the same gasmix two or more times
+		 * If yes return more verbose string */
+		int same_gas = same_gasmix_cylinder(cyl, i, d, true);
+		if (same_gas == -1)
+			list.push_back(get_gas_string(cyl->gasmix));
+		else
+			list.push_back(get_gas_string(cyl->gasmix) + QString(" (%1 %2 ").arg(gettextFromC::tr("cyl.")).arg(i + 1) +
+				cyl->type.description + ")");
+	}
+	return list;
+}
+
 QString get_taglist_string(struct tag_entry *tag_list)
 {
 	char *buffer = taglist_get_tagstring(tag_list);

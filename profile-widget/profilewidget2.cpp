@@ -1695,7 +1695,7 @@ void ProfileWidget2::disconnectTemporaryConnections()
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::pointInserted(const QModelIndex&, int, int)
 {
-	DiveHandler *item = new DiveHandler();
+	DiveHandler *item = new DiveHandler(&displayed_dive);
 	scene()->addItem(item);
 	handles << item;
 
