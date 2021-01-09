@@ -24,26 +24,9 @@ GasSelectionModel *GasSelectionModel::instance()
 	return &self;
 }
 
-static QStringList getGasList()
-{
-	QStringList list;
-	for (int i = 0; i < displayed_dive.cylinders.nr; i++) {
-		const cylinder_t *cyl = get_cylinder(&displayed_dive, i);
-		/* Check if we have the same gasmix two or more times
-		 * If yes return more verbose string */
-		int same_gas = same_gasmix_cylinder(cyl, i, &displayed_dive, true);
-		if (same_gas == -1)
-			list.push_back(get_gas_string(cyl->gasmix));
-		else
-			list.push_back(get_gas_string(cyl->gasmix) + QString(" (%1 %2 ").arg(GasSelectionModel::tr("cyl.")).arg(i + 1) +
-				cyl->type.description + ")");
-	}
-	return list;
-}
-
 void GasSelectionModel::repopulate()
 {
-	setStringList(getGasList());
+	setStringList(get_dive_gas_list(&displayed_dive));
 }
 
 QVariant GasSelectionModel::data(const QModelIndex &index, int role) const

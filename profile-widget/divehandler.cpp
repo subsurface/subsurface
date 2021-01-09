@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divehandler.h"
 #include "profilewidget2.h"
+#include "core/dive.h"
 #include "core/gettextfromc.h"
+#include "core/qthelper.h"
 #include "qt-models/diveplannermodel.h"
-#include "qt-models/models.h"
 
 #include <QMenu>
 #include <QGraphicsSceneMouseEvent>
 #include <QSettings>
 
-DiveHandler::DiveHandler() : QGraphicsEllipseItem()
+DiveHandler::DiveHandler(const struct dive *d) : dive(d)
 {
 	setRect(-5, -5, 10, 10);
 	setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
@@ -32,12 +33,10 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
 	if (index.sibling(index.row() + 1, index.column()).isValid()) {
-		GasSelectionModel *model = GasSelectionModel::instance();
-		model->repopulate();
-		int rowCount = model->rowCount();
-		for (int i = 0; i < rowCount; i++) {
+		QStringList gases = get_dive_gas_list(dive);
+		for (int i = 0; i < gases.size(); i++) {
 			QAction *action = new QAction(&m);
-			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString());
+			action->setText(gases[i]);
 			action->setData(i);
 			connect(action, &QAction::triggered, this, &DiveHandler::changeGas);
 			m.addAction(action);

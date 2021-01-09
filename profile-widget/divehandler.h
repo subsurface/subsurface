@@ -5,10 +5,12 @@
 #include <QGraphicsPathItem>
 #include <QElapsedTimer>
 
+struct dive;
+
 class DiveHandler : public QObject, public QGraphicsEllipseItem {
 	Q_OBJECT
 public:
-	DiveHandler();
+	DiveHandler(const struct dive *d);
 
 protected:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
@@ -26,6 +28,7 @@ slots:
 	void selfRemove();
 	void changeGas();
 private:
+	const struct dive *dive;
 	QElapsedTimer t;
 };
 
