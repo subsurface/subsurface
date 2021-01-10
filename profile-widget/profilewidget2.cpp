@@ -563,6 +563,10 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #endif
 	}
 
+	struct divecomputer *currentdc = select_dc(&displayed_dive);
+	if (!currentdc || !currentdc->samples)
+		return setEmptyState();
+
 	// special handling when switching from empty state
 	animSpeed = instant || currentState == EMPTY ? 0 : qPrefDisplay::animation_speed();
 
@@ -576,14 +580,6 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #endif
 	if (currentState == EMPTY)
 		setProfileState();
-
-	// next get the dive computer structure - if there are no samples
-	// let's create a fake profile that's somewhat reasonable for the
-	// data that we have
-	struct divecomputer *currentdc = select_dc(&displayed_dive);
-	Q_ASSERT(currentdc);
-	if (!currentdc || !currentdc->samples)
-		fake_dc(currentdc);
 
 	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;
 	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
