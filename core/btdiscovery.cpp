@@ -116,6 +116,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		// but that seems to be just happenstance.
 		vendor = "Ratio";
 		product = "iX3M GPS Easy"; // we don't know which of the GPS models, so set one
+	} else if (btName.contains(QRegularExpression("^IX5M\\d{6}"))) {
+		// The 2021 iX3M models (square buttons) report as iX5M,
+		// eventhough the physical model states iX3M.
+		vendor = "Ratio";
+		product = "iX3M GPS Easy"; // we don't know which of the GPS models, so set one
 	} else if (btName == "COSMIQ") {
 		vendor = "Deepblu";
 		product = "Cosmiq+";
