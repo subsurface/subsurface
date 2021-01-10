@@ -1000,7 +1000,7 @@ struct DepthVariableBase : public StatsVariableTemplate<StatsVariable::Type::Num
 	DepthBinner feet15, feet30, feet60;
 	DepthVariableBase(bool mean) :
 		mean(mean),
-		meter5(5, true, mean), meter10(10, true, mean), meter20(10, true, mean),
+		meter5(5, true, mean), meter10(10, true, mean), meter20(20, true, mean),
 		feet15(15, false, mean), feet30(30, false, mean), feet60(60, false, mean)
 	{
 	}
