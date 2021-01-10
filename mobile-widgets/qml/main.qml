@@ -456,6 +456,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				icon {
+					name: ":/icons/office-chart-bar-stacked.svg"
+				}
+
 				text: qsTr("Statistics")
 				onTriggered: {
 					showPage(statistics)
