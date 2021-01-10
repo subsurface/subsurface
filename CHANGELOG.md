@@ -1,5 +1,7 @@
 - desktop: complete rewrite of the statistics code, significantly expanding capabilities
 - desktop: add preferences option to disable default cylinder types
+- mobile: add ability to show fundamentally the same statistics as on the desktop
+- mobile: add settings for DC and calculated ceilings and show calculated ceilings
 - mobile: switch to newer version of Kirigami
 - mobile: change the way Kirigami is integrated into Subsurface, linking against static plugin
 - mobile: change Android build to support aab builds with current NDK and Qt 5.15.2
