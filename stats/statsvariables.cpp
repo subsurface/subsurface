@@ -297,7 +297,9 @@ static const char *operation_names[] = {
 	QT_TRANSLATE_NOOP("StatsTranslations", "Median"),
 	QT_TRANSLATE_NOOP("StatsTranslations", "Mean"),
 	QT_TRANSLATE_NOOP("StatsTranslations", "Time-weighted mean"),
-	QT_TRANSLATE_NOOP("StatsTranslations", "Sum")
+	QT_TRANSLATE_NOOP("StatsTranslations", "Sum"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "Minimum"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "Maximum")
 };
 
 QStringList StatsVariable::supportedOperationNames() const
@@ -413,11 +415,17 @@ StatsOperationResults StatsVariable::applyOperations(const std::vector<dive *> &
 	if (res.count <= 0)
 		return res;
 
+	res.min = std::numeric_limits<double>::max();
+	res.max = std::numeric_limits<double>::lowest();
 	for (auto [v, d]: val) {
 		res.sum += v;
 		res.mean += v;
 		sumTime += d->duration.seconds;
 		res.timeWeightedMean += v * d->duration.seconds;
+		if (v < res.min)
+			res.min = v;
+		if (v > res.max)
+			res.max = v;
 	}
 
 	res.mean /= res.count;
@@ -426,7 +434,7 @@ StatsOperationResults StatsVariable::applyOperations(const std::vector<dive *> &
 }
 
 StatsOperationResults::StatsOperationResults() :
-	count(0), median(0.0), mean(0.0), timeWeightedMean(0.0), sum(0.0)
+	count(0), median(0.0), mean(0.0), timeWeightedMean(0.0), sum(0.0), min(0.0), max(0.0)
 {
 }
 
@@ -442,6 +450,8 @@ double StatsOperationResults::get(StatsOperation op) const
 	case StatsOperation::Mean: return mean;
 	case StatsOperation::TimeWeightedMean: return timeWeightedMean;
 	case StatsOperation::Sum: return sum;
+	case StatsOperation::Min: return min;
+	case StatsOperation::Max: return max;
 	case StatsOperation::Invalid:
 	default: return invalid_value<double>();
 	}
@@ -986,9 +996,6 @@ struct DepthVariableBase : public StatsVariableTemplate<StatsVariable::Type::Num
 		return prefs.units.length == units::METERS ? depth / 1000.0
 							   : mm_to_feet(depth);
 	}
-	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum };
-	}
 };
 
 struct MaxDepthVariable : public DepthVariableBase {
@@ -998,7 +1005,7 @@ struct MaxDepthVariable : public DepthVariableBase {
 		return StatsTranslations::tr("Max. Depth");
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum, StatsOperation::Min, StatsOperation::Max };
 	}
 };
 
@@ -1010,7 +1017,7 @@ struct MeanDepthVariable : public DepthVariableBase {
 		return StatsTranslations::tr("Mean Depth");
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean, StatsOperation::Min, StatsOperation::Max };
 	}
 };
 
@@ -1068,7 +1075,7 @@ struct DurationVariable : public StatsVariableTemplate<StatsVariable::Type::Nume
 		return d->duration.seconds / 60.0;
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum, StatsOperation::Min, StatsOperation::Max };
 	}
 };
 
@@ -1159,7 +1166,7 @@ struct SACVariable : public StatsVariableTemplate<StatsVariable::Type::Numeric> 
 							    ml_to_cuft(d->sac);
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean, StatsOperation::Min, StatsOperation::Max };
 	}
 };
 
@@ -1219,7 +1226,7 @@ struct TemperatureVariable : public StatsVariableTemplate<StatsVariable::Type::N
 			return { &bin2F, &bin5F, &bin10F, &bin20F };
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean, StatsOperation::Min, StatsOperation::Max };
 	}
 };
 
@@ -1298,7 +1305,7 @@ struct WeightVariable : public StatsVariableTemplate<StatsVariable::Type::Numeri
 						       : grams_to_lbs(total_weight(d));
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum, StatsOperation::Min, StatsOperation::Max };
 	}
 };
 
@@ -1601,7 +1608,7 @@ struct GasContentVariable : public StatsVariableTemplate<StatsVariable::Type::Nu
 		return 1;
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
-		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean };
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::TimeWeightedMean, StatsOperation::Min, StatsOperation::Max };
 	}
 	double toFloat(const dive *d) const override {
 		int res = get_gas_content(d, he, max_he);
