@@ -26,6 +26,8 @@ enum class StatsOperation : int {
 	Mean,
 	TimeWeightedMean,
 	Sum,
+	Min,
+	Max,
 	Invalid
 };
 
@@ -36,6 +38,8 @@ struct StatsOperationResults {
 	double mean;
 	double timeWeightedMean;
 	double sum;
+	double min;
+	double max;
 	StatsOperationResults(); // Initialize to invalid (e.g. no dives)
 	bool isValid() const;
 	double get(StatsOperation op) const;
