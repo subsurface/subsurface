@@ -43,6 +43,10 @@ Kirigami.ApplicationWindow {
 	property string filterPattern: ""
 	property int colWidth: undefined
 
+	// signal that the profile (and possibly other code) listens to so they
+	// can redraw if settings are changed
+	signal settingsChanged()
+
 	onNotificationTextChanged: {
 		// once the app is fully initialized and the UI is running, we use passive
 		// notifications to show the notification text, but during initialization
