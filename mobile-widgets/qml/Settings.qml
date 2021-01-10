@@ -603,6 +603,44 @@ TemplatePage {
 				visible: sectionAdvanced.isExpanded
 			}
 			GridLayout {
+				id: profilePrefs
+				visible: sectionAdvanced.isExpanded
+				width: parent.width
+				columns: 2
+				TemplateLabel {
+					text: qsTr("Profile deco ceiling")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+					Layout.columnSpan: 2
+				}
+				TemplateLabel {
+					text: qsTr("Show DC reported ceiling")
+				}
+				SsrfSwitch {
+					checked: PrefTechnicalDetails.dcceiling
+					onClicked: {
+						PrefTechnicalDetails.dcceiling = checked
+						rootItem.settingChanged()
+					}
+				}
+				TemplateLabel {
+					text: qsTr("Show calculated ceiling")
+				}
+				SsrfSwitch {
+					checked: PrefTechnicalDetails.calcceiling
+					onClicked: {
+						PrefTechnicalDetails.calcceiling = checked
+						rootItem.settingsChanged()
+					}
+				}
+			}
+			TemplateLine {
+				visible: sectionAdvanced.isExpanded
+			}
+
+			GridLayout {
 				id: developer
 				visible: sectionAdvanced.isExpanded
 				width: parent.width
