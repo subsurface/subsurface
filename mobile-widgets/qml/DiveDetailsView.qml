@@ -16,6 +16,14 @@ Item {
 
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
 	height: divePlate.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
+
+	Connections {
+		target: rootItem
+		onSettingsChanged: {
+			qmlProfile.update()
+		}
+	}
+
 	Rectangle {
 		z: 99
 		color: subsurfaceTheme.textColor
