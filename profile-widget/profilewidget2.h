@@ -79,10 +79,10 @@ public:
 	void scale(qreal sx, qreal sy);
 	void plotDive(const struct dive *d, bool force = false, bool clearPictures = false, bool instant = false);
 	void setPrintMode(bool mode, bool grayscale = false);
-	bool getPrintMode();
+	bool getPrintMode() const;
 	bool isPointOutOfBoundaries(const QPointF &point) const;
-	bool isPlanner();
-	double getFontPrintScale();
+	bool isPlanner() const;
+	double getFontPrintScale() const;
 	void setFontPrintScale(double scale);
 #ifndef SUBSURFACE_MOBILE
 	bool eventFilter(QObject *, QEvent *) override;

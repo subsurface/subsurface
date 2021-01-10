@@ -1321,7 +1321,7 @@ void ProfileWidget2::setPlanState()
 }
 #endif
 
-bool ProfileWidget2::isPlanner()
+bool ProfileWidget2::isPlanner() const
 {
 	return currentState == PLAN;
 }
@@ -1608,7 +1608,7 @@ void ProfileWidget2::changeGas(int tank, int seconds)
 }
 #endif
 
-bool ProfileWidget2::getPrintMode()
+bool ProfileWidget2::getPrintMode() const
 {
 	return printMode;
 }
@@ -1641,7 +1641,7 @@ void ProfileWidget2::setFontPrintScale(double scale)
 	emit fontPrintScaleChanged(scale);
 }
 
-double ProfileWidget2::getFontPrintScale()
+double ProfileWidget2::getFontPrintScale() const
 {
 	if (printMode)
 		return fontPrintScale;
