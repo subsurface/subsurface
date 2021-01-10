@@ -92,7 +92,7 @@ template<> QString invalid_value<QString>()
 template<> StatsQuartiles invalid_value<StatsQuartiles>()
 {
 	double NaN = std::numeric_limits<double>::quiet_NaN();
-	return { NaN, NaN, NaN, NaN, NaN };
+	return { NaN, NaN, NaN, NaN, NaN, 0 };
 }
 
 static bool is_invalid_value(int i)
@@ -411,20 +411,20 @@ StatsQuartiles StatsVariable::quartiles(const std::vector<dive *> &dives) const
 // This expects the value vector to be sorted!
 StatsQuartiles StatsVariable::quartiles(const std::vector<StatsValue> &vec)
 {
-	size_t s = vec.size();
-	if (s == 0)
+	int s = (int)vec.size();
+	if (s <= 0)
 		return invalid_value<StatsQuartiles>();
 	switch (s % 4) {
 	default:
 		// gcc doesn't recognize that we catch all possible values. disappointing.
 	case 0:
-		return { vec[0].v, q3(&vec[s/4 - 1]), q2(&vec[s/2 - 1]), q1(&vec[s - s/4 - 1]), vec[s - 1].v };
+		return { vec[0].v, q3(&vec[s/4 - 1]), q2(&vec[s/2 - 1]), q1(&vec[s - s/4 - 1]), vec[s - 1].v, s };
 	case 1:
-		return { vec[0].v, vec[s/4].v, vec[s/2].v, vec[s - s/4 - 1].v, vec[s - 1].v };
+		return { vec[0].v, vec[s/4].v, vec[s/2].v, vec[s - s/4 - 1].v, vec[s - 1].v, s };
 	case 2:
-		return { vec[0].v, q1(&vec[s/4]), q2(&vec[s/2 - 1]), q3(&vec[s - s/4 - 2]), vec[s - 1].v };
+		return { vec[0].v, q1(&vec[s/4]), q2(&vec[s/2 - 1]), q3(&vec[s - s/4 - 2]), vec[s - 1].v, s };
 	case 3:
-		return { vec[0].v, q2(&vec[s/4]), vec[s/2].v, q2(&vec[s - s/4 - 2]), vec[s - 1].v };
+		return { vec[0].v, q2(&vec[s/4]), vec[s/2].v, q2(&vec[s - s/4 - 2]), vec[s - 1].v, s };
 	}
 }
 
