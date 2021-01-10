@@ -8,6 +8,7 @@
 #include "core/pref.h"
 #include "core/qthelper.h" // for get_depth_unit() et al.
 #include "core/string-format.h"
+#include "core/tag.h"
 #include "core/subsurface-time.h"
 #include <cmath>
 #include <limits>
@@ -1449,6 +1450,30 @@ struct BuddyVariable : public StatsVariableTemplate<StatsVariable::Type::Discret
 	}
 };
 
+// ============ Tags ============
+
+struct TagBinner : public StringBinner<TagBinner, StringBin> {
+	std::vector<QString> to_bin_values(const dive *d) const {
+		std::vector<QString> tags;
+		for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
+			tags.push_back(QString(tag->tag->name).trimmed());
+		return tags;
+	}
+};
+
+static TagBinner tag_binner;
+struct TagVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Tags");
+	}
+	QString diveCategories(const dive *d) const override {
+		return get_taglist_string(d->tag_list);
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &tag_binner };
+	}
+};
+
 // ============ Gas type, in 2%, 5%, 10% and 20% steps  ============
 // This is a bit convoluted: We differentiate between four types: air, pure oxygen, EAN and trimix
 // The latter two are binned in x% steps. The problem is that we can't use the "simple binner",
@@ -1865,6 +1890,7 @@ static WeightVariable weight_variable;
 static DiveNrVariable dive_nr_variable;
 static DiveModeVariable dive_mode_variable;
 static BuddyVariable buddy_variable;
+static TagVariable tag_variable;
 static GasTypeVariable gas_type_variable;
 static GasContentO2Variable gas_content_o2_variable;
 static GasContentO2HeMaxVariable gas_content_o2_he_max_variable;
@@ -1881,7 +1907,7 @@ const std::vector<const StatsVariable *> stats_variables = {
 	&date_variable, &max_depth_variable, &mean_depth_variable, &duration_variable, &sac_variable,
 	&water_temperature_variable, &air_temperature_variable, &weight_variable, &dive_nr_variable,
 	&gas_content_o2_variable, &gas_content_o2_he_max_variable, &gas_content_he_variable,
-	&dive_mode_variable, &buddy_variable, &gas_type_variable, &suit_variable,
+	&dive_mode_variable, &buddy_variable, &tag_variable, &gas_type_variable, &suit_variable,
 	&weightsystem_variable, &cylinder_type_variable, &location_variable, &day_of_week_variable,
 	&rating_variable, &visibility_variable
 };
