@@ -50,6 +50,7 @@ struct StatsQuartiles {
 	double min;
 	double q1, q2, q3;
 	double max;
+	int count;
 	bool isValid() const;
 };
 
