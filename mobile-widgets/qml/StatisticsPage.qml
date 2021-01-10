@@ -98,6 +98,24 @@ Kirigami.Page {
 				}
 			}
 		}
+		ColumnLayout {
+			id: i5
+			Layout.column: wide ? 0 : 2
+			Layout.row: wide ? 4 : 1
+			Layout.margins: Kirigami.Units.smallSpacing
+			TemplateLabelSmall {
+				text: qsTr("Operation")
+			}
+			TemplateComboBox {
+				id: var2Operation
+				model: statsManager.operation2List
+				currentIndex: statsManager.operation2Index;
+				Layout.fillWidth: false
+				onCurrentIndexChanged: {
+					statsManager.var2OperationChanged(currentIndex)
+				}
+			}
+		}
 		Item {
 			Layout.column: wide ? 0 : 4
 			Layout.row: wide ? 4 : 0
