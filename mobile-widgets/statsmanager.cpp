@@ -28,31 +28,37 @@ void StatsManager::doit()
 	view->plot(state);
 }
 
-static void setVariableList(const StatsState::VariableList &list, QStringList &stringList)
+static void setVariableList(const StatsState::VariableList &list, QStringList &stringList, int &idx)
 {
 	stringList.clear();
 	for (const StatsState::Variable &v: list.variables)
 		stringList.push_back(v.name);
+	idx = list.selected;
 }
 
-static void setBinnerList(const StatsState::BinnerList &list, QStringList &stringList)
+static void setBinnerList(const StatsState::BinnerList &list, QStringList &stringList, int &idx)
 {
 	stringList.clear();
 	for (const QString &v: list.binners)
 		stringList.push_back(v);
+	idx = list.selected;
 }
 
 void StatsManager::updateUi()
 {
 	uiState = state.getUIState();
-	setVariableList(uiState.var1, var1List);
-	setBinnerList(uiState.binners1, binner1List);
-	setVariableList(uiState.var2, var2List);
-	setBinnerList(uiState.binners2, binner2List);
+	setVariableList(uiState.var1, var1List, var1Index);
+	setBinnerList(uiState.binners1, binner1List, binner1Index);
+	setVariableList(uiState.var2, var2List, var2Index);
+	setBinnerList(uiState.binners2, binner2List, binner2Index);
 	var1ListChanged();
 	binner1ListChanged();
 	var2ListChanged();
 	binner2ListChanged();
+	var1IndexChanged();
+	binner1IndexChanged();
+	var2IndexChanged();
+	binner2IndexChanged();
 
 	if (view)
 		view->plot(state);
