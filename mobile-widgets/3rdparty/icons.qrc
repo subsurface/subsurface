@@ -21,5 +21,6 @@
 		<file alias="icons/edit-copy.svg">breeze-icons/icons/actions/24/edit-copy.svg</file>
 		<file alias="icons/edit-paste.svg">breeze-icons/icons/actions/24/edit-paste.svg</file>
 		<file alias="icons/view-readermode.svg">breeze-icons/icons/actions/16/view-readermode.svg</file>
+		<file alias="icons/office-chart-bar-stacked.svg">breeze-icons/icons/actions/24/office-chart-bar-stacked.svg</file>
 	</qresource>
 </RCC>
