@@ -51,14 +51,17 @@ void StatsManager::updateUi()
 	setBinnerList(uiState.binners1, binner1List, binner1Index);
 	setVariableList(uiState.var2, var2List, var2Index);
 	setBinnerList(uiState.binners2, binner2List, binner2Index);
+	setVariableList(uiState.operations2, operation2List, operation2Index);
 	var1ListChanged();
 	binner1ListChanged();
 	var2ListChanged();
 	binner2ListChanged();
+	operation2ListChanged();
 	var1IndexChanged();
 	binner1IndexChanged();
 	var2IndexChanged();
 	binner2IndexChanged();
+	operation2IndexChanged();
 
 	if (view)
 		view->plot(state);
@@ -91,5 +94,14 @@ void StatsManager::var2Changed(int idx)
 void StatsManager::var2BinnerChanged(int idx)
 {
 	state.binner2Changed(idx);
+	updateUi();
+}
+
+void StatsManager::var2OperationChanged(int idx)
+{
+	if (uiState.var2.variables.empty())
+		return;
+	idx = std::clamp(idx, 0, (int)uiState.operations2.variables.size());
+	state.var2OperationChanged(uiState.operations2.variables[idx].id);
 	updateUi();
 }
