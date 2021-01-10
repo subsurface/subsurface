@@ -45,6 +45,30 @@ static QString join_strings(const std::vector<QString> &v)
 	return res;
 }
 
+// A wrapper around dive site, that caches the name of the dive site
+struct DiveSiteWrapper {
+	const dive_site *ds;
+	QString name;
+	DiveSiteWrapper(const dive_site *ds) : ds(ds),
+		name(ds ? ds->name : "")
+	{
+	}
+	bool operator<(const DiveSiteWrapper &d2) const {
+		if (int cmp = QString::compare(name, d2.name, Qt::CaseInsensitive))
+			return cmp < 0;
+		return ds < d2.ds; // This is just random, try something better.
+	}
+	bool operator==(const DiveSiteWrapper &d2) const {
+		return ds == d2.ds;
+	}
+	bool operator!=(const DiveSiteWrapper &d2) const {
+		return ds != d2.ds;
+	}
+	QString format() const {
+		return ds ? name : StatsTranslations::tr("no divesite");
+	}
+};
+
 // Note: usually I dislike functions defined inside class/struct
 // declarations ("Java style"). However, for brevity this is done
 // in this rather template-heavy source file more or less consistently.
@@ -91,9 +115,9 @@ static bool is_invalid_value(const year_quarter &)
 	return false;
 }
 
-static bool is_invalid_value(const dive_site *d)
+static bool is_invalid_value(const DiveSiteWrapper &d)
 {
-	return !d;
+	return !d.ds;
 }
 
 static bool is_invalid_value(const StatsOperationResults &res)
@@ -1730,15 +1754,14 @@ struct CylinderTypeVariable : public StatsVariableTemplate<StatsVariable::Type::
 
 // ============ Location (including trip location) ============
 
-using LocationBin = SimpleBin<const dive_site *>;
+using LocationBin = SimpleBin<DiveSiteWrapper>;
 
 struct LocationBinner : public SimpleBinner<LocationBinner, LocationBin> {
 	QString format(const StatsBin &bin) const override {
-		const dive_site *ds = derived_bin(bin).value;
-		return QString(ds ? ds->name : "-");
+		return derived_bin(bin).value.format();
 	}
-	const dive_site *to_bin_value(const dive *d) const {
-		return d->dive_site;
+	const DiveSiteWrapper to_bin_value(const dive *d) const {
+		return DiveSiteWrapper(d->dive_site);
 	}
 };
 
@@ -1748,7 +1771,7 @@ struct LocationVariable : public StatsVariableTemplate<StatsVariable::Type::Disc
 		return StatsTranslations::tr("Dive site");
 	}
 	QString diveCategories(const dive *d) const override {
-		return d->dive_site ? d->dive_site->name : "-";
+		return DiveSiteWrapper(d->dive_site).format();
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &location_binner };
