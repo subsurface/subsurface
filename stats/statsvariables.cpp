@@ -1420,9 +1420,9 @@ struct DiveModeVariable : public StatsVariableTemplate<StatsVariable::Type::Disc
 	}
 };
 
-// ============ Buddy (including dive guides) ============
+// ============ People, buddies and dive guides ============
 
-struct BuddyBinner : public StringBinner<BuddyBinner, StringBin> {
+struct PeopleBinner : public StringBinner<PeopleBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> dive_people;
 		for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
@@ -1433,10 +1433,10 @@ struct BuddyBinner : public StringBinner<BuddyBinner, StringBin> {
 	}
 };
 
-static BuddyBinner buddy_binner;
-struct BuddyVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+static PeopleBinner people_binner;
+struct PeopleVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
 	QString name() const override {
-		return StatsTranslations::tr("Buddies");
+		return StatsTranslations::tr("People");
 	}
 	QString diveCategories(const dive *d) const override {
 		QString buddy = QString(d->buddy).trimmed();
@@ -1446,7 +1446,51 @@ struct BuddyVariable : public StatsVariableTemplate<StatsVariable::Type::Discret
 		return buddy + divemaster;
 	}
 	std::vector<const StatsBinner *> binners() const override {
+		return { &people_binner };
+	}
+};
+
+struct BuddyBinner : public StringBinner<BuddyBinner, StringBin> {
+	std::vector<QString> to_bin_values(const dive *d) const {
+		std::vector<QString> buddies;
+		for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
+			buddies.push_back(s.trimmed());
+		return buddies;
+	}
+};
+
+static BuddyBinner buddy_binner;
+struct BuddyVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Buddies");
+	}
+	QString diveCategories(const dive *d) const override {
+		return QString(d->buddy).trimmed();
+	}
+	std::vector<const StatsBinner *> binners() const override {
 		return { &buddy_binner };
+	}
+};
+
+struct DiveGuideBinner : public StringBinner<DiveGuideBinner, StringBin> {
+	std::vector<QString> to_bin_values(const dive *d) const {
+		std::vector<QString> dive_guides;
+		for (const QString &s: QString(d->divemaster).split(",", SKIP_EMPTY))
+			dive_guides.push_back(s.trimmed());
+		return dive_guides;
+	}
+};
+
+static DiveGuideBinner dive_guide_binner;
+struct DiveGuideVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Dive guides");
+	}
+	QString diveCategories(const dive *d) const override {
+		return QString(d->divemaster).trimmed();
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &dive_guide_binner };
 	}
 };
 
@@ -1889,7 +1933,9 @@ static AirTemperatureVariable air_temperature_variable;
 static WeightVariable weight_variable;
 static DiveNrVariable dive_nr_variable;
 static DiveModeVariable dive_mode_variable;
+static PeopleVariable people_variable;
 static BuddyVariable buddy_variable;
+static DiveGuideVariable dive_guide_variable;
 static TagVariable tag_variable;
 static GasTypeVariable gas_type_variable;
 static GasContentO2Variable gas_content_o2_variable;
@@ -1907,7 +1953,8 @@ const std::vector<const StatsVariable *> stats_variables = {
 	&date_variable, &max_depth_variable, &mean_depth_variable, &duration_variable, &sac_variable,
 	&water_temperature_variable, &air_temperature_variable, &weight_variable, &dive_nr_variable,
 	&gas_content_o2_variable, &gas_content_o2_he_max_variable, &gas_content_he_variable,
-	&dive_mode_variable, &buddy_variable, &tag_variable, &gas_type_variable, &suit_variable,
+	&dive_mode_variable, &people_variable, &buddy_variable, &dive_guide_variable, &tag_variable,
+	&gas_type_variable, &suit_variable,
 	&weightsystem_variable, &cylinder_type_variable, &location_variable, &day_of_week_variable,
 	&rating_variable, &visibility_variable
 };
