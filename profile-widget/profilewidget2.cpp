@@ -623,7 +623,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 		maxdepth = newMaxDepth;
 	}
 
-	dataModel->setDive(&displayed_dive, plotInfo);
+	dataModel->setDive(plotInfo);
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->setPlotInfo(plotInfo);
 #endif
