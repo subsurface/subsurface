@@ -3014,7 +3014,6 @@ struct dive *make_first_dc(const struct dive *d, int dc_number)
 
 	/* make a new unique id, since we still can't handle two equal ids */
 	res->id = dive_getUniqID();
-	invalidate_dive_cache(res);
 
 	if (dc_number == 0)
 		return res;
