@@ -4,6 +4,7 @@
 		<file>TemplateButton.qml</file>
 		<file>TemplateCheckBox.qml</file>
 		<file>TemplateComboBox.qml</file>
+		<file>TemplateSlimComboBox.qml</file>
 		<file>TemplateEditComboBox.qml</file>
 		<file>TemplateLabel.qml</file>
 		<file>TemplateLabelSmall.qml</file>
