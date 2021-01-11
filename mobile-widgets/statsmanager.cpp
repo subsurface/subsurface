@@ -99,7 +99,7 @@ void StatsManager::var2BinnerChanged(int idx)
 
 void StatsManager::var2OperationChanged(int idx)
 {
-	if (uiState.var2.variables.empty())
+	if (uiState.operations2.variables.empty())
 		return;
 	idx = std::clamp(idx, 0, (int)uiState.operations2.variables.size());
 	state.var2OperationChanged(uiState.operations2.variables[idx].id);
