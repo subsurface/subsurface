@@ -13,8 +13,8 @@
 #include <QGraphicsRectItem>
 
 class QGraphicsScene;
-class InformationBox;
-class StatsVariable;
+struct InformationBox;
+struct StatsVariable;
 
 class BarSeries : public StatsSeries {
 public:

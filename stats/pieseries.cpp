@@ -116,7 +116,7 @@ PieSeries::PieSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis, 
 		  { return std::make_tuple(-data[idx1].second, idx1) <
 			   std::make_tuple(-data[idx2].second, idx2); });
 	auto it = std::find_if(sorted.begin(), sorted.end(),
-			       [count=totalCount, &data, smallest_slice_percentage](int idx)
+			       [count=totalCount, &data](int idx)
 			       { return data[idx].second * 100 / count < smallest_slice_percentage; });
 	if (it - sorted.begin() < min_slices) {
 		// Take minimum amount of slices below 50%...
