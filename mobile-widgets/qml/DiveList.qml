@@ -386,17 +386,15 @@ Kirigami.ScrollablePage {
 			anchors.right: parent.right
 			anchors.leftMargin: Kirigami.Units.gridUnit / 2
 			anchors.rightMargin: Kirigami.Units.gridUnit / 2
-			TemplateComboBox {
+			TemplateSlimComboBox {
 				visible: filterBar.height === sitefilter.implicitHeight
 				id: sitefilterMode
-				editable: false
 				model: ListModel {
 					ListElement {text: qsTr("Fulltext")}
 					ListElement {text: qsTr("People")}
 					ListElement {text: qsTr("Tags")}
 				}
 				font.pointSize: subsurfaceTheme.smallPointSize
-				Layout.preferredWidth: parent.width * 0.2
 				Layout.maximumWidth: parent.width * 0.3
 				onActivated:  {
 					manager.setFilter(sitefilter.text, currentIndex)
