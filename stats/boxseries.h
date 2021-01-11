@@ -13,7 +13,7 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsRectItem>
 
-class InformationBox;
+struct InformationBox;
 class QGraphicsScene;
 
 class BoxSeries : public StatsSeries {

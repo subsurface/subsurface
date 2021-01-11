@@ -9,7 +9,7 @@
 #include <vector>
 #include <QString>
 
-class InformationBox;
+struct InformationBox;
 class QGraphicsEllipseItem;
 class QGraphicsScene;
 class QGraphicsSimpleTextItem;

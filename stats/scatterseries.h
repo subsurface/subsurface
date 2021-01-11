@@ -12,7 +12,7 @@
 
 class QGraphicsPixmapItem;
 class QGraphicsScene;
-class InformationBox;
+struct InformationBox;
 struct StatsVariable;
 struct dive;
 
