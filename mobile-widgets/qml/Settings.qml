@@ -81,7 +81,7 @@ TemplatePage {
 				TemplateLabel {
 					text: qsTr("Cylinder:")
 				}
-				TemplateComboBox {
+				TemplateSlimComboBox {
 					id: defaultCylinderBox
 					Layout.fillWidth: true
 					onActivated: {
@@ -145,7 +145,7 @@ TemplatePage {
 					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 					Layout.columnSpan: 2
 				}
-				TemplateComboBox {
+				TemplateSlimComboBox {
 					editable: false
 					Layout.columnSpan: 2
 					currentIndex: (subsurfaceTheme.currentTheme === "Blue") ? 0 :

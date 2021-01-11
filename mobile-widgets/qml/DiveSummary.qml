@@ -12,7 +12,7 @@ Kirigami.ScrollablePage {
 	DiveSummaryModel { id: summaryModel }
 	property string firstDive: ""
 	property string lastDive: ""
-	property int headerColumnWidth: Math.floor(width / 3)
+	property int headerColumnWidth: Math.floor((width - Kirigami.Units.gridUnit) / 3)
 
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	title: qsTr("Dive summary")
@@ -83,12 +83,13 @@ Kirigami.ScrollablePage {
 		TemplateButton {
 			/* Replace by signals from the core in due course. */
 			text: qsTr("Refresh")
-			implicitWidth: headerColumnWidth
+			implicitWidth: headerColumnWidth - Kirigami.Units.largeSpacing
 			onClicked: reload()
 		}
-		TemplateComboBox {
+		TemplateSlimComboBox {
 			id: selectionPrimary
-			editable: false
+			Layout.maximumWidth: headerColumnWidth - Kirigami.Units.largeSpacing
+			Layout.preferredWidth: headerColumnWidth - Kirigami.Units.largeSpacing
 			currentIndex: 0
 			model: monthModel
 			font.pointSize: subsurfaceTheme.smallPointSize
@@ -96,9 +97,10 @@ Kirigami.ScrollablePage {
 				summaryModel.calc(0, currentIndex)
 			}
 		}
-		TemplateComboBox {
+		TemplateSlimComboBox {
 			id: selectionSecondary
-			editable: false
+			Layout.maximumWidth: headerColumnWidth - Kirigami.Units.largeSpacing
+			Layout.preferredWidth: headerColumnWidth - Kirigami.Units.largeSpacing
 			currentIndex: 3
 			model: monthModel
 			font.pointSize: subsurfaceTheme.smallPointSize
@@ -110,6 +112,7 @@ Kirigami.ScrollablePage {
 		Component {
 			id: rowDelegate
 			Row {
+				Layout.leftMargin: 0
 				height: headerLabel.height + Kirigami.Units.largeSpacing
 				Rectangle {
 					width: Kirigami.Units.gridUnit
@@ -131,7 +134,7 @@ Kirigami.ScrollablePage {
 				}
 				Rectangle {
 					color: index & 1 ? subsurfaceTheme.backgroundColor : subsurfaceTheme.lightPrimaryColor
-					width: headerColumnWidth - 2 * Kirigami.Units.gridUnit
+					width: headerColumnWidth - 1.5 * Kirigami.Units.gridUnit
 					height: headerLabel.height + Kirigami.Units.largeSpacing
 					Label {
 						color: subsurfaceTheme.textColor
@@ -141,7 +144,7 @@ Kirigami.ScrollablePage {
 				}
 				Rectangle {
 					color: index & 1 ? subsurfaceTheme.backgroundColor : subsurfaceTheme.lightPrimaryColor
-					width: headerColumnWidth - 2 * Kirigami.Units.gridUnit
+					width: headerColumnWidth - 1.5 * Kirigami.Units.gridUnit
 					height: headerLabel.height + Kirigami.Units.largeSpacing
 					Label {
 						color: subsurfaceTheme.textColor
