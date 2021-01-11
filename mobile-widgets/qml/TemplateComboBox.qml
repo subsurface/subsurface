@@ -27,7 +27,7 @@ ComboBox {
 		id: canvas
 		x: cb.width - width - cb.rightPadding
 		y: cb.topPadding + (cb.availableHeight - height) / 2
-		width: Kirigami.Units.gridUnit
+		width: Kirigami.Units.gridUnit * 0.8
 		height: width * 0.66
 		contextType: "2d"
 		Connections {
@@ -74,7 +74,7 @@ ComboBox {
 		border.color: cb.focus ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.backgroundColor
 		border.width: cb.visualFocus ? 2 : 1
 		color: Qt.darker(subsurfaceTheme.backgroundColor, 1.1)
-		radius: 2
+		radius: Kirigami.Units.smallSpacing
 	}
 
 	popup: Popup {
@@ -95,7 +95,7 @@ ComboBox {
 		background: Rectangle {
 			border.color: subsurfaceTheme.darkerPrimaryColor
 			color: subsurfaceTheme.backgroundColor
-			radius: 2
+			radius: Kirigami.Units.smallSpacing
 		}
 	}
 }
