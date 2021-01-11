@@ -5,6 +5,7 @@
 #define COMMAND_EVENT_H
 
 #include "command_base.h"
+#include "core/divemode.h"
 
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
@@ -35,10 +36,11 @@ private:
 class AddEventBase : public EventBase {
 public:
 	AddEventBase(struct dive *d, int dcNr, struct event *ev); // Takes ownership of event!
-private:
-	bool workToBeDone() override;
+protected:
 	void undoit() override;
 	void redoit() override;
+private:
+	bool workToBeDone() override;
 
 	OwningEventPtr eventToAdd;	// for redo
 	event *eventToRemove;		// for undo
@@ -57,6 +59,10 @@ public:
 class AddEventSetpointChange : public AddEventBase {
 public:
 	AddEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2);
+private:
+	divemode_t divemode;	// Wonderful: this may change the divemode of the dive to CCR
+	void undoit() override;
+	void redoit() override;
 };
 
 class RenameEvent : public EventBase {

@@ -345,8 +345,6 @@ static void check_setpoint_events(const struct dive *dive, struct divecomputer *
 	do {
 		i = set_setpoint(pi, i, setpoint.mbar, ev->time.seconds);
 		setpoint.mbar = ev->value;
-		if (setpoint.mbar)
-			dc->divemode = CCR;
 		ev = get_next_event(ev->next, "SP change");
 	} while (ev);
 	set_setpoint(pi, i, setpoint.mbar, INT_MAX);

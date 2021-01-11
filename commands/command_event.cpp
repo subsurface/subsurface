@@ -74,9 +74,22 @@ AddEventDivemodeSwitch::AddEventDivemodeSwitch(struct dive *d, int dcNr, int sec
 }
 
 AddEventSetpointChange::AddEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2) :
-	AddEventBase(d, dcNr, create_event(seconds, SAMPLE_EVENT_PO2, 0, pO2.mbar, QT_TRANSLATE_NOOP("gettextFromC", "SP change")))
+	AddEventBase(d, dcNr, create_event(seconds, SAMPLE_EVENT_PO2, 0, pO2.mbar, QT_TRANSLATE_NOOP("gettextFromC", "SP change"))),
+	divemode(CCR)
 {
 	setText(Command::Base::tr("Add set point change")); // TODO: format pO2 value in bar or psi.
+}
+
+void AddEventSetpointChange::undoit()
+{
+	AddEventBase::undoit();
+	std::swap(get_dive_dc(d, dcNr)->divemode, divemode);
+}
+
+void AddEventSetpointChange::redoit()
+{
+	AddEventBase::redoit();
+	std::swap(get_dive_dc(d, dcNr)->divemode, divemode);
 }
 
 RenameEvent::RenameEvent(struct dive *d, int dcNr, struct event *ev, const char *name) : EventBase(d, dcNr),
