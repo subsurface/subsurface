@@ -365,9 +365,33 @@ std::pair<QString, QString> CategoryAxis::getFirstLastLabel() const
 	return { QString(), QString() };
 }
 
+// Get ellipses for a given label size
+static QString ellipsis1 = QStringLiteral("․");
+static QString ellipsis2 = QStringLiteral("‥");
+static QString ellipsis3 = QStringLiteral("…");
+static QString getEllipsis(const QFontMetrics &fm, double widthIn)
+{
+	int width = static_cast<int>(floor(widthIn));
+	if (fm.size(Qt::TextSingleLine, ellipsis3).width() < width)
+		return ellipsis3;
+	if (fm.size(Qt::TextSingleLine, ellipsis2).width() < width)
+		return ellipsis2;
+	if (fm.size(Qt::TextSingleLine, ellipsis1).width() < width)
+		return ellipsis1;
+	return QString();
+}
+
 void CategoryAxis::updateLabels()
 {
-	// TODO: paint ellipses if space too small
+	if (labelsText.empty())
+		return;
+
+	QFontMetrics fm(labelFont);
+	double size_per_label = size / static_cast<double>(labelsText.size()) - axisTickWidth;
+	double fontHeight = fm.height();
+
+	QString ellipsis = horizontal ? getEllipsis(fm, size_per_label) : QString();
+
 	labels.clear();
 	ticks.clear();
 	labels.reserve(labelsText.size());
@@ -375,7 +399,13 @@ void CategoryAxis::updateLabels()
 	double pos = 0.0;
 	addTick(-0.5);
 	for (const QString &s: labelsText) {
-		addLabel(s, pos);
+		if (horizontal) {
+			double width = static_cast<double>(fm.size(Qt::TextSingleLine, s).width());
+			addLabel(width < size_per_label ? s : ellipsis, pos);
+		} else {
+			if (fontHeight < size_per_label)
+				addLabel(s, pos);
+		}
 		addTick(pos + 0.5);
 		pos += 1.0;
 	}
