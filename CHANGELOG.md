@@ -1,3 +1,4 @@
+- undo: reset dive-mode on undo of set-point addition
 - desktop: complete rewrite of the statistics code, significantly expanding capabilities
 - desktop: add preferences option to disable default cylinder types
 - mobile: add ability to show fundamentally the same statistics as on the desktop
