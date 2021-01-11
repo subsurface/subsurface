@@ -15,6 +15,7 @@ public:
 	Q_PROPERTY(QStringList var2List MEMBER var2List NOTIFY var2ListChanged)
 	Q_PROPERTY(QStringList binner2List MEMBER binner2List NOTIFY binner2ListChanged)
 	Q_PROPERTY(QStringList operation2List MEMBER operation2List NOTIFY operation2ListChanged)
+	Q_PROPERTY(QStringList chartList MEMBER chartList NOTIFY chartListChanged)
 	Q_PROPERTY(int var1Index MEMBER var1Index NOTIFY var1IndexChanged)
 	Q_PROPERTY(int binner1Index MEMBER binner1Index NOTIFY binner1IndexChanged)
 	Q_PROPERTY(int var2Index MEMBER var2Index NOTIFY var2IndexChanged)
@@ -30,12 +31,14 @@ public:
 	Q_INVOKABLE void var2Changed(int idx);
 	Q_INVOKABLE void var2BinnerChanged(int idx);
 	Q_INVOKABLE void var2OperationChanged(int idx);
+	Q_INVOKABLE void setChart(int i);
 signals:
 	void var1ListChanged();
 	void binner1ListChanged();
 	void var2ListChanged();
 	void binner2ListChanged();
 	void operation2ListChanged();
+	void chartListChanged();
 	void var1IndexChanged();
 	void binner1IndexChanged();
 	void var2IndexChanged();
@@ -49,6 +52,7 @@ private:
 	QStringList var2List;
 	QStringList binner2List;
 	QStringList operation2List;
+	QStringList chartList;
 	int var1Index;
 	int binner1Index;
 	int var2Index;
@@ -56,7 +60,6 @@ private:
 	int operation2Index;
 	StatsState::UIState uiState;	// Remember UI state so that we can interpret indexes
 	void updateUi();
-
 };
 
 #endif
