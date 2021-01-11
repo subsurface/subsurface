@@ -57,6 +57,17 @@ std::pair<double, double> StatsAxis::minMaxScreen() const
 			  : std::make_pair(zeroOnScreen, zeroOnScreen - size);
 }
 
+std::pair<double, double> StatsAxis::horizontalOverhang() const
+{
+	// If the labels are between ticks, they cannot peak out
+	if (!horizontal || labelsBetweenTicks)
+		return { 0.0, 0.0 };
+	QFontMetrics fm(labelFont);
+	auto [firstLabel, lastLabel] = getFirstLastLabel();
+	return { fm.size(Qt::TextSingleLine, firstLabel).width() / 2.0,
+		 fm.size(Qt::TextSingleLine, lastLabel).width() / 2.0 };
+}
+
 void StatsAxis::setRange(double minIn, double maxIn)
 {
 	min = minIn;
@@ -223,6 +234,19 @@ ValueAxis::ValueAxis(const QString &title, double min, double max, int decimals,
 	StatsAxis(title, horizontal, false),
 	min(min), max(max), decimals(decimals)
 {
+	// Avoid degenerate cases
+	if (max - min < 0.0001) {
+		max += 0.5;
+		min -= 0.5;
+	}
+}
+
+// Attention: this is only heuristics. Before setting the actual size, we
+// don't know the actual numbers of the minimum and maximum value.
+std::pair<QString, QString> ValueAxis::getFirstLastLabel() const
+{
+	QLocale loc;
+	return { loc.toString(min, 'f', decimals), loc.toString(max, 'f', decimals) };
 }
 
 void ValueAxis::updateLabels()
@@ -230,15 +254,8 @@ void ValueAxis::updateLabels()
 	labels.clear();
 	ticks.clear();
 
-	// Avoid degenerate cases
-	if (max - min < 0.0001) {
-		max += 0.5;
-		min -= 0.5;
-	}
-
 	QLocale loc;
-	QString minString = loc.toString(min, 'f', decimals);
-	QString maxString = loc.toString(max, 'f', decimals);
+	auto [minString, maxString] = getFirstLastLabel();
 	int numTicks = guessNumTicks({ minString, maxString});
 
 	// Use full decimal increments
@@ -277,6 +294,14 @@ CountAxis::CountAxis(const QString &title, int count, bool horizontal) :
 	ValueAxis(title, 0.0, (double)count, 0, horizontal),
 	count(count)
 {
+}
+
+// Attention: this is only heuristics. Before setting the actual size, we
+// don't know the actual numbers of the minimum and maximum value.
+std::pair<QString, QString> CountAxis::getFirstLastLabel() const
+{
+	QLocale loc;
+	return { QString("0"), loc.toString(count) };
 }
 
 void CountAxis::updateLabels()
@@ -333,6 +358,13 @@ CategoryAxis::CategoryAxis(const QString &title, const std::vector<QString> &lab
 	setRange(-0.5, static_cast<double>(labels.size()) + 0.5);
 }
 
+// No implementation because the labels are inside ticks and this
+// is only used to calculate the "overhang" of labels under ticks.
+std::pair<QString, QString> CategoryAxis::getFirstLastLabel() const
+{
+	return { QString(), QString() };
+}
+
 void CategoryAxis::updateLabels()
 {
 	// TODO: paint ellipses if space too small
@@ -368,6 +400,14 @@ HistogramAxis::HistogramAxis(const QString &title, std::vector<HistogramAxisEntr
 				[](const HistogramAxisEntry &e) { return e.recommended; });
 	preferred_step = it2 == bin_values.end() ? 1 : it2 - it1;
 	setRange(bin_values.front().value, bin_values.back().value);
+}
+
+std::pair<QString, QString> HistogramAxis::getFirstLastLabel() const
+{
+	if (bin_values.empty())
+		return { QString(), QString() };
+	else
+		return { bin_values.front().name, bin_values.back().name };
 }
 
 // Initialize a histogram axis with the given labels. Labels are specified as (name, value, recommended) triplets.

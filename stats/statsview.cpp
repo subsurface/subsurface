@@ -97,15 +97,21 @@ void StatsView::plotAreaChanged(const QSizeF &s)
 	if (title)
 		top += title->boundingRect().height() + titleBorder;
 	// Currently, we only have either none, or an x- and a y-axis
-	if (xAxis)
+	std::pair<double,double> horizontalSpace{ 0.0, 0.0 };
+	if (xAxis) {
 		bottom -= xAxis->height();
+		horizontalSpace = xAxis->horizontalOverhang();
+	}
 	if (bottom - top < minSize)
 		return;
 	if (yAxis) {
 		yAxis->setSize(bottom - top);
-		left += yAxis->width();
-		yAxis->setPos(QPointF(left, bottom));
+		horizontalSpace.first = std::max(horizontalSpace.first, yAxis->width());
 	}
+	left += horizontalSpace.first;
+	right -= horizontalSpace.second;
+	if (yAxis)
+		yAxis->setPos(QPointF(left, bottom));
 	if (right - left < minSize)
 		return;
 	if (xAxis) {

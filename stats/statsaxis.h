@@ -16,6 +16,7 @@ public:
 	// Returns minimum and maximum of shown range, not of data points.
 	std::pair<double, double> minMax() const;
 	std::pair<double, double> minMaxScreen() const; // minimum and maximum in screen coordinates
+	std::pair<double, double> horizontalOverhang() const; // space that labels peak out in horizontal axes
 
 	double width() const;		// Only supported by vertical axes. Only valid after setSize().
 	double height() const;		// Only supported for horizontal axes. Always valid.
@@ -39,6 +40,7 @@ protected:
 	std::vector<Label> labels;
 	void addLabel(const QString &label, double pos);
 	virtual void updateLabels() = 0;
+	virtual std::pair<QString, QString> getFirstLastLabel() const = 0;
 
 	struct Tick {
 		std::unique_ptr<QGraphicsLineItem> item;
@@ -69,6 +71,7 @@ private:
 	double min, max;
 	int decimals;
 	void updateLabels() override;
+	std::pair<QString, QString> getFirstLastLabel() const override;
 };
 
 class CountAxis : public ValueAxis {
@@ -77,6 +80,7 @@ public:
 private:
 	int count;
 	void updateLabels() override;
+	std::pair<QString, QString> getFirstLastLabel() const override;
 };
 
 class CategoryAxis : public StatsAxis {
@@ -85,6 +89,7 @@ public:
 private:
 	std::vector<QString> labelsText;
 	void updateLabels();
+	std::pair<QString, QString> getFirstLastLabel() const override;
 };
 
 struct HistogramAxisEntry {
@@ -98,6 +103,7 @@ public:
 	HistogramAxis(const QString &title, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
 private:
 	void updateLabels() override;
+	std::pair<QString, QString> getFirstLastLabel() const override;
 	std::vector<HistogramAxisEntry> bin_values;
 	int preferred_step;
 };
