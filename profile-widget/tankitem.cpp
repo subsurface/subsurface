@@ -61,7 +61,7 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 	label->setZValue(101);
 }
 
-void TankItem::setData(struct plot_info *plotInfo, struct dive *d)
+void TankItem::setData(const struct plot_info *plotInfo, const struct dive *d)
 {
 	if (!d)
 		return;
@@ -73,7 +73,7 @@ void TankItem::setData(struct plot_info *plotInfo, struct dive *d)
 	}
 
 	// Find correct end of the dive plot for correct end of the tankbar.
-	struct plot_data *last_entry = &plotInfo->entry[plotInfo->nr - 1];
+	const struct plot_data *last_entry = &plotInfo->entry[plotInfo->nr - 1];
 	plotEndTime = last_entry->sec;
 
 	// We don't have enougth data to calculate things, quit.
@@ -90,7 +90,7 @@ void TankItem::setData(struct plot_info *plotInfo, struct dive *d)
 
 	// get the information directly from the displayed dive
 	// (get_dive_dc() always returns a valid dive computer)
-	struct divecomputer *dc = get_dive_dc(d, dc_number);
+	const struct divecomputer *dc = get_dive_dc_const(d, dc_number);
 
 	// start with the first gasmix and at the start of the dive
 	int cyl = explicit_first_cylinder(d, dc);
