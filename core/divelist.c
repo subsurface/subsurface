@@ -419,7 +419,7 @@ static struct gasmix air = { .o2.permille = O2_IN_AIR, .he.permille = 0 };
 /* return negative surface time if dives are overlapping */
 /* The place you call this function is likely the place where you want
  * to create the deco_state */
-int init_decompression(struct deco_state *ds, struct dive *dive)
+int init_decompression(struct deco_state *ds, const struct dive *dive)
 {
 	int i, divenr = -1;
 	int surface_time = 48 * 60 * 60;
