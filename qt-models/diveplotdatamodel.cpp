@@ -180,7 +180,7 @@ void DivePlotDataModel::clear()
 	}
 }
 
-void DivePlotDataModel::setDive(dive *d, const plot_info &info)
+void DivePlotDataModel::setDive(const plot_info &info)
 {
 	beginResetModel();
 	dcNr = dc_number;
