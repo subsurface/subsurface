@@ -109,10 +109,12 @@ Kirigami.ApplicationWindow {
 		if (page === statistics) {
 			manager.appendTextToLog("switching to statistics page, clearing out stack")
 			pageStack.clear()
+			contextDrawer.title = qsTr("Chart type")
 		}
 		if (pageStack.currentItem === statistics) {
 			manager.appendTextToLog("switching away from statistics page, clearing out stack")
 			pageStack.clear()
+			contextDrawer.title = qsTr("Actions")
 		}
 
 		if (page !== mapPage)

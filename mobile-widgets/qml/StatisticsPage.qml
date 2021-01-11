@@ -21,8 +21,10 @@ Kirigami.Page {
 	}
 	onVisibleChanged: {
 	       manager.appendTextToLog("StatisticsPage visible changed with width " + width + " with height " + rootItem.height + " we are " + (statisticsPage.wide ? "in" : "not in") + " wide mode")
-		if (visible)
+		if (visible) {
+			updateCharts()
 			statsManager.doit()
+		}
 	}
 	onWidthChanged: {
 		if (visible) {
@@ -30,6 +32,28 @@ Kirigami.Page {
 						 (statisticsPage.wide ? "in" : "not in") + " wide mode - screen " + Screen.width + " x " + Screen.height )
 			statsManager.doit()
 		}
+	}
+	function executeAction(actionText) {
+		statsManager.setChart(actionText)
+	}
+	function updateCharts() {
+		var charts = []
+		for(var chart in chartList) {
+			var chartKey = chartList[chart]
+			var keyParts = chartKey.split(':')
+			var newAction = Qt.createQmlObject('import QtQuick 2.6; import org.kde.kirigami 2.4 as Kirigami;' +
+							   'Kirigami.Action { text: "' + keyParts[0] + '"; onTriggered: { executeAction(' + keyParts[1] + ') }}',
+							   statisticsPage,
+							   "dynamicAction");
+			charts.push(newAction)
+		}
+		statisticsPage.contextualActions = charts
+	}
+
+	property var chartList: statsManager.chartList
+
+	onChartListChanged: {
+		updateCharts()
 	}
 
 	GridLayout {
