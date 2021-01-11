@@ -308,7 +308,7 @@ const struct event *get_next_event(const struct event *event, const char *name)
 	return get_next_event_mutable((struct event *)event, name);
 }
 
-static int count_events(struct divecomputer *dc)
+static int count_events(const struct divecomputer *dc)
 {
 	int result = 0;
 	struct event *ev = dc->events;
@@ -331,7 +331,7 @@ static int set_setpoint(struct plot_info *pi, int i, int setpoint, int end)
 	return i;
 }
 
-static void check_setpoint_events(const struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+static void check_setpoint_events(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi)
 {
 	UNUSED(dive);
 	int i = 0;
@@ -351,9 +351,9 @@ static void check_setpoint_events(const struct dive *dive, struct divecomputer *
 }
 
 
-static void calculate_max_limits_new(struct dive *dive, struct divecomputer *given_dc, struct plot_info *pi, bool in_planner)
+static void calculate_max_limits_new(const struct dive *dive, const struct divecomputer *given_dc, struct plot_info *pi, bool in_planner)
 {
-	struct divecomputer *dc = &(dive->dc);
+	const struct divecomputer *dc = &(dive->dc);
 	bool seen = false;
 	bool found_sample_beyond_last_event = false;
 	int maxdepth = dive->maxdepth.mm;
@@ -472,7 +472,7 @@ void free_plot_info_data(struct plot_info *pi)
 	pi->pressures = NULL;
 }
 
-static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+static void populate_plot_entries(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi)
 {
 	UNUSED(dive);
 	int idx, maxtime, nr, i;
@@ -616,7 +616,7 @@ static void populate_plot_entries(struct dive *dive, struct divecomputer *dc, st
  *
  * Everything in between has a cylinder pressure for at least some of the cylinders.
  */
-static int sac_between(struct dive *dive, struct plot_info *pi, int first, int last, const bool gases[])
+static int sac_between(const struct dive *dive, struct plot_info *pi, int first, int last, const bool gases[])
 {
 	int i, airuse;
 	double pressuretime;
@@ -696,7 +696,7 @@ static bool filter_pressures(struct plot_info *pi, int idx, const bool gases_in[
  * an array of gases, the caller passes in scratch memory in the last
  * argument.
  */
-static void fill_sac(struct dive *dive, struct plot_info *pi, int idx, const bool gases_in[], bool gases[])
+static void fill_sac(const struct dive *dive, struct plot_info *pi, int idx, const bool gases_in[], bool gases[])
 {
 	struct plot_data *entry = pi->entry + idx;
 	int first, last;
@@ -754,7 +754,7 @@ static void fill_sac(struct dive *dive, struct plot_info *pi, int idx, const boo
 /*
  * Create a bitmap of cylinders that match our current gasmix
  */
-static void matching_gases(struct dive *dive, struct gasmix gasmix, bool gases[])
+static void matching_gases(const struct dive *dive, struct gasmix gasmix, bool gases[])
 {
 	int i;
 
@@ -762,7 +762,7 @@ static void matching_gases(struct dive *dive, struct gasmix gasmix, bool gases[]
 		gases[i] = same_gasmix(gasmix, get_cylinder(dive, i)->gasmix);
 }
 
-static void calculate_sac(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+static void calculate_sac(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi)
 {
 	struct gasmix gasmix = gasmix_invalid;
 	const struct event *ev = NULL;
@@ -1188,7 +1188,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
  * calculates the po2 value from the sensor data. Several rules are applied, depending on how many o2 sensors
  * there are and the differences among the readings from these sensors.
  */
-static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc)
+static int calculate_ccr_po2(struct plot_data *entry, const struct divecomputer *dc)
 {
 	int sump = 0, minp = 999999, maxp = -999999;
 	int diff_limit = 100; // The limit beyond which O2 sensor differences are considered significant (default = 100 mbar)
@@ -1226,7 +1226,7 @@ static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc)
 	}
 }
 
-static void calculate_gas_information_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+static void calculate_gas_information_new(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi)
 {
 	int i;
 	double amb_pressure;
@@ -1274,7 +1274,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 	}
 }
 
-void fill_o2_values(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+static void fill_o2_values(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi)
 /* In the samples from each dive computer, there may be uninitialised oxygen
  * sensor or setpoint values, e.g. when events were inserted into the dive log
  * or if the dive computer does not report o2 values with every sample. But
@@ -1353,7 +1353,7 @@ void init_plot_info(struct plot_info *pi)
  * The old data will be freed. Before the first call, the plot
  * info must be initialized with init_plot_info().
  */
-void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds)
+void create_plot_info_new(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds)
 {
 	int o2, he, o2max;
 	struct deco_state plot_deco_state;

@@ -83,7 +83,7 @@ struct plot_data {
 extern void compare_samples(const struct dive *d, const struct plot_info *pi, int idx1, int idx2, char *buf, int bufsize, bool sum);
 extern void init_plot_info(struct plot_info *pi);
 /* when planner_dc is non-null, this is called in planner mode. */
-extern void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds);
+extern void create_plot_info_new(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds);
 extern int get_plot_details_new(const struct dive *d, const struct plot_info *pi, int time, struct membuffer *);
 extern void free_plot_info_data(struct plot_info *pi);
 
