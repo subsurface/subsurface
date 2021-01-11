@@ -228,7 +228,7 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 	return interpolate;
 }
 
-static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t *track_pr, int cyl)
+static void fill_missing_tank_pressures(const struct dive *dive, struct plot_info *pi, pr_track_t *track_pr, int cyl)
 {
 	int i;
 	struct plot_data *entry;
@@ -335,7 +335,7 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
  * scale pressures, so it ends up being a unitless scaling
  * factor.
  */
-static inline int calc_pressure_time(struct dive *dive, struct plot_data *a, struct plot_data *b)
+static inline int calc_pressure_time(const struct dive *dive, struct plot_data *a, struct plot_data *b)
 {
 	int time = b->sec - a->sec;
 	int depth = (a->depth + b->depth) / 2;
@@ -365,7 +365,7 @@ static void debug_print_pressures(struct plot_info *pi)
  * calculates the summed pressure-time value for the duration of the dive and stores these * in the pr_track_alloc
  * structures. This function is called by create_plot_info_new() in profile.c
  */
-void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int sensor)
+void populate_pressure_information(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, int sensor)
 {
 	UNUSED(dc);
 	int first, last, cyl;
