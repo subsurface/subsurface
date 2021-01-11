@@ -838,6 +838,7 @@ void ReplanDive::undo()
 	std::swap(d->duration, duration);
 	std::swap(d->salinity, salinity);
 	fixup_dive(d);
+	invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 
 	QVector<dive *> divesToNotify = { d };
 	// Note that we have to emit cylindersReset before divesChanged, because the divesChanged
@@ -875,6 +876,7 @@ void AddWeight::undo()
 			continue;
 		remove_weightsystem(d, d->weightsystems.nr - 1);
 		emit diveListNotifier.weightRemoved(d, d->weightsystems.nr);
+		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -883,6 +885,7 @@ void AddWeight::redo()
 	for (dive *d: dives) {
 		add_cloned_weightsystem(&d->weightsystems, empty_weightsystem);
 		emit diveListNotifier.weightAdded(d, d->weightsystems.nr - 1);
+		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -954,6 +957,7 @@ void RemoveWeight::undo()
 	for (size_t i = 0; i < dives.size(); ++i) {
 		add_to_weightsystem_table(&dives[i]->weightsystems, indices[i], clone_weightsystem(ws));
 		emit diveListNotifier.weightAdded(dives[i], indices[i]);
+		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -962,6 +966,7 @@ void RemoveWeight::redo()
 	for (size_t i = 0; i < dives.size(); ++i) {
 		remove_weightsystem(dives[i], indices[i]);
 		emit diveListNotifier.weightRemoved(dives[i], indices[i]);
+		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1012,6 +1017,7 @@ void EditWeight::redo()
 	for (size_t i = 0; i < dives.size(); ++i) {
 		set_weightsystem(dives[i], indices[i], new_ws);
 		emit diveListNotifier.weightEdited(dives[i], indices[i]);
+		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
 	std::swap(ws, new_ws);
 }

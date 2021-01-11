@@ -1,3 +1,4 @@
+- undo: save to git after editing weights [#3159]
 - desktop: complete rewrite of the statistics code, significantly expanding capabilities
 - desktop: add preferences option to disable default cylinder types
 - mobile: add ability to show fundamentally the same statistics as on the desktop
