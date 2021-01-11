@@ -43,11 +43,10 @@ Kirigami.Page {
 			TemplateLabelSmall {
 				text: qsTr("Base variable")
 			}
-			TemplateComboBox  {
+			TemplateSlimComboBox  {
 				id: var1
 				model: statsManager.var1List
 				currentIndex: statsManager.var1Index;
-				Layout.fillWidth: false
 				onCurrentIndexChanged: {
 					statsManager.var1Changed(currentIndex)
 				}
@@ -61,11 +60,10 @@ Kirigami.Page {
 			TemplateLabelSmall {
 				text: qsTr("Binning")
 			}
-			TemplateComboBox {
+			TemplateSlimComboBox {
 				id: var1Binner
 				model: statsManager.binner1List
 				currentIndex: statsManager.binner1Index;
-				Layout.fillWidth: false
 				onCurrentIndexChanged: {
 					statsManager.var1BinnerChanged(currentIndex)
 				}
@@ -79,7 +77,7 @@ Kirigami.Page {
 			TemplateLabelSmall {
 				text: qsTr("Data")
 			}
-			TemplateComboBox {
+			TemplateSlimComboBox {
 				id: var2
 				model: statsManager.var2List
 				currentIndex: statsManager.var2Index;
@@ -97,7 +95,7 @@ Kirigami.Page {
 			TemplateLabelSmall {
 				text: qsTr("Binning")
 			}
-			TemplateComboBox {
+			TemplateSlimComboBox {
 				id: var2Binner
 				model: statsManager.binner2List
 				currentIndex: statsManager.binner2Index;
@@ -115,7 +113,7 @@ Kirigami.Page {
 			TemplateLabelSmall {
 				text: qsTr("Operation")
 			}
-			TemplateComboBox {
+			TemplateSlimComboBox {
 				id: var2Operation
 				model: statsManager.operation2List
 				currentIndex: statsManager.operation2Index;
