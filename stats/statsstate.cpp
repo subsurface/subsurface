@@ -265,6 +265,27 @@ const std::vector<std::pair<const ChartTypeDesc &, bool>> validCharts(const Stat
 	return res;
 }
 
+// provide list of usable charts - if there are 'good' ones, then only those, otherwise 'undesired' ones
+// this is returned as QStringList as it is used as in the mobile UI
+QStringList StatsState::usableCharts()
+{
+	QStringList resGood, resOK;
+	for (const ChartTypeDesc &desc: chart_types) {
+		ChartValidity valid = chartValidity(desc, var1, var2, var1Binner, var2Binner, var2Operation);
+		if (valid == ChartValidity::Invalid)
+			continue;
+		for (ChartSubType subtype: desc.subtypes) {
+			int key = toInt(desc.id, subtype);
+			QString chartDesc = QString("%1/%2:%3").arg(desc.name).arg(chart_subtype_names[(int)subtype]).arg(key);
+			if (valid == ChartValidity::Good)
+				resGood.append(chartDesc);
+			else
+				resOK.append(chartDesc);
+		}
+	}
+	return resGood.isEmpty() ? resOK : resGood;
+}
+
 static StatsState::ChartList createChartList(const StatsVariable *var1, const StatsVariable *var2,
 					     const StatsBinner *binner1, const StatsBinner *binner2,
 					     StatsOperation operation,

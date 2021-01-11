@@ -111,6 +111,8 @@ public:
 	const StatsBinner *var1Binner;	// nullptr: undefined
 	const StatsBinner *var2Binner;	// nullptr: undefined
 	StatsOperation var2Operation;
+	QStringList usableCharts();
+
 private:
 	void validate(bool varChanged);
 	int chartFeatures;
