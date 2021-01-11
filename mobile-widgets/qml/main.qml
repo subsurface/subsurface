@@ -194,16 +194,19 @@ Kirigami.ApplicationWindow {
 				  Backend.cloud_verification_status === Enums.CS_VERIFIED)
 		topContent: Image {
 			source: "qrc:/qml/icons/dive.jpg"
+			// it's a 4x3 image, but clip if it takes too much space (making sure the text fits)
+			property int myHeight: Math.min(Math.max(rootItem.height * 0.3, textblock.height + Kirigami.Units.largeSpacing), parent.width * 0.75)
 			Layout.fillWidth: true
+			Layout.maximumHeight: myHeight
 			sourceSize.width: parent.width
-			fillMode: Image.PreserveAspectFit
+			fillMode: Image.PreserveAspectCrop
 			LinearGradient {
 				anchors {
 					left: parent.left
 					right: parent.right
 					top: parent.top
 				}
-				height: textblock.height * 2
+				height: Math.min(textblock.height * 2, parent.myHeight)
 				start: Qt.point(0, 0)
 				end: Qt.point(0, height)
 				gradient: Gradient {
