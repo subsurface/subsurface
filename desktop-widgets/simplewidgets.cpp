@@ -34,10 +34,8 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 		int newNr = ui.spinBox->value();
 		struct dive *d;
 		for_each_dive (i, d) {
-			if (!selectedOnly || d->selected) {
-				invalidate_dive_cache(d);
+			if (!selectedOnly || d->selected)
 				renumberedDives.append({ d, newNr++ });
-			}
 		}
 		Command::renumberDives(renumberedDives);
 	}
