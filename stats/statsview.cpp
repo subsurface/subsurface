@@ -725,12 +725,16 @@ void StatsView::QuartileMarker::updatePosition()
 
 StatsView::RegressionLine::RegressionLine(const struct regression_data reg, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
 	item(createItemPtr<QGraphicsPolygonItem>(scene)),
+	central(createItemPtr<QGraphicsPolygonItem>(scene)),
 	xAxis(xAxis), yAxis(yAxis),
 	reg(reg)
 {
 	item->setZValue(ZValues::chartFeatures);
 	item->setPen(Qt::NoPen);
 	item->setBrush(brush);
+
+	central->setZValue(ZValues::chartFeatures+1);
+	central->setPen(QPen(Qt::red));
 }
 
 void StatsView::RegressionLine::updatePosition()
@@ -739,6 +743,10 @@ void StatsView::RegressionLine::updatePosition()
 		return;
 	auto [minX, maxX] = xAxis->minMax();
 	auto [minY, maxY] = yAxis->minMax();
+
+	QPolygonF line;
+	line << QPoint(xAxis->toScreen(minX), yAxis->toScreen(reg.a * minX + reg.b))
+		<< QPoint(xAxis->toScreen(maxX), yAxis->toScreen(reg.a * maxX + reg.b));
 
 	// Draw the confidence interval according to http://www2.stat.duke.edu/~tjl13/s101/slides/unit6lec3H.pdf p.5 with t*=2 for 95% confidence
 	QPolygonF poly;
@@ -751,6 +759,7 @@ void StatsView::RegressionLine::updatePosition()
 	QRectF box(QPoint(xAxis->toScreen(minX), yAxis->toScreen(minY)), QPoint(xAxis->toScreen(maxX), yAxis->toScreen(maxY)));
 
 	item->setPolygon(poly.intersected(box));
+	central->setPolygon(line.intersected(box));
 }
 
 StatsView::HistogramMarker::HistogramMarker(double val, bool horizontal, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :

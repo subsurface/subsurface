@@ -126,6 +126,7 @@ private:
 	// A regression line
 	struct RegressionLine {
 		std::unique_ptr<QGraphicsPolygonItem> item;
+		std::unique_ptr<QGraphicsPolygonItem> central;
 		StatsAxis *xAxis, *yAxis;
 		const struct regression_data reg;
 		void updatePosition();
