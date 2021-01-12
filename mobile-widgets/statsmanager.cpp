@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsmanager.h"
+#include "stats/chartlistmodel.h"
 
-StatsManager::StatsManager() : view(nullptr)
+StatsManager::StatsManager() : view(nullptr), charts(nullptr)
 {
 	updateUi();
 }
@@ -10,18 +11,19 @@ StatsManager::~StatsManager()
 {
 }
 
-void StatsManager::init(StatsView *v, QObject *o)
+void StatsManager::init(StatsView *v, ChartListModel *m)
 {
 	if (!v)
 		fprintf(stderr, "StatsManager::init(): no StatsView - statistics will not work.\n");
+	if (!m)
+		fprintf(stderr, "StatsManager::init(): no ChartListModel - statistics will not work.\n");
 	view = v;
+	charts = m;
 }
 
 void StatsManager::doit()
 {
-	if (!view)
-		return;
-	view->plot(state);
+	updateUi();
 }
 
 static void setVariableList(const StatsState::VariableList &list, QStringList &stringList, int &idx)
@@ -59,6 +61,8 @@ void StatsManager::updateUi()
 	binner2IndexChanged();
 	operation2IndexChanged();
 
+	if (charts)
+		charts->update(uiState.charts);
 	if (view)
 		view->plot(state);
 }
@@ -99,5 +103,11 @@ void StatsManager::var2OperationChanged(int idx)
 		return;
 	idx = std::clamp(idx, 0, (int)uiState.operations2.variables.size());
 	state.var2OperationChanged(uiState.operations2.variables[idx].id);
+	updateUi();
+}
+
+void StatsManager::setChart(int idx)
+{
+	state.chartChanged(idx);
 	updateUi();
 }
