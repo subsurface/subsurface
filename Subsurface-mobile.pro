@@ -131,6 +131,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	stats/statsview.cpp \
 	stats/barseries.cpp \
 	stats/boxseries.cpp \
+	stats/chartitem.cpp \
 	stats/chartlistmodel.cpp \
 	stats/informationbox.cpp \
 	stats/legend.cpp \
@@ -279,6 +280,7 @@ HEADERS += \
 	backend-shared/roundrectitem.h \
 	stats/barseries.h \
 	stats/boxseries.h \
+	stats/chartitem.h \
 	stats/chartlistmodel.h \
 	stats/informationbox.h \
 	stats/legend.h \

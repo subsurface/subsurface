@@ -25,28 +25,6 @@
 #include <QSGImageNode>
 #include <QSGTexture>
 
-QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
-{
-	// The QtQuick drawing interface is utterly bizzare with a distinct 1980ies-style memory management.
-	// This is just a copy of what is found in Qt's documentation.
-	QSGImageNode *n = static_cast<QSGImageNode *>(oldNode);
-	if (!n)
-		n = window()->createImageNode();
-
-	QRectF rect = boundingRect();
-	if (plotRect != rect) {
-		plotRect = rect;
-		plotAreaChanged(plotRect.size());
-	}
-
-	img->fill(backgroundColor);
-	scene.render(painter.get());
-	texture.reset(window()->createTextureFromImage(*img, QQuickWindow::TextureIsOpaque));
-	n->setTexture(texture.get());
-	n->setRect(rect);
-	return n;
-}
-
 // Constants that control the graph layouts
 static const QColor quartileMarkerColor(Qt::red);
 static const double quartileMarkerSize = 15.0;
@@ -56,7 +34,8 @@ static const double titleBorder = 2.0;			// Border between title and chart
 StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	highlightedSeries(nullptr),
 	xAxis(nullptr),
-	yAxis(nullptr)
+	yAxis(nullptr),
+	rootNode(nullptr)
 {
 	setFlag(ItemHasContents, true);
 
@@ -74,6 +53,59 @@ StatsView::StatsView() : StatsView(nullptr)
 
 StatsView::~StatsView()
 {
+}
+
+QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
+{
+	// The QtQuick drawing interface is utterly bizzare with a distinct 1980ies-style memory management.
+	// This is just a copy of what is found in Qt's documentation.
+	QSGImageNode *n = static_cast<QSGImageNode *>(oldNode);
+	if (!n)
+		n = rootNode = window()->createImageNode();
+
+	for (ChartItem *item: items) {
+		if (item->dirty)
+			item->render();
+	}
+
+	QRectF rect = boundingRect();
+	if (plotRect != rect) {
+		plotRect = rect;
+		plotAreaChanged(plotRect.size());
+	}
+
+	img->fill(backgroundColor);
+	scene.render(painter.get());
+	texture.reset(window()->createTextureFromImage(*img, QQuickWindow::TextureIsOpaque));
+	n->setTexture(texture.get());
+	n->setRect(rect);
+	return n;
+}
+
+void StatsView::addQSGNode(QSGNode *node, int)
+{
+	rootNode->appendChildNode(node);
+}
+
+// Currently this does an inefficient linear search in the chart-item vector.
+// The reason is that removing individual chart items is very rare: for now,
+// it is only done when hiding an InfoBox. In the future, this might have to
+// be improved.
+void StatsView::unregisterChartItem(const ChartItem *item)
+{
+	auto it = std::find(items.begin(), items.end(), item);
+	if (it != items.end())
+		items.erase(it);
+}
+
+QQuickWindow *StatsView::w() const
+{
+	return window();
+}
+
+QSizeF StatsView::size() const
+{
+	return boundingRect().size();
 }
 
 void StatsView::plotAreaChanged(const QSizeF &s)
@@ -202,6 +234,14 @@ T *StatsView::createAxis(const QString &title, Args&&... args)
 	return res;
 }
 
+template <typename T, class... Args>
+std::unique_ptr<T> StatsView::createChartItem(Args&&... args)
+{
+	std::unique_ptr<T> res(new T(*this, std::forward<Args>(args)...));
+	items.push_back(res.get());
+	return res;
+}
+
 void StatsView::setAxes(StatsAxis *x, StatsAxis *y)
 {
 	xAxis = x;
@@ -214,6 +254,7 @@ void StatsView::reset()
 {
 	highlightedSeries = nullptr;
 	xAxis = yAxis = nullptr;
+	items.clear(); // non-owning pointers
 	legend.reset();
 	series.clear();
 	quartileMarkers.clear();
@@ -406,7 +447,7 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 
 	// Paint legend first, because the bin-names will be moved away from.
 	if (showLegend)
-		legend = createItemPtr<Legend>(&scene, data.vbinNames);
+		legend = createChartItem<Legend>(data.vbinNames);
 
 	std::vector<BarSeries::MultiItem> items;
 	items.reserve(data.hbin_counts.size());
@@ -623,7 +664,7 @@ void StatsView::plotPieChart(const std::vector<dive *> &dives,
 	PieSeries *series = createSeries<PieSeries>(categoryVariable->name(), data, keepOrder, labels);
 
 	if (showLegend)
-		legend = createItemPtr<Legend>(&scene, series->binNames());
+		legend = createChartItem<Legend>(series->binNames());
 }
 
 void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
@@ -959,7 +1000,7 @@ void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 
 	BarPlotData data(categoryBins, *valueBinner);
 	if (showLegend)
-		legend = createItemPtr<Legend>(&scene, data.vbinNames);
+		legend = createChartItem<Legend>(data.vbinNames);
 
 	CountAxis *valAxis = createCountAxis(data.maxCategoryCount, isHorizontal);
 
