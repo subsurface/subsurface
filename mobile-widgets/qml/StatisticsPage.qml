@@ -19,6 +19,9 @@ Kirigami.Page {
 	StatsManager {
 		id: statsManager
 	}
+	ChartListModel {
+		id: chartListModel
+	}
 	onVisibleChanged: {
 	       manager.appendTextToLog("StatisticsPage visible changed with width " + width + " with height " + rootItem.height + " we are " + (statisticsPage.wide ? "in" : "not in") + " wide mode")
 		if (visible)
@@ -29,6 +32,28 @@ Kirigami.Page {
 			manager.appendTextToLog("StatisticsPage width changed to " + width + " with height " + height + " we are " +
 						 (statisticsPage.wide ? "in" : "not in") + " wide mode - screen " + Screen.width + " x " + Screen.height )
 			statsManager.doit()
+		}
+	}
+
+	Component {
+		id: chartListDelegate
+		Kirigami.AbstractListItem {
+			id: chartListDelegateItem
+			height: isHeader ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing // delegateInnerItem.height
+			onClicked: {
+				if (!isHeader) {
+					chartTypePopup.close()
+					statsManager.setChart(id)
+				}
+			}
+
+			Item {
+				id: chartListDelegateInnerItem
+				height: childrenRect.height
+				Label {
+					text: chartName
+				}
+			}
 		}
 	}
 
@@ -125,6 +150,11 @@ Kirigami.Page {
 				}
 			}
 		}
+		Button {
+			id: chartTypeButton
+			text: "Chart type"
+			onClicked: chartTypePopup.open()
+		}
 		Item {
 			Layout.column: wide ? 0 : 1
 			Layout.row: wide ? 5 : 2
@@ -133,6 +163,22 @@ Kirigami.Page {
 			// just used for spacing
 		}
 
+		Popup {
+			id: chartTypePopup
+			x: 10
+			y: 10
+			width: 300
+			height: 600
+			modal: true
+			focus: true
+			closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+			ListView {
+				id: chartTypes
+				model: chartListModel
+				anchors.fill: parent
+				delegate: chartListDelegate
+			}
+		}
 		StatsView {
 			Layout.column: wide ? 1 : 0
 			Layout.row: wide ? 0 : 3
@@ -153,7 +199,7 @@ Kirigami.Page {
 		}
 	}
 	Component.onCompleted: {
-		statsManager.init(statsView, var1)
+		statsManager.init(statsView, chartListModel)
 		console.log("Statistics widget loaded")
 	}
 }

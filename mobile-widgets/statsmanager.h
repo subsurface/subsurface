@@ -7,6 +7,8 @@
 
 #include <QStringList>
 
+class ChartListModel;
+
 class StatsManager : public QObject {
 	Q_OBJECT
 public:
@@ -23,13 +25,14 @@ public:
 
 	StatsManager();
 	~StatsManager();
-	Q_INVOKABLE void init(StatsView *v, QObject *o);
+	Q_INVOKABLE void init(StatsView *v, ChartListModel *charts);
 	Q_INVOKABLE void doit();
 	Q_INVOKABLE void var1Changed(int idx);
 	Q_INVOKABLE void var1BinnerChanged(int idx);
 	Q_INVOKABLE void var2Changed(int idx);
 	Q_INVOKABLE void var2BinnerChanged(int idx);
 	Q_INVOKABLE void var2OperationChanged(int idx);
+	Q_INVOKABLE void setChart(int idx);
 signals:
 	void var1ListChanged();
 	void binner1ListChanged();
@@ -43,6 +46,7 @@ signals:
 	void operation2IndexChanged();
 private:
 	StatsView *view;
+	ChartListModel *charts;
 	StatsState state;
 	QStringList var1List;
 	QStringList binner1List;
