@@ -19,8 +19,10 @@ struct StatsVariable;
 
 class QGraphicsLineItem;
 class QGraphicsSimpleTextItem;
+class QSGImageNode;
 class StatsSeries;
 class CategoryAxis;
+class ChartItem;
 class CountAxis;
 class HistogramAxis;
 class StatsAxis;
@@ -46,6 +48,10 @@ public:
 	~StatsView();
 
 	void plot(const StatsState &state);
+	QQuickWindow *w() const;		// Make window available to items
+	QSizeF size() const;
+	void addQSGNode(QSGNode *node, int z);	// Must only be called in render thread!
+	void unregisterChartItem(const ChartItem *item);
 private slots:
 	void replotIfVisible();
 private:
@@ -103,6 +109,9 @@ private:
 	template <typename T, class... Args>
 	T *createAxis(const QString &title, Args&&... args);
 
+	template <typename T, class... Args>
+	std::unique_ptr<T> createChartItem(Args&&... args);
+
 	template<typename T>
 	CategoryAxis *createCategoryAxis(const QString &title, const StatsBinner &binner,
 					 const std::vector<T> &bins, bool isHorizontal);
@@ -156,11 +165,14 @@ private:
 	std::vector<RegressionLine> regressionLines;
 	std::vector<HistogramMarker> histogramMarkers;
 	std::unique_ptr<QGraphicsSimpleTextItem> title;
+	std::vector<ChartItem *> items; // Attention: currently, items are not automatically removed on destruction!
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
 
 	void hoverEnterEvent(QHoverEvent *event) override;
 	void hoverMoveEvent(QHoverEvent *event) override;
+
+	QSGImageNode *rootNode;
 };
 
 #endif
