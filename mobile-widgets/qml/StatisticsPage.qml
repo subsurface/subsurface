@@ -19,6 +19,9 @@ Kirigami.Page {
 	StatsManager {
 		id: statsManager
 	}
+	ChartListModel {
+		id: chartListModel
+	}
 	onVisibleChanged: {
 		if (visible)
 			statsManager.doit()
@@ -26,6 +29,53 @@ Kirigami.Page {
 	onWidthChanged: {
 		if (visible) {
 			statsManager.doit()
+		}
+	}
+
+	Component {
+		id: chartListDelegate
+		Kirigami.AbstractListItem {
+			id: chartListDelegateItem
+			height: isHeader ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing // delegateInnerItem.height
+			onClicked: {
+				if (!isHeader) {
+					chartTypePopup.close()
+					statsManager.setChart(id)
+				}
+			}
+			Item {
+				id: chartListDelegateInnerItem
+				Row {
+					height: childrenRect.height
+					spacing: Kirigami.Units.smallSpacing
+					Kirigami.Icon {
+						id: chartIcon
+						source: icon
+						width: iconSize !== undefined ? iconSize.width : 0
+					}
+					Label {
+						text: chartName
+						font.bold: isHeader
+					}
+				}
+			}
+		}
+	}
+	Popup {
+		id: chartTypePopup
+		x: Kirigami.Units.gridUnit * 2
+		y: Kirigami.Units.gridUnit
+		width: Math.min(Kirigami.Units.gridUnit * 12, statisticsPage.width * 0.6)
+		height: Math.min(statisticsPage.height - 3 * Kirigami.Units.gridUnit, chartListModel.count * Kirigami.Units.gridUnit * 2.75)
+		modal: true
+		focus: true
+		clip: true
+		closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+		ListView {
+			id: chartTypes
+			model: chartListModel
+			anchors.fill: parent
+			delegate: chartListDelegate
 		}
 	}
 
@@ -120,19 +170,40 @@ Kirigami.Page {
 				}
 			}
 		}
-		Item {
+		Button {
+			id: chartTypeButton
 			Layout.column: wide ? 0 : 1
 			Layout.row: wide ? 5 : 2
+			Layout.leftMargin: Kirigami.Units.smallSpacing
+			Layout.topMargin: Kirigami.Units.largeSpacing
+			Layout.preferredHeight: Kirigami.Units.gridUnit * 2
+			Layout.preferredWidth: Kirigami.Units.gridUnit * 8
+			background: Rectangle {
+				color: chartTypeButton.pressed ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.primaryColor
+				antialiasing: true
+				radius: Kirigami.Units.smallSpacing * 2
+				height: Kirigami.Units.gridUnit * 2
+			}
+			contentItem: Text {
+				verticalAlignment: Qt.AlignVCenter
+				horizontalAlignment: Qt.AlignHCenter
+				color: subsurfaceTheme.primaryTextColor
+				text: qsTr("Chart type")
+			}
+			onClicked: chartTypePopup.open()
+		}
+		Item {
+			Layout.column: wide ? 0 : 1
+			Layout.row: wide ? 6 : 2
 			Layout.preferredHeight: wide ? parent.height - Kirigami.Units.gridUnit * 16 : Kirigami.Units.gridUnit
 			Layout.preferredWidth: wide ? parent.width - i1.implicitWidt - i2.implicitWidt - i3.implicitWidt - i4.implicitWidth : Kirigami.Units.gridUnit
 			// just used for spacing
 		}
-
 		StatsView {
 			Layout.column: wide ? 1 : 0
 			Layout.row: wide ? 0 : 3
 			Layout.columnSpan: wide ? 1 : 3
-			Layout.rowSpan: wide ? 6 : 1
+			Layout.rowSpan: wide ? 7 : 1
 			id: statsView
 			Layout.margins: Kirigami.Units.smallSpacing
 			Layout.fillWidth: true
@@ -148,7 +219,7 @@ Kirigami.Page {
 		}
 	}
 	Component.onCompleted: {
-		statsManager.init(statsView, var1)
+		statsManager.init(statsView, chartListModel)
 		console.log("Statistics widget loaded")
 	}
 }
