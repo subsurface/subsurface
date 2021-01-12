@@ -20,14 +20,11 @@ Kirigami.Page {
 		id: statsManager
 	}
 	onVisibleChanged: {
-	       manager.appendTextToLog("StatisticsPage visible changed with width " + width + " with height " + rootItem.height + " we are " + (statisticsPage.wide ? "in" : "not in") + " wide mode")
 		if (visible)
 			statsManager.doit()
 	}
 	onWidthChanged: {
 		if (visible) {
-			manager.appendTextToLog("StatisticsPage width changed to " + width + " with height " + height + " we are " +
-						 (statisticsPage.wide ? "in" : "not in") + " wide mode - screen " + Screen.width + " x " + Screen.height )
 			statsManager.doit()
 		}
 	}
