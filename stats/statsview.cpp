@@ -717,10 +717,10 @@ void StatsView::QuartileMarker::updatePosition()
 		      x + quartileMarkerSize / 2.0, y);
 }
 
-StatsView::RegressionLine::RegressionLine(double a, double b, double width, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
+StatsView::RegressionLine::RegressionLine(const struct regression_data reg, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
 	item(createItemPtr<QGraphicsPolygonItem>(scene)),
 	xAxis(xAxis), yAxis(yAxis),
-	a(a), b(b), width(width)
+	reg(reg)
 {
 	item->setZValue(ZValues::chartFeatures);
 	item->setPen(Qt::NoPen);
@@ -734,12 +734,14 @@ void StatsView::RegressionLine::updatePosition()
 	auto [minX, maxX] = xAxis->minMax();
 	auto [minY, maxY] = yAxis->minMax();
 
+	// Draw the confidence interval according to http://www2.stat.duke.edu/~tjl13/s101/slides/unit6lec3H.pdf p.5 with t*=2 for 95% confidence
 	QPolygonF poly;
-	poly << QPointF(xAxis->toScreen(minX), yAxis->toScreen(a * minX + b + width))
-	     << QPointF(xAxis->toScreen(maxX), yAxis->toScreen(a * maxX + b + width))
-	     << QPointF(xAxis->toScreen(maxX), yAxis->toScreen(a * maxX + b - width))
-	     << QPointF(xAxis->toScreen(minX), yAxis->toScreen(a * minX + b - width))
-	     << QPointF(xAxis->toScreen(minX), yAxis->toScreen(a * minX + b + width));
+	for (double x = minX; x <= maxX + 1; x += (maxX - minX) / 100)
+		poly << QPointF(xAxis->toScreen(x),
+			yAxis->toScreen(reg.a * x + reg.b + 2.0 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
+	for (double x = maxX; x >= minX - 1; x -= (maxX - minX) / 100)
+		poly << QPointF(xAxis->toScreen(x),
+			yAxis->toScreen(reg.a * x + reg.b - 2.0 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
 	QRectF box(QPoint(xAxis->toScreen(minX), yAxis->toScreen(minY)), QPoint(xAxis->toScreen(maxX), yAxis->toScreen(maxY)));
 
 	item->setPolygon(poly.intersected(box));
@@ -774,15 +776,15 @@ void StatsView::addHistogramMarker(double pos, const QPen &pen, bool isHorizonta
 	histogramMarkers.emplace_back(pos, isHorizontal, pen, &scene, xAxis, yAxis);
 }
 
-void StatsView::addLinearRegression(double a, double b, double res2, double r2, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis)
+void StatsView::addLinearRegression(const struct regression_data reg, StatsAxis *xAxis, StatsAxis *yAxis)
 {
 	QColor red = QColor(Qt::red);
-	red.setAlphaF(r2);
+	red.setAlphaF(reg.r2);
 	QPen pen(red);
 	QBrush brush(red);
 	brush.setStyle(Qt::SolidPattern);
 
-	regressionLines.emplace_back(a, b, sqrt(res2), brush, &scene, xAxis, yAxis);
+	regressionLines.emplace_back(reg, brush, &scene, xAxis, yAxis);
 }
 
 // Yikes, we get our data in different kinds of (bin, value) pairs.
@@ -1021,11 +1023,6 @@ static bool is_linear_regression(int sample_size, double cov, double sx2, double
 	return true; // can't happen, as we tested for sample_size above.
 }
 
-struct regression_data {
-	double a,b;
-	double res2, r2;
-};
-
 // Returns the coefficients a,b of the line y = ax + b
 // as well as the variance of the residuals (averaged residual squared) as res2
 // and r^2 = 1.0 - variance of data / res2 which is the fraction of the variance of
@@ -1034,17 +1031,18 @@ struct regression_data {
 
 static struct regression_data linear_regression(const std::vector<StatsScatterItem> &v)
 {
-	if (v.size() < 2)
-		return { .a = NaN, .b = NaN, .res2 = 0.0, .r2 = 0.0};
-
+	struct regression_data ret = { .a = NaN, .b = NaN, .res2 = 0.0, .r2 = 0.0, .sx2 = 0.0, .xavg = 0.0};
+	ret.n = v.size();
+	if (ret.n < 2)
+		return ret;
 	// First, calculate the x and y average
 	double avg_x = 0.0, avg_y = 0.0;
 	for (auto [x, y, d]: v) {
 		avg_x += x;
 		avg_y += y;
 	}
-	avg_x /= (double)v.size();
-	avg_y /= (double)v.size();
+	avg_x /= ret.n;
+	avg_y /= ret.n;
 
 	double cov = 0.0, sx2 = 0.0, sy2 = 0.0;
 	for (auto [x, y, d]: v) {
@@ -1056,15 +1054,16 @@ static struct regression_data linear_regression(const std::vector<StatsScatterIt
 	bool is_linear = is_linear_regression((int)v.size(), cov, sx2, sy2);
 
 	if (fabs(sx2) < 1e-10 || !is_linear) // If t is not statistically significant, do not plot the regression line.
-		return { .a = NaN, .b = NaN, .res2 = 0.0, .r2 = 0.0};
-	double a = cov / sx2;
-	double b = avg_y - a * avg_x;
+		return ret;
+	ret.xavg = avg_x;
+	ret.sx2 = sx2;
+	ret.a = cov / sx2;
+	ret.b = avg_y - ret.a * avg_x;
 
-	double res2 = 0.0;
 	for (auto [x, y, d]: v)
-		res2 += (y - a * x - b) * (y - a * x - b);
-	double r2 = sy2 > 0.0 ? 1.0 - res2 / sy2 : 1.0;
-	return { .a = a, .b = b, .res2 = res2 / v.size(), .r2 = r2 };
+		ret.res2 += (y - ret.a * x - ret.b) * (y - ret.a * x - ret.b);
+	ret.r2 = sy2 > 0.0 ? 1.0 - ret.res2 / sy2 : 1.0;
+	return ret;
 }
 
 void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsVariable *categoryVariable, const StatsVariable *valueVariable)
@@ -1095,9 +1094,6 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsVariabl
 
 	// y = ax + b
 	struct regression_data reg = linear_regression(points);
-	if (!std::isnan(reg.a)) {
-		auto [minx, maxx] = axisX->minMax();
-		auto [miny, maxy] = axisY->minMax();
-		addLinearRegression(reg.a, reg.b, reg.res2, reg.r2, minx, maxx, miny, maxy, xAxis, yAxis);
-	}
+	if (!std::isnan(reg.a))
+		addLinearRegression(reg, xAxis, yAxis);
 }

@@ -31,6 +31,13 @@ class QSGTexture;
 enum class ChartSubType : int;
 enum class StatsOperation : int;
 
+struct regression_data {
+	double a,b;
+	double res2, r2, sx2, xavg;
+	int n;
+};
+
+
 class StatsView : public QQuickItem {
 	Q_OBJECT
 public:
@@ -120,10 +127,9 @@ private:
 	struct RegressionLine {
 		std::unique_ptr<QGraphicsPolygonItem> item;
 		StatsAxis *xAxis, *yAxis;
-		double a, b;			// y = ax + b
-		double width;
+		const struct regression_data reg;
 		void updatePosition();
-		RegressionLine(double a, double b, double width, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
+		RegressionLine(const struct regression_data reg, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
 	};
 
 	// A line marking median or mean in histograms
@@ -136,7 +142,7 @@ private:
 		HistogramMarker(double val, bool horizontal, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
 	};
 
-	void addLinearRegression(double a, double b, double res2, double r2, double minX, double maxX, double minY, double maxY, StatsAxis *xAxis, StatsAxis *yAxis);
+	void addLinearRegression(const struct regression_data reg, StatsAxis *xAxis, StatsAxis *yAxis);
 	void addHistogramMarker(double pos, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
 
 	StatsState state;
