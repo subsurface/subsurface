@@ -159,7 +159,7 @@ Kirigami.Page {
 			Layout.column: wide ? 1 : 0
 			Layout.row: wide ? 0 : 3
 			Layout.columnSpan: wide ? 1 : 3
-			Layout.rowSpan: wide ? 5 : 1
+			Layout.rowSpan: wide ? 6 : 1
 			id: statsView
 			Layout.margins: Kirigami.Units.smallSpacing
 			Layout.fillWidth: true
