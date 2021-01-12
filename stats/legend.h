@@ -3,34 +3,34 @@
 #ifndef STATS_LEGEND_H
 #define STATS_LEGEND_H
 
-#include "backend-shared/roundrectitem.h"
+#include "chartitem.h"
 
 #include <memory>
 #include <vector>
+#include <QFont>
 
-class QGraphicsScene;
-class QGraphicsSceneMouseEvent;
+class QFontMetrics;
 
-class Legend : public RoundRectItem {
+class Legend : public ChartRectItem {
 public:
-	Legend(const std::vector<QString> &names);
+	Legend(StatsView &view, const std::vector<QString> &names);
 	void hover(QPointF pos);
 	void resize(); // called when the chart size changes.
 private:
 	// Each entry is a text besides a rectangle showing the color
 	struct Entry {
-		std::unique_ptr<QGraphicsRectItem> rect;
-		std::unique_ptr<QGraphicsSimpleTextItem> text;
+		QString name;
+		QBrush rectBrush;
 		QPointF pos;
 		double width;
-		Entry(const QString &name, int idx, int numBins, QGraphicsItem *parent);
+		Entry(const QString &name, int idx, int numBins, const QFontMetrics &fm);
 	};
 	int displayedItems;
 	double width;
 	double height;
+	QFont font;
 	int fontHeight;
 	std::vector<Entry> entries;
-	void updatePosition();
 	void hide();
 };
 
