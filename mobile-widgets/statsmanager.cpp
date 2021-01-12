@@ -3,10 +3,10 @@
 
 StatsManager::StatsManager() : view(nullptr)
 {
-	// Test: show some random data. Let's see what happens.
-	state.var1Changed(2);
-	state.var2Changed(3);
-	state.binner2Changed(2);
+	// Default chart is dives per year
+	state.var1Changed(0);
+	state.var2Changed(0);
+	state.binner2Changed(0);
 	updateUi();
 }
 
