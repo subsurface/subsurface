@@ -44,6 +44,7 @@ private:
 	QFont itemFont;
 	QFont headerFont;
 	std::vector<Item> items;
+	QHash<int, QByteArray> roleNames() const override;
 	int rowCount(const QModelIndex &parent) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
