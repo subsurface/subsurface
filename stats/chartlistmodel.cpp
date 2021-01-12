@@ -60,6 +60,18 @@ Qt::ItemFlags ChartListModel::flags(const QModelIndex &index) const
 				   : Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
+QHash<int, QByteArray> ChartListModel::roleNames() const
+{
+	QHash<int, QByteArray> roles;
+	roles[Qt::DisplayRole] = "display";
+	roles[IconRole] = "icon";
+	roles[IconSizeRole] = "iconSize";
+	roles[ChartNameRole] = "chartName";
+	roles[IsHeaderRole] = "isHeader";
+	roles[Qt::UserRole] = "id";
+	return roles;
+}
+
 QVariant ChartListModel::data(const QModelIndex &index, int role) const
 {
 	int row = index.row();
