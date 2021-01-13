@@ -7,7 +7,7 @@
 #include <QPainter>
 
 ChartListModel::ChartListModel() :
-	itemFont(defaultModelFont()), 
+	itemFont(defaultModelFont()),
 	headerFont(itemFont.family(), itemFont.pointSize(), itemFont.weight(), true)
 {
 	QFontMetrics fm(itemFont);
@@ -127,5 +127,6 @@ int ChartListModel::update(const StatsState::ChartList &charts)
 		items.push_back({ false, chart.subtypeName, fullName, chart.subtype, chart.id, chart.warning });
 	}
 	endResetModel();
+	emit countChanged();
 	return res;
 }
