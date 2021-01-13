@@ -18,7 +18,7 @@ struct dive;
 
 class ScatterSeries : public StatsSeries {
 public:
-	ScatterSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
+	ScatterSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		      const StatsVariable &varX, const StatsVariable &varY);
 	~ScatterSeries();
 
