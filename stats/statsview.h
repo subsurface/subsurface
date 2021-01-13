@@ -19,7 +19,6 @@ struct StatsVariable;
 
 class QGraphicsLineItem;
 class QGraphicsSimpleTextItem;
-class QSGImageNode;
 class StatsSeries;
 class CategoryAxis;
 class ChartItem;
@@ -29,8 +28,10 @@ class StatsAxis;
 class StatsGrid;
 class Legend;
 class QSGTexture;
+class RootNode;	// Internal implementation detail
 
 enum class ChartSubType : int;
+enum class ChartZValue : int;
 enum class StatsOperation : int;
 
 struct regression_data {
@@ -50,7 +51,8 @@ public:
 	void plot(const StatsState &state);
 	QQuickWindow *w() const;		// Make window available to items
 	QSizeF size() const;
-	void addQSGNode(QSGNode *node, int z);	// Must only be called in render thread!
+	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
+	void registerChartItem(ChartItem *item);
 	void unregisterChartItem(const ChartItem *item);
 	template <typename T, class... Args>
 	std::unique_ptr<T> createChartItem(Args&&... args);
@@ -165,7 +167,6 @@ private:
 	std::vector<RegressionLine> regressionLines;
 	std::vector<HistogramMarker> histogramMarkers;
 	std::unique_ptr<QGraphicsSimpleTextItem> title;
-	std::vector<ChartItem *> items; // Attention: currently, items are not automatically removed on destruction!
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
 	Legend *draggedItem;
@@ -176,7 +177,7 @@ private:
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
-	QSGImageNode *rootNode;
+	RootNode *rootNode;
 };
 
 // This implementation detail must be known to users of the class.
@@ -185,7 +186,7 @@ template <typename T, class... Args>
 std::unique_ptr<T> StatsView::createChartItem(Args&&... args)
 {
 	std::unique_ptr<T> res(new T(*this, std::forward<Args>(args)...));
-	items.push_back(res.get());
+	registerChartItem(res.get());
 	return res;
 }
 
