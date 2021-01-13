@@ -128,78 +128,160 @@ Item {
 		clearDetailsEdit()
 	}
 
-	height: editArea.height
+	height: editArea.height + Kirigami.Units.gridUnit * 3
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding - Kirigami.Units.smallSpacing * 2
-	ColumnLayout {
-		id: editArea
-		spacing: Kirigami.Units.smallSpacing
-		width: parent.width
-
-		GridLayout {
-			id: editorDetails
+	Item {
+		// there is a maximum width above which this becomes less pleasant to use. 42 gridUnits
+		// allows for two of the large drop downs or four of the text fields or all of a cylinder
+		// to be in one row. More just doesn't look good
+		width: Math.min(parent.width - Kirigami.Units.smallSpacing, Kirigami.Units.gridUnit * 42)
+		// weird way to create a little space from the left edge - but I can't do a margin here
+		x: Kirigami.Units.smallSpacing
+		Flow {
+			id: editArea
+			// with larger fonts we need more space, or things look too crowded
+			spacing: subsurfaceTheme.currentScale > 1.0 ? 1.5 * Kirigami.Units.largeSpacing : Kirigami.Units.largeSpacing
 			width: parent.width
-			columns: 2
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Dive number:")
-			}
-			SsrfTextField {
-				id: txtNumber;
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Date:")
-			}
-			SsrfTextField {
-				id: txtDate;
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Location:")
-			}
-			TemplateEditComboBox {
-				id: locationBox
-				flickable: detailsEditFlickable
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					       manager.locationList : null
-				onAccepted: {
-					focus = false
-					gpsText = manager.getGpsFromSiteName(editText)
+			flow: GridLayout.LeftToRight
+			RowLayout {
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Date/Time:")
 				}
-				onActivated: {
-					focus = false
-					gpsText = manager.getGpsFromSiteName(editText)
+				SsrfTextField {
+					id: txtDate;
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 10
+					flickable: detailsEditFlickable
 				}
 			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Coordinates:")
-			}
-			SsrfTextField {
-				id: txtGps
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Use current\nGPS location:")
-				visible: manager.locationServiceAvailable
-			}
-			TemplateCheckBox {
-				id: checkboxGPS
-				visible: manager.locationServiceAvailable
-				onCheckedChanged: {
-					if (checked)
-						gpsText = manager.getCurrentPosition()
+			RowLayout {
+				TemplateLabelSmall {
+					horizontalAlignment: Text.AlignRight
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					text: qsTr("Dive number:")
+				}
+				SsrfTextField {
+					id: txtNumber;
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					flickable: detailsEditFlickable
+				}
+				Item {
+					// if date and dive number are on the same line, don't have the Depth behind them
+					// to ensure that we add an element that fills enough of the line that the flow
+					// will not pull the next element up
+					visible: editArea.width > Kirigami.Units.gridUnit * 27
+					Layout.preferredWidth: editArea.width - Kirigami.Units.gridUnit * 26
 				}
 			}
+			RowLayout {
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Depth:")
+				}
+				SsrfTextField {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					id: txtDepth
+					validator: RegExpValidator { regExp: /[^-]*/ }
+					flickable: detailsEditFlickable
+				}
+			}
+			RowLayout {
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Duration:")
+				}
+				SsrfTextField {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					id: txtDuration
+					validator: RegExpValidator { regExp: /[^-]*/ }
+					flickable: detailsEditFlickable
+				}
+
+			}
+			RowLayout {
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Air Temp:")
+				}
+				SsrfTextField {
+					id: txtAirTemp
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					flickable: detailsEditFlickable
+				}
+
+			}
+			RowLayout {
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Water Temp:")
+				}
+				SsrfTextField {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					id: txtWaterTemp
+					flickable: detailsEditFlickable
+				}
+			}
+			RowLayout {
+				width: Kirigami.Units.gridUnit * 20
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Location:")
+				}
+				TemplateEditComboBox {
+					// this one needs more space
+					id: locationBox
+					flickable: detailsEditFlickable
+					model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+						       manager.locationList : null
+					onAccepted: {
+						focus = false
+						gpsText = manager.getGpsFromSiteName(editText)
+					}
+					onActivated: {
+						focus = false
+						gpsText = manager.getGpsFromSiteName(editText)
+					}
+				}
+			}
+			RowLayout {
+				spacing: Kirigami.Units.smallSpacing
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 20
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Coordinates:")
+				}
+				SsrfTextField {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 16
+					id: txtGps
+					flickable: detailsEditFlickable
+				}
+			}
+			RowLayout {
+				width: manager.locationServiceAvailable ? Kirigami.Units.gridUnit * 12 : 0
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Use current\nGPS location:")
+					visible: manager.locationServiceAvailable
+				}
+				TemplateCheckBox {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+					id: checkboxGPS
+					visible: manager.locationServiceAvailable
+					onCheckedChanged: {
+						if (checked)
+							gpsText = manager.getCurrentPosition()
+					}
+				}
+			}
+
 			Connections {
 				target: manager
 				onWaitingForPositionChanged: {
@@ -207,443 +289,541 @@ Item {
 					manager.appendTextToLog("received updated position info " + gpsText)
 				}
 			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Depth:")
+			RowLayout {
+				width: Kirigami.Units.gridUnit * 20
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Suit:")
+				}
+				TemplateEditComboBox  {
+					id: suitBox
+					flickable: detailsEditFlickable
+					model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+						       manager.suitList : null
+				}
 			}
-			SsrfTextField {
-				id: txtDepth
-				Layout.fillWidth: true
-				validator: RegExpValidator { regExp: /[^-]*/ }
-				flickable: detailsEditFlickable
+			RowLayout {
+				width: Kirigami.Units.gridUnit * 20
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Buddy:")
+				}
+				TemplateEditComboBox {
+					id: buddyBox
+					flickable: detailsEditFlickable
+					model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+						       manager.buddyList : null
+				}
 			}
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Duration:")
-			}
-			SsrfTextField {
-				id: txtDuration
-				Layout.fillWidth: true
-				validator: RegExpValidator { regExp: /[^-]*/ }
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Air Temp:")
-			}
-			SsrfTextField {
-				id: txtAirTemp
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Water Temp:")
-			}
-			SsrfTextField {
-				id: txtWaterTemp
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Suit:")
-			}
-			TemplateEditComboBox  {
-				id: suitBox
-				flickable: detailsEditFlickable
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					       manager.suitList : null
+			RowLayout {
+				width: Kirigami.Units.gridUnit * 20
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Divemaster:")
+				}
+				TemplateEditComboBox {
+					id: divemasterBox
+					flickable: detailsEditFlickable
+					model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+						       manager.divemasterList : null
+				}
 			}
 
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Buddy:")
-			}
-			TemplateEditComboBox {
-				id: buddyBox
-				flickable: detailsEditFlickable
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					       manager.buddyList : null
+
+			RowLayout {
+				width: Kirigami.Units.gridUnit * 16
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Weight:")
+				}
+				SsrfTextField {
+					id: txtWeight
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+					readOnly: text === "cannot edit multiple weight systems"
+					flickable: detailsEditFlickable
+				}
 			}
 
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Divemaster:")
-			}
-			TemplateEditComboBox {
-				id: divemasterBox
-				flickable: detailsEditFlickable
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					       manager.divemasterList : null
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Weight:")
-			}
-			SsrfTextField {
-				id: txtWeight
-				readOnly: text === "cannot edit multiple weight systems"
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-// all cylinder info should be able to become dynamic instead of this blob of code.
-// first cylinder
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Cylinder1:")
-			}
-			TemplateComboBox {
-				id: cylinderBox0
-				flickable: detailsEditFlickable
-				flat: true
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.cylinderList : null
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Gas mix:")
-			}
-			SsrfTextField {
-				id: txtGasMix0
-				text: usedGas[0] != null ? usedGas[0] : null
-				Layout.fillWidth: true
-				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Start Pressure:")
-			}
-			SsrfTextField {
-				id: txtStartPressure0
-				text: startpressure[0] != null ? startpressure[0] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("End Pressure:")
-			}
-			SsrfTextField {
-				id: txtEndPressure0
-				text: endpressure[0] != null ? endpressure[0] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-//second cylinder
-			TemplateLabelSmall {
-				visible: usedCyl[1] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Cylinder2:")
-			}
-			TemplateComboBox {
-				visible: usedCyl[1] != null ? true : false
-				id: cylinderBox1
-				flickable: detailsEditFlickable
-				flat: true
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.cylinderList : null
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[1] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Gas mix:")
-			}
-			SsrfTextField {
-				visible: usedCyl[1] != null ? true : false
-				id: txtGasMix1
-				text: usedGas[1] != null ? usedGas[1] : null
-				Layout.fillWidth: true
-				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[1] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Start Pressure:")
-			}
-			SsrfTextField {
-				visible: usedCyl[1] != null ? true : false
-				id: txtStartPressure1
-				text: startpressure[1] != null ? startpressure[1] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[1] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("End Pressure:")
-			}
-			SsrfTextField {
-				visible: usedCyl[1] != null ? true : false
-				id: txtEndPressure1
-				text: endpressure[1] != null ? endpressure[1] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-// third cylinder
-			TemplateLabelSmall {
-				visible: usedCyl[2] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Cylinder3:")
-			}
-			TemplateComboBox {
-				visible: usedCyl[2] != null ? true : false
-				id: cylinderBox2
-				flickable: detailsEditFlickable
-				currentIndex: find(usedCyl[2])
-				flat: true
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.cylinderList : null
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[2] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Gas mix:")
-			}
-			SsrfTextField {
-				visible: usedCyl[2] != null ? true : false
-				id: txtGasMix2
-				text: usedGas[2] != null ? usedGas[2] : null
-				Layout.fillWidth: true
-				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[2] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Start Pressure:")
-			}
-			SsrfTextField {
-				visible: usedCyl[2] != null ? true : false
-				id: txtStartPressure2
-				text: startpressure[2] != null ? startpressure[2] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[2] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("End Pressure:")
-			}
-			SsrfTextField {
-				visible: usedCyl[2] != null ? true : false
-				id: txtEndPressure2
-				text: endpressure[2] != null ? endpressure[2] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-// fourth cylinder
-			TemplateLabelSmall {
-				visible: usedCyl[3] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Cylinder4:")
-			}
-			TemplateComboBox {
-				visible: usedCyl[3] != null ? true : false
-				id: cylinderBox3
-				flickable: detailsEditFlickable
-				currentIndex: find(usedCyl[3])
-				flat: true
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.cylinderList : null
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[3] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Gas mix:")
-			}
-			SsrfTextField {
-				visible: usedCyl[3] != null ? true : false
-				id: txtGasMix3
-				text: usedGas[3] != null ? usedGas[3] : null
-				Layout.fillWidth: true
-				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[3] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Start Pressure:")
-			}
-			SsrfTextField {
-				visible: usedCyl[3] != null ? true : false
-				id: txtStartPressure3
-				text: startpressure[3] != null ? startpressure[3] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[3] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("End Pressure:")
-			}
-			SsrfTextField {
-				visible: usedCyl[3] != null ? true : false
-				id: txtEndPressure3
-				text: endpressure[3] != null ? endpressure[3] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-// fifth cylinder
-			TemplateLabelSmall {
-				visible: usedCyl[4] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Cylinder5:")
-			}
-			TemplateComboBox {
-				visible: usedCyl[4] != null ? true : false
-				id: cylinderBox4
-				flickable: detailsEditFlickable
-				currentIndex: find(usedCyl[4])
-				flat: true
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.cylinderList : null
-				inputMethodHints: Qt.ImhNoPredictiveText
-				Layout.fillWidth: true
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[4] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Gas mix:")
-			}
-			SsrfTextField {
-				visible: usedCyl[4] != null ? true : false
-				id: txtGasMix4
-				text: usedGas[4] != null ? usedGas[4] : null
-				Layout.fillWidth: true
-				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[4] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Start Pressure:")
-			}
-			SsrfTextField {
-				visible: usedCyl[4] != null ? true : false
-				id: txtStartPressure4
-				text: startpressure[4] != null ? startpressure[4] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				visible: usedCyl[4] != null ? true : false
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("End Pressure:")
-			}
-			SsrfTextField {
-				visible: usedCyl[4] != null ? true : false
-				id: txtEndPressure4
-				text: endpressure[4] != null ? endpressure[4] : null
-				Layout.fillWidth: true
-				flickable: detailsEditFlickable
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Rating:")
-			}
-			TemplateSpinBox {
-				id: ratingPicker
-				from: 0
-				to: 5
-				value: rating
-				onValueChanged: rating = value
-			}
-
-			TemplateLabelSmall {
-				Layout.alignment: Qt.AlignRight
-				text: qsTr("Visibility:")
-			}
-			TemplateSpinBox {
-				id: visibilityPicker
-				from: 0
-				to: 5
-				value: visibility
-				onValueChanged: visibility = value
-			}
-
-			TemplateLabelSmall {
-				Layout.columnSpan: 2
-				Layout.alignment: Qt.AlignLeft
-				text: qsTr("Notes:")
-			}
-			Controls.TextArea {
-				Layout.columnSpan: 2
+			// all cylinder info should be able to become dynamic instead of this blob of code.
+			// first cylinder
+			Flow {
 				width: parent.width
-				id: txtNotes
-				textFormat: TextEdit.RichText
-				focus: true
-				color: subsurfaceTheme.textColor
-				Layout.fillWidth: true
-				Layout.fillHeight: true
-				Layout.minimumHeight: Kirigami.Units.gridUnit * 6
-				selectByMouse: true
-				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
-				property bool firstTime: true
-				property int visibleTop: detailsEditFlickable.contentY
-				property int visibleBottom: visibleTop + detailsEditFlickable.height - 4 * Kirigami.Units.gridUnit
-				onPressed: waitForKeyboard.start()
-				onCursorRectangleChanged: {
-					ensureVisible(y + cursorRectangle.y)
-				}
 
-				// ensure that the y coordinate is inside the visible part of the detailsEditFlickable (our flickable)
-				function ensureVisible(yDest) {
-					if (yDest > visibleBottom)
-						detailsEditFlickable.contentY += yDest - visibleBottom
-					if (yDest < visibleTop)
-						detailsEditFlickable.contentY -= visibleTop - yDest
-				}
 
-				// give the OS enough time to actually resize the flickable
-				Timer {
-					id: waitForKeyboard
-					interval: 300 // 300ms seems like FOREVER
-					onTriggered: {
-						if (!Qt.inputMethod.visible) {
-							if (txtNotes.firstTime) {
-								txtNotes.firstTime = false
-								restart()
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 12
+					id: cb1
+
+					TemplateLabelSmall {
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Cylinder1:")
+					}
+					TemplateComboBox {
+						id: cylinderBox0
+						flickable: detailsEditFlickable
+						flat: true
+						model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+							       diveDetailsListView.currentItem.modelData.cylinderList : null
+						inputMethodHints: Qt.ImhNoPredictiveText
+					}
+				}
+				RowLayout {
+					height: cb1.height
+					width: Kirigami.Units.gridUnit * 8
+					TemplateLabelSmall {
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Gas mix:")
+					}
+					SsrfTextField {
+						id: txtGasMix0
+						text: usedGas[0] != null ? usedGas[0] : null
+						Layout.fillWidth: true
+						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						flickable: detailsEditFlickable
+					}
+				}
+				RowLayout {
+					height: cb1.height
+					width: Kirigami.Units.gridUnit * 10
+					TemplateLabelSmall {
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Start Pressure:")
+					}
+					SsrfTextField {
+						id: txtStartPressure0
+						text: startpressure[0] != null ? startpressure[0] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+				}
+				RowLayout {
+					height: cb1.height
+					width: Kirigami.Units.gridUnit * 10
+					TemplateLabelSmall {
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("End Pressure:")
+					}
+					SsrfTextField {
+						id: txtEndPressure0
+						text: endpressure[0] != null ? endpressure[0] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+				}
+			}
+			//second cylinder
+			Flow {
+				width: parent.width
+
+				RowLayout {
+					id: cb2
+					width: Kirigami.Units.gridUnit * 12
+					TemplateLabelSmall {
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						visible: usedCyl[1] != null ? true : false
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Cylinder2:")
+					}
+					TemplateComboBox {
+						visible: usedCyl[1] != null ? true : false
+						id: cylinderBox1
+						flickable: detailsEditFlickable
+						flat: true
+						model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+							       diveDetailsListView.currentItem.modelData.cylinderList : null
+						inputMethodHints: Qt.ImhNoPredictiveText
+					}
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 8
+					height: cb2.height
+					TemplateLabelSmall {
+						visible: usedCyl[1] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Gas mix:")
+					}
+					SsrfTextField {
+						visible: usedCyl[1] != null ? true : false
+						id: txtGasMix1
+						text: usedGas[1] != null ? usedGas[1] : null
+						Layout.fillWidth: true
+						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						flickable: detailsEditFlickable
+					}
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					height: cb2.height
+					TemplateLabelSmall {
+						visible: usedCyl[1] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Start Pressure:")
+					}
+					SsrfTextField {
+						visible: usedCyl[1] != null ? true : false
+						id: txtStartPressure1
+						text: startpressure[1] != null ? startpressure[1] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					height: cb2.height
+					TemplateLabelSmall {
+						visible: usedCyl[1] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("End Pressure:")
+					}
+					SsrfTextField {
+						visible: usedCyl[1] != null ? true : false
+						id: txtEndPressure1
+						text: endpressure[1] != null ? endpressure[1] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+				}
+			}
+			// third cylinder
+			Flow {
+				width: parent.width
+				RowLayout {
+					id: cb3
+					width: Kirigami.Units.gridUnit * 12
+					TemplateLabelSmall {
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						visible: usedCyl[2] != null ? true : false
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Cylinder3:")
+					}
+					TemplateComboBox {
+						visible: usedCyl[2] != null ? true : false
+						id: cylinderBox2
+						flickable: detailsEditFlickable
+						currentIndex: find(usedCyl[2])
+						flat: true
+						model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+							       diveDetailsListView.currentItem.modelData.cylinderList : null
+						inputMethodHints: Qt.ImhNoPredictiveText
+					}
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 8
+					height: cb3.height
+					TemplateLabelSmall {
+						visible: usedCyl[2] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Gas mix:")
+					}
+					SsrfTextField {
+						visible: usedCyl[2] != null ? true : false
+						id: txtGasMix2
+						text: usedGas[2] != null ? usedGas[2] : null
+						Layout.fillWidth: true
+						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						flickable: detailsEditFlickable
+					}
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					height: cb3.height
+					TemplateLabelSmall {
+						visible: usedCyl[2] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Start Pressure:")
+					}
+					SsrfTextField {
+						visible: usedCyl[2] != null ? true : false
+						id: txtStartPressure2
+						text: startpressure[2] != null ? startpressure[2] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					height: cb3.height
+					TemplateLabelSmall {
+						visible: usedCyl[2] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("End Pressure:")
+					}
+					SsrfTextField {
+						visible: usedCyl[2] != null ? true : false
+						id: txtEndPressure2
+						text: endpressure[2] != null ? endpressure[2] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+				}
+			}
+			// fourth cylinder
+			Flow {
+				width: parent.width
+				RowLayout {
+					id: cb4
+					width: Kirigami.Units.gridUnit * 12
+					TemplateLabelSmall {
+						visible: usedCyl[3] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Cylinder4:")
+					}
+					TemplateComboBox {
+						visible: usedCyl[3] != null ? true : false
+						id: cylinderBox3
+						flickable: detailsEditFlickable
+						currentIndex: find(usedCyl[3])
+						flat: true
+						model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+							       diveDetailsListView.currentItem.modelData.cylinderList : null
+						inputMethodHints: Qt.ImhNoPredictiveText
+					}
+
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 8
+					height: cb4.height
+					TemplateLabelSmall {
+						visible: usedCyl[3] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Gas mix:")
+					}
+					SsrfTextField {
+						visible: usedCyl[3] != null ? true : false
+						id: txtGasMix3
+						text: usedGas[3] != null ? usedGas[3] : null
+						Layout.fillWidth: true
+						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						flickable: detailsEditFlickable
+					}
+
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					height: cb4.height
+					TemplateLabelSmall {
+						visible: usedCyl[3] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Start Pressure:")
+					}
+					SsrfTextField {
+						visible: usedCyl[3] != null ? true : false
+						id: txtStartPressure3
+						text: startpressure[3] != null ? startpressure[3] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					height: cb4.height
+					TemplateLabelSmall {
+						visible: usedCyl[3] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("End Pressure:")
+					}
+					SsrfTextField {
+						visible: usedCyl[3] != null ? true : false
+						id: txtEndPressure3
+						text: endpressure[3] != null ? endpressure[3] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+				}
+			}
+			// fifth cylinder
+			Flow {
+				width: parent.width
+				RowLayout {
+					id: cb5
+					width: Kirigami.Units.gridUnit * 12
+					TemplateLabelSmall {
+						visible: usedCyl[4] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Cylinder5:")
+					}
+					TemplateComboBox {
+						visible: usedCyl[4] != null ? true : false
+						id: cylinderBox4
+						flickable: detailsEditFlickable
+						currentIndex: find(usedCyl[4])
+						flat: true
+						model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+							       diveDetailsListView.currentItem.modelData.cylinderList : null
+						inputMethodHints: Qt.ImhNoPredictiveText
+						Layout.fillWidth: true
+					}
+
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 8
+					height: cb5.height
+					TemplateLabelSmall {
+						visible: usedCyl[4] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Gas mix:")
+					}
+					SsrfTextField {
+						visible: usedCyl[4] != null ? true : false
+						id: txtGasMix4
+						text: usedGas[4] != null ? usedGas[4] : null
+						Layout.fillWidth: true
+						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						flickable: detailsEditFlickable
+					}
+
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					height: cb5.height
+					TemplateLabelSmall {
+						visible: usedCyl[4] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Start Pressure:")
+					}
+					SsrfTextField {
+						visible: usedCyl[4] != null ? true : false
+						id: txtStartPressure4
+						text: startpressure[4] != null ? startpressure[4] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					height: cb5.height
+					TemplateLabelSmall {
+						visible: usedCyl[4] != null ? true : false
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("End Pressure:")
+					}
+					SsrfTextField {
+						visible: usedCyl[4] != null ? true : false
+						id: txtEndPressure4
+						text: endpressure[4] != null ? endpressure[4] : null
+						Layout.fillWidth: true
+						flickable: detailsEditFlickable
+					}
+				}
+			}
+			// rating / visibility
+			RowLayout {
+				width: parent.width
+
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					TemplateLabelSmall {
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Rating:")
+					}
+					TemplateSpinBox {
+						id: ratingPicker
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						from: 0
+						to: 5
+						value: rating
+						onValueChanged: rating = value
+					}
+
+				}
+				RowLayout {
+					width: Kirigami.Units.gridUnit * 10
+					TemplateLabelSmall {
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						horizontalAlignment: Text.AlignRight
+						text: qsTr("Visibility:")
+					}
+					TemplateSpinBox {
+						id: visibilityPicker
+						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						from: 0
+						to: 5
+						value: visibility
+						onValueChanged: visibility = value
+					}
+					Item { Layout.fillWidth: true }
+				}
+			}
+			ColumnLayout {
+				width: parent.width
+				TemplateLabelSmall {
+					Layout.preferredWidth: parent.width
+					text: qsTr("Notes:")
+				}
+				Controls.TextArea {
+					Layout.preferredWidth: parent.width
+					width: parent.width
+					id: txtNotes
+					textFormat: TextEdit.RichText
+					focus: true
+					color: subsurfaceTheme.textColor
+					Layout.fillWidth: true
+					Layout.fillHeight: true
+					Layout.minimumHeight: Kirigami.Units.gridUnit * 6
+					selectByMouse: true
+					wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+					property bool firstTime: true
+					property int visibleTop: detailsEditFlickable.contentY
+					property int visibleBottom: visibleTop + detailsEditFlickable.height - 4 * Kirigami.Units.gridUnit
+					onPressed: waitForKeyboard.start()
+					onCursorRectangleChanged: {
+						ensureVisible(y + cursorRectangle.y)
+					}
+
+					// ensure that the y coordinate is inside the visible part of the detailsEditFlickable (our flickable)
+					function ensureVisible(yDest) {
+						if (yDest > visibleBottom)
+							detailsEditFlickable.contentY += yDest - visibleBottom
+						if (yDest < visibleTop)
+							detailsEditFlickable.contentY -= visibleTop - yDest
+					}
+
+					// give the OS enough time to actually resize the flickable
+					Timer {
+						id: waitForKeyboard
+						interval: 300 // 300ms seems like FOREVER
+						onTriggered: {
+							if (!Qt.inputMethod.visible) {
+								if (txtNotes.firstTime) {
+									txtNotes.firstTime = false
+									restart()
+								}
+								return
 							}
-							return
+							// make sure at least half the Notes field is visible
+							txtNotes.ensureVisible(txtNotes.y + txtNotes.cursorRectangle.y)
 						}
-						// make sure at least half the Notes field is visible
-						txtNotes.ensureVisible(txtNotes.y + txtNotes.cursorRectangle.y)
 					}
 				}
 			}
 		}
 		Item {
+			anchors.top: editArea.bottom
 			height: Kirigami.Units.gridUnit * 3
 			width: height // just to make sure the spacer doesn't produce scrollbars, but also isn't null
 		}
