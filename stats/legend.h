@@ -14,7 +14,6 @@ class QFontMetrics;
 class Legend : public ChartRectItem {
 public:
 	Legend(StatsView &view, const std::vector<QString> &names);
-	void hover(QPointF pos);
 	void resize(); // called when the chart size changes.
 private:
 	// Each entry is a text besides a rectangle showing the color
