@@ -4,6 +4,7 @@
 #include "statscolors.h"
 #include "statshelper.h"
 #include "statstranslations.h"
+#include "statsview.h"
 #include "zvalues.h"
 
 #include <math.h> // for lrint()
@@ -403,7 +404,7 @@ bool BarSeries::hover(QPointF pos)
 		Item &item = items[highlighted.bar];
 		item.highlight(index.subitem, true, binCount());
 		if (!information)
-			information = createItemPtr<InformationBox>(scene);
+			information = view.createChartItem<InformationBox>();
 		information->setText(makeInfo(item, highlighted.subitem), pos);
 	} else {
 		information.reset();
