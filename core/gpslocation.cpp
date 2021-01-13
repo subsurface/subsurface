@@ -126,7 +126,7 @@ QString GpsLocation::currentPosition()
 	if (!hasLocationsSource())
 		return tr("Unknown GPS location (no GPS source)");
 	if (m_trackers.count()) {
-		QDateTime lastFixTime =	timestampToDateTime(m_trackers.lastKey() + gettimezoneoffset());
+		QDateTime lastFixTime =	timestampToDateTime(m_trackers.lastKey() - gettimezoneoffset());
 		QDateTime now = QDateTime::currentDateTime();
 		int delta = lastFixTime.secsTo(now);
 		qDebug() << "lastFixTime" << lastFixTime.toString() << "now" << now.toString() << "delta" << delta;
@@ -168,14 +168,13 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	    lastCoord.distanceTo(pos.coordinate()) > prefs.distance_threshold) {
 		QString msg = QStringLiteral("received new position %1 after delta %2 threshold %3 (now %4 last %5)");
 		status(qPrintable(msg.arg(pos.coordinate().toString()).arg(delta).arg(prefs.time_threshold).arg(pos.timestamp().toString()).arg(timestampToDateTime(lastTime).toString())));
-		waitingForPosition = false;
-		acquiredPosition();
 		gpsTracker gt;
 		gt.when = thisTime;
 		gt.location = create_location(pos.coordinate().latitude(), pos.coordinate().longitude());
 		addFixToStorage(gt);
 		gpsTracker gtNew = m_trackers.last();
-		qDebug() << "newest fix is now at" << timestampToDateTime(gtNew.when - gettimezoneoffset()).toString();
+		waitingForPosition = false;
+		acquiredPosition();
 	}
 }
 
