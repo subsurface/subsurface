@@ -39,6 +39,10 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 		if (lastMessage == newMessage)
 			return;
 	}
+	// filter extremely noisy and unhelpful messages
+	if (message.contains("Updating RSSI for") || (message.contains(QRegExp(".*kirigami.*onFoo properties in Connections"))))
+		return;
+
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 	m_data.append({message, type});
 	endInsertRows();
