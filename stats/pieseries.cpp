@@ -4,6 +4,7 @@
 #include "statscolors.h"
 #include "statshelper.h"
 #include "statstranslations.h"
+#include "statsview.h"
 #include "zvalues.h"
 
 #include <numeric>
@@ -246,7 +247,7 @@ bool PieSeries::hover(QPointF pos)
 	if (highlighted >= 0 && highlighted < (int)items.size()) {
 		items[highlighted].highlight(highlighted, true, (int)items.size());
 		if (!information)
-			information = createItemPtr<InformationBox>(scene);
+			information = view.createChartItem<InformationBox>();
 		information->setText(makeInfo(highlighted), pos);
 	} else {
 		information.reset();

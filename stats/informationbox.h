@@ -4,26 +4,24 @@
 #ifndef INFORMATION_BOX_H
 #define INFORMATION_BOX_H
 
-#include "backend-shared/roundrectitem.h"
+#include "chartitem.h"
 
 #include <vector>
 #include <memory>
 #include <QFont>
 
 struct dive;
-class QGraphicsScene;
+class StatsView;
 
 // Information window showing data of highlighted dive
-struct InformationBox : RoundRectItem {
-	InformationBox();
+struct InformationBox : ChartRectItem {
+	InformationBox(StatsView &);
 	void setText(const std::vector<QString> &text, QPointF pos);
 	void setPos(QPointF pos);
 	int recommendedMaxLines() const;
 private:
 	QFont font; // For future specialization.
 	double width, height;
-	void addLine(const QString &s);
-	std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> textItems;
 };
 
 #endif

@@ -279,14 +279,6 @@ T *StatsView::createAxis(const QString &title, Args&&... args)
 	return res;
 }
 
-template <typename T, class... Args>
-std::unique_ptr<T> StatsView::createChartItem(Args&&... args)
-{
-	std::unique_ptr<T> res(new T(*this, std::forward<Args>(args)...));
-	items.push_back(res.get());
-	return res;
-}
-
 void StatsView::setAxes(StatsAxis *x, StatsAxis *y)
 {
 	xAxis = x;

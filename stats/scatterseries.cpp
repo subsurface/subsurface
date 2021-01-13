@@ -5,6 +5,7 @@
 #include "statshelper.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
+#include "statsview.h"
 #include "zvalues.h"
 #include "core/dive.h"
 #include "core/divelist.h"
@@ -173,7 +174,7 @@ bool ScatterSeries::hover(QPointF pos)
 		return false;
 	} else {
 		if (!information)
-			information = createItemPtr<InformationBox>(scene);
+			information = view.createChartItem<InformationBox>();
 
 		std::vector<QString> text;
 		text.reserve(highlighted.size() * 5);

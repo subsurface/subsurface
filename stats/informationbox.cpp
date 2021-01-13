@@ -1,5 +1,6 @@
 #include "informationbox.h"
 #include "statscolors.h"
+#include "statsview.h"
 #include "zvalues.h"
 
 #include <QFontMetrics>
@@ -11,74 +12,65 @@ static const int informationBorder = 2;
 static const double informationBorderRadius = 4.0; // Radius of rounded corners
 static const int distanceFromPointer = 10; // Distance to place box from mouse pointer or scatter item
 
-InformationBox::InformationBox() : RoundRectItem(informationBorderRadius, nullptr)
+InformationBox::InformationBox(StatsView &v) :
+	ChartRectItem(v, QPen(informationBorderColor, informationBorder),
+		      QBrush(informationColor), informationBorderRadius)
 {
-	setPen(QPen(informationBorderColor, informationBorder));
-	setBrush(informationColor);
-	setZValue(ZValues::informationBox);
 }
 
 void InformationBox::setText(const std::vector<QString> &text, QPointF pos)
 {
-	width = height = 0.0;
-	textItems.clear();
+	QFontMetrics fm(font);
+	double fontHeight = fm.height();
 
+	std::vector<double> widths;
+	widths.reserve(text.size());
+	width = 0.0;
 	for (const QString &s: text) {
-		if (!s.isEmpty())
-			addLine(s);
+		widths.push_back(static_cast<double>(fm.size(Qt::TextSingleLine, s).width()));
+		width = std::max(width, widths.back());
 	}
 
 	width += 4.0 * informationBorder;
-	height += 4.0 * informationBorder;
+	height = widths.size() * fontHeight + 4.0 * informationBorder;
 
-	// Setting the position will also set the proper size
-	setPos(pos);
+	ChartRectItem::resize(QSizeF(width, height));
+
+	painter->setPen(QPen(darkLabelColor)); // QPainter uses QPen to set text color!
+	double y = 2.0 * informationBorder;
+	for (size_t i = 0; i < widths.size(); ++i) {
+		QRectF rect(2.0 * informationBorder, y, widths[i], fontHeight);
+		painter->drawText(rect, text[i]);
+		y += fontHeight;
+	}
 }
 
 void InformationBox::setPos(QPointF pos)
 {
-	QRectF plotArea = scene()->sceneRect();
+	QSizeF size = sceneSize();
 
 	double x = pos.x() + distanceFromPointer;
-	if (x + width >= plotArea.right()) {
-		if (pos.x() - width >= plotArea.x())
+	if (x + width >= size.width()) {
+		if (pos.x() - width >= 0.0)
 			x = pos.x() - width;
 		else
 			x = pos.x() - width / 2.0;
 	}
 	double y = pos.y() + distanceFromPointer;
-	if (y + height >= plotArea.bottom()) {
-		if (pos.y() - height >= plotArea.y())
+	if (y + height >= size.height()) {
+		if (pos.y() - height >= 0.0)
 			y = pos.y() - height;
 		else
 			y = pos.y() - height / 2.0;
 	}
 
-	setRect(x, y, width, height);
-	double actY = y + 2.0 * informationBorder;
-	for (auto &item: textItems) {
-		item->setPos(QPointF(x + 2.0 * informationBorder, actY));
-		actY += item->boundingRect().height();
-	}
-}
-
-void InformationBox::addLine(const QString &s)
-{
-	textItems.emplace_back(new QGraphicsSimpleTextItem(s, this));
-	QGraphicsSimpleTextItem &item = *textItems.back();
-	item.setBrush(QBrush(darkLabelColor));
-	item.setPos(QPointF(0.0, height));
-	item.setFont(font);
-	item.setZValue(ZValues::informationBox);
-	QRectF rect = item.boundingRect();
-	width = std::max(width, rect.width());
-	height += rect.height();
+	ChartRectItem::setPos(QPointF(x, y));
 }
 
 // Try to stay within three-thirds of the chart height
 int InformationBox::recommendedMaxLines() const
 {
 	QFontMetrics fm(font);
-	int maxHeight = static_cast<int>(scene()->sceneRect().height());
+	int maxHeight = static_cast<int>(sceneSize().height());
 	return maxHeight * 2 / fm.height() / 3;
 }
