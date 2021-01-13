@@ -236,14 +236,7 @@ void StatsView::mouseMoveEvent(QMouseEvent *event)
 	QSizeF sceneSize = size();
 	if (sceneSize.width() <= 1.0 || sceneSize.height() <= 1.0)
 		return;
-	QPointF pos = event->pos() - dragStartMouse + dragStartItem;;
-	QSizeF itemSize = draggedItem->getRect().size();
-	double widthHalf = floor(itemSize.width() / 2);
-	double heightHalf = floor(itemSize.height() / 2);
-	QSizeF itemSizeHalf(floor(itemSize.width() / 2), floor(itemSize.height() / 2));
-	QPointF sanitizedPos(std::clamp(pos.x(), -widthHalf, sceneSize.width() - widthHalf - 1.0),
-			     std::clamp(pos.y(), -heightHalf, sceneSize.height() - heightHalf - 1.0));
-	draggedItem->setPos(sanitizedPos);
+	draggedItem->setPos(event->pos() - dragStartMouse + dragStartItem);
 	update();
 }
 

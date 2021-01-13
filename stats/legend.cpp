@@ -3,6 +3,7 @@
 #include "statscolors.h"
 #include "zvalues.h"
 
+#include <cmath>
 #include <QFontMetrics>
 #include <QPen>
 
@@ -18,7 +19,8 @@ Legend::Legend(StatsView &view, const std::vector<QString> &names) :
 	ChartRectItem(view, ChartZValue::Legend,
 		      QPen(legendBorderColor, legendBorderSize), QBrush(legendColor), legendBoxBorderRadius),
 	displayedItems(0), width(0.0), height(0.0),
-	font(QFont())	// Make configurable
+	font(QFont()),	// Make configurable
+	posInitialized(false)
 {
 	entries.reserve(names.size());
 	QFontMetrics fm(font);
@@ -103,7 +105,38 @@ void Legend::resize()
 		painter->drawText(rect, entries[i].name);
 	}
 
-	// For now, place the legend in the top right corner.
-	QPointF pos(size.width() - width - 10.0, 10.0);
-	setPos(pos);
+	if (!posInitialized) {
+		// At first, place in top right corner
+		setPos(QPointF(size.width() - width - 10.0, 10.0));
+		posInitialized = true;
+	} else {
+		// Try to keep relative position with what it was before
+		setPos(QPointF(size.width() * centerPos.x() - width / 2.0,
+			       size.height() * centerPos.y() - height / 2.0));
+	}
+}
+
+void Legend::setPos(QPointF newPos)
+{
+	// Round the position to integers or horrible artifacts appear (at least on desktop)
+	QPointF posInt(round(newPos.x()), round(newPos.y()));
+
+	// Make sure that the center is inside the drawing area,
+	// so that the user can't lose the legend.
+	QSizeF size = sceneSize();
+	if (size.width() < 1.0 || size.height() < 1.0)
+		return;
+	double widthHalf = floor(width / 2.0);
+	double heightHalf = floor(height / 2.0);
+	QPointF sanitizedPos(std::clamp(posInt.x(), -widthHalf, size.width() - widthHalf - 1.0),
+			     std::clamp(posInt.y(), -heightHalf, size.height() - heightHalf - 1.0));
+
+	// Set position
+	ChartRectItem::setPos(sanitizedPos);
+
+	// Remember relative position of center for next time
+	QPointF centerPosAbsolute(sanitizedPos.x() + width / 2.0,
+				  sanitizedPos.y() + height / 2.0);
+	centerPos = QPointF(centerPosAbsolute.x() / size.width(),
+			    centerPosAbsolute.y() / size.height());
 }
