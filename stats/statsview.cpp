@@ -18,7 +18,6 @@
 
 #include <cmath>
 #include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
 #include <QGraphicsSimpleTextItem>
 #include <QQuickItem>
 #include <QQuickWindow>
@@ -35,6 +34,7 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	highlightedSeries(nullptr),
 	xAxis(nullptr),
 	yAxis(nullptr),
+	draggedItem(nullptr),
 	rootNode(nullptr)
 {
 	setFlag(ItemHasContents, true);
@@ -42,6 +42,7 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
 
 	setAcceptHoverEvents(true);
+	setAcceptedMouseButtons(Qt::LeftButton);
 
 	QFont font;
 	titleFont = QFont(font.family(), font.pointSize(), QFont::Light);	// Make configurable
@@ -53,6 +54,30 @@ StatsView::StatsView() : StatsView(nullptr)
 
 StatsView::~StatsView()
 {
+}
+
+void StatsView::mousePressEvent(QMouseEvent *event)
+{
+	// Currently, we only support dragging of the legend. If other objects
+	// should be made draggable, this needs to be generalized.
+	if (legend) {
+		QPointF pos = event->localPos();
+		QRectF rect = legend->getRect();
+		if (legend->getRect().contains(pos)) {
+			dragStartMouse = pos;
+			dragStartItem = rect.topLeft();
+			draggedItem = legend.get();
+			grabMouse();
+		}
+	}
+}
+
+void StatsView::mouseReleaseEvent(QMouseEvent *)
+{
+	if (draggedItem) {
+		draggedItem = nullptr;
+		ungrabMouse();
+	}
 }
 
 QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
@@ -172,13 +197,33 @@ void StatsView::replotIfVisible()
 		plot(state);
 }
 
+void StatsView::mouseMoveEvent(QMouseEvent *event)
+{
+	if (!draggedItem)
+		return;
+
+	QSizeF sceneSize = size();
+	if (sceneSize.width() <= 1.0 || sceneSize.height() <= 1.0)
+		return;
+	QPointF pos = event->pos() - dragStartMouse + dragStartItem;;
+	QSizeF itemSize = draggedItem->getRect().size();
+	double widthHalf = floor(itemSize.width() / 2);
+	double heightHalf = floor(itemSize.height() / 2);
+	QSizeF itemSizeHalf(floor(itemSize.width() / 2), floor(itemSize.height() / 2));
+	QPointF sanitizedPos(std::clamp(pos.x(), -widthHalf, sceneSize.width() - widthHalf - 1.0),
+			     std::clamp(pos.y(), -heightHalf, sceneSize.height() - heightHalf - 1.0));
+	draggedItem->setPos(sanitizedPos);
+	update();
+}
+
 void StatsView::hoverEnterEvent(QHoverEvent *)
 {
 }
 
 void StatsView::hoverMoveEvent(QHoverEvent *event)
 {
-	QPointF pos(event->pos());
+	QPointF pos = event->pos();
+
 	for (auto &series: series) {
 		if (series->hover(pos)) {
 			if (series.get() != highlightedSeries) {
@@ -254,6 +299,7 @@ void StatsView::reset()
 {
 	highlightedSeries = nullptr;
 	xAxis = yAxis = nullptr;
+	draggedItem = nullptr;
 	items.clear(); // non-owning pointers
 	legend.reset();
 	series.clear();
