@@ -212,14 +212,9 @@ Kirigami.Page {
 						     statisticsPage.height - 2 * Kirigami.Units.gridUnit - i4.height
 			Layout.maximumWidth: wide ? statisticsPage.width - 2 * Kirigami.Units.gridUnit - i4.width :
 						     statisticsPage.width - 2 * Kirigami.Units.smallSpacing
-
-			onWidthChanged: {
-				console.log("StatsView widget width is " + width + " on page with width " + statisticsPage.width)
-			}
 		}
 	}
 	Component.onCompleted: {
 		statsManager.init(statsView, chartListModel)
-		console.log("Statistics widget loaded")
 	}
 }

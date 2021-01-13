@@ -53,11 +53,8 @@ Kirigami.ScrollablePage {
 			height: isTrip ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing // delegateInnerItem.height
 
 			onSelectedChanged: {
-				console.log("index " + index + " select changed to " + selected)
-				if (selected && index !== view.currentIndex) {
+				if (selected && index !== view.currentIndex)
 					view.currentIndex = index;
-					console.log("updated view.currentIndex")
-				}
 			}
 
 			// When clicked, a trip expands / unexpands, a dive is opened in DiveDetails
