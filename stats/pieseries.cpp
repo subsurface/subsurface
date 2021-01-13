@@ -85,9 +85,9 @@ void PieSeries::Item::highlight(int bin_nr, bool highlight, int numBins)
 	}
 }
 
-PieSeries::PieSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
+PieSeries::PieSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
 		     const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels) :
-	StatsSeries(scene, xAxis, yAxis),
+	StatsSeries(scene, view, xAxis, yAxis),
 	categoryName(categoryName),
 	highlighted(-1)
 {

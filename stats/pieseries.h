@@ -20,7 +20,7 @@ public:
 	// The pie series is initialized with (name, count) pairs.
 	// If keepOrder is false, bins will be sorted by size, otherwise the sorting
 	// of the shown bins will be retained. Small bins are omitted for clarity.
-	PieSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
+	PieSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
 		  const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels);
 	~PieSeries();
 
