@@ -15,6 +15,7 @@ class Legend : public ChartRectItem {
 public:
 	Legend(StatsView &view, const std::vector<QString> &names);
 	void resize(); // called when the chart size changes.
+	void setPos(QPointF pos); // Attention: not virtual - always call on this class.
 private:
 	// Each entry is a text besides a rectangle showing the color
 	struct Entry {
@@ -28,6 +29,10 @@ private:
 	double width;
 	double height;
 	QFont font;
+	// The position is specified with respect to the center and in relative terms
+	// with respect to the canvas.
+	QPointF centerPos;
+	bool posInitialized;
 	int fontHeight;
 	std::vector<Entry> entries;
 	void hide();
