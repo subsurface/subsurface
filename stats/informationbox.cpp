@@ -13,7 +13,8 @@ static const double informationBorderRadius = 4.0; // Radius of rounded corners
 static const int distanceFromPointer = 10; // Distance to place box from mouse pointer or scatter item
 
 InformationBox::InformationBox(StatsView &v) :
-	ChartRectItem(v, QPen(informationBorderColor, informationBorder),
+	ChartRectItem(v, ChartZValue::InformationBox,
+		      QPen(informationBorderColor, informationBorder),
 		      QBrush(informationColor), informationBorderRadius)
 {
 }

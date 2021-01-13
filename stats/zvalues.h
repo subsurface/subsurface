@@ -15,4 +15,15 @@ struct ZValues {
 	static constexpr double legend = 5.0;
 };
 
+enum class ChartZValue {
+	Grid = 0,
+	Series,
+	Axes,
+	SeriesLabels,
+	ChartFeatures,	// quartile markers and regression lines
+	InformationBox,
+	Legend,
+	Count
+};
+
 #endif

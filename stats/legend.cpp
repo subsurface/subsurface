@@ -17,7 +17,8 @@ static const QColor legendColor(0x00, 0x8e, 0xcc, 192); // Note: fourth argument
 static const QColor legendBorderColor(Qt::black);
 
 Legend::Legend(StatsView &view, const std::vector<QString> &names) :
-	ChartRectItem(view, QPen(legendBorderColor, legendBorderSize), QBrush(legendColor), legendBoxBorderRadius),
+	ChartRectItem(view, ChartZValue::Legend,
+		      QPen(legendBorderColor, legendBorderSize), QBrush(legendColor), legendBoxBorderRadius),
 	displayedItems(0), width(0.0), height(0.0),
 	font(QFont())	// Make configurable
 {
