@@ -24,6 +24,12 @@ public:
 	static const constexpr int IsHeaderRole = Qt::UserRole + 2;
 	static const constexpr int IconRole = Qt::UserRole + 3;
 	static const constexpr int IconSizeRole = Qt::UserRole + 4;
+
+	Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
+
+signals:
+	void countChanged();
+
 private:
 	struct Item {
 		bool isHeader;
@@ -45,7 +51,7 @@ private:
 	QFont headerFont;
 	std::vector<Item> items;
 	QHash<int, QByteArray> roleNames() const override;
-	int rowCount(const QModelIndex &parent) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex &index, int role) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 	void initIcon(ChartSubType type, const char *name, int iconSize);
