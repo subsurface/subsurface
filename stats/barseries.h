@@ -47,13 +47,13 @@ public:
 	// Note: this expects that all items are added with increasing pos
 	// and that no bar is inside another bar, i.e. lowerBound and upperBound
 	// are ordered identically.
-	BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
+	BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, const QString &categoryName,
 		  const std::vector<CountItem> &items);
-	BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
+	BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, const QString &categoryName, const StatsVariable *valueVariable,
 		  const std::vector<ValueItem> &items);
-	BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
+	BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, bool stacked, const QString &categoryName, const StatsVariable *valueVariable,
 		  std::vector<QString> valueBinNames,
 		  const std::vector<MultiItem> &items);
@@ -63,7 +63,7 @@ public:
 	bool hover(QPointF pos) override;
 	void unhighlight() override;
 private:
-	BarSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
+	BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, bool stacked, const QString &categoryName, const StatsVariable *valueVariable,
 		  std::vector<QString> valueBinNames);
 
