@@ -16,9 +16,9 @@
 static const int scatterItemDiameter = 10;
 static const int scatterItemBorder = 1;
 
-ScatterSeries::ScatterSeries(QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis,
+ScatterSeries::ScatterSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 			     const StatsVariable &varX, const StatsVariable &varY) :
-	StatsSeries(scene, xAxis, yAxis),
+	StatsSeries(scene, view, xAxis, yAxis),
 	varX(varX), varY(varY)
 {
 }
