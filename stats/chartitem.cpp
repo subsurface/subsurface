@@ -12,8 +12,8 @@ static int round_up(double f)
 	return static_cast<int>(ceil(f));
 }
 
-ChartItem::ChartItem(StatsView &v) :
-	dirty(false), view(v), positionDirty(false), textureDirty(false)
+ChartItem::ChartItem(StatsView &v, ChartZValue z) :
+	dirty(false), zValue(z), view(v), positionDirty(false), textureDirty(false)
 {
 }
 
@@ -46,7 +46,7 @@ void ChartItem::render()
 		return;
 	if (!node) {
 		node.reset(view.w()->createImageNode());
-		view.addQSGNode(node.get(), 0);
+		view.addQSGNode(node.get(), zValue);
 	}
 	if (!img) {
 		resize(QSizeF(1,1));
@@ -85,7 +85,8 @@ QRectF ChartItem::getRect() const
 	return rect;
 }
 
-ChartRectItem::ChartRectItem(StatsView &v, const QPen &pen, const QBrush &brush, double radius) : ChartItem(v),
+ChartRectItem::ChartRectItem(StatsView &v, ChartZValue z,
+			     const QPen &pen, const QBrush &brush, double radius) : ChartItem(v, z),
 	pen(pen), brush(brush), radius(radius)
 {
 }
