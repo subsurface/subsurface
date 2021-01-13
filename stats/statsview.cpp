@@ -80,17 +80,33 @@ void StatsView::mouseReleaseEvent(QMouseEvent *)
 	}
 }
 
+class RootNode : public QSGNode
+{
+public:
+	RootNode();
+	QSGImageNode *imageNode; // imageNode to plot QGRaphicsScene on. Remove in due course.
+	// We entertain one node per Z-level.
+	std::array<QSGNode *, (size_t)ChartZValue::Count> zNodes;
+	std::array<std::vector<ChartItem *>, (size_t)ChartZValue::Count> items;
+};
+
+RootNode::RootNode()
+{
+	for (QSGNode *&zNode: zNodes) {
+		zNode = new QSGNode;
+		appendChildNode(zNode);
+	}
+}
+
 QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
 {
 	// The QtQuick drawing interface is utterly bizzare with a distinct 1980ies-style memory management.
 	// This is just a copy of what is found in Qt's documentation.
-	QSGImageNode *n = static_cast<QSGImageNode *>(oldNode);
-	if (!n)
-		n = rootNode = window()->createImageNode();
-
-	for (ChartItem *item: items) {
-		if (item->dirty)
-			item->render();
+	RootNode *n = static_cast<RootNode *>(oldNode);
+	if (!n) {
+		n = rootNode = new RootNode;
+		n->imageNode = window()->createImageNode();
+		n->zNodes[(int)ChartZValue::Series]->appendChildNode(n->imageNode);
 	}
 
 	QRectF rect = boundingRect();
@@ -99,28 +115,43 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 		plotAreaChanged(plotRect.size());
 	}
 
+	for (auto &v: n->items) {
+		for (ChartItem *item: v) {
+			if (item->dirty)
+				item->render();
+		}
+	}
+
 	img->fill(backgroundColor);
 	scene.render(painter.get());
 	texture.reset(window()->createTextureFromImage(*img, QQuickWindow::TextureIsOpaque));
-	n->setTexture(texture.get());
-	n->setRect(rect);
+	n->imageNode->setTexture(texture.get());
+	n->imageNode->setRect(rect);
 	return n;
 }
 
-void StatsView::addQSGNode(QSGNode *node, int)
+void StatsView::addQSGNode(QSGNode *node, ChartZValue z)
 {
-	rootNode->appendChildNode(node);
+	int idx = std::clamp((int)z, 0, (int)ChartZValue::Count - 1);
+	rootNode->zNodes[idx]->appendChildNode(node);
 }
 
 // Currently this does an inefficient linear search in the chart-item vector.
-// The reason is that removing individual chart items is very rare: for now,
-// it is only done when hiding an InfoBox. In the future, this might have to
-// be improved.
+// However, we entertain one vector of items per Z-value and currently
+// only the infobox is explicitly deleted, which has a unique Z-value.
 void StatsView::unregisterChartItem(const ChartItem *item)
 {
-	auto it = std::find(items.begin(), items.end(), item);
-	if (it != items.end())
-		items.erase(it);
+	int idx = std::clamp((int)item->zValue, 0, (int)ChartZValue::Count - 1);
+	std::vector<ChartItem *> &v = rootNode->items[idx];
+	auto it = std::find(v.begin(), v.end(), item);
+	if (it != v.end())
+		v.erase(it);
+}
+
+void StatsView::registerChartItem(ChartItem *item)
+{
+	int idx = std::clamp((int)item->zValue, 0, (int)ChartZValue::Count - 1);
+	rootNode->items[idx].push_back(item);
 }
 
 QQuickWindow *StatsView::w() const
@@ -292,7 +323,10 @@ void StatsView::reset()
 	highlightedSeries = nullptr;
 	xAxis = yAxis = nullptr;
 	draggedItem = nullptr;
-	items.clear(); // non-owning pointers
+	if (rootNode) {
+		for (auto &v: rootNode->items)
+			v.clear(); // non-owning pointers
+	}
 	legend.reset();
 	series.clear();
 	quartileMarkers.clear();

@@ -10,10 +10,11 @@
 class QSGImageNode;
 class QSGTexture;
 class StatsView;
+enum class ChartZValue : int;
 
 class ChartItem {
 public:
-	ChartItem(StatsView &v);
+	ChartItem(StatsView &v, ChartZValue z);
 	~ChartItem();
 	// Attention: The children are responsible for updating the item. None of these calls will.
 	void resize(QSizeF size);	// Resets the canvas. Attention: image is *unitialized*.
@@ -21,6 +22,7 @@ public:
 	void render();			// Only call on render thread!
 	QRectF getRect() const;
 	bool dirty;			// If true, call render() when rebuilding the scene
+	const ChartZValue zValue;
 protected:
 	std::unique_ptr<QPainter> painter;
 	std::unique_ptr<QImage> img;
@@ -39,7 +41,7 @@ private:
 // Draw a rectangular background after resize. Children are responsible for calling update().
 class ChartRectItem : public ChartItem {
 public:
-	ChartRectItem(StatsView &v, const QPen &pen, const QBrush &brush, double radius);
+	ChartRectItem(StatsView &v, ChartZValue z, const QPen &pen, const QBrush &brush, double radius);
 	~ChartRectItem();
 	void resize(QSizeF size);
 private:
