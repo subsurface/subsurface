@@ -308,10 +308,11 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device, bool from
 	else
 		newDevice = device.name;
 
-	qDebug() << (fromPaired ? "Paired device" : "Discovered new device:") << newDevice << device.address;
+	QString msg;
+	msg = QString("%1 device: '%2' [%3]: ").arg(fromPaired ? "Paired" : "Discovered new").arg(newDevice).arg(device.address);
 	if (newDC) {
 		QString vendor = dc_descriptor_get_vendor(newDC);
-		qDebug() << "this could be a " + vendor + " " + newDevice;
+		qDebug() << msg << "this could be a " + vendor;
 		btVP.btpdi = device;
 		btVP.dcDescriptor = newDC;
 		btVP.vendorIdx = vendorList.indexOf(vendor);
@@ -326,7 +327,7 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device, bool from
 			newDevice += " ";
 		connectionListModel.addAddress(newDevice + device.address);
 	}
-	qDebug() << "Not recognized as dive computer";
+	qDebug() << msg << "not recognized as dive computer";
 }
 
 QList<BTDiscovery::btVendorProduct> BTDiscovery::getBtDcs()
