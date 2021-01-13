@@ -168,10 +168,14 @@ private:
 	std::vector<ChartItem *> items; // Attention: currently, items are not automatically removed on destruction!
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
+	Legend *draggedItem;
+	QPointF dragStartMouse, dragStartItem;
 
 	void hoverEnterEvent(QHoverEvent *event) override;
 	void hoverMoveEvent(QHoverEvent *event) override;
-
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
 	QSGImageNode *rootNode;
 };
 
