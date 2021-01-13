@@ -44,7 +44,8 @@ Controls.TextField {
 			// make sure there's enough space for the input field above the keyboard and action button (and that it's not too far up, either)
 			var positionInFlickable = stf.mapToItem(flickable.contentItem, 0, 0)
 			var stfY = positionInFlickable.y
-			console.log("position check: lower edge of view is " + (0 + flickable.contentY + flickable.height) + " and text field is at " + stfY)
+			if (verbose)
+				manager.appendTextToLogFile("position check: lower edge of view is " + (0 + flickable.contentY + flickable.height) + " and text field is at " + stfY)
 			if (stfY + stf.height > flickable.contentY + flickable.height - 3 * Kirigami.Units.gridUnit || stfY < flickable.contentY)
 				flickable.contentY = Math.max(0, 3 * Kirigami.Units.gridUnit + stfY + stf.height - flickable.height)
 		}

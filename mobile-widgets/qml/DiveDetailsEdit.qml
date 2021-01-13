@@ -616,9 +616,6 @@ Item {
 				onCursorRectangleChanged: {
 					ensureVisible(y + cursorRectangle.y)
 				}
-				onContentHeightChanged: {
-					console.log("content height changed")
-				}
 
 				// ensure that the y coordinate is inside the visible part of the detailsEditFlickable (our flickable)
 				function ensureVisible(yDest) {
