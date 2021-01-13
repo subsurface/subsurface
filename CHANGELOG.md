@@ -2,6 +2,7 @@
 - undo: reset dive-mode on undo of set-point addition
 - desktop: complete rewrite of the statistics code, significantly expanding capabilities
 - desktop: add preferences option to disable default cylinder types
+- mobile: redesigned dive edit experience
 - mobile: fix broken 'use current location' in dive edit
 - mobile: add ability to show fundamentally the same statistics as on the desktop
 - mobile: add settings for DC and calculated ceilings and show calculated ceilings
