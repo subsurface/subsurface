@@ -52,6 +52,9 @@ public:
 	QSizeF size() const;
 	void addQSGNode(QSGNode *node, int z);	// Must only be called in render thread!
 	void unregisterChartItem(const ChartItem *item);
+	template <typename T, class... Args>
+	std::unique_ptr<T> createChartItem(Args&&... args);
+
 private slots:
 	void replotIfVisible();
 private:
@@ -108,9 +111,6 @@ private:
 
 	template <typename T, class... Args>
 	T *createAxis(const QString &title, Args&&... args);
-
-	template <typename T, class... Args>
-	std::unique_ptr<T> createChartItem(Args&&... args);
 
 	template<typename T>
 	CategoryAxis *createCategoryAxis(const QString &title, const StatsBinner &binner,
@@ -178,5 +178,15 @@ private:
 	void mouseMoveEvent(QMouseEvent *event) override;
 	QSGImageNode *rootNode;
 };
+
+// This implementation detail must be known to users of the class.
+// Perhaps move it into a statsview_impl.h file.
+template <typename T, class... Args>
+std::unique_ptr<T> StatsView::createChartItem(Args&&... args)
+{
+	std::unique_ptr<T> res(new T(*this, std::forward<Args>(args)...));
+	items.push_back(res.get());
+	return res;
+}
 
 #endif

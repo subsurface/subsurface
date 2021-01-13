@@ -4,6 +4,7 @@
 #include "statscolors.h"
 #include "statshelper.h"
 #include "statstranslations.h"
+#include "statsview.h"
 #include "zvalues.h"
 
 #include <QLocale>
@@ -149,7 +150,7 @@ bool BoxSeries::hover(QPointF pos)
 		Item &item = *items[highlighted];
 		item.highlight(true);
 		if (!information)
-			information = createItemPtr<InformationBox>(scene);
+			information = view.createChartItem<InformationBox>();
 		information->setText(formatInformation(item), pos);
 	} else {
 		information.reset();
