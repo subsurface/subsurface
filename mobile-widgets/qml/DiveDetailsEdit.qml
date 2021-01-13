@@ -204,6 +204,7 @@ Item {
 				target: manager
 				onWaitingForPositionChanged: {
 					gpsText = manager.getCurrentPosition()
+					manager.appendTextToLog("received updated position info " + gpsText)
 				}
 			}
 
