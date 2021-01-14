@@ -24,6 +24,7 @@ class CategoryAxis;
 class ChartItem;
 class CountAxis;
 class HistogramAxis;
+class HistogramMarker;
 class QuartileMarker;
 class StatsAxis;
 class StatsGrid;
@@ -136,18 +137,8 @@ private:
 		RegressionLine(const struct regression_data reg, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
 	};
 
-	// A line marking median or mean in histograms
-	struct HistogramMarker {
-		std::unique_ptr<QGraphicsLineItem> item;
-		StatsAxis *xAxis, *yAxis;
-		double val;
-		bool horizontal;
-		void updatePosition();
-		HistogramMarker(double val, bool horizontal, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
-	};
-
 	void addLinearRegression(const struct regression_data reg, StatsAxis *xAxis, StatsAxis *yAxis);
-	void addHistogramMarker(double pos, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
+	void addHistogramMarker(double pos, QColor color, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
 
 	StatsState state;
 	QFont titleFont;
@@ -157,7 +148,7 @@ private:
 	std::unique_ptr<Legend> legend;
 	std::vector<std::unique_ptr<QuartileMarker>> quartileMarkers;
 	std::vector<RegressionLine> regressionLines;
-	std::vector<HistogramMarker> histogramMarkers;
+	std::vector<std::unique_ptr<HistogramMarker>> histogramMarkers;
 	std::unique_ptr<QGraphicsSimpleTextItem> title;
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
