@@ -25,6 +25,7 @@
 #include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
 #include "core/subsurfacestartup.h" // for testqml
+#include "core/metrics.h"
 #include "qt-models/diveimportedmodel.h"
 #else
 #include "desktop-widgets/mainwindow.h"
@@ -73,6 +74,8 @@ void run_ui()
 #if defined(Q_OS_ANDROID)
 	// work around an odd interaction between the OnePlus flavor of Android and Qt font handling
 	if (getAndroidHWInfo().contains("/OnePlus/")) {
+		QFontInfo qfi(defaultModelFont());
+		double basePointSize = qfi.pointSize();
 		QFontDatabase db;
 		int id = QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf");
 		QStringList fontFamilies = QFontDatabase::applicationFontFamilies(id);
@@ -80,6 +83,7 @@ void run_ui()
 			QString family = fontFamilies.at(0);
 			QFont newDefaultFont;
 			newDefaultFont.setFamily(family);
+			newDefaultFont.setPointSize(basePointSize);
 			(static_cast<QApplication *>(QCoreApplication::instance()))->setFont(newDefaultFont);
 			qDebug() << "Detected OnePlus device, trying to force bundled font" << family;
 			QFont defaultFont = (static_cast<QApplication *>(QCoreApplication::instance()))->font();
