@@ -2,15 +2,19 @@
 #ifndef STATS_AXIS_H
 #define STATS_AXIS_H
 
+#include "chartitem.h"
+
 #include <memory>
 #include <vector>
 #include <QFont>
-#include <QGraphicsSimpleTextItem>
-#include <QGraphicsLineItem>
 
-class QGraphicsScene;
+class StatsView;
+class ChartLineItem;
+class QFontMetrics;
 
-class StatsAxis : public QGraphicsLineItem {
+// The labels and the title of the axis are rendered into a pixmap.
+// The ticks and the baseline are realized as individual ChartLineItems.
+class StatsAxis : public ChartPixmapItem {
 public:
 	virtual ~StatsAxis();
 	// Returns minimum and maximum of shown range, not of data points.
@@ -30,22 +34,25 @@ public:
 
 	std::vector<double> ticksPositions() const; // Positions in screen coordinates
 protected:
-	StatsAxis(const QString &title, bool horizontal, bool labelsBetweenTicks);
+	StatsAxis(StatsView &view, const QString &title, bool horizontal, bool labelsBetweenTicks);
+
+	std::unique_ptr<ChartLineItem> line;
+	QString title;
+	double titleWidth;
 
 	struct Label {
-		std::unique_ptr<QGraphicsSimpleTextItem> label;
+		QString label;
+		int width;
 		double pos;
-		Label(const QString &name, double pos, QGraphicsScene *scene, const QFont &font);
 	};
 	std::vector<Label> labels;
-	void addLabel(const QString &label, double pos);
+	void addLabel(const QFontMetrics &fm, const QString &label, double pos);
 	virtual void updateLabels() = 0;
 	virtual std::pair<QString, QString> getFirstLastLabel() const = 0;
 
 	struct Tick {
-		std::unique_ptr<QGraphicsLineItem> item;
+		std::unique_ptr<ChartLineItem> item;
 		double pos;
-		Tick(double pos, QGraphicsScene *scene);
 	};
 	std::vector<Tick> ticks;
 	void addTick(double pos);
@@ -55,9 +62,9 @@ protected:
 	bool labelsBetweenTicks;	// When labels are between ticks, they can be moved closer to the axis
 
 	QFont labelFont, titleFont;
-	std::unique_ptr<QGraphicsSimpleTextItem> title;
 	double size;			// width for horizontal, height for vertical
 	double zeroOnScreen;
+	QPointF offset;			// Offset of the label and title pixmap with respect to the (0,0) position.
 	double min, max;
 	double labelWidth;		// Maximum width of labels
 private:
@@ -66,7 +73,7 @@ private:
 
 class ValueAxis : public StatsAxis {
 public:
-	ValueAxis(const QString &title, double min, double max, int decimals, bool horizontal);
+	ValueAxis(StatsView &view, const QString &title, double min, double max, int decimals, bool horizontal);
 private:
 	double min, max;
 	int decimals;
@@ -76,7 +83,7 @@ private:
 
 class CountAxis : public ValueAxis {
 public:
-	CountAxis(const QString &title, int count, bool horizontal);
+	CountAxis(StatsView &view, const QString &title, int count, bool horizontal);
 private:
 	int count;
 	void updateLabels() override;
@@ -85,7 +92,7 @@ private:
 
 class CategoryAxis : public StatsAxis {
 public:
-	CategoryAxis(const QString &title, const std::vector<QString> &labels, bool horizontal);
+	CategoryAxis(StatsView &view, const QString &title, const std::vector<QString> &labels, bool horizontal);
 private:
 	std::vector<QString> labelsText;
 	void updateLabels();
@@ -100,7 +107,7 @@ struct HistogramAxisEntry {
 
 class HistogramAxis : public StatsAxis {
 public:
-	HistogramAxis(const QString &title, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
+	HistogramAxis(StatsView &view, const QString &title, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
 private:
 	void updateLabels() override;
 	std::pair<QString, QString> getFirstLastLabel() const override;
@@ -110,7 +117,7 @@ private:
 
 class DateAxis : public HistogramAxis {
 public:
-	DateAxis(const QString &title, double from, double to, bool horizontal);
+	DateAxis(StatsView &view, const QString &title, double from, double to, bool horizontal);
 };
 
 #endif

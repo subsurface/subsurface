@@ -142,6 +142,7 @@ private:
 
 	StatsState state;
 	QFont titleFont;
+	std::unique_ptr<std::vector<ChartItem *>[]> chartItems;
 	std::vector<std::unique_ptr<StatsAxis>> axes;
 	std::unique_ptr<StatsGrid> grid;
 	std::vector<std::unique_ptr<StatsSeries>> series;
