@@ -19,6 +19,8 @@ set(SUBSURFACE_STATS_SRCS
 	legend.cpp
 	pieseries.h
 	pieseries.cpp
+	quartilemarker.h
+	quartilemarker.cpp
 	scatterseries.h
 	scatterseries.cpp
 	statsaxis.h

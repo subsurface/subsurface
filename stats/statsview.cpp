@@ -4,6 +4,7 @@
 #include "boxseries.h"
 #include "legend.h"
 #include "pieseries.h"
+#include "quartilemarker.h"
 #include "scatterseries.h"
 #include "statsaxis.h"
 #include "statscolors.h"
@@ -25,8 +26,6 @@
 #include <QSGTexture>
 
 // Constants that control the graph layouts
-static const QColor quartileMarkerColor(Qt::red);
-static const double quartileMarkerSize = 15.0;
 static const double sceneBorder = 5.0;			// Border between scene edges and statitistics view
 static const double titleBorder = 2.0;			// Border between title and chart
 
@@ -211,8 +210,8 @@ void StatsView::plotAreaChanged(const QSizeF &s)
 		grid->updatePositions();
 	for (auto &series: series)
 		series->updatePositions();
-	for (QuartileMarker &marker: quartileMarkers)
-		marker.updatePosition();
+	for (auto &marker: quartileMarkers)
+		marker->updatePosition();
 	for (RegressionLine &line: regressionLines)
 		line.updatePosition();
 	for (HistogramMarker &marker: histogramMarkers)
@@ -799,34 +798,16 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 		if (quartiles) {
 			StatsQuartiles quartiles = StatsVariable::quartiles(array);
 			if (quartiles.isValid()) {
-				quartileMarkers.emplace_back(x, quartiles.q1, &scene, catAxis, valAxis);
-				quartileMarkers.emplace_back(x, quartiles.q2, &scene, catAxis, valAxis);
-				quartileMarkers.emplace_back(x, quartiles.q3, &scene, catAxis, valAxis);
+				quartileMarkers.push_back(createChartItem<QuartileMarker>(
+						x, quartiles.q1, catAxis, valAxis));
+				quartileMarkers.push_back(createChartItem<QuartileMarker>(
+						x, quartiles.q2, catAxis, valAxis));
+				quartileMarkers.push_back(createChartItem<QuartileMarker>(
+						x, quartiles.q3, catAxis, valAxis));
 			}
 		}
 		x += 1.0;
 	}
-}
-
-StatsView::QuartileMarker::QuartileMarker(double pos, double value, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
-	item(createItemPtr<QGraphicsLineItem>(scene)),
-	xAxis(xAxis), yAxis(yAxis),
-	pos(pos),
-	value(value)
-{
-	item->setZValue(ZValues::chartFeatures);
-	item->setPen(QPen(quartileMarkerColor, 2.0));
-	updatePosition();
-}
-
-void StatsView::QuartileMarker::updatePosition()
-{
-	if (!xAxis || !yAxis)
-		return;
-	double x = xAxis->toScreen(pos);
-	double y = yAxis->toScreen(value);
-	item->setLine(x - quartileMarkerSize / 2.0, y,
-		      x + quartileMarkerSize / 2.0, y);
 }
 
 StatsView::RegressionLine::RegressionLine(const struct regression_data reg, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
