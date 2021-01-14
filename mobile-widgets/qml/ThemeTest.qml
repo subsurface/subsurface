@@ -129,6 +129,31 @@ Kirigami.Page {
 			height: Math.round(Screen.pixelDensity * 20)
 			color: "black"
 		}
+		Controls.Label {
+			text: "text in 4 gridUnit square"
+		}
+		Rectangle {
+			id: backSquare
+			width: Kirigami.Units.gridUnit * 4
+			height: width
+			border.color: subsurfaceTheme.primaryColor
+			border.width: 1
+
+			Controls.Label {
+				anchors.top: backSquare.top
+				anchors.left: backSquare.left
+				color: subsurfaceTheme.textColor
+				font.pointSize: subsurfaceTheme.regularPointSize
+				text: "Simply 27 random characters"
+			}
+			Controls.Label {
+				anchors.bottom: backSquare.bottom
+				anchors.left: backSquare.left
+				color: subsurfaceTheme.textColor
+				font.pointSize: subsurfaceTheme.smallPointSize
+				text: "Simply 27 random characters"
+			}
+		}
 
 		Controls.Label {
 			Layout.columnSpan: 2
