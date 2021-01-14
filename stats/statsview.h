@@ -24,6 +24,7 @@ class CategoryAxis;
 class ChartItem;
 class CountAxis;
 class HistogramAxis;
+class QuartileMarker;
 class StatsAxis;
 class StatsGrid;
 class Legend;
@@ -125,15 +126,6 @@ private:
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
 
-	// A short line used to mark quartiles
-	struct QuartileMarker {
-		std::unique_ptr<QGraphicsLineItem> item;
-		StatsAxis *xAxis, *yAxis;
-		double pos, value;
-		QuartileMarker(double pos, double value, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
-		void updatePosition();
-	};
-
 	// A regression line
 	struct RegressionLine {
 		std::unique_ptr<QGraphicsPolygonItem> item;
@@ -163,7 +155,7 @@ private:
 	std::unique_ptr<StatsGrid> grid;
 	std::vector<std::unique_ptr<StatsSeries>> series;
 	std::unique_ptr<Legend> legend;
-	std::vector<QuartileMarker> quartileMarkers;
+	std::vector<std::unique_ptr<QuartileMarker>> quartileMarkers;
 	std::vector<RegressionLine> regressionLines;
 	std::vector<HistogramMarker> histogramMarkers;
 	std::unique_ptr<QGraphicsSimpleTextItem> title;
