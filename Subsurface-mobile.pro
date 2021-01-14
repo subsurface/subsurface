@@ -136,6 +136,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	stats/informationbox.cpp \
 	stats/legend.cpp \
 	stats/pieseries.cpp \
+	stats/quartilemarker.cpp \
 	stats/scatterseries.cpp \
 	stats/statsaxis.cpp \
 	stats/statscolors.cpp \
@@ -285,6 +286,7 @@ HEADERS += \
 	stats/informationbox.h \
 	stats/legend.h \
 	stats/pieseries.h \
+	stats/quartilemarker.h \
 	stats/scatterseries.h \
 	stats/statsaxis.h \
 	stats/statscolors.h \
