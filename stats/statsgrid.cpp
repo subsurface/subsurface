@@ -1,17 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsgrid.h"
+#include "chartitem.h"
 #include "statsaxis.h"
 #include "statscolors.h"
-#include "statshelper.h"
+#include "statsview.h"
 #include "zvalues.h"
 
-#include <QGraphicsLineItem>
-
 static const double gridWidth = 1.0;
-static const Qt::PenStyle gridStyle = Qt::SolidLine;
 
-StatsGrid::StatsGrid(QGraphicsScene *scene, const StatsAxis &xAxis, const StatsAxis &yAxis)
-	: scene(scene), xAxis(xAxis), yAxis(yAxis)
+StatsGrid::StatsGrid(StatsView &view, const StatsAxis &xAxis, const StatsAxis &yAxis)
+	: view(view), xAxis(xAxis), yAxis(yAxis)
 {
 }
 
@@ -19,18 +17,19 @@ void StatsGrid::updatePositions()
 {
 	std::vector<double> xtics = xAxis.ticksPositions();
 	std::vector<double> ytics = yAxis.ticksPositions();
+
+	// We probably should be smarter and reuse existing lines.
+	// For now, this does it.
 	lines.clear();
 	if (xtics.empty() || ytics.empty())
 		return;
 
 	for (double x: xtics) {
-		lines.emplace_back(createItem<QGraphicsLineItem>(scene, x, ytics.front(), x, ytics.back()));
-		lines.back()->setPen(QPen(gridColor, gridWidth, gridStyle));
-		lines.back()->setZValue(ZValues::grid);
+		lines.push_back(view.createChartItem<ChartLineItem>(ChartZValue::Grid, gridColor, gridWidth));
+		lines.back()->setLine(QPointF(x, ytics.front()), QPointF(x, ytics.back()));
 	}
 	for (double y: ytics) {
-		lines.emplace_back(createItem<QGraphicsLineItem>(scene, xtics.front(), y, xtics.back(), y));
-		lines.back()->setPen(QPen(gridColor, gridWidth, gridStyle));
-		lines.back()->setZValue(ZValues::grid);
+		lines.push_back(view.createChartItem<ChartLineItem>(ChartZValue::Grid, gridColor, gridWidth));
+		lines.back()->setLine(QPointF(xtics.front(), y), QPointF(xtics.back(), y));
 	}
 }

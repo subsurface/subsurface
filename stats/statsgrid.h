@@ -3,18 +3,17 @@
 
 #include <memory>
 #include <vector>
-#include <QVector>
-#include <QGraphicsLineItem>
 
 class StatsAxis;
-class QGraphicsScene;
+class StatsView;
+class ChartLineItem;
 
 class StatsGrid  {
 public:
-	StatsGrid(QGraphicsScene *scene, const StatsAxis &xAxis, const StatsAxis &yAxis);
+	StatsGrid(StatsView &view, const StatsAxis &xAxis, const StatsAxis &yAxis);
 	void updatePositions();
 private:
-	QGraphicsScene *scene;
+	StatsView &view;
 	const StatsAxis &xAxis, &yAxis;
-	std::vector<std::unique_ptr<QGraphicsLineItem>> lines;
+	std::vector<std::unique_ptr<ChartLineItem>> lines;
 };

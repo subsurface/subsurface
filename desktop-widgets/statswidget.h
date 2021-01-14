@@ -33,7 +33,6 @@ private:
 	std::vector<std::unique_ptr<QCheckBox>> features;
 
 	ChartListModel charts;
-	//QStringListModel charts;
 	void showEvent(QShowEvent *) override;
 };
 
