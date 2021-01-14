@@ -7,6 +7,9 @@
 #include <memory>
 #include <QPainter>
 
+class QSGGeometry;
+class QSGGeometryNode;
+class QSGFlatColorMaterial;
 class QSGImageNode;
 class QSGTexture;
 class StatsView;
@@ -15,31 +18,41 @@ enum class ChartZValue : int;
 class ChartItem {
 public:
 	ChartItem(StatsView &v, ChartZValue z);
-	~ChartItem();
-	// Attention: The children are responsible for updating the item. None of these calls will.
-	void resize(QSizeF size);	// Resets the canvas. Attention: image is *unitialized*.
-	void setPos(QPointF pos);
-	void render();			// Only call on render thread!
+	virtual ~ChartItem();
+	virtual void render() = 0;	// Only call on render thread!
 	QRectF getRect() const;
 	bool dirty;			// If true, call render() when rebuilding the scene
 	const ChartZValue zValue;
 protected:
+	QSizeF sceneSize() const;
+	StatsView &view;
+};
+
+// A chart item that blits a precalculated pixmap onto the scene.
+class ChartPixmapItem : public ChartItem {
+public:
+	ChartPixmapItem(StatsView &v, ChartZValue z);
+	~ChartPixmapItem();
+
+	void setPos(QPointF pos);
+	void render() override;		// Only call on render thread!
+	QRectF getRect() const;
+protected:
+	void resize(QSizeF size);	// Resets the canvas. Attention: image is *unitialized*.
 	std::unique_ptr<QPainter> painter;
 	std::unique_ptr<QImage> img;
-	QSizeF sceneSize() const;
 	void setTextureDirty();
 	void setPositionDirty();
 private:
-	StatsView &view;
 	QRectF rect;
-	bool positionDirty;
-	bool textureDirty;
+	bool positionDirty;		// true if the position changed since last render
+	bool textureDirty;		// true if the pixmap changed since last render
 	std::unique_ptr<QSGImageNode> node;
 	std::unique_ptr<QSGTexture> texture;
 };
 
 // Draw a rectangular background after resize. Children are responsible for calling update().
-class ChartRectItem : public ChartItem {
+class ChartRectItem : public ChartPixmapItem {
 public:
 	ChartRectItem(StatsView &v, ChartZValue z, const QPen &pen, const QBrush &brush, double radius);
 	~ChartRectItem();
@@ -48,6 +61,23 @@ private:
 	QPen pen;
 	QBrush brush;
 	double radius;
+};
+
+class ChartLineItem : public ChartItem {
+public:
+	ChartLineItem(StatsView &v, ChartZValue z, QColor color, double width);
+	~ChartLineItem();
+	void setLine(QPointF from, QPointF to);
+	void render() override;		// Only call on render thread!
+private:
+	QPointF from, to;
+	QColor color;
+	double width;
+	bool positionDirty;
+	bool materialDirty;
+	std::unique_ptr<QSGGeometryNode> node;
+	std::unique_ptr<QSGFlatColorMaterial> material;
+	std::unique_ptr<QSGGeometry> geometry;
 };
 
 #endif
