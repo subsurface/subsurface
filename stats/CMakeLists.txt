@@ -13,6 +13,9 @@ set(SUBSURFACE_STATS_SRCS
 	chartitem.cpp
 	chartlistmodel.h
 	chartlistmodel.cpp
+	histogrammarker.h
+	histogrammarker.cpp
+	chartlistmodel.cpp
 	informationbox.h
 	informationbox.cpp
 	legend.h
