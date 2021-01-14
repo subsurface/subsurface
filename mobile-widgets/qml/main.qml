@@ -690,11 +690,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		manager.appendTextToLog(numColumns + " columns with column width of " + rootItem.colWidth)
 		manager.appendTextToLog("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
 		if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
-			// change our global grid unit - make absolutely certain there is no Qt binding happening
+			// change our global grid unit and prevent Kirigami from resizing our rootItem
+			var fixWidth = rootItem.width
+			var fixHeight = rootItem.height
 			Kirigami.Units.gridUnit = kirigamiGridUnit * 1.0
+			rootItem.width = fixWidth
+			rootItem.height = fixHeight
 		}
+
 		pageStack.defaultColumnWidth = rootItem.colWidth
-		manager.appendTextToLog("Done setting up sizes")
+		manager.appendTextToLog("Done setting up sizes width " + rootItem.width + " gridUnit " + kirigamiGridUnit)
 	}
 
 	QtObject {
@@ -715,6 +720,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	onWidthChanged: {
 		manager.appendTextToLog("[screensetup] width changed now " + width + " x " + height + " vs screen " + Screen.width + " x " + Screen.height)
+
 		if (screenSizeObject.lastOrientation === undefined) {
 			manager.appendTextToLog("[screensetup] found initial orientation " + Screen.orientation)
 			screenSizeObject.lastOrientation = Screen.orientation
@@ -747,6 +753,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						manager.appendTextToLog("[screensetup] remembering better height")
 						screenSizeObject.initialWidth = width
 					}
+					setupUnits()
 				}
 			}
 		} else {
