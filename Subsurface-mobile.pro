@@ -133,6 +133,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	stats/boxseries.cpp \
 	stats/chartitem.cpp \
 	stats/chartlistmodel.cpp \
+	stats/histogrammarker.cpp \
 	stats/informationbox.cpp \
 	stats/legend.cpp \
 	stats/pieseries.cpp \
@@ -283,6 +284,7 @@ HEADERS += \
 	stats/boxseries.h \
 	stats/chartitem.h \
 	stats/chartlistmodel.h \
+	stats/histogrammarker.h \
 	stats/informationbox.h \
 	stats/legend.h \
 	stats/pieseries.h \
