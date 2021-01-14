@@ -663,29 +663,35 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 	}
 
+	FontMetrics {
+		id: fontMetrics
+		font.pointSize: subsurfaceTheme.regularPointSize
+	}
+
 	function setupUnits() {
+		// since Kirigami was initially instantiated, the font size may have
+		// changed, so recalculate the gridUnit
+		var kirigamiGridUnit = fontMetrics.height
+
 		// some screens are too narrow for Subsurface-mobile to render well
-		// try to hack around that by making sure that we can fit at least 21 gridUnits in a row
-		var numColumns = Math.max(Math.floor(rootItem.width / (21 * Kirigami.Units.gridUnit)), 1)
+		// things don't look greate with fewer than 21 gridUnits in a row
+		var numColumns = Math.max(Math.floor(rootItem.width / (21 * kirigamiGridUnit)), 1)
 		if (Screen.primaryOrientation === Qt.PortraitOrientation && PrefDisplay.singleColumnPortrait) {
 			manager.appendTextToLog("show only one column in portrait mode");
 			numColumns = 1;
 		}
-
 		rootItem.colWidth = numColumns > 1 ? Math.floor(rootItem.width / numColumns) : rootItem.width;
-		var kirigamiGridUnit = Kirigami.Units.gridUnit
+
+		// If we can't fit 21 gridUnits into a line, let the user know and suggest using a smaller font
 		var widthInGridUnits = Math.floor(rootItem.colWidth / kirigamiGridUnit)
 		if (widthInGridUnits < 21) {
-			kirigamiGridUnit = Math.floor(rootItem.colWidth / 21)
-			widthInGridUnits = Math.floor(rootItem.colWidth / kirigamiGridUnit)
+			showPassiveNotification(qsTr("Font size likely too big for the display, switching to smaller font suggested"), 3000)
 		}
-		var factor = 1.0
 		manager.appendTextToLog(numColumns + " columns with column width of " + rootItem.colWidth)
 		manager.appendTextToLog("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
 		if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
-			factor = kirigamiGridUnit / Kirigami.Units.gridUnit
-			// change our glabal grid unit
-			Kirigami.Units.gridUnit = kirigamiGridUnit
+			// change our global grid unit - make absolutely certain there is no Qt binding happening
+			Kirigami.Units.gridUnit = kirigamiGridUnit * 1.0
 		}
 		pageStack.defaultColumnWidth = rootItem.colWidth
 		manager.appendTextToLog("Done setting up sizes")

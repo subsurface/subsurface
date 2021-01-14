@@ -328,6 +328,7 @@ TemplatePage {
 						enabled: subsurfaceTheme.currentScale !== 0.85
 						onClicked: {
 							subsurfaceTheme.currentScale = 0.85
+							rootItem.setupUnits()
 						}
 					}
 					TemplateButton {
@@ -337,6 +338,7 @@ TemplatePage {
 						enabled: subsurfaceTheme.currentScale !== 1.0
 						onClicked: {
 							subsurfaceTheme.currentScale = 1.0
+							rootItem.setupUnits()
 						}
 					}
 					TemplateButton {
@@ -346,6 +348,7 @@ TemplatePage {
 						enabled: subsurfaceTheme.currentScale !== 1.15
 						onClicked: {
 							subsurfaceTheme.currentScale = 1.15
+							rootItem.setupUnits()
 						}
 					}
 					TemplateButton {
