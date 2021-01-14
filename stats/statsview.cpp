@@ -317,7 +317,7 @@ void StatsView::setAxes(StatsAxis *x, StatsAxis *y)
 	xAxis = x;
 	yAxis = y;
 	if (x && y)
-		grid = std::make_unique<StatsGrid>(&scene, *x, *y);
+		grid = std::make_unique<StatsGrid>(*this, *x, *y);
 }
 
 void StatsView::reset()
