@@ -745,8 +745,8 @@ void StatsView::RegressionLine::updatePosition()
 	auto [minY, maxY] = yAxis->minMax();
 
 	QPolygonF line;
-	line << QPoint(xAxis->toScreen(minX), yAxis->toScreen(reg.a * minX + reg.b))
-		<< QPoint(xAxis->toScreen(maxX), yAxis->toScreen(reg.a * maxX + reg.b));
+	line << QPointF(xAxis->toScreen(minX), yAxis->toScreen(reg.a * minX + reg.b))
+		<< QPointF(xAxis->toScreen(maxX), yAxis->toScreen(reg.a * maxX + reg.b));
 
 	// Draw the confidence interval according to http://www2.stat.duke.edu/~tjl13/s101/slides/unit6lec3H.pdf p.5 with t*=2 for 95% confidence
 	QPolygonF poly;
@@ -756,7 +756,7 @@ void StatsView::RegressionLine::updatePosition()
 	for (double x = maxX; x >= minX - 1; x -= (maxX - minX) / 100)
 		poly << QPointF(xAxis->toScreen(x),
 			yAxis->toScreen(reg.a * x + reg.b - 2.0 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
-	QRectF box(QPoint(xAxis->toScreen(minX), yAxis->toScreen(minY)), QPoint(xAxis->toScreen(maxX), yAxis->toScreen(maxY)));
+	QRectF box(QPointF(xAxis->toScreen(minX), yAxis->toScreen(minY)), QPointF(xAxis->toScreen(maxX), yAxis->toScreen(maxY)));
 
 	item->setPolygon(poly.intersected(box));
 	central->setPolygon(line.intersected(box));
