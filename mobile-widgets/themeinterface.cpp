@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "themeinterface.h"
+#include "core/subsurface-string.h"
 #include "qmlmanager.h"
 #include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"
@@ -79,16 +80,17 @@ double ThemeInterface::currentScale()
 
 void ThemeInterface::set_currentScale(double newScale)
 {
-	if (newScale != qPrefDisplay::mobile_scale()) {
+	if (!IS_FP_SAME(newScale, qPrefDisplay::mobile_scale())) {
+		double factor = newScale / qPrefDisplay::mobile_scale();
 		qPrefDisplay::set_mobile_scale(newScale);
 		emit currentScaleChanged();
+
+		// Set current font size
+		m_basePointSize *= factor;
+		defaultModelFont().setPointSizeF(m_basePointSize);
 	}
-
-	// Set current font size
-	defaultModelFont().setPointSizeF(m_basePointSize * qPrefDisplay::mobile_scale());
-
 	// adjust all used font sizes
-	m_regularPointSize = m_basePointSize * qPrefDisplay::mobile_scale();
+	m_regularPointSize = m_basePointSize;
 	emit regularPointSizeChanged();
 
 	m_headingPointSize = m_regularPointSize * 1.2;
