@@ -24,6 +24,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QSGImageNode>
+#include <QSGRectangleNode>
 #include <QSGTexture>
 
 // Constants that control the graph layouts
@@ -83,19 +84,29 @@ void StatsView::mouseReleaseEvent(QMouseEvent *)
 class RootNode : public QSGNode
 {
 public:
-	RootNode();
+	RootNode(QQuickWindow *w);
+	QSGRectangleNode *backgroundNode; // solid background
 	QSGImageNode *imageNode; // imageNode to plot QGRaphicsScene on. Remove in due course.
 	// We entertain one node per Z-level.
 	std::array<QSGNode *, (size_t)ChartZValue::Count> zNodes;
 	std::array<std::vector<ChartItem *>, (size_t)ChartZValue::Count> items;
 };
 
-RootNode::RootNode()
+RootNode::RootNode(QQuickWindow *w)
 {
+	// Add a background rectangle with a solid color. This could
+	// also be done on the widget level, but would have to be done
+	// separately for desktop and mobile, so do it here.
+	backgroundNode = w->createRectangleNode();
+	backgroundNode->setColor(backgroundColor);
+	appendChildNode(backgroundNode);
+
 	for (QSGNode *&zNode: zNodes) {
 		zNode = new QSGNode;
 		appendChildNode(zNode);
 	}
+	imageNode = w->createImageNode();
+	zNodes[(int)ChartZValue::Series]->appendChildNode(imageNode);
 }
 
 QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
@@ -103,15 +114,13 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	// The QtQuick drawing interface is utterly bizzare with a distinct 1980ies-style memory management.
 	// This is just a copy of what is found in Qt's documentation.
 	RootNode *n = static_cast<RootNode *>(oldNode);
-	if (!n) {
-		n = rootNode = new RootNode;
-		n->imageNode = window()->createImageNode();
-		n->zNodes[(int)ChartZValue::Series]->appendChildNode(n->imageNode);
-	}
+	if (!n)
+		n = rootNode = new RootNode(window());
 
 	QRectF rect = boundingRect();
 	if (plotRect != rect) {
 		plotRect = rect;
+		rootNode->backgroundNode->setRect(rect);
 		plotAreaChanged(plotRect.size());
 	}
 
@@ -122,9 +131,9 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 		}
 	}
 
-	img->fill(backgroundColor);
+	img->fill(Qt::transparent);
 	scene.render(painter.get());
-	texture.reset(window()->createTextureFromImage(*img, QQuickWindow::TextureIsOpaque));
+	texture.reset(window()->createTextureFromImage(*img, QQuickWindow::TextureHasAlphaChannel));
 	n->imageNode->setTexture(texture.get());
 	n->imageNode->setRect(rect);
 	return n;
@@ -172,7 +181,7 @@ void StatsView::plotAreaChanged(const QSizeF &s)
 	int h = std::max(1, static_cast<int>(floor(s.height())));
 	scene.setSceneRect(QRectF(0, 0, static_cast<double>(w), static_cast<double>(h)));
 	painter.reset();
-	img.reset(new QImage(w, h, QImage::Format_RGB32));
+	img.reset(new QImage(w, h, QImage::Format_ARGB32));
 	painter.reset(new QPainter(img.get()));
 	painter->setRenderHint(QPainter::Antialiasing);
 
