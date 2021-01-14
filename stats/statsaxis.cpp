@@ -4,6 +4,7 @@
 #include "statshelper.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
+#include "statsview.h"
 #include "zvalues.h"
 #include "core/pref.h"
 #include "core/subsurface-time.h"
@@ -23,23 +24,19 @@ static const double axisLabelSpaceVertical = 2.0;	// Space between axis or ticks
 static const double axisTitleSpaceHorizontal = 2.0;	// Space between labels and title
 static const double axisTitleSpaceVertical = 2.0;	// Space between labels and title
 
-StatsAxis::StatsAxis(const QString &titleIn, bool horizontal, bool labelsBetweenTicks) :
-	horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
+StatsAxis::StatsAxis(StatsView &view, const QString &title, bool horizontal, bool labelsBetweenTicks) :
+	ChartPixmapItem(view, ChartZValue::Axes),
+	line(view.createChartItem<ChartLineItem>(ChartZValue::Axes, axisColor, axisWidth)),
+	title(title), horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
 	size(1.0), zeroOnScreen(0.0), min(0.0), max(1.0), labelWidth(0.0)
 {
-	// use a Light version of the application fond for both labels and title
+	// use a Light version of the application font for both labels and title
 	labelFont = QFont();
 	labelFont.setWeight(QFont::Light);
 	titleFont = labelFont;
-	setPen(QPen(axisColor, axisWidth));
-	setZValue(ZValues::axes);
-	if (!titleIn.isEmpty()) {
-		title.reset(new QGraphicsSimpleTextItem(titleIn, this));
-		title->setFont(titleFont);
-		title->setBrush(darkLabelColor);
-		if (!horizontal)
-			title->setRotation(-90.0);
-	}
+	QFontMetrics fm(titleFont);
+	titleWidth = title.isEmpty() ? 0.0
+				     : static_cast<double>(fm.size(Qt::TextSingleLine, title).width());
 }
 
 StatsAxis::~StatsAxis()
@@ -101,7 +98,7 @@ int StatsAxis::guessNumTicks(const std::vector<QString> &strings) const
 
 double StatsAxis::titleSpace() const
 {
-	if (!title)
+	if (title.isEmpty())
 		return 0.0;
 	return horizontal ? QFontMetrics(titleFont).height() + axisTitleSpaceHorizontal
 			  : QFontMetrics(titleFont).height() + axisTitleSpaceVertical;
@@ -124,31 +121,14 @@ double StatsAxis::height() const
 	       (labelsBetweenTicks ? 0.0 : axisTickSizeHorizontal);
 }
 
-StatsAxis::Label::Label(const QString &name, double pos, QGraphicsScene *scene, const QFont &font) :
-	label(createItem<QGraphicsSimpleTextItem>(scene, name)),
-	pos(pos)
+void StatsAxis::addLabel(const QFontMetrics &fm, const QString &label, double pos)
 {
-	label->setBrush(QBrush(darkLabelColor));
-	label->setFont(font);
-	label->setZValue(ZValues::axes);
-}
-
-void StatsAxis::addLabel(const QString &label, double pos)
-{
-	labels.emplace_back(label, pos, scene(), labelFont);
-}
-
-StatsAxis::Tick::Tick(double pos, QGraphicsScene *scene) :
-	item(createItemPtr<QGraphicsLineItem>(scene)),
-	pos(pos)
-{
-	item->setPen(QPen(axisColor, axisTickWidth));
-	item->setZValue(ZValues::axes);
+	labels.push_back({ label, fm.size(Qt::TextSingleLine, label).width(), pos });
 }
 
 void StatsAxis::addTick(double pos)
 {
-	ticks.emplace_back(pos, scene());
+	ticks.push_back({ view.createChartItem<ChartLineItem>(ChartZValue::Axes, axisColor, axisTickWidth), pos });
 }
 
 std::vector<double> StatsAxis::ticksPositions() const
@@ -178,60 +158,105 @@ double StatsAxis::toValue(double pos) const
 void StatsAxis::setSize(double sizeIn)
 {
 	size = sizeIn;
+
+	labels.clear();
+	ticks.clear();
 	updateLabels();
+
 	labelWidth = 0.0;
 	for (const Label &label: labels) {
-		double w = label.label->boundingRect().width();
-		if (w > labelWidth)
-			labelWidth = w;
+		if (label.width > labelWidth)
+			labelWidth = label.width;
+	}
+
+	QFontMetrics fm(labelFont);
+	int fontHeight = fm.height();
+	if (horizontal) {
+		double pixmapWidth = size;
+		double offsetX = 0.0;
+		if (!labels.empty() && !labelsBetweenTicks) {
+			pixmapWidth += labels.front().width / 2.0 + labels.back().width / 2.0;
+			offsetX += labels.front().width / 2.0;
+		}
+
+		double pixmapHeight = fontHeight + titleSpace();
+		double offsetY = -axisWidth / 2.0 - axisLabelSpaceHorizontal -
+				 (labelsBetweenTicks ? 0.0 : axisTickSizeHorizontal);
+
+		ChartPixmapItem::resize(QSizeF(pixmapWidth, pixmapHeight)); // Note: this rounds the dimensions up
+		offset = QPointF(round(offsetX), round(offsetY));
+		img->fill(Qt::transparent);
+
+		painter->setPen(QPen(darkLabelColor));
+		painter->setFont(labelFont);
+		for (const Label &label: labels) {
+			double x = (label.pos - min) / (max - min) * size + offset.x() - round(label.width / 2.0);
+			QRectF rect(x, 0.0, label.width, fontHeight);
+			painter->drawText(rect, label.label);
+		}
+		if (!title.isEmpty()) {
+			QRectF rect(offset.x() + round((size - titleWidth) / 2.0),
+				    fontHeight + axisTitleSpaceHorizontal,
+				    titleWidth, fontHeight);
+			painter->setFont(titleFont);
+			painter->drawText(rect, title);
+		}
+	} else {
+		double pixmapWidth = labelWidth + titleSpace();
+		double offsetX = pixmapWidth + axisLabelSpaceVertical + (labelsBetweenTicks ? 0.0 : axisTickSizeVertical);
+
+		double pixmapHeight = ceil(size + axisTickWidth);
+		double offsetY = size;
+		if (!labels.empty() && !labelsBetweenTicks) {
+			pixmapHeight += fontHeight;
+			offsetY += fontHeight / 2.0;
+		}
+
+		ChartPixmapItem::resize(QSizeF(pixmapWidth, pixmapHeight)); // Note: this rounds the dimensions up
+		offset = QPointF(round(offsetX), round(offsetY));
+		img->fill(Qt::transparent);
+
+		painter->setPen(QPen(darkLabelColor));
+		painter->setFont(labelFont);
+		for (const Label &label: labels) {
+			double y = (min - label.pos) / (max - min) * size + offset.y() - round(fontHeight / 2.0);
+			QRectF rect(pixmapWidth - label.width, y, label.width, fontHeight);
+			painter->drawText(rect, label.label);
+		}
+		if (!title.isEmpty()) {
+			painter->rotate(-90.0);
+			QRectF rect(round(-(offsetY + titleWidth) / 2.0), 0.0, titleWidth, fontHeight);
+			painter->setFont(titleFont);
+			painter->drawText(rect, title);
+			painter->resetTransform();
+		}
 	}
 }
 
 void StatsAxis::setPos(QPointF pos)
 {
+	zeroOnScreen = horizontal ? pos.x() : pos.y();
+	ChartPixmapItem::setPos(pos - offset);
+
 	if (horizontal) {
-		zeroOnScreen = pos.x();
-		double labelY = pos.y() + axisLabelSpaceHorizontal +
-				(labelsBetweenTicks ? 0.0 : axisTickSizeHorizontal);
 		double y = pos.y();
-		for (Label &label: labels) {
-			double x = toScreen(label.pos) - label.label->boundingRect().width() / 2.0;
-			label.label->setPos(QPointF(x, labelY));
-		}
-		for (Tick &tick: ticks) {
+		for (const Tick &tick: ticks) {
 			double x = toScreen(tick.pos);
-			tick.item->setLine(x, y, x, y + axisTickSizeHorizontal);
+			tick.item->setLine(QPointF(x, y), QPointF(x, y + axisTickSizeHorizontal));
 		}
-		setLine(zeroOnScreen, y, zeroOnScreen + size, y);
-		if (title)
-			title->setPos(zeroOnScreen + (size - title->boundingRect().width()) / 2.0,
-				      labelY + QFontMetrics(labelFont).height() + axisTitleSpaceHorizontal);
+		line->setLine(QPointF(zeroOnScreen, y), QPointF(zeroOnScreen + size, y));
 	} else {
-		double fontHeight = QFontMetrics(labelFont).height();
-		zeroOnScreen = pos.y();
 		double x = pos.x();
-		double labelX = x - axisLabelSpaceVertical -
-				(labelsBetweenTicks ? 0.0 : axisTickSizeVertical);
-		for (Label &label: labels) {
-			double y = toScreen(label.pos) - fontHeight / 2.0;
-			label.label->setPos(QPointF(labelX - label.label->boundingRect().width(), y));
-		}
-		for (Tick &tick: ticks) {
+		for (const Tick &tick: ticks) {
 			double y = toScreen(tick.pos);
-			tick.item->setLine(x, y, x - axisTickSizeVertical, y);
+			tick.item->setLine(QPointF(x, y), QPointF(x - axisTickSizeVertical, y));
 		}
-		// This is very confusing: even though we need the height of the title, the correct
-		// size is stored in boundingRect().width(). Presumably because the item is rotated
-		// by -90°. Apparently, the boundingRect is in item-local coordinates?
-		if (title)
-			title->setPos(labelX - labelWidth - QFontMetrics(labelFont).height() - axisTitleSpaceVertical,
-				      zeroOnScreen - (size - title->boundingRect().width()) / 2.0);
-		setLine(x, zeroOnScreen, x, zeroOnScreen - size);
+		line->setLine(QPointF(x, zeroOnScreen), QPointF(x, zeroOnScreen - size));
 	}
 }
 
-ValueAxis::ValueAxis(const QString &title, double min, double max, int decimals, bool horizontal) :
-	StatsAxis(title, horizontal, false),
+ValueAxis::ValueAxis(StatsView &view, const QString &title, double min, double max, int decimals, bool horizontal) :
+	StatsAxis(view, title, horizontal, false),
 	min(min), max(max), decimals(decimals)
 {
 	// Avoid degenerate cases
@@ -251,9 +276,6 @@ std::pair<QString, QString> ValueAxis::getFirstLastLabel() const
 
 void ValueAxis::updateLabels()
 {
-	labels.clear();
-	ticks.clear();
-
 	QLocale loc;
 	auto [minString, maxString] = getFirstLastLabel();
 	int numTicks = guessNumTicks({ minString, maxString});
@@ -283,15 +305,16 @@ void ValueAxis::updateLabels()
 	double act = actMin;
 	labels.reserve(num + 1);
 	ticks.reserve(num + 1);
+	QFontMetrics fm(labelFont);
 	for (int i = 0; i <= num; ++i) {
-		addLabel(loc.toString(act, 'f', decimals), act);
+		addLabel(fm, loc.toString(act, 'f', decimals), act);
 		addTick(act);
 		act += actStep;
 	}
 }
 
-CountAxis::CountAxis(const QString &title, int count, bool horizontal) :
-	ValueAxis(title, 0.0, (double)count, 0, horizontal),
+CountAxis::CountAxis(StatsView &view, const QString &title, int count, bool horizontal) :
+	ValueAxis(view, title, 0.0, (double)count, 0, horizontal),
 	count(count)
 {
 }
@@ -306,9 +329,6 @@ std::pair<QString, QString> CountAxis::getFirstLastLabel() const
 
 void CountAxis::updateLabels()
 {
-	labels.clear();
-	ticks.clear();
-
 	QLocale loc;
 	QString countString = loc.toString(count);
 	int numTicks = guessNumTicks({ countString });
@@ -345,14 +365,15 @@ void CountAxis::updateLabels()
 
 	labels.reserve(max + 1);
 	ticks.reserve(max + 1);
+	QFontMetrics fm(labelFont);
 	for (int i = 0; i <= max; i += step) {
-		addLabel(loc.toString(i), static_cast<double>(i));
+		addLabel(fm, loc.toString(i), static_cast<double>(i));
 		addTick(static_cast<double>(i));
 	}
 }
 
-CategoryAxis::CategoryAxis(const QString &title, const std::vector<QString> &labels, bool horizontal) :
-	StatsAxis(title, horizontal, true),
+CategoryAxis::CategoryAxis(StatsView &view, const QString &title, const std::vector<QString> &labels, bool horizontal) :
+	StatsAxis(view, title, horizontal, true),
 	labelsText(labels)
 {
 	setRange(-0.5, static_cast<double>(labels.size()) + 0.5);
@@ -392,8 +413,6 @@ void CategoryAxis::updateLabels()
 
 	QString ellipsis = horizontal ? getEllipsis(fm, size_per_label) : QString();
 
-	labels.clear();
-	ticks.clear();
 	labels.reserve(labelsText.size());
 	ticks.reserve(labelsText.size() + 1);
 	double pos = 0.0;
@@ -401,18 +420,18 @@ void CategoryAxis::updateLabels()
 	for (const QString &s: labelsText) {
 		if (horizontal) {
 			double width = static_cast<double>(fm.size(Qt::TextSingleLine, s).width());
-			addLabel(width < size_per_label ? s : ellipsis, pos);
+			addLabel(fm, width < size_per_label ? s : ellipsis, pos);
 		} else {
 			if (fontHeight < size_per_label)
-				addLabel(s, pos);
+				addLabel(fm, s, pos);
 		}
 		addTick(pos + 0.5);
 		pos += 1.0;
 	}
 }
 
-HistogramAxis::HistogramAxis(const QString &title, std::vector<HistogramAxisEntry> bins, bool horizontal) :
-	StatsAxis(title, horizontal, false),
+HistogramAxis::HistogramAxis(StatsView &view, const QString &title, std::vector<HistogramAxisEntry> bins, bool horizontal) :
+	StatsAxis(view, title, horizontal, false),
 	bin_values(std::move(bins))
 {
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
@@ -446,9 +465,6 @@ std::pair<QString, QString> HistogramAxis::getFirstLastLabel() const
 // There, we obviously want to show the years and not the quarters.
 void HistogramAxis::updateLabels()
 {
-	labels.clear();
-	ticks.clear();
-
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
 		return;
 
@@ -488,9 +504,10 @@ void HistogramAxis::updateLabels()
 	if (first != 0)
 		addTick(bin_values.front().value);
 	int last = first;
+	QFontMetrics fm(labelFont);
 	for (int i = first; i < (int)bin_values.size(); i += step) {
 		const auto &[name, value, recommended] = bin_values[i];
-		addLabel(name, value);
+		addLabel(fm, name, value);
 		addTick(value);
 		last = i;
 	}
@@ -617,7 +634,7 @@ static std::vector<HistogramAxisEntry> timeRangeToBins(double from, double to)
 	return res;
 }
 
-DateAxis::DateAxis(const QString &title, double from, double to, bool horizontal) :
-	HistogramAxis(title, timeRangeToBins(from, to), horizontal)
+DateAxis::DateAxis(StatsView &view, const QString &title, double from, double to, bool horizontal) :
+	HistogramAxis(view, title, timeRangeToBins(from, to), horizontal)
 {
 }
