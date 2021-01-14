@@ -38,6 +38,7 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	draggedItem(nullptr),
 	rootNode(nullptr)
 {
+	chartItems.reset(new std::vector<ChartItem *>[(size_t)ChartZValue::Count]);
 	setFlag(ItemHasContents, true);
 
 	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
@@ -89,7 +90,6 @@ public:
 	QSGImageNode *imageNode; // imageNode to plot QGRaphicsScene on. Remove in due course.
 	// We entertain one node per Z-level.
 	std::array<QSGNode *, (size_t)ChartZValue::Count> zNodes;
-	std::array<std::vector<ChartItem *>, (size_t)ChartZValue::Count> items;
 };
 
 RootNode::RootNode(QQuickWindow *w)
@@ -124,8 +124,8 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 		plotAreaChanged(plotRect.size());
 	}
 
-	for (auto &v: n->items) {
-		for (ChartItem *item: v) {
+	for (int i = 0; i < (int)ChartZValue::Count; ++i) {
+		for (ChartItem *item: chartItems[i]) {
 			if (item->dirty)
 				item->render();
 		}
@@ -151,7 +151,7 @@ void StatsView::addQSGNode(QSGNode *node, ChartZValue z)
 void StatsView::unregisterChartItem(const ChartItem *item)
 {
 	int idx = std::clamp((int)item->zValue, 0, (int)ChartZValue::Count - 1);
-	std::vector<ChartItem *> &v = rootNode->items[idx];
+	std::vector<ChartItem *> &v = chartItems[idx];
 	auto it = std::find(v.begin(), v.end(), item);
 	if (it != v.end())
 		v.erase(it);
@@ -160,7 +160,7 @@ void StatsView::unregisterChartItem(const ChartItem *item)
 void StatsView::registerChartItem(ChartItem *item)
 {
 	int idx = std::clamp((int)item->zValue, 0, (int)ChartZValue::Count - 1);
-	rootNode->items[idx].push_back(item);
+	chartItems[idx].push_back(item);
 }
 
 QQuickWindow *StatsView::w() const
@@ -307,8 +307,9 @@ void StatsView::updateTitlePos()
 template <typename T, class... Args>
 T *StatsView::createAxis(const QString &title, Args&&... args)
 {
-	T *res = createItem<T>(&scene, title, std::forward<Args>(args)...);
-	axes.emplace_back(res);
+	std::unique_ptr<T> ptr = createChartItem<T>(title, std::forward<Args>(args)...);
+	T *res = ptr.get();
+	axes.push_back(std::move(ptr));
 	return res;
 }
 
@@ -326,8 +327,8 @@ void StatsView::reset()
 	xAxis = yAxis = nullptr;
 	draggedItem = nullptr;
 	if (rootNode) {
-		for (auto &v: rootNode->items)
-			v.clear(); // non-owning pointers
+		for (int i = 0; i < (int)ChartZValue::Count; ++i)
+			chartItems[i].clear(); // non-owning pointers
 	}
 	legend.reset();
 	series.clear();
