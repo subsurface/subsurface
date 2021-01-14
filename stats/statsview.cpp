@@ -2,6 +2,7 @@
 #include "statsview.h"
 #include "barseries.h"
 #include "boxseries.h"
+#include "histogrammarker.h"
 #include "legend.h"
 #include "pieseries.h"
 #include "quartilemarker.h"
@@ -214,8 +215,8 @@ void StatsView::plotAreaChanged(const QSizeF &s)
 		marker->updatePosition();
 	for (RegressionLine &line: regressionLines)
 		line.updatePosition();
-	for (HistogramMarker &marker: histogramMarkers)
-		marker.updatePosition();
+	for (auto &marker: histogramMarkers)
+		marker->updatePosition();
 	if (legend)
 		legend->resize();
 	updateTitlePos();
@@ -849,33 +850,9 @@ void StatsView::RegressionLine::updatePosition()
 	central->setPolygon(line.intersected(box));
 }
 
-StatsView::HistogramMarker::HistogramMarker(double val, bool horizontal, QPen pen, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
-	item(createItemPtr<QGraphicsLineItem>(scene)),
-	xAxis(xAxis), yAxis(yAxis),
-	val(val), horizontal(horizontal)
+void StatsView::addHistogramMarker(double pos, QColor color, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis)
 {
-	item->setZValue(ZValues::chartFeatures);
-	item->setPen(pen);
-}
-
-void StatsView::HistogramMarker::updatePosition()
-{
-	if (!xAxis || !yAxis)
-		return;
-	if (horizontal) {
-		double y = yAxis->toScreen(val);
-		auto [x1, x2] = xAxis->minMaxScreen();
-		item->setLine(x1, y, x2, y);
-	} else {
-		double x = xAxis->toScreen(val);
-		auto [y1, y2] = yAxis->minMaxScreen();
-		item->setLine(x, y1, x, y2);
-	}
-}
-
-void StatsView::addHistogramMarker(double pos, const QPen &pen, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis)
-{
-	histogramMarkers.emplace_back(pos, isHorizontal, pen, &scene, xAxis, yAxis);
+	histogramMarkers.push_back(createChartItem<HistogramMarker>(pos, isHorizontal, color, xAxis, yAxis));
 }
 
 void StatsView::addLinearRegression(const struct regression_data reg, StatsAxis *xAxis, StatsAxis *yAxis)
@@ -959,17 +936,13 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	if (categoryVariable->type() == StatsVariable::Type::Numeric) {
 		if (showMean) {
 			double mean = categoryVariable->mean(dives);
-			QPen meanPen(Qt::green);
-			meanPen.setWidth(2);
 			if (!std::isnan(mean))
-				addHistogramMarker(mean, meanPen, isHorizontal, xAxis, yAxis);
+				addHistogramMarker(mean, Qt::green, isHorizontal, xAxis, yAxis);
 		}
 		if (showMedian) {
 			double median = categoryVariable->quartiles(dives).q2;
-			QPen medianPen(Qt::red);
-			medianPen.setWidth(2);
 			if (!std::isnan(median))
-				addHistogramMarker(median, medianPen, isHorizontal, xAxis, yAxis);
+				addHistogramMarker(median, Qt::red, isHorizontal, xAxis, yAxis);
 		}
 	}
 }
