@@ -6,6 +6,7 @@
 #include "legend.h"
 #include "pieseries.h"
 #include "quartilemarker.h"
+#include "regressionitem.h"
 #include "scatterseries.h"
 #include "statsaxis.h"
 #include "statscolors.h"
@@ -235,8 +236,8 @@ void StatsView::plotAreaChanged(const QSizeF &s)
 		series->updatePositions();
 	for (auto &marker: quartileMarkers)
 		marker->updatePosition();
-	for (RegressionLine &line: regressionLines)
-		line.updatePosition();
+	if (regressionItem)
+		regressionItem->updatePosition();
 	for (auto &marker: histogramMarkers)
 		marker->updatePosition();
 	if (legend)
@@ -347,8 +348,8 @@ void StatsView::reset()
 	legend.reset();
 	series.clear();
 	quartileMarkers.clear();
-	regressionLines.clear();
 	histogramMarkers.clear();
+	regressionItem.reset();
 	grid.reset();
 	axes.clear();
 	title.reset();
@@ -835,59 +836,9 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	}
 }
 
-StatsView::RegressionLine::RegressionLine(const struct regression_data reg, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis) :
-	item(createItemPtr<QGraphicsPolygonItem>(scene)),
-	central(createItemPtr<QGraphicsPolygonItem>(scene)),
-	xAxis(xAxis), yAxis(yAxis),
-	reg(reg)
-{
-	item->setZValue(ZValues::chartFeatures);
-	item->setPen(Qt::NoPen);
-	item->setBrush(brush);
-
-	central->setZValue(ZValues::chartFeatures+1);
-	central->setPen(QPen(Qt::red));
-}
-
-void StatsView::RegressionLine::updatePosition()
-{
-	if (!xAxis || !yAxis)
-		return;
-	auto [minX, maxX] = xAxis->minMax();
-	auto [minY, maxY] = yAxis->minMax();
-
-	QPolygonF line;
-	line << QPoint(xAxis->toScreen(minX), yAxis->toScreen(reg.a * minX + reg.b))
-		<< QPoint(xAxis->toScreen(maxX), yAxis->toScreen(reg.a * maxX + reg.b));
-
-	// Draw the confidence interval according to http://www2.stat.duke.edu/~tjl13/s101/slides/unit6lec3H.pdf p.5 with t*=2 for 95% confidence
-	QPolygonF poly;
-	for (double x = minX; x <= maxX + 1; x += (maxX - minX) / 100)
-		poly << QPointF(xAxis->toScreen(x),
-			yAxis->toScreen(reg.a * x + reg.b + 2.0 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
-	for (double x = maxX; x >= minX - 1; x -= (maxX - minX) / 100)
-		poly << QPointF(xAxis->toScreen(x),
-			yAxis->toScreen(reg.a * x + reg.b - 2.0 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
-	QRectF box(QPoint(xAxis->toScreen(minX), yAxis->toScreen(minY)), QPoint(xAxis->toScreen(maxX), yAxis->toScreen(maxY)));
-
-	item->setPolygon(poly.intersected(box));
-	central->setPolygon(line.intersected(box));
-}
-
 void StatsView::addHistogramMarker(double pos, QColor color, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis)
 {
 	histogramMarkers.push_back(createChartItem<HistogramMarker>(pos, isHorizontal, color, xAxis, yAxis));
-}
-
-void StatsView::addLinearRegression(const struct regression_data reg, StatsAxis *xAxis, StatsAxis *yAxis)
-{
-	QColor red = QColor(Qt::red);
-	red.setAlphaF(reg.r2);
-	QPen pen(red);
-	QBrush brush(red);
-	brush.setStyle(Qt::SolidPattern);
-
-	regressionLines.emplace_back(reg, brush, &scene, xAxis, yAxis);
 }
 
 // Yikes, we get our data in different kinds of (bin, value) pairs.
@@ -1194,5 +1145,5 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsVariabl
 	// y = ax + b
 	struct regression_data reg = linear_regression(points);
 	if (!std::isnan(reg.a))
-		addLinearRegression(reg, xAxis, yAxis);
+		regressionItem = createChartItem<RegressionItem>(reg, xAxis, yAxis);
 }
