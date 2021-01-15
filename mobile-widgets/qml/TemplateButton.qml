@@ -5,6 +5,7 @@ import org.kde.kirigami 2.4 as Kirigami
 
 Button {
 	id: root
+	property double fontSize: subsurfaceTheme.regularPointSize
 	background: Rectangle {
 		id: buttonBackground
 		color: root.enabled? (root.pressed ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.primaryColor) : "gray"
@@ -15,7 +16,7 @@ Button {
 	contentItem: Text {
 		id: buttonText
 		text: root.text
-		font.pointSize: subsurfaceTheme.regularPointSize
+		font.pointSize: root.fontSize
 		anchors.centerIn: buttonBackground
 		color: root.pressed ? subsurfaceTheme.darkerPrimaryTextColor :subsurfaceTheme.primaryTextColor
 	}
