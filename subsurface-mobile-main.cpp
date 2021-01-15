@@ -19,6 +19,7 @@
 #include "core/settings/qPrefCloudStorage.h"
 
 #include <QApplication>
+#include <QFont>
 #include <QLocale>
 #include <QLoggingCategory>
 #include <QStringList>
@@ -60,6 +61,9 @@ int main(int argc, char **argv)
 
 	parse_xml_init();
 	taglist_init_global();
+
+	// grab the system font size before we overwrite this when we load preferences
+	double initial_font_size = QGuiApplication::font().pointSizeF();
 	init_ui();
 	if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE)
 		set_filename(prefs.default_filename);
@@ -76,7 +80,7 @@ int main(int argc, char **argv)
 	init_proxy();
 
 	if (!quit)
-		run_mobile_ui();
+		run_mobile_ui(initial_font_size);
 	exit_ui();
 	taglist_free(g_tag_list);
 	parse_xml_exit();

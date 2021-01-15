@@ -24,7 +24,6 @@ IconMetrics::IconMetrics() :
 QFont defaultModelFont()
 {
 	QFont font;
-//	font.setPointSizeF(font.pointSizeF() * 0.8);
 	return font;
 }
 

@@ -56,13 +56,7 @@ ThemeInterface::ThemeInterface()
 	// get current theme
 	m_currentTheme = qPrefDisplay::theme();
 	update_theme();
-
-	// check system font and create QFontInfo in order to reliably get the point size
-	QFontInfo qfi(defaultModelFont());
-	m_basePointSize = qfi.pointSize();
-
-	// set initial font size
-	set_currentScale(qPrefDisplay::mobile_scale());
+	m_basePointSize = -1.0; // simply a placeholder to declare 'this isn't set, yet'
 }
 
 void ThemeInterface::set_currentTheme(const QString &theme)
@@ -73,6 +67,12 @@ void ThemeInterface::set_currentTheme(const QString &theme)
 	emit currentThemeChanged();
 }
 
+void ThemeInterface::setInitialFontSize(double fontSize)
+{
+	m_basePointSize = fontSize;
+	set_currentScale(qPrefDisplay::mobile_scale());
+}
+
 double ThemeInterface::currentScale()
 {
 	return qPrefDisplay::mobile_scale();
@@ -80,27 +80,30 @@ double ThemeInterface::currentScale()
 
 void ThemeInterface::set_currentScale(double newScale)
 {
+	static bool needSignals = true; // make sure the signals fire the first time
+
 	if (!IS_FP_SAME(newScale, qPrefDisplay::mobile_scale())) {
-		double factor = newScale / qPrefDisplay::mobile_scale();
 		qPrefDisplay::set_mobile_scale(newScale);
 		emit currentScaleChanged();
-
-		// Set current font size
-		m_basePointSize *= factor;
-		defaultModelFont().setPointSizeF(m_basePointSize);
+		needSignals = true;
 	}
-	// adjust all used font sizes
-	m_regularPointSize = m_basePointSize;
-	emit regularPointSizeChanged();
+	if (needSignals) {
+		// adjust all used font sizes
+		m_regularPointSize = m_basePointSize * newScale;
+		defaultModelFont().setPointSizeF(m_regularPointSize);
+		emit regularPointSizeChanged();
 
-	m_headingPointSize = m_regularPointSize * 1.2;
-	emit headingPointSizeChanged();
+		m_headingPointSize = m_regularPointSize * 1.2;
+		emit headingPointSizeChanged();
 
-	m_smallPointSize = m_regularPointSize * 0.8;
-	emit smallPointSizeChanged();
+		m_smallPointSize = m_regularPointSize * 0.8;
+		emit smallPointSizeChanged();
 
-	m_titlePointSize = m_regularPointSize * 1.5;
-	emit titlePointSizeChanged();
+		m_titlePointSize = m_regularPointSize * 1.5;
+		emit titlePointSizeChanged();
+
+		needSignals = false;
+	}
 }
 
 void ThemeInterface::update_theme()
