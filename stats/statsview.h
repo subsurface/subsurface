@@ -54,8 +54,8 @@ public:
 	QQuickWindow *w() const;		// Make window available to items
 	QSizeF size() const;
 	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
-	void registerChartItem(ChartItem *item);
-	void unregisterChartItem(const ChartItem *item);
+	void registerDirtyChartItem(ChartItem &item);
+	void unregisterDirtyChartItem(ChartItem &item);
 	template <typename T, class... Args>
 	std::unique_ptr<T> createChartItem(Args&&... args);
 
@@ -142,7 +142,6 @@ private:
 
 	StatsState state;
 	QFont titleFont;
-	std::unique_ptr<std::vector<ChartItem *>[]> chartItems;
 	std::vector<std::unique_ptr<StatsAxis>> axes;
 	std::unique_ptr<StatsGrid> grid;
 	std::vector<std::unique_ptr<StatsSeries>> series;
@@ -162,6 +161,7 @@ private:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	RootNode *rootNode;
+	ChartItem *firstDirtyChartItem, *lastDirtyChartItem;
 };
 
 // This implementation detail must be known to users of the class.
@@ -170,7 +170,6 @@ template <typename T, class... Args>
 std::unique_ptr<T> StatsView::createChartItem(Args&&... args)
 {
 	std::unique_ptr<T> res(new T(*this, std::forward<Args>(args)...));
-	registerChartItem(res.get());
 	return res;
 }
 

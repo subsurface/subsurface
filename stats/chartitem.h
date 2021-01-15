@@ -19,9 +19,10 @@ class ChartItem {
 public:
 	ChartItem(StatsView &v, ChartZValue z);
 	virtual ~ChartItem();
-	virtual void render() = 0;	// Only call on render thread!
+	virtual void render() = 0;		// Only call on render thread!
 	QRectF getRect() const;
-	bool dirty;			// If true, call render() when rebuilding the scene
+	bool dirty;				// If true, call render() when rebuilding the scene
+	ChartItem *dirtyPrev, *dirtyNext;	// Double linked list of dirty items
 	const ChartZValue zValue;
 protected:
 	QSizeF sceneSize() const;
