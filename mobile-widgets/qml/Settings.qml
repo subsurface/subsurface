@@ -309,12 +309,22 @@ TemplatePage {
 					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 					Layout.columnSpan: 2
 				}
-				RowLayout {
+				Flow {
 					Layout.columnSpan: 2
 					spacing: Kirigami.Units.largeSpacing
 					TemplateButton {
-						text: qsTr("smaller")
+						text: qsTr("very small")
+						fontSize: subsurfaceTheme.regularPointSize / subsurfaceTheme.currentScale * 0.75
+						enabled: subsurfaceTheme.currentScale !== 0.75
+						onClicked: {
+							subsurfaceTheme.currentScale = 0.75
+							rootItem.setupUnits()
+						}
+					}
+					TemplateButton {
+						text: qsTr("small")
 						Layout.fillWidth: true
+						fontSize: subsurfaceTheme.regularPointSize / subsurfaceTheme.currentScale * 0.85
 						enabled: subsurfaceTheme.currentScale !== 0.85
 						onClicked: {
 							subsurfaceTheme.currentScale = 0.85
@@ -323,17 +333,29 @@ TemplatePage {
 					TemplateButton {
 						text: qsTr("regular")
 						Layout.fillWidth: true
+						fontSize: subsurfaceTheme.regularPointSize / subsurfaceTheme.currentScale * 0.85
 						enabled: subsurfaceTheme.currentScale !== 1.0
 						onClicked: {
 							subsurfaceTheme.currentScale = 1.0
 						}
 					}
 					TemplateButton {
-						text: qsTr("larger")
+						text: qsTr("large")
 						Layout.fillWidth: true
+						fontSize: subsurfaceTheme.regularPointSize / subsurfaceTheme.currentScale * 1.15
 						enabled: subsurfaceTheme.currentScale !== 1.15
 						onClicked: {
 							subsurfaceTheme.currentScale = 1.15
+						}
+					}
+					TemplateButton {
+						text: qsTr("very large")
+						Layout.fillWidth: true
+						fontSize: subsurfaceTheme.regularPointSize / subsurfaceTheme.currentScale * 1.3
+						enabled: subsurfaceTheme.currentScale !== 1.3
+						onClicked: {
+							subsurfaceTheme.currentScale = 1.3
+							rootItem.setupUnits()
 						}
 					}
 				}
