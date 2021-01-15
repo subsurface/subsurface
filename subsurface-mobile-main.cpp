@@ -20,6 +20,7 @@
 
 #include <QApplication>
 #include <QFont>
+#include <QFontMetrics>
 #include <QLocale>
 #include <QLoggingCategory>
 #include <QStringList>
@@ -64,6 +65,14 @@ int main(int argc, char **argv)
 
 	// grab the system font size before we overwrite this when we load preferences
 	double initial_font_size = QGuiApplication::font().pointSizeF();
+	if (initial_font_size < 0.0) {
+		// The OS provides a default font in pixels, not points; doing some crude math
+		// to reverse engineer that information by measuring the height of a 10pt font in pixels
+		QFont testFont;
+		testFont.setPointSizeF(10.0);
+		QFontMetrics fm(testFont);
+		initial_font_size = QGuiApplication::font().pixelSize() * 10.0 / fm.height();
+	}
 	init_ui();
 	if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE)
 		set_filename(prefs.default_filename);
