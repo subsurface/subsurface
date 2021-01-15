@@ -36,9 +36,10 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	xAxis(nullptr),
 	yAxis(nullptr),
 	draggedItem(nullptr),
-	rootNode(nullptr)
+	rootNode(nullptr),
+	firstDirtyChartItem(nullptr),
+	lastDirtyChartItem(nullptr)
 {
-	chartItems.reset(new std::vector<ChartItem *>[(size_t)ChartZValue::Count]);
 	setFlag(ItemHasContents, true);
 
 	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
@@ -124,11 +125,11 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 		plotAreaChanged(plotRect.size());
 	}
 
-	for (int i = 0; i < (int)ChartZValue::Count; ++i) {
-		for (ChartItem *item: chartItems[i]) {
-			if (item->dirty)
-				item->render();
-		}
+	for (ChartItem *item = std::exchange(firstDirtyChartItem, nullptr); item;
+	     item = std::exchange(item->dirtyNext, nullptr)) {
+		item->render();
+		item->dirty = false;
+		item->dirtyPrev = nullptr;
 	}
 
 	img->fill(Qt::transparent);
@@ -145,22 +146,34 @@ void StatsView::addQSGNode(QSGNode *node, ChartZValue z)
 	rootNode->zNodes[idx]->appendChildNode(node);
 }
 
-// Currently this does an inefficient linear search in the chart-item vector.
-// However, we entertain one vector of items per Z-value and currently
-// only the infobox is explicitly deleted, which has a unique Z-value.
-void StatsView::unregisterChartItem(const ChartItem *item)
+void StatsView::unregisterDirtyChartItem(ChartItem &item)
 {
-	int idx = std::clamp((int)item->zValue, 0, (int)ChartZValue::Count - 1);
-	std::vector<ChartItem *> &v = chartItems[idx];
-	auto it = std::find(v.begin(), v.end(), item);
-	if (it != v.end())
-		v.erase(it);
+	if (!item.dirty)
+		return;
+	if (item.dirtyNext)
+		item.dirtyNext->dirtyPrev = item.dirtyPrev;
+	else
+		lastDirtyChartItem = item.dirtyPrev;
+	if (item.dirtyPrev)
+		item.dirtyPrev->dirtyNext = item.dirtyNext;
+	else
+		firstDirtyChartItem = item.dirtyNext;
+	item.dirtyPrev = item.dirtyNext = nullptr;
+	item.dirty = false;
 }
 
-void StatsView::registerChartItem(ChartItem *item)
+void StatsView::registerDirtyChartItem(ChartItem &item)
 {
-	int idx = std::clamp((int)item->zValue, 0, (int)ChartZValue::Count - 1);
-	chartItems[idx].push_back(item);
+	if (item.dirty)
+		return;
+	if (!firstDirtyChartItem) {
+		firstDirtyChartItem = &item;
+	} else {
+		item.dirtyPrev = lastDirtyChartItem;
+		lastDirtyChartItem->dirtyNext = &item;
+	}
+	lastDirtyChartItem = &item;
+	item.dirty = true;
 }
 
 QQuickWindow *StatsView::w() const
@@ -326,9 +339,10 @@ void StatsView::reset()
 	highlightedSeries = nullptr;
 	xAxis = yAxis = nullptr;
 	draggedItem = nullptr;
-	if (rootNode) {
-		for (int i = 0; i < (int)ChartZValue::Count; ++i)
-			chartItems[i].clear(); // non-owning pointers
+	for (ChartItem *item = std::exchange(firstDirtyChartItem, nullptr); item;
+	     item = std::exchange(item->dirtyNext, nullptr)) {
+		item->dirty = false;
+		item->dirtyPrev = nullptr;
 	}
 	legend.reset();
 	series.clear();

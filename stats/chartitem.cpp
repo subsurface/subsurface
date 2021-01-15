@@ -14,13 +14,15 @@ static int round_up(double f)
 }
 
 ChartItem::ChartItem(StatsView &v, ChartZValue z) :
-	dirty(false), zValue(z), view(v)
+	dirty(false), dirtyPrev(nullptr), dirtyNext(nullptr),
+	zValue(z), view(v)
 {
 }
 
 ChartItem::~ChartItem()
 {
-	view.unregisterChartItem(this);
+	if (dirty)
+		view.unregisterDirtyChartItem(*this);
 }
 
 QSizeF ChartItem::sceneSize() const
@@ -41,19 +43,17 @@ ChartPixmapItem::~ChartPixmapItem()
 void ChartPixmapItem::setTextureDirty()
 {
 	textureDirty = true;
-	dirty = true;
+	view.registerDirtyChartItem(*this);
 }
 
 void ChartPixmapItem::setPositionDirty()
 {
 	positionDirty = true;
-	dirty = true;
+	view.registerDirtyChartItem(*this);
 }
 
 void ChartPixmapItem::render()
 {
-	if (!dirty)
-		return;
 	if (!node) {
 		node.reset(view.w()->createImageNode());
 		view.addQSGNode(node.get(), zValue);
@@ -71,7 +71,6 @@ void ChartPixmapItem::render()
 		node->setRect(rect);
 		positionDirty = false;
 	}
-	dirty = false;
 }
 
 void ChartPixmapItem::resize(QSizeF size)
@@ -161,5 +160,5 @@ void ChartLineItem::setLine(QPointF fromIn, QPointF toIn)
 	from = fromIn;
 	to = toIn;
 	positionDirty = true;
-	dirty = true;
+	view.registerDirtyChartItem(*this);
 }
