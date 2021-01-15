@@ -10,9 +10,11 @@
 
 #include <memory>
 #include <vector>
-#include <QGraphicsRectItem>
+#include <QRectF>
 
 class QGraphicsScene;
+class ChartBarItem;
+class ChartTextItem;
 struct InformationBox;
 struct StatsVariable;
 
@@ -80,17 +82,16 @@ private:
 
 	// A label that is composed of multiple lines
 	struct BarLabel {
-		std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> items;
-		double totalWidth, totalHeight; // Size of the item
+		std::unique_ptr<ChartTextItem> item;
 		bool isOutside; // Is shown outside of bar
-		BarLabel(QGraphicsScene *scene, const std::vector<QString> &labels, int bin_nr, int binCount);
+		BarLabel(StatsView &view, const std::vector<QString> &labels, int bin_nr, int binCount);
 		void setVisible(bool visible);
 		void updatePosition(bool horizontal, bool center, const QRectF &rect, int bin_nr, int binCount);
 		void highlight(bool highlight, int bin_nr, int binCount);
 	};
 
 	struct SubItem {
-		std::unique_ptr<QGraphicsRectItem> item;
+		std::unique_ptr<ChartBarItem> item;
 		std::unique_ptr<BarLabel> label;
 		double value_from;
 		double value_to;
@@ -107,7 +108,7 @@ private:
 		const QString binName;
 		StatsOperationResults res;
 		int total;
-		Item(QGraphicsScene *scene, BarSeries *series, double lowerBound, double upperBound,
+		Item(BarSeries *series, double lowerBound, double upperBound,
 		     std::vector<SubItem> subitems,
 		     const QString &binName, const StatsOperationResults &res, int total, bool horizontal,
 		     bool stacked, int binCount);
@@ -118,7 +119,6 @@ private:
 
 	std::unique_ptr<InformationBox> information;
 	std::vector<Item> items;
-	std::vector<BarLabel> barLabels;
 	bool horizontal;
 	bool stacked;
 	QString categoryName;
