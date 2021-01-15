@@ -11,9 +11,30 @@ Controls.TextField {
 	property var flickable
 	property bool firstTime: true
 
+	/**
+	 * set inComboBox if the TextField is used in an editable ComboBox
+	 * this ensures that the baseline that is used to visually indicate that the user can
+	 * edit the text as well as use the drop down is placed much closer to the actual text
+	 */
+	property bool inComboBox: false
+
 	id: stf
+	background: Item {
+		Rectangle {
+			width: parent.width - Kirigami.Units.smallSpacing
+			x: inComboBox ? Kirigami.Units.smallSpacing : -1
+			height: 1
+			color: stf.focus ? subsurfaceTheme.primaryColor : Qt.darker(subsurfaceTheme.backgroundColor, 1.2)
+			anchors.bottom: parent.bottom
+			anchors.bottomMargin: inComboBox ? Kirigami.Units.largeSpacing : 1
+			visible: !stf.readOnly
+		}
+	}
 
 	// while we are at it, let's put some common settings here into the shared element
+	font.pointSize: subsurfaceTheme.regularPointSize
+	topPadding: 0
+	bottomPadding: 0
 	color: subsurfaceTheme.textColor
 	onEditingFinished: {
 		focus = false
