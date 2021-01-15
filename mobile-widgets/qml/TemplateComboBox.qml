@@ -6,10 +6,12 @@ import org.kde.kirigami 2.4 as Kirigami
 
 ComboBox {
 	id: cb
+	editable: false
 	Layout.fillWidth: true
-	Layout.preferredHeight: Kirigami.Units.gridUnit * 2.5
+	Layout.preferredHeight: Kirigami.Units.gridUnit * 2.0
 	inputMethodHints: Qt.ImhNoPredictiveText
 	font.pointSize: subsurfaceTheme.regularPointSize
+	rightPadding: Kirigami.Units.smallSpacing
 	property var flickable // used to ensure the combobox is visible on screen
 	delegate: ItemDelegate {
 		width: cb.width
@@ -49,6 +51,7 @@ ComboBox {
 	}
 
 	contentItem: SsrfTextField {
+		inComboBox: cb.editable
 		readOnly: !cb.editable
 		anchors.right: indicator.left
 		anchors.left: cb.left
@@ -59,6 +62,7 @@ ComboBox {
 		font: cb.font
 		color: subsurfaceTheme.textColor
 		verticalAlignment: Text.AlignVCenter
+
 		onPressed: {
 			if (readOnly) {
 				if (cb.popup.opened) {

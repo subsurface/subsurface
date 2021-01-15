@@ -8,7 +8,7 @@ TemplateComboBox {
 	id: cb
 	Layout.fillWidth: false
 	Layout.preferredHeight: Kirigami.Units.gridUnit * 2
-	Layout.preferredWidth: Kirigami.Units.gridUnit * 8
+	Layout.minimumWidth: Kirigami.Units.gridUnit * 8
 	contentItem: Text {
 		text: cb.displayText
 		font.pointSize: subsurfaceTheme.regularPointSize
