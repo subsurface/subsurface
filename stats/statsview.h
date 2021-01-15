@@ -26,6 +26,7 @@ class CountAxis;
 class HistogramAxis;
 class HistogramMarker;
 class QuartileMarker;
+class RegressionItem;
 class StatsAxis;
 class StatsGrid;
 class Legend;
@@ -35,13 +36,6 @@ class RootNode;	// Internal implementation detail
 enum class ChartSubType : int;
 enum class ChartZValue : int;
 enum class StatsOperation : int;
-
-struct regression_data {
-	double a,b;
-	double res2, r2, sx2, xavg;
-	int n;
-};
-
 
 class StatsView : public QQuickItem {
 	Q_OBJECT
@@ -127,17 +121,6 @@ private:
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
 
-	// A regression line
-	struct RegressionLine {
-		std::unique_ptr<QGraphicsPolygonItem> item;
-		std::unique_ptr<QGraphicsPolygonItem> central;
-		StatsAxis *xAxis, *yAxis;
-		const struct regression_data reg;
-		void updatePosition();
-		RegressionLine(const struct regression_data reg, QBrush brush, QGraphicsScene *scene, StatsAxis *xAxis, StatsAxis *yAxis);
-	};
-
-	void addLinearRegression(const struct regression_data reg, StatsAxis *xAxis, StatsAxis *yAxis);
 	void addHistogramMarker(double pos, QColor color, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
 
 	StatsState state;
@@ -147,9 +130,9 @@ private:
 	std::vector<std::unique_ptr<StatsSeries>> series;
 	std::unique_ptr<Legend> legend;
 	std::vector<std::unique_ptr<QuartileMarker>> quartileMarkers;
-	std::vector<RegressionLine> regressionLines;
 	std::vector<std::unique_ptr<HistogramMarker>> histogramMarkers;
 	std::unique_ptr<QGraphicsSimpleTextItem> title;
+	std::unique_ptr<RegressionItem> regressionItem;
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
 	Legend *draggedItem;
