@@ -69,7 +69,7 @@ void exit_ui()
 }
 
 #ifdef SUBSURFACE_MOBILE
-void run_mobile_ui()
+void run_mobile_ui(double initial_font_size)
 {
 #if defined(Q_OS_ANDROID)
 	// work around an odd interaction between the OnePlus flavor of Android and Qt font handling
@@ -127,9 +127,13 @@ void run_mobile_ui()
 	ctxt->setContextProperty("diveModel", MobileModels::instance()->listModel());
 	set_non_bt_addresses();
 
+	// we need to setup the initial font size before the QML UI is instantiated
+	ThemeInterface *themeInterface = ThemeInterface::instance();
+	themeInterface->setInitialFontSize(initial_font_size);
+
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
-	ctxt->setContextProperty("subsurfaceTheme", ThemeInterface::instance());
+	ctxt->setContextProperty("subsurfaceTheme", themeInterface);
 
 	qmlRegisterUncreatableType<QMLManager>("org.subsurfacedivelog.mobile",1,0,"ExportType","Enum is not a type");
 

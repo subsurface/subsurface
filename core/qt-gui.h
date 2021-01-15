@@ -10,7 +10,7 @@ void set_non_bt_addresses();
 
 #if defined(SUBSURFACE_MOBILE)
 #include <QQuickWindow>
-void run_mobile_ui();
+void run_mobile_ui(double initial_font_size);
 #else
 void run_ui();
 #endif

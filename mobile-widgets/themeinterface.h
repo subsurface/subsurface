@@ -37,6 +37,7 @@ class ThemeInterface : public QObject {
 public:
 	static ThemeInterface *instance();
 	double currentScale();
+	void setInitialFontSize(double fontSize);
 
 public slots:
 	void set_currentTheme(const QString &theme);
