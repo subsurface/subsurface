@@ -5,12 +5,14 @@
 void init_qt_late();
 void init_ui();
 
-void run_ui();
 void exit_ui();
 void set_non_bt_addresses();
 
 #if defined(SUBSURFACE_MOBILE)
 #include <QQuickWindow>
+void run_mobile_ui();
+#else
+void run_ui();
 #endif
 
 #endif // QT_GUI_H

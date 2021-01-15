@@ -68,9 +68,9 @@ void exit_ui()
 	free((void *)existing_filename);
 }
 
-void run_ui()
-{
 #ifdef SUBSURFACE_MOBILE
+void run_mobile_ui()
+{
 #if defined(Q_OS_ANDROID)
 	// work around an odd interaction between the OnePlus flavor of Android and Qt font handling
 	if (getAndroidHWInfo().contains("/OnePlus/")) {
@@ -187,11 +187,16 @@ void run_ui()
 	qml_window->setWidth(width);
 #endif // not Q_OS_ANDROID and not Q_OS_IOS
 	qml_window->show();
-#else
-	MainWindow::instance()->show();
-#endif // SUBSURFACE_MOBILE
 	qApp->exec();
 }
+#else // SUBSURFACE_MOBILE
+// just run the desktop UI
+void run_ui()
+{
+	MainWindow::instance()->show();
+	qApp->exec();
+}
+#endif // SUBSURFACE_MOBILE
 
 Q_DECLARE_METATYPE(duration_t)
 static void register_meta_types()

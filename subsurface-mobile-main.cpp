@@ -76,7 +76,7 @@ int main(int argc, char **argv)
 	init_proxy();
 
 	if (!quit)
-		run_ui();
+		run_mobile_ui();
 	exit_ui();
 	taglist_free(g_tag_list);
 	parse_xml_exit();
