@@ -13,6 +13,7 @@
 // Constants that control the bar layout
 static const double barWidth = 0.8; // 1.0 = full width of category
 static const double subBarWidth = 0.9; // For grouped bar charts
+static const double barBorderWidth = 1.0;
 
 // Default constructor: invalid index.
 BarSeries::Index::Index() : bar(-1), subitem(-1)
@@ -86,97 +87,76 @@ BarSeries::~BarSeries()
 {
 }
 
-BarSeries::BarLabel::BarLabel(QGraphicsScene *scene, const std::vector<QString> &labels, int bin_nr, int binCount) :
-	totalWidth(0.0), totalHeight(0.0), isOutside(false)
+BarSeries::BarLabel::BarLabel(StatsView &view, const std::vector<QString> &labels, int bin_nr, int binCount) :
+	isOutside(false)
 {
-	items.reserve(labels.size());
-	for (const QString &label: labels) {
-		items.emplace_back(createItem<QGraphicsSimpleTextItem>(scene));
-		items.back()->setText(label);
-		items.back()->setZValue(ZValues::seriesLabels);
-		QRectF rect = items.back()->boundingRect();
-		if (rect.width() > totalWidth)
-			totalWidth = rect.width();
-		totalHeight += rect.height();
-	}
+	QFont f; // make configurable
+	item = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, labels, true);
 	highlight(false, bin_nr, binCount);
 }
 
 void BarSeries::BarLabel::setVisible(bool visible)
 {
-	for (auto &item: items)
-		item->setVisible(visible);
+	// item->setVisible(visible); TODO!
 }
 
 void BarSeries::BarLabel::highlight(bool highlight, int bin_nr, int binCount)
 {
-	QBrush brush(highlight || isOutside ? darkLabelColor : labelColor(bin_nr, binCount));
-	for (auto &item: items)
-		item->setBrush(brush);
+	item->setColor(highlight || isOutside ? darkLabelColor : labelColor(bin_nr, binCount));
 }
 
 void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRectF &rect,
 					 int bin_nr, int binCount)
 {
+	QSizeF itemSize = item->getRect().size();
 	if (!horizontal) {
-		if (totalWidth > rect.width()) {
+		if (itemSize.width() > rect.width()) {
 			setVisible(false);
 			return;
 		}
 		QPointF pos = rect.center();
+		pos.rx() -= round(itemSize.width() / 2.0);
 
 		// Heuristics: if the label fits nicely into the bar (bar height is at least twice the label height),
 		// then put the label in the middle of the bar. Otherwise, put it at the top of the bar.
-		isOutside = !center && rect.height() < 2.0 * totalHeight;
+		isOutside = !center && rect.height() < 2.0 * itemSize.height();
 		if (isOutside) {
-			pos.ry() = rect.top() - (totalHeight + 2.0); // Leave two pixels(?) space
+			pos.ry() = rect.top() - (itemSize.height() + 2.0); // Leave two pixels(?) space
 		} else {
-			if (totalHeight > rect.height()) {
+			if (itemSize.height() > rect.height()) {
 				setVisible(false);
 				return;
 			}
-			pos.ry() -= totalHeight / 2.0;
+			pos.ry() -= round(itemSize.height() / 2.0);
 		}
-		for (auto &it: items) {
-			QPointF itemPos = pos;
-			QRectF rect = it->boundingRect();
-			itemPos.rx() -= rect.width() / 2.0;
-			it->setPos(itemPos);
-			pos.ry() += rect.height();
-		}
+		item->setPos(pos);
 	} else {
-		if (totalHeight > rect.height()) {
+		if (itemSize.height() > rect.height()) {
 			setVisible(false);
 			return;
 		}
 		QPointF pos = rect.center();
-		pos.ry() -= totalHeight / 2.0;
+		pos.ry() -= round(itemSize.height() / 2.0);
 
 		// Heuristics: if the label fits nicely into the bar (bar width is at least twice the label height),
 		// then put the label in the middle of the bar. Otherwise, put it to the right of the bar.
-		isOutside = !center && rect.width() < 2.0 * totalWidth;
+		isOutside = !center && rect.width() < 2.0 * itemSize.width();
 		if (isOutside) {
-			pos.rx() = rect.right() + (totalWidth / 2.0 + 2.0); // Leave two pixels(?) space
+			pos.rx() = round(rect.right() + 2.0); // Leave two pixels(?) space
 		} else {
-			if (totalWidth > rect.width()) {
+			if (itemSize.width() > rect.width()) {
 				setVisible(false);
 				return;
 			}
 		}
-		for (auto &it: items) {
-			QPointF itemPos = pos;
-			QRectF rect = it->boundingRect();
-			itemPos.rx() -= rect.width() / 2.0;
-			it->setPos(itemPos);
-			pos.ry() += rect.height();
-		}
+		item->setPos(pos);
 	}
 	setVisible(true);
 	// If label changed from inside to outside, or vice-versa, the color might change.
 	highlight(false, bin_nr, binCount);
 }
 
-BarSeries::Item::Item(QGraphicsScene *scene, BarSeries *series, double lowerBound, double upperBound,
+BarSeries::Item::Item(BarSeries *series, double lowerBound, double upperBound,
 		      std::vector<SubItem> subitemsIn,
 		      const QString &binName, const StatsOperationResults &res, int total,
 		      bool horizontal, bool stacked, int binCount) :
@@ -187,10 +167,8 @@ BarSeries::Item::Item(QGraphicsScene *scene, BarSeries *series, double lowerBoun
 	res(res),
 	total(total)
 {
-	for (SubItem &item: subitems) {
-		item.item->setZValue(ZValues::series);
+	for (SubItem &item: subitems)
 		item.highlight(false, binCount);
-	}
 	updatePosition(series, horizontal, stacked, binCount);
 }
 
@@ -203,13 +181,10 @@ void BarSeries::Item::highlight(int subitem, bool highlight, int binCount)
 
 void BarSeries::SubItem::highlight(bool highlight, int binCount)
 {
-	if (highlight) {
-		item->setBrush(QBrush(highlightedColor));
-		item->setPen(QPen(highlightedBorderColor));
-	} else {
-		item->setBrush(QBrush(binColor(bin_nr, binCount)));
-		item->setPen(QPen(::borderColor));
-	}
+	if (highlight)
+		item->setColor(highlightedColor, highlightedBorderColor);
+	else
+		item->setColor(binColor(bin_nr, binCount), ::borderColor);
 	if (label)
 		label->highlight(highlight, bin_nr, binCount);
 }
@@ -235,9 +210,9 @@ void BarSeries::Item::updatePosition(BarSeries *series, bool horizontal, bool st
 		double center = (idx + 0.5) * fullSubWidth + from;
 		item.updatePosition(series, horizontal, stacked, center - subWidth / 2.0, center + subWidth / 2.0, binCount);
 	}
-	rect = subitems[0].item->rect();
+	rect = subitems[0].item->getRect();
 	for (auto it = std::next(subitems.begin()); it != subitems.end(); ++it)
-		rect = rect.united(it->item->rect());
+		rect = rect.united(it->item->getRect());
 }
 
 void BarSeries::SubItem::updatePosition(BarSeries *series, bool horizontal, bool stacked,
@@ -265,9 +240,10 @@ std::vector<BarSeries::SubItem> BarSeries::makeSubItems(const std::vector<std::p
 	int bin_nr = 0;
 	for (auto &[v, label]: values) {
 		if (v > 0.0) {
-			res.push_back({ createItemPtr<QGraphicsRectItem>(scene), {}, from, from + v, bin_nr });
+			res.push_back({ view.createChartItem<ChartBarItem>(ChartZValue::Series, barBorderWidth, horizontal),
+					{}, from, from + v, bin_nr });
 			if (!label.empty())
-				res.back().label = std::make_unique<BarLabel>(scene, label, bin_nr, binCount());
+				res.back().label = std::make_unique<BarLabel>(view, label, bin_nr, binCount());
 		}
 		if (stacked)
 			from += v;
@@ -293,7 +269,7 @@ void BarSeries::add_item(double lowerBound, double upperBound, std::vector<SubIt
 	// Don't add empty items, as that messes with the "find item under mouse" routine.
 	if (subitems.empty())
 		return;
-	items.emplace_back(scene, this, lowerBound, upperBound, std::move(subitems), binName, res,
+	items.emplace_back(this, lowerBound, upperBound, std::move(subitems), binName, res,
 			   total, horizontal, stacked, binCount());
 }
 
@@ -323,10 +299,10 @@ int BarSeries::Item::getSubItemUnderMouse(const QPointF &point, bool horizontal,
 	// Search the first item whose "end" position is greater than the cursor position.
 	bool search_x = horizontal == stacked;
 	auto it = search_x ? std::lower_bound(subitems.begin(), subitems.end(), point.x(),
-					      [] (const SubItem &item, double x) { return item.item->rect().right() < x; })
+					      [] (const SubItem &item, double x) { return item.item->getRect().right() < x; })
 			   : std::lower_bound(subitems.begin(), subitems.end(), point.y(),
-					      [] (const SubItem &item, double y) { return item.item->rect().top() > y; });
-	return it != subitems.end() && it->item->rect().contains(point) ? it - subitems.begin() : -1;
+					      [] (const SubItem &item, double y) { return item.item->getRect().top() > y; });
+	return it != subitems.end() && it->item->getRect().contains(point) ? it - subitems.begin() : -1;
 }
 
 // Format information in a count-based bar chart.

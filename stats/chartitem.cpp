@@ -6,6 +6,7 @@
 #include <QQuickWindow>
 #include <QSGFlatColorMaterial>
 #include <QSGImageNode>
+#include <QSGRectangleNode>
 #include <QSGTexture>
 
 static int round_up(double f)
@@ -116,6 +117,40 @@ void ChartRectItem::resize(QSizeF size)
 	painter->drawRoundedRect(rect, radius, radius, Qt::AbsoluteSize);
 }
 
+ChartTextItem::ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const std::vector<QString> &text, bool center) :
+	ChartPixmapItem(v, z), f(f), center(center)
+{
+	QFontMetrics fm(f);
+	double totalWidth = 1.0;
+	fontHeight = static_cast<double>(fm.height());
+	double totalHeight = std::max(1.0, static_cast<double>(text.size()) * fontHeight);
+
+	items.reserve(text.size());
+	for (const QString &s: text) {
+		double w = fm.size(Qt::TextSingleLine, s).width();
+		items.push_back({ s, w });
+		if (w > totalWidth)
+			totalWidth = w;
+	}
+	resize(QSizeF(totalWidth, totalHeight));
+}
+
+void ChartTextItem::setColor(const QColor &c)
+{
+	img->fill(Qt::transparent);
+	double y = 0.0;
+	painter->setPen(QPen(c));
+	painter->setFont(f);
+	double totalWidth = getRect().width();
+	for (const auto &[s, w]: items) {
+		double x = center ? round((totalWidth - w) / 2.0) : 0.0;
+		QRectF rect(x, y, w, fontHeight);
+		painter->drawText(rect, s);
+		y += fontHeight;
+	}
+	setTextureDirty();
+}
+
 ChartLineItem::ChartLineItem(StatsView &v, ChartZValue z, QColor color, double width) : ChartItem(v, z),
 	color(color), width(width), positionDirty(false), materialDirty(false)
 {
@@ -123,6 +158,12 @@ ChartLineItem::ChartLineItem(StatsView &v, ChartZValue z, QColor color, double w
 
 ChartLineItem::~ChartLineItem()
 {
+}
+
+// Helper function to set points
+void setPoint(QSGGeometry::Point2D &v, const QPointF &p)
+{
+	v.set(static_cast<float>(p.x()), static_cast<float>(p.y()));
 }
 
 void ChartLineItem::render()
@@ -142,8 +183,8 @@ void ChartLineItem::render()
 		// Attention: width is a geometry property and therefore handled by position dirty!
 		geometry->setLineWidth(static_cast<float>(width));
 		auto vertices = geometry->vertexDataAsPoint2D();
-		vertices[0].set(static_cast<float>(from.x()), static_cast<float>(from.y()));
-		vertices[1].set(static_cast<float>(to.x()), static_cast<float>(to.y()));
+		setPoint(vertices[0], from);
+		setPoint(vertices[1], to);
 		node->markDirty(QSGNode::DirtyGeometry);
 	}
 
@@ -161,4 +202,78 @@ void ChartLineItem::setLine(QPointF fromIn, QPointF toIn)
 	to = toIn;
 	positionDirty = true;
 	view.registerDirtyChartItem(*this);
+}
+
+ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, double borderWidth, bool horizontal) : ChartItem(v, z),
+	borderWidth(borderWidth), horizontal(horizontal),
+	positionDirty(false), colorDirty(false)
+{
+}
+
+ChartBarItem::~ChartBarItem()
+{
+}
+
+void ChartBarItem::render()
+{
+	if (!node) {
+		node.reset(view.w()->createRectangleNode());
+
+		borderGeometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 4));
+		borderGeometry->setDrawingMode(QSGGeometry::DrawLineLoop);
+		borderGeometry->setLineWidth(static_cast<float>(borderWidth));
+		borderMaterial.reset(new QSGFlatColorMaterial);
+		borderNode.reset(new QSGGeometryNode);
+		borderNode->setGeometry(borderGeometry.get());
+		borderNode->setMaterial(borderMaterial.get());
+
+		node->appendChildNode(borderNode.get());
+		view.addQSGNode(node.get(), zValue);
+		positionDirty = colorDirty = true;
+	}
+
+	if (colorDirty) {
+		node->setColor(color);
+		borderMaterial->setColor(borderColor);
+		borderNode->markDirty(QSGNode::DirtyMaterial);
+	}
+
+	if (positionDirty) {
+		node->setRect(rect);
+		auto vertices = borderGeometry->vertexDataAsPoint2D();
+		if (horizontal) {
+			setPoint(vertices[0], rect.topLeft());
+			setPoint(vertices[1], rect.topRight());
+			setPoint(vertices[2], rect.bottomRight());
+			setPoint(vertices[3], rect.bottomLeft());
+		} else {
+			setPoint(vertices[0], rect.bottomLeft());
+			setPoint(vertices[1], rect.topLeft());
+			setPoint(vertices[2], rect.topRight());
+			setPoint(vertices[3], rect.bottomRight());
+		}
+		borderNode->markDirty(QSGNode::DirtyGeometry);
+	}
+
+	positionDirty = colorDirty = false;
+}
+
+void ChartBarItem::setColor(QColor colorIn, QColor borderColorIn)
+{
+	color = colorIn;
+	borderColor = borderColorIn;
+	colorDirty = true;
+	view.registerDirtyChartItem(*this);
+}
+
+void ChartBarItem::setRect(const QRectF &rectIn)
+{
+	rect = rectIn;
+	positionDirty = true;
+	view.registerDirtyChartItem(*this);
+}
+
+QRectF ChartBarItem::getRect() const
+{
+	return rect;
 }
