@@ -362,8 +362,6 @@ TemplatePage {
 						}
 					}
 				}
-				Rectangle {
-				}
 			}
 		}
 		TemplateSection {
@@ -541,37 +539,31 @@ TemplatePage {
 				}
 				TemplateLabel {
 					text: qsTr("Distance threshold (meters)")
-					//Layout.preferredWidth: gridWidth * 0.75
 				}
 				TemplateTextField {
 					id: distanceThreshold
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					text: PrefLocationService.distance_threshold
-					//Layout.preferredWidth: gridWidth * 0.25
 					onEditingFinished: {
 						PrefLocationService.distance_threshold = distanceThreshold.text
 					}
 				}
 				TemplateLabel {
 					text: qsTr("Time threshold (minutes)")
-					//Layout.preferredWidth: gridWidth * 0.75
 				}
 				TemplateTextField {
 					id: timeThreshold
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					text: PrefLocationService.time_threshold / 60
-					//Layout.preferredWidth: gridWidth * 0.25
 					onEditingFinished: {
 						PrefLocationService.time_threshold = timeThreshold.text * 60
 					}
 				}
-			}
-			TemplateLine {
-				visible: sectionAdvanced.isExpanded
-			}
-			GridLayout {
-				id: whichBluetoothDevices
-				visible: sectionAdvanced.isExpanded
-				width: parent.width
-				columns: 2
+
+				TemplateLine {
+					visible: sectionAdvanced.isExpanded
+					Layout.columnSpan: 2
+				}
 				TemplateLabel {
 					text: qsTr("Bluetooth")
 					font.pointSize: subsurfaceTheme.headingPointSize
@@ -583,25 +575,19 @@ TemplatePage {
 				TemplateLabel {
 					text: qsTr("Temporarily show all bluetooth devices \neven if not recognized as dive computers.\nPlease report DCs that need this setting")
 					Layout.fillWidth: true
-					//Layout.preferredWidth: gridWidth * 0.75
 				}
 				SsrfSwitch {
 					id: nonDCButton
 					checked: manager.showNonDiveComputers
-					//Layout.preferredWidth: gridWidth * 0.25
 					onClicked: {
 						manager.showNonDiveComputers = checked
 					}
 				}
-			}
-			TemplateLine {
-				visible: sectionAdvanced.isExpanded
-			}
-			GridLayout {
-				id: display
-				visible: sectionAdvanced.isExpanded
-				width: parent.width
-				columns: 2
+
+				TemplateLine {
+					visible: sectionAdvanced.isExpanded
+					Layout.columnSpan: 2
+				}
 				TemplateLabel {
 					text: qsTr("Display")
 					font.pointSize: subsurfaceTheme.headingPointSize
@@ -613,25 +599,18 @@ TemplatePage {
 				TemplateLabel {
 					text: qsTr("Show only one column in Portrait mode")
 					Layout.fillWidth: true
-					//Layout.preferredWidth: gridWidth * 0.75
 				}
 				SsrfSwitch {
 					id: singleColumnButton
 					checked: PrefDisplay.singleColumnPortrait
-					//Layout.preferredWidth: gridWidth * 0.25
 					onClicked: {
 						PrefDisplay.singleColumnPortrait = checked
 					}
 				}
-			}
-			TemplateLine {
-				visible: sectionAdvanced.isExpanded
-			}
-			GridLayout {
-				id: profilePrefs
-				visible: sectionAdvanced.isExpanded
-				width: parent.width
-				columns: 2
+				TemplateLine {
+					visible: sectionAdvanced.isExpanded
+					Layout.columnSpan: 2
+				}
 				TemplateLabel {
 					text: qsTr("Profile deco ceiling")
 					font.pointSize: subsurfaceTheme.headingPointSize
@@ -665,6 +644,7 @@ TemplatePage {
 				}
 				TemplateTextField {
 					id: gfLow
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					text: PrefTechnicalDetails.gflow
 					inputMask: "99"
 					onEditingFinished: {
@@ -677,6 +657,7 @@ TemplatePage {
 				}
 				TemplateTextField {
 					id: gfHigh
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					text: PrefTechnicalDetails.gfhigh
 					inputMask: "99"
 					onEditingFinished: {
@@ -684,16 +665,10 @@ TemplatePage {
 						rootItem.settingsChanged()
 					}
 				}
-			}
-			TemplateLine {
-				visible: sectionAdvanced.isExpanded
-			}
-
-			GridLayout {
-				id: developer
-				visible: sectionAdvanced.isExpanded
-				width: parent.width
-				columns: 2
+				TemplateLine {
+					visible: sectionAdvanced.isExpanded
+					Layout.columnSpan: 2
+				}
 				TemplateLabel {
 					text: qsTr("Developer")
 					font.pointSize: subsurfaceTheme.headingPointSize
@@ -705,12 +680,10 @@ TemplatePage {
 				TemplateLabel {
 					text: qsTr("Display Developer menu")
 					Layout.fillWidth: true
-					//Layout.preferredWidth: gridWidth * 0.75
 				}
 				SsrfSwitch {
 					id: developerButton
 					checked: PrefDisplay.show_developer
-					//sLayout.preferredWidth: gridWidth * 0.25
 					onClicked: {
 						PrefDisplay.show_developer = checked
 					}
