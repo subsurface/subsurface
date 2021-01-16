@@ -84,31 +84,31 @@ Item {
 		var state =  diveDetailsPage.state
 		diveDetailsPage.state = "view" // run the transition
 		// join cylinder info from separate string into a list.
-		if (usedCyl[0] != null) {
+		if (usedCyl[0] !== undefined) {
 			usedCyl[0] = cylinderBox0.currentText
 			usedGas[0] = txtGasMix0.text
 			startpressure[0] = txtStartPressure0.text
 			endpressure[0] = txtEndPressure0.text
 		}
-		if (usedCyl[1] != null) {
+		if (usedCyl[1] !== undefined) {
 			usedCyl[1] = cylinderBox1.currentText
 			usedGas[1] = txtGasMix1.text
 			startpressure[1] = txtStartPressure1.text
 			endpressure[1] = txtEndPressure1.text
 		}
-		if (usedCyl[2] != null) {
+		if (usedCyl[2] !== undefined) {
 			usedCyl[2] = cylinderBox2.currentText
 			usedGas[2] = txtGasMix2.text
 			startpressure[2] = txtStartPressure2.text
 			endpressure[2] = txtEndPressure2.text
 		}
-		if (usedCyl[3] != null) {
+		if (usedCyl[3] !== undefined) {
 			usedCyl[3] = cylinderBox3.currentText
 			usedGas[3] = txtGasMix3.text
 			startpressure[3] = txtStartPressure3.text
 			endpressure[3] = txtEndPressure3.text
 		}
-		if (usedCyl[4] != null) {
+		if (usedCyl[4] !== undefined) {
 			usedCyl[4] = cylinderBox4.currentText
 			usedGas[4] = txtGasMix4.text
 			startpressure[4] = txtStartPressure4.text
@@ -352,12 +352,9 @@ Item {
 			// first cylinder
 			Flow {
 				width: parent.width
-
-
 				RowLayout {
 					width: Kirigami.Units.gridUnit * 12
 					id: cb1
-
 					TemplateLabelSmall {
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 						horizontalAlignment: Text.AlignRight
@@ -382,7 +379,7 @@ Item {
 					}
 					SsrfTextField {
 						id: txtGasMix0
-						text: usedGas[0] != null ? usedGas[0] : null
+						text: usedGas[0] !== undefined ? usedGas[0] : null
 						Layout.fillWidth: true
 						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
@@ -398,7 +395,7 @@ Item {
 					}
 					SsrfTextField {
 						id: txtStartPressure0
-						text: startpressure[0] != null ? startpressure[0] : null
+						text: startpressure[0] !== undefined ? startpressure[0] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -413,7 +410,7 @@ Item {
 					}
 					SsrfTextField {
 						id: txtEndPressure0
-						text: endpressure[0] != null ? endpressure[0] : null
+						text: endpressure[0] !== undefined ? endpressure[0] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -422,18 +419,16 @@ Item {
 			//second cylinder
 			Flow {
 				width: parent.width
-
+				visible: usedCyl[1] !== undefined ? true : false
 				RowLayout {
 					id: cb2
 					width: Kirigami.Units.gridUnit * 12
 					TemplateLabelSmall {
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-						visible: usedCyl[1] != null ? true : false
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Cylinder2:")
 					}
 					TemplateComboBox {
-						visible: usedCyl[1] != null ? true : false
 						id: cylinderBox1
 						flickable: detailsEditFlickable
 						flat: true
@@ -446,15 +441,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 8
 					height: cb2.height
 					TemplateLabelSmall {
-						visible: usedCyl[1] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Gas mix:")
 					}
 					SsrfTextField {
-						visible: usedCyl[1] != null ? true : false
 						id: txtGasMix1
-						text: usedGas[1] != null ? usedGas[1] : null
+						text: usedGas[1] !== undefined ? usedGas[1] : null
 						Layout.fillWidth: true
 						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
@@ -464,15 +457,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 10
 					height: cb2.height
 					TemplateLabelSmall {
-						visible: usedCyl[1] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Start Pressure:")
 					}
 					SsrfTextField {
-						visible: usedCyl[1] != null ? true : false
 						id: txtStartPressure1
-						text: startpressure[1] != null ? startpressure[1] : null
+						text: startpressure[1] !== undefined ? startpressure[1] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -481,15 +472,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 10
 					height: cb2.height
 					TemplateLabelSmall {
-						visible: usedCyl[1] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("End Pressure:")
 					}
 					SsrfTextField {
-						visible: usedCyl[1] != null ? true : false
 						id: txtEndPressure1
-						text: endpressure[1] != null ? endpressure[1] : null
+						text: endpressure[1] !== undefined ? endpressure[1] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -498,17 +487,16 @@ Item {
 			// third cylinder
 			Flow {
 				width: parent.width
+				visible: usedCyl[2] !== undefined ? true : false
 				RowLayout {
 					id: cb3
 					width: Kirigami.Units.gridUnit * 12
 					TemplateLabelSmall {
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-						visible: usedCyl[2] != null ? true : false
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Cylinder3:")
 					}
 					TemplateComboBox {
-						visible: usedCyl[2] != null ? true : false
 						id: cylinderBox2
 						flickable: detailsEditFlickable
 						currentIndex: find(usedCyl[2])
@@ -522,15 +510,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 8
 					height: cb3.height
 					TemplateLabelSmall {
-						visible: usedCyl[2] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Gas mix:")
 					}
 					SsrfTextField {
-						visible: usedCyl[2] != null ? true : false
 						id: txtGasMix2
-						text: usedGas[2] != null ? usedGas[2] : null
+						text: usedGas[2] !== undefined ? usedGas[2] : null
 						Layout.fillWidth: true
 						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
@@ -540,15 +526,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 10
 					height: cb3.height
 					TemplateLabelSmall {
-						visible: usedCyl[2] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Start Pressure:")
 					}
 					SsrfTextField {
-						visible: usedCyl[2] != null ? true : false
 						id: txtStartPressure2
-						text: startpressure[2] != null ? startpressure[2] : null
+						text: startpressure[2] !== undefined ? startpressure[2] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -557,15 +541,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 10
 					height: cb3.height
 					TemplateLabelSmall {
-						visible: usedCyl[2] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("End Pressure:")
 					}
 					SsrfTextField {
-						visible: usedCyl[2] != null ? true : false
 						id: txtEndPressure2
-						text: endpressure[2] != null ? endpressure[2] : null
+						text: endpressure[2] !== undefined ? endpressure[2] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -574,17 +556,16 @@ Item {
 			// fourth cylinder
 			Flow {
 				width: parent.width
+				visible: usedCyl[3] !== undefined ? true : false
 				RowLayout {
 					id: cb4
 					width: Kirigami.Units.gridUnit * 12
 					TemplateLabelSmall {
-						visible: usedCyl[3] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Cylinder4:")
 					}
 					TemplateComboBox {
-						visible: usedCyl[3] != null ? true : false
 						id: cylinderBox3
 						flickable: detailsEditFlickable
 						currentIndex: find(usedCyl[3])
@@ -599,15 +580,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 8
 					height: cb4.height
 					TemplateLabelSmall {
-						visible: usedCyl[3] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Gas mix:")
 					}
 					SsrfTextField {
-						visible: usedCyl[3] != null ? true : false
 						id: txtGasMix3
-						text: usedGas[3] != null ? usedGas[3] : null
+						text: usedGas[3] !== undefined ? usedGas[3] : null
 						Layout.fillWidth: true
 						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
@@ -618,15 +597,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 10
 					height: cb4.height
 					TemplateLabelSmall {
-						visible: usedCyl[3] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Start Pressure:")
 					}
 					SsrfTextField {
-						visible: usedCyl[3] != null ? true : false
 						id: txtStartPressure3
-						text: startpressure[3] != null ? startpressure[3] : null
+						text: startpressure[3] !== undefined ? startpressure[3] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -636,15 +613,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 10
 					height: cb4.height
 					TemplateLabelSmall {
-						visible: usedCyl[3] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("End Pressure:")
 					}
 					SsrfTextField {
-						visible: usedCyl[3] != null ? true : false
 						id: txtEndPressure3
-						text: endpressure[3] != null ? endpressure[3] : null
+						text: endpressure[3] !== undefined ? endpressure[3] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -653,17 +628,16 @@ Item {
 			// fifth cylinder
 			Flow {
 				width: parent.width
+				visible: usedCyl[4] !== undefined ? true : false
 				RowLayout {
 					id: cb5
 					width: Kirigami.Units.gridUnit * 12
 					TemplateLabelSmall {
-						visible: usedCyl[4] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Cylinder5:")
 					}
 					TemplateComboBox {
-						visible: usedCyl[4] != null ? true : false
 						id: cylinderBox4
 						flickable: detailsEditFlickable
 						currentIndex: find(usedCyl[4])
@@ -679,15 +653,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 8
 					height: cb5.height
 					TemplateLabelSmall {
-						visible: usedCyl[4] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Gas mix:")
 					}
 					SsrfTextField {
-						visible: usedCyl[4] != null ? true : false
 						id: txtGasMix4
-						text: usedGas[4] != null ? usedGas[4] : null
+						text: usedGas[4] !== undefined ? usedGas[4] : null
 						Layout.fillWidth: true
 						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
@@ -698,15 +670,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 10
 					height: cb5.height
 					TemplateLabelSmall {
-						visible: usedCyl[4] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Start Pressure:")
 					}
 					SsrfTextField {
-						visible: usedCyl[4] != null ? true : false
 						id: txtStartPressure4
-						text: startpressure[4] != null ? startpressure[4] : null
+						text: startpressure[4] !== undefined ? startpressure[4] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -716,15 +686,13 @@ Item {
 					width: Kirigami.Units.gridUnit * 10
 					height: cb5.height
 					TemplateLabelSmall {
-						visible: usedCyl[4] != null ? true : false
 						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("End Pressure:")
 					}
 					SsrfTextField {
-						visible: usedCyl[4] != null ? true : false
 						id: txtEndPressure4
-						text: endpressure[4] != null ? endpressure[4] : null
+						text: endpressure[4] !== undefined ? endpressure[4] : null
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
