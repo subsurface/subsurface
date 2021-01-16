@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="chart-bar-grouped-horizontal-icon">../icons/chart_bar_grouped_horizontal.svg</file>
+        <file alias="chart-bar-grouped-vertical-icon">../icons/chart_bar_grouped_vertical.svg</file>
+        <file alias="chart-bar-stacked-horizontal-icon">../icons/chart_bar_stacked_horizontal.svg</file>
+        <file alias="chart-bar-stacked-vertical-icon">../icons/chart_bar_stacked_vertical.svg</file>
+        <file alias="chart-bar-horizontal-icon">../icons/chart_bar_horizontal.svg</file>
+        <file alias="chart-bar-vertical-icon">../icons/chart_bar_vertical.svg</file>
+        <file alias="chart-box-icon">../icons/chart_box.svg</file>
+        <file alias="chart-pie-icon">../icons/chart_pie.svg</file>
+        <file alias="chart-points-icon">../icons/chart_points.svg</file>
+        <file alias="chart-warning-icon">../icons/warning-icon.svg</file>
+    </qresource>
+</RCC>
+
