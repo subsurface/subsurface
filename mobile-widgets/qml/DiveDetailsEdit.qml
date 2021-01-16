@@ -788,21 +788,26 @@ Item {
 					selectByMouse: true
 					wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 					property bool firstTime: true
-					property int visibleTop: detailsEditFlickable.contentY
-					property int visibleBottom: visibleTop + detailsEditFlickable.height - 4 * Kirigami.Units.gridUnit
 					onPressed: waitForKeyboard.start()
 					onCursorRectangleChanged: {
-						ensureVisible(y + cursorRectangle.y)
+						ensureVisible()
 					}
-
 					// ensure that the y coordinate is inside the visible part of the detailsEditFlickable (our flickable)
-					function ensureVisible(yDest) {
-						if (yDest > visibleBottom)
-							detailsEditFlickable.contentY += yDest - visibleBottom
-						if (yDest < visibleTop)
-							detailsEditFlickable.contentY -= visibleTop - yDest
+					function ensureVisible() {
+						// make sure there's enough space for the TextArea above the keyboard and action button
+						// and that it's not too far up, either
+						var flickable = detailsEditFlickable
+						var positionInFlickable = txtNotes.mapToItem(flickable.contentItem, 0, 0)
+						var taY = positionInFlickable.y + cursorRectangle.y
+						if (manager.verboseEnabled)
+							manager.appendTextToLog("position check: lower edge of view is " +
+										    (0 + flickable.contentY + flickable.height) +
+										    " and text area is at " + taY)
+						if (taY > flickable.contentY + flickable.height - 4 * Kirigami.Units.gridUnit)
+							flickable.contentY = Math.max(0, 4 * Kirigami.Units.gridUnit + taY - flickable.height)
+						while (taY < flickable.contentY)
+							flickable.contentY -= 2 * Kirigami.Units.gridUnit
 					}
-
 					// give the OS enough time to actually resize the flickable
 					Timer {
 						id: waitForKeyboard
@@ -816,7 +821,7 @@ Item {
 								return
 							}
 							// make sure at least half the Notes field is visible
-							txtNotes.ensureVisible(txtNotes.y + txtNotes.cursorRectangle.y)
+							txtNotes.ensureVisible()
 						}
 					}
 				}
