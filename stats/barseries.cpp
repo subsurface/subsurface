@@ -413,6 +413,10 @@ bool BarSeries::hover(QPointF pos)
 	return highlighted.bar >= 0;
 }
 
+void BarSeries::selectItemsUnderMouse(const QPointF &pos)
+{
+}
+
 void BarSeries::unhighlight()
 {
 	if (highlighted.bar >= 0 && highlighted.bar < (int)items.size())

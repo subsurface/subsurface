@@ -164,3 +164,7 @@ void BoxSeries::unhighlight()
 		items[highlighted]->highlight(false);
 	highlighted = -1;
 }
+
+void BoxSeries::selectItemsUnderMouse(const QPointF &point)
+{
+}

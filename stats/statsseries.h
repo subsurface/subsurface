@@ -17,6 +17,8 @@ public:
 	virtual void updatePositions() = 0;	// Called if chart geometry changes.
 	virtual bool hover(QPointF pos) = 0;	// Called on mouse movement. Return true if an item of this series is highlighted.
 	virtual void unhighlight() = 0;		// Unhighlight any highlighted item.
+	virtual void selectItemsUnderMouse(const QPointF &pos) = 0;
+
 protected:
 	QGraphicsScene *scene;
 	StatsView &view;

@@ -10,6 +10,7 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/qthelper.h"
+#include "core/selection.h"
 
 #include <QGraphicsPixmapItem>
 #include <QPainter>
@@ -124,6 +125,17 @@ std::vector<int> ScatterSeries::getItemsUnderMouse(const QPointF &point) const
 			res.push_back(it - items.begin());
 	}
 	return res;
+}
+
+void ScatterSeries::selectItemsUnderMouse(const QPointF &point)
+{
+	std::vector<struct dive *> selected;
+	struct dive *new_current;
+
+	for(int idx: getItemsUnderMouse(point)) {
+		selected.emplace_back(new_current = items[idx].d);
+	}
+	setSelection(selected, new_current);
 }
 
 static QString dataInfo(const StatsVariable &var, const dive *d)

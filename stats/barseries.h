@@ -62,6 +62,8 @@ public:
 	void updatePositions() override;
 	bool hover(QPointF pos) override;
 	void unhighlight() override;
+	void selectItemsUnderMouse(const QPointF &point) override;
+
 private:
 	BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, bool stacked, const QString &categoryName, const StatsVariable *valueVariable,

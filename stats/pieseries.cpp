@@ -261,3 +261,7 @@ void PieSeries::unhighlight()
 		items[highlighted].highlight(highlighted, false, (int)items.size());
 	highlighted = -1;
 }
+
+void PieSeries::selectItemsUnderMouse(const QPointF &point)
+{
+}

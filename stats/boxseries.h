@@ -25,6 +25,7 @@ public:
 	void updatePositions() override;
 	bool hover(QPointF pos) override;
 	void unhighlight() override;
+	void selectItemsUnderMouse(const QPointF &point) override;
 
 	// Note: this expects that all items are added with increasing pos
 	// and that no bar is inside another bar, i.e. lowerBound and upperBound

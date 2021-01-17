@@ -84,6 +84,14 @@ void StatsView::mouseReleaseEvent(QMouseEvent *)
 	}
 }
 
+void StatsView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	QPointF pos = event->localPos();
+	for (auto &series: series) {
+		series->selectItemsUnderMouse(pos);
+	}
+}
+
 class RootNode : public QSGNode
 {
 public:
