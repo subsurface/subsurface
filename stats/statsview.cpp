@@ -64,10 +64,11 @@ StatsView::~StatsView()
 
 void StatsView::mousePressEvent(QMouseEvent *event)
 {
+	QPointF pos = event->localPos();
+
 	// Currently, we only support dragging of the legend. If other objects
 	// should be made draggable, this needs to be generalized.
 	if (legend) {
-		QPointF pos = event->localPos();
 		QRectF rect = legend->getRect();
 		if (legend->getRect().contains(pos)) {
 			dragStartMouse = pos;
@@ -75,8 +76,12 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 			draggedItem = &*legend;
 			grabMouse();
 			setKeepMouseGrab(true); // don't allow Qt to steal the grab
+			return;
 		}
 	}
+
+	for (auto &series: series)
+		series->selectItemsUnderMouse(pos);
 }
 
 void StatsView::mouseReleaseEvent(QMouseEvent *)

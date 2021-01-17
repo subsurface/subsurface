@@ -6,6 +6,7 @@
 #include "statstranslations.h"
 #include "statsview.h"
 #include "zvalues.h"
+#include "core/selection.h"
 
 #include <numeric>
 #include <math.h>
@@ -262,4 +263,14 @@ void PieSeries::unhighlight()
 	if (highlighted >= 0 && highlighted < (int)items.size())
 		items[highlighted].highlight(*item, highlighted, false, (int)items.size());
 	highlighted = -1;
+}
+
+void PieSeries::selectItemsUnderMouse(const QPointF &pos)
+{
+	int index = getItemUnderMouse(pos);
+	if (index < 0)
+		return setSelection({}, nullptr);
+
+	const std::vector<dive *> &dives = items[index].dives;
+	setSelection(dives, dives.empty() ? nullptr : dives.front());
 }
