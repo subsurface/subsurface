@@ -53,9 +53,7 @@ Kirigami.ApplicationWindow {
 	onNotificationTextChanged: {
 		// once the app is fully initialized and the UI is running, we use passive
 		// notifications to show the notification text, but during initialization
-		// we instead dump the information into the textBlock below - and to make
-		// this visually more useful we interpret a "\r" at the beginning of a notification
-		// to mean that we want to simply over-write the last line, not create a new one
+		// we instead dump the information into the textBlock below
 		if (initialized) {
 			// make sure any old notification is hidden
 			// hiding notifications is no longer supported????
