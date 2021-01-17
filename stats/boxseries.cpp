@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "boxseries.h"
 #include "informationbox.h"
+#include "statsaxis.h"
 #include "statscolors.h"
 #include "statshelper.h"
 #include "statstranslations.h"
@@ -11,7 +12,7 @@
 
 // Constants that control the bar layout
 static const double boxWidth = 0.8; // 1.0 = full width of category
-static const int boxBorderWidth = 2;
+static const int boxBorderWidth = 2.0;
 
 BoxSeries::BoxSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     const QString &variable, const QString &unit, int decimals) :
@@ -24,23 +25,12 @@ BoxSeries::~BoxSeries()
 {
 }
 
-BoxSeries::Item::Item(QGraphicsScene *scene, BoxSeries *series, double lowerBound, double upperBound,
+BoxSeries::Item::Item(StatsView &view, BoxSeries *series, double lowerBound, double upperBound,
 		      const StatsQuartiles &q, const QString &binName) :
 	lowerBound(lowerBound), upperBound(upperBound), q(q),
 	binName(binName)
 {
-	box.setZValue(ZValues::series);
-	topWhisker.setZValue(ZValues::series);
-	bottomWhisker.setZValue(ZValues::series);
-	topBar.setZValue(ZValues::series);
-	bottomBar.setZValue(ZValues::series);
-	center.setZValue(ZValues::series);
-	scene->addItem(&box);
-	scene->addItem(&topWhisker);
-	scene->addItem(&bottomWhisker);
-	scene->addItem(&topBar);
-	scene->addItem(&bottomBar);
-	scene->addItem(&center);
+	item = view.createChartItem<ChartBoxItem>(ChartZValue::Series, boxBorderWidth);
 	highlight(false);
 	updatePosition(series);
 }
@@ -51,48 +41,34 @@ BoxSeries::Item::~Item()
 
 void BoxSeries::Item::highlight(bool highlight)
 {
-	QBrush brush = highlight ? QBrush(highlightedColor) : QBrush(fillColor);
-	QPen pen = highlight ? QPen(highlightedBorderColor, boxBorderWidth) : QPen(::borderColor, boxBorderWidth);
-	box.setBrush(brush);
-	box.setPen(pen);
-	topWhisker.setPen(pen);
-	bottomWhisker.setPen(pen);
-	topBar.setPen(pen);
-	bottomBar.setPen(pen);
-	center.setPen(pen);
+	if (highlight)
+		item->setColor(highlightedColor, highlightedBorderColor);
+	else
+		item->setColor(fillColor, ::borderColor);
 }
 
 void BoxSeries::Item::updatePosition(BoxSeries *series)
 {
+	StatsAxis *xAxis = series->xAxis;
+	StatsAxis *yAxis = series->yAxis;
+	if (!xAxis || !yAxis)
+		return;
+
 	double delta = (upperBound - lowerBound) * boxWidth;
 	double from = (lowerBound + upperBound - delta) / 2.0;
 	double to = (lowerBound + upperBound + delta) / 2.0;
-	double mid = (from + to) / 2.0;
 
-	QPointF topLeft, bottomRight;
-	QMarginsF margins(boxBorderWidth / 2.0, boxBorderWidth / 2.0, boxBorderWidth / 2.0, boxBorderWidth / 2.0);
-	topLeft = series->toScreen(QPointF(from, q.max));
-	bottomRight = series->toScreen(QPointF(to, q.min));
-	bounding = QRectF(topLeft, bottomRight).marginsAdded(margins);
-	double left = topLeft.x();
-	double right = bottomRight.x();
-	double width = right - left;
-	double top = topLeft.y();
-	double bottom = bottomRight.y();
-	QPointF q1 = series->toScreen(QPointF(mid, q.q1));
-	QPointF q2 = series->toScreen(QPointF(mid, q.q2));
-	QPointF q3 = series->toScreen(QPointF(mid, q.q3));
-	box.setRect(left, q3.y(), width, q1.y() - q3.y());
-	topWhisker.setLine(q3.x(), top, q3.x(), q3.y());
-	bottomWhisker.setLine(q1.x(), q1.y(), q1.x(), bottom);
-	topBar.setLine(left, top, right, top);
-	bottomBar.setLine(left, bottom, right, bottom);
-	center.setLine(left, q2.y(), right, q2.y());
+	double fromScreen = xAxis->toScreen(from);
+	double toScreen = xAxis->toScreen(to);
+	double q1 = yAxis->toScreen(q.q1);
+	double q3 = yAxis->toScreen(q.q3);
+	QRectF rect(fromScreen, q3, toScreen - fromScreen, q1 - q3);
+	item->setBox(rect, yAxis->toScreen(q.min), yAxis->toScreen(q.max), yAxis->toScreen(q.q2));
 }
 
 void BoxSeries::append(double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName)
 {
-	items.emplace_back(new Item(scene, this, lowerBound, upperBound, q, binName));
+	items.emplace_back(new Item(view, this, lowerBound, upperBound, q, binName));
 }
 
 void BoxSeries::updatePositions()
@@ -106,8 +82,8 @@ int BoxSeries::getItemUnderMouse(const QPointF &point)
 {
 	// Search the first item whose "end" position is greater than the cursor position.
 	auto it = std::lower_bound(items.begin(), items.end(), point.x(),
-			   [] (const std::unique_ptr<Item> &item, double x) { return item->bounding.right() < x; });
-	return it != items.end() && (*it)->bounding.contains(point) ? it - items.begin() : -1;
+			   [] (const std::unique_ptr<Item> &item, double x) { return item->item->getRect().right() < x; });
+	return it != items.end() && (*it)->item->getRect().contains(point) ? it - items.begin() : -1;
 }
 
 static QString infoItem(const QString &name, const QString &unit, int decimals, double value)

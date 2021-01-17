@@ -123,7 +123,7 @@ public:
 	void setRect(const QRectF &rect);
 	QRectF getRect() const;
 	void render() override;		// Only call on render thread!
-private:
+protected:
 	QColor color, borderColor;
 	double borderWidth;
 	QRectF rect;
@@ -134,6 +134,22 @@ private:
 	std::unique_ptr<QSGFlatColorMaterial> borderMaterial;
 	std::unique_ptr<QSGGeometry> borderGeometry;
 };
+
+// A box-and-whiskers item. This is a bit lazy: derive from the bar item and add whiskers.
+class ChartBoxItem : public ChartBarItem {
+public:
+	ChartBoxItem(StatsView &v, ChartZValue z, double borderWidth);
+	~ChartBoxItem();
+	void setBox(const QRectF &rect, double min, double max, double median); // The rect describes Q1, Q3.
+	QRectF getRect() const;		// Note: this extends the center rectangle to include the whiskers.
+	void render() override;		// Only call on render thread!
+private:
+	double min, max, median;
+	std::unique_ptr<QSGGeometryNode> whiskersNode;
+	std::unique_ptr<QSGFlatColorMaterial> whiskersMaterial;
+	std::unique_ptr<QSGGeometry> whiskersGeometry;
+};
+
 
 // Implementation detail of templates - move to serparate header file
 template <typename Node>
