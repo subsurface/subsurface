@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "scatterseries.h"
+#include "chartitem.h"
 #include "informationbox.h"
 #include "statscolors.h"
 #include "statshelper.h"
@@ -10,12 +11,6 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/qthelper.h"
-
-#include <QGraphicsPixmapItem>
-#include <QPainter>
-
-static const int scatterItemDiameter = 10;
-static const int scatterItemBorder = 1;
 
 ScatterSeries::ScatterSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 			     const StatsVariable &varX, const StatsVariable &varY) :
@@ -28,62 +23,28 @@ ScatterSeries::~ScatterSeries()
 {
 }
 
-static QPixmap createScatterPixmap(const QColor &color, const QColor &borderColor)
-{
-	QPixmap res(scatterItemDiameter, scatterItemDiameter);
-	res.fill(Qt::transparent);
-	QPainter painter(&res);
-	painter.setPen(Qt::NoPen);
-	painter.setRenderHint(QPainter::Antialiasing);
-	painter.setBrush(borderColor);
-	painter.drawEllipse(0, 0, scatterItemDiameter, scatterItemDiameter);
-	painter.setBrush(color);
-	painter.drawEllipse(scatterItemBorder, scatterItemBorder,
-			    scatterItemDiameter - 2 * scatterItemBorder,
-			    scatterItemDiameter - 2 * scatterItemBorder);
-	return res;
-}
-
-// Annoying: we can create a QPixmap only after the application was initialized.
-// Therefore, do this as a on-demand initialized pointer. A function local static
-// variable does unnecesssary (in this case) thread synchronization.
-static std::unique_ptr<QPixmap> scatterPixmapPtr;
-static std::unique_ptr<QPixmap> scatterPixmapHighlightedPtr;
-
-static const QPixmap &scatterPixmap(bool highlight)
-{
-	if (!scatterPixmapPtr) {
-		scatterPixmapPtr.reset(new QPixmap(createScatterPixmap(fillColor, ::borderColor)));
-		scatterPixmapHighlightedPtr.reset(new QPixmap(createScatterPixmap(highlightedColor, highlightedBorderColor)));
-	}
-	return highlight ? *scatterPixmapHighlightedPtr : *scatterPixmapPtr;
-}
-
-ScatterSeries::Item::Item(QGraphicsScene *scene, ScatterSeries *series, dive *d, double pos, double value) :
-	item(createItemPtr<QGraphicsPixmapItem>(scene, scatterPixmap(false))),
+ScatterSeries::Item::Item(StatsView &view, ScatterSeries *series, dive *d, double pos, double value) :
+	item(view.createChartItem<ChartScatterItem>(ChartZValue::Series)),
 	d(d),
 	pos(pos),
 	value(value)
 {
-	item->setZValue(ZValues::series);
 	updatePosition(series);
 }
 
 void ScatterSeries::Item::updatePosition(ScatterSeries *series)
 {
-	QPointF center = series->toScreen(QPointF(pos, value));
-	item->setPos(center.x() - scatterItemDiameter / 2.0,
-		     center.y() - scatterItemDiameter / 2.0);
+	item->setPos(series->toScreen(QPointF(pos, value)));
 }
 
 void ScatterSeries::Item::highlight(bool highlight)
 {
-	item->setPixmap(scatterPixmap(highlight));
+	item->setHighlight(highlight);
 }
 
 void ScatterSeries::append(dive *d, double pos, double value)
 {
-	items.emplace_back(scene, this, d, pos, value);
+	items.emplace_back(view, this, d, pos, value);
 }
 
 void ScatterSeries::updatePositions()
@@ -92,35 +53,20 @@ void ScatterSeries::updatePositions()
 		item.updatePosition(this);
 }
 
-static double sq(double f)
-{
-	return f * f;
-}
-
-static double squareDist(const QPointF &p1, const QPointF &p2)
-{
-	QPointF diff = p1 - p2;
-	return QPointF::dotProduct(diff, diff);
-}
-
 std::vector<int> ScatterSeries::getItemsUnderMouse(const QPointF &point) const
 {
 	std::vector<int> res;
 	double x = point.x();
 
-	auto low = std::lower_bound(items.begin(), items.end(), x - scatterItemDiameter,
-				    [] (const Item &item, double x) { return item.item->pos().x() < x; });
-	auto high = std::upper_bound(low, items.end(), x + scatterItemDiameter,
-				    [] (double x, const Item &item) { return x < item.item->pos().x(); });
+	auto low = std::lower_bound(items.begin(), items.end(), x,
+				    [] (const Item &item, double x) { return item.item->getRect().right() < x; });
+	auto high = std::upper_bound(low, items.end(), x,
+				    [] (double x, const Item &item) { return x < item.item->getRect().left(); });
 	// Hopefully that narrows it down enough. For discrete scatter plots, we could also partition
 	// by equal x and do a binary search in these partitions. But that's probably not worth it.
 	res.reserve(high - low);
-	double minSquare = sq(scatterItemDiameter / 2.0 + scatterItemBorder);
 	for (auto it = low; it < high; ++it) {
-		QPointF pos = it->item->pos();
-		pos.rx() += scatterItemDiameter / 2.0 + scatterItemBorder;
-		pos.ry() += scatterItemDiameter / 2.0 + scatterItemBorder;
-		if (squareDist(pos, point) <= minSquare)
+		if (it->item->contains(point))
 			res.push_back(it - items.begin());
 	}
 	return res;
