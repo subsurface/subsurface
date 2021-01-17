@@ -1332,7 +1332,7 @@ void QMLManager::addDiveToTrip(int id, int tripId)
 	changesNeedSaving();
 }
 
-void QMLManager::changesNeedSaving()
+void QMLManager::changesNeedSaving(bool fromUndo)
 {
 	// we no longer save right away on iOS because file access is so slow; on the other hand,
 	// on Android the save as the user switches away doesn't seem to work... drat.
@@ -1343,9 +1343,9 @@ void QMLManager::changesNeedSaving()
 	mark_divelist_changed(true);
 	emit syncStateChanged();
 #if defined(Q_OS_IOS)
-	saveChangesLocal();
+	saveChangesLocal(fromUndo);
 #else
-	saveChangesCloud(false);
+	saveChangesCloud(false, fromUndo);
 #endif
 	updateAllGlobalLists();
 }
@@ -1376,7 +1376,7 @@ void QMLManager::openNoCloudRepo()
 	openLocalThenRemote(filename);
 }
 
-void QMLManager::saveChangesLocal()
+void QMLManager::saveChangesLocal(bool fromUndo)
 {
 	if (unsavedChanges()) {
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
@@ -1406,12 +1406,18 @@ void QMLManager::saveChangesLocal()
 		mark_divelist_changed(false);
 		Command::setClean();
 		updateHaveLocalChanges(true);
+		// provide a useful undo/redo notification
+		QString msgFormat = tr("Changes saved:'%1'. %2 possible via context menu");
+		if (fromUndo)
+			setNotificationText(msgFormat.arg(tr("Undo: %1").arg(getRedoText())).arg(tr("Redo")));
+		else
+			setNotificationText(msgFormat.arg(getUndoText()).arg(tr("Undo")));
 	} else {
 		appendTextToLog("local save requested with no unsaved changes");
 	}
 }
 
-void QMLManager::saveChangesCloud(bool forceRemoteSync)
+void QMLManager::saveChangesCloud(bool forceRemoteSync, bool fromUndo)
 {
 	if (!unsavedChanges() && !forceRemoteSync) {
 		appendTextToLog("asked to save changes but no unsaved changes");
@@ -1419,7 +1425,7 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 	}
 	// first we need to store any unsaved changes to the local repo
 	gitProgressCB("Save changes to local cache");
-	saveChangesLocal();
+	saveChangesLocal(fromUndo);
 	// if the user asked not to push to the cloud we are done
 	if (git_local_only && !forceRemoteSync)
 		return;
@@ -1439,7 +1445,7 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 void QMLManager::undo()
 {
 	Command::getUndoStack()->undo();
-	changesNeedSaving();
+	changesNeedSaving(true);
 }
 
 void QMLManager::redo()
