@@ -11,6 +11,7 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/qthelper.h"
+#include "core/selection.h"
 
 ScatterSeries::ScatterSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 			     const StatsVariable &varX, const StatsVariable &varY) :
@@ -70,6 +71,16 @@ std::vector<int> ScatterSeries::getItemsUnderMouse(const QPointF &point) const
 			res.push_back(it - items.begin());
 	}
 	return res;
+}
+
+void ScatterSeries::selectItemsUnderMouse(const QPointF &point)
+{
+	std::vector<struct dive *> selected;
+
+	for(int idx: getItemsUnderMouse(point))
+		selected.push_back(items[idx].d);
+
+	setSelection(selected, selected.empty() ? nullptr : selected.front());
 }
 
 static QString dataInfo(const StatsVariable &var, const dive *d)

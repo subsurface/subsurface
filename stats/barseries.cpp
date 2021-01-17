@@ -6,6 +6,7 @@
 #include "statstranslations.h"
 #include "statsview.h"
 #include "zvalues.h"
+#include "core/selection.h"
 
 #include <math.h> // for lrint()
 #include <QLocale>
@@ -403,4 +404,14 @@ void BarSeries::unhighlight()
 	if (highlighted.bar >= 0 && highlighted.bar < (int)items.size())
 		items[highlighted.bar].highlight(highlighted.subitem, false, binCount());
 	highlighted = Index();
+}
+
+void BarSeries::selectItemsUnderMouse(const QPointF &pos)
+{
+	Index index = getItemUnderMouse(pos);
+	if (index.bar < 0)
+		return setSelection({}, nullptr);
+
+	const std::vector<dive *> &dives = items[index.bar].subitems[index.subitem].dives;
+	setSelection(dives, dives.empty() ? nullptr : dives.front());
 }
