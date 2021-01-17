@@ -8,10 +8,9 @@
 
 #include <memory>
 #include <vector>
-#include <QGraphicsRectItem>
 
-class QGraphicsPixmapItem;
 class QGraphicsScene;
+class ChartScatterItem;
 struct InformationBox;
 struct StatsVariable;
 struct dive;
@@ -34,10 +33,10 @@ private:
 	std::vector<int> getItemsUnderMouse(const QPointF &f) const;
 
 	struct Item {
-		std::unique_ptr<QGraphicsPixmapItem> item;
+		std::unique_ptr<ChartScatterItem> item;
 		dive *d;
 		double pos, value;
-		Item(QGraphicsScene *scene, ScatterSeries *series, dive *d, double pos, double value);
+		Item(StatsView &view, ScatterSeries *series, dive *d, double pos, double value);
 		void updatePosition(ScatterSeries *series);
 		void highlight(bool highlight);
 	};

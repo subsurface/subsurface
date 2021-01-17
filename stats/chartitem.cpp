@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "chartitem.h"
+#include "statscolors.h"
 #include "statsview.h"
 
 #include <cmath>
@@ -91,6 +92,94 @@ void ChartPixmapItem::setPos(QPointF pos)
 }
 
 QRectF ChartPixmapItem::getRect() const
+{
+	return rect;
+}
+
+static const int scatterItemDiameter = 10;
+static const int scatterItemBorder = 1;
+
+ChartScatterItem::ChartScatterItem(StatsView &v, ChartZValue z) : HideableChartItem(v, z),
+	positionDirty(false), textureDirty(false), highlighted(false)
+{
+	rect.setSize(QSizeF(static_cast<double>(scatterItemDiameter), static_cast<double>(scatterItemDiameter)));
+}
+
+ChartScatterItem::~ChartScatterItem()
+{
+}
+
+static std::unique_ptr<QSGTexture> createScatterTexture(StatsView &view, const QColor &color, const QColor &borderColor)
+{
+	QImage img(scatterItemDiameter, scatterItemDiameter, QImage::Format_ARGB32);
+	img.fill(Qt::transparent);
+	QPainter painter(&img);
+	painter.setPen(Qt::NoPen);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setBrush(borderColor);
+	painter.drawEllipse(0, 0, scatterItemDiameter, scatterItemDiameter);
+	painter.setBrush(color);
+	painter.drawEllipse(scatterItemBorder, scatterItemBorder,
+			    scatterItemDiameter - 2 * scatterItemBorder,
+			    scatterItemDiameter - 2 * scatterItemBorder);
+	return std::unique_ptr<QSGTexture>(
+		view.w()->createTextureFromImage(img, QQuickWindow::TextureHasAlphaChannel)
+	);
+}
+
+std::unique_ptr<QSGTexture> scatterItemTexture;
+std::unique_ptr<QSGTexture> scatterItemHighlightedTexture;
+
+void ChartScatterItem::render()
+{
+	if (!scatterItemTexture) {
+		scatterItemTexture = createScatterTexture(view, fillColor, borderColor);
+		scatterItemHighlightedTexture = createScatterTexture(view, highlightedColor, highlightedBorderColor);
+	}
+	if (!node) {
+		createNode(view.w()->createImageNode());
+		view.addQSGNode(node.get(), zValue);
+		textureDirty = positionDirty = true;
+	}
+	if (textureDirty) {
+		node->node->setTexture(highlighted ? scatterItemHighlightedTexture.get() : scatterItemTexture.get());
+		textureDirty = false;
+	}
+	if (positionDirty) {
+		node->node->setRect(rect);
+		positionDirty = false;
+	}
+}
+
+void ChartScatterItem::setPos(QPointF pos)
+{
+	pos -= QPointF(scatterItemDiameter / 2.0, scatterItemDiameter / 2.0);
+	rect.moveTopLeft(pos);
+	positionDirty = true;
+	view.registerDirtyChartItem(*this);
+}
+
+static double squareDist(const QPointF &p1, const QPointF &p2)
+{
+	QPointF diff = p1 - p2;
+	return QPointF::dotProduct(diff, diff);
+}
+
+bool ChartScatterItem::contains(QPointF point) const
+{
+	return squareDist(point, rect.center()) <= (scatterItemDiameter / 2.0) * (scatterItemDiameter / 2.0);
+}
+
+void ChartScatterItem::setHighlight(bool highlightedIn)
+{
+	if (highlighted == highlightedIn)
+		return;
+	highlighted = highlightedIn;
+	textureDirty = true;
+	view.registerDirtyChartItem(*this);
+}
+
+QRectF ChartScatterItem::getRect() const
 {
 	return rect;
 }
