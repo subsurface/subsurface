@@ -4,6 +4,8 @@
 #ifndef CHART_ITEM_H
 #define CHART_ITEM_H
 
+#include "statshelper.h"
+
 #include <memory>
 #include <QPainter>
 
@@ -18,19 +20,35 @@ enum class ChartZValue : int;
 
 class ChartItem {
 public:
-	ChartItem(StatsView &v, ChartZValue z);
-	virtual ~ChartItem();
 	virtual void render() = 0;		// Only call on render thread!
 	bool dirty;				// If true, call render() when rebuilding the scene
 	ChartItem *dirtyPrev, *dirtyNext;	// Double linked list of dirty items
 	const ChartZValue zValue;
 protected:
+	ChartItem(StatsView &v, ChartZValue z);
+	virtual ~ChartItem();
 	QSizeF sceneSize() const;
 	StatsView &view;
 };
 
+template <typename Node>
+class HideableChartItem : public ChartItem {
+protected:
+	HideableChartItem(StatsView &v, ChartZValue z);
+	std::unique_ptr<Node> node;
+	bool visible;				// Argh. If visibility is set before node is created, we have to cache it.
+	template<class... Args>
+	void createNode(Args&&... args);	// Call to create node with visibility flag.
+public:
+	void setVisible(bool visible);
+};
+
+// A shortcut for ChartItems based on a hideable proxy item
+template <typename Node>
+using HideableChartProxyItem = HideableChartItem<HideableQSGNode<QSGProxyNode<Node>>>;
+
 // A chart item that blits a precalculated pixmap onto the scene.
-class ChartPixmapItem : public ChartItem {
+class ChartPixmapItem : public HideableChartProxyItem<QSGImageNode> {
 public:
 	ChartPixmapItem(StatsView &v, ChartZValue z);
 	~ChartPixmapItem();
@@ -48,7 +66,6 @@ private:
 	QRectF rect;
 	bool positionDirty;		// true if the position changed since last render
 	bool textureDirty;		// true if the pixmap changed since last render
-	std::unique_ptr<QSGImageNode> node;
 	std::unique_ptr<QSGTexture> texture;
 };
 
@@ -80,7 +97,7 @@ private:
 	std::vector<Item> items;
 };
 
-class ChartLineItem : public ChartItem {
+class ChartLineItem : public HideableChartItem<HideableQSGNode<QSGGeometryNode>> {
 public:
 	ChartLineItem(StatsView &v, ChartZValue z, QColor color, double width);
 	~ChartLineItem();
@@ -93,13 +110,12 @@ private:
 	bool horizontal;
 	bool positionDirty;
 	bool materialDirty;
-	std::unique_ptr<QSGGeometryNode> node;
 	std::unique_ptr<QSGFlatColorMaterial> material;
 	std::unique_ptr<QSGGeometry> geometry;
 };
 
 // A bar in a bar chart: a rectangle bordered by lines.
-class ChartBarItem : public ChartItem {
+class ChartBarItem : public HideableChartProxyItem<QSGRectangleNode> {
 public:
 	ChartBarItem(StatsView &v, ChartZValue z, double borderWidth, bool horizontal);
 	~ChartBarItem();
@@ -114,10 +130,31 @@ private:
 	bool horizontal;
 	bool positionDirty;
 	bool colorDirty;
-	std::unique_ptr<QSGRectangleNode> node;
 	std::unique_ptr<QSGGeometryNode> borderNode;
 	std::unique_ptr<QSGFlatColorMaterial> borderMaterial;
 	std::unique_ptr<QSGGeometry> borderGeometry;
 };
+
+// Implementation detail of templates - move to serparate header file
+template <typename Node>
+void HideableChartItem<Node>::setVisible(bool visibleIn)
+{
+	visible = visibleIn;
+	if (node)
+		node->setVisible(visible);
+}
+
+template <typename Node>
+template<class... Args>
+void HideableChartItem<Node>::createNode(Args&&... args)
+{
+	node.reset(new Node(visible, std::forward<Args>(args)...));
+}
+
+template <typename Node>
+HideableChartItem<Node>::HideableChartItem(StatsView &v, ChartZValue z) : ChartItem(v, z),
+	visible(true)
+{
+}
 
 #endif
