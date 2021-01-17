@@ -1407,11 +1407,14 @@ void QMLManager::saveChangesLocal(bool fromUndo)
 		Command::setClean();
 		updateHaveLocalChanges(true);
 		// provide a useful undo/redo notification
-		QString msgFormat = tr("Changes saved:'%1'. %2 possible via context menu");
+		// NOTE: the QML UI interprets a leading '[action]' (where only the two brackets are checked for)
+		//       as an indication to use the text between those two brackets as the label of a button that
+		//       can be used to open the context menu
+		QString msgFormat = tr("[%1]Changes saved:'%2'.\n%1 possible via context menu");
 		if (fromUndo)
-			setNotificationText(msgFormat.arg(tr("Undo: %1").arg(getRedoText())).arg(tr("Redo")));
+			setNotificationText(msgFormat.arg(tr("Redo")).arg(tr("Undo: %1").arg(getRedoText())));
 		else
-			setNotificationText(msgFormat.arg(getUndoText()).arg(tr("Undo")));
+			setNotificationText(msgFormat.arg(tr("Undo")).arg(getUndoText()));
 	} else {
 		appendTextToLog("local save requested with no unsaved changes");
 	}
