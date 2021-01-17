@@ -193,10 +193,10 @@ Kirigami.Page {
 			onClicked: chartTypePopup.open()
 		}
 		Item {
-			Layout.column: wide ? 0 : 1
+			Layout.column: wide ? 0 : 2
 			Layout.row: wide ? 6 : 2
 			Layout.preferredHeight: wide ? parent.height - Kirigami.Units.gridUnit * 16 : Kirigami.Units.gridUnit
-			Layout.preferredWidth: wide ? parent.width - i1.implicitWidt - i2.implicitWidt - i3.implicitWidt - i4.implicitWidth : Kirigami.Units.gridUnit
+			Layout.fillWidth: wide ? false : true
 			// just used for spacing
 		}
 		StatsView {
