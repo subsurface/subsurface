@@ -279,3 +279,77 @@ QRectF ChartBarItem::getRect() const
 {
 	return rect;
 }
+
+ChartBoxItem::ChartBoxItem(StatsView &v, ChartZValue z, double borderWidth) :
+	ChartBarItem(v, z, borderWidth, false) // Only support for vertical boxes
+{
+}
+
+ChartBoxItem::~ChartBoxItem()
+{
+}
+
+void ChartBoxItem::render()
+{
+	// Remember old dirty values, since ChartBarItem::render() will clear them
+	bool oldPositionDirty = positionDirty;
+	bool oldColorDirty = colorDirty;
+	ChartBarItem::render();		// This will create the base node, so no need to check for that.
+	if (!whiskersNode) {
+		whiskersGeometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 10));
+		whiskersGeometry->setDrawingMode(QSGGeometry::DrawLines);
+		whiskersGeometry->setLineWidth(static_cast<float>(borderWidth));
+		whiskersMaterial.reset(new QSGFlatColorMaterial);
+		whiskersNode.reset(new QSGGeometryNode);
+		whiskersNode->setGeometry(whiskersGeometry.get());
+		whiskersNode->setMaterial(whiskersMaterial.get());
+
+		node->node->appendChildNode(whiskersNode.get());
+		// If this is the first time, make sure to update the geometry.
+		oldPositionDirty = oldColorDirty = true;
+	}
+
+	if (oldColorDirty) {
+		whiskersMaterial->setColor(borderColor);
+		whiskersNode->markDirty(QSGNode::DirtyMaterial);
+	}
+
+	if (oldPositionDirty) {
+		auto vertices = whiskersGeometry->vertexDataAsPoint2D();
+		double left = rect.left();
+		double right = rect.right();
+		double mid = (left + right) / 2.0;
+		// top bar
+		setPoint(vertices[0], QPointF(left, max));
+		setPoint(vertices[1], QPointF(right, max));
+		// top whisker
+		setPoint(vertices[2], QPointF(mid, max));
+		setPoint(vertices[3], QPointF(mid, rect.top()));
+		// bottom bar
+		setPoint(vertices[4], QPointF(left, min));
+		setPoint(vertices[5], QPointF(right, min));
+		// bottom whisker
+		setPoint(vertices[6], QPointF(mid, min));
+		setPoint(vertices[7], QPointF(mid, rect.bottom()));
+		// median indicator
+		setPoint(vertices[8], QPointF(left, median));
+		setPoint(vertices[9], QPointF(right, median));
+		whiskersNode->markDirty(QSGNode::DirtyGeometry);
+	}
+}
+
+void ChartBoxItem::setBox(const QRectF &rect, double minIn, double maxIn, double medianIn)
+{
+	min = minIn;
+	max = maxIn;
+	median = medianIn;
+	setRect(rect);
+}
+
+QRectF ChartBoxItem::getRect() const
+{
+	QRectF res = rect;
+	res.setTop(min);
+	res.setBottom(max);
+	return rect;
+}

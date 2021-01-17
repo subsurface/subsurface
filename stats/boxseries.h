@@ -5,13 +5,12 @@
 #ifndef BOX_SERIES_H
 #define BOX_SERIES_H
 
+#include "chartitem.h"
 #include "statsseries.h"
 #include "statsvariables.h" // for StatsQuartiles
 
 #include <memory>
 #include <vector>
-#include <QGraphicsLineItem>
-#include <QGraphicsRectItem>
 
 struct InformationBox;
 class QGraphicsScene;
@@ -36,16 +35,12 @@ private:
 	int getItemUnderMouse(const QPointF &f);
 
 	struct Item {
-		QGraphicsRectItem box;
-		QGraphicsLineItem topWhisker, bottomWhisker;
-		QGraphicsLineItem topBar, bottomBar;
-		QGraphicsLineItem center;
-		QRectF bounding; // bounding box in screen coordinates
-		~Item();
+		std::unique_ptr<ChartBoxItem> item;
 		double lowerBound, upperBound;
 		StatsQuartiles q;
 		QString binName;
-		Item(QGraphicsScene *scene, BoxSeries *series, double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName);
+		Item(StatsView &view, BoxSeries *series, double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName);
+		~Item();
 		void updatePosition(BoxSeries *series);
 		void highlight(bool highlight);
 	};
