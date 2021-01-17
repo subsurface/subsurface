@@ -150,6 +150,26 @@ private:
 	std::unique_ptr<QSGGeometry> whiskersGeometry;
 };
 
+// An item in a scatter chart. This is not simply a normal pixmap item,
+// because we want that all items share the *same* texture for memory
+// efficiency. It is somewhat questionable to define the form of the
+// scatter item here, but so it is for now.
+class ChartScatterItem : public HideableChartProxyItem<QSGImageNode> {
+public:
+	ChartScatterItem(StatsView &v, ChartZValue z);
+	~ChartScatterItem();
+
+	void setPos(QPointF pos);		// Specifies the *center* of the item.
+	void setHighlight(bool highlight);	// In the future, support different kinds of scatter items.
+	void render() override;			// Only call on render thread!
+	QRectF getRect() const;
+	bool contains(QPointF point) const;
+private:
+	QRectF rect;
+	QSizeF textureSize;
+	bool positionDirty, textureDirty;
+	bool highlighted;
+};
 
 // Implementation detail of templates - move to serparate header file
 template <typename Node>
