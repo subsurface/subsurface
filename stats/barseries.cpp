@@ -97,7 +97,7 @@ BarSeries::BarLabel::BarLabel(StatsView &view, const std::vector<QString> &label
 
 void BarSeries::BarLabel::setVisible(bool visible)
 {
-	// item->setVisible(visible); TODO!
+	item->setVisible(visible);
 }
 
 void BarSeries::BarLabel::highlight(bool highlight, int bin_nr, int binCount)

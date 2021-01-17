@@ -31,7 +31,7 @@ QSizeF ChartItem::sceneSize() const
 	return view.size();
 }
 
-ChartPixmapItem::ChartPixmapItem(StatsView &v, ChartZValue z) : ChartItem(v, z),
+ChartPixmapItem::ChartPixmapItem(StatsView &v, ChartZValue z) : HideableChartItem(v, z),
 	positionDirty(false), textureDirty(false)
 {
 }
@@ -56,7 +56,7 @@ void ChartPixmapItem::setPositionDirty()
 void ChartPixmapItem::render()
 {
 	if (!node) {
-		node.reset(view.w()->createImageNode());
+		createNode(view.w()->createImageNode());
 		view.addQSGNode(node.get(), zValue);
 	}
 	if (!img) {
@@ -65,11 +65,11 @@ void ChartPixmapItem::render()
 	}
 	if (textureDirty) {
 		texture.reset(view.w()->createTextureFromImage(*img, QQuickWindow::TextureHasAlphaChannel));
-		node->setTexture(texture.get());
+		node->node->setTexture(texture.get());
 		textureDirty = false;
 	}
 	if (positionDirty) {
-		node->setRect(rect);
+		node->node->setRect(rect);
 		positionDirty = false;
 	}
 }
@@ -151,7 +151,7 @@ void ChartTextItem::setColor(const QColor &c)
 	setTextureDirty();
 }
 
-ChartLineItem::ChartLineItem(StatsView &v, ChartZValue z, QColor color, double width) : ChartItem(v, z),
+ChartLineItem::ChartLineItem(StatsView &v, ChartZValue z, QColor color, double width) : HideableChartItem(v, z),
 	color(color), width(width), positionDirty(false), materialDirty(false)
 {
 }
@@ -172,7 +172,7 @@ void ChartLineItem::render()
 		geometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 2));
 		geometry->setDrawingMode(QSGGeometry::DrawLines);
 		material.reset(new QSGFlatColorMaterial);
-		node.reset(new QSGGeometryNode);
+		createNode();
 		node->setGeometry(geometry.get());
 		node->setMaterial(material.get());
 		view.addQSGNode(node.get(), zValue);
@@ -204,7 +204,7 @@ void ChartLineItem::setLine(QPointF fromIn, QPointF toIn)
 	view.registerDirtyChartItem(*this);
 }
 
-ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, double borderWidth, bool horizontal) : ChartItem(v, z),
+ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, double borderWidth, bool horizontal) : HideableChartItem(v, z),
 	borderWidth(borderWidth), horizontal(horizontal),
 	positionDirty(false), colorDirty(false)
 {
@@ -217,7 +217,7 @@ ChartBarItem::~ChartBarItem()
 void ChartBarItem::render()
 {
 	if (!node) {
-		node.reset(view.w()->createRectangleNode());
+		createNode(view.w()->createRectangleNode());
 
 		borderGeometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 4));
 		borderGeometry->setDrawingMode(QSGGeometry::DrawLineLoop);
@@ -227,19 +227,20 @@ void ChartBarItem::render()
 		borderNode->setGeometry(borderGeometry.get());
 		borderNode->setMaterial(borderMaterial.get());
 
-		node->appendChildNode(borderNode.get());
+		node->node->appendChildNode(borderNode.get());
 		view.addQSGNode(node.get(), zValue);
 		positionDirty = colorDirty = true;
 	}
 
 	if (colorDirty) {
-		node->setColor(color);
+		node->node->setColor(color);
 		borderMaterial->setColor(borderColor);
+		node->node->markDirty(QSGNode::DirtyMaterial);
 		borderNode->markDirty(QSGNode::DirtyMaterial);
 	}
 
 	if (positionDirty) {
-		node->setRect(rect);
+		node->node->setRect(rect);
 		auto vertices = borderGeometry->vertexDataAsPoint2D();
 		if (horizontal) {
 			setPoint(vertices[0], rect.topLeft());
@@ -252,6 +253,7 @@ void ChartBarItem::render()
 			setPoint(vertices[2], rect.topRight());
 			setPoint(vertices[3], rect.bottomRight());
 		}
+		node->node->markDirty(QSGNode::DirtyGeometry);
 		borderNode->markDirty(QSGNode::DirtyGeometry);
 	}
 
