@@ -328,6 +328,9 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 
 	// we start out with clean data
 	updateHaveLocalChanges(false);
+
+	// setup Command infrastructure
+	Command::init();
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
