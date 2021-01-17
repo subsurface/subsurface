@@ -128,7 +128,12 @@ static void showProgress(QString msg)
 // show the git progress in the passive notification area
 extern "C" int gitProgressCB(const char *text)
 {
-	showProgress(QString(text));
+	// regular users, during regular operation, likely really don't
+	// care at all about the git progress
+	if (verbose) {
+		showProgress(QString(text));
+		appendTextToLogStandalone(text);
+	}
 	// return 0 so that we don't end the download
 	return 0;
 }
