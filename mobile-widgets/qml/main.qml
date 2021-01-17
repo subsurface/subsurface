@@ -55,13 +55,17 @@ Kirigami.ApplicationWindow {
 		// notifications to show the notification text, but during initialization
 		// we instead dump the information into the textBlock below
 		if (initialized) {
-			// make sure any old notification is hidden
-			// hiding notifications is no longer supported????
-			// hidePassiveNotification()
 			if (notificationText !== "") {
-				// there's a risk that we have a >5 second gap in update events;
-				// still, keep the timeout at 5s to avoid odd unchanging notifications
-				showPassiveNotification(notificationText, 5000)
+				var actionEnd = notificationText.indexOf("]")
+				if (notificationText.startsWith("[") && actionEnd !== -1) {
+					// we have a notification text that starts with our special syntax to indication
+					// an action that the user can take (the actual action is always opening the context drawer
+					// so the action text should always be something that can then be found in the context drawer)
+					showPassiveNotification(notificationText.substring(actionEnd + 1), 5000, notificationText.substring(1,actionEnd),
+								function() { contextDrawer.open() })
+				} else {
+					showPassiveNotification(notificationText, 5000)
+				}
 			}
 		} else {
 			textBlock.text = textBlock.text + "\n" + notificationText
