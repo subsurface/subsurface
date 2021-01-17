@@ -115,7 +115,7 @@ Kirigami.Page {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, undoAction, redoAction ]
+	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, deleteAction, undoAction, redoAction ]
 
 	states: [
 		State {
@@ -123,7 +123,7 @@ Kirigami.Page {
 			PropertyChanges {
 				target: diveDetailsPage;
 				actions {
-					right: deleteAction
+					right: null
 					left: currentItem ? (currentItem.modelData && currentItem.modelData.gps !== "" ? mapAction : null) : null
 				}
 				contextualActions: contextactions
