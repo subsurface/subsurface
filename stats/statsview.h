@@ -45,6 +45,7 @@ public:
 	void plot(const StatsState &state);
 	QQuickWindow *w() const;		// Make window available to items
 	QSizeF size() const;
+	QRectF plotArea() const;
 	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
 	void registerDirtyChartItem(ChartItem &item);
 	void unregisterDirtyChartItem(ChartItem &item);

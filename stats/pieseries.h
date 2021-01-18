@@ -10,9 +10,9 @@
 #include <QString>
 
 struct InformationBox;
-class QGraphicsEllipseItem;
+struct ChartPieItem;
+struct ChartTextItem;
 class QGraphicsScene;
-class QGraphicsSimpleTextItem;
 class QRectF;
 
 class PieSeries : public StatsSeries {
@@ -34,20 +34,20 @@ private:
 	// Get item under mouse pointer, or -1 if none
 	int getItemUnderMouse(const QPointF &f) const;
 
+	std::unique_ptr<ChartPieItem> item;
 	QString categoryName;
 	std::vector<QString> makeInfo(int idx) const;
 
 	struct Item {
-		std::unique_ptr<QGraphicsEllipseItem> item;
-		std::unique_ptr<QGraphicsSimpleTextItem> innerLabel, outerLabel;
+		std::unique_ptr<ChartTextItem> innerLabel, outerLabel;
 		QString name;
-		double angleTo; // In fraction of total
+		double angleFrom, angleTo; // In fraction of total
 		int count;
 		QPointF innerLabelPos, outerLabelPos; // With respect to a (-1, -1)-(1, 1) rectangle.
-		Item(QGraphicsScene *scene, const QString &name, int from, int count, int totalCount,
+		Item(StatsView &view, const QString &name, int from, int count, int totalCount,
 		     int bin_nr, int numBins, bool labels);
-		void updatePositions(const QRectF &rect, const QPointF &center, double radius);
-		void highlight(int bin_nr, bool highlight, int numBins);
+		void updatePositions(const QPointF &center, double radius);
+		void highlight(ChartPieItem &item, int bin_nr, bool highlight, int numBins);
 	};
 	std::vector<Item> items;
 	int totalCount;

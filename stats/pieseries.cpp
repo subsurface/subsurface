@@ -9,7 +9,6 @@
 
 #include <numeric>
 #include <math.h>
-#include <QGraphicsEllipseItem>
 #include <QLocale>
 
 static const double pieSize = 0.9; // 1.0 = occupy full width of chart
@@ -17,20 +16,15 @@ static const double pieBorderWidth = 1.0;
 static const double innerLabelRadius = 0.75; // 1.0 = at outer border of pie
 static const double outerLabelRadius = 1.01; // 1.0 = at outer border of pie
 
-PieSeries::Item::Item(QGraphicsScene *scene, const QString &name, int from, int count, int totalCount,
+PieSeries::Item::Item(StatsView &view, const QString &name, int from, int count, int totalCount,
 		      int bin_nr, int numBins, bool labels) :
-	item(createItemPtr<QGraphicsEllipseItem>(scene)),
 	name(name),
 	count(count)
 {
+	QFont f; // make configurable
 	QLocale loc;
-	// For whatever obscure reason, angles in QGraphicsEllipseItem are given as 16th of a degree...?
-	// Angles increase CCW, whereas pie charts usually are read CW.
-	item->setStartAngle(90 * 16 - (from + count) * 360 * 16 / totalCount);
-	item->setSpanAngle(count * 360 * 16 / totalCount);
-	item->setPen(QPen(::borderColor));
-	item->setZValue(ZValues::series);
 
+	angleFrom = static_cast<double>(from) / totalCount;
 	angleTo = static_cast<double>(from + count) / totalCount;
 	double meanAngle = M_PI / 2.0 - (from + count / 2.0) / totalCount * M_PI * 2.0; // Note: "-" because we go CW.
 	innerLabelPos = QPointF(cos(meanAngle) * innerLabelRadius, -sin(meanAngle) * innerLabelRadius);
@@ -39,27 +33,24 @@ PieSeries::Item::Item(QGraphicsScene *scene, const QString &name, int from, int 
 	if (labels) {
 		double percentage = count * 100.0 / totalCount;
 		QString innerLabelText = QStringLiteral("%1\%").arg(loc.toString(percentage, 'f', 1));
-		innerLabel = createItemPtr<QGraphicsSimpleTextItem>(scene, innerLabelText);
-		innerLabel->setZValue(ZValues::seriesLabels);
+		innerLabel = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, innerLabelText);
 
-		outerLabel = createItemPtr<QGraphicsSimpleTextItem>(scene, name);
-		outerLabel->setBrush(QBrush(darkLabelColor));
-		outerLabel->setZValue(ZValues::seriesLabels);
+		outerLabel = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, name);
+		outerLabel->setColor(darkLabelColor);
 	}
-
-	highlight(bin_nr, false, numBins);
 }
 
-void PieSeries::Item::updatePositions(const QRectF &rect, const QPointF &center, double radius)
+void PieSeries::Item::updatePositions(const QPointF &center, double radius)
 {
-	item->setRect(rect);
+	// Note: the positions in this functions are rounded to integer values,
+	// because half-integer values gives horrible aliasing artifacts.
 	if (innerLabel) {
-		QRectF labelRect = innerLabel->boundingRect();
-		innerLabel->setPos(center.x() + innerLabelPos.x() * radius - labelRect.width() / 2.0,
-				   center.y() + innerLabelPos.y() * radius - labelRect.height() / 2.0);
+		QRectF labelRect = innerLabel->getRect();
+		innerLabel->setPos(QPointF(round(center.x() + innerLabelPos.x() * radius - labelRect.width() / 2.0),
+					   round(center.y() + innerLabelPos.y() * radius - labelRect.height() / 2.0)));
 	}
 	if (outerLabel) {
-		QRectF labelRect = outerLabel->boundingRect();
+		QRectF labelRect = outerLabel->getRect();
 		QPointF pos(center.x() + outerLabelPos.x() * radius, center.y() + outerLabelPos.y() * radius);
 		if (outerLabelPos.x() < 0.0) {
 			if (outerLabelPos.y() < 0.0)
@@ -70,25 +61,23 @@ void PieSeries::Item::updatePositions(const QRectF &rect, const QPointF &center,
 			pos.ry() -= labelRect.height();
 		}
 
-		outerLabel->setPos(pos);
+		outerLabel->setPos(QPointF(round(pos.x()), round(pos.y())));
 	}
 }
 
-void PieSeries::Item::highlight(int bin_nr, bool highlight, int numBins)
+void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, int numBins)
 {
-	QBrush brush(highlight ? highlightedColor : binColor(bin_nr, numBins));
-	QPen pen(highlight ? highlightedBorderColor : ::borderColor, pieBorderWidth);
-	item->setBrush(brush);
-	item->setPen(pen);
-	if (innerLabel) {
-		QBrush labelBrush(highlight ? darkLabelColor : labelColor(bin_nr, numBins));
-		innerLabel->setBrush(labelBrush);
-	}
+	if (innerLabel)
+		innerLabel->setColor(highlight ? darkLabelColor : labelColor(bin_nr, numBins));
+	item.drawSegment(angleFrom, angleTo,
+			 highlight ? highlightedColor : binColor(bin_nr, numBins),
+			 highlight ? highlightedBorderColor : ::borderColor);
 }
 
 PieSeries::PieSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
 		     const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels) :
 	StatsSeries(scene, view, xAxis, yAxis),
+	item(view.createChartItem<ChartPieItem>(ChartZValue::Series, pieBorderWidth)),
 	categoryName(categoryName),
 	highlighted(-1)
 {
@@ -148,7 +137,7 @@ PieSeries::PieSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, S
 	int act = 0;
 	for (auto it2 = sorted.begin(); it2 != it; ++it2) {
 		int count = data[*it2].second;
-		items.emplace_back(scene, data[*it2].first, act, count, totalCount, (int)items.size(), numBins, labels);
+		items.emplace_back(view, data[*it2].first, act, count, totalCount, (int)items.size(), numBins, labels);
 		act += count;
 	}
 
@@ -158,7 +147,7 @@ PieSeries::PieSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, S
 		for (auto it2 = it; it2 != sorted.end(); ++it2)
 			other.push_back({ data[*it2].first, data[*it2].second });
 		QString name = StatsTranslations::tr("other (%1 items)").arg(other.size());
-		items.emplace_back(scene, name, act, totalCount - act, totalCount, (int)items.size(), numBins, labels);
+		items.emplace_back(view, name, act, totalCount - act, totalCount, (int)items.size(), numBins, labels);
 	}
 }
 
@@ -168,12 +157,18 @@ PieSeries::~PieSeries()
 
 void PieSeries::updatePositions()
 {
-	QRectF plotRect = scene->sceneRect();
+	QRectF plotRect = view.plotArea();
 	center = plotRect.center();
-	radius = std::min(plotRect.width(), plotRect.height()) * pieSize / 2.0;
-	QRectF rect(center.x() - radius, center.y() - radius, 2.0 * radius, 2.0 * radius);
-	for (Item &item: items)
-		item.updatePositions(rect, center, radius);
+	radius = ceil(std::min(plotRect.width(), plotRect.height()) * pieSize / 2.0);
+	QRectF rect(round(center.x() - radius), round(center.y() - radius), ceil(2.0 * radius), ceil(2.0 * radius));
+	item->resize(rect.size());
+	item->setPos(rect.topLeft());
+	int i = 0;
+	for (Item &segment: items) {
+		segment.updatePositions(center, radius);
+		segment.highlight(*item, i, i == highlighted, (int)items.size()); // Draw segment
+		++i;
+	}
 }
 
 std::vector<QString> PieSeries::binNames()
@@ -245,7 +240,7 @@ bool PieSeries::hover(QPointF pos)
 
 	// Highlight new item (if any)
 	if (highlighted >= 0 && highlighted < (int)items.size()) {
-		items[highlighted].highlight(highlighted, true, (int)items.size());
+		items[highlighted].highlight(*item, highlighted, true, (int)items.size());
 		if (!information)
 			information = view.createChartItem<InformationBox>();
 		information->setText(makeInfo(highlighted), pos);
@@ -258,6 +253,6 @@ bool PieSeries::hover(QPointF pos)
 void PieSeries::unhighlight()
 {
 	if (highlighted >= 0 && highlighted < (int)items.size())
-		items[highlighted].highlight(highlighted, false, (int)items.size());
+		items[highlighted].highlight(*item, highlighted, false, (int)items.size());
 	highlighted = -1;
 }
