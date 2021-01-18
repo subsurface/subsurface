@@ -3,6 +3,7 @@
 #ifndef PIE_SERIES_H
 #define PIE_SERIES_H
 
+#include "statshelper.h"
 #include "statsseries.h"
 
 #include <memory>
@@ -33,12 +34,12 @@ private:
 	// Get item under mouse pointer, or -1 if none
 	int getItemUnderMouse(const QPointF &f) const;
 
-	std::unique_ptr<ChartPieItem> item;
+	ChartItemPtr<ChartPieItem> item;
 	QString categoryName;
 	std::vector<QString> makeInfo(int idx) const;
 
 	struct Item {
-		std::unique_ptr<ChartTextItem> innerLabel, outerLabel;
+		ChartItemPtr<ChartTextItem> innerLabel, outerLabel;
 		QString name;
 		double angleFrom, angleTo; // In fraction of total
 		int count;
@@ -58,7 +59,7 @@ private:
 	};
 	std::vector<OtherItem> other;
 
-	std::unique_ptr<InformationBox> information;
+	ChartItemPtr<InformationBox> information;
 	QPointF center; // center of drawing area
 	double radius; // radius of pie
 	int highlighted;

@@ -7,6 +7,52 @@
 #include <memory>
 #include <QSGNode>
 
+// A stupid pointer class that initializes to null and can be copy
+// assigned. This is for historical reasons: unique_ptrs to ChartItems
+// were replaced by plain pointers. Instead of nulling the plain pointers
+// in the constructors, use this. Ultimately, we might think about making
+// this thing smarter, once removal of individual ChartItems is implemented.
+template <typename T>
+class ChartItemPtr {
+	friend class StatsView; // Only the stats view can create these pointers
+	T *ptr;
+	ChartItemPtr(T *ptr) : ptr(ptr)
+	{
+	}
+public:
+	ChartItemPtr() : ptr(nullptr)
+	{
+	}
+	ChartItemPtr(const ChartItemPtr &p) : ptr(p.ptr)
+	{
+	}
+	void reset()
+	{
+		ptr = nullptr;
+	}
+	ChartItemPtr &operator=(const ChartItemPtr &p)
+	{
+		ptr = p.ptr;
+		return *this;
+	}
+	operator bool() const
+	{
+		return !!ptr;
+	}
+	bool operator!() const
+	{
+		return !ptr;
+	}
+	T &operator*() const
+	{
+		return *ptr;
+	}
+	T *operator->() const
+	{
+		return ptr;
+	}
+};
+
 // In general, we want chart items to be hideable. For example to show/hide
 // labels on demand. Very sadly, the QSG API is absolutely terrible with
 // respect to temporarily disabling. Instead of simply having a flag,
@@ -82,6 +128,7 @@ template <typename Node>
 void HideableQSGNode<Node>::setVisible(bool visible)
 {
 	hidden = !visible;
+	Node::markDirty(QSGNode::DirtySubtreeBlocked);
 }
 
 #endif

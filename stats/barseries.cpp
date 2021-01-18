@@ -382,8 +382,9 @@ bool BarSeries::hover(QPointF pos)
 		if (!information)
 			information = view.createChartItem<InformationBox>();
 		information->setText(makeInfo(item, highlighted.subitem), pos);
+		information->setVisible(true);
 	} else {
-		information.reset();
+		information->setVisible(false);
 	}
 
 	return highlighted.bar >= 0;

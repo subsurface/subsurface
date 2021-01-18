@@ -35,9 +35,7 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	xAxis(nullptr),
 	yAxis(nullptr),
 	draggedItem(nullptr),
-	rootNode(nullptr),
-	firstDirtyChartItem(nullptr),
-	lastDirtyChartItem(nullptr)
+	rootNode(nullptr)
 {
 	setFlag(ItemHasContents, true);
 
@@ -68,7 +66,7 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 		if (legend->getRect().contains(pos)) {
 			dragStartMouse = pos;
 			dragStartItem = rect.topLeft();
-			draggedItem = legend.get();
+			draggedItem = &*legend;
 			grabMouse();
 		}
 	}
@@ -114,6 +112,14 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	if (!n)
 		n = rootNode = new RootNode(window());
 
+	// Delete all chart items that are marked for deletion.
+	ChartItem *nextitem;
+	for (ChartItem *item = deletedItems.first; item; item = nextitem) {
+		nextitem = item->next;
+		delete item;
+	}
+	deletedItems.clear();
+
 	QRectF rect = boundingRect();
 	if (plotRect != rect) {
 		plotRect = rect;
@@ -121,12 +127,11 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 		plotAreaChanged(plotRect.size());
 	}
 
-	for (ChartItem *item = std::exchange(firstDirtyChartItem, nullptr); item;
-	     item = std::exchange(item->dirtyNext, nullptr)) {
+	for (ChartItem *item = dirtyItems.first; item; item = item->next) {
 		item->render();
 		item->dirty = false;
-		item->dirtyPrev = nullptr;
 	}
+	dirtyItems.splice(cleanItems);
 
 	return n;
 }
@@ -137,34 +142,74 @@ void StatsView::addQSGNode(QSGNode *node, ChartZValue z)
 	rootNode->zNodes[idx]->appendChildNode(node);
 }
 
-void StatsView::unregisterDirtyChartItem(ChartItem &item)
+void StatsView::registerChartItem(ChartItem &item)
 {
-	if (!item.dirty)
-		return;
-	if (item.dirtyNext)
-		item.dirtyNext->dirtyPrev = item.dirtyPrev;
-	else
-		lastDirtyChartItem = item.dirtyPrev;
-	if (item.dirtyPrev)
-		item.dirtyPrev->dirtyNext = item.dirtyNext;
-	else
-		firstDirtyChartItem = item.dirtyNext;
-	item.dirtyPrev = item.dirtyNext = nullptr;
-	item.dirty = false;
+	cleanItems.append(item);
 }
 
 void StatsView::registerDirtyChartItem(ChartItem &item)
 {
 	if (item.dirty)
 		return;
-	if (!firstDirtyChartItem) {
-		firstDirtyChartItem = &item;
-	} else {
-		item.dirtyPrev = lastDirtyChartItem;
-		lastDirtyChartItem->dirtyNext = &item;
-	}
-	lastDirtyChartItem = &item;
+	cleanItems.remove(item);
+	dirtyItems.append(item);
 	item.dirty = true;
+}
+
+void StatsView::deleteChartItemInternal(ChartItem &item)
+{
+	if (item.dirty)
+		dirtyItems.remove(item);
+	else
+		cleanItems.remove(item);
+	deletedItems.append(item);
+}
+
+StatsView::ChartItemList::ChartItemList() : first(nullptr), last(nullptr)
+{
+}
+
+void StatsView::ChartItemList::clear()
+{
+	first = last = nullptr;
+}
+
+void StatsView::ChartItemList::remove(ChartItem &item)
+{
+	if (item.next)
+		item.next->prev = item.prev;
+	else
+		last = item.prev;
+	if (item.prev)
+		item.prev->next = item.next;
+	else
+		first = item.next;
+	item.prev = item.next = nullptr;
+}
+
+void StatsView::ChartItemList::append(ChartItem &item)
+{
+	if (!first) {
+		first = &item;
+	} else {
+		item.prev = last;
+		last->next = &item;
+	}
+	last = &item;
+}
+
+void StatsView::ChartItemList::splice(ChartItemList &l2)
+{
+	if (!first) // if list is empty -> nothing to do.
+		return;
+	if (!l2.first) {
+		l2 = *this;
+	} else {
+		l2.last->next = first;
+		first->prev = l2.last;
+		l2.last = last;
+	}
+	clear();
 }
 
 QQuickWindow *StatsView::w() const
@@ -286,8 +331,8 @@ T *StatsView::createSeries(Args&&... args)
 
 void StatsView::setTitle(const QString &s)
 {
-	if (s.isEmpty()) {
-		title.reset();
+	if (title) {
+		// Ooops. Currently we do not support setting the title twice.
 		return;
 	}
 	title = createChartItem<ChartTextItem>(ChartZValue::Legend, titleFont, s);
@@ -305,10 +350,7 @@ void StatsView::updateTitlePos()
 template <typename T, class... Args>
 T *StatsView::createAxis(const QString &title, Args&&... args)
 {
-	std::unique_ptr<T> ptr = createChartItem<T>(title, std::forward<Args>(args)...);
-	T *res = ptr.get();
-	axes.push_back(std::move(ptr));
-	return res;
+	return &*createChartItem<T>(title, std::forward<Args>(args)...);
 }
 
 void StatsView::setAxes(StatsAxis *x, StatsAxis *y)
@@ -324,19 +366,18 @@ void StatsView::reset()
 	highlightedSeries = nullptr;
 	xAxis = yAxis = nullptr;
 	draggedItem = nullptr;
-	for (ChartItem *item = std::exchange(firstDirtyChartItem, nullptr); item;
-	     item = std::exchange(item->dirtyNext, nullptr)) {
-		item->dirty = false;
-		item->dirtyPrev = nullptr;
-	}
+	title.reset();
 	legend.reset();
+	regressionItem.reset();
+
+	// Mark clean and dirty chart items for deletion
+	cleanItems.splice(deletedItems);
+	dirtyItems.splice(deletedItems);
+
 	series.clear();
 	quartileMarkers.clear();
 	histogramMarkers.clear();
-	regressionItem.reset();
 	grid.reset();
-	axes.clear();
-	title.reset();
 }
 
 void StatsView::plot(const StatsState &stateIn)

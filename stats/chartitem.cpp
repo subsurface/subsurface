@@ -16,20 +16,26 @@ static int round_up(double f)
 }
 
 ChartItem::ChartItem(StatsView &v, ChartZValue z) :
-	dirty(false), dirtyPrev(nullptr), dirtyNext(nullptr),
+	dirty(false), prev(nullptr), next(nullptr),
 	zValue(z), view(v)
 {
+	// Register before the derived constructors run, so that the
+	// derived classes can mark the item as dirty in the constructor.
+	v.registerChartItem(*this);
 }
 
 ChartItem::~ChartItem()
 {
-	if (dirty)
-		view.unregisterDirtyChartItem(*this);
 }
 
 QSizeF ChartItem::sceneSize() const
 {
 	return view.size();
+}
+
+void ChartItem::markDirty()
+{
+	view.registerDirtyChartItem(*this);
 }
 
 ChartPixmapItem::ChartPixmapItem(StatsView &v, ChartZValue z) : HideableChartItem(v, z),
@@ -45,13 +51,13 @@ ChartPixmapItem::~ChartPixmapItem()
 void ChartPixmapItem::setTextureDirty()
 {
 	textureDirty = true;
-	view.registerDirtyChartItem(*this);
+	markDirty();
 }
 
 void ChartPixmapItem::setPositionDirty()
 {
 	positionDirty = true;
-	view.registerDirtyChartItem(*this);
+	markDirty();
 }
 
 void ChartPixmapItem::render()
@@ -60,6 +66,8 @@ void ChartPixmapItem::render()
 		createNode(view.w()->createImageNode());
 		view.addQSGNode(node.get(), zValue);
 	}
+	updateVisible();
+
 	if (!img) {
 		resize(QSizeF(1,1));
 		img->fill(Qt::transparent);
@@ -141,6 +149,7 @@ void ChartScatterItem::render()
 		view.addQSGNode(node.get(), zValue);
 		textureDirty = positionDirty = true;
 	}
+	updateVisible();
 	if (textureDirty) {
 		node->node->setTexture(highlighted ? scatterItemHighlightedTexture.get() : scatterItemTexture.get());
 		textureDirty = false;
@@ -156,7 +165,7 @@ void ChartScatterItem::setPos(QPointF pos)
 	pos -= QPointF(scatterItemDiameter / 2.0, scatterItemDiameter / 2.0);
 	rect.moveTopLeft(pos);
 	positionDirty = true;
-	view.registerDirtyChartItem(*this);
+	markDirty();
 }
 
 static double squareDist(const QPointF &p1, const QPointF &p2)
@@ -176,7 +185,7 @@ void ChartScatterItem::setHighlight(bool highlightedIn)
 		return;
 	highlighted = highlightedIn;
 	textureDirty = true;
-	view.registerDirtyChartItem(*this);
+	markDirty();
 }
 
 QRectF ChartScatterItem::getRect() const
@@ -297,6 +306,7 @@ void ChartLineItem::render()
 		view.addQSGNode(node.get(), zValue);
 		positionDirty = materialDirty = true;
 	}
+	updateVisible();
 
 	if (positionDirty) {
 		// Attention: width is a geometry property and therefore handled by position dirty!
@@ -320,7 +330,7 @@ void ChartLineItem::setLine(QPointF fromIn, QPointF toIn)
 	from = fromIn;
 	to = toIn;
 	positionDirty = true;
-	view.registerDirtyChartItem(*this);
+	markDirty();
 }
 
 ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, double borderWidth, bool horizontal) : HideableChartItem(v, z),
@@ -350,6 +360,7 @@ void ChartBarItem::render()
 		view.addQSGNode(node.get(), zValue);
 		positionDirty = colorDirty = true;
 	}
+	updateVisible();
 
 	if (colorDirty) {
 		node->node->setColor(color);
@@ -384,14 +395,14 @@ void ChartBarItem::setColor(QColor colorIn, QColor borderColorIn)
 	color = colorIn;
 	borderColor = borderColorIn;
 	colorDirty = true;
-	view.registerDirtyChartItem(*this);
+	markDirty();
 }
 
 void ChartBarItem::setRect(const QRectF &rectIn)
 {
 	rect = rectIn;
 	positionDirty = true;
-	view.registerDirtyChartItem(*this);
+	markDirty();
 }
 
 QRectF ChartBarItem::getRect() const
