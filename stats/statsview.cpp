@@ -298,7 +298,7 @@ void StatsView::hoverMoveEvent(QHoverEvent *event)
 template <typename T, class... Args>
 T *StatsView::createSeries(Args&&... args)
 {
-	T *res = new T(&scene, *this, xAxis, yAxis, std::forward<Args>(args)...);
+	T *res = new T(*this, xAxis, yAxis, std::forward<Args>(args)...);
 	series.emplace_back(res);
 	series.back()->updatePositions();
 	return res;

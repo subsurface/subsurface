@@ -9,7 +9,6 @@
 #include <memory>
 #include <vector>
 
-class QGraphicsScene;
 class ChartScatterItem;
 struct InformationBox;
 struct StatsVariable;
@@ -17,7 +16,7 @@ struct dive;
 
 class ScatterSeries : public StatsSeries {
 public:
-	ScatterSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
+	ScatterSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		      const StatsVariable &varX, const StatsVariable &varY);
 	~ScatterSeries();
 

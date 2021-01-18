@@ -29,19 +29,19 @@ bool BarSeries::Index::operator==(const Index &i2) const
 	return std::tie(bar, subitem) == std::tie(i2.bar, i2.subitem);
 }
 
-BarSeries::BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
+BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, bool stacked, const QString &categoryName,
 		     const StatsVariable *valueVariable, std::vector<QString> valueBinNames) :
-	StatsSeries(scene, view, xAxis, yAxis),
+	StatsSeries(view, xAxis, yAxis),
 	horizontal(horizontal), stacked(stacked), categoryName(categoryName),
 	valueVariable(valueVariable), valueBinNames(std::move(valueBinNames))
 {
 }
 
-BarSeries::BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
+BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, const QString &categoryName,
 		     const std::vector<CountItem> &items) :
-	BarSeries(scene, view, xAxis, yAxis, horizontal, false, categoryName, nullptr, std::vector<QString>())
+	BarSeries(view, xAxis, yAxis, horizontal, false, categoryName, nullptr, std::vector<QString>())
 {
 	for (const CountItem &item: items) {
 		StatsOperationResults res;
@@ -52,10 +52,10 @@ BarSeries::BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, S
 	}
 }
 
-BarSeries::BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
+BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, const QString &categoryName, const StatsVariable *valueVariable,
 		     const std::vector<ValueItem> &items) :
-	BarSeries(scene, view, xAxis, yAxis, horizontal, false, categoryName, valueVariable, std::vector<QString>())
+	BarSeries(view, xAxis, yAxis, horizontal, false, categoryName, valueVariable, std::vector<QString>())
 {
 	for (const ValueItem &item: items) {
 		add_item(item.lowerBound, item.upperBound, makeSubItems(item.value, item.label),
@@ -63,11 +63,11 @@ BarSeries::BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, S
 	}
 }
 
-BarSeries::BarSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
+BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, bool stacked, const QString &categoryName, const StatsVariable *valueVariable,
 		     std::vector<QString> valueBinNames,
 		     const std::vector<MultiItem> &items) :
-	BarSeries(scene, view, xAxis, yAxis, horizontal, stacked, categoryName, valueVariable, std::move(valueBinNames))
+	BarSeries(view, xAxis, yAxis, horizontal, stacked, categoryName, valueVariable, std::move(valueBinNames))
 {
 	for (const MultiItem &item: items) {
 		StatsOperationResults res;

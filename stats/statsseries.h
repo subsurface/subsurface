@@ -6,19 +6,17 @@
 
 #include <QPointF>
 
-class QGraphicsScene;
 class StatsAxis;
 class StatsView;
 
 class StatsSeries {
 public:
-	StatsSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis);
+	StatsSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis);
 	virtual ~StatsSeries();
 	virtual void updatePositions() = 0;	// Called if chart geometry changes.
 	virtual bool hover(QPointF pos) = 0;	// Called on mouse movement. Return true if an item of this series is highlighted.
 	virtual void unhighlight() = 0;		// Unhighlight any highlighted item.
 protected:
-	QGraphicsScene *scene;
 	StatsView &view;
 	StatsAxis *xAxis, *yAxis;		// May be zero for charts without axes (pie charts).
 	QPointF toScreen(QPointF p);

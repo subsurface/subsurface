@@ -12,9 +12,9 @@
 #include "core/divelist.h"
 #include "core/qthelper.h"
 
-ScatterSeries::ScatterSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
+ScatterSeries::ScatterSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 			     const StatsVariable &varX, const StatsVariable &varY) :
-	StatsSeries(scene, view, xAxis, yAxis),
+	StatsSeries(view, xAxis, yAxis),
 	varX(varX), varY(varY)
 {
 }

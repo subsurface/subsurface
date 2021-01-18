@@ -74,9 +74,9 @@ void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, 
 			 highlight ? highlightedBorderColor : ::borderColor);
 }
 
-PieSeries::PieSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
+PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
 		     const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels) :
-	StatsSeries(scene, view, xAxis, yAxis),
+	StatsSeries(view, xAxis, yAxis),
 	item(view.createChartItem<ChartPieItem>(ChartZValue::Series, pieBorderWidth)),
 	categoryName(categoryName),
 	highlighted(-1)
