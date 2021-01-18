@@ -23,139 +23,143 @@ Kirigami.Page {
 		Kirigami.Heading {
 			Layout.columnSpan: 2
 			text: "Theme Information"
+			color: subsurfaceTheme.textColor
 		}
 
 		Kirigami.Heading {
 			text: "Screen"
+			color: subsurfaceTheme.textColor
 			Layout.columnSpan: 2
 			level: 3
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "Geometry (pixels):"
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: rootItem.width + "x" + rootItem.height
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "Geometry (gridUnits):"
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: Math.round(rootItem.width / Kirigami.Units.gridUnit) + "x" + Math.round(rootItem.height / Kirigami.Units.gridUnit)
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "Units.gridUnit:"
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: Kirigami.Units.gridUnit
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "Units.devicePixelRatio:"
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: Screen.devicePixelRatio
 		}
 
 		Kirigami.Heading {
 			text: "Font Metrics"
+			color: subsurfaceTheme.textColor
 			level: 3
 			Layout.columnSpan: 2
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "basePointSize:"
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: subsurfaceTheme.basePointSize
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "FontMetrics pointSize:"
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: fontMetrics.font.pointSize
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "FontMetrics pixelSize:"
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: Number(fontMetrics.height).toFixed(2)
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "FontMetrics devicePixelRatio:"
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: Number(fontMetrics.height / fontMetrics.font.pointSize).toFixed(2)
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "Text item pixelSize:"
 		}
-		Text {
+		TemplateLabel {
 			text: fontMetrics.font.pixelSize
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "Text item pointSize:"
 		}
-		Text {
+		TemplateLabel {
 			text: fontMetrics.font.pointSize
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "Pixel density:"
 		}
-		Text {
+		TemplateLabel {
 			text: Number(Screen.pixelDensity).toFixed(2)
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "Height of default font:"
 		}
-		Text {
+		TemplateLabel {
 			text: Number(fontMetrics.font.pixelSize / Screen.pixelDensity).toFixed(2) + "mm"
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: "2cm x 2cm square:"
 		}
 		Rectangle {
 			width: Math.round(Screen.pixelDensity * 20)
 			height: Math.round(Screen.pixelDensity * 20)
-			color: "black"
+			color: subsurfaceTheme.textColor
 		}
-		Controls.Label {
+		TemplateLabel {
 			text: "text in 4 gridUnit square"
 		}
 		Rectangle {
 			id: backSquare
 			width: Kirigami.Units.gridUnit * 4
 			height: width
+			color: subsurfaceTheme.primaryColor
 			border.color: subsurfaceTheme.primaryColor
 			border.width: 1
 
 			Controls.Label {
 				anchors.top: backSquare.top
 				anchors.left: backSquare.left
-				color: subsurfaceTheme.textColor
+				color: subsurfaceTheme.primaryTextColor
 				font.pointSize: subsurfaceTheme.regularPointSize
 				text: "Simply 27 random characters"
 			}
 			Controls.Label {
 				anchors.bottom: backSquare.bottom
 				anchors.left: backSquare.left
-				color: subsurfaceTheme.textColor
+				color: subsurfaceTheme.primaryTextColor
 				font.pointSize: subsurfaceTheme.smallPointSize
 				text: "Simply 27 random characters"
 			}
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			Layout.columnSpan: 2
 			Layout.fillHeight: true
 		}
