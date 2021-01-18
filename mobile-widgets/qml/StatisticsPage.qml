@@ -32,6 +32,18 @@ Kirigami.Page {
 			statsManager.doit()
 		}
 	}
+	onWideChanged: {
+		// so this means we rotated the device - and sometimes after rotation
+		// the stats widget is empty.
+		rotationRedrawTrigger.start()
+	}
+	Timer {
+		// wait .5 seconds (so the OS rotation animation has a chance to run) and then set var1 again
+		// to its current value, which appears to be enough to ensure that the chart is drawn again
+		id: rotationRedrawTrigger
+		interval: 500
+		onTriggered: statsManager.var1Changed(i1.var1currentIndex)
+	}
 
 	Component {
 		id: chartListDelegate
@@ -89,6 +101,7 @@ Kirigami.Page {
 			Layout.row: 0
 			Layout.leftMargin: Kirigami.Units.smallSpacing
 			Layout.topMargin: Kirigami.Units.smallSpacing
+			property alias var1currentIndex: var1.currentIndex
 			TemplateLabelSmall {
 				text: qsTr("Base variable")
 			}
