@@ -1,0 +1,28 @@
+From a0532ed879b5068ce64a9d5e5464d36507a9a92a Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Sun, 17 Jan 2021 17:31:22 -0800
+Subject: [PATCH 17/17] make space for button in passive notification
+
+Not sure how this is supposed to work otherwise.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/templates/private/PassiveNotification.qml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/controls/templates/private/PassiveNotification.qml b/src/controls/templates/private/PassiveNotification.qml
+index ceb57aca..aaa438ae 100644
+--- a/src/controls/templates/private/PassiveNotification.qml
++++ b/src/controls/templates/private/PassiveNotification.qml
+@@ -172,7 +172,7 @@ Controls.Popup {
+                 Controls.Label {
+                     id: label
+                     color: subsurfaceTheme.primaryTextColor
+-                    Layout.maximumWidth: Math.min(root.parent.width - Kirigami.Units.largeSpacing * 4, implicitWidth)
++                    Layout.maximumWidth: Math.min(root.parent.width - actionButton.implicitWidth - Kirigami.Units.largeSpacing * 4, implicitWidth)
+                     elide: Text.ElideRight
+                     wrapMode: Text.WordWrap
+                     maximumLineCount: 4
+-- 
+2.29.2
+
