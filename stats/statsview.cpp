@@ -20,8 +20,6 @@
 #include "core/subsurface-qt/divelistnotifier.h"
 
 #include <cmath>
-#include <QGraphicsScene>
-#include <QGraphicsSimpleTextItem>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QSGImageNode>
@@ -88,10 +86,9 @@ class RootNode : public QSGNode
 {
 public:
 	RootNode(QQuickWindow *w);
-	QSGRectangleNode *backgroundNode; // solid background
-	QSGImageNode *imageNode; // imageNode to plot QGRaphicsScene on. Remove in due course.
+	std::unique_ptr<QSGRectangleNode> backgroundNode; // solid background
 	// We entertain one node per Z-level.
-	std::array<QSGNode *, (size_t)ChartZValue::Count> zNodes;
+	std::array<std::unique_ptr<QSGNode>, (size_t)ChartZValue::Count> zNodes;
 };
 
 RootNode::RootNode(QQuickWindow *w)
@@ -99,16 +96,14 @@ RootNode::RootNode(QQuickWindow *w)
 	// Add a background rectangle with a solid color. This could
 	// also be done on the widget level, but would have to be done
 	// separately for desktop and mobile, so do it here.
-	backgroundNode = w->createRectangleNode();
+	backgroundNode.reset(w->createRectangleNode());
 	backgroundNode->setColor(backgroundColor);
-	appendChildNode(backgroundNode);
+	appendChildNode(backgroundNode.get());
 
-	for (QSGNode *&zNode: zNodes) {
-		zNode = new QSGNode;
-		appendChildNode(zNode);
+	for (auto &zNode: zNodes) {
+		zNode.reset(new QSGNode);
+		appendChildNode(zNode.get());
 	}
-	imageNode = w->createImageNode();
-	zNodes[(int)ChartZValue::Series]->appendChildNode(imageNode);
 }
 
 QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
@@ -133,11 +128,6 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 		item->dirtyPrev = nullptr;
 	}
 
-	img->fill(Qt::transparent);
-	scene.render(painter.get());
-	texture.reset(window()->createTextureFromImage(*img, QQuickWindow::TextureHasAlphaChannel));
-	n->imageNode->setTexture(texture.get());
-	n->imageNode->setRect(rect);
 	return n;
 }
 
@@ -194,16 +184,6 @@ QRectF StatsView::plotArea() const
 
 void StatsView::plotAreaChanged(const QSizeF &s)
 {
-	// Make sure that image is at least one pixel wide / high, otherwise
-	// the painter starts acting up.
-	int w = std::max(1, static_cast<int>(floor(s.width())));
-	int h = std::max(1, static_cast<int>(floor(s.height())));
-	scene.setSceneRect(QRectF(0, 0, static_cast<double>(w), static_cast<double>(h)));
-	painter.reset();
-	img.reset(new QImage(w, h, QImage::Format_ARGB32));
-	painter.reset(new QPainter(img.get()));
-	painter->setRenderHint(QPainter::Antialiasing);
-
 	double left = sceneBorder;
 	double top = sceneBorder;
 	double right = s.width() - sceneBorder;
@@ -363,7 +343,7 @@ void StatsView::plot(const StatsState &stateIn)
 {
 	state = stateIn;
 	plotChart();
-	plotAreaChanged(scene.sceneRect().size());
+	plotAreaChanged(boundingRect().size());
 	update();
 }
 

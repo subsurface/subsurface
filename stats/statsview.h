@@ -5,7 +5,6 @@
 #include "statsstate.h"
 #include <memory>
 #include <QFont>
-#include <QGraphicsScene>
 #include <QImage>
 #include <QPainter>
 #include <QQuickItem>
@@ -58,10 +57,6 @@ private:
 	// QtQuick related things
 	QRectF plotRect;
 	QSGNode *updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
-	std::unique_ptr<QImage> img;
-	std::unique_ptr<QPainter> painter;
-	QGraphicsScene scene;
-	std::unique_ptr<QSGTexture> texture;
 
 	void plotAreaChanged(const QSizeF &size);
 	void reset(); // clears all series and axes
