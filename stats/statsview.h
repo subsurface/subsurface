@@ -16,10 +16,10 @@ struct StatsBin;
 struct StatsState;
 struct StatsVariable;
 
-class QGraphicsSimpleTextItem;
 class StatsSeries;
 class CategoryAxis;
 class ChartItem;
+class ChartTextItem;
 class CountAxis;
 class HistogramAxis;
 class HistogramMarker;
@@ -130,7 +130,7 @@ private:
 	std::unique_ptr<Legend> legend;
 	std::vector<std::unique_ptr<QuartileMarker>> quartileMarkers;
 	std::vector<std::unique_ptr<HistogramMarker>> histogramMarkers;
-	std::unique_ptr<QGraphicsSimpleTextItem> title;
+	std::unique_ptr<ChartTextItem> title;
 	std::unique_ptr<RegressionItem> regressionItem;
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;

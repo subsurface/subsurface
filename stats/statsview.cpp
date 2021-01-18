@@ -211,7 +211,7 @@ void StatsView::plotAreaChanged(const QSizeF &s)
 	const double minSize = 30.0;
 
 	if (title)
-		top += title->boundingRect().height() + titleBorder;
+		top += title->getRect().height() + titleBorder;
 	// Currently, we only have either none, or an x- and a y-axis
 	std::pair<double,double> horizontalSpace{ 0.0, 0.0 };
 	if (xAxis) {
@@ -310,17 +310,16 @@ void StatsView::setTitle(const QString &s)
 		title.reset();
 		return;
 	}
-	title = createItemPtr<QGraphicsSimpleTextItem>(&scene, s);
-	title->setFont(titleFont);
+	title = createChartItem<ChartTextItem>(ChartZValue::Legend, titleFont, s);
+	title->setColor(darkLabelColor);
 }
 
 void StatsView::updateTitlePos()
 {
 	if (!title)
 		return;
-	QRectF rect = scene.sceneRect();
-	title->setPos(sceneBorder + (rect.width() - title->boundingRect().width()) / 2.0,
-		      sceneBorder);
+	title->setPos(QPointF(round(sceneBorder + (boundingRect().width() - title->getRect().width()) / 2.0),
+			      round(sceneBorder)));
 }
 
 template <typename T, class... Args>
