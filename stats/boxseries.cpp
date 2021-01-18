@@ -128,8 +128,9 @@ bool BoxSeries::hover(QPointF pos)
 		if (!information)
 			information = view.createChartItem<InformationBox>();
 		information->setText(formatInformation(item), pos);
+		information->setVisible(true);
 	} else {
-		information.reset();
+		information->setVisible(false);
 	}
 	return highlighted >= 0;
 }

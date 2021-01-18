@@ -5,6 +5,7 @@
 #ifndef BAR_SERIES_H
 #define BAR_SERIES_H
 
+#include "statshelper.h"
 #include "statsseries.h"
 #include "statsvariables.h"
 
@@ -81,7 +82,7 @@ private:
 
 	// A label that is composed of multiple lines
 	struct BarLabel {
-		std::unique_ptr<ChartTextItem> item;
+		ChartItemPtr<ChartTextItem> item;
 		bool isOutside; // Is shown outside of bar
 		BarLabel(StatsView &view, const std::vector<QString> &labels, int bin_nr, int binCount);
 		void setVisible(bool visible);
@@ -90,7 +91,7 @@ private:
 	};
 
 	struct SubItem {
-		std::unique_ptr<ChartBarItem> item;
+		ChartItemPtr<ChartBarItem> item;
 		std::unique_ptr<BarLabel> label;
 		double value_from;
 		double value_to;
@@ -116,7 +117,7 @@ private:
 		int getSubItemUnderMouse(const QPointF &f, bool horizontal, bool stacked) const;
 	};
 
-	std::unique_ptr<InformationBox> information;
+	ChartItemPtr<InformationBox> information;
 	std::vector<Item> items;
 	bool horizontal;
 	bool stacked;
