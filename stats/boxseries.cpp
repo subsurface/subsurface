@@ -14,9 +14,9 @@
 static const double boxWidth = 0.8; // 1.0 = full width of category
 static const int boxBorderWidth = 2.0;
 
-BoxSeries::BoxSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
+BoxSeries::BoxSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     const QString &variable, const QString &unit, int decimals) :
-	StatsSeries(scene, view, xAxis, yAxis),
+	StatsSeries(view, xAxis, yAxis),
 	variable(variable), unit(unit), decimals(decimals), highlighted(-1)
 {
 }

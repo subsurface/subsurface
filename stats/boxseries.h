@@ -13,11 +13,10 @@
 #include <vector>
 
 struct InformationBox;
-class QGraphicsScene;
 
 class BoxSeries : public StatsSeries {
 public:
-	BoxSeries(QGraphicsScene *scene, StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
+	BoxSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		  const QString &variable, const QString &unit, int decimals);
 	~BoxSeries();
 
