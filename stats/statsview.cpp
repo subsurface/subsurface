@@ -187,6 +187,11 @@ QSizeF StatsView::size() const
 	return boundingRect().size();
 }
 
+QRectF StatsView::plotArea() const
+{
+	return plotRect;
+}
+
 void StatsView::plotAreaChanged(const QSizeF &s)
 {
 	// Make sure that image is at least one pixel wide / high, otherwise

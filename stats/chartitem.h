@@ -62,8 +62,8 @@ protected:
 	std::unique_ptr<QImage> img;
 	void setTextureDirty();
 	void setPositionDirty();
-private:
 	QRectF rect;
+private:
 	bool positionDirty;		// true if the position changed since last render
 	bool textureDirty;		// true if the pixmap changed since last render
 	std::unique_ptr<QSGTexture> texture;
@@ -85,6 +85,7 @@ private:
 class ChartTextItem : public ChartPixmapItem {
 public:
 	ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const std::vector<QString> &text, bool center);
+	ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const QString &text);
 	void setColor(const QColor &color);
 private:
 	QFont f;
@@ -95,6 +96,16 @@ private:
 		double width;
 	};
 	std::vector<Item> items;
+};
+
+// A pie chart item: draws disk segments onto a pixmap.
+class ChartPieItem : public ChartPixmapItem {
+public:
+	ChartPieItem(StatsView &v, ChartZValue z, double borderWidth);
+	void drawSegment(double from, double to, QColor fill, QColor border); // from and to are relative (0-1 is full disk).
+	void resize(QSizeF size);	// As in base class, but clears the canvas
+private:
+	double borderWidth;
 };
 
 class ChartLineItem : public HideableChartItem<HideableQSGNode<QSGGeometryNode>> {
