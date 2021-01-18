@@ -665,9 +665,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 	}
 
+	property double regularFontsize: subsurfaceTheme.regularPointSize
+
 	FontMetrics {
 		id: fontMetrics
-		font.pointSize: subsurfaceTheme.regularPointSize
+		font.pointSize: regularFontsize
+	}
+
+	onRegularFontsizeChanged: {
+		manager.appendTextToLog("regular font size changed to " + regularFontsize)
+		rootItem.font.pointSize = regularFontsize
 	}
 
 	function setupUnits() {
