@@ -379,7 +379,10 @@ CategoryAxis::CategoryAxis(StatsView &view, const QString &title, const std::vec
 	StatsAxis(view, title, horizontal, true),
 	labelsText(labels)
 {
-	setRange(-0.5, static_cast<double>(labels.size()) + 0.5);
+	if (!labels.empty())
+		setRange(-0.5, static_cast<double>(labels.size()) - 0.5);
+	else
+		setRange(-1.0, 1.0);
 }
 
 // No implementation because the labels are inside ticks and this
