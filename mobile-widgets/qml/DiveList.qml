@@ -278,11 +278,40 @@ Kirigami.ScrollablePage {
 		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip
 		onTriggered: manager.toggleDiveInvalid(currentItem.myData.id)
 	}
+	Timer {
+		// this waits a tenth of a second and then deletes the dive -
+		// this way the Action in the contextDrawer can complete its signal handler before
+		// having the visual QML element going away and being deleted (which could cause a crash)
+		id: delayedDelete
+		interval: 100
+		onTriggered: {
+			var myDiveToDelete = diveToDelete // try to minimize the window for a race
+			diveToDelete = -1
+			if (myDiveToDelete !== -1) {
+				manager.appendTextToLog("now deleting dive id " + myDiveToDelete)
+				manager.deleteDive(myDiveToDelete)
+			} else {
+				manager.appendTextToLog("delayedDelete triggered with dive id -1");
+			}
+		}
+	}
+	property int diveToDelete: -1
 	property QtObject deleteAction: Kirigami.Action {
 		text: qsTr("Delete dive")
 		icon { name: ":/icons/trash-empty.svg" }
 		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip
-		onTriggered: manager.deleteDive(currentItem.myData.id)
+		onTriggered: {
+			if (diveToDelete === -1) {
+				diveToDelete = currentItem.myData.id
+				manager.appendTextToLog("setting timer to delete dive " + diveToDelete)
+				delayedDelete.start()
+				contextDrawer.close()
+				manager.appendTextToLog("closed drawer, done with the action")
+			} else {
+				manager.appendTextToLog("deleteAction triggered with diveToDelete already set to " +
+							diveToDelete + " -- ignoring just to be safe");
+			}
+		}
 	}
 	property QtObject mapAction: Kirigami.Action {
 		text: qsTr("Show on map")
