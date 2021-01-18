@@ -116,7 +116,7 @@ bool ScatterSeries::hover(QPointF pos)
 	highlighted = std::move(newHighlighted);
 
 	if (highlighted.empty()) {
-		information.reset();
+		information->setVisible(false);
 		return false;
 	} else {
 		if (!information)
@@ -148,6 +148,7 @@ bool ScatterSeries::hover(QPointF pos)
 		}
 
 		information->setText(text, pos);
+		information->setVisible(true);
 		return true;
 	}
 }

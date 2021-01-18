@@ -20,7 +20,10 @@ void StatsGrid::updatePositions()
 
 	// We probably should be smarter and reuse existing lines.
 	// For now, this does it.
+	for (auto &line: lines)
+		view.deleteChartItem(line);
 	lines.clear();
+
 	if (xtics.empty() || ytics.empty())
 		return;
 

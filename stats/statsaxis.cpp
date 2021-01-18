@@ -159,6 +159,9 @@ void StatsAxis::setSize(double sizeIn)
 {
 	size = sizeIn;
 
+	// Ticks (and labels) should probably be reused. For now, clear them.
+	for (Tick &tick: ticks)
+		view.deleteChartItem(tick.item);
 	labels.clear();
 	ticks.clear();
 	updateLabels();

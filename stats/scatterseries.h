@@ -4,6 +4,7 @@
 #ifndef SCATTER_SERIES_H
 #define SCATTER_SERIES_H
 
+#include "statshelper.h"
 #include "statsseries.h"
 
 #include <memory>
@@ -32,7 +33,7 @@ private:
 	std::vector<int> getItemsUnderMouse(const QPointF &f) const;
 
 	struct Item {
-		std::unique_ptr<ChartScatterItem> item;
+		ChartItemPtr<ChartScatterItem> item;
 		dive *d;
 		double pos, value;
 		Item(StatsView &view, ScatterSeries *series, dive *d, double pos, double value);
@@ -40,7 +41,7 @@ private:
 		void highlight(bool highlight);
 	};
 
-	std::unique_ptr<InformationBox> information;
+	ChartItemPtr<InformationBox> information;
 	std::vector<Item> items;
 	std::vector<int> highlighted;
 	const StatsVariable &varX;

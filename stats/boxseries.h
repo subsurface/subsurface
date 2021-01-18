@@ -34,7 +34,7 @@ private:
 	int getItemUnderMouse(const QPointF &f);
 
 	struct Item {
-		std::unique_ptr<ChartBoxItem> item;
+		ChartItemPtr<ChartBoxItem> item;
 		double lowerBound, upperBound;
 		StatsQuartiles q;
 		QString binName;
@@ -48,7 +48,7 @@ private:
 	int decimals;
 
 	std::vector<QString> formatInformation(const Item &item) const;
-	std::unique_ptr<InformationBox> information;
+	ChartItemPtr<InformationBox> information;
 	std::vector<std::unique_ptr<Item>> items;
 	int highlighted; // -1: no item highlighted
 };

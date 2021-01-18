@@ -3,6 +3,7 @@
 #define STATS_VIEW_H
 
 #include "statsstate.h"
+#include "statshelper.h"
 #include <memory>
 #include <QFont>
 #include <QImage>
@@ -46,14 +47,24 @@ public:
 	QSizeF size() const;
 	QRectF plotArea() const;
 	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
+	void registerChartItem(ChartItem &item);
 	void registerDirtyChartItem(ChartItem &item);
-	void unregisterDirtyChartItem(ChartItem &item);
-	template <typename T, class... Args>
-	std::unique_ptr<T> createChartItem(Args&&... args);
 
+	// Create a chart item and add it to the scene.
+	// The item must not be deleted by the caller, but can be
+	// scheduled for deletion using deleteChartItem() below.
+	// Most items can be made invisible, which is preferred over deletion.
+	// All items on the scene will be deleted once the chart is reset.
+	template <typename T, class... Args>
+	ChartItemPtr<T> createChartItem(Args&&... args);
+
+	template <typename T>
+	void deleteChartItem(ChartItemPtr<T> &item);
 private slots:
 	void replotIfVisible();
 private:
+	bool resetChart;
+
 	// QtQuick related things
 	QRectF plotRect;
 	QSGNode *updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
@@ -119,17 +130,16 @@ private:
 
 	StatsState state;
 	QFont titleFont;
-	std::vector<std::unique_ptr<StatsAxis>> axes;
-	std::unique_ptr<StatsGrid> grid;
 	std::vector<std::unique_ptr<StatsSeries>> series;
-	std::unique_ptr<Legend> legend;
-	std::vector<std::unique_ptr<QuartileMarker>> quartileMarkers;
-	std::vector<std::unique_ptr<HistogramMarker>> histogramMarkers;
-	std::unique_ptr<ChartTextItem> title;
-	std::unique_ptr<RegressionItem> regressionItem;
+	std::unique_ptr<StatsGrid> grid;
+	std::vector<ChartItemPtr<QuartileMarker>> quartileMarkers;
+	std::vector<ChartItemPtr<HistogramMarker>> histogramMarkers;
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
+	ChartItemPtr<ChartTextItem> title;
+	ChartItemPtr<Legend> legend;
 	Legend *draggedItem;
+	ChartItemPtr<RegressionItem> regressionItem;
 	QPointF dragStartMouse, dragStartItem;
 
 	void hoverEnterEvent(QHoverEvent *event) override;
@@ -138,16 +148,34 @@ private:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	RootNode *rootNode;
-	ChartItem *firstDirtyChartItem, *lastDirtyChartItem;
+
+	// There are three double linked lists of chart items:
+	// clean items, dirty items and items to be deleted.
+	struct ChartItemList {
+		ChartItemList();
+		ChartItem *first, *last;
+		void append(ChartItem &item);
+		void remove(ChartItem &item);
+		void clear();
+		void splice(ChartItemList &list);
+	};
+	ChartItemList cleanItems, dirtyItems, deletedItems;
+	void deleteChartItemInternal(ChartItem &item);
 };
 
 // This implementation detail must be known to users of the class.
 // Perhaps move it into a statsview_impl.h file.
 template <typename T, class... Args>
-std::unique_ptr<T> StatsView::createChartItem(Args&&... args)
+ChartItemPtr<T> StatsView::createChartItem(Args&&... args)
 {
-	std::unique_ptr<T> res(new T(*this, std::forward<Args>(args)...));
-	return res;
+	return ChartItemPtr(new T(*this, std::forward<Args>(args)...));
+}
+
+template <typename T>
+void StatsView::deleteChartItem(ChartItemPtr<T> &item)
+{
+	deleteChartItemInternal(*item);
+	item.reset();
 }
 
 #endif

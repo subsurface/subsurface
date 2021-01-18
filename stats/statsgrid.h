@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 // The background grid of a chart
 
+#include "statshelper.h"
+
 #include <memory>
 #include <vector>
 
@@ -15,5 +17,5 @@ public:
 private:
 	StatsView &view;
 	const StatsAxis &xAxis, &yAxis;
-	std::vector<std::unique_ptr<ChartLineItem>> lines;
+	std::vector<ChartItemPtr<ChartLineItem>> lines;
 };

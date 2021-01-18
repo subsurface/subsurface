@@ -22,13 +22,14 @@ class ChartItem {
 public:
 	virtual void render() = 0;		// Only call on render thread!
 	bool dirty;				// If true, call render() when rebuilding the scene
-	ChartItem *dirtyPrev, *dirtyNext;	// Double linked list of dirty items
+	ChartItem *prev, *next;			// Double linked list of items
 	const ChartZValue zValue;
+	virtual ~ChartItem();			// Attention: must only be called by render thread.
 protected:
 	ChartItem(StatsView &v, ChartZValue z);
-	virtual ~ChartItem();
 	QSizeF sceneSize() const;
 	StatsView &view;
+	void markDirty();
 };
 
 template <typename Node>
@@ -36,9 +37,11 @@ class HideableChartItem : public ChartItem {
 protected:
 	HideableChartItem(StatsView &v, ChartZValue z);
 	std::unique_ptr<Node> node;
-	bool visible;				// Argh. If visibility is set before node is created, we have to cache it.
+	bool visible;
+	bool visibleChanged;
 	template<class... Args>
 	void createNode(Args&&... args);	// Call to create node with visibility flag.
+	void updateVisible();			// Must be called by child class to update visibility flag!
 public:
 	void setVisible(bool visible);
 };
@@ -186,9 +189,11 @@ private:
 template <typename Node>
 void HideableChartItem<Node>::setVisible(bool visibleIn)
 {
+	if (visible == visibleIn)
+		return;
 	visible = visibleIn;
-	if (node)
-		node->setVisible(visible);
+	visibleChanged = true;
+	markDirty();
 }
 
 template <typename Node>
@@ -196,12 +201,21 @@ template<class... Args>
 void HideableChartItem<Node>::createNode(Args&&... args)
 {
 	node.reset(new Node(visible, std::forward<Args>(args)...));
+	visibleChanged = false;
 }
 
 template <typename Node>
 HideableChartItem<Node>::HideableChartItem(StatsView &v, ChartZValue z) : ChartItem(v, z),
-	visible(true)
+	visible(true), visibleChanged(false)
 {
+}
+
+template <typename Node>
+void HideableChartItem<Node>::updateVisible()
+{
+	if (visibleChanged)
+		node->setVisible(visible);
+	visibleChanged = false;
 }
 
 #endif

@@ -3,6 +3,7 @@
 #define STATS_AXIS_H
 
 #include "chartitem.h"
+#include "statshelper.h"
 
 #include <memory>
 #include <vector>
@@ -36,7 +37,7 @@ public:
 protected:
 	StatsAxis(StatsView &view, const QString &title, bool horizontal, bool labelsBetweenTicks);
 
-	std::unique_ptr<ChartLineItem> line;
+	ChartItemPtr<ChartLineItem> line;
 	QString title;
 	double titleWidth;
 
@@ -51,7 +52,7 @@ protected:
 	virtual std::pair<QString, QString> getFirstLastLabel() const = 0;
 
 	struct Tick {
-		std::unique_ptr<ChartLineItem> item;
+		ChartItemPtr<ChartLineItem> item;
 		double pos;
 	};
 	std::vector<Tick> ticks;
