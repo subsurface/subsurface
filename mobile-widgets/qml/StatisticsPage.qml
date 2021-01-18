@@ -15,6 +15,7 @@ Kirigami.Page {
 	bottomPadding: 0
 	width: rootItem.width
 	implicitWidth: rootItem.width
+	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 	property bool wide: width > rootItem.height
 	StatsManager {
 		id: statsManager
@@ -56,6 +57,7 @@ Kirigami.Page {
 					Label {
 						text: chartName
 						font.bold: isHeader
+						color: subsurfaceTheme.textColor
 					}
 				}
 			}
