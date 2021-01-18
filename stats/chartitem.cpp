@@ -224,6 +224,11 @@ ChartTextItem::ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const 
 	resize(QSizeF(totalWidth, totalHeight));
 }
 
+ChartTextItem::ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const QString &text) :
+	ChartTextItem(v, z, f, std::vector<QString>({ text }), true)
+{
+}
+
 void ChartTextItem::setColor(const QColor &c)
 {
 	img->fill(Qt::transparent);
@@ -238,6 +243,31 @@ void ChartTextItem::setColor(const QColor &c)
 		y += fontHeight;
 	}
 	setTextureDirty();
+}
+
+ChartPieItem::ChartPieItem(StatsView &v, ChartZValue z, double borderWidth) : ChartPixmapItem(v, z),
+	borderWidth(borderWidth)
+{
+}
+
+void ChartPieItem::drawSegment(double from, double to, QColor fill, QColor border)
+{
+	painter->setPen(QPen(border, borderWidth));
+	painter->setBrush(QBrush(fill));
+	// For whatever obscure reason, angles of pie pieces are given as 16th of a degree...?
+	// Angles increase CCW, whereas pie charts usually are read CW. Therfore, startAngle
+	// is dervied from "from" and subtracted from the origin angle at 12:00.
+	int startAngle = 90 * 16 - static_cast<int>(round(to * 360.0 * 16.0));
+	int spanAngle = static_cast<int>(round((to - from) * 360.0 * 16.0));
+	QRectF drawRect(QPointF(0.0, 0.0), rect.size());
+	painter->drawPie(drawRect, startAngle, spanAngle);
+	setTextureDirty();
+}
+
+void ChartPieItem::resize(QSizeF size)
+{
+	ChartPixmapItem::resize(size);
+	img->fill(Qt::transparent);
 }
 
 ChartLineItem::ChartLineItem(StatsView &v, ChartZValue z, QColor color, double width) : HideableChartItem(v, z),
