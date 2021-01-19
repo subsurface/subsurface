@@ -752,10 +752,10 @@ void StatsView::RegressionLine::updatePosition()
 	QPolygonF poly;
 	for (double x = minX; x <= maxX + 1; x += (maxX - minX) / 100)
 		poly << QPointF(xAxis->toScreen(x),
-			yAxis->toScreen(reg.a * x + reg.b + 2.0 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
+			yAxis->toScreen(reg.a * x + reg.b + 1.960 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
 	for (double x = maxX; x >= minX - 1; x -= (maxX - minX) / 100)
 		poly << QPointF(xAxis->toScreen(x),
-			yAxis->toScreen(reg.a * x + reg.b - 2.0 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
+			yAxis->toScreen(reg.a * x + reg.b - 1.960 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
 	QRectF box(QPoint(xAxis->toScreen(minX), yAxis->toScreen(minY)), QPoint(xAxis->toScreen(maxX), yAxis->toScreen(maxY)));
 
 	item->setPolygon(poly.intersected(box));
