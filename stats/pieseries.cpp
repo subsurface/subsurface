@@ -17,7 +17,7 @@ static const double innerLabelRadius = 0.75; // 1.0 = at outer border of pie
 static const double outerLabelRadius = 1.01; // 1.0 = at outer border of pie
 
 PieSeries::Item::Item(StatsView &view, const QString &name, int from, int count, int totalCount,
-		      int bin_nr, int numBins, bool labels) :
+		      int bin_nr, int numBins) :
 	name(name),
 	count(count)
 {
@@ -30,14 +30,12 @@ PieSeries::Item::Item(StatsView &view, const QString &name, int from, int count,
 	innerLabelPos = QPointF(cos(meanAngle) * innerLabelRadius, -sin(meanAngle) * innerLabelRadius);
 	outerLabelPos = QPointF(cos(meanAngle) * outerLabelRadius, -sin(meanAngle) * outerLabelRadius);
 
-	if (labels) {
-		double percentage = count * 100.0 / totalCount;
-		QString innerLabelText = QStringLiteral("%1\%").arg(loc.toString(percentage, 'f', 1));
-		innerLabel = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, innerLabelText);
+	double percentage = count * 100.0 / totalCount;
+	QString innerLabelText = QStringLiteral("%1\%").arg(loc.toString(percentage, 'f', 1));
+	innerLabel = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, innerLabelText);
 
-		outerLabel = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, name);
-		outerLabel->setColor(darkLabelColor);
-	}
+	outerLabel = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, name);
+	outerLabel->setColor(darkLabelColor);
 }
 
 void PieSeries::Item::updatePositions(const QPointF &center, double radius)
@@ -75,7 +73,7 @@ void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, 
 }
 
 PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
-		     const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels) :
+		     const std::vector<std::pair<QString, int>> &data, bool keepOrder) :
 	StatsSeries(view, xAxis, yAxis),
 	item(view.createChartItem<ChartPieItem>(ChartZValue::Series, pieBorderWidth)),
 	categoryName(categoryName),
@@ -137,7 +135,7 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 	int act = 0;
 	for (auto it2 = sorted.begin(); it2 != it; ++it2) {
 		int count = data[*it2].second;
-		items.emplace_back(view, data[*it2].first, act, count, totalCount, (int)items.size(), numBins, labels);
+		items.emplace_back(view, data[*it2].first, act, count, totalCount, (int)items.size(), numBins);
 		act += count;
 	}
 
@@ -147,7 +145,7 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 		for (auto it2 = it; it2 != sorted.end(); ++it2)
 			other.push_back({ data[*it2].first, data[*it2].second });
 		QString name = StatsTranslations::tr("other (%1 items)").arg(other.size());
-		items.emplace_back(view, name, act, totalCount - act, totalCount, (int)items.size(), numBins, labels);
+		items.emplace_back(view, name, act, totalCount - act, totalCount, (int)items.size(), numBins);
 	}
 }
 
