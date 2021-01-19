@@ -732,7 +732,7 @@ void DivePlannerPointsModel::setStartDate(const QDate &date)
 void DivePlannerPointsModel::setStartTime(const QTime &t)
 {
 	startTime.setTime(t);
-		diveplan.when = dateTimeToTimestamp(startTime);
+	diveplan.when = dateTimeToTimestamp(startTime);
 	displayed_dive.when = diveplan.when;
 	emitDataChanged();
 }

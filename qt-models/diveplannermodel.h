@@ -40,14 +40,11 @@ public:
 	void setPlanMode(Mode mode);
 	bool isPlanner();
 	void createSimpleDive();
-	void setupStartTime();
 	void clear();
 	Mode currentMode() const;
 	bool setRecalc(bool recalc);
 	bool recalcQ();
 	bool tankInUse(int cylinderid);
-	void setupCylinders();
-	bool updateMaxDepth();
 	CylindersModel *cylindersModel();
 
 	int ascrate75Display();
@@ -63,7 +60,6 @@ public:
 	divedatapoint at(int row);
 	int size();
 	struct diveplan &getDiveplan();
-	int lastEnteredPoint();
 	void removeDeco();
 	static bool addingDeco;
 	struct deco_state final_deco_state;
@@ -122,6 +118,10 @@ signals:
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
+	void setupStartTime();
+	void setupCylinders();
+	int lastEnteredPoint();
+	bool updateMaxDepth();
 	void createPlan(bool replanCopy);
 	struct diveplan diveplan;
 	struct divedatapoint *cloneDiveplan(struct diveplan *plan_src, struct diveplan *plan_copy);
