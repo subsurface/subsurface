@@ -21,7 +21,7 @@ public:
 	// If keepOrder is false, bins will be sorted by size, otherwise the sorting
 	// of the shown bins will be retained. Small bins are omitted for clarity.
 	PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
-		  const std::vector<std::pair<QString, int>> &data, bool keepOrder, bool labels);
+		  const std::vector<std::pair<QString, int>> &data, bool keepOrder);
 	~PieSeries();
 
 	void updatePositions() override;
@@ -45,7 +45,7 @@ private:
 		int count;
 		QPointF innerLabelPos, outerLabelPos; // With respect to a (-1, -1)-(1, 1) rectangle.
 		Item(StatsView &view, const QString &name, int from, int count, int totalCount,
-		     int bin_nr, int numBins, bool labels);
+		     int bin_nr, int numBins);
 		void updatePositions(const QPointF &center, double radius);
 		void highlight(ChartPieItem &item, int bin_nr, bool highlight, int numBins);
 	};

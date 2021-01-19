@@ -80,13 +80,17 @@ void StatsView::mouseReleaseEvent(QMouseEvent *)
 	}
 }
 
+// Define a hideable dummy QSG node that is used as a parent node to make
+// all objects of a z-level visible / invisible.
+using ZNode = HideableQSGNode<QSGNode>;
+
 class RootNode : public QSGNode
 {
 public:
 	RootNode(QQuickWindow *w);
 	std::unique_ptr<QSGRectangleNode> backgroundNode; // solid background
 	// We entertain one node per Z-level.
-	std::array<std::unique_ptr<QSGNode>, (size_t)ChartZValue::Count> zNodes;
+	std::array<std::unique_ptr<ZNode>, (size_t)ChartZValue::Count> zNodes;
 };
 
 RootNode::RootNode(QQuickWindow *w)
@@ -99,7 +103,7 @@ RootNode::RootNode(QQuickWindow *w)
 	appendChildNode(backgroundNode.get());
 
 	for (auto &zNode: zNodes) {
-		zNode.reset(new QSGNode);
+		zNode.reset(new ZNode(true));
 		appendChildNode(zNode.get());
 	}
 }
@@ -268,8 +272,10 @@ void StatsView::plotAreaChanged(const QSizeF &s)
 		marker->updatePosition();
 	if (regressionItem)
 		regressionItem->updatePosition();
-	for (auto &marker: histogramMarkers)
-		marker->updatePosition();
+	if (meanMarker)
+		meanMarker->updatePosition();
+	if (medianMarker)
+		medianMarker->updatePosition();
 	if (legend)
 		legend->resize();
 	updateTitlePos();
@@ -369,6 +375,8 @@ void StatsView::reset()
 	title.reset();
 	legend.reset();
 	regressionItem.reset();
+	meanMarker.reset();
+	medianMarker.reset();
 
 	// Mark clean and dirty chart items for deletion
 	cleanItems.splice(deletedItems);
@@ -376,7 +384,6 @@ void StatsView::reset()
 
 	series.clear();
 	quartileMarkers.clear();
-	histogramMarkers.clear();
 	grid.reset();
 }
 
@@ -384,7 +391,15 @@ void StatsView::plot(const StatsState &stateIn)
 {
 	state = stateIn;
 	plotChart();
+	updateFeatures(); // Show / hide chart features, such as legend, etc.
 	plotAreaChanged(boundingRect().size());
+	update();
+}
+
+void StatsView::updateFeatures(const StatsState &stateIn)
+{
+	state = stateIn;
+	updateFeatures();
 	update();
 }
 
@@ -398,27 +413,26 @@ void StatsView::plotChart()
 	switch (state.type) {
 	case ChartType::DiscreteBar:
 		return plotBarChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
-				    state.var2Binner, state.labels, state.legend);
+				    state.var2Binner);
 	case ChartType::DiscreteValue:
 		return plotValueChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
-				      state.var2Operation, state.labels);
+				      state.var2Operation);
 	case ChartType::DiscreteCount:
-		return plotDiscreteCountChart(dives, state.subtype, state.var1, state.var1Binner, state.labels);
+		return plotDiscreteCountChart(dives, state.subtype, state.var1, state.var1Binner);
 	case ChartType::Pie:
-		return plotPieChart(dives, state.var1, state.var1Binner, state.labels, state.legend);
+		return plotPieChart(dives, state.var1, state.var1Binner);
 	case ChartType::DiscreteBox:
 		return plotDiscreteBoxChart(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::DiscreteScatter:
-		return plotDiscreteScatter(dives, state.var1, state.var1Binner, state.var2, state.quartiles);
+		return plotDiscreteScatter(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::HistogramCount:
-		return plotHistogramCountChart(dives, state.subtype, state.var1, state.var1Binner,
-					       state.labels, state.median, state.mean);
+		return plotHistogramCountChart(dives, state.subtype, state.var1, state.var1Binner);
 	case ChartType::HistogramValue:
 		return plotHistogramValueChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
-					       state.var2Operation, state.labels);
+					       state.var2Operation);
 	case ChartType::HistogramStacked:
 		return plotHistogramStackedChart(dives, state.subtype, state.var1, state.var1Binner,
-						 state.var2, state.var2Binner, state.labels, state.legend);
+						 state.var2, state.var2Binner);
 	case ChartType::HistogramBox:
 		return plotHistogramBoxChart(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::ScatterPlot:
@@ -429,6 +443,25 @@ void StatsView::plotChart()
 		qWarning("Unknown chart type: %d", (int)state.type);
 		return;
 	}
+}
+
+void StatsView::updateFeatures()
+{
+	if (legend)
+		legend->setVisible(state.legend);
+
+	// For labels, we are brutal: simply show/hide the whole z-level with the labels
+	if (rootNode)
+		rootNode->zNodes[(int)ChartZValue::SeriesLabels]->setVisible(state.labels);
+
+	if (meanMarker)
+		meanMarker->setVisible(state.mean);
+
+	if (medianMarker)
+		medianMarker->setVisible(state.median);
+
+	for (ChartItemPtr<QuartileMarker> &marker: quartileMarkers)
+		marker->setVisible(state.quartiles);
 }
 
 template<typename T>
@@ -517,14 +550,12 @@ static std::vector<QString> makePercentageLabels(int count, int total, bool isHo
 
 // From a list of counts, make (count, label) pairs, where the label
 // formats the total number and the percentage of dives.
-static std::vector<std::pair<int, std::vector<QString>>> makeCountLabels(const std::vector<int> &counts, int total,
-									 bool labels, bool isHorizontal)
+static std::vector<std::pair<int, std::vector<QString>>> makeCountLabels(const std::vector<int> &counts, int total, bool isHorizontal)
 {
 	std::vector<std::pair<int, std::vector<QString>>> count_labels;
 	count_labels.reserve(counts.size());
 	for (int count: counts) {
-		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
-						    : std::vector<QString>();
+		std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
 		count_labels.push_back(std::make_pair(count, label));
 	}
 	return count_labels;
@@ -533,7 +564,7 @@ static std::vector<std::pair<int, std::vector<QString>>> makeCountLabels(const s
 void StatsView::plotBarChart(const std::vector<dive *> &dives,
 			     ChartSubType subType,
 			     const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-			     const StatsVariable *valueVariable, const StatsBinner *valueBinner, bool labels, bool showLegend)
+			     const StatsVariable *valueVariable, const StatsBinner *valueBinner)
 {
 	if (!categoryBinner || !valueBinner)
 		return;
@@ -561,14 +592,13 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 		setAxes(catAxis, valAxis);
 
 	// Paint legend first, because the bin-names will be moved away from.
-	if (showLegend)
-		legend = createChartItem<Legend>(data.vbinNames);
+	legend = createChartItem<Legend>(data.vbinNames);
 
 	std::vector<BarSeries::MultiItem> items;
 	items.reserve(data.hbin_counts.size());
 	double pos = 0.0;
 	for (auto &[hbin, counts, total]: data.hbin_counts) {
-		items.push_back({ pos - 0.5, pos + 0.5, makeCountLabels(counts, total, labels, isHorizontal),
+		items.push_back({ pos - 0.5, pos + 0.5, makeCountLabels(counts, total, isHorizontal),
 				  categoryBinner->formatWithUnit(*hbin) });
 		pos += 1.0;
 	}
@@ -645,8 +675,7 @@ static std::pair<double, double> getMinMaxValue(const std::vector<StatsBinOp> &b
 void StatsView::plotValueChart(const std::vector<dive *> &dives,
 			       ChartSubType subType,
 			       const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-			       const StatsVariable *valueVariable, StatsOperation valueAxisOperation,
-			       bool labels)
+			       const StatsVariable *valueVariable, StatsOperation valueAxisOperation)
 {
 	if (!categoryBinner)
 		return;
@@ -681,8 +710,7 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 		if (res.isValid()) {
 			double height = res.get(valueAxisOperation);
 			QString value = QString("%L1").arg(height, 0, 'f', decimals);
-			std::vector<QString> label = labels ? std::vector<QString> { value }
-							    : std::vector<QString>();
+			std::vector<QString> label = std::vector<QString> { value };
 			items.push_back({ pos - 0.5, pos + 0.5, height, label,
 					  categoryBinner->formatWithUnit(*bin), res });
 		}
@@ -713,8 +741,7 @@ static int getMaxCount(const std::vector<T> &bins)
 
 void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 				      ChartSubType subType,
-				      const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-				      bool labels)
+				      const StatsVariable *categoryVariable, const StatsBinner *categoryBinner)
 {
 	if (!categoryBinner)
 		return;
@@ -745,8 +772,7 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 	items.reserve(categoryBins.size());
 	double pos = 0.0;
 	for (auto const &[bin, count]: categoryBins) {
-		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
-						    : std::vector<QString>();
+		std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
 		items.push_back({ pos - 0.5, pos + 0.5, count, label,
 				  categoryBinner->formatWithUnit(*bin), total });
 		pos += 1.0;
@@ -756,8 +782,7 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 }
 
 void StatsView::plotPieChart(const std::vector<dive *> &dives,
-			     const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-			     bool labels, bool showLegend)
+			     const StatsVariable *categoryVariable, const StatsBinner *categoryBinner)
 {
 	if (!categoryBinner)
 		return;
@@ -776,10 +801,9 @@ void StatsView::plotPieChart(const std::vector<dive *> &dives,
 		data.emplace_back(categoryBinner->formatWithUnit(*bin), count);
 
 	bool keepOrder = categoryVariable->type() != StatsVariable::Type::Discrete;
-	PieSeries *series = createSeries<PieSeries>(categoryVariable->name(), data, keepOrder, labels);
+	PieSeries *series = createSeries<PieSeries>(categoryVariable->name(), data, keepOrder);
 
-	if (showLegend)
-		legend = createChartItem<Legend>(series->binNames());
+	legend = createChartItem<Legend>(series->binNames());
 }
 
 void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
@@ -818,7 +842,7 @@ void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
 
 void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 				    const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-				    const StatsVariable *valueVariable, bool quartiles)
+				    const StatsVariable *valueVariable)
 {
 	if (!categoryBinner)
 		return;
@@ -846,24 +870,17 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 	for (const auto &[bin, array]: categoryBins) {
 		for (auto [v, d]: array)
 			series->append(d, x, v);
-		if (quartiles) {
-			StatsQuartiles quartiles = StatsVariable::quartiles(array);
-			if (quartiles.isValid()) {
-				quartileMarkers.push_back(createChartItem<QuartileMarker>(
-						x, quartiles.q1, catAxis, valAxis));
-				quartileMarkers.push_back(createChartItem<QuartileMarker>(
-						x, quartiles.q2, catAxis, valAxis));
-				quartileMarkers.push_back(createChartItem<QuartileMarker>(
-						x, quartiles.q3, catAxis, valAxis));
-			}
+		StatsQuartiles quartiles = StatsVariable::quartiles(array);
+		if (quartiles.isValid()) {
+			quartileMarkers.push_back(createChartItem<QuartileMarker>(
+					x, quartiles.q1, catAxis, valAxis));
+			quartileMarkers.push_back(createChartItem<QuartileMarker>(
+					x, quartiles.q2, catAxis, valAxis));
+			quartileMarkers.push_back(createChartItem<QuartileMarker>(
+					x, quartiles.q3, catAxis, valAxis));
 		}
 		x += 1.0;
 	}
-}
-
-void StatsView::addHistogramMarker(double pos, QColor color, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis)
-{
-	histogramMarkers.push_back(createChartItem<HistogramMarker>(pos, isHorizontal, color, xAxis, yAxis));
 }
 
 // Yikes, we get our data in different kinds of (bin, value) pairs.
@@ -890,8 +907,7 @@ HistogramAxis *StatsView::createHistogramAxis(const QString &name, const StatsBi
 
 void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 					ChartSubType subType,
-					const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-					bool labels, bool showMedian, bool showMean)
+					const StatsVariable *categoryVariable, const StatsBinner *categoryBinner)
 {
 	if (!categoryBinner)
 		return;
@@ -924,8 +940,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	for (auto const &[bin, count]: categoryBins) {
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
-		std::vector<QString> label = labels ? makePercentageLabels(count, total, isHorizontal)
-						    : std::vector<QString>();
+		std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
 
 		items.push_back({ lowerBound, upperBound, count, label,
 				  categoryBinner->formatWithUnit(*bin), total });
@@ -934,24 +949,19 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), items);
 
 	if (categoryVariable->type() == StatsVariable::Type::Numeric) {
-		if (showMean) {
-			double mean = categoryVariable->mean(dives);
-			if (!std::isnan(mean))
-				addHistogramMarker(mean, Qt::green, isHorizontal, xAxis, yAxis);
-		}
-		if (showMedian) {
-			double median = categoryVariable->quartiles(dives).q2;
-			if (!std::isnan(median))
-				addHistogramMarker(median, Qt::red, isHorizontal, xAxis, yAxis);
-		}
+		double mean = categoryVariable->mean(dives);
+		if (!std::isnan(mean))
+			meanMarker = createChartItem<HistogramMarker>(mean, isHorizontal, Qt::green, xAxis, yAxis);
+		double median = categoryVariable->quartiles(dives).q2;
+		if (!std::isnan(median))
+			medianMarker = createChartItem<HistogramMarker>(median, isHorizontal, Qt::red, xAxis, yAxis);
 	}
 }
 
 void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 					ChartSubType subType,
 					const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-					const StatsVariable *valueVariable, StatsOperation valueAxisOperation,
-					bool labels)
+					const StatsVariable *valueVariable, StatsOperation valueAxisOperation)
 {
 	if (!categoryBinner)
 		return;
@@ -990,8 +1000,7 @@ void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
 		QString value = QString("%L1").arg(height, 0, 'f', decimals);
-		std::vector<QString> label = labels ? std::vector<QString> { value }
-						    : std::vector<QString>();
+		std::vector<QString> label = std::vector<QString> { value };
 		items.push_back({ lowerBound, upperBound, height, label,
 				  categoryBinner->formatWithUnit(*bin), res });
 	}
@@ -1002,7 +1011,7 @@ void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 					  ChartSubType subType,
 					  const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-					  const StatsVariable *valueVariable, const StatsBinner *valueBinner, bool labels, bool showLegend)
+					  const StatsVariable *valueVariable, const StatsBinner *valueBinner)
 {
 	if (!categoryBinner || !valueBinner)
 		return;
@@ -1018,8 +1027,7 @@ void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 						     *categoryBinner, categoryBins, !isHorizontal);
 
 	BarPlotData data(categoryBins, *valueBinner);
-	if (showLegend)
-		legend = createChartItem<Legend>(data.vbinNames);
+	legend = createChartItem<Legend>(data.vbinNames);
 
 	CountAxis *valAxis = createCountAxis(data.maxCategoryCount, isHorizontal);
 
@@ -1034,7 +1042,7 @@ void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 	for (auto &[hbin, counts, total]: data.hbin_counts) {
 		double lowerBound = categoryBinner->lowerBoundToFloat(*hbin);
 		double upperBound = categoryBinner->upperBoundToFloat(*hbin);
-		items.push_back({ lowerBound, upperBound, makeCountLabels(counts, total, labels, isHorizontal),
+		items.push_back({ lowerBound, upperBound, makeCountLabels(counts, total, isHorizontal),
 				  categoryBinner->formatWithUnit(*hbin) });
 	}
 
