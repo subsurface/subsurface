@@ -68,6 +68,7 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 			dragStartItem = rect.topLeft();
 			draggedItem = &*legend;
 			grabMouse();
+			setKeepMouseGrab(true); // don't allow Qt to steal the grab
 		}
 	}
 }
