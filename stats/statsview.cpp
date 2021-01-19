@@ -956,10 +956,10 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	if (categoryVariable->type() == StatsVariable::Type::Numeric) {
 		double mean = categoryVariable->mean(dives);
 		if (!std::isnan(mean))
-			meanMarker = createChartItem<HistogramMarker>(mean, isHorizontal, Qt::green, xAxis, yAxis);
+			meanMarker = createChartItem<HistogramMarker>(mean, isHorizontal, meanMarkerColor, xAxis, yAxis);
 		double median = categoryVariable->quartiles(dives).q2;
 		if (!std::isnan(median))
-			medianMarker = createChartItem<HistogramMarker>(median, isHorizontal, Qt::red, xAxis, yAxis);
+			medianMarker = createChartItem<HistogramMarker>(median, isHorizontal, medianMarkerColor, xAxis, yAxis);
 	}
 }
 
