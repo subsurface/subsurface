@@ -12,8 +12,6 @@ static const double legendBoxBorderSize = 1.0;
 static const double legendBoxBorderRadius = 4.0;	// radius of rounded corners
 static const double legendBoxScale = 0.8;		// 1.0: text-height of the used font
 static const double legendInternalBorderSize = 2.0;
-static const QColor legendColor(0x00, 0x8e, 0xcc, 192); // Note: fourth argument is opacity
-static const QColor legendBorderColor(Qt::black);
 
 Legend::Legend(StatsView &view, const std::vector<QString> &names) :
 	ChartRectItem(view, ChartZValue::Legend,
