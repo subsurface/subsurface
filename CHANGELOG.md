@@ -1,3 +1,4 @@
+- mobile: add GF fields to adjust Buhlmann algorithm parameters for calculated ceiling
 - undo: save to git after editing weights [#3159]
 - undo: reset dive-mode on undo of set-point addition
 - desktop: complete rewrite of the statistics code, significantly expanding capabilities

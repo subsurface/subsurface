@@ -622,7 +622,7 @@ TemplatePage {
 					checked: PrefTechnicalDetails.dcceiling
 					onClicked: {
 						PrefTechnicalDetails.dcceiling = checked
-						rootItem.settingChanged()
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -632,6 +632,30 @@ TemplatePage {
 					checked: PrefTechnicalDetails.calcceiling
 					onClicked: {
 						PrefTechnicalDetails.calcceiling = checked
+						rootItem.settingsChanged()
+					}
+				}
+				TemplateLabel {
+					text: qsTr("GFLow")
+				}
+				TemplateTextField {
+					id: gfLow
+					text: PrefTechnicalDetails.gflow
+					inputMask: "99"
+					onEditingFinished: {
+						PrefTechnicalDetails.gflow = gfLow.text
+						rootItem.settingsChanged()
+					}
+				}
+				TemplateLabel {
+					text: qsTr("GFHigh")
+				}
+				TemplateTextField {
+					id: gfHigh
+					text: PrefTechnicalDetails.gfhigh
+					inputMask: "99"
+					onEditingFinished: {
+						PrefTechnicalDetails.gfhigh = gfHigh.text
 						rootItem.settingsChanged()
 					}
 				}
