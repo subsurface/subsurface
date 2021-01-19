@@ -460,6 +460,11 @@ void StatsView::updateFeatures()
 	if (medianMarker)
 		medianMarker->setVisible(state.median);
 
+	if (regressionItem) {
+		regressionItem->setVisible(state.regression || state.confidence);
+		if (state.regression || state.confidence)
+			regressionItem->setFeatures(state.regression, state.confidence);
+	}
 	for (ChartItemPtr<QuartileMarker> &marker: quartileMarkers)
 		marker->setVisible(state.quartiles);
 }

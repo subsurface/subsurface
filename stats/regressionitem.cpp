@@ -11,7 +11,8 @@ static const double regressionLineWidth = 2.0;
 RegressionItem::RegressionItem(StatsView &view, regression_data reg,
 						   StatsAxis *xAxis, StatsAxis *yAxis) :
 	ChartPixmapItem(view, ChartZValue::ChartFeatures),
-	xAxis(xAxis), yAxis(yAxis), reg(reg)
+	xAxis(xAxis), yAxis(yAxis), reg(reg),
+	regression(true), confidence(true)
 {
 }
 
@@ -19,6 +20,16 @@ RegressionItem::~RegressionItem()
 {
 }
 
+void RegressionItem::setFeatures(bool regressionIn, bool confidenceIn)
+{
+	if (regressionIn == regression && confidenceIn == confidence)
+		return;
+	regression = regressionIn;
+	confidence = confidenceIn;
+	updatePosition();
+}
+
+// Note: this calculates the confidence area, even if it isn't shown. Might want to optimize this.
 void RegressionItem::updatePosition()
 {
 	if (!xAxis || !yAxis)
@@ -74,14 +85,18 @@ void RegressionItem::updatePosition()
 	ChartPixmapItem::resize(QSizeF(screenMaxX - screenMinX, screenMaxY - screenMinY));
 
 	img->fill(Qt::transparent);
-	QColor col(regressionItemColor);
-	col.setAlphaF(reg.r2);
-	painter->setPen(Qt::NoPen);
-	painter->setBrush(QBrush(col));
-	painter->drawPolygon(poly);
+	if (confidence) {
+		QColor col(regressionItemColor);
+		col.setAlphaF(reg.r2);
+		painter->setPen(Qt::NoPen);
+		painter->setBrush(QBrush(col));
+		painter->drawPolygon(poly);
+	}
 
-	painter->setPen(QPen(regressionItemColor, regressionLineWidth));
-	painter->drawLine(QPointF(linePolygon[0]), QPointF(linePolygon[1]));
+	if (regression) {
+		painter->setPen(QPen(regressionItemColor, regressionLineWidth));
+		painter->drawLine(QPointF(linePolygon[0]), QPointF(linePolygon[1]));
+	}
 
 	ChartPixmapItem::setPos(offset);
 }

@@ -23,11 +23,13 @@ enum class SupportedVariable {
 	Numeric
 };
 
-static const int ChartFeatureLabels =	 1 << 0;
-static const int ChartFeatureLegend =	 1 << 1;
-static const int ChartFeatureMedian =	 1 << 2;
-static const int ChartFeatureMean =	 1 << 3;
-static const int ChartFeatureQuartiles = 1 << 4;
+static const int ChartFeatureLabels =	  1 << 0;
+static const int ChartFeatureLegend =	  1 << 1;
+static const int ChartFeatureMedian =	  1 << 2;
+static const int ChartFeatureMean =	  1 << 3;
+static const int ChartFeatureQuartiles =  1 << 4;
+static const int ChartFeatureRegression = 1 << 5;
+static const int ChartFeatureConfidence = 1 << 6;
 
 static const struct ChartTypeDesc {
 	ChartType id;
@@ -45,7 +47,7 @@ static const struct ChartTypeDesc {
 		SupportedVariable::Numeric,
 		false, false, false,
 		{ ChartSubType::Dots },
-		0
+		ChartFeatureRegression | ChartFeatureConfidence
 	},
 	{
 		ChartType::HistogramCount,
@@ -161,6 +163,8 @@ StatsState::StatsState() :
 	median(false),
 	mean(false),
 	quartiles(true),
+	regression(true),
+	confidence(true),
 	var1Binner(nullptr),
 	var2Binner(nullptr),
 	var2Operation(StatsOperation::Invalid)
@@ -353,19 +357,23 @@ static StatsState::VariableList createOperationsList(const StatsVariable *var, S
 	return res;
 }
 
-static std::vector<StatsState::Feature> createFeaturesList(int chartFeatures, bool labels, bool legend, bool median, bool mean, bool quartiles)
+static std::vector<StatsState::Feature> createFeaturesList(int chartFeatures, const StatsState &state)
 {
 	std::vector<StatsState::Feature> res;
 	if (chartFeatures & ChartFeatureLabels)
-		res.push_back({ StatsTranslations::tr("labels"), ChartFeatureLabels, labels });
+		res.push_back({ StatsTranslations::tr("labels"), ChartFeatureLabels, state.labels });
 	if (chartFeatures & ChartFeatureLegend)
-		res.push_back({ StatsTranslations::tr("legend"), ChartFeatureLegend, legend });
+		res.push_back({ StatsTranslations::tr("legend"), ChartFeatureLegend, state.legend });
 	if (chartFeatures & ChartFeatureMedian)
-		res.push_back({ StatsTranslations::tr("median"), ChartFeatureMedian, median });
+		res.push_back({ StatsTranslations::tr("median"), ChartFeatureMedian, state.median });
 	if (chartFeatures & ChartFeatureMean)
-		res.push_back({ StatsTranslations::tr("mean"), ChartFeatureMean, mean });
+		res.push_back({ StatsTranslations::tr("mean"), ChartFeatureMean, state.mean });
 	if (chartFeatures & ChartFeatureQuartiles)
-		res.push_back({ StatsTranslations::tr("quartiles"), ChartFeatureQuartiles, quartiles });
+		res.push_back({ StatsTranslations::tr("quartiles"), ChartFeatureQuartiles, state.quartiles });
+	if (chartFeatures & ChartFeatureRegression)
+		res.push_back({ StatsTranslations::tr("linear regression"), ChartFeatureRegression, state.regression });
+	if (chartFeatures & ChartFeatureConfidence)
+		res.push_back({ StatsTranslations::tr("95% confidence area"), ChartFeatureConfidence, state.confidence });
 	return res;
 }
 
@@ -381,7 +389,7 @@ StatsState::UIState StatsState::getUIState() const
 	// Second variable can only be binned if first variable is binned.
 	res.binners2 = createBinnerList(var2, var2Binner, var1Binner != nullptr, true);
 	res.operations2 = createOperationsList(var2, var2Operation, var1Binner);
-	res.features = createFeaturesList(chartFeatures, labels, legend, median, mean, quartiles);
+	res.features = createFeaturesList(chartFeatures, *this);
 	return res;
 }
 
@@ -471,6 +479,10 @@ void StatsState::featureChanged(int id, bool state)
 		mean = state;
 	else if (id == ChartFeatureQuartiles)
 		quartiles = state;
+	else if (id == ChartFeatureRegression)
+		regression = state;
+	else if (id == ChartFeatureConfidence)
+		confidence = state;
 }
 
 // Creates the new chart-type from the current chart-type and a list of possible chart types.

@@ -108,6 +108,8 @@ public:
 	bool median;
 	bool mean;
 	bool quartiles;
+	bool regression;
+	bool confidence;
 	const StatsBinner *var1Binner;	// nullptr: undefined
 	const StatsBinner *var2Binner;	// nullptr: undefined
 	StatsOperation var2Operation;
