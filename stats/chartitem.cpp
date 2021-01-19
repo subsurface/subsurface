@@ -117,7 +117,7 @@ ChartScatterItem::~ChartScatterItem()
 {
 }
 
-static std::unique_ptr<QSGTexture> createScatterTexture(StatsView &view, const QColor &color, const QColor &borderColor)
+static QSGTexture *createScatterTexture(StatsView &view, const QColor &color, const QColor &borderColor)
 {
 	QImage img(scatterItemDiameter, scatterItemDiameter, QImage::Format_ARGB32);
 	img.fill(Qt::transparent);
@@ -130,13 +130,15 @@ static std::unique_ptr<QSGTexture> createScatterTexture(StatsView &view, const Q
 	painter.drawEllipse(scatterItemBorder, scatterItemBorder,
 			    scatterItemDiameter - 2 * scatterItemBorder,
 			    scatterItemDiameter - 2 * scatterItemBorder);
-	return std::unique_ptr<QSGTexture>(
-		view.w()->createTextureFromImage(img, QQuickWindow::TextureHasAlphaChannel)
-	);
+	return view.w()->createTextureFromImage(img, QQuickWindow::TextureHasAlphaChannel);
 }
 
-std::unique_ptr<QSGTexture> scatterItemTexture;
-std::unique_ptr<QSGTexture> scatterItemHighlightedTexture;
+// Note: Originally these were std::unique_ptrs, which automatically
+// freed the textures on exit. However, destroying textures after
+// QApplication finished its thread leads to crashes. Therefore, these
+// are now normal pointers and the texture objects are leaked.
+static QSGTexture *scatterItemTexture = nullptr;
+static QSGTexture *scatterItemHighlightedTexture = nullptr;
 
 void ChartScatterItem::render()
 {
@@ -151,7 +153,7 @@ void ChartScatterItem::render()
 	}
 	updateVisible();
 	if (textureDirty) {
-		node->node->setTexture(highlighted ? scatterItemHighlightedTexture.get() : scatterItemTexture.get());
+		node->node->setTexture(highlighted ? scatterItemHighlightedTexture : scatterItemTexture);
 		textureDirty = false;
 	}
 	if (positionDirty) {
