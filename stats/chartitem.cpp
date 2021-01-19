@@ -242,7 +242,12 @@ ChartTextItem::ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const 
 
 void ChartTextItem::setColor(const QColor &c)
 {
-	img->fill(Qt::transparent);
+	setColor(c, Qt::transparent);
+}
+
+void ChartTextItem::setColor(const QColor &c, const QColor &background)
+{
+	img->fill(background);
 	double y = 0.0;
 	painter->setPen(QPen(c));
 	painter->setFont(f);

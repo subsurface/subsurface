@@ -89,7 +89,8 @@ class ChartTextItem : public ChartPixmapItem {
 public:
 	ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const std::vector<QString> &text, bool center);
 	ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const QString &text);
-	void setColor(const QColor &color);
+	void setColor(const QColor &color); // Draw on transparent background
+	void setColor(const QColor &color, const QColor &background); // Fill rectangle with given background color
 private:
 	QFont f;
 	double fontHeight;

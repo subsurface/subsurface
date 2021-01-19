@@ -65,11 +65,11 @@ void PieSeries::Item::updatePositions(const QPointF &center, double radius)
 
 void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, int numBins)
 {
+	QColor fill = highlight ? highlightedColor : binColor(bin_nr, numBins);
+	QColor border = highlight ? highlightedBorderColor : ::borderColor;
 	if (innerLabel)
-		innerLabel->setColor(highlight ? darkLabelColor : labelColor(bin_nr, numBins));
-	item.drawSegment(angleFrom, angleTo,
-			 highlight ? highlightedColor : binColor(bin_nr, numBins),
-			 highlight ? highlightedBorderColor : ::borderColor);
+		innerLabel->setColor(highlight ? darkLabelColor : labelColor(bin_nr, numBins), fill);
+	item.drawSegment(angleFrom, angleTo, fill, border);
 }
 
 PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,

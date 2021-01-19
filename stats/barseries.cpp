@@ -92,7 +92,7 @@ BarSeries::BarLabel::BarLabel(StatsView &view, const std::vector<QString> &label
 {
 	QFont f; // make configurable
 	item = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, labels, true);
-	highlight(false, bin_nr, binCount);
+	//highlight(false, bin_nr, binCount);
 }
 
 void BarSeries::BarLabel::setVisible(bool visible)
@@ -100,13 +100,16 @@ void BarSeries::BarLabel::setVisible(bool visible)
 	item->setVisible(visible);
 }
 
-void BarSeries::BarLabel::highlight(bool highlight, int bin_nr, int binCount)
+void BarSeries::BarLabel::highlight(bool highlight, int bin_nr, int binCount, const QColor &background)
 {
-	item->setColor(highlight || isOutside ? darkLabelColor : labelColor(bin_nr, binCount));
+	// For labels that are on top of a bar, use the corresponding bar color
+	// as background. Rendering on a transparent background gives ugly artifacts.
+	item->setColor(highlight || isOutside ? darkLabelColor : labelColor(bin_nr, binCount),
+		       isOutside ? Qt::transparent : background);
 }
 
 void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRectF &rect,
-					 int bin_nr, int binCount)
+					 int bin_nr, int binCount, const QColor &background)
 {
 	QSizeF itemSize = item->getRect().size();
 	if (!horizontal) {
@@ -153,7 +156,7 @@ void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRe
 	}
 	setVisible(true);
 	// If label changed from inside to outside, or vice-versa, the color might change.
-	highlight(false, bin_nr, binCount);
+	highlight(false, bin_nr, binCount, background);
 }
 
 BarSeries::Item::Item(BarSeries *series, double lowerBound, double upperBound,
@@ -181,12 +184,11 @@ void BarSeries::Item::highlight(int subitem, bool highlight, int binCount)
 
 void BarSeries::SubItem::highlight(bool highlight, int binCount)
 {
-	if (highlight)
-		item->setColor(highlightedColor, highlightedBorderColor);
-	else
-		item->setColor(binColor(bin_nr, binCount), ::borderColor);
+	fill = highlight ? highlightedColor : binColor(bin_nr, binCount);
+	QColor border = highlight ? highlightedBorderColor : ::borderColor;
+	item->setColor(fill, border);
 	if (label)
-		label->highlight(highlight, bin_nr, binCount);
+		label->highlight(highlight, bin_nr, binCount, fill);
 }
 
 void BarSeries::Item::updatePosition(BarSeries *series, bool horizontal, bool stacked, int binCount)
@@ -229,7 +231,7 @@ void BarSeries::SubItem::updatePosition(BarSeries *series, bool horizontal, bool
 	QRectF rect(topLeft, bottomRight);
 	item->setRect(rect);
 	if (label)
-		label->updatePosition(horizontal, stacked, rect, bin_nr, binCount);
+		label->updatePosition(horizontal, stacked, rect, bin_nr, binCount, fill);
 }
 
 std::vector<BarSeries::SubItem> BarSeries::makeSubItems(const std::vector<std::pair<double, std::vector<QString>>> &values) const
