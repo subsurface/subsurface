@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "regressionitem.h"
 #include "statsaxis.h"
+#include "statscolors.h"
 #include "zvalues.h"
 
 #include <cmath>
 
-static const QColor regressionItemColor(Qt::red);
 static const double regressionLineWidth = 2.0;
 
 RegressionItem::RegressionItem(StatsView &view, regression_data reg,
