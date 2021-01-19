@@ -43,7 +43,8 @@ public:
 	~StatsView();
 
 	void plot(const StatsState &state);
-	QQuickWindow *w() const;		// Make window available to items
+	void updateFeatures(const StatsState &state); // Updates the visibility of chart features, such as legend, regression, etc.
+	QQuickWindow *w() const;			// Make window available to items
 	QSizeF size() const;
 	QRectF plotArea() const;
 	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
@@ -75,39 +76,39 @@ private:
 	void plotBarChart(const std::vector<dive *> &dives,
 			  ChartSubType subType,
 			  const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-			  const StatsVariable *valueVariable, const StatsBinner *valueBinner, bool labels, bool legend);
+			  const StatsVariable *valueVariable, const StatsBinner *valueBinner);
 	void plotValueChart(const std::vector<dive *> &dives,
 			    ChartSubType subType,
 			    const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-			    const StatsVariable *valueVariable, StatsOperation valueAxisOperation, bool labels);
+			    const StatsVariable *valueVariable, StatsOperation valueAxisOperation);
 	void plotDiscreteCountChart(const std::vector<dive *> &dives,
 				    ChartSubType subType,
-				    const StatsVariable *categoryVariable, const StatsBinner *categoryBinner, bool labels);
+				    const StatsVariable *categoryVariable, const StatsBinner *categoryBinner);
 	void plotPieChart(const std::vector<dive *> &dives,
-			  const StatsVariable *categoryVariable, const StatsBinner *categoryBinner, bool labels, bool legend);
+			  const StatsVariable *categoryVariable, const StatsBinner *categoryBinner);
 	void plotDiscreteBoxChart(const std::vector<dive *> &dives,
 				  const StatsVariable *categoryVariable, const StatsBinner *categoryBinner, const StatsVariable *valueVariable);
 	void plotDiscreteScatter(const std::vector<dive *> &dives,
 				 const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-				 const StatsVariable *valueVariable, bool quartiles);
+				 const StatsVariable *valueVariable);
 	void plotHistogramCountChart(const std::vector<dive *> &dives,
 				     ChartSubType subType,
-				     const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-				     bool labels, bool showMedian, bool showMean);
+				     const StatsVariable *categoryVariable, const StatsBinner *categoryBinner);
 	void plotHistogramValueChart(const std::vector<dive *> &dives,
 				     ChartSubType subType,
 				     const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-				     const StatsVariable *valueVariable, StatsOperation valueAxisOperation, bool labels);
+				     const StatsVariable *valueVariable, StatsOperation valueAxisOperation);
 	void plotHistogramStackedChart(const std::vector<dive *> &dives,
 				       ChartSubType subType,
 				       const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
-				       const StatsVariable *valueVariable, const StatsBinner *valueBinner, bool labels, bool legend);
+				       const StatsVariable *valueVariable, const StatsBinner *valueBinner);
 	void plotHistogramBoxChart(const std::vector<dive *> &dives,
 				   const StatsVariable *categoryVariable, const StatsBinner *categoryBinner, const StatsVariable *valueVariable);
 	void plotScatter(const std::vector<dive *> &dives, const StatsVariable *categoryVariable, const StatsVariable *valueVariable);
 	void setTitle(const QString &);
 	void updateTitlePos(); // After resizing, set title to correct position
 	void plotChart();
+	void updateFeatures(); // Updates the visibility of chart features, such as legend, regression, etc.
 
 	template <typename T, class... Args>
 	T *createSeries(Args&&... args);
@@ -126,14 +127,13 @@ private:
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
 
-	void addHistogramMarker(double pos, QColor color, bool isHorizontal, StatsAxis *xAxis, StatsAxis *yAxis);
 
 	StatsState state;
 	QFont titleFont;
 	std::vector<std::unique_ptr<StatsSeries>> series;
 	std::unique_ptr<StatsGrid> grid;
 	std::vector<ChartItemPtr<QuartileMarker>> quartileMarkers;
-	std::vector<ChartItemPtr<HistogramMarker>> histogramMarkers;
+	ChartItemPtr<HistogramMarker> medianMarker, meanMarker;
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
 	ChartItemPtr<ChartTextItem> title;

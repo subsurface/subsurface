@@ -185,7 +185,9 @@ void StatsWidget::var2OperationChanged(int idx)
 void StatsWidget::featureChanged(int idx, bool status)
 {
 	state.featureChanged(idx, status);
-	updateUi();
+	// No need for a full chart replot - just show/hide the features
+	if (view)
+		view->updateFeatures(state);
 }
 
 void StatsWidget::showEvent(QShowEvent *e)
