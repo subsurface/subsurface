@@ -62,6 +62,7 @@ void qPrefTechnicalDetails::set_gfhigh(int value)
 	if (value != prefs.gfhigh) {
 		prefs.gfhigh = value;
 		disk_gfhigh(true);
+		set_gf(-1, prefs.gfhigh);
 		emit instance()->gfhighChanged(value);
 	}
 }
@@ -82,6 +83,7 @@ void qPrefTechnicalDetails::set_gflow(int value)
 	if (value != prefs.gflow) {
 		prefs.gflow = value;
 		disk_gflow(true);
+		set_gf(prefs.gflow, -1);
 		emit instance()->gflowChanged(value);
 	}
 }

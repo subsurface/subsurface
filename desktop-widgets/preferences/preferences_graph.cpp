@@ -68,7 +68,6 @@ void PreferencesGraph::syncSettings()
 	prefs.planner_deco_mode = ui->buehlmann->isChecked() ? BUEHLMANN : VPMB;
 	qPrefTechnicalDetails::set_gflow(ui->gflow->value());
 	qPrefTechnicalDetails::set_gfhigh(ui->gfhigh->value());
-	set_gf(ui->gflow->value(), ui->gfhigh->value());
 	qPrefTechnicalDetails::set_vpmb_conservatism(ui->vpmb_conservatism->value());
 	set_vpmb_conservatism(ui->vpmb_conservatism->value());
 	qPrefTechnicalDetails::set_show_ccr_setpoint(ui->show_ccr_setpoint->isChecked());
