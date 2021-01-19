@@ -18,9 +18,11 @@ public:
 	RegressionItem(StatsView &view, regression_data data, StatsAxis *xAxis, StatsAxis *yAxis);
 	~RegressionItem();
 	void updatePosition();
+	void setFeatures(bool regression, bool confidence);
 private:
 	StatsAxis *xAxis, *yAxis;
 	regression_data reg;
+	bool regression, confidence;
 };
 
 #endif
