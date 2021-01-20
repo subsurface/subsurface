@@ -45,12 +45,12 @@ void RegressionItem::updatePosition()
 	for (int i = 0; i < num_samples; ++i) {
 		double x = (maxX - minX) / (num_samples - 1) * static_cast<double>(i) + minX;
 		poly << QPointF(xAxis->toScreen(x),
-			yAxis->toScreen(reg.a * x + reg.b + 2.0 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
+			yAxis->toScreen(reg.a * x + reg.b + 1.960 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
 	}
 	for (int i = num_samples - 1; i >= 0; --i) {
 		double x = (maxX - minX) / (num_samples - 1) * static_cast<double>(i) + minX;
 		poly << QPointF(xAxis->toScreen(x),
-			yAxis->toScreen(reg.a * x + reg.b - 2.0 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
+			yAxis->toScreen(reg.a * x + reg.b - 1.960 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
 	}
 	QPolygonF linePolygon;
 	linePolygon.reserve(2);
