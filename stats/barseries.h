@@ -25,7 +25,7 @@ public:
 	// based charts and for stacked bar charts with multiple items.
 	struct CountItem {
 		double lowerBound, upperBound;
-		int count;
+		std::vector<dive *> dives;
 		std::vector<QString> label;
 		QString binName;
 		int total;
@@ -35,11 +35,15 @@ public:
 		double value;
 		std::vector<QString> label;
 		QString binName;
-		StatsOperationResults res;
+		StatsOperationResults res;	// Contains the dives
 	};
 	struct MultiItem {
+		struct Item {
+			std::vector<dive *> dives;
+			std::vector<QString> label;
+		};
 		double lowerBound, upperBound;
-		std::vector<std::pair<int, std::vector<QString>>> countLabels;
+		std::vector<Item> items;
 		QString binName;
 	};
 
@@ -52,14 +56,14 @@ public:
 	// are ordered identically.
 	BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, const QString &categoryName,
-		  const std::vector<CountItem> &items);
+		  std::vector<CountItem> items);
 	BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, const QString &categoryName, const StatsVariable *valueVariable,
-		  const std::vector<ValueItem> &items);
+		  std::vector<ValueItem> items);
 	BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		  bool horizontal, bool stacked, const QString &categoryName, const StatsVariable *valueVariable,
 		  std::vector<QString> valueBinNames,
-		  const std::vector<MultiItem> &items);
+		  std::vector<MultiItem> items);
 	~BarSeries();
 
 	void updatePositions() override;
@@ -93,6 +97,7 @@ private:
 
 	struct SubItem {
 		ChartItemPtr<ChartBarItem> item;
+		std::vector<dive *> dives;
 		std::unique_ptr<BarLabel> label;
 		double value_from;
 		double value_to;
@@ -127,8 +132,13 @@ private:
 	const StatsVariable *valueVariable; // null: this is count based
 	std::vector<QString> valueBinNames;
 	Index highlighted;
-	std::vector<SubItem> makeSubItems(double value, const std::vector<QString> &label) const;
-	std::vector<SubItem> makeSubItems(const std::vector<std::pair<double, std::vector<QString>>> &values) const;
+	struct SubItemDesc {
+		double v;
+		std::vector<dive *> dives;
+		std::vector<QString> label;
+	};
+	std::vector<SubItem> makeSubItems(SubItemDesc item) const;
+	std::vector<SubItem> makeSubItems(std::vector<SubItemDesc> items) const;
 	void add_item(double lowerBound, double upperBound, std::vector<SubItem> subitems,
 		      const QString &binName, const StatsOperationResults &res, int total, bool horizontal,
 		      bool stacked);

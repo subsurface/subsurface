@@ -16,14 +16,15 @@ static const double pieBorderWidth = 1.0;
 static const double innerLabelRadius = 0.75; // 1.0 = at outer border of pie
 static const double outerLabelRadius = 1.01; // 1.0 = at outer border of pie
 
-PieSeries::Item::Item(StatsView &view, const QString &name, int from, int count, int totalCount,
+PieSeries::Item::Item(StatsView &view, const QString &name, int from, std::vector<dive *> divesIn, int totalCount,
 		      int bin_nr, int numBins) :
 	name(name),
-	count(count)
+	dives(std::move(divesIn))
 {
 	QFont f; // make configurable
 	QLocale loc;
 
+	int count = (int)dives.size();
 	angleFrom = static_cast<double>(from) / totalCount;
 	angleTo = static_cast<double>(from + count) / totalCount;
 	double meanAngle = M_PI / 2.0 - (from + count / 2.0) / totalCount * M_PI * 2.0; // Note: "-" because we go CW.
@@ -74,7 +75,7 @@ void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, 
 }
 
 PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
-		     const std::vector<std::pair<QString, int>> &data, bool keepOrder) :
+		     std::vector<std::pair<QString, std::vector<dive *>>> data, bool keepOrder) :
 	StatsSeries(view, xAxis, yAxis),
 	item(view.createChartItem<ChartPieItem>(ChartZValue::Series, pieBorderWidth)),
 	categoryName(categoryName),
@@ -89,8 +90,8 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 
 	// Easier to read than std::accumulate
 	totalCount = 0;
-	for (const auto &[name, count]: data)
-		totalCount += count;
+	for (const auto &[name, dives]: data)
+		totalCount += (int)dives.size();
 
 	// First of all, sort from largest to smalles slice. Instead
 	// of sorting the initial array, sort a list of indices, so that
@@ -102,19 +103,19 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 	//  - do a lexicographic sort by (count, idx) so that for equal counts the order is preserved.
 	std::sort(sorted.begin(), sorted.end(),
 		  [&data](int idx1, int idx2)
-		  { return std::make_tuple(-data[idx1].second, idx1) <
-			   std::make_tuple(-data[idx2].second, idx2); });
+		  { return std::make_tuple(-data[idx1].second.size(), idx1) <
+			   std::make_tuple(-data[idx2].second.size(), idx2); });
 	auto it = std::find_if(sorted.begin(), sorted.end(),
 			       [count=totalCount, &data](int idx)
-			       { return data[idx].second * 100 / count < smallest_slice_percentage; });
+			       { return (int)data[idx].second.size() * 100 / count < smallest_slice_percentage; });
 	if (it - sorted.begin() < min_slices) {
 		// Take minimum amount of slices below 50%...
 		int sum = 0;
 		for (auto it2 = sorted.begin(); it2 != it; ++it2)
-			sum += data[*it2].second;
+			sum += (int)data[*it2].second.size();
 
 		while(it != sorted.end() && sum * 2 < totalCount && it - sorted.begin() < min_slices) {
-			sum += data[*it].second;
+			sum += (int)data[*it].second.size();
 			++it;
 		}
 	}
@@ -135,18 +136,24 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 	items.reserve(numBins);
 	int act = 0;
 	for (auto it2 = sorted.begin(); it2 != it; ++it2) {
-		int count = data[*it2].second;
-		items.emplace_back(view, data[*it2].first, act, count, totalCount, (int)items.size(), numBins);
+		int count = (int)data[*it2].second.size();
+		items.emplace_back(view, data[*it2].first, act, std::move(data[*it2].second),
+				   totalCount, (int)items.size(), numBins);
 		act += count;
 	}
 
 	// Register the items of the "other" group.
 	if (it != sorted.end()) {
+		std::vector<dive *> otherDives;
+		otherDives.reserve(totalCount - act);
 		other.reserve(sorted.end() - it);
-		for (auto it2 = it; it2 != sorted.end(); ++it2)
-			other.push_back({ data[*it2].first, data[*it2].second });
+		for (auto it2 = it; it2 != sorted.end(); ++it2) {
+			other.push_back({ data[*it2].first, (int)data[*it2].second.size() });
+			for (dive *d: data[*it2].second)
+				otherDives.push_back(d);
+		}
 		QString name = StatsTranslations::tr("other (%1 items)").arg(other.size());
-		items.emplace_back(view, name, act, totalCount - act, totalCount, (int)items.size(), numBins);
+		items.emplace_back(view, name, act, std::move(otherDives), totalCount, (int)items.size(), numBins);
 	}
 }
 
@@ -212,15 +219,15 @@ std::vector<QString> PieSeries::makeInfo(int idx) const
 		// This is the "other" bin. Format all these items and an overview item.
 		res.reserve(other.size() + 1);
 		res.push_back(QString("%1: %2").arg(StatsTranslations::tr("other"),
-						    makePercentageLine(items[idx].count, totalCount)));
+						    makePercentageLine((int)items[idx].dives.size(), totalCount)));
 		for (const OtherItem &item: other)
 			res.push_back(QString("%1: %2").arg(item.name,
-							    makePercentageLine(item.count, totalCount)));
+							    makePercentageLine((int)item.count, totalCount)));
 	} else {
 		// A "normal" item.
 		res.reserve(2);
 		res.push_back(QStringLiteral("%1: %2").arg(categoryName, items[idx].name));
-		res.push_back(makePercentageLine(items[idx].count, totalCount));
+		res.push_back(makePercentageLine((int)items[idx].dives.size(), totalCount));
 	}
 	return res;
 }
