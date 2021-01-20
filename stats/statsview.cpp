@@ -117,6 +117,20 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	if (!n)
 		n = rootNode = new RootNode(window());
 
+	// If the plot area changed, we might need to redraw the grid, axes, etc.
+	// This may do quite some extensive allocations and rendering, so it is
+	// questionable whether this should (or can) be done in the render thread.
+	// After all, each QObject has an owning thread and we might end up
+	// with a collection of objects belonging to different threads. Scary.
+	// Probably this should be treated differently and just signal the UI thread
+	// that the size changed?
+	QRectF rect = boundingRect();
+	if (plotRect != rect) {
+		plotRect = rect;
+		rootNode->backgroundNode->setRect(rect);
+		plotAreaChanged(plotRect.size());
+	}
+
 	// Delete all chart items that are marked for deletion.
 	ChartItem *nextitem;
 	for (ChartItem *item = deletedItems.first; item; item = nextitem) {
@@ -124,13 +138,6 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 		delete item;
 	}
 	deletedItems.clear();
-
-	QRectF rect = boundingRect();
-	if (plotRect != rect) {
-		plotRect = rect;
-		rootNode->backgroundNode->setRect(rect);
-		plotAreaChanged(plotRect.size());
-	}
 
 	for (ChartItem *item = dirtyItems.first; item; item = item->next) {
 		item->render();
