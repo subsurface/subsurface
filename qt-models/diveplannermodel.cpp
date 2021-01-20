@@ -58,13 +58,14 @@ void DivePlannerPointsModel::createSimpleDive()
 	setupStartTime();
 
 	// initialize the start time in the plan
-	diveplan.when = displayed_dive.when;
+	diveplan.when = dateTimeToTimestamp(startTime);
+	displayed_dive.when = diveplan.when;
 
 	// Use gas from the first cylinder
 	int cylinderid = 0;
 
 	// If we're in drop_stone_mode, don't add a first point.
-	// It will be added implicit.
+	// It will be added implicitly.
 	if (!prefs.drop_stone_mode)
 		addStop(M_OR_FT(15, 45), 1 * 60, cylinderid, 0, true, UNDEF_COMP_TYPE);
 
@@ -91,7 +92,6 @@ void DivePlannerPointsModel::setupStartTime()
 			startTime = startTime.addSecs(diff + 3600);
 		}
 	}
-	emit startTimeChanged(startTime);
 }
 
 void DivePlannerPointsModel::loadFromDive(dive *d)
@@ -736,7 +736,6 @@ void DivePlannerPointsModel::setStartTime(const QTime &t)
 	displayed_dive.when = diveplan.when;
 	emitDataChanged();
 }
-
 
 bool divePointsLessThan(const divedatapoint &p1, const divedatapoint &p2)
 {

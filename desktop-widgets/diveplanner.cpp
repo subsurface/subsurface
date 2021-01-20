@@ -72,7 +72,6 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 	connect(ui.atmHeight, QOverload<int>::of(&QSpinBox::valueChanged), this, &DivePlannerWidget::heightChanged);
 	connect(ui.waterType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DivePlannerWidget::waterTypeChanged);
 	connect(ui.customSalinity, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &DivePlannerWidget::customSalinityChanged);
-	connect(plannerModel, &DivePlannerPointsModel::startTimeChanged, this, &DivePlannerWidget::setupStartTime);
 
 	// Creating (and canceling) the plan
 	replanButton = ui.buttonBox->addButton(tr("Save new"), QDialogButtonBox::ActionRole);
@@ -564,6 +563,8 @@ void PlannerWidgets::planDive()
 			plannerWidget.setSalinity(SEAWATER_SALINITY);
 	}
 	plannerWidget.setReplanButton(false);
+
+	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));	// This will reload the profile!
 }
 
 void PlannerWidgets::replanDive()

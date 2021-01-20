@@ -116,7 +116,6 @@ signals:
 	void planCreated();
 	void planCanceled();
 	void cylinderModelEdited();
-	void startTimeChanged(QDateTime);
 	void recreationChanged(bool);
 	void calculatedPlanNotes(QString);
 	void variationsComputed(QString);
