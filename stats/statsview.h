@@ -64,12 +64,12 @@ public:
 private slots:
 	void replotIfVisible();
 private:
-	bool resetChart;
-
 	// QtQuick related things
+	bool backgroundDirty;
 	QRectF plotRect;
 	QSGNode *updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
 
+	void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
 	void plotAreaChanged(const QSizeF &size);
 	void reset(); // clears all series and axes
 	void setAxes(StatsAxis *x, StatsAxis *y);
