@@ -40,25 +40,24 @@ BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 
 BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, const QString &categoryName,
-		     const std::vector<CountItem> &items) :
+		     std::vector<CountItem> items) :
 	BarSeries(view, xAxis, yAxis, horizontal, false, categoryName, nullptr, std::vector<QString>())
 {
-	for (const CountItem &item: items) {
+	for (CountItem &item: items) {
 		StatsOperationResults res;
-		res.count = item.count;
-		double value = item.count;
-		add_item(item.lowerBound, item.upperBound, makeSubItems(value, item.label),
+		double value = (double)item.dives.size();
+		add_item(item.lowerBound, item.upperBound, makeSubItems({ value, std::move(item.dives), std::move(item.label) }),
 			 item.binName, res, item.total, horizontal, stacked);
 	}
 }
 
 BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, const QString &categoryName, const StatsVariable *valueVariable,
-		     const std::vector<ValueItem> &items) :
+		     std::vector<ValueItem> items) :
 	BarSeries(view, xAxis, yAxis, horizontal, false, categoryName, valueVariable, std::vector<QString>())
 {
-	for (const ValueItem &item: items) {
-		add_item(item.lowerBound, item.upperBound, makeSubItems(item.value, item.label),
+	for (ValueItem &item: items) {
+		add_item(item.lowerBound, item.upperBound, makeSubItems({ item.value, std::move(item.res.dives), std::move(item.label) }),
 			 item.binName, item.res, -1, horizontal, stacked);
 	}
 }
@@ -66,19 +65,19 @@ BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, bool stacked, const QString &categoryName, const StatsVariable *valueVariable,
 		     std::vector<QString> valueBinNames,
-		     const std::vector<MultiItem> &items) :
+		     std::vector<MultiItem> items) :
 	BarSeries(view, xAxis, yAxis, horizontal, stacked, categoryName, valueVariable, std::move(valueBinNames))
 {
-	for (const MultiItem &item: items) {
+	for (MultiItem &item: items) {
 		StatsOperationResults res;
-		std::vector<std::pair<double, std::vector<QString>>> valuesLabels;
-		valuesLabels.reserve(item.countLabels.size());
+		std::vector<SubItemDesc> subitems;
+		subitems.reserve(item.items.size());
 		int total = 0;
-		for (auto &[count, label]: item.countLabels) {
-			valuesLabels.push_back({ static_cast<double>(count), std::move(label) });
-			total += count;
+		for (auto &[dives, label]: item.items) {
+			total += (int)dives.size();
+			subitems.push_back({ static_cast<double>(dives.size()), std::move(dives), std::move(label) });
 		}
-		add_item(item.lowerBound, item.upperBound, makeSubItems(valuesLabels),
+		add_item(item.lowerBound, item.upperBound, makeSubItems(std::move(subitems)),
 			 item.binName, res, total, horizontal, stacked);
 	}
 }
@@ -235,15 +234,16 @@ void BarSeries::SubItem::updatePosition(BarSeries *series, bool horizontal, bool
 		label->updatePosition(horizontal, stacked, rect, bin_nr, binCount, fill);
 }
 
-std::vector<BarSeries::SubItem> BarSeries::makeSubItems(const std::vector<std::pair<double, std::vector<QString>>> &values) const
+std::vector<BarSeries::SubItem> BarSeries::makeSubItems(std::vector<SubItemDesc> items) const
 {
 	std::vector<SubItem> res;
-	res.reserve(values.size());
+	res.reserve(items.size());
 	double from = 0.0;
 	int bin_nr = 0;
-	for (auto &[v, label]: values) {
+	for (auto &[v, dives, label]: items) {
 		if (v > 0.0) {
 			res.push_back({ view.createChartItem<ChartBarItem>(ChartZValue::Series, barBorderWidth, horizontal),
+					std::move(dives),
 					{}, from, from + v, bin_nr });
 			if (!label.empty())
 				res.back().label = std::make_unique<BarLabel>(view, label, bin_nr, binCount());
@@ -255,9 +255,9 @@ std::vector<BarSeries::SubItem> BarSeries::makeSubItems(const std::vector<std::p
 	return res;
 }
 
-std::vector<BarSeries::SubItem> BarSeries::makeSubItems(double value, const std::vector<QString> &label) const
+std::vector<BarSeries::SubItem> BarSeries::makeSubItems(SubItemDesc item) const
 {
-	return makeSubItems(std::vector<std::pair<double, std::vector<QString>>>{ { value, label } });
+	return makeSubItems(std::vector<SubItemDesc>{ std::move(item) });
 }
 
 int BarSeries::binCount() const
@@ -329,7 +329,8 @@ static std::vector<QString> makeCountInfo(const QString &binName, const QString 
 
 // Format information in a value bar chart: the name of the bin and the value with unit.
 static std::vector<QString> makeValueInfo(const QString &binName, const QString &axisName,
-					  const StatsVariable &valueVariable, const StatsOperationResults &values)
+					  const StatsVariable &valueVariable, const StatsOperationResults &values,
+					  int count)
 {
 	QLocale loc;
 	int decimals = valueVariable.decimals();
@@ -338,7 +339,7 @@ static std::vector<QString> makeValueInfo(const QString &binName, const QString 
 	std::vector<QString> res;
 	res.reserve(operations.size() + 3);
 	res.push_back(QStringLiteral("%1: %2").arg(axisName, binName));
-	res.push_back(QStringLiteral("%1: %2").arg(StatsTranslations::tr("Count"), loc.toString(values.count)));
+	res.push_back(QStringLiteral("%1: %2").arg(StatsTranslations::tr("Count"), loc.toString(count)));
 	res.push_back(QStringLiteral("%1: ").arg(valueVariable.name()));
 	for (StatsOperation op: operations) {
 		QString valueFormatted = loc.toString(values.get(op), 'f', decimals);
@@ -349,19 +350,23 @@ static std::vector<QString> makeValueInfo(const QString &binName, const QString 
 
 std::vector<QString> BarSeries::makeInfo(const Item &item, int subitem_idx) const
 {
+	if (item.subitems.empty())
+		return {};
 	if (!valueBinNames.empty() && valueVariable) {
 		if (subitem_idx < 0 || subitem_idx >= (int)item.subitems.size())
 			return {};
 		const SubItem &subitem = item.subitems[subitem_idx];
 		if (subitem.bin_nr < 0 || subitem.bin_nr >= (int)valueBinNames.size())
 			return {};
-		int count = (int)lrint(subitem.value_to - subitem.value_from);
+		int count = (int)subitem.dives.size();
 		return makeCountInfo(item.binName, categoryName, valueBinNames[subitem.bin_nr],
 				     valueVariable->name(), count, item.total);
 	} else if (valueVariable) {
-		return makeValueInfo(item.binName, categoryName, *valueVariable, item.res);
+		int count = (int)item.subitems[0].dives.size();
+		return makeValueInfo(item.binName, categoryName, *valueVariable, item.res, count);
 	} else {
-		return makeCountInfo(item.binName, categoryName, QString(), QString(), item.res.count, item.total);
+		int count = (int)item.subitems[0].dives.size();
+		return makeCountInfo(item.binName, categoryName, QString(), QString(), count, item.total);
 	}
 }
 

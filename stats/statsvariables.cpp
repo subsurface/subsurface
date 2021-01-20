@@ -434,15 +434,16 @@ StatsOperationResults StatsVariable::applyOperations(const std::vector<dive *> &
 	std::vector<StatsValue> val = values(dives);
 
 	double sumTime = 0.0;
-	res.count = (int)val.size();
+	res.dives.reserve(val.size());
 	res.median = quartiles(val).q2;
 
-	if (res.count <= 0)
+	if (val.empty())
 		return res;
 
 	res.min = std::numeric_limits<double>::max();
 	res.max = std::numeric_limits<double>::lowest();
 	for (auto [v, d]: val) {
+		res.dives.push_back(d);
 		res.sum += v;
 		res.mean += v;
 		sumTime += d->duration.seconds;
@@ -453,19 +454,19 @@ StatsOperationResults StatsVariable::applyOperations(const std::vector<dive *> &
 			res.max = v;
 	}
 
-	res.mean /= res.count;
+	res.mean /= val.size();
 	res.timeWeightedMean /= sumTime;
 	return res;
 }
 
 StatsOperationResults::StatsOperationResults() :
-	count(0), median(0.0), mean(0.0), timeWeightedMean(0.0), sum(0.0), min(0.0), max(0.0)
+	median(0.0), mean(0.0), timeWeightedMean(0.0), sum(0.0), min(0.0), max(0.0)
 {
 }
 
 bool StatsOperationResults::isValid() const
 {
-	return count > 0;
+	return !dives.empty();
 }
 
 double StatsOperationResults::get(StatsOperation op) const
@@ -584,7 +585,6 @@ struct SimpleBinner : public StatsBinner {
 public:
 	using Type = decltype(Bin::value);
 	std::vector<StatsBinDives> bin_dives(const std::vector<dive *> &dives, bool fill_empty) const override;
-	std::vector<StatsBinCount> count_dives(const std::vector<dive *> &dives, bool fill_empty) const override;
 	const Binner &derived() const {
 		return static_cast<const Binner &>(*this);
 	}
@@ -658,24 +658,6 @@ std::vector<StatsBinDives> SimpleBinner<Binner, Bin>::bin_dives(const std::vecto
 			continue;
 		register_bin_value(value_bins, value,
 				   [d](std::vector<dive *> &v) { v.push_back(d); });
-	}
-
-	// Now, turn that into our result array with allocated bin objects.
-	return value_vector_to_bin_vector<Bin>(*this, value_bins, fill_empty);
-}
-
-template<typename Binner, typename Bin>
-std::vector<StatsBinCount> SimpleBinner<Binner, Bin>::count_dives(const std::vector<dive *> &dives, bool fill_empty) const
-{
-	// First, collect a value / counts vector and then produce the final vector
-	// out of that. I wonder if that is premature optimization?
-	using Pair = std::pair<Type, int>;
-	std::vector<Pair> value_bins;
-	for (const dive *d: dives) {
-		Type value = derived().to_bin_value(d);
-		if (is_invalid_value(value))
-			continue;
-		register_bin_value(value_bins, value, [](int &i){ ++i; });
 	}
 
 	// Now, turn that into our result array with allocated bin objects.
@@ -778,7 +760,6 @@ struct MultiBinner : public StatsBinner {
 public:
 	using Type = decltype(Bin::value);
 	std::vector<StatsBinDives> bin_dives(const std::vector<dive *> &dives, bool fill_empty) const override;
-	std::vector<StatsBinCount> count_dives(const std::vector<dive *> &dives, bool fill_empty) const override;
 	const Binner &derived() const {
 		return static_cast<const Binner &>(*this);
 	}
@@ -800,25 +781,6 @@ std::vector<StatsBinDives> MultiBinner<Binner, Bin>::bin_dives(const std::vector
 				continue;
 			register_bin_value(value_bins, val,
 					   [d](std::vector<dive *> &v) { v.push_back(d); });
-		}
-	}
-
-	// Now, turn that into our result array with allocated bin objects.
-	return value_vector_to_bin_vector<Bin>(*this, value_bins, false);
-}
-
-template<typename Binner, typename Bin>
-std::vector<StatsBinCount> MultiBinner<Binner, Bin>::count_dives(const std::vector<dive *> &dives, bool) const
-{
-	// First, collect a value / counts vector and then produce the final vector
-	// out of that. I wonder if that is premature optimization?
-	using Pair = std::pair<Type, int>;
-	std::vector<Pair> value_bins;
-	for (const dive *d: dives) {
-		for (const Type &s: derived().to_bin_values(d)) {
-			if (is_invalid_value(s))
-				continue;
-			register_bin_value(value_bins, s, [](int &i){ ++i; });
 		}
 	}
 

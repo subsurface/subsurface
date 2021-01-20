@@ -534,10 +534,10 @@ CountAxis *StatsView::createCountAxis(int maxVal, bool isHorizontal)
 }
 
 // For "two-dimensionally" binned plots (eg. stacked bar or grouped bar):
-// Counts for each bin on the independent variable, including the total counts for that bin.
-struct BinCounts {
+// Dives for each bin on the independent variable, including the total counts for that bin.
+struct BinDives {
 	StatsBinPtr bin;
-	std::vector<int> counts;
+	std::vector<std::vector<dive *>> dives;
 	int total;
 };
 
@@ -547,7 +547,7 @@ struct BinCounts {
 // Perhaps we should determine the bins of all dives first and then
 // query the counts for precisely those bins?
 struct BarPlotData {
-	std::vector<BinCounts> hbin_counts; // For each category bin the counts for all value bins
+	std::vector<BinDives> hbins;		// For each category bin the counts for all value bins
 	std::vector<StatsBinPtr> vbins;
 	std::vector<QString> vbinNames;
 	int maxCount;				// Highest count of any bin-combination
@@ -561,8 +561,8 @@ BarPlotData::BarPlotData(std::vector<StatsBinDives> &categoryBins, const StatsBi
 {
 	for (auto &[bin, dives]: categoryBins) {
 		// This moves the bin - the original pointer is invalidated
-		hbin_counts.push_back({ std::move(bin), std::vector<int>(vbins.size(), 0), 0 });
-		for (auto &[vbin, count]: valueBinner.count_dives(dives, false)) {
+		hbins.push_back({ std::move(bin), std::vector<std::vector<dive *>>(vbins.size()), 0 });
+		for (auto &[vbin, dives]: valueBinner.bin_dives(dives, false)) {
 			// Note: we assume that the bins are sorted!
 			auto it = std::lower_bound(vbins.begin(), vbins.end(), vbin,
 						   [] (const StatsBinPtr &p, const StatsBinPtr &bin)
@@ -573,15 +573,16 @@ BarPlotData::BarPlotData(std::vector<StatsBinDives> &categoryBins, const StatsBi
 				// Attn: this invalidates "vbin", which must not be used henceforth!
 				vbins.insert(it, std::move(vbin));
 				// Fix the old arrays
-				for (auto &[bin, v, total]: hbin_counts)
-					v.insert(v.begin() + pos, 0);
+				for (auto &[bin, v, total]: hbins)
+					v.insert(v.begin() + pos, std::vector<dive *>());
 			}
-			hbin_counts.back().counts[pos] = count;
-			hbin_counts.back().total += count;
+			int count = (int)dives.size();
+			hbins.back().dives[pos] = std::move(dives);
+			hbins.back().total += count;
 			if (count > maxCount)
 				maxCount = count;
 		}
-		maxCategoryCount = std::max(maxCategoryCount, hbin_counts.back().total);
+		maxCategoryCount = std::max(maxCategoryCount, hbins.back().total);
 	}
 
 	vbinNames.reserve(vbins.size());
@@ -601,17 +602,17 @@ static std::vector<QString> makePercentageLabels(int count, int total, bool isHo
 		return { countString, percentageString };
 }
 
-// From a list of counts, make (count, label) pairs, where the label
+// From a list of dive bins, make (dives, label) pairs, where the label
 // formats the total number and the percentage of dives.
-static std::vector<std::pair<int, std::vector<QString>>> makeCountLabels(const std::vector<int> &counts, int total, bool isHorizontal)
+static std::vector<BarSeries::MultiItem::Item> makeMultiItems(std::vector<std::vector<dive *>> bins, int total, bool isHorizontal)
 {
-	std::vector<std::pair<int, std::vector<QString>>> count_labels;
-	count_labels.reserve(counts.size());
-	for (int count: counts) {
-		std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
-		count_labels.push_back(std::make_pair(count, label));
+	std::vector<BarSeries::MultiItem::Item> res;
+	res.reserve(bins.size());
+	for (std::vector<dive*> &bin: bins) {
+		std::vector<QString> label = makePercentageLabels((int)bin.size(), total, isHorizontal);
+		res.push_back({ std::move(bin), std::move(label) });
 	}
-	return count_labels;
+	return res;
 }
 
 void StatsView::plotBarChart(const std::vector<dive *> &dives,
@@ -648,15 +649,15 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	legend = createChartItem<Legend>(data.vbinNames);
 
 	std::vector<BarSeries::MultiItem> items;
-	items.reserve(data.hbin_counts.size());
+	items.reserve(data.hbins.size());
 	double pos = 0.0;
-	for (auto &[hbin, counts, total]: data.hbin_counts) {
-		items.push_back({ pos - 0.5, pos + 0.5, makeCountLabels(counts, total, isHorizontal),
+	for (auto &[hbin, dives, total]: data.hbins) {
+		items.push_back({ pos - 0.5, pos + 0.5, makeMultiItems(std::move(dives), total, isHorizontal),
 				  categoryBinner->formatWithUnit(*hbin) });
 		pos += 1.0;
 	}
 
-	createSeries<BarSeries>(isHorizontal, isStacked, categoryVariable->name(), valueVariable, std::move(data.vbinNames), items);
+	createSeries<BarSeries>(isHorizontal, isStacked, categoryVariable->name(), valueVariable, std::move(data.vbinNames), std::move(items));
 }
 
 const double NaN = std::numeric_limits<double>::quiet_NaN();
@@ -770,14 +771,14 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 		pos += 1.0;
 	}
 
-	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), valueVariable, items);
+	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), valueVariable, std::move(items));
 }
 
-static int getTotalCount(const std::vector<StatsBinCount> &bins)
+static int getTotalCount(const std::vector<StatsBinDives> &bins)
 {
 	int total = 0;
-	for (const auto &[bin, count]: bins)
-		total += count;
+	for (const auto &[bin, dives]: bins)
+		total += (int)dives.size();
 	return total;
 }
 
@@ -785,10 +786,8 @@ template<typename T>
 static int getMaxCount(const std::vector<T> &bins)
 {
 	int res = 0;
-	for (auto const &[dummy, val]: bins) {
-		if (val > res)
-			res = val;
-	}
+	for (auto const &[dummy, dives]: bins)
+		res = std::max(res, (int)(dives.size()));
 	return res;
 }
 
@@ -801,7 +800,7 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 
 	setTitle(categoryVariable->nameWithBinnerUnit(*categoryBinner));
 
-	std::vector<StatsBinCount> categoryBins = categoryBinner->count_dives(dives, false);
+	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, false);
 
 	// If there is nothing to display, quit
 	if (categoryBins.empty())
@@ -824,14 +823,14 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 	std::vector<BarSeries::CountItem> items;
 	items.reserve(categoryBins.size());
 	double pos = 0.0;
-	for (auto const &[bin, count]: categoryBins) {
-		std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
-		items.push_back({ pos - 0.5, pos + 0.5, count, label,
+	for (auto const &[bin, dives]: categoryBins) {
+		std::vector<QString> label = makePercentageLabels((int)dives.size(), total, isHorizontal);
+		items.push_back({ pos - 0.5, pos + 0.5, std::move(dives), label,
 				  categoryBinner->formatWithUnit(*bin), total });
 		pos += 1.0;
 	}
 
-	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), items);
+	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), std::move(items));
 }
 
 void StatsView::plotPieChart(const std::vector<dive *> &dives,
@@ -842,19 +841,19 @@ void StatsView::plotPieChart(const std::vector<dive *> &dives,
 
 	setTitle(categoryVariable->nameWithBinnerUnit(*categoryBinner));
 
-	std::vector<StatsBinCount> categoryBins = categoryBinner->count_dives(dives, false);
+	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, false);
 
 	// If there is nothing to display, quit
 	if (categoryBins.empty())
 		return;
 
-	std::vector<std::pair<QString, int>> data;
+	std::vector<std::pair<QString, std::vector<dive *>>> data;
 	data.reserve(categoryBins.size());
-	for (auto const &[bin, count]: categoryBins)
-		data.emplace_back(categoryBinner->formatWithUnit(*bin), count);
+	for (auto &[bin, dives]: categoryBins)
+		data.emplace_back(categoryBinner->formatWithUnit(*bin), std::move(dives));
 
 	bool keepOrder = categoryVariable->type() != StatsVariable::Type::Discrete;
-	PieSeries *series = createSeries<PieSeries>(categoryVariable->name(), data, keepOrder);
+	PieSeries *series = createSeries<PieSeries>(categoryVariable->name(), std::move(data), keepOrder);
 
 	legend = createChartItem<Legend>(series->binNames());
 }
@@ -967,7 +966,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 
 	setTitle(categoryVariable->name());
 
-	std::vector<StatsBinCount> categoryBins = categoryBinner->count_dives(dives, true);
+	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, true);
 
 	// If there is nothing to display, quit
 	if (categoryBins.empty())
@@ -990,16 +989,17 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	std::vector<BarSeries::CountItem> items;
 	items.reserve(categoryBins.size());
 
-	for (auto const &[bin, count]: categoryBins) {
+	// Attention: this moves away the dives
+	for (auto &[bin, dives]: categoryBins) {
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
-		std::vector<QString> label = makePercentageLabels(count, total, isHorizontal);
+		std::vector<QString> label = makePercentageLabels((int)dives.size(), total, isHorizontal);
 
-		items.push_back({ lowerBound, upperBound, count, label,
+		items.push_back({ lowerBound, upperBound, std::move(dives), label,
 				  categoryBinner->formatWithUnit(*bin), total });
 	}
 
-	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), items);
+	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), std::move(items));
 
 	if (categoryVariable->type() == StatsVariable::Type::Numeric) {
 		double mean = categoryVariable->mean(dives);
@@ -1058,7 +1058,7 @@ void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 				  categoryBinner->formatWithUnit(*bin), res });
 	}
 
-	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), valueVariable, items);
+	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), valueVariable, std::move(items));
 }
 
 void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
@@ -1090,16 +1090,16 @@ void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 		setAxes(catAxis, valAxis);
 
 	std::vector<BarSeries::MultiItem> items;
-	items.reserve(data.hbin_counts.size());
+	items.reserve(data.hbins.size());
 
-	for (auto &[hbin, counts, total]: data.hbin_counts) {
+	for (auto &[hbin, dives, total]: data.hbins) {
 		double lowerBound = categoryBinner->lowerBoundToFloat(*hbin);
 		double upperBound = categoryBinner->upperBoundToFloat(*hbin);
-		items.push_back({ lowerBound, upperBound, makeCountLabels(counts, total, isHorizontal),
+		items.push_back({ lowerBound, upperBound, makeMultiItems(std::move(dives), total, isHorizontal),
 				  categoryBinner->formatWithUnit(*hbin) });
 	}
 
-	createSeries<BarSeries>(isHorizontal, true, categoryVariable->name(), valueVariable, std::move(data.vbinNames), items);
+	createSeries<BarSeries>(isHorizontal, true, categoryVariable->name(), valueVariable, std::move(data.vbinNames), std::move(items));
 }
 
 void StatsView::plotHistogramBoxChart(const std::vector<dive *> &dives,

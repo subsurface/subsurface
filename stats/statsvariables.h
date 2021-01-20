@@ -33,7 +33,7 @@ enum class StatsOperation : int {
 
 // Results of the above operations
 struct StatsOperationResults {
-	int count;
+	std::vector<dive *> dives;
 	double median;
 	double mean;
 	double timeWeightedMean;
@@ -77,7 +77,6 @@ struct StatsBinValue {
 };
 using StatsBinDives = StatsBinValue<std::vector<dive *>>;
 using StatsBinValues = StatsBinValue<std::vector<StatsValue>>;
-using StatsBinCount = StatsBinValue<int>;
 using StatsBinQuartiles = StatsBinValue<StatsQuartiles>;
 using StatsBinOp = StatsBinValue<StatsOperationResults>;
 
@@ -89,7 +88,6 @@ struct StatsBinner {
 	// The binning functions have a parameter "fill_empty". If true, missing
 	// bins in the range will be filled with empty bins. This only works for continuous variables.
 	virtual std::vector<StatsBinDives> bin_dives(const std::vector<dive *> &dives, bool fill_empty) const = 0;
-	virtual std::vector<StatsBinCount> count_dives(const std::vector<dive *> &dives, bool fill_empty) const = 0;
 
 	// Note: these functions will crash with an exception if passed incompatible bins!
 	virtual QString format(const StatsBin &bin) const = 0;
