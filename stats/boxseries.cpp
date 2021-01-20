@@ -98,7 +98,7 @@ std::vector<QString> BoxSeries::formatInformation(const Item &item) const
 {
 	QLocale loc;
 	return {
-		StatsTranslations::tr("%1 (%2 dives)").arg(item.binName, loc.toString(item.q.count)),
+		StatsTranslations::tr("%1 (%2 dives)").arg(item.binName, loc.toString((int)item.q.dives.size())),
 		QStringLiteral("%1:").arg(variable),
 		infoItem(StatsTranslations::tr("min"), unit, decimals, item.q.min),
 		infoItem(StatsTranslations::tr("Q1"), unit, decimals, item.q.q1),

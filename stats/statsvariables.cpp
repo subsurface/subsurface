@@ -92,7 +92,7 @@ template<> QString invalid_value<QString>()
 template<> StatsQuartiles invalid_value<StatsQuartiles>()
 {
 	double NaN = std::numeric_limits<double>::quiet_NaN();
-	return { NaN, NaN, NaN, NaN, NaN, 0 };
+	return { std::vector<dive *>(), NaN, NaN, NaN, NaN, NaN };
 }
 
 static bool is_invalid_value(int i)
@@ -170,7 +170,7 @@ static bool is_invalid_value(const std::vector<StatsValue> &v)
 
 static bool is_invalid_value(const StatsQuartiles &q)
 {
-	return std::isnan(q.min);
+	return q.dives.empty();
 }
 
 bool StatsQuartiles::isValid() const
@@ -414,17 +414,22 @@ StatsQuartiles StatsVariable::quartiles(const std::vector<StatsValue> &vec)
 	int s = (int)vec.size();
 	if (s <= 0)
 		return invalid_value<StatsQuartiles>();
+	std::vector<dive *> dives;
+	dives.reserve(vec.size());
+	for (const auto &[v, d]: vec)
+		dives.push_back(d);
+
 	switch (s % 4) {
 	default:
 		// gcc doesn't recognize that we catch all possible values. disappointing.
 	case 0:
-		return { vec[0].v, q3(&vec[s/4 - 1]), q2(&vec[s/2 - 1]), q1(&vec[s - s/4 - 1]), vec[s - 1].v, s };
+		return { std::move(dives), vec[0].v, q3(&vec[s/4 - 1]), q2(&vec[s/2 - 1]), q1(&vec[s - s/4 - 1]), vec[s - 1].v };
 	case 1:
-		return { vec[0].v, vec[s/4].v, vec[s/2].v, vec[s - s/4 - 1].v, vec[s - 1].v, s };
+		return { std::move(dives), vec[0].v, vec[s/4].v, vec[s/2].v, vec[s - s/4 - 1].v, vec[s - 1].v };
 	case 2:
-		return { vec[0].v, q1(&vec[s/4]), q2(&vec[s/2 - 1]), q3(&vec[s - s/4 - 2]), vec[s - 1].v, s };
+		return { std::move(dives), vec[0].v, q1(&vec[s/4]), q2(&vec[s/2 - 1]), q3(&vec[s - s/4 - 2]), vec[s - 1].v };
 	case 3:
-		return { vec[0].v, q2(&vec[s/4]), vec[s/2].v, q2(&vec[s - s/4 - 2]), vec[s - 1].v, s };
+		return { std::move(dives), vec[0].v, q2(&vec[s/4]), vec[s/2].v, q2(&vec[s - s/4 - 2]), vec[s - 1].v };
 	}
 }
 
