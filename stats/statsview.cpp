@@ -31,6 +31,7 @@ static const double sceneBorder = 5.0;			// Border between scene edges and stati
 static const double titleBorder = 2.0;			// Border between title and chart
 
 StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
+	backgroundDirty(true),
 	highlightedSeries(nullptr),
 	xAxis(nullptr),
 	yAxis(nullptr),
@@ -125,11 +126,9 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	}
 	deletedItems.clear();
 
-	QRectF rect = boundingRect();
-	if (plotRect != rect) {
-		plotRect = rect;
-		rootNode->backgroundNode->setRect(rect);
-		plotAreaChanged(plotRect.size());
+	if (backgroundDirty) {
+		rootNode->backgroundNode->setRect(plotRect);
+		backgroundDirty = false;
 	}
 
 	for (ChartItem *item = dirtyItems.first; item; item = item->next) {
@@ -230,6 +229,16 @@ QSizeF StatsView::size() const
 QRectF StatsView::plotArea() const
 {
 	return plotRect;
+}
+
+void StatsView::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+	plotRect = QRectF(QPointF(0.0, 0.0), newGeometry.size());
+	backgroundDirty = true;
+	plotAreaChanged(plotRect.size());
+
+	// Do we need to call the base-class' version of geometryChanged? Probably for QML?
+	QQuickItem::geometryChanged(newGeometry, oldGeometry);
 }
 
 void StatsView::plotAreaChanged(const QSizeF &s)
@@ -393,7 +402,7 @@ void StatsView::plot(const StatsState &stateIn)
 	state = stateIn;
 	plotChart();
 	updateFeatures(); // Show / hide chart features, such as legend, etc.
-	plotAreaChanged(boundingRect().size());
+	plotAreaChanged(plotRect.size());
 	update();
 }
 
