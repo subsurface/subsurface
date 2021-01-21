@@ -89,18 +89,20 @@ using ZNode = HideableQSGNode<QSGNode>;
 class RootNode : public QSGNode
 {
 public:
-	RootNode(QQuickWindow *w);
+	RootNode(StatsView &view);
+	~RootNode();
+	StatsView &view;
 	std::unique_ptr<QSGRectangleNode> backgroundNode; // solid background
 	// We entertain one node per Z-level.
 	std::array<std::unique_ptr<ZNode>, (size_t)ChartZValue::Count> zNodes;
 };
 
-RootNode::RootNode(QQuickWindow *w)
+RootNode::RootNode(StatsView &view) : view(view)
 {
 	// Add a background rectangle with a solid color. This could
 	// also be done on the widget level, but would have to be done
 	// separately for desktop and mobile, so do it here.
-	backgroundNode.reset(w->createRectangleNode());
+	backgroundNode.reset(view.w()->createRectangleNode());
 	backgroundNode->setColor(backgroundColor);
 	appendChildNode(backgroundNode.get());
 
@@ -110,21 +112,31 @@ RootNode::RootNode(QQuickWindow *w)
 	}
 }
 
-QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
+RootNode::~RootNode()
 {
-	// The QtQuick drawing interface is utterly bizzare with a distinct 1980ies-style memory management.
-	// This is just a copy of what is found in Qt's documentation.
-	RootNode *n = static_cast<RootNode *>(oldNode);
-	if (!n)
-		n = rootNode = new RootNode(window());
+	view.emergencyShutdown();
+}
 
-	// Delete all chart items that are marked for deletion.
+void StatsView::freeDeletedChartItems()
+{
 	ChartItem *nextitem;
 	for (ChartItem *item = deletedItems.first; item; item = nextitem) {
 		nextitem = item->next;
 		delete item;
 	}
 	deletedItems.clear();
+}
+
+QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
+{
+	// The QtQuick drawing interface is utterly bizzare with a distinct 1980ies-style memory management.
+	// This is just a copy of what is found in Qt's documentation.
+	RootNode *n = static_cast<RootNode *>(oldNode);
+	if (!n)
+		n = rootNode = new RootNode(*this);
+
+	// Delete all chart items that are marked for deletion.
+	freeDeletedChartItems();
 
 	if (backgroundDirty) {
 		rootNode->backgroundNode->setRect(plotRect);
@@ -138,6 +150,32 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	dirtyItems.splice(cleanItems);
 
 	return n;
+}
+
+// When reparenting the QQuickWidget, QtQuick decides to delete our rootNode
+// and with it all the QSG nodes, even though we have *not* given the
+// permission to do so! If the widget is reused, we try to delete the
+// stale items, whose nodes have already been deleted by QtQuick, leading
+// to a double-free(). Instead of searching for the cause of this behavior,
+// let's just hook into the rootNodes destructor and delete the objects
+// in a controlled manner, so that QtQuick has no more access to them.
+void StatsView::emergencyShutdown()
+{
+	// Mark clean and dirty chart items for deletion...
+	cleanItems.splice(deletedItems);
+	dirtyItems.splice(deletedItems);
+
+	// ...and delete them.
+	freeDeletedChartItems();
+
+	// Now delete all the pointers we might have to chart features,
+	// axes, etc. Note that all pointers to chart items are non
+	// owning, so this only resets stale references, but does not
+	// lead to any additional deletion of chart items.
+	reset();
+
+	// The rootNode is being deleted -> remove the reference to that
+	rootNode = nullptr;
 }
 
 void StatsView::addQSGNode(QSGNode *node, ChartZValue z)

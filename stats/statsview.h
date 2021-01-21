@@ -43,13 +43,14 @@ public:
 	~StatsView();
 
 	void plot(const StatsState &state);
-	void updateFeatures(const StatsState &state); // Updates the visibility of chart features, such as legend, regression, etc.
+	void updateFeatures(const StatsState &state);	// Updates the visibility of chart features, such as legend, regression, etc.
 	QQuickWindow *w() const;			// Make window available to items
 	QSizeF size() const;
 	QRectF plotArea() const;
 	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
 	void registerChartItem(ChartItem &item);
 	void registerDirtyChartItem(ChartItem &item);
+	void emergencyShutdown();			// Called when QQuick decides to delete out root node.
 
 	// Create a chart item and add it to the scene.
 	// The item must not be deleted by the caller, but can be
@@ -151,6 +152,10 @@ private:
 
 	// There are three double linked lists of chart items:
 	// clean items, dirty items and items to be deleted.
+	// Note that only the render thread must delete chart items,
+	// and therefore these lists are the only owning pointers
+	// to chart items. All other pointers are non-owning and
+	// can therefore become stale.
 	struct ChartItemList {
 		ChartItemList();
 		ChartItem *first, *last;
@@ -161,6 +166,7 @@ private:
 	};
 	ChartItemList cleanItems, dirtyItems, deletedItems;
 	void deleteChartItemInternal(ChartItem &item);
+	void freeDeletedChartItems();
 };
 
 // This implementation detail must be known to users of the class.
