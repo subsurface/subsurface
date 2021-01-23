@@ -52,6 +52,7 @@ public:
 	int ascratestopsDisplay();
 	int ascratelast6mDisplay();
 	int descrateDisplay();
+	int getSurfacePressure();
 
 	/**
 	 * @return the row number.
@@ -64,6 +65,7 @@ public:
 	static bool addingDeco;
 	struct deco_state final_deco_state;
 
+	void loadFromDive(dive *d);
 public
 slots:
 	int addStop(int millimeters = 0, int seconds = 0, int cylinderid_in = -1, int ccpoint = 0, bool entered = true, enum divemode_t = UNDEF_COMP_TYPE);
@@ -73,7 +75,6 @@ slots:
 	void setVpmbConservatism(int level);
 	void setSurfacePressure(int pressure);
 	void setSalinity(int salinity);
-	int getSurfacePressure();
 	void setBottomSac(double sac);
 	void setDecoSac(double sac);
 	void setStartTime(const QTime &t);
@@ -93,7 +94,6 @@ slots:
 	void cancelPlan();
 	void createTemporaryPlan();
 	void deleteTemporaryPlan();
-	void loadFromDive(dive *d);
 	void emitDataChanged();
 	void setRebreatherMode(int mode);
 	void setReserveGas(int reserve);
