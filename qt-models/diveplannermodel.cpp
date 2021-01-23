@@ -826,8 +826,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 	point.entered = entered;
 	point.divemode = divemode;
 	point.next = NULL;
-	divepoints.append(point);
-	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
+	divepoints.insert(divepoints.begin() + row, point);
 	endInsertRows();
 	return row;
 }
