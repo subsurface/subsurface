@@ -956,11 +956,9 @@ void DivePlannerPointsModel::clear()
 	bool oldRecalc = setRecalc(false);
 
 	cylinders.updateDive(&displayed_dive);
-	if (rowCount() > 0) {
-		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-		divepoints.clear();
-		endRemoveRows();
-	}
+	beginResetModel();
+	divepoints.clear();
+	endResetModel();
 	cylinders.clear();
 	preserved_until.seconds = 0;
 	setRecalc(oldRecalc);
