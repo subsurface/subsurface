@@ -38,28 +38,28 @@ public:
 	void cylinderRenumber(int mapping[]);
 	void removeSelectedPoints(const QVector<int> &rows);
 	void setPlanMode(Mode mode);
-	bool isPlanner();
+	bool isPlanner() const;
 	void createSimpleDive();
 	void clear();
 	Mode currentMode() const;
 	bool setRecalc(bool recalc);
-	bool recalcQ();
-	bool tankInUse(int cylinderid);
+	bool recalcQ() const;
+	bool tankInUse(int cylinderid) const;
 	CylindersModel *cylindersModel();
 
-	int ascrate75Display();
-	int ascrate50Display();
-	int ascratestopsDisplay();
-	int ascratelast6mDisplay();
-	int descrateDisplay();
-	int getSurfacePressure();
+	int ascrate75Display() const;
+	int ascrate50Display() const;
+	int ascratestopsDisplay() const;
+	int ascratelast6mDisplay() const;
+	int descrateDisplay() const;
+	int getSurfacePressure() const;
 
 	/**
 	 * @return the row number.
 	 */
 	void editStop(int row, divedatapoint newData);
-	divedatapoint at(int row);
-	int size();
+	divedatapoint at(int row) const;
+	int size() const;
 	struct diveplan &getDiveplan();
 	void removeDeco();
 	static bool addingDeco;
@@ -120,7 +120,7 @@ private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
 	void setupStartTime();
 	void setupCylinders();
-	int lastEnteredPoint();
+	int lastEnteredPoint() const;
 	bool updateMaxDepth();
 	void createPlan(bool replanCopy);
 	struct diveplan diveplan;

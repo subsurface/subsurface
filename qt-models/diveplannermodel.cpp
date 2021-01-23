@@ -244,7 +244,7 @@ void DivePlannerPointsModel::setPlanMode(Mode m)
 	}
 }
 
-bool DivePlannerPointsModel::isPlanner()
+bool DivePlannerPointsModel::isPlanner() const
 {
 	return mode == PLAN;
 }
@@ -259,7 +259,7 @@ bool DivePlannerPointsModel::setRecalc(bool rec)
 	return old;
 }
 
-bool DivePlannerPointsModel::recalcQ()
+bool DivePlannerPointsModel::recalcQ() const
 {
 	return recalc;
 }
@@ -568,7 +568,7 @@ void DivePlannerPointsModel::setSalinity(int salinity)
 	emitDataChanged();
 }
 
-int DivePlannerPointsModel::getSurfacePressure()
+int DivePlannerPointsModel::getSurfacePressure() const
 {
 	return diveplan.surface_pressure;
 }
@@ -584,7 +584,7 @@ void DivePlannerPointsModel::setAscrate75Display(int rate)
 	qPrefDivePlanner::set_ascrate75(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
-int DivePlannerPointsModel::ascrate75Display()
+int DivePlannerPointsModel::ascrate75Display() const
 {
 	return lrint((float)prefs.ascrate75 / UNIT_FACTOR);
 }
@@ -594,7 +594,7 @@ void DivePlannerPointsModel::setAscrate50Display(int rate)
 	qPrefDivePlanner::set_ascrate50(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
-int DivePlannerPointsModel::ascrate50Display()
+int DivePlannerPointsModel::ascrate50Display() const
 {
 	return lrint((float)prefs.ascrate50 / UNIT_FACTOR);
 }
@@ -604,7 +604,7 @@ void DivePlannerPointsModel::setAscratestopsDisplay(int rate)
 	qPrefDivePlanner::set_ascratestops(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
-int DivePlannerPointsModel::ascratestopsDisplay()
+int DivePlannerPointsModel::ascratestopsDisplay() const
 {
 	return lrint((float)prefs.ascratestops / UNIT_FACTOR);
 }
@@ -614,7 +614,7 @@ void DivePlannerPointsModel::setAscratelast6mDisplay(int rate)
 	qPrefDivePlanner::set_ascratelast6m(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
-int DivePlannerPointsModel::ascratelast6mDisplay()
+int DivePlannerPointsModel::ascratelast6mDisplay() const
 {
 	return lrint((float)prefs.ascratelast6m / UNIT_FACTOR);
 }
@@ -624,7 +624,7 @@ void DivePlannerPointsModel::setDescrateDisplay(int rate)
 	qPrefDivePlanner::set_descrate(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
-int DivePlannerPointsModel::descrateDisplay()
+int DivePlannerPointsModel::descrateDisplay() const
 {
 	return lrint((float)prefs.descrate / UNIT_FACTOR);
 }
@@ -742,7 +742,7 @@ bool divePointsLessThan(const divedatapoint &p1, const divedatapoint &p2)
 	return p1.time < p2.time;
 }
 
-int DivePlannerPointsModel::lastEnteredPoint()
+int DivePlannerPointsModel::lastEnteredPoint() const
 {
 	for (int i = divepoints.count() - 1; i >= 0; i--)
 		if (divepoints.at(i).entered)
@@ -845,12 +845,12 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	emitDataChanged();
 }
 
-int DivePlannerPointsModel::size()
+int DivePlannerPointsModel::size() const
 {
 	return divepoints.size();
 }
 
-divedatapoint DivePlannerPointsModel::at(int row)
+divedatapoint DivePlannerPointsModel::at(int row) const
 {
 	/*
 	 * When moving divepoints rigorously, we might end up with index
@@ -932,10 +932,10 @@ DivePlannerPointsModel::Mode DivePlannerPointsModel::currentMode() const
 	return mode;
 }
 
-bool DivePlannerPointsModel::tankInUse(int cylinderid)
+bool DivePlannerPointsModel::tankInUse(int cylinderid) const
 {
 	for (int j = 0; j < rowCount(); j++) {
-		divedatapoint &p = divepoints[j];
+		const divedatapoint &p = divepoints[j];
 		if (p.time == 0) // special entries that hold the available gases
 			continue;
 		if (!p.entered) // removing deco gases is ok
