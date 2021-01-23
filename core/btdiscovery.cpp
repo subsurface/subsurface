@@ -37,6 +37,51 @@ static struct modelPattern model[] = {
 	{ 0x4743, "Aqualung", "i470TC" }
 };
 
+struct namePattern {
+	const char *prefix;
+	const char *vendor;
+	const char *product;
+};
+static struct namePattern name[] = {
+	// Shearwater dive computers
+	{ "Predator", "Shearwater", "Predator" },
+	// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device
+	// but only the Petrel 2 is listed as available dive computer on iOS (which requires BLE support)
+	// so always pick the "Petrel 2" as product when seeing a Petrel
+	{ "Petrel", "Shearwater", "Petrel 2" },
+	{ "Perdix", "Shearwater", "Perdix" },
+	{ "Teric", "Shearwater", "Teric" },
+	{ "Peregrine", "Shearwater", "Peregrine" },
+	{ "NERD 2", "Shearwater", "NERD 2" },
+	{ "NERD", "Shearwater", "NERD" }, // order is important, test for the more specific one first
+	{ "Predator", "Shearwater", "Predator" },
+	{ "Predator", "Shearwater", "Predator" },
+	{ "Predator", "Shearwater", "Predator" },
+	// Suunto dive computers
+	{ "EON Steel", "Suunto", "EON Steel" },
+	{ "EON Core", "Suunto", "EON Core" },
+	{ "Suunto D5", "Suunto", "D5" },
+	// Scubapro dive computers
+	{ "G2", "Scubapro", "G2" },
+	{ "HUD", "Scubapro", "G2 HUD" },
+	{ "Aladin", "Scubapro", "Aladin Sport Matrix" },
+	{ "A1", "Scubapro", "Aladin A1" },
+	// Mares dive computers
+	{ "Mares Genius", "Mares", "Genius" },
+	{ "Mares", "Mares", "Quad" }, // we actually don't know and just pick a common one - user needs to fix in UI
+	// Cress dive computers
+	{ "CARESIO_", "Cressi", "Cartesio" },
+	{ "GOA_", "Cressi", "Goa" },
+	// Deepblu dive computesr
+	{ "COSMIQ", "Deepblu", "Cosmiq+" },
+	// Oceans dive computers
+	{ "S1", "Oceans", "S1" },
+	// McLean dive computers
+	{ "McLean Extreme", "McLean", "Extreme" },
+	// Tecdiving dive computers
+	{ "DiveComputer", "Tecdiving", "DiveComputer.eu" }
+};
+
 static dc_descriptor_t *getDeviceType(QString btName)
 // central function to convert a BT name to a Subsurface known vendor/model pair
 {
@@ -54,52 +99,6 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		// just use a default product that allows the codoe to download from the
 		// user's dive computer
 		else product = "OSTC 2";
-	} else if (btName.startsWith("Predator") ||
-		    btName.startsWith("Petrel") ||
-		    btName.startsWith("Perdix") ||
-		    btName.startsWith("Teric") ||
-		    btName.startsWith("Peregrine") ||
-		    btName.startsWith("NERD")) {
-		vendor = "Shearwater";
-		// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device
-		// but only the Petrel 2 is listed as available dive computer on iOS (which requires BLE support)
-		// so always pick the "Petrel 2" as product when seeing a Petrel
-		if (btName.startsWith("Petrel")) product = "Petrel 2";
-		if (btName.startsWith("Perdix")) product = "Perdix";
-		if (btName.startsWith("Predator")) product = "Predator";
-		if (btName.startsWith("Teric")) product = "Teric";
-		if (btName.startsWith("Peregrine")) product = "Peregrine";
-		if (btName.startsWith("NERD")) product = "Nerd"; // next line might override this
-		if (btName.startsWith("NERD 2")) product = "Nerd 2";
-	} else if (btName.startsWith("EON Steel")) {
-		vendor = "Suunto";
-		product = "EON Steel";
-	} else if (btName.startsWith("EON Core")) {
-		vendor = "Suunto";
-		product = "EON Core";
-	} else if (btName.startsWith("Suunto D5")) {
-		vendor = "Suunto";
-		product = "D5";
-	} else if (btName.startsWith("G2")  || btName.startsWith("Aladin") || btName.startsWith("HUD") || btName.startsWith("A1")) {
-		vendor = "Scubapro";
-		if (btName.startsWith("G2")) product = "G2";
-		if (btName.startsWith("HUD")) product = "G2 HUD";
-		if (btName.startsWith("Aladin")) product = "Aladin Sport Matrix";
-		if (btName.startsWith("A1")) product = "Aladin A1";
-	} else if (btName.startsWith("Mares")) {
-		vendor = "Mares";
-		// we don't know which of the dive computers it is,
-		// so let's just randomly pick one
-		product = "Quad";
-		// Some we can pick out directly
-		if (btName.startsWith("Mares Genius"))
-			product = "Genius";
-	} else if (btName.startsWith("CARTESIO_")) {
-		vendor = "Cressi";
-		product = "Cartesio";
-	} else if (btName.startsWith("GOA_")) {
-		vendor = "Cressi";
-		product = "Goa";
 	} else if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
 		// The Ratio bluetooth name looks like the Pelagic ones,
 		// but that seems to be just happenstance.
@@ -110,19 +109,8 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		// eventhough the physical model states iX3M.
 		vendor = "Ratio";
 		product = "iX3M GPS Easy"; // we don't know which of the GPS models, so set one
-	} else if (btName == "COSMIQ") {
-		vendor = "Deepblu";
-		product = "Cosmiq+";
-	} else if (btName.startsWith("S1")) {
-		vendor = "Oceans";
-		product = "S1";
-	} else if (btName.startsWith("McLean Extreme")) {
-		vendor = "McLean";
-		product = "Extreme";
-	} else if (btName.startsWith("DiveComputer")) {
-		vendor = "Tecdiving";
-		product = "DiveComputer.eu";
-	} else { // finally try all the Pelagic/Aqualung names
+	} else if (btName.contains(QRegularExpression("^[A-Z]{2}\\d{6}"))) {
+		// try the Pelagic/Aqualung name patterns
 		// the source of truth for this data is in libdivecomputer/src/descriptor.c
 		// we'd prefer to use the filter functions there but current design makes that really challenging
 		// The Pelagic dive computers (generally branded as Oceanic, Aqualung, or Sherwood)
@@ -134,6 +122,14 @@ static dc_descriptor_t *getDeviceType(QString btName)
 			if (btName.contains(QRegularExpression(pattern))) {
 				vendor = model[i].vendor;
 				product = model[i].product;
+				break;
+			}
+		}
+	} else { // finally try all the string prefix based ones
+		for (uint16_t i = 0; i < sizeof(name) / sizeof(struct namePattern); i++) {
+			if (btName.startsWith(name[i].prefix)) {
+				vendor = name[i].vendor;
+				product = name[i].product;
 				break;
 			}
 		}
