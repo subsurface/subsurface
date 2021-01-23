@@ -66,9 +66,10 @@ public:
 	struct deco_state final_deco_state;
 
 	void loadFromDive(dive *d);
+	int addStop(int millimeters, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t);
 public
 slots:
-	int addStop(int millimeters = 0, int seconds = 0, int cylinderid_in = -1, int ccpoint = 0, bool entered = true, enum divemode_t = UNDEF_COMP_TYPE);
+	void addDefaultStop();
 	void addCylinder_clicked();
 	void setGFHigh(const int gfhigh);
 	void setGFLow(const int gflow);
