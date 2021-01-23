@@ -26,6 +26,7 @@ Kirigami.ScrollablePage {
 			if (Backend.cloud_verification_status === Enums.CS_VERIFIED) {
 				detailsWindow.endEditMode()
 				manager.saveChangesCloud(true)
+				showPassiveNotification(qsTr("Completed manual sync with cloud\n") + manager.syncState)
 				refreshing = false
 			} else {
 				manager.appendTextToLog("sync with cloud storage requested, but credentialStatus is " + Backend.cloud_verification_status)
