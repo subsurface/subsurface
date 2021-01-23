@@ -750,6 +750,11 @@ int DivePlannerPointsModel::lastEnteredPoint() const
 	return -1;
 }
 
+void DivePlannerPointsModel::addDefaultStop()
+{
+	addStop(0, 0, -1, 0, true, UNDEF_COMP_TYPE);
+}
+
 // cylinderid_in == -1 means same gas as before.
 // divemode == UNDEF_COMP_TYPE means determine from previous point.
 int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t divemode)
