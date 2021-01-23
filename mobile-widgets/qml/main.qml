@@ -605,6 +605,15 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					}
 				}
 
+				Kirigami.Action {
+					text: qsTr("Copy GPS to clipboard")
+					onTriggered: {
+						globalDrawer.close()
+						manager.copyGpsFixesToClipboard()
+					}
+
+				}
+
 				/* disable for now
 				Kirigami.Action {
 					text: qsTr("Dive planner")

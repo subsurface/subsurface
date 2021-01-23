@@ -37,7 +37,7 @@ public:
 	bool hasLocationsSource();
 	QString currentPosition();
 	void setLogCallBack(void (*showMsgCB)(const char *msg));
-
+	QString getFixString();
 	QMap<qint64, gpsTracker> currentGPSInfo() const;
 
 private:

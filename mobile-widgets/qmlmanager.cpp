@@ -492,6 +492,16 @@ void QMLManager::copyAppLogToClipboard()
 	QApplication::clipboard()->setText(getCombinedLogs(), QClipboard::Clipboard);
 }
 
+void QMLManager::copyGpsFixesToClipboard()
+{
+	// This of course creates a potential privacy issue, so let's be clear about that
+	QString gpsWarning("Sending these GPS data to someone exposes your location history; ");
+	gpsWarning += "they can, however, be helpful when debugging problems with the app. ";
+	gpsWarning += "Please consider carefully where you are seninding these data.\n\n";
+	gpsWarning += GpsLocation::instance()->getFixString();
+	QApplication::clipboard()->setText(gpsWarning, QClipboard::Clipboard);
+}
+
 bool QMLManager::createSupportEmail()
 {
 	QString mailToLink = "mailto:in-app-support@subsurface-divelog.org?subject=Subsurface-mobile support request";

@@ -321,6 +321,16 @@ void GpsLocation::loadFromStorage()
 	}
 }
 
+QString GpsLocation::getFixString()
+{
+	// only used for debugging
+	QString res;
+	struct gpsTracker gpsEntry;
+	foreach (gpsEntry, m_trackers.values())
+		res += QString("%1: %2; %3 ; \"%4\"\n").arg(gpsEntry.when).arg(gpsEntry.location.lat.udeg).arg(gpsEntry.location.lon.udeg).arg(gpsEntry.name);
+	return res;
+}
+
 void GpsLocation::replaceFixToStorage(gpsTracker &gt)
 {
 	if (!m_trackers.keys().contains(gt.when)) {

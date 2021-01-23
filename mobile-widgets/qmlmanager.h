@@ -217,6 +217,7 @@ public slots:
 	void clearGpsData();
 	QString getCombinedLogs();
 	void copyAppLogToClipboard();
+	void copyGpsFixesToClipboard();
 	bool createSupportEmail();
 	void finishSetup();
 	QString getNumber(const QString& diveId);
