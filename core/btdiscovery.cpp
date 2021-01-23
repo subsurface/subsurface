@@ -17,6 +17,26 @@ namespace {
 }
 BTDiscovery *BTDiscovery::m_instance = NULL;
 
+struct modelPattern {
+	uint16_t    model;
+	const char *vendor;
+	const char *product;
+};
+static struct modelPattern model[] = {
+	{ 0x4552, "Oceanic", "Pro Plus X" },
+	{ 0x455A, "Aqualung", "i750TC" },
+	{ 0x4647, "Sherwood", "Sage" },
+	{ 0x4648, "Aqualung", "i300C" },
+	{ 0x4649, "Aqualung", "i200C" },
+	{ 0x4651, "Aqualung", "i770R" },
+	{ 0x4652, "Aqualung", "i550C" },
+	{ 0x4653, "Oceanic", "Geo 4.0" },
+	{ 0x4654, "Oceanic", "Veo 4.0" },
+	{ 0x4655, "Sherwood", "Wisdom 4" },
+	{ 0x4656, "Oceanic", "Pro Plus 4" },
+	{ 0x4743, "Aqualung", "i470TC" }
+};
+
 static dc_descriptor_t *getDeviceType(QString btName)
 // central function to convert a BT name to a Subsurface known vendor/model pair
 {
@@ -80,37 +100,6 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	} else if (btName.startsWith("GOA_")) {
 		vendor = "Cressi";
 		product = "Goa";
-	} else if (btName.contains(QRegularExpression("^FI\\d{6}$"))) {
-		// The Pelagic dive computers (generally branded as Oceanic or Aqualung)
-		// show up with a two-byte model code followed by six bytes of serial
-		// number. The model code matches the hex model (so "FQ" is 0x4651,
-		// where 'F' is 46h and 'Q' is 51h in ASCII).
-		vendor = "Aqualung";
-		product = "i200C";
-	} else if (btName.contains(QRegularExpression("^FH\\d{6}$"))) {
-		vendor = "Aqualung";
-		product = "i300C";
-	} else if (btName.contains(QRegularExpression("^FQ\\d{6}$"))) {
-		vendor = "Aqualung";
-		product = "i770R";
-	} else if (btName.contains(QRegularExpression("^FR\\d{6}$"))) {
-		vendor = "Aqualung";
-		product = "i550C";
-	} else if (btName.contains(QRegularExpression("^FS\\d{6}$"))) {
-		vendor = "Oceanic";
-		product = "Geo 4.0";
-	} else if (btName.contains(QRegularExpression("^FT\\d{6}$"))) {
-		vendor = "Oceanic";
-		product = "Veo 4.0";
-	} else if (btName.contains(QRegularExpression("^FU\\d{6}$"))) {
-		vendor = "Sherwood";
-		product = "Wisdom 4";
-	} else if (btName.contains(QRegularExpression("^FV\\d{6}$"))) {
-		vendor = "Oceanic";
-		product = "ProPlus 4";
-	} else if (btName.contains(QRegularExpression("^ER\\d{6}$"))) {
-		vendor = "Oceanic";
-		product = "Pro Plus X";
 	} else if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
 		// The Ratio bluetooth name looks like the Pelagic ones,
 		// but that seems to be just happenstance.
@@ -133,6 +122,21 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	} else if (btName.startsWith("DiveComputer")) {
 		vendor = "Tecdiving";
 		product = "DiveComputer.eu";
+	} else { // finally try all the Pelagic/Aqualung names
+		// the source of truth for this data is in libdivecomputer/src/descriptor.c
+		// we'd prefer to use the filter functions there but current design makes that really challenging
+		// The Pelagic dive computers (generally branded as Oceanic, Aqualung, or Sherwood)
+		// show up with a two-byte model code followed by six bytes of serial
+		// number. The model code matches the hex model (so "FQ" is 0x4651,
+		// where 'F' is 46h and 'Q' is 51h in ASCII).
+		for (uint16_t i = 0; i < sizeof(model) / sizeof(struct modelPattern); i++) {
+			QString pattern = QString("^%1%2\\d{6}$").arg(QChar(model[i].model >> 8)).arg(QChar(model[i].model & 0xFF));
+			if (btName.contains(QRegularExpression(pattern))) {
+				vendor = model[i].vendor;
+				product = model[i].product;
+				break;
+			}
+		}
 	}
 
 	// check if we found a known dive computer
