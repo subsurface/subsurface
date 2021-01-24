@@ -28,20 +28,18 @@ CylindersModel *DivePlannerPointsModel::cylindersModel()
 	return &cylinders;
 }
 
-/* TODO: Port this to CleanerTableModel to remove a bit of boilerplate. */
 void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 {
 	if (!rows.count())
 		return;
-	int firstRow = rowCount() - rows.count();
 	QVector<int> v2 = rows;
 	std::sort(v2.begin(), v2.end());
 
-	beginRemoveRows(QModelIndex(), firstRow, rowCount() - 1);
 	for (int i = v2.count() - 1; i >= 0; i--) {
-		divepoints.remove(v2[i]);
+		beginRemoveRows(QModelIndex(), v2[i], v2[i]);
+		divepoints.erase(divepoints.begin() + v2[i]);
+		endRemoveRows();
 	}
-	endRemoveRows();
 	cylinders.updateTrashIcon();
 }
 
