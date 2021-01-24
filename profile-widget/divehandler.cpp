@@ -22,7 +22,7 @@ DiveHandler::DiveHandler(const struct dive *d) : dive(d)
 int DiveHandler::parentIndex()
 {
 	ProfileWidget2 *view = qobject_cast<ProfileWidget2 *>(scene()->views().first());
-	return view->handles.indexOf(this);
+	return view->handleIndex(this);
 }
 
 void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
