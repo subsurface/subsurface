@@ -1286,6 +1286,7 @@ void ProfileWidget2::setAddState()
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
 	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
 	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
 	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
 	/* show the same stuff that the profile shows. */
@@ -1317,6 +1318,7 @@ void ProfileWidget2::setPlanState()
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
 	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
 	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
 	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
 	/* show the same stuff that the profile shows. */
@@ -1684,8 +1686,10 @@ void ProfileWidget2::disconnectTemporaryConnections()
 	disconnect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
 	disconnect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
 
+	disconnect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
 	disconnect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
 	disconnect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
+	disconnect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
 #endif
 	Q_FOREACH (QAction *action, actionsForKeys.values()) {
 		action->setShortcut(QKeySequence());
@@ -1702,22 +1706,45 @@ int ProfileWidget2::handleIndex(const DiveHandler *h) const
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::pointInserted(const QModelIndex&, int, int)
+
+DiveHandler *ProfileWidget2::createHandle()
 {
 	DiveHandler *item = new DiveHandler(&displayed_dive);
 	scene()->addItem(item);
-	handles.emplace_back(item);
-
 	connect(item, &DiveHandler::moved, this, &ProfileWidget2::recreatePlannedDive);
 	connect(item, &DiveHandler::clicked, this, &ProfileWidget2::divePlannerHandlerClicked);
 	connect(item, &DiveHandler::released, this, &ProfileWidget2::divePlannerHandlerReleased);
+	return item;
+}
+
+QGraphicsSimpleTextItem *ProfileWidget2::createGas()
+{
 	QGraphicsSimpleTextItem *gasChooseBtn = new QGraphicsSimpleTextItem();
 	scene()->addItem(gasChooseBtn);
 	gasChooseBtn->setZValue(10);
 	gasChooseBtn->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	gases.emplace_back(gasChooseBtn);
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	if (plannerModel->recalcQ())
+	return gasChooseBtn;
+}
+
+void ProfileWidget2::pointsReset()
+{
+	handles.clear();
+	gases.clear();
+	int count = DivePlannerPointsModel::instance()->rowCount();
+	for (int i = 0; i < count; ++i) {
+		handles.emplace_back(createHandle());
+		gases.emplace_back(createGas());
+	}
+}
+
+void ProfileWidget2::pointInserted(const QModelIndex &, int from, int to)
+{
+	for (int i = from; i <= to; ++i) {
+		handles.emplace(handles.begin() + i, createHandle());
+		gases.emplace(gases.begin() + i, createGas());
+	}
+
+	if (DivePlannerPointsModel::instance()->recalcQ())
 		replot();
 }
 
@@ -1728,6 +1755,12 @@ void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
 	gases.erase(gases.begin() + start, gases.begin() + end + 1);
 	scene()->clearSelection();
 	replot();
+}
+
+void ProfileWidget2::pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &, int row)
+{
+	moveInVector(handles, start, end + 1, row);
+	moveInVector(gases, start, end + 1, row);
 }
 
 void ProfileWidget2::repositionDiveHandlers()
