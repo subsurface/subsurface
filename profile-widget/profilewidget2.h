@@ -112,8 +112,10 @@ slots: // Necessary to call from QAction's signals.
 	void picturesAdded(dive *d, QVector<PictureObj> pics);
 	void setPlanState();
 	void setAddState();
+	void pointsReset();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
+	void pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &destination, int row);
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
 	void profileChanged(dive *d);
 	void pictureOffsetChanged(dive *d, QString filename, offset_t offset);
@@ -256,6 +258,8 @@ private:
 #ifndef SUBSURFACE_MOBILE
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
+	DiveHandler *createHandle();
+	QGraphicsSimpleTextItem *createGas();
 #endif
 	friend class DiveHandler;
 	QHash<Qt::Key, QAction *> actionsForKeys;
