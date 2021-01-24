@@ -1062,7 +1062,7 @@ bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
 template <typename T>
 static void hideAll(const T &container)
 {
-	for (auto *item: container)
+	for (auto &item: container)
 		item->setVisible(false);
 }
 
@@ -1693,12 +1693,20 @@ void ProfileWidget2::disconnectTemporaryConnections()
 	}
 }
 
+int ProfileWidget2::handleIndex(const DiveHandler *h) const
+{
+	auto it = std::find_if(handles.begin(), handles.end(),
+			       [h] (const std::unique_ptr<DiveHandler> &h2)
+			       { return h == h2.get(); });
+	return it != handles.end() ? it - handles.begin() : -1;
+}
+
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::pointInserted(const QModelIndex&, int, int)
 {
 	DiveHandler *item = new DiveHandler(&displayed_dive);
 	scene()->addItem(item);
-	handles << item;
+	handles.emplace_back(item);
 
 	connect(item, &DiveHandler::moved, this, &ProfileWidget2::recreatePlannedDive);
 	connect(item, &DiveHandler::clicked, this, &ProfileWidget2::divePlannerHandlerClicked);
@@ -1707,21 +1715,17 @@ void ProfileWidget2::pointInserted(const QModelIndex&, int, int)
 	scene()->addItem(gasChooseBtn);
 	gasChooseBtn->setZValue(10);
 	gasChooseBtn->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	gases << gasChooseBtn;
+	gases.emplace_back(gasChooseBtn);
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	if (plannerModel->recalcQ())
 		replot();
 }
 
 void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
-{ // start and end are inclusive.
-	int num = (end - start) + 1;
-	for (int i = num; i != 0; i--) {
-		delete handles.back();
-		handles.pop_back();
-		delete gases.back();
-		gases.pop_back();
-	}
+{
+	// Qt's model/view API is mad. The end-point is inclusive, which means that the empty range is [0,-1]!
+	handles.erase(handles.begin() + start, handles.begin() + end + 1);
+	gases.erase(gases.begin() + start, gases.begin() + end + 1);
 	scene()->clearSelection();
 	replot();
 }
@@ -1735,7 +1739,7 @@ void ProfileWidget2::repositionDiveHandlers()
 		struct divedatapoint datapoint = plannerModel->at(i);
 		if (datapoint.time == 0) // those are the magic entries for tanks
 			continue;
-		DiveHandler *h = handles.at(i);
+		DiveHandler *h = handles[i].get();
 		h->setVisible(datapoint.entered);
 		h->setPos(timeAxis->posAtValue(datapoint.time), profileYAxis->posAtValue(datapoint.depth.mm));
 		QPointF p1;
@@ -1763,14 +1767,14 @@ void ProfileWidget2::repositionDiveHandlers()
 
 int ProfileWidget2::fixHandlerIndex(DiveHandler *activeHandler)
 {
-	int index = handles.indexOf(activeHandler);
-	if (index > 0 && index < handles.count() - 1) {
-		DiveHandler *before = handles[index - 1];
+	int index = handleIndex(activeHandler);
+	if (index > 0 && index < (int)handles.size() - 1) {
+		DiveHandler *before = handles[index - 1].get();
 		if (before->pos().x() > activeHandler->pos().x()) {
 			std::swap(handles[index], handles[index - 1]);
 			return index - 1;
 		}
-		DiveHandler *after = handles[index + 1];
+		DiveHandler *after = handles[index + 1].get();
 		if (after->pos().x() < activeHandler->pos().x()) {
 			std::swap(handles[index], handles[index + 1]);
 			return index + 1;
@@ -1817,7 +1821,7 @@ void ProfileWidget2::keyDownAction()
 
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handles.indexOf(handler);
+			int row = handleIndex(handler);
 			divedatapoint dp = plannerModel->at(row);
 			if (dp.depth.mm >= profileYAxis->maximum())
 				continue;
@@ -1839,7 +1843,7 @@ void ProfileWidget2::keyUpAction()
 	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handles.indexOf(handler);
+			int row = handleIndex(handler);
 			divedatapoint dp = plannerModel->at(row);
 
 			if (dp.depth.mm <= 0)
@@ -1862,7 +1866,7 @@ void ProfileWidget2::keyLeftAction()
 	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handles.indexOf(handler);
+			int row = handleIndex(handler);
 			divedatapoint dp = plannerModel->at(row);
 
 			if (dp.time / 60 <= 0)
@@ -1872,7 +1876,7 @@ void ProfileWidget2::keyLeftAction()
 			// maybe this is a good place for a 'goto'?
 			double xpos = timeAxis->posAtValue((dp.time - 60) / 60);
 			bool nextStep = false;
-			Q_FOREACH (DiveHandler *h, handles) {
+			for (const auto &h: handles) {
 				if (IS_FP_SAME(h->pos().x(), xpos)) {
 					nextStep = true;
 					break;
@@ -1898,7 +1902,7 @@ void ProfileWidget2::keyRightAction()
 	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handles.indexOf(handler);
+			int row = handleIndex(handler);
 			divedatapoint dp = plannerModel->at(row);
 			if (dp.time / 60.0 >= timeAxis->maximum())
 				continue;
@@ -1907,7 +1911,7 @@ void ProfileWidget2::keyRightAction()
 			// maybe this is a good place for a 'goto'?
 			double xpos = timeAxis->posAtValue((dp.time + 60) / 60);
 			bool nextStep = false;
-			Q_FOREACH (DiveHandler *h, handles) {
+			for (const auto &h: handles) {
 				if (IS_FP_SAME(h->pos().x(), xpos)) {
 					nextStep = true;
 					break;
@@ -1935,7 +1939,7 @@ void ProfileWidget2::keyDeleteAction()
 		QVector<int> selectedIndices;
 		Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-				selectedIndices.push_back(handles.indexOf(handler));
+				selectedIndices.push_back(handleIndex(handler));
 				handler->hide();
 			}
 		}

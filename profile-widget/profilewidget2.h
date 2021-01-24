@@ -227,7 +227,7 @@ private:
 #endif
 	TankItem *tankItem;
 
-	QList<QGraphicsSimpleTextItem *> gases;
+	std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> gases;
 
 	//specifics for ADD and PLAN
 #ifndef SUBSURFACE_MOBILE
@@ -251,7 +251,8 @@ private:
 	void updateThumbnailPaintOrder();
 #endif
 
-	QList<DiveHandler *> handles;
+	std::vector<std::unique_ptr<DiveHandler>> handles;
+	int handleIndex(const DiveHandler *h) const;
 #ifndef SUBSURFACE_MOBILE
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
