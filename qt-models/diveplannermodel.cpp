@@ -831,20 +831,49 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 
 void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 {
+	if (row < 0 || row >= divepoints.count())
+		return;
+
+	// Refuse to move to 0, since that has special meaning.
+	if (newData.time <= 0)
+		return;
+
 	/*
 	 * When moving divepoints rigorously, we might end up with index
 	 * out of range, thus returning the last one instead.
 	 */
 	int old_first_cylid = divepoints[0].cylinderid;
-	if (row >= divepoints.count())
-		return;
+
+	// Is it ok to change data first and then move the rows?
 	divepoints[row] = newData;
-	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
+
+	// If the time changed, the item might have to be moved. Oh joy.
+	int newRow = row;
+	while (newRow + 1 < divepoints.count() && divepoints[newRow + 1].time < divepoints[row].time)
+		++newRow;
+	if (newRow != row) {
+		++newRow; // Move one past item with smaller time stamp
+	} else {
+		// If we didn't move forward, try moving backwards
+		while (newRow > 0 && divepoints[newRow - 1].time > divepoints[row].time)
+			--newRow;
+	}
+
+	if (newRow != row && newRow != row + 1) {
+		beginMoveRows(QModelIndex(), row, row, QModelIndex(), newRow);
+		moveInVector(divepoints, row, row + 1, newRow);
+		endMoveRows();
+
+		// Account for moving the row backwards in the array.
+		row = newRow > row ? newRow - 1 : newRow;
+	}
+
 	if (updateMaxDepth())
 		cylinders.updateBestMixes();
 	if (divepoints[0].cylinderid != old_first_cylid)
 		cylinders.moveAtFirst(divepoints[0].cylinderid);
-	emitDataChanged();
+
+	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
 }
 
 int DivePlannerPointsModel::size() const
