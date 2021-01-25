@@ -124,7 +124,7 @@ slots: // Necessary to call from QAction's signals.
 	void removePicture(const QString &fileUrl);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
-	void recreatePlannedDive();
+	void divePlannerHandlerMoved();
 
 	/* key press handlers */
 	void keyEscAction();
