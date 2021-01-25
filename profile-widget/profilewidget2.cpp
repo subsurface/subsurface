@@ -102,9 +102,10 @@ T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z
 	return res;
 }
 
-ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
+ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, QWidget *parent) : QGraphicsView(parent),
 	currentState(INVALID),
 	dataModel(new DivePlotDataModel(this)),
+	plannerModel(plannerModelIn),
 	zoomLevel(0),
 	zoomFactor(1.15),
 	isGrayscale(false),
@@ -527,7 +528,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 #ifdef SUBSURFACE_MOBILE
 	Q_UNUSED(doClearPictures);
 #endif
-	if (currentState != ADD && currentState != PLAN) {
+	if ((currentState != ADD && currentState != PLAN) || !plannerModel) {
 		if (!d) {
 			setEmptyState();
 			return;
@@ -549,7 +550,6 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 			decoModelParameters->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
 #ifndef SUBSURFACE_MOBILE
 	} else {
-		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 		plannerModel->createTemporaryPlan();
 		struct diveplan &diveplan = plannerModel->getDiveplan();
 		if (!diveplan.dp) {
@@ -601,7 +601,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	// create_plot_info_new() automatically frees old plot data
 #ifndef SUBSURFACE_MOBILE
 	// A non-null planner_ds signals to create_plot_info_new that the dive is currently planned.
-	struct deco_state *planner_ds = currentState == PLAN ? &DivePlannerPointsModel::instance()->final_deco_state : nullptr;
+	struct deco_state *planner_ds = currentState == PLAN && plannerModel ? &plannerModel->final_deco_state : nullptr;
 	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth, planner_ds);
 #else
 	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth, nullptr);
@@ -790,10 +790,9 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	diveComputerText->setText(dcText);
 
 #ifndef SUBSURFACE_MOBILE
-	if (currentState == ADD || currentState == PLAN) { // TODO: figure a way to move this from here.
+	if ((currentState == ADD || currentState == PLAN) && plannerModel) {
 		repositionDiveHandlers();
-		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
-		model->deleteTemporaryPlan();
+		plannerModel->deleteTemporaryPlan();
 	}
 	if (doClearPictures)
 		clearPictures();
@@ -998,8 +997,7 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 
 void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 {
-	if (currentState == PLAN || currentState == ADD) {
-		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	if ((currentState == PLAN || currentState == ADD) && plannerModel) {
 		QPointF mappedPos = mapToScene(event->pos());
 		if (isPointOutOfBoundaries(mappedPos))
 			return;
@@ -1266,7 +1264,6 @@ void ProfileWidget2::setToolTipVisibile(bool visible)
 
 void ProfileWidget2::connectPlannerModel()
 {
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
 	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
 	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
@@ -1685,14 +1682,15 @@ void ProfileWidget2::editName(DiveEventItem *item)
 void ProfileWidget2::disconnectTemporaryConnections()
 {
 #ifndef SUBSURFACE_MOBILE
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	disconnect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
-	disconnect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
+	if (plannerModel) {
+		disconnect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
+		disconnect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
 
-	disconnect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
-	disconnect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
-	disconnect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
-	disconnect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
+		disconnect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
+		disconnect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
+		disconnect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
+		disconnect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
+	}
 #endif
 	Q_FOREACH (QAction *action, actionsForKeys.values()) {
 		action->setShortcut(QKeySequence());
@@ -1733,7 +1731,7 @@ void ProfileWidget2::pointsReset()
 {
 	handles.clear();
 	gases.clear();
-	int count = DivePlannerPointsModel::instance()->rowCount();
+	int count = plannerModel->rowCount();
 	for (int i = 0; i < count; ++i) {
 		handles.emplace_back(createHandle());
 		gases.emplace_back(createGas());
@@ -1747,7 +1745,7 @@ void ProfileWidget2::pointInserted(const QModelIndex &, int from, int to)
 		gases.emplace(gases.begin() + i, createGas());
 	}
 
-	if (DivePlannerPointsModel::instance()->recalcQ())
+	if (plannerModel->recalcQ())
 		replot();
 }
 
@@ -1768,7 +1766,6 @@ void ProfileWidget2::pointsMoved(const QModelIndex &, int start, int end, const 
 
 void ProfileWidget2::repositionDiveHandlers()
 {
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	hideAll(gases);
 	// Re-position the user generated dive handlers
 	for (int i = 0; i < plannerModel->rowCount(); i++) {
@@ -1822,7 +1819,6 @@ int ProfileWidget2::fixHandlerIndex(DiveHandler *activeHandler)
 void ProfileWidget2::recreatePlannedDive()
 {
 	DiveHandler *activeHandler = qobject_cast<DiveHandler *>(sender());
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	int index = fixHandlerIndex(activeHandler);
 	int mintime = 0;
 	int maxtime = plannerModel->at(plannerModel->size() - 1).time * 3 / 2;
@@ -1849,10 +1845,9 @@ void ProfileWidget2::recreatePlannedDive()
 
 void ProfileWidget2::keyDownAction()
 {
-	if (currentState != ADD && currentState != PLAN)
+	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	bool oldRecalc = plannerModel->setRecalc(false);
 
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
@@ -1872,10 +1867,9 @@ void ProfileWidget2::keyDownAction()
 
 void ProfileWidget2::keyUpAction()
 {
-	if (currentState != ADD && currentState != PLAN)
+	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
@@ -1895,10 +1889,9 @@ void ProfileWidget2::keyUpAction()
 
 void ProfileWidget2::keyLeftAction()
 {
-	if (currentState != ADD && currentState != PLAN)
+	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
@@ -1931,10 +1924,9 @@ void ProfileWidget2::keyLeftAction()
 
 void ProfileWidget2::keyRightAction()
 {
-	if (currentState != ADD && currentState != PLAN)
+	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
@@ -1966,10 +1958,9 @@ void ProfileWidget2::keyRightAction()
 
 void ProfileWidget2::keyDeleteAction()
 {
-	if (currentState != ADD && currentState != PLAN)
+	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	int selCount = scene()->selectedItems().count();
 	if (selCount) {
 		QVector<int> selectedIndices;
@@ -1985,7 +1976,7 @@ void ProfileWidget2::keyDeleteAction()
 
 void ProfileWidget2::keyEscAction()
 {
-	if (currentState != ADD && currentState != PLAN)
+	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
 	if (scene()->selectedItems().count()) {
@@ -1993,7 +1984,6 @@ void ProfileWidget2::keyEscAction()
 		return;
 	}
 
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	if (plannerModel->isPlanner())
 		plannerModel->cancelPlan();
 }

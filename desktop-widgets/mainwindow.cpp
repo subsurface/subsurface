@@ -134,7 +134,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	// for the "default" mode
 	mainTab.reset(new MainTab);
 	diveList.reset(new DiveListView);
-	graphics = new ProfileWidget2(this);
+	graphics = new ProfileWidget2(DivePlannerPointsModel::instance(), this);
 	mapWidget.reset(MapWidget::instance()); // Yes, this is ominous see comment in mapwidget.cpp.
 	plannerWidgets.reset(new PlannerWidgets);
 	statistics.reset(new StatsWidget);
