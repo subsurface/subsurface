@@ -1712,7 +1712,7 @@ DiveHandler *ProfileWidget2::createHandle()
 {
 	DiveHandler *item = new DiveHandler(&displayed_dive);
 	scene()->addItem(item);
-	connect(item, &DiveHandler::moved, this, &ProfileWidget2::recreatePlannedDive);
+	connect(item, &DiveHandler::moved, this, &ProfileWidget2::divePlannerHandlerMoved);
 	connect(item, &DiveHandler::clicked, this, &ProfileWidget2::divePlannerHandlerClicked);
 	connect(item, &DiveHandler::released, this, &ProfileWidget2::divePlannerHandlerReleased);
 	return item;
@@ -1798,49 +1798,21 @@ void ProfileWidget2::repositionDiveHandlers()
 	}
 }
 
-int ProfileWidget2::fixHandlerIndex(DiveHandler *activeHandler)
-{
-	int index = handleIndex(activeHandler);
-	if (index > 0 && index < (int)handles.size() - 1) {
-		DiveHandler *before = handles[index - 1].get();
-		if (before->pos().x() > activeHandler->pos().x()) {
-			std::swap(handles[index], handles[index - 1]);
-			return index - 1;
-		}
-		DiveHandler *after = handles[index + 1].get();
-		if (after->pos().x() < activeHandler->pos().x()) {
-			std::swap(handles[index], handles[index + 1]);
-			return index + 1;
-		}
-	}
-	return index;
-}
-
-void ProfileWidget2::recreatePlannedDive()
+void ProfileWidget2::divePlannerHandlerMoved()
 {
 	DiveHandler *activeHandler = qobject_cast<DiveHandler *>(sender());
-	int index = fixHandlerIndex(activeHandler);
-	int mintime = 0;
-	int maxtime = plannerModel->at(plannerModel->size() - 1).time * 3 / 2;
-	if (index > 0)
-		mintime = plannerModel->at(index - 1).time;
-	if (index < plannerModel->size() - 1)
-		maxtime = plannerModel->at(index + 1).time;
+	int index = handleIndex(activeHandler);
 
+	// Grow the time axis if necessary.
 	int minutes = lrint(timeAxis->valueAt(activeHandler->pos()) / 60);
-	if (minutes * 60 <= mintime || minutes * 60 >= maxtime)
-		return;
 	if (minutes * 60 > timeAxis->maximum() * 0.9)
 		timeAxis->setMaximum(timeAxis->maximum() * 1.02);
 
 	divedatapoint data = plannerModel->at(index);
-	depth_t oldDepth = data.depth;
-	int oldtime = data.time;
 	data.depth.mm = lrint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
 	data.time = lrint(timeAxis->valueAt(activeHandler->pos()));
 
-	if (data.depth.mm != oldDepth.mm || data.time != oldtime)
-		plannerModel->editStop(index, data);
+	plannerModel->editStop(index, data);
 }
 
 void ProfileWidget2::keyDownAction()
