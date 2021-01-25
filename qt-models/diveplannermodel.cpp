@@ -993,7 +993,6 @@ void DivePlannerPointsModel::clear()
 {
 	bool oldRecalc = setRecalc(false);
 
-	cylinders.updateDive(&displayed_dive);
 	beginResetModel();
 	divepoints.clear();
 	endResetModel();
