@@ -256,6 +256,7 @@ private:
 	std::vector<std::unique_ptr<DiveHandler>> handles;
 	int handleIndex(const DiveHandler *h) const;
 #ifndef SUBSURFACE_MOBILE
+	void connectPlannerModel();
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
 	DiveHandler *createHandle();

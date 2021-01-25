@@ -1264,6 +1264,17 @@ void ProfileWidget2::setToolTipVisibile(bool visible)
 	toolTipItem->setVisible(visible);
 }
 
+void ProfileWidget2::connectPlannerModel()
+{
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
+	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
+	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
+	connect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
+}
+
 void ProfileWidget2::setAddState()
 {
 	if (currentState == ADD)
@@ -1283,13 +1294,8 @@ void ProfileWidget2::setAddState()
 	actionsForKeys[Qt::Key_Escape]->setShortcut(Qt::Key_Escape);
 	actionsForKeys[Qt::Key_Delete]->setShortcut(Qt::Key_Delete);
 
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
-	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
-	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
-	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
-	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
-	connect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
+	connectPlannerModel();
+
 	/* show the same stuff that the profile shows. */
 	currentState = ADD; /* enable the add state. */
 	diveCeiling->setVisible(true);
@@ -1316,13 +1322,8 @@ void ProfileWidget2::setPlanState()
 	actionsForKeys[Qt::Key_Escape]->setShortcut(Qt::Key_Escape);
 	actionsForKeys[Qt::Key_Delete]->setShortcut(Qt::Key_Delete);
 
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
-	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
-	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
-	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
-	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
-	connect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
+	connectPlannerModel();
+
 	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
 	diveCeiling->setVisible(true);
