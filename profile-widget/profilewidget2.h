@@ -38,6 +38,7 @@ class DiveRectItem;
 class DepthAxis;
 class DiveCartesianAxis;
 class DiveProfileItem;
+class DivePlannerPointsModel;
 class TimeAxis;
 class DiveTemperatureItem;
 class DiveHeartrateItem;
@@ -74,7 +75,8 @@ public:
 		COLUMNS
 	};
 
-	ProfileWidget2(QWidget *parent = 0);
+	// Pass null as plannerModel if no support for planning required
+	ProfileWidget2(DivePlannerPointsModel *plannerModel, QWidget *parent = 0);
 	~ProfileWidget2();
 	void resetZoom();
 	void scale(qreal sx, qreal sy);
@@ -179,6 +181,7 @@ private:
 	void splitCurrentDC();
 
 	DivePlotDataModel *dataModel;
+	DivePlannerPointsModel *plannerModel; // If null, no planning supported.
 	int zoomLevel;
 	qreal zoomFactor;
 	bool isGrayscale;
