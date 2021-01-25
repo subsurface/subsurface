@@ -1873,19 +1873,6 @@ void ProfileWidget2::keyLeftAction()
 			if (dp.time / 60 <= 0)
 				continue;
 
-			// don't overlap positions.
-			// maybe this is a good place for a 'goto'?
-			double xpos = timeAxis->posAtValue((dp.time - 60) / 60);
-			bool nextStep = false;
-			for (const auto &h: handles) {
-				if (IS_FP_SAME(h->pos().x(), xpos)) {
-					nextStep = true;
-					break;
-				}
-			}
-			if (nextStep)
-				continue;
-
 			dp.time -= 60;
 			plannerModel->editStop(row, dp);
 		}
@@ -1905,19 +1892,6 @@ void ProfileWidget2::keyRightAction()
 			int row = handleIndex(handler);
 			divedatapoint dp = plannerModel->at(row);
 			if (dp.time / 60.0 >= timeAxis->maximum())
-				continue;
-
-			// don't overlap positions.
-			// maybe this is a good place for a 'goto'?
-			double xpos = timeAxis->posAtValue((dp.time + 60) / 60);
-			bool nextStep = false;
-			for (const auto &h: handles) {
-				if (IS_FP_SAME(h->pos().x(), xpos)) {
-					nextStep = true;
-					break;
-				}
-			}
-			if (nextStep)
 				continue;
 
 			dp.time += 60;

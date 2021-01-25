@@ -844,6 +844,18 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	 */
 	int old_first_cylid = divepoints[0].cylinderid;
 
+	// Refuse creation of two points with the same time stamp.
+	// Note: "time" is moved in the positive direction to avoid
+	// time becoming zero or, worse, negative.
+	while (std::any_of(divepoints.begin(), divepoints.begin() + row,
+			[t = newData.time] (const divedatapoint &data)
+			{ return data.time == t; }))
+		newData.time += 10;
+	while (std::any_of(divepoints.begin() + row + 1, divepoints.end(),
+			[t = newData.time] (const divedatapoint &data)
+			{ return data.time == t; }))
+		newData.time += 10;
+
 	// Is it ok to change data first and then move the rows?
 	divepoints[row] = newData;
 
