@@ -40,7 +40,6 @@ public:
 	void setPlanMode(Mode mode);
 	bool isPlanner() const;
 	void createSimpleDive();
-	void clear();
 	Mode currentMode() const;
 	bool setRecalc(bool recalc);
 	bool recalcQ() const;
@@ -119,6 +118,7 @@ signals:
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
+	void clear();
 	void setupStartTime();
 	void setupCylinders();
 	int lastEnteredPoint() const;

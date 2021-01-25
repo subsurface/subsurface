@@ -1514,7 +1514,6 @@ void MainWindow::editCurrentDive()
 		return;
 
 	disableShortcuts();
-	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	graphics->setAddState();
 	setApplicationState(ApplicationState::EditDive);

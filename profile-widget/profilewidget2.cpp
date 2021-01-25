@@ -1792,7 +1792,10 @@ void ProfileWidget2::repositionDiveHandlers()
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
-		gases[i]->setText(get_gas_string(get_cylinder(&displayed_dive, datapoint.cylinderid)->gasmix));
+		if (datapoint.cylinderid >= 0 && datapoint.cylinderid < displayed_dive.cylinders.nr)
+			gases[i]->setText(get_gas_string(get_cylinder(&displayed_dive, datapoint.cylinderid)->gasmix));
+		else
+			gases[i]->setText(QString());
 		gases[i]->setVisible(datapoint.entered &&
 				(i == 0 || gases[i]->text() != gases[i-1]->text()));
 	}

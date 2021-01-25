@@ -563,7 +563,6 @@ void PlannerWidgets::planDive()
 
 void PlannerWidgets::replanDive()
 {
-	DivePlannerPointsModel::instance()->clear();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 
 	MainWindow::instance()->graphics->setPlanState();
