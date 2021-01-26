@@ -1829,8 +1829,6 @@ void ProfileWidget2::keyDownAction()
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handleIndex(handler);
 			divedatapoint dp = plannerModel->at(row);
-			if (dp.depth.mm >= profileYAxis->maximum())
-				continue;
 
 			dp.depth.mm += M_OR_FT(1, 5);
 			plannerModel->editStop(row, dp);
@@ -1894,8 +1892,6 @@ void ProfileWidget2::keyRightAction()
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handleIndex(handler);
 			divedatapoint dp = plannerModel->at(row);
-			if (dp.time / 60.0 >= timeAxis->maximum())
-				continue;
 
 			dp.time += 60;
 			plannerModel->editStop(row, dp);
