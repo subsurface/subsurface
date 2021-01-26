@@ -14,11 +14,11 @@ void cliDownloader(const char *vendor, const char *product, const char *device)
 	data->setProduct(product);
 	data->setBluetoothMode(false);
 	if (data->vendor() == "Uemis") {
-		char *colon;
-		char *devname = strdup(device);
-		if ((colon = strstr(devname, ":\\ (UEMISSDA)")) != NULL) {
-			*(colon + 2) = '\0';
-			fprintf(stderr, "shortened devname to \"%s\"", devname);
+		QString devname(device);
+		int colon = devname.indexOf(QStringLiteral(":\\ (UEMISSDA)"));
+		if (colon >= 0) {
+			devname.truncate(colon + 2);
+			fprintf(stderr, "shortened devname to \"%s\"", qPrintable(devname));
 		}
 		data->setDevName(devname);
 	} else {
