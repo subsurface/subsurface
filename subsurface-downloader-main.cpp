@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 	struct filter_preset_table presets;
 
 	// set a default logfile name for libdivecomputer so we always get a logfile
-	logfile_name = "subsurface-downloader.log";
+	logfile_name = strdup("subsurface-downloader.log");
 
 	const char *default_directory = system_default_directory();
 	const char *default_filename = system_default_filename();
