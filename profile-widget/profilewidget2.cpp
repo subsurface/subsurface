@@ -1910,17 +1910,15 @@ void ProfileWidget2::keyDeleteAction()
 	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	int selCount = scene()->selectedItems().count();
-	if (selCount) {
-		QVector<int> selectedIndices;
-		Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-			if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-				selectedIndices.push_back(handleIndex(handler));
-				handler->hide();
-			}
+	QVector<int> selectedIndices;
+	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
+			selectedIndices.push_back(handleIndex(handler));
+			handler->hide();
 		}
-		plannerModel->removeSelectedPoints(selectedIndices);
 	}
+	if (!selectedIndices.isEmpty())
+		plannerModel->removeSelectedPoints(selectedIndices);
 }
 
 void ProfileWidget2::keyEscAction()
