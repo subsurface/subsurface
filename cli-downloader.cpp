@@ -3,13 +3,13 @@
 
 void cliDownloader(const char *vendor, const char *product, const char *device)
 {
-	DiveImportedModel *diveImportedModel = new DiveImportedModel();
-	DiveImportedModel::connect(diveImportedModel, &DiveImportedModel::downloadFinished, [] {
+	DiveImportedModel diveImportedModel;
+	DiveImportedModel::connect(&diveImportedModel, &DiveImportedModel::downloadFinished, [] {
 		// do something useful at the end of the download
 		printf("Finished\n");
 	});
 
-	auto data = diveImportedModel->thread.data();
+	auto data = diveImportedModel.thread.data();
 	data->setVendor(vendor);
 	data->setProduct(product);
 	data->setBluetoothMode(false);
@@ -25,13 +25,12 @@ void cliDownloader(const char *vendor, const char *product, const char *device)
 		data->setDevName(device);
 	}
 
-	// some assumptiond - should all be configurable
+	// some assumptions - should all be configurable
 	data->setForceDownload(false);
 	data->setSaveLog(true);
 	data->setSaveDump(false);
 
-	// before we start, remember where the dive_table ended
-	diveImportedModel->startDownload();
-	diveImportedModel->waitForDownload();
-	diveImportedModel->recordDives();
+	diveImportedModel.startDownload();
+	diveImportedModel.waitForDownload();
+	diveImportedModel.recordDives();
 }
