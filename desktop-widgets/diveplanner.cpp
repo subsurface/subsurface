@@ -545,7 +545,7 @@ void PlannerWidgets::planDive()
 	dc_number = 0;
 
 	// create a simple starting dive, using the first gas from the just copied cylinders
-	DivePlannerPointsModel::instance()->createSimpleDive();
+	DivePlannerPointsModel::instance()->createSimpleDive(&displayed_dive);
 
 	// plan the dive in the same mode as the currently selected one
 	if (current_dive) {
@@ -563,17 +563,20 @@ void PlannerWidgets::planDive()
 
 void PlannerWidgets::replanDive()
 {
+	if (!current_dive)
+		return;
+	copy_dive(current_dive, &displayed_dive); // Planning works on a copy of the dive (for now).
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
 
 	MainWindow::instance()->graphics->setPlanState();
 
 	plannerWidget.setReplanButton(true);
-	plannerWidget.setupStartTime(timestampToDateTime(current_dive->when));
-	if (current_dive->surface_pressure.mbar)
-		plannerWidget.setSurfacePressure(current_dive->surface_pressure.mbar);
-	if (current_dive->salinity)
-		plannerWidget.setSalinity(current_dive->salinity);
-	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
+	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));
+	if (displayed_dive.surface_pressure.mbar)
+		plannerWidget.setSurfacePressure(displayed_dive.surface_pressure.mbar);
+	if (displayed_dive.salinity)
+		plannerWidget.setSalinity(displayed_dive.salinity);
 	reset_cylinders(&displayed_dive, true);
 	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(&displayed_dive);
 }
