@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/diveimportedmodel.h"
 
-#include <QObject>
-#include <QUndoStack>
-
-
 void cliDownloader(const char *vendor, const char *product, const char *device)
 {
 	DiveImportedModel *diveImportedModel = new DiveImportedModel();
