@@ -130,16 +130,10 @@ bool ScatterSeries::hover(QPointF pos)
 			const dive *d = items[idx].d;
 			if (!text.empty())
 				text.push_back(QString(" ")); // Argh. Empty strings are filtered away.
-			// We don't listen to undo-command signals, therefore we have to check whether that dive actually exists!
-			// TODO: fix this.
-			if (get_divenr(d) < 0) {
-				text.push_back(StatsTranslations::tr("Removed dive"));
-			} else {
-				text.push_back(StatsTranslations::tr("Dive #%1").arg(d->number));
-				text.push_back(get_dive_date_string(d->when));
-				text.push_back(dataInfo(varX, d));
-				text.push_back(dataInfo(varY, d));
-			}
+			text.push_back(StatsTranslations::tr("Dive #%1").arg(d->number));
+			text.push_back(get_dive_date_string(d->when));
+			text.push_back(dataInfo(varX, d));
+			text.push_back(dataInfo(varY, d));
 			if (++shown >= show && shown < (int)highlighted.size()) {
 				text.push_back(" ");
 				text.push_back(StatsTranslations::tr("and %1 more").arg((int)highlighted.size() - shown));

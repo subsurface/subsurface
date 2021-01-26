@@ -18,6 +18,7 @@
 #include "zvalues.h"
 #include "core/divefilter.h"
 #include "core/subsurface-qt/divelistnotifier.h"
+#include "core/trip.h"
 
 #include <cmath>
 #include <QQuickItem>
@@ -41,6 +42,10 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	setFlag(ItemHasContents, true);
 
 	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
+	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &StatsView::replotIfVisible);
+	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this, &StatsView::replotIfVisible);
+	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &StatsView::replotIfVisible);
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &StatsView::replotIfVisible);
 
 	setAcceptHoverEvents(true);
 	setAcceptedMouseButtons(Qt::LeftButton);
