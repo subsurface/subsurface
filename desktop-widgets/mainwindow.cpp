@@ -338,10 +338,21 @@ MainWindow::MainWindow() : QMainWindow(),
 #endif
 }
 
+static void clearSplitter(QSplitter &splitter)
+{
+	// Qt's ownership model is absolutely hare-brained.
+	// To remove a widget from a splitter, you reparent it, which
+	// informs the splitter via a signal. Wow.
+	while (splitter.count() > 0)
+		splitter.widget(0)->setParent(nullptr);
+}
+
 MainWindow::~MainWindow()
 {
 	// Remove widgets from the splitters so that they don't delete singletons.
-	clearSplitters();
+	clearSplitter(*topSplitter);
+	clearSplitter(*bottomSplitter);
+	clearSplitter(*ui.mainSplitter);
 	write_hashes();
 	m_Instance = nullptr;
 }
@@ -1575,29 +1586,27 @@ void MainWindow::registerApplicationState(ApplicationState state, Quadrants q)
 	applicationState[(int)state] = q;
 }
 
-void MainWindow::setQuadrantWidget(const Quadrant &q, QSplitter &splitter)
+void MainWindow::setQuadrantWidget(QSplitter &splitter, const Quadrant &q, int pos)
 {
-	if (q.widget) {
+	if (!q.widget)
+		return;
+	if (splitter.count() > pos)
+		splitter.replaceWidget(pos, q.widget);
+	else
 		splitter.addWidget(q.widget);
-		splitter.setCollapsible(splitter.count() - 1, false);
-		q.widget->setEnabled(!(q.flags & FLAG_DISABLED));
-	}
+	splitter.setCollapsible(pos, false);
+	q.widget->setEnabled(!(q.flags & FLAG_DISABLED));
 }
 
-static void clearSplitter(QSplitter &splitter)
+void MainWindow::setQuadrantWidgets(QSplitter &splitter, const Quadrant &left, const Quadrant &right)
 {
-	// Qt's ownership model is absolutely hare-brained.
-	// To remove a widget from a splitter, you reparent it, which
-	// informs the splitter via a signal. Wow.
-	while (splitter.count() > 0)
-		splitter.widget(0)->setParent(nullptr);
-}
+	int num = (left.widget != nullptr) + (right.widget != nullptr);
+	// Remove superfluous widgets by reparenting to null.
+	while (splitter.count() > num)
+		splitter.widget(splitter.count() - 1)->setParent(nullptr);
 
-void MainWindow::clearSplitters()
-{
-	clearSplitter(*topSplitter);
-	clearSplitter(*bottomSplitter);
-	clearSplitter(*ui.mainSplitter);
+	setQuadrantWidget(splitter, left, 0);
+	setQuadrantWidget(splitter, right, left.widget != nullptr ? 1 : 0);
 }
 
 bool MainWindow::userMayChangeAppState() const
@@ -1614,19 +1623,34 @@ void MainWindow::setApplicationState(ApplicationState state)
 
 	setAppState(state);
 
-	clearSplitters();
+	clearSplitter(*topSplitter);
+	clearSplitter(*bottomSplitter);
 	const Quadrants &quadrants = applicationState[(int)state];
-	setQuadrantWidget(quadrants.topLeft, *topSplitter);
-	setQuadrantWidget(quadrants.topRight, *topSplitter);
-	setQuadrantWidget(quadrants.bottomLeft, *bottomSplitter);
-	setQuadrantWidget(quadrants.bottomRight, *bottomSplitter);
+	setQuadrantWidgets(*topSplitter, quadrants.topLeft, quadrants.topRight);
+	setQuadrantWidgets(*bottomSplitter, quadrants.bottomLeft, quadrants.bottomRight);
+
 	if (topSplitter->count() >= 1) {
-		ui.mainSplitter->addWidget(topSplitter.get());
-		ui.mainSplitter->setCollapsible(ui.mainSplitter->count() - 1, false);
+		// Add topSplitter if it is not already shown
+		if (ui.mainSplitter->count() == 0 ||
+		    ui.mainSplitter->widget(0) != topSplitter.get()) {
+			ui.mainSplitter->insertWidget(0, topSplitter.get());
+			ui.mainSplitter->setCollapsible(ui.mainSplitter->count() - 1, false);
+		}
+	} else {
+		// Remove topSplitter by reparenting it. So weird.
+		topSplitter->setParent(nullptr);
 	}
+
 	if (bottomSplitter->count() >= 1) {
-		ui.mainSplitter->addWidget(bottomSplitter.get());
-		ui.mainSplitter->setCollapsible(ui.mainSplitter->count() - 1, false);
+		// Add bottomSplitter if it is not already shown
+		if (ui.mainSplitter->count() == 0 ||
+		    ui.mainSplitter->widget(ui.mainSplitter->count() - 1) != bottomSplitter.get()) {
+			ui.mainSplitter->addWidget(bottomSplitter.get());
+			ui.mainSplitter->setCollapsible(ui.mainSplitter->count() - 1, false);
+		}
+	} else {
+		// Remove bottomSplitter by reparenting it. So weird.
+		bottomSplitter->setParent(nullptr);
 	}
 
 	restoreSplitterSizes();
