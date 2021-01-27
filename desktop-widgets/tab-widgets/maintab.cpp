@@ -269,7 +269,7 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 
 	// If duration or depth changed, the profile needs to be replotted
 	if (field.duration || field.depth)
-		MainWindow::instance()->graphics->plotDive(current_dive, true);
+		MainWindow::instance()->refreshProfile();
 }
 
 void MainTab::diveSiteEdited(dive_site *ds, int)
@@ -513,7 +513,7 @@ void MainTab::acceptChanges()
 	if (editMode) {
 		MainWindow::instance()->diveList->reload();
 		MainWindow::instance()->refreshDisplay();
-		MainWindow::instance()->graphics->plotDive(current_dive, true);
+		MainWindow::instance()->refreshProfile();
 	} else {
 		MainWindow::instance()->refreshDisplay();
 	}
@@ -549,7 +549,7 @@ void MainTab::rejectChanges()
 	updateDiveInfo();
 
 	// show the profile and dive info
-	MainWindow::instance()->graphics->plotDive(current_dive, true);
+	MainWindow::instance()->refreshProfile();
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
