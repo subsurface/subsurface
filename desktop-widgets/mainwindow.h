@@ -184,7 +184,6 @@ private:
 	void saveSplitterSizes();
 	void restoreSplitterSizes();
 	void updateLastUsedDir(const QString &s);
-	void clearSplitters();
 	bool filesAsArguments;
 	UpdateManager *updateManager;
 	std::unique_ptr<LocationInformationWidget> diveSiteEdit;
@@ -220,7 +219,8 @@ private:
 	Quadrants applicationState[(size_t)ApplicationState::Count];
 	static void addWidgets(const Quadrant &);
 	bool userMayChangeAppState() const;
-	void setQuadrantWidget(const Quadrant &q, QSplitter &splitter);
+	void setQuadrantWidget(QSplitter &splitter, const Quadrant &q, int pos);
+	void setQuadrantWidgets(QSplitter &splitter, const Quadrant &left, const Quadrant &right);
 	void registerApplicationState(ApplicationState state, Quadrants q);
 
 	QMenu *connections;
