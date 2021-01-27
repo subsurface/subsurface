@@ -22,6 +22,7 @@
 #include "core/color.h"
 #include "core/pictureobj.h"
 #include "core/units.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 class RulerItem2;
 struct dive;
@@ -102,6 +103,7 @@ public
 slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
 	void actionRequestedReplot(bool triggered);
+	void divesChanged(const QVector<dive *> &dives, DiveField field);
 	void setEmptyState();
 	void setProfileState();
 #ifndef SUBSURFACE_MOBILE
