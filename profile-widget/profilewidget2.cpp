@@ -32,7 +32,6 @@
 #include "core/gettextfromc.h"
 #include "core/imagedownloader.h"
 #endif
-#include "core/subsurface-qt/divelistnotifier.h"
 
 #include <libdivecomputer/parser.h>
 #include <QScrollBar>
@@ -174,6 +173,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &ProfileWidget2::profileChanged);
 	connect(&diveListNotifier, &DiveListNotifier::eventsChanged, this, &ProfileWidget2::profileChanged);
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &ProfileWidget2::pictureOffsetChanged);
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &ProfileWidget2::divesChanged);
 #endif // SUBSURFACE_MOBILE
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
@@ -812,6 +812,16 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 		qPrefTechnicalDetails::set_calcndltts(false);
 		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
+}
+
+void ProfileWidget2::divesChanged(const QVector<dive *> &dives, DiveField field)
+{
+	// If the mode of the currently displayed dive changed, replot
+	if (field.mode &&
+	    std::any_of(dives.begin(), dives.end(),
+			[id = displayed_dive.id] (const dive *d)
+			{ return d->id == id; } ))
+		replot();
 }
 
 void ProfileWidget2::actionRequestedReplot(bool)
