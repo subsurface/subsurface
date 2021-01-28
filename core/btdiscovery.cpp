@@ -55,8 +55,6 @@ static struct namePattern name[] = {
 	{ "NERD 2", "Shearwater", "NERD 2" },
 	{ "NERD", "Shearwater", "NERD" }, // order is important, test for the more specific one first
 	{ "Predator", "Shearwater", "Predator" },
-	{ "Predator", "Shearwater", "Predator" },
-	{ "Predator", "Shearwater", "Predator" },
 	// Suunto dive computers
 	{ "EON Steel", "Suunto", "EON Steel" },
 	{ "EON Core", "Suunto", "EON Core" },
