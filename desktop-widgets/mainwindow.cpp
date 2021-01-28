@@ -434,7 +434,7 @@ void MainWindow::selectionChanged()
 		configureToolbar();
 		enableDisableOtherDCsActions();
 	}
-	graphics->plotDive(current_dive, false);
+	graphics->plotDive(current_dive, dc_number, false);
 	MapWidget::instance()->selectionChanged();
 }
 
@@ -685,7 +685,7 @@ void MainWindow::enableShortcuts()
 void MainWindow::showProfile()
 {
 	enableShortcuts();
-	graphics->setProfileState();
+	graphics->setProfileState(current_dive, dc_number);
 	setApplicationState(ApplicationState::Default);
 }
 
@@ -738,7 +738,7 @@ void MainWindow::refreshProfile()
 {
 	showProfile();
 	configureToolbar();
-	graphics->plotDive(current_dive, true);
+	graphics->plotDive(current_dive, dc_number, true);
 }
 
 void MainWindow::planCanceled()
@@ -919,7 +919,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
 	configureToolbar();
-	graphics->plotDive(current_dive, false);
+	graphics->plotDive(current_dive, dc_number, false);
 	mainTab->updateDiveInfo();
 }
 
@@ -928,7 +928,7 @@ void MainWindow::on_actionNextDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
 	configureToolbar();
-	graphics->plotDive(current_dive, false);
+	graphics->plotDive(current_dive, dc_number, false);
 	mainTab->updateDiveInfo();
 }
 
@@ -1516,7 +1516,7 @@ void MainWindow::editCurrentDive()
 	disableShortcuts();
 	copy_dive(current_dive, &displayed_dive); // Work on a copy of the dive
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-	graphics->setAddState();
+	graphics->setAddState(&displayed_dive, 0);
 	setApplicationState(ApplicationState::EditDive);
 	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
 	mainTab->enableEdition();

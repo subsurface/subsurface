@@ -541,11 +541,6 @@ void MainTab::rejectChanges()
 	// no harm done to call cancelPlan even if we were not PLAN mode...
 	DivePlannerPointsModel::instance()->cancelPlan();
 
-	// now make sure that the correct dive is displayed
-	if (current_dive)
-		copy_dive(current_dive, &displayed_dive);
-	else
-		clear_dive(&displayed_dive);
 	updateDiveInfo();
 
 	// show the profile and dive info

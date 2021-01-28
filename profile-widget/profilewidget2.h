@@ -80,7 +80,10 @@ public:
 	~ProfileWidget2();
 	void resetZoom();
 	void scale(qreal sx, qreal sy);
-	void plotDive(const struct dive *d, bool force = false, bool clearPictures = false, bool instant = false);
+	void plotDive(const struct dive *d, int dc, bool force = false, bool clearPictures = false, bool instant = false);
+	void setProfileState(const struct dive *d, int dc);
+	void setPlanState(const struct dive *d, int dc);
+	void setAddState(const struct dive *d, int dc);
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool getPrintMode() const;
 	bool isPointOutOfBoundaries(const QPointF &point) const;
@@ -107,13 +110,10 @@ slots: // Necessary to call from QAction's signals.
 	void actionRequestedReplot(bool triggered);
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
 	void setEmptyState();
-	void setProfileState();
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
 	void picturesRemoved(dive *d, QVector<QString> filenames);
 	void picturesAdded(dive *d, QVector<PictureObj> pics);
-	void setPlanState();
-	void setAddState();
 	void pointsReset();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
@@ -139,6 +139,7 @@ slots: // Necessary to call from QAction's signals.
 #endif
 
 private:
+	void setProfileState(); // keep currently displayed dive
 	void resizeEvent(QResizeEvent *event) override;
 #ifndef SUBSURFACE_MOBILE
 	void wheelEvent(QWheelEvent *event) override;
@@ -194,6 +195,8 @@ private:
 	// All those here should probably be merged into one structure,
 	// So it's esyer to replicate for more dives later.
 	// In the meantime, keep it here.
+	const struct dive *d;
+	int dc;
 	struct plot_info plotInfo;
 	DepthAxis *profileYAxis;
 	PartialGasPressureAxis *gasYAxis;
@@ -272,6 +275,12 @@ private:
 	int maxtime;
 	int maxdepth;
 	double fontPrintScale;
+
+	// We store a const pointer to the shown dive. However, the undo commands want
+	// (understandably) a non-const pointer. Since the profile has a context-menu
+	// with actions, it needs such a non-const pointer. This function turns the
+	// currently shown dive into such a pointer. Ugly, yes.
+	struct dive *mutable_dive() const;
 };
 
 #endif // PROFILEWIDGET2_H
