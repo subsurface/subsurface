@@ -20,7 +20,7 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 {
 	setAntialiasing(true);
 	setFlags(QQuickItem::ItemClipsChildrenToShape | QQuickItem::ItemHasContents );
-	m_profileWidget->setProfileState();
+	m_profileWidget->setProfileState(nullptr, 0);
 	m_profileWidget->setPrintMode(true);
 	m_profileWidget->setFontPrintScale(fontScale);
 	connect(QMLManager::instance(), &QMLManager::sendScreenChanged, this, &QMLProfile::screenChanged);
@@ -135,7 +135,7 @@ void QMLProfile::updateProfile()
 		return;
 	if (verbose)
 		qDebug() << "update profile for dive #" << d->number << "offeset" << QString::number(m_xOffset, 'f', 1) << "/" << QString::number(m_yOffset, 'f', 1);
-	m_profileWidget->plotDive(d, true);
+	m_profileWidget->plotDive(d, dc_number, true);
 }
 
 void QMLProfile::setDiveId(int diveId)
@@ -189,10 +189,9 @@ void QMLProfile::divesChanged(const QVector<dive *> &dives, DiveField)
 	for (struct dive *d: dives) {
 		if (d->id == m_diveId) {
 			qDebug() << "dive #" << d->number << "changed, trigger profile update";
-			m_profileWidget->plotDive(d, true);
+			m_profileWidget->plotDive(d, dc_number, true);
 			triggerUpdate();
 			return;
 		}
 	}
-
 }

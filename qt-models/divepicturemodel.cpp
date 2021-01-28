@@ -193,7 +193,6 @@ void DivePictureModel::picturesRemoved(dive *d, QVector<QString> filenamesIn)
 		endRemoveRows();
 		toIdx -= j - i;
 	}
-	copy_dive(current_dive, &displayed_dive); // TODO: Remove once displayed_dive is moved to the planner
 }
 
 // Assumes that pics is sorted!
@@ -306,7 +305,6 @@ void DivePictureModel::pictureOffsetChanged(dive *d, const QString filenameIn, o
 
 	// Update the offset here and in the backend
 	oldPos->offsetSeconds = offset.seconds;
-	copy_dive(current_dive, &displayed_dive); // TODO: remove once profile can display arbitrary dives
 
 	// Henceforth we will work with indices instead of iterators
 	int oldIndex = oldPos - pictures.begin();

@@ -229,7 +229,7 @@ void exportProfile(const struct dive *dive, const QString filename)
 	profile->setPrintMode(true);
 	double scale = profile->getFontPrintScale();
 	profile->setFontPrintScale(4 * scale);
-	profile->plotDive(dive, true, false, true);
+	profile->plotDive(dive, 0, true, false, true);
 	QImage image = QImage(profile->size() * 4, QImage::Format_RGB32);
 	QPainter paint;
 	paint.begin(&image);
@@ -238,5 +238,5 @@ void exportProfile(const struct dive *dive, const QString filename)
 	profile->setToolTipVisibile(true);
 	profile->setFontPrintScale(scale);
 	profile->setPrintMode(false);
-	profile->plotDive(dive, true);
+	profile->plotDive(dive, 0, true); // TODO: Shouldn't this plot the current dive?
 }
