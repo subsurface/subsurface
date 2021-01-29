@@ -504,19 +504,15 @@ void MainTab::acceptChanges()
 	ui.dateEdit->setEnabled(true);
 	hideMessage();
 
-	if (editMode) {
-		MainWindow::instance()->showProfile();
-		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-		Command::editProfile(&displayed_dive);
-	}
+	MainWindow::instance()->showProfile();
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
+	Command::editProfile(&displayed_dive);
+
 	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
-	if (editMode) {
-		MainWindow::instance()->diveList->reload();
-		MainWindow::instance()->refreshDisplay();
-		MainWindow::instance()->refreshProfile();
-	} else {
-		MainWindow::instance()->refreshDisplay();
-	}
+	MainWindow::instance()->diveList->reload();
+	MainWindow::instance()->refreshDisplay();
+	MainWindow::instance()->refreshProfile();
+
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->diveList->verticalScrollBar()->setSliderPosition(scrolledBy);
 	MainWindow::instance()->diveList->setFocus();
@@ -528,13 +524,12 @@ void MainTab::acceptChanges()
 
 void MainTab::rejectChanges()
 {
-	if (editMode && current_dive) {
-		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
-									       tr("You are about to discard your changes.")),
-					 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
-			return;
-		}
+	if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
+								       tr("You are about to discard your changes.")),
+				 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
+		return;
 	}
+
 	ui.dateEdit->setEnabled(true);
 	editMode = false;
 	hideMessage();
@@ -544,6 +539,7 @@ void MainTab::rejectChanges()
 	updateDiveInfo();
 
 	// show the profile and dive info
+	MainWindow::instance()->refreshDisplay();
 	MainWindow::instance()->refreshProfile();
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
