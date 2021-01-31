@@ -28,7 +28,7 @@ public:
 	void updatePositions() override;
 	bool hover(QPointF pos) override;
 	void unhighlight() override;
-	void selectItemsUnderMouse(const QPointF &point) override;
+	void selectItemsUnderMouse(const QPointF &point, bool shiftPressed) override;
 
 	std::vector<QString> binNames();
 

@@ -406,7 +406,7 @@ void BarSeries::unhighlight()
 	highlighted = Index();
 }
 
-void BarSeries::selectItemsUnderMouse(const QPointF &pos)
+void BarSeries::selectItemsUnderMouse(const QPointF &pos, bool)
 {
 	Index index = getItemUnderMouse(pos);
 	if (index.bar < 0)

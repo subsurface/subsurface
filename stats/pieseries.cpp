@@ -265,7 +265,7 @@ void PieSeries::unhighlight()
 	highlighted = -1;
 }
 
-void PieSeries::selectItemsUnderMouse(const QPointF &pos)
+void PieSeries::selectItemsUnderMouse(const QPointF &pos, bool)
 {
 	int index = getItemUnderMouse(pos);
 	if (index < 0)

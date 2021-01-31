@@ -27,7 +27,7 @@ public:
 
 	// Note: this expects that all items are added with increasing pos!
 	void append(dive *d, double pos, double value);
-	void selectItemsUnderMouse(const QPointF &point) override;
+	void selectItemsUnderMouse(const QPointF &point, bool shiftPressed) override;
 
 private:
 	// Get items under mouse.
