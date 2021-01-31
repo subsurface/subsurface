@@ -64,6 +64,7 @@ public:
 	void deleteChartItem(ChartItemPtr<T> &item);
 private slots:
 	void replotIfVisible();
+	void divesSelected(const QVector<dive *> &dives);
 private:
 	// QtQuick related things
 	bool backgroundDirty;

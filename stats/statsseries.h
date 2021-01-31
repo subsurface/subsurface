@@ -8,6 +8,7 @@
 
 class StatsAxis;
 class StatsView;
+struct dive;
 
 class StatsSeries {
 public:
@@ -17,6 +18,7 @@ public:
 	virtual bool hover(QPointF pos) = 0;	// Called on mouse movement. Return true if an item of this series is highlighted.
 	virtual void unhighlight() = 0;		// Unhighlight any highlighted item.
 	virtual void selectItemsUnderMouse(const QPointF &pos) = 0;
+	virtual void divesSelected(const QVector<dive *> &dives);
 
 protected:
 	StatsView &view;

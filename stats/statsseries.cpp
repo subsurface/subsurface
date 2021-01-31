@@ -16,3 +16,7 @@ QPointF StatsSeries::toScreen(QPointF p)
 	return xAxis && yAxis ? QPointF(xAxis->toScreen(p.x()), yAxis->toScreen(p.y()))
 			      : QPointF(0.0, 0.0);
 }
+
+void StatsSeries::divesSelected(const QVector<dive *> &)
+{
+}

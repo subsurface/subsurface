@@ -46,6 +46,7 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this, &StatsView::replotIfVisible);
 	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &StatsView::replotIfVisible);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &StatsView::replotIfVisible);
+	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &StatsView::divesSelected);
 
 	setAcceptHoverEvents(true);
 	setAcceptedMouseButtons(Qt::LeftButton);
@@ -343,6 +344,15 @@ void StatsView::replotIfVisible()
 {
 	if (isVisible())
 		plot(state);
+}
+
+void StatsView::divesSelected(const QVector<dive *> &dives)
+{
+	if (isVisible()) {
+		for (auto &series: series)
+			series->divesSelected(dives);
+	}
+	update();
 }
 
 void StatsView::mouseMoveEvent(QMouseEvent *event)

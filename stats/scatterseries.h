@@ -36,6 +36,7 @@ private:
 	struct Item {
 		ChartItemPtr<ChartScatterItem> item;
 		dive *d;
+		bool selected;
 		double pos, value;
 		Item(StatsView &view, ScatterSeries *series, dive *d, double pos, double value);
 		void updatePosition(ScatterSeries *series);
@@ -47,6 +48,7 @@ private:
 	std::vector<int> highlighted;
 	const StatsVariable &varX;
 	const StatsVariable &varY;
+	void divesSelected(const QVector<dive *> &) override;
 };
 
 #endif

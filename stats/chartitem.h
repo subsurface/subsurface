@@ -174,16 +174,23 @@ public:
 	ChartScatterItem(StatsView &v, ChartZValue z);
 	~ChartScatterItem();
 
+	// Currently, there is no highlighted and selected status.
+	enum class Highlight {
+		Unselected,
+		Selected,
+		Highlighted
+	};
 	void setPos(QPointF pos);		// Specifies the *center* of the item.
-	void setHighlight(bool highlight);	// In the future, support different kinds of scatter items.
+	void setHighlight(Highlight highlight);	// In the future, support different kinds of scatter items.
 	void render() override;			// Only call on render thread!
 	QRectF getRect() const;
 	bool contains(QPointF point) const;
 private:
+	QSGTexture *getTexture() const;
 	QRectF rect;
 	QSizeF textureSize;
 	bool positionDirty, textureDirty;
-	bool highlighted;
+	Highlight highlight;
 };
 
 // Implementation detail of templates - move to serparate header file
