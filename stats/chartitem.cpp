@@ -108,7 +108,7 @@ static const int scatterItemDiameter = 10;
 static const int scatterItemBorder = 1;
 
 ChartScatterItem::ChartScatterItem(StatsView &v, ChartZValue z) : HideableChartItem(v, z),
-	positionDirty(false), textureDirty(false), highlighted(false)
+	positionDirty(false), textureDirty(false), highlight(Highlight::Unselected)
 {
 	rect.setSize(QSizeF(static_cast<double>(scatterItemDiameter), static_cast<double>(scatterItemDiameter)));
 }
@@ -138,12 +138,27 @@ static QSGTexture *createScatterTexture(StatsView &view, const QColor &color, co
 // QApplication finished its thread leads to crashes. Therefore, these
 // are now normal pointers and the texture objects are leaked.
 static QSGTexture *scatterItemTexture = nullptr;
+static QSGTexture *scatterItemSelectedTexture = nullptr;
 static QSGTexture *scatterItemHighlightedTexture = nullptr;
+
+QSGTexture *ChartScatterItem::getTexture() const
+{
+	switch (highlight) {
+	default:
+	case Highlight::Unselected:
+		return scatterItemTexture;
+	case Highlight::Selected:
+		return scatterItemSelectedTexture;
+	case Highlight::Highlighted:
+		return scatterItemHighlightedTexture;
+	}
+}
 
 void ChartScatterItem::render()
 {
 	if (!scatterItemTexture) {
 		scatterItemTexture = createScatterTexture(view, fillColor, borderColor);
+		scatterItemSelectedTexture = createScatterTexture(view, selectedColor, selectedBorderColor);
 		scatterItemHighlightedTexture = createScatterTexture(view, highlightedColor, highlightedBorderColor);
 	}
 	if (!node) {
@@ -153,7 +168,7 @@ void ChartScatterItem::render()
 	}
 	updateVisible();
 	if (textureDirty) {
-		node->node->setTexture(highlighted ? scatterItemHighlightedTexture : scatterItemTexture);
+		node->node->setTexture(getTexture());
 		textureDirty = false;
 	}
 	if (positionDirty) {
@@ -181,11 +196,11 @@ bool ChartScatterItem::contains(QPointF point) const
 	return squareDist(point, rect.center()) <= (scatterItemDiameter / 2.0) * (scatterItemDiameter / 2.0);
 }
 
-void ChartScatterItem::setHighlight(bool highlightedIn)
+void ChartScatterItem::setHighlight(Highlight highlightIn)
 {
-	if (highlighted == highlightedIn)
+	if (highlight == highlightIn)
 		return;
-	highlighted = highlightedIn;
+	highlight = highlightIn;
 	textureDirty = true;
 	markDirty();
 }

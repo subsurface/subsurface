@@ -27,6 +27,7 @@ ScatterSeries::~ScatterSeries()
 ScatterSeries::Item::Item(StatsView &view, ScatterSeries *series, dive *d, double pos, double value) :
 	item(view.createChartItem<ChartScatterItem>(ChartZValue::Series)),
 	d(d),
+	selected(d->selected),
 	pos(pos),
 	value(value)
 {
@@ -40,7 +41,11 @@ void ScatterSeries::Item::updatePosition(ScatterSeries *series)
 
 void ScatterSeries::Item::highlight(bool highlight)
 {
-	item->setHighlight(highlight);
+	ChartScatterItem::Highlight status = d->selected ?
+		ChartScatterItem::Highlight::Selected : ChartScatterItem::Highlight::Unselected;
+	if (highlight)
+		status = ChartScatterItem::Highlight::Highlighted;
+	item->setHighlight(status);
 }
 
 void ScatterSeries::append(dive *d, double pos, double value)
@@ -163,4 +168,16 @@ void ScatterSeries::unhighlight()
 	for (int idx: highlighted)
 		items[idx].highlight(false);
 	highlighted.clear();
+}
+
+void ScatterSeries::divesSelected(const QVector<dive *> &)
+{
+	for (Item &item: items) {
+		if (item.selected != item.d->selected) {
+			item.selected = item.d->selected;
+			int idx = &item - &items[0];
+			bool highlight = std::find(highlighted.begin(), highlighted.end(), idx) != highlighted.end();
+			item.highlight(highlight);
+		}
+	}
 }
