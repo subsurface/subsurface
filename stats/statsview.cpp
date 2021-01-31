@@ -81,8 +81,9 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 		}
 	}
 
+	bool shiftPressed = event->modifiers() & Qt::ShiftModifier;
 	for (auto &series: series)
-		series->selectItemsUnderMouse(pos);
+		series->selectItemsUnderMouse(pos, shiftPressed);
 }
 
 void StatsView::mouseReleaseEvent(QMouseEvent *)
