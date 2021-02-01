@@ -69,7 +69,7 @@ public:
 	void updatePositions() override;
 	bool hover(QPointF pos) override;
 	void unhighlight() override;
-	void selectItemsUnderMouse(const QPointF &point, bool shiftPressed) override;
+	bool selectItemsUnderMouse(const QPointF &point, bool shiftPressed) override;
 
 private:
 	BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,

@@ -19,6 +19,7 @@ struct StatsVariable;
 class StatsSeries;
 class CategoryAxis;
 class ChartItem;
+class ChartRectLineItem;
 class ChartTextItem;
 class CountAxis;
 class HistogramAxis;
@@ -142,7 +143,10 @@ private:
 	ChartItemPtr<Legend> legend;
 	Legend *draggedItem;
 	ChartItemPtr<RegressionItem> regressionItem;
+	ChartItemPtr<ChartRectLineItem> selectionRect;
 	QPointF dragStartMouse, dragStartItem;
+	bool shiftSelection;
+	std::vector<dive *> oldSelection;
 
 	void hoverEnterEvent(QHoverEvent *event) override;
 	void hoverMoveEvent(QHoverEvent *event) override;

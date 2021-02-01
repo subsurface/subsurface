@@ -143,12 +143,15 @@ void BoxSeries::unhighlight()
 	highlighted = -1;
 }
 
-void BoxSeries::selectItemsUnderMouse(const QPointF &pos, bool)
+bool BoxSeries::selectItemsUnderMouse(const QPointF &pos, bool)
 {
 	int index = getItemUnderMouse(pos);
-	if (index < 0)
-		return setSelection({}, nullptr);
+	if (index < 0) {
+		setSelection({}, nullptr);
+		return false;
+	}
 
 	const std::vector<dive *> &dives = items[index]->q.dives;
 	setSelection(dives, dives.empty() ? nullptr : dives.front());
+	return true;
 }

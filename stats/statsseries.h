@@ -4,11 +4,13 @@
 #ifndef STATS_SERIES_H
 #define STATS_SERIES_H
 
+#include <vector>
 #include <QPointF>
 
 class StatsAxis;
 class StatsView;
 struct dive;
+class QRectF;
 
 class StatsSeries {
 public:
@@ -17,7 +19,11 @@ public:
 	virtual void updatePositions() = 0;	// Called if chart geometry changes.
 	virtual bool hover(QPointF pos) = 0;	// Called on mouse movement. Return true if an item of this series is highlighted.
 	virtual void unhighlight() = 0;		// Unhighlight any highlighted item.
-	virtual void selectItemsUnderMouse(const QPointF &pos, bool shiftPressed) = 0;
+	// Returns true if an item was under the mouse.
+	virtual bool selectItemsUnderMouse(const QPointF &pos, bool shiftPressed) = 0;
+	virtual bool supportsLassoSelection() const;
+	// Needs only be defined if supportsLassoSelection() returns true.
+	virtual void selectItemsInRect(const QRectF &rect, bool shiftPressed, const std::vector<dive *> &oldSelection);
 	virtual void divesSelected(const QVector<dive *> &dives);
 
 protected:

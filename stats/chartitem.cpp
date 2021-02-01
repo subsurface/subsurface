@@ -196,6 +196,12 @@ bool ChartScatterItem::contains(QPointF point) const
 	return squareDist(point, rect.center()) <= (scatterItemDiameter / 2.0) * (scatterItemDiameter / 2.0);
 }
 
+// For rectangular selections, we are more crude: simply check whether the center is in the selection.
+bool ChartScatterItem::inRect(const QRectF &selection) const
+{
+	return selection.contains(rect.center());
+}
+
 void ChartScatterItem::setHighlight(Highlight highlightIn)
 {
 	if (highlight == highlightIn)
@@ -301,13 +307,21 @@ void ChartPieItem::resize(QSizeF size)
 	img->fill(Qt::transparent);
 }
 
-ChartLineItem::ChartLineItem(StatsView &v, ChartZValue z, QColor color, double width) : HideableChartItem(v, z),
+ChartLineItemBase::ChartLineItemBase(StatsView &v, ChartZValue z, QColor color, double width) : HideableChartItem(v, z),
 	color(color), width(width), positionDirty(false), materialDirty(false)
 {
 }
 
-ChartLineItem::~ChartLineItem()
+ChartLineItemBase::~ChartLineItemBase()
 {
+}
+
+void ChartLineItemBase::setLine(QPointF fromIn, QPointF toIn)
+{
+	from = fromIn;
+	to = toIn;
+	positionDirty = true;
+	markDirty();
 }
 
 // Helper function to set points
@@ -347,12 +361,37 @@ void ChartLineItem::render()
 	positionDirty = materialDirty = false;
 }
 
-void ChartLineItem::setLine(QPointF fromIn, QPointF toIn)
+void ChartRectLineItem::render()
 {
-	from = fromIn;
-	to = toIn;
-	positionDirty = true;
-	markDirty();
+	if (!node) {
+		geometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 4));
+		geometry->setDrawingMode(QSGGeometry::DrawLineLoop);
+		material.reset(new QSGFlatColorMaterial);
+		createNode();
+		node->setGeometry(geometry.get());
+		node->setMaterial(material.get());
+		view.addQSGNode(node.get(), zValue);
+		positionDirty = materialDirty = true;
+	}
+	updateVisible();
+
+	if (positionDirty) {
+		// Attention: width is a geometry property and therefore handled by position dirty!
+		geometry->setLineWidth(static_cast<float>(width));
+		auto vertices = geometry->vertexDataAsPoint2D();
+		setPoint(vertices[0], from);
+		setPoint(vertices[1], QPointF(from.x(), to.y()));
+		setPoint(vertices[2], to);
+		setPoint(vertices[3], QPointF(to.x(), from.y()));
+		node->markDirty(QSGNode::DirtyGeometry);
+	}
+
+	if (materialDirty) {
+		material->setColor(color);
+		node->markDirty(QSGNode::DirtyMaterial);
+	}
+
+	positionDirty = materialDirty = false;
 }
 
 ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, double borderWidth, bool horizontal) : HideableChartItem(v, z),

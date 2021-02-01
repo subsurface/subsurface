@@ -112,21 +112,33 @@ private:
 	double borderWidth;
 };
 
-class ChartLineItem : public HideableChartItem<HideableQSGNode<QSGGeometryNode>> {
+// Common data for line and rect items. Both are represented by two points.
+class ChartLineItemBase : public HideableChartItem<HideableQSGNode<QSGGeometryNode>> {
 public:
-	ChartLineItem(StatsView &v, ChartZValue z, QColor color, double width);
-	~ChartLineItem();
+	ChartLineItemBase(StatsView &v, ChartZValue z, QColor color, double width);
+	~ChartLineItemBase();
 	void setLine(QPointF from, QPointF to);
-	void render() override;		// Only call on render thread!
-private:
+protected:
 	QPointF from, to;
 	QColor color;
 	double width;
-	bool horizontal;
 	bool positionDirty;
 	bool materialDirty;
 	std::unique_ptr<QSGFlatColorMaterial> material;
 	std::unique_ptr<QSGGeometry> geometry;
+};
+
+class ChartLineItem : public ChartLineItemBase {
+public:
+	using ChartLineItemBase::ChartLineItemBase;
+	void render() override;		// Only call on render thread!
+};
+
+// A simple rectangle without fill. Specified by any two opposing vertices.
+class ChartRectLineItem : public ChartLineItemBase {
+public:
+	using ChartLineItemBase::ChartLineItemBase;
+	void render() override;		// Only call on render thread!
 };
 
 // A bar in a bar chart: a rectangle bordered by lines.
@@ -185,6 +197,7 @@ public:
 	void render() override;			// Only call on render thread!
 	QRectF getRect() const;
 	bool contains(QPointF point) const;
+	bool inRect(const QRectF &rect) const;
 private:
 	QSGTexture *getTexture() const;
 	QRectF rect;
