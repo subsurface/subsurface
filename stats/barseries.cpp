@@ -406,12 +406,15 @@ void BarSeries::unhighlight()
 	highlighted = Index();
 }
 
-void BarSeries::selectItemsUnderMouse(const QPointF &pos, bool)
+bool BarSeries::selectItemsUnderMouse(const QPointF &pos, bool)
 {
 	Index index = getItemUnderMouse(pos);
-	if (index.bar < 0)
-		return setSelection({}, nullptr);
+	if (index.bar < 0) {
+		setSelection({}, nullptr);
+		return false;
+	}
 
 	const std::vector<dive *> &dives = items[index.bar].subitems[index.subitem].dives;
 	setSelection(dives, dives.empty() ? nullptr : dives.front());
+	return true;
 }

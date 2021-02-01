@@ -20,3 +20,12 @@ QPointF StatsSeries::toScreen(QPointF p)
 void StatsSeries::divesSelected(const QVector<dive *> &)
 {
 }
+
+bool StatsSeries::supportsLassoSelection() const
+{
+	return false;
+}
+
+void StatsSeries::selectItemsInRect(const QRectF &, bool, const std::vector<dive *> &)
+{
+}

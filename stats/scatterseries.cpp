@@ -78,7 +78,25 @@ std::vector<int> ScatterSeries::getItemsUnderMouse(const QPointF &point) const
 	return res;
 }
 
-void ScatterSeries::selectItemsUnderMouse(const QPointF &point, bool shiftPressed)
+std::vector<int> ScatterSeries::getItemsInRect(const QRectF &rect) const
+{
+	std::vector<int> res;
+
+	auto low = std::lower_bound(items.begin(), items.end(), rect.left(),
+				    [] (const Item &item, double x) { return item.item->getRect().right() < x; });
+	auto high = std::upper_bound(low, items.end(), rect.right(),
+				    [] (double x, const Item &item) { return x < item.item->getRect().left(); });
+	// Hopefully that narrows it down enough. For discrete scatter plots, we could also partition
+	// by equal x and do a binary search in these partitions. But that's probably not worth it.
+	res.reserve(high - low);
+	for (auto it = low; it < high; ++it) {
+		if (it->item->inRect(rect))
+			res.push_back(it - items.begin());
+	}
+	return res;
+}
+
+bool ScatterSeries::selectItemsUnderMouse(const QPointF &point, bool shiftPressed)
 {
 	std::vector<struct dive *> selected;
 	std::vector<int> indices = getItemsUnderMouse(point);
@@ -87,6 +105,7 @@ void ScatterSeries::selectItemsUnderMouse(const QPointF &point, bool shiftPresse
 		// When shift is pressed, add the items under the mouse to the selection
 		// or, if all items under the mouse are selected, remove them.
 		selected = getDiveSelection();
+		selected.reserve(indices.size() + selected.size());
 		bool allSelected = std::all_of(indices.begin(), indices.end(),
 					       [this] (int idx) { return items[idx].d->selected; });
 		if (allSelected) {
@@ -108,7 +127,35 @@ void ScatterSeries::selectItemsUnderMouse(const QPointF &point, bool shiftPresse
 			}
 		}
 	} else {
+		selected.reserve(indices.size());
 		for(int idx: indices)
+			selected.push_back(items[idx].d);
+	}
+
+	setSelection(selected, selected.empty() ? nullptr : selected.front());
+	return !indices.empty();
+}
+
+bool ScatterSeries::supportsLassoSelection() const
+{
+	return true;
+}
+
+void ScatterSeries::selectItemsInRect(const QRectF &rect, bool shiftPressed, const std::vector<dive *> &oldSelection)
+{
+	std::vector<struct dive *> selected;
+	std::vector<int> indices = getItemsInRect(rect);
+	selected.reserve(oldSelection.size() + indices.size());
+
+	if (shiftPressed) {
+		selected = oldSelection;
+		// Ouch - this primitive merging of the selections grows with O(n^2). Fix this.
+		for (int idx: indices) {
+			if (std::find(selected.begin(), selected.end(), items[idx].d) == selected.end())
+				selected.push_back(items[idx].d);
+		}
+	} else {
+		for (int idx: indices)
 			selected.push_back(items[idx].d);
 	}
 

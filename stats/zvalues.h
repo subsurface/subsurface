@@ -11,6 +11,7 @@ enum class ChartZValue {
 	Axes,
 	SeriesLabels,
 	ChartFeatures,	// quartile markers and regression lines
+	Selection,
 	InformationBox,
 	Legend,
 	Count

@@ -18,6 +18,7 @@
 #include "zvalues.h"
 #include "core/divefilter.h"
 #include "core/subsurface-qt/divelistnotifier.h"
+#include "core/selection.h"
 #include "core/trip.h"
 
 #include <cmath>
@@ -30,6 +31,7 @@
 // Constants that control the graph layouts
 static const double sceneBorder = 5.0;			// Border between scene edges and statitistics view
 static const double titleBorder = 2.0;			// Border between title and chart
+static const double selectionLassoWidth = 2.0;		// Border between title and chart
 
 StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	backgroundDirty(true),
@@ -37,6 +39,7 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	xAxis(nullptr),
 	yAxis(nullptr),
 	draggedItem(nullptr),
+	shiftSelection(false),
 	rootNode(nullptr)
 {
 	setFlag(ItemHasContents, true);
@@ -82,8 +85,25 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 	}
 
 	bool shiftPressed = event->modifiers() & Qt::ShiftModifier;
+	bool itemSelected = false;
 	for (auto &series: series)
-		series->selectItemsUnderMouse(pos, shiftPressed);
+		itemSelected |= series->selectItemsUnderMouse(pos, shiftPressed);
+
+	// The user clicked in "empty" space. If there is a series supporting lasso-select,
+	// got into lasso mode. For now, we only support a rectangular lasso.
+	if (!itemSelected && std::any_of(series.begin(), series.end(),
+					 [] (const std::unique_ptr<StatsSeries> &s)
+					 { return s->supportsLassoSelection(); })) {
+		if (selectionRect)
+			deleteChartItem(selectionRect); // Ooops. Already a selection in place.
+		dragStartMouse = pos;
+		selectionRect = createChartItem<ChartRectLineItem>(ChartZValue::Selection, selectionLassoColor, selectionLassoWidth);
+		shiftSelection = shiftPressed;
+		oldSelection = shiftPressed ? getDiveSelection() : std::vector<dive *>();
+		grabMouse();
+		setKeepMouseGrab(true); // don't allow Qt to steal the grab
+		update();
+	}
 }
 
 void StatsView::mouseReleaseEvent(QMouseEvent *)
@@ -91,6 +111,12 @@ void StatsView::mouseReleaseEvent(QMouseEvent *)
 	if (draggedItem) {
 		draggedItem = nullptr;
 		ungrabMouse();
+	}
+
+	if (selectionRect) {
+		deleteChartItem(selectionRect);
+		ungrabMouse();
+		update();
 	}
 }
 
@@ -358,14 +384,26 @@ void StatsView::divesSelected(const QVector<dive *> &dives)
 
 void StatsView::mouseMoveEvent(QMouseEvent *event)
 {
-	if (!draggedItem)
-		return;
+	if (draggedItem) {
+		QSizeF sceneSize = size();
+		if (sceneSize.width() <= 1.0 || sceneSize.height() <= 1.0)
+			return;
+		draggedItem->setPos(event->pos() - dragStartMouse + dragStartItem);
+		update();
+	}
 
-	QSizeF sceneSize = size();
-	if (sceneSize.width() <= 1.0 || sceneSize.height() <= 1.0)
-		return;
-	draggedItem->setPos(event->pos() - dragStartMouse + dragStartItem);
-	update();
+	if (selectionRect) {
+		QPointF p1 = event->pos();
+		QPointF p2 = dragStartMouse;
+		selectionRect->setLine(p1, p2);
+		QRectF rect(std::min(p1.x(), p2.x()), std::min(p1.y(), p2.y()),
+			    fabs(p2.x() - p1.x()), fabs(p2.y() - p1.y()));
+		for (auto &series: series) {
+			if (series->supportsLassoSelection())
+				series->selectItemsInRect(rect, shiftSelection, oldSelection);
+		}
+		update();
+	}
 }
 
 void StatsView::hoverEnterEvent(QHoverEvent *)
@@ -446,6 +484,7 @@ void StatsView::reset()
 	regressionItem.reset();
 	meanMarker.reset();
 	medianMarker.reset();
+	selectionRect.reset();
 
 	// Mark clean and dirty chart items for deletion
 	cleanItems.splice(deletedItems);
