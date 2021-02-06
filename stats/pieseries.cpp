@@ -44,8 +44,9 @@ void PieSeries::Item::updatePositions(const QPointF &center, double radius)
 	// because half-integer values gives horrible aliasing artifacts.
 	if (innerLabel) {
 		QRectF labelRect = innerLabel->getRect();
-		innerLabel->setPos(QPointF(round(center.x() + innerLabelPos.x() * radius - labelRect.width() / 2.0),
-					   round(center.y() + innerLabelPos.y() * radius - labelRect.height() / 2.0)));
+		QPointF pos(center.x() + innerLabelPos.x() * radius - labelRect.width() / 2.0,
+			    center.y() + innerLabelPos.y() * radius - labelRect.height() / 2.0);
+		innerLabel->setPos(roundPos(pos));
 	}
 	if (outerLabel) {
 		QRectF labelRect = outerLabel->getRect();
@@ -59,7 +60,7 @@ void PieSeries::Item::updatePositions(const QPointF &center, double radius)
 			pos.ry() -= labelRect.height();
 		}
 
-		outerLabel->setPos(QPointF(round(pos.x()), round(pos.y())));
+		outerLabel->setPos(roundPos(pos));
 	}
 }
 

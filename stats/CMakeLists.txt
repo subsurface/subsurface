@@ -34,6 +34,8 @@ set(SUBSURFACE_STATS_SRCS
 	statscolors.cpp
 	statsgrid.h
 	statsgrid.cpp
+	statshelper.h
+	statshelper.cpp
 	statsseries.h
 	statsseries.cpp
 	statsstate.h

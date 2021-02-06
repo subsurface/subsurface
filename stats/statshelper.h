@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0
-// Helper functions to render the stats. Currently contains
+// Helper functions to render the stats. Includes
 // QSGNode template jugglery to overcome API flaws.
 #ifndef STATSHELPER_H
 #define STATSHELPER_H
 
 #include <memory>
+#include <QPointF>
 #include <QSGNode>
+
+// Round positions to integer values to avoid ugly artifacts
+QPointF roundPos(const QPointF &p);
 
 // A stupid pointer class that initializes to null and can be copy
 // assigned. This is for historical reasons: unique_ptrs to ChartItems

@@ -359,8 +359,8 @@ void StatsView::updateTitlePos()
 {
 	if (!title)
 		return;
-	title->setPos(QPointF(round(sceneBorder + (boundingRect().width() - title->getRect().width()) / 2.0),
-			      round(sceneBorder)));
+	QPointF pos(sceneBorder + (boundingRect().width() - title->getRect().width()) / 2.0, sceneBorder);
+	title->setPos(roundPos(pos));
 }
 
 template <typename T, class... Args>
