@@ -143,6 +143,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	stats/statsaxis.cpp \
 	stats/statscolors.cpp \
 	stats/statsgrid.cpp \
+	stats/statshelper.cpp \
 	stats/statsseries.cpp \
 	stats/statsstate.cpp \
 	mobile-widgets/qmlinterface.cpp \
@@ -295,6 +296,7 @@ HEADERS += \
 	stats/statsaxis.h \
 	stats/statscolors.h \
 	stats/statsgrid.h \
+	stats/statshelper.h \
 	stats/statsseries.h \
 	stats/statsstate.h \
 	stats/statstranslations.h \

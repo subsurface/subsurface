@@ -118,7 +118,7 @@ void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRe
 			return;
 		}
 		QPointF pos = rect.center();
-		pos.rx() -= round(itemSize.width() / 2.0);
+		pos.rx() -= itemSize.width() / 2.0;
 
 		// Heuristics: if the label fits nicely into the bar (bar height is at least twice the label height),
 		// then put the label in the middle of the bar. Otherwise, put it at the top of the bar.
@@ -130,29 +130,29 @@ void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRe
 				setVisible(false);
 				return;
 			}
-			pos.ry() -= round(itemSize.height() / 2.0);
+			pos.ry() -= itemSize.height() / 2.0;
 		}
-		item->setPos(pos);
+		item->setPos(roundPos(pos)); // Round to integer to avoid ugly artifacts.
 	} else {
 		if (itemSize.height() > rect.height()) {
 			setVisible(false);
 			return;
 		}
 		QPointF pos = rect.center();
-		pos.ry() -= round(itemSize.height() / 2.0);
+		pos.ry() -= itemSize.height() / 2.0;
 
 		// Heuristics: if the label fits nicely into the bar (bar width is at least twice the label height),
 		// then put the label in the middle of the bar. Otherwise, put it to the right of the bar.
 		isOutside = !center && rect.width() < 2.0 * itemSize.width();
 		if (isOutside) {
-			pos.rx() = round(rect.right() + 2.0); // Leave two pixels(?) space
+			pos.rx() = rect.right() + 2.0; // Leave two pixels(?) space
 		} else {
 			if (itemSize.width() > rect.width()) {
 				setVisible(false);
 				return;
 			}
 		}
-		item->setPos(pos);
+		item->setPos(roundPos(pos)); // Round to integer to avoid ugly artifacts.
 	}
 	setVisible(true);
 	// If label changed from inside to outside, or vice-versa, the color might change.
