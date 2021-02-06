@@ -81,10 +81,6 @@ namespace {
 	QProgressDialog *progressDialog = nullptr;
 	bool progressDialogCanceled = false;
 	int progressCounter = 0;
-
-	int round_int (double value) {
-		return static_cast<int>(lrint(value));
-	};
 }
 
 extern "C" int updateProgress(const char *text)
@@ -902,12 +898,6 @@ void MainWindow::restoreSplitterSizes()
 	if (ui.mainSplitter->count() < 2 || topSplitter->count() < 2 || bottomSplitter->count() < 2)
 		return;
 
-	const int appH = qApp->desktop()->size().height();
-	const int appW = qApp->desktop()->size().width();
-
-	QList<int> mainSizes = { round_int(appH * 0.7), round_int(appH * 0.3) };
-	QList<int> infoProfileSizes = { round_int(appW * 0.3), round_int(appW * 0.7) };
-	QList<int> listGlobeSizes = { round_int(appW * 0.7), round_int(appW * 0.3) };
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
@@ -917,9 +907,12 @@ void MainWindow::restoreSplitterSizes()
 		topSplitter->restoreState(settings.value("topSplitter").toByteArray());
 		bottomSplitter->restoreState(settings.value("bottomSplitter").toByteArray());
 	} else {
-		ui.mainSplitter->setSizes(mainSizes);
-		topSplitter->setSizes(infoProfileSizes);
-		bottomSplitter->setSizes(listGlobeSizes);
+		const int appH = qApp->desktop()->size().height();
+		const int appW = qApp->desktop()->size().width();
+
+		ui.mainSplitter->setSizes({ appH * 3 / 5, appH * 2 / 5 });
+		topSplitter->setSizes({ appW / 2, appW / 2 });
+		bottomSplitter->setSizes({ appW * 3 / 5, appW * 2 / 5 });
 	}
 }
 
