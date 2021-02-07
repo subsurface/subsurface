@@ -24,7 +24,7 @@ public:
 	virtual bool supportsLassoSelection() const;
 	// Needs only be defined if supportsLassoSelection() returns true.
 	virtual void selectItemsInRect(const QRectF &rect, bool shiftPressed, const std::vector<dive *> &oldSelection);
-	virtual void divesSelected(const QVector<dive *> &dives);
+	virtual void divesSelected(const QVector<dive *> &dives) = 0;
 
 protected:
 	StatsView &view;

@@ -46,6 +46,7 @@ private:
 		double angleFrom, angleTo; // In fraction of total
 		std::vector<dive *> dives;
 		QPointF innerLabelPos, outerLabelPos; // With respect to a (-1, -1)-(1, 1) rectangle.
+		bool selected;
 		Item(StatsView &view, const QString &name, int from, std::vector<dive *> dives, int totalCount,
 		     int bin_nr, int numBins);
 		void updatePositions(const QPointF &center, double radius);
@@ -65,6 +66,7 @@ private:
 	QPointF center; // center of drawing area
 	double radius; // radius of pie
 	int highlighted;
+	void divesSelected(const QVector<dive *> &) override;
 };
 
 #endif

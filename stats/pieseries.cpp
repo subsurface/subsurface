@@ -20,7 +20,8 @@ static const double outerLabelRadius = 1.01; // 1.0 = at outer border of pie
 PieSeries::Item::Item(StatsView &view, const QString &name, int from, std::vector<dive *> divesIn, int totalCount,
 		      int bin_nr, int numBins) :
 	name(name),
-	dives(std::move(divesIn))
+	dives(std::move(divesIn)),
+	selected(allDivesSelected(dives))
 {
 	QFont f; // make configurable
 	QLocale loc;
@@ -72,7 +73,7 @@ void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, 
 	QColor border = highlight ? highlightedBorderColor : ::borderColor;
 	if (innerLabel)
 		innerLabel->setColor(highlight ? darkLabelColor : labelColor(bin_nr, numBins), fill);
-	item.drawSegment(angleFrom, angleTo, fill, border);
+	item.drawSegment(angleFrom, angleTo, fill, border, selected);
 }
 
 PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
@@ -276,4 +277,17 @@ bool PieSeries::selectItemsUnderMouse(const QPointF &pos, bool)
 	const std::vector<dive *> &dives = items[index].dives;
 	setSelection(dives, dives.empty() ? nullptr : dives.front());
 	return true;
+}
+
+void PieSeries::divesSelected(const QVector<dive *> &)
+{
+	for (Item &segment: items) {
+		bool selected = allDivesSelected(segment.dives);
+		if (segment.selected != selected) {
+			segment.selected = selected;
+
+			int idx = &segment - &items[0];
+			segment.highlight(*item, idx, idx == highlighted, (int)items.size());
+		}
+	}
 }

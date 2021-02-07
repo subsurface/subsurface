@@ -107,7 +107,7 @@ private:
 class ChartPieItem : public ChartPixmapItem {
 public:
 	ChartPieItem(StatsView &v, ChartZValue z, double borderWidth);
-	void drawSegment(double from, double to, QColor fill, QColor border); // from and to are relative (0-1 is full disk).
+	void drawSegment(double from, double to, QColor fill, QColor border, bool selected); // from and to are relative (0-1 is full disk).
 	void resize(QSizeF size);	// As in base class, but clears the canvas
 private:
 	double borderWidth;
