@@ -402,8 +402,8 @@ void ChartRectLineItem::render()
 	positionDirty = materialDirty = false;
 }
 
-ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, double borderWidth, bool horizontal) : HideableChartItem(v, z),
-	borderWidth(borderWidth), selected(false), horizontal(horizontal),
+ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, double borderWidth) : HideableChartItem(v, z),
+	borderWidth(borderWidth), selected(false),
 	positionDirty(false), colorDirty(false), selectedDirty(false)
 {
 }
@@ -453,17 +453,10 @@ void ChartBarItem::render()
 	if (positionDirty) {
 		node->node->setRect(rect);
 		auto vertices = borderGeometry->vertexDataAsPoint2D();
-		if (horizontal) {
-			setPoint(vertices[0], rect.topLeft());
-			setPoint(vertices[1], rect.topRight());
-			setPoint(vertices[2], rect.bottomRight());
-			setPoint(vertices[3], rect.bottomLeft());
-		} else {
-			setPoint(vertices[0], rect.bottomLeft());
-			setPoint(vertices[1], rect.topLeft());
-			setPoint(vertices[2], rect.topRight());
-			setPoint(vertices[3], rect.bottomRight());
-		}
+		setPoint(vertices[0], rect.topLeft());
+		setPoint(vertices[1], rect.topRight());
+		setPoint(vertices[2], rect.bottomRight());
+		setPoint(vertices[3], rect.bottomLeft());
 		node->node->markDirty(QSGNode::DirtyGeometry);
 		borderNode->markDirty(QSGNode::DirtyGeometry);
 	}
@@ -540,7 +533,7 @@ QRectF ChartBarItem::getRect() const
 }
 
 ChartBoxItem::ChartBoxItem(StatsView &v, ChartZValue z, double borderWidth) :
-	ChartBarItem(v, z, borderWidth, false) // Only support for vertical boxes
+	ChartBarItem(v, z, borderWidth)
 {
 }
 
