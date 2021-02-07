@@ -25,6 +25,7 @@ inline const QColor regressionItemColor(Qt::red);
 inline const QColor meanMarkerColor(Qt::green);
 inline const QColor medianMarkerColor(Qt::red);
 inline const QColor selectionLassoColor(Qt::black);
+inline const QColor selectionOverlayColor(Qt::lightGray);
 
 QColor binColor(int bin, int numBins);
 QColor labelColor(int bin, size_t numBins);

@@ -104,6 +104,7 @@ private:
 		double value_from;
 		double value_to;
 		int bin_nr;
+		bool selected;
 		QColor fill;
 		void updatePosition(BarSeries *series, bool horizontal, bool stacked,
 				    double from, double to, int binCount);
@@ -146,6 +147,7 @@ private:
 		      bool stacked);
 	std::vector<QString> makeInfo(const Item &item, int subitem) const;
 	int binCount() const;
+	void divesSelected(const QVector<dive *> &) override;
 };
 
 #endif
