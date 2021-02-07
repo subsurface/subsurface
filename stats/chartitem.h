@@ -15,6 +15,7 @@ class QSGFlatColorMaterial;
 class QSGImageNode;
 class QSGRectangleNode;
 class QSGTexture;
+class QSGTextureMaterial;
 class StatsView;
 enum class ChartZValue : int;
 
@@ -148,18 +149,27 @@ public:
 	~ChartBarItem();
 	void setColor(QColor color, QColor borderColor);
 	void setRect(const QRectF &rect);
+	void setSelected(bool selected);
 	QRectF getRect() const;
 	void render() override;		// Only call on render thread!
 protected:
 	QColor color, borderColor;
 	double borderWidth;
 	QRectF rect;
+	bool selected;
 	bool horizontal;
 	bool positionDirty;
 	bool colorDirty;
+	bool selectedDirty;
 	std::unique_ptr<QSGGeometryNode> borderNode;
 	std::unique_ptr<QSGFlatColorMaterial> borderMaterial;
 	std::unique_ptr<QSGGeometry> borderGeometry;
+private:
+	// Overlay for selected items. Created on demand.
+	std::unique_ptr<QSGGeometryNode> selectionNode;
+	std::unique_ptr<QSGTextureMaterial> selectionMaterial;
+	std::unique_ptr<QSGGeometry> selectionGeometry;
+	QSGTexture *getSelectedTexture() const;
 };
 
 // A box-and-whiskers item. This is a bit lazy: derive from the bar item and add whiskers.

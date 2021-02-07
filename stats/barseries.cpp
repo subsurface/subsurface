@@ -6,6 +6,7 @@
 #include "statstranslations.h"
 #include "statsview.h"
 #include "zvalues.h"
+#include "core/dive.h"
 #include "core/selection.h"
 
 #include <math.h> // for lrint()
@@ -183,11 +184,14 @@ void BarSeries::Item::highlight(int subitem, bool highlight, int binCount)
 	subitems[subitem].highlight(highlight, binCount);
 }
 
+// For single-bin charts, selected items are marked with a special fill and border color.
+// For multi-bin charts, they are marked by a differend border color and border width.
 void BarSeries::SubItem::highlight(bool highlight, int binCount)
 {
 	fill = highlight ? highlightedColor : binColor(bin_nr, binCount);
 	QColor border = highlight ? highlightedBorderColor : ::borderColor;
 	item->setColor(fill, border);
+	item->setSelected(selected);
 	if (label)
 		label->highlight(highlight, bin_nr, binCount, fill);
 }
@@ -243,9 +247,10 @@ std::vector<BarSeries::SubItem> BarSeries::makeSubItems(std::vector<SubItemDesc>
 	int bin_nr = 0;
 	for (auto &[v, dives, label]: items) {
 		if (v > 0.0) {
+			bool selected = std::all_of(dives.begin(), dives.end(), [] (const dive *d) { return d->selected; });
 			res.push_back({ view.createChartItem<ChartBarItem>(ChartZValue::Series, barBorderWidth, horizontal),
 					std::move(dives),
-					{}, from, from + v, bin_nr });
+					{}, from, from + v, bin_nr, selected });
 			if (!label.empty())
 				res.back().label = std::make_unique<BarLabel>(view, label, bin_nr, binCount());
 		}
@@ -417,4 +422,20 @@ bool BarSeries::selectItemsUnderMouse(const QPointF &pos, bool)
 	const std::vector<dive *> &dives = items[index.bar].subitems[index.subitem].dives;
 	setSelection(dives, dives.empty() ? nullptr : dives.front());
 	return true;
+}
+
+void BarSeries::divesSelected(const QVector<dive *> &)
+{
+	for (Item &item: items) {
+		for (SubItem &subitem: item.subitems) {
+			bool selected = std::all_of(subitem.dives.begin(), subitem.dives.end(), [] (const dive *d) { return d->selected; });
+			if (subitem.selected != selected) {
+				subitem.selected = selected;
+
+				Index idx(&item - &items[0], &subitem - &item.subitems[0]);
+				bool highlight = idx == highlighted;
+				item.highlight(idx.subitem, highlight, binCount());
+			}
+		}
+	}
 }

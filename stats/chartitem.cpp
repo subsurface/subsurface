@@ -9,6 +9,7 @@
 #include <QSGImageNode>
 #include <QSGRectangleNode>
 #include <QSGTexture>
+#include <QSGTextureMaterial>
 
 static int round_up(double f)
 {
@@ -140,6 +141,7 @@ static QSGTexture *createScatterTexture(StatsView &view, const QColor &color, co
 static QSGTexture *scatterItemTexture = nullptr;
 static QSGTexture *scatterItemSelectedTexture = nullptr;
 static QSGTexture *scatterItemHighlightedTexture = nullptr;
+static QSGTexture *selectedTexture = nullptr; // A checkerboard pattern.
 
 QSGTexture *ChartScatterItem::getTexture() const
 {
@@ -330,6 +332,12 @@ void setPoint(QSGGeometry::Point2D &v, const QPointF &p)
 	v.set(static_cast<float>(p.x()), static_cast<float>(p.y()));
 }
 
+void setPoint(QSGGeometry::TexturedPoint2D &v, const QPointF &p, const QPointF &t)
+{
+	v.set(static_cast<float>(p.x()), static_cast<float>(p.y()),
+	      static_cast<float>(t.x()), static_cast<float>(t.y()));
+}
+
 void ChartLineItem::render()
 {
 	if (!node) {
@@ -395,13 +403,25 @@ void ChartRectLineItem::render()
 }
 
 ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, double borderWidth, bool horizontal) : HideableChartItem(v, z),
-	borderWidth(borderWidth), horizontal(horizontal),
-	positionDirty(false), colorDirty(false)
+	borderWidth(borderWidth), selected(false), horizontal(horizontal),
+	positionDirty(false), colorDirty(false), selectedDirty(false)
 {
 }
 
 ChartBarItem::~ChartBarItem()
 {
+}
+
+QSGTexture *ChartBarItem::getSelectedTexture() const
+{
+	if (!selectedTexture) {
+		QImage img(2, 2, QImage::Format_ARGB32);
+		img.fill(Qt::transparent);
+		img.setPixelColor(0, 0, selectionOverlayColor);
+		img.setPixelColor(1, 1, selectionOverlayColor);
+		selectedTexture = view.w()->createTextureFromImage(img, QQuickWindow::TextureHasAlphaChannel);
+	}
+	return selectedTexture;
 }
 
 void ChartBarItem::render()
@@ -419,7 +439,7 @@ void ChartBarItem::render()
 
 		node->node->appendChildNode(borderNode.get());
 		view.addQSGNode(node.get(), zValue);
-		positionDirty = colorDirty = true;
+		positionDirty = colorDirty = selectedDirty = true;
 	}
 	updateVisible();
 
@@ -448,11 +468,48 @@ void ChartBarItem::render()
 		borderNode->markDirty(QSGNode::DirtyGeometry);
 	}
 
-	positionDirty = colorDirty = false;
+	if (selectedDirty) {
+		if (selected) {
+			if (!selectionNode) {
+				// Create the selection overlay if it didn't exist up to now.
+				selectionGeometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4));
+				selectionGeometry->setDrawingMode(QSGGeometry::DrawTriangleFan);
+				selectionMaterial.reset(new QSGTextureMaterial);
+				selectionMaterial->setTexture(getSelectedTexture());
+				selectionMaterial->setHorizontalWrapMode(QSGTexture::Repeat);
+				selectionMaterial->setVerticalWrapMode(QSGTexture::Repeat);
+				selectionNode.reset(new QSGGeometryNode);
+				selectionNode->setGeometry(selectionGeometry.get());
+				selectionNode->setMaterial(selectionMaterial.get());
+			}
+
+			node->node->appendChildNode(selectionNode.get());
+
+			// Update the position of the selection overlay, even if the position didn't change.
+			positionDirty = true;
+		} else {
+			if (selectionNode)
+				node->node->removeChildNode(selectionNode.get());
+		}
+	}
+
+	if (selected && positionDirty) {
+		// The checkerboard texture is 2x2. By dividing the coordinates by 4, every square is 2x2 pixels on the screen.
+		auto selectionVertices = selectionGeometry->vertexDataAsTexturedPoint2D();
+		selectionNode->markDirty(QSGNode::DirtyGeometry);
+		setPoint(selectionVertices[0], rect.topLeft(), QPointF());
+		setPoint(selectionVertices[1], rect.topRight(), QPointF(rect.width() / 4.0, 0.0));
+		setPoint(selectionVertices[2], rect.bottomRight(), QPointF(rect.width() / 4.0, rect.height() / 4.0));
+		setPoint(selectionVertices[3], rect.bottomLeft(), QPointF(0.0, rect.height() / 4.0));
+	}
+
+	positionDirty = colorDirty = selectedDirty = false;
 }
 
 void ChartBarItem::setColor(QColor colorIn, QColor borderColorIn)
 {
+	if (color == colorIn)
+		return;
 	color = colorIn;
 	borderColor = borderColorIn;
 	colorDirty = true;
@@ -461,8 +518,19 @@ void ChartBarItem::setColor(QColor colorIn, QColor borderColorIn)
 
 void ChartBarItem::setRect(const QRectF &rectIn)
 {
+	if (rect == rectIn)
+		return;
 	rect = rectIn;
 	positionDirty = true;
+	markDirty();
+}
+
+void ChartBarItem::setSelected(bool selectedIn)
+{
+	if (selected == selectedIn)
+		return;
+	selected = selectedIn;
+	selectedDirty = true;
 	markDirty();
 }
 
