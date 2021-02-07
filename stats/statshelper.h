@@ -5,11 +5,17 @@
 #define STATSHELPER_H
 
 #include <memory>
+#include <vector>
 #include <QPointF>
 #include <QSGNode>
 
+struct dive;
+
 // Round positions to integer values to avoid ugly artifacts
 QPointF roundPos(const QPointF &p);
+
+// Are all dives in this vector selected?
+bool allDivesSelected(const std::vector<dive *> &dives);
 
 // A stupid pointer class that initializes to null and can be copy
 // assigned. This is for historical reasons: unique_ptrs to ChartItems

@@ -247,7 +247,7 @@ std::vector<BarSeries::SubItem> BarSeries::makeSubItems(std::vector<SubItemDesc>
 	int bin_nr = 0;
 	for (auto &[v, dives, label]: items) {
 		if (v > 0.0) {
-			bool selected = std::all_of(dives.begin(), dives.end(), [] (const dive *d) { return d->selected; });
+			bool selected = allDivesSelected(dives);
 			res.push_back({ view.createChartItem<ChartBarItem>(ChartZValue::Series, barBorderWidth),
 					std::move(dives),
 					{}, from, from + v, bin_nr, selected });
@@ -428,7 +428,7 @@ void BarSeries::divesSelected(const QVector<dive *> &)
 {
 	for (Item &item: items) {
 		for (SubItem &subitem: item.subitems) {
-			bool selected = std::all_of(subitem.dives.begin(), subitem.dives.end(), [] (const dive *d) { return d->selected; });
+			bool selected = allDivesSelected(subitem.dives);
 			if (subitem.selected != selected) {
 				subitem.selected = selected;
 
