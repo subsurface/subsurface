@@ -151,6 +151,7 @@ void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRe
 				setVisible(false);
 				return;
 			}
+			pos.rx() -= itemSize.width() / 2.0;
 		}
 		item->setPos(roundPos(pos)); // Round to integer to avoid ugly artifacts.
 	}
