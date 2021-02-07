@@ -27,9 +27,10 @@ BoxSeries::~BoxSeries()
 }
 
 BoxSeries::Item::Item(StatsView &view, BoxSeries *series, double lowerBound, double upperBound,
-		      const StatsQuartiles &q, const QString &binName) :
-	lowerBound(lowerBound), upperBound(upperBound), q(q),
-	binName(binName)
+		      const StatsQuartiles &qIn, const QString &binName) :
+	lowerBound(lowerBound), upperBound(upperBound), q(qIn),
+	binName(binName),
+	selected(allDivesSelected(q.dives))
 {
 	item = view.createChartItem<ChartBoxItem>(ChartZValue::Series, boxBorderWidth);
 	highlight(false);
@@ -44,6 +45,8 @@ void BoxSeries::Item::highlight(bool highlight)
 {
 	if (highlight)
 		item->setColor(highlightedColor, highlightedBorderColor);
+	else if (selected)
+		item->setColor(selectedColor, selectedBorderColor);
 	else
 		item->setColor(fillColor, ::borderColor);
 }
@@ -154,4 +157,18 @@ bool BoxSeries::selectItemsUnderMouse(const QPointF &pos, bool)
 	const std::vector<dive *> &dives = items[index]->q.dives;
 	setSelection(dives, dives.empty() ? nullptr : dives.front());
 	return true;
+}
+
+void BoxSeries::divesSelected(const QVector<dive *> &)
+{
+	for (auto &item: items) {
+		bool selected = allDivesSelected(item->q.dives);
+		if (item->selected != selected) {
+			item->selected = selected;
+
+			int idx = &item - &items[0];
+			bool highlight = idx == highlighted;
+			item->highlight(highlight);
+		}
+	}
 }

@@ -39,6 +39,7 @@ private:
 		double lowerBound, upperBound;
 		StatsQuartiles q;
 		QString binName;
+		bool selected;
 		Item(StatsView &view, BoxSeries *series, double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName);
 		~Item();
 		void updatePosition(BoxSeries *series);
@@ -52,6 +53,7 @@ private:
 	ChartItemPtr<InformationBox> information;
 	std::vector<std::unique_ptr<Item>> items;
 	int highlighted; // -1: no item highlighted
+	void divesSelected(const QVector<dive *> &) override;
 };
 
 #endif
