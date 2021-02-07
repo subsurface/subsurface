@@ -17,10 +17,6 @@ QPointF StatsSeries::toScreen(QPointF p)
 			      : QPointF(0.0, 0.0);
 }
 
-void StatsSeries::divesSelected(const QVector<dive *> &)
-{
-}
-
 bool StatsSeries::supportsLassoSelection() const
 {
 	return false;

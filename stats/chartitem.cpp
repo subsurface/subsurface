@@ -11,6 +11,8 @@
 #include <QSGTexture>
 #include <QSGTextureMaterial>
 
+static int selectionOverlayPixelSize = 2;
+
 static int round_up(double f)
 {
 	return static_cast<int>(ceil(f));
@@ -289,10 +291,26 @@ ChartPieItem::ChartPieItem(StatsView &v, ChartZValue z, double borderWidth) : Ch
 {
 }
 
-void ChartPieItem::drawSegment(double from, double to, QColor fill, QColor border)
+static QBrush makeBrush(QColor fill, bool selected)
+{
+	if (!selected)
+		return QBrush(fill);
+	QImage img(2 * selectionOverlayPixelSize, 2 * selectionOverlayPixelSize, QImage::Format_ARGB32);
+	img.fill(fill);
+	for (int x = 0; x < selectionOverlayPixelSize; ++x) {
+		for (int y = 0; y < selectionOverlayPixelSize; ++y) {
+			img.setPixelColor(x, y, selectionOverlayColor);
+			img.setPixelColor(x + selectionOverlayPixelSize, y + selectionOverlayPixelSize,
+					  selectionOverlayColor);
+		}
+	}
+	return QBrush(img);
+}
+
+void ChartPieItem::drawSegment(double from, double to, QColor fill, QColor border, bool selected)
 {
 	painter->setPen(QPen(border, borderWidth));
-	painter->setBrush(QBrush(fill));
+	painter->setBrush(makeBrush(fill, selected));
 	// For whatever obscure reason, angles of pie pieces are given as 16th of a degree...?
 	// Angles increase CCW, whereas pie charts usually are read CW. Therfore, startAngle
 	// is dervied from "from" and subtracted from the origin angle at 12:00.
@@ -487,13 +505,13 @@ void ChartBarItem::render()
 	}
 
 	if (selected && positionDirty) {
-		// The checkerboard texture is 2x2. By dividing the coordinates by 4, every square is 2x2 pixels on the screen.
+		double pixelFactor = 2.0 * selectionOverlayPixelSize; // The texture image is 2x2 pixels.
 		auto selectionVertices = selectionGeometry->vertexDataAsTexturedPoint2D();
 		selectionNode->markDirty(QSGNode::DirtyGeometry);
 		setPoint(selectionVertices[0], rect.topLeft(), QPointF());
-		setPoint(selectionVertices[1], rect.topRight(), QPointF(rect.width() / 4.0, 0.0));
-		setPoint(selectionVertices[2], rect.bottomRight(), QPointF(rect.width() / 4.0, rect.height() / 4.0));
-		setPoint(selectionVertices[3], rect.bottomLeft(), QPointF(0.0, rect.height() / 4.0));
+		setPoint(selectionVertices[1], rect.topRight(), QPointF(rect.width() / pixelFactor, 0.0));
+		setPoint(selectionVertices[2], rect.bottomRight(), QPointF(rect.width() / pixelFactor, rect.height() / pixelFactor));
+		setPoint(selectionVertices[3], rect.bottomLeft(), QPointF(0.0, rect.height() / pixelFactor));
 	}
 
 	positionDirty = colorDirty = selectedDirty = false;
