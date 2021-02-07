@@ -145,7 +145,7 @@ public:
 // A bar in a bar chart: a rectangle bordered by lines.
 class ChartBarItem : public HideableChartProxyItem<QSGRectangleNode> {
 public:
-	ChartBarItem(StatsView &v, ChartZValue z, double borderWidth, bool horizontal);
+	ChartBarItem(StatsView &v, ChartZValue z, double borderWidth);
 	~ChartBarItem();
 	void setColor(QColor color, QColor borderColor);
 	void setRect(const QRectF &rect);
@@ -157,7 +157,6 @@ protected:
 	double borderWidth;
 	QRectF rect;
 	bool selected;
-	bool horizontal;
 	bool positionDirty;
 	bool colorDirty;
 	bool selectedDirty;
