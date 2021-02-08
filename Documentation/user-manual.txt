@@ -2784,7 +2784,7 @@ off filtering and exit the _Filter Panel_, click on _Reset_ and then on _Close_.
 [[S_Stats]]
 === Dive statistics
 
-Subsurface provides extensive opportunities to summarise information from the dive log in a graphical way. To access the dive statistics tool, select _Main Menu_ -> _View_ -> _Dive Statistics_. This tool is so flexible that it is impossible to cover every possible use case. Rather, we provide a conceptual introduction, followed by specific examples. The tool can be closed using the Close button at the top left. The Statistics tool has four panels (see image below):
+Creating meaningful statistics that convey the information you are looking for is surprisingly hard. Different users have very different needs and very different expectations. Subsurface provides a rather detailed set of statistics features to summarise information from the dive log in a graphical way. To access the dive statistics tool, select _Main Menu_ -> _View_ -> _Dive Statistics_. This tool is so flexible that it is impossible to cover every possible use case. Rather, we provide a conceptual introduction, followed by specific examples. The tool can be closed using the Close button at the top left. The Statistics tool has four panels (see image below):
 
 1. A setup panel containing comboboxes for requesting a graph (top left).
 2. The graph that has been requested (top right).
@@ -2799,7 +2799,7 @@ image::images/StatsPanel.jpg["Statistics panel",align="center"]
 [icon="images/icons/important.png"]
 [IMPORTANT]
 
-The extreme flexibility of the Statistics tool requires that the user needs to provide detailed information about what information Subsurface should provide. A clear objective is therefore critical for the successful use of the Statistics tool, that is, one needs to formulate the correct question. There are so many graphical display options that, if one does not formulate the question correctly, the information is unlikely to be presented in a valid or appropriate way. Because all statistical results in Subsurface are shown as graphs, formulating an appropriate specification requires four steps:
+The extreme flexibility of the Statistics tool means that you need to provide detailed information about what information Subsurface should provide. It helps to have a clear objective, a solid understanding of what you want Subsurface to show you. In other words, you need to formulate the correct question. There are so many graphical display options that, if you do not formulate the question correctly, the information is unlikely to be presented in a valid or appropriate way. Because all statistical results in Subsurface are shown as graphs, formulating an appropriate specification requires four steps:
 
 a) Which dives do you wish to graph? Perhaps you wish to analyse dives during winter, or dives on tropical reefs, or dives at a specific dive site. Use the Filter panel for selecting those dives. The section on the <<S_Filter,_Filter tool_>> contains complete instructions for filtering the dive list.
 
@@ -2815,7 +2815,7 @@ d) Which chart type do you require? By default Subsurface selects the most appro
 
 image::images/StatsGraphOptions.jpg["Statistics graph options",align="center"]
 
-The point of the discussion above is to show that, _before initiating a graph, one needs to think carefully about what one wishes Subsurface to show_, at least keeping the above four aspects in consideration.
+The point of the discussion above is to show that, _before initiating a graph, you need to think carefully about what you want Subsurface to show_, at least keeping the above four aspects in consideration.
 
 *A more technical note on the valid use of statistical graphs*
 
@@ -2843,23 +2843,23 @@ image::images/StatsCountsData.jpg["Counts data example",align="center"]
 
 ==== Scattergraphs
 
-Sometimes one wishes to investigate the relationship between two dive variables. Has my SAC rate decreased over the years? Is the water temperature colder at greater dive depth? One of the ways of investigating these questions is to draw a scattergraph where the values of one variable is plotted against the other variable (see image below). 
+Sometimes you might wish to investigate the relationship between two dive variables. Has my SAC rate decreased over the years? Is the water temperature colder at greater dive depth? One of the ways of investigating these questions is to draw a scattergraph where the values of one variable is plotted against the other variable (see image below).
 
 image::images/StatsRegression.jpg["Regression data example",align="center"]
 
 For the dataset in the above image, the SAC rate appears to have decreased over time. If the "linear regression" checkbox is marked, a red line is shown that summarises the best estimate of the relationship between SAC rate and year. In this graph it appears that SAC rate has decreased from around 21 l/min to around 14 l/min between 2013 and 2021. The pink area around the red line indicates the uncertainty of the precise orientation of the line. The line is expected to lie somewhere within the pink area with a certainty of 95%. The intensity of the pink colour also indicates the relative reliability of these estimates. The procedure for obtaining a scattergrapth is:
 
-a) The Base variable needs to be specified. Which variable should be along the horizontal axis? Examples are Date, Temperature, Max. depth, SAC rate.
+a) Specify the Base variable: Which variable should be along the horizontal axis? Examples are Date, Temperature, Max. depth, SAC rate.
 
-b) The binning value for the Base variable needs to be "none".
+b) Set the binning value for the Base variable to "none".
 
-c) The Data variable needs to be specified. Which variable should be along the vertical axis?
+c) Specify the Data variable: Which variable should be along the vertical axis?
 
-Within the scattergraph, hovering over a specific point provides more information pertinent to that point.
+Within the scattergraph, hover over a specific point to see more information for that point.
 
 ==== Comparisons between categories of dives
 
-One may wish to compare different categories of dives. Is the (5-star) Rating of a dive related to water temperature? Is my SAC rate related to diving with different dive suits? Since dive suit and Rating are categories, a scattergraph is not appropriate. The default is a categorical dot graph, which, in the case of image A below, shows the precise water temperatures for each Rating. The red lines indicate the top quartile, the mean and the lower quartile of temperature for each rating. The column with no star indicates dives for which a Rating has not been selected. It appears that dives with a 5-star rating have higher temperatures that the other ratings. To obtain a categorical graph:
+You might also wish to compare different categories of dives. Is the (5-star) Rating of a dive related to water temperature? Is my SAC rate related to diving with different dive suits? Since dive suit and Rating are categories, a scattergraph is not appropriate. The default is a categorical dot graph, which, in the case of image A below, shows the precise water temperatures for each Rating. The red lines indicate the top quartile, the mean and the lower quartile of temperature for each rating. The column with no star indicates dives for which a Rating has not been selected. It appears that dives with a 5-star rating have higher temperatures that the other ratings. To obtain a categorical graph:
 
 a) Select a variable with categories (along the horizontal axis) as a Base variable.
 
@@ -2869,7 +2869,7 @@ c) By default the Chart combobox shows "Categorical/data points". If this is not
 
 image::images/StatsCategoricalData.jpg["Stats: Comparison of categories",align="center"]
 
-Alternatively one could produce a Box-whisker graph for the same data. In the Chart combobox, select "Categorical/box-whisker". This creates a graph indicating the maximum, top quartile (Q3), median, bottom quartile (Q1) and minimum for each category or class. Image B above shows a box-whisker graph for the same data as image A above. One can see that the values for a Rating of 5 stars tend to be higher than for other ratings. Hovering over a box provides more complete information pertaining to that box.
+Alternatively you could create a Box-whisker graph for the same data. In the Chart combobox, select "Categorical/box-whisker". This creates a graph indicating the maximum, top quartile (Q3), median, bottom quartile (Q1) and minimum for each category or class. Image B above shows a box-whisker graph for the same data as image A above. You can see that the values for a Rating of 5 stars tend to be higher than for other ratings. Hover over a box to see more complete information for that box.
 
 ==== Counts comprising more than one category in a bar
 
