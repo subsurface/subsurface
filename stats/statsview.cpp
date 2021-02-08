@@ -39,7 +39,6 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	xAxis(nullptr),
 	yAxis(nullptr),
 	draggedItem(nullptr),
-	shiftSelection(false),
 	rootNode(nullptr)
 {
 	setFlag(ItemHasContents, true);
@@ -84,10 +83,12 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 		}
 	}
 
-	bool shiftPressed = event->modifiers() & Qt::ShiftModifier;
+	SelectionModifier modifier;
+	modifier.shift = (event->modifiers() & Qt::ShiftModifier) != 0;
+	modifier.ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
 	bool itemSelected = false;
 	for (auto &series: series)
-		itemSelected |= series->selectItemsUnderMouse(pos, shiftPressed);
+		itemSelected |= series->selectItemsUnderMouse(pos, modifier);
 
 	// The user clicked in "empty" space. If there is a series supporting lasso-select,
 	// got into lasso mode. For now, we only support a rectangular lasso.
@@ -98,8 +99,8 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 			deleteChartItem(selectionRect); // Ooops. Already a selection in place.
 		dragStartMouse = pos;
 		selectionRect = createChartItem<ChartRectLineItem>(ChartZValue::Selection, selectionLassoColor, selectionLassoWidth);
-		shiftSelection = shiftPressed;
-		oldSelection = shiftPressed ? getDiveSelection() : std::vector<dive *>();
+		selectionModifier = modifier;
+		oldSelection = modifier.ctrl ? getDiveSelection() : std::vector<dive *>();
 		grabMouse();
 		setKeepMouseGrab(true); // don't allow Qt to steal the grab
 		update();
@@ -400,7 +401,7 @@ void StatsView::mouseMoveEvent(QMouseEvent *event)
 			    fabs(p2.x() - p1.x()), fabs(p2.y() - p1.y()));
 		for (auto &series: series) {
 			if (series->supportsLassoSelection())
-				series->selectItemsInRect(rect, shiftSelection, oldSelection);
+				series->selectItemsInRect(rect, selectionModifier, oldSelection);
 		}
 		update();
 	}

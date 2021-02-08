@@ -27,9 +27,9 @@ public:
 
 	// Note: this expects that all items are added with increasing pos!
 	void append(dive *d, double pos, double value);
-	bool selectItemsUnderMouse(const QPointF &point, bool shiftPressed) override;
+	bool selectItemsUnderMouse(const QPointF &point, SelectionModifier modifier) override;
 	bool supportsLassoSelection() const override;
-	void selectItemsInRect(const QRectF &rect, bool shiftPressed, const std::vector<dive *> &oldSelection) override;
+	void selectItemsInRect(const QRectF &rect, SelectionModifier modifier, const std::vector<dive *> &oldSelection) override;
 
 private:
 	// Get items under mouse.
