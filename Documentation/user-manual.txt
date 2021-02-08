@@ -1,8 +1,8 @@
-// Subsurface 4.9 User Manual
+// Subsurface 5.0 User Manual
 // ==========================
 // :author: Manual authors: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.9
+// :revnumber: 5.0
 // :revdate:February 2021
 :icons:
 :toc2:
@@ -18,7 +18,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs
 
-[blue]#_Version 4.9, February 2021_#
+[blue]#_Version 5.0, February 2021_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
