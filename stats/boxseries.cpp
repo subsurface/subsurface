@@ -146,7 +146,7 @@ void BoxSeries::unhighlight()
 	highlighted = -1;
 }
 
-bool BoxSeries::selectItemsUnderMouse(const QPointF &pos, bool)
+bool BoxSeries::selectItemsUnderMouse(const QPointF &pos, SelectionModifier)
 {
 	int index = getItemUnderMouse(pos);
 	if (index < 0) {

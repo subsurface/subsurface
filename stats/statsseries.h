@@ -4,6 +4,8 @@
 #ifndef STATS_SERIES_H
 #define STATS_SERIES_H
 
+#include "statsselection.h"
+
 #include <vector>
 #include <QPointF>
 
@@ -20,10 +22,10 @@ public:
 	virtual bool hover(QPointF pos) = 0;	// Called on mouse movement. Return true if an item of this series is highlighted.
 	virtual void unhighlight() = 0;		// Unhighlight any highlighted item.
 	// Returns true if an item was under the mouse.
-	virtual bool selectItemsUnderMouse(const QPointF &pos, bool shiftPressed) = 0;
+	virtual bool selectItemsUnderMouse(const QPointF &pos, SelectionModifier modifier) = 0;
 	virtual bool supportsLassoSelection() const;
 	// Needs only be defined if supportsLassoSelection() returns true.
-	virtual void selectItemsInRect(const QRectF &rect, bool shiftPressed, const std::vector<dive *> &oldSelection);
+	virtual void selectItemsInRect(const QRectF &rect, SelectionModifier modifier, const std::vector<dive *> &oldSelection);
 	virtual void divesSelected(const QVector<dive *> &dives) = 0;
 
 protected:

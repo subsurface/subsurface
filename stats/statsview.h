@@ -4,6 +4,7 @@
 
 #include "statsstate.h"
 #include "statshelper.h"
+#include "statsselection.h"
 #include <memory>
 #include <QFont>
 #include <QImage>
@@ -145,7 +146,7 @@ private:
 	ChartItemPtr<RegressionItem> regressionItem;
 	ChartItemPtr<ChartRectLineItem> selectionRect;
 	QPointF dragStartMouse, dragStartItem;
-	bool shiftSelection;
+	SelectionModifier selectionModifier;
 	std::vector<dive *> oldSelection;
 
 	void hoverEnterEvent(QHoverEvent *event) override;

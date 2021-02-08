@@ -22,6 +22,6 @@ bool StatsSeries::supportsLassoSelection() const
 	return false;
 }
 
-void StatsSeries::selectItemsInRect(const QRectF &, bool, const std::vector<dive *> &)
+void StatsSeries::selectItemsInRect(const QRectF &, SelectionModifier, const std::vector<dive *> &)
 {
 }

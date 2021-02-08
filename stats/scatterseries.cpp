@@ -96,12 +96,12 @@ std::vector<int> ScatterSeries::getItemsInRect(const QRectF &rect) const
 	return res;
 }
 
-bool ScatterSeries::selectItemsUnderMouse(const QPointF &point, bool shiftPressed)
+bool ScatterSeries::selectItemsUnderMouse(const QPointF &point, SelectionModifier modifier)
 {
 	std::vector<struct dive *> selected;
 	std::vector<int> indices = getItemsUnderMouse(point);
 
-	if (shiftPressed) {
+	if (modifier.ctrl) {
 		// When shift is pressed, add the items under the mouse to the selection
 		// or, if all items under the mouse are selected, remove them.
 		selected = getDiveSelection();
@@ -141,13 +141,13 @@ bool ScatterSeries::supportsLassoSelection() const
 	return true;
 }
 
-void ScatterSeries::selectItemsInRect(const QRectF &rect, bool shiftPressed, const std::vector<dive *> &oldSelection)
+void ScatterSeries::selectItemsInRect(const QRectF &rect, SelectionModifier modifier, const std::vector<dive *> &oldSelection)
 {
 	std::vector<struct dive *> selected;
 	std::vector<int> indices = getItemsInRect(rect);
 	selected.reserve(oldSelection.size() + indices.size());
 
-	if (shiftPressed) {
+	if (modifier.ctrl) {
 		selected = oldSelection;
 		// Ouch - this primitive merging of the selections grows with O(n^2). Fix this.
 		for (int idx: indices) {
