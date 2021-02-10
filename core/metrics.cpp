@@ -43,7 +43,7 @@ static int defaultIconSize(int height)
 	return ret;
 }
 
-const IconMetrics & defaultIconMetrics()
+const IconMetrics &defaultIconMetrics()
 {
 	if (dfltIconMetrics.sz_small == -1) {
 		int small = defaultIconSize(defaultModelFontMetrics().height());
