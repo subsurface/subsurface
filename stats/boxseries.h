@@ -53,6 +53,7 @@ private:
 	ChartItemPtr<InformationBox> information;
 	std::vector<std::unique_ptr<Item>> items;
 	int highlighted; // -1: no item highlighted
+	int lastClicked; // -1: no item clicked
 	void divesSelected(const QVector<dive *> &) override;
 };
 

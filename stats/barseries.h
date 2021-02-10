@@ -82,7 +82,9 @@ private:
 		Index();
 		Index(int bar, int subitem);
 		bool operator==(const Index &i2) const;
+		bool operator<=(const Index &i2) const;
 	};
+	void inc(Index &index);
 
 	// Get item under mouse pointer, or -1 if none
 	Index getItemUnderMouse(const QPointF &f) const;
@@ -135,6 +137,7 @@ private:
 	const StatsVariable *valueVariable; // null: this is count based
 	std::vector<QString> valueBinNames;
 	Index highlighted;
+	Index lastClicked;
 	struct SubItemDesc {
 		double v;
 		std::vector<dive *> dives;

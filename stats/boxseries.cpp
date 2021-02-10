@@ -18,7 +18,7 @@ static const int boxBorderWidth = 2.0;
 BoxSeries::BoxSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     const QString &variable, const QString &unit, int decimals) :
 	StatsSeries(view, xAxis, yAxis),
-	variable(variable), unit(unit), decimals(decimals), highlighted(-1)
+	variable(variable), unit(unit), decimals(decimals), highlighted(-1), lastClicked(-1)
 {
 }
 
@@ -150,9 +150,25 @@ bool BoxSeries::selectItemsUnderMouse(const QPointF &pos, SelectionModifier modi
 {
 	int index = getItemUnderMouse(pos);
 
+	if (modifier.shift && index < 0)
+		return false;
+
+	if (!modifier.shift || lastClicked < 0)
+		lastClicked = index;
+
 	std::vector<dive *> divesUnderMouse;
-	if (index >= 0)
+	if (modifier.shift && lastClicked >= 0 && index >= 0) {
+		int first = lastClicked;
+		int last = index;
+		if (last < first)
+			std::swap(first, last);
+		for (int idx = first; idx <= last; ++idx) {
+			const std::vector<dive *> &dives = items[idx]->q.dives;
+			divesUnderMouse.insert(divesUnderMouse.end(), dives.begin(), dives.end());
+		}
+	} else if (index >= 0) {
 		divesUnderMouse = items[index]->q.dives;
+	}
 	processSelection(std::move(divesUnderMouse), modifier);
 
 	return index >= 0;

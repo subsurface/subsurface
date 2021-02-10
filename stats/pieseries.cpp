@@ -81,7 +81,8 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 	StatsSeries(view, xAxis, yAxis),
 	item(view.createChartItem<ChartPieItem>(ChartZValue::Series, pieBorderWidth)),
 	categoryName(categoryName),
-	highlighted(-1)
+	highlighted(-1),
+	lastClicked(-1)
 {
 	// Pie charts with many slices are unreadable. Therefore, subsume slices under
 	// a certain percentage as "other". But draw a minimum number of slices
@@ -270,9 +271,30 @@ bool PieSeries::selectItemsUnderMouse(const QPointF &pos, SelectionModifier modi
 {
 	int index = getItemUnderMouse(pos);
 
+	if (modifier.shift && index < 0)
+		return false;
+
+	if (!modifier.shift || lastClicked < 0)
+		lastClicked = index;
+
 	std::vector<dive *> divesUnderMouse;
-	if (index >= 0)
+	if (modifier.shift && lastClicked >= 0 && index >= 0) {
+		// Selecting a range in a pie plot is a bit special due to its cyclic nature.
+		// One way would be to always select the "shorter" path, but that would restrict the user.
+		// Thus, always select in the "positive" direction, i.e. clockwise.
+		int idx = lastClicked;
+		int last = index;
+		for (;;) {
+			const std::vector<dive *> &dives = items[idx].dives;
+			divesUnderMouse.insert(divesUnderMouse.end(), dives.begin(), dives.end());
+			if (idx == last)
+				break;
+			if (++idx >= (int)items.size())
+				idx = 0;
+		}
+	} else if (index >= 0) {
 		divesUnderMouse = items[index].dives;
+	}
 	processSelection(std::move(divesUnderMouse), modifier);
 
 	return index >= 0;
