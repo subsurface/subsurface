@@ -248,11 +248,16 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices)
 		if (std::find(affectedTrips.begin(), affectedTrips.end(), row) == affectedTrips.end())
 			affectedTrips.push_back(row);
 	}
+	// Disable animations when expanding trips. Otherwise, selection of
+	// a large number of dives becomes increadibly slow.
+	bool oldAnimated = isAnimated();
+	setAnimated(false);
 	MultiFilterSortModel *m = MultiFilterSortModel::instance();
 	for (int row: affectedTrips) {
 		QModelIndex idx = m->index(row, 0);
 		expand(idx);
 	}
+	setAnimated(oldAnimated);
 
 	selectionChangeDone();
 	programmaticalSelectionChange = false;
