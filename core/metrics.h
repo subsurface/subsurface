@@ -31,7 +31,7 @@ struct IconMetrics {
 	IconMetrics();
 };
 
-const IconMetrics & defaultIconMetrics();
+const IconMetrics &defaultIconMetrics();
 void updateDevicePixelRatio(double dpr);
 
 #endif // METRICS_H

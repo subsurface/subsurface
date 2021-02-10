@@ -188,6 +188,28 @@ static QString displayWeight(const struct dive *d, bool units)
 		return s + gettextFromC::tr("lbs");
 }
 
+static QPixmap &getGlobeIcon()
+{
+	static std::unique_ptr<QPixmap> icon;
+	if (!icon) {
+		const IconMetrics &im = defaultIconMetrics();
+		icon = std::make_unique<QPixmap>(QIcon(":globe-icon").pixmap(im.sz_small, im.sz_small));
+	}
+	return *icon;
+}
+
+static QPixmap &getPhotoIcon(int idx)
+{
+	static std::unique_ptr<QPixmap[]> icons;
+	if (!icons) {
+		const IconMetrics &im = defaultIconMetrics();
+		icons = std::make_unique<QPixmap[]>(std::size(icon_names));
+		for (size_t i = 0; i < std::size(icon_names); ++i)
+			icons[i] = QIcon(icon_names[i]).pixmap(im.sz_small, im.sz_small);
+	}
+	return icons[idx];
+}
+
 QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role) const
 {
 #ifdef SUBSURFACE_MOBILE
@@ -289,17 +311,15 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case COUNTRY:
 			return QVariant();
 		case LOCATION:
-			if (dive_has_gps_location(d)) {
-				IconMetrics im = defaultIconMetrics();
-				return QIcon(":globe-icon").pixmap(im.sz_small, im.sz_small);
-			}
+			if (dive_has_gps_location(d))
+				return getGlobeIcon();
 			break;
 		case PHOTOS:
-			if (d->pictures.nr > 0) {
-				IconMetrics im = defaultIconMetrics();
-				return QIcon(icon_names[countPhotos(d)]).pixmap(im.sz_small, im.sz_small);
-			}	 // If there are photos, show one of the three photo icons: fish= photos during dive;
-			break;	 // sun=photos before/after dive; sun+fish=photos during dive as well as before/after
+			// If there are photos, show one of the three photo icons: fish= photos during dive;
+			// sun=photos before/after dive; sun+fish=photos during dive as well as before/after
+			if (d->pictures.nr > 0)
+				return getPhotoIcon(countPhotos(d));
+			break;
 		}
 		break;
 	case Qt::ToolTipRole:
