@@ -31,6 +31,21 @@ bool BarSeries::Index::operator==(const Index &i2) const
 	return std::tie(bar, subitem) == std::tie(i2.bar, i2.subitem);
 }
 
+// Note: only defined for valid indices.
+bool BarSeries::Index::operator<=(const Index &i2) const
+{
+	return std::tie(bar, subitem) <= std::tie(i2.bar, i2.subitem);
+}
+
+// Note: only defined for valid indices.
+void BarSeries::inc(Index &index)
+{
+	if (++index.subitem < binCount())
+		return;
+	++index.bar;
+	index.subitem = 0;
+}
+
 BarSeries::BarSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,
 		     bool horizontal, bool stacked, const QString &categoryName,
 		     const StatsVariable *valueVariable, std::vector<QString> valueBinNames) :
@@ -415,9 +430,25 @@ bool BarSeries::selectItemsUnderMouse(const QPointF &pos, SelectionModifier modi
 {
 	Index index = getItemUnderMouse(pos);
 
+	if (modifier.shift && index.bar < 0)
+		return false;
+
+	if (!modifier.shift || lastClicked.bar < 0)
+		lastClicked = index;
+
 	std::vector<dive *> divesUnderMouse;
-	if (index.bar >= 0)
+	if (modifier.shift && lastClicked.bar >= 0 && index.bar >= 0) {
+		Index first = lastClicked;
+		Index last = index;
+		if (last <= first)
+			std::swap(first, last);
+		for (Index idx = first; idx <= last; inc(idx)) {
+			const std::vector<dive *> &dives = items[idx.bar].subitems[idx.subitem].dives;
+			divesUnderMouse.insert(divesUnderMouse.end(), dives.begin(), dives.end());
+		}
+	} else if (index.bar >= 0) {
 		divesUnderMouse = items[index.bar].subitems[index.subitem].dives;
+	}
 	processSelection(std::move(divesUnderMouse), modifier);
 
 	return index.bar >= 0;
