@@ -266,17 +266,16 @@ void PieSeries::unhighlight()
 	highlighted = -1;
 }
 
-bool PieSeries::selectItemsUnderMouse(const QPointF &pos, SelectionModifier)
+bool PieSeries::selectItemsUnderMouse(const QPointF &pos, SelectionModifier modifier)
 {
 	int index = getItemUnderMouse(pos);
-	if (index < 0) {
-		setSelection({}, nullptr);
-		return false;
-	}
 
-	const std::vector<dive *> &dives = items[index].dives;
-	setSelection(dives, dives.empty() ? nullptr : dives.front());
-	return true;
+	std::vector<dive *> divesUnderMouse;
+	if (index >= 0)
+		divesUnderMouse = items[index].dives;
+	processSelection(std::move(divesUnderMouse), modifier);
+
+	return index >= 0;
 }
 
 void PieSeries::divesSelected(const QVector<dive *> &)
