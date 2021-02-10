@@ -4,6 +4,10 @@
 #ifndef STATS_SELECTION_H
 #define STATS_SELECTION_H
 
+#include <vector>
+
+struct dive;
+
 struct SelectionModifier {
 	unsigned int ctrl : 1;
 	unsigned int shift : 1;
@@ -11,5 +15,7 @@ struct SelectionModifier {
 	// Therefore, for now an inline constructor.
 	SelectionModifier() : ctrl(0), shift(0) {}
 };
+
+void processSelection(std::vector<dive *> dives, SelectionModifier modifier);
 
 #endif

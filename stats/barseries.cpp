@@ -411,17 +411,16 @@ void BarSeries::unhighlight()
 	highlighted = Index();
 }
 
-bool BarSeries::selectItemsUnderMouse(const QPointF &pos, SelectionModifier)
+bool BarSeries::selectItemsUnderMouse(const QPointF &pos, SelectionModifier modifier)
 {
 	Index index = getItemUnderMouse(pos);
-	if (index.bar < 0) {
-		setSelection({}, nullptr);
-		return false;
-	}
 
-	const std::vector<dive *> &dives = items[index.bar].subitems[index.subitem].dives;
-	setSelection(dives, dives.empty() ? nullptr : dives.front());
-	return true;
+	std::vector<dive *> divesUnderMouse;
+	if (index.bar >= 0)
+		divesUnderMouse = items[index.bar].subitems[index.subitem].dives;
+	processSelection(std::move(divesUnderMouse), modifier);
+
+	return index.bar >= 0;
 }
 
 void BarSeries::divesSelected(const QVector<dive *> &)

@@ -98,41 +98,14 @@ std::vector<int> ScatterSeries::getItemsInRect(const QRectF &rect) const
 
 bool ScatterSeries::selectItemsUnderMouse(const QPointF &point, SelectionModifier modifier)
 {
-	std::vector<struct dive *> selected;
 	std::vector<int> indices = getItemsUnderMouse(point);
+	std::vector<struct dive *> divesUnderMouse;
 
-	if (modifier.ctrl) {
-		// When shift is pressed, add the items under the mouse to the selection
-		// or, if all items under the mouse are selected, remove them.
-		selected = getDiveSelection();
-		selected.reserve(indices.size() + selected.size());
-		bool allSelected = std::all_of(indices.begin(), indices.end(),
-					       [this] (int idx) { return items[idx].d->selected; });
-		if (allSelected) {
-			// Remove items under cursor from selection. This could be made more efficient.
-			for (int idx: indices) {
-				auto it = std::find(selected.begin(), selected.end(), items[idx].d);
-				if (it != selected.end()) {
-					// Move last element to deselected element. If this already was
-					// the last element, this is a no-op. Then, chop off last element.
-					*it = selected.back();
-					selected.pop_back();
-				}
-			}
-		} else {
-			// Add items under cursor to selection
-			for (int idx: indices) {
-				if (std::find(selected.begin(), selected.end(), items[idx].d) == selected.end())
-					selected.push_back(items[idx].d);
-			}
-		}
-	} else {
-		selected.reserve(indices.size());
-		for(int idx: indices)
-			selected.push_back(items[idx].d);
-	}
+	divesUnderMouse.reserve(indices.size());
+	for(int idx: indices)
+		divesUnderMouse.push_back(items[idx].d);
 
-	setSelection(selected, selected.empty() ? nullptr : selected.front());
+	processSelection(std::move(divesUnderMouse), modifier);
 	return !indices.empty();
 }
 
