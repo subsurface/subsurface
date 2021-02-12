@@ -217,7 +217,7 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 	timeAxis = axis;
 }
 
-void ToolTipItem::refresh(const dive *d, const QPointF &pos)
+void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 {
 	static QPixmap tissues(16,60);
 	static QPainter painter(&tissues);
@@ -249,7 +249,7 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos)
 
 		const struct plot_data *entry = &pInfo.entry[idx];
 		painter.setPen(QColor(0, 0, 0, 255));
-		if (decoMode() == BUEHLMANN)
+		if (decoMode(inPlanner) == BUEHLMANN)
 			painter.drawLine(0, lrint(60 - entry->gfline / 2), 16, lrint(60 - entry->gfline / 2));
 		painter.drawLine(0, lrint(60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure / 2),
 				16, lrint(60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure /2));

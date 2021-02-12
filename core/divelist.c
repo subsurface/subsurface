@@ -580,7 +580,7 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 	}
 
 	// I do not dare to remove this call. We don't need the result but it might have side effects. Bummer.
-	tissue_tolerance_calc(ds, dive, surface_pressure);
+	tissue_tolerance_calc(ds, dive, surface_pressure, in_planner);
 	return surface_time;
 }
 

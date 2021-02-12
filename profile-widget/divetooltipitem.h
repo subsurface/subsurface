@@ -35,7 +35,7 @@ public:
 	void collapse();
 	void expand();
 	void clear();
-	void refresh(const dive *d, const QPointF &pos);
+	void refresh(const dive *d, const QPointF &pos, bool inPlanner);
 	bool isExpanded() const;
 	void persistPos();
 	void readPos();

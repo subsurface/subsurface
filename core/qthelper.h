@@ -151,7 +151,7 @@ char *cloud_url();
 char *hashfile_name_string();
 char *picturedir_string();
 const char *subsurface_user_agent();
-enum deco_mode decoMode();
+enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
 char *get_current_date();
 time_t get_dive_datetime_from_isostring(char *when);

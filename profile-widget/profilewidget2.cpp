@@ -543,7 +543,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 		// this copies the dive and makes copies of all the relevant additional data
 		copy_dive(d, &displayed_dive);
 
-		if (decoMode() == VPMB)
+		if (decoMode(false) == VPMB)
 			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.vpmb_conservatism));
 		else
 			decoModelParameters->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
@@ -556,7 +556,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 			plannerModel->deleteTemporaryPlan();
 			return;
 		}
-		if (decoMode() == VPMB)
+		if (decoMode(currentState == PLAN) == VPMB)
 			decoModelParameters->setText(QString("VPM-B +%1").arg(diveplan.vpmb_conservatism));
 		else
 			decoModelParameters->setText(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh));
@@ -800,7 +800,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 	else
 		plotPicturesInternal(d, instant);
 
-	toolTipItem->refresh(&displayed_dive, mapToScene(mapFromGlobal(QCursor::pos())));
+	toolTipItem->refresh(&displayed_dive, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 #endif
 
 	// OK, how long did this take us? Anything above the second is way too long,
@@ -1027,7 +1027,7 @@ void ProfileWidget2::scrollViewTo(const QPoint &pos)
 void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 {
 	QPointF pos = mapToScene(event->pos());
-	toolTipItem->refresh(&displayed_dive, mapToScene(mapFromGlobal(QCursor::pos())));
+	toolTipItem->refresh(&displayed_dive, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 
 	if (zoomLevel == 0) {
 		QGraphicsView::mouseMoveEvent(event);

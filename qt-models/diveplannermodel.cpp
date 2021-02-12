@@ -1118,7 +1118,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	struct divedatapoint *last_segment;
 	struct deco_state ds = *previous_ds;
 
-	if (isPlanner() && prefs.display_variations && decoMode() != RECREATIONAL) {
+	if (isPlanner() && prefs.display_variations && decoMode(true) != RECREATIONAL) {
 		int my_instance = ++instanceCounter;
 		cache_deco_state(&ds, &save);
 
