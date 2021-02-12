@@ -35,7 +35,6 @@ public:
 	void collapse();
 	void expand();
 	void clear();
-	void addToolTip(const QString &toolTip, const QIcon &icon = QIcon(), const QPixmap &pixmap = QPixmap());
 	void refresh(const dive *d, const QPointF &pos);
 	bool isExpanded() const;
 	void persistPos();
@@ -62,6 +61,8 @@ private:
 	int lastTime;
 	QElapsedTimer refreshTime;
 	QList<QGraphicsItem*> oldSelection;
+
+	void addToolTip(const QString &toolTip, const QIcon &icon = QIcon(), const QPixmap &pixmap = QPixmap());
 };
 
 #endif // DIVETOOLTIPITEM_H
