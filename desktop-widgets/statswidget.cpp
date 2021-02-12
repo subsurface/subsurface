@@ -84,6 +84,8 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 	connect(ui.var1Binner, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var1BinnerChanged);
 	connect(ui.var2Binner, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2BinnerChanged);
 	connect(ui.var2Operation, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2OperationChanged);
+	connect(ui.restrictButton, &QToolButton::clicked, this, &StatsWidget::restrict);
+	connect(ui.unrestrictButton, &QToolButton::clicked, this, &StatsWidget::unrestrict);
 
 	ui.stats->setSource(urlStatsView);
 	ui.stats->setResizeMode(QQuickWidget::SizeRootObjectToView);
@@ -141,6 +143,18 @@ void StatsWidget::updateUi()
 		view->plot(state);
 }
 
+void StatsWidget::updateRestrictionLabel()
+{
+	if (!view)
+		return;
+	int num = view->restrictionCount();
+	if (num < 0)
+		ui.restrictionLabel->setText(tr("Analyzing all dives"));
+	else
+		ui.restrictionLabel->setText(tr("Analyzing subset (%L1) dives").arg(num));
+	ui.unrestrictButton->setEnabled(num > 0);
+}
+
 void StatsWidget::closeStats()
 {
 	MainWindow::instance()->setApplicationState(ApplicationState::Default);
@@ -192,6 +206,21 @@ void StatsWidget::featureChanged(int idx, bool status)
 
 void StatsWidget::showEvent(QShowEvent *e)
 {
+	unrestrict();
 	updateUi();
 	QWidget::showEvent(e);
+}
+
+void StatsWidget::restrict()
+{
+	if (view)
+		view->restrictToSelection();
+	updateRestrictionLabel();
+}
+
+void StatsWidget::unrestrict()
+{
+	if (view)
+		view->unrestrict();
+	updateRestrictionLabel();
 }

@@ -25,11 +25,14 @@ slots:
 	void var2BinnerChanged(int);
 	void var2OperationChanged(int);
 	void featureChanged(int, bool);
+	void restrict();
+	void unrestrict();
 private:
 	Ui::StatsWidget ui;
 	StatsState state;
 	StatsView *view;
 	void updateUi();
+	void updateRestrictionLabel();
 	std::vector<std::unique_ptr<QCheckBox>> features;
 
 	ChartListModel charts;
