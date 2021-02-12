@@ -771,6 +771,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	// put us in PLAN mode
 	setApplicationState(ApplicationState::PlanDive);
 
+	graphics->setPlanState(&displayed_dive, 0);
 	plannerWidgets->replanDive();
 }
 
@@ -782,6 +783,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	// put us in PLAN mode
 	setApplicationState(ApplicationState::PlanDive);
 
+	graphics->setPlanState(&displayed_dive, 0);
 	plannerWidgets->planDive();
 }
 

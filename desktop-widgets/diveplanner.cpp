@@ -540,8 +540,6 @@ PlannerWidgets::PlannerWidgets()
 void PlannerWidgets::planDive()
 {
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-
-	MainWindow::instance()->graphics->setPlanState(&displayed_dive, 0);
 	dc_number = 0;
 
 	// create a simple starting dive, using the first gas from the just copied cylinders
@@ -568,8 +566,6 @@ void PlannerWidgets::replanDive()
 	copy_dive(current_dive, &displayed_dive); // Planning works on a copy of the dive (for now).
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
-
-	MainWindow::instance()->graphics->setPlanState(&displayed_dive, 0);
 
 	plannerWidget.setReplanButton(true);
 	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));
