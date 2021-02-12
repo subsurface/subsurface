@@ -26,7 +26,7 @@ extern struct dive_table dive_table;
 
 extern void sort_dive_table(struct dive_table *table);
 extern void update_cylinder_related_info(struct dive *);
-extern int init_decompression(struct deco_state *ds, const struct dive *dive);
+extern int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_planner);
 
 /* divelist core logic functions */
 extern void process_loaded_dives();

@@ -65,7 +65,7 @@ extern double tissue_tolerance_calc(struct deco_state *ds, const struct dive *di
 extern void calc_crushing_pressure(struct deco_state *ds, double pressure);
 extern void vpmb_start_gradient(struct deco_state *ds);
 extern void clear_vpmb_state(struct deco_state *ds);
-extern void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int setpoint, enum divemode_t divemode, int sac);
+extern void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int setpoint, enum divemode_t divemode, int sac, bool in_planner);
 
 extern double regressiona(const struct deco_state *ds);
 extern double regressionb(const struct deco_state *ds);
