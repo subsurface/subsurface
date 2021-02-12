@@ -989,7 +989,7 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 /* Let's try to do some deco calculations.
  */
 static void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_ds, const struct dive *dive,
-				       const struct divecomputer *dc, struct plot_info *pi, bool print_mode)
+				       const struct divecomputer *dc, struct plot_info *pi)
 {
 	int i, count_iteration = 0;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
@@ -1124,7 +1124,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			* We don't for print-mode because this info doesn't show up there
 			* If the ceiling hasn't cleared by the last data point, we need tts for VPM-B CVA calculation
 			* It is not necessary to do these calculation on the first VPMB iteration, except for the last data point */
-			if ((prefs.calcndltts && !print_mode && (decoMode() != VPMB || !planner_ds || !first_iteration)) ||
+			if ((prefs.calcndltts && (decoMode() != VPMB || !planner_ds || !first_iteration)) ||
 			    (decoMode() == VPMB && !planner_ds && i == pi->nr - 1)) {
 				/* only calculate ndl/tts on every 30 seconds */
 				if ((entry->sec - last_ndl_tts_calc_time) < 30 && i != pi->nr - 1) {
@@ -1383,7 +1383,7 @@ void create_plot_info_new(const struct dive *dive, const struct divecomputer *dc
 	fill_o2_values(dive, dc, pi);			 /* .. and insert the O2 sensor data having 0 values. */
 	calculate_sac(dive, dc, pi);			 /* Calculate sac */
 
-	calculate_deco_information(&plot_deco_state, planner_ds, dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */
+	calculate_deco_information(&plot_deco_state, planner_ds, dive, dc, pi); /* and ceiling information, using gradient factor values in Preferences) */
 
 	calculate_gas_information_new(dive, dc, pi);	 /* Calculate gas partial pressures */
 
