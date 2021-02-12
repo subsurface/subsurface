@@ -372,7 +372,7 @@ static int calculate_sac(const struct dive *dive)
 }
 
 /* for now we do this based on the first divecomputer */
-static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
+static void add_dive_to_deco(struct deco_state *ds, struct dive *dive, bool in_planner)
 {
 	struct divecomputer *dc = &dive->dc;
 	struct gasmix gasmix = gasmix_air;
@@ -394,7 +394,8 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
 			gasmix = get_gasmix(dive, dc, j, &ev, gasmix);
 			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample->setpoint.mbar,
-				get_current_divemode(&dive->dc, j, &evd, &current_divemode), dive->sac);
+				    get_current_divemode(&dive->dc, j, &evd, &current_divemode), dive->sac,
+				    in_planner);
 		}
 	}
 }
@@ -419,7 +420,7 @@ static struct gasmix air = { .o2.permille = O2_IN_AIR, .he.permille = 0 };
 /* return negative surface time if dives are overlapping */
 /* The place you call this function is likely the place where you want
  * to create the deco_state */
-int init_decompression(struct deco_state *ds, const struct dive *dive)
+int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_planner)
 {
 	int i, divenr = -1;
 	int surface_time = 48 * 60 * 60;
@@ -534,14 +535,14 @@ int init_decompression(struct deco_state *ds, const struct dive *dive)
 #endif
 				return surface_time;
 			}
-			add_segment(ds, surface_pressure, air, surface_time, 0, dive->dc.divemode, prefs.decosac);
+			add_segment(ds, surface_pressure, air, surface_time, 0, dive->dc.divemode, prefs.decosac, in_planner);
 #if DECO_CALC_DEBUG & 2
 			printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
 			dump_tissues(ds);
 #endif
 		}
 
-		add_dive_to_deco(ds, pdive);
+		add_dive_to_deco(ds, pdive, in_planner);
 
 		last_starttime = pdive->when;
 		last_endtime = dive_endtime(pdive);
@@ -571,7 +572,7 @@ int init_decompression(struct deco_state *ds, const struct dive *dive)
 #endif
 			return surface_time;
 		}
-		add_segment(ds, surface_pressure, air, surface_time, 0, dive->dc.divemode, prefs.decosac);
+		add_segment(ds, surface_pressure, air, surface_time, 0, dive->dc.divemode, prefs.decosac, in_planner);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
 		dump_tissues(ds);

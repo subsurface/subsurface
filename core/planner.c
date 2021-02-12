@@ -103,7 +103,7 @@ static void interpolate_transition(struct deco_state *ds, struct dive *dive, dur
 
 	for (j = t0.seconds; j < t1.seconds; j++) {
 		int depth = interpolate(d0.mm, d1.mm, j - t0.seconds, t1.seconds - t0.seconds);
-		add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, po2.mbar, divemode, prefs.bottomsac);
+		add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, po2.mbar, divemode, prefs.bottomsac, true);
 	}
 	if (d1.mm > d0.mm)
 		calc_crushing_pressure(ds, depth_to_bar(d1.mm, dive));
@@ -125,7 +125,7 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_s
 	if (*cached_datap) {
 		restore_deco_state(*cached_datap, ds, true);
 	} else {
-		surface_interval = init_decompression(ds, dive);
+		surface_interval = init_decompression(ds, dive, true);
 		cache_deco_state(ds, cached_datap);
 	}
 	dc = &dive->dc;
@@ -533,7 +533,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 	if (wait_time)
 		add_segment(ds, depth_to_bar(trial_depth, dive),
 			    gasmix,
-			    wait_time, po2, divemode, prefs.decosac);
+			    wait_time, po2, divemode, prefs.decosac, true);
 	if (decoMode() == VPMB) {
 		double tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(stoplevel, dive));
 		update_regression(ds, dive);
@@ -551,7 +551,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 			deltad = trial_depth;
 		add_segment(ds, depth_to_bar(trial_depth, dive),
 			    gasmix,
-			    TIMESTEP, po2, divemode, prefs.decosac);
+			    TIMESTEP, po2, divemode, prefs.decosac, true);
 		tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(trial_depth, dive));
 		if (decoMode() == VPMB)
 			update_regression(ds, dive);
@@ -766,7 +766,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		do {
 			add_segment(ds, depth_to_bar(depth, dive),
 				    get_cylinder(dive, current_cylinder)->gasmix,
-				    timestep, po2, divemode, prefs.bottomsac);
+				    timestep, po2, divemode, prefs.bottomsac, true);
 			update_cylinder_pressure(dive, depth, depth, timestep, prefs.bottomsac, get_cylinder(dive, current_cylinder), false, divemode);
 			clock += timestep;
 		} while (trial_ascent(ds, 0, depth, 0, avg_depth, bottom_time, get_cylinder(dive, current_cylinder)->gasmix,
@@ -831,7 +831,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		int bailoutsegment = MAX(prefs.min_switch_duration, 60 * prefs.problemsolvingtime);
 		add_segment(ds, depth_to_bar(depth, dive),
 			get_cylinder(dive, current_cylinder)->gasmix,
-			bailoutsegment, po2, divemode, prefs.bottomsac);
+			bailoutsegment, po2, divemode, prefs.bottomsac, true);
 		plan_add_segment(diveplan, bailoutsegment, depth, current_cylinder, po2, false, divemode);
 		bottom_time += bailoutsegment;
 		last_segment_min_switch = true;
@@ -898,7 +898,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 				add_segment(ds, depth_to_bar(depth, dive),
 								get_cylinder(dive, current_cylinder)->gasmix,
-								TIMESTEP, po2, divemode, prefs.decosac);
+								TIMESTEP, po2, divemode, prefs.decosac, true);
 				last_segment_min_switch = false;
 				clock += TIMESTEP;
 				depth -= deltad;
@@ -937,7 +937,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 						if (!last_segment_min_switch && get_o2(get_cylinder(dive, current_cylinder)->gasmix) != 1000) {
 							add_segment(ds, depth_to_bar(depth, dive),
 								get_cylinder(dive, current_cylinder)->gasmix,
-								prefs.min_switch_duration, po2, divemode, prefs.decosac);
+								prefs.min_switch_duration, po2, divemode, prefs.decosac, true);
 							clock += prefs.min_switch_duration;
 							last_segment_min_switch = true;
 						}
@@ -991,7 +991,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 					if (!last_segment_min_switch && get_o2(get_cylinder(dive, current_cylinder)->gasmix) != 1000) {
 						add_segment(ds, depth_to_bar(depth, dive),
 							get_cylinder(dive, current_cylinder)->gasmix,
-							prefs.min_switch_duration, po2, divemode, prefs.decosac);
+							prefs.min_switch_duration, po2, divemode, prefs.decosac, true);
 						clock += prefs.min_switch_duration;
 						last_segment_min_switch = true;
 					}
@@ -1047,7 +1047,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 					}
 				}
 				add_segment(ds, depth_to_bar(depth, dive), get_cylinder(dive, stop_cylinder)->gasmix,
-					    laststoptime, po2, divemode, prefs.decosac);
+					    laststoptime, po2, divemode, prefs.decosac, true);
 				last_segment_min_switch = false;
 				decostoptable[decostopcounter].depth = depth;
 				decostoptable[decostopcounter].time = laststoptime;
