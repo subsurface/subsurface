@@ -849,7 +849,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		decostopcounter = 0;
 		is_final_plan = (decoMode() == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
 		if (ds->deco_time != 10000000)
-			vpmb_next_gradient(ds, ds->deco_time, diveplan->surface_pressure / 1000.0);
+			vpmb_next_gradient(ds, ds->deco_time, diveplan->surface_pressure / 1000.0, true);
 
 		previous_deco_time = ds->deco_time;
 		restore_deco_state(bottom_cache, ds, true);

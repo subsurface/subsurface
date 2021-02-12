@@ -1055,7 +1055,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 					vpmb_start_gradient(ds);
 					/* For CVA iterations, calculate next gradient */
 					if (!first_iteration || !planner_ds)
-						vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0);
+						vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0, in_planner);
 				}
 				entry->ceiling = deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, !prefs.calcceiling3m);
 				if (prefs.calcceiling3m)
@@ -1078,7 +1078,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 							   converges correctly, so add 30min*/
 							if (!planner_ds)
 								ds->deco_time = pi->maxtime - t1 + 1800;
-							vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0);
+							vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0, in_planner);
 						}
 					}
 					// Use the point where the ceiling clears as the end of deco phase for CVA calculations
@@ -1161,7 +1161,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				 * comes typically 10-60s after the end of the bottom time, so add 20s to the calculated
 				 * deco time. */
 					ds->deco_time = ROUND_UP(time_clear_ceiling - time_deep_ceiling + 20, 60) + 20;
-			vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0);
+			vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0, in_planner);
 			final_tts = 0;
 			last_ndl_tts_calc_time = 0;
 			first_ceiling = 0;

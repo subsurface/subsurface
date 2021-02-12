@@ -308,9 +308,9 @@ static double factor(int period_in_seconds, int ci, enum gas_component gas)
 		return 1.0 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_He_t_halflife[ci]);
 }
 
-static double calc_surface_phase(double surface_pressure, double he_pressure, double n2_pressure, double he_time_constant, double n2_time_constant)
+static double calc_surface_phase(double surface_pressure, double he_pressure, double n2_pressure, double he_time_constant, double n2_time_constant, bool in_planner)
 {
-	double inspired_n2 = (surface_pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * NITROGEN_FRACTION;
+	double inspired_n2 = (surface_pressure - ((in_planner && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * NITROGEN_FRACTION;
 
 	if (n2_pressure > inspired_n2)
 		return (he_pressure / he_time_constant + (n2_pressure - inspired_n2) / n2_time_constant) / (he_pressure + n2_pressure - inspired_n2);
@@ -334,7 +334,7 @@ void vpmb_start_gradient(struct deco_state *ds)
 	}
 }
 
-void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure)
+void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure, bool in_planner)
 {
 	int ci;
 	double n2_b, n2_c;
@@ -343,7 +343,7 @@ void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_
 	deco_time /= 60.0;
 
 	for (ci = 0; ci < 16; ++ci) {
-		desat_time = deco_time + calc_surface_phase(surface_pressure, ds->tissue_he_sat[ci], ds->tissue_n2_sat[ci], log(2.0) / buehlmann_He_t_halflife[ci], log(2.0) / buehlmann_N2_t_halflife[ci]);
+		desat_time = deco_time + calc_surface_phase(surface_pressure, ds->tissue_he_sat[ci], ds->tissue_n2_sat[ci], log(2.0) / buehlmann_He_t_halflife[ci], log(2.0) / buehlmann_N2_t_halflife[ci], in_planner);
 
 		n2_b = ds->initial_n2_gradient[ci] + (vpmb_config.crit_volume_lambda * vpmb_config.surface_tension_gamma) / (vpmb_config.skin_compression_gammaC * desat_time);
 		he_b = ds->initial_he_gradient[ci] + (vpmb_config.crit_volume_lambda * vpmb_config.surface_tension_gamma) / (vpmb_config.skin_compression_gammaC * desat_time);
