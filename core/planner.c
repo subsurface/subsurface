@@ -678,7 +678,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	dive->surface_pressure.mbar = diveplan->surface_pressure;
-	clear_deco(ds, dive->surface_pressure.mbar / 1000.0);
+	clear_deco(ds, dive->surface_pressure.mbar / 1000.0, true);
 	ds->max_bottom_ceiling_pressure.mbar = ds->first_ceiling_pressure.mbar = 0;
 	create_dive_from_plan(diveplan, dive, is_planner);
 

@@ -521,7 +521,7 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 #if DECO_CALC_DEBUG & 2
 			printf("Init deco\n");
 #endif
-			clear_deco(ds, surface_pressure);
+			clear_deco(ds, surface_pressure, in_planner);
 			deco_init = true;
 #if DECO_CALC_DEBUG & 2
 			printf("Tissues after init:\n");
@@ -559,7 +559,7 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 #if DECO_CALC_DEBUG & 2
 		printf("Init deco\n");
 #endif
-		clear_deco(ds, surface_pressure);
+		clear_deco(ds, surface_pressure, in_planner);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after no previous dive, surface time set to 48h:\n");
 		dump_tissues(ds);
