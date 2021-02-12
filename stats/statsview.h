@@ -46,13 +46,16 @@ public:
 
 	void plot(const StatsState &state);
 	void updateFeatures(const StatsState &state);	// Updates the visibility of chart features, such as legend, regression, etc.
+	void restrictToSelection();
+	void unrestrict();
+	int restrictionCount() const;			// <0: no restriction
 	QQuickWindow *w() const;			// Make window available to items
 	QSizeF size() const;
 	QRectF plotArea() const;
 	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
 	void registerChartItem(ChartItem &item);
 	void registerDirtyChartItem(ChartItem &item);
-	void emergencyShutdown();			// Called when QQuick decides to delete out root node.
+	void emergencyShutdown();			// Called when QQuick decides to delete our root node.
 
 	// Create a chart item and add it to the scene.
 	// The item must not be deleted by the caller, but can be
@@ -131,7 +134,6 @@ private:
 	// Helper functions to add feature to the chart
 	void addLineMarker(double pos, double low, double high, const QPen &pen, bool isHorizontal);
 
-
 	StatsState state;
 	QFont titleFont;
 	std::vector<std::unique_ptr<StatsSeries>> series;
@@ -148,6 +150,8 @@ private:
 	QPointF dragStartMouse, dragStartItem;
 	SelectionModifier selectionModifier;
 	std::vector<dive *> oldSelection;
+	bool restrictDives;
+	std::vector<dive *> restrictedDives;	// sorted by pointer for quick lookup.
 
 	void hoverEnterEvent(QHoverEvent *event) override;
 	void hoverMoveEvent(QHoverEvent *event) override;

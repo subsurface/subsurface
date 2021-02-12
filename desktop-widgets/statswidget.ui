@@ -96,6 +96,32 @@
       </widget>
      </item>
      <item>
+      <widget class="QGroupBox" name="restrictionGroup">
+       <property name="title">
+        <string>Restriction</string>
+       </property>
+       <layout class="QVBoxLayout" name="chartLayout">
+        <item>
+         <widget class="QLabel" name="restrictionLabel" />
+        </item>
+        <item>
+          <widget class="QToolButton" name="restrictButton">
+           <property name="text">
+            <string>Restrict to selection</string>
+           </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QToolButton" name="unrestrictButton">
+           <property name="text">
+            <string>Reset restriction</string>
+           </property>
+          </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>

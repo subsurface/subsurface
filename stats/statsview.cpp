@@ -39,6 +39,7 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	xAxis(nullptr),
 	yAxis(nullptr),
 	draggedItem(nullptr),
+	restrictDives(false),
 	rootNode(nullptr)
 {
 	setFlag(ItemHasContents, true);
@@ -496,6 +497,25 @@ void StatsView::reset()
 	grid.reset();
 }
 
+void StatsView::restrictToSelection()
+{
+	restrictedDives = getDiveSelection();
+	std::sort(restrictedDives.begin(), restrictedDives.end()); // Sort by pointer for quick lookup
+	restrictDives = true;
+	plot(state);
+}
+
+void StatsView::unrestrict()
+{
+	restrictDives = false;
+	plot(state);
+}
+
+int StatsView::restrictionCount() const
+{
+	return restrictDives ? (int)restrictedDives.size() : -1;
+}
+
 void StatsView::plot(const StatsState &stateIn)
 {
 	state = stateIn;
@@ -518,7 +538,19 @@ void StatsView::plotChart()
 		return;
 	reset();
 
-	const std::vector<dive *> dives = DiveFilter::instance()->visibleDives();
+	std::vector<dive *> dives;
+	if (restrictDives) {
+		std::vector<dive *> visible = DiveFilter::instance()->visibleDives();
+		dives.reserve(visible.size());
+		for (dive *d: visible) {
+			// binary search
+			auto it = std::lower_bound(restrictedDives.begin(), restrictedDives.end(), d);
+			if (it != restrictedDives.end() && *it == d)
+				dives.push_back(d);
+		}
+	} else {
+		dives = DiveFilter::instance()->visibleDives();
+	}
 	switch (state.type) {
 	case ChartType::DiscreteBar:
 		return plotBarChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
