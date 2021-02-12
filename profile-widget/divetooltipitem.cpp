@@ -9,9 +9,9 @@
 #include <QGraphicsView>
 #include "core/qthelper.h"
 
-void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QPixmap& pixmap)
+void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QPixmap &pixmap)
 {
-	const IconMetrics& iconMetrics = defaultIconMetrics();
+	const IconMetrics &iconMetrics = defaultIconMetrics();
 
 	QGraphicsPixmapItem *iconItem = 0;
 	double yValue = title->boundingRect().height() + iconMetrics.spacing;
@@ -48,9 +48,8 @@ void ToolTipItem::clear()
 
 void ToolTipItem::setRect(const QRectF &r)
 {
-	if( r == rect() ) {
+	if (r == rect())
 		return;
-	}
 
 	QGraphicsRectItem::setRect(r);
 	updateTitlePosition();
@@ -79,10 +78,10 @@ void ToolTipItem::expand()
 	if (!title)
 		return;
 
-	const IconMetrics& iconMetrics = defaultIconMetrics();
+	const IconMetrics &iconMetrics = defaultIconMetrics();
 
 	double width = 0, height = title->boundingRect().height() + iconMetrics.spacing;
-	Q_FOREACH (const ToolTip& t, toolTips) {
+	Q_FOREACH (const ToolTip &t, toolTips) {
 		QRectF sRect = t.second->boundingRect();
 		if (sRect.width() > width)
 			width = sRect.width();
@@ -97,7 +96,7 @@ void ToolTipItem::expand()
 	}
 
 	const int sp2 = iconMetrics.spacing * 2;
-	// pixmap left padding, icon, pixmap right padding, right padding */
+	// pixmap left padding, icon, pixmap right padding, right padding
 	width += sp2 + iconMetrics.sz_small + sp2 + sp2 * 2;
 	// bottom padding
 	height += sp2;
@@ -168,7 +167,7 @@ ToolTipItem::~ToolTipItem()
 
 void ToolTipItem::updateTitlePosition()
 {
-	const IconMetrics& iconMetrics = defaultIconMetrics();
+	const IconMetrics &iconMetrics = defaultIconMetrics();
 	if (rect().width() < title->boundingRect().width() + iconMetrics.spacing * 4) {
 		QRectF newRect = rect();
 		newRect.setWidth(title->boundingRect().width() + iconMetrics.spacing * 4);
@@ -201,9 +200,8 @@ void ToolTipItem::persistPos()
 void ToolTipItem::readPos()
 {
 	QPointF value = qPrefDisplay::tooltip_position();
-	if (!scene()->sceneRect().contains(value)) {
+	if (!scene()->sceneRect().contains(value))
 		value = QPointF(0, 0);
-	}
 	setPos(value);
 }
 
@@ -259,9 +257,8 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos)
 		painter.drawLine(0, lrint(60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure / 2),
 				16, lrint(60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure /2));
 		painter.setPen(QColor(0, 0, 0, 127));
-		for (int i=0; i<16; i++) {
+		for (int i = 0; i < 16; i++)
 			painter.drawLine(i, 60, i, 60 - entry->percentages[i] / 2);
-		}
 		entryToolTip.second->setText(QString::fromUtf8(mb.buffer, mb.len));
 	}
 	entryToolTip.first->setPixmap(tissues);
