@@ -503,14 +503,14 @@ void clear_vpmb_state(struct deco_state *ds)
 	ds->max_bottom_ceiling_pressure.mbar = 0;
 }
 
-void clear_deco(struct deco_state *ds, double surface_pressure)
+void clear_deco(struct deco_state *ds, double surface_pressure, bool in_planner)
 {
 	int ci;
 
 	memset(ds, 0, sizeof(*ds));
 	clear_vpmb_state(ds);
 	for (ci = 0; ci < 16; ci++) {
-		ds->tissue_n2_sat[ci] = (surface_pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * N2_IN_AIR / 1000;
+		ds->tissue_n2_sat[ci] = (surface_pressure - ((in_planner && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * N2_IN_AIR / 1000;
 		ds->tissue_he_sat[ci] = 0.0;
 		ds->max_n2_crushing_pressure[ci] = 0.0;
 		ds->max_he_crushing_pressure[ci] = 0.0;
