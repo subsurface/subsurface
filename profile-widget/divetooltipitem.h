@@ -62,7 +62,7 @@ private:
 	QElapsedTimer refreshTime;
 	QList<QGraphicsItem*> oldSelection;
 
-	void addToolTip(const QString &toolTip, const QIcon &icon = QIcon(), const QPixmap &pixmap = QPixmap());
+	void addToolTip(const QString &toolTip, const QPixmap &pixmap);
 };
 
 #endif // DIVETOOLTIPITEM_H

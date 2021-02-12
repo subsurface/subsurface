@@ -9,7 +9,7 @@
 #include <QGraphicsView>
 #include "core/qthelper.h"
 
-void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QPixmap &pixmap)
+void ToolTipItem::addToolTip(const QString &toolTip, const QPixmap &pixmap)
 {
 	const IconMetrics &iconMetrics = defaultIconMetrics();
 
@@ -22,11 +22,8 @@ void ToolTipItem::addToolTip(const QString &toolTip, const QIcon &icon, const QP
 		yValue += entryToolTip.second->boundingRect().height();
 	}
 	iconItem = new QGraphicsPixmapItem(this);
-	if (!icon.isNull()) {
-		iconItem->setPixmap(icon.pixmap(iconMetrics.sz_small, iconMetrics.sz_small));
-	} else if (!pixmap.isNull()) {
+	if (!pixmap.isNull())
 		iconItem->setPixmap(pixmap);
-	}
 	const int sp2 = iconMetrics.spacing * 2;
 	iconItem->setPos(sp2, yValue);
 
@@ -148,7 +145,7 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : RoundRectItem(8.0, parent),
 
 	setZValue(99);
 
-	addToolTip(QString(), QIcon(), QPixmap(16,60));
+	addToolTip(QString(), QPixmap(16,60));
 	entryToolTip = toolTips.first();
 	toolTips.clear();
 
@@ -267,7 +264,7 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos)
 			scene()->views().first()->transform());
 	for (QGraphicsItem *item: l) {
 		if (!item->toolTip().isEmpty())
-			addToolTip(item->toolTip());
+			addToolTip(item->toolTip(), QPixmap());
 	}
 	expand();
 }
