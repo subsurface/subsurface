@@ -158,12 +158,12 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_s
 		 * portion of the dive.
 		 * Remember the value for later.
 		 */
-		if ((decoMode() == VPMB) && (lastdepth.mm > sample->depth.mm)) {
+		if ((decoMode(true) == VPMB) && (lastdepth.mm > sample->depth.mm)) {
 			pressure_t ceiling_pressure;
 			nuclear_regeneration(ds, t0.seconds);
 			vpmb_start_gradient(ds);
 			ceiling_pressure.mbar = depth_to_mbar(deco_allowed_depth(tissue_tolerance_calc(ds, dive,
-													depth_to_bar(lastdepth.mm, dive)),
+													depth_to_bar(lastdepth.mm, dive), true),
 										dive->surface_pressure.mbar / 1000.0,
 										dive,
 										1),
@@ -534,8 +534,8 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 		add_segment(ds, depth_to_bar(trial_depth, dive),
 			    gasmix,
 			    wait_time, po2, divemode, prefs.decosac, true);
-	if (decoMode() == VPMB) {
-		double tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(stoplevel, dive));
+	if (decoMode(true) == VPMB) {
+		double tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(stoplevel, dive), true);
 		update_regression(ds, dive);
 		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1) > stoplevel) {
 			restore_deco_state(trial_cache, ds, false);
@@ -552,8 +552,8 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 		add_segment(ds, depth_to_bar(trial_depth, dive),
 			    gasmix,
 			    TIMESTEP, po2, divemode, prefs.decosac, true);
-		tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(trial_depth, dive));
-		if (decoMode() == VPMB)
+		tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(trial_depth, dive), true);
+		if (decoMode(true) == VPMB)
 			update_regression(ds, dive);
 		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1) > trial_depth - deltad) {
 			/* We should have stopped */
@@ -759,7 +759,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	diveplan->surface_interval = tissue_at_end(ds, dive, cached_datap);
 	nuclear_regeneration(ds, clock);
 	vpmb_start_gradient(ds);
-	if (decoMode() == RECREATIONAL) {
+	if (decoMode(true) == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
 		track_ascent_gas(depth, dive, current_cylinder, avg_depth, bottom_time, safety_stop, divemode);
 		// How long can we stay at the current depth and still directly ascent to the surface?
@@ -847,7 +847,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	//CVA
 	do {
 		decostopcounter = 0;
-		is_final_plan = (decoMode() == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
+		is_final_plan = (decoMode(true) == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
 		if (ds->deco_time != 10000000)
 			vpmb_next_gradient(ds, ds->deco_time, diveplan->surface_pressure / 1000.0, true);
 
@@ -863,7 +863,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		first_stop_depth = 0;
 		stopidx = bottom_stopidx;
 		ds->first_ceiling_pressure.mbar = depth_to_mbar(
-					deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(depth, dive)),
+					deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(depth, dive), true),
 							   diveplan->surface_pressure / 1000.0, dive, 1),
 					dive);
 		if (ds->max_bottom_ceiling_pressure.mbar > ds->first_ceiling_pressure.mbar)
@@ -1074,7 +1074,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	decostoptable[decostopcounter].depth = 0;
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
-	if (decoMode() == VPMB) {
+	if (decoMode(true) == VPMB) {
 		diveplan->eff_gfhigh = lrint(100.0 * regressionb(ds));
 		diveplan->eff_gflow = lrint(100.0 * (regressiona(ds) * first_stop_depth + regressionb(ds)));
 	}

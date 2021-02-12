@@ -86,8 +86,8 @@ const char *get_planner_disclaimer()
 char *get_planner_disclaimer_formatted()
 {
 	struct membuffer buf = { 0 };
-	const char *deco = decoMode() == VPMB ? translate("gettextFromC", "VPM-B")
-					      : translate("gettextFromC", "BUHLMANN");
+	const char *deco = decoMode(true) == VPMB ? translate("gettextFromC", "VPM-B")
+						  : translate("gettextFromC", "BUHLMANN");
 	put_format(&buf, get_planner_disclaimer(), deco);
 	return detach_cstring(&buf);
 }
@@ -162,7 +162,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 	put_string(&buf, "<br/>\n");
 
-	if (prefs.display_variations && decoMode() != RECREATIONAL)
+	if (prefs.display_variations && decoMode(true) != RECREATIONAL)
 		put_format_loc(&buf, translate("gettextFromC", "Runtime: %dmin%s"),
 			diveplan_duration(diveplan), "VARIATIONS");
 	else
@@ -420,16 +420,16 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 	/* Print the settings for the diveplan next. */
 	put_string(&buf, "<div>\n");
-	if (decoMode() == BUEHLMANN) {
+	if (decoMode(true) == BUEHLMANN) {
 		put_format_loc(&buf, translate("gettextFromC", "Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%"), diveplan->gflow, diveplan->gfhigh);
-	} else if (decoMode() == VPMB){
+	} else if (decoMode(true) == VPMB) {
 		if (diveplan->vpmb_conservatism == 0)
 			put_string(&buf, translate("gettextFromC", "Deco model: VPM-B at nominal conservatism"));
 		else
 			put_format_loc(&buf, translate("gettextFromC", "Deco model: VPM-B at +%d conservatism"), diveplan->vpmb_conservatism);
 		if (diveplan->eff_gflow)
 			put_format_loc(&buf,  translate("gettextFromC", ", effective GF=%d/%d"), diveplan->eff_gflow, diveplan->eff_gfhigh);
-	} else if (decoMode() == RECREATIONAL){
+	} else if (decoMode(true) == RECREATIONAL) {
 		put_format_loc(&buf, translate("gettextFromC", "Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%"),
 			     diveplan->gflow, diveplan->gfhigh);
 	}
@@ -496,7 +496,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			/* not for recreational mode and if no other warning was set before. */
 			else
 				if (lastbottomdp && gasidx == lastbottomdp->cylinderid
-					&& dive->dc.divemode == OC && decoMode() != RECREATIONAL) {
+					&& dive->dc.divemode == OC && decoMode(true) != RECREATIONAL) {
 					/* Calculate minimum gas volume. */
 					volume_t mingasv;
 					mingasv.mliter = lrint(prefs.sacfactor / 100.0 * prefs.problemsolvingtime * prefs.bottomsac

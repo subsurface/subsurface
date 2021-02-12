@@ -61,7 +61,7 @@ extern void restore_deco_state(struct deco_state *data, struct deco_state *targe
 extern void nuclear_regeneration(struct deco_state *ds, double time);
 extern void vpmb_start_gradient(struct deco_state *ds);
 extern void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure, bool in_planner);
-extern double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, double pressure);
+extern double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, double pressure, bool in_planner);
 extern void calc_crushing_pressure(struct deco_state *ds, double pressure);
 extern void vpmb_start_gradient(struct deco_state *ds);
 extern void clear_vpmb_state(struct deco_state *ds);

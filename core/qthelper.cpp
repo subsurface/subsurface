@@ -1489,9 +1489,9 @@ extern "C" bool in_planner()
 	return getAppState() == ApplicationState::PlanDive || getAppState() == ApplicationState::EditPlannedDive;
 }
 
-extern "C" enum deco_mode decoMode()
+extern "C" enum deco_mode decoMode(bool in_planner)
 {
-	return in_planner() ? prefs.planner_deco_mode : prefs.display_deco_mode;
+	return in_planner ? prefs.planner_deco_mode : prefs.display_deco_mode;
 }
 
 void init_proxy()
