@@ -122,7 +122,7 @@ void Printer::flowRender()
 	painter.end();
 }
 
-void Printer::render(int Pages = 0)
+void Printer::render(int pages)
 {
 	// keep original preferences
 	ProfileWidget2 *profile = MainWindow::instance()->graphics;
@@ -155,7 +155,7 @@ void Printer::render(int Pages = 0)
 	profile->setFontPrintScale(printFontScale);
 
 	int elemNo = 0;
-	for (int i = 0; i < Pages; i++) {
+	for (int i = 0; i < pages; i++) {
 		// render the base Html template
 		webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer);
 
@@ -173,8 +173,8 @@ void Printer::render(int Pages = 0)
 		viewPort.adjust(0, pageSize.height(), 0, pageSize.height());
 
 		// rendering progress is 4/5 of total work
-		emit(progessUpdated(lrint((i * 80.0 / Pages) + done)));
-		if (i < Pages - 1 && printMode == Printer::PRINT)
+		emit(progessUpdated(lrint((i * 80.0 / pages) + done)));
+		if (i < pages - 1 && printMode == Printer::PRINT)
 			static_cast<QPrinter*>(paintDevice)->newPage();
 	}
 	painter.end();
@@ -220,7 +220,6 @@ void Printer::print()
 		return;
 	}
 
-
 	QPrinter *printerPtr;
 	printerPtr = static_cast<QPrinter*>(paintDevice);
 
@@ -253,13 +252,10 @@ void Printer::print()
 		divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
 		//TODO: show warning
 	}
-	int Pages;
-	if (divesPerPage == 0) {
+	if (divesPerPage == 0)
 		flowRender();
-	} else {
-		Pages = qCeil(getTotalWork(printOptions) / (float)divesPerPage);
-		render(Pages);
-	}
+	else
+		render((t.numDives - 1) / divesPerPage + 1);
 }
 
 void Printer::previewOnePage()
