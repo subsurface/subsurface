@@ -56,11 +56,7 @@
 #include "profile-widget/profilewidget2.h"
 
 #ifndef NO_PRINTING
-#include <QPrinter>
-#include <QPrintDialog>
-#include <QBuffer>
 #include "desktop-widgets/printdialog.h"
-#include "desktop-widgets/printer.h"
 #include "desktop-widgets/templatelayout.h"
 #endif
 
