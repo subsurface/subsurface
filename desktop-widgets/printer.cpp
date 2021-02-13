@@ -14,12 +14,13 @@
 #include <QWebElement>
 #include "profile-widget/profilewidget2.h"
 
-Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode) :
+Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner) :
 	paintDevice(paintDevice),
 	webView(new QWebView),
 	printOptions(printOptions),
 	templateOptions(templateOptions),
 	printMode(printMode),
+	inPlanner(inPlanner),
 	done(0),
 	dpi(0)
 {
@@ -205,7 +206,7 @@ QString Printer::exportHtml()
 	QString html;
 
 	if (printOptions.type == print_options::DIVELIST)
-		html = t.generate();
+		html = t.generate(inPlanner);
 	else if (printOptions.type == print_options::STATISTICS )
 		html = t.generateStatistics();
 
@@ -235,7 +236,7 @@ void Printer::print()
 	// export border width with at least 1 pixel
 	// templateOptions.borderwidth = std::max(1, pageSize.width() / 1000);
 	if (printOptions.type == print_options::DIVELIST)
-		webView->setHtml(t.generate());
+		webView->setHtml(t.generate(inPlanner));
 	else if (printOptions.type == print_options::STATISTICS )
 		webView->setHtml(t.generateStatistics());
 	if (printOptions.color_selected && printerPtr->colorMode())
@@ -269,7 +270,7 @@ void Printer::previewOnePage()
 		// initialize the border settings
 		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
 		if (printOptions.type == print_options::DIVELIST)
-			webView->setHtml(t.generate());
+			webView->setHtml(t.generate(inPlanner));
 		else if (printOptions.type == print_options::STATISTICS )
 			webView->setHtml(t.generateStatistics());
 		bool ok;

@@ -653,7 +653,9 @@ void MainWindow::updateLastUsedDir(const QString &dir)
 void MainWindow::on_actionPrint_triggered()
 {
 #ifndef NO_PRINTING
-	PrintDialog dlg(this);
+	bool in_planner = getAppState() == ApplicationState::PlanDive ||
+			  getAppState() == ApplicationState::EditPlannedDive;
+	PrintDialog dlg(in_planner, this);
 
 	dlg.exec();
 #endif

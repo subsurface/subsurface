@@ -27,6 +27,7 @@ private:
 	const template_options &templateOptions;
 	QSize pageSize;
 	PrintMode printMode;
+	bool inPlanner;
 	int done;
 	int dpi;
 	void render(int Pages);
@@ -38,7 +39,7 @@ private slots:
 	void templateProgessUpdated(int value);
 
 public:
-	Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode);
+	Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner);
 	~Printer();
 	void print();
 	void previewOnePage();

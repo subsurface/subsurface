@@ -137,7 +137,6 @@ extern "C" {
 #endif
 
 char *printGPSCoordsC(const location_t *loc);
-bool in_planner();
 bool getProxyString(char **buffer);
 bool canReachCloudServer();
 void updateWindowTitle();
