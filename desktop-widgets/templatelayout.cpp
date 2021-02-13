@@ -95,13 +95,13 @@ TemplateLayout::TemplateLayout(const print_options &printOptions, const template
 {
 }
 
-QString TemplateLayout::generate()
+QString TemplateLayout::generate(bool in_planner)
 {
 	QString htmlContent;
 
 	State state;
 
-	if (in_planner()) {
+	if (in_planner) {
 		state.dives.append(&displayed_dive);
 	} else {
 		int i;

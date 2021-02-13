@@ -19,8 +19,9 @@
 
 template_options::color_palette_struct ssrf_colors, almond_colors, blueshades_colors, custom_colors;
 
-PrintDialog::PrintDialog(QWidget *parent) :
+PrintDialog::PrintDialog(bool inPlanner, QWidget *parent) :
 	QDialog(parent, QFlag(0)),
+	inPlanner(inPlanner),
 	printer(NULL),
 	qprinter(NULL)
 {
@@ -174,10 +175,10 @@ void PrintDialog::createPrinterObj()
 {
 	// create a new printer object
 	if (!printer) {
-		qprinter = new QPrinter();
+		qprinter = new QPrinter;
 		qprinter->setResolution(printOptions.resolution);
 		qprinter->setOrientation((QPrinter::Orientation)printOptions.landscape);
-		printer = new Printer(qprinter, printOptions, templateOptions, Printer::PRINT);
+		printer = new Printer(qprinter, printOptions, templateOptions, Printer::PRINT, inPlanner);
 	}
 }
 

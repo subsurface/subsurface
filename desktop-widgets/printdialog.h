@@ -18,10 +18,11 @@ class PrintDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit PrintDialog(QWidget *parent = 0);
+	explicit PrintDialog(bool inPlanner, QWidget *parent = 0);
 	~PrintDialog();
 
 private:
+	bool inPlanner;
 	PrintOptions *optionsWidget;
 	QProgressBar *progressBar;
 	Printer *printer;
