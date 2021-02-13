@@ -15,16 +15,6 @@
 
 QList<QString> grantlee_templates, grantlee_statistics_templates;
 
-int getTotalWork(const print_options &printOptions)
-{
-	if (printOptions.print_selected) {
-		// return the correct number depending on all/selected dives
-		// but don't return 0 as we might divide by this number
-		return amount_selected && !in_planner() ? amount_selected : 1;
-	}
-	return dive_table.nr;
-}
-
 void find_all_templates()
 {
 	const QLatin1String ext(".html");
@@ -101,36 +91,31 @@ void copy_bundled_templates(QString src, QString dst, QStringList *templateBacku
 }
 
 TemplateLayout::TemplateLayout(const print_options &printOptions, const template_options &templateOptions) :
-	printOptions(printOptions), templateOptions(templateOptions)
+	numDives(0), printOptions(printOptions), templateOptions(templateOptions)
 {
 }
 
 QString TemplateLayout::generate()
 {
-	int progress = 0;
-	int totalWork = getTotalWork(printOptions);
-
 	QString htmlContent;
 
 	State state;
 
-	struct dive *dive;
 	if (in_planner()) {
 		state.dives.append(&displayed_dive);
-		emit progressUpdated(100.0);
 	} else {
 		int i;
+		struct dive *dive;
 		for_each_dive (i, dive) {
 			//TODO check for exporting selected dives only
 			if (!dive->selected && printOptions.print_selected)
 				continue;
 			state.dives.append(dive);
-			progress++;
-			emit progressUpdated(lrint(progress * 100.0 / totalWork));
 		}
 	}
 
 	QString templateContents = readTemplate(printOptions.p_template);
+	numDives = state.dives.size();
 
 	QList<token> tokens = lexer(templateContents);
 	QString buffer;
@@ -290,7 +275,7 @@ static QRegularExpression ifstatement(R"(forloop\.counter\|\s*divisibleby\:\s*(\
 
 template<typename V, typename T>
 void TemplateLayout::parser_for(QList<token> tokenList, int from, int to, QTextStream &out, State &state,
-				const V &data, const T *&act)
+				const V &data, const T *&act, bool emitProgress)
 {
 	const T *old = act;
 	int i = 1; // Loop iterators start at one
@@ -299,7 +284,11 @@ void TemplateLayout::parser_for(QList<token> tokenList, int from, int to, QTextS
 		act = &item;
 		state.forloopiterator = i++;
 		parser(tokenList, from, to, out, state);
+		if (emitProgress)
+			emit progressUpdated(state.forloopiterator * 100 / data.size());
 	}
+	if (data.empty())
+		emit progressUpdated(100);
 	act = old;
 	state.forloopiterator = olditerator;
 }
@@ -357,17 +346,17 @@ void TemplateLayout::parser(QList<token> tokenList, int from, int to, QTextStrea
 					break;
 				}
 				if (listname == "years") {
-					parser_for(tokenList, pos, loop_end, capture, state, state.years, state.currentYear);
+					parser_for(tokenList, pos, loop_end, capture, state, state.years, state.currentYear, true);
 				} else if (listname == "dives") {
-					parser_for(tokenList, pos, loop_end, capture, state, state.dives, state.currentDive);
+					parser_for(tokenList, pos, loop_end, capture, state, state.dives, state.currentDive, true);
 				} else if (listname == "cylinders") {
 					if (state.currentDive)
-						parser_for(tokenList, pos, loop_end, capture, state, formatCylinders(*state.currentDive), state.currentCylinder);
+						parser_for(tokenList, pos, loop_end, capture, state, formatCylinders(*state.currentDive), state.currentCylinder, false);
 					else
 						qWarning("cylinders loop outside of dive");
 				} else if (listname == "cylinderObjects") {
 					if (state.currentDive)
-						parser_for(tokenList, pos, loop_end, capture, state, cylinderList(*state.currentDive), state.currentCylinderObject);
+						parser_for(tokenList, pos, loop_end, capture, state, cylinderList(*state.currentDive), state.currentCylinderObject, false);
 					else
 						qWarning("cylinderObjects loop outside of dive");
 				} else {

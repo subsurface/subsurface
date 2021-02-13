@@ -10,7 +10,6 @@ struct print_options;
 struct template_options;
 class QTextStream;
 
-int getTotalWork(const print_options &printOptions);
 void find_all_templates();
 void set_bundled_templates_as_read_only();
 void copy_bundled_templates(QString src, QString dst, QStringList *templateBackupList);
@@ -32,6 +31,7 @@ public:
 	QString generateStatistics();
 	static QString readTemplate(QString template_name);
 	static void writeTemplate(QString template_name, QString grantlee_template);
+	int numDives; // valid after a call to generate()
 
 private:
 	struct State {
@@ -49,7 +49,7 @@ private:
 	QList<token> lexer(QString input);
 	void parser(QList<token> tokenList, int from, int to, QTextStream &out, State &state);
 	template<typename V, typename T>
-	void parser_for(QList<token> tokenList, int from, int to, QTextStream &out, State &state, const V &data, const T *&act);
+	void parser_for(QList<token> tokenList, int from, int to, QTextStream &out, State &state, const V &data, const T *&act, bool emitProgress);
 	QVariant getValue(QString list, QString property, const State &state);
 	QString translate(QString s, State &state);
 
