@@ -728,7 +728,7 @@ void ProfileWidget2::plotDive(const struct dive *d, bool force, bool doClearPict
 
 	// Replot dive items
 	for (AbstractProfilePolygonItem *item: profileItems)
-		item->replot(&displayed_dive);
+		item->replot(&displayed_dive, currentState == PLAN);
 
 	// The event items are a bit special since we don't know how many events are going to
 	// exist on a dive, so I cant create cache items for that. that's why they are here

@@ -31,7 +31,7 @@ void AbstractProfilePolygonItem::setVisible(bool visible)
 	QGraphicsPolygonItem::setVisible(visible);
 }
 
-void AbstractProfilePolygonItem::replot(const dive *)
+void AbstractProfilePolygonItem::replot(const dive *, bool)
 {
 	// Calculate the polygon. This is the polygon that will be painted on screen
 	// on the ::paint method. Here we calculate the correct position of the points
@@ -85,9 +85,9 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	painter->restore();
 }
 
-void DiveProfileItem::replot(const dive *d)
+void DiveProfileItem::replot(const dive *d, bool in_planner)
 {
-	AbstractProfilePolygonItem::replot(d);
+	AbstractProfilePolygonItem::replot(d, in_planner);
 	if (polygon().isEmpty())
 		return;
 
@@ -165,7 +165,7 @@ DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveC
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::hrgraphChanged, this, &DiveHeartrateItem::setVisible);
 }
 
-void DiveHeartrateItem::replot(const dive *)
+void DiveHeartrateItem::replot(const dive *, bool)
 {
 	int last = -300, last_printed_hr = 0, sec = 0;
 	struct {
@@ -244,7 +244,7 @@ DivePercentageItem::DivePercentageItem(const DivePlotDataModel &model, const Div
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraphChanged, this, &DivePercentageItem::setVisible);
 }
 
-void DivePercentageItem::replot(const dive *d)
+void DivePercentageItem::replot(const dive *d, bool)
 {
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
@@ -318,7 +318,7 @@ DiveAmbPressureItem::DiveAmbPressureItem(const DivePlotDataModel &model, const D
 	setPen(pen);
 }
 
-void DiveAmbPressureItem::replot(const dive *)
+void DiveAmbPressureItem::replot(const dive *, bool)
 {
 	int sec = 0;
 
@@ -359,7 +359,7 @@ DiveGFLineItem::DiveGFLineItem(const DivePlotDataModel &model, const DiveCartesi
 	setPen(pen);
 }
 
-void DiveGFLineItem::replot(const dive *)
+void DiveGFLineItem::replot(const dive *, bool)
 {
 	int sec = 0;
 
@@ -400,7 +400,7 @@ DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const D
 	setPen(pen);
 }
 
-void DiveTemperatureItem::replot(const dive *)
+void DiveTemperatureItem::replot(const dive *, bool)
 {
 	int last = -300, last_printed_temp = 0, sec = 0, last_valid_temp = 0;
 
@@ -478,7 +478,7 @@ DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveC
 	lastRunningSum = 0.0;
 }
 
-void DiveMeanDepthItem::replot(const dive *)
+void DiveMeanDepthItem::replot(const dive *, bool)
 {
 	double meandepthvalue = 0.0;
 
@@ -525,7 +525,7 @@ void DiveMeanDepthItem::createTextItem()
 	texts.append(text);
 }
 
-void DiveGasPressureItem::replot(const dive *d)
+void DiveGasPressureItem::replot(const dive *d, bool in_planner)
 {
 	const struct plot_info *pInfo = &dataModel.data();
 	std::vector<int> plotted_cyl(pInfo->nr_cylinders, false);
@@ -548,7 +548,7 @@ void DiveGasPressureItem::replot(const dive *d)
 			boundingPoly.push_back(point);
 
 			QColor color;
-			if (!in_planner()) {
+			if (in_planner) {
 				if (entry->sac)
 					color = getSacColor(entry->sac, d->sac);
 				else
@@ -699,9 +699,9 @@ DiveCalculatedCeiling::DiveCalculatedCeiling(const DivePlotDataModel &model, con
 	setVisible(prefs.calcceiling);
 }
 
-void DiveCalculatedCeiling::replot(const dive *d)
+void DiveCalculatedCeiling::replot(const dive *d, bool in_planner)
 {
-	AbstractProfilePolygonItem::replot(d);
+	AbstractProfilePolygonItem::replot(d, in_planner);
 	// Add 2 points to close the polygon.
 	QPolygonF poly = polygon();
 	if (poly.isEmpty())
@@ -747,7 +747,7 @@ DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const D
 	setVisible(prefs.dcceiling);
 }
 
-void DiveReportedCeiling::replot(const dive *)
+void DiveReportedCeiling::replot(const dive *, bool)
 {
 	QPolygonF p;
 	p.append(QPointF(hAxis.posAtValue(0), vAxis.posAtValue(0)));
@@ -780,7 +780,7 @@ void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-void PartialPressureGasItem::replot(const dive *)
+void PartialPressureGasItem::replot(const dive *, bool)
 {
 	plot_data *entry = dataModel.data().entry;
 	QPolygonF poly;
