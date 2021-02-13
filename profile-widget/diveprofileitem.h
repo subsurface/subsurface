@@ -45,15 +45,6 @@ slots:
 	void setVisible(bool visible);
 
 protected:
-	/* when the model emits a 'datachanged' signal, this method below should be used to check if the
-	 * modified data affects this particular item ( for example, when setting the '3m increment'
-	 * the data for Ceiling and tissues will be changed, and only those. so, the topLeft will be the CEILING
-	 * column and the bottomRight will have the TISSUE_16 column. this method takes the vDataColumn and hDataColumn
-	 * into consideration when returning 'true' for "yes, continue the calculation', and 'false' for
-	 * 'do not recalculate, we already have the right data.
-	 */
-	bool shouldCalculateStuff(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-
 	const DiveCartesianAxis &hAxis;
 	const DiveCartesianAxis &vAxis;
 	const DivePlotDataModel &dataModel;
