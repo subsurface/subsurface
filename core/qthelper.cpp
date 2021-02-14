@@ -13,7 +13,6 @@
 #include "planner.h"
 #include "subsurface-time.h"
 #include "gettextfromc.h"
-#include "applicationstate.h"
 #include "metadata.h"
 #include "exif.h"
 #include "file.h"

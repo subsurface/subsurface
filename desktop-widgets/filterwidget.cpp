@@ -181,7 +181,7 @@ void FilterWidget::clearFilter()
 
 void FilterWidget::closeFilter()
 {
-	MainWindow::instance()->setApplicationState(ApplicationState::Default);
+	MainWindow::instance()->setApplicationState(MainWindow::ApplicationState::Default);
 }
 
 FilterData FilterWidget::createFilterData() const

@@ -219,7 +219,7 @@ void LocationInformationWidget::acceptChanges()
 
 	MainWindow::instance()->diveList->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
-	MainWindow::instance()->setApplicationState(ApplicationState::Default);
+	MainWindow::instance()->setApplicationState(MainWindow::ApplicationState::Default);
 	DiveFilter::instance()->stopFilterDiveSites();
 
 	// Subtlety alert: diveSite must be cleared *after* exiting the dive-site mode.

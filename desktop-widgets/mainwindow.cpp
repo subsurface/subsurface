@@ -112,6 +112,7 @@ extern "C" void showErrorFromC(char *buf)
 }
 
 MainWindow::MainWindow() : QMainWindow(),
+	appState((ApplicationState)-1), // Invalid state
 	actionNextDive(nullptr),
 	actionPreviousDive(nullptr),
 #ifndef NO_USERMANUAL
@@ -653,8 +654,7 @@ void MainWindow::updateLastUsedDir(const QString &dir)
 void MainWindow::on_actionPrint_triggered()
 {
 #ifndef NO_PRINTING
-	bool in_planner = getAppState() == ApplicationState::PlanDive ||
-			  getAppState() == ApplicationState::EditPlannedDive;
+	bool in_planner = appState == ApplicationState::PlanDive || appState == ApplicationState::EditPlannedDive;
 	PrintDialog dlg(in_planner, this);
 
 	dlg.exec();
@@ -1132,7 +1132,7 @@ void MainWindow::writeSettings()
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());
 	settings.setValue("maximized", isMaximized());
-	settings.setValue("lastState", (int)getAppState());
+	settings.setValue("lastState", (int)appState);
 	saveSplitterSizes();
 	settings.endGroup();
 }
@@ -1562,14 +1562,14 @@ void MainWindow::on_actionFilterTags_triggered()
 {
 	if (!userMayChangeAppState())
 		return;
-	setApplicationState(getAppState() == ApplicationState::FilterDive ? ApplicationState::Default : ApplicationState::FilterDive);
+	setApplicationState(appState == ApplicationState::FilterDive ? ApplicationState::Default : ApplicationState::FilterDive);
 }
 
 void MainWindow::on_actionStats_triggered()
 {
 	if (!userMayChangeAppState())
 		return;
-	setApplicationState(getAppState() == ApplicationState::Statistics ? ApplicationState::Default : ApplicationState::Statistics);
+	setApplicationState(appState == ApplicationState::Statistics ? ApplicationState::Default : ApplicationState::Statistics);
 }
 
 void MainWindow::registerApplicationState(ApplicationState state, Quadrants q)
@@ -1602,17 +1602,17 @@ void MainWindow::setQuadrantWidgets(QSplitter &splitter, const Quadrant &left, c
 
 bool MainWindow::userMayChangeAppState() const
 {
-	return applicationState[(int)getAppState()].allowUserChange;
+	return applicationState[(int)appState].allowUserChange;
 }
 
 void MainWindow::setApplicationState(ApplicationState state)
 {
-	if (getAppState() == state)
+	if (appState == state)
 		return;
 
 	saveSplitterSizes();
 
-	setAppState(state);
+	appState = state;
 
 	clearSplitter(*topSplitter);
 	clearSplitter(*bottomSplitter);
