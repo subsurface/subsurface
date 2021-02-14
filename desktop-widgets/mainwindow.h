@@ -19,7 +19,6 @@
 #include "ui_plannerDetails.h"
 #include "desktop-widgets/notificationwidget.h"
 #include "desktop-widgets/filterwidget.h"
-#include "core/applicationstate.h"
 #include "core/dive.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
@@ -52,6 +51,21 @@ public:
 	void addRecentFile(const QString &file, bool update);
 	LocationInformationWidget *locationInformationWidget();
 	void setTitle();
+
+	enum class ApplicationState {
+		Default,
+		EditDive,
+		PlanDive,
+		EditPlannedDive,
+		EditDiveSite,
+		FilterDive,
+		Statistics,
+		MapMaximized,
+		ProfileMaximized,
+		ListMaximized,
+		InfoMaximized,
+		Count
+	};
 
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);
@@ -155,6 +169,7 @@ slots:
 	void startDiveSiteEdit();
 
 private:
+	ApplicationState appState;
 	Ui::MainWindow ui;
 	FilterWidget filterWidget;
 	std::unique_ptr<QSplitter> topSplitter;

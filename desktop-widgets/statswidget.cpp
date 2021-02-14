@@ -143,7 +143,7 @@ void StatsWidget::updateUi()
 
 void StatsWidget::closeStats()
 {
-	MainWindow::instance()->setApplicationState(ApplicationState::Default);
+	MainWindow::instance()->setApplicationState(MainWindow::ApplicationState::Default);
 }
 
 void StatsWidget::chartTypeChanged(int idx)

@@ -37,8 +37,6 @@ endif()
 
 # compile the core library part in C, part in C++
 set(SUBSURFACE_CORE_LIB_SRCS
-	applicationstate.cpp
-	applicationstate.h
 	checkcloudconnection.cpp
 	checkcloudconnection.h
 	cloudstorage.cpp
