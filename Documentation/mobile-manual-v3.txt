@@ -2,8 +2,8 @@
 // Subsurface-mobile User Manual
 // =============================
 // :author: Manual authors: Willem Ferguson, Dirk Hohndel
-// :revnumber: 3.0.0
-// :revdate: March 2020
+// :revnumber: 3.1.3
+// :revdate: February 2021
 :icons:
 :toc:
 :toc-placement: manual
@@ -18,7 +18,7 @@ image::mobile-images/Banner.jpg["Banner",align="center"]
 
 // toc::[]
 
-[blue]#_Version 3.0.5, May 2020_#
+[blue]#_Version 3.1.3, February 2021_#
 
 toc::[]
 
@@ -261,6 +261,7 @@ to open a map with the dive site in an integrated map viewer.
 This of course is only possible if the dive site is associated with GPS
 information.
 
+[[S_Filter]]
 === Filter the dive list
 
 By default, all the dives in the dive log are shown in the dive list. After several years your dive
@@ -491,7 +492,226 @@ The summary page lists the date of your first dive in the dive list as well as y
 It also provides two columns of data for selectable time ranges (by default all dives in the dive list
 and the dives during the last six months.
 
-=== Export
+
+[[S_Stats]]
+== Dive Statistics
+
+[width="100%", frame="None"]
+|===
+a|image::mobile-images/StatsPanel.jpg["Image: Statistics panel",float="left"] |
+
+Creating meaningful statistics that convey the information you are looking for is surprisingly hard.
+Different users have very different needs and very different expectations. Subsurface-Mobile provides
+a rather detailed set of statistics features to summarise information from the dive log in a graphical
+way. To access the dive statistics tool, select _Main Menu_ -> _Statistics_. The statistics tool is
+so flexible that it is impossible to cover every possible use case. Rather, we provide a conceptual
+introduction, followed by specific examples. The tool can be closed using the _Back_ button (bottom
+right in Android).
+
+The Statistics tool has two panels (image on left):
+
+1. A setup panel containing comboboxes for requesting a graph (top).
+
+2. The graph that has been requested (bottom).
+
+|===
+
+
+[[S_Stats_Intro]]
+****
+*A diver's introduction to statistical graphs*
+[icon="images/icons/important.png"]
+[IMPORTANT]
+
+The extreme flexibility of the Statistics tool means that you need to provide detailed information about
+what information Subsurface should provide. It helps to have a clear objective, i.e. a solid understanding of
+what you want Subsurface to show you. In other words, you need to formulate the correct question. There
+are so many graphical display options that, if you do not formulate the question correctly, the information
+is unlikely to be presented in a valid or appropriate way. Because all statistical results in Subsurface
+are shown as graphs, formulating an appropriate specification requires four steps:
+
+a) Which dives do you wish to graph? If required, use the xref:S_Filter[Filter button] for selecting specific dives to be analysed.
+
+b) Which variable should be displayed along the bottom horizontal axis of the graph?
+Let's say you wish to see how many dives you performed each year. In this case the variable along the bottom
+horizontal axis would be "Year". Alternatively, if you wished to compare the mean depth of your dives using
+different suit types, then "Suit type" would be selected as the variable for the bottom horizontal axis.
+Alternatively, if you wished to visualise the water temperature for dives of different dive depths,
+then you would select "Max. depth" as the variable on the horizontal axis (see image below). The variable
+along the horizontal axis is also called the "base variable", the "X-axis variable" or the "independent
+variable": it defines the basic units or categories used for analysis.
+
+image::mobile-images/StatsGraphAxes.jpg["Example: Statistics graph axes",align="center"]
+
+c) Which variable should be displayed along the left-hand vertical axis of the graph? This is the variable
+that you are primarily interested in. In some cases this could just be a count such as "No. of dives".
+However, if you are interested in water temperature at different dive depths, you would select "Water
+temperature" as the variable along the vertical axis (see image above). In this case you are primarily
+interested in water temperature, not in dive depth (which would be the variable along the horizontal
+axis). The variable along the vertical axis is also called the "data variable" or the "dependent variable":
+it is the variable affected by (or dependent on) the values of the variable along the horizontal axis, as
+in the graph above.
+
+*NB:* Since, in Subsurface-Mobile, the graphs can be rotated to be horizontally-oriented or vertically oriented,
+the terms "horizontal axis variable" and "vertical axis variable" are not appropriate. We use the term *Base
+variable* to denote the conventional horizontal axis variable and the *Data variable* to denote the conventional
+vertical axis variable.
+
+d) Which chart type do you require? By default Subsurface selects the most appropriate graph type, but this
+is a user-selectable option. Taking the example of water temperature at various depths above, the image below
+shows three of the possible chart types of the same data: Image A shows the raw data by plotting the exact
+temperature and depth for each dive. Image B, however, groups the dives in 5m depth intervals within which the
+temperature for each dive is indicated (the red marks are explained below). Image C also groups the dives in 5m
+depth intervals. However, in this case the minimum, maximum, mean, upper quartile and lower quartile are shown
+for each depth class. 
+
+image::mobile-images/StatsGraphOptions.jpg["Statistics graph options",align="center"]
+
+The point of the discussion above is to show that, _before initiating a graph, you need to think carefully
+about what you want Subsurface to show_, at least keeping the above four aspects in consideration.
+
+*A more technical note on the valid use of statistical graphs*
+
+When graphing variables from a dive log, there is an important distinction between _continuous variables_ and
+_categorical variables_. These two data types are typically graphed in different ways. A continuous variable
+can theoretically have any value. For instance dive depth can have any value greater than zero (theoretically
+negative depths indicate height above the water but this is not a practical possibility). Consequently, depths
+of 21.63857 meters or 44.7653 feet are entirely realistic. Dates are also continuous since the annual value
+of any particular instant in time can be presented. For instance a dive at 12 noon on April 1st 2020 can be
+presented by a value of 2020.24726 (90.5/366 days in that leap year). On the other hand dive mode is a
+categorical variable: there are no values between "Freedive" and "Open circuit" or between "Open Circuit"
+and "CCR". Other categorical variables include Buddy, Visibility, Rating and Suit type. Different methods
+are used to represent these two types of variables, evident from the way in which the axes are organised.
+It is perfectly valid to create a
+graph with a continuous Base variable and a categorical Data variable and _vice versa_. However, when using
+a continuous Base variable, use a
+histogram, NOT a bar-chart. The images below show counts of dives at different depths. Image A is a histogram
+showing that no dives were conducted between 55m and 60m depth. However two dives were performed between 60m
+and 65m: these two bars (55-60m and 60-65m) have equally important information. Image B shows the bar-chart
+of the same dataset where depth has been converted to a categorical type. Notice that the two bars with no
+dives (55-60m and 75-80m) are omitted. Important information is lost because of the use of a bar-chart to
+represent continuous data. It is easy to determine whether a specific graph is a barchart or a histogram:
+when selecting "Chart type" the heading of the submenu should show either _Barchart_ or _Categorical_
+in the case of categorical variables, and _histogram_ or _scattergraph_ in the case of continuous variables.
+Subsurface-Mobile helps by showing a yellow triangle for graph types likely to be inappropriate (Image C).
+
+image::mobile-images/StatsDataTypes.jpg["Statistics: bar-charts of continuous and categorical data types",align="center"]
+
+****
+
+=== Graph orientation
+
+In many cases the values of the Base Variable along the horizontal axis are shown by dots, not numbers or names (Image B above).
+This is because the screen of a mobile device often is not wide enough to show all the values, especially prevalent
+in bar charts where the labels along the bottom axis are long. There are two ways of addressing this problem:
+
+
+1. Turn the mobile device through 90 degrees so that the screen display is in landscape (wide) mode.
+
+
+2. Rotate the bar chart through 90 degrees by selecting a horizontal bar chart (in the
+Chart type combobox, select a horizontal chart type). In this case the bars are shown horizontally in both portrait and landscape orientation. For instance,
+the image below shows the horizontal bar-chart produced when selecting "Categorical/Horizontal" in the Chart type combobox and
+using the same dataset as in graph B in the image above. With the axes rotated there is much more horizontal space for showing
+the relatively long label for each bar in the chart.
+
+image::mobile-images/StatsBarchartRotated.jpg["Stats rotated barchart",align="center"]
+
+=== Graphs of counts data
+
+By default, when the Statistics panel is opened, a histogram is shown of the number of dives performed each year. 
+This is an example of *counts* data. To request a graph representing counts, three comboboxes need to be set:
+
+a) The top left combobox of the Base variable needs to be specified. Which variable should be along the horizontal
+   axis? Examples are Year, Buddy, Rating, Max. depth.
+
+b) The binning combobox (top right) for the Base variable needs to be specified. This represents the increment
+for each bar along the horizontal axis. For instance, when counts of number of dives are extracted for years,
+this could be in increments of a year, a quarter (3 month period) or a month. For some variables, e.g. Buddy
+or Rating, a binning value is not relevant and cannot be selected. However, for others, e.g. Year or Max.
+depth, selecting the appropriate binning is important.
+
+c) For simple counts data, the left combobox of the Data variable needs to be set to "none". This is because
+a data variable is not involved in this type of graph. Divers used to spreadsheets may prefer a *pie chart*
+for these data, achieved by selecting "piechart" from the Chart type combobox. It is possible to
+simultaneously provide counts for two variables. In this case one could specify a Data variable which
+results in the counts being subdivided according to the data variable. This option does not have a piechart
+equivalent.
+
+For simple histograms, the default height of each bar is determined by the mean value for the observations
+included in each bar. However, this can be manipulated using the Operation combobox to show the mean,
+maximum, minimum, median and sum applicable to each bar. Image A below shows quarterly count data of
+dives while image B shows quarterly count data, subdivided by dive mode (some dives open circuit,
+other dives rebreather). The legend can be dragged around so that it does not obscure part of the graph.
+
+image::mobile-images/StatsCountsData.jpg["Counts data example",align="center"]
+
+=== Counts comprising more than one category in a bar
+
+As mentioned in the section above, bar-charts showing a breakdown of each category for a number of
+subcategories are easily created.
+
+a) Select a variable with categories (along the horizontal axis) as a Base variable (e.g. dive mode or suite type).
+
+b) Select another category of data as a Data variable (e.g. gas type or cylinder type).
+
+The images below show two alternative bar-chart representations. If, in the Chart type combobox, one selects
+"Barchart/stacked vertical", a graph similar to image A below is generated, summarising a log of technical
+dives where, for each cylinder gas type, the bar is subdivided into a count for open-circuit dives and for
+rebreather dives. On the other hand, if "Barchart/grouped horizontal" is selected in the Chart type combobox, a graph
+similar to image B, below, is produced. Here the subdivision within each gas type is shown as adjacent bars.
+
+image::mobile-images/StatsBarchartSubdivided.jpg["Stats subdivided barchart",align="center"]
+
+=== Scattergraphs
+
+[width="100%", frame="None"]
+|=======
+a|image::mobile-images/StatsRegression.jpg["Regression data example",align="center"] |
+Sometimes you might wish to investigate the relationship between two dive variables. Has my SAC rate decreased over
+the years? Is the water temperature colder at greater dive depth? One of the ways of investigating these questions
+is to draw a scattergraph where the values of one variable is plotted against the other variable (see image on the left).
+
+
+For the dataset in the image on the left the SAC rate appears to have decreased over time. If the relationship between the two variables
+is statistically significant, a red line is shown that summarises the best estimate of the relationship between SAC rate and year.
+In this graph it appears that SAC rate has decreased from around 21 l/min to around 14 l/min between 2013 and 2021. The pink area
+around the red line indicates the uncertainty of the precise orientation of the line. The line is expected to lie somewhere within
+the pink area with a certainty of 95%. The intensity of the pink colour also indicates the relative reliability of these estimates.
+The procedure for obtaining a scattergrapth is:
+
+a) Specify the Base variable: Which variable should be along the horizontal axis? Examples are Date, Temperature, Max. depth, SAC rate.
+
+b) Set the binning value for the Base variable (top right) to "none".
+
+c) Specify the Data variable: Which variable should be along the vertical axis?
+
+|=======
+
+=== Comparisons between categories of dives
+
+You might wish to compare different categories of dives. Is the (5-star) Rating of a dive related to water temperature?
+Is my SAC rate related to diving with different dive suits? Since dive suit and Rating are categories, a scattergraph is not
+appropriate. The default is a categorical dot graph, which, in the case of image A below, shows the precise water temperatures
+for each Rating. The red lines indicate the top quartile, the mean and the lower quartile of temperature for each rating. The
+column with no star indicates dives for which a Rating has not been selected. It appears that dives with a 5-star rating have
+higher temperatures than the other ratings. To obtain a categorical graph:
+
+a) Select a variable with categories (along the horizontal axis) as a Base variable (Top left).
+
+b) Select the data variable and set binning to "none" (middle right combobox).
+
+c) By default the Chart type combobox shows "Categorical/data points". If this is not the case, select this value. 
+
+image::mobile-images/StatsCategoricalData.jpg["Stats: Comparison of categories",align="center"]
+
+Alternatively you could create a Box-whisker graph for the same data. In the Chart type combobox, select Categorical/"box-whisker".
+This creates a graph indicating the maximum, top quartile (Q3), median, bottom quartile (Q1) and minimum for each category or
+class. Image B above shows a box-whisker graph for the same data as image A above. You can see that the values for a Rating
+of 5 stars tend to be higher than for other ratings.
+
+
+== Export
 
 The _Export_ feature is somewhat experimental. On Android it only allows the upload of your dive list
 to two websites (_divelogs.de_ and _diveshare_). On iOS it also allows local file based exports as _Subsurface_
