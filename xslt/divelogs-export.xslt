@@ -42,6 +42,17 @@
       <xsl:value-of select="//site[@uuid = $uuid]/@name"/>
     </xsl:variable>
     <xsl:choose>
+      <xsl:when test="/divelog/divesites/site[@uuid = $uuid]/geo/@value != ''">
+        <LOCATION>
+          <xsl:for-each select="/divelog/divesites/site[@uuid = $uuid]/geo/@value">
+            <xsl:if test="position() != 1"> / </xsl:if>
+            <xsl:value-of select="."/>
+          </xsl:for-each>
+        </LOCATION>
+        <SITE>
+          <xsl:value-of select="$location"/>
+        </SITE>
+      </xsl:when>
       <xsl:when test="contains($location, '/')">
         <xsl:variable name="site">
           <xsl:call-template name="basename">
@@ -56,17 +67,6 @@
         </LOCATION>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:if test="/divelog/divesites/site[@uuid = $uuid]/geo/@value != ''">
-          <LOCATION>
-            <xsl:for-each select="/divelog/divesites/site[@uuid = $uuid]/geo/@value">
-              <xsl:if test="position() != 1"> / </xsl:if>
-              <xsl:value-of select="."/>
-            </xsl:for-each>
-          </LOCATION>
-        </xsl:if>
-        <SITE>
-          <xsl:value-of select="$location"/>
-        </SITE>
       </xsl:otherwise>
     </xsl:choose>
 
