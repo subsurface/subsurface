@@ -3,31 +3,53 @@
 #ifndef STATSCOLORS_H
 #define STATSCOLORS_H
 
+#include <vector>
 #include <QColor>
+#include <QString>
 
-inline const QColor backgroundColor(Qt::white);
-inline const QColor fillColor(0x44, 0x76, 0xaa);
-inline const QColor borderColor(0x66, 0xb2, 0xff);
-inline const QColor selectedColor(0xaa, 0x76, 0x44);
-inline const QColor selectedBorderColor(0xff, 0xb2, 0x66);
-inline const QColor highlightedColor(Qt::yellow);
-inline const QColor highlightedBorderColor(0xaa, 0xaa, 0x22);
-inline const QColor darkLabelColor(Qt::black);
-inline const QColor lightLabelColor(Qt::white);
-inline const QColor axisColor(Qt::black);
-inline const QColor gridColor(0xcc, 0xcc, 0xcc);
-inline const QColor informationBorderColor(Qt::black);
-inline const QColor informationColor(0xff, 0xff, 0x00, 192); // Note: fourth argument is opacity
-inline const QColor legendColor(0x00, 0x8e, 0xcc, 192); // Note: fourth argument is opacity
-inline const QColor legendBorderColor(Qt::black);
-inline const QColor quartileMarkerColor(Qt::red);
-inline const QColor regressionItemColor(Qt::red);
-inline const QColor meanMarkerColor(Qt::green);
-inline const QColor medianMarkerColor(Qt::red);
-inline const QColor selectionLassoColor(Qt::black);
-inline const QColor selectionOverlayColor(Qt::lightGray);
+class QSGTexture;
 
-QColor binColor(int bin, int numBins);
-QColor labelColor(int bin, size_t numBins);
+class StatsTheme {
+public:
+	StatsTheme();
+	virtual QString name() const = 0;
+	QColor backgroundColor;
+	QColor fillColor;
+	QColor borderColor;
+	QColor selectedColor;
+	QColor selectedBorderColor;
+	QColor highlightedColor;
+	QColor highlightedBorderColor;
+	// The dark and light label colors are with respect to the light theme.
+	// In the dark theme, dark is light and light is dark. Might want to change the names!
+	QColor darkLabelColor;
+	QColor lightLabelColor;
+	QColor axisColor;
+	QColor gridColor;
+	QColor informationBorderColor;
+	QColor informationColor;
+	QColor legendColor;
+	QColor legendBorderColor;
+	QColor quartileMarkerColor;
+	QColor regressionItemColor;
+	QColor meanMarkerColor;
+	QColor medianMarkerColor;
+	QColor selectionLassoColor;
+	QColor selectionOverlayColor;
+	virtual QColor binColor(int bin, int numBins) const = 0;
+	virtual QColor labelColor(int bin, size_t numBins) const = 0;
+
+	// These are cashes for the QSG rendering engine
+	// Note: Originally these were std::unique_ptrs, which automatically
+	// freed the textures on exit. However, destroying textures after
+	// QApplication finished its thread leads to crashes. Therefore, these
+	// are now normal pointers and the texture objects are leaked.
+	mutable QSGTexture *scatterItemTexture = nullptr;
+	mutable QSGTexture *scatterItemSelectedTexture = nullptr;
+	mutable QSGTexture *scatterItemHighlightedTexture = nullptr;
+	mutable QSGTexture *selectedTexture = nullptr; // A checkerboard pattern.
+};
+
+extern std::vector<const StatsTheme *> statsThemes;
 
 #endif

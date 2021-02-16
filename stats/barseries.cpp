@@ -116,16 +116,17 @@ void BarSeries::BarLabel::setVisible(bool visible)
 	item->setVisible(visible);
 }
 
-void BarSeries::BarLabel::highlight(bool highlight, int bin_nr, int binCount, const QColor &background)
+void BarSeries::BarLabel::highlight(bool highlight, int bin_nr, int binCount, const QColor &background, const StatsTheme &theme)
 {
 	// For labels that are on top of a bar, use the corresponding bar color
 	// as background. Rendering on a transparent background gives ugly artifacts.
-	item->setColor(highlight || isOutside ? darkLabelColor : labelColor(bin_nr, binCount),
+	item->setColor(highlight || isOutside ? theme.darkLabelColor : theme.labelColor(bin_nr, binCount),
 		       isOutside ? Qt::transparent : background);
 }
 
 void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRectF &rect,
-					 int bin_nr, int binCount, const QColor &background)
+					 int bin_nr, int binCount, const QColor &background,
+					 const StatsTheme &theme)
 {
 	QSizeF itemSize = item->getRect().size();
 	if (!horizontal) {
@@ -173,13 +174,14 @@ void BarSeries::BarLabel::updatePosition(bool horizontal, bool center, const QRe
 	}
 	setVisible(true);
 	// If label changed from inside to outside, or vice-versa, the color might change.
-	highlight(false, bin_nr, binCount, background);
+	highlight(false, bin_nr, binCount, background, theme);
 }
 
 BarSeries::Item::Item(BarSeries *series, double lowerBound, double upperBound,
 		      std::vector<SubItem> subitemsIn,
 		      const QString &binName, const StatsOperationResults &res, int total,
-		      bool horizontal, bool stacked, int binCount) :
+		      bool horizontal, bool stacked, int binCount,
+		      const StatsTheme &theme) :
 	lowerBound(lowerBound),
 	upperBound(upperBound),
 	subitems(std::move(subitemsIn)),
@@ -188,30 +190,30 @@ BarSeries::Item::Item(BarSeries *series, double lowerBound, double upperBound,
 	total(total)
 {
 	for (SubItem &item: subitems)
-		item.highlight(false, binCount);
-	updatePosition(series, horizontal, stacked, binCount);
+		item.highlight(false, binCount, theme);
+	updatePosition(series, horizontal, stacked, binCount, theme);
 }
 
-void BarSeries::Item::highlight(int subitem, bool highlight, int binCount)
+void BarSeries::Item::highlight(int subitem, bool highlight, int binCount, const StatsTheme &theme)
 {
 	if (subitem < 0 || subitem >= (int)subitems.size())
 		return;
-	subitems[subitem].highlight(highlight, binCount);
+	subitems[subitem].highlight(highlight, binCount, theme);
 }
 
 // For single-bin charts, selected items are marked with a special fill and border color.
 // For multi-bin charts, they are marked by a differend border color and border width.
-void BarSeries::SubItem::highlight(bool highlight, int binCount)
+void BarSeries::SubItem::highlight(bool highlight, int binCount, const StatsTheme &theme)
 {
-	fill = highlight ? highlightedColor : binColor(bin_nr, binCount);
-	QColor border = highlight ? highlightedBorderColor : ::borderColor;
+	fill = highlight ? theme.highlightedColor : theme.binColor(bin_nr, binCount);
+	QColor border = highlight ? theme.highlightedBorderColor : theme.borderColor;
 	item->setColor(fill, border);
 	item->setSelected(selected);
 	if (label)
-		label->highlight(highlight, bin_nr, binCount, fill);
+		label->highlight(highlight, bin_nr, binCount, fill, theme);
 }
 
-void BarSeries::Item::updatePosition(BarSeries *series, bool horizontal, bool stacked, int binCount)
+void BarSeries::Item::updatePosition(BarSeries *series, bool horizontal, bool stacked, int binCount, const StatsTheme &theme)
 {
 	if (subitems.empty())
 		return;
@@ -230,7 +232,7 @@ void BarSeries::Item::updatePosition(BarSeries *series, bool horizontal, bool st
 	for (SubItem &item: subitems) {
 		int idx = stacked ? 0 : item.bin_nr;
 		double center = (idx + 0.5) * fullSubWidth + from;
-		item.updatePosition(series, horizontal, stacked, center - subWidth / 2.0, center + subWidth / 2.0, binCount);
+		item.updatePosition(series, horizontal, stacked, center - subWidth / 2.0, center + subWidth / 2.0, binCount, theme);
 	}
 	rect = subitems[0].item->getRect();
 	for (auto it = std::next(subitems.begin()); it != subitems.end(); ++it)
@@ -238,7 +240,8 @@ void BarSeries::Item::updatePosition(BarSeries *series, bool horizontal, bool st
 }
 
 void BarSeries::SubItem::updatePosition(BarSeries *series, bool horizontal, bool stacked,
-					double from, double to, int binCount)
+					double from, double to, int binCount,
+					const StatsTheme &theme)
 {
 	QPointF topLeft, bottomRight;
 	if (horizontal) {
@@ -251,7 +254,7 @@ void BarSeries::SubItem::updatePosition(BarSeries *series, bool horizontal, bool
 	QRectF rect(topLeft, bottomRight);
 	item->setRect(rect);
 	if (label)
-		label->updatePosition(horizontal, stacked, rect, bin_nr, binCount, fill);
+		label->updatePosition(horizontal, stacked, rect, bin_nr, binCount, fill, theme);
 }
 
 std::vector<BarSeries::SubItem> BarSeries::makeSubItems(std::vector<SubItemDesc> items) const
@@ -294,13 +297,13 @@ void BarSeries::add_item(double lowerBound, double upperBound, std::vector<SubIt
 	if (subitems.empty())
 		return;
 	items.emplace_back(this, lowerBound, upperBound, std::move(subitems), binName, res,
-			   total, horizontal, stacked, binCount());
+			   total, horizontal, stacked, binCount(), theme);
 }
 
 void BarSeries::updatePositions()
 {
 	for (Item &item: items)
-		item.updatePosition(this, horizontal, stacked, binCount());
+		item.updatePosition(this, horizontal, stacked, binCount(), theme);
 }
 
 // Attention: this supposes that items are sorted by position and no bar is inside another bar!
@@ -407,7 +410,7 @@ bool BarSeries::hover(QPointF pos)
 	// Highlight new item (if any)
 	if (highlighted.bar >= 0 && highlighted.bar < (int)items.size()) {
 		Item &item = items[highlighted.bar];
-		item.highlight(index.subitem, true, binCount());
+		item.highlight(index.subitem, true, binCount(), theme);
 		if (!information)
 			information = view.createChartItem<InformationBox>();
 		information->setText(makeInfo(item, highlighted.subitem), pos);
@@ -422,7 +425,7 @@ bool BarSeries::hover(QPointF pos)
 void BarSeries::unhighlight()
 {
 	if (highlighted.bar >= 0 && highlighted.bar < (int)items.size())
-		items[highlighted.bar].highlight(highlighted.subitem, false, binCount());
+		items[highlighted.bar].highlight(highlighted.subitem, false, binCount(), theme);
 	highlighted = Index();
 }
 
@@ -464,7 +467,7 @@ void BarSeries::divesSelected(const QVector<dive *> &)
 
 				Index idx(&item - &items[0], &subitem - &item.subitems[0]);
 				bool highlight = idx == highlighted;
-				item.highlight(idx.subitem, highlight, binCount());
+				item.highlight(idx.subitem, highlight, binCount(), theme);
 			}
 		}
 	}

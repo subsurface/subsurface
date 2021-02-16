@@ -49,9 +49,9 @@ private:
 		QPointF innerLabelPos, outerLabelPos; // With respect to a (-1, -1)-(1, 1) rectangle.
 		bool selected;
 		Item(StatsView &view, const QString &name, int from, std::vector<dive *> dives, int totalCount,
-		     int bin_nr, int numBins);
+		     int bin_nr, int numBins, const StatsTheme &theme);
 		void updatePositions(const QPointF &center, double radius);
-		void highlight(ChartPieItem &item, int bin_nr, bool highlight, int numBins);
+		void highlight(ChartPieItem &item, int bin_nr, bool highlight, int numBins, const StatsTheme &theme);
 	};
 	std::vector<Item> items;
 	int totalCount;

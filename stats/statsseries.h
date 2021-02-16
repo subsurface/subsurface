@@ -10,6 +10,7 @@
 #include <QPointF>
 
 class StatsAxis;
+class StatsTheme;
 class StatsView;
 struct dive;
 class QRectF;
@@ -30,6 +31,7 @@ public:
 
 protected:
 	StatsView &view;
+	const StatsTheme &theme;		// Theme is only set once in the constructor
 	StatsAxis *xAxis, *yAxis;		// May be zero for charts without axes (pie charts).
 	QPointF toScreen(QPointF p);
 };

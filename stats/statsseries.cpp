@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsseries.h"
 #include "statsaxis.h"
+#include "statsview.h"
 
 StatsSeries::StatsSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis) :
-	view(view), xAxis(xAxis), yAxis(yAxis)
+	view(view), theme(view.getCurrentTheme()), xAxis(xAxis), yAxis(yAxis)
 {
 }
 

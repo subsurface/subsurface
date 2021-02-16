@@ -35,6 +35,7 @@ static const double selectionLassoWidth = 2.0;		// Border between title and char
 
 StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	backgroundDirty(true),
+	currentTheme(statsThemes[0]),
 	highlightedSeries(nullptr),
 	xAxis(nullptr),
 	yAxis(nullptr),
@@ -99,7 +100,7 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 		if (selectionRect)
 			deleteChartItem(selectionRect); // Ooops. Already a selection in place.
 		dragStartMouse = pos;
-		selectionRect = createChartItem<ChartRectLineItem>(ChartZValue::Selection, selectionLassoColor, selectionLassoWidth);
+		selectionRect = createChartItem<ChartRectLineItem>(ChartZValue::Selection, currentTheme->selectionLassoColor, selectionLassoWidth);
 		selectionModifier = modifier;
 		oldSelection = modifier.ctrl ? getDiveSelection() : std::vector<dive *>();
 		grabMouse();
@@ -143,7 +144,7 @@ RootNode::RootNode(StatsView &view) : view(view)
 	// also be done on the widget level, but would have to be done
 	// separately for desktop and mobile, so do it here.
 	backgroundNode.reset(view.w()->createRectangleNode());
-	backgroundNode->setColor(backgroundColor);
+	backgroundNode->setColor(view.getCurrentTheme().backgroundColor);
 	appendChildNode(backgroundNode.get());
 
 	for (auto &zNode: zNodes) {
@@ -184,7 +185,7 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	}
 
 	for (ChartItem *item = dirtyItems.first; item; item = item->next) {
-		item->render();
+		item->render(*currentTheme);
 		item->dirty = false;
 	}
 	dirtyItems.splice(cleanItems);
@@ -297,6 +298,18 @@ void StatsView::ChartItemList::splice(ChartItemList &l2)
 QQuickWindow *StatsView::w() const
 {
 	return window();
+}
+
+void StatsView::setTheme(int idx)
+{
+	idx = std::clamp(idx, 0, (int)statsThemes.size() - 1);
+	currentTheme = statsThemes[idx];
+	rootNode->backgroundNode->setColor(currentTheme->backgroundColor);
+}
+
+const StatsTheme &StatsView::getCurrentTheme() const
+{
+	return *currentTheme;
 }
 
 QSizeF StatsView::size() const
@@ -459,7 +472,7 @@ void StatsView::setTitle(const QString &s)
 		return;
 	}
 	title = createChartItem<ChartTextItem>(ChartZValue::Legend, titleFont, s);
-	title->setColor(darkLabelColor);
+	title->setColor(currentTheme->darkLabelColor);
 }
 
 void StatsView::updateTitlePos()
@@ -1128,10 +1141,10 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 	if (categoryVariable->type() == StatsVariable::Type::Numeric) {
 		double mean = categoryVariable->mean(dives);
 		if (!std::isnan(mean))
-			meanMarker = createChartItem<HistogramMarker>(mean, isHorizontal, meanMarkerColor, xAxis, yAxis);
+			meanMarker = createChartItem<HistogramMarker>(mean, isHorizontal, currentTheme->meanMarkerColor, xAxis, yAxis);
 		double median = categoryVariable->quartiles(dives).q2;
 		if (!std::isnan(median))
-			medianMarker = createChartItem<HistogramMarker>(median, isHorizontal, medianMarkerColor, xAxis, yAxis);
+			medianMarker = createChartItem<HistogramMarker>(median, isHorizontal, currentTheme->medianMarkerColor, xAxis, yAxis);
 	}
 }
 

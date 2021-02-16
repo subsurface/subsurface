@@ -16,12 +16,14 @@ class QSGImageNode;
 class QSGRectangleNode;
 class QSGTexture;
 class QSGTextureMaterial;
+class StatsTheme;
 class StatsView;
 enum class ChartZValue : int;
 
 class ChartItem {
 public:
-	virtual void render() = 0;		// Only call on render thread!
+	// Only call on render thread!
+	virtual void render(const StatsTheme &theme) = 0;
 	bool dirty;				// If true, call render() when rebuilding the scene
 	ChartItem *prev, *next;			// Double linked list of items
 	const ChartZValue zValue;
@@ -58,7 +60,7 @@ public:
 	~ChartPixmapItem();
 
 	void setPos(QPointF pos);
-	void render() override;		// Only call on render thread!
+	void render(const StatsTheme &theme) override;
 	QRectF getRect() const;
 protected:
 	void resize(QSizeF size);	// Resets the canvas. Attention: image is *unitialized*.
@@ -107,7 +109,7 @@ private:
 class ChartPieItem : public ChartPixmapItem {
 public:
 	ChartPieItem(StatsView &v, ChartZValue z, double borderWidth);
-	void drawSegment(double from, double to, QColor fill, QColor border, bool selected); // from and to are relative (0-1 is full disk).
+	void drawSegment(double from, double to, QColor fill, QColor border, bool selected, const StatsTheme &theme); // from and to are relative (0-1 is full disk).
 	void resize(QSizeF size);	// As in base class, but clears the canvas
 private:
 	double borderWidth;
@@ -132,14 +134,14 @@ protected:
 class ChartLineItem : public ChartLineItemBase {
 public:
 	using ChartLineItemBase::ChartLineItemBase;
-	void render() override;		// Only call on render thread!
+	void render(const StatsTheme &theme) override;
 };
 
 // A simple rectangle without fill. Specified by any two opposing vertices.
 class ChartRectLineItem : public ChartLineItemBase {
 public:
 	using ChartLineItemBase::ChartLineItemBase;
-	void render() override;		// Only call on render thread!
+	void render(const StatsTheme &theme) override;
 };
 
 // A bar in a bar chart: a rectangle bordered by lines.
@@ -151,7 +153,7 @@ public:
 	void setRect(const QRectF &rect);
 	void setSelected(bool selected);
 	QRectF getRect() const;
-	void render() override;		// Only call on render thread!
+	void render(const StatsTheme &theme) override;
 protected:
 	QColor color, borderColor;
 	double borderWidth;
@@ -168,7 +170,7 @@ private:
 	std::unique_ptr<QSGGeometryNode> selectionNode;
 	std::unique_ptr<QSGTextureMaterial> selectionMaterial;
 	std::unique_ptr<QSGGeometry> selectionGeometry;
-	QSGTexture *getSelectedTexture() const;
+	QSGTexture *getSelectedTexture(const StatsTheme &theme) const;
 };
 
 // A box-and-whiskers item. This is a bit lazy: derive from the bar item and add whiskers.
@@ -178,7 +180,7 @@ public:
 	~ChartBoxItem();
 	void setBox(const QRectF &rect, double min, double max, double median); // The rect describes Q1, Q3.
 	QRectF getRect() const;		// Note: this extends the center rectangle to include the whiskers.
-	void render() override;		// Only call on render thread!
+	void render(const StatsTheme &theme) override;
 private:
 	double min, max, median;
 	std::unique_ptr<QSGGeometryNode> whiskersNode;
@@ -203,12 +205,12 @@ public:
 	};
 	void setPos(QPointF pos);		// Specifies the *center* of the item.
 	void setHighlight(Highlight highlight);	// In the future, support different kinds of scatter items.
-	void render() override;			// Only call on render thread!
+	void render(const StatsTheme &theme) override;
 	QRectF getRect() const;
 	bool contains(QPointF point) const;
 	bool inRect(const QRectF &rect) const;
 private:
-	QSGTexture *getTexture() const;
+	QSGTexture *getTexture(const StatsTheme &theme) const;
 	QRectF rect;
 	QSizeF textureSize;
 	bool positionDirty, textureDirty;

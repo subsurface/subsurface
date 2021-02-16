@@ -7,6 +7,7 @@
 #include <vector>
 
 class StatsAxis;
+class StatsTheme;
 class StatsView;
 class ChartLineItem;
 
@@ -16,6 +17,7 @@ public:
 	void updatePositions();
 private:
 	StatsView &view;
+	const StatsTheme &theme; // Initialized once in constructor.
 	const StatsAxis &xAxis, &yAxis;
 	std::vector<ChartItemPtr<ChartLineItem>> lines;
 };

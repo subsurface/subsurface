@@ -95,8 +95,9 @@ private:
 		bool isOutside; // Is shown outside of bar
 		BarLabel(StatsView &view, const std::vector<QString> &labels, int bin_nr, int binCount);
 		void setVisible(bool visible);
-		void updatePosition(bool horizontal, bool center, const QRectF &rect, int bin_nr, int binCount, const QColor &background);
-		void highlight(bool highlight, int bin_nr, int binCount, const QColor &background);
+		void updatePosition(bool horizontal, bool center, const QRectF &rect, int bin_nr, int binCount,
+				    const QColor &background, const StatsTheme &theme);
+		void highlight(bool highlight, int bin_nr, int binCount, const QColor &background, const StatsTheme &theme);
 	};
 
 	struct SubItem {
@@ -109,8 +110,8 @@ private:
 		bool selected;
 		QColor fill;
 		void updatePosition(BarSeries *series, bool horizontal, bool stacked,
-				    double from, double to, int binCount);
-		void highlight(bool highlight, int binCount);
+				    double from, double to, int binCount, const StatsTheme &theme);
+		void highlight(bool highlight, int binCount, const StatsTheme &theme);
 	};
 
 	struct Item {
@@ -123,9 +124,11 @@ private:
 		Item(BarSeries *series, double lowerBound, double upperBound,
 		     std::vector<SubItem> subitems,
 		     const QString &binName, const StatsOperationResults &res, int total, bool horizontal,
-		     bool stacked, int binCount);
-		void updatePosition(BarSeries *series, bool horizontal, bool stacked, int binCount);
-		void highlight(int subitem, bool highlight, int binCount);
+		     bool stacked, int binCount,
+		     const StatsTheme &theme);
+		void updatePosition(BarSeries *series, bool horizontal, bool stacked, int binCount,
+				    const StatsTheme &theme);
+		void highlight(int subitem, bool highlight, int binCount, const StatsTheme &theme);
 		int getSubItemUnderMouse(const QPointF &f, bool horizontal, bool stacked) const;
 	};
 

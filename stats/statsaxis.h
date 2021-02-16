@@ -37,6 +37,7 @@ public:
 protected:
 	StatsAxis(StatsView &view, const QString &title, bool horizontal, bool labelsBetweenTicks);
 
+	const StatsTheme &theme; // Initialized once in constructor.
 	ChartItemPtr<ChartLineItem> line;
 	QString title;
 	double titleWidth;
