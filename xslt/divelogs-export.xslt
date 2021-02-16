@@ -67,6 +67,9 @@
         </LOCATION>
       </xsl:when>
       <xsl:otherwise>
+        <SITE>
+          <xsl:value-of select="$location"/>
+        </SITE>
       </xsl:otherwise>
     </xsl:choose>
 
