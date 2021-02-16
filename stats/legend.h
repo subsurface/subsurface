@@ -10,6 +10,7 @@
 #include <QFont>
 
 class QFontMetrics;
+class StatsTheme;
 
 class Legend : public ChartRectItem {
 public:
@@ -23,11 +24,12 @@ private:
 		QBrush rectBrush;
 		QPointF pos;
 		double width;
-		Entry(const QString &name, int idx, int numBins, const QFontMetrics &fm);
+		Entry(const QString &name, int idx, int numBins, const QFontMetrics &fm, const StatsTheme &);
 	};
 	int displayedItems;
 	double width;
 	double height;
+	const StatsTheme &theme; // Set once in constructor.
 	QFont font;
 	// The position is specified with respect to the center and in relative terms
 	// with respect to the canvas.

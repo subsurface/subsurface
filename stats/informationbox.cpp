@@ -11,8 +11,9 @@ static const int distanceFromPointer = 10; // Distance to place box from mouse p
 
 InformationBox::InformationBox(StatsView &v) :
 	ChartRectItem(v, ChartZValue::InformationBox,
-		      QPen(informationBorderColor, informationBorder),
-		      QBrush(informationColor), informationBorderRadius),
+		      QPen(v.getCurrentTheme().informationBorderColor, informationBorder),
+		      QBrush(v.getCurrentTheme().informationColor), informationBorderRadius),
+	theme(v.getCurrentTheme()),
 	width(0.0),
 	height(0.0)
 {
@@ -36,7 +37,7 @@ void InformationBox::setText(const std::vector<QString> &text, QPointF pos)
 
 	ChartRectItem::resize(QSizeF(width, height));
 
-	painter->setPen(QPen(darkLabelColor)); // QPainter uses QPen to set text color!
+	painter->setPen(QPen(theme.darkLabelColor)); // QPainter uses QPen to set text color!
 	double y = 2.0 * informationBorder;
 	for (size_t i = 0; i < widths.size(); ++i) {
 		QRectF rect(2.0 * informationBorder, y, widths[i], fontHeight);

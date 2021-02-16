@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "quartilemarker.h"
-#include "statscolors.h"
 #include "statsaxis.h"
+#include "statscolors.h"
+#include "statsview.h"
 #include "zvalues.h"
 
 static const double quartileMarkerSize = 15.0;
 
 QuartileMarker::QuartileMarker(StatsView &view, double pos, double value, StatsAxis *xAxis, StatsAxis *yAxis) :
-	ChartLineItem(view, ChartZValue::ChartFeatures, quartileMarkerColor, 2.0),
+	ChartLineItem(view, ChartZValue::ChartFeatures, view.getCurrentTheme().quartileMarkerColor, 2.0),
 	xAxis(xAxis), yAxis(yAxis),
 	pos(pos),
 	value(value)

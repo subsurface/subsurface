@@ -40,10 +40,11 @@ private:
 		StatsQuartiles q;
 		QString binName;
 		bool selected;
-		Item(StatsView &view, BoxSeries *series, double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName);
+		Item(StatsView &view, BoxSeries *series, double lowerBound, double upperBound, const StatsQuartiles &q,
+		     const QString &binName, const StatsTheme &theme);
 		~Item();
 		void updatePosition(BoxSeries *series);
-		void highlight(bool highlight);
+		void highlight(bool highlight, const StatsTheme &theme);
 	};
 
 	QString variable, unit;

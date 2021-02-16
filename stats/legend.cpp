@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "legend.h"
 #include "statscolors.h"
+#include "statsview.h"
 #include "zvalues.h"
 
 #include <cmath>
@@ -15,8 +16,10 @@ static const double legendInternalBorderSize = 2.0;
 
 Legend::Legend(StatsView &view, const std::vector<QString> &names) :
 	ChartRectItem(view, ChartZValue::Legend,
-		      QPen(legendBorderColor, legendBorderSize), QBrush(legendColor), legendBoxBorderRadius),
+		      QPen(view.getCurrentTheme().legendBorderColor, legendBorderSize),
+		      QBrush(view.getCurrentTheme().legendColor), legendBoxBorderRadius),
 	displayedItems(0), width(0.0), height(0.0),
+	theme(view.getCurrentTheme()),
 	font(QFont()),	// Make configurable
 	posInitialized(false)
 {
@@ -25,12 +28,12 @@ Legend::Legend(StatsView &view, const std::vector<QString> &names) :
 	fontHeight = fm.height();
 	int idx = 0;
 	for (const QString &name: names)
-		entries.emplace_back(name, idx++, (int)names.size(), fm);
+		entries.emplace_back(name, idx++, (int)names.size(), fm, theme);
 }
 
-Legend::Entry::Entry(const QString &name, int idx, int numBins, const QFontMetrics &fm) :
+Legend::Entry::Entry(const QString &name, int idx, int numBins, const QFontMetrics &fm, const StatsTheme &theme) :
 	name(name),
-	rectBrush(QBrush(binColor(idx, numBins)))
+	rectBrush(QBrush(theme.binColor(idx, numBins)))
 {
 	width = fm.height() + 2.0 * legendBoxBorderSize + fm.size(Qt::TextSingleLine, name).width();
 }
@@ -82,7 +85,7 @@ void Legend::resize()
 	ChartRectItem::resize(QSizeF(width, height));
 
 	// Paint rectangles
-	painter->setPen(QPen(legendBorderColor, legendBoxBorderSize));
+	painter->setPen(QPen(theme.legendBorderColor, legendBoxBorderSize));
 	for (int i = 0; i < displayedItems; ++i) {
 		QPointF itemPos = entries[i].pos;
 		painter->setBrush(entries[i].rectBrush);
@@ -94,7 +97,7 @@ void Legend::resize()
 	}
 
 	// Paint labels
-	painter->setPen(darkLabelColor); // QPainter uses pen not brush for text!
+	painter->setPen(theme.darkLabelColor); // QPainter uses pen not brush for text!
 	painter->setFont(font);
 	for (int i = 0; i < displayedItems; ++i) {
 		QPointF itemPos = entries[i].pos;

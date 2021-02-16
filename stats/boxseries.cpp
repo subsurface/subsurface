@@ -27,13 +27,13 @@ BoxSeries::~BoxSeries()
 }
 
 BoxSeries::Item::Item(StatsView &view, BoxSeries *series, double lowerBound, double upperBound,
-		      const StatsQuartiles &qIn, const QString &binName) :
+		      const StatsQuartiles &qIn, const QString &binName, const StatsTheme &theme) :
 	lowerBound(lowerBound), upperBound(upperBound), q(qIn),
 	binName(binName),
 	selected(allDivesSelected(q.dives))
 {
 	item = view.createChartItem<ChartBoxItem>(ChartZValue::Series, boxBorderWidth);
-	highlight(false);
+	highlight(false, theme);
 	updatePosition(series);
 }
 
@@ -41,14 +41,14 @@ BoxSeries::Item::~Item()
 {
 }
 
-void BoxSeries::Item::highlight(bool highlight)
+void BoxSeries::Item::highlight(bool highlight, const StatsTheme &theme)
 {
 	if (highlight)
-		item->setColor(highlightedColor, highlightedBorderColor);
+		item->setColor(theme.highlightedColor, theme.highlightedBorderColor);
 	else if (selected)
-		item->setColor(selectedColor, selectedBorderColor);
+		item->setColor(theme.selectedColor, theme.selectedBorderColor);
 	else
-		item->setColor(fillColor, ::borderColor);
+		item->setColor(theme.fillColor, theme.borderColor);
 }
 
 void BoxSeries::Item::updatePosition(BoxSeries *series)
@@ -72,7 +72,7 @@ void BoxSeries::Item::updatePosition(BoxSeries *series)
 
 void BoxSeries::append(double lowerBound, double upperBound, const StatsQuartiles &q, const QString &binName)
 {
-	items.emplace_back(new Item(view, this, lowerBound, upperBound, q, binName));
+	items.emplace_back(new Item(view, this, lowerBound, upperBound, q, binName, theme));
 }
 
 void BoxSeries::updatePositions()
@@ -128,7 +128,7 @@ bool BoxSeries::hover(QPointF pos)
 	// Highlight new item (if any)
 	if (highlighted >= 0 && highlighted < (int)items.size()) {
 		Item &item = *items[highlighted];
-		item.highlight(true);
+		item.highlight(true, theme);
 		if (!information)
 			information = view.createChartItem<InformationBox>();
 		information->setText(formatInformation(item), pos);
@@ -142,7 +142,7 @@ bool BoxSeries::hover(QPointF pos)
 void BoxSeries::unhighlight()
 {
 	if (highlighted >= 0 && highlighted < (int)items.size())
-		items[highlighted]->highlight(false);
+		items[highlighted]->highlight(false, theme);
 	highlighted = -1;
 }
 
@@ -183,7 +183,7 @@ void BoxSeries::divesSelected(const QVector<dive *> &)
 
 			int idx = &item - &items[0];
 			bool highlight = idx == highlighted;
-			item->highlight(highlight);
+			item->highlight(highlight, theme);
 		}
 	}
 }

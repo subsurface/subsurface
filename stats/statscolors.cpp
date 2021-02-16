@@ -1,4 +1,5 @@
 #include "statscolors.h"
+#include "statstranslations.h"
 
 // Colors created using the Chroma.js Color Palette Helper
 // https://vis4.net/palettes/#/50|d|00108c,3ed8ff,ffffe0|ffffe0,ff005e,743535|1|1
@@ -15,22 +16,65 @@ static const QColor binColors[] = {
 	QRgb(0xa83e49), QRgb(0x9d3a44), QRgb(0x90383f), QRgb(0x83363a), QRgb(0x743535)
 };
 
-// Pick roughly equidistant colors out of the color set above
-// if we need more bins than we have colors (what chart is THAT?) simply loop
-QColor binColor(int bin, int numBins)
+StatsTheme::StatsTheme() :
+	scatterItemTexture(nullptr),
+	scatterItemSelectedTexture(nullptr),
+	scatterItemHighlightedTexture(nullptr),
+	selectedTexture(nullptr)
 {
-	if (numBins == 1 || bin < 0 || bin >= numBins)
-		return fillColor;
-	if (numBins > (int)std::size(binColors))
-		return binColors[bin % std::size(binColors)];
-
-	// use integer math to spread out the indices
-	int idx = bin * (std::size(binColors) - 1) / (numBins - 1);
-	return binColors[idx];
 }
 
-// Figure out if we want a light or a dark label
-QColor labelColor(int bin, size_t numBins)
-{
-	return (binColor(bin, numBins).lightness() < 150) ? lightLabelColor : darkLabelColor;
-}
+class StatsThemeLight : public StatsTheme {
+public:
+	StatsThemeLight()
+	{
+		backgroundColor = Qt::white;
+		fillColor = QColor(0x44, 0x76, 0xaa);
+		borderColor = QColor(0x66, 0xb2, 0xff);
+		selectedColor = QColor(0xaa, 0x76, 0x44);
+		selectedBorderColor = QColor(0xff, 0xb2, 0x66);
+		highlightedColor = Qt::yellow;
+		highlightedBorderColor = QColor(0xaa, 0xaa, 0x22);
+		darkLabelColor = Qt::black;
+		lightLabelColor = Qt::white;
+		axisColor = Qt::black;
+		gridColor = QColor(0xcc, 0xcc, 0xcc);
+		informationBorderColor = Qt::black;
+		informationColor = QColor(0xff, 0xff, 0x00, 192); // Note: fourth argument is opacity
+		legendColor = QColor(0x00, 0x8e, 0xcc, 192); // Note: fourth argument is opacity
+		legendBorderColor = Qt::black;
+		quartileMarkerColor = Qt::red;
+		regressionItemColor = Qt::red;
+		meanMarkerColor = Qt::green;
+		medianMarkerColor = Qt::red;
+		selectionLassoColor = Qt::black;
+		selectionOverlayColor = Qt::lightGray;
+	}
+private:
+	QString name() const
+	{
+		return StatsTranslations::tr("Light");
+	}
+
+	// Pick roughly equidistant colors out of the color set above
+	// if we need more bins than we have colors (what chart is THAT?) simply loop
+	QColor binColor(int bin, int numBins) const override
+	{
+		if (numBins == 1 || bin < 0 || bin >= numBins)
+			return fillColor;
+		if (numBins > (int)std::size(binColors))
+			return binColors[bin % std::size(binColors)];
+
+		// use integer math to spread out the indices
+		int idx = bin * (std::size(binColors) - 1) / (numBins - 1);
+		return binColors[idx];
+	}
+
+	QColor labelColor(int bin, size_t numBins) const override
+	{
+		return (binColor(bin, numBins).lightness() < 150) ? lightLabelColor : darkLabelColor;
+	}
+};
+
+static StatsThemeLight statsThemeLight;
+std::vector<const StatsTheme *> statsThemes = { &statsThemeLight };

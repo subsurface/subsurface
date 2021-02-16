@@ -2,6 +2,7 @@
 #include "regressionitem.h"
 #include "statsaxis.h"
 #include "statscolors.h"
+#include "statsview.h"
 #include "zvalues.h"
 
 #include <cmath>
@@ -11,6 +12,7 @@ static const double regressionLineWidth = 2.0;
 RegressionItem::RegressionItem(StatsView &view, regression_data reg,
 						   StatsAxis *xAxis, StatsAxis *yAxis) :
 	ChartPixmapItem(view, ChartZValue::ChartFeatures),
+	theme(view.getCurrentTheme()),
 	xAxis(xAxis), yAxis(yAxis), reg(reg),
 	regression(true), confidence(true)
 {
@@ -86,7 +88,7 @@ void RegressionItem::updatePosition()
 
 	img->fill(Qt::transparent);
 	if (confidence) {
-		QColor col(regressionItemColor);
+		QColor col(theme.regressionItemColor);
 		col.setAlphaF((float)reg.r2);
 		painter->setPen(Qt::NoPen);
 		painter->setBrush(QBrush(col));
@@ -94,7 +96,7 @@ void RegressionItem::updatePosition()
 	}
 
 	if (regression) {
-		painter->setPen(QPen(regressionItemColor, regressionLineWidth));
+		painter->setPen(QPen(theme.regressionItemColor, regressionLineWidth));
 		painter->drawLine(QPointF(linePolygon[0]), QPointF(linePolygon[1]));
 	}
 

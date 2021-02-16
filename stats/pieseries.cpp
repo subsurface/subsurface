@@ -18,7 +18,7 @@ static const double innerLabelRadius = 0.75; // 1.0 = at outer border of pie
 static const double outerLabelRadius = 1.01; // 1.0 = at outer border of pie
 
 PieSeries::Item::Item(StatsView &view, const QString &name, int from, std::vector<dive *> divesIn, int totalCount,
-		      int bin_nr, int numBins) :
+		      int bin_nr, int numBins, const StatsTheme &theme) :
 	name(name),
 	dives(std::move(divesIn)),
 	selected(allDivesSelected(dives))
@@ -43,7 +43,7 @@ PieSeries::Item::Item(StatsView &view, const QString &name, int from, std::vecto
 	innerLabel = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, innerLabelText);
 
 	outerLabel = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, name);
-	outerLabel->setColor(darkLabelColor);
+	outerLabel->setColor(theme.darkLabelColor);
 }
 
 void PieSeries::Item::updatePositions(const QPointF &center, double radius)
@@ -72,13 +72,13 @@ void PieSeries::Item::updatePositions(const QPointF &center, double radius)
 	}
 }
 
-void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, int numBins)
+void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, int numBins, const StatsTheme &theme)
 {
-	QColor fill = highlight ? highlightedColor : binColor(bin_nr, numBins);
-	QColor border = highlight ? highlightedBorderColor : ::borderColor;
+	QColor fill = highlight ? theme.highlightedColor : theme.binColor(bin_nr, numBins);
+	QColor border = highlight ? theme.highlightedBorderColor : theme.borderColor;
 	if (innerLabel)
-		innerLabel->setColor(highlight ? darkLabelColor : labelColor(bin_nr, numBins), fill);
-	item.drawSegment(angleFrom, angleTo, fill, border, selected);
+		innerLabel->setColor(highlight ? theme.darkLabelColor : theme.labelColor(bin_nr, numBins), fill);
+	item.drawSegment(angleFrom, angleTo, fill, border, selected, theme);
 }
 
 PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
@@ -147,7 +147,7 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 	for (auto it2 = sorted.begin(); it2 != it; ++it2) {
 		int count = (int)data[*it2].second.size();
 		items.emplace_back(view, data[*it2].first, act, std::move(data[*it2].second),
-				   totalCount, (int)items.size(), numBins);
+				   totalCount, (int)items.size(), numBins, theme);
 		act += count;
 	}
 
@@ -162,7 +162,7 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 				otherDives.push_back(d);
 		}
 		QString name = StatsTranslations::tr("other (%1 items)").arg(other.size());
-		items.emplace_back(view, name, act, std::move(otherDives), totalCount, (int)items.size(), numBins);
+		items.emplace_back(view, name, act, std::move(otherDives), totalCount, (int)items.size(), numBins, theme);
 	}
 }
 
@@ -181,7 +181,7 @@ void PieSeries::updatePositions()
 	int i = 0;
 	for (Item &segment: items) {
 		segment.updatePositions(center, radius);
-		segment.highlight(*item, i, i == highlighted, (int)items.size()); // Draw segment
+		segment.highlight(*item, i, i == highlighted, (int)items.size(), theme); // Draw segment
 		++i;
 	}
 }
@@ -255,7 +255,7 @@ bool PieSeries::hover(QPointF pos)
 
 	// Highlight new item (if any)
 	if (highlighted >= 0 && highlighted < (int)items.size()) {
-		items[highlighted].highlight(*item, highlighted, true, (int)items.size());
+		items[highlighted].highlight(*item, highlighted, true, (int)items.size(), theme);
 		if (!information)
 			information = view.createChartItem<InformationBox>();
 		information->setText(makeInfo(highlighted), pos);
@@ -269,7 +269,7 @@ bool PieSeries::hover(QPointF pos)
 void PieSeries::unhighlight()
 {
 	if (highlighted >= 0 && highlighted < (int)items.size())
-		items[highlighted].highlight(*item, highlighted, false, (int)items.size());
+		items[highlighted].highlight(*item, highlighted, false, (int)items.size(), theme);
 	highlighted = -1;
 }
 
@@ -314,7 +314,7 @@ void PieSeries::divesSelected(const QVector<dive *> &)
 			segment.selected = selected;
 
 			int idx = &segment - &items[0];
-			segment.highlight(*item, idx, idx == highlighted, (int)items.size());
+			segment.highlight(*item, idx, idx == highlighted, (int)items.size(), theme);
 		}
 	}
 }

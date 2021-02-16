@@ -26,7 +26,8 @@ static const double axisTitleSpaceVertical = 2.0;	// Space between labels and ti
 
 StatsAxis::StatsAxis(StatsView &view, const QString &title, bool horizontal, bool labelsBetweenTicks) :
 	ChartPixmapItem(view, ChartZValue::Axes),
-	line(view.createChartItem<ChartLineItem>(ChartZValue::Axes, axisColor, axisWidth)),
+	theme(view.getCurrentTheme()),
+	line(view.createChartItem<ChartLineItem>(ChartZValue::Axes, theme.axisColor, axisWidth)),
 	title(title), horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
 	size(1.0), zeroOnScreen(0.0), min(0.0), max(1.0), labelWidth(0.0)
 {
@@ -128,7 +129,7 @@ void StatsAxis::addLabel(const QFontMetrics &fm, const QString &label, double po
 
 void StatsAxis::addTick(double pos)
 {
-	ticks.push_back({ view.createChartItem<ChartLineItem>(ChartZValue::Axes, axisColor, axisTickWidth), pos });
+	ticks.push_back({ view.createChartItem<ChartLineItem>(ChartZValue::Axes, theme.axisColor, axisTickWidth), pos });
 }
 
 std::vector<double> StatsAxis::ticksPositions() const
@@ -190,7 +191,7 @@ void StatsAxis::setSize(double sizeIn)
 		offset = QPointF(round(offsetX), round(offsetY));
 		img->fill(Qt::transparent);
 
-		painter->setPen(QPen(darkLabelColor));
+		painter->setPen(QPen(theme.darkLabelColor));
 		painter->setFont(labelFont);
 		for (const Label &label: labels) {
 			double x = (label.pos - min) / (max - min) * size + offset.x() - round(label.width / 2.0);
@@ -219,7 +220,7 @@ void StatsAxis::setSize(double sizeIn)
 		offset = QPointF(round(offsetX), round(offsetY));
 		img->fill(Qt::transparent);
 
-		painter->setPen(QPen(darkLabelColor));
+		painter->setPen(QPen(theme.darkLabelColor));
 		painter->setFont(labelFont);
 		for (const Label &label: labels) {
 			double y = (min - label.pos) / (max - min) * size + offset.y() - round(fontHeight / 2.0);

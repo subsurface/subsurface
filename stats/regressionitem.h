@@ -5,6 +5,7 @@
 #include "chartitem.h"
 
 class StatsAxis;
+class StatsTheme;
 class StatsView;
 
 struct regression_data {
@@ -20,6 +21,7 @@ public:
 	void updatePosition();
 	void setFeatures(bool regression, bool confidence);
 private:
+	const StatsTheme &theme; // Initialized once in constructor
 	StatsAxis *xAxis, *yAxis;
 	regression_data reg;
 	bool regression, confidence;

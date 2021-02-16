@@ -20,6 +20,7 @@ struct InformationBox : ChartRectItem {
 	void setPos(QPointF pos);
 	int recommendedMaxLines() const;
 private:
+	const StatsTheme &theme; // Set once in constructor.
 	QFont font; // For future specialization.
 	double width, height;
 };
