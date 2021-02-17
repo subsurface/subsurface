@@ -108,7 +108,7 @@ fi
 
 cp debian/changelog ../changelog$SUFFIX
 
-debuild -S
+debuild -S -d
 
 #create builds for the newer Ubuntu releases that Launchpad supports
 rel=bionic
@@ -116,7 +116,7 @@ others="focal groovy"
 for next in $others
 do
 	sed -i "s/${rel}/${next}/g" debian/changelog
-	debuild -S
+	debuild -S -d
 	rel=$next
 done
 
