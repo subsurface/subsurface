@@ -382,7 +382,23 @@ struct gaschanges {
 	int gasidx;
 };
 
-static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr, int depth, int *asc_cylinder)
+// Return new setpoint if cylinderi is a setpoint change an 0 if not
+
+static int setpoint_change(struct dive *dive, int cylinderid)
+{
+	cylinder_t *cylinder = get_cylinder(dive, cylinderid);
+	if (!cylinder->type.description)
+		return 0;
+	if (!strncmp(cylinder->type.description, "SP ", 3)) {
+		float sp;
+		sscanf(cylinder->type.description + 3, "%f", &sp);
+		return (int) (sp * 1000);
+	} else {
+		return 0;
+	}
+}
+
+static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr, int depth, int *asc_cylinder, bool ccr)
 {
 	int nr = 0;
 	struct gaschanges *gaschanges = NULL;
@@ -390,7 +406,7 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 	int best_depth = get_cylinder(dive, *asc_cylinder)->depth.mm;
 	bool total_time_zero = true;
 	while (dp) {
-		if (dp->time == 0 && total_time_zero) {
+		if (dp->time == 0 && total_time_zero && (ccr == (bool) setpoint_change(dive, dp->cylinderid))) {
 			if (dp->depth.mm <= depth) {
 				int i = 0;
 				nr++;
@@ -737,12 +753,8 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	best_first_ascend_cylinder = current_cylinder;
 	/* Find the gases available for deco */
 
-	if (divemode == CCR && !prefs.dobailout) {	// Don't change gas in CCR mode
-		gaschanges = NULL;
-		gaschangenr = 0;
-	} else {
-		gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr, depth, &best_first_ascend_cylinder);
-	}
+	gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr, depth, &best_first_ascend_cylinder, divemode == CCR && !prefs.dobailout);
+
 	/* Find the first potential decostopdepth above current depth */
 	for (stopidx = 0; stopidx < decostoplevelcount; stopidx++)
 		if (*(decostoplevels + stopidx) >= depth)
@@ -929,6 +941,8 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 						previous_point_time = clock;
 						current_cylinder = gaschanges[gi].gasidx;
 						gas = get_cylinder(dive, current_cylinder)->gasmix;
+						if (divemode == CCR)
+							po2 = setpoint_change(dive, current_cylinder);
 #if DEBUG_PLAN & 16
 						printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
 							(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
@@ -983,6 +997,8 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				if (pendinggaschange) {
 					current_cylinder = gaschanges[gi + 1].gasidx;
 					gas = get_cylinder(dive, current_cylinder)->gasmix;
+					if (divemode == CCR)
+						po2 = setpoint_change(dive, current_cylinder);
 #if DEBUG_PLAN & 16
 					printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi + 1].gasidx,
 						(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi + 1].depth / 1000.0);
