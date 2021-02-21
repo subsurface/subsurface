@@ -13,7 +13,6 @@
 #include "qt-models/diveplannermodel.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/selection.h"
-#include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/diveplanner.h"
 #include "qt-models/divecomputerextradatamodel.h"
 #include "qt-models/divelocationmodel.h"
@@ -355,7 +354,7 @@ void MainTab::updateDiveInfo()
 {
 	ui.location->refreshDiveSiteCache();
 	// don't execute this while adding / planning a dive
-	if (editMode || MainWindow::instance()->graphics->isPlanner())
+	if (editMode || DivePlannerPointsModel::instance()->isPlanner())
 		return;
 
 	// If there is no current dive, disable all widgets except the last two,
