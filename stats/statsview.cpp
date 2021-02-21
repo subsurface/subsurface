@@ -54,9 +54,6 @@ StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 
 	setAcceptHoverEvents(true);
 	setAcceptedMouseButtons(Qt::LeftButton);
-
-	QFont font;
-	titleFont = QFont(font.family(), font.pointSize(), QFont::Light);	// Make configurable
 }
 
 StatsView::StatsView() : StatsView(nullptr)
@@ -470,7 +467,7 @@ void StatsView::setTitle(const QString &s)
 		// Ooops. Currently we do not support setting the title twice.
 		return;
 	}
-	title = createChartItem<ChartTextItem>(ChartZValue::Legend, titleFont, s);
+	title = createChartItem<ChartTextItem>(ChartZValue::Legend, currentTheme->titleFont, s);
 	title->setColor(currentTheme->darkLabelColor);
 }
 

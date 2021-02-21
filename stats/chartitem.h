@@ -95,7 +95,7 @@ public:
 	void setColor(const QColor &color); // Draw on transparent background
 	void setColor(const QColor &color, const QColor &background); // Fill rectangle with given background color
 private:
-	QFont f;
+	const QFont &f;
 	double fontHeight;
 	bool center;
 	struct Item {

@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <vector>
-#include <QFont>
 
 class StatsView;
 class ChartLineItem;
@@ -63,7 +62,6 @@ protected:
 	bool horizontal;
 	bool labelsBetweenTicks;	// When labels are between ticks, they can be moved closer to the axis
 
-	QFont labelFont, titleFont;
 	double size;			// width for horizontal, height for vertical
 	double zeroOnScreen;
 	QPointF offset;			// Offset of the label and title pixmap with respect to the (0,0) position.

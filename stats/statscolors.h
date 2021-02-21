@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <QColor>
+#include <QFont>
 #include <QString>
 
 class QSGTexture;
@@ -38,6 +39,13 @@ public:
 	QColor selectionOverlayColor;
 	virtual QColor binColor(int bin, int numBins) const = 0;
 	virtual QColor labelColor(int bin, size_t numBins) const = 0;
+
+	QFont axisLabelFont;
+	QFont axisTitleFont;
+	QFont informationBoxFont;
+	QFont labelFont;
+	QFont legendFont;
+	QFont titleFont;
 
 	// These are cashes for the QSG rendering engine
 	// Note: Originally these were std::unique_ptrs, which automatically
