@@ -106,7 +106,7 @@ BarSeries::~BarSeries()
 BarSeries::BarLabel::BarLabel(StatsView &view, const std::vector<QString> &labels, int bin_nr, int binCount) :
 	isOutside(false)
 {
-	QFont f; // make configurable
+	const QFont &f = view.getCurrentTheme().labelFont;
 	item = view.createChartItem<ChartTextItem>(ChartZValue::SeriesLabels, f, labels, true);
 	//highlight(false, bin_nr, binCount);
 }

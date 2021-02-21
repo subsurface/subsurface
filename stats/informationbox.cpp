@@ -21,7 +21,7 @@ InformationBox::InformationBox(StatsView &v) :
 
 void InformationBox::setText(const std::vector<QString> &text, QPointF pos)
 {
-	QFontMetrics fm(font);
+	QFontMetrics fm(theme.informationBoxFont);
 	double fontHeight = fm.height();
 
 	std::vector<double> widths;
@@ -37,6 +37,7 @@ void InformationBox::setText(const std::vector<QString> &text, QPointF pos)
 
 	ChartRectItem::resize(QSizeF(width, height));
 
+	painter->setFont(theme.informationBoxFont);
 	painter->setPen(QPen(theme.darkLabelColor)); // QPainter uses QPen to set text color!
 	double y = 2.0 * informationBorder;
 	for (size_t i = 0; i < widths.size(); ++i) {
@@ -71,7 +72,7 @@ void InformationBox::setPos(QPointF pos)
 // Try to stay within three-thirds of the chart height
 int InformationBox::recommendedMaxLines() const
 {
-	QFontMetrics fm(font);
+	QFontMetrics fm(theme.informationBoxFont);
 	int maxHeight = static_cast<int>(sceneSize().height());
 	return maxHeight * 2 / fm.height() / 3;
 }

@@ -20,11 +20,10 @@ Legend::Legend(StatsView &view, const std::vector<QString> &names) :
 		      QBrush(view.getCurrentTheme().legendColor), legendBoxBorderRadius),
 	displayedItems(0), width(0.0), height(0.0),
 	theme(view.getCurrentTheme()),
-	font(QFont()),	// Make configurable
 	posInitialized(false)
 {
 	entries.reserve(names.size());
-	QFontMetrics fm(font);
+	QFontMetrics fm(theme.legendFont);
 	fontHeight = fm.height();
 	int idx = 0;
 	for (const QString &name: names)
@@ -98,7 +97,7 @@ void Legend::resize()
 
 	// Paint labels
 	painter->setPen(theme.darkLabelColor); // QPainter uses pen not brush for text!
-	painter->setFont(font);
+	painter->setFont(theme.legendFont);
 	for (int i = 0; i < displayedItems; ++i) {
 		QPointF itemPos = entries[i].pos;
 		itemPos.rx() += fontHeight + 2.0 * legendBoxBorderSize;

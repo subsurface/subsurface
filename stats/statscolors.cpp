@@ -51,6 +51,11 @@ public:
 		medianMarkerColor = Qt::red;
 		selectionLassoColor = Qt::black;
 		selectionOverlayColor = Qt::lightGray;
+
+		// use a light version of the application font for axis labels, axis title and chart title
+		axisLabelFont.setWeight(QFont::Light);
+		axisTitleFont.setWeight(QFont::Light);
+		titleFont.setWeight(QFont::Light);
 	}
 private:
 	QString name() const
@@ -118,6 +123,11 @@ public:
 		medianMarkerColor = Qt::cyan;
 		selectionLassoColor = Qt::white;
 		selectionOverlayColor = Qt::darkGray;
+
+		// use a bold version of the application font for axis labels, axis title and chart title
+		axisLabelFont.setWeight(QFont::Bold);
+		axisTitleFont.setWeight(QFont::Bold);
+		titleFont.setWeight(QFont::Bold);
 	}
 private:
 	QString name() const

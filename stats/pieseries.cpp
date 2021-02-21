@@ -23,7 +23,7 @@ PieSeries::Item::Item(StatsView &view, const QString &name, int from, std::vecto
 	dives(std::move(divesIn)),
 	selected(allDivesSelected(dives))
 {
-	QFont f; // make configurable
+	const QFont &f = theme.labelFont;
 	QLocale loc;
 
 	int count = (int)dives.size();

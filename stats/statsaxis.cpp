@@ -31,11 +31,7 @@ StatsAxis::StatsAxis(StatsView &view, const QString &title, bool horizontal, boo
 	title(title), horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
 	size(1.0), zeroOnScreen(0.0), min(0.0), max(1.0), labelWidth(0.0)
 {
-	// use a Light version of the application font for both labels and title
-	labelFont = QFont();
-	labelFont.setWeight(QFont::Light);
-	titleFont = labelFont;
-	QFontMetrics fm(titleFont);
+	QFontMetrics fm(theme.axisTitleFont);
 	titleWidth = title.isEmpty() ? 0.0
 				     : static_cast<double>(fm.size(Qt::TextSingleLine, title).width());
 }
@@ -60,7 +56,7 @@ std::pair<double, double> StatsAxis::horizontalOverhang() const
 	// If the labels are between ticks, they cannot peak out
 	if (!horizontal || labelsBetweenTicks)
 		return { 0.0, 0.0 };
-	QFontMetrics fm(labelFont);
+	QFontMetrics fm(theme.axisLabelFont);
 	auto [firstLabel, lastLabel] = getFirstLastLabel();
 	return { fm.size(Qt::TextSingleLine, firstLabel).width() / 2.0,
 		 fm.size(Qt::TextSingleLine, lastLabel).width() / 2.0 };
@@ -79,7 +75,7 @@ void StatsAxis::setRange(double minIn, double maxIn)
 // margins.
 int StatsAxis::guessNumTicks(const std::vector<QString> &strings) const
 {
-	QFontMetrics fm(labelFont);
+	QFontMetrics fm(theme.axisLabelFont);
 	int minSize = fm.height();
 	for (const QString &s: strings) {
 		QSize labelSize = fm.size(Qt::TextSingleLine, s);
@@ -101,8 +97,8 @@ double StatsAxis::titleSpace() const
 {
 	if (title.isEmpty())
 		return 0.0;
-	return horizontal ? QFontMetrics(titleFont).height() + axisTitleSpaceHorizontal
-			  : QFontMetrics(titleFont).height() + axisTitleSpaceVertical;
+	return horizontal ? QFontMetrics(theme.axisTitleFont).height() + axisTitleSpaceHorizontal
+			  : QFontMetrics(theme.axisTitleFont).height() + axisTitleSpaceVertical;
 }
 
 double StatsAxis::width() const
@@ -117,7 +113,7 @@ double StatsAxis::height() const
 {
 	if (!horizontal)
 		return 0.0;	// Only supported for horizontal axes
-	return QFontMetrics(labelFont).height() + axisLabelSpaceHorizontal +
+	return QFontMetrics(theme.axisLabelFont).height() + axisLabelSpaceHorizontal +
 	       titleSpace() +
 	       (labelsBetweenTicks ? 0.0 : axisTickSizeHorizontal);
 }
@@ -173,7 +169,7 @@ void StatsAxis::setSize(double sizeIn)
 			labelWidth = label.width;
 	}
 
-	QFontMetrics fm(labelFont);
+	QFontMetrics fm(theme.axisLabelFont);
 	int fontHeight = fm.height();
 	if (horizontal) {
 		double pixmapWidth = size;
@@ -192,7 +188,7 @@ void StatsAxis::setSize(double sizeIn)
 		img->fill(Qt::transparent);
 
 		painter->setPen(QPen(theme.darkLabelColor));
-		painter->setFont(labelFont);
+		painter->setFont(theme.axisLabelFont);
 		for (const Label &label: labels) {
 			double x = (label.pos - min) / (max - min) * size + offset.x() - round(label.width / 2.0);
 			QRectF rect(x, 0.0, label.width, fontHeight);
@@ -202,7 +198,7 @@ void StatsAxis::setSize(double sizeIn)
 			QRectF rect(offset.x() + round((size - titleWidth) / 2.0),
 				    fontHeight + axisTitleSpaceHorizontal,
 				    titleWidth, fontHeight);
-			painter->setFont(titleFont);
+			painter->setFont(theme.axisTitleFont);
 			painter->drawText(rect, title);
 		}
 	} else {
@@ -221,7 +217,7 @@ void StatsAxis::setSize(double sizeIn)
 		img->fill(Qt::transparent);
 
 		painter->setPen(QPen(theme.darkLabelColor));
-		painter->setFont(labelFont);
+		painter->setFont(theme.axisLabelFont);
 		for (const Label &label: labels) {
 			double y = (min - label.pos) / (max - min) * size + offset.y() - round(fontHeight / 2.0);
 			QRectF rect(pixmapWidth - label.width, y, label.width, fontHeight);
@@ -230,7 +226,7 @@ void StatsAxis::setSize(double sizeIn)
 		if (!title.isEmpty()) {
 			painter->rotate(-90.0);
 			QRectF rect(round(-(offsetY + titleWidth) / 2.0), 0.0, titleWidth, fontHeight);
-			painter->setFont(titleFont);
+			painter->setFont(theme.axisTitleFont);
 			painter->drawText(rect, title);
 			painter->resetTransform();
 		}
@@ -309,7 +305,7 @@ void ValueAxis::updateLabels()
 	double act = actMin;
 	labels.reserve(num + 1);
 	ticks.reserve(num + 1);
-	QFontMetrics fm(labelFont);
+	QFontMetrics fm(theme.axisLabelFont);
 	for (int i = 0; i <= num; ++i) {
 		addLabel(fm, loc.toString(act, 'f', decimals), act);
 		addTick(act);
@@ -369,7 +365,7 @@ void CountAxis::updateLabels()
 
 	labels.reserve(max + 1);
 	ticks.reserve(max + 1);
-	QFontMetrics fm(labelFont);
+	QFontMetrics fm(theme.axisLabelFont);
 	for (int i = 0; i <= max; i += step) {
 		addLabel(fm, loc.toString(i), static_cast<double>(i));
 		addTick(static_cast<double>(i));
@@ -414,7 +410,7 @@ void CategoryAxis::updateLabels()
 	if (labelsText.empty())
 		return;
 
-	QFontMetrics fm(labelFont);
+	QFontMetrics fm(theme.axisLabelFont);
 	double size_per_label = size / static_cast<double>(labelsText.size()) - axisTickWidth;
 	double fontHeight = fm.height();
 
@@ -511,7 +507,7 @@ void HistogramAxis::updateLabels()
 	if (first != 0)
 		addTick(bin_values.front().value);
 	int last = first;
-	QFontMetrics fm(labelFont);
+	QFontMetrics fm(theme.axisLabelFont);
 	for (int i = first; i < (int)bin_values.size(); i += step) {
 		const auto &[name, value, recommended] = bin_values[i];
 		addLabel(fm, name, value);

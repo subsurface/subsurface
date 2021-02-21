@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <vector>
-#include <QFont>
 
 class QFontMetrics;
 class StatsTheme;
@@ -30,7 +29,6 @@ private:
 	double width;
 	double height;
 	const StatsTheme &theme; // Set once in constructor.
-	QFont font;
 	// The position is specified with respect to the center and in relative terms
 	// with respect to the canvas.
 	QPointF centerPos;

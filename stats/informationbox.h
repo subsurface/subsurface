@@ -8,7 +8,6 @@
 
 #include <vector>
 #include <memory>
-#include <QFont>
 
 struct dive;
 class StatsView;
@@ -21,7 +20,6 @@ struct InformationBox : ChartRectItem {
 	int recommendedMaxLines() const;
 private:
 	const StatsTheme &theme; // Set once in constructor.
-	QFont font; // For future specialization.
 	double width, height;
 };
 
