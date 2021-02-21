@@ -54,7 +54,7 @@ public:
 	QQuickWindow *w() const;			// Make window available to items
 	QSizeF size() const;
 	QRectF plotArea() const;
-	void setTheme(int idx);				// Invalid indexes will result in the default theme. Chart must be replot for theme to become effective.
+	void setTheme(bool dark);			// Chart must be replot for theme to become effective.
 	const StatsTheme &getCurrentTheme() const;
 	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
 	void registerChartItem(ChartItem &item);
