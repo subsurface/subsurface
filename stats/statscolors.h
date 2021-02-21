@@ -3,7 +3,7 @@
 #ifndef STATSCOLORS_H
 #define STATSCOLORS_H
 
-#include <vector>
+#include <memory>
 #include <QColor>
 #include <QString>
 
@@ -50,6 +50,6 @@ public:
 	mutable QSGTexture *selectedTexture = nullptr; // A checkerboard pattern.
 };
 
-extern std::vector<const StatsTheme *> statsThemes;
+extern const StatsTheme &getStatsTheme(bool dark);
 
 #endif

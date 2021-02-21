@@ -35,7 +35,7 @@ static const double selectionLassoWidth = 2.0;		// Border between title and char
 
 StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	backgroundDirty(true),
-	currentTheme(statsThemes[0]),
+	currentTheme(&getStatsTheme(false)),
 	highlightedSeries(nullptr),
 	xAxis(nullptr),
 	yAxis(nullptr),
@@ -300,10 +300,9 @@ QQuickWindow *StatsView::w() const
 	return window();
 }
 
-void StatsView::setTheme(int idx)
+void StatsView::setTheme(bool dark)
 {
-	idx = std::clamp(idx, 0, (int)statsThemes.size() - 1);
-	currentTheme = statsThemes[idx];
+	currentTheme = &getStatsTheme(dark);
 	rootNode->backgroundNode->setColor(currentTheme->backgroundColor);
 }
 

@@ -1,5 +1,7 @@
 #include "statscolors.h"
 #include "statstranslations.h"
+#include "core/globals.h"
+#include <array>
 
 // Colors created using the Chroma.js Color Palette Helper
 // https://vis4.net/palettes/#/50|d|00108c,3ed8ff,ffffe0|ffffe0,ff005e,743535|1|1
@@ -143,6 +145,16 @@ private:
 	}
 };
 
-static StatsThemeLight statsThemeLight;
-static StatsThemeDark statsThemeDark;
-std::vector<const StatsTheme *> statsThemes = { &statsThemeLight, &statsThemeDark };
+// Currently, we only support two themes: bright and dark.
+// The themes are generated on first use. Thus, the constructors are run
+// once the overall application is initialized. This ensures that the themes'
+// constructors can access the settings, etc.
+static std::array<const StatsTheme *, 2> statsThemes;
+const StatsTheme &getStatsTheme(bool dark)
+{
+	if (!statsThemes[0]) {
+		statsThemes[0] = make_global<StatsThemeLight>();
+		statsThemes[1] = make_global<StatsThemeDark>();
+	}
+	return *statsThemes[dark ? 1 : 0];
+}
