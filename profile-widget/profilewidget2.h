@@ -159,7 +159,6 @@ private:
 	void scrollViewTo(const QPoint &pos);
 	void setupSceneAndFlags();
 	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args);
-	void setupItemSizes();
 	void addItemsToScene();
 	void setupItemOnScene();
 	void disconnectTemporaryConnections();
