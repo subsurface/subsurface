@@ -58,32 +58,33 @@
  * hard coding the item on the scene with a random
  * value.
  */
-static struct _ItemPos {
-	struct _Pos {
+const static struct ItemPos {
+	struct Pos {
 		QPointF on;
 		QPointF off;
 	};
-	struct _Axis {
-		_Pos pos;
+	struct Axis {
+		Pos pos;
 		QLineF shrinked;
 		QLineF expanded;
 		QLineF intermediate;
 	};
-	_Pos background;
-	_Pos dcLabel;
-	_Pos tankBar;
-	_Axis depth;
-	_Axis partialPressure;
-	_Axis partialPressureTissue;
-	_Axis partialPressureWithTankBar;
-	_Axis percentage;
-	_Axis percentageWithTankBar;
-	_Axis time;
-	_Axis cylinder;
-	_Axis temperature;
-	_Axis temperatureAll;
-	_Axis heartBeat;
-	_Axis heartBeatWithTankBar;
+	Pos background;
+	Pos dcLabel;
+	Pos tankBar;
+	Axis depth;
+	Axis partialPressure;
+	Axis partialPressureTissue;
+	Axis partialPressureWithTankBar;
+	Axis percentage;
+	Axis percentageWithTankBar;
+	Axis time;
+	Axis cylinder;
+	Axis temperature;
+	Axis temperatureAll;
+	Axis heartBeat;
+	Axis heartBeatWithTankBar;
+	ItemPos();
 } itemPos;
 
 // Constant describing at which z-level the thumbnails are located.
@@ -154,7 +155,6 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, QWidget *
 	init_plot_info(&plotInfo);
 
 	setupSceneAndFlags();
-	setupItemSizes();
 	setupItemOnScene();
 	addItemsToScene();
 	scene()->installEventFilter(this);
@@ -372,7 +372,7 @@ PartialPressureGasItem *ProfileWidget2::createPPGas(int column, color_index_t co
 	return item;
 }
 
-void ProfileWidget2::setupItemSizes()
+ItemPos::ItemPos()
 {
 	// Scene is *always* (double) 100 / 100.
 	// Background Config
@@ -381,119 +381,119 @@ void ProfileWidget2::setupItemSizes()
 	 * Axis and everything else is auto-adjusted.*
 	 */
 
-	itemPos.background.on.setX(0);
-	itemPos.background.on.setY(0);
-	itemPos.background.off.setX(0);
-	itemPos.background.off.setY(110);
+	background.on.setX(0);
+	background.on.setY(0);
+	background.off.setX(0);
+	background.off.setY(110);
 
 	//Depth Axis Config
-	itemPos.depth.pos.on.setX(3);
-	itemPos.depth.pos.on.setY(3);
-	itemPos.depth.pos.off.setX(-2);
-	itemPos.depth.pos.off.setY(3);
-	itemPos.depth.expanded.setP1(QPointF(0, 0));
+	depth.pos.on.setX(3);
+	depth.pos.on.setY(3);
+	depth.pos.off.setX(-2);
+	depth.pos.off.setY(3);
+	depth.expanded.setP1(QPointF(0, 0));
 #ifndef SUBSURFACE_MOBILE
-	itemPos.depth.expanded.setP2(QPointF(0, 85));
+	depth.expanded.setP2(QPointF(0, 85));
 #else
-	itemPos.depth.expanded.setP2(QPointF(0, 65));
+	depth.expanded.setP2(QPointF(0, 65));
 #endif
-	itemPos.depth.shrinked.setP1(QPointF(0, 0));
-	itemPos.depth.shrinked.setP2(QPointF(0, 55));
-	itemPos.depth.intermediate.setP1(QPointF(0, 0));
-	itemPos.depth.intermediate.setP2(QPointF(0, 65));
+	depth.shrinked.setP1(QPointF(0, 0));
+	depth.shrinked.setP2(QPointF(0, 55));
+	depth.intermediate.setP1(QPointF(0, 0));
+	depth.intermediate.setP2(QPointF(0, 65));
 
 	// Time Axis Config
-	itemPos.time.pos.on.setX(3);
+	time.pos.on.setX(3);
 #ifndef SUBSURFACE_MOBILE
-	itemPos.time.pos.on.setY(95);
+	time.pos.on.setY(95);
 #else
-	itemPos.time.pos.on.setY(89.5);
+	time.pos.on.setY(89.5);
 #endif
-	itemPos.time.pos.off.setX(3);
-	itemPos.time.pos.off.setY(110);
-	itemPos.time.expanded.setP1(QPointF(0, 0));
-	itemPos.time.expanded.setP2(QPointF(94, 0));
+	time.pos.off.setX(3);
+	time.pos.off.setY(110);
+	time.expanded.setP1(QPointF(0, 0));
+	time.expanded.setP2(QPointF(94, 0));
 
 	// Partial Gas Axis Config
-	itemPos.partialPressure.pos.on.setX(97);
+	partialPressure.pos.on.setX(97);
 #ifndef SUBSURFACE_MOBILE
-	itemPos.partialPressure.pos.on.setY(75);
+	partialPressure.pos.on.setY(75);
 #else
-	itemPos.partialPressure.pos.on.setY(70);
+	partialPressure.pos.on.setY(70);
 #endif
-	itemPos.partialPressure.pos.off.setX(110);
-	itemPos.partialPressure.pos.off.setY(63);
-	itemPos.partialPressure.expanded.setP1(QPointF(0, 0));
+	partialPressure.pos.off.setX(110);
+	partialPressure.pos.off.setY(63);
+	partialPressure.expanded.setP1(QPointF(0, 0));
 #ifndef SUBSURFACE_MOBILE
-	itemPos.partialPressure.expanded.setP2(QPointF(0, 19));
+	partialPressure.expanded.setP2(QPointF(0, 19));
 #else
-	itemPos.partialPressure.expanded.setP2(QPointF(0, 20));
+	partialPressure.expanded.setP2(QPointF(0, 20));
 #endif
-	itemPos.partialPressureWithTankBar = itemPos.partialPressure;
-	itemPos.partialPressureWithTankBar.expanded.setP2(QPointF(0, 17));
-	itemPos.partialPressureTissue = itemPos.partialPressure;
-	itemPos.partialPressureTissue.pos.on.setX(97);
-	itemPos.partialPressureTissue.pos.on.setY(65);
-	itemPos.partialPressureTissue.expanded.setP2(QPointF(0, 16));
+	partialPressureWithTankBar = partialPressure;
+	partialPressureWithTankBar.expanded.setP2(QPointF(0, 17));
+	partialPressureTissue = partialPressure;
+	partialPressureTissue.pos.on.setX(97);
+	partialPressureTissue.pos.on.setY(65);
+	partialPressureTissue.expanded.setP2(QPointF(0, 16));
 
 	// cylinder axis config
-	itemPos.cylinder.pos.on.setX(3);
-	itemPos.cylinder.pos.on.setY(20);
-	itemPos.cylinder.pos.off.setX(-10);
-	itemPos.cylinder.pos.off.setY(20);
-	itemPos.cylinder.expanded.setP1(QPointF(0, 15));
-	itemPos.cylinder.expanded.setP2(QPointF(0, 50));
-	itemPos.cylinder.shrinked.setP1(QPointF(0, 0));
-	itemPos.cylinder.shrinked.setP2(QPointF(0, 20));
-	itemPos.cylinder.intermediate.setP1(QPointF(0, 0));
-	itemPos.cylinder.intermediate.setP2(QPointF(0, 20));
+	cylinder.pos.on.setX(3);
+	cylinder.pos.on.setY(20);
+	cylinder.pos.off.setX(-10);
+	cylinder.pos.off.setY(20);
+	cylinder.expanded.setP1(QPointF(0, 15));
+	cylinder.expanded.setP2(QPointF(0, 50));
+	cylinder.shrinked.setP1(QPointF(0, 0));
+	cylinder.shrinked.setP2(QPointF(0, 20));
+	cylinder.intermediate.setP1(QPointF(0, 0));
+	cylinder.intermediate.setP2(QPointF(0, 20));
 
 	// Temperature axis config
-	itemPos.temperature.pos.on.setX(3);
-	itemPos.temperature.pos.off.setX(-10);
-	itemPos.temperature.pos.off.setY(40);
-	itemPos.temperature.expanded.setP1(QPointF(0, 20));
-	itemPos.temperature.expanded.setP2(QPointF(0, 33));
-	itemPos.temperature.shrinked.setP1(QPointF(0, 2));
-	itemPos.temperature.shrinked.setP2(QPointF(0, 12));
+	temperature.pos.on.setX(3);
+	temperature.pos.off.setX(-10);
+	temperature.pos.off.setY(40);
+	temperature.expanded.setP1(QPointF(0, 20));
+	temperature.expanded.setP2(QPointF(0, 33));
+	temperature.shrinked.setP1(QPointF(0, 2));
+	temperature.shrinked.setP2(QPointF(0, 12));
 #ifndef SUBSURFACE_MOBILE
-	itemPos.temperature.pos.on.setY(60);
-	itemPos.temperatureAll.pos.on.setY(51);
-	itemPos.temperature.intermediate.setP1(QPointF(0, 2));
-	itemPos.temperature.intermediate.setP2(QPointF(0, 12));
+	temperature.pos.on.setY(60);
+	temperatureAll.pos.on.setY(51);
+	temperature.intermediate.setP1(QPointF(0, 2));
+	temperature.intermediate.setP2(QPointF(0, 12));
 #else
-	itemPos.temperature.pos.on.setY(51);
-	itemPos.temperatureAll.pos.on.setY(47);
-	itemPos.temperature.intermediate.setP1(QPointF(0, 2));
-	itemPos.temperature.intermediate.setP2(QPointF(0, 12));
+	temperature.pos.on.setY(51);
+	temperatureAll.pos.on.setY(47);
+	temperature.intermediate.setP1(QPointF(0, 2));
+	temperature.intermediate.setP2(QPointF(0, 12));
 #endif
 
 	// Heart rate axis config
-	itemPos.heartBeat.pos.on.setX(3);
-	itemPos.heartBeat.pos.on.setY(82);
-	itemPos.heartBeat.expanded.setP1(QPointF(0, 0));
-	itemPos.heartBeat.expanded.setP2(QPointF(0, 10));
-	itemPos.heartBeatWithTankBar = itemPos.heartBeat;
-	itemPos.heartBeatWithTankBar.expanded.setP2(QPointF(0, 7));
+	heartBeat.pos.on.setX(3);
+	heartBeat.pos.on.setY(82);
+	heartBeat.expanded.setP1(QPointF(0, 0));
+	heartBeat.expanded.setP2(QPointF(0, 10));
+	heartBeatWithTankBar = heartBeat;
+	heartBeatWithTankBar.expanded.setP2(QPointF(0, 7));
 
 	// Percentage axis config
-	itemPos.percentage.pos.on.setX(3);
-	itemPos.percentage.pos.on.setY(80);
-	itemPos.percentage.expanded.setP1(QPointF(0, 0));
-	itemPos.percentage.expanded.setP2(QPointF(0, 15));
-	itemPos.percentageWithTankBar = itemPos.percentage;
-	itemPos.percentageWithTankBar.expanded.setP2(QPointF(0, 11.9));
+	percentage.pos.on.setX(3);
+	percentage.pos.on.setY(80);
+	percentage.expanded.setP1(QPointF(0, 0));
+	percentage.expanded.setP2(QPointF(0, 15));
+	percentageWithTankBar = percentage;
+	percentageWithTankBar.expanded.setP2(QPointF(0, 11.9));
 
-	itemPos.dcLabel.on.setX(3);
-	itemPos.dcLabel.on.setY(100);
-	itemPos.dcLabel.off.setX(-10);
-	itemPos.dcLabel.off.setY(100);
+	dcLabel.on.setX(3);
+	dcLabel.on.setY(100);
+	dcLabel.off.setX(-10);
+	dcLabel.off.setY(100);
 
-	itemPos.tankBar.on.setX(0);
+	tankBar.on.setX(0);
 #ifndef SUBSURFACE_MOBILE
-	itemPos.tankBar.on.setY(91.95);
+	tankBar.on.setY(91.95);
 #else
-	itemPos.tankBar.on.setY(86.4);
+	tankBar.on.setY(86.4);
 #endif
 }
 
