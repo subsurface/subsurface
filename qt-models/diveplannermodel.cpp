@@ -334,8 +334,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 					cylinders.updateBestMixes();
 			}
 			break;
-		case RUNTIME:
-		{
+		case RUNTIME: {
 			int secs = value.toInt() * 60;
 			i = index.row();
 			int duration = secs;
@@ -348,10 +347,9 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			while (++i < divepoints.size())
 				if (divepoints[i].time < divepoints[i - 1].time + 10)
 					divepoints[i].time = divepoints[i - 1].time + 10;
-		}
 			break;
-		case DURATION:
-		{
+		}
+		case DURATION: {
 				int secs = value.toInt() * 60;
 				if (!secs)
 					secs = 10;
@@ -362,14 +360,15 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 					shift = divepoints[i].time - secs;
 				while (i < divepoints.size())
 					divepoints[i++].time -= shift;
-		}
 				break;
+		}
 		case CCSETPOINT: {
 			int po2 = 0;
 			QByteArray gasv = value.toByteArray();
 			if (validate_po2(gasv.data(), &po2))
 				p.setpoint = po2;
-		} break;
+			break;
+		}
 		case GAS:
 			if (value.toInt() >= 0)
 				p.cylinderid = value.toInt();
@@ -537,7 +536,7 @@ void DivePlannerPointsModel::setRebreatherMode(int mode)
 {
 	int i;
 	d->dc.divemode = (divemode_t) mode;
-	for (i=0; i < rowCount(); i++) {
+	for (i = 0; i < rowCount(); i++) {
 		divepoints[i].setpoint = mode == CCR ? prefs.defaultsetpoint : 0;
 		divepoints[i].divemode = (enum divemode_t) mode;
 	}
