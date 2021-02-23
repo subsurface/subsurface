@@ -1,3 +1,5 @@
+- planner: allow automatic setpoint changes at specified depths in CCR mode
+- core: fix OTU und CNS calculations for CCR dives at shallow depths
 - desktop: make selection of multiple dives reasonable fast
 - mobile: add GF fields to adjust Buhlmann algorithm parameters for calculated ceiling
 - undo: save to git after editing weights [#3159]
