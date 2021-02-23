@@ -41,7 +41,6 @@ public:
 	bool isPlanner() const;
 	void createSimpleDive(struct dive *d);
 	Mode currentMode() const;
-	bool setRecalc(bool recalc);
 	bool recalcQ() const;
 	bool tankInUse(int cylinderid) const;
 	CylindersModel *cylindersModel();
