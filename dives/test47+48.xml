@@ -2,11 +2,11 @@
 <settings>
 </settings>
 <divesites>
-<site uuid='15ae02d0' name='Test dive'>
+<site uuid='15ae02d1' name='Test dive'>
 </site>
 </divesites>
 <dives>
-<dive number='1' tags='test' divesiteid='15ae02d0' date='2015-10-01' time='08:00:25' duration='46:00 min'>
+<dive number='1' cns='2%' tags='test' divesiteid='15ae02d1' date='2015-10-01' time='08:00:25' duration='46:00 min'>
   <cylinder size='11.1 l' workpressure='207.0 bar' description='unknown' />
   <divecomputer model='do not care' date='2015-10-05' time='08:45:25'>
   <depth max='13.716 m' mean='10.595 m' />

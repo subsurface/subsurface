@@ -34,7 +34,7 @@
   <depth max='24.9 m' mean='20.1 m' />
   </divecomputer>
 </dive>
-<dive number='417' otu='135' cns='54%' divesiteid='deadbeef' date='2015-05-23' time='13:23:00' duration='100:00 min'>
+<dive number='417' otu='138' cns='54%' divesiteid='deadbeef' date='2015-05-23' time='13:23:00' duration='100:00 min'>
   <notes>{\rtf1\ansi\ansicpg1252\deff0\deflang1035{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}
 \viewkind4\uc1\pard\f0\fs17\par
 }</notes>

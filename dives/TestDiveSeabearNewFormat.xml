@@ -211,7 +211,7 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive number='3' otu='13' cns='7%' date='2012-10-01' time='06:49:00' duration='16:25 min'>
+<dive number='3' otu='14' cns='8%' date='2012-10-01' time='06:49:00' duration='16:25 min'>
   <divecomputer model='Seabear H3' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
@@ -418,7 +418,7 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive number='4' otu='13' cns='14%' date='2012-10-01' time='07:07:00' duration='16:17 min'>
+<dive number='4' otu='14' cns='16%' date='2012-10-01' time='07:07:00' duration='16:17 min'>
   <divecomputer model='Seabear H3' deviceid='ffffffff' dctype='Freedive'>
   <depth max='70.1 m' mean='33.197 m' />
   <temperature water='25.0 C' />
@@ -1351,7 +1351,7 @@
   <sample time='16:24 min' depth='0.1 m' />
   </divecomputer>
 </dive>
-<dive number='5' otu='13' cns='21%' date='2012-10-01' time='07:24:00' duration='16:25 min'>
+<dive number='5' otu='14' cns='24%' date='2012-10-01' time='07:24:00' duration='16:25 min'>
   <divecomputer model='Seabear H3' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
@@ -1973,7 +1973,7 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive number='3' otu='13' cns='12%' date='2012-10-01' time='06:49:00' duration='16:25 min'>
+<dive number='3' otu='14' cns='12%' date='2012-10-01' time='06:49:00' duration='16:25 min'>
   <divecomputer model='Seabear T1' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
@@ -2180,7 +2180,7 @@
   <sample time='17:15 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive number='4' otu='13' cns='19%' date='2012-10-01' time='07:07:00' duration='16:17 min'>
+<dive number='4' otu='14' cns='20%' date='2012-10-01' time='07:07:00' duration='16:17 min'>
   <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='Freedive'>
   <depth max='70.1 m' mean='33.197 m' />
   <temperature water='24.0 C' />
@@ -3113,7 +3113,7 @@
   <sample time='16:24 min' depth='0.1 m' />
   </divecomputer>
 </dive>
-<dive number='5' otu='13' cns='26%' date='2012-10-01' time='07:24:00' duration='16:25 min'>
+<dive number='5' otu='14' cns='28%' date='2012-10-01' time='07:24:00' duration='16:25 min'>
   <divecomputer model='Seabear T1' deviceid='ffffffff'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />

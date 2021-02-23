@@ -109,12 +109,14 @@ static int calculate_otu(const struct dive *dive)
 			po2f = sample->o2sensor[0].mbar;	// ... use data from the first o2 sensor
 		} else {
 			if (dc->divemode == CCR) {
-				po2i = psample->setpoint.mbar;		// if CCR has no o2 sensors then use setpoint
-				po2f = sample->setpoint.mbar;
+				po2i = MIN((int) psample->setpoint.mbar,
+					   depth_to_mbar(psample->depth.mm, dive));		// if CCR has no o2 sensors then use setpoint
+				po2f = MIN((int) sample->setpoint.mbar,
+					   depth_to_mbar(sample->depth.mm, dive));
 			} else {						// For OC and rebreather without o2 sensor/setpoint
 				int o2 = active_o2(dive, dc, psample->time);	// 	... calculate po2 from depth and FiO2.
-				po2i = lrint(o2 * depth_to_atm(psample->depth.mm, dive));	// (initial) po2 at start of segment
-				po2f = lrint(o2 * depth_to_atm(sample->depth.mm, dive));	// (final) po2 at end of segment
+				po2i = lrint(o2 * depth_to_bar(psample->depth.mm, dive));	// (initial) po2 at start of segment
+				po2f = lrint(o2 * depth_to_bar(sample->depth.mm, dive));	// (final) po2 at end of segment
 			}
 		}
 		if ((po2i > 500) || (po2f > 500)) {			// If PO2 in segment is above 500 mbar then calculate otu
@@ -164,14 +166,16 @@ static double calculate_cns_dive(const struct dive *dive)
 			trueo2 = true;
 		}
 		if ((dc->divemode == CCR) && (!trueo2)) {
-			po2i = psample->setpoint.mbar;		// if CCR has no o2 sensors then use setpoint
-			po2f = sample->setpoint.mbar;
+			po2i = MIN((int) psample->setpoint.mbar,
+				   depth_to_mbar(psample->depth.mm, dive));		// if CCR has no o2 sensors then use setpoint
+			po2f = MIN((int) sample->setpoint.mbar,
+				   depth_to_mbar(sample->depth.mm, dive));
 			trueo2 = true;
 		}
 		if (!trueo2) {
 			int o2 = active_o2(dive, dc, psample->time);			// For OC and rebreather without o2 sensor:
-			po2i = lrint(o2 * depth_to_atm(psample->depth.mm, dive));	// (initial) po2 at start of segment
-			po2f = lrint(o2 * depth_to_atm(sample->depth.mm, dive));	// (final) po2 at end of segment
+			po2i = lrint(o2 * depth_to_bar(psample->depth.mm, dive));	// (initial) po2 at start of segment
+			po2f = lrint(o2 * depth_to_bar(sample->depth.mm, dive));	// (final) po2 at end of segment
 		}
 		po2i = (po2i + po2f) / 2;	// po2i now holds the mean po2 of initial and final po2 values of segment.
 		/* Don't increase CNS when po2 below 500 matm */

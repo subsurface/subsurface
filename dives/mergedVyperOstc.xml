@@ -6,7 +6,7 @@
 <divesites>
 </divesites>
 <dives>
-<dive number='1' otu='52' cns='22%' date='2017-02-03' time='06:58:00' duration='72:00 min'>
+<dive number='1' otu='53' cns='22%' date='2017-02-03' time='06:58:00' duration='72:00 min'>
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' />
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='32.0%' />
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='31.0%' />
@@ -103,7 +103,7 @@
   <sample time='76:56 min' depth='0.01 m' ndl='0:00 min' cns='0%' />
   </divecomputer>
 </dive>
-<dive number='2' otu='39' cns='22%' date='2017-02-03' time='10:24:00' duration='66:00 min'>
+<dive number='2' otu='40' cns='22%' date='2017-02-03' time='10:24:00' duration='66:00 min'>
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' />
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='32.0%' />
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='31.0%' />
@@ -194,7 +194,7 @@
   <sample time='70:46 min' depth='0.0 m' ndl='0:00 min' cns='0%' />
   </divecomputer>
 </dive>
-<dive number='1' sac='9.026 l/min' otu='53' cns='17%' date='2017-02-03' time='06:59:41' duration='71:40 min'>
+<dive number='1' sac='9.026 l/min' otu='54' cns='17%' date='2017-02-03' time='06:59:41' duration='71:40 min'>
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='32.0%' />
   <divecomputer model='Suunto Vyper Air' deviceid='11223344' diveid='c51cb31b'>
   <depth max='26.72 m' mean='16.837 m' />
@@ -420,7 +420,7 @@
   <sample time='71:40 min' depth='1.5 m' pressure='53.05 bar' cns='0%' />
   </divecomputer>
 </dive>
-<dive number='2' sac='9.173 l/min' otu='40' cns='17%' date='2017-02-03' time='10:25:16' duration='65:40 min'>
+<dive number='2' sac='9.173 l/min' otu='41' cns='17%' date='2017-02-03' time='10:25:16' duration='65:40 min'>
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='32.0%' />
   <divecomputer model='Suunto Vyper Air' deviceid='20993833' diveid='5372ae57'>
   <depth max='27.8 m' mean='14.594 m' />
