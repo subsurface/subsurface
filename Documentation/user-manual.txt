@@ -4214,6 +4214,12 @@ CCR dive, add a one-minute dive segment to the end with a setpoint value of 0. T
 algorithm does not switch deco-gases automatically while in CCR mode (i.e. when a positive setpoint is specified) but
 this is calculated for bail out ascents.
 
+If you want the setpoint to change during the planned ascent at a specified depth, you can do this 
+using a "fake" cylinder that you add to the gas list: Give that cylinder a name of "SP 1.4" (or use
+a different number) and set the "Deco switch value" to the depth at which you want to set the new
+setpoint. This will make the planner stop at the specified depth and use the new setpoint from
+there on.
+
 The dive profile for a CCR dive may look something like the image below.
 
 image::images/Planner_CCR.jpg["FIGURE: Planning a CCR dive: setup",align="center"]
