@@ -5,7 +5,7 @@
 <divesites>
 </divesites>
 <dives>
-<dive number='1' sac='11.046 l/min' otu='45' cns='15%' date='2013-02-02' time='16:14:08' duration='59:20 min'>
+<dive number='1' sac='11.046 l/min' otu='46' cns='15%' date='2013-02-02' time='16:14:08' duration='59:20 min'>
   <notes>Notes are here</notes>
   <cylinder size='12.0 l' o2='33.0%' start='205.11 bar' />
   <divecomputer model='Vyper Air' deviceid='013749e4'>
@@ -194,7 +194,7 @@
   <sample time='59:20 min' depth='1.88 m' pressure='53.87 bar' />
   </divecomputer>
 </dive>
-<dive number='2' sac='11.298 l/min' otu='32' cns='11%' tags='boat, photography, tag' date='2013-02-02' time='13:44:21' duration='61:00 min'>
+<dive number='2' sac='11.298 l/min' otu='33' cns='12%' tags='boat, photography, tag' date='2013-02-02' time='13:44:21' duration='61:00 min'>
   <notes>Testing notes</notes>
   <cylinder size='12.0 l' o2='33.0%' start='209.04 bar' />
   <divecomputer model='Vyper Air' deviceid='013749e4'>
@@ -388,7 +388,7 @@
   <sample time='61:00 min' depth='1.67 m' pressure='72.34 bar' />
   </divecomputer>
 </dive>
-<dive number='3' sac='10.109 l/min' otu='41' cns='15%' date='2013-02-02' time='10:53:54' duration='66:00 min'>
+<dive number='3' sac='10.109 l/min' otu='42' cns='15%' date='2013-02-02' time='10:53:54' duration='66:00 min'>
   <notes>Dive notes</notes>
   <cylinder size='12.0 l' o2='33.0%' start='212.74 bar' />
   <divecomputer model='Vyper Air' deviceid='013749e4'>
@@ -597,7 +597,7 @@
   <sample time='66:00 min' depth='2.43 m' />
   </divecomputer>
 </dive>
-<dive number='4' sac='10.260 l/min' otu='48' cns='17%' date='2013-02-02' time='08:21:50' duration='60:40 min'>
+<dive number='4' sac='10.260 l/min' otu='49' cns='18%' date='2013-02-02' time='08:21:50' duration='60:40 min'>
   <notes>Notes test</notes>
   <cylinder size='12.0 l' o2='33.0%' start='194.74 bar' />
   <divecomputer model='Vyper Air' deviceid='013749e4'>

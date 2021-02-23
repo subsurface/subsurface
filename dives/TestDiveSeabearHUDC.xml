@@ -4,7 +4,7 @@
 <divesites>
 </divesites>
 <dives>
-<dive otu='3' cns='1%' date='2009-10-10' time='05:32:41' duration='7:32 min'>
+<dive otu='4' cns='1%' date='2009-10-10' time='05:32:41' duration='7:32 min'>
   <divecomputer model='DC text' deviceid='ffffffff'>
   <depth max='40.0 m' mean='22.32 m' />
   <temperature water='1.0 C' />

@@ -5,7 +5,7 @@
 <divesites>
 </divesites>
 <dives>
-<dive number='1' otu='45' cns='15%' date='2013-02-02' time='16:14:08' duration='59:20 min'>
+<dive number='1' otu='46' cns='15%' date='2013-02-02' time='16:14:08' duration='59:20 min'>
   <notes>Notes are here</notes>
   <cylinder workpressure='200.0 bar' o2='33.0%' start='205.11 bar' />
   <divecomputer>
