@@ -221,13 +221,13 @@ bool DivePlannerPointsModel::updateMaxDepth()
 
 void DivePlannerPointsModel::removeDeco()
 {
-	bool oldrec = setRecalc(false);
+	bool oldrec = std::exchange(recalc, false);
 	QVector<int> computedPoints;
 	for (int i = 0; i < rowCount(); i++)
 		if (!at(i).entered)
 			computedPoints.push_back(i);
 	removeSelectedPoints(computedPoints);
-	setRecalc(oldrec);
+	recalc = oldrec;
 }
 
 void DivePlannerPointsModel::addCylinder_clicked()
@@ -253,13 +253,6 @@ bool DivePlannerPointsModel::isPlanner() const
 
 /* When the planner adds deco stops to the model, adding those should not trigger a new deco calculation.
  * We thus start the planner only when recalc is true. */
-
-bool DivePlannerPointsModel::setRecalc(bool rec)
-{
-	bool old = recalc;
-	recalc = rec;
-	return old;
-}
 
 bool DivePlannerPointsModel::recalcQ() const
 {
@@ -456,7 +449,7 @@ DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTable
 	d(nullptr),
 	cylinders(true),
 	mode(NOTHING),
-	recalc(false)
+	recalc(true)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
 	startTime.setTimeSpec(Qt::UTC);
@@ -996,14 +989,14 @@ bool DivePlannerPointsModel::tankInUse(int cylinderid) const
 
 void DivePlannerPointsModel::clear()
 {
-	bool oldRecalc = setRecalc(false);
+	bool oldrec = std::exchange(recalc, false);
 
 	beginResetModel();
 	divepoints.clear();
 	endResetModel();
 	cylinders.clear();
 	preserved_until.seconds = 0;
-	setRecalc(oldRecalc);
+	recalc = oldrec;
 }
 
 void DivePlannerPointsModel::createTemporaryPlan()
@@ -1240,7 +1233,6 @@ finish:
 	free(save);
 	free(cache);
 	free(dive);
-//	setRecalc(oldRecalc);
 }
 
 void DivePlannerPointsModel::computeVariationsDone(QString variations)
@@ -1255,10 +1247,10 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 {
 	// Ok, so, here the diveplan creates a dive
 	struct deco_state *cache = NULL;
-	bool oldRecalc = setRecalc(false);
+	bool oldrec = std::exchange(recalc, false);
 	removeDeco();
 	createTemporaryPlan();
-	setRecalc(oldRecalc);
+	recalc = oldrec;
 
 	//TODO: C-based function here?
 	struct decostop stoptable[60];
