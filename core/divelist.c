@@ -104,7 +104,7 @@ static int calculate_otu(const struct dive *dive)
 		struct sample *sample = dc->sample + i;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		if (sample->o2sensor[0].mbar) {			// if dive computer has o2 sensor(s) (CCR & PSCR) ..
+		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample->o2sensor[0].mbar) {	// if dive computer has o2 sensor(s) (CCR & PSCR) ..
 			po2i = psample->o2sensor[0].mbar;
 			po2f = sample->o2sensor[0].mbar;	// ... use data from the first o2 sensor
 		} else {
@@ -160,7 +160,7 @@ static double calculate_cns_dive(const struct dive *dive)
 		struct sample *sample = dc->sample + n;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		if (sample->o2sensor[0].mbar) {			// if dive computer has o2 sensor(s) (CCR & PSCR)
+		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample->o2sensor[0].mbar) {			// if dive computer has o2 sensor(s) (CCR & PSCR)
 			po2i = psample->o2sensor[0].mbar;
 			po2f = sample->o2sensor[0].mbar;	// then use data from the first o2 sensor
 			trueo2 = true;
@@ -177,13 +177,13 @@ static double calculate_cns_dive(const struct dive *dive)
 			po2i = lrint(o2 * depth_to_bar(psample->depth.mm, dive));	// (initial) po2 at start of segment
 			po2f = lrint(o2 * depth_to_bar(sample->depth.mm, dive));	// (final) po2 at end of segment
 		}
-		po2i = (po2i + po2f) / 2;	// po2i now holds the mean po2 of initial and final po2 values of segment.
+		int po2avg = (po2i + po2f) / 2;	// po2i now holds the mean po2 of initial and final po2 values of segment.
 		/* Don't increase CNS when po2 below 500 matm */
-		if (po2i <= 500)
+		if (po2avg <= 500)
 			continue;
 
 		// This formula is the result of fitting two lines to the Log of the NOAA CNS table
-		rate = po2i <= 1500 ? exp(-11.7853 + 0.00193873 * po2i) : exp(-23.6349 + 0.00980829 * po2i);
+		rate = po2i <= 1500 ? exp(-11.7853 + 0.00193873 * po2avg) : exp(-23.6349 + 0.00980829 * po2avg);
 		cns += (double) t * rate * 100.0;
 	}
 	return cns;
