@@ -1813,8 +1813,6 @@ void ProfileWidget2::keyDownAction()
 	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	bool oldRecalc = plannerModel->setRecalc(false);
-
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handleIndex(handler);
@@ -1824,8 +1822,6 @@ void ProfileWidget2::keyDownAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
-	plannerModel->setRecalc(oldRecalc);
-	replot();
 }
 
 void ProfileWidget2::keyUpAction()
@@ -1833,7 +1829,6 @@ void ProfileWidget2::keyUpAction()
 	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handleIndex(handler);
@@ -1846,8 +1841,6 @@ void ProfileWidget2::keyUpAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
-	plannerModel->setRecalc(oldRecalc);
-	replot();
 }
 
 void ProfileWidget2::keyLeftAction()
@@ -1855,7 +1848,6 @@ void ProfileWidget2::keyLeftAction()
 	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handleIndex(handler);
@@ -1868,8 +1860,6 @@ void ProfileWidget2::keyLeftAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
-	plannerModel->setRecalc(oldRecalc);
-	replot();
 }
 
 void ProfileWidget2::keyRightAction()
@@ -1877,7 +1867,6 @@ void ProfileWidget2::keyRightAction()
 	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
 		return;
 
-	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handleIndex(handler);
@@ -1887,8 +1876,6 @@ void ProfileWidget2::keyRightAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
-	plannerModel->setRecalc(oldRecalc);
-	replot();
 }
 
 void ProfileWidget2::keyDeleteAction()
