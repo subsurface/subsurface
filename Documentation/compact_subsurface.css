@@ -69,12 +69,12 @@ body                        { font-family: Verdana, sans-serif; }
 #footer                     { font-size: 0.8em; }
 
 h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
-h2                          { font-size: 1.5em; }
+h2                          { font-size: 160%; }
 .sectionbody                { font-size: 0.85em; }
 .sectionbody .sectionbody   { font-size: inherit; }
-h3                          { font-size: 159%; } /* 1.35em */
-h4                          { font-size: 141%; } /* 1.2em */
-h5                          { font-size: 118%; } /* 1em */
+h3                          { font-size: 150%; } /* 1.35em */
+h4                          { font-size: 140%; } /* 1.2em */
+h5                          { font-size: 130%; } /* 1em */
 .title                      { font-size: 106%;   /* 0.9em */
 			      font-weight: bold;
 			    }
