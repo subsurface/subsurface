@@ -496,10 +496,9 @@ and the dives during the last six months.
 [[S_Stats]]
 == Dive Statistics
 
-[width="100%", frame="None"]
+[width="100%", frame="None", cols="2,3"]
 |===
 a|image::mobile-images/StatsPanel.jpg["Image: Statistics panel",float="left"] |
-
 Creating meaningful statistics that convey the information you are looking for is surprisingly hard.
 Different users have very different needs and very different expectations. Subsurface-Mobile provides
 a rather detailed set of statistics features to summarise information from the dive log in a graphical
@@ -515,7 +514,6 @@ The Statistics tool has two panels (image on left):
 2. The graph that has been requested (bottom).
 
 |===
-
 
 [[S_Stats_Intro]]
 ****
@@ -541,7 +539,7 @@ then you would select "Max. depth" as the variable on the horizontal axis (see i
 along the horizontal axis is also called the "base variable", the "X-axis variable" or the "independent
 variable": it defines the basic units or categories used for analysis.
 
-image::mobile-images/StatsGraphAxes.jpg["Example: Statistics graph axes",align="center"]
+image::mobile-images/StatsGraphAxes.jpg["Example: Statistics graph axes",align="left"]
 
 c) Which variable should be displayed along the left-hand vertical axis of the graph? This is the variable
 that you are primarily interested in. In some cases this could just be a count such as "No. of dives".
@@ -565,7 +563,7 @@ temperature for each dive is indicated (the red marks are explained below). Imag
 depth intervals. However, in this case the minimum, maximum, mean, upper quartile and lower quartile are shown
 for each depth class. 
 
-image::mobile-images/StatsGraphOptions.jpg["Statistics graph options",align="center"]
+image::mobile-images/StatsGraphOptions.jpg["Statistics graph options",align="left"]
 
 The point of the discussion above is to show that, _before initiating a graph, you need to think carefully
 about what you want Subsurface to show_, at least keeping the above four aspects in consideration.
@@ -595,7 +593,7 @@ when selecting "Chart type" the heading of the submenu should show either _Barch
 in the case of categorical variables, and _histogram_ or _scattergraph_ in the case of continuous variables.
 Subsurface-Mobile helps by showing a yellow triangle for graph types likely to be inappropriate (Image C).
 
-image::mobile-images/StatsDataTypes.jpg["Statistics: bar-charts of continuous and categorical data types",align="center"]
+image::mobile-images/StatsDataTypes.jpg["Statistics: bar-charts of continuous and categorical data types",align="left"]
 
 ****
 
@@ -615,7 +613,7 @@ the image below shows the horizontal bar-chart produced when selecting "Categori
 using the same dataset as in graph B in the image above. With the axes rotated there is much more horizontal space for showing
 the relatively long label for each bar in the chart.
 
-image::mobile-images/StatsBarchartRotated.jpg["Stats rotated barchart",align="center"]
+image::mobile-images/StatsBarchartRotated.jpg["Stats rotated barchart",align="left"]
 
 === Graphs of counts data
 
@@ -665,15 +663,16 @@ image::mobile-images/StatsBarchartSubdivided.jpg["Stats subdivided barchart",ali
 
 === Scattergraphs
 
-[width="100%", frame="None"]
+[width="100%", cols="2,3", frame="None"]
 |=======
 a|image::mobile-images/StatsRegression.jpg["Regression data example",align="center"] |
 Sometimes you might wish to investigate the relationship between two dive variables. Has my SAC rate decreased over
 the years? Is the water temperature colder at greater dive depth? One of the ways of investigating these questions
 is to draw a scattergraph where the values of one variable is plotted against the other variable (see image on the left).
+|=======
 
 
-For the dataset in the image on the left the SAC rate appears to have decreased over time. If the relationship between the two variables
+For the dataset in the image above the SAC rate appears to have decreased over time. If the relationship between the two variables
 is statistically significant, a red line is shown that summarises the best estimate of the relationship between SAC rate and year.
 In this graph it appears that SAC rate has decreased from around 21 l/min to around 14 l/min between 2013 and 2021. The pink area
 around the red line indicates the uncertainty of the precise orientation of the line. The line is expected to lie somewhere within
@@ -686,7 +685,6 @@ b) Set the binning value for the Base variable (top right) to "none".
 
 c) Specify the Data variable: Which variable should be along the vertical axis?
 
-|=======
 
 === Comparisons between categories of dives
 
@@ -758,7 +756,7 @@ image::mobile-images/GPSConfig.jpg["FIGURE: GPS configure",align="center"]
 
 === Collecting GPS positions
 
-[width="100%", frame="None"]
+[width="100%", frame="None", cols="2,3"]
 |=======
 a|image::mobile-images/LocationMenu.jpg["FIGURE: GPS start",align="center"] |
 In the _Location_ menu select _Run location service_.
@@ -769,6 +767,8 @@ indicating that the service is active. After returning from
 the dive, deactivate the collection of GPS data by tapping
 the option _Location -> Disable location service_. The GPS symbol at the bottom
 of menus disappears.
+|=======
+
 
 Collecting GPS fixes like this is relatively battery intensive and unfortunately
 both Android and especially iOS have become increasingly aggressive in killing
@@ -776,7 +776,6 @@ applications that are running while the screen is turned off. It may make sense
 to check between dives that the location service is still running. On the other hand
 the battery consumption of a smartphone with GPS enabled is often significantly less than
 the battery consumption of a dedicated GPS that is logging a track.
-|=======
 
 === Viewing GPS data collected during a dive
 
