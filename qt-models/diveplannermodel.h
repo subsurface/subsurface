@@ -57,7 +57,6 @@ public:
 	 */
 	void editStop(int row, divedatapoint newData);
 	divedatapoint at(int row) const;
-	int size() const;
 	struct diveplan &getDiveplan();
 	void removeDeco();
 	struct deco_state final_deco_state;

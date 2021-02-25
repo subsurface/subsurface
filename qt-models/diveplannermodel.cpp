@@ -885,11 +885,6 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
 }
 
-int DivePlannerPointsModel::size() const
-{
-	return divepoints.size();
-}
-
 divedatapoint DivePlannerPointsModel::at(int row) const
 {
 	/*
