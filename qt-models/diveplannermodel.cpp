@@ -1016,8 +1016,6 @@ void DivePlannerPointsModel::createTemporaryPlan()
 			plan_add_segment(&diveplan, deltaT, p.depth.mm, p.cylinderid, p.setpoint, true, p.divemode);
 	}
 
-	// what does the cache do???
-	struct deco_state *cache = NULL;
 	struct divedatapoint *dp = NULL;
 	for (int i = 0; i < d->cylinders.nr; i++) {
 		cylinder_t *cyl = get_cylinder(d, i);
@@ -1035,28 +1033,35 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
-	if (recalcQ() && !diveplan_empty(&diveplan)) {
-		struct decostop stoptable[60];
-		struct deco_state plan_deco_state;
-		struct diveplan *plan_copy;
+}
 
-		memset(&plan_deco_state, 0, sizeof(struct deco_state));
-		plan(&plan_deco_state, &diveplan, d, DECOTIMESTEP, stoptable, &cache, isPlanner(), false);
-		plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
-		lock_planner();
-		cloneDiveplan(&diveplan, plan_copy);
-		unlock_planner();
+void DivePlannerPointsModel::recalcTemporaryPlan()
+{
+	if (diveplan_empty(&diveplan))
+		return;
+
+	struct deco_state *cache = NULL;
+	struct decostop stoptable[60];
+	struct deco_state plan_deco_state;
+	struct diveplan *plan_copy;
+
+	memset(&plan_deco_state, 0, sizeof(struct deco_state));
+	plan(&plan_deco_state, &diveplan, d, DECOTIMESTEP, stoptable, &cache, isPlanner(), false);
+	plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
+	lock_planner();
+	cloneDiveplan(&diveplan, plan_copy);
+	unlock_planner();
 #ifdef VARIATIONS_IN_BACKGROUND
-		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
-		// on the stack, it must be copied and freed by the worker-thread.
-		struct deco_state *plan_deco_state_copy = new deco_state(plan_deco_state);
-		QtConcurrent::run(this, &DivePlannerPointsModel::computeVariationsFreeDeco, plan_copy, plan_deco_state_copy);
+	// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
+	// on the stack, it must be copied and freed by the worker-thread.
+	struct deco_state *plan_deco_state_copy = new deco_state(plan_deco_state);
+	QtConcurrent::run(this, &DivePlannerPointsModel::computeVariationsFreeDeco, plan_copy, plan_deco_state_copy);
 #else
-		computeVariations(plan_copy, &plan_deco_state);
+	computeVariations(plan_copy, &plan_deco_state);
 #endif
-		final_deco_state = plan_deco_state;
-		emit calculatedPlanNotes(QString(d->notes));
-	}
+	final_deco_state = plan_deco_state;
+	emit calculatedPlanNotes(QString(d->notes));
+
 	// throw away the cache
 	free(cache);
 #if DEBUG_PLAN
@@ -1246,10 +1251,8 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 {
 	// Ok, so, here the diveplan creates a dive
 	struct deco_state *cache = NULL;
-	bool oldrec = std::exchange(recalc, false);
 	removeDeco();
 	createTemporaryPlan();
-	recalc = oldrec;
 
 	//TODO: C-based function here?
 	struct decostop stoptable[60];
