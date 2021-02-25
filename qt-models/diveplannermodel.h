@@ -58,7 +58,6 @@ public:
 	void editStop(int row, divedatapoint newData);
 	divedatapoint at(int row) const;
 	struct diveplan &getDiveplan();
-	void removeDeco();
 	struct deco_state final_deco_state;
 
 	void loadFromDive(dive *d);
@@ -89,6 +88,7 @@ slots:
 	void saveDuplicatePlan();
 	void remove(const QModelIndex &index);
 	void cancelPlan();
+	void removeDeco();
 	void createTemporaryPlan();
 	void recalcTemporaryPlan(); // Writes the plan into the dive.
 	void deleteTemporaryPlan();
