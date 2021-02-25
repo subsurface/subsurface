@@ -543,6 +543,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool force, bool
 #ifndef SUBSURFACE_MOBILE
 	} else {
 		plannerModel->createTemporaryPlan();
+		plannerModel->recalcTemporaryPlan();
 		struct diveplan &diveplan = plannerModel->getDiveplan();
 		if (!diveplan.dp) {
 			plannerModel->deleteTemporaryPlan();

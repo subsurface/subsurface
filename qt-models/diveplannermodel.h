@@ -92,6 +92,7 @@ slots:
 	void remove(const QModelIndex &index);
 	void cancelPlan();
 	void createTemporaryPlan();
+	void recalcTemporaryPlan(); // Writes the plan into the dive.
 	void deleteTemporaryPlan();
 	void emitDataChanged();
 	void setRebreatherMode(int mode);
