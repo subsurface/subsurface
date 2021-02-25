@@ -60,7 +60,6 @@ public:
 	int size() const;
 	struct diveplan &getDiveplan();
 	void removeDeco();
-	static bool addingDeco;
 	struct deco_state final_deco_state;
 
 	void loadFromDive(dive *d);
