@@ -19,8 +19,13 @@ jobs:
     steps:
     - name: Install Snapcraft
       uses: samuelmeuli/action-snapcraft@v1
-      with:
-        use_lxd: true
+
+    - name: Setup LXD
+      uses: whywaita/setup-lxd@v1
+
+    - name: Add user to LXD group
+      run: |
+        sudo adduser ${USER} lxd
 
     - name: Check out code
       uses: actions/checkout@v2
