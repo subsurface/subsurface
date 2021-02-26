@@ -5,6 +5,7 @@
 #include "core/trip.h"
 #include "core/file.h"
 #include "core/save-profiledata.h"
+#include "core/pref.h"
 
 // This test compares the content of struct profile against a known reference version for a list
 // of dives to prevent accidental regressions. Thus is you change anything in the profile this
@@ -15,12 +16,29 @@
 
 void TestProfile::testProfileExport()
 {
+	prefs.planner_deco_mode = BUEHLMANN;
 	parse_file("../dives/abitofeverything.ssrf", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
 	save_profiledata("exportprofile.csv", false);
 	QFile org("../dives/exportprofilereference.csv");
-	org.open(QFile::ReadOnly);
+	QCOMPARE(org.open(QFile::ReadOnly), true);
 	QFile out("exportprofile.csv");
-	out.open(QFile::ReadOnly);
+	QCOMPARE(out.open(QFile::ReadOnly), true);
+	QTextStream orgS(&org);
+	QTextStream outS(&out);
+	QString readin = orgS.readAll();
+	QString written = outS.readAll();
+	QCOMPARE(readin, written);
+
+}
+void TestProfile::testProfileExportVPMB()
+{
+	prefs.planner_deco_mode = VPMB;
+	parse_file("../dives/abitofeverything.ssrf", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+	save_profiledata("exportprofileVPMB.csv", false);
+	QFile org("../dives/exportprofilereferenceVPMB.csv");
+	QCOMPARE(org.open(QFile::ReadOnly), true);
+	QFile out("exportprofileVPMB.csv");
+	QCOMPARE(out.open(QFile::ReadOnly), true);
 	QTextStream orgS(&org);
 	QTextStream outS(&out);
 	QString readin = orgS.readAll();
