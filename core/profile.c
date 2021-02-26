@@ -997,7 +997,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 	int prev_deco_time = 10000000, time_deep_ceiling = 0;
 	bool in_planner = planner_ds != NULL;
 
-	if (!planner_ds) {
+	if (!in_planner) {
 		ds->deco_time = 0;
 		ds->first_ceiling_pressure.mbar = 0;
 	} else {
@@ -1054,7 +1054,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 					nuclear_regeneration(ds, t1);
 					vpmb_start_gradient(ds);
 					/* For CVA iterations, calculate next gradient */
-					if (!first_iteration || !planner_ds)
+					if (!first_iteration || in_planner)
 						vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0, in_planner);
 				}
 				entry->ceiling = deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(entry->depth, dive), in_planner), surface_pressure, dive, !prefs.calcceiling3m);
@@ -1076,7 +1076,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 							/* For CVA calculations, deco time = dive time remaining is a good guess,
 							   but we want to over-estimate deco_time for the first iteration so it
 							   converges correctly, so add 30min*/
-							if (!planner_ds)
+							if (!in_planner)
 								ds->deco_time = pi->maxtime - t1 + 1800;
 							vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0, in_planner);
 						}
@@ -1113,7 +1113,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			// that can be trampled upon. But ultimately, the ceiling-violation
 			// marker should be handled differently!
 			// Don't scream if we violate the ceiling by a few cm.
-			if (planner_ds && !pi->waypoint_above_ceiling &&
+			if (in_planner && !pi->waypoint_above_ceiling &&
 			    entry->depth < max_ceiling - 100 && entry->sec > 0) {
 				struct dive *non_const_dive = (struct dive *)dive; // cast away const!
 				add_event(&non_const_dive->dc, entry->sec, SAMPLE_EVENT_CEILING, -1, max_ceiling / 1000,
@@ -1125,8 +1125,8 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			* We don't for print-mode because this info doesn't show up there
 			* If the ceiling hasn't cleared by the last data point, we need tts for VPM-B CVA calculation
 			* It is not necessary to do these calculation on the first VPMB iteration, except for the last data point */
-			if ((prefs.calcndltts && (decoMode(in_planner) != VPMB || !planner_ds || !first_iteration)) ||
-			    (decoMode(in_planner) == VPMB && !planner_ds && i == pi->nr - 1)) {
+			if ((prefs.calcndltts && (decoMode(in_planner) != VPMB || in_planner || !first_iteration)) ||
+			    (decoMode(in_planner) == VPMB && !in_planner && i == pi->nr - 1)) {
 				/* only calculate ndl/tts on every 30 seconds */
 				if ((entry->sec - last_ndl_tts_calc_time) < 30 && i != pi->nr - 1) {
 					struct plot_data *prev_entry = (entry - 1);
@@ -1142,14 +1142,14 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				struct deco_state *cache_data = NULL;
 				cache_deco_state(ds, &cache_data);
 				calculate_ndl_tts(ds, dive, entry, gasmix, surface_pressure, current_divemode, in_planner);
-				if (decoMode(in_planner) == VPMB && !planner_ds && i == pi->nr - 1)
+				if (decoMode(in_planner) == VPMB && !in_planner && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
 				restore_deco_state(cache_data, ds, decoMode(in_planner) == VPMB);
 				free(cache_data);
 			}
 		}
-		if (decoMode(in_planner) == VPMB && !planner_ds) {
+		if (decoMode(in_planner) == VPMB && !in_planner) {
 			int this_deco_time;
 			prev_deco_time = ds->deco_time;
 			// Do we need to update deco_time?
