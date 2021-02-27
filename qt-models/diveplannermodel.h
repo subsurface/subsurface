@@ -89,8 +89,6 @@ slots:
 	void remove(const QModelIndex &index);
 	void cancelPlan();
 	void removeDeco();
-	void createTemporaryPlan();
-	void recalcTemporaryPlan(); // Writes the plan into the dive.
 	void deleteTemporaryPlan();
 	void emitDataChanged();
 	void setRebreatherMode(int mode);
@@ -123,6 +121,8 @@ private:
 	int lastEnteredPoint() const;
 	bool updateMaxDepth();
 	void createPlan(bool replanCopy);
+	void updateDiveProfile(); // Creates a temporary plan and updates the dive profile with it.
+	void createTemporaryPlan();
 	struct diveplan diveplan;
 	struct divedatapoint *cloneDiveplan(struct diveplan *plan_src, struct diveplan *plan_copy);
 	void computeVariationsDone(QString text);

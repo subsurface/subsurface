@@ -40,6 +40,8 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 		divepoints.erase(divepoints.begin() + v2[i]);
 		endRemoveRows();
 	}
+	updateDiveProfile();
+	emitDataChanged();
 	cylinders.updateTrashIcon();
 }
 
@@ -73,7 +75,7 @@ void DivePlannerPointsModel::createSimpleDive(struct dive *dIn)
 		addStop(M_OR_FT(5, 15), 42 * 60, 0, cylinderid, true, UNDEF_COMP_TYPE);
 		addStop(M_OR_FT(5, 15), 45 * 60, 0, cylinderid, true, UNDEF_COMP_TYPE);
 	}
-	updateMaxDepth();
+	updateDiveProfile();
 	GasSelectionModel::instance()->repopulate();
 	DiveTypeSelectionModel::instance()->repopulate();
 }
@@ -170,6 +172,8 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn)
 	recalc = oldRec;
 	DiveTypeSelectionModel::instance()->repopulate();
 	preserved_until = d->duration;
+
+	updateDiveProfile();
 	emitDataChanged();
 }
 
@@ -753,6 +757,7 @@ void DivePlannerPointsModel::addDefaultStop()
 void DivePlannerPointsModel::addStop(int milimeters, int seconds)
 {
 	addStop(milimeters, seconds, -1, 0, true, UNDEF_COMP_TYPE);
+	updateDiveProfile();
 }
 
 // cylinderid_in == -1 means same gas as before.
@@ -887,6 +892,7 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	if (divepoints[0].cylinderid != old_first_cylid)
 		cylinders.moveAtFirst(divepoints[0].cylinderid);
 
+	updateDiveProfile();
 	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
 }
 
@@ -932,10 +938,14 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 		beginRemoveRows(QModelIndex(), index.row(), index.row());
 		divepoints.remove(index.row());
 	}
+
 	endRemoveRows();
 	cylinders.updateTrashIcon();
 	if (divepoints[0].cylinderid != old_first_cylid)
 		cylinders.moveAtFirst(divepoints[0].cylinderid);
+
+	updateDiveProfile();
+	emitDataChanged();
 }
 
 struct diveplan &DivePlannerPointsModel::getDiveplan()
@@ -1035,8 +1045,9 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #endif
 }
 
-void DivePlannerPointsModel::recalcTemporaryPlan()
+void DivePlannerPointsModel::updateDiveProfile()
 {
+	createTemporaryPlan();
 	if (diveplan_empty(&diveplan))
 		return;
 
@@ -1047,6 +1058,7 @@ void DivePlannerPointsModel::recalcTemporaryPlan()
 
 	memset(&plan_deco_state, 0, sizeof(struct deco_state));
 	plan(&plan_deco_state, &diveplan, d, DECOTIMESTEP, stoptable, &cache, isPlanner(), false);
+	updateMaxDepth();
 	plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
 	lock_planner();
 	cloneDiveplan(&diveplan, plan_copy);

@@ -542,13 +542,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool force, bool
 			decoModelParameters->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
 #ifndef SUBSURFACE_MOBILE
 	} else {
-		plannerModel->createTemporaryPlan();
-		plannerModel->recalcTemporaryPlan();
 		struct diveplan &diveplan = plannerModel->getDiveplan();
-		if (!diveplan.dp) {
-			plannerModel->deleteTemporaryPlan();
-			return;
-		}
 		if (decoMode(currentState == PLAN) == VPMB)
 			decoModelParameters->setText(QString("VPM-B +%1").arg(diveplan.vpmb_conservatism));
 		else
@@ -558,7 +552,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool force, bool
 
 	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
 	if (!currentdc || !currentdc->samples)
-		return setEmptyState();
+		return;
 
 	// special handling when switching from empty state
 	animSpeed = instant || currentState == EMPTY ? 0 : qPrefDisplay::animation_speed();
@@ -1742,8 +1736,9 @@ void ProfileWidget2::pointInserted(const QModelIndex &, int from, int to)
 		gases.emplace(gases.begin() + i, createGas());
 	}
 
-	if (plannerModel->recalcQ())
-		replot();
+	// Note: we don't replot the dive here, because when removing multiple
+	// points, these might trickle in one-by-one. Instead, the model will
+	// emit a data-changed signal.
 }
 
 void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
@@ -1752,7 +1747,10 @@ void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
 	handles.erase(handles.begin() + start, handles.begin() + end + 1);
 	gases.erase(gases.begin() + start, gases.begin() + end + 1);
 	scene()->clearSelection();
-	replot();
+
+	// Note: we don't replot the dive here, because when removing multiple
+	// points, these might trickle in one-by-one. Instead, the model will
+	// emit a data-changed signal.
 }
 
 void ProfileWidget2::pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &, int row)
