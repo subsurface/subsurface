@@ -1300,6 +1300,9 @@ void ProfileWidget2::setAddState(const dive *d, int dc)
 	diveCeiling->setVisible(true);
 	decoModelParameters->setVisible(true);
 	setBackgroundBrush(QColor("#A7DCFF"));
+
+	pointsReset();
+	repositionDiveHandlers();
 }
 
 void ProfileWidget2::setPlanState(const dive *d, int dc)
@@ -1328,6 +1331,9 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 	diveCeiling->setVisible(true);
 	decoModelParameters->setVisible(true);
 	setBackgroundBrush(QColor("#D7E3EF"));
+
+	pointsReset();
+	repositionDiveHandlers();
 }
 #endif
 

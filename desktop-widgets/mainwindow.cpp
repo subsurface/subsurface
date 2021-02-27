@@ -1518,9 +1518,9 @@ void MainWindow::editCurrentDive()
 	disableShortcuts();
 	copy_dive(current_dive, &displayed_dive); // Work on a copy of the dive
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
+	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
 	graphics->setAddState(&displayed_dive, 0);
 	setApplicationState(ApplicationState::EditDive);
-	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
 	mainTab->enableEdition();
 }
 
