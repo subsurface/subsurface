@@ -115,6 +115,7 @@ private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
 	void clear();
 	int addStop(int millimeters, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t);
+	void removePoints(const QVector<int> &rows);
 	void setupStartTime();
 	void setupCylinders();
 	int lastEnteredPoint() const;
