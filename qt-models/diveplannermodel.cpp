@@ -255,14 +255,6 @@ bool DivePlannerPointsModel::isPlanner() const
 	return mode == PLAN;
 }
 
-/* When the planner adds deco stops to the model, adding those should not trigger a new deco calculation.
- * We thus start the planner only when recalc is true. */
-
-bool DivePlannerPointsModel::recalcQ() const
-{
-	return recalc;
-}
-
 int DivePlannerPointsModel::columnCount(const QModelIndex&) const
 {
 	return COLUMNS; // to disable CCSETPOINT subtract one
@@ -770,7 +762,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 		cylinderid = cylinderid_in;
 	else
 		usePrevious = true;
-	if (recalcQ())
+	if (recalc)
 		removeDeco();
 
 	int row = divepoints.count();
