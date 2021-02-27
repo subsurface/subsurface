@@ -995,14 +995,11 @@ bool DivePlannerPointsModel::tankInUse(int cylinderid) const
 
 void DivePlannerPointsModel::clear()
 {
-	bool oldrec = std::exchange(recalc, false);
-
+	cylinders.clear();
+	preserved_until.seconds = 0;
 	beginResetModel();
 	divepoints.clear();
 	endResetModel();
-	cylinders.clear();
-	preserved_until.seconds = 0;
-	recalc = oldrec;
 }
 
 void DivePlannerPointsModel::createTemporaryPlan()
