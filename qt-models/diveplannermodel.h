@@ -61,7 +61,7 @@ public:
 	struct deco_state final_deco_state;
 
 	void loadFromDive(dive *d);
-	int addStop(int millimeters, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t);
+	void addStop(int millimeters, int seconds);
 public
 slots:
 	void addDefaultStop();
@@ -117,6 +117,7 @@ signals:
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
 	void clear();
+	int addStop(int millimeters, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t);
 	void setupStartTime();
 	void setupCylinders();
 	int lastEnteredPoint() const;

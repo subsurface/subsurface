@@ -997,14 +997,14 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 
 		int minutes = lrint(timeAxis->valueAt(mappedPos) / 60);
 		int milimeters = lrint(profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-		plannerModel->addStop(milimeters, minutes * 60, -1, 0, true, UNDEF_COMP_TYPE);
+		plannerModel->addStop(milimeters, minutes * 60);
 	}
 }
 
 void ProfileWidget2::scrollViewTo(const QPoint &pos)
 {
 	/* since we cannot use translate() directly on the scene we hack on
- * the scroll bars (hidden) functionality */
+	 * the scroll bars (hidden) functionality */
 	if (!zoomLevel || currentState == EMPTY)
 		return;
 	QScrollBar *vs = verticalScrollBar();
