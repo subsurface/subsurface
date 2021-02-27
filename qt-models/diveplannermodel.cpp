@@ -61,6 +61,7 @@ void DivePlannerPointsModel::createSimpleDive(struct dive *dIn)
 	d->dc.model = strdup("planned dive"); // don't translate! this is stored in the XML file
 
 	clear();
+	removeDeco();
 	setupCylinders();
 	setupStartTime();
 
@@ -119,6 +120,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn)
 	duration_t newtime = {};
 
 	clear();
+	removeDeco();
 	free_dps(&diveplan);
 
 	diveplan.when = d->when;
@@ -748,11 +750,13 @@ int DivePlannerPointsModel::lastEnteredPoint() const
 
 void DivePlannerPointsModel::addDefaultStop()
 {
+	removeDeco();
 	addStop(0, 0, -1, 0, true, UNDEF_COMP_TYPE);
 }
 
 void DivePlannerPointsModel::addStop(int milimeters, int seconds)
 {
+	removeDeco();
 	addStop(milimeters, seconds, -1, 0, true, UNDEF_COMP_TYPE);
 	updateDiveProfile();
 }
@@ -767,8 +771,6 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 		cylinderid = cylinderid_in;
 	else
 		usePrevious = true;
-	if (recalc)
-		removeDeco();
 
 	int row = divepoints.count();
 	if (seconds == 0 && milimeters == 0 && row != 0) {
