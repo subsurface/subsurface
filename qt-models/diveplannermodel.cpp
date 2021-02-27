@@ -28,7 +28,7 @@ CylindersModel *DivePlannerPointsModel::cylindersModel()
 	return &cylinders;
 }
 
-void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
+void DivePlannerPointsModel::removePoints(const QVector<int> &rows)
 {
 	if (!rows.count())
 		return;
@@ -40,6 +40,12 @@ void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
 		divepoints.erase(divepoints.begin() + v2[i]);
 		endRemoveRows();
 	}
+}
+
+void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
+{
+	removePoints(rows);
+
 	updateDiveProfile();
 	emitDataChanged();
 	cylinders.updateTrashIcon();
@@ -225,13 +231,12 @@ bool DivePlannerPointsModel::updateMaxDepth()
 
 void DivePlannerPointsModel::removeDeco()
 {
-	bool oldrec = std::exchange(recalc, false);
 	QVector<int> computedPoints;
-	for (int i = 0; i < rowCount(); i++)
+	for (int i = 0; i < rowCount(); i++) {
 		if (!at(i).entered)
 			computedPoints.push_back(i);
-	removeSelectedPoints(computedPoints);
-	recalc = oldrec;
+	}
+	removePoints(computedPoints);
 }
 
 void DivePlannerPointsModel::addCylinder_clicked()
