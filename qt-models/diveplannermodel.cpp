@@ -109,11 +109,9 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn)
 	int depthsum = 0;
 	int samplecount = 0;
 	o2pressure_t last_sp;
-	bool oldRec = recalc;
 	struct divecomputer *dc = &(d->dc);
 	const struct event *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
-	recalc = false;
 	cylinders.updateDive(d);
 	duration_t lasttime = { 0 };
 	duration_t lastrecordedtime = {};
@@ -177,7 +175,6 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn)
 	current_divemode = get_current_divemode(dc, d->dc.duration.seconds, &evd, &current_divemode);
 	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
 		addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
-	recalc = oldRec;
 	DiveTypeSelectionModel::instance()->repopulate();
 	preserved_until = d->duration;
 
@@ -450,8 +447,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex&) const
 DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent),
 	d(nullptr),
 	cylinders(true),
-	mode(NOTHING),
-	recalc(true)
+	mode(NOTHING)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
 	startTime.setTimeSpec(Qt::UTC);

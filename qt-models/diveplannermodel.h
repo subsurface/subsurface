@@ -132,7 +132,6 @@ private:
 	struct dive *d;
 	CylindersModel cylinders;
 	Mode mode;
-	bool recalc;
 	QVector<divedatapoint> divepoints;
 	QDateTime startTime;
 	int instanceCounter = 0;
