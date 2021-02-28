@@ -1037,6 +1037,11 @@ void DivePlannerPointsModel::createTemporaryPlan()
 #endif
 }
 
+static bool shouldComputeVariations()
+{
+	return prefs.display_variations && decoMode(true) != RECREATIONAL;
+}
+
 void DivePlannerPointsModel::updateDiveProfile()
 {
 	createTemporaryPlan();
@@ -1046,25 +1051,27 @@ void DivePlannerPointsModel::updateDiveProfile()
 	struct deco_state *cache = NULL;
 	struct decostop stoptable[60];
 	struct deco_state plan_deco_state;
-	struct diveplan *plan_copy;
 
 	memset(&plan_deco_state, 0, sizeof(struct deco_state));
 	plan(&plan_deco_state, &diveplan, d, DECOTIMESTEP, stoptable, &cache, isPlanner(), false);
 	updateMaxDepth();
-	plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
-	lock_planner();
-	cloneDiveplan(&diveplan, plan_copy);
-	unlock_planner();
+
+	if (isPlanner() && shouldComputeVariations()) {
+		struct diveplan *plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
+		lock_planner();
+		cloneDiveplan(&diveplan, plan_copy);
+		unlock_planner();
 #ifdef VARIATIONS_IN_BACKGROUND
-	// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
-	// on the stack, it must be copied and freed by the worker-thread.
-	struct deco_state *plan_deco_state_copy = new deco_state(plan_deco_state);
-	QtConcurrent::run(this, &DivePlannerPointsModel::computeVariationsFreeDeco, plan_copy, plan_deco_state_copy);
+		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
+		// on the stack, it must be copied and freed by the worker-thread.
+		struct deco_state *plan_deco_state_copy = new deco_state(plan_deco_state);
+		QtConcurrent::run(this, &DivePlannerPointsModel::computeVariationsFreeDeco, plan_copy, plan_deco_state_copy);
 #else
-	computeVariations(plan_copy, &plan_deco_state);
+		computeVariations(plan_copy, &plan_deco_state);
 #endif
-	final_deco_state = plan_deco_state;
-	emit calculatedPlanNotes(QString(d->notes));
+		final_deco_state = plan_deco_state;
+		emit calculatedPlanNotes(QString(d->notes));
+	}
 
 	// throw away the cache
 	free(cache);
@@ -1164,77 +1171,75 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	struct divedatapoint *last_segment;
 	struct deco_state ds = *previous_ds;
 
-	if (isPlanner() && prefs.display_variations && decoMode(true) != RECREATIONAL) {
-		int my_instance = ++instanceCounter;
-		cache_deco_state(&ds, &save);
+	int my_instance = ++instanceCounter;
+	cache_deco_state(&ds, &save);
 
-		duration_t delta_time = { .seconds = 60 };
-		QString time_units = tr("min");
-		depth_t delta_depth;
-		QString depth_units;
+	duration_t delta_time = { .seconds = 60 };
+	QString time_units = tr("min");
+	depth_t delta_depth;
+	QString depth_units;
 
-		if (prefs.units.length == units::METERS) {
-			delta_depth.mm = 1000; // 1m
-			depth_units = tr("m");
-		} else {
-			delta_depth.mm = feet_to_mm(1.0); // 1ft
-			depth_units = tr("ft");
-		}
-
-		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		if (!last_segment)
-			goto finish;
-		if (my_instance != instanceCounter)
-			goto finish;
-		plan(&ds, &plan_copy, dive, 1, original, &cache, true, false);
-		free_dps(&plan_copy);
-		restore_deco_state(save, &ds, false);
-
-		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		last_segment->depth.mm += delta_depth.mm;
-		last_segment->next->depth.mm += delta_depth.mm;
-		if (my_instance != instanceCounter)
-			goto finish;
-		plan(&ds, &plan_copy, dive, 1, deeper, &cache, true, false);
-		free_dps(&plan_copy);
-		restore_deco_state(save, &ds, false);
-
-		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		last_segment->depth.mm -= delta_depth.mm;
-		last_segment->next->depth.mm -= delta_depth.mm;
-		if (my_instance != instanceCounter)
-			goto finish;
-		plan(&ds, &plan_copy, dive, 1, shallower, &cache, true, false);
-		free_dps(&plan_copy);
-		restore_deco_state(save, &ds, false);
-
-		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		last_segment->next->time += delta_time.seconds;
-		if (my_instance != instanceCounter)
-			goto finish;
-		plan(&ds, &plan_copy, dive, 1, longer, &cache, true, false);
-		free_dps(&plan_copy);
-		restore_deco_state(save, &ds, false);
-
-		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		last_segment->next->time -= delta_time.seconds;
-		if (my_instance != instanceCounter)
-			goto finish;
-		plan(&ds, &plan_copy, dive, 1, shorter, &cache, true, false);
-		free_dps(&plan_copy);
-		restore_deco_state(save, &ds, false);
-
-		char buf[200];
-		sprintf(buf, ", %s: + %d:%02d /%s + %d:%02d /min", qPrintable(tr("Stop times")),
-			FRACTION(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
-			FRACTION(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
-
-		// By using a signal, we can transport the variations to the main thread.
-		emit variationsComputed(QString(buf));
-#ifdef DEBUG_STOPVAR
-		printf("\n\n");
-#endif
+	if (prefs.units.length == units::METERS) {
+		delta_depth.mm = 1000; // 1m
+		depth_units = tr("m");
+	} else {
+		delta_depth.mm = feet_to_mm(1.0); // 1ft
+		depth_units = tr("ft");
 	}
+
+	last_segment = cloneDiveplan(original_plan, &plan_copy);
+	if (!last_segment)
+		goto finish;
+	if (my_instance != instanceCounter)
+		goto finish;
+	plan(&ds, &plan_copy, dive, 1, original, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, &ds, false);
+
+	last_segment = cloneDiveplan(original_plan, &plan_copy);
+	last_segment->depth.mm += delta_depth.mm;
+	last_segment->next->depth.mm += delta_depth.mm;
+	if (my_instance != instanceCounter)
+		goto finish;
+	plan(&ds, &plan_copy, dive, 1, deeper, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, &ds, false);
+
+	last_segment = cloneDiveplan(original_plan, &plan_copy);
+	last_segment->depth.mm -= delta_depth.mm;
+	last_segment->next->depth.mm -= delta_depth.mm;
+	if (my_instance != instanceCounter)
+		goto finish;
+	plan(&ds, &plan_copy, dive, 1, shallower, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, &ds, false);
+
+	last_segment = cloneDiveplan(original_plan, &plan_copy);
+	last_segment->next->time += delta_time.seconds;
+	if (my_instance != instanceCounter)
+		goto finish;
+	plan(&ds, &plan_copy, dive, 1, longer, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, &ds, false);
+
+	last_segment = cloneDiveplan(original_plan, &plan_copy);
+	last_segment->next->time -= delta_time.seconds;
+	if (my_instance != instanceCounter)
+		goto finish;
+	plan(&ds, &plan_copy, dive, 1, shorter, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, &ds, false);
+
+	char buf[200];
+	sprintf(buf, ", %s: + %d:%02d /%s + %d:%02d /min", qPrintable(tr("Stop times")),
+		FRACTION(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
+		FRACTION(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
+
+	// By using a signal, we can transport the variations to the main thread.
+	emit variationsComputed(QString(buf));
+#ifdef DEBUG_STOPVAR
+	printf("\n\n");
+#endif
 finish:
 	free_dps(original_plan);
 	free(original_plan);
@@ -1261,12 +1266,15 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	//TODO: C-based function here?
 	struct decostop stoptable[60];
 	plan(&ds_after_previous_dives, &diveplan, d, DECOTIMESTEP, stoptable, &cache, isPlanner(), true);
-	struct diveplan *plan_copy;
-	plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
-	lock_planner();
-	cloneDiveplan(&diveplan, plan_copy);
-	unlock_planner();
-	computeVariations(plan_copy, &ds_after_previous_dives);
+
+	if (shouldComputeVariations()) {
+		struct diveplan *plan_copy;
+		plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
+		lock_planner();
+		cloneDiveplan(&diveplan, plan_copy);
+		unlock_planner();
+		computeVariations(plan_copy, &ds_after_previous_dives);
+	}
 
 	free(cache);
 
