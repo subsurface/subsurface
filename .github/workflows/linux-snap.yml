@@ -23,10 +23,6 @@ jobs:
     - name: Setup LXD
       uses: whywaita/setup-lxd@v1
 
-    - name: Add user to LXD group
-      run: |
-        sudo adduser ${USER} lxd
-
     - name: Check out code
       uses: actions/checkout@v2
       with:
@@ -38,7 +34,7 @@ jobs:
       run: |
         sudo apt-get install ccache
         ccache --max-size=2G
-        sg lxd -c '/snap/bin/lxc profile device add default ccache disk source=${HOME}/.ccache/ path=/root/.ccache'
+        /snap/bin/lxc profile device add default ccache disk source=${HOME}/.ccache/ path=/root/.ccache
 
         # Patch snapcraft.yaml to enable ccache
         patch -p1 < .github/workflows/linux-snap.patch
@@ -58,7 +54,7 @@ jobs:
     - name: Build
       run: |
         # Build the `subsurface` part.
-        sg lxd -c '/snap/bin/snapcraft build --use-lxd subsurface'
+        /snap/bin/snapcraft build --use-lxd subsurface
 
     - name: Clear CCache stats
       run: ccache --show-stats --zero-stats
@@ -69,7 +65,7 @@ jobs:
         SNAP_ENFORCE_RESQUASHFS: 0
       run: |
         # Actually build the snap.
-        sg lxd -c '/snap/bin/snapcraft --use-lxd'
+        /snap/bin/snapcraft --use-lxd
 
         sudo snap install review-tools
         /snap/bin/review-tools.snap-review *.snap
