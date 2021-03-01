@@ -21,14 +21,16 @@ jobs:
       run: |
         echo "--------------------------------------------------------------"
         echo "update distro and install dependencies"
-        zypper -n install git gcc-c++ make autoconf automake libtool cmake libzip-devel \
-        libxml2-devel libxslt-devel sqlite3-devel libusb-1_0-devel \
-        libqt5-linguist-devel libqt5-qttools-devel libQt5WebKitWidgets-devel \
+        zypper -n update
+        zypper -n install busybox shadow
+        zypper -n install git gcc-c++ make autoconf automake libtool cmake
+        zypper -n install libzip-devel libxml2-devel libxslt-devel sqlite3-devel libusb-1_0-devel
+        zypper -n install bluez-devel libcurl-devel libgit2-devel libmtp-devel
+        zypper -n install libqt5-linguist-devel libqt5-qttools-devel libQt5WebKitWidgets-devel \
         libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
         libqt5-qtscript-devel libqt5-qtdeclarative-devel \
-        libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel \
-        libQt5QuickControls2-devel bluez-devel \
-        which libgit2-devel libssh2-devel libmtp-devel
+        libqt5-qtconnectivity-devel libqt5-qtlocation-devel \
+        libQt5QuickControls2-devel
 
 # if we want to run the tests below, add    xvfb-run
 
