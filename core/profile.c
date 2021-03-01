@@ -1538,7 +1538,7 @@ static void plot_string(const struct dive *d, const struct plot_info *pi, int id
 			put_format(b, translate("gettextFromC", "Surface GF %.0f%%\n"), entry->surface_gf);
 		if (entry->ceiling) {
 			depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
-			put_format_loc(b, translate("gettextFromC", "Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
+			put_format_loc(b, translate("gettextFromC", "Calculated ceiling %.1f%s\n"), depthvalue, depth_unit);
 			if (prefs.calcalltissues) {
 				int k;
 				for (k = 0; k < 16; k++) {
