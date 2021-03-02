@@ -86,6 +86,7 @@ slots:
 	void savePlan();
 	void saveDuplicatePlan();
 	void remove(const QModelIndex &index);
+	void removeControlPressed(const QModelIndex &index);
 	void cancelPlan();
 	void removeDeco();
 	void deleteTemporaryPlan();
