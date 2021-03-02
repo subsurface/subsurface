@@ -902,9 +902,43 @@ divedatapoint DivePlannerPointsModel::at(int row) const
 	return divepoints.at(row);
 }
 
+void DivePlannerPointsModel::removeControlPressed(const QModelIndex &index)
+{
+	// Never delete all points.
+	int rows = rowCount();
+	if (index.column() != REMOVE || index.row() <= 0 || index.row() >= rows)
+		return;
+
+	int old_first_cylid = divepoints[0].cylinderid;
+
+	preserved_until.seconds = divepoints.at(index.row()).time;
+	beginRemoveRows(QModelIndex(), index.row(), rows - 1);
+	divepoints.erase(divepoints.begin() + index.row(), divepoints.end());
+	endRemoveRows();
+
+	cylinders.updateTrashIcon();
+	if (divepoints[0].cylinderid != old_first_cylid)
+		cylinders.moveAtFirst(divepoints[0].cylinderid);
+
+	updateDiveProfile();
+	emitDataChanged();
+}
+
 void DivePlannerPointsModel::remove(const QModelIndex &index)
 {
-	if (index.column() != REMOVE || rowCount() == 1)
+/* TODO: this seems so wrong.
+ * We can't do this here if we plan to use QML on mobile
+ * as mobile has no ControlModifier.
+ * The correct thing to do is to create a new method
+ * remove method that will pass the first and last index of the
+ * removed rows, and remove those in a go.
+ */
+	if (QApplication::keyboardModifiers() & Qt::ControlModifier)
+		return removeControlPressed(index);
+
+	// Refuse deleting the last point.
+	int rows = rowCount();
+	if (index.column() != REMOVE || index.row() < 0 || index.row() >= rows || rows <= 1)
 		return;
 
 	divedatapoint dp = at(index.row());
@@ -913,28 +947,12 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 
 	int old_first_cylid = divepoints[0].cylinderid;
 
-/* TODO: this seems so wrong.
- * We can't do this here if we plan to use QML on mobile
- * as mobile has no ControlModifier.
- * The correct thing to do is to create a new method
- * remove method that will pass the first and last index of the
- * removed rows, and remove those in a go.
- */
-	int i;
-	int rows = rowCount();
-	if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
-		preserved_until.seconds = divepoints.at(index.row()).time;
-		beginRemoveRows(QModelIndex(), index.row(), rows - 1);
-		for (i = rows - 1; i >= index.row(); i--)
-			divepoints.remove(i);
-	} else {
-		if (index.row() == rows -1)
-			preserved_until.seconds = divepoints.at(rows - 1).time;
-		beginRemoveRows(QModelIndex(), index.row(), index.row());
-		divepoints.remove(index.row());
-	}
-
+	if (index.row() == rows)
+		preserved_until.seconds = divepoints.at(rows - 1).time;
+	beginRemoveRows(QModelIndex(), index.row(), index.row());
+	divepoints.remove(index.row());
 	endRemoveRows();
+
 	cylinders.updateTrashIcon();
 	if (divepoints[0].cylinderid != old_first_cylid)
 		cylinders.moveAtFirst(divepoints[0].cylinderid);
