@@ -27,6 +27,11 @@ PieSeries::Item::Item(StatsView &view, const QString &name, int from, std::vecto
 	QLocale loc;
 
 	int count = (int)dives.size();
+
+	// totalCount = 0 shouldn't happen, but for robustness' sake, let's not divide by zero.
+	if (totalCount <= 0)
+		totalCount = count = 1;
+
 	angleFrom = static_cast<double>(from) / totalCount;
 	angleTo = static_cast<double>(from + count) / totalCount;
 	double meanAngle = M_PI / 2.0 - (from + count / 2.0) / totalCount * M_PI * 2.0; // Note: "-" because we go CW.
