@@ -18,7 +18,8 @@ DiveEventItem::DiveEventItem(QGraphicsItem *parent) : DivePixmapItem(parent),
 	vAxis(NULL),
 	hAxis(NULL),
 	dataModel(NULL),
-	internalEvent(NULL)
+	internalEvent(NULL),
+	dive(NULL)
 {
 	setFlag(ItemIgnoresTransformations);
 }
