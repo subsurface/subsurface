@@ -12,7 +12,9 @@ static const int distanceFromPointer = 10; // Distance to place box from mouse p
 InformationBox::InformationBox(StatsView &v) :
 	ChartRectItem(v, ChartZValue::InformationBox,
 		      QPen(informationBorderColor, informationBorder),
-		      QBrush(informationColor), informationBorderRadius)
+		      QBrush(informationColor), informationBorderRadius),
+	width(0.0),
+	height(0.0)
 {
 }
 
