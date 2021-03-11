@@ -114,9 +114,16 @@ static int calculate_otu(const struct dive *dive)
 				po2f = MIN((int) sample->setpoint.mbar,
 					   depth_to_mbar(sample->depth.mm, dive));
 			} else {						// For OC and rebreather without o2 sensor/setpoint
-				int o2 = active_o2(dive, dc, psample->time);	// 	... calculate po2 from depth and FiO2.
-				po2i = lrint(o2 * depth_to_bar(psample->depth.mm, dive));	// (initial) po2 at start of segment
-				po2f = lrint(o2 * depth_to_bar(sample->depth.mm, dive));	// (final) po2 at end of segment
+				double amb_presure = depth_to_bar(sample->depth.mm, dive);
+				double pamb_pressure = depth_to_bar(psample->depth.mm , dive);
+				if (dc->divemode == PSCR) {
+					po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample->time));
+					po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample->time));
+				} else {
+					int o2 = active_o2(dive, dc, psample->time);	// 	... calculate po2 from depth and FiO2.
+					po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
+					po2f = lrint(o2 * amb_presure);	// (final) po2 at end of segment
+				}
 			}
 		}
 		if ((po2i > 500) || (po2f > 500)) {			// If PO2 in segment is above 500 mbar then calculate otu
@@ -173,9 +180,16 @@ static double calculate_cns_dive(const struct dive *dive)
 			trueo2 = true;
 		}
 		if (!trueo2) {
-			int o2 = active_o2(dive, dc, psample->time);			// For OC and rebreather without o2 sensor:
-			po2i = lrint(o2 * depth_to_bar(psample->depth.mm, dive));	// (initial) po2 at start of segment
-			po2f = lrint(o2 * depth_to_bar(sample->depth.mm, dive));	// (final) po2 at end of segment
+			double amb_presure = depth_to_bar(sample->depth.mm, dive);
+			double pamb_pressure = depth_to_bar(psample->depth.mm , dive);
+			if (dc->divemode == PSCR) {
+				po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample->time));
+				po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample->time));
+			} else {
+				int o2 = active_o2(dive, dc, psample->time);	// 	... calculate po2 from depth and FiO2.
+				po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
+				po2f = lrint(o2 * amb_presure);	// (final) po2 at end of segment
+			}
 		}
 		int po2avg = (po2i + po2f) / 2;	// po2i now holds the mean po2 of initial and final po2 values of segment.
 		/* Don't increase CNS when po2 below 500 matm */

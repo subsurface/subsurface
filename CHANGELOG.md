@@ -1,3 +1,4 @@
+- core: Take into account PSCR pO2 drop when computing CNS and OTU
 - planner: allow automatic setpoint changes at specified depths in CCR mode
 - core: fix OTU und CNS calculations for CCR dives at shallow depths
 - desktop: make selection of multiple dives reasonable fast
