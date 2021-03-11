@@ -223,7 +223,7 @@ and down through your dive history.
 The Dive List consists of two types of entries:
 
 1. *Trip headers*. A trip header is a line describing the year and month during which a dive trip 
-took place, as wel as the geographical area of the trip. The second line in the lefthand image below indicates that a 10-dive trip
+took place, as well as the geographical area of the trip. The second line in the lefthand image below indicates that a 10-dive trip
 was made to Guinjata, Moçambique during December 2016. 
 
 2. *Individual dive records*. Tapping a trip header expands the dive list to show (or hide) the individual dives performed during the trip. Each dive is represented by a dive record. By default the dives during the last trip are listed with older dives at the bottom and recent dives at the top of the list. In the lefthand image below the last dive during
@@ -501,7 +501,7 @@ and the dives during the last six months.
 a|image::mobile-images/StatsPanel.jpg["Image: Statistics panel",float="left"] |
 Creating meaningful statistics that convey the information you are looking for is surprisingly hard.
 Different users have very different needs and very different expectations. Subsurface-Mobile provides
-a rather detailed set of statistics features to summarise information from the dive log in a graphical
+a rather detailed set of statistics features to summarize information from the dive log in a graphical
 way. To access the dive statistics tool, select _Main Menu_ -> _Statistics_. The statistics tool is
 so flexible that it is impossible to cover every possible use case. Rather, we provide a conceptual
 introduction, followed by specific examples. The tool can be closed using the _Back_ button (bottom
@@ -528,13 +528,13 @@ are so many graphical display options that, if you do not formulate the question
 is unlikely to be presented in a valid or appropriate way. Because all statistical results in Subsurface
 are shown as graphs, formulating an appropriate specification requires four steps:
 
-a) Which dives do you wish to graph? If required, use the xref:S_Filter[Filter button] for selecting specific dives to be analysed.
+a) Which dives do you wish to graph? If required, use the xref:S_Filter[Filter button] for selecting specific dives to be analyzed.
 
 b) Which variable should be displayed along the bottom horizontal axis of the graph?
 Let's say you wish to see how many dives you performed each year. In this case the variable along the bottom
 horizontal axis would be "Year". Alternatively, if you wished to compare the mean depth of your dives using
 different suit types, then "Suit type" would be selected as the variable for the bottom horizontal axis.
-Alternatively, if you wished to visualise the water temperature for dives of different dive depths,
+Alternatively, if you wished to visualize the water temperature for dives of different dive depths,
 then you would select "Max. depth" as the variable on the horizontal axis (see image below). The variable
 along the horizontal axis is also called the "base variable", the "X-axis variable" or the "independent
 variable": it defines the basic units or categories used for analysis.
@@ -579,7 +579,7 @@ of any particular instant in time can be presented. For instance a dive at 12 no
 presented by a value of 2020.24726 (90.5/366 days in that leap year). On the other hand dive mode is a
 categorical variable: there are no values between "Freedive" and "Open circuit" or between "Open Circuit"
 and "CCR". Other categorical variables include Buddy, Visibility, Rating and Suit type. Different methods
-are used to represent these two types of variables, evident from the way in which the axes are organised.
+are used to represent these two types of variables, evident from the way in which the axes are organized.
 It is perfectly valid to create a
 graph with a continuous Base variable and a categorical Data variable and _vice versa_. However, when using
 a continuous Base variable, use a
@@ -654,7 +654,7 @@ a) Select a variable with categories (along the horizontal axis) as a Base varia
 b) Select another category of data as a Data variable (e.g. gas type or cylinder type).
 
 The images below show two alternative bar-chart representations. If, in the Chart type combobox, one selects
-"Barchart/stacked vertical", a graph similar to image A below is generated, summarising a log of technical
+"Barchart/stacked vertical", a graph similar to image A below is generated, summarizing a log of technical
 dives where, for each cylinder gas type, the bar is subdivided into a count for open-circuit dives and for
 rebreather dives. On the other hand, if "Barchart/grouped horizontal" is selected in the Chart type combobox, a graph
 similar to image B, below, is produced. Here the subdivision within each gas type is shown as adjacent bars.
@@ -673,10 +673,10 @@ is to draw a scattergraph where the values of one variable is plotted against th
 
 
 For the dataset in the image above the SAC rate appears to have decreased over time. If the relationship between the two variables
-is statistically significant, a red line is shown that summarises the best estimate of the relationship between SAC rate and year.
+is statistically significant, a red line is shown that summarizes the best estimate of the relationship between SAC rate and year.
 In this graph it appears that SAC rate has decreased from around 21 l/min to around 14 l/min between 2013 and 2021. The pink area
 around the red line indicates the uncertainty of the precise orientation of the line. The line is expected to lie somewhere within
-the pink area with a certainty of 95%. The intensity of the pink colour also indicates the relative reliability of these estimates.
+the pink area with a certainty of 95%. The intensity of the pink color also indicates the relative reliability of these estimates.
 The procedure for obtaining a scattergrapth is:
 
 a) Specify the Base variable: Which variable should be along the horizontal axis? Examples are Date, Temperature, Max. depth, SAC rate.

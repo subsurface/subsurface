@@ -86,7 +86,7 @@ it. In most situations the up/down keys can be used to switch
 between dives. The *Dive List* is an important tool for manipulating a dive log.
 
 2. The *Dive Map* on the bottom right, showing the user's dive sites on a world map
-and centred on the site of the last dive selected in the *Dive List*. The map
+and centered on the site of the last dive selected in the *Dive List*. The map
 scale can be increased or decreased.
 
 3. The *Info* on the top left, giving more detailed information on the
@@ -125,7 +125,7 @@ Decide which of the four panels are displayed by selecting the
 *Info*: Show only the Notes about the last selected dive and statistics for
 all highlighted dives.
 
-*Map*: Show only the world map, centred on the last selected dive.
+*Map*: Show only the world map, centered on the last selected dive.
 
 Like other functions that can be accessed via the Main Menu, these options
 can also be triggered using keyboard shortcuts. The shortcuts
@@ -460,7 +460,7 @@ as well as contextual information about the dives recorded on the dive computer.
 Bluetooth is becoming a more common way of communication between dive computers
 and _Subsurface_. _Subsurface_ provides a largely operating system independent
 Bluetooth interface. An increasing number of dive computers use Bluetooth Low Energy (BTLE)
-as a means of communication. However, BTLE is not a standardised protocol,
+as a means of communication. However, BTLE is not a standardized protocol,
 consequently adaptations need to be made for communicating with each different dive computer model. See the
 link:https://subsurface-divelog.org/documentation/supported-dive-computers/[list of supported dive computers].
 Bluetooth communication is often more reliable if all Bluetooth devices seen by the
@@ -488,7 +488,7 @@ Bluetooth pairing at the operating system level, it is always prudent to follow 
 initial Bluetooth pairing problems by pairing the Bluetooth dive computer with
 the _Subsurface_ computer using the operating system services of the desktop computer. Delete all
 existing pairings and start by scanning for Bluetooth devices from an empty list
-(on the desktop) of Bluetooth devices. Once _Subsurface_ has recognised the Bluetooth dive
+(on the desktop) of Bluetooth devices. Once _Subsurface_ has recognized the Bluetooth dive
 computer, subsequent divelog downloads are likely to be simple.
 
 On the _Linux_ or _MacOS_ platforms the name
@@ -832,10 +832,10 @@ show the local time. Make sure your GPS device shows the same local time as your
 dive computer. If the times are not identical, then specify a correction in the bottom
 text box of the panel illustrated below.
 
-8. The coloured icon to the right of the _Start and end times_ in the above panel shows the
-degree of synchronisation between dive computer and GPS device. A green icon
+8. The colored icon to the right of the _Start and end times_ in the above panel shows the
+degree of synchronization between dive computer and GPS device. A green icon
 indicates that the GPS track coincides with the time of the dive. A yellow icon
-indicates partial synchronisation while a red icon indicates that the dive and the
+indicates partial synchronization while a red icon indicates that the dive and the
 GPS track are at different times and that coordinates cannot be extracted. Make
 sure that the GPS date and the dive date are the same.
 
@@ -929,7 +929,7 @@ the cylinder name with your new cylinder name and press ENTER on the keyboard. T
 cylinder name now appears on the dropdown list. Overtyping a cylinder name does not affect
 the name that is being overtyped. Add a size and start pressure for that
 cylinder. The usual convention is that double cylinders are prefixed with a "D"  to
-indicate "double". Say for instance you dive a manifolded twinset of two 7 litre steel cylinders. This
+indicate "double". Say for instance you dive a manifolded twinset of two 7 liter steel cylinders. This
 could be named "D7ℓ 232 bar" rather than "14ℓ 232 bar". However, use a rule that works for you.
 
 Next, indicate the starting pressure and the ending pressure of the
@@ -1616,7 +1616,7 @@ the dive named at the top of the panel and returns you to the dive sites managem
 
 At the top right of the dive sites management table is a round button with a "+". Clicking that button inserts a
 new site entitled "New dive site" into the list (image below). The new site can also be deleted (maybe after erroneously
-clicking the + icon or you realised the dive site already exists) by selecting _Edit -> Undo_ from the main menu or by typing Ctrl-Z (or CMD-Z on a Mac) while the dive sites management table has focus. Edit this new site by selecting its edit icon and provide a name,
+clicking the + icon or you realized the dive site already exists) by selecting _Edit -> Undo_ from the main menu or by typing Ctrl-Z (or CMD-Z on a Mac) while the dive sites management table has focus. Edit this new site by selecting its edit icon and provide a name,
 coordinates and, if preferred, a description. Clicking
 the "Done" button in the edit panel returns you to the dive sites management panel.
 
@@ -1899,7 +1899,7 @@ logging of cylinder pressures during sidemount involves three steps, exactly as 
   from a dive with the times of cylinder changes is the only tedious part of logging sidemount dives.
 - *Within _Subsurface_ describe the cylinders used during the dive*. The diver needs to provide the
   specifications of the different cylinders, using the *Equipment* tab of the *Info Panel* (see
-  image below where two 12 litre cylinders were used).
+  image below where two 12 liter cylinders were used).
 - *Indicate cylinder change events on the _Subsurface_ dive profile*. Once the dive log has been imported
   from a dive computer into _Subsurface_, the cylinder switch events need to be shown on the dive profile.
   Cylinder changes are recorded by right-clicking at the appropriate point on the dive profile, then
@@ -1944,8 +1944,8 @@ over two hours.
 
 image::images/pSCR_profile.jpg["FIGURE: pSCR profile",align="center"]
 
-_Visualising the pO~2~ drop_: The difference between the pO~2~ of the fresh cylinder gas and the pO~2~
-in the loop can be visualised in _Subsurface_ by opening the _Tech setup_
+Visualizing the pO~2~ drop_: The difference between the pO~2~ of the fresh cylinder gas and the pO~2~
+in the loop can be visualized in _Subsurface_ by opening the _Tech setup_
 panel in the _File -> Preferences_ menu item and then providing suitable information in the section
 labelled _pSCR options_. The _pSCR metabolic rate_ is your rate of oxygen metabolism in liters/min (commonly
 between 0.5 and 2.5). The _Dilution ratio_ is the ratio indicating how much gas in the loop is replaced with
@@ -2097,7 +2097,7 @@ a stage cylinder, indicate the bailout as well as the gas change event and _Subs
 all the appropriate pO~2~ values. Some dive computers record bailout events as well as gas change
 events: in this case the events are shown automatically in the dive log.
 
-image::images/CCR_bailout.jpg["FIGURE: CCR bailout profileh",align="center"]
+image::images/CCR_bailout.jpg["FIGURE: CCR bailout profile",align="center"]
 
 _Deco ceiling_: The deco ceiling calculated by Subsurface is not very accurate because the precise pressure of nitrogen
 in the loop can usually not be determined from the dive log imported from the CCR equipment. Many CCR dive
@@ -2196,7 +2196,7 @@ shallowest and deepest dives of those selected.
 === The *Extra Data* tab (usually for individual dives)
 
 When using a dive computer, it often reports several data items that cannot easily be
-presented in a standardised way because the nature of the information differs from one
+presented in a standardized way because the nature of the information differs from one
 dive computer to another. These data often comprise setup information, metadata about
 a dive, battery levels, no fly times, or gradient factors used during the dive. When
 possible, this information is presented in the *Extra Data* tab. Below is an
@@ -2400,7 +2400,7 @@ most dive computers report alarms relating to high partial pressures of oxygen,
 to rapid ascents or the exceeding of no-deco limits (NDL).
 On the other hand, other events are classified as warnings and, for instance, occur when
 the remaining gas in a cylinder falls below a predetermined limit, a deep stop needs to be performed or
-the need to change gas during multicylinder dives. Some dive computers also report notifications,
+the need to change gas during multi-cylinder dives. Some dive computers also report notifications,
 e.g. when a safety stop is initiated or terminated or when a predetermined amount of OTUs have been incurred.
 The alarms, warnings and notifications differs from one dive computer to another: some dive computers do not
 report any of the above events, while others provide an extensive log of events. The reporting of events
@@ -2572,7 +2572,7 @@ image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph",align="center"]
 [icon="images/icons/heatmap.png"]
 [NOTE]
 ====================================================================================
-Display the tissue heat-map. The heat map summarises, for the duration of the dive, the inert gas tissue pressures
+Display the tissue heat-map. The heat map summarizes, for the duration of the dive, the inert gas tissue pressures
 for each of the 16 tissue compartments of the Bühlmann model. Blue colors mean low gas pressures in a tissue compartment
 and thus on-gassing, green to red means excess gas in the tissue and thus off-gassing. Fast to slow tissues are indicated from
 top to bottom. The figure below explains in greater detail how the heat map can be interpreted.
@@ -2589,7 +2589,7 @@ for more details on the different elements of this graph.
 Image *B* shows a gradient of unique colors, spanning the whole range of inert gas pressures.
 It is possible to map the height of each of the dark green vertical bars of *A* to a
 color in *B*. For instance, the fastest (leftmost) dark green vertical bar in *A* has
-a height corresponding to the medium green part of *B*. The height of this bar can therefore be summarised
+a height corresponding to the medium green part of *B*. The height of this bar can therefore be summarized
 using a medium green color. Similarly, the highest dark green bar in *A* is as high
 as the yellow part of *B*. The 14 remaining tissue pressure bars in *A* can also be
 translated to colors. The colors represent three ranges of tissue inert gas pressure:
@@ -2784,7 +2784,7 @@ off filtering and exit the _Filter Panel_, click on _Reset_ and then on _Close_.
 [[S_Stats]]
 === Dive statistics
 
-Creating meaningful statistics that convey the information you are looking for is surprisingly hard. Different users have very different needs and very different expectations. Subsurface provides a rather detailed set of statistics features to summarise information from the dive log in a graphical way. To access the dive statistics tool, select _Main Menu_ -> _View_ -> _Dive Statistics_. This tool is so flexible that it is impossible to cover every possible use case. Rather, we provide a conceptual introduction, followed by specific examples. The tool can be closed using the Close button at the top left. The Statistics tool has four panels (see image below):
+Creating meaningful statistics that convey the information you are looking for is surprisingly hard. Different users have very different needs and very different expectations. Subsurface provides a rather detailed set of statistics features to summarize information from the dive log in a graphical way. To access the dive statistics tool, select _Main Menu_ -> _View_ -> _Dive Statistics_. This tool is so flexible that it is impossible to cover every possible use case. Rather, we provide a conceptual introduction, followed by specific examples. The tool can be closed using the Close button at the top left. The Statistics tool has four panels (see image below):
 
 1. A setup panel containing comboboxes for requesting a graph (top left).
 2. The graph that has been requested (top right).
@@ -2801,9 +2801,9 @@ image::images/StatsPanel.jpg["Statistics panel",align="center"]
 
 The extreme flexibility of the Statistics tool means that you need to provide detailed information about what information Subsurface should provide. It helps to have a clear objective, a solid understanding of what you want Subsurface to show you. In other words, you need to formulate the correct question. There are so many graphical display options that, if you do not formulate the question correctly, the information is unlikely to be presented in a valid or appropriate way. Because all statistical results in Subsurface are shown as graphs, formulating an appropriate specification requires four steps:
 
-a) Which dives do you wish to graph? Perhaps you wish to analyse dives during winter, or dives on tropical reefs, or dives at a specific dive site. Use the Filter panel for selecting those dives. The section on the <<S_Filter,_Filter tool_>> contains complete instructions for filtering the dive list.
+a) Which dives do you wish to graph? Perhaps you wish to analyze dives during winter, or dives on tropical reefs, or dives at a specific dive site. Use the Filter panel for selecting those dives. The section on the <<S_Filter,_Filter tool_>> contains complete instructions for filtering the dive list.
 
-b) Which variable should be displayed along the bottom horizontal axis of the graph? Let's say you wish to see how many dives you performed each year. In this case the variable along the bottom horizontal axis would be "Year". Alternatively, if you wished to compare the mean depth of your dives using different suit types, then "Suit type" would be selected as the variable for the bottom horizontal axis. Alternatively, if you wished to visualise the water temperature for dives of different dive depths, then you would select "Max. depth" as the variable on the horizontal axis (see image below). The variable along the horizontal axis is also called the "base variable", the "X-axis variable" or the "independent variable": it defines the basic units or categories used for analysis.
+b) Which variable should be displayed along the bottom horizontal axis of the graph? Let's say you wish to see how many dives you performed each year. In this case the variable along the bottom horizontal axis would be "Year". Alternatively, if you wished to compare the mean depth of your dives using different suit types, then "Suit type" would be selected as the variable for the bottom horizontal axis. Alternatively, if you wished to visualize the water temperature for dives of different dive depths, then you would select "Max. depth" as the variable on the horizontal axis (see image below). The variable along the horizontal axis is also called the "base variable", the "X-axis variable" or the "independent variable": it defines the basic units or categories used for analysis.
 
 image::images/StatsGraphAxes.jpg["Example: Statistics graph axes",align="center"]
 
@@ -2819,7 +2819,7 @@ The point of the discussion above is to show that, _before initiating a graph, y
 
 *A more technical note on the valid use of statistical graphs*
 
-When graphing variables from a dive log, there is an important distinction between _continuous variables_ and _categorical variables_. These two data types are typically graphed in different ways. A continuous variable can theoretically have any value. For instance dive depth can have any value greater than zero (theoretically negative depths indicate height above the water but this is not a practical possibility). Consequently, depths of 21.63857 meters or 44.7653 feet are entirely realistic. Dates are also continuous since the annual value of any particular instant in time can be presented. For instance a dive at 12 noon on April 1st 2020 can be presented by a value of 2020.24726 (90.5/366 days in that leap year). On the other hand dive mode is a categorical variable: there are no values between "Freedive" and "Open circuit" or between "Open Circuit" and "CCR". Other categorical variables include Buddy, Visibility, Rating and Suit type. Different methods are used to represent these two types of variables, evident from the way in which the axes are organised. It is perfectly valid to create a
+When graphing variables from a dive log, there is an important distinction between _continuous variables_ and _categorical variables_. These two data types are typically graphed in different ways. A continuous variable can theoretically have any value. For instance dive depth can have any value greater than zero (theoretically negative depths indicate height above the water but this is not a practical possibility). Consequently, depths of 21.63857 meters or 44.7653 feet are entirely realistic. Dates are also continuous since the annual value of any particular instant in time can be presented. For instance a dive at 12 noon on April 1st 2020 can be presented by a value of 2020.24726 (90.5/366 days in that leap year). On the other hand dive mode is a categorical variable: there are no values between "Freedive" and "Open circuit" or between "Open Circuit" and "CCR". Other categorical variables include Buddy, Visibility, Rating and Suit type. Different methods are used to represent these two types of variables, evident from the way in which the axes are organized. It is perfectly valid to create a
 graph with a continuous Base variable and a categorical Data variable and _vice versa_. However, when using a continuous Base variable, use a
 histogram, NOT a bar-chart. The images below show counts of dives at different depths. Image A is a histogram showing that no dives were conducted between 55m and 60m depth. However two dives were performed between 60m and 65m: these two bars (55-60m and 60-65m) have equally important information. Image B shows the bar-chart of the same dataset where depth has been converted to a categorical type. Notice that the two bars with no dives (55-60m and 75-80m) are omitted. Important information is lost because of the use of a bar-chart to represent continuous data.
 
@@ -2847,7 +2847,7 @@ Sometimes you might wish to investigate the relationship between two dive variab
 
 image::images/StatsRegression.jpg["Regression data example",align="center"]
 
-For the dataset in the above image, the SAC rate appears to have decreased over time. If the "linear regression" checkbox is marked, a red line is shown that summarises the best estimate of the relationship between SAC rate and year. In this graph it appears that SAC rate has decreased from around 21 l/min to around 14 l/min between 2013 and 2021. The pink area around the red line indicates the uncertainty of the precise orientation of the line. The line is expected to lie somewhere within the pink area with a certainty of 95%. The intensity of the pink colour also indicates the relative reliability of these estimates. The procedure for obtaining a scattergraph is:
+For the dataset in the above image, the SAC rate appears to have decreased over time. If the "linear regression" checkbox is marked, a red line is shown that summarizes the best estimate of the relationship between SAC rate and year. In this graph it appears that SAC rate has decreased from around 21 l/min to around 14 l/min between 2013 and 2021. The pink area around the red line indicates the uncertainty of the precise orientation of the line. The line is expected to lie somewhere within the pink area with a certainty of 95%. The intensity of the pink color also indicates the relative reliability of these estimates. The procedure for obtaining a scattergraph is:
 
 a) Specify the Base variable: Which variable should be along the horizontal axis? Examples are Date, Temperature, Max. depth, SAC rate.
 
@@ -2879,7 +2879,7 @@ a) Select a variable with categories (along the horizontal axis) as a Base varia
 
 b) Select another category of data as a Data variable (e.g. gas type or cylinder type).
 
-The images below show two alternative bar-chart representations. If, in the Chart combobox, one selects "Barchart/stacked vertical", a graph similar to image A below is generated. This summarised a log of technical dives where, for each cylinder gas type, the bar is subdivided into a count for open-circuit dives and for rebreather dives. On the other hand, if "Barchart/grouped vertical" is selected in the Chart combobox, a graph similar to image B, below, is produced. Here the subdivision within each gas type is shown as adjacent bars.
+The images below show two alternative bar-chart representations. If, in the Chart combobox, one selects "Barchart/stacked vertical", a graph similar to image A below is generated. This summarized a log of technical dives where, for each cylinder gas type, the bar is subdivided into a count for open-circuit dives and for rebreather dives. On the other hand, if "Barchart/grouped vertical" is selected in the Chart combobox, a graph similar to image B, below, is produced. Here the subdivision within each gas type is shown as adjacent bars.
 
 image::images/StatsBarchartSubdivided.jpg["Stats subdivided barchart",align="center"]
 
@@ -2897,14 +2897,14 @@ to select only data for the two years of interest and then view those data using
 _Subsurface_ provides a rapid mechanism of selecting the appropriate subset of data using your mouse. In the above example of a bar graph,
 select the bars for the two years of interest by clicking on them and activate the "Restrict to selection" button towards the bottom left
 of the Statistics panel.
-This displays only the data for the two bars that have been selected. This restricted subset can now be analysed
+This displays only the data for the two bars that have been selected. This restricted subset can now be analyzed
 using all the options in the Statistics panel. Below is a scattergraph for a number of dives, showing the water temperature for different dive depths.
 
 image::images/StatsRestricted.jpg["Stats: Selecting restricted data",align="center"]
 
-Let's say you wish to analyse only dives at tropical dive sites, defined by temperatures above 22°C and depths less than 60m. Select the
+Let's say you wish to analyze only dives at tropical dive sites, defined by temperatures above 22°C and depths less than 60m. Select the
 appropriate dives by dragging your mouse across the scattergraph (see image above) and restrict the data by activating the "Restrict to selection" button.
-Now only the selected subset of points is shown on the graph. You can now select *Base* and *Data* variables to further analyse the restricted data.
+Now only the selected subset of points is shown on the graph. You can now select *Base* and *Data* variables to further analyze the restricted data.
 The graph below shows the SAC rates as a function of dive depth for the restricted dataset created
 above. The graph shows that SAC rate was more or less constant (around 15 l/min) for all dive depths at tropical dive sites.
 
@@ -3089,7 +3089,7 @@ it may happen that the dive computer does not register a new dive, but continues
 the previous dive due to the brief surface interval. In this case it is possible to
 split a dive so that the two dives are shown as independent dives on the *Dive List*.
 If this operation is performed, _Subsurface_ scans the selected dive(s) and splits the
-dive at points during the dive where the depth is less than a metre.
+dive at points during the dive where the depth is less than a meter.
 
 ==== Load image(s) from file(s)
 This topic is discussed in the section: xref:S_LoadImage[Adding photographs or videos to dives].
@@ -3259,7 +3259,7 @@ Subsurface will never use this email address again.
 (this field is only visible while the server is waiting for email
 address confirmation)
 ** Click _Apply_ again. The _Subsurface cloud storage_ account
-will be marked as verified and the _Subsurface cloud storage_ service is initialised for use.
+will be marked as verified and the _Subsurface cloud storage_ service is initialized for use.
 
 ****
 [icon="images/icons/important.png"]
@@ -3345,7 +3345,7 @@ In this case, each user's preferences, settings and cloud access information are
   each diver to interact with _Subsurface_ in her/his preferred way and with individual cloud access. The above
   process can be made user-friendly by creating a link/shortcut with a desktop icon that executes the above
   command-line instruction. Use of the _--user=_ option therefore enables each user to create, maintain and
-  backup a separate dive log within a personalised user interface. This way, when each diver launches _Subsurface_,
+  backup a separate dive log within a personalized user interface. This way, when each diver launches _Subsurface_,
   it opens with the correct dive log as well as the appropriate display and backup preferences, and each diver
   can access their own divelog on a mobile device using https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[_Subsurface-Mobile_].
 
@@ -4000,7 +4000,7 @@ In addition to calculating the total gas consumption for every cylinder the plan
 of calculating the recommended volume of bottom gas which is needed for safe ascent to the
 first deco gas change depth or the surface. This procedure is called the "minimum gas" or "rock bottom"
 consideration and it is used by various (but not all)
-technical diving organisations. See the text below for a detailed explanation.
+technical diving organizations. See the text below for a detailed explanation.
 
 Now you can start the detailed time-depth planning of the dive. _Subsurface_ offers an unique
 graphical interface for doing planning. The mechanics are
@@ -4019,7 +4019,7 @@ left of the dive planner panel. Ensure the _Used Gas_ value in each row
 of that table corresponds to one of the gas mixtures specified in the _Available Gases_ table.
 Add new waypoints until the main features of the dive have been completed, e.g. the
 bottom time segment and deep stops (if these are implemented). In most cases _Subsurface_
-computes additional way points in order to fulfil decompression requirements for that
+computes additional way points in order to fulfill decompression requirements for that
 dive. A waypoint can also be moved by selecting it and by using the arrow keys.
 The waypoints listed in the _Dive Planner Points_ dialog can be edited by hand in
 order to get a precise presentation of the dive plan. In fact, it is sometimes more easy to create the
@@ -4035,7 +4035,7 @@ Cylinders used for the plan need to be entered in the table of _Available gases_
 _Type_ select the appropriate cylinder size by using the dropdown list that appears when
 double-clicking a cell in this column. By default, a large number of sizes are listed,
 and a new cylinder size can be created by typing this into the text box. The cylinder size, start pressure
-and default switch depths are initialised automatically. Specify the gas composition
+and default switch depths are initialized automatically. Specify the gas composition
 (e.g. helium and oxygen content). A non-zero value in the "CC setpoint" column of the table of dive planner points
 indicates a valid setpoint for oxygen partial pressure and that the segment
 is dived using a closed circuit rebreather (CCR). If the last manually entered
@@ -4126,7 +4126,7 @@ bottom gas used during the dive if it exactly follows the plan. the minimum gas 
 This indicates:
 
  * Within parentheses, the _SAC factor_ and _Problem solving time_ specified.
- * The number of liters of back gas required for a safe ascent (2130 litres in the example above)
+ * The number of liters of back gas required for a safe ascent (2130 liters in the example above)
  * The number of bars of back gas required for a safe ascent (90 bars in the example above).
  * The delta-value: number of bars of back gas available at the end of the bottom section of the dive, _over and above_ the minimum
    gas requirement (80 bars in the above example). A positive delta reflects a safe plan; a negative delta indicates insufficient gas for a
@@ -4352,7 +4352,7 @@ merged dive highlighted in the _Dive List_, switch
 between the planned profile and the real-life profile using the right-arrow/left-arrow keyboard keys.
 
 == Running _Subsurface_ from the command-line
-_Subsurface_ can be launched from the command-line to set some specialised settings or as
+_Subsurface_ can be launched from the command-line to set some specialized settings or as
 part of an script-based automated process for manipulating a dive log. The format for launching _Subsurface_ from the
 command-line is:
 
@@ -4807,7 +4807,7 @@ the download page for the ScubaPro SmartTrak software.
 For Windows, IrDA is not available for Windows 10 and higher.
 For the Apple Mac, IrDA communication via the MCS7780 link is not
 available for OSX 10.6 or higher.
-In addition it is foreseen that the IrDA stack will be phased out in Linux. This is old technology and, even though it is currently more robust, fast and efficient than many other technologies such as Bluetooth, it is not fashionable. If IrDA communication is required for an operating system that does not support it, an easy solution is to run Subsurface in a virtual machine (VM) that contains support for IrDA. A VM (e.g. VMWare or vitualbox) can be installed on most modern operating systems. The only hardware setup required is to route the USB port of the host OS through to the guest OS.
+In addition the IrDA stack has been phased out in Linux. This is old technology and, even though it is currently more robust, fast and efficient than many other technologies such as Bluetooth, it is not fashionable. If IrDA communication is required for an operating system that does not support it, an easy solution is to run Subsurface in a virtual machine (VM) that contains support for IrDA. A VM (e.g. VMWare or vitualbox) can be installed on most modern operating systems. The only hardware setup required is to route the USB port of the host OS through to the guest OS.
 
 
 ****
@@ -4817,11 +4817,11 @@ In addition it is foreseen that the IrDA stack will be phased out in Linux. This
 
 Many of the new desktop operation systems (e.g. Windows 10, Linux kernel 4.17 and newer) do not provide support for IrDA-based communication. The underlying kernel drivers for IrDA
 are not provided any more because IrDA is an old technology, not well-maintained any more, thus creating problems on new operating systems such as Windows or Linux. However, in this case, do not stop using your Galileo or other IrDA-dependent dive computer. A way to solve this problem is to create a virtual machine on your desktop with a guest operating system that still does support IrDA. Your existing desktop acts as a host, with the IrDA-supporting operating system running as a guest on your host desktop. This is not a
-complex task but is best done with the help of an IT support person. Virtualisation software can be found for all desktop operating systems. In the Microsoft environment, Hyper-V allows virtual machines, as does Parallels on the Apple Mac: however these are proprietary software. VM-Ware is probably the most sophisticated virtualisation software, running on all operating systems, but it is also proprietary. Within the open source environment, VirtualBox is available free of
+complex task but is best done with the help of an IT support person. Virtualization software can be found for all desktop operating systems. In the Microsoft environment, Hyper-V allows virtual machines, as does Parallels on the Apple Mac: however these are proprietary software. VMware is probably the most sophisticated virtualization software, running on all operating systems, but it is also proprietary. Within the open source environment, VirtualBox is available free of
 charge for most current operation systems. Older, potential guest operating systems with IrDA support include Windows 8 and Linux Ubuntu 18.04 LTS (Linux kernel 4.15 or older). Creating a virtual machine allows, for instance, Windows 8 to be run as a guest on
 your Windows 10 (or later) machine. After installing Subsurface on the Windows 8 guest operating system, its IrDA facilities can be used to access an IrDA dongle plugged into the USB port of your Windows 10 (or later) host machine, allowing dive computers dependent on IrDA to download dive data to the guest operating system (Windows 8 in this case). Host and guest can share directories, which facilitates dive log transfer between the two systems.
 
-The downside of this solution is that the guest operating system needs to be started specially for the IrDA-based download from a dive computer. Install a scaled down version of the guest operating system to minimise its demands on the host system.
+The downside of this solution is that the guest operating system needs to be started specially for the IrDA-based download from a dive computer. Install a scaled down version of the guest operating system to minimize its demands on the host system.
 
 ****
 
@@ -5009,7 +5009,7 @@ C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db. This file can
 be directly imported to Subsurface.
 
 
-=== Exporting from Mares Dive Organiser V2.1
+=== Exporting from Mares Dive Organizer V2.1
 [[Mares_Export]]
 
 [icon="images/icons/mareslogo.jpg"]
@@ -5395,7 +5395,7 @@ Remember: one ATM is ~1.013 bar, so without the compressibility, your gas use is
 which is about 1445, not 1464. So there was 19 l too much in your simple
 calculation that ignored the difference between 1 bar and one ATM.
 The compressibility does show up above 200 bar, and takes that 1445 down
-about eight litres more, so you really did use only about 1437 l of air at surface pressure.
+about eight liters more, so you really did use only about 1437 l of air at surface pressure.
 
 So be happy: your SAC really is better than your calculations indicated.
 Or be sad: your cylinder contains less air than you thought it did.
