@@ -86,7 +86,7 @@ it. In most situations the up/down keys can be used to switch
 between dives. The *Dive List* is an important tool for manipulating a dive log.
 
 2. The *Dive Map* on the bottom right, showing the user's dive sites on a world map
-and centered on the site of the last dive selected in the *Dive List*. The map
+and centred on the site of the last dive selected in the *Dive List*. The map
 scale can be increased or decreased.
 
 3. The *Info* on the top left, giving more detailed information on the
@@ -125,7 +125,7 @@ Decide which of the four panels are displayed by selecting the
 *Info*: Show only the Notes about the last selected dive and statistics for
 all highlighted dives.
 
-*Map*: Show only the world map, centered on the last selected dive.
+*Map*: Show only the world map, centred on the last selected dive.
 
 Like other functions that can be accessed via the Main Menu, these options
 can also be triggered using keyboard shortcuts. The shortcuts
@@ -505,7 +505,7 @@ computer for more information. Now the third item in the list above has been fin
 Select the _Scan_ button towards the bottom left of the dialog above. After
 searching, the dive computer should be listed
 (perhaps as one of a number of Bluetooth devices) in the main list box on the
-lefthand side of the dialog (see image above). If this does not work, select
+left-hand side of the dialog (see image above). If this does not work, select
 the _Clear_ button, then scan again for Bluetooth devices using the _Scan_
 button. After taking these actions _Subsurface_ should see the dive computer.
 On the left hand side, if the
@@ -544,7 +544,7 @@ One way to achieve this is to use +bluetoothctl+:
 After the devices are paired, press the _Save_ button of the dialog.
 This closes the Bluetooth dialog. Now select _Download_ in the _Download from
 dive computer_ dialog which should still be open. The downloaded dives are
-shown on the righthand side of the download dialog.
+shown on the right-hand side of the download dialog.
 
 ===== On Windows:
 image::images/DC_import_Bluetooth_Windows.jpg["FIGURE: Download Bluetooth on Windows",align="center"]
@@ -635,7 +635,7 @@ increase in the amount of information stored for a dive.
 
 1. The *Notes* tab
 holds basic information about the dive, the date and time, locality,
-budiy, divemaster and some dive notes. This is about the minimum amount of
+buddy, divemaster and some dive notes. This is about the minimum amount of
 information required for a coherent dive log. 
 
 2. If one wishes, one can expand the dive information by using the
@@ -810,7 +810,7 @@ from the GPS to a directory on your desktop computer.
 2. In the *Dive List*, select the dive to be edited and specify a name for the dive site
 using the Locality field in the *Notes* panel.
 
-3. Open the *Dive site managment panel* by selecting the blue globe icon to the right
+3. Open the *Dive site management panel* by selecting the blue globe icon to the right
 of the Locality text box of the *Notes* tab.
 
 4. Select the button "Use GPS file" to the right of the Coordinates text box (see image A
@@ -1024,7 +1024,7 @@ using the dropdown box. The following water types are available:
  as a safe value for both fresh water and sea water.
 4. Salt water encountered in the sea.
 
-The topic of water salinity is complex because it differs sonewhat between different oceans. A warning icon
+The topic of water salinity is complex because it differs somewhat between different oceans. A warning icon
 is shown if the water type reported by the dive computer currently displayed is different from
 the value that is typed here. The water density value (corresponding to salinity) is automatically calculated
 from the choice of water type.
@@ -2317,11 +2317,11 @@ values are dependent on the composition of the breathing gas. The EAD
 is the depth of a hypothetical air dive that has the same partial
 pressure of nitrogen as the current depth of the nitrox dive at
 hand. A nitrox dive leads to the same decompression obligation as an
-air dive to the depth equaling the EAD. The END is the depth of a
+air dive to the depth equalling the EAD. The END is the depth of a
 hypothetical air dive that has the same sum of partial pressures of
 the narcotic gases nitrogen and oxygen as the current trimix dive. A
 trimix diver can expect the same narcotic effect as a diver breathing
-air diving at a depth equaling the END.
+air diving at a depth equalling the END.
 
 If at some point a isobaric counter diffusion situation is encountered
 in the leading tissue (defined to be a moment in time where helium is
@@ -2847,7 +2847,7 @@ Sometimes you might wish to investigate the relationship between two dive variab
 
 image::images/StatsRegression.jpg["Regression data example",align="center"]
 
-For the dataset in the above image, the SAC rate appears to have decreased over time. If the "linear regression" checkbox is marked, a red line is shown that summarises the best estimate of the relationship between SAC rate and year. In this graph it appears that SAC rate has decreased from around 21 l/min to around 14 l/min between 2013 and 2021. The pink area around the red line indicates the uncertainty of the precise orientation of the line. The line is expected to lie somewhere within the pink area with a certainty of 95%. The intensity of the pink colour also indicates the relative reliability of these estimates. The procedure for obtaining a scattergrapth is:
+For the dataset in the above image, the SAC rate appears to have decreased over time. If the "linear regression" checkbox is marked, a red line is shown that summarises the best estimate of the relationship between SAC rate and year. In this graph it appears that SAC rate has decreased from around 21 l/min to around 14 l/min between 2013 and 2021. The pink area around the red line indicates the uncertainty of the precise orientation of the line. The line is expected to lie somewhere within the pink area with a certainty of 95%. The intensity of the pink colour also indicates the relative reliability of these estimates. The procedure for obtaining a scattergraph is:
 
 a) Specify the Base variable: Which variable should be along the horizontal axis? Examples are Date, Temperature, Max. depth, SAC rate.
 
@@ -2885,9 +2885,37 @@ image::images/StatsBarchartSubdivided.jpg["Stats subdivided barchart",align="cen
 
 ==== Graph orientation
 
-Bar-charts can be rotated by 90 degrees by selecting the appropriate chart type in the Chart combobox. For instance, here is the horizontal bar-chart produced when selecting "Barchart/stacked horizontal" in the Chart combobox and using the same dataset as in the graph above.
+Bar-charts can be rotated by 90 degrees by selecting the appropriate chart type in the Chart combobox. For instance, here is the horizontal bar-chart produced when selecting "Barchart/stacked horizontal" in the Chart combobox and using the same dataset as in the graph above. This is useful if the labels for different bars are long, preventing them being displayed with vertical bar charts.
 
 image::images/StatsBarchartHorizontal.jpg["Stats: Horizontal comparison of categories",align="center"]
+
+==== Rapid graphing of subsets of data in a graph (restricting the displayed data)
+
+Let's say you are viewing a bar graph showing mean maximum dive depth for different years. However two of the years have dive 
+depth values that appear atypical and you wish to inspect the dives only for those two years. The obvious approach is to use the xref:S_Filter[Filter tool] 
+to select only data for the two years of interest and then view those data using the Statistics panel. However, 
+_Subsurface_ provides a rapid mechanism of selecting the appropriate subset of data using your mouse. In the above example of a bar graph,
+select the bars for the two years of interest by clicking on them and activate the "Restrict to selection" button towards the bottom left
+of the Statistics panel.
+This displays only the data for the two bars that have been selected. This restricted subset can now be analysed
+using all the options in the Statistics panel. Below is a scattergraph for a number of dives, showing the water temperature for different dive depths.
+
+image::images/StatsRestricted.jpg["Stats: Selecting restricted data",align="center"]
+
+Let's say you wish to analyse only dives at tropical dive sites, defined by temperatures above 22°C and depths less than 60m. Select the
+appropriate dives by dragging your mouse across the scattergraph (see image above) and restrict the data by activating the "Restrict to selection" button.
+Now only the selected subset of points is shown on the graph. You can now select *Base* and *Data* variables to further analyse the restricted data.
+The graph below shows the SAC rates as a function of dive depth for the restricted dataset created
+above. The graph shows that SAC rate was more or less constant (around 15 l/min) for all dive depths at tropical dive sites.
+
+image::images/StatsRestrictedGraph.jpg["Stats: Showing restricted data",align="center"]
+
+The ability to rapidly create subsets of data for display (using the restriction tool) creates a powerful mechanism to do rapid but detailed analysis of a dive log.
+
+After creating a data subset, The text in the restriction tool indicates the number of dives in the subset that has been selected. Note, in the figure above, that a 
+previously greyed-out button, "Reset restriction", has been made active after restricting
+the data for graphing. The original dataset can be restored by clicking the "Reset restriction" button. The text in the restriction tool now shows "Analyzing all dives".
+
 
 == Organizing the logbook (Manipulating groups of dives)
 
@@ -3116,7 +3144,7 @@ A dive log or part of it can be saved in several formats:
   the depth profile, temperature and pressure information of each dive. The source of the data
   being saved are the data as downloaded from your dive computer.
 
-* _CSV Computer Profile Panel daata_. This option exports the information presented in the _Profile Panel_.
+* _CSV Computer Profile Panel data_. This option exports the information presented in the _Profile Panel_.
   The _Profile panel_ contains many calculated  and interpolated values, e.g. SAC,
   cylinder pressure, decompression ceilings, gas partial pressures and interpolated depths. These
   data therefore differ from the raw dive information imported from a dive computer. This export option
@@ -3531,7 +3559,7 @@ image::images/Pref_log.jpg["FIGURE: Preferences: Dive log",align="center"]
      in the Information tab of the Info panel. The tools for visibility and current are always shown,
      irrespective of whether this radio button has been checked or not.
 
-  ** *Allow editing of water salinity*: The *Information* tab has a tool for displaying the water salinity, i.e the type of
+  ** *Allow editing of water salinity*: The *Information* tab has a tool for displaying the water salinity, i.e. the type of
      water dived in and its salinity. In the case of manually-entered dives, editing of water type is *always* active.
      In some cases one may want to edit the water type of a dive derived from a dive log. For instance you left the dive computer
      setting as "Salt water" while actually diving in an inland lake with fresh water. In this case you may wish to edit the
@@ -3549,7 +3577,7 @@ image::images/Pref_log.jpg["FIGURE: Preferences: Dive log",align="center"]
 
 === Equipment
 
-This tab sets some dedault values relating to equipment.
+This tab sets some default values relating to equipment.
 
 image::images/Pref_eqpmnt.jpg["FIGURE: Preferences: equipment",align="center"]
 
@@ -3991,7 +4019,7 @@ left of the dive planner panel. Ensure the _Used Gas_ value in each row
 of that table corresponds to one of the gas mixtures specified in the _Available Gases_ table.
 Add new waypoints until the main features of the dive have been completed, e.g. the
 bottom time segment and deep stops (if these are implemented). In most cases _Subsurface_
-computes additional way points in order to fulfill decompression requirements for that
+computes additional way points in order to fulfil decompression requirements for that
 dive. A waypoint can also be moved by selecting it and by using the arrow keys.
 The waypoints listed in the _Dive Planner Points_ dialog can be edited by hand in
 order to get a precise presentation of the dive plan. In fact, it is sometimes more easy to create the
@@ -4530,7 +4558,7 @@ verifies that
 the appropriate group membership has been created. The +dialout+ group should
 be listed
 among the different IDs.
- - Under some circumstances this change takes only effect (eg. on Ubuntu) after
+ - Under some circumstances this change takes only effect (e.g. on Ubuntu) after
 you log out and then log in again.
 
 With the appropriate device name (e.g. +dev/ttyUSB3+) and with write permission
@@ -4779,7 +4807,24 @@ the download page for the ScubaPro SmartTrak software.
 For Windows, IrDA is not available for Windows 10 and higher.
 For the Apple Mac, IrDA communication via the MCS7780 link is not
 available for OSX 10.6 or higher.
-In addition it is foreseen that the IrDA stack will be phased out in Linux. This is old technology and, even though it is currently more robust, fast and efficient than many other technologies such as Bluetooth, it is not fasionable. If IrDA communication is required for an operating system that does not support it, an easy solution is to run Subsurface in a virtual machine (VM) that contains support for IrDA. A VM (e.g. VMWare or vitualbox) can be installed on most modern operating systems. The only hardware setup required is to route the USB port of the host OS through to the guest OS.
+In addition it is foreseen that the IrDA stack will be phased out in Linux. This is old technology and, even though it is currently more robust, fast and efficient than many other technologies such as Bluetooth, it is not fashionable. If IrDA communication is required for an operating system that does not support it, an easy solution is to run Subsurface in a virtual machine (VM) that contains support for IrDA. A VM (e.g. VMWare or vitualbox) can be installed on most modern operating systems. The only hardware setup required is to route the USB port of the host OS through to the guest OS.
+
+
+****
+*My desktop computer does not provide for infra-red (IrDA) communication*
+[icon="images/icons/important.png"]
+[IMPORTANT]
+
+Many of the new desktop operation systems (e.g. Windows 10, Linux kernel 4.17 and newer) do not provide support for IrDA-based communication. The underlying kernel drivers for IrDA
+are not provided any more because IrDA is an old technology, not well-maintained any more, thus creating problems on new operating systems such as Windows or Linux. However, in this case, do not stop using your Galileo or other IrDA-dependent dive computer. A way to solve this problem is to create a virtual machine on your desktop with a guest operating system that still does support IrDA. Your existing desktop acts as a host, with the IrDA-supporting operating system running as a guest on your host desktop. This is not a
+complex task but is best done with the help of an IT support person. Virtualisation software can be found for all desktop operating systems. In the Microsoft environment, Hyper-V allows virtual machines, as does Parallels on the Apple Mac: however these are proprietary software. VM-Ware is probably the most sophisticated virtualisation software, running on all operating systems, but it is also proprietary. Within the open source environment, VirtualBox is available free of
+charge for most current operation systems. Older, potential guest operating systems with IrDA support include Windows 8 and Linux Ubuntu 18.04 LTS (Linux kernel 4.15 or older). Creating a virtual machine allows, for instance, Windows 8 to be run as a guest on
+your Windows 10 (or later) machine. After installing Subsurface on the Windows 8 guest operating system, its IrDA facilities can be used to access an IrDA dongle plugged into the USB port of your Windows 10 (or later) host machine, allowing dive computers dependent on IrDA to download dive data to the guest operating system (Windows 8 in this case). Host and guest can share directories, which facilitates dive log transfer between the two systems.
+
+The downside of this solution is that the guest operating system needs to be started specially for the IrDA-based download from a dive computer. Install a scaled down version of the guest operating system to minimise its demands on the host system.
+
+****
+
 
 [[S_ImportingDR5]]
 === Importing from Heinrichs Weikamp DR5
@@ -5278,7 +5323,7 @@ IMPORTANT: All CSS units should be in relative lengths only, to support printing
 
 In handling video associated with dives, _Subsurface_ needs to create a thumbnail for each video that can be shown
 either on the dive profile or in the _Media_ tab. By default this is a nonspecific placeholder thumbnail.
-To see thumbnails that represent individual videos, _Subsurface_ uses an external program calle _FFmpeg_.
+To see thumbnails that represent individual videos, _Subsurface_ uses an external program called _FFmpeg_.
 To create thumbnails for videos, do two things:
 
 1. Install _FFmpeg_ on the computer that runs _Subsurface_. The program can be downloaded from the FFmpeg web site:
