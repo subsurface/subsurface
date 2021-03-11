@@ -96,6 +96,15 @@ fraction_t get_gas_component_fraction(struct gasmix mix, enum gas_component comp
 	}
 }
 
+// O2 pressure in mbar according to the steady state model for the PSCR
+// NB: Ambient pressure comes in bar!
+int pscr_o2(const double amb_pressure, struct gasmix mix) {
+	int o2 = get_o2(mix) * amb_pressure - (int)((1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (prefs.bottomsac * prefs.pscr_ratio) * 1000000);
+	if (o2 < 0.0) // He's dead, Jim.
+		o2 = 0.0;
+	return o2;
+}
+
 /* fill_pressures(): Compute partial gas pressures in bar from gasmix and ambient pressures, possibly for OC or CCR, to be
  * extended to PSCT. This function does the calculations of gas pressures applicable to a single point on the dive profile.
  * The structure "pressures" is used to return calculated gas pressures to the calling software.
@@ -123,9 +132,7 @@ void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, 
 		}
 	} else {
 		if (divemode == PSCR) { /* The steady state approximation should be good enough */
-			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure - (1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (prefs.bottomsac * prefs.pscr_ratio / 1000.0);
-			if (pressures->o2 < 0) // He's dead, Jim.
-				pressures->o2 = 0;
+			pressures->o2 = pscr_o2(amb_pressure, mix) / 1000.0;
 			if (get_o2(mix) != 1000) {
 				pressures->he = (amb_pressure - pressures->o2) * get_he(mix) / (1000.0 - get_o2(mix));
 				pressures->n2 = (amb_pressure - pressures->o2) * get_n2(mix) / (1000.0 - get_o2(mix));

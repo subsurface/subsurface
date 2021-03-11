@@ -59,6 +59,8 @@ static inline int get_n2(struct gasmix mix)
 	return 1000 - get_o2(mix) - get_he(mix);
 }
 
+int pscr_o2(const double amb_pressure, struct gasmix mix);
+
 struct gas_pressures {
 	double o2, n2, he;
 };
