@@ -642,7 +642,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 			QLowEnergyDescriptor d = l.first();
 
 			for (const QLowEnergyDescriptor &tmp: l) {
-				if (tmp.type() == QBluetoothUuid::ClientCharacteristicConfiguration) {
+				if (tmp.type() == QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration) {
 					d = tmp;
 					break;
 				}
