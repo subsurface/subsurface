@@ -63,7 +63,7 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 #if defined(Q_OS_ANDROID)
 	QBluetoothUuid uuid = QBluetoothUuid(QUuid("{00001101-0000-1000-8000-00805f9b34fb}"));
 	qDebug() << "connecting to Uuid" << uuid;
-	serial_port->socket->setPreferredSecurityFlags(QBluetooth::NoSecurity);
+	serial_port->socket->setPreferredSecurityFlags(QBluetooth::Security::NoSecurity);
 	serial_port->socket->connectToService(remoteDeviceAddress, uuid, QIODevice::ReadWrite | QIODevice::Unbuffered);
 #else
 	QBluetoothLocalDevice dev;
@@ -74,15 +74,15 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 	timer.start(msec);
 	loop.exec();
 
-	if (serial_port->socket->state() == QBluetoothSocket::ConnectingState ||
-	    serial_port->socket->state() == QBluetoothSocket::ServiceLookupState) {
+	if (serial_port->socket->state() == QBluetoothSocket::SocketState::ConnectingState ||
+	    serial_port->socket->state() == QBluetoothSocket::SocketState::ServiceLookupState) {
 		// It seems that the connection step took more than expected. Wait another 20 seconds.
 		qDebug() << "The connection step took more than expected. Wait another 20 seconds";
 		timer.start(4 * msec);
 		loop.exec();
 	}
 
-	if (serial_port->socket->state() != QBluetoothSocket::ConnectedState) {
+	if (serial_port->socket->state() != QBluetoothSocket::SocketState::ConnectedState) {
 
 		// Get the latest error and try to match it with one from libdivecomputer
 		QBluetoothSocket::SocketError err = serial_port->socket->error();
@@ -90,14 +90,14 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 
 		free (serial_port);
 		switch(err) {
-		case QBluetoothSocket::HostNotFoundError:
-		case QBluetoothSocket::ServiceNotFoundError:
+		case QBluetoothSocket::SocketError::HostNotFoundError:
+		case QBluetoothSocket::SocketError::ServiceNotFoundError:
 			return DC_STATUS_NODEVICE;
-		case QBluetoothSocket::UnsupportedProtocolError:
+		case QBluetoothSocket::SocketError::UnsupportedProtocolError:
 			return DC_STATUS_PROTOCOL;
-		case QBluetoothSocket::OperationError:
+		case QBluetoothSocket::SocketError::OperationError:
 			return DC_STATUS_UNSUPPORTED;
-		case QBluetoothSocket::NetworkError:
+		case QBluetoothSocket::SocketError::NetworkError:
 			return DC_STATUS_IO;
 		default:
 			return DC_STATUS_IO;
@@ -140,7 +140,7 @@ static dc_status_t qt_serial_read(void *io, void* data, size_t size, size_t *act
 	for (;;) {
 		int rc;
 
-		if (device->socket->state() != QBluetoothSocket::ConnectedState)
+		if (device->socket->state() != QBluetoothSocket::SocketState::ConnectedState)
 			return DC_STATUS_IO;
 
 		rc = device->socket->read((char *) data, size);
@@ -179,7 +179,7 @@ static dc_status_t qt_serial_write(void *io, const void* data, size_t size, size
 	for (;;) {
 		int rc;
 
-		if (device->socket->state() != QBluetoothSocket::ConnectedState)
+		if (device->socket->state() != QBluetoothSocket::SocketState::ConnectedState)
 			return DC_STATUS_IO;
 
 		rc = device->socket->write((char *) data, size);
