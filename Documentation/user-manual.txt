@@ -922,19 +922,50 @@ options for the entered characters. The
 *Size* of the cylinder as well as its working pressure (_Work.press_) will
 automatically be shown in the dialog.
 
-*If your cylinder is not listed:* Maybe the cylinder type you dive with is not listed in the dropdown list. Add a new
-cylinder by selecting any of the existing cylinders in the list and clicking on the
-name of that cylinder. This activates the cursor on the cylinder name. Overtype
-the cylinder name with your new cylinder name and press ENTER on the keyboard. The new
-cylinder name now appears on the dropdown list. Overtyping a cylinder name does not affect
-the name that is being overtyped. Add a size and start pressure for that
-cylinder. The usual convention is that double cylinders are prefixed with a "D"  to
-indicate "double". Say for instance you dive a manifolded twinset of two 7 liter steel cylinders. This
-could be named "D7ℓ 232 bar" rather than "14ℓ 232 bar". However, use a rule that works for you.
-
 Next, indicate the starting pressure and the ending pressure of the
 specified gas during the dive. The unit of pressure (metric/imperial)
 corresponds to the settings chosen in the _Preferences_.
+
+[[S_newcyl]]
+
+
+****
+[icon="images/icons/important.png"]
+[IMPORTANT]
+*MY CYLINDER IS NOT LISTED IN THE DROPDOWN LIST*
+
+Maybe the cylinder type you dive with is not listed in the dropdown list. Let us say that you
+dive with 7-litre twins at 300 bars and these do not appear in the dropdown list. The image below shows
+the _Cylinder table_ as it might appear after selecting the _Equipment_ tab and before specifying
+any cylinder information:
+
+image::images/Newcyl-Initial.png["FIGURE: Initial display of cylinder table",align="center"]
+
+Start by selecting the existing cylinder in the table and clicking on the
+name of that cylinder type. The cylinder type changes to a dropdown box, recognized by the down-arrow
+next to the cylinder name (see image below)
+
+image::images/Newcyl-selection.png["FIGURE: Selecting cylinder name in cylinder table",align="center"]
+
+This activates the cursor on the cylinder type. Overtype the cylinder type with your new cylinder type (image below).
+*Important:* Overtyping a cylinder type does not affect the name that is being overtyped. The usual convention is that
+double cylinders are prefixed with a "D" to indicate "double". In our case we have a manifolded twinset of two
+7-litre 300 bar cylinders. This could be named "D7ℓ 300 bar" rather than "14ℓ 300 bar". However, use a rule that works for you.
+
+image::images/Newcyl-name.png["FIGURE: Typing new cylinder name",align="center"]
+
+and press ENTER on the keyboard. This is a critical step where most users go wrong. Pressing the ENTER key
+is the action that creates a new cylinder type (image below). Merely clicking an adjacent cell in the table does not
+create the new cylinder type.
+
+image::images/Newcyl-create.png["FIGURE: Creating ne cylinder type",align="center"]
+
+The new cylinder type now appears on the dropdown list. Add a size and start pressure for that
+cylinder (image below). 
+
+image::images/Newcyl-final.png["FIGURE: Final details for new cylinder type",align="center"]
+
+****
 
 Finally, provide the gas mixture used. If air was used, the
 value of 21%  can be entered into the oxygen box or this field can be left blank. If nitrox or
