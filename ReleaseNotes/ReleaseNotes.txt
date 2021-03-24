@@ -2,6 +2,22 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 5.0.0
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- desktop: complete rewrite of the statistics code, significantly expanding capabilities
+- desktop: add preferences option to disable default cylinder types
+- desktop: make selection of multiple dives reasonable fast
+- planner: allow automatic setpoint changes at specified depths in CCR mode
+- core: Take into account PSCR pO2 drop when computing CNS and OTU
+- core: fix OTU und CNS calculations for CCR dives at shallow depths
+- undo: save to git after editing weights [#3159]
+- undo: reset dive-mode on undo of set-point addition
+
+dive computer support:
+- add Mares Horizon support
+- add Sherwood Sage support
+- add support for Ratio 2021 models
+
 New in _Subsurface_ 4.9.10
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 - core: fix missing GPS coordinate strings in the UI

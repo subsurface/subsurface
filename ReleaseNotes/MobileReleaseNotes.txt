@@ -1,5 +1,23 @@
 = _Subsurface-mobile_ Release Notes
 
+New in Subsurface-mobile 3.2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- add GF fields to adjust Buhlmann algorithm parameters for calculated ceiling
+- redesigned dive edit experience
+- fix broken 'use current location' in dive edit
+- add ability to show fundamentally the same statistics as on the desktop
+- add settings for DC and calculated ceilings and show calculated ceilings
+- switch to newer version of Kirigami
+- change the way Kirigami is integrated into Subsurface, linking against static plugin
+- change Android build to support aab builds with current NDK and Qt 5.15.2
+- change iOS build to be consistent with the Android build and use the same qmake setup
+- add location service warning as required by Google Play
+- fix manually adding dives in the past [#2971]
+
+Previous Release Notes
+~~~~~~~~~~~~~~~~~~~~~~
+
 _Subsurface-mobile_ is the mobile version of _Subsurface_, advanced dive logging software with
 extensive infrastructure to display, organize, and interpret scuba and free dives.
 _Subsurface-mobile_ is available for Android and iOS. It is open-source software (in simple terms
