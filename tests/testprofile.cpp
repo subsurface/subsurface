@@ -17,9 +17,9 @@
 void TestProfile::testProfileExport()
 {
 	prefs.planner_deco_mode = BUEHLMANN;
-	parse_file("../dives/abitofeverything.ssrf", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/abitofeverything.ssrf", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
 	save_profiledata("exportprofile.csv", false);
-	QFile org("../dives/exportprofilereference.csv");
+	QFile org(SUBSURFACE_TEST_DATA "/dives/exportprofilereference.csv");
 	QCOMPARE(org.open(QFile::ReadOnly), true);
 	QFile out("exportprofile.csv");
 	QCOMPARE(out.open(QFile::ReadOnly), true);
@@ -33,9 +33,9 @@ void TestProfile::testProfileExport()
 void TestProfile::testProfileExportVPMB()
 {
 	prefs.planner_deco_mode = VPMB;
-	parse_file("../dives/abitofeverything.ssrf", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/abitofeverything.ssrf", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
 	save_profiledata("exportprofileVPMB.csv", false);
-	QFile org("../dives/exportprofilereferenceVPMB.csv");
+	QFile org(SUBSURFACE_TEST_DATA "/dives/exportprofilereferenceVPMB.csv");
 	QCOMPARE(org.open(QFile::ReadOnly), true);
 	QFile out("exportprofileVPMB.csv");
 	QCOMPARE(out.open(QFile::ReadOnly), true);
