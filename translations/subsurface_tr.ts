@@ -5,13 +5,14 @@
         <location filename="../mobile-widgets/qml/About.qml" line="10"/>
         <location filename="../mobile-widgets/qml/About.qml" line="20"/>
         <source>About Subsurface-mobile</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-Mobil Hakkında</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="38"/>
         <source>A mobile version of the free Subsurface divelog software.
 </source>
-        <translation type="unfinished"/>
+        <translation>Ücretsiz Subsurface dalış günlüğü yazılımının mobil versiyonu.
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="39"/>
@@ -24,12 +25,15 @@
 
 © Subsurface developer team
 2011-2020</source>
-        <translation type="unfinished"/>
+        <translation>Versiyon: %1
+
+© Subsurface Geliştirme Takımı
+2011-2020</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="65"/>
         <source>Copy logs to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kaydı panoya kopyalayın</translation>
     </message>
 </context>
 <context>
@@ -38,12 +42,12 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="17"/>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="43"/>
         <source>Save filter set</source>
-        <translation type="unfinished"/>
+        <translation>Filtre grubunu kaydet </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Uyarı: mevcut filtre düzenin üzerine yazacaktır.</translation>
     </message>
 </context>
 <context>
@@ -52,7 +56,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="14"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="240"/>
         <source>Remote Bluetooth device selection</source>
-        <translation type="unfinished"/>
+        <translation>Uzaktan Bluetooth cihaz seçimi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="22"/>
@@ -66,67 +70,67 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="37"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="242"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="66"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="26"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="244"/>
         <source>Local Bluetooth device details</source>
-        <translation type="unfinished"/>
+        <translation>Yerel Bluetooth cihaz ayrıntıları</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="75"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="245"/>
         <source>Name: </source>
-        <translation type="unfinished"/>
+        <translation>İsim:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="89"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="28"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="246"/>
         <source>Address:</source>
-        <translation type="unfinished"/>
+        <translation>Adres:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="118"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="30"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="247"/>
         <source>Bluetooth powered on</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth açıldı</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="140"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="31"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="248"/>
         <source>Turn on/off</source>
-        <translation type="unfinished"/>
+        <translation>Aç / Kapa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="150"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="27"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="249"/>
         <source>Select device:</source>
-        <translation type="unfinished"/>
+        <translation>Cihaz seç:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="172"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="32"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="250"/>
         <source>Discovered devices</source>
-        <translation type="unfinished"/>
+        <translation>Bulunan cihazlar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="251"/>
         <source>Bluetooth mode</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth modu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="201"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="252"/>
         <source>Auto</source>
-        <translation type="unfinished"/>
+        <translation>Otomatik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="206"/>
@@ -143,209 +147,209 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="221"/>
         <source>even if not recognized as dive computer</source>
-        <translation type="unfinished"/>
+        <translation>dalış bilgisayarı olarak tanınmasa bile</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation type="unfinished"/>
+        <translation>Tüm BT cihazları göster</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="33"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="256"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Ara</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="255"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="34"/>
         <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="257"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Temzile</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="29"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>İsim:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="101"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Yerel Bluetooth cihazını açmaya çalışıyor ...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="104"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Yerel Bluetooth cihazı kapatılmaya çalışılıyor ...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="132"/>
         <source>Remote devices list was cleared.</source>
-        <translation type="unfinished"/>
+        <translation>Uzak cihazlar listesi temizlendi.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="144"/>
         <source>Scanning for remote devices...</source>
-        <translation type="unfinished"/>
+        <translation>Uzak cihazlar aranıyor ...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="157"/>
         <source>Scanning finished successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Arama başarıyla tamamlandı.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="167"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Yerel Bluetooth cihazı %1 idi.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="168"/>
         <source>turned on</source>
-        <translation type="unfinished"/>
+        <translation>açık</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="168"/>
         <source>turned off</source>
-        <translation type="unfinished"/>
+        <translation>kapalı</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="186"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="321"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="341"/>
         <source>UNPAIRED</source>
-        <translation type="unfinished"/>
+        <translation>EŞLEŞMEDİ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="190"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="326"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="339"/>
         <source>PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>EŞLEŞTİ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="193"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>YETKİLİ_EŞLEŞME</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="208"/>
         <source>%1 (%2)   [State: %3]</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2) [Durum: %3]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="231"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>%1 cihazı bağlantı için kullanılabilir. Kaydet düğmesine basabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="247"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="356"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
-        <translation type="unfinished"/>
+        <translation>% 1 aygıtının kullanılabilmesi için eşleştirilmesi gerekir. Eşleştirme seçenekleri için lütfen sağ tık menüsünü kullanın.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="253"/>
         <source>A device needs a non-zero address for a connection.</source>
-        <translation type="unfinished"/>
+        <translation>Bir cihaz, bağlantı için sıfır olmayan bir adrese ihtiyaç duyar.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="273"/>
         <source>The local device was changed.</source>
-        <translation type="unfinished"/>
+        <translation>The local device was changed.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="289"/>
         <source>Pair</source>
-        <translation type="unfinished"/>
+        <translation>Eşleşme</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="290"/>
         <source>Remove pairing</source>
-        <translation type="unfinished"/>
+        <translation>Eşleştirmeyi kaldır</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="306"/>
         <source>Trying to pair device %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 cihazı eşleştirmeye çalışılıyor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="310"/>
         <source>Trying to unpair device %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 cihazının eşlemesini kaldırmaya çalışılıyor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="322"/>
         <source>Device %1 was unpaired.</source>
-        <translation type="unfinished"/>
+        <translation>%1 aygıtının eşlemesi kaldırıldı.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="329"/>
         <source>Device %1 was paired.</source>
-        <translation type="unfinished"/>
+        <translation>%1 cihazı eşleştirildi.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="334"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation type="unfinished"/>
+        <translation>%1 cihazı eşlendi ve yetkilendirildi.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>%1 cihazı artık bağlantı için kullanılabilir. Kaydet düğmesine basabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="371"/>
         <source>Local device error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Yerel aygıt hatası:%1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="372"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
-        <translation type="unfinished"/>
+        <translation>Eşleştirme hatası. Uzak cihaz özel bir PIN kodu gerektiriyorsa, lütfen cihazları işletim sisteminizi kullanarak eşleştirmeyi deneyin.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="374"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Bilinmeyen hata</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth bağdaştırıcısı kapalıdır, arama yapmadan önce açın.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="386"/>
         <source>Writing to or reading from the device resulted in an error.</source>
-        <translation type="unfinished"/>
+        <translation>Cihaza yazmak veya cihazdan okumak hatayla sonuçlandı.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="389"/>
         <source>An unknown error has occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Bilinmeyen bir hata oluştu.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="393"/>
         <source>Device discovery error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Aygıt bulma hatası:%1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="444"/>
         <source>Not available</source>
-        <translation type="unfinished"/>
+        <translation>Müsait değil</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="451"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
-        <translation type="unfinished"/>
+        <translation>Yerel Bluetooth adaptörüne erişilemiyor.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="490"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
-        <translation type="unfinished"/>
+        <translation>%1 adresi herhangi bir yerel Bluetooth aygıtının fiziksel bağdaştırıcı adresiyle eşleşmediğinden, cihaz arama servisi başlatılamadı.</translation>
     </message>
 </context>
 <context>
@@ -353,12 +357,12 @@
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
         <source>Waiting for cloud connection (%n second(s) passed)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Bulut bağlantısı bekleniyor (%n saniye geçti)</numerusform><numerusform>Bulut bağlantısı bekleniyor (%n saniye geçti)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="65"/>
         <source>Cloud connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Bulut bağlantısı başarısız oldu</translation>
     </message>
 </context>
 <context>
@@ -366,12 +370,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="43"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Bulut hesap bilgileri</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="50"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>E-posta</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="65"/>
@@ -381,12 +385,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="82"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="99"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Kayıt</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="110"/>
@@ -396,22 +400,22 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="113"/>
         <source>Check credentials...</source>
-        <translation type="unfinished"/>
+        <translation>Hesap bilgilerini kontrol ediniz..</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="126"/>
         <source>Sign-in or Register</source>
-        <translation type="unfinished"/>
+        <translation>Giriş yap veya Kayıt ol</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="137"/>
         <source>No cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>Bulut modu yok</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="151"/>
         <source>Forgot password?</source>
-        <translation type="unfinished"/>
+        <translation>Şifrenizi mi unuttunuz?</translation>
     </message>
 </context>
 <context>
@@ -419,7 +423,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation type="unfinished"/>
+        <translation>Bulut hesabı doğrulaması gerekli, tercihlerede PIN girin</translation>
     </message>
 </context>
 <context>
@@ -427,7 +431,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Dalış #</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
@@ -442,17 +446,17 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>Süre</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>Mod</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Location</source>
-        <translation type="unfinished"/>
+        <translation>Yer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
@@ -467,17 +471,17 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Tüp boyut</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Başlangıç basıncı</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Bitiş basıncı</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
@@ -497,12 +501,12 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Dalış eşi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Elbise</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
@@ -537,72 +541,72 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Örnek zaman</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Örnek derinlik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Örnek sıcaklık</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Örnek pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>Örnek CNS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Örnek NDL</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Örnek TTS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Örnek durma derinliği</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Örnek Basınç</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Örnek sensör1 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Örnek sensör2 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Örnek sensör3 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Örnek donma noktası</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Visibility</source>
-        <translation>Görünütlük</translation>
+        <translation>Görüş</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
@@ -612,7 +616,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Örnek kalp atış hızı</translation>
     </message>
 </context>
 <context>
@@ -620,52 +624,52 @@
     <message>
         <location filename="../commands/command_base.cpp" line="45"/>
         <source>&amp;Undo</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Geri al</translation>
     </message>
     <message>
         <location filename="../commands/command_base.cpp" line="50"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tekrarla</translation>
     </message>
     <message>
         <location filename="../commands/command_base.cpp" line="65"/>
         <source>all dives</source>
-        <translation type="unfinished"/>
+        <translation>tüm dalışlar</translation>
     </message>
     <message>
         <location filename="../commands/command_device.cpp" line="14"/>
         <source>Delete device %1 (0x%2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 cihazını sil (0x%2)</translation>
     </message>
     <message>
         <location filename="../commands/command_device.cpp" line="43"/>
         <source>Set nickname of device %1 (0x%2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>%1 aygıtının takma adını (0x%2)% 3 olarak ayarlayın</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="404"/>
         <source>add dive</source>
-        <translation type="unfinished"/>
+        <translation>dalış ekle</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="475"/>
         <source>import %n dive(s) from %1</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>% 1 den% n dalışı içe aktar</numerusform><numerusform>%1 den %n dalışı içe aktar</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="608"/>
         <source>delete %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dalışı sil%n dalışı sil</numerusform><numerusform>%n dalışı sil</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="644"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dalışın zamanını kaydır</numerusform><numerusform>%n dalışın zamanını kaydır</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="692"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dalışı yeniden numaralandır</numerusform><numerusform>%n dalışı yeniden numaralandır</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divelist.cpp" line="750"/>
@@ -2602,12 +2606,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="72"/>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Dalış eşi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="84"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Elbise</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="96"/>
@@ -2832,7 +2836,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="108"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="149"/>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Dalış eşi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="115"/>
@@ -2850,7 +2854,7 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="129"/>
         <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="142"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Elbise</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="136"/>
@@ -3232,7 +3236,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="40"/>
         <source>Duration</source>
-        <translation type="unfinished"/>
+        <translation>Süre</translation>
     </message>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="42"/>
@@ -3326,7 +3330,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="336"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Bulut kimlik bilgileri</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="345"/>
@@ -4005,79 +4009,79 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="812"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="912"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Örnek zaman</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="694"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="813"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Örnek derinlik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="696"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="814"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Örnek sıcaklık</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="698"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="815"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Örnek pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="700"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="816"/>
         <source>Sample sensor1 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Örnek sensör1 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="702"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="817"/>
         <source>Sample sensor2 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Örnek sensör2 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="704"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="818"/>
         <source>Sample sensor3 pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Örnek sensör3 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="706"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="819"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>Örnek CNS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="708"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="820"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Örnek NDL</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="710"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="821"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Örnek TTS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="712"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="822"/>
         <source>Sample stopdepth</source>
-        <translation type="unfinished"/>
+        <translation>Örnek durma derinliği</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="714"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="823"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Örnek Basınç</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="716"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="825"/>
         <source>Sample setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Örnek donma noktası</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="720"/>
@@ -4122,7 +4126,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="726"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="918"/>
         <source>Mode</source>
-        <translation type="unfinished"/>
+        <translation>Mod</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="727"/>
@@ -4140,19 +4144,19 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="729"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="933"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Tüp boyut</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="730"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="934"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Başlangıç basıncı</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="731"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="935"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Bitiş Basıncı</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="732"/>
@@ -4188,13 +4192,13 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="737"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="924"/>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Dalış eşi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="738"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="925"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Elbise</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="739"/>
@@ -4231,7 +4235,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="824"/>
         <source>Sample heartrate</source>
-        <translation type="unfinished"/>
+        <translation>Örnek kalp atış hızı</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="962"/>
@@ -5085,7 +5089,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="391"/>
         <location filename="../qt-models/divetripmodel.cpp" line="431"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Elbise</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="324"/>
@@ -5149,7 +5153,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="409"/>
         <location filename="../qt-models/divetripmodel.cpp" line="449"/>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Dalış eşi</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="344"/>
@@ -5552,7 +5556,7 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="359"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="377"/>
@@ -5945,7 +5949,7 @@ Existing Site</source>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="42"/>
         <source>Name: </source>
-        <translation type="unfinished"/>
+        <translation>İsim:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/GpsList.qml" line="54"/>
@@ -6348,7 +6352,7 @@ Existing Site</source>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="332"/>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="505"/>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Dalış eşi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="371"/>
@@ -6472,7 +6476,7 @@ Existing Site</source>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="508"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Elbise</translation>
     </message>
     <message>
         <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="510"/>
@@ -6885,13 +6889,13 @@ Existing Site</source>
         <location filename="../desktop-widgets/mainwindow.ui" line="666"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="605"/>
         <source>&amp;Undo</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Geri al</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="674"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="606"/>
         <source>&amp;Redo</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tekrarla</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="682"/>
@@ -9257,7 +9261,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="19"/>
         <source>No cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>Bulut modu yok</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="24"/>
@@ -9272,7 +9276,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="42"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>E-posta</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="45"/>
@@ -10422,7 +10426,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.ui" line="74"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Elbise</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="49"/>
@@ -13726,12 +13730,12 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="532"/>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Dalış eşi</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="533"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Elbise</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="535"/>
@@ -13864,12 +13868,12 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="564"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Başlangıç basıncı</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="565"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Bitiş Basıncı</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="566"/>

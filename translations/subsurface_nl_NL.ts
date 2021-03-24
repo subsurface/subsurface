@@ -7295,12 +7295,12 @@ Subsurface heeft reeds gesprobeerd de data te converteren, maar het is nuttig ze
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="17"/>
         <source>Select visible dive locations</source>
-        <translation>Selecteer zichtbare duiklocaties</translation>
+        <translation>Zichtbare duiklocaties selecteren</translation>
     </message>
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="18"/>
         <source>Open in Google Maps</source>
-        <translation>Open in Google Maps</translation>
+        <translation>In Google Maps openen</translation>
     </message>
 </context>
 <context>

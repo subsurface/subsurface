@@ -644,7 +644,7 @@
     <message>
         <location filename="../commands/command_device.cpp" line="43"/>
         <source>Set nickname of device %1 (0x%2) to %3</source>
-        <translation>Sätt smeknamn för enhet %1 (0x%2) till %3</translation>
+        <translation>Sätt alternativt namn för enhet %1 (0x%2) till %3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="404"/>
@@ -1050,12 +1050,12 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="183"/>
         <source>Could not save the backup file %1. Error Message: %2</source>
-        <translation>Kunde inte spara backupfil %1. Felmeddelande: %2</translation>
+        <translation>Kunde inte spara säkerhetskopia %1. Felmeddelande: %2</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="199"/>
         <source>Could not open backup file: %1</source>
-        <translation>Kunde inte öppna backupfil: %1</translation>
+        <translation>Kunde inte öppna säkehetskopia: %1</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="541"/>
@@ -1130,7 +1130,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="90"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2542"/>
         <source>Read settings from backup file or from device before writing to the device</source>
-        <translation>Läs in inställningarna ifrån en backupfil eller ifrån enheten innan de kan skrivas till enheten</translation>
+        <translation>Läs in inställningarna från en säkerhetskopia eller enheten innan data skrivs till enheten</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="93"/>
@@ -1142,19 +1142,19 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="116"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2546"/>
         <source>Read settings from backup file or from device before writing to a backup file</source>
-        <translation>Läs in inställningarna ifrån en backupfil eller ifrån enheten innan de kan skrivas till en backupfil</translation>
+        <translation>Läs in inställningarna från en säkerhetskopia eller enheten innan data sparas till en säkerhetskopia</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="119"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2548"/>
         <source>Backup</source>
-        <translation>Backup</translation>
+        <translation>Säkerhetskopia</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="129"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2549"/>
         <source>Restore backup</source>
-        <translation>Återställ backup</translation>
+        <translation>Återställ säkerhetskopia</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="139"/>
@@ -2491,24 +2491,24 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1365"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1386"/>
         <source>Backup files</source>
-        <translation>Backupfiler</translation>
+        <translation>Säkerhetskopior</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1369"/>
         <source>XML backup error</source>
-        <translation>Fel vid backup av XML</translation>
+        <translation>Fel vid säkerhetskopiering av XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1370"/>
         <source>An error occurred while saving the backup file.
 %1</source>
-        <translation>Ett fel inträffade när backupfilen skulle sparas.
+        <translation>Ett fel inträffade när säkerhetskopian skulle sparas.
 %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1373"/>
         <source>Backup succeeded</source>
-        <translation>Backup lyckades</translation>
+        <translation>Säkerhetskopiering lyckades</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1374"/>
@@ -2529,7 +2529,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
-        <translation>Ett fel inträffade när backupfilen skulle återställas.
+        <translation>Ett fel inträffade vid återläsning av säkerhetskopia.
 %1</translation>
     </message>
     <message>
@@ -6966,7 +6966,7 @@ Existerande dykplats</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="251"/>
         <source>Template backup created</source>
-        <translation>Backupkopia av mall skapad</translation>
+        <translation>Säkerhetskopia av mall skapad</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="252"/>
@@ -6980,7 +6980,7 @@ Location:
 Please note that as of this version of Subsurface the default templates
 are read-only and should not be edited directly, since the application
 can overwrite them on startup.</source>
-        <translation>Följande utskriftsmallar för backup skapades:
+        <translation>Följande utskriftsmallar säkerhetskopierades:
 
 %1
 
@@ -9436,12 +9436,12 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="316"/>
         <source>very small</source>
-        <translation>minsta</translation>
+        <translation>minst</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="325"/>
         <source>small</source>
-        <translation>liten</translation>
+        <translation>mindre</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="335"/>
@@ -9451,12 +9451,12 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="345"/>
         <source>large</source>
-        <translation>stor</translation>
+        <translation>större</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="355"/>
         <source>very large</source>
-        <translation>största</translation>
+        <translation>störst</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="369"/>
@@ -9584,9 +9584,8 @@ Vänligen exportera mallen till en ny fil.</translation>
 even if not recognized as dive computers.
 Please report DCs that need this setting</source>
         <translation>Visa temporärt alla bluetooth-enheter
-även om de inte identifieras som en
-dykdator. Vänligen rapportera dykdatorer
-som kräver den här inställningen</translation>
+även om de inte identifieras som en dykdator.
+Rapportera gärna DC som kräver den här inställningen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="592"/>
@@ -9601,7 +9600,7 @@ som kräver den här inställningen</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="615"/>
         <source>Profile deco ceiling</source>
-        <translation>Profil deco-takdjup</translation>
+        <translation>Profil takdjup</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="623"/>
@@ -10062,7 +10061,7 @@ Filer med felaktig datum/tid</translation>
         <location filename="../stats/statsstate.cpp" line="324"/>
         <location filename="../stats/statsstate.cpp" line="351"/>
         <source>none</source>
-        <translation>inget</translation>
+        <translation>Ingen</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="364"/>
@@ -14487,7 +14486,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="164"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
-        <translation>Förväntade XML-tagg &apos;DiveDateReader&apos;, fick istället &apos;%1</translation>
+        <translation>Förväntad XML-tagg är &apos;DiveDateReader&apos;, erhöll istället &apos;%1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="210"/>

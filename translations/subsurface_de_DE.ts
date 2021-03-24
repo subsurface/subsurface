@@ -9889,7 +9889,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="123"/>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="158"/>
         <source>Binning</source>
-        <translation type="unfinished"/>
+        <translation>Bündelung</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="140"/>
@@ -9899,7 +9899,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="176"/>
         <source>Operation</source>
-        <translation type="unfinished"/>
+        <translation>Operation</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="206"/>
@@ -9918,7 +9918,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../stats/barseries.cpp" line="340"/>
         <source>Count</source>
-        <translation type="unfinished"/>
+        <translation>Anzahl</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="101"/>
@@ -10016,7 +10016,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../stats/statsstate.cpp" line="15"/>
         <source>box-whisker</source>
-        <translation type="unfinished"/>
+        <translation>Kastengrafik</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="16"/>
@@ -10381,7 +10381,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
         <location filename="../desktop-widgets/statswidget.ui" line="41"/>
         <location filename="../desktop-widgets/statswidget.ui" line="63"/>
         <source>Binning</source>
-        <translation type="unfinished"/>
+        <translation>Bündelung</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="54"/>
@@ -10391,7 +10391,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="73"/>
         <source>Operation</source>
-        <translation type="unfinished"/>
+        <translation>Operation</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="86"/>
