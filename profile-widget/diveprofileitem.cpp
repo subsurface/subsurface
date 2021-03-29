@@ -548,7 +548,7 @@ void DiveGasPressureItem::replot(const dive *d, bool in_planner)
 			boundingPoly.push_back(point);
 
 			QColor color;
-			if (in_planner) {
+			if (!in_planner) {
 				if (entry->sac)
 					color = getSacColor(entry->sac, d->sac);
 				else
