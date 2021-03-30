@@ -93,6 +93,8 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 	view = qobject_cast<StatsView *>(root);
 	if (!view)
 		qWarning("Oops. The root of the StatsView is not a StatsView.");
+	if (view)
+		view->setVisible(isVisible()); // Synchronize visibility of widget and QtQuick-view.
 }
 
 // Initialize QComboBox with list of variables
@@ -209,6 +211,17 @@ void StatsWidget::showEvent(QShowEvent *e)
 	unrestrict();
 	updateUi();
 	QWidget::showEvent(e);
+	// Apparently, we have to manage the visibility of the view ourselves. That's mad.
+	if (view)
+		view->setVisible(true);
+}
+
+void StatsWidget::hideEvent(QHideEvent *e)
+{
+	QWidget::hideEvent(e);
+	// Apparently, we have to manage the visibility of the view ourselves. That's mad.
+	if (view)
+		view->setVisible(false);
 }
 
 void StatsWidget::restrict()

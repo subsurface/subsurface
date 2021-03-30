@@ -37,6 +37,7 @@ private:
 
 	ChartListModel charts;
 	void showEvent(QShowEvent *) override;
+	void hideEvent(QHideEvent *) override;
 };
 
 #endif // STATSWIDGET_H
