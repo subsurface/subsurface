@@ -377,6 +377,9 @@ void StatsView::replotIfVisible()
 
 void StatsView::divesSelected(const QVector<dive *> &dives)
 {
+	if (dive_table.nr <= 0)
+		// there are no dives, don't bother (this can happen during reset, for example)
+		return;
 	if (isVisible()) {
 		for (auto &series: series)
 			series->divesSelected(dives);
