@@ -29,6 +29,9 @@ MACRO_ENSURE_OUT_OF_SOURCE_BUILD(
     "We don't support building in source, please create a build folder elsewhere and remember to run git clean -xdf to remove temporary files created by CMake."
 )
 
+#Option for memory debugging
+option(SUBSURFACE_ASAN_BUILD "enable memory debugging of Subsurface binary" OFF)
+
 #Option for profiling
 option(SUBSURFACE_PROFILING_BUILD "enable profiling of Subsurface binary" OFF)
 
@@ -109,6 +112,11 @@ if (SUBSURFACE_PROFILING_BUILD)
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
 	SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
 	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+endif()
+# set up ASan
+if (SUBSURFACE_ASAN_BUILD)
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+	SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 endif()
 
 # every compiler understands -Wall
