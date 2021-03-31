@@ -824,6 +824,9 @@ void process_loaded_dives()
 
 	/* Inform frontend of reset data. This should reset all the models. */
 	emit_reset_signal();
+
+	/* Now that everything is settled, select the newest dive. */
+	select_newest_visible_dive();
 }
 
 /*
@@ -1373,7 +1376,7 @@ int get_dive_id_closest_to(timestamp_t when)
 void clear_dive_file_data()
 {
 	fulltext_unregister_all();
-	clear_selection();
+	select_single_dive(NULL);	// This is propagate up to the UI and clears all the information.
 
 	while (dive_table.nr)
 		delete_single_dive(0);

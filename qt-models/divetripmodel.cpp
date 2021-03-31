@@ -499,7 +499,6 @@ void DiveTripModelBase::reset()
 	uiNotification(tr("finish populating data store"));
 	endResetModel();
 	uiNotification(tr("setting up internal data structures"));
-	initSelection();
 	emit diveListNotifier.numShownChanged();
 	uiNotification(tr("done setting up internal data structures"));
 }
