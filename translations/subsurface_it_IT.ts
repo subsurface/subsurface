@@ -644,7 +644,7 @@
     <message>
         <location filename="../commands/command_device.cpp" line="43"/>
         <source>Set nickname of device %1 (0x%2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>Rinomina  il dispositivio %1 (0x%2) in %3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="404"/>
@@ -2987,7 +2987,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="150"/>
         <source>Date/Time:</source>
-        <translation type="unfinished"/>
+        <translation>Data/Ora</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="162"/>
@@ -5734,7 +5734,7 @@ Più vicino</translation>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
         <source>Click to remove this constraint</source>
-        <translation type="unfinished"/>
+        <translation>Clicca per rimuovere il vincolo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
@@ -5772,7 +5772,7 @@ Più vicino</translation>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="76"/>
         <source>Add constraint</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi Vincolo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="90"/>
@@ -6391,7 +6391,7 @@ Più vicino</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
         <source>Summary</source>
-        <translation type="unfinished"/>
+        <translation>Riepilogo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
@@ -6888,7 +6888,7 @@ Più vicino</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="646"/>
         <source>Dive statistics</source>
-        <translation type="unfinished"/>
+        <translation>Statistiche immersione</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="661"/>
