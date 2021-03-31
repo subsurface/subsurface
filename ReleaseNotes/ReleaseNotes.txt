@@ -2,6 +2,11 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 5.0.1
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- fix Windows crash when changing log file
+- fix incorrect SAC coloring in profile
+
 New in _Subsurface_ 5.0.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - desktop: complete rewrite of the statistics code, significantly expanding capabilities

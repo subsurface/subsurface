@@ -1,4 +1,4 @@
-name: openSUSE/Tumbleweed / Qt latest
+name: openSUSE/Tumbleweed / Qt latest--
 on:
   push:
     branches:

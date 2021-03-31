@@ -1,4 +1,4 @@
-name: Ubuntu 14.04 / Qt 5.12 for AppImage
+name: Ubuntu 14.04 / Qt 5.12 for AppImage--
 on:
   push:
     branches:
