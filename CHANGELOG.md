@@ -1,4 +1,4 @@
-
+printing: use sensible font size even for strange window size
 
 ---
 * Always add new entries at the very top of this file above other existing entries and this note.
