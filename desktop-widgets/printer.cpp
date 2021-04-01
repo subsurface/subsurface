@@ -150,8 +150,12 @@ void Printer::render(int pages)
 
 	QSize originalSize = profile->size();
 	if (collection.count() > 0) {
-		printFontScale = (double)collection.at(0).geometry().size().height() / (double)profile->size().height();
-		profile->resize(collection.at(0).geometry().size());
+		// A "standard" profile has about 600 pixels in height.
+		// Scale the fonts in the printed profile accordingly.
+		// This is arbitrary, but it seems to work reasonably.
+		QSize size = collection[0].geometry().size();
+		printFontScale = size.height() / 600.0;
+		profile->resize(size);
 	}
 	profile->setFontPrintScale(printFontScale);
 
