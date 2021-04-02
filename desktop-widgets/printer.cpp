@@ -4,7 +4,6 @@
 #include "templatelayout.h"
 #include "core/statistics.h"
 #include "core/qthelper.h"
-#include "core/settings/qPrefDisplay.h"
 
 #include <algorithm>
 #include <QPainter>
@@ -37,6 +36,7 @@ void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &view
 	int y = profilePlaceholder.y() - viewPort.y();
 	// use the placeHolder and the viewPort position to calculate the relative position of the dive profile.
 	QRect pos(x, y, profilePlaceholder.width(), profilePlaceholder.height());
+	profile->setProfileState(dive, 0);
 	profile->plotDive(dive, 0, true);
 
 	if (!printOptions.color_selected) {
@@ -124,16 +124,14 @@ void Printer::flowRender()
 
 void Printer::render(int pages)
 {
-	// keep original preferences
-	ProfileWidget2 *profile = MainWindow::instance()->graphics;
-	int profileFrameStyle = profile->frameStyle();
-	double fontScale = profile->getFontPrintScale();
+	// TODO: Annoyingly, this still needs a parent window? Otherwise,
+	// the profile is shown as its own window, when calling show() below.
+	auto profile = std::make_unique<ProfileWidget2>(nullptr, MainWindow::instance());
 	double printFontScale = 1.0;
 
 	// apply printing settings to profile
 	profile->setFrameStyle(QFrame::NoFrame);
 	profile->setPrintMode(true, !printOptions.color_selected);
-	profile->setToolTipVisibile(false);
 
 	// render the Qwebview
 	QPainter painter;
@@ -145,13 +143,13 @@ void Printer::render(int pages)
 	// get all refereces to diveprofile class in the Html template
 	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
 
-	QSize originalSize = profile->size();
 	if (collection.count() > 0) {
 		// A "standard" profile has about 600 pixels in height.
 		// Scale the fonts in the printed profile accordingly.
 		// This is arbitrary, but it seems to work reasonably.
 		QSize size = collection[0].geometry().size();
 		printFontScale = size.height() / 600.0;
+		profile->show();	// Ominous: if the scene isn't shown, parts of the plot are missing. Needs investigation.
 		profile->resize(size);
 	}
 	profile->setFontPrintScale(printFontScale);
@@ -166,7 +164,7 @@ void Printer::render(int pages)
 			// dive id field should be dive_{{dive_no}} se we remove the first 5 characters
 			QString diveIdString = collection.at(elemNo).attribute("id");
 			int diveId = diveIdString.remove(0, 5).toInt(0, 10);
-			putProfileImage(collection.at(elemNo).geometry(), viewPort, &painter, get_dive_by_uniq_id(diveId), profile);
+			putProfileImage(collection.at(elemNo).geometry(), viewPort, &painter, get_dive_by_uniq_id(diveId), profile.get());
 			elemNo++;
 		}
 
@@ -180,16 +178,6 @@ void Printer::render(int pages)
 			static_cast<QPrinter*>(paintDevice)->newPage();
 	}
 	painter.end();
-
-	// return profle settings
-	profile->setFrameStyle(profileFrameStyle);
-	profile->setPrintMode(false);
-	profile->setFontPrintScale(fontScale);
-	profile->setToolTipVisibile(true);
-	profile->resize(originalSize);
-
-	//replot the dive after returning the settings
-	profile->plotDive(current_dive, dc_number, true);
 }
 
 //value: ranges from 0 : 100 and shows the progress of the templating engine
