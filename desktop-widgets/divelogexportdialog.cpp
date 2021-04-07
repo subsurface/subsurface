@@ -253,22 +253,3 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		}
 	}
 }
-
-void exportProfile(const struct dive *dive, const QString filename)
-{
-	ProfileWidget2 *profile = MainWindow::instance()->graphics;
-	profile->setToolTipVisibile(false);
-	profile->setPrintMode(true);
-	double scale = profile->getFontPrintScale();
-	profile->setFontPrintScale(4 * scale);
-	profile->plotDive(dive, 0, false, true);
-	QImage image = QImage(profile->size() * 4, QImage::Format_RGB32);
-	QPainter paint;
-	paint.begin(&image);
-	profile->render(&paint);
-	image.save(filename);
-	profile->setToolTipVisibile(true);
-	profile->setFontPrintScale(scale);
-	profile->setPrintMode(false);
-	profile->plotDive(dive, 0); // TODO: Shouldn't this plot the current dive?
-}
