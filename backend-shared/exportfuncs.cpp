@@ -34,23 +34,33 @@ bool ExportCallback::canceled() const
 
 #include "desktop-widgets/mainwindow.h" // Currently needed for profile printing. TODO: remove.
 
-static void exportProfile(const struct dive *dive, const QString filename)
+static void exportProfile(ProfileWidget2 *profile, const struct dive *dive, const QString &filename)
 {
-	ProfileWidget2 *profile = MainWindow::instance()->graphics;
-	profile->setToolTipVisibile(false);
-	profile->setPrintMode(true);
-	double scale = profile->getFontPrintScale();
-	profile->setFontPrintScale(4 * scale);
 	profile->plotDive(dive, 0, false, true);
 	QImage image = QImage(profile->size() * 4, QImage::Format_RGB32);
 	QPainter paint;
 	paint.begin(&image);
 	profile->render(&paint);
 	image.save(filename);
+}
+
+static ProfileWidget2 *getPrintProfile()
+{
+	ProfileWidget2 *profile = MainWindow::instance()->graphics;
+	profile->setToolTipVisibile(false);
+	profile->setPrintMode(true);
+	double scale = profile->getFontPrintScale();
+	profile->setFontPrintScale(4 * scale);
+	return profile;
+}
+
+static void resetProfile()
+{
+	ProfileWidget2 *profile = MainWindow::instance()->graphics;
 	profile->setToolTipVisibile(true);
-	profile->setFontPrintScale(scale);
+	profile->setFontPrintScale(1.0);
 	profile->setPrintMode(false);
-	profile->plotDive(dive, 0, true); // TODO: Shouldn't this plot the current dive?
+	profile->plotDive(current_dive, 0, true);
 }
 
 void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
@@ -64,18 +74,19 @@ void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 
 	int todo = selected_only ? amount_selected : dive_table.nr;
 	int done = 0;
+	ProfileWidget2 *profile = getPrintProfile();
 	for_each_dive (i, dive) {
 		if (cb.canceled())
 			return;
 		if (selected_only && !dive->selected)
 			continue;
 		cb.setProgress(done++ * 1000 / todo);
-		if (count)
-			exportProfile(dive, fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix());
-		else
-			exportProfile(dive, filename);
+		QString fn = count ? fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix()
+				   : filename;
+		exportProfile(profile, dive, fn);
 		++count;
 	}
+	resetProfile();
 }
 
 void export_TeX(const char *filename, bool selected_only, bool plain, ExportCallback &cb)
@@ -133,13 +144,14 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 	int todo = selected_only ? amount_selected : dive_table.nr;
 	int done = 0;
+	ProfileWidget2 *profile = getPrintProfile();
 	for_each_dive (i, dive) {
 		if (cb.canceled())
 			return;
 		if (selected_only && !dive->selected)
 			continue;
 		cb.setProgress(done++ * 1000 / todo);
-		exportProfile(dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
+		exportProfile(profile, dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
@@ -264,6 +276,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 		put_format(&buf, "\\%spage\n", ssrf);
 	}
+	resetProfile();
 
 	if (plain)
 		put_format(&buf, "\\bye\n");
