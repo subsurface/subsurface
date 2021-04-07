@@ -20,6 +20,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QtConcurrent>
+#include <memory>
 
 // Default implementation of the export callback: do nothing / never cancel
 void ExportCallback::setProgress(int)
@@ -37,31 +38,29 @@ bool ExportCallback::canceled() const
 
 static void exportProfile(ProfileWidget2 *profile, const struct dive *dive, const QString &filename)
 {
+	profile->setProfileState(dive, 0);
 	profile->plotDive(dive, 0, false, true);
-	QImage image = QImage(profile->size() * 4, QImage::Format_RGB32);
+	QImage image = QImage(profile->size(), QImage::Format_RGB32);
 	QPainter paint;
 	paint.begin(&image);
 	profile->render(&paint);
 	image.save(filename);
 }
 
-static ProfileWidget2 *getPrintProfile()
+static std::unique_ptr<ProfileWidget2> getPrintProfile()
 {
-	ProfileWidget2 *profile = MainWindow::instance()->graphics;
-	profile->setToolTipVisibile(false);
-	profile->setPrintMode(true);
-	double scale = profile->getFontPrintScale();
-	profile->setFontPrintScale(4 * scale);
-	return profile;
-}
+	// Let's say that 800x600 is a "reasonable" profile size. Use four times that for printing.
+	const int scale = 4;
+	QSize size(800 * scale, 600 * scale);
 
-static void resetProfile()
-{
-	ProfileWidget2 *profile = MainWindow::instance()->graphics;
-	profile->setToolTipVisibile(true);
-	profile->setFontPrintScale(1.0);
-	profile->setPrintMode(false);
-	profile->plotDive(current_dive, 0, true);
+	// TODO: Annoyingly, this still needs a parent window? Otherwise,
+	// the profile is shown as its own window, when calling show() below.
+	auto profile = std::make_unique<ProfileWidget2>(nullptr, MainWindow::instance());
+	profile->resize(size);
+	profile->show();	// Ominous: if the scene isn't shown, parts of the plot are missing. Needs investigation.
+	profile->setPrintMode(true);
+	profile->setFontPrintScale((double)scale);
+	return profile;
 }
 
 void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
@@ -75,7 +74,7 @@ void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 
 	int todo = selected_only ? amount_selected : dive_table.nr;
 	int done = 0;
-	ProfileWidget2 *profile = getPrintProfile();
+	auto profile = getPrintProfile();
 	for_each_dive (i, dive) {
 		if (cb.canceled())
 			return;
@@ -84,10 +83,9 @@ void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 		cb.setProgress(done++ * 1000 / todo);
 		QString fn = count ? fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix()
 				   : filename;
-		exportProfile(profile, dive, fn);
+		exportProfile(profile.get(), dive, fn);
 		++count;
 	}
-	resetProfile();
 }
 
 void export_TeX(const char *filename, bool selected_only, bool plain, ExportCallback &cb)
@@ -145,14 +143,14 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 	int todo = selected_only ? amount_selected : dive_table.nr;
 	int done = 0;
-	ProfileWidget2 *profile = getPrintProfile();
+	auto profile = getPrintProfile();
 	for_each_dive (i, dive) {
 		if (cb.canceled())
 			return;
 		if (selected_only && !dive->selected)
 			continue;
 		cb.setProgress(done++ * 1000 / todo);
-		exportProfile(profile, dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
+		exportProfile(profile.get(), dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
@@ -273,7 +271,6 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 		put_format(&buf, "\\%spage\n", ssrf);
 	}
-	resetProfile();
 
 	if (plain)
 		put_format(&buf, "\\bye\n");
