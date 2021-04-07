@@ -22,13 +22,4 @@ QFuture<int> exportUsingStyleSheet(QString filename, bool doExport, int units, Q
 // prepareDivesForUploadDiveLog
 // prepareDivesForUploadDiveShare
 
-// WARNING
-// exportProfile uses the UI and are therefore different between
-// Desktop (UI) and Mobile (QML)
-// In order to solve this difference, the actual implementations
-// are done in
-// desktop-widgets/divelogexportdialog.cpp and
-// mobile-widgets/qmlmanager.cpp
-void exportProfile(const struct dive *dive, const QString filename);
-
 #endif // EXPORT_FUNCS_H

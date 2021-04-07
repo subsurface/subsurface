@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <QFileInfo>
-#include <QDir>
-#include <QtConcurrent>
+#include "exportfuncs.h"
 #include "core/membuffer.h"
 #include "core/dive.h"
 #include "core/divesite.h"
@@ -16,7 +14,11 @@
 #include "core/pref.h"
 #include "core/sample.h"
 #include "core/selection.h"
-#include "exportfuncs.h"
+#include "core/sample.h"
+#include "profile-widget/profilewidget2.h"
+#include <QDir>
+#include <QFileInfo>
+#include <QtConcurrent>
 
 // Default implementation of the export callback: do nothing / never cancel
 void ExportCallback::setProgress(int)
@@ -29,6 +31,28 @@ bool ExportCallback::canceled() const
 }
 
 #if !defined(SUBSURFACE_MOBILE)
+
+#include "desktop-widgets/mainwindow.h" // Currently needed for profile printing. TODO: remove.
+
+static void exportProfile(const struct dive *dive, const QString filename)
+{
+	ProfileWidget2 *profile = MainWindow::instance()->graphics;
+	profile->setToolTipVisibile(false);
+	profile->setPrintMode(true);
+	double scale = profile->getFontPrintScale();
+	profile->setFontPrintScale(4 * scale);
+	profile->plotDive(dive, 0, false, true);
+	QImage image = QImage(profile->size() * 4, QImage::Format_RGB32);
+	QPainter paint;
+	paint.begin(&image);
+	profile->render(&paint);
+	image.save(filename);
+	profile->setToolTipVisibile(true);
+	profile->setFontPrintScale(scale);
+	profile->setPrintMode(false);
+	profile->plotDive(dive, 0, true); // TODO: Shouldn't this plot the current dive?
+}
+
 void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 {
 	struct dive *dive;
