@@ -80,7 +80,6 @@ public:
 	std::unique_ptr<MainTab> mainTab;
 	std::unique_ptr<PlannerWidgets> plannerWidgets;
 	std::unique_ptr<StatsWidget> statistics;
-	ProfileWidget2 *graphics;
 	std::unique_ptr<DiveListView> diveList;
 	std::unique_ptr<QWidget> profileContainer;
 	std::unique_ptr<MapWidget> mapWidget;
@@ -171,6 +170,7 @@ private:
 	FilterWidget filterWidget;
 	std::unique_ptr<QSplitter> topSplitter;
 	std::unique_ptr<QSplitter> bottomSplitter;
+	ProfileWidget2 *graphics;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 	QAction *undoAction;
