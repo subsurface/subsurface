@@ -80,7 +80,7 @@ public:
 	~ProfileWidget2();
 	void resetZoom();
 	void scale(qreal sx, qreal sy);
-	void plotDive(const struct dive *d, int dc, bool force = false, bool clearPictures = false, bool instant = false);
+	void plotDive(const struct dive *d, int dc, bool clearPictures = false, bool instant = false);
 	void setProfileState(const struct dive *d, int dc);
 	void setPlanState(const struct dive *d, int dc);
 	void setAddState(const struct dive *d, int dc);

@@ -360,7 +360,7 @@ void ProfileWidget2::setupItemOnScene()
 
 void ProfileWidget2::replot()
 {
-	plotDive(d, dc, true, false);
+	plotDive(d, dc, false);
 }
 
 PartialPressureGasItem *ProfileWidget2::createPPGas(int column, color_index_t color, color_index_t colorAlert,
@@ -521,7 +521,7 @@ void ProfileWidget2::resetZoom()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool force, bool doClearPictures, bool instant)
+void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPictures, bool instant)
 {
 	d = dIn;
 	dc = dcIn;

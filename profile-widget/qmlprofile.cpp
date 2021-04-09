@@ -135,7 +135,7 @@ void QMLProfile::updateProfile()
 		return;
 	if (verbose)
 		qDebug() << "update profile for dive #" << d->number << "offeset" << QString::number(m_xOffset, 'f', 1) << "/" << QString::number(m_yOffset, 'f', 1);
-	m_profileWidget->plotDive(d, dc_number, true);
+	m_profileWidget->plotDive(d, dc_number);
 }
 
 void QMLProfile::setDiveId(int diveId)
@@ -189,7 +189,7 @@ void QMLProfile::divesChanged(const QVector<dive *> &dives, DiveField)
 	for (struct dive *d: dives) {
 		if (d->id == m_diveId) {
 			qDebug() << "dive #" << d->number << "changed, trigger profile update";
-			m_profileWidget->plotDive(d, dc_number, true);
+			m_profileWidget->plotDive(d, dc_number);
 			triggerUpdate();
 			return;
 		}
