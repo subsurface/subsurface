@@ -432,7 +432,7 @@ void MainWindow::selectionChanged()
 		configureToolbar();
 		enableDisableOtherDCsActions();
 	}
-	graphics->plotDive(current_dive, dc_number, false);
+	graphics->plotDive(current_dive, dc_number);
 	MapWidget::instance()->selectionChanged();
 }
 
@@ -736,7 +736,7 @@ void MainWindow::refreshProfile()
 {
 	showProfile();
 	configureToolbar();
-	graphics->plotDive(current_dive, dc_number, true);
+	graphics->plotDive(current_dive, dc_number);
 }
 
 void MainWindow::planCanceled()
@@ -921,7 +921,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
 	configureToolbar();
-	graphics->plotDive(current_dive, dc_number, false);
+	graphics->plotDive(current_dive, dc_number);
 	mainTab->updateDiveInfo();
 }
 
@@ -930,7 +930,7 @@ void MainWindow::on_actionNextDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
 	configureToolbar();
-	graphics->plotDive(current_dive, dc_number, false);
+	graphics->plotDive(current_dive, dc_number);
 	mainTab->updateDiveInfo();
 }
 
