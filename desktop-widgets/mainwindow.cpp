@@ -223,6 +223,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	enableDisableCloudActions();
 
 	ui.mainErrorMessage->hide();
+	setEnabledToolbar(false);
 	graphics->setEmptyState();
 	initialUiSetup();
 	readSettings();
@@ -295,8 +296,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.profPn2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_pn2);
 	connect(ui.profPO2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_po2);
 
-	// now let's set up some connections
-	connect(graphics, &ProfileWidget2::enableToolbar ,this, &MainWindow::setEnabledToolbar);
 	connect(graphics, &ProfileWidget2::editCurrentDive, this, &MainWindow::editCurrentDive);
 
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, graphics, &ProfileWidget2::settingsChanged);
@@ -425,6 +424,12 @@ void MainWindow::configureToolbar()
 	}
 }
 
+void MainWindow::plotCurrentDive()
+{
+	setEnabledToolbar(current_dive != nullptr);
+	graphics->plotDive(current_dive, dc_number);
+}
+
 void MainWindow::selectionChanged()
 {
 	mainTab->updateDiveInfo();
@@ -432,7 +437,7 @@ void MainWindow::selectionChanged()
 		configureToolbar();
 		enableDisableOtherDCsActions();
 	}
-	graphics->plotDive(current_dive, dc_number);
+	plotCurrentDive();
 	MapWidget::instance()->selectionChanged();
 }
 
@@ -736,7 +741,7 @@ void MainWindow::refreshProfile()
 {
 	showProfile();
 	configureToolbar();
-	graphics->plotDive(current_dive, dc_number);
+	plotCurrentDive();
 }
 
 void MainWindow::planCanceled()
@@ -921,7 +926,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
 	configureToolbar();
-	graphics->plotDive(current_dive, dc_number);
+	plotCurrentDive();
 	mainTab->updateDiveInfo();
 }
 
@@ -930,7 +935,7 @@ void MainWindow::on_actionNextDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
 	configureToolbar();
-	graphics->plotDive(current_dive, dc_number);
+	plotCurrentDive();
 	mainTab->updateDiveInfo();
 }
 

@@ -99,7 +99,6 @@ public:
 
 signals:
 	void fontPrintScaleChanged(double scale);
-	void enableToolbar(bool enable);
 	void editCurrentDive();
 
 public
