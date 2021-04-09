@@ -236,6 +236,7 @@ private:
 	void setQuadrantWidgets(QSplitter &splitter, const Quadrant &left, const Quadrant &right);
 	void registerApplicationState(ApplicationState state, Quadrants q);
 	void disableShortcuts(bool disablePaste = true);
+	void plotCurrentDive();
 	void enableShortcuts();
 
 	QMenu *connections;

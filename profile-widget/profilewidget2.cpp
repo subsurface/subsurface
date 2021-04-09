@@ -1064,7 +1064,6 @@ void ProfileWidget2::setEmptyState()
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 	dataModel->clear();
 	currentState = EMPTY;
-	emit enableToolbar(false);
 
 	fixBackgroundPos();
 	background->setVisible(true);
@@ -1128,7 +1127,6 @@ void ProfileWidget2::setProfileState()
 	/* show the same stuff that the profile shows. */
 
 	currentState = PROFILE;
-	emit enableToolbar(true);
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 
 	background->setVisible(false);
