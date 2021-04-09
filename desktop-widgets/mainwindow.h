@@ -164,8 +164,6 @@ slots:
 	void setEnabledToolbar(bool arg1);
 	// Some shortcuts like "change DC" or "copy/paste dive components"
 	// should only be enabled when the profile's visible.
-	void disableShortcuts(bool disablePaste = true);
-	void enableShortcuts();
 	void startDiveSiteEdit();
 
 private:
@@ -237,6 +235,8 @@ private:
 	void setQuadrantWidget(QSplitter &splitter, const Quadrant &q, int pos);
 	void setQuadrantWidgets(QSplitter &splitter, const Quadrant &left, const Quadrant &right);
 	void registerApplicationState(ApplicationState state, Quadrants q);
+	void disableShortcuts(bool disablePaste = true);
+	void enableShortcuts();
 
 	QMenu *connections;
 	QAction *share_on_fb;

@@ -100,8 +100,6 @@ public:
 signals:
 	void fontPrintScaleChanged(double scale);
 	void enableToolbar(bool enable);
-	void enableShortcuts();
-	void disableShortcuts(bool paste);
 	void editCurrentDive();
 
 public
