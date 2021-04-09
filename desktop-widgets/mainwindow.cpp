@@ -297,8 +297,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	// now let's set up some connections
 	connect(graphics, &ProfileWidget2::enableToolbar ,this, &MainWindow::setEnabledToolbar);
-	connect(graphics, &ProfileWidget2::disableShortcuts, this, &MainWindow::disableShortcuts);
-	connect(graphics, &ProfileWidget2::enableShortcuts, this, &MainWindow::enableShortcuts);
 	connect(graphics, &ProfileWidget2::editCurrentDive, this, &MainWindow::editCurrentDive);
 
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, graphics, &ProfileWidget2::settingsChanged);
@@ -771,6 +769,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	// put us in PLAN mode
 	setApplicationState(ApplicationState::PlanDive);
 
+	disableShortcuts(true);
 	graphics->setPlanState(&displayed_dive, 0);
 	plannerWidgets->replanDive();
 }
@@ -783,6 +782,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	// put us in PLAN mode
 	setApplicationState(ApplicationState::PlanDive);
 
+	disableShortcuts(true);
 	graphics->setPlanState(&displayed_dive, 0);
 	plannerWidgets->planDive();
 }
@@ -1515,7 +1515,7 @@ void MainWindow::editCurrentDive()
 	if (mainTab->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING)
 		return;
 
-	disableShortcuts();
+	disableShortcuts(false);
 	copy_dive(current_dive, &displayed_dive); // Work on a copy of the dive
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);

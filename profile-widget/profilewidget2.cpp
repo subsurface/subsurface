@@ -1127,8 +1127,6 @@ void ProfileWidget2::setProfileState()
 	disconnectTemporaryConnections();
 	/* show the same stuff that the profile shows. */
 
-	emit enableShortcuts();
-
 	currentState = PROFILE;
 	emit enableToolbar(true);
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
@@ -1279,7 +1277,6 @@ void ProfileWidget2::setAddState(const dive *d, int dc)
 	mouseFollowerHorizontal->setLine(timeAxis->line());
 	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
 	disconnectTemporaryConnections();
-	emit disableShortcuts(false);
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
 	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
@@ -1310,7 +1307,6 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 	mouseFollowerHorizontal->setLine(timeAxis->line());
 	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
 	disconnectTemporaryConnections();
-	emit disableShortcuts(true);
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
 	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
