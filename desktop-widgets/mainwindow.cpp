@@ -625,8 +625,8 @@ void MainWindow::closeCurrentFile()
 
 void MainWindow::updateCloudOnlineStatus()
 {
-	bool is_cloud = existing_filename && prefs.cloud_git_url && prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED &&
-			strstr(existing_filename, prefs.cloud_git_url);
+	bool is_cloud = existing_filename && prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED &&
+			strstr(existing_filename, prefs.cloud_base_url);
 	ui.actionCloudOnline->setEnabled(is_cloud);
 	ui.actionCloudOnline->setChecked(is_cloud && !git_local_only);
 }
@@ -1169,7 +1169,7 @@ void MainWindow::loadRecentFiles()
 		QString file = s.value(key).toString();
 
 		// never add our cloud URL to the recent files
-		if (!same_string(prefs.cloud_git_url, "") && file.startsWith(prefs.cloud_git_url))
+		if (file.startsWith(prefs.cloud_base_url))
 			continue;
 		// but allow local git repos
 		QRegularExpression gitrepo("(.*)\\[[^]]+]");
@@ -1207,7 +1207,7 @@ void MainWindow::updateRecentFilesMenu()
 void MainWindow::addRecentFile(const QString &file, bool update)
 {
 	// never add Subsurface cloud file to the recent files - it has its own menu entry
-	if (!same_string(prefs.cloud_git_url, "") && file.startsWith(prefs.cloud_git_url))
+	if (file.startsWith(prefs.cloud_base_url))
 		return;
 	QString localFile = QDir::toNativeSeparators(file);
 	int index = recentFiles.indexOf(localFile);
@@ -1257,9 +1257,8 @@ int MainWindow::file_save_as(void)
 
 	// if the default is to save to cloud storage, pick something that will work as local file:
 	// simply extract the branch name which should be the users email address
-	if (default_filename && strstr(default_filename, prefs.cloud_git_url)) {
+	if (default_filename && strstr(default_filename, prefs.cloud_base_url)) {
 		QString filename(default_filename);
-		filename.remove(prefs.cloud_git_url);
 		filename.remove(0, filename.indexOf("[") + 1);
 		filename.replace("]", ".ssrf");
 		default_filename = copy_qstring(filename);
@@ -1350,7 +1349,7 @@ QString MainWindow::displayedFilename(QString fullFilename)
 	QFileInfo fileInfo(f);
 	QString fileName(fileInfo.fileName());
 
-	if (fullFilename.contains(prefs.cloud_git_url)) {
+	if (fullFilename.contains(prefs.cloud_base_url)) {
 		QString email = fileName.left(fileName.indexOf('['));
 		return git_local_only ?
 			tr("[local cache for] %1").arg(email) :

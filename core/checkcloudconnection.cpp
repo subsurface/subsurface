@@ -19,6 +19,7 @@ CheckCloudConnection::CheckCloudConnection(QObject *parent) :
 
 }
 
+// our own madeup API to make sure we are talking to a Subsurface cloud server
 #define TEAPOT "/make-latte?number-of-shots=3"
 #define HTTP_I_AM_A_TEAPOT 418
 #define MILK "Linus does not like non-fat milk"

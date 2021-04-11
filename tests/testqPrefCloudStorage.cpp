@@ -23,7 +23,6 @@ void TestQPrefCloudStorage::test_struct_get()
 
 	prefs.cloud_auto_sync = true;
 	prefs.cloud_base_url = copy_qstring("new url");
-	prefs.cloud_git_url = copy_qstring("new again url");
 	prefs.cloud_storage_email = copy_qstring("myEmail");
 	prefs.cloud_storage_email_encoded = copy_qstring("encodedMyEMail");
 	prefs.cloud_storage_password = copy_qstring("more secret");
@@ -34,7 +33,6 @@ void TestQPrefCloudStorage::test_struct_get()
 
 	QCOMPARE(tst->cloud_auto_sync(), prefs.cloud_auto_sync);
 	QCOMPARE(tst->cloud_base_url(), QString(prefs.cloud_base_url));
-	QCOMPARE(tst->cloud_git_url(), QString(prefs.cloud_git_url));
 	QCOMPARE(tst->cloud_storage_email(), QString(prefs.cloud_storage_email));
 	QCOMPARE(tst->cloud_storage_email_encoded(), QString(prefs.cloud_storage_email_encoded));
 	QCOMPARE(tst->cloud_storage_password(), QString(prefs.cloud_storage_password));
@@ -69,9 +67,6 @@ void TestQPrefCloudStorage::test_set_struct()
 	QCOMPARE((int)prefs.cloud_timeout, 123);
 	QCOMPARE((int)prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_VERIFIED);
 	QCOMPARE(prefs.save_password_local, false);
-
-	// remark is set with set_base_url
-	QCOMPARE(QString(prefs.cloud_git_url), QString("t2 base/git"));
 }
 
 void TestQPrefCloudStorage::test_set_load_struct()
@@ -92,7 +87,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 
 	prefs.cloud_auto_sync = false;
 	prefs.cloud_base_url = copy_qstring("error1");
-	prefs.cloud_git_url = copy_qstring("error1");
 	prefs.cloud_storage_email = copy_qstring("error1");
 	prefs.cloud_storage_email_encoded = copy_qstring("error1");
 	prefs.cloud_storage_password = copy_qstring("error1");
@@ -111,9 +105,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	QCOMPARE((int)prefs.cloud_timeout, 321);
 	QCOMPARE((int)prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_NOCLOUD);
 	QCOMPARE(prefs.save_password_local, true);
-
-	// remark is set with set_base_url
-	QCOMPARE(QString(prefs.cloud_git_url), QString("t3 base/git"));
 }
 
 void TestQPrefCloudStorage::test_struct_disk()
@@ -136,7 +127,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 
 	prefs.cloud_auto_sync = false;
 	prefs.cloud_base_url = copy_qstring("error1");
-	prefs.cloud_git_url = copy_qstring("error1");
 	prefs.cloud_storage_email = copy_qstring("error1");
 	prefs.cloud_storage_email_encoded = copy_qstring("error1");
 	prefs.cloud_storage_password = copy_qstring("error1");
@@ -156,9 +146,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 	QCOMPARE((int)prefs.cloud_timeout, 123);
 	QCOMPARE((int)prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_VERIFIED);
 	QCOMPARE(prefs.save_password_local, true);
-
-	// remark is set with set_base_url
-	QCOMPARE(QString(prefs.cloud_git_url), QString("t4 base/git"));
 }
 
 void TestQPrefCloudStorage::test_multiple()

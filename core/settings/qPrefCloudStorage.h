@@ -9,7 +9,6 @@ class qPrefCloudStorage : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool cloud_auto_sync READ cloud_auto_sync WRITE set_cloud_auto_sync NOTIFY cloud_auto_syncChanged)
 	Q_PROPERTY(QString cloud_base_url READ cloud_base_url WRITE set_cloud_base_url NOTIFY cloud_base_urlChanged)
-	Q_PROPERTY(QString cloud_git_url READ cloud_git_url)
 	Q_PROPERTY(QString cloud_storage_email READ cloud_storage_email WRITE set_cloud_storage_email NOTIFY cloud_storage_emailChanged)
 	Q_PROPERTY(QString cloud_storage_email_encoded READ cloud_storage_email_encoded WRITE set_cloud_storage_email_encoded NOTIFY cloud_storage_email_encodedChanged)
 	Q_PROPERTY(QString cloud_storage_password READ cloud_storage_password WRITE set_cloud_storage_password NOTIFY cloud_storage_passwordChanged)
@@ -43,7 +42,6 @@ public:
 
 	static bool cloud_auto_sync() { return prefs.cloud_auto_sync; }
 	static QString cloud_base_url() { return prefs.cloud_base_url; }
-	static QString cloud_git_url() { return prefs.cloud_git_url; }
 	static QString cloud_storage_email() { return prefs.cloud_storage_email; }
 	static QString cloud_storage_email_encoded() { return prefs.cloud_storage_email_encoded; }
 	static QString cloud_storage_password() { return prefs.cloud_storage_password; }

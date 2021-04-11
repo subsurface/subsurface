@@ -284,9 +284,7 @@ int check_git_sha(const char *filename, struct git_repository **git_p, const cha
 		*git_p = git;
 	if (branch_p)
 		*branch_p = branch;
-	if (prefs.cloud_git_url &&
-	    strstr(filename, prefs.cloud_git_url)
-	    && git == dummy_git_repository) {
+	if (strstr(filename, prefs.cloud_base_url) && git == dummy_git_repository) {
 		/* opening the cloud storage repository failed for some reason,
 		 * so we don't know if there is additional data in the remote */
 		free(current_sha);
@@ -317,13 +315,11 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 	int ret;
 
 	git = is_git_repository(filename, &branch, NULL, false);
-	if (prefs.cloud_git_url &&
-	    strstr(filename, prefs.cloud_git_url)
-	    && git == dummy_git_repository) {
+	if (strstr(filename, prefs.cloud_base_url) && git == dummy_git_repository)
 		/* opening the cloud storage repository failed for some reason
 		 * give up here and don't send errors about git repositories */
 		return -1;
-	}
+
 	if (git)
 		return git_load_dives(git, branch, table, trips, sites, devices, filter_presets);
 

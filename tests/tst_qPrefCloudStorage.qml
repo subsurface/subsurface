@@ -11,9 +11,6 @@ TestCase {
 		PrefCloudStorage.cloud_base_url = "my url"
 		compare(PrefCloudStorage.cloud_base_url, "my url")
 
-		var x2 = PrefCloudStorage.cloud_git_url
-		compare(PrefCloudStorage.cloud_git_url, "my url/git")
-
 		var x3 = PrefCloudStorage.cloud_storage_email
 		PrefCloudStorage.cloud_storage_email = "my email"
 		compare(PrefCloudStorage.cloud_storage_email, "my email")

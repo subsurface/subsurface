@@ -82,7 +82,6 @@ struct preferences {
 	// ********** CloudStorage **********
 	bool        cloud_auto_sync;
 	const char *cloud_base_url;
-	const char *cloud_git_url;
 	const char *cloud_storage_email;
 	const char *cloud_storage_email_encoded;
 	const char *cloud_storage_password;
