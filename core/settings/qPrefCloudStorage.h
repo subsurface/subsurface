@@ -57,6 +57,7 @@ public:
 public slots:
 	static void set_cloud_auto_sync(bool value);
 	static void set_cloud_base_url(const QString &value);
+	static void store_cloud_base_url(const QString &value);
 	static void set_cloud_storage_email(const QString &value);
 	static void set_cloud_storage_email_encoded(const QString &value);
 	static void set_cloud_storage_password(const QString &value);
