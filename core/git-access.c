@@ -297,7 +297,8 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 	UNUSED(payload);
 	if (verbose)
 		SSRF_INFO("git storage: certificate callback for host %s with validity %d\n", host, valid);
-	if (same_string(host, "cloud.subsurface-divelog.org") && cert->cert_type == GIT_CERT_X509) {
+	if ((same_string(host, CLOUD_HOST_GENERIC) || same_string(host, CLOUD_HOST_US) || same_string(host, CLOUD_HOST_EU)) &&
+			cert->cert_type == GIT_CERT_X509) {
 		// for some reason the LetsEncrypt certificate makes libgit2 throw up on some
 		// platforms but not on others
 		// if we are connecting to the cloud server we alrady called 'canReachCloudServer()'
@@ -712,7 +713,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		return 0;
 	}
 	if (verbose)
-		SSRF_INFO("git storage: fetch remote\n");
+		SSRF_INFO("git storage: fetch remote %s\n", git_remote_url(origin));
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	opts.callbacks.transfer_progress = &transfer_progress_cb;
 	auth_attempt = 0;
@@ -774,6 +775,11 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 			}
 		}
 		git_reference_free(head);
+	}
+	/* make sure we have the correct origin - the cloud server URL could have changed */
+	if (git_remote_set_url(repo, "origin", remote)) {
+		SSRF_INFO("git storage: failed to update origin to '%s'", remote);
+		return NULL;
 	}
 
 	if (!git_local_only)

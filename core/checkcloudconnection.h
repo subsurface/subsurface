@@ -11,11 +11,14 @@ class CheckCloudConnection : public QObject {
 public:
 	CheckCloudConnection(QObject *parent = 0);
 	bool checkServer();
+	void pickServer();
 private:
 	QNetworkReply *reply;
 private
 slots:
 	void sslErrors(const QList<QSslError> &errorList);
+	void gotIP(QNetworkReply *reply);
+	void gotContinent(QNetworkReply *reply);
 };
 
 #endif // CHECKCLOUDCONNECTION_H

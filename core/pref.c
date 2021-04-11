@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "pref.h"
 #include "subsurface-string.h"
+#include "git-access.h" // for CLOUD_HOST
 
 struct preferences prefs, git_prefs;
 struct preferences default_prefs = {
-	.cloud_base_url = "https://cloud.subsurface-divelog.org/",
+	.cloud_base_url = "https://" CLOUD_HOST_EU "/", // if we don't know any better, use the European host
 	.units = SI_UNITS,
 	.unit_system = METRIC,
 	.coordinates_traditional = true,
