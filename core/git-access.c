@@ -1023,7 +1023,7 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 
 	/* remember if the current git storage we are working on is our cloud storage
 	 * this is used to create more user friendly error message and warnings */
-	is_subsurface_cloud = strstr(remote, prefs.cloud_git_url) != NULL;
+	is_subsurface_cloud = strstr(remote, prefs.cloud_base_url) != NULL;
 
 	return get_remote_repo(localdir, remote, branch);
 }

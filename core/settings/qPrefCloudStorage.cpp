@@ -31,7 +31,6 @@ void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 		// only free and set if not default
 		if (prefs.cloud_base_url != default_prefs.cloud_base_url) {
 			qPrefPrivate::copy_txt(&prefs.cloud_base_url, value);
-			qPrefPrivate::copy_txt(&prefs.cloud_git_url, value + "/git");
 		}
 
 		disk_cloud_base_url(true);
@@ -44,7 +43,6 @@ void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
 		qPrefPrivate::propSetValue(keyFromGroupAndName(group, "cloud_base_url"), prefs.cloud_base_url, default_prefs.cloud_base_url);
 	} else {
 		prefs.cloud_base_url = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, "cloud_base_url"), default_prefs.cloud_base_url).toString());
-		qPrefPrivate::copy_txt(&prefs.cloud_git_url, QString(prefs.cloud_base_url) + "/git");
 	}
 }
 

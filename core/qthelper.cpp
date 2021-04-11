@@ -1442,9 +1442,9 @@ int getCloudURL(QString &filename)
 		free((void *)prefs.cloud_storage_email_encoded);
 		prefs.cloud_storage_email_encoded = copy_qstring(email);
 	}
-	filename = QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email);
+	filename = QString(QString(prefs.cloud_base_url) + "git/%1[%1]").arg(email);
 	if (verbose)
-		qDebug() << "cloud URL set as" << filename;
+		qDebug() << "returning cloud URL" << filename;
 	return 0;
 }
 

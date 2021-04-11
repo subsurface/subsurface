@@ -111,14 +111,13 @@ void TestGitStorage::initTestCase()
 	if (gitUrl.right(1) != "/")
 		gitUrl += "/";
 	gitUrl += "git";
-	prefs.cloud_git_url = copy_qstring(gitUrl);
 	prefs.cloud_storage_email_encoded = copy_qstring(email);
 	prefs.cloud_storage_password = copy_qstring(password);
 	gitUrl += "/" + email;
 	// all user storage for historical reasons always uses the user's email both as
 	// repo name and as branch. To allow us to keep testing and not step on parallel
 	// runs we'll use actually random branch names - yes, this still has a chance of
-	// conflict, but I'm not going to implement a distributed locak manager for this
+	// conflict, but I'm not going to implement a distributed lock manager for this
 	if (email.startsWith("gitstorage")) {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 		randomBranch = QString::number(QRandomGenerator::global()->bounded(0x1000000), 16) +
