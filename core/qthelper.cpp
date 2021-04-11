@@ -22,6 +22,7 @@
 #include "trip.h"
 #include "imagedownloader.h"
 #include "xmlparams.h"
+#include "core/git-access.h" // for CLOUD_HOST definitions
 #include <QFile>
 #include <QRegExp>
 #include <QDir>
@@ -1453,6 +1454,15 @@ extern "C" char *cloud_url()
 	QString filename;
 	getCloudURL(filename);
 	return copy_qstring(filename);
+}
+
+extern "C" const char *normalize_cloud_name(const char *remote_in)
+{
+	// replace ssrf-cloud-XX.subsurface... names with cloud.subsurface... names
+	// that trailing '/' is to match old code
+	QString ri(remote_in);
+	ri.replace(QRegularExpression(CLOUD_HOST_PATTERN), CLOUD_HOST_GENERIC "/");
+	return strdup(ri.toUtf8().constData());
 }
 
 extern "C" bool getProxyString(char **buffer)

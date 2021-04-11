@@ -147,6 +147,7 @@ void copy_image_and_overwrite(const char *cfileName, const char *path, const cha
 char *move_away(const char *path);
 const char *local_file_path(struct picture *picture);
 char *cloud_url();
+const char *normalize_cloud_name(const char *remote_in);
 char *hashfile_name_string();
 char *picturedir_string();
 const char *subsurface_user_agent();

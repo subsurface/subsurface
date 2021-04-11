@@ -130,10 +130,21 @@ static int push_transfer_progress_cb(unsigned int current, unsigned int total, s
 	return git_storage_update_progress(buf);
 }
 
-char *get_local_dir(const char *remote, const char *branch)
+char *get_local_dir(const char *remote_in, const char *branch)
 {
 	SHA_CTX ctx;
 	unsigned char hash[20];
+
+	// this optimization could in theory lead to odd things happening if the
+	// cloud backend servers ever get out of sync - but when a user switches
+	// between those servers (either because one is down, or because the algorithm
+	// which server to pick changed, or because the user is on a different continent),
+	// then the hash and therefore the local directory would change. To prevent that
+	// from happening, normalize the cloud string to always use the old default name.
+	// That's trivial with QString operations and painful to do right in plain C, so
+	// let's be lazy and call a C++ helper function
+	// just remember to free the string we get back
+	const char *remote = normalize_cloud_name(remote_in);
 
 	// That zero-byte update is so that we don't get hash
 	// collisions for "repo1 branch" vs "repo 1branch".
@@ -142,7 +153,7 @@ char *get_local_dir(const char *remote, const char *branch)
 	SHA1_Update(&ctx, "", 1);
 	SHA1_Update(&ctx, branch, strlen(branch));
 	SHA1_Final(hash, &ctx);
-
+	free((void *)remote);
 	return format_string("%s/cloudstorage/%02x%02x%02x%02x%02x%02x%02x%02x",
 			system_default_directory(),
 			hash[0], hash[1], hash[2], hash[3],
