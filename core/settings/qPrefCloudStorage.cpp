@@ -37,6 +37,13 @@ void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 		emit instance()->cloud_base_urlChanged(value);
 	}
 }
+
+void qPrefCloudStorage::store_cloud_base_url(const QString &value)
+{
+	// this is used if we want to update the on-disk settings without changing
+	// the runtime preference
+	qPrefPrivate::propSetValue(keyFromGroupAndName(group, "cloud_base_url"), value, default_prefs.cloud_base_url);
+}
 void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
 {
 	if (doSync) {
