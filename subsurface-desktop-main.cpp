@@ -15,6 +15,7 @@
 #include "core/settings/qPref.h"
 #include "core/tag.h"
 #include "desktop-widgets/mainwindow.h"
+#include "core/checkcloudconnection.h"
 
 #include <QApplication>
 #include <QLoggingCategory>
@@ -76,6 +77,8 @@ int main(int argc, char **argv)
 #endif
 	setup_system_prefs();
 	copy_prefs(&default_prefs, &prefs);
+	CheckCloudConnection ccc;
+	ccc.pickServer();
 	fill_computer_list();
 	reset_tank_info_table(&tank_info_table);
 	parse_xml_init();

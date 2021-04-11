@@ -46,11 +46,10 @@ void qPrefCloudStorage::store_cloud_base_url(const QString &value)
 }
 void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
 {
-	if (doSync) {
-		qPrefPrivate::propSetValue(keyFromGroupAndName(group, "cloud_base_url"), prefs.cloud_base_url, default_prefs.cloud_base_url);
-	} else {
+	// we don't allow to automatically write back the prefs value for the cloud_base_url.
+	// in order to do that you need to use the explicit function above store_cloud_base_url()
+	if (!doSync)
 		prefs.cloud_base_url = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, "cloud_base_url"), default_prefs.cloud_base_url).toString());
-	}
 }
 
 HANDLE_PREFERENCE_TXT(CloudStorage, "email", cloud_storage_email);

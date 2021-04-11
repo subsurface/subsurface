@@ -1262,7 +1262,7 @@ int MainWindow::file_save_as(void)
 
 	// if the default is to save to cloud storage, pick something that will work as local file:
 	// simply extract the branch name which should be the users email address
-	if (default_filename && strstr(default_filename, prefs.cloud_base_url)) {
+	if (default_filename && QString(default_filename).contains(QRegularExpression(CLOUD_HOST_PATTERN))) {
 		QString filename(default_filename);
 		filename.remove(0, filename.indexOf("[") + 1);
 		filename.replace("]", ".ssrf");

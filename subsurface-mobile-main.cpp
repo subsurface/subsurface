@@ -17,6 +17,7 @@
 #include "core/settings/qPrefDisplay.h"
 #include "core/tag.h"
 #include "core/settings/qPrefCloudStorage.h"
+#include "core/checkcloudconnection.h"
 
 #include <QApplication>
 #include <QFont>
@@ -57,6 +58,8 @@ int main(int argc, char **argv)
 	else
 		default_prefs.units = IMPERIAL_units;
 	copy_prefs(&default_prefs, &prefs);
+	CheckCloudConnection ccc;
+	ccc.pickServer();
 	fill_computer_list();
 	reset_tank_info_table(&tank_info_table);
 
