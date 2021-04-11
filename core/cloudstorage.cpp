@@ -92,15 +92,7 @@ void CloudStorageAuthenticate::sslErrors(const QList<QSslError> &errorList)
 	QSslConfiguration conf = reply->sslConfiguration();
 	QSslCertificate cert = conf.peerCertificate();
 	QByteArray hexDigest = cert.digest().toHex();
-	if (reply->url().toString().contains(prefs.cloud_base_url) &&
-	    hexDigest == "13ff44c62996cfa5cd69d6810675490e") {
-		if (verbose)
-			qDebug() << "Overriding SSL check as I recognize the certificate digest" << hexDigest;
-		reply->ignoreSslErrors();
-	} else {
-		if (verbose)
-			qDebug() << "got invalid SSL certificate with hex digest" << hexDigest;
-	}
+	qDebug() << "got invalid SSL certificate with hex digest" << hexDigest;
 }
 
 QNetworkAccessManager *manager()
