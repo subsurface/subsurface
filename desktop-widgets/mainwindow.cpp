@@ -397,8 +397,9 @@ void MainWindow::refreshDisplay()
 	ui.actionAutoGroup->setChecked(autogroup);
 }
 
-void MainWindow::configureToolbar()
+void MainWindow::plotCurrentDive()
 {
+	setEnabledToolbar(current_dive != nullptr);
 	if (current_dive) {
 		bool freeDiveMode = current_dive->dc.divemode == FREEDIVE;
 		ui.profCalcCeiling->setDisabled(freeDiveMode);
@@ -422,21 +423,14 @@ void MainWindow::configureToolbar()
 		ui.profTogglePicture->setDisabled(false);
 		ui.profHR->setDisabled(false);
 	}
-}
-
-void MainWindow::plotCurrentDive()
-{
-	setEnabledToolbar(current_dive != nullptr);
 	graphics->plotDive(current_dive, dc_number);
 }
 
 void MainWindow::selectionChanged()
 {
 	mainTab->updateDiveInfo();
-	if (current_dive) {
-		configureToolbar();
+	if (current_dive)
 		enableDisableOtherDCsActions();
-	}
 	plotCurrentDive();
 	MapWidget::instance()->selectionChanged();
 }
@@ -740,7 +734,6 @@ bool MainWindow::plannerStateClean()
 void MainWindow::refreshProfile()
 {
 	showProfile();
-	configureToolbar();
 	plotCurrentDive();
 }
 
@@ -925,7 +918,6 @@ void MainWindow::on_actionPreviousDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
-	configureToolbar();
 	plotCurrentDive();
 	mainTab->updateDiveInfo();
 }
@@ -934,7 +926,6 @@ void MainWindow::on_actionNextDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
-	configureToolbar();
 	plotCurrentDive();
 	mainTab->updateDiveInfo();
 }

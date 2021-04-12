@@ -201,7 +201,6 @@ private:
 	std::unique_ptr<LocationInformationWidget> diveSiteEdit;
 
 	bool plannerStateClean();
-	void configureToolbar();
 	void setupSocialNetworkMenu();
 	QDialog *findMovedImagesDialog;
 	struct dive copyPasteDive;
