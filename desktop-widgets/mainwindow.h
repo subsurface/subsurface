@@ -153,7 +153,6 @@ signals:
 
 public
 slots:
-	void turnOffNdlTts();
 	void readSettings();
 	void refreshDisplay();
 	void showProfile();
