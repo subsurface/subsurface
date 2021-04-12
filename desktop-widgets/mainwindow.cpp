@@ -11,7 +11,6 @@
 #include <QDesktopWidget>
 #include <QSettings>
 #include <QShortcut>
-#include <QToolBar>
 #include <QStatusBar>
 #include <QNetworkProxy>
 #include <QUndoStack>
@@ -33,8 +32,6 @@
 
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefDisplay.h"
-#include "core/settings/qPrefPartialPressureGas.h"
-#include "core/settings/qPrefTechnicalDetails.h"
 
 #include "desktop-widgets/about.h"
 #include "desktop-widgets/divelistview.h"
@@ -53,6 +50,7 @@
 #include "desktop-widgets/statswidget.h"
 #include "commands/command.h"
 
+#include "profilewidget.h"
 #include "profile-widget/profilewidget2.h"
 
 #ifndef NO_PRINTING
@@ -134,57 +132,30 @@ MainWindow::MainWindow() : QMainWindow(),
 	// for the "default" mode
 	mainTab.reset(new MainTab);
 	diveList.reset(new DiveListView);
-	graphics = new ProfileWidget2(DivePlannerPointsModel::instance(), this);
 	mapWidget.reset(MapWidget::instance()); // Yes, this is ominous see comment in mapwidget.cpp.
 	plannerWidgets.reset(new PlannerWidgets);
 	statistics.reset(new StatsWidget);
-	profileContainer.reset(new QWidget);
-
-	// what is a sane order for those icons? we should have the ones the user is
-	// most likely to want towards the top so they are always visible
-	// and the ones that someone likely sets and then never touches again towards the bottom
-	profileToolbarActions = { ui.profCalcCeiling, ui.profCalcAllTissues, // start with various ceilings
-				ui.profIncrement3m, ui.profDcCeiling,
-				ui.profPhe, ui.profPn2, ui.profPO2, // partial pressure graphs
-				ui.profRuler, ui.profScaled, // measuring and scaling
-				ui.profTogglePicture, ui.profTankbar,
-				ui.profMod, ui.profDeco, ui.profNdl_tts, // various values that a user is either interested in or not
-				ui.profEad, ui.profSAC,
-				ui.profHR, // very few dive computers support this
-				ui.profTissues}; // maybe less frequently used
-
-	QToolBar *toolBar = new QToolBar();
-	Q_FOREACH (QAction *a, profileToolbarActions)
-		toolBar->addAction(a);
-	toolBar->setOrientation(Qt::Vertical);
-	toolBar->setIconSize(QSize(24,24));
-	QHBoxLayout *profLayout = new QHBoxLayout();
-	profLayout->setSpacing(0);
-	profLayout->setMargin(0);
-	profLayout->setContentsMargins(0,0,0,0);
-	profLayout->addWidget(toolBar);
-	profLayout->addWidget(graphics);
-	profileContainer->setLayout(profLayout);
+	profile.reset(new ProfileWidget);
 
 	diveSiteEdit.reset(new LocationInformationWidget);
 
-	registerApplicationState(ApplicationState::Default, { true, { mainTab.get(), FLAG_NONE },  { profileContainer.get(), FLAG_NONE },
+	registerApplicationState(ApplicationState::Default, { true, { mainTab.get(), FLAG_NONE },  { profile.get(), FLAG_NONE },
 								    { diveList.get(), FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditDive, { false, { mainTab.get(), FLAG_NONE },  { profileContainer.get(), FLAG_NONE },
+	registerApplicationState(ApplicationState::EditDive, { false, { mainTab.get(), FLAG_NONE },  { profile.get(), FLAG_NONE },
 								      { diveList.get(), FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
-	registerApplicationState(ApplicationState::PlanDive, { false, { &plannerWidgets->plannerWidget, FLAG_NONE },         { profileContainer.get(), FLAG_NONE },
+	registerApplicationState(ApplicationState::PlanDive, { false, { &plannerWidgets->plannerWidget, FLAG_NONE },         { profile.get(), FLAG_NONE },
 								      { &plannerWidgets->plannerSettingsWidget, FLAG_NONE }, { &plannerWidgets->plannerDetails, FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditPlannedDive, { true, { &plannerWidgets->plannerWidget, FLAG_NONE }, { profileContainer.get(), FLAG_NONE },
+	registerApplicationState(ApplicationState::EditPlannedDive, { true, { &plannerWidgets->plannerWidget, FLAG_NONE }, { profile.get(), FLAG_NONE },
 									    { diveList.get(), FLAG_NONE },                 { mapWidget.get(), FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditDiveSite, { false, { diveSiteEdit.get(), FLAG_NONE }, { profileContainer.get(), FLAG_DISABLED },
+	registerApplicationState(ApplicationState::EditDiveSite, { false, { diveSiteEdit.get(), FLAG_NONE }, { profile.get(), FLAG_DISABLED },
 									  { diveList.get(), FLAG_DISABLED }, { mapWidget.get(), FLAG_NONE } });
-	registerApplicationState(ApplicationState::FilterDive, { true, { mainTab.get(), FLAG_NONE },  { profileContainer.get(), FLAG_NONE },
+	registerApplicationState(ApplicationState::FilterDive, { true, { mainTab.get(), FLAG_NONE },  { profile.get(), FLAG_NONE },
 								       { diveList.get(), FLAG_NONE }, { &filterWidget, FLAG_NONE } });
 	registerApplicationState(ApplicationState::Statistics, { true, { statistics.get(), FLAG_NONE }, { nullptr, FLAG_NONE },
 								       { diveList.get(), FLAG_DISABLED },   { &filterWidget, FLAG_NONE } });
 	registerApplicationState(ApplicationState::MapMaximized, { true, { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE },
 									 { nullptr, FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
-	registerApplicationState(ApplicationState::ProfileMaximized, { true, { nullptr, FLAG_NONE }, { profileContainer.get(), FLAG_NONE },
+	registerApplicationState(ApplicationState::ProfileMaximized, { true, { nullptr, FLAG_NONE }, { profile.get(), FLAG_NONE },
 									     { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE } });
 	registerApplicationState(ApplicationState::ListMaximized, { true, { nullptr, FLAG_NONE },        { nullptr, FLAG_NONE },
 									  { diveList.get(), FLAG_NONE }, { nullptr, FLAG_NONE } });
@@ -224,7 +195,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	ui.mainErrorMessage->hide();
 	setEnabledToolbar(false);
-	graphics->setEmptyState();
+	profile->view->setEmptyState();
 	initialUiSetup();
 	readSettings();
 	diveList->setFocus();
@@ -270,54 +241,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	set_git_update_cb(&updateProgress);
 	set_error_cb(&showErrorFromC);
 
-	// Toolbar Connections related to the Profile Update
-	auto tec = qPrefTechnicalDetails::instance();
-	connect(ui.profCalcAllTissues, &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcalltissues);
-	connect(ui.profCalcCeiling,    &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcceiling);
-	connect(ui.profDcCeiling,      &QAction::triggered, tec, &qPrefTechnicalDetails::set_dcceiling);
-	connect(ui.profEad,            &QAction::triggered, tec, &qPrefTechnicalDetails::set_ead);
-	connect(ui.profIncrement3m,    &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcceiling3m);
-	connect(ui.profMod,            &QAction::triggered, tec, &qPrefTechnicalDetails::set_mod);
-	connect(ui.profNdl_tts,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcndltts);
-	connect(ui.profDeco,           &QAction::triggered, tec, &qPrefTechnicalDetails::set_decoinfo);
-	connect(ui.profHR,             &QAction::triggered, tec, &qPrefTechnicalDetails::set_hrgraph);
-	connect(ui.profRuler,          &QAction::triggered, tec, &qPrefTechnicalDetails::set_rulergraph);
-	connect(ui.profSAC,            &QAction::triggered, tec, &qPrefTechnicalDetails::set_show_sac);
-	connect(ui.profScaled,         &QAction::triggered, tec, &qPrefTechnicalDetails::set_zoomed_plot);
-	connect(ui.profTogglePicture,  &QAction::triggered, tec, &qPrefTechnicalDetails::set_show_pictures_in_profile);
-	connect(ui.profTankbar,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_tankbar);
-	connect(ui.profTissues,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_percentagegraph);
-
-	connect(ui.profTissues,        &QAction::triggered, this, &MainWindow::unsetProfHR);
-	connect(ui.profHR,             &QAction::triggered, this, &MainWindow::unsetProfTissues);
-
-	auto pp_gas = qPrefPartialPressureGas::instance();
-	connect(ui.profPhe, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_phe);
-	connect(ui.profPn2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_pn2);
-	connect(ui.profPO2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_po2);
-
-	connect(graphics, &ProfileWidget2::editCurrentDive, this, &MainWindow::editCurrentDive);
-
-	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, graphics, &ProfileWidget2::settingsChanged);
-
-	ui.profCalcAllTissues->setChecked(qPrefTechnicalDetails::calcalltissues());
-	ui.profCalcCeiling->setChecked(qPrefTechnicalDetails::calcceiling());
-	ui.profDcCeiling->setChecked(qPrefTechnicalDetails::dcceiling());
-	ui.profEad->setChecked(qPrefTechnicalDetails::ead());
-	ui.profIncrement3m->setChecked(qPrefTechnicalDetails::calcceiling3m());
-	ui.profMod->setChecked(qPrefTechnicalDetails::mod());
-	ui.profNdl_tts->setChecked(qPrefTechnicalDetails::calcndltts());
-	ui.profDeco->setChecked(qPrefTechnicalDetails::decoinfo());
-	ui.profPhe->setChecked(pp_gas->phe());
-	ui.profPn2->setChecked(pp_gas->pn2());
-	ui.profPO2->setChecked(pp_gas->po2());
-	ui.profHR->setChecked(qPrefTechnicalDetails::hrgraph());
-	ui.profRuler->setChecked(qPrefTechnicalDetails::rulergraph());
-	ui.profSAC->setChecked(qPrefTechnicalDetails::show_sac());
-	ui.profTogglePicture->setChecked(qPrefTechnicalDetails::show_pictures_in_profile());
-	ui.profTankbar->setChecked(qPrefTechnicalDetails::tankbar());
-	ui.profTissues->setChecked(qPrefTechnicalDetails::percentagegraph());
-	ui.profScaled->setChecked(qPrefTechnicalDetails::zoomed_plot());
+	connect(profile->view.get(), &ProfileWidget2::editCurrentDive, this, &MainWindow::editCurrentDive);
 
 // full screen support is buggy on Windows and Ubuntu.
 // require the FULLSCREEN_SUPPORT macro to enable it!
@@ -398,41 +322,12 @@ void MainWindow::refreshDisplay()
 	ui.actionAutoGroup->setChecked(autogroup);
 }
 
-void MainWindow::plotCurrentDive()
-{
-	setEnabledToolbar(current_dive != nullptr);
-	if (current_dive) {
-		bool freeDiveMode = current_dive->dc.divemode == FREEDIVE;
-		ui.profCalcCeiling->setDisabled(freeDiveMode);
-		ui.profCalcCeiling->setDisabled(freeDiveMode);
-		ui.profCalcAllTissues ->setDisabled(freeDiveMode);
-		ui.profIncrement3m->setDisabled(freeDiveMode);
-		ui.profDcCeiling->setDisabled(freeDiveMode);
-		ui.profPhe->setDisabled(freeDiveMode);
-		ui.profPn2->setDisabled(freeDiveMode); //TODO is the same as scuba?
-		ui.profPO2->setDisabled(freeDiveMode); //TODO is the same as scuba?
-		ui.profTankbar->setDisabled(freeDiveMode);
-		ui.profMod->setDisabled(freeDiveMode);
-		ui.profNdl_tts->setDisabled(freeDiveMode);
-		ui.profDeco->setDisabled(freeDiveMode);
-		ui.profEad->setDisabled(freeDiveMode);
-		ui.profSAC->setDisabled(freeDiveMode);
-		ui.profTissues->setDisabled(freeDiveMode);
-
-		ui.profRuler->setDisabled(false);
-		ui.profScaled->setDisabled(false); // measuring and scaling
-		ui.profTogglePicture->setDisabled(false);
-		ui.profHR->setDisabled(false);
-	}
-	graphics->plotDive(current_dive, dc_number);
-}
-
 void MainWindow::selectionChanged()
 {
 	mainTab->updateDiveInfo();
 	if (current_dive)
 		enableDisableOtherDCsActions();
-	plotCurrentDive();
+	profile->plotCurrentDive();
 	MapWidget::instance()->selectionChanged();
 }
 
@@ -683,7 +578,7 @@ void MainWindow::enableShortcuts()
 void MainWindow::showProfile()
 {
 	enableShortcuts();
-	graphics->setProfileState(current_dive, dc_number);
+	profile->view->setProfileState(current_dive, dc_number);
 	setApplicationState(ApplicationState::Default);
 }
 
@@ -735,7 +630,7 @@ bool MainWindow::plannerStateClean()
 void MainWindow::refreshProfile()
 {
 	showProfile();
-	plotCurrentDive();
+	profile->plotCurrentDive();
 }
 
 void MainWindow::planCanceled()
@@ -769,7 +664,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	setApplicationState(ApplicationState::PlanDive);
 
 	disableShortcuts(true);
-	graphics->setPlanState(&displayed_dive, 0);
+	profile->setPlanState(&displayed_dive, 0);
 	plannerWidgets->replanDive();
 }
 
@@ -782,7 +677,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	setApplicationState(ApplicationState::PlanDive);
 
 	disableShortcuts(true);
-	graphics->setPlanState(&displayed_dive, 0);
+	profile->setPlanState(&displayed_dive, 0);
 	plannerWidgets->planDive();
 }
 
@@ -919,7 +814,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
-	plotCurrentDive();
+	profile->plotCurrentDive();
 	mainTab->updateDiveInfo();
 }
 
@@ -927,7 +822,7 @@ void MainWindow::on_actionNextDC_triggered()
 {
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
-	plotCurrentDive();
+	profile->plotCurrentDive();
 	mainTab->updateDiveInfo();
 }
 
@@ -1515,7 +1410,7 @@ void MainWindow::editCurrentDive()
 	copy_dive(current_dive, &displayed_dive); // Work on a copy of the dive
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
-	graphics->setEditState(&displayed_dive, 0);
+	profile->setEditState(&displayed_dive, 0);
 	setApplicationState(ApplicationState::EditDive);
 	mainTab->enableEdition();
 }
@@ -1534,8 +1429,7 @@ void MainWindow::on_actionConfigure_Dive_Computer_triggered()
 
 void MainWindow::setEnabledToolbar(bool arg1)
 {
-	Q_FOREACH (QAction *b, profileToolbarActions)
-		b->setEnabled(arg1);
+	profile->setEnabledToolbar(arg1);
 }
 
 void MainWindow::on_copy_triggered()
@@ -1672,18 +1566,6 @@ void MainWindow::hideProgressBar()
 		delete progressDialog;
 		progressDialog = nullptr;
 	}
-}
-
-void MainWindow::unsetProfHR()
-{
-	ui.profHR->setChecked(false);
-	qPrefTechnicalDetails::set_hrgraph(false);
-}
-
-void MainWindow::unsetProfTissues()
-{
-	ui.profTissues->setChecked(false);
-	qPrefTechnicalDetails::set_percentagegraph(false);
 }
 
 void MainWindow::divesChanged(const QVector<dive *> &dives, DiveField field)
