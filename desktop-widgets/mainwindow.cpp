@@ -1528,11 +1528,6 @@ void MainWindow::editCurrentDive()
 	mainTab->enableEdition();
 }
 
-void MainWindow::turnOffNdlTts()
-{
-	qPrefTechnicalDetails::set_calcndltts(false);
-}
-
 void MainWindow::on_actionExport_triggered()
 {
 	DiveLogExportDialog diveLogExport;
