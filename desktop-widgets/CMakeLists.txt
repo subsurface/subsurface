@@ -35,6 +35,7 @@ set (SUBSURFACE_UI
 	plannerDetails.ui
 	plannerSettings.ui
 	printoptions.ui
+	profilewidget.ui
 	renumber.ui
 	searchbar.ui
 	setpoint.ui
@@ -100,6 +101,8 @@ set(SUBSURFACE_INTERFACE
 	modeldelegates.h
 	notificationwidget.cpp
 	notificationwidget.h
+	profilewidget.cpp
+	profilewidget.h
 	qtwaitingspinner.cpp
 	qtwaitingspinner.h
 	simplewidgets.cpp

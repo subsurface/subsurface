@@ -35,7 +35,7 @@ class QSettings;
 class UpdateManager;
 class UserManual;
 class PlannerWidgets;
-class ProfileWidget2;
+class ProfileWidget;
 class StatsWidget;
 class LocationInformationWidget;
 
@@ -76,12 +76,13 @@ public:
 	void enableDisableCloudActions();
 	void enableDisableOtherDCsActions();
 	void editDiveSite(dive_site *ds);
+	void setEnabledToolbar(bool arg1);
 
 	std::unique_ptr<MainTab> mainTab;
 	std::unique_ptr<PlannerWidgets> plannerWidgets;
 	std::unique_ptr<StatsWidget> statistics;
 	std::unique_ptr<DiveListView> diveList;
-	std::unique_ptr<QWidget> profileContainer;
+	std::unique_ptr<ProfileWidget> profile;
 	std::unique_ptr<MapWidget> mapWidget;
 private
 slots:
@@ -141,8 +142,6 @@ slots:
 	void setDefaultState();
 	void setAutomaticTitle();
 	void cancelCloudStorageOperation();
-	void unsetProfHR();
-	void unsetProfTissues();
 
 protected:
 	void closeEvent(QCloseEvent *);
@@ -159,7 +158,6 @@ slots:
 	void editCurrentDive();
 	void planCanceled();
 	void planCreated();
-	void setEnabledToolbar(bool arg1);
 	// Some shortcuts like "change DC" or "copy/paste dive components"
 	// should only be enabled when the profile's visible.
 	void startDiveSiteEdit();
@@ -170,7 +168,6 @@ private:
 	FilterWidget filterWidget;
 	std::unique_ptr<QSplitter> topSplitter;
 	std::unique_ptr<QSplitter> bottomSplitter;
-	ProfileWidget2 *graphics;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
 	QAction *undoAction;
@@ -205,7 +202,6 @@ private:
 	QDialog *findMovedImagesDialog;
 	struct dive copyPasteDive;
 	struct dive_components what;
-	QList<QAction *> profileToolbarActions;
 	QStringList recentFiles;
 	QAction *actionsRecent[NUM_RECENT_FILES];
 
@@ -234,7 +230,6 @@ private:
 	void setQuadrantWidgets(QSplitter &splitter, const Quadrant &left, const Quadrant &right);
 	void registerApplicationState(ApplicationState state, Quadrants q);
 	void disableShortcuts(bool disablePaste = true);
-	void plotCurrentDive();
 	void enableShortcuts();
 
 	QMenu *connections;
