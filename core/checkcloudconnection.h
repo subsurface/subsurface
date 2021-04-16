@@ -14,6 +14,7 @@ public:
 	void pickServer();
 private:
 	QNetworkReply *reply;
+	bool nextServer();
 private
 slots:
 	void sslErrors(const QList<QSslError> &errorList);
