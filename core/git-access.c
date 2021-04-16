@@ -716,6 +716,8 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		return 0;
 	}
 
+	// we know that we already checked for the cloud server, but to give a decent warning message
+	// here in case none of them are reachable, let's check one more time
 	if (is_subsurface_cloud && !canReachCloudServer()) {
 		// this is not an error, just a warning message, so return 0
 		SSRF_INFO("git storage: cannot connect to remote server");
@@ -723,6 +725,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		git_storage_update_progress(translate("gettextFromC", "Can't reach cloud server, working with local data"));
 		return 0;
 	}
+
 	if (verbose)
 		SSRF_INFO("git storage: fetch remote %s\n", git_remote_url(origin));
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
@@ -1042,6 +1045,14 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 	 * this is used to create more user friendly error message and warnings */
 	is_subsurface_cloud = strstr(remote, prefs.cloud_base_url) != NULL;
 
+	/* if we are planning to access the server, make sure it's available and try to
+	 * pick one of the alternative servers if necessary */
+	if (is_subsurface_cloud && !git_local_only) {
+		// since we know that this is Subsurface cloud storage, we don't have to
+		// worry about the local directory name changing if we end up with a different
+		// cloud_base_url... the algorithm normalizes those URLs
+		(void)canReachCloudServer();
+	}
 	return get_remote_repo(localdir, remote, branch);
 }
 

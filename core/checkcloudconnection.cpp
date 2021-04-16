@@ -35,48 +35,51 @@ bool CheckCloudConnection::checkServer()
 	if (verbose)
 		fprintf(stderr, "Checking cloud connection...\n");
 
-	QTimer timer;
-	timer.setSingleShot(true);
 	QEventLoop loop;
-	QNetworkRequest request;
-	request.setRawHeader("Accept", "text/plain");
-	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
-	request.setRawHeader("Client-Id", getUUID().toUtf8());
-	request.setUrl(QString(prefs.cloud_base_url) + TEAPOT);
 	QNetworkAccessManager *mgr = new QNetworkAccessManager();
-	reply = mgr->get(request);
-	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-	connect(reply, &QNetworkReply::sslErrors, this, &CheckCloudConnection::sslErrors);
-	for (int seconds = 1; seconds <= prefs.cloud_timeout; seconds++) {
-		timer.start(1000); // wait the given number of seconds (default 5)
-		loop.exec();
-		if (timer.isActive()) {
-			// didn't time out, did we get the right response?
-			timer.stop();
-			if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == HTTP_I_AM_A_TEAPOT &&
-			    reply->readAll() == QByteArray(MILK)) {
-				reply->deleteLater();
-				mgr->deleteLater();
-				if (verbose > 1)
-					qWarning() << "Cloud storage: successfully checked connection to cloud server";
-				return true;
+	do {
+		QNetworkRequest request;
+		request.setRawHeader("Accept", "text/plain");
+		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
+		request.setRawHeader("Client-Id", getUUID().toUtf8());
+		request.setUrl(QString(prefs.cloud_base_url) + TEAPOT);
+		reply = mgr->get(request);
+		QTimer timer;
+		timer.setSingleShot(true);
+		connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+		connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+		connect(reply, &QNetworkReply::sslErrors, this, &CheckCloudConnection::sslErrors);
+		for (int seconds = 1; seconds <= prefs.cloud_timeout; seconds++) {
+			timer.start(1000); // wait the given number of seconds (default 5)
+			loop.exec();
+			if (timer.isActive()) {
+				// didn't time out, did we get the right response?
+				timer.stop();
+				if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == HTTP_I_AM_A_TEAPOT &&
+						reply->readAll() == QByteArray(MILK)) {
+					reply->deleteLater();
+					mgr->deleteLater();
+					if (verbose)
+						qWarning() << "Cloud storage: successfully checked connection to cloud server";
+					return true;
+				}
+			} else if (seconds < prefs.cloud_timeout) {
+				QString text = tr("Waiting for cloud connection (%n second(s) passed)", "", seconds);
+				git_storage_update_progress(qPrintable(text));
+			} else {
+				disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+				reply->abort();
 			}
-		} else if (seconds < prefs.cloud_timeout) {
-			QString text = tr("Waiting for cloud connection (%n second(s) passed)", "", seconds);
-			git_storage_update_progress(qPrintable(text));
-		} else {
-			disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-			reply->abort();
 		}
-	}
+		if (verbose)
+			qDebug() << "connection test to cloud server" << prefs.cloud_base_url << "failed" <<
+				    reply->error() << reply->errorString() <<
+				    reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() <<
+				    reply->readAll();
+	} while (nextServer());
+	// if none of the servers was reachable, update the user and switch to git_local_only
 	git_storage_update_progress(qPrintable(tr("Cloud connection failed")));
 	git_local_only = true;
-	if (verbose)
-		qDebug() << "connection test to cloud server failed" <<
-			    reply->error() << reply->errorString() <<
-			    reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() <<
-			    reply->readAll();
 	reply->deleteLater();
 	mgr->deleteLater();
 	if (verbose)
@@ -89,6 +92,38 @@ void CheckCloudConnection::sslErrors(const QList<QSslError> &errorList)
 	qDebug() << "Received error response trying to set up https connection with cloud storage backend:";
 	for (QSslError err: errorList)
 		qDebug() << err.errorString();
+}
+
+bool CheckCloudConnection::nextServer()
+{
+	struct serverTried {
+		const char *server;
+		bool tried;
+	};
+	static struct serverTried cloudServers[] = {
+		{ CLOUD_HOST_EU, false },
+		{ CLOUD_HOST_US, false }
+	};
+	const char *server = nullptr;
+	for (int i = 0; i < CLOUD_NUM_HOSTS; i++) {
+		if (strstr(prefs.cloud_base_url, cloudServers[i].server))
+			cloudServers[i].tried = true;
+		else if (cloudServers[i].tried == false)
+			server = cloudServers[i].server;
+	}
+	if (server) {
+		int s = strlen(server);
+		char *baseurl = (char *)malloc(10 + s);
+		strcpy(baseurl, "https://");
+		strncat(baseurl, server, s);
+		strcat(baseurl, "/");
+		qDebug() << "failed to connect to" << prefs.cloud_base_url << "next server to try: " << baseurl;
+		prefs.cloud_base_url = baseurl;
+		git_storage_update_progress(qPrintable(tr("Trying different cloud server...")));
+		return true;
+	}
+	qDebug() << "failed to connect to any of the Subsurface cloud servers, giving up";
+	return false;
 }
 
 void CheckCloudConnection::pickServer()
