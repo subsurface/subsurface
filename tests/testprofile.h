@@ -8,6 +8,7 @@
 class TestProfile : public QObject {
 	Q_OBJECT
 private slots:
+	void init();
 	void testProfileExport();
 	void testProfileExportVPMB();
 };
