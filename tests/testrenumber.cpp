@@ -5,10 +5,12 @@
 #include "core/divesite.h"
 #include "core/trip.h"
 #include "core/file.h"
+#include "core/pref.h"
 #include <QTextStream>
 
 void TestRenumber::setup()
 {
+	prefs.cloud_base_url = strdup(default_prefs.cloud_base_url);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table), 0);
 	process_loaded_dives();
 }

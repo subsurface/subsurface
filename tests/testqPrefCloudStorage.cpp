@@ -76,6 +76,7 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	auto tst = qPrefCloudStorage::instance();
 
 	tst->set_cloud_base_url("t3 base");
+	tst->store_cloud_base_url("t3 base"); // the base URL is no longer automatically saved to disk
 	tst->set_cloud_storage_email("t3 email");
 	tst->set_cloud_storage_email_encoded("t3 email2");
 	tst->set_save_password_local(true);
@@ -114,6 +115,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 	auto tst = qPrefCloudStorage::instance();
 
 	prefs.cloud_base_url = copy_qstring("t4 base");
+	tst->store_cloud_base_url("t4 base"); // the base URL is no longer automatically saved to disk
 	prefs.cloud_storage_email = copy_qstring("t4 email");
 	prefs.cloud_storage_email_encoded = copy_qstring("t4 email2");
 	prefs.save_password_local = true;
@@ -170,8 +172,10 @@ void TestQPrefCloudStorage::test_oldPreferences()
 	auto cloud = qPrefCloudStorage::instance();
 
 	cloud->set_cloud_base_url("test_one");
+	cloud->store_cloud_base_url("test_one");
 	TEST(cloud->cloud_base_url(), QStringLiteral("test_one"));
 	cloud->set_cloud_base_url("test_two");
+	cloud->store_cloud_base_url("test_two");
 	TEST(cloud->cloud_base_url(), QStringLiteral("test_two"));
 
 	cloud->set_cloud_storage_email("tomaz@subsurface.com");

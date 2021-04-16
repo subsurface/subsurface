@@ -5,12 +5,14 @@
 #include "core/divesite.h"
 #include "core/file.h"
 #include "core/trip.h"
+#include "core/pref.h"
 #include <QTextStream>
 
 void TestMerge::initTestCase()
 {
 	/* we need to manually tell that the resource exists, because we are using it as library. */
 	Q_INIT_RESOURCE(subsurface);
+	prefs.cloud_base_url = strdup(default_prefs.cloud_base_url);
 }
 
 void TestMerge::cleanup()

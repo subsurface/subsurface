@@ -7,6 +7,7 @@
 #include "core/picture.h"
 #include "core/trip.h"
 #include "core/file.h"
+#include "core/pref.h"
 #include <QString>
 #include <core/qthelper.h>
 
@@ -14,6 +15,7 @@ void TestPicture::initTestCase()
 {
 	/* we need to manually tell that the resource exists, because we are using it as library. */
 	Q_INIT_RESOURCE(subsurface);
+	prefs.cloud_base_url = strdup(default_prefs.cloud_base_url);
 }
 
 #define PIC1_NAME "/dives/images/wreck.jpg"
