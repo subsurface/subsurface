@@ -132,6 +132,7 @@ void init_qt_late()
 			report_info("loading %s translations", qPrintable(uiLang));
 		application->installTranslator(&ssrfTranslator);
 	} else {
-		report_info("can't find Subsurface localization for locale %s", qPrintable(uiLang));
+		if (verbose)
+			report_info("can't find Subsurface localization for locale %s", qPrintable(uiLang));
 	}
 }

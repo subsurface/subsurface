@@ -427,7 +427,11 @@ void initUiLanguage()
 	if (!qPrefLanguage::use_system_language()) {
 		loc = QLocale(qPrefLanguage::lang_locale());
 	} else {
-		loc = QLocale(QLocale().uiLanguages().first());
+		QStringList ll = QLocale().uiLanguages();
+		if (! ll.isEmpty())
+			loc = QLocale(QLocale().uiLanguages().first());
+		else
+			loc = QLocale("en_US");
 	}
 
 	// Find language code with one '-', or use the first entry.
