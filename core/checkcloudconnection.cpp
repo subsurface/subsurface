@@ -11,6 +11,7 @@
 #include "git-access.h"
 #include "errorhelper.h"
 #include "core/subsurface-string.h"
+#include "core/membuffer.h"
 #include "core/settings/qPrefCloudStorage.h"
 
 #include "checkcloudconnection.h"
@@ -197,9 +198,20 @@ void CheckCloudConnection::gotContinent(QNetworkReply *reply)
 }
 
 // helper to be used from C code
-extern "C" bool canReachCloudServer()
+extern "C" bool canReachCloudServer(const char **remote)
 {
 	if (verbose)
-		qWarning() << "Cloud storage: checking connection to cloud server";
-	return CheckCloudConnection().checkServer();
+		qWarning() << "Cloud storage: checking connection to cloud server" << *remote;
+	bool connection = CheckCloudConnection().checkServer();
+	if (strstr(*remote, prefs.cloud_base_url) == nullptr) {
+		// we switched the cloud URL - likely because we couldn't reach the server passed in
+		// the strstr with the offset is designed so we match the right component in the name;
+		// the cloud_base_url ends with a '/', so we need the text starting at "git/..."
+		char *newremote = format_string("%s%s", prefs.cloud_base_url, strstr(*remote, "org/git/") + 4);
+		if (verbose)
+			qDebug() << "updating remote to: " << newremote;
+		free((void*)*remote);
+		*remote = newremote;
+	}
+	return connection;
 }
