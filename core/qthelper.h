@@ -138,7 +138,7 @@ extern "C" {
 
 char *printGPSCoordsC(const location_t *loc);
 bool getProxyString(char **buffer);
-bool canReachCloudServer();
+bool canReachCloudServer(const char **remote);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 char *get_file_name(const char *fileName);

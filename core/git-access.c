@@ -718,7 +718,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 
 	// we know that we already checked for the cloud server, but to give a decent warning message
 	// here in case none of them are reachable, let's check one more time
-	if (is_subsurface_cloud && !canReachCloudServer()) {
+	if (is_subsurface_cloud && !canReachCloudServer(&remote)) {
 		// this is not an error, just a warning message, so return 0
 		SSRF_INFO("git storage: cannot connect to remote server");
 		report_error("Cannot connect to cloud server, working with local copy");
@@ -889,7 +889,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	opts.fetch_opts.callbacks.certificate_check = certificate_check_cb;
 
 	opts.checkout_branch = branch;
-	if (is_subsurface_cloud && !canReachCloudServer()) {
+	if (is_subsurface_cloud && !canReachCloudServer(&remote)) {
 		SSRF_INFO("git storage: cannot reach remote server");
 		return 0;
 	}
@@ -985,10 +985,10 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
  *    https://host/repo[branch]
  *    file://repo[branch]
  */
-static struct git_repository *is_remote_git_repository(char *remote, const char *branch)
+static struct git_repository *is_remote_git_repository(char **remote, const char *branch)
 {
 	char c, *localdir;
-	char *p = remote;
+	char *p = *remote;
 
 	while ((c = *p++) >= 'a' && c <= 'z')
 		/* nothing */;
@@ -1024,7 +1024,7 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 	 * next we need to make sure that any encoded username
 	 * has been extracted from the URL
 	 */
-	char *at = strchr(remote, '@');
+	char *at = strchr(*remote, '@');
 	if (at) {
 		/* was this the @ that denotes an account? that means it was before the
 		 * first '/' after the protocol:// - so let's find a '/' after that and compare */
@@ -1037,13 +1037,13 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 			memmove(p, at + 1, strlen(at + 1) + 1);
 		}
 	}
-	localdir = get_local_dir(remote, branch);
+	localdir = get_local_dir(*remote, branch);
 	if (!localdir)
 		return NULL;
 
 	/* remember if the current git storage we are working on is our cloud storage
 	 * this is used to create more user friendly error message and warnings */
-	is_subsurface_cloud = strstr(remote, prefs.cloud_base_url) != NULL;
+	is_subsurface_cloud = strstr(*remote, prefs.cloud_base_url) != NULL;
 
 	/* if we are planning to access the server, make sure it's available and try to
 	 * pick one of the alternative servers if necessary */
@@ -1051,9 +1051,9 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 		// since we know that this is Subsurface cloud storage, we don't have to
 		// worry about the local directory name changing if we end up with a different
 		// cloud_base_url... the algorithm normalizes those URLs
-		(void)canReachCloudServer();
+		(void)canReachCloudServer((const char **)remote);
 	}
-	return get_remote_repo(localdir, remote, branch);
+	return get_remote_repo(localdir, *remote, branch);
 }
 
 /*
@@ -1127,7 +1127,7 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 		*remote = loc;
 		return dummy_git_repository;
 	}
-	repo = is_remote_git_repository(loc, branch);
+	repo = is_remote_git_repository(&loc, branch);
 	if (repo) {
 		if (remote)
 			*remote = loc;
