@@ -58,7 +58,6 @@ struct keyword_action {
 	const char *keyword;
 	void (*fn)(char *, struct membuffer *, struct git_parser_state *);
 };
-#define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
 static git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry);
 

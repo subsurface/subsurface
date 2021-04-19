@@ -15,11 +15,12 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
-#define CLOUD_NUM_HOSTS 2
 #define CLOUD_HOST_US "ssrf-cloud-us.subsurface-divelog.org"
 #define CLOUD_HOST_EU "ssrf-cloud-eu.subsurface-divelog.org"
 #define CLOUD_HOST_PATTERN "ssrf-cloud-..\\.subsurface-divelog\\.org"
 #define CLOUD_HOST_GENERIC "cloud.subsurface-divelog.org"
+
+#define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
 enum remote_transport { RT_OTHER, RT_HTTPS, RT_SSH };
 
