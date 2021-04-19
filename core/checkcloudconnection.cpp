@@ -106,7 +106,7 @@ bool CheckCloudConnection::nextServer()
 		{ CLOUD_HOST_US, false }
 	};
 	const char *server = nullptr;
-	for (int i = 0; i < CLOUD_NUM_HOSTS; i++) {
+	for (unsigned int i = 0; i < ARRAY_SIZE(cloudServers); i++) {
 		if (strstr(prefs.cloud_base_url, cloudServers[i].server))
 			cloudServers[i].tried = true;
 		else if (cloudServers[i].tried == false)
