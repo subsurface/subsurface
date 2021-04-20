@@ -1748,9 +1748,9 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	state.sites = sites;
 	state.devices = devices;
 	state.filter_presets = filter_presets;
-	doc = xmlReadMemory(res, strlen(res), url, NULL, 0);
+	doc = xmlReadMemory(res, strlen(res), url, NULL, XML_PARSE_HUGE);
 	if (!doc)
-		doc = xmlReadMemory(res, strlen(res), url, "latin1", 0);
+		doc = xmlReadMemory(res, strlen(res), url, "latin1", XML_PARSE_HUGE);
 
 	if (res != buffer)
 		free((char *)res);
