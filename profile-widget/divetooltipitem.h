@@ -20,7 +20,6 @@ class QGraphicsPixmapItem;
  */
 class ToolTipItem : public QObject, public RoundRectItem {
 	Q_OBJECT
-	void updateTitlePosition();
 	Q_PROPERTY(QRectF rect READ rect WRITE setRect)
 
 public:
@@ -32,12 +31,7 @@ public:
 	explicit ToolTipItem(QGraphicsItem *parent = 0);
 	~ToolTipItem();
 
-	void collapse();
-	void expand();
-	void clear();
 	void refresh(const dive *d, const QPointF &pos, bool inPlanner);
-	bool isExpanded() const;
-	void persistPos();
 	void readPos();
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -63,6 +57,12 @@ private:
 	QList<QGraphicsItem*> oldSelection;
 
 	void addToolTip(const QString &toolTip, const QPixmap &pixmap);
+	void collapse();
+	void expand();
+	void clear();
+	bool isExpanded() const;
+	void persistPos() const;
+	void updateTitlePosition();
 };
 
 #endif // DIVETOOLTIPITEM_H
