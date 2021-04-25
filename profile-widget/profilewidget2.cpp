@@ -217,9 +217,6 @@ void ProfileWidget2::addActionShortcut(const Qt::Key shortcut, void (ProfileWidg
 }
 #endif // SUBSURFACE_MOBILE
 
-#define SUBSURFACE_OBJ_DATA 1
-#define SUBSURFACE_OBJ_DC_TEXT 0x42
-
 void ProfileWidget2::addItemsToScene()
 {
 	scene()->addItem(background);
@@ -228,11 +225,6 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(temperatureAxis);
 	scene()->addItem(timeAxis);
 	scene()->addItem(cylinderPressureAxis);
-	// I cannot seem to figure out if an object that I find with itemAt() on the scene
-	// is the object I am looking for - my guess is there's a simple way in Qt to do that
-	// but nothing I tried worked.
-	// so instead this adds a special magic key/value pair to the object to mark it
-	diveComputerText->setData(SUBSURFACE_OBJ_DATA, SUBSURFACE_OBJ_DC_TEXT);
 	scene()->addItem(diveComputerText);
 	scene()->addItem(tankItem);
 	scene()->addItem(decoModelParameters);
@@ -1365,7 +1357,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (sceneItem) {
 		QGraphicsItem *parentItem = sceneItem;
 		while (parentItem) {
-			if (parentItem->data(SUBSURFACE_OBJ_DATA) == SUBSURFACE_OBJ_DC_TEXT) {
+			if (parentItem == diveComputerText) {
 				isDCName = true;
 				break;
 			}
