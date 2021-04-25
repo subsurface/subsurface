@@ -1342,6 +1342,16 @@ static QString printCylinderDescription(int i, const cylinder_t *cylinder)
 	return label;
 }
 
+static bool isDiveTextItem(const QGraphicsItem *item, const DiveTextItem *textItem)
+{
+	while (item) {
+		if (item == textItem)
+			return true;
+		item = item->parentItem();
+	}
+	return false;
+}
+
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (currentState == ADD || currentState == PLAN) {
@@ -1349,36 +1359,26 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		return;
 	}
 	QMenu m;
-	bool isDCName = false;
 	if (!d)
 		return;
 	// figure out if we are ontop of the dive computer name in the profile
 	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
-	if (sceneItem) {
-		QGraphicsItem *parentItem = sceneItem;
-		while (parentItem) {
-			if (parentItem == diveComputerText) {
-				isDCName = true;
-				break;
-			}
-			parentItem = parentItem->parentItem();
-		}
-		if (isDCName) {
-			if (dc == 0 && number_of_computers(d) == 1)
-				// nothing to do, can't delete or reorder
-				return;
-			// create menu to show when right clicking on dive computer name
-			if (dc > 0)
-				m.addAction(tr("Make first dive computer"), this, &ProfileWidget2::makeFirstDC);
-			if (number_of_computers(d) > 1) {
-				m.addAction(tr("Delete this dive computer"), this, &ProfileWidget2::deleteCurrentDC);
-				m.addAction(tr("Split this dive computer into own dive"), this, &ProfileWidget2::splitCurrentDC);
-			}
-			m.exec(event->globalPos());
-			// don't show the regular profile context menu
+	if (isDiveTextItem(sceneItem, diveComputerText)) {
+		if (dc == 0 && number_of_computers(d) == 1)
+			// nothing to do, can't delete or reorder
 			return;
+		// create menu to show when right clicking on dive computer name
+		if (dc > 0)
+			m.addAction(tr("Make first dive computer"), this, &ProfileWidget2::makeFirstDC);
+		if (number_of_computers(d) > 1) {
+			m.addAction(tr("Delete this dive computer"), this, &ProfileWidget2::deleteCurrentDC);
+			m.addAction(tr("Split this dive computer into own dive"), this, &ProfileWidget2::splitCurrentDC);
 		}
+		m.exec(event->globalPos());
+		// don't show the regular profile context menu
+		return;
 	}
+
 	// create the profile context menu
 	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
 	qreal sec_val = timeAxis->valueAt(scenePos);
