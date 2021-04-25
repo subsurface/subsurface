@@ -128,7 +128,6 @@ void Printer::render(int pages)
 	// keep original preferences
 	ProfileWidget2 *profile = MainWindow::instance()->graphics;
 	int profileFrameStyle = profile->frameStyle();
-	int animationOriginal = qPrefDisplay::animation_speed();
 	double fontScale = profile->getFontPrintScale();
 	double printFontScale = 1.0;
 
@@ -136,7 +135,6 @@ void Printer::render(int pages)
 	profile->setFrameStyle(QFrame::NoFrame);
 	profile->setPrintMode(true, !printOptions.color_selected);
 	profile->setToolTipVisibile(false);
-	qPrefDisplay::set_animation_speed(0);
 
 	// render the Qwebview
 	QPainter painter;
@@ -190,7 +188,6 @@ void Printer::render(int pages)
 	profile->setFontPrintScale(fontScale);
 	profile->setToolTipVisibile(true);
 	profile->resize(originalSize);
-	qPrefDisplay::set_animation_speed(animationOriginal);
 
 	//replot the dive after returning the settings
 	profile->plotDive(current_dive, dc_number, true);

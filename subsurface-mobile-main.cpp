@@ -83,7 +83,6 @@ int main(int argc, char **argv)
 		set_filename(NULL);
 
 	// some hard coded settings
-	qPrefDisplay::set_animation_speed(0); // we render the profile to pixmap, no animations
 	qPrefCloudStorage::set_save_password_local(true);
 
 	// always show the divecomputer reported ceiling in red
