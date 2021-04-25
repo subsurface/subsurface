@@ -4,7 +4,6 @@
 #include "core/event.h"
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
-#include "core/picture.h"
 #include "core/profile.h"
 #include "core/settings/qPrefDisplay.h"
 #include "core/settings/qPrefTechnicalDetails.h"
@@ -20,20 +19,14 @@
 #include "core/pref.h"
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/models.h"
-#include "qt-models/divepicturemodel.h" // TODO: remove once divepictures have been undo-ified
-#include "core/divelist.h"
 #include "core/errorhelper.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/simplewidgets.h"
-#include "desktop-widgets/divepicturewidget.h"
-#include "desktop-widgets/mainwindow.h"
 #include "commands/command.h"
-#include "core/qthelper.h"
 #include "core/gettextfromc.h"
 #include "core/imagedownloader.h"
 #endif
 
-#include <libdivecomputer/parser.h>
 #include <QScrollBar>
 #include <QtCore/qmath.h>
 #include <QMessageBox>
@@ -41,12 +34,12 @@
 #include <QDebug>
 #include <QWheelEvent>
 #include <QMenu>
+#include <QMimeData>
 #include <QElapsedTimer>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
 #endif
-#include <QtWidgets>
 
 #define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 
