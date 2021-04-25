@@ -555,7 +555,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 		return;
 
 	// special handling when switching from empty state
-	animSpeed = instant || currentState == EMPTY ? 0 : qPrefDisplay::animation_speed();
+	animSpeed = instant || currentState == EMPTY || printMode ? 0 : qPrefDisplay::animation_speed();
 
 	// restore default zoom level
 	resetZoom();
