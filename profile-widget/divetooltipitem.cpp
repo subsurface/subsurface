@@ -189,7 +189,7 @@ void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void ToolTipItem::persistPos()
+void ToolTipItem::persistPos() const
 {
 	qPrefDisplay::set_tooltip_position(pos());
 }
