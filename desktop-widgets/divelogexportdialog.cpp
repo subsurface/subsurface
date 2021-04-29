@@ -161,12 +161,12 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		} else if (ui->exportWorldMap->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export world map"), lastDir,
 								tr("HTML files") + " (*.html)");
-			if (!filename.isNull() && !filename.isEmpty())
+			if (!filename.isEmpty())
 				export_worldmap_HTML(qPrintable(filename), ui->exportSelected->isChecked());
 		} else if (ui->exportSubsurfaceXML->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface XML"), lastDir,
 								tr("Subsurface files") + " (*.ssrf *.xml)");
-			if (!filename.isNull() && !filename.isEmpty()) {
+			if (!filename.isEmpty()) {
 				if (!filename.contains('.'))
 					filename.append(".ssrf");
 				QByteArray bt = QFile::encodeName(filename);
@@ -175,7 +175,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		} else if (ui->exportSubsurfaceSitesXML->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface dive sites XML"), lastDir,
 								tr("Subsurface files") + " (*.xml)");
-			if (!filename.isNull() && !filename.isEmpty()) {
+			if (!filename.isEmpty()) {
 				if (!filename.contains('.'))
 					filename.append(".xml");
 				QByteArray bt = QFile::encodeName(filename);
@@ -184,31 +184,31 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			}
 		} else if (ui->exportImageDepths->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
-			if (!filename.isNull() && !filename.isEmpty())
+			if (!filename.isEmpty())
 				export_depths(qPrintable(filename), ui->exportSelected->isChecked());
 		} else if (ui->exportTeX->isChecked() || ui->exportLaTeX->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export to TeX file"), lastDir, tr("TeX files") + " (*.tex)");
-			if (!filename.isNull() && !filename.isEmpty())
+			if (!filename.isEmpty())
 				export_TeX(qPrintable(filename), ui->exportSelected->isChecked(), ui->exportTeX->isChecked());
 		} else if (ui->exportProfile->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save profile image"), lastDir);
-			if (!filename.isNull() && !filename.isEmpty())
+			if (!filename.isEmpty())
 				exportProfile(qPrintable(filename), ui->exportSelected->isChecked());
 		} else if (ui->exportProfileData->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save profile data"), lastDir);
-			if (!filename.isNull() && !filename.isEmpty())
+			if (!filename.isEmpty())
 				save_profiledata(qPrintable(filename), ui->exportSelected->isChecked());
 		}
 		break;
 	case 1:
 		filename = QFileDialog::getSaveFileName(this, tr("Export HTML files as"), lastDir,
 							tr("HTML files") + " (*.html)");
-		if (!filename.isNull() && !filename.isEmpty())
+		if (!filename.isEmpty())
 			exportHtmlInit(filename);
 		break;
 	}
 
-	if (!filename.isNull() && !filename.isEmpty()) {
+	if (!filename.isEmpty()) {
 		// remember the last export path
 		QFileInfo fileInfo(filename);
 		qPrefDisplay::set_lastDir(fileInfo.dir().path());
