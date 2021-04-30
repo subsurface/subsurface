@@ -1,3 +1,4 @@
+export: show progress dialog when exporting to TeX
 printing: use sensible font size even for strange window size
 
 ---

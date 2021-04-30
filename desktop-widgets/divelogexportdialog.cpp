@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QFileDialog>
+#include <QProgressDialog>
 #include <QShortcut>
 #include <QSettings>
 #include <string.h> // Allows string comparisons and substitutions in TeX export
@@ -14,6 +15,7 @@
 #include "core/divesite.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
+#include "core/gettextfromc.h"
 #include "core/tag.h"
 #include "backend-shared/exportfuncs.h"
 #include "desktop-widgets/mainwindow.h"
@@ -131,6 +133,32 @@ void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton*)
 	showExplanation();
 }
 
+// Use a QProgressDialog to show export-progress
+// Default implementation of the export callback: do nothing / never cancel
+struct ProgressDialogCallback : public ExportCallback {
+	ProgressDialogCallback();
+	QProgressDialog dialog;
+	virtual void setProgress(int progress) override;
+	virtual bool canceled() const override;
+};
+
+ProgressDialogCallback::ProgressDialogCallback() :
+	dialog(gettextFromC::tr("Exporting..."), gettextFromC::tr("Cancel"), 0, 1000, MainWindow::instance())
+{
+	dialog.setWindowModality(Qt::WindowModal);
+	dialog.setMinimumDuration(0); // Show dialog immediately
+}
+
+void ProgressDialogCallback::setProgress(int progress)
+{
+	dialog.setValue(progress);
+}
+
+bool ProgressDialogCallback::canceled() const
+{
+	return dialog.wasCanceled();
+}
+
 void DiveLogExportDialog::on_buttonBox_accepted()
 {
 	QString filename;
@@ -188,8 +216,10 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 				export_depths(qPrintable(filename), ui->exportSelected->isChecked());
 		} else if (ui->exportTeX->isChecked() || ui->exportLaTeX->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export to TeX file"), lastDir, tr("TeX files") + " (*.tex)");
-			if (!filename.isEmpty())
-				export_TeX(qPrintable(filename), ui->exportSelected->isChecked(), ui->exportTeX->isChecked());
+			if (!filename.isEmpty()) {
+				ProgressDialogCallback cb;
+				export_TeX(qPrintable(filename), ui->exportSelected->isChecked(), ui->exportTeX->isChecked(), cb);
+			}
 		} else if (ui->exportProfile->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save profile image"), lastDir);
 			if (!filename.isEmpty())
