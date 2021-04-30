@@ -15,7 +15,18 @@
 #include "core/picture.h"
 #include "core/pref.h"
 #include "core/sample.h"
+#include "core/selection.h"
 #include "exportfuncs.h"
+
+// Default implementation of the export callback: do nothing / never cancel
+void ExportCallback::setProgress(int)
+{
+}
+
+bool ExportCallback::canceled() const
+{
+	return false;
+}
 
 #if !defined(SUBSURFACE_MOBILE)
 void exportProfile(QString filename, bool selected_only)
@@ -38,7 +49,7 @@ void exportProfile(QString filename, bool selected_only)
 	}
 }
 
-void export_TeX(const char *filename, bool selected_only, bool plain)
+void export_TeX(const char *filename, bool selected_only, bool plain, ExportCallback &cb)
 {
 	FILE *f;
 	QDir texdir = QFileInfo(filename).dir();
@@ -91,10 +102,14 @@ void export_TeX(const char *filename, bool selected_only, bool plain)
 
 	put_format(&buf, "\n%%%%%%%%%% Begin Dive Data: %%%%%%%%%%\n");
 
+	int todo = selected_only ? amount_selected : dive_table.nr;
+	int done = 0;
 	for_each_dive (i, dive) {
+		if (cb.canceled())
+			return;
 		if (selected_only && !dive->selected)
 			continue;
-
+		cb.setProgress(done++ * 1000 / todo);
 		exportProfile(dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
@@ -219,7 +234,6 @@ void export_TeX(const char *filename, bool selected_only, bool plain)
 		dive->maxdepth.mm ? put_format(&buf, "\\def\\%sdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%sdepth{}\n", ssrf);
 
 		put_format(&buf, "\\%spage\n", ssrf);
-
 	}
 
 	if (plain)
@@ -235,7 +249,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain)
 		fclose(f);
 	}
 	free_buffer(&buf);
-
+	cb.setProgress(1000);
 }
 
 void export_depths(const char *filename, bool selected_only)

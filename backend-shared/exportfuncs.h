@@ -7,8 +7,14 @@
 
 struct dive_site;
 
+// A synchrounous callback interface to signal progress / check for user abort
+struct ExportCallback {
+	virtual void setProgress(int progress);	// 0-1000
+	virtual bool canceled() const;
+};
+
 void exportProfile(QString filename, bool selected_only);
-void export_TeX(const char *filename, bool selected_only, bool plain);
+void export_TeX(const char *filename, bool selected_only, bool plain, ExportCallback &cb);
 void export_depths(const char *filename, bool selected_only);
 std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly);
 QFuture<int> exportUsingStyleSheet(QString filename, bool doExport, int units, QString stylesheet, bool anonymize);
