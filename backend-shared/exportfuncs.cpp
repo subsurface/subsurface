@@ -29,7 +29,7 @@ bool ExportCallback::canceled() const
 }
 
 #if !defined(SUBSURFACE_MOBILE)
-void exportProfile(QString filename, bool selected_only)
+void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 {
 	struct dive *dive;
 	int i;
@@ -38,9 +38,14 @@ void exportProfile(QString filename, bool selected_only)
 		filename = filename.append(".png");
 	QFileInfo fi(filename);
 
+	int todo = selected_only ? amount_selected : dive_table.nr;
+	int done = 0;
 	for_each_dive (i, dive) {
+		if (cb.canceled())
+			return;
 		if (selected_only && !dive->selected)
 			continue;
+		cb.setProgress(done++ * 1000 / todo);
 		if (count)
 			exportProfile(dive, fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix());
 		else
