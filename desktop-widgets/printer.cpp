@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printer.h"
-#include "mainwindow.h"
 #include "templatelayout.h"
 #include "core/statistics.h"
 #include "core/qthelper.h"
@@ -36,31 +35,10 @@ void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &view
 	int y = profilePlaceholder.y() - viewPort.y();
 	// use the placeHolder and the viewPort position to calculate the relative position of the dive profile.
 	QRect pos(x, y, profilePlaceholder.width(), profilePlaceholder.height());
+
 	profile->setProfileState(dive, 0);
 	profile->plotDive(dive, 0, true);
-
-	if (!printOptions.color_selected) {
-		QImage image(pos.width(), pos.height(), QImage::Format_ARGB32);
-		QPainter imgPainter(&image);
-		imgPainter.setRenderHint(QPainter::Antialiasing);
-		imgPainter.setRenderHint(QPainter::SmoothPixmapTransform);
-		profile->render(&imgPainter, QRect(0, 0, pos.width(), pos.height()));
-		imgPainter.end();
-
-		// convert QImage to grayscale before rendering
-		for (int i = 0; i < image.height(); i++) {
-			QRgb *pixel = reinterpret_cast<QRgb *>(image.scanLine(i));
-			QRgb *end = pixel + image.width();
-			for (; pixel != end; pixel++) {
-				int gray_val = qGray(*pixel);
-				*pixel = QColor(gray_val, gray_val, gray_val).rgb();
-			}
-		}
-
-		painter->drawImage(pos, image);
-	} else {
-		profile->render(painter, pos);
-	}
+	profile->draw(painter, pos);
 }
 
 void Printer::flowRender()
@@ -124,9 +102,7 @@ void Printer::flowRender()
 
 void Printer::render(int pages)
 {
-	// TODO: Annoyingly, this still needs a parent window? Otherwise,
-	// the profile is shown as its own window, when calling show() below.
-	auto profile = std::make_unique<ProfileWidget2>(nullptr, MainWindow::instance());
+	auto profile = std::make_unique<ProfileWidget2>(nullptr, nullptr);
 	double printFontScale = 1.0;
 
 	// apply printing settings to profile
@@ -149,8 +125,6 @@ void Printer::render(int pages)
 		// This is arbitrary, but it seems to work reasonably.
 		QSize size = collection[0].geometry().size();
 		printFontScale = size.height() / 600.0;
-		profile->show();	// Ominous: if the scene isn't shown, parts of the plot are missing. Needs investigation.
-		profile->resize(size);
 	}
 	profile->setFontPrintScale(printFontScale);
 

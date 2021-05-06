@@ -34,32 +34,27 @@ bool ExportCallback::canceled() const
 
 #if !defined(SUBSURFACE_MOBILE)
 
-#include "desktop-widgets/mainwindow.h" // Currently needed for profile printing. TODO: remove.
+// Let's say that 800x600 is a "reasonable" profile size. Use four times that for printing.
+static constexpr int profileScale = 4;
+static constexpr int profileWidth = 800 * profileScale;
+static constexpr int profileHeight = 600 * profileScale;
 
 static void exportProfile(ProfileWidget2 *profile, const struct dive *dive, const QString &filename)
 {
 	profile->setProfileState(dive, 0);
 	profile->plotDive(dive, 0, false, true);
-	QImage image = QImage(profile->size(), QImage::Format_RGB32);
+	QImage image = QImage(QSize(profileWidth, profileHeight), QImage::Format_RGB32);
 	QPainter paint;
 	paint.begin(&image);
-	profile->render(&paint);
+	profile->draw(&paint, QRect(0, 0, profileWidth, profileHeight));
 	image.save(filename);
 }
 
 static std::unique_ptr<ProfileWidget2> getPrintProfile()
 {
-	// Let's say that 800x600 is a "reasonable" profile size. Use four times that for printing.
-	const int scale = 4;
-	QSize size(800 * scale, 600 * scale);
-
-	// TODO: Annoyingly, this still needs a parent window? Otherwise,
-	// the profile is shown as its own window, when calling show() below.
-	auto profile = std::make_unique<ProfileWidget2>(nullptr, MainWindow::instance());
-	profile->resize(size);
-	profile->show();	// Ominous: if the scene isn't shown, parts of the plot are missing. Needs investigation.
+	auto profile = std::make_unique<ProfileWidget2>(nullptr, nullptr);
 	profile->setPrintMode(true);
-	profile->setFontPrintScale((double)scale);
+	profile->setFontPrintScale((double)profileScale);
 	return profile;
 }
 
