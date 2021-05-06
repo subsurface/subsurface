@@ -588,9 +588,9 @@ void PlannerWidgets::printDecoPlan()
 	free(disclaimer);
 
 	QPrinter printer;
-	QPrintDialog *dialog = new QPrintDialog(&printer, MainWindow::instance());
-	dialog->setWindowTitle(tr("Print runtime table"));
-	if (dialog->exec() != QDialog::Accepted)
+	QPrintDialog dialog(&printer, MainWindow::instance());
+	dialog.setWindowTitle(tr("Print runtime table"));
+	if (dialog.exec() != QDialog::Accepted)
 		return;
 
 	/* render the profile as a pixmap that is inserted as base64 data into a HTML <img> tag
