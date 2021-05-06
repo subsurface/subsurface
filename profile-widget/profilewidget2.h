@@ -79,6 +79,8 @@ public:
 	bool isPlanner() const;
 	double getFontPrintScale() const;
 	void setFontPrintScale(double scale);
+	void draw(QPainter *painter, const QRect &pos);
+	QImage toImage(QSize size);
 #ifndef SUBSURFACE_MOBILE
 	bool eventFilter(QObject *, QEvent *) override;
 #endif

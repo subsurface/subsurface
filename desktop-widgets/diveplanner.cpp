@@ -607,15 +607,11 @@ void PlannerWidgets::printDecoPlan()
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
-	// TODO: Annoyingly, this still needs a parent window? Otherwise,
-	// the profile is shown as its own window, when calling show() below.
-	auto profile = std::make_unique<ProfileWidget2>(DivePlannerPointsModel::instance(), MainWindow::instance());
-	profile->show();	// Ominous: if the scene isn't shown, parts of the plot are missing. Needs investigation.
-	profile->resize(renderSize.toSize());
+	auto profile = std::make_unique<ProfileWidget2>(DivePlannerPointsModel::instance(), nullptr);
 	profile->setPlanState(&displayed_dive, 0);
 	profile->plotDive(&displayed_dive, 0, true, true);
 	profile->setPrintMode(true);
-	profile->render(&painter);
+	profile->draw(&painter, QRect(0, 0, pixmap.width(), pixmap.height()));
 
 	QByteArray byteArray;
 	QBuffer buffer(&byteArray);
