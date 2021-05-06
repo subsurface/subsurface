@@ -41,7 +41,7 @@ cp /ssllibs/libssl.so appdir/usr/lib/libssl.so.1.1
 cp /ssllibs/libcrypto.so appdir/usr/lib/libcrypto.so.1.1
 
 # get the linuxdeployqt tool and run it to collect the libraries
-curl -L -O "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+curl -L -O "https://github.com/probonopd/linuxdeployqt/releases/download/7/linuxdeployqt-7-x86_64.AppImage"
 chmod a+x linuxdeployqt*.AppImage
 unset QTDIR
 unset QT_PLUGIN_PATH
