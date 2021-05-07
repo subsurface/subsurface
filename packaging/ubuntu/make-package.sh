@@ -110,15 +110,23 @@ cp debian/changelog ../changelog$SUFFIX
 
 debuild -S -d
 
-#create builds for the newer Ubuntu releases that Launchpad supports
+# create builds for the newer Ubuntu releases that Launchpad supports
+#
+# the bionic release is the last that needs the qt5-default package for a successful build,
+# and as of hirsute this package no longer exists. So simply remove it from the control
+# file when building the newer ones
+sed -i.bak "/qt5-default/d" debian/control
 rel=bionic
-others="focal groovy"
+others="focal groovy hirsute"
 for next in $others
 do
 	sed -i "s/${rel}/${next}/g" debian/changelog
 	debuild -S -d
 	rel=$next
 done
+if [ -f debian/control.bak ] ; then
+	mv debian/control.bak debian/control
+fi
 
 cd ..
 
