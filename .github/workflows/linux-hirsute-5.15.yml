@@ -1,4 +1,4 @@
-name: Ubuntu 20.10 / Qt 5.14--
+name: Ubuntu 21.04 / Qt 5.15--
 on:
   push:
     branches:
@@ -8,10 +8,10 @@ on:
     - master
 
 jobs:
-  buildUbuntuGroovy:
+  buildUbuntuHirsute:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:20.10
+      image: ubuntu:21.04
 
     steps:
     - name: checkout sources
