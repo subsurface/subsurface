@@ -757,7 +757,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	/* Find the first potential decostopdepth above current depth */
 	for (stopidx = 0; stopidx < decostoplevelcount; stopidx++)
-		if (*(decostoplevels + stopidx) >= depth)
+		if (decostoplevels[stopidx] > depth)
 			break;
 	if (stopidx > 0)
 		stopidx--;
