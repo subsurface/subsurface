@@ -472,7 +472,7 @@ void TestPlan::testImperial()
 	struct divedatapoint *dp = testPlan.dp;
 	while (!dp->minimum_gas.mbar && dp->next)
 		dp = dp->next;
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 154l);
+	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 155l);
 	// check first gas change to EAN36 at 33m
 	struct event *ev = displayed_dive.dc.events;
 	QVERIFY(ev != NULL);
