@@ -1088,8 +1088,9 @@ void DivePlannerPointsModel::updateDiveProfile()
 		computeVariations(plan_copy, &plan_deco_state);
 #endif
 		final_deco_state = plan_deco_state;
-		emit calculatedPlanNotes(QString(d->notes));
 	}
+	emit calculatedPlanNotes(QString(d->notes));
+
 
 	// throw away the cache
 	free(cache);
