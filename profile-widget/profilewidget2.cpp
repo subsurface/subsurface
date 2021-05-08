@@ -1910,7 +1910,7 @@ void ProfileWidget2::updateDurationLine(PictureEntry &e)
 		double durationLineWidth = unscaledDurationLineWidth / scale;
 		double durationLinePenWidth = unscaledDurationLinePenWidth / scale;
 		e.durationLine.reset(new QGraphicsRectItem(begin, y - durationLineWidth - durationLinePenWidth, end - begin, durationLineWidth));
-		e.durationLine->setPen(QPen(getColor(GF_LINE, isGrayscale), durationLinePenWidth));
+		e.durationLine->setPen(QPen(getColor(DURATION_LINE, isGrayscale), durationLinePenWidth));
 		e.durationLine->setBrush(getColor(::BACKGROUND, isGrayscale));
 		e.durationLine->setVisible(prefs.show_pictures_in_profile);
 		scene()->addItem(e.durationLine.get());
