@@ -135,7 +135,6 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, QWidget *
 	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1)),
 	percentageAxis(new DiveCartesianAxis(this)),
 	ambPressureItem(createItem<DiveAmbPressureItem>(*percentageAxis, DivePlotDataModel::AMBPRESSURE, 1)),
-	gflineItem(createItem<DiveGFLineItem>(*percentageAxis, DivePlotDataModel::GFLINE, 1)),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
@@ -1076,7 +1075,6 @@ void ProfileWidget2::setEmptyState()
 	toolTipItem->setVisible(false);
 	rulerItem->setVisible(false);
 	ambPressureItem->setVisible(false);
-	gflineItem->setVisible(false);
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 	heartBeatAxis->setVisible(false);
