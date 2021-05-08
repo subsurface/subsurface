@@ -224,7 +224,6 @@ private:
 	DiveCartesianAxis *percentageAxis;
 	QList<DivePercentageItem *> allPercentages;
 	DiveAmbPressureItem *ambPressureItem;
-	DiveGFLineItem *gflineItem;
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;

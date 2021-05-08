@@ -349,47 +349,6 @@ void DiveAmbPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraphChanged, this, &DiveAmbPressureItem::setVisible);
 }
 
-DiveGFLineItem::DiveGFLineItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn)
-{
-	QPen pen;
-	pen.setBrush(QBrush(getColor(::GF_LINE)));
-	pen.setCosmetic(true);
-	pen.setWidth(2);
-	setPen(pen);
-}
-
-void DiveGFLineItem::replot(const dive *, bool)
-{
-	int sec = 0;
-
-	// Ignore empty values. a heart rate of 0 would be a bad sign.
-	QPolygonF poly;
-	for (int i = 0, modelDataCount = dataModel.rowCount(); i < modelDataCount; i++) {
-		int hr = dataModel.index(i, vDataColumn).data().toInt();
-		if (!hr)
-			continue;
-		sec = dataModel.index(i, hDataColumn).data().toInt();
-		QPointF point(hAxis.posAtValue(sec), vAxis.posAtValue(hr));
-		poly.append(point);
-	}
-	setPolygon(poly);
-
-	if (texts.count())
-		texts.last()->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-}
-
-void DiveGFLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
-{
-	if (polygon().isEmpty())
-		return;
-	painter->save();
-	painter->setPen(pen());
-	painter->drawPolyline(polygon());
-	painter->restore();
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraphChanged, this, &DiveAmbPressureItem::setVisible);
-}
-
 DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn) :
 	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn)
 {
