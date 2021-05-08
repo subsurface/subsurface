@@ -65,8 +65,7 @@ static QMap<color_index_t, std::array<QColor, 2>> profile_color = {
 	{ CALC_CEILING_SHALLOW, {{ FUNGREEN1_HIGH_TRANS, BLACK1_HIGH_TRANS }} },
 	{ CALC_CEILING_DEEP, {{ APPLE1_HIGH_TRANS, BLACK1_HIGH_TRANS }} },
 	{ TISSUE_PERCENTAGE, {{ GOVERNORBAY2, BLACK1_LOW_TRANS }} },
-	{ GF_LINE, {{ BLACK1, BLACK1_LOW_TRANS }} },
-	{ AMB_PRESSURE_LINE, {{ TUNDORA1_MED_TRANS, BLACK1_LOW_TRANS }} }
+	{ GF_LINE, {{ BLACK1, BLACK1_LOW_TRANS }} }
 };
 
 QColor getColor(const color_index_t i, bool isGrayscale)
