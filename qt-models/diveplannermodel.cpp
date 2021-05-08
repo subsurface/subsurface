@@ -464,6 +464,7 @@ DivePlannerPointsModel *DivePlannerPointsModel::instance()
 
 void DivePlannerPointsModel::emitDataChanged()
 {
+	updateDiveProfile();
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
 
@@ -1062,6 +1063,8 @@ static bool shouldComputeVariations()
 
 void DivePlannerPointsModel::updateDiveProfile()
 {
+	if (!d)
+		return;
 	createTemporaryPlan();
 	if (diveplan_empty(&diveplan))
 		return;
