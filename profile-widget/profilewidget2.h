@@ -223,7 +223,6 @@ private:
 	DiveHeartrateItem *heartBeatItem;
 	DiveCartesianAxis *percentageAxis;
 	QList<DivePercentageItem *> allPercentages;
-	DiveAmbPressureItem *ambPressureItem;
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;

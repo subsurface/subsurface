@@ -69,8 +69,6 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 			return item.scr_OC_pO2.mbar / 1000.0;
 		case HEARTBEAT:
 			return item.heartbeat;
-		case AMBPRESSURE:
-			return AMB_PERCENTAGE;
 		case INSTANT_MEANDEPTH:
 			return item.running_sum;
 		}
@@ -146,8 +144,6 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		return tr("Sensor 2");
 	case CCRSENSOR3:
 		return tr("Sensor 3");
-	case AMBPRESSURE:
-		return tr("Ambient pressure");
 	case HEARTBEAT:
 		return tr("Heart rate");
 	case INSTANT_MEANDEPTH:
