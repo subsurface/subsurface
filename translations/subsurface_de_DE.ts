@@ -4013,7 +4013,7 @@ Position verwenden</translation>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="812"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="912"/>
         <source>Sample time</source>
-        <translation>Segment Dauer</translation>
+        <translation>Segment Zeit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="694"/>

@@ -573,7 +573,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 
 		apd=true;
 
-		firstLine = "Sample time" + apdseparator + "Sample depth" + apdseparator + "Sample setpoint" + apdseparator + "Sample sensor1 pO₂" + apdseparator + "Sample sensor2 pO₂" + apdseparator + "Sample sensor3 pO₂" + apdseparator + "Sample pO₂" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "Sample temperature" + apdseparator + "" + apdseparator + "Sample CNS" + apdseparator + "Sample stopdepth";
+		firstLine = tr("Sample time") + apdseparator + tr("Sample depth") + apdseparator + tr("Sample setpoint") + apdseparator + tr("Sample sensor1 pO₂") + apdseparator + tr("Sample sensor2 pO₂") + apdseparator + tr("Sample sensor3 pO₂") + apdseparator + tr("Sample pO₂") + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + "" + apdseparator + tr("Sample temperature") + apdseparator + "" + apdseparator + tr("Sample CNS") + apdseparator + tr("Sample stopdepth");
 		blockSignals(true);
 		ui->CSVSeparator->setCurrentText(apdseparator);
 		if (triggeredBy == INITIAL && fileNames.first().contains(".apd", Qt::CaseInsensitive))
