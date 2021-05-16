@@ -685,6 +685,10 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 	}
 	if (what.weights)
 		copy_weights(&data->weightsystems, &weightsystems);
+	if (what.number)
+		number = data->number;
+	if (what.when)
+		when = data->when;
 }
 
 PasteState::~PasteState()
@@ -725,6 +729,10 @@ void PasteState::swap(dive_components what)
 		std::swap(cylinders, d->cylinders);
 	if (what.weights)
 		std::swap(weightsystems, d->weightsystems);
+	if (what.number)
+		std::swap(number, d->number);
+	if (what.when)
+		std::swap(when, d->when);
 }
 
 // ***** Paste *****
@@ -767,6 +775,8 @@ void PasteDives::undo()
 	fields.chill = what.chill;
 	fields.divesite = what.divesite;
 	fields.tags = what.tags;
+	fields.datetime = what.when;
+	fields.nr = what.number;
 	emit diveListNotifier.divesChanged(divesToNotify, fields);
 	if (what.cylinders)
 		emit diveListNotifier.cylindersReset(divesToNotify);

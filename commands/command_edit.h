@@ -301,6 +301,8 @@ struct PasteState {
 	tag_entry *tags;
 	struct cylinder_table cylinders;
 	struct weightsystem_table weightsystems;
+	int number;
+	timestamp_t when;
 
 	PasteState(dive *d, const dive *data, dive_components what); // Read data from dive data for dive d
 	~PasteState();
