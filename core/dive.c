@@ -336,6 +336,10 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 		copy_cylinder_types(s, d);
 	if (what.weights)
 		copy_weights(&s->weightsystems, &d->weightsystems);
+	if (what.number)
+		d->number = s->number;
+	if (what.when)
+		d->when = s->when;
 }
 #undef CONDITIONAL_COPY_STRING
 

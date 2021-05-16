@@ -90,6 +90,8 @@ struct dive_components {
 	unsigned int tags : 1;
 	unsigned int cylinders : 1;
 	unsigned int weights : 1;
+	unsigned int number : 1;
+	unsigned int when : 1;
 };
 
 extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);

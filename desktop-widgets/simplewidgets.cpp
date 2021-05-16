@@ -312,6 +312,8 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 	UI_FROM_COMPONENT(tags);
 	UI_FROM_COMPONENT(cylinders);
 	UI_FROM_COMPONENT(weights);
+	UI_FROM_COMPONENT(number);
+	UI_FROM_COMPONENT(when);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
@@ -332,6 +334,8 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		COMPONENT_FROM_UI(tags);
 		COMPONENT_FROM_UI(cylinders);
 		COMPONENT_FROM_UI(weights);
+		COMPONENT_FROM_UI(number);
+		COMPONENT_FROM_UI(when);
 		selective_copy_dive(current_dive, targetDive, *what, true);
 		QClipboard *clipboard = QApplication::clipboard();
 		QTextStream text;
@@ -376,6 +380,10 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 				text << ws.description << ws.weight.grams / 1000 << "kg\n";
 			}
 		}
+		if (what->number)
+			text << tr("Dive number: ") << current_dive->number << "\n";
+		if (what->when)
+			text << tr("Date / time: ") << get_dive_date_string(current_dive->when) << "\n";
 		clipboard->setText(cliptext);
 	}
 }
