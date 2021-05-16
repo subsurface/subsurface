@@ -134,8 +134,6 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, QWidget *
 	heartBeatAxis(new DiveCartesianAxis(this)),
 	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1)),
 	percentageAxis(new DiveCartesianAxis(this)),
-	ambPressureItem(createItem<DiveAmbPressureItem>(*percentageAxis, DivePlotDataModel::AMBPRESSURE, 1)),
-	gflineItem(createItem<DiveGFLineItem>(*percentageAxis, DivePlotDataModel::GFLINE, 1)),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
@@ -1075,8 +1073,6 @@ void ProfileWidget2::setEmptyState()
 	toolTipItem->clearPlotInfo();
 	toolTipItem->setVisible(false);
 	rulerItem->setVisible(false);
-	ambPressureItem->setVisible(false);
-	gflineItem->setVisible(false);
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 	heartBeatAxis->setVisible(false);
@@ -1914,7 +1910,7 @@ void ProfileWidget2::updateDurationLine(PictureEntry &e)
 		double durationLineWidth = unscaledDurationLineWidth / scale;
 		double durationLinePenWidth = unscaledDurationLinePenWidth / scale;
 		e.durationLine.reset(new QGraphicsRectItem(begin, y - durationLineWidth - durationLinePenWidth, end - begin, durationLineWidth));
-		e.durationLine->setPen(QPen(getColor(GF_LINE, isGrayscale), durationLinePenWidth));
+		e.durationLine->setPen(QPen(getColor(DURATION_LINE, isGrayscale), durationLinePenWidth));
 		e.durationLine->setBrush(getColor(::BACKGROUND, isGrayscale));
 		e.durationLine->setVisible(prefs.show_pictures_in_profile);
 		scene()->addItem(e.durationLine.get());

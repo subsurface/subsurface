@@ -135,8 +135,7 @@ typedef enum {
 	CALC_CEILING_SHALLOW,
 	CALC_CEILING_DEEP,
 	TISSUE_PERCENTAGE,
-	GF_LINE,
-	AMB_PRESSURE_LINE
+	DURATION_LINE
 } color_index_t;
 
 QColor getColor(const color_index_t i, bool isGrayscale = false);

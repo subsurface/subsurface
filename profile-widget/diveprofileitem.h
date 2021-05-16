@@ -120,28 +120,6 @@ private:
 
 };
 
-class DiveAmbPressureItem : public AbstractProfilePolygonItem {
-	Q_OBJECT
-public:
-	DiveAmbPressureItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn);
-	void replot(const dive *d, bool in_planner) override;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-
-private:
-	QString visibilityKey;
-};
-
-class DiveGFLineItem : public AbstractProfilePolygonItem {
-	Q_OBJECT
-public:
-	DiveGFLineItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn);
-	void replot(const dive *d, bool in_planner) override;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-
-private:
-	QString visibilityKey;
-};
-
 class DiveGasPressureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
