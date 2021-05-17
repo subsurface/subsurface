@@ -159,13 +159,13 @@ if [ "$PLATFORM" = Darwin ] ; then
 	# find a 10.x base SDK to use, or if none can be found, find a numbered 11.x base SDK to use
 	BASESDK=$(ls $SDKROOT | grep "MacOSX10\.1.\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
 	if [ -z "$BASESDK" ] ; then
-	  BASESDK=$(ls $SDKROOT | grep -E "MacOSX11\.[0-9]+\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
-	  if [ -z "$BASESDK" ] ; then
-	    echo "Cannot find a base SDK of type 10.x or 11.x under the SDK root of ${SDKROOT}"
-	    exit 1;
-    fi
-  fi
-  echo "Using ${BASESDK} as the BASESDK under ${SDKROOT}"
+		BASESDK=$(ls $SDKROOT | grep -E "MacOSX11\.[0-9]+\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
+		if [ -z "$BASESDK" ] ; then
+			echo "Cannot find a base SDK of type 10.x or 11.x under the SDK root of ${SDKROOT}"
+			exit 1;
+		fi
+	fi
+	echo "Using ${BASESDK} as the BASESDK under ${SDKROOT}"
 
 	OLDER_MAC="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
 	OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
