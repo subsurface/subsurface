@@ -100,7 +100,7 @@
        <property name="title">
         <string>Restriction</string>
        </property>
-       <layout class="QVBoxLayout" name="chartLayout">
+       <layout class="QVBoxLayout" name="restrictionLayout">
         <item>
          <widget class="QLabel" name="restrictionLabel" />
         </item>
