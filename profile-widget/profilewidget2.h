@@ -84,7 +84,6 @@ public:
 #ifndef SUBSURFACE_MOBILE
 	bool eventFilter(QObject *, QEvent *) override;
 #endif
-	void setToolTipVisibile(bool visible);
 	State currentState;
 	int animSpeed;
 

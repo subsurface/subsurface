@@ -1161,11 +1161,6 @@ void ProfileWidget2::setProfileState()
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::setToolTipVisibile(bool visible)
-{
-	toolTipItem->setVisible(visible);
-}
-
 void ProfileWidget2::connectPlannerModel()
 {
 	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
