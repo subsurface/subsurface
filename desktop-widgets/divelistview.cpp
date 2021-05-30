@@ -779,12 +779,14 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 			popup.addAction(tr("Collapse all"), this, &QTreeView::collapseAll);
 
 		// verify if there`s a need for collapse others
-		if (expanded_nodes > 1)
+		if (expanded_nodes > 1 && d->divetrip)
 			collapseAction = popup.addAction(tr("Collapse others"), this, &QTreeView::collapseAll);
 
 
 		if (d) {
-			popup.addAction(tr("Remove dive(s) from trip"), this, &DiveListView::removeFromTrip);
+			if (d->divetrip) {
+				popup.addAction(tr("Remove dive(s) from trip","",amount_selected), this, &DiveListView::removeFromTrip);
+			}
 			popup.addAction(tr("Create new trip above"), this, &DiveListView::newTripAbove);
 			if (!d->divetrip) {
 				struct dive *top = d;
@@ -800,9 +802,9 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 					}
 				}
 				if (is_trip_before_after(top, (currentOrder == Qt::AscendingOrder)))
-					popup.addAction(tr("Add dive(s) to trip immediately above"), this, &DiveListView::addToTripAbove);
+					popup.addAction(tr("Add dive(s) to trip immediately above","",amount_selected), this, &DiveListView::addToTripAbove);
 				if (is_trip_before_after(bottom, (currentOrder == Qt::DescendingOrder)))
-					popup.addAction(tr("Add dive(s) to trip immediately below"), this, &DiveListView::addToTripBelow);
+					popup.addAction(tr("Add dive(s) to trip immediately below","",amount_selected), this, &DiveListView::addToTripBelow);
 			}
 		}
 		if (trip) {
@@ -811,17 +813,17 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 	if (d) {
-		popup.addAction(tr("Delete dive(s)"), this, &DiveListView::deleteDive);
+		popup.addAction(tr("Delete dive(s)","",amount_selected), this, &DiveListView::deleteDive);
 		if (d->invalid)
-			popup.addAction(tr("Mark dive(s) valid"), this, &DiveListView::markDiveValid);
+			popup.addAction(tr("Mark dive(s) valid","",amount_selected), this, &DiveListView::markDiveValid);
 		else
-			popup.addAction(tr("Mark dive(s) invalid"), this, &DiveListView::markDiveInvalid);
+			popup.addAction(tr("Mark dive(s) invalid","",amount_selected), this, &DiveListView::markDiveInvalid);
 	}
 	if (amount_selected > 1 && consecutive_selected())
 		popup.addAction(tr("Merge selected dives"), this, &DiveListView::mergeDives);
 	if (amount_selected >= 1) {
-		popup.addAction(tr("Add dive(s) to arbitrary trip"), this, &DiveListView::addDivesToTrip);
-		popup.addAction(tr("Renumber dive(s)"), this, &DiveListView::renumberDives);
+		popup.addAction(tr("Add dive(s) to arbitrary trip","",amount_selected), this, &DiveListView::addDivesToTrip);
+		popup.addAction(tr("Renumber dive(s)","",amount_selected), this, &DiveListView::renumberDives);
 		popup.addAction(tr("Shift dive times"), this, &DiveListView::shiftTimes);
 		popup.addAction(tr("Split selected dives"), this, &DiveListView::splitDives);
 		popup.addAction(tr("Load media from file(s)"), this, &DiveListView::loadImages);
