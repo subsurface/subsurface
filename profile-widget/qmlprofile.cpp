@@ -160,7 +160,8 @@ void QMLProfile::setDevicePixelRatio(qreal dpr)
 {
 	if (dpr != m_devicePixelRatio) {
 		m_devicePixelRatio = dpr;
-		m_profileWidget->setFontPrintScale(fontScale * dpr);
+		// Recreate the view to redraw the text items with the new scale.
+		createProfileView();
 		updateDevicePixelRatio(dpr);
 		emit devicePixelRatioChanged();
 	}
