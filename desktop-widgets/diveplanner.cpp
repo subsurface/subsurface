@@ -607,7 +607,7 @@ void PlannerWidgets::printDecoPlan()
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
-	auto profile = std::make_unique<ProfileWidget2>(DivePlannerPointsModel::instance(), nullptr);
+	auto profile = std::make_unique<ProfileWidget2>(DivePlannerPointsModel::instance(), 1.0, nullptr);
 	profile->setPlanState(&displayed_dive, 0);
 	profile->plotDive(&displayed_dive, 0, true, true);
 	profile->setPrintMode(true);

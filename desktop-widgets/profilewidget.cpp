@@ -26,7 +26,7 @@ ProfileWidget::ProfileWidget()
 			   ui.profHR, // very few dive computers support this
 			   ui.profTissues }; // maybe less frequently used
 
-	view.reset(new ProfileWidget2(DivePlannerPointsModel::instance(), this));
+	view.reset(new ProfileWidget2(DivePlannerPointsModel::instance(), 1.0, this));
 	QToolBar *toolBar = new QToolBar(this);
 	for (QAction *a: toolbarActions)
 		toolBar->addAction(a);

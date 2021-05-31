@@ -96,7 +96,7 @@ T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z
 	return res;
 }
 
-ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, QWidget *parent) : QGraphicsView(parent),
+ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fontPrintScale, QWidget *parent) : QGraphicsView(parent),
 	currentState(INVALID),
 	dataModel(new DivePlotDataModel(this)),
 	plannerModel(plannerModelIn),
@@ -141,7 +141,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, QWidget *
 	tankItem(new TankItem(*timeAxis)),
 	shouldCalculateMaxTime(true),
 	shouldCalculateMaxDepth(true),
-	fontPrintScale(1.0)
+	fontPrintScale(fontPrintScale)
 {
 	init_plot_info(&plotInfo);
 
