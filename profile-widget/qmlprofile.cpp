@@ -28,10 +28,9 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 
 void QMLProfile::createProfileView()
 {
-	m_profileWidget.reset(new ProfileWidget2(nullptr, nullptr));
+	m_profileWidget.reset(new ProfileWidget2(nullptr, fontScale * m_devicePixelRatio, nullptr));
 	m_profileWidget->setProfileState(nullptr, 0);
 	m_profileWidget->setPrintMode(true);
-	m_profileWidget->setFontPrintScale(fontScale * m_devicePixelRatio);
 }
 
 // we need this so we can connect update() to the scaleChanged() signal - which the connect above cannot do

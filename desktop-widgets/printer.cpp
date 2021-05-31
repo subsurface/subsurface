@@ -102,8 +102,14 @@ void Printer::flowRender()
 
 void Printer::render(int pages)
 {
-	auto profile = std::make_unique<ProfileWidget2>(nullptr, nullptr);
-	double printFontScale = 1.0;
+	// get all refereces to diveprofile class in the Html template
+	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
+
+	// A "standard" profile has about 600 pixels in height.
+	// Scale the fonts in the printed profile accordingly.
+	// This is arbitrary, but it seems to work reasonably well.
+	double printFontScale = collection.count() > 0 ? collection[0].geometry().size().height() / 600.0 : 1.0;
+	auto profile = std::make_unique<ProfileWidget2>(nullptr, printFontScale, nullptr);
 
 	// apply printing settings to profile
 	profile->setFrameStyle(QFrame::NoFrame);
@@ -115,18 +121,6 @@ void Printer::render(int pages)
 	painter.begin(paintDevice);
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-
-	// get all refereces to diveprofile class in the Html template
-	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
-
-	if (collection.count() > 0) {
-		// A "standard" profile has about 600 pixels in height.
-		// Scale the fonts in the printed profile accordingly.
-		// This is arbitrary, but it seems to work reasonably.
-		QSize size = collection[0].geometry().size();
-		printFontScale = size.height() / 600.0;
-	}
-	profile->setFontPrintScale(printFontScale);
 
 	int elemNo = 0;
 	for (int i = 0; i < pages; i++) {
