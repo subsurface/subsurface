@@ -38,6 +38,7 @@ private:
 	qreal m_xOffset, m_yOffset;
 	QScopedPointer<ProfileWidget2> m_profileWidget;
 	void updateProfile();
+	void createProfileView();
 
 private slots:
 	void divesChanged(const QVector<dive *> &dives, DiveField);
