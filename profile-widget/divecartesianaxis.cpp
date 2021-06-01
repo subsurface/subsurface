@@ -64,7 +64,6 @@ void DiveCartesianAxis::setTextColor(const QColor &color)
 DiveCartesianAxis::DiveCartesianAxis(ProfileWidget2 *widget) : QObject(),
 	QGraphicsLineItem(),
 	printMode(false),
-	unitSystem(0),
 	profileWidget(widget),
 	orientation(LeftToRight),
 	min(0),
