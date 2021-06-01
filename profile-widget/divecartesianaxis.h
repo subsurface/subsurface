@@ -49,7 +49,6 @@ public:
 	void setLinesVisible(bool arg1);
 	void setLineSize(qreal lineSize);
 	void setLine(const QLineF& line);
-	int unitSystem;
 	virtual void updateTicks(color_index_t color = TIME_GRID);
 
 signals:
