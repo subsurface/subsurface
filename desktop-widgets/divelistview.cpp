@@ -813,7 +813,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 	if (d) {
-		popup.addAction(tr("Delete %n dive(s)","",amount_selected), this, &DiveListView::deleteDive);
+		popup.addAction(tr("Delete dive(s)","",amount_selected), this, &DiveListView::deleteDive);
 		if (d->invalid)
 			popup.addAction(tr("Mark dive(s) valid","",amount_selected), this, &DiveListView::markDiveValid);
 		else
