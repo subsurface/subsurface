@@ -81,7 +81,7 @@ public:
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
-	int unitSystem;
+	units::LENGTH unitSystem;
 private
 slots:
 	void settingsChanged();
