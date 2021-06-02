@@ -39,7 +39,6 @@ public:
 	void setFontLabelScale(qreal scale);
 	double minimum() const;
 	double maximum() const;
-	double fontLabelScale() const;
 	qreal valueAt(const QPointF &p) const;
 	qreal posAtValue(qreal value) const;
 	void setColor(const QColor &color);
