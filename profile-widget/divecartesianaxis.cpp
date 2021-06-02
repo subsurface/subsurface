@@ -202,7 +202,7 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 		DiveTextItem *label = new DiveTextItem(this);
 		label->setText(textForValue(currValueText));
 		label->setBrush(colorForValue(currValueText));
-		label->setScale(fontLabelScale());
+		label->setScale(labelScale);
 		label->setZValue(1);
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
@@ -331,11 +331,6 @@ double DiveCartesianAxis::maximum() const
 double DiveCartesianAxis::minimum() const
 {
 	return min;
-}
-
-double DiveCartesianAxis::fontLabelScale() const
-{
-	return labelScale;
 }
 
 void DiveCartesianAxis::setColor(const QColor &color)
