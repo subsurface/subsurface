@@ -370,10 +370,6 @@ void DepthAxis::settingsChanged()
 	unitSystem = prefs.units.length;
 }
 
-TimeAxis::TimeAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget)
-{
-}
-
 QColor TimeAxis::colorForValue(double) const
 {
 	return QColor(Qt::blue);
@@ -395,10 +391,6 @@ void TimeAxis::updateTicks(color_index_t color)
 			labels[i]->setVisible(i % 2);
 		}
 	}
-}
-
-TemperatureAxis::TemperatureAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget)
-{
 }
 
 QString TemperatureAxis::textForValue(double value) const

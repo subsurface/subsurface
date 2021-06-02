@@ -88,7 +88,7 @@ slots:
 class TimeAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	TimeAxis(ProfileWidget2 *widget);
+	using DiveCartesianAxis::DiveCartesianAxis;
 	void updateTicks(color_index_t color = TIME_GRID) override;
 private:
 	QString textForValue(double value) const override;
@@ -98,7 +98,7 @@ private:
 class TemperatureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	TemperatureAxis(ProfileWidget2 *widget);
+	using DiveCartesianAxis::DiveCartesianAxis;
 private:
 	QString textForValue(double value) const override;
 };
