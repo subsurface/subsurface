@@ -2766,20 +2766,20 @@ We may wish to refine our selection of dives to show in the *Dive List*. Let's s
 temperature was  18 °C or higher. Select "Water Temp." from the list of constraints. A line containing this new constraint is added to the filter
 panel. Select "at least" from the combobox on this line and type "18" in the appropriate text box. Below is an image with constraints defined to filter dives at Sodwana with water temperatures at 18 °C or higher.
 
-image::images/Filter:LocTemp.png["Figure: Filter:  Stage 2 Filter set construction",align="center"]
+image::images/Filter-LocTemp.png["Figure: Filter:  Stage 2 Filter set construction",align="center"]
 
 In order to refine our filter we may wish to show only dives on a Tuesday. Select "week day" from the list of constraints. A line
 containing this new constraint is added to the filter panel with a dropdown list of days that are selectable. Select "Tuesday" from the
 list. The image below shows a filter that selects dives at Sodwana on Tuesdays with the water temperature at or above 18 °C.
 
-image::images/Filter:LocTempWeek.png["Figure: Filter: Stage 3 Filter set construction",align="center"]
+image::images/Filter-LocTempWeek.png["Figure: Filter: Stage 3 Filter set construction",align="center"]
 
 As a last step in refining our filter we may wish to add another constraint specifying visibility of at least three stars. Select
 "visibility" from the list of constraints. A new line is added to the filter panel, allowing us to select the number of stars
 we require. In this case click on the third star and ensure that the combobox shows "at least". We have now filtered for all dives
 at Sodwana on a Tuesday with water temperature at or above 18 °C and with a 3-star or better visibility.
 
-image::images/Filter:LocTempWeekVis.png["Figure: Filter: Stage 4 Filter set construction",align="center"]
+image::images/Filter-LocTempWeekVis.png["Figure: Filter: Stage 4 Filter set construction",align="center"]
 
 Clearly it is possible to construct highly refined filters. The examples above show only a tiny fraction of the possibilities
 in creating filters.
