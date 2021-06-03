@@ -9,9 +9,10 @@
 
 static const qreal height = 3.0;
 
-TankItem::TankItem(const DiveCartesianAxis &axis) :
+TankItem::TankItem(const DiveCartesianAxis &axis, double fontPrintScale) :
 	hAxis(axis),
-	plotEndTime(-1)
+	plotEndTime(-1),
+	fontPrintScale(fontPrintScale)
 {
 	QColor red(PERSIANRED1);
 	QColor blue(AIR_BLUE);
@@ -50,7 +51,7 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 		rect->setBrush(nitrox);
 	rect->setPen(QPen(QBrush(), 0.0)); // get rid of the thick line around the rectangle
 	rects.push_back(rect);
-	DiveTextItem *label = new DiveTextItem(rect);
+	DiveTextItem *label = new DiveTextItem(fontPrintScale, rect);
 	label->setText(gasname(gas));
 	label->setBrush(Qt::black);
 	label->setPos(x + 1, 0);

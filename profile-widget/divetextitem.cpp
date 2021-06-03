@@ -8,11 +8,11 @@
 #include <QDebug>
 #include <QApplication>
 
-DiveTextItem::DiveTextItem(QGraphicsItem *parent) : QGraphicsItemGroup(parent),
+DiveTextItem::DiveTextItem(double printScale, QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),
 	textBackgroundItem(new QGraphicsPathItem(this)),
 	textItem(new QGraphicsPathItem(this)),
-	printScale(1.0),
+	printScale(printScale),
 	scale(1.0),
 	connected(false)
 {
@@ -26,11 +26,6 @@ void DiveTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
 	updateText();
 	QGraphicsItemGroup::paint(painter, option, widget);
-}
-
-void DiveTextItem::fontPrintScaleUpdate(double scale)
-{
-	printScale = scale;
 }
 
 void DiveTextItem::setAlignment(int alignFlags)
@@ -55,19 +50,6 @@ void DiveTextItem::setScale(double newscale)
 void DiveTextItem::setText(const QString &t)
 {
 	if (internalText != t) {
-		if (!connected) {
-			if (scene()) {
-				// by now we should be on a scene. grab the profile widget from it and setup our printScale
-				// and connect to the signal that makes sure we keep track if that changes
-				ProfileWidget2 *profile = qobject_cast<ProfileWidget2 *>(scene()->views().first());
-				connect(profile, SIGNAL(fontPrintScaleChanged(double)), this, SLOT(fontPrintScaleUpdate(double)), Qt::UniqueConnection);
-				fontPrintScaleUpdate(profile->getFontPrintScale());
-				connected = true;
-			} else {
-				if (verbose)
-					qDebug() << "called before scene was set up" << t;
-			}
-		}
 		internalText = t;
 		updateText();
 	}
