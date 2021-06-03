@@ -78,7 +78,6 @@ public:
 	bool isPointOutOfBoundaries(const QPointF &point) const;
 	bool isPlanner() const;
 	double getFontPrintScale() const;
-	void setFontPrintScale(double scale);
 	void draw(QPainter *painter, const QRect &pos);
 	QImage toImage(QSize size);
 #ifndef SUBSURFACE_MOBILE
@@ -88,7 +87,6 @@ public:
 	int animSpeed;
 
 signals:
-	void fontPrintScaleChanged(double scale);
 	void editCurrentDive();
 
 public
