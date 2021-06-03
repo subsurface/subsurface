@@ -1543,14 +1543,6 @@ void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 #endif
 }
 
-double ProfileWidget2::getFontPrintScale() const
-{
-	if (printMode)
-		return fontPrintScale;
-	else
-		return 1.0;
-}
-
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::editName(DiveEventItem *item)
 {

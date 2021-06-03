@@ -77,7 +77,6 @@ public:
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool isPointOutOfBoundaries(const QPointF &point) const;
 	bool isPlanner() const;
-	double getFontPrintScale() const;
 	void draw(QPainter *painter, const QRect &pos);
 	QImage toImage(QSize size);
 #ifndef SUBSURFACE_MOBILE
