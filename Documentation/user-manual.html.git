@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.10" />
+<meta name="generator" content="AsciiDoc" />
 <title></title>
 <style type="text/css">
 /*
@@ -17,7 +17,7 @@
  */
 
 *   { padding: 0;  margin: 0; }
-img { border: 0; margin: 15px; }
+img { border: 0; margin: 15px; max-width:90% }
 
 /*** Layout ***/
 
@@ -78,12 +78,12 @@ body                        { font-family: Verdana, sans-serif; }
 #footer                     { font-size: 0.8em; }
 
 h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
-h2                          { font-size: 1.5em; }
+h2                          { font-size: 160%; }
 .sectionbody                { font-size: 0.85em; }
 .sectionbody .sectionbody   { font-size: inherit; }
-h3                          { font-size: 159%; } /* 1.35em */
-h4                          { font-size: 141%; } /* 1.2em */
-h5                          { font-size: 118%; } /* 1em */
+h3                          { font-size: 150%; } /* 1.35em */
+h4                          { font-size: 140%; } /* 1.2em */
+h5                          { font-size: 130%; } /* 1em */
 .title                      { font-size: 106%;   /* 0.9em */
 			      font-weight: bold;
 			    }
@@ -446,7 +446,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.9, April 2020</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 5.0, February 2021</em></span></p></div>
 <div class="paragraph"><p>Welcome as a user of <em>Subsurface</em>, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
 and free dives. <em>Subsurface</em> binaries are available for Windows PCs (Win 7 or later from
@@ -459,7 +459,7 @@ the software, consult the <em>Downloads</em> page on the
 <a href="https://subsurface-divelog.org/"><em>Subsurface</em> web site</a>.
 Please discuss issues with this program by sending an email to
 <a href="mailto:subsurface@subsurface-divelog.org">our mailing list</a> and report bugs at
-<a href="https://github.com/Subsurface-divelog/subsurface/issues">our bugtracker</a>.  For instructions on how to build the
+<a href="https://github.com/Subsurface/subsurface/issues">our bugtracker</a>.  For instructions on how to build the
 software and (if needed) its dependencies please consult the INSTALL file
 included with the source code.</p></div>
 <div class="paragraph"><p><strong>Audience</strong>: Recreational Scuba Divers, Free Divers, Tec Divers, Professional
@@ -557,7 +557,7 @@ time <em>Subsurface</em> starts it uses the positions of the dividers from the l
 and profile of
 the <em>selected dive</em> are shown in the respective panels. If
 several dives are selected, the last highlighted dive is the <em>selected
-dive</em>, but summary data of all <em>highlighted dives</em> is shown in the <strong>Stats</strong> tab
+dive</em>, but summary data of all <em>highlighted dives</em> is shown in the <strong>Summary</strong> tab
 of the <strong>Info</strong> panel (maximum, minimum and average depths, durations, water
 temperatures and SAC; total time and number of dives selected).</p></div>
 <div class="imageblock" id="S_ViewPanels" style="text-align:center;">
@@ -993,7 +993,7 @@ as well as contextual information about the dives recorded on the dive computer.
 <div class="paragraph"><p>Bluetooth is becoming a more common way of communication between dive computers
 and <em>Subsurface</em>. <em>Subsurface</em> provides a largely operating system independent
 Bluetooth interface. An increasing number of dive computers use Bluetooth Low Energy (BTLE)
-as a means of communication. However, BTLE is not a standardised protocol,
+as a means of communication. However, BTLE is not a standardized protocol,
 consequently adaptations need to be made for communicating with each different dive computer model. See the
 <a href="https://subsurface-divelog.org/documentation/supported-dive-computers/">list of supported dive computers</a>.
 Bluetooth communication is often more reliable if all Bluetooth devices seen by the
@@ -1042,7 +1042,7 @@ Bluetooth pairing at the operating system level, it is always prudent to follow 
 initial Bluetooth pairing problems by pairing the Bluetooth dive computer with
 the <em>Subsurface</em> computer using the operating system services of the desktop computer. Delete all
 existing pairings and start by scanning for Bluetooth devices from an empty list
-(on the desktop) of Bluetooth devices. Once <em>Subsurface</em> has recognised the Bluetooth dive
+(on the desktop) of Bluetooth devices. Once <em>Subsurface</em> has recognized the Bluetooth dive
 computer, subsequent divelog downloads are likely to be simple.</p></div>
 <div class="paragraph"><p>On the <em>Linux</em> or <em>MacOS</em> platforms the name
 of the <em>Subsurface</em> computer and its Bluetooth address are shown on the right hand side.
@@ -1058,7 +1058,7 @@ computer for more information. Now the third item in the list above has been fin
 Select the <em>Scan</em> button towards the bottom left of the dialog above. After
 searching, the dive computer should be listed
 (perhaps as one of a number of Bluetooth devices) in the main list box on the
-lefthand side of the dialog (see image above). If this does not work, select
+left-hand side of the dialog (see image above). If this does not work, select
 the <em>Clear</em> button, then scan again for Bluetooth devices using the <em>Scan</em>
 button. After taking these actions <em>Subsurface</em> should see the dive computer.
 On the left hand side, if the
@@ -1102,7 +1102,7 @@ Request PIN code
 <div class="paragraph"><p>After the devices are paired, press the <em>Save</em> button of the dialog.
 This closes the Bluetooth dialog. Now select <em>Download</em> in the <em>Download from
 dive computer</em> dialog which should still be open. The downloaded dives are
-shown on the righthand side of the download dialog.</p></div>
+shown on the right-hand side of the download dialog.</p></div>
 <div class="sect4">
 <h5 id="_on_windows">On Windows:</h5>
 <div class="imageblock" style="text-align:center;">
@@ -1209,7 +1209,7 @@ increase in the amount of information stored for a dive.</p></div>
 <p>
 The <strong>Notes</strong> tab
 holds basic information about the dive, the date and time, locality,
-budiy, divemaster and some dive notes. This is about the minimum amount of
+buddy, divemaster and some dive notes. This is about the minimum amount of
 information required for a coherent dive log.
 </p>
 </li>
@@ -1423,7 +1423,7 @@ using the Locality field in the <strong>Notes</strong> panel.
 </li>
 <li>
 <p>
-Open the <strong>Dive site managment panel</strong> by selecting the blue globe icon to the right
+Open the <strong>Dive site management panel</strong> by selecting the blue globe icon to the right
 of the Locality text box of the <strong>Notes</strong> tab.
 </p>
 </li>
@@ -1460,10 +1460,10 @@ text box of the panel illustrated below.
 </li>
 <li>
 <p>
-The coloured icon to the right of the <em>Start and end times</em> in the above panel shows the
-degree of synchronisation between dive computer and GPS device. A green icon
+The colored icon to the right of the <em>Start and end times</em> in the above panel shows the
+degree of synchronization between dive computer and GPS device. A green icon
 indicates that the GPS track coincides with the time of the dive. A yellow icon
-indicates partial synchronisation while a red icon indicates that the dive and the
+indicates partial synchronization while a red icon indicates that the dive and the
 GPS track are at different times and that coordinates cannot be extracted. Make
 sure that the GPS date and the dive date are the same.
 </p>
@@ -1551,18 +1551,61 @@ for this dive, or just start typing in the box which shows the available
 options for the entered characters. The
 <strong>Size</strong> of the cylinder as well as its working pressure (<em>Work.press</em>) will
 automatically be shown in the dialog.</p></div>
-<div class="paragraph"><p><strong>If your cylinder is not listed:</strong> Maybe the cylinder type you dive with is not listed in the dropdown list. Add a new
-cylinder by selecting any of the existing cylinders in the list and clicking on the
-name of that cylinder. This activates the cursor on the cylinder name. Overtype
-the cylinder name with your new cylinder name and press ENTER on the keyboard. The new
-cylinder name now appears on the dropdown list. Overtyping a cylinder name does not affect
-the name that is being overtyped. Add a size and start pressure for that
-cylinder. The usual convention is that double cylinders are prefixed with a "D"  to
-indicate "double". Say for instance you dive a manifolded twinset of two 7 litre steel cylinders. This
-could be named "D7ℓ 232 bar" rather than "14ℓ 232 bar". However, use a rule that works for you.</p></div>
 <div class="paragraph"><p>Next, indicate the starting pressure and the ending pressure of the
 specified gas during the dive. The unit of pressure (metric/imperial)
 corresponds to the settings chosen in the <em>Preferences</em>.</p></div>
+<div class="sidebarblock" id="S_newcyl">
+<div class="content">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content"><strong>MY CYLINDER IS NOT LISTED IN THE DROPDOWN LIST</strong></td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Maybe the cylinder type you dive with is not listed in the dropdown list. Let us say that you
+dive with 7-litre twins at 300 bars and these do not appear in the dropdown list. The image below shows
+the <em>Cylinder table</em> as it might appear after selecting the <em>Equipment</em> tab and before specifying
+any cylinder information:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Newcyl-Initial.png" alt="FIGURE: Initial display of cylinder table" />
+</div>
+</div>
+<div class="paragraph"><p>Start by selecting the existing cylinder in the table and clicking on the
+name of that cylinder type. The cylinder type changes to a dropdown box, recognized by the down-arrow
+next to the cylinder name (see image below)</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Newcyl-selection.png" alt="FIGURE: Selecting cylinder name in cylinder table" />
+</div>
+</div>
+<div class="paragraph"><p>This activates the cursor on the cylinder type. Overtype the cylinder type with your new cylinder type (image below).
+<strong>Important:</strong> Overtyping a cylinder type does not affect the name that is being overtyped. The usual convention is that
+double cylinders are prefixed with a "D" to indicate "double". In our case we have a manifolded twinset of two
+7-litre 300 bar cylinders. This could be named "D7ℓ 300 bar" rather than "14ℓ 300 bar". However, use a rule that works for you.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Newcyl-name.png" alt="FIGURE: Typing new cylinder name" />
+</div>
+</div>
+<div class="paragraph"><p>and press ENTER on the keyboard. This is a critical step where most users go wrong. Pressing the ENTER key
+is the action that creates a new cylinder type (image below). Merely clicking an adjacent cell in the table does not
+create the new cylinder type.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Newcyl-create.png" alt="FIGURE: Creating ne cylinder type" />
+</div>
+</div>
+<div class="paragraph"><p>The new cylinder type now appears on the dropdown list. Add a size and start pressure for that
+cylinder (image below).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Newcyl-final.png" alt="FIGURE: Final details for new cylinder type" />
+</div>
+</div>
+</div></div>
 <div class="paragraph"><p>Finally, provide the gas mixture used. If air was used, the
 value of 21%  can be entered into the oxygen box or this field can be left blank. If nitrox or
 trimix were used, their percentages of oxygen and/or helium should be entered.
@@ -1665,13 +1708,14 @@ Fresh water, usually at inland dive sites or in caves.
 </li>
 <li>
 <p>
-Salty water, i.e. water that contains a little salt (called brackish water).
+Brackish water, water that contains a little salt.
 </p>
 </li>
 <li>
 <p>
-EN13319, an average value that represents neither fresh water or sea water. This value is available
-on some dive computers and is regarded by some as a safe value for both fresh water and sea water.
+EN13319, an value defined in the European CE standard for dive computers that represents neither
+ fresh water or sea water. This value is available on some dive computers and is regarded by some
+ as a safe value for both fresh water and sea water.
 </p>
 </li>
 <li>
@@ -1680,7 +1724,7 @@ Salt water encountered in the sea.
 </p>
 </li>
 </ol></div>
-<div class="paragraph"><p>The topic of water salinity is complex because it differs sonewhat between different oceans. A warning icon
+<div class="paragraph"><p>The topic of water salinity is complex because it differs somewhat between different oceans. A warning icon
 is shown if the water type reported by the dive computer currently displayed is different from
 the value that is typed here. The water density value (corresponding to salinity) is automatically calculated
 from the choice of water type.</p></div>
@@ -1697,10 +1741,10 @@ right allows two ways of expressing atmospheric pressure: mbar or m/ft above sea
 The altitude unit (metric/imperial) is taken from the settings in the <em>Units Preferences</em> screen. A
 third option is to use the atmospheric pressure provided by the dive computer. In order to specify
 the pressure/altitude, first select the appropriate unit in the dropbox (in the case of the image on the left
-these are "mbar/m/use dc", then type an appropriate value into the text box. In the case
+these are "mbar/m/Use DC", then type an appropriate value into the text box. In the case
 of m/ft the altitude typed into the text box is automatically converted to the
 mean expected atmospheric pressure (mbar) at the specified altitude.
-In the case of "use dc", no value is required in the text box. Atmospheric pressure provided by a dive
+In the case of "Use DC", no value is required in the text box. Atmospheric pressure provided by a dive
 computer does not need any editing.</td>
 </tr></table>
 </div>
@@ -1902,6 +1946,11 @@ JDiveLog
 <li>
 <p>
 Suunto Dive Manager (DM3, DM4, DM5)
+</p>
+</li>
+<li>
+<p>
+Seac SeacSync
 </p>
 </li>
 <li>
@@ -2137,7 +2186,17 @@ success status is shown (see image <strong>B</strong>, below). The
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingCSVData">4.3.6. Importing data in CSV format</h4>
+<h4 id="S_ImportingSeacSync">4.3.6. Importing dives from SeacSync</h4>
+<div class="paragraph"><p><em>Subsurface</em> can directly import the database generated by the proprietary SeacSync
+application. Simply locate the database file on your computer, then use the
+<a href="#Unified_import">universal import dialog.</a></p></div>
+<div class="paragraph"><p>On Windows 10, The SeacSync database is typically found in:
+    C:\[USERNAME]\AppData\Roaming\SeacSync\divesDB.db</p></div>
+<div class="paragraph"><p><em>Subsurface</em> will not modify the database during import, so it can be imported directly from this
+location.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingCSVData">4.3.7. Importing data in CSV format</h4>
 <div class="paragraph"><p>A comma-separated file (.csv) can be used to import dive information either as dive profiles
 (as in the case of the APD Inspiration and Evolution closed circuit rebreathers) or as dive
 metadata (in case the user keeps dive data in a spreadsheet). The <em>CSV</em> format is a universal
@@ -2394,7 +2453,7 @@ the dive named at the top of the panel and returns you to the dive sites managem
 <h4 id="_add_a_dive_site">4.4.4. Add a dive site</h4>
 <div class="paragraph"><p>At the top right of the dive sites management table is a round button with a "+". Clicking that button inserts a
 new site entitled "New dive site" into the list (image below). The new site can also be deleted (maybe after erroneously
-clicking the + icon or you realised the dive site already exists) by selecting <em>Edit &#8594; Undo</em> from the main menu or by typing Ctrl-Z (or CMD-Z on a Mac) while the dive sites management table has focus. Edit this new site by selecting its edit icon and provide a name,
+clicking the + icon or you realized the dive site already exists) by selecting <em>Edit &#8594; Undo</em> from the main menu or by typing Ctrl-Z (or CMD-Z on a Mac) while the dive sites management table has focus. Edit this new site by selecting its edit icon and provide a name,
 coordinates and, if preferred, a description. Clicking
 the "Done" button in the edit panel returns you to the dive sites management panel.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -2745,7 +2804,7 @@ logging of cylinder pressures during sidemount involves three steps, exactly as 
 <p>
 <strong>Within <em>Subsurface</em> describe the cylinders used during the dive</strong>. The diver needs to provide the
   specifications of the different cylinders, using the <strong>Equipment</strong> tab of the <strong>Info Panel</strong> (see
-  image below where two 12 litre cylinders were used).
+  image below where two 12 liter cylinders were used).
 </p>
 </li>
 <li>
@@ -2812,8 +2871,8 @@ over two hours.</p></div>
 <img src="images/pSCR_profile.jpg" alt="FIGURE: pSCR profile" />
 </div>
 </div>
-<div class="paragraph"><p><em>Visualising the pO<sub>2</sub> drop</em>: The difference between the pO<sub>2</sub> of the fresh cylinder gas and the pO<sub>2</sub>
-in the loop can be visualised in <em>Subsurface</em> by opening the <em>Tech setup</em>
+<div class="paragraph"><p>Visualizing the pO<sub>2</sub> drop_: The difference between the pO<sub>2</sub> of the fresh cylinder gas and the pO<sub>2</sub>
+in the loop can be visualized in <em>Subsurface</em> by opening the <em>Tech setup</em>
 panel in the <em>File &#8594; Preferences</em> menu item and then providing suitable information in the section
 labelled <em>pSCR options</em>. The <em>pSCR metabolic rate</em> is your rate of oxygen metabolism in liters/min (commonly
 between 0.5 and 2.5). The <em>Dilution ratio</em> is the ratio indicating how much gas in the loop is replaced with
@@ -3001,7 +3060,7 @@ all the appropriate pO<sub>2</sub> values. Some dive computers record bailout ev
 events: in this case the events are shown automatically in the dive log.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/CCR_bailout.jpg" alt="FIGURE: CCR bailout profileh" />
+<img src="images/CCR_bailout.jpg" alt="FIGURE: CCR bailout profile" />
 </div>
 </div>
 <div class="paragraph"><p><em>Deco ceiling</em>: The deco ceiling calculated by Subsurface is not very accurate because the precise pressure of nitrogen
@@ -3124,8 +3183,8 @@ Refer to <a href="#SAC_CALCULATION">Appendix F</a> for more information.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_the_strong_stats_strong_tab_for_groups_of_dives">5.3. The <strong>Stats</strong> tab (for groups of dives)</h3>
-<div class="paragraph"><p>The Stats tab gives summary statistics for more than one dive, assuming that
+<h3 id="_the_strong_summary_strong_tab_for_groups_of_dives">5.3. The <strong>Summary</strong> tab (for groups of dives)</h3>
+<div class="paragraph"><p>The Summary tab gives summary statistics for more than one dive, assuming that
 more than one dive has been selected in the <strong>Dive List</strong> using the standard
 Ctrl-click or Shift-click of the mouse. If only one
 dive has been selected, figures for only that dive are given. This tab
@@ -3138,7 +3197,7 @@ shallowest and deepest dives of those selected.</p></div>
 <div class="sect2">
 <h3 id="S_ExtraDataTab">5.4. The <strong>Extra Data</strong> tab (usually for individual dives)</h3>
 <div class="paragraph"><p>When using a dive computer, it often reports several data items that cannot easily be
-presented in a standardised way because the nature of the information differs from one
+presented in a standardized way because the nature of the information differs from one
 dive computer to another. These data often comprise setup information, metadata about
 a dive, battery levels, no fly times, or gradient factors used during the dive. When
 possible, this information is presented in the <strong>Extra Data</strong> tab. Below is an
@@ -3319,11 +3378,11 @@ values are dependent on the composition of the breathing gas. The EAD
 is the depth of a hypothetical air dive that has the same partial
 pressure of nitrogen as the current depth of the nitrox dive at
 hand. A nitrox dive leads to the same decompression obligation as an
-air dive to the depth equaling the EAD. The END is the depth of a
+air dive to the depth equalling the EAD. The END is the depth of a
 hypothetical air dive that has the same sum of partial pressures of
 the narcotic gases nitrogen and oxygen as the current trimix dive. A
 trimix diver can expect the same narcotic effect as a diver breathing
-air diving at a depth equaling the END.</td>
+air diving at a depth equalling the END.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>If at some point a isobaric counter diffusion situation is encountered
@@ -3437,7 +3496,7 @@ most dive computers report alarms relating to high partial pressures of oxygen,
 to rapid ascents or the exceeding of no-deco limits (NDL).
 On the other hand, other events are classified as warnings and, for instance, occur when
 the remaining gas in a cylinder falls below a predetermined limit, a deep stop needs to be performed or
-the need to change gas during multicylinder dives. Some dive computers also report notifications,
+the need to change gas during multi-cylinder dives. Some dive computers also report notifications,
 e.g. when a safety stop is initiated or terminated or when a predetermined amount of OTUs have been incurred.
 The alarms, warnings and notifications differs from one dive computer to another: some dive computers do not
 report any of the above events, while others provide an extensive log of events. The reporting of events
@@ -3662,7 +3721,7 @@ red bar. The image below shows a dive which first uses a trimix cylinder (red an
 <img src="images/icons/heatmap.png" alt="Note" />
 </td>
 <td class="content">
-<div class="paragraph"><p>Display the tissue heat-map. The heat map summarises, for the duration of the dive, the inert gas tissue pressures
+<div class="paragraph"><p>Display the tissue heat-map. The heat map summarizes, for the duration of the dive, the inert gas tissue pressures
 for each of the 16 tissue compartments of the Bühlmann model. Blue colors mean low gas pressures in a tissue compartment
 and thus on-gassing, green to red means excess gas in the tissue and thus off-gassing. Fast to slow tissues are indicated from
 top to bottom. The figure below explains in greater detail how the heat map can be interpreted.</p></div>
@@ -3680,7 +3739,7 @@ for more details on the different elements of this graph.</p></div>
 <div class="paragraph"><p>Image <strong>B</strong> shows a gradient of unique colors, spanning the whole range of inert gas pressures.
 It is possible to map the height of each of the dark green vertical bars of <strong>A</strong> to a
 color in <strong>B</strong>. For instance, the fastest (leftmost) dark green vertical bar in <strong>A</strong> has
-a height corresponding to the medium green part of <strong>B</strong>. The height of this bar can therefore be summarised
+a height corresponding to the medium green part of <strong>B</strong>. The height of this bar can therefore be summarized
 using a medium green color. Similarly, the highest dark green bar in <strong>A</strong> is as high
 as the yellow part of <strong>B</strong>. The 14 remaining tissue pressure bars in <strong>A</strong> can also be
 translated to colors. The colors represent three ranges of tissue inert gas pressure:</p></div>
@@ -3784,63 +3843,279 @@ restored to view by selecting Unhide all events from the context menu.</p></div>
 of the dives based on attributes such as dive tags, dive site, divemaster or buddy.
 For instance, filtering lets you list the dives during a particular year at a specific
 dive site, or otherwise the cave dives with a particular buddy. Filtering can be performed
-based on any information in the <em>Information Panel</em>.</p></div>
+based on virtually any information in the <strong>Info</strong> panel.</p></div>
 <div class="paragraph"><p>To open the filter, select <em>Log &#8594;  Filter divelist</em> from the main menu. This replaces the
 <em>Dive Map Panel</em> with a <em>Filter Panel</em>. The top window bar contains the number of dives that satisfy the
-current selections of the filter (see image below).</p></div>
+current criteria of the filter (see image below).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/FilterWindowBar.jpg" alt="Figure: Filter Window Bar" />
 </div>
 </div>
-<div class="paragraph"><p>When opened, the filter contains default values that include all the dives in the <em>Dive list</em>. Filter the
-<em>Dive list</em> by either changing some of the default values in the panel, or by typing specific
-values or words in any of the text boxes. For instance, in the image below the open circuit dives using
-a drysuit at a specific location (Simonstad) are shown in the <em>Dive list</em>. There is no button to
-activate the filter action: the action of typing text into a textbox or specifying a range
-in any of the fields automatically performs the filtering.</p></div>
-<div class="paragraph"><p>During filtering the Dive Mode (Open circuit, CCR, pSCR, Freedive) is added to the tag list of a dive, allowing
-only specific types of dive (e.g. CCR) to be selected in the tag attribute of the filter. This is
-useful for rebreather divers and free divers who also do some open circuit diving.</p></div>
+<div class="paragraph"><p>By default a full-text specification for filtering is shown. For instance, if one typed the word "shark" into the
+<em>Full-text</em> box, all dives are shown that have the word "shark" in any of the text fields in the <strong>Info</strong> panel,
+including the <em>Notes</em>, the <em>Tags</em> and <em>Location</em>. One can select whether the search phrase (e.g. "shark") must be
+a complete word, the starting part of a word (e.g. "SharkLife") or any part of a word (e.g. "whalesharks"). See the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/FilterPanel.jpg" alt="Figure: Filter panel" />
+<img src="images/FilterFullText.png" alt="Figure: Filter: Full Text Filter" />
 </div>
 </div>
-<div class="paragraph"><p>The top text box is a full-text filter: dives are searched in their entirety (notes and all other fields) for the word(s) in the text box. Let us assume the text box contains the word "whale". There are three ways the dive contents is filtered: 1) Starts with: all words starting with the text in the text box are used to filter the dive list. This means that a dive containing the word "whaleshark" is included in the divelist. 2) Substring: dives with all words that <em>include</em> the text in the full text search box are included in the list. If the full-text box contains "shark", dives containing the word "whaleshark" are also included in the dive list. 3) Full word: filtering is performed strictly using the word in the full-text box. If the full-text box contains "shark", dives containing "whaleshark" are NOT included in the dive list. However if a dive contains "bull shark" it is included in the dive list.</p></div>
-<div class="paragraph"><p>For the fields in the lower half of the panel the filter criteria can be any of the following:</p></div>
-<div class="paragraph"><p>1) Using different text boxes in the <em>Filter panel</em> performs an AND operator on different attributes. For example,
-   typing "Peter" for the Persons attribute and "Sipadan" for the Location attribute results in a dive list containing
-   all dives with Peter at Sipadan.</p></div>
-<div class="paragraph"><p>2) Within a single attribute the "All of" criterion implements an AND operator. For the <em>People</em> attribute in
-   the image below, the filtered dive list contains the dives for which BOTH Bob Smith AND Stefan Schultz
-   were listed as dive buddies/divemaster based on the People information in the <em>Info Panel</em>.</p></div>
-<div class="paragraph"><p>3) The "Any of" criterion implements an OR operator. For the <em>Location</em> attribute in the image below,
-   the filtered dive list contains dives performed EITHER at Simonstad OR at Hout Bay.</p></div>
-<div class="paragraph"><p>4) The "None of" criterion implements a NOT function. For the <em>Suit</em> attribute in the image below,
-   the dive list EXCLUDES all the dives during which a drysuit was used.</p></div>
-<div class="paragraph"><p>5) Empty field. For the <em>Tags</em> and <em>Notes</em> attributes in the image below, an empty text box results
-   in these attributes being not being considered during filtering.</p></div>
+<div class="sect3">
+<h4 id="_defining_constraints">5.6.1. Defining Constraints</h4>
+<div class="paragraph"><p>However, filtering can be performed in a much more precise way by adding constraints to the filter panel.
+Clicking the <em>Load Constraints</em> button (located near the top left-hand of the filter panel) brings up a list of
+the terms that could be selected for filtering the <strong>Dive List</strong>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/FilterOptions.jpg" alt="Figure: Filter options" />
+<img src="images/FilterConstraints.png" alt="Figure: Filter:Constraints list" />
 </div>
 </div>
-<div class="paragraph"><p>At the top of the <em>Filter Panel</em> the <strong>yellow up-arrow</strong> is used for resetting the filter to show all dives,
-and a <strong>red button</strong> with white cross closes the filter panel.</p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="./images/icons/important.png" alt="Important" />
-</td>
-<td class="content">The filter action can only be stopped by using the <em>Reset Filter</em> button (yellow up-arrow) or
-by manually clearing all the filter text boxes. Closing the <em>Filter Panel</em> does not terminate
+<div class="paragraph"><p>For instance, selecting the constraint "Location" from this list adds a line to
+the filter panel for specifying the location constraint. For instance, typing "Sodwana" into the Locality
+text box brings up all the dives for which the dive location was given as Sodwana. There are two combo-boxes
+associated with the Location constraint. Selecting "is not" from the first combobox allows showing all the dives
+that were NOT performed at Sodwana. The second combobox operates in a similar way to that of the Full-text filter
+as described above (first part of word, complete word, contains-word). Constraints can be refined in one of two ways:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/FilterOR.png" alt="Figure: Filter: OR operation" />
+</div>
+</div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Filtering dives at more than one site: I may wish to list dives at Sodwana <strong>as well as</strong> at Aliwal (a logical OR operation).
+In this case type both dive sites into the text box, separated by a comma (see image below).
+</p>
+</li>
+<li>
+<p>
+Filtering some dive at a dive site: I may wish to list only the dives at 2 Mile Reef at Sodwana. However the
+way I entered the dive locations for dives was not consistent (some cases "2 Mile Reef Sodwana", other cases
+"Sodwana 2 mile reef"). In that case add a Location constraint, select "with substring" from the combobox and specify "Sodwana". Then add a second
+Location constraint, select "with substring" from the combobox and type "2 mile Reef") in the location text box
+(see image below). This is a logical AND operation. The same principles apply to all constraints
+selectable from the constraints list.
+</p>
+</li>
+</ol></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/FilterAND.png" alt="Figure: Filter: AND operation" />
+</div>
+</div>
+<div class="paragraph"><p>We may wish to refine our selection of dives to show in the <strong>Dive List</strong>. Let&#8217;s say we wish to show dives for which the water
+temperature was  18 °C or higher. Select "Water Temp." from the list of constraints. A line containing this new constraint is added to the filter
+panel. Select "at least" from the combobox on this line and type "18" in the appropriate text box. Below is an image with constraints defined to filter dives at Sodwana with water temperatures at 18 °C or higher.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Filter-LocTemp.png" alt="Figure: Filter:  Stage 2 Filter set construction" />
+</div>
+</div>
+<div class="paragraph"><p>In order to refine our filter we may wish to show only dives on a Tuesday. Select "week day" from the list of constraints. A line
+containing this new constraint is added to the filter panel with a dropdown list of days that are selectable. Select "Tuesday" from the
+list. The image below shows a filter that selects dives at Sodwana on Tuesdays with the water temperature at or above 18 °C.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Filter-LocTempWeek.png" alt="Figure: Filter: Stage 3 Filter set construction" />
+</div>
+</div>
+<div class="paragraph"><p>As a last step in refining our filter we may wish to add another constraint specifying visibility of at least three stars. Select
+"visibility" from the list of constraints. A new line is added to the filter panel, allowing us to select the number of stars
+we require. In this case click on the third star and ensure that the combobox shows "at least". We have now filtered for all dives
+at Sodwana on a Tuesday with water temperature at or above 18 °C and with a 3-star or better visibility.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Filter-LocTempWeekVis.png" alt="Figure: Filter: Stage 4 Filter set construction" />
+</div>
+</div>
+<div class="paragraph"><p>Clearly it is possible to construct highly refined filters. The examples above show only a tiny fraction of the possibilities
+in creating filters.</p></div>
+<div class="paragraph"><p><strong>Deleting a constraint:</strong> A constraint can be removed from the filter by clicking the appropriate dustbin icon on the left of the filter panel.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_filter_sets">5.6.2. Filter Sets</h4>
+<div class="paragraph"><p>We need to define a new term: "Filter sets". A "Filter set" is a combination of constraints that have been defined to form a
+filter, as in our example above. Specifying a filter set (as above) can take some time and experimentation, and we may wish
+to save this set for later use. Save the set by clicking the button "Save set". A text box opens to provide a name for this set.
+Provide a set name, click the OK button and the set is now permanently saved as part of the overall dive log.</p></div>
+<div class="paragraph"><p>If you wish to access the filter set on a later date, click the button "Load set". This provides a list of sets that
+have been saved. Select the set you wish to use. It is loaded into the filter panel, showing the name of the set in the top
+line of the panel immediately following "Current set:"</p></div>
+<div class="paragraph"><p>Filter sets can be deleted by selecting the "Filter sets" tab in the Filter Panel and by clicking on the dustbin icon on the left
+of the appropriate filter set name.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_closing_the_filter_panel">5.6.3. Closing the filter panel</h4>
+<div class="paragraph"><p>The filter action can only be stopped by using the <em>Reset</em> button (yellow up-arrow) or
+by manually deleting any full-text specification as well as all the constraints with associated dustbin icons.
+Closing the <em>Filter Panel</em> does not terminate
 filtering: the filtered dive list remains unchanged. This is obvious from the top bar of the <em>Subsurface</em>
 window indicating that only some of all the dives are shown. Closing the <em>Filter Panel</em> activates the <em>Map Panel</em>,
 allowing viewing the map locations of the filtered dive list. For instance one might wish to filter on
 Bob Smith as a buddy. Closing the <em>Filter Panel</em> allows viewing the map locations where Bob Smith was a buddy.
-To re-open the <em>Filter Panel</em> in this case, select <em>Log &#8594;  Filter divelist</em> from the <em>Main Menu</em>.</td>
+To re-open the <em>Filter Panel</em> in this case, select <em>Log &#8594;  Filter divelist</em> from the <em>Main Menu</em>. To switch
+off filtering and exit the <em>Filter Panel</em>, click on <em>Reset</em> and then on <em>Close</em>.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="S_Stats">5.7. Dive statistics</h3>
+<div class="paragraph"><p>Creating meaningful statistics that convey the information you are looking for is surprisingly hard. Different users have very different needs and very different expectations. Subsurface provides a rather detailed set of statistics features to summarize information from the dive log in a graphical way. To access the dive statistics tool, select <em>Main Menu</em> &#8594; <em>View</em> &#8594; <em>Dive Statistics</em>. This tool is so flexible that it is impossible to cover every possible use case. Rather, we provide a conceptual introduction, followed by specific examples. The tool can be closed using the Close button at the top left. The Statistics tool has four panels (see image below):</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+A setup panel containing comboboxes for requesting a graph (top left).
+</p>
+</li>
+<li>
+<p>
+The graph that has been requested (top right).
+</p>
+</li>
+<li>
+<p>
+The Filter panel (bottom right).
+</p>
+</li>
+<li>
+<p>
+The Dive List, reflecting the dives or dive trips included in the analysis (bottom left).
+</p>
+</li>
+</ol></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsPanel.jpg" alt="Statistics panel" />
+</div>
+</div>
+<div class="sidebarblock" id="S_Stats_Intro">
+<div class="content">
+<div class="paragraph"><p><strong>A diver&#8217;s introduction to statistical graphs</strong></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content">The extreme flexibility of the Statistics tool means that you need to provide detailed information about what information Subsurface should provide. It helps to have a clear objective, a solid understanding of what you want Subsurface to show you. In other words, you need to formulate the correct question. There are so many graphical display options that, if you do not formulate the question correctly, the information is unlikely to be presented in a valid or appropriate way. Because all statistical results in Subsurface are shown as graphs, formulating an appropriate specification requires four steps:</td>
 </tr></table>
+</div>
+<div class="paragraph"><p>a) Which dives do you wish to graph? Perhaps you wish to analyze dives during winter, or dives on tropical reefs, or dives at a specific dive site. Use the Filter panel for selecting those dives. The section on the <a href="#S_Filter"><em>Filter tool</em></a> contains complete instructions for filtering the dive list.</p></div>
+<div class="paragraph"><p>b) Which variable should be displayed along the bottom horizontal axis of the graph? Let&#8217;s say you wish to see how many dives you performed each year. In this case the variable along the bottom horizontal axis would be "Year". Alternatively, if you wished to compare the mean depth of your dives using different suit types, then "Suit type" would be selected as the variable for the bottom horizontal axis. Alternatively, if you wished to visualize the water temperature for dives of different dive depths, then you would select "Max. depth" as the variable on the horizontal axis (see image below). The variable along the horizontal axis is also called the "base variable", the "X-axis variable" or the "independent variable": it defines the basic units or categories used for analysis.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsGraphAxes.jpg" alt="Example: Statistics graph axes" />
+</div>
+</div>
+<div class="paragraph"><p>c) Which variable should be displayed along the left-hand vertical axis of the graph? This is the variable that you are primarily interested in. In some cases this could just be a count such as "No. of dives". However, if you are interested in water temperature at different dive depths, you would select "Water temperature" as the variable along the vertical axis (see image above). In this case you are primarily interested in water temperature, not in dive depth (which would be the variable along the horizontal axis). The variable along the vertical axis is also called the "data variable" or the "dependent variable": it is the variable affected by (or dependent on) the values of the variable along the horizontal axis, as in the graph above.</p></div>
+<div class="paragraph"><p><strong>NB:</strong> Since, in Subsurface, the graphs can be rotated to be horizontally-oriented or vertically oriented, the terms "horizontal axis variable" and "vertical axis variable" are not appropriate. We use the term <strong>Base variable</strong> to denote the conventional horizontal axis variable and the <strong>Data variable</strong> to denote the conventional vertical axis variable.</p></div>
+<div class="paragraph"><p>d) Which chart type do you require? By default Subsurface selects the most appropriate graph type, but this is a user-selectable option. Taking the example of water temperature at various depths above, the image below shows three of the possible chart types of the same data: Image A below shows the raw data by plotting the exact temperature and depth for each dive. Image B, however, groups the dives in 5m depth intervals within which the temperature for each dive is indicated (the red marks are explained below). Image C also groups the dives in 5m depth intervals. However, in this case the minimum, maximum, mean, upper quartile and lower quartile are shown for each depth class.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsGraphOptions.jpg" alt="Statistics graph options" />
+</div>
+</div>
+<div class="paragraph"><p>The point of the discussion above is to show that, <em>before initiating a graph, you need to think carefully about what you want Subsurface to show</em>, at least keeping the above four aspects in consideration.</p></div>
+<div class="paragraph"><p><strong>A more technical note on the valid use of statistical graphs</strong></p></div>
+<div class="paragraph"><p>When graphing variables from a dive log, there is an important distinction between <em>continuous variables</em> and <em>categorical variables</em>. These two data types are typically graphed in different ways. A continuous variable can theoretically have any value. For instance dive depth can have any value greater than zero (theoretically negative depths indicate height above the water but this is not a practical possibility). Consequently, depths of 21.63857 meters or 44.7653 feet are entirely realistic. Dates are also continuous since the annual value of any particular instant in time can be presented. For instance a dive at 12 noon on April 1st 2020 can be presented by a value of 2020.24726 (90.5/366 days in that leap year). On the other hand dive mode is a categorical variable: there are no values between "Freedive" and "Open circuit" or between "Open Circuit" and "CCR". Other categorical variables include Buddy, Visibility, Rating and Suit type. Different methods are used to represent these two types of variables, evident from the way in which the axes are organized. It is perfectly valid to create a
+graph with a continuous Base variable and a categorical Data variable and <em>vice versa</em>. However, when using a continuous Base variable, use a
+histogram, NOT a bar-chart. The images below show counts of dives at different depths. Image A is a histogram showing that no dives were conducted between 55m and 60m depth. However two dives were performed between 60m and 65m: these two bars (55-60m and 60-65m) have equally important information. Image B shows the bar-chart of the same dataset where depth has been converted to a categorical type. Notice that the two bars with no dives (55-60m and 75-80m) are omitted. Important information is lost because of the use of a bar-chart to represent continuous data.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsDataTypes.jpg" alt="Statistics: bar-charts of continuous and categorical data types" />
+</div>
+</div>
+</div></div>
+<div class="sect3">
+<h4 id="_graphs_of_counts_data">5.7.1. Graphs of counts data</h4>
+<div class="paragraph"><p>By default, when the Statistics panel is opened, a histogram is shown of the number of dives performed each year. This is an example of <strong>counts</strong> data. To request a graph representing counts, three comboboxes need to be set:</p></div>
+<div class="paragraph"><p>a) The top combobox of the Base variable needs to be specified. Which variable should be along the horizontal axis? Examples are Year, Buddy, Rating, Max. depth.</p></div>
+<div class="paragraph"><p>b) The binning combobox for the Base variable needs to be specified. This represents the increment for each bar along the horizontal axis. For instance, when counts of number of dives are extracted for years, this could be in increments of a year, a quarter (3 month period) or a month. For some variables, e.g. Buddy or Rating, a binning value is not relevant and cannot be selected. However, for others, e.g. Year or Max. depth, selecting the appropriate binning is important.</p></div>
+<div class="paragraph"><p>c) For simple counts data, the top combobox of the Data variable needs to be set to "none". This is because a data variable is not involved in this type of graph. Divers used to spreadsheets may prefer a <strong>pie chart</strong> for these data, achieved by selecting "Categorical/piechart" from the Chart combobox. It is possible to simultaneously provide counts for two variables. In this case one could specify a Data variable which results in the counts being subdivided according to the data variable. This option does not have a piechart equivalent. Detailed information for each bar can be obtained by hovering the mouse over the the appropriate bar.</p></div>
+<div class="paragraph"><p>For simple histograms, the default height of each bar is determined by the mean value for the observations included in each bar. However, this can be manipulated using the Operation combobox to show the mean, maximum, minimum, median and sum applicable to each bar. Image A below shows quarterly count data of dives while image B shows quarterly count data, subdivided by dive mode (some dives open circuit, other dives rebreather). The mouse is positioned over a specific bar to provide detailed information. The legend can be dragged around so that it does not obscure part of the graph. Alternatively, the legend can be removed by deselecting the appropriate checkbox at the bottom left of the setup panel.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsCountsData.jpg" alt="Counts data example" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scattergraphs">5.7.2. Scattergraphs</h4>
+<div class="paragraph"><p>Sometimes you might wish to investigate the relationship between two dive variables. Has my SAC rate decreased over the years? Is the water temperature colder at greater dive depth? One of the ways of investigating these questions is to draw a scattergraph where the values of one variable is plotted against the other variable (see image below).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsRegression.jpg" alt="Regression data example" />
+</div>
+</div>
+<div class="paragraph"><p>For the dataset in the above image, the SAC rate appears to have decreased over time. If the "linear regression" checkbox is marked, a red line is shown that summarizes the best estimate of the relationship between SAC rate and year. In this graph it appears that SAC rate has decreased from around 21 l/min to around 14 l/min between 2013 and 2021. The pink area around the red line indicates the uncertainty of the precise orientation of the line. The line is expected to lie somewhere within the pink area with a certainty of 95%. The intensity of the pink color also indicates the relative reliability of these estimates. The procedure for obtaining a scattergraph is:</p></div>
+<div class="paragraph"><p>a) Specify the Base variable: Which variable should be along the horizontal axis? Examples are Date, Temperature, Max. depth, SAC rate.</p></div>
+<div class="paragraph"><p>b) Set the binning value for the Base variable to "none".</p></div>
+<div class="paragraph"><p>c) Specify the Data variable: Which variable should be along the vertical axis?</p></div>
+<div class="paragraph"><p>Within the scattergraph, hover over a specific point to see more information for that point.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_comparisons_between_categories_of_dives">5.7.3. Comparisons between categories of dives</h4>
+<div class="paragraph"><p>You might also wish to compare different categories of dives. Is the (5-star) Rating of a dive related to water temperature? Is my SAC rate related to diving with different dive suits? Since dive suit and Rating are categories, a scattergraph is not appropriate. The default is a categorical dot graph, which, in the case of image A below, shows the precise water temperatures for each Rating. The red lines indicate the top quartile, the mean and the lower quartile of temperature for each rating. The column with no star indicates dives for which a Rating has not been selected. It appears that dives with a 5-star rating have higher temperatures that the other ratings. To obtain a categorical graph:</p></div>
+<div class="paragraph"><p>a) Select a variable with categories (along the horizontal axis) as a Base variable.</p></div>
+<div class="paragraph"><p>b) Select the data variable and set binning to "none".</p></div>
+<div class="paragraph"><p>c) By default the Chart combobox shows "Categorical/data points". If this is not the case, select this value.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsCategoricalData.jpg" alt="Stats: Comparison of categories" />
+</div>
+</div>
+<div class="paragraph"><p>Alternatively you could create a Box-whisker graph for the same data. In the Chart combobox, select "Categorical/box-whisker". This creates a graph indicating the maximum, top quartile (Q3), median, bottom quartile (Q1) and minimum for each category or class. Image B above shows a box-whisker graph for the same data as image A above. You can see that the values for a Rating of 5 stars tend to be higher than for other ratings. Hover over a box to see more complete information for that box.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_counts_comprising_more_than_one_category_in_a_bar">5.7.4. Counts comprising more than one category in a bar</h4>
+<div class="paragraph"><p>As explained in the section above on counts data, bar-charts showing a breakdown of each category for a number of subcategories is easy (images below).</p></div>
+<div class="paragraph"><p>a) Select a variable with categories (along the horizontal axis) as a Base variable (e.g. dive mode or suite type).</p></div>
+<div class="paragraph"><p>b) Select another category of data as a Data variable (e.g. gas type or cylinder type).</p></div>
+<div class="paragraph"><p>The images below show two alternative bar-chart representations. If, in the Chart combobox, one selects "Barchart/stacked vertical", a graph similar to image A below is generated. This summarized a log of technical dives where, for each cylinder gas type, the bar is subdivided into a count for open-circuit dives and for rebreather dives. On the other hand, if "Barchart/grouped vertical" is selected in the Chart combobox, a graph similar to image B, below, is produced. Here the subdivision within each gas type is shown as adjacent bars.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsBarchartSubdivided.jpg" alt="Stats subdivided barchart" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_graph_orientation">5.7.5. Graph orientation</h4>
+<div class="paragraph"><p>Bar-charts can be rotated by 90 degrees by selecting the appropriate chart type in the Chart combobox. For instance, here is the horizontal bar-chart produced when selecting "Barchart/stacked horizontal" in the Chart combobox and using the same dataset as in the graph above. This is useful if the labels for different bars are long, preventing them being displayed with vertical bar charts.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsBarchartHorizontal.jpg" alt="Stats: Horizontal comparison of categories" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rapid_graphing_of_subsets_of_data_in_a_graph_restricting_the_displayed_data">5.7.6. Rapid graphing of subsets of data in a graph (restricting the displayed data)</h4>
+<div class="paragraph"><p>Let&#8217;s say you are viewing a bar graph showing mean maximum dive depth for different years. However two of the years have dive
+depth values that appear atypical and you wish to inspect the dives only for those two years. The obvious approach is to use the <a href="#S_Filter">Filter tool</a>
+to select only data for the two years of interest and then view those data using the Statistics panel. However,
+<em>Subsurface</em> provides a rapid mechanism of selecting the appropriate subset of data using your mouse. In the above example of a bar graph,
+select the bars for the two years of interest by clicking on them and activate the "Restrict to selection" button towards the bottom left
+of the Statistics panel.
+This displays only the data for the two bars that have been selected. This restricted subset can now be analyzed
+using all the options in the Statistics panel. Below is a scattergraph for a number of dives, showing the water temperature for different dive depths.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsRestricted.jpg" alt="Stats: Selecting restricted data" />
+</div>
+</div>
+<div class="paragraph"><p>Let&#8217;s say you wish to analyze only dives at tropical dive sites, defined by temperatures above 22°C and depths less than 60m. Select the
+appropriate dives by dragging your mouse across the scattergraph (see image above) and restrict the data by activating the "Restrict to selection" button.
+Now only the selected subset of points is shown on the graph. You can now select <strong>Base</strong> and <strong>Data</strong> variables to further analyze the restricted data.
+The graph below shows the SAC rates as a function of dive depth for the restricted dataset created
+above. The graph shows that SAC rate was more or less constant (around 15 l/min) for all dive depths at tropical dive sites.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/StatsRestrictedGraph.jpg" alt="Stats: Showing restricted data" />
+</div>
+</div>
+<div class="paragraph"><p>The ability to rapidly create subsets of data for display (using the restriction tool) creates a powerful mechanism to do rapid but detailed analysis of a dive log.</p></div>
+<div class="paragraph"><p>After creating a data subset, The text in the restriction tool indicates the number of dives in the subset that has been selected. Note, in the figure above, that a
+previously greyed-out button, "Reset restriction", has been made active after restricting
+the data for graphing. The original dataset can be restored by clicking the "Reset restriction" button. The text in the restriction tool now shows "Analyzing all dives".</p></div>
 </div>
 </div>
 </div>
@@ -4037,7 +4312,7 @@ it may happen that the dive computer does not register a new dive, but continues
 the previous dive due to the brief surface interval. In this case it is possible to
 split a dive so that the two dives are shown as independent dives on the <strong>Dive List</strong>.
 If this operation is performed, <em>Subsurface</em> scans the selected dive(s) and splits the
-dive at points during the dive where the depth is less than a metre.</p></div>
+dive at points during the dive where the depth is less than a meter.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_load_image_s_from_file_s">6.4.7. Load image(s) from file(s)</h4>
@@ -4122,7 +4397,7 @@ Universal Dive Data Format (<em>UDDF</em>). Refer to <em>http://uddf.org</em> fo
 </li>
 <li>
 <p>
-<em>CSV Computer Profile Panel daata</em>. This option exports the information presented in the <em>Profile Panel</em>.
+<em>CSV Computer Profile Panel data</em>. This option exports the information presented in the <em>Profile Panel</em>.
   The <em>Profile panel</em> contains many calculated  and interpolated values, e.g. SAC,
   cylinder pressure, decompression ceilings, gas partial pressures and interpolated depths. These
   data therefore differ from the raw dive information imported from a dive computer. This export option
@@ -4310,7 +4585,7 @@ address confirmation)
 <li>
 <p>
 Click <em>Apply</em> again. The <em>Subsurface cloud storage</em> account
-will be marked as verified and the <em>Subsurface cloud storage</em> service is initialised for use.
+will be marked as verified and the <em>Subsurface cloud storage</em> service is initialized for use.
 </p>
 </li>
 </ul></div>
@@ -4421,7 +4696,7 @@ family members/friends. There are two approaches for doing this.</p></div>
   each diver to interact with <em>Subsurface</em> in her/his preferred way and with individual cloud access. The above
   process can be made user-friendly by creating a link/shortcut with a desktop icon that executes the above
   command-line instruction. Use of the <em>--user=</em> option therefore enables each user to create, maintain and
-  backup a separate dive log within a personalised user interface. This way, when each diver launches <em>Subsurface</em>,
+  backup a separate dive log within a personalized user interface. This way, when each diver launches <em>Subsurface</em>,
   it opens with the correct dive log as well as the appropriate display and backup preferences, and each diver
   can access their own divelog on a mobile device using <a href="https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual"><em>Subsurface-Mobile</em></a>.</p></div>
 <div class="paragraph"><p><strong>B)</strong> On the other hand, if the users log onto the same computer using different userIDs and passwords (i.e. users each
@@ -4780,7 +5055,7 @@ the log.</p></div>
 </li>
 <li>
 <p>
-<strong>Allow editing of water salinity</strong>: The <strong>Information</strong> tab has a tool for displaying the water salinity, i.e the type of
+<strong>Allow editing of water salinity</strong>: The <strong>Information</strong> tab has a tool for displaying the water salinity, i.e. the type of
      water dived in and its salinity. In the case of manually-entered dives, editing of water type is <strong>always</strong> active.
      In some cases one may want to edit the water type of a dive derived from a dive log. For instance you left the dive computer
      setting as "Salt water" while actually diving in an inland lake with fresh water. In this case you may wish to edit the
@@ -4803,7 +5078,7 @@ the log.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_equipment">12.6. Equipment</h3>
-<div class="paragraph"><p>This tab sets some dedault values relating to equipment.</p></div>
+<div class="paragraph"><p>This tab sets some default values relating to equipment.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref_eqpmnt.jpg" alt="FIGURE: Preferences: equipment" />
@@ -5465,7 +5740,7 @@ In addition to calculating the total gas consumption for every cylinder the plan
 of calculating the recommended volume of bottom gas which is needed for safe ascent to the
 first deco gas change depth or the surface. This procedure is called the "minimum gas" or "rock bottom"
 consideration and it is used by various (but not all)
-technical diving organisations. See the text below for a detailed explanation.</p></div>
+technical diving organizations. See the text below for a detailed explanation.</p></div>
 <div class="paragraph"><p>Now you can start the detailed time-depth planning of the dive. <em>Subsurface</em> offers an unique
 graphical interface for doing planning. The mechanics are
 similar to hand-entering a dive profile in the dive log part of <em>Subsurface</em>. Upon activating the
@@ -5496,7 +5771,7 @@ the surface.</p></div>
 <em>Type</em> select the appropriate cylinder size by using the dropdown list that appears when
 double-clicking a cell in this column. By default, a large number of sizes are listed,
 and a new cylinder size can be created by typing this into the text box. The cylinder size, start pressure
-and default switch depths are initialised automatically. Specify the gas composition
+and default switch depths are initialized automatically. Specify the gas composition
 (e.g. helium and oxygen content). A non-zero value in the "CC setpoint" column of the table of dive planner points
 indicates a valid setpoint for oxygen partial pressure and that the segment
 is dived using a closed circuit rebreather (CCR). If the last manually entered
@@ -5600,7 +5875,7 @@ Within parentheses, the <em>SAC factor</em> and <em>Problem solving time</em> sp
 </li>
 <li>
 <p>
-The number of liters of back gas required for a safe ascent (2130 litres in the example above)
+The number of liters of back gas required for a safe ascent (2130 liters in the example above)
 </p>
 </li>
 <li>
@@ -5738,6 +6013,11 @@ using the setpoint of the last manually entered segment. So, to plan a bail out 
 CCR dive, add a one-minute dive segment to the end with a setpoint value of 0. The decompression
 algorithm does not switch deco-gases automatically while in CCR mode (i.e. when a positive setpoint is specified) but
 this is calculated for bail out ascents.</p></div>
+<div class="paragraph"><p>If you want the setpoint to change during the planned ascent at a specified depth, you can do this
+using a "fake" cylinder that you add to the gas list: Give that cylinder a name of "SP 1.4" (or use
+a different number) and set the "Deco switch value" to the depth at which you want to set the new
+setpoint. This will make the planner stop at the specified depth and use the new setpoint from
+there on.</p></div>
 <div class="paragraph"><p>The dive profile for a CCR dive may look something like the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -5868,7 +6148,7 @@ between the planned profile and the real-life profile using the right-arrow/left
 <div class="sect1">
 <h2 id="_running_em_subsurface_em_from_the_command_line">14. Running <em>Subsurface</em> from the command-line</h2>
 <div class="sectionbody">
-<div class="paragraph"><p><em>Subsurface</em> can be launched from the command-line to set some specialised settings or as
+<div class="paragraph"><p><em>Subsurface</em> can be launched from the command-line to set some specialized settings or as
 part of an script-based automated process for manipulating a dive log. The format for launching <em>Subsurface</em> from the
 command-line is:</p></div>
 <div class="literalblock">
@@ -5915,10 +6195,6 @@ cellspacing="0" cellpadding="4">
 <tr>
 <td align="left" valign="top"><p class="table">--version</p></td>
 <td align="left" valign="top"><p class="table">Prints the current version of <em>Subsurface</em></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table">--survey</p></td>
-<td align="left" valign="top"><p class="table">Opens the <a href="#S_UserSurvey">user survey</a> immediately after starting <em>Subsurface</em></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p class="table">--user=&lt;username&gt;</p></td>
@@ -6141,6 +6417,11 @@ The Edit option allows one to undo or redo an action, e.g. deleting dives.
 </li>
 <li>
 <p>
+<a href="#S_Stats"><em>Dive statistics</em></a> - Use the statistics tool.
+</p>
+</li>
+<li>
+<p>
 <em>Yearly Statistics</em> - Display summary statistics about dives during this and past
   years.
 </p>
@@ -6171,12 +6452,6 @@ The Edit option allows one to undo or redo an action, e.g. deleting dives.
 <p>
 <em>Check for updates</em> - Find out whether a newer version of Subsurface is available
   on the <a href="https://subsurface-divelog.org/"><em>Subsurface</em> web site</a>.
-</p>
-</li>
-<li>
-<p>
-<a href="#S_UserSurvey"><em>User survey</em></a>  - Help to make <em>Subsurface</em> even better by taking part in our user survey
-  or by completing another survey if your diving habits have changed.
 </p>
 </li>
 <li>
@@ -6341,7 +6616,7 @@ among the different IDs.
 </li>
 <li>
 <p>
-Under some circumstances this change takes only effect (eg. on Ubuntu) after
+Under some circumstances this change takes only effect (e.g. on Ubuntu) after
 you log out and then log in again.
 </p>
 </li>
@@ -6647,7 +6922,24 @@ the download page for the ScubaPro SmartTrak software.</p></div>
 <div class="paragraph"><p>For Windows, IrDA is not available for Windows 10 and higher.
 For the Apple Mac, IrDA communication via the MCS7780 link is not
 available for OSX 10.6 or higher.
-In addition it is foreseen that the IrDA stack will be phased out in Linux. This is old technology and, even though it is currently more robust, fast and efficient than many other technologies such as Bluetooth, it is not fasionable. If IrDA communication is required for an operating system that does not support it, an easy solution is to run Subsurface in a virtual machine (VM) that contains support for IrDA. A VM (e.g. VMWare or vitualbox) can be installed on most modern operating systems. The only hardware setup required is to route the USB port of the host OS through to the guest OS.</p></div>
+In addition the IrDA stack has been phased out in Linux. This is old technology and, even though it is currently more robust, fast and efficient than many other technologies such as Bluetooth, it is not fashionable. If IrDA communication is required for an operating system that does not support it, an easy solution is to run Subsurface in a virtual machine (VM) that contains support for IrDA. A VM (e.g. VMWare or vitualbox) can be installed on most modern operating systems. The only hardware setup required is to route the USB port of the host OS through to the guest OS.</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph"><p><strong>My desktop computer does not provide for infra-red (IrDA) communication</strong></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Many of the new desktop operation systems (e.g. Windows 10, Linux kernel 4.17 and newer) do not provide support for IrDA-based communication. The underlying kernel drivers for IrDA
+are not provided any more because IrDA is an old technology, not well-maintained any more, thus creating problems on new operating systems such as Windows or Linux. However, in this case, do not stop using your Galileo or other IrDA-dependent dive computer. A way to solve this problem is to create a virtual machine on your desktop with a guest operating system that still does support IrDA. Your existing desktop acts as a host, with the IrDA-supporting operating system running as a guest on your host desktop. This is not a
+complex task but is best done with the help of an IT support person. Virtualization software can be found for all desktop operating systems. In the Microsoft environment, Hyper-V allows virtual machines, as does Parallels on the Apple Mac: however these are proprietary software. VMware is probably the most sophisticated virtualization software, running on all operating systems, but it is also proprietary. Within the open source environment, VirtualBox is available free of
+charge for most current operation systems. Older, potential guest operating systems with IrDA support include Windows 8 and Linux Ubuntu 18.04 LTS (Linux kernel 4.15 or older). Creating a virtual machine allows, for instance, Windows 8 to be run as a guest on
+your Windows 10 (or later) machine. After installing Subsurface on the Windows 8 guest operating system, its IrDA facilities can be used to access an IrDA dongle plugged into the USB port of your Windows 10 (or later) host machine, allowing dive computers dependent on IrDA to download dive data to the guest operating system (Windows 8 in this case). Host and guest can share directories, which facilitates dive log transfer between the two systems.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>The downside of this solution is that the guest operating system needs to be started specially for the IrDA-based download from a dive computer. Install a scaled down version of the guest operating system to minimize its demands on the host system.</p></div>
+</div></div>
 </div>
 <div class="sect2">
 <h3 id="S_ImportingDR5">17.2. Importing from Heinrichs Weikamp DR5</h3>
@@ -7037,7 +7329,7 @@ be directly imported to Subsurface.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_exporting_from_mares_dive_organiser_v2_1">18.3. Exporting from Mares Dive Organiser V2.1</h3>
+<h3 id="_exporting_from_mares_dive_organizer_v2_1">18.3. Exporting from Mares Dive Organizer V2.1</h3>
 <div class="admonitionblock" id="Mares_Export">
 <table><tr>
 <td class="icon">
@@ -7448,6 +7740,14 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table">firstGas</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) first used gas</p></td>
 </tr>
+<tr>
+<td align="left" valign="top"><p class="table">salinity</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) the salinity of the water for the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">waterType</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) the type of the water for the dive</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -7650,7 +7950,7 @@ render as much dives as possible:
 <h3 id="_setting_up_the_appropriate_thumbnails_for_videos_that_are_associated_with_dives">21.1. Setting up the appropriate thumbnails for videos that are associated with dives.</h3>
 <div class="paragraph"><p>In handling video associated with dives, <em>Subsurface</em> needs to create a thumbnail for each video that can be shown
 either on the dive profile or in the <em>Media</em> tab. By default this is a nonspecific placeholder thumbnail.
-To see thumbnails that represent individual videos, <em>Subsurface</em> uses an external program calle <em>FFmpeg</em>.
+To see thumbnails that represent individual videos, <em>Subsurface</em> uses an external program called <em>FFmpeg</em>.
 To create thumbnails for videos, do two things:</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
@@ -7760,7 +8060,7 @@ Remember: one ATM is ~1.013 bar, so without the compressibility, your gas use is
 <div class="paragraph"><p>which is about 1445, not 1464. So there was 19 l too much in your simple
 calculation that ignored the difference between 1 bar and one ATM.
 The compressibility does show up above 200 bar, and takes that 1445 down
-about eight litres more, so you really did use only about 1437 l of air at surface pressure.</p></div>
+about eight liters more, so you really did use only about 1437 l of air at surface pressure.</p></div>
 <div class="paragraph"><p>So be happy: your SAC really is better than your calculations indicated.
 Or be sad: your cylinder contains less air than you thought it did.
 And as mentioned, the "contains less air than you thought it did" really
@@ -7804,7 +8104,7 @@ cannot be salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-04-19 12:15:52 PDT
+ 2021-06-03 08:27:23 PDT
 </div>
 </div>
 </body>
