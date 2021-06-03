@@ -28,7 +28,7 @@ public:
 		LeftToRight,
 		RightToLeft
 	};
-	DiveCartesianAxis(ProfileWidget2 *widget);
+	DiveCartesianAxis(double fontPrintScale, ProfileWidget2 *widget);
 	~DiveCartesianAxis();
 	void setPrintMode(bool mode);
 	void setMinimum(double minimum);
@@ -70,12 +70,13 @@ protected:
 	double labelScale;
 	qreal line_size;
 	bool changed;
+	double fontPrintScale;
 };
 
 class DepthAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	DepthAxis(ProfileWidget2 *widget);
+	DepthAxis(double fontPrintScale, ProfileWidget2 *widget);
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
@@ -106,7 +107,7 @@ private:
 class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	PartialGasPressureAxis(const DivePlotDataModel &model, ProfileWidget2 *widget);
+	PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, ProfileWidget2 *widget);
 public
 slots:
 	void update();

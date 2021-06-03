@@ -13,17 +13,13 @@ class DiveTextItem : public QObject, public QGraphicsItemGroup {
 	Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 	Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 public:
-	DiveTextItem(QGraphicsItem *parent = 0);
+	DiveTextItem(double printScale, QGraphicsItem *parent = 0);
 	void setText(const QString &text);
 	void setAlignment(int alignFlags);
 	void setScale(double newscale);
 	void setBrush(const QBrush &brush);
 	const QString &text();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
-private
-slots:
-	void fontPrintScaleUpdate(double scale);
 
 private:
 	void updateText();
@@ -33,7 +29,6 @@ private:
 	QString internalText;
 	double printScale;
 	double scale;
-	bool connected;
 };
 
 #endif // DIVETEXTITEM_H
