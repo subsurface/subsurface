@@ -108,17 +108,17 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
 #endif
-	profileYAxis(new DepthAxis(this)),
-	gasYAxis(new PartialGasPressureAxis(*dataModel, this)),
-	temperatureAxis(new TemperatureAxis(this)),
-	timeAxis(new TimeAxis(this)),
-	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0)),
-	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1)),
-	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1)),
-	cylinderPressureAxis(new DiveCartesianAxis(this)),
-	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1)),
-	diveComputerText(new DiveTextItem()),
-	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1)),
+	profileYAxis(new DepthAxis(fontPrintScale, this)),
+	gasYAxis(new PartialGasPressureAxis(*dataModel, fontPrintScale, this)),
+	temperatureAxis(new TemperatureAxis(fontPrintScale, this)),
+	timeAxis(new TimeAxis(fontPrintScale, this)),
+	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0, fontPrintScale)),
+	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
+	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, fontPrintScale)),
+	cylinderPressureAxis(new DiveCartesianAxis(fontPrintScale, this)),
+	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
+	diveComputerText(new DiveTextItem(fontPrintScale)),
+	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
 	pn2GasItem(createPPGas(DivePlotDataModel::PN2, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
 	pheGasItem(createPPGas(DivePlotDataModel::PHE, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold)),
 	po2GasItem(createPPGas(DivePlotDataModel::PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
@@ -127,17 +127,17 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 	ccrsensor2GasItem(createPPGas(DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1)),
-	decoModelParameters(new DiveTextItem()),
+	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
+	decoModelParameters(new DiveTextItem(fontPrintScale)),
 #ifndef SUBSURFACE_MOBILE
-	heartBeatAxis(new DiveCartesianAxis(this)),
-	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1)),
-	percentageAxis(new DiveCartesianAxis(this)),
+	heartBeatAxis(new DiveCartesianAxis(fontPrintScale, this)),
+	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, fontPrintScale)),
+	percentageAxis(new DiveCartesianAxis(fontPrintScale, this)),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
 #endif
-	tankItem(new TankItem(*timeAxis)),
+	tankItem(new TankItem(*timeAxis, fontPrintScale)),
 	shouldCalculateMax(true),
 	fontPrintScale(fontPrintScale)
 {
@@ -305,9 +305,9 @@ void ProfileWidget2::setupItemOnScene()
 	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 #ifndef SUBSURFACE_MOBILE
 	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1);
+		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, fontPrintScale);
 		allTissues.append(tissueItem);
-		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i);
+		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i, fontPrintScale);
 		allPercentages.append(percentageItem);
 	}
 #endif
@@ -335,7 +335,7 @@ void ProfileWidget2::replot()
 PartialPressureGasItem *ProfileWidget2::createPPGas(int column, color_index_t color, color_index_t colorAlert,
 						    const double *thresholdSettingsMin, const double *thresholdSettingsMax)
 {
-	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column, 99);
+	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column, 99, fontPrintScale);
 	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
 	item->setColors(getColor(color, isGrayscale), getColor(colorAlert, isGrayscale));
 	return item;
@@ -709,7 +709,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 		// printMode is always selected for SUBSURFACE_MOBILE due to font problems
 		// BUT events are wanted.
 #endif
-		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix, dataModel, timeAxis, profileYAxis, animSpeed, getFontPrintScale());
+		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix, dataModel, timeAxis, profileYAxis, animSpeed, fontPrintScale);
 		item->setZValue(2);
 		scene()->addItem(item);
 		eventItems.push_back(item);
