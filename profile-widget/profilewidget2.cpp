@@ -1505,11 +1505,9 @@ void ProfileWidget2::addSetpointChange(int seconds)
 
 void ProfileWidget2::splitDive(int seconds)
 {
-#ifndef SUBSURFACE_MOBILE
 	if (!d)
 		return;
 	Command::splitDives(mutable_dive(), duration_t{ seconds });
-#endif
 }
 
 void ProfileWidget2::changeGas(int tank, int seconds)
