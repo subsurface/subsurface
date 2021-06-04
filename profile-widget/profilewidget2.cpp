@@ -1582,11 +1582,6 @@ void ProfileWidget2::changeGas(int tank, int seconds)
 }
 #endif
 
-bool ProfileWidget2::getPrintMode() const
-{
-	return printMode;
-}
-
 void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 {
 	printMode = mode;
