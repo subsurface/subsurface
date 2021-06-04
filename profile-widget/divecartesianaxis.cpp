@@ -132,7 +132,7 @@ void emptyList(QList<T *> &list, int steps, int speed)
 
 void DiveCartesianAxis::updateTicks(color_index_t color)
 {
-	if (!scene() || (!changed && !profileWidget->getPrintMode()))
+	if (!scene() || (!changed && !printMode))
 		return;
 	QLineF m = line();
 	// unused so far:
