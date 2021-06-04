@@ -45,7 +45,6 @@ void DiveCartesianAxis::setMaximum(double maximum)
 		return;
 	max = maximum;
 	changed = true;
-	emit maxChanged();
 }
 
 void DiveCartesianAxis::setMinimum(double minimum)
