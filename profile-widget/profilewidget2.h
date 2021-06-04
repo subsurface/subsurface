@@ -85,7 +85,6 @@ public:
 	void setPlanState(const struct dive *d, int dc);
 	void setAddState(const struct dive *d, int dc);
 	void setPrintMode(bool mode, bool grayscale = false);
-	bool getPrintMode() const;
 	bool isPointOutOfBoundaries(const QPointF &point) const;
 	bool isPlanner() const;
 	double getFontPrintScale() const;
