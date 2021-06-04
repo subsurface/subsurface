@@ -11,12 +11,7 @@
 /* This is the Profile Item, it should be used for quite a lot of things
  on the profile view. The usage should be pretty simple:
 
- DiveProfileItem *profile = new DiveProfileItem( DiveDataModel );
- profile->setVerticalAxis( profileYAxis );
- profile->setHorizontalAxis( timeAxis );
- profile->setModel( DiveDataModel );
- profile->setHorizontalDataColumn( DiveDataModel::TIME );
- profile->setVerticalDataColumn( DiveDataModel::DEPTH );
+ DiveProfileItem *profile = new DiveProfileItem(DiveDataModel, timeAxis, DiveDataModel::TIME, DiveDataModel, DiveDataModel::DEPTH, fontPrintScale);
  scene()->addItem(profile);
 
  This is a generically item and should be used as a base for others, I think...
