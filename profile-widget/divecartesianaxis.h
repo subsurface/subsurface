@@ -53,7 +53,6 @@ public:
 
 signals:
 	void sizeChanged();
-	void maxChanged();
 
 protected:
 	ProfileWidget2 *profileWidget;
