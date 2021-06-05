@@ -170,6 +170,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	profile-widget/diveeventitem.cpp \
 	profile-widget/diveprofileitem.cpp \
 	profile-widget/profilewidget2.cpp \
+	profile-widget/profilescene.cpp \
 	profile-widget/ruleritem.cpp \
 	profile-widget/animationfunctions.cpp \
 	profile-widget/divepixmapitem.cpp \
@@ -325,6 +326,7 @@ HEADERS += \
 	profile-widget/qmlprofile.h \
 	profile-widget/diveprofileitem.h \
 	profile-widget/profilewidget2.h \
+	profile-widget/profilescene.h \
 	profile-widget/ruleritem.h \
 	profile-widget/diveeventitem.h \
 	profile-widget/divetooltipitem.h \

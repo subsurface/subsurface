@@ -22,6 +22,8 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	divetooltipitem.h
 	profilewidget2.cpp
 	profilewidget2.h
+	profilescene.cpp
+	profilescene.h
 	ruleritem.cpp
 	ruleritem.h
 	tankitem.cpp
