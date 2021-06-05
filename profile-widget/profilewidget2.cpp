@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/profilewidget2.h"
+#include "profile-widget/profilescene.h"
 #include "qt-models/diveplotdatamodel.h"
 #include "core/event.h"
 #include "core/subsurface-string.h"
@@ -96,6 +97,7 @@ T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z
 }
 
 ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fontPrintScale, QWidget *parent) : QGraphicsView(parent),
+	profileScene(new ProfileScene),
 	currentState(INVALID),
 	dataModel(new DivePlotDataModel(this)),
 	plannerModel(plannerModelIn),
@@ -463,7 +465,7 @@ ItemPos::ItemPos()
 
 void ProfileWidget2::setupSceneAndFlags()
 {
-	setScene(new QGraphicsScene(this));
+	setScene(profileScene.get());
 	scene()->setSceneRect(0, 0, 100, 100);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

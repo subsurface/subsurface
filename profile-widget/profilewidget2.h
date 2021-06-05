@@ -24,6 +24,7 @@
 #include "core/units.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
+class ProfileScene;
 class RulerItem2;
 struct dive;
 struct plot_info;
@@ -82,6 +83,7 @@ public:
 #ifndef SUBSURFACE_MOBILE
 	bool eventFilter(QObject *, QEvent *) override;
 #endif
+	std::unique_ptr<ProfileScene> profileScene;
 	State currentState;
 	int animSpeed;
 
