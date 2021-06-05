@@ -11,7 +11,9 @@ struct event;
 class DiveEventItem : public DivePixmapItem {
 	Q_OBJECT
 public:
-	DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix, QGraphicsItem *parent = 0);
+	DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix,
+		      DivePlotDataModel *model, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
+		      int speed, QGraphicsItem *parent = nullptr);
 	~DiveEventItem();
 	struct event *getEvent();
 	void eventVisibilityChanged(const QString &eventName, bool visible);
