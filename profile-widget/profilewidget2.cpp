@@ -466,10 +466,8 @@ ItemPos::ItemPos()
 void ProfileWidget2::setupSceneAndFlags()
 {
 	setScene(profileScene.get());
-	scene()->setSceneRect(0, 0, 100, 100);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	scene()->setItemIndexMethod(QGraphicsScene::NoIndex);
 	setOptimizationFlags(QGraphicsView::DontSavePainterState);
 	setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);

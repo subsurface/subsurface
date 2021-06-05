@@ -3,6 +3,8 @@
 
 ProfileScene::ProfileScene()
 {
+	setSceneRect(0, 0, 100, 100);
+	setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
 ProfileScene::~ProfileScene()
