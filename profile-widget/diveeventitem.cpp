@@ -14,14 +14,18 @@
 
 #define DEPTH_NOT_FOUND (-2342)
 
-DiveEventItem::DiveEventItem(QGraphicsItem *parent) : DivePixmapItem(parent),
+DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix, QGraphicsItem *parent) : DivePixmapItem(parent),
 	vAxis(NULL),
 	hAxis(NULL),
 	dataModel(NULL),
-	internalEvent(NULL),
-	dive(NULL)
+	internalEvent(clone_event(ev)),
+	dive(d)
 {
 	setFlag(ItemIgnoresTransformations);
+
+	setupPixmap(lastgasmix);
+	setupToolTipString(lastgasmix);
+	recalculatePos(0);
 }
 
 DiveEventItem::~DiveEventItem()
@@ -52,19 +56,6 @@ void DiveEventItem::setVerticalAxis(DiveCartesianAxis *axis, int speed)
 struct event *DiveEventItem::getEvent()
 {
 	return internalEvent;
-}
-
-void DiveEventItem::setEvent(const struct dive *d, struct event *ev, struct gasmix lastgasmix)
-{
-	if (!ev)
-		return;
-
-	dive = d;
-	free(internalEvent);
-	internalEvent = clone_event(ev);
-	setupPixmap(lastgasmix);
-	setupToolTipString(lastgasmix);
-	recalculatePos(0);
 }
 
 void DiveEventItem::setupPixmap(struct gasmix lastgasmix)

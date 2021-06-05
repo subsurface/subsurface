@@ -725,11 +725,10 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 		// printMode is always selected for SUBSURFACE_MOBILE due to font problems
 		// BUT events are wanted.
 #endif
-		DiveEventItem *item = new DiveEventItem();
+		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix);
 		item->setHorizontalAxis(timeAxis);
 		item->setVerticalAxis(profileYAxis, qPrefDisplay::animation_speed());
 		item->setModel(dataModel);
-		item->setEvent(d, event, lastgasmix);
 		item->setZValue(2);
 #ifndef SUBSURFACE_MOBILE
 		item->setScale(printMode ? 4 :1);
