@@ -1419,7 +1419,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
 		m.addAction(tr("Hide similar events"), [this, item] { hideEvents(item); });
-		struct event *dcEvent = item->getEvent();
+		const struct event *dcEvent = item->getEvent();
 		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK)
 			m.addAction(tr("Edit name"), [this, item] { editName(item); });
 #if 0 // TODO::: FINISH OR DISABLE
@@ -1496,7 +1496,7 @@ void ProfileWidget2::makeFirstDC()
 
 void ProfileWidget2::hideEvents(DiveEventItem *item)
 {
-	struct event *event = item->getEvent();
+	const struct event *event = item->getEvent();
 
 	if (QMessageBox::question(this,
 				  TITLE_OR_TEXT(tr("Hide events"), tr("Hide all %1 events?").arg(event->name)),
@@ -1529,7 +1529,7 @@ void ProfileWidget2::unhideEvents()
 
 void ProfileWidget2::removeEvent(DiveEventItem *item)
 {
-	struct event *event = item->getEvent();
+	struct event *event = item->getEventMutable();
 	if (!event || !d)
 		return;
 
@@ -1622,7 +1622,7 @@ double ProfileWidget2::getFontPrintScale() const
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::editName(DiveEventItem *item)
 {
-	struct event *event = item->getEvent();
+	struct event *event = item->getEventMutable();
 	if (!event || !d)
 		return;
 	bool ok;

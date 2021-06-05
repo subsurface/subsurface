@@ -20,7 +20,7 @@ DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasm
 	vAxis(vAxis),
 	hAxis(hAxis),
 	dataModel(model),
-	internalEvent(clone_event(ev)),
+	ev(ev),
 	dive(d)
 {
 	setFlag(ItemIgnoresTransformations);
@@ -36,12 +36,16 @@ DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasm
 
 DiveEventItem::~DiveEventItem()
 {
-	free(internalEvent);
 }
 
-struct event *DiveEventItem::getEvent()
+const struct event *DiveEventItem::getEvent() const
 {
-	return internalEvent;
+	return ev;
+}
+
+struct event *DiveEventItem::getEventMutable()
+{
+	return ev;
 }
 
 void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
@@ -63,17 +67,17 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
 
 #define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(sz_pix, sz_pix, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 #define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(sz_bigger, sz_bigger, Qt::KeepAspectRatio, Qt::SmoothTransformation)
-	if (empty_string(internalEvent->name)) {
+	if (empty_string(ev->name)) {
 		setPixmap(EVENT_PIXMAP(":status-warning-icon"));
-	} else if (same_string_caseinsensitive(internalEvent->name, "modechange")) {
-		if (internalEvent->value == 0)
+	} else if (same_string_caseinsensitive(ev->name, "modechange")) {
+		if (ev->value == 0)
 			setPixmap(EVENT_PIXMAP(":bailout-icon"));
 		else
 			setPixmap(EVENT_PIXMAP(":onCCRLoop-icon"));
-	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
+	} else if (ev->type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(EVENT_PIXMAP(":dive-bookmark-icon"));
-	} else if (event_is_gaschange(internalEvent)) {
-		struct gasmix mix = get_gasmix_from_event(dive, internalEvent);
+	} else if (event_is_gaschange(ev)) {
+		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		struct icd_data icd_data;
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (mix.he.permille) {
@@ -98,13 +102,13 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
 				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-icon"));
 		}
 #ifdef SAMPLE_FLAGS_SEVERITY_SHIFT
-	} else if ((((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
+	} else if ((((ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
 		    // those are useless internals of the dive computer
 #else
 	} else if (
 #endif
-		   same_string_caseinsensitive(internalEvent->name, "heading") ||
-		   (same_string_caseinsensitive(internalEvent->name, "SP change") && internalEvent->time.seconds == 0)) {
+		   same_string_caseinsensitive(ev->name, "heading") ||
+		   (same_string_caseinsensitive(ev->name, "SP change") && ev->time.seconds == 0)) {
 		// 2 cases:
 		// a) some dive computers have heading in every sample
 		// b) at t=0 we might have an "SP change" to indicate dive type
@@ -116,26 +120,26 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
 		transparentPixmap.fill(QColor::fromRgbF(1.0, 1.0, 1.0, 0.01));
 		setPixmap(transparentPixmap);
 #ifdef SAMPLE_FLAGS_SEVERITY_SHIFT
-	} else if (((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 2) {
+	} else if (((ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 2) {
 		setPixmap(EVENT_PIXMAP(":status-info-icon"));
-	} else if (((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 3) {
+	} else if (((ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 3) {
 		setPixmap(EVENT_PIXMAP(":status-warning-icon"));
-	} else if (((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 4) {
+	} else if (((ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 4) {
 		setPixmap(EVENT_PIXMAP(":status-violation-icon"));
 #endif
-	} else if (same_string_caseinsensitive(internalEvent->name, "violation") || // generic libdivecomputer
-		   same_string_caseinsensitive(internalEvent->name, "Safety stop violation")  || // the rest are from the Uemis downloader
-		   same_string_caseinsensitive(internalEvent->name, "pO₂ ascend alarm")  ||
-		   same_string_caseinsensitive(internalEvent->name, "RGT alert")  ||
-		   same_string_caseinsensitive(internalEvent->name, "Dive time alert")  ||
-		   same_string_caseinsensitive(internalEvent->name, "Low battery alert")  ||
-		   same_string_caseinsensitive(internalEvent->name, "Speed alarm")) {
+	} else if (same_string_caseinsensitive(ev->name, "violation") || // generic libdivecomputer
+		   same_string_caseinsensitive(ev->name, "Safety stop violation")  || // the rest are from the Uemis downloader
+		   same_string_caseinsensitive(ev->name, "pO₂ ascend alarm")  ||
+		   same_string_caseinsensitive(ev->name, "RGT alert")  ||
+		   same_string_caseinsensitive(ev->name, "Dive time alert")  ||
+		   same_string_caseinsensitive(ev->name, "Low battery alert")  ||
+		   same_string_caseinsensitive(ev->name, "Speed alarm")) {
 		setPixmap(EVENT_PIXMAP(":status-violation-icon"));
-	} else if (same_string_caseinsensitive(internalEvent->name, "non stop time") || // generic libdivecomputer
-		   same_string_caseinsensitive(internalEvent->name, "safety stop") ||
-		   same_string_caseinsensitive(internalEvent->name, "safety stop (voluntary)") ||
-		   same_string_caseinsensitive(internalEvent->name, "Tank change suggested") || // Uemis downloader
-		   same_string_caseinsensitive(internalEvent->name, "Marker")) {
+	} else if (same_string_caseinsensitive(ev->name, "non stop time") || // generic libdivecomputer
+		   same_string_caseinsensitive(ev->name, "safety stop") ||
+		   same_string_caseinsensitive(ev->name, "safety stop (voluntary)") ||
+		   same_string_caseinsensitive(ev->name, "Tank change suggested") || // Uemis downloader
+		   same_string_caseinsensitive(ev->name, "Marker")) {
 		setPixmap(EVENT_PIXMAP(":status-info-icon"));
 	} else {
 		// we should do some guessing based on the type / name of the event;
@@ -149,20 +153,20 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
 void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 {
 	// we display the event on screen - so translate
-	QString name = gettextFromC::tr(internalEvent->name);
-	int value = internalEvent->value;
-	int type = internalEvent->type;
+	QString name = gettextFromC::tr(ev->name);
+	int value = ev->value;
+	int type = ev->type;
 
-	if (event_is_gaschange(internalEvent)) {
+	if (event_is_gaschange(ev)) {
 		struct icd_data icd_data;
-		struct gasmix mix = get_gasmix_from_event(dive, internalEvent);
+		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		struct membuffer mb = {};
 		name += ": ";
 		name += gasname(mix);
 
 		/* Do we have an explicit cylinder index?  Show it. */
-		if (internalEvent->gas.index >= 0)
-			name += tr(" (cyl. %1)").arg(internalEvent->gas.index + 1);
+		if (ev->gas.index >= 0)
+			name += tr(" (cyl. %1)").arg(ev->gas.index + 1);
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (icd_data.dHe < 0) {
 			put_format(&mb, "\n%s %s:%+.3g%% %s:%+.3g%%%s%+.3g%%",
@@ -173,25 +177,25 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 			name += QString::fromUtf8(mb.buffer, mb.len);
 			free_buffer(&mb);
 		}
-	} else if (same_string(internalEvent->name, "modechange")) {
-		name += QString(": %1").arg(gettextFromC::tr(divemode_text_ui[internalEvent->value]));
+	} else if (same_string(ev->name, "modechange")) {
+		name += QString(": %1").arg(gettextFromC::tr(divemode_text_ui[ev->value]));
 	} else if (value) {
-		if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
+		if (type == SAMPLE_EVENT_PO2 && same_string(ev->name, "SP change")) {
 			name += QString(": %1bar").arg((double)value / 1000, 0, 'f', 1);
-		} else if (type == SAMPLE_EVENT_CEILING && same_string(internalEvent->name, "planned waypoint above ceiling")) {
+		} else if (type == SAMPLE_EVENT_CEILING && same_string(ev->name, "planned waypoint above ceiling")) {
 			const char *depth_unit;
 			double depth_value = get_depth_units(value*1000, NULL, &depth_unit);
 			name += QString(": %1%2").arg((int) round(depth_value)).arg(depth_unit);
 		} else {
 			name += QString(": %1").arg(value);
 		}
-	} else if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
+	} else if (type == SAMPLE_EVENT_PO2 && same_string(ev->name, "SP change")) {
 		// this is a bad idea - we are abusing an existing event type that is supposed to
 		// warn of high or low pO₂ and are turning it into a setpoint change event
 		name += ":\n" + tr("Manual switch to OC");
 	} else {
-		name += internalEvent->flags & SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
-								    internalEvent->flags & SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
+		name += ev->flags & SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
+								    ev->flags & SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
 	}
 	setToolTip(name);
 }
@@ -203,7 +207,6 @@ void DiveEventItem::eventVisibilityChanged(const QString&, bool)
 
 bool DiveEventItem::shouldBeHidden()
 {
-	const struct event *event = internalEvent;
 	const struct divecomputer *dc = get_dive_dc_const(dive, dc_number);
 
 	/*
@@ -211,24 +214,24 @@ bool DiveEventItem::shouldBeHidden()
 	 * Don't bother showing those
 	 */
 	const struct sample *first_sample = &dc->sample[0];
-	if (!strcmp(event->name, "gaschange") &&
-	    (event->time.seconds == 0 ||
-	     (first_sample && event->time.seconds == first_sample->time.seconds) ||
-	     depthAtTime(event->time.seconds) < SURFACE_THRESHOLD))
+	if (!strcmp(ev->name, "gaschange") &&
+	    (ev->time.seconds == 0 ||
+	     (first_sample && ev->time.seconds == first_sample->time.seconds) ||
+	     depthAtTime(ev->time.seconds) < SURFACE_THRESHOLD))
 		return true;
 
 	/*
 	 * Some divecomputers give "surface" events that just aren't interesting.
 	 * Like at the beginning or very end of a dive. Well, duh.
 	 */
-	if (!strcmp(event->name, "surface")) {
-		int time = event->time.seconds;
+	if (!strcmp(ev->name, "surface")) {
+		int time = ev->time.seconds;
 		if (time <= 30 || time + 30 >= (int)dc->duration.seconds)
 			return true;
 	}
 
 	for (int i = 0; i < evn_used; i++) {
-		if (!strcmp(event->name, ev_namelist[i].ev_name) && ev_namelist[i].plot_ev == false)
+		if (!strcmp(ev->name, ev_namelist[i].ev_name) && ev_namelist[i].plot_ev == false)
 			return true;
 	}
 	return false;
@@ -247,21 +250,21 @@ int DiveEventItem::depthAtTime(int time)
 
 void DiveEventItem::recalculatePos(int speed)
 {
-	if (!vAxis || !hAxis || !internalEvent || !dataModel)
+	if (!ev)
 		return;
 
-	QModelIndexList result = dataModel->match(dataModel->index(0, DivePlotDataModel::TIME), Qt::DisplayRole, internalEvent->time.seconds);
+	QModelIndexList result = dataModel->match(dataModel->index(0, DivePlotDataModel::TIME), Qt::DisplayRole, ev->time.seconds);
 	if (result.isEmpty()) {
 		qWarning("can't find a spot in the dataModel");
 		hide();
 		return;
 	}
-	int depth = depthAtTime(internalEvent->time.seconds);
+	int depth = depthAtTime(ev->time.seconds);
 	if (depth == DEPTH_NOT_FOUND)
 		return;
 	if (!isVisible() && !shouldBeHidden())
 		show();
-	qreal x = hAxis->posAtValue(internalEvent->time.seconds);
+	qreal x = hAxis->posAtValue(ev->time.seconds);
 	qreal y = vAxis->posAtValue(depth);
 	if (speed > 0)
 		Animations::moveTo(this, speed, x, y);
