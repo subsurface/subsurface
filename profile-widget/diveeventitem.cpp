@@ -14,10 +14,12 @@
 
 #define DEPTH_NOT_FOUND (-2342)
 
-DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix, QGraphicsItem *parent) : DivePixmapItem(parent),
-	vAxis(NULL),
-	hAxis(NULL),
-	dataModel(NULL),
+DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix,
+			     DivePlotDataModel *model, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
+			     int speed, QGraphicsItem *parent) : DivePixmapItem(parent),
+	vAxis(vAxis),
+	hAxis(hAxis),
+	dataModel(model),
 	internalEvent(clone_event(ev)),
 	dive(d)
 {
@@ -26,31 +28,15 @@ DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasm
 	setupPixmap(lastgasmix);
 	setupToolTipString(lastgasmix);
 	recalculatePos(0);
+
+
+	connect(vAxis, &DiveCartesianAxis::sizeChanged, this,
+		[speed, this] { recalculatePos(speed); });
 }
 
 DiveEventItem::~DiveEventItem()
 {
 	free(internalEvent);
-}
-
-void DiveEventItem::setHorizontalAxis(DiveCartesianAxis *axis)
-{
-	hAxis = axis;
-	recalculatePos(0);
-}
-
-void DiveEventItem::setModel(DivePlotDataModel *model)
-{
-	dataModel = model;
-	recalculatePos(0);
-}
-
-void DiveEventItem::setVerticalAxis(DiveCartesianAxis *axis, int speed)
-{
-	vAxis = axis;
-	recalculatePos(0);
-	connect(vAxis, &DiveCartesianAxis::sizeChanged, this,
-		[speed, this] { recalculatePos(speed); });
 }
 
 struct event *DiveEventItem::getEvent()
