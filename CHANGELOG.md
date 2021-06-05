@@ -1,3 +1,4 @@
+desktop: fix removal/editing of bookmarks on the profile
 export: show progress dialog when exporting to TeX
 printing: use sensible font size even for strange window size
 * Planner: Don't immediately ascent automatically

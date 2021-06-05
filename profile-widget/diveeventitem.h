@@ -15,7 +15,8 @@ public:
 		      DivePlotDataModel *model, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
 		      int speed, QGraphicsItem *parent = nullptr);
 	~DiveEventItem();
-	struct event *getEvent();
+	const struct event *getEvent() const;
+	struct event *getEventMutable();
 	void eventVisibilityChanged(const QString &eventName, bool visible);
 	void setVerticalAxis(DiveCartesianAxis *axis, int speed);
 	void setHorizontalAxis(DiveCartesianAxis *axis);
@@ -32,7 +33,7 @@ private:
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;
 	DivePlotDataModel *dataModel;
-	struct event *internalEvent;
+	struct event *ev;
 	const struct dive *dive;
 };
 
