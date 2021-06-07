@@ -4,9 +4,10 @@ Run scripts/makeRelease.sh
 Upload sources to webserver
 Push sources and tags to github
 
-Check that automated Linux distro builds have succeeded and are pushed to RELEASE
-Notarize automated Mac build and upload to new and old webserver (for version check)
-Copy Windows installers and AppImages from GitHub to new and old webserver (for version check)
+Check Launchpad and OBS to ensure release builds have been triggered
+Check Mac notorization success
+Ensure Windows machine is unlocked and authorize Windows signing
+Check that Windows, Mac, AppImage have been moved to downloads/ folder on webserver
 
 Add date to release announcement draft and move to the corresponding _posts directories
 Update links on website
