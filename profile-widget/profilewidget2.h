@@ -136,6 +136,7 @@ slots: // Necessary to call from QAction's signals.
 
 private:
 	void setProfileState(); // keep currently displayed dive
+	void updateAxes(); // Update axes according to preferences
 	void resizeEvent(QResizeEvent *event) override;
 #ifndef SUBSURFACE_MOBILE
 	void wheelEvent(QWheelEvent *event) override;
