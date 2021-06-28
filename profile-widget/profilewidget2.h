@@ -70,7 +70,7 @@ public:
 	void setProfileState(const struct dive *d, int dc);
 	void setPlanState(const struct dive *d, int dc);
 	void setEditState(const struct dive *d, int dc);
-	void setPrintMode(bool mode, bool grayscale = false);
+	void setPrintMode(bool grayscale = false);
 	bool isPlanner() const;
 	void draw(QPainter *painter, const QRect &pos);
 	QImage toImage(QSize size);

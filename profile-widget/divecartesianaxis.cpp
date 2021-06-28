@@ -27,9 +27,9 @@ void DiveCartesianAxis::setFontLabelScale(qreal scale)
 	changed = true;
 }
 
-void DiveCartesianAxis::setPrintMode(bool mode)
+void DiveCartesianAxis::setPrintMode()
 {
-	printMode = mode;
+	printMode = true;
 	// update the QPen of all lines depending on printMode
 	QPen newPen = gridPen();
 	QColor oldColor = pen().brush().color();

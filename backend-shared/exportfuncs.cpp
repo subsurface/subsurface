@@ -53,7 +53,7 @@ static void exportProfile(ProfileWidget2 *profile, const struct dive *dive, cons
 static std::unique_ptr<ProfileWidget2> getPrintProfile()
 {
 	auto profile = std::make_unique<ProfileWidget2>(nullptr, (double)profileScale, nullptr);
-	profile->setPrintMode(true);
+	profile->setPrintMode();
 	return profile;
 }
 
