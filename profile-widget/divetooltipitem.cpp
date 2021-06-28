@@ -244,9 +244,6 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 	painter.setBrush(QColor(Qt::red));
 	painter.drawRect(0,0,16,10);
 	if (idx) {
-		ProfileWidget2 *view = qobject_cast<ProfileWidget2*>(scene()->views().first());
-		Q_ASSERT(view);
-
 		const struct plot_data *entry = &pInfo.entry[idx];
 		painter.setPen(QColor(0, 0, 0, 255));
 		if (decoMode(inPlanner) == BUEHLMANN)
