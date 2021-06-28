@@ -31,23 +31,18 @@ struct plot_info;
 class ToolTipItem;
 class DiveReportedCeiling;
 class DiveTextItem;
-class TemperatureAxis;
 class DiveEventItem;
-class DivePlotDataModel;
 class DivePixmapItem;
 class DiveRectItem;
-class DepthAxis;
 class DiveCartesianAxis;
 class DiveProfileItem;
 class DivePlannerPointsModel;
-class TimeAxis;
 class DiveTemperatureItem;
 class DiveHeartrateItem;
 class DiveGasPressureItem;
 class DiveCalculatedCeiling;
 class DiveCalculatedTissue;
 class PartialPressureGasItem;
-class PartialGasPressureAxis;
 class AbstractProfilePolygonItem;
 class TankItem;
 class DiveHandler;
@@ -76,7 +71,6 @@ public:
 	void setPlanState(const struct dive *d, int dc);
 	void setEditState(const struct dive *d, int dc);
 	void setPrintMode(bool mode, bool grayscale = false);
-	bool isPointOutOfBoundaries(const QPointF &point) const;
 	bool isPlanner() const;
 	void draw(QPainter *painter, const QRect &pos);
 	QImage toImage(QSize size);
@@ -85,7 +79,6 @@ public:
 #endif
 	std::unique_ptr<ProfileScene> profileScene;
 	State currentState;
-	int animSpeed;
 
 signals:
 	void editCurrentDive();
@@ -126,7 +119,6 @@ slots: // Necessary to call from QAction's signals.
 
 private:
 	void setProfileState(); // keep currently displayed dive
-	void updateAxes(); // Update axes according to preferences
 	void updateVisibility(); // Update visibility of non-interactive chart features according to preferences
 	void resizeEvent(QResizeEvent *event) override;
 #ifndef SUBSURFACE_MOBILE
@@ -169,7 +161,6 @@ private:
 	void splitCurrentDC();
 	void renameCurrentDC();
 
-	DivePlotDataModel *dataModel;
 	DivePlannerPointsModel *plannerModel; // If null, no planning supported.
 	int zoomLevel;
 	qreal zoomFactor;
@@ -186,15 +177,10 @@ private:
 	const struct dive *d;
 	int dc;
 	struct plot_info plotInfo;
-	DepthAxis *profileYAxis;
-	PartialGasPressureAxis *gasYAxis;
-	TemperatureAxis *temperatureAxis;
-	TimeAxis *timeAxis;
 	std::vector<AbstractProfilePolygonItem *> profileItems;
 	DiveProfileItem *diveProfileItem;
 	DiveTemperatureItem *temperatureItem;
 	DiveMeanDepthItem *meanDepthItem;
-	DiveCartesianAxis *cylinderPressureAxis;
 	DiveGasPressureItem *gasPressureItem;
 	QList<DiveEventItem *> eventItems;
 	DiveTextItem *diveComputerText;
@@ -211,9 +197,7 @@ private:
 	DiveTextItem *decoModelParameters;
 #ifndef SUBSURFACE_MOBILE
 	QList<DiveCalculatedTissue *> allTissues;
-	DiveCartesianAxis *heartBeatAxis;
 	DiveHeartrateItem *heartBeatItem;
-	DiveCartesianAxis *percentageAxis;
 	QList<DivePercentageItem *> allPercentages;
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;

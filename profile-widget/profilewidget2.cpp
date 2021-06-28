@@ -42,8 +42,6 @@
 #include <QTableView>
 #endif
 
-#define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
-
 /* This is the global 'Item position' variable.
  * it should tell you where to position things up
  * on the canvas.
@@ -57,26 +55,8 @@ const static struct ItemPos {
 		QPointF on;
 		QPointF off;
 	};
-	struct Axis {
-		Pos pos;
-		QLineF shrinked;
-		QLineF expanded;
-		QLineF intermediate;
-	};
 	Pos dcLabel;
 	Pos tankBar;
-	Axis depth;
-	Axis partialPressure;
-	Axis partialPressureTissue;
-	Axis partialPressureWithTankBar;
-	Axis percentage;
-	Axis percentageWithTankBar;
-	Axis time;
-	Axis cylinder;
-	Axis temperature;
-	Axis temperatureAll;
-	Axis heartBeat;
-	Axis heartBeatWithTankBar;
 	ItemPos();
 } itemPos;
 
@@ -89,7 +69,7 @@ static const double thumbnailBaseZValue = 100.0;
 template<typename T, class... Args>
 T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args)
 {
-	T *res = new T(*dataModel, *timeAxis, DivePlotDataModel::TIME, vAxis, vColumn,
+	T *res = new T(*profileScene->dataModel, *profileScene->timeAxis, DivePlotDataModel::TIME, vAxis, vColumn,
 		       std::forward<Args>(args)...);
 	res->setZValue(static_cast<double>(z));
 	profileItems.push_back(res);
@@ -97,9 +77,8 @@ T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z
 }
 
 ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fontPrintScale, QWidget *parent) : QGraphicsView(parent),
-	profileScene(new ProfileScene),
+	profileScene(new ProfileScene(fontPrintScale)),
 	currentState(INVALID),
-	dataModel(new DivePlotDataModel(this)),
 	plannerModel(plannerModelIn),
 	zoomLevel(0),
 	zoomFactor(1.15),
@@ -110,17 +89,12 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
 #endif
-	profileYAxis(new DepthAxis(fontPrintScale, this)),
-	gasYAxis(new PartialGasPressureAxis(*dataModel, fontPrintScale, this)),
-	temperatureAxis(new TemperatureAxis(fontPrintScale, this)),
-	timeAxis(new TimeAxis(fontPrintScale, this)),
-	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0, fontPrintScale)),
-	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
-	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, fontPrintScale)),
-	cylinderPressureAxis(new DiveCartesianAxis(fontPrintScale, this)),
-	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
+	diveProfileItem(createItem<DiveProfileItem>(*profileScene->profileYAxis, DivePlotDataModel::DEPTH, 0, fontPrintScale)),
+	temperatureItem(createItem<DiveTemperatureItem>(*profileScene->temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
+	meanDepthItem(createItem<DiveMeanDepthItem>(*profileScene->profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, fontPrintScale)),
+	gasPressureItem(createItem<DiveGasPressureItem>(*profileScene->cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
 	diveComputerText(new DiveTextItem(fontPrintScale)),
-	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
+	reportedCeiling(createItem<DiveReportedCeiling>(*profileScene->profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
 	pn2GasItem(createPPGas(DivePlotDataModel::PN2, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
 	pheGasItem(createPPGas(DivePlotDataModel::PHE, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold)),
 	po2GasItem(createPPGas(DivePlotDataModel::PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
@@ -129,17 +103,15 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 	ccrsensor2GasItem(createPPGas(DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
+	diveCeiling(createItem<DiveCalculatedCeiling>(*profileScene->profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
 	decoModelParameters(new DiveTextItem(fontPrintScale)),
 #ifndef SUBSURFACE_MOBILE
-	heartBeatAxis(new DiveCartesianAxis(fontPrintScale, this)),
-	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, fontPrintScale)),
-	percentageAxis(new DiveCartesianAxis(fontPrintScale, this)),
+	heartBeatItem(createItem<DiveHeartrateItem>(*profileScene->heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, fontPrintScale)),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
 #endif
-	tankItem(new TankItem(*timeAxis, fontPrintScale)),
+	tankItem(new TankItem(*profileScene->timeAxis, fontPrintScale)),
 	shouldCalculateMax(true),
 	fontPrintScale(fontPrintScale)
 {
@@ -171,7 +143,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
 	QTableView *diveDepthTableView = new QTableView();
-	diveDepthTableView->setModel(dataModel);
+	diveDepthTableView->setModel(profileScene->dataModel);
 	diveDepthTableView->show();
 #endif
 
@@ -219,18 +191,11 @@ void ProfileWidget2::addActionShortcut(const Qt::Key shortcut, void (ProfileWidg
 void ProfileWidget2::addItemsToScene()
 {
 	scene()->addItem(background);
-	scene()->addItem(profileYAxis);
-	scene()->addItem(gasYAxis);
-	scene()->addItem(temperatureAxis);
-	scene()->addItem(timeAxis);
-	scene()->addItem(cylinderPressureAxis);
 	scene()->addItem(diveComputerText);
 	scene()->addItem(tankItem);
 	scene()->addItem(decoModelParameters);
 #ifndef SUBSURFACE_MOBILE
 	scene()->addItem(toolTipItem);
-	scene()->addItem(percentageAxis);
-	scene()->addItem(heartBeatAxis);
 	scene()->addItem(rulerItem);
 	scene()->addItem(rulerItem->sourceNode());
 	scene()->addItem(rulerItem->destNode());
@@ -250,55 +215,16 @@ void ProfileWidget2::setupItemOnScene()
 	background->setZValue(9999);
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->setZValue(9998);
-	toolTipItem->setTimeAxis(timeAxis);
+	toolTipItem->setTimeAxis(profileScene->timeAxis);
 	rulerItem->setZValue(9997);
 #endif
 	tankItem->setZValue(100);
-
-	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
-	profileYAxis->setMinimum(0);
-	profileYAxis->setTickInterval(M_OR_FT(10, 30));
-	profileYAxis->setTickSize(0.5);
-	profileYAxis->setLineSize(96);
-
-	timeAxis->setLineSize(92);
-	timeAxis->setTickSize(-0.5);
-
-	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	gasYAxis->setTickInterval(1);
-	gasYAxis->setTickSize(1);
-	gasYAxis->setMinimum(0);
-	gasYAxis->setFontLabelScale(0.7);
-	gasYAxis->setLineSize(96);
-
-#ifndef SUBSURFACE_MOBILE
-	heartBeatAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	heartBeatAxis->setTickSize(0.2);
-	heartBeatAxis->setTickInterval(10);
-	heartBeatAxis->setFontLabelScale(0.7);
-	heartBeatAxis->setLineSize(96);
-
-	percentageAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	percentageAxis->setTickSize(0.2);
-	percentageAxis->setTickInterval(10);
-	percentageAxis->setFontLabelScale(0.7);
-	percentageAxis->setLineSize(96);
-#endif
-
-	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	temperatureAxis->setTickSize(2);
-	temperatureAxis->setTickInterval(300);
-
-	cylinderPressureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	cylinderPressureAxis->setTickSize(2);
-	cylinderPressureAxis->setTickInterval(30000);
-
 
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
 
 #ifndef SUBSURFACE_MOBILE
-	rulerItem->setAxis(timeAxis, profileYAxis);
+	rulerItem->setAxis(profileScene->timeAxis, profileScene->profileYAxis);
 #endif
 	// show the deco model parameters at the top in the center
 	decoModelParameters->setY(0);
@@ -307,26 +233,12 @@ void ProfileWidget2::setupItemOnScene()
 	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 #ifndef SUBSURFACE_MOBILE
 	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, fontPrintScale);
+		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileScene->profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, fontPrintScale);
 		allTissues.append(tissueItem);
-		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i, fontPrintScale);
+		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*profileScene->percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i, fontPrintScale);
 		allPercentages.append(percentageItem);
 	}
 #endif
-
-#ifndef SUBSURFACE_MOBILE
-	heartBeatAxis->setTextVisible(true);
-	heartBeatAxis->setLinesVisible(true);
-	percentageAxis->setTextVisible(true);
-	percentageAxis->setLinesVisible(true);
-#endif
-	temperatureAxis->setTextVisible(false);
-	temperatureAxis->setLinesVisible(false);
-	cylinderPressureAxis->setTextVisible(false);
-	cylinderPressureAxis->setLinesVisible(false);
-	timeAxis->setLinesVisible(true);
-	profileYAxis->setLinesVisible(true);
-	gasYAxis->setZValue(timeAxis->zValue() + 1);
 }
 
 void ProfileWidget2::replot()
@@ -337,7 +249,7 @@ void ProfileWidget2::replot()
 PartialPressureGasItem *ProfileWidget2::createPPGas(int column, color_index_t color, color_index_t colorAlert,
 						    const double *thresholdSettingsMin, const double *thresholdSettingsMax)
 {
-	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column, 99, fontPrintScale);
+	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*profileScene->gasYAxis, column, 99, fontPrintScale);
 	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
 	item->setColors(getColor(color, isGrayscale), getColor(colorAlert, isGrayscale));
 	return item;
@@ -351,104 +263,6 @@ ItemPos::ItemPos()
 	 * good thing is that we only need to change the
 	 * Axis and everything else is auto-adjusted.*
 	 */
-
-	//Depth Axis Config
-	depth.pos.on.setX(3);
-	depth.pos.on.setY(3);
-	depth.pos.off.setX(-2);
-	depth.pos.off.setY(3);
-	depth.expanded.setP1(QPointF(0, 0));
-#ifndef SUBSURFACE_MOBILE
-	depth.expanded.setP2(QPointF(0, 85));
-#else
-	depth.expanded.setP2(QPointF(0, 65));
-#endif
-	depth.shrinked.setP1(QPointF(0, 0));
-	depth.shrinked.setP2(QPointF(0, 55));
-	depth.intermediate.setP1(QPointF(0, 0));
-	depth.intermediate.setP2(QPointF(0, 65));
-
-	// Time Axis Config
-	time.pos.on.setX(3);
-#ifndef SUBSURFACE_MOBILE
-	time.pos.on.setY(95);
-#else
-	time.pos.on.setY(89.5);
-#endif
-	time.pos.off.setX(3);
-	time.pos.off.setY(110);
-	time.expanded.setP1(QPointF(0, 0));
-	time.expanded.setP2(QPointF(94, 0));
-
-	// Partial Gas Axis Config
-	partialPressure.pos.on.setX(97);
-#ifndef SUBSURFACE_MOBILE
-	partialPressure.pos.on.setY(75);
-#else
-	partialPressure.pos.on.setY(70);
-#endif
-	partialPressure.pos.off.setX(110);
-	partialPressure.pos.off.setY(63);
-	partialPressure.expanded.setP1(QPointF(0, 0));
-#ifndef SUBSURFACE_MOBILE
-	partialPressure.expanded.setP2(QPointF(0, 19));
-#else
-	partialPressure.expanded.setP2(QPointF(0, 20));
-#endif
-	partialPressureWithTankBar = partialPressure;
-	partialPressureWithTankBar.expanded.setP2(QPointF(0, 17));
-	partialPressureTissue = partialPressure;
-	partialPressureTissue.pos.on.setX(97);
-	partialPressureTissue.pos.on.setY(65);
-	partialPressureTissue.expanded.setP2(QPointF(0, 16));
-
-	// cylinder axis config
-	cylinder.pos.on.setX(3);
-	cylinder.pos.on.setY(20);
-	cylinder.pos.off.setX(-10);
-	cylinder.pos.off.setY(20);
-	cylinder.expanded.setP1(QPointF(0, 15));
-	cylinder.expanded.setP2(QPointF(0, 50));
-	cylinder.shrinked.setP1(QPointF(0, 0));
-	cylinder.shrinked.setP2(QPointF(0, 20));
-	cylinder.intermediate.setP1(QPointF(0, 0));
-	cylinder.intermediate.setP2(QPointF(0, 20));
-
-	// Temperature axis config
-	temperature.pos.on.setX(3);
-	temperature.pos.off.setX(-10);
-	temperature.pos.off.setY(40);
-	temperature.expanded.setP1(QPointF(0, 20));
-	temperature.expanded.setP2(QPointF(0, 33));
-	temperature.shrinked.setP1(QPointF(0, 2));
-	temperature.shrinked.setP2(QPointF(0, 12));
-#ifndef SUBSURFACE_MOBILE
-	temperature.pos.on.setY(60);
-	temperatureAll.pos.on.setY(51);
-	temperature.intermediate.setP1(QPointF(0, 2));
-	temperature.intermediate.setP2(QPointF(0, 12));
-#else
-	temperature.pos.on.setY(51);
-	temperatureAll.pos.on.setY(47);
-	temperature.intermediate.setP1(QPointF(0, 2));
-	temperature.intermediate.setP2(QPointF(0, 12));
-#endif
-
-	// Heart rate axis config
-	heartBeat.pos.on.setX(3);
-	heartBeat.pos.on.setY(82);
-	heartBeat.expanded.setP1(QPointF(0, 0));
-	heartBeat.expanded.setP2(QPointF(0, 10));
-	heartBeatWithTankBar = heartBeat;
-	heartBeatWithTankBar.expanded.setP2(QPointF(0, 7));
-
-	// Percentage axis config
-	percentage.pos.on.setX(3);
-	percentage.pos.on.setY(80);
-	percentage.expanded.setP1(QPointF(0, 0));
-	percentage.expanded.setP2(QPointF(0, 15));
-	percentageWithTankBar = percentage;
-	percentageWithTankBar.expanded.setP2(QPointF(0, 11.9));
 
 	dcLabel.on.setX(3);
 	dcLabel.on.setY(100);
@@ -521,7 +335,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 	}
 
 	// special handling when switching from empty state
-	animSpeed = instant || currentState == EMPTY || printMode ? 0 : qPrefDisplay::animation_speed();
+	profileScene->animSpeed = instant || currentState == EMPTY || printMode ? 0 : qPrefDisplay::animation_speed();
 
 	// restore default zoom level
 	resetZoom();
@@ -577,17 +391,17 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 		maxdepth = newMaxDepth;
 	}
 
-	dataModel->setDive(plotInfo);
+	profileScene->dataModel->setDive(plotInfo);
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->setPlotInfo(plotInfo);
 #endif
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
-	profileYAxis->setMaximum(maxdepth);
-	profileYAxis->updateTicks();
+	profileScene->profileYAxis->setMaximum(maxdepth);
+	profileScene->profileYAxis->updateTicks();
 
-	temperatureAxis->setMinimum(plotInfo.mintemp);
-	temperatureAxis->setMaximum(plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
+	profileScene->temperatureAxis->setMinimum(plotInfo.mintemp);
+	profileScene->temperatureAxis->setMaximum(plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
 
 #ifndef SUBSURFACE_MOBILE
 	if (plotInfo.maxhr) {
@@ -602,20 +416,20 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 		else
 			heartBeatAxisTick = 50;
 		for (heartBeatAxisMax = heartBeatAxisMin; heartBeatAxisMax < plotInfo.maxhr; heartBeatAxisMax += heartBeatAxisTick);
-		heartBeatAxis->setMinimum(heartBeatAxisMin);
-		heartBeatAxis->setMaximum(heartBeatAxisMax + 1);
-		heartBeatAxis->setTickInterval(heartBeatAxisTick);
-		heartBeatAxis->updateTicks(HR_AXIS); // this shows the ticks
+		profileScene->heartBeatAxis->setMinimum(heartBeatAxisMin);
+		profileScene->heartBeatAxis->setMaximum(heartBeatAxisMax + 1);
+		profileScene->heartBeatAxis->setTickInterval(heartBeatAxisTick);
+		profileScene->heartBeatAxis->updateTicks(HR_AXIS); // this shows the ticks
 	}
-	heartBeatAxis->setVisible(prefs.hrgraph && plotInfo.maxhr);
+	profileScene->heartBeatAxis->setVisible(prefs.hrgraph && plotInfo.maxhr);
 
-	percentageAxis->setMinimum(0);
-	percentageAxis->setMaximum(100);
-	percentageAxis->setVisible(false);
-	percentageAxis->updateTicks(HR_AXIS);
+	profileScene->percentageAxis->setMinimum(0);
+	profileScene->percentageAxis->setMaximum(100);
+	profileScene->percentageAxis->setVisible(false);
+	profileScene->percentageAxis->updateTicks(HR_AXIS);
 #endif
 	if (shouldCalculateMax)
-		timeAxis->setMaximum(maxtime);
+		profileScene->timeAxis->setMaximum(maxtime);
 	int i, incr;
 	static int increments[8] = { 10, 20, 30, 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60 };
 	/* Time markers: at most every 10 seconds, but no more than 12 markers.
@@ -631,18 +445,18 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 	incr = increments[i];
 	while (maxtime / incr > 12)
 		incr *= 2;
-	timeAxis->setTickInterval(incr);
-	timeAxis->updateTicks();
-	cylinderPressureAxis->setMinimum(plotInfo.minpressure);
-	cylinderPressureAxis->setMaximum(plotInfo.maxpressure);
+	profileScene->timeAxis->setTickInterval(incr);
+	profileScene->timeAxis->updateTicks();
+	profileScene->cylinderPressureAxis->setMinimum(plotInfo.minpressure);
+	profileScene->cylinderPressureAxis->setMaximum(plotInfo.maxpressure);
 #ifndef SUBSURFACE_MOBILE
 	rulerItem->setPlotInfo(d, plotInfo);
 #endif
 
 #ifdef SUBSURFACE_MOBILE
 	if (currentdc->divemode == CCR) {
-		gasYAxis->setPos(itemPos.partialPressure.pos.on);
-		gasYAxis->setLine(itemPos.partialPressure.expanded);
+		profileScene->gasYAxis->setPos(itemPos.partialPressure.pos.on);
+		profileScene->gasYAxis->setLine(itemPos.partialPressure.expanded);
 
 		tankItem->setVisible(false);
 		pn2GasItem->setVisible(false);
@@ -665,7 +479,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 			temperatureItem->setVisible(false);
 	} else {
 		tankItem->setVisible(prefs.tankbar);
-		gasYAxis->setPos(itemPos.partialPressure.pos.off);
+		profileScene->gasYAxis->setPos(itemPos.partialPressure.pos.off);
 		pn2GasItem->setVisible(false);
 		po2GasItem->setVisible(false);
 		pheGasItem->setVisible(false);
@@ -678,7 +492,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 #endif
 	tankItem->setData(&plotInfo, d);
 
-	gasYAxis->update();
+	profileScene->gasYAxis->update();
 
 	// Replot dive items
 	for (AbstractProfilePolygonItem *item: profileItems)
@@ -709,7 +523,9 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 		// printMode is always selected for SUBSURFACE_MOBILE due to font problems
 		// BUT events are wanted.
 #endif
-		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix, dataModel, timeAxis, profileYAxis, animSpeed, fontPrintScale);
+		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix, profileScene->dataModel,
+							profileScene->timeAxis, profileScene->profileYAxis, profileScene->animSpeed,
+							fontPrintScale);
 		item->setZValue(2);
 		scene()->addItem(item);
 		eventItems.push_back(item);
@@ -775,67 +591,9 @@ void ProfileWidget2::actionRequestedReplot(bool)
 	settingsChanged();
 }
 
-void ProfileWidget2::updateAxes()
-{
-#ifndef SUBSURFACE_MOBILE
-	gasYAxis->update();	// Initialize ticks of partial pressure graph
-	if ((prefs.percentagegraph||prefs.hrgraph) && PP_GRAPHS_ENABLED) {
-		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
-		temperatureAxis->setPos(itemPos.temperatureAll.pos.on);
-		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked);
-		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.shrinked);
-
-		if (prefs.tankbar) {
-			percentageAxis->setPos(itemPos.percentageWithTankBar.pos.on);
-			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
-			heartBeatAxis->setPos(itemPos.heartBeatWithTankBar.pos.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded);
-		} else {
-			percentageAxis->setPos(itemPos.percentage.pos.on);
-			percentageAxis->animateChangeLine(itemPos.percentage.expanded);
-			heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded);
-		}
-		gasYAxis->setPos(itemPos.partialPressureTissue.pos.on);
-		gasYAxis->animateChangeLine(itemPos.partialPressureTissue.expanded);
-	} else if (PP_GRAPHS_ENABLED || prefs.hrgraph || prefs.percentagegraph) {
-		profileYAxis->animateChangeLine(itemPos.depth.intermediate);
-		temperatureAxis->setPos(itemPos.temperature.pos.on);
-		temperatureAxis->animateChangeLine(itemPos.temperature.intermediate);
-		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.intermediate);
-		if (prefs.tankbar) {
-			percentageAxis->setPos(itemPos.percentageWithTankBar.pos.on);
-			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
-			gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
-			gasYAxis->animateChangeLine(itemPos.partialPressureWithTankBar.expanded);
-			heartBeatAxis->setPos(itemPos.heartBeatWithTankBar.pos.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded);
-		} else {
-			gasYAxis->setPos(itemPos.partialPressure.pos.on);
-			gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
-			percentageAxis->setPos(itemPos.percentage.pos.on);
-			percentageAxis->animateChangeLine(itemPos.percentage.expanded);
-			heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded);
-		}
-	} else {
-#else
-	{
-#endif
-		profileYAxis->animateChangeLine(itemPos.depth.expanded);
-		if (prefs.tankbar) {
-			temperatureAxis->setPos(itemPos.temperatureAll.pos.on);
-		} else {
-			temperatureAxis->setPos(itemPos.temperature.pos.on);
-		}
-		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
-		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
-	}
-}
-
 void ProfileWidget2::settingsChanged()
 {
-	updateAxes();
+	profileScene->updateAxes();
 	tankItem->setVisible(prefs.tankbar);
 	replot();
 }
@@ -912,16 +670,6 @@ void ProfileWidget2::scale(qreal sx, qreal sy)
 #endif
 }
 
-bool ProfileWidget2::isPointOutOfBoundaries(const QPointF &point) const
-{
-	double xpos = timeAxis->valueAt(point);
-	double ypos = profileYAxis->valueAt(point);
-	return xpos > timeAxis->maximum() ||
-	       xpos < timeAxis->minimum() ||
-	       ypos > profileYAxis->maximum() ||
-	       ypos < profileYAxis->minimum();
-}
-
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
@@ -950,11 +698,11 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	if ((currentState == PLAN || currentState == EDIT) && plannerModel) {
 		QPointF mappedPos = mapToScene(event->pos());
-		if (isPointOutOfBoundaries(mappedPos))
+		if (profileScene->isPointOutOfBoundaries(mappedPos))
 			return;
 
-		int minutes = lrint(timeAxis->valueAt(mappedPos) / 60);
-		int milimeters = lrint(profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
+		int minutes = lrint(profileScene->timeAxis->valueAt(mappedPos) / 60);
+		int milimeters = lrint(profileScene->profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
 		plannerModel->addStop(milimeters, minutes * 60);
 	}
 }
@@ -986,14 +734,14 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 		toolTipItem->setPos(mapToScene(toolTipPos));
 	}
 
-	qreal vValue = profileYAxis->valueAt(pos);
-	qreal hValue = timeAxis->valueAt(pos);
+	qreal vValue = profileScene->profileYAxis->valueAt(pos);
+	qreal hValue = profileScene->timeAxis->valueAt(pos);
 
-	if (profileYAxis->maximum() >= vValue && profileYAxis->minimum() <= vValue) {
-		mouseFollowerHorizontal->setPos(timeAxis->pos().x(), pos.y());
+	if (profileScene->profileYAxis->maximum() >= vValue && profileScene->profileYAxis->minimum() <= vValue) {
+		mouseFollowerHorizontal->setPos(profileScene->timeAxis->pos().x(), pos.y());
 	}
-	if (timeAxis->maximum() >= hValue && timeAxis->minimum() <= hValue) {
-		mouseFollowerVertical->setPos(pos.x(), profileYAxis->line().y1());
+	if (profileScene->timeAxis->maximum() >= hValue && profileScene->timeAxis->minimum() <= hValue) {
+		mouseFollowerVertical->setPos(pos.x(), profileScene->profileYAxis->line().y1());
 	}
 }
 
@@ -1026,17 +774,17 @@ void ProfileWidget2::setEmptyState()
 #endif
 	disconnectTemporaryConnections();
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
-	dataModel->clear();
+	profileScene->dataModel->clear();
 	currentState = EMPTY;
 
 	fixBackgroundPos();
 	background->setVisible(true);
 
-	profileYAxis->setVisible(false);
-	gasYAxis->setVisible(false);
-	timeAxis->setVisible(false);
-	temperatureAxis->setVisible(false);
-	cylinderPressureAxis->setVisible(false);
+	profileScene->profileYAxis->setVisible(false);
+	profileScene->gasYAxis->setVisible(false);
+	profileScene->timeAxis->setVisible(false);
+	profileScene->temperatureAxis->setVisible(false);
+	profileScene->cylinderPressureAxis->setVisible(false);
 	diveComputerText->setVisible(false);
 	reportedCeiling->setVisible(false);
 	tankItem->setVisible(false);
@@ -1056,7 +804,7 @@ void ProfileWidget2::setEmptyState()
 	rulerItem->setVisible(false);
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
-	heartBeatAxis->setVisible(false);
+	profileScene->heartBeatAxis->setVisible(false);
 	heartBeatItem->setVisible(false);
 #endif
 	for (AbstractProfilePolygonItem *item: profileItems)
@@ -1128,24 +876,19 @@ void ProfileWidget2::setProfileState()
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 
 	background->setVisible(false);
-	profileYAxis->setVisible(true);
-	gasYAxis->setVisible(true);
-	timeAxis->setVisible(true);
-	temperatureAxis->setVisible(true);
-	cylinderPressureAxis->setVisible(true);
+	profileScene->profileYAxis->setVisible(true);
+	profileScene->gasYAxis->setVisible(true);
+	profileScene->timeAxis->setVisible(true);
+	profileScene->temperatureAxis->setVisible(true);
+	profileScene->cylinderPressureAxis->setVisible(true);
 
-	profileYAxis->setPos(itemPos.depth.pos.on);
-	updateAxes();
+	profileScene->updateAxes();
 
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->readPos();
 	toolTipItem->setVisible(true);
 	rulerItem->setVisible(prefs.rulergraph);
 #endif
-	timeAxis->setPos(itemPos.time.pos.on);
-	timeAxis->setLine(itemPos.time.expanded);
-
-	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
 
 	diveComputerText->setVisible(true);
 	diveComputerText->setPos(itemPos.dcLabel.on);
@@ -1179,8 +922,8 @@ void ProfileWidget2::setEditState(const dive *d, int dc)
 	setProfileState(d, dc);
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
-	mouseFollowerHorizontal->setLine(timeAxis->line());
-	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
+	mouseFollowerHorizontal->setLine(profileScene->timeAxis->line());
+	mouseFollowerVertical->setLine(QLineF(0, profileScene->profileYAxis->pos().y(), 0, profileScene->timeAxis->pos().y()));
 	disconnectTemporaryConnections();
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
@@ -1209,8 +952,8 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 	setProfileState(d, dc);
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
-	mouseFollowerHorizontal->setLine(timeAxis->line());
-	mouseFollowerVertical->setLine(QLineF(0, profileYAxis->pos().y(), 0, timeAxis->pos().y()));
+	mouseFollowerHorizontal->setLine(profileScene->timeAxis->line());
+	mouseFollowerVertical->setLine(QLineF(0, profileScene->profileYAxis->pos().y(), 0, profileScene->timeAxis->pos().y()));
 	disconnectTemporaryConnections();
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
@@ -1306,7 +1049,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 
 	// create the profile context menu
 	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
-	qreal sec_val = timeAxis->valueAt(scenePos);
+	qreal sec_val = profileScene->timeAxis->valueAt(scenePos);
 	int seconds = (sec_val < 0.0) ? 0 : (int)sec_val;
 	DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem);
 
@@ -1525,15 +1268,15 @@ void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
 	resetZoom();
 
 	// set printMode for axes
-	profileYAxis->setPrintMode(mode);
-	gasYAxis->setPrintMode(mode);
-	temperatureAxis->setPrintMode(mode);
-	timeAxis->setPrintMode(mode);
-	cylinderPressureAxis->setPrintMode(mode);
+	profileScene->profileYAxis->setPrintMode(mode);
+	profileScene->gasYAxis->setPrintMode(mode);
+	profileScene->temperatureAxis->setPrintMode(mode);
+	profileScene->timeAxis->setPrintMode(mode);
+	profileScene->cylinderPressureAxis->setPrintMode(mode);
 	isGrayscale = mode ? grayscale : false;
 #ifndef SUBSURFACE_MOBILE
-	heartBeatAxis->setPrintMode(mode);
-	percentageAxis->setPrintMode(mode);
+	profileScene->heartBeatAxis->setPrintMode(mode);
+	profileScene->percentageAxis->setPrintMode(mode);
 
 	mouseFollowerHorizontal->setVisible(!mode);
 	mouseFollowerVertical->setVisible(!mode);
@@ -1662,16 +1405,16 @@ void ProfileWidget2::repositionDiveHandlers()
 			continue;
 		DiveHandler *h = handles[i].get();
 		h->setVisible(datapoint.entered);
-		h->setPos(timeAxis->posAtValue(datapoint.time), profileYAxis->posAtValue(datapoint.depth.mm));
+		h->setPos(profileScene->timeAxis->posAtValue(datapoint.time), profileScene->profileYAxis->posAtValue(datapoint.depth.mm));
 		QPointF p1;
 		if (i == 0) {
 			if (prefs.drop_stone_mode)
 				// place the text on the straight line from the drop to stone position
-				p1 = QPointF(timeAxis->posAtValue(datapoint.depth.mm / prefs.descrate),
-					     profileYAxis->posAtValue(datapoint.depth.mm));
+				p1 = QPointF(profileScene->timeAxis->posAtValue(datapoint.depth.mm / prefs.descrate),
+					     profileScene->profileYAxis->posAtValue(datapoint.depth.mm));
 			else
 				// place the text on the straight line from the origin to the first position
-				p1 = QPointF(timeAxis->posAtValue(0), profileYAxis->posAtValue(0));
+				p1 = QPointF(profileScene->timeAxis->posAtValue(0), profileScene->profileYAxis->posAtValue(0));
 		} else {
 			// place the text on the line from the last position
 			p1 = handles[i - 1]->pos();
@@ -1695,13 +1438,13 @@ void ProfileWidget2::divePlannerHandlerMoved()
 	int index = handleIndex(activeHandler);
 
 	// Grow the time axis if necessary.
-	int minutes = lrint(timeAxis->valueAt(activeHandler->pos()) / 60);
-	if (minutes * 60 > timeAxis->maximum() * 0.9)
-		timeAxis->setMaximum(timeAxis->maximum() * 1.02);
+	int minutes = lrint(profileScene->timeAxis->valueAt(activeHandler->pos()) / 60);
+	if (minutes * 60 > profileScene->timeAxis->maximum() * 0.9)
+		profileScene->timeAxis->setMaximum(profileScene->timeAxis->maximum() * 1.02);
 
 	divedatapoint data = plannerModel->at(index);
-	data.depth.mm = lrint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-	data.time = lrint(timeAxis->valueAt(activeHandler->pos()));
+	data.depth.mm = lrint(profileScene->profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
+	data.time = lrint(profileScene->timeAxis->valueAt(activeHandler->pos()));
 
 	plannerModel->editStop(index, data);
 }
@@ -1819,8 +1562,8 @@ void ProfileWidget2::updateDurationLine(PictureEntry &e)
 {
 	if (e.duration.seconds > 0) {
 		// We know the duration of this video, reset the line symbolizing its extent accordingly
-		double begin = timeAxis->posAtValue(e.offset.seconds);
-		double end = timeAxis->posAtValue(e.offset.seconds + e.duration.seconds);
+		double begin = profileScene->timeAxis->posAtValue(e.offset.seconds);
+		double end = profileScene->timeAxis->posAtValue(e.offset.seconds + e.duration.seconds);
 		double y = e.thumbnail->y();
 
 		// Undo scaling for pen-width and line-width. For this purpose, we use the scaling of the y-axis.
@@ -1935,7 +1678,7 @@ void ProfileWidget2::updateThumbnailXPos(PictureEntry &e)
 {
 	// Here, we only set the x-coordinate of the picture. The y-coordinate
 	// will be set later in calculatePictureYPositions().
-	double x = timeAxis->posAtValue(e.offset.seconds);
+	double x = profileScene->timeAxis->posAtValue(e.offset.seconds);
 	e.thumbnail->setX(x);
 }
 
@@ -2028,7 +1771,7 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 		QString filename;
 		dataStream >> filename;
 		QPointF mappedPos = mapToScene(event->pos());
-		offset_t offset { (int32_t)lrint(timeAxis->valueAt(mappedPos)) };
+		offset_t offset { (int32_t)lrint(profileScene->timeAxis->valueAt(mappedPos)) };
 		Command::setPictureOffset(mutable_dive(), filename, offset);
 
 		if (event->source() == this) {
