@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divehandler.h"
 #include "profilewidget2.h"
+#include "profilescene.h"
 #include "core/dive.h"
 #include "core/gettextfromc.h"
 #include "core/qthelper.h"
@@ -74,7 +75,7 @@ void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	t.start();
 
 	ProfileWidget2 *view = qobject_cast<ProfileWidget2*>(scene()->views().first());
-	if(view->isPointOutOfBoundaries(event->scenePos()))
+	if(view->profileScene->isPointOutOfBoundaries(event->scenePos()))
 		return;
 
 	QGraphicsEllipseItem::mouseMoveEvent(event);

@@ -7,7 +7,7 @@
 #include "qt-models/diveplotdatamodel.h"
 #include "profile-widget/animationfunctions.h"
 #include "profile-widget/divelineitem.h"
-#include "profile-widget/profilewidget2.h"
+#include "profile-widget/profilescene.h"
 
 QPen DiveCartesianAxis::gridPen() const
 {
@@ -60,10 +60,10 @@ void DiveCartesianAxis::setTextColor(const QColor &color)
 	textColor = color;
 }
 
-DiveCartesianAxis::DiveCartesianAxis(double fontPrintScale, ProfileWidget2 *widget) : QObject(),
+DiveCartesianAxis::DiveCartesianAxis(double fontPrintScale, ProfileScene &scene) : QObject(),
 	QGraphicsLineItem(),
 	printMode(false),
-	profileWidget(widget),
+	scene(scene),
 	orientation(LeftToRight),
 	min(0),
 	max(0),
@@ -133,11 +133,9 @@ void emptyList(QList<T *> &list, int steps, int speed)
 
 void DiveCartesianAxis::updateTicks(color_index_t color)
 {
-	if (!scene() || (!changed && !printMode))
+	if (!changed && !printMode)
 		return;
 	QLineF m = line();
-	// unused so far:
-	// QGraphicsView *view = scene()->views().first();
 	double stepsInRange = (max - min) / interval;
 	int steps = (int)stepsInRange;
 	double currValueText = min;
@@ -146,8 +144,8 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 	if (steps < 1)
 		return;
 
-	emptyList(labels, steps, profileWidget->animSpeed);
-	emptyList(lines, steps, profileWidget->animSpeed);
+	emptyList(labels, steps, scene.animSpeed);
+	emptyList(lines, steps, scene.animSpeed);
 
 	// Move the remaining ticks / text to their correct positions
 	// regarding the possible new values for the axis
@@ -174,9 +172,9 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 
 		labels[i]->setText(textForValue(currValueText));
 		if (orientation == LeftToRight || orientation == RightToLeft) {
-			Animations::moveTo(labels[i], profileWidget->animSpeed, childPos, m.y1() + tick_size);
+			Animations::moveTo(labels[i], scene.animSpeed, childPos, m.y1() + tick_size);
 		} else {
-			Animations::moveTo(labels[i], profileWidget->animSpeed ,m.x1() - tick_size, childPos);
+			Animations::moveTo(labels[i], scene.animSpeed ,m.x1() - tick_size, childPos);
 		}
 	}
 
@@ -186,9 +184,9 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 					 begin - i * stepSize;
 
 		if (orientation == LeftToRight || orientation == RightToLeft) {
-			Animations::moveTo(lines[i], profileWidget->animSpeed, childPos, m.y1());
+			Animations::moveTo(lines[i], scene.animSpeed, childPos, m.y1());
 		} else {
-			Animations::moveTo(lines[i], profileWidget->animSpeed, m.x1(), childPos);
+			Animations::moveTo(lines[i], scene.animSpeed, m.x1(), childPos);
 		}
 	}
 
@@ -208,12 +206,12 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
-			label->setPos(scene()->sceneRect().width() + 10, m.y1() + tick_size); // position it outside of the scene);
-			Animations::moveTo(label, profileWidget->animSpeed,childPos , m.y1() + tick_size);
+			label->setPos(scene.sceneRect().width() + 10, m.y1() + tick_size); // position it outside of the scene;
+			Animations::moveTo(label, scene.animSpeed,childPos , m.y1() + tick_size);
 		} else {
 			label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-			label->setPos(m.x1() - tick_size, scene()->sceneRect().height() + 10);
-			Animations::moveTo(label, profileWidget->animSpeed, m.x1() - tick_size, childPos);
+			label->setPos(m.x1() - tick_size, scene.sceneRect().height() + 10);
+			Animations::moveTo(label, scene.animSpeed, m.x1() - tick_size, childPos);
 		}
 	}
 
@@ -233,14 +231,14 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 		lines.push_back(line);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			line->setLine(0, -line_size, 0, 0);
-			line->setPos(scene()->sceneRect().width() + 10, m.y1()); // position it outside of the scene);
-			Animations::moveTo(line, profileWidget->animSpeed, childPos, m.y1());
+			line->setPos(scene.sceneRect().width() + 10, m.y1()); // position it outside of the scene);
+			Animations::moveTo(line, scene.animSpeed, childPos, m.y1());
 		} else {
 			QPointF p1 = mapFromScene(3, 0);
 			QPointF p2 = mapFromScene(line_size, 0);
 			line->setLine(p1.x(), 0, p2.x(), 0);
-			line->setPos(m.x1(), scene()->sceneRect().height() + 10);
-			Animations::moveTo(line, profileWidget->animSpeed, m.x1(), childPos);
+			line->setPos(m.x1(), scene.sceneRect().height() + 10);
+			Animations::moveTo(line, scene.animSpeed, m.x1(), childPos);
 		}
 	}
 
@@ -355,7 +353,7 @@ QColor DepthAxis::colorForValue(double) const
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis(double fontPrintScale, ProfileWidget2 *widget) : DiveCartesianAxis(fontPrintScale, widget),
+DepthAxis::DepthAxis(double fontPrintScale, ProfileScene &scene) : DiveCartesianAxis(fontPrintScale, scene),
 	unitSystem(prefs.units.length)
 {
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DepthAxis::settingsChanged);
@@ -399,8 +397,8 @@ QString TemperatureAxis::textForValue(double value) const
 	return QString::number(mkelvin_to_C((int)value));
 }
 
-PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, ProfileWidget2 *widget) :
-	DiveCartesianAxis(fontPrintScale, widget),
+PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, ProfileScene &scene) :
+	DiveCartesianAxis(fontPrintScale, scene),
 	model(model)
 {
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &PartialGasPressureAxis::update);

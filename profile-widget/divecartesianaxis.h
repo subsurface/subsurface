@@ -5,8 +5,9 @@
 #include <QObject>
 #include <QGraphicsLineItem>
 #include "core/color.h"
-#include "profilewidget2.h"
+#include "core/units.h"
 
+class ProfileScene;
 class QPropertyAnimation;
 class DiveTextItem;
 class DiveLineItem;
@@ -28,7 +29,7 @@ public:
 		LeftToRight,
 		RightToLeft
 	};
-	DiveCartesianAxis(double fontPrintScale, ProfileWidget2 *widget);
+	DiveCartesianAxis(double fontPrintScale, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setPrintMode(bool mode);
 	void setMinimum(double minimum);
@@ -54,7 +55,7 @@ signals:
 	void sizeChanged();
 
 protected:
-	ProfileWidget2 *profileWidget;
+	ProfileScene &scene;
 	virtual QString textForValue(double value) const;
 	virtual QColor colorForValue(double value) const;
 	Orientation orientation;
@@ -76,7 +77,7 @@ protected:
 class DepthAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	DepthAxis(double fontPrintScale, ProfileWidget2 *widget);
+	DepthAxis(double fontPrintScale, ProfileScene &scene);
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
@@ -107,7 +108,7 @@ private:
 class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, ProfileWidget2 *widget);
+	PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, ProfileScene &scene);
 public
 slots:
 	void update();
