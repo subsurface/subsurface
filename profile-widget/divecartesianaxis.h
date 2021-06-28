@@ -31,7 +31,7 @@ public:
 	};
 	DiveCartesianAxis(double fontPrintScale, ProfileScene &scene);
 	~DiveCartesianAxis();
-	void setPrintMode(bool mode);
+	void setPrintMode();
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);

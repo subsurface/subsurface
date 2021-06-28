@@ -113,7 +113,7 @@ void Printer::render(int pages)
 
 	// apply printing settings to profile
 	profile->setFrameStyle(QFrame::NoFrame);
-	profile->setPrintMode(true, !printOptions.color_selected);
+	profile->setPrintMode(!printOptions.color_selected);
 
 	// render the Qwebview
 	QPainter painter;

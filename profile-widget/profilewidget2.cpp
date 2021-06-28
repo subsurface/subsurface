@@ -1262,25 +1262,25 @@ void ProfileWidget2::changeGas(int tank, int seconds)
 }
 #endif
 
-void ProfileWidget2::setPrintMode(bool mode, bool grayscale)
+void ProfileWidget2::setPrintMode(bool grayscale)
 {
-	printMode = mode;
+	printMode = true;
 	resetZoom();
 
 	// set printMode for axes
-	profileScene->profileYAxis->setPrintMode(mode);
-	profileScene->gasYAxis->setPrintMode(mode);
-	profileScene->temperatureAxis->setPrintMode(mode);
-	profileScene->timeAxis->setPrintMode(mode);
-	profileScene->cylinderPressureAxis->setPrintMode(mode);
-	isGrayscale = mode ? grayscale : false;
+	profileScene->profileYAxis->setPrintMode();
+	profileScene->gasYAxis->setPrintMode();
+	profileScene->temperatureAxis->setPrintMode();
+	profileScene->timeAxis->setPrintMode();
+	profileScene->cylinderPressureAxis->setPrintMode();
+	isGrayscale = grayscale;
 #ifndef SUBSURFACE_MOBILE
-	profileScene->heartBeatAxis->setPrintMode(mode);
-	profileScene->percentageAxis->setPrintMode(mode);
+	profileScene->heartBeatAxis->setPrintMode();
+	profileScene->percentageAxis->setPrintMode();
 
-	mouseFollowerHorizontal->setVisible(!mode);
-	mouseFollowerVertical->setVisible(!mode);
-	toolTipItem->setVisible(!mode);
+	mouseFollowerHorizontal->setVisible(false);
+	mouseFollowerVertical->setVisible(false);
+	toolTipItem->setVisible(false);
 #endif
 }
 
