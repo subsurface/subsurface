@@ -62,7 +62,6 @@ const static struct ItemPos {
 		QLineF expanded;
 		QLineF intermediate;
 	};
-	Pos background;
 	Pos dcLabel;
 	Pos tankBar;
 	Axis depth;
@@ -363,11 +362,6 @@ ItemPos::ItemPos()
 	 * good thing is that we only need to change the
 	 * Axis and everything else is auto-adjusted.*
 	 */
-
-	background.on.setX(0);
-	background.on.setY(0);
-	background.off.setX(0);
-	background.off.setY(110);
 
 	//Depth Axis Config
 	depth.pos.on.setX(3);
