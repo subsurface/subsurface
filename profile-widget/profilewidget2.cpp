@@ -866,7 +866,7 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 	if (zoomLevel)
 		return;
 	QGraphicsView::mousePressEvent(event);
-	if (currentState == PLAN || currentState == ADD || currentState == EDIT)
+	if (currentState == PLAN || currentState == ADD)
 		shouldCalculateMaxDepth = shouldCalculateMaxTime = false;
 }
 
@@ -890,7 +890,7 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 	if (zoomLevel)
 		return;
 	QGraphicsView::mouseReleaseEvent(event);
-	if (currentState == PLAN || currentState == ADD || currentState == EDIT) {
+	if (currentState == PLAN || currentState == ADD) {
 		shouldCalculateMaxTime = shouldCalculateMaxDepth = true;
 		replot();
 	}
