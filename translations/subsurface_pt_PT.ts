@@ -367,7 +367,7 @@
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="123"/>
         <source>Trying different cloud server...</source>
-        <translation type="unfinished"/>
+        <translation>A testar outro servidor remoto</translation>
     </message>
 </context>
 <context>
@@ -2801,12 +2801,12 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="384"/>
         <source>Dive number: </source>
-        <translation type="unfinished"/>
+        <translation>Mergulho nº:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="386"/>
         <source>Date / time: </source>
-        <translation type="unfinished"/>
+        <translation>Data/hora:</translation>
     </message>
 </context>
 <context>
@@ -2885,7 +2885,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="143"/>
         <source>Dive Number</source>
-        <translation type="unfinished"/>
+        <translation>Mergulho Nº</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="150"/>
@@ -3297,7 +3297,8 @@ do GPS actual:</translation>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="29"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Terminada sincronização manual com o servidor remoto
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="176"/>
@@ -3430,7 +3431,7 @@ do GPS actual:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="788"/>
         <source>Remove dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Remover mergulho da viagem</numerusform><numerusform>Remover mergulhos da viagem</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="790"/>
@@ -3440,12 +3441,12 @@ do GPS actual:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="805"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Adicionar mergulho à viagem imediatamente acima</numerusform><numerusform>Adicionar mergulhos à viagem imediatamente acima</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="807"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Adicionar mergulho à viagem imediatamente abaixo</numerusform><numerusform>Adicionar mergulhos à viagem imediatamente abaixo</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="811"/>
@@ -3460,17 +3461,17 @@ do GPS actual:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="816"/>
         <source>Delete dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Eliminar mergulho</numerusform><numerusform>Eliminar mergulhos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Marcar como mergulho válido</numerusform><numerusform>Marcar como mergulhos válidos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="820"/>
         <source>Mark dive(s) invalid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Marcar como mergulho inválido</numerusform><numerusform>Marcar como mergulhos inválidos</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="823"/>
@@ -3480,12 +3481,12 @@ do GPS actual:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Adicionar mergulho a uma viagem arbitrária</numerusform><numerusform>Adicionar mergulhos a uma viagem arbitrária</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="826"/>
         <source>Renumber dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Renumerar mergulho</numerusform><numerusform>Renumerar mergulhos</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="827"/>
@@ -10429,27 +10430,27 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Restrição</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="110"/>
         <source>Restrict to selection</source>
-        <translation type="unfinished"/>
+        <translation>Restringir à selecção</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="117"/>
         <source>Reset restriction</source>
-        <translation type="unfinished"/>
+        <translation>Remover restrição</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="154"/>
         <source>Analyzing all dives</source>
-        <translation type="unfinished"/>
+        <translation>A analisar todos os mergulhos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="156"/>
         <source>Analyzing subset (%L1) dives</source>
-        <translation type="unfinished"/>
+        <translation>A analisar selecção de (%L1) mergulhos</translation>
     </message>
 </context>
 <context>
@@ -13462,7 +13463,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1541"/>
         <source>Calculated ceiling %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Calculado o tecto de %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1547"/>
@@ -14524,7 +14526,7 @@ O Uemis Zurich está correctamente ligado?</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
         <source>Exporting...</source>
-        <translation type="unfinished"/>
+        <translation>A exportar...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
@@ -14711,7 +14713,8 @@ O Uemis Zurich está correctamente ligado?</translation>
         <location filename="../mobile-widgets/qml/main.qml" line="364"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Terminada sincronização manual com o servidor remoto
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="372"/>
@@ -14847,7 +14850,7 @@ O Uemis Zurich está correctamente ligado?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="610"/>
         <source>Copy GPS to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copiar GPS para a área de transferência</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="670"/>
