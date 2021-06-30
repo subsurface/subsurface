@@ -60,7 +60,6 @@ public:
 	enum State {
 		EMPTY,
 		PROFILE,
-		EDIT,
 		ADD,
 		PLAN,
 		INVALID
