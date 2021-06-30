@@ -2,6 +2,26 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 5.0.2
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- desktop: fix removal/editing of bookmarks on the profile
+- export: show progress dialog when exporting to TeX
+- printing: use sensible font size even for strange window size
+- planner: don't immediately ascent automatically
+- planner: various small bug fixes
+- import: fix parsing of translated ADP header strings
+- dive edit: add ability to copy and paste dive nr and date
+- core: prevent crash when parsing certain very complex XML files
+- cloud: support redundandant backup servers
+- cloud: try to pick a server close to the user if possible
+
+dive computer support:
+- add Suunto Eon Steel Black
+- add Sherwood Beacon
+- add new variant of Zoop Novo
+- add new variants of Shearwater Perdix AI
+- add Sporasub SP2
+
 New in _Subsurface_ 5.0.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - fix Windows crash when changing log file
