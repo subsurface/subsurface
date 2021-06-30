@@ -8,6 +8,45 @@
 
 #include <QToolBar>
 #include <QHBoxLayout>
+#include <QStackedWidget>
+#include <QLabel>
+
+// A resizing display of the Subsurface logo when no dive is shown
+class EmptyView : public QLabel {
+public:
+	EmptyView(QWidget *parent = nullptr);
+	~EmptyView();
+private:
+	QPixmap logo;
+	void update();
+	void resizeEvent(QResizeEvent *) override;
+};
+
+EmptyView::EmptyView(QWidget *parent) : QLabel(parent),
+	logo(":poster-icon")
+{
+	QPalette pal;
+	pal.setColor(QPalette::Window, getColor(::BACKGROUND));
+	setAutoFillBackground(true);
+	setPalette(pal);
+	setMinimumSize(1,1);
+	setAlignment(Qt::AlignHCenter);
+	update();
+}
+
+EmptyView::~EmptyView()
+{
+}
+
+void EmptyView::update()
+{
+	setPixmap(logo.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+}
+
+void EmptyView::resizeEvent(QResizeEvent *)
+{
+	update();
+}
 
 ProfileWidget::ProfileWidget()
 {
@@ -26,18 +65,25 @@ ProfileWidget::ProfileWidget()
 			   ui.profHR, // very few dive computers support this
 			   ui.profTissues }; // maybe less frequently used
 
+	emptyView.reset(new EmptyView);
+
 	view.reset(new ProfileWidget2(DivePlannerPointsModel::instance(), 1.0, this));
 	QToolBar *toolBar = new QToolBar(this);
 	for (QAction *a: toolbarActions)
 		toolBar->addAction(a);
 	toolBar->setOrientation(Qt::Vertical);
 	toolBar->setIconSize(QSize(24, 24));
+
+	stack = new QStackedWidget(this);
+	stack->addWidget(emptyView.get());
+	stack->addWidget(view.get());
+
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setSpacing(0);
 	layout->setMargin(0);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addWidget(toolBar);
-	layout->addWidget(view.get());
+	layout->addWidget(stack);
 	setLayout(layout);
 
 	// Toolbar Connections related to the Profile Update
@@ -128,9 +174,33 @@ void ProfileWidget::setDive(const struct dive *d)
 void ProfileWidget::plotCurrentDive()
 {
 	setEnabledToolbar(current_dive != nullptr);
-	if (current_dive)
-		setDive(current_dive);
-	view->plotDive(current_dive, dc_number);
+	if (current_dive) {
+		stack->setCurrentIndex(1);
+		bool freeDiveMode = current_dive->dc.divemode == FREEDIVE;
+		ui.profCalcCeiling->setDisabled(freeDiveMode);
+		ui.profCalcCeiling->setDisabled(freeDiveMode);
+		ui.profCalcAllTissues ->setDisabled(freeDiveMode);
+		ui.profIncrement3m->setDisabled(freeDiveMode);
+		ui.profDcCeiling->setDisabled(freeDiveMode);
+		ui.profPhe->setDisabled(freeDiveMode);
+		ui.profPn2->setDisabled(freeDiveMode); //TODO is the same as scuba?
+		ui.profPO2->setDisabled(freeDiveMode); //TODO is the same as scuba?
+		ui.profTankbar->setDisabled(freeDiveMode);
+		ui.profMod->setDisabled(freeDiveMode);
+		ui.profNdl_tts->setDisabled(freeDiveMode);
+		ui.profDeco->setDisabled(freeDiveMode);
+		ui.profEad->setDisabled(freeDiveMode);
+		ui.profSAC->setDisabled(freeDiveMode);
+		ui.profTissues->setDisabled(freeDiveMode);
+
+		ui.profRuler->setDisabled(false);
+		ui.profScaled->setDisabled(false); // measuring and scaling
+		ui.profTogglePicture->setDisabled(false);
+		ui.profHR->setDisabled(false);
+		view->plotDive(current_dive, dc_number);
+	} else {
+		stack->setCurrentIndex(0);
+	}
 }
 
 void ProfileWidget::setPlanState(const struct dive *d, int dc)

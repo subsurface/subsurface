@@ -10,6 +10,8 @@
 #include <memory>
 
 class ProfileWidget2;
+class EmptyView;
+class QStackedWidget;
 
 class ProfileWidget : public QWidget {
 	Q_OBJECT
@@ -26,8 +28,10 @@ slots:
 	void unsetProfHR();
 	void unsetProfTissues();
 private:
+	std::unique_ptr<EmptyView> emptyView;
 	std::vector<QAction *> toolbarActions;
 	Ui::ProfileWidget ui;
+	QStackedWidget *stack;
 	void setDive(const struct dive *d);
 };
 
