@@ -512,7 +512,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 #ifdef SUBSURFACE_MOBILE
 	Q_UNUSED(doClearPictures);
 #endif
-	if ((currentState != ADD && currentState != PLAN) || !plannerModel) {
+	if ((currentState != EDIT && currentState != PLAN) || !plannerModel) {
 		if (decoMode(false) == VPMB)
 			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.vpmb_conservatism));
 		else
@@ -540,7 +540,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 #ifndef SUBSURFACE_MOBILE
 	// reset some item visibility on printMode changes
 	toolTipItem->setVisible(!printMode);
-	rulerItem->setVisible(prefs.rulergraph && !printMode && currentState != PLAN && currentState != ADD);
+	rulerItem->setVisible(prefs.rulergraph && !printMode && currentState != PLAN && currentState != EDIT);
 #endif
 	if (currentState == EMPTY)
 		setProfileState();
@@ -750,7 +750,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 	diveComputerText->setText(dcText);
 
 #ifndef SUBSURFACE_MOBILE
-	if ((currentState == ADD || currentState == PLAN) && plannerModel) {
+	if ((currentState == EDIT || currentState == PLAN) && plannerModel) {
 		repositionDiveHandlers();
 		plannerModel->deleteTemporaryPlan();
 	}
@@ -866,7 +866,7 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 	if (zoomLevel)
 		return;
 	QGraphicsView::mousePressEvent(event);
-	if (currentState == PLAN || currentState == ADD)
+	if (currentState == PLAN || currentState == EDIT)
 		shouldCalculateMaxDepth = shouldCalculateMaxTime = false;
 }
 
@@ -890,7 +890,7 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 	if (zoomLevel)
 		return;
 	QGraphicsView::mouseReleaseEvent(event);
-	if (currentState == PLAN || currentState == ADD) {
+	if (currentState == PLAN || currentState == EDIT) {
 		shouldCalculateMaxTime = shouldCalculateMaxDepth = true;
 		replot();
 	}
@@ -961,7 +961,7 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 
 void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 {
-	if ((currentState == PLAN || currentState == ADD) && plannerModel) {
+	if ((currentState == PLAN || currentState == EDIT) && plannerModel) {
 		QPointF mappedPos = mapToScene(event->pos());
 		if (isPointOutOfBoundaries(mappedPos))
 			return;
@@ -1187,9 +1187,9 @@ void ProfileWidget2::connectPlannerModel()
 	connect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
 }
 
-void ProfileWidget2::setAddState(const dive *d, int dc)
+void ProfileWidget2::setEditState(const dive *d, int dc)
 {
-	if (currentState == ADD)
+	if (currentState == EDIT)
 		return;
 
 	setProfileState(d, dc);
@@ -1208,7 +1208,7 @@ void ProfileWidget2::setAddState(const dive *d, int dc)
 	connectPlannerModel();
 
 	/* show the same stuff that the profile shows. */
-	currentState = ADD; /* enable the add state. */
+	currentState = EDIT; /* enable the add state. */
 	diveCeiling->setVisible(true);
 	decoModelParameters->setVisible(true);
 	setBackgroundBrush(QColor("#A7DCFF"));
@@ -1292,7 +1292,7 @@ static bool isDiveTextItem(const QGraphicsItem *item, const DiveTextItem *textIt
 
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 {
-	if (currentState == ADD || currentState == PLAN) {
+	if (currentState == EDIT || currentState == PLAN) {
 		QGraphicsView::contextMenuEvent(event);
 		return;
 	}
@@ -1727,7 +1727,7 @@ void ProfileWidget2::divePlannerHandlerMoved()
 
 void ProfileWidget2::keyDownAction()
 {
-	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
+	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
@@ -1743,7 +1743,7 @@ void ProfileWidget2::keyDownAction()
 
 void ProfileWidget2::keyUpAction()
 {
-	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
+	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
@@ -1762,7 +1762,7 @@ void ProfileWidget2::keyUpAction()
 
 void ProfileWidget2::keyLeftAction()
 {
-	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
+	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
@@ -1781,7 +1781,7 @@ void ProfileWidget2::keyLeftAction()
 
 void ProfileWidget2::keyRightAction()
 {
-	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
+	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
@@ -1797,7 +1797,7 @@ void ProfileWidget2::keyRightAction()
 
 void ProfileWidget2::keyDeleteAction()
 {
-	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
+	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
 	QVector<int> selectedIndices;
@@ -1813,7 +1813,7 @@ void ProfileWidget2::keyDeleteAction()
 
 void ProfileWidget2::keyEscAction()
 {
-	if ((currentState != ADD && currentState != PLAN) || !plannerModel)
+	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
 	if (scene()->selectedItems().count()) {
@@ -1967,7 +1967,7 @@ void ProfileWidget2::plotPictures()
 void ProfileWidget2::plotPicturesInternal(const struct dive *d, bool synchronous)
 {
 	pictures.clear();
-	if (currentState == ADD || currentState == PLAN)
+	if (currentState == EDIT || currentState == PLAN)
 		return;
 
 	// Fetch all pictures of the dive, but consider only those that are within the dive time.

@@ -60,7 +60,7 @@ public:
 	enum State {
 		EMPTY,
 		PROFILE,
-		ADD,
+		EDIT,
 		PLAN,
 		INVALID
 	};
@@ -82,7 +82,7 @@ public:
 	void plotDive(const struct dive *d, int dc, bool clearPictures = false, bool instant = false);
 	void setProfileState(const struct dive *d, int dc);
 	void setPlanState(const struct dive *d, int dc);
-	void setAddState(const struct dive *d, int dc);
+	void setEditState(const struct dive *d, int dc);
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool isPointOutOfBoundaries(const QPointF &point) const;
 	bool isPlanner() const;
