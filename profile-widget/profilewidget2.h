@@ -64,15 +64,6 @@ public:
 		PLAN,
 		INVALID
 	};
-	enum Items {
-		BACKGROUND,
-		PROFILE_Y_AXIS,
-		GAS_Y_AXIS,
-		TIME_AXIS,
-		DEPTH_CONTROLLER,
-		TIME_CONTROLLER,
-		COLUMNS
-	};
 
 	// Pass null as plannerModel if no support for planning required
 	ProfileWidget2(DivePlannerPointsModel *plannerModel, QWidget *parent = 0);
