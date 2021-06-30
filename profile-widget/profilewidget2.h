@@ -230,7 +230,6 @@ private:
 
 	std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> gases;
 
-	//specifics for ADD and PLAN
 #ifndef SUBSURFACE_MOBILE
 	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
 	// For the same offset, sort by filename.
