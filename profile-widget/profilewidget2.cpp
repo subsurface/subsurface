@@ -78,17 +78,17 @@ T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z
 
 ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fontPrintScale, QWidget *parent) : QGraphicsView(parent),
 	profileScene(new ProfileScene(fontPrintScale)),
-	currentState(INVALID),
+	currentState(INIT),
 	plannerModel(plannerModelIn),
 	zoomLevel(0),
 	zoomFactor(1.15),
 	isGrayscale(false),
 	printMode(false),
-	background(new DivePixmapItem()),
-	backgroundFile(":poster-icon"),
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
 #endif
+	d(nullptr),
+	dc(0),
 	diveProfileItem(createItem<DiveProfileItem>(*profileScene->profileYAxis, DivePlotDataModel::DEPTH, 0, fontPrintScale)),
 	temperatureItem(createItem<DiveTemperatureItem>(*profileScene->temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
 	meanDepthItem(createItem<DiveMeanDepthItem>(*profileScene->profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, fontPrintScale)),
@@ -169,6 +169,8 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 	connect(pp_gas, &qPrefPartialPressureGas::pheChanged, this, &ProfileWidget2::actionRequestedReplot);
 	connect(pp_gas, &qPrefPartialPressureGas::pn2Changed, this, &ProfileWidget2::actionRequestedReplot);
 	connect(pp_gas, &qPrefPartialPressureGas::po2Changed, this, &ProfileWidget2::actionRequestedReplot);
+
+	setProfileState();
 }
 
 ProfileWidget2::~ProfileWidget2()
@@ -190,7 +192,6 @@ void ProfileWidget2::addActionShortcut(const Qt::Key shortcut, void (ProfileWidg
 
 void ProfileWidget2::addItemsToScene()
 {
-	scene()->addItem(background);
 	scene()->addItem(diveComputerText);
 	scene()->addItem(tankItem);
 	scene()->addItem(decoModelParameters);
@@ -212,7 +213,6 @@ void ProfileWidget2::addItemsToScene()
 
 void ProfileWidget2::setupItemOnScene()
 {
-	background->setZValue(9999);
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->setZValue(9998);
 	toolTipItem->setTimeAxis(profileScene->timeAxis);
@@ -286,7 +286,6 @@ void ProfileWidget2::setupSceneAndFlags()
 	setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 	setMouseTracking(true);
-	background->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 }
 
 void ProfileWidget2::resetZoom()
@@ -301,10 +300,14 @@ void ProfileWidget2::resetZoom()
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPictures, bool instant)
 {
+	// If there was no previously displayed dive, turn off animations
+	if (!d)
+		instant = true;
+
 	d = dIn;
 	dc = dcIn;
 	if (!d) {
-		setEmptyState();
+		clear();
 		return;
 	}
 
@@ -330,12 +333,11 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 
 	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
 	if (!currentdc || !currentdc->samples) {
-		setEmptyState();
+		clear();
 		return;
 	}
 
-	// special handling when switching from empty state
-	profileScene->animSpeed = instant || currentState == EMPTY || printMode ? 0 : qPrefDisplay::animation_speed();
+	profileScene->animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
 
 	// restore default zoom level
 	resetZoom();
@@ -345,8 +347,6 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 	toolTipItem->setVisible(!printMode);
 	rulerItem->setVisible(prefs.rulergraph && !printMode && currentState != PLAN && currentState != EDIT);
 #endif
-	if (currentState == EMPTY)
-		setProfileState();
 	updateVisibility();
 
 	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2;
@@ -602,7 +602,6 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 {
 	QGraphicsView::resizeEvent(event);
 	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
-	fixBackgroundPos();
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -642,19 +641,6 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 }
 #endif
 
-void ProfileWidget2::fixBackgroundPos()
-{
-	static QPixmap toBeScaled(backgroundFile);
-	if (currentState != EMPTY)
-		return;
-	QPixmap p = toBeScaled.scaledToHeight(viewport()->height() - 40, Qt::SmoothTransformation);
-	int x = viewport()->width() / 2 - p.width() / 2;
-	int y = viewport()->height() / 2 - p.height() / 2;
-	background->setPixmap(p);
-	background->setX(mapToScene(x, 0).x());
-	background->setY(mapToScene(y, 20).y());
-}
-
 void ProfileWidget2::scale(qreal sx, qreal sy)
 {
 	QGraphicsView::scale(sx, sy);
@@ -673,7 +659,7 @@ void ProfileWidget2::scale(qreal sx, qreal sy)
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
-	if (currentState == EMPTY)
+	if (!d)
 		return;
 	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
 	if (event->buttons() == Qt::LeftButton)
@@ -711,7 +697,7 @@ void ProfileWidget2::scrollViewTo(const QPoint &pos)
 {
 	/* since we cannot use translate() directly on the scene we hack on
 	 * the scroll bars (hidden) functionality */
-	if (!zoomLevel || currentState == EMPTY)
+	if (!zoomLevel || !d)
 		return;
 	QScrollBar *vs = verticalScrollBar();
 	QScrollBar *hs = horizontalScrollBar();
@@ -763,64 +749,24 @@ static void hideAll(const T &container)
 		item->setVisible(false);
 }
 
-void ProfileWidget2::setEmptyState()
+void ProfileWidget2::clear()
 {
-	// Then starting Empty State, move the background up.
-	if (currentState == EMPTY)
-		return;
-
 #ifndef SUBSURFACE_MOBILE
 	clearPictures();
 #endif
 	disconnectTemporaryConnections();
-	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
 	profileScene->dataModel->clear();
-	currentState = EMPTY;
 
-	fixBackgroundPos();
-	background->setVisible(true);
-
-	profileScene->profileYAxis->setVisible(false);
-	profileScene->gasYAxis->setVisible(false);
-	profileScene->timeAxis->setVisible(false);
-	profileScene->temperatureAxis->setVisible(false);
-	profileScene->cylinderPressureAxis->setVisible(false);
-	diveComputerText->setVisible(false);
-	reportedCeiling->setVisible(false);
-	tankItem->setVisible(false);
-	pn2GasItem->setVisible(false);
-	po2GasItem->setVisible(false);
-	pheGasItem->setVisible(false);
-	o2SetpointGasItem->setVisible(false);
-	ccrsensor1GasItem->setVisible(false);
-	ccrsensor2GasItem->setVisible(false);
-	ccrsensor3GasItem->setVisible(false);
-	ocpo2GasItem->setVisible(false);
-	decoModelParameters->setVisible(false);
-	diveCeiling->setVisible(false);
-#ifndef SUBSURFACE_MOBILE
-	toolTipItem->clearPlotInfo();
-	toolTipItem->setVisible(false);
-	rulerItem->setVisible(false);
-	mouseFollowerHorizontal->setVisible(false);
-	mouseFollowerVertical->setVisible(false);
-	profileScene->heartBeatAxis->setVisible(false);
-	heartBeatItem->setVisible(false);
-#endif
 	for (AbstractProfilePolygonItem *item: profileItems)
 		item->clear();
 
-#ifndef SUBSURFACE_MOBILE
-	hideAll(allTissues);
-	hideAll(allPercentages);
-	hideAll(handles);
-#endif
 	// the events will have connected slots which can fire after
 	// the dive and its data have been deleted - so explictly delete
 	// the DiveEventItems
 	qDeleteAll(eventItems);
 	eventItems.clear();
-	hideAll(gases);
+	handles.clear();
+	gases.clear();
 }
 
 void ProfileWidget2::setProfileState(const dive *dIn, int dcIn)
@@ -865,22 +811,13 @@ void ProfileWidget2::updateVisibility()
 
 void ProfileWidget2::setProfileState()
 {
-	// Then starting Empty State, move the background up.
 	if (currentState == PROFILE)
 		return;
 
 	disconnectTemporaryConnections();
-	/* show the same stuff that the profile shows. */
 
 	currentState = PROFILE;
 	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
-
-	background->setVisible(false);
-	profileScene->profileYAxis->setVisible(true);
-	profileScene->gasYAxis->setVisible(true);
-	profileScene->timeAxis->setVisible(true);
-	profileScene->temperatureAxis->setVisible(true);
-	profileScene->cylinderPressureAxis->setVisible(true);
 
 	profileScene->updateAxes();
 
@@ -896,11 +833,12 @@ void ProfileWidget2::setProfileState()
 	tankItem->setPos(itemPos.tankBar.on);
 
 #ifndef SUBSURFACE_MOBILE
-	hideAll(handles);
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 #endif
-	hideAll(gases);
+
+	handles.clear();
+	gases.clear();
 }
 
 #ifndef SUBSURFACE_MOBILE

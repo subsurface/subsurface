@@ -32,7 +32,6 @@ class ToolTipItem;
 class DiveReportedCeiling;
 class DiveTextItem;
 class DiveEventItem;
-class DivePixmapItem;
 class DiveRectItem;
 class DiveCartesianAxis;
 class DiveProfileItem;
@@ -54,11 +53,10 @@ class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
 public:
 	enum State {
-		EMPTY,
 		PROFILE,
 		EDIT,
 		PLAN,
-		INVALID
+		INIT
 	};
 
 	// Pass null as plannerModel if no support for planning required
@@ -73,6 +71,7 @@ public:
 	void setPrintMode(bool grayscale = false);
 	bool isPlanner() const;
 	void draw(QPainter *painter, const QRect &pos);
+	void clear();
 	QImage toImage(QSize size);
 #ifndef SUBSURFACE_MOBILE
 	bool eventFilter(QObject *, QEvent *) override;
@@ -88,7 +87,6 @@ slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
 	void actionRequestedReplot(bool triggered);
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
-	void setEmptyState();
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
 	void picturesRemoved(dive *d, QVector<QString> filenames);
@@ -135,7 +133,6 @@ private:
 
 	void replot();
 	void changeGas(int tank, int seconds);
-	void fixBackgroundPos();
 	void scrollViewTo(const QPoint &pos);
 	void setupSceneAndFlags();
 	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args);
@@ -166,8 +163,6 @@ private:
 	qreal zoomFactor;
 	bool isGrayscale;
 	bool printMode;
-	DivePixmapItem *background;
-	QString backgroundFile;
 #ifndef SUBSURFACE_MOBILE
 	ToolTipItem *toolTipItem;
 #endif
