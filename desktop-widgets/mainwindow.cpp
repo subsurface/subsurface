@@ -195,7 +195,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	ui.mainErrorMessage->hide();
 	setEnabledToolbar(false);
-	profile->view->setEmptyState();
 	initialUiSetup();
 	readSettings();
 	diveList->setFocus();
