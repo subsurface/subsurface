@@ -6969,7 +6969,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="699"/>
         <source>Cloud stora&amp;ge online</source>
-        <translation>Cloudspeicher online</translation>
+        <translation>Cloud-Speicher online</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="711"/>
@@ -7051,7 +7051,7 @@ Die Druckvorlagen in dieser Subsurface Version sind schreibgeschützt und sollte
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation>Es gibt ungesicherte Änderungen. Sollen diese in die Cloud gespeichert werden?
-Bei &quot;nein&quot; wird die Cloud erst beim nächsten &quot;Cloudspeicher öffnen&quot; oder &quot;In Cloud speichern&quot; synchronisiert.</translation>
+Bei &quot;nein&quot; wird die Cloud erst beim nächsten &quot;Cloud-Speicher öffnen&quot; oder &quot;In Cloud-Speicher speichern&quot; synchronisiert.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="595"/>

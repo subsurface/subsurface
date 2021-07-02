@@ -367,7 +367,7 @@
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="123"/>
         <source>Trying different cloud server...</source>
-        <translation type="unfinished"/>
+        <translation>Tentativo di connessione a un server cloud diverso ...</translation>
     </message>
 </context>
 <context>
@@ -2801,12 +2801,12 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="384"/>
         <source>Dive number: </source>
-        <translation type="unfinished"/>
+        <translation>Immersione numero:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="386"/>
         <source>Date / time: </source>
-        <translation type="unfinished"/>
+        <translation>Data / ora:</translation>
     </message>
 </context>
 <context>
@@ -2885,7 +2885,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="143"/>
         <source>Dive Number</source>
-        <translation type="unfinished"/>
+        <translation>Immersione numero</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="150"/>
@@ -3297,7 +3297,8 @@ del GPS:</translation>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="29"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione manuale con il cloud completata
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="176"/>
@@ -3430,7 +3431,7 @@ del GPS:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="788"/>
         <source>Remove dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Rimuovi immersione dal viaggio</numerusform><numerusform>Rimuovi immersioni dal viaggio</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="790"/>
@@ -3460,7 +3461,7 @@ del GPS:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="816"/>
         <source>Delete dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Cancella immersione</numerusform><numerusform>Cancella immersioni</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
@@ -14717,7 +14718,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <location filename="../mobile-widgets/qml/main.qml" line="364"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione manuale con il cloud completata</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="372"/>
