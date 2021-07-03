@@ -1512,7 +1512,7 @@ void MainWindow::on_actionImportDiveSites_triggered()
 void MainWindow::editCurrentDive()
 {
 	// We only allow editing of the profile for manually added dives.
-	if (!current_dive || !same_string(current_dive->dc.model, "manually added dive") || !userMayChangeAppState())
+	if (!current_dive || (!same_string(current_dive->dc.model, "manually added dive") && current_dive->dc.samples) || !userMayChangeAppState())
 		return;
 
 	// This shouldn't be possible, but let's make sure no weird "double editing" takes place.
