@@ -11,11 +11,6 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget *parent) : QDialog(parent, QFlag(0))
 
 	setWindowModality(Qt::ApplicationModal);
 	QString versionString(subsurface_git_version());
-	QStringList readableVersions = QStringList() << "4.5.95" << "4.6 Beta 0" <<
-							"4.5.96" << "4.6 Beta 1" <<
-							"4.5.97" << "4.6 Beta 2";
-	if (readableVersions.contains(versionString))
-		versionString = readableVersions[readableVersions.indexOf(versionString) + 1];
 
 	ui.aboutLabel->setText(tr("<span style='font-size: 18pt; font-weight: bold;'>"
 				  "Subsurface %1 </span><br><br>"
