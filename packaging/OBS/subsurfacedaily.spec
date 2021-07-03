@@ -1,7 +1,7 @@
 #
 # spec file for package subsurface
 #
-# Copyright (c) 2014-2020 Dirk Hohndel
+# Copyright (c) 2014-2021 Dirk Hohndel
 #
 
 %define latestVersion 4.9.10.166
