@@ -16,7 +16,7 @@
 
 DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix,
 			     DivePlotDataModel *model, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
-			     int speed, QGraphicsItem *parent) : DivePixmapItem(parent),
+			     int speed, double fontPrintScale, QGraphicsItem *parent) : DivePixmapItem(parent),
 	vAxis(vAxis),
 	hAxis(hAxis),
 	dataModel(model),
@@ -25,7 +25,7 @@ DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasm
 {
 	setFlag(ItemIgnoresTransformations);
 
-	setupPixmap(lastgasmix);
+	setupPixmap(lastgasmix, fontPrintScale);
 	setupToolTipString(lastgasmix);
 	recalculatePos(0);
 
@@ -48,7 +48,7 @@ struct event *DiveEventItem::getEventMutable()
 	return ev;
 }
 
-void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
+void DiveEventItem::setupPixmap(struct gasmix lastgasmix, double fontPrintScale)
 {
 	const IconMetrics& metrics = defaultIconMetrics();
 #ifndef SUBSURFACE_MOBILE
@@ -63,6 +63,7 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
 	int sz_bigger = metrics.sz_big + metrics.sz_med;
 #endif
 #endif
+	sz_bigger = lrint(sz_bigger * fontPrintScale);
 	int sz_pix = sz_bigger/2; // ex 20px
 
 #define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(sz_pix, sz_pix, Qt::KeepAspectRatio, Qt::SmoothTransformation)
