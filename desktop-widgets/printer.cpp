@@ -21,8 +21,7 @@ Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, c
 	templateOptions(templateOptions),
 	printMode(printMode),
 	inPlanner(inPlanner),
-	done(0),
-	dpi(0)
+	done(0)
 {
 }
 
@@ -227,7 +226,7 @@ void Printer::print()
 
 	TemplateLayout t(printOptions, templateOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
-	dpi = printerPtr->resolution();
+	int dpi = printerPtr->resolution();
 	//rendering resolution = selected paper size in inchs * printer dpi
 	pageSize.setHeight(qCeil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
 	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));

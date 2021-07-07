@@ -29,7 +29,6 @@ private:
 	PrintMode printMode;
 	bool inPlanner;
 	int done;
-	int dpi;
 	void render(int Pages);
 	void flowRender();
 	void putProfileImage(const QRect &box, const QRect &viewPort, QPainter *painter,
