@@ -11,6 +11,7 @@
 #include "core/membuffer.h"
 #include "core/sample.h"
 #include "core/subsurface-string.h"
+#include <QDebug>
 
 #define DEPTH_NOT_FOUND (-2342)
 
@@ -50,6 +51,7 @@ struct event *DiveEventItem::getEventMutable()
 
 void DiveEventItem::setupPixmap(struct gasmix lastgasmix, double fontPrintScale)
 {
+	extern int verbose;
 	const IconMetrics& metrics = defaultIconMetrics();
 #ifndef SUBSURFACE_MOBILE
 	int sz_bigger = metrics.sz_med + metrics.sz_small; // ex 40px
@@ -65,6 +67,8 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, double fontPrintScale)
 #endif
 	sz_bigger = lrint(sz_bigger * fontPrintScale);
 	int sz_pix = sz_bigger/2; // ex 20px
+	if (verbose)
+		qDebug() << __FUNCTION__ << "fontPrintScale" << fontPrintScale << "metrics" << metrics.sz_med << metrics.sz_small << "sz_bigger" << sz_bigger;
 
 #define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(sz_pix, sz_pix, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 #define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(sz_bigger, sz_bigger, Qt::KeepAspectRatio, Qt::SmoothTransformation)

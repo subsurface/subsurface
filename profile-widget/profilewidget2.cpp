@@ -723,9 +723,6 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 #endif
 		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix, dataModel, timeAxis, profileYAxis, animSpeed, getFontPrintScale());
 		item->setZValue(2);
-#ifndef SUBSURFACE_MOBILE
-		item->setScale(printMode ? 4 :1);
-#endif
 		scene()->addItem(item);
 		eventItems.push_back(item);
 		if (event_is_gaschange(event))
