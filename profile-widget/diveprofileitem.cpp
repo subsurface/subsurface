@@ -26,11 +26,6 @@ void AbstractProfilePolygonItem::clear()
 	texts.clear();
 }
 
-void AbstractProfilePolygonItem::setVisible(bool visible)
-{
-	QGraphicsPolygonItem::setVisible(visible);
-}
-
 void AbstractProfilePolygonItem::replot(const dive *, bool)
 {
 	// Calculate the polygon. This is the polygon that will be painted on screen
