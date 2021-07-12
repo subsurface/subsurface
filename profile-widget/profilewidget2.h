@@ -127,6 +127,7 @@ slots: // Necessary to call from QAction's signals.
 private:
 	void setProfileState(); // keep currently displayed dive
 	void updateAxes(); // Update axes according to preferences
+	void updateVisibility(); // Update visibility of non-interactive chart features according to preferences
 	void resizeEvent(QResizeEvent *event) override;
 #ifndef SUBSURFACE_MOBILE
 	void wheelEvent(QWheelEvent *event) override;
