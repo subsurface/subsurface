@@ -162,7 +162,6 @@ DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveC
 	pen.setCosmetic(true);
 	pen.setWidth(1);
 	setPen(pen);
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::hrgraphChanged, this, &DiveHeartrateItem::setVisible);
 }
 
 void DiveHeartrateItem::replot(const dive *, bool)
@@ -241,7 +240,6 @@ DivePercentageItem::DivePercentageItem(const DivePlotDataModel &model, const Div
 	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn),
 	tissueIndex(i)
 {
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraphChanged, this, &DivePercentageItem::setVisible);
 }
 
 void DivePercentageItem::replot(const dive *d, bool)
@@ -425,7 +423,6 @@ void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 	painter->restore();
-	connect(qPrefLog::instance(), &qPrefLog::show_average_depthChanged, this, &DiveMeanDepthItem::setVisible);
 }
 
 void DiveMeanDepthItem::createTextItem()
@@ -612,8 +609,6 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 DiveCalculatedCeiling::DiveCalculatedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn) :
 	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn)
 {
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcceilingChanged, this, &DiveCalculatedCeiling::setVisible);
-	setVisible(prefs.calcceiling);
 }
 
 void DiveCalculatedCeiling::replot(const dive *d, bool in_planner)
@@ -647,21 +642,11 @@ void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsI
 DiveCalculatedTissue::DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn) :
 	DiveCalculatedCeiling(model, hAxis, hColumn, vAxis, vColumn)
 {
-	setVisible(true);
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcalltissuesChanged, this, &DiveCalculatedTissue::setVisible);
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcceilingChanged, this, &DiveCalculatedTissue::setVisible);
-}
-
-void DiveCalculatedTissue::setVisible(bool)
-{
-	DiveCalculatedCeiling::setVisible(prefs.calcalltissues && prefs.calcceiling);
 }
 
 DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn) :
 	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn)
 {
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::dcceilingChanged, this, &DiveReportedCeiling::setVisible);
-	setVisible(prefs.dcceiling);
 }
 
 void DiveReportedCeiling::replot(const dive *, bool)
