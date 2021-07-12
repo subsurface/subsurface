@@ -1119,7 +1119,7 @@ void ProfileWidget2::updateVisibility()
 	decoModelParameters->setVisible(prefs.calcceiling);
 #ifndef SUBSURFACE_MOBILE
 	for (DiveCalculatedTissue *tissue: allTissues)
-		tissue->setVisible(prefs.calcalltissues);
+		tissue->setVisible(prefs.calcalltissues && prefs.calcceiling);
 	for (DivePercentageItem *percentage: allPercentages)
 		percentage->setVisible(prefs.percentagegraph);
 #endif
