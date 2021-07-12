@@ -39,9 +39,6 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) = 0;
 	void clear();
 	virtual void replot(const dive *d, bool in_planner);
-public
-slots:
-	void setVisible(bool visible);
 
 protected:
 	const DiveCartesianAxis &hAxis;
