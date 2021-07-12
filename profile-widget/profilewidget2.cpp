@@ -1095,6 +1095,38 @@ void ProfileWidget2::setProfileState(const dive *dIn, int dcIn)
 	setProfileState();
 }
 
+// Update visibility of non-interactive chart features according to preferences
+void ProfileWidget2::updateVisibility()
+{
+#ifndef SUBSURFACE_MOBILE
+	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
+	po2GasItem->setVisible(prefs.pp_graphs.po2);
+	pheGasItem->setVisible(prefs.pp_graphs.phe);
+
+	const struct divecomputer *currentdc = d ? get_dive_dc_const(d, dc) : nullptr;
+	bool setpointflag = currentdc && currentdc->divemode == CCR && prefs.pp_graphs.po2;
+	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
+	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
+	ccrsensor1GasItem->setVisible(sensorflag);
+	ccrsensor2GasItem->setVisible(currentdc && sensorflag && currentdc->no_o2sensors > 1);
+	ccrsensor3GasItem->setVisible(currentdc && sensorflag && currentdc->no_o2sensors > 2);
+	ocpo2GasItem->setVisible(currentdc && currentdc->divemode == PSCR && prefs.show_scr_ocpo2);
+
+	heartBeatItem->setVisible(prefs.hrgraph);
+#endif
+	diveCeiling->setVisible(prefs.calcceiling);
+	decoModelParameters->setVisible(prefs.calcceiling);
+#ifndef SUBSURFACE_MOBILE
+	for (DiveCalculatedTissue *tissue: allTissues)
+		tissue->setVisible(prefs.calcalltissues);
+	for (DivePercentageItem *percentage: allPercentages)
+		percentage->setVisible(prefs.percentagegraph);
+#endif
+	meanDepthItem->setVisible(prefs.show_average_depth);
+	reportedCeiling->setVisible(prefs.dcceiling);
+	tankItem->setVisible(prefs.tankbar);
+}
+
 void ProfileWidget2::setProfileState()
 {
 	// Then starting Empty State, move the background up.
@@ -1120,50 +1152,16 @@ void ProfileWidget2::setProfileState()
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->readPos();
 	toolTipItem->setVisible(true);
-	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
-	po2GasItem->setVisible(prefs.pp_graphs.po2);
-	pheGasItem->setVisible(prefs.pp_graphs.phe);
-
-	const struct divecomputer *currentdc = d ? get_dive_dc_const(d, dc) : nullptr;
-	bool setpointflag = currentdc && currentdc->divemode == CCR && prefs.pp_graphs.po2;
-	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
-	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
-	ccrsensor1GasItem->setVisible(sensorflag);
-	ccrsensor2GasItem->setVisible(currentdc && sensorflag && currentdc->no_o2sensors > 1);
-	ccrsensor3GasItem->setVisible(currentdc && sensorflag && currentdc->no_o2sensors > 2);
-	ocpo2GasItem->setVisible(currentdc && currentdc->divemode == PSCR && prefs.show_scr_ocpo2);
-
-	heartBeatItem->setVisible(prefs.hrgraph);
-#endif
-	diveCeiling->setVisible(prefs.calcceiling);
-	decoModelParameters->setVisible(prefs.calcceiling);
-#ifndef SUBSURFACE_MOBILE
-	if (prefs.calcalltissues) {
-		Q_FOREACH (DiveCalculatedTissue *tissue, allTissues) {
-			tissue->setVisible(true);
-		}
-	}
-	if (prefs.percentagegraph) {
-		Q_FOREACH (DivePercentageItem *percentage, allPercentages) {
-			percentage->setVisible(true);
-		}
-	}
-
 	rulerItem->setVisible(prefs.rulergraph);
-
 #endif
 	timeAxis->setPos(itemPos.time.pos.on);
 	timeAxis->setLine(itemPos.time.expanded);
 
 	cylinderPressureAxis->setPos(itemPos.cylinder.pos.on);
-	meanDepthItem->setVisible(prefs.show_average_depth);
 
 	diveComputerText->setVisible(true);
 	diveComputerText->setPos(itemPos.dcLabel.on);
 
-	reportedCeiling->setVisible(prefs.dcceiling);
-
-	tankItem->setVisible(prefs.tankbar);
 	tankItem->setPos(itemPos.tankBar.on);
 
 #ifndef SUBSURFACE_MOBILE
@@ -1172,6 +1170,7 @@ void ProfileWidget2::setProfileState()
 	mouseFollowerVertical->setVisible(false);
 #endif
 	hideAll(gases);
+	updateVisibility();
 }
 
 #ifndef SUBSURFACE_MOBILE
