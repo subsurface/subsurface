@@ -546,6 +546,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 #endif
 	if (currentState == EMPTY)
 		setProfileState();
+	updateVisibility();
 
 	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2;
 	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
@@ -1170,7 +1171,6 @@ void ProfileWidget2::setProfileState()
 	mouseFollowerVertical->setVisible(false);
 #endif
 	hideAll(gases);
-	updateVisibility();
 }
 
 #ifndef SUBSURFACE_MOBILE
