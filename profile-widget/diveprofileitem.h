@@ -161,7 +161,6 @@ class DiveCalculatedTissue : public DiveCalculatedCeiling {
 public:
 	DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
 			     const DiveCartesianAxis &vAxis, int vColumn);
-	void setVisible(bool visible);
 };
 
 class PartialPressureGasItem : public AbstractProfilePolygonItem {
