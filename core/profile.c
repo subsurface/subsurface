@@ -1424,9 +1424,16 @@ static void plot_string(const struct dive *d, const struct plot_info *pi, int id
 		int mbar = get_plot_pressure(pi, idx, cyl);
 		if (!mbar)
 			continue;
-		struct gasmix mix = get_cylinder(d, cyl)->gasmix;
-		pressurevalue = get_pressure_units(mbar, &pressure_unit);
-		put_format_loc(b, translate("gettextFromC", "P: %d%s (%s)\n"), pressurevalue, pressure_unit, gasname(mix));
+		// one would assume that there always is such a cylinder, but users have seen
+		// crashes when this got dereferenced, so let's check there's actually a cylinder there
+		cylinder_t *cylinder = get_cylinder(d, cyl);
+		if (cylinder) {
+			struct gasmix mix = cylinder->gasmix;
+			pressurevalue = get_pressure_units(mbar, &pressure_unit);
+			put_format_loc(b, translate("gettextFromC", "P: %d%s (%s)\n"), pressurevalue, pressure_unit, gasname(mix));
+		} else {
+			fprintf(stderr, "plot_string: failed to access cylinder %d\n", cyl);
+		}
 	}
 	if (entry->temperature) {
 		tempvalue = get_temp_units(entry->temperature, &temp_unit);
