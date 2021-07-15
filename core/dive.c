@@ -1246,6 +1246,10 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 
 	/* Fixup CCR / PSCR dives with o2sensor values, but without no_o2sensors */
 	fixup_no_o2sensors(dc);
+
+	/* If there are no samples, generate a fake profile based on depth and time */
+	if (!dc->samples)
+		fake_dc(dc);
 }
 
 struct dive *fixup_dive(struct dive *dive)
