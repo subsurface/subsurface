@@ -11,6 +11,7 @@
 #include "core/membuffer.h"
 #include "core/divesite.h"
 #include "core/cloudstorage.h"
+#include "core/xmlparams.h"
 #ifndef SUBSURFACE_MOBILE
 #include "core/selection.h"
 #endif // SUBSURFACE_MOBILE
@@ -97,6 +98,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		xmlDoc *transformed;
 		struct zip_source *s;
 		struct membuffer mb = {};
+		struct xml_params *params = alloc_xml_params();
 
 		/*
 		 * Get the i'th dive in XML format so we can process it.
@@ -153,7 +155,9 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		}
 		free_buffer(&mb);
 
-		transformed = xsltApplyStylesheet(xslt, doc, NULL);
+		xml_params_add_int(params, "allcylinders", prefs.display_unused_tanks);
+		transformed = xsltApplyStylesheet(xslt, doc, xml_params_get(params));
+		free_xml_params(params);
 		if (!transformed) {
 			qWarning() << errPrefix << "XSLT transform failed for dive: " << i;
 			report_error(tr("Conversion of dive %1 to divelogs.de format failed").arg(i).toUtf8());
