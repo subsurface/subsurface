@@ -3,6 +3,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:include href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
+  <xsl:param name="allcylinders" select="allcylinders"/>
   <xsl:output method="xml" encoding="UTF-8" indent="yes"
     cdata-section-elements="LOCATION SITE WEATHER WATERVIZIBILITY PARTNER BOATNAME CYLINDERDESCRIPTION LOGNOTES"
     />
@@ -170,7 +171,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-        <xsl:if test="following-sibling::divecomputer/event[@name='gaschange' and @value=$gas] or substring-before(@start, ' ') - 5 &gt; substring-before(@end, ' ')">
+        <xsl:if test="following-sibling::divecomputer/event[@name='gaschange' and @value=$gas] or substring-before(@start, ' ') - 5 &gt; substring-before(@end, ' ') or $allcylinders &gt; 0">
           <xsl:variable name="cur_cyl">
             <xsl:value-of select="position()"/>
           </xsl:variable>
