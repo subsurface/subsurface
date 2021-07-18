@@ -1657,9 +1657,10 @@ static void sample_renumber(struct sample *s, int i, const int mapping[])
 	int j;
 
 	for (j = 0; j < MAX_SENSORS; j++) {
-		int sensor;
+		int sensor = -1;
 
-		sensor = mapping[s->sensor[j]];
+		if (s->sensor[j] != NO_SENSOR)
+			sensor = mapping[s->sensor[j]];
 		if (sensor == -1) {
 			// Remove sensor and gas pressure info
 			if (i == 0) {

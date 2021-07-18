@@ -566,9 +566,9 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 		} else {
 			entry->pressures.o2 = sample->setpoint.mbar / 1000.0;
 		}
-		if (sample->pressure[0].mbar)
+		if (sample->pressure[0].mbar && sample->sensor[0] != NO_SENSOR)
 			set_plot_pressure_data(pi, idx, SENSOR_PR, sample->sensor[0], sample->pressure[0].mbar);
-		if (sample->pressure[1].mbar)
+		if (sample->pressure[1].mbar && sample->sensor[1] != NO_SENSOR)
 			set_plot_pressure_data(pi, idx, SENSOR_PR, sample->sensor[1], sample->pressure[1].mbar);
 		if (sample->temperature.mkelvin)
 			entry->temperature = lasttemp = sample->temperature.mkelvin;
