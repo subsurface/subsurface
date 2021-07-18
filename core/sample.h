@@ -9,6 +9,8 @@ extern "C" {
 #endif
 
 #define MAX_SENSORS 2
+#define NO_SENSOR ((uint8_t)-1)
+
 struct sample                         // BASE TYPE BYTES  UNITS    RANGE               DESCRIPTION
 {                                     // --------- -----  -----    -----               -----------
 	duration_t time;                  // int32_t    4  seconds  (0-34 yrs)             elapsed dive time up to this sample
@@ -23,7 +25,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE        
 	o2pressure_t setpoint;            // uint16_t   2    mbar   (0-65 bar)             O2 partial pressure (will be setpoint)
 	o2pressure_t o2sensor[3];         // uint16_t   6    mbar   (0-65 bar)             Up to 3 PO2 sensor values (rebreather)
 	bearing_t bearing;                // int16_t    2  degrees  (-1 no val, 0-360 deg) compass bearing
-	uint8_t sensor[MAX_SENSORS];      // uint8_t    1  sensorID (0-255)                ID of cylinder pressure sensor
+	uint8_t sensor[MAX_SENSORS];      // uint8_t    1  sensorID (0-254)                ID of cylinder pressure sensor
 	uint16_t cns;                     // uint16_t   1     %     (0-64k %)              cns% accumulated
 	uint8_t heartbeat;                // uint8_t    1  beats/m  (0-255)                heart rate measurement
 	volume_t sac;                     //            4  ml/min                          predefined SAC
