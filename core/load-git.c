@@ -642,6 +642,14 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 }
 
 /*
+ * If the given cylinder doesn't exist, return -1 as a "none" marker.
+ */
+static int sanitize_cylinder_id(const struct dive *d, int nr)
+{
+	return d && nr >=0 && nr < d->cylinders.nr ? nr : -1;
+}
+
+/*
  * By default the sample data does not change unless the
  * save-file gives an explicit new value. So we copy the
  * data from the previous sample if one exists, and then
@@ -667,8 +675,8 @@ static struct sample *new_sample(struct git_parser_state *state)
 		sample->pressure[0].mbar = 0;
 		sample->pressure[1].mbar = 0;
 	} else {
-		sample->sensor[0] = !state->o2pressure_sensor;
-		sample->sensor[1] = state->o2pressure_sensor;
+		sample->sensor[0] = sanitize_cylinder_id(state->active_dive, !state->o2pressure_sensor);
+		sample->sensor[1] = sanitize_cylinder_id(state->active_dive, state->o2pressure_sensor);
 	}
 	return sample;
 }

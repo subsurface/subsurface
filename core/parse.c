@@ -365,6 +365,14 @@ void ws_end(struct parser_state *state)
 }
 
 /*
+ * If the given cylinder doesn't exist, return -1 as a "none" marker.
+ */
+static int sanitize_cylinder_id(const struct dive *d, int nr)
+{
+	return d && nr >=0 && nr < d->cylinders.nr ? nr : -1;
+}
+
+/*
  * By default the sample data does not change unless the
  * save-file gives an explicit new value. So we copy the
  * data from the previous sample if one exists, and then
@@ -392,8 +400,8 @@ void sample_start(struct parser_state *state)
 		sample->pressure[0].mbar = 0;
 		sample->pressure[1].mbar = 0;
 	} else {
-		sample->sensor[0] = !state->o2pressure_sensor;
-		sample->sensor[1] = state->o2pressure_sensor;
+		sample->sensor[0] = sanitize_cylinder_id(state->cur_dive, !state->o2pressure_sensor);
+		sample->sensor[1] = sanitize_cylinder_id(state->cur_dive, state->o2pressure_sensor);
 	}
 	state->cur_sample = sample;
 	state->next_o2_sensor = 0;
