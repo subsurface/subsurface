@@ -1208,6 +1208,17 @@ static void fixup_no_o2sensors(struct divecomputer *dc)
 	}
 }
 
+static void fixup_dc_sample_sensors(struct divecomputer *dc, int nr_cylinders)
+{
+	for (int i = 0; i < dc->samples; i++) {
+		struct sample *s = dc->sample + i;
+		for (int j = 0; j < MAX_SENSORS; j++) {
+			if (s->sensor[j] < 0 || s->sensor[j] >= nr_cylinders)
+				s->sensor[j] = NO_SENSOR;
+		}
+	}
+}
+
 static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 {
 	/* Fixup duration and mean depth */
@@ -1227,6 +1238,9 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 
 	/* Fix up cylinder pressures based on DC info */
 	fixup_dive_pressures(dive, dc);
+
+	/* Fix up cylinder ids in pressure sensors */
+	fixup_dc_sample_sensors(dc, dive->cylinders.nr);
 
 	fixup_dc_events(dc);
 
