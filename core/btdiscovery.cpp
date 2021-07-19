@@ -64,6 +64,7 @@ static struct namePattern name[] = {
 	{ "HUD", "Scubapro", "G2 HUD" },
 	{ "Aladin", "Scubapro", "Aladin Sport Matrix" },
 	{ "A1", "Scubapro", "Aladin A1" },
+	{ "A2", "Scubapro", "Aladin A2" },
 	// Mares dive computers
 	{ "Mares Genius", "Mares", "Genius" },
 	{ "Mares", "Mares", "Quad" }, // we actually don't know and just pick a common one - user needs to fix in UI
