@@ -104,8 +104,10 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		 * Get the i'th dive in XML format so we can process it.
 		 * We need to save to a file before we can reload it back into memory...
 		 */
-		if (selected && !dive->selected)
+		if (selected && !dive->selected) {
+			free_xml_params(params);
 			continue;
+		}
 
 		/* make sure the buffer is empty and add the dive */
 		mb.len = 0;
@@ -151,6 +153,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 			zip_close(zip);
 			QFile::remove(tempfile);
 			xsltFreeStylesheet(xslt);
+			free_xml_params(params);
 			return false;
 		}
 		free_buffer(&mb);
