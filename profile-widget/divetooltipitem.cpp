@@ -131,6 +131,8 @@ void ToolTipItem::expand()
 ToolTipItem::ToolTipItem(QGraphicsItem *parent) : RoundRectItem(8.0, parent),
 	title(new QGraphicsSimpleTextItem(tr("Information"), this)),
 	status(COLLAPSED),
+	tissues(16,60),
+	painter(&tissues),
 	timeAxis(0),
 	lastTime(-1)
 {
@@ -219,8 +221,6 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 
 void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 {
-	static QPixmap tissues(16,60);
-	static QPainter painter(&tissues);
 	static struct membuffer mb = {};
 
 	if(refreshTime.elapsed() < 40)
