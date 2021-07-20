@@ -65,7 +65,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 	int i;
 	bool need_pagebreak = false;
 
-	struct membuffer buf = {};
+	struct membufferpp buf;
 
 	if (plain) {
 		ssrf = "";
@@ -253,7 +253,6 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		flush_buffer(&buf, f); /*check for writing errors? */
 		fclose(f);
 	}
-	free_buffer(&buf);
 	cb.setProgress(1000);
 }
 
@@ -265,7 +264,7 @@ void export_depths(const char *filename, bool selected_only)
 	int i;
 	const char *unit = NULL;
 
-	struct membuffer buf = {};
+	struct membufferpp buf;
 
 	for_each_dive (i, dive) {
 		if (selected_only && !dive->selected)
@@ -291,7 +290,6 @@ void export_depths(const char *filename, bool selected_only)
 		flush_buffer(&buf, f); /*check for writing errors? */
 		fclose(f);
 	}
-	free_buffer(&buf);
 }
 #endif /* ! SUBSURFACE_MOBILE */
 

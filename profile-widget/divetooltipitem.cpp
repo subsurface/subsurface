@@ -221,7 +221,7 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 
 void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 {
-	static struct membuffer mb = {};
+	struct membufferpp mb;
 
 	if(refreshTime.elapsed() < 40)
 		return;
@@ -232,7 +232,6 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 	lastTime = time;
 	clear();
 
-	mb.len = 0;
 	int idx = get_plot_details_new(d, &pInfo, time, &mb);
 
 	tissues.fill();

@@ -97,7 +97,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		const char *membuf;
 		xmlDoc *transformed;
 		struct zip_source *s;
-		struct membuffer mb = {};
+		struct membufferpp mb;
 		struct xml_params *params = alloc_xml_params();
 
 		/*
@@ -109,9 +109,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 			continue;
 		}
 
-		/* make sure the buffer is empty and add the dive */
-		mb.len = 0;
-
+		/* add the dive */
 		struct dive_site *ds = dive->dive_site;
 
 		if (ds) {
@@ -140,7 +138,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 			put_format(&mb, "</divelog>\n");
 		}
 		membuf = mb_cstring(&mb);
-		streamsize = strlen(membuf);
+		streamsize = mb.len;
 		/*
 		 * Parse the memory buffer into XML document and
 		 * transform it to divelogs.de format, finally dumping
@@ -156,7 +154,6 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 			free_xml_params(params);
 			return false;
 		}
-		free_buffer(&mb);
 
 		xml_params_add_int(params, "allcylinders", prefs.display_unused_tanks);
 		transformed = xsltApplyStylesheet(xslt, doc, xml_params_get(params));

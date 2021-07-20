@@ -27,10 +27,9 @@ uploadDiveShare::uploadDiveShare():
 void uploadDiveShare::doUpload(bool selected, const QString &uid, bool noPublic)
 {
 	//generate json
-	struct membuffer buf = {};
+	struct membufferpp buf;
 	export_list(&buf, NULL, selected, false);
 	QByteArray json_data(buf.buffer, buf.len);
-	free_buffer(&buf);
 
 	//Request to server
 	QNetworkRequest request;
