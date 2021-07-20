@@ -700,7 +700,7 @@ static void try_to_match_autogroup(const char *name, char *buf)
 	nonmatch("autogroup", name, buf);
 }
 
-static void get_cylinderindex(char *buffer, uint8_t *i, struct parser_state *state)
+static void get_cylinderindex(char *buffer, int16_t *i, struct parser_state *state)
 {
 	*i = atoi(buffer);
 	if (state->lastcylinderindex != *i) {
@@ -709,7 +709,7 @@ static void get_cylinderindex(char *buffer, uint8_t *i, struct parser_state *sta
 	}
 }
 
-static void get_sensor(char *buffer, uint8_t *i)
+static void get_sensor(char *buffer, int16_t *i)
 {
 	*i = atoi(buffer);
 }
@@ -839,7 +839,7 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf,
 		return;
 	if (MATCH("dctype", get_dc_type, &dc->divemode))
 		return;
-	if (MATCH("no_o2sensors", get_sensor, &dc->no_o2sensors))
+	if (MATCH("no_o2sensors", get_uint8, &dc->no_o2sensors))
 		return;
 	if (match_dc_data_fields(dc, name, buf, state))
 		return;

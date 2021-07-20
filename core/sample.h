@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 #define MAX_SENSORS 2
-#define NO_SENSOR ((uint8_t)-1)
+#define NO_SENSOR -1
 
 struct sample                         // BASE TYPE BYTES  UNITS    RANGE               DESCRIPTION
 {                                     // --------- -----  -----    -----               -----------
@@ -21,18 +21,18 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE        
 	depth_t depth;                    // int32_t    4    mm     (0-2000 km)            dive depth of this sample
 	depth_t stopdepth;                // int32_t    4    mm     (0-2000 km)            depth of next deco stop
 	temperature_t temperature;        // uint32_t   4    mK     (0-4 MK)               ambient temperature
-	pressure_t pressure[MAX_SENSORS]; // int32_t    4    mbar   (0-2 Mbar)             cylinder pressures (main and CCR o2)
+	pressure_t pressure[MAX_SENSORS]; // int32_t  2x4    mbar   (0-2 Mbar)             cylinder pressures (main and CCR o2)
 	o2pressure_t setpoint;            // uint16_t   2    mbar   (0-65 bar)             O2 partial pressure (will be setpoint)
-	o2pressure_t o2sensor[3];         // uint16_t   6    mbar   (0-65 bar)             Up to 3 PO2 sensor values (rebreather)
+	o2pressure_t o2sensor[3];         // uint16_t 3x2    mbar   (0-65 bar)             Up to 3 PO2 sensor values (rebreather)
 	bearing_t bearing;                // int16_t    2  degrees  (-1 no val, 0-360 deg) compass bearing
-	uint8_t sensor[MAX_SENSORS];      // uint8_t    1  sensorID (0-254)                ID of cylinder pressure sensor
-	uint16_t cns;                     // uint16_t   1     %     (0-64k %)              cns% accumulated
+	int16_t sensor[MAX_SENSORS];      // int16_t  2x2  sensorID (0-16k)                ID of cylinder pressure sensor
+	uint16_t cns;                     // uint16_t   2     %     (0-64k %)              cns% accumulated
 	uint8_t heartbeat;                // uint8_t    1  beats/m  (0-255)                heart rate measurement
 	volume_t sac;                     //            4  ml/min                          predefined SAC
 	bool in_deco;                     // bool       1    y/n      y/n                  this sample is part of deco
 	bool manually_entered;            // bool       1    y/n      y/n                  this sample was entered by the user,
 					  //                                               not calculated when planning a dive
-};	                                  // Total size of structure: 57 bytes, excluding padding at end
+};	                                  // Total size of structure: 63 bytes, excluding padding at end
 
 extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);
 
