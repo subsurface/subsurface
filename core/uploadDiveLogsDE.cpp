@@ -94,7 +94,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 	for_each_dive (i, dive) {
 		char filename[PATH_MAX];
 		int streamsize;
-		const char *membuf;
+		char *membuf;
 		xmlDoc *transformed;
 		struct zip_source *s;
 		struct membufferpp mb;
@@ -137,14 +137,12 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		if (ds) {
 			put_format(&mb, "</divelog>\n");
 		}
-		membuf = mb_cstring(&mb);
-		streamsize = mb.len;
 		/*
 		 * Parse the memory buffer into XML document and
 		 * transform it to divelogs.de format, finally dumping
 		 * the XML into a character buffer.
 		 */
-		xmlDoc *doc = xmlReadMemory(membuf, streamsize, "divelog", NULL, 0);
+		xmlDoc *doc = xmlReadMemory(mb.buffer, mb.len, "divelog", NULL, 0);
 		if (!doc) {
 			qWarning() << errPrefix << "could not parse back into memory the XML file we've just created!";
 			report_error(tr("internal error").toUtf8());
@@ -171,7 +169,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		 * Save the XML document into a zip file.
 		 */
 		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
-		s = zip_source_buffer(zip, membuf, streamsize, 1);
+		s = zip_source_buffer(zip, membuf, streamsize, 1); // frees membuffer!
 		if (s) {
 			int64_t ret = zip_add(zip, filename, s);
 			if (ret == -1)
