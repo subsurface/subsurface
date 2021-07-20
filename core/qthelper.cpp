@@ -7,7 +7,6 @@
 #include "subsurface-string.h"
 #include "gettextfromc.h"
 #include "statistics.h"
-#include "membuffer.h"
 #include "version.h"
 #include "errorhelper.h"
 #include "planner.h"
