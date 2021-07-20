@@ -397,7 +397,6 @@ int vasprintf_loc(char **dst, const char *cformat, va_list ap)
 	return utf8.size();
 }
 
-// This function is defined here instead of membuffer.c, because it needs to access QString.
 extern "C" void put_vformat_loc(struct membuffer *b, const char *fmt, va_list args)
 {
 	QByteArray utf8 = vqasprintf_loc(fmt, args).toUtf8();
@@ -408,4 +407,3 @@ extern "C" void put_vformat_loc(struct membuffer *b, const char *fmt, va_list ar
 	memcpy(b->buffer + b->len, data, utf8_size);
 	b->len += utf8_size;
 }
-

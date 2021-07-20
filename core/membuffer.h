@@ -36,10 +36,6 @@
 #ifndef MEMBUFFER_H
 #define MEMBUFFER_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -49,6 +45,17 @@ struct membuffer {
 	unsigned int len, alloc;
 	char *buffer;
 };
+
+#ifdef __cplusplus
+
+// In C++ code use this - it automatically frees the buffer, when going out of scope.
+struct membufferpp : public membuffer {
+	membufferpp();
+	~membufferpp();
+};
+
+extern "C" {
+#endif
 
 #ifdef __GNUC__
 #define __printf(x, y) __attribute__((__format__(__printf__, x, y)))
@@ -64,6 +71,8 @@ extern void put_bytes(struct membuffer *, const char *, int);
 extern void put_string(struct membuffer *, const char *);
 extern void put_quoted(struct membuffer *, const char *, int, int);
 extern void strip_mb(struct membuffer *);
+
+/* The pointer obtained by mb_cstring is invalidated by any modifictation to the membuffer! */
 extern const char *mb_cstring(struct membuffer *);
 extern __printf(2, 0) void put_vformat(struct membuffer *, const char *, va_list);
 extern __printf(2, 0) void put_vformat_loc(struct membuffer *, const char *, va_list);
