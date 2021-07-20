@@ -12,6 +12,16 @@
 #include "units.h"
 #include "membuffer.h"
 
+membufferpp::membufferpp()
+	: membuffer{0, 0, nullptr}
+{
+}
+
+membufferpp::~membufferpp()
+{
+	free_buffer(this);
+}
+
 /* Only for internal use */
 static char *detach_buffer(struct membuffer *b)
 {
@@ -66,7 +76,7 @@ void make_room(struct membuffer *b, unsigned int size)
 		char *n;
 		/* round it up to not reallocate all the time.. */
 		needed = needed * 9 / 8 + 1024;
-		n = realloc(b->buffer, needed);
+		n = (char *)realloc(b->buffer, needed);
 		if (!n)
 			oom();
 		b->buffer = n;

@@ -86,7 +86,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/divesite.c \
 	core/equipment.c \
 	core/gas.c \
-	core/membuffer.c \
+	core/membuffer.cpp \
 	core/selection.cpp \
 	core/sha1.c \
 	core/string-format.cpp \
