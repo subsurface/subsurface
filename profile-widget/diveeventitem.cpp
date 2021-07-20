@@ -4,11 +4,11 @@
 #include "profile-widget/divecartesianaxis.h"
 #include "profile-widget/animationfunctions.h"
 #include "core/event.h"
+#include "core/format.h"
 #include "core/libdivecomputer.h"
 #include "core/profile.h"
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
-#include "core/membuffer.h"
 #include "core/sample.h"
 #include "core/subsurface-string.h"
 #include <QDebug>
@@ -165,7 +165,6 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 	if (event_is_gaschange(ev)) {
 		struct icd_data icd_data;
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
-		struct membuffer mb = {};
 		name += ": ";
 		name += gasname(mix);
 
@@ -174,13 +173,11 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 			name += tr(" (cyl. %1)").arg(ev->gas.index + 1);
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (icd_data.dHe < 0) {
-			put_format(&mb, "\n%s %s:%+.3g%% %s:%+.3g%%%s%+.3g%%",
-				qPrintable(tr("ICD")),
-				qPrintable(tr("ΔHe")), icd_data.dHe / 10.0,
-				qPrintable(tr("ΔN₂")), icd_data.dN2 / 10.0,
-				icd ? ">" : "<", lrint(-icd_data.dHe / 5.0) / 10.0);
-			name += QString::fromUtf8(mb.buffer, mb.len);
-			free_buffer(&mb);
+			name += qasprintf_loc("\n%s %s:%+.3g%% %s:%+.3g%%%s%+.3g%%",
+					      qPrintable(tr("ICD")),
+					      qPrintable(tr("ΔHe")), icd_data.dHe / 10.0,
+					      qPrintable(tr("ΔN₂")), icd_data.dN2 / 10.0,
+					      icd ? ">" : "<", lrint(-icd_data.dHe / 5.0) / 10.0);
 		}
 	} else if (same_string(ev->name, "modechange")) {
 		name += QString(": %1").arg(gettextFromC::tr(divemode_text_ui[ev->value]));
