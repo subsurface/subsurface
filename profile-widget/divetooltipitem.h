@@ -7,6 +7,7 @@
 #include <QRectF>
 #include <QIcon>
 #include <QElapsedTimer>
+#include <QPainter>
 #include "backend-shared/roundrectitem.h"
 #include "core/display.h"
 
@@ -48,6 +49,8 @@ private:
 	ToolTip entryToolTip;
 	QGraphicsSimpleTextItem *title;
 	Status status;
+	QPixmap tissues;
+	QPainter painter;
 	QRectF rectangle;
 	QRectF nextRectangle;
 	DiveCartesianAxis *timeAxis;
