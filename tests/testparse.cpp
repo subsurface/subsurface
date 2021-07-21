@@ -35,7 +35,7 @@ void TestParse::initTestCase()
 {
 	/* we need to manually tell that the resource exists, because we are using it as library. */
 	Q_INIT_RESOURCE(subsurface);
-	prefs.cloud_base_url = strdup(default_prefs.cloud_base_url);
+	copy_prefs(&default_prefs, &prefs);
 }
 
 void TestParse::init()
