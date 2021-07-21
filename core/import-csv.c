@@ -245,6 +245,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 			return -1;
 		}
 		mem_csv.size = ptr - (char*)mem_csv.buffer;
+		end_ptr += ptr - (char *)mem_csv.buffer;
 
 		iter = parse_dan_new_line(ptr + 1, NL);
 		if (iter && strncmp(iter, "ZDT", 3) == 0) {
@@ -268,7 +269,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 			return -1;
 
 		ret |= parse_xml_buffer(filename, mem_csv.buffer, mem_csv.size, table, trips, sites, devices, filter_presets, params);
-		end_ptr += ptr - (char *)mem_csv.buffer;
+
 		free(mem_csv.buffer);
 	}
 
