@@ -374,6 +374,7 @@ void MainWindow::enableDisableCloudActions()
 void MainWindow::enableDisableOtherDCsActions()
 {
 	bool nr = number_of_computers(current_dive) > 1;
+	enableShortcuts();
 	ui.actionNextDC->setEnabled(nr);
 	ui.actionPreviousDC->setEnabled(nr);
 }
