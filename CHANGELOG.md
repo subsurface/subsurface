@@ -1,3 +1,4 @@
+- fix broken curser left/right shortcut for showing multiple dive computers
 
 ---
 * Always add new entries at the very top of this file above other existing entries and this note.
