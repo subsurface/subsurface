@@ -1,4 +1,10 @@
 - fix broken curser left/right shortcut for showing multiple dive computers
+- allow editing the profile for dives imported without samples (via CSV)
+- fix potential crash (and other errors) importing DL7 dives
+- add detection for Aladin A2 as BLE dive computer
+- improve printout scaling for event icons
+- support exporting unused cylinders to divelogs.de
+- improve handling of CNS values when combining multiple dive computers
 
 ---
 * Always add new entries at the very top of this file above other existing entries and this note.
