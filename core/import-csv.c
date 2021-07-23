@@ -178,7 +178,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 		memset(tmpbuf, 0, sizeof(tmpbuf));
 		iter = strchr(iter, '|');
 
-		if (iter && iter + 1) {
+		if (iter && iter[1]) {
 			iter = iter + 1;
 			iter_end = strchr(iter, '|');
 
