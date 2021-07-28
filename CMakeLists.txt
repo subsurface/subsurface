@@ -299,6 +299,13 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	find_package(Qt5 5.11 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
 	set(MAKE_TESTS OFF)
 endif()
+# we don't support Qt6
+# the comparison with an invalid version of 5.15 ensures that this will keep working even if
+# there are newer Qt 5.15 versions over time (which is unfortunately doubtful)
+if (Qt5Core_VERSION VERSION_GREATER 5.15.15)
+	message(FATAL_ERROR "Subsurface cannot be built against Qt 6 or later")
+endif()
+
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
 	list(APPEND QT_LIBRARIES Qt5::${_QT_COMPONENT})
 endforeach()
