@@ -138,8 +138,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, QWidget *
 	rulerItem(new RulerItem2()),
 #endif
 	tankItem(new TankItem(*timeAxis)),
-	shouldCalculateMaxTime(true),
-	shouldCalculateMaxDepth(true),
+	shouldCalculateMax(true),
 	fontPrintScale(1.0)
 {
 	init_plot_info(&plotInfo);
@@ -568,12 +567,12 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 #ifndef SUBSURFACE_MOBILE
 	// A non-null planner_ds signals to create_plot_info_new that the dive is currently planned.
 	struct deco_state *planner_ds = currentState == PLAN && plannerModel ? &plannerModel->final_deco_state : nullptr;
-	create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !shouldCalculateMaxDepth, planner_ds);
+	create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !shouldCalculateMax, planner_ds);
 #else
-	create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !shouldCalculateMaxDepth, nullptr);
+	create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !shouldCalculateMax, nullptr);
 #endif
 	int newMaxtime = get_maxtime(&plotInfo);
-	if (shouldCalculateMaxTime || newMaxtime > maxtime)
+	if (shouldCalculateMax || newMaxtime > maxtime)
 		maxtime = newMaxtime;
 
 	/* Only update the max. depth if it's bigger than the current ones
@@ -581,7 +580,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 	 * otherwhise, update normally.
 	 */
 	int newMaxDepth = get_maxdepth(&plotInfo);
-	if (!shouldCalculateMaxDepth) {
+	if (!shouldCalculateMax) {
 		if (maxdepth < newMaxDepth) {
 			maxdepth = newMaxDepth;
 		}
@@ -626,7 +625,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 	percentageAxis->setVisible(false);
 	percentageAxis->updateTicks(HR_AXIS);
 #endif
-	if (shouldCalculateMaxTime)
+	if (shouldCalculateMax)
 		timeAxis->setMaximum(maxtime);
 	int i, incr;
 	static int increments[8] = { 10, 20, 30, 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60 };
@@ -866,21 +865,21 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 		return;
 	QGraphicsView::mousePressEvent(event);
 	if (currentState == PLAN || currentState == EDIT)
-		shouldCalculateMaxDepth = shouldCalculateMaxTime = false;
+		shouldCalculateMax = false;
 }
 
 void ProfileWidget2::divePlannerHandlerClicked()
 {
 	if (zoomLevel)
 		return;
-	shouldCalculateMaxDepth = shouldCalculateMaxTime = false;
+	shouldCalculateMax = false;
 }
 
 void ProfileWidget2::divePlannerHandlerReleased()
 {
 	if (zoomLevel)
 		return;
-	shouldCalculateMaxDepth = shouldCalculateMaxTime = true;
+	shouldCalculateMax = true;
 	replot();
 }
 
@@ -890,7 +889,7 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 		return;
 	QGraphicsView::mouseReleaseEvent(event);
 	if (currentState == PLAN || currentState == EDIT) {
-		shouldCalculateMaxTime = shouldCalculateMaxDepth = true;
+		shouldCalculateMax = true;
 		replot();
 	}
 }

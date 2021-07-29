@@ -253,8 +253,7 @@ private:
 #endif
 	friend class DiveHandler;
 	QHash<Qt::Key, QAction *> actionsForKeys;
-	bool shouldCalculateMaxTime;
-	bool shouldCalculateMaxDepth;
+	bool shouldCalculateMax; // Calculate maximum time and depth (default). False when dragging handles.
 	int maxtime;
 	int maxdepth;
 	double fontPrintScale;
