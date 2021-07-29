@@ -161,8 +161,6 @@ private:
 	DivePlannerPointsModel *plannerModel; // If null, no planning supported.
 	int zoomLevel;
 	qreal zoomFactor;
-	bool isGrayscale;
-	bool printMode;
 #ifndef SUBSURFACE_MOBILE
 	ToolTipItem *toolTipItem;
 #endif
@@ -237,7 +235,6 @@ private:
 	bool shouldCalculateMax; // Calculate maximum time and depth (default). False when dragging handles.
 	int maxtime;
 	int maxdepth;
-	double fontPrintScale;
 
 	// We store a const pointer to the shown dive. However, the undo commands want
 	// (understandably) a non-const pointer. Since the profile has a context-menu

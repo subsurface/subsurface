@@ -82,8 +82,6 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 	plannerModel(plannerModelIn),
 	zoomLevel(0),
 	zoomFactor(1.15),
-	isGrayscale(false),
-	printMode(false),
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
 #endif
@@ -112,8 +110,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 	rulerItem(new RulerItem2()),
 #endif
 	tankItem(new TankItem(*profileScene->timeAxis, fontPrintScale)),
-	shouldCalculateMax(true),
-	fontPrintScale(fontPrintScale)
+	shouldCalculateMax(true)
 {
 	init_plot_info(&plotInfo);
 
@@ -221,7 +218,7 @@ void ProfileWidget2::setupItemOnScene()
 	tankItem->setZValue(100);
 
 	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
-	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
+	diveComputerText->setBrush(getColor(TIME_TEXT, profileScene->isGrayscale));
 
 #ifndef SUBSURFACE_MOBILE
 	rulerItem->setAxis(profileScene->timeAxis, profileScene->profileYAxis);
@@ -233,9 +230,9 @@ void ProfileWidget2::setupItemOnScene()
 	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 #ifndef SUBSURFACE_MOBILE
 	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileScene->profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, fontPrintScale);
+		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileScene->profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, profileScene->fontPrintScale);
 		allTissues.append(tissueItem);
-		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*profileScene->percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i, fontPrintScale);
+		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*profileScene->percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i, profileScene->fontPrintScale);
 		allPercentages.append(percentageItem);
 	}
 #endif
@@ -249,9 +246,9 @@ void ProfileWidget2::replot()
 PartialPressureGasItem *ProfileWidget2::createPPGas(int column, color_index_t color, color_index_t colorAlert,
 						    const double *thresholdSettingsMin, const double *thresholdSettingsMax)
 {
-	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*profileScene->gasYAxis, column, 99, fontPrintScale);
+	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*profileScene->gasYAxis, column, 99, profileScene->fontPrintScale);
 	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
-	item->setColors(getColor(color, isGrayscale), getColor(colorAlert, isGrayscale));
+	item->setColors(getColor(color, profileScene->isGrayscale), getColor(colorAlert, profileScene->isGrayscale));
 	return item;
 }
 
@@ -337,15 +334,15 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 		return;
 	}
 
-	profileScene->animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
+	profileScene->animSpeed = instant || profileScene->printMode ? 0 : qPrefDisplay::animation_speed();
 
 	// restore default zoom level
 	resetZoom();
 
 #ifndef SUBSURFACE_MOBILE
 	// reset some item visibility on printMode changes
-	toolTipItem->setVisible(!printMode);
-	rulerItem->setVisible(prefs.rulergraph && !printMode && currentState != PLAN && currentState != EDIT);
+	toolTipItem->setVisible(!profileScene->printMode);
+	rulerItem->setVisible(prefs.rulergraph && !profileScene->printMode && currentState != PLAN && currentState != EDIT);
 #endif
 	updateVisibility();
 
@@ -509,7 +506,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 	while (event) {
 #ifndef SUBSURFACE_MOBILE
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
-		if (printMode) {
+		if (profileScene->printMode) {
 			if (empty_string(event->name) ||
 			    !(strcmp(event->name, "heading") == 0 ||
 			      (same_string(event->name, "SP change") && event->time.seconds == 0) ||
@@ -525,7 +522,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 #endif
 		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix, profileScene->dataModel,
 							profileScene->timeAxis, profileScene->profileYAxis, profileScene->animSpeed,
-							fontPrintScale);
+							profileScene->fontPrintScale);
 		item->setZValue(2);
 		scene()->addItem(item);
 		eventItems.push_back(item);
@@ -817,7 +814,7 @@ void ProfileWidget2::setProfileState()
 	disconnectTemporaryConnections();
 
 	currentState = PROFILE;
-	setBackgroundBrush(getColor(::BACKGROUND, isGrayscale));
+	setBackgroundBrush(getColor(::BACKGROUND, profileScene->isGrayscale));
 
 	profileScene->updateAxes();
 
@@ -1202,7 +1199,7 @@ void ProfileWidget2::changeGas(int tank, int seconds)
 
 void ProfileWidget2::setPrintMode(bool grayscale)
 {
-	printMode = true;
+	profileScene->printMode = true;
 	resetZoom();
 
 	// set printMode for axes
@@ -1211,7 +1208,7 @@ void ProfileWidget2::setPrintMode(bool grayscale)
 	profileScene->temperatureAxis->setPrintMode();
 	profileScene->timeAxis->setPrintMode();
 	profileScene->cylinderPressureAxis->setPrintMode();
-	isGrayscale = grayscale;
+	profileScene->isGrayscale = grayscale;
 #ifndef SUBSURFACE_MOBILE
 	profileScene->heartBeatAxis->setPrintMode();
 	profileScene->percentageAxis->setPrintMode();
@@ -1509,8 +1506,8 @@ void ProfileWidget2::updateDurationLine(PictureEntry &e)
 		double durationLineWidth = unscaledDurationLineWidth / scale;
 		double durationLinePenWidth = unscaledDurationLinePenWidth / scale;
 		e.durationLine.reset(new QGraphicsRectItem(begin, y - durationLineWidth - durationLinePenWidth, end - begin, durationLineWidth));
-		e.durationLine->setPen(QPen(getColor(DURATION_LINE, isGrayscale), durationLinePenWidth));
-		e.durationLine->setBrush(getColor(::BACKGROUND, isGrayscale));
+		e.durationLine->setPen(QPen(getColor(DURATION_LINE, profileScene->isGrayscale), durationLinePenWidth));
+		e.durationLine->setBrush(getColor(::BACKGROUND, profileScene->isGrayscale));
 		e.durationLine->setVisible(prefs.show_pictures_in_profile);
 		scene()->addItem(e.durationLine.get());
 	} else {
@@ -1829,7 +1826,7 @@ QImage ProfileWidget2::toImage(QSize size)
 	QRectF sceneRect(0.0, 0.0, 100.0, 102.0);
 
 	QImage image(size, QImage::Format_ARGB32);
-	image.fill(getColor(::BACKGROUND, isGrayscale));
+	image.fill(getColor(::BACKGROUND, profileScene->isGrayscale));
 
 	QPainter imgPainter(&image);
 	imgPainter.setRenderHint(QPainter::Antialiasing);
@@ -1837,7 +1834,7 @@ QImage ProfileWidget2::toImage(QSize size)
 	scene()->render(&imgPainter, QRect(QPoint(), size), sceneRect, Qt::IgnoreAspectRatio);
 	imgPainter.end();
 
-	if (isGrayscale) {
+	if (profileScene->isGrayscale) {
 		// convert QImage to grayscale before rendering
 		for (int i = 0; i < image.height(); i++) {
 			QRgb *pixel = reinterpret_cast<QRgb *>(image.scanLine(i));
