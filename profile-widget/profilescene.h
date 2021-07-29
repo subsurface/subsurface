@@ -25,6 +25,10 @@ public:
 	int animSpeed;
 private:
 	friend class ProfileWidget2; // For now, give the ProfileWidget full access to the objects on the scene
+	double fontPrintScale;
+	bool printMode;
+	bool isGrayscale;
+
 	DivePlotDataModel *dataModel;
 	DepthAxis *profileYAxis;
 	PartialGasPressureAxis *gasYAxis;

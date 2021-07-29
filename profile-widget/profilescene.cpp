@@ -30,6 +30,9 @@ const static struct ProfileItemPos {
 } itemPos;
 
 ProfileScene::ProfileScene(double fontPrintScale) :
+	fontPrintScale(fontPrintScale),
+	printMode(false),
+	isGrayscale(false),
 	dataModel(new DivePlotDataModel(this)),
 	profileYAxis(new DepthAxis(fontPrintScale, *this)),
 	gasYAxis(new PartialGasPressureAxis(*dataModel, fontPrintScale, *this)),
