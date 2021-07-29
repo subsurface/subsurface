@@ -22,7 +22,6 @@
  This is a generically item and should be used as a base for others, I think...
 */
 
-class ProfileWidget2;
 class DivePlotDataModel;
 class DiveTextItem;
 class DiveCartesianAxis;
@@ -143,12 +142,9 @@ class DiveCalculatedCeiling : public AbstractProfilePolygonItem {
 
 public:
 	DiveCalculatedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-			      const DiveCartesianAxis &vAxis, int vColumn, ProfileWidget2 *profileWidget);
+			      const DiveCartesianAxis &vAxis, int vColumn);
 	void replot(const dive *d, bool in_planner) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
-
-private:
-	ProfileWidget2 *profileWidget;
 };
 
 class DiveReportedCeiling : public AbstractProfilePolygonItem {
@@ -164,7 +160,7 @@ class DiveCalculatedTissue : public DiveCalculatedCeiling {
 	Q_OBJECT
 public:
 	DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-			     const DiveCartesianAxis &vAxis, int vColumn, ProfileWidget2 *profileWidget);
+			     const DiveCartesianAxis &vAxis, int vColumn);
 	void setVisible(bool visible);
 };
 
