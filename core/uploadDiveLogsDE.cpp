@@ -2,6 +2,7 @@
 #include "uploadDiveLogsDE.h"
 #include <QDir>
 #include <QDebug>
+#include <QTemporaryFile>
 #include <zip.h>
 #include <errno.h>
 #include "core/display.h"
@@ -34,21 +35,22 @@ uploadDiveLogsDE::uploadDiveLogsDE():
 }
 
 
+static QString makeTempFileName()
+{
+	QTemporaryFile tmpfile;
+	tmpfile.setFileTemplate(QDir::tempPath() + "/divelogsde-upload.XXXXXXXX.dld");
+	tmpfile.open();
+	QString filename(tmpfile.fileName());
+	tmpfile.close();
+	return filename;
+}
+
+
 void uploadDiveLogsDE::doUpload(bool selected, const QString &userid, const QString &password)
 {
 	QString err;
 
-
-	/* generate a temporary filename and create/open that file with zip_open */
-	QString filename(QDir::tempPath() + "/divelogsde-upload.dld");
-
-	// delete file if it exist
-
-	QFile f(filename);
-	if (f.open(QIODevice::ReadOnly)) {
-		f.close();
-		f.remove();
-	}
+	QString filename = makeTempFileName();
 
 	// Make zip file, with all dives, in divelogs.de format
 	if (!prepareDives(filename, selected)) {
