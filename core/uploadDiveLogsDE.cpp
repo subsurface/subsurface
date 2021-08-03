@@ -40,9 +40,7 @@ static QString makeTempFileName()
 	QTemporaryFile tmpfile;
 	tmpfile.setFileTemplate(QDir::tempPath() + "/divelogsde-upload.XXXXXXXX.dld");
 	tmpfile.open();
-	QString filename(tmpfile.fileName());
-	tmpfile.close();
-	return filename;
+	return tmpfile.fileName();
 }
 
 
@@ -196,6 +194,13 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 }
 
 
+void uploadDiveLogsDE::cleanupTempFile()
+{
+	if (tempFile.isOpen())
+		tempFile.remove();
+}
+
+
 void uploadDiveLogsDE::uploadDives(const QString &filename, const QString &userid, const QString &password)
 {
 	QHttpPart part1, part2, part3;
@@ -219,12 +224,15 @@ void uploadDiveLogsDE::uploadDives(const QString &filename, const QString &useri
 	// prepare header with filename (of all dives) and pointer to file
 	args = "form-data; name=\"userfile\"; filename=\"" + filename + "\"";
 	part1.setRawHeader("Content-Disposition", args.toLatin1());
-	QFile *f = new QFile(filename);
-	if (!f->open(QIODevice::ReadOnly)) {
+
+	// open new file for reading
+	cleanupTempFile();
+	tempFile.setFileName(filename);
+	if (!tempFile.open(QIODevice::ReadOnly)) {
 		qDebug() << "ERROR opening zip file: " << filename;
 		return;
 	}
-	part1.setBodyDevice(f);
+	part1.setBodyDevice(&tempFile);
 	multipart->append(part1);
 
 	// Add userid
@@ -289,6 +297,7 @@ void uploadDiveLogsDE::uploadFinishedSlot()
 	QByteArray xmlData = reply->readAll();
 	reply->deleteLater();
 	reply = NULL;
+	cleanupTempFile();
 	char *resp = xmlData.data();
 	if (resp) {
 		char *parsed = strstr(resp, "<Login>");
@@ -324,6 +333,7 @@ void uploadDiveLogsDE::uploadTimeoutSlot()
 		reply->deleteLater();
 		reply = NULL;
 	}
+	cleanupTempFile();
 	QString err(tr("divelogs.de not responding"));
 	report_error(err.toUtf8());
 	emit uploadFinish(false, err);
@@ -337,6 +347,7 @@ void uploadDiveLogsDE::uploadErrorSlot(QNetworkReply::NetworkError error)
 		reply->deleteLater();
 		reply = NULL;
 	}
+	cleanupTempFile();
 	QString err(tr("network error %1").arg(error));
 	report_error(err.toUtf8());
 	emit uploadFinish(false, err);

@@ -4,6 +4,7 @@
 #include <QNetworkReply>
 #include <QHttpMultiPart>
 #include <QTimer>
+#include <QFile>
 
 
 class uploadDiveLogsDE : public QObject {
@@ -28,10 +29,12 @@ private:
 	uploadDiveLogsDE();
 
 	void uploadDives(const QString &filename, const QString &userid, const QString &password);
+	void cleanupTempFile();
 
 	// only to be used in desktop-widgets::subsurfacewebservices
 	bool prepareDives(const QString &tempfile, bool selected);
 
+	QFile tempFile;
 	QNetworkReply *reply;
 	QHttpMultiPart *multipart;
 	QTimer timeout;
