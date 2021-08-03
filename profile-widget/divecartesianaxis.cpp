@@ -130,7 +130,7 @@ void emptyList(QList<T *> &list, int steps, int speed)
 	}
 }
 
-void DiveCartesianAxis::updateTicks(color_index_t color)
+void DiveCartesianAxis::updateTicks(int animSpeed, color_index_t color)
 {
 	if (!changed && !printMode)
 		return;
@@ -143,8 +143,8 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 	if (steps < 1)
 		return;
 
-	emptyList(labels, steps, scene.animSpeed);
-	emptyList(lines, steps, scene.animSpeed);
+	emptyList(labels, steps, animSpeed);
+	emptyList(lines, steps, animSpeed);
 
 	// Move the remaining ticks / text to their correct positions
 	// regarding the possible new values for the axis
@@ -171,9 +171,9 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 
 		labels[i]->setText(textForValue(currValueText));
 		if (orientation == LeftToRight || orientation == RightToLeft) {
-			Animations::moveTo(labels[i], scene.animSpeed, childPos, m.y1() + tick_size);
+			Animations::moveTo(labels[i], animSpeed, childPos, m.y1() + tick_size);
 		} else {
-			Animations::moveTo(labels[i], scene.animSpeed ,m.x1() - tick_size, childPos);
+			Animations::moveTo(labels[i], animSpeed ,m.x1() - tick_size, childPos);
 		}
 	}
 
@@ -183,9 +183,9 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 					 begin - i * stepSize;
 
 		if (orientation == LeftToRight || orientation == RightToLeft) {
-			Animations::moveTo(lines[i], scene.animSpeed, childPos, m.y1());
+			Animations::moveTo(lines[i], animSpeed, childPos, m.y1());
 		} else {
-			Animations::moveTo(lines[i], scene.animSpeed, m.x1(), childPos);
+			Animations::moveTo(lines[i], animSpeed, m.x1(), childPos);
 		}
 	}
 
@@ -206,11 +206,11 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
 			label->setPos(scene.sceneRect().width() + 10, m.y1() + tick_size); // position it outside of the scene;
-			Animations::moveTo(label, scene.animSpeed,childPos , m.y1() + tick_size);
+			Animations::moveTo(label, animSpeed,childPos , m.y1() + tick_size);
 		} else {
 			label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 			label->setPos(m.x1() - tick_size, scene.sceneRect().height() + 10);
-			Animations::moveTo(label, scene.animSpeed, m.x1() - tick_size, childPos);
+			Animations::moveTo(label, animSpeed, m.x1() - tick_size, childPos);
 		}
 	}
 
@@ -231,13 +231,13 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 		if (orientation == RightToLeft || orientation == LeftToRight) {
 			line->setLine(0, -line_size, 0, 0);
 			line->setPos(scene.sceneRect().width() + 10, m.y1()); // position it outside of the scene);
-			Animations::moveTo(line, scene.animSpeed, childPos, m.y1());
+			Animations::moveTo(line, animSpeed, childPos, m.y1());
 		} else {
 			QPointF p1 = mapFromScene(3, 0);
 			QPointF p2 = mapFromScene(line_size, 0);
 			line->setLine(p1.x(), 0, p2.x(), 0);
 			line->setPos(m.x1(), scene.sceneRect().height() + 10);
-			Animations::moveTo(line, scene.animSpeed, m.x1(), childPos);
+			Animations::moveTo(line, animSpeed, m.x1(), childPos);
 		}
 	}
 
@@ -254,10 +254,10 @@ void DiveCartesianAxis::setLine(const QLineF &line)
 	changed = true;
 }
 
-void DiveCartesianAxis::animateChangeLine(const QLineF &newLine)
+void DiveCartesianAxis::animateChangeLine(const QLineF &newLine, int animSpeed)
 {
 	setLine(newLine);
-	updateTicks();
+	updateTicks(animSpeed);
 	sizeChanged();
 }
 
@@ -370,9 +370,9 @@ QString TimeAxis::textForValue(double value) const
 	return QString::number(nr);
 }
 
-void TimeAxis::updateTicks(color_index_t color)
+void TimeAxis::updateTicks(int animSpeed, color_index_t color)
 {
-	DiveCartesianAxis::updateTicks(color);
+	DiveCartesianAxis::updateTicks(animSpeed, color);
 	if (maximum() > 600) {
 		for (int i = 0; i < labels.count(); i++) {
 			labels[i]->setVisible(i % 2);
@@ -391,7 +391,7 @@ PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, d
 {
 }
 
-void PartialGasPressureAxis::update()
+void PartialGasPressureAxis::update(int animSpeed)
 {
 	bool showPhe = prefs.pp_graphs.phe;
 	bool showPn2 = prefs.pp_graphs.pn2;
@@ -412,5 +412,5 @@ void PartialGasPressureAxis::update()
 
 	setMaximum(pp);
 	setTickInterval(pp > 4 ? 0.5 : 0.25);
-	updateTicks();
+	updateTicks(animSpeed);
 }
