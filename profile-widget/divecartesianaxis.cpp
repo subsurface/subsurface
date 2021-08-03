@@ -3,7 +3,6 @@
 #include "profile-widget/divetextitem.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
-#include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/diveplotdatamodel.h"
 #include "profile-widget/animationfunctions.h"
 #include "profile-widget/divelineitem.h"
@@ -353,20 +352,9 @@ QColor DepthAxis::colorForValue(double) const
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis(double fontPrintScale, ProfileScene &scene) : DiveCartesianAxis(fontPrintScale, scene),
-	unitSystem(prefs.units.length)
+DepthAxis::DepthAxis(double fontPrintScale, ProfileScene &scene) : DiveCartesianAxis(fontPrintScale, scene)
 {
-	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DepthAxis::settingsChanged);
 	changed = true;
-}
-
-void DepthAxis::settingsChanged()
-{
-	if (unitSystem == prefs.units.length)
-		return;
-	changed = true;
-	updateTicks();
-	unitSystem = prefs.units.length;
 }
 
 QColor TimeAxis::colorForValue(double) const
@@ -401,7 +389,6 @@ PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, d
 	DiveCartesianAxis(fontPrintScale, scene),
 	model(model)
 {
-	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &PartialGasPressureAxis::update);
 }
 
 void PartialGasPressureAxis::update()
