@@ -81,10 +81,6 @@ public:
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
-	units::LENGTH unitSystem;
-private
-slots:
-	void settingsChanged();
 };
 
 class TimeAxis : public DiveCartesianAxis {
@@ -109,8 +105,6 @@ class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, ProfileScene &scene);
-public
-slots:
 	void update();
 private:
 	const DivePlotDataModel &model;
