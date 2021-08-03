@@ -62,7 +62,6 @@ PartialPressureGasItem *ProfileScene::createPPGas(int column, color_index_t colo
 }
 
 ProfileScene::ProfileScene(double fontPrintScale) :
-	animSpeed(0),
 	d(nullptr),
 	dc(-1),
 	fontPrintScale(fontPrintScale),
@@ -246,63 +245,65 @@ void ProfileScene::updateVisibility()
 	tankItem->setVisible(prefs.tankbar);
 }
 
-void ProfileScene::updateAxes()
+void ProfileScene::updateAxes(bool instant)
 {
+	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
+
 	profileYAxis->setPos(itemPos.depth.on);
 
 #ifndef SUBSURFACE_MOBILE
-	gasYAxis->update();	// Initialize ticks of partial pressure graph
+	gasYAxis->update(animSpeed);	// Initialize ticks of partial pressure graph
 	if ((prefs.percentagegraph||prefs.hrgraph) && ppGraphsEnabled()) {
-		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
+		profileYAxis->animateChangeLine(itemPos.depth.shrinked, animSpeed);
 		temperatureAxis->setPos(itemPos.temperatureAll.on);
-		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked);
-		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.shrinked);
+		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked, animSpeed);
+		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.shrinked, animSpeed);
 
 		if (prefs.tankbar) {
 			percentageAxis->setPos(itemPos.percentageWithTankBar.on);
-			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
+			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded, animSpeed);
 			heartBeatAxis->setPos(itemPos.heartBeatWithTankBar.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded);
+			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded, animSpeed);
 		} else {
 			percentageAxis->setPos(itemPos.percentage.on);
-			percentageAxis->animateChangeLine(itemPos.percentage.expanded);
+			percentageAxis->animateChangeLine(itemPos.percentage.expanded, animSpeed);
 			heartBeatAxis->setPos(itemPos.heartBeat.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded);
+			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded, animSpeed);
 		}
 		gasYAxis->setPos(itemPos.partialPressureTissue.on);
-		gasYAxis->animateChangeLine(itemPos.partialPressureTissue.expanded);
+		gasYAxis->animateChangeLine(itemPos.partialPressureTissue.expanded, animSpeed);
 	} else if (ppGraphsEnabled() || prefs.hrgraph || prefs.percentagegraph) {
-		profileYAxis->animateChangeLine(itemPos.depth.intermediate);
+		profileYAxis->animateChangeLine(itemPos.depth.intermediate, animSpeed);
 		temperatureAxis->setPos(itemPos.temperature.on);
-		temperatureAxis->animateChangeLine(itemPos.temperature.intermediate);
-		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.intermediate);
+		temperatureAxis->animateChangeLine(itemPos.temperature.intermediate, animSpeed);
+		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.intermediate, animSpeed);
 		if (prefs.tankbar) {
 			percentageAxis->setPos(itemPos.percentageWithTankBar.on);
-			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
+			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded, animSpeed);
 			gasYAxis->setPos(itemPos.partialPressureWithTankBar.on);
-			gasYAxis->animateChangeLine(itemPos.partialPressureWithTankBar.expanded);
+			gasYAxis->animateChangeLine(itemPos.partialPressureWithTankBar.expanded, animSpeed);
 			heartBeatAxis->setPos(itemPos.heartBeatWithTankBar.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded);
+			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded, animSpeed);
 		} else {
 			gasYAxis->setPos(itemPos.partialPressure.on);
-			gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
+			gasYAxis->animateChangeLine(itemPos.partialPressure.expanded, animSpeed);
 			percentageAxis->setPos(itemPos.percentage.on);
-			percentageAxis->animateChangeLine(itemPos.percentage.expanded);
+			percentageAxis->animateChangeLine(itemPos.percentage.expanded, animSpeed);
 			heartBeatAxis->setPos(itemPos.heartBeat.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded);
+			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded, animSpeed);
 		}
 	} else {
 #else
 	{
 #endif
-		profileYAxis->animateChangeLine(itemPos.depth.expanded);
+		profileYAxis->animateChangeLine(itemPos.depth.expanded, animSpeed);
 		if (prefs.tankbar) {
 			temperatureAxis->setPos(itemPos.temperatureAll.on);
 		} else {
 			temperatureAxis->setPos(itemPos.temperature.on);
 		}
-		temperatureAxis->animateChangeLine(itemPos.temperature.expanded);
-		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded);
+		temperatureAxis->animateChangeLine(itemPos.temperature.expanded, animSpeed);
+		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded, animSpeed);
 	}
 
 	timeAxis->setPos(itemPos.time.on);
@@ -464,7 +465,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	if (!currentdc || !currentdc->samples)
 		return;
 
-	animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
+	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
 
 	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2;
 	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
@@ -511,7 +512,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
 	profileYAxis->setMaximum(maxdepth);
-	profileYAxis->updateTicks();
+	profileYAxis->updateTicks(animSpeed);
 
 	temperatureAxis->setMinimum(plotInfo.mintemp);
 	temperatureAxis->setMaximum(plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
@@ -559,7 +560,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	while (maxtime / incr > 12)
 		incr *= 2;
 	timeAxis->setTickInterval(incr);
-	timeAxis->updateTicks();
+	timeAxis->updateTicks(animSpeed);
 	cylinderPressureAxis->setMinimum(plotInfo.minpressure);
 	cylinderPressureAxis->setMaximum(plotInfo.maxpressure);
 
@@ -602,7 +603,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 #endif
 	tankItem->setData(&plotInfo, d);
 
-	gasYAxis->update();
+	gasYAxis->update(animSpeed);
 
 	// Replot dive items
 	for (AbstractProfilePolygonItem *item: profileItems)

@@ -38,12 +38,11 @@ public:
 	ProfileScene(double fontPrintScale);
 	~ProfileScene();
 
-	void updateAxes(); // Update axes according to preferences
+	void updateAxes(bool instant); // Update axes according to preferences
 	void clear();
 	bool isPointOutOfBoundaries(const QPointF &point) const;
 
 	// If a plannerModel is passed, the deco-information is taken from there.
-	int animSpeed;
 	void plotDive(const struct dive *d, int dc, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
 		      bool instant = false, bool calcMax = true);
 

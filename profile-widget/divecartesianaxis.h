@@ -44,12 +44,12 @@ public:
 	qreal posAtValue(qreal value) const;
 	void setColor(const QColor &color);
 	void setTextColor(const QColor &color);
-	void animateChangeLine(const QLineF &newLine);
+	void animateChangeLine(const QLineF &newLine, int animSpeed);
 	void setTextVisible(bool arg1);
 	void setLinesVisible(bool arg1);
 	void setLineSize(qreal lineSize);
 	void setLine(const QLineF& line);
-	virtual void updateTicks(color_index_t color = TIME_GRID);
+	virtual void updateTicks(int animSpeed, color_index_t color = TIME_GRID);
 
 signals:
 	void sizeChanged();
@@ -87,7 +87,7 @@ class TimeAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	using DiveCartesianAxis::DiveCartesianAxis;
-	void updateTicks(color_index_t color = TIME_GRID) override;
+	void updateTicks(int animSpeed, color_index_t color = TIME_GRID) override;
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
@@ -105,7 +105,7 @@ class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, ProfileScene &scene);
-	void update();
+	void update(int animSpeed);
 private:
 	const DivePlotDataModel &model;
 };
