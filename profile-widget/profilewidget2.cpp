@@ -46,7 +46,7 @@ static const double thumbnailBaseZValue = 100.0;
 #endif
 
 ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fontPrintScale, QWidget *parent) : QGraphicsView(parent),
-	profileScene(new ProfileScene(fontPrintScale)),
+	profileScene(new ProfileScene(fontPrintScale, false, false)),
 	currentState(INIT),
 	plannerModel(plannerModelIn),
 	zoomLevel(0),
@@ -821,16 +821,8 @@ void ProfileWidget2::setPrintMode(bool grayscale)
 	resetZoom();
 
 	// set printMode for axes
-	profileScene->profileYAxis->setPrintMode();
-	profileScene->gasYAxis->setPrintMode();
-	profileScene->temperatureAxis->setPrintMode();
-	profileScene->timeAxis->setPrintMode();
-	profileScene->cylinderPressureAxis->setPrintMode();
 	profileScene->isGrayscale = grayscale;
 #ifndef SUBSURFACE_MOBILE
-	profileScene->heartBeatAxis->setPrintMode();
-	profileScene->percentageAxis->setPrintMode();
-
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 	toolTipItem->setVisible(false);

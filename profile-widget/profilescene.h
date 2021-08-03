@@ -1,6 +1,6 @@
-	// SPDX-License-Identifier: GPL-2.0
-	// Displays the dive profile. Used by the interactive profile widget
-	// and the printing/exporting code.
+// SPDX-License-Identifier: GPL-2.0
+// Displays the dive profile. Used by the interactive profile widget
+// and the printing/exporting code.
 #ifndef PROFILESCENE_H
 #define PROFILESCENE_H
 
@@ -35,7 +35,7 @@ class TimeAxis;
 
 class ProfileScene : public QGraphicsScene {
 public:
-	ProfileScene(double fontPrintScale);
+	ProfileScene(double fontPrintScale, bool printMode, bool isGrayscale);
 	~ProfileScene();
 
 	void updateAxes(bool instant); // Update axes according to preferences
