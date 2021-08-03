@@ -61,22 +61,22 @@ PartialPressureGasItem *ProfileScene::createPPGas(int column, color_index_t colo
 	return item;
 }
 
-ProfileScene::ProfileScene(double fontPrintScale) :
+ProfileScene::ProfileScene(double fontPrintScale, bool printMode, bool isGrayscale) :
 	d(nullptr),
 	dc(-1),
 	fontPrintScale(fontPrintScale),
-	printMode(false),
-	isGrayscale(false),
+	printMode(printMode),
+	isGrayscale(isGrayscale),
 	maxtime(-1),
 	maxdepth(-1),
 	dataModel(new DivePlotDataModel(this)),
-	profileYAxis(new DepthAxis(fontPrintScale, *this)),
-	gasYAxis(new PartialGasPressureAxis(*dataModel, fontPrintScale, *this)),
-	temperatureAxis(new TemperatureAxis(fontPrintScale, *this)),
-	timeAxis(new TimeAxis(fontPrintScale, *this)),
-	cylinderPressureAxis(new DiveCartesianAxis(fontPrintScale, *this)),
-	heartBeatAxis(new DiveCartesianAxis(fontPrintScale, *this)),
-	percentageAxis(new DiveCartesianAxis(fontPrintScale, *this)),
+	profileYAxis(new DepthAxis(fontPrintScale, printMode, *this)),
+	gasYAxis(new PartialGasPressureAxis(*dataModel, fontPrintScale, printMode, *this)),
+	temperatureAxis(new TemperatureAxis(fontPrintScale, printMode, *this)),
+	timeAxis(new TimeAxis(fontPrintScale, printMode, *this)),
+	cylinderPressureAxis(new DiveCartesianAxis(fontPrintScale, printMode, *this)),
+	heartBeatAxis(new DiveCartesianAxis(fontPrintScale, printMode, *this)),
+	percentageAxis(new DiveCartesianAxis(fontPrintScale, printMode, *this)),
 	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0, fontPrintScale)),
 	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
 	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, fontPrintScale)),

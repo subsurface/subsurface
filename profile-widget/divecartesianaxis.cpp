@@ -26,18 +26,6 @@ void DiveCartesianAxis::setFontLabelScale(qreal scale)
 	changed = true;
 }
 
-void DiveCartesianAxis::setPrintMode()
-{
-	printMode = true;
-	// update the QPen of all lines depending on printMode
-	QPen newPen = gridPen();
-	QColor oldColor = pen().brush().color();
-	newPen.setBrush(oldColor);
-	setPen(newPen);
-	Q_FOREACH (DiveLineItem *item, lines)
-		item->setPen(pen());
-}
-
 void DiveCartesianAxis::setMaximum(double maximum)
 {
 	if (IS_FP_SAME(max, maximum))
@@ -59,9 +47,8 @@ void DiveCartesianAxis::setTextColor(const QColor &color)
 	textColor = color;
 }
 
-DiveCartesianAxis::DiveCartesianAxis(double fontPrintScale, ProfileScene &scene) : QObject(),
-	QGraphicsLineItem(),
-	printMode(false),
+DiveCartesianAxis::DiveCartesianAxis(double fontPrintScale, bool printMode, ProfileScene &scene) :
+	printMode(printMode),
 	scene(scene),
 	orientation(LeftToRight),
 	min(0),
@@ -352,7 +339,7 @@ QColor DepthAxis::colorForValue(double) const
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis(double fontPrintScale, ProfileScene &scene) : DiveCartesianAxis(fontPrintScale, scene)
+DepthAxis::DepthAxis(double fontPrintScale, bool printMode, ProfileScene &scene) : DiveCartesianAxis(fontPrintScale, printMode, scene)
 {
 	changed = true;
 }
@@ -385,8 +372,8 @@ QString TemperatureAxis::textForValue(double value) const
 	return QString::number(mkelvin_to_C((int)value));
 }
 
-PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, ProfileScene &scene) :
-	DiveCartesianAxis(fontPrintScale, scene),
+PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, bool printMode, ProfileScene &scene) :
+	DiveCartesianAxis(fontPrintScale, printMode, scene),
 	model(model)
 {
 }
