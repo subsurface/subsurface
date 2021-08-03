@@ -2,6 +2,7 @@
 
 #include "profilewidget.h"
 #include "profile-widget/profilewidget2.h"
+#include "core/color.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "qt-models/diveplannermodel.h"

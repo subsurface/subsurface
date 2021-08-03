@@ -2,11 +2,10 @@
 #include "profile-widget/profilewidget2.h"
 #include "profile-widget/profilescene.h"
 #include "qt-models/diveplotdatamodel.h"
+#include "core/device.h"
 #include "core/event.h"
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
-#include "core/profile.h"
-#include "core/settings/qPrefDisplay.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "profile-widget/diveeventitem.h"
@@ -14,9 +13,7 @@
 #include "profile-widget/divetooltipitem.h"
 #include "profile-widget/divehandler.h"
 #include "core/planner.h"
-#include "core/device.h"
 #include "profile-widget/ruleritem.h"
-#include "profile-widget/tankitem.h"
 #include "core/pref.h"
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/models.h"
@@ -42,39 +39,11 @@
 #include <QTableView>
 #endif
 
-/* This is the global 'Item position' variable.
- * it should tell you where to position things up
- * on the canvas.
- *
- * please, please, please, use this instead of
- * hard coding the item on the scene with a random
- * value.
- */
-const static struct ItemPos {
-	struct Pos {
-		QPointF on;
-		QPointF off;
-	};
-	Pos dcLabel;
-	Pos tankBar;
-	ItemPos();
-} itemPos;
-
 // Constant describing at which z-level the thumbnails are located.
 // We might add more constants here for easier customability.
 #ifndef SUBSURFACE_MOBILE
 static const double thumbnailBaseZValue = 100.0;
 #endif
-
-template<typename T, class... Args>
-T *ProfileWidget2::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args)
-{
-	T *res = new T(*profileScene->dataModel, *profileScene->timeAxis, DivePlotDataModel::TIME, vAxis, vColumn,
-		       std::forward<Args>(args)...);
-	res->setZValue(static_cast<double>(z));
-	profileItems.push_back(res);
-	return res;
-}
 
 ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fontPrintScale, QWidget *parent) : QGraphicsView(parent),
 	profileScene(new ProfileScene(fontPrintScale)),
@@ -87,33 +56,13 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 #endif
 	d(nullptr),
 	dc(0),
-	diveProfileItem(createItem<DiveProfileItem>(*profileScene->profileYAxis, DivePlotDataModel::DEPTH, 0, fontPrintScale)),
-	temperatureItem(createItem<DiveTemperatureItem>(*profileScene->temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
-	meanDepthItem(createItem<DiveMeanDepthItem>(*profileScene->profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, fontPrintScale)),
-	gasPressureItem(createItem<DiveGasPressureItem>(*profileScene->cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
-	diveComputerText(new DiveTextItem(fontPrintScale)),
-	reportedCeiling(createItem<DiveReportedCeiling>(*profileScene->profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
-	pn2GasItem(createPPGas(DivePlotDataModel::PN2, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
-	pheGasItem(createPPGas(DivePlotDataModel::PHE, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold)),
-	po2GasItem(createPPGas(DivePlotDataModel::PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	o2SetpointGasItem(createPPGas(DivePlotDataModel::O2SETPOINT, O2SETPOINT, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	ccrsensor1GasItem(createPPGas(DivePlotDataModel::CCRSENSOR1, CCRSENSOR1, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	ccrsensor2GasItem(createPPGas(DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	diveCeiling(createItem<DiveCalculatedCeiling>(*profileScene->profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
-	decoModelParameters(new DiveTextItem(fontPrintScale)),
 #ifndef SUBSURFACE_MOBILE
-	heartBeatItem(createItem<DiveHeartrateItem>(*profileScene->heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, fontPrintScale)),
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
 #endif
-	tankItem(new TankItem(*profileScene->timeAxis, fontPrintScale)),
 	shouldCalculateMax(true)
 {
-	init_plot_info(&plotInfo);
-
 	setupSceneAndFlags();
 	setupItemOnScene();
 	addItemsToScene();
@@ -172,7 +121,6 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fo
 
 ProfileWidget2::~ProfileWidget2()
 {
-	free_plot_info_data(&plotInfo);
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -189,9 +137,6 @@ void ProfileWidget2::addActionShortcut(const Qt::Key shortcut, void (ProfileWidg
 
 void ProfileWidget2::addItemsToScene()
 {
-	scene()->addItem(diveComputerText);
-	scene()->addItem(tankItem);
-	scene()->addItem(decoModelParameters);
 #ifndef SUBSURFACE_MOBILE
 	scene()->addItem(toolTipItem);
 	scene()->addItem(rulerItem);
@@ -204,8 +149,6 @@ void ProfileWidget2::addItemsToScene()
 	mouseFollowerHorizontal->setPen(pen);
 	mouseFollowerVertical->setPen(pen);
 #endif
-	for (AbstractProfilePolygonItem *item: profileItems)
-		scene()->addItem(item);
 }
 
 void ProfileWidget2::setupItemOnScene()
@@ -214,64 +157,13 @@ void ProfileWidget2::setupItemOnScene()
 	toolTipItem->setZValue(9998);
 	toolTipItem->setTimeAxis(profileScene->timeAxis);
 	rulerItem->setZValue(9997);
-#endif
-	tankItem->setZValue(100);
-
-	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
-	diveComputerText->setBrush(getColor(TIME_TEXT, profileScene->isGrayscale));
-
-#ifndef SUBSURFACE_MOBILE
 	rulerItem->setAxis(profileScene->timeAxis, profileScene->profileYAxis);
-#endif
-	// show the deco model parameters at the top in the center
-	decoModelParameters->setY(0);
-	decoModelParameters->setX(50);
-	decoModelParameters->setBrush(getColor(PRESSURE_TEXT));
-	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-#ifndef SUBSURFACE_MOBILE
-	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileScene->profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, profileScene->fontPrintScale);
-		allTissues.append(tissueItem);
-		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*profileScene->percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i, profileScene->fontPrintScale);
-		allPercentages.append(percentageItem);
-	}
 #endif
 }
 
 void ProfileWidget2::replot()
 {
 	plotDive(d, dc, false);
-}
-
-PartialPressureGasItem *ProfileWidget2::createPPGas(int column, color_index_t color, color_index_t colorAlert,
-						    const double *thresholdSettingsMin, const double *thresholdSettingsMax)
-{
-	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*profileScene->gasYAxis, column, 99, profileScene->fontPrintScale);
-	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
-	item->setColors(getColor(color, profileScene->isGrayscale), getColor(colorAlert, profileScene->isGrayscale));
-	return item;
-}
-
-ItemPos::ItemPos()
-{
-	// Scene is *always* (double) 100 / 100.
-	// Background Config
-	/* Much probably a better math is needed here.
-	 * good thing is that we only need to change the
-	 * Axis and everything else is auto-adjusted.*
-	 */
-
-	dcLabel.on.setX(3);
-	dcLabel.on.setY(100);
-	dcLabel.off.setX(-10);
-	dcLabel.off.setY(100);
-
-	tankBar.on.setX(0);
-#ifndef SUBSURFACE_MOBILE
-	tankBar.on.setY(91.95);
-#else
-	tankBar.on.setY(86.4);
-#endif
 }
 
 void ProfileWidget2::setupSceneAndFlags()
@@ -313,243 +205,23 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 #ifdef SUBSURFACE_MOBILE
 	Q_UNUSED(doClearPictures);
 #endif
-	if ((currentState != EDIT && currentState != PLAN) || !plannerModel) {
-		if (decoMode(false) == VPMB)
-			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.vpmb_conservatism));
-		else
-			decoModelParameters->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
-#ifndef SUBSURFACE_MOBILE
-	} else {
-		struct diveplan &diveplan = plannerModel->getDiveplan();
-		if (decoMode(currentState == PLAN) == VPMB)
-			decoModelParameters->setText(QString("VPM-B +%1").arg(diveplan.vpmb_conservatism));
-		else
-			decoModelParameters->setText(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh));
-#endif
-	}
-
-	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
-	if (!currentdc || !currentdc->samples) {
-		clear();
-		return;
-	}
-
-	profileScene->animSpeed = instant || profileScene->printMode ? 0 : qPrefDisplay::animation_speed();
 
 	// restore default zoom level
 	resetZoom();
+
+	DivePlannerPointsModel *model = currentState == EDIT || currentState == PLAN ? plannerModel : nullptr;
+	bool inPlanner = currentState == PLAN;
+
+	profileScene->plotDive(d, dc, model, inPlanner, instant, shouldCalculateMax);
 
 #ifndef SUBSURFACE_MOBILE
 	// reset some item visibility on printMode changes
 	toolTipItem->setVisible(!profileScene->printMode);
 	rulerItem->setVisible(prefs.rulergraph && !profileScene->printMode && currentState != PLAN && currentState != EDIT);
-#endif
-	updateVisibility();
 
-	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2;
-	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
-	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
-	ccrsensor1GasItem->setVisible(sensorflag);
-	ccrsensor2GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 1));
-	ccrsensor3GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 2));
-	ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
+	toolTipItem->setPlotInfo(profileScene->plotInfo);
+	rulerItem->setPlotInfo(d, profileScene->plotInfo);
 
-
-	/* This struct holds all the data that's about to be plotted.
-	 * I'm not sure this is the best approach ( but since we are
-	 * interpolating some points of the Dive, maybe it is... )
-	 * The  Calculation of the points should be done per graph,
-	 * so I'll *not* calculate everything if something is not being
-	 * shown.
-	 */
-
-	// create_plot_info_new() automatically frees old plot data
-#ifndef SUBSURFACE_MOBILE
-	// A non-null planner_ds signals to create_plot_info_new that the dive is currently planned.
-	struct deco_state *planner_ds = currentState == PLAN && plannerModel ? &plannerModel->final_deco_state : nullptr;
-	create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !shouldCalculateMax, planner_ds);
-#else
-	create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !shouldCalculateMax, nullptr);
-#endif
-	int newMaxtime = get_maxtime(&plotInfo);
-	if (shouldCalculateMax || newMaxtime > maxtime)
-		maxtime = newMaxtime;
-
-	/* Only update the max. depth if it's bigger than the current ones
-	 * when we are dragging the handler to plan / add dive.
-	 * otherwhise, update normally.
-	 */
-	int newMaxDepth = get_maxdepth(&plotInfo);
-	if (!shouldCalculateMax) {
-		if (maxdepth < newMaxDepth) {
-			maxdepth = newMaxDepth;
-		}
-	} else {
-		maxdepth = newMaxDepth;
-	}
-
-	profileScene->dataModel->setDive(plotInfo);
-#ifndef SUBSURFACE_MOBILE
-	toolTipItem->setPlotInfo(plotInfo);
-#endif
-	// It seems that I'll have a lot of boilerplate setting the model / axis for
-	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
-	profileScene->profileYAxis->setMaximum(maxdepth);
-	profileScene->profileYAxis->updateTicks();
-
-	profileScene->temperatureAxis->setMinimum(plotInfo.mintemp);
-	profileScene->temperatureAxis->setMaximum(plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
-
-#ifndef SUBSURFACE_MOBILE
-	if (plotInfo.maxhr) {
-		int heartBeatAxisMin = lrint(plotInfo.minhr / 5.0 - 0.5) * 5;
-		int heartBeatAxisMax, heartBeatAxisTick;
-		if (plotInfo.maxhr - plotInfo.minhr < 40)
-			heartBeatAxisTick = 10;
-		else if (plotInfo.maxhr - plotInfo.minhr < 80)
-			heartBeatAxisTick = 20;
-		else if (plotInfo.maxhr - plotInfo.minhr < 100)
-			heartBeatAxisTick = 25;
-		else
-			heartBeatAxisTick = 50;
-		for (heartBeatAxisMax = heartBeatAxisMin; heartBeatAxisMax < plotInfo.maxhr; heartBeatAxisMax += heartBeatAxisTick);
-		profileScene->heartBeatAxis->setMinimum(heartBeatAxisMin);
-		profileScene->heartBeatAxis->setMaximum(heartBeatAxisMax + 1);
-		profileScene->heartBeatAxis->setTickInterval(heartBeatAxisTick);
-		profileScene->heartBeatAxis->updateTicks(HR_AXIS); // this shows the ticks
-	}
-	profileScene->heartBeatAxis->setVisible(prefs.hrgraph && plotInfo.maxhr);
-
-	profileScene->percentageAxis->setMinimum(0);
-	profileScene->percentageAxis->setMaximum(100);
-	profileScene->percentageAxis->setVisible(false);
-	profileScene->percentageAxis->updateTicks(HR_AXIS);
-#endif
-	if (shouldCalculateMax)
-		profileScene->timeAxis->setMaximum(maxtime);
-	int i, incr;
-	static int increments[8] = { 10, 20, 30, 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60 };
-	/* Time markers: at most every 10 seconds, but no more than 12 markers.
-	 * We start out with 10 seconds and increment up to 30 minutes,
-	 * depending on the dive time.
-	 * This allows for 6h dives - enough (I hope) for even the craziest
-	 * divers - but just in case, for those 8h depth-record-breaking dives,
-	 * we double the interval if this still doesn't get us to 12 or fewer
-	 * time markers */
-	i = 0;
-	while (i < 7 && maxtime / increments[i] > 12)
-		i++;
-	incr = increments[i];
-	while (maxtime / incr > 12)
-		incr *= 2;
-	profileScene->timeAxis->setTickInterval(incr);
-	profileScene->timeAxis->updateTicks();
-	profileScene->cylinderPressureAxis->setMinimum(plotInfo.minpressure);
-	profileScene->cylinderPressureAxis->setMaximum(plotInfo.maxpressure);
-#ifndef SUBSURFACE_MOBILE
-	rulerItem->setPlotInfo(d, plotInfo);
-#endif
-
-#ifdef SUBSURFACE_MOBILE
-	if (currentdc->divemode == CCR) {
-		profileScene->gasYAxis->setPos(itemPos.partialPressure.pos.on);
-		profileScene->gasYAxis->setLine(itemPos.partialPressure.expanded);
-
-		tankItem->setVisible(false);
-		pn2GasItem->setVisible(false);
-		po2GasItem->setVisible(prefs.pp_graphs.po2);
-		pheGasItem->setVisible(false);
-		o2SetpointGasItem->setVisible(prefs.show_ccr_setpoint);
-		ccrsensor1GasItem->setVisible(prefs.show_ccr_sensors);
-		ccrsensor2GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
-		ccrsensor3GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
-		ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
-		//when no gas graph, we can show temperature
-		if (!po2GasItem->isVisible() &&
-		    !o2SetpointGasItem->isVisible() &&
-		    !ccrsensor1GasItem->isVisible() &&
-		    !ccrsensor2GasItem->isVisible() &&
-		    !ccrsensor3GasItem->isVisible() &&
-		    !ocpo2GasItem->isVisible())
-			temperatureItem->setVisible(true);
-		else
-			temperatureItem->setVisible(false);
-	} else {
-		tankItem->setVisible(prefs.tankbar);
-		profileScene->gasYAxis->setPos(itemPos.partialPressure.pos.off);
-		pn2GasItem->setVisible(false);
-		po2GasItem->setVisible(false);
-		pheGasItem->setVisible(false);
-		o2SetpointGasItem->setVisible(false);
-		ccrsensor1GasItem->setVisible(false);
-		ccrsensor2GasItem->setVisible(false);
-		ccrsensor3GasItem->setVisible(false);
-		ocpo2GasItem->setVisible(false);
-	}
-#endif
-	tankItem->setData(&plotInfo, d);
-
-	profileScene->gasYAxis->update();
-
-	// Replot dive items
-	for (AbstractProfilePolygonItem *item: profileItems)
-		item->replot(d, currentState == PLAN);
-
-	// The event items are a bit special since we don't know how many events are going to
-	// exist on a dive, so I cant create cache items for that. that's why they are here
-	// while all other items are up there on the constructor.
-	qDeleteAll(eventItems);
-	eventItems.clear();
-	struct event *event = currentdc->events;
-	struct gasmix lastgasmix = get_gasmix_at_time(d, get_dive_dc_const(d, dc), duration_t{1});
-
-	while (event) {
-#ifndef SUBSURFACE_MOBILE
-		// if print mode is selected only draw headings, SP change, gas events or bookmark event
-		if (profileScene->printMode) {
-			if (empty_string(event->name) ||
-			    !(strcmp(event->name, "heading") == 0 ||
-			      (same_string(event->name, "SP change") && event->time.seconds == 0) ||
-			      event_is_gaschange(event) ||
-			      event->type == SAMPLE_EVENT_BOOKMARK)) {
-				event = event->next;
-				continue;
-			}
-		}
-#else
-		// printMode is always selected for SUBSURFACE_MOBILE due to font problems
-		// BUT events are wanted.
-#endif
-		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix, profileScene->dataModel,
-							profileScene->timeAxis, profileScene->profileYAxis, profileScene->animSpeed,
-							profileScene->fontPrintScale);
-		item->setZValue(2);
-		scene()->addItem(item);
-		eventItems.push_back(item);
-		if (event_is_gaschange(event))
-			lastgasmix = get_gasmix_from_event(d, event);
-		event = event->next;
-	}
-
-	// Only set visible the events that should be visible
-	Q_FOREACH (DiveEventItem *event, eventItems) {
-		event->setVisible(!event->shouldBeHidden());
-	}
-	QString dcText = get_dc_nickname(currentdc);
-	if (dcText == "planned dive")
-		dcText = tr("Planned dive");
-	else if (dcText == "manually added dive")
-		dcText = tr("Manually added dive");
-	else if (dcText.isEmpty())
-		dcText = tr("Unknown dive computer");
-#ifndef SUBSURFACE_MOBILE
-	int nr;
-	if ((nr = number_of_computers(d)) > 1)
-		dcText += tr(" (#%1 of %2)").arg(dc + 1).arg(nr);
-#endif
-	diveComputerText->setText(dcText);
-
-#ifndef SUBSURFACE_MOBILE
 	if ((currentState == EDIT || currentState == PLAN) && plannerModel) {
 		repositionDiveHandlers();
 		plannerModel->deleteTemporaryPlan();
@@ -591,7 +263,6 @@ void ProfileWidget2::actionRequestedReplot(bool)
 void ProfileWidget2::settingsChanged()
 {
 	profileScene->updateAxes();
-	tankItem->setVisible(prefs.tankbar);
 	replot();
 }
 
@@ -752,16 +423,7 @@ void ProfileWidget2::clear()
 	clearPictures();
 #endif
 	disconnectTemporaryConnections();
-	profileScene->dataModel->clear();
-
-	for (AbstractProfilePolygonItem *item: profileItems)
-		item->clear();
-
-	// the events will have connected slots which can fire after
-	// the dive and its data have been deleted - so explictly delete
-	// the DiveEventItems
-	qDeleteAll(eventItems);
-	eventItems.clear();
+	profileScene->clear();
 	handles.clear();
 	gases.clear();
 }
@@ -772,38 +434,6 @@ void ProfileWidget2::setProfileState(const dive *dIn, int dcIn)
 	dc = dcIn;
 
 	setProfileState();
-}
-
-// Update visibility of non-interactive chart features according to preferences
-void ProfileWidget2::updateVisibility()
-{
-#ifndef SUBSURFACE_MOBILE
-	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
-	po2GasItem->setVisible(prefs.pp_graphs.po2);
-	pheGasItem->setVisible(prefs.pp_graphs.phe);
-
-	const struct divecomputer *currentdc = d ? get_dive_dc_const(d, dc) : nullptr;
-	bool setpointflag = currentdc && currentdc->divemode == CCR && prefs.pp_graphs.po2;
-	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
-	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
-	ccrsensor1GasItem->setVisible(sensorflag);
-	ccrsensor2GasItem->setVisible(currentdc && sensorflag && currentdc->no_o2sensors > 1);
-	ccrsensor3GasItem->setVisible(currentdc && sensorflag && currentdc->no_o2sensors > 2);
-	ocpo2GasItem->setVisible(currentdc && currentdc->divemode == PSCR && prefs.show_scr_ocpo2);
-
-	heartBeatItem->setVisible(prefs.hrgraph);
-#endif
-	diveCeiling->setVisible(prefs.calcceiling);
-	decoModelParameters->setVisible(prefs.calcceiling);
-#ifndef SUBSURFACE_MOBILE
-	for (DiveCalculatedTissue *tissue: allTissues)
-		tissue->setVisible(prefs.calcalltissues && prefs.calcceiling);
-	for (DivePercentageItem *percentage: allPercentages)
-		percentage->setVisible(prefs.percentagegraph);
-#endif
-	meanDepthItem->setVisible(prefs.show_average_depth);
-	reportedCeiling->setVisible(prefs.dcceiling);
-	tankItem->setVisible(prefs.tankbar);
 }
 
 void ProfileWidget2::setProfileState()
@@ -822,14 +452,6 @@ void ProfileWidget2::setProfileState()
 	toolTipItem->readPos();
 	toolTipItem->setVisible(true);
 	rulerItem->setVisible(prefs.rulergraph);
-#endif
-
-	diveComputerText->setVisible(true);
-	diveComputerText->setPos(itemPos.dcLabel.on);
-
-	tankItem->setPos(itemPos.tankBar.on);
-
-#ifndef SUBSURFACE_MOBILE
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 #endif
@@ -871,8 +493,6 @@ void ProfileWidget2::setEditState(const dive *d, int dc)
 
 	/* show the same stuff that the profile shows. */
 	currentState = EDIT; /* enable the add state. */
-	diveCeiling->setVisible(true);
-	decoModelParameters->setVisible(true);
 	setBackgroundBrush(QColor("#A7DCFF"));
 
 	pointsReset();
@@ -901,8 +521,6 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 
 	/* show the same stuff that the profile shows. */
 	currentState = PLAN; /* enable the add state. */
-	diveCeiling->setVisible(true);
-	decoModelParameters->setVisible(true);
 	setBackgroundBrush(QColor("#D7E3EF"));
 
 	pointsReset();
@@ -963,7 +581,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		return;
 	// figure out if we are ontop of the dive computer name in the profile
 	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
-	if (isDiveTextItem(sceneItem, diveComputerText)) {
+	if (isDiveTextItem(sceneItem, profileScene->diveComputerText)) {
 		const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
 		if (!currentdc->deviceid && dc == 0 && number_of_computers(d) == 1)
 			// nothing to do, can't rename, delete or reorder
@@ -1129,7 +747,7 @@ void ProfileWidget2::hideEvents(DiveEventItem *item)
 					break;
 				}
 			}
-			Q_FOREACH (DiveEventItem *evItem, eventItems) {
+			Q_FOREACH (DiveEventItem *evItem, profileScene->eventItems) {
 				if (same_string(evItem->getEvent()->name, event->name))
 					evItem->hide();
 			}
@@ -1144,7 +762,7 @@ void ProfileWidget2::unhideEvents()
 	for (int i = 0; i < evn_used; i++) {
 		ev_namelist[i].plot_ev = true;
 	}
-	Q_FOREACH (DiveEventItem *item, eventItems)
+	Q_FOREACH (DiveEventItem *item, profileScene->eventItems)
 		item->show();
 }
 
