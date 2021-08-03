@@ -17,9 +17,6 @@
 //  * It needs to be dynamic, things should *flow* on it, not just appear / disappear.
 //  */
 #include "profile-widget/divelineitem.h"
-#include "profile-widget/diveprofileitem.h"
-#include "core/display.h"
-#include "core/color.h"
 #include "core/pictureobj.h"
 #include "core/units.h"
 #include "core/subsurface-qt/divelistnotifier.h"
@@ -27,23 +24,9 @@
 class ProfileScene;
 class RulerItem2;
 struct dive;
-struct plot_info;
 class ToolTipItem;
-class DiveReportedCeiling;
-class DiveTextItem;
 class DiveEventItem;
-class DiveRectItem;
-class DiveCartesianAxis;
-class DiveProfileItem;
 class DivePlannerPointsModel;
-class DiveTemperatureItem;
-class DiveHeartrateItem;
-class DiveGasPressureItem;
-class DiveCalculatedCeiling;
-class DiveCalculatedTissue;
-class PartialPressureGasItem;
-class AbstractProfilePolygonItem;
-class TankItem;
 class DiveHandler;
 class QGraphicsSimpleTextItem;
 class QModelIndex;
@@ -117,7 +100,6 @@ slots: // Necessary to call from QAction's signals.
 
 private:
 	void setProfileState(); // keep currently displayed dive
-	void updateVisibility(); // Update visibility of non-interactive chart features according to preferences
 	void resizeEvent(QResizeEvent *event) override;
 #ifndef SUBSURFACE_MOBILE
 	void wheelEvent(QWheelEvent *event) override;
@@ -135,14 +117,11 @@ private:
 	void changeGas(int tank, int seconds);
 	void scrollViewTo(const QPoint &pos);
 	void setupSceneAndFlags();
-	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args);
 	void addItemsToScene();
 	void setupItemOnScene();
 	void disconnectTemporaryConnections();
 	struct plot_data *getEntryFromPos(QPointF pos);
 	void addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)());
-	PartialPressureGasItem *createPPGas(int column, color_index_t color, color_index_t colorAlert,
-					    const double *thresholdSettingsMin, const double *thresholdSettingsMax);
 	void clearPictures();
 	void plotPicturesInternal(const struct dive *d, bool synchronous);
 	void addDivemodeSwitch(int seconds, int divemode);
@@ -169,34 +148,11 @@ private:
 	// In the meantime, keep it here.
 	const struct dive *d;
 	int dc;
-	struct plot_info plotInfo;
-	std::vector<AbstractProfilePolygonItem *> profileItems;
-	DiveProfileItem *diveProfileItem;
-	DiveTemperatureItem *temperatureItem;
-	DiveMeanDepthItem *meanDepthItem;
-	DiveGasPressureItem *gasPressureItem;
-	QList<DiveEventItem *> eventItems;
-	DiveTextItem *diveComputerText;
-	DiveReportedCeiling *reportedCeiling;
-	PartialPressureGasItem *pn2GasItem;
-	PartialPressureGasItem *pheGasItem;
-	PartialPressureGasItem *po2GasItem;
-	PartialPressureGasItem *o2SetpointGasItem;
-	PartialPressureGasItem *ccrsensor1GasItem;
-	PartialPressureGasItem *ccrsensor2GasItem;
-	PartialPressureGasItem *ccrsensor3GasItem;
-	PartialPressureGasItem *ocpo2GasItem;
-	DiveCalculatedCeiling *diveCeiling;
-	DiveTextItem *decoModelParameters;
 #ifndef SUBSURFACE_MOBILE
-	QList<DiveCalculatedTissue *> allTissues;
-	DiveHeartrateItem *heartBeatItem;
-	QList<DivePercentageItem *> allPercentages;
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;
 #endif
-	TankItem *tankItem;
 
 	std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> gases;
 
@@ -233,8 +189,6 @@ private:
 	friend class DiveHandler;
 	QHash<Qt::Key, QAction *> actionsForKeys;
 	bool shouldCalculateMax; // Calculate maximum time and depth (default). False when dragging handles.
-	int maxtime;
-	int maxdepth;
 
 	// We store a const pointer to the shown dive. However, the undo commands want
 	// (understandably) a non-const pointer. Since the profile has a context-menu
