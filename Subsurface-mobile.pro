@@ -169,14 +169,11 @@ SOURCES += subsurface-mobile-main.cpp \
 	profile-widget/divecartesianaxis.cpp \
 	profile-widget/diveeventitem.cpp \
 	profile-widget/diveprofileitem.cpp \
-	profile-widget/profilewidget2.cpp \
 	profile-widget/profilescene.cpp \
-	profile-widget/ruleritem.cpp \
 	profile-widget/animationfunctions.cpp \
 	profile-widget/divepixmapitem.cpp \
 	profile-widget/divetooltipitem.cpp \
 	profile-widget/tankitem.cpp \
-	profile-widget/divehandler.cpp \
 	profile-widget/divelineitem.cpp \
 	profile-widget/diverectitem.cpp \
 	profile-widget/divetextitem.cpp
@@ -325,15 +322,12 @@ HEADERS += \
 	qt-models/filterpresetmodel.h \
 	profile-widget/qmlprofile.h \
 	profile-widget/diveprofileitem.h \
-	profile-widget/profilewidget2.h \
 	profile-widget/profilescene.h \
-	profile-widget/ruleritem.h \
 	profile-widget/diveeventitem.h \
 	profile-widget/divetooltipitem.h \
 	profile-widget/tankitem.h \
 	profile-widget/animationfunctions.h \
 	profile-widget/divecartesianaxis.h \
-	profile-widget/divehandler.h \
 	profile-widget/divelineitem.h \
 	profile-widget/divepixmapitem.h \
 	profile-widget/diverectitem.h \

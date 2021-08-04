@@ -6,8 +6,6 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	divecartesianaxis.h
 	diveeventitem.cpp
 	diveeventitem.h
-	divehandler.cpp
-	divehandler.h
 	divelineitem.cpp
 	divelineitem.h
 	divepixmapitem.cpp
@@ -20,12 +18,8 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	divetextitem.h
 	divetooltipitem.cpp
 	divetooltipitem.h
-	profilewidget2.cpp
-	profilewidget2.h
 	profilescene.cpp
 	profilescene.h
-	ruleritem.cpp
-	ruleritem.h
 	tankitem.cpp
 	tankitem.h
 )
@@ -34,6 +28,16 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	${SUBSURFACE_PROFILE_LIB_SRCS}
 	qmlprofile.cpp
 	qmlprofile.h
+)
+else ()
+set(SUBSURFACE_PROFILE_LIB_SRCS
+	${SUBSURFACE_PROFILE_LIB_SRCS}
+	divehandler.cpp
+	divehandler.h
+	profilewidget2.cpp
+	profilewidget2.h
+	ruleritem.cpp
+	ruleritem.h
 )
 endif ()
 source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})
