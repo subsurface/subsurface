@@ -51,7 +51,6 @@ public:
 	void setProfileState(const struct dive *d, int dc);
 	void setPlanState(const struct dive *d, int dc);
 	void setEditState(const struct dive *d, int dc);
-	void setPrintMode(bool grayscale = false);
 	bool isPlanner() const;
 	void clear();
 #ifndef SUBSURFACE_MOBILE

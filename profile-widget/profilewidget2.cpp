@@ -815,20 +815,6 @@ void ProfileWidget2::changeGas(int tank, int seconds)
 }
 #endif
 
-void ProfileWidget2::setPrintMode(bool grayscale)
-{
-	profileScene->printMode = true;
-	resetZoom();
-
-	// set printMode for axes
-	profileScene->isGrayscale = grayscale;
-#ifndef SUBSURFACE_MOBILE
-	mouseFollowerHorizontal->setVisible(false);
-	mouseFollowerVertical->setVisible(false);
-	toolTipItem->setVisible(false);
-#endif
-}
-
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::editName(DiveEventItem *item)
 {
