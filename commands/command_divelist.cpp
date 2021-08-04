@@ -6,7 +6,6 @@
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/filtermodels.h"
-#include "../profile-widget/profilewidget2.h"
 #include "core/divefilter.h"
 
 #include <array>
