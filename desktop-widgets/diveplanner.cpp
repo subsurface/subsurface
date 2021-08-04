@@ -12,7 +12,7 @@
 
 #include "qt-models/cylindermodel.h"
 #include "qt-models/models.h"
-#include "profile-widget/profilewidget2.h"
+#include "profile-widget/profilescene.h"
 #include "qt-models/diveplannermodel.h"
 
 #include <QShortcut>
@@ -607,10 +607,8 @@ void PlannerWidgets::printDecoPlan()
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
-	auto profile = std::make_unique<ProfileWidget2>(DivePlannerPointsModel::instance(), 1.0, nullptr);
-	profile->setPlanState(&displayed_dive, 0);
-	profile->plotDive(&displayed_dive, 0, true, true);
-	profile->setPrintMode();
+	auto profile = std::make_unique<ProfileScene>(1.0, true, false);
+	profile->plotDive(&displayed_dive, 0, DivePlannerPointsModel::instance(), true, true);
 	profile->draw(&painter, QRect(0, 0, pixmap.width(), pixmap.height()));
 
 	QByteArray byteArray;

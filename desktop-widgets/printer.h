@@ -5,7 +5,7 @@
 #include "printoptions.h"
 #include "templateedit.h"
 
-class ProfileWidget2;
+class ProfileScene;
 class QPainter;
 class QPaintDevice;
 class QRect;
@@ -32,7 +32,7 @@ private:
 	void render(int Pages);
 	void flowRender();
 	void putProfileImage(const QRect &box, const QRect &viewPort, QPainter *painter,
-			     struct dive *dive, ProfileWidget2 *profile);
+			     struct dive *dive, ProfileScene *profile);
 
 private slots:
 	void templateProgessUpdated(int value);
