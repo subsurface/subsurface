@@ -53,9 +53,7 @@ public:
 	void setEditState(const struct dive *d, int dc);
 	void setPrintMode(bool grayscale = false);
 	bool isPlanner() const;
-	void draw(QPainter *painter, const QRect &pos);
 	void clear();
-	QImage toImage(QSize size);
 #ifndef SUBSURFACE_MOBILE
 	bool eventFilter(QObject *, QEvent *) override;
 #endif

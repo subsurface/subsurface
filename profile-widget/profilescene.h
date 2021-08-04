@@ -8,6 +8,7 @@
 #include "core/display.h"
 
 #include <QGraphicsScene>
+#include <QPainter>
 
 class DivePlannerPointsModel;
 class DivePlotDataModel;
@@ -45,6 +46,9 @@ public:
 	// If a plannerModel is passed, the deco-information is taken from there.
 	void plotDive(const struct dive *d, int dc, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
 		      bool instant = false, bool calcMax = true);
+
+	void draw(QPainter *painter, const QRect &pos);
+	QImage toImage(QSize size);
 
 	const struct dive *d;
 	int dc;

@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printer.h"
 #include "templatelayout.h"
+#include "core/dive.h" // for get_dive_by_uniq_id()
 #include "core/statistics.h"
 #include "core/qthelper.h"
+#include "profile-widget/profilescene.h"
 
 #include <algorithm>
+#include <memory>
 #include <QPainter>
 #include <QPrinter>
 #include <QtWebKitWidgets>
 #include <QWebElementCollection>
 #include <QWebElement>
-#include "profile-widget/profilewidget2.h"
 
 Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner) :
 	paintDevice(paintDevice),
@@ -29,15 +31,14 @@ Printer::~Printer()
 }
 
 void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &viewPort, QPainter *painter,
-			      struct dive *dive, ProfileWidget2 *profile)
+			      struct dive *dive, ProfileScene *profile)
 {
 	int x = profilePlaceholder.x() - viewPort.x();
 	int y = profilePlaceholder.y() - viewPort.y();
 	// use the placeHolder and the viewPort position to calculate the relative position of the dive profile.
 	QRect pos(x, y, profilePlaceholder.width(), profilePlaceholder.height());
 
-	profile->setProfileState(dive, 0);
-	profile->plotDive(dive, 0, true);
+	profile->plotDive(dive, 0, nullptr, true);
 	profile->draw(painter, pos);
 }
 
@@ -109,11 +110,7 @@ void Printer::render(int pages)
 	// Scale the fonts in the printed profile accordingly.
 	// This is arbitrary, but it seems to work reasonably well.
 	double printFontScale = collection.count() > 0 ? collection[0].geometry().size().height() / 600.0 : 1.0;
-	auto profile = std::make_unique<ProfileWidget2>(nullptr, printFontScale, nullptr);
-
-	// apply printing settings to profile
-	profile->setFrameStyle(QFrame::NoFrame);
-	profile->setPrintMode(!printOptions.color_selected);
+	auto profile = std::make_unique<ProfileScene>(printFontScale, true, !printOptions.color_selected);
 
 	// render the Qwebview
 	QPainter painter;

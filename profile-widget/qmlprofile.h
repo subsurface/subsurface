@@ -2,9 +2,11 @@
 #ifndef QMLPROFILE_H
 #define QMLPROFILE_H
 
-#include "profilewidget2.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include <QQuickPaintedItem>
+#include <memory>
+
+class ProfileScene;
 
 class QMLProfile : public QQuickPaintedItem
 {
@@ -16,6 +18,7 @@ class QMLProfile : public QQuickPaintedItem
 
 public:
 	explicit QMLProfile(QQuickItem *parent = 0);
+	~QMLProfile();
 
 	void paint(QPainter *painter);
 
@@ -36,7 +39,7 @@ private:
 	qreal m_devicePixelRatio;
 	int m_margin;
 	qreal m_xOffset, m_yOffset;
-	QScopedPointer<ProfileWidget2> m_profileWidget;
+	std::unique_ptr<ProfileScene> m_profileWidget;
 	void updateProfile();
 	void createProfileView();
 

@@ -187,6 +187,8 @@ ProfileScene::ProfileScene(double fontPrintScale, bool printMode, bool isGraysca
 
 	for (AbstractProfilePolygonItem *item: profileItems)
 		addItem(item);
+
+	updateAxes(true);
 }
 
 ProfileScene::~ProfileScene()
@@ -662,4 +664,40 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		dcText += tr(" (#%1 of %2)").arg(dc + 1).arg(nr);
 #endif
 	diveComputerText->setText(dcText);
+}
+
+QImage ProfileScene::toImage(QSize size)
+{
+	// The size of chart with respect to the scene is fixed - by convention - to 100.0.
+	// We add 2% to the height so that the dive computer name is not cut off.
+	QRectF sceneRect(0.0, 0.0, 100.0, 102.0);
+
+	QImage image(size, QImage::Format_ARGB32);
+	image.fill(getColor(::BACKGROUND, isGrayscale));
+
+	QPainter imgPainter(&image);
+	imgPainter.setRenderHint(QPainter::Antialiasing);
+	imgPainter.setRenderHint(QPainter::SmoothPixmapTransform);
+	render(&imgPainter, QRect(QPoint(), size), sceneRect, Qt::IgnoreAspectRatio);
+	imgPainter.end();
+
+	if (isGrayscale) {
+		// convert QImage to grayscale before rendering
+		for (int i = 0; i < image.height(); i++) {
+			QRgb *pixel = reinterpret_cast<QRgb *>(image.scanLine(i));
+			QRgb *end = pixel + image.width();
+			for (; pixel != end; pixel++) {
+				int gray_val = qGray(*pixel);
+				*pixel = QColor(gray_val, gray_val, gray_val).rgb();
+			}
+		}
+	}
+
+	return image;
+}
+
+void ProfileScene::draw(QPainter *painter, const QRect &pos)
+{
+	QImage img = toImage(pos.size());
+	painter->drawImage(pos, img);
 }
