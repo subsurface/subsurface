@@ -577,7 +577,7 @@ void MainWindow::enableShortcuts()
 void MainWindow::showProfile()
 {
 	enableShortcuts();
-	profile->view->setProfileState(current_dive, dc_number);
+	profile->plotCurrentDive();
 	setApplicationState(ApplicationState::Default);
 }
 
@@ -629,7 +629,6 @@ bool MainWindow::plannerStateClean()
 void MainWindow::refreshProfile()
 {
 	showProfile();
-	profile->plotCurrentDive();
 }
 
 void MainWindow::planCanceled()

@@ -197,8 +197,10 @@ void ProfileWidget::plotCurrentDive()
 		ui.profScaled->setDisabled(false); // measuring and scaling
 		ui.profTogglePicture->setDisabled(false);
 		ui.profHR->setDisabled(false);
+		view->setProfileState(current_dive, dc_number);
 		view->plotDive(current_dive, dc_number);
 	} else {
+		view->clear();
 		stack->setCurrentIndex(0);
 	}
 }
