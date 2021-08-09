@@ -13,8 +13,8 @@
 #include "profile-widget/profilewidget2.h"
 
 AbstractProfilePolygonItem::AbstractProfilePolygonItem(const DivePlotDataModel &model, const DiveCartesianAxis &horizontal, int hColumn,
-						       const DiveCartesianAxis &vertical, int vColumn, double fontPrintScale) :
-	hAxis(horizontal), vAxis(vertical), dataModel(model), hDataColumn(hColumn), vDataColumn(vColumn), fontPrintScale(fontPrintScale)
+						       const DiveCartesianAxis &vertical, int vColumn, double dpr) :
+	hAxis(horizontal), vAxis(vertical), dataModel(model), hDataColumn(hColumn), vDataColumn(vColumn), dpr(dpr)
 {
 	setCacheMode(DeviceCoordinateCache);
 }
@@ -47,8 +47,8 @@ void AbstractProfilePolygonItem::replot(const dive *, bool)
 }
 
 DiveProfileItem::DiveProfileItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-				 const DiveCartesianAxis &vAxis, int vColumn, double fontPrintScale) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, fontPrintScale),
+				 const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
+	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr),
 	show_reported_ceiling(0), reported_ceiling_in_red(0)
 {
 }
@@ -142,7 +142,7 @@ void DiveProfileItem::replot(const dive *d, bool in_planner)
 
 void DiveProfileItem::plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color)
 {
-	DiveTextItem *item = new DiveTextItem(fontPrintScale, this);
+	DiveTextItem *item = new DiveTextItem(dpr, this);
 	item->setPos(hAxis.posAtValue(entry->sec), vAxis.posAtValue(entry->depth));
 	item->setText(get_depth_string(entry->depth, true));
 	item->setAlignment(flags);
@@ -151,8 +151,8 @@ void DiveProfileItem::plot_depth_sample(struct plot_data *entry, QFlags<Qt::Alig
 }
 
 DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-				     const DiveCartesianAxis &vAxis, int vColumn, double fontPrintScale) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, fontPrintScale)
+				     const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
+	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
 {
 	QPen pen;
 	pen.setBrush(QBrush(getColor(::HR_PLOT)));
@@ -214,7 +214,7 @@ void DiveHeartrateItem::replot(const dive *, bool)
 
 void DiveHeartrateItem::createTextItem(int sec, int hr)
 {
-	DiveTextItem *text = new DiveTextItem(fontPrintScale, this);
+	DiveTextItem *text = new DiveTextItem(dpr, this);
 	text->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	text->setBrush(getColor(HR_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(hr)));
@@ -234,8 +234,8 @@ void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 }
 
 DivePercentageItem::DivePercentageItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-				       const DiveCartesianAxis &vAxis, int vColumn, int i, double fontPrintScale) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, fontPrintScale),
+				       const DiveCartesianAxis &vAxis, int vColumn, int i, double dpr) :
+	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr),
 	tissueIndex(i)
 {
 }
@@ -305,8 +305,8 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 }
 
 DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-					 const DiveCartesianAxis &vAxis, int vColumn, double fontPrintScale) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, fontPrintScale)
+					 const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
+	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
 {
 	QPen pen;
 	pen.setBrush(QBrush(getColor(::TEMP_PLOT)));
@@ -363,7 +363,7 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
 	temperature_t temp;
 	temp.mkelvin = mkelvin;
 
-	DiveTextItem *text = new DiveTextItem(fontPrintScale, this);
+	DiveTextItem *text = new DiveTextItem(dpr, this);
 	text->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	text->setBrush(getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(mkelvin)));
@@ -383,8 +383,8 @@ void DiveTemperatureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 }
 
 DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-				     const DiveCartesianAxis &vAxis, int vColumn, double fontPrintScale) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, fontPrintScale)
+				     const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
+	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
 {
 	QPen pen;
 	pen.setBrush(QBrush(getColor(::HR_AXIS)));
@@ -431,7 +431,7 @@ void DiveMeanDepthItem::createTextItem()
 	int sec = entry[dataModel.rowCount()-1].sec;
 	qDeleteAll(texts);
 	texts.clear();
-	DiveTextItem *text = new DiveTextItem(fontPrintScale, this);
+	DiveTextItem *text = new DiveTextItem(dpr, this);
 	text->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	text->setBrush(getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec) + 1, vAxis.posAtValue(lastRunningSum)));
@@ -569,7 +569,7 @@ void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::Alignm
 {
 	const char *unit;
 	int pressure = get_pressure_units(mbar, &unit);
-	DiveTextItem *text = new DiveTextItem(fontPrintScale, this);
+	DiveTextItem *text = new DiveTextItem(dpr, this);
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + pressure_offset );
 	text->setText(QString("%1%2").arg(pressure).arg(unit));
 	text->setAlignment(align);
@@ -580,7 +580,7 @@ void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::Alignm
 void DiveGasPressureItem::plotGasValue(int mbar, int sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double gasname_offset)
 {
 	QString gas = get_gas_string(gasmix);
-	DiveTextItem *text = new DiveTextItem(fontPrintScale, this);
+	DiveTextItem *text = new DiveTextItem(dpr, this);
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + gasname_offset );
 	text->setText(gas);
 	text->setAlignment(align);
@@ -607,8 +607,8 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 }
 
 DiveCalculatedCeiling::DiveCalculatedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-					     const DiveCartesianAxis &vAxis, int vColumn, double fontPrintScale) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, fontPrintScale)
+					     const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
+	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
 {
 }
 
@@ -641,14 +641,14 @@ void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsI
 }
 
 DiveCalculatedTissue::DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-					   const DiveCartesianAxis &vAxis, int vColumn, double fontPrintScale) :
-	DiveCalculatedCeiling(model, hAxis, hColumn, vAxis, vColumn, fontPrintScale)
+					   const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
+	DiveCalculatedCeiling(model, hAxis, hColumn, vAxis, vColumn, dpr)
 {
 }
 
 DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-					 const DiveCartesianAxis &vAxis, int vColumn, double fontPrintScale) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, fontPrintScale)
+					 const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
+	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
 {
 }
 
@@ -752,8 +752,8 @@ void PartialPressureGasItem::setThresholdSettingsKey(const double *prefPointerMi
 }
 
 PartialPressureGasItem::PartialPressureGasItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
-					       const DiveCartesianAxis &vAxis, int vColumn, double fontPrintScale) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, fontPrintScale),
+					       const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
+	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr),
 	thresholdPtrMin(NULL),
 	thresholdPtrMax(NULL)
 {

@@ -13,7 +13,7 @@ class DiveEventItem : public DivePixmapItem {
 public:
 	DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix,
 		      DivePlotDataModel *model, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
-		      int speed, double fontPrintScale, QGraphicsItem *parent = nullptr);
+		      int speed, double dpr, QGraphicsItem *parent = nullptr);
 	~DiveEventItem();
 	const struct event *getEvent() const;
 	struct event *getEventMutable();
@@ -28,7 +28,7 @@ slots:
 
 private:
 	void setupToolTipString(struct gasmix lastgasmix);
-	void setupPixmap(struct gasmix lastgasmix, double fontPrintScale);
+	void setupPixmap(struct gasmix lastgasmix, double dpr);
 	int depthAtTime(int time);
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;

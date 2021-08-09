@@ -47,7 +47,7 @@ void DiveCartesianAxis::setTextColor(const QColor &color)
 	textColor = color;
 }
 
-DiveCartesianAxis::DiveCartesianAxis(double fontPrintScale, bool printMode, ProfileScene &scene) :
+DiveCartesianAxis::DiveCartesianAxis(double dpr, bool printMode, ProfileScene &scene) :
 	printMode(printMode),
 	scene(scene),
 	orientation(LeftToRight),
@@ -60,7 +60,7 @@ DiveCartesianAxis::DiveCartesianAxis(double fontPrintScale, bool printMode, Prof
 	labelScale(1.0),
 	line_size(1),
 	changed(true),
-	fontPrintScale(fontPrintScale)
+	dpr(dpr)
 {
 	setPen(gridPen());
 }
@@ -184,7 +184,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed, color_index_t color)
 		} else {
 			childPos = begin - i * stepSize;
 		}
-		DiveTextItem *label = new DiveTextItem(fontPrintScale, this);
+		DiveTextItem *label = new DiveTextItem(dpr, this);
 		label->setText(textForValue(currValueText));
 		label->setBrush(colorForValue(currValueText));
 		label->setScale(labelScale);
@@ -339,7 +339,7 @@ QColor DepthAxis::colorForValue(double) const
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis(double fontPrintScale, bool printMode, ProfileScene &scene) : DiveCartesianAxis(fontPrintScale, printMode, scene)
+DepthAxis::DepthAxis(double dpr, bool printMode, ProfileScene &scene) : DiveCartesianAxis(dpr, printMode, scene)
 {
 	changed = true;
 }
@@ -372,8 +372,8 @@ QString TemperatureAxis::textForValue(double value) const
 	return QString::number(mkelvin_to_C((int)value));
 }
 
-PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, bool printMode, ProfileScene &scene) :
-	DiveCartesianAxis(fontPrintScale, printMode, scene),
+PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, double dpr, bool printMode, ProfileScene &scene) :
+	DiveCartesianAxis(dpr, printMode, scene),
 	model(model)
 {
 }

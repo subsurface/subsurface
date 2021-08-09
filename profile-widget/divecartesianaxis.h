@@ -29,7 +29,7 @@ public:
 		LeftToRight,
 		RightToLeft
 	};
-	DiveCartesianAxis(double fontPrintScale, bool printMode, ProfileScene &scene);
+	DiveCartesianAxis(double dpr, bool printMode, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
@@ -70,13 +70,13 @@ protected:
 	double labelScale;
 	qreal line_size;
 	bool changed;
-	double fontPrintScale;
+	double dpr;
 };
 
 class DepthAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	DepthAxis(double fontPrintScale, bool printMode, ProfileScene &scene);
+	DepthAxis(double dpr, bool printMode, ProfileScene &scene);
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
@@ -103,7 +103,7 @@ private:
 class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	PartialGasPressureAxis(const DivePlotDataModel &model, double fontPrintScale, bool printMode, ProfileScene &scene);
+	PartialGasPressureAxis(const DivePlotDataModel &model, double dpr, bool printMode, ProfileScene &scene);
 	void update(int animSpeed);
 private:
 	const DivePlotDataModel &model;

@@ -107,10 +107,10 @@ void Printer::render(int pages)
 	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
 
 	// A "standard" profile has about 600 pixels in height.
-	// Scale the fonts in the printed profile accordingly.
+	// Scale the items in the printed profile accordingly.
 	// This is arbitrary, but it seems to work reasonably well.
-	double printFontScale = collection.count() > 0 ? collection[0].geometry().size().height() / 600.0 : 1.0;
-	auto profile = std::make_unique<ProfileScene>(printFontScale, true, !printOptions.color_selected);
+	double dpr = collection.count() > 0 ? collection[0].geometry().size().height() / 600.0 : 1.0;
+	auto profile = std::make_unique<ProfileScene>(dpr, true, !printOptions.color_selected);
 
 	// render the Qwebview
 	QPainter painter;

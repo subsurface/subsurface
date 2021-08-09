@@ -8,11 +8,11 @@
 #include <QDebug>
 #include <QApplication>
 
-DiveTextItem::DiveTextItem(double printScale, QGraphicsItem *parent) : QGraphicsItemGroup(parent),
+DiveTextItem::DiveTextItem(double dpr, QGraphicsItem *parent) : QGraphicsItemGroup(parent),
 	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),
 	textBackgroundItem(new QGraphicsPathItem(this)),
 	textItem(new QGraphicsPathItem(this)),
-	printScale(printScale),
+	dpr(dpr),
 	scale(1.0)
 {
 	setFlag(ItemIgnoresTransformations);
@@ -69,11 +69,11 @@ void DiveTextItem::updateText()
 	QFont fnt(qApp->font());
 	if ((size = fnt.pixelSize()) > 0) {
 		// set in pixels - so the scale factor may not make a difference if it's too close to 1
-		size *= scale * printScale;
+		size *= scale * dpr;
 		fnt.setPixelSize(lrint(size));
 	} else {
 		size = fnt.pointSizeF();
-		size *= scale * printScale;
+		size *= scale * dpr;
 		fnt.setPointSizeF(size);
 	}
 	QFontMetrics fm(fnt);

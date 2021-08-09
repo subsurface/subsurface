@@ -13,7 +13,7 @@ class DiveTextItem : public QObject, public QGraphicsItemGroup {
 	Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 	Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 public:
-	DiveTextItem(double printScale, QGraphicsItem *parent = 0);
+	DiveTextItem(double dpr, QGraphicsItem *parent = 0);
 	void setText(const QString &text);
 	void setAlignment(int alignFlags);
 	void setScale(double newscale);
@@ -27,7 +27,7 @@ private:
 	QGraphicsPathItem *textBackgroundItem;
 	QGraphicsPathItem *textItem;
 	QString internalText;
-	double printScale;
+	double dpr;
 	double scale;
 };
 
