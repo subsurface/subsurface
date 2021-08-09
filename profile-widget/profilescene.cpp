@@ -55,34 +55,34 @@ T *ProfileScene::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, 
 PartialPressureGasItem *ProfileScene::createPPGas(int column, color_index_t color, color_index_t colorAlert,
 						    const double *thresholdSettingsMin, const double *thresholdSettingsMax)
 {
-	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column, 99, fontPrintScale);
+	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column, 99, dpr);
 	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
 	item->setColors(getColor(color, isGrayscale), getColor(colorAlert, isGrayscale));
 	return item;
 }
 
-ProfileScene::ProfileScene(double fontPrintScale, bool printMode, bool isGrayscale) :
+ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	d(nullptr),
 	dc(-1),
-	fontPrintScale(fontPrintScale),
+	dpr(dpr),
 	printMode(printMode),
 	isGrayscale(isGrayscale),
 	maxtime(-1),
 	maxdepth(-1),
 	dataModel(new DivePlotDataModel(this)),
-	profileYAxis(new DepthAxis(fontPrintScale, printMode, *this)),
-	gasYAxis(new PartialGasPressureAxis(*dataModel, fontPrintScale, printMode, *this)),
-	temperatureAxis(new TemperatureAxis(fontPrintScale, printMode, *this)),
-	timeAxis(new TimeAxis(fontPrintScale, printMode, *this)),
-	cylinderPressureAxis(new DiveCartesianAxis(fontPrintScale, printMode, *this)),
-	heartBeatAxis(new DiveCartesianAxis(fontPrintScale, printMode, *this)),
-	percentageAxis(new DiveCartesianAxis(fontPrintScale, printMode, *this)),
-	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0, fontPrintScale)),
-	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
-	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, fontPrintScale)),
-	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1, fontPrintScale)),
-	diveComputerText(new DiveTextItem(fontPrintScale)),
-	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
+	profileYAxis(new DepthAxis(dpr, printMode, *this)),
+	gasYAxis(new PartialGasPressureAxis(*dataModel, dpr, printMode, *this)),
+	temperatureAxis(new TemperatureAxis(dpr, printMode, *this)),
+	timeAxis(new TimeAxis(dpr, printMode, *this)),
+	cylinderPressureAxis(new DiveCartesianAxis(dpr, printMode, *this)),
+	heartBeatAxis(new DiveCartesianAxis(dpr, printMode, *this)),
+	percentageAxis(new DiveCartesianAxis(dpr, printMode, *this)),
+	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0, dpr)),
+	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, dpr)),
+	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, dpr)),
+	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1, dpr)),
+	diveComputerText(new DiveTextItem(dpr)),
+	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, dpr)),
 	pn2GasItem(createPPGas(DivePlotDataModel::PN2, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
 	pheGasItem(createPPGas(DivePlotDataModel::PHE, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold)),
 	po2GasItem(createPPGas(DivePlotDataModel::PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
@@ -91,10 +91,10 @@ ProfileScene::ProfileScene(double fontPrintScale, bool printMode, bool isGraysca
 	ccrsensor2GasItem(createPPGas(DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, fontPrintScale)),
-	decoModelParameters(new DiveTextItem(fontPrintScale)),
-	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, fontPrintScale)),
-	tankItem(new TankItem(*timeAxis, fontPrintScale))
+	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, dpr)),
+	decoModelParameters(new DiveTextItem(dpr)),
+	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, dpr)),
+	tankItem(new TankItem(*timeAxis, dpr))
 {
 	init_plot_info(&plotInfo);
 
@@ -167,9 +167,9 @@ ProfileScene::ProfileScene(double fontPrintScale, bool printMode, bool isGraysca
 	tankItem->setPos(itemPos.tankBar.on);
 
 	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, fontPrintScale);
+		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, dpr);
 		allTissues.append(tissueItem);
-		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i, fontPrintScale);
+		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i, dpr);
 		allPercentages.append(percentageItem);
 	}
 
@@ -637,8 +637,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		// BUT events are wanted.
 #endif
 		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix, dataModel,
-							timeAxis, profileYAxis, animSpeed,
-							fontPrintScale);
+							timeAxis, profileYAxis, animSpeed, dpr);
 		item->setZValue(2);
 		addItem(item);
 		eventItems.push_back(item);

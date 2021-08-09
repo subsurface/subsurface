@@ -36,7 +36,7 @@ class TimeAxis;
 
 class ProfileScene : public QGraphicsScene {
 public:
-	ProfileScene(double fontPrintScale, bool printMode, bool isGrayscale);
+	ProfileScene(double dpr, bool printMode, bool isGrayscale);
 	~ProfileScene();
 
 	void updateAxes(bool instant); // Update axes according to preferences
@@ -59,7 +59,7 @@ private:
 	void updateVisibility(); // Update visibility of non-interactive chart features according to preferences
 
 	friend class ProfileWidget2; // For now, give the ProfileWidget full access to the objects on the scene
-	double fontPrintScale;
+	double dpr; // Device Pixel Ratio. A DPR of one corresponds to a "standard" PC screen.
 	bool printMode;
 	bool isGrayscale;
 	int maxtime;

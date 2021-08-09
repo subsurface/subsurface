@@ -45,8 +45,8 @@
 static const double thumbnailBaseZValue = 100.0;
 #endif
 
-ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double fontPrintScale, QWidget *parent) : QGraphicsView(parent),
-	profileScene(new ProfileScene(fontPrintScale, false, false)),
+ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dpr, QWidget *parent) : QGraphicsView(parent),
+	profileScene(new ProfileScene(dpr, false, false)),
 	currentState(INIT),
 	plannerModel(plannerModelIn),
 	zoomLevel(0),

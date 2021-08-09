@@ -13,14 +13,14 @@ class DiveCartesianAxis;
 class TankItem : public QGraphicsRectItem
 {
 public:
-	explicit TankItem(const DiveCartesianAxis &axis, double fontPrintScale);
+	explicit TankItem(const DiveCartesianAxis &axis, double dpr);
 	void setData(const struct plot_info *plotInfo, const struct dive *d);
 
 private:
 	void createBar(int startTime, int stopTime, struct gasmix gas);
 	const DiveCartesianAxis &hAxis;
 	int plotEndTime;
-	double fontPrintScale;
+	double dpr;
 	QBrush air, nitrox, oxygen, trimix;
 	QList<QGraphicsRectItem *> rects;
 };

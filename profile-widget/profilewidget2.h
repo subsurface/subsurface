@@ -43,7 +43,7 @@ public:
 	};
 
 	// Pass null as plannerModel if no support for planning required
-	ProfileWidget2(DivePlannerPointsModel *plannerModel, double fontPrintScale, QWidget *parent = 0);
+	ProfileWidget2(DivePlannerPointsModel *plannerModel, double dpr, QWidget *parent = 0);
 	~ProfileWidget2();
 	void resetZoom();
 	void scale(qreal sx, qreal sy);

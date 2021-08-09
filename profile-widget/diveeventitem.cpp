@@ -17,7 +17,7 @@
 
 DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix,
 			     DivePlotDataModel *model, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
-			     int speed, double fontPrintScale, QGraphicsItem *parent) : DivePixmapItem(parent),
+			     int speed, double dpr, QGraphicsItem *parent) : DivePixmapItem(parent),
 	vAxis(vAxis),
 	hAxis(hAxis),
 	dataModel(model),
@@ -26,7 +26,7 @@ DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasm
 {
 	setFlag(ItemIgnoresTransformations);
 
-	setupPixmap(lastgasmix, fontPrintScale);
+	setupPixmap(lastgasmix, dpr);
 	setupToolTipString(lastgasmix);
 	recalculatePos(0);
 
@@ -49,7 +49,7 @@ struct event *DiveEventItem::getEventMutable()
 	return ev;
 }
 
-void DiveEventItem::setupPixmap(struct gasmix lastgasmix, double fontPrintScale)
+void DiveEventItem::setupPixmap(struct gasmix lastgasmix, double dpr)
 {
 	extern int verbose;
 	const IconMetrics& metrics = defaultIconMetrics();
@@ -65,10 +65,10 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, double fontPrintScale)
 	int sz_bigger = metrics.sz_big + metrics.sz_med;
 #endif
 #endif
-	sz_bigger = lrint(sz_bigger * fontPrintScale);
+	sz_bigger = lrint(sz_bigger * dpr);
 	int sz_pix = sz_bigger/2; // ex 20px
 	if (verbose)
-		qDebug() << __FUNCTION__ << "fontPrintScale" << fontPrintScale << "metrics" << metrics.sz_med << metrics.sz_small << "sz_bigger" << sz_bigger;
+		qDebug() << __FUNCTION__ << "DPR" << dpr << "metrics" << metrics.sz_med << metrics.sz_small << "sz_bigger" << sz_bigger;
 
 #define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(sz_pix, sz_pix, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 #define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(sz_bigger, sz_bigger, Qt::KeepAspectRatio, Qt::SmoothTransformation)
