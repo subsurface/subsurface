@@ -22,6 +22,8 @@ public:
 	const QString &text();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	static QFont getFont(double dpr, double scale);
+	static double fontHeight(double dpr, double scale);
+	double height() const;
 
 private:
 	void updateText();
