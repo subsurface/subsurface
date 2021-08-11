@@ -75,6 +75,18 @@ QFont DiveTextItem::getFont(double dpr, double scale)
 	return fnt;
 }
 
+double DiveTextItem::fontHeight(double dpr, double scale)
+{
+	QFont fnt = getFont(dpr, scale);
+	QFontMetrics fm(fnt);
+	return (double)fm.height();
+}
+
+double DiveTextItem::height() const
+{
+	return fontHeight(dpr, scale);
+}
+
 void DiveTextItem::updateText()
 {
 	if (internalText.isEmpty())
