@@ -49,6 +49,7 @@ public:
 	void setLineSize(qreal lineSize);
 	void setLine(const QLineF& line);
 	virtual void updateTicks(int animSpeed, color_index_t color = TIME_GRID);
+	double width() const;
 
 signals:
 	void sizeChanged();
@@ -57,6 +58,7 @@ protected:
 	ProfileScene &scene;
 	virtual QString textForValue(double value) const;
 	virtual QColor colorForValue(double value) const;
+	double textWidth(const QString &s) const;
 	Orientation orientation;
 	QList<DiveTextItem *> labels;
 	QList<DiveLineItem *> lines;
@@ -105,6 +107,7 @@ class PartialGasPressureAxis : public DiveCartesianAxis {
 public:
 	PartialGasPressureAxis(const DivePlotDataModel &model, double dpr, bool printMode, ProfileScene &scene);
 	void update(int animSpeed);
+	double width() const;
 private:
 	const DivePlotDataModel &model;
 };

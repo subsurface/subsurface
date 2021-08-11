@@ -59,15 +59,11 @@ const QString &DiveTextItem::text()
 	return internalText;
 }
 
-void DiveTextItem::updateText()
+QFont DiveTextItem::getFont(double dpr, double scale)
 {
-	double size;
-	if (internalText.isEmpty()) {
-		return;
-	}
-
 	QFont fnt(qApp->font());
-	if ((size = fnt.pixelSize()) > 0) {
+	double size = fnt.pixelSize();
+	if (size > 0) {
 		// set in pixels - so the scale factor may not make a difference if it's too close to 1
 		size *= scale * dpr;
 		fnt.setPixelSize(lrint(size));
@@ -76,6 +72,15 @@ void DiveTextItem::updateText()
 		size *= scale * dpr;
 		fnt.setPointSizeF(size);
 	}
+	return fnt;
+}
+
+void DiveTextItem::updateText()
+{
+	if (internalText.isEmpty())
+		return;
+
+	QFont fnt = getFont(dpr, scale);
 	QFontMetrics fm(fnt);
 
 	QPainterPath textPath;

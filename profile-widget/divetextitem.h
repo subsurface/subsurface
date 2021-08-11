@@ -3,6 +3,7 @@
 #define DIVETEXTITEM_H
 
 #include <QObject>
+#include <QFont>
 #include <QGraphicsItemGroup>
 
 class QBrush;
@@ -20,6 +21,7 @@ public:
 	void setBrush(const QBrush &brush);
 	const QString &text();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	static QFont getFont(double dpr, double scale);
 
 private:
 	void updateText();

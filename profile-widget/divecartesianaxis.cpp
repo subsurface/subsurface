@@ -8,6 +8,8 @@
 #include "profile-widget/divelineitem.h"
 #include "profile-widget/profilescene.h"
 
+static const double labelSpace = 2.0; // space between label and ticks
+
 QPen DiveCartesianAxis::gridPen() const
 {
 	QPen pen;
@@ -115,6 +117,18 @@ void emptyList(QList<T *> &list, int steps, int speed)
 		T *removedItem = list.takeLast();
 		Animations::animDelete(removedItem, speed);
 	}
+}
+
+double DiveCartesianAxis::textWidth(const QString &s) const
+{
+	QFont fnt = DiveTextItem::getFont(dpr, labelScale);
+	QFontMetrics fm(fnt);
+	return fm.size(Qt::TextSingleLine, s).width() + labelSpace * dpr;
+}
+
+double DiveCartesianAxis::width() const
+{
+	return textWidth("999");
 }
 
 void DiveCartesianAxis::updateTicks(int animSpeed, color_index_t color)
@@ -400,4 +414,9 @@ void PartialGasPressureAxis::update(int animSpeed)
 	setMaximum(pp);
 	setTickInterval(pp > 4 ? 0.5 : 0.25);
 	updateTicks(animSpeed);
+}
+
+double PartialGasPressureAxis::width() const
+{
+	return textWidth(textForValue(0.99));
 }
