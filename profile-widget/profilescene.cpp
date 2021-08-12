@@ -81,7 +81,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, dpr)),
 	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, dpr)),
 	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1, dpr)),
-	diveComputerText(new DiveTextItem(dpr)),
+	diveComputerText(new DiveTextItem(dpr, 1.0, Qt::AlignRight | Qt::AlignTop, nullptr)),
 	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, dpr)),
 	pn2GasItem(createPPGas(DivePlotDataModel::PN2, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
 	pheGasItem(createPPGas(DivePlotDataModel::PHE, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold)),
@@ -92,7 +92,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, dpr)),
-	decoModelParameters(new DiveTextItem(dpr)),
+	decoModelParameters(new DiveTextItem(dpr, 1.0, Qt::AlignHCenter | Qt::AlignBottom, nullptr)),
 	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, dpr)),
 	tankItem(new TankItem(*timeAxis, dpr))
 {
@@ -158,9 +158,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	decoModelParameters->setY(0);
 	decoModelParameters->setX(50);
 	decoModelParameters->setBrush(getColor(PRESSURE_TEXT));
-	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
 
-	diveComputerText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
 	diveComputerText->setPos(itemPos.dcLabel.on);
 

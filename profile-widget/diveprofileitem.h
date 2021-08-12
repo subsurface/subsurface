@@ -82,7 +82,7 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 private:
-	void createTextItem(int seconds, int mkelvin);
+	void createTextItem(int seconds, int mkelvin, bool last);
 };
 
 class DiveHeartrateItem : public AbstractProfilePolygonItem {
@@ -93,7 +93,7 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
-	void createTextItem(int seconds, int hr);
+	void createTextItem(int seconds, int hr, bool last);
 	QString visibilityKey;
 };
 
