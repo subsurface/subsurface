@@ -258,9 +258,6 @@ void DivePercentageItem::replot(const dive *d, bool)
 		colors.push_back(ColorScale(value, inert));
 	}
 	setPolygon(poly);
-
-	if (texts.count())
-		texts.last()->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 }
 
 QColor DivePercentageItem::ColorScale(double value, int inert)
