@@ -779,7 +779,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 			popup.addAction(tr("Collapse all"), this, &QTreeView::collapseAll);
 
 		// verify if there`s a need for collapse others
-		if (expanded_nodes > 1 && d->divetrip)
+		if (expanded_nodes > 1 && (trip || (d && d->divetrip)))
 			collapseAction = popup.addAction(tr("Collapse others"), this, &QTreeView::collapseAll);
 
 
