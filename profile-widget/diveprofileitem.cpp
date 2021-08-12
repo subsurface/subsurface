@@ -142,10 +142,9 @@ void DiveProfileItem::replot(const dive *d, bool in_planner)
 
 void DiveProfileItem::plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color)
 {
-	DiveTextItem *item = new DiveTextItem(dpr, this);
+	DiveTextItem *item = new DiveTextItem(dpr, 1.0, flags, this);
 	item->setPos(hAxis.posAtValue(entry->sec), vAxis.posAtValue(entry->depth));
 	item->setText(get_depth_string(entry->depth, true));
-	item->setAlignment(flags);
 	item->setBrush(color);
 	texts.append(item);
 }
@@ -164,10 +163,11 @@ DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveC
 void DiveHeartrateItem::replot(const dive *, bool)
 {
 	int last = -300, last_printed_hr = 0, sec = 0;
-	struct {
+	struct sec_hr {
 		int sec;
 		int hr;
 	} hist[3] = {};
+	std::vector<sec_hr> textItems;
 
 	qDeleteAll(texts);
 	texts.clear();
@@ -203,22 +203,24 @@ void DiveHeartrateItem::replot(const dive *, bool)
 		    (abs(hr - last_printed_hr) < 10))
 			continue;
 		last = sec;
-		createTextItem(sec, hr);
+		textItems.push_back({ sec, hr });
 		last_printed_hr = hr;
 	}
 	setPolygon(poly);
 
-	if (texts.count())
-		texts.last()->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	for (size_t i = 0; i < textItems.size(); ++i) {
+		auto [sec, hr] = textItems[i];
+		createTextItem(sec, hr, i == textItems.size() - 1);
+	}
 }
 
-void DiveHeartrateItem::createTextItem(int sec, int hr)
+void DiveHeartrateItem::createTextItem(int sec, int hr, bool last)
 {
-	DiveTextItem *text = new DiveTextItem(dpr, this);
-	text->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	int flags = last ? Qt::AlignLeft | Qt::AlignBottom :
+			   Qt::AlignRight | Qt::AlignBottom;
+	DiveTextItem *text = new DiveTextItem(dpr, 0.7, flags, this);
 	text->setBrush(getColor(HR_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(hr)));
-	text->setScale(0.7); // need to call this BEFORE setText()
 	text->setText(QString("%1").arg(hr));
 	texts.append(text);
 }
@@ -315,6 +317,7 @@ DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const D
 void DiveTemperatureItem::replot(const dive *, bool)
 {
 	int last = -300, last_printed_temp = 0, sec = 0, last_valid_temp = 0;
+	std::vector<std::pair<int, int>> textItems;
 
 	qDeleteAll(texts);
 	texts.clear();
@@ -339,7 +342,7 @@ void DiveTemperatureItem::replot(const dive *, bool)
 			continue;
 		last = sec;
 		if (mkelvin > 200000)
-			createTextItem(sec, mkelvin);
+			textItems.push_back({ sec, mkelvin });
 		last_printed_temp = mkelvin;
 	}
 	setPolygon(poly);
@@ -349,22 +352,25 @@ void DiveTemperatureItem::replot(const dive *, bool)
 	* than a quarter of the dive back */
 	if (last_valid_temp > 200000 &&
 	    ((abs(last_valid_temp - last_printed_temp) > 500) || ((double)last / (double)sec < 0.75))) {
-		createTextItem(sec, last_valid_temp);
+		textItems.push_back({ sec, last_valid_temp });
 	}
-	if (texts.count())
-		texts.last()->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+
+	for (size_t i = 0; i < textItems.size(); ++i) {
+		auto [sec, mkelvin] = textItems[i];
+		createTextItem(sec, mkelvin, i == textItems.size() - 1);
+	}
 }
 
-void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
+void DiveTemperatureItem::createTextItem(int sec, int mkelvin, bool last)
 {
 	temperature_t temp;
 	temp.mkelvin = mkelvin;
 
-	DiveTextItem *text = new DiveTextItem(dpr, this);
-	text->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	int flags = last ? Qt::AlignLeft | Qt::AlignBottom :
+			   Qt::AlignRight | Qt::AlignBottom;
+	DiveTextItem *text = new DiveTextItem(dpr, 0.8, flags, this);
 	text->setBrush(getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(mkelvin)));
-	text->setScale(0.8); // need to call this BEFORE setText()
 	text->setText(get_temperature_string(temp, true));
 	texts.append(text);
 }
@@ -428,11 +434,9 @@ void DiveMeanDepthItem::createTextItem()
 	int sec = entry[dataModel.rowCount()-1].sec;
 	qDeleteAll(texts);
 	texts.clear();
-	DiveTextItem *text = new DiveTextItem(dpr, this);
-	text->setAlignment(Qt::AlignRight | Qt::AlignTop);
+	DiveTextItem *text = new DiveTextItem(dpr, 0.8, Qt::AlignRight | Qt::AlignTop, this);
 	text->setBrush(getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec) + 1, vAxis.posAtValue(lastRunningSum)));
-	text->setScale(0.8); // need to call this BEFORE setText()
 	text->setText(get_depth_string(lrint(lastRunningSum), true));
 	texts.append(text);
 }
@@ -566,10 +570,9 @@ void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::Alignm
 {
 	const char *unit;
 	int pressure = get_pressure_units(mbar, &unit);
-	DiveTextItem *text = new DiveTextItem(dpr, this);
+	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + pressure_offset );
 	text->setText(QString("%1%2").arg(pressure).arg(unit));
-	text->setAlignment(align);
 	text->setBrush(getColor(PRESSURE_TEXT));
 	texts.push_back(text);
 }
@@ -577,10 +580,9 @@ void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::Alignm
 void DiveGasPressureItem::plotGasValue(int mbar, int sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double gasname_offset)
 {
 	QString gas = get_gas_string(gasmix);
-	DiveTextItem *text = new DiveTextItem(dpr, this);
+	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + gasname_offset );
 	text->setText(gas);
-	text->setAlignment(align);
 	text->setBrush(getColor(PRESSURE_TEXT));
 	texts.push_back(text);
 }

@@ -198,18 +198,17 @@ void DiveCartesianAxis::updateTicks(int animSpeed, color_index_t color)
 		} else {
 			childPos = begin - i * stepSize;
 		}
-		DiveTextItem *label = new DiveTextItem(dpr, this);
+		int alignFlags = orientation == RightToLeft || orientation == LeftToRight ? Qt::AlignBottom | Qt::AlignHCenter :
+											    Qt::AlignVCenter | Qt::AlignLeft;
+		DiveTextItem *label = new DiveTextItem(dpr, labelScale, alignFlags, this);
 		label->setText(textForValue(currValueText));
 		label->setBrush(colorForValue(currValueText));
-		label->setScale(labelScale);
 		label->setZValue(1);
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {
-			label->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
 			label->setPos(scene.sceneRect().width() + 10, m.y1() + tick_size); // position it outside of the scene;
 			Animations::moveTo(label, animSpeed,childPos , m.y1() + tick_size);
 		} else {
-			label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 			label->setPos(m.x1() - tick_size, scene.sceneRect().height() + 10);
 			Animations::moveTo(label, animSpeed, m.x1() - tick_size, childPos);
 		}

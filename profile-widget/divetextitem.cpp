@@ -8,12 +8,12 @@
 #include <QDebug>
 #include <QApplication>
 
-DiveTextItem::DiveTextItem(double dpr, QGraphicsItem *parent) : QGraphicsItemGroup(parent),
-	internalAlignFlags(Qt::AlignHCenter | Qt::AlignVCenter),
+DiveTextItem::DiveTextItem(double dpr, double scale, int alignFlags, QGraphicsItem *parent) : QGraphicsItemGroup(parent),
+	internalAlignFlags(alignFlags),
 	textBackgroundItem(new QGraphicsPathItem(this)),
 	textItem(new QGraphicsPathItem(this)),
 	dpr(dpr),
-	scale(1.0)
+	scale(scale)
 {
 	setFlag(ItemIgnoresTransformations);
 	textBackgroundItem->setBrush(QBrush(getColor(TEXT_BACKGROUND)));
@@ -27,23 +27,9 @@ void DiveTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	QGraphicsItemGroup::paint(painter, option, widget);
 }
 
-void DiveTextItem::setAlignment(int alignFlags)
-{
-	if (alignFlags != internalAlignFlags) {
-		internalAlignFlags = alignFlags;
-	}
-}
-
 void DiveTextItem::setBrush(const QBrush &b)
 {
 	textItem->setBrush(b);
-}
-
-void DiveTextItem::setScale(double newscale)
-{
-	if (scale != newscale) {
-		scale = newscale;
-	}
 }
 
 void DiveTextItem::setText(const QString &t)

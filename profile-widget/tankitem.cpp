@@ -51,11 +51,10 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 		rect->setBrush(nitrox);
 	rect->setPen(QPen(QBrush(), 0.0)); // get rid of the thick line around the rectangle
 	rects.push_back(rect);
-	DiveTextItem *label = new DiveTextItem(dpr, rect);
+	DiveTextItem *label = new DiveTextItem(dpr, 1.0, Qt::AlignBottom | Qt::AlignRight, rect);
 	label->setText(gasname(gas));
 	label->setBrush(Qt::black);
 	label->setPos(x + 1, 0);
-	label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
 #ifdef SUBSURFACE_MOBILE
 	label->setPos(x + 1, -2.5);
 #endif
