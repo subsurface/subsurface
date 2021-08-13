@@ -15,8 +15,7 @@ class DiveTextItem : public QObject, public QGraphicsItemGroup {
 	Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 public:
 	DiveTextItem(double dpr, double scale, int alignFlags, QGraphicsItem *parent);
-	void setText(const QString &text);
-	void setBrush(const QBrush &brush);
+	void set(const QString &text, const QBrush &brush);
 	const QString &text();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	static QFont getFont(double dpr, double scale);

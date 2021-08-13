@@ -157,9 +157,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	// show the deco model parameters at the top in the center
 	decoModelParameters->setY(0);
 	decoModelParameters->setX(50);
-	decoModelParameters->setBrush(getColor(PRESSURE_TEXT));
 
-	diveComputerText->setBrush(getColor(TIME_TEXT, isGrayscale));
 	diveComputerText->setPos(itemPos.dcLabel.on);
 
 	tankItem->setPos(itemPos.tankBar.on);
@@ -450,15 +448,15 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 	if (!plannerModel) {
 		if (decoMode(false) == VPMB)
-			decoModelParameters->setText(QString("VPM-B +%1").arg(prefs.vpmb_conservatism));
+			decoModelParameters->set(QString("VPM-B +%1").arg(prefs.vpmb_conservatism), getColor(PRESSURE_TEXT));
 		else
-			decoModelParameters->setText(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh));
+			decoModelParameters->set(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh), getColor(PRESSURE_TEXT));
 	} else {
 		struct diveplan &diveplan = plannerModel->getDiveplan();
 		if (decoMode(inPlanner) == VPMB)
-			decoModelParameters->setText(QString("VPM-B +%1").arg(diveplan.vpmb_conservatism));
+			decoModelParameters->set(QString("VPM-B +%1").arg(diveplan.vpmb_conservatism), getColor(PRESSURE_TEXT));
 		else
-			decoModelParameters->setText(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh));
+			decoModelParameters->set(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh), getColor(PRESSURE_TEXT));
 	}
 
 	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
@@ -660,7 +658,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	if ((nr = number_of_computers(d)) > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc + 1).arg(nr);
 #endif
-	diveComputerText->setText(dcText);
+	diveComputerText->set(dcText, getColor(TIME_TEXT, isGrayscale));
 }
 
 QImage ProfileScene::toImage(QSize size)

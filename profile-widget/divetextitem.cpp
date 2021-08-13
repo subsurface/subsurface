@@ -27,17 +27,11 @@ void DiveTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	QGraphicsItemGroup::paint(painter, option, widget);
 }
 
-void DiveTextItem::setBrush(const QBrush &b)
+void DiveTextItem::set(const QString &t, const QBrush &b)
 {
 	textItem->setBrush(b);
-}
-
-void DiveTextItem::setText(const QString &t)
-{
-	if (internalText != t) {
-		internalText = t;
-		updateText();
-	}
+	internalText = t;
+	updateText();
 }
 
 const QString &DiveTextItem::text()
