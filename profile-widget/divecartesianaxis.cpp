@@ -170,7 +170,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed, color_index_t color)
 					 begin + i * stepSize :
 					 begin - i * stepSize;
 
-		labels[i]->setText(textForValue(currValueText));
+		labels[i]->set(textForValue(currValueText), colorForValue(currValueText));
 		if (orientation == LeftToRight || orientation == RightToLeft) {
 			Animations::moveTo(labels[i], animSpeed, childPos, m.y1() + tick_size);
 		} else {
@@ -201,8 +201,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed, color_index_t color)
 		int alignFlags = orientation == RightToLeft || orientation == LeftToRight ? Qt::AlignBottom | Qt::AlignHCenter :
 											    Qt::AlignVCenter | Qt::AlignLeft;
 		DiveTextItem *label = new DiveTextItem(dpr, labelScale, alignFlags, this);
-		label->setText(textForValue(currValueText));
-		label->setBrush(colorForValue(currValueText));
+		label->set(textForValue(currValueText), colorForValue(currValueText));
 		label->setZValue(1);
 		labels.push_back(label);
 		if (orientation == RightToLeft || orientation == LeftToRight) {

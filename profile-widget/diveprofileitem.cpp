@@ -143,9 +143,8 @@ void DiveProfileItem::replot(const dive *d, bool in_planner)
 void DiveProfileItem::plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color)
 {
 	DiveTextItem *item = new DiveTextItem(dpr, 1.0, flags, this);
+	item->set(get_depth_string(entry->depth, true), color);
 	item->setPos(hAxis.posAtValue(entry->sec), vAxis.posAtValue(entry->depth));
-	item->setText(get_depth_string(entry->depth, true));
-	item->setBrush(color);
 	texts.append(item);
 }
 
@@ -219,9 +218,8 @@ void DiveHeartrateItem::createTextItem(int sec, int hr, bool last)
 	int flags = last ? Qt::AlignLeft | Qt::AlignBottom :
 			   Qt::AlignRight | Qt::AlignBottom;
 	DiveTextItem *text = new DiveTextItem(dpr, 0.7, flags, this);
-	text->setBrush(getColor(HR_TEXT));
+	text->set(QString("%1").arg(hr), getColor(HR_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(hr)));
-	text->setText(QString("%1").arg(hr));
 	texts.append(text);
 }
 
@@ -369,9 +367,8 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin, bool last)
 	int flags = last ? Qt::AlignLeft | Qt::AlignBottom :
 			   Qt::AlignRight | Qt::AlignBottom;
 	DiveTextItem *text = new DiveTextItem(dpr, 0.8, flags, this);
-	text->setBrush(getColor(TEMP_TEXT));
+	text->set(get_temperature_string(temp, true), getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(mkelvin)));
-	text->setText(get_temperature_string(temp, true));
 	texts.append(text);
 }
 
@@ -435,9 +432,8 @@ void DiveMeanDepthItem::createTextItem()
 	qDeleteAll(texts);
 	texts.clear();
 	DiveTextItem *text = new DiveTextItem(dpr, 0.8, Qt::AlignRight | Qt::AlignTop, this);
-	text->setBrush(getColor(TEMP_TEXT));
+	text->set(get_depth_string(lrint(lastRunningSum), true), getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec) + 1, vAxis.posAtValue(lastRunningSum)));
-	text->setText(get_depth_string(lrint(lastRunningSum), true));
 	texts.append(text);
 }
 
@@ -571,9 +567,8 @@ void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::Alignm
 	const char *unit;
 	int pressure = get_pressure_units(mbar, &unit);
 	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
+	text->set(QString("%1%2").arg(pressure).arg(unit), getColor(PRESSURE_TEXT));
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + pressure_offset );
-	text->setText(QString("%1%2").arg(pressure).arg(unit));
-	text->setBrush(getColor(PRESSURE_TEXT));
 	texts.push_back(text);
 }
 
@@ -581,9 +576,8 @@ void DiveGasPressureItem::plotGasValue(int mbar, int sec, struct gasmix gasmix, 
 {
 	QString gas = get_gas_string(gasmix);
 	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
+	text->set(gas, getColor(PRESSURE_TEXT));
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + gasname_offset );
-	text->setText(gas);
-	text->setBrush(getColor(PRESSURE_TEXT));
 	texts.push_back(text);
 }
 
