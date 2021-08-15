@@ -1,3 +1,4 @@
+- avoid potential crash when switching divelogs
 - add GPS fix downloaded from a dive comuter to existing dive site
 - fix broken curser left/right shortcut for showing multiple dive computers
 - allow editing the profile for dives imported without samples (via CSV)
