@@ -2639,6 +2639,12 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 
 	/* we take the first dive site, unless it's empty */
 	*site = a->dive_site && !dive_site_is_empty(a->dive_site) ? a->dive_site : b->dive_site;
+	if (!dive_site_has_gps_location(*site) && dive_site_has_gps_location(b->dive_site)) {
+		/* we picked the first dive site and that didn't have GPS data, but the new dive has
+		 * GPS data (that could be a download from a GPS enabled dive computer).
+		 * Keep the dive site, but add the GPS data */
+		(*site)->location = b->dive_site->location;
+	}
 	fixup_dive(res);
 	free(cylinders_map_a);
 	free(cylinders_map_b);
