@@ -1078,7 +1078,11 @@ void ProfileWidget2::setEmptyState()
 	hideAll(allPercentages);
 	hideAll(handles);
 #endif
-	hideAll(eventItems);
+	// the events will have connected slots which can fire after
+	// the dive and its data have been deleted - so explictly delete
+	// the DiveEventItems
+	qDeleteAll(eventItems);
+	eventItems.clear();
 	hideAll(gases);
 }
 
