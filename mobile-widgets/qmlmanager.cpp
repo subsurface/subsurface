@@ -692,7 +692,7 @@ bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
 	QEventLoop loop;
 	connect(csa, &CloudStorageAuthenticate::finishedAuthenticate, &loop, &QEventLoop::quit);
 	connect(&myTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
-	myTimer.start(5000);
+	myTimer.start(prefs.cloud_timeout * 1000);
 	loop.exec();
 	if (!myTimer.isActive()) {
 		// got no response from the server
