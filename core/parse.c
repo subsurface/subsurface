@@ -203,8 +203,10 @@ void dc_settings_start(struct parser_state *state)
 
 void dc_settings_end(struct parser_state *state)
 {
-	create_device_node(state->devices, state->cur_settings.dc.model, state->cur_settings.dc.deviceid, state->cur_settings.dc.serial_nr,
-			   state->cur_settings.dc.firmware, state->cur_settings.dc.nickname);
+	create_device_node(state->devices,
+		state->cur_settings.dc.model,
+		state->cur_settings.dc.serial_nr,
+		state->cur_settings.dc.nickname);
 	reset_dc_settings(state);
 }
 

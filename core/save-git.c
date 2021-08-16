@@ -853,19 +853,15 @@ static void save_one_device(struct membuffer *b, const struct device *d)
 	const char *model = device_get_model(d);
 	const char *nickname = device_get_nickname(d);
 	const char *serial = device_get_serial(d);
-	const char *firmware = device_get_firmware(d);
-	if (!empty_string(nickname) && !strcmp(model, nickname))
-		nickname = NULL;
+
 	if (empty_string(serial)) serial = NULL;
-	if (empty_string(firmware)) firmware = NULL;
 	if (empty_string(nickname)) nickname = NULL;
-	if (!nickname && !serial && !firmware)
+	if (!nickname || !serial)
 		return;
 
 	show_utf8(b, "divecomputerid ", model, "");
-	put_format(b, " deviceid=%08x", device_get_id(d));
+	put_format(b, " deviceid=%08x", calculate_string_hash(serial));
 	show_utf8(b, " serial=", serial, "");
-	show_utf8(b, " firmware=", firmware, "");
 	show_utf8(b, " nickname=", nickname, "");
 	put_string(b, "\n");
 }

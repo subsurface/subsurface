@@ -725,8 +725,7 @@ static void parse_dc_deviceid(char *line, struct membuffer *str, struct git_pars
 {
 	UNUSED(str);
 	int id = get_hex(line);
-	set_dc_deviceid(state->active_dc, id, &device_table); // prefer already known serial/firmware over those from the loaded log
-	set_dc_deviceid(state->active_dc, id, state->devices);
+	UNUSED(id);	// legacy
 }
 
 static void parse_dc_diveid(char *line, struct membuffer *str, struct git_parser_state *state)
@@ -974,16 +973,16 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
 {
 	struct divecomputerid *cid = _cid;
 
-	if (!strcmp(key, "deviceid")) {
-		cid->deviceid = get_hex(value);
+	// Ignored legacy fields
+	if (!strcmp(key, "firmware"))
 		return;
-	}
+	if (!strcmp(key, "deviceid"))
+		return;
+
+	// Serial number and nickname matter
 	if (!strcmp(key, "serial")) {
 		cid->serial = value;
-		return;
-	}
-	if (!strcmp(key, "firmware")) {
-		cid->firmware = value;
+		cid->deviceid = calculate_string_hash(value);
 		return;
 	}
 	if (!strcmp(key, "nickname")) {
@@ -1014,7 +1013,7 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, str
 			break;
 		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, str);
 	}
-	create_device_node(state->devices, id.model, id.deviceid, id.serial, id.firmware, id.nickname);
+	create_device_node(state->devices, id.model, id.serial, id.nickname);
 }
 
 static void parse_picture_filename(char *line, struct membuffer *str, struct git_parser_state *state)

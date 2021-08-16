@@ -1112,7 +1112,6 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		smtkdive->notes = smtk_concat_str(smtkdive->notes, "\n", "%s", col[coln(REMARKS)]->bind_ptr);
 
 		record_dive_to_table(smtkdive, divetable);
-		add_devices_of_dive(smtkdive, devices);
 		device_data_free(devdata);
 	}
 	mdb_free_tabledef(mdb_table);

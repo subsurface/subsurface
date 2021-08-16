@@ -16,10 +16,7 @@ struct dive_table;
 // global device table
 extern struct device_table device_table;
 
-extern void set_dc_deviceid(struct divecomputer *dc, unsigned int deviceid, const struct device_table *table);
-
-extern void add_devices_of_dive(const struct dive *dive, struct device_table *table);
-extern void create_device_node(struct device_table *table, const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname);
+extern int create_device_node(struct device_table *table, const char *model, const char *serial, const char *nickname);
 extern int nr_devices(const struct device_table *table);
 extern const struct device *get_device(const struct device_table *table, int i);
 extern struct device *get_device_mutable(struct device_table *table, int i);
@@ -35,9 +32,7 @@ extern void remove_from_device_table(struct device_table *table, int idx);
 
 // struct device accessors for C-code. The returned strings are not stable!
 const char *device_get_model(const struct device *dev);
-const uint32_t device_get_id(const struct device *dev);
 const char *device_get_serial(const struct device *dev);
-const char *device_get_firmware(const struct device *dev);
 const char *device_get_nickname(const struct device *dev);
 
 // for C code that needs to alloc/free a device table. (Let's try to get rid of those)
@@ -56,16 +51,15 @@ extern void free_device_table(struct device_table *devices);
 struct device {
 	bool operator==(const device &a) const; // TODO: remove, once devices are integrated in the undo system
 	bool operator<(const device &a) const;
-	void showchanges(const std::string &n, const std::string &s, const std::string &f) const;
+	void showchanges(const std::string &n) const;
 	std::string model;
-	uint32_t deviceId;
 	std::string serialNumber;
-	std::string firmware;
 	std::string nickName;
+	uint32_t deviceId;	// Always the string hash of the serialNumber
 };
 
 struct device_table {
-	// Keep the dive computers in a vector sorted by (model, deviceId)
+	// Keep the dive computers in a vector sorted by (model, serial)
 	std::vector<device> devices;
 };
 
