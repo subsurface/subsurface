@@ -22,6 +22,7 @@ Kirigami.Page {
 	property alias divemasterIndex: detailsEdit.divemasterIndex
 	property alias divemasterText: detailsEdit.divemasterText
 	property alias divemasterModel: detailsEdit.divemasterModel
+	property alias tagText: detailsEdit.tagText
 	property alias depth: detailsEdit.depthText
 	property alias duration: detailsEdit.durationText
 	property alias location: detailsEdit.locationText
@@ -353,6 +354,7 @@ Kirigami.Page {
 		suitIndex = manager.suitList.indexOf(modelData.suit)
 		buddyText = modelData.buddy;
 		divemasterText = modelData.diveMaster
+		tagText = modelData.tags
 		notes = modelData.notes
 		if (modelData.singleWeight) {
 			// we have only one weight, go ahead, have fun and edit it

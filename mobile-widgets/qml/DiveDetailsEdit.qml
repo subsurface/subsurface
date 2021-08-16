@@ -22,6 +22,7 @@ Item {
 	property alias buddyText: buddyBox.editText
 	property alias divemasterIndex: divemasterBox.currentIndex
 	property alias divemasterText: divemasterBox.editText
+	property alias tagText: txtTag.text
 	property alias cylinderIndex0: cylinderBox0.currentIndex
 	property alias cylinderIndex1: cylinderBox1.currentIndex
 	property alias cylinderIndex2: cylinderBox2.currentIndex
@@ -118,7 +119,7 @@ Item {
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.number, detailsEdit.dateText, locationBox.editText, detailsEdit.gpsText, detailsEdit.durationText,
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText,
-				      suitBox.editText, buddyBox.editText, divemasterBox.editText,
+				      suitBox.editText, buddyBox.editText, divemasterBox.editText, detailsEdit.tagText,
 				      detailsEdit.weightText, detailsEdit.notesText, startpressure,
 				      endpressure, usedGas, usedCyl,
 				      detailsEdit.rating,
@@ -331,7 +332,19 @@ Item {
 						       manager.divemasterList : null
 				}
 			}
-
+			RowLayout {
+				width: Kirigami.Units.gridUnit * 20
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Tags:")
+				}
+				SsrfTextField {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 16
+					id: txtTag
+					flickable: detailsEditFlickable
+				}
+			}
 
 			RowLayout {
 				width: Kirigami.Units.gridUnit * 16
