@@ -583,29 +583,23 @@ static void save_one_device(struct membuffer *b, const struct device *d)
 	const char *model = device_get_model(d);
 	const char *nickname = device_get_nickname(d);
 	const char *serial_nr = device_get_serial(d);
-	const char *firmware = device_get_firmware(d);
 
 	/* Nicknames that are empty or the same as the device model are not interesting */
 	if (empty_string(nickname) || !strcmp(model, nickname))
-			nickname = NULL;
+		nickname = NULL;
 
 	/* Serial numbers that are empty are not interesting */
 	if (empty_string(serial_nr))
 		serial_nr = NULL;
 
-	/* Firmware strings that are empty are not interesting */
-	if (empty_string(firmware))
-		firmware = NULL;
-
 	/* Do we have anything interesting about this dive computer to save? */
-	if (!serial_nr && !nickname && !firmware)
+	if (!serial_nr || !nickname)
 		return;
 
 	put_format(b, "<divecomputerid");
 	show_utf8(b, model, " model='", "'", 1);
-	put_format(b, " deviceid='%08x'", device_get_id(d));
+	put_format(b, " deviceid='%08x'", calculate_string_hash(serial_nr));
 	show_utf8(b, serial_nr, " serial='", "'", 1);
-	show_utf8(b, firmware, " firmware='", "'", 1);
 	show_utf8(b, nickname, " nickname='", "'", 1);
 	put_format(b, "/>\n");
 }

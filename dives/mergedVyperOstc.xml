@@ -1,7 +1,5 @@
 <divelog program='subsurface' version='3'>
 <settings>
-<divecomputerid model='Suunto Vyper Air' deviceid='11223344' serial='99999999'/>
-<divecomputerid model='Heinrichs Weikamp OSTC Sport' deviceid='abcdef00' serial='10000' firmware='10.31'/>
 </settings>
 <divesites>
 </divesites>
@@ -12,7 +10,7 @@
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='31.0%' />
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' />
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' />
-  <divecomputer model='Heinrichs Weikamp OSTC Sport' deviceid='abcdef00' diveid='b4ffa0ce'>
+  <divecomputer model='Heinrichs Weikamp OSTC Sport' deviceid='8e8f3f68' diveid='b4ffa0ce'>
   <depth max='26.32 m' mean='16.594 m' />
   <temperature water='26.0 C' />
   <surface pressure='1.008 bar' />
@@ -109,7 +107,7 @@
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='31.0%' />
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' />
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' />
-  <divecomputer model='Heinrichs Weikamp OSTC Sport' deviceid='ae480b5b' diveid='7ab00781'>
+  <divecomputer model='Heinrichs Weikamp OSTC Sport' deviceid='8e8f3f68' diveid='7ab00781'>
   <depth max='27.44 m' mean='14.427 m' />
   <temperature water='26.2 C' />
   <surface pressure='1.009 bar' />
@@ -196,7 +194,7 @@
 </dive>
 <dive number='1' sac='9.026 l/min' otu='54' cns='17%' date='2017-02-03' time='06:59:41' duration='71:40 min'>
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='32.0%' />
-  <divecomputer model='Suunto Vyper Air' deviceid='11223344' diveid='c51cb31b'>
+  <divecomputer model='Suunto Vyper Air' deviceid='f95a40f1' diveid='c51cb31b'>
   <depth max='26.72 m' mean='16.837 m' />
   <temperature air='28.0 C' water='27.0 C' />
   <extradata key='Serial' value='99312861' />
@@ -422,7 +420,7 @@
 </dive>
 <dive number='2' sac='9.173 l/min' otu='41' cns='17%' date='2017-02-03' time='10:25:16' duration='65:40 min'>
   <cylinder size='11.094 l' workpressure='206.843 bar' description='AL80' o2='32.0%' />
-  <divecomputer model='Suunto Vyper Air' deviceid='20993833' diveid='5372ae57'>
+  <divecomputer model='Suunto Vyper Air' deviceid='f95a40f1' diveid='5372ae57'>
   <depth max='27.8 m' mean='14.594 m' />
   <temperature air='29.0 C' water='27.0 C' />
   <extradata key='Serial' value='99312861' />

@@ -548,7 +548,7 @@ static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int 
 	return csum[0];
 }
 
-static uint32_t calculate_string_hash(const char *str)
+uint32_t calculate_string_hash(const char *str)
 {
 	return calculate_diveid((const unsigned char *)str, strlen(str));
 }
@@ -556,10 +556,7 @@ static uint32_t calculate_string_hash(const char *str)
 /*
  * Set the serial number.
  *
- * This also sets the device ID by looking for existing devices that
- * have that serial number.
- *
- * If no existing device ID exists, create a new by hashing the serial
+ * This also sets the device ID by hashing the serial
  * number string.
  */
 static void set_dc_serial(struct divecomputer *dc, const char *serial, const device_data_t *devdata)
@@ -567,14 +564,7 @@ static void set_dc_serial(struct divecomputer *dc, const char *serial, const dev
 	const struct device *device;
 
 	dc->serial = strdup(serial);
-	if ((device = get_device_for_dc(&device_table, dc)) != NULL)	// prefer already known ID over downloaded ID.
-		dc->deviceid = device_get_id(device);
-
-	if (!dc->deviceid && (device = get_device_for_dc(devdata->devices, dc)) != NULL)
-		dc->deviceid = device_get_id(device);
-
-	if (!dc->deviceid)
-		dc->deviceid = calculate_string_hash(serial);
+	dc->deviceid = calculate_string_hash(serial);
 }
 
 static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str)
@@ -937,7 +927,6 @@ static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event
 			 (devinfo->firmware >> 8) & 0xff,
 			 (devinfo->firmware >> 0) & 0xff);
 	}
-	create_device_node(devdata->devices, devdata->model, devdata->deviceid, serial_nr, firmware, "");
 
 	return serial;
 }

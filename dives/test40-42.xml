@@ -9,7 +9,7 @@
 <dive number='1' otu='9' cns='5%' date='2013-10-01' time='10:34:00' duration='45:00 min'>
   <buddy>Dirk</buddy>
   <suit>wet, 5mm</suit>
-  <divecomputer model='csv' last-manual-time='45:00 min' deviceid='ffffffff'>
+  <divecomputer model='csv' last-manual-time='45:00 min'>
   <depth max='18.0 m' mean='16.0 m' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='2:00 min' depth='18.0 m' />
@@ -22,7 +22,7 @@
 <dive number='2' otu='5' cns='7%' date='2013-10-01' time='12:13:00' duration='41:00 min'>
   <buddy>Linus</buddy>
   <suit>wet, shorty, 3mm</suit>
-  <divecomputer model='csv' last-manual-time='41:00 min' deviceid='ffffffff'>
+  <divecomputer model='csv' last-manual-time='41:00 min'>
   <depth max='16.2 m' mean='13.5 m' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='1:48 min' depth='16.2 m' />
@@ -35,7 +35,7 @@
 <dive number='3' date='2014-10-01' time='10:02:00' duration='48:00 min'>
   <buddy>Tomaz</buddy>
   <suit>none</suit>
-  <divecomputer model='csv' last-manual-time='48:00 min' deviceid='ffffffff'>
+  <divecomputer model='csv' last-manual-time='48:00 min'>
   <depth max='13.3 m' mean='11.5 m' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='1:29 min' depth='13.3 m' />
@@ -48,7 +48,7 @@
 <dive number='4' otu='13' cns='5%' date='2014-10-01' time='14:19:00' duration='34:00 min'>
   <buddy>Don</buddy>
   <suit>dry, Whites Fusion</suit>
-  <divecomputer model='csv' last-manual-time='34:00 min' deviceid='ffffffff'>
+  <divecomputer model='csv' last-manual-time='34:00 min'>
   <depth max='24.9 m' mean='20.1 m' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='2:46 min' depth='24.9 m' />
@@ -775,7 +775,7 @@
   <notes>CCR dive</notes>
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Oxy2' o2='100.0%' start='190.0 bar' end='130.0 bar' use='oxygen' />
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Dil2' start='185.0 bar' end='130.0 bar' use='diluent' />
-  <divecomputer model='Heinrichs Weikamp OSTC 3' deviceid='01234567' diveid='76543210' dctype='CCR'>
+  <divecomputer model='Heinrichs Weikamp OSTC 3' diveid='76543210' dctype='CCR'>
   <depth max='38.99 m' mean='17.72 m' />
   <temperature water='4.3 C' />
   <surface pressure='1.02 bar' />
@@ -3272,7 +3272,7 @@
   <notes>CCR dive</notes>
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Oxy2' o2='100.0%' start='190.0 bar' end='130.0 bar' use='oxygen' />
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Dil2' start='185.0 bar' end='130.0 bar' use='diluent' />
-  <divecomputer model='Heinrichs Weikamp OSTC 3' deviceid='01234567' diveid='76543210' dctype='CCR'>
+  <divecomputer model='Heinrichs Weikamp OSTC 3' diveid='76543210' dctype='CCR'>
   <depth max='38.99 m' mean='17.72 m' />
   <temperature water='4.3 C' />
   <surface pressure='1.02 bar' />

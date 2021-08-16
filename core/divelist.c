@@ -807,13 +807,6 @@ void delete_single_dive(int idx)
 
 void process_loaded_dives()
 {
-	int i;
-	struct dive *dive;
-
-	/* Register dive computer nick names. */
-	for_each_dive(i, dive)
-		add_devices_of_dive(dive, &device_table);
-
 	sort_dive_table(&dive_table);
 	sort_trip_table(&trip_table);
 
@@ -1170,17 +1163,6 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 		const struct device *dev = get_device(import_device_table, i);
 		if (!device_exists(&device_table, dev))
 			add_to_device_table(devices_to_add, dev);
-	}
-
-	/* check if we need a nickname for the divecomputer for newly downloaded dives;
-	 * since we know they all came from the same divecomputer we just check for the
-	 * first one */
-	if (flags & IMPORT_IS_DOWNLOADED) {
-		add_devices_of_dive(import_table->dives[0], devices_to_add);
-	} else {
-		/* they aren't downloaded, so record / check all new ones */
-		for (i = 0; i < import_table->nr; i++)
-			add_devices_of_dive(import_table->dives[i], devices_to_add);
 	}
 
 	/* Sort the table of dives to be imported and combine mergable dives */

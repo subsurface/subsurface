@@ -5,7 +5,7 @@
 </divesites>
 <dives>
 <dive number='2' date='2012-10-01' time='06:22:00' duration='16:25 min'>
-  <divecomputer model='Seabear H3' deviceid='ffffffff' dctype='CCR'>
+  <divecomputer model='Seabear H3' dctype='CCR'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <extradata key='Firmware version' value='1.31' />
@@ -212,7 +212,7 @@
   </divecomputer>
 </dive>
 <dive number='3' otu='14' cns='8%' date='2012-10-01' time='06:49:00' duration='16:25 min'>
-  <divecomputer model='Seabear H3' deviceid='ffffffff'>
+  <divecomputer model='Seabear H3'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <extradata key='Firmware version' value='1.31' />
@@ -419,7 +419,7 @@
   </divecomputer>
 </dive>
 <dive number='4' otu='14' cns='16%' date='2012-10-01' time='07:07:00' duration='16:17 min'>
-  <divecomputer model='Seabear H3' deviceid='ffffffff' dctype='Freedive'>
+  <divecomputer model='Seabear H3' dctype='Freedive'>
   <depth max='70.1 m' mean='33.197 m' />
   <temperature water='25.0 C' />
   <extradata key='Firmware version' value='1.31' />
@@ -1352,7 +1352,7 @@
   </divecomputer>
 </dive>
 <dive number='5' otu='14' cns='24%' date='2012-10-01' time='07:24:00' duration='16:25 min'>
-  <divecomputer model='Seabear H3' deviceid='ffffffff'>
+  <divecomputer model='Seabear H3'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <extradata key='Firmware version' value='1.31' />
@@ -1560,7 +1560,7 @@
 <dive number='1' otu='16' cns='5%' date='2012-10-01' time='06:02:00' duration='16:25 min'>
   <cylinder description='oxygen' o2='100.0%' use='oxygen' />
   <cylinder description='diluent' use='diluent' />
-  <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='CCR' no_o2sensors='3'>
+  <divecomputer model='Seabear T1' dctype='CCR' no_o2sensors='3'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <extradata key='Firmware version' value='1.31' />
@@ -1767,7 +1767,7 @@
   </divecomputer>
 </dive>
 <dive number='2' cns='5%' date='2012-10-01' time='06:22:00' duration='16:25 min'>
-  <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='CCR'>
+  <divecomputer model='Seabear T1' dctype='CCR'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <extradata key='Firmware version' value='1.31' />
@@ -1974,7 +1974,7 @@
   </divecomputer>
 </dive>
 <dive number='3' otu='14' cns='12%' date='2012-10-01' time='06:49:00' duration='16:25 min'>
-  <divecomputer model='Seabear T1' deviceid='ffffffff'>
+  <divecomputer model='Seabear T1'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <extradata key='Firmware version' value='1.31' />
@@ -2181,7 +2181,7 @@
   </divecomputer>
 </dive>
 <dive number='4' otu='14' cns='20%' date='2012-10-01' time='07:07:00' duration='16:17 min'>
-  <divecomputer model='Seabear T1' deviceid='ffffffff' dctype='Freedive'>
+  <divecomputer model='Seabear T1' dctype='Freedive'>
   <depth max='70.1 m' mean='33.197 m' />
   <temperature water='24.0 C' />
   <extradata key='Firmware version' value='1.31' />
@@ -3114,7 +3114,7 @@
   </divecomputer>
 </dive>
 <dive number='5' otu='14' cns='28%' date='2012-10-01' time='07:24:00' duration='16:25 min'>
-  <divecomputer model='Seabear T1' deviceid='ffffffff'>
+  <divecomputer model='Seabear T1'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
   <extradata key='Firmware version' value='1.31' />
