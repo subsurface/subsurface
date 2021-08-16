@@ -48,6 +48,7 @@
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefUnit.h"
 #include "core/trip.h"
+#include "core/tag.h"
 #include "backend-shared/exportfuncs.h"
 #include "core/worldmap-save.h"
 #include "core/uploadDiveLogsDE.h"
@@ -1078,7 +1079,7 @@ bool QMLManager::checkDepth(dive *d, QString depth)
 
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString number, QString date, QString location, QString gps, QString duration, QString depth,
-			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
+			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString tags, QString weight, QString notes,
 			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state)
 {
 	struct dive *orig = get_dive_by_uniq_id(diveId.toInt());
@@ -1100,6 +1101,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				      QStringLiteral("suit    :'%1'\n").arg(suit) <<
 				      QStringLiteral("buddy   :'%1'\n").arg(buddy) <<
 				      QStringLiteral("diveMstr:'%1'\n").arg(diveMaster) <<
+				      QStringLiteral("tags    :'%1'\n").arg(tags) <<
 				      QStringLiteral("weight  :'%1'\n").arg(weight) <<
 				      QStringLiteral("state   :'%1'\n").arg(state);
 	}
@@ -1234,6 +1236,24 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		diveChanged = true;
 		free(d->divemaster);
 		d->divemaster = copy_qstring(diveMaster);
+	}
+	// normalize the tag list we have and the one we get from the UI
+	// try hard to deal with accidental white space issues
+	QStringList existingTagList = get_taglist_string(d->tag_list).split(",", QString::SkipEmptyParts);
+	QStringList newTagList = tags.split(",", QString::SkipEmptyParts);
+	QStringList newCleanTagList;
+	for (QString s: newTagList) {
+		if (!s.simplified().isEmpty())
+			newCleanTagList << s.simplified();
+	}
+	newCleanTagList.sort();
+	existingTagList.sort();
+	if (newCleanTagList.join(",") != existingTagList.join(",")) {
+		diveChanged = true;
+		taglist_free(d->tag_list);
+		d->tag_list = nullptr;
+		for (QString tag: newCleanTagList)
+			taglist_add_tag(&d->tag_list, qPrintable(tag));
 	}
 	if (d->rating != rating) {
 		diveChanged = true;
