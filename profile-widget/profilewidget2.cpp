@@ -164,6 +164,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, QWidget *
 	connect(&diveListNotifier, &DiveListNotifier::eventsChanged, this, &ProfileWidget2::profileChanged);
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &ProfileWidget2::pictureOffsetChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &ProfileWidget2::divesChanged);
+	connect(&diveListNotifier, &DiveListNotifier::deviceEdited, this, &ProfileWidget2::replot);
 #endif // SUBSURFACE_MOBILE
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
@@ -1451,14 +1452,8 @@ void ProfileWidget2::renameCurrentDC()
 	QString newName = QInputDialog::getText(this, tr("Edit nickname"),
 						tr("Set new nickname for %1 (serial %2):").arg(current_dc->model).arg(current_dc->serial),
 						QLineEdit::Normal, get_dc_nickname(current_dc), &ok);
-	if (ok) {
-		// this needs to happen using the Undo code
-		// note that an empty nickname is valid - it simply removes the nickname for this dive computer
-		create_device_node(&device_table, current_dc->model, current_dc->serial, qPrintable(newName));
-
-		// now trigger the redraw of the profile with the updated nickname
-	}
-
+	if (ok)
+		Command::editDeviceNickname(current_dc, newName);
 }
 
 void ProfileWidget2::hideEvents(DiveEventItem *item)
