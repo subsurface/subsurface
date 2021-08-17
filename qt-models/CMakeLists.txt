@@ -37,8 +37,6 @@ set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 	divecomputerextradatamodel.cpp
 	divecomputerextradatamodel.h
-	divecomputermodel.cpp
-	divecomputermodel.h
 	divepicturemodel.cpp
 	divepicturemodel.h
 	divesiteimportmodel.cpp
