@@ -53,7 +53,6 @@ set (SUBSURFACE_UI
 	tab-widgets/TabDiveExtraInfo.ui
 	tab-widgets/TabDiveEquipment.ui
 	tab-widgets/TabDiveSite.ui
-	tab-widgets/TabDiveComputer.ui
 )
 
 # the interface, in C++
@@ -124,8 +123,6 @@ set(SUBSURFACE_INTERFACE
 	tab-widgets/TabDiveStatistics.h
 	tab-widgets/TabDiveSite.cpp
 	tab-widgets/TabDiveSite.h
-	tab-widgets/TabDiveComputer.cpp
-	tab-widgets/TabDiveComputer.h
 	tab-widgets/maintab.cpp
 	tab-widgets/maintab.h
 	tableview.cpp

@@ -31,7 +31,6 @@
 #include "TabDivePhotos.h"
 #include "TabDiveStatistics.h"
 #include "TabDiveSite.h"
-#include "TabDiveComputer.h"
 
 #include <QCompleter>
 #include <QScrollBar>
@@ -72,8 +71,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Extra Info"));
 	extraWidgets << new TabDiveSite(this);
 	ui.tabWidget->addTab(extraWidgets.last(), tr("Dive sites"));
-	extraWidgets << new TabDiveComputer(this);
-	ui.tabWidget->addTab(extraWidgets.last(), tr("Device names"));
 
 	// make sure we know if this is a light or dark mode
 	isDark = paletteIsDark(palette());
