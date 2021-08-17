@@ -12,24 +12,9 @@ struct device;
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
 
-class RemoveDevice final : public Base {
-public:
-	RemoveDevice(int index);
-private:
-	// for undo
-	device dev;
-
-	// for redo
-	int index;
-
-	void undo() override;
-	void redo() override;
-	bool workToBeDone() override;
-};
-
 class EditDeviceNickname final : public Base {
 public:
-	EditDeviceNickname(int index, const QString &nickname);
+	EditDeviceNickname(const divecomputer *dc, const QString &nickname);
 private:
 	// for redo and undo
 	int index;

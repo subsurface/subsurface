@@ -132,9 +132,7 @@ signals:
 	void picturesAdded(dive *d, QVector<PictureObj> pics);
 
 	// Devices related signals
-	void deviceAdded(int index);
-	void deviceDeleted(int index);
-	void deviceEdited(int index);
+	void deviceEdited();
 
 	// Filter related signals
 	void filterPresetAdded(int index);
