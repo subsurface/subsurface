@@ -553,20 +553,6 @@ uint32_t calculate_string_hash(const char *str)
 	return calculate_diveid((const unsigned char *)str, strlen(str));
 }
 
-/*
- * Set the serial number.
- *
- * This also sets the device ID by hashing the serial
- * number string.
- */
-static void set_dc_serial(struct divecomputer *dc, const char *serial, const device_data_t *devdata)
-{
-	const struct device *device;
-
-	dc->serial = strdup(serial);
-	dc->deviceid = calculate_string_hash(serial);
-}
-
 static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str)
 {
 	// Our dive ID is the string hash of the "Dive ID" string
@@ -575,15 +561,10 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 			dive->dc.diveid = calculate_string_hash(str->value);
 		return;
 	}
+
+	// This will pick up serial number and firmware data
 	add_extra_data(&dive->dc, str->desc, str->value);
-	if (!strcmp(str->desc, "Serial")) {
-		set_dc_serial(&dive->dc, str->value, devdata);
-		return;
-	}
-	if (!strcmp(str->desc, "FW Version")) {
-		dive->dc.fw_version = strdup(str->value);
-		return;
-	}
+
 	/* GPS data? */
 	if (!strncmp(str->desc, "GPS", 3)) {
 		char *line = (char *) str->value;

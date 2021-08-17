@@ -474,16 +474,22 @@ void remove_event_from_dc(struct divecomputer *dc, struct event *event)
 void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 {
 	struct extra_data **ed = &dc->extra_data;
+	const char *newval = strdup(value);
 
-	if (!strcasecmp(key, "Serial"))
+	if (!strcasecmp(key, "Serial")) {
 		dc->deviceid = calculate_string_hash(value);
+		dc->serial = newval;
+	}
+	if (!strcmp(key, "FW Version")) {
+		dc->fw_version = newval;
+	}
 
 	while (*ed)
 		ed = &(*ed)->next;
 	*ed = malloc(sizeof(struct extra_data));
 	if (*ed) {
 		(*ed)->key = strdup(key);
-		(*ed)->value = strdup(value);
+		(*ed)->value = newval;
 		(*ed)->next = NULL;
 	}
 }
