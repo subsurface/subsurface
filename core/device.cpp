@@ -44,6 +44,18 @@ extern "C" const struct device *get_device_for_dc(const struct device_table *tab
 	return it != dcs.end() && same_device(*it, dev) ? &*it : NULL;
 }
 
+extern "C" int get_or_add_device_for_dc(struct device_table *table, const struct divecomputer *dc)
+{
+	if (!dc->model || !dc->serial)
+		return -1;
+	const struct device *dev = get_device_for_dc(table, dc);
+	if (dev) {
+		auto it = std::lower_bound(table->devices.begin(), table->devices.end(), *dev);
+		return it - table->devices.begin();
+	}
+	return create_device_node(table, dc->model, dc->serial, "");
+}
+
 extern "C" bool device_exists(const struct device_table *device_table, const struct device *dev)
 {
 	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
@@ -71,16 +83,9 @@ static int addDC(std::vector<device> &dcs, const std::string &m, const std::stri
 		if (verbose)
 			it->showchanges(n);
 		// Update any non-existent fields from the old entry
-		if (n.empty()) {
-			dcs.erase(it);
-			return -1;
-		}
 		it->nickName = n;
 		return it - dcs.begin();
 	} else {
-		if (n.empty())
-			return -1;
-
 		dev.deviceId = calculate_string_hash(s.c_str());
 		dcs.insert(it, dev);
 		return it - dcs.begin();
