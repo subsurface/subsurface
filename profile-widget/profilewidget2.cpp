@@ -1304,8 +1304,9 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	// figure out if we are ontop of the dive computer name in the profile
 	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
 	if (isDiveTextItem(sceneItem, diveComputerText)) {
-		if (dc == 0 && number_of_computers(d) == 1)
-			// nothing to do, can't delete or reorder
+		const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
+		if (!currentdc->deviceid && dc == 0 && number_of_computers(d) == 1)
+			// nothing to do, can't rename, delete or reorder
 			return;
 		// create menu to show when right clicking on dive computer name
 		if (dc > 0)
@@ -1314,6 +1315,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			m.addAction(tr("Delete this dive computer"), this, &ProfileWidget2::deleteCurrentDC);
 			m.addAction(tr("Split this dive computer into own dive"), this, &ProfileWidget2::splitCurrentDC);
 		}
+		if (currentdc->deviceid)
+			m.addAction(tr("Rename this dive computer"), this, &ProfileWidget2::renameCurrentDC);
 		m.exec(event->globalPos());
 		// don't show the regular profile context menu
 		return;
@@ -1440,6 +1443,14 @@ void ProfileWidget2::makeFirstDC()
 {
 	if (d)
 		Command::moveDiveComputerToFront(mutable_dive(), dc);
+}
+
+void ProfileWidget2::renameCurrentDC()
+{
+	// Add UI code to give a new name, and do
+	// create_device_node(device_table, dc->model, serial, nickname)
+	// where 'serial' is the dc extradata for "Serial" and
+	// nickname is the new nickname (empty deletes the entry)
 }
 
 void ProfileWidget2::hideEvents(DiveEventItem *item)
