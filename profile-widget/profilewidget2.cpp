@@ -1447,10 +1447,18 @@ void ProfileWidget2::makeFirstDC()
 
 void ProfileWidget2::renameCurrentDC()
 {
-	// Add UI code to give a new name, and do
-	// create_device_node(device_table, dc->model, serial, nickname)
-	// where 'serial' is the dc extradata for "Serial" and
-	// nickname is the new nickname (empty deletes the entry)
+	bool ok;
+	QString newName = QInputDialog::getText(this, tr("Edit nickname"),
+						tr("Set new nickname for %1 (serial %2):").arg(current_dc->model).arg(current_dc->serial),
+						QLineEdit::Normal, get_dc_nickname(current_dc), &ok);
+	if (ok) {
+		// this needs to happen using the Undo code
+		// note that an empty nickname is valid - it simply removes the nickname for this dive computer
+		create_device_node(&device_table, current_dc->model, current_dc->serial, qPrintable(newName));
+
+		// now trigger the redraw of the profile with the updated nickname
+	}
+
 }
 
 void ProfileWidget2::hideEvents(DiveEventItem *item)
