@@ -25,6 +25,7 @@ const char *get_dc_nickname(const struct divecomputer *dc);
 extern bool device_used_by_selected_dive(const struct device *dev);
 
 extern const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc);
+extern int get_or_add_device_for_dc(struct device_table *table, const struct divecomputer *dc);
 extern bool device_exists(const struct device_table *table, const struct device *dev);
 extern int add_to_device_table(struct device_table *table, const struct device *dev); // returns index
 extern int remove_device(struct device_table *table, const struct device *dev); // returns index or -1 if not found
