@@ -166,6 +166,7 @@ private:
 	void makeFirstDC();
 	void deleteCurrentDC();
 	void splitCurrentDC();
+	void renameCurrentDC();
 
 	DivePlotDataModel *dataModel;
 	DivePlannerPointsModel *plannerModel; // If null, no planning supported.
