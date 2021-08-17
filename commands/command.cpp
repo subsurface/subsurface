@@ -381,14 +381,9 @@ void addPictures(const std::vector<PictureListForAddition> &pictures)
 	execute(new AddPictures(pictures));
 }
 
-void removeDevice(int idx)
+void editDeviceNickname(struct divecomputer *dc, const QString &nickname)
 {
-	execute(new RemoveDevice(idx));
-}
-
-void editDeviceNickname(int idx, const QString &nickname)
-{
-	execute(new EditDeviceNickname(idx, nickname));
+	execute(new EditDeviceNickname(dc, nickname));
 }
 
 void createFilterPreset(const QString &name, const FilterData &data)

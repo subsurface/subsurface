@@ -553,10 +553,8 @@ void ImportDives::redoit()
 	divesAndSitesToRemove = std::move(divesAndSitesToRemoveNew);
 
 	// Add devices
-	for (const device &dev: devicesToAddAndRemove.devices) {
-		int idx = add_to_device_table(&device_table, &dev);
-		emit diveListNotifier.deviceAdded(idx);
-	}
+	for (const device &dev: devicesToAddAndRemove.devices)
+		add_to_device_table(&device_table, &dev);
 
 	// Add new filter presets
 	for (auto &it: filterPresetsToAdd) {
@@ -583,11 +581,8 @@ void ImportDives::undoit()
 	setSelection(selection, currentDive);
 
 	// Remove devices
-	for (const device &dev: devicesToAddAndRemove.devices) {
-		int idx = remove_device(&device_table, &dev);
-		if (idx >= 0)
-			emit diveListNotifier.deviceDeleted(idx);
-	}
+	for (const device &dev: devicesToAddAndRemove.devices)
+		remove_device(&device_table, &dev);
 
 	// Remove filter presets. Do this in reverse order.
 	for (auto it = filterPresetsToRemove.rbegin(); it != filterPresetsToRemove.rend(); ++it) {

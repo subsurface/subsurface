@@ -5,43 +5,14 @@
 
 namespace Command {
 
-RemoveDevice::RemoveDevice(int indexIn) : index(indexIn)
+EditDeviceNickname::EditDeviceNickname(const struct divecomputer *dc, const QString &nicknameIn) :
+	nickname(nicknameIn.toStdString())
 {
-	const device *dev = get_device(&device_table, index);
-	if (!dev)
+	index = get_or_add_device_for_dc(&device_table, dc);
+	if (index == -1)
 		return;
 
-	setText(Command::Base::tr("Delete device %1 (0x%2)").arg(QString::fromStdString(dev->model),
-								 QString::number(dev->deviceId)));
-}
-
-bool RemoveDevice::workToBeDone()
-{
-	return get_device(&device_table, index) != nullptr;
-}
-
-void RemoveDevice::redo()
-{
-	dev = *get_device(&device_table, index);
-	remove_from_device_table(&device_table, index);
-	emit diveListNotifier.deviceDeleted(index);
-}
-
-void RemoveDevice::undo()
-{
-	index = add_to_device_table(&device_table, &dev);
-	emit diveListNotifier.deviceAdded(index);
-}
-
-EditDeviceNickname::EditDeviceNickname(int indexIn, const QString &nicknameIn) :
-	index(indexIn), nickname(nicknameIn.toStdString())
-{
-	const device *dev = get_device(&device_table, index);
-	if (!dev)
-		return;
-
-	setText(Command::Base::tr("Set nickname of device %1 (0x%2) to %3").arg(QString::fromStdString(dev->model),
-										QString::number(dev->deviceId,1 ,16), nicknameIn));
+	setText(Command::Base::tr("Set nickname of device %1 (serial %2) to %3").arg(dc->model, dc->serial, nicknameIn));
 }
 
 bool EditDeviceNickname::workToBeDone()
@@ -55,7 +26,7 @@ void EditDeviceNickname::redo()
 	if (!dev)
 		return;
 	std::swap(dev->nickName, nickname);
-	emit diveListNotifier.deviceEdited(index);
+	emit diveListNotifier.deviceEdited();
 }
 
 void EditDeviceNickname::undo()

@@ -141,8 +141,7 @@ void addPictures(const std::vector<PictureListForAddition> &pictures);
 
 // 8) Device commands
 
-void removeDevice(int idx);
-void editDeviceNickname(int idx, const QString &nickname);
+void editDeviceNickname(struct divecomputer *dc, const QString &nickname);
 
 // 9) Filter commands
 
