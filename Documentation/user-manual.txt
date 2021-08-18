@@ -591,12 +591,12 @@ you might like to call one "Alice's Suunto D4" and the other
 "Bob's Suunto D4". Alternatively, consider a technical diver who dives with two or more
 dive computers of the same model, the logs of both (or all) being uploaded.
 In this case it might be prudent to call one of them
-"Suunto D4 (1)" and another "Suunto D4 (2)". This is easily done in _Subsurface_.
-On the *Main Menu*, select _Log ->  Edit device names_. A dialog box opens, showing the
-current Model, ID and Nickname of the dive computers used for upload. Edit the Nickname
-field for the appropriate dive computer. After saving the Nickname, the dive logs
-show the nickname for that particular device instead of the model name,
-allowing easy identification of devices.
+"Suunto D4 (1)" and another "Suunto D4 (2)".
+
+To achieve this, display a dive downloaded from this dive computer, right click on its name
+in the profile and select the option to set a new nickname. If this option isn't shown, then
+Subsurface cannot reliably identify this specific dive computer (not all models support this
+feature, but most modern ones do).
 
 [[S_MultipleDiveComputers]]
 ==== Uploading data for a specific dive from more than one dive computer
