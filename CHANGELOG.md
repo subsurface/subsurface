@@ -1,4 +1,5 @@
 - mobile: add ability to edit tags
+- Correct OTU and CNS calculations for planned bailout
 - replace dive computer management with a new implementation, this fixes rare cases where
   Subsurface unnecessarily download already downloaded dives, but also means
   that some older style dive computer can no longer have nicknames

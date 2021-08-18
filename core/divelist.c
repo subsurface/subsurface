@@ -85,6 +85,35 @@ static int active_o2(const struct dive *dive, const struct divecomputer *dc, dur
 	return get_o2(gas);
 }
 
+// Do not call on first sample as it acccesses the previous sample
+static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc, const struct sample *sample)
+{
+	int po2i, po2f, po2;
+	const struct sample *psample = sample - 1;
+	// Use sensor[0] if available
+	if ((dc->divemode == CCR || dc->divemode == PSCR) && sample->o2sensor[0].mbar) {
+		po2i = psample->o2sensor[0].mbar;
+		po2f = sample->o2sensor[0].mbar;	// then use data from the first o2 sensor
+		po2 = (po2f + po2i) / 2;
+	} else if (sample->setpoint.mbar > 0) {
+		po2 = MIN((int) sample->setpoint.mbar,
+			   depth_to_mbar(sample->depth.mm, dive));
+	} else {
+		double amb_presure = depth_to_bar(sample->depth.mm, dive);
+		double pamb_pressure = depth_to_bar(psample->depth.mm , dive);
+		if (dc->divemode == PSCR) {
+			po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample->time));
+			po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample->time));
+		} else {
+			int o2 = active_o2(dive, dc, psample->time);	// 	... calculate po2 from depth and FiO2.
+			po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
+			po2f = lrint(o2 * amb_presure);	// (final) po2 at end of segment
+		}
+		po2 = (po2i + po2f) / 2;
+	}
+	return po2;
+}
+
 /* Calculate OTU for a dive - this only takes the first divecomputer into account.
    Implement the protocol in Erik Baker's document "Oxygen Toxicity Calculations". This code
    implements a third-order continuous approximation of Baker's Eq. 2 and enables OTU
@@ -104,15 +133,19 @@ static int calculate_otu(const struct dive *dive)
 		struct sample *sample = dc->sample + i;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample->o2sensor[0].mbar) {	// if dive computer has o2 sensor(s) (CCR & PSCR) ..
+		// if there is sensor data use sensor[0]
+		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample->o2sensor[0].mbar) {
 			po2i = psample->o2sensor[0].mbar;
 			po2f = sample->o2sensor[0].mbar;	// ... use data from the first o2 sensor
 		} else {
-			if (dc->divemode == CCR) {
-				po2i = MIN((int) psample->setpoint.mbar,
-					   depth_to_mbar(psample->depth.mm, dive));		// if CCR has no o2 sensors then use setpoint
+			if (sample->setpoint.mbar > 0) {
 				po2f = MIN((int) sample->setpoint.mbar,
 					   depth_to_mbar(sample->depth.mm, dive));
+				if (psample->setpoint.mbar > 0)
+					po2i = MIN((int) psample->setpoint.mbar,
+						   depth_to_mbar(psample->depth.mm, dive));
+				else
+					po2i = po2f;
 			} else {						// For OC and rebreather without o2 sensor/setpoint
 				double amb_presure = depth_to_bar(sample->depth.mm, dive);
 				double pamb_pressure = depth_to_bar(psample->depth.mm , dive);
@@ -162,42 +195,17 @@ static double calculate_cns_dive(const struct dive *dive)
 	/* Calculate the CNS for each sample in this dive and sum them */
 	for (n = 1; n < dc->samples; n++) {
 		int t;
-		int po2i, po2f;
-		bool trueo2 = false;
+		int po2;
 		struct sample *sample = dc->sample + n;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample->o2sensor[0].mbar) {			// if dive computer has o2 sensor(s) (CCR & PSCR)
-			po2i = psample->o2sensor[0].mbar;
-			po2f = sample->o2sensor[0].mbar;	// then use data from the first o2 sensor
-			trueo2 = true;
-		}
-		if ((dc->divemode == CCR) && (!trueo2)) {
-			po2i = MIN((int) psample->setpoint.mbar,
-				   depth_to_mbar(psample->depth.mm, dive));		// if CCR has no o2 sensors then use setpoint
-			po2f = MIN((int) sample->setpoint.mbar,
-				   depth_to_mbar(sample->depth.mm, dive));
-			trueo2 = true;
-		}
-		if (!trueo2) {
-			double amb_presure = depth_to_bar(sample->depth.mm, dive);
-			double pamb_pressure = depth_to_bar(psample->depth.mm , dive);
-			if (dc->divemode == PSCR) {
-				po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample->time));
-				po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample->time));
-			} else {
-				int o2 = active_o2(dive, dc, psample->time);	// 	... calculate po2 from depth and FiO2.
-				po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
-				po2f = lrint(o2 * amb_presure);	// (final) po2 at end of segment
-			}
-		}
-		int po2avg = (po2i + po2f) / 2;	// po2i now holds the mean po2 of initial and final po2 values of segment.
+		po2 = get_sample_o2(dive, dc, sample);
 		/* Don't increase CNS when po2 below 500 matm */
-		if (po2avg <= 500)
+		if (po2 <= 500)
 			continue;
 
 		// This formula is the result of fitting two lines to the Log of the NOAA CNS table
-		rate = po2i <= 1500 ? exp(-11.7853 + 0.00193873 * po2avg) : exp(-23.6349 + 0.00980829 * po2avg);
+		rate = po2 <= 1500 ? exp(-11.7853 + 0.00193873 * po2) : exp(-23.6349 + 0.00980829 * po2);
 		cns += (double) t * rate * 100.0;
 	}
 	return cns;

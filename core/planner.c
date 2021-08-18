@@ -284,6 +284,8 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 			}
 			sample = prepare_sample(dc);
 			sample[-1].setpoint.mbar = po2;
+			if (po2)
+				sample[-1].o2sensor[0].mbar = po2;
 			sample->time.seconds = lasttime + 1;
 			sample->depth = lastdepth;
 			sample->manually_entered = dp->entered;
