@@ -232,4 +232,13 @@ Kirigami.Page {
 	Component.onCompleted: {
 		statsManager.init(statsView, chartListModel)
 	}
+	onBackRequested: {
+		// if the menu drawer is open, the back button should close it
+		if (globalDrawer.visible) {
+			globalDrawer.close()
+		} else {
+			showDiveList()
+		}
+		event.accepted = true;
+	}
 }
