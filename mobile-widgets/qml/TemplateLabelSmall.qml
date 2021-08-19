@@ -6,7 +6,7 @@ Label {
 	id: myLabel
 	color: subsurfaceTheme.textColor
 	font.pointSize: subsurfaceTheme.smallPointSize
-	lineHeight: 0.6
+	lineHeight: 0.7
 	property alias colorBackground: myLabelBackground.color
 
 	background: Rectangle {
