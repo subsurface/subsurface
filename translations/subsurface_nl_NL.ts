@@ -367,7 +367,7 @@
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="123"/>
         <source>Trying different cloud server...</source>
-        <translation type="unfinished"/>
+        <translation>Andere cloudserver proberen...</translation>
     </message>
 </context>
 <context>
@@ -2801,12 +2801,12 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="384"/>
         <source>Dive number: </source>
-        <translation type="unfinished"/>
+        <translation>Duiknummer:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="386"/>
         <source>Date / time: </source>
-        <translation type="unfinished"/>
+        <translation>Datum / tijd:</translation>
     </message>
 </context>
 <context>
@@ -2885,7 +2885,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="143"/>
         <source>Dive Number</source>
-        <translation type="unfinished"/>
+        <translation>Duiknummer:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="150"/>
@@ -3297,7 +3297,8 @@ GPS locatie:</translation>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="29"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Handmatige synchronisatie met cloud voltooid
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="176"/>
@@ -3430,7 +3431,7 @@ GPS locatie:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="788"/>
         <source>Remove dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Duik uit trip verwijderen</numerusform><numerusform>Duiken uit trip verwijderen</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="790"/>
@@ -3440,12 +3441,12 @@ GPS locatie:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="805"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Duik toevoegen aan trip direct hierboven</numerusform><numerusform>Duiken toevoegen aan trip direct hierboven</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="807"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Duik toevoegen aan trip direct hieronder</numerusform><numerusform>Duiken toevoegen aan trip direct hieronder</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="811"/>
@@ -3460,17 +3461,17 @@ GPS locatie:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="816"/>
         <source>Delete dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Duik verwijderen</numerusform><numerusform>Duiken verwijderen</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Duik als geldig markeren</numerusform><numerusform>Duiken als geldig markeren</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="820"/>
         <source>Mark dive(s) invalid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Duik als ongeldig markeren</numerusform><numerusform>Duiken als ongeldig markeren</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="823"/>
@@ -3480,12 +3481,12 @@ GPS locatie:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Duik toevoegen aan willekeurige trip</numerusform><numerusform>Duiken toevoegen aan willekeurige trip</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="826"/>
         <source>Renumber dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Duik hernummeren</numerusform><numerusform>Duiken hernummeren</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="827"/>
@@ -8832,138 +8833,138 @@ Exporteer naar een ander bestand.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="740"/>
         <source>Planned dive</source>
         <translation>Geplande duik</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="742"/>
         <source>Manually added dive</source>
         <translation>Handmatig toegevoegde duik</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="750"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="744"/>
         <source>Unknown dive computer</source>
         <translation>Onbekende duikcomputer</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="754"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 van %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="772"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>NDL / TTS wordt niet getoond omdat de berekening te lang duurt</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1364"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1310"/>
         <source>Make first dive computer</source>
         <translation>Maak eerste duikcomputer</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1312"/>
         <source>Delete this dive computer</source>
         <translation>Verwijder deze duikcomputer</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1313"/>
         <source>Split this dive computer into own dive</source>
         <translation>Deze duikcomputer naar eigen duik splitsen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1383"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
         <source>Edit Gas Change</source>
         <translation>Gaswissel bewerken</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1391"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1337"/>
         <source>Add gas change</source>
         <translation>Gaswissel toevoegen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1398"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1344"/>
         <source>Add setpoint change</source>
         <translation>Setpoint wissel toevoegen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1345"/>
         <source>Add bookmark</source>
         <translation>Bladwijzer toevoegen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1400"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1346"/>
         <source>Split dive into two</source>
         <translation>Duik in tweeën splitsen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1351"/>
         <source>Change divemode</source>
         <translation>Duikmodus wijzigen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1417"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1363"/>
         <source>Edit the profile</source>
         <translation>Profiel bewerken</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1420"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
         <source>Remove event</source>
         <translation>Gebeurtenis verwijderen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
         <source>Hide similar events</source>
         <translation>Gelijkaardige gebeurtenissen verbergen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1424"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1370"/>
         <source>Edit name</source>
         <translation>Naam bewerken</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1453"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1460"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Druk aanpassen van fles %1 (nu geïnterpoleerd als %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
         <source>Unhide all events</source>
         <translation>Alle gebeurtenissen tonen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide events</source>
         <translation>Gebeurtenissen verbergen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide all %1 events?</source>
         <translation>Alle %1 gebeurtenissen verbergen?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1537"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1483"/>
         <source>Remove the selected event?</source>
         <translation>Geselecteerde gebeurtenis verwijderen?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1538"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1484"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1624"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Edit name of bookmark</source>
         <translation>Naam bladwijzer bewerken</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1625"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1571"/>
         <source>Custom name:</source>
         <translation>Naam:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1630"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1576"/>
         <source>Name is too long!</source>
         <translation>Deze naam is te lang!</translation>
     </message>
@@ -10433,27 +10434,27 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Beperking</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="110"/>
         <source>Restrict to selection</source>
-        <translation type="unfinished"/>
+        <translation>Beperken tot selectie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="117"/>
         <source>Reset restriction</source>
-        <translation type="unfinished"/>
+        <translation>Beperking resetten</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="154"/>
         <source>Analyzing all dives</source>
-        <translation type="unfinished"/>
+        <translation>Alle duiken analyseren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="156"/>
         <source>Analyzing subset (%L1) dives</source>
-        <translation type="unfinished"/>
+        <translation>Analyse subset (%L1) duiken</translation>
     </message>
 </context>
 <context>
@@ -10489,7 +10490,7 @@ Bestanden met onjuiste datum/tijd</translation>
         <translation>Sluiten</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.cpp" line="20"/>
+        <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2021&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform duiklog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger en anderen, 2011-2021&lt;/span&gt;</translation>
     </message>
@@ -13466,7 +13467,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1541"/>
         <source>Calculated ceiling %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Berekend plafond %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1547"/>
@@ -14528,7 +14530,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
         <source>Exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Bezig met exporteren...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
@@ -14581,7 +14583,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
         <translation>Dit punt verwijderen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1275"/>
         <source>Cyl</source>
         <translation>Fles</translation>
     </message>
@@ -14715,7 +14717,8 @@ Is de Uemis Zurich correct aangesloten?</translation>
         <location filename="../mobile-widgets/qml/main.qml" line="364"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Handmatige synchronisatie met cloud voltooid
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="372"/>
@@ -14851,7 +14854,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="610"/>
         <source>Copy GPS to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopieer GPS naar klembord</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="670"/>

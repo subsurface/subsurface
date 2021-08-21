@@ -25,10 +25,7 @@
 
 © Subsurface developer team
 2011-2021</source>
-        <translation>Versiunea: %1
-
-© Echipa Subsurface 
-2011-2021</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="65"/>
@@ -8832,138 +8829,138 @@ Va rugam exportati sablonul in alt fisier.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="740"/>
         <source>Planned dive</source>
         <translation>Scufundare planificată</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="742"/>
         <source>Manually added dive</source>
         <translation>Scufundare adăugată manual</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="750"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="744"/>
         <source>Unknown dive computer</source>
         <translation>Calculator de scufundări necunoscut</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="754"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
         <source> (#%1 of %2)</source>
         <translation>(#%1 din %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="772"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Arată NDL / TTS a fost dezactivat din cauza timpului excesiv de procesare</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1364"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1310"/>
         <source>Make first dive computer</source>
         <translation>Definește ca primul computer</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1312"/>
         <source>Delete this dive computer</source>
         <translation>Șterge acest computer</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1313"/>
         <source>Split this dive computer into own dive</source>
         <translation>Împarte acest computer in scufundarea proprie</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1383"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
         <source>Edit Gas Change</source>
         <translation>Editeză schimbarea de gaz</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1391"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1337"/>
         <source>Add gas change</source>
         <translation>Adaugă gazul modificat</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1398"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1344"/>
         <source>Add setpoint change</source>
         <translation>Adaugă schimbare de setpoint</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1345"/>
         <source>Add bookmark</source>
         <translation>Adaugă marcaj</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1400"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1346"/>
         <source>Split dive into two</source>
         <translation>Desparte scufundarea în două</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1351"/>
         <source>Change divemode</source>
         <translation>Schimba modul de scufundare</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1417"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1363"/>
         <source>Edit the profile</source>
         <translation>Modifică profilul</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1420"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
         <source>Remove event</source>
         <translation>Șterge evenimentul</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
         <source>Hide similar events</source>
         <translation>Ascunde evenimente similare</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1424"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1370"/>
         <source>Edit name</source>
         <translation>Modifică numele</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1453"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1460"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Ajusteza presiuneal but. %1 (mementan interpolata ca %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
         <source>Unhide all events</source>
         <translation>Arată toate evenimentele</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide events</source>
         <translation>Ascunde evenimente</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide all %1 events?</source>
         <translation>Ascunde toate %1 evenimentele?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1537"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1483"/>
         <source>Remove the selected event?</source>
         <translation>Înlătură evenimentul selectat?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1538"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1484"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1624"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Edit name of bookmark</source>
         <translation>Modifică numele marcajului</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1625"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1571"/>
         <source>Custom name:</source>
         <translation>Nume presonalizat:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1630"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1576"/>
         <source>Name is too long!</source>
         <translation>Numele este prea lung</translation>
     </message>
@@ -10489,9 +10486,9 @@ Fisiere cu data/ora neconforme</translation>
         <translation>&amp;Închide</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.cpp" line="20"/>
+        <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2021&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Software jurnal de scufundare multi platformă&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, și alții, 2011-2021&lt;/span&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -14581,7 +14578,7 @@ Este conectat corect dispozitivul Uemis Zurich?</translation>
         <translation>Elimină acest punct</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1275"/>
         <source>Cyl</source>
         <translation>Tub</translation>
     </message>

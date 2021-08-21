@@ -25,10 +25,7 @@
 
 © Subsurface developer team
 2011-2021</source>
-        <translation>Version: %1
-
-© Subsurface developer team
-2011-2021</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="65"/>
@@ -8833,138 +8830,138 @@ Please export this template to a different file.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="740"/>
         <source>Planned dive</source>
         <translation>Planned dive</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="742"/>
         <source>Manually added dive</source>
         <translation>Manually added dive</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="750"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="744"/>
         <source>Unknown dive computer</source>
         <translation>Unknown dive computer</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="754"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
         <source> (#%1 of %2)</source>
         <translation> (No.%1 of %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="772"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Show NDL / TTS was disabled because of excessive processing time</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1364"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1310"/>
         <source>Make first dive computer</source>
         <translation>Make default dive computer</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1312"/>
         <source>Delete this dive computer</source>
         <translation>Delete this dive computer</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1313"/>
         <source>Split this dive computer into own dive</source>
         <translation>Split this dive computer into own dive</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1383"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
         <source>Edit Gas Change</source>
         <translation>Edit gas change</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1391"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1337"/>
         <source>Add gas change</source>
         <translation>Add gas change</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1398"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1344"/>
         <source>Add setpoint change</source>
         <translation>Add setpoint change</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1345"/>
         <source>Add bookmark</source>
         <translation>Add bookmark</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1400"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1346"/>
         <source>Split dive into two</source>
         <translation>Split dive into two</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1351"/>
         <source>Change divemode</source>
         <translation>Change dive mode</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1417"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1363"/>
         <source>Edit the profile</source>
         <translation>Edit the profile</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1420"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
         <source>Remove event</source>
         <translation>Remove event</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
         <source>Hide similar events</source>
         <translation>Hide similar events</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1424"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1370"/>
         <source>Edit name</source>
         <translation>Edit name</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1453"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1460"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Adjust pressure of cyl. %1 (currently interpolated as %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
         <source>Unhide all events</source>
         <translation>Unhide all events</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide events</source>
         <translation>Hide events</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide all %1 events?</source>
         <translation>Hide all %1 events?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1537"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1483"/>
         <source>Remove the selected event?</source>
         <translation>Remove the selected event?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1538"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1484"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1624"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Edit name of bookmark</source>
         <translation>Edit name of bookmark</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1625"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1571"/>
         <source>Custom name:</source>
         <translation>Custom name:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1630"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1576"/>
         <source>Name is too long!</source>
         <translation>Name is too long.</translation>
     </message>
@@ -10490,9 +10487,9 @@ Files with inappropriate date/time</translation>
         <translation>&amp;Close</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.cpp" line="20"/>
+        <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2021&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2021&lt;/span&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -14583,7 +14580,7 @@ Is the Uemis Zurich plugged in correctly?</translation>
         <translation>Remove this point</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1275"/>
         <source>Cyl</source>
         <translation>Cyl</translation>
     </message>

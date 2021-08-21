@@ -25,10 +25,7 @@
 
 © Subsurface developer team
 2011-2021</source>
-        <translation>Version: %1
-
-© Subsurface utvecklingsteam
-2011-2021</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="65"/>
@@ -8833,138 +8830,138 @@ Vänligen exportera mallen till en ny fil.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="740"/>
         <source>Planned dive</source>
         <translation>Planera dyk</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="742"/>
         <source>Manually added dive</source>
         <translation>Manuellt dyk</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="750"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="744"/>
         <source>Unknown dive computer</source>
         <translation>Okänd dykdator</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="754"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 av %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="772"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Visa NDL / TTS stängdes av för att beräkningen tog för lång tid</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1364"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1310"/>
         <source>Make first dive computer</source>
         <translation>Gör till första dykdator</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1312"/>
         <source>Delete this dive computer</source>
         <translation>Ta bort denna dykdator</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1313"/>
         <source>Split this dive computer into own dive</source>
         <translation>Dela dykdator till ett eget dyk</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1383"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
         <source>Edit Gas Change</source>
         <translation>Redigera gasbyte</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1391"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1337"/>
         <source>Add gas change</source>
         <translation>Lägg till gasbyte</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1398"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1344"/>
         <source>Add setpoint change</source>
         <translation>Lägg till byte av setpoint</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1345"/>
         <source>Add bookmark</source>
         <translation>Lägg till bokmärke</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1400"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1346"/>
         <source>Split dive into two</source>
         <translation>Dela dyk i två delar</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1351"/>
         <source>Change divemode</source>
         <translation>Ändra dykläge</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1417"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1363"/>
         <source>Edit the profile</source>
         <translation>Redigera profil</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1420"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
         <source>Remove event</source>
         <translation>Ta bort händelse</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
         <source>Hide similar events</source>
         <translation>Göm liknande händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1424"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1370"/>
         <source>Edit name</source>
         <translation>Ändra namn</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1453"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1460"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Anpassa trycket i flaska %1 (nu interpolerat som %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
         <source>Unhide all events</source>
         <translation>Visa alla händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide events</source>
         <translation>Göm händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide all %1 events?</source>
         <translation>Göm alla %1 händelser?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1537"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1483"/>
         <source>Remove the selected event?</source>
         <translation>Ta bort markerad händelse?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1538"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1484"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1624"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Edit name of bookmark</source>
         <translation>Ändra namnet på bokmärket</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1625"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1571"/>
         <source>Custom name:</source>
         <translation>Valt namn:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1630"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1576"/>
         <source>Name is too long!</source>
         <translation>Namnet är för långt!</translation>
     </message>
@@ -10490,9 +10487,9 @@ Filer med felaktig datum/tid</translation>
         <translation>&amp;Stäng</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.cpp" line="20"/>
+        <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2021&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Dykprogramvara med stöd för flera plattformar&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, och andra, 2011-2021&lt;/span&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -14581,7 +14578,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Ta bort denna punkt</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1275"/>
         <source>Cyl</source>
         <translation>Cyl</translation>
     </message>

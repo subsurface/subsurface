@@ -367,7 +367,7 @@
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="123"/>
         <source>Trying different cloud server...</source>
-        <translation type="unfinished"/>
+        <translation>Yritetään toista pilvipalvelinta...</translation>
     </message>
 </context>
 <context>
@@ -2801,12 +2801,12 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="384"/>
         <source>Dive number: </source>
-        <translation type="unfinished"/>
+        <translation>Sukellusnumero:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="386"/>
         <source>Date / time: </source>
-        <translation type="unfinished"/>
+        <translation>Päivä / aika:</translation>
     </message>
 </context>
 <context>
@@ -2885,7 +2885,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="143"/>
         <source>Dive Number</source>
-        <translation type="unfinished"/>
+        <translation>Sukellusnumero</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="150"/>
@@ -3297,7 +3297,8 @@ GPS-sijaintia:</translation>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="29"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Manuaalinen synkronointi pilvipalveluun suoritettu
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="176"/>
@@ -3430,7 +3431,7 @@ GPS-sijaintia:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="788"/>
         <source>Remove dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Erota sukellus retkestä</numerusform><numerusform>Erota sukellukset retkestä</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="790"/>
@@ -3440,12 +3441,12 @@ GPS-sijaintia:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="805"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Lisää sukellus yläpuoliseen retkeen</numerusform><numerusform>Lisää sukellukset yläpuoliseen retkeen</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="807"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Lisää sukellus alapuoliseen retkeen</numerusform><numerusform>Lisää sukellukset alapuoliseen retkeen</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="811"/>
@@ -3460,17 +3461,17 @@ GPS-sijaintia:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="816"/>
         <source>Delete dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Poista sukellus</numerusform><numerusform>Poista sukellukset</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Merkitse sukellus epäkelvoksi</numerusform><numerusform>Merkitse sukellukset epäkelvoiksi</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="820"/>
         <source>Mark dive(s) invalid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Merkitse sukellus epäkelvoksi</numerusform><numerusform>Merkitse sukellukset epäkelvoiksi</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="823"/>
@@ -3480,12 +3481,12 @@ GPS-sijaintia:</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Lisää sukellus valitsemaasi retkeen</numerusform><numerusform>Lisää sukellukset valitsemaasi retkeen</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="826"/>
         <source>Renumber dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Numeroi sukellus uudelleen</numerusform><numerusform>Numeroi sukellukset uudelleen</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="827"/>
@@ -7779,7 +7780,7 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="74"/>
         <source>Show default cylinder sizes in the cylinders selection of the equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Näytä oletussäiliöiden koot varustevälilehden valinnassa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.cpp" line="13"/>
@@ -8831,138 +8832,138 @@ Tallenna muokkauksesi eri nimelle.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="740"/>
         <source>Planned dive</source>
         <translation>Suunniteltu sukellus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="742"/>
         <source>Manually added dive</source>
         <translation>Käsin lisätty sukellus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="750"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="744"/>
         <source>Unknown dive computer</source>
         <translation>Tuntematon sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="754"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 / %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="772"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Suoranousu-/pintautumisaikaa ei näytetä, koska niiden laskemiseen kuluu liikaa aikaa</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1364"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1310"/>
         <source>Make first dive computer</source>
         <translation>Aseta ensimmäiseksi sukellustietokoneeksi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1312"/>
         <source>Delete this dive computer</source>
         <translation>Poista tämä sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1313"/>
         <source>Split this dive computer into own dive</source>
         <translation>Jaa tämä sukellustietokone omaksi sukelluksekseen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1383"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
         <source>Edit Gas Change</source>
         <translation>Muokkaa kaasun vaihtoa</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1391"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1337"/>
         <source>Add gas change</source>
         <translation>Lisää kaasun vaihto</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1398"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1344"/>
         <source>Add setpoint change</source>
         <translation>Aseta setpoint-muutos</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1345"/>
         <source>Add bookmark</source>
         <translation>Lisää kirjanmerkki</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1400"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1346"/>
         <source>Split dive into two</source>
         <translation>Jaa sukellus kahtia</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1351"/>
         <source>Change divemode</source>
         <translation>Muuta sukellustyyppi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1417"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1363"/>
         <source>Edit the profile</source>
         <translation>Muokkaa profiilia</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1420"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
         <source>Remove event</source>
         <translation>Poista tapahtuma</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
         <source>Hide similar events</source>
         <translation>Piilota samankaltaiset tapahtumat</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1424"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1370"/>
         <source>Edit name</source>
         <translation>Muokkaa nimeä</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1453"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1460"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Muokkaa säiliön %1 painetta (arvioitu %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
         <source>Unhide all events</source>
         <translation>Näytä kaikki tapahtumat</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide events</source>
         <translation>Piilota tapahtumat</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Hide all %1 events?</source>
         <translation>Piilota kaikki %1 tapahtumat</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1537"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1483"/>
         <source>Remove the selected event?</source>
         <translation>Poistetaanko valitut tapahtumat?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1538"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1484"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1624"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Edit name of bookmark</source>
         <translation>Muokkaa kirjanmerkin nimeä</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1625"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1571"/>
         <source>Custom name:</source>
         <translation>Valinnainen nimi:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1630"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1576"/>
         <source>Name is too long!</source>
         <translation>Nimi on liian pitkä!</translation>
     </message>
@@ -9107,7 +9108,8 @@ Tallenna muokkauksesi eri nimelle.</translation>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1423"/>
         <source>[%1]Changes saved:'%2'.
 %1 possible via context menu</source>
-        <translation type="unfinished"/>
+        <translation>[%1]Mutoksia tallennettu:&apos;%2&apos;.
+%1 mahdollista valikon kautta</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1425"/>
@@ -9630,12 +9632,12 @@ tarvitsevat tämän asetuksen</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="615"/>
         <source>Profile deco ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Profiilin deko-katto</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="623"/>
         <source>Show DC reported ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Näytä sukellustietokoneen raportoima kattosyvyys</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="633"/>
@@ -9917,28 +9919,28 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="106"/>
         <source>Base variable</source>
-        <translation type="unfinished"/>
+        <translation>Perusmuuttuja</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="123"/>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="158"/>
         <source>Binning</source>
-        <translation type="unfinished"/>
+        <translation>Aikajakso</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="140"/>
         <source>Data</source>
-        <translation type="unfinished"/>
+        <translation>Tieto</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="176"/>
         <source>Operation</source>
-        <translation type="unfinished"/>
+        <translation>Toiminto</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="206"/>
         <source>Chart type</source>
-        <translation type="unfinished"/>
+        <translation>Kuvaajan tyyppi</translation>
     </message>
 </context>
 <context>
@@ -9947,17 +9949,17 @@ Files with inappropriate date/time</source>
         <location filename="../stats/barseries.cpp" line="347"/>
         <location filename="../stats/pieseries.cpp" line="221"/>
         <source>%1 (%2 of %3) dives</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2 / %3) sukellusta</translation>
     </message>
     <message>
         <location filename="../stats/barseries.cpp" line="363"/>
         <source>Count</source>
-        <translation type="unfinished"/>
+        <translation>Määrä</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="105"/>
         <source>%1 (%2 dives)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2 sukellusta)</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="107"/>
@@ -9969,28 +9971,28 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/boxseries.cpp" line="108"/>
         <source>Q1</source>
-        <translation type="unfinished"/>
+        <translation>Q1</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="109"/>
         <location filename="../stats/statsstate.cpp" line="368"/>
         <source>median</source>
-        <translation type="unfinished"/>
+        <translation>mediaani</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="110"/>
         <source>Q3</source>
-        <translation type="unfinished"/>
+        <translation>Q3</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="111"/>
         <source>max</source>
-        <translation type="unfinished"/>
+        <translation>Maksimi</translation>
     </message>
     <message>
         <location filename="../stats/pieseries.cpp" line="164"/>
         <source>other (%1 items)</source>
-        <translation type="unfinished"/>
+        <translation>muut (%1 elementtiä)</translation>
     </message>
     <message>
         <location filename="../stats/pieseries.cpp" line="230"/>
@@ -10010,52 +10012,52 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsstate.cpp" line="8"/>
         <source>vertical</source>
-        <translation type="unfinished"/>
+        <translation>pystysuora</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="9"/>
         <source>grouped vertical</source>
-        <translation type="unfinished"/>
+        <translation>ryhmitelty pystysuora</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="10"/>
         <source>stacked vertical</source>
-        <translation type="unfinished"/>
+        <translation>Pinottu pystysuora</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="11"/>
         <source>horizontal</source>
-        <translation type="unfinished"/>
+        <translation>vaakasuora</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="12"/>
         <source>grouped horizontal</source>
-        <translation type="unfinished"/>
+        <translation>ryhmitelty vaakasuora</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="13"/>
         <source>stacked horizontal</source>
-        <translation type="unfinished"/>
+        <translation>pinottu vaakasuora</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="14"/>
         <source>data points</source>
-        <translation type="unfinished"/>
+        <translation>datapisteitä</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="15"/>
         <source>box-whisker</source>
-        <translation type="unfinished"/>
+        <translation>laatikkokuvaaja</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="16"/>
         <source>piechart</source>
-        <translation type="unfinished"/>
+        <translation>piirasdiagrammi</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="45"/>
         <source>Scattergraph</source>
-        <translation type="unfinished"/>
+        <translation>Hajontakuvio</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="54"/>
@@ -10063,7 +10065,7 @@ Files with inappropriate date/time</source>
         <location filename="../stats/statsstate.cpp" line="72"/>
         <location filename="../stats/statsstate.cpp" line="81"/>
         <source>Histogram</source>
-        <translation type="unfinished"/>
+        <translation>Histogrammi</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="90"/>
@@ -10072,12 +10074,12 @@ Files with inappropriate date/time</source>
         <location filename="../stats/statsstate.cpp" line="117"/>
         <location filename="../stats/statsstate.cpp" line="126"/>
         <source>Categorical</source>
-        <translation type="unfinished"/>
+        <translation>Kategorinen</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="135"/>
         <source>Barchart</source>
-        <translation type="unfinished"/>
+        <translation>Pylväsdiagrammi</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="183"/>
@@ -10089,57 +10091,57 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsstate.cpp" line="364"/>
         <source>labels</source>
-        <translation type="unfinished"/>
+        <translation>nimike</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="366"/>
         <source>legend</source>
-        <translation type="unfinished"/>
+        <translation>selite</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="370"/>
         <source>mean</source>
-        <translation type="unfinished"/>
+        <translation>keskiarvo</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="372"/>
         <source>quartiles</source>
-        <translation type="unfinished"/>
+        <translation>kvartiili</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="374"/>
         <source>linear regression</source>
-        <translation type="unfinished"/>
+        <translation>linearinen regressio</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="376"/>
         <source>95% confidence area</source>
-        <translation type="unfinished"/>
+        <translation>95% varmuusalue</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="69"/>
         <source>no divesite</source>
-        <translation type="unfinished"/>
+        <translation>ei sukelluskohdetta</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="322"/>
         <source>Median</source>
-        <translation type="unfinished"/>
+        <translation>Mediaani</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="323"/>
         <source>Mean</source>
-        <translation type="unfinished"/>
+        <translation>Keskiarvo</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="324"/>
         <source>Time-weighted mean</source>
-        <translation type="unfinished"/>
+        <translation>Aikapainotettu keskiarvo</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="325"/>
         <source>Sum</source>
-        <translation type="unfinished"/>
+        <translation>Summa</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="326"/>
@@ -10161,27 +10163,27 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="824"/>
         <source>Yearly</source>
-        <translation type="unfinished"/>
+        <translation>Vuosi</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="841"/>
         <source>Quarterly</source>
-        <translation type="unfinished"/>
+        <translation>Kvartaali</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="845"/>
         <source>%1 Q%2</source>
-        <translation type="unfinished"/>
+        <translation>%1 Q%2</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="853"/>
         <source>Q%1</source>
-        <translation type="unfinished"/>
+        <translation>Q%1</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="887"/>
         <source>Monthly</source>
-        <translation type="unfinished"/>
+        <translation>Kuukausi</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="925"/>
@@ -10193,7 +10195,7 @@ Files with inappropriate date/time</source>
         <location filename="../stats/statsvariables.cpp" line="1178"/>
         <location filename="../stats/statsvariables.cpp" line="1258"/>
         <source>in %1 %2 steps</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 vaiheessa</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="997"/>
@@ -10203,17 +10205,17 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1009"/>
         <source>Mean Depth</source>
-        <translation type="unfinished"/>
+        <translation>Keskisyvyys</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1021"/>
         <source>in %1 min steps</source>
-        <translation type="unfinished"/>
+        <translation>%1 min vaiheessa</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1033"/>
         <source>in hours</source>
-        <translation type="unfinished"/>
+        <translation>tuntia</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1039"/>
@@ -10229,7 +10231,7 @@ Files with inappropriate date/time</source>
         <location filename="../stats/statsvariables.cpp" line="1080"/>
         <location filename="../stats/statsvariables.cpp" line="1104"/>
         <source>in %1 %2/min steps</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2/min vaiheessa</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1084"/>
@@ -10261,7 +10263,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1328"/>
         <source>in %L2 steps</source>
-        <translation type="unfinished"/>
+        <translation>%L2 vaiheessa</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1346"/>
@@ -10286,7 +10288,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1454"/>
         <source>Dive guides</source>
-        <translation type="unfinished"/>
+        <translation>Sukellusoppaat</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1478"/>
@@ -10296,7 +10298,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1517"/>
         <source>in %1% steps</source>
-        <translation type="unfinished"/>
+        <translation>%1% vaiheessa</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1537"/>
@@ -10311,12 +10313,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1541"/>
         <source>EAN%1–%2</source>
-        <translation type="unfinished"/>
+        <translation>EAN%1–%2</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1544"/>
         <source>%1/%2–%3/%4</source>
-        <translation type="unfinished"/>
+        <translation>%1/%2–%3/%4</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1555"/>
@@ -10326,42 +10328,42 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1582"/>
         <source>Gas type</source>
-        <translation type="unfinished"/>
+        <translation>Seostyyppi</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1638"/>
         <source>In %L1% steps</source>
-        <translation type="unfinished"/>
+        <translation>%L1% vaiheessa</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1688"/>
         <source>O₂ (max)</source>
-        <translation type="unfinished"/>
+        <translation>O₂ (max)</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1697"/>
         <source>O₂ (bottom gas)</source>
-        <translation type="unfinished"/>
+        <translation>O₂ (pohjakaasu)</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1706"/>
         <source>He (max)</source>
-        <translation type="unfinished"/>
+        <translation>He (max)</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1721"/>
         <source>Suit type</source>
-        <translation type="unfinished"/>
+        <translation>Sukelluspuvun tyyppi</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1751"/>
         <source>Weightsystem</source>
-        <translation type="unfinished"/>
+        <translation>Painojärjestelmä</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1781"/>
         <source>Cylinder type</source>
-        <translation type="unfinished"/>
+        <translation>Säiliötyyppi</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1807"/>
@@ -10371,7 +10373,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1831"/>
         <source>Day of week</source>
-        <translation type="unfinished"/>
+        <translation>Viikonpäivä</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1856"/>
@@ -10386,12 +10388,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsview.cpp" line="626"/>
         <source>No. dives</source>
-        <translation type="unfinished"/>
+        <translation>Sukelluksia</translation>
     </message>
     <message>
         <location filename="../stats/statsview.cpp" line="1300"/>
         <source>%1 vs. %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 vs. %2</translation>
     </message>
 </context>
 <context>
@@ -10404,53 +10406,53 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="32"/>
         <source>Base variable</source>
-        <translation type="unfinished"/>
+        <translation>Perusmuuttuja</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="41"/>
         <location filename="../desktop-widgets/statswidget.ui" line="63"/>
         <source>Binning</source>
-        <translation type="unfinished"/>
+        <translation>Aikajakso</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="54"/>
         <source>Data</source>
-        <translation type="unfinished"/>
+        <translation>Tieto</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="73"/>
         <source>Operation</source>
-        <translation type="unfinished"/>
+        <translation>Operaatio</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="86"/>
         <source>Chart</source>
-        <translation type="unfinished"/>
+        <translation>Kaavio</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Rajoitus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="110"/>
         <source>Restrict to selection</source>
-        <translation type="unfinished"/>
+        <translation>Valinnan rajoitus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="117"/>
         <source>Reset restriction</source>
-        <translation type="unfinished"/>
+        <translation>Poista rajoitukset</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="154"/>
         <source>Analyzing all dives</source>
-        <translation type="unfinished"/>
+        <translation>Analysoidaan kaikki sukellukset</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="156"/>
         <source>Analyzing subset (%L1) dives</source>
-        <translation type="unfinished"/>
+        <translation>Analysoidaan (%L1) sukellusta</translation>
     </message>
 </context>
 <context>
@@ -10486,7 +10488,7 @@ Files with inappropriate date/time</source>
         <translation>&amp;Sulje</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.cpp" line="20"/>
+        <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2021&lt;/span&gt;</source>
         <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Sukelluslokiohjelmisto useille käyttöjärjestelmille&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger ja tiimi, 2011-2021 &lt;/span&gt;</translation>
     </message>
@@ -12484,22 +12486,22 @@ Keski</translation>
     <message>
         <location filename="../core/gas.c" line="166"/>
         <source>Nitrox</source>
-        <translation type="unfinished"/>
+        <translation>Nitrox</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="167"/>
         <source>Hypoxic Trimix</source>
-        <translation type="unfinished"/>
+        <translation>Hypoxic Trimix</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="168"/>
         <source>Normoxic Trimix</source>
-        <translation type="unfinished"/>
+        <translation>Normoxic Trimix</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="169"/>
         <source>Hyperoxic Trimix</source>
-        <translation type="unfinished"/>
+        <translation>Hyperoxic Trimix</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="170"/>
@@ -13463,7 +13465,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1541"/>
         <source>Calculated ceiling %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Laskettu katto %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1547"/>
@@ -14524,7 +14527,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
         <source>Exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Viedään...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
@@ -14577,7 +14580,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
         <translation>Poista tämä etappi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1275"/>
         <source>Cyl</source>
         <translation>Säiliöt</translation>
     </message>
@@ -14711,7 +14714,8 @@ Onko Uemis Zurich kytketty oikein?</translation>
         <location filename="../mobile-widgets/qml/main.qml" line="364"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Manuaalinen synkronointi pilvipalveluun suoritettu
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="372"/>
@@ -14847,7 +14851,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="610"/>
         <source>Copy GPS to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi GPS leikepöydälle</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="670"/>
@@ -14857,7 +14861,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="707"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
-        <translation type="unfinished"/>
+        <translation>Fontin koko liian suuri näytölle, suositellaan vaihtoa pienempään kirjasimeen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="871"/>
@@ -14872,7 +14876,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="884"/>
         <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
-        <translation type="unfinished"/>
+        <translation>Sijaintitietoa käytetään vain, kun liität sijainnin sukelluksiin tässä laitteessa.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="890"/>
