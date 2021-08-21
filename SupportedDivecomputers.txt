@@ -6,7 +6,7 @@ Atomic Aquatics: Cobalt, Cobalt 2
 Beuchat: Mundial 2, Mundial 3, Voyager 2G
 Citizen: Hyper Aqualand
 Cochran: Commander I, Commander II, Commander TM, EMC-14, EMC-16, EMC-20H
-Cressi: Cartesio, Drake, Edy, Giotto, Goa, Leonardo, Newton
+Cressi: Cartesio, Drake, Edy, Giotto, Goa, Leonardo, Neon, Newton
 Deepblu: Cosmiq+
 Dive Rite: NiTek Q, NiTek Trio
 DiveSystem: Orca, iDive DAN, iDive Deep, iDive Easy, iDive Free, iDive Pro, iDive Reb, iDive Stealth, iDive Tech, iDive X3M
@@ -26,7 +26,7 @@ Seabaer: T1, H3, HUDC
 Seac: Guru, Jack
 Seemann: XP5
 Shearwater: Nerd, Nerd 2, Perdix, Perdix AI, Peregrine, Petrel, Petrel 2, Predator, Teric
-Sherwood: Amphos, Amphos Air, Beacon, Insight, Insight 2, Sage, Vision, Wisdom, Wisdom 2, Wisdom 3, Wisdom 4
+Sherwood: Amphos, Amphos 2.0, Amphos Air, Beacon, Insight, Insight 2, Sage, Vision, Wisdom, Wisdom 2, Wisdom 3, Wisdom 4
 Sporasub: SP2
 Subgear: XP Air, XP-10, XP-3G, XP-Air
 Suunto: Cobra, Cobra 2, Cobra 3, D3, D4, D4f, D4i, D5, D6, D6i, D9, D9tx, DX, EON Core, EON Steel, EON Steel Black, Eon, Gekko, HelO2, Mosquito, Solution, Solution Alpha, Solution Nitrox, Spyder, Stinger, Vyper, Vyper 2, Vyper Air, Vyper Novo, Vytec, Zoop, Zoop Novo
