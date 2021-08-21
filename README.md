@@ -11,10 +11,10 @@
 ![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2020.10%20/%20Qt%205.14--/badge.svg)
 ![Build Status](https://github.com/subsurface/subsurface/workflows/openSUSE/Tumbleweed%20/%20Qt%20latest--/badge.svg)
 
-This is the README file for Subsurface 5.0.2
+This is the README file for Subsurface 5.0.3
 
 Please check the `ReleaseNotes.txt` for details about new features and
-changes since Subsurface 5.0.1 (and earlier versions).
+changes since Subsurface 5.0.2 (and earlier versions).
 
 Subsurface can be found at http://subsurface-divelog.org
 
@@ -49,10 +49,10 @@ development version) you can either get this via git or the release tar
 ball. After cloning run the following command:
 
 ```
-git checkout v5.0.2  (or whatever the last release is)
+git checkout v5.0.3  (or whatever the last release is)
 ```
 
-or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-5.0.2.tgz
+or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-5.0.3.tgz
 
 Detailed build instructions can be found in the INSTALL file.
 
