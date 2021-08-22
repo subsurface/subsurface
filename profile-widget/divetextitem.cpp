@@ -5,33 +5,60 @@
 #include "core/errorhelper.h"
 
 #include <QBrush>
-#include <QDebug>
 #include <QApplication>
 
-DiveTextItem::DiveTextItem(double dpr, double scale, int alignFlags, QGraphicsItem *parent) : QGraphicsItemGroup(parent),
+static const double outlineSize = 3.0;
+
+DiveTextItem::DiveTextItem(double dpr, double scale, int alignFlags, QGraphicsItem *parent) : QGraphicsPixmapItem(parent),
 	internalAlignFlags(alignFlags),
-	textBackgroundItem(new QGraphicsPathItem(this)),
-	textItem(new QGraphicsPathItem(this)),
 	dpr(dpr),
 	scale(scale)
 {
 	setFlag(ItemIgnoresTransformations);
-	textBackgroundItem->setBrush(QBrush(getColor(TEXT_BACKGROUND)));
-	textBackgroundItem->setPen(Qt::NoPen);
-	textItem->setPen(Qt::NoPen);
-}
-
-void DiveTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-	updateText();
-	QGraphicsItemGroup::paint(painter, option, widget);
 }
 
 void DiveTextItem::set(const QString &t, const QBrush &b)
 {
-	textItem->setBrush(b);
 	internalText = t;
-	updateText();
+	if (internalText.isEmpty()) {
+		setPixmap(QPixmap());
+		return;
+	}
+
+	QFont fnt = getFont(dpr, scale);
+
+	QPainterPath textPath;
+	textPath.addText(0.0, 0.0, fnt, internalText);
+	QPainterPathStroker stroker;
+	stroker.setWidth(outlineSize * dpr);
+	QPainterPath outlinePath = stroker.createStroke(textPath);
+
+	QRectF outlineRect = outlinePath.boundingRect();
+	textPath.translate(-outlineRect.topLeft());
+	outlinePath.translate(-outlineRect.topLeft());
+
+	QPixmap pixmap(outlineRect.size().toSize());
+	pixmap.fill(Qt::transparent);
+	{
+		QPainter painter(&pixmap);
+		painter.setRenderHints(QPainter::Antialiasing);
+		painter.setBrush(QBrush(getColor(TEXT_BACKGROUND)));
+		painter.setPen(Qt::NoPen);
+		painter.drawPath(outlinePath);
+		painter.setBrush(b);
+		painter.setPen(Qt::NoPen);
+		painter.drawPath(textPath);
+	}
+	setPixmap(pixmap);
+
+	double yOffset = (internalAlignFlags & Qt::AlignTop) ? 0.0 :
+		(internalAlignFlags & Qt::AlignBottom) ? -outlineRect.height() :
+		/*(internalAlignFlags & Qt::AlignVCenter  ? */ -outlineRect.height() / 2.0;
+
+	double xOffset = (internalAlignFlags & Qt::AlignLeft) ? -outlineRect.width() :
+		(internalAlignFlags & Qt::AlignHCenter) ? -outlineRect.width() / 2.0 :
+		/* (internalAlignFlags & Qt::AlignRight) */ 0.0;
+	setOffset(xOffset, yOffset);
 }
 
 const QString &DiveTextItem::text()
@@ -64,32 +91,5 @@ double DiveTextItem::fontHeight(double dpr, double scale)
 
 double DiveTextItem::height() const
 {
-	return fontHeight(dpr, scale);
-}
-
-void DiveTextItem::updateText()
-{
-	if (internalText.isEmpty())
-		return;
-
-	QFont fnt = getFont(dpr, scale);
-	QFontMetrics fm(fnt);
-
-	QPainterPath textPath;
-	qreal xPos = 0, yPos = 0;
-
-	QRectF rect = fm.boundingRect(internalText);
-	yPos = (internalAlignFlags & Qt::AlignTop) ? 0 :
-		(internalAlignFlags & Qt::AlignBottom) ? +rect.height() :
-		/*(internalAlignFlags & Qt::AlignVCenter  ? */ +rect.height() / 4;
-
-	xPos = (internalAlignFlags & Qt::AlignLeft) ? -rect.width() :
-		(internalAlignFlags & Qt::AlignHCenter) ? -rect.width() / 2 :
-		/* (internalAlignFlags & Qt::AlignRight) */ 0;
-
-	textPath.addText(xPos, yPos, fnt, internalText);
-	QPainterPathStroker stroker;
-	stroker.setWidth(3);
-	textBackgroundItem->setPath(stroker.createStroke(textPath));
-	textItem->setPath(textPath);
+	return fontHeight(dpr, scale) + outlineSize * dpr;
 }
