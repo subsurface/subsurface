@@ -80,34 +80,26 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
 	profileYAxis->setMinimum(0);
 	profileYAxis->setTickInterval(M_OR_FT(10, 30));
-	profileYAxis->setTickSize(0.5);
-
-	timeAxis->setTickSize(-0.5);
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setTickInterval(1);
-	gasYAxis->setTickSize(1);
 	gasYAxis->setMinimum(0);
 	gasYAxis->setFontLabelScale(0.7);
 
 #ifndef SUBSURFACE_MOBILE
 	heartBeatAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	heartBeatAxis->setTickSize(0.2);
 	heartBeatAxis->setTickInterval(10);
 	heartBeatAxis->setFontLabelScale(0.7);
 
 	percentageAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	percentageAxis->setTickSize(0.2);
 	percentageAxis->setTickInterval(10);
 	percentageAxis->setFontLabelScale(0.7);
 #endif
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	temperatureAxis->setTickSize(2);
 	temperatureAxis->setTickInterval(300);
 
 	cylinderPressureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	cylinderPressureAxis->setTickSize(2);
 	cylinderPressureAxis->setTickInterval(30000);
 
 	heartBeatAxis->setTextVisible(true);
