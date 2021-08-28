@@ -15,32 +15,7 @@
 #include "qt-models/diveplotdatamodel.h"
 #include "qt-models/diveplannermodel.h"
 
-const static struct ProfileItemPos {
-	struct Pos {
-		QPointF on;
-		QPointF off;
-	};
-	struct Axis : public Pos {
-		QLineF shrinked;
-		QLineF expanded;
-		QLineF intermediate;
-	};
-	Pos dcLabel;
-	Pos tankBar;
-	Axis depth;
-	Axis partialPressure;
-	Axis partialPressureTissue;
-	Axis partialPressureWithTankBar;
-	Axis percentage;
-	Axis percentageWithTankBar;
-	Axis time;
-	Axis cylinder;
-	Axis temperature;
-	Axis temperatureAll;
-	Axis heartBeat;
-	Axis heartBeatWithTankBar;
-	ProfileItemPos();
-} itemPos;
+static const double diveComputerTextBorder = 1.0;
 
 template<typename T, class... Args>
 T *ProfileScene::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args)
@@ -92,7 +67,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, dpr)),
-	decoModelParameters(new DiveTextItem(dpr, 1.0, Qt::AlignHCenter | Qt::AlignBottom, nullptr)),
+	decoModelParameters(new DiveTextItem(dpr, 1.0, Qt::AlignHCenter | Qt::AlignTop, nullptr)),
 	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, dpr)),
 	tankItem(new TankItem(*timeAxis, dpr))
 {
@@ -106,9 +81,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	profileYAxis->setMinimum(0);
 	profileYAxis->setTickInterval(M_OR_FT(10, 30));
 	profileYAxis->setTickSize(0.5);
-	profileYAxis->setLineSize(96);
 
-	timeAxis->setLineSize(92);
 	timeAxis->setTickSize(-0.5);
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
@@ -116,20 +89,17 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	gasYAxis->setTickSize(1);
 	gasYAxis->setMinimum(0);
 	gasYAxis->setFontLabelScale(0.7);
-	gasYAxis->setLineSize(96);
 
 #ifndef SUBSURFACE_MOBILE
 	heartBeatAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	heartBeatAxis->setTickSize(0.2);
 	heartBeatAxis->setTickInterval(10);
 	heartBeatAxis->setFontLabelScale(0.7);
-	heartBeatAxis->setLineSize(96);
 
 	percentageAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	percentageAxis->setTickSize(0.2);
 	percentageAxis->setTickInterval(10);
 	percentageAxis->setFontLabelScale(0.7);
-	percentageAxis->setLineSize(96);
 #endif
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
@@ -153,14 +123,6 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	profileYAxis->setLinesVisible(true);
 	gasYAxis->setZValue(timeAxis->zValue() + 1);
 	tankItem->setZValue(100);
-
-	// show the deco model parameters at the top in the center
-	decoModelParameters->setY(0);
-	decoModelParameters->setX(50);
-
-	diveComputerText->setPos(itemPos.dcLabel.on);
-
-	tankItem->setPos(itemPos.tankBar.on);
 
 	for (int i = 0; i < 16; i++) {
 		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, dpr);
@@ -231,7 +193,7 @@ void ProfileScene::updateVisibility()
 	heartBeatItem->setVisible(prefs.hrgraph);
 #endif
 	diveCeiling->setVisible(prefs.calcceiling);
-	decoModelParameters->setVisible(prefs.calcceiling);
+	decoModelParameters->setVisible(prefs.decoinfo);
 #ifndef SUBSURFACE_MOBILE
 	for (DiveCalculatedTissue *tissue: allTissues)
 		tissue->setVisible(prefs.calcalltissues && prefs.calcceiling);
@@ -243,71 +205,99 @@ void ProfileScene::updateVisibility()
 	tankItem->setVisible(prefs.tankbar);
 }
 
+void ProfileScene::resize(QSizeF size)
+{
+	setSceneRect(QRectF(QPointF(), size));
+	updateAxes(true); // disable animations when resizing
+}
+
+// Helper structure for laying out secondary plots.
+struct VerticalAxisLayout {
+	DiveCartesianAxis *axis;
+	double height;
+	bool visible;
+};
+
 void ProfileScene::updateAxes(bool instant)
 {
 	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
 
-	profileYAxis->setPos(itemPos.depth.on);
+	// Calculate left and right border needed for the axes.
+	// viz. the depth axis to the left and the partial pressure axis to the right.
+	// Thus, calculating the "border" of the graph is trivial.
+	double leftBorder = profileYAxis->width();
+	if (prefs.hrgraph)
+		leftBorder = std::max(leftBorder, heartBeatAxis->width());
+	double rightWidth = ppGraphsEnabled() ? gasYAxis->width() : 0.0;
+	double rightBorder = sceneRect().width() - rightWidth;
+	double width = rightBorder - leftBorder;
 
-#ifndef SUBSURFACE_MOBILE
-	gasYAxis->update(animSpeed);	// Initialize ticks of partial pressure graph
-	if ((prefs.percentagegraph||prefs.hrgraph) && ppGraphsEnabled()) {
-		profileYAxis->animateChangeLine(itemPos.depth.shrinked, animSpeed);
-		temperatureAxis->setPos(itemPos.temperatureAll.on);
-		temperatureAxis->animateChangeLine(itemPos.temperature.shrinked, animSpeed);
-		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.shrinked, animSpeed);
+	if (width <= 10.0 * dpr)
+		return clear();
 
-		if (prefs.tankbar) {
-			percentageAxis->setPos(itemPos.percentageWithTankBar.on);
-			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded, animSpeed);
-			heartBeatAxis->setPos(itemPos.heartBeatWithTankBar.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded, animSpeed);
-		} else {
-			percentageAxis->setPos(itemPos.percentage.on);
-			percentageAxis->animateChangeLine(itemPos.percentage.expanded, animSpeed);
-			heartBeatAxis->setPos(itemPos.heartBeat.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded, animSpeed);
-		}
-		gasYAxis->setPos(itemPos.partialPressureTissue.on);
-		gasYAxis->animateChangeLine(itemPos.partialPressureTissue.expanded, animSpeed);
-	} else if (ppGraphsEnabled() || prefs.hrgraph || prefs.percentagegraph) {
-		profileYAxis->animateChangeLine(itemPos.depth.intermediate, animSpeed);
-		temperatureAxis->setPos(itemPos.temperature.on);
-		temperatureAxis->animateChangeLine(itemPos.temperature.intermediate, animSpeed);
-		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.intermediate, animSpeed);
-		if (prefs.tankbar) {
-			percentageAxis->setPos(itemPos.percentageWithTankBar.on);
-			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded, animSpeed);
-			gasYAxis->setPos(itemPos.partialPressureWithTankBar.on);
-			gasYAxis->animateChangeLine(itemPos.partialPressureWithTankBar.expanded, animSpeed);
-			heartBeatAxis->setPos(itemPos.heartBeatWithTankBar.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded, animSpeed);
-		} else {
-			gasYAxis->setPos(itemPos.partialPressure.on);
-			gasYAxis->animateChangeLine(itemPos.partialPressure.expanded, animSpeed);
-			percentageAxis->setPos(itemPos.percentage.on);
-			percentageAxis->animateChangeLine(itemPos.percentage.expanded, animSpeed);
-			heartBeatAxis->setPos(itemPos.heartBeat.on);
-			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded, animSpeed);
-		}
-	} else {
-#else
-	{
-#endif
-		profileYAxis->animateChangeLine(itemPos.depth.expanded, animSpeed);
-		if (prefs.tankbar) {
-			temperatureAxis->setPos(itemPos.temperatureAll.on);
-		} else {
-			temperatureAxis->setPos(itemPos.temperature.on);
-		}
-		temperatureAxis->animateChangeLine(itemPos.temperature.expanded, animSpeed);
-		cylinderPressureAxis->animateChangeLine(itemPos.cylinder.expanded, animSpeed);
+	// Place the fixed dive computer text at the bottom
+	double bottomBorder = sceneRect().height() - diveComputerText->height() - 2.0 * dpr * diveComputerTextBorder;
+	diveComputerText->setPos(0.0, bottomBorder + dpr * diveComputerTextBorder);
+
+	double topBorder = 0.0;
+
+	// show the deco model parameters at the top in the center
+	if (prefs.decoinfo) {
+		decoModelParameters->setPos(leftBorder + width / 2.0, topBorder);
+		topBorder += decoModelParameters->height();
 	}
 
-	timeAxis->setPos(itemPos.time.on);
-	timeAxis->setLine(itemPos.time.expanded);
+	bottomBorder -= timeAxis->height();
+	timeAxis->animateChangeLine(QRectF(leftBorder, topBorder, width, bottomBorder - topBorder), animSpeed);
 
-	cylinderPressureAxis->setPos(itemPos.cylinder.on);
+	if (prefs.tankbar) {
+		bottomBorder -= tankItem->height();
+		// Note: we set x to 0.0, because the tank item uses the timeAxis to set the x-coordinate.
+		tankItem->setPos(0.0, bottomBorder);
+	}
+
+	double height = bottomBorder - topBorder;
+	if (height <= 50.0 * dpr)
+		return clear();
+
+	// The rest is laid out dynamically. Give at least 50% to the actual profile.
+	// The max heights are given for DPR=1, i.e. a ca. 800x600 pixels profile.
+	const double minProfileFraction = 0.5;
+        VerticalAxisLayout secondaryAxes[] = {
+		// Note: axes are listed from bottom to top, since they are added that way.
+		{ heartBeatAxis, 75.0, prefs.hrgraph },
+		{ percentageAxis, 50.0, prefs.percentagegraph },
+		{ gasYAxis, 75.0, ppGraphsEnabled() },
+		{ temperatureAxis, 50.0, true },
+        };
+
+	// A loop is probably easier to read than std::accumulate.
+	double totalSecondaryHeight = 0.0;
+	for (const VerticalAxisLayout &l: secondaryAxes) {
+		if (l.visible)
+			totalSecondaryHeight += l.height * dpr;
+	}
+
+	if (totalSecondaryHeight > height * minProfileFraction) {
+		// Use 50% for the profile and the rest for the remaining graphs, scaled by their maximum height.
+		double remainingSpace = height * minProfileFraction;
+		for (VerticalAxisLayout &l: secondaryAxes)
+			l.height *= remainingSpace / totalSecondaryHeight;
+	}
+
+	for (const VerticalAxisLayout &l: secondaryAxes) {
+		l.axis->setVisible(l.visible);
+		if (!l.visible)
+			continue;
+		bottomBorder -= l.height * dpr;
+		l.axis->animateChangeLine(QRectF(leftBorder, bottomBorder, width, l.height * dpr), animSpeed);
+	}
+
+	height = bottomBorder - topBorder;
+	profileYAxis->animateChangeLine(QRectF(leftBorder, topBorder, width, height), animSpeed);
+
+	// The cylinders are displayed in the 24-80% region of the profile
+	cylinderPressureAxis->animateChangeLine(QRectF(leftBorder, topBorder + 0.24 * height, width, 0.56 * height), animSpeed);
 }
 
 bool ProfileScene::isPointOutOfBoundaries(const QPointF &point) const
@@ -318,123 +308,6 @@ bool ProfileScene::isPointOutOfBoundaries(const QPointF &point) const
 	       xpos < timeAxis->minimum() ||
 	       ypos > profileYAxis->maximum() ||
 	       ypos < profileYAxis->minimum();
-}
-
-ProfileItemPos::ProfileItemPos()
-{
-	// Scene is *always* (double) 100 / 100.
-	// TODO: The relative scaling doesn't work well with large or small
-	// profiles and needs to be fixed.
-
-	dcLabel.on.setX(3);
-	dcLabel.on.setY(100);
-	dcLabel.off.setX(-10);
-	dcLabel.off.setY(100);
-
-	tankBar.on.setX(0);
-#ifndef SUBSURFACE_MOBILE
-	tankBar.on.setY(91.95);
-#else
-	tankBar.on.setY(86.4);
-#endif
-
-	//Depth Axis Config
-	depth.on.setX(3);
-	depth.on.setY(3);
-	depth.off.setX(-2);
-	depth.off.setY(3);
-	depth.expanded.setP1(QPointF(0, 0));
-#ifndef SUBSURFACE_MOBILE
-	depth.expanded.setP2(QPointF(0, 85));
-#else
-	depth.expanded.setP2(QPointF(0, 65));
-#endif
-	depth.shrinked.setP1(QPointF(0, 0));
-	depth.shrinked.setP2(QPointF(0, 55));
-	depth.intermediate.setP1(QPointF(0, 0));
-	depth.intermediate.setP2(QPointF(0, 65));
-
-	// Time Axis Config
-	time.on.setX(3);
-#ifndef SUBSURFACE_MOBILE
-	time.on.setY(95);
-#else
-	time.on.setY(89.5);
-#endif
-	time.off.setX(3);
-	time.off.setY(110);
-	time.expanded.setP1(QPointF(0, 0));
-	time.expanded.setP2(QPointF(94, 0));
-
-	// Partial Gas Axis Config
-	partialPressure.on.setX(97);
-#ifndef SUBSURFACE_MOBILE
-	partialPressure.on.setY(75);
-#else
-	partialPressure.on.setY(70);
-#endif
-	partialPressure.off.setX(110);
-	partialPressure.off.setY(63);
-	partialPressure.expanded.setP1(QPointF(0, 0));
-#ifndef SUBSURFACE_MOBILE
-	partialPressure.expanded.setP2(QPointF(0, 19));
-#else
-	partialPressure.expanded.setP2(QPointF(0, 20));
-#endif
-	partialPressureWithTankBar = partialPressure;
-	partialPressureWithTankBar.expanded.setP2(QPointF(0, 17));
-	partialPressureTissue = partialPressure;
-	partialPressureTissue.on.setX(97);
-	partialPressureTissue.on.setY(65);
-	partialPressureTissue.expanded.setP2(QPointF(0, 16));
-
-	// cylinder axis config
-	cylinder.on.setX(3);
-	cylinder.on.setY(20);
-	cylinder.off.setX(-10);
-	cylinder.off.setY(20);
-	cylinder.expanded.setP1(QPointF(0, 15));
-	cylinder.expanded.setP2(QPointF(0, 50));
-	cylinder.shrinked.setP1(QPointF(0, 0));
-	cylinder.shrinked.setP2(QPointF(0, 20));
-	cylinder.intermediate.setP1(QPointF(0, 0));
-	cylinder.intermediate.setP2(QPointF(0, 20));
-
-	// Temperature axis config
-	temperature.on.setX(3);
-	temperature.off.setX(-10);
-	temperature.off.setY(40);
-	temperature.expanded.setP1(QPointF(0, 20));
-	temperature.expanded.setP2(QPointF(0, 33));
-	temperature.shrinked.setP1(QPointF(0, 2));
-	temperature.shrinked.setP2(QPointF(0, 12));
-#ifndef SUBSURFACE_MOBILE
-	temperature.on.setY(60);
-	temperatureAll.on.setY(51);
-	temperature.intermediate.setP1(QPointF(0, 2));
-	temperature.intermediate.setP2(QPointF(0, 12));
-#else
-	temperature.on.setY(51);
-	temperatureAll.on.setY(47);
-	temperature.intermediate.setP1(QPointF(0, 2));
-	temperature.intermediate.setP2(QPointF(0, 12));
-#endif
-
-	// Heart rate axis config
-	heartBeat.on.setX(3);
-	heartBeat.on.setY(82);
-	heartBeat.expanded.setP1(QPointF(0, 0));
-	heartBeat.expanded.setP2(QPointF(0, 10));
-	heartBeatWithTankBar = heartBeat;
-	heartBeatWithTankBar.expanded.setP2(QPointF(0, 7));
-
-	// Percentage axis config
-	percentage.on.setX(3);
-	percentage.on.setY(80);
-	percentage.expanded.setP1(QPointF(0, 0));
-	percentage.expanded.setP2(QPointF(0, 15));
-	percentageWithTankBar = percentage;
-	percentageWithTankBar.expanded.setP2(QPointF(0, 11.9));
 }
 
 void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsModel *plannerModel, bool inPlanner, bool instant, bool calcMax)
@@ -530,7 +403,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		heartBeatAxis->setMinimum(heartBeatAxisMin);
 		heartBeatAxis->setMaximum(heartBeatAxisMax + 1);
 		heartBeatAxis->setTickInterval(heartBeatAxisTick);
-		heartBeatAxis->updateTicks(animSpeed);
+		heartBeatAxis->updateTicks(animSpeed); // this shows the ticks
 	}
 	heartBeatAxis->setVisible(prefs.hrgraph && plotInfo.maxhr);
 
@@ -564,9 +437,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 #ifdef SUBSURFACE_MOBILE
 	if (currentdc->divemode == CCR) {
-		gasYAxis->setPos(itemPos.partialPressure.on);
-		gasYAxis->setLine(itemPos.partialPressure.expanded);
-
 		tankItem->setVisible(false);
 		pn2GasItem->setVisible(false);
 		po2GasItem->setVisible(prefs.pp_graphs.po2);
@@ -588,7 +458,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 			temperatureItem->setVisible(false);
 	} else {
 		tankItem->setVisible(prefs.tankbar);
-		gasYAxis->setPos(itemPos.partialPressure.off);
 		pn2GasItem->setVisible(false);
 		po2GasItem->setVisible(false);
 		pheGasItem->setVisible(false);

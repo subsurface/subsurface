@@ -39,6 +39,7 @@ public:
 	ProfileScene(double dpr, bool printMode, bool isGrayscale);
 	~ProfileScene();
 
+	void resize(QSizeF size);
 	void updateAxes(bool instant); // Update axes according to preferences
 	void clear();
 	bool isPointOutOfBoundaries(const QPointF &point) const;

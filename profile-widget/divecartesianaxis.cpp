@@ -63,7 +63,6 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor,
 	textVisibility(true),
 	lineVisibility(true),
 	labelScale(1.0),
-	line_size(1),
 	changed(true),
 	dpr(dpr)
 {
@@ -72,12 +71,6 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor,
 
 DiveCartesianAxis::~DiveCartesianAxis()
 {
-}
-
-void DiveCartesianAxis::setLineSize(qreal lineSize)
-{
-	line_size = lineSize;
-	changed = true;
 }
 
 void DiveCartesianAxis::setOrientation(Orientation o)
@@ -157,7 +150,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	emptyList(labels, steps, animSpeed);
 	emptyList(lines, steps, animSpeed);
 
-	// Move the remaining ticks / text to their correct positions
+	// Move the remaining grid lines / labels to their correct positions
 	// regarding the possible new values for the axis
 	qreal begin, stepSize;
 	if (orientation == TopToBottom) {
@@ -176,56 +169,78 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	stepSize /= stepsInRange;
 
 	for (int i = 0, count = labels.size(); i < count; i++, currValueText += interval) {
-		qreal childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
+		double childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
 					 begin + i * stepSize :
 					 begin - i * stepSize;
 
 		labels[i]->set(textForValue(currValueText), colorForValue(currValueText));
-		if (orientation == LeftToRight || orientation == RightToLeft) {
-			Animations::moveTo(labels[i], animSpeed, childPos, m.y1() + tick_size);
-		} else {
-			Animations::moveTo(labels[i], animSpeed ,m.x1() - tick_size, childPos);
+		switch (position) {
+		default:
+		case Position::Bottom:
+			Animations::moveTo(labels[i], animSpeed, childPos, rect.bottom() + labelSpaceVertical * dpr);
+			break;
+		case Position::Left:
+			Animations::moveTo(labels[i], animSpeed, rect.left() - labelSpaceHorizontal * dpr, childPos);
+			break;
+		case Position::Right:
+			Animations::moveTo(labels[i], animSpeed, rect.right() + labelSpaceHorizontal * dpr, childPos);
+			break;
 		}
 	}
 
 	for (int i = 0, count = lines.size(); i < count; i++, currValueLine += interval) {
-		qreal childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
+		double childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
 					 begin + i * stepSize :
 					 begin - i * stepSize;
 
-		if (orientation == LeftToRight || orientation == RightToLeft) {
-			Animations::moveTo(lines[i], animSpeed, childPos, m.y1());
+		if (position == Position::Bottom) {
+			// Fix size in case the scene changed
+			QLineF old = lines[i]->line();
+			lines[i]->setLine(old.x1(), old.y1(), old.x1(), old.y1() + rect.height());
+			Animations::moveTo(lines[i], animSpeed, childPos, rect.top());
 		} else {
-			Animations::moveTo(lines[i], animSpeed, m.x1(), childPos);
+			// Fix size in case the scene changed
+			QLineF old = lines[i]->line();
+			lines[i]->setLine(old.x1(), old.y1(), old.x1() + rect.width(), old.y1());
+			Animations::moveTo(lines[i], animSpeed, rect.left(), childPos);
 		}
 	}
 
-	// Add's the rest of the needed Ticks / Text.
+	// Add the rest of the needed labels.
 	for (int i = labels.size(); i < steps; i++, currValueText += interval) {
-		qreal childPos;
+		double childPos;
 		if (orientation == TopToBottom || orientation == LeftToRight) {
 			childPos = begin + i * stepSize;
 		} else {
 			childPos = begin - i * stepSize;
 		}
-		int alignFlags = orientation == RightToLeft || orientation == LeftToRight ? Qt::AlignBottom | Qt::AlignHCenter :
-											    Qt::AlignVCenter | Qt::AlignLeft;
+		int alignFlags = position == Position::Bottom ? Qt::AlignTop | Qt::AlignHCenter :
+				 position == Position::Left   ? Qt::AlignVCenter | Qt::AlignLeft:
+								Qt::AlignVCenter | Qt::AlignRight;
 		DiveTextItem *label = new DiveTextItem(dpr, labelScale, alignFlags, this);
 		label->set(textForValue(currValueText), colorForValue(currValueText));
 		label->setZValue(1);
 		labels.push_back(label);
-		if (orientation == RightToLeft || orientation == LeftToRight) {
-			label->setPos(scene.sceneRect().width() + 10, m.y1() + tick_size); // position it outside of the scene;
-			Animations::moveTo(label, animSpeed,childPos , m.y1() + tick_size);
-		} else {
-			label->setPos(m.x1() - tick_size, scene.sceneRect().height() + 10);
-			Animations::moveTo(label, animSpeed, m.x1() - tick_size, childPos);
+		switch (position) {
+		default:
+		case Position::Bottom:
+			label->setPos(scene.sceneRect().width() + 10, rect.bottom() + labelSpaceVertical * dpr); // position it outside of the scene;
+			Animations::moveTo(labels[i], animSpeed, childPos, rect.bottom() + labelSpaceVertical * dpr);
+			break;
+		case Position::Left:
+			label->setPos(rect.left() - labelSpaceHorizontal * dpr, scene.sceneRect().height() + 10);
+			Animations::moveTo(labels[i], animSpeed, rect.left() - labelSpaceHorizontal * dpr, childPos);
+			break;
+		case Position::Right:
+			label->setPos(rect.right() + labelSpaceHorizontal * dpr, scene.sceneRect().height() + 10);
+			Animations::moveTo(labels[i], animSpeed, rect.right() + labelSpaceHorizontal * dpr, childPos);
+			break;
 		}
 	}
 
-	// Add's the rest of the needed Ticks / Text.
+	// Add the rest of the needed grid lines.
 	for (int i = lines.size(); i < steps; i++, currValueText += interval) {
-		qreal childPos;
+		double childPos;
 		if (orientation == TopToBottom || orientation == LeftToRight) {
 			childPos = begin + i * stepSize;
 		} else {
@@ -237,16 +252,14 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 		line->setPen(pen);
 		line->setZValue(0);
 		lines.push_back(line);
-		if (orientation == RightToLeft || orientation == LeftToRight) {
-			line->setLine(0, -line_size, 0, 0);
-			line->setPos(scene.sceneRect().width() + 10, m.y1()); // position it outside of the scene);
-			Animations::moveTo(line, animSpeed, childPos, m.y1());
+		if (position == Position::Bottom) {
+			line->setLine(0.0, 0.0, 0.0, rect.height());
+			line->setPos(scene.sceneRect().width() + 10, rect.top()); // position it outside of the scene);
+			Animations::moveTo(line, animSpeed, childPos, rect.top());
 		} else {
-			QPointF p1 = mapFromScene(3, 0);
-			QPointF p2 = mapFromScene(line_size, 0);
-			line->setLine(p1.x(), 0, p2.x(), 0);
-			line->setPos(m.x1(), scene.sceneRect().height() + 10);
-			Animations::moveTo(line, animSpeed, m.x1(), childPos);
+			line->setLine(0.0, 0.0, rect.width(), 0.0);
+			line->setPos(rect.left(), scene.sceneRect().height() + 10);
+			Animations::moveTo(line, animSpeed, rect.left(), childPos);
 		}
 	}
 
@@ -263,9 +276,21 @@ void DiveCartesianAxis::setLine(const QLineF &line)
 	changed = true;
 }
 
-void DiveCartesianAxis::animateChangeLine(const QLineF &newLine, int animSpeed)
+void DiveCartesianAxis::animateChangeLine(const QRectF &rectIn, int animSpeed)
 {
-	setLine(newLine);
+	rect = rectIn;
+	switch (position) {
+		case Position::Left:
+			setLine(QLineF(rect.topLeft(), rect.bottomLeft()));
+			break;
+		case Position::Right:
+			setLine(QLineF(rect.topRight(), rect.bottomRight()));
+			break;
+		case Position::Bottom:
+		default:
+			setLine(QLineF(rect.bottomLeft(), rect.bottomRight()));
+			break;
+	}
 	updateTicks(animSpeed);
 	sizeChanged();
 }
@@ -380,6 +405,7 @@ QString TimeAxis::textForValue(double value) const
 	return QString::number(nr);
 }
 
+// TODO: replace by real dynamic axis - this is just weird.
 void TimeAxis::updateTicks(int animSpeed)
 {
 	DiveCartesianAxis::updateTicks(animSpeed);

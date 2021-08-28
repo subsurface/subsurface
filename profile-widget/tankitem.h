@@ -15,6 +15,7 @@ class TankItem : public QGraphicsRectItem
 public:
 	explicit TankItem(const DiveCartesianAxis &axis, double dpr);
 	void setData(const struct plot_info *plotInfo, const struct dive *d);
+	double height() const;
 
 private:
 	void createBar(int startTime, int stopTime, struct gasmix gas);

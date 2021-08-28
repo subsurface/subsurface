@@ -46,10 +46,9 @@ public:
 	qreal posAtValue(qreal value) const;
 	void setColor(const QColor &color);
 	void setTextColor(const QColor &color);
-	void animateChangeLine(const QLineF &newLine, int animSpeed);
+	void animateChangeLine(const QRectF &rect, int animSpeed);
 	void setTextVisible(bool arg1);
 	void setLinesVisible(bool arg1);
-	void setLineSize(qreal lineSize);
 	void setLine(const QLineF& line);
 	virtual void updateTicks(int animSpeed);
 	double width() const; // only for vertical axes
@@ -60,6 +59,7 @@ signals:
 
 protected:
 	Position position;
+	QRectF rect; // Rectangle to fill with grid lines
 	color_index_t gridColor;
 	ProfileScene &scene;
 	virtual QString textForValue(double value) const;
@@ -76,7 +76,6 @@ protected:
 	bool textVisibility;
 	bool lineVisibility;
 	double labelScale;
-	qreal line_size;
 	bool changed;
 	double dpr;
 };
