@@ -29,6 +29,9 @@ public:
 		LeftToRight,
 		RightToLeft
 	};
+	enum class Position {
+		Left, Right, Bottom
+	};
 	DiveCartesianAxis(double dpr, bool printMode, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setMinimum(double minimum);
