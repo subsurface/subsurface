@@ -49,7 +49,8 @@ public:
 	void setLineSize(qreal lineSize);
 	void setLine(const QLineF& line);
 	virtual void updateTicks(int animSpeed, color_index_t color = TIME_GRID);
-	double width() const;
+	double width() const; // only for vertical axes
+	double height() const; // only for horizontal axes
 
 signals:
 	void sizeChanged();
