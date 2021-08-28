@@ -270,7 +270,8 @@ void ProfileWidget2::settingsChanged()
 void ProfileWidget2::resizeEvent(QResizeEvent *event)
 {
 	QGraphicsView::resizeEvent(event);
-	fitInView(sceneRect(), Qt::IgnoreAspectRatio);
+	profileScene->resize(viewport()->size());
+	plotDive(d, dc, false, true); // disable animation on resize events
 }
 
 #ifndef SUBSURFACE_MOBILE

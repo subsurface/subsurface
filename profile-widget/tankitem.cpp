@@ -6,8 +6,9 @@
 #include "core/event.h"
 #include "core/profile.h"
 #include <QPen>
+#include <QFontMetrics>
 
-static const qreal height = 3.0;
+static const double border = 1.0;
 
 TankItem::TankItem(const DiveCartesianAxis &axis, double dpr) :
 	hAxis(axis),
@@ -18,14 +19,14 @@ TankItem::TankItem(const DiveCartesianAxis &axis, double dpr) :
 	QColor blue(AIR_BLUE);
 	QColor yellow(NITROX_YELLOW);
 	QColor green(NITROX_GREEN);
-	QLinearGradient nitroxGradient(QPointF(0, 0), QPointF(0, height));
+	QLinearGradient nitroxGradient(QPointF(0, 0), QPointF(0, height()));
 	nitroxGradient.setColorAt(0.0, green);
 	nitroxGradient.setColorAt(0.49, green);
 	nitroxGradient.setColorAt(0.5, yellow);
 	nitroxGradient.setColorAt(1.0, yellow);
 	nitrox = nitroxGradient;
 	oxygen = green;
-	QLinearGradient trimixGradient(QPointF(0, 0), QPointF(0, height));
+	QLinearGradient trimixGradient(QPointF(0, 0), QPointF(0, height()));
 	trimixGradient.setColorAt(0.0, green);
 	trimixGradient.setColorAt(0.49, green);
 	trimixGradient.setColorAt(0.5, red);
@@ -34,13 +35,20 @@ TankItem::TankItem(const DiveCartesianAxis &axis, double dpr) :
 	air = blue;
 }
 
+double TankItem::height() const
+{
+	QFont fnt = DiveTextItem::getFont(dpr, 1.0);
+	QFontMetrics fm(fnt);
+	return fm.height() + 2.0 * border * dpr;
+}
+
 void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 {
 	qreal x = hAxis.posAtValue(startTime);
 	qreal w = hAxis.posAtValue(stopTime) - hAxis.posAtValue(startTime);
 
 	// pick the right gradient, size, position and text
-	QGraphicsRectItem *rect = new QGraphicsRectItem(x, 0, w, height, this);
+	QGraphicsRectItem *rect = new QGraphicsRectItem(x, 0, w, height(), this);
 	if (gasmix_is_air(gas))
 		rect->setBrush(air);
 	else if (gas.he.permille)
@@ -51,12 +59,9 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 		rect->setBrush(nitrox);
 	rect->setPen(QPen(QBrush(), 0.0)); // get rid of the thick line around the rectangle
 	rects.push_back(rect);
-	DiveTextItem *label = new DiveTextItem(dpr, 1.0, Qt::AlignBottom | Qt::AlignRight, rect);
+	DiveTextItem *label = new DiveTextItem(dpr, 1.0, Qt::AlignVCenter | Qt::AlignRight, rect);
 	label->set(gasname(gas), Qt::black);
-	label->setPos(x + 1, 0);
-#ifdef SUBSURFACE_MOBILE
-	label->setPos(x + 1, -2.5);
-#endif
+	label->setPos(x + 2.0 * dpr, height() / 2.0);
 	label->setZValue(101);
 }
 
