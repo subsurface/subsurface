@@ -59,7 +59,6 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor,
 	min(0),
 	max(0),
 	interval(1),
-	tick_size(0),
 	textVisibility(true),
 	lineVisibility(true),
 	labelScale(1.0),
@@ -298,11 +297,6 @@ void DiveCartesianAxis::animateChangeLine(const QRectF &rectIn, int animSpeed)
 QString DiveCartesianAxis::textForValue(double value) const
 {
 	return QString("%L1").arg(value, 0, 'g', 4);
-}
-
-void DiveCartesianAxis::setTickSize(qreal size)
-{
-	tick_size = size;
 }
 
 void DiveCartesianAxis::setTickInterval(double i)

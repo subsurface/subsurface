@@ -38,7 +38,6 @@ public:
 	void setMaximum(double maximum);
 	void setTickInterval(double interval);
 	void setOrientation(Orientation orientation);
-	void setTickSize(qreal size);
 	void setFontLabelScale(qreal scale);
 	double minimum() const;
 	double maximum() const;
@@ -71,7 +70,6 @@ protected:
 	double min;
 	double max;
 	double interval;
-	double tick_size;
 	QColor textColor;
 	bool textVisibility;
 	bool lineVisibility;
