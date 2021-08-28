@@ -32,7 +32,7 @@ public:
 	enum class Position {
 		Left, Right, Bottom
 	};
-	DiveCartesianAxis(double dpr, bool printMode, ProfileScene &scene);
+	DiveCartesianAxis(Position position, color_index_t gridColor, double dpr, bool printMode, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
@@ -59,6 +59,8 @@ signals:
 	void sizeChanged();
 
 protected:
+	Position position;
+	color_index_t gridColor;
 	ProfileScene &scene;
 	virtual QString textForValue(double value) const;
 	virtual QColor colorForValue(double value) const;
@@ -82,7 +84,7 @@ protected:
 class DepthAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	DepthAxis(double dpr, bool printMode, ProfileScene &scene);
+	DepthAxis(Position position, color_index_t gridColor, double dpr, bool printMode, ProfileScene &scene);
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
@@ -109,7 +111,8 @@ private:
 class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	PartialGasPressureAxis(const DivePlotDataModel &model, double dpr, bool printMode, ProfileScene &scene);
+	PartialGasPressureAxis(const DivePlotDataModel &model, Position position, color_index_t gridColor,
+			       double dpr, bool printMode, ProfileScene &scene);
 	void update(int animSpeed);
 	double width() const;
 private:
