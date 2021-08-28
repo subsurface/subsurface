@@ -141,7 +141,7 @@ double DiveCartesianAxis::height() const
 	return fm.height() + labelSpaceVertical * dpr;
 }
 
-void DiveCartesianAxis::updateTicks(int animSpeed, color_index_t color)
+void DiveCartesianAxis::updateTicks(int animSpeed)
 {
 	if (!changed && !printMode)
 		return;
@@ -233,7 +233,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed, color_index_t color)
 		}
 		DiveLineItem *line = new DiveLineItem(this);
 		QPen pen = gridPen();
-		pen.setBrush(getColor(color));
+		pen.setBrush(getColor(gridColor));
 		line->setPen(pen);
 		line->setZValue(0);
 		lines.push_back(line);
@@ -380,9 +380,9 @@ QString TimeAxis::textForValue(double value) const
 	return QString::number(nr);
 }
 
-void TimeAxis::updateTicks(int animSpeed, color_index_t color)
+void TimeAxis::updateTicks(int animSpeed)
 {
-	DiveCartesianAxis::updateTicks(animSpeed, color);
+	DiveCartesianAxis::updateTicks(animSpeed);
 	if (maximum() > 600) {
 		for (int i = 0; i < labels.count(); i++) {
 			labels[i]->setVisible(i % 2);

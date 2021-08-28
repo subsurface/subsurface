@@ -530,14 +530,14 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		heartBeatAxis->setMinimum(heartBeatAxisMin);
 		heartBeatAxis->setMaximum(heartBeatAxisMax + 1);
 		heartBeatAxis->setTickInterval(heartBeatAxisTick);
-		heartBeatAxis->updateTicks(HR_AXIS); // this shows the ticks
+		heartBeatAxis->updateTicks(animSpeed);
 	}
 	heartBeatAxis->setVisible(prefs.hrgraph && plotInfo.maxhr);
 
 	percentageAxis->setMinimum(0);
 	percentageAxis->setMaximum(100);
 	percentageAxis->setVisible(false);
-	percentageAxis->updateTicks(HR_AXIS);
+	percentageAxis->updateTicks(animSpeed);
 
 	if (calcMax)
 		timeAxis->setMaximum(maxtime);
