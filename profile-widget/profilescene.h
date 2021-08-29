@@ -96,7 +96,7 @@ private:
 	DiveTextItem *decoModelParameters;
 	QList<DiveCalculatedTissue *> allTissues;
 	DiveHeartrateItem *heartBeatItem;
-	QList<DivePercentageItem *> allPercentages;
+	DivePercentageItem *percentageItem;
 	TankItem *tankItem;
 };
 

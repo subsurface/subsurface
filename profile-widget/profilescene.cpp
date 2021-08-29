@@ -2,6 +2,7 @@
 #include "profilescene.h"
 #include "diveeventitem.h"
 #include "divecartesianaxis.h"
+#include "divepercentageitem.h"
 #include "diveprofileitem.h"
 #include "divetextitem.h"
 #include "tankitem.h"
@@ -69,6 +70,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, dpr)),
 	decoModelParameters(new DiveTextItem(dpr, 1.0, Qt::AlignHCenter | Qt::AlignTop, nullptr)),
 	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, dpr)),
+	percentageItem(new DivePercentageItem(*timeAxis, *percentageAxis, dpr)),
 	tankItem(new TankItem(*timeAxis, dpr))
 {
 	init_plot_info(&plotInfo);
@@ -119,9 +121,9 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	for (int i = 0; i < 16; i++) {
 		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, dpr);
 		allTissues.append(tissueItem);
-		DivePercentageItem *percentageItem = createItem<DivePercentageItem>(*percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, i + 1, i, dpr);
-		allPercentages.append(percentageItem);
 	}
+
+	percentageItem->setZValue(1.0);
 
 	// Add items to scene
 	addItem(diveComputerText);
@@ -134,6 +136,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	addItem(cylinderPressureAxis);
 	addItem(percentageAxis);
 	addItem(heartBeatAxis);
+	addItem(percentageItem);
 
 	for (AbstractProfilePolygonItem *item: profileItems)
 		addItem(item);
@@ -189,8 +192,7 @@ void ProfileScene::updateVisibility()
 #ifndef SUBSURFACE_MOBILE
 	for (DiveCalculatedTissue *tissue: allTissues)
 		tissue->setVisible(prefs.calcalltissues && prefs.calcceiling);
-	for (DivePercentageItem *percentage: allPercentages)
-		percentage->setVisible(prefs.percentagegraph);
+	percentageItem->setVisible(prefs.percentagegraph);
 #endif
 	meanDepthItem->setVisible(prefs.show_average_depth);
 	reportedCeiling->setVisible(prefs.dcceiling);
@@ -467,6 +469,9 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// Replot dive items
 	for (AbstractProfilePolygonItem *item: profileItems)
 		item->replot(d, inPlanner);
+
+	if (prefs.percentagegraph)
+		percentageItem->replot(d, currentdc, dataModel->data());
 
 	// The event items are a bit special since we don't know how many events are going to
 	// exist on a dive, so I cant create cache items for that. that's why they are here
