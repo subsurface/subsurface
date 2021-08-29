@@ -359,6 +359,12 @@ double DiveCartesianAxis::minimum() const
 	return min;
 }
 
+std::pair<double, double> DiveCartesianAxis::screenMinMax() const
+{
+	return position == Position::Bottom ? std::make_pair(rect.left(), rect.right())
+					    : std::make_pair(rect.top(), rect.bottom());
+}
+
 void DiveCartesianAxis::setColor(const QColor &color)
 {
 	QPen defaultPen = gridPen();

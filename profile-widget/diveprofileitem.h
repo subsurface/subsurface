@@ -97,21 +97,6 @@ private:
 	QString visibilityKey;
 };
 
-class DivePercentageItem : public AbstractProfilePolygonItem {
-	Q_OBJECT
-public:
-	DivePercentageItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, int i, double dpr);
-	void replot(const dive *d, bool in_planner) override;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-
-private:
-	std::vector<QColor> colors;	// Must have same number of elements as the polygon
-	QString visibilityKey;
-	int tissueIndex;
-	QColor ColorScale(double value, int inert);
-
-};
-
 class DiveGasPressureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
