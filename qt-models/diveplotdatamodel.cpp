@@ -78,10 +78,6 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 		return item.ceilings[index.column() - TISSUE_1];
 	}
 
-	if (role == Qt::DisplayRole && index.column() >= PERCENTAGE_1 && index.column() <= PERCENTAGE_16) {
-		return item.percentages[index.column() - PERCENTAGE_1];
-	}
-
 	if (role == Qt::BackgroundRole) {
 		switch (index.column()) {
 		case COLOR:
@@ -151,9 +147,6 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 	}
 	if (role == Qt::DisplayRole && section >= TISSUE_1 && section <= TISSUE_16) {
 		return QString("Ceiling: %1").arg(section - TISSUE_1);
-	}
-	if (role == Qt::DisplayRole && section >= PERCENTAGE_1 && section <= PERCENTAGE_16) {
-		return QString("Tissue: %1").arg(section - PERCENTAGE_1);
 	}
 	return QVariant();
 }
