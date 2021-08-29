@@ -67,36 +67,12 @@ static void dump_pi(struct plot_info *pi)
  * current dive. However, we don't scale past less than
  * 30 minutes or 90 ft, just so that small dives show
  * up as such unless zoom is enabled.
- * We also need to add 180 seconds at the end so the min/max
- * plots correctly
  */
 int get_maxtime(const struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
-
-	int DURATION_THR = (pi->dive_type == FREEDIVING ? 60 : 600);
-	int CEILING = (pi->dive_type == FREEDIVING ? 30 : 60);
-
-	if (prefs.zoomed_plot) {
-		/* Rounded up to one minute, with at least 2.5 minutes to
-		 * spare.
-		 * For dive times shorter than 10 minutes, we use seconds/4 to
-		 * calculate the space dynamically.
-		 * This is seamless since 600/4 = 150.
-		 */
-		if (seconds < DURATION_THR)
-			return ROUND_UP(seconds + seconds / 4, CEILING);
-		else
-			return ROUND_UP(seconds + DURATION_THR/4, CEILING);
-	} else {
-#ifndef SUBSURFACE_MOBILE
-		/* min 30 minutes, rounded up to 5 minutes, with at least 2.5 minutes to spare */
-		return MAX(30 * 60, ROUND_UP(seconds + DURATION_THR/4, CEILING * 5));
-#else
-		/* just add 2.5 minutes so we have a consistant right margin */
-		return seconds + DURATION_THR / 4;
-#endif
-	}
+	int min = prefs.zoomed_plot ? 30 : 30 * 60;
+	return MAX(min, seconds);
 }
 
 /* get the maximum depth to which we want to plot
