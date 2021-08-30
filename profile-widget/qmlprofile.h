@@ -40,7 +40,6 @@ private:
 	int m_margin;
 	qreal m_xOffset, m_yOffset;
 	std::unique_ptr<ProfileScene> m_profileWidget;
-	void updateProfile();
 	void createProfileView();
 
 private slots:

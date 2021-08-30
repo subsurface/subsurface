@@ -38,8 +38,7 @@ void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &view
 	// use the placeHolder and the viewPort position to calculate the relative position of the dive profile.
 	QRect pos(x, y, profilePlaceholder.width(), profilePlaceholder.height());
 
-	profile->plotDive(dive, 0, nullptr, true);
-	profile->draw(painter, pos);
+	profile->draw(painter, pos, dive, 0, nullptr, false);
 }
 
 void Printer::flowRender()

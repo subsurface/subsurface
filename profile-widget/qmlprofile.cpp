@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-2.0
+// SPDX-License-Identifier: GPL-2.
 #include "qmlprofile.h"
 #include "profilescene.h"
 #include "mobile-widgets/qmlmanager.h"
@@ -54,7 +54,12 @@ void QMLProfile::paint(QPainter *painter)
 
 	// let's look at the intended size of the content and scale our scene accordingly
 	QRect painterRect = painter->viewport();
-	m_profileWidget->draw(painter, painterRect);
+	if (m_diveId < 0)
+		return;
+	struct dive *d = get_dive_by_uniq_id(m_diveId);
+	if (!d)
+		return;
+	m_profileWidget->draw(painter, painterRect, d, dc_number, nullptr, false);
 }
 
 void QMLProfile::setMargin(int margin)
@@ -67,22 +72,9 @@ int QMLProfile::diveId() const
 	return m_diveId;
 }
 
-void QMLProfile::updateProfile()
-{
-	struct dive *d = get_dive_by_uniq_id(m_diveId);
-	if (!d)
-		return;
-	if (verbose)
-		qDebug() << "update profile for dive #" << d->number << "offeset" << QString::number(m_xOffset, 'f', 1) << "/" << QString::number(m_yOffset, 'f', 1);
-	m_profileWidget->plotDive(d, dc_number);
-}
-
 void QMLProfile::setDiveId(int diveId)
 {
 	m_diveId = diveId;
-	if (m_diveId < 0)
-		return;
-	updateProfile();
 }
 
 qreal QMLProfile::devicePixelRatio() const
@@ -129,7 +121,6 @@ void QMLProfile::divesChanged(const QVector<dive *> &dives, DiveField)
 	for (struct dive *d: dives) {
 		if (d->id == m_diveId) {
 			qDebug() << "dive #" << d->number << "changed, trigger profile update";
-			m_profileWidget->plotDive(d, dc_number);
 			triggerUpdate();
 			return;
 		}

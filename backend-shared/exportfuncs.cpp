@@ -41,11 +41,10 @@ static constexpr int profileHeight = 600 * profileScale;
 
 static void exportProfile(ProfileScene *profile, const struct dive *dive, const QString &filename)
 {
-	profile->plotDive(dive, 0, nullptr, false, true);
 	QImage image = QImage(QSize(profileWidth, profileHeight), QImage::Format_RGB32);
 	QPainter paint;
 	paint.begin(&image);
-	profile->draw(&paint, QRect(0, 0, profileWidth, profileHeight));
+	profile->draw(&paint, QRect(0, 0, profileWidth, profileHeight), dive, 0, nullptr, false);
 	image.save(filename);
 }
 
