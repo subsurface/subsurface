@@ -48,8 +48,9 @@ public:
 	void plotDive(const struct dive *d, int dc, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
 		      bool instant = false, bool calcMax = true);
 
-	void draw(QPainter *painter, const QRect &pos);
-	QImage toImage(QSize size);
+	void draw(QPainter *painter, const QRect &pos,
+		  const struct dive *d, int dc,
+		  DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false);
 
 	const struct dive *d;
 	int dc;

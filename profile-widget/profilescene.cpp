@@ -530,19 +530,21 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	diveComputerText->set(dcText, getColor(TIME_TEXT, isGrayscale));
 }
 
-QImage ProfileScene::toImage(QSize size)
+void ProfileScene::draw(QPainter *painter, const QRect &pos,
+			const struct dive *d, int dc,
+			DivePlannerPointsModel *plannerModel, bool inPlanner)
 {
-	// The size of chart with respect to the scene is fixed - by convention - to 100.0.
-	// We add 2% to the height so that the dive computer name is not cut off.
-	QRectF sceneRect(0.0, 0.0, 100.0, 102.0);
+	QSize size = pos.size();
+	resize(QSizeF(size));
+	plotDive(d, dc, plannerModel, inPlanner, true, true);
 
-	QImage image(size, QImage::Format_ARGB32);
+	QImage image(pos.size(), QImage::Format_ARGB32);
 	image.fill(getColor(::BACKGROUND, isGrayscale));
 
 	QPainter imgPainter(&image);
 	imgPainter.setRenderHint(QPainter::Antialiasing);
 	imgPainter.setRenderHint(QPainter::SmoothPixmapTransform);
-	render(&imgPainter, QRect(QPoint(), size), sceneRect, Qt::IgnoreAspectRatio);
+	render(&imgPainter, QRect(QPoint(), size), sceneRect(), Qt::IgnoreAspectRatio);
 	imgPainter.end();
 
 	if (isGrayscale) {
@@ -556,12 +558,5 @@ QImage ProfileScene::toImage(QSize size)
 			}
 		}
 	}
-
-	return image;
-}
-
-void ProfileScene::draw(QPainter *painter, const QRect &pos)
-{
-	QImage img = toImage(pos.size());
-	painter->drawImage(pos, img);
+	painter->drawImage(pos, image);
 }

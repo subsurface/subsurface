@@ -608,8 +608,7 @@ void PlannerWidgets::printDecoPlan()
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
 	auto profile = std::make_unique<ProfileScene>(1.0, true, false);
-	profile->plotDive(&displayed_dive, 0, DivePlannerPointsModel::instance(), true, true);
-	profile->draw(&painter, QRect(0, 0, pixmap.width(), pixmap.height()));
+	profile->draw(&painter, QRect(0, 0, pixmap.width(), pixmap.height()), &displayed_dive, 0, DivePlannerPointsModel::instance(), true);
 
 	QByteArray byteArray;
 	QBuffer buffer(&byteArray);
