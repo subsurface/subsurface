@@ -9,6 +9,7 @@
 
 #include <QGraphicsScene>
 #include <QPainter>
+#include <memory>
 
 class DivePlannerPointsModel;
 class DivePlotDataModel;
@@ -24,6 +25,7 @@ class DiveGasPressureItem;
 class DiveHeartrateItem;
 class DiveMeanDepthItem;
 class DivePercentageItem;
+class DivePixmaps;
 class DiveProfileItem;
 class DiveReportedCeiling;
 class DiveTemperatureItem;
@@ -98,6 +100,7 @@ private:
 	DiveHeartrateItem *heartBeatItem;
 	DivePercentageItem *percentageItem;
 	TankItem *tankItem;
+	std::shared_ptr<const DivePixmaps> pixmaps;
 };
 
 #endif

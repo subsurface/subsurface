@@ -1,23 +1,21 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/diveeventitem.h"
-#include "qt-models/diveplotdatamodel.h"
 #include "profile-widget/divecartesianaxis.h"
+#include "profile-widget/divepixmapcache.h"
 #include "profile-widget/animationfunctions.h"
 #include "core/event.h"
 #include "core/format.h"
-#include "core/libdivecomputer.h"
 #include "core/profile.h"
 #include "core/gettextfromc.h"
-#include "core/metrics.h"
 #include "core/sample.h"
 #include "core/subsurface-string.h"
-#include <QDebug>
+#include "qt-models/diveplotdatamodel.h"
 
 #define DEPTH_NOT_FOUND (-2342)
 
 DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix,
 			     DivePlotDataModel *model, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
-			     int speed, double dpr, QGraphicsItem *parent) : DivePixmapItem(parent),
+			     int speed, const DivePixmaps &pixmaps, QGraphicsItem *parent) : DivePixmapItem(parent),
 	vAxis(vAxis),
 	hAxis(hAxis),
 	dataModel(model),
@@ -26,7 +24,7 @@ DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasm
 {
 	setFlag(ItemIgnoresTransformations);
 
-	setupPixmap(lastgasmix, dpr);
+	setupPixmap(lastgasmix, pixmaps);
 	setupToolTipString(lastgasmix);
 	recalculatePos(0);
 
@@ -49,62 +47,41 @@ struct event *DiveEventItem::getEventMutable()
 	return ev;
 }
 
-void DiveEventItem::setupPixmap(struct gasmix lastgasmix, double dpr)
+void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pixmaps)
 {
-	extern int verbose;
-	const IconMetrics& metrics = defaultIconMetrics();
-#ifndef SUBSURFACE_MOBILE
-	int sz_bigger = metrics.sz_med + metrics.sz_small; // ex 40px
-#else
-#if defined(Q_OS_IOS)
-	 // on iOS devices we need to adjust for Device Pixel Ratio
-	int sz_bigger = metrics.sz_med  * metrics.dpr;
-#else
-	// SUBSURFACE_MOBILE, seems a little big from the code,
-	// but looks fine on device
-	int sz_bigger = metrics.sz_big + metrics.sz_med;
-#endif
-#endif
-	sz_bigger = lrint(sz_bigger * dpr);
-	int sz_pix = sz_bigger/2; // ex 20px
-	if (verbose)
-		qDebug() << __FUNCTION__ << "DPR" << dpr << "metrics" << metrics.sz_med << metrics.sz_small << "sz_bigger" << sz_bigger;
-
-#define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(sz_pix, sz_pix, Qt::KeepAspectRatio, Qt::SmoothTransformation)
-#define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(sz_bigger, sz_bigger, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 	if (empty_string(ev->name)) {
-		setPixmap(EVENT_PIXMAP(":status-warning-icon"));
+		setPixmap(pixmaps.warning);
 	} else if (same_string_caseinsensitive(ev->name, "modechange")) {
 		if (ev->value == 0)
-			setPixmap(EVENT_PIXMAP(":bailout-icon"));
+			setPixmap(pixmaps.bailout);
 		else
-			setPixmap(EVENT_PIXMAP(":onCCRLoop-icon"));
+			setPixmap(pixmaps.onCCRLoop);
 	} else if (ev->type == SAMPLE_EVENT_BOOKMARK) {
-		setPixmap(EVENT_PIXMAP(":dive-bookmark-icon"));
+		setPixmap(pixmaps.bookmark);
 	} else if (event_is_gaschange(ev)) {
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		struct icd_data icd_data;
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (mix.he.permille) {
 			if (icd)
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-ICD-icon"));
+				setPixmap(pixmaps.gaschangeTrimixICD);
 			else
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-icon"));
+				setPixmap(pixmaps.gaschangeTrimix);
 		} else if (gasmix_is_air(mix)) {
 			if (icd)
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-ICD-icon"));
+				setPixmap(pixmaps.gaschangeAirICD);
 			else
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-icon"));
+				setPixmap(pixmaps.gaschangeAir);
 		} else if (mix.o2.permille == 1000) {
 			if (icd)
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-oxygen-ICD-icon"));
+				setPixmap(pixmaps.gaschangeOxygenICD);
 			else
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-oxygen-icon"));
+				setPixmap(pixmaps.gaschangeOxygen);
 		} else {
 			if (icd)
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-ICD-icon"));
+				setPixmap(pixmaps.gaschangeEANICD);
 			else
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-icon"));
+				setPixmap(pixmaps.gaschangeEAN);
 		}
 #ifdef SAMPLE_FLAGS_SEVERITY_SHIFT
 	} else if ((((ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
@@ -121,16 +98,14 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, double dpr)
 		// so set an "almost invisible" pixmap (a narrow but somewhat tall, basically transparent pixmap)
 		// that allows tooltips to work when we don't want to show a specific
 		// pixmap for an event, but want to show the event value in the tooltip
-		QPixmap transparentPixmap(4, 20);
-		transparentPixmap.fill(QColor::fromRgbF(1.0, 1.0, 1.0, 0.01));
-		setPixmap(transparentPixmap);
+		setPixmap(pixmaps.transparent);
 #ifdef SAMPLE_FLAGS_SEVERITY_SHIFT
 	} else if (((ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 2) {
-		setPixmap(EVENT_PIXMAP(":status-info-icon"));
+		setPixmap(pixmaps.info);
 	} else if (((ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 3) {
-		setPixmap(EVENT_PIXMAP(":status-warning-icon"));
+		setPixmap(pixmaps.warning);
 	} else if (((ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 4) {
-		setPixmap(EVENT_PIXMAP(":status-violation-icon"));
+		setPixmap(pixmaps.violation);
 #endif
 	} else if (same_string_caseinsensitive(ev->name, "violation") || // generic libdivecomputer
 		   same_string_caseinsensitive(ev->name, "Safety stop violation")  || // the rest are from the Uemis downloader
@@ -139,20 +114,18 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, double dpr)
 		   same_string_caseinsensitive(ev->name, "Dive time alert")  ||
 		   same_string_caseinsensitive(ev->name, "Low battery alert")  ||
 		   same_string_caseinsensitive(ev->name, "Speed alarm")) {
-		setPixmap(EVENT_PIXMAP(":status-violation-icon"));
+		setPixmap(pixmaps.violation);
 	} else if (same_string_caseinsensitive(ev->name, "non stop time") || // generic libdivecomputer
 		   same_string_caseinsensitive(ev->name, "safety stop") ||
 		   same_string_caseinsensitive(ev->name, "safety stop (voluntary)") ||
 		   same_string_caseinsensitive(ev->name, "Tank change suggested") || // Uemis downloader
 		   same_string_caseinsensitive(ev->name, "Marker")) {
-		setPixmap(EVENT_PIXMAP(":status-info-icon"));
+		setPixmap(pixmaps.info);
 	} else {
 		// we should do some guessing based on the type / name of the event;
 		// for now they all get the warning icon
-		setPixmap(EVENT_PIXMAP(":status-warning-icon"));
+		setPixmap(pixmaps.warning);
 	}
-#undef EVENT_PIXMAP
-#undef EVENT_PIXMAP_BIGGER
 }
 
 void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)

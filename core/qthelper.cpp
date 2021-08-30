@@ -1762,4 +1762,3 @@ QImage renderSVGIconWidth(const char *id, int size)
 	svg.render(&painter);
 	return res;
 }
-
