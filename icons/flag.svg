@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xml:space="preserve"
+   width="32px"
+   height="32px"
+   style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg30"><metadata
+   id="metadata34"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata>
+ <defs
+   id="defs14">
+  <style
+   type="text/css"
+   id="style2">
+   <![CDATA[
+    .str0 {stroke:#1F1A17;stroke-width:1.24967}
+    .str1 {stroke:#1F1A17;stroke-width:2.36232}
+    .fil2 {fill:none}
+    .fil1 {fill:white}
+    .fil0 {fill:url(#id1)}
+   ]]>
+  </style>
+   <clipPath
+   id="id0">
+    <path
+   d="M9.28983 6.40661l21.0341 5.69556 -3.28245 12.1211 -21.0341 -5.69556 3.28245 -12.1211z"
+   id="path1" />
+   </clipPath>
+  <linearGradient
+   id="id1"
+   gradientUnits="userSpaceOnUse"
+   x1="4.85575"
+   y1="28.2014"
+   x2="31.6208"
+   y2="1.43629">
+   <stop
+   offset="0"
+   style="stop-color:#542729"
+   id="s1" />
+   <stop
+   offset="0.25098"
+   style="stop-color:#A91414"
+   id="s2" />
+   <stop
+   offset="1"
+   style="stop-color:red"
+   id="s3" />
+  </linearGradient>
+ <linearGradient
+   xlink:href="#id1"
+   id="linearGradient870"
+   gradientUnits="userSpaceOnUse"
+   x1="4.85575"
+   y1="28.2014"
+   x2="31.6208"
+   y2="1.43629" />
+   </defs>
+ <path
+   id="p1"
+   style="fill:url(#linearGradient870)"
+   d="M 9.2890625 6.40625 L 6.0078125 18.527344 L 27.041016 24.222656 L 30.324219 12.101562 L 9.2890625 6.40625 z " /><path
+   id="p2"
+   style="stroke:#ffffff;fill:#ffffff"
+   d="M 9.2890625 6.40625 L 8.7382812 8.4414062 L 24.296875 23.480469 L 27.041016 24.222656 L 27.599609 22.158203 L 12.357422 7.2363281 L 9.2890625 6.40625 z " /><polygon
+   class="fil2 str0"
+   points="27.0415,24.2232 6.00738,18.5277 9.28983,6.40661 30.3239,12.1022 "
+   id="p3" /><line
+   class="fil2 str1"
+   x1="9.5425997"
+   y1="4.5817199"
+   x2="2.37413"
+   y2="29.979"
+   id="line26" />
+</svg>

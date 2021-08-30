@@ -37,7 +37,7 @@
         <file alias="onCCRLoop-icon">icons/CCR.png</file>
         <file alias="bailout-icon">icons/OC.png</file>
         <file alias="salinity-warning-icon">icons/bluewarning.png</file>
-        <file alias="dive-bookmark-icon">icons/flag.png</file>
+        <file alias="dive-bookmark-icon">icons/flag.svg</file>
         <file alias="ruler-icon">icons/ruler.png</file>
         <file alias="poster-icon">icons/poster.png</file>
         <file>xslt/commonTemplates.xsl</file>

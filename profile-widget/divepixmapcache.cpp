@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divepixmapcache.h"
 #include "core/metrics.h"
+#include "core/qthelper.h" // for renderSVGIconWidth
 
 #include <cmath>
 
@@ -40,7 +41,7 @@ DivePixmaps::DivePixmaps(int dpr) : dpr(dpr)
 	violation = createPixmap(":status-violation-icon", sz_pix);
 	bailout = createPixmap(":bailout-icon", sz_pix);
 	onCCRLoop = createPixmap(":onCCRLoop-icon", sz_pix);
-	bookmark = createPixmap(":dive-bookmark-icon", sz_pix);
+	bookmark = QPixmap::fromImage(renderSVGIconWidth(":dive-bookmark-icon", sz_pix));
 	gaschangeTrimixICD = createPixmap(":gaschange-trimix-ICD-icon", sz_bigger);
 	gaschangeTrimix = createPixmap(":gaschange-trimix-icon", sz_bigger);
 	gaschangeAirICD = createPixmap(":gaschange-air-ICD-icon", sz_bigger);
