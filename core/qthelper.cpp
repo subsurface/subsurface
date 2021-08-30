@@ -1758,6 +1758,7 @@ QImage renderSVGIconWidth(const char *id, int size)
 	QSvgRenderer svg{QString(id)};
 	QSize svgSize = svg.defaultSize();
 	QImage res(size, size * svgSize.height() / svgSize.width(), QImage::Format_ARGB32);
+	res.fill(Qt::transparent);
 	QPainter painter(&res);
 	svg.render(&painter);
 	return res;
