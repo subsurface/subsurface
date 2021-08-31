@@ -484,7 +484,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	struct gasmix lastgasmix = get_gasmix_at_time(d, get_dive_dc_const(d, dc), duration_t{1});
 
 	while (event) {
-#ifndef SUBSURFACE_MOBILE
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
 			if (empty_string(event->name) ||
@@ -496,10 +495,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 				continue;
 			}
 		}
-#else
-		// printMode is always selected for SUBSURFACE_MOBILE due to font problems
-		// BUT events are wanted.
-#endif
 		if (DiveEventItem::isInteresting(d, currentdc, event, plotInfo)) {
 			auto item = new DiveEventItem(d, event, lastgasmix, plotInfo,
 						      timeAxis, profileYAxis, animSpeed, *pixmaps);
