@@ -16,8 +16,7 @@ IconMetrics::IconMetrics() :
 	sz_med(-1),
 	sz_big(-1),
 	sz_pic(-1),
-	spacing(-1),
-	dpr(1.0)
+	spacing(-1)
 {
 }
 
@@ -57,9 +56,4 @@ const IconMetrics &defaultIconMetrics()
 	}
 
 	return dfltIconMetrics;
-}
-
-void updateDevicePixelRatio(double dpr)
-{
-	dfltIconMetrics.dpr = dpr;
 }
