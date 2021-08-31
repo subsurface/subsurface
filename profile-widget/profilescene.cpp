@@ -500,20 +500,18 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		// printMode is always selected for SUBSURFACE_MOBILE due to font problems
 		// BUT events are wanted.
 #endif
-		DiveEventItem *item = new DiveEventItem(d, event, lastgasmix, dataModel,
-							timeAxis, profileYAxis, animSpeed, *pixmaps);
-		item->setZValue(2);
-		addItem(item);
-		eventItems.push_back(item);
+		if (DiveEventItem::isInteresting(d, currentdc, event, *dataModel)) {
+			auto item = new DiveEventItem(d, event, lastgasmix, dataModel,
+						      timeAxis, profileYAxis, animSpeed, *pixmaps);
+			item->setZValue(2);
+			addItem(item);
+			eventItems.push_back(item);
+		}
 		if (event_is_gaschange(event))
 			lastgasmix = get_gasmix_from_event(d, event);
 		event = event->next;
 	}
 
-	// Only set visible the events that should be visible
-	Q_FOREACH (DiveEventItem *event, eventItems) {
-		event->setVisible(!event->shouldBeHidden());
-	}
 	QString dcText = get_dc_nickname(currentdc);
 	if (dcText == "planned dive")
 		dcText = tr("Planned dive");

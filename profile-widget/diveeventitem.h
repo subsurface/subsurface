@@ -23,6 +23,8 @@ public:
 	void setHorizontalAxis(DiveCartesianAxis *axis);
 	void setModel(DivePlotDataModel *model);
 	bool shouldBeHidden();
+	static bool isInteresting(const struct dive *d, const struct divecomputer *dc,
+				  const struct event *ev, const DivePlotDataModel &model);
 public
 slots:
 	void recalculatePos(int animationSpeed);
@@ -30,7 +32,6 @@ slots:
 private:
 	void setupToolTipString(struct gasmix lastgasmix);
 	void setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pixmaps);
-	int depthAtTime(int time);
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;
 	DivePlotDataModel *dataModel;
