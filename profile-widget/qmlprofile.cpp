@@ -9,8 +9,6 @@
 #include <QScreen>
 #include <QElapsedTimer>
 
-const double fontScale = 0.6; // profile looks less cluttered with smaller font
-
 QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
 	m_devicePixelRatio(1.0),
@@ -33,7 +31,7 @@ QMLProfile::~QMLProfile()
 
 void QMLProfile::createProfileView()
 {
-	m_profileWidget.reset(new ProfileScene(fontScale * m_devicePixelRatio, true, false));
+	m_profileWidget.reset(new ProfileScene(m_devicePixelRatio, false, false));
 }
 
 // we need this so we can connect update() to the scaleChanged() signal - which the connect above cannot do
