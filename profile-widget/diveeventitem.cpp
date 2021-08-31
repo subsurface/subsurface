@@ -28,7 +28,6 @@ DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasm
 	setupToolTipString(lastgasmix);
 	recalculatePos(0);
 
-
 	connect(vAxis, &DiveCartesianAxis::sizeChanged, this,
 		[speed, this] { recalculatePos(speed); });
 }
@@ -180,10 +179,19 @@ void DiveEventItem::eventVisibilityChanged(const QString&, bool)
 	//WARN: lookslike we should implement this.
 }
 
-bool DiveEventItem::shouldBeHidden()
+static int depthAtTime(const DivePlotDataModel &model, int time)
 {
-	const struct divecomputer *dc = get_dive_dc_const(dive, dc_number);
+	QModelIndexList result = model.match(model.index(0, DivePlotDataModel::TIME), Qt::DisplayRole, time);
+	if (result.isEmpty()) {
+		qWarning("can't find a spot in the dataModel");
+		return DEPTH_NOT_FOUND;
+	}
+	return model.data(model.index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();
+}
 
+bool DiveEventItem::isInteresting(const struct dive *d, const struct divecomputer *dc,
+				  const struct event *ev, const DivePlotDataModel &model)
+{
 	/*
 	 * Some gas change events are special. Some dive computers just tell us the initial gas this way.
 	 * Don't bother showing those
@@ -192,8 +200,8 @@ bool DiveEventItem::shouldBeHidden()
 	if (!strcmp(ev->name, "gaschange") &&
 	    (ev->time.seconds == 0 ||
 	     (first_sample && ev->time.seconds == first_sample->time.seconds) ||
-	     depthAtTime(ev->time.seconds) < SURFACE_THRESHOLD))
-		return true;
+	     depthAtTime(model, ev->time.seconds) < SURFACE_THRESHOLD))
+		return false;
 
 	/*
 	 * Some divecomputers give "surface" events that just aren't interesting.
@@ -202,25 +210,18 @@ bool DiveEventItem::shouldBeHidden()
 	if (!strcmp(ev->name, "surface")) {
 		int time = ev->time.seconds;
 		if (time <= 30 || time + 30 >= (int)dc->duration.seconds)
-			return true;
+			return false;
 	}
+	return true;
+}
 
+bool DiveEventItem::shouldBeHidden()
+{
 	for (int i = 0; i < evn_used; i++) {
 		if (!strcmp(ev->name, ev_namelist[i].ev_name) && ev_namelist[i].plot_ev == false)
 			return true;
 	}
 	return false;
-}
-
-int DiveEventItem::depthAtTime(int time)
-{
-	QModelIndexList result = dataModel->match(dataModel->index(0, DivePlotDataModel::TIME), Qt::DisplayRole, time);
-	if (result.isEmpty()) {
-		qWarning("can't find a spot in the dataModel");
-		hide();
-		return DEPTH_NOT_FOUND;
-	}
-	return dataModel->data(dataModel->index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();
 }
 
 void DiveEventItem::recalculatePos(int speed)
@@ -234,17 +235,16 @@ void DiveEventItem::recalculatePos(int speed)
 		hide();
 		return;
 	}
-	int depth = depthAtTime(ev->time.seconds);
-	if (depth == DEPTH_NOT_FOUND)
+	int depth = depthAtTime(*dataModel, ev->time.seconds);
+	if (depth == DEPTH_NOT_FOUND) {
+		hide();
 		return;
-	if (!isVisible() && !shouldBeHidden())
-		show();
+	}
+	setVisible(!shouldBeHidden());
 	qreal x = hAxis->posAtValue(ev->time.seconds);
 	qreal y = vAxis->posAtValue(depth);
 	if (speed > 0)
 		Animations::moveTo(this, speed, x, y);
 	else
 		setPos(x, y);
-	if (isVisible() && shouldBeHidden())
-		hide();
 }
