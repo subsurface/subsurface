@@ -22,14 +22,9 @@ DivePixmaps::DivePixmaps(int dpr) : dpr(dpr)
 #ifndef SUBSURFACE_MOBILE
 	int sz_bigger = metrics.sz_med + metrics.sz_small; // ex 40px
 #else
-#if defined(Q_OS_IOS)
-	 // on iOS devices we need to adjust for Device Pixel Ratio
-	int sz_bigger = metrics.sz_med  * metrics.dpr;
-#else
 	// SUBSURFACE_MOBILE, seems a little big from the code,
 	// but looks fine on device
 	int sz_bigger = metrics.sz_big + metrics.sz_med;
-#endif
 #endif
 	sz_bigger = lrint(sz_bigger * dprf);
 	int sz_pix = sz_bigger / 2; // ex 20px
