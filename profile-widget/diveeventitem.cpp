@@ -58,6 +58,7 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 			setPixmap(pixmaps.onCCRLoop);
 	} else if (ev->type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(pixmaps.bookmark);
+		setOffset(QPointF(0.0, -pixmap().height()));
 	} else if (event_is_gaschange(ev)) {
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		struct icd_data icd_data;
