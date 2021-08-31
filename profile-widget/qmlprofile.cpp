@@ -88,7 +88,6 @@ void QMLProfile::setDevicePixelRatio(qreal dpr)
 		m_devicePixelRatio = dpr;
 		// Recreate the view to redraw the text items with the new scale.
 		createProfileView();
-		updateDevicePixelRatio(dpr);
 		emit devicePixelRatioChanged();
 	}
 }
