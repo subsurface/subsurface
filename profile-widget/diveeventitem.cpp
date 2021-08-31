@@ -229,12 +229,6 @@ void DiveEventItem::recalculatePos(int speed)
 	if (!ev)
 		return;
 
-	QModelIndexList result = dataModel->match(dataModel->index(0, DivePlotDataModel::TIME), Qt::DisplayRole, ev->time.seconds);
-	if (result.isEmpty()) {
-		qWarning("can't find a spot in the dataModel");
-		hide();
-		return;
-	}
 	int depth = depthAtTime(*dataModel, ev->time.seconds);
 	if (depth == DEPTH_NOT_FOUND) {
 		hide();
