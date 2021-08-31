@@ -9,18 +9,19 @@
 #include "core/gettextfromc.h"
 #include "core/sample.h"
 #include "core/subsurface-string.h"
-#include "qt-models/diveplotdatamodel.h"
 
 #define DEPTH_NOT_FOUND (-2342)
 
+static int depthAtTime(const plot_info &pi, duration_t time);
+
 DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix,
-			     DivePlotDataModel *model, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
+			     const plot_info &pi, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
 			     int speed, const DivePixmaps &pixmaps, QGraphicsItem *parent) : DivePixmapItem(parent),
 	vAxis(vAxis),
 	hAxis(hAxis),
-	dataModel(model),
 	ev(ev),
-	dive(d)
+	dive(d),
+	depth(depthAtTime(pi, ev->time))
 {
 	setFlag(ItemIgnoresTransformations);
 
@@ -179,13 +180,12 @@ void DiveEventItem::eventVisibilityChanged(const QString&, bool)
 	//WARN: lookslike we should implement this.
 }
 
-static int depthAtTime(const DivePlotDataModel &model, int time)
+static int depthAtTime(const plot_info &pi, duration_t time)
 {
 	// Do a binary search for the timestamp
-	const plot_info &pi = model.data();
 	auto it = std::lower_bound(pi.entry, pi.entry + pi.nr, time,
-				   [](const plot_data &d1, int time) { return d1.sec < time; });
-	if (it == pi.entry + pi.nr || it->sec != time) {
+				   [](const plot_data &d1, duration_t t) { return d1.sec < t.seconds; });
+	if (it == pi.entry + pi.nr || it->sec != time.seconds) {
 		qWarning("can't find a spot in the dataModel");
 		return DEPTH_NOT_FOUND;
 	}
@@ -193,7 +193,7 @@ static int depthAtTime(const DivePlotDataModel &model, int time)
 }
 
 bool DiveEventItem::isInteresting(const struct dive *d, const struct divecomputer *dc,
-				  const struct event *ev, const DivePlotDataModel &model)
+				  const struct event *ev, const plot_info &pi)
 {
 	/*
 	 * Some gas change events are special. Some dive computers just tell us the initial gas this way.
@@ -203,7 +203,7 @@ bool DiveEventItem::isInteresting(const struct dive *d, const struct divecompute
 	if (!strcmp(ev->name, "gaschange") &&
 	    (ev->time.seconds == 0 ||
 	     (first_sample && ev->time.seconds == first_sample->time.seconds) ||
-	     depthAtTime(model, ev->time.seconds) < SURFACE_THRESHOLD))
+	     depthAtTime(pi, ev->time) < SURFACE_THRESHOLD))
 		return false;
 
 	/*
@@ -232,7 +232,6 @@ void DiveEventItem::recalculatePos(int speed)
 	if (!ev)
 		return;
 
-	int depth = depthAtTime(*dataModel, ev->time.seconds);
 	if (depth == DEPTH_NOT_FOUND) {
 		hide();
 		return;
