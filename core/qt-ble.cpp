@@ -373,7 +373,7 @@ dc_status_t BLEObject::poll(int timeout)
 
 dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 {
-	dc_status_t rc;
+	dc_status_t rc = DC_STATUS_SUCCESS;
 
 	if (actual)
 		*actual = 0;
@@ -386,13 +386,11 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	QByteArray packet = receivedPackets.takeFirst();
 
 	// Did we get more than asked for?
-	//
-	// Put back the left-over at the beginning of the
-	// received packet list, and truncate the packet
-	// we got to just the part asked for.
+	// Truncate the packet and report the error.
 	if ((size_t)packet.size() > size) {
-		receivedPackets.prepend(packet.mid(size));
+		report_error("%s packet too large (%llu %llu)", current_time().c_str(), (long long) packet.size(), (long long) size);
 		packet.truncate(size);
+		rc = DC_STATUS_IO;
 	}
 
 	memcpy((char *)data, packet.data(), packet.size());
@@ -402,7 +400,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
 		report_info("%s packet READ %s", current_time().c_str(), qPrintable(packet.toHex()));
 
-	return DC_STATUS_SUCCESS;
+	return rc;
 }
 
 //
