@@ -167,13 +167,19 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				cyl.type.workingpressure.mbar = lrint(tank.workpressure * 1000);
 
 				cyl.cylinder_use = OC_GAS;
+#ifdef DC_TANKINFO_CC_O2
 				// libdivecomputer treats these as independent, but a tank cannot be used for diluent and O2 at the same time
 				if (tank.type & DC_TANKINFO_CC_DILUENT)
 					cyl.cylinder_use = DILUENT;
 				else if (tank.type & DC_TANKINFO_CC_O2)
 					cyl.cylinder_use = OXYGEN;
+#endif
 
+#ifdef DC_TANKINFO_IMPERIAL
 				if (tank.type & DC_TANKINFO_IMPERIAL) {
+#else
+				if (tank.type == DC_TANKVOLUME_IMPERIAL) {
+#endif
 					if (same_string(devdata->model, "Suunto EON Steel")) {
 						/* Suunto EON Steele gets this wrong. Badly.
 						 * but on the plus side it only supports a few imperial sizes,
@@ -563,6 +569,7 @@ uint32_t calculate_string_hash(const char *str)
 	return calculate_diveid((const unsigned char *)str, strlen(str));
 }
 
+#ifdef DC_FIELD_STRING
 static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str)
 {
 	// Our dive ID is the string hash of the "Dive ID" string
@@ -597,6 +604,7 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 		}
 	}
 }
+#endif
 
 static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devdata, struct dive *dive)
 {
@@ -713,6 +721,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	if (rc == DC_STATUS_SUCCESS)
 		dive->dc.surface_pressure.mbar = lrint(surface_pressure * 1000.0);
 
+#ifdef DC_FIELD_STRING
 	// The dive parsing may give us more device information
 	int idx;
 	for (idx = 0; idx < 100; idx++) {
@@ -725,6 +734,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		parse_string_field(devdata, dive, &str);
 		free((void *)str.value); // libdc gives us copies of the value-string.
 	}
+#endif
 
 	dc_divemode_t divemode;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVEMODE, 0, &divemode);

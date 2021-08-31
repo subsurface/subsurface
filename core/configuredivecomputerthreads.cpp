@@ -2218,7 +2218,11 @@ void FirmwareUpdateThread::run()
 	}
 	switch (dc_device_get_type(m_data->device)) {
 	case DC_FAMILY_HW_OSTC3:
+#ifdef DC_FIELD_STRING
 		rc = hw_ostc3_device_fwupdate(m_data->device, qPrintable(m_fileName), m_forceUpdate);
+#else
+		rc = hw_ostc3_device_fwupdate(m_data->device, qPrintable(m_fileName));
+#endif
 		break;
 	case DC_FAMILY_HW_OSTC:
 		rc = hw_ostc_device_fwupdate(m_data->device, qPrintable(m_fileName));
