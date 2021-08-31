@@ -181,12 +181,15 @@ void DiveEventItem::eventVisibilityChanged(const QString&, bool)
 
 static int depthAtTime(const DivePlotDataModel &model, int time)
 {
-	QModelIndexList result = model.match(model.index(0, DivePlotDataModel::TIME), Qt::DisplayRole, time);
-	if (result.isEmpty()) {
+	// Do a binary search for the timestamp
+	const plot_info &pi = model.data();
+	auto it = std::lower_bound(pi.entry, pi.entry + pi.nr, time,
+				   [](const plot_data &d1, int time) { return d1.sec < time; });
+	if (it == pi.entry + pi.nr || it->sec != time) {
 		qWarning("can't find a spot in the dataModel");
 		return DEPTH_NOT_FOUND;
 	}
-	return model.data(model.index(result.first().row(), DivePlotDataModel::DEPTH)).toInt();
+	return it->depth;
 }
 
 bool DiveEventItem::isInteresting(const struct dive *d, const struct divecomputer *dc,
