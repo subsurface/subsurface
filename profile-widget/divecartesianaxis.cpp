@@ -11,18 +11,6 @@
 static const double labelSpaceHorizontal = 2.0; // space between label and ticks
 static const double labelSpaceVertical = 2.0; // space between label and ticks
 
-QPen DiveCartesianAxis::gridPen() const
-{
-	QPen pen;
-	pen.setColor(getColor(TIME_GRID));
-	/* cosmetic width() == 0 for lines in printMode
-	 * having setCosmetic(true) and width() > 0 does not work when
-	 * printing on OSX and Linux */
-	pen.setWidth(DiveCartesianAxis::printMode ? 0 : 2);
-	pen.setCosmetic(true);
-	return pen;
-}
-
 void DiveCartesianAxis::setFontLabelScale(qreal scale)
 {
 	labelScale = scale;
@@ -45,7 +33,8 @@ void DiveCartesianAxis::setMinimum(double minimum)
 	changed = true;
 }
 
-DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor, double dpr, bool printMode, ProfileScene &scene) :
+DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor, double dpr,
+				     bool printMode, bool isGrayscale, ProfileScene &scene) :
 	printMode(printMode),
 	position(position),
 	gridColor(gridColor),
@@ -60,7 +49,17 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor,
 	changed(true),
 	dpr(dpr)
 {
-	setPen(gridPen());
+	QPen pen;
+	pen.setColor(getColor(TIME_GRID, isGrayscale));
+	/* cosmetic width() == 0 for lines in printMode
+	 * having setCosmetic(true) and width() > 0 does not work when
+	 * printing on OSX and Linux */
+	pen.setWidth(DiveCartesianAxis::printMode ? 0 : 2);
+	pen.setCosmetic(true);
+	setPen(pen);
+
+	pen.setBrush(getColor(gridColor, isGrayscale));
+	gridPen = pen;
 }
 
 DiveCartesianAxis::~DiveCartesianAxis()
@@ -241,9 +240,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 			childPos = begin - i * stepSize;
 		}
 		DiveLineItem *line = new DiveLineItem(this);
-		QPen pen = gridPen();
-		pen.setBrush(getColor(gridColor));
-		line->setPen(pen);
+		line->setPen(gridPen);
 		line->setZValue(0);
 		lines.push_back(line);
 		if (position == Position::Bottom) {
@@ -372,8 +369,9 @@ QColor DepthAxis::colorForValue(double) const
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis(Position position, color_index_t gridColor, double dpr, bool printMode, ProfileScene &scene) :
-	DiveCartesianAxis(position, gridColor, dpr, printMode, scene)
+DepthAxis::DepthAxis(Position position, color_index_t gridColor, double dpr,
+		     bool printMode, bool isGrayscale, ProfileScene &scene) :
+	DiveCartesianAxis(position, gridColor, dpr, printMode, isGrayscale, scene)
 {
 	changed = true;
 }
@@ -408,8 +406,8 @@ QString TemperatureAxis::textForValue(double value) const
 }
 
 PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, Position position, color_index_t gridColor,
-					       double dpr, bool printMode, ProfileScene &scene) :
-	DiveCartesianAxis(position, gridColor, dpr, printMode, scene),
+					       double dpr, bool printMode, bool isGrayscale, ProfileScene &scene) :
+	DiveCartesianAxis(position, gridColor, dpr, printMode, isGrayscale, scene),
 	model(model)
 {
 }
