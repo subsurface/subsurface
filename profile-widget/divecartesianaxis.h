@@ -44,8 +44,6 @@ public:
 	std::pair<double, double> screenMinMax() const;
 	qreal valueAt(const QPointF &p) const;
 	qreal posAtValue(qreal value) const;
-	void setColor(const QColor &color);
-	void setTextColor(const QColor &color);
 	void animateChangeLine(const QRectF &rect, int animSpeed);
 	void setTextVisible(bool arg1);
 	void setLinesVisible(bool arg1);
@@ -71,7 +69,6 @@ protected:
 	double min;
 	double max;
 	double interval;
-	QColor textColor;
 	bool textVisibility;
 	bool lineVisibility;
 	double labelScale;
