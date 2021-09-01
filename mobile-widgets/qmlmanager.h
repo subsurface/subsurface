@@ -38,7 +38,8 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QStringList buddyList READ buddyList NOTIFY buddyListChanged)
 	Q_PROPERTY(QStringList divemasterList READ divemasterList NOTIFY divemasterListChanged)
 	Q_PROPERTY(QStringList locationList READ locationList NOTIFY locationListChanged)
-	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
+	Q_PROPERTY(QStringList cylinderListInit READ cylinderListInit CONSTANT)
+	Q_PROPERTY(QStringList defaultCylinderListInit READ defaultCylinderListInit CONSTANT)
 	Q_PROPERTY(QStringList cloudCacheList READ cloudCacheList NOTIFY cloudCacheListChanged)
 	Q_PROPERTY(QString progressMessage MEMBER m_progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
 	Q_PROPERTY(bool btEnabled MEMBER m_btEnabled WRITE setBtEnabled NOTIFY btEnabledChanged)
@@ -162,7 +163,8 @@ public:
 	QStringList buddyList() const;
 	QStringList divemasterList() const;
 	QStringList locationList() const;
-	QStringList cylinderInit() const;
+	QStringList cylinderListInit() const;
+	QStringList defaultCylinderListInit() const;
 	QStringList cloudCacheList() const;
 	Q_INVOKABLE void setStatusbarColor(QColor color);
 	void btHostModeChange(QBluetoothLocalDevice::HostMode state);

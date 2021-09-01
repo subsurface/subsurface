@@ -168,11 +168,11 @@ Kirigami.ApplicationWindow {
 		detailsWindow.suitModel = manager.suitList
 		detailsWindow.suitIndex = -1
 		detailsWindow.suitText = ""
-		detailsWindow.cylinderModel0 = manager.cylinderInit
-		detailsWindow.cylinderModel1 = manager.cylinderInit
-		detailsWindow.cylinderModel2 = manager.cylinderInit
-		detailsWindow.cylinderModel3 = manager.cylinderInit
-		detailsWindow.cylinderModel4 = manager.cylinderInit
+		detailsWindow.cylinderModel0 = manager.cylinderListInit
+		detailsWindow.cylinderModel1 = manager.cylinderListInit
+		detailsWindow.cylinderModel2 = manager.cylinderListInit
+		detailsWindow.cylinderModel3 = manager.cylinderListInit
+		detailsWindow.cylinderModel4 = manager.cylinderListInit
 		detailsWindow.cylinderIndex0 = PrefEquipment.default_cylinder == "" ? -1 : detailsWindow.cylinderModel0.indexOf(PrefEquipment.default_cylinder)
 		detailsWindow.usedCyl = ["",]
 		detailsWindow.weight = ""
@@ -482,7 +482,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				text: qsTr("Settings")
 				onTriggered: {
 					globalDrawer.close()
-					settingsWindow.defaultCylinderModel = manager.cylinderInit
+					settingsWindow.defaultCylinderModel = manager.defaultCylinderListInit
 					PrefEquipment.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(PrefEquipment.default_cylinder)
 					showPage(settingsWindow)
 					detailsWindow.endEditMode()
