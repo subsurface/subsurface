@@ -1867,27 +1867,17 @@ QStringList QMLManager::locationList() const
 	return locationModel.allSiteNames();
 }
 
-QStringList QMLManager::cylinderInit() const
+// this is the cylinder list used when editing a dive
+QStringList QMLManager::cylinderListInit() const
 {
-	QStringList cylinders;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
-		for (int j = 0; j < d->cylinders.nr; j++) {
-			if (!empty_string(get_cylinder(d, j)->type.description))
-				cylinders << get_cylinder(d, j)->type.description;
-		}
-	}
+	return formatFullCylinderList();
+}
 
-	for (int ti = 0; ti < tank_info_table.nr; ti++) {
-		QString cyl = tank_info_table.infos[ti].name;
-		if (cyl == "")
-			continue;
-		cylinders << cyl;
-	}
-
-	cylinders.removeDuplicates();
-	cylinders.sort();
+// this is the cylinder list used to pick your default cylinder
+// it starts with the (translated) "no default cylinder" in order to special-case this
+QStringList QMLManager::defaultCylinderListInit() const
+{
+	QStringList cylinders = cylinderListInit();
 	// now add fist one that indicates that the user wants no default cylinder
 	cylinders.prepend(tr("no default cylinder"));
 	return cylinders;
