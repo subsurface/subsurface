@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QGraphicsLineItem>
+#include <QPen>
 #include "core/color.h"
 #include "core/units.h"
 
@@ -21,7 +22,6 @@ class DiveCartesianAxis : public QObject, public QGraphicsLineItem {
 	Q_PROPERTY(qreal y WRITE setY READ y)
 private:
 	bool printMode;
-	QPen gridPen() const;
 public:
 	enum Orientation {
 		TopToBottom,
@@ -32,7 +32,8 @@ public:
 	enum class Position {
 		Left, Right, Bottom
 	};
-	DiveCartesianAxis(Position position, color_index_t gridColor, double dpr, bool printMode, ProfileScene &scene);
+	DiveCartesianAxis(Position position, color_index_t gridColor, double dpr,
+			  bool printMode, bool isGrayscale, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);
@@ -58,6 +59,7 @@ signals:
 protected:
 	Position position;
 	QRectF rect; // Rectangle to fill with grid lines
+	QPen gridPen;
 	color_index_t gridColor;
 	ProfileScene &scene;
 	virtual QString textForValue(double value) const;
@@ -79,7 +81,8 @@ protected:
 class DepthAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	DepthAxis(Position position, color_index_t gridColor, double dpr, bool printMode, ProfileScene &scene);
+	DepthAxis(Position position, color_index_t gridColor, double dpr,
+		  bool printMode, bool isGrayscale, ProfileScene &scene);
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
@@ -107,7 +110,7 @@ class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	PartialGasPressureAxis(const DivePlotDataModel &model, Position position, color_index_t gridColor,
-			       double dpr, bool printMode, ProfileScene &scene);
+			       double dpr, bool printMode, bool isGrayscale, ProfileScene &scene);
 	void update(int animSpeed);
 	double width() const;
 private:
