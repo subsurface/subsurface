@@ -45,11 +45,6 @@ void DiveCartesianAxis::setMinimum(double minimum)
 	changed = true;
 }
 
-void DiveCartesianAxis::setTextColor(const QColor &color)
-{
-	textColor = color;
-}
-
 DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor, double dpr, bool printMode, ProfileScene &scene) :
 	printMode(printMode),
 	position(position),
@@ -363,15 +358,6 @@ std::pair<double, double> DiveCartesianAxis::screenMinMax() const
 {
 	return position == Position::Bottom ? std::make_pair(rect.left(), rect.right())
 					    : std::make_pair(rect.top(), rect.bottom());
-}
-
-void DiveCartesianAxis::setColor(const QColor &color)
-{
-	QPen defaultPen = gridPen();
-	defaultPen.setColor(color);
-	defaultPen.setJoinStyle(Qt::RoundJoin);
-	defaultPen.setCapStyle(Qt::RoundCap);
-	setPen(defaultPen);
 }
 
 QString DepthAxis::textForValue(double value) const
