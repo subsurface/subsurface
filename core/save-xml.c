@@ -865,7 +865,7 @@ static int export_dives_xslt_doit(const char *filename, struct xml_params *param
 	 * transform it to selected export format, finally dumping
 	 * the XML into a character buffer.
 	 */
-	doc = xmlReadMemory(buf.buffer, buf.len, "divelog", NULL, XML_PARSE_HUGE);
+	doc = xmlReadMemory(buf.buffer, buf.len, "divelog", NULL, XML_PARSE_HUGE | XML_PARSE_RECOVER);
 	free_buffer(&buf);
 	if (!doc)
 		return report_error("Failed to read XML memory");
