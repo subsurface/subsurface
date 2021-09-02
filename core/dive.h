@@ -198,6 +198,7 @@ extern int get_cylinder_index(const struct dive *dive, const struct event *ev);
 extern struct gasmix get_gasmix_from_event(const struct dive *, const struct event *ev);
 extern int nr_cylinders(const struct dive *dive);
 extern int nr_weightsystems(const struct dive *dive);
+extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
 
 /* UI related protopypes */
 

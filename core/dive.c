@@ -3481,3 +3481,17 @@ struct gasmix get_gasmix_at_time(const struct dive *d, const struct divecomputer
 	struct gasmix gasmix = gasmix_air;
 	return get_gasmix(d, dc, time.seconds, &ev, gasmix);
 }
+
+/* Does that cylinder have any pressure readings? */
+extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id)
+{
+	for (const struct divecomputer *dc = &dive->dc; dc; dc = dc->next) {
+		for (int i = 0; i < dc->samples; ++i) {
+			for (int j = 0; j < MAX_SENSORS; ++j) {
+				if (dc->sample[i].sensor[j] == cylinder_id)
+					return true;
+			}
+		}
+	}
+	return false;
+}
