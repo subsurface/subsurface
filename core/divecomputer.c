@@ -548,4 +548,3 @@ void free_dc(struct divecomputer *dc)
 	free_dc_contents(dc);
 	free(dc);
 }
-
