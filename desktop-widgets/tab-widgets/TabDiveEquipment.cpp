@@ -3,11 +3,14 @@
 #include "maintab.h"
 #include "desktop-widgets/simplewidgets.h" // For isGnome3Session()
 #include "desktop-widgets/modeldelegates.h"
+#include "core/dive.h"
+#include "core/selection.h"
 #include "commands/command.h"
 
 #include "qt-models/cylindermodel.h"
 #include "qt-models/weightmodel.h"
 
+#include <QMessageBox>
 #include <QSettings>
 #include <QCompleter>
 
@@ -162,10 +165,21 @@ void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 	if (!index.isValid())
 		return;
 
-	if (index.column() == CylindersModel::REMOVE)
+	if (index.column() == CylindersModel::REMOVE) {
+		int cylinder_id = cylindersModel->mapToSource(index).row();
+		for (dive *d: getDiveSelection()) {
+			if (cylinder_with_sensor_sample(d, cylinder_id)) {
+				if (QMessageBox::warning(this, tr("Remove cylinder?"),
+							 tr("The deleted cylinder has sensor readings, which will be lost.\n"
+							    "Do you want to continue?"),
+							 QMessageBox::Yes|QMessageBox::No) != QMessageBox::Yes)
+					return;
+			}
+		}
 		divesEdited(Command::removeCylinder(cylindersModel->mapToSource(index).row(), false));
-	else
+	} else {
 		ui.cylinders->edit(index);
+	}
 }
 
 void TabDiveEquipment::editWeightWidget(const QModelIndex &index)
