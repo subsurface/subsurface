@@ -577,6 +577,7 @@ Item {
 			Layout.fillWidth: true
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			color: subsurfaceTheme.textColor
+			textFormat: Text.RichText
 		}
 		Item {
 			Layout.columnSpan: 3
