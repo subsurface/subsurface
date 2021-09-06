@@ -1566,18 +1566,17 @@ static void plot_string(const struct dive *d, const struct plot_info *pi, int id
 
 int get_plot_details_new(const struct dive *d, const struct plot_info *pi, int time, struct membuffer *mb)
 {
-	int idx, i;
+	int i;
 
 	/* The two first and the two last plot entries do not have useful data */
 	if (pi->nr <= 4)
 		return 0;
-	for (i = 2; i < pi->nr - 2; i++) {
-		idx = i;
+	for (i = 2; i < pi->nr - 3; i++) {
 		if (pi->entry[i].sec >= time)
 			break;
 	}
-	plot_string(d, pi, idx, mb);
-	return idx;
+	plot_string(d, pi, i, mb);
+	return i;
 }
 
 /* Compare two plot_data entries and writes the results into a string */
