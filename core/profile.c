@@ -1578,7 +1578,7 @@ int get_plot_details_new(const struct dive *d, const struct plot_info *pi, int t
 	}
 	plot_string(d, pi, idx, mb);
 	return idx;
-} 
+}
 
 /* Compare two plot_data entries and writes the results into a string */
 void compare_samples(const struct dive *d, const struct plot_info *pi, int idx1, int idx2, char *buf, int bufsize, bool sum)
