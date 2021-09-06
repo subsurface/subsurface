@@ -1571,7 +1571,7 @@ int get_plot_details_new(const struct dive *d, const struct plot_info *pi, int t
 	/* The two first and the two last plot entries do not have useful data */
 	if (pi->nr <= 4)
 		return 0;
-	for (i = 2; i < pi->nr - 2; i++) {
+	for (i = 2; i < pi->nr - 3; i++) {
 		if (pi->entry[i].sec >= time)
 			break;
 	}
