@@ -124,11 +124,6 @@ ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent),
 
 void ShiftImageTimesDialog::buttonClicked(QAbstractButton *button)
 {
-	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-		m_amount = ui.timeEdit->time().hour() * 3600 + ui.timeEdit->time().minute() * 60;
-		if (ui.backwards->isChecked())
-			m_amount *= -1;
-	}
 }
 
 void ShiftImageTimesDialog::syncCameraClicked()
@@ -140,6 +135,10 @@ void ShiftImageTimesDialog::syncCameraClicked()
 							      tr("Image files") + " (*.jpg *.jpeg)");
 	if (fileNames.isEmpty())
 		return;
+
+	ui.timeEdit->setEnabled(false);
+	ui.backwards->setEnabled(false);
+	ui.forward->setEnabled(false);
 
 	picture.load(fileNames.at(0));
 	ui.displayDC->setEnabled(true);
@@ -160,7 +159,10 @@ void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)
 	if (!dcImageEpoch)
 		return;
 	newtime.setTimeSpec(Qt::UTC);
-	setOffset(dateTimeToTimestamp(newtime) - dcImageEpoch);
+
+	m_amount = dateTimeToTimestamp(newtime) - dcImageEpoch;
+	if (m_amount)
+		updateInvalid();
 }
 
 void ShiftImageTimesDialog::matchAllImagesToggled(bool state)
