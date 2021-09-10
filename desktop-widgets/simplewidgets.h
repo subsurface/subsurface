@@ -75,7 +75,6 @@ public:
 	bool matchAll();
 private
 slots:
-	void buttonClicked(QAbstractButton *button);
 	void syncCameraClicked();
 	void dcDateTimeChanged(const QDateTime &);
 	void timeEditChanged(const QTime &time);
