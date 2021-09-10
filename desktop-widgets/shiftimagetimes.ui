@@ -55,61 +55,16 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="warningLabel">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: red;</string>
-        </property>
-        <property name="text">
-         <string>Warning!
-Not all media files have timestamps in the range between
-30 minutes before the start and 30 minutes after the end of any selected dive.</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="matchAllImages">
-        <property name="text">
-         <string>Load media files even if the time does not match the dive time</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTextEdit" name="invalidFilesText">
-        <property name="styleSheet">
-         <string notr="true">color: red; </string>
-        </property>
-        <property name="lineWrapMode">
-         <enum>QTextEdit::NoWrap</enum>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="text" stdset="0">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDialogButtonBox" name="buttonBox">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="standardButtons">
-         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
+
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox2">
+     <property name="title">
+      <string>Use camera sync</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout2">
       <item>
        <widget class="QLabel" name="label">
         <property name="maximumSize">
@@ -194,6 +149,54 @@ Not all media files have timestamps in the range between
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="warningLabel">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: red;</string>
+     </property>
+     <property name="text">
+      <string>Warning!
+Not all media files have timestamps in the range between
+30 minutes before the start and 30 minutes after the end of any selected dive.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="invalidFilesText">
+     <property name="styleSheet">
+      <string notr="true">color: red; </string>
+     </property>
+     <property name="lineWrapMode">
+      <enum>QTextEdit::NoWrap</enum>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="text" stdset="0">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="matchAllImages">
+     <property name="text">
+      <string>Load media files even if the time does not match the dive time</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
     </widget>
    </item>
   </layout>
