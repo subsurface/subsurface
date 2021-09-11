@@ -1634,16 +1634,6 @@ int QMLManager::addDive()
 	return diveId;
 }
 
-void QMLManager::applyGpsData()
-{
-	appendTextToLog("Applying GPS fiexs");
-	std::vector<DiveAndLocation> fixes = GpsLocation::instance()->getLocations();
-	Command::applyGPSFixes(fixes);
-	appendTextToLog(QString("Attached %1 GPS fixes").arg(fixes.size()));
-	if (fixes.size())
-		changesNeedSaving();
-}
-
 void QMLManager::deleteGpsFix(quint64 when)
 {
 	GpsLocation::instance()->deleteGpsFix(when);
