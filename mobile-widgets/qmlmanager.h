@@ -213,7 +213,6 @@ public slots:
 	void undo();
 	void redo();
 	int addDive();
-	void applyGpsData();
 	void cancelDownloadDC();
 	QString getCombinedLogs();
 	void copyAppLogToClipboard();
