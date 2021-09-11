@@ -47,13 +47,13 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	maxtime(-1),
 	maxdepth(-1),
 	dataModel(new DivePlotDataModel(this)),
-	profileYAxis(new DepthAxis(DiveCartesianAxis::Position::Left, TIME_GRID, dpr, printMode, isGrayscale, *this)),
-	gasYAxis(new PartialGasPressureAxis(*dataModel, DiveCartesianAxis::Position::Right, TIME_GRID, dpr, printMode, isGrayscale, *this)),
-	temperatureAxis(new TemperatureAxis(DiveCartesianAxis::Position::Right, TIME_GRID, dpr, printMode, isGrayscale, *this)),
-	timeAxis(new TimeAxis(DiveCartesianAxis::Position::Bottom, TIME_GRID, dpr, printMode, isGrayscale, *this)),
-	cylinderPressureAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, TIME_GRID, dpr, printMode, isGrayscale, *this)),
-	heartBeatAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Left, HR_AXIS, dpr, printMode, isGrayscale, *this)),
-	percentageAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, TIME_GRID, dpr, printMode, isGrayscale, *this)),
+	profileYAxis(new DepthAxis(DiveCartesianAxis::Position::Left, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
+	gasYAxis(new PartialGasPressureAxis(*dataModel, DiveCartesianAxis::Position::Right, TIME_GRID, dpr, 0.7, printMode, isGrayscale, *this)),
+	temperatureAxis(new TemperatureAxis(DiveCartesianAxis::Position::Right, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
+	timeAxis(new TimeAxis(DiveCartesianAxis::Position::Bottom, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
+	cylinderPressureAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
+	heartBeatAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Left, HR_AXIS, dpr, 0.7, printMode, isGrayscale, *this)),
+	percentageAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, TIME_GRID, dpr, 0.7, printMode, isGrayscale, *this)),
 	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0, dpr)),
 	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, dpr)),
 	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, dpr)),
@@ -86,16 +86,13 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setTickInterval(1);
-	gasYAxis->setFontLabelScale(0.7);
 
 #ifndef SUBSURFACE_MOBILE
 	heartBeatAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	heartBeatAxis->setTickInterval(10);
-	heartBeatAxis->setFontLabelScale(0.7);
 
 	percentageAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	percentageAxis->setTickInterval(10);
-	percentageAxis->setFontLabelScale(0.7);
 #endif
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);

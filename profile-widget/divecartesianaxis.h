@@ -33,12 +33,11 @@ public:
 		Left, Right, Bottom
 	};
 	DiveCartesianAxis(Position position, color_index_t gridColor, double dpr,
-			  bool printMode, bool isGrayscale, ProfileScene &scene);
+			  double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setBounds(double min, double max);
 	void setTickInterval(double interval);
 	void setOrientation(Orientation orientation);
-	void setFontLabelScale(qreal scale);
 	double minimum() const;
 	double maximum() const;
 	std::pair<double, double> screenMinMax() const;
@@ -108,7 +107,7 @@ class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	PartialGasPressureAxis(const DivePlotDataModel &model, Position position, color_index_t gridColor,
-			       double dpr, bool printMode, bool isGrayscale, ProfileScene &scene);
+			       double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
 	void update(int animSpeed);
 	double width() const;
 private:
