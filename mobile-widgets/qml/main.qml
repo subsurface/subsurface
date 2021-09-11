@@ -547,47 +547,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						showPage(recoverCache)
 					}
 				}
-				/* disable for now
-				Kirigami.Action {
-					text: qsTr("Dive planner")
-
-					Kirigami.Action {
-						icon {
-							name: ":/go-previous-symbolic"
-						}
-						text: qsTr("Back")
-						onTriggered: globalDrawer.pop()
-					}
-					Kirigami.Action {
-						text: qsTr("Setup")
-						onTriggered: {
-							globalDrawer.close()
-							pageStack.push(divePlannerSetupWindow)
-						}
-					}
-					Kirigami.Action {
-						text: qsTr("Edit")
-						onTriggered: {
-							globalDrawer.close()
-							pageStack.push(divePlannerEditWindow)
-						}
-					}
-					Kirigami.Action {
-						text: qsTr("View")
-						onTriggered: {
-							globalDrawer.close()
-							pageStack.push(divePlannerViewWindow)
-						}
-					}
-					Kirigami.Action {
-						text: qsTr("Manager")
-						onTriggered: {
-							globalDrawer.close()
-							pageStack.push(divePlannerManagerWindow)
-						}
-					}
-				}
-				*/
 			}
 		] // end actions
 	}
