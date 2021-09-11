@@ -293,11 +293,6 @@ QMLManager::QMLManager() :
 		connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
 			this, &QMLManager::btHostModeChange);
 	}
-	// add log call back to the location manager service singleton
-	GpsLocation::instance()->setLogCallBack(&appendTextToLogStandalone);
-	progress_callback = &progressCallback;
-	connect(GpsLocation::instance(), &GpsLocation::haveSourceChanged, this, &QMLManager::hasLocationSourceChanged);
-	setLocationServiceAvailable(GpsLocation::instance()->hasLocationsSource());
 	set_git_update_cb(&gitProgressCB);
 
 	// present dive site lists sorted by name
