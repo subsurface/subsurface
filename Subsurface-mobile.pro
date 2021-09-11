@@ -152,7 +152,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	mobile-widgets/themeinterface.cpp \
 	qt-models/divesummarymodel.cpp \
 	qt-models/diveplotdatamodel.cpp \
-	qt-models/gpslistmodel.cpp \
 	qt-models/completionmodels.cpp \
 	qt-models/divelocationmodel.cpp \
 	qt-models/maplocationmodel.cpp \
@@ -311,7 +310,6 @@ HEADERS += \
 	map-widget/qmlmapwidgethelper.h \
 	qt-models/divesummarymodel.h \
 	qt-models/diveplotdatamodel.h \
-	qt-models/gpslistmodel.h \
 	qt-models/divelocationmodel.h \
 	qt-models/completionmodels.h \
 	qt-models/weightsysteminfomodel.h \
