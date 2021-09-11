@@ -333,26 +333,6 @@ Kirigami.ApplicationWindow {
 				}
 				Kirigami.Action {
 					icon {
-						name: ":/icons/ic_add_location.svg"
-					}
-					text: qsTr("Apply GPS fixes")
-					onTriggered: {
-						globalDrawer.close()
-						showBusy()
-						diveList.diveListModel = null
-						manager.applyGpsData()
-						diveModel.resetInternalData()
-						manager.refreshDiveList()
-						while (pageStack.depth > 1) {
-							pageStack.pop()
-						}
-						diveList.diveListModel = diveModel
-						showDiveList()
-						hideBusy()
-					}
-				}
-				Kirigami.Action {
-					icon {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
@@ -424,44 +404,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: mapPage.title
 					onTriggered: {
 						showMap()
-					}
-				}
-				Kirigami.Action {
-					icon {
-						name:":/icons/ic_gps_fixed.svg"
-					}
-					text: qsTr("Show GPS fixes")
-					onTriggered: {
-						globalDrawer.close()
-						returnTopPage()
-						manager.populateGpsData();
-						showPage(gpsWindow)
-					}
-				}
-
-				Kirigami.Action {
-					icon {
-						name: ":/icons/ic_clear.svg"
-					}
-					text: qsTr("Clear GPS cache")
-					onTriggered: {
-						globalDrawer.close();
-						manager.clearGpsData();
-					}
-				}
-
-				Kirigami.Action {
-					icon {
-						name: locationServiceEnabled ?  ":/icons/ic_location_off.svg" : ":/icons/ic_place.svg"
-					}
-					text: locationServiceEnabled ? qsTr("Disable background location service") : qsTr("Run background location service")
-					onTriggered: {
-						globalDrawer.close();
-						locationServiceEnabled = !locationServiceEnabled
-						if (locationServiceEnabled) {
-							locationWarning.open()
-						}
-
 					}
 				}
 			},
@@ -605,16 +547,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						showPage(recoverCache)
 					}
 				}
-
-				Kirigami.Action {
-					text: qsTr("Copy GPS to clipboard")
-					onTriggered: {
-						globalDrawer.close()
-						manager.copyGpsFixesToClipboard()
-					}
-
-				}
-
 				/* disable for now
 				Kirigami.Action {
 					text: qsTr("Dive planner")
@@ -658,21 +590,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				*/
 			}
 		] // end actions
-		Row {
-			spacing: Kirigami.Units.smallSpacing
-			Image {
-				id: ls_logo
-				fillMode: Image.PreserveAspectFit
-				source: "qrc:///icons/" + (subsurfaceTheme.currentTheme !== "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
-				visible: locationServiceEnabled
-			}
-			Text {
-				text: qsTr("Background location service active")
-				color: subsurfaceTheme.textColor
-				visible: locationServiceEnabled
-				anchors.verticalCenter: ls_logo.verticalCenter
-			}
-		}
 	}
 
 	property double regularFontsize: subsurfaceTheme.regularPointSize
@@ -860,44 +777,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 	}
 
-	Kirigami.OverlaySheet {
-		id: locationWarning
-		background: Rectangle { color: subsurfaceTheme.backgroundColor }
-		ColumnLayout {
-			width: locationWarning.width - Kirigami.Units.gridUnit
-			spacing: Kirigami.Units.gridUnit
-			TemplateTitle {
-				Layout.alignment: Qt.AlignHCenter
-				title: qsTr("Location Service Enabled")
-			}
-			Text {
-				Layout.fillWidth: true
-				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-				color: subsurfaceTheme.textColor
-				text: qsTr("This service collects location data to enable you to track the GPS coordinates of your dives. " +
-					   "This will attempt to continue to collect location data, even if the app is closed or your phone screen locked.")
-			}
-			Text {
-				Layout.fillWidth: true
-				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-				color: subsurfaceTheme.textColor
-				text: qsTr("The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.")
-			}
-			Text {
-				Layout.fillWidth: true
-				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-				color: subsurfaceTheme.textColor
-				text: qsTr("By default, the location data are never transferred to the cloud or to any other service. However, in order to allow debugging " +
-					   "of location data related issues, you can explicitly enable storing those location data in the cloud by enabling the corresponding option in the advanced settings.")
-			}
-			TemplateButton {
-				Layout.alignment: Qt.AlignHCenter
-				text: qsTr("Understood")
-				onClicked: { locationWarning.close() }
-			}
-		}
-	}
-
 	Label {
 		id: textBlock
 		visible: !initialized
@@ -974,11 +853,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	Log {
 		id: logWindow
-		visible: false
-	}
-
-	GpsList {
-		id: gpsWindow
 		visible: false
 	}
 
