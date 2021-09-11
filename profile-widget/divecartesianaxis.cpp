@@ -360,13 +360,6 @@ QColor DepthAxis::colorForValue(double) const
 	return QColor(Qt::red);
 }
 
-DepthAxis::DepthAxis(Position position, color_index_t gridColor, double dpr,
-		     bool printMode, bool isGrayscale, ProfileScene &scene) :
-	DiveCartesianAxis(position, gridColor, dpr, printMode, isGrayscale, scene)
-{
-	changed = true;
-}
-
 QColor TimeAxis::colorForValue(double) const
 {
 	return QColor(Qt::blue);
