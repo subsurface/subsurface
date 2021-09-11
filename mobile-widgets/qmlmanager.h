@@ -222,7 +222,6 @@ public slots:
 	void screenChanged(QScreen *screen);
 	void appendTextToLog(const QString &newText);
 	void quit();
-	void hasLocationSourceChanged();
 	void btRescan();
 	void usbRescan();
 	void rescanConnections();
