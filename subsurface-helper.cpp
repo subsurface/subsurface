@@ -19,7 +19,6 @@
 #include "mobile-widgets/statsmanager.h"
 #include "stats/chartlistmodel.h"
 #include "qt-models/divesummarymodel.h"
-#include "qt-models/gpslistmodel.h"
 #include "qt-models/messagehandlermodel.h"
 #include "qt-models/mobilelistmodel.h"
 #include "profile-widget/qmlprofile.h"
@@ -116,12 +115,6 @@ void run_mobile_ui(double initial_font_size)
 	// this is frustrating, but we appear to need different import paths on different OSs
 	engine.addImportPath(":");
 	engine.addImportPath("qrc://imports");
-	QSortFilterProxyModel *gpsSortModel = new QSortFilterProxyModel(nullptr);
-	gpsSortModel->setSourceModel(GpsListModel::instance());
-	gpsSortModel->setDynamicSortFilter(true);
-	gpsSortModel->setSortRole(GpsListModel::GpsWhenRole);
-	gpsSortModel->sort(0, Qt::DescendingOrder);
-	ctxt->setContextProperty("gpsModel", gpsSortModel);
 	ctxt->setContextProperty("vendorList", vendorList);
 	ctxt->setContextProperty("swipeModel", MobileModels::instance()->swipeModel());
 	ctxt->setContextProperty("diveModel", MobileModels::instance()->listModel());

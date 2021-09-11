@@ -55,8 +55,6 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 set(SUBSURFACE_MOBILE_MODELS_LIB_SRCS
 	divesummarymodel.cpp
 	divesummarymodel.h
-	gpslistmodel.cpp
-	gpslistmodel.h
 	messagehandlermodel.cpp
 	messagehandlermodel.h
 	mobilelistmodel.cpp

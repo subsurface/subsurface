@@ -20,7 +20,6 @@
 
 #include <QBluetoothLocalDevice>
 
-#include "qt-models/gpslistmodel.h"
 #include "qt-models/completionmodels.h"
 #include "qt-models/messagehandlermodel.h"
 #include "qt-models/tankinfomodel.h"
@@ -1684,22 +1683,14 @@ void QMLManager::applyGpsData()
 		changesNeedSaving();
 }
 
-void QMLManager::populateGpsData()
-{
-	if (GpsListModel::instance())
-		GpsListModel::instance()->update();
-}
-
 void QMLManager::clearGpsData()
 {
 	GpsLocation::instance()->clearGpsData();
-	populateGpsData();
 }
 
 void QMLManager::deleteGpsFix(quint64 when)
 {
 	GpsLocation::instance()->deleteGpsFix(when);
-	populateGpsData();
 }
 
 QString QMLManager::logText() const

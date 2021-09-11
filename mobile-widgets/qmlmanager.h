@@ -214,7 +214,6 @@ public slots:
 	void redo();
 	int addDive();
 	void applyGpsData();
-	void populateGpsData();
 	void cancelDownloadDC();
 	void clearGpsData();
 	QString getCombinedLogs();

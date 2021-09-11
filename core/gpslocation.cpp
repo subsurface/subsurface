@@ -2,7 +2,6 @@
 #include "core/gpslocation.h"
 #include "core/divesite.h"
 #include "core/dive.h"
-#include "qt-models/gpslistmodel.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/errorhelper.h"
