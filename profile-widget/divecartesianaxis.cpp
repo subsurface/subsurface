@@ -11,12 +11,6 @@
 static const double labelSpaceHorizontal = 2.0; // space between label and ticks
 static const double labelSpaceVertical = 2.0; // space between label and ticks
 
-void DiveCartesianAxis::setFontLabelScale(qreal scale)
-{
-	labelScale = scale;
-	changed = true;
-}
-
 void DiveCartesianAxis::setBounds(double minimum, double maximum)
 {
 	changed = !IS_FP_SAME(max, maximum) || !IS_FP_SAME(min, minimum);
@@ -25,7 +19,7 @@ void DiveCartesianAxis::setBounds(double minimum, double maximum)
 }
 
 DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor, double dpr,
-				     bool printMode, bool isGrayscale, ProfileScene &scene) :
+				     double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene) :
 	printMode(printMode),
 	position(position),
 	gridColor(gridColor),
@@ -36,7 +30,7 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor,
 	interval(1),
 	textVisibility(true),
 	lineVisibility(true),
-	labelScale(1.0),
+	labelScale(labelScale),
 	changed(true),
 	dpr(dpr)
 {
@@ -390,8 +384,8 @@ QString TemperatureAxis::textForValue(double value) const
 }
 
 PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, Position position, color_index_t gridColor,
-					       double dpr, bool printMode, bool isGrayscale, ProfileScene &scene) :
-	DiveCartesianAxis(position, gridColor, dpr, printMode, isGrayscale, scene),
+					       double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene) :
+	DiveCartesianAxis(position, gridColor, dpr, labelScale, printMode, isGrayscale, scene),
 	model(model)
 {
 }
