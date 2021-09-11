@@ -1653,11 +1653,6 @@ void QMLManager::setLocationServiceAvailable(bool locationServiceAvailable)
 	emit locationServiceAvailableChanged();
 }
 
-void QMLManager::hasLocationSourceChanged()
-{
-	setLocationServiceAvailable(GpsLocation::instance()->hasLocationsSource());
-}
-
 void QMLManager::setVerboseEnabled(bool verboseMode)
 {
 	m_verboseEnabled = verboseMode;
