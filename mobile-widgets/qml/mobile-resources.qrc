@@ -33,7 +33,6 @@
 		-->
 		<file>DiveSummary.qml</file>
 		<file>Export.qml</file>
-		<file>GpsList.qml</file>
 		<file>HintsTextEdit.qml</file>
 		<file>Log.qml</file>
 		<file>main.qml</file>
