@@ -1634,11 +1634,6 @@ int QMLManager::addDive()
 	return diveId;
 }
 
-void QMLManager::deleteGpsFix(quint64 when)
-{
-	GpsLocation::instance()->deleteGpsFix(when);
-}
-
 QString QMLManager::logText() const
 {
 	QString logText = m_logText + QString("\nNumer of GPS fixes: %1").arg(GpsLocation::instance()->getGpsNum());

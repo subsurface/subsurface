@@ -222,7 +222,6 @@ public slots:
 	QString getDate(const QString& diveId);
 	QString getGpsFromSiteName(const QString& siteName);
 	QString getVersion() const;
-	void deleteGpsFix(quint64 when);
 	void refreshDiveList();
 	void screenChanged(QScreen *screen);
 	void appendTextToLog(const QString &newText);
