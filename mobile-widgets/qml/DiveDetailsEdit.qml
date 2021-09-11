@@ -35,7 +35,6 @@ Item {
 	property var usedGas: []
 	property var endpressure: []
 	property var startpressure: []
-	property alias gpsCheckbox: checkboxGPS.checked
 	property alias suitModel: suitBox.model
 	property alias divemasterModel: divemasterBox.model
 	property alias buddyModel: buddyBox.model
@@ -262,32 +261,6 @@ Item {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 16
 					id: txtGps
 					flickable: detailsEditFlickable
-				}
-			}
-			RowLayout {
-				width: manager.locationServiceAvailable ? Kirigami.Units.gridUnit * 12 : 0
-				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
-					horizontalAlignment: Text.AlignRight
-					text: qsTr("Use current\nGPS location:")
-					visible: manager.locationServiceAvailable
-				}
-				TemplateCheckBox {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
-					id: checkboxGPS
-					visible: manager.locationServiceAvailable
-					onCheckedChanged: {
-						if (checked)
-							gpsText = manager.getCurrentPosition()
-					}
-				}
-			}
-
-			Connections {
-				target: manager
-				onWaitingForPositionChanged: {
-					gpsText = manager.getCurrentPosition()
-					manager.appendTextToLog("received updated position info " + gpsText)
 				}
 			}
 			RowLayout {

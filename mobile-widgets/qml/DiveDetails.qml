@@ -40,7 +40,6 @@ Kirigami.Page {
 	property alias cylinderIndex3: detailsEdit.cylinderIndex3
 	property alias cylinderIndex4: detailsEdit.cylinderIndex4
 	property alias usedGas: detailsEdit.usedGas
-	property alias gpsCheckbox: detailsEdit.gpsCheckbox
 	property alias rating: detailsEdit.rating
 	property alias visibility: detailsEdit.visibility
 	property alias usedCyl: detailsEdit.usedCyl
@@ -346,7 +345,6 @@ Kirigami.Page {
 			detailsEdit.locationText = locationText
 		}
 		gps = modelData.gps
-		gpsCheckbox = false
 		duration = modelData.duration
 		depth = modelData.depth
 		airtemp = modelData.airTemp

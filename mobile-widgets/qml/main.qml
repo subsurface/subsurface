@@ -179,7 +179,6 @@ Kirigami.ApplicationWindow {
 		detailsWindow.usedGas = []
 		detailsWindow.startpressure = []
 		detailsWindow.endpressure = []
-		detailsWindow.gpsCheckbox = false
 		showPage(detailsWindow)
 	}
 
