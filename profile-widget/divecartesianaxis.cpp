@@ -17,20 +17,11 @@ void DiveCartesianAxis::setFontLabelScale(qreal scale)
 	changed = true;
 }
 
-void DiveCartesianAxis::setMaximum(double maximum)
+void DiveCartesianAxis::setBounds(double minimum, double maximum)
 {
-	if (IS_FP_SAME(max, maximum))
-		return;
-	max = maximum;
-	changed = true;
-}
-
-void DiveCartesianAxis::setMinimum(double minimum)
-{
-	if (IS_FP_SAME(min, minimum))
-		return;
+	changed = !IS_FP_SAME(max, maximum) || !IS_FP_SAME(min, minimum);
 	min = minimum;
-	changed = true;
+	max = maximum;
 }
 
 DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor, double dpr,
@@ -431,7 +422,7 @@ void PartialGasPressureAxis::update(int animSpeed)
 	if (IS_FP_SAME(maximum(), pp))
 		return;
 
-	setMaximum(pp);
+	setBounds(0.0, pp);
 	setTickInterval(pp > 4 ? 0.5 : 0.25);
 	updateTicks(animSpeed);
 }

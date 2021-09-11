@@ -970,7 +970,7 @@ void ProfileWidget2::divePlannerHandlerMoved()
 	// Grow the time axis if necessary.
 	int minutes = lrint(profileScene->timeAxis->valueAt(activeHandler->pos()) / 60);
 	if (minutes * 60 > profileScene->timeAxis->maximum() * 0.9)
-		profileScene->timeAxis->setMaximum(profileScene->timeAxis->maximum() * 1.02);
+		profileScene->timeAxis->setBounds(0.0, profileScene->timeAxis->maximum() * 1.02);
 
 	divedatapoint data = plannerModel->at(index);
 	data.depth.mm = lrint(profileScene->profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);

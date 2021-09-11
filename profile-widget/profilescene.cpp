@@ -82,12 +82,10 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 	// Initialize axes. Perhaps part of this should be moved down to the axes code?
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
-	profileYAxis->setMinimum(0);
 	profileYAxis->setTickInterval(M_OR_FT(10, 30));
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 	gasYAxis->setTickInterval(1);
-	gasYAxis->setMinimum(0);
 	gasYAxis->setFontLabelScale(0.7);
 
 #ifndef SUBSURFACE_MOBILE
@@ -377,11 +375,11 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
-	profileYAxis->setMaximum(maxdepth);
+	profileYAxis->setBounds(0.0, maxdepth);
 	profileYAxis->updateTicks(animSpeed);
 
-	temperatureAxis->setMinimum(plotInfo.mintemp);
-	temperatureAxis->setMaximum(plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
+	temperatureAxis->setBounds(plotInfo.mintemp,
+				   plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
 
 	if (hasHeartBeat) {
 		int heartBeatAxisMin = lrint(plotInfo.minhr / 5.0 - 0.5) * 5;
@@ -395,19 +393,17 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		else
 			heartBeatAxisTick = 50;
 		for (heartBeatAxisMax = heartBeatAxisMin; heartBeatAxisMax < plotInfo.maxhr; heartBeatAxisMax += heartBeatAxisTick);
-		heartBeatAxis->setMinimum(heartBeatAxisMin);
-		heartBeatAxis->setMaximum(heartBeatAxisMax + 1);
+		heartBeatAxis->setBounds(heartBeatAxisMin, heartBeatAxisMax + 1);
 		heartBeatAxis->setTickInterval(heartBeatAxisTick);
 		heartBeatAxis->updateTicks(animSpeed); // this shows the ticks
 	}
 
-	percentageAxis->setMinimum(0);
-	percentageAxis->setMaximum(100);
+	percentageAxis->setBounds(0, 100);
 	percentageAxis->setVisible(false);
 	percentageAxis->updateTicks(animSpeed);
 
 	if (calcMax)
-		timeAxis->setMaximum(maxtime);
+		timeAxis->setBounds(0.0, maxtime);
 
 	int i, incr;
 	static int increments[8] = { 10, 20, 30, 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60 };
@@ -426,8 +422,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		incr *= 2;
 	timeAxis->setTickInterval(incr);
 	timeAxis->updateTicks(animSpeed);
-	cylinderPressureAxis->setMinimum(plotInfo.minpressure);
-	cylinderPressureAxis->setMaximum(plotInfo.maxpressure);
+	cylinderPressureAxis->setBounds(plotInfo.minpressure, plotInfo.maxpressure);
 
 #ifdef SUBSURFACE_MOBILE
 	if (currentdc->divemode == CCR) {

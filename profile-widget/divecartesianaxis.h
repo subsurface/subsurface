@@ -35,8 +35,7 @@ public:
 	DiveCartesianAxis(Position position, color_index_t gridColor, double dpr,
 			  bool printMode, bool isGrayscale, ProfileScene &scene);
 	~DiveCartesianAxis();
-	void setMinimum(double minimum);
-	void setMaximum(double maximum);
+	void setBounds(double min, double max);
 	void setTickInterval(double interval);
 	void setOrientation(Orientation orientation);
 	void setFontLabelScale(qreal scale);
