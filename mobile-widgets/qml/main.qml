@@ -39,7 +39,6 @@ Kirigami.ApplicationWindow {
 	pageStack.globalToolBar.maximumHeight: Kirigami.Units.gridUnit * 2
 
 	property alias notificationText: manager.notificationText
-	property alias locationServiceEnabled: manager.locationServiceEnabled
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
 	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
 	property bool filterToggle: false

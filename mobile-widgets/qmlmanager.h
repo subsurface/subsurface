@@ -27,8 +27,6 @@ struct DiveSiteChange; // An obscure implementation artifact - remove in due cou
 
 class QMLManager : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool locationServiceEnabled MEMBER m_locationServiceEnabled WRITE setLocationServiceEnabled NOTIFY locationServiceEnabledChanged)
-	Q_PROPERTY(bool locationServiceAvailable MEMBER m_locationServiceAvailable WRITE setLocationServiceAvailable NOTIFY locationServiceAvailableChanged)
 	Q_PROPERTY(bool loadFromCloud MEMBER m_loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
 	Q_PROPERTY(QString startPageText MEMBER m_startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled MEMBER m_verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
@@ -124,12 +122,6 @@ public:
 	static QMLManager *instance();
 	Q_INVOKABLE void registerError(QString error);
 	QString consumeError();
-
-	bool locationServiceEnabled() const;
-	void setLocationServiceEnabled(bool locationServiceEnable);
-
-	bool locationServiceAvailable() const;
-	void setLocationServiceAvailable(bool locationServiceAvailable);
 
 	bool verboseEnabled() const;
 	void setVerboseEnabled(bool verboseMode);
@@ -240,8 +232,6 @@ private:
 	DiveSiteSortedModel locationModel;
 	QString m_startPageText;
 	QString m_lastError;
-	bool m_locationServiceEnabled;
-	bool m_locationServiceAvailable;
 	bool m_verboseEnabled;
 	bool m_diveListProcessing;
 	bool m_initialized;
@@ -284,8 +274,6 @@ private:
 	qPrefCloudStorage::cloud_status m_oldStatus;
 
 signals:
-	void locationServiceEnabledChanged();
-	void locationServiceAvailableChanged();
 	void verboseEnabledChanged();
 	void diveListProcessingChanged();
 	void initializedChanged();
