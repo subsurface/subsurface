@@ -201,7 +201,7 @@ static bool unsavedChanges()
 	return unsaved_changes() || !Command::isClean();
 }
 
-QMLManager::QMLManager() : m_locationServiceEnabled(false),
+QMLManager::QMLManager() :
 	m_verboseEnabled(false),
 	m_diveListProcessing(false),
 	m_initialized(false),
@@ -1637,20 +1637,6 @@ int QMLManager::addDive()
 void QMLManager::appendTextToLog(const QString &newText)
 {
 	qDebug() << QString::number(timer.elapsed() / 1000.0,'f', 3) + ": " + newText;
-}
-
-void QMLManager::setLocationServiceEnabled(bool locationServiceEnabled)
-{
-	m_locationServiceEnabled = locationServiceEnabled;
-	GpsLocation::instance()->serviceEnable(m_locationServiceEnabled);
-	emit locationServiceEnabledChanged();
-}
-
-void QMLManager::setLocationServiceAvailable(bool locationServiceAvailable)
-{
-	appendTextToLog(QStringLiteral("location service is ") + (locationServiceAvailable ? QStringLiteral("available") : QStringLiteral("not available")));
-	m_locationServiceAvailable = locationServiceAvailable;
-	emit locationServiceAvailableChanged();
 }
 
 void QMLManager::setVerboseEnabled(bool verboseMode)
