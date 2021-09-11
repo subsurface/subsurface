@@ -263,7 +263,6 @@ void ProfileWidget2::actionRequestedReplot(bool)
 
 void ProfileWidget2::settingsChanged()
 {
-	profileScene->updateAxes(false);
 	replot();
 }
 
@@ -447,8 +446,6 @@ void ProfileWidget2::setProfileState()
 
 	currentState = PROFILE;
 	setBackgroundBrush(getColor(::BACKGROUND, profileScene->isGrayscale));
-
-	profileScene->updateAxes(true);
 
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->readPos();

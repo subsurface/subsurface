@@ -142,8 +142,6 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 	for (AbstractProfilePolygonItem *item: profileItems)
 		addItem(item);
-
-	updateAxes(true);
 }
 
 ProfileScene::~ProfileScene()
@@ -171,7 +169,7 @@ static bool ppGraphsEnabled()
 }
 
 // Update visibility of non-interactive chart features according to preferences
-void ProfileScene::updateVisibility()
+void ProfileScene::updateVisibility(bool diveHasHeartBeat)
 {
 #ifndef SUBSURFACE_MOBILE
 	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
@@ -187,7 +185,7 @@ void ProfileScene::updateVisibility()
 	ccrsensor3GasItem->setVisible(currentdc && sensorflag && currentdc->no_o2sensors > 2);
 	ocpo2GasItem->setVisible(currentdc && currentdc->divemode == PSCR && prefs.show_scr_ocpo2);
 
-	heartBeatItem->setVisible(prefs.hrgraph);
+	heartBeatItem->setVisible(prefs.hrgraph && diveHasHeartBeat);
 #endif
 	diveCeiling->setVisible(prefs.calcceiling);
 	decoModelParameters->setVisible(prefs.decoinfo);
@@ -204,7 +202,6 @@ void ProfileScene::updateVisibility()
 void ProfileScene::resize(QSizeF size)
 {
 	setSceneRect(QRectF(QPointF(), size));
-	updateAxes(true); // disable animations when resizing
 }
 
 // Helper structure for laying out secondary plots.
@@ -214,7 +211,7 @@ struct VerticalAxisLayout {
 	bool visible;
 };
 
-void ProfileScene::updateAxes(bool instant)
+void ProfileScene::updateAxes(bool instant, bool diveHasHeartBeat)
 {
 	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
 
@@ -261,7 +258,7 @@ void ProfileScene::updateAxes(bool instant)
 	const double minProfileFraction = 0.5;
         VerticalAxisLayout secondaryAxes[] = {
 		// Note: axes are listed from bottom to top, since they are added that way.
-		{ heartBeatAxis, 75.0, prefs.hrgraph },
+		{ heartBeatAxis, 75.0, prefs.hrgraph && diveHasHeartBeat },
 		{ percentageAxis, 50.0, prefs.percentagegraph },
 		{ gasYAxis, 75.0, ppGraphsEnabled() },
 		{ temperatureAxis, 50.0, true },
@@ -342,8 +339,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	ccrsensor3GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 2));
 	ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
 
-	updateVisibility();
-
 	// A non-null planner_ds signals to create_plot_info_new that the dive is currently planned.
 	struct deco_state *planner_ds = inPlanner && plannerModel ? &plannerModel->final_deco_state : nullptr;
 
@@ -356,6 +351,10 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	 * create_plot_info_new() automatically frees old plot data.
 	 */
 	create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !calcMax, planner_ds);
+
+	bool hasHeartBeat = plotInfo.maxhr;
+	updateVisibility(hasHeartBeat);
+	updateAxes(instant, hasHeartBeat);
 
 	int newMaxtime = get_maxtime(&plotInfo);
 	if (calcMax || newMaxtime > maxtime)
@@ -384,7 +383,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	temperatureAxis->setMinimum(plotInfo.mintemp);
 	temperatureAxis->setMaximum(plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
 
-	if (plotInfo.maxhr) {
+	if (hasHeartBeat) {
 		int heartBeatAxisMin = lrint(plotInfo.minhr / 5.0 - 0.5) * 5;
 		int heartBeatAxisMax, heartBeatAxisTick;
 		if (plotInfo.maxhr - plotInfo.minhr < 40)
@@ -401,7 +400,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		heartBeatAxis->setTickInterval(heartBeatAxisTick);
 		heartBeatAxis->updateTicks(animSpeed); // this shows the ticks
 	}
-	heartBeatAxis->setVisible(prefs.hrgraph && plotInfo.maxhr);
 
 	percentageAxis->setMinimum(0);
 	percentageAxis->setMaximum(100);

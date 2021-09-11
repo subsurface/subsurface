@@ -42,7 +42,6 @@ public:
 	~ProfileScene();
 
 	void resize(QSizeF size);
-	void updateAxes(bool instant); // Update axes according to preferences
 	void clear();
 	bool isPointOutOfBoundaries(const QPointF &point) const;
 
@@ -60,7 +59,8 @@ private:
 	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args);
 	PartialPressureGasItem *createPPGas(int column, color_index_t color, color_index_t colorAlert,
 					    const double *thresholdSettingsMin, const double *thresholdSettingsMax);
-	void updateVisibility(); // Update visibility of non-interactive chart features according to preferences
+	void updateVisibility(bool diveHasHeartBeat); // Update visibility of non-interactive chart features according to preferences
+	void updateAxes(bool instant, bool diveHasHeartBeat); // Update axes according to preferences
 
 	friend class ProfileWidget2; // For now, give the ProfileWidget full access to the objects on the scene
 	double dpr; // Device Pixel Ratio. A DPR of one corresponds to a "standard" PC screen.
