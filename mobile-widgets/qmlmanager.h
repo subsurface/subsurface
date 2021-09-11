@@ -27,7 +27,6 @@ struct DiveSiteChange; // An obscure implementation artifact - remove in due cou
 
 class QMLManager : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
 	Q_PROPERTY(bool locationServiceEnabled MEMBER m_locationServiceEnabled WRITE setLocationServiceEnabled NOTIFY locationServiceEnabledChanged)
 	Q_PROPERTY(bool locationServiceAvailable MEMBER m_locationServiceAvailable WRITE setLocationServiceAvailable NOTIFY locationServiceAvailableChanged)
 	Q_PROPERTY(bool loadFromCloud MEMBER m_loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
@@ -141,9 +140,6 @@ public:
 	QString startPageText() const;
 	void setStartPageText(const QString& text);
 
-	QString logText() const;
-	void setLogText(const QString &logText);
-
 	QString notificationText() const;
 	void setNotificationText(QString text);
 
@@ -244,7 +240,6 @@ private:
 	DiveMasterCompletionModel divemasterModel;
 	DiveSiteSortedModel locationModel;
 	QString m_startPageText;
-	QString m_logText;
 	QString m_lastError;
 	bool m_locationServiceEnabled;
 	bool m_locationServiceAvailable;
@@ -295,7 +290,6 @@ signals:
 	void verboseEnabledChanged();
 	void diveListProcessingChanged();
 	void initializedChanged();
-	void logTextChanged();
 	void loadFromCloudChanged();
 	void startPageTextChanged();
 	void notificationTextChanged();
