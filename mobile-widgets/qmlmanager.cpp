@@ -1634,18 +1634,6 @@ int QMLManager::addDive()
 	return diveId;
 }
 
-QString QMLManager::logText() const
-{
-	QString logText = m_logText + QString("\nNumer of GPS fixes: %1").arg(GpsLocation::instance()->getGpsNum());
-	return logText;
-}
-
-void QMLManager::setLogText(const QString &logText)
-{
-	m_logText = logText;
-	emit logTextChanged();
-}
-
 void QMLManager::appendTextToLog(const QString &newText)
 {
 	qDebug() << QString::number(timer.elapsed() / 1000.0,'f', 3) + ": " + newText;
