@@ -999,17 +999,6 @@ bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString loca
 			qDebug() << "parsed GPS, using it";
 			// there are valid GPS coordinates - just use them
 			setupDivesite(res, d, ds, lat, lon, qPrintable(location));
-		} else if (gps == GPS_CURRENT_POS) {
-			qDebug() << "gps was our default text for no GPS";
-			// user asked to use current pos
-			QString gpsString = getCurrentPosition();
-			if (gpsString != GPS_CURRENT_POS) {
-				qDebug() << "but now I got a valid location" << gpsString;
-				if (parseGpsText(qPrintable(gpsString), &lat, &lon))
-					setupDivesite(res, d, ds, lat, lon, qPrintable(location));
-			} else {
-				appendTextToLog("couldn't get GPS location in time");
-			}
 		} else {
 			// just something we can't parse, so tell the user
 			appendTextToLog(QString("wasn't able to parse gps string '%1'").arg(gps));
@@ -1653,24 +1642,6 @@ int QMLManager::addDive()
 		appendTextToLog(QString("Adding new dive with id '%1'").arg(diveId));
 	// the QML UI uses the return value to set up the edit screen
 	return diveId;
-}
-
-QString QMLManager::getCurrentPosition()
-{
-	static bool hasLocationSource = false;
-	if (GpsLocation::instance()->hasLocationsSource() != hasLocationSource) {
-		hasLocationSource = !hasLocationSource;
-		setLocationServiceAvailable(hasLocationSource);
-	}
-	if (!hasLocationSource)
-		return tr("Unknown GPS location");
-
-	QString positionResponse = GpsLocation::instance()->currentPosition();
-	if (positionResponse == GPS_CURRENT_POS)
-		connect(GpsLocation::instance(), &GpsLocation::acquiredPosition, this, &QMLManager::waitingForPositionChanged, Qt::UniqueConnection);
-	else
-		disconnect(GpsLocation::instance(), &GpsLocation::acquiredPosition, this, &QMLManager::waitingForPositionChanged);
-	return positionResponse;
 }
 
 void QMLManager::applyGpsData()
