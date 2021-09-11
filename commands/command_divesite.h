@@ -5,9 +5,14 @@
 #define COMMAND_DIVESITE_H
 
 #include "command_base.h"
-#include "core/gpslocation.h"
 
 #include <QVector>
+
+struct DiveAndLocation {
+	struct dive *d;
+	location_t location;
+	QString name;
+};
 
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {

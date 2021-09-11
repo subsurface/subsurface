@@ -106,8 +106,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	gettextfromc.h
 	git-access.c
 	git-access.h
-	gpslocation.cpp
-	gpslocation.h
 	imagedownloader.cpp
 	imagedownloader.h
 	import-cobalt.c

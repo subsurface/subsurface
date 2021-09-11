@@ -23,7 +23,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/cloudstorage.cpp \
 	core/configuredivecomputerthreads.cpp \
 	core/devicedetails.cpp \
-	core/gpslocation.cpp \
 	core/downloadfromdcthread.cpp \
 	core/qtserialbluetooth.cpp \
 	core/plannernotes.c \
@@ -204,7 +203,6 @@ HEADERS += \
 	core/event.h \
 	core/extradata.h \
 	core/git-access.h \
-	core/gpslocation.h \
 	core/pref.h \
 	core/profile.h \
 	core/qthelper.h \

@@ -11,7 +11,6 @@
 #include <QFile>
 
 #include "core/btdiscovery.h"
-#include "core/gpslocation.h"
 #include "core/downloadfromdcthread.h"
 #include "qt-models/completionmodels.h"
 #include "qt-models/divelocationmodel.h"
