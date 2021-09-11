@@ -80,8 +80,7 @@ protected:
 class DepthAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	DepthAxis(Position position, color_index_t gridColor, double dpr,
-		  bool printMode, bool isGrayscale, ProfileScene &scene);
+	using DiveCartesianAxis::DiveCartesianAxis;
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
