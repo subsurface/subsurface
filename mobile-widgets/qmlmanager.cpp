@@ -1654,11 +1654,6 @@ void QMLManager::applyGpsData()
 		changesNeedSaving();
 }
 
-void QMLManager::clearGpsData()
-{
-	GpsLocation::instance()->clearGpsData();
-}
-
 void QMLManager::deleteGpsFix(quint64 when)
 {
 	GpsLocation::instance()->deleteGpsFix(when);
