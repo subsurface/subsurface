@@ -35,8 +35,7 @@ aimed at Android and iOS smartphone and tablet devices.
 While the desktop version of _Subsurface_ shows much more detailed information
 for each dive, the mobile version allows a more accessible dive log on the go. For example,
 you can prove dive experience on a dive trip to dive shops or review
-previous dives while on a dive boat. _Subsurface-mobile_ also allows
-the gathering of GPS locations where dives are performed.
+previous dives while on a dive boat.
 Assuming you have a dive computer that is supported by the mobile OS of
 your choice, _Subsurface-mobile_ supports the downloading of dives from your dive computer.
 
@@ -53,7 +52,6 @@ _Subsurface-mobile_ allows:
 - Download dive data directly from some dive computers.
 - Editing most of the dive log data, e.g. dive-master, buddy,
   equipment or notes relating to a dive.
-- Recording, storing and applying GPS positions to dive information.
 - Viewing the localities of recorded GPS positions and of dives
   on a map.
 
@@ -717,90 +715,6 @@ specific XML files (both for dives and dive sites) as well as _UDDF_.
 
 Tapping on _Next_ opens an additional page for login information for the destination website (or a file selection dialog).
 
-== Obtaining dive site locations using the GPS
-
-The fact that almost all smartphones have GPS facilities allows
-_Subsurface-mobile_ to record
-the locations of dives. 
-
-****
-[icon="images/icons/important.png"]
-[IMPORTANT]
-*Accuracy of GPS coordinates*
-
-GPS-derived coordinates on a smartphone
-are not always accurate and can have an error greater than 1 km. GPS accuracy
-is determined by the hardware and software of the
-smartphone as well as by the GPS settings selected within Android/iOS.
-As of Android V6 (Marshmallow) select Android _Settings -> Communication -> Location -> High accuracy_*.
-If the smartphone is taken on the boat
-during a dive, locations can be automatically recorded at regular intervals.
-These locations can then be applied to dives in the dive list as described below
-****
-To collect dive site coordinates four step are required:
-
-[[S_ConfigureGPS]]
-=== Configuring the GPS service
-
-For most users, the defaults for tracking GPS locations are
-appropriate. If you would like to change them, go to
-the _Main Menu_, select the xref:S_Settings[_Settings_] screen, and open
-the _Advanced_ area on that page where there is a section for
-configuring the GPS service (see image below). GPS location data
-are collected at regular intervals, e.g. every 5 minutes, or at regular
-distances, e.g. after the boat has moved more than 200m, or a combination of
-both of these approaches. Provide the appropriate information and
-tap the _Back_ button. The program is now ready to collect GPS positions.
-
-image::mobile-images/GPSConfig.jpg["FIGURE: GPS configure",align="center"]
-
-=== Collecting GPS positions
-
-[width="100%", frame="None", cols="2,3"]
-|=======
-a|image::mobile-images/LocationMenu.jpg["FIGURE: GPS start",align="center"] |
-In the _Location_ menu select _Run location service_.
-_Subsurface-mobile_ starts to collect GPS locations automatically,
-following the preferences specified as described above. While the GPS
-location service is running, all menus have a GPS symbol at the bottom,
-indicating that the service is active. After returning from
-the dive, deactivate the collection of GPS data by tapping
-the option _Location -> Disable location service_. The GPS symbol at the bottom
-of menus disappears.
-|=======
-
-
-Collecting GPS fixes like this is relatively battery intensive and unfortunately
-both Android and especially iOS have become increasingly aggressive in killing
-applications that are running while the screen is turned off. It may make sense
-to check between dives that the location service is still running. On the other hand
-the battery consumption of a smartphone with GPS enabled is often significantly less than
-the battery consumption of a dedicated GPS that is logging a track.
-
-=== Viewing GPS data collected during a dive
-
-From the _Location_ submenu select _Show GPS fixes_. This brings
-up a list of GPS positions obtained by the location service (image
-below). Two actions are possible for each of the locations, enabled by
-dragging the right part of a location to the left. This exposes two
-options. Tapping the dustbin deletes this particular GPS location. Tapping the
-teardrop-shaped icon (actually a Google Maps pin) opens up Google Maps with a pin
-indicating the exact map position of the GPS record being viewed. The two above
-options can be hidden by drawing the GPS record to the right.
-
-image::mobile-images/gpsmanagement.jpg["FIGURE: GPS management",align="center"]
-
-
-=== Applying GPS data to dives in the dive log
-
-After running the location service during a dive trip, first either download
-the dives from your dive computer or manually enter the dives into the dive list.
-Now you can apply the GPS positions to these dives.
-From the _Dive management_ menu, tap _Apply GPS fixes_. The dive list contains the start
-and end times of each dive. Now, _Subsurface-mobile_ applies the first
-GPS position that falls within the dive period of each dive. This results
-in a GPS position for each dive that is saved as part of the dive log.
-
 == Viewing the locations of all dives in the dive list
 
 image::mobile-images/DivesMap.jpg["FIGURE: Map of all dive sites",align="center"]
@@ -871,11 +785,6 @@ your location.
 === _Advanced_ section
 
 As the name indicates, most users do not need to make changes here.
-
-==== GPS location service thresholds
-
-As indicated above in the _Location_ section of this manual, here you can set the distance and time
-thresholds for the _location service_
 
 ==== Bluetooth
 
