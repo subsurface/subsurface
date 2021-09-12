@@ -525,40 +525,9 @@ TemplatePage {
 			width: parent.width
 
 			GridLayout {
-				id: gpsPrefs
 				visible: sectionAdvanced.isExpanded
 				width: parent.width
 				columns: 2
-				TemplateLabel {
-					text: qsTr("GPS location service")
-					font.pointSize: subsurfaceTheme.headingPointSize
-					font.weight: Font.Light
-					Layout.topMargin: Kirigami.Units.largeSpacing
-					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-					Layout.columnSpan: 2
-				}
-				TemplateLabel {
-					text: qsTr("Distance threshold (meters)")
-				}
-				TemplateTextField {
-					id: distanceThreshold
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-					text: PrefLocationService.distance_threshold
-					onEditingFinished: {
-						PrefLocationService.distance_threshold = distanceThreshold.text
-					}
-				}
-				TemplateLabel {
-					text: qsTr("Time threshold (minutes)")
-				}
-				TemplateTextField {
-					id: timeThreshold
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-					text: PrefLocationService.time_threshold / 60
-					onEditingFinished: {
-						PrefLocationService.time_threshold = timeThreshold.text * 60
-					}
-				}
 
 				TemplateLine {
 					visible: sectionAdvanced.isExpanded

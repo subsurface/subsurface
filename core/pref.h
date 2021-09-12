@@ -134,10 +134,6 @@ struct preferences {
 	const char     *time_format;
 	bool            time_format_override;
 
-	// ********** LocationService **********
-	int time_threshold;
-	int distance_threshold;
-
 	// ********** Network **********
 	bool        proxy_auth;
 	const char *proxy_host;

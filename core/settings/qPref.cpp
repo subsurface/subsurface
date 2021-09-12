@@ -8,7 +8,6 @@
 #include "qPrefGeneral.h"
 #include "qPrefGeocoding.h"
 #include "qPrefLanguage.h"
-#include "qPrefLocationService.h"
 #include "qPrefPartialPressureGas.h"
 #include "qPrefProxy.h"
 #include "qPrefTechnicalDetails.h"
@@ -32,7 +31,6 @@ void qPref::loadSync(bool doSync)
 	qPrefGeneral::loadSync(doSync);
 	qPrefGeocoding::loadSync(doSync);
 	qPrefLanguage::loadSync(doSync);
-	qPrefLocationService::loadSync(doSync);
 	qPrefPartialPressureGas::loadSync(doSync);
 	qPrefProxy::loadSync(doSync);
 	qPrefTechnicalDetails::loadSync(doSync);
@@ -67,7 +65,6 @@ void qPref::registerQML(QQmlEngine *engine)
 		ct->setContextProperty("PrefGeneral", qPrefGeneral::instance());
 		ct->setContextProperty("PrefGeocoding", qPrefGeocoding::instance());
 		ct->setContextProperty("PrefLanguage", qPrefLanguage::instance());
-		ct->setContextProperty("PrefLocationService", qPrefLocationService::instance());
 		ct->setContextProperty("PrefPartialPressureGas", qPrefPartialPressureGas::instance());
 		ct->setContextProperty("PrefProxy", qPrefProxy::instance());
 		ct->setContextProperty("PrefTechnicalDetails", qPrefTechnicalDetails::instance());

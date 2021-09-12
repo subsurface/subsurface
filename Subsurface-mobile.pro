@@ -111,7 +111,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/settings/qPrefGeneral.cpp \
 	core/settings/qPrefGeocoding.cpp \
 	core/settings/qPrefLanguage.cpp \
-	core/settings/qPrefLocationService.cpp \
 	core/settings/qPrefPartialPressureGas.cpp \
 	core/settings/qPrefPrivate.cpp \
 	core/settings/qPrefProxy.cpp \
@@ -265,7 +264,6 @@ HEADERS += \
 	core/settings/qPrefGeneral.h \
 	core/settings/qPrefGeocoding.h \
 	core/settings/qPrefLanguage.h \
-	core/settings/qPrefLocationService.h \
 	core/settings/qPrefPartialPressureGas.h \
 	core/settings/qPrefPrivate.h \
 	core/settings/qPrefProxy.h \

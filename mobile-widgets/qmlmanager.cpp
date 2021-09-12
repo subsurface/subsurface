@@ -42,7 +42,6 @@
 #include "core/ssrf.h"
 #include "core/save-profiledata.h"
 #include "core/settings/qPrefLog.h"
-#include "core/settings/qPrefLocationService.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefUnit.h"
