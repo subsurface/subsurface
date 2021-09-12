@@ -221,8 +221,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefGeocoding.h
 	settings/qPrefLanguage.cpp
 	settings/qPrefLanguage.h
-	settings/qPrefLocationService.cpp
-	settings/qPrefLocationService.h
 	settings/qPrefLog.cpp
 	settings/qPrefLog.h
 	settings/qPrefMedia.cpp

@@ -137,7 +137,6 @@ TEST(TestQPrefEquipment testqPrefEquipment.cpp)
 TEST(TestQPrefMedia testqPrefMedia.cpp)
 TEST(TestQPrefGeocoding testqPrefGeocoding.cpp)
 TEST(TestQPrefLanguage testqPrefLanguage.cpp)
-TEST(TestQPrefLocationService testqPrefLocationService.cpp)
 TEST(TestQPrefPartialPressureGas testqPrefPartialPressureGas.cpp)
 TEST(TestQPrefProxy testqPrefProxy.cpp)
 TEST(TestQPrefTechnicalDetails testqPrefTechnicalDetails.cpp)
@@ -174,7 +173,6 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefMedia
 	TestQPrefGeocoding
 	TestQPrefLanguage
-	TestQPrefLocationService
 	TestQPrefPartialPressureGas
 	TestQPrefProxy
 	TestQPrefTechnicalDetails
