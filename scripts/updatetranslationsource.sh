@@ -21,7 +21,7 @@ git status | grep "Changes to be committed" 2>/dev/null && echo "tree not clean"
 
 # now remove the translations and remove access to the kirigami sources
 # and any old sources under tmp
-chmod 000 mobile-widgets/qml/kirigami
+chmod 000 mobile-widgets/3rdparty
 chmod 000 tmp
 rm translations/subsurface_source.ts
 
@@ -52,7 +52,7 @@ git commit -s -m "Update translation source strings"
 git reset --hard
 
 # now enable access to kirigami again
-chmod 755 mobile-widgets/qml/kirigami
+chmod 755 mobile-widgets/3rdparty
 chmod 755 tmp
 
 # this really depends on my filesystem layout
