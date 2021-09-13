@@ -1213,8 +1213,10 @@ static void fixup_dc_sample_sensors(struct divecomputer *dc, int nr_cylinders)
 	for (int i = 0; i < dc->samples; i++) {
 		struct sample *s = dc->sample + i;
 		for (int j = 0; j < MAX_SENSORS; j++) {
-			if (s->sensor[j] < 0 || s->sensor[j] >= nr_cylinders)
+			if (s->sensor[j] < 0 || s->sensor[j] >= nr_cylinders) {
 				s->sensor[j] = NO_SENSOR;
+				s->pressure[j].mbar = 0;
+			}
 		}
 	}
 }
