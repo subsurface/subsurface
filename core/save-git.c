@@ -258,6 +258,9 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		pressure_t p = sample->pressure[idx];
 		int sensor = sample->sensor[idx];
 
+		if (sensor == NO_SENSOR)
+			continue;
+
 		if (!p.mbar)
 			continue;
 
