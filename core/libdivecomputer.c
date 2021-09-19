@@ -600,7 +600,8 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 
-	dive->dc.deviceid = devdata->deviceid;
+	// Our deviceid is the hash of the serial number
+	dive->dc.deviceid = 0;
 
 	if (rc == DC_STATUS_SUCCESS) {
 		tm.tm_year = dt.year;
@@ -771,16 +772,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->dc.model = strdup(devdata->model);
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
-	/* Should we add it to the cached fingerprint file? */
-	if (fingerprint && fsize && !devdata->fingerprint) {
-		devdata->fingerprint = calloc(fsize, 1);
-		if (devdata->fingerprint) {
-			devdata->fsize = fsize;
-			devdata->fdiveid = dive->dc.diveid;
-			memcpy(devdata->fingerprint, fingerprint, fsize);
-		}
-	}
-
 	// Parse the dive's header data
 	rc = libdc_header_parser (parser, devdata, dive);
 	if (rc != DC_STATUS_SUCCESS) {
@@ -796,6 +787,22 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 
 	dc_parser_destroy(parser);
+
+	/*
+	 * Save off fingerprint data.
+	 *
+	 * NOTE! We do this after parsing the dive fully, so that
+	 * we have the final deviceid here.
+	 */
+	if (fingerprint && fsize && !devdata->fingerprint) {
+		devdata->fingerprint = calloc(fsize, 1);
+		if (devdata->fingerprint) {
+			devdata->fsize = fsize;
+			devdata->fdeviceid = dive->dc.deviceid;
+			devdata->fdiveid = dive->dc.diveid;
+			memcpy(devdata->fingerprint, fingerprint, fsize);
+		}
+	}
 
 	/* If we already saw this dive, abort. */
 	if (!devdata->force_download && find_dive(&dive->dc)) {
@@ -822,95 +829,6 @@ error_exit:
 
 }
 
-/*
- * The device ID for libdivecomputer devices is the first 32-bit word
- * of the SHA1 hash of the model/firmware/serial numbers.
- *
- * NOTE! This is byte-order-dependent. And I can't find it in myself to
- * care.
- */
-static uint32_t calculate_sha1(unsigned int model, unsigned int firmware, unsigned int serial)
-{
-	SHA_CTX ctx;
-	uint32_t csum[5];
-
-	SHA1_Init(&ctx);
-	SHA1_Update(&ctx, &model, sizeof(model));
-	SHA1_Update(&ctx, &firmware, sizeof(firmware));
-	SHA1_Update(&ctx, &serial, sizeof(serial));
-	SHA1_Final((unsigned char *)csum, &ctx);
-	return csum[0];
-}
-
-/*
- * libdivecomputer has returned two different serial numbers for the
- * same device in different versions. First it used to just do the four
- * bytes as one 32-bit number, then it turned it into a decimal number
- * with each byte giving two digits (0-99).
- *
- * The only way we can tell is by looking at the format of the number,
- * so we'll just fix it to the first format.
- */
-static unsigned int undo_libdivecomputer_suunto_nr_changes(unsigned int serial)
-{
-	unsigned char b0, b1, b2, b3;
-
-	/*
-	 * The second format will never have more than 8 decimal
-	 * digits, so do a cheap check first
-	 */
-	if (serial >= 100000000)
-		return serial;
-
-	/* The original format seems to be four bytes of values 00-99 */
-	b0 = (serial >> 0) & 0xff;
-	b1 = (serial >> 8) & 0xff;
-	b2 = (serial >> 16) & 0xff;
-	b3 = (serial >> 24) & 0xff;
-
-	/* Looks like an old-style libdivecomputer serial number */
-	if ((b0 < 100) && (b1 < 100) && (b2 < 100) && (b3 < 100))
-		return serial;
-
-	/* Nope, it was converted. */
-	b0 = serial % 100;
-	serial /= 100;
-	b1 = serial % 100;
-	serial /= 100;
-	b2 = serial % 100;
-	serial /= 100;
-	b3 = serial % 100;
-
-	serial = b0 + (b1 << 8) + (b2 << 16) + (b3 << 24);
-	return serial;
-}
-
-static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event_devinfo_t *devinfo)
-{
-	unsigned int serial = devinfo->serial;
-	char serial_nr[13] = "";
-	char firmware[13] = "";
-
-	first_temp_is_air = 1;
-
-	serial = undo_libdivecomputer_suunto_nr_changes(serial);
-
-	if (serial) {
-		snprintf(serial_nr, sizeof(serial_nr), "%02d%02d%02d%02d",
-			 (devinfo->serial >> 24) & 0xff,
-			 (devinfo->serial >> 16) & 0xff,
-			 (devinfo->serial >> 8) & 0xff,
-			 (devinfo->serial >> 0) & 0xff);
-	}
-	if (devinfo->firmware) {
-		snprintf(firmware, sizeof(firmware), "%d.%d.%d",
-			 (devinfo->firmware >> 16) & 0xff,
-			 (devinfo->firmware >> 8) & 0xff,
-			 (devinfo->firmware >> 0) & 0xff);
-	}
-
-	return serial;
-}
 #ifndef O_BINARY
   #define O_BINARY 0
 #endif
@@ -922,11 +840,14 @@ static void do_save_fingerprint(device_data_t *devdata, const char *tmp, const c
 	if (fd < 0)
 		return;
 
+	dev_info(devdata, "Saving fingerprint for %08x:%08x to '%s'",
+		devdata->fdeviceid, devdata->fdiveid, final);
+
 	/* The fingerprint itself.. */
 	written = write(fd, devdata->fingerprint, devdata->fsize);
 
-	/* ..followed by the dive ID of the fingerprinted dive */
-	if (write(fd, &devdata->fdiveid, 4) != 4)
+	/* ..followed by the device ID and dive ID of the fingerprinted dive */
+	if (write(fd, &devdata->fdeviceid, 4) != 4 || write(fd, &devdata->fdiveid, 4) != 4)
 		written = -1;
 
 	/* I'd like to do fsync() here too, but does Windows support it? */
@@ -934,33 +855,76 @@ static void do_save_fingerprint(device_data_t *devdata, const char *tmp, const c
 		written = -1;
 
 	if (written == devdata->fsize) {
-		if (!subsurface_rename(tmp, final))
+		if (!subsurface_rename(tmp, final)) {
+			dev_info(devdata, "  ... %d bytes and dive ID", written);
 			return;
+		}
 	}
 	unlink(tmp);
 }
 
+static char *fingerprint_file(device_data_t *devdata)
+{
+	uint32_t model, serial;
+
+	// Model hash and libdivecomputer 32-bit 'serial number' for the file name
+	model = calculate_string_hash(devdata->model);
+	serial = devdata->devinfo.serial;
+
+	return format_string("%s/fingerprints/%04x.%u",
+		system_default_directory(),
+		model, serial);
+}
+
 /*
  * Save the fingerprint after a successful download
+ *
+ * NOTE! At this point, we have the final device ID for the divecomputer
+ * we downloaded from. But that 'deviceid' is actually not useful, because
+ * at the point where we want to _load_ this, we only have the libdivecomputer
+ * DC_EVENT_DEVINFO state (devdata->devinfo).
+ *
+ * Now, we do have the devdata->devinfo at save time, but at load time we
+ * need to verify not only that it's the proper fingerprint file: we also
+ * need to check that we actually have the particular dive that was
+ * associated with that fingerprint state.
+ *
+ * That means that the fingerprint save file needs to include not only the
+ * fingerprint data itself, but also enough data to look up a dive unambiguously
+ * when loading the fingerprint. And the fingerprint data needs to be looked
+ * up using the DC_EVENT_DEVINFO data.
+ *
+ * End result:
+ *
+ *   - fingerprint filename depends on the model name and 'devinfo.serial'
+ *     so that we can look it up at DC_EVENT_DEVINFO time before the full
+ *     info has been parsed.
+ *
+ *   - the fingerprint file contains the 'diveid' of the fingerprinted dive,
+ *     which is just a hash of the fingerprint itself.
+ *
+ *   - we also save the final 'deviceid' in the fingerprint file, so that
+ *     looking up the dive associated with the fingerprint is possible.
  */
 static void save_fingerprint(device_data_t *devdata)
 {
 	char *dir, *tmp, *final;
 
-	if (!devdata->fingerprint)
+	// Don't try to save nonexistent fingerprint data
+	if (!devdata->fingerprint || !devdata->fdiveid)
 		return;
 
+	// Make sure the fingerprints directory exists
 	dir = format_string("%s/fingerprints", system_default_directory());
 	subsurface_mkdir(dir);
-	tmp = format_string("%s/%04x.tmp", dir, devdata->deviceid);
-	final = format_string("%s/%04x", dir, devdata->deviceid);
+
+	final = fingerprint_file(devdata);
+	tmp = format_string("%s.tmp", final);
 	free(dir);
 
 	do_save_fingerprint(devdata, tmp, final);
 	free(tmp);
 	free(final);
-	free(devdata->fingerprint);
-	devdata->fingerprint = NULL;
 }
 
 static int has_dive(unsigned int deviceid, unsigned int diveid)
@@ -984,26 +948,31 @@ static int has_dive(unsigned int deviceid, unsigned int diveid)
 
 /*
  * The fingerprint cache files contain the actual libdivecomputer
- * fingerprint, followed by 4 bytes of diveid data. Before we use
- * the fingerprint data, verify that we actually do have that
- * fingerprinted dive.
+ * fingerprint, followed by 8 bytes of (deviceid,diveid) data.
+ *
+ * Before we use the fingerprint data, verify that we actually
+ * do have that fingerprinted dive.
  */
 static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, const unsigned char *buffer, size_t size)
 {
-	unsigned int diveid, deviceid;
+	uint32_t diveid, deviceid;
 
-	if (size <= 4)
+	if (size <= 8)
 		return;
-	size -= 4;
+	size -= 8;
 
 	/* Get the dive ID from the end of the fingerprint cache file.. */
-	memcpy(&diveid, buffer + size, 4);
-	/* .. and the device ID from the device data */
-	deviceid = devdata->deviceid;
+	memcpy(&deviceid, buffer + size, 4);
+	memcpy(&diveid, buffer + size + 4, 4);
 
+	dev_info(devdata, " ... fingerprinted dive %08x:%08x", deviceid, diveid);
 	/* Only use it if we *have* that dive! */
-	if (has_dive(deviceid, diveid))
-		dc_device_set_fingerprint(device, buffer, size);
+	if (!has_dive(deviceid, diveid)) {
+		dev_info(devdata, " ... dive not found", deviceid, diveid);
+		return;
+	}
+	dc_device_set_fingerprint(device, buffer, size);
+	dev_info(devdata, " ... fingerprint of size %zu", size);
 }
 
 /*
@@ -1018,9 +987,11 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 
 	if (devdata->force_download)
 		return;
-	cachename = format_string("%s/fingerprints/%04x",
-		system_default_directory(), devdata->deviceid);
+
+	cachename = fingerprint_file(devdata);
+	dev_info(devdata, "Looking for fingerprint in '%s'", cachename);
 	if (readfile(cachename, &mem) > 0) {
+		dev_info(devdata, " ... got %zu bytes", mem.size);
 		verify_fingerprint(device, devdata, mem.buffer, mem.size);
 		free(mem.buffer);
 	}
@@ -1035,7 +1006,6 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 	const dc_event_clock_t *clock = data;
 	const dc_event_vendor_t *vendor = data;
 	device_data_t *devdata = userdata;
-	unsigned int serial;
 
 	switch (event) {
 	case DC_EVENT_WAITING:
@@ -1070,19 +1040,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				devinfo->serial, devinfo->serial);
 		}
 
-		/*
-		 * libdivecomputer doesn't give serial numbers in the proper string form,
-		 * so we have to see if we can do some vendor-specific munging.
-		 */
-		serial = devinfo->serial;
-		if (!strcmp(devdata->vendor, "Suunto"))
-			serial = fixup_suunto_versions(devdata, devinfo);
-		devdata->deviceid = calculate_sha1(devinfo->model, devinfo->firmware, serial);
-		/* really, firmware version is NOT a number. We'll try to save it here
-		 * in something that might work, but this really needs to be handled with the
-		 * DC_FIELD_STRING interface instead */
-		devdata->libdc_firmware = devinfo->firmware;
-
+		devdata->devinfo = *devinfo;
 		lookup_fingerprint(device, devdata);
 
 		break;
@@ -1495,6 +1453,8 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	 * it refers to before we use the fingerprint data.
 	 */
 	save_fingerprint(data);
+	free(data->fingerprint);
+	data->fingerprint = NULL;
 
 	return err;
 }

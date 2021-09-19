@@ -48,7 +48,6 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool DC_forceDownload READ DC_forceDownload WRITE DC_setForceDownload NOTIFY DC_ForceDownloadChanged)
 	Q_PROPERTY(bool DC_bluetoothMode READ DC_bluetoothMode WRITE DC_setBluetoothMode)
 	Q_PROPERTY(bool DC_saveDump READ DC_saveDump WRITE DC_setSaveDump)
-	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
 	Q_PROPERTY(QString pluggedInDeviceName MEMBER m_pluggedInDeviceName NOTIFY pluggedInDeviceNameChanged)
 	Q_PROPERTY(bool showNonDiveComputers MEMBER m_showNonDiveComputers WRITE setShowNonDiveComputers NOTIFY showNonDiveComputersChanged)
 	Q_PROPERTY(qPrefCloudStorage::cloud_status oldStatus MEMBER m_oldStatus WRITE setOldStatus NOTIFY oldStatusChanged)
@@ -100,9 +99,6 @@ public:
 
 	bool DC_saveDump() const;
 	void DC_setSaveDump(bool dumpMode);
-
-	int DC_deviceId() const;
-	void DC_setDeviceId(int deviceId);
 
 	QString getUndoText() const;
 	QString getRedoText() const;

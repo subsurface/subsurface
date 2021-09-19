@@ -273,7 +273,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 	// for the OSTC that means highbyte.lowbyte is the version number
 	// For OSTC 4's its stored as XXXX XYYY YYZZ ZZZB, -> X.Y.Z beta?
 
-	int firmwareOnDevice = devData.libdc_firmware;
+	int firmwareOnDevice = devData.devinfo.firmware;
 	QString firmwareOnDeviceString;
 	// Convert the latestFirmwareAvailable to a integear we can compare with
 	QStringList fwParts = latestFirmwareAvailable.split(".");
@@ -907,7 +907,8 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	device_data.product = copy_qstring(selected_product);
 
 	device_data.descriptor = descriptorLookup.value(selected_vendor.toLower() + selected_product.toLower());
-	device_data.deviceid = device_data.diveid = 0;
+	device_data.diveid = 0;
+	memset(&device_data.devinfo, 0, sizeof(device_data.devinfo));
 
 	qPrefDiveComputer::set_device(device_data.devname);
 #ifdef BT_SUPPORT
