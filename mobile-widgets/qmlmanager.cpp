@@ -1892,16 +1892,6 @@ bool QMLManager::DC_saveDump() const
 	return DCDeviceData::instance()->saveDump();
 }
 
-int QMLManager::DC_deviceId() const
-{
-	return DCDeviceData::instance()->deviceId();
-}
-
-void QMLManager::DC_setDeviceId(int deviceId)
-{
-	DCDeviceData::instance()->setDeviceId(deviceId);
-}
-
 void QMLManager::DC_setVendor(const QString& vendor)
 {
 	DCDeviceData::instance()->setVendor(vendor);

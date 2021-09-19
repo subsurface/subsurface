@@ -32,7 +32,6 @@ public:
 	QString descriptor() const;
 	bool forceDownload() const;
 	bool saveLog() const;
-	int deviceId() const;
 	int diveId() const;
 
 	/* this needs to be a pointer to make the C-API happy */
@@ -44,7 +43,6 @@ public:
 	int getDetectedVendorIndex();
 	int getDetectedProductIndex(const QString &currentVendorText);
 
-	void setDeviceId(int deviceId);
 	void setDiveId(int diveId);
 	void setVendor(const QString& vendor);
 	void setProduct(const QString& product);

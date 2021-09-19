@@ -35,9 +35,9 @@ typedef struct {
 	const char *vendor, *product, *devname;
 	const char *model, *btname;
 	unsigned char *fingerprint;
-	unsigned int fsize, fdiveid;
-	uint32_t libdc_firmware;
-	uint32_t deviceid, diveid;
+	unsigned int fsize, fdeviceid, fdiveid;
+	struct dc_event_devinfo_t devinfo;
+	uint32_t diveid;
 	dc_device_t *device;
 	dc_context_t *context;
 	dc_iostream_t *iostream;

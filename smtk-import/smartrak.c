@@ -871,7 +871,6 @@ static int prepare_data(int data_model, char *serial, dc_family_t dc_fam, device
 	if (!data_model){
 		dev_data->model = copy_string("manually added dive");
 		dev_data->descriptor = NULL;
-		dev_data->deviceid = 0;
 		return DC_STATUS_NODEVICE;
 	}
 	dev_data->descriptor = get_data_descriptor(data_model, dc_fam);
@@ -879,11 +878,11 @@ static int prepare_data(int data_model, char *serial, dc_family_t dc_fam, device
 		dev_data->vendor = dc_descriptor_get_vendor(dev_data->descriptor);
 		dev_data->product = dc_descriptor_get_product(dev_data->descriptor);
 		dev_data->model = smtk_concat_str(dev_data->model, "", "%s %s", dev_data->vendor, dev_data->product);
-		dev_data->deviceid = (uint32_t) lrint(strtod(serial, NULL));
+		dev_data->devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
 		return DC_STATUS_SUCCESS;
 	} else {
 		dev_data->model = copy_string("unsupported dive computer");
-		dev_data->deviceid = (uint32_t) lrint(strtod(serial, NULL));
+		dev_data->devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
 		return DC_STATUS_UNSUPPORTED;
 	}
 }
@@ -1012,7 +1011,6 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 				dc_fam = DC_FAMILY_UWATEC_ALADIN;
 		}
 		rc = prepare_data(dc_model, copy_string(col[coln(DCNUMBER)]->bind_ptr), dc_fam, devdata);
-		smtkdive->dc.deviceid = devdata->deviceid;
 		smtkdive->dc.model = copy_string(devdata->model);
 		if (rc == DC_STATUS_SUCCESS && *bound_lens[coln(PROFILE)]) {
 			prf_buffer = mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length);

@@ -218,7 +218,6 @@ DCDeviceData::DCDeviceData()
 	memset(&data, 0, sizeof(data));
 	data.download_table = nullptr;
 	data.diveid = 0;
-	data.deviceid = 0;
 #if defined(BT_SUPPORT)
 	data.bluetooth_mode = true;
 #else
@@ -293,11 +292,6 @@ bool DCDeviceData::forceDownload() const
 	return data.force_download;
 }
 
-int DCDeviceData::deviceId() const
-{
-	return data.deviceid;
-}
-
 int DCDeviceData::diveId() const
 {
 	return data.diveid;
@@ -355,11 +349,6 @@ void DCDeviceData::setBluetoothMode(bool mode)
 void DCDeviceData::setForceDownload(bool force)
 {
 	data.force_download = force;
-}
-
-void DCDeviceData::setDeviceId(int deviceId)
-{
-	data.deviceid = deviceId;
 }
 
 void DCDeviceData::setDiveId(int diveId)
