@@ -32,7 +32,7 @@ public:
 	enum class Position {
 		Left, Right, Bottom
 	};
-	DiveCartesianAxis(Position position, color_index_t gridColor, double dpr,
+	DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor, double dpr,
 			  double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setBounds(double min, double max);
@@ -62,7 +62,6 @@ protected:
 	ProfileScene &scene;
 	virtual QString textForValue(double value) const;
 	virtual QColor colorForValue(double value) const;
-	double textWidth(const QString &s) const;
 	Orientation orientation;
 	QList<DiveTextItem *> labels;
 	QList<DiveLineItem *> lines;
@@ -74,6 +73,7 @@ protected:
 	double labelScale;
 	bool changed;
 	double dpr;
+	double labelWidth, labelHeight; // maximum expected sizes of label width and height
 };
 
 class DepthAxis : public DiveCartesianAxis {
@@ -106,10 +106,9 @@ private:
 class PartialGasPressureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
-	PartialGasPressureAxis(const DivePlotDataModel &model, Position position, color_index_t gridColor,
-			       double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
+	PartialGasPressureAxis(const DivePlotDataModel &model, Position position, int integralDigits, int fractionalDigits,
+			       color_index_t gridColor, double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
 	void update(int animSpeed);
-	double width() const;
 private:
 	const DivePlotDataModel &model;
 };

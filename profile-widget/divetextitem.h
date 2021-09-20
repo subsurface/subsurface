@@ -22,6 +22,7 @@ public:
 	const QString &text();
 	static QFont getFont(double dpr, double scale);
 	static double fontHeight(double dpr, double scale);
+	static double outlineSpace(double dpr); // Additional space needed by outline
 	double height() const;
 
 private:

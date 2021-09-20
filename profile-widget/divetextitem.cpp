@@ -82,6 +82,11 @@ QFont DiveTextItem::getFont(double dpr, double scale)
 	return fnt;
 }
 
+double DiveTextItem::outlineSpace(double dpr)
+{
+	return 2.0 * outlineSize * dpr; // Double because outline growths to both sides.
+}
+
 double DiveTextItem::fontHeight(double dpr, double scale)
 {
 	QFont fnt = getFont(dpr, scale);
