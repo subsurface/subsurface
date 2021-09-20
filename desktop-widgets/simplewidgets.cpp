@@ -177,9 +177,10 @@ ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNa
 	matchAllImages(false)
 {
 	ui.setupUi(this);
+	ui.timeEdit->setValidator(new QRegExpValidator(QRegExp("\\d{0,6}:[0-5]\\d")));
 	connect(ui.syncCamera, SIGNAL(clicked()), this, SLOT(syncCameraClicked()));
-	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime &)), this, SLOT(timeEditChanged(const QTime &)));
-	connect(ui.backwards, SIGNAL(toggled(bool)), this, SLOT(timeEditChanged()));
+	connect(ui.timeEdit, &QLineEdit::textEdited, this, &ShiftImageTimesDialog::timeEdited);
+	connect(ui.backwards, &QCheckBox::toggled, this, &ShiftImageTimesDialog::backwardsChanged);
 	connect(ui.matchAllImages, SIGNAL(toggled(bool)), this, SLOT(matchAllImagesToggled(bool)));
 	dcImageEpoch = (time_t)0;
 
@@ -198,13 +199,13 @@ time_t ShiftImageTimesDialog::amount() const
 
 void ShiftImageTimesDialog::setOffset(time_t offset)
 {
-	if (offset >= 0) {
+	int sign = offset >= 0 ? 1 : -1;
+	time_t value = sign * offset;
+	ui.timeEdit->setText(QString("%1:%2").arg(value / 3600).arg((value % 3600) / 60, 2, 10, QLatin1Char('0')));
+	if (offset >= 0)
 		ui.forward->setChecked(true);
-	} else {
+	else
 		ui.backwards->setChecked(true);
-		offset *= -1;
-	}
-	ui.timeEdit->setTime(QTime(offset / 3600, (offset % 3600) / 60, offset % 60));
 }
 
 void ShiftImageTimesDialog::updateInvalid()
@@ -242,25 +243,28 @@ void ShiftImageTimesDialog::updateInvalid()
 	}
 }
 
-void ShiftImageTimesDialog::timeEditChanged(const QTime &time)
+void ShiftImageTimesDialog::timeEdited(const QString &timeText)
 {
-	QDateTimeEdit::Section timeEditSection = ui.timeEdit->currentSection();
-	ui.timeEdit->setEnabled(false);
-	m_amount = time.hour() * 3600 + time.minute() * 60;
-	if (ui.backwards->isChecked())
-		m_amount *= -1;
-	updateInvalid();
-	ui.timeEdit->setEnabled(true);
-	ui.timeEdit->setFocus();
-	ui.timeEdit->setSelectedSection(timeEditSection);
+	// simplistic indication of whether the string is valid
+	if (ui.timeEdit->hasAcceptableInput()) {
+		ui.timeEdit->setStyleSheet("");
+		// parse based on the same reg exp used to validate...
+		QRegExp re("(\\d{0,6}):(\\d\\d)");
+		if (re.indexIn(timeText) != -1) {
+			time_t hours = re.cap(1).toInt();
+			time_t minutes = re.cap(2).toInt();
+			m_amount = (ui.backwards->isChecked() ? -1 : 1) * (3600 * hours + 60 * minutes);
+			updateInvalid();
+		}
+	} else {
+		ui.timeEdit->setStyleSheet("QLineEdit { color: red;}");
+	}
 }
 
-void ShiftImageTimesDialog::timeEditChanged()
+void ShiftImageTimesDialog::backwardsChanged(bool)
 {
-	if ((m_amount > 0) == ui.backwards->isChecked())
-		m_amount *= -1;
-	if (m_amount)
-		updateInvalid();
+	// simply use the timeEdit slot to deal with the sign change
+	timeEdited(ui.timeEdit->text());
 }
 
 URLDialog::URLDialog(QWidget *parent) : QDialog(parent)
