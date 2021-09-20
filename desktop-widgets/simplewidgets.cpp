@@ -128,7 +128,7 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	QStringList fileNames = QFileDialog::getOpenFileNames(this,
 							      tr("Open image file"),
 							      DiveListView::lastUsedImageDir(),
-							      tr("Image files") + " (*.jpg *.jpeg)");
+							      QString("%1 (%2)").arg(tr("Image files"), imageExtensionFilters().join(" ")));
 	if (fileNames.isEmpty())
 		return;
 
