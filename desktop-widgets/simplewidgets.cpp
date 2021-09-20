@@ -122,10 +122,6 @@ ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent),
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
-void ShiftImageTimesDialog::buttonClicked(QAbstractButton *button)
-{
-}
-
 void ShiftImageTimesDialog::syncCameraClicked()
 {
 	QPixmap picture;
@@ -181,7 +177,6 @@ ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNa
 	matchAllImages(false)
 {
 	ui.setupUi(this);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.syncCamera, SIGNAL(clicked()), this, SLOT(syncCameraClicked()));
 	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime &)), this, SLOT(timeEditChanged(const QTime &)));
 	connect(ui.backwards, SIGNAL(toggled(bool)), this, SLOT(timeEditChanged()));
