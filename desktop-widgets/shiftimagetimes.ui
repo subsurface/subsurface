@@ -31,72 +31,11 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Shift times of image(s) by</string>
+      <string>Manually shift times of image(s) by hours:minutes</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTimeEdit" name="timeEdit">
-        <property name="date">
-         <date>
-          <year>2000</year>
-          <month>1</month>
-          <day>1</day>
-         </date>
-        </property>
-        <property name="maximumDateTime">
-         <datetime>
-          <hour>23</hour>
-          <minute>59</minute>
-          <second>59</second>
-          <year>2010</year>
-          <month>12</month>
-          <day>31</day>
-         </datetime>
-        </property>
-        <property name="minimumDateTime">
-         <datetime>
-          <hour>0</hour>
-          <minute>0</minute>
-          <second>0</second>
-          <year>2000</year>
-          <month>1</month>
-          <day>1</day>
-         </datetime>
-        </property>
-        <property name="maximumDate">
-         <date>
-          <year>2010</year>
-          <month>12</month>
-          <day>31</day>
-         </date>
-        </property>
-        <property name="minimumDate">
-         <date>
-          <year>2000</year>
-          <month>1</month>
-          <day>1</day>
-         </date>
-        </property>
-        <property name="maximumTime">
-         <time>
-          <hour>23</hour>
-          <minute>59</minute>
-          <second>59</second>
-         </time>
-        </property>
-        <property name="minimumTime">
-         <time>
-          <hour>0</hour>
-          <minute>0</minute>
-          <second>0</second>
-         </time>
-        </property>
-        <property name="displayFormat">
-         <string>h:mm</string>
-        </property>
-        <property name="timeSpec">
-         <enum>Qt::LocalTime</enum>
-        </property>
+       <widget class="QLineEdit" name="timeEdit">
        </widget>
       </item>
       <item>

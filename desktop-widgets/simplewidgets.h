@@ -77,8 +77,8 @@ private
 slots:
 	void syncCameraClicked();
 	void dcDateTimeChanged(const QDateTime &);
-	void timeEditChanged(const QTime &time);
-	void timeEditChanged();
+	void timeEdited(const QString &timeText);
+	void backwardsChanged(bool);
 	void updateInvalid();
 	void matchAllImagesToggled(bool);
 
