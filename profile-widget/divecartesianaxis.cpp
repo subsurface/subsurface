@@ -18,7 +18,7 @@ void DiveCartesianAxis::setBounds(double minimum, double maximum)
 	max = maximum;
 }
 
-DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor, double dpr,
+DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor, double dpr,
 				     double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene) :
 	printMode(printMode),
 	position(position),
@@ -45,6 +45,26 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, color_index_t gridColor,
 
 	pen.setBrush(getColor(gridColor, isGrayscale));
 	gridPen = pen;
+
+	/* Create the longest expected label, e.g. 999.99. */
+	QString label;
+	label.reserve(integralDigits + fractionalDigits + 1);
+	for (int i = 0; i < integralDigits; ++i)
+		label.append('9');
+	if (fractionalDigits > 0) {
+		label.append('.');
+		for (int i = 0; i < fractionalDigits; ++i)
+			label.append('9');
+	}
+
+	/* Use the label to estimate size of the labels.
+	 * Round up, because non-integers tend to give abysmal rendering.
+	 */
+	QFont fnt = DiveTextItem::getFont(dpr, labelScale);
+	double outlineSpace = DiveTextItem::outlineSpace(dpr);
+	QFontMetrics fm(fnt);
+	labelWidth = ceil(fm.size(Qt::TextSingleLine, label).width() + outlineSpace);
+	labelHeight = ceil(fm.height() + outlineSpace);
 }
 
 DiveCartesianAxis::~DiveCartesianAxis()
@@ -93,23 +113,14 @@ void emptyList(QList<T *> &list, int steps, int speed)
 	}
 }
 
-double DiveCartesianAxis::textWidth(const QString &s) const
-{
-	QFont fnt = DiveTextItem::getFont(dpr, labelScale);
-	QFontMetrics fm(fnt);
-	return fm.size(Qt::TextSingleLine, s).width() + labelSpaceHorizontal * dpr;
-}
-
 double DiveCartesianAxis::width() const
 {
-	return textWidth("999");
+	return labelWidth + labelSpaceHorizontal * dpr;
 }
 
 double DiveCartesianAxis::height() const
 {
-	QFont fnt = DiveTextItem::getFont(dpr, labelScale);
-	QFontMetrics fm(fnt);
-	return fm.height() + labelSpaceVertical * dpr;
+	return labelHeight + labelSpaceVertical * dpr;
 }
 
 void DiveCartesianAxis::updateTicks(int animSpeed)
@@ -383,9 +394,10 @@ QString TemperatureAxis::textForValue(double value) const
 	return QString::number(mkelvin_to_C((int)value));
 }
 
-PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, Position position, color_index_t gridColor,
-					       double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene) :
-	DiveCartesianAxis(position, gridColor, dpr, labelScale, printMode, isGrayscale, scene),
+PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, Position position, int integralDigits, int fractionalDigits,
+					       color_index_t gridColor, double dpr, double labelScale, bool printMode, bool isGrayscale,
+					       ProfileScene &scene) :
+	DiveCartesianAxis(position, integralDigits, fractionalDigits, gridColor, dpr, labelScale, printMode, isGrayscale, scene),
 	model(model)
 {
 }
@@ -412,9 +424,4 @@ void PartialGasPressureAxis::update(int animSpeed)
 	setBounds(0.0, pp);
 	setTickInterval(pp > 4 ? 0.5 : 0.25);
 	updateTicks(animSpeed);
-}
-
-double PartialGasPressureAxis::width() const
-{
-	return textWidth(textForValue(0.99));
 }
