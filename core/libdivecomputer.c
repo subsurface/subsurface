@@ -968,7 +968,7 @@ static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, cons
 	dev_info(devdata, " ... fingerprinted dive %08x:%08x", deviceid, diveid);
 	/* Only use it if we *have* that dive! */
 	if (!has_dive(deviceid, diveid)) {
-		dev_info(devdata, " ... dive not found", deviceid, diveid);
+		dev_info(devdata, " ... dive not found");
 		return;
 	}
 	dc_device_set_fingerprint(device, buffer, size);
