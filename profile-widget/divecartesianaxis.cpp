@@ -22,6 +22,7 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int 
 				     double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene) :
 	printMode(printMode),
 	position(position),
+	fractionalDigits(fractionalDigits),
 	gridColor(gridColor),
 	scene(scene),
 	orientation(LeftToRight),
@@ -32,7 +33,8 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int 
 	lineVisibility(true),
 	labelScale(labelScale),
 	changed(true),
-	dpr(dpr)
+	dpr(dpr),
+	transform({1.0, 0.0})
 {
 	QPen pen;
 	pen.setColor(getColor(TIME_GRID, isGrayscale));
@@ -74,6 +76,13 @@ DiveCartesianAxis::~DiveCartesianAxis()
 void DiveCartesianAxis::setOrientation(Orientation o)
 {
 	orientation = o;
+	changed = true;
+}
+
+void DiveCartesianAxis::setTransform(double a, double b)
+{
+	transform.a = a;
+	transform.b = b;
 	changed = true;
 }
 
@@ -282,9 +291,19 @@ void DiveCartesianAxis::animateChangeLine(const QRectF &rectIn, int animSpeed)
 	sizeChanged();
 }
 
+double DiveCartesianAxis::Transform::to(double x) const
+{
+	return a*x + b;
+}
+
+double DiveCartesianAxis::Transform::from(double y) const
+{
+	return (y - b) / a;
+}
+
 QString DiveCartesianAxis::textForValue(double value) const
 {
-	return QString("%L1").arg(value, 0, 'g', 4);
+	return QStringLiteral("%L1").arg(transform.to(value), 0, 'f', fractionalDigits);
 }
 
 void DiveCartesianAxis::setTickInterval(double i)
@@ -353,13 +372,6 @@ std::pair<double, double> DiveCartesianAxis::screenMinMax() const
 					    : std::make_pair(rect.top(), rect.bottom());
 }
 
-QString DepthAxis::textForValue(double value) const
-{
-	if (value == 0)
-		return QString();
-	return get_depth_string(lrint(value), false, false);
-}
-
 QColor DepthAxis::colorForValue(double) const
 {
 	return QColor(Qt::red);
@@ -387,11 +399,6 @@ void TimeAxis::updateTicks(int animSpeed)
 			labels[i]->setVisible(i % 2);
 		}
 	}
-}
-
-QString TemperatureAxis::textForValue(double value) const
-{
-	return QString::number(mkelvin_to_C((int)value));
 }
 
 PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, Position position, int integralDigits, int fractionalDigits,

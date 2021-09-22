@@ -32,10 +32,12 @@ public:
 	enum class Position {
 		Left, Right, Bottom
 	};
+
 	DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor, double dpr,
 			  double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setBounds(double min, double max);
+	void setTransform(double a, double b = 0.0);
 	void setTickInterval(double interval);
 	void setOrientation(Orientation orientation);
 	double minimum() const;
@@ -56,6 +58,7 @@ signals:
 
 protected:
 	Position position;
+	int fractionalDigits;
 	QRectF rect; // Rectangle to fill with grid lines
 	QPen gridPen;
 	color_index_t gridColor;
@@ -74,6 +77,16 @@ protected:
 	bool changed;
 	double dpr;
 	double labelWidth, labelHeight; // maximum expected sizes of label width and height
+
+	// To format the labels and choose the label positions, the
+	// axis has to be aware of the displayed values. Thankfully,
+	// the conversion between internal data (eg. mm) and displayed
+	// data (e.g. ft) can be represented by an affine map ax+b.
+	struct Transform {
+		double a, b;
+		double to(double x) const;
+		double from(double y) const;
+	} transform;
 };
 
 class DepthAxis : public DiveCartesianAxis {
@@ -81,7 +94,6 @@ class DepthAxis : public DiveCartesianAxis {
 public:
 	using DiveCartesianAxis::DiveCartesianAxis;
 private:
-	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
 };
 
@@ -99,8 +111,6 @@ class TemperatureAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	using DiveCartesianAxis::DiveCartesianAxis;
-private:
-	QString textForValue(double value) const override;
 };
 
 class PartialGasPressureAxis : public DiveCartesianAxis {
