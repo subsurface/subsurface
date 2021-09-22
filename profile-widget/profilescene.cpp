@@ -51,7 +51,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	gasYAxis(new PartialGasPressureAxis(*dataModel, DiveCartesianAxis::Position::Right, 1, 2, TIME_GRID, dpr, 0.7, printMode, isGrayscale, *this)),
 	temperatureAxis(new TemperatureAxis(DiveCartesianAxis::Position::Right, 3, 0, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
 	timeAxis(new TimeAxis(DiveCartesianAxis::Position::Bottom, 2, 2, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
-	cylinderPressureAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, 2, 2, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
+	cylinderPressureAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, 4, 0, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
 	heartBeatAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Left, 3, 0, HR_AXIS, dpr, 0.7, printMode, isGrayscale, *this)),
 	percentageAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, 2, 0, TIME_GRID, dpr, 0.7, printMode, isGrayscale, *this)),
 	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0, dpr)),
@@ -114,6 +114,11 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	profileYAxis->setLinesVisible(true);
 	gasYAxis->setZValue(timeAxis->zValue() + 1);
 	tankItem->setZValue(100);
+
+	// These axes are not locale-dependent. Set their scale factor once here.
+	timeAxis->setTransform(60.0);
+	heartBeatAxis->setTransform(1.0);
+	gasYAxis->setTransform(1.0); // Non-metric countries likewise use bar (disguised as "percentage") for partial pressure.
 
 	for (int i = 0; i < 16; i++) {
 		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, dpr);
@@ -197,6 +202,19 @@ void ProfileScene::updateVisibility(bool diveHasHeartBeat)
 void ProfileScene::resize(QSizeF size)
 {
 	setSceneRect(QRectF(QPointF(), size));
+}
+
+// Helper templates to determine slope and intersect of a linear function.
+// The function arguments are supposed to be integral types.
+template<typename Func>
+static auto intercept(Func f)
+{
+	return f(0);
+}
+template<typename Func>
+static auto slope(Func f)
+{
+	return f(1) - f(0);
 }
 
 // Helper structure for laying out secondary plots.
@@ -286,6 +304,16 @@ void ProfileScene::updateAxes(bool instant, bool diveHasHeartBeat)
 
 	// The cylinders are displayed in the 24-80% region of the profile
 	cylinderPressureAxis->animateChangeLine(QRectF(leftBorder, topBorder + 0.24 * height, width, 0.56 * height), animSpeed);
+
+	// Set scale factors depending on locale.
+	// The conversion calls, such as mm_to_feet(), will be optimized away.
+	profileYAxis->setTransform(prefs.units.length == units::METERS ? 0.001 : slope(mm_to_feet));
+	cylinderPressureAxis->setTransform(prefs.units.pressure == units::BAR ? 0.001 : slope(mbar_to_PSI));
+	// Temperature is special: this is not a linear transformation, but requires a shift of origin.
+	if (prefs.units.temperature == units::CELSIUS)
+		temperatureAxis->setTransform(slope(mkelvin_to_C), intercept(mkelvin_to_C));
+	else
+		temperatureAxis->setTransform(slope(mkelvin_to_F), intercept(mkelvin_to_F));
 }
 
 bool ProfileScene::isPointOutOfBoundaries(const QPointF &point) const
