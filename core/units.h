@@ -245,9 +245,9 @@ static inline long psi_to_mbar(double psi)
 	return lrint(psi_to_bar(psi) * 1000);
 }
 
-static inline int to_PSI(pressure_t pressure)
+static inline double to_PSI(pressure_t pressure)
 {
-	return (int)lrint(pressure.mbar * 0.0145037738);
+	return pressure.mbar * 0.0145037738;
 }
 
 static inline double bar_to_atm(double bar)
@@ -260,7 +260,7 @@ static inline double mbar_to_atm(int mbar)
 	return (double)mbar / SURFACE_PRESSURE;
 }
 
-static inline int mbar_to_PSI(int mbar)
+static inline double mbar_to_PSI(int mbar)
 {
 	pressure_t p = { mbar };
 	return to_PSI(p);

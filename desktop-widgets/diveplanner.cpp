@@ -494,7 +494,7 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.reserve_gas->setSuffix(tr("psi"));
 		ui.reserve_gas->setSingleStep(10);
 		ui.reserve_gas->setMaximum(5000);
-		ui.reserve_gas->setValue(mbar_to_PSI(prefs.reserve_gas));
+		ui.reserve_gas->setValue(lrint(mbar_to_PSI(prefs.reserve_gas)));
 	}
 
 	ui.bottomSAC->blockSignals(false);
