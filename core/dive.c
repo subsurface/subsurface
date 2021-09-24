@@ -698,7 +698,7 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	bar = type->workingpressure.mbar / 1000.0;
 	cuft = ml_to_cuft(type->size.mliter);
 	cuft *= bar_to_atm(bar);
-	psi = to_PSI(type->workingpressure);
+	psi = lrint(to_PSI(type->workingpressure));
 
 	switch (psi) {
 	case 2300 ... 2500: /* 2400 psi: LP tank */

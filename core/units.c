@@ -16,7 +16,7 @@ int get_pressure_units(int mb, const char **units)
 		unit = translate("gettextFromC", "bar");
 		break;
 	case PSI:
-		pressure = mbar_to_PSI(mb);
+		pressure = (int)lrint(mbar_to_PSI(mb));
 		unit = translate("gettextFromC", "psi");
 		break;
 	}

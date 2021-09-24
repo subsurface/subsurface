@@ -100,7 +100,7 @@ static void dump_pr_track(int cyl, pr_track_t *track_pr)
 	printf("cyl%d:\n", cyl);
 	list = track_pr;
 	while (list) {
-		printf("   start %d end %d t_start %d:%02d t_end %d:%02d pt %d\n",
+		printf("   start %f end %f t_start %d:%02d t_end %d:%02d pt %d\n",
 		       mbar_to_PSI(list->start),
 		       mbar_to_PSI(list->end),
 		       FRACTION(list->t_start, 60),
