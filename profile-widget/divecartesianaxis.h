@@ -38,7 +38,6 @@ public:
 	~DiveCartesianAxis();
 	void setBounds(double min, double max);
 	void setTransform(double a, double b = 0.0);
-	void setTickInterval(double interval);
 	void setOrientation(Orientation orientation);
 	double minimum() const;
 	double maximum() const;
@@ -49,7 +48,7 @@ public:
 	void setTextVisible(bool arg1);
 	void setLinesVisible(bool arg1);
 	void setLine(const QLineF &line);
-	virtual void updateTicks(int animSpeed);
+	void updateTicks(int animSpeed);
 	double width() const; // only for vertical axes
 	double height() const; // only for horizontal axes
 
@@ -68,9 +67,8 @@ protected:
 	Orientation orientation;
 	QList<DiveTextItem *> labels;
 	QList<DiveLineItem *> lines;
-	double min;
-	double max;
-	double interval;
+	double dataMin, dataMax;
+	double min, max;
 	bool textVisibility;
 	bool lineVisibility;
 	double labelScale;
@@ -101,7 +99,6 @@ class TimeAxis : public DiveCartesianAxis {
 	Q_OBJECT
 public:
 	using DiveCartesianAxis::DiveCartesianAxis;
-	void updateTicks(int animSpeed) override;
 private:
 	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
