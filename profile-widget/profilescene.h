@@ -72,7 +72,7 @@ private:
 	DivePlotDataModel *dataModel;
 	struct plot_info plotInfo;
 	DepthAxis *profileYAxis;
-	PartialGasPressureAxis *gasYAxis;
+	DiveCartesianAxis *gasYAxis;
 	TemperatureAxis *temperatureAxis;
 	TimeAxis *timeAxis;
 	DiveCartesianAxis *cylinderPressureAxis;

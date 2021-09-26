@@ -110,14 +110,4 @@ public:
 	using DiveCartesianAxis::DiveCartesianAxis;
 };
 
-class PartialGasPressureAxis : public DiveCartesianAxis {
-	Q_OBJECT
-public:
-	PartialGasPressureAxis(const DivePlotDataModel &model, Position position, int integralDigits, int fractionalDigits,
-			       color_index_t gridColor, double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
-	void update(int animSpeed);
-private:
-	const DivePlotDataModel &model;
-};
-
 #endif // DIVECARTESIANAXIS_H
