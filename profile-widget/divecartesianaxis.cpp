@@ -14,8 +14,8 @@ static const double labelSpaceVertical = 2.0; // space between label and ticks
 void DiveCartesianAxis::setBounds(double minimum, double maximum)
 {
 	changed = !IS_FP_SAME(max, maximum) || !IS_FP_SAME(min, minimum);
-	min = minimum;
-	max = maximum;
+	dataMin = min = minimum;
+	dataMax = max = maximum;
 }
 
 DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor, double dpr,
@@ -28,7 +28,6 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int 
 	orientation(LeftToRight),
 	min(0),
 	max(0),
-	interval(1),
 	textVisibility(true),
 	lineVisibility(true),
 	labelScale(labelScale),
@@ -136,35 +135,59 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 {
 	if (!changed && !printMode)
 		return;
+
+	if (dataMax - dataMin < 1e-5)
+		return;
+
+	// Guess the number of tick marks.
 	QLineF m = line();
-	double stepsInRange = (max - min) / interval;
-	int steps = (int)stepsInRange;
+	double spaceNeeded = position == Position::Bottom ? labelWidth * 3.0 / 2.0
+							  : labelHeight * 2.0;
+	double size = position == Position::Bottom ? fabs(m.x2() - m.x1())
+						   : fabs(m.y2() - m.y1());
+	int numTicks = lrint(size / spaceNeeded);
+
+	numTicks = std::clamp(numTicks, 2, 50);
+	double interval = (dataMax - dataMin) / numTicks;
+
+	// Round the interval to a sensible size in display units
+	double intervalDisplay = interval * transform.a;
+	intervalDisplay = ceil(intervalDisplay); // Currently, round to full integers, might want to improve.
+
+	// Choose full multiples of the interval as minumum and maximum values
+	double minDisplay = transform.to(dataMin);
+	double maxDisplay = transform.to(dataMax);
+	double firstDisplay = floor(minDisplay / intervalDisplay * (1.0 + 1e-5)) * intervalDisplay;
+	double lastDisplay = ceil(maxDisplay / intervalDisplay * (1.0 - 1e-5)) * intervalDisplay;
+	numTicks = lrint((lastDisplay - firstDisplay) / intervalDisplay) + 1;
+	numTicks = std::max(numTicks, 0);
+
+	min = transform.from(firstDisplay);
+	max = transform.from(lastDisplay);
+
 	double currValueText = min;
 	double currValueLine = min;
 
-	if (steps < 1)
+	emptyList(labels, numTicks, animSpeed);
+	emptyList(lines, numTicks, animSpeed);
+	if (numTicks == 0)
 		return;
 
-	emptyList(labels, steps, animSpeed);
-	emptyList(lines, steps, animSpeed);
+	interval = numTicks > 1 ? (max - min) / (numTicks - 1) : 0;
+	double stepSize = numTicks > 1 ? size / (numTicks - 1) : 0;
 
 	// Move the remaining grid lines / labels to their correct positions
 	// regarding the possible new values for the axis
-	qreal begin, stepSize;
+	double begin;
 	if (orientation == TopToBottom) {
 		begin = m.y1();
-		stepSize = (m.y2() - m.y1());
 	} else if (orientation == BottomToTop) {
 		begin = m.y2();
-		stepSize = (m.y2() - m.y1());
 	} else if (orientation == LeftToRight) {
 		begin = m.x1();
-		stepSize = (m.x2() - m.x1());
 	} else /* if (orientation == RightToLeft) */ {
 		begin = m.x2();
-		stepSize = (m.x2() - m.x1());
 	}
-	stepSize /= stepsInRange;
 
 	for (int i = 0, count = labels.size(); i < count; i++, currValueText += interval) {
 		double childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
@@ -205,7 +228,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	}
 
 	// Add the rest of the needed labels.
-	for (int i = labels.size(); i < steps; i++, currValueText += interval) {
+	for (int i = labels.size(); i < numTicks; i++, currValueText += interval) {
 		double childPos;
 		if (orientation == TopToBottom || orientation == LeftToRight) {
 			childPos = begin + i * stepSize;
@@ -237,7 +260,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	}
 
 	// Add the rest of the needed grid lines.
-	for (int i = lines.size(); i < steps; i++, currValueText += interval) {
+	for (int i = lines.size(); i < numTicks; i++, currValueText += interval) {
 		double childPos;
 		if (orientation == TopToBottom || orientation == LeftToRight) {
 			childPos = begin + i * stepSize;
@@ -304,11 +327,6 @@ double DiveCartesianAxis::Transform::from(double y) const
 QString DiveCartesianAxis::textForValue(double value) const
 {
 	return QStringLiteral("%L1").arg(transform.to(value), 0, 'f', fractionalDigits);
-}
-
-void DiveCartesianAxis::setTickInterval(double i)
-{
-	interval = i;
 }
 
 qreal DiveCartesianAxis::valueAt(const QPointF &p) const
@@ -390,17 +408,6 @@ QString TimeAxis::textForValue(double value) const
 	return QString::number(nr);
 }
 
-// TODO: replace by real dynamic axis - this is just weird.
-void TimeAxis::updateTicks(int animSpeed)
-{
-	DiveCartesianAxis::updateTicks(animSpeed);
-	if (maximum() > 600) {
-		for (int i = 0; i < labels.count(); i++) {
-			labels[i]->setVisible(i % 2);
-		}
-	}
-}
-
 PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, Position position, int integralDigits, int fractionalDigits,
 					       color_index_t gridColor, double dpr, double labelScale, bool printMode, bool isGrayscale,
 					       ProfileScene &scene) :
@@ -429,6 +436,5 @@ void PartialGasPressureAxis::update(int animSpeed)
 		return;
 
 	setBounds(0.0, pp);
-	setTickInterval(pp > 4 ? 0.5 : 0.25);
 	updateTicks(animSpeed);
 }

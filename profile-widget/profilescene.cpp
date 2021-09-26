@@ -82,24 +82,18 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 	// Initialize axes. Perhaps part of this should be moved down to the axes code?
 	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
-	profileYAxis->setTickInterval(M_OR_FT(10, 30));
 
 	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	gasYAxis->setTickInterval(1);
 
 #ifndef SUBSURFACE_MOBILE
 	heartBeatAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	heartBeatAxis->setTickInterval(10);
 
 	percentageAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	percentageAxis->setTickInterval(10);
 #endif
 
 	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	temperatureAxis->setTickInterval(300);
 
 	cylinderPressureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-	cylinderPressureAxis->setTickInterval(30000);
 
 	heartBeatAxis->setTextVisible(true);
 	heartBeatAxis->setLinesVisible(true);
@@ -116,7 +110,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	tankItem->setZValue(100);
 
 	// These axes are not locale-dependent. Set their scale factor once here.
-	timeAxis->setTransform(60.0);
+	timeAxis->setTransform(1.0/60.0);
 	heartBeatAxis->setTransform(1.0);
 	gasYAxis->setTransform(1.0); // Non-metric countries likewise use bar (disguised as "percentage") for partial pressure.
 
@@ -407,20 +401,8 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 				   plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
 
 	if (hasHeartBeat) {
-		int heartBeatAxisMin = lrint(plotInfo.minhr / 5.0 - 0.5) * 5;
-		int heartBeatAxisMax, heartBeatAxisTick;
-		if (plotInfo.maxhr - plotInfo.minhr < 40)
-			heartBeatAxisTick = 10;
-		else if (plotInfo.maxhr - plotInfo.minhr < 80)
-			heartBeatAxisTick = 20;
-		else if (plotInfo.maxhr - plotInfo.minhr < 100)
-			heartBeatAxisTick = 25;
-		else
-			heartBeatAxisTick = 50;
-		for (heartBeatAxisMax = heartBeatAxisMin; heartBeatAxisMax < plotInfo.maxhr; heartBeatAxisMax += heartBeatAxisTick);
-		heartBeatAxis->setBounds(heartBeatAxisMin, heartBeatAxisMax + 1);
-		heartBeatAxis->setTickInterval(heartBeatAxisTick);
-		heartBeatAxis->updateTicks(animSpeed); // this shows the ticks
+		heartBeatAxis->setBounds(plotInfo.minhr, plotInfo.maxhr);
+		heartBeatAxis->updateTicks(animSpeed);
 	}
 
 	percentageAxis->setBounds(0, 100);
@@ -430,22 +412,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	if (calcMax)
 		timeAxis->setBounds(0.0, maxtime);
 
-	int i, incr;
-	static int increments[8] = { 10, 20, 30, 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60 };
-	/* Time markers: at most every 10 seconds, but no more than 12 markers.
-	 * We start out with 10 seconds and increment up to 30 minutes,
-	 * depending on the dive time.
-	 * This allows for 6h dives - enough (I hope) for even the craziest
-	 * divers - but just in case, for those 8h depth-record-breaking dives,
-	 * we double the interval if this still doesn't get us to 12 or fewer
-	 * time markers */
-	i = 0;
-	while (i < 7 && maxtime / increments[i] > 12)
-		i++;
-	incr = increments[i];
-	while (maxtime / incr > 12)
-		incr *= 2;
-	timeAxis->setTickInterval(incr);
 	timeAxis->updateTicks(animSpeed);
 	cylinderPressureAxis->setBounds(plotInfo.minpressure, plotInfo.maxpressure);
 
