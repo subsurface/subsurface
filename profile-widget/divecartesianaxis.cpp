@@ -407,34 +407,3 @@ QString TimeAxis::textForValue(double value) const
 		return QString("%1:%2").arg(nr).arg((int)value % 60, 2, 10, QChar('0'));
 	return QString::number(nr);
 }
-
-PartialGasPressureAxis::PartialGasPressureAxis(const DivePlotDataModel &model, Position position, int integralDigits, int fractionalDigits,
-					       color_index_t gridColor, double dpr, double labelScale, bool printMode, bool isGrayscale,
-					       ProfileScene &scene) :
-	DiveCartesianAxis(position, integralDigits, fractionalDigits, gridColor, dpr, labelScale, printMode, isGrayscale, scene),
-	model(model)
-{
-}
-
-void PartialGasPressureAxis::update(int animSpeed)
-{
-	bool showPhe = prefs.pp_graphs.phe;
-	bool showPn2 = prefs.pp_graphs.pn2;
-	bool showPo2 = prefs.pp_graphs.po2;
-	setVisible(showPhe || showPn2 || showPo2);
-	if (!model.rowCount())
-		return;
-
-	double max = showPhe ? model.pheMax() : -1;
-	if (showPn2 && model.pn2Max() > max)
-		max = model.pn2Max();
-	if (showPo2 && model.po2Max() > max)
-		max = model.po2Max();
-
-	qreal pp = floor(max * 10.0) / 10.0 + 0.2;
-	if (IS_FP_SAME(maximum(), pp))
-		return;
-
-	setBounds(0.0, pp);
-	updateTicks(animSpeed);
-}

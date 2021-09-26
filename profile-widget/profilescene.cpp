@@ -48,7 +48,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	maxdepth(-1),
 	dataModel(new DivePlotDataModel(this)),
 	profileYAxis(new DepthAxis(DiveCartesianAxis::Position::Left, 3, 0, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
-	gasYAxis(new PartialGasPressureAxis(*dataModel, DiveCartesianAxis::Position::Right, 1, 2, TIME_GRID, dpr, 0.7, printMode, isGrayscale, *this)),
+	gasYAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, 1, 2, TIME_GRID, dpr, 0.7, printMode, isGrayscale, *this)),
 	temperatureAxis(new TemperatureAxis(DiveCartesianAxis::Position::Right, 3, 0, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
 	timeAxis(new TimeAxis(DiveCartesianAxis::Position::Bottom, 2, 2, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
 	cylinderPressureAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, 4, 0, TIME_GRID, dpr, 1.0, printMode, isGrayscale, *this)),
@@ -450,7 +450,16 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 #endif
 	tankItem->setData(&plotInfo, d);
 
-	gasYAxis->update(animSpeed);
+	if (ppGraphsEnabled()) {
+		double max = prefs.pp_graphs.phe ? dataModel->pheMax() : -1;
+		if (prefs.pp_graphs.pn2)
+			max = std::max(dataModel->pn2Max(), max);
+		if (prefs.pp_graphs.po2)
+			max = std::max(dataModel->po2Max(), max);
+
+		gasYAxis->setBounds(0.0, max);
+		gasYAxis->updateTicks(animSpeed);
+	}
 
 	// Replot dive items
 	for (AbstractProfilePolygonItem *item: profileItems)
