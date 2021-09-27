@@ -292,6 +292,7 @@ QMLManager::QMLManager() :
 		connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
 			this, &QMLManager::btHostModeChange);
 	}
+	progress_callback = &progressCallback;
 	set_git_update_cb(&gitProgressCB);
 
 	// present dive site lists sorted by name
