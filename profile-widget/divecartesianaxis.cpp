@@ -311,7 +311,6 @@ void DiveCartesianAxis::animateChangeLine(const QRectF &rectIn, int animSpeed)
 			break;
 	}
 	updateTicks(animSpeed);
-	sizeChanged();
 }
 
 double DiveCartesianAxis::Transform::to(double x) const

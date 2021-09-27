@@ -27,10 +27,7 @@ DiveEventItem::DiveEventItem(const struct dive *d, struct event *ev, struct gasm
 
 	setupPixmap(lastgasmix, pixmaps);
 	setupToolTipString(lastgasmix);
-	recalculatePos(0);
-
-	connect(vAxis, &DiveCartesianAxis::sizeChanged, this,
-		[speed, this] { recalculatePos(speed); });
+	recalculatePos();
 }
 
 DiveEventItem::~DiveEventItem()
@@ -228,7 +225,7 @@ bool DiveEventItem::shouldBeHidden()
 	return false;
 }
 
-void DiveEventItem::recalculatePos(int speed)
+void DiveEventItem::recalculatePos()
 {
 	if (!ev)
 		return;
@@ -238,10 +235,7 @@ void DiveEventItem::recalculatePos(int speed)
 		return;
 	}
 	setVisible(!shouldBeHidden());
-	qreal x = hAxis->posAtValue(ev->time.seconds);
-	qreal y = vAxis->posAtValue(depth);
-	if (speed > 0)
-		Animations::moveTo(this, speed, x, y);
-	else
-		setPos(x, y);
+	double x = hAxis->posAtValue(ev->time.seconds);
+	double y = vAxis->posAtValue(depth);
+	setPos(x, y);
 }

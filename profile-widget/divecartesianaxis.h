@@ -52,9 +52,6 @@ public:
 	double width() const; // only for vertical axes
 	double height() const; // only for horizontal axes
 
-signals:
-	void sizeChanged();
-
 protected:
 	Position position;
 	int fractionalDigits;
