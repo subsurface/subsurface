@@ -24,13 +24,11 @@ public:
 	bool shouldBeHidden();
 	static bool isInteresting(const struct dive *d, const struct divecomputer *dc,
 				  const struct event *ev, const struct plot_info &pi);
-public
-slots:
-	void recalculatePos(int animationSpeed);
 
 private:
 	void setupToolTipString(struct gasmix lastgasmix);
 	void setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pixmaps);
+	void recalculatePos();
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;
 	struct event *ev;
