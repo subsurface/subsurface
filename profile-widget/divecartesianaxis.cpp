@@ -131,6 +131,30 @@ double DiveCartesianAxis::height() const
 	return labelHeight + labelSpaceVertical * dpr;
 }
 
+static double sensibleInterval(double inc, int decimals)
+{
+	// Use full decimal increments
+	double digits = floor(log10(inc));
+	int digits_int = lrint(digits);
+
+	// Don't do increments smaller than the displayed decimals.
+	if (digits_int < -decimals) {
+		digits_int = -decimals;
+		digits = static_cast<double>(digits_int);
+	}
+
+	double digits_factor = pow(10.0, digits);
+	int inc_int = std::max((int)ceil(inc / digits_factor), 1);
+	// Do "nice" increments of the leading digit: 1, 2, 4, 5.
+	if (inc_int > 5)
+		inc_int = 10;
+	if (inc_int == 3)
+		inc_int = 4;
+	inc = inc_int * digits_factor;
+
+	return inc;
+}
+
 void DiveCartesianAxis::updateTicks(int animSpeed)
 {
 	if (!changed && !printMode)
@@ -152,7 +176,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 
 	// Round the interval to a sensible size in display units
 	double intervalDisplay = interval * transform.a;
-	intervalDisplay = ceil(intervalDisplay); // Currently, round to full integers, might want to improve.
+	intervalDisplay = sensibleInterval(intervalDisplay, fractionalDigits);
 
 	// Choose full multiples of the interval as minumum and maximum values
 	double minDisplay = transform.to(dataMin);
