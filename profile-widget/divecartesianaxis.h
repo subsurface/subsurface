@@ -44,10 +44,9 @@ public:
 	std::pair<double, double> screenMinMax() const;
 	qreal valueAt(const QPointF &p) const;
 	qreal posAtValue(qreal value) const;
-	void animateChangeLine(const QRectF &rect, int animSpeed);
+	void setPosition(const QRectF &rect);
 	void setTextVisible(bool arg1);
 	void setLinesVisible(bool arg1);
-	void setLine(const QLineF &line);
 	void updateTicks(int animSpeed);
 	double width() const; // only for vertical axes
 	double height() const; // only for horizontal axes

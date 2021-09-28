@@ -289,13 +289,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	changed = false;
 }
 
-void DiveCartesianAxis::setLine(const QLineF &line)
-{
-	QGraphicsLineItem::setLine(line);
-	changed = true;
-}
-
-void DiveCartesianAxis::animateChangeLine(const QRectF &rectIn, int animSpeed)
+void DiveCartesianAxis::setPosition(const QRectF &rectIn)
 {
 	rect = rectIn;
 	switch (position) {
@@ -310,7 +304,7 @@ void DiveCartesianAxis::animateChangeLine(const QRectF &rectIn, int animSpeed)
 			setLine(QLineF(rect.bottomLeft(), rect.bottomRight()));
 			break;
 	}
-	updateTicks(animSpeed);
+	changed = true;
 }
 
 double DiveCartesianAxis::Transform::to(double x) const

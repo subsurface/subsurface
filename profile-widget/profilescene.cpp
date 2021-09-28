@@ -218,10 +218,8 @@ struct VerticalAxisLayout {
 	bool visible;
 };
 
-void ProfileScene::updateAxes(bool instant, bool diveHasHeartBeat)
+void ProfileScene::updateAxes(bool diveHasHeartBeat)
 {
-	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
-
 	// Calculate left and right border needed for the axes.
 	// viz. the depth axis to the left and the partial pressure axis to the right.
 	// Thus, calculating the "border" of the graph is trivial.
@@ -248,7 +246,7 @@ void ProfileScene::updateAxes(bool instant, bool diveHasHeartBeat)
 	}
 
 	bottomBorder -= timeAxis->height();
-	timeAxis->animateChangeLine(QRectF(leftBorder, topBorder, width, bottomBorder - topBorder), animSpeed);
+	timeAxis->setPosition(QRectF(leftBorder, topBorder, width, bottomBorder - topBorder));
 
 	if (prefs.tankbar) {
 		bottomBorder -= tankItem->height();
@@ -290,14 +288,14 @@ void ProfileScene::updateAxes(bool instant, bool diveHasHeartBeat)
 		if (!l.visible)
 			continue;
 		bottomBorder -= l.height * dpr;
-		l.axis->animateChangeLine(QRectF(leftBorder, bottomBorder, width, l.height * dpr), animSpeed);
+		l.axis->setPosition(QRectF(leftBorder, bottomBorder, width, l.height * dpr));
 	}
 
 	height = bottomBorder - topBorder;
-	profileYAxis->animateChangeLine(QRectF(leftBorder, topBorder, width, height), animSpeed);
+	profileYAxis->setPosition(QRectF(leftBorder, topBorder, width, height));
 
 	// The cylinders are displayed in the 24-80% region of the profile
-	cylinderPressureAxis->animateChangeLine(QRectF(leftBorder, topBorder + 0.24 * height, width, 0.56 * height), animSpeed);
+	cylinderPressureAxis->setPosition(QRectF(leftBorder, topBorder + 0.24 * height, width, 0.56 * height));
 
 	// Set scale factors depending on locale.
 	// The conversion calls, such as mm_to_feet(), will be optimized away.
@@ -371,7 +369,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 	bool hasHeartBeat = plotInfo.maxhr;
 	updateVisibility(hasHeartBeat);
-	updateAxes(instant, hasHeartBeat);
+	updateAxes(hasHeartBeat);
 
 	int newMaxtime = get_maxtime(&plotInfo);
 	if (calcMax || newMaxtime > maxtime)
