@@ -445,11 +445,11 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		if (QString::compare(qPrintable(vString), "*") == 0) {
 			cyl.bestmix_he = true;
 			// Calculate fO2 for max. depth
-			cyl.gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl.gasmix.o2);
+			cyl.gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, make_fraction(get_o2(cyl.gasmix)));
 		} else {
 			cyl.bestmix_he = false;
 			// Calculate fHe for input depth
-			cyl.gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, cyl.gasmix.o2);
+			cyl.gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, make_fraction(get_o2(cyl.gasmix)));
 		}
 		type = Command::EditCylinderType::GASMIX;
 		break;
