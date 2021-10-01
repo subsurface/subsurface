@@ -33,15 +33,15 @@ int same_gasmix(struct gasmix a, struct gasmix b)
 		return 0;
 	if (gasmix_is_air(a) && gasmix_is_air(b))
 		return 1;
-	return a.o2.permille == b.o2.permille && a.he.permille == b.he.permille;
+	return get_o2(a) == get_o2(b) && get_he(a) == get_he(b);
 }
 
 void sanitize_gasmix(struct gasmix *mix)
 {
 	unsigned int o2, he;
 
-	o2 = mix->o2.permille;
-	he = mix->he.permille;
+	o2 = get_o2(*mix);
+	he = get_he(*mix);
 
 	/* Regular air: leave empty */
 	if (!he) {
@@ -74,12 +74,12 @@ int gasmix_distance(struct gasmix a, struct gasmix b)
 
 bool gasmix_is_air(struct gasmix gasmix)
 {
-	int o2 = gasmix.o2.permille;
-	int he = gasmix.he.permille;
+	int o2 = get_o2(gasmix);
+	int he = get_he(gasmix);
 	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
 }
 
-static fraction_t make_fraction(int i)
+fraction_t make_fraction(int i)
 {
 	fraction_t res;
 	res.permille = i;
@@ -152,13 +152,13 @@ enum gastype gasmix_to_type(struct gasmix mix)
 {
 	if (gasmix_is_air(mix))
 		return GASTYPE_AIR;
-	if (mix.o2.permille >= 980)
+	if (get_o2(mix) >= 980)
 		return GASTYPE_OXYGEN;
-	if (mix.he.permille == 0)
-		return mix.o2.permille >= 230 ? GASTYPE_NITROX : GASTYPE_AIR;
-	if (mix.o2.permille <= 180)
+	if (get_he(mix) == 0)
+		return get_o2(mix) >= 230 ? GASTYPE_NITROX : GASTYPE_AIR;
+	if (get_o2(mix) <= 180)
 		return GASTYPE_HYPOXIC_TRIMIX;
-	return mix.o2.permille <= 230 ? GASTYPE_NORMOXIC_TRIMIX : GASTYPE_HYPEROXIC_TRIMIX;
+	return get_o2(mix) <= 230 ? GASTYPE_NORMOXIC_TRIMIX : GASTYPE_HYPEROXIC_TRIMIX;
 }
 
 static const char *gastype_names[] = {

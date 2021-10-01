@@ -44,12 +44,12 @@ extern double isothermal_pressure(struct gasmix gas, double p1, int volume1, int
 extern double gas_density(struct gasmix gas, int pressure);
 extern int same_gasmix(struct gasmix a, struct gasmix b);
 
-static inline int get_o2(struct gasmix mix)
+static inline int get_o2(const struct gasmix mix)
 {
 	return mix.o2.permille ?: O2_IN_AIR;
 }
 
-static inline int get_he(struct gasmix mix)
+static inline int get_he(const struct gasmix mix)
 {
 	return mix.he.permille;
 }
@@ -74,6 +74,7 @@ extern bool gasmix_is_air(struct gasmix gasmix);
 extern bool gasmix_is_invalid(struct gasmix mix);
 extern enum gastype gasmix_to_type(struct gasmix mix);
 extern const char *gastype_name(enum gastype type);
+extern fraction_t make_fraction(int f);
 
 #ifdef __cplusplus
 }

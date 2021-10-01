@@ -1,3 +1,4 @@
+planner: fix a bug setting the MND for gasmix with 21% oxygen
 mobile: remove support for acquiring fine grain location / GPS
 mobile: Add support for rich text when displaying dive notes
 core: fix off-by-one causing incorrect profile display #3184

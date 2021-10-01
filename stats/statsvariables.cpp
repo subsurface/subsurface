@@ -1499,12 +1499,12 @@ struct gas_bin_t bin_gasmix(struct gasmix mix, int size)
 {
 	if (gasmix_is_air(mix))
 		return gas_bin_t::air();
-	if (mix.o2.permille == 1000)
+	if (get_o2(mix) == 1000)
 		return gas_bin_t::oxygen();
-	return mix.he.permille == 0 ?
-		gas_bin_t::ean(mix.o2.permille / 10 / size * size) :
-		gas_bin_t::trimix(mix.o2.permille / 10 / size * size,
-				  mix.he.permille / 10 / size * size);
+	return get_he(mix) == 0 ?
+		gas_bin_t::ean(get_o2(mix) / 10 / size * size) :
+		gas_bin_t::trimix(get_o2(mix) / 10 / size * size,
+				  get_he(mix) / 10 / size * size);
 }
 
 struct GasTypeBinner : public MultiBinner<GasTypeBinner, GasTypeBin> {
