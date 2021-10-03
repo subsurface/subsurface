@@ -33,8 +33,9 @@ public:
 		Left, Right, Bottom
 	};
 
-	DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor, double dpr,
-			  double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
+	DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor,
+			  bool textVisible, bool linesVisible,
+			  double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setBounds(double min, double max);
 	void setTransform(double a, double b = 0.0);
@@ -51,7 +52,7 @@ public:
 	double width() const; // only for vertical axes
 	double height() const; // only for horizontal axes
 
-protected:
+private:
 	Position position;
 	int fractionalDigits;
 	QRectF rect; // Rectangle to fill with grid lines
@@ -81,6 +82,9 @@ protected:
 		double to(double x) const;
 		double from(double y) const;
 	} transform;
+
+	void updateLabels(int numTicks, double firstPosScreen, double firstValue, double stepScreen, double stepValue, int animSpeed);
+	void updateLines(int numTicks, double firstPosScreen, double stepScreen, int animSpeed);
 };
 
 class DepthAxis : public DiveCartesianAxis {
