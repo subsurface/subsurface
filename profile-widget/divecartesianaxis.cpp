@@ -18,8 +18,9 @@ void DiveCartesianAxis::setBounds(double minimum, double maximum)
 	dataMax = max = maximum;
 }
 
-DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor, double dpr,
-				     double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene) :
+DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor,
+				     bool textVisible, bool linesVisible,
+				     double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene) :
 	printMode(printMode),
 	position(position),
 	fractionalDigits(fractionalDigits),
@@ -28,8 +29,8 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int 
 	orientation(LeftToRight),
 	min(0),
 	max(0),
-	textVisibility(true),
-	lineVisibility(true),
+	textVisibility(textVisible),
+	lineVisibility(linesVisible),
 	labelScale(labelScale),
 	changed(true),
 	dpr(dpr),
@@ -90,28 +91,6 @@ QColor DiveCartesianAxis::colorForValue(double) const
 	return QColor(Qt::black);
 }
 
-void DiveCartesianAxis::setTextVisible(bool arg1)
-{
-	if (textVisibility == arg1) {
-		return;
-	}
-	textVisibility = arg1;
-	Q_FOREACH (DiveTextItem *item, labels) {
-		item->setVisible(textVisibility);
-	}
-}
-
-void DiveCartesianAxis::setLinesVisible(bool arg1)
-{
-	if (lineVisibility == arg1) {
-		return;
-	}
-	lineVisibility = arg1;
-	Q_FOREACH (DiveLineItem *item, lines) {
-		item->setVisible(lineVisibility);
-	}
-}
-
 template <typename T>
 void emptyList(QList<T *> &list, int steps, int speed)
 {
@@ -163,6 +142,9 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	if (dataMax - dataMin < 1e-5)
 		return;
 
+	if (!textVisibility && !lineVisibility)
+		return; // Nothing to display...
+
 	// Guess the number of tick marks.
 	QLineF m = line();
 	double spaceNeeded = position == Position::Bottom ? labelWidth * 3.0 / 2.0
@@ -172,10 +154,10 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	int numTicks = lrint(size / spaceNeeded);
 
 	numTicks = std::clamp(numTicks, 2, 50);
-	double interval = (dataMax - dataMin) / numTicks;
+	double stepValue = (dataMax - dataMin) / numTicks;
 
 	// Round the interval to a sensible size in display units
-	double intervalDisplay = interval * transform.a;
+	double intervalDisplay = stepValue * transform.a;
 	intervalDisplay = sensibleInterval(intervalDisplay, fractionalDigits);
 
 	// Choose full multiples of the interval as minumum and maximum values
@@ -185,17 +167,17 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	// The time axis is special: use the full width in that case.
 	// Other axes round to the next "nice" number
 	double firstDisplay, lastDisplay;
-	double currValueText, currValueLine;
+	double firstValue;
 	if (position == Position::Bottom) {
 		firstDisplay = ceil(minDisplay / intervalDisplay * (1.0 - 1e-5)) * intervalDisplay;
 		lastDisplay = floor(maxDisplay / intervalDisplay * (1.0 + 1e-5)) * intervalDisplay;
-		currValueText = currValueLine = transform.from(firstDisplay);
+		firstValue = transform.from(firstDisplay);
 	} else {
 		firstDisplay = floor(minDisplay / intervalDisplay * (1.0 + 1e-5)) * intervalDisplay;
 		lastDisplay = ceil(maxDisplay / intervalDisplay * (1.0 - 1e-5)) * intervalDisplay;
 		min = transform.from(firstDisplay);
 		max = transform.from(lastDisplay);
-		currValueText = currValueLine = min;
+		firstValue = min;
 	}
 	numTicks = lrint((lastDisplay - firstDisplay) / intervalDisplay) + 1;
 	numTicks = std::max(numTicks, 0);
@@ -205,30 +187,39 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	if (numTicks == 0)
 		return;
 
-	interval = position == Position::Bottom ?
+	stepValue = position == Position::Bottom ?
 		intervalDisplay / transform.a :		// special case for time axis.
 		numTicks > 1 ? (max - min) / (numTicks - 1) : 0;
-	double stepSize = interval * size / (max - min);
+	double stepScreen = stepValue * size / (max - min);
 
 	// Move the remaining grid lines / labels to their correct positions
 	// regarding the possible new values for the axis
-	double begin;
+	double firstPosScreen;
 	if (orientation == TopToBottom) {
-		begin = m.y1();
+		firstPosScreen = m.y1();
 	} else if (orientation == BottomToTop) {
-		begin = m.y2();
+		firstPosScreen = m.y2();
 	} else if (orientation == LeftToRight) {
-		begin = m.x1();
+		firstPosScreen = m.x1();
 	} else /* if (orientation == RightToLeft) */ {
-		begin = m.x2();
+		firstPosScreen = m.x2();
 	}
 
-	for (int i = 0, count = labels.size(); i < count; i++, currValueText += interval) {
-		double childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
-					 begin + i * stepSize :
-					 begin - i * stepSize;
+	if (textVisibility)
+		updateLabels(numTicks, firstPosScreen, firstValue, stepScreen, stepValue, animSpeed);
+	if (lineVisibility)
+		updateLines(numTicks, firstPosScreen, stepScreen, animSpeed);
+	changed = false;
+}
 
-		labels[i]->set(textForValue(currValueText), colorForValue(currValueText));
+void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double firstValue, double stepScreen, double stepValue, int animSpeed)
+{
+	for (int i = 0, count = labels.size(); i < count; i++, firstValue += stepValue) {
+		double childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
+					 firstPosScreen + i * stepScreen :
+					 firstPosScreen - i * stepScreen;
+
+		labels[i]->set(textForValue(firstValue), colorForValue(firstValue));
 		switch (position) {
 		default:
 		case Position::Bottom:
@@ -243,37 +234,19 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 		}
 	}
 
-	for (int i = 0, count = lines.size(); i < count; i++, currValueLine += interval) {
-		double childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
-					 begin + i * stepSize :
-					 begin - i * stepSize;
-
-		if (position == Position::Bottom) {
-			// Fix size in case the scene changed
-			QLineF old = lines[i]->line();
-			lines[i]->setLine(old.x1(), old.y1(), old.x1(), old.y1() + rect.height());
-			Animations::moveTo(lines[i], animSpeed, childPos, rect.top());
-		} else {
-			// Fix size in case the scene changed
-			QLineF old = lines[i]->line();
-			lines[i]->setLine(old.x1(), old.y1(), old.x1() + rect.width(), old.y1());
-			Animations::moveTo(lines[i], animSpeed, rect.left(), childPos);
-		}
-	}
-
 	// Add the rest of the needed labels.
-	for (int i = labels.size(); i < numTicks; i++, currValueText += interval) {
+	for (int i = labels.size(); i < numTicks; i++, firstValue += stepValue) {
 		double childPos;
 		if (orientation == TopToBottom || orientation == LeftToRight) {
-			childPos = begin + i * stepSize;
+			childPos = firstPosScreen + i * stepScreen;
 		} else {
-			childPos = begin - i * stepSize;
+			childPos = firstPosScreen - i * stepScreen;
 		}
 		int alignFlags = position == Position::Bottom ? Qt::AlignTop | Qt::AlignHCenter :
 				 position == Position::Left   ? Qt::AlignVCenter | Qt::AlignLeft:
 								Qt::AlignVCenter | Qt::AlignRight;
 		DiveTextItem *label = new DiveTextItem(dpr, labelScale, alignFlags, this);
-		label->set(textForValue(currValueText), colorForValue(currValueText));
+		label->set(textForValue(firstValue), colorForValue(firstValue));
 		label->setZValue(1);
 		labels.push_back(label);
 		switch (position) {
@@ -292,14 +265,35 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 			break;
 		}
 	}
+}
+
+void DiveCartesianAxis::updateLines(int numTicks, double firstPosScreen, double stepScreen, int animSpeed)
+{
+	for (int i = 0, count = lines.size(); i < count; i++) {
+		double childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
+					 firstPosScreen + i * stepScreen :
+					 firstPosScreen - i * stepScreen;
+
+		if (position == Position::Bottom) {
+			// Fix size in case the scene changed
+			QLineF old = lines[i]->line();
+			lines[i]->setLine(old.x1(), old.y1(), old.x1(), old.y1() + rect.height());
+			Animations::moveTo(lines[i], animSpeed, childPos, rect.top());
+		} else {
+			// Fix size in case the scene changed
+			QLineF old = lines[i]->line();
+			lines[i]->setLine(old.x1(), old.y1(), old.x1() + rect.width(), old.y1());
+			Animations::moveTo(lines[i], animSpeed, rect.left(), childPos);
+		}
+	}
 
 	// Add the rest of the needed grid lines.
-	for (int i = lines.size(); i < numTicks; i++, currValueText += interval) {
+	for (int i = lines.size(); i < numTicks; i++) {
 		double childPos;
 		if (orientation == TopToBottom || orientation == LeftToRight) {
-			childPos = begin + i * stepSize;
+			childPos = firstPosScreen + i * stepScreen;
 		} else {
-			childPos = begin - i * stepSize;
+			childPos = firstPosScreen - i * stepScreen;
 		}
 		DiveLineItem *line = new DiveLineItem(this);
 		line->setPen(gridPen);
@@ -315,12 +309,6 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 			Animations::moveTo(line, animSpeed, rect.left(), childPos);
 		}
 	}
-
-	Q_FOREACH (DiveTextItem *item, labels)
-		item->setVisible(textVisibility);
-	Q_FOREACH (DiveLineItem *item, lines)
-		item->setVisible(lineVisibility);
-	changed = false;
 }
 
 void DiveCartesianAxis::setPosition(const QRectF &rectIn)
