@@ -24,7 +24,6 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int 
 	printMode(printMode),
 	position(position),
 	fractionalDigits(fractionalDigits),
-	gridColor(gridColor),
 	scene(scene),
 	orientation(LeftToRight),
 	min(0),
