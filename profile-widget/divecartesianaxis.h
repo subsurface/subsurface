@@ -57,7 +57,6 @@ private:
 	int fractionalDigits;
 	QRectF rect; // Rectangle to fill with grid lines
 	QPen gridPen;
-	color_index_t gridColor;
 	ProfileScene &scene;
 	QString textForValue(double value) const;
 	virtual QColor colorForValue(double value) const;
