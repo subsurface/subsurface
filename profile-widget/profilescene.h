@@ -15,8 +15,6 @@ class DivePlannerPointsModel;
 class DivePlotDataModel;
 
 class AbstractProfilePolygonItem;
-class DepthAxis;
-class DiveCartesianAxis;
 class DiveCalculatedCeiling;
 class DiveCalculatedTissue;
 class DiveCartesianAxis;
@@ -30,11 +28,8 @@ class DiveProfileItem;
 class DiveReportedCeiling;
 class DiveTemperatureItem;
 class DiveTextItem;
-class PartialGasPressureAxis;
 class PartialPressureGasItem;
 class TankItem;
-class TemperatureAxis;
-class TimeAxis;
 
 class ProfileScene : public QGraphicsScene {
 public:
@@ -71,10 +66,10 @@ private:
 
 	DivePlotDataModel *dataModel;
 	struct plot_info plotInfo;
-	DepthAxis *profileYAxis;
+	DiveCartesianAxis *profileYAxis;
 	DiveCartesianAxis *gasYAxis;
-	TemperatureAxis *temperatureAxis;
-	TimeAxis *timeAxis;
+	DiveCartesianAxis *temperatureAxis;
+	DiveCartesianAxis *timeAxis;
 	DiveCartesianAxis *cylinderPressureAxis;
 	DiveCartesianAxis *heartBeatAxis;
 	DiveCartesianAxis *percentageAxis;

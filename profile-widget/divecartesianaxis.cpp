@@ -19,11 +19,12 @@ void DiveCartesianAxis::setBounds(double minimum, double maximum)
 }
 
 DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor,
-				     bool textVisible, bool linesVisible,
+				     QColor textColor, bool textVisible, bool linesVisible,
 				     double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene) :
 	printMode(printMode),
 	position(position),
 	fractionalDigits(fractionalDigits),
+	textColor(textColor),
 	scene(scene),
 	orientation(LeftToRight),
 	min(0),
@@ -83,11 +84,6 @@ void DiveCartesianAxis::setTransform(double a, double b)
 	transform.a = a;
 	transform.b = b;
 	changed = true;
-}
-
-QColor DiveCartesianAxis::colorForValue(double) const
-{
-	return QColor(Qt::black);
 }
 
 template <typename T>
@@ -218,7 +214,7 @@ void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double
 					 firstPosScreen + i * stepScreen :
 					 firstPosScreen - i * stepScreen;
 
-		labels[i]->set(textForValue(firstValue), colorForValue(firstValue));
+		labels[i]->set(textForValue(firstValue), textColor);
 		switch (position) {
 		default:
 		case Position::Bottom:
@@ -245,7 +241,7 @@ void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double
 				 position == Position::Left   ? Qt::AlignVCenter | Qt::AlignLeft:
 								Qt::AlignVCenter | Qt::AlignRight;
 		DiveTextItem *label = new DiveTextItem(dpr, labelScale, alignFlags, this);
-		label->set(textForValue(firstValue), colorForValue(firstValue));
+		label->set(textForValue(firstValue), textColor);
 		label->setZValue(1);
 		labels.push_back(label);
 		switch (position) {
@@ -410,14 +406,4 @@ std::pair<double, double> DiveCartesianAxis::screenMinMax() const
 {
 	return position == Position::Bottom ? std::make_pair(rect.left(), rect.right())
 					    : std::make_pair(rect.top(), rect.bottom());
-}
-
-QColor DepthAxis::colorForValue(double) const
-{
-	return QColor(Qt::red);
-}
-
-QColor TimeAxis::colorForValue(double) const
-{
-	return QColor(Qt::blue);
 }

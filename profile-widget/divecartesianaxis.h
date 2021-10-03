@@ -34,7 +34,7 @@ public:
 	};
 
 	DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor,
-			  bool textVisible, bool linesVisible,
+			  QColor textColor, bool textVisible, bool linesVisible,
 			  double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setBounds(double min, double max);
@@ -57,9 +57,9 @@ private:
 	int fractionalDigits;
 	QRectF rect; // Rectangle to fill with grid lines
 	QPen gridPen;
+	QColor textColor;
 	ProfileScene &scene;
 	QString textForValue(double value) const;
-	virtual QColor colorForValue(double value) const;
 	Orientation orientation;
 	QList<DiveTextItem *> labels;
 	QList<DiveLineItem *> lines;
@@ -84,28 +84,6 @@ private:
 
 	void updateLabels(int numTicks, double firstPosScreen, double firstValue, double stepScreen, double stepValue, int animSpeed);
 	void updateLines(int numTicks, double firstPosScreen, double stepScreen, int animSpeed);
-};
-
-class DepthAxis : public DiveCartesianAxis {
-	Q_OBJECT
-public:
-	using DiveCartesianAxis::DiveCartesianAxis;
-private:
-	QColor colorForValue(double value) const override;
-};
-
-class TimeAxis : public DiveCartesianAxis {
-	Q_OBJECT
-public:
-	using DiveCartesianAxis::DiveCartesianAxis;
-private:
-	QColor colorForValue(double value) const override;
-};
-
-class TemperatureAxis : public DiveCartesianAxis {
-	Q_OBJECT
-public:
-	using DiveCartesianAxis::DiveCartesianAxis;
 };
 
 #endif // DIVECARTESIANAXIS_H
