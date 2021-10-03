@@ -58,7 +58,7 @@ protected:
 	QPen gridPen;
 	color_index_t gridColor;
 	ProfileScene &scene;
-	virtual QString textForValue(double value) const;
+	QString textForValue(double value) const;
 	virtual QColor colorForValue(double value) const;
 	Orientation orientation;
 	QList<DiveTextItem *> labels;
@@ -96,7 +96,6 @@ class TimeAxis : public DiveCartesianAxis {
 public:
 	using DiveCartesianAxis::DiveCartesianAxis;
 private:
-	QString textForValue(double value) const override;
 	QColor colorForValue(double value) const override;
 };
 
