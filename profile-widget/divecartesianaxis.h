@@ -23,23 +23,16 @@ class DiveCartesianAxis : public QObject, public QGraphicsLineItem {
 private:
 	bool printMode;
 public:
-	enum Orientation {
-		TopToBottom,
-		BottomToTop,
-		LeftToRight,
-		RightToLeft
-	};
 	enum class Position {
 		Left, Right, Bottom
 	};
 
-	DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor,
+	DiveCartesianAxis(Position position, bool inverted, int integralDigits, int fractionalDigits, color_index_t gridColor,
 			  QColor textColor, bool textVisible, bool linesVisible,
 			  double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene);
 	~DiveCartesianAxis();
 	void setBounds(double min, double max);
 	void setTransform(double a, double b = 0.0);
-	void setOrientation(Orientation orientation);
 	double minimum() const;
 	double maximum() const;
 	std::pair<double, double> screenMinMax() const;
@@ -54,13 +47,13 @@ public:
 
 private:
 	Position position;
+	bool inverted; // Top-to-bottom or right-to-left axis.
 	int fractionalDigits;
 	QRectF rect; // Rectangle to fill with grid lines
 	QPen gridPen;
 	QColor textColor;
 	ProfileScene &scene;
 	QString textForValue(double value) const;
-	Orientation orientation;
 	QList<DiveTextItem *> labels;
 	QList<DiveLineItem *> lines;
 	double dataMin, dataMax;

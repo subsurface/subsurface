@@ -18,15 +18,15 @@ void DiveCartesianAxis::setBounds(double minimum, double maximum)
 	dataMax = max = maximum;
 }
 
-DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int fractionalDigits, color_index_t gridColor,
+DiveCartesianAxis::DiveCartesianAxis(Position position, bool inverted, int integralDigits, int fractionalDigits, color_index_t gridColor,
 				     QColor textColor, bool textVisible, bool linesVisible,
 				     double dpr, double labelScale, bool printMode, bool isGrayscale, ProfileScene &scene) :
 	printMode(printMode),
 	position(position),
+	inverted(inverted),
 	fractionalDigits(fractionalDigits),
 	textColor(textColor),
 	scene(scene),
-	orientation(LeftToRight),
 	min(0),
 	max(0),
 	textVisibility(textVisible),
@@ -71,12 +71,6 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, int integralDigits, int 
 
 DiveCartesianAxis::~DiveCartesianAxis()
 {
-}
-
-void DiveCartesianAxis::setOrientation(Orientation o)
-{
-	orientation = o;
-	changed = true;
 }
 
 void DiveCartesianAxis::setTransform(double a, double b)
@@ -182,23 +176,21 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	if (numTicks == 0)
 		return;
 
+	double internalToScreen = size / (max - min);
 	stepValue = position == Position::Bottom ?
 		intervalDisplay / transform.a :		// special case for time axis.
 		numTicks > 1 ? (max - min) / (numTicks - 1) : 0;
-	double stepScreen = stepValue * size / (max - min);
+	double stepScreen = stepValue * internalToScreen;
+
+	// The ticks of the time axis don't necessarily start at the beginning.
+	double offsetScreen = position == Position::Bottom ?
+		(firstValue - min) * internalToScreen : 0.0;
 
 	// Move the remaining grid lines / labels to their correct positions
-	// regarding the possible new values for the axis
-	double firstPosScreen;
-	if (orientation == TopToBottom) {
-		firstPosScreen = m.y1();
-	} else if (orientation == BottomToTop) {
-		firstPosScreen = m.y2();
-	} else if (orientation == LeftToRight) {
-		firstPosScreen = m.x1();
-	} else /* if (orientation == RightToLeft) */ {
-		firstPosScreen = m.x2();
-	}
+	// regarding the possible new values for the axis.
+	double firstPosScreen = position == Position::Bottom ?
+		(inverted ? m.x2() - offsetScreen : m.x1() + offsetScreen) :
+		(inverted ? m.y1() + offsetScreen : m.y2() - offsetScreen);
 
 	if (textVisibility)
 		updateLabels(numTicks, firstPosScreen, firstValue, stepScreen, stepValue, animSpeed);
@@ -210,10 +202,9 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double firstValue, double stepScreen, double stepValue, int animSpeed)
 {
 	for (int i = 0, count = labels.size(); i < count; i++, firstValue += stepValue) {
-		double childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
+		double childPos = ((position == Position::Bottom) != inverted) ?
 					 firstPosScreen + i * stepScreen :
 					 firstPosScreen - i * stepScreen;
-
 		labels[i]->set(textForValue(firstValue), textColor);
 		switch (position) {
 		default:
@@ -231,12 +222,9 @@ void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double
 
 	// Add the rest of the needed labels.
 	for (int i = labels.size(); i < numTicks; i++, firstValue += stepValue) {
-		double childPos;
-		if (orientation == TopToBottom || orientation == LeftToRight) {
-			childPos = firstPosScreen + i * stepScreen;
-		} else {
-			childPos = firstPosScreen - i * stepScreen;
-		}
+		double childPos = ((position == Position::Bottom) != inverted) ?
+					firstPosScreen + i * stepScreen :
+					firstPosScreen - i * stepScreen;
 		int alignFlags = position == Position::Bottom ? Qt::AlignTop | Qt::AlignHCenter :
 				 position == Position::Left   ? Qt::AlignVCenter | Qt::AlignLeft:
 								Qt::AlignVCenter | Qt::AlignRight;
@@ -265,9 +253,9 @@ void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double
 void DiveCartesianAxis::updateLines(int numTicks, double firstPosScreen, double stepScreen, int animSpeed)
 {
 	for (int i = 0, count = lines.size(); i < count; i++) {
-		double childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
-					 firstPosScreen + i * stepScreen :
-					 firstPosScreen - i * stepScreen;
+		double childPos = ((position == Position::Bottom) != inverted) ?
+					firstPosScreen + i * stepScreen :
+					firstPosScreen - i * stepScreen;
 
 		if (position == Position::Bottom) {
 			// Fix size in case the scene changed
@@ -284,12 +272,9 @@ void DiveCartesianAxis::updateLines(int numTicks, double firstPosScreen, double 
 
 	// Add the rest of the needed grid lines.
 	for (int i = lines.size(); i < numTicks; i++) {
-		double childPos;
-		if (orientation == TopToBottom || orientation == LeftToRight) {
-			childPos = firstPosScreen + i * stepScreen;
-		} else {
-			childPos = firstPosScreen - i * stepScreen;
-		}
+		double childPos = ((position == Position::Bottom) != inverted) ?
+					firstPosScreen + i * stepScreen :
+					firstPosScreen - i * stepScreen;
 		DiveLineItem *line = new DiveLineItem(this);
 		line->setPen(gridPen);
 		line->setZValue(0);
@@ -349,18 +334,16 @@ QString DiveCartesianAxis::textForValue(double value) const
 
 qreal DiveCartesianAxis::valueAt(const QPointF &p) const
 {
-	double fraction;
 	QLineF m = line();
 	QPointF relativePosition = p;
 	relativePosition -= pos(); // normalize p based on the axis' offset on screen
 
-	if (orientation == LeftToRight || orientation == RightToLeft)
-		fraction = (relativePosition.x() - m.x1()) / (m.x2() - m.x1());
-	else
-		fraction = (relativePosition.y() - m.y1()) / (m.y2() - m.y1());
+	double fraction = position == Position::Bottom ?
+		(relativePosition.x() - m.x1()) / (m.x2() - m.x1()) :
+		(relativePosition.y() - m.y1()) / (m.y2() - m.y1());
 
-	if (orientation == RightToLeft || orientation == BottomToTop)
-			fraction = 1 - fraction;
+	if ((position == Position::Bottom) == inverted)
+		fraction = 1.0 - fraction;
 	return fraction * (max - min) + min;
 }
 
@@ -375,20 +358,18 @@ qreal DiveCartesianAxis::posAtValue(qreal value) const
 	double percent = IS_FP_SAME(min, max) ? 0.0 : (value - min) / size;
 
 
-	double realSize = orientation == LeftToRight || orientation == RightToLeft ?
-				  m.x2() - m.x1() :
-				  m.y2() - m.y1();
+	double realSize = position == Position::Bottom ?
+		  m.x2() - m.x1() :
+		  m.y2() - m.y1();
 
 	// Inverted axis, just invert the percentage.
-	if (orientation == RightToLeft || orientation == BottomToTop)
-		percent = 1 - percent;
+	if ((position == Position::Bottom) == inverted)
+		percent = 1.0 - percent;
 
 	double retValue = realSize * percent;
-	double adjusted =
-		orientation == LeftToRight ? retValue + m.x1() + p.x() :
-		orientation == RightToLeft ? retValue + m.x1() + p.x() :
-		orientation == TopToBottom ? retValue + m.y1() + p.y() :
-		/* entation == BottomToTop */ retValue + m.y1() + p.y();
+	double adjusted = position == Position::Bottom ?
+		retValue + m.x1() + p.x() :
+		retValue + m.y1() + p.y();
 	return adjusted;
 }
 

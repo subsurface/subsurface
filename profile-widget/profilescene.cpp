@@ -47,19 +47,19 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	maxtime(-1),
 	maxdepth(-1),
 	dataModel(new DivePlotDataModel(this)),
-	profileYAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Left, 3, 0, TIME_GRID, Qt::red, true, true,
+	profileYAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Left, true, 3, 0, TIME_GRID, Qt::red, true, true,
 				   dpr, 1.0, printMode, isGrayscale, *this)),
-	gasYAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, 1, 2, TIME_GRID, Qt::black, true, true,
+	gasYAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, false, 1, 2, TIME_GRID, Qt::black, true, true,
 				       dpr, 0.7, printMode, isGrayscale, *this)),
-	temperatureAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, 3, 0, TIME_GRID, Qt::black, false, false,
+	temperatureAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, false, 3, 0, TIME_GRID, Qt::black, false, false,
 					    dpr, 1.0, printMode, isGrayscale, *this)),
-	timeAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Bottom, 2, 2, TIME_GRID, Qt::blue, true, true,
+	timeAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Bottom, false, 2, 2, TIME_GRID, Qt::blue, true, true,
 			      dpr, 1.0, printMode, isGrayscale, *this)),
-	cylinderPressureAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, 4, 0, TIME_GRID, Qt::black, false, false,
+	cylinderPressureAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, false, 4, 0, TIME_GRID, Qt::black, false, false,
 						   dpr, 1.0, printMode, isGrayscale, *this)),
-	heartBeatAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Left, 3, 0, HR_AXIS, Qt::black, true, true,
+	heartBeatAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Left, false, 3, 0, HR_AXIS, Qt::black, true, true,
 					    dpr, 0.7, printMode, isGrayscale, *this)),
-	percentageAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, 2, 0, TIME_GRID, Qt::black, false, false,
+	percentageAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, false, 2, 0, TIME_GRID, Qt::black, false, false,
 					     dpr, 0.7, printMode, isGrayscale, *this)),
 	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0, dpr)),
 	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, dpr)),
@@ -86,21 +86,6 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 	setSceneRect(0, 0, 100, 100);
 	setItemIndexMethod(QGraphicsScene::NoIndex);
-
-	// Initialize axes. Perhaps part of this should be moved down to the axes code?
-	profileYAxis->setOrientation(DiveCartesianAxis::TopToBottom);
-
-	gasYAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-
-#ifndef SUBSURFACE_MOBILE
-	heartBeatAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-
-	percentageAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-#endif
-
-	temperatureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
-
-	cylinderPressureAxis->setOrientation(DiveCartesianAxis::BottomToTop);
 
 	gasYAxis->setZValue(timeAxis->zValue() + 1);
 	tankItem->setZValue(100);
