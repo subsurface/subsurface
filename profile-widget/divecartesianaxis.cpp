@@ -181,24 +181,34 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	// Choose full multiples of the interval as minumum and maximum values
 	double minDisplay = transform.to(dataMin);
 	double maxDisplay = transform.to(dataMax);
-	double firstDisplay = floor(minDisplay / intervalDisplay * (1.0 + 1e-5)) * intervalDisplay;
-	double lastDisplay = ceil(maxDisplay / intervalDisplay * (1.0 - 1e-5)) * intervalDisplay;
+
+	// The time axis is special: use the full width in that case.
+	// Other axes round to the next "nice" number
+	double firstDisplay, lastDisplay;
+	double currValueText, currValueLine;
+	if (position == Position::Bottom) {
+		firstDisplay = ceil(minDisplay / intervalDisplay * (1.0 - 1e-5)) * intervalDisplay;
+		lastDisplay = floor(maxDisplay / intervalDisplay * (1.0 + 1e-5)) * intervalDisplay;
+		currValueText = currValueLine = transform.from(firstDisplay);
+	} else {
+		firstDisplay = floor(minDisplay / intervalDisplay * (1.0 + 1e-5)) * intervalDisplay;
+		lastDisplay = ceil(maxDisplay / intervalDisplay * (1.0 - 1e-5)) * intervalDisplay;
+		min = transform.from(firstDisplay);
+		max = transform.from(lastDisplay);
+		currValueText = currValueLine = min;
+	}
 	numTicks = lrint((lastDisplay - firstDisplay) / intervalDisplay) + 1;
 	numTicks = std::max(numTicks, 0);
-
-	min = transform.from(firstDisplay);
-	max = transform.from(lastDisplay);
-
-	double currValueText = min;
-	double currValueLine = min;
 
 	emptyList(labels, numTicks, animSpeed);
 	emptyList(lines, numTicks, animSpeed);
 	if (numTicks == 0)
 		return;
 
-	interval = numTicks > 1 ? (max - min) / (numTicks - 1) : 0;
-	double stepSize = numTicks > 1 ? size / (numTicks - 1) : 0;
+	interval = position == Position::Bottom ?
+		intervalDisplay / transform.a :		// special case for time axis.
+		numTicks > 1 ? (max - min) / (numTicks - 1) : 0;
+	double stepSize = interval * size / (max - min);
 
 	// Move the remaining grid lines / labels to their correct positions
 	// regarding the possible new values for the axis
@@ -343,7 +353,15 @@ double DiveCartesianAxis::Transform::from(double y) const
 
 QString DiveCartesianAxis::textForValue(double value) const
 {
-	return QStringLiteral("%L1").arg(transform.to(value), 0, 'f', fractionalDigits);
+	if (position == Position::Bottom) {
+		// The bottom axis is the time axis and that needs special treatment.
+		int nr = lrint(value) / 60;
+		if (maximum() - minimum() < 600.0)
+			return QString("%1:%2").arg(nr).arg((int)value % 60, 2, 10, QChar('0'));
+		return QString::number(nr);
+	} else {
+		return QStringLiteral("%L1").arg(transform.to(value), 0, 'f', fractionalDigits);
+	}
 }
 
 qreal DiveCartesianAxis::valueAt(const QPointF &p) const
@@ -415,12 +433,4 @@ QColor DepthAxis::colorForValue(double) const
 QColor TimeAxis::colorForValue(double) const
 {
 	return QColor(Qt::blue);
-}
-
-QString TimeAxis::textForValue(double value) const
-{
-	int nr = lrint(value) / 60;
-	if (maximum() < 600)
-		return QString("%1:%2").arg(nr).arg((int)value % 60, 2, 10, QChar('0'));
-	return QString::number(nr);
 }
