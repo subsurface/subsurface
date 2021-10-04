@@ -41,16 +41,16 @@
 
 // Constant describing at which z-level the thumbnails are located.
 // We might add more constants here for easier customability.
-#ifndef SUBSURFACE_MOBILE
 static const double thumbnailBaseZValue = 100.0;
-#endif
+
+// Base of exponential zoom function: one wheel-click will increase the zoom by 15%.
+static const double zoomFactor = 1.15;
 
 ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dpr, QWidget *parent) : QGraphicsView(parent),
 	profileScene(new ProfileScene(dpr, false, false)),
 	currentState(INIT),
 	plannerModel(plannerModelIn),
 	zoomLevel(0),
-	zoomFactor(1.15),
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
 #endif
@@ -182,7 +182,7 @@ void ProfileWidget2::resetZoom()
 {
 	if (!zoomLevel)
 		return;
-	const qreal defScale = 1.0 / qPow(zoomFactor, (qreal)zoomLevel);
+	const double defScale = 1.0 / pow(zoomFactor, (double)zoomLevel);
 	scale(defScale, defScale);
 	zoomLevel = 0;
 }
@@ -320,7 +320,7 @@ void ProfileWidget2::scale(qreal sx, qreal sy)
 	for (PictureEntry &p: pictures)
 		updateDurationLine(p);
 
-	// Since we created new duration lines, we have to update the order in which the thumbnails is painted.
+	// Since we created new duration lines, we have to update the order in which the thumbnails are painted.
 	updateThumbnailPaintOrder();
 #endif
 }

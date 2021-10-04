@@ -136,7 +136,6 @@ private:
 
 	DivePlannerPointsModel *plannerModel; // If null, no planning supported.
 	int zoomLevel;
-	qreal zoomFactor;
 #ifndef SUBSURFACE_MOBILE
 	ToolTipItem *toolTipItem;
 #endif
