@@ -199,6 +199,7 @@ void ProfileWidget::plotCurrentDive()
 		ui.profTogglePicture->setDisabled(false);
 		ui.profHR->setDisabled(false);
 		view->setProfileState(current_dive, dc_number);
+		view->resetZoom(); // when switching dive, reset the zoomLevel
 		view->plotDive(current_dive, dc_number);
 	} else {
 		view->clear();

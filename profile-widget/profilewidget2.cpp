@@ -207,9 +207,6 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 	Q_UNUSED(doClearPictures);
 #endif
 
-	// restore default zoom level
-	resetZoom();
-
 	DivePlannerPointsModel *model = currentState == EDIT || currentState == PLAN ? plannerModel : nullptr;
 	bool inPlanner = currentState == PLAN;
 
