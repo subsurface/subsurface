@@ -180,11 +180,8 @@ void ProfileWidget2::setupSceneAndFlags()
 
 void ProfileWidget2::resetZoom()
 {
-	if (!zoomLevel)
-		return;
-	const double defScale = 1.0 / pow(zoomFactor, (double)zoomLevel);
-	scale(defScale, defScale);
 	zoomLevel = 0;
+	zoomedPosition = 0.0;
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
@@ -210,7 +207,8 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 	DivePlannerPointsModel *model = currentState == EDIT || currentState == PLAN ? plannerModel : nullptr;
 	bool inPlanner = currentState == PLAN;
 
-	profileScene->plotDive(d, dc, model, inPlanner, instant, shouldCalculateMax);
+	double zoom = zoomLevel == 0 ? 1.0 : pow(zoomFactor, zoomLevel);
+	profileScene->plotDive(d, dc, model, inPlanner, instant, shouldCalculateMax, zoom, zoomedPosition);
 
 #ifndef SUBSURFACE_MOBILE
 	// reset some item visibility on printMode changes
@@ -307,19 +305,16 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 }
 #endif
 
-void ProfileWidget2::scale(qreal sx, qreal sy)
+void ProfileWidget2::setZoom(int level)
 {
-	QGraphicsView::scale(sx, sy);
-
-#ifndef SUBSURFACE_MOBILE
-	// Since the zoom level changed, adjust the duration bars accordingly.
-	// We want to grow/shrink the length, but not the height and pen.
-	for (PictureEntry &p: pictures)
-		updateDurationLine(p);
-
-	// Since we created new duration lines, we have to update the order in which the thumbnails are painted.
-	updateThumbnailPaintOrder();
-#endif
+	zoomLevel = level;
+	if (zoomLevel == 0) {
+		zoomedPosition = 0.0;
+	} else {
+		double pos = mapToScene(mapFromGlobal(QCursor::pos())).x();
+		zoomedPosition = pos / profileScene->width();
+	}
+	replot();
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -327,23 +322,12 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
 	if (!d)
 		return;
-	QPoint toolTipPos = mapFromScene(toolTipItem->pos());
 	if (event->buttons() == Qt::LeftButton)
 		return;
-	if (event->angleDelta().y() > 0 && zoomLevel < 20) {
-		scale(zoomFactor, zoomFactor);
-		zoomLevel++;
-	} else if (event->angleDelta().y() < 0 && zoomLevel > 0) {
-		// Zooming out
-		scale(1.0 / zoomFactor, 1.0 / zoomFactor);
-		zoomLevel--;
-	}
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-	scrollViewTo(event->position().toPoint());
-#else
-	scrollViewTo(event->pos());
-#endif
-	toolTipItem->setPos(mapToScene(toolTipPos));
+	if (event->angleDelta().y() > 0 && zoomLevel < 20)
+		setZoom(++zoomLevel);
+	else if (event->angleDelta().y() < 0 && zoomLevel > 0)
+		setZoom(--zoomLevel);
 }
 
 void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
@@ -359,42 +343,26 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 	}
 }
 
-void ProfileWidget2::scrollViewTo(const QPoint &pos)
-{
-	/* since we cannot use translate() directly on the scene we hack on
-	 * the scroll bars (hidden) functionality */
-	if (!zoomLevel || !d)
-		return;
-	QScrollBar *vs = verticalScrollBar();
-	QScrollBar *hs = horizontalScrollBar();
-	const qreal yRat = (qreal)pos.y() / viewport()->height();
-	const qreal xRat = (qreal)pos.x() / viewport()->width();
-	vs->setValue(lrint(yRat * vs->maximum()));
-	hs->setValue(lrint(xRat * hs->maximum()));
-}
-
 void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 {
+	QGraphicsView::mouseMoveEvent(event);
+
 	QPointF pos = mapToScene(event->pos());
 	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 
-	if (zoomLevel == 0) {
-		QGraphicsView::mouseMoveEvent(event);
-	} else {
-		QPoint toolTipPos = mapFromScene(toolTipItem->pos());
-		scrollViewTo(event->pos());
-		toolTipItem->setPos(mapToScene(toolTipPos));
+	if (zoomLevel != 0) {
+		zoomedPosition = pos.x() / profileScene->width();
+		plotDive(d, dc, false, true); // TODO: animations don't work when scrolling
 	}
 
-	qreal vValue = profileScene->profileYAxis->valueAt(pos);
-	qreal hValue = profileScene->timeAxis->valueAt(pos);
+	double vValue = profileScene->profileYAxis->valueAt(pos);
+	double hValue = profileScene->timeAxis->valueAt(pos);
 
-	if (profileScene->profileYAxis->maximum() >= vValue && profileScene->profileYAxis->minimum() <= vValue) {
+	if (profileScene->profileYAxis->maximum() >= vValue && profileScene->profileYAxis->minimum() <= vValue)
 		mouseFollowerHorizontal->setPos(profileScene->timeAxis->pos().x(), pos.y());
-	}
-	if (profileScene->timeAxis->maximum() >= hValue && profileScene->timeAxis->minimum() <= hValue) {
+
+	if (profileScene->timeAxis->maximum() >= hValue && profileScene->timeAxis->minimum() <= hValue)
 		mouseFollowerVertical->setPos(pos.x(), profileScene->profileYAxis->line().y1());
-	}
 }
 
 bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)

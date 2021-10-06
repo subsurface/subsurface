@@ -299,7 +299,8 @@ bool ProfileScene::isPointOutOfBoundaries(const QPointF &point) const
 	       ypos < profileYAxis->minimum();
 }
 
-void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsModel *plannerModel, bool inPlanner, bool instant, bool calcMax)
+void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsModel *plannerModel,
+			   bool inPlanner, bool instant, bool calcMax, double zoom, double zoomedPosition)
 {
 	d = dIn;
 	dc = dcIn;
@@ -388,8 +389,11 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	percentageAxis->setVisible(false);
 	percentageAxis->updateTicks(animSpeed);
 
-	if (calcMax)
-		timeAxis->setBounds(0.0, maxtime);
+	if (calcMax) {
+		double relStart = (1.0 - 1.0/zoom) * zoomedPosition;
+		double relEnd = relStart + 1.0/zoom;
+		timeAxis->setBounds(round(relStart * maxtime), round(relEnd * maxtime));
+	}
 
 	timeAxis->updateTicks(animSpeed);
 	cylinderPressureAxis->setBounds(plotInfo.minpressure, plotInfo.maxpressure);
