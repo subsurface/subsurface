@@ -121,6 +121,10 @@ static void calculateDive(struct dive *dive, Stats &stats)
 		return;
 	}
 
+	if (dive->invalid) {
+		return;
+	}
+
 	// one more real dive
 	stats.dives++;
 
