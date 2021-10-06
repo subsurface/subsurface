@@ -46,7 +46,6 @@ public:
 	ProfileWidget2(DivePlannerPointsModel *plannerModel, double dpr, QWidget *parent = 0);
 	~ProfileWidget2();
 	void resetZoom();
-	void scale(qreal sx, qreal sy);
 	void plotDive(const struct dive *d, int dc, bool clearPictures = false, bool instant = false);
 	void setProfileState(const struct dive *d, int dc);
 	void setPlanState(const struct dive *d, int dc);
@@ -111,8 +110,8 @@ private:
 	void dragMoveEvent(QDragMoveEvent *event) override;
 
 	void replot();
+	void setZoom(int level);
 	void changeGas(int tank, int seconds);
-	void scrollViewTo(const QPoint &pos);
 	void setupSceneAndFlags();
 	void addItemsToScene();
 	void setupItemOnScene();
@@ -136,6 +135,7 @@ private:
 
 	DivePlannerPointsModel *plannerModel; // If null, no planning supported.
 	int zoomLevel;
+	double zoomedPosition;	// Position, when zoomed: 0.0 = beginning, 1.0 = end.
 #ifndef SUBSURFACE_MOBILE
 	ToolTipItem *toolTipItem;
 #endif

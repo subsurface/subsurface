@@ -42,7 +42,7 @@ public:
 
 	// If a plannerModel is passed, the deco-information is taken from there.
 	void plotDive(const struct dive *d, int dc, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
-		      bool instant = false, bool calcMax = true);
+		      bool instant = false, bool calcMax = true, double zoom = 1.0, double zoomedPosition = 0.0);
 
 	void draw(QPainter *painter, const QRect &pos,
 		  const struct dive *d, int dc,
