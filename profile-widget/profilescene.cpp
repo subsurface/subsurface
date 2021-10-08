@@ -395,6 +395,22 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		timeAxis->setBounds(round(relStart * maxtime), round(relEnd * maxtime));
 	}
 
+	// Find first and last plotInfo entry
+	int firstSecond = lrint(timeAxis->minimum());
+	int lastSecond = lrint(timeAxis->maximum());
+	auto it1 = std::lower_bound(plotInfo.entry, plotInfo.entry + plotInfo.nr, firstSecond,
+				   [](const plot_data &d, int s)
+				   { return d.sec < s; });
+	auto it2 = std::lower_bound(it1, plotInfo.entry + plotInfo.nr, lastSecond,
+				    [](const plot_data &d, int s)
+				    { return d.sec < s; });
+	if (it1 > plotInfo.entry && it1->sec > firstSecond)
+		--it1;
+	if (it2 < plotInfo.entry + plotInfo.nr)
+		++it2;
+	int from = it1 - plotInfo.entry;
+	int to = it2 - plotInfo.entry;
+
 	timeAxis->updateTicks(animSpeed);
 	cylinderPressureAxis->setBounds(plotInfo.minpressure, plotInfo.maxpressure);
 
@@ -446,7 +462,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 	// Replot dive items
 	for (AbstractProfilePolygonItem *item: profileItems)
-		item->replot(d, inPlanner);
+		item->replot(d, from, to, inPlanner);
 
 	if (prefs.percentagegraph)
 		percentageItem->replot(d, currentdc, dataModel->data());

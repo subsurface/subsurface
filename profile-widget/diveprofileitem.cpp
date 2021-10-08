@@ -14,7 +14,7 @@
 
 AbstractProfilePolygonItem::AbstractProfilePolygonItem(const DivePlotDataModel &model, const DiveCartesianAxis &horizontal, int hColumn,
 						       const DiveCartesianAxis &vertical, int vColumn, double dpr) :
-	hAxis(horizontal), vAxis(vertical), dataModel(model), hDataColumn(hColumn), vDataColumn(vColumn), dpr(dpr)
+	hAxis(horizontal), vAxis(vertical), dataModel(model), hDataColumn(hColumn), vDataColumn(vColumn), dpr(dpr), from(0), to(0)
 {
 	setCacheMode(DeviceCoordinateCache);
 }
@@ -26,19 +26,30 @@ void AbstractProfilePolygonItem::clear()
 	texts.clear();
 }
 
-void AbstractProfilePolygonItem::replot(const dive *, bool)
+void AbstractProfilePolygonItem::makePolygon(int fromIn, int toIn)
 {
+	from = fromIn;
+	to = toIn;
+
 	// Calculate the polygon. This is the polygon that will be painted on screen
 	// on the ::paint method. Here we calculate the correct position of the points
 	// regarting our cartesian plane ( made by the hAxis and vAxis ), the QPolygonF
 	// is an array of QPointF's, so we basically get the point from the model, convert
 	// to our coordinates, store. no painting is done here.
 	QPolygonF poly;
-	for (int i = 0, modelDataCount = dataModel.rowCount(); i < modelDataCount; i++) {
-		qreal horizontalValue = dataModel.index(i, hDataColumn).data().toReal();
-		qreal verticalValue = dataModel.index(i, vDataColumn).data().toReal();
+	for (int i = from; i < to; i++) {
+		double horizontalValue = dataModel.index(i, hDataColumn).data().toReal();
+		double verticalValue = dataModel.index(i, vDataColumn).data().toReal();
+		if (i == from) {
+			QPointF point(hAxis.posAtValue(horizontalValue), vAxis.posAtValue(0.0));
+			poly.append(point);
+		}
 		QPointF point(hAxis.posAtValue(horizontalValue), vAxis.posAtValue(verticalValue));
 		poly.append(point);
+		if (i == to - 1) {
+			QPointF point(hAxis.posAtValue(horizontalValue), vAxis.posAtValue(0.0));
+			poly.append(point);
+		}
 	}
 	setPolygon(poly);
 
@@ -71,19 +82,19 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	pen.setWidth(2);
 	QPolygonF poly = polygon();
 	// This paints the colors of the velocities.
-	for (int i = 1, count = dataModel.rowCount(); i < count; i++) {
+	for (int i = from + 1; i < to; i++) {
 		QModelIndex colorIndex = dataModel.index(i, DivePlotDataModel::COLOR);
 		pen.setBrush(QBrush(colorIndex.data(Qt::BackgroundRole).value<QColor>()));
 		painter->setPen(pen);
-		if (i < poly.count())
-			painter->drawLine(poly[i - 1], poly[i]);
+		if (i - from < poly.count() - 1)
+			painter->drawLine(poly[i - from], poly[i - from + 1]);
 	}
 	painter->restore();
 }
 
-void DiveProfileItem::replot(const dive *d, bool in_planner)
+void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 {
-	AbstractProfilePolygonItem::replot(d, in_planner);
+	makePolygon(from, to);
 	if (polygon().isEmpty())
 		return;
 
@@ -95,8 +106,8 @@ void DiveProfileItem::replot(const dive *d, bool in_planner)
 	/* Show any ceiling we may have encountered */
 	if (prefs.dcceiling && !prefs.redceiling) {
 		QPolygonF p = polygon();
-		plot_data *entry = dataModel.data().entry + dataModel.rowCount() - 1;
-		for (int i = dataModel.rowCount() - 1; i >= 0; i--, entry--) {
+		plot_data *entry = dataModel.data().entry + to - 1;
+		for (int i = to - 1; i >= from; i--, entry--) {
 			if (!entry->in_deco) {
 				/* not in deco implies this is a safety stop, no ceiling */
 				p.append(QPointF(hAxis.posAtValue(entry->sec), vAxis.posAtValue(0)));
@@ -115,7 +126,7 @@ void DiveProfileItem::replot(const dive *d, bool in_planner)
 	setBrush(QBrush(pat));
 
 	int last = -1;
-	for (int i = 0, count = dataModel.rowCount(); i < count; i++) {
+	for (int i = from; i < to; i++) {
 		struct plot_data *pd = dataModel.data().entry;
 		struct plot_data *entry =  pd + i;
 		// "min/max" are the 9-minute window min/max indices
@@ -159,8 +170,11 @@ DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveC
 	setPen(pen);
 }
 
-void DiveHeartrateItem::replot(const dive *, bool)
+void DiveHeartrateItem::replot(const dive *, int fromIn, int toIn, bool)
 {
+	from = fromIn;
+	to = toIn;
+
 	int last = -300, last_printed_hr = 0, sec = 0;
 	struct sec_hr {
 		int sec;
@@ -172,7 +186,7 @@ void DiveHeartrateItem::replot(const dive *, bool)
 	texts.clear();
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
-	for (int i = 0, modelDataCount = dataModel.rowCount(); i < modelDataCount; i++) {
+	for (int i = from; i < to; i++) {
 		int hr = dataModel.index(i, vDataColumn).data().toInt();
 		if (!hr)
 			continue;
@@ -244,8 +258,11 @@ DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const D
 	setPen(pen);
 }
 
-void DiveTemperatureItem::replot(const dive *, bool)
+void DiveTemperatureItem::replot(const dive *, int fromIn, int toIn, bool)
 {
+	from = fromIn;
+	to = toIn;
+
 	int last = -300, last_printed_temp = 0, sec = 0, last_valid_temp = 0;
 	std::vector<std::pair<int, int>> textItems;
 
@@ -253,7 +270,7 @@ void DiveTemperatureItem::replot(const dive *, bool)
 	texts.clear();
 	// Ignore empty values. things do not look good with '0' as temperature in kelvin...
 	QPolygonF poly;
-	for (int i = 0, modelDataCount = dataModel.rowCount(); i < modelDataCount; i++) {
+	for (int i = from; i < to; i++) {
 		int mkelvin = dataModel.index(i, vDataColumn).data().toInt();
 		if (!mkelvin)
 			continue;
@@ -326,13 +343,16 @@ DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveC
 	lastRunningSum = 0.0;
 }
 
-void DiveMeanDepthItem::replot(const dive *, bool)
+void DiveMeanDepthItem::replot(const dive *, int fromIn, int toIn, bool)
 {
+	from = fromIn;
+	to = toIn;
+
 	double meandepthvalue = 0.0;
 
 	QPolygonF poly;
-	plot_data *entry = dataModel.data().entry;
-	for (int i = 0, modelDataCount = dataModel.rowCount(); i < modelDataCount; i++, entry++) {
+	plot_data *entry = dataModel.data().entry + from;
+	for (int i = from; i < to; i++, entry++) {
 		// Ignore empty values
 		if (entry->running_sum == 0 || entry->sec == 0)
 			continue;
@@ -360,7 +380,7 @@ void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 void DiveMeanDepthItem::createTextItem()
 {
 	plot_data *entry = dataModel.data().entry;
-	int sec = entry[dataModel.rowCount()-1].sec;
+	int sec = to > 0 ? entry[to-1].sec : 0;
 	qDeleteAll(texts);
 	texts.clear();
 	DiveTextItem *text = new DiveTextItem(dpr, 0.8, Qt::AlignRight | Qt::AlignTop, this);
@@ -369,8 +389,11 @@ void DiveMeanDepthItem::createTextItem()
 	texts.append(text);
 }
 
-void DiveGasPressureItem::replot(const dive *d, bool in_planner)
+void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_planner)
 {
+	from = fromIn;
+	to = toIn;
+
 	const struct plot_info *pInfo = &dataModel.data();
 	std::vector<int> plotted_cyl(pInfo->nr_cylinders, false);
 	std::vector<int> last_plotted(pInfo->nr_cylinders, 0);
@@ -378,7 +401,7 @@ void DiveGasPressureItem::replot(const dive *d, bool in_planner)
 	QPolygonF boundingPoly;
 	polygons.clear();
 
-	for (int i = 0, count = dataModel.rowCount(); i < count; i++) {
+	for (int i = from; i < to; i++) {
 		const struct plot_data *entry = pInfo->entry + i;
 
 		for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
@@ -451,7 +474,7 @@ void DiveGasPressureItem::replot(const dive *d, bool in_planner)
 	double axisRange = (vAxis.maximum() - vAxis.minimum())/1000;	// Convert axis pressure range to bar
 	double axisLog = log10(log10(axisRange));
 
-	for (int i = 0, count = dataModel.rowCount(); i < count; i++) {
+	for (int i = from; i < to; i++) {
 		const struct plot_data *entry = pInfo->entry + i;
 
 		for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
@@ -537,19 +560,9 @@ DiveCalculatedCeiling::DiveCalculatedCeiling(const DivePlotDataModel &model, con
 {
 }
 
-void DiveCalculatedCeiling::replot(const dive *d, bool in_planner)
+void DiveCalculatedCeiling::replot(const dive *d, int from, int to, bool in_planner)
 {
-	AbstractProfilePolygonItem::replot(d, in_planner);
-	// Add 2 points to close the polygon.
-	QPolygonF poly = polygon();
-	if (poly.isEmpty())
-		return;
-	QPointF p1 = poly.first();
-	QPointF p2 = poly.last();
-
-	poly.prepend(QPointF(p1.x(), vAxis.posAtValue(0)));
-	poly.append(QPointF(p2.x(), vAxis.posAtValue(0)));
-	setPolygon(poly);
+	makePolygon(from, to);
 
 	QLinearGradient pat(0, polygon().boundingRect().top(), 0, polygon().boundingRect().bottom());
 	pat.setColorAt(0, getColor(CALC_CEILING_SHALLOW));
@@ -577,16 +590,20 @@ DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const D
 {
 }
 
-void DiveReportedCeiling::replot(const dive *, bool)
+void DiveReportedCeiling::replot(const dive *, int fromIn, int toIn, bool)
 {
+	from = fromIn;
+	to = toIn;
+
 	QPolygonF p;
-	p.append(QPointF(hAxis.posAtValue(0), vAxis.posAtValue(0)));
-	plot_data *entry = dataModel.data().entry;
-	for (int i = 0, count = dataModel.rowCount(); i < count; i++, entry++) {
-		if (entry->in_deco && entry->stopdepth) {
-			p.append(QPointF(hAxis.posAtValue(entry->sec), vAxis.posAtValue(qMin(entry->stopdepth, entry->depth))));
+	for (int i = from; i < to; i++) {
+		const plot_data &entry = dataModel.data().entry[i];
+		if (i == from)
+			p.append(QPointF(hAxis.posAtValue(entry.sec), vAxis.posAtValue(0)));
+		if (entry.in_deco && entry.stopdepth) {
+			p.append(QPointF(hAxis.posAtValue(entry.sec), vAxis.posAtValue(std::min(entry.stopdepth, entry.depth))));
 		} else {
-			p.append(QPointF(hAxis.posAtValue(entry->sec), vAxis.posAtValue(0)));
+			p.append(QPointF(hAxis.posAtValue(entry.sec), vAxis.posAtValue(0)));
 		}
 	}
 	setPolygon(p);
@@ -610,9 +627,12 @@ void DiveReportedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-void PartialPressureGasItem::replot(const dive *, bool)
+void PartialPressureGasItem::replot(const dive *, int fromIn, int toIn, bool)
 {
-	plot_data *entry = dataModel.data().entry;
+	from = fromIn;
+	to = toIn;
+
+	plot_data *entry = dataModel.data().entry + from;
 	QPolygonF poly;
 	QPolygonF alertpoly;
 	alertPolygons.clear();
@@ -623,7 +643,7 @@ void PartialPressureGasItem::replot(const dive *, bool)
 	if (thresholdPtrMin)
 		threshold_min = *thresholdPtrMin;
 	bool inAlertFragment = false;
-	for (int i = 0; i < dataModel.rowCount(); i++, entry++) {
+	for (int i = from; i < to; i++, entry++) {
 		double value = dataModel.index(i, vDataColumn).data().toDouble();
 		int time = dataModel.index(i, hDataColumn).data().toInt();
 		QPointF point(hAxis.posAtValue(time), vAxis.posAtValue(value));
