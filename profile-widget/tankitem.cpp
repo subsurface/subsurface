@@ -64,26 +64,18 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 	label->setZValue(101);
 }
 
-void TankItem::setData(const struct plot_info *plotInfo, const struct dive *d)
+void TankItem::setData(const struct dive *d, int plotStartTime, int plotEndTime)
 {
-	if (!d)
-		return;
-
-	// If there is nothing to plot, quit early.
-	if (plotInfo->nr <= 0)
-		return;
-
-	// Find correct end of the dive plot for correct end of the tankbar.
-	const struct plot_data *last_entry = &plotInfo->entry[plotInfo->nr - 1];
-	int plotEndTime = last_entry->sec;
-
-	// We don't have enougth data to calculate things, quit.
-	if (plotEndTime < 0)
-		return;
-
 	// remove the old rectangles
 	qDeleteAll(rects);
 	rects.clear();
+
+	if (!d)
+		return;
+
+	// We don't have enougth data to calculate things, quit.
+	if (plotEndTime < 0 || plotEndTime <= plotStartTime)
+		return;
 
 	// Bail if there are no cylinders
 	if (d->cylinders.nr <= 0)
@@ -96,15 +88,22 @@ void TankItem::setData(const struct plot_info *plotInfo, const struct dive *d)
 	// start with the first gasmix and at the start of the dive
 	int cyl = explicit_first_cylinder(d, dc);
 	struct gasmix gasmix = get_cylinder(d, cyl)->gasmix;
-	int startTime = 0;
+
+	// skip over all gas changes before the plotted range
+	const struct event *ev = get_next_event(dc->events, "gaschange");
+	while (ev && (int)ev->time.seconds <= plotStartTime)
+		ev = get_next_event(ev->next, "gaschange");
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
-	const struct event *ev = get_next_event(dc->events, "gaschange");
+	int startTime = plotStartTime;
 	while (ev && (int)ev->time.seconds < plotEndTime) {
+		gasmix = get_gasmix_from_event(d, ev);
 		createBar(startTime, ev->time.seconds, gasmix);
 		startTime = ev->time.seconds;
 		gasmix = get_gasmix_from_event(d, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}
+	if (ev)
+		gasmix = get_gasmix_from_event(d, ev);
 	createBar(startTime, plotEndTime, gasmix);
 }
