@@ -447,7 +447,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		ocpo2GasItem->setVisible(false);
 	}
 #endif
-	tankItem->setData(&plotInfo, d);
+	tankItem->setData(d, firstSecond, lastSecond);
 
 	if (ppGraphsEnabled()) {
 		double max = prefs.pp_graphs.phe ? dataModel->pheMax() : -1;
