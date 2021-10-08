@@ -20,7 +20,6 @@ public:
 private:
 	void createBar(int startTime, int stopTime, struct gasmix gas);
 	const DiveCartesianAxis &hAxis;
-	int plotEndTime;
 	double dpr;
 	QBrush air, nitrox, oxygen, trimix;
 	QList<QGraphicsRectItem *> rects;
