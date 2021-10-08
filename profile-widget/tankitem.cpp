@@ -12,7 +12,6 @@ static const double border = 1.0;
 
 TankItem::TankItem(const DiveCartesianAxis &axis, double dpr) :
 	hAxis(axis),
-	plotEndTime(-1),
 	dpr(dpr)
 {
 	QColor red(PERSIANRED1);
@@ -71,14 +70,12 @@ void TankItem::setData(const struct plot_info *plotInfo, const struct dive *d)
 		return;
 
 	// If there is nothing to plot, quit early.
-	if (plotInfo->nr <= 0) {
-		plotEndTime = -1;
+	if (plotInfo->nr <= 0)
 		return;
-	}
 
 	// Find correct end of the dive plot for correct end of the tankbar.
 	const struct plot_data *last_entry = &plotInfo->entry[plotInfo->nr - 1];
-	plotEndTime = last_entry->sec;
+	int plotEndTime = last_entry->sec;
 
 	// We don't have enougth data to calculate things, quit.
 	if (plotEndTime < 0)
