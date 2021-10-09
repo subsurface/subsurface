@@ -80,7 +80,6 @@ private:
 	void createTextItem(double lastSec, double lastMeanDepth);
 	std::pair<double,double> getMeanDepth(int i) const;
 	std::pair<double,double> getNextMeanDepth(int i) const;
-	QString visibilityKey;
 };
 
 class DiveTemperatureItem : public AbstractProfilePolygonItem {
@@ -103,7 +102,6 @@ public:
 
 private:
 	void createTextItem(int seconds, int hr, bool last);
-	QString visibilityKey;
 };
 
 class DiveGasPressureItem : public AbstractProfilePolygonItem {
@@ -176,7 +174,6 @@ private:
 	QVector<QPolygonF> alertPolygons;
 	const double *thresholdPtrMin;
 	const double *thresholdPtrMax;
-	QString visibilityKey;
 	QColor normalColor;
 	QColor alertColor;
 };
