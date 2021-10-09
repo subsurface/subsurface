@@ -138,40 +138,60 @@ void ProfileScene::clear()
 	eventItems.clear();
 }
 
-static bool ppGraphsEnabled()
+static bool ppGraphsEnabled(const struct divecomputer *dc, bool simplified)
 {
-	return prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe;
+	return simplified ? (dc->divemode == CCR && prefs.pp_graphs.po2)
+			  : (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe);
 }
 
 // Update visibility of non-interactive chart features according to preferences
-void ProfileScene::updateVisibility(bool diveHasHeartBeat)
+void ProfileScene::updateVisibility(bool diveHasHeartBeat, bool simplified)
 {
-#ifndef SUBSURFACE_MOBILE
-	pn2GasItem->setVisible(prefs.pp_graphs.pn2);
-	po2GasItem->setVisible(prefs.pp_graphs.po2);
-	pheGasItem->setVisible(prefs.pp_graphs.phe);
+	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
+	if (!currentdc)
+		return;
+	bool ppGraphs = ppGraphsEnabled(currentdc, simplified);
 
-	const struct divecomputer *currentdc = d ? get_dive_dc_const(d, dc) : nullptr;
-	bool setpointflag = currentdc && currentdc->divemode == CCR && prefs.pp_graphs.po2;
-	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
-	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
-	ccrsensor1GasItem->setVisible(sensorflag);
-	ccrsensor2GasItem->setVisible(currentdc && sensorflag && currentdc->no_o2sensors > 1);
-	ccrsensor3GasItem->setVisible(currentdc && sensorflag && currentdc->no_o2sensors > 2);
-	ocpo2GasItem->setVisible(currentdc && currentdc->divemode == PSCR && prefs.show_scr_ocpo2);
+	if (simplified) {
+		pn2GasItem->setVisible(false);
+		po2GasItem->setVisible(ppGraphs);
+		pheGasItem->setVisible(false);
 
-	heartBeatItem->setVisible(prefs.hrgraph && diveHasHeartBeat);
-#endif
-	diveCeiling->setVisible(prefs.calcceiling);
-	decoModelParameters->setVisible(prefs.decoinfo);
-#ifndef SUBSURFACE_MOBILE
-	for (DiveCalculatedTissue *tissue: allTissues)
-		tissue->setVisible(prefs.calcalltissues && prefs.calcceiling);
-	percentageItem->setVisible(prefs.percentagegraph);
-#endif
-	meanDepthItem->setVisible(prefs.show_average_depth);
-	reportedCeiling->setVisible(prefs.dcceiling);
-	tankItem->setVisible(prefs.tankbar);
+		temperatureItem->setVisible(!ppGraphs);
+		tankItem->setVisible(!ppGraphs && prefs.tankbar);
+
+		o2SetpointGasItem->setVisible(ppGraphs && prefs.show_ccr_setpoint);
+		ccrsensor1GasItem->setVisible(ppGraphs && prefs.show_ccr_sensors);
+		ccrsensor2GasItem->setVisible(ppGraphs && prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
+		ccrsensor3GasItem->setVisible(ppGraphs && prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
+		ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
+	} else {
+		pn2GasItem->setVisible(prefs.pp_graphs.pn2);
+		po2GasItem->setVisible(prefs.pp_graphs.po2);
+		pheGasItem->setVisible(prefs.pp_graphs.phe);
+
+		bool setpointflag = currentdc->divemode == CCR && prefs.pp_graphs.po2;
+		bool sensorflag = setpointflag && prefs.show_ccr_sensors;
+		o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
+		ccrsensor1GasItem->setVisible(sensorflag);
+		ccrsensor2GasItem->setVisible(sensorflag && currentdc->no_o2sensors > 1);
+		ccrsensor3GasItem->setVisible(sensorflag && currentdc->no_o2sensors > 2);
+		ocpo2GasItem->setVisible(currentdc->divemode == PSCR && prefs.show_scr_ocpo2);
+
+		heartBeatItem->setVisible(prefs.hrgraph && diveHasHeartBeat);
+
+		diveCeiling->setVisible(prefs.calcceiling);
+		decoModelParameters->setVisible(prefs.decoinfo);
+
+		for (DiveCalculatedTissue *tissue: allTissues)
+			tissue->setVisible(prefs.calcalltissues && prefs.calcceiling);
+		percentageItem->setVisible(prefs.percentagegraph);
+
+		meanDepthItem->setVisible(prefs.show_average_depth);
+		reportedCeiling->setVisible(prefs.dcceiling);
+		tankItem->setVisible(prefs.tankbar);
+		temperatureItem->setVisible(true);
+	}
 }
 
 void ProfileScene::resize(QSizeF size)
@@ -199,15 +219,19 @@ struct VerticalAxisLayout {
 	bool visible;
 };
 
-void ProfileScene::updateAxes(bool diveHasHeartBeat)
+void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 {
+	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
+	if (!currentdc)
+		return;
+
 	// Calculate left and right border needed for the axes.
 	// viz. the depth axis to the left and the partial pressure axis to the right.
 	// Thus, calculating the "border" of the graph is trivial.
 	double leftBorder = profileYAxis->width();
 	if (prefs.hrgraph)
 		leftBorder = std::max(leftBorder, heartBeatAxis->width());
-	double rightWidth = ppGraphsEnabled() ? gasYAxis->width() : 0.0;
+	double rightWidth = ppGraphsEnabled(current_dc, simplified) ? gasYAxis->width() : 0.0;
 	double rightBorder = sceneRect().width() - rightWidth;
 	double width = rightBorder - leftBorder;
 
@@ -246,7 +270,7 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat)
 		// Note: axes are listed from bottom to top, since they are added that way.
 		{ heartBeatAxis, 75.0, prefs.hrgraph && diveHasHeartBeat },
 		{ percentageAxis, 50.0, prefs.percentagegraph },
-		{ gasYAxis, 75.0, ppGraphsEnabled() },
+		{ gasYAxis, 75.0, ppGraphsEnabled(currentdc, simplified) },
 		{ temperatureAxis, 50.0, true },
         };
 
@@ -328,14 +352,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
 
-	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2;
-	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
-	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
-	ccrsensor1GasItem->setVisible(sensorflag);
-	ccrsensor2GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 1));
-	ccrsensor3GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 2));
-	ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
-
 	// A non-null planner_ds signals to create_plot_info_new that the dive is currently planned.
 	struct deco_state *planner_ds = inPlanner && plannerModel ? &plannerModel->final_deco_state : nullptr;
 
@@ -350,8 +366,14 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !calcMax, planner_ds);
 
 	bool hasHeartBeat = plotInfo.maxhr;
-	updateVisibility(hasHeartBeat);
-	updateAxes(hasHeartBeat);
+	// For mobile we might want to turn of some features that are normally shown.
+#ifdef SUBSURFACE_MOBILE
+	bool simplified = true;
+#else
+	bool simplified = false;
+#endif
+	updateVisibility(hasHeartBeat, simplified);
+	updateAxes(hasHeartBeat, simplified);
 
 	int newMaxtime = get_maxtime(&plotInfo);
 	if (calcMax || newMaxtime > maxtime)
@@ -414,42 +436,9 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	timeAxis->updateTicks(animSpeed);
 	cylinderPressureAxis->setBounds(plotInfo.minpressure, plotInfo.maxpressure);
 
-#ifdef SUBSURFACE_MOBILE
-	if (currentdc->divemode == CCR) {
-		tankItem->setVisible(false);
-		pn2GasItem->setVisible(false);
-		po2GasItem->setVisible(prefs.pp_graphs.po2);
-		pheGasItem->setVisible(false);
-		o2SetpointGasItem->setVisible(prefs.show_ccr_setpoint);
-		ccrsensor1GasItem->setVisible(prefs.show_ccr_sensors);
-		ccrsensor2GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
-		ccrsensor3GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
-		ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
-		//when no gas graph, we can show temperature
-		if (!po2GasItem->isVisible() &&
-		    !o2SetpointGasItem->isVisible() &&
-		    !ccrsensor1GasItem->isVisible() &&
-		    !ccrsensor2GasItem->isVisible() &&
-		    !ccrsensor3GasItem->isVisible() &&
-		    !ocpo2GasItem->isVisible())
-			temperatureItem->setVisible(true);
-		else
-			temperatureItem->setVisible(false);
-	} else {
-		tankItem->setVisible(prefs.tankbar);
-		pn2GasItem->setVisible(false);
-		po2GasItem->setVisible(false);
-		pheGasItem->setVisible(false);
-		o2SetpointGasItem->setVisible(false);
-		ccrsensor1GasItem->setVisible(false);
-		ccrsensor2GasItem->setVisible(false);
-		ccrsensor3GasItem->setVisible(false);
-		ocpo2GasItem->setVisible(false);
-	}
-#endif
 	tankItem->setData(d, firstSecond, lastSecond);
 
-	if (ppGraphsEnabled()) {
+	if (ppGraphsEnabled(current_dc, simplified)) {
 		double max = prefs.pp_graphs.phe ? dataModel->pheMax() : -1;
 		if (prefs.pp_graphs.pn2)
 			max = std::max(dataModel->pn2Max(), max);
