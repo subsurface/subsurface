@@ -191,8 +191,15 @@ static int depthAtTime(const plot_info &pi, duration_t time)
 }
 
 bool DiveEventItem::isInteresting(const struct dive *d, const struct divecomputer *dc,
-				  const struct event *ev, const plot_info &pi)
+				  const struct event *ev, const plot_info &pi,
+				  int firstSecond, int lastSecond)
 {
+	/*
+	 * Ignore items outside of plot range
+	 */
+	if (ev->time.seconds < firstSecond || ev->time.seconds >= lastSecond)
+		return false;
+
 	/*
 	 * Some gas change events are special. Some dive computers just tell us the initial gas this way.
 	 * Don't bother showing those
