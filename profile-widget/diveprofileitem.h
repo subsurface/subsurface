@@ -40,6 +40,9 @@ public:
 
 protected:
 	void makePolygon(int from, int to);
+	void clipStart(double &x, double &y, double next_x, double next_y) const;
+	void clipStop(double &x, double &y, double prev_x, double prev_y) const;
+	std::pair<double, double> getPoint(int i) const;
 	const DiveCartesianAxis &hAxis;
 	const DiveCartesianAxis &vAxis;
 	const DivePlotDataModel &dataModel;
@@ -74,8 +77,9 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 private:
-	void createTextItem();
-	double lastRunningSum;
+	void createTextItem(double lastSec, double lastMeanDepth);
+	std::pair<double,double> getMeanDepth(int i) const;
+	std::pair<double,double> getNextMeanDepth(int i) const;
 	QString visibilityKey;
 };
 
@@ -111,13 +115,22 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 private:
-	void plotPressureValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, double offset);
-	void plotGasValue(int mbar, int sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double offset);
+	void plotPressureValue(double mbar, double sec, QFlags<Qt::AlignmentFlag> align, double offset);
+	void plotGasValue(double mbar, double sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double offset);
+	struct PressureEntry {
+		double time = 0.0;
+		double pressure = 0.0;
+	};
 	struct Entry {
 		QPointF pos;
 		QColor col;
 	};
-	std::vector<std::vector<Entry>> polygons;
+	struct Segment {
+		int cyl;
+		std::vector<Entry> polygon;
+		PressureEntry first, last;
+	};
+	std::vector<Segment> segments;
 };
 
 class DiveCalculatedCeiling : public AbstractProfilePolygonItem {
@@ -137,6 +150,9 @@ public:
 	DiveReportedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 	void replot(const dive *d, int from, int to, bool in_planner) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+private:
+	std::pair<double,double> getTimeValue(int i) const;
+	std::pair<double, double> getPoint(int i) const;
 };
 
 class DiveCalculatedTissue : public DiveCalculatedCeiling {

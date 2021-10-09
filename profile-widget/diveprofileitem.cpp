@@ -26,6 +26,44 @@ void AbstractProfilePolygonItem::clear()
 	texts.clear();
 }
 
+static std::pair<double,double> clip(double x1, double y1, double x2, double y2, double x)
+{
+	double rel = fabs(x2 - x1) > 1e-10 ? (x - x1) / (x2 - x1) : 0.5;
+	return { x, (y2 - y1) * rel + y1 };
+}
+
+void AbstractProfilePolygonItem::clipStart(double &x, double &y, double next_x, double next_y) const
+{
+	if (x < hAxis.minimum())
+		std::tie(x, y) = clip(x, y, next_x, next_y, hAxis.minimum());
+}
+
+void AbstractProfilePolygonItem::clipStop(double &x, double &y, double prev_x, double prev_y) const
+{
+	if (x > hAxis.maximum())
+		std::tie(x, y) = clip(prev_x, prev_y, x, y, hAxis.maximum());
+}
+
+std::pair<double, double> AbstractProfilePolygonItem::getPoint(int i) const
+{
+	double x = dataModel.index(i, hDataColumn).data().toReal();
+	double y = dataModel.index(i, vDataColumn).data().toReal();
+
+	// Do clipping of first and last value
+	if (i == from && i < to) {
+		double next_x = dataModel.index(i+1, hDataColumn).data().toReal();
+		double next_y = dataModel.index(i+1, vDataColumn).data().toReal();
+		clipStart(x, y, next_x, next_y);
+	}
+	if (i == to - 1 && i > 0) {
+		double prev_x = dataModel.index(i-1, hDataColumn).data().toReal();
+		double prev_y = dataModel.index(i-1, vDataColumn).data().toReal();
+		clipStop(x, y, prev_x, prev_y);
+	}
+
+	return { x, y };
+}
+
 void AbstractProfilePolygonItem::makePolygon(int fromIn, int toIn)
 {
 	from = fromIn;
@@ -38,8 +76,8 @@ void AbstractProfilePolygonItem::makePolygon(int fromIn, int toIn)
 	// to our coordinates, store. no painting is done here.
 	QPolygonF poly;
 	for (int i = from; i < to; i++) {
-		double horizontalValue = dataModel.index(i, hDataColumn).data().toReal();
-		double verticalValue = dataModel.index(i, vDataColumn).data().toReal();
+		auto [horizontalValue, verticalValue] = getPoint(i);
+
 		if (i == from) {
 			QPointF point(hAxis.posAtValue(horizontalValue), vAxis.posAtValue(0.0));
 			poly.append(point);
@@ -175,7 +213,7 @@ void DiveHeartrateItem::replot(const dive *, int fromIn, int toIn, bool)
 	from = fromIn;
 	to = toIn;
 
-	int last = -300, last_printed_hr = 0, sec = 0;
+	int last = -300, last_printed_hr = 0;
 	struct sec_hr {
 		int sec;
 		int hr;
@@ -187,11 +225,12 @@ void DiveHeartrateItem::replot(const dive *, int fromIn, int toIn, bool)
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
 	for (int i = from; i < to; i++) {
-		int hr = dataModel.index(i, vDataColumn).data().toInt();
+		auto [sec_double, hr_double] = getPoint(i);
+		int hr = lrint(hr_double);
 		if (!hr)
 			continue;
-		sec = dataModel.index(i, hDataColumn).data().toInt();
-		QPointF point(hAxis.posAtValue(sec), vAxis.posAtValue(hr));
+		int sec = lrint(sec_double);
+		QPointF point(hAxis.posAtValue(sec_double), vAxis.posAtValue(hr_double));
 		poly.append(point);
 		if (hr == hist[2].hr)
 			// same as last one, no point in looking at printing
@@ -263,7 +302,7 @@ void DiveTemperatureItem::replot(const dive *, int fromIn, int toIn, bool)
 	from = fromIn;
 	to = toIn;
 
-	int last = -300, last_printed_temp = 0, sec = 0, last_valid_temp = 0;
+	double last = -300.0, last_printed_temp = 0.0, last_valid_temp = 0.0, sec = 0.0;
 	std::vector<std::pair<int, int>> textItems;
 
 	qDeleteAll(texts);
@@ -271,35 +310,34 @@ void DiveTemperatureItem::replot(const dive *, int fromIn, int toIn, bool)
 	// Ignore empty values. things do not look good with '0' as temperature in kelvin...
 	QPolygonF poly;
 	for (int i = from; i < to; i++) {
-		int mkelvin = dataModel.index(i, vDataColumn).data().toInt();
-		if (!mkelvin)
+		auto [sec, mkelvin] = getPoint(i);
+		if (mkelvin < 1.0)
 			continue;
-		last_valid_temp = mkelvin;
-		sec = dataModel.index(i, hDataColumn).data().toInt();
 		QPointF point(hAxis.posAtValue(sec), vAxis.posAtValue(mkelvin));
 		poly.append(point);
+		last_valid_temp = sec;
 
 		/* don't print a temperature
 		 * if it's been less than 5min and less than a 2K change OR
 		 * if it's been less than 2min OR if the change from the
 		 * last print is less than .4K (and therefore less than 1F) */
-		if (((sec < last + 300) && (abs(mkelvin - last_printed_temp) < 2000)) ||
-		    (sec < last + 120) ||
-		    (abs(mkelvin - last_printed_temp) < 400))
+		if (((sec < last + 300.0) && (fabs(mkelvin - last_printed_temp) < 2000.0)) ||
+		    (sec < last + 120.0) ||
+		    (fabs(mkelvin - last_printed_temp) < 400.0))
 			continue;
 		last = sec;
-		if (mkelvin > 200000)
-			textItems.push_back({ sec, mkelvin });
+		if (mkelvin > 200000.0)
+			textItems.push_back({ static_cast<int>(sec), static_cast<int>(mkelvin) });
 		last_printed_temp = mkelvin;
 	}
 	setPolygon(poly);
 
-	/* it would be nice to print the end temperature, if it's
-	* different or if the last temperature print has been more
-	* than a quarter of the dive back */
-	if (last_valid_temp > 200000 &&
-	    ((abs(last_valid_temp - last_printed_temp) > 500) || ((double)last / (double)sec < 0.75))) {
-		textItems.push_back({ sec, last_valid_temp });
+	/* print the end temperature, if it's different or if the
+	 * last temperature print has been more than a quarter of the
+	 * dive back */
+	if (last_valid_temp > 200000.0 &&
+	    ((fabs(last_valid_temp - last_printed_temp) > 500.0) || (last < 0.75 * sec))) {
+		textItems.push_back({ static_cast<int>(sec), static_cast<int>(last_valid_temp) });
 	}
 
 	for (size_t i = 0; i < textItems.size(); ++i) {
@@ -340,7 +378,30 @@ DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveC
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	setPen(pen);
-	lastRunningSum = 0.0;
+}
+
+// Apparently, there can be samples without mean depth? If not, remove these functions.
+std::pair<double,double> DiveMeanDepthItem::getMeanDepth(int i) const
+{
+	for ( ; i >= 0; --i) {
+		const plot_data &entry = dataModel.data().entry[i];
+		if (entry.running_sum > 0)
+			return { static_cast<double>(entry.sec),
+				 static_cast<double>(entry.running_sum) / entry.sec };
+	}
+	return { 0.0, 0.0 };
+}
+
+std::pair<double,double> DiveMeanDepthItem::getNextMeanDepth(int first) const
+{
+	int last = dataModel.data().nr;
+	for (int i = first + 1; i < last;  ++i) {
+		const plot_data &entry = dataModel.data().entry[i];
+		if (entry.running_sum > 0)
+			return { static_cast<double>(entry.sec),
+				 static_cast<double>(entry.running_sum) / entry.sec };
+	}
+	return getMeanDepth(first);
 }
 
 void DiveMeanDepthItem::replot(const dive *, int fromIn, int toIn, bool)
@@ -348,22 +409,32 @@ void DiveMeanDepthItem::replot(const dive *, int fromIn, int toIn, bool)
 	from = fromIn;
 	to = toIn;
 
-	double meandepthvalue = 0.0;
+	double prevSec = 0.0, prevMeanDepth = 0.0;
 
 	QPolygonF poly;
-	plot_data *entry = dataModel.data().entry + from;
-	for (int i = from; i < to; i++, entry++) {
+	for (int i = from; i < to; i++) {
+		auto [sec, meanDepth] = getMeanDepth(i);
 		// Ignore empty values
-		if (entry->running_sum == 0 || entry->sec == 0)
+		if (meanDepth == 0)
 			continue;
+		if (i == from && i < to) {
+			auto [sec2, meanDepth2] = getNextMeanDepth(i);
+			if (meanDepth2 > 0.0)
+				clipStart(sec, meanDepth, sec2, meanDepth2);
+		}
+		if (i == to - 1 && i > 0)
+			clipStop(sec, meanDepth, prevSec, prevMeanDepth);
 
-		meandepthvalue = entry->running_sum / entry->sec;
-		QPointF point(hAxis.posAtValue(entry->sec), vAxis.posAtValue(meandepthvalue));
+
+		QPointF point(hAxis.posAtValue(sec), vAxis.posAtValue(meanDepth));
 		poly.append(point);
+
+		prevSec = sec;
+		prevMeanDepth = meanDepth;
 	}
-	lastRunningSum = meandepthvalue;
 	setPolygon(poly);
-	createTextItem();
+	if (prevMeanDepth > 0.0)
+		createTextItem(prevSec, prevMeanDepth);
 }
 
 
@@ -377,15 +448,13 @@ void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 	painter->restore();
 }
 
-void DiveMeanDepthItem::createTextItem()
+void DiveMeanDepthItem::createTextItem(double lastSec, double lastMeanDepth)
 {
-	plot_data *entry = dataModel.data().entry;
-	int sec = to > 0 ? entry[to-1].sec : 0;
 	qDeleteAll(texts);
 	texts.clear();
 	DiveTextItem *text = new DiveTextItem(dpr, 0.8, Qt::AlignRight | Qt::AlignTop, this);
-	text->set(get_depth_string(lrint(lastRunningSum), true), getColor(TEMP_TEXT));
-	text->setPos(QPointF(hAxis.posAtValue(sec) + 1, vAxis.posAtValue(lastRunningSum)));
+	text->set(get_depth_string(lrint(lastMeanDepth), true), getColor(TEMP_TEXT));
+	text->setPos(QPointF(hAxis.posAtValue(lastSec) + dpr, vAxis.posAtValue(lastMeanDepth)));
 	texts.append(text);
 }
 
@@ -396,20 +465,36 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 
 	const struct plot_info *pInfo = &dataModel.data();
 	std::vector<int> plotted_cyl(pInfo->nr_cylinders, false);
-	std::vector<int> last_plotted(pInfo->nr_cylinders, 0);
-	std::vector<std::vector<Entry>> poly(pInfo->nr_cylinders);
+	std::vector<double> last_plotted(pInfo->nr_cylinders, 0.0);
+	std::vector<Segment> act_segments(pInfo->nr_cylinders);
 	QPolygonF boundingPoly;
-	polygons.clear();
+	segments.clear();
 
 	for (int i = from; i < to; i++) {
 		const struct plot_data *entry = pInfo->entry + i;
 
 		for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
-			int mbar = get_plot_pressure(pInfo, i, cyl);
-			int time = entry->sec;
+			double mbar = static_cast<double>(get_plot_pressure(pInfo, i, cyl));
+			double time = static_cast<double>(entry->sec);
 
-			if (!mbar)
+			if (mbar < 1.0)
 				continue;
+
+			if (i == from && i < to - 1) {
+				double mbar2 = static_cast<double>(get_plot_pressure(pInfo, i+1, cyl));
+				double time2 = static_cast<double>(entry[1].sec);
+				if (mbar2 < 1.0)
+					continue;
+				clipStart(time, mbar, time2, mbar2);
+			}
+
+			if (i == to - 1 && i > from) {
+				double mbar2 = static_cast<double>(get_plot_pressure(pInfo, i-1, cyl));
+				double time2 = static_cast<double>(entry[-1].sec);
+				if (mbar2 < 1.0)
+					continue;
+				clipStop(time, mbar, time2, mbar2);
+			}
 
 			QPointF point(hAxis.posAtValue(time), vAxis.posAtValue(mbar));
 			boundingPoly.push_back(point);
@@ -421,46 +506,50 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 				else
 					color = MED_GRAY_HIGH_TRANS;
 			} else {
-				if (mbar < 0)
+				if (mbar < 0.0)
 					color = MAGENTA;
 				else
 					color = getPressureColor(entry->density);
 			}
 
-			if (plotted_cyl[cyl]) {
+			if (!act_segments[cyl].polygon.empty()) {
 				/* Have we used this cylinder in the last two minutes? Continue */
-				if (time - last_plotted[cyl] <= 2*60) {
-					poly[cyl].push_back({ point, color });
-					last_plotted[cyl] = time;
+				if (time - act_segments[cyl].last.time <= 2*60) {
+					act_segments[cyl].polygon.push_back({ point, color });
+					act_segments[cyl].last.time = time;
+					act_segments[cyl].last.pressure = mbar;
 					continue;
 				}
 
 				/* Finish the previous one, start a new one */
-				polygons.push_back(std::move(poly[cyl]));
-				poly[cyl].clear();
+				act_segments[cyl].cyl = cyl;
+				segments.push_back(std::move(act_segments[cyl]));
+				act_segments[cyl] = Segment();
 			}
 
 			plotted_cyl[cyl] = true;
-			last_plotted[cyl] = time;
-			poly[cyl].push_back({ point, color });
+			act_segments[cyl].polygon.push_back({ point, color });
+			act_segments[cyl].last.time = time;
+			act_segments[cyl].last.pressure = mbar;
+			if (act_segments[cyl].first.pressure == 0.0) {
+				act_segments[cyl].first.time = time;
+				act_segments[cyl].first.pressure = mbar;
+			}
 		}
 	}
 
 	for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
-		if (!plotted_cyl[cyl])
+		if (act_segments[cyl].polygon.empty())
 			continue;
-		polygons.push_back(poly[cyl]);
+		act_segments[cyl].cyl = cyl;
+		segments.push_back(std::move(act_segments[cyl]));
 	}
 
 	setPolygon(boundingPoly);
 	qDeleteAll(texts);
 	texts.clear();
 
-	std::vector<int> seen_cyl(pInfo->nr_cylinders, false);
-	std::vector<int> last_pressure(pInfo->nr_cylinders, 0);
-	std::vector<int> last_time(pInfo->nr_cylinders, 0);
-
-	// These are offset values used to print the gas lables and pressures on a
+	// These are offset values used to print the gas labels and pressures on a
 	// dive profile at appropriate Y-coordinates. We alternate aligning the
 	// label and the gas pressure above and under the pressure line.
 	// The values are historical, and we could try to pick the over/under
@@ -473,54 +562,35 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 
 	double labelHeight = DiveTextItem::fontHeight(dpr, 1.0);
 
-	for (int i = from; i < to; i++) {
-		const struct plot_data *entry = pInfo->entry + i;
+	for (const Segment &segment: segments) {
+		// Magic Y offset depending on whether we're aliging
+		// the top of the text or the bottom of the text to
+		// the pressure line.
+		double value_y_offset = -0.5 * dpr;
+		double label_y_offset = alignVar & Qt::AlignTop ? labelHeight : -labelHeight;
+		gasmix gas = get_cylinder(d, segment.cyl)->gasmix;
+		plotPressureValue(segment.first.pressure, segment.first.time, alignVar, value_y_offset);
+		plotGasValue(segment.first.pressure, segment.first.time, gas, alignVar, label_y_offset);
 
-		for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
-			int mbar = get_plot_pressure(pInfo, i, cyl);
+		// For each cylinder, on right hand side of the curve, write cylinder pressure
+		plotPressureValue(segment.last.pressure, segment.last.time, alignVar | Qt::AlignLeft, value_y_offset);
 
-			if (!mbar)
-				continue;
-
-			if (!seen_cyl[cyl]) {
-				// Magic Y offset depending on whether we're aliging
-				// the top of the text or the bottom of the text to
-				// the pressure line.
-				double value_y_offset = -0.5;
-				double label_y_offset = alignVar & Qt::AlignTop ? labelHeight : -labelHeight;
-				plotPressureValue(mbar, entry->sec, alignVar, value_y_offset);
-				plotGasValue(mbar, entry->sec, get_cylinder(d, cyl)->gasmix, alignVar, label_y_offset);
-				seen_cyl[cyl] = true;
-
-				/* Alternate alignment as we see cylinder use.. */
-				align[cyl] = alignVar;
-				alignVar ^= Qt::AlignTop | Qt::AlignBottom;
-			}
-			last_pressure[cyl] = mbar;
-			last_time[cyl] = entry->sec;
-		}
-	}
-
-	// For each cylinder, on right hand side of profile, write cylinder pressure
-	for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
-		if (last_time[cyl]) {
-			double value_y_offset = -0.5;
-			plotPressureValue(last_pressure[cyl], last_time[cyl], align[cyl] | Qt::AlignLeft, value_y_offset);
-		}
+		/* Alternate alignment as we see cylinder use.. */
+		alignVar ^= Qt::AlignTop | Qt::AlignBottom;
 	}
 }
 
-void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, double pressure_offset)
+void DiveGasPressureItem::plotPressureValue(double mbar, double sec, QFlags<Qt::AlignmentFlag> align, double pressure_offset)
 {
 	const char *unit;
-	int pressure = get_pressure_units(mbar, &unit);
+	int pressure = get_pressure_units(lrint(mbar), &unit);
 	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
 	text->set(QString("%1%2").arg(pressure).arg(unit), getColor(PRESSURE_TEXT));
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + pressure_offset);
 	texts.push_back(text);
 }
 
-void DiveGasPressureItem::plotGasValue(int mbar, int sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double gasname_offset)
+void DiveGasPressureItem::plotGasValue(double mbar, double sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double gasname_offset)
 {
 	QString gas = get_gas_string(gasmix);
 	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
@@ -537,11 +607,11 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	painter->save();
-	for (const std::vector<Entry> &poly: polygons) {
-		for (size_t i = 1; i < poly.size(); i++) {
-			pen.setBrush(poly[i].col);
+	for (const Segment &segment: segments) {
+		for (size_t i = 1; i < segment.polygon.size(); i++) {
+			pen.setBrush(segment.polygon[i].col);
 			painter->setPen(pen);
-			painter->drawLine(poly[i - 1].pos, poly[i].pos);
+			painter->drawLine(segment.polygon[i - 1].pos, segment.polygon[i].pos);
 		}
 	}
 	painter->restore();
@@ -583,6 +653,27 @@ DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const D
 {
 }
 
+std::pair<double,double> DiveReportedCeiling::getTimeValue(int i) const
+{
+	const plot_data &entry = dataModel.data().entry[i];
+	int value = entry.in_deco && entry.stopdepth ? std::min(entry.stopdepth, entry.depth) : 0;
+	return { static_cast<double>(entry.sec), static_cast<double>(value) };
+}
+
+std::pair<double, double> DiveReportedCeiling::getPoint(int i) const
+{
+	auto [x,y] = getTimeValue(i);
+	if (i == from && i < to) {
+		auto [next_x, next_y] = getTimeValue(i + 1);
+		clipStart(x, y, next_x, next_y);
+	}
+	if (i == to - 1 && i > 0) {
+		auto [prev_x, prev_y] = getTimeValue(i - 1);
+		clipStop(x, y, prev_x, prev_y);
+	}
+	return { x, y };
+}
+
 void DiveReportedCeiling::replot(const dive *, int fromIn, int toIn, bool)
 {
 	from = fromIn;
@@ -590,14 +681,12 @@ void DiveReportedCeiling::replot(const dive *, int fromIn, int toIn, bool)
 
 	QPolygonF p;
 	for (int i = from; i < to; i++) {
-		const plot_data &entry = dataModel.data().entry[i];
+		auto [sec, value] = getPoint(i);
 		if (i == from)
-			p.append(QPointF(hAxis.posAtValue(entry.sec), vAxis.posAtValue(0)));
-		if (entry.in_deco && entry.stopdepth) {
-			p.append(QPointF(hAxis.posAtValue(entry.sec), vAxis.posAtValue(std::min(entry.stopdepth, entry.depth))));
-		} else {
-			p.append(QPointF(hAxis.posAtValue(entry.sec), vAxis.posAtValue(0)));
-		}
+			p.append(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(0.0)));
+		p.append(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(value)));
+		if (i == to - 1)
+			p.append(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(0)));
 	}
 	setPolygon(p);
 	QLinearGradient pat(0, p.boundingRect().top(), 0, p.boundingRect().bottom());
@@ -625,7 +714,6 @@ void PartialPressureGasItem::replot(const dive *, int fromIn, int toIn, bool)
 	from = fromIn;
 	to = toIn;
 
-	plot_data *entry = dataModel.data().entry + from;
 	QPolygonF poly;
 	QPolygonF alertpoly;
 	alertPolygons.clear();
@@ -636,9 +724,8 @@ void PartialPressureGasItem::replot(const dive *, int fromIn, int toIn, bool)
 	if (thresholdPtrMin)
 		threshold_min = *thresholdPtrMin;
 	bool inAlertFragment = false;
-	for (int i = from; i < to; i++, entry++) {
-		double value = dataModel.index(i, vDataColumn).data().toDouble();
-		int time = dataModel.index(i, hDataColumn).data().toInt();
+	for (int i = from; i < to; i++) {
+		auto [time, value] = getPoint(i);
 		QPointF point(hAxis.posAtValue(time), vAxis.posAtValue(value));
 		poly.push_back(point);
 		if (thresholdPtrMax && value >= threshold_max) {
@@ -664,9 +751,6 @@ void PartialPressureGasItem::replot(const dive *, int fromIn, int toIn, bool)
 		}
 	}
 	setPolygon(poly);
-	/*
-	createPPLegend(trUtf8("pN₂"), getColor(PN2), legendPos);
-	*/
 }
 
 void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
