@@ -487,7 +487,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 				continue;
 			}
 		}
-		if (DiveEventItem::isInteresting(d, currentdc, event, plotInfo)) {
+		if (DiveEventItem::isInteresting(d, currentdc, event, plotInfo, firstSecond, lastSecond)) {
 			auto item = new DiveEventItem(d, event, lastgasmix, plotInfo,
 						      timeAxis, profileYAxis, animSpeed, *pixmaps);
 			item->setZValue(2);

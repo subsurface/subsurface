@@ -23,7 +23,8 @@ public:
 	void setHorizontalAxis(DiveCartesianAxis *axis);
 	bool shouldBeHidden();
 	static bool isInteresting(const struct dive *d, const struct divecomputer *dc,
-				  const struct event *ev, const struct plot_info &pi);
+				  const struct event *ev, const struct plot_info &pi,
+				  int firstSecond, int lastSecond);
 
 private:
 	void setupToolTipString(struct gasmix lastgasmix);
