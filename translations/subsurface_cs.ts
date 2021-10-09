@@ -51,93 +51,79 @@
     <name>BtDeviceSelectionDialog</name>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="240"/>
         <source>Remote Bluetooth device selection</source>
         <translation>Výběr vzdáleného zařízení Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="22"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="35"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="241"/>
         <source>Save</source>
         <translation>Uložit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="35"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="37"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="242"/>
         <source>Quit</source>
         <translation>Ukončit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="66"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="26"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="244"/>
         <source>Local Bluetooth device details</source>
         <translation>Podrobnosti místního zařízení Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="75"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="245"/>
         <source>Name: </source>
         <translation>Název:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="89"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="28"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="246"/>
         <source>Address:</source>
         <translation>Adresa:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="118"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="30"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="247"/>
         <source>Bluetooth powered on</source>
         <translation>Bluetooth zapnuto</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="140"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="31"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="248"/>
         <source>Turn on/off</source>
         <translation>Zapnout/Vypnout</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="150"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="27"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="249"/>
         <source>Select device:</source>
         <translation>Vybraná zařízení:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="172"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="32"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="250"/>
         <source>Discovered devices</source>
         <translation>Objevená zařízení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="251"/>
         <source>Bluetooth mode</source>
         <translation>Režim Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="201"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="252"/>
         <source>Auto</source>
         <translation>Automatický</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="206"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="253"/>
         <source>Force LE</source>
         <translation>Vynutit LE</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="211"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="254"/>
         <source>Force classical</source>
         <translation>Vynutit klasický</translation>
     </message>
@@ -154,14 +140,12 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="33"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="256"/>
         <source>Scan</source>
         <translation>Prohledat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="255"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="34"/>
-        <location filename="../subsurface/desktop-widgets/ui_btdeviceselectiondialog.h" line="257"/>
         <source>Clear</source>
         <translation>Vyprázdnit</translation>
     </message>
@@ -639,13 +623,8 @@
         <translation>všechny ponory</translation>
     </message>
     <message>
-        <location filename="../commands/command_device.cpp" line="14"/>
-        <source>Delete device %1 (0x%2)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../commands/command_device.cpp" line="43"/>
-        <source>Set nickname of device %1 (0x%2) to %3</source>
+        <location filename="../commands/command_device.cpp" line="15"/>
+        <source>Set nickname of device %1 (serial %2) to %3</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -659,67 +638,67 @@
         <translation><numerusform>importovat %n ponor z %1</numerusform><numerusform>importovat %n ponory z %1</numerusform><numerusform>importovat %n ponorů z %1</numerusform><numerusform>importovat %n ponor(ů) z %1</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="608"/>
+        <location filename="../commands/command_divelist.cpp" line="603"/>
         <source>delete %n dive(s)</source>
         <translation><numerusform>vymazat %n ponor</numerusform><numerusform>vymazat %n ponory</numerusform><numerusform>vymazat %n ponorů</numerusform><numerusform>vymazat %n ponor(ů)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="644"/>
+        <location filename="../commands/command_divelist.cpp" line="639"/>
         <source>shift time of %n dives</source>
         <translation><numerusform>Posunout čas %n ponoru</numerusform><numerusform>Posunout čas %n ponorů</numerusform><numerusform>Posunout čas %n ponorů</numerusform><numerusform>Posunout čas %n ponorů</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="692"/>
+        <location filename="../commands/command_divelist.cpp" line="687"/>
         <source>renumber %n dive(s)</source>
         <translation><numerusform>Přečíslovat %n ponoru</numerusform><numerusform>Přečíslovat %n ponorů</numerusform><numerusform>Přečíslovat %n ponorů</numerusform><numerusform>Přečíslovat %n ponorů</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="750"/>
+        <location filename="../commands/command_divelist.cpp" line="745"/>
         <source>remove %n dive(s) from trip</source>
         <translation><numerusform>Odstranit %n ponor z výletu</numerusform><numerusform>Odstranit %n ponorů z výletu</numerusform><numerusform>Odstranit %n ponorů z výletu</numerusform><numerusform>Odstranit %n ponorů z výletu</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="762"/>
+        <location filename="../commands/command_divelist.cpp" line="757"/>
         <source>remove autogenerated trips</source>
         <translation>Odstranit automaticky vytvořené výlety</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="774"/>
+        <location filename="../commands/command_divelist.cpp" line="769"/>
         <source>add %n dives to trip</source>
         <translation><numerusform>přidat %n ponor do výletu</numerusform><numerusform>přidat %n ponory do výletu</numerusform><numerusform>přidat %n ponorů do výletu</numerusform><numerusform>přidat %n ponorů do výletu</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="781"/>
+        <location filename="../commands/command_divelist.cpp" line="776"/>
         <source>create trip</source>
         <translation>vytvořit výlet</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="794"/>
+        <location filename="../commands/command_divelist.cpp" line="789"/>
         <source>autogroup dives</source>
         <translation>automaticky sloučit ponory</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="889"/>
+        <location filename="../commands/command_divelist.cpp" line="884"/>
         <source>split dive</source>
         <translation>rozdělit ponor</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="907"/>
+        <location filename="../commands/command_divelist.cpp" line="902"/>
         <source>split dive computer</source>
         <translation>rozdělit z počítače</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="963"/>
+        <location filename="../commands/command_divelist.cpp" line="958"/>
         <source>move dive computer to front</source>
         <translation>přesunout počítač dopředu</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="969"/>
+        <location filename="../commands/command_divelist.cpp" line="964"/>
         <source>delete dive computer</source>
         <translation>smazat počítač</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="974"/>
+        <location filename="../commands/command_divelist.cpp" line="969"/>
         <source>merge dive</source>
         <translation>sloučit ponory</translation>
     </message>
@@ -962,17 +941,17 @@
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1220"/>
+        <location filename="../commands/command_edit.cpp" line="1221"/>
         <source>Edit cylinder</source>
         <translation>Upravit láhev</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1222"/>
+        <location filename="../commands/command_edit.cpp" line="1223"/>
         <source>Edit cylinder (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1297"/>
+        <location filename="../commands/command_edit.cpp" line="1298"/>
         <source>Edit dive [%1]</source>
         <translation>Upravit ponor [%1]</translation>
     </message>
@@ -1094,115 +1073,96 @@
     <name>ConfigureDiveComputerDialog</name>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2535"/>
         <source>Configure dive computer</source>
         <translation>Nastavit potápěčský počítač</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="22"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2536"/>
         <source>Device or mount point</source>
         <translation>Zařízení nebo přípojný bod</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2537"/>
         <source>Connect via Bluetooth</source>
         <translation>Připojit pomocí Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="54"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2538"/>
         <source>Connect</source>
         <translation>Připojit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="64"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2539"/>
         <source>Disconnect</source>
         <translation>Odpojit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="80"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2540"/>
         <source>Retrieve available details</source>
         <translation>Získat dostupné podrobnosti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="90"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2542"/>
         <source>Read settings from backup file or from device before writing to the device</source>
         <translation>Před zápisem do zařízení načíst nastavení ze záložního souboru nebo zařízení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="93"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2544"/>
         <source>Save changes to device</source>
         <translation>Uložit změny do zařízení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="116"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2546"/>
         <source>Read settings from backup file or from device before writing to a backup file</source>
         <translation>Před zápisem do záložního souboru načíst nastavení ze záložního souboru nebo zařízení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="119"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2548"/>
         <source>Backup</source>
         <translation>Záloha</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="129"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2549"/>
         <source>Restore backup</source>
         <translation>Obnovit zálohu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="139"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2550"/>
         <source>Update firmware</source>
         <translation>Aktualizovat firmware</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="163"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2551"/>
         <source>Save libdivecomputer logfile</source>
         <translation>Uložit soubor .log libdivecomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="170"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2552"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="177"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2553"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="214"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2558"/>
         <source>OSTC Mk2/2N/2C</source>
         <translation>OSTC Mk2/2N/2C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="223"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2560"/>
         <source>OSTC 2/3/Sport/Plus/cR</source>
         <translation>OSTC 2/3/Sport/Plus/cR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="232"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2562"/>
         <source>OSTC 4</source>
         <translation>OSTC 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="241"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2564"/>
         <source>Suunto Vyper family</source>
         <translation>Rodina Suunto Vyper</translation>
     </message>
@@ -1211,10 +1171,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1194"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2492"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3567"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2589"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2751"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2911"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3055"/>
         <source>Basic settings</source>
         <translation>Základní nastavení</translation>
     </message>
@@ -1223,10 +1179,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1267"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2565"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3662"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2567"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2701"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2879"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3024"/>
         <source>Serial No.</source>
         <translation>Sériové číslo</translation>
     </message>
@@ -1234,9 +1186,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="278"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1628"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2835"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2568"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2745"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2908"/>
         <source>Length</source>
         <translation>Délka</translation>
     </message>
@@ -1245,10 +1194,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1290"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2588"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3685"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2569"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2702"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2880"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3025"/>
         <source>Firmware version</source>
         <translation>Verze firmware</translation>
     </message>
@@ -1257,18 +1202,12 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1479"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2717"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3719"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2570"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2724"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2892"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3027"/>
         <source>Custom text</source>
         <translation>Vlastní text</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="338"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3642"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2571"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3023"/>
         <source>Number of dives</source>
         <translation>Počet ponorů</translation>
     </message>
@@ -1276,17 +1215,12 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="345"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1595"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2809"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2572"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2742"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2906"/>
         <source>Show safety stop</source>
         <translation>Zobrazit bezpečnostní zastávku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="359"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1544"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2573"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2734"/>
         <source>Sampling rate</source>
         <translation>Rychlost vzorkování</translation>
     </message>
@@ -1294,27 +1228,21 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="388"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1336"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2634"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2574"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2708"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2886"/>
         <source>Date format</source>
         <translation>Formát data</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="399"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2575"/>
         <source>MM/DD/YY</source>
         <translation>MM/DD/RR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="404"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2576"/>
         <source>DD/MM/YY</source>
         <translation>DD/MM/RR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="409"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2577"/>
         <source>YY/MM/DD</source>
         <translation>RR/MM/DD</translation>
     </message>
@@ -1322,21 +1250,16 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="417"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1578"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2792"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2579"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2740"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2904"/>
         <source>Sync dive computer time with PC</source>
         <translation>Synchronizovat čas potápěčského počítače s PC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="424"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2580"/>
         <source>Salinity</source>
         <translation>Salinita</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="434"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2581"/>
         <source>kg/ℓ</source>
         <translation> kg/ℓ</translation>
     </message>
@@ -1344,25 +1267,18 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="463"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1635"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2842"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2582"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2746"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2909"/>
         <source>Start Depth</source>
         <translation>Počáteční hloubka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="470"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1602"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2583"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2743"/>
         <source>End Depth</source>
         <translation>Koncová hloubka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="477"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1642"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2584"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2747"/>
         <source>Reset Depth</source>
         <translation>Obnovit výchozí hloubku</translation>
     </message>
@@ -1371,10 +1287,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1612"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2819"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3880"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2585"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2744"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2907"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3050"/>
         <source>s</source>
         <translation>s</translation>
     </message>
@@ -1389,16 +1301,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1845"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2852"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2971"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2586"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2587"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2588"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2594"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2748"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2749"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2750"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2763"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2910"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2921"/>
         <source>m</source>
         <translation>m</translation>
     </message>
@@ -1406,25 +1308,18 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="573"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1719"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2875"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2621"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2790"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2944"/>
         <source>Advanced settings</source>
         <translation>Pokročilá nastavení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="579"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1739"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2590"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2754"/>
         <source>Alt GF can be selected underwater</source>
         <translation>Alternativní GF lze zvolit pod vodou</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="586"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1806"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2591"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2761"/>
         <source>Desaturation</source>
         <translation>Vysycení</translation>
     </message>
@@ -1432,9 +1327,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="596"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1746"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2911"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2592"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2755"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2915"/>
         <source>Future TTS</source>
         <translation>Budoucí TTS</translation>
     </message>
@@ -1461,28 +1353,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2955"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2991"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3069"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2593"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2605"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2607"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2609"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2613"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2615"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2692"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2758"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2760"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2762"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2765"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2772"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2774"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2784"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2785"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2857"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2870"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2913"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2918"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2920"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2923"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2932"/>
         <source>%</source>
         <translation>%</translation>
     </message>
@@ -1490,9 +1360,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="645"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1858"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2984"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2595"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2764"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2922"/>
         <source>Decotype</source>
         <translation>Typ dekomprese</translation>
     </message>
@@ -1500,9 +1367,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="656"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1901"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3024"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2596"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2767"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2925"/>
         <source>ZH-L16</source>
         <translation>ZH-L16</translation>
     </message>
@@ -1510,15 +1374,11 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="661"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1507"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2745"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2597"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2727"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2895"/>
         <source>Gauge</source>
         <translation>Gauge</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="666"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2598"/>
         <source>ZH-L16 CC</source>
         <translation>ZH-L16 CC</translation>
     </message>
@@ -1526,27 +1386,21 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1512"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2750"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2599"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2728"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2896"/>
         <source>Apnea</source>
         <translation>Apnoe</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="676"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2600"/>
         <source>L16-GF OC</source>
         <translation>L16-GF OC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="681"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2601"/>
         <source>L16-GF CC</source>
         <translation>L16-GF CC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="686"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2602"/>
         <source>PSCR-GF</source>
         <translation>PSCR-GF</translation>
     </message>
@@ -1556,11 +1410,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3042"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3822"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3914"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2604"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2770"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2929"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3041"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3053"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -1568,9 +1417,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="723"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1924"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3052"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2606"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2771"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2930"/>
         <source>Last deco</source>
         <translation>Poslední dekomprese</translation>
     </message>
@@ -1578,9 +1424,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="749"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1950"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3062"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2608"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2773"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2931"/>
         <source>Alt GFLow</source>
         <translation>Alternativní GFLow</translation>
     </message>
@@ -1588,17 +1431,12 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="775"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1976"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3085"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2610"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2775"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2933"/>
         <source>Alt GFHigh</source>
         <translation>Alternativní GFHigh</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="782"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1983"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2611"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2776"/>
         <source>Saturation</source>
         <translation>Nasycení</translation>
     </message>
@@ -1606,9 +1444,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="792"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1783"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2948"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2612"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2759"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2919"/>
         <source>GFHigh</source>
         <translation>GFHigh</translation>
     </message>
@@ -1616,17 +1451,12 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="815"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1760"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2925"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2614"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2757"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2917"/>
         <source>GFLow</source>
         <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="838"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2014"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2616"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2780"/>
         <source>Graphical speed indicator</source>
         <translation>Grafický ukazatel rychlosti</translation>
     </message>
@@ -1638,13 +1468,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3106"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3122"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3138"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2617"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2618"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2786"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2787"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2936"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2937"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2938"/>
         <source>ℓ/min</source>
         <translation> ℓ/min</translation>
     </message>
@@ -1652,9 +1475,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="877"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2028"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3092"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2619"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2782"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2934"/>
         <source>Bottom gas consumption</source>
         <translation>Spotřeba plynu na dně</translation>
     </message>
@@ -1662,9 +1482,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="884"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2035"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3099"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2620"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2783"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2935"/>
         <source>Deco gas consumption</source>
         <translation>Spotřeba plynu při dekompresi</translation>
     </message>
@@ -1672,9 +1489,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="892"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2133"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3221"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2687"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2865"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3018"/>
         <source>Gas settings</source>
         <translation>Nastavení plynu</translation>
     </message>
@@ -1685,12 +1499,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2261"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3264"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3349"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2623"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2646"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2792"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2815"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2946"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2969"/>
         <source>%O₂</source>
         <translation>%O₂</translation>
     </message>
@@ -1701,12 +1509,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2266"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3269"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3354"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2625"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2648"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2794"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2817"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2948"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2971"/>
         <source>%He</source>
         <translation>%He</translation>
     </message>
@@ -1717,12 +1519,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2271"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3274"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3359"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2627"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2650"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2796"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2819"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2950"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2973"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
@@ -1736,15 +1532,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3279"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3364"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3439"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2629"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2652"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2671"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2798"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2821"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2840"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2952"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2975"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2994"/>
         <source>Change depth</source>
         <translation>Změnit hloubku</translation>
     </message>
@@ -1752,9 +1539,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="955"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2196"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3284"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2634"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2803"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2957"/>
         <source>Gas 1</source>
         <translation>Plyn 1</translation>
     </message>
@@ -1762,9 +1546,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="960"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2201"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3289"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2636"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2805"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2959"/>
         <source>Gas 2</source>
         <translation>Plyn 2</translation>
     </message>
@@ -1772,9 +1553,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="965"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2206"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3294"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2638"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2807"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2961"/>
         <source>Gas 3</source>
         <translation>Plyn 3</translation>
     </message>
@@ -1782,9 +1560,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="970"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2211"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3299"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2640"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2809"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2963"/>
         <source>Gas 4</source>
         <translation>Plyn 4</translation>
     </message>
@@ -1792,9 +1567,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="975"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2216"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3304"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2642"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2811"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2965"/>
         <source>Gas 5</source>
         <translation>Plyn 5</translation>
     </message>
@@ -1802,9 +1574,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1040"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2281"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3369"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2657"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2826"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2980"/>
         <source>Dil 1</source>
         <translation>Dil 1</translation>
     </message>
@@ -1812,9 +1581,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1045"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2286"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3374"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2659"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2828"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2982"/>
         <source>Dil 2</source>
         <translation>Dil 2</translation>
     </message>
@@ -1822,9 +1588,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1050"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2291"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3379"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2661"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2830"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2984"/>
         <source>Dil 3</source>
         <translation>Dil 3</translation>
     </message>
@@ -1832,9 +1595,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1055"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2296"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3384"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2663"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2832"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2986"/>
         <source>Dil 4</source>
         <translation>Dil 4</translation>
     </message>
@@ -1842,9 +1602,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1060"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2301"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3389"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2665"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2834"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2988"/>
         <source>Dil 5</source>
         <translation>Dil 5</translation>
     </message>
@@ -1852,9 +1609,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1095"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2346"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3434"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2669"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2838"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2992"/>
         <source>Setpoint</source>
         <translation>Požadovaná hodnota</translation>
     </message>
@@ -1862,9 +1616,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1105"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2356"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3444"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2676"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2845"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2999"/>
         <source>SP 1</source>
         <translation>SP 1</translation>
     </message>
@@ -1872,9 +1623,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1110"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2361"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3449"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2678"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2847"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3001"/>
         <source>SP 2</source>
         <translation>SP 2</translation>
     </message>
@@ -1882,9 +1630,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1115"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2366"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3454"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2680"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2849"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3003"/>
         <source>SP 3</source>
         <translation>SP 3</translation>
     </message>
@@ -1895,12 +1640,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2450"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3509"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3525"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2683"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2684"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2861"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2862"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3014"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3015"/>
         <source>cbar</source>
         <translation>cbar</translation>
     </message>
@@ -1908,9 +1647,6 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1168"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2466"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3541"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2685"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2863"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3016"/>
         <source>pO₂ max</source>
         <translation>pO₂ max</translation>
     </message>
@@ -1918,121 +1654,90 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1175"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2473"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3548"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2686"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2864"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3017"/>
         <source>pO₂ min</source>
         <translation>pO₂ min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1201"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2499"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2688"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2866"/>
         <source>Eco</source>
         <translation>Eko</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1206"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2504"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2689"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2867"/>
         <source>Medium</source>
         <translation>Střední</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1211"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2509"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2690"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2868"/>
         <source>High</source>
         <translation>Vysoký</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1230"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2528"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2693"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2871"/>
         <source>English</source>
         <translation>Angličtina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1235"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2533"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2694"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2872"/>
         <source>German</source>
         <translation>Němčina</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1240"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2538"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2695"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2873"/>
         <source>French</source>
         <translation>Francouzština</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1245"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2543"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2696"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2874"/>
         <source>Italian</source>
         <translation>Italština</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1254"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2552"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2698"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2876"/>
         <source>m/°C</source>
         <translation>m/°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1259"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2557"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2699"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2877"/>
         <source>ft/°F</source>
         <translation>ft/°F</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1301"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2599"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2703"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2881"/>
         <source>MMDDYY</source>
         <translation>MMDDRR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1306"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2604"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2704"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2882"/>
         <source>DDMMYY</source>
         <translation>DDMMRR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1311"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2609"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2705"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2883"/>
         <source>YYMMDD</source>
         <translation>RRMMDD</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1326"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2624"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2707"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2885"/>
         <source>Language</source>
         <translation>Jazyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1346"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2644"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2709"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2887"/>
         <source>Brightness</source>
         <translation>Jas</translation>
     </message>
@@ -2040,79 +1745,63 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1356"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2654"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3856"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2710"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2888"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3046"/>
         <source>Units</source>
         <translation>Jednotky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1366"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2664"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2711"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2889"/>
         <source>Salinity (0-5%)</source>
         <translation>Salinita (0-5 %)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1379"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2677"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2712"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2890"/>
         <source>Reset device to default settings</source>
         <translation>Obnovit výchozí nastavení zařízení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1393"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2713"/>
         <source>230LSB/Gauss</source>
         <translation>230LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1398"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2714"/>
         <source>330LSB/Gauss</source>
         <translation>330LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1403"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2715"/>
         <source>390LSB/Gauss</source>
         <translation>390LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1408"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2716"/>
         <source>440LSB/Gauss</source>
         <translation>440LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1413"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2717"/>
         <source>660LSB/Gauss</source>
         <translation>660LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1418"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2718"/>
         <source>820LSB/Gauss</source>
         <translation>820LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1423"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2719"/>
         <source>1090LSB/Gauss</source>
         <translation>1090LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1428"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2720"/>
         <source>1370LSB/Gauss</source>
         <translation>1370LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1462"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2722"/>
         <source>Compass gain</source>
         <translation>Citlivost kompasu</translation>
     </message>
@@ -2120,362 +1809,288 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1472"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2710"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3805"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2723"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2891"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3040"/>
         <source>Computer model</source>
         <translation>Počítačový model</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1497"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2735"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2725"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2893"/>
         <source>OC</source>
         <translation>OC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1502"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2740"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2726"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2894"/>
         <source>CC</source>
         <translation>CC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1520"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2758"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2730"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2898"/>
         <source>Dive mode</source>
         <translation>Režim potápění</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1531"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2731"/>
         <source>2s</source>
         <translation>2 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1536"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3775"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2732"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3034"/>
         <source>10s</source>
         <translation>10 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1555"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2769"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2735"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2899"/>
         <source>Standard</source>
         <translation>Obvyklá</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1560"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2774"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2736"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2900"/>
         <source>Red</source>
         <translation>Červená</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1565"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2779"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2737"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2901"/>
         <source>Green</source>
         <translation>Zelená</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1570"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2784"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2738"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2902"/>
         <source>Blue</source>
         <translation>Modrá</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1585"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2799"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2741"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2905"/>
         <source>Dive mode color</source>
         <translation>Barva režimu potápění</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1725"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2752"/>
         <source>Left button sensitivity</source>
         <translation>Citlivost levého tlačítka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1732"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3167"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2753"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2939"/>
         <source>Always show pO₂</source>
         <translation>Vždy zobrazit pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1753"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2918"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2756"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2916"/>
         <source>Pressure sensor offset</source>
         <translation>Posun čidla tlaku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1884"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3007"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2766"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2924"/>
         <source>mbar</source>
         <translation> mbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1906"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3029"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2768"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2926"/>
         <source>ZH-L16+GF</source>
         <translation>ZH-L16+GF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1993"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2777"/>
         <source>Flip screen</source>
         <translation>Otočit obrazovku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2000"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2778"/>
         <source>Right button sensitivity</source>
         <translation>Citlivost pravého tlačítka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2007"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2779"/>
         <source>MOD warning</source>
         <translation>Varování MOD</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2021"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2781"/>
         <source>Dynamic ascent rate</source>
         <translation>Dynamická výstupová rychlost</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2106"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3194"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2788"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2942"/>
         <source>Temperature sensor offset</source>
         <translation>Posun čidla teploty</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2113"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3201"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2789"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2943"/>
         <source>°C</source>
         <translation>°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2371"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3459"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2851"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3005"/>
         <source>SP 4</source>
         <translation>SP 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2376"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3464"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2853"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3007"/>
         <source>SP 5</source>
         <translation>SP 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2384"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2856"/>
         <source>O₂ in calibration gas</source>
         <translation>O₂ v kalibračním plynu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2408"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3473"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2858"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3010"/>
         <source>Fixed setpoint</source>
         <translation>Pevná požadovaná hodnota</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2413"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3478"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2859"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3011"/>
         <source>Sensor</source>
         <translation>Čidlo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2881"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2912"/>
         <source>Travel gas consumption</source>
         <translation>Spotřeba plynu při pohybu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2904"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2914"/>
         <source>Button sensitivity</source>
         <translation>Citlivost tlačítka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3034"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2927"/>
         <source>VPM</source>
         <translation>VPM</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3174"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2940"/>
         <source>VPM conservatism</source>
         <translation>VPM konzervatismus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3181"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2941"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3486"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3013"/>
         <source>Setpoint fallback</source>
         <translation>Záložní hodnota požadované hodnoty</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3589"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3019"/>
         <source>Safety level</source>
         <translation>Úroveň bezpečnosti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3615"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3021"/>
         <source>Altitude range</source>
         <translation>Výškový rozsah</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3622"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3022"/>
         <source>Model</source>
         <translation>Model</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3702"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3026"/>
         <source>Max. depth</source>
         <translation>Největší hloubka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3749"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3029"/>
         <source>P0 (none)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation>P0 (žádná)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3754"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3030"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation>P1 (střední)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3759"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3031"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation>P2 (vysoká)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3767"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3033"/>
         <source>Sample rate</source>
         <translation>Vzorkovací rychlost</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3780"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3035"/>
         <source>20s</source>
         <translation>20 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3785"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3036"/>
         <source>30s</source>
         <translation>30 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3790"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3037"/>
         <source>60s</source>
         <translation>60 s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3798"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3039"/>
         <source>Total dive time</source>
         <translation>Celkový čas ponoru</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3836"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3042"/>
         <source>24h</source>
         <translation>24 h</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3841"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3043"/>
         <source>12h</source>
         <translation>12 h</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3849"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3045"/>
         <source>Time format</source>
         <translation>Formát času</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3864"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3047"/>
         <source>Imperial</source>
         <translation>Imperiální</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3869"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3048"/>
         <source>Metric</source>
         <translation>Metrické</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3887"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3051"/>
         <source>Light</source>
         <translation>Světlo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3904"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3052"/>
         <source>Depth alarm</source>
         <translation>Hloubkový poplach</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3924"/>
-        <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3054"/>
         <source>Time alarm</source>
         <translation>Časový poplach</translation>
     </message>
@@ -2485,97 +2100,97 @@
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1364"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1365"/>
         <source>Backup dive computer settings</source>
         <translation>Nastavení záložního potápěčského počítače</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1365"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1386"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1366"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1387"/>
         <source>Backup files</source>
         <translation>Záložní soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1369"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1370"/>
         <source>XML backup error</source>
         <translation>Chyba zálohy XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1370"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1371"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation>Chyba při ukládání záložního souboru.
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1373"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1374"/>
         <source>Backup succeeded</source>
         <translation>Záloha úspěšně vytvořena</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1374"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1375"/>
         <source>Your settings have been saved to: %1</source>
         <translation>Nastavení bylo uloženo do: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1385"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1386"/>
         <source>Restore dive computer settings</source>
         <translation>Obnovit nastavení potápěčského počítače</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1391"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
         <source>XML restore error</source>
         <translation>Chyba obnovy XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1393"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation>Chyba při obnově záložního souboru.
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1396"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1397"/>
         <source>Restore succeeded</source>
         <translation>Obnova úspěšně proběhla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1397"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1398"/>
         <source>Your settings have been restored successfully.</source>
         <translation>Vaše nastavení bylo úspěšně obnoveno.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1407"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1408"/>
         <source>Select firmware file</source>
         <translation>Vyberte soubor s firmware</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1408"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1409"/>
         <source>All files</source>
         <translation>Všechny soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1462"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1463"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Vyberte log soubor stahování z potápěčského počítače</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1463"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1464"/>
         <source>Log files</source>
         <translation>Log soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1488"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1489"/>
         <source>Connecting to device...</source>
         <translation>Připojování k zařízení...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1514"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1515"/>
         <source>Connected to device</source>
         <translation>Připojeno k zařízení</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1534"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1535"/>
         <source>Disconnected from device</source>
         <translation>Odpojeno od zařízení</translation>
     </message>
@@ -2740,68 +2355,68 @@
 <context>
     <name>DiveComponentSelection</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="345"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="346"/>
         <source>Dive site: </source>
         <translation>Potápěčské místo:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="347"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="348"/>
         <source>Dive master: </source>
         <translation>Divemaster:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="349"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="350"/>
         <source>Buddy: </source>
         <translation>Partner:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="351"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="352"/>
         <source>Rating: </source>
         <translation>Hodnocení:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="353"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="354"/>
         <source>Visibility: </source>
         <translation>Viditelnost:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="355"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="356"/>
         <source>Notes:
 </source>
         <translation>Poznámky:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="357"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="358"/>
         <source>Suit: </source>
         <translation>Oblek:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="359"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="360"/>
         <source>Tags: </source>
         <translation>Štítky:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="369"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="370"/>
         <source>Cylinders:
 </source>
         <translation>Láhve:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="377"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="378"/>
         <source>Weights:
 </source>
         <translation>Zátěž:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="384"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="385"/>
         <source>Dive number: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="386"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="387"/>
         <source>Date / time: </source>
         <translation type="unfinished"/>
     </message>
@@ -2810,7 +2425,6 @@
     <name>DiveComponentSelectionDialog</name>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="23"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="139"/>
         <source>Component selection</source>
         <translation>Výběr součásti</translation>
     </message>
@@ -2821,61 +2435,51 @@
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="73"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="145"/>
         <source>Tags</source>
         <translation>Štítky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="80"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="146"/>
         <source>Weights</source>
         <translation>Zátěž</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="87"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="141"/>
         <source>Dive site</source>
         <translation>Potápěčská lokalita</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="94"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="143"/>
         <source>Visibility</source>
         <translation>Viditelnost</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="101"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="147"/>
         <source>Cylinders</source>
         <translation>Lahve</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="108"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="149"/>
         <source>Buddy</source>
         <translation>Partner</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="115"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="144"/>
         <source>Notes</source>
         <translation>Poznámky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="122"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="148"/>
         <source>Divemaster</source>
         <translation>Divemaster</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="129"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="142"/>
         <source>Suit</source>
         <translation>Oblek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="136"/>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="150"/>
         <source>Rating</source>
         <translation>Hodnocení</translation>
     </message>
@@ -2893,42 +2497,6 @@
         <location filename="../desktop-widgets/divecomponentselection.ui" line="160"/>
         <source>You can paste these to another dive or as text to another application.</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_divecomponentselection.h" line="140"/>
-        <source>Which components would you like to copy</source>
-        <translation>Které součásti chcete kopírovat</translation>
-    </message>
-</context>
-<context>
-    <name>DiveComputerManagementDialog</name>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_divecomputermanagementdialog.h" line="65"/>
-        <source>Edit dive computer nicknames</source>
-        <translation>Upravit názvy potápěčských počítačů</translation>
-    </message>
-</context>
-<context>
-    <name>DiveComputerModel</name>
-    <message>
-        <location filename="../qt-models/divecomputermodel.cpp" line="14"/>
-        <source>Model</source>
-        <translation>Model</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divecomputermodel.cpp" line="14"/>
-        <source>Device ID</source>
-        <translation>ID zařízení</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divecomputermodel.cpp" line="14"/>
-        <source>Nickname</source>
-        <translation>Název</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divecomputermodel.cpp" line="49"/>
-        <source>Clicking here will remove this dive computer.</source>
-        <translation>Kliknutím sem odstraníte tento potápěčský počítač.</translation>
     </message>
 </context>
 <context>
@@ -3048,95 +2616,93 @@
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="271"/>
-        <source>Use current
-GPS location:</source>
-        <translation>Použít nynější
-GPS polohu:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="297"/>
         <source>Suit:</source>
         <translation>Oblek:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="311"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="285"/>
         <source>Buddy:</source>
         <translation>Partner:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="325"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="299"/>
         <source>Divemaster:</source>
         <translation>Divemaster:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="341"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="313"/>
+        <source>Tags:</source>
+        <translation>Značky:</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="327"/>
         <source>Weight:</source>
         <translation>Zátěž:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="361"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="347"/>
         <source>Cylinder1:</source>
         <translation>Láhev 1:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="378"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="446"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="515"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="585"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="658"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="364"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="432"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="501"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="571"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="644"/>
         <source>Gas mix:</source>
         <translation>Směs plynu:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="394"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="462"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="531"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="602"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="675"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="380"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="448"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="517"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="588"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="661"/>
         <source>Start Pressure:</source>
         <translation>Počáteční tlak:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="409"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="477"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="546"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="618"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="691"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="395"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="463"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="532"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="604"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="677"/>
         <source>End Pressure:</source>
         <translation>Koncový tlak:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="429"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="415"/>
         <source>Cylinder2:</source>
         <translation>Láhev 2:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="497"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="483"/>
         <source>Cylinder3:</source>
         <translation>Láhev 3:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="566"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="552"/>
         <source>Cylinder4:</source>
         <translation>Láhev 4:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="638"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="624"/>
         <source>Cylinder5:</source>
         <translation>Láhev 5:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="710"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="696"/>
         <source>Rating:</source>
         <translation>Hodnocení:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="727"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="713"/>
         <source>Visibility:</source>
         <translation>Viditelnost:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="744"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="730"/>
         <source>Notes:</source>
         <translation>Poznámky:</translation>
     </message>
@@ -3217,38 +2783,38 @@ GPS polohu:</translation>
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="169"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="173"/>
         <source> (cyl. %1)</source>
         <translation> (lahev %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="173"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="177"/>
         <source>ICD</source>
         <translation>ICD</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="174"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="178"/>
         <source>ΔHe</source>
         <translation>ΔHe</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="175"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="179"/>
         <source>ΔN₂</source>
         <translation>ΔN₂</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="195"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="197"/>
         <source>Manual switch to OC</source>
         <translation>Ruční přepnutí na OC</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="197"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="199"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation> začátek</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="198"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="200"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation> konec</translation>
@@ -3552,69 +3118,57 @@ GPS polohu:</translation>
     <name>DiveLogExportDialog</name>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="372"/>
         <source>Export dive log files</source>
         <translation>Uložit soubory potápěčského deníku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="44"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="392"/>
         <source>General export</source>
         <translation>Obecné uložení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="108"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="384"/>
         <source>Selection</source>
         <translation>Výběr</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="117"/>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="412"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="385"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="395"/>
         <source>Selected dives</source>
         <translation>Vybrané ponory</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="127"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="386"/>
         <source>All dives</source>
         <translation>Všechny ponory</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="140"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="387"/>
         <source>Options</source>
         <translation>Volby</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="156"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="388"/>
         <source>Metric</source>
         <translation>Metrické</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="161"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="389"/>
         <source>Imperial</source>
         <translation>Imperiální</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="175"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="391"/>
         <source>Anonymize</source>
         <translation>Anonymizovat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="186"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="374"/>
         <source>Export format</source>
         <translation>Formát uložení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="198"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="375"/>
         <source>Subsurface &amp;XML</source>
         <translation>Subsurface &amp;XML</translation>
     </message>
@@ -3625,19 +3179,16 @@ GPS polohu:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="227"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="376"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="240"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="377"/>
         <source>di&amp;velogs.de</source>
         <translation>di&amp;velogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="250"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="378"/>
         <source>DiveShare</source>
         <translation>DiveShare</translation>
     </message>
@@ -3663,13 +3214,11 @@ GPS polohu:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="300"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="381"/>
         <source>Worldmap</source>
         <translation>Mapa světa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="310"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="382"/>
         <source>TeX</source>
         <translation>TeX</translation>
     </message>
@@ -3680,128 +3229,107 @@ GPS polohu:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="330"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="383"/>
         <source>I&amp;mage depths</source>
         <translation>Hloubky pořízení &amp;obrázků</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="372"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="415"/>
         <source>HTML</source>
         <translation>HTML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="390"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="393"/>
         <source>General settings</source>
         <translation>Obecná nastavení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="396"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="394"/>
         <source>Subsurface numbers</source>
         <translation>Čísla Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="425"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="396"/>
         <source>Export yearly statistics</source>
         <translation>Uložit roční statistiky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="441"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="397"/>
         <source>All di&amp;ves</source>
         <translation>Všechny &amp;ponory</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="451"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="398"/>
         <source>Export list only</source>
         <translation>Uložit pouze seznam</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="458"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="399"/>
         <source>Export photos</source>
         <translation>Uložit fotografie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="474"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="400"/>
         <source>Style options</source>
         <translation>Nastavení stylu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="489"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="401"/>
         <source>Font</source>
         <translation>Písmo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="499"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="402"/>
         <source>Font size</source>
         <translation>Velikost písma</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="510"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="403"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="515"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="404"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="520"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="405"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="525"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="406"/>
         <source>14</source>
         <translation>14</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="530"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="407"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="535"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="408"/>
         <source>18</source>
         <translation>18</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="540"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="409"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="548"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="411"/>
         <source>Theme</source>
         <translation>Vzhled</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="559"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="118"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="412"/>
         <source>Light</source>
         <translation>Světlý</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="564"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="413"/>
         <source>Sand</source>
         <translation>Pískový</translation>
     </message>
@@ -3954,76 +3482,56 @@ GPS polohu:</translation>
         <source>Please wait, exporting...</source>
         <translation>Čekejte, prosím, ukládá se...</translation>
     </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="379"/>
-        <source>CSV dive profile</source>
-        <translation>CSV profil ponoru</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="380"/>
-        <source>CSV dive details</source>
-        <translation>CSV podrobnosti ponoru</translation>
-    </message>
 </context>
 <context>
     <name>DiveLogImportDialog</name>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="157"/>
         <source>Import dive log file</source>
         <translation>Náhrát soubor potápěčského deníku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="89"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="158"/>
         <source>dd.mm.yyyy</source>
         <translation>dd.mm.rrrr</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="94"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="159"/>
         <source>mm/dd/yyyy</source>
         <translation>mm/dd/rrrr</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="99"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="160"/>
         <source>yyyy-mm-dd</source>
         <translation>rrrr-mm-dd</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="108"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="162"/>
         <source>Seconds</source>
         <translation>sekundy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="113"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="163"/>
         <source>Minutes</source>
         <translation>minuty</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="118"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="164"/>
         <source>Minutes:seconds</source>
         <translation>Minuty:sekundy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="127"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="166"/>
         <source>Metric</source>
         <translation>Metrické</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="132"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="167"/>
         <source>Imperial</source>
         <translation>Imperiální</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="155"/>
-        <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="169"/>
         <source>Drag the tags above to each corresponding column below</source>
         <translation>Štítky nahoře přetáhněte k odpovídajícím sloupcům dole</translation>
     </message>
@@ -4291,67 +3799,56 @@ GPS polohu:</translation>
     <name>DivePlanner</name>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="74"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="201"/>
         <source>Planned dive time</source>
         <translation>Plánovaná doba ponoru</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="117"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="202"/>
         <source>Altitude</source>
         <translation>Nadmořská výška</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="124"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="203"/>
         <source>ATM pressure</source>
         <translation>Tlak na hladině</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="131"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="204"/>
         <source>Water type</source>
         <translation>Typ vody</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="144"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="205"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="166"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="206"/>
         <source>mbar</source>
         <translation> mbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="180"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="207"/>
         <source>Fresh water</source>
         <translation>Sladká voda</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="185"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="208"/>
         <source>Sea water</source>
         <translation>Slaná voda</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="190"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="209"/>
         <source>EN13319</source>
         <translation>EN13319</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="195"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="210"/>
         <source>Custom</source>
         <translation>Osobní</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="221"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveplanner.h" line="215"/>
         <source>kg/ℓ</source>
         <translation> kg/ℓ</translation>
     </message>
@@ -4843,55 +4340,46 @@ GPS polohu:</translation>
     <name>DiveShareExportDialog</name>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="178"/>
         <source>Dialog</source>
         <translation>Dialog</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="61"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="179"/>
         <source>User ID</source>
         <translation>ID uživatele</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="75"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="183"/>
         <source>⌫</source>
         <translation>⌫</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="82"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="184"/>
         <source>Get user ID</source>
         <translation>Získat ID uživatele</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="91"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="185"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; Not using a UserID means that you will need to manually keep bookmarks to your dives, to find them again.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ff8000;&quot;&gt;⚠&lt;/span&gt; Nepoužívání uživatelského ID má za následek, že budete muset ručně udržovat záložky, abyste znovu nalezli své ponory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="104"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="187"/>
         <source>Private dives will not appear in &quot;related dives&quot; lists, and will only be accessible if their URL is known.</source>
         <translation>Soukromé ponory nebudou v seznamu „souvisejících ponorů“, budou dostupné pouze, pokud je známa jejich URL.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="107"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="189"/>
         <source>Keep dives private</source>
         <translation>Zachovat ponory soukromé</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="129"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="190"/>
         <source>Upload dive data</source>
         <translation>Nahrát data ponoru</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="174"/>
-        <location filename="../subsurface/desktop-widgets/ui_diveshareexportdialog.h" line="191"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -5250,56 +4738,56 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DivelogsDeWebServices</name>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="251"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="416"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="250"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="415"/>
         <source>Done</source>
         <translation>Hotovo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="274"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="273"/>
         <source>Uploading dive list...</source>
         <translation>Nahrává se seznam ponorů...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="294"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="293"/>
         <source>Downloading dive list...</source>
         <translation>Stahuje se seznam ponorů...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="335"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="334"/>
         <source>Downloading %1 dives...</source>
         <translation>Stahování %1 ponorů...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="369"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="368"/>
         <source>Download finished - %1</source>
         <translation>Stahování dokončeno - %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="383"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="382"/>
         <source>Problem with download</source>
         <translation>Problém se stahováním</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="384"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="394"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="383"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="393"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Archiv se nepodařilo otevřít:
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="393"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="392"/>
         <source>Corrupted download</source>
         <translation>Poškozené stahování</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="427"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="426"/>
         <source>Error: %1</source>
         <translation>Chyba: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="436"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="435"/>
         <source>Transferring data...</source>
         <translation>Probíhá přenos dat...</translation>
     </message>
@@ -5439,43 +4927,36 @@ Existing Site</source>
     <name>DownloadFromDiveComputer</name>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="317"/>
         <source>Download from dive computer</source>
         <translation>Stáhnout z potápěčského počítače</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="52"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="318"/>
         <source>Force download of all dives</source>
         <translation>Vynutit opětovné stažení všech ponorů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="59"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="319"/>
         <source>Dive computer</source>
         <translation>Potápěčský počítač</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="69"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="320"/>
         <source>Always prefer downloaded dives</source>
         <translation>Vždy upřednostňovat stažené ponory</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="76"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="321"/>
         <source>Save libdivecomputer logfile</source>
         <translation>Uložit soubor .log libdivecomputer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="90"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="322"/>
         <source>Choose Bluetooth download mode</source>
         <translation>Vybrat režim Bluetooth stahování</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="97"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="324"/>
         <source>Select a remote Bluetooth device.</source>
         <translation>Vyberte vzdálené Bluetooth zařízení.</translation>
     </message>
@@ -5484,34 +4965,26 @@ Existing Site</source>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="107"/>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="114"/>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="128"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="326"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="327"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="328"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="330"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="121"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="329"/>
         <source>Device or mount point</source>
         <translation>Zařízení nebo přípojný bod</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="135"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="331"/>
         <source>Vendor</source>
         <translation>Výrobce</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="142"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="332"/>
         <source>Download into new trip</source>
         <translation>Stáhnout do nového výletu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="149"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="333"/>
         <source>Save libdivecomputer dumpfile</source>
         <translation>Uložit libdivecomputer dump soubor</translation>
     </message>
@@ -5521,38 +4994,32 @@ Existing Site</source>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="328"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="366"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="474"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="334"/>
         <source>Download</source>
         <translation>Stáhnout</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="265"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="336"/>
         <source>Downloaded dives</source>
         <translation>Stažené ponory</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="275"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="337"/>
         <source>Select all</source>
         <translation>Označit vše</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="282"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="338"/>
         <source>Unselect all</source>
         <translation>Odznačit vše</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="323"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="339"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="330"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="359"/>
-        <location filename="../subsurface/desktop-widgets/ui_downloadfromdivecomputer.h" line="340"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
@@ -5786,7 +5253,6 @@ Existing Site</source>
     <name>FilterWidget</name>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="20"/>
-        <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="82"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
@@ -5856,75 +5322,32 @@ Existing Site</source>
         <source>modified</source>
         <translation type="unfinished"/>
     </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="83"/>
-        <source>Text label</source>
-        <translation>Textové označení</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="84"/>
-        <source>Filter this list</source>
-        <translation>Filtrovat tento seznam</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="86"/>
-        <source>Negate filter</source>
-        <translation>Negovat filtr</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_listfilter.h" line="88"/>
-        <source>¬</source>
-        <translation>¬</translation>
-    </message>
-</context>
-<context>
-    <name>FilterWidget2</name>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_filterwidget.h" line="118"/>
-        <source>Reset filters</source>
-        <translation>Obnovit nastavení filtrů</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_filterwidget.h" line="121"/>
-        <source>Show/hide filters</source>
-        <translation>Ukázat/Skrýt filtry</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_filterwidget.h" line="124"/>
-        <source>Close and reset filters</source>
-        <translation>Zavřít a obnovit filtry</translation>
-    </message>
 </context>
 <context>
     <name>FindMovedImagesDialog</name>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
-        <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="154"/>
         <source>Find moved media files</source>
         <translation>Nalézt přesunuté soubory se záznamy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
-        <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="155"/>
         <source>Found media files</source>
         <translation>Nalezené soubory se záznamy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
-        <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="157"/>
         <source>Match only media files in selected dive(s)</source>
         <translation>Porovnat pouze soubory se záznamy ve vybraných potápěních</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
-        <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="159"/>
         <source>Scanning:</source>
         <translation>Prohledává se</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="121"/>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="241"/>
-        <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="161"/>
         <source>Select folder and scan</source>
         <translation>Vybrat složku a prohledat</translation>
     </message>
@@ -5970,42 +5393,6 @@ Existing Site</source>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2232"/>
         <source>Firmware update failed!</source>
         <translation>Aktualizace firmware selhala!</translation>
-    </message>
-</context>
-<context>
-    <name>GpsList</name>
-    <message>
-        <location filename="../mobile-widgets/qml/GpsList.qml" line="14"/>
-        <source>GPS Fixes</source>
-        <translation>GPS pozice</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/GpsList.qml" line="30"/>
-        <source>Date: </source>
-        <translation>Datum:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/GpsList.qml" line="42"/>
-        <source>Name: </source>
-        <translation>Název:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/GpsList.qml" line="54"/>
-        <source>Latitude: </source>
-        <translation>Zeměpisná šířka:</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/GpsList.qml" line="65"/>
-        <source>Longitude: </source>
-        <translation>Zeměpisná délka:</translation>
-    </message>
-</context>
-<context>
-    <name>GpsLocation</name>
-    <message>
-        <location filename="../core/gpslocation.cpp" line="127"/>
-        <source>Unknown GPS location (no GPS source)</source>
-        <translation>Neznámá poloha GPS (žádný zdroj GPS)</translation>
     </message>
 </context>
 <context>
@@ -6172,31 +5559,26 @@ Existing Site</source>
     <name>LocationInformation</name>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="189"/>
         <source>GroupBox</source>
         <translation>Seskupovací okénko</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="29"/>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="191"/>
         <source>Name</source>
         <translation>Název</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="36"/>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="192"/>
         <source>Description</source>
         <translation>Popis</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="43"/>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="193"/>
         <source>Notes</source>
         <translation>Poznámky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="67"/>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="194"/>
         <source>Coordinates</source>
         <translation>Souřadnice</translation>
     </message>
@@ -6212,13 +5594,11 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="89"/>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="196"/>
         <source>Reverse geo lookup</source>
         <translation>Reverzní geo vyhledávání</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="92"/>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="198"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -6234,25 +5614,13 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="176"/>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="200"/>
         <source>Tags</source>
         <translation>Štítky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.ui" line="190"/>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="202"/>
         <source>Country</source>
         <translation>Stát</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="199"/>
-        <source>Dive sites on same coordinates</source>
-        <translation>Potápěčské lokality na stejných souřadnicích</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_locationInformation.h" line="204"/>
-        <source>Update location on map</source>
-        <translation>Aktualizovat místo na mapě</translation>
     </message>
 </context>
 <context>
@@ -6323,35 +5691,29 @@ Existing Site</source>
     <name>MainTab</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="491"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="30"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="454"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="423"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="448"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="511"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="512"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="420"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="445"/>
         <source>Notes</source>
         <translation>Poznámky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="83"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="493"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="103"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="494"/>
         <source>Time</source>
         <translation>Čas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="141"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="497"/>
         <source>Depth</source>
         <translation>Hloubka</translation>
     </message>
@@ -6362,394 +5724,313 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="244"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="447"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="498"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="444"/>
         <source>Location</source>
         <translation>Lokalita</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="277"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="287"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="503"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="284"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="501"/>
         <source>Edit dive site</source>
         <translation>Upravit potápěčskou lokalitu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="319"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="504"/>
         <source>Divemaster</source>
         <translation>Divemaster</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="332"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="505"/>
         <source>Buddy</source>
         <translation>Partner</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="371"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="509"/>
         <source>Tags</source>
         <translation>Štítky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="422"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="506"/>
         <source>Rating</source>
         <translation>Hodnocení</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="64"/>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="513"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="63"/>
         <source>Equipment</source>
         <translation>Výstroj</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="66"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="65"/>
         <source>Information</source>
         <translation>Informace</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="68"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
         <source>Summary</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="70"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
         <source>Media</source>
         <translation>Záznamy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="72"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
         <source>Extra Info</source>
         <translation>Další údaje</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="74"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
         <source>Dive sites</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="76"/>
-        <source>Device names</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="104"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
         <source>Apply changes</source>
         <translation>Použít změny</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="108"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
         <source>Discard changes</source>
         <translation>Zahodit změny</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="112"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="116"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="113"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="235"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="232"/>
         <source>This dive is being edited.</source>
         <translation>Tento ponor je upravován.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="385"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="413"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="382"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="410"/>
         <source>Trip notes</source>
         <translation>Poznámky k výletu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="407"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="404"/>
         <source>Trip location</source>
         <translation>Lokalita výletu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="526"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="523"/>
         <source>Discard the changes?</source>
         <translation>Zahodit změny?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="527"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="524"/>
         <source>You are about to discard your changes.</source>
         <translation>Chystáte se zahodit změny.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="553"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="550"/>
         <source>Warning: edited %1 dives</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="492"/>
-        <source>Duration</source>
-        <translation>Délka</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="495"/>
-        <source>Air temp.</source>
-        <translation>Teplota vzduchu</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="496"/>
-        <source>Water temp.</source>
-        <translation>Teplota vody</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="507"/>
-        <source>Visibility</source>
-        <translation>Viditelnost</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="508"/>
-        <source>Suit</source>
-        <translation>Oblek</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_maintab.h" line="510"/>
-        <source>Dive mode</source>
-        <translation>Režim potápění</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="53"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="614"/>
         <source>&amp;File</source>
         <translation>&amp;Soubor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="74"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="615"/>
         <source>&amp;Log</source>
         <translation>&amp;Ponory</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="89"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="616"/>
         <source>&amp;View</source>
         <translation>&amp;Pohled</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="106"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="617"/>
         <source>&amp;Help</source>
         <translation>&amp;Nápověda</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="114"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="618"/>
         <source>&amp;Import</source>
         <translation>&amp;Náhrát</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="123"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="619"/>
         <source>&amp;Edit</source>
         <translation>Úp&amp;ravy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="135"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="529"/>
         <source>&amp;New logbook</source>
         <translation>&amp;Nový deník</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="138"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="531"/>
         <source>New</source>
         <translation>Nový</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="146"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="533"/>
         <source>&amp;Open logbook</source>
         <translation>&amp;Otevřít deník</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="149"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="469"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="535"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="470"/>
         <source>Open</source>
         <translation>Otevřít</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="157"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="537"/>
         <source>&amp;Save</source>
         <translation>&amp;Uložit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="160"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="539"/>
         <source>Save</source>
         <translation>Uložit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="168"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="541"/>
         <source>Sa&amp;ve as</source>
         <translation>Uložit &amp;jako</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="171"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="543"/>
         <source>Save as</source>
         <translation>Uložit jako</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="179"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="545"/>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="182"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="547"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="190"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="549"/>
         <source>&amp;Print</source>
         <translation>&amp;Tisk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="198"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="550"/>
         <source>P&amp;references</source>
         <translation>&amp;Nastavení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="209"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="551"/>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="220"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="552"/>
         <source>Import from &amp;dive computer</source>
         <translation>Náhrát z potápěčského počítače</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="228"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="554"/>
         <source>&amp;Add dive</source>
         <translation>&amp;Přidat ponor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="236"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="555"/>
         <source>&amp;Copy dive components</source>
         <translation>&amp;Kopírovat data ponoru</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="244"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="556"/>
         <source>&amp;Paste dive components</source>
         <translation>&amp;Vložit data ponoru</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="252"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="557"/>
         <source>&amp;Renumber</source>
         <translation>&amp;Přečíslovat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="263"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="558"/>
         <source>Auto &amp;group</source>
         <translation>&amp;Seskupit automaticky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="268"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="559"/>
         <source>&amp;Yearly statistics</source>
         <translation>&amp;Roční statistiky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="276"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="560"/>
         <source>&amp;Dive list</source>
         <translation>S&amp;eznam ponorů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="284"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="561"/>
         <source>&amp;Profile</source>
         <translation>&amp;Profil</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="292"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="562"/>
         <source>&amp;Info</source>
         <translation>&amp;Informace</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="300"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="563"/>
         <source>&amp;All</source>
         <translation>&amp;Vše</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="308"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="564"/>
         <source>P&amp;revious DC</source>
         <translation>&amp;Předchozí potápěčský počítač</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="316"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="565"/>
         <source>&amp;Next DC</source>
         <translation>&amp;Následující potápěčský počítač</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="324"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="566"/>
         <source>&amp;About Subsurface</source>
         <translation>&amp;O programu Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="332"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="567"/>
         <source>User &amp;manual</source>
         <translation>Uživatelská &amp;příručka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="340"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="568"/>
         <source>&amp;Map</source>
         <translation>&amp;Mapa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="348"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="569"/>
         <source>P&amp;lan dive</source>
         <translation>&amp;Naplánovat ponor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="356"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="570"/>
         <source>&amp;Import log files</source>
         <translation>&amp;Náhrát log soubory</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="359"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="572"/>
         <source>Import divelog files from other applications</source>
         <translation>Náhrát soubory potápěčského deníku z jiné aplikace</translation>
     </message>
@@ -6765,37 +6046,31 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="378"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="574"/>
         <source>Import &amp;from divelogs.de</source>
         <translation>Náhrát &amp;z divelogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="386"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="575"/>
         <source>&amp;Full screen</source>
         <translation>&amp;Celá obrazovka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="389"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="577"/>
         <source>Toggle full screen</source>
         <translation>Přepnout zobrazení na celou obrazovku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="397"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="579"/>
         <source>&amp;Check for updates</source>
         <translation>&amp;Zkontrolovat aktualizace</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="402"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="580"/>
         <source>&amp;Export</source>
         <translation>&amp;Uložit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="405"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="582"/>
         <source>Export dive logs</source>
         <translation>Uložit potápěčský deník</translation>
     </message>
@@ -6806,109 +6081,91 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="424"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="585"/>
         <source>Edit &amp;dive in planner</source>
         <translation>&amp;Upravit ponor v plánovači</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="436"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="586"/>
         <source>Toggle pO₂ graph</source>
         <translation>Zobrazit pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="448"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="587"/>
         <source>Toggle pN₂ graph</source>
         <translation>Zobrazit pN₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="460"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="588"/>
         <source>Toggle pHe graph</source>
         <translation>Zobrazit pHe</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="472"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="589"/>
         <source>Toggle DC reported ceiling</source>
         <translation>Zobrazit strop vypočtený potápěčských počítačem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="484"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="590"/>
         <source>Toggle calculated ceiling</source>
         <translation>Zobrazit vypočtený strop</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="496"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="591"/>
         <source>Toggle calculating all tissues</source>
         <translation>Zobrazit výpočet všech tkání</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="508"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="592"/>
         <source>Toggle calculated ceiling with 3m increments</source>
         <translation>Zobrazit vypočtený strop s 3m nárůstky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="520"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="593"/>
         <source>Toggle heart rate</source>
         <translation>Zobrazit tepovou frekvenci</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="532"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="594"/>
         <source>Toggle MOD</source>
         <translation>Zobrazit MOD</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="544"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="595"/>
         <source>Toggle EAD, END, EADD</source>
         <translation>Zobrazit EAD, END, EADD</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="556"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="596"/>
         <source>Toggle NDL, TTS</source>
         <translation>Zobrazit NDL, TTS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="568"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="597"/>
         <source>Toggle SAC rate</source>
         <translation>Zobrazit SAC rate (rychlost spotřeby plynu)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="580"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="598"/>
         <source>Toggle ruler</source>
         <translation>Zobrazit pravítko</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="592"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="599"/>
         <source>Scale graph</source>
         <translation>Změnit velikost grafu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="604"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="600"/>
         <source>Toggle media</source>
         <translation>Zobrazit záznamy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="616"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="601"/>
         <source>Toggle gas bar</source>
         <translation>Zobrazit pruh plynů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="624"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="602"/>
         <source>&amp;Filter divelist</source>
         <translation>&amp;Filtrovat seznam ponorů</translation>
     </message>
@@ -6919,49 +6176,41 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="647"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="603"/>
         <source>Toggle tissue heat-map</source>
         <translation>Zobrazit heat mapu tkání</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="652"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="605"/>
         <source>&amp;Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="660"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="606"/>
         <source>&amp;Redo</source>
         <translation>Znovu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="668"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="607"/>
         <source>&amp;Find moved media files</source>
         <translation>&amp;Nalézt přesunuté soubory se záznamy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="673"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="608"/>
         <source>Open c&amp;loud storage</source>
         <translation>Otevřít &amp;serverové úložiště</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="681"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="609"/>
         <source>Save to clo&amp;ud storage</source>
         <translation>&amp;Uložit na serverové úložiště</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="686"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="610"/>
         <source>&amp;Manage dive sites</source>
         <translation>Správa potápěčských lokalit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="691"/>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="611"/>
         <source>Dive Site &amp;Edit</source>
         <translation>&amp;Upravení potápěčské lokality</translation>
     </message>
@@ -6978,10 +6227,10 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="600"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="572"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="606"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="734"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="769"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="573"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="607"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="735"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="770"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
@@ -7019,276 +6268,246 @@ pouze pro čtení a neměly by být přímo editovány, protože aplikace
 je může při startu přepsat.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="460"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="507"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1245"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="461"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="508"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1246"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Před otevřením nového souboru prosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="466"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="467"/>
         <source>Open file</source>
         <translation>Otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="470"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1663"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="471"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1664"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="572"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="573"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation>Před online připojením prosím uložte nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="584"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1090"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="585"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1091"/>
         <source>Save changes?</source>
         <translation>Uložit změny?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="585"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="586"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation>Máte neuložené změny. Chcete je odeslat na serverové úložiště?
 Pokud odpovíte ne, serverové úložiště bude synchronizováno pouze při příštím volání &quot;Otevřít serverové úložiště&quot; nebo &quot;Uložit do serverového úložiště&quot;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="595"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="596"/>
         <source>Failure taking cloud storage online</source>
         <translation>Chyba online připojení serverového úložiště.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="646"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="647"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Před zavřením souboru přosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="708"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="709"/>
         <source>Please save or cancel the current dive edit before quiting the application.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="734"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="735"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Před přidáním ponoru prosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="769"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="770"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Pokus o přeplánování ponoru, který není plánem ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="846"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="847"/>
         <source>Yearly statistics</source>
         <translation>Roční statistiky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="984"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1025"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="985"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1026"/>
         <source>Dive log files</source>
         <translation>Soubory potápěčského deníku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1004"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1046"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1273"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1005"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1047"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1274"/>
         <source>Subsurface files</source>
         <translation>Soubory Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1005"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1047"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1006"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1048"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1006"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1049"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1007"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1050"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1007"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1050"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1008"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1051"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1008"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1051"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1009"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1052"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1009"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1052"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1010"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1053"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1010"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1053"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1011"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1054"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1011"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1054"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1012"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1055"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1012"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1055"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1013"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1056"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1013"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1056"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1014"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1057"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1014"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1057"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1015"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1058"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1015"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1058"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1016"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1059"/>
         <source>MkVI files</source>
         <translation>MkVI soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1016"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1059"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1017"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1060"/>
         <source>APD log viewer</source>
         <translation>Prohlížeč záznamů APD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1017"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1060"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1018"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1061"/>
         <source>OSTCtools</source>
         <translation>OSTCtools</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1018"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1061"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1019"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1062"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1048"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1049"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1062"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1074"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1063"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1075"/>
         <source>All files</source>
         <translation>Všechny soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1069"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1070"/>
         <source>Dive site files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1084"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1085"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Chcete uložit změny provedené v souboru %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1085"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1086"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Chcete uložit změny provedené v souboru s daty?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1091"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1092"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Změny budou ztraceny, pokud je neuložíte.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1272"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1273"/>
         <source>Save file as</source>
         <translation>Uložit soubor jako</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1360"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1361"/>
         <source>[local cache for] %1</source>
         <translation>[místní vyrovnávací paměť pro] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1361"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1362"/>
         <source>[cloud storage for] %1</source>
         <translation>[serverové úložiště pro] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1401"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1505"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1402"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1506"/>
         <source>multiple files</source>
         <translation>více souborů</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1429"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1430"/>
         <source>Opening datafile from older version</source>
         <translation>Otevírání datového souboru ze starší verze</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1430"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1431"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Otevřeli jste datový soubor starší verze Subsurface. Doporučujeme vám přečíst příručku, abyste zjistili změny v nové verzi, zvláště o správě potápěčských lokalit, která se značně změnila.
 Subsurface se pokusil předvyplnit data, ale může být užitečné podívat se na systém nové správy potápěčských lokalit a ujistit se, že vše vypadá správně.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1454"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1455"/>
         <source>Open dive log file</source>
         <translation>Otevřít soubor potápěčského deníku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1481"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1482"/>
         <source>Open dive site file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1663"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1664"/>
         <source>Contacting cloud service...</source>
         <translation>Spojení se serverovou službou...</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="553"/>
-        <source>Edit device &amp;names</source>
-        <translation>Upravit zařízení a &amp;názvy</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="584"/>
-        <source>Configure &amp;dive computer</source>
-        <translation>Nastavit potápěčský počítač</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="604"/>
-        <source>User &amp;survey</source>
-        <translation>Uživatelský průzkum</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="612"/>
-        <source>Facebook</source>
-        <translation>Facebook</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="613"/>
-        <source>Cloud storage online</source>
-        <translation>Serverové úložiště online.</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="620"/>
-        <source>Share on</source>
-        <translation>Sdílení</translation>
     </message>
 </context>
 <context>
@@ -7596,7 +6815,6 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="329"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
@@ -7607,19 +6825,16 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="31"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="331"/>
         <source>Font</source>
         <translation>Písmo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="53"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="332"/>
         <source>Font size</source>
         <translation>Velikost písma</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="68"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="345"/>
         <source>Animations</source>
         <translation>Animace</translation>
     </message>
@@ -7630,7 +6845,6 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="94"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="346"/>
         <source>Speed</source>
         <translation>Rychlost</translation>
     </message>
@@ -7638,102 +6852,6 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="15"/>
         <source>Display</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="330"/>
-        <source>Lists and tables</source>
-        <translation>Seznamy a tabulky</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="333"/>
-        <source>Dives</source>
-        <translation>Ponory</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="334"/>
-        <source>Default dive log file</source>
-        <translation>Výchozí soubor s potápěčským deníkem</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="335"/>
-        <source>&amp;No default file</source>
-        <translation>Žá&amp;dný výchozí soubor</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="336"/>
-        <source>&amp;Local default file</source>
-        <translation>&amp;Lokální výchozí soubor</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="337"/>
-        <source>Clo&amp;ud storage default file</source>
-        <translation>Výchozí soubor &amp;serverového úložiště</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="338"/>
-        <source>Local dive log file</source>
-        <translation>Lokální potápěčský deník</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="339"/>
-        <source>Use default</source>
-        <translation>Použít výchozí</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="340"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="349"/>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="341"/>
-        <source>Display invalid</source>
-        <translation>Zobrazit neplatné</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="343"/>
-        <source>Default cylinder</source>
-        <translation>Výchozí lahev</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="344"/>
-        <source>Use default cylinder</source>
-        <translation>Použít výchozí lahev</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="347"/>
-        <source>Video thumbnails</source>
-        <translation>Náhledy na videa</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="348"/>
-        <source>ffmpeg executable</source>
-        <translation>Spustitelný soubor ffmpeg</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="350"/>
-        <source>Extract at position</source>
-        <translation>Vytáhnout v poloze</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="351"/>
-        <source>Extract video thumbnails</source>
-        <translation>Vytáhnout náhledy na videa</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="353"/>
-        <source>Clear settings</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="354"/>
-        <source>Reset remembered dive computers</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="355"/>
-        <source>Reset all settings to their default value</source>
-        <translation>Nastavit všechna nastavení na jejich výchozí hodnoty</translation>
     </message>
 </context>
 <context>
@@ -7786,7 +6904,6 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
     <name>PreferencesGeoreference</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_georeference.h" line="105"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
@@ -7803,8 +6920,6 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="65"/>
         <location filename="../desktop-widgets/preferences/preferences_georeference.ui" line="82"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_georeference.h" line="107"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_georeference.h" line="108"/>
         <source>/</source>
         <translation>/</translation>
     </message>
@@ -7813,29 +6928,21 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
         <source>Georeference</source>
         <translation>Georeference</translation>
     </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_georeference.h" line="106"/>
-        <source>Dive site layout</source>
-        <translation>Rozvržení potápěčské lokality</translation>
-    </message>
 </context>
 <context>
     <name>PreferencesGraph</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="337"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="20"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="338"/>
         <source>Gas pressure display setup</source>
         <translation>Nastavení zobrazení tlaku plynu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="29"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="339"/>
         <source>Threshold for pO₂ (minimum, maximum)</source>
         <translation>Práh pro pO₂ (minimum, maximum)</translation>
     </message>
@@ -7846,158 +6953,127 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="98"/>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="121"/>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="145"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="340"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="341"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="343"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="345"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="347"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="350"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="65"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="342"/>
         <source>Threshold for pN₂ (maximum only)</source>
         <translation>Práh pro pN₂ (pouze maximum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="88"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="344"/>
         <source>Threshold for pHe (maximum only)</source>
         <translation>Práh pro pHe (pouze maximum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="111"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="346"/>
         <source>pO₂ in calculating MOD (maximum only )</source>
         <translation>pO₂ ve výpočtu MOD (pouze maximum)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="131"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="348"/>
         <source>CCR options:</source>
         <translation>CCR možnosti:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="138"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="349"/>
         <source>Dive planner default setpoint</source>
         <translation>Výchozí požadovaná hodnota plánovače ponorů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="351"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
         <translation>Zobrazit hodnoty senzoru O₂ při zobrazení pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="352"/>
         <source>Show CCR setpoints when viewing pO₂</source>
         <translation>Zobrazit požadované hodnoty CCR při zobrazení pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="175"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="353"/>
         <source>pSCR options:</source>
         <translation>pSCR možnosti:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="182"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="354"/>
         <source>pSCR metabolic rate O₂</source>
         <translation>pSCR rychlost látkové výměny O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="192"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="355"/>
         <source>ℓ/min</source>
         <translation> ℓ/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="202"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="356"/>
         <source>Dilution ratio</source>
         <translation>Poměr ředění</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="215"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="358"/>
         <source>1:</source>
         <translation>1:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="359"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
         <translation>Ukázat ekvivalent OC pO₂ s pSCR pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="360"/>
         <source>Show warnings for isobaric counterdiffusion</source>
         <translation>Zobrazit varování pro izobarické protisměrné difúze</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="239"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="361"/>
         <source>Ceiling display setup</source>
         <translation>Nastavení zobrazení stropu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="245"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="362"/>
         <source>GFHigh</source>
         <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="363"/>
         <source>B&amp;ühlmann</source>
         <translation>B&amp;ühlmann</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="268"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="364"/>
         <source>Algorithm for calculated ceiling:</source>
         <translation>Algoritmus pro výpočet stropu:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="275"/>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="328"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="365"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="370"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="288"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="366"/>
         <source>Conservatism level</source>
         <translation>Úroveň konzervatismu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="298"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="367"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="314"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="368"/>
         <source>Draw dive computer reported ceiling red</source>
         <translation>Vykreslit strop vypočtený potápěčským počítačem červeně</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="321"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="369"/>
         <source>&amp;VPM-B</source>
         <translation>&amp;VPM-B</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="341"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="371"/>
         <source>GFLow</source>
         <translation>GFLow</translation>
     </message>
@@ -8006,94 +7082,62 @@ Pokud vaše zařízení používá Bluetooth, udělejte stejné přípravy jako 
         <source>Tech setup</source>
         <translation type="unfinished"/>
     </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="372"/>
-        <source>Misc</source>
-        <translation>Různé</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="373"/>
-        <source>Show unused cylinders in Equipment tab</source>
-        <translation>Zobrazit nepoužité lahve na kartě s výstrojí</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="374"/>
-        <source>Show mean depth in Profile</source>
-        <translation>Zobrazit střední hodnotu hloubky v profilu</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="375"/>
-        <source>Recalculate thumbnails if older than media file</source>
-        <translation>Přepočítat náhledy, pokud jsou starší než soubor se záznamem</translation>
-    </message>
 </context>
 <context>
     <name>PreferencesLanguage</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="178"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="26"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="179"/>
         <source>UI language</source>
         <translation>Jazyk uživatelského rozhraní</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="32"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="180"/>
         <source>Use system default</source>
         <translation>Použít systémový výchozí</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="55"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="181"/>
         <source>Filter</source>
         <translation>Filtr</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="74"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="182"/>
         <source>Date format</source>
         <translation>Formát datumu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="80"/>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="138"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="183"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="192"/>
         <source>Use UI language default</source>
         <translation>Použít výchozí, dle jazyka uživatelského rozhraní</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="90"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="185"/>
         <source>This is used in places where there is less space to show the full date</source>
         <translation>Použito na místech, kde je málo místa pro zobrazení celého data</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="93"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="187"/>
         <source>Short format</source>
         <translation>Krátký formát</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="113"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="189"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred date format. Commonly used fields are&lt;/p&gt;&lt;p&gt;d (day of month)&lt;/p&gt;&lt;p&gt;ddd (abbr. day name)&lt;/p&gt;&lt;p&gt;M (month number)&lt;/p&gt;&lt;p&gt;MMM (abbr. month name)&lt;/p&gt;&lt;p&gt;yy/yyyy (2/4 digit year)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upřednostňovaný formát data. Běžně používaná pole jsou&lt;/p&gt;&lt;p&gt;d (den měsíce)&lt;/p&gt;&lt;p&gt;ddd (zkratka názvu dne)&lt;/p&gt;&lt;p&gt;M (číslo měsíce)&lt;/p&gt;&lt;p&gt;MMM (zkratka názvu dne)&lt;/p&gt;&lt;p&gt;yy/yyyy (2/4 cifry rok)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="132"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="191"/>
         <source>Time format</source>
         <translation>Formát času</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="151"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_language.h" line="194"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred time format&lt;/p&gt;&lt;p&gt;Commonly used format specifiers are&lt;/p&gt;&lt;p&gt;h (hours in 12h format)&lt;/p&gt;&lt;p&gt;H (hours in 24h format)&lt;/p&gt;&lt;p&gt;mm (2 digit minutes)&lt;/p&gt;&lt;p&gt;ss (2 digit seconds)&lt;/p&gt;&lt;p&gt;t/tt (a/p or am/pm)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upřednostňovaný formát času&lt;/p&gt;&lt;p&gt;Běžně používané specifikátory formátu jsou&lt;/p&gt;&lt;p&gt;h (hodiny v 12h formátu)&lt;/p&gt;&lt;p&gt;H (hodiny v 24h formátu)&lt;/p&gt;&lt;p&gt;mm (2 místa pro minuty)&lt;/p&gt;&lt;p&gt;ss (2 místa pro sekundy)&lt;/p&gt;&lt;p&gt;t/tt (a/p nebo am/pm)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -8310,7 +7354,6 @@ Viz http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <name>PreferencesNetwork</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="233"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
@@ -8321,38 +7364,31 @@ Viz http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="32"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="235"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="39"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="236"/>
         <source>Host</source>
         <translation>Host</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="46"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="237"/>
         <source>Proxy type</source>
         <translation>Typ proxy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="56"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="238"/>
         <source>Username</source>
         <translation>Uživatelské jméno</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="108"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="239"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="246"/>
         <source>Password</source>
         <translation>Heslo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="134"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="240"/>
         <source>Requires authentication</source>
         <translation>Vyžaduje ověření</translation>
     </message>
@@ -8380,36 +7416,6 @@ Viz http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="17"/>
         <source>SOCKS proxy</source>
         <translation>SOCKS proxy</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="234"/>
-        <source>Proxy</source>
-        <translation>Proxy</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="241"/>
-        <source>Subsurface cloud storage</source>
-        <translation>Serverové úložiště Subsurface</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="245"/>
-        <source>Email address</source>
-        <translation>E-mailová adresa</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="247"/>
-        <source>Verification PIN</source>
-        <translation>Ověřovací PIN</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="248"/>
-        <source>New password</source>
-        <translation>Nové heslo</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_network.h" line="255"/>
-        <source>Save Password locally?</source>
-        <translation>Uložit heslo lokálně?</translation>
     </message>
 </context>
 <context>
@@ -8439,223 +7445,186 @@ Viz http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <name>PreferencesUnits</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="346"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="20"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="347"/>
         <source>Unit system</source>
         <translation>Systém jednotek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="26"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="348"/>
         <source>System</source>
         <translation>Systém</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="33"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="349"/>
         <source>&amp;Metric</source>
         <translation>&amp;Metrické</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="40"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="350"/>
         <source>Imperial</source>
         <translation>Imperiální</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="47"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="351"/>
         <source>Personali&amp;ze</source>
         <translation>Personali&amp;zovat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="57"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="352"/>
         <source>Individual settings</source>
         <translation>Individuální nastavení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="69"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="353"/>
         <source>Depth</source>
         <translation>Hloubka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="76"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="354"/>
         <source>meter</source>
         <translation>metr</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="86"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="355"/>
         <source>feet</source>
         <translation>stopa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="96"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="356"/>
         <source>Pressure</source>
         <translation>Tlak</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="103"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="357"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="113"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="358"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="123"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="359"/>
         <source>Volume</source>
         <translation>Objem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="130"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="360"/>
         <source>&amp;liter</source>
         <translation>&amp;litr</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="140"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="361"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="150"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="362"/>
         <source>Temperature</source>
         <translation>Teplota</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="157"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="363"/>
         <source>celsius</source>
         <translation>Celsius</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="167"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="364"/>
         <source>fahrenheit</source>
         <translation>Fahrenheit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="177"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="365"/>
         <source>Weight</source>
         <translation>Hmotnost</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="184"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="366"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="194"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="367"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="207"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="368"/>
         <source>Time units</source>
         <translation>Jednotky času</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="213"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="369"/>
         <source>Ascent/descent speed denominator</source>
         <translation>Jednotky času pro rychlost při výstupu/sestupu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="220"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="370"/>
         <source>Minutes</source>
         <translation>Minuty</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="227"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="371"/>
         <source>Seconds</source>
         <translation>Sekundy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="237"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="372"/>
         <source>Duration units</source>
         <translation>Jednotky doby trvání</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="243"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="373"/>
         <source>Show hours in duration</source>
         <translation>Ukázat hodiny v době trvání</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="250"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="374"/>
         <source>hh:mm (always)</source>
         <translation>hh:mm (vždy)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="257"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="375"/>
         <source>mm (always)</source>
         <translation>mm (vždy)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="264"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="376"/>
         <source>mm (for dives shorter than 1 hour), hh:mm (otherwise)</source>
         <translation>mm (pro ponory kratší než 1 hodina), hh:mm (jinak)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="274"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="377"/>
         <source>Dive list table</source>
         <translation>Tabulka ponorů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="280"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="378"/>
         <source>Show units in dive list table</source>
         <translation>Zobrazit jednotky v tabulce ponorů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="290"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="379"/>
         <source>GPS coordinates</source>
         <translation>Souřadnice GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="296"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="380"/>
         <source>Location Display</source>
         <translation>Zobrazení pozice</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="303"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="381"/>
         <source>traditional (dms)</source>
         <translation>tradiční (dms)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="310"/>
-        <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="382"/>
         <source>decimal</source>
         <translation>desetinný</translation>
     </message>
@@ -8702,37 +7671,31 @@ Viz http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <name>PrintOptions</name>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="29"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="168"/>
         <source>Print type</source>
         <translation>Druh tisku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="41"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="169"/>
         <source>&amp;Dive list print</source>
         <translation>Tisk seznamu ponorů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="57"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="170"/>
         <source>&amp;Statistics print</source>
         <translation>Tisk statistik</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="67"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="171"/>
         <source>Print options</source>
         <translation>Možnosti tisku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="79"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="172"/>
         <source>Print only selected dives</source>
         <translation>Vytisknout pouze vybrané ponory</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="92"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="173"/>
         <source>Print in color</source>
         <translation>Vytisknout barevně</translation>
     </message>
@@ -8743,31 +7706,26 @@ Viz http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="132"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="174"/>
         <source>Template</source>
         <translation>Šablona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="157"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="175"/>
         <source>Edit</source>
         <translation>Upravit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="164"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="176"/>
         <source>Delete</source>
         <translation>Smazat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="171"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="177"/>
         <source>Export</source>
         <translation>Uložení</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="178"/>
-        <location filename="../subsurface/desktop-widgets/ui_printoptions.h" line="178"/>
         <source>Import</source>
         <translation>Náhrání</translation>
     </message>
@@ -8827,138 +7785,153 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="740"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="739"/>
         <source>Planned dive</source>
         <translation>Plánovaný ponor</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="742"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="741"/>
         <source>Manually added dive</source>
         <translation>Ručně přidaný ponor</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="744"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="743"/>
         <source>Unknown dive computer</source>
         <translation>Neznámý potápěčský počítač</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="748"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="747"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 z %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="772"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="771"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>NDL / TTS nebylo zobrazeno kvůli příliš dlouhému času zpracování</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1310"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1314"/>
         <source>Make first dive computer</source>
         <translation>První potápěčský počítač</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1312"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1316"/>
         <source>Delete this dive computer</source>
         <translation>Smazat tento potápěčský počítač</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1313"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1317"/>
         <source>Split this dive computer into own dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1329"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1320"/>
+        <source>Rename this dive computer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1335"/>
         <source>Edit Gas Change</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1337"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1343"/>
         <source>Add gas change</source>
         <translation>Přidat změnu plynu</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1344"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1350"/>
         <source>Add setpoint change</source>
         <translation>Přidat změnu požadované hodnoty</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1345"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1351"/>
         <source>Add bookmark</source>
         <translation>Přidat záložku</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1346"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1352"/>
         <source>Split dive into two</source>
         <translation>Rozdělit ponor do dvou</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1351"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1357"/>
         <source>Change divemode</source>
         <translation>Změnit režim ponoru</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1363"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1369"/>
         <source>Edit the profile</source>
         <translation>Editovat profil</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1366"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1372"/>
         <source>Remove event</source>
         <translation>Odstranit událost</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1367"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1373"/>
         <source>Hide similar events</source>
         <translation>Skrýt podobné události</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1370"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1376"/>
         <source>Edit name</source>
         <translation>Upravit název</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1399"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1412"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Upravit tlak v lahvi %1 (v současnosti interpolován jako %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1427"/>
         <source>Unhide all events</source>
         <translation>Zrušit skrytí všech událostí</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1452"/>
+        <source>Edit nickname</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1453"/>
+        <source>Set new nickname for %1 (serial %2):</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1464"/>
         <source>Hide events</source>
         <translation>Skrýt události</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1464"/>
         <source>Hide all %1 events?</source>
         <translation>Skrýt všech %1 událostí?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1483"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1499"/>
         <source>Remove the selected event?</source>
         <translation>Odstranit vybranou událost?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1484"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1500"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1586"/>
         <source>Edit name of bookmark</source>
         <translation>Upravit název záložky</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1571"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1587"/>
         <source>Custom name:</source>
         <translation>Vlastní název:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1576"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1592"/>
         <source>Name is too long!</source>
         <translation>Název je příliš dlouhý!</translation>
     </message>
@@ -8966,187 +7939,182 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="376"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="370"/>
         <source>Open local dive data file</source>
         <translation>Otevřít místní soubor s údaji o ponoru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="398"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="392"/>
         <source>Opening local data file failed</source>
         <translation>Otevřít místní soubor s daty se nepodařilo</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="416"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="410"/>
         <source>Processing %1 dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="412"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 ponorů nahráno z místního souboru s údaji o ponoru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="425"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="419"/>
         <source>Incorrect cloud credentials</source>
         <translation>Nesprávné přístupové údaje k serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="568"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="552"/>
         <source>working in no-cloud mode</source>
         <translation>režim práce bez serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="572"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="556"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Chyba při zpracování místního úložiště. Vzdává se</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="582"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="566"/>
         <source>no cloud credentials</source>
         <translation>žádné přístupové údaje k serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="583"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="663"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="567"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="647"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Prosím zadejte platné přístupové údaje k serveru.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="624"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>E-mail a heslo k serverovému úložišti mohou obsahovat pouze písmena, čísla a &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="630"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="614"/>
         <source>Invalid format for email address</source>
         <translation>Neplatný formát pro adresy elektronické pošty</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="671"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="655"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Pokus o otevření serverového úložiště s novými přístupovými údaji</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="683"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="667"/>
         <source>Testing cloud credentials</source>
         <translation>Zkoušení přístupových údajů k serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="700"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="684"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Žádná odpověď serveru k ověření přístupových údajů</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="706"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="690"/>
         <source>Incorrect email / password combination</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="711"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="695"/>
         <source>Cloud credentials require verification PIN</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="714"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
         <source>Incorrect PIN, please try again</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="703"/>
         <source>PIN accepted, credentials verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="712"/>
         <source>Cloud storage error: %1</source>
         <translation>Chyba serverového úložiště: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="773"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="757"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>Nahrávají se ponory s místního úložiště (režim žádný server)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="821"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="805"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Selhalo připojení k serveru, návrat ke stavu bez serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="841"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="825"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Serverové úložiště úspěšně otevřeno. Žádné ponory v seznamu.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1026"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1027"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="999"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1000"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1026"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1027"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1028"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="999"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1000"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1001"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1026"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="999"/>
         <source>sec</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1145"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1119"/>
         <source>weight</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1423"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1415"/>
         <source>[%1]Changes saved:'%2'.
 %1 possible via context menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1425"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1417"/>
         <source>Redo</source>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1425"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1417"/>
         <source>Undo: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1427"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1419"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1447"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1439"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1648"/>
-        <source>Unknown GPS location</source>
-        <translation>Neznámá GPS pozice</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1873"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1778"/>
         <source>no default cylinder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2341"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2236"/>
         <source>(unsaved changes in memory)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2343"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2238"/>
         <source>(changes synced locally)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2344"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2239"/>
         <source>(synced with cloud)</source>
         <translation type="unfinished"/>
     </message>
@@ -9215,20 +8183,17 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
     <name>RenumberDialog</name>
     <message>
         <location filename="../desktop-widgets/renumber.ui" line="17"/>
-        <location filename="../subsurface/desktop-widgets/ui_renumber.h" line="88"/>
         <source>Renumber</source>
         <translation>Přečíslovat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/renumber.ui" line="43"/>
-        <location filename="../subsurface/desktop-widgets/ui_renumber.h" line="89"/>
         <source>Renumbering all dives</source>
         <translation>Přečíslování všech ponorů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/renumber.ui" line="61"/>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="56"/>
-        <location filename="../subsurface/desktop-widgets/ui_renumber.h" line="90"/>
         <source>New starting number</source>
         <translation>Nové počáteční číslo</translation>
     </message>
@@ -9260,7 +8225,6 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
     <name>SearchBar</name>
     <message>
         <location filename="../desktop-widgets/searchbar.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_searchbar.h" line="120"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
@@ -9269,19 +8233,16 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
     <name>SetpointDialog</name>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="17"/>
-        <location filename="../subsurface/desktop-widgets/ui_setpoint.h" line="82"/>
         <source>Add setpoint change</source>
         <translation>Přidat změnu požadované hodnoty</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="43"/>
-        <location filename="../subsurface/desktop-widgets/ui_setpoint.h" line="83"/>
         <source>New setpoint (0 for OC)</source>
         <translation>Nová požadovaná hodnota (0 pro otevřený systém)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="61"/>
-        <location filename="../subsurface/desktop-widgets/ui_setpoint.h" line="84"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
@@ -9584,74 +8545,59 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="533"/>
-        <source>GPS location service</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="541"/>
-        <source>Distance threshold (meters)</source>
-        <translation>Práh vzdálenosti (metry)</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="552"/>
-        <source>Time threshold (minutes)</source>
-        <translation>Práh času (minuty)</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="568"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="537"/>
         <source>Bluetooth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="576"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="545"/>
         <source>Temporarily show all bluetooth devices 
 even if not recognized as dive computers.
 Please report DCs that need this setting</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="592"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="561"/>
         <source>Display</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="600"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="569"/>
         <source>Show only one column in Portrait mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="615"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="584"/>
         <source>Profile deco ceiling</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="623"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="592"/>
         <source>Show DC reported ceiling</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="633"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="602"/>
         <source>Show calculated ceiling</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="643"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="612"/>
         <source>GFLow</source>
         <translation>GFLow</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="656"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="625"/>
         <source>GFHigh</source>
         <translation>GFHigh</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="673"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="642"/>
         <source>Developer</source>
         <translation>Vývojář</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="681"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="650"/>
         <source>Display Developer menu</source>
         <translation>Zobrazit vývojářskou nabídku</translation>
     </message>
@@ -9660,37 +8606,51 @@ Please report DCs that need this setting</source>
     <name>ShiftImageTimesDialog</name>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="23"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="194"/>
         <source>Shift selected image times</source>
         <translation>Posunout vybrané časy obrázků</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="195"/>
-        <source>Shift times of image(s) by</source>
-        <translation>Vybrané časy obrázku(ů) posunout o</translation>
+        <source>Manually shift times of image(s) by hours:minutes</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="95"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="196"/>
-        <source>h:mm</source>
-        <translation>h:mm</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="105"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="197"/>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
         <source>Earlier</source>
         <translation>Dříve</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="112"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="198"/>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="51"/>
         <source>Later</source>
         <translation>Později</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="128"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="199"/>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
+        <source>Use camera sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>
+        <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
+        <translation>Pro vypočtení rozdílu mezi časem vašeho potápěčského počítače a vaším fotoaparátem vyfoťte vaším fotoaparátem váš potápěčský počítač zobrazující aktuální čas. Stáhněte fotografii do počítače a stiskněte toto tlačítko.</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="90"/>
+        <source>Determine camera time offset</source>
+        <translation>Určit posun času fotoaparátu</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="93"/>
+        <source>Select image of divecomputer showing time</source>
+        <translation>Vyberte fotografii zobrazující čas na potápěčském počítači</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="115"/>
+        <source>Which date and time are displayed on the image?</source>
+        <translation>Jaké datum a čas jsou zobrazeny na fotografii?</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="163"/>
         <source>Warning!
 Not all media files have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
@@ -9699,69 +8659,44 @@ Ne všechny soubory se záznamy mají čas mezi
 30 minutami před začátkem a 30 minutami po konci vybraného ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="137"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="202"/>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="188"/>
         <source>Load media files even if the time does not match the dive time</source>
         <translation>Nahrát soubory se záznamy i pokud jejich čas nesouhlasí s časem ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="186"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="204"/>
-        <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
-        <translation>Pro vypočtení rozdílu mezi časem vašeho potápěčského počítače a vaším fotoaparátem vyfoťte vaším fotoaparátem váš potápěčský počítač zobrazující aktuální čas. Stáhněte fotografii do počítače a stiskněte toto tlačítko.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="196"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="206"/>
-        <source>Determine camera time offset</source>
-        <translation>Určit posun času fotoaparátu</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="199"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="208"/>
-        <source>Select image of divecomputer showing time</source>
-        <translation>Vyberte fotografii zobrazující čas na potápěčském počítači</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="221"/>
-        <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="210"/>
-        <source>Which date and time are displayed on the image?</source>
-        <translation>Jaké datum a čas jsou zobrazeny na fotografii?</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="138"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="129"/>
         <source>Open image file</source>
         <translation>Otevřít soubor s obrázkem</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="140"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="131"/>
         <source>Image files</source>
         <translation>Soubory s obrázky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="221"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="219"/>
         <source>Selected dive date/time</source>
         <translation>Čas/Datum vybraného ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="223"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="221"/>
         <source>First selected dive date/time</source>
         <translation>Čas/Datum prvního vybraného ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="224"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="222"/>
         <source>Last selected dive date/time</source>
         <translation>Čas/Datum posledního vybraného ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="226"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="224"/>
         <source>
 Files with inappropriate date/time</source>
         <translation>
 Soubory se špatným datem/časem</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="236"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="234"/>
         <source>No Exif date/time found</source>
         <translation>Nenalezeno žádné datum/čas EXIF</translation>
     </message>
@@ -9770,51 +8705,42 @@ Soubory se špatným datem/časem</translation>
     <name>ShiftTimesDialog</name>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="23"/>
-        <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="136"/>
         <source>Shift selected dive times</source>
         <translation>Posunout časy vybraných ponorů</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="49"/>
-        <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="137"/>
         <source>Shift times of selected dives by</source>
         <translation>Posunout časy vybraných ponorů o</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="72"/>
-        <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="138"/>
         <source>Shifted time:</source>
         <translation>Posunutý čas:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="79"/>
-        <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="139"/>
         <source>Current time:</source>
         <translation>Nynější čas:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="86"/>
         <location filename="../desktop-widgets/shifttimes.ui" line="93"/>
-        <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="140"/>
-        <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="141"/>
         <source>0:0</source>
         <translation>0:0</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="126"/>
-        <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="142"/>
         <source>h:mm</source>
         <translation>h:mm</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="136"/>
-        <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="143"/>
         <source>Earlier</source>
         <translation>Dříve</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="143"/>
-        <location filename="../subsurface/desktop-widgets/ui_shifttimes.h" line="144"/>
         <source>Later</source>
         <translation>Později</translation>
     </message>
@@ -10452,45 +9378,32 @@ Soubory se špatným datem/časem</translation>
     <name>SubsurfaceAbout</name>
     <message>
         <location filename="../desktop-widgets/about.ui" line="23"/>
-        <location filename="../subsurface/desktop-widgets/ui_about.h" line="118"/>
         <source>About Subsurface</source>
         <translation>O programu Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="83"/>
-        <location filename="../subsurface/desktop-widgets/ui_about.h" line="121"/>
         <source>&amp;License</source>
         <translation>&amp;Licence</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="90"/>
-        <location filename="../subsurface/desktop-widgets/ui_about.h" line="122"/>
         <source>Credits</source>
         <translation>Zásluhy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="97"/>
-        <location filename="../subsurface/desktop-widgets/ui_about.h" line="123"/>
         <source>&amp;Website</source>
         <translation>&amp;Web</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="104"/>
-        <location filename="../subsurface/desktop-widgets/ui_about.h" line="124"/>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2021&lt;/span&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>TabDiveComputer</name>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveComputer.ui" line="17"/>
-        <source>Dive Computers</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -10507,37 +9420,48 @@ Soubory se špatným datem/časem</translation>
         <translation>Oblek</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="49"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="52"/>
         <source>Cylinders</source>
         <translation>Lahve</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="50"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="53"/>
         <source>Add cylinder</source>
         <translation>Přidat lahev</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="53"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="56"/>
         <source>Weights</source>
         <translation>Zátěž</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="54"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="57"/>
         <source>Add weight system</source>
         <translation>Přidat zátěž</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="57"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="60"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="64"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="188"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="172"/>
+        <source>Remove cylinder?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="173"/>
+        <source>The deleted cylinder has sensor readings, which will be lost.
+Do you want to continue?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="202"/>
         <source>Warning: edited %1 dives</source>
         <translation type="unfinished"/>
     </message>
@@ -10546,7 +9470,6 @@ Soubory se špatným datem/časem</translation>
     <name>TabDiveExtraInfo</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveExtraInfo.h" line="49"/>
         <source>Extra Info</source>
         <translation>Další údaje</translation>
     </message>
@@ -10555,7 +9478,6 @@ Soubory se špatným datem/časem</translation>
     <name>TabDiveInformation</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="297"/>
         <source>Information</source>
         <translation>Informace</translation>
     </message>
@@ -10571,7 +9493,6 @@ Soubory se špatným datem/časem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="98"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="300"/>
         <source>Interval</source>
         <translation>Interval</translation>
     </message>
@@ -10582,13 +9503,11 @@ Soubory se špatným datem/časem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="154"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="312"/>
         <source>Max. depth</source>
         <translation>Největší hloubka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="183"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="314"/>
         <source>Avg. depth</source>
         <translation>Průměrná hloubka</translation>
     </message>
@@ -10604,25 +9523,21 @@ Soubory se špatným datem/časem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="251"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="304"/>
         <source>Gas consumed</source>
         <translation>Spotřebovaný plyn</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="279"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="306"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="307"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="308"/>
         <source>CNS</source>
         <translation>CNS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="335"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="310"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
@@ -10633,13 +9548,11 @@ Soubory se špatným datem/časem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="381"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="318"/>
         <source>Air temp.</source>
         <translation>Teplota vzduchu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="410"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="320"/>
         <source>Water temp.</source>
         <translation>Teplota vody</translation>
     </message>
@@ -10772,43 +9685,16 @@ Soubory se špatným datem/časem</translation>
         <source>unknown</source>
         <translation>neznámý</translation>
     </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="298"/>
-        <source>Date</source>
-        <translation>Datum</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="302"/>
-        <source>Gases used</source>
-        <translation>Použité plyny</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="316"/>
-        <source>Air pressure</source>
-        <translation>Tlak vzduchu</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="322"/>
-        <source>Dive time</source>
-        <translation>Doba ponoru</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveInformation.h" line="324"/>
-        <source>Water type</source>
-        <translation>Typ vody</translation>
-    </message>
 </context>
 <context>
     <name>TabDivePhotos</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDivePhotos.h" line="78"/>
         <source>Photos</source>
         <translation>Fotografie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.ui" line="29"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDivePhotos.h" line="79"/>
         <source>Zoom level</source>
         <translation>Úroveň zvětšení</translation>
     </message>
@@ -10848,12 +9734,12 @@ Soubory se špatným datem/časem</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="156"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="155"/>
         <source>Deleting media files</source>
         <translation>Mazání souborů se záznamy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="156"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="155"/>
         <source>Are you sure you want to delete all media files?</source>
         <translation>Opravdu chcete smazat všechny soubory se záznamy?</translation>
     </message>
@@ -10897,7 +9783,6 @@ Soubory se špatným datem/časem</translation>
     <name>TabDiveStatistics</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="194"/>
         <source>Statistics</source>
         <translation>Statistiky</translation>
     </message>
@@ -10908,19 +9793,16 @@ Soubory se špatným datem/časem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="200"/>
         <source>Duration</source>
         <translation>Délka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="120"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="197"/>
         <source>Temperature</source>
         <translation>Teplota</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="143"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="196"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
@@ -10941,7 +9823,6 @@ Soubory se špatným datem/časem</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="203"/>
         <source>Gas consumption</source>
         <translation>Spotřeba plynu</translation>
     </message>
@@ -11054,29 +9935,12 @@ ze vzduchu a následujících plynů:</translation>
         <source>O₂</source>
         <translation>O₂</translation>
     </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="195"/>
-        <source>Depth</source>
-        <translation>Hloubka</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="198"/>
-        <source>Total time</source>
-        <translation>Celkový čas</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_TabDiveStatistics.h" line="201"/>
-        <source>Dives</source>
-        <translation>Ponory</translation>
-    </message>
 </context>
 <context>
     <name>TableView</name>
     <message>
         <location filename="../desktop-widgets/tableview.ui" line="14"/>
         <location filename="../desktop-widgets/tableview.ui" line="17"/>
-        <location filename="../subsurface/desktop-widgets/ui_tableview.h" line="49"/>
-        <location filename="../subsurface/desktop-widgets/ui_tableview.h" line="50"/>
         <source>GroupBox</source>
         <translation>Seskupovací okénko</translation>
     </message>
@@ -11103,127 +9967,106 @@ ze vzduchu a následujících plynů:</translation>
     <name>TemplateEdit</name>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="454"/>
         <source>Edit template</source>
         <translation>Upravit šablonu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="37"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="455"/>
         <source>Preview</source>
         <translation>Náhled</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="94"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="473"/>
         <source>Style</source>
         <translation>Styl</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="104"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="457"/>
         <source>Font</source>
         <translation>Písmo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="112"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="458"/>
         <source>Arial</source>
         <translation>Arial</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="117"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="459"/>
         <source>Impact</source>
         <translation>Impact</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="122"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="460"/>
         <source>Georgia</source>
         <translation>Georgia</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="127"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="461"/>
         <source>Courier</source>
         <translation>Courier</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="132"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="462"/>
         <source>Verdana</source>
         <translation>Verdana</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="144"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="464"/>
         <source>Font size</source>
         <translation>Velikost písma</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="165"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="465"/>
         <source>Color palette</source>
         <translation>Barevná paleta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="173"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="466"/>
         <source>Default</source>
         <translation>Výchozí</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="178"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="467"/>
         <source>Almond</source>
         <translation>Almond</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="183"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="468"/>
         <source>Shades of blue</source>
         <translation>Odstíny modré</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="188"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="469"/>
         <source>Custom</source>
         <translation>Osobní</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="200"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="471"/>
         <source>Line spacing</source>
         <translation>Řádkování</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="227"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="472"/>
         <source>Border width</source>
         <translation>Šířka rámečku</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="271"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="474"/>
         <source>Template</source>
         <translation>Šablona</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="294"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="493"/>
         <source>Colors</source>
         <translation>Barvy</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="310"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="475"/>
         <source>Background</source>
         <translation>Pozadí</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="323"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="476"/>
         <source>color1</source>
         <translation>barva1</translation>
     </message>
@@ -11234,72 +10077,56 @@ ze vzduchu a následujících plynů:</translation>
         <location filename="../desktop-widgets/templateedit.ui" line="453"/>
         <location filename="../desktop-widgets/templateedit.ui" line="493"/>
         <location filename="../desktop-widgets/templateedit.ui" line="533"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="477"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="480"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="483"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="486"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="489"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="492"/>
         <source>Edit</source>
         <translation>Upravit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="350"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="478"/>
         <source>Table cells 1</source>
         <translation>Buňky tabulky 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="363"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="479"/>
         <source>color2</source>
         <translation>barva2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="390"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="481"/>
         <source>Table cells 2</source>
         <translation>Buňky tabulky 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="403"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="482"/>
         <source>color3</source>
         <translation>barva3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="430"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="484"/>
         <source>Text 1</source>
         <translation>Text 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="443"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="485"/>
         <source>color4</source>
         <translation>barva4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="470"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="487"/>
         <source>Text 2</source>
         <translation>Text 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="483"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="488"/>
         <source>color5</source>
         <translation>barva5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="510"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="490"/>
         <source>Borders</source>
         <translation>Okraje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="523"/>
-        <location filename="../subsurface/desktop-widgets/ui_templateedit.h" line="491"/>
         <source>color6</source>
         <translation>barva6</translation>
     </message>
@@ -11312,7 +10139,7 @@ ze vzduchu a následujících plynů:</translation>
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="497"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="498"/>
         <source>%1click to visit %2</source>
         <translation>%1klik k návštěvě %2</translation>
     </message>
@@ -11370,13 +10197,11 @@ ze vzduchu a následujících plynů:</translation>
     <name>URLDialog</name>
     <message>
         <location filename="../desktop-widgets/urldialog.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_urldialog.h" line="57"/>
         <source>Dialog</source>
         <translation>Dialog</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/urldialog.ui" line="52"/>
-        <location filename="../subsurface/desktop-widgets/ui_urldialog.h" line="58"/>
         <source>Enter URL for media files</source>
         <translation>Zadejte adresu (URL) souborů se záznamy</translation>
     </message>
@@ -11471,79 +10296,6 @@ Pokud nechcete, aby Subsurface pokračoval v kontrole, klikněte na Odmítnout.<
     </message>
 </context>
 <context>
-    <name>UserSurvey</name>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="192"/>
-        <source>User survey</source>
-        <translation>Uživatelský průzkum</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="193"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;We would love to learn more about our users, their preferences and their usage habits. Please spare a minute to fill out this form and submit it to the Subsurface team.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rádi bychom zjistili víc, o našich uživatelích, jejich preferencích a návicích. Prosíme věnujte chvíli vyplnění tohoto formuláře a odeslání týmu Subsurface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="194"/>
-        <source>What kind of diver are you?</source>
-        <translation>Jaký druh potápěče jste?</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="195"/>
-        <source>Technical diver</source>
-        <translation>Technický potápěč</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="196"/>
-        <source>Recreational diver</source>
-        <translation>Rekreační potápěč</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="197"/>
-        <source>Dive planner</source>
-        <translation>Plánovač ponorů</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="198"/>
-        <source>Where are you importing data from?</source>
-        <translation>Odkud nahráváte data?</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="199"/>
-        <source>Supported dive computer</source>
-        <translation>Podporovaný potápěčský počítač</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="200"/>
-        <source>Other software/sources</source>
-        <translation>Jiné programy/zdroje</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="201"/>
-        <source>Manually entering dives</source>
-        <translation>Ruční zadávání ponorů</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="202"/>
-        <source>Android/iPhone companion app</source>
-        <translation>Android/iPhone companion aplikace</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="203"/>
-        <source>Any suggestions? (in English)</source>
-        <translation>Návrhy? (Anglicky)</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="204"/>
-        <source>The following information about your system will also be submitted.</source>
-        <translation>Budou odeslány i následující údaje o vašem systému.</translation>
-    </message>
-    <message>
-        <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="205"/>
-        <source>Subsurface user survey</source>
-        <translation>Uživatelský průzkum Subsurface</translation>
-    </message>
-</context>
-<context>
     <name>VideoFrameExtractor</name>
     <message>
         <location filename="../core/videoframeextractor.cpp" line="93"/>
@@ -11573,59 +10325,51 @@ Pokud nechcete, aby Subsurface pokračoval v kontrole, klikněte na Odmítnout.<
     <name>WebServices</name>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="129"/>
         <source>Web service connection</source>
         <translation>Připojení internetové služby</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="25"/>
-        <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="130"/>
         <source>Status:</source>
         <translation>Stav:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="32"/>
-        <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="131"/>
         <source>Enter your ID here</source>
         <translation>Sem zadejte vaše ID</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="44"/>
-        <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="132"/>
         <source>Download</source>
         <translation>Stáhnout</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="68"/>
-        <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="133"/>
         <source>User ID</source>
         <translation>ID Uživatele</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="85"/>
-        <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="135"/>
         <source>Save user ID locally?</source>
         <translation>Uložit lokálně ID uživatele?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="92"/>
-        <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="136"/>
         <source>Password</source>
         <translation>Heslo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="106"/>
-        <location filename="../subsurface/desktop-widgets/ui_webservices.h" line="137"/>
         <source>Upload</source>
         <translation>Nahrát</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="81"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="80"/>
         <source>Operation timed out</source>
         <translation>Operace trvala příliš dlouho</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="102"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="101"/>
         <source>Transferring data...</source>
         <translation>Probíhá přenos dat...</translation>
     </message>
@@ -11779,7 +10523,7 @@ Průměr</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="816"/>
+        <location filename="../core/libdivecomputer.c" line="778"/>
         <source>Error parsing the header</source>
         <translation>Chyba při zpracování hlavičky</translation>
     </message>
@@ -11788,7 +10532,7 @@ Průměr</translation>
     <name>gettextFromC</name>
     <message>
         <location filename="../backend-shared/exportfuncs.cpp" line="251"/>
-        <location filename="../backend-shared/exportfuncs.cpp" line="289"/>
+        <location filename="../backend-shared/exportfuncs.cpp" line="288"/>
         <location filename="../core/save-html.c" line="490"/>
         <location filename="../core/save-html.c" line="579"/>
         <location filename="../core/worldmap-save.c" line="117"/>
@@ -11817,14 +10561,14 @@ Průměr</translation>
     <message>
         <location filename="../core/cochran.c" line="335"/>
         <location filename="../core/cochran.c" line="389"/>
-        <location filename="../core/import-csv.c" line="695"/>
+        <location filename="../core/import-csv.c" line="696"/>
         <location filename="../core/libdivecomputer.c" line="251"/>
         <source>ascent</source>
         <translation>výstup</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="341"/>
-        <location filename="../core/import-csv.c" line="673"/>
+        <location filename="../core/import-csv.c" line="674"/>
         <source>battery</source>
         <translation>baterie</translation>
     </message>
@@ -11851,7 +10595,7 @@ Průměr</translation>
         <location filename="../core/cochran.c" line="364"/>
         <location filename="../core/cochran.c" line="413"/>
         <location filename="../core/cochran.c" line="420"/>
-        <location filename="../core/import-csv.c" line="776"/>
+        <location filename="../core/import-csv.c" line="777"/>
         <location filename="../core/libdivecomputer.c" line="259"/>
         <location filename="../core/libdivecomputer.c" line="273"/>
         <location filename="../core/plannernotes.c" line="54"/>
@@ -12065,7 +10809,7 @@ Průměr</translation>
         <translation>[Chyba] Nedostatek paměti pro ponor %d. Zrušit zpracování.</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="640"/>
+        <location filename="../core/datatrak.c" line="639"/>
         <location filename="../core/import-divinglog.c" line="308"/>
         <location filename="../core/libdivecomputer.c" line="233"/>
         <location filename="../core/string-format.cpp" line="151"/>
@@ -12074,12 +10818,12 @@ Průměr</translation>
         <translation>neznámý</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="695"/>
+        <location filename="../core/datatrak.c" line="694"/>
         <source>[Error] File is not a DataTrak file. Aborted</source>
         <translation>[Chyba] Soubor není souborem DataTrak. Zrušeno</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="720"/>
+        <location filename="../core/datatrak.c" line="719"/>
         <source>Error: no dive</source>
         <translation>Chyba: žádný ponor</translation>
     </message>
@@ -12114,10 +10858,10 @@ Průměr</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/divelist.c" line="640"/>
+        <location filename="../core/divelist.c" line="648"/>
         <location filename="../core/equipment.c" line="201"/>
-        <location filename="../core/planner.c" line="1169"/>
-        <location filename="../core/planner.c" line="1172"/>
+        <location filename="../core/planner.c" line="1171"/>
+        <location filename="../core/planner.c" line="1174"/>
         <source>air</source>
         <translation>vzduch</translation>
     </message>
@@ -12179,8 +10923,8 @@ Průměr</translation>
     <message>
         <location filename="../core/equipment.c" line="86"/>
         <location filename="../core/equipment.c" line="205"/>
-        <location filename="../core/planner.c" line="1173"/>
-        <location filename="../core/planner.c" line="1176"/>
+        <location filename="../core/planner.c" line="1175"/>
+        <location filename="../core/planner.c" line="1178"/>
         <source>oxygen</source>
         <translation>kyslík</translation>
     </message>
@@ -12233,9 +10977,9 @@ Průměr</translation>
     <message>
         <location filename="../core/file.c" line="331"/>
         <location filename="../core/import-csv.c" line="124"/>
-        <location filename="../core/import-csv.c" line="348"/>
-        <location filename="../core/import-csv.c" line="511"/>
-        <location filename="../core/import-csv.c" line="853"/>
+        <location filename="../core/import-csv.c" line="349"/>
+        <location filename="../core/import-csv.c" line="512"/>
+        <location filename="../core/import-csv.c" line="854"/>
         <location filename="../core/ostctools.c" line="57"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Nepodařilo se přečíst &apos;%s&apos;</translation>
@@ -12619,53 +11363,48 @@ Průměr</translation>
         <translation>Seřizují se datové soubory</translation>
     </message>
     <message>
-        <location filename="../core/gpslocation.h" line="14"/>
-        <source>Waiting to aquire GPS location</source>
-        <translation>Čekání na získání GPS pozice</translation>
-    </message>
-    <message>
         <location filename="../core/import-csv.c" line="228"/>
         <source>No dive profile found from &apos;%s&apos;</source>
         <translation>Nenalezen žádný profil ponoru v &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="612"/>
+        <location filename="../core/import-csv.c" line="613"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>Nahrání Poseidon selhal: nelze číst &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="648"/>
+        <location filename="../core/import-csv.c" line="649"/>
         <source>Mouth piece position OC</source>
         <translation>Poloha náustku OC</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="652"/>
+        <location filename="../core/import-csv.c" line="653"/>
         <source>Mouth piece position CC</source>
         <translation>Poloha náustku CC</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="656"/>
+        <location filename="../core/import-csv.c" line="657"/>
         <source>Mouth piece position unknown</source>
         <translation>Poloha náustku neznámá</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="660"/>
+        <location filename="../core/import-csv.c" line="661"/>
         <source>Mouth piece position not connected</source>
         <translation>Poloha náustku nepřipojen</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="667"/>
+        <location filename="../core/import-csv.c" line="668"/>
         <source>Power off</source>
         <translation>Vypnout</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="717"/>
+        <location filename="../core/import-csv.c" line="718"/>
         <source>O₂ calibration failed</source>
         <translation>Kalibrace O₂ selhala</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="719"/>
-        <location filename="../core/import-csv.c" line="728"/>
+        <location filename="../core/import-csv.c" line="720"/>
+        <location filename="../core/import-csv.c" line="729"/>
         <source>O₂ calibration</source>
         <translation>Kalibrace O₂</translation>
     </message>
@@ -12756,119 +11495,119 @@ Průměr</translation>
         <translation>neplatné číslo události</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="628"/>
+        <location filename="../core/libdivecomputer.c" line="599"/>
         <source>Error parsing the datetime</source>
         <translation>Chyba při zpracování data a času</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="646"/>
+        <location filename="../core/libdivecomputer.c" line="618"/>
         <source>Dive %d: %s</source>
         <translation>Ponor číslo %d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="652"/>
+        <location filename="../core/libdivecomputer.c" line="624"/>
         <source>Error parsing the divetime</source>
         <translation>Chyba zpracování data a času ponoru</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="662"/>
+        <location filename="../core/libdivecomputer.c" line="634"/>
         <source>Error parsing the maxdepth</source>
         <translation>Chyba zpracování největší hloubky</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="676"/>
+        <location filename="../core/libdivecomputer.c" line="648"/>
         <source>Error parsing temperature</source>
         <translation>Chyba zpracování teploty</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="695"/>
+        <location filename="../core/libdivecomputer.c" line="667"/>
         <source>Error parsing the gas mix count</source>
         <translation>Chyba zpracování počtu dýchacích plynů</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="706"/>
+        <location filename="../core/libdivecomputer.c" line="678"/>
         <source>Error obtaining water salinity</source>
         <translation>Chyba zpracování salinity vody</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="715"/>
+        <location filename="../core/libdivecomputer.c" line="687"/>
         <source>Error obtaining surface pressure</source>
         <translation>Chyba zpracování tlaku na hladině</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="737"/>
+        <location filename="../core/libdivecomputer.c" line="709"/>
         <source>Error obtaining dive mode</source>
         <translation>Chyba při získávání potápěčského režimu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="759"/>
+        <location filename="../core/libdivecomputer.c" line="731"/>
         <source>Error parsing the gas mix</source>
         <translation>Chyba zpracování směsi plynu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="787"/>
+        <location filename="../core/libdivecomputer.c" line="759"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Nelze vytvořit parser pro %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="793"/>
+        <location filename="../core/libdivecomputer.c" line="765"/>
         <source>Error registering the data</source>
         <translation>Chyba registrace dat</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="823"/>
+        <location filename="../core/libdivecomputer.c" line="785"/>
         <source>Error parsing the samples</source>
         <translation>Chyba zpracování vzorků</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="832"/>
+        <location filename="../core/libdivecomputer.c" line="810"/>
         <source>Already downloaded dive at %s</source>
         <translation>Ponor již stažen v %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1072"/>
+        <location filename="../core/libdivecomputer.c" line="1012"/>
         <source>Event: waiting for user action</source>
         <translation>Událost: Čekání na uživatelský vstup</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1094"/>
+        <location filename="../core/libdivecomputer.c" line="1034"/>
         <source>model=%s firmware=%u serial=%u</source>
         <translation>model=%s firmware=%u serial=%u</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1159"/>
+        <location filename="../core/libdivecomputer.c" line="1087"/>
         <source>Error registering the event handler.</source>
         <translation>Chyba registrování ovladače události.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1164"/>
+        <location filename="../core/libdivecomputer.c" line="1092"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Chyba registrování ovladače zrušení.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1185"/>
+        <location filename="../core/libdivecomputer.c" line="1113"/>
         <source>Dive data import error</source>
         <translation>Chyba nahrání dat ponoru</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1475"/>
+        <location filename="../core/libdivecomputer.c" line="1403"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Potíže při inicializaci libdivecomputer</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1484"/>
+        <location filename="../core/libdivecomputer.c" line="1412"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Nelze otevřít %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1496"/>
+        <location filename="../core/libdivecomputer.c" line="1424"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
         <translation>Chyba při otevírání zařízení %s %s (%s).
 Pro odladění této záležitosti je většinou užitečné poslat vývojářům soubory se záznamy. Můžete je zkopírovat do schránky v dialogu O.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1498"/>
+        <location filename="../core/libdivecomputer.c" line="1426"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
@@ -12877,13 +11616,13 @@ Pro debugování této záležitosti je většinou užitečný log soubor libdiv
 Tento log soubor můžete vytvořit vybráním odpovídajícího checkboxu v stahovacím dialogu.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1507"/>
+        <location filename="../core/libdivecomputer.c" line="1435"/>
         <source>No new dives downloaded from dive computer</source>
         <translation>Z potápěčského počítače nebyl stažen žádný ponor</translation>
     </message>
     <message>
         <location filename="../core/load-git.c" line="186"/>
-        <location filename="../core/parse-xml.c" line="1208"/>
+        <location filename="../core/parse-xml.c" line="1205"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
         <translation>více GPS pozic pro tuto potápěčskou lokalitu; také %s
@@ -12891,19 +11630,19 @@ Tento log soubor můžete vytvořit vybráním odpovídajícího checkboxu v sta
     </message>
     <message>
         <location filename="../core/load-git.c" line="211"/>
-        <location filename="../core/parse.c" line="500"/>
+        <location filename="../core/parse.c" line="510"/>
         <source>additional name for site: %s
 </source>
         <translation>dodatečný název lokality: %s
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1858"/>
+        <location filename="../core/load-git.c" line="1865"/>
         <source>Load dives from local cache</source>
         <translation>Nahrát ponory s místní vyrovnávací paměti</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1862"/>
+        <location filename="../core/load-git.c" line="1869"/>
         <source>Successfully opened dive data</source>
         <translation>Úspěšně otevřena data ponoru</translation>
     </message>
@@ -12926,22 +11665,22 @@ Tento log soubor můžete vytvořit vybráním odpovídajícího checkboxu v sta
 </translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="1759"/>
+        <location filename="../core/parse-xml.c" line="1756"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Nepodařilo se zpracovat &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2357"/>
+        <location filename="../core/parse-xml.c" line="2354"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Nelze otevřít styl %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="892"/>
+        <location filename="../core/planner.c" line="894"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Nelze najít směs %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1177"/>
+        <location filename="../core/planner.c" line="1179"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
@@ -12975,9 +11714,9 @@ Tento log soubor můžete vytvořit vybráním odpovídajícího checkboxu v sta
         <location filename="../core/plannernotes.c" line="72"/>
         <location filename="../core/plannernotes.c" line="73"/>
         <location filename="../core/plannernotes.c" line="74"/>
-        <location filename="../core/qthelper.cpp" line="638"/>
-        <location filename="../core/qthelper.cpp" line="880"/>
-        <location filename="../core/qthelper.cpp" line="1371"/>
+        <location filename="../core/qthelper.cpp" line="637"/>
+        <location filename="../core/qthelper.cpp" line="879"/>
+        <location filename="../core/qthelper.cpp" line="1370"/>
         <location filename="../core/units.c" line="16"/>
         <source>bar</source>
         <translation>bar</translation>
@@ -13535,209 +12274,209 @@ EADD: %d%s / %.1fg/ℓ
         <translation>%s SAC:%.*f%s/min</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="76"/>
+        <location filename="../core/qthelper.cpp" line="75"/>
         <source>%1km</source>
         <translation>%1 km</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="78"/>
+        <location filename="../core/qthelper.cpp" line="77"/>
         <source>%1m</source>
         <translation>%1 m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="82"/>
+        <location filename="../core/qthelper.cpp" line="81"/>
         <source>%1mi</source>
         <translation>%1 mi</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="84"/>
+        <location filename="../core/qthelper.cpp" line="83"/>
         <source>%1yd</source>
         <translation>%1 yd</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="102"/>
-        <location filename="../core/qthelper.cpp" line="241"/>
+        <location filename="../core/qthelper.cpp" line="101"/>
+        <location filename="../core/qthelper.cpp" line="240"/>
         <source>N</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="102"/>
-        <location filename="../core/qthelper.cpp" line="242"/>
+        <location filename="../core/qthelper.cpp" line="101"/>
+        <location filename="../core/qthelper.cpp" line="241"/>
         <source>S</source>
         <translation>J</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="103"/>
-        <location filename="../core/qthelper.cpp" line="243"/>
+        <location filename="../core/qthelper.cpp" line="102"/>
+        <location filename="../core/qthelper.cpp" line="242"/>
         <source>E</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="103"/>
-        <location filename="../core/qthelper.cpp" line="244"/>
+        <location filename="../core/qthelper.cpp" line="102"/>
+        <location filename="../core/qthelper.cpp" line="243"/>
         <source>W</source>
         <translation>Z</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="533"/>
-        <location filename="../core/qthelper.cpp" line="548"/>
-        <location filename="../core/qthelper.cpp" line="792"/>
-        <location filename="../core/qthelper.cpp" line="1346"/>
+        <location filename="../core/qthelper.cpp" line="532"/>
+        <location filename="../core/qthelper.cpp" line="547"/>
+        <location filename="../core/qthelper.cpp" line="791"/>
+        <location filename="../core/qthelper.cpp" line="1345"/>
         <location filename="../core/units.c" line="103"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="536"/>
-        <location filename="../core/qthelper.cpp" line="550"/>
-        <location filename="../core/qthelper.cpp" line="794"/>
-        <location filename="../core/qthelper.cpp" line="1345"/>
+        <location filename="../core/qthelper.cpp" line="535"/>
+        <location filename="../core/qthelper.cpp" line="549"/>
+        <location filename="../core/qthelper.cpp" line="793"/>
+        <location filename="../core/qthelper.cpp" line="1344"/>
         <location filename="../core/units.c" line="108"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="562"/>
-        <location filename="../core/qthelper.cpp" line="572"/>
-        <location filename="../core/qthelper.cpp" line="847"/>
-        <location filename="../core/qthelper.cpp" line="1321"/>
+        <location filename="../core/qthelper.cpp" line="561"/>
+        <location filename="../core/qthelper.cpp" line="571"/>
+        <location filename="../core/qthelper.cpp" line="846"/>
+        <location filename="../core/qthelper.cpp" line="1320"/>
         <location filename="../core/units.c" line="163"/>
         <location filename="../qt-models/divetripmodel.cpp" line="186"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="564"/>
-        <location filename="../core/qthelper.cpp" line="574"/>
-        <location filename="../core/qthelper.cpp" line="849"/>
-        <location filename="../core/qthelper.cpp" line="1322"/>
+        <location filename="../core/qthelper.cpp" line="563"/>
+        <location filename="../core/qthelper.cpp" line="573"/>
+        <location filename="../core/qthelper.cpp" line="848"/>
+        <location filename="../core/qthelper.cpp" line="1321"/>
         <location filename="../core/units.c" line="159"/>
         <location filename="../qt-models/divetripmodel.cpp" line="188"/>
         <source>lbs</source>
         <translation>libra US</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="588"/>
-        <location filename="../core/qthelper.cpp" line="820"/>
+        <location filename="../core/qthelper.cpp" line="587"/>
+        <location filename="../core/qthelper.cpp" line="819"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="591"/>
-        <location filename="../core/qthelper.cpp" line="822"/>
+        <location filename="../core/qthelper.cpp" line="590"/>
+        <location filename="../core/qthelper.cpp" line="821"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="624"/>
+        <location filename="../core/qthelper.cpp" line="623"/>
         <location filename="../core/units.c" line="57"/>
         <source>ℓ</source>
         <translation>ℓ</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="626"/>
-        <location filename="../core/qthelper.cpp" line="1394"/>
+        <location filename="../core/qthelper.cpp" line="625"/>
+        <location filename="../core/qthelper.cpp" line="1393"/>
         <location filename="../core/units.c" line="62"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="641"/>
-        <location filename="../core/qthelper.cpp" line="882"/>
-        <location filename="../core/qthelper.cpp" line="1370"/>
+        <location filename="../core/qthelper.cpp" line="640"/>
+        <location filename="../core/qthelper.cpp" line="881"/>
+        <location filename="../core/qthelper.cpp" line="1369"/>
         <location filename="../core/units.c" line="20"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="647"/>
+        <location filename="../core/qthelper.cpp" line="646"/>
         <source>g/ℓ</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="652"/>
+        <location filename="../core/qthelper.cpp" line="651"/>
         <source>Fresh</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="653"/>
+        <location filename="../core/qthelper.cpp" line="652"/>
         <source>Brackish</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="654"/>
+        <location filename="../core/qthelper.cpp" line="653"/>
         <source>EN13319</source>
         <translation>EN13319</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="655"/>
+        <location filename="../core/qthelper.cpp" line="654"/>
         <source>Salt</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="656"/>
+        <location filename="../core/qthelper.cpp" line="655"/>
         <source>Use DC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="903"/>
-        <location filename="../core/qthelper.cpp" line="1273"/>
+        <location filename="../core/qthelper.cpp" line="902"/>
+        <location filename="../core/qthelper.cpp" line="1272"/>
         <source>AIR</source>
         <translation>VZDUCH</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="905"/>
+        <location filename="../core/qthelper.cpp" line="904"/>
         <source>EAN</source>
         <translation>EAN</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="980"/>
+        <location filename="../core/qthelper.cpp" line="979"/>
         <source>more than %1 days</source>
         <translation>víc než %1 dní</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1024"/>
-        <location filename="../core/qthelper.cpp" line="1029"/>
+        <location filename="../core/qthelper.cpp" line="1023"/>
+        <location filename="../core/qthelper.cpp" line="1028"/>
         <source>no dives</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../core/qthelper.cpp" line="1054"/>
+        <location filename="../core/qthelper.cpp" line="1053"/>
         <source>(%n dive(s))</source>
         <translation><numerusform>(%n ponor)</numerusform><numerusform>(%n ponory)</numerusform><numerusform>(%n ponorů)</numerusform><numerusform>(%n ponorů)</numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1273"/>
+        <location filename="../core/qthelper.cpp" line="1272"/>
         <source>OXYGEN</source>
         <translation>KYSLÍK</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1288"/>
+        <location filename="../core/qthelper.cpp" line="1287"/>
         <source>cyl.</source>
         <translation>lahev</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1393"/>
+        <location filename="../core/qthelper.cpp" line="1392"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1014"/>
+        <location filename="../core/save-git.c" line="1013"/>
         <source>Start saving data</source>
         <translation>Začít ukládat data</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1024"/>
+        <location filename="../core/save-git.c" line="1023"/>
         <source>Start saving dives</source>
         <translation>Začít ukládat ponory</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1057"/>
+        <location filename="../core/save-git.c" line="1056"/>
         <source>Done creating local cache</source>
         <translation>Vytvoření místní vyrovnávací paměti dokončeno</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1312"/>
+        <location filename="../core/save-git.c" line="1311"/>
         <source>Preparing to save data</source>
         <translation>Připravuje se uložit data</translation>
     </message>
@@ -14025,12 +12764,12 @@ EADD: %d%s / %.1fg/ℓ
         <translation>Status ponoru</translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="835"/>
+        <location filename="../core/save-xml.c" line="832"/>
         <source>Failed to save dives to %s (%s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="955"/>
+        <location filename="../core/save-xml.c" line="952"/>
         <source>Failed to save divesites to %s (%s)</source>
         <translation type="unfinished"/>
     </message>
@@ -14515,27 +13254,27 @@ Je Uemis Zurich správně zapojen?</translation>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="532"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="533"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation>Neukládat prázdný log do serveru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="156"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="155"/>
         <source>Invalid response from server</source>
         <translation>Neplatná odpověď serveru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="164"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="163"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Byl očekáván XML tag &apos;DiveDateReader&apos;, místo toho nalezeno &apos;%1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="210"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="209"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Očekávaný XML tag &apos;DiveDates&apos; nenalezen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="217"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="216"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Špatný formát XML odpovědi. Řádek %1: %2</translation>
     </message>
@@ -14560,7 +13299,7 @@ Je Uemis Zurich správně zapojen?</translation>
         <translation>Odstranit tento bod</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1275"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1278"/>
         <source>Cyl</source>
         <translation>Lahev</translation>
     </message>
@@ -14653,222 +13392,162 @@ Je Uemis Zurich správně zapojen?</translation>
         <translation>Subsurface-mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="291"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="289"/>
         <source>Dive list</source>
         <translation>Seznam potápění</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="302"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="300"/>
         <source>Dive management</source>
         <translation>Správa potápění</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="307"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="417"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="500"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="558"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="395"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="440"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="498"/>
         <source>Back</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="314"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="312"/>
         <source>Add dive manually</source>
         <translation>Ručně přidat ponor</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="326"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="324"/>
         <source>Download from DC</source>
         <translation>Stáhnout z potápěčského počítače</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="338"/>
-        <source>Apply GPS fixes</source>
-        <translation>Použít GPS pozice</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="358"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="336"/>
         <source>Manual sync with cloud</source>
         <translation>Ruční synchronizace se serverem</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="364"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="342"/>
         <source>Completed manual sync with cloud
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="372"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
         <source>Disable auto cloud sync</source>
         <translation>Zakázat automatickou synchronizaci se serverem</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="372"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
         <source>Enable auto cloud sync</source>
         <translation>Povolit automatickou synchronizaci se serverem</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="378"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="356"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Vypnutí automatické synchronizace se serverem způsobí uložení všech dat pouze lokálně. To může být velmi užitečné v situacích s omezeným nebo žádným přístupem k síti. Zvolte prosím &quot;Ručně synchronizovat se serverem&quot; pokud máte síťové připojení a chcete synchronizovat data se serverovým úložištěm.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="388"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
         <source>Dive summary</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="399"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="377"/>
         <source>Export</source>
         <translation>Uložení</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="411"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="389"/>
         <source>Location</source>
         <translation>Lokalita</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="433"/>
-        <source>Show GPS fixes</source>
-        <translation>Zobrazit GPS pozice</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="446"/>
-        <source>Clear GPS cache</source>
-        <translation>Vyčistit vyrovnávací paměť GPS</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="457"/>
-        <source>Disable background location service</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="457"/>
-        <source>Run background location service</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="473"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="413"/>
         <source>Statistics</source>
         <translation>Statistiky</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="482"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="495"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="435"/>
         <source>Help</source>
         <translation>Nápověda</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="507"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="447"/>
         <source>About</source>
         <translation>O</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="518"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="458"/>
         <source>Show user manual</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="527"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="467"/>
         <source>Ask for support</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="531"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="471"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="541"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="481"/>
         <source>Reset forgotten Subsurface Cloud password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="552"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
         <source>Developer</source>
         <translation>Vývojář</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="562"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="502"/>
         <source>App log</source>
         <translation>Aplikační záznam</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="569"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="509"/>
         <source>Test busy indicator (toggle)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="579"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="581"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="519"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="521"/>
         <source>Test notification text</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="585"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="525"/>
         <source>Theme information</source>
         <translation>Informace tématu</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="593"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="533"/>
         <source>Enable verbose logging (currently: %1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="595"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="535"/>
         <source>Not persistent</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="602"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="542"/>
         <source>Access local cloud cache dirs</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="610"/>
-        <source>Copy GPS to clipboard</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="670"/>
-        <source>Background location service active</source>
-        <translation>Lokalizační služba na pozadí aktivní</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="707"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="581"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="871"/>
-        <source>Location Service Enabled</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="877"/>
-        <source>This service collects location data to enable you to track the GPS coordinates of your dives. This will attempt to continue to collect location data, even if the app is closed or your phone screen locked.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="884"/>
-        <source>The location data are not used in any way, except when you apply the location data to the dives in your dive list on this device.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="890"/>
-        <source>By default, the location data are never transferred to the cloud or to any other service. However, in order to allow debugging of location data related issues, you can explicitly enable storing those location data in the cloud by enabling the corresponding option in the advanced settings.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="895"/>
-        <source>Understood</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="905"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="741"/>
         <source>Subsurface-mobile starting up</source>
         <translation type="unfinished"/>
     </message>
@@ -14877,25 +13556,21 @@ Je Uemis Zurich správně zapojen?</translation>
     <name>plannerDetails</name>
     <message>
         <location filename="../desktop-widgets/plannerDetails.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerDetails.h" line="92"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerDetails.ui" line="43"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerDetails.h" line="93"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dive plan details&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Podrobnosti plánu potápění&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerDetails.ui" line="59"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerDetails.h" line="94"/>
         <source>Print</source>
         <translation>Tisk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerDetails.ui" line="92"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerDetails.h" line="95"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -14912,25 +13587,21 @@ p, li { white-space: pre-wrap; }
     <name>plannerSettingsWidget</name>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="14"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="560"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="74"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="561"/>
         <source>Rates</source>
         <translation>Rychlosti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="95"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="562"/>
         <source>Ascent</source>
         <translation>Výstup</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="104"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="563"/>
         <source>below 75% avg. depth</source>
         <translation>Pod 75 % průměrné hloubky</translation>
     </message>
@@ -14940,47 +13611,36 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="145"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="162"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="206"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="564"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="566"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="568"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="570"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="573"/>
         <source>m/min</source>
         <translation> m/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="121"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="565"/>
         <source>75% to 50% avg. depth</source>
         <translation>75 % až 50 % průměrné hloubky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="138"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="567"/>
         <source>50% avg. depth to 6m</source>
         <translation>50 % průměrné hloubky do 6 m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="155"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="569"/>
         <source>6m to surface</source>
         <translation>6 m na povrch</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="175"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="571"/>
         <source>Descent</source>
         <translation>Sestup</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="187"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="572"/>
         <source>surface to the bottom</source>
         <translation>Od hladiny na dno</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="240"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="574"/>
         <source>Planning</source>
         <translation>Plánování</translation>
     </message>
@@ -14988,41 +13648,32 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="261"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="690"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="719"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="575"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="606"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="608"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="293"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="578"/>
         <source>Postpone gas change if a stop is not required</source>
         <translation>Odložit změnu plynu, pokud není vyžadována zastávka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="296"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="580"/>
         <source>Only switch at required stops</source>
         <translation>Přepínat pouze na vyžadovaných zastávkách</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="303"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="589"/>
         <source>Last stop at 6m</source>
         <translation>Poslední zastávka v 6 m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="310"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="600"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="320"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="386"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="583"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="594"/>
         <source>%</source>
         <translation>%</translation>
     </message>
@@ -15030,86 +13681,71 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="333"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="536"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="821"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="587"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="643"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="352"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="586"/>
         <source>Plan backgas breaks</source>
         <translation>Plánovat vzduchové přestávky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="372"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="585"/>
         <source>Min. switch duration O₂% below 100%</source>
         <translation>Nejkratší doba přepnutí O₂% pod 100%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="379"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="584"/>
         <source>Drop to first depth</source>
         <translation>Přímý sestup k první hloubce</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="399"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="582"/>
         <source>GFLow</source>
         <translation>GFLow</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="409"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="581"/>
         <source>GFHigh</source>
         <translation>GFHigh</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="419"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="591"/>
         <source>Maximize bottom time allowed by gas and no decompression limits</source>
         <translation>Maximalizovat čas na dně povolený plynem a ne dekompresními limity</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="422"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="593"/>
         <source>Recreational mode</source>
         <translation>Rekreační režim</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="429"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="599"/>
         <source>Conservatism level</source>
         <translation>Úroveň konzervatismu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="439"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="595"/>
         <source>VPM-B deco</source>
         <translation>VPM-B dekomprese</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="449"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="598"/>
         <source>Safety stop</source>
         <translation>Bezpečnostní zastávka</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="495"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="602"/>
         <source>Dive mode</source>
         <translation>Režim potápění</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="502"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="596"/>
         <source>Bühlmann deco</source>
         <translation>Bühlmann dekomprese</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="512"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="597"/>
         <source>Reserve gas</source>
         <translation>Záložní plyn</translation>
     </message>
@@ -15125,141 +13761,117 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="546"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="603"/>
         <source>Gas options</source>
         <translation>Nastavení směsi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="567"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="616"/>
         <source>Notes</source>
         <translation>Poznámky</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="588"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="617"/>
         <source>Verbatim dive plan</source>
         <translation>Podrobný plán ponoru</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="595"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="619"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
         <translation>Zobrazit v plánu ponoru přechody nebo je považovat za implicitní</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="598"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="621"/>
         <source>Display transitions in deco</source>
         <translation>Zobrazit přechody v dekompresi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="605"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="623"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
         <translation>Zobrazit v plánu ponoru časy konců zastávek (absolutní čas)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="608"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="625"/>
         <source>Display runtime</source>
         <translation>Zobrazit časy konců</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="618"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="627"/>
         <source>In dive plan, show duration (relative time) of stops</source>
         <translation>Zobrazit v plánu ponoru trvání zastávek (relativní čas)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="621"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="629"/>
         <source>Display segment duration</source>
         <translation>Zobrazit trvání segmentu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="631"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="631"/>
         <source>Compute variations of plan (performance cost)</source>
         <translation>Spočítat odchylky plánu (výpočetně náročnější)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="634"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="633"/>
         <source>Display plan variations</source>
         <translation>Zobrazit odchylky plánu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="644"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="706"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="604"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="607"/>
         <source>ℓ/min</source>
         <translation> ℓ/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="657"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="605"/>
         <source>Deco SAC</source>
         <translation>SAC při dekompresi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="735"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="610"/>
         <source>Used to calculate best mix. Select best mix depth in &apos;Available gases&apos; table by entering gas depth, followed by &quot;B&quot; (best trimix mix) or &quot;BN&quot; (best nitrox mix)</source>
         <translation>Použito pro výpočet nejlepší směsi. Vyberte hloubku pro nejlepší směs v tabulce „Dostupné plyny“ zadáním hloubky plynu, následovaným „B“ (nejlepší trimix směs) nebo „BN“ (nejlepší nitrox směs)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="738"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="612"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="754"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="613"/>
         <source>Bottom SAC</source>
         <translation>SAC na dně</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="761"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="614"/>
         <source>Bottom pO₂</source>
         <translation>pO₂ na dně</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="768"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="615"/>
         <source>Best mix END</source>
         <translation>Nejlepší směs END</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="775"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="634"/>
         <source>Deco pO₂</source>
         <translation>pO₂ při dekompresi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="782"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="635"/>
         <source>SAC factor</source>
         <translation>SAC faktor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="789"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="637"/>
         <source>Used to calculate minimum gas. Consider two divers with possibly increased SAC after OoG event.</source>
         <translation>Použito pro výpočet minima plynu. Zvažte dva ponory s případně zvýšeným SAS po události došel plyn.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="811"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="639"/>
         <source>Problem solving time</source>
         <translation>Čas řešení problému</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="818"/>
-        <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="641"/>
         <source>Used to calculate minimum gas. Additional time at max. depth after OoG event.</source>
         <translation>Použito k výpočtu minima plynu. Přidaný čas v maximální hloubce po události došel plyn.</translation>
     </message>
@@ -15277,22 +13889,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>uploadDiveLogsDE</name>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="54"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="55"/>
         <source>Cannot prepare dives, none selected?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="71"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="72"/>
         <source>building zip file to upload</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="76"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="77"/>
         <source>Stylesheet to export to divelogs.de is not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="86"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="87"/>
         <source>Failed to create zip file for upload: %s</source>
         <translation>Nepodařilo se vytvořit soubor s archivem ve formátu zip pro nahrání: %s</translation>
     </message>
@@ -15302,48 +13914,48 @@ p, li { white-space: pre-wrap; }
         <translation>vnitřní chyba</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="159"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="161"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
         <translation>Převod ponoru %1 do formátu divelogs.de selhal</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="187"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="189"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
         <translation>chyba zápisu zip souboru: %s zip chyba %d systémová chyba %d - %s</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="213"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="222"/>
         <source>Uploading dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="294"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="307"/>
         <source>Upload failed</source>
         <translation>Nahrávání selhalo</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="298"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="311"/>
         <source>Upload successful</source>
         <translation>Nahrávání uspěšně dokončeno</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="303"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="316"/>
         <source>Login failed</source>
         <translation>Přihlášení se nezdařilo</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="309"/>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="310"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="322"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="323"/>
         <source>Cannot parse response</source>
         <translation>Odpověď nelze zpracovat</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="323"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="337"/>
         <source>divelogs.de not responding</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="336"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="351"/>
         <source>network error %1</source>
         <translation type="unfinished"/>
     </message>
@@ -15351,17 +13963,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>uploadDiveShare</name>
     <message>
-        <location filename="../core/uploadDiveShare.cpp" line="85"/>
+        <location filename="../core/uploadDiveShare.cpp" line="84"/>
         <source>Upload successful</source>
         <translation>Nahrávání uspěšně dokončeno</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveShare.cpp" line="97"/>
+        <location filename="../core/uploadDiveShare.cpp" line="96"/>
         <source>dive-share.com not responding</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveShare.cpp" line="110"/>
+        <location filename="../core/uploadDiveShare.cpp" line="109"/>
         <source>network error %1</source>
         <translation type="unfinished"/>
     </message>

@@ -2155,95 +2155,95 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1364"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1365"/>
         <source>Backup dive computer settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1365"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1386"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1366"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1387"/>
         <source>Backup files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1369"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1370"/>
         <source>XML backup error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1370"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1371"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1373"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1374"/>
         <source>Backup succeeded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1374"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1375"/>
         <source>Your settings have been saved to: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1385"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1386"/>
         <source>Restore dive computer settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1391"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
         <source>XML restore error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1393"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1396"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1397"/>
         <source>Restore succeeded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1397"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1398"/>
         <source>Your settings have been restored successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1407"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1408"/>
         <source>Select firmware file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1408"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1409"/>
         <source>All files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1462"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1463"/>
         <source>Choose file for dive computer download logfile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1463"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1464"/>
         <source>Log files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1488"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1489"/>
         <source>Connecting to device...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1514"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1515"/>
         <source>Connected to device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1534"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1535"/>
         <source>Disconnected from device</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2408,65 +2408,65 @@
 <context>
     <name>DiveComponentSelection</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="345"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="346"/>
         <source>Dive site: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="347"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="348"/>
         <source>Dive master: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="349"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="350"/>
         <source>Buddy: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="351"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="352"/>
         <source>Rating: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="353"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="354"/>
         <source>Visibility: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="355"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="356"/>
         <source>Notes:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="357"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="358"/>
         <source>Suit: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="359"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="360"/>
         <source>Tags: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="369"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="370"/>
         <source>Cylinders:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="377"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="378"/>
         <source>Weights:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="384"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="385"/>
         <source>Dive number: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="386"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="387"/>
         <source>Date / time: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -7997,182 +7997,182 @@ Please export this template to a different file.</source>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="369"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="370"/>
         <source>Open local dive data file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="391"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="392"/>
         <source>Opening local data file failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="409"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="410"/>
         <source>Processing %1 dives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="411"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="412"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="419"/>
         <source>Incorrect cloud credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="551"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="552"/>
         <source>working in no-cloud mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="555"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="556"/>
         <source>Error parsing local storage, giving up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="565"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="566"/>
         <source>no cloud credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="566"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="646"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="567"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="647"/>
         <source>Please enter valid cloud credentials.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="607"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="613"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="614"/>
         <source>Invalid format for email address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="654"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="655"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="666"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="667"/>
         <source>Testing cloud credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="683"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="684"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="689"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="690"/>
         <source>Incorrect email / password combination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="694"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="695"/>
         <source>Cloud credentials require verification PIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="697"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
         <source>Incorrect PIN, please try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="702"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="703"/>
         <source>PIN accepted, credentials verified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="711"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="712"/>
         <source>Cloud storage error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="756"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="757"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="804"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="805"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="824"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="825"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="998"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="999"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1000"/>
         <source>h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="998"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="999"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1000"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1001"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="998"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="999"/>
         <source>sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1118"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1119"/>
         <source>weight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1414"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1415"/>
         <source>[%1]Changes saved:&apos;%2&apos;.
 %1 possible via context menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1416"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1417"/>
         <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1416"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1417"/>
         <source>Undo: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1418"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1419"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1438"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1439"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1777"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1778"/>
         <source>no default cylinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2245"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2236"/>
         <source>(unsaved changes in memory)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2247"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2238"/>
         <source>(changes synced locally)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2248"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2239"/>
         <source>(synced with cloud)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8669,89 +8669,89 @@ Please report DCs that need this setting</source>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
-        <source>Shift times of image(s) by</source>
+        <source>Manually shift times of image(s) by hours:minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="95"/>
-        <source>h:mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="105"/>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
         <source>Earlier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="112"/>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="51"/>
         <source>Later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="128"/>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
+        <source>Use camera sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>
+        <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="90"/>
+        <source>Determine camera time offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="93"/>
+        <source>Select image of divecomputer showing time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="115"/>
+        <source>Which date and time are displayed on the image?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="163"/>
         <source>Warning!
 Not all media files have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="137"/>
+        <location filename="../desktop-widgets/shiftimagetimes.ui" line="188"/>
         <source>Load media files even if the time does not match the dive time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="186"/>
-        <source>To compute the offset between the clocks of your dive computer and your camera use your camera to take a picture of your dive compuer displaying the current time. Download that image to your computer and press this button.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="196"/>
-        <source>Determine camera time offset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="199"/>
-        <source>Select image of divecomputer showing time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/shiftimagetimes.ui" line="221"/>
-        <source>Which date and time are displayed on the image?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="138"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="129"/>
         <source>Open image file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="140"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="131"/>
         <source>Image files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="221"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="219"/>
         <source>Selected dive date/time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="223"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="221"/>
         <source>First selected dive date/time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="224"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="222"/>
         <source>Last selected dive date/time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="226"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="224"/>
         <source>
 Files with inappropriate date/time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="236"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="234"/>
         <source>No Exif date/time found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10196,7 +10196,7 @@ mixed from Air and using:
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="497"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="498"/>
         <source>%1click to visit %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10569,7 +10569,7 @@ Maximum</source>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="787"/>
+        <location filename="../core/libdivecomputer.c" line="778"/>
         <source>Error parsing the header</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11545,120 +11545,120 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="617"/>
+        <location filename="../core/libdivecomputer.c" line="618"/>
         <source>Dive %d: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="623"/>
+        <location filename="../core/libdivecomputer.c" line="624"/>
         <source>Error parsing the divetime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="633"/>
+        <location filename="../core/libdivecomputer.c" line="634"/>
         <source>Error parsing the maxdepth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="647"/>
+        <location filename="../core/libdivecomputer.c" line="648"/>
         <source>Error parsing temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="666"/>
+        <location filename="../core/libdivecomputer.c" line="667"/>
         <source>Error parsing the gas mix count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="677"/>
+        <location filename="../core/libdivecomputer.c" line="678"/>
         <source>Error obtaining water salinity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="686"/>
+        <location filename="../core/libdivecomputer.c" line="687"/>
         <source>Error obtaining surface pressure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="708"/>
+        <location filename="../core/libdivecomputer.c" line="709"/>
         <source>Error obtaining dive mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="730"/>
+        <location filename="../core/libdivecomputer.c" line="731"/>
         <source>Error parsing the gas mix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="758"/>
+        <location filename="../core/libdivecomputer.c" line="759"/>
         <source>Unable to create parser for %s %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="764"/>
+        <location filename="../core/libdivecomputer.c" line="765"/>
         <source>Error registering the data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="794"/>
+        <location filename="../core/libdivecomputer.c" line="785"/>
         <source>Error parsing the samples</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="803"/>
+        <location filename="../core/libdivecomputer.c" line="810"/>
         <source>Already downloaded dive at %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1042"/>
+        <location filename="../core/libdivecomputer.c" line="1012"/>
         <source>Event: waiting for user action</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1064"/>
+        <location filename="../core/libdivecomputer.c" line="1034"/>
         <source>model=%s firmware=%u serial=%u</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1129"/>
+        <location filename="../core/libdivecomputer.c" line="1087"/>
         <source>Error registering the event handler.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1134"/>
+        <location filename="../core/libdivecomputer.c" line="1092"/>
         <source>Error registering the cancellation handler.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1155"/>
+        <location filename="../core/libdivecomputer.c" line="1113"/>
         <source>Dive data import error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1445"/>
+        <location filename="../core/libdivecomputer.c" line="1403"/>
         <source>Unable to create libdivecomputer context</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1454"/>
+        <location filename="../core/libdivecomputer.c" line="1412"/>
         <source>Unable to open %s %s (%s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1466"/>
+        <location filename="../core/libdivecomputer.c" line="1424"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1468"/>
+        <location filename="../core/libdivecomputer.c" line="1426"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1477"/>
+        <location filename="../core/libdivecomputer.c" line="1435"/>
         <source>No new dives downloaded from dive computer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12471,22 +12471,22 @@ EADD: %d%s / %.1fg/ℓ
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1010"/>
+        <location filename="../core/save-git.c" line="1013"/>
         <source>Start saving data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1020"/>
+        <location filename="../core/save-git.c" line="1023"/>
         <source>Start saving dives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1053"/>
+        <location filename="../core/save-git.c" line="1056"/>
         <source>Done creating local cache</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1308"/>
+        <location filename="../core/save-git.c" line="1311"/>
         <source>Preparing to save data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12774,12 +12774,12 @@ EADD: %d%s / %.1fg/ℓ
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="829"/>
+        <location filename="../core/save-xml.c" line="832"/>
         <source>Failed to save dives to %s (%s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="949"/>
+        <location filename="../core/save-xml.c" line="952"/>
         <source>Failed to save divesites to %s (%s)</source>
         <translation type="unfinished"></translation>
     </message>
