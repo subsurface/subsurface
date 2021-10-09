@@ -471,8 +471,7 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 	QFlags<Qt::AlignmentFlag> alignVar = Qt::AlignTop;
 	std::vector<QFlags<Qt::AlignmentFlag>> align(pInfo->nr_cylinders);
 
-	double axisRange = (vAxis.maximum() - vAxis.minimum())/1000;	// Convert axis pressure range to bar
-	double axisLog = log10(log10(axisRange));
+	double labelHeight = DiveTextItem::fontHeight(dpr, 1.0);
 
 	for (int i = from; i < to; i++) {
 		const struct plot_data *entry = pInfo->entry + i;
@@ -484,17 +483,11 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 				continue;
 
 			if (!seen_cyl[cyl]) {
-				double value_y_offset, label_y_offset;
-
 				// Magic Y offset depending on whether we're aliging
 				// the top of the text or the bottom of the text to
 				// the pressure line.
-				value_y_offset = -0.5;
-				if (alignVar & Qt::AlignTop) {
-					label_y_offset = 5 * axisLog;
-				} else {
-					label_y_offset = -7 * axisLog;
-				}
+				double value_y_offset = -0.5;
+				double label_y_offset = alignVar & Qt::AlignTop ? labelHeight : -labelHeight;
 				plotPressureValue(mbar, entry->sec, alignVar, value_y_offset);
 				plotGasValue(mbar, entry->sec, get_cylinder(d, cyl)->gasmix, alignVar, label_y_offset);
 				seen_cyl[cyl] = true;
@@ -523,7 +516,7 @@ void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::Alignm
 	int pressure = get_pressure_units(mbar, &unit);
 	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
 	text->set(QString("%1%2").arg(pressure).arg(unit), getColor(PRESSURE_TEXT));
-	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + pressure_offset );
+	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + pressure_offset);
 	texts.push_back(text);
 }
 
@@ -532,7 +525,7 @@ void DiveGasPressureItem::plotGasValue(int mbar, int sec, struct gasmix gasmix, 
 	QString gas = get_gas_string(gasmix);
 	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
 	text->set(gas, getColor(PRESSURE_TEXT));
-	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + gasname_offset );
+	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + gasname_offset);
 	texts.push_back(text);
 }
 
