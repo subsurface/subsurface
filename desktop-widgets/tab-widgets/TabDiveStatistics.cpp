@@ -75,7 +75,7 @@ void TabDiveStatistics::updateData()
 	stats_t stats_selection;
 	calculate_stats_selected(&stats_selection);
 	clear();
-	if (amount_selected > 1) {
+	if (amount_selected > 1 && stats_selection.selection_size >= 1) {
 		ui->depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true));
 		ui->depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, true));
 		ui->depthLimits->setAverage(get_depth_string(stats_selection.combined_max_depth.mm / stats_selection.selection_size, true));
