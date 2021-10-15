@@ -2,6 +2,15 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 5.0.4
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- desktop: fix potential crash when selecting multiple dives marked invalid
+- picture import: better support for large time stamp deltas
+- planner: fix a bug setting the MND for gasmix with 21% oxygen
+- core: fix off-by-one causing incorrect profile display #3184
+- core: due to a bug in 5.0.3 certain dive logs were incorrectly stored and couldn't subsequently be read back
+- core: fix potential crashes with very complex XML files
+
 New in _Subsurface_ 5.0.3
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - Correct OTU and CNS calculations for planned bailout
