@@ -8618,7 +8618,7 @@ Por favor informe-nos sobre computadores de mergulho que precisem desta configur
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
         <source>Manually shift times of image(s) by hours:minutes</source>
-        <translation type="unfinished"/>
+        <translation>Ajustar manualmente as horas das imagens (hh:mm)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
@@ -8633,7 +8633,7 @@ Por favor informe-nos sobre computadores de mergulho que precisem desta configur
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
         <source>Use camera sync</source>
-        <translation type="unfinished"/>
+        <translation>Usar sincronização com a câmara</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>

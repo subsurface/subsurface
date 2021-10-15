@@ -2414,7 +2414,7 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="385"/>
         <source>Dive number: </source>
-        <translation type="unfinished"/>
+        <translation>TG nummer:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="387"/>
@@ -7894,12 +7894,12 @@ Bitte mit einem neuen Dateinamen exportieren.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1452"/>
         <source>Edit nickname</source>
-        <translation type="unfinished"/>
+        <translation>Namen bearbeiten</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1453"/>
         <source>Set new nickname for %1 (serial %2):</source>
-        <translation type="unfinished"/>
+        <translation>Neuen Namen für %1 (Seriennummer %2) setzen:</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1464"/>
@@ -8616,7 +8616,7 @@ Bitte melden Sie TC, die diese Einstellung benötigen</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
         <source>Manually shift times of image(s) by hours:minutes</source>
-        <translation type="unfinished"/>
+        <translation>Zeit von Bildern um Stunden:Minuten verschieben</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
@@ -8631,7 +8631,7 @@ Bitte melden Sie TC, die diese Einstellung benötigen</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
         <source>Use camera sync</source>
-        <translation type="unfinished"/>
+        <translation>Mit Kamera synchronisieren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>
@@ -9354,27 +9354,27 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Einschränkung</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="110"/>
         <source>Restrict to selection</source>
-        <translation type="unfinished"/>
+        <translation>Auf Auswahl einschränken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="117"/>
         <source>Reset restriction</source>
-        <translation type="unfinished"/>
+        <translation>Einschränkung aufheben</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="154"/>
         <source>Analyzing all dives</source>
-        <translation type="unfinished"/>
+        <translation>Alle Tauchgänge analysieren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="156"/>
         <source>Analyzing subset (%L1) dives</source>
-        <translation type="unfinished"/>
+        <translation>Teil der Tauchgänge (%L1) analysieren</translation>
     </message>
 </context>
 <context>
@@ -9407,7 +9407,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2021&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2021&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -9455,13 +9455,14 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="172"/>
         <source>Remove cylinder?</source>
-        <translation type="unfinished"/>
+        <translation>Flasche entfernen?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="173"/>
         <source>The deleted cylinder has sensor readings, which will be lost.
 Do you want to continue?</source>
-        <translation type="unfinished"/>
+        <translation>Die gelöschte Flasche hat Sensordaten, die verworfen werden.
+Trotzdem weiter?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="202"/>
@@ -12198,7 +12199,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1541"/>
         <source>Calculated ceiling %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Berechnete Ceiling %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1547"/>
@@ -13260,7 +13262,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
         <source>Exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Exportiere...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>

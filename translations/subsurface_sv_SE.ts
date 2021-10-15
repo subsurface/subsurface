@@ -8621,7 +8621,7 @@ Rapportera gärna DC som kräver den här inställningen</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
         <source>Manually shift times of image(s) by hours:minutes</source>
-        <translation type="unfinished"/>
+        <translation>Manuellt byte av tid för bilder till timmar:minuter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
@@ -8636,7 +8636,7 @@ Rapportera gärna DC som kräver den här inställningen</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
         <source>Use camera sync</source>
-        <translation type="unfinished"/>
+        <translation>Använd kamerasynkronisering</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>

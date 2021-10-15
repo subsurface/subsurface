@@ -7160,7 +7160,7 @@ Als uw apparaat Bluetooth gebruikt, doe dezelfde voorbereidingen als voor het do
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="75"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
-        <translation>Om een nieuwe taal te laden dient u Subsurface te herstarten.</translation>
+        <translation>Om een nieuwe taal in te stellen dient u Subsurface te herstarten.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="97"/>
@@ -7703,7 +7703,7 @@ Zie http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="92"/>
         <source>Print in color</source>
-        <translation>Afdrukken in kleur</translation>
+        <translation>In kleur afdrukken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="120"/>
@@ -8617,12 +8617,12 @@ Rapporteer a.u.b. DC&apos;s die deze instelling nodig hebben</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="23"/>
         <source>Shift selected image times</source>
-        <translation>Geselecteerde tijdstippen verschuiven</translation>
+        <translation>Tijdstippen van geselecteerde afbeeldingen verschuiven</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
         <source>Manually shift times of image(s) by hours:minutes</source>
-        <translation type="unfinished"/>
+        <translation>Tijdstippen van afbeelding(en) handmatig verschuiven met uren:minuten</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
@@ -8637,7 +8637,7 @@ Rapporteer a.u.b. DC&apos;s die deze instelling nodig hebben</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
         <source>Use camera sync</source>
-        <translation type="unfinished"/>
+        <translation>Camera sync gebruiken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>
@@ -8647,7 +8647,7 @@ Rapporteer a.u.b. DC&apos;s die deze instelling nodig hebben</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="90"/>
         <source>Determine camera time offset</source>
-        <translation>Bereken tijdsverschil met camera</translation>
+        <translation>Tijdsverschil met camera berekenen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="93"/>
@@ -8715,7 +8715,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="23"/>
         <source>Shift selected dive times</source>
-        <translation>Geselecteerde tijdstippen verschuiven</translation>
+        <translation>Geselecteerde duik tijdstippen verschuiven</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shifttimes.ui" line="49"/>
@@ -9928,8 +9928,8 @@ Do you want to continue?</source>
         <source>These gases could be
 mixed from Air and using:
 </source>
-        <translation>Deze gassen kunnen bereid
-worden uit lucht en:
+        <translation>Deze gassen kunnen worden
+gemengd uit lucht en:
 </translation>
     </message>
     <message>
@@ -9980,7 +9980,7 @@ worden uit lucht en:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="14"/>
         <source>Edit template</source>
-        <translation>Bewerk sjabloon</translation>
+        <translation>Sjabloon bewerken</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="37"/>

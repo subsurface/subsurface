@@ -8622,7 +8622,7 @@ Por favor, reporta ordenadores que necesiten este ajuste.</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
         <source>Manually shift times of image(s) by hours:minutes</source>
-        <translation type="unfinished"/>
+        <translation>Modificar manualmente la hora del medio(s) en horas:minutos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
@@ -8637,7 +8637,7 @@ Por favor, reporta ordenadores que necesiten este ajuste.</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
         <source>Use camera sync</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar con la cámara</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>

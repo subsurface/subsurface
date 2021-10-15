@@ -628,7 +628,7 @@
     <message>
         <location filename="../commands/command_device.cpp" line="15"/>
         <source>Set nickname of device %1 (serial %2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>Aseta laitteen %1 (sarjanumero %2) lempinimi: %3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="404"/>
@@ -7832,7 +7832,7 @@ Tallenna muokkauksesi eri nimelle.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1320"/>
         <source>Rename this dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Nimeä sukellustietokone</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1335"/>
@@ -7898,12 +7898,12 @@ Tallenna muokkauksesi eri nimelle.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1452"/>
         <source>Edit nickname</source>
-        <translation type="unfinished"/>
+        <translation>Muokkaa lempinimeä</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1453"/>
         <source>Set new nickname for %1 (serial %2):</source>
-        <translation type="unfinished"/>
+        <translation>Aseta uusi lempinimi laitteelle %1 (sarjanumero %2):</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1464"/>
@@ -8621,7 +8621,7 @@ tarvitsevat tämän asetuksen</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
         <source>Manually shift times of image(s) by hours:minutes</source>
-        <translation type="unfinished"/>
+        <translation>Muuta kuvien aikaa tuntia:minuuttia</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
@@ -8636,7 +8636,7 @@ tarvitsevat tämän asetuksen</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
         <source>Use camera sync</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoi kamera</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>
@@ -9459,13 +9459,14 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="172"/>
         <source>Remove cylinder?</source>
-        <translation type="unfinished"/>
+        <translation>Poistetaanko säiliö?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="173"/>
         <source>The deleted cylinder has sensor readings, which will be lost.
 Do you want to continue?</source>
-        <translation type="unfinished"/>
+        <translation>Poistettavalle säiliölle on painetietoja, jotka häviävät.
+Haluatk jatkaa?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="202"/>

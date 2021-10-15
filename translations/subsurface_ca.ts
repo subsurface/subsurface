@@ -8626,7 +8626,7 @@ busseig. Informeu dels que necessitin aquest ajustament.</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
         <source>Manually shift times of image(s) by hours:minutes</source>
-        <translation type="unfinished"/>
+        <translation>Desplaça manualment el temps de la/es imatge/s per hores:minuts</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
@@ -8641,7 +8641,7 @@ busseig. Informeu dels que necessitin aquest ajustament.</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
         <source>Use camera sync</source>
-        <translation type="unfinished"/>
+        <translation>Empra la sincronització de la càmera</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>
