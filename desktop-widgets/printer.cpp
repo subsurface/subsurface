@@ -9,20 +9,39 @@
 #include <algorithm>
 #include <QPainter>
 #include <QPrinter>
+#ifdef USE_WEBENGINE
+#include <QtWebEngineWidgets>
+#else
 #include <QtWebKitWidgets>
 #include <QWebElementCollection>
 #include <QWebElement>
+#endif
 #include "profile-widget/profilewidget2.h"
 
 Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner) :
 	paintDevice(paintDevice),
+#ifdef USE_WEBENGINE
+	webView(new QWebEngineView),
+#else
 	webView(new QWebView),
+#endif
 	printOptions(printOptions),
 	templateOptions(templateOptions),
 	printMode(printMode),
 	inPlanner(inPlanner),
 	done(0)
 {
+//	this->paintDevice = paintDevice;
+//	this->printOptions = printOptions;
+//	this->templateOptions = templateOptions;
+//	this->printMode = printMode;
+//	dpi = 0;
+//	done = 0;
+//#ifdef USE_WEBENGINE
+//	webView = new QWebEngineView();
+//#else
+//	webView = new QWebView();
+//#endif
 }
 
 Printer::~Printer()
@@ -66,6 +85,7 @@ void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &view
 void Printer::flowRender()
 {
 	// add extra padding at the bottom to pages with height not divisible by view port
+#ifndef USE_WEBENGINE
 	int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
 	QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
 	webView->page()->mainFrame()->findFirstElement("body").setAttribute("style", styleString);
@@ -120,6 +140,9 @@ void Printer::flowRender()
 	webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
 
 	painter.end();
+#else
+	// FIX ME
+#endif
 }
 
 void Printer::render(int pages)
@@ -143,6 +166,9 @@ void Printer::render(int pages)
 	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 
 	// get all refereces to diveprofile class in the Html template
+#ifdef USE_WEBENGINE
+	//FIX ME
+#else
 	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
 
 	QSize originalSize = profile->size();
@@ -180,13 +206,19 @@ void Printer::render(int pages)
 			static_cast<QPrinter*>(paintDevice)->newPage();
 	}
 	painter.end();
+#endif
 
 	// return profle settings
 	profile->setFrameStyle(profileFrameStyle);
 	profile->setPrintMode(false);
 	profile->setFontPrintScale(fontScale);
 	profile->setToolTipVisibile(true);
+#ifdef USE_WEBENGINE
+	//FIXME
+#else
 	profile->resize(originalSize);
+#endif
+//	qPrefDisplay::set_animation_speed(animationOriginal);
 
 	//replot the dive after returning the settings
 	profile->plotDive(current_dive, dc_number, true);
@@ -230,9 +262,12 @@ void Printer::print()
 	//rendering resolution = selected paper size in inchs * printer dpi
 	pageSize.setHeight(qCeil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
 	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
+#ifdef USE_WEBENGINE
+	//FIXME
+#else
 	webView->page()->setViewportSize(pageSize);
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-
+#endif
 	// export border width with at least 1 pixel
 	// templateOptions.borderwidth = std::max(1, pageSize.width() / 1000);
 	if (printOptions.type == print_options::DIVELIST)
@@ -247,12 +282,17 @@ void Printer::print()
 	int divesPerPage;
 
 	// get number of dives per page from data-numberofdives attribute in the body of the selected template
+#ifdef USE_WEBENGINE
+	// FIX ME
+	divesPerPage = 1;
+#else
 	bool ok;
 	divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
 	if (!ok) {
 		divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
 		//TODO: show warning
 	}
+#endif
 	if (divesPerPage == 0)
 		flowRender();
 	else
@@ -266,13 +306,21 @@ void Printer::previewOnePage()
 
 		pageSize.setHeight(paintDevice->height());
 		pageSize.setWidth(paintDevice->width());
+#ifdef USE_WEBENGINE
+		//FIXME
+#else
 		webView->page()->setViewportSize(pageSize);
+#endif
 		// initialize the border settings
 		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
 		if (printOptions.type == print_options::DIVELIST)
 			webView->setHtml(t.generate(inPlanner));
 		else if (printOptions.type == print_options::STATISTICS )
 			webView->setHtml(t.generateStatistics());
+#ifdef USE_WEBENGINE
+		// FIX ME
+		render(1);
+#else
 		bool ok;
 		int divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
 		if (!ok) {
@@ -284,5 +332,6 @@ void Printer::previewOnePage()
 		} else {
 			render(1);
 		}
+#endif
 	}
 }
