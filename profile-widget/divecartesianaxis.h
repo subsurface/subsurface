@@ -45,6 +45,9 @@ public:
 	double width() const; // only for vertical axes
 	double height() const; // only for horizontal axes
 
+	// The minimum space between two labels on the plot in seconds
+	int getMinLabelDistance(const DiveCartesianAxis &timeAxis) const;
+
 private:
 	Position position;
 	bool inverted; // Top-to-bottom or right-to-left axis.
