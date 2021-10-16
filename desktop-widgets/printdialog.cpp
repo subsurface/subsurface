@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printdialog.h"
+#ifdef USE_WEBENGINE
+#include "printerwebengine.h"
+#else
 #include "printer.h"
+#endif
 #include "core/pref.h"
 #include "core/dive.h" // for existing_filename
 
@@ -14,6 +18,9 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QDialogButtonBox>
+#ifdef USE_WEBENGINE
+#include <QWebEngineView>
+#endif
 
 #define SETTINGS_GROUP "PrintDialog"
 
@@ -215,12 +222,25 @@ void PrintDialog::printClicked(void)
 {
 	createPrinterObj();
 	QPrintDialog printDialog(qprinter, this);
+#ifdef USE_WEBENGINE
+	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+	connect(printer, &Printer::jobDone, this, &PrintDialog::printingDone);
+	printer->print();
+}
+
+void PrintDialog::printingDone()
+{
+	close();
+}
+
+#else
 	if (printDialog.exec() == QDialog::Accepted) {
 		connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 		printer->print();
 		close();
 	}
 }
+#endif
 
 void PrintDialog::onPaintRequested(QPrinter*)
 {

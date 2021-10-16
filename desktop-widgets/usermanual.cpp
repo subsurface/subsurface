@@ -35,6 +35,27 @@ void SearchBar::enableButtons(const QString &s)
 	ui.findNext->setEnabled(s.length());
 }
 
+#ifdef USE_WEBENGINE
+MyQWebEnginePage::MyQWebEnginePage(QObject* parent) : QWebEnginePage(parent)
+{
+}
+
+bool MyQWebEnginePage::acceptNavigationRequest(const QUrl & url, QWebEnginePage::NavigationType type, bool)
+{
+	if (type == QWebEnginePage::NavigationTypeLinkClicked)
+	{
+		QDesktopServices::openUrl(url);
+		return false;
+	}
+	return true;
+}
+
+
+MyQWebEngineView::MyQWebEngineView(QWidget* parent)
+{
+}
+#endif
+
 UserManual::UserManual(QWidget *parent) : QDialog(parent)
 {
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
@@ -55,12 +76,19 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	setWindowTitle(tr("User manual"));
 	setWindowIcon(QIcon(":subsurface-icon"));
 
+#ifdef USE_WEBENGINE
+	userManual = new MyQWebEngineView(this);
+	MyQWebEnginePage *page = new MyQWebEnginePage();
+	userManual->setPage(page);
+#else
 	userManual = new QWebView(this);
+	userManual->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+#endif
+
 	QString colorBack = palette().highlight().color().name(QColor::HexRgb);
 	QString colorText = palette().highlightedText().color().name(QColor::HexRgb);
 	userManual->setStyleSheet(QString("QWebView { selection-background-color: %1; selection-color: %2; }")
 		.arg(colorBack).arg(colorText));
-	userManual->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath.size()) {
 		// look for localized versions of the manual first
@@ -85,7 +113,10 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	searchBar->hide();
 	connect(actionShowSearch, SIGNAL(triggered(bool)), searchBar, SLOT(show()));
 	connect(actionHideSearch, SIGNAL(triggered(bool)), searchBar, SLOT(hide()));
+#ifndef USE_WEBENGINE
 	connect(userManual, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
+#endif
+
 	connect(searchBar, SIGNAL(searchTextChanged(QString)), this, SLOT(searchTextChanged(QString)));
 	connect(searchBar, SIGNAL(searchNext()), this, SLOT(searchNext()));
 	connect(searchBar, SIGNAL(searchPrev()), this, SLOT(searchPrev()));
@@ -97,6 +128,14 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	setLayout(vboxLayout);
 }
 
+#ifdef USE_WEBENGINE
+void UserManual::search(QString text, QWebEnginePage::FindFlags flags = QFlag(0))
+{
+	userManual->findText(text, flags,
+			     [this, text](bool found) {searchBar->setStyleSheet(found || text.length() == 0 ? "" : "QLineEdit{background: red;}");});
+}
+
+#else
 void UserManual::search(QString text, QWebPage::FindFlags flags = QFlag(0))
 {
 	if (userManual->findText(text, QWebPage::FindWrapsAroundDocument | flags) || text.length() == 0) {
@@ -105,6 +144,7 @@ void UserManual::search(QString text, QWebPage::FindFlags flags = QFlag(0))
 		searchBar->setStyleSheet("QLineEdit{background: red;}");
 	}
 }
+#endif
 
 void UserManual::searchTextChanged(const QString& text)
 {
@@ -119,13 +159,21 @@ void UserManual::searchNext()
 
 void UserManual::searchPrev()
 {
+#ifdef USE_WEBENGINE
+	search(mLastText, QWebEnginePage::FindBackward);
+#else
 	search(mLastText, QWebPage::FindBackward);
+#endif
 }
 
+
+#ifndef USE_WEBENGINE
 void UserManual::linkClickedSlot(const QUrl& url)
 {
 	QDesktopServices::openUrl(url);
 }
+#endif
+
 
 #ifdef Q_OS_MAC
 void UserManual::showEvent(QShowEvent *e)
