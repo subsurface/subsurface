@@ -224,6 +224,7 @@ void DiveHeartrateItem::replot(const dive *, int fromIn, int toIn, bool)
 	texts.clear();
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
+	int interval = vAxis.getMinLabelDistance(hAxis);
 	for (int i = from; i < to; i++) {
 		auto [sec_double, hr_double] = getPoint(i);
 		int hr = lrint(hr_double);
@@ -241,8 +242,8 @@ void DiveHeartrateItem::replot(const dive *, int fromIn, int toIn, bool)
 		hist[2].hr = hr;
 		// don't print a HR
 		// if it's not a local min / max
-		// if it's been less than 5min and less than a 20 beats change OR
-		// if it's been less than 2min OR if the change from the
+		// if it's been less a full label interval and less than a 20 beats change OR
+		// if it's been less than half a label interval OR if the change from the
 		// last print is less than 10 beats
 		// to test min / max requires three points, so we now look at the
 		// previous one
@@ -250,8 +251,8 @@ void DiveHeartrateItem::replot(const dive *, int fromIn, int toIn, bool)
 		hr = hist[1].hr;
 		if ((hist[0].hr < hr && hr < hist[2].hr) ||
 		    (hist[0].hr > hr && hr > hist[2].hr) ||
-		    ((sec < last + 300) && (abs(hr - last_printed_hr) < 20)) ||
-		    (sec < last + 120) ||
+		    ((sec < last + interval) && (abs(hr - last_printed_hr) < 20)) ||
+		    (sec < last + interval / 2) ||
 		    (abs(hr - last_printed_hr) < 10))
 			continue;
 		last = sec;
@@ -309,6 +310,7 @@ void DiveTemperatureItem::replot(const dive *, int fromIn, int toIn, bool)
 	texts.clear();
 	// Ignore empty values. things do not look good with '0' as temperature in kelvin...
 	QPolygonF poly;
+	int interval = vAxis.getMinLabelDistance(hAxis);
 	for (int i = from; i < to; i++) {
 		auto [sec, mkelvin] = getPoint(i);
 		if (mkelvin < 1.0)
@@ -318,11 +320,11 @@ void DiveTemperatureItem::replot(const dive *, int fromIn, int toIn, bool)
 		last_valid_temp = sec;
 
 		/* don't print a temperature
-		 * if it's been less than 5min and less than a 2K change OR
-		 * if it's been less than 2min OR if the change from the
+		 * if it's been less than a full label interval and less than a 2K change OR
+		 * if it's been less than a half label interval OR if the change from the
 		 * last print is less than .4K (and therefore less than 1F) */
-		if (((sec < last + 300.0) && (fabs(mkelvin - last_printed_temp) < 2000.0)) ||
-		    (sec < last + 120.0) ||
+		if (((sec < last + interval) && (fabs(mkelvin - last_printed_temp) < 2000.0)) ||
+		    (sec < last + interval / 2) ||
 		    (fabs(mkelvin - last_printed_temp) < 400.0))
 			continue;
 		last = sec;

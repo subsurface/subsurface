@@ -99,6 +99,16 @@ double DiveCartesianAxis::height() const
 	return labelHeight + labelSpaceVertical * dpr;
 }
 
+int DiveCartesianAxis::getMinLabelDistance(const DiveCartesianAxis &timeAxis) const
+{
+	// For the plot not being to crowded we want at least two
+	// labels to fit between each pair of displayed labels.
+	// May need some optimization.
+	QLineF m = timeAxis.line();
+	double interval = labelWidth * 3.0 * (timeAxis.maximum() - timeAxis.minimum()) / (m.x2() - m.x1());
+	return int(ceil(interval));
+}
+
 static double sensibleInterval(double inc, int decimals)
 {
 	// Use full decimal increments
