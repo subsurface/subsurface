@@ -28,7 +28,7 @@ apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.github.mik3y:usb-serial-for-android:v2.2.2'
+    implementation 'com.github.mik3y:usb-serial-for-android:v3.4.3'
 }
 
 android {
@@ -60,6 +60,11 @@ android {
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     lintOptions {
