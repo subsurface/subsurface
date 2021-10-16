@@ -298,9 +298,10 @@ public class AndroidSerial {
 		Log.d(TAG, "in " + Thread.currentThread().getStackTrace()[2].getMethodName());
 		try {
 			Log.d(TAG, "write length: " + data.length);
-			int retval =  usbSerialPort.write(data, timeout);
-			Log.d(TAG, "actual write length: " + retval);
-			return retval;
+			usbSerialPort.write(data, timeout);
+			/* throws an exception if we didn't write all data successfully */
+			Log.d(TAG, "successfully written");
+			return data.length;
 		} catch (Exception e) {
 			Log.e(TAG, "Error in " + Thread.currentThread().getStackTrace()[2].getMethodName(), e);
 			return AndroidSerial.DC_STATUS_IO;
@@ -313,8 +314,9 @@ public class AndroidSerial {
 		Log.d(TAG, "in " + Thread.currentThread().getStackTrace()[2].getMethodName());
 		try {
 			if ((direction | AndroidSerial.DC_DIRECTION_INPUT) > 0) readBuffer.clear();
-			boolean retval = this.usbSerialPort.purgeHwBuffers((direction | AndroidSerial.DC_DIRECTION_OUTPUT) > 0, (direction | AndroidSerial.DC_DIRECTION_INPUT) > 0);
-			return retval ? AndroidSerial.DC_STATUS_SUCCESS : AndroidSerial.DC_STATUS_IO;
+			this.usbSerialPort.purgeHwBuffers((direction | AndroidSerial.DC_DIRECTION_OUTPUT) > 0, (direction | AndroidSerial.DC_DIRECTION_INPUT) > 0);
+			/* throws exeption if an error occured or flush isn't supported */
+			return AndroidSerial.DC_STATUS_SUCCESS;
 		} catch (Exception e) {
 			Log.e(TAG, "Error in " + Thread.currentThread().getStackTrace()[2].getMethodName(), e);
 			return AndroidSerial.DC_STATUS_IO;
