@@ -230,7 +230,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 				return QStringLiteral("*");
 			} else {
 				pressure_t modpO2;
-				modpO2.mbar = inPlanner ? prefs.bottompo2 : prefs.modpO2 * 1000;
+				modpO2.mbar = inPlanner ? prefs.bottompo2 : (int)(prefs.modpO2 * 1000.0);
 				return get_depth_string(gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(1,1)), true);
 			}
 		case MND:
