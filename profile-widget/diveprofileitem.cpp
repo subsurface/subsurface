@@ -130,6 +130,11 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	painter->restore();
 }
 
+static bool comp_depth(const struct plot_data &p1, const struct plot_data &p2)
+{
+	return p1.depth < p2.depth;
+}
+
 void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 {
 	makePolygon(from, to);
@@ -163,37 +168,93 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 	pat.setColorAt(0, getColor(DEPTH_TOP));
 	setBrush(QBrush(pat));
 
-	int last = -1;
-	for (int i = from; i < to; i++) {
-		struct plot_data *pd = dataModel.data().entry;
-		struct plot_data *entry =  pd + i;
-		// "min/max" are the 9-minute window min/max indices
-		struct plot_data *min_entry = pd + entry->min;
-		struct plot_data *max_entry = pd + entry->max;
+	// No point in searching peaks with less than three samples
+	if (to - from < 3)
+		return;
 
-		if (entry->depth < 2000)
-			continue;
+	const int half_interval = vAxis.getMinLabelDistance(hAxis);
+	const int min_depth = 2000; // in mm
+	const int min_prominence = 2000; // in mm (should this adapt to depth range?)
+	const plot_data *data = dataModel.data().entry;
+	const int max_peaks = (data[to - 1].sec - data[from].sec) / half_interval + 1;
+	struct Peak {
+		int range_from;
+		int range_to;
+		int peak;
+	};
+	std::vector<Peak> stack;
+	stack.reserve(max_peaks);
+	int highest_peak = std::max_element(data + from, data + to, comp_depth) - data;
+	if (data[highest_peak].depth < min_depth)
+		return;
+	stack.push_back(Peak{ from, to, highest_peak });
+	while (!stack.empty()) {
+		Peak act_peak = stack.back();
+		stack.pop_back();
+		plot_depth_sample(data[act_peak.peak], Qt::AlignHCenter | Qt::AlignTop, getColor(SAMPLE_DEEP));
 
-		if ((entry == max_entry) && entry->depth / 100 != last) {
-			plot_depth_sample(entry, Qt::AlignHCenter | Qt::AlignBottom, getColor(SAMPLE_DEEP));
-			last = entry->depth / 100;
+		// Skip half_interval seconds to the left and right of peak
+		// and add new peaks if there is enough place.
+		const plot_data &act_sample = data[act_peak.peak];
+		int valley = act_peak.peak;
+
+		// Search for first sample outside minimum range to the right.
+		int new_from;
+		for (new_from = act_peak.peak + 1; new_from + 3 < act_peak.range_to; ++new_from) {
+			if (data[new_from].sec > act_sample.sec + half_interval)
+				break;
+			if (data[new_from].depth < data[valley].depth)
+				valley = new_from;
+		}
+		// Continue search until peaks reach the minimum prominence (height from valley).
+		for ( ; new_from + 3 < act_peak.range_to; ++new_from) {
+			if (data[new_from].depth >= data[valley].depth + min_prominence) {
+				int new_peak = std::max_element(data + new_from, data + act_peak.range_to, comp_depth) - data;
+				if (data[new_peak].depth < min_depth)
+					break;
+				stack.push_back(Peak{ new_from, act_peak.range_to, new_peak });
+
+				if (data[valley].depth >= min_depth)
+					plot_depth_sample(data[valley], Qt::AlignHCenter | Qt::AlignBottom, getColor(SAMPLE_SHALLOW));
+				break;
+			}
+			if (data[new_from].depth < data[valley].depth)
+				valley = new_from;
 		}
 
-		if ((entry == min_entry) && entry->depth / 100 != last) {
-			plot_depth_sample(entry, Qt::AlignHCenter | Qt::AlignTop, getColor(SAMPLE_SHALLOW));
-			last = entry->depth / 100;
-		}
+		valley = act_peak.peak;
 
-		if (entry->depth != last)
-			last = -1;
+		// Search for first sample outside minimum range to the left.
+		int new_to;
+		for (new_to = act_peak.peak - 1; new_to >= act_peak.range_from + 3; --new_to) {
+			if (data[new_to].sec + half_interval < act_sample.sec)
+				break;
+			if (data[new_to].depth < data[valley].depth)
+				valley = new_to;
+		}
+		// Continue search until peaks reach the minimum prominence (height from valley).
+		for ( ; new_to >= act_peak.range_from + 3; --new_to) {
+			if (data[new_to].depth >= data[valley].depth + min_prominence) {
+				int new_peak = std::max_element(data + act_peak.range_from, data + new_to, comp_depth) - data;
+				if (data[new_peak].depth < min_depth)
+					break;
+				stack.push_back(Peak{ act_peak.range_from, new_to, new_peak });
+
+				if (data[valley].depth >= min_depth)
+					plot_depth_sample(data[valley], Qt::AlignHCenter | Qt::AlignBottom, getColor(SAMPLE_SHALLOW));
+				break;
+			}
+			if (data[new_to].depth < data[valley].depth)
+				valley = new_to;
+		}
 	}
 }
 
-void DiveProfileItem::plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color)
+void DiveProfileItem::plot_depth_sample(const struct plot_data &entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color)
 {
 	DiveTextItem *item = new DiveTextItem(dpr, 1.0, flags, this);
-	item->set(get_depth_string(entry->depth, true), color);
-	item->setPos(hAxis.posAtValue(entry->sec), vAxis.posAtValue(entry->depth));
+	item->set(get_depth_string(entry.depth, true), color);
+	item->setPos(hAxis.posAtValue(entry.sec), vAxis.posAtValue(entry.depth));
 	texts.append(item);
 }
 
