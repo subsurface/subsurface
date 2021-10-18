@@ -61,8 +61,6 @@ struct plot_data {
 	int mod, ead, end, eadd;
 	velocity_t velocity;
 	int speed;
-	// stats over 9 minute window:
-	int min, max;	// indices into pi->entry[]
 	/* values calculated by us */
 	unsigned int in_deco_calc : 1;
 	int ndl_calc;
