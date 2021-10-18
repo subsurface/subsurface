@@ -92,17 +92,8 @@
     <!--
          The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
          Remove the comment if you do not require these default permissions.
-         %% no space here INSERT_PERMISSIONS
-
-	 this always requests FINE_LOCATION which I no longer want to deal with - so instead manually request what we know we need.
-	 stupidly COARSE LOCATION appears to be necessary for BLE
     -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- %%INSERT_PERMISSIONS -->
 
     <!--
          The following comment will be replaced upon deployment with default features based on the dependencies of the application.
