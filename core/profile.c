@@ -128,50 +128,6 @@ static int get_local_sac(struct plot_info *pi, int idx1, int idx2, struct dive *
 	return lrint(airuse / atm * 60 / duration);
 }
 
-#define HALF_INTERVAL 9 * 30
-/*
- * Run the min/max calculations: over a 9 minute interval
- * around the entry point (indices 0, 1, 2 respectively).
- */
-static void analyze_plot_info_minmax(struct plot_info *pi, int entry_index)
-{
-	struct plot_data *plot_entry = pi->entry + entry_index;  // fixed
-	struct plot_data *p = plot_entry;  // moves with 'entry'
-	int start = p->sec - HALF_INTERVAL, end = p->sec + HALF_INTERVAL;
-	int min, max;
-
-	/* Go back 'seconds' in time */
-	while (entry_index > 0) {
-		if (p[-1].sec < start)
-			break;
-		entry_index--;
-		p--;
-	}
-
-	// indices to the min/max entries
-	min = max = entry_index;
-
-	/* Then go forward until we hit an entry past the time */
-	while (entry_index < pi->nr) {
-		int time = p->sec;
-		int depth = p->depth;
-
-		if (time > end)
-			break;
-
-		if (depth < pi->entry[min].depth)
-			min = entry_index;
-		if (depth > pi->entry[max].depth)
-			max = entry_index;
-
-		p++;
-		entry_index++;
-	}
-
-	plot_entry->min = min;
-	plot_entry->max = max;
-}
-
 static velocity_t velocity(int speed)
 {
 	velocity_t v;
@@ -232,10 +188,6 @@ static void analyze_plot_info(struct plot_info *pi)
 			entry->speed = 0;
 		}
 	}
-
-	/* get minmax data */
-	for (i = 0; i < nr; i++)
-		analyze_plot_info_minmax(pi, i);
 }
 
 /*
