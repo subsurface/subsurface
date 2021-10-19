@@ -18,6 +18,7 @@ if(NOT NO_DOCS)
 		COMMAND
 		mkdir -p ${CMAKE_BINARY_DIR}/Documentation/ &&
 		rm -rf ${CMAKE_BINARY_DIR}/Documentation/images &&
+		rm -rf ${CMAKE_BINARY_DIR}/Documentation/mobile-images &&
 		ln -sf ${CMAKE_SOURCE_DIR}/Documentation/images ${CMAKE_BINARY_DIR}/Documentation/images &&
 		ln -sf ${CMAKE_SOURCE_DIR}/Documentation/mobile-images ${CMAKE_BINARY_DIR}/Documentation/mobile-images
 	)
