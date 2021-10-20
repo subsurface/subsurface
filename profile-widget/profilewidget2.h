@@ -46,7 +46,7 @@ public:
 	ProfileWidget2(DivePlannerPointsModel *plannerModel, double dpr, QWidget *parent = 0);
 	~ProfileWidget2();
 	void resetZoom();
-	void plotDive(const struct dive *d, int dc, bool clearPictures = false, bool instant = false);
+	void plotDive(const struct dive *d, int dc, bool instant = false);
 	void setProfileState(const struct dive *d, int dc);
 	void setPlanState(const struct dive *d, int dc);
 	void setEditState(const struct dive *d, int dc);
