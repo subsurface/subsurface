@@ -164,7 +164,7 @@ void ProfileWidget2::setupItemOnScene()
 
 void ProfileWidget2::replot()
 {
-	plotDive(d, dc, false);
+	plotDive(d, dc);
 }
 
 void ProfileWidget2::setupSceneAndFlags()
@@ -185,7 +185,7 @@ void ProfileWidget2::resetZoom()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPictures, bool instant)
+void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool instant)
 {
 	// If there was no previously displayed dive, turn off animations
 	if (!d)
@@ -200,9 +200,6 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 
 	QElapsedTimer measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
-#ifdef SUBSURFACE_MOBILE
-	Q_UNUSED(doClearPictures);
-#endif
 
 	DivePlannerPointsModel *model = currentState == EDIT || currentState == PLAN ? plannerModel : nullptr;
 	bool inPlanner = currentState == PLAN;
@@ -222,10 +219,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool doClearPict
 		repositionDiveHandlers();
 		plannerModel->deleteTemporaryPlan();
 	}
-	if (doClearPictures)
-		clearPictures();
-	else
-		plotPicturesInternal(d, instant);
+	plotPicturesInternal(d, instant);
 
 	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 #endif
@@ -265,7 +259,7 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 {
 	QGraphicsView::resizeEvent(event);
 	profileScene->resize(viewport()->size());
-	plotDive(d, dc, false, true); // disable animation on resize events
+	plotDive(d, dc, true); // disable animation on resize events
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -352,7 +346,7 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 
 	if (zoomLevel != 0) {
 		zoomedPosition = pos.x() / profileScene->width();
-		plotDive(d, dc, false, true); // TODO: animations don't work when scrolling
+		plotDive(d, dc, true); // TODO: animations don't work when scrolling
 	}
 
 	double vValue = profileScene->profileYAxis->valueAt(pos);
