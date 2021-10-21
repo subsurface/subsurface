@@ -208,10 +208,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool instant)
 	profileScene->plotDive(d, dc, model, inPlanner, instant, shouldCalculateMax, zoom, zoomedPosition);
 
 #ifndef SUBSURFACE_MOBILE
-	// reset some item visibility on printMode changes
-	toolTipItem->setVisible(!profileScene->printMode);
-	rulerItem->setVisible(prefs.rulergraph && !profileScene->printMode && currentState != PLAN && currentState != EDIT);
-
+	rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
 	toolTipItem->setPlotInfo(profileScene->plotInfo);
 	rulerItem->setPlotInfo(d, profileScene->plotInfo);
 
