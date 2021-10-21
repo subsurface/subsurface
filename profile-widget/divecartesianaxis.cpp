@@ -13,7 +13,6 @@ static const double labelSpaceVertical = 2.0; // space between label and ticks
 
 void DiveCartesianAxis::setBounds(double minimum, double maximum)
 {
-	changed = !IS_FP_SAME(max, maximum) || !IS_FP_SAME(min, minimum);
 	dataMin = min = minimum;
 	dataMax = max = maximum;
 }
@@ -32,7 +31,6 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, bool inverted, int integ
 	textVisibility(textVisible),
 	lineVisibility(linesVisible),
 	labelScale(labelScale),
-	changed(true),
 	dpr(dpr),
 	transform({1.0, 0.0})
 {
@@ -77,7 +75,6 @@ void DiveCartesianAxis::setTransform(double a, double b)
 {
 	transform.a = a;
 	transform.b = b;
-	changed = true;
 }
 
 template <typename T>
@@ -135,9 +132,6 @@ static double sensibleInterval(double inc, int decimals)
 
 void DiveCartesianAxis::updateTicks(int animSpeed)
 {
-	if (!changed && !printMode)
-		return;
-
 	if (dataMax - dataMin < 1e-5)
 		return;
 
@@ -206,7 +200,6 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 		updateLabels(numTicks, firstPosScreen, firstValue, stepScreen, stepValue, animSpeed);
 	if (lineVisibility)
 		updateLines(numTicks, firstPosScreen, stepScreen, animSpeed);
-	changed = false;
 }
 
 void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double firstValue, double stepScreen, double stepValue, int animSpeed)
@@ -316,7 +309,6 @@ void DiveCartesianAxis::setPosition(const QRectF &rectIn)
 			setLine(QLineF(rect.bottomLeft(), rect.bottomRight()));
 			break;
 	}
-	changed = true;
 }
 
 double DiveCartesianAxis::Transform::to(double x) const

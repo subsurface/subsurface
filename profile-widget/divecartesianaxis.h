@@ -64,7 +64,6 @@ private:
 	bool textVisibility;
 	bool lineVisibility;
 	double labelScale;
-	bool changed;
 	double dpr;
 	double labelWidth, labelHeight; // maximum expected sizes of label width and height
 
