@@ -324,7 +324,7 @@ bool ProfileScene::isPointOutOfBoundaries(const QPointF &point) const
 }
 
 void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsModel *plannerModel,
-			   bool inPlanner, bool instant, bool calcMax, double zoom, double zoomedPosition)
+			   bool inPlanner, bool instant, bool keepPlotInfo, bool calcMax, double zoom, double zoomedPosition)
 {
 	d = dIn;
 	dc = dcIn;
@@ -363,7 +363,8 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	 * shown.
 	 * create_plot_info_new() automatically frees old plot data.
 	 */
-	create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !calcMax, planner_ds);
+	if (!keepPlotInfo)
+		create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !calcMax, planner_ds);
 
 	bool hasHeartBeat = plotInfo.maxhr;
 	// For mobile we might want to turn of some features that are normally shown.

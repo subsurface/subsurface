@@ -205,7 +205,9 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 	bool inPlanner = currentState == PLAN;
 
 	double zoom = zoomLevel == 0 ? 1.0 : pow(zoomFactor, zoomLevel);
-	profileScene->plotDive(d, dc, model, inPlanner, flags & RenderFlags::Instant, shouldCalculateMax, zoom, zoomedPosition);
+	profileScene->plotDive(d, dc, model, inPlanner, flags & RenderFlags::Instant,
+			       flags & RenderFlags::DontRecalculatePlotInfo,
+			       shouldCalculateMax, zoom, zoomedPosition);
 
 #ifndef SUBSURFACE_MOBILE
 	rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
@@ -256,7 +258,7 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 {
 	QGraphicsView::resizeEvent(event);
 	profileScene->resize(viewport()->size());
-	plotDive(d, dc, RenderFlags::Instant); // disable animation on resize events
+	plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // disable animation on resize events
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -305,7 +307,7 @@ void ProfileWidget2::setZoom(int level)
 		double pos = mapToScene(mapFromGlobal(QCursor::pos())).x();
 		zoomedPosition = pos / profileScene->width();
 	}
-	replot();
+	plotDive(d, dc, RenderFlags::DontRecalculatePlotInfo);
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -343,7 +345,7 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 
 	if (zoomLevel != 0) {
 		zoomedPosition = pos.x() / profileScene->width();
-		plotDive(d, dc, RenderFlags::Instant); // TODO: animations don't work when scrolling
+		plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
 	}
 
 	double vValue = profileScene->profileYAxis->valueAt(pos);
