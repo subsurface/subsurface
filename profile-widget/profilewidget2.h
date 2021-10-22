@@ -42,11 +42,17 @@ public:
 		INIT
 	};
 
+	struct RenderFlags {
+		static constexpr int None = 0;
+		static constexpr int Instant = 1 << 0;
+		static constexpr int DontRecalculatePlotInfo = 1 << 1;
+	};
+
 	// Pass null as plannerModel if no support for planning required
 	ProfileWidget2(DivePlannerPointsModel *plannerModel, double dpr, QWidget *parent = 0);
 	~ProfileWidget2();
 	void resetZoom();
-	void plotDive(const struct dive *d, int dc, bool instant = false);
+	void plotDive(const struct dive *d, int dc, int flags = RenderFlags::None);
 	void setProfileState(const struct dive *d, int dc);
 	void setPlanState(const struct dive *d, int dc);
 	void setEditState(const struct dive *d, int dc);

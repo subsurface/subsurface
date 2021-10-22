@@ -185,11 +185,11 @@ void ProfileWidget2::resetZoom()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool instant)
+void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 {
 	// If there was no previously displayed dive, turn off animations
 	if (!d)
-		instant = true;
+		flags |= RenderFlags::Instant;
 
 	d = dIn;
 	dc = dcIn;
@@ -205,7 +205,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool instant)
 	bool inPlanner = currentState == PLAN;
 
 	double zoom = zoomLevel == 0 ? 1.0 : pow(zoomFactor, zoomLevel);
-	profileScene->plotDive(d, dc, model, inPlanner, instant, shouldCalculateMax, zoom, zoomedPosition);
+	profileScene->plotDive(d, dc, model, inPlanner, flags & RenderFlags::Instant, shouldCalculateMax, zoom, zoomedPosition);
 
 #ifndef SUBSURFACE_MOBILE
 	rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
@@ -216,7 +216,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, bool instant)
 		repositionDiveHandlers();
 		plannerModel->deleteTemporaryPlan();
 	}
-	plotPicturesInternal(d, instant);
+	plotPicturesInternal(d, flags & RenderFlags::Instant);
 
 	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 #endif
@@ -256,7 +256,7 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 {
 	QGraphicsView::resizeEvent(event);
 	profileScene->resize(viewport()->size());
-	plotDive(d, dc, true); // disable animation on resize events
+	plotDive(d, dc, RenderFlags::Instant); // disable animation on resize events
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -343,7 +343,7 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 
 	if (zoomLevel != 0) {
 		zoomedPosition = pos.x() / profileScene->width();
-		plotDive(d, dc, true); // TODO: animations don't work when scrolling
+		plotDive(d, dc, RenderFlags::Instant); // TODO: animations don't work when scrolling
 	}
 
 	double vValue = profileScene->profileYAxis->valueAt(pos);
