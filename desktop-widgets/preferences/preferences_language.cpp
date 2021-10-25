@@ -95,14 +95,14 @@ void PreferencesLanguage::syncSettings()
 	refreshSettings();
 
 	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString");
-	QRegExp tfillegalchars("[^hHmszaApPt\\s:;\\.,]");
-	if (tfillegalchars.indexIn(ui->timeFormatEntry->currentText()) >= 0)
+	QRegularExpression tfillegalchars("[^hHmszaApPt\\s:;\\.,]");
+	if (tfillegalchars.match(ui->timeFormatEntry->currentText()).hasMatch())
 		QMessageBox::warning(this, tr("Literal characters"),
 			tr("Non-special character(s) in time format.\n") + qDateTimeWeb);
 
-	QRegExp dfillegalchars("[^dMy/\\s:;\\.,\\-]");
-	if (dfillegalchars.indexIn(ui->dateFormatEntry->currentText()) >= 0 ||
-	    dfillegalchars.indexIn(ui->shortDateFormatEntry->text()) >= 0)
+	QRegularExpression dfillegalchars("[^dMy/\\s:;\\.,\\-]");
+	if (dfillegalchars.match(ui->dateFormatEntry->currentText()).hasMatch() ||
+	    dfillegalchars.match(ui->shortDateFormatEntry->text()).hasMatch())
 		QMessageBox::warning(this, tr("Literal characters"),
 			tr("Non-special character(s) in date format.\n") + qDateTimeWeb);
 }
