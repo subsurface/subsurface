@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "messagehandlermodel.h"
 #include "core/qthelper.h"
+#include "QRegularExpression"
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 extern void writeToAppLogFile(QString logText);
@@ -40,7 +41,7 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 			return;
 	}
 	// filter extremely noisy and unhelpful messages
-	if (message.contains("Updating RSSI for") || (message.contains(QRegExp(".*kirigami.*onFoo properties in Connections"))))
+	if (message.contains("Updating RSSI for") || (message.contains(QRegularExpression(".*kirigami.*onFoo properties in Connections"))))
 		return;
 
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
