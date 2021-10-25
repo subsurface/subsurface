@@ -23,7 +23,7 @@
 #include "xmlparams.h"
 #include "core/git-access.h" // for CLOUD_HOST definitions
 #include <QFile>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QDir>
 #include <QDebug>
 #include <QStandardPaths>
@@ -139,13 +139,14 @@ static bool parseCoord(const QString &txt, int &pos, const QString &positives,
 		if (txt[pos].isDigit()) {
 			if (numberDefined)
 				return false;
-			QRegExp numberRe("(\\d+(?:[\\.,]\\d+)?).*");
-			if (!numberRe.exactMatch(txt.mid(pos)))
+			QRegularExpression numberRe("\\A(\\d+(?:[\\.,]\\d+)?).*");
+			QRegularExpressionMatch match = numberRe.match(txt.mid(pos));
+			if (!match.hasMatch())
 				return false;
-			number = numberRe.cap(1).toDouble();
+			number = match.captured(1).toDouble();
 			numberDefined = true;
 			posBeforeNumber = pos;
-			pos += numberRe.cap(1).size() - 1;
+			pos += match.captured(1).size() - 1;
 		} else if (positives.indexOf(txt[pos]) >= 0) {
 			if (sign != 0)
 				return false;
@@ -226,10 +227,11 @@ static bool parseCoord(const QString &txt, int &pos, const QString &positives,
 * Parse special coordinate formats that cannot be handled by parseCoord.
 */
 static bool parseSpecialCoords(const QString &txt, double &latitude, double &longitude) {
-	QRegExp xmlFormat("(-?\\d+(?:\\.\\d+)?),?\\s+(-?\\d+(?:\\.\\d+)?)");
-	if (xmlFormat.exactMatch(txt)) {
-		latitude = xmlFormat.cap(1).toDouble();
-		longitude = xmlFormat.cap(2).toDouble();
+	QRegularExpression xmlFormat("\\A(-?\\d+(?:\\.\\d+)?),?\\s+(-?\\d+(?:\\.\\d+)?)\\z");
+	QRegularExpressionMatch match = xmlFormat.match(txt);
+	if (match.hasMatch()) {
+		latitude = match.captured(1).toDouble();
+		longitude = match.captured(2).toDouble();
 		return true;
 	}
 	return false;
@@ -244,10 +246,10 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 
 	// Remove the useless spaces (but keep the ones separating numbers)
 	// and normalize different ways of writing separators.
-	static const QRegExp SPACE_CLEANER("\\s*([" + POS_LAT + NEG_LAT + POS_LON +
+	static const QRegularExpression spaceCleaner("\\s*([" + POS_LAT + NEG_LAT + POS_LON +
 		NEG_LON + degreeSigns() + "'\"\\s])\\s*");
 	const QString normalized = gps_text.trimmed().toUpper().
-		replace(SPACE_CLEANER, "\\1").
+		replace(spaceCleaner, "\\1").
 		replace(QStringLiteral("′"), "'").
 		replace(QStringLiteral("’"), "'").
 		replace(QStringLiteral("''"), "\"").
@@ -761,7 +763,7 @@ int parseDurationToSeconds(const QString &text)
 	int secs;
 	QString numOnly = text;
 	QString hours, minutes, seconds;
-	numOnly.replace(",", ".").remove(QRegExp("[^-0-9.:]"));
+	numOnly.replace(",", ".").remove(QRegularExpression("[^-0-9.:]"));
 	if (numOnly.isEmpty())
 		return 0;
 	if (numOnly.contains(':')) {
@@ -784,7 +786,7 @@ int parseLengthToMm(const QString &text)
 {
 	int mm;
 	QString numOnly = text;
-	numOnly.replace(",", ".").remove(QRegExp("[^-0-9.]"));
+	numOnly.replace(",", ".").remove(QRegularExpression("[^-0-9.]"));
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
@@ -812,7 +814,7 @@ int parseTemperatureToMkelvin(const QString &text)
 {
 	int mkelvin;
 	QString numOnly = text;
-	numOnly.replace(",", ".").remove(QRegExp("[^-0-9.]"));
+	numOnly.replace(",", ".").remove(QRegularExpression("[^-0-9.]"));
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
@@ -839,7 +841,7 @@ int parseWeightToGrams(const QString &text)
 {
 	int grams;
 	QString numOnly = text;
-	numOnly.replace(",", ".").remove(QRegExp("[^0-9.]"));
+	numOnly.replace(",", ".").remove(QRegularExpression("[^0-9.]"));
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
@@ -872,7 +874,7 @@ int parsePressureToMbar(const QString &text)
 	QString validNumberCharacters("0-9");
 	validNumberCharacters += loc.decimalPoint();
 	validNumberCharacters += loc.groupSeparator();
-	numOnly.remove(QRegExp(QString("[^%1]").arg(validNumberCharacters)));
+	numOnly.remove(QRegularExpression(QString("[^%1]").arg(validNumberCharacters)));
 	if (numOnly.isEmpty())
 		return 0;
 	double number = loc.toDouble(numOnly);
@@ -902,7 +904,7 @@ int parseGasMixO2(const QString &text)
 	if (gasString.contains(gettextFromC::tr("AIR"), Qt::CaseInsensitive)) {
 		o2 = O2_IN_AIR;
 	} else if (gasString.contains(gettextFromC::tr("EAN"), Qt::CaseInsensitive)) {
-		gasString.remove(QRegExp("[^0-9]"));
+		gasString.remove(QRegularExpression("[^0-9]"));
 		number = gasString.toInt();
 		o2 = number * 10;
 	} else if (gasString.contains("/")) {
