@@ -7,7 +7,7 @@
 #include <QShortcut>
 #include <QDrag>
 #include <QMimeData>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QUndoStack>
 #include <QPainter>
 #include "core/filterpreset.h"
@@ -121,7 +121,7 @@ int ColumnNameProvider::rowCount(const QModelIndex&) const
 int ColumnNameProvider::mymatch(QString value) const
 {
 	QString searchString = value.toLower();
-	QRegExp re(" \\(.*\\)");
+	QRegularExpression re(" \\(.*\\)");
 
 	searchString.replace("\"", "").replace(re, "").replace(" ", "").replace(".", "").replace("\n","");
 	for (int i = 0; i < columnNames.count(); i++) {
@@ -894,12 +894,15 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			} else {
 				xml_params params;
 
-				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
 				if (txtLog) {
 					parseTxtHeader(fileNames[i], params);
-				} else if (apdRe.exactMatch(fileNames[i])) {
-					xml_params_add(&params, "date", qPrintable("20" + apdRe.cap(1)));
-					xml_params_add(&params, "time", qPrintable("1" + apdRe.cap(2)));
+				} else {
+					QRegularExpression apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd\\z");
+					QRegularExpressionMatch match = apdRe.match(fileNames[i]);
+					if (match.hasMatch()) {
+						xml_params_add(&params, "date", qPrintable("20" + match.captured(1)));
+						xml_params_add(&params, "time", qPrintable("1" + match.captured(2)));
+					}
 				}
 				setup_csv_params(r, params);
 				parse_csv_file(qPrintable(fileNames[i]), &params,
@@ -944,12 +947,16 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 			} else {
 				xml_params params;
 
-				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");
 				if (txtLog) {
 					parseTxtHeader(fileNames[i], params);
-				} else if (apdRe.exactMatch(fileNames[i])) {
-					xml_params_add(&params, "date", qPrintable("20" + apdRe.cap(1)));
-					xml_params_add(&params, "time", qPrintable("1" + apdRe.cap(2)));
+				} else {
+					QRegularExpression apdRe("\\A^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd\\z");
+					QRegularExpressionMatch match = apdRe.match(fileNames[i]);
+					if (match.hasMatch()) {
+						xml_params_add(&params, "date", qPrintable("20" + match.captured(1)));
+						xml_params_add(&params, "time", qPrintable("1" + match.captured(2)));
+					}
+
 				}
 				setup_csv_params(r, params);
 				parse_csv_file(qPrintable(fileNames[i]), &params,
