@@ -177,7 +177,7 @@ ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNa
 	matchAllImages(false)
 {
 	ui.setupUi(this);
-	ui.timeEdit->setValidator(new QRegExpValidator(QRegExp("\\d{0,6}:[0-5]\\d")));
+	ui.timeEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("\\d{0,6}:[0-5]\\d")));
 	connect(ui.syncCamera, SIGNAL(clicked()), this, SLOT(syncCameraClicked()));
 	connect(ui.timeEdit, &QLineEdit::textEdited, this, &ShiftImageTimesDialog::timeEdited);
 	connect(ui.backwards, &QCheckBox::toggled, this, &ShiftImageTimesDialog::backwardsChanged);
@@ -249,10 +249,11 @@ void ShiftImageTimesDialog::timeEdited(const QString &timeText)
 	if (ui.timeEdit->hasAcceptableInput()) {
 		ui.timeEdit->setStyleSheet("");
 		// parse based on the same reg exp used to validate...
-		QRegExp re("(\\d{0,6}):(\\d\\d)");
-		if (re.indexIn(timeText) != -1) {
-			time_t hours = re.cap(1).toInt();
-			time_t minutes = re.cap(2).toInt();
+		QRegularExpression re("(\\d{0,6}):(\\d\\d)");
+		QRegularExpressionMatch match = re.match(timeText);
+		if (match.hasMatch()) {
+			time_t hours = match.captured(1).toInt();
+			time_t minutes = match.captured(2).toInt();
 			m_amount = (ui.backwards->isChecked() ? -1 : 1) * (3600 * hours + 60 * minutes);
 			updateInvalid();
 		}
@@ -579,7 +580,7 @@ QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, b
 		  "mn.abcd." for the url (wrong). So we have to go to 'i', to
 		  capture "mn.abcd.edu " (with trailing space), and then clean it up.
 		*/
-		QStringList list = grownText.split(QRegExp("\\s"), SKIP_EMPTY);
+		QStringList list = grownText.split(QRegularExpression("\\s"), SKIP_EMPTY);
 		if (!list.isEmpty()) {
 			result = list[0];
 		}
