@@ -19,6 +19,7 @@
 #include <QUrlQuery>
 #include <QEventLoop>
 #include <QTimer>
+#include <QRegularExpression>
 #include <memory>
 
 /** Performs a REST get request to a service returning a JSON object. */
@@ -87,19 +88,19 @@ taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude)
 	taxonomy_data taxonomy = { 0, 0 };
 
 	// check the oceans API to figure out the body of water
-	url = geonamesOceanURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
+	url = geonamesOceanURL.arg(getUiLanguage().section(QRegularExpression("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
 	obj = doAsyncRESTGetRequest(url, 5000); // 5 secs. timeout
 	QVariantMap oceanName = obj.value("ocean").toVariant().toMap();
 	if (oceanName["name"].isValid())
 		taxonomy_set_category(&taxonomy, TC_OCEAN, qPrintable(oceanName["name"].toString()), taxonomy_origin::GEOCODED);
 
 	// check the findNearbyPlaces API from geonames - that should give us country, state, city
-	url = geonamesNearbyPlaceNameURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
+	url = geonamesNearbyPlaceNameURL.arg(getUiLanguage().section(QRegularExpression("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
 	obj = doAsyncRESTGetRequest(url, 5000); // 5 secs. timeout
 	QVariantList geoNames = obj.value("geonames").toVariant().toList();
 	if (geoNames.count() == 0) {
 		// check the findNearby API from geonames if the previous search came up empty - that should give us country, state, location
-		url = geonamesNearbyURL.arg(getUiLanguage().section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
+		url = geonamesNearbyURL.arg(getUiLanguage().section(QRegularExpression("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
 		obj = doAsyncRESTGetRequest(url, 5000); // 5 secs. timeout
 		geoNames = obj.value("geonames").toVariant().toList();
 	}
