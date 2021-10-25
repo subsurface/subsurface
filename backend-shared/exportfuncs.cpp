@@ -16,6 +16,7 @@
 #include "core/pref.h"
 #include "core/sample.h"
 #include "core/selection.h"
+#include "core/taxonomy.h"
 #include "exportfuncs.h"
 
 // Default implementation of the export callback: do nothing / never cancel
@@ -119,14 +120,10 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
+		const char *country = NULL;
 		dive_site *site = dive->dive_site;
-		QRegExp ct("countrytag: (\\w+)");
-		QString country;
-		if (site && ct.indexIn(site->notes) >= 0)
-			country = ct.cap(1);
-		else
-			country = "";
-
+		if (site)
+			country = taxonomy_get_country(&site->taxonomy);
 		pressure_t delta_p = {.mbar = 0};
 
 		QString star = "*";
@@ -158,7 +155,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		site ? put_format(&buf, "\\def\\%sgpslat{%f}\n", ssrf, site->location.lat.udeg / 1000000.0) : put_format(&buf, "\\def\\%sgpslat{}\n", ssrf);
 		site ? put_format(&buf, "\\def\\%sgpslon{%f}\n", ssrf, site->location.lon.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
 		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dc.model);
-		put_format(&buf, "\\def\\%scountry{%s}\n", ssrf, qPrintable(country));
+		put_format(&buf, "\\def\\%scountry{%s}\n", ssrf, country ?: "");
 		put_format(&buf, "\\def\\%stime{%u:%02u}\n", ssrf, FRACTION(dive->duration.seconds, 60));
 
 		put_format(&buf, "\n%% Dive Profile Details:\n");
