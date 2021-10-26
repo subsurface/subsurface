@@ -38,7 +38,7 @@ public:
 
 	void resize(QSizeF size);
 	void clear();
-	bool isPointOutOfBoundaries(const QPointF &point) const;
+	bool pointOnProfile(const QPointF &point) const;
 
 	// If a plannerModel is passed, the deco-information is taken from there.
 	void plotDive(const struct dive *d, int dc, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,

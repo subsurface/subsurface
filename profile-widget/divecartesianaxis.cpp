@@ -375,16 +375,29 @@ qreal DiveCartesianAxis::posAtValue(qreal value) const
 	return adjusted;
 }
 
+static std::pair<double, double> getLineFromTo(const QLineF &l, bool horizontal)
+{
+	if (horizontal)
+		return std::make_pair(l.x1(), l.x2());
+	else
+		return std::make_pair(l.y1(), l.y2());
+}
+
 double DiveCartesianAxis::screenPosition(double pos) const
 {
-	QLineF m = line();
-	double from = position == Position::Bottom ? m.x1() : m.y1();
-	double to = position == Position::Bottom ? m.x2() : m.y2();
-
 	if ((position == Position::Bottom) == inverted)
 		pos = 1.0 - pos;
 
+	auto [from, to] = getLineFromTo(line(), position == Position::Bottom);
 	return (to - from) * pos + from;
+}
+
+double DiveCartesianAxis::pointInRange(double pos) const
+{
+	auto [from, to] = getLineFromTo(line(), position == Position::Bottom);
+	if (from > to)
+		std::swap(from, to);
+	return pos >= from && pos <= to;
 }
 
 double DiveCartesianAxis::maximum() const

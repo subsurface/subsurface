@@ -313,14 +313,9 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 		temperatureAxis->setTransform(slope(mkelvin_to_F), intercept(mkelvin_to_F));
 }
 
-bool ProfileScene::isPointOutOfBoundaries(const QPointF &point) const
+bool ProfileScene::pointOnProfile(const QPointF &point) const
 {
-	double xpos = timeAxis->valueAt(point);
-	double ypos = profileYAxis->valueAt(point);
-	return xpos > timeAxis->maximum() ||
-	       xpos < timeAxis->minimum() ||
-	       ypos > profileYAxis->maximum() ||
-	       ypos < profileYAxis->minimum();
+	return timeAxis->pointInRange(point.x()) && profileYAxis->pointInRange(point.y());
 }
 
 void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsModel *plannerModel,
