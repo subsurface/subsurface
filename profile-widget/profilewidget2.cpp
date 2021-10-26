@@ -1155,6 +1155,10 @@ void ProfileWidget2::calculatePictureYPositions()
 	const double xSpace = 18.0 * profileScene->dpr; // Horizontal range in which thumbnails are supposed to be overlapping (in pixels).
 	const int maxDepth = 14; // Maximal depth of thumbnail stack (in thumbnails).
 	for (PictureEntry &e: pictures) {
+		// Invisible items are outside of the shown range - ignore.
+		if (!e.thumbnail->isVisible())
+			continue;
+
 		// Let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
 		double x = e.thumbnail->x();
@@ -1178,8 +1182,15 @@ void ProfileWidget2::updateThumbnailXPos(PictureEntry &e)
 {
 	// Here, we only set the x-coordinate of the picture. The y-coordinate
 	// will be set later in calculatePictureYPositions().
-	double x = profileScene->timeAxis->posAtValue(e.offset.seconds);
-	e.thumbnail->setX(x);
+	// Thumbnails outside of the shown range are hidden.
+	double time = e.offset.seconds;
+	if (time >= profileScene->timeAxis->minimum() && time <= profileScene->timeAxis->maximum()) {
+		double x = profileScene->timeAxis->posAtValue(time);
+		e.thumbnail->setX(x);
+		e.thumbnail->setVisible(true);
+	} else {
+		e.thumbnail->setVisible(false);
+	}
 }
 
 // This function resets the picture thumbnails of the current dive.
