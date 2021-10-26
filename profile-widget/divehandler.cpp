@@ -75,7 +75,7 @@ void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	t.start();
 
 	ProfileWidget2 *view = qobject_cast<ProfileWidget2*>(scene()->views().first());
-	if(view->profileScene->isPointOutOfBoundaries(event->scenePos()))
+	if(!view->profileScene->pointOnProfile(event->scenePos()))
 		return;
 
 	QGraphicsEllipseItem::mouseMoveEvent(event);

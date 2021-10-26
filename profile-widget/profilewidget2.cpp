@@ -332,7 +332,7 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	if ((currentState == PLAN || currentState == EDIT) && plannerModel) {
 		QPointF mappedPos = mapToScene(event->pos());
-		if (profileScene->isPointOutOfBoundaries(mappedPos))
+		if (!profileScene->pointOnProfile(mappedPos))
 			return;
 
 		int minutes = lrint(profileScene->timeAxis->valueAt(mappedPos) / 60);
