@@ -1150,18 +1150,25 @@ void ProfileWidget2::updateThumbnailPaintOrder()
 void ProfileWidget2::calculatePictureYPositions()
 {
 	double lastX = -1.0, lastY = 0.0;
+	const double yStart = 0.05; // At which depth the thumbnails start (in fraction of total depth).
+	const double yStep = 0.01; // Increase of depth for overlapping thumbnails (in fraction of total depth).
+	const double xSpace = 18.0 * profileScene->dpr; // Horizontal range in which thumbnails are supposed to be overlapping (in pixels).
+	const int maxDepth = 14; // Maximal depth of thumbnail stack (in thumbnails).
 	for (PictureEntry &e: pictures) {
-		// let's put the picture at the correct time, but at a fixed "depth" on the profile
+		// Let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
 		double x = e.thumbnail->x();
+		if (x < 0.0)
+			continue;
 		double y;
-		if (lastX >= 0.0 && fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
-			y = lastY + 3;
+		if (lastX >= 0.0 && fabs(x - lastX) < xSpace * profileScene->dpr && lastY <= (yStart + maxDepth * yStep) - 1e-10)
+			y = lastY + yStep;
 		else
-			y = 10;
+			y = yStart;
 		lastX = x;
 		lastY = y;
-		e.thumbnail->setY(y);
+		double yScreen = profileScene->timeAxis->screenPosition(y);
+		e.thumbnail->setY(yScreen);
 		updateDurationLine(e); // If we changed the y-position, we also have to change the duration-line.
 	}
 	updateThumbnailPaintOrder();
