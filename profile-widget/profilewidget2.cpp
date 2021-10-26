@@ -218,7 +218,12 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 		repositionDiveHandlers();
 		plannerModel->deleteTemporaryPlan();
 	}
-	plotPicturesInternal(d, flags & RenderFlags::Instant);
+
+	// On zoom / pan don't recreate the picture thumbnails, only change their position.
+	if (flags & RenderFlags::DontRecalculatePlotInfo)
+		updateThumbnails();
+	else
+		plotPicturesInternal(d, flags & RenderFlags::Instant);
 
 	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 #endif
@@ -1195,7 +1200,11 @@ void ProfileWidget2::plotPicturesInternal(const struct dive *d, bool synchronous
 	// Sort pictures by timestamp (and filename if equal timestamps).
 	// This will allow for proper location of the pictures on the profile plot.
 	std::sort(pictures.begin(), pictures.end());
+	updateThumbnails();
+}
 
+void ProfileWidget2::updateThumbnails()
+{
 	// Calculate thumbnail positions. First the x-coordinates and and then the y-coordinates.
 	for (PictureEntry &e: pictures)
 		updateThumbnailXPos(e);
