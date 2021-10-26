@@ -5,43 +5,28 @@
 #include "core/statistics.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDisplay.h"
+#include <stdio.h>
 
 #include <algorithm>
 #include <QPainter>
 #include <QPrinter>
-#ifdef USE_WEBENGINE
 #include <QtWebEngineWidgets>
-#else
-#include <QtWebKitWidgets>
-#include <QWebElementCollection>
-#include <QWebElement>
-#endif
 #include "profile-widget/profilewidget2.h"
 
+extern void exportProfile(const struct dive *dive, const QString filename);
+
 Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner) :
-	paintDevice(paintDevice),
-#ifdef USE_WEBENGINE
 	webView(new QWebEngineView),
-#else
-	webView(new QWebView),
-#endif
+	paintDevice(paintDevice),
 	printOptions(printOptions),
 	templateOptions(templateOptions),
 	printMode(printMode),
 	inPlanner(inPlanner),
 	done(0)
 {
-//	this->paintDevice = paintDevice;
-//	this->printOptions = printOptions;
-//	this->templateOptions = templateOptions;
-//	this->printMode = printMode;
-//	dpi = 0;
-//	done = 0;
-//#ifdef USE_WEBENGINE
-//	webView = new QWebEngineView();
-//#else
-//	webView = new QWebView();
-//#endif
+	connect(webView, &QWebEngineView::loadFinished, this, &Printer::onLoadFinished);
+	connect(this, &Printer::profiles_inserted, this, &Printer::printing);
+	profiles_missing = true;
 }
 
 Printer::~Printer()
@@ -49,179 +34,30 @@ Printer::~Printer()
 	delete webView;
 }
 
-void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &viewPort, QPainter *painter,
-			      struct dive *dive, ProfileWidget2 *profile)
+void Printer::onLoadFinished()
 {
-	int x = profilePlaceholder.x() - viewPort.x();
-	int y = profilePlaceholder.y() - viewPort.y();
-	// use the placeHolder and the viewPort position to calculate the relative position of the dive profile.
-	QRect pos(x, y, profilePlaceholder.width(), profilePlaceholder.height());
-	profile->plotDive(dive, 0, true);
-
-	if (!printOptions.color_selected) {
-		QImage image(pos.width(), pos.height(), QImage::Format_ARGB32);
-		QPainter imgPainter(&image);
-		imgPainter.setRenderHint(QPainter::Antialiasing);
-		imgPainter.setRenderHint(QPainter::SmoothPixmapTransform);
-		profile->render(&imgPainter, QRect(0, 0, pos.width(), pos.height()));
-		imgPainter.end();
-
-		// convert QImage to grayscale before rendering
-		for (int i = 0; i < image.height(); i++) {
-			QRgb *pixel = reinterpret_cast<QRgb *>(image.scanLine(i));
-			QRgb *end = pixel + image.width();
-			for (; pixel != end; pixel++) {
-				int gray_val = qGray(*pixel);
-				*pixel = QColor(gray_val, gray_val, gray_val).rgb();
-			}
-		}
-
-		painter->drawImage(pos, image);
-	} else {
-		profile->render(painter, pos);
-	}
+	if (profiles_missing)
+		webView->page()->runJavaScript("   var profiles = document.getElementsByClassName(\"diveProfile\");\
+				       for (let profile of profiles) { \
+					  var id = profile.attributes.getNamedItem(\"Id\").value; \
+					  var img = document.createElement(\"img\"); \
+					  img.src = id + \".png\"; \
+					  img.style.height = \"100%\"; \
+					  img.style.width = \"100%\"; \
+					  profile.appendChild(img); \
+					} \
+				", [this](const QVariant &v) { emit profiles_inserted(); });
+	profiles_missing = false;
+	emit(progessUpdated(100));
 }
 
-void Printer::flowRender()
+void Printer::printing()
 {
-	// add extra padding at the bottom to pages with height not divisible by view port
-#ifndef USE_WEBENGINE
-	int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
-	QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
-	webView->page()->mainFrame()->findFirstElement("body").setAttribute("style", styleString);
-
-	// render the Qwebview
-	QPainter painter;
-	QRect viewPort(0, 0, 0, 0);
-	painter.begin(paintDevice);
-	painter.setRenderHint(QPainter::Antialiasing);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-
-	// get all references to dontbreak divs
-	int start = 0, end = 0;
-	int fullPageResolution = webView->page()->mainFrame()->contentsSize().height();
-	const QWebElementCollection dontbreak = webView->page()->mainFrame()->findAllElements(".dontbreak");
-	for (QWebElement dontbreakElement: dontbreak) {
-		if ((dontbreakElement.geometry().y() + dontbreakElement.geometry().height()) - start < pageSize.height()) {
-			// One more element can be placed
-			end = dontbreakElement.geometry().y() + dontbreakElement.geometry().height();
-		} else {
-			// fill the page with background color
-			QRect fullPage(0, 0, pageSize.width(), pageSize.height());
-			QBrush fillBrush(templateOptions.color_palette.color1);
-			painter.fillRect(fullPage, fillBrush);
-			QRegion reigon(0, 0, pageSize.width(), end - start);
-			viewPort.setRect(0, start, pageSize.width(), end - start);
-
-			// render the base Html template
-			webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
-
-			// scroll the webview to the next page
-			webView->page()->mainFrame()->scroll(0, dontbreakElement.geometry().y() - start);
-
-			// rendering progress is 4/5 of total work
-			emit(progessUpdated(lrint((end * 80.0 / fullPageResolution) + done)));
-
-			// add new pages only in print mode, while previewing we don't add new pages
-			if (printMode == Printer::PRINT) {
-				static_cast<QPrinter*>(paintDevice)->newPage();
-			} else {
-				painter.end();
-				return;
-			}
-			start = dontbreakElement.geometry().y();
-		}
+	QPrintDialog printDialog(&printer, (QWidget *) nullptr);
+	if (printDialog.exec() == QDialog::Accepted) {
+		webView->page()->print(&printer, [this](bool ok){ if (ok) emit jobDone(); });
 	}
-	// render the remianing page
-	QRect fullPage(0, 0, pageSize.width(), pageSize.height());
-	QBrush fillBrush(templateOptions.color_palette.color1);
-	painter.fillRect(fullPage, fillBrush);
-	QRegion reigon(0, 0, pageSize.width(), end - start);
-	webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
-
-	painter.end();
-#else
-	// FIX ME
-#endif
-}
-
-void Printer::render(int pages)
-{
-	// keep original preferences
-	ProfileWidget2 *profile = MainWindow::instance()->graphics;
-	int profileFrameStyle = profile->frameStyle();
-	double fontScale = profile->getFontPrintScale();
-	double printFontScale = 1.0;
-
-	// apply printing settings to profile
-	profile->setFrameStyle(QFrame::NoFrame);
-	profile->setPrintMode(true, !printOptions.color_selected);
-	profile->setToolTipVisibile(false);
-
-	// render the Qwebview
-	QPainter painter;
-	QRect viewPort(0, 0, pageSize.width(), pageSize.height());
-	painter.begin(paintDevice);
-	painter.setRenderHint(QPainter::Antialiasing);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-
-	// get all refereces to diveprofile class in the Html template
-#ifdef USE_WEBENGINE
-	//FIX ME
-#else
-	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
-
-	QSize originalSize = profile->size();
-	if (collection.count() > 0) {
-		// A "standard" profile has about 600 pixels in height.
-		// Scale the fonts in the printed profile accordingly.
-		// This is arbitrary, but it seems to work reasonably.
-		QSize size = collection[0].geometry().size();
-		printFontScale = size.height() / 600.0;
-		profile->resize(size);
-	}
-	profile->setFontPrintScale(printFontScale);
-
-	int elemNo = 0;
-	for (int i = 0; i < pages; i++) {
-		// render the base Html template
-		webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer);
-
-		// render all the dive profiles in the current page
-		while (elemNo < collection.count() && collection.at(elemNo).geometry().y() < viewPort.y() + viewPort.height()) {
-			// dive id field should be dive_{{dive_no}} se we remove the first 5 characters
-			QString diveIdString = collection.at(elemNo).attribute("id");
-			int diveId = diveIdString.remove(0, 5).toInt(0, 10);
-			putProfileImage(collection.at(elemNo).geometry(), viewPort, &painter, get_dive_by_uniq_id(diveId), profile);
-			elemNo++;
-		}
-
-		// scroll the webview to the next page
-		webView->page()->mainFrame()->scroll(0, pageSize.height());
-		viewPort.adjust(0, pageSize.height(), 0, pageSize.height());
-
-		// rendering progress is 4/5 of total work
-		emit(progessUpdated(lrint((i * 80.0 / pages) + done)));
-		if (i < pages - 1 && printMode == Printer::PRINT)
-			static_cast<QPrinter*>(paintDevice)->newPage();
-	}
-	painter.end();
-#endif
-
-	// return profle settings
-	profile->setFrameStyle(profileFrameStyle);
-	profile->setPrintMode(false);
-	profile->setFontPrintScale(fontScale);
-	profile->setToolTipVisibile(true);
-#ifdef USE_WEBENGINE
-	//FIXME
-#else
-	profile->resize(originalSize);
-#endif
-//	qPrefDisplay::set_animation_speed(animationOriginal);
-
-	//replot the dive after returning the settings
-	profile->plotDive(current_dive, dc_number, true);
+	printDialog.close();
 }
 
 //value: ranges from 0 : 100 and shows the progress of the templating engine
@@ -233,6 +69,7 @@ void Printer::templateProgessUpdated(int value)
 
 QString Printer::exportHtml()
 {
+	// Does anybody actually use this? It will not contian profile images!!!
 	TemplateLayout t(printOptions, templateOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	QString html;
@@ -252,51 +89,42 @@ void Printer::print()
 	if (printMode != Printer::PRINT) {
 		return;
 	}
+	int i;
+	struct dive *dive;
+	QString fn;
+	int dives_to_print = 0;
+	for_each_dive(i, dive)
+		if (dive->selected || !printOptions.print_selected)
+			++dives_to_print;
 
-	QPrinter *printerPtr;
-	printerPtr = static_cast<QPrinter*>(paintDevice);
+	for_each_dive (i, dive) {
+		//TODO check for exporting selected dives only
+		if (!dive->selected && printOptions.print_selected)
+			continue;
+		exportProfile(dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)));
+		emit(progessUpdated(done + lrint(i * 80.0 / dives_to_print)));
+	}
 
 	TemplateLayout t(printOptions, templateOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
-	int dpi = printerPtr->resolution();
-	//rendering resolution = selected paper size in inchs * printer dpi
-	pageSize.setHeight(qCeil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
-	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
-#ifdef USE_WEBENGINE
-	//FIXME
-#else
-	webView->page()->setViewportSize(pageSize);
-	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-#endif
-	// export border width with at least 1 pixel
-	// templateOptions.borderwidth = std::max(1, pageSize.width() / 1000);
-	if (printOptions.type == print_options::DIVELIST)
-		webView->setHtml(t.generate(inPlanner));
-	else if (printOptions.type == print_options::STATISTICS )
-		webView->setHtml(t.generateStatistics());
-	if (printOptions.color_selected && printerPtr->colorMode())
-		printerPtr->setColorMode(QPrinter::Color);
-	else
-		printerPtr->setColorMode(QPrinter::GrayScale);
-	// apply user settings
-	int divesPerPage;
+	int dpi = printer.resolution();
+	webView->page()->settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessFileUrls, true);
+	connect(webView, &QWebEngineView::loadFinished, this, &Printer::onLoadFinished);
 
-	// get number of dives per page from data-numberofdives attribute in the body of the selected template
-#ifdef USE_WEBENGINE
-	// FIX ME
-	divesPerPage = 1;
-#else
-	bool ok;
-	divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
-	if (!ok) {
-		divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
-		//TODO: show warning
-	}
-#endif
-	if (divesPerPage == 0)
-		flowRender();
+	if (printOptions.type == print_options::DIVELIST) {
+		QFile printFile(printDir.filePath("print.html"));
+		printFile.open(QIODevice::WriteOnly | QIODevice::Text);
+		QTextStream out(&printFile);
+		out << t.generate(inPlanner);
+		printFile.close();
+		webView->load(QUrl::fromLocalFile(printDir.filePath("print.html")));
+	} else if (printOptions.type == print_options::STATISTICS )
+		webView->setHtml(t.generateStatistics());
+	if (printOptions.color_selected && printer.colorMode())
+		printer.setColorMode(QPrinter::Color);
 	else
-		render((t.numDives - 1) / divesPerPage + 1);
+		printer.setColorMode(QPrinter::GrayScale);
+	printer.setResolution(dpi);
 }
 
 void Printer::previewOnePage()
@@ -306,32 +134,11 @@ void Printer::previewOnePage()
 
 		pageSize.setHeight(paintDevice->height());
 		pageSize.setWidth(paintDevice->width());
-#ifdef USE_WEBENGINE
-		//FIXME
-#else
-		webView->page()->setViewportSize(pageSize);
-#endif
 		// initialize the border settings
 		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
 		if (printOptions.type == print_options::DIVELIST)
 			webView->setHtml(t.generate(inPlanner));
 		else if (printOptions.type == print_options::STATISTICS )
 			webView->setHtml(t.generateStatistics());
-#ifdef USE_WEBENGINE
-		// FIX ME
-		render(1);
-#else
-		bool ok;
-		int divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
-		if (!ok) {
-			divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
-			//TODO: show warning
-		}
-		if (divesPerPage == 0) {
-			flowRender();
-		} else {
-			render(1);
-		}
-#endif
 	}
 }

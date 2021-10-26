@@ -14,6 +14,7 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QDialogButtonBox>
+#include <QWebEngineView>
 
 #define SETTINGS_GROUP "PrintDialog"
 
@@ -215,11 +216,14 @@ void PrintDialog::printClicked(void)
 {
 	createPrinterObj();
 	QPrintDialog printDialog(qprinter, this);
-	if (printDialog.exec() == QDialog::Accepted) {
-		connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
-		printer->print();
-		close();
-	}
+	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+	connect(printer, &Printer::jobDone, this, &PrintDialog::printingDone);
+	printer->print();
+}
+
+void PrintDialog::printingDone()
+{
+	close();
 }
 
 void PrintDialog::onPaintRequested(QPrinter*)

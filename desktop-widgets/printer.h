@@ -4,18 +4,21 @@
 
 #include "printoptions.h"
 #include "templateedit.h"
+#include <QPrinter>
+#include <QTemporaryDir>
 
 class ProfileWidget2;
 class QPainter;
 class QPaintDevice;
 class QRect;
-//class QWebView;
 class QWebEngineView;
+
 
 class Printer : public QObject {
 	Q_OBJECT
 
 public:
+	QWebEngineView *webView;
 	enum PrintMode {
 		PRINT,
 		PREVIEW
@@ -23,24 +26,20 @@ public:
 
 private:
 	QPaintDevice *paintDevice;
-#ifdef USE_WEBENGINE
-	QWebEngineView *webView;
-#else
-	QWebView *webView;
-#endif
+	QPrinter printer;
+	QTemporaryDir printDir;
 	const print_options &printOptions;
 	const template_options &templateOptions;
 	QSize pageSize;
 	PrintMode printMode;
 	bool inPlanner;
 	int done;
-	void render(int Pages);
-	void flowRender();
-	void putProfileImage(const QRect &box, const QRect &viewPort, QPainter *painter,
-			     struct dive *dive, ProfileWidget2 *profile);
+	void onLoadFinished();
+	bool profiles_missing;
 
 private slots:
 	void templateProgessUpdated(int value);
+	void printing();
 
 public:
 	Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner);
@@ -51,6 +50,8 @@ public:
 
 signals:
 	void progessUpdated(int value);
+	void profiles_inserted();
+	void jobDone();
 };
 
 #endif //PRINTER_H

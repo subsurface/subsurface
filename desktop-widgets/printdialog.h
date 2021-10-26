@@ -38,6 +38,11 @@ slots:
 	void printClicked();
 	void onPaintRequested(QPrinter *);
 	void createPrinterObj();
+
+public
+slots:
+	void printingDone();
 };
+
 #endif
 #endif // PRINTDIALOG_H
