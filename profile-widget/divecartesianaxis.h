@@ -39,6 +39,7 @@ public:
 	qreal valueAt(const QPointF &p) const;
 	qreal posAtValue(qreal value) const;
 	void setPosition(const QRectF &rect);
+	double screenPosition(double pos) const; // 0.0 = begin, 1.0 = end of axis, independent of represented values
 	void setTextVisible(bool arg1);
 	void setLinesVisible(bool arg1);
 	void updateTicks(int animSpeed);

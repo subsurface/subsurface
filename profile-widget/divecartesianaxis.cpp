@@ -375,6 +375,18 @@ qreal DiveCartesianAxis::posAtValue(qreal value) const
 	return adjusted;
 }
 
+double DiveCartesianAxis::screenPosition(double pos) const
+{
+	QLineF m = line();
+	double from = position == Position::Bottom ? m.x1() : m.y1();
+	double to = position == Position::Bottom ? m.x2() : m.y2();
+
+	if ((position == Position::Bottom) == inverted)
+		pos = 1.0 - pos;
+
+	return (to - from) * pos + from;
+}
+
 double DiveCartesianAxis::maximum() const
 {
 	return max;
