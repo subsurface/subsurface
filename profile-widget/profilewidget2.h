@@ -126,6 +126,7 @@ private:
 	void addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)());
 	void clearPictures();
 	void plotPicturesInternal(const struct dive *d, bool synchronous);
+	void updateThumbnails();
 	void addDivemodeSwitch(int seconds, int divemode);
 	void addBookmark(int seconds);
 	void splitDive(int seconds);
