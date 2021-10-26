@@ -996,30 +996,36 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 {
 	if (formatDiveDuration(d) != duration) {
 		int h = 0, m = 0, s = 0;
-		QRegExp r1(QStringLiteral("(\\d*)\\s*%1[\\s,:]*(\\d*)\\s*%2[\\s,:]*(\\d*)\\s*%3").arg(tr("h")).arg(tr("min")).arg(tr("sec")), Qt::CaseInsensitive);
-		QRegExp r2(QStringLiteral("(\\d*)\\s*%1[\\s,:]*(\\d*)\\s*%2").arg(tr("h")).arg(tr("min")), Qt::CaseInsensitive);
-		QRegExp r3(QStringLiteral("(\\d*)\\s*%1").arg(tr("min")), Qt::CaseInsensitive);
-		QRegExp r4(QStringLiteral("(\\d*):(\\d*):(\\d*)"));
-		QRegExp r5(QStringLiteral("(\\d*):(\\d*)"));
-		QRegExp r6(QStringLiteral("(\\d*)"));
-		if (r1.indexIn(duration) >= 0) {
-			h = r1.cap(1).toInt();
-			m = r1.cap(2).toInt();
-			s = r1.cap(3).toInt();
-		} else if (r2.indexIn(duration) >= 0) {
-			h = r2.cap(1).toInt();
-			m = r2.cap(2).toInt();
-		} else if (r3.indexIn(duration) >= 0) {
-			m = r3.cap(1).toInt();
-		} else if (r4.indexIn(duration) >= 0) {
-			h = r4.cap(1).toInt();
-			m = r4.cap(2).toInt();
-			s = r4.cap(3).toInt();
-		} else if (r5.indexIn(duration) >= 0) {
-			h = r5.cap(1).toInt();
-			m = r5.cap(2).toInt();
-		} else if (r6.indexIn(duration) >= 0) {
-			m = r6.cap(1).toInt();
+		QRegularExpression r1(QStringLiteral("(\\d*)\\s*%1[\\s,:]*(\\d*)\\s*%2[\\s,:]*(\\d*)\\s*%3").arg(tr("h")).arg(tr("min")).arg(tr("sec")), QRegularExpression::CaseInsensitiveOption);
+		QRegularExpressionMatch m1 = r1.match(duration);
+		QRegularExpression r2(QStringLiteral("(\\d*)\\s*%1[\\s,:]*(\\d*)\\s*%2").arg(tr("h")).arg(tr("min")), QRegularExpression::CaseInsensitiveOption);
+		QRegularExpressionMatch m2 = r2.match(duration);
+		QRegularExpression r3(QStringLiteral("(\\d*)\\s*%1").arg(tr("min")), QRegularExpression::CaseInsensitiveOption);
+		QRegularExpressionMatch m3 = r3.match(duration);
+		QRegularExpression r4(QStringLiteral("(\\d*):(\\d*):(\\d*)"));
+		QRegularExpressionMatch m4 = r4.match(duration);
+		QRegularExpression r5(QStringLiteral("(\\d*):(\\d*)"));
+		QRegularExpressionMatch m5 = r5.match(duration);
+		QRegularExpression r6(QStringLiteral("(\\d*)"));
+		QRegularExpressionMatch m6 = r6.match(duration);
+		if (m1.hasMatch()) {
+			h = m1.captured(1).toInt();
+			m = m1.captured(2).toInt();
+			s = m1.captured(3).toInt();
+		} else if (m2.hasMatch()) {
+			h = m2.captured(1).toInt();
+			m = m2.captured(2).toInt();
+		} else if (m3.hasMatch()) {
+			m = m3.captured(1).toInt();
+		} else if (m4.hasMatch()) {
+			h = m4.captured(1).toInt();
+			m = m4.captured(2).toInt();
+			s = m4.captured(3).toInt();
+		} else if (m5.hasMatch()) {
+			h = m5.captured(1).toInt();
+			m = m5.captured(2).toInt();
+		} else if (m6.hasMatch()) {
+			m = m6.captured(1).toInt();
 		}
 		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
 		if (same_string(d->dc.model, "manually added dive"))
@@ -1196,7 +1202,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	}
 	if (d->buddy != buddy) {
 		if (buddy.contains(",")){
-			buddy = buddy.replace(QRegExp("\\s*,\\s*"), ", ");
+			buddy = buddy.replace(QRegularExpression("\\s*,\\s*"), ", ");
 		}
 		diveChanged = true;
 		free(d->buddy);
@@ -1204,7 +1210,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	}
 	if (d->divemaster != diveMaster) {
 		if (diveMaster.contains(",")){
-			diveMaster = diveMaster.replace(QRegExp("\\s*,\\s*"), ", ");
+			diveMaster = diveMaster.replace(QRegularExpression("\\s*,\\s*"), ", ");
 		}
 		diveChanged = true;
 		free(d->divemaster);
@@ -1686,11 +1692,12 @@ QString QMLManager::getDate(const QString& diveId)
 
 QString QMLManager::getVersion() const
 {
-	QRegExp versionRe(".*:([()\\.,\\d]+).*");
-	if (!versionRe.exactMatch(getUserAgent()))
+	QRegularExpression versionRe(":([()\\.,\\d]+)");
+	QRegularExpressionMatch match = versionRe.match(getUserAgent());
+	if (!match.hasMatch())
 		return QString();
 
-	return versionRe.cap(1);
+	return match.captured(1);
 }
 
 QString QMLManager::getGpsFromSiteName(const QString &siteName)
@@ -2207,7 +2214,7 @@ void QMLManager::importCacheRepo(QString repo)
 QStringList QMLManager::cloudCacheList() const
 {
 	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory()));
-	QStringList dirs = localCacheDir.entryList().filter(QRegExp("...+"));
+	QStringList dirs = localCacheDir.entryList(QDir::NoDotAndDotDot);
 	QStringList result;
 	foreach(QString dir, dirs) {
 		QString originsDir = QString("%1/cloudstorage/%2/.git/refs/remotes/origin/").arg(system_default_directory()).arg(dir);
@@ -2215,7 +2222,7 @@ QStringList QMLManager::cloudCacheList() const
 		if (dir == "localrepo") {
 			result << QString("localrepo[master]");
 		} else {
-			foreach(QString branch, remote.entryList().filter(QRegExp("...+"))) {
+			foreach(QString branch, remote.entryList().filter(QRegularExpression("...+"))) {
 				result << QString("%1[%2]").arg(dir).arg(branch);
 			}
 		}
