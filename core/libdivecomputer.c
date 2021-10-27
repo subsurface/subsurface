@@ -1001,6 +1001,7 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
 	UNUSED(device);
+	static unsigned int last = 0;
 	const dc_event_progress_t *progress = data;
 	const dc_event_devinfo_t *devinfo = data;
 	const dc_event_clock_t *clock = data;
@@ -1012,9 +1013,19 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		dev_info(devdata, translate("gettextFromC", "Event: waiting for user action"));
 		break;
 	case DC_EVENT_PROGRESS:
-		if (!progress->maximum)
-			break;
-		progress_bar_fraction = (double)progress->current / (double)progress->maximum;
+		/* this seems really dumb... but having no idea what is happening on long
+		 * downloads makes people think that the app is hung;
+		 * since the progress is in bytes downloaded (usually), simply give updates in 10k increments
+		 */
+		if (progress->current < last)
+			/* this is a new communication with the divecomputer */
+			last = progress->current;
+		if (progress->current > last + 10240) {
+			last = progress->current;
+			dev_info(NULL, translate("gettextFromC", "read %dkb"), progress->current / 1024);
+		}
+		if (progress->maximum)
+			progress_bar_fraction = (double)progress->current / (double)progress->maximum;
 		break;
 	case DC_EVENT_DEVINFO:
 		if (dc_descriptor_get_model(devdata->descriptor) != devinfo->model) {
