@@ -840,8 +840,9 @@ static void do_save_fingerprint(device_data_t *devdata, const char *tmp, const c
 	if (fd < 0)
 		return;
 
-	dev_info(devdata, "Saving fingerprint for %08x:%08x to '%s'",
-		devdata->fdeviceid, devdata->fdiveid, final);
+	if (verbose)
+		dev_info(devdata, "Saving fingerprint for %08x:%08x to '%s'",
+			 devdata->fdeviceid, devdata->fdiveid, final);
 
 	/* The fingerprint itself.. */
 	written = write(fd, devdata->fingerprint, devdata->fsize);
@@ -855,10 +856,8 @@ static void do_save_fingerprint(device_data_t *devdata, const char *tmp, const c
 		written = -1;
 
 	if (written == devdata->fsize) {
-		if (!subsurface_rename(tmp, final)) {
-			dev_info(devdata, "  ... %d bytes and dive ID", written);
+		if (!subsurface_rename(tmp, final))
 			return;
-		}
 	}
 	unlink(tmp);
 }
@@ -965,14 +964,17 @@ static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, cons
 	memcpy(&deviceid, buffer + size, 4);
 	memcpy(&diveid, buffer + size + 4, 4);
 
-	dev_info(devdata, " ... fingerprinted dive %08x:%08x", deviceid, diveid);
+	if (verbose)
+		dev_info(devdata, " ... fingerprinted dive %08x:%08x", deviceid, diveid);
 	/* Only use it if we *have* that dive! */
 	if (!has_dive(deviceid, diveid)) {
-		dev_info(devdata, " ... dive not found");
+		if (verbose)
+			dev_info(devdata, " ... dive not found");
 		return;
 	}
 	dc_device_set_fingerprint(device, buffer, size);
-	dev_info(devdata, " ... fingerprint of size %zu", size);
+	if (verbose)
+		dev_info(devdata, " ... fingerprint of size %zu", size);
 }
 
 /*
@@ -989,9 +991,11 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 		return;
 
 	cachename = fingerprint_file(devdata);
-	dev_info(devdata, "Looking for fingerprint in '%s'", cachename);
+	if (verbose)
+		dev_info(devdata, "Looking for fingerprint in '%s'", cachename);
 	if (readfile(cachename, &mem) > 0) {
-		dev_info(devdata, " ... got %zu bytes", mem.size);
+		if (verbose)
+			dev_info(devdata, " ... got %zu bytes", mem.size);
 		verify_fingerprint(device, devdata, mem.buffer, mem.size);
 		free(mem.buffer);
 	}
