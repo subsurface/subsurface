@@ -1009,7 +1009,7 @@ QString get_short_dive_date_string(timestamp_t when)
 
 char *get_dive_date_c_string(timestamp_t when)
 {
-	QString text = get_dive_date_string(when);
+	QString text = get_short_dive_date_string(when);
 	return copy_qstring(text);
 }
 
