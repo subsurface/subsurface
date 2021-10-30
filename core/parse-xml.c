@@ -743,6 +743,22 @@ static void try_to_fill_dc_settings(const char *name, char *buf, struct parser_s
 	nonmatch("divecomputerid", name, buf);
 }
 
+static void try_to_fill_fingerprint(const char *name, char *buf, struct parser_state *state)
+{
+	start_match("fingerprint", name, buf);
+	if (MATCH("model.fingerprint", hex_value, &state->cur_settings.fingerprint.model))
+		return;
+	if (MATCH("serial.fingerprint", hex_value, &state->cur_settings.fingerprint.serial))
+		return;
+	if (MATCH("deviceid.fingerprint", hex_value, &state->cur_settings.fingerprint.fdeviceid))
+		return;
+	if (MATCH("diveid.fingerprint", hex_value, &state->cur_settings.fingerprint.fdiveid))
+		return;
+	if (MATCH("data.fingerprint", utf8_string, &state->cur_settings.fingerprint.data))
+		return;
+	nonmatch("fingerprint", name, buf);
+}
+
 static void try_to_fill_event(const char *name, char *buf, struct parser_state *state)
 {
 	start_match("event", name, buf);
@@ -1480,6 +1496,7 @@ static bool entry(const char *name, char *buf, struct parser_state *state)
 		return true;
 	}
 	if (state->in_settings) {
+		try_to_fill_fingerprint(name, buf, state);
 		try_to_fill_dc_settings(name, buf, state);
 		try_to_match_autogroup(name, buf);
 		return true;
@@ -1629,6 +1646,7 @@ static struct nesting {
 	const char *name;
 	parser_func start, end;
 } nesting[] = {
+	  { "fingerprint", fingerprint_settings_start, fingerprint_settings_end },
 	  { "divecomputerid", dc_settings_start, dc_settings_end },
 	  { "settings", settings_start, settings_end },
 	  { "site", dive_site_start, dive_site_end },
@@ -1744,6 +1762,7 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	state.trips = trips;
 	state.sites = sites;
 	state.devices = devices;
+	state.fingerprints = &fingerprint_table; // simply use the global table for now
 	state.filter_presets = filter_presets;
 	doc = xmlReadMemory(res, strlen(res), url, NULL, XML_PARSE_HUGE | XML_PARSE_RECOVER);
 	if (!doc)

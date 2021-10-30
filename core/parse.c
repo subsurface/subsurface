@@ -186,6 +186,16 @@ void reset_dc_settings(struct parser_state *state)
 	state->cur_settings.dc.deviceid = 0;
 }
 
+void reset_fingerprint(struct parser_state *state)
+{
+	free((void *)state->cur_settings.fingerprint.data);
+	state->cur_settings.fingerprint.data = NULL;
+	state->cur_settings.fingerprint.model = 0;
+	state->cur_settings.fingerprint.serial = 0;
+	state->cur_settings.fingerprint.fdeviceid = 0;
+	state->cur_settings.fingerprint.fdiveid = 0;
+}
+
 void settings_start(struct parser_state *state)
 {
 	state->in_settings = true;
@@ -196,6 +206,20 @@ void settings_end(struct parser_state *state)
 	state->in_settings = false;
 }
 
+void fingerprint_settings_start(struct parser_state *state)
+{
+	reset_fingerprint(state);
+}
+
+void fingerprint_settings_end(struct parser_state *state)
+{
+	create_fingerprint_node_from_hex(state->fingerprints,
+			state->cur_settings.fingerprint.model,
+			state->cur_settings.fingerprint.serial,
+			state->cur_settings.fingerprint.data,
+			state->cur_settings.fingerprint.fdeviceid,
+			state->cur_settings.fingerprint.fdiveid);
+}
 void dc_settings_start(struct parser_state *state)
 {
 	reset_dc_settings(state);

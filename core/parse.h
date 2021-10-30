@@ -30,6 +30,13 @@ struct parser_settings {
 		uint32_t deviceid;
 		const char *nickname, *serial_nr, *firmware;
 	} dc;
+	struct {
+		 uint32_t model;
+		 uint32_t serial;
+		 uint32_t fdeviceid;
+		 uint32_t fdiveid;
+		 const char *data;
+	} fingerprint;
 };
 
 enum import_source {
@@ -83,6 +90,7 @@ struct parser_state {
 	struct trip_table *trips;			/* non-owning */
 	struct dive_site_table *sites;			/* non-owning */
 	struct device_table *devices;			/* non-owning */
+	struct fingerprint_table *fingerprints;         /* non-owning */
 	struct filter_preset_table *filter_presets;	/* non-owning */
 
 	sqlite3 *sql_handle;			/* for SQL based parsers */
@@ -113,6 +121,8 @@ void reset_dc_info(struct divecomputer *dc, struct parser_state *state);
 void reset_dc_settings(struct parser_state *state);
 void settings_start(struct parser_state *state);
 void settings_end(struct parser_state *state);
+void fingerprint_settings_start(struct parser_state *state);
+void fingerprint_settings_end(struct parser_state *state);
 void dc_settings_start(struct parser_state *state);
 void dc_settings_end(struct parser_state *state);
 void dive_site_start(struct parser_state *state);
