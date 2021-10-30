@@ -1492,3 +1492,22 @@ struct dive *find_next_visible_dive(timestamp_t when)
 
 	return NULL;
 }
+
+bool has_dive(unsigned int deviceid, unsigned int diveid)
+{
+       int i;
+       struct dive *dive;
+
+       for_each_dive (i, dive) {
+	       struct divecomputer *dc;
+
+	       for_each_dc (dive, dc) {
+		       if (dc->deviceid != deviceid)
+			       continue;
+		       if (dc->diveid != diveid)
+			       continue;
+		       return 1;
+	       }
+       }
+       return 0;
+}

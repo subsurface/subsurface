@@ -69,6 +69,7 @@ void clear_dive_table(struct dive_table *table);
 void move_dive_table(struct dive_table *src, struct dive_table *dst);
 struct dive *unregister_dive(int idx);
 extern void delete_single_dive(int idx);
+extern bool has_dive(unsigned int deviceid, unsigned int diveid);
 
 #ifdef __cplusplus
 }

@@ -926,25 +926,6 @@ static void save_fingerprint(device_data_t *devdata)
 	free(final);
 }
 
-static int has_dive(unsigned int deviceid, unsigned int diveid)
-{
-	int i;
-	struct dive *dive;
-
-	for_each_dive (i, dive) {
-		struct divecomputer *dc;
-
-		for_each_dc (dive, dc) {
-			if (dc->deviceid != deviceid)
-				continue;
-			if (dc->diveid != diveid)
-				continue;
-			return 1;
-		}
-	}
-	return 0;
-}
-
 /*
  * The fingerprint cache files contain the actual libdivecomputer
  * fingerprint, followed by 8 bytes of (deviceid,diveid) data.
