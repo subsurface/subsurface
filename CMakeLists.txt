@@ -232,6 +232,12 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# in some builds we appear to be missing libz for some strange reason...
 	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} -lz -lpthread)
 
+	# on some Linux systems (like openSUSE) we don't manage to successfully
+	# link against libhidapi-libusb - even if that is used by libdivecomputer
+	find_library(HID_LIB hidapi-libusb)
+	message(STATUS "find hidapi-libusb: ${HID_LIB}")
+	set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${HID_LIB})
+
 	# Test for ARM processor (Raspberry Pi) and add libGLESv2 if found
 	if (CMAKE_SYSTEM_PROCESSOR STREQUAL "armv7l" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "armv6l")
 		message (STATUS "Found ARM processor. Adding libGLESv2")
