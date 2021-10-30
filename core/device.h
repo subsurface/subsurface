@@ -15,6 +15,7 @@ struct dive_table;
 
 // global device table
 extern struct device_table device_table;
+extern struct fingerprint_table fingerprint_table;
 
 extern int create_device_node(struct device_table *table, const char *model, const char *serial, const char *nickname);
 extern int nr_devices(const struct device_table *table);
@@ -40,6 +41,12 @@ const char *device_get_nickname(const struct device *dev);
 extern struct device_table *alloc_device_table();
 extern void free_device_table(struct device_table *devices);
 
+// create fingerprint entry - raw data remains owned by caller
+extern void create_fingerprint_node(struct fingerprint_table *table, uint32_t model, uint32_t serial,
+				   const unsigned char *raw_data, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid);
+// look up the fingerprint for model/serial - returns the number of bytes in the fingerprint; memory owned by the table
+extern unsigned int get_fingerprint_data(const struct fingerprint_table *table, uint32_t model, uint32_t serial, const unsigned char **fp_out);
+
 #ifdef __cplusplus
 }
 #endif
@@ -59,9 +66,24 @@ struct device {
 	uint32_t deviceId;	// Always the string hash of the serialNumber
 };
 
+struct fingerprint_record {
+	bool operator<(const fingerprint_record &a) const;
+	uint32_t       model;     // model and libdivecomputer serial number to
+	uint32_t       serial;    //    look up the fingerprint
+	unsigned char *raw_data;  // fingerprint data as provided by libdivecomputer
+	unsigned int   fsize;     // size of raw fingerprint data
+	unsigned int   fdeviceid; // corresponding deviceid
+	unsigned int   fdiveid;   // corresponding diveid
+};
+
 struct device_table {
 	// Keep the dive computers in a vector sorted by (model, serial)
 	std::vector<device> devices;
+};
+
+struct fingerprint_table {
+	// Keep the fingerprint records in a vector sorted by (model, serial) - these are uint32_t here
+	std::vector<fingerprint_record> fingerprints;
 };
 
 #endif

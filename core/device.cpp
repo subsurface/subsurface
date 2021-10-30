@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "ssrf.h"
 #include "dive.h"
+#include "divelist.h"
 #include "subsurface-string.h"
 #include "device.h"
 #include "errorhelper.h" // for verbose flag
@@ -9,6 +10,7 @@
 #include <QString> // for QString::number
 
 struct device_table device_table;
+struct fingerprint_table fingerprint_table;
 
 bool device::operator==(const device &a) const
 {
@@ -196,4 +198,57 @@ extern "C" struct device_table *alloc_device_table()
 extern "C" void free_device_table(struct device_table *devices)
 {
 	delete devices;
+}
+
+// managing fingerprint data
+bool fingerprint_record::operator<(const fingerprint_record &a) const
+{
+	if (model == a.model)
+		return serial < a.serial;
+	return model < a.model;
+}
+
+// annoyingly, the Cressi Edy doesn't support a serial number (it's always 0), but still uses fingerprints
+// so we can't bail on the serial number being 0
+extern "C" unsigned int get_fingerprint_data(const struct fingerprint_table *table, uint32_t model, uint32_t serial, const unsigned char **fp_out)
+{
+	if (model == 0 || fp_out == nullptr)
+		return 0;
+	struct fingerprint_record fpr = { model, serial };
+	auto it = std::lower_bound(table->fingerprints.begin(), table->fingerprints.end(), fpr);
+	if (it != table->fingerprints.end() && it->model == model && it->serial == serial) {
+		// std::lower_bound gets us the first element that isn't smaller than what we are looking
+		// for - so if one is found, we still need to check for equality
+		if (has_dive(it->fdeviceid, it->fdiveid)) {
+			*fp_out = it->raw_data;
+			return it->fsize;
+		}
+	}
+	return 0;
+}
+
+extern "C" void create_fingerprint_node(struct fingerprint_table *table, uint32_t model, uint32_t serial,
+				       const unsigned char *raw_data_in, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid)
+{
+	// since raw data can contain \0 we copy this manually, not as string
+	unsigned char *raw_data = (unsigned char *)malloc(fsize);
+	if (!raw_data)
+		return;
+	memcpy(raw_data, raw_data_in, fsize);
+
+	struct fingerprint_record fpr = { model, serial, raw_data, fsize, fdeviceid, fdiveid };
+	auto it = std::lower_bound(table->fingerprints.begin(), table->fingerprints.end(), fpr);
+	if (it != table->fingerprints.end() && it->model == model && it->serial == serial) {
+		// std::lower_bound gets us the first element that isn't smaller than what we are looking
+		// for - so if one is found, we still need to check for equality - and then we
+		// can update the existing entry; first we free the memory for the stored raw data
+		free(it->raw_data);
+		it->fdeviceid = fdeviceid;
+		it->fdiveid = fdiveid;
+		it->raw_data = raw_data;
+		it->fsize = fsize;
+	} else {
+		// insert a new one
+		table->fingerprints.insert(it, fpr);
+	}
 }
