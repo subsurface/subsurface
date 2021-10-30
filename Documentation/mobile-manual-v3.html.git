@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 9.1.0" />
+<meta name="generator" content="AsciiDoc" />
 <title></title>
 <style type="text/css">
 /*
@@ -410,7 +410,7 @@ asciidoc.install(3);
 </div>
 <div class="paragraph"><p><span class="big"><em>Subsurface-mobile</em> User Manual</span></p></div>
 <div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Dirk Hohndel</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 3.2, March 2021</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 3.4, October 2021</em></span></p></div>
 <div id="toc">
   <div id="toctitle">Table of Contents</div>
   <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
@@ -427,8 +427,7 @@ aimed at Android and iOS smartphone and tablet devices.
 While the desktop version of <em>Subsurface</em> shows much more detailed information
 for each dive, the mobile version allows a more accessible dive log on the go. For example,
 you can prove dive experience on a dive trip to dive shops or review
-previous dives while on a dive boat. <em>Subsurface-mobile</em> also allows
-the gathering of GPS locations where dives are performed.
+previous dives while on a dive boat.
 Assuming you have a dive computer that is supported by the mobile OS of
 your choice, <em>Subsurface-mobile</em> supports the downloading of dives from your dive computer.</p></div>
 <div class="paragraph"><p>Users of <em>Subsurface-mobile</em> often use the
@@ -462,11 +461,6 @@ Download dive data directly from some dive computers.
 <p>
 Editing most of the dive log data, e.g. dive-master, buddy,
   equipment or notes relating to a dive.
-</p>
-</li>
-<li>
-<p>
-Recording, storing and applying GPS positions to dive information.
 </p>
 </li>
 <li>
@@ -1236,113 +1230,7 @@ specific XML files (both for dives and dive sites) as well as <em>UDDF</em>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_obtaining_dive_site_locations_using_the_gps">12. Obtaining dive site locations using the GPS</h2>
-<div class="sectionbody">
-<div class="paragraph"><p>The fact that almost all smartphones have GPS facilities allows
-<em>Subsurface-mobile</em> to record
-the locations of dives.</p></div>
-<div class="sidebarblock">
-<div class="content">
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/important.png" alt="Important" />
-</td>
-<td class="content"><strong>Accuracy of GPS coordinates</strong></td>
-</tr></table>
-</div>
-<div class="paragraph"><p>GPS-derived coordinates on a smartphone
-are not always accurate and can have an error greater than 1 km. GPS accuracy
-is determined by the hardware and software of the
-smartphone as well as by the GPS settings selected within Android/iOS.
-As of Android V6 (Marshmallow) select Android <em>Settings &#8594; Communication &#8594; Location &#8594; High accuracy</em>*.
-If the smartphone is taken on the boat
-during a dive, locations can be automatically recorded at regular intervals.
-These locations can then be applied to dives in the dive list as described below</p></div>
-</div></div>
-<div class="paragraph"><p>To collect dive site coordinates four step are required:</p></div>
-<div class="sect2">
-<h3 id="S_ConfigureGPS">12.1. Configuring the GPS service</h3>
-<div class="paragraph"><p>For most users, the defaults for tracking GPS locations are
-appropriate. If you would like to change them, go to
-the <em>Main Menu</em>, select the <a href="#S_Settings"><em>Settings</em></a> screen, and open
-the <em>Advanced</em> area on that page where there is a section for
-configuring the GPS service (see image below). GPS location data
-are collected at regular intervals, e.g. every 5 minutes, or at regular
-distances, e.g. after the boat has moved more than 200m, or a combination of
-both of these approaches. Provide the appropriate information and
-tap the <em>Back</em> button. The program is now ready to collect GPS positions.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="mobile-images/GPSConfig.jpg" alt="FIGURE: GPS configure" />
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_collecting_gps_positions">12.2. Collecting GPS positions</h3>
-<div class="tableblock">
-<table rules="all"
-width="100%"
-frame=""
-cellspacing="0" cellpadding="4">
-<col width="40%" />
-<col width="60%" />
-<tbody>
-<tr>
-<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="mobile-images/LocationMenu.jpg" alt="FIGURE: GPS start" />
-</div>
-</div></div></td>
-<td align="left" valign="top"><p class="table">In the <em>Location</em> menu select <em>Run location service</em>.
-<em>Subsurface-mobile</em> starts to collect GPS locations automatically,
-following the preferences specified as described above. While the GPS
-location service is running, all menus have a GPS symbol at the bottom,
-indicating that the service is active. After returning from
-the dive, deactivate the collection of GPS data by tapping
-the option <em>Location &#8594; Disable location service</em>. The GPS symbol at the bottom
-of menus disappears.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="paragraph"><p>Collecting GPS fixes like this is relatively battery intensive and unfortunately
-both Android and especially iOS have become increasingly aggressive in killing
-applications that are running while the screen is turned off. It may make sense
-to check between dives that the location service is still running. On the other hand
-the battery consumption of a smartphone with GPS enabled is often significantly less than
-the battery consumption of a dedicated GPS that is logging a track.</p></div>
-</div>
-<div class="sect2">
-<h3 id="_viewing_gps_data_collected_during_a_dive">12.3. Viewing GPS data collected during a dive</h3>
-<div class="paragraph"><p>From the <em>Location</em> submenu select <em>Show GPS fixes</em>. This brings
-up a list of GPS positions obtained by the location service (image
-below). Two actions are possible for each of the locations, enabled by
-dragging the right part of a location to the left. This exposes two
-options. Tapping the dustbin deletes this particular GPS location. Tapping the
-teardrop-shaped icon (actually a Google Maps pin) opens up Google Maps with a pin
-indicating the exact map position of the GPS record being viewed. The two above
-options can be hidden by drawing the GPS record to the right.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="mobile-images/gpsmanagement.jpg" alt="FIGURE: GPS management" />
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_applying_gps_data_to_dives_in_the_dive_log">12.4. Applying GPS data to dives in the dive log</h3>
-<div class="paragraph"><p>After running the location service during a dive trip, first either download
-the dives from your dive computer or manually enter the dives into the dive list.
-Now you can apply the GPS positions to these dives.
-From the <em>Dive management</em> menu, tap <em>Apply GPS fixes</em>. The dive list contains the start
-and end times of each dive. Now, <em>Subsurface-mobile</em> applies the first
-GPS position that falls within the dive period of each dive. This results
-in a GPS position for each dive that is saved as part of the dive log.</p></div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_viewing_the_locations_of_all_dives_in_the_dive_list">13. Viewing the locations of all dives in the dive list</h2>
+<h2 id="_viewing_the_locations_of_all_dives_in_the_dive_list">12. Viewing the locations of all dives in the dive list</h2>
 <div class="sectionbody">
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -1356,19 +1244,19 @@ of the different dive sites.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_Settings">14. Specifying the settings for <em>Subsurface-mobile</em></h2>
+<h2 id="S_Settings">13. Specifying the settings for <em>Subsurface-mobile</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>The <em>Settings</em> page allows the customization of <em>Subsurface-mobile</em>.
 It is grouped into four sections. Many of the settings involve dragging a slider switch to activate or deactivate a particular setting.</p></div>
 <div class="sect2">
-<h3 id="_em_general_settings_em_section">14.1. <em>General settings</em> section</h3>
+<h3 id="_em_general_settings_em_section">13.1. <em>General settings</em> section</h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="mobile-images/GeneralSettings.jpg" alt="FIGURE: General Settings" />
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_ChangeCloudAccount">14.1.1. Cloud status: Changing to a different <em>Subsurface</em> cloud account</h4>
+<h4 id="S_ChangeCloudAccount">13.1.1. Cloud status: Changing to a different <em>Subsurface</em> cloud account</h4>
 <div class="paragraph"><p>Some users have more than one <em>Subsurface</em> cloud account and need to switch between accounts.
 Tap on the <em>Change</em> button next to the <em>Email address</em> in the <em>General settings</em> on the <em>Settings</em> page (see image above).
 This opens the <em>Cloud credentials</em> page.
@@ -1376,7 +1264,7 @@ Here you can change the email address and password used and then tap the button 
 The dive list of the newly-opened account is shown.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_default_cylinder">14.1.2. Default cylinder</h4>
+<h4 id="_default_cylinder">13.1.2. Default cylinder</h4>
 <div class="paragraph"><p>When manually entering a dive or when downloading from a dive computer that doesn&#8217;t explicitly
 include cylinder size information (very few dive computers support that feature), <em>Subsurface-mobile</em>
 uses the cylinder that you select here as the default, useful for divers that mostly use a particular
@@ -1384,15 +1272,15 @@ type of cylinder. If you don&#8217;t set this entry, no default
 cylinder is used.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_forget_the_remembered_dive_computers_used_during_dive_download">14.1.3. Forget the remembered dive computers used during dive download</h4>
+<h4 id="_forget_the_remembered_dive_computers_used_during_dive_download">13.1.3. Forget the remembered dive computers used during dive download</h4>
 <div class="paragraph"><p>Tap the <em>Forget</em> button to reset the dive computers that are stored in the shortcut
 buttons on the <em>Download from dive computer</em> page.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_em_theme_em_section">14.2. <em>Theme</em> section</h3>
+<h3 id="_em_theme_em_section">13.2. <em>Theme</em> section</h3>
 <div class="sect3">
-<h4 id="_color_theme">14.2.1. Color theme</h4>
+<h4 id="_color_theme">13.2.1. Color theme</h4>
 <div class="tableblock">
 <table rules="all"
 width="100%"
@@ -1418,27 +1306,22 @@ the drop down menu.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_font_size">14.2.2. Font size</h4>
+<h4 id="_font_size">13.2.2. Font size</h4>
 <div class="paragraph"><p>Depending on the size and the screen resolution of your mobile device, you may prefer slightly
 smaller or slightly larger fonts. You can make this selection with the three buttons here.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_em_units_em_section">14.3. <em>Units</em> section</h3>
+<h3 id="_em_units_em_section">13.3. <em>Units</em> section</h3>
 <div class="paragraph"><p>Here you can pick <em>metric</em>, <em>imperial</em>, or <em>personalized</em> units for the user interface.
 In most cases <em>Subsurface-mobile</em> should pick the regionally typical unit system for
 your location.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_em_advanced_em_section">14.4. <em>Advanced</em> section</h3>
+<h3 id="_em_advanced_em_section">13.4. <em>Advanced</em> section</h3>
 <div class="paragraph"><p>As the name indicates, most users do not need to make changes here.</p></div>
 <div class="sect3">
-<h4 id="_gps_location_service_thresholds">14.4.1. GPS location service thresholds</h4>
-<div class="paragraph"><p>As indicated above in the <em>Location</em> section of this manual, here you can set the distance and time
-thresholds for the <em>location service</em></p></div>
-</div>
-<div class="sect3">
-<h4 id="_bluetooth">14.4.2. Bluetooth</h4>
+<h4 id="_bluetooth">13.4.1. Bluetooth</h4>
 <div class="paragraph"><p>Since most mobile devices tend to find a <em>LOT</em> of BT/BLE devices that aren&#8217;t dive computers, by
 default <em>Subsurface-mobile</em> only shows known dive computers to make the connection list
 easier to use.</p></div>
@@ -1449,7 +1332,7 @@ by <em>Subsurface-mobile</em>, please send an email to the developers (using the
 menu entry) so we can add the missing code to recognize your dive computer as well.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_display">14.4.3. Display</h4>
+<h4 id="_display">13.4.2. Display</h4>
 <div class="paragraph"><p><em>Subsurface-mobile</em> tries to make efficient use of the available screen real estate of your
 mobile device. In most cases this leads to reasonable choices regarding the number of parallel
 columns that are being displayed. Some users have expressed the desire to force <em>Subsurface-mobile</em>
@@ -1458,7 +1341,7 @@ in a larger profile on the <em>Dive Details</em> page. Select this option if you
 feature.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_activating_the_developer_sub_menu">14.4.4. Activating the Developer sub-menu</h4>
+<h4 id="_activating_the_developer_sub_menu">13.4.3. Activating the Developer sub-menu</h4>
 <div class="paragraph"><p>This enables an additional menu item in the <em>Main</em> menu which contains options which are almost
 never useful for a regular user. Here you can find the detailed app log file as well as several
 test screens that help the developers track down issues you might encounter.</p></div>
@@ -1467,26 +1350,26 @@ test screens that help the developers track down issues you might encounter.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_help">15. Help</h2>
+<h2 id="_help">14. Help</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_about">15.1. About</h3>
+<h3 id="_about">14.1. About</h3>
 <div class="paragraph"><p>This page shows you the exact version of <em>Subsurface-mobile</em> that you are running and provides
 a convenient way to copy the application logs to the clipboard.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_show_user_manual">15.2. Show user manual</h3>
+<h3 id="_show_user_manual">14.2. Show user manual</h3>
 <div class="paragraph"><p>This menu entry opens the online version of this user manual in the native browser of your
 device. Unfortunately this option is not available without Internet access.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_ask_for_support">15.3. Ask for support</h3>
+<h3 id="_ask_for_support">14.3. Ask for support</h3>
 <div class="paragraph"><p>This item opens your default email client with a pre-populated email to the <em>Subsurface</em>
 support alias and copies the app logs into that email. Simply add your question or the
 but that you are reporting and send us your message.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_reset_forgotten_em_subsurface_cloud_em_password">15.4. Reset forgotten <em>Subsurface Cloud</em> password</h3>
+<h3 id="_reset_forgotten_em_subsurface_cloud_em_password">14.4. Reset forgotten <em>Subsurface Cloud</em> password</h3>
 <div class="paragraph"><p>As mentioned earlier in this manual, this is a convenient link to a web page that allows
 you to reset the password for your <em>Subsurface Cloud</em> account.</p></div>
 </div>
@@ -1497,7 +1380,7 @@ you to reset the password for your <em>Subsurface Cloud</em> account.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-03-31 10:19:16 PDT
+ 2021-10-30 08:48:42 PDT
 </div>
 </div>
 </body>

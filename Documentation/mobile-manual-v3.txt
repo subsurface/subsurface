@@ -18,7 +18,7 @@ image::mobile-images/Banner.jpg["Banner",align="center"]
 
 // toc::[]
 
-[blue]#_Version 3.2, March 2021_#
+[blue]#_Version 3.4, October 2021_#
 
 toc::[]
 
