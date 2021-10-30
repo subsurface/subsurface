@@ -967,10 +967,20 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 {
 	char *cachename;
 	struct memblock mem;
+	const unsigned char *raw_data;
 
 	if (devdata->force_download)
 		return;
 
+	/* first try our in memory data - raw_data is owned by the table, the dc_device_set_fingerprint function copies the data */
+	int fsize = get_fingerprint_data(&fingerprint_table, calculate_string_hash(devdata->model), devdata->devinfo.serial, &raw_data);
+	if (fsize) {
+		if (verbose)
+			dev_info(devdata, "... found fingerprint in dive table");
+		dc_device_set_fingerprint(device, raw_data, fsize);
+		return;
+	}
+	/* now check if we have a fingerprint on disk */
 	cachename = fingerprint_file(devdata);
 	if (verbose)
 		dev_info(devdata, "Looking for fingerprint in '%s'", cachename);
@@ -1447,8 +1457,15 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	 * we got a dive header, and because we will use the
 	 * dive id to verify that we actually have the dive
 	 * it refers to before we use the fingerprint data.
+	 *
+	 * For now we save the fingerprint both to the local file system
+	 * and to the global fingerprint table (to be then saved out with
+	 * the dive log data).
 	 */
 	save_fingerprint(data);
+	if (data->fingerprint && data->fdiveid)
+		create_fingerprint_node(&fingerprint_table, calculate_string_hash(data->model), data->devinfo.serial,
+					data->fingerprint, data->fsize, data->fdeviceid, data->fdiveid);
 	free(data->fingerprint);
 	data->fingerprint = NULL;
 
