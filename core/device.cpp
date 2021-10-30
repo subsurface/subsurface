@@ -252,3 +252,54 @@ extern "C" void create_fingerprint_node(struct fingerprint_table *table, uint32_
 		table->fingerprints.insert(it, fpr);
 	}
 }
+
+extern "C" void create_fingerprint_node_from_hex(struct fingerprint_table *table, uint32_t model, uint32_t serial,
+						const char *hex_data, uint32_t fdeviceid, uint32_t fdiveid)
+{
+	QByteArray raw = QByteArray::fromHex(hex_data);
+	create_fingerprint_node(table, model, serial,
+				(const unsigned char *)raw.constData(), raw.size(), fdeviceid, fdiveid);
+}
+
+extern "C" int nr_fingerprints(struct fingerprint_table *table)
+{
+	return table->fingerprints.size();
+}
+
+extern "C" uint32_t fp_get_model(struct fingerprint_table *table, unsigned int i)
+{
+	if (!table || i >= table->fingerprints.size())
+		return 0;
+	return table->fingerprints[i].model;
+}
+
+extern "C" uint32_t fp_get_serial(struct fingerprint_table *table, unsigned int i)
+{
+	if (!table || i >= table->fingerprints.size())
+		return 0;
+	return table->fingerprints[i].serial;
+}
+
+extern "C" uint32_t fp_get_deviceid(struct fingerprint_table *table, unsigned int i)
+{
+	if (!table || i >= table->fingerprints.size())
+		return 0;
+	return table->fingerprints[i].fdeviceid;
+}
+
+extern "C" uint32_t fp_get_diveid(struct fingerprint_table *table, unsigned int i)
+{
+	if (!table || i >= table->fingerprints.size())
+		return 0;
+	return table->fingerprints[i].fdiveid;
+}
+
+extern "C" char *fp_get_data(struct fingerprint_table *table, unsigned int i)
+{
+	if (!table || i >= table->fingerprints.size())
+		return 0;
+	struct fingerprint_record *fpr = &table->fingerprints[i];
+	// fromRawData() avoids one copy of the raw_data
+	QByteArray hex = QByteArray::fromRawData((char *)fpr->raw_data, fpr->fsize).toHex();
+	return strdup(hex.constData());
+}

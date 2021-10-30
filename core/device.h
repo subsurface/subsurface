@@ -44,8 +44,18 @@ extern void free_device_table(struct device_table *devices);
 // create fingerprint entry - raw data remains owned by caller
 extern void create_fingerprint_node(struct fingerprint_table *table, uint32_t model, uint32_t serial,
 				   const unsigned char *raw_data, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid);
+extern void create_fingerprint_node_from_hex(struct fingerprint_table *table, uint32_t model, uint32_t serial,
+					    const char *hex_data, uint32_t fdeviceid, uint32_t fdiveid);
 // look up the fingerprint for model/serial - returns the number of bytes in the fingerprint; memory owned by the table
 extern unsigned int get_fingerprint_data(const struct fingerprint_table *table, uint32_t model, uint32_t serial, const unsigned char **fp_out);
+
+// access the fingerprint data from C
+extern int nr_fingerprints(struct fingerprint_table *table);
+extern uint32_t fp_get_model(struct fingerprint_table *table, unsigned int i);
+extern uint32_t fp_get_serial(struct fingerprint_table *table, unsigned int i);
+extern uint32_t fp_get_deviceid(struct fingerprint_table *table, unsigned int i);
+extern uint32_t fp_get_diveid(struct fingerprint_table *table, unsigned int i);
+extern char *fp_get_data(struct fingerprint_table *table, unsigned int i);
 
 #ifdef __cplusplus
 }
