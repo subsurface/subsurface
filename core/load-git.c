@@ -1016,6 +1016,59 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, str
 	create_device_node(state->devices, id.model, id.serial, id.nickname);
 }
 
+struct fingerprint_helper {
+	uint32_t model;
+	uint32_t serial;
+	uint32_t fdeviceid;
+	uint32_t fdiveid;
+	const char *hex_data;
+};
+
+static void parse_fingerprint_keyvalue(void *_fph, const char *key, const char *value)
+{
+	struct fingerprint_helper *fph = _fph;
+
+	if (!strcmp(key, "model")) {
+		fph->model = get_hex(value);
+		return;
+	}
+	if (!strcmp(key, "serial")) {
+		fph->serial = get_hex(value);
+		return;
+	}
+	if (!strcmp(key, "deviceid")) {
+		fph->fdeviceid = get_hex(value);
+		return;
+	}
+	if (!strcmp(key, "diveid")) {
+		fph->fdiveid = get_hex(value);
+		return;
+	}
+	if (!strcmp(key, "data")) {
+		fph->hex_data = value;
+		return;
+	}
+	report_error("Unknown fingerprint key/value pair (%s/%s)", key, value);
+}
+
+
+static void parse_settings_fingerprint(char *line, struct membuffer *str, struct git_parser_state *state)
+{
+	struct fingerprint_helper fph = { 0, 0, 0, 0 };
+	for (;;) {
+		char c;
+		while (isspace(c = *line))
+			line++;
+		if (!c)
+			break;
+		line = parse_keyvalue_entry(parse_fingerprint_keyvalue, &fph, line, str);
+	}
+	if (verbose > 1)
+		SSRF_INFO("fingerprint %08x %08x %08x %08x %s\n", fph.model, fph.serial, fph.fdeviceid, fph.fdiveid, fph.hex_data);
+	create_fingerprint_node_from_hex(&fingerprint_table, fph.model, fph.serial,
+					 fph.hex_data, fph.fdeviceid, fph.fdiveid);
+}
+
 static void parse_picture_filename(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(line);
@@ -1098,7 +1151,7 @@ static void trip_parser(char *line, struct membuffer *str, struct git_parser_sta
 static struct keyword_action settings_action[] = {
 #undef D
 #define D(x) { #x, parse_settings_ ## x }
-	D(autogroup), D(divecomputerid), D(prefs), D(subsurface), D(units), D(userid), D(version)
+	D(autogroup), D(divecomputerid), D(fingerprint), D(prefs), D(subsurface), D(units), D(userid), D(version)
 };
 
 static void settings_parser(char *line, struct membuffer *str, struct git_parser_state *state)

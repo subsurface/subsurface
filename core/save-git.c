@@ -869,6 +869,16 @@ static void save_one_device(struct membuffer *b, const struct device *d)
 	put_string(b, "\n");
 }
 
+static void save_one_fingerprint(struct membuffer *b, unsigned int i)
+{
+	put_format(b, "fingerprint model=%08x serial=%08x deviceid=%08x diveid=%08x data=\"%s\"\n",
+		   fp_get_model(&fingerprint_table, i),
+		   fp_get_serial(&fingerprint_table, i),
+		   fp_get_deviceid(&fingerprint_table, i),
+		   fp_get_diveid(&fingerprint_table, i),
+		   fp_get_data(&fingerprint_table, i));
+}
+
 static void save_settings(git_repository *repo, struct dir *tree)
 {
 	struct membuffer b = { 0 };
@@ -876,6 +886,10 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	put_format(&b, "version %d\n", DATAFORMAT_VERSION);
 	for (int i = 0; i < nr_devices(&device_table); i++)
 		save_one_device(&b, get_device(&device_table, i));
+	/* save the fingerprint data */
+	for (unsigned int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
+		save_one_fingerprint(&b, i);
+
 	cond_put_format(autogroup, &b, "autogroup\n");
 	save_units(&b);
 	if (prefs.tankbar)
