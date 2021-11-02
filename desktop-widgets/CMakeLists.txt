@@ -148,14 +148,24 @@ if(NOT NO_PRINTING)
 	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
 		printdialog.cpp
 		printdialog.h
-		printer.cpp
-		printer.h
 		printoptions.cpp
 		printoptions.h
 		templateedit.cpp
 		templateedit.h
 		templatelayout.cpp
 		templatelayout.h
+	)
+endif()
+
+if(USE_WEBENGINE)
+	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
+		printerwebengine.cpp
+		printerwebengine.h
+	)
+else()
+	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
+		printer.cpp
+		printer.h
 	)
 endif()
 

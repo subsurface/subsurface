@@ -39,9 +39,11 @@ slots:
 	void onPaintRequested(QPrinter *);
 	void createPrinterObj();
 
+#ifdef USE_WEBENGINE
 public
 slots:
 	void printingDone();
+#endif
 };
 
 #endif
