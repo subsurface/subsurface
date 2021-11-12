@@ -80,7 +80,7 @@
     </application>
 
     <uses-sdk android:minSdkVersion="21"
-	      android:targetSdkVersion="29" />
+	      android:targetSdkVersion="30" />
 
     <supports-screens
         android:anyDensity="true"
