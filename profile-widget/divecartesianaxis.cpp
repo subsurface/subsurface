@@ -106,8 +106,23 @@ int DiveCartesianAxis::getMinLabelDistance(const DiveCartesianAxis &timeAxis) co
 	return int(ceil(interval));
 }
 
-static double sensibleInterval(double inc, int decimals)
+static double sensibleInterval(double inc, int decimals, bool is_time_axis)
 {
+	if (is_time_axis && inc < 60.0) {
+		// for time axes and less than one hour increments, round to
+		// 1, 2, 3, 4, 5, 6  or 12 parts of an hour or a minute
+		// (that is 60, 30, 20, 15, 12, 10 or 5 min/sec).
+		bool fraction_of_hour = inc > 1.0;
+		if (fraction_of_hour)
+			inc /= 60.0;
+		inc = inc <= 1.0 / 12.0 ? 1.0 / 12.0 :
+		      inc <= 1.0 / 6.0  ? 1.0 / 6.0 :
+					  1.0 / floor(1.0/inc);
+		if (fraction_of_hour)
+			inc *= 60.0;
+		return inc;
+	}
+
 	// Use full decimal increments
 	double digits = floor(log10(inc));
 	int digits_int = lrint(digits);
@@ -120,7 +135,7 @@ static double sensibleInterval(double inc, int decimals)
 
 	double digits_factor = pow(10.0, digits);
 	int inc_int = std::max((int)ceil(inc / digits_factor), 1);
-	// Do "nice" increments of the leading digit: 1, 2, 4, 5.
+	// Do "nice" increments of the leading digit. In general: 1, 2, 4, 5.
 	if (inc_int > 5)
 		inc_int = 10;
 	if (inc_int == 3)
@@ -151,7 +166,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 
 	// Round the interval to a sensible size in display units
 	double intervalDisplay = stepValue * transform.a;
-	intervalDisplay = sensibleInterval(intervalDisplay, fractionalDigits);
+	intervalDisplay = sensibleInterval(intervalDisplay, fractionalDigits, position == Position::Bottom);
 
 	// Choose full multiples of the interval as minumum and maximum values
 	double minDisplay = transform.to(dataMin);
