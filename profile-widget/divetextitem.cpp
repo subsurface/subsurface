@@ -17,6 +17,22 @@ DiveTextItem::DiveTextItem(double dpr, double scale, int alignFlags, QGraphicsIt
 	setFlag(ItemIgnoresTransformations);
 }
 
+static QFont getFont(double dpr, double scale)
+{
+	QFont fnt(qApp->font());
+	double size = fnt.pixelSize();
+	if (size > 0) {
+		// set in pixels - so the scale factor may not make a difference if it's too close to 1
+		size *= scale * dpr;
+		fnt.setPixelSize(lrint(size));
+	} else {
+		size = fnt.pointSizeF();
+		size *= scale * dpr;
+		fnt.setPointSizeF(size);
+	}
+	return fnt;
+}
+
 void DiveTextItem::set(const QString &t, const QBrush &b)
 {
 	internalText = t;
@@ -66,27 +82,6 @@ const QString &DiveTextItem::text()
 	return internalText;
 }
 
-QFont DiveTextItem::getFont(double dpr, double scale)
-{
-	QFont fnt(qApp->font());
-	double size = fnt.pixelSize();
-	if (size > 0) {
-		// set in pixels - so the scale factor may not make a difference if it's too close to 1
-		size *= scale * dpr;
-		fnt.setPixelSize(lrint(size));
-	} else {
-		size = fnt.pointSizeF();
-		size *= scale * dpr;
-		fnt.setPointSizeF(size);
-	}
-	return fnt;
-}
-
-double DiveTextItem::outlineSpace(double dpr)
-{
-	return outlineSize * dpr;
-}
-
 double DiveTextItem::fontHeight(double dpr, double scale)
 {
 	QFont fnt = getFont(dpr, scale);
@@ -97,4 +92,15 @@ double DiveTextItem::fontHeight(double dpr, double scale)
 double DiveTextItem::height() const
 {
 	return fontHeight(dpr, scale) + outlineSize * dpr;
+}
+
+std::pair<double, double> DiveTextItem::getLabelSize(double dpr, double scale, const QString &label)
+{
+	QFont fnt = getFont(dpr, scale);
+	double outlineSpace = outlineSize * dpr;
+	QFontMetrics fm(fnt);
+	/* Round up, because non-integers tend to give abysmal rendering. */
+	double width = ceil(fm.size(Qt::TextSingleLine, label).width() + outlineSpace);
+	double height = ceil(fm.height() + outlineSpace);
+	return std::make_pair(width, height);
 }

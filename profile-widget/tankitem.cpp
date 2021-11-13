@@ -36,9 +36,7 @@ TankItem::TankItem(const DiveCartesianAxis &axis, double dpr) :
 
 double TankItem::height() const
 {
-	QFont fnt = DiveTextItem::getFont(dpr, 1.0);
-	QFontMetrics fm(fnt);
-	return fm.height() + 2.0 * border * dpr;
+	return DiveTextItem::fontHeight(dpr, 1.0) + 2.0 * border * dpr;
 }
 
 void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)

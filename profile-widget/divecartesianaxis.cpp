@@ -57,14 +57,7 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, bool inverted, int integ
 			label.append('9');
 	}
 
-	/* Use the label to estimate size of the labels.
-	 * Round up, because non-integers tend to give abysmal rendering.
-	 */
-	QFont fnt = DiveTextItem::getFont(dpr, labelScale);
-	double outlineSpace = DiveTextItem::outlineSpace(dpr);
-	QFontMetrics fm(fnt);
-	labelWidth = ceil(fm.size(Qt::TextSingleLine, label).width() + outlineSpace);
-	labelHeight = ceil(fm.height() + outlineSpace);
+	std::tie(labelWidth, labelHeight) = DiveTextItem::getLabelSize(dpr, labelScale, label);
 }
 
 DiveCartesianAxis::~DiveCartesianAxis()
@@ -94,6 +87,11 @@ double DiveCartesianAxis::width() const
 double DiveCartesianAxis::height() const
 {
 	return labelHeight + labelSpaceVertical * dpr;
+}
+
+double DiveCartesianAxis::horizontalOverhang() const
+{
+	return labelWidth / 2.0;
 }
 
 int DiveCartesianAxis::getMinLabelDistance(const DiveCartesianAxis &timeAxis) const
