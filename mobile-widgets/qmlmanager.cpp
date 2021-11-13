@@ -850,6 +850,7 @@ static void setupDivesite(DiveSiteChange &res, struct dive *d, struct dive_site 
 		res.location = location;
 	} else {
 		res.createdDs.reset(alloc_dive_site_with_name(locationtext));
+		res.createdDs.get()->location = location;
 		d->dive_site = res.createdDs.get();
 	}
 	res.changed = true;
@@ -981,7 +982,10 @@ bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString loca
 	if (formatDiveGPS(d) != gps) {
 		double lat, lon;
 		if (parseGpsText(gps, &lat, &lon)) {
-			qDebug() << "parsed GPS, using it";
+			if (location.isEmpty())
+				location = gps;
+			if (verbose)
+				qDebug() << "parsed GPS" << gps << ", using it for dive site" << location;
 			// there are valid GPS coordinates - just use them
 			setupDivesite(res, d, ds, lat, lon, qPrintable(location));
 		} else {
