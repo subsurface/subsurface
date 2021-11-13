@@ -517,7 +517,7 @@ void DiveMeanDepthItem::createTextItem(double lastSec, double lastMeanDepth)
 {
 	qDeleteAll(texts);
 	texts.clear();
-	DiveTextItem *text = new DiveTextItem(dpr, diveMeanDepthItemLabelScale, Qt::AlignRight | Qt::AlignTop, this);
+	DiveTextItem *text = new DiveTextItem(dpr, diveMeanDepthItemLabelScale, Qt::AlignRight | Qt::AlignVCenter, this);
 	text->set(get_depth_string(lrint(lastMeanDepth), true), getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(lastSec) + dpr, vAxis.posAtValue(lastMeanDepth)));
 	texts.append(text);
