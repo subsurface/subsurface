@@ -432,9 +432,12 @@ void DiveTemperatureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->restore();
 }
 
+static const double diveMeanDepthItemLabelScale = 0.8;
+
 DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
 				     const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
+	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr),
+	labelWidth(DiveTextItem::getLabelSize(dpr, diveMeanDepthItemLabelScale, QStringLiteral("999.9ft")).first)
 {
 	QPen pen;
 	pen.setBrush(QBrush(getColor(::HR_AXIS)));
@@ -500,7 +503,6 @@ void DiveMeanDepthItem::replot(const dive *, int fromIn, int toIn, bool)
 		createTextItem(prevSec, prevMeanDepth);
 }
 
-
 void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
 	if (polygon().isEmpty())
@@ -515,7 +517,7 @@ void DiveMeanDepthItem::createTextItem(double lastSec, double lastMeanDepth)
 {
 	qDeleteAll(texts);
 	texts.clear();
-	DiveTextItem *text = new DiveTextItem(dpr, 0.8, Qt::AlignRight | Qt::AlignTop, this);
+	DiveTextItem *text = new DiveTextItem(dpr, diveMeanDepthItemLabelScale, Qt::AlignRight | Qt::AlignTop, this);
 	text->set(get_depth_string(lrint(lastMeanDepth), true), getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(lastSec) + dpr, vAxis.posAtValue(lastMeanDepth)));
 	texts.append(text);

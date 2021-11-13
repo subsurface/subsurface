@@ -225,13 +225,16 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	if (!currentdc)
 		return;
 
-	// Calculate left and right border needed for the axes.
-	// viz. the depth axis to the left and the partial pressure axis to the right.
-	// Thus, calculating the "border" of the graph is trivial.
+	// Calculate left and right border needed for the axes and other chart items.
 	double leftBorder = profileYAxis->width();
 	if (prefs.hrgraph)
 		leftBorder = std::max(leftBorder, heartBeatAxis->width());
-	double rightWidth = ppGraphsEnabled(current_dc, simplified) ? gasYAxis->width() : 0.0;
+
+	double rightWidth = timeAxis->horizontalOverhang();
+	if (prefs.show_average_depth)
+		rightWidth = std::max(rightWidth, meanDepthItem->labelWidth);
+	if (ppGraphsEnabled(currentdc, simplified))
+		rightWidth = std::max(rightWidth, gasYAxis->width());
 	double rightBorder = sceneRect().width() - rightWidth;
 	double width = rightBorder - leftBorder;
 
@@ -434,8 +437,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 	tankItem->setData(d, firstSecond, lastSecond);
 
-	if (ppGraphsEnabled(current_dc, simplified)) {
-		double max = prefs.pp_graphs.phe ? dataModel->pheMax() : -1;
+	if (ppGraphsEnabled(currentdc, simplified)) {
 		if (prefs.pp_graphs.pn2)
 			max = std::max(dataModel->pn2Max(), max);
 		if (prefs.pp_graphs.po2)

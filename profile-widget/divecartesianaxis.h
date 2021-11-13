@@ -46,6 +46,7 @@ public:
 	void updateTicks(int animSpeed);
 	double width() const; // only for vertical axes
 	double height() const; // only for horizontal axes
+	double horizontalOverhang() const; // space needed for labels of horizontal axes
 
 	// The minimum space between two labels on the plot in seconds
 	int getMinLabelDistance(const DiveCartesianAxis &timeAxis) const;

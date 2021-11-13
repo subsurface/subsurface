@@ -20,9 +20,8 @@ public:
 	DiveTextItem(double dpr, double scale, int alignFlags, QGraphicsItem *parent);
 	void set(const QString &text, const QBrush &brush);
 	const QString &text();
-	static QFont getFont(double dpr, double scale);
 	static double fontHeight(double dpr, double scale);
-	static double outlineSpace(double dpr); // Additional space needed by outline
+	static std::pair<double, double> getLabelSize(double dpr, double scale, const QString &label);
 	double height() const;
 
 private:
