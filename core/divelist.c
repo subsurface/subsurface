@@ -348,6 +348,10 @@ static double calculate_airuse(const struct dive *dive)
 	int airuse = 0;
 	int i;
 
+	// SAC for a CCR dive does not make sense.
+	if (dive->dc.divemode == CCR)
+		return 0.0;
+
 	for (i = 0; i < dive->cylinders.nr; i++) {
 		pressure_t start, end;
 		const cylinder_t *cyl = get_cylinder(dive, i);
