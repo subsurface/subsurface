@@ -365,27 +365,15 @@ qreal DiveCartesianAxis::valueAt(const QPointF &p) const
 qreal DiveCartesianAxis::posAtValue(qreal value) const
 {
 	QLineF m = line();
-	QPointF p = pos();
 
-	double size = max - min;
-	// unused for now:
-	// double distanceFromOrigin = value - min;
-	double percent = IS_FP_SAME(min, max) ? 0.0 : (value - min) / size;
-
-
-	double realSize = position == Position::Bottom ?
-		  m.x2() - m.x1() :
-		  m.y2() - m.y1();
-
-	// Inverted axis, just invert the percentage.
+	double screenFrom = position == Position::Bottom ? m.x1() : m.y1();
+	double screenTo = position == Position::Bottom ? m.x2() : m.y2();
+	if (IS_FP_SAME(min, max))
+		return (screenFrom + screenTo) / 2.0;
 	if ((position == Position::Bottom) == inverted)
-		percent = 1.0 - percent;
-
-	double retValue = realSize * percent;
-	double adjusted = position == Position::Bottom ?
-		retValue + m.x1() + p.x() :
-		retValue + m.y1() + p.y();
-	return adjusted;
+		std::swap(screenFrom, screenTo);
+	return (value - min) / (max - min) *
+	       (screenTo - screenFrom) + screenFrom;
 }
 
 static std::pair<double, double> getLineFromTo(const QLineF &l, bool horizontal)
