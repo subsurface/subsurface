@@ -2580,7 +2580,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="150"/>
         <source>Date/Time:</source>
-        <translation>Data i hora</translation>
+        <translation>Data i hora:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="162"/>
@@ -3948,12 +3948,12 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> m/min</source>
-        <translation>m/min</translation>
+        <translation> m/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> ft/min</source>
-        <translation>ft/min</translation>
+        <translation> ft/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
@@ -3963,7 +3963,7 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <source> cuft/min</source>
-        <translation>peus/min</translation>
+        <translation> peus/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
@@ -5050,17 +5050,17 @@ a la llista d&apos;immersions.</translation>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="93"/>
         <source> Dive Computer:</source>
-        <translation>Ordinador de busseig:</translation>
+        <translation> Ordinador de busseig:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="134"/>
         <source> Connection:</source>
-        <translation>Connexió:</translation>
+        <translation> Connexió:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="224"/>
         <source> Previously used dive computers: </source>
-        <translation>Ordinadors de busseig emprats anteriorment:</translation>
+        <translation> Ordinadors de busseig emprats anteriorment: </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="331"/>
@@ -5080,7 +5080,7 @@ a la llista d&apos;immersions.</translation>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="393"/>
         <source> Downloaded dives</source>
-        <translation>Immersions baixades</translation>
+        <translation> Immersions baixades</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="394"/>
@@ -5389,7 +5389,7 @@ relacionats amb el busseig.</translation>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="269"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at new locations:</source>
-        <translation>S&apos;han trobat &lt;b&gt;%1&lt;/b&gt; fitxers de suport als llocs nous.</translation>
+        <translation>S&apos;han trobat &lt;b&gt;%1&lt;/b&gt; fitxers de suport als llocs nous:</translation>
     </message>
 </context>
 <context>
@@ -5440,7 +5440,7 @@ relacionats amb el busseig.</translation>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="146"/>
         <source>   Dive   </source>
-        <translation>Immersió</translation>
+        <translation>   Immersió   </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="154"/>
@@ -7265,7 +7265,7 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="15"/>
         <source> Dive log</source>
-        <translation>Diari de busseig</translation>
+        <translation> Diari de busseig</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
@@ -7293,7 +7293,7 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="38"/>
         <source>Photographs or videos are sometimes edited after being uploaded and linked to Subsurface. If a photo is therefore more recent than its original thumbnail, checking the checkbox below will allow creating a new thumbnail after the media has been edited.</source>
-        <translation>A vegades, les fotografies o vídeos s&apos;editen després de pujar-les i vincular-se amb Subsurface. Per tant, si una fotografia és més recent que la seva miniatura original, el marcar la següent casella de selecció permetrà crear una miniatura nova una vegada s&apos;ha editat el suport.</translation>
+        <translation>A vegades, les fotografies o vídeos s&apos;editen després de pujar-les i vincular-se amb Subsurface. Per tant, si una fotografia és més recent que la seva miniatura original, el fet de marcar la casella de selecció següent permetrà crear una miniatura nova una vegada s&apos;ha editat el suport.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="46"/>
@@ -7371,7 +7371,7 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="20"/>
         <source>If your Internet access is through a proxy server, provide details for using that proxy</source>
-        <translation>Si el vostre accés a Internet és a través d&apos;un servidor intermediari, proporcioneu els detalls per a usar-l&apos;ho</translation>
+        <translation>Si el vostre accés a Internet és a través d&apos;un servidor intermediari, proporcioneu els detalls per a usar-lo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="32"/>
@@ -7818,7 +7818,7 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="771"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
-        <translation>Mostrar la LND / TTS ha estat inhabilitat per un temps de procès excessiu</translation>
+        <translation>Mostrar la LND / TTS ha estat inhabilitat per un temps de procés excessiu</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1314"/>
@@ -11205,7 +11205,7 @@ Màxim</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="104"/>
         <source>at least</source>
-        <translation>al menys</translation>
+        <translation>almenys</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="104"/>
@@ -13562,7 +13562,7 @@ Està connectat correctament el Uemis Zurich?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="581"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
-        <translation>La mida del tipus de lletra probablement és massa gran per a la pantalla, se suggereix canviar-la a un més petita</translation>
+        <translation>La mida del tipus de lletra probablement és massa gran per a la pantalla, se suggereix canviar-la a una més petita</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="741"/>
@@ -13919,12 +13919,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="77"/>
         <source>Stylesheet to export to divelogs.de is not found</source>
-        <translation>No s&apos;ha trobat el full d&apos;estils per exportar a «divelogs.de»</translation>
+        <translation>No s&apos;ha trobat el full d&apos;estils per a exportar a «divelogs.de»</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="87"/>
         <source>Failed to create zip file for upload: %s</source>
-        <translation>Ha fallat en crear el fitxer ZIP per publicar: %s</translation>
+        <translation>Ha fallat en crear el fitxer ZIP per a publicar: %s</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="148"/>
