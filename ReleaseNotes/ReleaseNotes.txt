@@ -2,6 +2,10 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 5.0.5
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- store dive computer 'fingerprints' with the dive log data, including in the cloud
+
 New in _Subsurface_ 5.0.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - desktop: fix potential crash when selecting multiple dives marked invalid
