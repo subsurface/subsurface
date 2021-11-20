@@ -11,9 +11,11 @@
 #include "core/subsurface-string.h"
 #include <string>
 
-CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableModel(parent),
+CylindersModel::CylindersModel(bool planner, bool hideUnused, QObject *parent) : CleanerTableModel(parent),
 	d(nullptr),
 	inPlanner(planner),
+	hideUnused(hideUnused),
+	numRows(0),
 	tempRow(-1),
 	tempCyl(empty_cylinder)
 {
@@ -150,12 +152,26 @@ bool CylindersModel::cylinderUsed(int i) const
 	return false;
 }
 
+// Calculate the number of displayed cylinders: If hideUnused
+// is set, we don't show unused cylinders at the end of the list.
+int CylindersModel::calcNumRows() const
+{
+	if (!d)
+		return 0;
+	if (!hideUnused || prefs.display_unused_tanks)
+		return d->cylinders.nr;
+	int res = d->cylinders.nr;
+	while (res > 0 && !cylinderUsed(res - 1))
+		--res;
+	return res;
+}
+
 QVariant CylindersModel::data(const QModelIndex &index, int role) const
 {
 	if (!d || !index.isValid())
 		return QVariant();
 
-	if (index.row() >= d->cylinders.nr) {
+	if (index.row() >= numRows) {
 		qWarning("CylindersModel and dive are out of sync!");
 		return QVariant();
 	}
@@ -300,7 +316,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		return false;
 
 	int row = index.row();
-	if (row < 0 || row >= d->cylinders.nr)
+	if (row < 0 || row >= numRows)
 		return false;
 
 	// Here we handle a few cases that allow us to set / commit / revert
@@ -480,9 +496,10 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 
 int CylindersModel::rowCount(const QModelIndex&) const
 {
-	return d ? d->cylinders.nr : 0;
+	return numRows;
 }
 
+// Only invoked from planner.
 void CylindersModel::add()
 {
 	if (!d)
@@ -510,6 +527,7 @@ void CylindersModel::updateDive(dive *dIn)
 #endif
 	beginResetModel();
 	d = dIn;
+	numRows = calcNumRows();
 	endResetModel();
 }
 
@@ -558,8 +576,12 @@ void CylindersModel::cylinderAdded(struct dive *changed, int pos)
 		return;
 
 	// The row was already inserted by the undo command. Just inform the model.
-	beginInsertRows(QModelIndex(), pos, pos);
-	endInsertRows();
+	if (pos < numRows) {
+		beginInsertRows(QModelIndex(), pos, pos);
+		++numRows;
+		endInsertRows();
+	}
+	updateNumRows();
 }
 
 void CylindersModel::cylinderRemoved(struct dive *changed, int pos)
@@ -568,8 +590,12 @@ void CylindersModel::cylinderRemoved(struct dive *changed, int pos)
 		return;
 
 	// The row was already deleted by the undo command. Just inform the model.
-	beginRemoveRows(QModelIndex(), pos, pos);
-	endRemoveRows();
+	if (pos < numRows) {
+		beginRemoveRows(QModelIndex(), pos, pos);
+		--numRows;
+		endRemoveRows();
+	}
+	updateNumRows();
 }
 
 void CylindersModel::cylinderEdited(struct dive *changed, int pos)
@@ -577,9 +603,26 @@ void CylindersModel::cylinderEdited(struct dive *changed, int pos)
 	if (d != changed)
 		return;
 
-	dataChanged(index(pos, TYPE), index(pos, USE));
+	if (pos < numRows)
+		dataChanged(index(pos, TYPE), index(pos, USE));
+	updateNumRows();
 }
 
+void CylindersModel::updateNumRows()
+{
+	int numRowsNew = calcNumRows();
+	if (numRowsNew < numRows) {
+		beginRemoveRows(QModelIndex(), numRowsNew, numRows - 1);
+		numRows = numRowsNew;
+		endRemoveRows();
+	} else if (numRowsNew > numRows) {
+		beginInsertRows(QModelIndex(), numRows, numRowsNew - 1);
+		numRows = numRowsNew;
+		endInsertRows();
+	}
+}
+
+// Only invoked from planner.
 void CylindersModel::moveAtFirst(int cylid)
 {
 	if (!d)
@@ -607,9 +650,10 @@ void CylindersModel::moveAtFirst(int cylid)
 	endMoveRows();
 }
 
+// Only invoked from planner.
 void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
 {
-	if (!d)
+	if (!d || numRows <= 0)
 		return;
 
 	pressure_t decopo2;
@@ -622,17 +666,18 @@ void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
 			cyl->depth = gas_mod(cyl->gasmix, decopo2, d, M_OR_FT(3, 10));
 		}
 	}
-	emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, COLUMNS - 1));
+	emit dataChanged(createIndex(0, 0), createIndex(numRows - 1, COLUMNS - 1));
 }
 
 void CylindersModel::updateTrashIcon()
 {
-	if (!d)
+	if (!d || numRows <= 0)
 		return;
 
-	emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, 0));
+	emit dataChanged(createIndex(0, 0), createIndex(numRows - 1, 0));
 }
 
+// Only invoked from planner.
 bool CylindersModel::updateBestMixes()
 {
 	if (!d)
@@ -667,8 +712,9 @@ bool CylindersModel::updateBestMixes()
 	return gasUpdated;
 }
 
-void CylindersModel::emitDataChanged() {
-	emit dataChanged(createIndex(0, 0), createIndex(d->cylinders.nr - 1, COLUMNS - 1));
+void CylindersModel::emitDataChanged()
+{
+	emit dataChanged(createIndex(0, 0), createIndex(numRows - 1, COLUMNS - 1));
 }
 
 void CylindersModel::cylindersReset(const QVector<dive *> &dives)
@@ -680,6 +726,7 @@ void CylindersModel::cylindersReset(const QVector<dive *> &dives)
 
 	// And update the model (the actual change was already performed in the backend)..
 	beginResetModel();
+	numRows = calcNumRows();
 	endResetModel();
 }
 
@@ -729,30 +776,4 @@ void CylindersModel::commitTempCyl(int row)
 	}
 	free_cylinder(tempCyl);
 	tempRow = -1;
-}
-
-CylindersModelFiltered::CylindersModelFiltered(QObject *parent) : QSortFilterProxyModel(parent),
-	source(false) // Currently, only the EquipmentTab uses the filtered model.
-{
-	setSourceModel(&source);
-}
-
-void CylindersModelFiltered::updateDive(dive *d)
-{
-	source.updateDive(d);
-}
-
-void CylindersModelFiltered::clear()
-{
-	source.clear();
-}
-
-CylindersModel *CylindersModelFiltered::model()
-{
-	return &source;
-}
-
-bool CylindersModelFiltered::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
-{
-	return prefs.display_unused_tanks || source.cylinderUsed(source_row);
 }

@@ -446,7 +446,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex&) const
 
 DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent),
 	d(nullptr),
-	cylinders(true),
+	cylinders(true, false),
 	mode(NOTHING)
 {
 	memset(&diveplan, 0, sizeof(diveplan));
