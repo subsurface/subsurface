@@ -1,16 +1,20 @@
 Work on release announcement draft in subsurface.github.io repo to get translations
 
 Run scripts/makeRelease.sh
-Upload sources to webserver
+Upload Subsurface and libdc sources to webserver
 Push sources and tags to github
+merge master into snap-stable and push that to github
 
 Check Launchpad and OBS to ensure release builds have been triggered
 Check Mac notorization success
 Ensure Windows machine is unlocked and authorize Windows signing
 Check that Windows, Mac, AppImage have been moved to downloads/ folder on webserver
+Check filenames of all the downloads
+Check that the update check shows the correct version
 
 Add date to release announcement draft and move to the corresponding _posts directories
-Update links on website
+Run the switchversion script to update links on website
 - index pages in all languages
 - download pages in all languages
+
 Post to Scubaboard
