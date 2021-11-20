@@ -152,7 +152,7 @@ bool CylindersModel::cylinderUsed(int i) const
 
 QVariant CylindersModel::data(const QModelIndex &index, int role) const
 {
-	if (!d || !index.isValid() || index.row() >= d->cylinders.nr)
+	if (!d || !index.isValid())
 		return QVariant();
 
 	if (index.row() >= d->cylinders.nr) {
