@@ -21,7 +21,7 @@ static bool ignoreHiddenFlag(int i)
 }
 
 TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
-	cylindersModel(new CylindersModelFiltered(this)),
+	cylindersModel(new CylindersModel(false, true, this)),
 	weightModel(new WeightModel(this))
 {
 	QCompleter *suitCompleter;
@@ -39,7 +39,7 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveEquipment::divesChanged);
 	connect(ui.cylinders, &TableView::itemClicked, this, &TabDiveEquipment::editCylinderWidget);
 	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
-	connect(cylindersModel->model(), &CylindersModel::divesEdited, this, &TabDiveEquipment::divesEdited);
+	connect(cylindersModel, &CylindersModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 	connect(weightModel, &WeightModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 
 	// Current display of things on Gnome3 looks like shit, so
@@ -174,9 +174,8 @@ void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 		return;
 
 	if (index.column() == CylindersModel::REMOVE) {
-		int cylinder_id = cylindersModel->mapToSource(index).row();
 		for (dive *d: getDiveSelection()) {
-			if (cylinder_with_sensor_sample(d, cylinder_id)) {
+			if (cylinder_with_sensor_sample(d, index.row())) {
 				if (QMessageBox::warning(this, tr("Remove cylinder?"),
 							 tr("The deleted cylinder has sensor readings, which will be lost.\n"
 							    "Do you want to continue?"),
@@ -184,7 +183,7 @@ void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 					return;
 			}
 		}
-		divesEdited(Command::removeCylinder(cylindersModel->mapToSource(index).row(), false));
+		divesEdited(Command::removeCylinder(index.row(), false));
 	} else {
 		ui.cylinders->edit(index);
 	}

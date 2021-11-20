@@ -35,7 +35,7 @@ public:
 		COMMIT_ROLE, // Save the temporary data to the dive. Must be set with Column == TYPE.
 		REVERT_ROLE // Revert to original data from dive. Must be set with Column == TYPE.
 	};
-	explicit CylindersModel(bool planner, QObject *parent = 0); // First argument: true if this model is used for the planner
+	explicit CylindersModel(bool planner, bool hideUnused, QObject *parent = 0); // First argument: true if this model is used for the planner
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
@@ -50,7 +50,6 @@ public:
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 	bool updateBestMixes();
 	void emitDataChanged();
-	bool cylinderUsed(int i) const;
 
 signals:
 	void divesEdited(int num);
@@ -66,6 +65,8 @@ slots:
 private:
 	dive *d;
 	bool inPlanner;
+	bool hideUnused;
+	int numRows; // Does not include unused cylinders at the end
 	// Used if we temporarily change a line because the user is selecting a weight type
 	int tempRow;
 	cylinder_t tempCyl;
@@ -74,20 +75,9 @@ private:
 	void initTempCyl(int row);
 	void clearTempCyl();
 	void commitTempCyl(int row);
-};
-
-// Cylinder model that hides unused cylinders if the pref.show_unused_cylinders flag is not set
-class CylindersModelFiltered : public QSortFilterProxyModel {
-	Q_OBJECT
-public:
-	CylindersModelFiltered(QObject *parent = 0);
-	CylindersModel *model(); // Access to unfiltered base model
-
-	void clear();
-	void updateDive(dive *d);
-private:
-	CylindersModel source;
-	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+	bool cylinderUsed(int i) const;
+	int calcNumRows() const;
+	void updateNumRows();
 };
 
 #endif
