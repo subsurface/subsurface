@@ -14,6 +14,12 @@
 #include <QSettings>
 #include <QCompleter>
 
+static bool ignoreHiddenFlag(int i)
+{
+	return i == CylindersModel::REMOVE || i == CylindersModel::TYPE ||
+	       i == CylindersModel::WORKINGPRESS_INT || i == CylindersModel::SIZE_INT;
+}
+
 TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	cylindersModel(new CylindersModelFiltered(this)),
 	weightModel(new WeightModel(this))
@@ -48,6 +54,8 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
 	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
 	ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
+	ui.cylinders->view()->setColumnHidden(CylindersModel::WORKINGPRESS_INT, true);
+	ui.cylinders->view()->setColumnHidden(CylindersModel::SIZE_INT, true);
 
 	ui.cylinders->setTitle(tr("Cylinders"));
 	ui.cylinders->setBtnToolTip(tr("Add cylinder"));
@@ -71,7 +79,7 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	QSettings s;
 	s.beginGroup("cylinders_dialog");
 	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
-		if ((i == CylindersModel::REMOVE) || (i == CylindersModel::TYPE))
+		if (ignoreHiddenFlag(i))
 			continue;
 		bool checked = s.value(QString("column%1_hidden").arg(i)).toBool();
 		QAction *action = new QAction(cylindersModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString(), ui.cylinders->view());
@@ -94,7 +102,7 @@ TabDiveEquipment::~TabDiveEquipment()
 	QSettings s;
 	s.beginGroup("cylinders_dialog");
 	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
-		if ((i == CylindersModel::REMOVE) || (i == CylindersModel::TYPE))
+		if (ignoreHiddenFlag(i))
 			continue;
 		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
 	}
@@ -122,8 +130,9 @@ void TabDiveEquipment::toggleTriggeredColumn()
 		view->showColumn(col);
 		if (view->columnWidth(col) <= 15)
 			view->setColumnWidth(col, 80);
-	} else
+	} else {
 		view->hideColumn(col);
+	}
 }
 
 void TabDiveEquipment::updateData()
@@ -131,7 +140,6 @@ void TabDiveEquipment::updateData()
 	cylindersModel->updateDive(current_dive);
 	weightModel->updateDive(current_dive);
 
-	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
 	bool is_ccr = current_dive && get_dive_dc(current_dive, dc_number)->divemode == CCR;
 	if (is_ccr)
 		ui.cylinders->view()->showColumn(CylindersModel::USE);

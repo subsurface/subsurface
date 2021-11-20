@@ -17,9 +17,9 @@ CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableMode
 	tempRow(-1),
 	tempCyl(empty_cylinder)
 {
-	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED};
+	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED, WORKINGPRESS_INT, SIZE_INT};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
-						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use"));
+						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use") << "" << "");
 
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &CylindersModel::cylinderAdded);
