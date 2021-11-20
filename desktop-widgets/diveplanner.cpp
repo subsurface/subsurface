@@ -47,6 +47,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 	view->setColumnHidden(CylindersModel::START, true);
 	view->setColumnHidden(CylindersModel::END, true);
 	view->setColumnHidden(CylindersModel::DEPTH, false);
+	view->setColumnHidden(CylindersModel::WORKINGPRESS_INT, true);
+	view->setColumnHidden(CylindersModel::SIZE_INT, true);
 	view->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	connect(ui.cylinderTableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addCylinder_clicked);
 	connect(ui.tableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addDefaultStop);
