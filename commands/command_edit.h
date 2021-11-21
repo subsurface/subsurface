@@ -386,6 +386,7 @@ public:
 	~AddCylinder();
 private:
 	cylinder_t cyl;
+	std::vector<int> indexes; // An index for each dive in the dives vector.
 	void undo() override;
 	void redo() override;
 	bool workToBeDone() override;
