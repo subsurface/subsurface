@@ -131,27 +131,6 @@ static QVariant percent_string(fraction_t fraction)
 	return QString("%L1%").arg(permille / 10.0, 0, 'f', 1);
 }
 
-bool CylindersModel::cylinderUsed(int i) const
-{
-	if (i < 0 || i >= d->cylinders.nr)
-		return false;
-	if (is_cylinder_used(d, i))
-		return true;
-
-	cylinder_t *cyl = get_cylinder(d, i);
-	if (cyl->start.mbar || cyl->sample_start.mbar ||
-	    cyl->end.mbar || cyl->sample_end.mbar)
-		return true;
-	if (cyl->manually_added)
-		return true;
-
-	/*
-	 * The cylinder has some data, but none of it is very interesting,
-	 * it has no pressures and no gas switches. Do we want to show it?
-	 */
-	return false;
-}
-
 // Calculate the number of displayed cylinders: If hideUnused
 // is set, we don't show unused cylinders at the end of the list.
 int CylindersModel::calcNumRows() const
@@ -160,10 +139,7 @@ int CylindersModel::calcNumRows() const
 		return 0;
 	if (!hideUnused || prefs.display_unused_tanks)
 		return d->cylinders.nr;
-	int res = d->cylinders.nr;
-	while (res > 0 && !cylinderUsed(res - 1))
-		--res;
-	return res;
+	return first_hidden_cylinder(d);
 }
 
 QVariant CylindersModel::data(const QModelIndex &index, int role) const

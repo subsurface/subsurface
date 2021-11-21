@@ -1052,6 +1052,7 @@ AddCylinder::AddCylinder(bool currentDiveOnly) :
 	else
 		setText(Command::Base::tr("Add cylinder (%n dive(s))", "", dives.size()));
 	cyl = create_new_cylinder(dives[0]);
+	indexes.reserve(dives.size());
 }
 
 AddCylinder::~AddCylinder()
@@ -1066,22 +1067,23 @@ bool AddCylinder::workToBeDone()
 
 void AddCylinder::undo()
 {
-	for (dive *d: dives) {
-		if (d->cylinders.nr <= 0)
-			continue;
-		remove_cylinder(d, d->cylinders.nr - 1);
-		update_cylinder_related_info(d);
-		emit diveListNotifier.cylinderRemoved(d, d->cylinders.nr);
-		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+	for (size_t i = 0; i < dives.size(); ++i) {
+		remove_cylinder(dives[i], indexes[i]);
+		update_cylinder_related_info(dives[i]);
+		emit diveListNotifier.cylinderRemoved(dives[i], indexes[i]);
+		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
 }
 
 void AddCylinder::redo()
 {
+	indexes.clear();
 	for (dive *d: dives) {
-		add_cloned_cylinder(&d->cylinders, cyl);
+		int index = first_hidden_cylinder(d);
+		indexes.push_back(index);
+		add_cylinder(&d->cylinders, index, clone_cylinder(cyl));
 		update_cylinder_related_info(d);
-		emit diveListNotifier.cylinderAdded(d, d->cylinders.nr - 1);
+		emit diveListNotifier.cylinderAdded(d, index);
 		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
 }

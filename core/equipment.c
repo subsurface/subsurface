@@ -464,6 +464,34 @@ cylinder_t create_new_cylinder(const struct dive *d)
 	return cyl;
 }
 
+static bool show_cylinder(const struct dive *d, int i) 
+{
+	if (is_cylinder_used(d, i))
+		return true;
+
+	const cylinder_t *cyl = &d->cylinders.cylinders[i];
+	if (cyl->start.mbar || cyl->sample_start.mbar ||
+	    cyl->end.mbar || cyl->sample_end.mbar)
+		return true;
+	if (cyl->manually_added)
+		return true;
+
+	/*
+	 * The cylinder has some data, but none of it is very interesting,
+	 * it has no pressures and no gas switches. Do we want to show it?
+	 */
+	return false;
+}
+
+/* The unused cylinders at the end of the cylinder list are hidden. */
+int first_hidden_cylinder(const struct dive *d)
+{
+	int res = d->cylinders.nr;
+	while (res > 0 && !show_cylinder(d, res - 1))
+		--res;
+	return res;
+}
+
 #ifdef DEBUG_CYL
 void dump_cylinders(struct dive *dive, bool verbose)
 {
