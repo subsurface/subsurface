@@ -537,12 +537,6 @@ QString TextHyperlinkEventFilter::tryToFormulateUrl(QTextCursor *cursor)
 	return stringMeetsOurUrlRequirements(maybeUrlStr) ? maybeUrlStr : QString();
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-#define SKIP_EMPTY Qt::SkipEmptyParts
-#else
-#define SKIP_EMPTY QString::SkipEmptyParts
-#endif
-
 QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, bool searchBackwards)
 {
 	// fromCursorTilWhitespace calls cursor->movePosition repeatedly, while

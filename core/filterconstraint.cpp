@@ -26,12 +26,6 @@ enum filter_constraint_units {
 	FILTER_CONSTRAINT_PERCENTAGE_UNIT
 };
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-#define SKIP_EMPTY Qt::SkipEmptyParts
-#else
-#define SKIP_EMPTY QString::SkipEmptyParts
-#endif
-
 static struct type_description {
 	filter_constraint_type type;
 	const char *token;		// untranslated token, which will be written to the log and should not contain spaces

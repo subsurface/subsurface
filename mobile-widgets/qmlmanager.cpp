@@ -1218,8 +1218,8 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	}
 	// normalize the tag list we have and the one we get from the UI
 	// try hard to deal with accidental white space issues
-	QStringList existingTagList = get_taglist_string(d->tag_list).split(",", QString::SkipEmptyParts);
-	QStringList newTagList = tags.split(",", QString::SkipEmptyParts);
+	QStringList existingTagList = get_taglist_string(d->tag_list).split(",", SKIP_EMPTY);
+	QStringList newTagList = tags.split(",", SKIP_EMPTY);
 	QStringList newCleanTagList;
 	for (QString s: newTagList) {
 		if (!s.simplified().isEmpty())
