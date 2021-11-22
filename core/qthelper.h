@@ -23,6 +23,12 @@ enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYP
 #include "core/gettextfromc.h"
 class QImage;
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#define SKIP_EMPTY Qt::SkipEmptyParts
+#else
+#define SKIP_EMPTY QString::SkipEmptyParts
+#endif
+
 QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);

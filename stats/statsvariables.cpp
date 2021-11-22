@@ -14,12 +14,6 @@
 #include <limits>
 #include <QLocale>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-#define SKIP_EMPTY Qt::SkipEmptyParts
-#else
-#define SKIP_EMPTY QString::SkipEmptyParts
-#endif
-
 static const constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
 
 // Typedefs for year / quarter or month binners
