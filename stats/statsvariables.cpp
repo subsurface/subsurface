@@ -606,7 +606,7 @@ template<typename T1, typename T2>
 auto pair_lower_bound(std::vector<std::pair<T1, T2>> &v, const T1 &value)
 {
 	return std::lower_bound(v.begin(), v.end(), value,
-	       			[] (const std::pair<T1, T2> &entry, const T1 &value) {
+				[] (const std::pair<T1, T2> &entry, const T1 &value) {
 					return entry.first < value;
 				});
 }
