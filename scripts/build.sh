@@ -546,7 +546,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	else
 		EXTRA_OPTS="-DNO_USERMANUAL=ON -DNO_PRINTING=ON"
 	fi
-	if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] && [ "$BUILD_WITH_WEBENGINE" = "1" ]); then
+	if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] && [ "$BUILD_WITH_WEBENGINE" = "1" ]; then
 		# EXTRA_OPTS were just set, so we know what they will look like - we want to replace the NO_PRINTING definition
 		EXTRA_OPTS="$(echo $EXTRA_OPTS | cut -d\  -f1) -DNO_PRINTING=OFF -DUSE_WEBENGINE=ON"
 	fi
