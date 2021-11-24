@@ -84,6 +84,12 @@ while [[ $# -gt 0 ]] ; do
 			shift
 			BUILD_PREFIX="$1"
 			;;
+		-print-with-webengine)
+			# WebKit is no longer supported in Qt 6
+			# WebEngine doesn't build with our tools on Windows
+			# so allow to switch printing between the two flavors
+			BUILD_WITH_WEBENGINE="1"
+			;;
 		-build-with-webkit)
 			# unless you build Qt from source (or at least webkit from source, you won't have webkit installed
 			# -build-with-webkit tells the script that in fact we can assume that webkit is present (it usually
@@ -126,7 +132,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-mobile] [-desktop] [-downloader] [-both] [-all] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-print-with-webengine] [-build-with-webkit] [-mobile] [-desktop] [-downloader] [-both] [-all] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
@@ -539,6 +545,11 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		EXTRA_OPTS="-DNO_USERMANUAL=OFF -DNO_PRINTING=OFF"
 	else
 		EXTRA_OPTS="-DNO_USERMANUAL=ON -DNO_PRINTING=ON"
+	fi
+	if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] && [ "$BUILD_WITH_WEBENGINE" = "1" ]; then
+		# if we build with QtWebKit as well then this is a bit redundant, but at least
+		# it's not wrong
+		EXTRA_OPTS="-DNO_USERMANUAL=OFF -DNO_PRINTING=OFF -DUSE_WEBENGINE=ON"
 	fi
 
 	cd "$SRC"/${SRC_DIR}
