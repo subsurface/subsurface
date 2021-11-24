@@ -14,8 +14,7 @@
 
 extern void exportProfile(const struct dive *dive, const QString filename);
 
-Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner) :
-	webView(new QWebEngineView),
+Printer::Printer(QPaintDevice *paintDevice, print_options &printOptions, template_options &templateOptions, PrintMode printMode, bool inPlanner, QWidget *parent = nullptr) :
 	paintDevice(paintDevice),
 	printOptions(printOptions),
 	templateOptions(templateOptions),
@@ -23,8 +22,10 @@ Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, c
 	inPlanner(inPlanner),
 	done(0)
 {
+	webView = new QWebEngineView(parent);
 	connect(webView, &QWebEngineView::loadFinished, this, &Printer::onLoadFinished);
-	connect(this, &Printer::profilesInserted, this, &Printer::printing);
+	if (printMode == PRINT)
+		connect(this, &Printer::profilesInserted, this, &Printer::printing);
 	profilesMissing = true;
 }
 
@@ -55,9 +56,8 @@ void Printer::onLoadFinished()
 void Printer::printing()
 {
 	QPrintDialog printDialog(&printer, (QWidget *) nullptr);
-	if (printDialog.exec() == QDialog::Accepted) {
+	if (printDialog.exec() == QDialog::Accepted)
 		webView->page()->print(&printer, [this](bool ok){ if (ok) emit jobDone(); });
-	}
 	printDialog.close();
 }
 
@@ -84,12 +84,28 @@ QString Printer::exportHtml()
 	return html;
 }
 
+void Printer::updateOptions(print_options &poptions, template_options &toptions)
+{
+	templateOptions = toptions;
+	printOptions = poptions;
+	profilesMissing = true;
+}
+
+QString Printer::writeTmpTemplate(const QString templtext)
+{
+	QFile fd(printDir.filePath("ssrftmptemplate.html"));
+
+
+	fd.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream out(&fd);
+	out << templtext;
+	fd.close();
+	return fd.fileName();
+}
+
 void Printer::print()
 {
 	// we can only print if "PRINT" mode is selected
-	if (printMode != Printer::PRINT) {
-		return;
-	}
 	int i;
 	struct dive *dive;
 	QString fn;
@@ -106,6 +122,7 @@ void Printer::print()
 		emit(progessUpdated(done + lrint(i * 80.0 / dives_to_print)));
 	}
 
+	profilesMissing = true;
 	TemplateLayout t(printOptions, templateOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	int dpi = printer.resolution();
@@ -128,18 +145,3 @@ void Printer::print()
 	printer.setResolution(dpi);
 }
 
-void Printer::previewOnePage()
-{
-	if (printMode == PREVIEW) {
-		TemplateLayout t(printOptions, templateOptions);
-
-		pageSize.setHeight(paintDevice->height());
-		pageSize.setWidth(paintDevice->width());
-		// initialize the border settings
-		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
-		if (printOptions.type == print_options::DIVELIST)
-			webView->setHtml(t.generate(inPlanner));
-		else if (printOptions.type == print_options::STATISTICS )
-			webView->setHtml(t.generateStatistics());
-	}
-}

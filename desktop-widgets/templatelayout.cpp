@@ -152,7 +152,13 @@ QString TemplateLayout::generateStatistics()
 
 QString TemplateLayout::readTemplate(QString template_name)
 {
-	QFile qfile(getPrintingTemplatePathUser() + QDir::separator() + template_name);
+	QString filename;
+	// are we using a temporary file while editing?
+	if (template_name.contains("ssrftmptemplate.html"))
+		filename = template_name;
+	else
+		filename = getPrintingTemplatePathUser() + QDir::separator() + template_name;
+	QFile qfile(filename);
 	if (qfile.open(QFile::ReadOnly | QFile::Text)) {
 		QTextStream in(&qfile);
 		return in.readAll();
