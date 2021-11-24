@@ -3,7 +3,7 @@
 #define PRINTER_H
 
 #include "printoptions.h"
-#include "templateedit.h"
+
 #include <QPrinter>
 #include <QTemporaryDir>
 
@@ -18,18 +18,18 @@ class Printer : public QObject {
 	Q_OBJECT
 
 public:
-	QWebEngineView *webView;
 	enum PrintMode {
 		PRINT,
 		PREVIEW
 	};
+	QWebEngineView *webView;
 
 private:
 	QPaintDevice *paintDevice;
 	QPrinter printer;
 	QTemporaryDir printDir;
-	const print_options &printOptions;
-	const template_options &templateOptions;
+	print_options &printOptions;
+	template_options &templateOptions;
 	QSize pageSize;
 	PrintMode printMode;
 	bool inPlanner;
@@ -42,11 +42,14 @@ private slots:
 	void printing();
 
 public:
-	Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner);
+	Printer(QPaintDevice *paintDevice, print_options &printOptions, template_options &templateOptions, PrintMode printMode, bool inPlanner, QWidget *parent);
 	~Printer();
 	void print();
 	void previewOnePage();
+	QString writeTmpTemplate(const QString templtext);
 	QString exportHtml();
+	void updateOptions(print_options &poptions, template_options &toptions);
+
 
 signals:
 	void progessUpdated(int value);

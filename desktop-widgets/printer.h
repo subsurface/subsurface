@@ -38,7 +38,7 @@ private slots:
 	void templateProgessUpdated(int value);
 
 public:
-	Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner);
+	Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner, QWidget *parent);
 	~Printer();
 	void print();
 	void previewOnePage();

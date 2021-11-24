@@ -1,15 +1,22 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "templateedit.h"
 #include "templatelayout.h"
+#ifdef USE_WEBENGINE
+#include "printerwebengine.h"
+#else
 #include "printer.h"
+#endif
 #include "ui_templateedit.h"
 
 #include <QMessageBox>
 #include <QButtonGroup>
 #include <QColorDialog>
 #include <QDir>
+#ifdef USE_WEBENGINE
+#include <QWebEngineView>
+#endif
 
-TemplateEdit::TemplateEdit(QWidget *parent, const print_options &printOptions, template_options &templateOptions) :
+TemplateEdit::TemplateEdit(QWidget *parent, print_options &printOptions, template_options &templateOptions) :
 	QDialog(parent),
 	ui(new Ui::TemplateEdit),
 	printOptions(printOptions),
@@ -43,7 +50,20 @@ TemplateEdit::TemplateEdit(QWidget *parent, const print_options &printOptions, t
 
 	ui->plainTextEdit->setPlainText(grantlee_template);
 	editingCustomColors = false;
+#ifdef USE_WEBENGINE
+	QWebEngineView *view;
+	preview = new Printer(nullptr, printOptions, newTemplateOptions, Printer::PREVIEW, false, this);
+	view = preview->webView;
+	int w = ui->label->width();
+	int h = ui->label->height();
+	view->resize(w, h);
+	preview->print();
+	view->setZoomFactor(0.25);
+	view->show();
+	ui->verticalLayout_3->replaceWidget(ui->label, view);
+#else
 	updatePreview();
+#endif
 }
 
 TemplateEdit::~TemplateEdit()
@@ -54,14 +74,16 @@ TemplateEdit::~TemplateEdit()
 
 void TemplateEdit::updatePreview()
 {
+#ifndef USE_WEBENGINE
 	// update Qpixmap preview
 	int width = ui->label->width();
 	int height = ui->label->height();
 	QPixmap map(width * 2, height * 2);
 	map.fill(QColor::fromRgb(255, 255, 255));
-	Printer printer(&map, printOptions, newTemplateOptions, Printer::PREVIEW, false);
+	Printer printer(&map, printOptions, newTemplateOptions, Printer::PREVIEW, false, Q_NULLPTR);
 	printer.previewOnePage();
 	ui->label->setPixmap(map.scaled(width, height, Qt::IgnoreAspectRatio));
+#endif
 
 	// update colors tab
 	ui->colorLable1->setStyleSheet("QLabel { background-color : \"" + newTemplateOptions.color_palette.color1.name() + "\";}");
@@ -165,6 +187,7 @@ void TemplateEdit::saveSettings()
 void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
 {
 	QDialogButtonBox::StandardButton standardButton = ui->buttonBox->standardButton(button);
+	QString template_file = printOptions.p_template;
 	switch (standardButton) {
 	case QDialogButtonBox::Ok:
 		saveSettings();
@@ -172,7 +195,14 @@ void TemplateEdit::on_buttonBox_clicked(QAbstractButton *button)
 	case QDialogButtonBox::Cancel:
 		break;
 	case QDialogButtonBox::Apply:
+#ifdef USE_WEBENGINE
+		printOptions.p_template = preview->writeTmpTemplate(ui->plainTextEdit->toPlainText());
+		preview->updateOptions(printOptions, templateOptions);
+		preview->print();
+		printOptions.p_template = template_file;
+#else
 		saveSettings();
+#endif
 		updatePreview();
 		break;
 	default:

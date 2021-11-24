@@ -117,8 +117,11 @@ PrintDialog::PrintDialog(bool inPlanner, QWidget *parent) :
 	QPushButton *printButton = new QPushButton(tr("P&rint"));
 	connect(printButton, SIGNAL(clicked(bool)), this, SLOT(printClicked()));
 
+	// To do: Port preview to WebEngine. For the time being: Use OS print preview
+#ifndef USE_WEBENGINE
 	QPushButton *previewButton = new QPushButton(tr("&Preview"));
 	connect(previewButton, SIGNAL(clicked(bool)), this, SLOT(previewClicked()));
+#endif
 
 	QPushButton *exportHtmlButton = new QPushButton(tr("Export Html"));
 	connect(exportHtmlButton, SIGNAL(clicked(bool)), this, SLOT(exportHtmlClicked()));
@@ -126,7 +129,9 @@ PrintDialog::PrintDialog(bool inPlanner, QWidget *parent) :
 	QDialogButtonBox *buttonBox = new QDialogButtonBox;
 	buttonBox->addButton(QDialogButtonBox::Cancel);
 	buttonBox->addButton(printButton, QDialogButtonBox::AcceptRole);
+#ifndef USE_WEBENGINE
 	buttonBox->addButton(previewButton, QDialogButtonBox::ActionRole);
+#endif
 	buttonBox->addButton(exportHtmlButton, QDialogButtonBox::AcceptRole);
 
 	connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
@@ -185,7 +190,7 @@ void PrintDialog::createPrinterObj()
 		qprinter = new QPrinter;
 		qprinter->setResolution(printOptions.resolution);
 		qprinter->setOrientation((QPrinter::Orientation)printOptions.landscape);
-		printer = new Printer(qprinter, printOptions, templateOptions, Printer::PRINT, inPlanner);
+		printer = new Printer(qprinter, printOptions, templateOptions, Printer::PRINT, inPlanner, Q_NULLPTR);
 	}
 }
 
