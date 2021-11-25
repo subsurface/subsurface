@@ -53,7 +53,7 @@ public:
 
 signals:
 	void progessUpdated(int value);
-	void profiles_inserted();
+	void profilesInserted();
 	void jobDone();
 };
 

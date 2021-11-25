@@ -25,7 +25,7 @@ Printer::Printer(QPaintDevice *paintDevice, print_options &printOptions, templat
 	webView = new QWebEngineView(parent);
 	connect(webView, &QWebEngineView::loadFinished, this, &Printer::onLoadFinished);
 		if (printMode == PRINT) {
-		connect(this, &Printer::profiles_inserted, this, &Printer::printing);
+		connect(this, &Printer::profilesInserted, this, &Printer::printing);
 	}
 	profiles_missing = true;
 }
@@ -37,7 +37,7 @@ Printer::~Printer()
 
 void Printer::onLoadFinished()
 {
-	if (profiles_missing)
+	if (profiles_missing) {
 		webView->page()->runJavaScript("   var profiles = document.getElementsByClassName(\"diveProfile\");\
 				       for (let profile of profiles) { \
 					  var id = profile.attributes.getNamedItem(\"Id\").value; \
@@ -47,17 +47,18 @@ void Printer::onLoadFinished()
 					  img.style.width = \"100%\"; \
 					  profile.appendChild(img); \
 					} \
-				", [this](const QVariant &v) { emit profiles_inserted(); });
+				", [this](const QVariant &v) { emit profilesInserted(); });
+
+	}
 	profiles_missing = false;
 	emit(progessUpdated(100));
 }
 
 void Printer::printing()
 {
-	QPrintDialog printDialog(&printer, (QWidget *) nullptr);
-	if (printDialog.exec() == QDialog::Accepted) {
+	QPrintDialog printDialog(&printer, (QWidget *) Q_NULLPTR);
+	if (printDialog.exec() == QDialog::Accepted)
 		webView->page()->print(&printer, [this](bool ok){ if (ok) emit jobDone(); });
-	}
 	printDialog.close();
 }
 
@@ -70,7 +71,7 @@ void Printer::templateProgessUpdated(int value)
 
 QString Printer::exportHtml()
 {
-	// Does anybody actually use this? It will not contian profile images!!!
+	// Does anybody actually use this? It will not containn profile images!!!
 	TemplateLayout t(printOptions, templateOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	QString html;
