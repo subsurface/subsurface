@@ -50,7 +50,6 @@ bool MyQWebEnginePage::acceptNavigationRequest(const QUrl & url, QWebEnginePage:
 	return true;
 }
 
-
 MyQWebEngineView::MyQWebEngineView(QWidget* parent)
 {
 }

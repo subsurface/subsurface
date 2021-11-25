@@ -231,19 +231,19 @@ void PrintDialog::printClicked(void)
 	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 	connect(printer, &Printer::jobDone, this, &PrintDialog::printingDone);
 	printer->print();
-}
-
-void PrintDialog::printingDone()
-{
-	close();
-}
-
 #else
 	if (printDialog.exec() == QDialog::Accepted) {
 		connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 		printer->print();
 		close();
 	}
+#endif
+}
+
+#ifdef USE_WEBENGINE
+void PrintDialog::printingDone()
+{
+	close();
 }
 #endif
 

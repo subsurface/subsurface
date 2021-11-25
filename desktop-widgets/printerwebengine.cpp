@@ -5,13 +5,12 @@
 #include "core/statistics.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDisplay.h"
-#include <stdio.h>
+#include "profile-widget/profilewidget2.h"
 
 #include <algorithm>
 #include <QPainter>
 #include <QPrinter>
 #include <QtWebEngineWidgets>
-#include "profile-widget/profilewidget2.h"
 
 extern void exportProfile(const struct dive *dive, const QString filename);
 
@@ -94,7 +93,7 @@ void Printer::updateOptions(print_options &poptions, template_options &toptions)
 
 QString Printer::writeTmpTemplate(const QString templtext)
 {
-	QFile fd(printDir.filePath("template.html"));
+	QFile fd(printDir.filePath("ssrftmptemplate.html"));
 
 
 	fd.open(QIODevice::WriteOnly | QIODevice::Text);
