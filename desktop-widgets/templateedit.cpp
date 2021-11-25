@@ -180,6 +180,7 @@ void TemplateEdit::saveSettings()
 			}
 			if (templateOptions.color_palette_index == CUSTOM)
 				custom_colors = templateOptions.color_palette;
+			emit accept();
 		}
 	}
 }
