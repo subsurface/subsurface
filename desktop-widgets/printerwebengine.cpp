@@ -46,8 +46,10 @@ void Printer::onLoadFinished()
 					  img.style.width = \"100%\"; \
 					  profile.appendChild(img); \
 					} \
-				", [this](const QVariant &v) { emit profilesInserted(); });
+				", [](const QVariant &v) {;});
 
+	} else {
+		emit profilesInserted();
 	}
 	profilesMissing = false;
 	emit(progessUpdated(100));
