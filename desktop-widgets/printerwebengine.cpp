@@ -25,7 +25,7 @@ Printer::Printer(QPaintDevice *paintDevice, print_options &printOptions, templat
 	webView = new QWebEngineView(parent);
 	connect(webView, &QWebEngineView::loadFinished, this, &Printer::onLoadFinished);
 	if (printMode == PRINT) {
-		connect(this, &Printer::profilesInserted, this, &Printer::printing);
+		connect(this, &Printer::profilesInserted, this, &Printer::reopen);
 		connect(this, &Printer::jobDone, this, &Printer::printFinished);
 	}
 	profilesMissing = true;
@@ -56,18 +56,42 @@ void Printer::onLoadFinished()
 		jsText.replace("TMPPATH", filePath);
 		webView->page()->runJavaScript(jsText, [this](const QVariant &v) {
 					qDebug() << "JS finished";
+					QFile fd(printDir.filePath("finalprint.html"));
+					fd.open(QIODevice::WriteOnly | QIODevice::Text);
+					QTextStream out(&fd);
+					out << v.toString();
+					fd.close();
+					qDebug() << "finalprint.html written";
+					profilesMissing = false;
+					emit(progessUpdated(80));
 					emit profilesInserted();
 				});
+	} else {
+		qDebug() << "load of" << webView->url().toString() << "finished - open printing dialog";
+		emit(progessUpdated(100));
+		printing();
 	}
-	profilesMissing = false;
-	emit(progessUpdated(100));
+}
+
+// the Javascript code injecting the profiles has completed, let's reload that page
+void Printer::reopen()
+{
+	qDebug() << "opening the finalprint.html file";
+	webView->load(QUrl::fromLocalFile(printDir.filePath("finalprint.html")));
 }
 
 void Printer::printing()
 {
 	QPrintDialog printDialog(&printer, (QWidget *) nullptr);
 	if (printDialog.exec() == QDialog::Accepted)
-		webView->page()->print(&printer, [this](bool ok){ if (ok) emit jobDone(); });
+		webView->page()->print(&printer, [this](bool ok){
+			if (ok)
+				emit jobDone();
+			qDebug() << "printing done with status " << ok ;
+			qDebug() << "content of" << printDir.path();
+			qDebug() << QDir(printDir.path()).entryList();
+		});
+	qDebug() << "closing the dialog now";
 	printDialog.close();
 }
 
@@ -136,7 +160,6 @@ void Printer::print()
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	int dpi = printer.resolution();
 	webView->page()->settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessFileUrls, true);
-	connect(webView, &QWebEngineView::loadFinished, this, &Printer::onLoadFinished);
 
 	if (printOptions.type == print_options::DIVELIST) {
 		QFile printFile(printDir.filePath("print.html"));
