@@ -37,17 +37,23 @@ Printer::~Printer()
 void Printer::onLoadFinished()
 {
 	if (profilesMissing) {
-		webView->page()->runJavaScript("   var profiles = document.getElementsByClassName(\"diveProfile\");\
-				       for (let profile of profiles) { \
-					  var id = profile.attributes.getNamedItem(\"Id\").value; \
-					  var img = document.createElement(\"img\"); \
-					  img.src = id + \".png\"; \
-					  img.style.height = \"100%\"; \
-					  img.style.width = \"100%\"; \
-					  profile.appendChild(img); \
-					} \
-				", [this](const QVariant &v) { emit profilesInserted(); });
-
+		QString jsText("   var profiles = document.getElementsByClassName(\"diveProfile\");\
+			       for (let profile of profiles) { \
+				  var id = profile.attributes.getNamedItem(\"Id\").value; \
+				  var img = document.createElement(\"img\"); \
+				  img.src = \"TMPPATH\" + id + \".png\"; \
+				  img.style.height = \"100%\"; \
+				  img.style.width = \"100%\"; \
+				  profile.appendChild(img); \
+				} \
+				document.documentElement.innerHTML; \
+			");
+		QString filePath = QStringLiteral("file://") + printDir.path() + QDir::separator();
+		jsText.replace("TMPPATH", filePath);
+		webView->page()->runJavaScript(jsText, [this](const QVariant &v) {
+					qDebug() << "JS finished";
+					emit profilesInserted();
+				});
 	}
 	profilesMissing = false;
 	emit(progessUpdated(100));
@@ -94,7 +100,6 @@ void Printer::updateOptions(print_options &poptions, template_options &toptions)
 QString Printer::writeTmpTemplate(const QString templtext)
 {
 	QFile fd(printDir.filePath("ssrftmptemplate.html"));
-
 
 	fd.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream out(&fd);
