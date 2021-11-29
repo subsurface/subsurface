@@ -24,18 +24,22 @@ Printer::Printer(QPaintDevice *paintDevice, print_options &printOptions, templat
 {
 	webView = new QWebEngineView(parent);
 	connect(webView, &QWebEngineView::loadFinished, this, &Printer::onLoadFinished);
-	if (printMode == PRINT)
+	if (printMode == PRINT) {
 		connect(this, &Printer::profilesInserted, this, &Printer::printing);
+		connect(this, &Printer::jobDone, this, &Printer::printFinished);
+	}
 	profilesMissing = true;
 }
 
 Printer::~Printer()
 {
+	qDebug() << "deleting Printer object";
 	delete webView;
 }
 
 void Printer::onLoadFinished()
 {
+	qDebug() << "onLoadFinished called with profilesMissing" << profilesMissing << "and URL" << webView->url().toString();
 	if (profilesMissing) {
 		QString jsText("   var profiles = document.getElementsByClassName(\"diveProfile\");\
 			       for (let profile of profiles) { \
@@ -150,3 +154,17 @@ void Printer::print()
 	printer.setResolution(dpi);
 }
 
+void Printer::printFinished()
+{
+	qDebug() << "received the jobDone signal, closing the dialog; page should have referenced:";
+	webView->page()->toHtml([](const QString h){
+		QRegularExpression img("img src=([^ ]+) ");
+		QRegularExpressionMatchIterator iter = img.globalMatch(h);
+		while(iter.hasNext()) {
+			QRegularExpressionMatch match = iter.next();
+			QString filename = match.captured(1).replace("file://", "");
+			qDebug() << filename << (QFile(filename).exists() ? "which does" : "which doesn't") << "exist";
+		}
+	});
+
+}
