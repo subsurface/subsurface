@@ -70,15 +70,6 @@ void DiveCartesianAxis::setTransform(double a, double b)
 	transform.b = b;
 }
 
-template <typename T>
-void emptyList(QList<T *> &list, int steps, int speed)
-{
-	while (list.size() > steps) {
-		T *removedItem = list.takeLast();
-		Animations::animDelete(removedItem, speed);
-	}
-}
-
 double DiveCartesianAxis::width() const
 {
 	return labelWidth + labelSpaceHorizontal * dpr;
@@ -151,6 +142,10 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	if (!textVisibility && !lineVisibility)
 		return; // Nothing to display...
 
+	// Remember the old range for animations.
+	double dataMaxOld = dataMax;
+	double dataMinOld = dataMin;
+
 	// Guess the number of tick marks.
 	QLineF m = line();
 	double spaceNeeded = position == Position::Bottom ? labelWidth * 3.0 / 2.0
@@ -188,8 +183,6 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 	numTicks = lrint((lastDisplay - firstDisplay) / intervalDisplay) + 1;
 	numTicks = std::max(numTicks, 0);
 
-	emptyList(labels, numTicks, animSpeed);
-	emptyList(lines, numTicks, animSpeed);
 	if (numTicks == 0)
 		return;
 
@@ -209,100 +202,151 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 		(inverted ? m.x2() - offsetScreen : m.x1() + offsetScreen) :
 		(inverted ? m.y1() + offsetScreen : m.y2() - offsetScreen);
 
-	if (textVisibility)
-		updateLabels(numTicks, firstPosScreen, firstValue, stepScreen, stepValue, animSpeed);
-	if (lineVisibility)
-		updateLines(numTicks, firstPosScreen, stepScreen, animSpeed);
+	updateLabels(numTicks, firstPosScreen, firstValue, stepScreen, stepValue, animSpeed, dataMinOld, dataMaxOld);
 }
 
-void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double firstValue, double stepScreen, double stepValue, int animSpeed)
-{
-	for (int i = 0, count = labels.size(); i < count; i++, firstValue += stepValue) {
-		double childPos = ((position == Position::Bottom) != inverted) ?
-					 firstPosScreen + i * stepScreen :
-					 firstPosScreen - i * stepScreen;
-		labels[i]->set(textForValue(firstValue), textColor);
-		switch (position) {
-		default:
-		case Position::Bottom:
-			Animations::moveTo(labels[i], animSpeed, childPos, rect.bottom() + labelSpaceVertical * dpr);
-			break;
-		case Position::Left:
-			Animations::moveTo(labels[i], animSpeed, rect.left() - labelSpaceHorizontal * dpr, childPos);
-			break;
-		case Position::Right:
-			Animations::moveTo(labels[i], animSpeed, rect.right() + labelSpaceHorizontal * dpr, childPos);
-			break;
-		}
-	}
 
-	// Add the rest of the needed labels.
-	for (int i = labels.size(); i < numTicks; i++, firstValue += stepValue) {
-		double childPos = ((position == Position::Bottom) != inverted) ?
-					firstPosScreen + i * stepScreen :
-					firstPosScreen - i * stepScreen;
+QPointF DiveCartesianAxis::labelPos(double pos) const
+{
+	return position == Position::Bottom ? QPointF(pos, rect.bottom() + labelSpaceVertical * dpr) :
+	       position == Position::Left   ? QPointF(rect.left() - labelSpaceHorizontal * dpr, pos) :
+					      QPointF(rect.right() + labelSpaceHorizontal * dpr, pos);
+}
+
+QLineF DiveCartesianAxis::linePos(double pos) const
+{
+	return position == Position::Bottom ? QLineF(pos, rect.top(), pos, rect.bottom()) :
+					      QLineF(rect.left(), pos, rect.right(), pos);
+}
+
+void DiveCartesianAxis::updateLabel(Label &label, double opacityEnd, double pos) const
+{
+	label.opacityStart = textVisibility ? label.label->opacity()
+					    : label.line->opacity();
+	label.opacityEnd = opacityEnd;
+	if (textVisibility) {
+		label.labelPosStart = label.label->pos();
+		label.labelPosEnd = labelPos(pos);
+	}
+	if (lineVisibility) {
+		label.lineStart = label.line->line();
+		label.lineEnd = linePos(pos);
+	}
+}
+
+DiveCartesianAxis::Label DiveCartesianAxis::createLabel(double value, double pos, double dataMinOld, double dataMaxOld, int animSpeed)
+{
+	Label label { value, 0.0, 1.0 };
+	double posStart = posAtValue(value, dataMaxOld, dataMinOld);
+	if (textVisibility) {
+		label.labelPosStart = labelPos(posStart);
+		label.labelPosEnd = labelPos(pos);
 		int alignFlags = position == Position::Bottom ? Qt::AlignTop | Qt::AlignHCenter :
 				 position == Position::Left   ? Qt::AlignVCenter | Qt::AlignLeft:
 								Qt::AlignVCenter | Qt::AlignRight;
-		DiveTextItem *label = new DiveTextItem(dpr, labelScale, alignFlags, this);
-		label->set(textForValue(firstValue), textColor);
-		label->setZValue(1);
-		labels.push_back(label);
-		switch (position) {
-		default:
-		case Position::Bottom:
-			label->setPos(scene.sceneRect().width() + 10, rect.bottom() + labelSpaceVertical * dpr); // position it outside of the scene;
-			Animations::moveTo(labels[i], animSpeed, childPos, rect.bottom() + labelSpaceVertical * dpr);
-			break;
-		case Position::Left:
-			label->setPos(rect.left() - labelSpaceHorizontal * dpr, scene.sceneRect().height() + 10);
-			Animations::moveTo(labels[i], animSpeed, rect.left() - labelSpaceHorizontal * dpr, childPos);
-			break;
-		case Position::Right:
-			label->setPos(rect.right() + labelSpaceHorizontal * dpr, scene.sceneRect().height() + 10);
-			Animations::moveTo(labels[i], animSpeed, rect.right() + labelSpaceHorizontal * dpr, childPos);
-			break;
-		}
+		label.label = std::make_unique<DiveTextItem>(dpr, labelScale, alignFlags, this);
+		label.label->set(textForValue(value), textColor);
+		label.label->setZValue(1);
+		label.label->setPos(animSpeed <= 0 ? label.labelPosEnd : label.labelPosStart);
+		label.label->setOpacity(animSpeed <= 0 ? 1.0 : 0.0);
 	}
+	if (lineVisibility) {
+		label.lineStart = linePos(posStart);
+		label.lineEnd = linePos(pos);
+		label.line = std::make_unique<DiveLineItem>(this);
+		label.line->setPen(gridPen);
+		label.line->setZValue(0);
+		label.line->setLine(animSpeed <= 0 ? label.lineEnd : label.lineStart);
+		label.line->setOpacity(animSpeed <= 0 ? 1.0 : 0.0);
+	}
+	return label;
 }
 
-void DiveCartesianAxis::updateLines(int numTicks, double firstPosScreen, double stepScreen, int animSpeed)
+void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double firstValue, double stepScreen, double stepValue,
+				     int animSpeed, double dataMinOld, double dataMaxOld)
 {
-	for (int i = 0, count = lines.size(); i < count; i++) {
-		double childPos = ((position == Position::Bottom) != inverted) ?
-					firstPosScreen + i * stepScreen :
-					firstPosScreen - i * stepScreen;
+	if (animSpeed <= 0)
+		labels.clear(); // No animation? Simply redo the labels.
 
-		if (position == Position::Bottom) {
-			// Fix size in case the scene changed
-			QLineF old = lines[i]->line();
-			lines[i]->setLine(old.x1(), old.y1(), old.x1(), old.y1() + rect.height());
-			Animations::moveTo(lines[i], animSpeed, childPos, rect.top());
+	std::vector<Label> newLabels;
+	newLabels.reserve(numTicks);
+	auto actOld = labels.begin();
+	double value = firstValue;
+	for (int i = 0; i < numTicks; i++, value += stepValue) {
+
+		// Check if we already got that label. If we find unused labels, mark them for deletion.
+		// Labels to be deleted are recognized by an end-opacity of 0.0.
+		// Note: floating point comparisons should be fine owing to our rounding to integers above.
+		for ( ; actOld != labels.end() && actOld->value < value; ++actOld) {
+			double pos = posAtValue(actOld->value);
+			updateLabel(*actOld, 0.0, pos);
+			newLabels.push_back(std::move(*actOld));
+		}
+
+		double pos = ((position == Position::Bottom) != inverted) ?
+					 firstPosScreen + i * stepScreen :
+					 firstPosScreen - i * stepScreen;
+		if (actOld != labels.end() && actOld->value == value) {
+			// Update label, but don't delete it
+			updateLabel(*actOld, 1.0, pos);
+			newLabels.push_back(std::move(*actOld));
+			++actOld;
 		} else {
-			// Fix size in case the scene changed
-			QLineF old = lines[i]->line();
-			lines[i]->setLine(old.x1(), old.y1(), old.x1() + rect.width(), old.y1());
-			Animations::moveTo(lines[i], animSpeed, rect.left(), childPos);
+			// Create new label
+			newLabels.push_back(createLabel(value, pos, dataMinOld, dataMaxOld, animSpeed));
 		}
 	}
 
-	// Add the rest of the needed grid lines.
-	for (int i = lines.size(); i < numTicks; i++) {
-		double childPos = ((position == Position::Bottom) != inverted) ?
-					firstPosScreen + i * stepScreen :
-					firstPosScreen - i * stepScreen;
-		DiveLineItem *line = new DiveLineItem(this);
-		line->setPen(gridPen);
-		line->setZValue(0);
-		lines.push_back(line);
-		if (position == Position::Bottom) {
-			line->setLine(0.0, 0.0, 0.0, rect.height());
-			line->setPos(scene.sceneRect().width() + 10, rect.top()); // position it outside of the scene);
-			Animations::moveTo(line, animSpeed, childPos, rect.top());
-		} else {
-			line->setLine(0.0, 0.0, rect.width(), 0.0);
-			line->setPos(rect.left(), scene.sceneRect().height() + 10);
-			Animations::moveTo(line, animSpeed, rect.left(), childPos);
+	// If there are any labels left, mark them for deletion.
+	for ( ; actOld != labels.end(); ++actOld) {
+		double pos = posAtValue(actOld->value);
+		updateLabel(*actOld, 0.0, pos);
+		newLabels.push_back(std::move(*actOld));
+	}
+
+	labels = std::move(newLabels);
+}
+
+// Arithmetics with lines. Needed for animations. Operates pointwise.
+static QLineF operator-(const QLineF &l1, const QLineF &l2)
+{
+	return QLineF(l1.p1() - l2.p1(), l1.p2() - l2.p2());
+}
+static QLineF operator+(const QLineF &l1, const QLineF &l2)
+{
+	return QLineF(l1.p1() + l2.p1(), l1.p2() + l2.p2());
+}
+static QLineF operator*(double f, const QLineF &l)
+{
+	return QLineF(f*l.p1(), f*l.p2());
+}
+
+// Helper template: get point in interval (0.0: start, 1.0: end)
+template <typename T>
+T mid(const T &start, const T &end, double fraction)
+{
+	return start + fraction * (end - start);
+}
+
+void DiveCartesianAxis::anim(double fraction)
+{
+	if (fraction == 1.0) {
+		// The animation has finished.
+		// Remove labels that have been marked for deletion by setting the opacity to 0.0.
+		// Use the erase-remove idiom (yes, it is a weird idiom).
+		labels.erase(std::remove_if(labels.begin(), labels.end(),
+					    [](const Label &l) { return l.opacityEnd == 0.0; }),
+			     labels.end());
+	}
+	for (Label &label: labels) {
+		double opacity = mid(label.opacityStart, label.opacityEnd, fraction);
+		if (label.label) {
+			label.label->setOpacity(opacity);
+			label.label->setPos(mid(label.labelPosStart, label.labelPosEnd, fraction));
+		}
+		if (label.line) {
+			label.line->setOpacity(opacity);
+			label.line->setLine(mid(label.lineStart, label.lineEnd, fraction));
 		}
 	}
 }
@@ -347,7 +391,7 @@ QString DiveCartesianAxis::textForValue(double value) const
 	}
 }
 
-qreal DiveCartesianAxis::valueAt(const QPointF &p) const
+double DiveCartesianAxis::valueAt(const QPointF &p) const
 {
 	QLineF m = line();
 	QPointF relativePosition = p;
@@ -362,7 +406,7 @@ qreal DiveCartesianAxis::valueAt(const QPointF &p) const
 	return fraction * (max - min) + min;
 }
 
-qreal DiveCartesianAxis::posAtValue(qreal value) const
+double DiveCartesianAxis::posAtValue(double value, double max, double min) const
 {
 	QLineF m = line();
 
@@ -374,6 +418,11 @@ qreal DiveCartesianAxis::posAtValue(qreal value) const
 		std::swap(screenFrom, screenTo);
 	return (value - min) / (max - min) *
 	       (screenTo - screenFrom) + screenFrom;
+}
+
+double DiveCartesianAxis::posAtValue(double value) const
+{
+	return posAtValue(value, max, min);
 }
 
 static std::pair<double, double> getLineFromTo(const QLineF &l, bool horizontal)

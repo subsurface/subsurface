@@ -29,6 +29,7 @@ class DiveReportedCeiling;
 class DiveTemperatureItem;
 class DiveTextItem;
 class PartialPressureGasItem;
+class ProfileAnimation;
 class TankItem;
 
 class ProfileScene : public QGraphicsScene {
@@ -39,6 +40,8 @@ public:
 	void resize(QSizeF size);
 	void clear();
 	bool pointOnProfile(const QPointF &point) const;
+	void anim(double fraction); // Called by the animation with 0.0-1.0 (start to stop).
+				    // Can be compared with literal 1.0 to determine "end" state.
 
 	// If a plannerModel is passed, the deco-information is taken from there.
 	void plotDive(const struct dive *d, int dc, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
@@ -96,6 +99,8 @@ private:
 	DivePercentageItem *percentageItem;
 	TankItem *tankItem;
 	std::shared_ptr<const DivePixmaps> pixmaps;
+	std::unique_ptr<ProfileAnimation> animation;
+	std::vector<DiveCartesianAxis *> animatedAxes;
 };
 
 #endif
