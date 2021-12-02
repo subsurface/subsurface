@@ -16,8 +16,36 @@
 #include "core/settings/qPrefDisplay.h"
 #include "qt-models/diveplotdatamodel.h"
 #include "qt-models/diveplannermodel.h"
+#include <QAbstractAnimation>
 
 static const double diveComputerTextBorder = 1.0;
+
+// Class for animations (if any). Might want to do our own.
+class ProfileAnimation : public QAbstractAnimation {
+	ProfileScene &scene;
+	// For historical reasons, speed is actually the duration
+	// (i.e. the reciprocal of speed). Ouch, that hurts.
+	int speed;
+
+	int duration() const override
+	{
+		return speed;
+	}
+	void updateCurrentTime(int time) override
+	{
+		// Note: we explicitly pass 1.0 at the end, so that
+		// the callee can do a simple float comparison for "end".
+		scene.anim(time == speed ? 1.0
+					 : static_cast<double>(time) / speed);
+	}
+public:
+	ProfileAnimation(ProfileScene &scene, int animSpeed) :
+		scene(scene),
+		speed(animSpeed)
+	{
+		start();
+	}
+};
 
 template<typename T, class... Args>
 T *ProfileScene::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args)
@@ -326,6 +354,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 {
 	d = dIn;
 	dc = dcIn;
+	animatedAxes.clear();
 	if (!d) {
 		clear();
 		return;
@@ -397,6 +426,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.
 	profileYAxis->setBounds(0.0, maxdepth);
 	profileYAxis->updateTicks(animSpeed);
+	animatedAxes.push_back(profileYAxis);
 
 	temperatureAxis->setBounds(plotInfo.mintemp,
 				   plotInfo.maxtemp - plotInfo.mintemp > 2000 ? plotInfo.maxtemp : plotInfo.mintemp + 2000);
@@ -404,11 +434,13 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	if (hasHeartBeat) {
 		heartBeatAxis->setBounds(plotInfo.minhr, plotInfo.maxhr);
 		heartBeatAxis->updateTicks(animSpeed);
+		animatedAxes.push_back(heartBeatAxis);
 	}
 
 	percentageAxis->setBounds(0, 100);
 	percentageAxis->setVisible(false);
 	percentageAxis->updateTicks(animSpeed);
+	animatedAxes.push_back(percentageAxis);
 
 	if (calcMax) {
 		double relStart = (1.0 - 1.0/zoom) * zoomedPosition;
@@ -433,6 +465,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	int to = it2 - plotInfo.entry;
 
 	timeAxis->updateTicks(animSpeed);
+	animatedAxes.push_back(timeAxis);
 	cylinderPressureAxis->setBounds(plotInfo.minpressure, plotInfo.maxpressure);
 
 	tankItem->setData(d, firstSecond, lastSecond);
@@ -445,6 +478,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 		gasYAxis->setBounds(0.0, max);
 		gasYAxis->updateTicks(animSpeed);
+		animatedAxes.push_back(gasYAxis);
 	}
 
 	// Replot dive items
@@ -499,6 +533,18 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		dcText += tr(" (#%1 of %2)").arg(dc + 1).arg(nr);
 #endif
 	diveComputerText->set(dcText, getColor(TIME_TEXT, isGrayscale));
+
+	// Reset animation.
+	if (animSpeed <= 0)
+		animation.reset();
+	else
+		animation = std::make_unique<ProfileAnimation>(*this, animSpeed);
+}
+
+void ProfileScene::anim(double fraction)
+{
+	for (DiveCartesianAxis *axis: animatedAxes)
+		axis->anim(fraction);
 }
 
 void ProfileScene::draw(QPainter *painter, const QRect &pos,
