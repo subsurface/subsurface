@@ -29,33 +29,7 @@ namespace Animations {
 		}
 	}
 
-	void animDelete(QObject *obj, int speed)
-	{
-		if (speed != 0) {
-			QPropertyAnimation *animation = new QPropertyAnimation(obj, "opacity");
-			obj->connect(animation, &QPropertyAnimation::finished, &QObject::deleteLater);
-			animation->setStartValue(1);
-			animation->setEndValue(0);
-			animation->start(QAbstractAnimation::DeleteWhenStopped);
-		} else {
-			delete obj;
-		}
-	}
-
-	void moveTo(QObject *obj, int speed, qreal x, qreal y)
-	{
-		if (speed != 0) {
-			QPropertyAnimation *animation = new QPropertyAnimation(obj, "pos");
-			animation->setDuration(prefs.animation_speed);
-			animation->setStartValue(obj->property("pos").toPointF());
-			animation->setEndValue(QPointF(x, y));
-			animation->start(QAbstractAnimation::DeleteWhenStopped);
-		} else {
-			obj->setProperty("pos", QPointF(x, y));
-		}
-	}
-
-	void scaleTo(QObject *obj, int speed, qreal scale)
+	void scaleTo(QObject *obj, int speed, double scale)
 	{
 		if (speed != 0) {
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "scale");
@@ -67,10 +41,5 @@ namespace Animations {
 		} else {
 			obj->setProperty("scale", QVariant::fromValue(scale));
 		}
-	}
-
-	void moveTo(QObject *obj, int speed, const QPointF &pos)
-	{
-		moveTo(obj, speed, pos.x(), pos.y());
 	}
 }
