@@ -63,9 +63,6 @@ public:
 	void clear();
 	void setDive(const plot_info &pInfo);
 	const plot_info &data() const;
-	double pheMax() const;
-	double pn2Max() const;
-	double po2Max() const;
 
 private:
 	struct plot_info pInfo;

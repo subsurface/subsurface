@@ -349,6 +349,16 @@ bool ProfileScene::pointOnProfile(const QPointF &point) const
 	return timeAxis->pointInRange(point.x()) && profileYAxis->pointInRange(point.y());
 }
 
+static double max_gas(const plot_info &pi, double gas_pressures::*gas)
+{
+	double ret = -1;
+	for (int i = 0; i < pi.nr; ++i) {
+		if (pi.entry[i].pressures.*gas > ret)
+			ret = pi.entry[i].pressures.*gas;
+	}
+	return ret;
+}
+
 void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsModel *plannerModel,
 			   bool inPlanner, bool instant, bool keepPlotInfo, bool calcMax, double zoom, double zoomedPosition)
 {
@@ -471,10 +481,11 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	tankItem->setData(d, firstSecond, lastSecond);
 
 	if (ppGraphsEnabled(currentdc, simplified)) {
+		double max = prefs.pp_graphs.phe ? max_gas(dataModel->data(), &gas_pressures::he) : -1;
 		if (prefs.pp_graphs.pn2)
-			max = std::max(dataModel->pn2Max(), max);
+			max = std::max(max_gas(dataModel->data(), &gas_pressures::n2), max);
 		if (prefs.pp_graphs.po2)
-			max = std::max(dataModel->po2Max(), max);
+			max = std::max(max_gas(dataModel->data(), &gas_pressures::o2), max);
 
 		gasYAxis->setBounds(0.0, max);
 		gasYAxis->updateTicks(animSpeed);
