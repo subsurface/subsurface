@@ -11,9 +11,6 @@
 #include <QPainter>
 #include <memory>
 
-class DivePlannerPointsModel;
-class DivePlotDataModel;
-
 class AbstractProfilePolygonItem;
 class DiveCalculatedCeiling;
 class DiveCalculatedTissue;
@@ -24,6 +21,7 @@ class DiveHeartrateItem;
 class DiveMeanDepthItem;
 class DivePercentageItem;
 class DivePixmaps;
+class DivePlannerPointsModel;
 class DiveProfileItem;
 class DiveReportedCeiling;
 class DiveTemperatureItem;
@@ -69,7 +67,6 @@ private:
 	int maxtime;
 	int maxdepth;
 
-	DivePlotDataModel *dataModel;
 	struct plot_info plotInfo;
 	DiveCartesianAxis *profileYAxis;
 	DiveCartesianAxis *gasYAxis;
