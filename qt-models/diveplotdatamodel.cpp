@@ -178,28 +178,3 @@ void DivePlotDataModel::setDive(const plot_info &info)
 	memcpy(pInfo.pressures, info.pressures, sizeof(plot_pressure_data) * pInfo.nr_cylinders * pInfo.nr);
 	endResetModel();
 }
-
-static double max_gas(const plot_info &pi, double gas_pressures::*gas)
-{
-	double ret = -1;
-	for (int i = 0; i < pi.nr; ++i) {
-		if (pi.entry[i].pressures.*gas > ret)
-			ret = pi.entry[i].pressures.*gas;
-	}
-	return ret;
-}
-
-double DivePlotDataModel::pheMax() const
-{
-	return max_gas(pInfo, &gas_pressures::he);
-}
-
-double DivePlotDataModel::pn2Max() const
-{
-	return max_gas(pInfo, &gas_pressures::n2);
-}
-
-double DivePlotDataModel::po2Max() const
-{
-	return max_gas(pInfo, &gas_pressures::o2);
-}
