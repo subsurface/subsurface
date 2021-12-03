@@ -77,10 +77,10 @@ static void put_pd(struct membuffer *b, const struct plot_info *pi, int idx)
 	put_int(b, entry->o2sensor[2].mbar);
 	put_int(b, entry->o2setpoint.mbar);
 	put_int(b, entry->scr_OC_pO2.mbar);
-	put_double(b, entry->mod);
-	put_double(b, entry->ead);
-	put_double(b, entry->end);
-	put_double(b, entry->eadd);
+	put_int(b, entry->mod);
+	put_int(b, entry->ead);
+	put_int(b, entry->end);
+	put_int(b, entry->eadd);
 	switch (entry->velocity) {
 	case STABLE:
 		put_csv_string(b, "STABLE");

@@ -58,7 +58,7 @@ struct plot_data {
 	pressure_t o2sensor[3]; //for rebreathers with up to 3 PO2 sensors
 	pressure_t o2setpoint;
 	pressure_t scr_OC_pO2;
-	double mod, ead, end, eadd;
+	int mod, ead, end, eadd;
 	velocity_t velocity;
 	int speed;
 	// stats over 9 minute window:

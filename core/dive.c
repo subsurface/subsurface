@@ -41,7 +41,7 @@ const char *divemode_text_ui[] = {
 // For writing/reading files.
 const char *divemode_text[] = {"OC", "CCR", "PSCR", "Freedive"};
 
-static int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity);
+static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity);
 
 /*
  * The legacy format for sample pressures has a single pressure
@@ -657,7 +657,7 @@ void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 				gasmix = get_gasmix_from_event(dive, ev);
 				next = get_next_event(ev, "gaschange");
 			}
-			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), gasmix ,0, dc->divemode);
+			fill_pressures(&pressures, lrint(calculate_depth_to_mbarf(dc->sample[i].depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
 			if (abs(dc->sample[i].setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
 				dc->sample[i].setpoint.mbar = 0;
 		}
@@ -3209,7 +3209,7 @@ static double salinity_to_specific_weight(int salinity)
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
  * of water (and use standard salt water at 1.03kg per liter if we don't know salinity)
  * and add that to the surface pressure (or to 1013 if that's unknown) */
-static int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity)
+static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity)
 {
 	double specific_weight;
 	int mbar = surface_pressure.mbar;
@@ -3221,13 +3221,17 @@ static int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int s
 	if (salinity < 500)
 		salinity += FRESHWATER_SALINITY;
 	specific_weight = salinity_to_specific_weight(salinity);
-	mbar += lrint(depth * specific_weight);
-	return mbar;
+	return mbar + depth * specific_weight;
 }
 
 int depth_to_mbar(int depth, const struct dive *dive)
 {
-	return calculate_depth_to_mbar(depth, dive->surface_pressure, dive->salinity);
+	return lrint(calculate_depth_to_mbarf(depth, dive->surface_pressure, dive->salinity));
+}
+
+double depth_to_mbarf(int depth, const struct dive *dive)
+{
+	return calculate_depth_to_mbarf(depth, dive->surface_pressure, dive->salinity);
 }
 
 double depth_to_bar(int depth, const struct dive *dive)
