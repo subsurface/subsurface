@@ -102,6 +102,7 @@ extern fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcoti
 
 extern int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null);
 extern int depth_to_mbar(int depth, const struct dive *dive);
+extern double depth_to_mbarf(int depth, const struct dive *dive);
 extern double depth_to_bar(int depth, const struct dive *dive);
 extern double depth_to_atm(int depth, const struct dive *dive);
 extern int rel_mbar_to_depth(int mbar, const struct dive *dive);

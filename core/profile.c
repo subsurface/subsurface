@@ -1236,15 +1236,15 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
 	for (i = 1; i < pi->nr; i++) {
-		int fn2, fhe;
+		double fn2, fhe;
 		struct plot_data *entry = pi->entry + i;
 
 		gasmix = get_gasmix(dive, dc, entry->sec, &evg, gasmix);
 		amb_pressure = depth_to_bar(entry->depth, dive);
 		current_divemode = get_current_divemode(dc, entry->sec, &evd, &current_divemode);
 		fill_pressures(&entry->pressures, amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry->o2pressure.mbar / 1000.0, current_divemode);
-		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
-		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
+		fn2 = 1000.0 * entry->pressures.n2 / amb_pressure;
+		fhe = 1000.0 * entry->pressures.he / amb_pressure;
 		if (dc->divemode == PSCR) { // OC pO2 is calulated for PSCR with or without external PO2 monitoring.
 			struct gasmix gasmix2 = get_gasmix(dive, dc, entry->sec, &evg, gasmix);
 			entry->scr_OC_pO2.mbar = (int) depth_to_mbar(entry->depth, dive) * get_o2(gasmix2) / 1000;
@@ -1255,14 +1255,14 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 		 * END takes O₂ + N₂ (air) into account ("Narcotic" for trimix dives)
 		 * EAD just uses N₂ ("Air" for nitrox dives) */
 		pressure_t modpO2 = { .mbar = (int)(prefs.modpO2 * 1000) };
-		entry->mod = (double)gas_mod(gasmix, modpO2, dive, 1).mm;
-		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
-		entry->ead = (entry->depth + 10000) * fn2 / (double)N2_IN_AIR - 10000;
-		entry->eadd = (entry->depth + 10000) *
+		entry->mod = gas_mod(gasmix, modpO2, dive, 1).mm;
+		entry->end = mbar_to_depth(lrint(depth_to_mbarf(entry->depth, dive) * (1000 - fhe) / 1000.0), dive);
+		entry->ead = mbar_to_depth(lrint(depth_to_mbarf(entry->depth, dive) * fn2 / (double)N2_IN_AIR), dive);
+		entry->eadd = mbar_to_depth(lrint(depth_to_mbarf(entry->depth, dive) *
 				      (entry->pressures.o2 / amb_pressure * O2_DENSITY +
 				       entry->pressures.n2 / amb_pressure * N2_DENSITY +
 				       entry->pressures.he / amb_pressure * HE_DENSITY) /
-				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 - 10000;
+				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000), dive);
 		entry->density = gas_density(gasmix, depth_to_mbar(entry->depth, dive));
 		if (entry->mod < 0)
 			entry->mod = 0;
@@ -1452,22 +1452,22 @@ static void plot_string(const struct dive *d, const struct plot_info *pi, int id
 	if (prefs.pp_graphs.phe && entry->pressures.he > 0)
 		put_format_loc(b, translate("gettextFromC", "pHe: %.2fbar\n"), entry->pressures.he);
 	if (prefs.mod && entry->mod > 0) {
-		mod = lrint(get_depth_units(lrint(entry->mod), NULL, &depth_unit));
+		mod = lrint(get_depth_units(entry->mod, NULL, &depth_unit));
 		put_format_loc(b, translate("gettextFromC", "MOD: %d%s\n"), mod, depth_unit);
 	}
-	eadd = lrint(get_depth_units(lrint(entry->eadd), NULL, &depth_unit));
+	eadd = lrint(get_depth_units(entry->eadd, NULL, &depth_unit));
 
 	if (prefs.ead) {
 		switch (pi->dive_type) {
 		case NITROX:
 			if (entry->ead > 0) {
-				ead = lrint(get_depth_units(lrint(entry->ead), NULL, &depth_unit));
+				ead = lrint(get_depth_units(entry->ead, NULL, &depth_unit));
 				put_format_loc(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), ead, depth_unit, eadd, depth_unit, entry->density);
 				break;
 			}
 		case TRIMIX:
 			if (entry->end > 0) {
-				end = lrint(get_depth_units(lrint(entry->end), NULL, &depth_unit));
+				end = lrint(get_depth_units(entry->end, NULL, &depth_unit));
 				put_format_loc(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), end, depth_unit, eadd, depth_unit, entry->density);
 				break;
 			}
