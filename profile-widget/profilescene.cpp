@@ -50,7 +50,7 @@ public:
 template<typename T, class... Args>
 T *ProfileScene::createItem(const DiveCartesianAxis &vAxis, DataAccessor accessor, int z, Args&&... args)
 {
-	T *res = new T(*dataModel, *timeAxis, vAxis, accessor, std::forward<Args>(args)...);
+	T *res = new T(plotInfo, *timeAxis, vAxis, accessor, std::forward<Args>(args)...);
 	res->setZValue(static_cast<double>(z));
 	profileItems.push_back(res);
 	return res;
@@ -518,11 +518,11 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	tankItem->setData(d, firstSecond, lastSecond);
 
 	if (ppGraphsEnabled(currentdc, simplified)) {
-		double max = prefs.pp_graphs.phe ? max_gas(dataModel->data(), &gas_pressures::he) : -1;
+		double max = prefs.pp_graphs.phe ? max_gas(plotInfo, &gas_pressures::he) : -1;
 		if (prefs.pp_graphs.pn2)
-			max = std::max(max_gas(dataModel->data(), &gas_pressures::n2), max);
+			max = std::max(max_gas(plotInfo, &gas_pressures::n2), max);
 		if (prefs.pp_graphs.po2)
-			max = std::max(max_gas(dataModel->data(), &gas_pressures::o2), max);
+			max = std::max(max_gas(plotInfo, &gas_pressures::o2), max);
 
 		gasYAxis->setBounds(0.0, max);
 		gasYAxis->updateTicks(animSpeed);
@@ -534,7 +534,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		item->replot(d, from, to, inPlanner);
 
 	if (prefs.percentagegraph)
-		percentageItem->replot(d, currentdc, dataModel->data());
+		percentageItem->replot(d, currentdc, plotInfo);
 
 	// The event items are a bit special since we don't know how many events are going to
 	// exist on a dive, so I cant create cache items for that. that's why they are here

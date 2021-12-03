@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/diveprofileitem.h"
-#include "qt-models/diveplotdatamodel.h"
 #include "profile-widget/divecartesianaxis.h"
 #include "profile-widget/divetextitem.h"
 #include "profile-widget/animationfunctions.h"
@@ -12,10 +11,10 @@
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"
 
-AbstractProfilePolygonItem::AbstractProfilePolygonItem(const DivePlotDataModel &model, const DiveCartesianAxis &horizontal,
+AbstractProfilePolygonItem::AbstractProfilePolygonItem(const plot_info &pInfo, const DiveCartesianAxis &horizontal,
 						       const DiveCartesianAxis &vertical, DataAccessor accessor,
 						       double dpr) :
-	hAxis(horizontal), vAxis(vertical), dataModel(model), accessor(accessor), dpr(dpr), from(0), to(0)
+	hAxis(horizontal), vAxis(vertical), pInfo(pInfo), accessor(accessor), dpr(dpr), from(0), to(0)
 {
 	setCacheMode(DeviceCoordinateCache);
 }
@@ -47,7 +46,7 @@ void AbstractProfilePolygonItem::clipStop(double &x, double &y, double prev_x, d
 
 std::pair<double, double> AbstractProfilePolygonItem::getPoint(int i) const
 {
-	const struct plot_data *data = dataModel.data().entry;
+	const struct plot_data *data = pInfo.entry;
 	double x = data[i].sec;
 	double y = accessor(data[i]);
 
@@ -97,9 +96,9 @@ void AbstractProfilePolygonItem::makePolygon(int fromIn, int toIn)
 	texts.clear();
 }
 
-DiveProfileItem::DiveProfileItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
+DiveProfileItem::DiveProfileItem(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
 				 const DiveCartesianAxis &vAxis, DataAccessor accessor, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, vAxis, accessor, dpr),
+	AbstractProfilePolygonItem(pInfo, hAxis, vAxis, accessor, dpr),
 	show_reported_ceiling(0), reported_ceiling_in_red(0)
 {
 }
@@ -121,7 +120,7 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	QPolygonF poly = polygon();
-	const struct plot_data *data = dataModel.data().entry;
+	const struct plot_data *data = pInfo.entry;
 	// This paints the colors of the velocities.
 	for (int i = from + 1; i < to; i++) {
 		QColor color = getColor((color_index_t)(VELOCITY_COLORS_START_IDX + data[i].velocity));
@@ -146,13 +145,13 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 
 	show_reported_ceiling = prefs.dcceiling;
 	reported_ceiling_in_red = prefs.redceiling;
-	profileColor = dataModel.data().waypoint_above_ceiling ? QColor(Qt::red)
-							       : getColor(DEPTH_BOTTOM);
+	profileColor = pInfo.waypoint_above_ceiling ? QColor(Qt::red)
+						    : getColor(DEPTH_BOTTOM);
 
 	/* Show any ceiling we may have encountered */
 	if (prefs.dcceiling && !prefs.redceiling) {
 		QPolygonF p = polygon();
-		plot_data *entry = dataModel.data().entry + to - 1;
+		plot_data *entry = pInfo.entry + to - 1;
 		for (int i = to - 1; i >= from; i--, entry--) {
 			if (!entry->in_deco) {
 				/* not in deco implies this is a safety stop, no ceiling */
@@ -178,7 +177,7 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 	const int half_interval = vAxis.getMinLabelDistance(hAxis);
 	const int min_depth = 2000; // in mm
 	const int min_prominence = 2000; // in mm (should this adapt to depth range?)
-	const plot_data *data = dataModel.data().entry;
+	const plot_data *data = pInfo.entry;
 	const int max_peaks = (data[to - 1].sec - data[from].sec) / half_interval + 1;
 	struct Peak {
 		int range_from;
@@ -261,9 +260,9 @@ void DiveProfileItem::plot_depth_sample(const struct plot_data &entry, QFlags<Qt
 	texts.append(item);
 }
 
-DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
+DiveHeartrateItem::DiveHeartrateItem(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
 				     const DiveCartesianAxis &vAxis, DataAccessor accessor, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, vAxis, accessor, dpr)
+	AbstractProfilePolygonItem(pInfo, hAxis, vAxis, accessor, dpr)
 {
 	QPen pen;
 	pen.setBrush(QBrush(getColor(::HR_PLOT)));
@@ -351,9 +350,9 @@ void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 	painter->restore();
 }
 
-DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
+DiveTemperatureItem::DiveTemperatureItem(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
 					 const DiveCartesianAxis &vAxis, DataAccessor accessor, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, vAxis, accessor, dpr)
+	AbstractProfilePolygonItem(pInfo, hAxis, vAxis, accessor, dpr)
 {
 	QPen pen;
 	pen.setBrush(QBrush(getColor(::TEMP_PLOT)));
@@ -437,9 +436,9 @@ void DiveTemperatureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 static const double diveMeanDepthItemLabelScale = 0.8;
 
-DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
+DiveMeanDepthItem::DiveMeanDepthItem(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
 				     const DiveCartesianAxis &vAxis, DataAccessor accessor, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, vAxis, accessor, dpr),
+	AbstractProfilePolygonItem(pInfo, hAxis, vAxis, accessor, dpr),
 	labelWidth(DiveTextItem::getLabelSize(dpr, diveMeanDepthItemLabelScale, QStringLiteral("999.9ft")).first)
 {
 	QPen pen;
@@ -453,7 +452,7 @@ DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveC
 std::pair<double,double> DiveMeanDepthItem::getMeanDepth(int i) const
 {
 	for ( ; i >= 0; --i) {
-		const plot_data &entry = dataModel.data().entry[i];
+		const plot_data &entry = pInfo.entry[i];
 		if (entry.running_sum > 0)
 			return { static_cast<double>(entry.sec),
 				 static_cast<double>(entry.running_sum) / entry.sec };
@@ -463,9 +462,9 @@ std::pair<double,double> DiveMeanDepthItem::getMeanDepth(int i) const
 
 std::pair<double,double> DiveMeanDepthItem::getNextMeanDepth(int first) const
 {
-	int last = dataModel.data().nr;
+	int last = pInfo.nr;
 	for (int i = first + 1; i < last;  ++i) {
-		const plot_data &entry = dataModel.data().entry[i];
+		const plot_data &entry = pInfo.entry[i];
 		if (entry.running_sum > 0)
 			return { static_cast<double>(entry.sec),
 				 static_cast<double>(entry.running_sum) / entry.sec };
@@ -531,25 +530,24 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 	from = fromIn;
 	to = toIn;
 
-	const struct plot_info *pInfo = &dataModel.data();
-	std::vector<int> plotted_cyl(pInfo->nr_cylinders, false);
-	std::vector<double> last_plotted(pInfo->nr_cylinders, 0.0);
-	std::vector<Segment> act_segments(pInfo->nr_cylinders);
+	std::vector<int> plotted_cyl(pInfo.nr_cylinders, false);
+	std::vector<double> last_plotted(pInfo.nr_cylinders, 0.0);
+	std::vector<Segment> act_segments(pInfo.nr_cylinders);
 	QPolygonF boundingPoly;
 	segments.clear();
 
 	for (int i = from; i < to; i++) {
-		const struct plot_data *entry = pInfo->entry + i;
+		const struct plot_data *entry = pInfo.entry + i;
 
-		for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
-			double mbar = static_cast<double>(get_plot_pressure(pInfo, i, cyl));
+		for (int cyl = 0; cyl < pInfo.nr_cylinders; cyl++) {
+			double mbar = static_cast<double>(get_plot_pressure(&pInfo, i, cyl));
 			double time = static_cast<double>(entry->sec);
 
 			if (mbar < 1.0)
 				continue;
 
 			if (i == from && i < to - 1) {
-				double mbar2 = static_cast<double>(get_plot_pressure(pInfo, i+1, cyl));
+				double mbar2 = static_cast<double>(get_plot_pressure(&pInfo, i+1, cyl));
 				double time2 = static_cast<double>(entry[1].sec);
 				if (mbar2 < 1.0)
 					continue;
@@ -557,7 +555,7 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 			}
 
 			if (i == to - 1 && i > from) {
-				double mbar2 = static_cast<double>(get_plot_pressure(pInfo, i-1, cyl));
+				double mbar2 = static_cast<double>(get_plot_pressure(&pInfo, i-1, cyl));
 				double time2 = static_cast<double>(entry[-1].sec);
 				if (mbar2 < 1.0)
 					continue;
@@ -606,7 +604,7 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 		}
 	}
 
-	for (int cyl = 0; cyl < pInfo->nr_cylinders; cyl++) {
+	for (int cyl = 0; cyl < pInfo.nr_cylinders; cyl++) {
 		if (act_segments[cyl].polygon.empty())
 			continue;
 		act_segments[cyl].cyl = cyl;
@@ -626,7 +624,7 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 	// pressures.
 
 	QFlags<Qt::AlignmentFlag> alignVar = Qt::AlignTop;
-	std::vector<QFlags<Qt::AlignmentFlag>> align(pInfo->nr_cylinders);
+	std::vector<QFlags<Qt::AlignmentFlag>> align(pInfo.nr_cylinders);
 
 	double labelHeight = DiveTextItem::fontHeight(dpr, 1.0);
 
@@ -685,9 +683,9 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->restore();
 }
 
-DiveCalculatedCeiling::DiveCalculatedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
+DiveCalculatedCeiling::DiveCalculatedCeiling(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
 					     const DiveCartesianAxis &vAxis, DataAccessor accessor, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, vAxis, accessor, dpr)
+	AbstractProfilePolygonItem(pInfo, hAxis, vAxis, accessor, dpr)
 {
 }
 
@@ -709,21 +707,21 @@ void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsI
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-DiveCalculatedTissue::DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
+DiveCalculatedTissue::DiveCalculatedTissue(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
 					   const DiveCartesianAxis &vAxis, DataAccessor accessor, double dpr) :
-	DiveCalculatedCeiling(model, hAxis, vAxis, accessor, dpr)
+	DiveCalculatedCeiling(pInfo, hAxis, vAxis, accessor, dpr)
 {
 }
 
-DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
+DiveReportedCeiling::DiveReportedCeiling(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
 					 const DiveCartesianAxis &vAxis, DataAccessor accessor, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, vAxis, accessor, dpr)
+	AbstractProfilePolygonItem(pInfo, hAxis, vAxis, accessor, dpr)
 {
 }
 
 std::pair<double,double> DiveReportedCeiling::getTimeValue(int i) const
 {
-	const plot_data &entry = dataModel.data().entry[i];
+	const plot_data &entry = pInfo.entry[i];
 	int value = entry.in_deco && entry.stopdepth ? std::min(entry.stopdepth, entry.depth) : 0;
 	return { static_cast<double>(entry.sec), static_cast<double>(value) };
 }
@@ -841,9 +839,9 @@ void PartialPressureGasItem::setThresholdSettingsKey(const double *prefPointerMi
 	thresholdPtrMax = prefPointerMax;
 }
 
-PartialPressureGasItem::PartialPressureGasItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
+PartialPressureGasItem::PartialPressureGasItem(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
 					       const DiveCartesianAxis &vAxis, DataAccessor accessor, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, vAxis, accessor, dpr),
+	AbstractProfilePolygonItem(pInfo, hAxis, vAxis, accessor, dpr),
 	thresholdPtrMin(NULL),
 	thresholdPtrMax(NULL)
 {
