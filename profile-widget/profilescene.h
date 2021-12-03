@@ -54,9 +54,11 @@ public:
 	const struct dive *d;
 	int dc;
 private:
-	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args);
-	PartialPressureGasItem *createPPGas(int column, color_index_t color, color_index_t colorAlert,
+	using DataAccessor = double (*)(const plot_data &data);
+	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, DataAccessor accessor, int z, Args&&... args);
+	PartialPressureGasItem *createPPGas(DataAccessor accessor, color_index_t color, color_index_t colorAlert,
 					    const double *thresholdSettingsMin, const double *thresholdSettingsMax);
+	template <int ACT, int MAX> void addTissueItems(double dpr);
 	void updateVisibility(bool diveHasHeartBeat, bool simplified); // Update visibility of non-interactive chart features according to preferences
 	void updateAxes(bool diveHasHeartBeat, bool simplified); // Update axes according to preferences
 
@@ -94,7 +96,7 @@ private:
 	PartialPressureGasItem *ocpo2GasItem;
 	DiveCalculatedCeiling *diveCeiling;
 	DiveTextItem *decoModelParameters;
-	QList<DiveCalculatedTissue *> allTissues;
+	std::vector<DiveCalculatedTissue *> allTissues;
 	DiveHeartrateItem *heartBeatItem;
 	DivePercentageItem *percentageItem;
 	TankItem *tankItem;
