@@ -179,11 +179,6 @@ void DivePlotDataModel::setDive(const plot_info &info)
 	endResetModel();
 }
 
-unsigned int DivePlotDataModel::dcShown() const
-{
-	return dcNr;
-}
-
 static double max_gas(const plot_info &pi, double gas_pressures::*gas)
 {
 	double ret = -1;
