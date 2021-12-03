@@ -30,7 +30,7 @@ class AbstractProfilePolygonItem : public QObject, public QGraphicsPolygonItem {
 	Q_PROPERTY(qreal x WRITE setX READ x)
 	Q_PROPERTY(qreal y WRITE setY READ y)
 public:
-	AbstractProfilePolygonItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
+	AbstractProfilePolygonItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) = 0;
 	void clear();
 
@@ -46,7 +46,6 @@ protected:
 	const DiveCartesianAxis &hAxis;
 	const DiveCartesianAxis &vAxis;
 	const DivePlotDataModel &dataModel;
-	int hDataColumn;
 	int vDataColumn;
 	double dpr;
 	int from, to;
@@ -57,7 +56,7 @@ class DiveProfileItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
 public:
-	DiveProfileItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
+	DiveProfileItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 	void replot(const dive *d, int from, int to, bool in_planner) override;
 	void plot_depth_sample(const struct plot_data &entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color);
@@ -72,7 +71,7 @@ private:
 class DiveMeanDepthItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	DiveMeanDepthItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
+	DiveMeanDepthItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 	void replot(const dive *d, int from, int to, bool in_planner) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 	double labelWidth;
@@ -86,7 +85,7 @@ private:
 class DiveTemperatureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	DiveTemperatureItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
+	DiveTemperatureItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 	void replot(const dive *d, int from, int to, bool in_planner) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
@@ -97,7 +96,7 @@ private:
 class DiveHeartrateItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	DiveHeartrateItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
+	DiveHeartrateItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 	void replot(const dive *d, int from, int to, bool in_planner) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
@@ -136,7 +135,7 @@ class DiveCalculatedCeiling : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
 public:
-	DiveCalculatedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+	DiveCalculatedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 			      const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 	void replot(const dive *d, int from, int to, bool in_planner) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
@@ -146,7 +145,7 @@ class DiveReportedCeiling : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
 public:
-	DiveReportedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
+	DiveReportedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 	void replot(const dive *d, int from, int to, bool in_planner) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 private:
@@ -157,14 +156,14 @@ private:
 class DiveCalculatedTissue : public DiveCalculatedCeiling {
 	Q_OBJECT
 public:
-	DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+	DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 			     const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 };
 
 class PartialPressureGasItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
-	PartialPressureGasItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
+	PartialPressureGasItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis, int vColumn, double dpr);
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 	void replot(const dive *d, int from, int to, bool in_planner) override;
 	void setThresholdSettingsKey(const double *prefPointerMin, const double *prefPointerMax);
