@@ -48,21 +48,40 @@ public:
 };
 
 template<typename T, class... Args>
-T *ProfileScene::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args)
+T *ProfileScene::createItem(const DiveCartesianAxis &vAxis, DataAccessor accessor, int z, Args&&... args)
 {
-	T *res = new T(*dataModel, *timeAxis, vAxis, vColumn, std::forward<Args>(args)...);
+	T *res = new T(*dataModel, *timeAxis, vAxis, accessor, std::forward<Args>(args)...);
 	res->setZValue(static_cast<double>(z));
 	profileItems.push_back(res);
 	return res;
 }
 
-PartialPressureGasItem *ProfileScene::createPPGas(int column, color_index_t color, color_index_t colorAlert,
-						    const double *thresholdSettingsMin, const double *thresholdSettingsMax)
+PartialPressureGasItem *ProfileScene::createPPGas(DataAccessor accessor, color_index_t color, color_index_t colorAlert,
+						  const double *thresholdSettingsMin, const double *thresholdSettingsMax)
 {
-	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, column, 99, dpr);
+	PartialPressureGasItem *item = createItem<PartialPressureGasItem>(*gasYAxis, accessor, 99, dpr);
 	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
 	item->setColors(getColor(color, isGrayscale), getColor(colorAlert, isGrayscale));
 	return item;
+}
+
+template <int IDX>
+double accessTissue(const plot_data &item)
+{
+	return item.ceilings[IDX];
+}
+
+// For now, the accessor functions for the profile data do not possess a payload.
+// To generate the 16 tissue (ceiling) accessor functions, use iterative templates.
+// Thanks to C++17's constexpr if, this is actually easy to read and follow.
+template <int ACT, int MAX>
+void ProfileScene::addTissueItems(double dpr)
+{
+	if constexpr (ACT < MAX) {
+		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, &accessTissue<ACT>, ACT + 1, dpr);
+		allTissues.push_back(tissueItem);
+		addTissueItems<ACT + 1, MAX>(dpr);
+	}
 }
 
 ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
@@ -88,23 +107,45 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 					    dpr, 0.7, printMode, isGrayscale, *this)),
 	percentageAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, false, 2, 0, TIME_GRID, Qt::black, false, false,
 					     dpr, 0.7, printMode, isGrayscale, *this)),
-	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis, DivePlotDataModel::DEPTH, 0, dpr)),
-	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis, DivePlotDataModel::TEMPERATURE, 1, dpr)),
-	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, 1, dpr)),
-	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, 1, dpr)),
+	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis,
+						    [](const plot_data &item) { return (double)item.depth; },
+						    0, dpr)),
+	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis,
+							[](const plot_data &item) { return (double)item.temperature; },
+							1, dpr)),
+	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis,
+						    [](const plot_data &item) { return (double)item.running_sum; },
+						    1, dpr)),
+	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis,
+							[](const plot_data &item) { return 0.0; }, // unused
+							1, dpr)),
 	diveComputerText(new DiveTextItem(dpr, 1.0, Qt::AlignRight | Qt::AlignTop, nullptr)),
-	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, dpr)),
-	pn2GasItem(createPPGas(DivePlotDataModel::PN2, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
-	pheGasItem(createPPGas(DivePlotDataModel::PHE, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold)),
-	po2GasItem(createPPGas(DivePlotDataModel::PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	o2SetpointGasItem(createPPGas(DivePlotDataModel::O2SETPOINT, O2SETPOINT, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	ccrsensor1GasItem(createPPGas(DivePlotDataModel::CCRSENSOR1, CCRSENSOR1, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	ccrsensor2GasItem(createPPGas(DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	ccrsensor3GasItem(createPPGas(DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	ocpo2GasItem(createPPGas(DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
-	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis, DivePlotDataModel::CEILING, 1, dpr)),
+	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis,
+							[](const plot_data &item) { return (double)item.ceiling; },
+							1, dpr)),
+	pn2GasItem(createPPGas([](const plot_data &item) { return (double)item.pressures.n2; },
+			       PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
+	pheGasItem(createPPGas([](const plot_data &item) { return (double)item.pressures.he; },
+			       PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold)),
+	po2GasItem(createPPGas([](const plot_data &item) { return (double)item.pressures.o2; },
+			       PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	o2SetpointGasItem(createPPGas([](const plot_data &item) { return item.o2setpoint.mbar / 1000.0; },
+				      O2SETPOINT, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	ccrsensor1GasItem(createPPGas([](const plot_data &item) { return item.o2sensor[0].mbar / 1000.0; },
+				      CCRSENSOR1, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	ccrsensor2GasItem(createPPGas([](const plot_data &item) { return item.o2sensor[1].mbar / 1000.0; },
+				      CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	ccrsensor3GasItem(createPPGas([](const plot_data &item) { return item.o2sensor[2].mbar / 1000.0; },
+				      CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	ocpo2GasItem(createPPGas([](const plot_data &item) { return item.scr_OC_pO2.mbar / 1000.0; },
+				 SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
+	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis,
+						      [](const plot_data &item) { return (double)item.ceiling; },
+						      1, dpr)),
 	decoModelParameters(new DiveTextItem(dpr, 1.0, Qt::AlignHCenter | Qt::AlignTop, nullptr)),
-	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis, DivePlotDataModel::HEARTBEAT, 1, dpr)),
+	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis,
+						    [](const plot_data &item) { return (double)item.heartbeat; },
+						    1, dpr)),
 	percentageItem(new DivePercentageItem(*timeAxis, *percentageAxis, dpr)),
 	tankItem(new TankItem(*timeAxis, dpr)),
 	pixmaps(getDivePixmaps(dpr))
@@ -122,10 +163,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	heartBeatAxis->setTransform(1.0);
 	gasYAxis->setTransform(1.0); // Non-metric countries likewise use bar (disguised as "percentage") for partial pressure.
 
-	for (int i = 0; i < 16; i++) {
-		DiveCalculatedTissue *tissueItem = createItem<DiveCalculatedTissue>(*profileYAxis, DivePlotDataModel::TISSUE_1 + i, i + 1, dpr);
-		allTissues.append(tissueItem);
-	}
+	addTissueItems<0,16>(dpr);
 
 	percentageItem->setZValue(1.0);
 
