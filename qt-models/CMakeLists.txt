@@ -15,8 +15,6 @@ set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 	divelocationmodel.h
 	diveplannermodel.cpp
 	diveplannermodel.h
-	diveplotdatamodel.cpp
-	diveplotdatamodel.h
 	divetripmodel.cpp
 	divetripmodel.h
 	filterconstraintmodel.cpp
