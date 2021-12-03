@@ -11,7 +11,6 @@
 class ProfileScene;
 class DiveTextItem;
 class DiveLineItem;
-class DivePlotDataModel;
 
 class DiveCartesianAxis : public QGraphicsLineItem {
 private:

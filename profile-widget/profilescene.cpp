@@ -50,8 +50,7 @@ public:
 template<typename T, class... Args>
 T *ProfileScene::createItem(const DiveCartesianAxis &vAxis, int vColumn, int z, Args&&... args)
 {
-	T *res = new T(*dataModel, *timeAxis, DivePlotDataModel::TIME, vAxis, vColumn,
-		       std::forward<Args>(args)...);
+	T *res = new T(*dataModel, *timeAxis, vAxis, vColumn, std::forward<Args>(args)...);
 	res->setZValue(static_cast<double>(z));
 	profileItems.push_back(res);
 	return res;

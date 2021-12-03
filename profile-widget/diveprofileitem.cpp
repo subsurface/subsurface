@@ -12,9 +12,9 @@
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"
 
-AbstractProfilePolygonItem::AbstractProfilePolygonItem(const DivePlotDataModel &model, const DiveCartesianAxis &horizontal, int hColumn,
+AbstractProfilePolygonItem::AbstractProfilePolygonItem(const DivePlotDataModel &model, const DiveCartesianAxis &horizontal,
 						       const DiveCartesianAxis &vertical, int vColumn, double dpr) :
-	hAxis(horizontal), vAxis(vertical), dataModel(model), hDataColumn(hColumn), vDataColumn(vColumn), dpr(dpr), from(0), to(0)
+	hAxis(horizontal), vAxis(vertical), dataModel(model), vDataColumn(vColumn), dpr(dpr), from(0), to(0)
 {
 	setCacheMode(DeviceCoordinateCache);
 }
@@ -46,17 +46,17 @@ void AbstractProfilePolygonItem::clipStop(double &x, double &y, double prev_x, d
 
 std::pair<double, double> AbstractProfilePolygonItem::getPoint(int i) const
 {
-	double x = dataModel.index(i, hDataColumn).data().toReal();
+	double x = dataModel.index(i, DivePlotDataModel::TIME).data().toReal();
 	double y = dataModel.index(i, vDataColumn).data().toReal();
 
 	// Do clipping of first and last value
 	if (i == from && i < to) {
-		double next_x = dataModel.index(i+1, hDataColumn).data().toReal();
+		double next_x = dataModel.index(i+1, DivePlotDataModel::TIME).data().toReal();
 		double next_y = dataModel.index(i+1, vDataColumn).data().toReal();
 		clipStart(x, y, next_x, next_y);
 	}
 	if (i == to - 1 && i > 0) {
-		double prev_x = dataModel.index(i-1, hDataColumn).data().toReal();
+		double prev_x = dataModel.index(i-1, DivePlotDataModel::TIME).data().toReal();
 		double prev_y = dataModel.index(i-1, vDataColumn).data().toReal();
 		clipStop(x, y, prev_x, prev_y);
 	}
@@ -95,9 +95,9 @@ void AbstractProfilePolygonItem::makePolygon(int fromIn, int toIn)
 	texts.clear();
 }
 
-DiveProfileItem::DiveProfileItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+DiveProfileItem::DiveProfileItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 				 const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr),
+	AbstractProfilePolygonItem(model, hAxis, vAxis, vColumn, dpr),
 	show_reported_ceiling(0), reported_ceiling_in_red(0)
 {
 }
@@ -258,9 +258,9 @@ void DiveProfileItem::plot_depth_sample(const struct plot_data &entry, QFlags<Qt
 	texts.append(item);
 }
 
-DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+DiveHeartrateItem::DiveHeartrateItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 				     const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
+	AbstractProfilePolygonItem(model, hAxis, vAxis, vColumn, dpr)
 {
 	QPen pen;
 	pen.setBrush(QBrush(getColor(::HR_PLOT)));
@@ -348,9 +348,9 @@ void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 	painter->restore();
 }
 
-DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+DiveTemperatureItem::DiveTemperatureItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 					 const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
+	AbstractProfilePolygonItem(model, hAxis, vAxis, vColumn, dpr)
 {
 	QPen pen;
 	pen.setBrush(QBrush(getColor(::TEMP_PLOT)));
@@ -434,9 +434,9 @@ void DiveTemperatureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 static const double diveMeanDepthItemLabelScale = 0.8;
 
-DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+DiveMeanDepthItem::DiveMeanDepthItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 				     const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr),
+	AbstractProfilePolygonItem(model, hAxis, vAxis, vColumn, dpr),
 	labelWidth(DiveTextItem::getLabelSize(dpr, diveMeanDepthItemLabelScale, QStringLiteral("999.9ft")).first)
 {
 	QPen pen;
@@ -682,9 +682,9 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->restore();
 }
 
-DiveCalculatedCeiling::DiveCalculatedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+DiveCalculatedCeiling::DiveCalculatedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 					     const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
+	AbstractProfilePolygonItem(model, hAxis, vAxis, vColumn, dpr)
 {
 }
 
@@ -706,15 +706,15 @@ void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsI
 	QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-DiveCalculatedTissue::DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+DiveCalculatedTissue::DiveCalculatedTissue(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 					   const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
-	DiveCalculatedCeiling(model, hAxis, hColumn, vAxis, vColumn, dpr)
+	DiveCalculatedCeiling(model, hAxis, vAxis, vColumn, dpr)
 {
 }
 
-DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+DiveReportedCeiling::DiveReportedCeiling(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 					 const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr)
+	AbstractProfilePolygonItem(model, hAxis, vAxis, vColumn, dpr)
 {
 }
 
@@ -838,9 +838,9 @@ void PartialPressureGasItem::setThresholdSettingsKey(const double *prefPointerMi
 	thresholdPtrMax = prefPointerMax;
 }
 
-PartialPressureGasItem::PartialPressureGasItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis, int hColumn,
+PartialPressureGasItem::PartialPressureGasItem(const DivePlotDataModel &model, const DiveCartesianAxis &hAxis,
 					       const DiveCartesianAxis &vAxis, int vColumn, double dpr) :
-	AbstractProfilePolygonItem(model, hAxis, hColumn, vAxis, vColumn, dpr),
+	AbstractProfilePolygonItem(model, hAxis, vAxis, vColumn, dpr),
 	thresholdPtrMin(NULL),
 	thresholdPtrMax(NULL)
 {
