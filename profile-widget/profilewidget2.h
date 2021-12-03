@@ -146,11 +146,9 @@ private:
 #ifndef SUBSURFACE_MOBILE
 	ToolTipItem *toolTipItem;
 #endif
-	// All those here should probably be merged into one structure,
-	// So it's esyer to replicate for more dives later.
-	// In the meantime, keep it here.
 	const struct dive *d;
 	int dc;
+	bool empty; // No dive shown.
 #ifndef SUBSURFACE_MOBILE
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;

@@ -56,6 +56,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 #endif
 	d(nullptr),
 	dc(0),
+	empty(true),
 #ifndef SUBSURFACE_MOBILE
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
@@ -187,16 +188,17 @@ void ProfileWidget2::resetZoom()
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 {
-	// If there was no previously displayed dive, turn off animations
-	if (!d)
-		flags |= RenderFlags::Instant;
-
 	d = dIn;
 	dc = dcIn;
 	if (!d) {
 		clear();
 		return;
 	}
+
+	// If there was no previously displayed dive, turn off animations
+	if (empty)
+		flags |= RenderFlags::Instant;
+	empty = false;
 
 	QElapsedTimer measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
@@ -390,6 +392,7 @@ void ProfileWidget2::clear()
 	profileScene->clear();
 	handles.clear();
 	gases.clear();
+	empty = true;
 }
 
 void ProfileWidget2::setProfileState(const dive *dIn, int dcIn)
