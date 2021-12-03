@@ -854,7 +854,7 @@ void ReplanDive::undo()
 
 	QVector<dive *> divesToNotify = { d };
 	// Note that we have to emit cylindersReset before divesChanged, because the divesChanged
-	// updates the DivePlotDataModel, which is out-of-sync and gets confused.
+	// updates the profile, which is out-of-sync and gets confused.
 	emit diveListNotifier.cylindersReset(divesToNotify);
 	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DATETIME | DiveField::DURATION | DiveField::DEPTH | DiveField::MODE |
 							  DiveField::NOTES | DiveField::SALINITY | DiveField::ATM_PRESS);

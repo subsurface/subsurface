@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/profilewidget2.h"
 #include "profile-widget/profilescene.h"
-#include "qt-models/diveplotdatamodel.h"
 #include "core/device.h"
 #include "core/event.h"
 #include "core/subsurface-string.h"

@@ -14,7 +14,6 @@
 #include "core/qthelper.h"	// for decoMode()
 #include "core/subsurface-string.h"
 #include "core/settings/qPrefDisplay.h"
-#include "qt-models/diveplotdatamodel.h"
 #include "qt-models/diveplannermodel.h"
 #include <QAbstractAnimation>
 
@@ -92,7 +91,6 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	isGrayscale(isGrayscale),
 	maxtime(-1),
 	maxdepth(-1),
-	dataModel(new DivePlotDataModel(this)),
 	profileYAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Left, true, 3, 0, TIME_GRID, Qt::red, true, true,
 				   dpr, 1.0, printMode, isGrayscale, *this)),
 	gasYAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, false, 1, 2, TIME_GRID, Qt::black, true, true,
@@ -191,8 +189,6 @@ ProfileScene::~ProfileScene()
 
 void ProfileScene::clear()
 {
-	dataModel->clear();
-
 	for (AbstractProfilePolygonItem *item: profileItems)
 		item->clear();
 
@@ -466,8 +462,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	} else {
 		maxdepth = newMaxDepth;
 	}
-
-	dataModel->setDive(plotInfo);
 
 	// It seems that I'll have a lot of boilerplate setting the model / axis for
 	// each item, I'll mostly like to fix this in the future, but I'll keep at this for now.

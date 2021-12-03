@@ -6,7 +6,6 @@
 struct dive;
 struct divecomputer;
 struct plot_info;
-class DivePlotDataModel;
 class DiveCartesianAxis;
 
 class DivePercentageItem : public QGraphicsPixmapItem {
@@ -16,7 +15,6 @@ public:
 private:
 	const DiveCartesianAxis &hAxis;
 	const DiveCartesianAxis &vAxis;
-	int hDataColumn;
 	double dpr;
 };
 
