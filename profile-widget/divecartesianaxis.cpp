@@ -220,24 +220,24 @@ QLineF DiveCartesianAxis::linePos(double pos) const
 
 void DiveCartesianAxis::updateLabel(Label &label, double opacityEnd, double pos) const
 {
-	label.opacityStart = textVisibility ? label.label->opacity()
-					    : label.line->opacity();
+	label.opacityStart = label.label ? label.label->opacity()
+					 : label.line->opacity();
 	label.opacityEnd = opacityEnd;
-	if (textVisibility) {
+	if (label.label) {
 		label.labelPosStart = label.label->pos();
 		label.labelPosEnd = labelPos(pos);
 	}
-	if (lineVisibility) {
+	if (label.line) {
 		label.lineStart = label.line->line();
 		label.lineEnd = linePos(pos);
 	}
 }
 
-DiveCartesianAxis::Label DiveCartesianAxis::createLabel(double value, double pos, double dataMinOld, double dataMaxOld, int animSpeed)
+DiveCartesianAxis::Label DiveCartesianAxis::createLabel(double value, double pos, double dataMinOld, double dataMaxOld, int animSpeed, bool noLabel)
 {
 	Label label { value, 0.0, 1.0 };
 	double posStart = posAtValue(value, dataMaxOld, dataMinOld);
-	if (textVisibility) {
+	if (textVisibility && !noLabel) {
 		label.labelPosStart = labelPos(posStart);
 		label.labelPosEnd = labelPos(pos);
 		int alignFlags = position == Position::Bottom ? Qt::AlignTop | Qt::AlignHCenter :
@@ -271,6 +271,7 @@ void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double
 	newLabels.reserve(numTicks);
 	auto actOld = labels.begin();
 	double value = firstValue;
+
 	for (int i = 0; i < numTicks; i++, value += stepValue) {
 
 		// Check if we already got that label. If we find unused labels, mark them for deletion.
@@ -291,8 +292,13 @@ void DiveCartesianAxis::updateLabels(int numTicks, double firstPosScreen, double
 			newLabels.push_back(std::move(*actOld));
 			++actOld;
 		} else {
+			// This is horrible: for the depth axis, we don't want to show the first label (0).
+			// We recognize this by the fact that the depth axis is the only "inverted" axis.
+			// This really should be replaced by a general flag to avoid surprises!
+			bool noLabel = inverted && i == 0;
+
 			// Create new label
-			newLabels.push_back(createLabel(value, pos, dataMinOld, dataMaxOld, animSpeed));
+			newLabels.push_back(createLabel(value, pos, dataMinOld, dataMaxOld, animSpeed, noLabel));
 		}
 	}
 
