@@ -197,6 +197,7 @@ void ProfileScene::clear()
 	// the DiveEventItems
 	qDeleteAll(eventItems);
 	eventItems.clear();
+	free_plot_info_data(&plotInfo);
 }
 
 static bool ppGraphsEnabled(const struct divecomputer *dc, bool simplified)
