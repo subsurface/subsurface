@@ -395,8 +395,7 @@ void free_plot_info_data(struct plot_info *pi)
 {
 	free(pi->entry);
 	free(pi->pressures);
-	pi->entry = NULL;
-	pi->pressures = NULL;
+	memset(pi, 0, sizeof(*pi));
 }
 
 static void populate_plot_entries(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi)
