@@ -306,6 +306,7 @@ void EditDuration::set(struct dive *d, int value) const
 	d->duration = d->dc.duration;
 	d->dc.meandepth.mm = 0;
 	d->dc.samples = 0;
+	fake_dc(&d->dc);
 }
 
 int EditDuration::data(struct dive *d) const
@@ -325,6 +326,7 @@ void EditDepth::set(struct dive *d, int value) const
 	d->maxdepth = d->dc.maxdepth;
 	d->dc.meandepth.mm = 0;
 	d->dc.samples = 0;
+	fake_dc(&d->dc);
 }
 
 int EditDepth::data(struct dive *d) const
