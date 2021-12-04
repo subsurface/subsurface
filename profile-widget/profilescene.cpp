@@ -418,8 +418,10 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	}
 
 	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
-	if (!currentdc || !currentdc->samples)
+	if (!currentdc || !currentdc->samples) {
+		clear();
 		return;
+	}
 
 	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
 
