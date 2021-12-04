@@ -95,9 +95,7 @@ extern void free_plot_info_data(struct plot_info *pi);
  */
 extern int get_maxtime(const struct plot_info *pi);
 
-/* get the maximum depth to which we want to plot
- * take into account the additional verical space needed to plot
- * partial pressure graphs */
+/* get the maximum depth to which we want to plot */
 extern int get_maxdepth(const struct plot_info *pi);
 
 static inline int get_plot_pressure_data(const struct plot_info *pi, int idx, enum plot_pressure sensor, int cylinder)

@@ -75,23 +75,12 @@ int get_maxtime(const struct plot_info *pi)
 	return MAX(min, seconds);
 }
 
-/* get the maximum depth to which we want to plot
- * take into account the additional vertical space needed to plot
- * partial pressure graphs */
+/* get the maximum depth to which we want to plot */
 int get_maxdepth(const struct plot_info *pi)
 {
-	unsigned mm = pi->maxdepth;
-	int md;
-
-	if (prefs.zoomed_plot) {
-		/* Rounded up to 10m, with at least 3m to spare */
-		md = ROUND_UP(mm + 3000, 10000);
-	} else {
-		/* Minimum 30m, rounded up to 10m, with at least 3m to spare */
-		md = MAX((unsigned)30000, ROUND_UP(mm + 3000, 10000));
-	}
-	md += lrint(pi->maxpp * 9000);
-	return md;
+	/* 3m to spare */
+	int mm = pi->maxdepth + 3000;
+	return prefs.zoomed_plot ? mm : MAX(30000, mm);
 }
 
 /* UNUSED! */
