@@ -57,6 +57,12 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, bool inverted, int integ
 	}
 
 	std::tie(labelWidth, labelHeight) = DiveTextItem::getLabelSize(dpr, labelScale, label);
+
+	// The axis is implemented by a line, which gives the position.
+	// If we don't show labels or grid, we don't want to show the line,
+	// as this gives a strange artifact. TODO: Don't derive from a
+	// line object in the first place.
+	setVisible(textVisible || linesVisible);
 }
 
 DiveCartesianAxis::~DiveCartesianAxis()
