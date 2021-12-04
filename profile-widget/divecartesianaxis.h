@@ -68,7 +68,7 @@ private:
 	QPointF labelPos(double pos) const;
 	QLineF linePos(double pos) const;
 	void updateLabel(Label &label, double opacityEnd, double pos) const;
-	Label createLabel(double value, double pos, double dataMinOld, double dataMaxOld, int animSpeed);
+	Label createLabel(double value, double pos, double dataMinOld, double dataMaxOld, int animSpeed, bool noLabel);
 	QString textForValue(double value) const;
 	std::vector<Label> labels;
 	double dataMin, dataMax;
