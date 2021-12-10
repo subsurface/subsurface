@@ -157,6 +157,8 @@ void ProfileWidget2::setupItemOnScene()
 	toolTipItem->setTimeAxis(profileScene->timeAxis);
 	rulerItem->setZValue(9997);
 	rulerItem->setAxis(profileScene->timeAxis, profileScene->profileYAxis);
+	mouseFollowerHorizontal->setZValue(9996);
+	mouseFollowerVertical->setZValue(9995);
 #endif
 }
 
@@ -352,14 +354,14 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 		plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
 	}
 
-	double vValue = profileScene->profileYAxis->valueAt(pos);
-	double hValue = profileScene->timeAxis->valueAt(pos);
-
-	if (profileScene->profileYAxis->maximum() >= vValue && profileScene->profileYAxis->minimum() <= vValue)
-		mouseFollowerHorizontal->setPos(profileScene->timeAxis->pos().x(), pos.y());
-
-	if (profileScene->timeAxis->maximum() >= hValue && profileScene->timeAxis->minimum() <= hValue)
-		mouseFollowerVertical->setPos(pos.x(), profileScene->profileYAxis->line().y1());
+	if (currentState == PLAN || currentState == EDIT) {
+		QRectF rect = profileScene->profileRegion;
+		auto [miny, maxy] = profileScene->profileYAxis->screenMinMax();
+		double x = std::clamp(pos.x(), rect.left(), rect.right());
+		double y = std::clamp(pos.y(), miny, maxy);
+		mouseFollowerHorizontal->setLine(rect.left(), y, rect.right(), y);
+		mouseFollowerVertical->setLine(x, rect.top(), x, rect.bottom());
+	}
 }
 
 bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
@@ -441,8 +443,6 @@ void ProfileWidget2::setEditState(const dive *d, int dc)
 	setProfileState(d, dc);
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
-	mouseFollowerHorizontal->setLine(profileScene->timeAxis->line());
-	mouseFollowerVertical->setLine(QLineF(0, profileScene->profileYAxis->pos().y(), 0, profileScene->timeAxis->pos().y()));
 	disconnectTemporaryConnections();
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
@@ -469,8 +469,6 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 	setProfileState(d, dc);
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
-	mouseFollowerHorizontal->setLine(profileScene->timeAxis->line());
-	mouseFollowerVertical->setLine(QLineF(0, profileScene->profileYAxis->pos().y(), 0, profileScene->timeAxis->pos().y()));
 	disconnectTemporaryConnections();
 	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
 	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);

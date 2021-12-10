@@ -316,7 +316,8 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	}
 
 	bottomBorder -= timeAxis->height();
-	timeAxis->setPosition(QRectF(leftBorder, topBorder, width, bottomBorder - topBorder));
+	profileRegion = QRectF(leftBorder, topBorder, width, bottomBorder - topBorder);
+	timeAxis->setPosition(profileRegion);
 
 	if (prefs.tankbar) {
 		bottomBorder -= tankItem->height();
