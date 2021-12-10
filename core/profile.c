@@ -1270,7 +1270,7 @@ void init_plot_info(struct plot_info *pi)
  * The old data will be freed. Before the first call, the plot
  * info must be initialized with init_plot_info().
  */
-void create_plot_info_new(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool fast, const struct deco_state *planner_ds)
+void create_plot_info_new(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, const struct deco_state *planner_ds)
 {
 	int o2, he, o2max;
 	struct deco_state plot_deco_state;
@@ -1294,10 +1294,8 @@ void create_plot_info_new(const struct dive *dive, const struct divecomputer *dc
 
 	check_setpoint_events(dive, dc, pi);     /* Populate setpoints */
 	setup_gas_sensor_pressure(dive, dc, pi); /* Try to populate our gas pressure knowledge */
-	if (!fast) {
-		for (int cyl = 0; cyl < pi->nr_cylinders; cyl++)
-			populate_pressure_information(dive, dc, pi, cyl);
-	}
+	for (int cyl = 0; cyl < pi->nr_cylinders; cyl++)
+		populate_pressure_information(dive, dc, pi, cyl);
 	fill_o2_values(dive, dc, pi);			 /* .. and insert the O2 sensor data having 0 values. */
 	calculate_sac(dive, dc, pi);			 /* Calculate sac */
 

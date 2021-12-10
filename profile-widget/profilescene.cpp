@@ -438,7 +438,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	 * create_plot_info_new() automatically frees old plot data.
 	 */
 	if (!keepPlotInfo)
-		create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, !calcMax, planner_ds);
+		create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, planner_ds);
 
 	bool hasHeartBeat = plotInfo.maxhr;
 	// For mobile we might want to turn of some features that are normally shown.
