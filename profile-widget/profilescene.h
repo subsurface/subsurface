@@ -68,6 +68,7 @@ private:
 	int maxdepth;
 
 	struct plot_info plotInfo;
+	QRectF profileRegion; // Region inside the axes, where the crosshair is painted in plan and edit mode.
 	DiveCartesianAxis *profileYAxis;
 	DiveCartesianAxis *gasYAxis;
 	DiveCartesianAxis *temperatureAxis;
