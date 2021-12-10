@@ -24,8 +24,6 @@
 #include "core/imagedownloader.h"
 #endif
 
-#include <QScrollBar>
-#include <QtCore/qmath.h>
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QDebug>
