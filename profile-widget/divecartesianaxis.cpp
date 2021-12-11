@@ -232,6 +232,12 @@ void DiveCartesianAxis::updateLabel(Label &label, double opacityEnd, double pos)
 	if (label.label) {
 		label.labelPosStart = label.label->pos();
 		label.labelPosEnd = labelPos(pos);
+
+		// For the time-axis, the format might change from "mm" to "mm:ss",
+		// or vice versa. Currently, we don't animate that, i.e. it will
+		// switch instantaneously.
+		if (position == Position::Bottom)
+			label.label->set(textForValue(label.value), textColor);
 	}
 	if (label.line) {
 		label.lineStart = label.line->line();
