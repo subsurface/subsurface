@@ -277,7 +277,8 @@ static auto slope(Func f)
 // Helper structure for laying out secondary plots.
 struct VerticalAxisLayout {
 	DiveCartesianAxis *axis;
-	double height;
+	double height;		// in pixels (times dpr) or a weight if not enough space
+	double bottom_border;	// in pixels (times dpr)
 	bool visible;
 };
 
@@ -334,10 +335,10 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	const double minProfileFraction = 0.5;
         VerticalAxisLayout secondaryAxes[] = {
 		// Note: axes are listed from bottom to top, since they are added that way.
-		{ heartBeatAxis, 75.0, prefs.hrgraph && diveHasHeartBeat },
-		{ percentageAxis, 50.0, prefs.percentagegraph },
-		{ gasYAxis, 75.0, ppGraphsEnabled(currentdc, simplified) },
-		{ temperatureAxis, 50.0, true },
+		{ heartBeatAxis, 75.0, 0.0, prefs.hrgraph && diveHasHeartBeat },
+		{ percentageAxis, 50.0, 0.0, prefs.percentagegraph },
+		{ gasYAxis, 75.0, 0.0, ppGraphsEnabled(currentdc, simplified) },
+		{ temperatureAxis, 50.0, 2.0, true },
         };
 
 	// A loop is probably easier to read than std::accumulate.
@@ -359,7 +360,7 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 		if (!l.visible)
 			continue;
 		bottomBorder -= l.height * dpr;
-		l.axis->setPosition(QRectF(leftBorder, bottomBorder, width, l.height * dpr));
+		l.axis->setPosition(QRectF(leftBorder, bottomBorder, width, (l.height - l.bottom_border) * dpr));
 	}
 
 	height = bottomBorder - topBorder;
