@@ -19,10 +19,13 @@ AbstractProfilePolygonItem::AbstractProfilePolygonItem(const plot_info &pInfo, c
 	setCacheMode(DeviceCoordinateCache);
 }
 
+AbstractProfilePolygonItem::~AbstractProfilePolygonItem()
+{
+}
+
 void AbstractProfilePolygonItem::clear()
 {
 	setPolygon(QPolygonF());
-	qDeleteAll(texts);
 	texts.clear();
 }
 
@@ -92,7 +95,6 @@ void AbstractProfilePolygonItem::makePolygon(int fromIn, int toIn)
 	}
 	setPolygon(poly);
 
-	qDeleteAll(texts);
 	texts.clear();
 }
 
@@ -254,10 +256,10 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 
 void DiveProfileItem::plot_depth_sample(const struct plot_data &entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color)
 {
-	DiveTextItem *item = new DiveTextItem(dpr, 1.0, flags, this);
+	auto item = std::make_unique<DiveTextItem>(dpr, 1.0, flags, this);
 	item->set(get_depth_string(entry.depth, true), color);
 	item->setPos(hAxis.posAtValue(entry.sec), vAxis.posAtValue(entry.depth));
-	texts.append(item);
+	texts.push_back(std::move(item));
 }
 
 DiveHeartrateItem::DiveHeartrateItem(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
@@ -283,7 +285,6 @@ void DiveHeartrateItem::replot(const dive *, int fromIn, int toIn, bool)
 	} hist[3] = {};
 	std::vector<sec_hr> textItems;
 
-	qDeleteAll(texts);
 	texts.clear();
 	// Ignore empty values. a heart rate of 0 would be a bad sign.
 	QPolygonF poly;
@@ -334,10 +335,10 @@ void DiveHeartrateItem::createTextItem(int sec, int hr, bool last)
 {
 	int flags = last ? Qt::AlignLeft | Qt::AlignBottom :
 			   Qt::AlignRight | Qt::AlignBottom;
-	DiveTextItem *text = new DiveTextItem(dpr, 0.7, flags, this);
+	auto text = std::make_unique<DiveTextItem>(dpr, 0.7, flags, this);
 	text->set(QString("%1").arg(hr), getColor(HR_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(hr)));
-	texts.append(text);
+	texts.push_back(std::move(text));
 }
 
 void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
@@ -369,7 +370,6 @@ void DiveTemperatureItem::replot(const dive *, int fromIn, int toIn, bool)
 	double last = -300.0, last_printed_temp = 0.0, last_valid_temp = 0.0, sec = 0.0;
 	std::vector<std::pair<int, int>> textItems;
 
-	qDeleteAll(texts);
 	texts.clear();
 	// Ignore empty values. things do not look good with '0' as temperature in kelvin...
 	QPolygonF poly;
@@ -418,10 +418,10 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin, bool last)
 
 	int flags = last ? Qt::AlignLeft | Qt::AlignBottom :
 			   Qt::AlignRight | Qt::AlignBottom;
-	DiveTextItem *text = new DiveTextItem(dpr, 0.8, flags, this);
+	auto text = std::make_unique<DiveTextItem>(dpr, 0.8, flags, this);
 	text->set(get_temperature_string(temp, true), getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(mkelvin)));
-	texts.append(text);
+	texts.push_back(std::move(text));
 }
 
 void DiveTemperatureItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
@@ -517,12 +517,11 @@ void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 
 void DiveMeanDepthItem::createTextItem(double lastSec, double lastMeanDepth)
 {
-	qDeleteAll(texts);
 	texts.clear();
-	DiveTextItem *text = new DiveTextItem(dpr, diveMeanDepthItemLabelScale, Qt::AlignRight | Qt::AlignVCenter, this);
+	auto text = std::make_unique<DiveTextItem>(dpr, diveMeanDepthItemLabelScale, Qt::AlignRight | Qt::AlignVCenter, this);
 	text->set(get_depth_string(lrint(lastMeanDepth), true), getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(lastSec) + dpr, vAxis.posAtValue(lastMeanDepth)));
-	texts.append(text);
+	texts.push_back(std::move(text));
 }
 
 void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_planner)
@@ -612,7 +611,6 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 	}
 
 	setPolygon(boundingPoly);
-	qDeleteAll(texts);
 	texts.clear();
 
 	// These are offset values used to print the gas labels and pressures on a
@@ -650,19 +648,19 @@ void DiveGasPressureItem::plotPressureValue(double mbar, double sec, QFlags<Qt::
 {
 	const char *unit;
 	int pressure = get_pressure_units(lrint(mbar), &unit);
-	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
+	auto text = std::make_unique<DiveTextItem>(dpr, 1.0, align, this);
 	text->set(QString("%1%2").arg(pressure).arg(unit), getColor(PRESSURE_TEXT));
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + pressure_offset);
-	texts.push_back(text);
+	texts.push_back(std::move(text));
 }
 
 void DiveGasPressureItem::plotGasValue(double mbar, double sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double gasname_offset)
 {
 	QString gas = get_gas_string(gasmix);
-	DiveTextItem *text = new DiveTextItem(dpr, 1.0, align, this);
+	auto text = std::make_unique<DiveTextItem>(dpr, 1.0, align, this);
 	text->set(gas, getColor(PRESSURE_TEXT));
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + gasname_offset);
-	texts.push_back(text);
+	texts.push_back(std::move(text));
 }
 
 void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
