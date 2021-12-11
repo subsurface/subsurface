@@ -3,6 +3,7 @@
 #define DIVEPROFILEITEM_H
 
 #include <QGraphicsPolygonItem>
+#include <memory>
 
 #include "divelineitem.h"
 
@@ -26,6 +27,7 @@ public:
 	using DataAccessor = double (*)(const plot_data &data); // The pointer-to-function syntax is hilarious.
 	AbstractProfilePolygonItem(const plot_info &pInfo, const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis,
 				   DataAccessor accessor, double dpr);
+	~AbstractProfilePolygonItem();
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) = 0;
 	void clear();
 
@@ -44,7 +46,7 @@ protected:
 	DataAccessor accessor;
 	double dpr;
 	int from, to;
-	QList<DiveTextItem *> texts;
+	std::vector<std::unique_ptr<DiveTextItem>> texts;
 };
 
 class DiveProfileItem : public AbstractProfilePolygonItem {
