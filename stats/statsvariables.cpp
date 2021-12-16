@@ -9,6 +9,7 @@
 #include "core/qthelper.h" // for get_depth_unit() et al.
 #include "core/string-format.h"
 #include "core/tag.h"
+#include "core/trip.h"
 #include "core/subsurface-time.h"
 #include <cmath>
 #include <limits>
@@ -49,6 +50,8 @@ struct DiveSiteWrapper {
 	{
 	}
 	bool operator<(const DiveSiteWrapper &d2) const {
+		if (ds == d2.ds)
+			return false;
 		if (int cmp = QString::compare(name, d2.name, Qt::CaseInsensitive))
 			return cmp < 0;
 		return ds < d2.ds; // This is just random, try something better.
@@ -61,6 +64,39 @@ struct DiveSiteWrapper {
 	}
 	QString format() const {
 		return ds ? name : StatsTranslations::tr("no divesite");
+	}
+};
+
+// A wrapper around dive trips, that caches the name and date of the trip and sorts by trip start date
+struct TripWrapper {
+	const dive_trip *t;
+	QString name;
+	timestamp_t date;
+	TripWrapper(const dive_trip *t) : t(t),
+		name(formatTripTitle(t)), // safe to pass null
+		date(trip_date(t)) // safe to pass null
+	{
+	}
+	bool operator<(const TripWrapper &t2) const {
+		if (t == t2.t)
+			return false;
+		if (!t)
+			return true;
+		if (date == t2.date) {
+			if (int cmp = QString::compare(name, t2.name, Qt::CaseInsensitive))
+				return cmp < 0;
+			return t < t2.t; // Basically random, but stable. What should we do if name and date are equal?
+		}
+		return date < t2.date;
+	}
+	bool operator==(const TripWrapper &t2) const {
+		return t == t2.t;
+	}
+	bool operator!=(const TripWrapper &t2) const {
+		return t != t2.t;
+	}
+	QString format() const {
+		return t ? name : StatsTranslations::tr("no trip");
 	}
 };
 
@@ -113,6 +149,11 @@ static bool is_invalid_value(const year_quarter &)
 static bool is_invalid_value(const DiveSiteWrapper &d)
 {
 	return !d.ds;
+}
+
+static bool is_invalid_value(const TripWrapper &t)
+{
+	return !t.t;
 }
 
 static bool is_invalid_value(const StatsOperationResults &res)
@@ -1808,6 +1849,32 @@ struct LocationVariable : public StatsVariableTemplate<StatsVariable::Type::Disc
 	}
 };
 
+// ============ Dive trip ============
+
+using TripBin = SimpleBin<TripWrapper>;
+
+struct TripBinner : public SimpleBinner<TripBinner, TripBin> {
+	QString format(const StatsBin &bin) const override {
+		return derived_bin(bin).value.format();
+	}
+	const TripWrapper to_bin_value(const dive *d) const {
+		return TripWrapper(d->divetrip);
+	}
+};
+
+static TripBinner trip_binner;
+struct TripVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Dive trip");
+	}
+	QString diveCategories(const dive *d) const override {
+		return formatTripTitle(d->divetrip);
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &trip_binner };
+	}
+};
+
 // ============ Day of the week ============
 
 struct DayOfWeekBinner : public SimpleBinner<DayOfWeekBinner, IntBin> {
@@ -1906,6 +1973,7 @@ static SuitVariable suit_variable;
 static WeightsystemVariable weightsystem_variable;
 static CylinderTypeVariable cylinder_type_variable;
 static LocationVariable location_variable;
+static TripVariable trip_variable;
 static DayOfWeekVariable day_of_week_variable;
 static RatingVariable rating_variable;
 static VisibilityVariable visibility_variable;
@@ -1916,6 +1984,6 @@ const std::vector<const StatsVariable *> stats_variables = {
 	&gas_content_o2_variable, &gas_content_o2_he_max_variable, &gas_content_he_variable,
 	&dive_mode_variable, &people_variable, &buddy_variable, &dive_guide_variable, &tag_variable,
 	&gas_type_variable, &suit_variable,
-	&weightsystem_variable, &cylinder_type_variable, &location_variable, &day_of_week_variable,
+	&weightsystem_variable, &cylinder_type_variable, &location_variable, &trip_variable, &day_of_week_variable,
 	&rating_variable, &visibility_variable
 };
