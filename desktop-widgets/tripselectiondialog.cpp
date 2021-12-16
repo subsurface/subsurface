@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "tripselectiondialog.h"
+#include "core/string-format.h"
 #include "core/trip.h"
-#include "core/qthelper.h"
 #include <QShortcut>
 #include <QPushButton>
 
@@ -19,7 +19,7 @@ TripSelectionDialog::TripSelectionDialog(QWidget *parent) : QDialog(parent)
 	QStringList list;
 	list.reserve(trip_table.nr);
 	for (int i = 0; i < trip_table.nr; ++i)
-		list.push_back(get_trip_string(trip_table.trips[i]));
+		list.push_back(formatTripTitleWithDives(trip_table.trips[i]));
 	ui.trips->addItems(list);
 }
 

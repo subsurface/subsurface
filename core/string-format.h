@@ -6,6 +6,7 @@
 #include <QStringList>
 
 struct dive;
+struct dive_trip;
 
 QString formatSac(const dive *d);
 QString formatNotes(const dive *d);
@@ -26,5 +27,7 @@ QString formatDiveDate(const dive *d);
 QString formatDiveTime(const dive *d);
 QString formatDiveDateTime(const dive *d);
 QString formatDayOfWeek(int day);
+QString formatTripTitle(const dive_trip *trip);
+QString formatTripTitleWithDives(const dive_trip *trip);
 
 #endif

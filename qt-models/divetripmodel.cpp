@@ -3,11 +3,11 @@
 #include "core/divefilter.h"
 #ifdef SUBSURFACE_MOBILE
 #include "qt-models/mobilelistmodel.h"
-#include "core/string-format.h"
 #endif
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/selection.h"
+#include "core/string-format.h"
 #include "core/trip.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
@@ -123,7 +123,7 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 			int countShown = trip_shown_dives(trip);
 			if (countShown < trip->dives.nr)
 				shownText = tr("(%1 shown)").arg(countShown);
-			return get_trip_string(trip) + " " + shownText;
+			return formatTripTitleWithDives(trip) + " " + shownText;
 		}
 	}
 
