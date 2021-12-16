@@ -104,26 +104,19 @@ static const char *negate_description[2] {
 	QT_TRANSLATE_NOOP("gettextFromC", "is not"),
 };
 
-// std::size() is only available starting in C++17, so let's roll our own.
-template <typename T, size_t N>
-static constexpr size_t array_size(const T (&)[N])
-{
-	return N;
-}
-
 static constexpr size_t type_descriptions_count()
 {
-	return array_size(type_descriptions);
+	return std::size(type_descriptions);
 }
 
 static constexpr size_t string_mode_descriptions_count()
 {
-	return array_size(string_mode_descriptions);
+	return std::size(string_mode_descriptions);
 }
 
 static constexpr size_t range_mode_descriptions_count()
 {
-	return array_size(range_mode_descriptions);
+	return std::size(range_mode_descriptions);
 }
 
 static const type_description *get_type_description(enum filter_constraint_type type)
