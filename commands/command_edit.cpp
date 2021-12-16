@@ -1107,10 +1107,10 @@ static bool same_cylinder_pressure(const cylinder_t &cyl1, const cylinder_t &cyl
 }
 
 // Flags for comparing cylinders
-static const constexpr int SAME_TYPE = 1 << 0;
-static const constexpr int SAME_SIZE = 1 << 1;
-static const constexpr int SAME_PRESS = 1 << 2;
-static const constexpr int SAME_GAS = 1 << 3;
+static constexpr int SAME_TYPE = 1 << 0;
+static constexpr int SAME_SIZE = 1 << 1;
+static constexpr int SAME_PRESS = 1 << 2;
+static constexpr int SAME_GAS = 1 << 3;
 
 static bool same_cylinder_with_flags(const cylinder_t &cyl1, const cylinder_t &cyl2, int sameCylinderFlags)
 {

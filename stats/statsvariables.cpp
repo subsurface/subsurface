@@ -14,7 +14,7 @@
 #include <limits>
 #include <QLocale>
 
-static const constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
+static constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
 
 // Typedefs for year / quarter or month binners
 using year_quarter = std::pair<unsigned short, unsigned short>;
