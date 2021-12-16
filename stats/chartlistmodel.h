@@ -20,10 +20,10 @@ public:
 	// Returns index of selected item
 	int update(const StatsState::ChartList &charts);
 
-	static const constexpr int ChartNameRole = Qt::UserRole + 1;
-	static const constexpr int IsHeaderRole = Qt::UserRole + 2;
-	static const constexpr int IconRole = Qt::UserRole + 3;
-	static const constexpr int IconSizeRole = Qt::UserRole + 4;
+	static constexpr int ChartNameRole = Qt::UserRole + 1;
+	static constexpr int IsHeaderRole = Qt::UserRole + 2;
+	static constexpr int IconRole = Qt::UserRole + 3;
+	static constexpr int IconSizeRole = Qt::UserRole + 4;
 
 	Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
 
