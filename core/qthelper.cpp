@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qthelper.h"
 #include "dive.h"
+#include "divelist.h"
 #include "core/settings/qPrefLanguage.h"
 #include "core/settings/qPrefUpdateManager.h"
 #include "core/subsurface-qt/divelistnotifier.h"
@@ -18,7 +19,6 @@
 #include "picture.h"
 #include "selection.h"
 #include "tag.h"
-#include "trip.h"
 #include "imagedownloader.h"
 #include "xmlparams.h"
 #include "core/git-access.h" // for CLOUD_HOST definitions
@@ -1038,25 +1038,6 @@ extern "C" char *get_current_date()
 	current_date = loc.toString(ts, QString(prefs.date_format_short));
 
 	return copy_qstring(current_date);
-}
-
-QString get_trip_string(const dive_trip *trip)
-{
-	if (!trip)
-		return QString();
-
-	int nr = trip->dives.nr;
-	timestamp_t when = trip_date(trip);
-	bool getday = trip_is_single_day(trip);
-
-	QDateTime localTime = timestampToDateTime(when);
-
-	QString prefix = !empty_string(trip->location) ? QString(trip->location) + ", " : QString();
-	QString suffix = " " + gettextFromC::tr("(%n dive(s))", "", nr);
-	if (getday)
-		return prefix + loc.toString(localTime, prefs.date_format) + suffix;
-	else
-		return prefix + loc.toString(localTime, "MMM yyyy") + suffix;
 }
 
 static QMutex hashOfMutex;

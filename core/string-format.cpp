@@ -3,10 +3,13 @@
 #include "divesite.h"
 #include "qthelper.h"
 #include "subsurface-string.h"
+#include "trip.h"
 #include <QDateTime>
+#include <QLocale>
 #include <QTextDocument>
 
 enum returnPressureSelector { START_PRESSURE, END_PRESSURE };
+static QLocale loc;
 
 static QString getPressures(const struct dive *dive, int i, enum returnPressureSelector ret)
 {
@@ -272,4 +275,28 @@ QString formatDayOfWeek(int day)
 	case 5:	return gettextFromC::tr("Friday");
 	case 6:	return gettextFromC::tr("Saturday");
 	}
+}
+
+QString formatTripTitle(const dive_trip *trip)
+{
+	if (!trip)
+		return QString();
+
+	timestamp_t when = trip_date(trip);
+	bool getday = trip_is_single_day(trip);
+
+	QDateTime localTime = timestampToDateTime(when);
+
+	QString prefix = !empty_string(trip->location) ? QString(trip->location) + ", " : QString();
+	if (getday)
+		return prefix + loc.toString(localTime, prefs.date_format);
+	else
+		return prefix + loc.toString(localTime, "MMM yyyy");
+}
+
+QString formatTripTitleWithDives(const dive_trip *trip)
+{
+	int nr = trip->dives.nr;
+	return formatTripTitle(trip) + " " +
+	       gettextFromC::tr("(%n dive(s))", "", nr);
 }
