@@ -12,8 +12,8 @@
 
 struct dive;
 struct InformationBox;
-struct ChartPieItem;
-struct ChartTextItem;
+class ChartPieItem;
+class ChartTextItem;
 class QRectF;
 
 class PieSeries : public StatsSeries {
