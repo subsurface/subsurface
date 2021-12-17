@@ -102,7 +102,7 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 	for (const auto &[name, dives]: data)
 		totalCount += (int)dives.size();
 
-	// First of all, sort from largest to smalles slice. Instead
+	// First of all, sort from largest to smallest slice. Instead
 	// of sorting the initial array, sort a list of indices, so that
 	// the original order can be easily reconstructed later.
 	std::vector<int> sorted(data.size());

@@ -41,7 +41,7 @@ static QString join_strings(const std::vector<QString> &v)
 	return res;
 }
 
-// A wrapper around dive site, that caches the name of the dive site
+// A wrapper around dive site that caches the name of the dive site
 struct DiveSiteWrapper {
 	const dive_site *ds;
 	QString name;
@@ -67,7 +67,7 @@ struct DiveSiteWrapper {
 	}
 };
 
-// A wrapper around dive trips, that caches the name and date of the trip and sorts by trip start date
+// A wrapper around dive trips that caches the name and date of the trip and sorts by trip start date
 struct TripWrapper {
 	const dive_trip *t;
 	QString name;
