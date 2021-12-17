@@ -280,7 +280,7 @@ void TemplateLayout::parser_for(QList<token> tokenList, int from, int to, QTextS
 	const T *old = act;
 	int i = 1; // Loop iterators start at one
 	int olditerator = state.forloopiterator;
-	for (const T &item: data) {
+	for (auto &item: data) {
 		act = &item;
 		state.forloopiterator = i++;
 		parser(tokenList, from, to, out, state);
