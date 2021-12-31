@@ -1,3 +1,4 @@
+Statistics: Implement ordering of categorical bar charts
 Profile: Fix editing of time / duration (profile of edited dive was not shown)
 Divelist: Don't attempt to compute SAC for CCR dives
 ---

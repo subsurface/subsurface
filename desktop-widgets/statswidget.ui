@@ -96,6 +96,18 @@
       </widget>
      </item>
      <item>
+      <widget class="QGroupBox" name="sortGroup">
+       <property name="title">
+        <string>Sorting</string>
+       </property>
+       <layout class="QVBoxLayout" name="chartLayout">
+        <item>
+         <widget class="QComboBox" name="var1Sort" />
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="QGroupBox" name="restrictionGroup">
        <property name="title">
         <string>Restriction</string>

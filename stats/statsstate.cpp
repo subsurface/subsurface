@@ -3,7 +3,7 @@
 #include "statstranslations.h"
 #include "statsvariables.h"
 
-// Attn: The order must correspond to the enum above
+// Attn: The order must correspond to the enum ChartSubType
 static const char *chart_subtype_names[] = {
 	QT_TRANSLATE_NOOP("StatsTranslations", "vertical"),
 	QT_TRANSLATE_NOOP("StatsTranslations", "grouped vertical"),
@@ -14,6 +14,13 @@ static const char *chart_subtype_names[] = {
 	QT_TRANSLATE_NOOP("StatsTranslations", "data points"),
 	QT_TRANSLATE_NOOP("StatsTranslations", "box-whisker"),
 	QT_TRANSLATE_NOOP("StatsTranslations", "piechart"),
+};
+
+// Attn: The order must correspond to the enum ChartSortMode
+static const char *sortmode_names[] = {
+	QT_TRANSLATE_NOOP("StatsTranslations", "Bin"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "Count"),
+	QT_TRANSLATE_NOOP("StatsTranslations", "Value"),
 };
 
 enum class SupportedVariable {
@@ -167,7 +174,8 @@ StatsState::StatsState() :
 	confidence(true),
 	var1Binner(nullptr),
 	var2Binner(nullptr),
-	var2Operation(StatsOperation::Invalid)
+	var2Operation(StatsOperation::Invalid),
+	sortMode1(ChartSortMode::Bin)
 {
 	validate(true);
 }
@@ -377,6 +385,40 @@ static std::vector<StatsState::Feature> createFeaturesList(int chartFeatures, co
 	return res;
 }
 
+// For creating the sort mode list, the ChartSortMode enum is misused to
+// indicate which sort modes are allowed:
+// 	bin -> none (list is redundant: only one mode)
+//	count -> bin, count
+//	value -> bin, count, value
+// In principle, the "highest possible" mode is given. If a mode is possible,
+// all the lower modes are likewise possible.
+static StatsState::VariableList createSortModeList(ChartSortMode allowed, ChartSortMode selectedSortMode)
+{
+	StatsState::VariableList res;
+	res.selected = -1;
+	if ((int)allowed <= (int)ChartSortMode::Bin)
+		return res;
+	for (int i = 0; i <= (int)allowed; ++i) {
+		ChartSortMode mode = static_cast<ChartSortMode>(i);
+		QString name = StatsTranslations::tr(sortmode_names[i]);
+		if (selectedSortMode == mode)
+			res.selected = (int)res.variables.size();
+		res.variables.push_back({ name, i });
+	}
+
+	return res;
+}
+
+static StatsState::VariableList createSortModeList1(ChartType type, ChartSortMode selectedSortMode)
+{
+	ChartSortMode allowed = ChartSortMode::Bin; // Default: no extra sorting
+	if (type == ChartType::DiscreteBar || type == ChartType::DiscreteCount || type == ChartType::Pie)
+		allowed = ChartSortMode::Count;
+	else if (type == ChartType::DiscreteValue)
+		allowed = ChartSortMode::Value;
+	return createSortModeList(allowed, selectedSortMode);
+}
+
 StatsState::UIState StatsState::getUIState() const
 {
 	UIState res;
@@ -390,6 +432,7 @@ StatsState::UIState StatsState::getUIState() const
 	res.binners2 = createBinnerList(var2, var2Binner, var1Binner != nullptr, true);
 	res.operations2 = createOperationsList(var2, var2Operation, var1Binner);
 	res.features = createFeaturesList(chartFeatures, *this);
+	res.sortMode1 = createSortModeList1(type, sortMode1);
 	return res;
 }
 
@@ -458,6 +501,12 @@ void StatsState::var2OperationChanged(int id)
 	if (var2Operation != StatsOperation::Invalid)
 		var2Binner = nullptr;
 
+	validate(false);
+}
+
+void StatsState::sortMode1Changed(int id)
+{
+	sortMode1 = (ChartSortMode)id;
 	validate(false);
 }
 
@@ -604,4 +653,12 @@ void StatsState::validate(bool varChanged)
 	// Median and mean currently only if the first variable is numeric
 	if (!var1 || var1->type() != StatsVariable::Type::Numeric)
 		chartFeatures &= ~(ChartFeatureMedian | ChartFeatureMean);
+
+	// By default, sort according to the used bin. Only for pie charts,
+	// sort by count, if the binning is on a categorical variable.
+	if (varChanged) {
+		sortMode1 = type == ChartType::Pie &&
+			    var1->type() == StatsVariable::Type::Discrete ? ChartSortMode::Count :
+									    ChartSortMode::Bin;
+	}
 }

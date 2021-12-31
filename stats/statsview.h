@@ -36,6 +36,7 @@ class RootNode;	// Internal implementation detail
 enum class ChartSubType : int;
 enum class ChartZValue : int;
 enum class StatsOperation : int;
+enum class ChartSortMode : int;
 
 class StatsView : public QQuickItem {
 	Q_OBJECT
@@ -81,17 +82,17 @@ private:
 	void reset(); // clears all series and axes
 	void setAxes(StatsAxis *x, StatsAxis *y);
 	void plotBarChart(const std::vector<dive *> &dives,
-			  ChartSubType subType,
+			  ChartSubType subType, ChartSortMode sortMode,
 			  const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
 			  const StatsVariable *valueVariable, const StatsBinner *valueBinner);
 	void plotValueChart(const std::vector<dive *> &dives,
-			    ChartSubType subType,
+			    ChartSubType subType, ChartSortMode sortMode,
 			    const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
 			    const StatsVariable *valueVariable, StatsOperation valueAxisOperation);
 	void plotDiscreteCountChart(const std::vector<dive *> &dives,
-				    ChartSubType subType,
+				    ChartSubType subType, ChartSortMode sortMode,
 				    const StatsVariable *categoryVariable, const StatsBinner *categoryBinner);
-	void plotPieChart(const std::vector<dive *> &dives,
+	void plotPieChart(const std::vector<dive *> &dives, ChartSortMode sortMode,
 			  const StatsVariable *categoryVariable, const StatsBinner *categoryBinner);
 	void plotDiscreteBoxChart(const std::vector<dive *> &dives,
 				  const StatsVariable *categoryVariable, const StatsBinner *categoryBinner, const StatsVariable *valueVariable);
