@@ -108,7 +108,7 @@ Kirigami.Page {
 			TemplateSlimComboBox  {
 				id: var1
 				model: statsManager.var1List
-				currentIndex: statsManager.var1Index;
+				currentIndex: statsManager.var1Index
 				onCurrentIndexChanged: {
 					statsManager.var1Changed(currentIndex)
 				}
@@ -125,7 +125,7 @@ Kirigami.Page {
 			TemplateSlimComboBox {
 				id: var1Binner
 				model: statsManager.binner1List
-				currentIndex: statsManager.binner1Index;
+				currentIndex: statsManager.binner1Index
 				onCurrentIndexChanged: {
 					statsManager.var1BinnerChanged(currentIndex)
 				}
@@ -142,7 +142,7 @@ Kirigami.Page {
 			TemplateSlimComboBox {
 				id: var2
 				model: statsManager.var2List
-				currentIndex: statsManager.var2Index;
+				currentIndex: statsManager.var2Index
 				Layout.fillWidth: false
 				onCurrentIndexChanged: {
 					statsManager.var2Changed(currentIndex)
@@ -160,7 +160,7 @@ Kirigami.Page {
 			TemplateSlimComboBox {
 				id: var2Binner
 				model: statsManager.binner2List
-				currentIndex: statsManager.binner2Index;
+				currentIndex: statsManager.binner2Index
 				Layout.fillWidth: false
 				onCurrentIndexChanged: {
 					statsManager.var2BinnerChanged(currentIndex)
@@ -178,10 +178,28 @@ Kirigami.Page {
 			TemplateSlimComboBox {
 				id: var2Operation
 				model: statsManager.operation2List
-				currentIndex: statsManager.operation2Index;
+				currentIndex: statsManager.operation2Index
 				Layout.fillWidth: false
 				onCurrentIndexChanged: {
 					statsManager.var2OperationChanged(currentIndex)
+				}
+			}
+		}
+		ColumnLayout {
+			id: i6
+			Layout.column: wide ? 0 : 0
+			Layout.row: wide ? 6 : 3
+			Layout.leftMargin: Kirigami.Units.smallSpacing
+			TemplateLabelSmall {
+				text: qsTr("SortMode")
+			}
+			TemplateSlimComboBox {
+				id: sortMode1
+				model: statsManager.sortMode1List
+				currentIndex: statsManager.sortMode1Index
+				Layout.fillWidth: false
+				onCurrentIndexChanged: {
+					statsManager.sortMode1Changed(currentIndex)
 				}
 			}
 		}
@@ -216,7 +234,7 @@ Kirigami.Page {
 		}
 		StatsView {
 			Layout.column: wide ? 1 : 0
-			Layout.row: wide ? 0 : 3
+			Layout.row: wide ? 0 : 4
 			Layout.columnSpan: wide ? 1 : 3
 			Layout.rowSpan: wide ? 7 : 1
 			id: statsView
