@@ -24,6 +24,7 @@ slots:
 	void var1BinnerChanged(int);
 	void var2BinnerChanged(int);
 	void var2OperationChanged(int);
+	void var1SortChanged(int);
 	void featureChanged(int, bool);
 	void restrict();
 	void unrestrict();

@@ -36,6 +36,12 @@ enum class ChartSubType {
 	Count
 };
 
+enum class ChartSortMode {
+	Bin = 0,	// Sort according to the binner (i.e. don't change sorting)
+	Count,		// Sort by number of dives in the bin
+	Value		// Sort by the displayed value of the bin
+};
+
 struct ChartTypeDesc; // Internal implementation detail
 struct StatsVariable;
 struct StatsBinner;
@@ -84,6 +90,9 @@ public:
 		std::vector<Feature> features;
 		BinnerList binners1;
 		BinnerList binners2;
+		// Currently, only alternative sorting on the first variable.
+		// Sort mode reuses the variable list - not very nice.
+		VariableList sortMode1;
 		// Currently, operations are only supported on the second variable
 		// This reuses the variable list - not very nice.
 		VariableList operations2;
@@ -97,6 +106,7 @@ public:
 	void binner1Changed(int id);
 	void binner2Changed(int id);
 	void var2OperationChanged(int id);
+	void sortMode1Changed(int id);
 	void featureChanged(int id, bool state);
 
 	const StatsVariable *var1;	// Independent variable
@@ -113,6 +123,7 @@ public:
 	const StatsBinner *var1Binner;	// nullptr: undefined
 	const StatsBinner *var2Binner;	// nullptr: undefined
 	StatsOperation var2Operation;
+	ChartSortMode sortMode1;
 private:
 	void validate(bool varChanged);
 	int chartFeatures;

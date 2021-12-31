@@ -553,15 +553,15 @@ void StatsView::plotChart()
 	}
 	switch (state.type) {
 	case ChartType::DiscreteBar:
-		return plotBarChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
-				    state.var2Binner);
+		return plotBarChart(dives, state.subtype, state.sortMode1, state.var1, state.var1Binner,
+				    state.var2, state.var2Binner);
 	case ChartType::DiscreteValue:
-		return plotValueChart(dives, state.subtype, state.var1, state.var1Binner, state.var2,
-				      state.var2Operation);
+		return plotValueChart(dives, state.subtype, state.sortMode1,
+				      state.var1, state.var1Binner, state.var2, state.var2Operation);
 	case ChartType::DiscreteCount:
-		return plotDiscreteCountChart(dives, state.subtype, state.var1, state.var1Binner);
+		return plotDiscreteCountChart(dives, state.subtype, state.sortMode1, state.var1, state.var1Binner);
 	case ChartType::Pie:
-		return plotPieChart(dives, state.var1, state.var1Binner);
+		return plotPieChart(dives, state.sortMode1, state.var1, state.var1Binner);
 	case ChartType::DiscreteBox:
 		return plotDiscreteBoxChart(dives, state.var1, state.var1Binner, state.var2);
 	case ChartType::DiscreteScatter:
@@ -709,7 +709,7 @@ static std::vector<BarSeries::MultiItem::Item> makeMultiItems(std::vector<std::v
 }
 
 void StatsView::plotBarChart(const std::vector<dive *> &dives,
-			     ChartSubType subType,
+			     ChartSubType subType, ChartSortMode sortMode,
 			     const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
 			     const StatsVariable *valueVariable, const StatsBinner *valueBinner)
 {
@@ -719,6 +719,13 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 	setTitle(valueVariable->nameWithBinnerUnit(*valueBinner));
 
 	std::vector<StatsBinDives> categoryBins = categoryBinner->bin_dives(dives, false);
+
+	if (sortMode == ChartSortMode::Count) {
+		// Note: we sort by count in reverse order, as this is probably what the user desires(?).
+		std::sort(categoryBins.begin(), categoryBins.end(),
+			  [](const StatsBinDives &b1, const StatsBinDives &b2)
+			  { return b1.value.size() > b2.value.size(); });
+	}
 
 	bool isStacked = subType == ChartSubType::VerticalStacked || subType == ChartSubType::HorizontalStacked;
 	bool isHorizontal = subType == ChartSubType::HorizontalGrouped || subType == ChartSubType::HorizontalStacked;
@@ -820,7 +827,7 @@ static std::pair<double, double> getMinMaxValue(const std::vector<StatsBinOp> &b
 }
 
 void StatsView::plotValueChart(const std::vector<dive *> &dives,
-			       ChartSubType subType,
+			       ChartSubType subType, ChartSortMode sortMode,
 			       const StatsVariable *categoryVariable, const StatsBinner *categoryBinner,
 			       const StatsVariable *valueVariable, StatsOperation valueAxisOperation)
 {
@@ -835,6 +842,16 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 	if (categoryBins.empty())
 		return;
 
+	if (sortMode == ChartSortMode::Count) {
+		// Note: we sort by count in reverse order, as this is probably what the user desires(?).
+		std::sort(categoryBins.begin(), categoryBins.end(),
+			  [](const StatsBinOp &b1, const StatsBinOp &b2)
+			  { return b1.value.dives.size() > b2.value.dives.size(); });
+	} else if (sortMode == ChartSortMode::Value) {
+		std::sort(categoryBins.begin(), categoryBins.end(),
+			  [valueAxisOperation](const StatsBinOp &b1, const StatsBinOp &b2)
+			  { return b1.value.get(valueAxisOperation) < b2.value.get(valueAxisOperation); });
+	}
 
 	bool isHorizontal = subType == ChartSubType::Horizontal;
 	const auto [minValue, maxValue] = getMinMaxValue(categoryBins, valueAxisOperation);
@@ -885,7 +902,7 @@ static int getMaxCount(const std::vector<T> &bins)
 }
 
 void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
-				      ChartSubType subType,
+				      ChartSubType subType, ChartSortMode sortMode,
 				      const StatsVariable *categoryVariable, const StatsBinner *categoryBinner)
 {
 	if (!categoryBinner)
@@ -898,6 +915,13 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 	// If there is nothing to display, quit
 	if (categoryBins.empty())
 		return;
+
+	if (sortMode == ChartSortMode::Count) {
+		// Note: we sort by count in reverse order, as this is probably what the user desires(?).
+		std::sort(categoryBins.begin(), categoryBins.end(),
+			  [](const StatsBinDives &b1, const StatsBinDives &b2)
+			  { return b1.value.size() > b2.value.size(); });
+	}
 
 	int total = getTotalCount(categoryBins);
 	bool isHorizontal = subType != ChartSubType::Vertical;
@@ -926,7 +950,7 @@ void StatsView::plotDiscreteCountChart(const std::vector<dive *> &dives,
 	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), std::move(items));
 }
 
-void StatsView::plotPieChart(const std::vector<dive *> &dives,
+void StatsView::plotPieChart(const std::vector<dive *> &dives, ChartSortMode sortMode,
 			     const StatsVariable *categoryVariable, const StatsBinner *categoryBinner)
 {
 	if (!categoryBinner)
@@ -945,8 +969,7 @@ void StatsView::plotPieChart(const std::vector<dive *> &dives,
 	for (auto &[bin, dives]: categoryBins)
 		data.emplace_back(categoryBinner->formatWithUnit(*bin), std::move(dives));
 
-	bool keepOrder = categoryVariable->type() != StatsVariable::Type::Discrete;
-	PieSeries *series = createSeries<PieSeries>(categoryVariable->name(), std::move(data), keepOrder);
+	PieSeries *series = createSeries<PieSeries>(categoryVariable->name(), std::move(data), sortMode);
 
 	legend = createChartItem<Legend>(series->binNames());
 }

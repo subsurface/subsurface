@@ -84,6 +84,7 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 	connect(ui.var1Binner, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var1BinnerChanged);
 	connect(ui.var2Binner, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2BinnerChanged);
 	connect(ui.var2Operation, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var2OperationChanged);
+	connect(ui.var1Sort, QOverload<int>::of(&QComboBox::activated), this, &StatsWidget::var1SortChanged);
 	connect(ui.restrictButton, &QToolButton::clicked, this, &StatsWidget::restrict);
 	connect(ui.unrestrictButton, &QToolButton::clicked, this, &StatsWidget::unrestrict);
 
@@ -129,6 +130,8 @@ void StatsWidget::updateUi()
 	setBinList(ui.var1Binner, uiState.binners1);
 	setBinList(ui.var2Binner, uiState.binners2);
 	setVariableList(ui.var2Operation, uiState.operations2);
+	setVariableList(ui.var1Sort, uiState.sortMode1);
+	ui.sortGroup->setVisible(!uiState.sortMode1.variables.empty());
 
 	// Add checkboxes for additional features
 	features.clear();
@@ -195,6 +198,12 @@ void StatsWidget::var2BinnerChanged(int idx)
 void StatsWidget::var2OperationChanged(int idx)
 {
 	state.var2OperationChanged(ui.var2Operation->itemData(idx).toInt());
+	updateUi();
+}
+
+void StatsWidget::var1SortChanged(int idx)
+{
+	state.sortMode1Changed(ui.var1Sort->itemData(idx).toInt());
 	updateUi();
 }
 

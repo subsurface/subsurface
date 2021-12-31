@@ -15,6 +15,7 @@ struct InformationBox;
 class ChartPieItem;
 class ChartTextItem;
 class QRectF;
+enum class ChartSortMode : int;
 
 class PieSeries : public StatsSeries {
 public:
@@ -22,7 +23,7 @@ public:
 	// If keepOrder is false, bins will be sorted by size, otherwise the sorting
 	// of the shown bins will be retained. Small bins are omitted for clarity.
 	PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
-		  std::vector<std::pair<QString, std::vector<dive *>>> data, bool keepOrder);
+		  std::vector<std::pair<QString, std::vector<dive *>>> data, ChartSortMode sortMode);
 	~PieSeries();
 
 	void updatePositions() override;

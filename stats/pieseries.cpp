@@ -82,7 +82,7 @@ void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, 
 }
 
 PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
-		     std::vector<std::pair<QString, std::vector<dive *>>> data, bool keepOrder) :
+		     std::vector<std::pair<QString, std::vector<dive *>>> data, ChartSortMode sortMode) :
 	StatsSeries(view, xAxis, yAxis),
 	item(view.createChartItem<ChartPieItem>(ChartZValue::Series, pieBorderWidth)),
 	categoryName(categoryName),
@@ -134,7 +134,7 @@ PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const 
 		++it;
 
 	// Sort the main groups and the other groups back, if requested
-	if (keepOrder) {
+	if (sortMode == ChartSortMode::Bin) {
 		std::sort(sorted.begin(), it);
 		std::sort(it, sorted.end());
 	}
