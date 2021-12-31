@@ -50,16 +50,19 @@ void StatsManager::updateUi()
 	setVariableList(uiState.var2, var2List, var2Index);
 	setBinnerList(uiState.binners2, binner2List, binner2Index);
 	setVariableList(uiState.operations2, operation2List, operation2Index);
+	setVariableList(uiState.sortMode1, sortMode1List, sortMode1Index);
 	var1ListChanged();
 	binner1ListChanged();
 	var2ListChanged();
 	binner2ListChanged();
 	operation2ListChanged();
+	sortMode1ListChanged();
 	var1IndexChanged();
 	binner1IndexChanged();
 	var2IndexChanged();
 	binner2IndexChanged();
 	operation2IndexChanged();
+	sortMode1IndexChanged();
 
 	if (charts)
 		charts->update(uiState.charts);
@@ -103,6 +106,15 @@ void StatsManager::var2OperationChanged(int idx)
 		return;
 	idx = std::clamp(idx, 0, (int)uiState.operations2.variables.size());
 	state.var2OperationChanged(uiState.operations2.variables[idx].id);
+	updateUi();
+}
+
+void StatsManager::sortMode1Changed(int idx)
+{
+	if (uiState.sortMode1.variables.empty())
+		return;
+	idx = std::clamp(idx, 0, (int)uiState.sortMode1.variables.size());
+	state.sortMode1Changed(uiState.sortMode1.variables[idx].id);
 	updateUi();
 }
 
