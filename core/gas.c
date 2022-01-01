@@ -98,8 +98,10 @@ fraction_t get_gas_component_fraction(struct gasmix mix, enum gas_component comp
 
 // O2 pressure in mbar according to the steady state model for the PSCR
 // NB: Ambient pressure comes in bar!
-int pscr_o2(const double amb_pressure, struct gasmix mix) {
-	int o2 = get_o2(mix) * amb_pressure - (int)((1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (prefs.bottomsac * prefs.pscr_ratio) * 1000000);
+int pscr_o2(const double amb_pressure, struct gasmix mix)
+{
+	int o2 = (int)(get_o2(mix) * amb_pressure -
+		       (1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (prefs.bottomsac * prefs.pscr_ratio) * 1000000);
 	if (o2 < 0.0) // He's dead, Jim.
 		o2 = 0.0;
 	return o2;
