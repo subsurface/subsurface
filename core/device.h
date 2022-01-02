@@ -67,7 +67,6 @@ extern char *fp_get_data(struct fingerprint_table *table, unsigned int i);
 #include <string>
 #include <vector>
 struct device {
-	bool operator==(const device &a) const; // TODO: remove, once devices are integrated in the undo system
 	bool operator<(const device &a) const;
 	void showchanges(const std::string &n) const;
 	std::string model;
