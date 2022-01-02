@@ -14,19 +14,19 @@ struct fingerprint_table fingerprint_table;
 
 static bool same_device(const device &dev1, const device &dev2)
 {
-	return strcmp(dev1.model.c_str(), dev2.model.c_str()) == 0 &&
-		strcmp(dev1.serialNumber.c_str(), dev2.serialNumber.c_str()) == 0;
+	return dev1.model == dev2.model &&
+		dev1.serialNumber == dev2.serialNumber;
 }
 
 bool device::operator<(const device &a) const
 {
 	int diff;
 
-	diff = strcmp(model.c_str(), a.model.c_str());
+	diff = model.compare(a.model);
 	if (diff)
 		return diff < 0;
 
-	return strcmp(serialNumber.c_str(), a.serialNumber.c_str()) < 0;
+	return serialNumber < a.serialNumber;
 }
 
 extern "C" const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
