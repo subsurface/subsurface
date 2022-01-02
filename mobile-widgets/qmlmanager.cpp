@@ -1126,7 +1126,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		// not sure what we'd do if there was more than one weight system
 		// defined - for now just ignore that case
 		if (d->weightsystems.nr == 0) {
-			weightsystem_t ws = { { parseWeightToGrams(weight) } , strdup(qPrintable(tr("weight"))) };
+			weightsystem_t ws = { { parseWeightToGrams(weight) } , strdup(qPrintable(tr("weight"))), false };
 			add_to_weightsystem_table(&d->weightsystems, 0, ws); // takes ownership of the string
 		} else if (d->weightsystems.nr == 1) {
 			d->weightsystems.weightsystems[0].weight.grams = parseWeightToGrams(weight);
