@@ -303,7 +303,7 @@ void WSInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelI
 		grams = wsim->data(wsim->index(row, WSInfoModel::GR)).toInt();
 	}
 
-	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ { grams }, copy_qstring(weightName) });
+	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ { grams }, copy_qstring(weightName), false });
 }
 
 WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(WSInfoModel::instance(), parent, true)

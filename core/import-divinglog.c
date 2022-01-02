@@ -305,7 +305,7 @@ static int divinglog_dive(void *param, int columns, char **data, char **column)
 		state->cur_dive->watertemp.mkelvin = C_to_mkelvin(atol(data[9]));
 
 	if (data[10]) {
-		weightsystem_t ws = { { atol(data[10]) * 1000 }, translate("gettextFromC", "unknown") };
+		weightsystem_t ws = { { atol(data[10]) * 1000 }, translate("gettextFromC", "unknown"), false };
 		add_cloned_weightsystem(&state->cur_dive->weightsystems, ws);
 	}
 
