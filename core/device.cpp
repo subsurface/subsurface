@@ -12,12 +12,6 @@
 struct device_table device_table;
 struct fingerprint_table fingerprint_table;
 
-bool device::operator==(const device &a) const
-{
-	return model == a.model &&
-	       serialNumber == a.serialNumber;
-}
-
 static bool same_device(const device &dev1, const device &dev2)
 {
 	return strcmp(dev1.model.c_str(), dev2.model.c_str()) == 0 &&
