@@ -522,7 +522,7 @@ int parse_txt_file(const char *filename, const char *csv, struct dive_table *tab
 		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1, prev_ndl = -1;
 		bool has_depth = false, has_setpoint = false, has_ndl = false;
 		char *lineptr, *key, *value;
-		unsigned int prev_time = 0;
+		int prev_time = 0;
 		cylinder_t cyl = empty_cylinder;
 
 		struct dive *dive;
