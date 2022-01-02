@@ -200,7 +200,7 @@ static inline double m_to_mile(int m)
 	return m / 1609.344;
 }
 
-static inline unsigned long feet_to_mm(double feet)
+static inline long feet_to_mm(double feet)
 {
 	return lrint(feet * 304.8);
 }
