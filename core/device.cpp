@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "ssrf.h"
+#include "device.h"
 #include "dive.h"
 #include "divelist.h"
 #include "subsurface-string.h"
-#include "device.h"
 #include "errorhelper.h" // for verbose flag
 #include "selection.h"
 #include "core/settings/qPrefDiveComputer.h"
-#include <QString> // for QString::number
 
 struct device_table device_table;
 struct fingerprint_table fingerprint_table;
