@@ -14,7 +14,7 @@
 #include <QWebElementCollection>
 #include <QWebElement>
 
-Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner) :
+Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner, QWidget *parent = nullptr) :
 	paintDevice(paintDevice),
 	webView(new QWebView),
 	printOptions(printOptions),
@@ -219,8 +219,6 @@ void Printer::previewOnePage()
 		pageSize.setHeight(paintDevice->height());
 		pageSize.setWidth(paintDevice->width());
 		webView->page()->setViewportSize(pageSize);
-		// initialize the border settings
-		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
 		if (printOptions.type == print_options::DIVELIST)
 			webView->setHtml(t.generate(inPlanner));
 		else if (printOptions.type == print_options::STATISTICS )

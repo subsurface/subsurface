@@ -4,6 +4,9 @@
 
 #include <QDialog>
 #include "printoptions.h"
+#ifdef USE_WEBENGINE
+#include "printerwebengine.h"
+#endif
 
 namespace Ui {
 class TemplateEdit;
@@ -14,7 +17,7 @@ class TemplateEdit : public QDialog
 	Q_OBJECT
 
 public:
-	explicit TemplateEdit(QWidget *parent, const print_options &printOptions, template_options &templateOptions);
+	explicit TemplateEdit(QWidget *parent, print_options &printOptions, template_options &templateOptions);
 	~TemplateEdit();
 private slots:
 	void on_fontsize_valueChanged(int font_size);
@@ -29,13 +32,15 @@ private:
 	Ui::TemplateEdit *ui;
 	QButtonGroup *btnGroup;
 	bool editingCustomColors;
-	const print_options &printOptions;
+	print_options &printOptions;
 	template_options &templateOptions;
 	struct template_options newTemplateOptions;
 	QString grantlee_template;
 	void saveSettings();
 	void updatePreview();
-
+#ifdef USE_WEBENGINE
+	Printer *preview;
+#endif
 };
 
 #endif // TEMPLATEEDIT_H

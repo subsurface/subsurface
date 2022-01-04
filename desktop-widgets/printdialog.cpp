@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printdialog.h"
+#ifdef USE_WEBENGINE
+#include "printerwebengine.h"
+#else
 #include "printer.h"
+#endif
 #include "core/pref.h"
 #include "core/dive.h" // for existing_filename
 
@@ -14,6 +18,9 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QDialogButtonBox>
+#ifdef USE_WEBENGINE
+#include <QWebEngineView>
+#endif
 
 #define SETTINGS_GROUP "PrintDialog"
 
@@ -110,8 +117,11 @@ PrintDialog::PrintDialog(bool inPlanner, QWidget *parent) :
 	QPushButton *printButton = new QPushButton(tr("P&rint"));
 	connect(printButton, SIGNAL(clicked(bool)), this, SLOT(printClicked()));
 
+	// To do: Port preview to WebEngine. For the time being: Use OS print preview
+#ifndef USE_WEBENGINE
 	QPushButton *previewButton = new QPushButton(tr("&Preview"));
 	connect(previewButton, SIGNAL(clicked(bool)), this, SLOT(previewClicked()));
+#endif
 
 	QPushButton *exportHtmlButton = new QPushButton(tr("Export Html"));
 	connect(exportHtmlButton, SIGNAL(clicked(bool)), this, SLOT(exportHtmlClicked()));
@@ -119,7 +129,9 @@ PrintDialog::PrintDialog(bool inPlanner, QWidget *parent) :
 	QDialogButtonBox *buttonBox = new QDialogButtonBox;
 	buttonBox->addButton(QDialogButtonBox::Cancel);
 	buttonBox->addButton(printButton, QDialogButtonBox::AcceptRole);
+#ifndef USE_WEBENGINE
 	buttonBox->addButton(previewButton, QDialogButtonBox::ActionRole);
+#endif
 	buttonBox->addButton(exportHtmlButton, QDialogButtonBox::AcceptRole);
 
 	connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
@@ -178,7 +190,7 @@ void PrintDialog::createPrinterObj()
 		qprinter = new QPrinter;
 		qprinter->setResolution(printOptions.resolution);
 		qprinter->setOrientation((QPrinter::Orientation)printOptions.landscape);
-		printer = new Printer(qprinter, printOptions, templateOptions, Printer::PRINT, inPlanner);
+		printer = new Printer(qprinter, printOptions, templateOptions, Printer::PRINT, inPlanner, nullptr);
 	}
 }
 
@@ -215,12 +227,25 @@ void PrintDialog::printClicked(void)
 {
 	createPrinterObj();
 	QPrintDialog printDialog(qprinter, this);
+#ifdef USE_WEBENGINE
+	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+	connect(printer, &Printer::jobDone, this, &PrintDialog::printingDone);
+	printer->print();
+#else
 	if (printDialog.exec() == QDialog::Accepted) {
 		connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
 		printer->print();
 		close();
 	}
+#endif
 }
+
+#ifdef USE_WEBENGINE
+void PrintDialog::printingDone()
+{
+	close();
+}
+#endif
 
 void PrintDialog::onPaintRequested(QPrinter*)
 {
