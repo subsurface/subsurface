@@ -3,8 +3,6 @@
 #define THEMEINTERFACE_H
 #include <QObject>
 #include <QColor>
-#include <QSettings>
-#include <QQmlContext>
 
 class ThemeInterface : public QObject {
 	Q_OBJECT
