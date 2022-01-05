@@ -5,8 +5,8 @@
  *******************************************************/
 buildscript {
     repositories {
+        mavenCentral()
         jcenter()
-        maven { url "https://dl.bintray.com/android/android-tools/" }
 	google()
     }
 
@@ -17,8 +17,8 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         jcenter()
-        maven { url "https://dl.bintray.com/android/android-tools/" }
         maven { url 'https://jitpack.io' }
 	google()
     }
