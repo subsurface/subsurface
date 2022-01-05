@@ -4,7 +4,6 @@
 #include "qmlmanager.h"
 #include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"
-#include <QFontInfo>
 
 static const QColor BLUE_BACKGROUND_COLOR = "#eff0f1";
 static const QColor BLUE_CONTRAST_ACCENT_COLOR = "#FF5722";
