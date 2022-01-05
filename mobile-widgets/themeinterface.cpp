@@ -50,12 +50,14 @@ ThemeInterface *ThemeInterface::instance()
 	return self;
 }
 
-ThemeInterface::ThemeInterface()
+ThemeInterface::ThemeInterface() :
+	m_basePointSize(-1.0), // simply a placeholder to declare 'this isn't set, yet'
+	m_currentTheme(qPrefDisplay::theme()),
+	m_needSignals(true) // make sure the signals fire the first time
+
 {
 	// get current theme
-	m_currentTheme = qPrefDisplay::theme();
 	update_theme();
-	m_basePointSize = -1.0; // simply a placeholder to declare 'this isn't set, yet'
 }
 
 void ThemeInterface::set_currentTheme(const QString &theme)
@@ -79,14 +81,12 @@ double ThemeInterface::currentScale()
 
 void ThemeInterface::set_currentScale(double newScale)
 {
-	static bool needSignals = true; // make sure the signals fire the first time
-
 	if (!IS_FP_SAME(newScale, qPrefDisplay::mobile_scale())) {
 		qPrefDisplay::set_mobile_scale(newScale);
 		emit currentScaleChanged();
-		needSignals = true;
+		m_needSignals = true;
 	}
-	if (needSignals) {
+	if (m_needSignals) {
 		// adjust all used font sizes
 		m_regularPointSize = m_basePointSize * newScale;
 		defaultModelFont().setPointSizeF(m_regularPointSize);
@@ -101,7 +101,7 @@ void ThemeInterface::set_currentScale(double newScale)
 		m_titlePointSize = m_regularPointSize * 1.5;
 		emit titlePointSizeChanged();
 
-		needSignals = false;
+		m_needSignals = false;
 	}
 }
 

@@ -87,5 +87,7 @@ private:
 	double m_titlePointSize;
 
 	QString m_currentTheme;
+
+	bool m_needSignals;
 };
 #endif
