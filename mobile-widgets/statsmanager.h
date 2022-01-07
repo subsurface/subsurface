@@ -49,6 +49,8 @@ signals:
 	void binner2IndexChanged();
 	void operation2IndexChanged();
 	void sortMode1IndexChanged();
+private slots:
+	void themeChanged();
 private:
 	StatsView *view;
 	ChartListModel *charts;
@@ -66,8 +68,8 @@ private:
 	int operation2Index;
 	int sortMode1Index;
 	StatsState::UIState uiState;	// Remember UI state so that we can interpret indexes
+	bool themeInitialized;		// setTheme() crashes if called in init()
 	void updateUi();
-
 };
 
 #endif
