@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsmanager.h"
+#include "themeinterface.h"
 #include "stats/chartlistmodel.h"
 
-StatsManager::StatsManager() : view(nullptr), charts(nullptr)
+StatsManager::StatsManager() : view(nullptr), charts(nullptr), themeInitialized(false)
 {
 	updateUi();
 }
@@ -19,6 +20,9 @@ void StatsManager::init(StatsView *v, ChartListModel *m)
 		fprintf(stderr, "StatsManager::init(): no ChartListModel - statistics will not work.\n");
 	view = v;
 	charts = m;
+
+	connect(ThemeInterface::instance(), &ThemeInterface::currentThemeChanged,
+		this, &StatsManager::themeChanged);
 }
 
 void StatsManager::doit()
@@ -64,6 +68,8 @@ void StatsManager::updateUi()
 	operation2IndexChanged();
 	sortMode1IndexChanged();
 
+	if (view && !std::exchange(themeInitialized, true))
+		themeChanged();
 	if (charts)
 		charts->update(uiState.charts);
 	if (view)
@@ -122,4 +128,15 @@ void StatsManager::setChart(int idx)
 {
 	state.chartChanged(idx);
 	updateUi();
+}
+
+void StatsManager::themeChanged()
+{
+	if (!view)
+		return;
+
+	// We could just make currentTheme accessible instead of
+	// using Qt's inane propertySystem. Whatever.
+	QString theme = ThemeInterface::instance()->property("currentTheme").toString();
+	view->setTheme(theme == "Dark");
 }
