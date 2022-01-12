@@ -484,6 +484,7 @@ void CylindersModel::add()
 	cylinder_t cyl = create_new_cylinder(d);
 	beginInsertRows(QModelIndex(), row, row);
 	add_cylinder(&d->cylinders, row, cyl);
+	++numRows;
 	endInsertRows();
 	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
 }
@@ -539,6 +540,7 @@ void CylindersModel::remove(QModelIndex index)
 
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
 	remove_cylinder(d, index.row());
+	--numRows;
 	endRemoveRows();
 
 	std::vector<int> mapping = get_cylinder_map_for_remove(d->cylinders.nr + 1, index.row());
