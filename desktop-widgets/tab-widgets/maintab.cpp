@@ -303,14 +303,27 @@ static bool isHtml(const QString &s)
 	return s.contains("<div", Qt::CaseInsensitive) || s.contains("<table", Qt::CaseInsensitive);
 }
 
+static QString htmlOrPlaintext(const QTextEdit &edit)
+{
+	QString html = edit.toHtml();
+	return isHtml(html) ? html : edit.toPlainText();
+}
+
 void MainTab::updateNotes(const struct dive *d)
 {
+	// Don't set notes field if the content is unchanged. That causes the
+	// cursor position to be reset, e.g. if the user switches between windows.
+	// It might be better to prevent this situation from the start. I.e.
+	// don't generate the dive-changed signal while editing the dive.
 	QString tmp(d->notes);
-	if (isHtml(tmp)) {
+	QString old = htmlOrPlaintext(*ui.notes);
+	if (old == tmp)
+		return;
+
+	if (isHtml(tmp))
 		ui.notes->setHtml(tmp);
-	} else {
+	else
 		ui.notes->setPlainText(tmp);
-	}
 }
 
 void MainTab::updateDateTime(const struct dive *d)
@@ -651,8 +664,7 @@ void MainTab::on_notes_editingFinished()
 	if (!currentTrip && !current_dive)
 		return;
 
-	QString html = ui.notes->toHtml();
-	QString notes = isHtml(html) ? html : ui.notes->toPlainText();
+	QString notes = htmlOrPlaintext(*ui.notes);
 
 	if (currentTrip)
 		Command::editTripNotes(currentTrip, notes);
