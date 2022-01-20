@@ -600,7 +600,7 @@ void ProfileScene::draw(QPainter *painter, const QRect &pos,
 {
 	QSize size = pos.size();
 	resize(QSizeF(size));
-	plotDive(d, dc, plannerModel, inPlanner, true, true);
+	plotDive(d, dc, plannerModel, inPlanner, true, false, true);
 
 	QImage image(pos.size(), QImage::Format_ARGB32);
 	image.fill(getColor(::BACKGROUND, isGrayscale));
