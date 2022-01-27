@@ -2,6 +2,16 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 5.0.6
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- statistics: implement ordering of categorical bar charts
+- divelist: Don't attempt to compute SAC for CCR dives
+- profile: fix editing of time / duration (profile of edited dive was not shown)
+- profile: rewrite of part of the implementation which resulted in performance improvements
+- small dive computer fixes:
+   - Uwatec/Scubapro dive computers: restore the original standard gravity factor
+   - Garmin: fix gas change event parsing
+
 New in _Subsurface_ 5.0.5
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - store dive computer 'fingerprints' with the dive log data, including in the cloud
