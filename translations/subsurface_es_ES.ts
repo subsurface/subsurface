@@ -8778,7 +8778,7 @@ Archivos con fecha/hora incorrectas</translation>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="194"/>
         <source>SortMode</source>
-        <translation type="unfinished"/>
+        <translation>SortMode</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="224"/>
@@ -8901,7 +8901,7 @@ Archivos con fecha/hora incorrectas</translation>
     <message>
         <location filename="../stats/statsstate.cpp" line="21"/>
         <source>Bin</source>
-        <translation type="unfinished"/>
+        <translation>Bin</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="23"/>
@@ -8980,7 +8980,7 @@ Archivos con fecha/hora incorrectas</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="99"/>
         <source>no trip</source>
-        <translation type="unfinished"/>
+        <translation>Sin viaje</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="357"/>
@@ -9232,7 +9232,7 @@ Archivos con fecha/hora incorrectas</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1868"/>
         <source>Dive trip</source>
-        <translation type="unfinished"/>
+        <translation>Viaje de buceo</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1892"/>
@@ -9296,7 +9296,7 @@ Archivos con fecha/hora incorrectas</translation>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Sorting</source>
-        <translation type="unfinished"/>
+        <translation>Orden</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="113"/>
@@ -11526,7 +11526,7 @@ Media</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="1020"/>
         <source>read %dkb</source>
-        <translation type="unfinished"/>
+        <translation>lee %dkb</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1040"/>

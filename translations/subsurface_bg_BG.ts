@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2022</source>
-        <translation type="unfinished"/>
+        <translation>Версия: %1
+
+© Subsurface екипа
+2011-2022</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="65"/>
@@ -39,12 +42,12 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="17"/>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="43"/>
         <source>Save filter set</source>
-        <translation type="unfinished"/>
+        <translation>Запиши филтър комплект</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Внимание: филтър комплектът ще бъде презаписан</translation>
     </message>
 </context>
 <context>
@@ -348,7 +351,7 @@
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="123"/>
         <source>Trying different cloud server...</source>
-        <translation type="unfinished"/>
+        <translation>Опитай друг облаков сървър...</translation>
     </message>
 </context>
 <context>
@@ -625,7 +628,7 @@
     <message>
         <location filename="../commands/command_device.cpp" line="15"/>
         <source>Set nickname of device %1 (serial %2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>Задай прякор на устройство %1 (serial %2) като %3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="403"/>
@@ -993,17 +996,17 @@
     <message>
         <location filename="../commands/command_filter.cpp" line="28"/>
         <source>Create filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Създай филтър пресет %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="49"/>
         <source>Delete filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Изтрий филтър пресет %1</translation>
     </message>
     <message>
         <location filename="../commands/command_filter.cpp" line="71"/>
         <source>Edit filter preset %1</source>
-        <translation type="unfinished"/>
+        <translation>Редактирай филтър пресет %1</translation>
     </message>
     <message>
         <location filename="../commands/command_pictures.cpp" line="20"/>
@@ -2413,12 +2416,12 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="386"/>
         <source>Dive number: </source>
-        <translation type="unfinished"/>
+        <translation>Номер на гмуркане:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="388"/>
         <source>Date / time: </source>
-        <translation type="unfinished"/>
+        <translation>Дата / време:</translation>
     </message>
 </context>
 <context>
@@ -2486,7 +2489,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="143"/>
         <source>Dive Number</source>
-        <translation type="unfinished"/>
+        <translation>Номер на гмуркане</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="150"/>
@@ -2577,7 +2580,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="150"/>
         <source>Date/Time:</source>
-        <translation type="unfinished"/>
+        <translation>Дата/време:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="162"/>
@@ -2860,7 +2863,8 @@
         <location filename="../mobile-widgets/qml/DiveList.qml" line="29"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Ръчна синхронизация с облака приключена
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="176"/>
@@ -2993,7 +2997,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="788"/>
         <source>Remove dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Изтрий гмуркане (гмуркания) от пътуване</numerusform><numerusform>Изтрий гмуркане (гмуркания) от пътуване</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="790"/>
@@ -3003,12 +3007,12 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="805"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Добави гмуркане (гмуркания) в пътуване непосредствено по-горе</numerusform><numerusform>Добави гмуркане (гмуркания) в пътуване непосредствено по-горе</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="807"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Добави гмуркане (гмуркания) в пътуване непосредствено по-долу</numerusform><numerusform>Добави гмуркане (гмуркания) в пътуване непосредствено по-долу</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="811"/>
@@ -3023,17 +3027,17 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="816"/>
         <source>Delete dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Изтрий гмуркане (гмуркания)</numerusform><numerusform>Изтрий гмуркане (гмуркания)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Маркирай гмуркане (гмуркания) като валидно</numerusform><numerusform>Маркирай гмуркане (гмуркания) като валидно</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="820"/>
         <source>Mark dive(s) invalid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Маркирай гмуркание (гмуркания) като невалидни</numerusform><numerusform>Маркирай гмуркание (гмуркания) като невалидни</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="823"/>
@@ -3043,12 +3047,12 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Добави гмуркане (гмуркания) към произволно пътуване</numerusform><numerusform>Добави гмуркане (гмуркания) към произволно пътуване</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="826"/>
         <source>Renumber dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Преномерирай гмуркане (гмуркания)</numerusform><numerusform>Преномерирай гмуркане (гмуркания)</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="827"/>
@@ -5131,7 +5135,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
         <source>Click to remove this constraint</source>
-        <translation type="unfinished"/>
+        <translation>Щракнете за да премахнете ограничението</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
@@ -5149,7 +5153,7 @@ Existing Site</source>
     <message>
         <location filename="../qt-models/filterpresetmodel.cpp" line="47"/>
         <source>Clicking here will remove this filter set.</source>
-        <translation type="unfinished"/>
+        <translation>Щракнете тук за да премахнете филтър групата.</translation>
     </message>
 </context>
 <context>
@@ -5168,22 +5172,22 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="76"/>
         <source>Add constraint</source>
-        <translation type="unfinished"/>
+        <translation>Добави ограничение</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="90"/>
         <source>Current set:</source>
-        <translation type="unfinished"/>
+        <translation>Текущ комплект:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="110"/>
         <source>Save set</source>
-        <translation type="unfinished"/>
+        <translation>Запиши комплект:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="123"/>
         <source>Load set</source>
-        <translation type="unfinished"/>
+        <translation>Зареди комплект</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="143"/>
@@ -5218,12 +5222,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/filterwidget.ui" line="241"/>
         <source>Filter sets</source>
-        <translation type="unfinished"/>
+        <translation>Филтър комплекти</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/filterwidget.cpp" line="232"/>
         <source>modified</source>
-        <translation type="unfinished"/>
+        <translation>променен</translation>
     </message>
 </context>
 <context>
@@ -5675,7 +5679,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
         <source>Summary</source>
-        <translation type="unfinished"/>
+        <translation>Обзор</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
@@ -5995,7 +5999,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="440"/>
         <source>Dive statistics</source>
-        <translation type="unfinished"/>
+        <translation>Статистики за гмуркане</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="448"/>
@@ -6704,7 +6708,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="74"/>
         <source>Show default cylinder sizes in the cylinders selection of the equipment tab</source>
-        <translation type="unfinished"/>
+        <translation>Бутилка по подразбиране в графата за екипировка</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.cpp" line="13"/>
@@ -7736,7 +7740,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="557"/>
         <source>Rename this dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Изтрий този гмуркачески компютър</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="572"/>
@@ -7802,12 +7806,12 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="689"/>
         <source>Edit nickname</source>
-        <translation type="unfinished"/>
+        <translation>Редактирай прякор</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="690"/>
         <source>Set new nickname for %1 (serial %2):</source>
-        <translation type="unfinished"/>
+        <translation>Задай нов прякор за %1 (serial %2):</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="701"/>
@@ -7985,7 +7989,8 @@ Please export this template to a different file.</source>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1425"/>
         <source>[%1]Changes saved:'%2'.
 %1 possible via context menu</source>
-        <translation type="unfinished"/>
+        <translation>[%1]Промени запазени:&apos;%2&apos;.
+%1 е възможно с контекст меню</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1427"/>
@@ -7995,7 +8000,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1427"/>
         <source>Undo: %1</source>
-        <translation type="unfinished"/>
+        <translation>Отмяна: %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1429"/>
@@ -8331,12 +8336,12 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="316"/>
         <source>very small</source>
-        <translation type="unfinished"/>
+        <translation>много малко</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="325"/>
         <source>small</source>
-        <translation type="unfinished"/>
+        <translation>малко</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="335"/>
@@ -8346,12 +8351,12 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="345"/>
         <source>large</source>
-        <translation type="unfinished"/>
+        <translation>голямо</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="355"/>
         <source>very large</source>
-        <translation type="unfinished"/>
+        <translation>много голямо</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="369"/>
@@ -8480,12 +8485,12 @@ Please report DCs that need this setting</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="584"/>
         <source>Profile deco ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Таван на декомпресия в профила</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="592"/>
         <source>Show DC reported ceiling</source>
-        <translation type="unfinished"/>
+        <translation>Покажи отчетен таван на гмуркачески компютър</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="602"/>
@@ -8523,7 +8528,7 @@ Please report DCs that need this setting</source>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
         <source>Manually shift times of image(s) by hours:minutes</source>
-        <translation type="unfinished"/>
+        <translation>Ръчно премести времената на изображението (изображенията) с часове:минути</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
@@ -8538,7 +8543,7 @@ Please report DCs that need this setting</source>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
         <source>Use camera sync</source>
-        <translation type="unfinished"/>
+        <translation>Използвай синхронизация с камера</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>
@@ -8748,33 +8753,33 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="106"/>
         <source>Base variable</source>
-        <translation type="unfinished"/>
+        <translation>Базова променлива</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="123"/>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="158"/>
         <source>Binning</source>
-        <translation type="unfinished"/>
+        <translation>Бининг</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="140"/>
         <source>Data</source>
-        <translation type="unfinished"/>
+        <translation>Данни</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="176"/>
         <source>Operation</source>
-        <translation type="unfinished"/>
+        <translation>Операция</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="194"/>
         <source>SortMode</source>
-        <translation type="unfinished"/>
+        <translation>Режим на сортиране</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="224"/>
         <source>Chart type</source>
-        <translation type="unfinished"/>
+        <translation>Вид на графиката</translation>
     </message>
 </context>
 <context>
@@ -8783,18 +8788,18 @@ Files with inappropriate date/time</source>
         <location filename="../stats/barseries.cpp" line="347"/>
         <location filename="../stats/pieseries.cpp" line="221"/>
         <source>%1 (%2 of %3) dives</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2 от %3) гмуркания</translation>
     </message>
     <message>
         <location filename="../stats/barseries.cpp" line="363"/>
         <location filename="../stats/statsstate.cpp" line="22"/>
         <source>Count</source>
-        <translation type="unfinished"/>
+        <translation>Брой</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="105"/>
         <source>%1 (%2 dives)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2 гмуркания)</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="107"/>
@@ -8806,28 +8811,28 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/boxseries.cpp" line="108"/>
         <source>Q1</source>
-        <translation type="unfinished"/>
+        <translation>Q1</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="109"/>
         <location filename="../stats/statsstate.cpp" line="376"/>
         <source>median</source>
-        <translation type="unfinished"/>
+        <translation>средно</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="110"/>
         <source>Q3</source>
-        <translation type="unfinished"/>
+        <translation>Q3</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="111"/>
         <source>max</source>
-        <translation type="unfinished"/>
+        <translation>макс</translation>
     </message>
     <message>
         <location filename="../stats/pieseries.cpp" line="164"/>
         <source>other (%1 items)</source>
-        <translation type="unfinished"/>
+        <translation>други (%1 елементи)</translation>
     </message>
     <message>
         <location filename="../stats/pieseries.cpp" line="230"/>
@@ -8837,62 +8842,62 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/scatterseries.cpp" line="196"/>
         <source>Dive #%1</source>
-        <translation type="unfinished"/>
+        <translation>Гмуркане №%1</translation>
     </message>
     <message>
         <location filename="../stats/scatterseries.cpp" line="202"/>
         <source>and %1 more</source>
-        <translation type="unfinished"/>
+        <translation>и още %1</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="8"/>
         <source>vertical</source>
-        <translation type="unfinished"/>
+        <translation>вертикално</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="9"/>
         <source>grouped vertical</source>
-        <translation type="unfinished"/>
+        <translation>групирани вертикално</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="10"/>
         <source>stacked vertical</source>
-        <translation type="unfinished"/>
+        <translation>натрупани вертикално</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="11"/>
         <source>horizontal</source>
-        <translation type="unfinished"/>
+        <translation>хоризонтално</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="12"/>
         <source>grouped horizontal</source>
-        <translation type="unfinished"/>
+        <translation>групирани хоризонтално</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="13"/>
         <source>stacked horizontal</source>
-        <translation type="unfinished"/>
+        <translation>натрупани хоризонтално</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="14"/>
         <source>data points</source>
-        <translation type="unfinished"/>
+        <translation>Точки за данни</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="15"/>
         <source>box-whisker</source>
-        <translation type="unfinished"/>
+        <translation>box-whisker</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="16"/>
         <source>piechart</source>
-        <translation type="unfinished"/>
+        <translation>кръгова диаграма</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="21"/>
         <source>Bin</source>
-        <translation type="unfinished"/>
+        <translation>Сандък</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="23"/>
@@ -8902,7 +8907,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsstate.cpp" line="52"/>
         <source>Scattergraph</source>
-        <translation type="unfinished"/>
+        <translation>Степенна</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="61"/>
@@ -8910,7 +8915,7 @@ Files with inappropriate date/time</source>
         <location filename="../stats/statsstate.cpp" line="79"/>
         <location filename="../stats/statsstate.cpp" line="88"/>
         <source>Histogram</source>
-        <translation type="unfinished"/>
+        <translation>Хистограма</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="97"/>
@@ -8919,12 +8924,12 @@ Files with inappropriate date/time</source>
         <location filename="../stats/statsstate.cpp" line="124"/>
         <location filename="../stats/statsstate.cpp" line="133"/>
         <source>Categorical</source>
-        <translation type="unfinished"/>
+        <translation>Категорична</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="142"/>
         <source>Barchart</source>
-        <translation type="unfinished"/>
+        <translation>Стълбова</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="191"/>
@@ -8936,62 +8941,62 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsstate.cpp" line="372"/>
         <source>labels</source>
-        <translation type="unfinished"/>
+        <translation>етикети</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="374"/>
         <source>legend</source>
-        <translation type="unfinished"/>
+        <translation>легенда</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="378"/>
         <source>mean</source>
-        <translation type="unfinished"/>
+        <translation>средно</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="380"/>
         <source>quartiles</source>
-        <translation type="unfinished"/>
+        <translation>квартили</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="382"/>
         <source>linear regression</source>
-        <translation type="unfinished"/>
+        <translation>линейна регресия</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="384"/>
         <source>95% confidence area</source>
-        <translation type="unfinished"/>
+        <translation>95% повърхност на доверие</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="66"/>
         <source>no divesite</source>
-        <translation type="unfinished"/>
+        <translation>няма местонахождение</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="99"/>
         <source>no trip</source>
-        <translation type="unfinished"/>
+        <translation>няма пътуване</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="357"/>
         <source>Median</source>
-        <translation type="unfinished"/>
+        <translation>Медиана</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="358"/>
         <source>Mean</source>
-        <translation type="unfinished"/>
+        <translation>Средно</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="359"/>
         <source>Time-weighted mean</source>
-        <translation type="unfinished"/>
+        <translation>Средно претеглено време</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="360"/>
         <source>Sum</source>
-        <translation type="unfinished"/>
+        <translation>Сума</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="361"/>
@@ -9008,32 +9013,32 @@ Files with inappropriate date/time</source>
         <location filename="../stats/statsvariables.cpp" line="1145"/>
         <location filename="../stats/statsvariables.cpp" line="1352"/>
         <source>%1–%2</source>
-        <translation type="unfinished"/>
+        <translation>%1–%2</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="859"/>
         <source>Yearly</source>
-        <translation type="unfinished"/>
+        <translation>Годишно</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="876"/>
         <source>Quarterly</source>
-        <translation type="unfinished"/>
+        <translation>Тримесечно</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="880"/>
         <source>%1 Q%2</source>
-        <translation type="unfinished"/>
+        <translation>%1 Q%2</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="888"/>
         <source>Q%1</source>
-        <translation type="unfinished"/>
+        <translation>Q%1</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="922"/>
         <source>Monthly</source>
-        <translation type="unfinished"/>
+        <translation>Месечно</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="960"/>
@@ -9045,7 +9050,7 @@ Files with inappropriate date/time</source>
         <location filename="../stats/statsvariables.cpp" line="1213"/>
         <location filename="../stats/statsvariables.cpp" line="1293"/>
         <source>in %1 %2 steps</source>
-        <translation type="unfinished"/>
+        <translation>в %1 %2 стъпки</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1032"/>
@@ -9055,17 +9060,17 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1044"/>
         <source>Mean Depth</source>
-        <translation type="unfinished"/>
+        <translation>Средна дълбочина</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1056"/>
         <source>in %1 min steps</source>
-        <translation type="unfinished"/>
+        <translation>в %1 мин стъпки</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1068"/>
         <source>in hours</source>
-        <translation type="unfinished"/>
+        <translation>в часове</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1074"/>
@@ -9081,7 +9086,7 @@ Files with inappropriate date/time</source>
         <location filename="../stats/statsvariables.cpp" line="1115"/>
         <location filename="../stats/statsvariables.cpp" line="1139"/>
         <source>in %1 %2/min steps</source>
-        <translation type="unfinished"/>
+        <translation>в %1 %2/мин стъпки</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1119"/>
@@ -9098,12 +9103,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1265"/>
         <source>Water temperature</source>
-        <translation type="unfinished"/>
+        <translation>Темп. на водата</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1277"/>
         <source>Air temperature</source>
-        <translation type="unfinished"/>
+        <translation>Темп. на въздуха</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1316"/>
@@ -9113,7 +9118,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1363"/>
         <source>in %L2 steps</source>
-        <translation type="unfinished"/>
+        <translation>в %L2 стъпки</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1381"/>
@@ -9133,12 +9138,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1467"/>
         <source>Buddies</source>
-        <translation type="unfinished"/>
+        <translation>Партньори</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1489"/>
         <source>Dive guides</source>
-        <translation type="unfinished"/>
+        <translation>Гидове</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1513"/>
@@ -9148,12 +9153,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1552"/>
         <source>in %1% steps</source>
-        <translation type="unfinished"/>
+        <translation>в %1% стъпки</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1572"/>
         <source>Air</source>
-        <translation type="unfinished"/>
+        <translation>Въздух</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1574"/>
@@ -9163,12 +9168,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1576"/>
         <source>EAN%1–%2</source>
-        <translation type="unfinished"/>
+        <translation>EAN%1–%2</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1579"/>
         <source>%1/%2–%3/%4</source>
-        <translation type="unfinished"/>
+        <translation>%1/%2–%3/%4</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1590"/>
@@ -9178,42 +9183,42 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1617"/>
         <source>Gas type</source>
-        <translation type="unfinished"/>
+        <translation>Тип на газ</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1673"/>
         <source>In %L1% steps</source>
-        <translation type="unfinished"/>
+        <translation>В %1% стъпки</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1723"/>
         <source>O₂ (max)</source>
-        <translation type="unfinished"/>
+        <translation>O₂ (макс)</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1732"/>
         <source>O₂ (bottom gas)</source>
-        <translation type="unfinished"/>
+        <translation>O₂ (долен газ)</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1741"/>
         <source>He (max)</source>
-        <translation type="unfinished"/>
+        <translation>He (макс)</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1756"/>
         <source>Suit type</source>
-        <translation type="unfinished"/>
+        <translation>Тип на костюма</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1786"/>
         <source>Weightsystem</source>
-        <translation type="unfinished"/>
+        <translation>Система за тежести</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1816"/>
         <source>Cylinder type</source>
-        <translation type="unfinished"/>
+        <translation>Тип на бутилка</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1842"/>
@@ -9223,12 +9228,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1868"/>
         <source>Dive trip</source>
-        <translation type="unfinished"/>
+        <translation>Пътуване</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1892"/>
         <source>Day of week</source>
-        <translation type="unfinished"/>
+        <translation>Ден от седмицата</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1917"/>
@@ -9243,12 +9248,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsview.cpp" line="626"/>
         <source>No. dives</source>
-        <translation type="unfinished"/>
+        <translation>Брой гмуркания</translation>
     </message>
     <message>
         <location filename="../stats/statsview.cpp" line="1323"/>
         <source>%1 vs. %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 срещу %2</translation>
     </message>
 </context>
 <context>
@@ -9261,58 +9266,58 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="32"/>
         <source>Base variable</source>
-        <translation type="unfinished"/>
+        <translation>Базова променлива</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="41"/>
         <location filename="../desktop-widgets/statswidget.ui" line="63"/>
         <source>Binning</source>
-        <translation type="unfinished"/>
+        <translation>Бининг</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="54"/>
         <source>Data</source>
-        <translation type="unfinished"/>
+        <translation>Данни</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="73"/>
         <source>Operation</source>
-        <translation type="unfinished"/>
+        <translation>Операция</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="86"/>
         <source>Chart</source>
-        <translation type="unfinished"/>
+        <translation>Графика</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Sorting</source>
-        <translation type="unfinished"/>
+        <translation>Сортиране</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="113"/>
         <source>Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Ограничение</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="122"/>
         <source>Restrict to selection</source>
-        <translation type="unfinished"/>
+        <translation>Ограничи селекция</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="129"/>
         <source>Reset restriction</source>
-        <translation type="unfinished"/>
+        <translation>Премахни ограничение</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="157"/>
         <source>Analyzing all dives</source>
-        <translation type="unfinished"/>
+        <translation>Анализирай всички гмуркания</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="159"/>
         <source>Analyzing subset (%L1) dives</source>
-        <translation type="unfinished"/>
+        <translation>Анализирай множество (%L1) гмуркания</translation>
     </message>
 </context>
 <context>
@@ -9345,7 +9350,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2022&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;мулти-платформен, гмуркачески регистър софтуер&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Линус Торвалдс, Дърк Хондел, Томаз Канабрава, Бертхолд Щогер и други, 2011-2022&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -9393,13 +9398,14 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="179"/>
         <source>Remove cylinder?</source>
-        <translation type="unfinished"/>
+        <translation>Премахни бутилка?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="180"/>
         <source>The deleted cylinder has sensor readings, which will be lost.
 Do you want to continue?</source>
-        <translation type="unfinished"/>
+        <translation>Битилката има сензорни отчитания, които ще бъдат изгубени.
+Желаете ли да продължите?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="209"/>
@@ -9752,17 +9758,17 @@ Do you want to continue?</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
         <source>All selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Всички избрани гмуркания</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
         <source>Total number of dives selected :</source>
-        <translation type="unfinished"/>
+        <translation>Тотален брой на избрани гмуркания:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
         <source>Total duration of selected dives :</source>
-        <translation type="unfinished"/>
+        <translation>Тотално времетраене на избрани гмуркания:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
@@ -10134,7 +10140,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/tripselectiondialog.ui" line="17"/>
         <source>Select trip</source>
-        <translation type="unfinished"/>
+        <translation>Избери пътуване</translation>
     </message>
 </context>
 <context>
@@ -10942,22 +10948,22 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="42"/>
         <source>date time</source>
-        <translation type="unfinished"/>
+        <translation>дата/време</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="43"/>
         <source>time of day</source>
-        <translation type="unfinished"/>
+        <translation>време на деня</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="44"/>
         <source>year</source>
-        <translation type="unfinished"/>
+        <translation>година</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="45"/>
         <source>week day</source>
-        <translation type="unfinished"/>
+        <translation>ден от седмицата</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="47"/>
@@ -10967,7 +10973,7 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="48"/>
         <source>wave size</source>
-        <translation type="unfinished"/>
+        <translation>големина на вълната</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="49"/>
@@ -10992,7 +10998,7 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="54"/>
         <source>max. depth</source>
-        <translation type="unfinished"/>
+        <translation>макс. дълбочина</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="55"/>
@@ -11008,17 +11014,17 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="57"/>
         <source>water temp.</source>
-        <translation type="unfinished"/>
+        <translation>темп. на водата</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="58"/>
         <source>air temp.</source>
-        <translation type="unfinished"/>
+        <translation>темп. на въздух</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="59"/>
         <source>water density</source>
-        <translation type="unfinished"/>
+        <translation>плътност на водата</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="60"/>
@@ -11029,12 +11035,12 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="62"/>
         <source>logged</source>
-        <translation type="unfinished"/>
+        <translation>регистрирани</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="63"/>
         <source>planned</source>
-        <translation type="unfinished"/>
+        <translation>планувани</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="65"/>
@@ -11049,7 +11055,7 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="68"/>
         <source>people</source>
-        <translation type="unfinished"/>
+        <translation>хора</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="69"/>
@@ -11059,32 +11065,32 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="70"/>
         <source>weight type</source>
-        <translation type="unfinished"/>
+        <translation>вид на тежест</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="71"/>
         <source>cylinder type</source>
-        <translation type="unfinished"/>
+        <translation>вид на бутилка</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="72"/>
         <source>cylinder size</source>
-        <translation type="unfinished"/>
+        <translation>големина на бутилка</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="73"/>
         <source>gas N₂ content</source>
-        <translation type="unfinished"/>
+        <translation>газ N₂ съдържание</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="74"/>
         <source>gas O₂ content</source>
-        <translation type="unfinished"/>
+        <translation>газ O₂ съдържание</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="75"/>
         <source>gas He content</source>
-        <translation type="unfinished"/>
+        <translation>газ He съдържание</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="76"/>
@@ -11099,87 +11105,87 @@ Maximum</source>
     <message>
         <location filename="../core/filterconstraint.cpp" line="85"/>
         <source>starting with</source>
-        <translation type="unfinished"/>
+        <translation>започва с</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="86"/>
         <source>with substring</source>
-        <translation type="unfinished"/>
+        <translation>с подниз</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="87"/>
         <source>exactly</source>
-        <translation type="unfinished"/>
+        <translation>точно</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="96"/>
         <source>equal to</source>
-        <translation type="unfinished"/>
+        <translation>равно на</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="96"/>
         <source>at</source>
-        <translation type="unfinished"/>
+        <translation>в</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="97"/>
         <source>at most</source>
-        <translation type="unfinished"/>
+        <translation>най-много</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="97"/>
         <source>before</source>
-        <translation type="unfinished"/>
+        <translation>преди</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="98"/>
         <source>at least</source>
-        <translation type="unfinished"/>
+        <translation>поне</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="98"/>
         <source>after</source>
-        <translation type="unfinished"/>
+        <translation>след</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="99"/>
         <source>in range</source>
-        <translation type="unfinished"/>
+        <translation>в обхват</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="103"/>
         <source>is</source>
-        <translation type="unfinished"/>
+        <translation>е</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="104"/>
         <source>is not</source>
-        <translation type="unfinished"/>
+        <translation>не е</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="167"/>
         <source>Air</source>
-        <translation type="unfinished"/>
+        <translation>Въздух</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="168"/>
         <source>Nitrox</source>
-        <translation type="unfinished"/>
+        <translation>Nitrox</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="169"/>
         <source>Hypoxic Trimix</source>
-        <translation type="unfinished"/>
+        <translation>Hypoxic Trimix</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="170"/>
         <source>Normoxic Trimix</source>
-        <translation type="unfinished"/>
+        <translation>Normoxic Trimix</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="171"/>
         <source>Hyperoxic Trimix</source>
-        <translation type="unfinished"/>
+        <translation>Hyperoxic Trimix</translation>
     </message>
     <message>
         <location filename="../core/gas.c" line="172"/>
@@ -11517,7 +11523,7 @@ Maximum</source>
     <message>
         <location filename="../core/libdivecomputer.c" line="1020"/>
         <source>read %dkb</source>
-        <translation type="unfinished"/>
+        <translation>прочетени %dкб</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1040"/>
@@ -12144,7 +12150,8 @@ EADD: %d%s / %.1fгр./л.
         <location filename="../core/profile.c" line="1455"/>
         <source>Calculated ceiling %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Калкулиран таван %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1461"/>
@@ -12751,37 +12758,37 @@ EADD: %d%s / %.1fгр./л.
     <message>
         <location filename="../core/string-format.cpp" line="270"/>
         <source>Sunday</source>
-        <translation type="unfinished"/>
+        <translation>Неделя</translation>
     </message>
     <message>
         <location filename="../core/string-format.cpp" line="271"/>
         <source>Monday</source>
-        <translation type="unfinished"/>
+        <translation>Понеделник</translation>
     </message>
     <message>
         <location filename="../core/string-format.cpp" line="272"/>
         <source>Tuesday</source>
-        <translation type="unfinished"/>
+        <translation>Вторник</translation>
     </message>
     <message>
         <location filename="../core/string-format.cpp" line="273"/>
         <source>Wednesday</source>
-        <translation type="unfinished"/>
+        <translation>Сряда</translation>
     </message>
     <message>
         <location filename="../core/string-format.cpp" line="274"/>
         <source>Thursday</source>
-        <translation type="unfinished"/>
+        <translation>Четвъртък</translation>
     </message>
     <message>
         <location filename="../core/string-format.cpp" line="275"/>
         <source>Friday</source>
-        <translation type="unfinished"/>
+        <translation>Петък</translation>
     </message>
     <message>
         <location filename="../core/string-format.cpp" line="276"/>
         <source>Saturday</source>
-        <translation type="unfinished"/>
+        <translation>Сряда</translation>
     </message>
     <message numerus="yes">
         <location filename="../core/string-format.cpp" line="301"/>
@@ -13206,7 +13213,7 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
         <source>Exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Експортиране...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
@@ -13388,7 +13395,8 @@ Uemis Zurich включен ли е правилно?</translation>
         <location filename="../mobile-widgets/qml/main.qml" line="342"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Ръчна синхронизация с облака приключена
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="350"/>
@@ -13504,7 +13512,7 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="581"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
-        <translation type="unfinished"/>
+        <translation>Големината на шрифта е най-вероятно прекалено голяма за дисплея. Пропоръчва се смаляване на шрифта</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="741"/>

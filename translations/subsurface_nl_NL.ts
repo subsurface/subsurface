@@ -2929,7 +2929,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="331"/>
         <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
-        <translation>Selecteer de &apos;+&apos; knop om een duik toe te voegen (of laad van een ondersteunde duikcomputer)</translation>
+        <translation>Selecteer de &apos;+&apos; knop om een duik toe te voegen (of downloaden van een ondersteunde duikcomputer)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="337"/>
@@ -4812,7 +4812,7 @@ Bestaande duikstek</translation>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="469"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
-        <translation>Duiken worden NIET in de duiklijst geladen als u de libdivecomputer dump opslaat.</translation>
+        <translation>Duiken worden NIET gedownload in de duiklijst als u de libdivecomputer dump opslaat.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="480"/>
@@ -8776,7 +8776,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="194"/>
         <source>SortMode</source>
-        <translation type="unfinished"/>
+        <translation>Sortering</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="224"/>
@@ -8899,7 +8899,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../stats/statsstate.cpp" line="21"/>
         <source>Bin</source>
-        <translation type="unfinished"/>
+        <translation>Groep</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="23"/>
@@ -8978,7 +8978,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="99"/>
         <source>no trip</source>
-        <translation type="unfinished"/>
+        <translation>geen trip</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="357"/>
@@ -9057,12 +9057,12 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1032"/>
         <source>Max. Depth</source>
-        <translation>Max. Diepte</translation>
+        <translation>Max. diepte</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1044"/>
         <source>Mean Depth</source>
-        <translation>Gemiddelde Diepte</translation>
+        <translation>Gemiddelde diepte</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1056"/>
@@ -9230,7 +9230,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1868"/>
         <source>Dive trip</source>
-        <translation type="unfinished"/>
+        <translation>Duik trip</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1892"/>
@@ -9294,7 +9294,7 @@ Bestanden met onjuiste datum/tijd</translation>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Sorting</source>
-        <translation type="unfinished"/>
+        <translation>Sortering</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="113"/>
@@ -11524,7 +11524,7 @@ Maximum</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="1020"/>
         <source>read %dkb</source>
-        <translation type="unfinished"/>
+        <translation>%dkb gelezen</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1040"/>

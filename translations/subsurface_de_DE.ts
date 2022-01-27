@@ -8770,7 +8770,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="194"/>
         <source>SortMode</source>
-        <translation type="unfinished"/>
+        <translation>Sortierungsmodus</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="224"/>
@@ -8893,7 +8893,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../stats/statsstate.cpp" line="21"/>
         <source>Bin</source>
-        <translation type="unfinished"/>
+        <translation>Korb</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="23"/>
@@ -8972,7 +8972,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="99"/>
         <source>no trip</source>
-        <translation type="unfinished"/>
+        <translation>keine Reise</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="357"/>
@@ -9224,7 +9224,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1868"/>
         <source>Dive trip</source>
-        <translation type="unfinished"/>
+        <translation>Reise</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1892"/>
@@ -9288,7 +9288,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Sorting</source>
-        <translation type="unfinished"/>
+        <translation>Sortierung</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="113"/>
@@ -11517,7 +11517,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="1020"/>
         <source>read %dkb</source>
-        <translation type="unfinished"/>
+        <translation>lese %dkb</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1040"/>

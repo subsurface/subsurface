@@ -8772,7 +8772,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="194"/>
         <source>SortMode</source>
-        <translation type="unfinished"/>
+        <translation>Ordenação</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="224"/>
@@ -8895,7 +8895,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsstate.cpp" line="21"/>
         <source>Bin</source>
-        <translation type="unfinished"/>
+        <translation>Faixa</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="23"/>
@@ -8974,7 +8974,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="99"/>
         <source>no trip</source>
-        <translation type="unfinished"/>
+        <translation>sem viagem</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="357"/>
@@ -9226,7 +9226,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1868"/>
         <source>Dive trip</source>
-        <translation type="unfinished"/>
+        <translation>Viagem de mergulho</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1892"/>
@@ -9290,7 +9290,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Sorting</source>
-        <translation type="unfinished"/>
+        <translation>Ordenação</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="113"/>
@@ -11521,7 +11521,7 @@ Média</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="1020"/>
         <source>read %dkb</source>
-        <translation type="unfinished"/>
+        <translation>ler %dkb</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1040"/>

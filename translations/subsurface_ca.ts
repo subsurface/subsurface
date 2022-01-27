@@ -8781,7 +8781,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="194"/>
         <source>SortMode</source>
-        <translation type="unfinished"/>
+        <translation>Mode ordenació</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="224"/>
@@ -8904,7 +8904,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <message>
         <location filename="../stats/statsstate.cpp" line="21"/>
         <source>Bin</source>
-        <translation type="unfinished"/>
+        <translation>Safata</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="23"/>
@@ -8983,7 +8983,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="99"/>
         <source>no trip</source>
-        <translation type="unfinished"/>
+        <translation>cap viatge</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="357"/>
@@ -9235,7 +9235,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1868"/>
         <source>Dive trip</source>
-        <translation type="unfinished"/>
+        <translation>Viatge amb immersió</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1892"/>
@@ -9299,7 +9299,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Sorting</source>
-        <translation type="unfinished"/>
+        <translation>Ordenació</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="113"/>
@@ -11527,7 +11527,7 @@ Màxim</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="1020"/>
         <source>read %dkb</source>
-        <translation type="unfinished"/>
+        <translation>llegeix %dkb</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1040"/>
