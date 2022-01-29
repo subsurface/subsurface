@@ -30,7 +30,7 @@ static int debugCounter;
 #define IS_SHEARWATER(_d) same_string((_d)->vendor, "Shearwater")
 #define IS_GARMIN(_d) same_string((_d)->vendor, "Garmin")
 
-#define MAXIMAL_HW_CREDIT	255
+#define MAXIMAL_HW_CREDIT	254
 #define MINIMAL_HW_CREDIT	32
 
 #define WAITFOR(expression, ms) do {					\
@@ -67,7 +67,7 @@ void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, con
 	if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
 		qDebug() << QTime::currentTime() << "packet RECV" << value.toHex();
 	if (IS_HW(device)) {
-		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_DATA_TX]) {
+		if (c.uuid() == telit[TELIT_DATA_TX] || c.uuid() == ublox[UBLOX_DATA_TX]) {
 			hw_credit--;
 			receivedPackets.append(value);
 			if (hw_credit == MINIMAL_HW_CREDIT)
@@ -83,7 +83,7 @@ void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, con
 void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
 	if (IS_HW(device)) {
-		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_CREDITS_RX]) {
+		if (c.uuid() == telit[TELIT_CREDITS_RX] || c.uuid() == ublox[UBLOX_CREDITS_RX]) {
 			bool ok;
 			hw_credit += value.toHex().toInt(&ok, 16);
 			isCharacteristicWritten = true;
@@ -135,7 +135,8 @@ static const char *match_uuid_list(const QBluetoothUuid &match, const struct uui
 // Oh. It did, didn't it?
 //
 static const struct uuid_match serial_service_uuids[] = {
-	{ "0000fefb-0000-1000-8000-00805f9b34fb", "Heinrichs-Weikamp" },
+	{ "0000fefb-0000-1000-8000-00805f9b34fb", "Heinrichs-Weikamp (Telit/Stollmann)" },
+	{ "2456e1b9-26e2-8f83-e744-f34f01e9d701", "Heinrichs-Weikamp (U-Blox)" },
 	{ "544e326b-5b72-c6b0-1c46-41c1bc448118", "Mares BlueLink Pro" },
 	{ "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
 	{ "98ae7120-e62e-11e3-badd-0002a5d5c51b", "Suunto (EON Steel/Core, G5)" },
@@ -467,8 +468,9 @@ dc_status_t BLEObject::setHwCredit(unsigned int c)
 	 */
 
 	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
+	int credits_rx = list.length() == 4 ? TELIT_CREDITS_RX : UBLOX_CREDITS_RX;
 	isCharacteristicWritten = false;
-	preferredService()->writeCharacteristic(list[HW_OSTC_BLE_CREDITS_RX],
+	preferredService()->writeCharacteristic(list[credits_rx],
 						QByteArray(1, c),
 						QLowEnergyService::WriteWithResponse);
 
@@ -490,7 +492,7 @@ dc_status_t BLEObject::setupHwTerminalIo(const QList<QLowEnergyCharacteristic> &
 	 * 0x0000FEFB is a clear indication that the OSTC is equipped with this BT/BLE hardware.
 	 */
 
-	if (allC.length() != 4) {
+	if (allC.length() != 4 && allC.length() != 2) {
 		qDebug() << "This should not happen. HW/OSTC BT/BLE device without 4 Characteristics";
 		return DC_STATUS_IO;
 	}
@@ -503,13 +505,15 @@ dc_status_t BLEObject::setupHwTerminalIo(const QList<QLowEnergyCharacteristic> &
 	 * Number: 0x2902. Enabling/Disabeling is setting the proper bit, and they
 	 * differ for indications and notifications.
 	 */
-	QLowEnergyDescriptor d = allC[HW_OSTC_BLE_CREDITS_TX].descriptors().first();
+	int credits_tx = allC.length() == 4 ? TELIT_CREDITS_TX : UBLOX_CREDITS_TX;
+	QLowEnergyDescriptor d = allC[credits_tx].descriptors().first();
 	preferredService()->writeDescriptor(d, QByteArray::fromHex("0200"));
 
 	/* The Terminal I/O client subscribes to notifications of the UART data TX
 	 * characteristic (see 6.2).
 	 */
-	d = allC[HW_OSTC_BLE_DATA_TX].descriptors().first();
+	int data_tx = allC.length() == 4 ? TELIT_DATA_TX : UBLOX_DATA_TX;
+	d = allC[data_tx].descriptors().first();
 	preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
 
 	/* The Terminal I/O client transmits initial UART credits to the server (see 6.5). */
