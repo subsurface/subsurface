@@ -348,7 +348,8 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd openssl
 	mkdir -p build
 	cd build
-	../Configure --prefix="$INSTALL_ROOT" --openssldir="$INSTALL_ROOT" "$OLDER_MAC" darwin64-x86_64-cc
+	if [ $(arch) == "arm64" ] ; then OS_ARCH=darwin64-arm64-cc ; else OS_ARCH=darwin64-x86_64-cc; fi
+	../Configure --prefix="$INSTALL_ROOT" --openssldir="$INSTALL_ROOT" "$OLDER_MAC" $OS_ARCH
 	make depend
 	# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
 	make -j4 -k
