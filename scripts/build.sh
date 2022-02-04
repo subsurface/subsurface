@@ -224,7 +224,8 @@ if [ -n "$CMAKE_PREFIX_PATH" ] ; then
 else
 	hash qmake > /dev/null 2> /dev/null && QMAKE=qmake
 	[ -z $QMAKE ] && hash qmake-qt5 > /dev/null 2> /dev/null && QMAKE=qmake-qt5
-	[ -z $QMAKE ] && echo "cannot find qmake or qmake-qt5" && exit 1
+	[ -z $QMAKE ] && hash qmake-qt6 > /dev/null 2> /dev/null && QMAKE=qmake-qt6
+	[ -z $QMAKE ] && echo "cannot find qmake, qmake-qt5, or qmake-qt6" && exit 1
 fi
 
 # it's not entirely clear why we only set this on macOS, but this appears to be what works
