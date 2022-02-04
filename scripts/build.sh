@@ -228,6 +228,9 @@ else
 	[ -z $QMAKE ] && echo "cannot find qmake, qmake-qt5, or qmake-qt6" && exit 1
 fi
 
+# grab the Qt version
+QT_VERSION=$($QMAKE -query QT_VERSION)
+
 # it's not entirely clear why we only set this on macOS, but this appears to be what works
 if [ "$PLATFORM" = Darwin ] ; then
 	if [ -z "$CMAKE_PREFIX_PATH" ] ; then
@@ -245,9 +248,8 @@ fi
 
 # on Debian and Ubuntu based systems, the private QtLocation and
 # QtPositioning headers aren't bundled. Download them if necessary.
-if [ "$PLATFORM" = Linux ] ; then
+if [ "$PLATFORM" = Linux ] && [[ $QT_VERSION == 5* ]] ; then
 	QT_HEADERS_PATH=$($QMAKE -query QT_INSTALL_HEADERS)
-	QT_VERSION=$($QMAKE -query QT_VERSION)
 
 	if [ ! -d "$QT_HEADERS_PATH/QtLocation/$QT_VERSION/QtLocation/private" ] &&
            [ ! -d "$INSTALL_ROOT"/include/QtLocation/private ] ; then
@@ -507,7 +509,7 @@ STATIC_LIBDC="$INSTALL_ROOT/$(grep ^libdir Makefile | cut -d/ -f2)/libdivecomput
 
 cd "$SRC"
 
-if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
+if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && [[ $QT_VERSION == 5* ]] ; then
 	# build the googlemaps map plugin
 
 	cd "$SRC"
