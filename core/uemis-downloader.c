@@ -32,7 +32,7 @@
 #include "subsurface-time.h"
 #include "core/subsurface-string.h"
 
-#define ERR_FS_ALMOST_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: the file system is almost full.\nDisconnect/reconnect the dive computer\nand click \'Retry\'")
+#define ERR_FS_ALMOST_FULL QT_TRANSLATE_NOOP("gettextFromC", "Disconnect/reconnect the SDA")
 #define ERR_FS_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: the file system is full.\nDisconnect/reconnect the dive computer\nand click Retry")
 #define ERR_FS_SHORT_WRITE QT_TRANSLATE_NOOP("gettextFromC", "Short write to req.txt file.\nIs the Uemis Zurich plugged in correctly?")
 #define ERR_NO_FILES QT_TRANSLATE_NOOP("gettextFromC", "No dives to download.")
@@ -1434,7 +1434,13 @@ const char *do_uemis_import(device_data_t *data)
 #if UEMIS_DEBUG & 4
 				fprintf(debugfile, "d_u_i out of memory, bailing\n");
 #endif
-				break;
+				char msg[strlen(translate("gettextFromC", ERR_FS_ALMOST_FULL)) + 4];
+				for (int wait=60; wait >=0; wait--){
+					sprintf(msg, "%s %ds", translate("gettextFromC", ERR_FS_ALMOST_FULL), wait);
+					uemis_info(msg);
+					filenr = 0;
+					usleep(1000000);
+				}
 			}
 			/* if the user clicked cancel, exit gracefully */
 			if (import_thread_cancelled) {
