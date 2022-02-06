@@ -1,3 +1,4 @@
+- Uemis support: fix the ability disconnect/reconnect the Zurich when its filesystem is full
 - libdivecomputer: add support for latest BLE hardware in OSTC dive computers
 
 ---
