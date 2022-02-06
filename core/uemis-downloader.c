@@ -32,7 +32,7 @@
 #include "subsurface-time.h"
 #include "core/subsurface-string.h"
 
-#define ERR_FS_ALMOST_FULL QT_TRANSLATE_NOOP("gettextFromC", "Disconnect/reconnect the SDA")
+#define ACTION_RECONNECT QT_TRANSLATE_NOOP("gettextFromC", "Disconnect/reconnect the SDA")
 #define ERR_FS_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: the file system is full.\nDisconnect/reconnect the dive computer\nand click Retry")
 #define ERR_FS_SHORT_WRITE QT_TRANSLATE_NOOP("gettextFromC", "Short write to req.txt file.\nIs the Uemis Zurich plugged in correctly?")
 #define ERR_NO_FILES QT_TRANSLATE_NOOP("gettextFromC", "No dives to download.")
@@ -1434,9 +1434,9 @@ const char *do_uemis_import(device_data_t *data)
 #if UEMIS_DEBUG & 4
 				fprintf(debugfile, "d_u_i out of memory, bailing\n");
 #endif
-				char msg[strlen(translate("gettextFromC", ERR_FS_ALMOST_FULL)) + 4];
+				char msg[strlen(translate("gettextFromC", ACTION_RECONNECT)) + 4];
 				for (int wait=60; wait >=0; wait--){
-					sprintf(msg, "%s %ds", translate("gettextFromC", ERR_FS_ALMOST_FULL), wait);
+					sprintf(msg, "%s %ds", translate("gettextFromC", ACTION_RECONNECT), wait);
 					uemis_info(msg);
 					filenr = 0;
 					usleep(1000000);
@@ -1494,9 +1494,6 @@ const char *do_uemis_import(device_data_t *data)
 		else
 			next_table_index++;
 	}
-
-	if (uemis_mem_status != UEMIS_MEM_OK)
-		result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
 
 bail:
 	(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
