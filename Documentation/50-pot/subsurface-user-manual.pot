@@ -9076,6 +9076,9 @@ msgid ""
 "reconnect it. You can now retry (or start a new download session) and the "
 "download will continue where it stopped previously. You may have to do this "
 "more than once, depending on how many dives are stored on the dive computer."
+"You may define a dive number offset by setting environment variable "
+"UEMIS_DIVE_OFFSET (e.g. export UEMIS_DIVE_OFFSET=300), "
+"if subsurface starts downloading dives that are already synced."
 msgstr ""
 
 #. type: Title ===
