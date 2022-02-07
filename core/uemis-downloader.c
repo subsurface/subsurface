@@ -1331,7 +1331,14 @@ const char *do_uemis_import(device_data_t *data)
 	char *endptr;
 	bool success, once = true;
 	int match_dive_and_log = 0;
+	int dive_offset = 0;
 	int uemis_mem_status = UEMIS_MEM_OK;
+
+	// To speed up sync you can skip downloading old dives by defining UEMIS_DIVE_OFFSET
+	if (getenv("UEMIS_DIVE_OFFSET")) {
+		dive_offset = atoi(getenv("UEMIS_DIVE_OFFSET"));
+		printf("Uemis: Using dive # offset %d\n", dive_offset);
+	}
 
 #if UEMIS_DEBUG
 	home = getenv("HOME");
@@ -1367,6 +1374,7 @@ const char *do_uemis_import(device_data_t *data)
 
 	first = start = atoi(newmax);
 	dive_to_read = mindiveid < first ? first - mindiveid : first;
+	start += dive_offset;
 	for (;;) {
 #if UEMIS_DEBUG & 2
 		debug_round++;
@@ -1434,13 +1442,29 @@ const char *do_uemis_import(device_data_t *data)
 #if UEMIS_DEBUG & 4
 				fprintf(debugfile, "d_u_i out of memory, bailing\n");
 #endif
+				(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
 				char msg[strlen(translate("gettextFromC", ACTION_RECONNECT)) + 4];
 				for (int wait=60; wait >=0; wait--){
 					sprintf(msg, "%s %ds", translate("gettextFromC", ACTION_RECONNECT), wait);
 					uemis_info(msg);
-					filenr = 0;
 					usleep(1000000);
 				}
+				filenr = 0;
+				max_mem_used = -1;
+				uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_DETAILS);
+				if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
+					goto bail;
+				if (strcmp(deviceid, param_buff[0]) != 0) {
+					printf(stderr, "Uemis: Device id has changed after reconnect!\n");
+					goto bail;
+				}
+				param_buff[0] = strdup(deviceid);
+				if (!uemis_get_answer(mountpath, "initSession", 1, 6, &result))
+					goto bail;
+				uemis_info(translate("gettextFromC", "Start download"));
+				if (!uemis_get_answer(mountpath, "processSync", 0, 2, &result))
+					goto bail;
+				param_buff[1] = "notempty";
 			}
 			/* if the user clicked cancel, exit gracefully */
 			if (import_thread_cancelled) {
