@@ -18,7 +18,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	ui->setupUi(this);
 
 	// Quit button callbacks
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), this, SLOT(reject()));
 	connect(ui->quit, SIGNAL(clicked()), this, SLOT(reject()));
 

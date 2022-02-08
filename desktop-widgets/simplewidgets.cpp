@@ -45,9 +45,9 @@ RenumberDialog::RenumberDialog(bool selectedOnlyIn, QWidget *parent) : QDialog(p
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 
 	if (selectedOnly && amount_selected == 1)
@@ -72,9 +72,9 @@ SetpointDialog::SetpointDialog(struct dive *dIn, int dcNrIn, int seconds) : QDia
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &SetpointDialog::buttonClicked);
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, &QShortcut::activated, this, &QDialog::close);
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, &QShortcut::activated, MainWindow::instance(), &QWidget::close);
 }
 
@@ -116,9 +116,9 @@ ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent),
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime)), this, SLOT(changeTime()));
 	connect(ui.backwards, SIGNAL(toggled(bool)), this, SLOT(changeTime()));
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
@@ -271,9 +271,9 @@ void ShiftImageTimesDialog::backwardsChanged(bool)
 URLDialog::URLDialog(QWidget *parent) : QDialog(parent)
 {
 	ui.setupUi(this);
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
@@ -317,9 +317,9 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 	UI_FROM_COMPONENT(number);
 	UI_FROM_COMPONENT(when);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
