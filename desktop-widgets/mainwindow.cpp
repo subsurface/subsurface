@@ -210,8 +210,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	updateManager = new UpdateManager(this);
 	undoAction = Command::undoAction(this);
 	redoAction = Command::redoAction(this);
-	undoAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
-	redoAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
+	undoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Z));
+	redoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Z));
 	ui.menu_Edit->addActions({ undoAction, redoAction });
 
 #ifndef NO_PRINTING
@@ -570,8 +570,8 @@ void MainWindow::enableShortcuts()
 	redoAction->setEnabled(true);
 	ui.actionPreviousDC->setShortcut(Qt::Key_Left);
 	ui.actionNextDC->setShortcut(Qt::Key_Right);
-	ui.copy->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
-	ui.paste->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
+	ui.copy->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
+	ui.paste->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_V));
 }
 
 void MainWindow::showProfile()
@@ -724,9 +724,9 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	l->addWidget(view);
 	d.resize(lrint(width() * .8), height() / 2);
 	d.move(lrint(width() * .1), height() / 4);
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), &d);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), &d);
 	connect(close, SIGNAL(activated()), &d, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), &d);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), &d);
 	connect(quit, SIGNAL(activated()), this, SLOT(close()));
 	d.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint
 		| Qt::WindowCloseButtonHint | Qt::WindowTitleHint | Qt::WindowMaximizeButtonHint);

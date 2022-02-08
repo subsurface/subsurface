@@ -31,8 +31,8 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent) : QDialog(parent, QF
 {
 	diveImportedModel = new DiveImportedModel(this);
 	vendorModel.setStringList(vendorList);
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 
 	int startingWidth = defaultModelFont().pointSize();
 

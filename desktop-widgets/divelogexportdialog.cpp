@@ -37,9 +37,9 @@ DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
 {
 	ui->setupUi(this);
 	showExplanation();
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), MainWindow::instance(), SLOT(close()));
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 
 	/* the names are not the actual values exported to the json files,The font-family property should hold several
