@@ -16,8 +16,8 @@
 DivesiteImportDialog::DivesiteImportDialog(struct dive_site_table &imported, QString source, QWidget *parent) : QDialog(parent),
 	importedSource(source)
 {
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 
 	divesiteImportedModel = new DivesiteImportedModel(this);
 

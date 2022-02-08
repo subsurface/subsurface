@@ -10,9 +10,9 @@ TripSelectionDialog::TripSelectionDialog(QWidget *parent) : QDialog(parent)
 	ui.setupUi(this);
 	connect(ui.trips, &QListWidget::itemSelectionChanged, this, &TripSelectionDialog::selectionChanged);
 
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, &QShortcut::activated, this, &QDialog::close);
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, &QShortcut::activated, parent, &QWidget::close);
 
 	// We could use a model, but it seems barely worth the hassle.

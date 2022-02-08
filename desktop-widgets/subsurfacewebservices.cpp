@@ -259,9 +259,9 @@ DivelogsDeWebServices::DivelogsDeWebServices(QWidget *parent) : WebServices(pare
 	ui.password->setText(qPrefCloudStorage::divelogde_pass());
 	ui.saveUidLocal->hide();
 	hideUpload();
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 }
 
