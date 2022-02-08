@@ -380,9 +380,9 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	loadFileContents(-1, INITIAL);
 
 	/* manually import CSV file */
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 
 	connect(ui->CSVSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(loadFileContentsSeperatorSelected(int)));
