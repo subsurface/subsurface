@@ -1,5 +1,9 @@
 # QTest based tests
-qt5_add_resources(SUBSURFACE_TEST_RESOURCES ../subsurface.qrc)
+if(NOT USINGQT6)
+	qt5_add_resources(SUBSURFACE_TEST_RESOURCES ../subsurface.qrc)
+else()
+	qt_add_resources(SUBSURFACE_TEST_RESOURCES ../subsurface.qrc)
+endif()
 
 # Access test data (dive folder) from SUBSURFACE_SOURCE by default.
 # In cross compilation cases or when test will not be executed at build time

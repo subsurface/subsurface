@@ -1,6 +1,10 @@
 # create the libraries
 file(GLOB SUBSURFACE_UI *.ui)
-qt5_wrap_ui(SUBSURFACE_UI_HDRS ${SUBSURFACE_UI})
+if(NOT USINGQT6)
+	qt5_wrap_ui(SUBSURFACE_UI_HDRS ${SUBSURFACE_UI})
+else()
+	qt_wrap_ui(SUBSURFACE_UI_HDRS ${SUBSURFACE_UI})
+endif()
 source_group("Subsurface Interface Files" FILES ${SUBSURFACE_UI})
 
 if(BTSUPPORT)
@@ -94,8 +98,6 @@ set(SUBSURFACE_INTERFACE
 	locationinformation.h
 	mainwindow.cpp
 	mainwindow.h
-	mapwidget.cpp
-	mapwidget.h
 	modeldelegates.cpp
 	modeldelegates.h
 	notificationwidget.cpp
@@ -139,6 +141,12 @@ set(SUBSURFACE_INTERFACE
 	updatemanager.cpp
 	updatemanager.h
 )
+if(NOT USINGQT6)
+	LIST(APPEND SUBSURFACE_INTERFACE
+		mapwidget.cpp
+		mapwidget.h
+	)
+endif()
 
 if(NOT NO_USERMANUAL)
 	set(SUBSURFACE_INTERFACE ${SUBSURFACE_INTERFACE}
@@ -178,7 +186,11 @@ set(SUBSURFACE_STATISTICS_LIB_SRCS
 )
 source_group("Subsurface Statistics" FILES ${SUBSURFACE_STATISTICS_LIB_SRCS})
 
-qt5_wrap_ui(SUBSURFACE_UI_SRCS ${SUBSURFACE_UI})
+if(NOT USINGQT6)
+	qt5_wrap_ui(SUBSURFACE_UI_SRCS ${SUBSURFACE_UI})
+else()
+	qt_wrap_ui(SUBSURFACE_UI_SRCS ${SUBSURFACE_UI})
+endif()
 
 add_library(subsurface_statistics STATIC ${SUBSURFACE_STATISTICS_LIB_SRCS})
 target_link_libraries(subsurface_statistics ${QT_LIBRARIES})

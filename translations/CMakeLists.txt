@@ -53,8 +53,12 @@ set(US_EN_PLURALS subsurface_en_US.ts)
 #	subsurface_vi.ts
 #	subsurface_zh_CN.ts
 
+if(NOT USINGQT6)
+	qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES} ${US_EN_PLURALS})
+else()
+	qt_add_translation(TRANSLATIONS ${TRANSLATION_FILES} ${US_EN_PLURALS})
+endif()
 
-qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES} ${US_EN_PLURALS})
 set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
 add_custom_target (translations ALL DEPENDS ${TRANSLATIONS})
 
