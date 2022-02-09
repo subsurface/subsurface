@@ -21,8 +21,6 @@ set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 	filterconstraintmodel.h
 	filterpresetmodel.cpp
 	filterpresetmodel.h
-	maplocationmodel.cpp
-	maplocationmodel.h
 	models.cpp
 	models.h
 	tankinfomodel.cpp
@@ -30,6 +28,13 @@ set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 	weightsysteminfomodel.cpp
 	weightsysteminfomodel.h
 )
+
+if(NOT USINGQT6)
+	LIST(APPEND SUBSURFACE_GENERIC_MODELS_LIB_SRCS
+		maplocationmodel.cpp
+		maplocationmodel.h
+	)
+endif()
 
 # models exclusively used in desktop builds
 set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
