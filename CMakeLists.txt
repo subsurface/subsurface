@@ -49,7 +49,7 @@ option(NO_PRINTING "disable the printing support" OFF)
 option(NO_USERMANUAL "don't include a viewer for the user manual" OFF)
 
 #Options regarding enabling parts of subsurface
-option(BTSUPPORT "enable support for QtBluetooth (requires Qt5.4 or newer)" ON)
+option(BTSUPPORT "enable support for QtBluetooth" ON)
 option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 
 # Options regarding What should we build on subsurface
@@ -505,9 +505,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(CODE "execute_process(COMMAND mkdir -p ${PLUGINDIR}/geoservices)")
 	install(CODE "execute_process(COMMAND cp ${_qt5Core_install_prefix}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
 	install(CODE "execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../install-root/${_qt5Core_install_prefix}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
-	# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
-	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
-	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} ${APP_BUNDLE_DIR} -no-strip ${MACDEPLOY_ARGS})")
+	# this will fail is macdeployqt isn't in the PATH - that seemed to happen in the past, but not recently
+	install(CODE "execute_process(COMMAND macdeployqt ${APP_BUNDLE_DIR} -no-strip ${MACDEPLOY_ARGS})")
 	# the next hack is here to delete the sqlite plugin that get's installed even though it isn't needed
 	install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns/sqldrivers)")
 	# and another hack to get the QML Components in the right place
