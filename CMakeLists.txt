@@ -173,6 +173,30 @@ include_directories(.
 	${CMAKE_BINARY_DIR}/desktop-widgets
 )
 
+# figure out which version of Qt we are building against
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+
+# right now there are a few things that don't work with Qt6
+# let's disable them right here and remember our Qt version
+if(QT_VERSION_MAJOR STREQUAL "6")
+	set(USINGQT6 ON)
+	set(QT5OR6 "")
+	# for Qt6 we want the Qt5 compatibility package
+	LIST(APPEND QT_EXTRA_COMPONENTS Core5Compat)
+	LIST(APPEND QT_TEST_LIBRARIES Qt::Core5Compat)
+
+	# QtWebKit doesn't work with Qt6, so no printing, no manual
+	set(NO_PRINTING ON)
+	set(NO_USERMANUAL ON)
+else()
+	set(USINGQT6 OFF)
+	set(QT5OR6 "5")
+	set(QT_VERSION ${Qt5_VERSION})
+	# for Qt5 we want the Location component (which is missing so far in Qt6)
+	LIST(APPEND QT_EXTRA_COMPONENTS Location)
+endif()
+message(STATUS "building with Qt ${QT_VERSION}")
+
 # Project Target specific configuration should go here,
 # if the configuration is too big or would disrupt the normal code flux,
 # move it somewhere else (another file) and include it.
@@ -284,39 +308,38 @@ if(ANDROID)
 	# our Qt installation. This is ugly, but it works.
 	set(CMAKE_FIND_ROOT_PATH "/;${CMAKE_FIND_ROOT_PATH}")
 endif()
-set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick Location ${QT_EXTRA_COMPONENTS})
+set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick ${QT_EXTRA_COMPONENTS})
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
-	find_package(Qt5 5.9.1 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
+	find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	# Kirigami 5.62 and newer require at least Qt 5.12
 	if(ANDROID)
-		find_package(Qt5 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools)
+		find_package(Qt${QT_VERSION_MAJOR} 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools)
 	else()
-		find_package(Qt5 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
+		find_package(Qt${QT_VERSION_MAJOR} 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	# let's pick a version that's not ancient
-	find_package(Qt5 5.11 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
+	find_package(Qt${QT_VERSION_MAJOR} 5.11 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
 	set(MAKE_TESTS OFF)
-endif()
-# we don't support Qt6
-# the comparison with an invalid version of 5.15 ensures that this will keep working even if
-# there are newer Qt 5.15 versions over time (which is unfortunately doubtful)
-if (Qt5Core_VERSION VERSION_GREATER 5.15.15)
-	message(FATAL_ERROR "Subsurface cannot be built against Qt 6 or later")
 endif()
 
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
-	list(APPEND QT_LIBRARIES Qt5::${_QT_COMPONENT})
+	list(APPEND QT_LIBRARIES Qt${QT5OR6}::${_QT_COMPONENT})
 endforeach()
 if(NOT ANDROID)
-	set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test Qt5::QuickTest)
+	LIST(APPEND QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt${QT5OR6}::Test Qt${QT5OR6}::QuickTest)
 endif()
 
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES} ${LIBMTP_LIBRARIES})
 if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
-	qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc stats/statsicons.qrc map-widget/qml/map-widget.qrc desktop-widgets/qml/statsview2.qrc)
+	if(USINGQT6)
+		qt_add_resources(SUBSURFACE_RESOURCES subsurface.qrc stats/statsicons.qrc desktop-widgets/qml/statsview2.qrc)
+	else()
+		qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc stats/statsicons.qrc map-widget/qml/map-widget.qrc desktop-widgets/qml/statsview2.qrc)
+		set(SUBSURFACE_MAPWIDGET subsurface_mapwidget)
+	endif()
 endif()
 
 # hack to build successfully on LGTM
@@ -333,7 +356,9 @@ add_subdirectory(qt-models)
 add_subdirectory(commands)
 if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 add_subdirectory(profile-widget)
+if(NOT USINGQT6)
 add_subdirectory(map-widget)
+endif()
 add_subdirectory(mobile-widgets)
 add_subdirectory(stats)
 endif()
@@ -361,9 +386,15 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface-mobile-main.cpp
 		subsurface-helper.cpp
 	)
-	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
-	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
-	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
+	if(USINGQT6)
+		qt_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
+		qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
+		qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
+	else()
+		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
+		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
+		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
+	endif()
 
 	# the following is split across two commands since in cmake 3.12 this would result
 	# in a non-sensical "no sources given to target" error if done all as one set of
@@ -374,7 +405,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		${SUBSURFACE_TARGET}
 		subsurface_mobile
 		subsurface_profile
-		subsurface_mapwidget
+		${SUBSURFACE_MAPWIDGET}
 		subsurface_backend_shared
 		subsurface_models_mobile
 		subsurface_commands
@@ -401,7 +432,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface_interface
 		subsurface_profile
 		subsurface_statistics
-		subsurface_mapwidget
+		${SUBSURFACE_MAPWIDGET}
 		subsurface_backend_shared
 		subsurface_models_desktop
 		subsurface_commands
@@ -461,7 +492,11 @@ set(DOCFILES
 FILE(STRINGS "subsurface_enabled_translations" QTTRANSLATIONS_BASE)
 
 if(NOT DEFINED QT_TRANSLATION_DIR OR QT_TRANSLATION_DIR STREQUAL "")
-	set(QT_TRANSLATION_DIR ${Qt5Core_DIR}/../../../translations)
+	if(USINGQT6)
+		set(QT_TRANSLATION_DIR ${QtCore_DIR}/../../../translations)
+	else()
+		set(QT_TRANSLATION_DIR ${Qt5Core_DIR}/../../../translations)
+	endif()
 endif()
 set(QTTRANSLATIONS "")
 foreach(QTTRANSLATION ${QTTRANSLATIONS_BASE})
@@ -514,12 +549,12 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick.2 ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtLocation ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtPositioning ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
-	if(NOT Qt5Core_VERSION VERSION_LESS 5.11.0)
+	if(NOT QT_VERSION VERSION_LESS 5.11.0)
 		# and with Qt 5.11 we need another library that isn't copied by macdeployqt
 		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtPositioningQuick.framework)")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtPositioningQuick.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
 	endif()
-	if(NOT Qt5Core_VERSION VERSION_LESS 5.14.0)
+	if(NOT QT_VERSION VERSION_LESS 5.14.0)
 		# and with Qt 5.14 we need another library that isn't always copied by macdeployqt
 		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtQmlWorkerScript.framework)")
 		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtQmlWorkerScript.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
@@ -562,10 +597,10 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION ${WINDOWSSTAGING})
 	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
 
-	if(NOT Qt5Core_VERSION VERSION_LESS 5.11.0)
+	if(NOT QT_VERSION VERSION_LESS 5.11.0)
 		# hack to work around the fact that we don't process the dependencies of plugins
 		# as of Qt 5.11 this additional DLL is needed and it's only referenced in the qml DLLs
-		install(FILES ${_qt5Core_install_prefix}/bin/Qt5PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+		install(FILES ${_qt5Core_install_prefix}/bin/QtPositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
 	endif()
 
 	if(NOT DEFINED MAKENSIS)
