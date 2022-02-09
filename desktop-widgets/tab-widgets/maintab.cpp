@@ -89,8 +89,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MainTab::updateDiveInfo);
 
 	connect(ui.editDiveSiteButton, &QToolButton::clicked, MainWindow::instance(), &MainWindow::startDiveSiteEdit);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
 	connect(ui.location, &DiveLocationLineEdit::currentChanged, MapWidget::instance(), &MapWidget::centerOnIndex);
+#endif
 	connect(ui.location, &DiveLocationLineEdit::editingFinished, this, &MainTab::on_location_diveSiteSelected);
 
 	// One might think that we could listen to the precise property-changed signals of the preferences system.

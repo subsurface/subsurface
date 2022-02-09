@@ -132,7 +132,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	// for the "default" mode
 	mainTab.reset(new MainTab);
 	diveList.reset(new DiveListView);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	mapWidget.reset(MapWidget::instance()); // Yes, this is ominous see comment in mapwidget.cpp.
+#endif
 	plannerWidgets.reset(new PlannerWidgets);
 	statistics.reset(new StatsWidget);
 	profile.reset(new ProfileWidget);
@@ -198,7 +200,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	initialUiSetup();
 	readSettings();
 	diveList->setFocus();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	MapWidget::instance()->reload();
+#endif
 	diveList->expand(diveList->model()->index(0, 0));
 	diveList->scrollTo(diveList->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 #ifdef NO_USERMANUAL
@@ -327,7 +331,9 @@ void MainWindow::selectionChanged()
 	if (current_dive)
 		enableDisableOtherDCsActions();
 	profile->plotCurrentDive();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	MapWidget::instance()->selectionChanged();
+#endif
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -508,7 +514,9 @@ void MainWindow::closeCurrentFile()
 	clear_dive_file_data(); // this clears all the core data structures and resets the models
 	setCurrentFile(nullptr);
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	MapWidget::instance()->reload();
+#endif
 	if (!existing_filename)
 		setTitle();
 	disableShortcuts();
