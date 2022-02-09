@@ -148,7 +148,9 @@ void DiveFilter::startFilterDiveSites(QVector<dive_site *> ds)
 		dive_sites = ds;
 		// When switching into dive site mode, reload the dive sites.
 		// TODO: why here? why not catch the filterReset signal in the map widget
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 		MapWidget::instance()->reload();
+#endif
 		emit diveListNotifier.filterReset();
 	}
 }
@@ -159,7 +161,9 @@ void DiveFilter::stopFilterDiveSites()
 		return;
 	dive_sites.clear();
 	emit diveListNotifier.filterReset();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	MapWidget::instance()->reload();
+#endif
 }
 
 void DiveFilter::setFilterDiveSite(QVector<dive_site *> ds)
@@ -172,8 +176,10 @@ void DiveFilter::setFilterDiveSite(QVector<dive_site *> ds)
 	dive_sites = ds;
 
 	emit diveListNotifier.filterReset();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	MapWidget::instance()->setSelected(dive_sites);
 	MapWidget::instance()->selectionChanged();
+#endif
 	MainWindow::instance()->diveList->expandAll();
 }
 
