@@ -523,7 +523,9 @@ void DiveListView::selectionChangeDone()
 			if (d->selected && !d->hidden_by_filter && d->dive_site && !selectedSites.contains(d->dive_site))
 				selectedSites.push_back(d->dive_site);
 		}
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 		MapWidget::instance()->setSelected(selectedSites);
+#endif
 	}
 	emit divesSelected();
 }

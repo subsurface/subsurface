@@ -2,8 +2,11 @@
 #include <QQmlEngine>
 #include <QQuickItem>
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
+#endif
+
 #include "stats/statsview.h"
 #include "core/qt-gui.h"
 #include "core/settings/qPref.h"
@@ -222,7 +225,9 @@ static void register_qml_types(QQmlEngine *engine)
 	register_qml_type<ChartListModel>("ChartListModel");
 #endif // not SUBSURFACE_MOBILE
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	register_qml_type<MapWidgetHelper>("MapWidgetHelper");
 	register_qml_type<MapLocationModel>("MapLocationModel");
+#endif
 	register_qml_type<StatsView>("StatsView");
 }
