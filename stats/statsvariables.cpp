@@ -113,7 +113,7 @@ template<> int invalid_value<int>()
 }
 template<> double invalid_value<double>()
 {
-	return std::numeric_limits<double>::quiet_NaN();
+	return NaN;
 }
 template<> QString invalid_value<QString>()
 {
@@ -121,7 +121,6 @@ template<> QString invalid_value<QString>()
 }
 template<> StatsQuartiles invalid_value<StatsQuartiles>()
 {
-	double NaN = std::numeric_limits<double>::quiet_NaN();
 	return { std::vector<dive *>(), NaN, NaN, NaN, NaN, NaN };
 }
 
