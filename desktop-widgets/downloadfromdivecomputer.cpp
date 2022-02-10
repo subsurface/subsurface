@@ -311,7 +311,7 @@ void DownloadFromDCWidget::updateState(states state)
 	currentState = state;
 }
 
-void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
+void DownloadFromDCWidget::on_vendor_currentTextChanged(const QString &vendor)
 {
 	unsigned int transport;
 	dc_descriptor_t *descriptor;
@@ -323,7 +323,7 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 	fill_device_list(transport);
 }
 
-void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &)
+void DownloadFromDCWidget::on_product_currentTextChanged(const QString &)
 {
 	updateDeviceEnabled();
 }
