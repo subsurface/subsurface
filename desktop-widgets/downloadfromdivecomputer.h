@@ -42,8 +42,8 @@ slots:
 	void on_ok_clicked();
 	void on_cancel_clicked();
 	void on_search_clicked();
-	void on_vendor_currentIndexChanged(const QString &vendor);
-	void on_product_currentIndexChanged(const QString &product);
+	void on_vendor_currentTextChanged(const QString &vendor);
+	void on_product_currentTextChanged(const QString &product);
 	void on_device_currentTextChanged(const QString &device);
 
 	void onDownloadThreadFinished();
