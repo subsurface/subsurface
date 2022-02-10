@@ -546,6 +546,10 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		set(QT_INSTALL_PREFIX ${QT6_INSTALL_PREFIX})
 	endif()
 	# this will fail is macdeployqt isn't in the PATH - that seemed to happen in the past, but not recently
+	# also, on M1 macOS systems macdeployqt throws a ton of (apparently harmless) errors. Warn the unsuspecting developer
+	if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64")
+		install(CODE "execute_process(COMMAND echo the following macdeployqt command will spew out a ton of harmless otool output parsing errors)")
+	endif()
 	install(CODE "execute_process(COMMAND macdeployqt ${APP_BUNDLE_DIR} -no-strip ${MACDEPLOY_ARGS})")
 	# the next hack is here to delete the sqlite plugin that get's installed even though it isn't needed
 	install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns/sqldrivers)")
