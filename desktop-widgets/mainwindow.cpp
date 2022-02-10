@@ -8,7 +8,9 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QDesktopWidget>
+#endif
 #include <QSettings>
 #include <QShortcut>
 #include <QStatusBar>
@@ -807,9 +809,13 @@ void MainWindow::restoreSplitterSizes()
 		topSplitter->restoreState(settings.value("topSplitter").toByteArray());
 		bottomSplitter->restoreState(settings.value("bottomSplitter").toByteArray());
 	} else {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 		const int appH = qApp->desktop()->size().height();
 		const int appW = qApp->desktop()->size().width();
-
+#else
+		const int appH = screen()->size().height();
+		const int appW = screen()->size().width();
+#endif
 		ui.mainSplitter->setSizes({ appH * 3 / 5, appH * 2 / 5 });
 		topSplitter->setSizes({ appW / 2, appW / 2 });
 		bottomSplitter->setSizes({ appW * 3 / 5, appW * 2 / 5 });
