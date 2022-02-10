@@ -11,7 +11,11 @@ TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NUL
 	connect(this, SIGNAL(textChanged()), this, SLOT(reparse()));
 
 	QColor textColor = palette().color(QPalette::Text);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	float h, s, l, a;
+#else
 	qreal h, s, l, a;
+#endif
 	textColor.getHslF(&h, &s, &l, &a);
 	// I use dark themes
 	if (l <= 0.3) { // very dark text. get a brigth background
