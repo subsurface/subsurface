@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "core/qthelper.h"
+#include "core/namecmp.h"
 #include "core/webservice.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include "desktop-widgets/mainwindow.h"
@@ -157,7 +158,7 @@ static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 	DiveListResult result;
 	result.idCount = 0;
 
-	if (reader.readNextStartElement() && reader.name() != "DiveDateReader") {
+	if (reader.readNextStartElement() && nameCmp(reader, "DiveDateReader") != 0) {
 		result.errorCondition = invalidXmlError;
 		result.errorDetails =
 			gettextFromC::tr("Expected XML tag 'DiveDateReader', got instead '%1")
@@ -166,8 +167,8 @@ static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 	}
 
 	while (reader.readNextStartElement()) {
-		if (reader.name() != "DiveDates") {
-			if (reader.name() == "Login") {
+		if (nameCmp(reader, "DiveDates") != 0) {
+			if (nameCmp(reader, "Login") == 0) {
 				QString status = reader.readElementText();
 				// qDebug() << "Login status:" << status;
 
@@ -185,11 +186,11 @@ static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 		// process <DiveDates>
 		seenDiveDates = true;
 		while (reader.readNextStartElement()) {
-			if (reader.name() != "date") {
+			if (nameCmp(reader, "date") != 0) {
 				// qDebug() << "Skipping" << reader.name();
 				continue;
 			}
-			QStringRef id = reader.attributes().value("divelogsId");
+			auto id = reader.attributes().value("divelogsId");
 			// qDebug() << "Found" << reader.name() << "with id =" << id;
 			if (!id.isEmpty()) {
 				result.idList += id.toLatin1();
