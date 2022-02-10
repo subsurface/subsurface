@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/parse-gpx.h"
 #include "core/subsurface-time.h"
+#include "core/namecmp.h"
 #include <QFile>
 #include <QXmlStreamReader>
 
@@ -43,7 +44,7 @@ int getCoordsFromGPXFile(struct dive_coords *coords, QString fileName)
 	while (!gpxReader.atEnd()) {
 		gpxReader.readNext();
 		if (gpxReader.isStartElement()) {
-			if (gpxReader.name() == "trkpt") {
+			if (nameCmp(gpxReader, "trkpt") == 0) {
 				trkpt_found = true;
 				line++;
 				foreach (const QXmlStreamAttribute &attr, gpxReader.attributes()) {
@@ -53,7 +54,7 @@ int getCoordsFromGPXFile(struct dive_coords *coords, QString fileName)
 						lon = attr.value().toString().toDouble();
 				}
 			}
-			if (gpxReader.name() == "time" && trkpt_found) {  // Ignore the <time> element in the GPX file header
+			if (nameCmp(gpxReader, "time") == 0 && trkpt_found) {  // Ignore the <time> element in the GPX file header
 				QString dateTimeString = gpxReader.readElementText();
 				bool ok;
 				tm1.tm_year = dateTimeString.left(4).toInt(&ok, 10);  // Extract the date/time components:
