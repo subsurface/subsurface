@@ -1087,7 +1087,11 @@ void DivePlannerPointsModel::updateDiveProfile()
 		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
 		// on the stack, it must be copied and freed by the worker-thread.
 		struct deco_state *plan_deco_state_copy = new deco_state(plan_deco_state);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		QtConcurrent::run(&DivePlannerPointsModel::computeVariationsFreeDeco, this, plan_copy, plan_deco_state_copy);
+#else
 		QtConcurrent::run(this, &DivePlannerPointsModel::computeVariationsFreeDeco, plan_copy, plan_deco_state_copy);
+#endif
 #else
 		computeVariations(plan_copy, &plan_deco_state);
 #endif
