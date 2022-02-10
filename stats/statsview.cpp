@@ -309,14 +309,22 @@ QRectF StatsView::plotArea() const
 	return plotRect;
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void StatsView::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+#else
 void StatsView::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+#endif
 {
 	plotRect = QRectF(QPointF(0.0, 0.0), newGeometry.size());
 	backgroundDirty = true;
 	plotAreaChanged(plotRect.size());
 
 	// Do we need to call the base-class' version of geometryChanged? Probably for QML?
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QQuickItem::geometryChange(newGeometry, oldGeometry);
+#else
 	QQuickItem::geometryChanged(newGeometry, oldGeometry);
+#endif
 }
 
 void StatsView::plotAreaChanged(const QSizeF &s)

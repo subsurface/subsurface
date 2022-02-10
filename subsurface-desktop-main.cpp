@@ -204,7 +204,7 @@ exit:
 	surface.destroy();
 	if (glError) {
 		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError);
-		QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
+		QQuickWindow::setSceneGraphBackend("software");
 	}
 }
 
