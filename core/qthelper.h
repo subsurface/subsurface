@@ -20,6 +20,7 @@ enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYP
 #ifdef __cplusplus
 
 #include <QString>
+#include <QXmlStreamReader>
 #include "core/gettextfromc.h"
 class QImage;
 
@@ -28,6 +29,12 @@ class QImage;
 #else
 #define SKIP_EMPTY QString::SkipEmptyParts
 #endif
+
+// this is annoying Qt5 / Qt6 incompatibility where we can't compare against string literals anymore
+static inline int nameCmp(QXmlStreamReader &r, const char * cs)
+{
+	return r.name().compare(QLatin1String(cs));
+}
 
 QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
