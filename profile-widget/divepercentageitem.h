@@ -10,12 +10,11 @@ class DiveCartesianAxis;
 
 class DivePercentageItem : public QGraphicsPixmapItem {
 public:
-	DivePercentageItem(const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis, double dpr);
+	DivePercentageItem(const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis);
 	void replot(const dive *d, const divecomputer *dc, const plot_info &pi);
 private:
 	const DiveCartesianAxis &hAxis;
 	const DiveCartesianAxis &vAxis;
-	double dpr;
 };
 
 #endif

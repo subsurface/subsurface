@@ -144,7 +144,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis,
 						    [](const plot_data &item) { return (double)item.heartbeat; },
 						    1, dpr)),
-	percentageItem(new DivePercentageItem(*timeAxis, *percentageAxis, dpr)),
+	percentageItem(new DivePercentageItem(*timeAxis, *percentageAxis)),
 	tankItem(new TankItem(*timeAxis, dpr)),
 	pixmaps(getDivePixmaps(dpr))
 {
