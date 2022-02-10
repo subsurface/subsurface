@@ -1443,12 +1443,13 @@ const char *do_uemis_import(device_data_t *data)
 				fprintf(debugfile, "d_u_i out of memory, bailing\n");
 #endif
 				(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
-				char msg[strlen(translate("gettextFromC", ACTION_RECONNECT)) + 4];
+				const char *errormsg = translate("gettextFromC", ACTION_RECONNECT);
 				for (int wait=60; wait >=0; wait--){
-					sprintf(msg, "%s %ds", translate("gettextFromC", ACTION_RECONNECT), wait);
-					uemis_info(msg);
+					uemis_info("%s %ds", errormsg, wait);
+					filenr = 0;
 					usleep(1000000);
 				}
+				// Resetting to original state
 				filenr = 0;
 				max_mem_used = -1;
 				uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_DETAILS);
