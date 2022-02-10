@@ -1,3 +1,4 @@
+
 // SPDX-License-Identifier: GPL-2.0
 #include <QApplication>
 #include <Qt>
@@ -50,7 +51,7 @@ void init_qt_late()
 	}
 	// Disables the WindowContextHelpButtonHint by default on Qt::Sheet and Qt::Dialog widgets.
 	// This hides the ? button on Windows, which only makes sense if you use QWhatsThis functionality.
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	QCoreApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
 #endif
 	qPref::load();
