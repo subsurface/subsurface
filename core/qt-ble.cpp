@@ -110,7 +110,7 @@ static const char *match_uuid_list(const QBluetoothUuid &match, const struct uui
 	const char *uuid;
 
 	while ((uuid = array->uuid) != NULL) {
-		if (match == QUuid(uuid))
+		if (match == QBluetoothUuid(QUuid(uuid)))
 			return array->details;
 		array++;
 	}
@@ -220,7 +220,11 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		service->connect(service, &QLowEnergyService::stateChanged,[=](QLowEnergyService::ServiceState newState) {
 			qDebug() << "   .. service state changed to" << newState;
 		});
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		service->connect(service, &QLowEnergyService::errorOccurred,
+#else
 		service->connect(service, QOverload<QLowEnergyService::ServiceError>::of(&QLowEnergyService::error),
+#endif
 				 [=](QLowEnergyService::ServiceError newError) {
 			qDebug() << "error discovering service details" << newError;
 		});
@@ -393,8 +397,13 @@ dc_status_t BLEObject::select_preferred_service(void)
 {
 	// Wait for each service to finish discovering
 	foreach (const QLowEnergyService *s, services) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		WAITFOR(s->state() != QLowEnergyService::RemoteServiceDiscovering, BLE_TIMEOUT);
+		if (s->state() == QLowEnergyService::RemoteServiceDiscovering)
+#else
 		WAITFOR(s->state() != QLowEnergyService::DiscoveringServices, BLE_TIMEOUT);
 		if (s->state() == QLowEnergyService::DiscoveringServices)
+#endif
 			qDebug() << " .. service " << s->serviceUuid() << "still hasn't completed discovery - trouble ahead";
 	}
 
@@ -412,7 +421,11 @@ dc_status_t BLEObject::select_preferred_service(void)
 
 	// Pick the preferred one
 	foreach (QLowEnergyService *s, services) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		if (s->state() != QLowEnergyService::RemoteServiceDiscovered)
+#else
 		if (s->state() != QLowEnergyService::ServiceDiscovered)
+#endif
 			continue;
 
 		bool hasread = false;
@@ -604,7 +617,11 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 			ble->addService(s);
 		}
 	});
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	ble->connect(controller, &QLowEnergyController::errorOccurred, [=](QLowEnergyController::Error newError) {
+#else
 	ble->connect(controller, QOverload<QLowEnergyController::Error>::of(&QLowEnergyController::error), [=](QLowEnergyController::Error newError) {
+#endif
 		qDebug() << "controler discovery error" << controller->errorString() << newError;
 	});
 
