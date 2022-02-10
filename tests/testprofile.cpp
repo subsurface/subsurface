@@ -6,6 +6,7 @@
 #include "core/file.h"
 #include "core/save-profiledata.h"
 #include "core/pref.h"
+#include "QTextCodec"
 
 // This test compares the content of struct profile against a known reference version for a list
 // of dives to prevent accidental regressions. Thus is you change anything in the profile this
@@ -18,7 +19,6 @@ void TestProfile::init()
 {
 	// Set UTF8 text codec as in real applications
 	QTextCodec::setCodecForLocale(QTextCodec::codecForMib(106));
-
 	// first, setup the preferences
 
 	// normally we should be able to do this - but it makes this test fail because the reference data
