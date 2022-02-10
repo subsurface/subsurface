@@ -6,8 +6,8 @@
 
 #include <array>
 
-DivePercentageItem::DivePercentageItem(const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis, double dpr) :
-	hAxis(hAxis), vAxis(vAxis), dpr(dpr)
+DivePercentageItem::DivePercentageItem(const DiveCartesianAxis &hAxis, const DiveCartesianAxis &vAxis) :
+	hAxis(hAxis), vAxis(vAxis)
 {
 }
 
