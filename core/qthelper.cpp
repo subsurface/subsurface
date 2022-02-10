@@ -753,9 +753,9 @@ timestamp_t dateTimeToTimestamp(const QDateTime &t)
 QString render_seconds_to_string(int seconds)
 {
 	if (seconds % 60 == 0)
-		return QDateTime::fromTime_t(seconds).toUTC().toString("h:mm");
+		return QDateTime::fromSecsSinceEpoch(seconds, Qt::UTC).toUTC().toString("h:mm");
 	else
-		return QDateTime::fromTime_t(seconds).toUTC().toString("h:mm:ss");
+		return QDateTime::fromSecsSinceEpoch(seconds, Qt::UTC).toUTC().toString("h:mm:ss");
 }
 
 int parseDurationToSeconds(const QString &text)
