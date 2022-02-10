@@ -8,8 +8,7 @@
 #include <vector>
 #include <QPointF>
 #include <QSGNode>
-
-struct dive;
+#include "core/dive.h"
 
 // Round positions to integer values to avoid ugly artifacts
 QPointF roundPos(const QPointF &p);
