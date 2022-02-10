@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QNetworkProxy>
+#include "QTextCodec"
 
 #define LARGE_TEST_REPO "https://github.com/Subsurface/large-anonymous-sample-data"
 
