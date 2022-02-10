@@ -192,7 +192,11 @@ void BTDiscovery::BTDiscoveryReDiscover()
 			connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
 			connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &BTDiscovery::btDeviceDiscoveryFinished);
 			connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled, this, &BTDiscovery::btDeviceDiscoveryFinished);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+			connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred,
+#else
 			connect(discoveryAgent, QOverload<QBluetoothDeviceDiscoveryAgent::Error>::of(&QBluetoothDeviceDiscoveryAgent::error),
+#endif
 				[this](QBluetoothDeviceDiscoveryAgent::Error error){
 					qDebug() << "device discovery received error" << discoveryAgent->errorString();
 				});

@@ -473,11 +473,16 @@ void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 	ui->discoveredDevicesList->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ui->discoveredDevicesList, SIGNAL(customContextMenuRequested(QPoint)),
 		this, SLOT(displayPairingMenu(QPoint)));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(localDevice, &QBluetoothLocalDevice::pairingFinished, this, &BtDeviceSelectionDialog::pairingFinished);
+	connect(localDevice, &QBluetoothLocalDevice::errorOccurred, this, &BtDeviceSelectionDialog::error);
+#else
 	connect(localDevice, SIGNAL(pairingFinished(QBluetoothAddress, QBluetoothLocalDevice::Pairing)),
 		this, SLOT(pairingFinished(QBluetoothAddress, QBluetoothLocalDevice::Pairing)));
 
 	connect(localDevice, SIGNAL(error(QBluetoothLocalDevice::Error)),
 		this, SLOT(error(QBluetoothLocalDevice::Error)));
+#endif
 }
 
 void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
@@ -494,10 +499,19 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 		ui->clear->setEnabled(false);
 		return;
 	}
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(remoteDeviceDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered,
+		this, &BtDeviceSelectionDialog::addRemoteDevice);
+	connect(remoteDeviceDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished,
+		this, &BtDeviceSelectionDialog::remoteDeviceScanFinished);
+	connect(remoteDeviceDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred,
+		this, &BtDeviceSelectionDialog::deviceDiscoveryError);
+#else
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
 		this, SLOT(addRemoteDevice(QBluetoothDeviceInfo)));
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(finished()),
 		this, SLOT(remoteDeviceScanFinished()));
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(error(QBluetoothDeviceDiscoveryAgent::Error)),
 		this, SLOT(deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error)));
+#endif
 }
