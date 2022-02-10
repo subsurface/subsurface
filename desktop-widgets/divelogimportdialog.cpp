@@ -10,6 +10,7 @@
 #include <QRegularExpression>
 #include <QUndoStack>
 #include <QPainter>
+#include <QFile>
 #include "core/filterpreset.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
