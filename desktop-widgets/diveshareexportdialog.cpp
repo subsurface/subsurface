@@ -18,6 +18,8 @@ DiveShareExportDialog::DiveShareExportDialog(QWidget *parent) :
 	exportSelected(false)
 {
 	ui->setupUi(this);
+	// creating this connection in the .ui file appears to fail with Qt6
+	connect(ui->getUIDbutton, &QPushButton::clicked, this, &DiveShareExportDialog::UIDFromBrowser);
 }
 
 DiveShareExportDialog::~DiveShareExportDialog()

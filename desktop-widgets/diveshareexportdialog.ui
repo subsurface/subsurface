@@ -236,22 +236,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>getUIDbutton</sender>
-   <signal>clicked()</signal>
-   <receiver>DiveShareExportDialog</receiver>
-   <slot>UIDFromBrowser()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>223</x>
-     <y>29</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>159</x>
-     <y>215</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>doUploadButton</sender>
    <signal>clicked()</signal>
    <receiver>DiveShareExportDialog</receiver>
