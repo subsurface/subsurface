@@ -37,6 +37,8 @@
 #include <QStyle>
 #include <QStyleOptionFocusRect>
 #include <QDebug>
+#include <QList>
+#include <QVector>
 #include <cmath>
 
 struct GroupedLineEdit::Private {
