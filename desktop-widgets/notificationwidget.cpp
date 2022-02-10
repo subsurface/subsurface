@@ -31,7 +31,7 @@ QString NotificationWidget::getNotificationText()
 	return text();
 }
 
-void NotificationWidget::setFuture(const QFuture<void> &future)
+void NotificationWidget::setFuture(const QFuture<int> &future)
 {
 	future_watcher.setFuture(future);
 }
