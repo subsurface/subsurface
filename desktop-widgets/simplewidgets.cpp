@@ -144,7 +144,7 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	ui.DCImage->setScene(scene);
 
 	dcImageEpoch = picture_get_timestamp(qPrintable(fileNames.at(0)));
-	QDateTime dcDateTime = QDateTime::fromTime_t(dcImageEpoch, Qt::UTC);
+	QDateTime dcDateTime = QDateTime::fromSecsSinceEpoch(dcImageEpoch, Qt::UTC);
 	ui.dcTime->setDateTime(dcDateTime);
 	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
 }
@@ -213,8 +213,8 @@ void ShiftImageTimesDialog::updateInvalid()
 	bool allValid = true;
 	ui.warningLabel->hide();
 	ui.invalidFilesText->hide();
-	QDateTime time_first = QDateTime::fromTime_t(first_selected_dive()->when, Qt::UTC);
-	QDateTime time_last = QDateTime::fromTime_t(last_selected_dive()->when, Qt::UTC);
+	QDateTime time_first = QDateTime::fromSecsSinceEpoch(first_selected_dive()->when, Qt::UTC);
+	QDateTime time_last = QDateTime::fromSecsSinceEpoch(last_selected_dive()->when, Qt::UTC);
 	if (first_selected_dive() == last_selected_dive()) {
 		ui.invalidFilesText->setPlainText(tr("Selected dive date/time") + ": " + time_first.toString());
 	} else {
@@ -229,7 +229,7 @@ void ShiftImageTimesDialog::updateInvalid()
 			continue;
 
 		// We've found an invalid image
-		time_first.setTime_t(timestamps[i] + m_amount);
+		time_first.setSecsSinceEpoch(timestamps[i] + m_amount);
 		if (timestamps[i] == 0)
 			ui.invalidFilesText->append(fileNames[i] + " - " + tr("No Exif date/time found"));
 		else
