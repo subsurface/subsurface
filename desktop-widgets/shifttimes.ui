@@ -198,17 +198,5 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>timeEdit</sender>
-   <signal>timeChanged(const QTime)</signal>
-   <receiver>ShiftTimesDialog</receiver>
-   <slot>changeTime()</slot>
-  </connection>
-  <connection>
-   <sender>backwards</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ShiftTimesDialog</receiver>
-   <slot>changeTime()</slot>
-  </connection>
  </connections>
 </ui>
