@@ -20,7 +20,9 @@
 #include <QItemSelectionModel>
 #include <qmessagebox.h>
 #include <cstdlib>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QDesktopWidget>
+#endif
 #include <QFileDialog>
 #include <QScrollBar>
 
@@ -587,7 +589,11 @@ void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 
 void DiveLocationLineEdit::fixPopupPosition()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	const QRect screen = this->screen()->availableGeometry();
+#else
 	const QRect screen = QApplication::desktop()->availableGeometry(this);
+#endif
 	const int maxVisibleItems = 5;
 	QPoint pos;
 	int rh, w;
