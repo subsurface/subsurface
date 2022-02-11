@@ -440,6 +440,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . libmtp
 	pushd libmtp
+	patch -p1 < ../${SRC_DIR}/scripts/libmtp.patch
 	echo 'N' | NOCONFIGURE="1" bash ./autogen.sh
 	mkdir -p build
 	cd build
