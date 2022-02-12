@@ -117,9 +117,9 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QCheckBox" name="divemaster">
+       <widget class="QCheckBox" name="diveguide">
         <property name="text">
-         <string>Divemaster</string>
+         <string>Dive guide</string>
         </property>
        </widget>
       </item>

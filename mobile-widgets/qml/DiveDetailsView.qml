@@ -481,7 +481,7 @@ Item {
 		// fifth row
 		//-----------
 		TemplateLabelSmall {
-			text: qsTr("Divemaster:")
+			text: qsTr("Dive guide:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
@@ -501,8 +501,8 @@ Item {
 		// sixth row
 		//-----------
 		TemplateLabelSmall {
-			id: txtDiveMaster
-			text: diveMaster
+			id: txtDiveGuide
+			text: diveGuide
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			color: subsurfaceTheme.textColor

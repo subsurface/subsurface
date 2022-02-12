@@ -305,7 +305,7 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 	ui.setupUi(this);
 	what = _what;
 	UI_FROM_COMPONENT(divesite);
-	UI_FROM_COMPONENT(divemaster);
+	UI_FROM_COMPONENT(diveguide);
 	UI_FROM_COMPONENT(buddy);
 	UI_FROM_COMPONENT(rating);
 	UI_FROM_COMPONENT(visibility);
@@ -327,7 +327,7 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 {
 	if (current_dive && ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		COMPONENT_FROM_UI(divesite);
-		COMPONENT_FROM_UI(divemaster);
+		COMPONENT_FROM_UI(diveguide);
 		COMPONENT_FROM_UI(buddy);
 		COMPONENT_FROM_UI(rating);
 		COMPONENT_FROM_UI(visibility);
@@ -345,8 +345,8 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		text.setString(&cliptext);
 		if (what->divesite && current_dive->dive_site)
 			text << tr("Dive site: ") << current_dive->dive_site->name << "\n";
-		if (what->divemaster)
-			text << tr("Dive master: ") << current_dive->divemaster << "\n";
+		if (what->diveguide)
+			text << tr("Dive guide: ") << current_dive->diveguide << "\n";
 		if (what->buddy)
 			text << tr("Buddy: ") << current_dive->buddy << "\n";
 		if (what->rating)

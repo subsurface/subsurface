@@ -229,7 +229,7 @@ public:
 	QString fieldName() const override;
 };
 
-// Fields that work with tag-lists (tags, buddies, divemasters) work differently and therefore
+// Fields that work with tag-lists (tags, buddies, dive guides) work differently and therefore
 // have their own base class. In this case, it's not a template, as all these lists are base
 // on strings.
 class EditTagsBase : public EditDivesBase {
@@ -276,7 +276,7 @@ public:
 	QString fieldName() const override;
 };
 
-class EditDiveMaster : public EditTagsTemplate<DiveField::DIVEMASTER> {
+class EditDiveGuide : public EditTagsTemplate<DiveField::DIVEGUIDE> {
 public:
 	using EditTagsTemplate::EditTagsTemplate;	// Use constructor of base class.
 	QStringList data(struct dive *d) const override;
@@ -289,7 +289,7 @@ struct PasteState {
 	dive *d;
 	dive_site *divesite;
 	QString notes;
-	QString divemaster;
+	QString diveguide;
 	QString buddy;
 	QString suit;
 	int rating;

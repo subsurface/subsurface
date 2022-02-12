@@ -1429,7 +1429,7 @@ struct PeopleBinner : public StringBinner<PeopleBinner, StringBin> {
 		std::vector<QString> dive_people;
 		for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
 			dive_people.push_back(s.trimmed());
-		for (const QString &s: QString(d->divemaster).split(",", SKIP_EMPTY))
+		for (const QString &s: QString(d->diveguide).split(",", SKIP_EMPTY))
 			dive_people.push_back(s.trimmed());
 		return dive_people;
 	}
@@ -1442,10 +1442,10 @@ struct PeopleVariable : public StatsVariableTemplate<StatsVariable::Type::Discre
 	}
 	QString diveCategories(const dive *d) const override {
 		QString buddy = QString(d->buddy).trimmed();
-		QString divemaster = QString(d->divemaster).trimmed();
-		if (!buddy.isEmpty() && !divemaster.isEmpty())
+		QString diveguide = QString(d->diveguide).trimmed();
+		if (!buddy.isEmpty() && !diveguide.isEmpty())
 			buddy += ", ";
-		return buddy + divemaster;
+		return buddy + diveguide;
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &people_binner };
@@ -1477,7 +1477,7 @@ struct BuddyVariable : public StatsVariableTemplate<StatsVariable::Type::Discret
 struct DiveGuideBinner : public StringBinner<DiveGuideBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> dive_guides;
-		for (const QString &s: QString(d->divemaster).split(",", SKIP_EMPTY))
+		for (const QString &s: QString(d->diveguide).split(",", SKIP_EMPTY))
 			dive_guides.push_back(s.trimmed());
 		return dive_guides;
 	}
@@ -1489,7 +1489,7 @@ struct DiveGuideVariable : public StatsVariableTemplate<StatsVariable::Type::Dis
 		return StatsTranslations::tr("Dive guides");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString(d->divemaster).trimmed();
+		return QString(d->diveguide).trimmed();
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &dive_guide_binner };

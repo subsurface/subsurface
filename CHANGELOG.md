@@ -1,3 +1,4 @@
+- general: rename dive master to dive guide
 - libdivecomputer: add support for latest BLE hardware in OSTC dive computers
 
 ---

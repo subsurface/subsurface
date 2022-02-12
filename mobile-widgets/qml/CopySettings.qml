@@ -57,15 +57,15 @@ Kirigami.ScrollablePage {
 				}
 			}
 			Controls.Label {
-				text: qsTr("Dive master")
+				text: qsTr("Dive guide")
 				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleDiveMaster(false)
+				checked: manager.toggleDiveGuide(false)
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
-					manager.toggleDiveMaster(true)
+					manager.toggleDiveGuide(true)
 				}
 			}
 			Controls.Label {
