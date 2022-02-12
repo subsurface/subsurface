@@ -860,7 +860,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
 
 		free(dive->dc.sample);
 		free((void *)dive->notes);
-		free((void *)dive->divemaster);
+		free((void *)dive->diveguide);
 		free((void *)dive->buddy);
 		free((void *)dive->suit);
 		taglist_free(dive->tag_list);

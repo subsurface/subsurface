@@ -97,7 +97,7 @@ static void show_utf8(struct membuffer *b, const char *prefix, const char *value
 
 static void save_overview(struct membuffer *b, struct dive *dive)
 {
-	show_utf8(b, "divemaster ", dive->divemaster, "\n");
+	show_utf8(b, "divemaster ", dive->diveguide, "\n");
 	show_utf8(b, "buddy ", dive->buddy, "\n");
 	show_utf8(b, "suit ", dive->suit, "\n");
 	show_utf8(b, "notes ", dive->notes, "\n");

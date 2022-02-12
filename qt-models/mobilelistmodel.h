@@ -39,7 +39,7 @@ public:
 		WaterTempRole,
 		SacRole,
 		SumWeightRole,
-		DiveMasterRole,
+		DiveGuideRole,
 		BuddyRole,
 		TagsRole,
 		NotesRole,

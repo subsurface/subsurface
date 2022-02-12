@@ -214,8 +214,8 @@ static void parse_dive_location(char *line, struct membuffer *str, struct git_pa
 	free(name);
 }
 
-static void parse_dive_divemaster(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(line); state->active_dive->divemaster = detach_cstring(str); }
+static void parse_dive_diveguide(char *line, struct membuffer *str, struct git_parser_state *state)
+{ UNUSED(line); state->active_dive->diveguide = detach_cstring(str); }
 
 static void parse_dive_buddy(char *line, struct membuffer *str, struct git_parser_state *state)
 { UNUSED(line); state->active_dive->buddy = detach_cstring(str); }
@@ -1113,8 +1113,9 @@ static void divecomputer_parser(char *line, struct membuffer *str, struct git_pa
 struct keyword_action dive_action[] = {
 #undef D
 #define D(x) { #x, parse_dive_ ## x }
-	D(airpressure), D(airtemp), D(buddy), D(chill), D(current), D(cylinder), D(divemaster), D(divesiteid), D(duration),
-	D(gps), D(invalid), D(location), D(notes), D(notrip), D(rating), D(suit), D(surge),
+	/* For historical reasons, we accept divemaster and diveguide */
+	D(airpressure), D(airtemp), D(buddy), D(chill), D(current), D(cylinder), D(diveguide), { "divemaster", parse_dive_diveguide },
+	D(divesiteid), D(duration), D(gps), D(invalid), D(location), D(notes), D(notrip), D(rating), D(suit), D(surge),
 	D(tags), D(visibility), D(watersalinity), D(watertemp), D(wavesize), D(weightsystem)
 };
 

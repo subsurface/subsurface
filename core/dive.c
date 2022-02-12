@@ -224,7 +224,7 @@ static void free_dive_structures(struct dive *d)
 	fulltext_unregister(d);
 	/* free the strings */
 	free(d->buddy);
-	free(d->divemaster);
+	free(d->diveguide);
 	free(d->notes);
 	free(d->suit);
 	/* free tags, additional dive computers, and pictures */
@@ -272,7 +272,7 @@ static void copy_dive_nodc(const struct dive *s, struct dive *d)
 	d->full_text = NULL;
 	invalidate_dive_cache(d);
 	d->buddy = copy_string(s->buddy);
-	d->divemaster = copy_string(s->divemaster);
+	d->diveguide = copy_string(s->diveguide);
 	d->notes = copy_string(s->notes);
 	d->suit = copy_string(s->suit);
 	copy_cylinders(&s->cylinders, &d->cylinders);
@@ -319,7 +319,7 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 	if (clear)
 		clear_dive(d);
 	CONDITIONAL_COPY_STRING(notes);
-	CONDITIONAL_COPY_STRING(divemaster);
+	CONDITIONAL_COPY_STRING(diveguide);
 	CONDITIONAL_COPY_STRING(buddy);
 	CONDITIONAL_COPY_STRING(suit);
 	if (what.rating)
@@ -2616,7 +2616,7 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 		*trip = get_preferred_trip(a, b);
 	MERGE_TXT(res, a, b, notes, "\n--\n");
 	MERGE_TXT(res, a, b, buddy, ", ");
-	MERGE_TXT(res, a, b, divemaster, ", ");
+	MERGE_TXT(res, a, b, diveguide, ", ");
 	MERGE_MAX(res, a, b, rating);
 	MERGE_TXT(res, a, b, suit, ", ");
 	MERGE_MAX(res, a, b, number);
