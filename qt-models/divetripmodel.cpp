@@ -54,6 +54,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModelBase::PHOTOS:
 	case DiveTripModelBase::COUNTRY:
 	case DiveTripModelBase::BUDDIES:
+	case DiveTripModelBase::DIVEGUIDE:
 	case DiveTripModelBase::LOCATION:
 		return int(Qt::AlignLeft | Qt::AlignVCenter);
 	}
@@ -296,6 +297,8 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			return QString(get_dive_country(d));
 		case BUDDIES:
 			return QString(d->buddy);
+		case DIVEGUIDE:
+			return QString(d->diveguide);
 		case LOCATION:
 			return QString(get_dive_location(d));
 		case GAS:
@@ -360,6 +363,8 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			return tr("Country");
 		case BUDDIES:
 			return tr("Buddy");
+		case DIVEGUIDE:
+			return tr("Dive guide");
 		case LOCATION:
 			return tr("Location");
 		}
@@ -427,6 +432,8 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 			return tr("Country");
 		case BUDDIES:
 			return tr("Buddy");
+		case DIVEGUIDE:
+			return tr("Dive guide");
 		case LOCATION:
 			return tr("Location");
 		}
@@ -467,6 +474,8 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 			return tr("Media before/during/after dive");
 		case BUDDIES:
 			return tr("Buddy");
+		case DIVEGUIDE:
+			return tr("Dive guide");
 		case LOCATION:
 			return tr("Location");
 		}
@@ -1772,6 +1781,8 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 		return lessThanHelper(strCmp(get_dive_country(d1), get_dive_country(d2)), row_diff);
 	case BUDDIES:
 		return lessThanHelper(strCmp(d1->buddy, d2->buddy), row_diff);
+	case DIVEGUIDE:
+		return lessThanHelper(strCmp(d1->diveguide, d2->diveguide), row_diff);
 	case LOCATION:
 		return lessThanHelper(strCmp(get_dive_location(d1), get_dive_location(d2)), row_diff);
 	}
