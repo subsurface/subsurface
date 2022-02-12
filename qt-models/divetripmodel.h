@@ -95,6 +95,7 @@ protected:
 	static QVariant tripData(const dive_trip *trip, int column, int role);
 	static QString tripTitle(const dive_trip *trip);
 	static QString tripShortDate(const dive_trip *trip);
+	static QString getDescription(int column);
 	void currentChanged();
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise

@@ -211,6 +211,55 @@ static QPixmap &getPhotoIcon(int idx)
 	return icons[idx];
 }
 
+// textual description of the meaning of a column for use in tooltips
+QString DiveTripModelBase::getDescription(int column)
+{
+	switch (column) {
+	case NR:
+		return tr("#");
+	case DATE:
+		return tr("Date");
+	case RATING:
+		return tr("Rating");
+	case DEPTH:
+		return tr("Depth(%1)").arg((get_units()->length == units::METERS) ? tr("m") : tr("ft"));
+	case DURATION:
+		return tr("Duration");
+	case TEMPERATURE:
+		return tr("Temp.(°%1)").arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
+	case TOTALWEIGHT:
+		return tr("Weight(%1)").arg((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
+	case SUIT:
+		return tr("Suit");
+	case CYLINDER:
+		return tr("Cylinder");
+	case GAS:
+		return tr("Gas");
+	case SAC:
+		const char *unit;
+		get_volume_units(0, NULL, &unit);
+		return tr("SAC(%1)").arg(QString(unit).append(tr("/min")));
+	case OTU:
+		return tr("OTU");
+	case MAXCNS:
+		return tr("Max. CNS");
+	case TAGS:
+		return tr("Tags");
+	case PHOTOS:
+		return tr("Media before/during/after dive");
+	case COUNTRY:
+		return tr("Country");
+	case BUDDIES:
+		return tr("Buddy");
+	case DIVEGUIDE:
+		return tr("Dive guide");
+	case LOCATION:
+		return tr("Location");
+	default:
+		return QString();
+	}
+}
+
 QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role) const
 {
 #ifdef SUBSURFACE_MOBILE
@@ -326,49 +375,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		}
 		break;
 	case Qt::ToolTipRole:
-		switch (column) {
-		case NR:
-			return tr("#");
-		case DATE:
-			return tr("Date");
-		case RATING:
-			return tr("Rating");
-		case DEPTH:
-			return tr("Depth(%1)").arg((get_units()->length == units::METERS) ? tr("m") : tr("ft"));
-		case DURATION:
-			return tr("Duration");
-		case TEMPERATURE:
-			return tr("Temp.(°%1)").arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
-		case TOTALWEIGHT:
-			return tr("Weight(%1)").arg((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
-		case SUIT:
-			return tr("Suit");
-		case CYLINDER:
-			return tr("Cylinder");
-		case GAS:
-			return tr("Gas");
-		case SAC:
-			const char *unit;
-			get_volume_units(0, NULL, &unit);
-			return tr("SAC(%1)").arg(QString(unit).append(tr("/min")));
-		case OTU:
-			return tr("OTU");
-		case MAXCNS:
-			return tr("Max. CNS");
-		case TAGS:
-			return tr("Tags");
-		case PHOTOS:
-			return tr("Media before/during/after dive");
-		case COUNTRY:
-			return tr("Country");
-		case BUDDIES:
-			return tr("Buddy");
-		case DIVEGUIDE:
-			return tr("Dive guide");
-		case LOCATION:
-			return tr("Location");
-		}
-		break;
+		return getDescription(column);
 	case STAR_ROLE:
 		return d->rating;
 	case DIVE_ROLE:
@@ -439,47 +446,7 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 		}
 		break;
 	case Qt::ToolTipRole:
-		switch (section) {
-		case NR:
-			return tr("#");
-		case DATE:
-			return tr("Date");
-		case RATING:
-			return tr("Rating");
-		case DEPTH:
-			return tr("Depth(%1)").arg((get_units()->length == units::METERS) ? tr("m") : tr("ft"));
-		case DURATION:
-			return tr("Duration");
-		case TEMPERATURE:
-			return tr("Temp.(°%1)").arg((get_units()->temperature == units::CELSIUS) ? "C" : "F");
-		case TOTALWEIGHT:
-			return tr("Weight(%1)").arg((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
-		case SUIT:
-			return tr("Suit");
-		case CYLINDER:
-			return tr("Cylinder");
-		case GAS:
-			return tr("Gas");
-		case SAC:
-			const char *unit;
-			get_volume_units(0, NULL, &unit);
-			return tr("SAC(%1)").arg(QString(unit).append(tr("/min")));
-		case OTU:
-			return tr("OTU");
-		case MAXCNS:
-			return tr("Max CNS");
-		case TAGS:
-			return tr("Tags");
-		case PHOTOS:
-			return tr("Media before/during/after dive");
-		case BUDDIES:
-			return tr("Buddy");
-		case DIVEGUIDE:
-			return tr("Dive guide");
-		case LOCATION:
-			return tr("Location");
-		}
-		break;
+		return getDescription(section);
 	}
 
 	return QVariant();
