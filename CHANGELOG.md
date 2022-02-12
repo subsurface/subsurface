@@ -1,6 +1,7 @@
+- dive list: make dive guide visible in dive list [#3382]
+- general: rename dive master to dive guide
 - desktop: Don't lose cursor position in notes when switching between windows [#3369]
 - Uemis support: fix the ability disconnect/reconnect the Zurich when its filesystem is full
-- general: rename dive master to dive guide
 - libdivecomputer: add support for latest BLE hardware in OSTC dive computers
 
 ---
