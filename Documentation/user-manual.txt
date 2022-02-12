@@ -178,7 +178,7 @@ These dives can be imported from:
 This is usually the approach for dives without a dive computer. The basic record
 of information within _Subsurface_ is a dive. The most important information
 in a simple dive logbook usually includes dive type, date, time, duration,
-depth, the names of your dive buddy and the divemaster or dive guide, and
+depth, the names of your dive buddy and the dive guide, and
 some remarks about the dive. _Subsurface_ can store much more
 information for each dive.  To add a dive to a dive log, select _Log
 ->  Add Dive_ from the Main Menu. The program then shows three panels
@@ -635,7 +635,7 @@ increase in the amount of information stored for a dive.
 
 1. The *Notes* tab
 holds basic information about the dive, the date and time, locality,
-buddy, divemaster and some dive notes. This is about the minimum amount of
+buddy, dive guide and some dive notes. This is about the minimum amount of
 information required for a coherent dive log. 
 
 2. If one wishes, one can expand the dive information by using the
@@ -701,7 +701,7 @@ image::images/undo.jpg["FIGURE:Performing an undo",align="center"]
 Dive locations are managed as a *separate* part of the dive log (See the section entitled xref:S_DiveSiteManagement[Manipulating Dive Site Information]).
 The dive information in the *Notes* and *Equipment* tabs can therefore NOT be edited at the same
 time as the dive site information. Save all the other dive information (e.g.
-divemaster, buddy, protective gear, notes about the dive) by selecting _Apply changes_ on the
+dive guide, buddy, protective gear, notes about the dive) by selecting _Apply changes_ on the
 *Notes* tab BEFORE editing the dive site information. Then supply a dive site name in the
 textbox labelled _Location_ on the *Notes* tab.
 
@@ -863,9 +863,8 @@ dive site name in the *Notes tab*.
 Having entered information about the dive site into the *Notes* tab, the following
 additional information can be typed in:
 
-*Divemaster*: The name of the divemaster or dive guide should be
-entered in this field
-which offers auto selection based on the list of divemasters in
+*Dive guide*: The name of the dive guide should be entered in this field
+which offers auto selection based on the list of dive guides in
 the current logbook.
 
 *Buddy*: In this field, enter the name(s) of the buddy or buddies
@@ -1107,7 +1106,7 @@ and gas composition). Other fields remain empty.
 It may be useful to simultaneously edit some of the
 fields in the *Notes* and *Equipment* tabs.  For instance, it’s possible
 that a diver performed several dives during a single day, using identical equipment at the same
-dive site, or with the same divemaster and/or buddy or tags. Instead
+dive site, or with the same dive guide and/or buddy or tags. Instead
 of completing the information for each
 dive separately, select all the dives for that day in the *Dive List* and
 insert the same information in the *Notes* and *Equipment* fields that need
@@ -1443,7 +1442,7 @@ There are two types of _CSV_ dive logs that can be imported into _Subsurface_:
 
 1. _CSV dive details_: This dive log format contains similar information to that of a
    typical written dive log, e.g. dive date and time, dive depth, dive duration, names of
-   buddy and divemaster and information about cylinder pressures before and
+   buddy and dive guide and information about cylinder pressures before and
    after the dive, as well as comments about the dive. All the data for a single
    dive go on a single line of text, following the order of the column headings.
 
@@ -2713,7 +2712,7 @@ restored to view by selecting Unhide all events from the context menu.
 === Filtering the dive list
 
 The dives in the *Dive List* can be filtered, selecting only some
-of the dives based on attributes such as dive tags, dive site, divemaster or buddy.
+of the dives based on attributes such as dive tags, dive site, dive guide or buddy.
 For instance, filtering lets you list the dives during a particular year at a specific
 dive site, or otherwise the cave dives with a particular buddy. Filtering can be performed
 based on virtually any information in the *Info* panel.
@@ -3217,7 +3216,7 @@ image::images/texexample.png["Figure: Export to TeX", align="center"]
   of each of those photos/videos was taken.
 
 When the "Anonymize" option is selected for xml-based file formats, the letters A-Z
-are all replaced by the letter 'X' in the notes, buddy, divemaster, divesite name
+are all replaced by the letter 'X' in the notes, buddy, dive guide, divesite name
 and divesite description fields. This way, you can share dive log files for debugging
 purposes without revealing personal information. Please note, though, that other
 characters are not replaced, so this is not useful for languages with non-latin
@@ -5234,7 +5233,7 @@ Only a subset of the dive data is exported:
 |location| (*string*) location of the dive
 |duration| (*string*) duration of the dive
 |depth| (*string*) depth of the dive
-|divemaster| (*string*) divemaster for the dive
+|diveguide| (*string*) dive guide for the dive
 |buddy| (*string*) buddy for the dive
 |airTemp| (*string*) air temperature of the dive
 |waterTemp| (*string*) water temperature of the dive
@@ -5443,7 +5442,7 @@ _Subsurface_ ends up ignoring surface time for many things (average depth, divet
 but then come back up and wait five minutes for your buddies, your dive computer may say
 that your dive is 50 minutes long - because you have fifty minutes worth of samples - but
 subsurface will say it's 45 minutes - because you were actually diving for 45 minutes.
-It's even more noticeable if you do things like divemastering the initial OW dives, when
+It's even more noticeable if you do things like guiding the initial OW dives, when
 you may stay in the water for a long time, but spend most of it at the surface. And then
 you don't want that to count as some kind of long dive”.
 
