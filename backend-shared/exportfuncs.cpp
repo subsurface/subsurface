@@ -204,7 +204,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		put_format(&buf, "\\def\\%sprofilename{profile%d}\n", ssrf, dive->number);
 		put_format(&buf, "\\def\\%scomment{%s}\n", ssrf, dive->notes ? dive->notes : "");
 		put_format(&buf, "\\def\\%sbuddy{%s}\n", ssrf, dive->buddy ? dive->buddy : "");
-		put_format(&buf, "\\def\\%sdivemaster{%s}\n", ssrf, dive->divemaster ? dive->divemaster : "");
+		put_format(&buf, "\\def\\%sdivemaster{%s}\n", ssrf, dive->diveguide ? dive->diveguide : "");
 		put_format(&buf, "\\def\\%ssuit{%s}\n", ssrf, dive->suit ? dive->suit : "");
 
 		// Print cylinder data

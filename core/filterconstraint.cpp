@@ -848,7 +848,7 @@ static bool has_people(const filter_constraint &c, const struct dive *d)
 	QStringList dive_people;
 	for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
 		dive_people.push_back(s.trimmed());
-	for (const QString &s: QString(d->divemaster).split(",", SKIP_EMPTY))
+	for (const QString &s: QString(d->diveguide).split(",", SKIP_EMPTY))
 		dive_people.push_back(s.trimmed());
 	return check(c, dive_people);
 }

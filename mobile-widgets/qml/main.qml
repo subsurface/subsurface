@@ -157,9 +157,9 @@ Kirigami.ApplicationWindow {
 		detailsWindow.buddyIndex = -1
 		detailsWindow.buddyText = ""
 		detailsWindow.depth = ""
-		detailsWindow.divemasterModel = manager.divemasterList
-		detailsWindow.divemasterIndex = -1
-		detailsWindow.divemasterText = ""
+		detailsWindow.diveguideModel = manager.diveguideList
+		detailsWindow.diveguideIndex = -1
+		detailsWindow.diveguideText = ""
 		detailsWindow.notes = ""
 		detailsWindow.location = ""
 		detailsWindow.gps = ""

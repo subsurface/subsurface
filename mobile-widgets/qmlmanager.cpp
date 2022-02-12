@@ -306,7 +306,7 @@ QMLManager::QMLManager() :
 
 	// Let's set some defaults to be copied so users don't necessarily need
 	// to know how to configure this
-	what.divemaster = true;
+	what.diveguide = true;
 	what.buddy = true;
 	what.suit = true;
 	what.tags = true;
@@ -458,7 +458,7 @@ void QMLManager::updateAllGlobalLists()
 {
 	emit buddyListChanged();
 	emit suitListChanged();
-	emit divemasterListChanged();
+	emit diveguideListChanged();
 	// TODO: It would be nice if we could export the list of locations via model/view instead of a Q_PROPERTY
 	emit locationListChanged();
 }
@@ -1062,7 +1062,7 @@ bool QMLManager::checkDepth(dive *d, QString depth)
 
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString number, QString date, QString location, QString gps, QString duration, QString depth,
-			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString tags, QString weight, QString notes,
+			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveGuide, QString tags, QString weight, QString notes,
 			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state)
 {
 	struct dive *orig = get_dive_by_uniq_id(diveId.toInt());
@@ -1083,7 +1083,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				      QStringLiteral("watertmp:'%1'\n").arg(watertemp) <<
 				      QStringLiteral("suit    :'%1'\n").arg(suit) <<
 				      QStringLiteral("buddy   :'%1'\n").arg(buddy) <<
-				      QStringLiteral("diveMstr:'%1'\n").arg(diveMaster) <<
+				      QStringLiteral("diveGde :'%1'\n").arg(diveGuide) <<
 				      QStringLiteral("tags    :'%1'\n").arg(tags) <<
 				      QStringLiteral("weight  :'%1'\n").arg(weight) <<
 				      QStringLiteral("state   :'%1'\n").arg(state);
@@ -1212,13 +1212,13 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		free(d->buddy);
 		d->buddy = copy_qstring(buddy);
 	}
-	if (d->divemaster != diveMaster) {
-		if (diveMaster.contains(",")){
-			diveMaster = diveMaster.replace(QRegularExpression("\\s*,\\s*"), ", ");
+	if (d->diveguide != diveGuide) {
+		if (diveGuide.contains(",")){
+			diveGuide = diveGuide.replace(QRegularExpression("\\s*,\\s*"), ", ");
 		}
 		diveChanged = true;
-		free(d->divemaster);
-		d->divemaster = copy_qstring(diveMaster);
+		free(d->diveguide);
+		d->diveguide = copy_qstring(diveGuide);
 	}
 	// normalize the tag list we have and the one we get from the UI
 	// try hard to deal with accidental white space issues
@@ -1523,12 +1523,12 @@ bool QMLManager::toggleNotes(bool toggle)
 	return what.notes;
 }
 
-bool QMLManager::toggleDiveMaster(bool toggle)
+bool QMLManager::toggleDiveGuide(bool toggle)
 {
 	if (toggle)
-		what.divemaster = what.divemaster ? false : true;
+		what.diveguide = what.diveguide ? false : true;
 
-	return what.divemaster;
+	return what.diveguide;
 }
 
 bool QMLManager::toggleBuddy(bool toggle)
@@ -1764,9 +1764,9 @@ QStringList QMLManager::buddyList() const
 	return buddyModel.stringList();
 }
 
-QStringList QMLManager::divemasterList() const
+QStringList QMLManager::diveguideList() const
 {
-	return divemasterModel.stringList();
+	return diveguideModel.stringList();
 }
 
 QStringList QMLManager::locationList() const

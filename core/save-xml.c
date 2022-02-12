@@ -162,7 +162,7 @@ static void save_salinity(struct membuffer *b, struct divecomputer *dc)
 
 static void save_overview(struct membuffer *b, struct dive *dive, bool anonymize)
 {
-	show_utf8_blanked(b, dive->divemaster, "  <divemaster>", "</divemaster>\n", 0, anonymize);
+	show_utf8_blanked(b, dive->diveguide, "  <divemaster>", "</divemaster>\n", 0, anonymize);
 	show_utf8_blanked(b, dive->buddy, "  <buddy>", "</buddy>\n", 0, anonymize);
 	show_utf8_blanked(b, dive->notes, "  <notes>", "</notes>\n", 0, anonymize);
 	show_utf8_blanked(b, dive->suit, "  <suit>", "</suit>\n", 0, anonymize);

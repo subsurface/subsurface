@@ -31,7 +31,7 @@ QHash<int, QByteArray> MobileListModelBase::roleNames() const
 	roles[WaterTempRole] = "waterTemp";
 	roles[SacRole] = "sac";
 	roles[SumWeightRole] = "sumWeight";
-	roles[DiveMasterRole] = "diveMaster";
+	roles[DiveGuideRole] = "diveGuide";
 	roles[BuddyRole] = "buddy";
 	roles[TagsRole] = "tags";
 	roles[NotesRole]= "notes";

@@ -44,7 +44,7 @@ slots:
 	void rejectChanges();
 	void on_location_diveSiteSelected();
 	void on_locationPopupButton_clicked();
-	void on_divemaster_editingFinished();
+	void on_diveguide_editingFinished();
 	void on_buddy_editingFinished();
 	void on_diveTripLocation_editingFinished();
 	void on_notes_editingFinished();
@@ -67,7 +67,7 @@ private:
 	bool editMode;
 	bool ignoreInput; // When computionally editing fields, we have to ignore changed-signals
 	BuddyCompletionModel buddyModel;
-	DiveMasterCompletionModel diveMasterModel;
+	DiveGuideCompletionModel diveGuideModel;
 	TagCompletionModel tagModel;
 	bool lastSelectedDive;
 	int lastTabSelectedDive;

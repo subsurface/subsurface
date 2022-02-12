@@ -599,22 +599,22 @@ QString EditBuddies::fieldName() const
 	return Command::Base::tr("buddies");
 }
 
-// ***** DiveMaster *****
-QStringList EditDiveMaster::data(struct dive *d) const
+// ***** DiveGuide *****
+QStringList EditDiveGuide::data(struct dive *d) const
 {
-	return stringToList(d->divemaster);
+	return stringToList(d->diveguide);
 }
 
-void EditDiveMaster::set(struct dive *d, const QStringList &v) const
+void EditDiveGuide::set(struct dive *d, const QStringList &v) const
 {
 	QString text = v.join(", ");
-	free(d->divemaster);
-	d->divemaster = copy_qstring(text);
+	free(d->diveguide);
+	d->diveguide = copy_qstring(text);
 }
 
-QString EditDiveMaster::fieldName() const
+QString EditDiveGuide::fieldName() const
 {
-	return Command::Base::tr("dive master");
+	return Command::Base::tr("dive guide");
 }
 
 static void swapCandQString(QString &q, char *&c)
@@ -632,8 +632,8 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 	memset(&weightsystems, 0, sizeof(weightsystems));
 	if (what.notes)
 		notes = data->notes;
-	if (what.divemaster)
-		divemaster = data->divemaster;
+	if (what.diveguide)
+		diveguide = data->diveguide;
 	if (what.buddy)
 		buddy = data->buddy;
 	if (what.suit)
@@ -705,8 +705,8 @@ void PasteState::swap(dive_components what)
 {
 	if (what.notes)
 		swapCandQString(notes, d->notes);
-	if (what.divemaster)
-		swapCandQString(divemaster, d->divemaster);
+	if (what.diveguide)
+		swapCandQString(diveguide, d->diveguide);
 	if (what.buddy)
 		swapCandQString(buddy, d->buddy);
 	if (what.suit)
@@ -766,7 +766,7 @@ void PasteDives::undo()
 	// Send signals.
 	DiveField fields(DiveField::NONE);
 	fields.notes = what.notes;
-	fields.divemaster = what.divemaster;
+	fields.diveguide = what.diveguide;
 	fields.buddy = what.buddy;
 	fields.suit = what.suit;
 	fields.rating = what.rating;
@@ -1321,8 +1321,8 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 		changedFields |= DiveField::ATM_PRESS;
 	if (oldDive->dive_site != newDive->dive_site)
 		changedFields |= DiveField::DIVESITE;
-	if (!same_string(oldDive->divemaster, newDive->divemaster))
-		changedFields |= DiveField::DIVEMASTER;
+	if (!same_string(oldDive->diveguide, newDive->diveguide))
+		changedFields |= DiveField::DIVEGUIDE;
 	if (!same_string(oldDive->buddy, newDive->buddy))
 		changedFields |= DiveField::BUDDY;
 	if (oldDive->rating != newDive->rating)

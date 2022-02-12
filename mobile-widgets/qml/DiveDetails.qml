@@ -19,9 +19,9 @@ Kirigami.Page {
 	property alias buddyIndex: detailsEdit.buddyIndex
 	property alias buddyText: detailsEdit.buddyText
 	property alias buddyModel: detailsEdit.buddyModel
-	property alias divemasterIndex: detailsEdit.divemasterIndex
-	property alias divemasterText: detailsEdit.divemasterText
-	property alias divemasterModel: detailsEdit.divemasterModel
+	property alias diveguideIndex: detailsEdit.diveguideIndex
+	property alias diveguideText: detailsEdit.diveguideText
+	property alias diveguideModel: detailsEdit.diveguideModel
 	property alias tagText: detailsEdit.tagText
 	property alias depth: detailsEdit.depthText
 	property alias duration: detailsEdit.durationText
@@ -351,7 +351,7 @@ Kirigami.Page {
 		watertemp = modelData.waterTemp
 		suitIndex = manager.suitList.indexOf(modelData.suit)
 		buddyText = modelData.buddy;
-		divemasterText = modelData.diveMaster
+		diveguideText = modelData.diveGuide
 		tagText = modelData.tags
 		notes = modelData.notes
 		if (modelData.singleWeight) {

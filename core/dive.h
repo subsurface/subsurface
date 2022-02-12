@@ -32,7 +32,7 @@ struct dive {
 	timestamp_t when;
 	struct dive_site *dive_site;
 	char *notes;
-	char *divemaster, *buddy;
+	char *diveguide, *buddy;
 	struct cylinder_table cylinders;
 	struct weightsystem_table weightsystems;
 	char *suit;
@@ -78,7 +78,7 @@ extern int same_gasmix_cylinder(const cylinder_t *cyl, int cylid, const struct d
 struct dive_components {
 	unsigned int divesite : 1;
 	unsigned int notes : 1;
-	unsigned int divemaster : 1;
+	unsigned int diveguide : 1;
 	unsigned int buddy : 1;
 	unsigned int suit : 1;
 	unsigned int rating : 1;
