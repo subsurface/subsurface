@@ -794,7 +794,7 @@ void PasteDives::redo()
 }
 
 // ***** ReplanDive *****
-ReplanDive::ReplanDive(dive *source, bool edit_profile) : d(current_dive),
+ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	when(0),
 	maxdepth({0}),
 	meandepth({0}),
@@ -824,7 +824,7 @@ ReplanDive::ReplanDive(dive *source, bool edit_profile) : d(current_dive),
 	std::swap(source->cylinders, cylinders);
 	std::swap(source->dc, dc);
 
-	setText((edit_profile ? Command::Base::tr("Replan dive") : Command::Base::tr("Edit profile")) + diveNumberOrDate(d));
+	setText(Command::Base::tr("Replan dive"));
 }
 
 ReplanDive::~ReplanDive()
@@ -863,6 +863,77 @@ void ReplanDive::undo()
 
 // Redo and undo do the same
 void ReplanDive::redo()
+{
+	undo();
+}
+
+// ***** EditProfile *****
+QString editProfileTypeToString(EditProfileType type, int count)
+{
+	switch (type) {
+		default:
+		case EditProfileType::ADD: return Command::Base::tr("Add stop");
+		case EditProfileType::REMOVE: return Command::Base::tr("Remove %n stop(s)", "", count);
+		case EditProfileType::MOVE: return Command::Base::tr("Move %n stop(s)", "", count);
+	}
+}
+
+EditProfile::EditProfile(const dive *source, EditProfileType type, int count) : d(current_dive),
+	dcNr(dc_number),
+	maxdepth({0}),
+	meandepth({0}),
+	dcmaxdepth({0}),
+	duration({0}),
+	dc({ 0 })
+{
+	const struct divecomputer *sdc = get_dive_dc_const(source, dcNr);
+	if (!sdc)
+		d = nullptr; // Signal that we refuse to do anything.
+	if (!d)
+		return;
+
+	maxdepth = source->maxdepth;
+	dcmaxdepth = sdc->maxdepth;
+	meandepth = source->meandepth;
+	duration = source->duration;
+
+	copy_samples(sdc, &dc);
+	copy_events(sdc, &dc);
+
+	setText(editProfileTypeToString(type, count) + diveNumberOrDate(d));
+}
+
+EditProfile::~EditProfile()
+{
+	free_dive_dcs(&dc);
+}
+
+bool EditProfile::workToBeDone()
+{
+	return !!d;
+}
+
+void EditProfile::undo()
+{
+	struct divecomputer *sdc = get_dive_dc(d, dcNr);
+	if (!sdc)
+		return;
+	std::swap(sdc->samples, dc.samples);
+	std::swap(sdc->alloc_samples, dc.alloc_samples);
+	std::swap(sdc->sample, dc.sample);
+	std::swap(sdc->maxdepth, dc.maxdepth);
+	std::swap(d->maxdepth, maxdepth);
+	std::swap(d->meandepth, meandepth);
+	std::swap(d->duration, duration);
+	fixup_dive(d);
+	invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+
+	QVector<dive *> divesToNotify = { d };
+	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DURATION | DiveField::DEPTH);
+}
+
+// Redo and undo do the same
+void EditProfile::redo()
 {
 	undo();
 }

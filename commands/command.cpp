@@ -276,12 +276,12 @@ void pasteDives(const dive *d, dive_components what)
 
 void replanDive(dive *d)
 {
-	execute(new ReplanDive(d, false));
+	execute(new ReplanDive(d));
 }
 
-void editProfile(dive *d)
+void editProfile(const dive *d, EditProfileType type, int count)
 {
-	execute(new ReplanDive(d, true));
+	execute(new EditProfile(d, type, count));
 }
 
 int addWeight(bool currentDiveOnly)

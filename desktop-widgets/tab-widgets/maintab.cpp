@@ -498,7 +498,7 @@ void MainTab::acceptChanges()
 
 	MainWindow::instance()->showProfile();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-	Command::editProfile(&displayed_dive);
+	Command::editProfile(&displayed_dive, Command::EditProfileType::MOVE, 0);
 
 	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
 	MainWindow::instance()->diveList->reload();

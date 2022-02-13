@@ -334,9 +334,25 @@ class ReplanDive : public Base {
 	int salinity;
 public:
 	// Dive computer(s) and cylinders(s) of the source dive will be reset!
-	// If edit_profile is true, the text will be changed from "replan dive" to "edit profile".
-	ReplanDive(dive *source, bool edit_profile);
+	ReplanDive(dive *source);
 	~ReplanDive();
+private:
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
+class EditProfile : public Base {
+	dive *d;
+	int dcNr;
+
+	depth_t maxdepth, meandepth, dcmaxdepth;
+	duration_t duration;
+	struct divecomputer dc;
+public:
+	// Note: source must be clean (i.e. fixup_dive must have been called on it).
+	EditProfile(const dive *source, EditProfileType type, int count);
+	~EditProfile();
 private:
 	void undo() override;
 	void redo() override;

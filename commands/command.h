@@ -93,8 +93,13 @@ int editTags(const QStringList &newList, bool currentDiveOnly);
 int editBuddies(const QStringList &newList, bool currentDiveOnly);
 int editDiveGuide(const QStringList &newList, bool currentDiveOnly);
 void pasteDives(const dive *d, dive_components what);
-void replanDive(dive *d); // dive computer(s) and cylinder(s) will be reset!
-void editProfile(dive *d); // dive computer(s) and cylinder(s) will be reset!
+enum class EditProfileType {
+	ADD,
+	REMOVE,
+	MOVE,
+};
+void replanDive(dive *d); // dive computer(s) and cylinder(s) of first argument will be consumed!
+void editProfile(const dive *d, EditProfileType type, int count);
 int addWeight(bool currentDiveOnly);
 int removeWeight(int index, bool currentDiveOnly);
 int editWeight(int index, weightsystem_t ws, bool currentDiveOnly);
