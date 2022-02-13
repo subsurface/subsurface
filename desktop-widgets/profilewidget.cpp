@@ -176,28 +176,7 @@ void ProfileWidget::plotCurrentDive()
 {
 	setEnabledToolbar(current_dive != nullptr);
 	if (current_dive) {
-		stack->setCurrentIndex(1);
-		bool freeDiveMode = current_dive->dc.divemode == FREEDIVE;
-		ui.profCalcCeiling->setDisabled(freeDiveMode);
-		ui.profCalcCeiling->setDisabled(freeDiveMode);
-		ui.profCalcAllTissues ->setDisabled(freeDiveMode);
-		ui.profIncrement3m->setDisabled(freeDiveMode);
-		ui.profDcCeiling->setDisabled(freeDiveMode);
-		ui.profPhe->setDisabled(freeDiveMode);
-		ui.profPn2->setDisabled(freeDiveMode); //TODO is the same as scuba?
-		ui.profPO2->setDisabled(freeDiveMode); //TODO is the same as scuba?
-		ui.profTankbar->setDisabled(freeDiveMode);
-		ui.profMod->setDisabled(freeDiveMode);
-		ui.profNdl_tts->setDisabled(freeDiveMode);
-		ui.profDeco->setDisabled(freeDiveMode);
-		ui.profEad->setDisabled(freeDiveMode);
-		ui.profSAC->setDisabled(freeDiveMode);
-		ui.profTissues->setDisabled(freeDiveMode);
-
-		ui.profRuler->setDisabled(false);
-		ui.profScaled->setDisabled(false); // measuring and scaling
-		ui.profTogglePicture->setDisabled(false);
-		ui.profHR->setDisabled(false);
+		setDive(current_dive);
 		view->setProfileState(current_dive, dc_number);
 		view->resetZoom(); // when switching dive, reset the zoomLevel
 		view->plotDive(current_dive, dc_number);
