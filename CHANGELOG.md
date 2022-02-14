@@ -1,3 +1,4 @@
+- desktop: Don't lose cursor position in notes when switching between windows [#3369]
 - Uemis support: fix the ability disconnect/reconnect the Zurich when its filesystem is full
 - libdivecomputer: add support for latest BLE hardware in OSTC dive computers
 
