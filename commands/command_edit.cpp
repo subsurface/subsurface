@@ -156,7 +156,8 @@ void EditBase<T>::undo()
 	// Send signals.
 	DiveField id = fieldId();
 	emit diveListNotifier.divesChanged(stdToQt<dive *>(dives), id);
-	setSelection(selectedDives, current);
+	if (!placingCommand())
+		setSelection(selectedDives, current);
 }
 
 // We have to manually instantiate the constructors of the EditBase class,

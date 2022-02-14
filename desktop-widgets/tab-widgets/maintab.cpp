@@ -248,7 +248,7 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 		ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
 	if (field.rating)
 		ui.rating->setCurrentStars(current_dive->rating);
-	if (field.notes)
+	if (field.notes && !Command::placingCommand())
 		updateNotes(current_dive);
 	if (field.datetime) {
 		updateDateTime(current_dive);
@@ -306,11 +306,10 @@ static bool isHtml(const QString &s)
 void MainTab::updateNotes(const struct dive *d)
 {
 	QString tmp(d->notes);
-	if (isHtml(tmp)) {
+	if (isHtml(tmp))
 		ui.notes->setHtml(tmp);
-	} else {
+	else
 		ui.notes->setPlainText(tmp);
-	}
 }
 
 void MainTab::updateDateTime(const struct dive *d)

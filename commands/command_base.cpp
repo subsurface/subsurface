@@ -112,5 +112,3 @@ bool placingCommand()
 }
 
 } // namespace Command
-
-
