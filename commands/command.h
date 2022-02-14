@@ -26,6 +26,7 @@ bool isClean();				// Any changes need to be saved?
 QAction *undoAction(QObject *parent);	// Create an undo action.
 QAction *redoAction(QObject *parent);	// Create an redo action.
 QString changesMade();			// return a string with the texts from all commands on the undo stack -> for commit message
+bool placingCommand();			// Currently executing a new command -> might not have to update the field the user just edited.
 
 // 2) Dive-list related commands
 
