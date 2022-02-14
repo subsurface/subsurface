@@ -561,7 +561,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 	// HACK ALERT! Qt 5.9 needs this for proper Bluez operation
 	qputenv("QT_DEFAULT_CENTRAL_SERVICES", "1");
 
-#if defined(Q_OS_MACOS) || defined(Q_OS_IOS)
+#if defined(Q_OS_MACOS) || defined(Q_OS_IOS) || QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	QBluetoothDeviceInfo remoteDevice = getBtDeviceInfo(QString(devaddr));
 	QLowEnergyController *controller = QLowEnergyController::createCentral(remoteDevice);
 #else
