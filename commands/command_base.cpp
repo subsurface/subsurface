@@ -91,16 +91,24 @@ QString changesMade()
 	return changeTexts;
 }
 
+static bool executingCommand = false;
 bool execute(Base *cmd)
 {
 	if (cmd->workToBeDone()) {
+		executingCommand = true;
 		undoStack.push(cmd);
+		executingCommand = false;
 		emit diveListNotifier.commandExecuted();
 		return true;
 	} else {
 		delete cmd;
 		return false;
 	}
+}
+
+bool placingCommand()
+{
+	return executingCommand;
 }
 
 } // namespace Command
