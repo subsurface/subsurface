@@ -68,7 +68,7 @@ StatsView::~StatsView()
 
 void StatsView::mousePressEvent(QMouseEvent *event)
 {
-	QPointF pos = event->localPos();
+	QPointF pos = event->position();
 
 	// Currently, we only support dragging of the legend. If other objects
 	// should be made draggable, this needs to be generalized.
@@ -390,12 +390,12 @@ void StatsView::mouseMoveEvent(QMouseEvent *event)
 		QSizeF sceneSize = size();
 		if (sceneSize.width() <= 1.0 || sceneSize.height() <= 1.0)
 			return;
-		draggedItem->setPos(event->pos() - dragStartMouse + dragStartItem);
+		draggedItem->setPos(event->position().toPoint() - dragStartMouse + dragStartItem);
 		update();
 	}
 
 	if (selectionRect) {
-		QPointF p1 = event->pos();
+		QPointF p1 = event->position().toPoint();
 		QPointF p2 = dragStartMouse;
 		selectionRect->setLine(p1, p2);
 		QRectF rect(std::min(p1.x(), p2.x()), std::min(p1.y(), p2.y()),
@@ -414,7 +414,7 @@ void StatsView::hoverEnterEvent(QHoverEvent *)
 
 void StatsView::hoverMoveEvent(QHoverEvent *event)
 {
-	QPointF pos = event->pos();
+	QPointF pos = event->position().toPoint();
 
 	for (auto &series: series) {
 		if (series->hover(pos)) {

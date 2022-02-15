@@ -332,7 +332,7 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	if ((currentState == PLAN || currentState == EDIT) && plannerModel) {
-		QPointF mappedPos = mapToScene(event->pos());
+		QPointF mappedPos = mapToScene(event->position().toPoint());
 		if (!profileScene->pointOnProfile(mappedPos))
 			return;
 
@@ -346,7 +346,7 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseMoveEvent(event);
 
-	QPointF pos = mapToScene(event->pos());
+	QPointF pos = mapToScene(event->position().toPoint());
 	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 
 	if (zoomLevel != 0) {
@@ -612,7 +612,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK)
 			m.addAction(tr("Edit name"), [this, item] { editName(item); });
 #if 0 // TODO::: FINISH OR DISABLE
-		QPointF scenePos = mapToScene(event->pos());
+		QPointF scenePos = mapToScene(event->position().toPoint());
 		int idx = getEntryFromPos(scenePos);
 		// this shows how to figure out if we should ask the user if they want adjust interpolated pressures
 		// at either side of a gas change
@@ -1283,7 +1283,7 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 
 		QString filename;
 		dataStream >> filename;
-		QPointF mappedPos = mapToScene(event->pos());
+		QPointF mappedPos = mapToScene(event->position().toPoint());
 		offset_t offset { (int32_t)lrint(profileScene->timeAxis->valueAt(mappedPos)) };
 		Command::setPictureOffset(mutable_dive(), filename, offset);
 

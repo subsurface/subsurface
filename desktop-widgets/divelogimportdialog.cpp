@@ -141,7 +141,7 @@ ColumnNameView::ColumnNameView(QWidget*)
 
 void ColumnNameView::mousePressEvent(QMouseEvent *press)
 {
-	QModelIndex atClick = indexAt(press->pos());
+	QModelIndex atClick = indexAt(press->position().toPoint());
 	if (!atClick.isValid())
 		return;
 
@@ -174,7 +174,7 @@ void ColumnNameView::dragEnterEvent(QDragEnterEvent *event)
 
 void ColumnNameView::dragMoveEvent(QDragMoveEvent *event)
 {
-	QModelIndex curr = indexAt(event->pos());
+	QModelIndex curr = indexAt(event->position().toPoint());
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 	event->acceptProposedAction();
@@ -209,7 +209,7 @@ void ColumnDropCSVView::dragEnterEvent(QDragEnterEvent *event)
 
 void ColumnDropCSVView::dragMoveEvent(QDragMoveEvent *event)
 {
-	QModelIndex curr = indexAt(event->pos());
+	QModelIndex curr = indexAt(event->position().toPoint());
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 	event->acceptProposedAction();
@@ -217,7 +217,7 @@ void ColumnDropCSVView::dragMoveEvent(QDragMoveEvent *event)
 
 void ColumnDropCSVView::dropEvent(QDropEvent *event)
 {
-	QModelIndex curr = indexAt(event->pos());
+	QModelIndex curr = indexAt(event->position().toPoint());
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 
@@ -330,7 +330,7 @@ void ColumnNameResult::setColumnValues(QList<QStringList> columns)
 
 void ColumnDropCSVView::mousePressEvent(QMouseEvent *press)
 {
-	QModelIndex atClick = indexAt(press->pos());
+	QModelIndex atClick = indexAt(press->position().toPoint());
 	if (!atClick.isValid() || atClick.row())
 		return;
 
