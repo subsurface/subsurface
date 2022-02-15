@@ -52,27 +52,35 @@ static std::array<int, num_tissues> calcLinesPerTissue(int size)
 	return res;
 }
 
+static inline QRgb hsv2rgb(double h, double s, double v)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)  // they are just trolling us with these changes
+	QColor c = QColor::fromHslF((float)h, (float)s, (float)v);
+#else
+	QColor c = QColor::fromHslF(h, s, v);
+#endif
+	return c.rgba();
+}
+
 static QRgb colorScale(double value, int inert)
 {
-	QColor color;
 	double scaledValue = value / (AMB_PERCENTAGE * inert) * 1000.0;
 	if (scaledValue < 0.8)	// grade from cyan to blue to purple
-		color.setHsvF(0.5 + 0.25 * scaledValue / 0.8, 1.0, 1.0);
+		return hsv2rgb(0.5 + 0.25 * scaledValue / 0.8, 1.0, 1.0);
 	else if (scaledValue < 1.0)	// grade from magenta to black
-		color.setHsvF(0.75, 1.0, (1.0 - scaledValue) / 0.2);
+		return hsv2rgb(0.75, 1.0, (1.0 - scaledValue) / 0.2);
 	else if (value < AMB_PERCENTAGE)	// grade from black to bright green
-		color.setHsvF(0.333, 1.0, (value - AMB_PERCENTAGE * inert / 1000.0) / (AMB_PERCENTAGE - AMB_PERCENTAGE * inert / 1000.0));
+		return hsv2rgb(0.333, 1.0, (value - AMB_PERCENTAGE * inert / 1000.0) / (AMB_PERCENTAGE - AMB_PERCENTAGE * inert / 1000.0));
 	else if (value < 65)		// grade from bright green (0% M) to yellow-green (30% M)
-		color.setHsvF(0.333 - 0.133 * (value - AMB_PERCENTAGE) / (65.0 - AMB_PERCENTAGE), 1.0, 1.0);
+		return hsv2rgb(0.333 - 0.133 * (value - AMB_PERCENTAGE) / (65.0 - AMB_PERCENTAGE), 1.0, 1.0);
 	else if (value < 85)		// grade from yellow-green (30% M) to orange (70% M)
-		color.setHsvF(0.2 - 0.1 * (value - 65.0) / 20.0, 1.0, 1.0);
+		return hsv2rgb(0.2 - 0.1 * (value - 65.0) / 20.0, 1.0, 1.0);
 	else if (value < 100)		// grade from orange (70% M) to red (100% M)
-		color.setHsvF(0.1 * (100.0 - value) / 15.0, 1.0, 1.0);
+		return hsv2rgb(0.1 * (100.0 - value) / 15.0, 1.0, 1.0);
 	else if (value < 120)		// M value exceeded - grade from red to white
-		color.setHsvF(0.0, 1 - (value - 100.0) / 20.0, 1.0);
+		return hsv2rgb(0.0, 1 - (value - 100.0) / 20.0, 1.0);
 	else	// white
-		color.setHsvF(0.0, 0.0, 1.0);
-	return color.rgba();
+		return hsv2rgb(0.0, 0.0, 1.0);
 }
 
 void DivePercentageItem::replot(const dive *d, const struct divecomputer *dc, const plot_info &pi)

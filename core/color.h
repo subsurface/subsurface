@@ -7,65 +7,74 @@
 
 #include <QColor>
 
+static inline QColor makeColor(double r, double g, double b, double a = 1.0)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)  // they are just trolling us with these changes
+	return QColor::fromRgbF((float)r, (float)g, (float)b, (float)a);
+#else
+	return QColor::fromRgbF(r, g, b, a);
+#endif
+}
+
 // Greens
-#define CAMARONE1 QColor::fromRgbF(0.0, 0.4, 0.0, 1)
-#define FUNGREEN1 QColor::fromRgbF(0.0, 0.4, 0.2, 1)
-#define FUNGREEN1_HIGH_TRANS QColor::fromRgbF(0.0, 0.4, 0.2, 0.25)
-#define KILLARNEY1 QColor::fromRgbF(0.2, 0.4, 0.2, 1)
-#define APPLE1 QColor::fromRgbF(0.2, 0.6, 0.2, 1)
-#define APPLE1_MED_TRANS QColor::fromRgbF(0.2, 0.6, 0.2, 0.5)
-#define APPLE1_HIGH_TRANS QColor::fromRgbF(0.2, 0.6, 0.2, 0.25)
-#define LIMENADE1 QColor::fromRgbF(0.4, 0.8, 0.0, 1)
-#define ATLANTIS1 QColor::fromRgbF(0.4, 0.8, 0.2, 1)
-#define ATLANTIS2 QColor::fromRgbF(0.6, 0.8, 0.2, 1)
-#define RIOGRANDE1 QColor::fromRgbF(0.8, 0.8, 0.0, 1)
-#define EARLSGREEN1 QColor::fromRgbF(0.8, 0.8, 0.2, 1)
-#define FORESTGREEN1 QColor::fromRgbF(0.1, 0.5, 0.1, 1)
-#define NITROX_GREEN QColor::fromRgbF(0, 0.54, 0.375, 1)
+#define CAMARONE1 makeColor(0.0, 0.4, 0.0)
+#define FUNGREEN1 makeColor(0.0, 0.4, 0.2)
+#define FUNGREEN1_HIGH_TRANS makeColor(0.0, 0.4, 0.2, 0.25)
+#define KILLARNEY1 makeColor(0.2, 0.4, 0.2)
+#define APPLE1 makeColor(0.2, 0.6, 0.2)
+#define APPLE1_MED_TRANS makeColor(0.2, 0.6, 0.2, 0.5)
+#define APPLE1_HIGH_TRANS makeColor(0.2, 0.6, 0.2, 0.25)
+#define LIMENADE1 makeColor(0.4, 0.8, 0.0)
+#define ATLANTIS1 makeColor(0.4, 0.8, 0.2)
+#define ATLANTIS2 makeColor(0.6, 0.8, 0.2)
+#define RIOGRANDE1 makeColor(0.8, 0.8, 0.0)
+#define EARLSGREEN1 makeColor(0.8, 0.8, 0.2)
+#define FORESTGREEN1 makeColor(0.1, 0.5, 0.1)
+#define NITROX_GREEN makeColor(0, 0.54, 0.375)
 
 // Reds
-#define PERSIANRED1 QColor::fromRgbF(0.8, 0.2, 0.2, 1)
-#define TUSCANY1 QColor::fromRgbF(0.8, 0.4, 0.2, 1)
-#define PIRATEGOLD1 QColor::fromRgbF(0.8, 0.5, 0.0, 1)
-#define PIRATEGOLD1_MED_TRANS QColor::fromRgbF(0.8, 0.5, 0.0, 0.75)
-#define HOKEYPOKEY1 QColor::fromRgbF(0.8, 0.6, 0.2, 1)
-#define CINNABAR1 QColor::fromRgbF(0.9, 0.3, 0.2, 1)
-#define REDORANGE1 QColor::fromRgbF(1.0, 0.2, 0.2, 1)
-#define REDORANGE1_HIGH_TRANS QColor::fromRgbF(1.0, 0.2, 0.2, 0.25)
-#define REDORANGE1_MED_TRANS QColor::fromRgbF(1.0, 0.2, 0.2, 0.5)
-#define RED1_MED_TRANS QColor::fromRgbF(1.0, 0.0, 0.0, 0.5)
-#define RED1 QColor::fromRgbF(1.0, 0.0, 0.0, 1)
+#define PERSIANRED1 makeColor(0.8, 0.2, 0.2)
+#define TUSCANY1 makeColor(0.8, 0.4, 0.2)
+#define PIRATEGOLD1 makeColor(0.8, 0.5, 0.0)
+#define PIRATEGOLD1_MED_TRANS makeColor(0.8, 0.5, 0.0, 0.75)
+#define HOKEYPOKEY1 makeColor(0.8, 0.6, 0.2)
+#define CINNABAR1 makeColor(0.9, 0.3, 0.2)
+#define REDORANGE1 makeColor(1.0, 0.2, 0.2)
+#define REDORANGE1_HIGH_TRANS makeColor(1.0, 0.2, 0.2, 0.25)
+#define REDORANGE1_MED_TRANS makeColor(1.0, 0.2, 0.2, 0.5)
+#define RED1_MED_TRANS makeColor(1.0, 0.0, 0.0, 0.5)
+#define RED1 makeColor(1.0, 0.0, 0.0)
 
 // Monochromes
-#define BLACK1 QColor::fromRgbF(0.0, 0.0, 0.0, 1)
-#define BLACK1_LOW_TRANS QColor::fromRgbF(0.0, 0.0, 0.0, 0.75)
-#define BLACK1_HIGH_TRANS QColor::fromRgbF(0.0, 0.0, 0.0, 0.25)
-#define TUNDORA1_MED_TRANS QColor::fromRgbF(0.3, 0.3, 0.3, 0.5)
-#define MED_GRAY_HIGH_TRANS QColor::fromRgbF(0.5, 0.5, 0.5, 0.25)
-#define MERCURY1_MED_TRANS QColor::fromRgbF(0.9, 0.9, 0.9, 0.5)
-#define CONCRETE1_LOWER_TRANS QColor::fromRgbF(0.95, 0.95, 0.95, 0.9)
-#define WHITE1_MED_TRANS QColor::fromRgbF(1.0, 1.0, 1.0, 0.5)
-#define WHITE1 QColor::fromRgbF(1.0, 1.0, 1.0, 1)
+#define BLACK1 makeColor(0.0, 0.0, 0.0)
+#define BLACK1_LOW_TRANS makeColor(0.0, 0.0, 0.0, 0.75)
+#define BLACK1_HIGH_TRANS makeColor(0.0, 0.0, 0.0, 0.25)
+#define TUNDORA1_MED_TRANS makeColor(0.3, 0.3, 0.3, 0.5)
+#define MED_GRAY_HIGH_TRANS makeColor(0.5, 0.5, 0.5, 0.25)
+#define MERCURY1_MED_TRANS makeColor(0.9, 0.9, 0.9, 0.5)
+#define CONCRETE1_LOWER_TRANS makeColor(0.95, 0.95, 0.95, 0.9)
+#define WHITE1_MED_TRANS makeColor(1.0, 1.0, 1.0, 0.5)
+#define WHITE1 makeColor(1.0, 1.0, 1.0)
 
 // Blues
-#define GOVERNORBAY2 QColor::fromRgbF(0.2, 0.2, 0.7, 1)
-#define GOVERNORBAY1_MED_TRANS QColor::fromRgbF(0.2, 0.2, 0.8, 0.5)
-#define ROYALBLUE2 QColor::fromRgbF(0.2, 0.2, 0.9, 1)
-#define ROYALBLUE2_LOW_TRANS QColor::fromRgbF(0.2, 0.2, 0.9, 0.75)
-#define AIR_BLUE QColor::fromRgbF(0.25, 0.75, 1.0, 1)
-#define AIR_BLUE_TRANS QColor::fromRgbF(0.25, 0.75, 1.0, 0.5)
+#define GOVERNORBAY2 makeColor(0.2, 0.2, 0.7)
+#define GOVERNORBAY1_MED_TRANS makeColor(0.2, 0.2, 0.8, 0.5)
+#define ROYALBLUE2 makeColor(0.2, 0.2, 0.9)
+#define ROYALBLUE2_LOW_TRANS makeColor(0.2, 0.2, 0.9, 0.75)
+#define AIR_BLUE makeColor(0.25, 0.75, 1.0)
+#define AIR_BLUE_TRANS makeColor(0.25, 0.75, 1.0, 0.5)
 
 // Yellows / BROWNS
-#define SPRINGWOOD1 QColor::fromRgbF(0.95, 0.95, 0.9, 1)
-#define SPRINGWOOD1_MED_TRANS QColor::fromRgbF(0.95, 0.95, 0.9, 0.5)
-#define BROOM1_LOWER_TRANS QColor::fromRgbF(1.0, 1.0, 0.1, 0.9)
-#define PEANUT QColor::fromRgbF(0.5, 0.2, 0.1, 1.0)
-#define PEANUT_MED_TRANS QColor::fromRgbF(0.5, 0.2, 0.1, 0.5)
-#define NITROX_YELLOW QColor::fromRgbF(0.98, 0.89, 0.07, 1.0)
+#define SPRINGWOOD1 makeColor(0.95, 0.95, 0.9)
+#define SPRINGWOOD1_MED_TRANS makeColor(0.95, 0.95, 0.9, 0.5)
+#define BROOM1_LOWER_TRANS makeColor(1.0, 1.0, 0.1, 0.9)
+#define PEANUT makeColor(0.5, 0.2, 0.1)
+#define PEANUT_MED_TRANS makeColor(0.5, 0.2, 0.1, 0.5)
+#define NITROX_YELLOW makeColor(0.98, 0.89, 0.07)
 
 // Magentas
-#define MEDIUMREDVIOLET1_HIGHER_TRANS QColor::fromRgbF(0.7, 0.2, 0.7, 0.1)
-#define MAGENTA QColor::fromRgbF(1.0, 0.0, 1.0, 1.0)
+#define MEDIUMREDVIOLET1_HIGHER_TRANS makeColor(0.7, 0.2, 0.7, 0.1)
+#define MAGENTA makeColor(1.0, 0.0, 1.0)
 
 #define SAC_COLORS_START_IDX SAC_1
 #define SAC_COLORS 9

@@ -2,6 +2,7 @@
 #include "divepixmapcache.h"
 #include "core/metrics.h"
 #include "core/qthelper.h" // for renderSVGIconWidth
+#include "core/color.h"
 
 #include <cmath>
 
@@ -49,7 +50,7 @@ DivePixmaps::DivePixmaps(int dpr) : dpr(dpr)
 	// The transparen pixmap is a very obscure feature to enable tooltips without showing a pixmap.
 	// See code in diveeventitem.cpp. This should probably be replaced by a different mechanism.
 	QPixmap transparentPixmap(lrint(4 * dprf), lrint(20 * dprf));
-	transparentPixmap.fill(QColor::fromRgbF(1.0, 1.0, 1.0, 0.01));
+	transparentPixmap.fill(makeColor(1.0, 1.0, 1.0, 0.01));
 }
 
 static std::vector<std::shared_ptr<const DivePixmaps>> cache;
