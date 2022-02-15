@@ -83,7 +83,7 @@ void init_qt_late()
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	translationLocation = QLatin1String(":/");
 #else
-	translationLocation = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+	translationLocation = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
 #endif
 	if (uiLang != "en_US" && uiLang != "en-US") {
 		if (qtTranslator.load(loc, "qtbase", "_", translationLocation) ||
