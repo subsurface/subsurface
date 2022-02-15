@@ -87,7 +87,7 @@ void RegressionItem::updatePosition()
 	img->fill(Qt::transparent);
 	if (confidence) {
 		QColor col(regressionItemColor);
-		col.setAlphaF(reg.r2);
+		col.setAlphaF((float)reg.r2);
 		painter->setPen(Qt::NoPen);
 		painter->setBrush(QBrush(col));
 		painter->drawPolygon(poly);
