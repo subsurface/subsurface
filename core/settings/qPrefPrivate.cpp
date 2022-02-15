@@ -20,7 +20,11 @@ void qPrefPrivate::propSetValue(const QString &key, const QVariant &value, const
 {
 	QSettings s;
 	bool isDefault = false;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	if (value.isValid() && value.typeId() == QMetaType::Double)
+#else
 	if (value.isValid() && value.type() == QVariant::Double)
+#endif
 		isDefault = IS_FP_SAME(value.toDouble(), defaultValue.toDouble());
 	else
 		isDefault = (value == defaultValue);
