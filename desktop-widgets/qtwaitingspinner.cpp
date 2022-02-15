@@ -272,7 +272,7 @@ QColor QtWaitingSpinner::currentLineColor(int countDistance, int totalNrOfLines,
   int distanceThreshold =
 	  static_cast<int>(ceil((totalNrOfLines - 1) * trailFadePerc / 100.0));
   if (countDistance > distanceThreshold) {
-	color.setAlphaF(minAlphaF);
+	color.setAlphaF((float)minAlphaF);
   } else {
 	qreal alphaDiff = color.alphaF() - minAlphaF;
 	qreal gradient = alphaDiff / static_cast<qreal>(distanceThreshold + 1);
@@ -280,7 +280,7 @@ QColor QtWaitingSpinner::currentLineColor(int countDistance, int totalNrOfLines,
 
 	// If alpha is out of bounds, clip it.
 	resultAlpha = std::min(1.0, std::max(0.0, resultAlpha));
-	color.setAlphaF(resultAlpha);
+	color.setAlphaF((float)resultAlpha);
   }
   return color;
 }

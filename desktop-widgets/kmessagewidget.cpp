@@ -250,9 +250,9 @@ KMessageWidget::MessageType KMessageWidget::messageType() const
 
 static QColor darkShade(QColor c)
 {
-    qreal contrast = 0.7; // taken from kcolorscheme for the dark shade
+    double contrast = 0.7; // taken from kcolorscheme for the dark shade
 
-    qreal darkAmount;
+    double darkAmount;
     if (c.lightnessF() < 0.006) { /* too dark */
         darkAmount = 0.02 + 0.40 * contrast;
     } else if (c.lightnessF() > 0.93) { /* too bright */
@@ -261,9 +261,9 @@ static QColor darkShade(QColor c)
         darkAmount = (-c.lightnessF()) * (0.55 + contrast * 0.35);
     }
 
-    qreal v = c.lightnessF() + darkAmount;
+    double v = c.lightnessF() + darkAmount;
     v = v > 0.0 ? (v < 1.0 ? v : 1.0) : 0.0;
-    c.setHsvF(c.hslHueF(), c.hslSaturationF(), v);
+    c.setHsvF(c.hslHueF(), c.hslSaturationF(), (float)v);
     return c;
 }
 
