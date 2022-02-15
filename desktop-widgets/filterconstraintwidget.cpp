@@ -328,7 +328,7 @@ void FilterConstraintWidget::update()
 	}
 
 	// Update the unit strings in case the locale was changed
-	if (unitFrom || unitTo) {
+	if (unitFrom && unitTo) {
 		QString unitString = idx.data(FilterConstraintModel::UNIT_ROLE).value<QString>();
 		unitFrom->setText(unitString);
 		unitTo->setText(unitString);
