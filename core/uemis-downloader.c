@@ -1457,7 +1457,7 @@ const char *do_uemis_import(device_data_t *data)
 				if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
 					goto bail;
 				if (strcmp(deviceid, param_buff[0]) != 0) {
-					printf(stderr, "Uemis: Device id has changed after reconnect!\n");
+					fprintf(stderr, "Uemis: Device id has changed after reconnect!\n");
 					goto bail;
 				}
 				param_buff[0] = strdup(deviceid);
