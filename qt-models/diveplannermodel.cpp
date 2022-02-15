@@ -824,6 +824,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 	point.time = seconds;
 	point.cylinderid = cylinderid;
 	point.setpoint = ccpoint;
+	point.minimum_gas.mbar = 0;
 	point.entered = entered;
 	point.divemode = divemode;
 	point.next = NULL;
