@@ -5,6 +5,7 @@
 #include <QCheckBox>
 #include <QPainter>
 #include <QStyledItemDelegate>
+#include <QQmlEngine>
 
 class ChartItemDelegate : public QStyledItemDelegate {
 private:
@@ -90,12 +91,24 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 
 	ui.stats->setSource(urlStatsView);
 	ui.stats->setResizeMode(QQuickWidget::SizeRootObjectToView);
-	QQuickItem *root = ui.stats->rootObject();
-	view = qobject_cast<StatsView *>(root);
+	(void)getView();
+}
+
+// hack around the Qt6 bug where the QML object gets destroyed and recreated
+StatsView *StatsWidget::getView()
+{
+	StatsView *view = qobject_cast<StatsView *>(ui.stats->rootObject());
 	if (!view)
 		qWarning("Oops. The root of the StatsView is not a StatsView.");
-	if (view)
+	if (view) {
+		// try to prevent the JS garbage collection from freeing the object
+		// this appears to fail with Qt6 which is why we still look up the
+		// object from the ui.stats rootObject
+		ui.stats->engine()->setObjectOwnership(view, QQmlEngine::CppOwnership);
+		view->setParent(this);
 		view->setVisible(isVisible()); // Synchronize visibility of widget and QtQuick-view.
+	}
+	return view;
 }
 
 // Initialize QComboBox with list of variables
@@ -143,13 +156,14 @@ void StatsWidget::updateUi()
 		connect(check, &QCheckBox::stateChanged, [this,id] (int state) { featureChanged(id, state); });
 		ui.features->addWidget(check);
 	}
-
+	StatsView *view = getView();
 	if (view)
 		view->plot(state);
 }
 
 void StatsWidget::updateRestrictionLabel()
 {
+	StatsView *view = getView();
 	if (!view)
 		return;
 	int num = view->restrictionCount();
@@ -211,6 +225,7 @@ void StatsWidget::featureChanged(int idx, bool status)
 {
 	state.featureChanged(idx, status);
 	// No need for a full chart replot - just show/hide the features
+	StatsView *view = getView();
 	if (view)
 		view->updateFeatures(state);
 }
@@ -221,20 +236,21 @@ void StatsWidget::showEvent(QShowEvent *e)
 	updateUi();
 	QWidget::showEvent(e);
 	// Apparently, we have to manage the visibility of the view ourselves. That's mad.
-	if (view)
-		view->setVisible(true);
+	// this is implicitly done in getView() - so we can ignore the return value
+	(void)getView();
 }
 
 void StatsWidget::hideEvent(QHideEvent *e)
 {
 	QWidget::hideEvent(e);
 	// Apparently, we have to manage the visibility of the view ourselves. That's mad.
-	if (view)
-		view->setVisible(false);
+	// this is implicitly done in getView() - so we can ignore the return value
+	(void)getView();
 }
 
 void StatsWidget::restrict()
 {
+	StatsView *view = getView();
 	if (view)
 		view->restrictToSelection();
 	updateRestrictionLabel();
@@ -242,6 +258,7 @@ void StatsWidget::restrict()
 
 void StatsWidget::unrestrict()
 {
+	StatsView *view = getView();
 	if (view)
 		view->unrestrict();
 	updateRestrictionLabel();
