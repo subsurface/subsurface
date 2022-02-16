@@ -31,7 +31,7 @@ slots:
 private:
 	Ui::StatsWidget ui;
 	StatsState state;
-	StatsView *view;
+	StatsView *getView();
 	void updateUi();
 	void updateRestrictionLabel();
 	std::vector<std::unique_ptr<QCheckBox>> features;
