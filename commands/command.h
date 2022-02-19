@@ -111,6 +111,7 @@ enum class EditCylinderType {
 	GASMIX
 };
 int editCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentDiveOnly);
+void editSensors(int toCylinder, const int fromCylinder);
 #ifdef SUBSURFACE_MOBILE
 // Edits a dive and creates a divesite (if createDs != NULL) or edits a divesite (if changeDs != NULL).
 // Takes ownership of newDive and createDs!

@@ -7,6 +7,7 @@
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
+#include "core/sample.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/subsurface-string.h"
 #include <string>
@@ -19,9 +20,10 @@ CylindersModel::CylindersModel(bool planner, bool hideUnused, QObject *parent) :
 	tempRow(-1),
 	tempCyl(empty_cylinder)
 {
-	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, IS_USED, WORKINGPRESS_INT, SIZE_INT};
+	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, WORKINGPRESS_INT, SIZE_INT, SENSORS};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
-						 << tr("Deco switch at") <<tr("Bot. MOD") <<tr("MND") << tr("Use") << "" << "");
+					   << tr("Deco switch at") << tr("Bot. MOD") << tr("MND") << tr("Use") << ""
+					   << "" << tr("Sensors"));
 
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &CylindersModel::cylinderAdded);
@@ -237,6 +239,24 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			return static_cast<int>(cyl->type.workingpressure.mbar);
 		case SIZE_INT:
 			return static_cast<int>(cyl->type.size.mliter);
+		case SENSORS: {
+			std::vector<int16_t> sensors;
+			for (int i = 0; i < current_dc->samples; ++i) {
+				auto &sample = current_dc->sample[i];
+				for (auto s = 0; s < MAX_SENSORS; ++s) {
+					if (sample.pressure[s].mbar) {
+						if (sample.sensor[s] == index.row())
+							return tr("Sensor attached, can't move another sensor here.");
+						else if (std::find(sensors.begin(), sensors.end(), sample.sensor[s]) == sensors.end())
+							sensors.push_back(sample.sensor[s]);
+					}
+				}
+			}
+			QStringList sensorStrings;
+			for (auto s : sensors)
+				sensorStrings << QString::number(s);
+			return tr("Select one of these cylinders: ") + sensorStrings.join(",");
+		}
 		}
 		break;
 	case Qt::DecorationRole:
@@ -272,6 +292,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			return tr("Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to '*' for best O₂% for max. depth.");
 		case MND:
 			return tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for max. depth.");
+		case SENSORS:
+			return tr("Index of cylinder that you want to move sensor data from.");
 		}
 		break;
 	}
@@ -453,6 +475,24 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		}
 		type = Command::EditCylinderType::TYPE;
 		break;
+	case SENSORS: {
+		std::vector<int> sensors;
+		for (auto &sensor : vString.split(",")) {
+			bool ok = false;
+			int s = sensor.toInt(&ok);
+			if (ok && s < MAX_SENSORS)
+				sensors.push_back(s);
+		}
+
+		bool ok = false;
+		int s = vString.toInt(&ok);
+		if (ok) {
+			Command::editSensors(index.row(), s);
+			// We don't use the edit cylinder command and editing sensors is not relevant for planner
+			return true;
+		}
+		return false;
+	}
 	}
 
 	if (inPlanner) {
@@ -512,6 +552,18 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 {
 	if (index.column() == REMOVE || index.column() == USE)
 		return Qt::ItemIsEnabled;
+	if (index.column() == SENSORS) {
+		for (int i = 0; i < current_dc->samples; ++i) {
+			auto &sample = current_dc->sample[i];
+			for (auto s = 0; s < MAX_SENSORS; ++s) {
+				if (sample.pressure[s].mbar) {
+					if (sample.sensor[s] == index.row())
+						// Sensor attached, not editable.
+						return QAbstractItemModel::flags(index);
+				}
+			}
+		}
+	}
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 

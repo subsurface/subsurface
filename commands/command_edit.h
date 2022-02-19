@@ -440,6 +440,22 @@ private:
 	void redo() override;
 };
 
+class EditSensors : public Base
+{
+public:
+	EditSensors(int cylIndex, int fromCylinder);
+
+private:
+	struct divecomputer *dc;
+	struct dive *d;
+	int toCylinder;
+	int fromCylinder;
+	void mapSensors(int toCyl, int fromCyl);
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
 #ifdef SUBSURFACE_MOBILE
 // Edit a full dive. This is used on mobile where we don't have per-field granularity.
 // It may add or edit a dive site.

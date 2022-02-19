@@ -27,6 +27,7 @@ public:
 		USE,
 		WORKINGPRESS_INT,
 		SIZE_INT,
+		SENSORS,
 		COLUMNS
 	};
 
