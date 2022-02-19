@@ -28,21 +28,21 @@ CylindersModel *DivePlannerPointsModel::cylindersModel()
 	return &cylinders;
 }
 
-void DivePlannerPointsModel::removePoints(const QVector<int> &rows)
+void DivePlannerPointsModel::removePoints(const std::vector<int> &rows)
 {
-	if (!rows.count())
+	if (rows.empty())
 		return;
-	QVector<int> v2 = rows;
+	std::vector<int> v2 = rows;
 	std::sort(v2.begin(), v2.end());
 
-	for (int i = v2.count() - 1; i >= 0; i--) {
+	for (int i = (int)v2.size() - 1; i >= 0; i--) {
 		beginRemoveRows(QModelIndex(), v2[i], v2[i]);
 		divepoints.erase(divepoints.begin() + v2[i]);
 		endRemoveRows();
 	}
 }
 
-void DivePlannerPointsModel::removeSelectedPoints(const QVector<int> &rows)
+void DivePlannerPointsModel::removeSelectedPoints(const std::vector<int> &rows)
 {
 	removePoints(rows);
 
@@ -230,7 +230,7 @@ bool DivePlannerPointsModel::updateMaxDepth()
 
 void DivePlannerPointsModel::removeDeco()
 {
-	QVector<int> computedPoints;
+	std::vector<int> computedPoints;
 	for (int i = 0; i < rowCount(); i++) {
 		if (!at(i).entered)
 			computedPoints.push_back(i);

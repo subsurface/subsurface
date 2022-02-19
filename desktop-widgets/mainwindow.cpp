@@ -145,8 +145,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	registerApplicationState(ApplicationState::Default, { true, { mainTab.get(), FLAG_NONE },  { profile.get(), FLAG_NONE },
 								    { diveList.get(), FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditDive, { false, { mainTab.get(), FLAG_NONE },  { profile.get(), FLAG_NONE },
-								      { diveList.get(), FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
 	registerApplicationState(ApplicationState::PlanDive, { false, { &plannerWidgets->plannerWidget, FLAG_NONE },         { profile.get(), FLAG_NONE },
 								      { &plannerWidgets->plannerSettingsWidget, FLAG_NONE }, { &plannerWidgets->plannerDetails, FLAG_NONE } });
 	registerApplicationState(ApplicationState::EditPlannedDive, { true, { &plannerWidgets->plannerWidget, FLAG_NONE }, { profile.get(), FLAG_NONE },
@@ -245,8 +243,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	setupSocialNetworkMenu();
 	set_git_update_cb(&updateProgress);
 	set_error_cb(&showErrorFromC);
-
-	connect(profile->view.get(), &ProfileWidget2::editCurrentDive, this, &MainWindow::editCurrentDive);
 
 // full screen support is buggy on Windows and Ubuntu.
 // require the FULLSCREEN_SUPPORT macro to enable it!
@@ -1406,25 +1402,6 @@ void MainWindow::on_actionImportDiveSites_triggered()
 	// sites table will be cleared by DivesiteImportDialog constructor
 	DivesiteImportDialog divesiteImport(sites, source, this);
 	divesiteImport.exec();
-}
-
-void MainWindow::editCurrentDive()
-{
-	// We only allow editing of the profile for manually added dives.
-	if (!current_dive || (!same_string(current_dive->dc.model, "manually added dive") && current_dive->dc.samples) || !userMayChangeAppState())
-		return;
-
-	// This shouldn't be possible, but let's make sure no weird "double editing" takes place.
-	if (mainTab->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING)
-		return;
-
-	disableShortcuts(false);
-	copy_dive(current_dive, &displayed_dive); // Work on a copy of the dive
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
-	profile->setEditState(&displayed_dive, 0);
-	setApplicationState(ApplicationState::EditDive);
-	mainTab->enableEdition();
 }
 
 void MainWindow::on_actionExport_triggered()

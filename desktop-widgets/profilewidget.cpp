@@ -2,9 +2,11 @@
 
 #include "profilewidget.h"
 #include "profile-widget/profilewidget2.h"
+#include "commands/command.h"
 #include "core/color.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
+#include "core/subsurface-string.h"
 #include "qt-models/diveplannermodel.h"
 
 #include <QToolBar>
@@ -49,7 +51,7 @@ void EmptyView::resizeEvent(QResizeEvent *)
 	update();
 }
 
-ProfileWidget::ProfileWidget()
+ProfileWidget::ProfileWidget() : originalDive(nullptr)
 {
 	ui.setupUi(this);
 
@@ -116,6 +118,10 @@ ProfileWidget::ProfileWidget()
 	connect(ui.profPO2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_po2);
 
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, view.get(), &ProfileWidget2::settingsChanged);
+	connect(view.get(), &ProfileWidget2::editCurrentDive, this, &ProfileWidget::editDive);
+	connect(view.get(), &ProfileWidget2::stopAdded, this, &ProfileWidget::stopAdded);
+	connect(view.get(), &ProfileWidget2::stopRemoved, this, &ProfileWidget::stopRemoved);
+	connect(view.get(), &ProfileWidget2::stopMoved, this, &ProfileWidget::stopMoved);
 
 	ui.profCalcAllTissues->setChecked(qPrefTechnicalDetails::calcalltissues());
 	ui.profCalcCeiling->setChecked(qPrefTechnicalDetails::calcceiling());
@@ -149,6 +155,7 @@ void ProfileWidget::setEnabledToolbar(bool enabled)
 
 void ProfileWidget::setDive(const struct dive *d)
 {
+	// If the user was currently editing a dive, exit edit mode.
 	stack->setCurrentIndex(1); // show profile
 
 	bool freeDiveMode = d->dc.divemode == FREEDIVE;
@@ -176,8 +183,14 @@ void ProfileWidget::setDive(const struct dive *d)
 
 void ProfileWidget::plotCurrentDive()
 {
+	// Exit edit mode if the dive changed
+	if (editedDive && originalDive != current_dive)
+		exitEditMode();
+
 	setEnabledToolbar(current_dive != nullptr);
-	if (current_dive) {
+	if (editedDive) {
+		view->plotDive(editedDive.get(), editedDc);
+	} else if (current_dive) {
 		setDive(current_dive);
 		view->setProfileState(current_dive, dc_number);
 		view->resetZoom(); // when switching dive, reset the zoomLevel
@@ -190,14 +203,9 @@ void ProfileWidget::plotCurrentDive()
 
 void ProfileWidget::setPlanState(const struct dive *d, int dc)
 {
-	setDive(d); // show subsurface logo
-	view->setPlanState(d, dc);
-}
-
-void ProfileWidget::setEditState(const struct dive *d, int dc)
-{
+	exitEditMode();
 	setDive(d);
-	view->setEditState(d, dc);
+	view->setPlanState(d, dc);
 }
 
 void ProfileWidget::unsetProfHR()
@@ -210,4 +218,64 @@ void ProfileWidget::unsetProfTissues()
 {
 	ui.profTissues->setChecked(false);
 	qPrefTechnicalDetails::set_percentagegraph(false);
+}
+
+void ProfileWidget::editDive()
+{
+	// We only allow editing of the profile for manually added dives
+	// and when no other editing is in progress.
+	if (!current_dive ||
+	   (!same_string(current_dive->dc.model, "manually added dive") && current_dive->dc.samples) ||
+	   (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) ||
+	   editedDive)
+		return;
+
+	editedDive.reset(alloc_dive());
+	editedDc = dc_number;
+	copy_dive(current_dive, editedDive.get()); // Work on a copy of the dive
+	originalDive = current_dive;
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
+	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get());
+	view->setEditState(editedDive.get(), 0);
+}
+
+void ProfileWidget::exitEditMode()
+{
+	if (!editedDive)
+		return;
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
+	view->setProfileState(current_dive, dc_number); // switch back to original dive before erasing the copy.
+	editedDive.reset();
+	originalDive = nullptr;
+}
+
+// Update depths of edited dive
+static void calcDepth(dive &d, int dcNr)
+{
+	d.maxdepth.mm = get_dive_dc(&d, dcNr)->maxdepth.mm = 0;
+	fixup_dive(&d);
+}
+
+void ProfileWidget::stopAdded()
+{
+	if (!editedDive)
+		return;
+	calcDepth(*editedDive, editedDc);
+	Command::editProfile(editedDive.get(), Command::EditProfileType::ADD, 0);
+}
+
+void ProfileWidget::stopRemoved(int count)
+{
+	if (!editedDive)
+		return;
+	calcDepth(*editedDive, editedDc);
+	Command::editProfile(editedDive.get(), Command::EditProfileType::REMOVE, count);
+}
+
+void ProfileWidget::stopMoved(int count)
+{
+	if (!editedDive)
+		return;
+	calcDepth(*editedDive, editedDc);
+	Command::editProfile(editedDive.get(), Command::EditProfileType::MOVE, count);
 }

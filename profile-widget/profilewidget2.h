@@ -66,6 +66,9 @@ public:
 
 signals:
 	void editCurrentDive();
+	void stopAdded(); // only emitted in edit mode
+	void stopRemoved(int count); // only emitted in edit mode
+	void stopMoved(int count); // only emitted in edit mode
 
 public
 slots: // Necessary to call from QAction's signals.
@@ -186,6 +189,7 @@ private:
 #endif
 	friend class DiveHandler;
 	bool shouldCalculateMax; // Calculate maximum time and depth (default). False when dragging handles.
+	std::vector<int> selectedDiveHandleIndices() const;
 
 	// We store a const pointer to the shown dive. However, the undo commands want
 	// (understandably) a non-const pointer. Since the profile has a context-menu

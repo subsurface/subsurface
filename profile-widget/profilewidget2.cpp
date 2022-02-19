@@ -283,6 +283,8 @@ void ProfileWidget2::divePlannerHandlerReleased()
 {
 	if (zoomLevel)
 		return;
+	if (currentState == EDIT)
+		emit stopMoved(1);
 	shouldCalculateMax = true;
 	replot();
 }
@@ -334,6 +336,8 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 		int minutes = lrint(profileScene->timeAxis->valueAt(mappedPos) / 60);
 		int milimeters = lrint(profileScene->profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
 		plannerModel->addStop(milimeters, minutes * 60);
+		if (currentState == EDIT)
+			emit stopAdded();
 	}
 }
 
@@ -919,20 +923,31 @@ void ProfileWidget2::divePlannerHandlerMoved()
 	plannerModel->editStop(index, data);
 }
 
+std::vector<int> ProfileWidget2::selectedDiveHandleIndices() const
+{
+	std::vector<int> res;
+	res.reserve(scene()->selectedItems().size());
+	for (QGraphicsItem *item: scene()->selectedItems()) {
+		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(item))
+			res.push_back(handleIndex(handler));
+	}
+	return res;
+}
+
 void ProfileWidget2::keyDownAction()
 {
 	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
-	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handleIndex(handler);
-			divedatapoint dp = plannerModel->at(row);
+	std::vector<int> handleIndices = selectedDiveHandleIndices();
+	for (int row: handleIndices) {
+		divedatapoint dp = plannerModel->at(row);
 
-			dp.depth.mm += M_OR_FT(1, 5);
-			plannerModel->editStop(row, dp);
-		}
+		dp.depth.mm += M_OR_FT(1, 5);
+		plannerModel->editStop(row, dp);
 	}
+	if (currentState == EDIT && !handleIndices.empty())
+		emit stopMoved(handleIndices.size()); // TODO: Accumulate key moves
 }
 
 void ProfileWidget2::keyUpAction()
@@ -940,18 +955,18 @@ void ProfileWidget2::keyUpAction()
 	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
-	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handleIndex(handler);
-			divedatapoint dp = plannerModel->at(row);
+	std::vector<int> handleIndices = selectedDiveHandleIndices();
+	for (int row: handleIndices) {
+		divedatapoint dp = plannerModel->at(row);
 
-			if (dp.depth.mm <= 0)
-				continue;
+		if (dp.depth.mm <= 0)
+			continue;
 
-			dp.depth.mm -= M_OR_FT(1, 5);
-			plannerModel->editStop(row, dp);
-		}
+		dp.depth.mm -= M_OR_FT(1, 5);
+		plannerModel->editStop(row, dp);
 	}
+	if (currentState == EDIT && !handleIndices.empty())
+		emit stopMoved(handleIndices.size()); // TODO: Accumulate key moves
 }
 
 void ProfileWidget2::keyLeftAction()
@@ -959,18 +974,18 @@ void ProfileWidget2::keyLeftAction()
 	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
-	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handleIndex(handler);
-			divedatapoint dp = plannerModel->at(row);
+	std::vector<int> handleIndices = selectedDiveHandleIndices();
+	for (int row: handleIndices) {
+		divedatapoint dp = plannerModel->at(row);
 
-			if (dp.time / 60 <= 0)
-				continue;
+		if (dp.time / 60 <= 0)
+			continue;
 
-			dp.time -= 60;
-			plannerModel->editStop(row, dp);
-		}
+		dp.time -= 60;
+		plannerModel->editStop(row, dp);
 	}
+	if (currentState == EDIT && !handleIndices.empty())
+		emit stopMoved(handleIndices.size()); // TODO: Accumulate key moves
 }
 
 void ProfileWidget2::keyRightAction()
@@ -978,15 +993,15 @@ void ProfileWidget2::keyRightAction()
 	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
-	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			int row = handleIndex(handler);
-			divedatapoint dp = plannerModel->at(row);
+	std::vector<int> handleIndices = selectedDiveHandleIndices();
+	for (int row: handleIndices) {
+		divedatapoint dp = plannerModel->at(row);
 
-			dp.time += 60;
-			plannerModel->editStop(row, dp);
-		}
+		dp.time += 60;
+		plannerModel->editStop(row, dp);
 	}
+	if (currentState == EDIT && !handleIndices.empty())
+		emit stopMoved(handleIndices.size()); // TODO: Accumulate key moves
 }
 
 void ProfileWidget2::keyDeleteAction()
@@ -994,15 +1009,15 @@ void ProfileWidget2::keyDeleteAction()
 	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
 		return;
 
-	QVector<int> selectedIndices;
-	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
-			selectedIndices.push_back(handleIndex(handler));
-			handler->hide();
-		}
+	std::vector<int> handleIndices = selectedDiveHandleIndices();
+	// For now, we have to convert to QVector.
+	for (int index: handleIndices)
+		handles[index]->hide();
+	if (!handleIndices.empty()) {
+		plannerModel->removeSelectedPoints(handleIndices);
+		if (currentState == EDIT)
+			emit stopRemoved(handleIndices.size());
 	}
-	if (!selectedIndices.isEmpty())
-		plannerModel->removeSelectedPoints(selectedIndices);
 }
 
 void ProfileWidget2::clearPictures()

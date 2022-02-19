@@ -221,21 +221,6 @@ void MainTab::displayMessage(QString str)
 	ui.diveNotesMessage->animatedShow();
 }
 
-void MainTab::enableEdition()
-{
-	if (current_dive == NULL || editMode)
-		return;
-
-	ui.editDiveSiteButton->setEnabled(false);
-	MainWindow::instance()->diveList->setEnabled(false);
-	MainWindow::instance()->setEnabledToolbar(false);
-
-	ui.dateEdit->setEnabled(true);
-	displayMessage(tr("This dive is being edited."));
-
-	editMode = true;
-}
-
 // This function gets called if a field gets updated by an undo command.
 // Refresh the corresponding UI field.
 void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)

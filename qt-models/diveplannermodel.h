@@ -4,6 +4,7 @@
 
 #include <QAbstractTableModel>
 #include <QDateTime>
+#include <vector>
 
 #include "core/deco.h"
 #include "core/planner.h"
@@ -36,7 +37,7 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 	void gasChange(const QModelIndex &index, int newcylinderid);
 	void cylinderRenumber(int mapping[]);
-	void removeSelectedPoints(const QVector<int> &rows);
+	void removeSelectedPoints(const std::vector<int> &rows);
 	void setPlanMode(Mode mode);
 	bool isPlanner() const;
 	void createSimpleDive(struct dive *d);
@@ -116,7 +117,7 @@ private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
 	void clear();
 	int addStop(int millimeters, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t);
-	void removePoints(const QVector<int> &rows);
+	void removePoints(const std::vector<int> &rows);
 	void setupStartTime();
 	void setupCylinders();
 	int lastEnteredPoint() const;

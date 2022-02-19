@@ -57,7 +57,6 @@ slots:
 	void closeMessage();
 	void closeWarning();
 	void displayMessage(QString str);
-	void enableEdition();
 	void escDetected(void);
 	void updateDateTimeFields();
 	void colorsChanged();

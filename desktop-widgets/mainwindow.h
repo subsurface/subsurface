@@ -54,7 +54,6 @@ public:
 
 	enum class ApplicationState {
 		Default,
-		EditDive,
 		PlanDive,
 		EditPlannedDive,
 		EditDiveSite,
@@ -155,7 +154,6 @@ slots:
 	void refreshDisplay();
 	void showProfile();
 	void refreshProfile();
-	void editCurrentDive();
 	void planCanceled();
 	void planCreated();
 	// Some shortcuts like "change DC" or "copy/paste dive components"

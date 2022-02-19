@@ -1,3 +1,4 @@
+- profile: include profile editing in undo system
 - core: avoid crash with corrupted cloud storage
 - mobile: fix profile scaling issue on high DPR devices
 - mobile/Android: add logfiles as attachment to support emails

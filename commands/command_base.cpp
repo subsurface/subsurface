@@ -80,7 +80,6 @@ QString getListOfDives(QVector<struct dive *> dives)
 	return getListOfDives(std::vector<struct dive *>(dives.begin(), dives.end()));
 }
 
-
 // return a string that can be used for the commit message and should list the changes that
 // were made to the dive list
 QString changesMade()
