@@ -438,8 +438,6 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 
 	if (verbose)
 		qDebug() << "Saving cloud storage to:" << filename;
-	if (mainTab->isEditing())
-		mainTab->acceptChanges();
 	mainTab->stealFocus(); // Make sure that any currently edited field is updated before saving.
 
 	showProgressBar();
@@ -460,8 +458,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 
 	// Refuse to go online if there is an edit in progress
 	if (!isOffline &&
-	    (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    mainTab->isEditing())) {
+	    (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING)) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before going online"));
 		// We didn't switch to online, therefore uncheck the checkbox
 		ui.actionCloudOnline->setChecked(false);
@@ -494,8 +491,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 
 bool MainWindow::okToClose(QString message)
 {
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-		mainTab->isEditing() ) {
+	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
 		QMessageBox::warning(this, tr("Warning"), message);
 		return false;
 	}
@@ -624,8 +620,7 @@ bool MainWindow::plannerStateClean()
 		// we are accessing the cloud, so let's not switch into Add or Plan mode
 		return false;
 
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-		mainTab->isEditing()) {
+	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to add a dive."));
 		return false;
 	}
@@ -1041,8 +1036,7 @@ void MainWindow::writeSettings()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-		mainTab->isEditing()) {
+	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
 		on_actionQuit_triggered();
 		event->ignore();
 		return;
@@ -1189,9 +1183,6 @@ int MainWindow::file_save_as(void)
 	if (filename.isNull() || filename.isEmpty())
 		return report_error("No filename to save into");
 
-	if (mainTab->isEditing())
-		mainTab->acceptChanges();
-
 	if (save_dives(qPrintable(filename)))
 		return -1;
 
@@ -1212,9 +1203,6 @@ int MainWindow::file_save(void)
 	is_cloud = (strncmp(existing_filename, "http", 4) == 0);
 	if (is_cloud && !saveToCloudOK())
 		return -1;
-
-	if (mainTab->isEditing())
-		mainTab->acceptChanges();
 
 	current_default = prefs.default_filename;
 	if (strcmp(existing_filename, current_default) == 0) {

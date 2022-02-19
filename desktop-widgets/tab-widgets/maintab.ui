@@ -15,9 +15,6 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_9">
    <item>
-    <widget class="KMessageWidget" name="diveNotesMessage"/>
-   </item>
-   <item>
     <widget class="KMessageWidget" name="multiDiveWarningMessage"/>
    </item>
    <item>

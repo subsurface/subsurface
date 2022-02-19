@@ -25,7 +25,6 @@ class MainTab : public QTabWidget {
 public:
 	MainTab(QWidget *parent = 0);
 	void clearTabs();
-	bool isEditing();
 	void nextInputField(QKeyEvent *event);
 	void stealFocus();
 
@@ -39,8 +38,6 @@ slots:
 	void updateDateTime(const struct dive *d);
 	void updateTripDate(const struct dive_trip *t);
 	void updateDiveSite(struct dive *d);
-	void acceptChanges();
-	void rejectChanges();
 	void on_location_diveSiteSelected();
 	void on_locationPopupButton_clicked();
 	void on_diveguide_editingFinished();
@@ -53,16 +50,12 @@ slots:
 	void on_timeEdit_editingFinished();
 	void on_rating_valueChanged(int value);
 	void on_tagWidget_editingFinished();
-	void hideMessage();
-	void closeMessage();
 	void closeWarning();
-	void displayMessage(QString str);
 	void escDetected(void);
 	void updateDateTimeFields();
 	void colorsChanged();
 private:
 	Ui::MainTab ui;
-	bool editMode;
 	bool ignoreInput; // When computionally editing fields, we have to ignore changed-signals
 	BuddyCompletionModel buddyModel;
 	DiveGuideCompletionModel diveGuideModel;

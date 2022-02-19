@@ -11,9 +11,7 @@
 #include "core/qthelper.h"
 #include "core/trip.h"
 #include "qt-models/diveplannermodel.h"
-#include "desktop-widgets/divelistview.h"
 #include "core/selection.h"
-#include "desktop-widgets/diveplanner.h"
 #include "qt-models/divecomputerextradatamodel.h"
 #include "qt-models/divelocationmodel.h"
 #include "qt-models/filtermodels.h"
@@ -33,9 +31,7 @@
 #include "TabDiveSite.h"
 
 #include <QCompleter>
-#include <QScrollBar>
 #include <QShortcut>
-#include <QMessageBox>
 
 struct Completers {
 	QCompleter *diveguide;
@@ -50,7 +46,6 @@ static bool paletteIsDark(const QPalette &p)
 }
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
-	editMode(false),
 	ignoreInput(false),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
@@ -80,8 +75,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	updateDateTimeFields();
 
-	closeMessage();
-
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MainTab::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &MainTab::tripChanged);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MainTab::diveSiteEdited);
@@ -100,15 +93,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// signal. However, the correct date and time format is set by the preferences dialog later. This should be fixed.
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MainTab::updateDateTimeFields);
 
-	QAction *action = new QAction(tr("Apply changes"), this);
-	connect(action, SIGNAL(triggered(bool)), this, SLOT(acceptChanges()));
-	ui.diveNotesMessage->addAction(action);
-
-	action = new QAction(tr("Discard changes"), this);
-	connect(action, SIGNAL(triggered(bool)), this, SLOT(rejectChanges()));
-	ui.diveNotesMessage->addAction(action);
-
-	action = new QAction(tr("OK"), this);
+	QAction *action = new QAction(tr("OK"), this);
 	connect(action, &QAction::triggered, this, &MainTab::closeWarning);
 	ui.multiDiveWarningMessage->addAction(action);
 
@@ -118,7 +103,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.multiDiveWarningMessage->addAction(action);
 
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-	connect(closeKey, SIGNAL(activated()), this, SLOT(escDetected()));
+	connect(closeKey, &QShortcut::activated, this, &MainTab::escDetected);
 
 	if (qApp->style()->objectName() == "oxygen")
 		setDocumentMode(true);
@@ -139,7 +124,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.buddy->setCompleter(completers.buddy);
 	ui.diveguide->setCompleter(completers.diveguide);
 	ui.tagWidget->setCompleter(completers.tags);
-	ui.diveNotesMessage->hide();
 	ui.multiDiveWarningMessage->hide();
 	ui.depth->hide();
 	ui.depthLabel->hide();
@@ -181,8 +165,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		label->setContentsMargins(margins);
 	}
 
-	connect(ui.diveNotesMessage, &KMessageWidget::showAnimationFinished,
-					ui.location, &DiveLocationLineEdit::fixPopupPosition);
 	connect(ui.multiDiveWarningMessage, &KMessageWidget::showAnimationFinished,
 					ui.location, &DiveLocationLineEdit::fixPopupPosition);
 
@@ -198,27 +180,9 @@ void MainTab::updateDateTimeFields()
 	ui.timeEdit->setDisplayFormat(prefs.time_format);
 }
 
-void MainTab::hideMessage()
-{
-	ui.diveNotesMessage->animatedHide();
-}
-
-void MainTab::closeMessage()
-{
-	hideMessage();
-	ui.diveNotesMessage->setCloseButtonVisible(false);
-}
-
 void MainTab::closeWarning()
 {
 	ui.multiDiveWarningMessage->hide();
-}
-
-void MainTab::displayMessage(QString str)
-{
-	ui.diveNotesMessage->setCloseButtonVisible(false);
-	ui.diveNotesMessage->setText(str);
-	ui.diveNotesMessage->animatedShow();
 }
 
 // This function gets called if a field gets updated by an undo command.
@@ -280,11 +244,6 @@ void MainTab::nextInputField(QKeyEvent *event)
 	keyPressEvent(event);
 }
 
-bool MainTab::isEditing()
-{
-	return editMode;
-}
-
 static bool isHtml(const QString &s)
 {
 	return s.contains("<div", Qt::CaseInsensitive) || s.contains("<table", Qt::CaseInsensitive);
@@ -336,8 +295,8 @@ void MainTab::updateDiveSite(struct dive *d)
 void MainTab::updateDiveInfo()
 {
 	ui.location->refreshDiveSiteCache();
-	// don't execute this while adding / planning a dive
-	if (editMode || DivePlannerPointsModel::instance()->isPlanner())
+	// don't execute this while planning a dive
+	if (DivePlannerPointsModel::instance()->isPlanner())
 		return;
 
 	// If there is no current dive, disable all widgets except the last two,
@@ -470,56 +429,6 @@ void MainTab::updateDiveInfo()
 
 	if (verbose && current_dive && current_dive->dive_site)
 		qDebug() << "Set the current dive site:" << current_dive->dive_site->uuid;
-}
-
-void MainTab::acceptChanges()
-{
-	if (ui.location->hasFocus())
-		stealFocus();
-
-	ignoreInput = true;
-	ui.dateEdit->setEnabled(true);
-	hideMessage();
-
-	MainWindow::instance()->showProfile();
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-	Command::editProfile(&displayed_dive, Command::EditProfileType::MOVE, 0);
-
-	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
-	MainWindow::instance()->diveList->reload();
-	MainWindow::instance()->refreshDisplay();
-	MainWindow::instance()->refreshProfile();
-
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-	MainWindow::instance()->diveList->verticalScrollBar()->setSliderPosition(scrolledBy);
-	MainWindow::instance()->diveList->setFocus();
-	MainWindow::instance()->setEnabledToolbar(true);
-	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
-	ignoreInput = false;
-	editMode = false;
-}
-
-void MainTab::rejectChanges()
-{
-	if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
-								       tr("You are about to discard your changes.")),
-				 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
-		return;
-	}
-
-	ui.dateEdit->setEnabled(true);
-	editMode = false;
-	hideMessage();
-	// no harm done to call cancelPlan even if we were not PLAN mode...
-	DivePlannerPointsModel::instance()->cancelPlan();
-
-	updateDiveInfo();
-
-	// show the profile and dive info
-	MainWindow::instance()->refreshDisplay();
-	MainWindow::instance()->refreshProfile();
-	MainWindow::instance()->setEnabledToolbar(true);
-	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
 
 void MainTab::divesEdited(int i)
@@ -658,12 +567,7 @@ void MainTab::stealFocus()
 
 void MainTab::escDetected()
 {
-	// In edit mode, pressing escape cancels the current changes.
-	// In standard mode, remove focus of any active widget to
-	if (editMode)
-		rejectChanges();
-	else
-		stealFocus();
+	stealFocus();
 }
 
 void MainTab::clearTabs()
