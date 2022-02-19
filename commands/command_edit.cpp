@@ -4,6 +4,7 @@
 #include "core/divelist.h"
 #include "core/fulltext.h"
 #include "core/qthelper.h" // for copy_qstring
+#include "core/sample.h"
 #include "core/selection.h"
 #include "core/subsurface-string.h"
 #include "core/tag.h"
@@ -1283,6 +1284,43 @@ void EditCylinder::redo()
 void EditCylinder::undo()
 {
 	redo();
+}
+
+EditSensors::EditSensors(int toCylinderIn, int fromCylinderIn)
+	: dc(current_dc), d(current_dive), toCylinder(toCylinderIn), fromCylinder(fromCylinderIn)
+{
+	if (!d || !dc)
+		return;
+
+	setText(Command::Base::tr("Edit sensors"));
+
+}
+
+void EditSensors::mapSensors(int toCyl, int fromCyl)
+{
+	for (int i = 0; i < dc->samples; ++i) {
+		for (int s = 0; s < MAX_SENSORS; ++s) {
+			if (dc->sample[i].pressure[s].mbar && dc->sample[i].sensor[s] == fromCyl)
+				dc->sample[i].sensor[s] = toCyl;
+		}
+	}
+	emit diveListNotifier.diveComputerEdited(dc);
+	invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+}
+
+void EditSensors::undo()
+{
+	mapSensors(fromCylinder, toCylinder);
+}
+
+void EditSensors::redo()
+{
+	mapSensors(toCylinder, fromCylinder);
+}
+
+bool EditSensors::workToBeDone()
+{
+	return d && dc;
 }
 
 #ifdef SUBSURFACE_MOBILE
