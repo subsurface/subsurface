@@ -859,6 +859,8 @@ void ReplanDive::undo()
 	emit diveListNotifier.cylindersReset(divesToNotify);
 	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DATETIME | DiveField::DURATION | DiveField::DEPTH | DiveField::MODE |
 							  DiveField::NOTES | DiveField::SALINITY | DiveField::ATM_PRESS);
+	if (!placingCommand())
+		setSelection({ d }, d);
 }
 
 // Redo and undo do the same
@@ -930,6 +932,8 @@ void EditProfile::undo()
 
 	QVector<dive *> divesToNotify = { d };
 	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DURATION | DiveField::DEPTH);
+	if (!placingCommand())
+		setSelection({ d }, d);
 }
 
 // Redo and undo do the same
