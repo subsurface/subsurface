@@ -68,13 +68,6 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 #ifndef SUBSURFACE_MOBILE
 	setAcceptDrops(true);
 
-	addActionShortcut(Qt::Key_Escape, &ProfileWidget2::keyEscAction);
-	addActionShortcut(Qt::Key_Delete, &ProfileWidget2::keyDeleteAction);
-	addActionShortcut(Qt::Key_Up, &ProfileWidget2::keyUpAction);
-	addActionShortcut(Qt::Key_Down, &ProfileWidget2::keyDownAction);
-	addActionShortcut(Qt::Key_Left, &ProfileWidget2::keyLeftAction);
-	addActionShortcut(Qt::Key_Right, &ProfileWidget2::keyRightAction);
-
 	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged, this, &ProfileWidget2::updateThumbnail, Qt::QueuedConnection);
 	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &ProfileWidget2::picturesRemoved);
 	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &ProfileWidget2::picturesAdded);
@@ -123,14 +116,16 @@ ProfileWidget2::~ProfileWidget2()
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)())
+void ProfileWidget2::keyPressEvent(QKeyEvent *e)
 {
-	QAction *action = new QAction(this);
-	action->setShortcut(shortcut);
-	action->setShortcutContext(Qt::WindowShortcut);
-	addAction(action);
-	connect(action, &QAction::triggered, this, slot);
-	actionsForKeys[shortcut] = action;
+	switch (e->key()) {
+		case Qt::Key_Delete: return keyDeleteAction();
+		case Qt::Key_Up: return keyUpAction();
+		case Qt::Key_Down: return keyDownAction();
+		case Qt::Key_Left: return keyLeftAction();
+		case Qt::Key_Right: return keyRightAction();
+	}
+	QGraphicsView::keyPressEvent(e);
 }
 #endif // SUBSURFACE_MOBILE
 
@@ -444,12 +439,6 @@ void ProfileWidget2::setEditState(const dive *d, int dc)
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
 	disconnectTemporaryConnections();
-	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
-	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
-	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
-	actionsForKeys[Qt::Key_Down]->setShortcut(Qt::Key_Down);
-	actionsForKeys[Qt::Key_Escape]->setShortcut(Qt::Key_Escape);
-	actionsForKeys[Qt::Key_Delete]->setShortcut(Qt::Key_Delete);
 
 	connectPlannerModel();
 
@@ -470,12 +459,6 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
 	disconnectTemporaryConnections();
-	actionsForKeys[Qt::Key_Left]->setShortcut(Qt::Key_Left);
-	actionsForKeys[Qt::Key_Right]->setShortcut(Qt::Key_Right);
-	actionsForKeys[Qt::Key_Up]->setShortcut(Qt::Key_Up);
-	actionsForKeys[Qt::Key_Down]->setShortcut(Qt::Key_Down);
-	actionsForKeys[Qt::Key_Escape]->setShortcut(Qt::Key_Escape);
-	actionsForKeys[Qt::Key_Delete]->setShortcut(Qt::Key_Delete);
 
 	connectPlannerModel();
 
@@ -810,10 +793,6 @@ void ProfileWidget2::disconnectTemporaryConnections()
 		disconnect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
 	}
 #endif
-	Q_FOREACH (QAction *action, actionsForKeys.values()) {
-		action->setShortcut(QKeySequence());
-		action->setShortcutContext(Qt::WidgetShortcut);
-	}
 }
 
 int ProfileWidget2::handleIndex(const DiveHandler *h) const
@@ -1024,20 +1003,6 @@ void ProfileWidget2::keyDeleteAction()
 	}
 	if (!selectedIndices.isEmpty())
 		plannerModel->removeSelectedPoints(selectedIndices);
-}
-
-void ProfileWidget2::keyEscAction()
-{
-	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
-		return;
-
-	if (scene()->selectedItems().count()) {
-		scene()->clearSelection();
-		return;
-	}
-
-	if (plannerModel->isPlanner())
-		plannerModel->cancelPlan();
 }
 
 void ProfileWidget2::clearPictures()
