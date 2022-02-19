@@ -87,15 +87,6 @@ slots: // Necessary to call from QAction's signals.
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void divePlannerHandlerMoved();
-
-	/* key press handlers */
-	void keyEscAction();
-	void keyDeleteAction();
-	void keyUpAction();
-	void keyDownAction();
-	void keyLeftAction();
-	void keyRightAction();
-
 	void divePlannerHandlerClicked();
 	void divePlannerHandlerReleased();
 #endif
@@ -110,6 +101,7 @@ private:
 	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
+	void keyPressEvent(QKeyEvent *e) override;
 #endif
 	void dropEvent(QDropEvent *event) override;
 	void dragEnterEvent(QDragEnterEvent *event) override;
@@ -123,7 +115,6 @@ private:
 	void setupItemOnScene();
 	void disconnectTemporaryConnections();
 	struct plot_data *getEntryFromPos(QPointF pos);
-	void addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)());
 	void clearPictures();
 	void plotPicturesInternal(const struct dive *d, bool synchronous);
 	void updateThumbnails();
@@ -176,6 +167,12 @@ private:
 	void calculatePictureYPositions();
 	void updateDurationLine(PictureEntry &e);
 	void updateThumbnailPaintOrder();
+
+	void keyDeleteAction();
+	void keyUpAction();
+	void keyDownAction();
+	void keyLeftAction();
+	void keyRightAction();
 #endif
 
 	std::vector<std::unique_ptr<DiveHandler>> handles;
@@ -188,7 +185,6 @@ private:
 	QGraphicsSimpleTextItem *createGas();
 #endif
 	friend class DiveHandler;
-	QHash<Qt::Key, QAction *> actionsForKeys;
 	bool shouldCalculateMax; // Calculate maximum time and depth (default). False when dragging handles.
 
 	// We store a const pointer to the shown dive. However, the undo commands want

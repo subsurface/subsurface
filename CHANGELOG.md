@@ -1,3 +1,4 @@
+- planner: make ESC (cancel plan) work when moving handles
 - dive list: make dive guide visible in dive list [#3382]
 - general: rename dive master to dive guide
 - desktop: Don't lose cursor position in notes when switching between windows [#3369]
