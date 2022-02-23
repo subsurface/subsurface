@@ -100,6 +100,7 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 		qWarning("Oops. The root of the StatsView is not a StatsView.");
 	if (view)
 		view->setVisible(isVisible()); // Synchronize visibility of widget and QtQuick-view.
+	qDebug() << "finished StatsWidget constructor -- graphicsAPI is" << QQuickWindow::graphicsApi();
 }
 
 // Initialize QComboBox with list of variables
@@ -125,6 +126,7 @@ static void setBinList(QComboBox *combo, const StatsState::BinnerList &list)
 
 void StatsWidget::updateUi()
 {
+	qDebug() << __FUNCTION__;
 	StatsState::UIState uiState = state.getUIState();
 	setVariableList(ui.var1, uiState.var1);
 	setVariableList(ui.var2, uiState.var2);
