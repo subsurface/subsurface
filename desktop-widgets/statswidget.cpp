@@ -70,7 +70,11 @@ QSize ChartItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
 	return size;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 static const QUrl urlStatsView = QUrl(QStringLiteral("qrc:/qml/statsview2.qml"));
+#else
+static const QUrl urlStatsView = QUrl(QStringLiteral("qrc:/statsview/desktop-widgets/qml/statsview2.qml"));
+#endif
 StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
