@@ -210,7 +210,7 @@ if [ -z "$BUILD_PREFIX" ] ; then
 else
 	INSTALL_ROOT="$BUILD_PREFIX"install-root
 fi
-mkdir -p "$INSTALL_ROOT"
+mkdir -p "$INSTALL_ROOT"/lib "$INSTALL_ROOT"/include
 export INSTALL_ROOT
 
 # make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
