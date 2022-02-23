@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QQmlEngine>
 #include <QQuickItem>
+#include <QQuickWindow>
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include "map-widget/qmlmapwidgethelper.h"
@@ -52,6 +53,7 @@ Q_IMPORT_PLUGIN(KirigamiPlugin)
 
 void init_ui()
 {
+	QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
 	init_qt_late();
 	register_meta_types();
 #ifndef SUBSURFACE_MOBILE
