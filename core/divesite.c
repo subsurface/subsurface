@@ -371,6 +371,14 @@ void purge_empty_dive_sites(struct dive_site_table *ds_table)
 void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
 {
 	int idx;
+	if (!d) {
+		fprintf(stderr, "Warning: add_dive_to_dive_site called with NULL dive\n");
+		return;
+	}
+	if (!ds) {
+		fprintf(stderr, "Warning: add_dive_to_dive_site called with NULL dive site\n");
+		return;
+	}
 	if (d->dive_site == ds)
 		return;
 	if (d->dive_site) {

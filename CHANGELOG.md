@@ -1,3 +1,4 @@
+- core: avoid crash with corrupted cloud storage
 - planner: make ESC (cancel plan) work when moving handles
 - dive list: make dive guide visible in dive list [#3382]
 - general: rename dive master to dive guide
