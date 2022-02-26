@@ -20,10 +20,80 @@ import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.util.Log;
+import java.io.File;
+import android.net.Uri;
+import android.support.v4.content.FileProvider;
+import android.support.v4.app.ShareCompat;
+import android.content.pm.PackageManager;
+import java.util.List;
+import android.content.pm.ResolveInfo;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 // this is the main class that will be run at start
 public class SubsurfaceMobileActivity extends QtActivity
 {
+	// FileProvider declares an 'authority' in AndroidManifest.xml
+	private static String fileProviderAuthority="org.subsurfacedivelog.mobile.fileprovider";
+
+	// you can share one file (for future use, I'm thinking divelist XML), or two files
+	// which is assumed to be a support request - maybe that shouldn't be implicit?
+	public boolean shareFiles(String path1, String path2) {
+		// better save than sorry
+		if (QtNative.activity() == null)
+			return false;
+
+		Log.d(TAG + " shareFile - trying to share: ", path1 + " and " + path2);
+
+		// Can't get this to work building my own intent, so let's use the IntentBuilder
+		Intent shareFileIntent = ShareCompat.IntentBuilder.from(QtNative.activity()).getIntent();
+		shareFileIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+
+		// now figure out the URI we need to share the first file
+		File fileToShare = new File(path1);
+		Uri uri;
+		try {
+			uri = FileProvider.getUriForFile(QtNative.activity(), fileProviderAuthority, fileToShare);
+		} catch (IllegalArgumentException e) {
+			Log.d(TAG + " shareFile - cannot get URI for ", path1);
+			return false;
+		}
+		Log.d(TAG + " shareFile - URI for file: ", uri.toString());
+
+		// because we allow up to two attachments, we use ACTION_SEND_MULTIPLE and so the attachments
+		// need to be an ArrayList - even if we only add one attachment this still works
+		ArrayList<Uri> attachments = new ArrayList<Uri>();
+		attachments.add(uri);
+
+		// if there is a second file name (that's for support emails) add it and set this up as support email as well
+		if (path2 != "") {
+			fileToShare = new File(path2);
+			try {
+				uri = FileProvider.getUriForFile(QtNative.activity(), fileProviderAuthority, fileToShare);
+			} catch (IllegalArgumentException e) {
+				Log.d(TAG + " shareFile - cannot get URI for ", path2);
+				return false;
+			}
+			Log.d(TAG + " shareFile - URI for file: ", uri.toString());
+			attachments.add(uri);
+			// recipients are also always an array, even if there's only one
+			shareFileIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "in-app-support@subsurface-divelog.org" });
+			shareFileIntent.putExtra(Intent.EXTRA_SUBJECT, "Subsurface-mobile support request");
+			shareFileIntent.putExtra(Intent.EXTRA_TEXT, "Please describe your issue here and keep the attached logs.\n\n\n\n");
+		}
+		shareFileIntent.setType("text/plain");
+		shareFileIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
+		shareFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		shareFileIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+		Log.d(TAG + " sendFile ", " create activity for the Intent");
+		// this actually allows sharing with any app that will take "text/plain" files, including Dropbox, etc
+		// in order for the recipient / subject to work, the user needs to be clever enough to share with an email app
+		QtNative.activity().startActivity(shareFileIntent);
+		return true;
+	}
+
+
 	public static boolean isIntentPending;
 	public static boolean isInitialized;
 	private static final String TAG = "subsurfacedivelog.mobile";
