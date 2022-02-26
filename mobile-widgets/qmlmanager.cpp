@@ -55,6 +55,7 @@
 #include "commands/command.h"
 
 #if defined(Q_OS_ANDROID)
+#include <QtAndroid>
 #include "core/serial_usb_android.h"
 std::vector<android_usb_serial_device_descriptor> androidSerialDevices;
 
@@ -230,9 +231,11 @@ QMLManager::QMLManager() :
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #if defined(Q_OS_ANDROID)
-	// on Android we first try the GenericDataLocation (typically /storage/emulated/0) and if that fails
-	// (as happened e.g. on a Sony Xperia phone) we try several other default locations, with the TempLocation as last resort
+	// on Android we first try the AppDataLocation (which allows sharing of files), then the
+	// GenericDataLocation (typically /storage/emulated/0), and if that fails (as happened e.g. on a
+	// Sony Xperia phone) we try several other default locations, with the TempLocation as last resort
 	QStringList fileLocations =
+		QStandardPaths::standardLocations(QStandardPaths::AppDataLocation) +
 		QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation) +
 		QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation) +
 		QStandardPaths::standardLocations(QStandardPaths::DownloadLocation) +
@@ -1825,8 +1828,6 @@ void QMLManager::writeToAppLogFile(QString logText)
 #if defined(Q_OS_ANDROID)
 //HACK to color the system bar on Android, use qtandroidextras and call the appropriate Java methods
 //this code is based on code in the Kirigami example app for Android (under LGPL-2) Copyright 2017 Marco Martin
-
-#include <QtAndroid>
 
 // there doesn't appear to be an include that defines these in an easily accessible way
 // WindowManager.LayoutParams
