@@ -1,3 +1,4 @@
+- mobile/Android: add logfiles as attachment to support emails
 - planner: make ESC (cancel plan) work when moving handles
 - dive list: make dive guide visible in dive list [#3382]
 - general: rename dive master to dive guide

@@ -263,7 +263,8 @@ QMLManager::QMLManager() :
 		appendTextToLog("Successfully opened logfile " + appLogFileName
 				+ " at " + QDateTime::currentDateTime().toString());
 		// if we were able to write the overall logfile, also write the libdivecomputer logfile
-		QString libdcLogFileName = appLogFileName.replace("/subsurface.log", "/libdivecomputer.log");
+		QString libdcLogFileName = appLogFileName;
+		libdcLogFileName = libdcLogFileName.replace("/subsurface.log", "/libdivecomputer.log");
 		// remove the existing libdivecomputer logfile so we don't copy an old one by mistake
 		QFile libdcLog(libdcLogFileName);
 		libdcLog.remove();
@@ -491,8 +492,25 @@ void QMLManager::copyAppLogToClipboard()
 
 bool QMLManager::createSupportEmail()
 {
+	QString messageBody = "Please describe your issue here and keep the logs below:\n\n\n\n";
+#if defined(Q_OS_ANDROID)
+	// let's use our nifty Java shareFile function
+	QAndroidJniObject activity = QtAndroid::androidActivity();
+	if (activity.isValid()) {
+		QAndroidJniObject applogfilepath = QAndroidJniObject::fromString(appLogFileName);
+		QAndroidJniObject libdcfilepath = QAndroidJniObject::fromString(logfile_name);
+		bool success = activity.callMethod<jboolean>("shareFiles",
+					"(Ljava/lang/String;Ljava/lang/String;)Z", // two string arguments, return bool
+					applogfilepath.object<jstring>(), libdcfilepath.object<jstring>());
+		qDebug() << __FUNCTION__ << "shareFiles" << (success ? "succeeded" : "failed");
+		if (success)
+			return true;
+	}
+	qDebug() << __FUNCTION__ << "failed to share the logFiles via intent, use the fall-back mail body method";
+#endif
 	QString mailToLink = "mailto:in-app-support@subsurface-divelog.org?subject=Subsurface-mobile support request";
-	mailToLink += "&body=Please describe your issue here and keep the logs below:\n\n\n\n";
+	mailToLink += "&body=";
+	mailToLink += messageBody;
 	mailToLink += getCombinedLogs();
 	if (QDesktopServices::openUrl(QUrl(mailToLink))) {
 		appendTextToLog("OS accepted support email");
