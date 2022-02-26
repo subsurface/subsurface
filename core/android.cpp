@@ -48,7 +48,8 @@ bool subsurface_ignore_font(const char *font)
 static const char *system_default_path_append(const char *append)
 {
 	// Qt appears to find a working path for us - let's just go with that
-	QString path = QStandardPaths::standardLocations(QStandardPaths::DataLocation).first();
+	// AppDataLocation allows potential sharing of the files we put there
+	QString path = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).first();
 
 	if (append)
 		path += QString("/%1").arg(append);
