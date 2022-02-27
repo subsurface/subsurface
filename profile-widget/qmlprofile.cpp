@@ -51,7 +51,10 @@ void QMLProfile::paint(QPainter *painter)
 		timer.start();
 
 	// let's look at the intended size of the content and scale our scene accordingly
+	// for some odd reason the painter transformation is set up to scale by the dpr - which results
+	// in applying that dpr scaling twice. So we hard-code it here to be the identity matrix
 	QRect painterRect = painter->viewport();
+	painter->resetTransform();
 	if (m_diveId < 0)
 		return;
 	struct dive *d = get_dive_by_uniq_id(m_diveId);
