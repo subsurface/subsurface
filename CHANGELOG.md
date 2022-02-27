@@ -1,4 +1,5 @@
 - core: avoid crash with corrupted cloud storage
+- mobile: fix profile scaling issue on high DPR devices
 - mobile/Android: add logfiles as attachment to support emails
 - planner: make ESC (cancel plan) work when moving handles
 - dive list: make dive guide visible in dive list [#3382]
