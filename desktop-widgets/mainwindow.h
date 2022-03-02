@@ -151,9 +151,6 @@ signals:
 public
 slots:
 	void readSettings();
-	void refreshDisplay();
-	void showProfile();
-	void refreshProfile();
 	void planCanceled();
 	void planCreated();
 	// Some shortcuts like "change DC" or "copy/paste dive components"
@@ -186,6 +183,8 @@ private:
 	void showProgressBar();
 	void hideProgressBar();
 	void writeSettings();
+	void refreshDisplay();
+	void showProfile();
 	int file_save();
 	int file_save_as();
 	void saveSplitterSizes();

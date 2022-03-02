@@ -627,16 +627,11 @@ bool MainWindow::plannerStateClean()
 	return true;
 }
 
-void MainWindow::refreshProfile()
-{
-	showProfile();
-}
-
 void MainWindow::planCanceled()
 {
 	// while planning we might have modified the displayed_dive
 	// let's refresh what's shown on the profile
-	refreshProfile();
+	showProfile();
 	refreshDisplay();
 }
 
