@@ -213,10 +213,6 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 		ui.buddy->setText(current_dive->buddy);
 	if (field.diveguide)
 		ui.diveguide->setText(current_dive->diveguide);
-
-	// If duration or depth changed, the profile needs to be replotted
-	if (field.duration || field.depth)
-		MainWindow::instance()->refreshProfile();
 }
 
 void MainTab::diveSiteEdited(dive_site *ds, int)

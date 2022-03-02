@@ -5,6 +5,7 @@
 #define PROFILEWIDGET_H
 
 #include "ui_profilewidget.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 #include <vector>
 #include <memory>
@@ -27,6 +28,7 @@ public:
 	void setEnabledToolbar(bool enabled);
 private
 slots:
+	void divesChanged(const QVector<dive *> &dives, DiveField field);
 	void unsetProfHR();
 	void unsetProfTissues();
 	void stopAdded();
@@ -48,6 +50,7 @@ private:
 	std::unique_ptr<dive, DiveDeleter> editedDive;
 	int editedDc;
 	dive *originalDive;
+	bool placingCommand;
 };
 
 #endif // PROFILEWIDGET_H

@@ -51,7 +51,7 @@ void EmptyView::resizeEvent(QResizeEvent *)
 	update();
 }
 
-ProfileWidget::ProfileWidget() : originalDive(nullptr)
+ProfileWidget::ProfileWidget() : originalDive(nullptr), placingCommand(false)
 {
 	ui.setupUi(this);
 
@@ -117,6 +117,7 @@ ProfileWidget::ProfileWidget() : originalDive(nullptr)
 	connect(ui.profPn2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_pn2);
 	connect(ui.profPO2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_po2);
 
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &ProfileWidget::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, view.get(), &ProfileWidget2::settingsChanged);
 	connect(view.get(), &ProfileWidget2::editCurrentDive, this, &ProfileWidget::editDive);
 	connect(view.get(), &ProfileWidget2::stopAdded, this, &ProfileWidget::stopAdded);
@@ -201,6 +202,27 @@ void ProfileWidget::plotCurrentDive()
 	}
 }
 
+void ProfileWidget::divesChanged(const QVector<dive *> &dives, DiveField field)
+{
+	// If the current dive is not in list of changed dives, do nothing.
+	// Only if duration or depth changed, the profile needs to be replotted.
+	// Also, if we are currently placing a command, don't do anything.
+	// Note that we cannot use Command::placingCommand(), because placing
+	// a depth or time change on the maintab requires an update.
+	if (!current_dive || !dives.contains(current_dive) || !(field.duration || field.depth) || placingCommand)
+		return;
+
+	// If were editing the current dive and not currently
+	// placing command, we have to update the edited dive.
+	if (editedDive) {
+		copy_dive(current_dive, editedDive.get());
+		// TODO: Holy moly that function sends too many signals. Fix it!
+		DivePlannerPointsModel::instance()->loadFromDive(editedDive.get());
+	}
+
+	plotCurrentDive();
+}
+
 void ProfileWidget::setPlanState(const struct dive *d, int dc)
 {
 	exitEditMode();
@@ -256,11 +278,24 @@ static void calcDepth(dive &d, int dcNr)
 	fixup_dive(&d);
 }
 
+// Silly RAII-variable setter class: reset variable when going out of scope.
+template <typename T>
+struct Setter {
+	T &var, old;
+	Setter(T &var, T value) : var(var), old(var) {
+		var = value;
+	}
+	~Setter() {
+		var = old;
+	}
+};
+
 void ProfileWidget::stopAdded()
 {
 	if (!editedDive)
 		return;
 	calcDepth(*editedDive, editedDc);
+	Setter s(placingCommand, true);
 	Command::editProfile(editedDive.get(), Command::EditProfileType::ADD, 0);
 }
 
@@ -269,6 +304,7 @@ void ProfileWidget::stopRemoved(int count)
 	if (!editedDive)
 		return;
 	calcDepth(*editedDive, editedDc);
+	Setter s(placingCommand, true);
 	Command::editProfile(editedDive.get(), Command::EditProfileType::REMOVE, count);
 }
 
@@ -277,5 +313,6 @@ void ProfileWidget::stopMoved(int count)
 	if (!editedDive)
 		return;
 	calcDepth(*editedDive, editedDc);
+	Setter s(placingCommand, true);
 	Command::editProfile(editedDive.get(), Command::EditProfileType::MOVE, count);
 }
