@@ -7661,6 +7661,10 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) depth of the dive</p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p class="table">meandepth</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) mean depth of the dive</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p class="table">divemaster</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) divemaster for the dive</p></td>
 </tr>

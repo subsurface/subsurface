@@ -5233,6 +5233,7 @@ Only a subset of the dive data is exported:
 |location| (*string*) location of the dive
 |duration| (*string*) duration of the dive
 |depth| (*string*) depth of the dive
+|meandepth| (*string*) mean depth of the dive
 |diveguide| (*string*) dive guide for the dive
 |buddy| (*string*) buddy for the dive
 |airTemp| (*string*) air temperature of the dive
