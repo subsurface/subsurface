@@ -5163,8 +5163,7 @@ explained on the section xref:S_ImportingCSVDives[Importing CSV dives].
 == APPENDIX E: Writing a custom print template
 
 _Subsurface_ has a way to create or modify templates for printing dive logs to
-produce customized printouts of them. Templates written in HTML, as well as a simple
-Grantlee instruction set, are rendered to the print device by _Subsurface_.
+produce customized printouts of them. Templates written in HTML are rendered to the print device by _Subsurface_.
 
 Templates are accessed using the print dialog (see image *B* below).
 
@@ -5187,14 +5186,11 @@ image::images/Template1_f22.jpg["FIGURE: template edit dialog",align="center"]
    customizable: the _Edit_ buttons in the _Colors_ tab allows choosing arbitrary colors for different
    components of the dive log printout.
 
-3) The _Template_ tab of the Edit Panel (see image below) allows creating a template using HTML as well as a few
-   Grantlee programming primitives. Grantlee can create and format HTML code in
-   a highly simple but efficient way (see below). The HTML of the template can be edited and saved. The saved
-   template is stored in the same directory as the dive being processed. By default, a _Custom_
-   template is a skeleton with no specific print instructions. The information printed
-   needs to be specified and formatted in the template by replacing the section marked with:
-   "<!-- Template must be filled -->". Writing HTML code with Grantlee instructions allows unlimited
-   freedom in determining what is printed and in which way it should be rendered.
+3) The _Template_ tab of the Edit Panel (see image below) allows creating a template using HTML. The HTML of the
+   template can be edited and saved. The saved template is stored in the same directory as the dive being processed.
+   By default, a _Custom_ template is a skeleton with no specific print instructions. The information printed needs to
+   be specified and formatted in the template by replacing the section marked with:
+   "<!-- Template must be filled -->".
 
 image::images/Template2_f22.jpg["FIGURE:Template tab",align="center"]
 
@@ -5205,7 +5201,8 @@ dialog to save the new template using a new template name.
 To write a custom template, the following elements must exist so  the template will be correctly handled and rendered.
 
 === Main dive loop
-_Subsurface_ exports a dive list called (*dives*) to the _Grantlee_ back end. It is possible to iterate over the list as follows:
+_Subsurface_ exports a dive list called (*dives*) as well as a list of cylinders called (*cylinderObjects*) to the back end. It is
+possible to iterate over the list as follows:
 .template.html
 ....
 	{% for dive in dives %}
@@ -5220,34 +5217,40 @@ _Subsurface_ exports a dive list called (*dives*) to the _Grantlee_ back end. It
 	<h1> 3 </h1>
 ....
 
-Additional information about _Grantlee_ can be found http://www.grantlee.org/apidox/for_themers.html[here]
-
-=== Grantlee exported variables
+=== Exported dive variables
 Only a subset of the dive data is exported:
 |====================
 |*Name*|*Description*
 |number| (*int*) dive number
 |id| (*int*) unique dive ID, should be used to fetch the dive profile
+|rating| (*int*) dive rating which ranges from 0 to 5
+|visibility| (*int*) dive visibility which ranges from 0 to 5
+|wavesize| (*int*) wave size during the dive which ranges from 0 to 5
+|current| (*int*) current during the dive which ranges from 0 to 5
+|surge| (*int*) surge during the dive which ranges from 0 to 5
+|chill| (*int*) chill during the dive which ranges from 0 to 5
 |date| (*string*) date of the dive
 |time| (*string*) time of the dive
 |location| (*string*) location of the dive
+|gps| (*string*) GPS coordinates of the dive
+|gps_decimal| (*string*) GPS coordinates of the dive in decimal format
 |duration| (*string*) duration of the dive
 |depth| (*string*) depth of the dive
 |meandepth| (*string*) mean depth of the dive
+|divemaster| (*string*) divemaster for the dive
 |diveguide| (*string*) dive guide for the dive
 |buddy| (*string*) buddy for the dive
 |airTemp| (*string*) air temperature of the dive
 |waterTemp| (*string*) water temperature of the dive
 |notes| (*string*) dive notes
-|rating| (*int*) dive rating which ranges from 0 to 5
-|sac| (*string*) SAC value for the dive
 |tags| (*string*) list of dive tags for the dive
 |gas| (*string*) list of gases used in the dive
+|sac| (*string*) SAC value for the dive
+|weights| (*string*) complete information of all used weight systems
+|weight0-5| (*string*) information about a specific weight system
 |suit| (*string*) the suit used for the dive
 |cylinders| (*string*) complete information of all used cylinders
 |cylinder0-7| (*string*) information about a specific cylinder
-|weights| (*string*) complete information of all used weight systems
-|weight0-5| (*string*) information about a specific weight system
 |maxcns| (*string*) maxCNS value for the dive
 |otu| (*string*) OTU value for the dive
 |sumWeight| (*string*) the summed weight of all used weight systems
@@ -5257,6 +5260,22 @@ Only a subset of the dive data is exported:
 |salinity| (*string*) the salinity of the water for the dive
 |waterType| (*string*) the type of the water for the dive
 |=====================
+
+=== Exported cylinder object variables
+Only a subset of the cylinder data is exported:
+|====================
+|*Name*|*Description*
+|description| (*string*) cylinder description
+|size| (*string*) cylinder size
+|workingPressure| (*string*) cylinder working pressure
+|startPressure| (*string*) start pressure of cylinder
+|endPressure| (*string*) end pressure of cylinder
+|gasMix| (*string*) gas mix of cylinder
+|gasO2| (*int*) oxygen percentage of gas mix
+|gasHe| (*int*) helium percentage of gas mix
+|gasN2| (*int*) nitrogen percentage of gas mix
+|=====================
+
 
 Please note that some of the variables like 'notes' need to be extended with '|safe' to support HTML tags:
 ....
