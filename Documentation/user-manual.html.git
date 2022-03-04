@@ -642,7 +642,7 @@ Spreadsheet or CSV files containing dive profiles.
 <div class="paragraph"><p>This is usually the approach for dives without a dive computer. The basic record
 of information within <em>Subsurface</em> is a dive. The most important information
 in a simple dive logbook usually includes dive type, date, time, duration,
-depth, the names of your dive buddy and the divemaster or dive guide, and
+depth, the names of your dive buddy and the dive guide, and
 some remarks about the dive. <em>Subsurface</em> can store much more
 information for each dive.  To add a dive to a dive log, select <em>Log
 &#8594;  Add Dive</em> from the Main Menu. The program then shows three panels
@@ -1163,12 +1163,11 @@ you might like to call one "Alice&#8217;s Suunto D4" and the other
 "Bob&#8217;s Suunto D4". Alternatively, consider a technical diver who dives with two or more
 dive computers of the same model, the logs of both (or all) being uploaded.
 In this case it might be prudent to call one of them
-"Suunto D4 (1)" and another "Suunto D4 (2)". This is easily done in <em>Subsurface</em>.
-On the <strong>Main Menu</strong>, select <em>Log &#8594;  Edit device names</em>. A dialog box opens, showing the
-current Model, ID and Nickname of the dive computers used for upload. Edit the Nickname
-field for the appropriate dive computer. After saving the Nickname, the dive logs
-show the nickname for that particular device instead of the model name,
-allowing easy identification of devices.</p></div>
+"Suunto D4 (1)" and another "Suunto D4 (2)".</p></div>
+<div class="paragraph"><p>To achieve this, display a dive downloaded from this dive computer, right click on its name
+in the profile and select the option to set a new nickname. If this option isn&#8217;t shown, then
+Subsurface cannot reliably identify this specific dive computer (not all models support this
+feature, but most modern ones do).</p></div>
 </div>
 <div class="sect3">
 <h4 id="S_MultipleDiveComputers">4.2.4. Uploading data for a specific dive from more than one dive computer</h4>
@@ -1209,7 +1208,7 @@ increase in the amount of information stored for a dive.</p></div>
 <p>
 The <strong>Notes</strong> tab
 holds basic information about the dive, the date and time, locality,
-buddy, divemaster and some dive notes. This is about the minimum amount of
+buddy, dive guide and some dive notes. This is about the minimum amount of
 information required for a coherent dive log.
 </p>
 </li>
@@ -1285,7 +1284,7 @@ to a specific dive and changes to multiple dives can be undone.</p></div>
 <td class="content">Dive locations are managed as a <strong>separate</strong> part of the dive log (See the section entitled <a href="#S_DiveSiteManagement">Manipulating Dive Site Information</a>).
 The dive information in the <strong>Notes</strong> and <strong>Equipment</strong> tabs can therefore NOT be edited at the same
 time as the dive site information. Save all the other dive information (e.g.
-divemaster, buddy, protective gear, notes about the dive) by selecting <em>Apply changes</em> on the
+dive guide, buddy, protective gear, notes about the dive) by selecting <em>Apply changes</em> on the
 <strong>Notes</strong> tab BEFORE editing the dive site information. Then supply a dive site name in the
 textbox labelled <em>Location</em> on the <strong>Notes</strong> tab.</td>
 </tr></table>
@@ -1496,9 +1495,8 @@ The dive site information can later be edited by clicking the globe icon to the 
 dive site name in the <strong>Notes tab</strong>.</p></div>
 <div class="paragraph"><p>Having entered information about the dive site into the <strong>Notes</strong> tab, the following
 additional information can be typed in:</p></div>
-<div class="paragraph"><p><strong>Divemaster</strong>: The name of the divemaster or dive guide should be
-entered in this field
-which offers auto selection based on the list of divemasters in
+<div class="paragraph"><p><strong>Dive guide</strong>: The name of the dive guide should be entered in this field
+which offers auto selection based on the list of dive guides in
 the current logbook.</p></div>
 <div class="paragraph"><p><strong>Buddy</strong>: In this field, enter the name(s) of the buddy or buddies
 (separated with commas) who were on the
@@ -1773,7 +1771,7 @@ and gas composition). Other fields remain empty.
 It may be useful to simultaneously edit some of the
 fields in the <strong>Notes</strong> and <strong>Equipment</strong> tabs.  For instance, it’s possible
 that a diver performed several dives during a single day, using identical equipment at the same
-dive site, or with the same divemaster and/or buddy or tags. Instead
+dive site, or with the same dive guide and/or buddy or tags. Instead
 of completing the information for each
 dive separately, select all the dives for that day in the <strong>Dive List</strong> and
 insert the same information in the <strong>Notes</strong> and <strong>Equipment</strong> fields that need
@@ -2217,7 +2215,7 @@ columns, followed by the data, one record per line.</p></div>
 <p>
 <em>CSV dive details</em>: This dive log format contains similar information to that of a
    typical written dive log, e.g. dive date and time, dive depth, dive duration, names of
-   buddy and divemaster and information about cylinder pressures before and
+   buddy and dive guide and information about cylinder pressures before and
    after the dive, as well as comments about the dive. All the data for a single
    dive go on a single line of text, following the order of the column headings.
 </p>
@@ -3840,7 +3838,7 @@ restored to view by selecting Unhide all events from the context menu.</p></div>
 <div class="sect2">
 <h3 id="S_Filter">5.6. Filtering the dive list</h3>
 <div class="paragraph"><p>The dives in the <strong>Dive List</strong> can be filtered, selecting only some
-of the dives based on attributes such as dive tags, dive site, divemaster or buddy.
+of the dives based on attributes such as dive tags, dive site, dive guide or buddy.
 For instance, filtering lets you list the dives during a particular year at a specific
 dive site, or otherwise the cave dives with a particular buddy. Filtering can be performed
 based on virtually any information in the <strong>Info</strong> panel.</p></div>
@@ -4466,7 +4464,7 @@ Universal Dive Data Format (<em>UDDF</em>). Refer to <em>http://uddf.org</em> fo
 </li>
 </ul></div>
 <div class="paragraph"><p>When the "Anonymize" option is selected for xml-based file formats, the letters A-Z
-are all replaced by the letter <em>X</em> in the notes, buddy, divemaster, divesite name
+are all replaced by the letter <em>X</em> in the notes, buddy, dive guide, divesite name
 and divesite description fields. This way, you can share dive log files for debugging
 purposes without revealing personal information. Please note, though, that other
 characters are not replaced, so this is not useful for languages with non-latin
@@ -7557,8 +7555,7 @@ explained on the section <a href="#S_ImportingCSVDives">Importing CSV dives</a>.
 <h2 id="S_APPENDIX_E">20. APPENDIX E: Writing a custom print template</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> has a way to create or modify templates for printing dive logs to
-produce customized printouts of them. Templates written in HTML, as well as a simple
-Grantlee instruction set, are rendered to the print device by <em>Subsurface</em>.</p></div>
+produce customized printouts of them. Templates written in HTML are rendered to the print device by <em>Subsurface</em>.</p></div>
 <div class="paragraph"><p>Templates are accessed using the print dialog (see image <strong>B</strong> below).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -7581,14 +7578,11 @@ a template, select one of the templates from the template dropdown list in the p
 <div class="paragraph"><p>2) The <em>Colors</em> tab (image <strong>B</strong> above) allows editing the colors used for printing the dive log. The colors are highly
    customizable: the <em>Edit</em> buttons in the <em>Colors</em> tab allows choosing arbitrary colors for different
    components of the dive log printout.</p></div>
-<div class="paragraph"><p>3) The <em>Template</em> tab of the Edit Panel (see image below) allows creating a template using HTML as well as a few
-   Grantlee programming primitives. Grantlee can create and format HTML code in
-   a highly simple but efficient way (see below). The HTML of the template can be edited and saved. The saved
-   template is stored in the same directory as the dive being processed. By default, a <em>Custom</em>
-   template is a skeleton with no specific print instructions. The information printed
-   needs to be specified and formatted in the template by replacing the section marked with:
-   "&lt;!-- Template must be filled -&#8594;". Writing HTML code with Grantlee instructions allows unlimited
-   freedom in determining what is printed and in which way it should be rendered.</p></div>
+<div class="paragraph"><p>3) The <em>Template</em> tab of the Edit Panel (see image below) allows creating a template using HTML. The HTML of the
+   template can be edited and saved. The saved template is stored in the same directory as the dive being processed.
+   By default, a <em>Custom</em> template is a skeleton with no specific print instructions. The information printed needs to
+   be specified and formatted in the template by replacing the section marked with:
+   "&lt;!-- Template must be filled -&#8594;".</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Template2_f22.jpg" alt="FIGURE:Template tab" />
@@ -7600,7 +7594,8 @@ dialog to save the new template using a new template name.</p></div>
 <div class="paragraph"><p>To write a custom template, the following elements must exist so  the template will be correctly handled and rendered.</p></div>
 <div class="sect2">
 <h3 id="_main_dive_loop">20.1. Main dive loop</h3>
-<div class="paragraph"><p><em>Subsurface</em> exports a dive list called (<strong>dives</strong>) to the <em>Grantlee</em> back end. It is possible to iterate over the list as follows:
+<div class="paragraph"><p><em>Subsurface</em> exports a dive list called (<strong>dives</strong>) as well as a list of cylinders called (<strong>cylinderObjects</strong>) to the back end. It is
+possible to iterate over the list as follows:
 .template.html</p></div>
 <div class="literalblock">
 <div class="content">
@@ -7615,10 +7610,9 @@ dialog to save the new template using a new template name.</p></div>
         &lt;h1&gt; 2 &lt;/h1&gt;
         &lt;h1&gt; 3 &lt;/h1&gt;</code></pre>
 </div></div>
-<div class="paragraph"><p>Additional information about <em>Grantlee</em> can be found <a href="http://www.grantlee.org/apidox/for_themers.html">here</a></p></div>
 </div>
 <div class="sect2">
-<h3 id="_grantlee_exported_variables">20.2. Grantlee exported variables</h3>
+<h3 id="_exported_dive_variables">20.2. Exported dive variables</h3>
 <div class="paragraph"><p>Only a subset of the dive data is exported:</p></div>
 <div class="tableblock">
 <table rules="all"
@@ -7641,6 +7635,30 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table">(<strong>int</strong>) unique dive ID, should be used to fetch the dive profile</p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p class="table">rating</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) dive rating which ranges from 0 to 5</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">visibility</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) dive visibility which ranges from 0 to 5</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">wavesize</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) wave size during the dive which ranges from 0 to 5</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">current</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) current during the dive which ranges from 0 to 5</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">surge</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) surge during the dive which ranges from 0 to 5</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">chill</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) chill during the dive which ranges from 0 to 5</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p class="table">date</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) date of the dive</p></td>
 </tr>
@@ -7651,6 +7669,14 @@ cellspacing="0" cellpadding="4">
 <tr>
 <td align="left" valign="top"><p class="table">location</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) location of the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">gps</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) GPS coordinates of the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">gps_decimal</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) GPS coordinates of the dive in decimal format</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p class="table">duration</p></td>
@@ -7669,6 +7695,10 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) divemaster for the dive</p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p class="table">diveguide</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) dive guide for the dive</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p class="table">buddy</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) buddy for the dive</p></td>
 </tr>
@@ -7685,20 +7715,24 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) dive notes</p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p class="table">rating</p></td>
-<td align="left" valign="top"><p class="table">(<strong>int</strong>) dive rating which ranges from 0 to 5</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table">sac</p></td>
-<td align="left" valign="top"><p class="table">(<strong>string</strong>) SAC value for the dive</p></td>
-</tr>
-<tr>
 <td align="left" valign="top"><p class="table">tags</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) list of dive tags for the dive</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p class="table">gas</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) list of gases used in the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">sac</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) SAC value for the dive</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">weights</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) complete information of all used weight systems</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">weight0-5</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) information about a specific weight system</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p class="table">suit</p></td>
@@ -7711,14 +7745,6 @@ cellspacing="0" cellpadding="4">
 <tr>
 <td align="left" valign="top"><p class="table">cylinder0-7</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) information about a specific cylinder</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table">weights</p></td>
-<td align="left" valign="top"><p class="table">(<strong>string</strong>) complete information of all used weight systems</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table">weight0-5</p></td>
-<td align="left" valign="top"><p class="table">(<strong>string</strong>) information about a specific weight system</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p class="table">maxcns</p></td>
@@ -7751,6 +7777,61 @@ cellspacing="0" cellpadding="4">
 <tr>
 <td align="left" valign="top"><p class="table">waterType</p></td>
 <td align="left" valign="top"><p class="table">(<strong>string</strong>) the type of the water for the dive</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exported_cylinder_object_variables">20.3. Exported cylinder object variables</h3>
+<div class="paragraph"><p>Only a subset of the cylinder data is exported:</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table"><strong>Name</strong></p></td>
+<td align="left" valign="top"><p class="table"><strong>Description</strong></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">description</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) cylinder description</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">size</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) cylinder size</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">workingPressure</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) cylinder working pressure</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">startPressure</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) start pressure of cylinder</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">endPressure</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) end pressure of cylinder</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">gasMix</p></td>
+<td align="left" valign="top"><p class="table">(<strong>string</strong>) gas mix of cylinder</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">gasO2</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) oxygen percentage of gas mix</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">gasHe</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) helium percentage of gas mix</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table">gasN2</p></td>
+<td align="left" valign="top"><p class="table">(<strong>int</strong>) nitrogen percentage of gas mix</p></td>
 </tr>
 </tbody>
 </table>
@@ -7864,7 +7945,7 @@ cellspacing="0" cellpadding="4">
 </div></div>
 </div>
 <div class="sect2">
-<h3 id="_defined_css_selectors">20.3. Defined CSS selectors</h3>
+<h3 id="_defined_css_selectors">20.4. Defined CSS selectors</h3>
 <div class="paragraph"><p>As the dive profile is placed after rendering, <em>Subsurface</em> uses special <em>CSS</em> selectors to search
 in the HTML output. The <em>CSS</em> selectors in the following table should be added.</p></div>
 <div class="tableblock">
@@ -7910,7 +7991,7 @@ in flow layout templates only (when data-numberofdives = 0)</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_special_attributes">20.4. Special attributes</h3>
+<h3 id="_special_attributes">20.5. Special attributes</h3>
 <div class="paragraph"><p>There are two ways of rendering- either rendering a specific number of dives in each page or make <em>Subsurface</em> try to
 fit as many dives as possible into one page (<em>flow</em> rendering).</p></div>
 <div class="paragraph"><p>The <strong>data-numberofdives</strong> data attribute is added to the body tag to set the rendering mode.</p></div>
@@ -8079,7 +8160,7 @@ contain twice as much air as a 200 bar one. At lower pressures, air acts pretty 
 but then come back up and wait five minutes for your buddies, your dive computer may say
 that your dive is 50 minutes long - because you have fifty minutes worth of samples - but
 subsurface will say it&#8217;s 45 minutes - because you were actually diving for 45 minutes.
-It&#8217;s even more noticeable if you do things like divemastering the initial OW dives, when
+It&#8217;s even more noticeable if you do things like guiding the initial OW dives, when
 you may stay in the water for a long time, but spend most of it at the surface. And then
 you don&#8217;t want that to count as some kind of long dive”.</p></div>
 </div>
@@ -8108,7 +8189,7 @@ cannot be salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-06-03 08:27:23 PDT
+ 2022-03-04 12:02:35 PST
 </div>
 </div>
 </body>
