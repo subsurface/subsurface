@@ -502,6 +502,12 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 			return get_pressure_string(cylinder->end, true);
 		} else if (property == "gasMix") {
 			return get_gas_string(cylinder->gasmix);
+                } else if (property == "gasO2") {
+                        return (get_o2(cylinder->gasmix) + 5) / 10;
+                } else if (property == "gasN2") {
+                        return (get_n2(cylinder->gasmix) + 5) / 10;
+                } else if (property == "gasHe") {
+                        return (get_he(cylinder->gasmix) + 5) / 10;
 		}
 	} else if (list == "dives") {
 		if (!state.currentDive)
