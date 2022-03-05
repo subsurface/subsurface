@@ -9,3 +9,11 @@ void TabBase::updateUi(QString titleColor)
 {
 	Q_UNUSED(titleColor)
 }
+
+void TabBase::enterEditMode()
+{
+}
+
+void TabBase::exitEditMode()
+{
+}
