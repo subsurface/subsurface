@@ -26,7 +26,6 @@ public:
 	MainTab(QWidget *parent = 0);
 	void clearTabs();
 	bool isEditing();
-	void refreshDisplayedDiveSite();
 	void nextInputField(QKeyEvent *event);
 	void stealFocus();
 

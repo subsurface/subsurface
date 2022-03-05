@@ -485,11 +485,6 @@ void MainTab::updateDiveInfo()
 		qDebug() << "Set the current dive site:" << current_dive->dive_site->uuid;
 }
 
-void MainTab::refreshDisplayedDiveSite()
-{
-	ui.location->setCurrentDiveSite(current_dive);
-}
-
 void MainTab::acceptChanges()
 {
 	if (ui.location->hasFocus())
