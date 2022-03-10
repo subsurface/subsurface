@@ -8,10 +8,10 @@
   e. Enlever le quadrillage
 2. Corriger le GF
 3. Notes
-  a. Enlever dive guide
+  a. Enlever dive guide -- Partiellement fait
 4. Équipement
-  a. Enlever Combinaison
-  b. Enlever Lestage
+  a. Enlever Combinaison --- DONE
+  b. Enlever Lestage --- DONE
   c. Rajouter une section bailouts?
 5. Informations
   a. Corriger la typo dans intervalle

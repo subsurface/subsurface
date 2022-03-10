@@ -129,13 +129,13 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	Completers completers;
 	completers.buddy = new QCompleter(&buddyModel, ui.buddy);
-	completers.diveguide = new QCompleter(&diveGuideModel, ui.diveguide);
+	//completers.diveguide = new QCompleter(&diveGuideModel, ui.diveguide);
 	completers.tags = new QCompleter(&tagModel, ui.tagWidget);
 	completers.buddy->setCaseSensitivity(Qt::CaseInsensitive);
-	completers.diveguide->setCaseSensitivity(Qt::CaseInsensitive);
+	//completers.diveguide->setCaseSensitivity(Qt::CaseInsensitive);
 	completers.tags->setCaseSensitivity(Qt::CaseInsensitive);
 	ui.buddy->setCompleter(completers.buddy);
-	ui.diveguide->setCompleter(completers.diveguide);
+	//ui.diveguide->setCompleter(completers.diveguide);
 	ui.tagWidget->setCompleter(completers.tags);
 	ui.diveNotesMessage->hide();
 	ui.multiDiveWarningMessage->hide();
@@ -260,8 +260,8 @@ void MainTab::divesChanged(const QVector<dive *> &dives, DiveField field)
 		ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
 	if (field.buddy)
 		ui.buddy->setText(current_dive->buddy);
-	if (field.diveguide)
-		ui.diveguide->setText(current_dive->diveguide);
+	//if (field.diveguide)
+	//	ui.diveguide->setText(current_dive->diveguide);
 
 	// If duration or depth changed, the profile needs to be replotted
 	if (field.duration || field.depth)
@@ -384,8 +384,8 @@ void MainTab::updateDiveInfo()
 				ui.tabWidget->setCurrentIndex(lastTabSelectedDiveTrip);
 			lastSelectedDive = false;
 			// only use trip relevant fields
-			ui.diveguide->setVisible(false);
-			ui.DiveguideLabel->setVisible(false);
+//			ui.diveguide->setVisible(false);
+//			ui.DiveguideLabel->setVisible(false);
 			ui.buddy->setVisible(false);
 			ui.BuddyLabel->setVisible(false);
 			ui.rating->setVisible(false);
@@ -426,12 +426,12 @@ void MainTab::updateDiveInfo()
 			ui.location->show();
 			ui.locationPopupButton->show();
 			ui.editDiveSiteButton->show();
-			ui.diveguide->setVisible(true);
+//			ui.diveguide->setVisible(true);
 			ui.buddy->setVisible(true);
 			ui.rating->setVisible(true);
 			ui.RatingLabel->setVisible(true);
 			ui.BuddyLabel->setVisible(true);
-			ui.DiveguideLabel->setVisible(true);
+//			ui.DiveguideLabel->setVisible(true);
 			ui.TagLabel->setVisible(true);
 			ui.tagWidget->setVisible(true);
 			ui.dateEdit->setReadOnly(false);
@@ -452,7 +452,7 @@ void MainTab::updateDiveInfo()
 			updateNotes(current_dive);
 			updateDiveSite(current_dive);
 			updateDateTime(current_dive);
-			ui.diveguide->setText(current_dive->diveguide);
+//			ui.diveguide->setText(current_dive->diveguide);
 			ui.buddy->setText(current_dive->buddy);
 		}
 		ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
@@ -467,7 +467,7 @@ void MainTab::updateDiveInfo()
 		clearTabs();
 		ui.rating->setCurrentStars(0);
 		ui.location->clear();
-		ui.diveguide->clear();
+//		ui.diveguide->clear();
 		ui.buddy->clear();
 		ui.notes->clear();
 		/* set date and time to minimums which triggers showing the special value text */
@@ -555,10 +555,13 @@ void MainTab::on_buddy_editingFinished()
 
 void MainTab::on_diveguide_editingFinished()
 {
+	return;
+	/*
 	if (ignoreInput || !current_dive)
 		return;
 
 	divesEdited(Command::editDiveGuide(stringToList(ui.diveguide->toPlainText()), false));
+	*/
 }
 
 void MainTab::on_duration_editingFinished()
