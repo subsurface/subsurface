@@ -69,20 +69,20 @@
              <enum>Qt::Vertical</enum>
             </property>
             <widget class="TableView" name="cylinders" native="true"/>
-            <widget class="QLabel" name="suitText">
+            <!--<widget class="QLabel" name="suitText">
              <property name="text">
               <string>Suit</string>
              </property>
              <property name="isHeader" stdset="0">
               <bool>true</bool>
              </property>
-            </widget>
-            <widget class="QLineEdit" name="suit">
+           </widget>-->
+            <!--<widget class="QLineEdit" name="suit">
              <property name="readOnly">
               <bool>false</bool>
              </property>
             </widget>
-            <widget class="TableView" name="weights" native="true"/>
+            <widget class="TableView" name="weights" native="true"/>-->
            </widget>
           </item>
          </layout>

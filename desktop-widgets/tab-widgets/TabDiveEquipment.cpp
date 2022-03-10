@@ -31,14 +31,14 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	// after the destructor of the tables,
 	// this is needed to save the column sizes.
 	cylindersModel->setParent(ui.cylinders);
-	weightModel->setParent(ui.weights);
+	//weightModel->setParent(ui.weights);
 
 	ui.cylinders->setModel(cylindersModel);
-	ui.weights->setModel(weightModel);
+	//ui.weights->setModel(weightModel);
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveEquipment::divesChanged);
-	connect(ui.cylinders, &TableView::itemClicked, this, &TabDiveEquipment::editCylinderWidget);
-	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
+	//connect(ui.cylinders, &TableView::itemClicked, this, &TabDiveEquipment::editCylinderWidget);
+	//connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
 	connect(cylindersModel, &CylindersModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 	connect(weightModel, &WeightModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 
@@ -52,7 +52,7 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
-	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
+	//ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
 	ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
 	ui.cylinders->view()->setColumnHidden(CylindersModel::WORKINGPRESS_INT, true);
 	ui.cylinders->view()->setColumnHidden(CylindersModel::SIZE_INT, true);
@@ -61,9 +61,9 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	ui.cylinders->setBtnToolTip(tr("Add cylinder"));
 	connect(ui.cylinders, &TableView::addButtonClicked, this, &TabDiveEquipment::addCylinder_clicked);
 
-	ui.weights->setTitle(tr("Weights"));
-	ui.weights->setBtnToolTip(tr("Add weight system"));
-	connect(ui.weights, &TableView::addButtonClicked, this, &TabDiveEquipment::addWeight_clicked);
+	//ui.weights->setTitle(tr("Weights"));
+	//ui.weights->setBtnToolTip(tr("Add weight system"));
+	//connect(ui.weights, &TableView::addButtonClicked, this, &TabDiveEquipment::addWeight_clicked);
 
 	QAction *action = new QAction(tr("OK"), this);
 	connect(action, &QAction::triggered, this, &TabDiveEquipment::closeWarning);
@@ -91,10 +91,10 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 		ui.cylinders->view()->horizontalHeader()->addAction(action);
 	}
 	ui.cylinders->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
-	ui.weights->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
-	suitCompleter = new QCompleter(&suitModel, ui.suit);
-	suitCompleter->setCaseSensitivity(Qt::CaseInsensitive);
-	ui.suit->setCompleter(suitCompleter);
+	//ui.weights->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
+	//suitCompleter = new QCompleter(&suitModel, ui.suit);
+	//suitCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+	//ui.suit->setCompleter(suitCompleter);
 }
 
 TabDiveEquipment::~TabDiveEquipment()
@@ -116,8 +116,8 @@ void TabDiveEquipment::divesChanged(const QVector<dive *> &dives, DiveField fiel
 	if (!current_dive || !dives.contains(current_dive))
 		return;
 
-	if (field.suit)
-		ui.suit->setText(QString(current_dive->suit));
+	//if (field.suit)
+		//ui.suit->setText(QString(current_dive->suit));
 }
 
 void TabDiveEquipment::toggleTriggeredColumn()
@@ -145,17 +145,17 @@ void TabDiveEquipment::updateData()
 		ui.cylinders->view()->showColumn(CylindersModel::USE);
 	else
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
-	if (current_dive && current_dive->suit)
-		ui.suit->setText(QString(current_dive->suit));
-	else
-		ui.suit->clear();
+	//if (current_dive && current_dive->suit)
+	//	ui.suit->setText(QString(current_dive->suit));
+	//else
+	//	ui.suit->clear();
 }
 
 void TabDiveEquipment::clear()
 {
 	cylindersModel->clear();
 	weightModel->clear();
-	ui.suit->clear();
+	//ui.suit->clear();
 }
 
 void TabDiveEquipment::addCylinder_clicked()
@@ -191,6 +191,8 @@ void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 
 void TabDiveEquipment::editWeightWidget(const QModelIndex &index)
 {
+	return;
+	/*
 	if (!index.isValid())
 		return;
 
@@ -198,6 +200,7 @@ void TabDiveEquipment::editWeightWidget(const QModelIndex &index)
 		divesEdited(Command::removeWeight(index.row(), false));
 	else
 		ui.weights->edit(index);
+		*/
 }
 
 void TabDiveEquipment::divesEdited(int i)
@@ -212,9 +215,10 @@ void TabDiveEquipment::divesEdited(int i)
 
 void TabDiveEquipment::on_suit_editingFinished()
 {
-	if (!current_dive)
-		return;
-	divesEdited(Command::editSuit(ui.suit->text(), false));
+	return;
+	//if (!current_dive)
+	//	return;
+	//divesEdited(Command::editSuit(ui.suit->text(), false));
 }
 
 void TabDiveEquipment::closeWarning()
