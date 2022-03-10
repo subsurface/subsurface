@@ -4,8 +4,8 @@
   a. La déco doit être rouge
   b. Le haut doit être incolore (comme le bas)
   c. Masquer la profondeur moyenne
-  d. Couleur de l'axe des Y == couleur axe des X
-  e. Enlever le quadrillage
+  d. Couleur de l'axe des Y == couleur axe des X -- DONE
+  e. Enlever le quadrillage -- DONE
 2. Corriger le GF
 3. Notes
   a. Enlever dive guide -- Partiellement fait
