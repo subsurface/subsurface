@@ -20,7 +20,9 @@ TabDiveExtraInfo::~TabDiveExtraInfo()
 
 void TabDiveExtraInfo::updateData()
 {
-	extraDataModel->updateDiveComputer(current_dc);
+	const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
+	if (currentdc)
+		extraDataModel->updateDiveComputer(currentdc);
 }
 
 void TabDiveExtraInfo::clear()

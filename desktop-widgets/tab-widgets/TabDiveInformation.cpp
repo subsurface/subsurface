@@ -181,9 +181,10 @@ int TabDiveInformation::updateSalinityComboIndex(int salinity)
 // If dive->user_salinity != dive->salinity (i.e. dc value) then show the salinity-overwrite indicator
 void TabDiveInformation::checkDcSalinityOverWritten()
 {
-	if (!current_dive)
+	const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
+	if (!current_dive || !currentdc)
 		return;
-	int dc_value = current_dc->salinity;
+	int dc_value = currentdc->salinity;
 	int user_value = current_dive->user_salinity;
 	bool show_indicator = false;
 	if (!manualDive && user_value != 0 && user_value != dc_value)
@@ -262,7 +263,10 @@ void TabDiveInformation::on_waterTypeCombo_activated(int index)
 {
 	Q_UNUSED(index)
 	int combobox_salinity = 0;
-	int dc_salinity = current_dc->salinity;
+	const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
+	if (!currentdc)
+		return;
+	int dc_salinity = currentdc->salinity;
 	switch(ui->waterTypeCombo->currentIndex()) {
 	case FRESHWATER:
 		combobox_salinity = FRESHWATER_SALINITY;

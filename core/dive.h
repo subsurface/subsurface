@@ -115,7 +115,6 @@ extern bool autogroup;
 extern struct dive displayed_dive;
 extern unsigned int dc_number;
 extern struct dive *current_dive;
-#define current_dc (get_dive_dc(current_dive, dc_number))
 
 extern struct dive *get_dive(int nr);
 extern struct dive *get_dive_from_table(int nr, const struct dive_table *dt);
