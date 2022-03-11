@@ -48,7 +48,7 @@ private:
 	void editDive();
 	void exitEditMode();
 	std::unique_ptr<dive, DiveDeleter> editedDive;
-	int editedDc;
+	unsigned int editedDc;
 	dive *originalDive;
 	bool placingCommand;
 };

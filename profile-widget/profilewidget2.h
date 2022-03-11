@@ -65,7 +65,6 @@ public:
 	State currentState;
 
 signals:
-	void editCurrentDive();
 	void stopAdded(); // only emitted in edit mode
 	void stopRemoved(int count); // only emitted in edit mode
 	void stopMoved(int count); // only emitted in edit mode

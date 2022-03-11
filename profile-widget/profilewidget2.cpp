@@ -589,9 +589,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		changeMode->addAction(gettextFromC::tr(divemode_text_ui[PSCR]),
 				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
-	if (same_string(get_dive_dc_const(d, dc)->model, "manually added dive") || !get_dive_dc_const(d, dc)->samples)
-		m.addAction(tr("Edit the profile"), this, &ProfileWidget2::editCurrentDive);
-
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
 		m.addAction(tr("Hide similar events"), [this, item] { hideEvents(item); });

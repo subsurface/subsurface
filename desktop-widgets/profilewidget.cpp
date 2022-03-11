@@ -119,7 +119,6 @@ ProfileWidget::ProfileWidget() : originalDive(nullptr), placingCommand(false)
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &ProfileWidget::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, view.get(), &ProfileWidget2::settingsChanged);
-	connect(view.get(), &ProfileWidget2::editCurrentDive, this, &ProfileWidget::editDive);
 	connect(view.get(), &ProfileWidget2::stopAdded, this, &ProfileWidget::stopAdded);
 	connect(view.get(), &ProfileWidget2::stopRemoved, this, &ProfileWidget::stopRemoved);
 	connect(view.get(), &ProfileWidget2::stopMoved, this, &ProfileWidget::stopMoved);
@@ -185,11 +184,21 @@ void ProfileWidget::setDive(const struct dive *d)
 void ProfileWidget::plotCurrentDive()
 {
 	// Exit edit mode if the dive changed
-	if (editedDive && originalDive != current_dive)
+	if (editedDive && (originalDive != current_dive || editedDc != dc_number))
 		exitEditMode();
+
+	// If this is a manually added dive and we are not in the planner
+	// or already editing the dive, switch to edit mode.
+	if (current_dive && !editedDive &&
+	    DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING) {
+		struct divecomputer *dc = get_dive_dc(current_dive, dc_number);
+		if (dc && same_string(dc->model, "manually added dive") && dc->samples)
+			editDive();
+	}
 
 	setEnabledToolbar(current_dive != nullptr);
 	if (editedDive) {
+		setDive(current_dive);
 		view->plotDive(editedDive.get(), editedDc);
 	} else if (current_dive) {
 		setDive(current_dive);
@@ -244,21 +253,13 @@ void ProfileWidget::unsetProfTissues()
 
 void ProfileWidget::editDive()
 {
-	// We only allow editing of the profile for manually added dives
-	// and when no other editing is in progress.
-	if (!current_dive ||
-	   (!same_string(current_dive->dc.model, "manually added dive") && current_dive->dc.samples) ||
-	   (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) ||
-	   editedDive)
-		return;
-
 	editedDive.reset(alloc_dive());
 	editedDc = dc_number;
 	copy_dive(current_dive, editedDive.get()); // Work on a copy of the dive
 	originalDive = current_dive;
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get());
-	view->setEditState(editedDive.get(), 0);
+	view->setEditState(editedDive.get(), editedDc);
 }
 
 void ProfileWidget::exitEditMode()
