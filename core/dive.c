@@ -123,7 +123,7 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
  * have to actually remove the existing event and replace it with a new one.
  * WARNING, WARNING... this may end up freeing event in case that event is indeed
  * WARNING, WARNING... part of this divecomputer on this dive! */
-void update_event_name(struct dive *d, struct event *event, const char *name)
+void update_event_name(struct dive *d, int dc_number, struct event *event, const char *name)
 {
 	if (!d || !event)
 		return;
