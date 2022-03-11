@@ -3124,7 +3124,7 @@ struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number)
  */
 void split_divecomputer(const struct dive *src, int num, struct dive **out1, struct dive **out2)
 {
-	struct divecomputer *srcdc = get_dive_dc(current_dive, dc_number);
+	const struct divecomputer *srcdc = get_dive_dc_const(src, num);
 
 	if (src && srcdc) {
 		// Copy the dive, but only using the selected dive computer
