@@ -669,11 +669,14 @@ void ProfileWidget2::makeFirstDC()
 void ProfileWidget2::renameCurrentDC()
 {
 	bool ok;
+	struct divecomputer *currentdc = get_dive_dc(mutable_dive(), dc);
+	if (!currentdc)
+		return;
 	QString newName = QInputDialog::getText(this, tr("Edit nickname"),
-						tr("Set new nickname for %1 (serial %2):").arg(current_dc->model).arg(current_dc->serial),
-						QLineEdit::Normal, get_dc_nickname(current_dc), &ok);
+						tr("Set new nickname for %1 (serial %2):").arg(currentdc->model).arg(currentdc->serial),
+						QLineEdit::Normal, get_dc_nickname(currentdc), &ok);
 	if (ok)
-		Command::editDeviceNickname(current_dc, newName);
+		Command::editDeviceNickname(currentdc, newName);
 }
 
 void ProfileWidget2::hideEvents(DiveEventItem *item)
