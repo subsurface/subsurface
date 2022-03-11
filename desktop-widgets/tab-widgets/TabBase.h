@@ -10,7 +10,7 @@ class TabBase : public QWidget {
 	Q_OBJECT
 
 public:
-	TabBase(QWidget *parent = 0);
+	using QWidget::QWidget;
 	virtual void updateData() = 0;
 	virtual void clear() = 0;
 	virtual void updateUi(QString titleColor);
