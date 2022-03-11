@@ -439,7 +439,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	 * create_plot_info_new() automatically frees old plot data.
 	 */
 	if (!keepPlotInfo)
-		create_plot_info_new(d, get_dive_dc_const(d, dc), &plotInfo, planner_ds);
+		create_plot_info_new(d, currentdc, &plotInfo, planner_ds);
 
 	bool hasHeartBeat = plotInfo.maxhr;
 	// For mobile we might want to turn of some features that are normally shown.
@@ -541,7 +541,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	qDeleteAll(eventItems);
 	eventItems.clear();
 	struct event *event = currentdc->events;
-	struct gasmix lastgasmix = get_gasmix_at_time(d, get_dive_dc_const(d, dc), duration_t{1});
+	struct gasmix lastgasmix = get_gasmix_at_time(d, currentdc, duration_t{1});
 
 	while (event) {
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
