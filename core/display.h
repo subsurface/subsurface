@@ -26,8 +26,6 @@ struct plot_info {
 	struct plot_pressure_data *pressures; /* cylinders.nr blocks of nr entries. */
 };
 
-extern struct divecomputer *select_dc(struct dive *);
-
 extern int is_default_dive_computer_device(const char *);
 
 typedef void (*device_callback_t)(const char *name, void *userdata);

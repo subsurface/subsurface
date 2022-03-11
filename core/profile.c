@@ -1311,18 +1311,6 @@ void create_plot_info_new(const struct dive *dive, const struct divecomputer *dc
 	analyze_plot_info(pi);
 }
 
-struct divecomputer *select_dc(struct dive *dive)
-{
-	unsigned int max = number_of_computers(dive);
-	unsigned int i = dc_number;
-
-	/* Reset 'dc_number' if we've switched dives and it is now out of range */
-	if (i >= max)
-		dc_number = i = 0;
-
-	return get_dive_dc(dive, i);
-}
-
 static void plot_string(const struct dive *d, const struct plot_info *pi, int idx, struct membuffer *b)
 {
 	int pressurevalue, mod, ead, end, eadd;
