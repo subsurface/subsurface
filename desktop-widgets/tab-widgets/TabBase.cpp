@@ -5,15 +5,6 @@ TabBase::TabBase(QWidget *parent) : QWidget(parent)
 {
 }
 
-void TabBase::updateUi(QString titleColor)
-{
-	Q_UNUSED(titleColor)
-}
-
-void TabBase::enterEditMode()
-{
-}
-
-void TabBase::exitEditMode()
+void TabBase::updateUi(QString)
 {
 }

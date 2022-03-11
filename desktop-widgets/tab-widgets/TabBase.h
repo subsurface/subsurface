@@ -14,8 +14,6 @@ public:
 	virtual void updateData() = 0;
 	virtual void clear() = 0;
 	virtual void updateUi(QString titleColor);
-	virtual void enterEditMode();
-	virtual void exitEditMode();
 };
 
 #endif
