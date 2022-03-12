@@ -446,9 +446,7 @@ void ProfileWidget2::setEditState(const dive *d, int dc)
 
 	connectPlannerModel();
 
-	/* show the same stuff that the profile shows. */
-	currentState = EDIT; /* enable the add state. */
-	setBackgroundBrush(QColor("#A7DCFF"));
+	currentState = EDIT;
 
 	pointsReset();
 	repositionDiveHandlers();
@@ -466,8 +464,7 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 
 	connectPlannerModel();
 
-	/* show the same stuff that the profile shows. */
-	currentState = PLAN; /* enable the add state. */
+	currentState = PLAN;
 	setBackgroundBrush(QColor("#D7E3EF"));
 
 	pointsReset();
