@@ -48,6 +48,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 	currentState(INIT),
 	plannerModel(plannerModelIn),
 	zoomLevel(0),
+	zoomedPosition(0.0),
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
 #endif
