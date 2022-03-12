@@ -8,12 +8,12 @@
 #include "core/profile.h"
 
 RulerNodeItem2::RulerNodeItem2() :
+	pInfo(NULL),
 	idx(-1),
 	ruler(NULL),
 	timeAxis(NULL),
 	depthAxis(NULL)
 {
-	init_plot_info(&pInfo);
 	setRect(-8, -8, 16, 16);
 	setBrush(QColor(0xff, 0, 0, 127));
 	setPen(QColor(Qt::red));
@@ -24,7 +24,7 @@ RulerNodeItem2::RulerNodeItem2() :
 
 void RulerNodeItem2::setPlotInfo(const plot_info &info)
 {
-	pInfo = info;
+	pInfo = &info;
 	idx = 0;
 }
 
@@ -35,19 +35,19 @@ void RulerNodeItem2::setRuler(RulerItem2 *r)
 
 void RulerNodeItem2::recalculate()
 {
-	if (pInfo.nr <= 0)
+	if (!pInfo || pInfo->nr <= 0)
 		return;
 
-	const struct plot_data &last = pInfo.entry[pInfo.nr - 1];
+	const struct plot_data &last = pInfo->entry[pInfo->nr - 1];
 	if (x() < 0) {
 		setPos(0, y());
 	} else if (x() > timeAxis->posAtValue(last.sec)) {
 		setPos(timeAxis->posAtValue(last.sec), depthAxis->posAtValue(last.depth));
 	} else {
 		idx = 0;
-		while (idx < pInfo.nr && timeAxis->posAtValue(pInfo.entry[idx].sec) < x())
+		while (idx < pInfo->nr && timeAxis->posAtValue(pInfo->entry[idx].sec) < x())
 			++idx;
-		const struct plot_data &data = pInfo.entry[idx];
+		const struct plot_data &data = pInfo->entry[idx];
 		setPos(timeAxis->posAtValue(data.sec), depthAxis->posAtValue(data.depth));
 	}
 }
@@ -62,14 +62,14 @@ void RulerNodeItem2::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	ruler->recalculate();
 }
 
-RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
+RulerItem2::RulerItem2() : pInfo(NULL),
+	source(new RulerNodeItem2()),
 	dest(new RulerNodeItem2()),
 	timeAxis(NULL),
 	depthAxis(NULL),
 	textItemBack(new QGraphicsRectItem(this)),
 	textItem(new QGraphicsSimpleTextItem(this))
 {
-	memset(&pInfo, 0, sizeof(pInfo));
 	source->setRuler(this);
 	dest->setRuler(this);
 	textItem->setFlag(QGraphicsItem::ItemIgnoresTransformations);
@@ -98,7 +98,7 @@ void RulerItem2::recalculate()
 	QFont font;
 	QFontMetrics fm(font);
 
-	if (timeAxis == NULL || depthAxis == NULL || pInfo.nr == 0)
+	if (timeAxis == NULL || depthAxis == NULL || !pInfo || pInfo->nr == 0)
 		return;
 
 	prepareGeometryChange();
@@ -112,7 +112,7 @@ void RulerItem2::recalculate()
 	}
 	QLineF line(startPoint, endPoint);
 	setLine(line);
-	compare_samples(dive, &pInfo, source->idx, dest->idx, buffer, 500, 1);
+	compare_samples(dive, pInfo, source->idx, dest->idx, buffer, 500, 1);
 	text = QString(buffer);
 
 	// draw text
@@ -150,7 +150,7 @@ RulerNodeItem2 *RulerItem2::destNode() const
 void RulerItem2::setPlotInfo(const struct dive *d, const plot_info &info)
 {
 	dive = d;
-	pInfo = info;
+	pInfo = &info;
 	dest->setPlotInfo(info);
 	source->setPlotInfo(info);
 	dest->recalculate();
