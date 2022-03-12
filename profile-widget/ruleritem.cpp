@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/ruleritem.h"
 #include "profile-widget/profilewidget2.h"
-#include "core/display.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 
 #include <qgraphicssceneevent.h>

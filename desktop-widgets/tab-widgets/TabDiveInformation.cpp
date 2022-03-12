@@ -10,7 +10,6 @@
 #include "core/dive.h"
 #include "core/qthelper.h"
 #include "core/statistics.h"
-#include "core/display.h"
 #include "core/divelist.h"
 
 #define COMBO_CHANGED 0

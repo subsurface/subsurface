@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/divesiteimportdialog.h"
 #include "commands/command.h"
-#include "core/display.h"
 #include "core/qthelper.h"
 #include "core/metrics.h"
 #include "core/subsurface-string.h"

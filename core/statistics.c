@@ -9,7 +9,6 @@
 
 #include "statistics.h"
 #include "dive.h"
-#include "display.h"
 #include "event.h"
 #include "gettext.h"
 #include "sample.h"

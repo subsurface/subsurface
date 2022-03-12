@@ -6,7 +6,7 @@
 #include <QGraphicsEllipseItem>
 #include <QGraphicsObject>
 #include "profile-widget/divecartesianaxis.h"
-#include "core/display.h"
+#include "core/profile.h"
 
 struct plot_data;
 class RulerItem2;

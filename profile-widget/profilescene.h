@@ -5,7 +5,7 @@
 #define PROFILESCENE_H
 
 #include "core/color.h"
-#include "core/display.h"
+#include "core/profile.h"
 
 #include <QGraphicsScene>
 #include <QPainter>

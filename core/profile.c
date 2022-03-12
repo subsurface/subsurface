@@ -9,7 +9,6 @@
 #include <assert.h>
 
 #include "dive.h"
-#include "display.h"
 #include "divelist.h"
 #include "event.h"
 #include "interpolate.h"

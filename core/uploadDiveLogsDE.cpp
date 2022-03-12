@@ -5,7 +5,6 @@
 #include <QTemporaryFile>
 #include <zip.h>
 #include <errno.h>
-#include "core/display.h"
 #include "core/errorhelper.h"
 #include "core/qthelper.h"
 #include "core/dive.h"

@@ -218,7 +218,6 @@ HEADERS += \
 	core/configuredivecomputer.h \
 	core/datatrak.h \
 	core/deco.h \
-	core/display.h \
 	core/divefilter.h \
 	core/filterconstraint.h \
 	core/filterpreset.h \
