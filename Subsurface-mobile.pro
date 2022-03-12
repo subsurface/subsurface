@@ -57,6 +57,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/gas-model.c \
 	core/gaspressures.c \
 	core/git-access.c \
+	core/globals.cpp \
 	core/liquivision.c \
 	core/load-git.c \
 	core/parse-xml.c \
@@ -201,6 +202,7 @@ HEADERS += \
 	core/event.h \
 	core/extradata.h \
 	core/git-access.h \
+	core/globals.h \
 	core/pref.h \
 	core/profile.h \
 	core/qthelper.h \

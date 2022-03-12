@@ -8,6 +8,7 @@
 #endif
 
 #include "stats/statsview.h"
+#include "core/globals.h"
 #include "core/qt-gui.h"
 #include "core/settings/qPref.h"
 #include "core/ssrf.h"
@@ -67,6 +68,7 @@ void exit_ui()
 #ifndef SUBSURFACE_MOBILE
 	delete MainWindow::instance();
 #endif // SUBSURFACE_MOBILE
+	free_globals();
 	free((void *)existing_filename);
 }
 
