@@ -6,9 +6,9 @@
 #include <QGraphicsEllipseItem>
 #include <QGraphicsObject>
 #include "profile-widget/divecartesianaxis.h"
-#include "core/profile.h"
 
 struct plot_data;
+struct plot_info;
 class RulerItem2;
 
 class RulerNodeItem2 : public QObject, public QGraphicsEllipseItem {
@@ -23,7 +23,7 @@ public:
 
 private:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-	struct plot_info pInfo;
+	const struct plot_info *pInfo;
 	int idx;
 	RulerItem2 *ruler;
 	DiveCartesianAxis *timeAxis;
@@ -48,7 +48,7 @@ slots:
 
 private:
 	const struct dive *dive;
-	struct plot_info pInfo;
+	const struct plot_info *pInfo;
 	QPointF startPoint, endPoint;
 	RulerNodeItem2 *source, *dest;
 	QString text;
