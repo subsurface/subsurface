@@ -7,7 +7,8 @@
 #include <fnmatch.h>
 #include "dive.h"
 #include "subsurface-string.h"
-#include "display.h"
+#include "device.h"
+#include "libdivecomputer.h"
 #include <CoreFoundation/CoreFoundation.h>
 #if !defined(__IPHONE_5_0)
 #include <CoreServices/CoreServices.h>

@@ -57,6 +57,12 @@ extern uint32_t fp_get_deviceid(struct fingerprint_table *table, unsigned int i)
 extern uint32_t fp_get_diveid(struct fingerprint_table *table, unsigned int i);
 extern char *fp_get_data(struct fingerprint_table *table, unsigned int i);
 
+extern int is_default_dive_computer_device(const char *);
+
+typedef void (*device_callback_t)(const char *name, void *userdata);
+
+extern int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport);
+
 #ifdef __cplusplus
 }
 #endif

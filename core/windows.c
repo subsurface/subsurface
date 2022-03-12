@@ -4,7 +4,8 @@
 #include "ssrf.h"
 #include <io.h>
 #include "dive.h"
-#include "display.h"
+#include "device.h"
+#include "libdivecomputer.h"
 #include "file.h"
 #include "errorhelper.h"
 #include "subsurfacesysinfo.h"
