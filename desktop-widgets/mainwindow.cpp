@@ -457,8 +457,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 		return;
 
 	// Refuse to go online if there is an edit in progress
-	if (!isOffline &&
-	    (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING)) {
+	if (!isOffline && inPlanner()) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before going online"));
 		// We didn't switch to online, therefore uncheck the checkbox
 		ui.actionCloudOnline->setChecked(false);
@@ -491,7 +490,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 
 bool MainWindow::okToClose(QString message)
 {
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
+	if (inPlanner()) {
 		QMessageBox::warning(this, tr("Warning"), message);
 		return false;
 	}
@@ -614,13 +613,18 @@ void MainWindow::on_actionDivelogs_de_triggered()
 	DivelogsDeWebServices::instance()->downloadDives();
 }
 
+bool MainWindow::inPlanner()
+{
+	return DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::PLAN;
+}
+
 bool MainWindow::plannerStateClean()
 {
 	if (progressDialog)
 		// we are accessing the cloud, so let's not switch into Add or Plan mode
 		return false;
 
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
+	if (inPlanner()) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to add a dive."));
 		return false;
 	}
@@ -1031,7 +1035,7 @@ void MainWindow::writeSettings()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
+	if (inPlanner()) {
 		on_actionQuit_triggered();
 		event->ignore();
 		return;

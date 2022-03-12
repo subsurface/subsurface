@@ -70,7 +70,6 @@ public:
 	void importFiles(const QStringList importFiles);
 	void setToolButtonsEnabled(bool enabled);
 	void setApplicationState(ApplicationState state);
-	bool inPlanner();
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
 	void enableDisableOtherDCsActions();
@@ -194,6 +193,7 @@ private:
 	UpdateManager *updateManager;
 	std::unique_ptr<LocationInformationWidget> diveSiteEdit;
 
+	bool inPlanner();
 	bool plannerStateClean();
 	void setupSocialNetworkMenu();
 	QDialog *findMovedImagesDialog;
