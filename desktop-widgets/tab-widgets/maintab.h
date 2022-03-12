@@ -10,7 +10,6 @@
 
 #include <QTabWidget>
 
-#include "ui_maintab.h"
 #include "core/dive.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
@@ -29,7 +28,6 @@ slots:
 	void escDetected();
 	void colorsChanged();
 private:
-	Ui::MainTab ui;
 	bool lastSelectedDive;
 	int lastTabSelectedDive;
 	int lastTabSelectedDiveTrip;

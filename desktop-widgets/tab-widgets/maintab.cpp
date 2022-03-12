@@ -32,22 +32,20 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	lastTabSelectedDive(0),
 	lastTabSelectedDiveTrip(0)
 {
-	ui.setupUi(this);
-
 	extraWidgets << new TabDiveNotes(this);
-	ui.tabWidget->addTab(extraWidgets.last(), tr("Notes"));
+	addTab(extraWidgets.last(), tr("Notes"));
 	extraWidgets << new TabDiveEquipment(this);
-	ui.tabWidget->addTab(extraWidgets.last(), tr("Equipment"));
+	addTab(extraWidgets.last(), tr("Equipment"));
 	extraWidgets << new TabDiveInformation(this);
-	ui.tabWidget->addTab(extraWidgets.last(), tr("Information"));
+	addTab(extraWidgets.last(), tr("Information"));
 	extraWidgets << new TabDiveStatistics(this);
-	ui.tabWidget->addTab(extraWidgets.last(), tr("Summary"));
+	addTab(extraWidgets.last(), tr("Summary"));
 	extraWidgets << new TabDivePhotos(this);
-	ui.tabWidget->addTab(extraWidgets.last(), tr("Media"));
+	addTab(extraWidgets.last(), tr("Media"));
 	extraWidgets << new TabDiveExtraInfo(this);
-	ui.tabWidget->addTab(extraWidgets.last(), tr("Extra Info"));
+	addTab(extraWidgets.last(), tr("Extra Info"));
 	extraWidgets << new TabDiveSite(this);
-	ui.tabWidget->addTab(extraWidgets.last(), tr("Dive sites"));
+	addTab(extraWidgets.last(), tr("Dive sites"));
 
 	// make sure we know if this is a light or dark mode
 	isDark = paletteIsDark(palette());
@@ -125,24 +123,24 @@ void MainTab::updateDiveInfo()
 		// 1) this disrupts the user-experience and
 		// 2) the filter is reset, potentially erasing the current trip under our feet.
 		// TODO: Don't hard code tab location!
-		bool onDiveSiteTab = ui.tabWidget->currentIndex() == 6;
+		bool onDiveSiteTab = currentIndex() == 6;
 		if (single_selected_trip()) {
 			// Remember the tab selected for last dive but only if we're not on the dive site tab
 			if (lastSelectedDive && !onDiveSiteTab)
-				lastTabSelectedDive = ui.tabWidget->currentIndex();
-			ui.tabWidget->setTabText(0, tr("Trip notes"));
+				lastTabSelectedDive = currentIndex();
+			setTabText(0, tr("Trip notes"));
 			// Recover the tab selected for last dive trip but only if we're not on the dive site tab
 			if (lastSelectedDive && !onDiveSiteTab)
-				ui.tabWidget->setCurrentIndex(lastTabSelectedDiveTrip);
+				setCurrentIndex(lastTabSelectedDiveTrip);
 			lastSelectedDive = false;
 		} else {
 			// Remember the tab selected for last dive trip but only if we're not on the dive site tab
 			if (!lastSelectedDive && !onDiveSiteTab)
-				lastTabSelectedDiveTrip = ui.tabWidget->currentIndex();
-			ui.tabWidget->setTabText(0, tr("Notes"));
+				lastTabSelectedDiveTrip = currentIndex();
+			setTabText(0, tr("Notes"));
 			// Recover the tab selected for last dive but only if we're not on the dive site tab
 			if (!lastSelectedDive && !onDiveSiteTab)
-				ui.tabWidget->setCurrentIndex(lastTabSelectedDive);
+				setCurrentIndex(lastTabSelectedDive);
 			lastSelectedDive = true;
 		}
 	} else {

@@ -51,7 +51,6 @@ set (SUBSURFACE_UI
 	tripselectiodialog.ui
 	urldialog.ui
 	webservices.ui
-	tab-widgets/maintab.ui
 	tab-widgets/TabDiveNotes.ui
 	tab-widgets/TabDiveStatistics.ui
 	tab-widgets/TabDiveInformation.ui
