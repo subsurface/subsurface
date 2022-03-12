@@ -1338,8 +1338,6 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	}
 
 	setPlanMode(NOTHING);
-	planCreated(); // This signal will exit the profile from planner state. This must be *before* adding the dive,
-		       // so that the Undo-commands update the display accordingly (see condition in updateDiveInfo().
 
 	// Now, add or modify the dive.
 	if (!current_dive || d->id != current_dive->id) {
@@ -1367,4 +1365,6 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.
 	free_dps(&diveplan);
+
+	planCreated(); // This signal will exit the UI from planner state.
 }
