@@ -1,5 +1,4 @@
 #include "core/profile.h"
-#include "core/display.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/membuffer.h"

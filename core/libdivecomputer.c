@@ -18,7 +18,6 @@
 #include "subsurface-string.h"
 #include "device.h"
 #include "dive.h"
-#include "display.h"
 #include "errorhelper.h"
 #include "event.h"
 #include "sha1.h"

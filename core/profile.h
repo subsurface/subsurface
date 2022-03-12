@@ -3,7 +3,6 @@
 #define PROFILE_H
 
 #include "dive.h"
-#include "display.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,7 +25,6 @@ enum plot_pressure {
 struct membuffer;
 struct deco_state;
 struct divecomputer;
-struct plot_info;
 
 /*
  * sensor data for a given cylinder
@@ -77,6 +75,26 @@ struct plot_data {
 	double density;
 	bool icd_warning;
 };
+
+/* Plot info with smoothing, velocity indication
+ * and one-, two- and three-minute minimums and maximums */
+struct plot_info {
+	int nr;
+	int nr_cylinders;
+	int maxtime;
+	int meandepth, maxdepth;
+	int minpressure, maxpressure;
+	int minhr, maxhr;
+	int mintemp, maxtemp;
+	enum {AIR, NITROX, TRIMIX, FREEDIVING} dive_type;
+	double endtempcoord;
+	double maxpp;
+	bool waypoint_above_ceiling;
+	struct plot_data *entry;
+	struct plot_pressure_data *pressures; /* cylinders.nr blocks of nr entries. */
+};
+
+#define AMB_PERCENTAGE 50.0
 
 extern void compare_samples(const struct dive *d, const struct plot_info *pi, int idx1, int idx2, char *buf, int bufsize, bool sum);
 extern void init_plot_info(struct plot_info *pi);

@@ -9,8 +9,9 @@
 #include <QElapsedTimer>
 #include <QPainter>
 #include "backend-shared/roundrectitem.h"
-#include "core/display.h"
+#include "core/profile.h"
 
+struct dive;
 class DiveCartesianAxis;
 class QGraphicsLineItem;
 class QGraphicsSimpleTextItem;

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/configuredivecomputerdialog.h"
 
-#include "core/display.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "desktop-widgets/mainwindow.h"
