@@ -5,7 +5,7 @@
 #include <fnmatch.h>
 #include "dive.h"
 #include "file.h"
-#include "display.h"
+#include "device.h"
 #include "core/qthelper.h"
 #include <CoreFoundation/CoreFoundation.h>
 #if !defined(__IPHONE_5_0)

@@ -2,8 +2,6 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include "libdivecomputer.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -25,12 +23,6 @@ struct plot_info {
 	struct plot_data *entry;
 	struct plot_pressure_data *pressures; /* cylinders.nr blocks of nr entries. */
 };
-
-extern int is_default_dive_computer_device(const char *);
-
-typedef void (*device_callback_t)(const char *name, void *userdata);
-
-extern int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport);
 
 #define AMB_PERCENTAGE 50.0
 

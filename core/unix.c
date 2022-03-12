@@ -5,7 +5,8 @@
 #include "dive.h"
 #include "file.h"
 #include "subsurface-string.h"
-#include "display.h"
+#include "device.h"
+#include "libdivecomputer.h"
 #include "membuffer.h"
 #include <stdlib.h>
 #include <sys/types.h>
