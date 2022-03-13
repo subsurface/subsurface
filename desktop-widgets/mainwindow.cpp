@@ -111,7 +111,7 @@ extern "C" void showErrorFromC(char *buf)
 	emit MainWindow::instance()->showError(error);
 }
 
-MainWindow::MainWindow() : QMainWindow(),
+MainWindow::MainWindow() :
 	appState((ApplicationState)-1), // Invalid state
 	actionNextDive(nullptr),
 	actionPreviousDive(nullptr),
