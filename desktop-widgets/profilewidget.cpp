@@ -198,7 +198,7 @@ void ProfileWidget::plotCurrentDive()
 
 	setEnabledToolbar(current_dive != nullptr);
 	if (editedDive) {
-		setDive(current_dive);
+		setDive(originalDive);
 		view->plotDive(editedDive.get(), editedDc);
 	} else if (current_dive) {
 		setDive(current_dive);
