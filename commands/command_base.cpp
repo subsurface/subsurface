@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_base.h"
+#include "core/globals.h"
 #include "core/qthelper.h" // for updateWindowTitle()
 #include "core/subsurface-qt/divelistnotifier.h"
 #include <QVector>
 
 namespace Command {
 
-static QUndoStack undoStack;
+static QUndoStack *undoStack;
 
 // forward declaration
 QString changesMade();
@@ -15,39 +16,40 @@ QString changesMade();
 // General commands
 void init()
 {
-	QObject::connect(&undoStack, &QUndoStack::cleanChanged, &updateWindowTitle);
+	undoStack = make_global<QUndoStack>();
+	QObject::connect(undoStack, &QUndoStack::cleanChanged, &updateWindowTitle);
 	changesCallback = &changesMade;
 }
 
 void clear()
 {
-	undoStack.clear();
+	undoStack->clear();
 }
 
 void setClean()
 {
-	undoStack.setClean();
+	undoStack->setClean();
 }
 
 bool isClean()
 {
-	return undoStack.isClean();
+	return undoStack->isClean();
 }
 
 // this can be used to get access to the signals emitted by the QUndoStack
 QUndoStack *getUndoStack()
 {
-	return &undoStack;
+	return undoStack;
 }
 
 QAction *undoAction(QObject *parent)
 {
-	return undoStack.createUndoAction(parent, QCoreApplication::translate("Command", "&Undo"));
+	return undoStack->createUndoAction(parent, QCoreApplication::translate("Command", "&Undo"));
 }
 
 QAction *redoAction(QObject *parent)
 {
-	return undoStack.createRedoAction(parent, QCoreApplication::translate("Command", "&Redo"));
+	return undoStack->createRedoAction(parent, QCoreApplication::translate("Command", "&Redo"));
 }
 
 QString diveNumberOrDate(struct dive *d)
@@ -85,8 +87,8 @@ QString getListOfDives(QVector<struct dive *> dives)
 QString changesMade()
 {
 	QString changeTexts;
-	for (int i = 0; i < undoStack.index(); i++)
-		changeTexts += undoStack.text(i) + "\n";
+	for (int i = 0; i < undoStack->index(); i++)
+		changeTexts += undoStack->text(i) + "\n";
 	return changeTexts;
 }
 
@@ -95,7 +97,7 @@ bool execute(Base *cmd)
 {
 	if (cmd->workToBeDone()) {
 		executingCommand = true;
-		undoStack.push(cmd);
+		undoStack->push(cmd);
 		executingCommand = false;
 		emit diveListNotifier.commandExecuted();
 		return true;
