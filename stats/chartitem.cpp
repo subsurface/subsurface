@@ -2,6 +2,7 @@
 #include "chartitem.h"
 #include "statscolors.h"
 #include "statsview.h"
+#include "core/globals.h"
 
 #include <cmath>
 #include <QQuickWindow>
@@ -136,10 +137,6 @@ static QSGTexture *createScatterTexture(StatsView &view, const QColor &color, co
 	return view.w()->createTextureFromImage(img, QQuickWindow::TextureHasAlphaChannel);
 }
 
-// Note: Originally these were std::unique_ptrs, which automatically
-// freed the textures on exit. However, destroying textures after
-// QApplication finished its thread leads to crashes. Therefore, these
-// are now normal pointers and the texture objects are leaked.
 static QSGTexture *scatterItemTexture = nullptr;
 static QSGTexture *scatterItemSelectedTexture = nullptr;
 static QSGTexture *scatterItemHighlightedTexture = nullptr;
@@ -161,9 +158,9 @@ QSGTexture *ChartScatterItem::getTexture() const
 void ChartScatterItem::render()
 {
 	if (!scatterItemTexture) {
-		scatterItemTexture = createScatterTexture(view, fillColor, borderColor);
-		scatterItemSelectedTexture = createScatterTexture(view, selectedColor, selectedBorderColor);
-		scatterItemHighlightedTexture = createScatterTexture(view, highlightedColor, highlightedBorderColor);
+		scatterItemTexture = register_global(createScatterTexture(view, fillColor, borderColor));
+		scatterItemSelectedTexture = register_global(createScatterTexture(view, selectedColor, selectedBorderColor));
+		scatterItemHighlightedTexture = register_global(createScatterTexture(view, highlightedColor, highlightedBorderColor));
 	}
 	if (!node) {
 		createNode(view.w()->createImageNode());
@@ -437,7 +434,7 @@ QSGTexture *ChartBarItem::getSelectedTexture() const
 		img.fill(Qt::transparent);
 		img.setPixelColor(0, 0, selectionOverlayColor);
 		img.setPixelColor(1, 1, selectionOverlayColor);
-		selectedTexture = view.w()->createTextureFromImage(img, QQuickWindow::TextureHasAlphaChannel);
+		selectedTexture = register_global(view.w()->createTextureFromImage(img, QQuickWindow::TextureHasAlphaChannel));
 	}
 	return selectedTexture;
 }
