@@ -241,8 +241,9 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			return static_cast<int>(cyl->type.size.mliter);
 		case SENSORS: {
 			std::vector<int16_t> sensors;
-			for (int i = 0; i < current_dc->samples; ++i) {
-				auto &sample = current_dc->sample[i];
+			const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
+			for (int i = 0; i < currentdc->samples; ++i) {
+				auto &sample = currentdc->sample[i];
 				for (auto s = 0; s < MAX_SENSORS; ++s) {
 					if (sample.pressure[s].mbar) {
 						if (sample.sensor[s] == index.row())
@@ -553,8 +554,9 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 	if (index.column() == REMOVE || index.column() == USE)
 		return Qt::ItemIsEnabled;
 	if (index.column() == SENSORS) {
-		for (int i = 0; i < current_dc->samples; ++i) {
-			auto &sample = current_dc->sample[i];
+		const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
+		for (int i = 0; i < currentdc->samples; ++i) {
+			auto &sample = currentdc->sample[i];
 			for (auto s = 0; s < MAX_SENSORS; ++s) {
 				if (sample.pressure[s].mbar) {
 					if (sample.sensor[s] == index.row())
