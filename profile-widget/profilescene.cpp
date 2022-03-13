@@ -252,7 +252,7 @@ void ProfileScene::updateVisibility(bool diveHasHeartBeat, bool simplified)
 		meanDepthItem->setVisible(prefs.show_average_depth);
 		reportedCeiling->setVisible(prefs.dcceiling);
 		tankItem->setVisible(prefs.tankbar);
-		temperatureItem->setVisible(true);
+		temperatureItem->setVisible(prefs.hrgraph);
 	}
 }
 
