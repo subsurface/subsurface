@@ -22,22 +22,7 @@
         <file alias="value-minimum-icon">icons/minimum.png</file>
         <file alias="value-maximum-icon">icons/maximum.png</file>
         <file alias="value-average-icon">icons/average.png</file>
-        <file alias="status-warning-icon">icons/warning-icon.png</file>
-        <file alias="status-violation-icon">icons/violation-icon.png</file>
-        <file alias="status-info-icon">icons/info-icon.png</file>
-        <file alias="gaschange-icon">icons/gaschange.png</file>
-        <file alias="gaschange-air-icon">icons/Air_change.png</file>
-        <file alias="gaschange-ean-icon">icons/Nx_change.png</file>
-        <file alias="gaschange-trimix-icon">icons/Tmx_change.png</file>
-        <file alias="gaschange-oxygen-icon">icons/Oxy_change.png</file>
-        <file alias="gaschange-air-ICD-icon">icons/Air_changeICD.png</file>
-        <file alias="gaschange-ean-ICD-icon">icons/Nx_changeICD.png</file>
-        <file alias="gaschange-trimix-ICD-icon">icons/Tmx_changeICD.png</file>
-        <file alias="gaschange-oxygen-ICD-icon">icons/Oxy_changeICD.png</file>
-        <file alias="onCCRLoop-icon">icons/CCR.png</file>
-        <file alias="bailout-icon">icons/OC.png</file>
         <file alias="salinity-warning-icon">icons/bluewarning.png</file>
-        <file alias="dive-bookmark-icon">icons/flag.svg</file>
         <file alias="ruler-icon">icons/ruler.png</file>
         <file alias="poster-icon">icons/poster.png</file>
         <file>xslt/commonTemplates.xsl</file>
