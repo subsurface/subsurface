@@ -338,7 +338,8 @@ HEADERS += \
 RESOURCES += mobile-widgets/qml/mobile-resources.qrc \
 		mobile-widgets/3rdparty/icons.qrc \
 		map-widget/qml/map-widget.qrc \
-		stats/statsicons.qrc
+		stats/statsicons.qrc \
+		profile.qrc
 
 android {
 	SOURCES += core/android.cpp \

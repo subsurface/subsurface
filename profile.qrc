@@ -1,0 +1,23 @@
+<RCC>
+	<qresource prefix="/">
+		<!-- ************ icons used in the profile ***************** -->
+		<file alias="status-warning-icon">icons/warning-icon.png</file>
+		<file alias="status-violation-icon">icons/violation-icon.png</file>
+		<file alias="status-info-icon">icons/info-icon.png</file>
+		<file alias="bailout-icon">icons/OC.png</file>
+		<file alias="onCCRLoop-icon">icons/CCR.png</file>
+		<file alias="dive-bookmark-icon">icons/flag.svg</file>
+		<file alias="gaschange-icon">icons/gaschange.png</file>
+		<file alias="gaschange-air-icon">icons/Air_change.png</file>
+		<file alias="gaschange-ean-icon">icons/Nx_change.png</file>
+		<file alias="gaschange-trimix-icon">icons/Tmx_change.png</file>
+		<file alias="gaschange-oxygen-icon">icons/Oxy_change.png</file>
+		<file alias="gaschange-air-ICD-icon">icons/Air_changeICD.png</file>
+		<file alias="gaschange-ean-ICD-icon">icons/Nx_changeICD.png</file>
+		<file alias="gaschange-trimix-ICD-icon">icons/Tmx_changeICD.png</file>
+		<file alias="gaschange-oxygen-ICD-icon">icons/Oxy_changeICD.png</file>
+		<file alias="list-add-icon">icons/plus.png</file>
+		<file alias="list-remove-icon">icons/trash.png</file>
+		<file alias="list-remove-disabled-icon">icons/trash-forbidden.png</file>
+	</qresource>
+</RCC>
