@@ -1164,8 +1164,9 @@ void ProfileWidget2::plotPictures()
 
 void ProfileWidget2::plotPicturesInternal(const struct dive *d, bool synchronous)
 {
+
 	pictures.clear();
-	if (currentState == EDIT || currentState == PLAN)
+	if (!prefs.show_pictures_in_profile || currentState == EDIT || currentState == PLAN)
 		return;
 
 	// Fetch all pictures of the dive, but consider only those that are within the dive time.
