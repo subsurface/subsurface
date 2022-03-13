@@ -1362,8 +1362,9 @@ void EditCylinder::undo()
 }
 
 EditSensors::EditSensors(int toCylinderIn, int fromCylinderIn)
-	: dc(current_dc), d(current_dive), toCylinder(toCylinderIn), fromCylinder(fromCylinderIn)
+	: d(current_dive), toCylinder(toCylinderIn), fromCylinder(fromCylinderIn)
 {
+	const struct divecomputer *dc = get_dive_dc(d, dc_number);
 	if (!d || !dc)
 		return;
 
