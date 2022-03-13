@@ -20,13 +20,7 @@ DivePixmaps::DivePixmaps(int dpr) : dpr(dpr)
 	extern int verbose;
 	double dprf = dpr / 100.0;
 	const IconMetrics &metrics = defaultIconMetrics();
-#ifndef SUBSURFACE_MOBILE
 	int sz_bigger = metrics.sz_med + metrics.sz_small; // ex 40px
-#else
-	// SUBSURFACE_MOBILE, seems a little big from the code,
-	// but looks fine on device
-	int sz_bigger = metrics.sz_big + metrics.sz_med;
-#endif
 	sz_bigger = lrint(sz_bigger * dprf);
 	int sz_pix = sz_bigger / 2; // ex 20px
 	if (verbose)
