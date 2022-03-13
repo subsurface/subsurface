@@ -44,7 +44,7 @@
 #define MED_GRAY_HIGH_TRANS QColor::fromRgbF(0.5, 0.5, 0.5, 0.25)
 #define MERCURY1_MED_TRANS QColor::fromRgbF(0.9, 0.9, 0.9, 0.5)
 #define CONCRETE1_LOWER_TRANS QColor::fromRgbF(0.95, 0.95, 0.95, 0.9)
-#define WHITE1_MED_TRANS QColor::fromRgbF(1.0, 1.0, 1.0, 0.5)
+#define WHITE1_MED_TRANS QColor::fromRgbF(1.0, 0, 0, 1)
 #define WHITE1 QColor::fromRgbF(1.0, 1.0, 1.0, 1)
 
 // Blues
