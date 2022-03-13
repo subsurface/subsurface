@@ -1,9 +1,9 @@
 #TO DO
 
 1. Changer la couleur du graphique
-  a. La déco doit être rouge
-  b. Le haut doit être incolore (comme le bas)
-  c. Masquer la profondeur moyenne
+  a. La déco doit être rouge -- DONE (pas nécéssaire voir dans préférences)
+  b. Le haut doit être incolore (comme le bas) -- DONE
+  c. Masquer la profondeur moyenne -- DONE (pas nécéssaire voir dans préférences)
   d. Couleur de l'axe des Y == couleur axe des X -- DONE
   e. Enlever le quadrillage -- DONE
 2. Corriger le GF
@@ -17,4 +17,4 @@
   a. Corriger la typo dans intervalle
   b. Gérer la consommation d'air (SAC)
 6. Général
-  a. Changer le logo
+  a. Changer le logo -- DONE
