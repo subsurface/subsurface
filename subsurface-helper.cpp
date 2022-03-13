@@ -58,16 +58,13 @@ void init_ui()
 #ifndef SUBSURFACE_MOBILE
 	register_qml_types(NULL);
 
-	MainWindow *window = new MainWindow();
+	MainWindow *window = make_global<MainWindow>();
 	window->setTitle();
 #endif // SUBSURFACE_MOBILE
 }
 
 void exit_ui()
 {
-#ifndef SUBSURFACE_MOBILE
-	delete MainWindow::instance();
-#endif // SUBSURFACE_MOBILE
 	free_globals();
 	free((void *)existing_filename);
 }
