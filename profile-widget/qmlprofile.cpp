@@ -31,7 +31,7 @@ QMLProfile::~QMLProfile()
 
 void QMLProfile::createProfileView()
 {
-	m_profileWidget.reset(new ProfileScene(m_devicePixelRatio, false, false));
+	m_profileWidget.reset(new ProfileScene(m_devicePixelRatio * 0.8, false, false));
 }
 
 // we need this so we can connect update() to the scaleChanged() signal - which the connect above cannot do
