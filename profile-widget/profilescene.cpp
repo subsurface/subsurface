@@ -579,7 +579,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	if ((nr = number_of_computers(d)) > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc + 1).arg(nr);
 #endif
-	diveComputerText->set(dcText, getColor(TIME_TEXT, isGrayscale));
+	diveComputerText->set(dcText, BLACK1);
 
 	// Reset animation.
 	if (animSpeed <= 0)
