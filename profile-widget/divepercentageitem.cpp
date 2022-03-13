@@ -55,9 +55,9 @@ static std::array<int, num_tissues> calcLinesPerTissue(int size)
 static inline QRgb hsv2rgb(double h, double s, double v)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)  // they are just trolling us with these changes
-	QColor c = QColor::fromHslF((float)h, (float)s, (float)v);
+	QColor c = QColor::fromHsvF((float)h, (float)s, (float)v);
 #else
-	QColor c = QColor::fromHslF(h, s, v);
+	QColor c = QColor::fromHsvF(h, s, v);
 #endif
 	return c.rgba();
 }
