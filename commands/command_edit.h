@@ -446,8 +446,8 @@ public:
 	EditSensors(int cylIndex, int fromCylinder);
 
 private:
-	struct divecomputer *dc;
 	struct dive *d;
+	struct divecomputer *dc;
 	int toCylinder;
 	int fromCylinder;
 	void mapSensors(int toCyl, int fromCyl);
