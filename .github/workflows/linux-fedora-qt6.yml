@@ -1,0 +1,53 @@
+name: Fedora 35 / Qt 6--
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  buildFedoraQt6:
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:35
+
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v1
+
+    - name: get container ready for build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "update distro and install dependencies"
+
+        dnf update -y
+        dnf install -y autoconf automake bluez-libs-devel cmake gcc-c++ git-core \
+        libcurl-devel libsqlite3x-devel libssh2-devel libtool libudev-devel \
+        libusbx-devel libxml2-devel libxslt-devel make \
+        qt6-qtbase-devel qt6-qtconnectivity-devel qt6-qtdeclarative-devel \
+        qt6-qtlocation-devel qt6-qtsvg-devel \
+        qt6-qttools-devel redhat-rpm-config \
+        libxkbcommon-devel qt6-qt5compat-devel \
+        bluez-libs-devel libgit2-devel libzip-devel libmtp-devel \
+        xorg-x11-server-Xvfb
+
+    - name: build Subsurface
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building desktop"
+
+        # now build for the desktop version (without WebKit)
+        git reset --hard
+        cd ..
+        ls -l . subsurface subsurface/scripts
+        bash -e -x subsurface/scripts/build.sh -desktop
+
+    - name: test desktop build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "running tests for desktop"
+        cd build/tests
+        xvfb-run --auto-servernum make check
+
