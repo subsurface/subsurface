@@ -52,7 +52,7 @@ ENV QT_ROOT /usr/local/Qt/5.12.10/gcc_64
 ENV PATH="/usr/local/Qt/5.12.10/gcc_64/bin/:${PATH}"
 
 # now build and install QtWebKit
-RUN git clone -b 5.212 git://github.com/qt/qtwebkit
+RUN git clone -b 5.212 https://github.com/qt/qtwebkit
 RUN mkdir -p qtwebkit/WebKitBuild/Release
 RUN cd qtwebkit/WebKitBuild/Release && cmake -DPORT=Qt -DCMAKE_BUILD_TYPE=Release -DQt5_DIR=/usr/local/Qt/5.12.10/gcc_64/lib/cmake/Qt5 ../..
 RUN cd qtwebkit/WebKitBuild/Release && make -j4 && make install
@@ -78,7 +78,7 @@ RUN apt-get remove -y libqt5core5a libqt5dbus5 libqt5gui5 ruby openssh-client
 
 # now build Subsurface once to populate the dependencies we don't get from
 # Ubuntu but that aren't really part of Subsurface (libgit, googlemaps)
-RUN git clone git://github.com/Subsurface/subsurface
+RUN git clone https://github.com/Subsurface/subsurface
 RUN bash -e -x ./subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit
 
 # remove the source, but keep the install-root

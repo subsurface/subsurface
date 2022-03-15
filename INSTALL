@@ -88,7 +88,7 @@ QtWebKit is needed, if you want to print, but no longer part of Qt5,
 so you need to download it and compile. In case you just want to test
 without print possibility omit this step.
 
-    git clone -b 5.212 git://github.com/qt/qtwebkit
+    git clone -b 5.212 https://github.com/qt/qtwebkit
     mkdir -p qtwebkit/WebKitBuild/Release
     cd qtwebkit/WebKitBuild/Release
     cmake -DPORT=Qt -DCMAKE_BUILD_TYPE=Release -DQt5_DIR=/<Qt Location>/<version>/<type>/lib/cmake/Qt5 ../..
