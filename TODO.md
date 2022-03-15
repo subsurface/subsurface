@@ -4,6 +4,7 @@
   f. Pour la PPO2, afficher en vert lorsque + 1 et en rouge lorsque - que 1
   g. Corriger le bug de l'affichage pour les images
   h. mettre une ligne qui pointe directement sur la partie du profil (pour les médias)
+  i. Affichage / masquage de Informations
 2. Corriger le GF
 3. Notes
   a. Enlever dive guide -- Partiellement fait
