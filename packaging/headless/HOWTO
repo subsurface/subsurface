@@ -24,7 +24,7 @@ trac system.
 * sudo dpkg-reconfigure tzdata
 * mkdir src
 * cd src
-* git clone git://subsurface-divelog.org/subsurface.git
+* git clone https://subsurface-divelog.org/subsurface.git
 * sudo apt-get install git g++ make autoconf automake libtool cmake pkg-config \
         libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
         libusb-1.0-0-dev libgit2-dev \

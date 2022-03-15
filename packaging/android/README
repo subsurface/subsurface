@@ -5,7 +5,7 @@ The easiest way to build things is using our container:
 
 mkdir $HOME/src
 cd $HOME/src
-git clone git://github.com/subsurface/subsurface
+git clone https://github.com/subsurface/subsurface
 cd subsurface
 git checkout version or branch you are testing
 cd ..
@@ -49,7 +49,7 @@ cd /android
 wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
 unzip commandlinetools-linux-*.zip
 
-git clone git://github.com/subsurface/subsurface
+git clone https://github.com/subsurface/subsurface
 
 # now get the SDK, NDK, Qt, everything that's needed
 bash /android/subsurface/packaging/android/android-build-setup.sh

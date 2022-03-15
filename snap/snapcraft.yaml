@@ -30,7 +30,7 @@ apps:
 
 parts:
   googlemaps:
-    source: git://github.com/Subsurface/googlemaps.git
+    source: https://github.com/Subsurface/googlemaps.git
     build-packages:
     - wget
     override-pull: |

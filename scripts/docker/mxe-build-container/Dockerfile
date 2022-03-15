@@ -51,7 +51,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
 
 # checkout MXE at the right version
 RUN mkdir -p /win
-RUN cd /win ; git clone git://github.com/mxe/mxe ; \
+RUN cd /win ; git clone https://github.com/mxe/mxe ; \
     cd mxe ; \
     git checkout ${_ver} ;
 

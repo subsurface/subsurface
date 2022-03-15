@@ -8,7 +8,7 @@ All it takes is this:
 
 ```
 cd /some/path/windows
-git clone git://github.com/subsurface/subsurface
+git clone https://github.com/subsurface/subsurface
 cd subsurface
 git submodule init
 git submodule update

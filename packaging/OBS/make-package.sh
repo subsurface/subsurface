@@ -9,7 +9,7 @@ if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivec
 	exit 1;
 fi
 if [[ ! -d googlemaps ]] ; then
-	echo "Please make sure you have the current master of git://github.com/Subsurface/googlemaps"
+	echo "Please make sure you have the current master of https://github.com/Subsurface/googlemaps"
 	echo "checked out in parallel to the Subsurface directory"
 	exit 1;
 fi
