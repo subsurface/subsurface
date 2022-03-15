@@ -1135,6 +1135,7 @@ void ProfileWidget2::calculatePictureYPositions()
 		lastX = x;
 		lastY = y;
 		double yScreen = profileScene->timeAxis->screenPosition(y);
+		qDebug() << "yScreen " << yScreen;
 		e.thumbnail->setY(yScreen);
 		updateDurationLine(e); // If we changed the y-position, we also have to change the duration-line.
 	}
@@ -1149,6 +1150,8 @@ void ProfileWidget2::updateThumbnailXPos(PictureEntry &e)
 	double time = e.offset.seconds;
 	if (time >= profileScene->timeAxis->minimum() && time <= profileScene->timeAxis->maximum()) {
 		double x = profileScene->timeAxis->posAtValue(time);
+		qDebug() << "x " << x;
+		qDebug() << profileScene->timeAxis;
 		e.thumbnail->setX(x);
 		e.thumbnail->setVisible(true);
 	} else {

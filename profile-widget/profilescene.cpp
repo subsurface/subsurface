@@ -16,7 +16,7 @@
 #include "core/settings/qPrefDisplay.h"
 #include "qt-models/diveplannermodel.h"
 #include <QAbstractAnimation>
-
+#include <QDebug>
 static const double diveComputerTextBorder = 1.0;
 
 // Class for animations (if any). Might want to do our own.
