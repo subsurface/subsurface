@@ -327,7 +327,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="490"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="495"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
         <translation type="unfinished"/>
     </message>
@@ -414,192 +414,192 @@
 <context>
     <name>ColumnNameProvider</name>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Dive #</source>
         <translation>Niršana #</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Date</source>
         <translation>Datums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Time</source>
         <translation>Laiks</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Duration</source>
         <translation>Ilgums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Location</source>
         <translation>Vieta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>GPS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Weight</source>
         <translation>Svars</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Cyl. size</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="73"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Start pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>End pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Max. depth</source>
         <translation>Maks. dziļums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Avg. depth</source>
         <translation>Vid. dziļums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Divemaster</source>
         <translation>Niršanas speciālists</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Buddy</source>
         <translation>Draugs</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Suit</source>
         <translation>Kostīms</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Notes</source>
         <translation>Piezīmes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Tags</source>
         <translation>Tagi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Air temp.</source>
         <translation>Gaisa temp.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Water temp.</source>
         <translation>Ūdens temp.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>O₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>He</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample depth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample CNS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Sample NDL</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample TTS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample stopdepth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample sensor1 pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample sensor2 pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample sensor3 pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Sample setpoint</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Visibility</source>
         <translation>Redzamība</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Rating</source>
         <translation>Novērtējums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Sample heartrate</source>
         <translation type="unfinished"/>
     </message>
@@ -607,17 +607,17 @@
 <context>
     <name>Command</name>
     <message>
-        <location filename="../commands/command_base.cpp" line="45"/>
+        <location filename="../commands/command_base.cpp" line="47"/>
         <source>&amp;Undo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_base.cpp" line="50"/>
+        <location filename="../commands/command_base.cpp" line="52"/>
         <source>&amp;Redo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_base.cpp" line="65"/>
+        <location filename="../commands/command_base.cpp" line="67"/>
         <source>all dives</source>
         <translation type="unfinished"/>
     </message>
@@ -762,195 +762,210 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="133"/>
-        <location filename="../commands/command_edit.cpp" line="520"/>
+        <location filename="../commands/command_edit.cpp" line="134"/>
+        <location filename="../commands/command_edit.cpp" line="522"/>
         <location filename="../commands/command_edit_trip.cpp" line="18"/>
         <source>Edit %1</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="135"/>
-        <location filename="../commands/command_edit.cpp" line="522"/>
+        <location filename="../commands/command_edit.cpp" line="136"/>
+        <location filename="../commands/command_edit.cpp" line="524"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="190"/>
+        <location filename="../commands/command_edit.cpp" line="192"/>
         <source>notes</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="196"/>
+        <location filename="../commands/command_edit.cpp" line="198"/>
         <source>suit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="202"/>
+        <location filename="../commands/command_edit.cpp" line="204"/>
         <source>rating</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="208"/>
+        <location filename="../commands/command_edit.cpp" line="210"/>
         <source>visibility</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="214"/>
+        <location filename="../commands/command_edit.cpp" line="216"/>
         <source>wavesize</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="220"/>
+        <location filename="../commands/command_edit.cpp" line="222"/>
         <source>current</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="226"/>
+        <location filename="../commands/command_edit.cpp" line="228"/>
         <source>surge</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="232"/>
+        <location filename="../commands/command_edit.cpp" line="234"/>
         <source>chill</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="248"/>
+        <location filename="../commands/command_edit.cpp" line="250"/>
         <source>air temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="267"/>
+        <location filename="../commands/command_edit.cpp" line="269"/>
         <source>water temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="283"/>
+        <location filename="../commands/command_edit.cpp" line="285"/>
         <source>salinity</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="299"/>
+        <location filename="../commands/command_edit.cpp" line="301"/>
         <source>Atm. pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="319"/>
+        <location filename="../commands/command_edit.cpp" line="321"/>
         <source>duration</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="339"/>
+        <location filename="../commands/command_edit.cpp" line="341"/>
         <source>depth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="356"/>
+        <location filename="../commands/command_edit.cpp" line="358"/>
         <source>dive site</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="449"/>
+        <location filename="../commands/command_edit.cpp" line="451"/>
         <source>dive mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="455"/>
+        <location filename="../commands/command_edit.cpp" line="457"/>
         <source>invalid</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="581"/>
+        <location filename="../commands/command_edit.cpp" line="583"/>
         <source>tags</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="599"/>
+        <location filename="../commands/command_edit.cpp" line="601"/>
         <source>buddies</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="617"/>
-        <source>dive master</source>
+        <location filename="../commands/command_edit.cpp" line="619"/>
+        <source>dive guide</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="748"/>
+        <location filename="../commands/command_edit.cpp" line="750"/>
         <source>Paste onto %n dive(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="826"/>
+        <location filename="../commands/command_edit.cpp" line="828"/>
         <source>Replan dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="826"/>
-        <source>Edit profile</source>
+        <location filename="../commands/command_edit.cpp" line="878"/>
+        <source>Add stop</source>
         <translation type="unfinished"/>
     </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="879"/>
+        <source>Remove %n stop(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../commands/command_edit.cpp" line="880"/>
+        <source>Move %n stop(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="874"/>
+        <location filename="../commands/command_edit.cpp" line="951"/>
         <source>Add weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="876"/>
+        <location filename="../commands/command_edit.cpp" line="953"/>
         <source>Add weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="962"/>
+        <location filename="../commands/command_edit.cpp" line="1039"/>
         <source>Remove weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="964"/>
+        <location filename="../commands/command_edit.cpp" line="1041"/>
         <source>Remove weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="995"/>
+        <location filename="../commands/command_edit.cpp" line="1072"/>
         <source>Edit weight</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="997"/>
+        <location filename="../commands/command_edit.cpp" line="1074"/>
         <source>Edit weight (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1051"/>
+        <location filename="../commands/command_edit.cpp" line="1128"/>
         <source>Add cylinder</source>
         <translation>Pievienot cilindri</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1053"/>
+        <location filename="../commands/command_edit.cpp" line="1130"/>
         <source>Add cylinder (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1174"/>
+        <location filename="../commands/command_edit.cpp" line="1251"/>
         <source>Remove cylinder</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1176"/>
+        <location filename="../commands/command_edit.cpp" line="1253"/>
         <source>Remove cylinder (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1225"/>
+        <location filename="../commands/command_edit.cpp" line="1302"/>
         <source>Edit cylinder</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1227"/>
+        <location filename="../commands/command_edit.cpp" line="1304"/>
         <source>Edit cylinder (%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1302"/>
+        <location filename="../commands/command_edit.cpp" line="1370"/>
+        <source>Edit sensors</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="1416"/>
         <source>Edit dive [%1]</source>
         <translation type="unfinished"/>
     </message>
@@ -2094,100 +2109,100 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="893"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="892"/>
         <source>Error</source>
         <translation>Kļūda</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1365"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1364"/>
         <source>Backup dive computer settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1366"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1387"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1365"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1386"/>
         <source>Backup files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1370"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1369"/>
         <source>XML backup error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1371"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1370"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1374"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1373"/>
         <source>Backup succeeded</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1375"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1374"/>
         <source>Your settings have been saved to: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1386"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1385"/>
         <source>Restore dive computer settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1391"/>
         <source>XML restore error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1393"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1397"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1396"/>
         <source>Restore succeeded</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1398"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1397"/>
         <source>Your settings have been restored successfully.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1408"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1407"/>
         <source>Select firmware file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1409"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1408"/>
         <source>All files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1463"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1462"/>
         <source>Choose file for dive computer download logfile</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1464"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1463"/>
         <source>Log files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1489"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1488"/>
         <source>Connecting to device...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1515"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1514"/>
         <source>Connected to device</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1535"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1534"/>
         <source>Disconnected from device</source>
         <translation type="unfinished"/>
     </message>
@@ -2216,7 +2231,7 @@
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="60"/>
-        <source>Dive master</source>
+        <source>Dive guide</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2258,94 +2273,114 @@
 <context>
     <name>CylindersModel</name>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="23"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
         <source>Type</source>
         <translation>Tips</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="23"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
         <source>Size</source>
         <translation>Izmērs</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="23"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
         <source>Work press.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="23"/>
-        <location filename="../qt-models/cylindermodel.cpp" line="35"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="37"/>
         <source>Start press.</source>
         <translation>Uzsākšanas spiedums.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="23"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
         <source>End press.</source>
         <translation>Gala spiedums.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="23"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
         <source>O₂%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="23"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
         <source>He%</source>
         <translation>He%</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>Deco switch at</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>Bot. MOD</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>MND</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>Use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="55"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
+        <source>Sensors</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-models/cylindermodel.cpp" line="57"/>
         <source>cuft</source>
         <translation>kub. pēda</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="59"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="61"/>
         <source>ℓ</source>
         <translation>ℓ</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="257"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="250"/>
+        <source>Sensor attached, can&apos;t move another sensor here.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-models/cylindermodel.cpp" line="259"/>
+        <source>Select one of these cylinders: </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-models/cylindermodel.cpp" line="278"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation>Šī gāze jau ir pielietota. Var noņemt tikai tos cilindrus, kuri nav pielietoti niršanā.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="259"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="280"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation>Noklikšķot šeit Jūs noņemsiet balonu.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="270"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="291"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="272"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="293"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max. depth.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="274"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="295"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max. depth.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-models/cylindermodel.cpp" line="297"/>
+        <source>Index of cylinder that you want to move sensor data from.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2358,7 +2393,7 @@
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="349"/>
-        <source>Dive master: </source>
+        <source>Dive guide: </source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2464,8 +2499,8 @@
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="122"/>
-        <source>Divemaster</source>
-        <translation>Niršanas speciālists</translation>
+        <source>Dive guide</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="129"/>
@@ -2620,8 +2655,8 @@
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="299"/>
-        <source>Divemaster:</source>
-        <translation>Niršanas speciālists:</translation>
+        <source>Dive guide:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="313"/>
@@ -2755,8 +2790,8 @@
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="484"/>
-        <source>Divemaster:</source>
-        <translation>Niršanas speciālists:</translation>
+        <source>Dive guide:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="492"/>
@@ -2970,127 +3005,127 @@
 <context>
     <name>DiveListView</name>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="777"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="779"/>
         <source>Expand all</source>
         <translation>Izvērst visu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="779"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="781"/>
         <source>Collapse all</source>
         <translation>Savērst visu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="783"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="785"/>
         <source>Collapse others</source>
         <translation>Savērst pārējus</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="788"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="790"/>
         <source>Remove dive(s) from trip</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="790"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="792"/>
         <source>Create new trip above</source>
         <translation>Izveidot jaunu ceļojumu augšup</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="805"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="807"/>
         <source>Add dive(s) to trip immediately above</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="807"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="809"/>
         <source>Add dive(s) to trip immediately below</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="811"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="813"/>
         <source>Merge trip with trip above</source>
         <translation>Saplūdināt ceļojumu ar augšējo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="812"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="814"/>
         <source>Merge trip with trip below</source>
         <translation>Saplūdināt ceļojumu ar apakšējo</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="816"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
         <source>Delete dive(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="820"/>
         <source>Mark dive(s) valid</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="820"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="822"/>
         <source>Mark dive(s) invalid</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="823"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
         <source>Merge selected dives</source>
         <translation>Saplūdināt izvēlētas niršanas</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="827"/>
         <source>Add dive(s) to arbitrary trip</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="826"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="828"/>
         <source>Renumber dive(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="827"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="829"/>
         <source>Shift dive times</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="828"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="830"/>
         <source>Split selected dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="829"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="831"/>
         <source>Load media from file(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="830"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="832"/>
         <source>Load media from web</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="856"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="858"/>
         <source>Open media files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="859"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="861"/>
         <source>Media files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="860"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="862"/>
         <source>Image files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="861"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="863"/>
         <source>Video files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="862"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="864"/>
         <source>All files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="926"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="928"/>
         <source>%1 does not appear to be an image</source>
         <translation type="unfinished"/>
     </message>
@@ -3098,12 +3133,12 @@
 <context>
     <name>DiveLocationModel</name>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="400"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="402"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="401"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="403"/>
         <source>Create a new dive site with this name</source>
         <translation type="unfinished"/>
     </message>
@@ -3530,261 +3565,261 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="378"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="584"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="379"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="585"/>
         <source>Tab</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="692"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="812"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="915"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="693"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="813"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="916"/>
         <source>Sample time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="694"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="813"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="695"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="814"/>
         <source>Sample depth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="716"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="825"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="717"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="826"/>
         <source>Sample setpoint</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="700"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="816"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="701"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="817"/>
         <source>Sample sensor1 pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="702"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="817"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="703"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="818"/>
         <source>Sample sensor2 pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="704"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="818"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="705"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="819"/>
         <source>Sample sensor3 pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="698"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="815"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="699"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="816"/>
         <source>Sample pO₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="696"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="814"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="697"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="815"/>
         <source>Sample temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="706"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="819"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="707"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="820"/>
         <source>Sample CNS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="576"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="712"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="822"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="713"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="823"/>
         <source>Sample stopdepth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="654"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="655"/>
         <source>Some column headers were pre-populated; please drag and drop the headers so they match the column they are in.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="708"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="820"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="709"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="821"/>
         <source>Sample NDL</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="710"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="821"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="711"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="822"/>
         <source>Sample TTS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="714"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="823"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="715"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="824"/>
         <source>Sample pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="720"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="811"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="917"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="721"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="812"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="918"/>
         <source>Dive #</source>
         <translation>Niršana #</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="721"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="808"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="918"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="722"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="809"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="919"/>
         <source>Date</source>
         <translation>Datums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="722"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="810"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="919"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="723"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="811"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="920"/>
         <source>Time</source>
         <translation>Laiks</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="723"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="920"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="724"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="921"/>
         <source>Duration</source>
         <translation>Ilgums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="724"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="924"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="725"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="925"/>
         <source>Max. depth</source>
         <translation>Maks. dziļums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="725"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="925"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="726"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="926"/>
         <source>Avg. depth</source>
         <translation>Vid. dziļums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="726"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="921"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="727"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="922"/>
         <source>Mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="727"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="941"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="728"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="942"/>
         <source>Air temp.</source>
         <translation>Gaisa temp.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="728"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="942"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="729"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="943"/>
         <source>Water temp.</source>
         <translation>Ūdens temp.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="729"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="936"/>
-        <source>Cyl. size</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="730"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="937"/>
-        <source>Start pressure</source>
+        <source>Cyl. size</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="731"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="938"/>
-        <source>End pressure</source>
+        <source>Start pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="732"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="939"/>
-        <source>O₂</source>
+        <source>End pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="733"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="940"/>
-        <source>He</source>
+        <source>O₂</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="734"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="922"/>
-        <source>Location</source>
-        <translation>Vieta</translation>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="941"/>
+        <source>He</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="735"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="923"/>
+        <source>Location</source>
+        <translation>Vieta</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="736"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="924"/>
         <source>GPS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="736"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="926"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="737"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="927"/>
         <source>Divemaster</source>
         <translation>Niršanas speciālists</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="737"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="927"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="738"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="928"/>
         <source>Buddy</source>
         <translation>Draugs</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="738"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="928"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="739"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="929"/>
         <source>Suit</source>
         <translation>Kostīms</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="739"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="827"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="944"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="740"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="828"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="945"/>
         <source>Rating</source>
         <translation>Novērtējums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="740"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="826"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="943"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="741"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="827"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="944"/>
         <source>Visibility</source>
         <translation>Redzamība</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="741"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="929"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="742"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="930"/>
         <source>Notes</source>
         <translation>Piezīmes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="742"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="930"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="743"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="931"/>
         <source>Weight</source>
         <translation>Svars</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="743"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="931"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="744"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="932"/>
         <source>Tags</source>
         <translation>Tagi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="824"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="825"/>
         <source>Sample heartrate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="969"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="970"/>
         <source>multiple files</source>
         <translation type="unfinished"/>
     </message>
@@ -3906,22 +3941,22 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1200"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1205"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1206"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1211"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1209"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1214"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1256"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1261"/>
         <source>Stop times</source>
         <translation type="unfinished"/>
     </message>
@@ -4217,17 +4252,17 @@
         <translation>Pievienot cilindri</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="63"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="64"/>
         <source>Add dive data point</source>
         <translation>Pievienot niršanas vietu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="72"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="73"/>
         <source>Save new</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="186"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="187"/>
         <source>kg/ℓ</source>
         <translation type="unfinished"/>
     </message>
@@ -4418,211 +4453,195 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveTripModelBase</name>
     <message numerus="yes">
-        <location filename="../qt-models/divetripmodel.cpp" line="76"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="77"/>
         <source>(%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="78"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="79"/>
         <source>(%L1 shown)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="125"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="126"/>
         <source>(%1 shown)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="328"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="397"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="437"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="219"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="409"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="330"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="399"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="439"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="221"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="411"/>
         <source>Date</source>
         <translation>Datums</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="332"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="401"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="441"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="223"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="413"/>
         <source>Rating</source>
         <translation>Novērtējums</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="334"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="443"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="225"/>
         <source>Depth(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="334"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="443"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="225"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="334"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="443"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="225"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="336"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="405"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="445"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="227"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="417"/>
         <source>Duration</source>
         <translation>Ilgums</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="338"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="447"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="229"/>
         <source>Temp.(°%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="340"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="449"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
         <source>Weight(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="340"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="449"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="340"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="449"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
         <source>lbs</source>
         <translation>mārciņa</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="342"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="411"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="451"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="233"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
         <source>Suit</source>
         <translation>Kostīms</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="344"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="413"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="453"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="235"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="425"/>
         <source>Cylinder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="346"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="415"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="455"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="427"/>
         <source>Gas</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="350"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="459"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="241"/>
         <source>SAC(%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="350"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="459"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="241"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="352"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="419"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="461"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="431"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="354"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="245"/>
         <source>Max. CNS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="356"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="465"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="247"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="435"/>
         <source>Tags</source>
         <translation>Tagi</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="358"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="467"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="249"/>
         <source>Media before/during/after dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="360"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="427"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="251"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="439"/>
         <source>Country</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="362"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="429"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="469"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="253"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="441"/>
         <source>Buddy</source>
         <translation>Draugs</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="364"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="431"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="471"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="255"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="443"/>
+        <source>Dive guide</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="257"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="445"/>
         <source>Location</source>
         <translation>Vieta</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="403"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="415"/>
         <source>Depth</source>
         <translation>Dziļums</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="407"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="419"/>
         <source>Temp.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="409"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="421"/>
         <source>Weight</source>
         <translation>Svars</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="417"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="429"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="421"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="463"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="433"/>
         <source>Max CNS</source>
         <translation>Maks. CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="425"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="437"/>
         <source>Media</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="499"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="475"/>
         <source>finish populating data store</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="501"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="477"/>
         <source>setting up internal data structures</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="503"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="479"/>
         <source>done setting up internal data structures</source>
         <translation type="unfinished"/>
     </message>
@@ -4630,56 +4649,56 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DivelogsDeWebServices</name>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="250"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="415"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="251"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="416"/>
         <source>Done</source>
         <translation>Izdarīts</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="273"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="274"/>
         <source>Uploading dive list...</source>
         <translation>Augšupielādē niršanas sarakstu...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="293"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="294"/>
         <source>Downloading dive list...</source>
         <translation>Niršanas saraksta lejupielādēšana...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="334"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="335"/>
         <source>Downloading %1 dives...</source>
         <translation>Lejupielādē %1 niršanas...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="368"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="369"/>
         <source>Download finished - %1</source>
         <translation>Lejupielādēšana pabeigta - %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="382"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="383"/>
         <source>Problem with download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="383"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="393"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="384"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="394"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Nevar atvērt arhīvu:
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="392"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="393"/>
         <source>Corrupted download</source>
         <translation>Bojāta lejupielādēšana</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="426"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="427"/>
         <source>Error: %1</source>
         <translation>Kļūda: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="435"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="436"/>
         <source>Transferring data...</source>
         <translation type="unfinished"/>
     </message>
@@ -4744,73 +4763,73 @@ Existing Site</source>
 <context>
     <name>DownloadFromDCWidget</name>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="86"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="85"/>
         <source>Download</source>
         <translation>Lejupielādēt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="90"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="89"/>
         <source>Choose Bluetooth download mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="202"/>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="205"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="201"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="204"/>
         <source>Connecting to dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="300"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="299"/>
         <source>Error</source>
         <translation>Kļūda</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="349"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="348"/>
         <source>Find Uemis dive computer</source>
         <translation>Atrast Uemis niršanas datoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="349"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="348"/>
         <source>Find Garmin dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="375"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="374"/>
         <source>Cancel download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="454"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="453"/>
         <source>Choose file for dive computer download logfile</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="455"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="454"/>
         <source>Log files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="468"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
         <source>Warning</source>
         <translation>Brīdinājums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="469"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="468"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation>Saglabājot izraksti, niršanas NEsaglabājas niršanas sarakstā.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="480"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="479"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="481"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="480"/>
         <source>Dump files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="509"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="508"/>
         <source>Retry download</source>
         <translation type="unfinished"/>
     </message>
@@ -5546,27 +5565,27 @@ Existing Site</source>
 <context>
     <name>LocationInformationWidget</name>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="32"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="34"/>
         <source>Done</source>
         <translation>Izdarīts</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="35"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="37"/>
         <source>Dive site management</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="64"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="66"/>
         <source>Merge into current site</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="253"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="255"/>
         <source>Select GPS file to open</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="255"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="257"/>
         <source>GPS files (*.gpx *.GPX)</source>
         <translation type="unfinished"/>
     </message>
@@ -5582,155 +5601,45 @@ Existing Site</source>
 <context>
     <name>MainTab</name>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="14"/>
-        <source>Form</source>
-        <translation>Veids</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="30"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="454"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="420"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="445"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="36"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="140"/>
         <source>Notes</source>
         <translation>Piezīmes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="83"/>
-        <source>Date</source>
-        <translation>Datums</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="103"/>
-        <source>Time</source>
-        <translation>Laiks</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="141"/>
-        <source>Depth</source>
-        <translation>Dziļums</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="157"/>
-        <source>Duration (h:mm)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="244"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="444"/>
-        <source>Location</source>
-        <translation>Vieta</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="277"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="287"/>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="284"/>
-        <source>Edit dive site</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="319"/>
-        <source>Divemaster</source>
-        <translation>Niršanas speciālists</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="332"/>
-        <source>Buddy</source>
-        <translation>Draugs</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="371"/>
-        <source>Tags</source>
-        <translation>Tagi</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="422"/>
-        <source>Rating</source>
-        <translation>Novērtējums</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="38"/>
         <source>Equipment</source>
         <translation>Aprīkojums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="40"/>
         <source>Information</source>
         <translation>Informācija</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="67"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="42"/>
         <source>Summary</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="69"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="44"/>
         <source>Media</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="71"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="46"/>
         <source>Extra Info</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="48"/>
         <source>Dive sites</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="101"/>
-        <source>Apply changes</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
-        <source>Discard changes</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="113"/>
-        <source>Undo</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="232"/>
-        <source>This dive is being edited.</source>
-        <translation>Niršanas rediģēšana.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="382"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="410"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="131"/>
         <source>Trip notes</source>
         <translation>Ceļojuma piezīmes</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="404"/>
-        <source>Trip location</source>
-        <translation>Ceļojuma vieta</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="523"/>
-        <source>Discard the changes?</source>
-        <translation>Atcelt izmaiņas?</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="524"/>
-        <source>You are about to discard your changes.</source>
-        <translation>Jūs taisāties atcelt izmaiņas.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="550"/>
-        <source>Warning: edited %1 dives</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5782,7 +5691,7 @@ Existing Site</source>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="149"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="358"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="362"/>
         <source>Open</source>
         <translation>Atvērt</translation>
     </message>
@@ -6027,26 +5936,26 @@ Existing Site</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="600"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="602"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="461"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="495"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="623"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="494"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="628"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="656"/>
         <source>Warning</source>
         <translation>Brīdinājums</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="601"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="603"/>
         <source>Trying to merge dives with %1min interval in between</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="226"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="230"/>
         <source>Template backup created</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="227"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="231"/>
         <source>The following backup printing templates were created:
 
 %1
@@ -6060,20 +5969,20 @@ can overwrite them on startup.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="349"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="396"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1130"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="353"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="400"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1133"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Lūdzu, saglabājiet vai atceliet pašreizējo niršanu rediģēšanu pirms jauna faila atveršanas.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="355"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="359"/>
         <source>Open file</source>
         <translation>Atvērt failu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="359"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1547"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="363"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1525"/>
         <source>Cancel</source>
         <translation>Atcelt</translation>
     </message>
@@ -6084,7 +5993,7 @@ can overwrite them on startup.</source>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="473"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="975"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="979"/>
         <source>Save changes?</source>
         <translation>Saglabāt izmaiņas?</translation>
     </message>
@@ -6100,17 +6009,17 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="535"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="536"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Lūdzu, saglabājiet vai atceliet pašreizējo niršanu rediģēšanu pirms fails aizvēršanas.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="597"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="598"/>
         <source>Please save or cancel the current dive edit before quiting the application.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="623"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="628"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Lūdzu, saglabājiet vai atceliet pašreizējo niršanu rediģēšanu pirms niršanas pievienošanas.</translation>
     </message>
@@ -6125,177 +6034,177 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <translation>Gada statistika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="910"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="873"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="914"/>
         <source>Dive log files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="889"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="931"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1158"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="893"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="935"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1161"/>
         <source>Subsurface files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="890"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="932"/>
-        <source>Cochran</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="891"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="934"/>
-        <source>DiveLogs.de</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="892"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="935"/>
-        <source>JDiveLog</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="893"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="936"/>
-        <source>Liquivision</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="894"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="937"/>
-        <source>Suunto</source>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="936"/>
+        <source>Cochran</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="895"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="938"/>
-        <source>UDCF</source>
+        <source>DiveLogs.de</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="896"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="939"/>
-        <source>UDDF</source>
-        <translation>UDDF</translation>
+        <source>JDiveLog</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="897"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="940"/>
-        <source>XML</source>
+        <source>Liquivision</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="898"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="941"/>
-        <source>Divesoft</source>
+        <source>Suunto</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="899"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="942"/>
-        <source>Datatrak/WLog</source>
+        <source>UDCF</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="900"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="943"/>
-        <source>MkVI files</source>
-        <translation type="unfinished"/>
+        <source>UDDF</source>
+        <translation>UDDF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="901"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="944"/>
-        <source>APD log viewer</source>
+        <source>XML</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="945"/>
-        <source>OSTCtools</source>
+        <source>Divesoft</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="946"/>
+        <source>Datatrak/WLog</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="904"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="947"/>
+        <source>MkVI files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="905"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="948"/>
+        <source>APD log viewer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="906"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="949"/>
+        <source>OSTCtools</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="907"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="950"/>
         <source>DAN DL7</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="933"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="937"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="947"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="959"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="951"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="963"/>
         <source>All files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="954"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="958"/>
         <source>Dive site files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="969"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="973"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Vai velāties saglabāt izmaiņas datnē %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="970"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="974"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Vai velāties saglabāt izmaiņas datnes datu datnē?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="976"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="980"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Izmaiņas pazūs, ja tos nesaglabāt.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1157"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1160"/>
         <source>Save file as</source>
         <translation>Saglabāt kā</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1245"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1242"/>
         <source>[local cache for] %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1246"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1243"/>
         <source>[cloud storage for] %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1286"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1390"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1283"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1387"/>
         <source>multiple files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1314"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1311"/>
         <source>Opening datafile from older version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1315"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1312"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1339"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1336"/>
         <source>Open dive log file</source>
         <translation>Atvērt niršanas žurnālu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1366"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1363"/>
         <source>Open dive site file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1547"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1525"/>
         <source>Contacting cloud service...</source>
         <translation type="unfinished"/>
     </message>
@@ -6351,39 +6260,39 @@ The QML modules QtPositioning and QtLocation could be missing!</source>
 <context>
     <name>OstcFirmwareCheck</name>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="297"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="296"/>
         <source>You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="300"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="299"/>
         <source>
 
 If your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="301"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="300"/>
         <source>Not now</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="302"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="301"/>
         <source>Update firmware</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="304"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="303"/>
         <source>Firmware upgrade notice</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="322"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="321"/>
         <source>Save the downloaded firmware as</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="323"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="322"/>
         <source>Firmware files</source>
         <translation type="unfinished"/>
     </message>
@@ -6391,74 +6300,74 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="457"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="458"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="458"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="459"/>
         <source>Last stop at 20ft</source>
         <translation>Pēdējā pietura pie 20ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="459"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="460"/>
         <source>50% avg. depth to 20ft</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="460"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="461"/>
         <source>20ft to surface</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="461"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="462"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="463"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="464"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="464"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="465"/>
         <source>Last stop at 6m</source>
         <translation>Pēdējā pietura pie 6m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="465"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="466"/>
         <source>50% avg. depth to 6m</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="466"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="467"/>
         <source>6m to surface</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="467"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="468"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="470"/>
         <location filename="../desktop-widgets/diveplanner.cpp" line="471"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="472"/>
         <source>cuft/min</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="479"/>
         <location filename="../desktop-widgets/diveplanner.cpp" line="480"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="481"/>
         <source>ℓ/min</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="489"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="490"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="494"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="495"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -6466,7 +6375,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
 <context>
     <name>PlannerWidgets</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="594"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="595"/>
         <source>Print runtime table</source>
         <translation>Izdrukāt niršanas tabulu</translation>
     </message>
@@ -7686,133 +7595,128 @@ Please export this template to a different file.</source>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="239"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="236"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="551"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="537"/>
         <source>Make first dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="553"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="539"/>
         <source>Delete this dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="554"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="540"/>
         <source>Split this dive computer into own dive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="557"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="543"/>
         <source>Rename this dive computer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="572"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="558"/>
         <source>Edit Gas Change</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="580"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="566"/>
         <source>Add gas change</source>
         <translation>Pievienot gāzes maiņu</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="587"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="573"/>
         <source>Add setpoint change</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="588"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="574"/>
         <source>Add bookmark</source>
         <translation>Pievienot grāmatzīmi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="589"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="575"/>
         <source>Split dive into two</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="594"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="580"/>
         <source>Change divemode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="606"/>
-        <source>Edit the profile</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="609"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="592"/>
         <source>Remove event</source>
         <translation>Noņemt notikumu</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="610"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="593"/>
         <source>Hide similar events</source>
         <translation>Paslēpt līdzīgus notikumus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="613"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="596"/>
         <source>Edit name</source>
         <translation>Rediģēt vārdu</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="642"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="649"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="625"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="632"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="664"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="647"/>
         <source>Unhide all events</source>
         <translation>Parādīt visus notikumus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="689"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="675"/>
         <source>Edit nickname</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="690"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="676"/>
         <source>Set new nickname for %1 (serial %2):</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="701"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="687"/>
         <source>Hide events</source>
         <translation>Paslēpt notikumus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="701"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="687"/>
         <source>Hide all %1 events?</source>
         <translation>Paslēpt visus %1 notikumus?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="736"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="722"/>
         <source>Remove the selected event?</source>
         <translation>Nodzēst izvēlēto notikumu?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="737"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="723"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="785"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="771"/>
         <source>Edit name of bookmark</source>
         <translation>Rediģēt grāmatzīmes vārdu</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="786"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="772"/>
         <source>Custom name:</source>
         <translation>Vārds:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="791"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="777"/>
         <source>Name is too long!</source>
         <translation type="unfinished"/>
     </message>
@@ -7820,182 +7724,182 @@ Please export this template to a different file.</source>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="370"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
         <source>Open local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="392"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="396"/>
         <source>Opening local data file failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="410"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="414"/>
         <source>Processing %1 dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="412"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="416"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="419"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="423"/>
         <source>Incorrect cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="552"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="573"/>
         <source>working in no-cloud mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="556"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="577"/>
         <source>Error parsing local storage, giving up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="566"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="587"/>
         <source>no cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="567"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="647"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="588"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="668"/>
         <source>Please enter valid cloud credentials.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="629"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="614"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="635"/>
         <source>Invalid format for email address</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="655"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="676"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="667"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="688"/>
         <source>Testing cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="684"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="705"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="690"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="711"/>
         <source>Incorrect email / password combination</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="695"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="716"/>
         <source>Cloud credentials require verification PIN</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
         <source>Incorrect PIN, please try again</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="703"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="724"/>
         <source>PIN accepted, credentials verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="712"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="733"/>
         <source>Cloud storage error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="757"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="778"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="805"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="826"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="825"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="846"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1003"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1005"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1024"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1026"/>
         <source>h</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1003"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1005"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1007"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1024"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1026"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1028"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1003"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1024"/>
         <source>sec</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1129"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1150"/>
         <source>weight</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1425"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1446"/>
         <source>[%1]Changes saved:'%2'.
 %1 possible via context menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1427"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1448"/>
         <source>Redo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1427"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1448"/>
         <source>Undo: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1429"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1450"/>
         <source>Undo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1449"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1470"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1789"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1810"/>
         <source>no default cylinder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2247"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2266"/>
         <source>(unsaved changes in memory)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2249"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2268"/>
         <source>(changes synced locally)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2250"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2269"/>
         <source>(synced with cloud)</source>
         <translation type="unfinished"/>
     </message>
@@ -8009,13 +7913,13 @@ Please export this template to a different file.</source>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="150"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="732"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="708"/>
         <source>start processing</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/fulltext.cpp" line="155"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="763"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="739"/>
         <source>%1 dives processed</source>
         <translation type="unfinished"/>
     </message>
@@ -8025,7 +7929,7 @@ Please export this template to a different file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="731"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="707"/>
         <source>populate data model</source>
         <translation type="unfinished"/>
     </message>
@@ -8748,13 +8652,13 @@ Files with inappropriate date/time</source>
 <context>
     <name>StatsTranslations</name>
     <message>
-        <location filename="../stats/barseries.cpp" line="347"/>
+        <location filename="../stats/barseries.cpp" line="350"/>
         <location filename="../stats/pieseries.cpp" line="221"/>
         <source>%1 (%2 of %3) dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/barseries.cpp" line="363"/>
+        <location filename="../stats/barseries.cpp" line="366"/>
         <location filename="../stats/statsstate.cpp" line="22"/>
         <source>Count</source>
         <translation type="unfinished"/>
@@ -8766,8 +8670,8 @@ Files with inappropriate date/time</source>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="107"/>
-        <location filename="../stats/statsvariables.cpp" line="1059"/>
-        <location filename="../stats/statsvariables.cpp" line="1093"/>
+        <location filename="../stats/statsvariables.cpp" line="1058"/>
+        <location filename="../stats/statsvariables.cpp" line="1092"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -8810,6 +8714,16 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/scatterseries.cpp" line="202"/>
         <source>and %1 more</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../stats/statscolors.cpp" line="63"/>
+        <source>Light</source>
+        <translation>Gaišs</translation>
+    </message>
+    <message>
+        <location filename="../stats/statscolors.cpp" line="135"/>
+        <source>Dark</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -8942,279 +8856,279 @@ Files with inappropriate date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="357"/>
+        <location filename="../stats/statsvariables.cpp" line="356"/>
         <source>Median</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="358"/>
+        <location filename="../stats/statsvariables.cpp" line="357"/>
         <source>Mean</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="359"/>
+        <location filename="../stats/statsvariables.cpp" line="358"/>
         <source>Time-weighted mean</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="360"/>
+        <location filename="../stats/statsvariables.cpp" line="359"/>
         <source>Sum</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="361"/>
+        <location filename="../stats/statsvariables.cpp" line="360"/>
         <source>Minimum</source>
         <translation>Minimums</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="362"/>
+        <location filename="../stats/statsvariables.cpp" line="361"/>
         <source>Maximum</source>
         <translation>Maksimums</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="764"/>
-        <location filename="../stats/statsvariables.cpp" line="1145"/>
-        <location filename="../stats/statsvariables.cpp" line="1352"/>
+        <location filename="../stats/statsvariables.cpp" line="763"/>
+        <location filename="../stats/statsvariables.cpp" line="1144"/>
+        <location filename="../stats/statsvariables.cpp" line="1351"/>
         <source>%1–%2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="859"/>
+        <location filename="../stats/statsvariables.cpp" line="858"/>
         <source>Yearly</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="876"/>
+        <location filename="../stats/statsvariables.cpp" line="875"/>
         <source>Quarterly</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="880"/>
+        <location filename="../stats/statsvariables.cpp" line="879"/>
         <source>%1 Q%2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="888"/>
+        <location filename="../stats/statsvariables.cpp" line="887"/>
         <source>Q%1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="922"/>
+        <location filename="../stats/statsvariables.cpp" line="921"/>
         <source>Monthly</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="960"/>
+        <location filename="../stats/statsvariables.cpp" line="959"/>
         <source>Date</source>
         <translation>Datums</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="986"/>
-        <location filename="../stats/statsvariables.cpp" line="1213"/>
-        <location filename="../stats/statsvariables.cpp" line="1293"/>
+        <location filename="../stats/statsvariables.cpp" line="985"/>
+        <location filename="../stats/statsvariables.cpp" line="1212"/>
+        <location filename="../stats/statsvariables.cpp" line="1292"/>
         <source>in %1 %2 steps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1032"/>
+        <location filename="../stats/statsvariables.cpp" line="1031"/>
         <source>Max. Depth</source>
         <translation>Maks. dziļums</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1044"/>
+        <location filename="../stats/statsvariables.cpp" line="1043"/>
         <source>Mean Depth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1056"/>
+        <location filename="../stats/statsvariables.cpp" line="1055"/>
         <source>in %1 min steps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1068"/>
+        <location filename="../stats/statsvariables.cpp" line="1067"/>
         <source>in hours</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1074"/>
+        <location filename="../stats/statsvariables.cpp" line="1073"/>
         <source>h</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1090"/>
+        <location filename="../stats/statsvariables.cpp" line="1089"/>
         <source>Duration</source>
         <translation>Ilgums</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1115"/>
-        <location filename="../stats/statsvariables.cpp" line="1139"/>
+        <location filename="../stats/statsvariables.cpp" line="1114"/>
+        <location filename="../stats/statsvariables.cpp" line="1138"/>
         <source>in %1 %2/min steps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1119"/>
-        <location filename="../stats/statsvariables.cpp" line="1149"/>
-        <location filename="../stats/statsvariables.cpp" line="1178"/>
+        <location filename="../stats/statsvariables.cpp" line="1118"/>
+        <location filename="../stats/statsvariables.cpp" line="1148"/>
+        <location filename="../stats/statsvariables.cpp" line="1177"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1175"/>
+        <location filename="../stats/statsvariables.cpp" line="1174"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1265"/>
+        <location filename="../stats/statsvariables.cpp" line="1264"/>
         <source>Water temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1277"/>
+        <location filename="../stats/statsvariables.cpp" line="1276"/>
         <source>Air temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1316"/>
+        <location filename="../stats/statsvariables.cpp" line="1315"/>
         <source>Weight</source>
         <translation>Svars</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1363"/>
+        <location filename="../stats/statsvariables.cpp" line="1362"/>
         <source>in %L2 steps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1381"/>
+        <location filename="../stats/statsvariables.cpp" line="1380"/>
         <source>Dive #</source>
         <translation>Niršana #</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1413"/>
+        <location filename="../stats/statsvariables.cpp" line="1412"/>
         <source>Dive mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1441"/>
+        <location filename="../stats/statsvariables.cpp" line="1440"/>
         <source>People</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1467"/>
+        <location filename="../stats/statsvariables.cpp" line="1466"/>
         <source>Buddies</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1489"/>
+        <location filename="../stats/statsvariables.cpp" line="1488"/>
         <source>Dive guides</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1513"/>
+        <location filename="../stats/statsvariables.cpp" line="1512"/>
         <source>Tags</source>
         <translation>Tagi</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1552"/>
+        <location filename="../stats/statsvariables.cpp" line="1551"/>
         <source>in %1% steps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1572"/>
+        <location filename="../stats/statsvariables.cpp" line="1571"/>
         <source>Air</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1574"/>
+        <location filename="../stats/statsvariables.cpp" line="1573"/>
         <source>Oxygen</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1576"/>
+        <location filename="../stats/statsvariables.cpp" line="1575"/>
         <source>EAN%1–%2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1579"/>
+        <location filename="../stats/statsvariables.cpp" line="1578"/>
         <source>%1/%2–%3/%4</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1590"/>
+        <location filename="../stats/statsvariables.cpp" line="1589"/>
         <source>General</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1617"/>
+        <location filename="../stats/statsvariables.cpp" line="1616"/>
         <source>Gas type</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1673"/>
+        <location filename="../stats/statsvariables.cpp" line="1672"/>
         <source>In %L1% steps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1723"/>
+        <location filename="../stats/statsvariables.cpp" line="1722"/>
         <source>O₂ (max)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1732"/>
+        <location filename="../stats/statsvariables.cpp" line="1731"/>
         <source>O₂ (bottom gas)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1741"/>
+        <location filename="../stats/statsvariables.cpp" line="1740"/>
         <source>He (max)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1756"/>
+        <location filename="../stats/statsvariables.cpp" line="1755"/>
         <source>Suit type</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1786"/>
+        <location filename="../stats/statsvariables.cpp" line="1785"/>
         <source>Weightsystem</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1816"/>
+        <location filename="../stats/statsvariables.cpp" line="1815"/>
         <source>Cylinder type</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1842"/>
+        <location filename="../stats/statsvariables.cpp" line="1841"/>
         <source>Dive site</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1868"/>
+        <location filename="../stats/statsvariables.cpp" line="1867"/>
         <source>Dive trip</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1892"/>
+        <location filename="../stats/statsvariables.cpp" line="1891"/>
         <source>Day of week</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1917"/>
+        <location filename="../stats/statsvariables.cpp" line="1916"/>
         <source>Rating</source>
         <translation>Novērtējums</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1943"/>
+        <location filename="../stats/statsvariables.cpp" line="1942"/>
         <source>Visibility</source>
         <translation>Redzamība</translation>
     </message>
     <message>
-        <location filename="../stats/statsview.cpp" line="626"/>
+        <location filename="../stats/statsview.cpp" line="643"/>
         <source>No. dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../stats/statsview.cpp" line="1323"/>
+        <location filename="../stats/statsview.cpp" line="1340"/>
         <source>%1 vs. %2</source>
         <translation type="unfinished"/>
     </message>
@@ -9273,12 +9187,12 @@ Files with inappropriate date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/statswidget.cpp" line="157"/>
+        <location filename="../desktop-widgets/statswidget.cpp" line="171"/>
         <source>Analyzing all dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/statswidget.cpp" line="159"/>
+        <location filename="../desktop-widgets/statswidget.cpp" line="173"/>
         <source>Analyzing subset (%L1) dives</source>
         <translation type="unfinished"/>
     </message>
@@ -9329,48 +9243,48 @@ Files with inappropriate date/time</source>
         <translation>Kostīms</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="60"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="69"/>
         <source>Cylinders</source>
         <translation>Cilindri</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="70"/>
         <source>Add cylinder</source>
         <translation>Pievienot cilindri</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="64"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="73"/>
         <source>Weights</source>
         <translation>Sver</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="74"/>
         <source>Add weight system</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="68"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="77"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="72"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="81"/>
         <source>Undo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="179"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="189"/>
         <source>Remove cylinder?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="180"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="190"/>
         <source>The deleted cylinder has sensor readings, which will be lost.
 Do you want to continue?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="209"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="219"/>
         <source>Warning: edited %1 dives</source>
         <translation type="unfinished"/>
     </message>
@@ -9543,22 +9457,22 @@ Do you want to continue?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="27"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="26"/>
         <source>Use DC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="40"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="39"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="43"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="42"/>
         <source>Undo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="87"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="86"/>
         <source>Warning: edited %1 dives</source>
         <translation type="unfinished"/>
     </message>
@@ -9590,9 +9504,101 @@ Do you want to continue?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="230"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="231"/>
         <source>unknown</source>
         <translation>nezināms</translation>
+    </message>
+</context>
+<context>
+    <name>TabDiveNotes</name>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="6"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="433"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="252"/>
+        <source>Notes</source>
+        <translation>Piezīmes</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="62"/>
+        <source>Date</source>
+        <translation>Datums</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="82"/>
+        <source>Time</source>
+        <translation>Laiks</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="120"/>
+        <source>Depth</source>
+        <translation>Dziļums</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="136"/>
+        <source>Duration (h:mm)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="223"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="251"/>
+        <source>Location</source>
+        <translation>Vieta</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="256"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="266"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="263"/>
+        <source>Edit dive site</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="298"/>
+        <source>Diveguide</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="311"/>
+        <source>Buddy</source>
+        <translation>Draugs</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="350"/>
+        <source>Tags</source>
+        <translation>Tagi</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="401"/>
+        <source>Rating</source>
+        <translation>Novērtējums</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="48"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="52"/>
+        <source>Undo</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="219"/>
+        <source>Trip location</source>
+        <translation>Ceļojuma vieta</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="225"/>
+        <source>Trip notes</source>
+        <translation>Ceļojuma piezīmes</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="300"/>
+        <source>Warning: edited %1 dives</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -10055,7 +10061,7 @@ mixed from Air and using:
 <context>
     <name>ToolTipItem</name>
     <message>
-        <location filename="../profile-widget/divetooltipitem.cpp" line="132"/>
+        <location filename="../profile-widget/divetooltipitem.cpp" line="131"/>
         <source>Information</source>
         <translation>Informācija</translation>
     </message>
@@ -10271,12 +10277,12 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
         <translation>Augšupielādēt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="80"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="81"/>
         <source>Operation timed out</source>
         <translation>Procesa izpilīdšanas laiks pārsniedza robežus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="101"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="102"/>
         <source>Transferring data...</source>
         <translation type="unfinished"/>
     </message>
@@ -10430,7 +10436,7 @@ Vidējais</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="778"/>
+        <location filename="../core/libdivecomputer.c" line="777"/>
         <source>Error parsing the header</source>
         <translation type="unfinished"/>
     </message>
@@ -10441,7 +10447,7 @@ Vidējais</translation>
         <location filename="../backend-shared/exportfuncs.cpp" line="272"/>
         <location filename="../backend-shared/exportfuncs.cpp" line="309"/>
         <location filename="../core/save-html.c" line="490"/>
-        <location filename="../core/save-html.c" line="579"/>
+        <location filename="../core/save-html.c" line="580"/>
         <location filename="../core/worldmap-save.c" line="117"/>
         <source>Can&apos;t open file %s</source>
         <translation>Nevar atvērt failu %s</translation>
@@ -10461,7 +10467,7 @@ Vidējais</translation>
         <location filename="../core/cochran.c" line="308"/>
         <location filename="../core/cochran.c" line="314"/>
         <location filename="../core/cochran.c" line="384"/>
-        <location filename="../core/libdivecomputer.c" line="249"/>
+        <location filename="../core/libdivecomputer.c" line="248"/>
         <source>deco stop</source>
         <translation>deko pietura</translation>
     </message>
@@ -10469,7 +10475,7 @@ Vidējais</translation>
         <location filename="../core/cochran.c" line="335"/>
         <location filename="../core/cochran.c" line="389"/>
         <location filename="../core/import-csv.c" line="696"/>
-        <location filename="../core/libdivecomputer.c" line="251"/>
+        <location filename="../core/libdivecomputer.c" line="250"/>
         <source>ascent</source>
         <translation>stāvums</translation>
     </message>
@@ -10481,20 +10487,20 @@ Vidējais</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="347"/>
-        <location filename="../core/libdivecomputer.c" line="267"/>
+        <location filename="../core/libdivecomputer.c" line="266"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="352"/>
-        <location filename="../core/libdivecomputer.c" line="266"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>maxdepth</source>
         <translation>maks. dziļums</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="357"/>
         <location filename="../core/cochran.c" line="403"/>
-        <location filename="../core/libdivecomputer.c" line="268"/>
+        <location filename="../core/libdivecomputer.c" line="267"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
@@ -10503,8 +10509,8 @@ Vidējais</translation>
         <location filename="../core/cochran.c" line="413"/>
         <location filename="../core/cochran.c" line="420"/>
         <location filename="../core/import-csv.c" line="777"/>
-        <location filename="../core/libdivecomputer.c" line="259"/>
-        <location filename="../core/libdivecomputer.c" line="273"/>
+        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="272"/>
         <location filename="../core/plannernotes.c" line="54"/>
         <source>gaschange</source>
         <translation>gāzes maiņa</translation>
@@ -10512,20 +10518,20 @@ Vidējais</translation>
     <message>
         <location filename="../core/cochran.c" line="369"/>
         <location filename="../core/cochran.c" line="408"/>
-        <location filename="../core/libdivecomputer.c" line="250"/>
+        <location filename="../core/libdivecomputer.c" line="249"/>
         <source>rbt</source>
         <translation>rbt</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="378"/>
         <location filename="../core/cochran.c" line="425"/>
-        <location filename="../core/libdivecomputer.c" line="252"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>ceiling</source>
         <translation>maksimāla dekompr. pietura</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="394"/>
-        <location filename="../core/libdivecomputer.c" line="254"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>transmitter</source>
         <translation>raidītājs</translation>
     </message>
@@ -10717,9 +10723,9 @@ Vidējais</translation>
     <message>
         <location filename="../core/datatrak.c" line="639"/>
         <location filename="../core/import-divinglog.c" line="308"/>
-        <location filename="../core/libdivecomputer.c" line="233"/>
+        <location filename="../core/libdivecomputer.c" line="232"/>
         <location filename="../core/string-format.cpp" line="154"/>
-        <location filename="../core/uemis-downloader.c" line="200"/>
+        <location filename="../core/uemis-downloader.c" line="201"/>
         <source>unknown</source>
         <translation>nezināms</translation>
     </message>
@@ -10754,18 +10760,18 @@ Vidējais</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/divefilter.cpp" line="199"/>
+        <location filename="../core/divefilter.cpp" line="205"/>
         <source>%L1/%L2 shown</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/divefilter.cpp" line="201"/>
+        <location filename="../core/divefilter.cpp" line="207"/>
         <source>%L1 dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/divelist.c" line="652"/>
-        <location filename="../core/equipment.c" line="201"/>
+        <location filename="../core/equipment.c" line="200"/>
         <location filename="../core/planner.c" line="1171"/>
         <location filename="../core/planner.c" line="1174"/>
         <source>air</source>
@@ -10776,7 +10782,7 @@ Vidējais</translation>
         <location filename="../core/divelogexportlogic.cpp" line="95"/>
         <location filename="../core/string-format.cpp" line="237"/>
         <location filename="../desktop-widgets/templatelayout.cpp" line="464"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="160"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="161"/>
         <source>h</source>
         <translation type="unfinished"/>
     </message>
@@ -10788,7 +10794,7 @@ Vidējais</translation>
         <location filename="../core/string-format.cpp" line="237"/>
         <location filename="../core/worldmap-save.c" line="50"/>
         <location filename="../desktop-widgets/templatelayout.cpp" line="465"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="160"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="161"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -10812,60 +10818,60 @@ Vidējais</translation>
     </message>
     <message>
         <location filename="../core/divesite-helper.cpp" line="29"/>
-        <location filename="../core/save-html.c" line="534"/>
+        <location filename="../core/save-html.c" line="535"/>
         <source>Tags</source>
         <translation>Tagi</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="86"/>
+        <location filename="../core/equipment.c" line="85"/>
         <source>OC-gas</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="86"/>
+        <location filename="../core/equipment.c" line="85"/>
         <source>diluent</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="86"/>
-        <location filename="../core/equipment.c" line="205"/>
+        <location filename="../core/equipment.c" line="85"/>
+        <location filename="../core/equipment.c" line="204"/>
         <location filename="../core/planner.c" line="1175"/>
         <location filename="../core/planner.c" line="1178"/>
         <source>oxygen</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="86"/>
+        <location filename="../core/equipment.c" line="85"/>
         <source>not used</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="203"/>
+        <location filename="../core/equipment.c" line="202"/>
         <source>EAN%d</source>
         <translation>EAN%d</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="323"/>
+        <location filename="../core/equipment.c" line="322"/>
         <source>integrated</source>
         <translation>integrēts</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="324"/>
+        <location filename="../core/equipment.c" line="323"/>
         <source>belt</source>
         <translation>josta</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="325"/>
+        <location filename="../core/equipment.c" line="324"/>
         <source>ankle</source>
         <translation>svars uz kājām</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="326"/>
+        <location filename="../core/equipment.c" line="325"/>
         <source>backplate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="327"/>
+        <location filename="../core/equipment.c" line="326"/>
         <source>clip-on</source>
         <translation>clip-on</translation>
     </message>
@@ -11315,216 +11321,216 @@ Vidējais</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="248"/>
+        <location filename="../core/libdivecomputer.c" line="247"/>
         <source>none</source>
         <translation>neviens</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="253"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>workload</source>
         <translation>darba slodze</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="255"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>violation</source>
         <translation>pārkapšana</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="256"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>bookmark</source>
         <translation>grāmatzīme</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="257"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>surface</source>
         <translation>virsma</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="257"/>
         <source>safety stop</source>
         <translation>drošības pietura</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="259"/>
         <source>safety stop (voluntary)</source>
         <translation>drošības pietura (brīvprātīga)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="260"/>
         <source>safety stop (mandatory)</source>
         <translation>drošības pietura (obligāta)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="261"/>
         <source>deepstop</source>
         <translation>dziļa pietura</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="263"/>
+        <location filename="../core/libdivecomputer.c" line="262"/>
         <source>ceiling (safety stop)</source>
         <translation>maksimāla dekompr. pietura (drošības pietura)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="264"/>
+        <location filename="../core/libdivecomputer.c" line="263"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>zemāk par grīdu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="265"/>
+        <location filename="../core/libdivecomputer.c" line="264"/>
         <source>divetime</source>
         <translation>niršanas laiks</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="269"/>
+        <location filename="../core/libdivecomputer.c" line="268"/>
         <source>airtime</source>
         <translation>skābekļa laiks</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="270"/>
+        <location filename="../core/libdivecomputer.c" line="269"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="271"/>
+        <location filename="../core/libdivecomputer.c" line="270"/>
         <source>heading</source>
         <translation>virziens</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="272"/>
+        <location filename="../core/libdivecomputer.c" line="271"/>
         <source>tissue level warning</source>
         <translation>audu līmeņa brīdinājums</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="282"/>
+        <location filename="../core/libdivecomputer.c" line="281"/>
         <source>invalid event number</source>
         <translation>kļūdains notikuma numurs</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="599"/>
+        <location filename="../core/libdivecomputer.c" line="598"/>
         <source>Error parsing the datetime</source>
         <translation>Kļūda parsējot laiku</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="618"/>
+        <location filename="../core/libdivecomputer.c" line="617"/>
         <source>Dive %d: %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="624"/>
+        <location filename="../core/libdivecomputer.c" line="623"/>
         <source>Error parsing the divetime</source>
         <translation>Kļūda parsējot niršanas laiku</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="634"/>
+        <location filename="../core/libdivecomputer.c" line="633"/>
         <source>Error parsing the maxdepth</source>
         <translation>Kļūda parsējot maks. dziļumu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="648"/>
+        <location filename="../core/libdivecomputer.c" line="647"/>
         <source>Error parsing temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="667"/>
+        <location filename="../core/libdivecomputer.c" line="666"/>
         <source>Error parsing the gas mix count</source>
         <translation>Kļūda parsējot gāzes maisījuma daudzumu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="678"/>
+        <location filename="../core/libdivecomputer.c" line="677"/>
         <source>Error obtaining water salinity</source>
         <translation>Kļūda ūdens sāļuma noteikšanā</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="687"/>
+        <location filename="../core/libdivecomputer.c" line="686"/>
         <source>Error obtaining surface pressure</source>
         <translation>Kļūda spiediena noteikšanā uz virsmu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="709"/>
+        <location filename="../core/libdivecomputer.c" line="708"/>
         <source>Error obtaining dive mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="731"/>
+        <location filename="../core/libdivecomputer.c" line="730"/>
         <source>Error parsing the gas mix</source>
         <translation>Kļūda parsējot gāzes maisījumu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="759"/>
+        <location filename="../core/libdivecomputer.c" line="758"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Nav iespējams izveidot parsētāju priekš %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="765"/>
+        <location filename="../core/libdivecomputer.c" line="764"/>
         <source>Error registering the data</source>
         <translation>Kļūda reģistrējot datus</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="785"/>
+        <location filename="../core/libdivecomputer.c" line="784"/>
         <source>Error parsing the samples</source>
         <translation>Kļūda parsējot paraugus</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="810"/>
+        <location filename="../core/libdivecomputer.c" line="809"/>
         <source>Already downloaded dive at %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1008"/>
+        <location filename="../core/libdivecomputer.c" line="1007"/>
         <source>Event: waiting for user action</source>
         <translation>Notikums: gaida lietotāja darbību</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1020"/>
+        <location filename="../core/libdivecomputer.c" line="1019"/>
         <source>read %dkb</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1040"/>
+        <location filename="../core/libdivecomputer.c" line="1039"/>
         <source>model=%s firmware=%u serial=%u</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1093"/>
+        <location filename="../core/libdivecomputer.c" line="1092"/>
         <source>Error registering the event handler.</source>
         <translation>Kļūda reģistrējot notikumu apstrādātāju.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1098"/>
+        <location filename="../core/libdivecomputer.c" line="1097"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Error registering the cancellation handler.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1119"/>
+        <location filename="../core/libdivecomputer.c" line="1118"/>
         <source>Dive data import error</source>
         <translation>Kļūda importējot niršanas datus</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1409"/>
+        <location filename="../core/libdivecomputer.c" line="1408"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Nav iespējams izveidot libdivecomputer kontekstu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1418"/>
+        <location filename="../core/libdivecomputer.c" line="1417"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Nevar atvērt %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1430"/>
+        <location filename="../core/libdivecomputer.c" line="1429"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1432"/>
+        <location filename="../core/libdivecomputer.c" line="1431"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1441"/>
+        <location filename="../core/libdivecomputer.c" line="1440"/>
         <source>No new dives downloaded from dive computer</source>
         <translation type="unfinished"/>
     </message>
@@ -11543,12 +11549,12 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1918"/>
+        <location filename="../core/load-git.c" line="1919"/>
         <source>Load dives from local cache</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1922"/>
+        <location filename="../core/load-git.c" line="1923"/>
         <source>Successfully opened dive data</source>
         <translation type="unfinished"/>
     </message>
@@ -11571,12 +11577,12 @@ You can create this logfile by selecting the corresponding checkbox in the downl
 </translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="1775"/>
+        <location filename="../core/parse-xml.c" line="1778"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Kļūme parsējot &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2373"/>
+        <location filename="../core/parse-xml.c" line="2376"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Nevar atvērts stila lapu %s</translation>
     </message>
@@ -11873,12 +11879,12 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1036"/>
+        <location filename="../core/profile.c" line="1035"/>
         <source>planned waypoint above ceiling</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1336"/>
+        <location filename="../core/profile.c" line="1323"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -11887,132 +11893,132 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1343"/>
+        <location filename="../core/profile.c" line="1330"/>
         <source>P: %d%s (%s)
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1347"/>
+        <location filename="../core/profile.c" line="1334"/>
         <source>T: %.1f%s
 </source>
         <translation>L: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1353"/>
+        <location filename="../core/profile.c" line="1340"/>
         <source>V: %.1f%s
 </source>
         <translation>Ā: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1356"/>
+        <location filename="../core/profile.c" line="1343"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1358"/>
+        <location filename="../core/profile.c" line="1345"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1360"/>
+        <location filename="../core/profile.c" line="1347"/>
         <source>pO₂: %.2fbar
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1362"/>
+        <location filename="../core/profile.c" line="1349"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1365"/>
+        <location filename="../core/profile.c" line="1352"/>
         <source>pN₂: %.2fbar
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1367"/>
+        <location filename="../core/profile.c" line="1354"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1370"/>
+        <location filename="../core/profile.c" line="1357"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1379"/>
+        <location filename="../core/profile.c" line="1366"/>
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1385"/>
+        <location filename="../core/profile.c" line="1372"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1390"/>
+        <location filename="../core/profile.c" line="1377"/>
         <source>Density: %.1fg/ℓ
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1402"/>
+        <location filename="../core/profile.c" line="1389"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1405"/>
+        <location filename="../core/profile.c" line="1392"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1410"/>
+        <location filename="../core/profile.c" line="1397"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Dekompr.: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1413"/>
+        <location filename="../core/profile.c" line="1400"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1417"/>
+        <location filename="../core/profile.c" line="1404"/>
         <source>In deco
 </source>
         <translation>Dekompresijā
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1419"/>
+        <location filename="../core/profile.c" line="1406"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1422"/>
+        <location filename="../core/profile.c" line="1409"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
@@ -12021,148 +12027,148 @@ EADD: %d%s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1425"/>
+        <location filename="../core/profile.c" line="1412"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Dekompr.: %umin @ %.0f%s (izrēķ.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1433"/>
+        <location filename="../core/profile.c" line="1420"/>
         <source>In deco (calc)
 </source>
         <translation>Dekompresijā (izrēķ.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1436"/>
+        <location filename="../core/profile.c" line="1423"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %umin (izrēķ.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1438"/>
+        <location filename="../core/profile.c" line="1425"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1442"/>
+        <location filename="../core/profile.c" line="1429"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (izrēķ.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1444"/>
+        <location filename="../core/profile.c" line="1431"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1447"/>
+        <location filename="../core/profile.c" line="1434"/>
         <source>RBT: %umin
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1450"/>
+        <location filename="../core/profile.c" line="1437"/>
         <source>GF %d%%
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1452"/>
+        <location filename="../core/profile.c" line="1439"/>
         <source>Surface GF %.0f%%
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1455"/>
+        <location filename="../core/profile.c" line="1442"/>
         <source>Calculated ceiling %.1f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1461"/>
+        <location filename="../core/profile.c" line="1448"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1468"/>
+        <location filename="../core/profile.c" line="1455"/>
         <source>ICD in leading tissue
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1470"/>
+        <location filename="../core/profile.c" line="1457"/>
         <source>heart rate: %d
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1472"/>
+        <location filename="../core/profile.c" line="1459"/>
         <source>bearing: %d
 </source>
         <translation>azimuts: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1475"/>
+        <location filename="../core/profile.c" line="1462"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1571"/>
+        <location filename="../core/profile.c" line="1558"/>
         <source>ΔT:%d:%02dmin</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1575"/>
+        <location filename="../core/profile.c" line="1562"/>
         <source>%s ΔD:%.1f%s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1579"/>
+        <location filename="../core/profile.c" line="1566"/>
         <source>%s ↓D:%.1f%s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1583"/>
+        <location filename="../core/profile.c" line="1570"/>
         <source>%s ↑D:%.1f%s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1587"/>
+        <location filename="../core/profile.c" line="1574"/>
         <source>%s øD:%.1f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1591"/>
+        <location filename="../core/profile.c" line="1578"/>
         <source>%s ↓V:%.2f%s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1595"/>
+        <location filename="../core/profile.c" line="1582"/>
         <source>%s ↑V:%.2f%s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1599"/>
+        <location filename="../core/profile.c" line="1586"/>
         <source>%s øV:%.2f%s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1606"/>
+        <location filename="../core/profile.c" line="1593"/>
         <source>%s ΔP:%d%s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1631"/>
+        <location filename="../core/profile.c" line="1618"/>
         <source>%s SAC:%.*f%s/min</source>
         <translation type="unfinished"/>
     </message>
@@ -12234,7 +12240,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="848"/>
         <location filename="../core/qthelper.cpp" line="1297"/>
         <location filename="../core/units.c" line="163"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="186"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="187"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -12244,7 +12250,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="850"/>
         <location filename="../core/qthelper.cpp" line="1298"/>
         <location filename="../core/units.c" line="159"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="188"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="189"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
@@ -12465,189 +12471,194 @@ EADD: %d%s / %.1fg/ℓ
     </message>
     <message>
         <location filename="../core/save-html.c" line="531"/>
+        <source>Diveguide</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/save-html.c" line="532"/>
         <source>Divemaster</source>
         <translation>Niršanas speciālists</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="532"/>
+        <location filename="../core/save-html.c" line="533"/>
         <source>Buddy</source>
         <translation>Draugs</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="533"/>
+        <location filename="../core/save-html.c" line="534"/>
         <source>Suit</source>
         <translation>Kostīms</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="535"/>
+        <location filename="../core/save-html.c" line="536"/>
         <location filename="../smtk-import/smartrak.c" line="262"/>
         <location filename="../smtk-import/smartrak.c" line="335"/>
         <source>Notes</source>
         <translation>Piezīmes</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="536"/>
+        <location filename="../core/save-html.c" line="537"/>
         <source>Show more details</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="539"/>
+        <location filename="../core/save-html.c" line="540"/>
         <source>Yearly statistics</source>
         <translation>Gada statistika</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="540"/>
+        <location filename="../core/save-html.c" line="541"/>
         <source>Year</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="541"/>
+        <location filename="../core/save-html.c" line="542"/>
         <source>Total time</source>
         <translation>Kopējais laiks</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="542"/>
+        <location filename="../core/save-html.c" line="543"/>
         <source>Average time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="543"/>
+        <location filename="../core/save-html.c" line="544"/>
         <source>Shortest time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="544"/>
+        <location filename="../core/save-html.c" line="545"/>
         <source>Longest time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="545"/>
+        <location filename="../core/save-html.c" line="546"/>
         <source>Average depth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="546"/>
+        <location filename="../core/save-html.c" line="547"/>
         <source>Min. depth</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="547"/>
+        <location filename="../core/save-html.c" line="548"/>
         <source>Max. depth</source>
         <translation>Maks. dziļums</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="548"/>
+        <location filename="../core/save-html.c" line="549"/>
         <source>Average SAC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="549"/>
+        <location filename="../core/save-html.c" line="550"/>
         <source>Min. SAC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="550"/>
+        <location filename="../core/save-html.c" line="551"/>
         <source>Max. SAC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="551"/>
+        <location filename="../core/save-html.c" line="552"/>
         <source>Average temp.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="552"/>
+        <location filename="../core/save-html.c" line="553"/>
         <source>Min. temp.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="553"/>
+        <location filename="../core/save-html.c" line="554"/>
         <source>Max. temp.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="554"/>
+        <location filename="../core/save-html.c" line="555"/>
         <source>Back to list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="557"/>
+        <location filename="../core/save-html.c" line="558"/>
         <source>Dive #</source>
         <translation>Niršana #</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="558"/>
+        <location filename="../core/save-html.c" line="559"/>
         <source>Dive profile</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="559"/>
+        <location filename="../core/save-html.c" line="560"/>
         <source>Dive information</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="560"/>
+        <location filename="../core/save-html.c" line="561"/>
         <source>Dive equipment</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="561"/>
-        <location filename="../core/save-html.c" line="568"/>
+        <location filename="../core/save-html.c" line="562"/>
+        <location filename="../core/save-html.c" line="569"/>
         <source>Type</source>
         <translation>Tips</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="562"/>
+        <location filename="../core/save-html.c" line="563"/>
         <source>Size</source>
         <translation>Izmērs</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="563"/>
+        <location filename="../core/save-html.c" line="564"/>
         <source>Work pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="564"/>
+        <location filename="../core/save-html.c" line="565"/>
         <source>Start pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="565"/>
+        <location filename="../core/save-html.c" line="566"/>
         <source>End pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="566"/>
+        <location filename="../core/save-html.c" line="567"/>
         <source>Gas</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="567"/>
+        <location filename="../core/save-html.c" line="568"/>
         <source>Weight</source>
         <translation>Svars</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="569"/>
+        <location filename="../core/save-html.c" line="570"/>
         <source>Events</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="570"/>
+        <location filename="../core/save-html.c" line="571"/>
         <source>Name</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="571"/>
+        <location filename="../core/save-html.c" line="572"/>
         <source>Value</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="572"/>
+        <location filename="../core/save-html.c" line="573"/>
         <source>Coordinates</source>
         <translation>Koordinātas</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="573"/>
+        <location filename="../core/save-html.c" line="574"/>
         <source>Dive status</source>
         <translation type="unfinished"/>
     </message>
@@ -12662,22 +12673,22 @@ EADD: %d%s / %.1fg/ℓ
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="151"/>
+        <location filename="../core/statistics.c" line="150"/>
         <source>All (by type stats)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="162"/>
+        <location filename="../core/statistics.c" line="161"/>
         <source>All (by max depth stats)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="165"/>
+        <location filename="../core/statistics.c" line="164"/>
         <source>All (by min. temp stats)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="233"/>
+        <location filename="../core/statistics.c" line="232"/>
         <source>All (by trip stats)</source>
         <translation type="unfinished"/>
     </message>
@@ -12868,116 +12879,122 @@ EADD: %d%s / %.1fg/ℓ
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="35"/>
+        <source>Disconnect/reconnect the SDA</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/uemis-downloader.c" line="36"/>
         <source>Uemis Zurich: the file system is almost full.
 Disconnect/reconnect the dive computer
 and click &apos;Retry&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="36"/>
+        <location filename="../core/uemis-downloader.c" line="37"/>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and click Retry</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="37"/>
+        <location filename="../core/uemis-downloader.c" line="38"/>
         <source>Short write to req.txt file.
 Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="38"/>
+        <location filename="../core/uemis-downloader.c" line="39"/>
         <source>No dives to download.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="502"/>
+        <location filename="../core/uemis-downloader.c" line="503"/>
         <source>%s %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="538"/>
+        <location filename="../core/uemis-downloader.c" line="539"/>
         <source>data</source>
         <translation>dati</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="566"/>
+        <location filename="../core/uemis-downloader.c" line="567"/>
         <source>dive log #</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="568"/>
+        <location filename="../core/uemis-downloader.c" line="569"/>
         <source>dive spot #</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="570"/>
+        <location filename="../core/uemis-downloader.c" line="571"/>
         <source>details for #</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="799"/>
+        <location filename="../core/uemis-downloader.c" line="800"/>
         <source>wetsuit</source>
         <translation>Slapjš kostīms</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="799"/>
+        <location filename="../core/uemis-downloader.c" line="800"/>
         <source>semidry</source>
         <translation>pussauss</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="799"/>
+        <location filename="../core/uemis-downloader.c" line="800"/>
         <source>drysuit</source>
         <translation>Sauss kostīms</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="800"/>
+        <location filename="../core/uemis-downloader.c" line="801"/>
         <source>shorty</source>
         <translation>īss</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="800"/>
+        <location filename="../core/uemis-downloader.c" line="801"/>
         <source>vest</source>
         <translation>veste</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="800"/>
+        <location filename="../core/uemis-downloader.c" line="801"/>
         <source>long john</source>
         <translation>kombinezons</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="800"/>
+        <location filename="../core/uemis-downloader.c" line="801"/>
         <source>jacket</source>
         <translation>jaka</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="800"/>
+        <location filename="../core/uemis-downloader.c" line="801"/>
         <source>full suit</source>
         <translation>Pilns kostīms</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="800"/>
+        <location filename="../core/uemis-downloader.c" line="801"/>
         <source>2 pcs full suit</source>
         <translation>2-daļu kostīms</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="801"/>
+        <location filename="../core/uemis-downloader.c" line="802"/>
         <source>membrane</source>
         <translation>membrāna</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1340"/>
+        <location filename="../core/uemis-downloader.c" line="1348"/>
         <source>Initialise communication</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1343"/>
+        <location filename="../core/uemis-downloader.c" line="1351"/>
         <source>Uemis init failed</source>
         <translation>Kļūme inicializējot Uemis</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1355"/>
+        <location filename="../core/uemis-downloader.c" line="1363"/>
+        <location filename="../core/uemis-downloader.c" line="1466"/>
         <source>Start download</source>
         <translation>Uzsākt lejupielādi</translation>
     </message>
@@ -13142,27 +13159,27 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Atcelt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="421"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="425"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="155"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="156"/>
         <source>Invalid response from server</source>
         <translation>Nederīga servera atbilde</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="163"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="164"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Gaidīja XML tagu &apos;DiveDateReader&apos;, bet saņēma &apos;%1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="209"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="210"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Gaidīts XML tags &apos;DiveDates&apos; nav atrasts</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="216"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="217"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Kļūdaina XML atbilde. Līnija %1: %2</translation>
     </message>
@@ -13187,12 +13204,12 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Noņemt šo vietu</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="515"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="501"/>
         <source>Cyl</source>
         <translation>Balons</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="177"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="178"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
@@ -13777,73 +13794,73 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>uploadDiveLogsDE</name>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="55"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="54"/>
         <source>Cannot prepare dives, none selected?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="72"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="71"/>
         <source>building zip file to upload</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="77"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="76"/>
         <source>Stylesheet to export to divelogs.de is not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="87"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="86"/>
         <source>Failed to create zip file for upload: %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="148"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="147"/>
         <source>internal error</source>
         <translation>iekšēja kļūda</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="161"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="160"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="189"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="188"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="222"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="221"/>
         <source>Uploading dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="307"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="306"/>
         <source>Upload failed</source>
         <translation>Augšupielādēšana neizdodas</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="311"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="310"/>
         <source>Upload successful</source>
         <translation>Sekmīga augšupielādēšana</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="316"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="315"/>
         <source>Login failed</source>
         <translation>Pieteikšanās neizdevās</translation>
     </message>
     <message>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="321"/>
         <location filename="../core/uploadDiveLogsDE.cpp" line="322"/>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="323"/>
         <source>Cannot parse response</source>
         <translation>Nevar noparsēt atbildi</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="337"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="336"/>
         <source>divelogs.de not responding</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="351"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="350"/>
         <source>network error %1</source>
         <translation type="unfinished"/>
     </message>
