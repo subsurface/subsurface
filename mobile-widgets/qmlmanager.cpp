@@ -207,13 +207,11 @@ QMLManager::QMLManager() :
 	m_initialized(false),
 	m_pluggedInDeviceName(""),
 	m_showNonDiveComputers(false),
-	undoAction(Command::undoAction(this)),
 	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN)
 {
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	timer.start();
-
 	// make upload signals available in QML
 	// Remark: signal - signal connect
 	connect(uploadDiveLogsDE::instance(), &uploadDiveLogsDE::uploadFinish,
@@ -334,6 +332,7 @@ QMLManager::QMLManager() :
 
 	// setup Command infrastructure
 	Command::init();
+	undoAction = Command::undoAction(this);
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
