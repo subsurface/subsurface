@@ -965,6 +965,35 @@ bool QMLManager::checkDate(struct dive *d, QString date)
 				if (newDate.isValid())
 					goto parsed;
 			}
+			// if everything else failed - maybe the user is entering dives where they
+			// don't recall the time? So let's try date only patterns...
+			QRegularExpression usDateOnly("\\d+/\\d+/\\d+");
+			if (date.contains(usDateOnly)) {
+				newDate = QDateTime::fromString(date, "M/d/yy");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date, "M/d/yyyy");
+				if (newDate.isValid())
+					goto parsed;
+			}
+			QRegularExpression leDateOnly("\\d+\\.\\d+\\.\\d+");
+			if (date.contains(usDateOnly)) {
+				newDate = QDateTime::fromString(date, "d.M.yy");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date, "d.M.yyyy");
+				if (newDate.isValid())
+					goto parsed;
+			}
+			QRegularExpression isoDateOnly("\\d+-\\d+-\\d+");
+			if (date.contains(usDateOnly)) {
+				newDate = QDateTime::fromString(date, "yy-M-d");
+				if (newDate.isValid())
+					goto parsed;
+				newDate = QDateTime::fromString(date, "yyyy-M-d");
+				if (newDate.isValid())
+					goto parsed;
+			}
 		}
 parsed:
 		if (newDate.isValid()) {
