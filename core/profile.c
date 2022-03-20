@@ -705,9 +705,27 @@ static void calculate_sac(const struct dive *dive, const struct divecomputer *dc
 
 static void populate_secondary_sensor_data(const struct divecomputer *dc, struct plot_info *pi)
 {
-	UNUSED(dc);
-	UNUSED(pi);
+	int *seen = calloc(pi->nr_cylinders, sizeof(*seen));
+	for (int idx = 0; idx < pi->nr; ++idx)
+		for (int c = 0; c < pi->nr_cylinders; ++c)
+			if (get_plot_pressure_data(pi, idx, SENSOR_PR, c))
+				++seen[c]; // Count instances so we can differentiate a real sensor from just start and end pressure
+	int idx = 0;
 	/* We should try to see if it has interesting pressure data here */
+	for (int i = 0; i < dc->samples && idx < pi->nr; i++) {
+		struct sample *sample = dc->sample + i;
+		for (; idx < pi->nr; ++idx) {
+			if (idx == pi->nr - 1 || pi->entry[idx].sec >= sample->time.seconds)
+				// We've either found the entry at or just after the sample's time,
+				// or this is the last entry so use for the last sensor readings if there are any.
+				break;
+		}
+		for (int s = 0; s < MAX_SENSORS; ++s)
+			// Copy sensor data if available, but don't add if this dc already has sensor data
+			if (sample->sensor[s] != NO_SENSOR && seen[sample->sensor[s]] < 3 && sample->pressure[s].mbar)
+				set_plot_pressure_data(pi, idx, SENSOR_PR, sample->sensor[s], sample->pressure[s].mbar);
+	}
+	free(seen);
 }
 
 /*
@@ -807,13 +825,13 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	/*
 	 * Here, we should try to walk through all the dive computers,
 	 * and try to see if they have sensor data different from the
-	 * primary dive computer (dc).
+	 * current dive computer (dc).
 	 */
 	secondary = &dive->dc;
 	do {
 		if (secondary == dc)
 			continue;
-		populate_secondary_sensor_data(dc, pi);
+		populate_secondary_sensor_data(secondary, pi);
 	} while ((secondary = secondary->next) != NULL);
 
 	free(seen);
