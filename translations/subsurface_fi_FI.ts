@@ -876,7 +876,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="619"/>
         <source>dive guide</source>
-        <translation type="unfinished"/>
+        <translation>sukellusopas</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="750"/>
@@ -891,17 +891,17 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="878"/>
         <source>Add stop</source>
-        <translation type="unfinished"/>
+        <translation>Lisää pysähdys</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="879"/>
         <source>Remove %n stop(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Poista %n pysähdys</numerusform><numerusform>Poista %n pysähdystä</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="880"/>
         <source>Move %n stop(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Siirrä %n pysähdys</numerusform><numerusform>Siirrä %n pysähdystä</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="951"/>
@@ -966,7 +966,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1370"/>
         <source>Edit sensors</source>
-        <translation type="unfinished"/>
+        <translation>Muokkaa sensoreita</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1416"/>
@@ -2238,7 +2238,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="60"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Sukellusopas</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="72"/>
@@ -2337,7 +2337,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Sensors</source>
-        <translation type="unfinished"/>
+        <translation>Sensorit</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="57"/>
@@ -2352,12 +2352,12 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="250"/>
         <source>Sensor attached, can&apos;t move another sensor here.</source>
-        <translation type="unfinished"/>
+        <translation>Sensori liitetty, toista sensoria ei voi lisätä</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="259"/>
         <source>Select one of these cylinders: </source>
-        <translation type="unfinished"/>
+        <translation>Valitse yksi säiliö:</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="278"/>
@@ -2387,7 +2387,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="297"/>
         <source>Index of cylinder that you want to move sensor data from.</source>
-        <translation type="unfinished"/>
+        <translation>Säiliön numore, johon haluat siirtää sensorin tiedot.</translation>
     </message>
 </context>
 <context>
@@ -2400,7 +2400,7 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="349"/>
         <source>Dive guide: </source>
-        <translation type="unfinished"/>
+        <translation>Sukellusopas:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="351"/>
@@ -2509,7 +2509,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="122"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>SukellusopasSukellusopas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="129"/>
@@ -2665,7 +2665,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="299"/>
         <source>Dive guide:</source>
-        <translation type="unfinished"/>
+        <translation>Sukellusopas:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="313"/>
@@ -2800,7 +2800,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="484"/>
         <source>Dive guide:</source>
-        <translation type="unfinished"/>
+        <translation>Sukellusopas:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="492"/>
@@ -4606,7 +4606,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="255"/>
         <location filename="../qt-models/divetripmodel.cpp" line="443"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Sukellusopas</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="257"/>
@@ -8678,7 +8678,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="194"/>
         <source>SortMode</source>
-        <translation type="unfinished"/>
+        <translation>Aloitusmoodi</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="224"/>
@@ -8811,7 +8811,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsstate.cpp" line="21"/>
         <source>Bin</source>
-        <translation type="unfinished"/>
+        <translation>Laari</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="23"/>
@@ -8890,7 +8890,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="99"/>
         <source>no trip</source>
-        <translation type="unfinished"/>
+        <translation>ei retkeä</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="356"/>
@@ -9142,7 +9142,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1867"/>
         <source>Dive trip</source>
-        <translation type="unfinished"/>
+        <translation>Sukellusmatka</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1891"/>
@@ -9206,7 +9206,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Sorting</source>
-        <translation type="unfinished"/>
+        <translation>Järjestys</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="113"/>
@@ -9596,7 +9596,7 @@ Haluatk jatkaa?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="298"/>
         <source>Diveguide</source>
-        <translation type="unfinished"/>
+        <translation>Sukellusopas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="311"/>
@@ -11529,7 +11529,7 @@ Keski</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="1019"/>
         <source>read %dkb</source>
-        <translation type="unfinished"/>
+        <translation>lue %dkb</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1039"/>
@@ -12545,7 +12545,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="531"/>
         <source>Diveguide</source>
-        <translation type="unfinished"/>
+        <translation>Sukellusopas</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="532"/>
@@ -12953,7 +12953,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/uemis-downloader.c" line="35"/>
         <source>Disconnect/reconnect the SDA</source>
-        <translation type="unfinished"/>
+        <translation>Irrota/kytke uudelleen SDA</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="36"/>

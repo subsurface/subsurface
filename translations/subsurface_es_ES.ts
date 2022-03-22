@@ -876,7 +876,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="619"/>
         <source>dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Guía</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="750"/>
@@ -891,17 +891,17 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="878"/>
         <source>Add stop</source>
-        <translation type="unfinished"/>
+        <translation>Añadir parada</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="879"/>
         <source>Remove %n stop(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Borrar %n parada(s)</numerusform><numerusform>Borrar %n parada(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="880"/>
         <source>Move %n stop(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Mover %n parada(s)</numerusform><numerusform>Mover %n parada(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="951"/>
@@ -966,7 +966,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1370"/>
         <source>Edit sensors</source>
-        <translation type="unfinished"/>
+        <translation>Editar sensores</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1416"/>
@@ -2238,7 +2238,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="60"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Guía</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="72"/>
@@ -2337,7 +2337,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Sensors</source>
-        <translation type="unfinished"/>
+        <translation>Sensores</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="57"/>
@@ -2352,12 +2352,12 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="250"/>
         <source>Sensor attached, can&apos;t move another sensor here.</source>
-        <translation type="unfinished"/>
+        <translation>Sensor ya conectado, no se puede mover otro sensor aquí.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="259"/>
         <source>Select one of these cylinders: </source>
-        <translation type="unfinished"/>
+        <translation>Selecciona una de estas botellas:</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="278"/>
@@ -2388,7 +2388,7 @@ Este gas se está usando. Solo se pueden borrar botellas que no se usen en la in
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="297"/>
         <source>Index of cylinder that you want to move sensor data from.</source>
-        <translation type="unfinished"/>
+        <translation>Índice de botellas de las que quieres obtener datos de los sensores.</translation>
     </message>
 </context>
 <context>
@@ -2401,7 +2401,7 @@ Este gas se está usando. Solo se pueden borrar botellas que no se usen en la in
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="349"/>
         <source>Dive guide: </source>
-        <translation type="unfinished"/>
+        <translation>Guía:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="351"/>
@@ -2510,7 +2510,7 @@ Este gas se está usando. Solo se pueden borrar botellas que no se usen en la in
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="122"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Guía</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="129"/>
@@ -2666,7 +2666,7 @@ Este gas se está usando. Solo se pueden borrar botellas que no se usen en la in
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="299"/>
         <source>Dive guide:</source>
-        <translation type="unfinished"/>
+        <translation>Guía:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="313"/>
@@ -2801,7 +2801,7 @@ Este gas se está usando. Solo se pueden borrar botellas que no se usen en la in
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="484"/>
         <source>Dive guide:</source>
-        <translation type="unfinished"/>
+        <translation>Guía:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="492"/>
@@ -4607,7 +4607,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="255"/>
         <location filename="../qt-models/divetripmodel.cpp" line="443"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Guía</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="257"/>
@@ -9600,7 +9600,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="298"/>
         <source>Diveguide</source>
-        <translation type="unfinished"/>
+        <translation>Guía</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="311"/>
@@ -12547,7 +12547,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="531"/>
         <source>Diveguide</source>
-        <translation type="unfinished"/>
+        <translation>Guía</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="532"/>
@@ -12955,7 +12955,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/uemis-downloader.c" line="35"/>
         <source>Disconnect/reconnect the SDA</source>
-        <translation type="unfinished"/>
+        <translation>Desconectar/reconectar el SDA</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="36"/>
