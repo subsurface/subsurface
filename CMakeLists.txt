@@ -174,7 +174,11 @@ include_directories(.
 )
 
 # figure out which version of Qt we are building against
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+# in theory this should get us all the variables set up correctly, but that
+# ended up failing in subtle ways to do what was advertized; in the Qt5 case
+# some of the variables didn't get set up, so we'll immediately call it again
+# for Qt5
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets)
 
 # right now there are a few things that don't work with Qt6
 # let's disable them right here and remember our Qt version
@@ -189,9 +193,13 @@ if(QT_VERSION_MAJOR STREQUAL "6")
 	set(NO_PRINTING ON)
 	set(NO_USERMANUAL ON)
 else()
+	# as mentioned above, since some variables appear to fail to populate
+	# on some platforms, simply run this again the 'old' way
+	find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
 	set(USINGQT6 OFF)
 	set(QT5OR6 "5")
 	set(QT_VERSION ${Qt5_VERSION})
+	set(QT_INSTALL_PREFIX ${_qt5Core_install_prefix})
 	# for Qt5 we want the Location component (which is missing so far in Qt6)
 	LIST(APPEND QT_EXTRA_COMPONENTS Location)
 endif()
@@ -613,7 +621,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if(NOT QT_VERSION VERSION_LESS 5.11.0)
 		# hack to work around the fact that we don't process the dependencies of plugins
 		# as of Qt 5.11 this additional DLL is needed and it's only referenced in the qml DLLs
-		install(FILES ${QT_INSTALL_PREFIX}/bin/QtPositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+		install(FILES ${QT_INSTALL_PREFIX}/bin/Qt5PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
 	endif()
 
 	if(NOT DEFINED MAKENSIS)
