@@ -11,7 +11,7 @@
 #include "core/settings/qPref.h"
 
 char *settings_suffix = NULL;
-static QTranslator qtTranslator, ssrfTranslator;
+static QTranslator qtTranslator, ssrfTranslator, parentLanguageTranslator;
 
 void init_qt_late()
 {
@@ -61,18 +61,8 @@ void init_qt_late()
 	QLocale loc;
 
 	// assign en_GB for use in South African locale
-	// and capture other French and Spanish speaking countries with the corresponding canonical locales
 	if (loc.country() == QLocale::SouthAfrica) {
 		loc.setDefault(QLocale("en_GB"));
-		loc = QLocale();
-	} else if (loc.language() == QLocale::French) {
-		loc.setDefault(QLocale("fr_FR"));
-		loc = QLocale();
-	} else if (loc.language() == QLocale::Spanish) {
-		loc.setDefault(QLocale("es_ES"));
-		loc = QLocale();
-	} else if (loc.language() == QLocale::German && loc.country() != QLocale::Switzerland) {
-		loc.setDefault(QLocale("de_DE"));
 		loc = QLocale();
 	}
 	initUiLanguage();
@@ -107,10 +97,40 @@ void init_qt_late()
 			}
 		}
 	}
+	// when creating our language names, we didn't define generic languages with additional
+	// country specific extensions, instead we included the "primary" country in the
+	// translation designations. This breaks the way Qt finds fall-back translations.
+	// Changing this now seems rather tedious, so instead we manually create a few
+	// obvious fallbacks
+	QPair<QLocale::Language, QLocale::Country> parents[] = {
+		{ QLocale::German, QLocale::Germany },
+		{ QLocale::Portuguese, QLocale::Portugal },
+		{ QLocale::French, QLocale::France},
+		{ QLocale::Spanish, QLocale::Spain}
+	};
+	for (auto parent: parents) {
+		if (loc.language() == parent.first && loc.country() != parent.second) {
+			// first load de_DE so it's used as fall-back
+			QLocale parentLoc = QLocale(parent.first, parent.second);
+			if (parentLanguageTranslator.load(parentLoc, "subsurface", "_") ||
+			    parentLanguageTranslator.load(parentLoc, "subsurface", "_", translationLocation) ||
+			    parentLanguageTranslator.load(parentLoc, "subsurface", "_", getSubsurfaceDataPath("translations")) ||
+			    parentLanguageTranslator.load(parentLoc, "subsurface", "_", getSubsurfaceDataPath("../translations"))) {
+				if (verbose)
+					qDebug() << "loading" << parentLoc.name() << "translations";
+				application->installTranslator(&parentLanguageTranslator);
+			} else {
+				qDebug() << "can't find Subsurface localization for locale" << parentLoc.name();
+			}
+		}
+
+	}
 	if (ssrfTranslator.load(loc, "subsurface", "_") ||
 	    ssrfTranslator.load(loc, "subsurface", "_", translationLocation) ||
 	    ssrfTranslator.load(loc, "subsurface", "_", getSubsurfaceDataPath("translations")) ||
 	    ssrfTranslator.load(loc, "subsurface", "_", getSubsurfaceDataPath("../translations"))) {
+		if (verbose)
+			qDebug() << "loading" << uiLang << "translations";
 		application->installTranslator(&ssrfTranslator);
 	} else {
 		qDebug() << "can't find Subsurface localization for locale" << uiLang;
