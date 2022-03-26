@@ -876,7 +876,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="619"/>
         <source>dive guide</source>
-        <translation type="unfinished"/>
+        <translation>guia de busseig</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="750"/>
@@ -891,17 +891,17 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="878"/>
         <source>Add stop</source>
-        <translation type="unfinished"/>
+        <translation>Afegeix una parada</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="879"/>
         <source>Remove %n stop(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>elimina %n parades</numerusform><numerusform>elimina %n parada</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="880"/>
         <source>Move %n stop(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Mou %n parades</numerusform><numerusform>Mou %n parada</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="951"/>
@@ -966,7 +966,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1370"/>
         <source>Edit sensors</source>
-        <translation type="unfinished"/>
+        <translation>Edita els sensors</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1416"/>
@@ -2238,7 +2238,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="60"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Guia de busseig</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="72"/>
@@ -2337,7 +2337,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Sensors</source>
-        <translation type="unfinished"/>
+        <translation>Sensors</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="57"/>
@@ -2352,12 +2352,12 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="250"/>
         <source>Sensor attached, can&apos;t move another sensor here.</source>
-        <translation type="unfinished"/>
+        <translation>Sensor adjunt, no es pot moure aquí un altre sensor.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="259"/>
         <source>Select one of these cylinders: </source>
-        <translation type="unfinished"/>
+        <translation>Seleccioneu una d&apos;aquestes ampolles:</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="278"/>
@@ -2387,7 +2387,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="297"/>
         <source>Index of cylinder that you want to move sensor data from.</source>
-        <translation type="unfinished"/>
+        <translation>Índex d&apos;ampolles del qual voleu moure les dades del sensor.</translation>
     </message>
 </context>
 <context>
@@ -2400,7 +2400,7 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="349"/>
         <source>Dive guide: </source>
-        <translation type="unfinished"/>
+        <translation>Guia de busseig:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="351"/>
@@ -2509,7 +2509,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="122"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Guia de busseig</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="129"/>
@@ -2665,7 +2665,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="299"/>
         <source>Dive guide:</source>
-        <translation type="unfinished"/>
+        <translation>Guia de busseig:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="313"/>
@@ -2800,7 +2800,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="484"/>
         <source>Dive guide:</source>
-        <translation type="unfinished"/>
+        <translation>Guia de busseig:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="492"/>
@@ -4609,7 +4609,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="255"/>
         <location filename="../qt-models/divetripmodel.cpp" line="443"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Guia de busseig</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="257"/>
@@ -9603,7 +9603,7 @@ Voleu continuar?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="298"/>
         <source>Diveguide</source>
-        <translation type="unfinished"/>
+        <translation>Guia de busseig</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="311"/>
@@ -12540,7 +12540,7 @@ EADD: %d% s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="531"/>
         <source>Diveguide</source>
-        <translation type="unfinished"/>
+        <translation>Guia de busseig</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="532"/>
@@ -12948,7 +12948,7 @@ EADD: %d% s / %.1fg/ℓ
     <message>
         <location filename="../core/uemis-downloader.c" line="35"/>
         <source>Disconnect/reconnect the SDA</source>
-        <translation type="unfinished"/>
+        <translation>Desconnecta/torna a connectar la SDA</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="36"/>

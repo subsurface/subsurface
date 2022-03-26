@@ -25,7 +25,10 @@
 
 © Subsurface developer team
 2011-2022</source>
-        <translation type="unfinished"/>
+        <translation>Versiunea: %1
+
+© Echipa Subsurface 
+2011-2022</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="65"/>
@@ -348,7 +351,7 @@
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="123"/>
         <source>Trying different cloud server...</source>
-        <translation type="unfinished"/>
+        <translation>Incerc server cloud diferit...</translation>
     </message>
 </context>
 <context>
@@ -625,7 +628,7 @@
     <message>
         <location filename="../commands/command_device.cpp" line="15"/>
         <source>Set nickname of device %1 (serial %2) to %3</source>
-        <translation type="unfinished"/>
+        <translation>Setează nume al dispozitivului %1 (serial %2) în %3</translation>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="403"/>
@@ -873,7 +876,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="619"/>
         <source>dive guide</source>
-        <translation type="unfinished"/>
+        <translation>ghid scufundare</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="750"/>
@@ -888,17 +891,17 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="878"/>
         <source>Add stop</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă oprire</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="879"/>
         <source>Remove %n stop(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Șterge %n oprire(i)</numerusform><numerusform>Șterge %n oprire(i)</numerusform><numerusform>Șterge %n oprire(i)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_edit.cpp" line="880"/>
         <source>Move %n stop(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Mută %n oprire(i)</numerusform><numerusform>Mută %n oprire(i)</numerusform><numerusform>Mută %n oprire(i)</numerusform></translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="951"/>
@@ -963,7 +966,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="1370"/>
         <source>Edit sensors</source>
-        <translation type="unfinished"/>
+        <translation>Editează senzori</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="1416"/>
@@ -2235,7 +2238,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="60"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Ghid scufundare</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CopySettings.qml" line="72"/>
@@ -2334,7 +2337,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Sensors</source>
-        <translation type="unfinished"/>
+        <translation>Senzori</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="57"/>
@@ -2349,12 +2352,12 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="250"/>
         <source>Sensor attached, can&apos;t move another sensor here.</source>
-        <translation type="unfinished"/>
+        <translation>Senzor atașat, nu se poate muta alt senzor aici.</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="259"/>
         <source>Select one of these cylinders: </source>
-        <translation type="unfinished"/>
+        <translation>Selectează unul din cilindrii aceștia:</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="278"/>
@@ -2384,7 +2387,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="297"/>
         <source>Index of cylinder that you want to move sensor data from.</source>
-        <translation type="unfinished"/>
+        <translation>Indexul cilindrului de unde vrei sa muți datele senzorului.</translation>
     </message>
 </context>
 <context>
@@ -2397,7 +2400,7 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="349"/>
         <source>Dive guide: </source>
-        <translation type="unfinished"/>
+        <translation>Ghid scufundare:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="351"/>
@@ -2448,12 +2451,12 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="386"/>
         <source>Dive number: </source>
-        <translation type="unfinished"/>
+        <translation>Număr scufundare:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="388"/>
         <source>Date / time: </source>
-        <translation type="unfinished"/>
+        <translation>Data / ora:</translation>
     </message>
 </context>
 <context>
@@ -2506,7 +2509,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="122"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Ghid scufundare</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="129"/>
@@ -2521,7 +2524,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="143"/>
         <source>Dive Number</source>
-        <translation type="unfinished"/>
+        <translation>Număr scufundare</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="150"/>
@@ -2662,7 +2665,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="299"/>
         <source>Dive guide:</source>
-        <translation type="unfinished"/>
+        <translation>Ghid scufundare:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="313"/>
@@ -2797,7 +2800,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="484"/>
         <source>Dive guide:</source>
-        <translation type="unfinished"/>
+        <translation>Ghid scufundare:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="492"/>
@@ -2895,7 +2898,8 @@
         <location filename="../mobile-widgets/qml/DiveList.qml" line="29"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Sincronizare manuală cu cloud completă
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="176"/>
@@ -3028,7 +3032,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="790"/>
         <source>Remove dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Elimină scufundare/scufundări din excursie</numerusform><numerusform>Elimină scufundare/scufundări din excursie</numerusform><numerusform>Elimină scufundare/scufundări din excursie</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="792"/>
@@ -3038,12 +3042,12 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="807"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Adaugă scufundare(i) excursiei aflate sub</numerusform><numerusform>Adaugă scufundare(i) excursiei aflate sub</numerusform><numerusform>Adaugă scufundare(i) excursiei aflate sub</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="809"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Adaugă scufundare(i) excursiei aflate sub</numerusform><numerusform>Adaugă scufundare(i) excursiei aflate sub</numerusform><numerusform>Adaugă scufundare(i) excursiei aflate sub</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="813"/>
@@ -3058,17 +3062,17 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
         <source>Delete dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Șterge scufundare/scufundări</numerusform><numerusform>Șterge scufundare/scufundări</numerusform><numerusform>Șterge scufundare/scufundări</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="820"/>
         <source>Mark dive(s) valid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Marchează scufundare(i) ca valid</numerusform><numerusform>Marchează scufundare(i) ca valid</numerusform><numerusform>Marchează scufundare(i) ca valid</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="822"/>
         <source>Mark dive(s) invalid</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Marchează scufundare(i) ca valid</numerusform><numerusform>Marchează scufundare(i) ca valid</numerusform><numerusform>Marchează scufundarea ca invalidă</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
@@ -3078,12 +3082,12 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="827"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Adaugă scufundare(i) la excursie arbitrară</numerusform><numerusform>Adaugă scufundare(i) la excursie arbitrară</numerusform><numerusform>Adaugă scufundare(i) la excursie arbitrară</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../desktop-widgets/divelistview.cpp" line="828"/>
         <source>Renumber dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Renumerotează scufundarea/scufundările</numerusform><numerusform>Renumerotează scufundarea/scufundările</numerusform><numerusform>Renumerotează scufundarea/scufundările</numerusform></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="829"/>
@@ -4602,7 +4606,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="255"/>
         <location filename="../qt-models/divetripmodel.cpp" line="443"/>
         <source>Dive guide</source>
-        <translation type="unfinished"/>
+        <translation>Ghid scufundare</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="257"/>
@@ -7646,7 +7650,7 @@ Va rugam exportati sablonul in alt fisier.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="543"/>
         <source>Rename this dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Redenumește acest computer</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="558"/>
@@ -7707,12 +7711,12 @@ Va rugam exportati sablonul in alt fisier.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="675"/>
         <source>Edit nickname</source>
-        <translation type="unfinished"/>
+        <translation>Editeză numele</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="676"/>
         <source>Set new nickname for %1 (serial %2):</source>
-        <translation type="unfinished"/>
+        <translation>Setează nume nou pentru %1 (seria %2):</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="687"/>
@@ -8429,7 +8433,7 @@ Vă rugăm raportați computerele care au nevoie de această setare</translation
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="34"/>
         <source>Manually shift times of image(s) by hours:minutes</source>
-        <translation type="unfinished"/>
+        <translation>Schimbă manual data imaginiri(lor) cu ore:minute</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="44"/>
@@ -8444,7 +8448,7 @@ Vă rugăm raportați computerele care au nevoie de această setare</translation
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="65"/>
         <source>Use camera sync</source>
-        <translation type="unfinished"/>
+        <translation>Folosește sincronizare cameră</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="80"/>
@@ -8676,7 +8680,7 @@ Fisiere cu data/ora neconforme</translation>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="194"/>
         <source>SortMode</source>
-        <translation type="unfinished"/>
+        <translation>ModSortare</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="224"/>
@@ -8809,7 +8813,7 @@ Fisiere cu data/ora neconforme</translation>
     <message>
         <location filename="../stats/statsstate.cpp" line="21"/>
         <source>Bin</source>
-        <translation type="unfinished"/>
+        <translation>Bin</translation>
     </message>
     <message>
         <location filename="../stats/statsstate.cpp" line="23"/>
@@ -8888,7 +8892,7 @@ Fisiere cu data/ora neconforme</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="99"/>
         <source>no trip</source>
-        <translation type="unfinished"/>
+        <translation>nici o excursie</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="356"/>
@@ -9140,7 +9144,7 @@ Fisiere cu data/ora neconforme</translation>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1867"/>
         <source>Dive trip</source>
-        <translation type="unfinished"/>
+        <translation>Excursie scufundare</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="1891"/>
@@ -9204,32 +9208,32 @@ Fisiere cu data/ora neconforme</translation>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="101"/>
         <source>Sorting</source>
-        <translation type="unfinished"/>
+        <translation>Sortare</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="113"/>
         <source>Restriction</source>
-        <translation type="unfinished"/>
+        <translation>Restricție</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="122"/>
         <source>Restrict to selection</source>
-        <translation type="unfinished"/>
+        <translation>Restricție de selectat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.ui" line="129"/>
         <source>Reset restriction</source>
-        <translation type="unfinished"/>
+        <translation>Resetează restricție</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="171"/>
         <source>Analyzing all dives</source>
-        <translation type="unfinished"/>
+        <translation>Analiza tuturor scufundărilor</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/statswidget.cpp" line="173"/>
         <source>Analyzing subset (%L1) dives</source>
-        <translation type="unfinished"/>
+        <translation>Se analizează subset (%L1) scufundări</translation>
     </message>
 </context>
 <context>
@@ -9262,7 +9266,7 @@ Fisiere cu data/ora neconforme</translation>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2022&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Software jurnal de scufundare multi platformă&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, și alții, 2011-2022&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -9310,13 +9314,14 @@ Fisiere cu data/ora neconforme</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="189"/>
         <source>Remove cylinder?</source>
-        <translation type="unfinished"/>
+        <translation>Șterge cilindru?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="190"/>
         <source>The deleted cylinder has sensor readings, which will be lost.
 Do you want to continue?</source>
-        <translation type="unfinished"/>
+        <translation>Cilindrul șters are citiri de senzor, care vor fi pierdute.
+Vrei să continui?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="219"/>
@@ -9593,7 +9598,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="298"/>
         <source>Diveguide</source>
-        <translation type="unfinished"/>
+        <translation>Ghid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="311"/>
@@ -11526,7 +11531,7 @@ Medie</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="1019"/>
         <source>read %dkb</source>
-        <translation type="unfinished"/>
+        <translation>citește %dkb</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1039"/>
@@ -12152,7 +12157,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1442"/>
         <source>Calculated ceiling %.1f%s
 </source>
-        <translation type="unfinished"/>
+        <translation>Plafonul calculat %.1f%s
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1448"/>
@@ -12541,7 +12547,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="531"/>
         <source>Diveguide</source>
-        <translation type="unfinished"/>
+        <translation>Ghid</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="532"/>
@@ -12949,7 +12955,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/uemis-downloader.c" line="35"/>
         <source>Disconnect/reconnect the SDA</source>
-        <translation type="unfinished"/>
+        <translation>Deconectează/reconectează SDA</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="36"/>
@@ -13225,7 +13231,7 @@ Este conectat corect dispozitivul Uemis Zurich?</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
         <source>Exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Se exportă...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
@@ -13407,7 +13413,8 @@ Este conectat corect dispozitivul Uemis Zurich?</translation>
         <location filename="../mobile-widgets/qml/main.qml" line="342"/>
         <source>Completed manual sync with cloud
 </source>
-        <translation type="unfinished"/>
+        <translation>Sincronizare manuala cu cloud completă
+</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="350"/>
