@@ -103,6 +103,17 @@ other editors that implement this coding style, please add them here.
   where the two meet, use your best judgment and go for best consistency
   (i.e., where does the name "originate")
 
+* macro names should be capitalized; e.g., prefer
+  ```
+  #define FROB 17
+  #define FROBULATE(x) (x)+FROB
+  ```
+  to
+  ```
+  #define frob 17
+  #define frobulate(x) (x)+frob
+  ```
+
 * there is a strong preference for lower case file names; sometimes conventions
   or outside requirements make camelCase filenames the better (or only) choice,
   but absent such an outside reason all file names should be lower case
