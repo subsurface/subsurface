@@ -1,3 +1,4 @@
+- core: add support for separator characters when using degree-style coordinates
 - profile: include profile editing in undo system
 - mobile: Add a dark theme for statistics
 - core: avoid crash with corrupted cloud storage

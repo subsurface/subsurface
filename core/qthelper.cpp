@@ -129,6 +129,7 @@ static bool parseCoord(const QString &txt, int &pos, const QString &positives,
 		       const QString &negatives, const QString &others,
 		       double &value)
 {
+	static const QString separators = QString(",;");
 	bool numberDefined = false, degreesDefined = false,
 		minutesDefined = false, secondsDefined = false;
 	double number = 0.0;
@@ -200,11 +201,8 @@ static bool parseCoord(const QString &txt, int &pos, const QString &positives,
 			numberDefined = false;
 			secondsDefined = true;
 		} else if ((numberDefined || minutesDefined || secondsDefined) &&
-			   (txt[pos] == ',' || txt[pos] == ';')) {
-			// next coordinate coming up
-			// eat the ',' and any subsequent white space
-			while (++pos < txt.size() && txt[pos].isSpace())
-				/* nothing */ ;
+			   separators.indexOf(txt[pos]) >= 0) {
+			// separator; this coordinate is finished
 			break;
 		} else {
 			return false;
@@ -219,6 +217,12 @@ static bool parseCoord(const QString &txt, int &pos, const QString &positives,
 		value += number / 3600.0;
 	else if (numberDefined)
 		return false;
+
+	// We parsed a valid coordinate; eat any subsequent separators and/or
+	// whitespace
+	while (pos < txt.size() && (txt[pos].isSpace() || separators.indexOf(txt[pos]) >= 0))
+		pos++;
+
 	if (sign == -1) value *= -1.0;
 	return true;
 }
