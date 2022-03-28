@@ -104,7 +104,7 @@ void init_qt_late()
 	// obvious fallbacks
 	QPair<QLocale::Language, QLocale::Country> parents[] = {
 		{ QLocale::German, QLocale::Germany },
-		{ QLocale::Portuguese, QLocale::Brazil },
+		{ QLocale::Portuguese, QLocale::Portugal },
 		{ QLocale::French, QLocale::France},
 		{ QLocale::Spanish, QLocale::Spain}
 	};
