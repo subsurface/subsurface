@@ -2413,6 +2413,11 @@
                 <string>Sensor</string>
                </property>
               </item>
+              <item>
+               <property name="text">
+                <string>Auto SP</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="6" column="2">
