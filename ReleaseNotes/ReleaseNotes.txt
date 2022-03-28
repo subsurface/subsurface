@@ -2,6 +2,13 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 5.0.8
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- core: add support for separator characters when using degree-style coordinates
+- profile: plot sensor data from other dive computer if available
+- build-system: fix packaging errors that prevented maps from being shown on Windows and macOS
+- translations: fall back to related translations (before falling back to US English)
+
 New in _Subsurface_ 5.0.7
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - profile: include profile editing in undo system
