@@ -3839,7 +3839,7 @@
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="74"/>
         <source>Planned dive time</source>
-        <translation>Geplande duikdatum</translation>
+        <translation>Geplande duikdatum/tijd</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="117"/>
@@ -4378,7 +4378,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DiveSummary.qml" line="85"/>
         <source>Refresh</source>
-        <translation>Ververs</translation>
+        <translation>Verversen</translation>
     </message>
 </context>
 <context>
