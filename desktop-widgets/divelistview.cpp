@@ -905,46 +905,53 @@ void DiveListView::loadWebImages()
 	URLDialog urlDialog(this);
 	if (!urlDialog.exec())
 		return;
-	loadImageFromURL(QUrl::fromUserInput(urlDialog.url()));
+	loadImagesFromURLs(urlDialog.url());
 }
 
-void DiveListView::loadImageFromURL(QUrl url)
+void DiveListView::loadImagesFromURLs(QString urls)
 {
-	if (url.isValid()) {
-		QEventLoop loop;
-		QNetworkRequest request(url);
-		QNetworkReply *reply = manager.get(request);
-		while (reply->isRunning()) {
-			loop.processEvents();
-			sleep(1);
-		}
-		QByteArray imageData = reply->readAll();
+	QStringList validUrls;
+	QStringList urlList = urls.split('\n');
+	QStringList::ConstIterator userUrl;
+	for (userUrl = urlList.constBegin(); userUrl != urlList.constEnd(); ++userUrl) {
+		QUrl url = QUrl::fromUserInput(*userUrl);
+		if (url.isValid()) {
+			QEventLoop loop;
+			QNetworkRequest request(url);
+			QNetworkReply *reply = manager.get(request);
+			while (reply->isRunning()) {
+				loop.processEvents();
+				sleep(1);
+			}
+			QByteArray imageData = reply->readAll();
 
-		QImage image = QImage();
-		image.loadFromData(imageData);
-		if (image.isNull()) {
-			// If this is not an image, maybe it's an html file and Miika can provide some xslr magic to extract images.
-			// In this case we would call the function recursively on the list of image source urls;
-			report_error(qPrintable(tr("%1 does not appear to be an image").arg(url.toString())));
-			return;
-		}
+			QImage image = QImage();
+			image.loadFromData(imageData);
+			if (image.isNull()) {
+				// If this is not an image, maybe it's an html file and Miika can provide some xslr magic to extract images.
+				// In this case we would call the function recursively on the list of image source urls;
+				report_error(qPrintable(tr("%1 does not appear to be an image").arg(url.toString())));
+				return;
+			}
 
-		QCryptographicHash hash(QCryptographicHash::Sha1);
-		hash.addData(url.toString().toUtf8());
-		QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
-		QDir dir(path);
-		if (!dir.exists())
-			dir.mkpath(path);
-		QFile imageFile(path.append("/").append(hash.result().toHex()));
-		if (imageFile.open(QIODevice::WriteOnly)) {
-			QDataStream stream(&imageFile);
-			stream.writeRawData(imageData.data(), imageData.length());
-			imageFile.waitForBytesWritten(-1);
-			imageFile.close();
-			learnPictureFilename(url.toString(), imageFile.fileName());
-			matchImagesToDives(QStringList(url.toString()));
+			QCryptographicHash hash(QCryptographicHash::Sha1);
+			hash.addData(url.toString().toUtf8());
+			QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
+			QDir dir(path);
+			if (!dir.exists())
+				dir.mkpath(path);
+			QFile imageFile(path.append("/").append(hash.result().toHex()));
+			if (imageFile.open(QIODevice::WriteOnly)) {
+				QDataStream stream(&imageFile);
+				stream.writeRawData(imageData.data(), imageData.length());
+				imageFile.waitForBytesWritten(-1);
+				imageFile.close();
+				learnPictureFilename(url.toString(), imageFile.fileName());
+				validUrls << url.toString();
+			}
 		}
 	}
+	matchImagesToDives(validUrls);
 }
 
 QString DiveListView::lastUsedImageDir()
