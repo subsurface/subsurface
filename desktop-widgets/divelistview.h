@@ -82,7 +82,7 @@ private:
 	int lastImageTimeOffset();
 	void addToTrip(int delta);
 	void matchImagesToDives(QStringList fileNames);
-	void loadImageFromURL(QUrl url);
+	void loadImagesFromURLs(QString urls);
 	bool eventFilter(QObject *, QEvent *) override;
 	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void contextMenuEvent(QContextMenuEvent *event) override;
