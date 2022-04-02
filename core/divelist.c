@@ -21,6 +21,7 @@
 #include "trip.h"
 
 bool autogroup = false;
+extern void command_clear_from_C();
 
 void set_autogroup(bool value)
 {
@@ -1391,6 +1392,7 @@ void clear_dive_file_data()
 	clear_git_id();
 
 	reset_tank_info_table(&tank_info_table);
+	command_clear_from_C();
 
 	/* Inform frontend of reset data. This should reset all the models. */
 	emit_reset_signal();

@@ -23,7 +23,10 @@ void init()
 
 void clear()
 {
-	undoStack->clear();
+	// this can get called from C code even if the Command code was never initialized
+	// (really only in the case of tests like TestParse)
+	if (undoStack)
+		undoStack->clear();
 }
 
 void setClean()
@@ -113,3 +116,9 @@ bool placingCommand()
 }
 
 } // namespace Command
+
+extern "C" {
+void command_clear_from_C() {
+	Command::clear();
+}
+}
