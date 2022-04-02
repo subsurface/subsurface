@@ -513,7 +513,6 @@ void MainWindow::closeCurrentFile()
 	if (!existing_filename)
 		setTitle();
 	disableShortcuts();
-	Command::setClean();
 }
 
 void MainWindow::updateCloudOnlineStatus()
