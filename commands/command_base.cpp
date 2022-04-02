@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
+#include "command.h"
 #include "command_base.h"
 #include "core/globals.h"
 #include "core/qthelper.h" // for updateWindowTitle()
@@ -18,6 +19,7 @@ void init()
 {
 	undoStack = make_global<QUndoStack>();
 	QObject::connect(undoStack, &QUndoStack::cleanChanged, &updateWindowTitle);
+	QObject::connect(&diveListNotifier, &DiveListNotifier::dataReset, &Command::clear);
 	changesCallback = &changesMade;
 }
 
