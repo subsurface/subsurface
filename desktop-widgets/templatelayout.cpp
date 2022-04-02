@@ -319,6 +319,16 @@ static std::vector<const cylinder_t *> cylinderList(const dive *d)
 	return res;
 }
 
+static QStringList pictureList(const dive *d)
+{
+	QStringList res;
+	res.reserve(d->pictures.nr);
+	FOR_EACH_PICTURE(d) {
+		res << QString(picture->filename);
+	}
+	return res;
+ }
+
 void TemplateLayout::parser(QList<token> tokenList, int from, int to, QTextStream &out, State &state)
 {
 	for (int pos = from; pos < to; ++pos) {
@@ -359,6 +369,11 @@ void TemplateLayout::parser(QList<token> tokenList, int from, int to, QTextStrea
 						parser_for(tokenList, pos, loop_end, capture, state, cylinderList(*state.currentDive), state.currentCylinderObject, false);
 					else
 						qWarning("cylinderObjects loop outside of dive");
+				} else if (listname == "pictures") {
+					if (state.currentDive)
+						parser_for(tokenList, pos, loop_end, capture, state, pictureList(*state.currentDive), state.currentPicture, false);
+					else
+						qWarning("pictures loop outside of dive");
 				} else {
 					qWarning("unknown loop: %s", qPrintable(listname));
 				}
@@ -485,6 +500,10 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 	} else if (list == "cylinders") {
 		if (state.currentCylinder && property == "description") {
 			return *state.currentCylinder;
+		}
+	} else if (list == "pictures") {
+		if (state.currentPicture && property == "url") {
+			return QUrl::fromUserInput(*state.currentPicture).toString();
 		}
 	} else if (list == "cylinderObjects") {
 		if (!state.currentCylinderObject)

@@ -43,6 +43,7 @@ private:
 		const stats_t * const *currentYear = nullptr;
 		const QString *currentCylinder = nullptr;
 		const cylinder_t * const *currentCylinderObject = nullptr;
+		const QString *currentPicture = nullptr;
 	};
 	const print_options &printOptions;
 	const template_options &templateOptions;
