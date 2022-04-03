@@ -62,13 +62,13 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 	label->setZValue(101);
 }
 
-void TankItem::setData(const struct dive *d, int plotStartTime, int plotEndTime)
+void TankItem::setData(const struct dive *d, const struct divecomputer *dc, int plotStartTime, int plotEndTime)
 {
 	// remove the old rectangles
 	qDeleteAll(rects);
 	rects.clear();
 
-	if (!d)
+	if (!d || !dc)
 		return;
 
 	// We don't have enougth data to calculate things, quit.
@@ -78,10 +78,6 @@ void TankItem::setData(const struct dive *d, int plotStartTime, int plotEndTime)
 	// Bail if there are no cylinders
 	if (d->cylinders.nr <= 0)
 		return;
-
-	// get the information directly from the displayed dive
-	// (get_dive_dc() always returns a valid dive computer)
-	const struct divecomputer *dc = get_dive_dc_const(d, dc_number);
 
 	// start with the first gasmix and at the start of the dive
 	int cyl = explicit_first_cylinder(d, dc);
