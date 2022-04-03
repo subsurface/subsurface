@@ -514,7 +514,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	animatedAxes.push_back(timeAxis);
 	cylinderPressureAxis->setBounds(plotInfo.minpressure, plotInfo.maxpressure);
 
-	tankItem->setData(d, firstSecond, lastSecond);
+	tankItem->setData(d, currentdc, firstSecond, lastSecond);
 
 	if (ppGraphsEnabled(currentdc, simplified)) {
 		double max = prefs.pp_graphs.phe ? max_gas(plotInfo, &gas_pressures::he) : -1;

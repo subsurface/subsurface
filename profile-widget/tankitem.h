@@ -8,13 +8,14 @@
 #include <QBrush>
 
 struct dive;
+struct divecomputer;
 class DiveCartesianAxis;
 
 class TankItem : public QGraphicsRectItem
 {
 public:
 	explicit TankItem(const DiveCartesianAxis &axis, double dpr);
-	void setData(const struct dive *d, int plotStartTime, int plotEndTime);
+	void setData(const struct dive *d, const struct divecomputer *dc, int plotStartTime, int plotEndTime);
 	double height() const;
 
 private:
