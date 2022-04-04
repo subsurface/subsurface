@@ -7,6 +7,8 @@
 struct dive;
 
 extern int amount_selected;
+extern unsigned int dc_number;
+extern struct dive *current_dive;
 
 /*** C and C++ functions ***/
 
@@ -40,9 +42,10 @@ extern void dump_selection(void);
 #include <vector>
 
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
-// Set the current dive to "currentDive". "currentDive" must be an element of "selection" (or
-// null if "seletion" is empty).
-void setSelection(const std::vector<dive *> &selection, dive *currentDive);
+// Set the current dive to "currentDive" and the current dive computer to "currentDc".
+// "currentDive" must be an element of "selection" (or null if "seletion" is empty).
+// If "currentDc" is negative, an attempt will be made to keep the current computer number.
+void setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc);
 
 // Get currently selectd dives
 std::vector<dive *> getDiveSelection();

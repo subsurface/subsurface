@@ -5,6 +5,7 @@
 #include "core/errorhelper.h"
 #include "core/subsurface-float.h"
 #include "core/metrics.h"
+#include "core/subsurface-string.h"
 #include <QTransform>
 #include <QScreen>
 #include <QElapsedTimer>

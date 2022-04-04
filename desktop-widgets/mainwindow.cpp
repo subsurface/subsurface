@@ -28,6 +28,7 @@
 #include "core/import-csv.h"
 #include "core/planner.h"
 #include "core/qthelper.h"
+#include "core/selection.h"
 #include "core/subsurface-string.h"
 #include "core/trip.h"
 #include "core/version.h"

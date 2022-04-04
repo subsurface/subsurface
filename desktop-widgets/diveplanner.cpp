@@ -5,6 +5,7 @@
 #include "core/planner.h"
 #include "core/qthelper.h"
 #include "core/units.h"
+#include "core/selection.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/gettextfromc.h"

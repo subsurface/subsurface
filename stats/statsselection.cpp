@@ -38,5 +38,5 @@ void processSelection(std::vector<dive *> dives, SelectionModifier modifier)
 		selected = std::move(dives);
 	}
 
-	setSelection(selected, selected.empty() ? nullptr : selected.front());
+	setSelection(selected, selected.empty() ? nullptr : selected.front(), -1);
 }

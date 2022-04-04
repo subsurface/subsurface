@@ -132,7 +132,7 @@ void ScatterSeries::selectItemsInRect(const QRectF &rect, SelectionModifier modi
 			selected.push_back(items[idx].d);
 	}
 
-	setSelection(selected, selected.empty() ? nullptr : selected.front());
+	setSelection(selected, selected.empty() ? nullptr : selected.front(), -1);
 }
 
 static QString dataInfo(const StatsVariable &var, const dive *d)

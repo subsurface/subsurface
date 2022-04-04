@@ -159,7 +159,7 @@ void EditBase<T>::undo()
 	DiveField id = fieldId();
 	emit diveListNotifier.divesChanged(stdToQt<dive *>(dives), id);
 	if (!placingCommand())
-		setSelection(selectedDives, current);
+		setSelection(selectedDives, current, -1);
 }
 
 // We have to manually instantiate the constructors of the EditBase class,
@@ -552,7 +552,7 @@ void EditTagsBase::undo()
 	// Send signals.
 	DiveField id = fieldId();
 	emit diveListNotifier.divesChanged(stdToQt<dive *>(dives), id);
-	setSelection(selectedDives, current);
+	setSelection(selectedDives, current, -1);
 }
 
 // Undo and redo do the same as just the stored value is exchanged
@@ -862,7 +862,7 @@ void ReplanDive::undo()
 	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DATETIME | DiveField::DURATION | DiveField::DEPTH | DiveField::MODE |
 							  DiveField::NOTES | DiveField::SALINITY | DiveField::ATM_PRESS);
 	if (!placingCommand())
-		setSelection({ d }, d);
+		setSelection({ d }, d, -1);
 }
 
 // Redo and undo do the same
@@ -935,7 +935,7 @@ void EditProfile::undo()
 	QVector<dive *> divesToNotify = { d };
 	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DURATION | DiveField::DEPTH);
 	if (!placingCommand())
-		setSelection({ d }, d);
+		setSelection({ d }, d, dcNr);
 }
 
 // Redo and undo do the same
@@ -1521,7 +1521,7 @@ void EditDive::exchangeDives()
 	emit diveListNotifier.divesChanged(dives, changedFields);
 
 	// Select the changed dives
-	setSelection( { oldDive }, oldDive);
+	setSelection( { oldDive }, oldDive, -1);
 }
 
 void EditDive::editDs()

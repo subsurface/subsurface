@@ -30,9 +30,6 @@
 
 extern int ascent_velocity(int depth, int avg_depth, int bottom_time);
 
-struct dive *current_dive = NULL;
-unsigned int dc_number = 0;
-
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
 static void dump_pi(struct plot_info *pi)

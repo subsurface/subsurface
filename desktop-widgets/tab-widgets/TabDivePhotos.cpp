@@ -11,8 +11,9 @@
 #include <QUrl>
 #include <QMessageBox>
 #include <QFileInfo>
-#include "core/save-profiledata.h"
 #include "core/membuffer.h"
+#include "core/save-profiledata.h"
+#include "core/selection.h"
 
 //TODO: Remove those in the future.
 #include "../mainwindow.h"
