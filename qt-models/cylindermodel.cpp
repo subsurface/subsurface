@@ -8,6 +8,7 @@
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
 #include "core/sample.h"
+#include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/subsurface-string.h"
 #include <string>

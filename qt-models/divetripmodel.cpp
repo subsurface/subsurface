@@ -466,7 +466,7 @@ void DiveTripModelBase::initSelection()
 {
 	std::vector<dive *> dives = getDiveSelection();
 	if (!dives.empty())
-		setSelection(dives, current_dive);
+		setSelection(dives, current_dive, -1);
 	else
 		select_newest_visible_dive();
 }

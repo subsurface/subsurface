@@ -14,6 +14,7 @@
 #include "desktop-widgets/modeldelegates.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/taxonomy.h"
+#include "core/selection.h"
 #include "core/settings/qPrefUnit.h"
 #include "commands/command.h"
 

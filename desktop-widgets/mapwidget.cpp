@@ -103,7 +103,7 @@ void MapWidget::selectedDivesChanged(const QList<int> &list)
 		if (dive *d = get_dive(idx))
 			selection.push_back(d);
 	}
-	setSelection(selection, current_dive);
+	setSelection(selection, current_dive, -1);
 }
 
 void MapWidget::coordinatesChanged(struct dive_site *ds, const location_t &location)

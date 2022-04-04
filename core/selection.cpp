@@ -9,8 +9,20 @@
 
 #include <QVector>
 
+struct dive *current_dive = NULL;
+unsigned int dc_number = 0;
 int amount_selected;
 static int amount_trips_selected;
+
+static void fixup_current_dc()
+{
+	// Every dive is guaranteed to have a dc
+	if (!current_dive || dc_number == 0)
+		return;
+
+	// Note that number_of_computers returns at least 1, so subtraction is valid.
+	dc_number = std::min(dc_number, number_of_computers(current_dive) - 1);
+}
 
 extern "C" void select_dive(struct dive *dive)
 {
@@ -21,6 +33,7 @@ extern "C" void select_dive(struct dive *dive)
 		amount_selected++;
 	}
 	current_dive = dive;
+	fixup_current_dc();
 }
 
 extern "C" void deselect_dive(struct dive *dive)
@@ -51,6 +64,7 @@ extern "C" void deselect_dive(struct dive *dive)
 		}
 		current_dive = NULL;
 	}
+	fixup_current_dc();
 }
 
 extern "C" struct dive *first_selected_dive()
@@ -155,7 +169,7 @@ static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &s
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
 // Set the current dive to "currentDive". "currentDive" must be an element of "selection" (or
 // null if "seletion" is empty). Return true if the selection or current dive changed.
-void setSelection(const std::vector<dive *> &selection, dive *currentDive)
+void setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc)
 {
 	// To do so, generate vectors of dives to be selected and deselected.
 	// We send signals batched by trip, so keep track of trip/dive pairs.
@@ -203,6 +217,10 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 		setClosestCurrentDive(currentDive->when, selection, divesToSelect);
 	}
 
+	if (currentDc >= 0)
+		dc_number = currentDc;
+	fixup_current_dc();
+
 	// Send the new selection
 	emit diveListNotifier.divesSelected(divesToSelect);
 }
@@ -210,9 +228,9 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 extern "C" void select_single_dive(dive *d)
 {
 	if (d)
-		setSelection(std::vector<dive *>{ d }, d);
+		setSelection(std::vector<dive *>{ d }, d, -1);
 	else
-		setSelection(std::vector<dive *>(), nullptr);
+		setSelection(std::vector<dive *>(), nullptr, -1);
 }
 
 // Turn current selection into a vector.

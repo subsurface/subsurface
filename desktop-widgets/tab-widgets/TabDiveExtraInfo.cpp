@@ -2,6 +2,7 @@
 #include "TabDiveExtraInfo.h"
 #include "ui_TabDiveExtraInfo.h"
 #include "core/dive.h"
+#include "core/selection.h"
 #include "qt-models/divecomputerextradatamodel.h"
 
 TabDiveExtraInfo::TabDiveExtraInfo(QWidget *parent) :

@@ -32,8 +32,7 @@ void EventBase::updateDive()
 {
 	invalidate_dive_cache(d);
 	emit diveListNotifier.eventsChanged(d);
-	dc_number = dcNr;
-	setSelection({ d }, d);
+	setSelection({ d }, d, dcNr);
 }
 
 AddEventBase::AddEventBase(struct dive *d, int dcNr, struct event *ev) : EventBase(d, dcNr),

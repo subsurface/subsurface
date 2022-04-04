@@ -11,6 +11,7 @@
 #include "core/qthelper.h"
 #include "core/range.h"
 #include "core/sample.h"
+#include "core/selection.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefUnit.h"
 #if !defined(SUBSURFACE_TESTING)
