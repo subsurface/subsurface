@@ -90,6 +90,11 @@ while [[ $# -gt 0 ]] ; do
 			# is still available on Linux distros)
 			BUILD_WITH_WEBKIT="1"
 			;;
+		-build-with-map)
+			# Qt6 doesn't include QtLocation (as of Qt 6.3) - but you can build / install it from source.
+			# use this flag to force building googlemaps with Qt6
+			BUILD_WITH_MAP="1"
+			;;
 		-mobile)
 			# we are building Subsurface-mobile
 			# Note that this will run natively on the host OS.
@@ -126,7 +131,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-mobile] [-desktop] [-downloader] [-both] [-all] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-build-with-map] [-mobile] [-desktop] [-downloader] [-both] [-all] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
@@ -441,7 +446,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . libmtp
 	pushd libmtp
-	patch -p1 < ../${SRC_DIR}/scripts/libmtp.patch
+	patch -p1 < ../${SRC_DIR}/scripts/libmtp.patch || true
 	echo 'N' | NOCONFIGURE="1" bash ./autogen.sh
 	mkdir -p build
 	cd build
@@ -510,7 +515,7 @@ STATIC_LIBDC="$INSTALL_ROOT/$(grep ^libdir Makefile | cut -d/ -f2)/libdivecomput
 
 cd "$SRC"
 
-if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && [[ $QT_VERSION == 5* ]] ; then
+if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VERSION == 5* ]] || [ "$BUILD_WITH_MAP" = "1" ] ); then
 	# build the googlemaps map plugin
 
 	cd "$SRC"
@@ -519,7 +524,13 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && [[ $QT_VERS
 	mkdir -p build
 	mkdir -p J10build
 	cd build
-	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
+	if [ "$PLATFORM" = Darwin ]  && [[ $QT_VERSION == 6* ]]; then
+		# since we are currently building QtLocation from source, we don't have a way to easily install
+		# the private headers... so this is a bit of a hack to get those for googlemaps...
+		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/../qtlocation/build/include/QtLocation/6.3.0" ../googlemaps.pro
+	else
+		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
+	fi
 	# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
 	# since things compile fine with c++11, let's just hack that away
 	# similarly, don't use -Wdata-time
