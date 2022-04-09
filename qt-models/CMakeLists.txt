@@ -29,7 +29,7 @@ set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 	weightsysteminfomodel.h
 )
 
-if(NOT USINGQT6)
+if(MAPSUPPORT)
 	LIST(APPEND SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 		maplocationmodel.cpp
 		maplocationmodel.h

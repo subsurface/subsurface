@@ -134,7 +134,7 @@ MainWindow::MainWindow() :
 	// for the "default" mode
 	mainTab.reset(new MainTab);
 	diveList.reset(new DiveListView);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#ifdef MAP_SUPPORT
 	mapWidget.reset(MapWidget::instance()); // Yes, this is ominous see comment in mapwidget.cpp.
 #endif
 	plannerWidgets.reset(new PlannerWidgets);
@@ -200,7 +200,7 @@ MainWindow::MainWindow() :
 	initialUiSetup();
 	readSettings();
 	diveList->setFocus();
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#ifdef MAP_SUPPORT
 	MapWidget::instance()->reload();
 #endif
 	diveList->expand(diveList->model()->index(0, 0));
@@ -329,7 +329,7 @@ void MainWindow::selectionChanged()
 	if (current_dive)
 		enableDisableOtherDCsActions();
 	profile->plotCurrentDive();
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#ifdef MAP_SUPPORT
 	MapWidget::instance()->selectionChanged();
 #endif
 }
@@ -507,7 +507,7 @@ void MainWindow::closeCurrentFile()
 	clear_dive_file_data(); // this clears all the core data structures and resets the models
 	setCurrentFile(nullptr);
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#ifdef MAP_SUPPORT
 	MapWidget::instance()->reload();
 #endif
 	if (!existing_filename)

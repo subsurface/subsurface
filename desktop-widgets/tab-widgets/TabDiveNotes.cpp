@@ -34,7 +34,7 @@ TabDiveNotes::TabDiveNotes(QWidget *parent) : TabBase(parent),
 	connect(&diveListNotifier, &DiveListNotifier::commandExecuted, this, &TabDiveNotes::closeWarning);
 
 	connect(ui.editDiveSiteButton, &QToolButton::clicked, MainWindow::instance(), &MainWindow::startDiveSiteEdit);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#ifdef MAP_SUPPORT
 	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
 	connect(ui.location, &DiveLocationLineEdit::currentChanged, MapWidget::instance(), &MapWidget::centerOnIndex);
 #endif
