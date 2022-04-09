@@ -12,7 +12,7 @@
 Q_IMPORT_PLUGIN(QGeoServiceProviderFactoryGooglemaps)
 #endif
 
-class MapLocationModel;
+#include "qt-models/maplocationmodel.h"
 class MapLocation;
 struct dive_site;
 
