@@ -143,7 +143,7 @@ set(SUBSURFACE_INTERFACE
 	updatemanager.cpp
 	updatemanager.h
 )
-if(NOT USINGQT6)
+if(MAPSUPPORT)
 	LIST(APPEND SUBSURFACE_INTERFACE
 		mapwidget.cpp
 		mapwidget.h
