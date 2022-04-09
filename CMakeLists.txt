@@ -192,6 +192,26 @@ if(QT_VERSION_MAJOR STREQUAL "6")
 	# QtWebKit doesn't work with Qt6, so no printing, no manual
 	set(NO_PRINTING ON)
 	set(NO_USERMANUAL ON)
+
+	# as of Qt 6.3 by default QtLocation isn't included, but one can
+	# build the module from source; so let's look if the user has installed
+	# it (or if a newer version is out that includes it, anyway)
+	find_package(Qt6 COMPONENTS Location)
+	if(Qt6Location_FOUND)
+		message(STATUS "Found Qt6Location")
+		LIST(APPEND QT_EXTRA_COMPONENTS Location)
+		add_definitions(-DMAP_SUPPORT)
+		set(MAPSUPPORT ON)
+
+		# at least on macOS something goes sideways and we fail to load the
+		# QML files with a weird error about Qml.WorkerScript missing
+		# linking Subsurface against that component appears enough to hack
+		# around that, but that feels... wrong
+		if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+			find_package(Qt6 COMPONENTS QmlWorkerScript)
+			LIST(APPEND SUBSURFACE_LINK_LIBRARIES Qt6::QmlWorkerScript)
+		endif()
+	endif()
 else()
 	# as mentioned above, since some variables appear to fail to populate
 	# on some platforms, simply run this again the 'old' way
