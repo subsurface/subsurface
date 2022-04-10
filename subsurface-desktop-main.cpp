@@ -128,6 +128,13 @@ int main(int argc, char **argv)
 void validateGL()
 {
 	QString quickBackend = qgetenv("QT_QUICK_BACKEND");
+	/* on macOS with Qt6 (maybe others), things only work with the software backend */
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	if (quickBackend.isEmpty()) {
+		quickBackend = QStringLiteral("software");
+		qputenv("QT_QUICK_BACKEND", "software");
+	}
+#endif
 	/* an empty QT_QUICK_BACKEND env. variable means OpenGL (default).
 	 * only validate OpenGL; for everything else print out and return.
 	 * https://doc.qt.io/qt-5/qtquick-visualcanvas-adaptations.html
