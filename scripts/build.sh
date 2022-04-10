@@ -49,6 +49,7 @@ PLATFORM=$(uname)
 BTSUPPORT="ON"
 DEBUGRELEASE="Debug"
 SRC_DIR="subsurface"
+ARCHS=""
 
 # deal with all the command line arguments
 while [[ $# -gt 0 ]] ; do
@@ -75,6 +76,11 @@ while [[ $# -gt 0 ]] ; do
 			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those)
 			# call this script with -build-deps
 			BUILD_DEPS="1"
+			;;
+		-fat-build)
+			# build a fat binary for macOS
+			# ignored on other platforms
+			ARCHS="arm64 x86_64"
 			;;
 		-build-prefix)
 			# instead of building in build & build-mobile in the current directory, build in <buildprefix>build
@@ -131,7 +137,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-build-with-map] [-mobile] [-desktop] [-downloader] [-both] [-all] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-fat-build] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-build-with-map] [-mobile] [-desktop] [-downloader] [-both] [-all] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
@@ -170,10 +176,19 @@ if [ "$PLATFORM" = Darwin ] ; then
 			exit 1;
 		fi
 	fi
+	if [ "$ARCHS" != "" ] ; then
+		# we do assume that the two architectures mentioned are x86_64 and arm64 .. that's kinda wrong
+		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/ -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64'"
+		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk -arch arm64 -arch x86_64"
+	else
+		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
+		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
+		ARCHS=$(arch)
+	fi
+	# OpenSSL can't deal with multi arch build
+	MAC_OPTS_OPENSSL="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
 	echo "Using ${BASESDK} as the BASESDK under ${SDKROOT}"
 
-	OLDER_MAC="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
-	OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
 	if [[ ! -d /usr/include && ! -d "${SDKROOT}/MacOSX${BASESDK}.sdk/usr/include" ]] ; then
 		echo "Error: Xcode Command Line Tools are not installed"
 		echo ""
@@ -335,7 +350,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	sed -i .bak 's/share\/pkgconfig/pkgconfig/' CMakeLists.txt
 	mkdir -p build
 	cd build
-	cmake "$OLDER_MAC_CMAKE" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
+	cmake $MAC_CMAKE -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
 		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
 		..
 	make -j4
@@ -347,29 +362,46 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	bash ./buildconf
 	mkdir -p build
 	cd build
-	CFLAGS="$OLDER_MAC" ../configure --prefix="$INSTALL_ROOT" --with-darwinssl \
+	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --with-darwinssl \
 		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
 	make -j4
 	make install
 	popd
 
+	# openssl doesn't support fat binaries out of the box
+	# this tries to hack around this by first doing an install for x86_64, then a build for arm64
+	# and then manually creating fat libraries from that
+	# I worry if there are issues with using the arm or x86 include files...???
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . openssl
 	pushd openssl
-	mkdir -p build
-	cd build
-	if [ $(arch) == "arm64" ] ; then OS_ARCH=darwin64-arm64-cc ; else OS_ARCH=darwin64-x86_64-cc; fi
-	../Configure --prefix="$INSTALL_ROOT" --openssldir="$INSTALL_ROOT" "$OLDER_MAC" $OS_ARCH
-	make depend
-	# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
-	make -j4 -k
-	make -k install
+	for ARCH in $ARCHS; do
+		mkdir -p build-$ARCH
+		cd build-$ARCH
+		OS_ARCH=darwin64-$ARCH-cc
+		../Configure --prefix="$INSTALL_ROOT" --openssldir="$INSTALL_ROOT" "$MAC_OPTS_OPENSSL" $OS_ARCH
+		make depend
+		# all the tests fail because the assume that openssl is already installed. Odd? Still things work
+		make -j4 -k
+		make -k install
+		cd ..
+	done
+	if [[ $ARCHS == *" "* ]] ; then
+		# now manually add the binaries together and overwrite them in the INSTALL_ROOT
+		cd build-arm64
+		lipo -create ./libcrypto.a ../build-x86_64/libcrypto.a -output "$INSTALL_ROOT"/lib/libcrypto.a
+		lipo -create ./libssl.a ../build-x86_64/libssl.a -output "$INSTALL_ROOT"/lib/libssl.a
+		LIBSSLNAME=$(readlink libssl.dylib)
+		lipo -create ./$LIBSSLNAME ../build-x86_64/$LIBSSLNAME -output "$INSTALL_ROOT"/lib/$LIBSSLNAME
+		LIBCRYPTONAME=$(readlink libcrypto.dylib)
+		lipo -create ./$LIBCRYPTONAME ../build-x86_64/$LIBCRYPTONAME -output "$INSTALL_ROOT"/lib/$LIBCRYPTONAME
+	fi
 	popd
 
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . libssh2
 	pushd libssh2
 	mkdir -p build
 	cd build
-	cmake "$OLDER_MAC_CMAKE" -DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" -DCMAKE_BUILD_TYPE=$DEBUGRELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+	cmake $MAC_CMAKE -DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" -DCMAKE_BUILD_TYPE=$DEBUGRELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
 	make -j4
 	make install
 	popd
@@ -392,7 +424,7 @@ if [[ "$LIBGITMAJ" -lt "1" && "$LIBGIT" -lt "26" ]] ; then
 	pushd libgit2
 	mkdir -p build
 	cd build
-	cmake "$OLDER_MAC_CMAKE" -DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" -DBUILD_CLAR=OFF ..
+	cmake $MAC_CMAKE -DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" -DBUILD_CLAR=OFF ..
 	make -j4
 	make install
 	popd
@@ -416,7 +448,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libzip
 	mkdir -p build
 	cd build
-	cmake "$OLDER_MAC_CMAKE" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
+	cmake $MAC_CMAKE -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
 		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
 		..
 	make -j4
@@ -429,7 +461,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	bash ./bootstrap
 	mkdir -p build
 	cd build
-	CFLAGS="$OLDER_MAC" ../configure --prefix="$INSTALL_ROOT"
+	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT"
 	make -j4
 	make install
 	popd
@@ -439,7 +471,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	bash ./bootstrap.sh
 	mkdir -p build
 	cd build
-	CFLAGS="$OLDER_MAC" ../configure --prefix="$INSTALL_ROOT" --disable-examples
+	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --disable-examples
 	make -j4
 	make install
 	popd
@@ -450,7 +482,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	echo 'N' | NOCONFIGURE="1" bash ./autogen.sh
 	mkdir -p build
 	cd build
-	CFLAGS="$OLDER_MAC" ../configure --prefix="$INSTALL_ROOT"
+	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT"
 	make -j4
 	make install
 	popd
@@ -459,7 +491,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libftdi1
 	mkdir -p build
 	cd build
-	cmake "$OLDER_MAC_CMAKE" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
+	cmake $MAC_CMAKE -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
 		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
 		..
 	make -j4
@@ -489,7 +521,7 @@ if [ ! -f "$SRC"/${SRC_DIR}/libdivecomputer/configure ] ; then
 	autoreconf --install "$SRC"/${SRC_DIR}/libdivecomputer
 	autoreconf --install "$SRC"/${SRC_DIR}/libdivecomputer
 fi
-CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" "$SRC"/${SRC_DIR}/libdivecomputer/configure --prefix="$INSTALL_ROOT" --disable-examples
+CFLAGS="$MAC_OPTS -I$INSTALL_ROOT/include $LIBDC_CFLAGS" "$SRC"/${SRC_DIR}/libdivecomputer/configure --prefix="$INSTALL_ROOT" --disable-examples
 if [ "$PLATFORM" = Darwin ] ; then
 	# remove some copmpiler options that aren't supported on Mac
 	# otherwise the log gets very noisy
