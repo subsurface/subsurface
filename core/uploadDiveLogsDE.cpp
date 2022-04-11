@@ -255,13 +255,20 @@ void uploadDiveLogsDE::uploadDives(const QString &filename, const QString &useri
 	reply = manager()->post(request, multipart);
 
 	// connect signals from upload process
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(reply, &QNetworkReply::finished, this, &uploadDiveLogsDE::uploadFinishedSlot);
+	connect(reply, &QNetworkReply::errorOccurred, this, &uploadDiveLogsDE::uploadErrorSlot);
+	connect(reply, &QNetworkReply::uploadProgress, this, &uploadDiveLogsDE::updateProgressSlot);
+	connect(&timeout, &QTimer::timeout, this, &uploadDiveLogsDE::uploadTimeoutSlot);
+#else
+
 	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinishedSlot()));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
 		SLOT(uploadErrorSlot(QNetworkReply::NetworkError)));
 	connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this,
 		SLOT(updateProgressSlot(qint64, qint64)));
 	connect(&timeout, SIGNAL(timeout()), this, SLOT(uploadTimeoutSlot()));
-
+#endif
 	timeout.start(30000); // 30s
 }
 

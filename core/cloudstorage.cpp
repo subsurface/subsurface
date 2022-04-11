@@ -37,10 +37,16 @@ QNetworkReply* CloudStorageAuthenticate::backend(const QString& email,const QStr
 	request->setRawHeader("User-Agent", userAgent.toUtf8());
 	request->setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
 	reply = manager()->post(*request, qPrintable(payload));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(reply, &QNetworkReply::finished, this, &CloudStorageAuthenticate::uploadFinished);
+	connect(reply, &QNetworkReply::sslErrors, this, &CloudStorageAuthenticate::sslErrors);
+	connect(reply, &QNetworkReply::errorOccurred, this, &CloudStorageAuthenticate::uploadError);
+#else
 	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinished()));
 	connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslErrors(QList<QSslError>)));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
 		SLOT(uploadError(QNetworkReply::NetworkError)));
+#endif
 	return reply;
 }
 

@@ -26,6 +26,8 @@ slots:
 	virtual void startDownload() = 0;
 	virtual void startUpload() = 0;
 	virtual void buttonClicked(QAbstractButton *button) = 0;
+	virtual void downloadFinished() = 0;
+	virtual void downloadError(QNetworkReply::NetworkError error) = 0;
 	void downloadTimedOut();
 
 protected
