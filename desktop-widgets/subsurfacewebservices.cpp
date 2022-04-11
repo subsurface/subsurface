@@ -107,12 +107,17 @@ void WebServices::updateProgress(qint64 current, qint64 total)
 
 void WebServices::connectSignalsForDownload(QNetworkReply *reply)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(reply, &QNetworkReply::finished, this, &WebServices::downloadFinished);
+	connect(reply, &QNetworkReply::errorOccurred, this, &WebServices::downloadError);
+	connect(reply, &QNetworkReply::downloadProgress, this, &WebServices::updateProgress);
+#else
 	connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
 		this, SLOT(downloadError(QNetworkReply::NetworkError)));
 	connect(reply, SIGNAL(downloadProgress(qint64, qint64)), this,
 		SLOT(updateProgress(qint64, qint64)));
-
+#endif
 	timeout.start(30000); // 30s
 }
 
@@ -308,10 +313,14 @@ void DivelogsDeWebServices::startDownload()
 	body.addQueryItem("pass", ui.password->text().replace("+", "%2b"));
 
 	reply = manager()->post(request, body.query(QUrl::FullyEncoded).toLatin1());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(reply, &QNetworkReply::finished, this, &DivelogsDeWebServices::listDownloadFinished);
+	connect(reply, &QNetworkReply::errorOccurred, this, &DivelogsDeWebServices::downloadError);
+#else
 	connect(reply, SIGNAL(finished()), this, SLOT(listDownloadFinished()));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
 		this, SLOT(downloadError(QNetworkReply::NetworkError)));
-
+#endif
 	timeout.start(30000); // 30s
 }
 

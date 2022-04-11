@@ -45,13 +45,19 @@ void uploadDiveShare::doUpload(bool selected, const QString &uid, bool noPublic)
 	reply = manager()->put(request, json_data);
 
 	// connect signals from upload process
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(reply, &QNetworkReply::finished, this, &uploadDiveShare::uploadFinishedSlot);
+	connect(reply, &QNetworkReply::errorOccurred, this, &uploadDiveShare::uploadErrorSlot);
+	connect(reply, &QNetworkReply::uploadProgress, this, &uploadDiveShare::updateProgressSlot);
+	connect(&timeout, &QTimer::timeout, this, &uploadDiveShare::uploadTimeoutSlot);
+#else
 	connect(reply, SIGNAL(finished()), this, SLOT(uploadFinishedSlot()));
 	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
 			SLOT(uploadErrorSlot(QNetworkReply::NetworkError)));
 	connect(reply, SIGNAL(uploadProgress(qint64, qint64)), this,
 			SLOT(updateProgressSlot(qint64, qint64)));
 	connect(&timeout, SIGNAL(timeout()), this, SLOT(uploadTimeoutSlot()));
-
+#endif
 	timeout.start(30000); // 30s
 }
 
