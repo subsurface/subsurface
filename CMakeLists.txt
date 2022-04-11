@@ -580,8 +580,13 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	endif()
 	if(MAPSUPPORT)
 		install(CODE "execute_process(COMMAND mkdir -p ${PLUGINDIR}/geoservices)")
+		# this is really weird. We first try a plugin that ended up in the Qt install prefix
+		# then we try one that's in that odd broken install location that the qmake file results in (that includes the QT_INSTALL_PREFIX after our INSTALL_ROOT
+		# and finally, for fat binaries, we copy the one that's in the 'logical' spot under the INSTALL_ROOT
+		# this should cover all cases and always get us the correct library
 		install(CODE "execute_process(COMMAND cp ${QT_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
 		install(CODE "execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../install-root/${QT_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
+		install(CODE "execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../install-root/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
 	endif()
 	# this will fail is macdeployqt isn't in the PATH - that seemed to happen in the past, but not recently
 	# also, on M1 macOS systems macdeployqt throws a ton of (apparently harmless) errors. Warn the unsuspecting developer
