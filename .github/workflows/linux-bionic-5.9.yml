@@ -34,6 +34,8 @@ jobs:
     - name: build Subsurface
       run: |
         cd ..
+        git config --global --add safe.directory /__w/subsurface/subsurface
+        git config --global --add safe.directory /__w/subsurface/subsurface/libdivecomputer
         bash -x subsurface/scripts/build.sh -desktop -build-with-webkit
 
     - name: test desktop build
