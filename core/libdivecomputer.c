@@ -831,6 +831,14 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		dive->dc.sample[0].temperature.mkelvin = 0;
 	}
 
+	/* special case for bug in Tecdiving DiveComputer.eu
+	 * often the first sample has a water temperature of 0C, followed by the correct
+	 * temperature in the next sample */
+	if (same_string(dive->dc.model, "Tecdiving DiveComputer.eu") &&
+	    dive->dc.sample[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
+	    dive->dc.sample[1].temperature.mkelvin > dive->dc.sample[0].temperature.mkelvin)
+		dive->dc.sample[0].temperature.mkelvin = dive->dc.sample[1].temperature.mkelvin;
+
 	record_dive_to_table(dive, devdata->download_table);
 	return true;
 
