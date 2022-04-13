@@ -677,8 +677,21 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		download_error(translate("gettextFromC", "Error obtaining water salinity"));
 		return rc;
 	}
-	if (rc == DC_STATUS_SUCCESS)
+	if (rc == DC_STATUS_SUCCESS) {
 		dive->dc.salinity = lrint(salinity.density * 10.0);
+		if (dive->dc.salinity == 0) {
+			// sometimes libdivecomputer gives us density values, sometimes just
+			// a water type and a density of zero; let's make this work as best as we can
+			switch (salinity.type) {
+			case DC_WATER_FRESH:
+				dive->dc.salinity = FRESHWATER_SALINITY;
+				break;
+			default:
+				dive->dc.salinity = SEAWATER_SALINITY;
+				break;
+			}
+		}
+	}
 
 	double surface_pressure = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_ATMOSPHERIC, 0, &surface_pressure);
