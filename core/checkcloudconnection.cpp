@@ -198,20 +198,20 @@ void CheckCloudConnection::gotContinent(QNetworkReply *reply)
 }
 
 // helper to be used from C code
-extern "C" bool canReachCloudServer(const char **remote)
+extern "C" bool canReachCloudServer(struct git_info *info)
 {
 	if (verbose)
-		qWarning() << "Cloud storage: checking connection to cloud server" << *remote;
+		qWarning() << "Cloud storage: checking connection to cloud server" << info->url;
 	bool connection = CheckCloudConnection().checkServer();
-	if (strstr(*remote, prefs.cloud_base_url) == nullptr) {
+	if (strstr(info->url, prefs.cloud_base_url) == nullptr) {
 		// we switched the cloud URL - likely because we couldn't reach the server passed in
 		// the strstr with the offset is designed so we match the right component in the name;
 		// the cloud_base_url ends with a '/', so we need the text starting at "git/..."
-		char *newremote = format_string("%s%s", prefs.cloud_base_url, strstr(*remote, "org/git/") + 4);
+		char *newremote = format_string("%s%s", prefs.cloud_base_url, strstr(info->url, "org/git/") + 4);
 		if (verbose)
 			qDebug() << "updating remote to: " << newremote;
-		free((void*)*remote);
-		*remote = newremote;
+		free((void*)info->url);
+		info->url = newremote;
 	}
 	return connection;
 }

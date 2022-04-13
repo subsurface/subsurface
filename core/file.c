@@ -273,55 +273,45 @@ static int parse_file_buffer(const char *filename, struct memblock *mem, struct 
 	return parse_xml_buffer(filename, mem->buffer, mem->size, table, trips, sites, devices, filter_presets, NULL);
 }
 
-int check_git_sha(const char *filename, struct git_repository **git_p, const char **branch_p)
+bool check_git_sha(const char *filename, struct git_info *info)
 {
-	struct git_repository *git;
-	const char *branch = NULL;
-
 	char *current_sha = copy_string(saved_git_id);
-	git = is_git_repository(filename, &branch, NULL, false);
-	if (git_p)
-		*git_p = git;
-	if (branch_p)
-		*branch_p = branch;
-	if (strstr(filename, prefs.cloud_base_url) && git == dummy_git_repository) {
-		/* opening the cloud storage repository failed for some reason,
-		 * so we don't know if there is additional data in the remote */
-		free(current_sha);
-		return 1;
-	}
-	/* if this is a git repository, do we already have this exact state loaded ?
-	 * get the SHA and compare with what we currently have */
-	if (git && git != dummy_git_repository) {
-		const char *sha = get_sha(git, branch);
-		if (!empty_string(sha) &&
-		    same_string(sha, current_sha)) {
+
+	if (is_git_repository(filename, info) && open_git_repository(info)) {
+		const char *sha = get_sha(info->repo, info->branch);
+		if (!empty_string(sha) && same_string(sha, current_sha)) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
 			free(current_sha);
-			return 0;
+			return false;
 		}
 	}
+
+	// Either the repository couldn't be opened, or the SHA couldn't
+	// be found.
 	free(current_sha);
-	return 1;
+	return true;
 }
 
 int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
 	       struct device_table *devices, struct filter_preset_table *filter_presets)
 {
-	struct git_repository *git;
-	const char *branch = NULL;
+	struct git_info info;
 	struct memblock mem;
 	char *fmt;
 	int ret;
 
-	git = is_git_repository(filename, &branch, NULL, false);
-	if (strstr(filename, prefs.cloud_base_url) && git == dummy_git_repository)
-		/* opening the cloud storage repository failed for some reason
-		 * give up here and don't send errors about git repositories */
-		return -1;
+	if (is_git_repository(filename, &info)) {
+		if (!open_git_repository(&info)) {
+			/*
+			 * Opening the cloud storage repository failed for some reason
+			 * give up here and don't send errors about git repositories
+			 */
+			if (info.is_subsurface_cloud)
+				return -1;
+		}
 
-	if (git)
-		return git_load_dives(git, branch, table, trips, sites, devices, filter_presets);
+		return git_load_dives(&info, table, trips, sites, devices, filter_presets);
+	}
 
 	if ((ret = readfile(filename, &mem)) < 0) {
 		/* we don't want to display an error if this was the default file  */
