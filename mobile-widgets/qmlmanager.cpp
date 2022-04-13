@@ -734,10 +734,10 @@ void QMLManager::loadDivesWithValidCredentials()
 		return;
 	}
 	QByteArray fileNamePrt = QFile::encodeName(url);
-	git_repository *git;
-	const char *branch;
+	struct git_info info;
 	int error;
-	if (check_git_sha(fileNamePrt.data(), &git, &branch) == 0) {
+
+	if (check_git_sha(fileNamePrt.data(), &info) == 0) {
 		appendTextToLog("Cloud sync shows local cache was current");
 	} else {
 		appendTextToLog("Cloud sync brought newer data, reloading the dive list");
@@ -749,9 +749,9 @@ void QMLManager::loadDivesWithValidCredentials()
 		} else {
 			appendTextToLog("Switching from no cloud mode; keep in memory dive data");
 		}
-		if (git != dummy_git_repository) {
-			appendTextToLog(QString("have repository and branch %1").arg(branch));
-			error = git_load_dives(git, branch, &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+		if (info.repo) {
+			appendTextToLog(QString("have repository and branch %1").arg(info.branch));
+			error = git_load_dives(&info, &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
 		} else {
 			appendTextToLog(QString("didn't receive valid git repo, try again"));
 			error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
@@ -1419,13 +1419,10 @@ void QMLManager::openNoCloudRepo()
 	 * is obviously empty when just created.
 	 */
 	QString filename = nocloud_localstorage();
-	const char *branch;
-	struct git_repository *git;
+	struct git_info info;
 
 	appendTextToLog(QString("User asked not to connect to cloud, using %1 as repo.").arg(filename));
-	git = is_git_repository(qPrintable(filename), &branch, NULL, false);
-
-	if (git == dummy_git_repository) {
+	if (is_git_repository(qPrintable(filename), &info) && !open_git_repository(&info)) {
 		// repo doesn't exist, create it and write the empty dive list to it
 		git_create_local_repo(qPrintable(filename));
 		save_dives(qPrintable(filename));

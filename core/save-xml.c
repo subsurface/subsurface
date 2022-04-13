@@ -822,14 +822,12 @@ static void try_to_backup(const char *filename)
 int save_dives_logic(const char *filename, const bool select_only, bool anonymize)
 {
 	struct membuffer buf = { 0 };
+	struct git_info info;
 	FILE *f;
-	void *git;
-	const char *branch, *remote;
 	int error = 0;
 
-	git = is_git_repository(filename, &branch, &remote, false);
-	if (git)
-		return git_save_dives(git, branch, remote, select_only);
+	if (is_git_repository(filename, &info))
+		return git_save_dives(&info, select_only);
 
 	save_dives_buffer(&buf, select_only, anonymize);
 
