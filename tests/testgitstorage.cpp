@@ -44,34 +44,31 @@ static void moveDir(QString oldName, QString newName)
 static void localRemoteCleanup()
 {
 	// cleanup the local cache dir
+	struct git_info info = { };
 	QDir localCacheDirectory(localCacheDir);
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 
-	// get the remote/branch information as parsed by our git tooling
-	const char *branch, *remote;
-	struct git_repository *git_repo;
-
 	// when this is first executed, we expect the branch not to exist on the remote server;
 	// if that's true, this will print a harmless error to stderr
-	git_repo = is_git_repository(qPrintable(cloudTestRepo), &branch, &remote, false);
+	is_git_repository(qPrintable(cloudTestRepo), &info) && open_git_repository(&info);
 
 	// this odd comparison is used to tell that we were able to connect to the remote repo;
 	// in the error case we get the full cloudTestRepo name back as "branch"
-	if (branch != randomBranch) {
+	if (info.branch != randomBranch) {
 		// dang, we weren't able to connect to the server - let's not fail the test
 		// but just give up
 		QSKIP("wasn't able to connect to server");
 	}
 
 	// force delete any remote branch of that name on the server (and ignore any errors)
-	delete_remote_branch(git_repo, remote, branch);
+	delete_remote_branch(info.repo, info.url, info.branch);
 
 	// and since this will have created a local repo, remove that one, again so the tests start clean
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 
-	free((void *)branch);
-	free((void *)remote);
-	git_repository_free(git_repo);
+	free((void *)info.branch);
+	free((void *)info.url);
+	git_repository_free(info.repo);
 }
 
 void TestGitStorage::initTestCase()

@@ -1945,23 +1945,23 @@ const char *get_sha(git_repository *repo, const char *branch)
  * If it is a git repository, we return zero for success,
  * or report an error and return 1 if the load failed.
  */
-int git_load_dives(struct git_repository *repo, const char *branch, struct dive_table *table, struct trip_table *trips,
+int git_load_dives(struct git_info *info, struct dive_table *table, struct trip_table *trips,
 		   struct dive_site_table *sites, struct device_table *devices, struct filter_preset_table *filter_presets)
 {
 	int ret;
 	struct git_parser_state state = { 0 };
-	state.repo = repo;
+	state.repo = info->repo;
 	state.table = table;
 	state.trips = trips;
 	state.sites = sites;
 	state.devices = devices;
 	state.filter_presets = filter_presets;
 
-	if (repo == dummy_git_repository)
-		return report_error("Unable to open git repository at '%s'", branch);
-	ret = do_git_load(repo, branch, &state);
-	git_repository_free(repo);
-	free((void *)branch);
+	if (!info->repo)
+		return report_error("Unable to open git repository '%s[%s]'", info->url, info->branch);
+	ret = do_git_load(info->repo, info->branch, &state);
+	git_repository_free(info->repo);
+	free((void *)info->branch);
 	finish_active_dive(&state);
 	finish_active_trip(&state);
 	return ret;

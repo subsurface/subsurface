@@ -141,9 +141,11 @@ void moveInVector(Vector &v, int rangeBegin, int rangeEnd, int destination)
 extern "C" {
 #endif
 
+struct git_info;
+
 char *printGPSCoordsC(const location_t *loc);
 bool getProxyString(char **buffer);
-bool canReachCloudServer(const char **remote);
+bool canReachCloudServer(struct git_info *);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 char *get_file_name(const char *fileName);
