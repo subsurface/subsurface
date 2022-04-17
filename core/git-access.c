@@ -28,8 +28,6 @@
 #include "gettext.h"
 #include "sha1.h"
 
-bool is_subsurface_cloud = false;
-
 // the mobile app assumes that it shouldn't talk to the cloud
 // the desktop app assumes that it should
 #if defined(SUBSURFACE_MOBILE)
@@ -168,12 +166,12 @@ static char *move_local_cache(struct git_info *info)
 
 static int check_clean(const char *path, unsigned int status, void *payload)
 {
-	UNUSED(payload);
+	struct git_info *info = (struct git_info *)payload;
 	status &= ~GIT_STATUS_CURRENT | GIT_STATUS_IGNORED;
 	if (!status)
 		return 0;
 	SSRF_INFO("git storage: local cache dir %s modified, git status 0x%04x", path, status);
-	if (is_subsurface_cloud)
+	if (info->is_subsurface_cloud)
 		report_error(translate("gettextFromC", "Local cache directory %s corrupted - can't sync with Subsurface cloud storage"), path);
 	else
 		report_error("WARNING: Git cache directory modified (path %s) status 0x%04x", path, status);
@@ -183,7 +181,7 @@ static int check_clean(const char *path, unsigned int status, void *payload)
 /*
  * The remote is strictly newer than the local branch.
  */
-static int reset_to_remote(git_repository *repo, git_reference *local, const git_oid *new_id)
+static int reset_to_remote(struct git_info *info, git_reference *local, const git_oid *new_id)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 	opts.progress_cb = &progress_cb;
@@ -193,7 +191,7 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 		SSRF_INFO("git storage: reset to remote\n");
 
 	// If it's not checked out (bare or not HEAD), just update the reference */
-	if (git_repository_is_bare(repo) || git_branch_is_head(local) != 1) {
+	if (git_repository_is_bare(info->repo) || git_branch_is_head(local) != 1) {
 		git_reference *out;
 
 		if (git_reference_set_target(&out, local, new_id, "Update to remote")) {
@@ -209,17 +207,17 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 		return 0;
 	}
 
-	if (git_object_lookup(&target, repo, new_id, GIT_OBJ_COMMIT)) {
+	if (git_object_lookup(&target, info->repo, new_id, GIT_OBJ_COMMIT)) {
 		SSRF_INFO("git storage: could not look up remote commit");
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			return report_error(translate("gettextFromC", "Subsurface cloud storage corrupted"));
 		else
 			return report_error("Could not look up remote commit");
 	}
 	opts.checkout_strategy = GIT_CHECKOUT_SAFE;
-	if (git_reset(repo, target, GIT_RESET_HARD, &opts)) {
+	if (git_reset(info->repo, target, GIT_RESET_HARD, &opts)) {
 		SSRF_INFO("git storage: local head checkout failed after update");
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			return report_error(translate("gettextFromC", "Could not update local cache to newer remote data"));
 		else
 			return report_error("Local head checkout failed after update");
@@ -345,7 +343,7 @@ static int update_remote(struct git_info *info, git_remote *origin, git_referenc
 	if (git_remote_push(origin, &refspec, &opts)) {
 		const char *msg = giterr_last()->message;
 		SSRF_INFO("git storage: unable to update remote with current local cache state, error: %s", msg);
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			return report_error(translate("gettextFromC", "Could not update Subsurface cloud storage, try again later"));
 		else
 			return report_error("Unable to update remote with current local cache state (%s)", msg);
@@ -504,9 +502,9 @@ static int try_to_update(struct git_info *info, git_remote *origin, git_referenc
 
 	// Dirty modified state in the working tree? We're not going
 	// to update either way
-	if (git_status_foreach(info->repo, check_clean, NULL)) {
+	if (git_status_foreach(info->repo, check_clean, (void *)info)) {
 		SSRF_INFO("git storage: local cache is dirty, skipping update");
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("local cached copy is dirty, skipping update");
@@ -519,7 +517,7 @@ static int try_to_update(struct git_info *info, git_remote *origin, git_referenc
 			SSRF_INFO("git storage: unable to get local SHA");
 		if (!remote_id)
 			SSRF_INFO("git storage: unable to get remote SHA");
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("Unable to get local or remote SHA1");
@@ -531,7 +529,7 @@ static int try_to_update(struct git_info *info, git_remote *origin, git_referenc
 		// but needs testing and cleanup afterwards
 		//
 		SSRF_INFO("git storage: no common commit between local and remote branches");
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("Unable to find common commit of local and remote branches");
@@ -541,7 +539,7 @@ static int try_to_update(struct git_info *info, git_remote *origin, git_referenc
 		if (verbose)
 			SSRF_INFO("git storage: remote is newer than local, update local");
 		git_storage_update_progress(translate("gettextFromC", "Update local storage to match cloud storage"));
-		return reset_to_remote(info->repo, local, remote_id);
+		return reset_to_remote(info, local, remote_id);
 	}
 
 	/* Is the local repo the more recent one? See if we can update upstream */
@@ -554,7 +552,7 @@ static int try_to_update(struct git_info *info, git_remote *origin, git_referenc
 	/* Merging a bare repository always needs user action */
 	if (git_repository_is_bare(info->repo)) {
 		SSRF_INFO("git storage: local is bare and has diverged from remote; user action needed");
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("Local and remote have diverged, merge of bare branch needed");
@@ -562,7 +560,7 @@ static int try_to_update(struct git_info *info, git_remote *origin, git_referenc
 	/* Merging will definitely need the head branch too */
 	if (git_branch_is_head(local) != 1) {
 		SSRF_INFO("git storage: local branch is not HEAD, cannot merge");
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("Local and remote do not match, local branch not HEAD - cannot update");
@@ -593,7 +591,7 @@ static int check_remote_status(struct git_info *info, git_remote *origin)
 
 	if (git_branch_lookup(&local_ref, info->repo, info->branch, GIT_BRANCH_LOCAL)) {
 		SSRF_INFO("git storage: branch %s is missing in local repo", info->branch);
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			return cleanup_local_cache(info);
 		else
 			return report_error("Git cache branch %s no longer exists", info->branch);
@@ -709,14 +707,14 @@ int sync_with_remote(struct git_info *info)
 	if (error) {
 		const char *msg = giterr_last()->message;
 		SSRF_INFO("git storage: repo %s origin lookup failed with: %s", info->url, msg);
-		if (!is_subsurface_cloud)
+		if (!info->is_subsurface_cloud)
 			report_error("Repository '%s' origin lookup failed (%s)", info->url, msg);
 		return 0;
 	}
 
 	// we know that we already checked for the cloud server, but to give a decent warning message
 	// here in case none of them are reachable, let's check one more time
-	if (is_subsurface_cloud && !canReachCloudServer(info)) {
+	if (info->is_subsurface_cloud && !canReachCloudServer(info)) {
 		// this is not an error, just a warning message, so return 0
 		SSRF_INFO("git storage: cannot connect to remote server");
 		report_error("Cannot connect to cloud server, working with local copy");
@@ -738,7 +736,7 @@ int sync_with_remote(struct git_info *info)
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
 	// NOTE! A fetch error is not fatal, we just report it
 	if (error) {
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			report_error("Cannot sync with cloud server, working with offline copy");
 		else
 			report_error("Unable to fetch remote '%s'", info->url);
@@ -767,7 +765,7 @@ static bool update_local_repo(struct git_info *info)
 	if (error) {
 		const char *msg = giterr_last()->message;
 		SSRF_INFO("git storage: unable to open local cache at %s: %s", info->localdir, msg);
-		if (is_subsurface_cloud)
+		if (info->is_subsurface_cloud)
 			(void)cleanup_local_cache(info);
 		else
 			report_error("Unable to open git cache repository at %s: %s", info->localdir, msg);
@@ -885,7 +883,7 @@ static bool create_local_repo(struct git_info *info)
 	opts.fetch_opts.callbacks.certificate_check = certificate_check_cb;
 
 	opts.checkout_branch = info->branch;
-	if (is_subsurface_cloud && !canReachCloudServer(info)) {
+	if (info->is_subsurface_cloud && !canReachCloudServer(info)) {
 		SSRF_INFO("git storage: cannot reach remote server");
 		return false;
 	}
@@ -912,7 +910,7 @@ static bool create_local_repo(struct git_info *info)
 			if (create_and_push_remote(info))
 				error = 0;
 #if !defined(DEBUG) && !defined(SUBSURFACE_MOBILE)
-		} else if (is_subsurface_cloud) {
+		} else if (info->is_subsurface_cloud) {
 			report_error(translate("gettextFromC", "Error connecting to Subsurface cloud storage"));
 #endif
 		} else {
@@ -945,7 +943,7 @@ static bool get_remote_repo(struct git_info *info)
 	/* Do we already have a local cache? */
 	if (!subsurface_stat(info->localdir, &st)) {
 		if (!S_ISDIR(st.st_mode)) {
-			if (is_subsurface_cloud)
+			if (info->is_subsurface_cloud)
 				(void)cleanup_local_cache(info);
 			else
 				report_error("local git cache at '%s' is corrupt", info->localdir);
@@ -1121,8 +1119,7 @@ bool is_git_repository(const char *filename, struct git_info *info)
 	 *
 	 * This is used to create more user friendly error message and warnings.
 	 */
-	is_subsurface_cloud = strstr(info->url, prefs.cloud_base_url) != NULL;
-	info->is_subsurface_cloud = is_subsurface_cloud;
+	info->is_subsurface_cloud = (strstr(info->url, prefs.cloud_base_url) != NULL);
 
 	return true;
 }
@@ -1146,7 +1143,7 @@ bool open_git_repository(struct git_info *info)
 
 	/* if we are planning to access the server, make sure it's available and try to
 	 * pick one of the alternative servers if necessary */
-	if (is_subsurface_cloud && !git_local_only) {
+	if (info->is_subsurface_cloud && !git_local_only) {
 		// since we know that this is Subsurface cloud storage, we don't have to
 		// worry about the local directory name changing if we end up with a different
 		// cloud_base_url... the algorithm normalizes those URLs
