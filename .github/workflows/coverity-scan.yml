@@ -40,6 +40,8 @@ jobs:
     - name: run build
       run: |
         cd ..
+        git config --global --add safe.directory /__w/subsurface/subsurface
+        git config --global --add safe.directory /__w/subsurface/subsurface/libdivecomputer
         export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
         cov-build --dir cov-int bash -x subsurface/scripts/build.sh -desktop -build-with-webkit
 
