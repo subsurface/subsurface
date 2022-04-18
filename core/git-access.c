@@ -755,22 +755,7 @@ int sync_with_remote(struct git_info *info)
 
 static bool update_local_repo(struct git_info *info)
 {
-	int error;
 	git_reference *head;
-
-	if (verbose)
-		SSRF_INFO("git storage: update local repo\n");
-
-	error = git_repository_open(&info->repo, info->localdir);
-	if (error) {
-		const char *msg = giterr_last()->message;
-		SSRF_INFO("git storage: unable to open local cache at %s: %s", info->localdir, msg);
-		if (info->is_subsurface_cloud)
-			(void)cleanup_local_cache(info);
-		else
-			report_error("Unable to open git cache repository at %s: %s", info->localdir, msg);
-		return false;
-	}
 
 	/* Check the HEAD being the right branch */
 	if (!git_repository_head(&head, info->repo)) {
@@ -942,13 +927,22 @@ static bool get_remote_repo(struct git_info *info)
 	git_storage_update_progress(translate("gettextFromC", "Synchronising data file"));
 	/* Do we already have a local cache? */
 	if (!subsurface_stat(info->localdir, &st)) {
-		if (!S_ISDIR(st.st_mode)) {
+		int error;
+
+		if (verbose)
+			SSRF_INFO("git storage: update local repo\n");
+
+		error = git_repository_open(&info->repo, info->localdir);
+		if (error) {
+			const char *msg = giterr_last()->message;
+			SSRF_INFO("git storage: unable to open local cache at %s: %s", info->localdir, msg);
 			if (info->is_subsurface_cloud)
 				(void)cleanup_local_cache(info);
 			else
-				report_error("local git cache at '%s' is corrupt", info->localdir);
+				report_error("Unable to open git cache repository at %s: %s", info->localdir, msg);
 			return false;
 		}
+
 		return update_local_repo(info);
 	} else {
 		/* We have no local cache yet.
