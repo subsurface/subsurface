@@ -737,7 +737,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	struct git_info info;
 	int error;
 
-	if (check_git_sha(fileNamePrt.data(), &info) == 0) {
+	if (remote_repo_uptodate(fileNamePrt.data(), &info)) {
 		appendTextToLog("Cloud sync shows local cache was current");
 	} else {
 		appendTextToLog("Cloud sync brought newer data, reloading the dive list");

@@ -273,7 +273,7 @@ static int parse_file_buffer(const char *filename, struct memblock *mem, struct 
 	return parse_xml_buffer(filename, mem->buffer, mem->size, table, trips, sites, devices, filter_presets, NULL);
 }
 
-bool check_git_sha(const char *filename, struct git_info *info)
+bool remote_repo_uptodate(const char *filename, struct git_info *info)
 {
 	char *current_sha = copy_string(saved_git_id);
 
@@ -282,14 +282,14 @@ bool check_git_sha(const char *filename, struct git_info *info)
 		if (!empty_string(sha) && same_string(sha, current_sha)) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
 			free(current_sha);
-			return false;
+			return true;
 		}
 	}
 
 	// Either the repository couldn't be opened, or the SHA couldn't
 	// be found.
 	free(current_sha);
-	return true;
+	return false;
 }
 
 int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
