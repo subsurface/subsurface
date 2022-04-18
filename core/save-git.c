@@ -1363,29 +1363,33 @@ int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 int git_save_dives(struct git_info *info, bool select_only)
 {
 	/*
-	 * FIXME!! This open_git_repository() will
-	 * sync with the cloud. That is NOT what
-	 * we actually want to do here. We want
-	 * to just open the local repo, and then
-	 * sync with the clound after having saved.
+	 * First, just try to open the local git repo without
+	 * doing any remote updates at all. If networking is
+	 * reliable, the remote has been updated at open time,
+	 * and we want to update *after* saving.
 	 *
-	 * NOTE! The "we already have a repo" case
-	 * case is fairly easy (we can just treat
-	 * it as a local repository and open it
-	 * as-is). But the "need to create it by
-	 * cloning" case is what we currently also
-	 * do in 'open_git_repository()', and that
-	 * all needs to be thought about a lot.
+	 * And if networking isn't reliable, we want to save
+	 * first anyway.
 	 *
-	 * Do we want to have the rule that you
-	 * can't save to a git repo unless you first
-	 * opened it for reading, and make all that
-	 * complexity be a load-time thing? That
-	 * would make the saving rules be very clear
-	 * and simple.
+	 * Note that 'do_git_save()' will try to sync with the
+	 * remote after saving (see sync_with_remote()), so we
+	 * will be doing the remote access at that point, but
+	 * at least the local state will be saved early in
+	 * case something goes wrong.
+	 */
+	if (!git_repository_open(&info->repo, info->localdir))
+		return do_git_save(info, select_only, false);
+
+	/*
+	 * Ok, so there was something wrong with the local
+	 * repo (possibly it's just missing entirely). That
+	 * means we don't want to just save to it, we'll
+	 * need to try to load the remote state first.
+	 *
+	 * This shouldn't be the common case.
 	 */
 	if (!open_git_repository(info))
-		report_error(translate("gettextFromC", "Failed to save dives to %s[%s] (%s)"), info->url, info->branch, strerror(errno));
+		return report_error(translate("gettextFromC", "Failed to save dives to %s[%s] (%s)"), info->url, info->branch, strerror(errno));
 
 	return do_git_save(info, select_only, false);
 }
