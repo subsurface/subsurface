@@ -769,6 +769,8 @@ void QMLManager::loadDivesWithValidCredentials()
 		}
 		consumeFinishedLoad();
 	}
+	cleanup_git_info(&info);
+
 	setLoadFromCloud(true);
 
 	// if we came from local storage mode, let's merge the local data into the local cache

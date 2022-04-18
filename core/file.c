@@ -306,11 +306,15 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 			 * Opening the cloud storage repository failed for some reason
 			 * give up here and don't send errors about git repositories
 			 */
-			if (info.is_subsurface_cloud)
+			if (info.is_subsurface_cloud) {
+				cleanup_git_info(&info);
 				return -1;
+			}
 		}
 
-		return git_load_dives(&info, table, trips, sites, devices, filter_presets);
+		ret = git_load_dives(&info, table, trips, sites, devices, filter_presets);
+		cleanup_git_info(&info);
+		return ret;
 	}
 
 	if ((ret = readfile(filename, &mem)) < 0) {

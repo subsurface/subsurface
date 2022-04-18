@@ -1362,8 +1362,6 @@ int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 
 int git_save_dives(struct git_info *info, bool select_only)
 {
-	int ret;
-
 	/*
 	 * FIXME!! This open_git_repository() will
 	 * sync with the cloud. That is NOT what
@@ -1389,8 +1387,5 @@ int git_save_dives(struct git_info *info, bool select_only)
 	if (!open_git_repository(info))
 		report_error(translate("gettextFromC", "Failed to save dives to %s[%s] (%s)"), info->url, info->branch, strerror(errno));
 
-	ret = do_git_save(info, select_only, false);
-	git_repository_free(info->repo);
-	free((void *)info->branch);
-	return ret;
+	return do_git_save(info, select_only, false);
 }

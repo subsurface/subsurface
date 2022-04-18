@@ -1009,6 +1009,17 @@ static void extract_username(struct git_info *info, char *url)
 	prefs.cloud_storage_email_encoded = strdup(info->username);
 }
 
+void cleanup_git_info(struct git_info *info)
+{
+	if (info->repo)
+		git_repository_free(info->repo);
+	free((void *)info->url);
+	free((void *)info->branch);
+	free((void *)info->username);
+	free((void *)info->localdir);
+	memset(info, 0, sizeof(*info));
+}
+
 /*
  * If it's not a git repo, return NULL. Be very conservative.
  *
