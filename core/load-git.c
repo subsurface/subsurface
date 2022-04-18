@@ -1960,8 +1960,6 @@ int git_load_dives(struct git_info *info, struct dive_table *table, struct trip_
 	if (!info->repo)
 		return report_error("Unable to open git repository '%s[%s]'", info->url, info->branch);
 	ret = do_git_load(info->repo, info->branch, &state);
-	git_repository_free(info->repo);
-	free((void *)info->branch);
 	finish_active_dive(&state);
 	finish_active_trip(&state);
 	return ret;

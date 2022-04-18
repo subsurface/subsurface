@@ -62,6 +62,7 @@ void print_files()
 	} else {
 		printf("Unable to get local git directory\n");
 	}
+	cleanup_git_info(&info);
 	printf("Cloud URL: %s\n", filename);
 	free((void *)filename);
 	char *tmp = hashfile_name_string();

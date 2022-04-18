@@ -66,9 +66,7 @@ static void localRemoteCleanup()
 	// and since this will have created a local repo, remove that one, again so the tests start clean
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 
-	free((void *)info.branch);
-	free((void *)info.url);
-	git_repository_free(info.repo);
+	cleanup_git_info(&info);
 }
 
 void TestGitStorage::initTestCase()
