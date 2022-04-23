@@ -55,6 +55,9 @@ option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 # Options regarding What should we build on subsurface
 option(MAKE_TESTS "Make the tests" ON)
 
+# Option whether we should try to build against Qt6, if it is available
+option(BUILD_WITH_QT6 "try to build against Qt6 (incomplete)" OFF)
+
 SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable, MobileExecutable, or DownloaderExecutable")
 LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable" "DownloaderExecutable")
 SET_PROPERTY(CACHE SUBSURFACE_TARGET_EXECUTABLE PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_EXECUTABLES})
@@ -173,12 +176,19 @@ include_directories(.
 	${CMAKE_BINARY_DIR}/desktop-widgets
 )
 
+# decide what to do about Qt
+# this is messy because we want to support older Qt5 versions, newer Qt5 versions,
+# and Qt6 when enabled / available.
+if(BUILD_WITH_QT6)
+	set(CHECK_QT6 "Qt6")
+endif()
+
 # figure out which version of Qt we are building against
 # in theory this should get us all the variables set up correctly, but that
 # ended up failing in subtle ways to do what was advertized; in the Qt5 case
 # some of the variables didn't get set up, so we'll immediately call it again
 # for Qt5
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets)
+find_package(QT NAMES ${CHECK_QT6} Qt5 REQUIRED COMPONENTS Core Widgets)
 
 # right now there are a few things that don't work with Qt6
 # let's disable them right here and remember our Qt version
