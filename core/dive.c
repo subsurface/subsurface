@@ -2623,8 +2623,10 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	MERGE_NONZERO(res, a, b, visibility);
 	copy_pictures(a->pictures.nr ? &a->pictures : &b->pictures, &res->pictures);
 	taglist_merge(&res->tag_list, a->tag_list, b->tag_list);
-	cylinders_map_a = malloc(a->cylinders.nr * sizeof(*cylinders_map_a));
-	cylinders_map_b = malloc(b->cylinders.nr * sizeof(*cylinders_map_b));
+	/* if we get dives without any gas / cylinder information in an import, make sure
+	 * that there is at leatst one entry in the cylinder map for that dive */
+	cylinders_map_a = malloc(MAX(1, a->cylinders.nr) * sizeof(*cylinders_map_a));
+	cylinders_map_b = malloc(MAX(1, b->cylinders.nr) * sizeof(*cylinders_map_b));
 	merge_cylinders(res, a, b, cylinders_map_a, cylinders_map_b);
 	merge_equipment(res, a, b);
 	merge_temperatures(res, a, b);

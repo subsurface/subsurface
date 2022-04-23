@@ -1,3 +1,4 @@
+- core: prevent crash when merging dives without cylinders (as we might get when importing from divelogs.de)
 - core: work around bug in TecDiving dive computer reporting spurious 0 deg C water temperature in first sample
 - core: correctly parse DC_FIELD_SALINITY response; fixes incorrect water type with some dive computers, including the Mares Smart
 - Desktop: Allow more than one media file to be imported from web
