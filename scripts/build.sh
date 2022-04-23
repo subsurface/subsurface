@@ -96,6 +96,14 @@ while [[ $# -gt 0 ]] ; do
 			# is still available on Linux distros)
 			BUILD_WITH_WEBKIT="1"
 			;;
+		-build-with-qt6)
+			# Qt6 is not enabled by default as there are a few issues still with the port
+			# - by default the Qt6 packages don't include QtLocation, so no maps (see below)
+			# - WebKit doesn't work with Qt6, so no printing or in-app user manual
+			# - there are a few other random bugs that we still find here and there
+			# So by default we only try to build against Qt5. This overwrites that
+			BUILD_WITH_QT6="1"
+			;;
 		-build-with-map)
 			# Qt6 doesn't include QtLocation (as of Qt 6.3) - but you can build / install it from source.
 			# use this flag to force building googlemaps with Qt6
@@ -603,6 +611,9 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		EXTRA_OPTS="-DNO_USERMANUAL=OFF -DNO_PRINTING=OFF"
 	else
 		EXTRA_OPTS="-DNO_USERMANUAL=ON -DNO_PRINTING=ON"
+	fi
+	if [ "$BUILD_WITH_QT6" = "1" ] ; then
+		EXTRA_OPTS="$EXTRA_OPTS -DBUILD_WITH_QT6=ON"
 	fi
 
 	cd "$SRC"/${SRC_DIR}

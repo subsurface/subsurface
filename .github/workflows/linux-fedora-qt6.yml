@@ -42,7 +42,7 @@ jobs:
         git reset --hard
         cd ..
         ls -l . subsurface subsurface/scripts
-        bash -e -x subsurface/scripts/build.sh -desktop
+        bash -e -x subsurface/scripts/build.sh -desktop -build-with-qt6
 
     - name: test desktop build
       run: |
