@@ -71,7 +71,7 @@ while [[ $# -gt 0 ]] ; do
 			# use the same 3rd party set.
 			shift
 			SRC_DIR="$1"
-			;;			
+			;;
 		-build-deps)
 			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those)
 			# call this script with -build-deps
@@ -112,7 +112,7 @@ while [[ $# -gt 0 ]] ; do
 		-mobile)
 			# we are building Subsurface-mobile
 			# Note that this will run natively on the host OS.
-			# To cross build for Android or iOS (including simulator) 
+			# To cross build for Android or iOS (including simulator)
 			# use the scripts in packaging/xxx
 			BUILD_MOBILE="1"
 			;;
