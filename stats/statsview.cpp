@@ -21,6 +21,7 @@
 #include "core/selection.h"
 #include "core/trip.h"
 
+#include <array> // for std::array
 #include <cmath>
 #include <QQuickItem>
 #include <QQuickWindow>

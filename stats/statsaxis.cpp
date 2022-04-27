@@ -10,6 +10,7 @@
 #include "core/subsurface-time.h"
 #include <math.h> // for lrint
 #include <numeric>
+#include <array> // for std::array
 #include <QFontMetrics>
 #include <QLocale>
 
