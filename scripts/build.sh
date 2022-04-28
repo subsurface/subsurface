@@ -80,7 +80,9 @@ while [[ $# -gt 0 ]] ; do
 		-fat-build)
 			# build a fat binary for macOS
 			# ignored on other platforms
+			# this implies a Qt6 build (as m1 isn't supported in Qt5)
 			ARCHS="arm64 x86_64"
+			BUILD_WITH_QT6="1"
 			;;
 		-build-prefix)
 			# instead of building in build & build-mobile in the current directory, build in <buildprefix>build
