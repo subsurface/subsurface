@@ -191,7 +191,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 	else
 		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
 		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
-		ARCHS=$(arch)
+		ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
 	fi
 	# OpenSSL can't deal with multi arch build
 	MAC_OPTS_OPENSSL="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
@@ -568,7 +568,7 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VE
 		# since we are currently building QtLocation from source, we don't have a way to easily install
 		# the private headers... so this is a bit of a hack to get those for googlemaps...
 		# regardless of whether we do a fat build or not, let's do the 'native' build here
-		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/../qtlocation/build/include/QtLocation/6.3.0" QMAKE_APPLE_DEVICE_ARCHS=$(arch) ../googlemaps.pro
+		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/../qtlocation/build/include/QtLocation/6.3.0" QMAKE_APPLE_DEVICE_ARCHS="$(uname -m)" ../googlemaps.pro
 	else
 		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
 	fi
@@ -583,7 +583,7 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VE
 	if [ "$PLATFORM" = Darwin ]  && [[ $QT_VERSION == 6* ]] && [[ $ARCHS == *" "* ]] ; then
 		# we can't build fat binaries directly here, so let's do it in two steps
 		# above we build the 'native' binary, now build the other one
-		OTHERARCH=${ARCHS//$(arch)/}
+		OTHERARCH=${ARCHS//$(uname -m)/}
 		OTHERARCH=${OTHERARCH// /}
 		mkdir -p ../build-$OTHERARCH
 		cd ../build-$OTHERARCH
