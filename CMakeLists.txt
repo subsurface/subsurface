@@ -20,6 +20,7 @@ endif ()
 
 set(CMAKE_MODULE_PATH
 	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
+	${${PROJECT_NAME}_SOURCE_DIR}/../install-root/lib/cmake
 	${CMAKE_MODULE_PATH}
 )
 
