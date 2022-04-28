@@ -3495,7 +3495,7 @@ extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id
 {
 	for (const struct divecomputer *dc = &dive->dc; dc; dc = dc->next) {
 		for (int i = 0; i < dc->samples; ++i) {
-			for (int j = 0; j < MAX_SENSORS; ++j) {
+			for (int j = 0; j < (dc->divemode == OC ? 1 : MAX_SENSORS); ++j) {
 				if (dc->sample[i].sensor[j] == cylinder_id)
 					return true;
 			}
