@@ -849,7 +849,7 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 	const int ascent_s_per_deco_step = 1;
 	/* how long time steps in deco calculations? */
 	const int time_stepsize = 60;
-	const int deco_stepsize = 3000;
+	const int deco_stepsize = M_OR_FT(3, 10);
 	/* at what depth is the current deco-step? */
 	int next_stop = ROUND_UP(deco_allowed_depth(
 					 tissue_tolerance_calc(ds, dive, depth_to_bar(entry->depth, dive), in_planner),
