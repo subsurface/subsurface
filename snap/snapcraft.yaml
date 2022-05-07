@@ -1,7 +1,5 @@
 name: subsurface
-version: git
-version-script: |
-  git describe
+adopt-info: subsurface
 icon: icons/subsurface-icon.svg
 summary: Open source divelog program for recreational, tech, and free-divers
 description: |
@@ -13,12 +11,16 @@ description: |
 
 grade: stable
 confinement: strict
-base: core18
+base: core20
 
 apps:
   subsurface:
-    command: desktop-launch $SNAP/bin/subsurface
-    desktop: share/applications/subsurface.desktop
+    environment:
+      LD_LIBRARY_PATH: ${SNAP}/usr/local/lib
+    command-chain:
+    - bin/desktop-launch
+    command: usr/local/bin/subsurface
+    desktop: usr/local/share/applications/subsurface.desktop
     plugs:
     - bluez
     - home
@@ -27,6 +29,7 @@ apps:
     - raw-usb
     - removable-media
     - unity7
+    - wayland
 
 parts:
   googlemaps:
@@ -73,7 +76,7 @@ parts:
           http://code.qt.io/cgit/qt/qtlocation.git/plain/src/positioning/${HEADER}_p.h?h=v${QT_VERSION}
       done
     plugin: qmake
-    options:
+    qmake-parameters:
     - INCLUDEPATH+=QtHeaders
 
   desktop-qt5:
@@ -122,11 +125,12 @@ parts:
     source: .
     after: [desktop-qt5, googlemaps, libdc]
     plugin: cmake
-    configflags:
+    cmake-parameters:
     - -DMAKE_TESTS=OFF
     - -DLIBGIT2_DYNAMIC=ON
     - -DFTDISUPPORT=ON
-    - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/lib/libdivecomputer.so
+    - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/usr/local/lib/libdivecomputer.so
+    - -DLIBDIVECOMPUTER_INCLUDE_DIR=../../../stage/usr/local/include
     source-type: git
     build-packages:
     - build-essential
@@ -140,13 +144,16 @@ parts:
     - libssh2-1-dev
     - libssl-dev
     - libxml2-dev
-    - libxslt-dev
+    - libxslt1-dev
     - libzip-dev
     - pkg-config
     - qtconnectivity5-dev
     - qtlocation5-dev
     - qtpositioning5-dev
     - qttools5-dev
+    override-pull: |
+      snapcraftctl pull
+      snapcraftctl set-version $( git describe )
     override-build: |
       mkdir -p ../install-root
       ln -sf ../../../stage/usr/lib/*/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so \
@@ -158,7 +165,7 @@ parts:
     - libcurl3-gnutls
     - libdb5.3
     - libftdi1-2
-    - libgit2-26
+    - libgit2-28
     - libqt5bluetooth5
     - libqt5charts5
     - libqt5concurrent5
@@ -176,12 +183,13 @@ parts:
     - libqt5widgets5
     - libsqlite3-0
     - libssh2-1
-    - libssl1.0.0
+    - libssl1.1
     - libusb-1.0-0
     - libxml2
     - libxslt1.1
-    - libzip4
+    - libzip5
     - qml-module-qtlocation
     - qml-module-qtpositioning
     - qml-module-qtquick2
+    - qtwayland5
     - zlib1g
