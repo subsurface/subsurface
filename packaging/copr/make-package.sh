@@ -1,0 +1,81 @@
+#!/bin/bash -e
+# start from the directory above the subsurface directory
+#
+# we need to build the google maps plugin which is not part of our sources, so let's make sure
+# it is included in our source tar file
+#
+# a lot of this is redundant with the OBS code - but I'm trying to make both of these scripts reasonably
+# complete so a user could simply run one of them and not the other - well, of course a user would have
+# to make changes as they can't write to the OBS/COPR repos that I own... but this should be a great
+# starting point.
+
+if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivecomputer ]] ; then
+	echo "Please start this script from the folder ABOVE the subsurface source directory"
+	exit 1;
+fi
+if [[ ! -d googlemaps ]] ; then
+	echo "Please make sure you have the current master of https://github.com/Subsurface/googlemaps"
+	echo "checked out in parallel to the Subsurface directory"
+	exit 1;
+fi
+
+# ensure that the libdivecomputer module is there and current
+cd subsurface
+git submodule init
+git submodule update
+cd -
+
+GITVERSION=$(cd subsurface ; git describe --abbrev=12 | sed -e 's/-g.*$// ; s/^v//')
+GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
+VERSION=$(echo $GITVERSION | sed -e 's/-/./')
+GITDATE=$(cd subsurface ; git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
+LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
+FOLDER="subsurface-$VERSION"
+
+echo "building Subsurface" $VERSION "with libdivecomputer" $LIBDCREVISION
+
+# we put all of the files into the distrobuilds directory in order not to clutter the 'src' directory
+mkdir -p distrobuilds
+cd distrobuilds
+
+if [[ ! -d $FOLDER ]]; then
+	mkdir $FOLDER
+	echo "copying sources"
+
+	(cd ../subsurface ; tar cf - . ) | (cd $FOLDER ; tar xf - )
+	cd $FOLDER
+	cp -a ../../googlemaps .
+
+	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
+	echo $GITVERSION > .gitversion
+	echo $GITDATE > .gitdate
+	echo $LIBDCREVISION > libdivecomputer/revision
+	cd ..
+fi
+
+if [[ ! -f rpmbuild/SOURCES/subsurface-$VERSION.orig.tar.xz ]] ; then
+	tar ch $FOLDER | xz > rpmbuild/SOURCES/subsurface-$VERSION.orig.tar.xz
+fi
+
+# if the user wanted to post this automatically, do so
+#
+# because in the normal flow we should never have the need to rev the Release number in the spec
+# file, this is hard coded to 1 - it's entirely possible that there will be use cases where we
+# need to push additional versions... but it seems impossible to predict what exactly would drive
+# those and how to automate them
+if [[ "$1" = "post" ]] ; then
+	# daily vs. release
+	if [[ "$GITREVISION" == "" ]] ; then
+		# this is a release
+		echo "RELEASE PROCESS IS NOT WELL TESTED"
+		REPO="Subsurface"
+		DESCRIPTION="This is the official Subsurface build, including our own custom libdivecomputer."
+	else
+		REPO="Subsurface-test"
+		DESCRIPTION="This is a test build of Subsurface, provided by the Subsurface team, based on the latest sources. Only use if you need the bleeding edge of development."
+	fi
+	cd rpmbuild
+	cat ../../subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $VERSION/;s/DESCRIPTION/$DESCRIPTION/" > SPECS/subsurface.spec
+	rpmbuild --verbose -bs $(pwd)/SPECS/subsurface.spec
+	copr build $REPO $(pwd)/SRPMS/subsurface-$VERSION-1.fc*.src.rpm
+fi
