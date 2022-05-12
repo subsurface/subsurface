@@ -17,6 +17,7 @@
 #include "tag.h"
 #include "errorhelper.h"
 #include <string.h>
+#include "divecomputer.h"
 
 /* Process gas change event for seac database.
  * Create gas change event at the time of the
@@ -51,7 +52,7 @@ static int seac_dive(void *param, int columns, char **data, char **column)
 	sqlite3 *handle = state->sql_handle;
 	sqlite3_stmt *sqlstmt;
 
-	const char *get_samples = "SELECT dive_number, runtime_s, depth_cm, temperature_mCx10, active_O2_fr, first_stop_depth_cm, first_stop_time_s, ndl_tts_s, cns, gf_l, gf_h FROM dive_data WHERE dive_number = ? ORDER BY runtime_s ASC";
+	const char *get_samples = "SELECT dive_number, runtime_s, depth_cm, temperature_mCx10, active_O2_fr, first_stop_depth_cm, first_stop_time_s, ndl_tts_s, cns, gf_l, gf_h FROM dive_data WHERE dive_number = ? AND dive_id = ? ORDER BY runtime_s ASC";
 		/*  0 = dive_number
 		 *  1 = runtime_s
 		 *  2 = depth_cm
@@ -192,6 +193,7 @@ static int seac_dive(void *param, int columns, char **data, char **column)
 
 	// Bind current dive number to sql statement
 	sqlite3_bind_int(sqlstmt, 1, state->cur_dive->number);
+	sqlite3_bind_int(sqlstmt, 2, atoi(data[13]));
 
 	// Catch a bad query
 	retval = sqlite3_step(sqlstmt);
@@ -206,8 +208,9 @@ static int seac_dive(void *param, int columns, char **data, char **column)
 	utf8_string(data[1], &state->cur_dive->dc.serial);
 	utf8_string(data[12], &state->cur_dive->dc.fw_version);
 	state->cur_dive->dc.model = strdup("Seac Action");
-	// TODO: Calculate device hash from string
-	state->cur_dive->dc.deviceid = 0xffffffff;
+
+	state->cur_dive->dc.deviceid = calculate_string_hash(data[1]);
+
 	add_extra_data(&state->cur_dive->dc, "GF-Lo", (const char*)sqlite3_column_text(sqlstmt, 9));
 	add_extra_data(&state->cur_dive->dc, "GF-Hi", (const char*)sqlite3_column_text(sqlstmt, 10));
 
@@ -277,7 +280,7 @@ int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int 
 	state.devices = devices;
 	state.sql_handle = handle;
 
-	const char *get_dives = "SELECT dive_number, device_sn, date, timezone, time, elapsed_surface_time, dive_type, start_mode, water_type, comment, total_dive_time, max_depth, firmware_version FROM headers_dive";
+	const char *get_dives = "SELECT dive_number, device_sn, date, timezone, time, elapsed_surface_time, dive_type, start_mode, water_type, comment, total_dive_time, max_depth, firmware_version, dive_id FROM headers_dive";
 		/*  0 = dive_number
 		 *  1 = device_sn
 		 *  2 = date
@@ -291,6 +294,7 @@ int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int 
 		 * 10 = total_dive_time
 		 * 11 = max_depth
 		 * 12 = firmware version
+		 * 13 = dive_id
 		 */
 
 	retval = sqlite3_exec(handle, get_dives, &seac_dive, &state, &err);
