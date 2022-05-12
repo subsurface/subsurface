@@ -41,6 +41,8 @@ jobs:
         # now build for the desktop version (without WebKit)
         git reset --hard
         cd ..
+        git config --global --add safe.directory /__w/subsurface/subsurface
+        git config --global --add safe.directory /__w/subsurface/subsurface/libdivecomputer
         ls -l . subsurface subsurface/scripts
         bash -e -x subsurface/scripts/build.sh -desktop -build-with-qt6
 
