@@ -36,13 +36,15 @@ jobs:
         qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev
 
     - name: build Subsurface-mobile
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         echo "--------------------------------------------------------------"
         echo "building mobile"
         git config --global user.email "ci@subsurface-divelog.org"
         git config --global user.name "Subsurface CI"
-        git config --global --add safe.directory /__w/subsurface/subsurface
-        git config --global --add safe.directory /__w/subsurface/subsurface/libdivecomputer
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         cd ..
         bash -e -x subsurface/scripts/build.sh -mobile
 

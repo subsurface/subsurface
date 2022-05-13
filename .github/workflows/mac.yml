@@ -21,6 +21,8 @@ jobs:
         curl --output Qt-5.13.0-mac.tar.xz https://f002.backblazeb2.com/file/Subsurface-Travis/Qt-5.13.0-mac.tar.xz
         tar -xJ -C Qt/5.13.0 -f Qt-5.13.0-mac.tar.xz
     - name: build Subsurface-mobile
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         cd ${GITHUB_WORKSPACE}/..
         export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
@@ -30,6 +32,8 @@ jobs:
         DIR=$(pwd)
         git config --global user.email "ci@subsurface-divelog.org"
         git config --global user.name "Subsurface CI"
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         # first build Subsurface-mobile to ensure this didn't get broken
         bash -e -x ./subsurface/scripts/build.sh -mobile
 

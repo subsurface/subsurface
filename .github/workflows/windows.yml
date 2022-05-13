@@ -18,8 +18,12 @@ jobs:
       uses: actions/checkout@v1
 
     - name: get other dependencies
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         echo "Running script to install additional dependancies into container"
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         cd /win
         ln -s /__w/subsurface/subsurface .
         bash -x subsurface/.github/workflows/scripts/windows-container-prep.sh 2>&1 | tee pre-build.log

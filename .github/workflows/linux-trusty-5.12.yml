@@ -18,8 +18,12 @@ jobs:
       uses: actions/checkout@v1
 
     - name: run build
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         cd ..
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         rm -rf /install-root/include/libdivecomputer
         bash -x subsurface/.github/workflows/scripts/linux-in-container-build.sh
 

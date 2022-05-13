@@ -38,10 +38,12 @@ jobs:
         TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
 
     - name: run build
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         cd ..
-        git config --global --add safe.directory /__w/subsurface/subsurface
-        git config --global --add safe.directory /__w/subsurface/subsurface/libdivecomputer
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
         cov-build --dir cov-int bash -x subsurface/scripts/build.sh -desktop -build-with-webkit
 

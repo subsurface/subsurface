@@ -60,8 +60,12 @@ jobs:
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
     - name: Build
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         cd ..
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit
 
     - name: Perform CodeQL Analysis

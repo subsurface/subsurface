@@ -18,6 +18,8 @@ jobs:
       uses: actions/checkout@v1
 
     - name: run build
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         # this is rather awkward, but it allows us to use the preinstalled
         # Android and Qt versions with relative paths
@@ -35,5 +37,7 @@ jobs:
         # it turns out our build container doesn't have a native compiler
         # yet ECM needs that
         apt-get install --reinstall cpp-7 gcc-7-base libgcc-7-dev libcc1-0 gcc-7
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         bash -x ./subsurface/packaging/android/qmake-build.sh
 

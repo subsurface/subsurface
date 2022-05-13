@@ -32,10 +32,12 @@ jobs:
         qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev
 
     - name: build Subsurface
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         cd ..
-        git config --global --add safe.directory /__w/subsurface/subsurface
-        git config --global --add safe.directory /__w/subsurface/subsurface/libdivecomputer
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         bash -x subsurface/scripts/build.sh -desktop -build-with-webkit
 
     - name: test desktop build

@@ -24,8 +24,12 @@ jobs:
         mkdir -p $HOME/Qt
         xzcat Qt-5.14.1-ios.tar.xz | tar -x -C $HOME/Qt -f -
     - name: build Subsurface-mobile for iOS
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
-        cd $GITHUB_WORKSPACE/..
+        cd ${SUBSURFACE_REPO_PATH}/..
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         ln -s $HOME/Qt Qt
         echo "build for simulator"
         bash -x $GITHUB_WORKSPACE/packaging/ios/build.sh -simulator
