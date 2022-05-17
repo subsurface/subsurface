@@ -69,13 +69,15 @@ if [[ "$1" = "post" ]] ; then
 		# this is a release
 		echo "RELEASE PROCESS IS NOT WELL TESTED"
 		REPO="Subsurface"
-		DESCRIPTION="This is the official Subsurface build, including our own custom libdivecomputer."
+		SUMMARY="official Fedora RPMs from the Subsurface project"
+		DESCRIPTION="This is the official Subsurface build, provided by the Subsurface team, including our own custom libdivecomputer."
 	else
 		REPO="Subsurface-test"
+		SUMMARY="test build of the latest development version of Subsurface"
 		DESCRIPTION="This is a test build of Subsurface, provided by the Subsurface team, based on the latest sources. Only use if you need the bleeding edge of development."
 	fi
 	cd rpmbuild
-	cat ../../subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $VERSION/;s/DESCRIPTION/$DESCRIPTION/" > SPECS/subsurface.spec
+	cat ../../subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $VERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
 	rpmbuild --verbose -bs $(pwd)/SPECS/subsurface.spec
 	copr build $REPO $(pwd)/SRPMS/subsurface-$VERSION-1.fc*.src.rpm
 fi

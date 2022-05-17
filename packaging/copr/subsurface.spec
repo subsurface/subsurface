@@ -10,7 +10,7 @@ Name:           subsurface
 Version:	%latestVersion
 Release:        1%{?dist}
 
-Summary:        A test build of the latest development version of Subsurface
+Summary:        SUMMARY
 
 License:        GPL v2
 Url:            http://subsurface-divelog.org
@@ -88,8 +88,7 @@ mkdir -p install-root
                 -DLIBDIVECOMPUTER_INCLUDE_DIR=%{_builddir}/install-root/include \
                 -DLIBGIT2_INCLUDE_DIR=%{_builddir}/install-root/include \
                 -DLIBDIVECOMPUTER_LIBRARIES=%{_builddir}/install-root/lib/libdivecomputer.a \
-                -DNO_PRINTING=OFF \
-                .
+                -DNO_PRINTING=OFF
 %cmake_build
 
 %install
