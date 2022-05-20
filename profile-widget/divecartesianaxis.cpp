@@ -30,6 +30,7 @@ DiveCartesianAxis::DiveCartesianAxis(Position position, bool inverted, int integ
 	max(0),
 	textVisibility(textVisible),
 	lineVisibility(linesVisible),
+	metricIntervals(false),
 	labelScale(labelScale),
 	dpr(dpr),
 	transform({1.0, 0.0})
@@ -101,7 +102,7 @@ int DiveCartesianAxis::getMinLabelDistance(const DiveCartesianAxis &timeAxis) co
 	return int(ceil(interval));
 }
 
-static double sensibleInterval(double inc, int decimals, bool is_time_axis)
+static double sensibleInterval(double inc, int decimals, bool is_time_axis, bool is_metric_depth)
 {
 	if (is_time_axis && inc < 60.0) {
 		// for time axes and less than one hour increments, round to
@@ -130,11 +131,24 @@ static double sensibleInterval(double inc, int decimals, bool is_time_axis)
 
 	double digits_factor = pow(10.0, digits);
 	int inc_int = std::max((int)ceil(inc / digits_factor), 1);
-	// Do "nice" increments of the leading digit. In general: 1, 2, 4, 5.
-	if (inc_int > 5)
-		inc_int = 10;
-	if (inc_int == 3)
-		inc_int = 4;
+	if (is_metric_depth)
+	{
+		// Do increments quantized to 3. In general: 1, 3, 6, 15
+		if (inc_int > 6)
+			inc_int = 15;
+		else if (inc_int > 3)
+			inc_int = 6;
+		else if (inc_int == 2)
+			inc_int = 3;
+	}
+	else
+	{
+		// Do "nice" increments of the leading digit. In general: 1, 2, 4, 5.
+		if (inc_int > 5)
+			inc_int = 10;
+		if (inc_int == 3)
+			inc_int = 4;
+	}
 	inc = inc_int * digits_factor;
 
 	return inc;
@@ -165,7 +179,7 @@ void DiveCartesianAxis::updateTicks(int animSpeed)
 
 	// Round the interval to a sensible size in display units
 	double intervalDisplay = stepValue * transform.a;
-	intervalDisplay = sensibleInterval(intervalDisplay, fractionalDigits, position == Position::Bottom);
+	intervalDisplay = sensibleInterval(intervalDisplay, fractionalDigits, position == Position::Bottom, metricIntervals);
 
 	// Choose full multiples of the interval as minumum and maximum values
 	double minDisplay = transform.to(dataMin);
@@ -476,6 +490,11 @@ double DiveCartesianAxis::maximum() const
 double DiveCartesianAxis::minimum() const
 {
 	return min;
+}
+
+void DiveCartesianAxis::setMetricIntervals(bool arg1)
+{
+	metricIntervals = arg1;
 }
 
 std::pair<double, double> DiveCartesianAxis::screenMinMax() const

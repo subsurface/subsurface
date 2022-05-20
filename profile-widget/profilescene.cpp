@@ -164,6 +164,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	addTissueItems<0,16>(dpr);
 
 	percentageItem->setZValue(1.0);
+	profileYAxis->setMetricIntervals( qPrefDisplay::standard_level_grid() );
 
 	// Add items to scene
 	addItem(diveComputerText);
@@ -303,6 +304,8 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 
 	if (width <= 10.0 * dpr)
 		return clear();
+
+	profileYAxis->setMetricIntervals( qPrefDisplay::standard_level_grid() );
 
 	// Place the fixed dive computer text at the bottom
 	double bottomBorder = sceneRect().height() - diveComputerText->height() - 2.0 * dpr * diveComputerTextBorder;

@@ -28,6 +28,10 @@ void PreferencesDefaults::refreshSettings()
 	ui->fontsize->setValue(qPrefDisplay::font_size());
 	ui->velocitySlider->setValue(qPrefDisplay::animation_speed());
 
+	if (qPrefDisplay::standard_level_grid())
+		ui->gridLeveled->setChecked(true);
+	else
+		ui->gridNatural->setChecked(true);
 }
 
 void PreferencesDefaults::syncSettings()
@@ -35,4 +39,5 @@ void PreferencesDefaults::syncSettings()
 	qPrefDisplay::set_divelist_font(ui->font->currentFont().toString());
 	qPrefDisplay::set_font_size(ui->fontsize->value());
 	qPrefDisplay::set_animation_speed(ui->velocitySlider->value());
+	qPrefDisplay::set_standard_level_grid(ui->gridLeveled->isChecked());
 }

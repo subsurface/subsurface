@@ -25,6 +25,7 @@ class qPrefDisplay : public QObject {
 	Q_PROPERTY(QByteArray windowState READ windowState WRITE set_windowState NOTIFY windowStateChanged)
 	Q_PROPERTY(int lastState READ lastState WRITE set_lastState NOTIFY lastStateChanged)
 	Q_PROPERTY(bool singleColumnPortrait READ singleColumnPortrait WRITE set_singleColumnPortrait NOTIFY singleColumnPortraitChanged)
+	Q_PROPERTY(bool standard_level_grid READ standard_level_grid WRITE set_standard_level_grid NOTIFY standard_level_gridChanged)
 
 public:
 	static qPrefDisplay *instance();
@@ -52,6 +53,7 @@ public:
 	static QByteArray windowState() { return st_windowState; }
 	static int lastState() { return st_lastState; }
 	static bool singleColumnPortrait() { return st_singleColumnPortrait; }
+	static bool standard_level_grid() { return prefs.standard_level_grid; }
 
 public slots:
 	static void set_animation_speed(int value);
@@ -71,6 +73,7 @@ public slots:
 	static void set_windowState(const QByteArray& value);
 	static void set_lastState(int value);
 	static void set_singleColumnPortrait(bool value);
+	static void set_standard_level_grid(bool value);
 
 signals:
 	void animation_speedChanged(int value);
@@ -90,6 +93,7 @@ signals:
 	void windowStateChanged(const QByteArray& value);
 	void lastStateChanged(int value);
 	void singleColumnPortraitChanged(bool value);
+	void standard_level_gridChanged(bool value);
 
 private:
 	qPrefDisplay() {}
@@ -101,6 +105,7 @@ private:
 	static void disk_mobile_scale(bool doSync);
 	static void disk_display_invalid_dives(bool doSync);
 	static void disk_show_developer(bool doSync);
+	static void disk_standard_level_grid(bool doSync);
 
 	// functions to handle class variables
 	static void load_lastDir();

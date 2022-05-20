@@ -67,6 +67,7 @@ void qPrefDisplay::loadSync(bool doSync)
 		load_lastState();
 		load_singleColumnPortrait();
 	}
+	disk_standard_level_grid(doSync);
 }
 
 void qPrefDisplay::set_divelist_font(const QString &value)
@@ -148,6 +149,8 @@ HANDLE_PREFERENCE_BOOL(Display, "displayinvalid", display_invalid_dives);
 
 HANDLE_PREFERENCE_BOOL(Display, "show_developer", show_developer);
 
+HANDLE_PREFERENCE_BOOL(Display, "standard_level_grid", standard_level_grid);
+
 void qPrefDisplay::setCorrectFont()
 {
 	// get the font from the settings or our defaults
@@ -197,3 +200,4 @@ HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/windowState", windowState);
 HANDLE_PROP_INT(Display, "MainWindow/lastState", lastState);
 
 HANDLE_PROP_BOOL(Display, "singleColumnPortrait", singleColumnPortrait);
+

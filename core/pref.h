@@ -206,6 +206,7 @@ struct preferences {
 	bool                    coordinates_traditional;
 	enum unit_system_values unit_system;
 	struct units            units;
+	bool					standard_level_grid;
 
 	// ********** UpdateManager **********
 	update_manager_prefs_t update_manager;

@@ -14,17 +14,24 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Font for lists and tables</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_1">
-      <property name="margin">
+      <property name="leftMargin">
        <number>5</number>
       </property>
-
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
       <item>
        <widget class="QLabel" name="label_7">
         <property name="text">
@@ -35,18 +42,16 @@
       <item>
        <widget class="QFontComboBox" name="font"/>
       </item>
-
       <item>
        <widget class="QLabel" name="label_default1">
+        <property name="text">
+         <string/>
+        </property>
         <property name="wordWrap">
          <bool>true</bool>
         </property>
-        <property name="text">
-         <string></string>
-        </property>
        </widget>
       </item>
-
       <item>
        <widget class="QLabel" name="label_8">
         <property name="text">
@@ -57,41 +62,46 @@
       <item>
        <widget class="QDoubleSpinBox" name="fontsize"/>
       </item>
-
      </layout>
     </widget>
    </item>
-
    <item>
     <widget class="QGroupBox" name="groupBox_7">
      <property name="title">
       <string>Animations</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
-      <property name="margin">
+      <property name="leftMargin">
        <number>5</number>
       </property>
-
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
       <item>
        <widget class="QLabel" name="label_help4">
         <property name="toolTip">
          <string extracomment="Help info 1"/>
         </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
         <property name="text">
          <string>In some actions, e.g. when zooming the dive profile, the changing axis values are animated. Select the speed with which this animation should occur (maximum = 500):</string>
         </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
-
-      <item>  
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QLabel" name="label_15">
           <property name="text">
-            <string>Speed</string>
+           <string>Speed</string>
           </property>
          </widget>
         </item>
@@ -114,11 +124,39 @@
         </item>
        </layout>
       </item>
-
      </layout>
     </widget>
    </item>
-
+   <item>
+    <widget class="QGroupBox" name="groupBox_gridDepth">
+     <property name="title">
+      <string>Dive profile depth grid</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Depth line intevals.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="gridNatural">
+        <property name="text">
+         <string>generic ( 1, 2, 4, 5, 10 )</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="gridLeveled">
+        <property name="text">
+         <string>standard levels ( 1, 3, 6, 15 )</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
