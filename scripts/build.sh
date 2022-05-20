@@ -47,14 +47,8 @@ fi
 PLATFORM=$(uname)
 
 BTSUPPORT="ON"
-#DEBUGRELEASE="Debug"
+DEBUGRELEASE="Debug"
 SRC_DIR="subsurface"
-#QUICK="1"
-#BUILD_DEPS="0"
-QMAKE=/fast/usr/Qt/5.12.8/gcc_64/bin/qmake
-export Qt5_DIR=/fast/usr/Qt/5.12.8/gcc_64/lib/cmake
-#export CMAKE_MODULE_PATH="~/usr/Qt/5.12.8/gcc_64/lib/cmake"
-
 
 # deal with all the command line arguments
 while [[ $# -gt 0 ]] ; do
@@ -225,15 +219,15 @@ export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 echo Building from "$SRC", installing in "$INSTALL_ROOT"
 
 # find qmake
-#if [ -n "$CMAKE_PREFIX_PATH" ] ; then
-#	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
-#fi
-#if [[ -z $QMAKE  ||  ! -x $QMAKE ]] ; then
-#	hash qmake > /dev/null 2> /dev/null && QMAKE=qmake
-#	[ -z $QMAKE ] && hash qmake-qt5 > /dev/null 2> /dev/null && QMAKE=qmake-qt5
-#	[ -z $QMAKE ] && hash qmake-qt6 > /dev/null 2> /dev/null && QMAKE=qmake-qt6
-#	[ -z $QMAKE ] && echo "cannot find qmake, qmake-qt5, or qmake-qt6" && exit 1
-#fi
+if [ -n "$CMAKE_PREFIX_PATH" ] ; then
+	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
+fi
+if [[ -z $QMAKE  ||  ! -x $QMAKE ]] ; then
+	hash qmake > /dev/null 2> /dev/null && QMAKE=qmake
+	[ -z $QMAKE ] && hash qmake-qt5 > /dev/null 2> /dev/null && QMAKE=qmake-qt5
+	[ -z $QMAKE ] && hash qmake-qt6 > /dev/null 2> /dev/null && QMAKE=qmake-qt6
+	[ -z $QMAKE ] && echo "cannot find qmake, qmake-qt5, or qmake-qt6" && exit 1
+fi
 
 # grab the Qt version
 QT_VERSION=$($QMAKE -query QT_VERSION)
@@ -252,7 +246,6 @@ if [ "$PLATFORM" = Darwin ] ; then
 	fi
 fi
 
-echo Building for QT "$QT_VERSION"
 
 # on Debian and Ubuntu based systems, the private QtLocation and
 # QtPositioning headers aren't bundled. Download them if necessary.
@@ -469,9 +462,6 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	popd
 fi
 
-
-cd "$SRC/${SRC_DIR}/libdivecomputer"
-autoreconf -f -i
 
 cd "$SRC"
 

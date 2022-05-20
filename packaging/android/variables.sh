@@ -2,8 +2,6 @@
 # When changing Qt version remember to update the 
 # qt-installer-noninteractive file as well.
 QT_VERSION=5.15
-#export QT5_ANDROID=/fast/usr/Qt/5.15.2
-#export CMAKE_PREFIX_PATH="/fast/usr/Qt/5.15.2/android/lib/cmake"
 LATEST_QT=5.15.1
 NDK_VERSION=21.3.6528147
 ANDROID_BUILDTOOLS_REVISION=29.0.3

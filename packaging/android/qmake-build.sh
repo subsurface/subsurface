@@ -19,8 +19,7 @@ popd
 
 # Set build defaults
 # is this a release or debug build
-BUILD_TYPE=Release
-#BUILD_TYPE=Debug
+BUILD_TYPE=Debug
 
 # and now we need a monotonic build number...
 if [ ! -f ./buildnr.dat ] ; then
