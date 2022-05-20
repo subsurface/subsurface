@@ -118,7 +118,37 @@
      </layout>
     </widget>
    </item>
-
+   <item>
+    <widget class="QGroupBox" name="groupBox_gridDepth">
+     <property name="title">
+      <string>Dive profile depth grid</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Depth line intevals.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="gridGeneric">
+        <property name="text">
+         <string>generic ( 1, 2, 4, 5, 10 )</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="grid3MBased">
+        <property name="text">
+         <string>based on ×3 intervals ( 1, 3, 6, 15 )</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   
    <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">

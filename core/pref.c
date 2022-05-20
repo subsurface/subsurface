@@ -92,6 +92,7 @@ struct preferences default_prefs = {
 	.auto_recalculate_thumbnails = true,
 	.extract_video_thumbnails = true,
 	.extract_video_thumbnails_position = 20,		// The first fifth seems like a reasonable place
+	.three_m_based_grid = false,
 };
 
 /* copy a preferences block, including making copies of all included strings */

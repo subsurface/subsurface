@@ -36,6 +36,7 @@ public:
 	double pointInRange(double pos) const; // Point on screen is in range of axis
 	void setTextVisible(bool arg1);
 	void setLinesVisible(bool arg1);
+	void setGridIsMultipleOfThree(bool arg1);
 	void updateTicks(int animSpeed);
 	double width() const; // only for vertical axes
 	double height() const; // only for horizontal axes
@@ -75,6 +76,7 @@ private:
 	double min, max;
 	bool textVisibility;
 	bool lineVisibility;
+	bool gridIsMultipleOfThree;
 	double labelScale;
 	double dpr;
 	double labelWidth, labelHeight; // maximum expected sizes of label width and height
