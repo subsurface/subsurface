@@ -67,6 +67,7 @@ void qPrefDisplay::loadSync(bool doSync)
 		load_lastState();
 		load_singleColumnPortrait();
 	}
+	disk_three_m_based_grid(doSync);
 }
 
 void qPrefDisplay::set_divelist_font(const QString &value)
@@ -147,6 +148,8 @@ HANDLE_PREFERENCE_INT(Display, "animation_speed", animation_speed);
 HANDLE_PREFERENCE_BOOL(Display, "displayinvalid", display_invalid_dives);
 
 HANDLE_PREFERENCE_BOOL(Display, "show_developer", show_developer);
+
+HANDLE_PREFERENCE_BOOL(Display, "three_m_based_grid", three_m_based_grid);
 
 void qPrefDisplay::setCorrectFont()
 {

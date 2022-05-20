@@ -576,6 +576,16 @@ TemplatePage {
 						PrefDisplay.singleColumnPortrait = checked
 					}
 				}
+                TemplateLabel {
+                    text: qsTr("Depth line based on ×3 intervals")
+                }
+                SsrfSwitch {
+                    checked: PrefDisplay.three_m_based_grid
+                    onClicked: {
+                        PrefDisplay.three_m_based_grid = checked
+                        rootItem.settingsChanged()
+                    }
+                }
 				TemplateLine {
 					visible: sectionAdvanced.isExpanded
 					Layout.columnSpan: 2

@@ -103,6 +103,7 @@ struct preferences {
 	double      font_size;
 	double      mobile_scale;
 	bool        show_developer;
+	bool        three_m_based_grid;
 
 	// ********** Equipment tab *******
 	const char *default_cylinder;
