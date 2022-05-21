@@ -226,7 +226,7 @@ void ProfileWidget::divesChanged(const QVector<dive *> &dives, DiveField field)
 	if (editedDive) {
 		copy_dive(current_dive, editedDive.get());
 		// TODO: Holy moly that function sends too many signals. Fix it!
-		DivePlannerPointsModel::instance()->loadFromDive(editedDive.get());
+		DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), editedDc);
 	}
 
 	plotCurrentDive();
@@ -258,7 +258,7 @@ void ProfileWidget::editDive()
 	copy_dive(current_dive, editedDive.get()); // Work on a copy of the dive
 	originalDive = current_dive;
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get());
+	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), editedDc);
 	view->setEditState(editedDive.get(), editedDc);
 }
 

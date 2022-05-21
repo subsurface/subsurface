@@ -241,7 +241,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case SIZE_INT:
 			return static_cast<int>(cyl->type.size.mliter);
 		case SENSORS: {
-			const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
+			std::vector<int16_t> sensors;
+			const struct divecomputer *currentdc = get_dive_dc(d, dcNr);
 			for (int i = 0; i < currentdc->samples; ++i) {
 				auto &sample = currentdc->sample[i];
 				for (int s = 0; s < MAX_SENSORS; ++s) {
@@ -475,7 +476,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		bool ok = false;
 		int s = vString.toInt(&ok);
 		if (ok) {
-			Command::editSensors(index.row(), s, dc_number);
+			Command::editSensors(index.row(), s, dcNr);
 			// We don't use the edit cylinder command and editing sensors is not relevant for planner
 			return true;
 		}
@@ -521,10 +522,11 @@ void CylindersModel::clear()
 {
 	beginResetModel();
 	d = nullptr;
+	dcNr = -1;
 	endResetModel();
 }
 
-void CylindersModel::updateDive(dive *dIn)
+void CylindersModel::updateDive(dive *dIn, int dcNrIn)
 {
 #ifdef DEBUG_CYL
 	if (d)
@@ -532,6 +534,7 @@ void CylindersModel::updateDive(dive *dIn)
 #endif
 	beginResetModel();
 	d = dIn;
+	dcNr = dcNrIn;
 	numRows = calcNumRows();
 	endResetModel();
 }
