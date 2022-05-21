@@ -24,49 +24,6 @@ static void fixup_current_dc()
 	dc_number = std::min(dc_number, number_of_computers(current_dive) - 1);
 }
 
-extern "C" void select_dive(struct dive *dive)
-{
-	if (!dive)
-		return;
-	if (!dive->selected) {
-		dive->selected = 1;
-		amount_selected++;
-	}
-	current_dive = dive;
-	fixup_current_dc();
-}
-
-extern "C" void deselect_dive(struct dive *dive)
-{
-	int idx;
-	if (dive && dive->selected) {
-		dive->selected = 0;
-		if (amount_selected)
-			amount_selected--;
-		if (current_dive == dive && amount_selected > 0) {
-			/* pick a different dive as selected */
-			int selected_dive = idx = get_divenr(dive);
-			while (--selected_dive >= 0) {
-				dive = get_dive(selected_dive);
-				if (dive && dive->selected) {
-					current_dive = dive;
-					return;
-				}
-			}
-			selected_dive = idx;
-			while (++selected_dive < divelog.dives->nr) {
-				dive = get_dive(selected_dive);
-				if (dive && dive->selected) {
-					current_dive = dive;
-					return;
-				}
-			}
-		}
-		current_dive = NULL;
-	}
-	fixup_current_dc();
-}
-
 extern "C" struct dive *first_selected_dive()
 {
 	int idx;
