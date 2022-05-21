@@ -277,9 +277,9 @@ void replanDive(dive *d)
 	execute(new ReplanDive(d));
 }
 
-void editProfile(const dive *d, EditProfileType type, int count)
+void editProfile(const dive *d, int dcNr, EditProfileType type, int count)
 {
-	execute(new EditProfile(d, type, count));
+	execute(new EditProfile(d, dcNr, type, count));
 }
 
 int addWeight(bool currentDiveOnly)

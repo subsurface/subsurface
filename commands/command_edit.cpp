@@ -882,8 +882,8 @@ QString editProfileTypeToString(EditProfileType type, int count)
 	}
 }
 
-EditProfile::EditProfile(const dive *source, EditProfileType type, int count) : d(current_dive),
-	dcNr(dc_number),
+EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int count) : d(current_dive),
+	dcNr(dcNr),
 	maxdepth({0}),
 	meandepth({0}),
 	dcmaxdepth({0}),

@@ -297,7 +297,7 @@ void ProfileWidget::stopAdded()
 		return;
 	calcDepth(*editedDive, editedDc);
 	Setter s(placingCommand, true);
-	Command::editProfile(editedDive.get(), Command::EditProfileType::ADD, 0);
+	Command::editProfile(editedDive.get(), editedDc, Command::EditProfileType::ADD, 0);
 }
 
 void ProfileWidget::stopRemoved(int count)
@@ -306,7 +306,7 @@ void ProfileWidget::stopRemoved(int count)
 		return;
 	calcDepth(*editedDive, editedDc);
 	Setter s(placingCommand, true);
-	Command::editProfile(editedDive.get(), Command::EditProfileType::REMOVE, count);
+	Command::editProfile(editedDive.get(), editedDc, Command::EditProfileType::REMOVE, count);
 }
 
 void ProfileWidget::stopMoved(int count)
@@ -315,5 +315,5 @@ void ProfileWidget::stopMoved(int count)
 		return;
 	calcDepth(*editedDive, editedDc);
 	Setter s(placingCommand, true);
-	Command::editProfile(editedDive.get(), Command::EditProfileType::MOVE, count);
+	Command::editProfile(editedDive.get(), editedDc, Command::EditProfileType::MOVE, count);
 }
