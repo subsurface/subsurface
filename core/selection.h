@@ -16,8 +16,6 @@ extern struct dive *current_dive;
 extern "C" {
 #endif
 
-extern void select_dive(struct dive *dive);
-extern void deselect_dive(struct dive *dive);
 extern struct dive *first_selected_dive(void);
 extern struct dive *last_selected_dive(void);
 extern bool consecutive_selected(void);
