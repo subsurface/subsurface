@@ -287,26 +287,6 @@ dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *fr
 	return NULL;
 }
 
-void deselect_dives_in_trip(struct dive_trip *trip)
-{
-	if (!trip)
-		return;
-	for (int i = 0; i < trip->dives.nr; ++i)
-		deselect_dive(trip->dives.dives[i]);
-}
-
-void select_dives_in_trip(struct dive_trip *trip)
-{
-	struct dive *dive;
-	if (!trip)
-		return;
-	for (int i = 0; i < trip->dives.nr; ++i) {
-		dive = trip->dives.dives[i];
-		if (!dive->hidden_by_filter)
-			select_dive(dive);
-	}
-}
-
 /* Out of two strings, copy the string that is not empty (if any). */
 static char *copy_non_empty_string(const char *a, const char *b)
 {
