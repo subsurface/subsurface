@@ -45,10 +45,18 @@ extern void dump_selection(void);
 // Set the current dive to "currentDive" and the current dive computer to "currentDc".
 // "currentDive" must be an element of "selection" (or null if "seletion" is empty).
 // If "currentDc" is negative, an attempt will be made to keep the current computer number.
-void setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc);
+// Returns true if the current dive changed.
+bool setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc);
 
-// Get currently selectd dives
+// Set selection, but try to keep the current dive. If current dive is not in selection,
+// find the nearest current dive in the selection
+// Returns true if the current dive changed.
+bool setSelection(const std::vector<dive *> &selection);
+
+// Get currently selected dives
 std::vector<dive *> getDiveSelection();
+bool diveInSelection(const std::vector<dive *> &selection, const dive *d);
+void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &add, const std::vector<dive *> &remove);
 
 #endif // __cplusplus
 

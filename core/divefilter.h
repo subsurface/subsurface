@@ -57,8 +57,10 @@ public:
 private:
 	DiveFilter();
 	bool showDive(const struct dive *d) const; // Should that dive be shown?
-	bool setFilterStatus(struct dive *d, bool shown) const;
-	void updateDiveStatus(dive *d, bool newStatus, ShownChange &change) const;
+	bool setFilterStatus(struct dive *d, bool shown,
+			     std::vector<dive *> &removeFromSelection) const;
+	void updateDiveStatus(dive *d, bool newStatus, ShownChange &change,
+			      std::vector<dive *> &removeFromSelection) const;
 
 	QVector<dive_site *> dive_sites;
 	FilterData filterData;
