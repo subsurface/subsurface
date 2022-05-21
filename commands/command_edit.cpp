@@ -1351,8 +1351,8 @@ void EditCylinder::undo()
 	redo();
 }
 
-EditSensors::EditSensors(int toCylinderIn, int fromCylinderIn)
-	: d(current_dive), dc(get_dive_dc(d, dc_number)), toCylinder(toCylinderIn), fromCylinder(fromCylinderIn)
+EditSensors::EditSensors(int toCylinderIn, int fromCylinderIn, int dcNr)
+	: d(current_dive), dc(get_dive_dc(d, dcNr)), toCylinder(toCylinderIn), fromCylinder(fromCylinderIn)
 {
 	if (!d || !dc)
 		return;
