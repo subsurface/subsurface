@@ -44,7 +44,7 @@ public:
 
 	void add();
 	void clear();
-	void updateDive(dive *d);
+	void updateDive(dive *d, int dcNr);
 	void updateDecoDepths(pressure_t olddecopo2);
 	void updateTrashIcon();
 	void moveAtFirst(int cylid);
@@ -65,6 +65,7 @@ slots:
 
 private:
 	dive *d;
+	int dcNr;
 	bool inPlanner;
 	bool hideUnused;
 	int numRows; // Does not include unused cylinders at the end

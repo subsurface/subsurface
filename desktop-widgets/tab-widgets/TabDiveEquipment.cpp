@@ -139,7 +139,7 @@ void TabDiveEquipment::toggleTriggeredColumn()
 
 void TabDiveEquipment::updateData()
 {
-	cylindersModel->updateDive(current_dive);
+	cylindersModel->updateDive(current_dive, dc_number);
 	weightModel->updateDive(current_dive);
 
 	if (current_dive && current_dive->suit)

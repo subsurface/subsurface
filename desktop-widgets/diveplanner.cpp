@@ -571,7 +571,7 @@ void PlannerWidgets::replanDive()
 		return;
 	copy_dive(current_dive, &displayed_dive); // Planning works on a copy of the dive (for now).
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive);
+	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive, dc_number);
 
 	plannerWidget.setReplanButton(true);
 	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));
@@ -580,7 +580,7 @@ void PlannerWidgets::replanDive()
 	if (displayed_dive.salinity)
 		plannerWidget.setSalinity(displayed_dive.salinity);
 	reset_cylinders(&displayed_dive, true);
-	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(&displayed_dive);
+	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(&displayed_dive, dc_number);
 }
 
 void PlannerWidgets::printDecoPlan()
