@@ -102,7 +102,7 @@ enum class EditProfileType {
 	MOVE,
 };
 void replanDive(dive *d); // dive computer(s) and cylinder(s) of first argument will be consumed!
-void editProfile(const dive *d, EditProfileType type, int count);
+void editProfile(const dive *d, int dcNr, EditProfileType type, int count);
 int addWeight(bool currentDiveOnly);
 int removeWeight(int index, bool currentDiveOnly);
 int editWeight(int index, weightsystem_t ws, bool currentDiveOnly);
