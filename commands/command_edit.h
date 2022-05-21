@@ -444,7 +444,7 @@ private:
 class EditSensors : public Base
 {
 public:
-	EditSensors(int cylIndex, int fromCylinder);
+	EditSensors(int cylIndex, int fromCylinder, int dcNr);
 
 private:
 	struct dive *d;

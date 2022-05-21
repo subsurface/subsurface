@@ -475,7 +475,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		bool ok = false;
 		int s = vString.toInt(&ok);
 		if (ok) {
-			Command::editSensors(index.row(), s);
+			Command::editSensors(index.row(), s, dc_number);
 			// We don't use the edit cylinder command and editing sensors is not relevant for planner
 			return true;
 		}

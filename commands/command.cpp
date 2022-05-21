@@ -312,9 +312,9 @@ int editCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentD
 	return execute_edit(new EditCylinder(index, cyl, type, currentDiveOnly));
 }
 
-void editSensors(int toCylinder, const int fromCylinder)
+void editSensors(int toCylinder, int fromCylinder, int dcNr)
 {
-	execute(new EditSensors(toCylinder, fromCylinder));
+	execute(new EditSensors(toCylinder, fromCylinder, dcNr));
 }
 
 // Trip editing related commands
