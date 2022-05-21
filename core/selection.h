@@ -40,18 +40,24 @@ extern void dump_selection(void);
 
 #ifdef __cplusplus
 #include <vector>
+#include <QVector>
 
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
 // Set the current dive to "currentDive" and the current dive computer to "currentDc".
 // "currentDive" must be an element of "selection" (or null if "seletion" is empty).
 // If "currentDc" is negative, an attempt will be made to keep the current computer number.
+// Returns the list of selected dives
+QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *currentDive, int currentDc);
+
+// As above, but sends a signal to inform the frontend of the changed selection.
 // Returns true if the current dive changed.
-bool setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc);
+void setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc);
 
 // Set selection, but try to keep the current dive. If current dive is not in selection,
 // find the nearest current dive in the selection
 // Returns true if the current dive changed.
-bool setSelection(const std::vector<dive *> &selection);
+// Does not send a signal.
+bool setSelectionKeepCurrent(const std::vector<dive *> &selection);
 
 // Get currently selected dives
 std::vector<dive *> getDiveSelection();

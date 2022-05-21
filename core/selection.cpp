@@ -177,21 +177,17 @@ static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &s
 	}
 }
 
-// Reset the selection to the dives of the "selection" vector and send the appropriate signals.
+
+// Reset the selection to the dives of the "selection" vector.
 // Set the current dive to "currentDive". "currentDive" must be an element of "selection" (or
-// null if "selection" is empty). Return true if the current dive changed.
-bool setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc)
+// null if "selection" is empty).
+// Does not send signals or clear the trip selection.
+QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *currentDive, int currentDc)
 {
 	// To do so, generate vectors of dives to be selected and deselected.
 	// We send signals batched by trip, so keep track of trip/dive pairs.
 	QVector<dive *> divesToSelect;
 	divesToSelect.reserve(selection.size());
-	const dive *oldCurrent = current_dive;
-
-	// Since we select only dives, there are no selected trips!
-	amount_trips_selected = 0;
-	for (int i = 0; i < divelog.trips->nr; ++i)
-		divelog.trips->trips[i]->selected = false;
 
 	// TODO: We might want to keep track of selected dives in a more efficient way!
 	int i;
@@ -213,11 +209,6 @@ bool setSelection(const std::vector<dive *> &selection, dive *currentDive, int c
 			++amount_selected;
 			divesToSelect.push_back(d);
 		}
-		// TODO: Instead of using select_dive() and deselect_dive(), we set selected directly.
-		// The reason is that deselect() automatically sets a new current dive, which we
-		// don't want, as we set it later anyway.
-		// There is other parts of the C++ code that touches the innards directly, but
-		// ultimately this should be pushed down to C.
 		d->selected = newState;
 	}
 
@@ -232,18 +223,48 @@ bool setSelection(const std::vector<dive *> &selection, dive *currentDive, int c
 	if (currentDc >= 0)
 		dc_number = currentDc;
 	fixup_current_dc();
-
-	// Send the new selection
-	emit diveListNotifier.divesSelected(divesToSelect);
-	return current_dive != oldCurrent;
+	return divesToSelect;
 }
 
-bool setSelection(const std::vector<dive *> &selection)
+static void clear_trip_selection()
 {
+	amount_trips_selected = 0;
+	for (int i = 0; i < divelog.trips->nr; ++i)
+		divelog.trips->trips[i]->selected = false;
+}
+
+// Reset the selection to the dives of the "selection" vector and send the appropriate signals.
+// Set the current dive to "currentDive". "currentDive" must be an element of "selection" (or
+// null if "selection" is empty).
+// If "currentDc" is negative, an attempt will be made to keep the current computer number.
+void setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc)
+{
+	// Since we select only dives, there are no selected trips!
+	clear_trip_selection();
+
+	auto selectedDives = setSelectionCore(selection, currentDive, currentDc);
+
+	// Send the new selection to the UI.
+	emit diveListNotifier.divesSelected(selectedDives);
+}
+
+// Set selection, but try to keep the current dive. If current dive is not in selection,
+// find the nearest current dive in the selection
+// Returns true if the current dive changed.
+// Do not send a signal.
+bool setSelectionKeepCurrent(const std::vector<dive *> &selection)
+{
+	// Since we select only dives, there are no selected trips!
+	clear_trip_selection();
+
+	const dive *oldCurrent = current_dive;
+
 	dive *newCurrent = current_dive;
 	if (current_dive && std::find(selection.begin(), selection.end(), current_dive) == selection.end())
 		newCurrent = closestInSelection(current_dive->when, selection);
-	return setSelection(selection, newCurrent, -1);
+	setSelectionCore(selection, newCurrent, -1);
+
+	return current_dive != oldCurrent;
 }
 
 extern "C" void select_single_dive(dive *d)

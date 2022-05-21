@@ -49,9 +49,6 @@ extern dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated
 extern dive_trip_t *get_trip_by_uniq_id(int tripId);
 extern bool trips_overlap(const struct dive_trip *t1, const struct dive_trip *t2);
 
-extern void select_dives_in_trip(struct dive_trip *trip);
-extern void deselect_dives_in_trip(struct dive_trip *trip);
-
 extern dive_trip_t *combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b);
 extern bool is_trip_before_after(const struct dive *dive, bool before);
 extern bool trip_is_single_day(const struct dive_trip *trip);

@@ -548,17 +548,18 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 
 	QItemSelection newSelected = selected.size() ? selected : selectionModel()->selection();
 
+	std::vector<dive *> addToSelection, removeFromSelection;
 	Q_FOREACH (const QModelIndex &index, newDeselected.indexes()) {
 		if (index.column() != 0)
 			continue;
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-		if (!dive) { // it's a trip!
-			dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+		if (dive) {
+			removeFromSelection.push_back(dive);
+		} else if (dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>()) {
 			deselect_trip(trip);
-			deselect_dives_in_trip(trip);
-		} else {
-			deselect_dive(dive);
+			for (int i = 0; i < trip->dives.nr; ++i)
+				removeFromSelection.push_back(trip->dives.dives[i]);
 		}
 	}
 	Q_FOREACH (const QModelIndex &index, newSelected.indexes()) {
@@ -567,10 +568,12 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 
 		const QAbstractItemModel *model = index.model();
 		struct dive *dive = model->data(index, DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-		if (!dive) { // it's a trip!
-			dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+		if (dive) {
+			addToSelection.push_back(dive);
+		} else if (dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>()) {
 			select_trip(trip);
-			select_dives_in_trip(trip);
+			for (int i = 0; i < trip->dives.nr; ++i)
+				addToSelection.push_back(trip->dives.dives[i]);
 			if (model->rowCount(index)) {
 				QItemSelection selection;
 				selection.select(model->index(0, 0, index), model->index(model->rowCount(index) - 1, 0, index));
@@ -579,10 +582,22 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 				if (!isExpanded(index))
 					expand(index);
 			}
-		} else {
-			select_dive(dive);
 		}
 	}
+
+	// Funny: It can happen that dives were added to the add and remove lists.
+	// For example, when switching from a trip to a single dive in the trip.
+	// To avoid ill-define situations, clean that up.
+	for (dive *d: addToSelection) {
+		auto it = std::find(removeFromSelection.begin(), removeFromSelection.end(), d);
+		if (it != removeFromSelection.end())
+			removeFromSelection.erase(it);
+	}
+
+	std::vector<dive *> selection = getDiveSelection();
+	updateSelection(selection, addToSelection, removeFromSelection);
+	dive *newCurrent = selection.empty() ? nullptr : selection.front();
+	setSelectionCore(selection, newCurrent, -1);
 
 	// Display the new, processed, selection
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
