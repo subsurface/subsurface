@@ -130,51 +130,63 @@ extern "C" void dump_selection(void)
 }
 #endif
 
+// Get closest dive in selection, if possible a newer dive.
+// Supposes that selection is sorted
+static dive *closestInSelection(timestamp_t when, const std::vector<dive *> &selection)
+{
+	// Start from back until we get the first dive that is before
+	// the supposed-to-be selected dive. (Note: this mimics the
+	// old behavior when the current dive changed).
+	for (auto it = selection.rbegin(); it < selection.rend(); ++it) {
+		if ((*it)->when > when && !(*it)->hidden_by_filter)
+			return *it;
+	}
+
+	// We didn't find a more recent selected dive -> try to
+	// find *any* visible selected dive.
+	for (dive *d: selection) {
+		if (!d->hidden_by_filter)
+			return d;
+	}
+
+	return nullptr;
+}
+
 // Set the current dive either from a list of selected dives,
 // or a newly selected dive. In both cases, try to select the
-// dive that is newer that is newer than the given date.
+// dive that is newer than the given date.
 // This mimics the old behavior when the current dive changed.
 // If a current dive outside of the selection was set, add
 // it to the list of selected dives, so that we never end up
 // in a situation where we display a non-selected dive.
 static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &selection, QVector<dive *> &divesToSelect)
 {
-	// Start from back until we get the first dive that is before
-	// the supposed-to-be selected dive. (Note: this mimics the
-	// old behavior when the current dive changed).
-	for (auto it = selection.rbegin(); it < selection.rend(); ++it) {
-		if ((*it)->when > when && !(*it)->hidden_by_filter) {
-			current_dive = *it;
-			return;
-		}
-	}
-
-	// We didn't find a more recent selected dive -> try to
-	// find *any* visible selected dive.
-	for (dive *d: selection) {
-		if (!d->hidden_by_filter) {
-			current_dive = d;
-			return;
-		}
+	if (dive *d = closestInSelection(when, selection)) {
+		current_dive = d;
+		return;
 	}
 
 	// No selected dive is visible! Take the closest dive. Note, this might
 	// return null, but that just means unsetting the current dive (as no
 	// dive is visible anyway).
 	current_dive = find_next_visible_dive(when);
-	if (current_dive)
+	if (current_dive) {
+		current_dive->selected = true;
+		amount_selected++;
 		divesToSelect.push_back(current_dive);
+	}
 }
 
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
 // Set the current dive to "currentDive". "currentDive" must be an element of "selection" (or
-// null if "seletion" is empty). Return true if the selection or current dive changed.
-void setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc)
+// null if "selection" is empty). Return true if the current dive changed.
+bool setSelection(const std::vector<dive *> &selection, dive *currentDive, int currentDc)
 {
 	// To do so, generate vectors of dives to be selected and deselected.
 	// We send signals batched by trip, so keep track of trip/dive pairs.
 	QVector<dive *> divesToSelect;
 	divesToSelect.reserve(selection.size());
+	const dive *oldCurrent = current_dive;
 
 	// Since we select only dives, there are no selected trips!
 	amount_trips_selected = 0;
@@ -223,6 +235,15 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive, int c
 
 	// Send the new selection
 	emit diveListNotifier.divesSelected(divesToSelect);
+	return current_dive != oldCurrent;
+}
+
+bool setSelection(const std::vector<dive *> &selection)
+{
+	dive *newCurrent = current_dive;
+	if (current_dive && std::find(selection.begin(), selection.end(), current_dive) == selection.end())
+		newCurrent = closestInSelection(current_dive->when, selection);
+	return setSelection(selection, newCurrent, -1);
 }
 
 extern "C" void select_single_dive(dive *d)
@@ -247,6 +268,32 @@ std::vector<dive *> getDiveSelection()
 			res.push_back(d);
 	}
 	return res;
+}
+
+bool diveInSelection(const std::vector<dive *> &selection, const dive *d)
+{
+	// Do a binary search using the ordering of the dive list.
+	auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than);
+	return it != selection.end() && *it == d;
+}
+
+void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &add, const std::vector<dive *> &remove)
+{
+	// We could sort the array and merge the vectors as we do in the undo code. But is it necessary?
+	for (dive *d: add) {
+		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than);
+		if (it != selection.end() && *it == d)
+			continue; // Ooops. Already there?
+		selection.insert(it, d);
+	}
+
+	// Likewise, we could sort the array and be smarter here. Again, is it necessary?
+	for (dive *d: remove) {
+		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than);
+		if (it == selection.end() || *it != d)
+			continue; // Ooops. Not there?
+		selection.erase(it);
+	}
 }
 
 // Select the first dive that is visible

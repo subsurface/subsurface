@@ -15,7 +15,7 @@
 #endif
 
 // Set filter status of dive and return whether it has been changed
-bool DiveFilter::setFilterStatus(struct dive *d, bool shown) const
+bool DiveFilter::setFilterStatus(struct dive *d, bool shown, std::vector<dive *> &removeFromSelection) const
 {
 	bool old_shown, changed;
 	if (!d)
@@ -23,16 +23,16 @@ bool DiveFilter::setFilterStatus(struct dive *d, bool shown) const
 	old_shown = !d->hidden_by_filter;
 	d->hidden_by_filter = !shown;
 	if (!shown && d->selected)
-		deselect_dive(d);
+		removeFromSelection.push_back(d);
 	changed = old_shown != shown;
 	if (changed)
 		shown_dives += shown - old_shown;
 	return changed;
 }
 
-void DiveFilter::updateDiveStatus(dive *d, bool newStatus, ShownChange &change) const
+void DiveFilter::updateDiveStatus(dive *d, bool newStatus, ShownChange &change, std::vector<dive *> &removeFromSelection) const
 {
-	if (setFilterStatus(d, newStatus)) {
+	if (setFilterStatus(d, newStatus, removeFromSelection)) {
 		if (newStatus)
 			change.newShown.push_back(d);
 		else
@@ -54,19 +54,20 @@ bool FilterData::validFilter() const
 
 ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 {
-	dive *old_current = current_dive;
-
 	ShownChange res;
 	bool doDS = diveSiteMode();
 	bool doFullText = filterData.fullText.doit();
+	std::vector<dive *> selection = getDiveSelection();
+	std::vector<dive *> removeFromSelection;
 	for (dive *d: dives) {
 		// There are three modes: divesite, fulltext, normal
 		bool newStatus = doDS        ? dive_sites.contains(d->dive_site) :
 				 doFullText  ? fulltext_dive_matches(d, filterData.fullText, filterData.fulltextStringMode) && showDive(d) :
 					       showDive(d);
-		updateDiveStatus(d, newStatus, res);
+		updateDiveStatus(d, newStatus, res, removeFromSelection);
 	}
-	res.currentChanged = old_current != current_dive;
+	updateSelection(selection, std::vector<dive *>(), removeFromSelection);
+	res.currentChanged = setSelection(selection);
 	return res;
 }
 
@@ -82,30 +83,31 @@ void DiveFilter::reset()
 
 ShownChange DiveFilter::updateAll() const
 {
-	dive *old_current = current_dive;
-
 	ShownChange res;
 	int i;
 	dive *d;
+	std::vector<dive *> selection = getDiveSelection();
+	std::vector<dive *> removeFromSelection;
 	// There are three modes: divesite, fulltext, normal
 	if (diveSiteMode()) {
 		for_each_dive(i, d) {
 			bool newStatus = dive_sites.contains(d->dive_site);
-			updateDiveStatus(d, newStatus, res);
+			updateDiveStatus(d, newStatus, res, removeFromSelection);
 		}
 	} else if (filterData.fullText.doit()) {
 		FullTextResult ft = fulltext_find_dives(filterData.fullText, filterData.fulltextStringMode);
 		for_each_dive(i, d) {
 			bool newStatus = ft.dive_matches(d) && showDive(d);
-			updateDiveStatus(d, newStatus, res);
+			updateDiveStatus(d, newStatus, res, removeFromSelection);
 		}
 	} else {
 		for_each_dive(i, d) {
 			bool newStatus = showDive(d);
-			updateDiveStatus(d, newStatus, res);
+			updateDiveStatus(d, newStatus, res, removeFromSelection);
 		}
 	}
-	res.currentChanged = old_current != current_dive;
+	updateSelection(selection, std::vector<dive *>(), removeFromSelection);
+	res.currentChanged = setSelection(selection);
 	return res;
 }
 
