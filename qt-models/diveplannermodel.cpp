@@ -1258,9 +1258,9 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	restore_deco_state(save, &ds, false);
 
 	char buf[200];
-	sprintf(buf, ", %s: + %d:%02d /%s + %d:%02d /min", qPrintable(tr("Stop times")),
-		FRACTION(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
-		FRACTION(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
+	sprintf(buf, ", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
+		SIGNED_FRAC(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
+		SIGNED_FRAC(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
 
 	// By using a signal, we can transport the variations to the main thread.
 	emit variationsComputed(QString(buf));
