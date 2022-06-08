@@ -2621,6 +2621,10 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	MERGE_TXT(res, a, b, suit, ", ");
 	MERGE_MAX(res, a, b, number);
 	MERGE_NONZERO(res, a, b, visibility);
+	MERGE_NONZERO(res, a, b, wavesize);
+	MERGE_NONZERO(res, a, b, current);
+	MERGE_NONZERO(res, a, b, surge);
+	MERGE_NONZERO(res, a, b, chill);
 	copy_pictures(a->pictures.nr ? &a->pictures : &b->pictures, &res->pictures);
 	taglist_merge(&res->tag_list, a->tag_list, b->tag_list);
 	/* if we get dives without any gas / cylinder information in an import, make sure
