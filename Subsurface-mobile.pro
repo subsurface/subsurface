@@ -2,7 +2,7 @@ TEMPLATE = app
 
 QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth 
 
-DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT
+DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT MAP_SUPPORT
 
 CONFIG += c++17
 CONFIG += qtquickcompiler
@@ -347,7 +347,7 @@ android {
 		core/serial_usb_android.cpp
 
 	# ironically, we appear to need to include the Kirigami shaders here
-	# as they aren't found when we assume that they are part of the
+	# as they are not found when we assume that they are part of the
 	# libkirigami library
 	RESOURCES += packaging/android/translations.qrc \
 		android-mobile/font.qrc \
