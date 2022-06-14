@@ -79,5 +79,5 @@ if [[ "$1" = "post" ]] ; then
 	cd rpmbuild
 	cat ../../subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $VERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
 	rpmbuild --verbose -bs $(pwd)/SPECS/subsurface.spec
-	copr build $REPO $(pwd)/SRPMS/subsurface-$VERSION-1.fc*.src.rpm
+	copr build --nowait $REPO $(pwd)/SRPMS/subsurface-$VERSION-1.fc*.src.rpm
 fi
