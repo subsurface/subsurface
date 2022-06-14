@@ -11,6 +11,7 @@
  - Add support for the Seac Screen and Action
  - Add support for the Cressi Michelangelo
  - Add partial support for the new version of the Aqualung i200C with GI.... version numbers, internally named i200Cv2
+ - Add initial support for the Shearwater Petrel 3 and Perdix 2
 
 
 ---
