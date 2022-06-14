@@ -43,9 +43,13 @@ struct namePattern {
 	const char *vendor;
 	const char *product;
 };
+// search is in order of this array, and as a prefix search, so more specific names
+// should be added before less specific names (i.e. "Perdix 2" before "Perdix")
 static struct namePattern name[] = {
 	// Shearwater dive computers
 	{ "Predator", "Shearwater", "Predator" },
+	{ "Perdix 2", "Shearwater", "Perdix 2"},
+	{ "Petrel 3", "Shearwater", "Petrel 3"},
 	// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device
 	// but only the Petrel 2 is listed as available dive computer on iOS (which requires BLE support)
 	// so always pick the "Petrel 2" as product when seeing a Petrel
