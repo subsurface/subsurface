@@ -28,7 +28,7 @@ static struct modelPattern model[] = {
 	{ 0x4647, "Sherwood", "Sage" },
 	{ 0x4648, "Aqualung", "i300C" },
 	{ 0x4649, "Aqualung", "i200C" },
-	{ 0x4749, "Aqualung", "i200C" },
+	{ 0x4749, "Aqualung", "i200Cv2" },
 	{ 0x4651, "Aqualung", "i770R" },
 	{ 0x4652, "Aqualung", "i550C" },
 	{ 0x4653, "Oceanic", "Geo 4.0" },
