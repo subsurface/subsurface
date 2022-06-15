@@ -49,6 +49,12 @@
 	<string>Subsurface-mobile can download dive information directly from some Bluetooth LE enabled dive computers; for this it needs access to your Bluetooth peripherals.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Subsurface-mobile stores your dive list locally - iOS seems to think that means it accesses your photos (which it does not)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Subsurface-mobile does NOT access your location information, but iOS seems to think it does because one of the core libraries we use has the ability to access location information.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Subsurface-mobile does NOT access your location information, but iOS seems to think it does because one of the core libraries we use has the ability to access location information.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Subsurface-mobile does NOT access your location information, but iOS seems to think it does because one of the core libraries we use has the ability to access location information.</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
