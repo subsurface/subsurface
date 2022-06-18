@@ -1,3 +1,4 @@
+- filter: normalize unicode code points to base letter (for searching ℓ, etc.)
 - core: when modifying cylinders across multiple dives, match cylinder number before comparing type
 - core: merge all properties in a dive, including current, waveheight, etc
 - core: prevent crash when merging dives without cylinders (as we might get when importing from divelogs.de)
