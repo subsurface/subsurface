@@ -85,8 +85,9 @@ bool fulltext_dive_matches(const struct dive *d, const FullTextQuery &q, StringF
 
 // Class implementation
 
-// Take a text and tokenize it into words. Normalize the words to upper case
-// and add to a given list, if not already in list.
+// Take a text and tokenize it into words. Normalize the words to the base
+// upper case base character (e.g. 'ℓ' to 'L') and add to a given list,
+// if not already in list.
 // We might think about limiting the lower size of words we store.
 // Note: we convert to QString before tokenization because we rely in
 // Qt's isPunct() function.
@@ -107,7 +108,9 @@ static void tokenize(QString s, std::vector<QString> &res)
 		int end = pos;
 		while (end < size && !s[end].isSpace() && !s[end].isPunct())
 			++end;
-		QString word = loc.toUpper(s.mid(pos, end - pos)); // Sad: Locale::toUpper can't use QStringRef - we have to copy the substring!
+		QString word = s.mid(pos, end - pos);
+		word = word.normalized(QString::NormalizationForm_KD);
+		word = loc.toUpper(word);
 		pos = end;
 
 		if (find(res.begin(), res.end(), word) == res.end())
@@ -157,11 +160,10 @@ void FullText::populate()
 
 void FullText::registerDive(struct dive *d)
 {
-	if (d->full_text) {
+	if (d->full_text)
 		unregisterWords(d, d->full_text->words);
-	} else {
+	else
 		d->full_text = new full_text_cache;
-	}
 	d->full_text->words = getWords(d);
 	registerWords(d, d->full_text->words);
 }
