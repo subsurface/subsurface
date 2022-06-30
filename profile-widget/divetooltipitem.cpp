@@ -84,12 +84,10 @@ void ToolTipItem::expand()
 		height += sRect.height();
 	}
 
-	if (entryToolTip.first) {
-		QRectF sRect = entryToolTip.second->boundingRect();
-		if (sRect.width() > width)
-			width = sRect.width();
-		height += sRect.height();
-	}
+	QRectF sRect = entryToolTip.second->boundingRect();
+	if (sRect.width() > width)
+		width = sRect.width();
+	height += sRect.height();
 
 	const int sp2 = iconMetrics.spacing * 2;
 	// pixmap left padding, icon, pixmap right padding, right padding
@@ -101,13 +99,9 @@ void ToolTipItem::expand()
 	if (width < title->boundingRect().width() + sp2)
 		width = title->boundingRect().width() + sp2;
 	// clip the height
-	if (entryToolTip.first) {
-		const int minH = lrint(entryToolTip.first->y() + entryToolTip.first->pixmap().height() + sp2);
-		if (height < minH)
-			height = minH;
-	} else if (height < iconMetrics.sz_small) {
-		height = iconMetrics.sz_small;
-	}
+	const int minH = lrint(entryToolTip.first->y() + entryToolTip.first->pixmap().height() + sp2);
+	if (height < minH)
+		height = minH;
 
 	nextRectangle.setWidth(width);
 	nextRectangle.setHeight(height);
