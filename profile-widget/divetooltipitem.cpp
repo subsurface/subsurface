@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/divetooltipitem.h"
 #include "profile-widget/divecartesianaxis.h"
-#include "core/membuffer.h"
 #include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"
+#include "core/qthelper.h"
+#include "core/string-format.h"
 #include <QPropertyAnimation>
 #include <QGraphicsView>
-#include "core/qthelper.h"
 
 ToolTipItem::ToolTip ToolTipItem::makeToolTip(const QString &toolTip, const QPixmap &pixmap)
 {
@@ -203,8 +203,6 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 
 void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 {
-	struct membufferpp mb;
-
 	if(refreshTime.elapsed() < 40)
 		return;
 	refreshTime.start();
@@ -214,7 +212,7 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 	lastTime = time;
 	clear();
 
-	int idx = get_plot_details_new(d, &pInfo, time, &mb);
+	auto [text, idx] = formatProfileInfo(d, &pInfo, time);
 
 	tissues.fill();
 	painter.setPen(QColor(0, 0, 0, 0));
@@ -234,7 +232,7 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 		painter.setPen(QColor(0, 0, 0, 127));
 		for (int i = 0; i < 16; i++)
 			painter.drawLine(i, 60, i, 60 - entry->percentages[i] / 2);
-		entryToolTip.text->setText(QString::fromUtf8(mb.buffer, mb.len));
+		entryToolTip.text->setText(text);
 	}
 	entryToolTip.pixmap->setPixmap(tissues);
 

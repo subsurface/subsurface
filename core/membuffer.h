@@ -48,7 +48,7 @@ struct membuffer {
 
 #ifdef __cplusplus
 
-// In C++ code use this - it automatically frees the buffer, when going out of scope.
+// In C++ code use this - it automatically frees the buffer when going out of scope.
 struct membufferpp : public membuffer {
 	membufferpp();
 	~membufferpp();

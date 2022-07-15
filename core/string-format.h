@@ -3,10 +3,12 @@
 #ifndef STRING_FORMAT_H
 #define STRING_FORMAT_H
 
+#include <utility>
 #include <QStringList>
 
 struct dive;
 struct dive_trip;
+struct plot_info;
 
 QString formatSac(const dive *d);
 QString formatNotes(const dive *d);
@@ -29,5 +31,6 @@ QString formatDiveDateTime(const dive *d);
 QString formatDayOfWeek(int day);
 QString formatTripTitle(const dive_trip *trip);
 QString formatTripTitleWithDives(const dive_trip *trip);
+std::pair<QString, int> formatProfileInfo(const dive *d, const plot_info *pi, int time);
 
 #endif
