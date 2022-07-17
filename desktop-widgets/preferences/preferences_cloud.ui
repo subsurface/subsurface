@@ -117,7 +117,7 @@
       <string extracomment="Help info 1"/>
      </property>
      <property name="text">
-      <string>1) Enter an email address and a novel password that Subsurface will use to initialise the dive log in the cloud. Click Apply to send the above email address and password to the (remote) cloud server.</string>
+      <string>1) Enter an email address and a novel password that Subsurface will use to initialise the dive log in the cloud. Click Apply to send the above email address and password to the (remote) cloud server. Cloud storage email and password can only consist of letters, numbers, and '.','-','_', and '+'.</string>
      </property>
     </widget>
    </item>
