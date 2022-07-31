@@ -1,4 +1,4 @@
-name: Ubuntu 21.10 / Qt 5.15--
+name: Ubuntu 22.04 / Qt 5.15--
 on:
   push:
     branches:
@@ -8,10 +8,10 @@ on:
     - master
 
 jobs:
-  buildUbuntuImpish:
+  buildUbuntuJammy:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:21.10
+      image: ubuntu:22.04
 
     steps:
     - name: checkout sources
