@@ -2,6 +2,27 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 5.0.9
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- filter: normalize unicode code points to base letter (for searching ℓ, etc.)
+- core: when modifying cylinders across multiple dives, match cylinder number before comparing type
+- core: merge all properties in a dive, including current, waveheight, etc
+- core: prevent crash when merging dives without cylinders (as we might get when importing from divelogs.de)
+- core: work around bug in TecDiving dive computer reporting spurious 0 deg C water temperature in first sample
+- core: correctly parse DC_FIELD_SALINITY response; fixes incorrect water type with some dive computers, including the Mares Smart
+- desktop: allow more than one media file to be imported from web
+- desktop: improve UX for cloud email/password checking
+- undo: clear undo stack when the current file is closed
+- dive computer support
+ - Garmin: correctly deal with short format filenames
+ - Garmin: correctly parse dive mode
+ - Add support for the Seac Screen and Action
+ - Add support for the Cressi Michelangelo
+ - Add support for the new version of the Aqualung i200C
+ - Add support for the Shearwater Petrel 3 and Perdix 2
+ - Add support for the Ratio iX3M 2
+ - Add support for the Sherwood Amphos Air 2.0
+
 New in _Subsurface_ 5.0.8
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - core: add support for separator characters when using degree-style coordinates
