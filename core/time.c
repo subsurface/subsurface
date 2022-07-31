@@ -56,7 +56,7 @@ void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 
 	/* minutes since 1900 */
 	tm->tm_sec = timestamp % 60;
-	val = timestamp /= 60;
+	val = timestamp / 60;
 
 	/* Do the simple stuff */
 	tm->tm_min = val % 60;
