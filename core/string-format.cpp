@@ -2,7 +2,7 @@
 #include "deco.h"
 #include "dive.h"
 #include "divesite.h"
-#include "membuffer.h"
+#include "format.h"
 #include "profile.h"
 #include "qthelper.h"
 #include "subsurface-string.h"
@@ -309,7 +309,7 @@ QString formatTripTitleWithDives(const dive_trip *trip)
 
 static QString formatPlotInfoInternal(const dive *d, const plot_info *pi, int idx)
 {
-	membufferpp b;
+	QString res;
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
 	double depthvalue, tempvalue, speedvalue, sacvalue;
@@ -318,43 +318,43 @@ static QString formatPlotInfoInternal(const dive *d, const plot_info *pi, int id
 	const struct plot_data *entry = pi->entry + idx;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
-	put_format_loc(&b, "%s: %d:%02d\n", translate("gettextFromC", "@"), FRACTION(entry->sec, 60));
-	put_format_loc(&b, "%s: %.1f%s\n", translate("gettextFromC", "D"), depthvalue, depth_unit);
+	res = qasprintf_loc("%s: %d:%02d\n", translate("gettextFromC", "@"), FRACTION(entry->sec, 60));
+	res += qasprintf_loc("%s: %.1f%s\n", translate("gettextFromC", "D"), depthvalue, depth_unit);
 	for (cyl = 0; cyl < pi->nr_cylinders; cyl++) {
 		int mbar = get_plot_pressure(pi, idx, cyl);
 		if (!mbar)
 			continue;
 		struct gasmix mix = get_cylinder(d, cyl)->gasmix;
 		pressurevalue = get_pressure_units(mbar, &pressure_unit);
-		put_format_loc(&b, "%s: %d%s (%s)\n", translate("gettextFromC", "P"), pressurevalue, pressure_unit, gasname(mix));
+		res += qasprintf_loc("%s: %d%s (%s)\n", translate("gettextFromC", "P"), pressurevalue, pressure_unit, gasname(mix));
 	}
 	if (entry->temperature) {
 		tempvalue = get_temp_units(entry->temperature, &temp_unit);
-		put_format_loc(&b, "%s: %.1f%s\n", translate("gettextFromC", "T"), tempvalue, temp_unit);
+		res += qasprintf_loc("%s: %.1f%s\n", translate("gettextFromC", "T"), tempvalue, temp_unit);
 	}
 	speedvalue = get_vertical_speed_units(abs(entry->speed), NULL, &vertical_speed_unit);
 	/* Ascending speeds are positive, descending are negative */
 	if (entry->speed > 0)
 		speedvalue *= -1;
-	put_format_loc(&b, "%s: %.1f%s\n", translate("gettextFromC", "V"), speedvalue, vertical_speed_unit);
+	res += qasprintf_loc("%s: %.1f%s\n", translate("gettextFromC", "V"), speedvalue, vertical_speed_unit);
 	sacvalue = get_volume_units(entry->sac, &decimals, &unit);
 	if (entry->sac && prefs.show_sac)
-		put_format_loc(&b, "%s: %.*f%s/%s\n", translate("gettextFromC", "SAC"), decimals, sacvalue, unit, translate("gettextFromC", "min"));
+		res += qasprintf_loc("%s: %.*f%s/%s\n", translate("gettextFromC", "SAC"), decimals, sacvalue, unit, translate("gettextFromC", "min"));
 	if (entry->cns)
-		put_format_loc(&b, "%s: %u%%\n", translate("gettextFromC", "CNS"), entry->cns);
+		res += qasprintf_loc("%s: %u%%\n", translate("gettextFromC", "CNS"), entry->cns);
 	if (prefs.pp_graphs.po2 && entry->pressures.o2 > 0) {
-		put_format_loc(&b, "%s: %.2f%s\n", translate("gettextFromC", "pO₂"), entry->pressures.o2, translate("gettextFromC", "bar"));
+		res += qasprintf_loc("%s: %.2f%s\n", translate("gettextFromC", "pO₂"), entry->pressures.o2, translate("gettextFromC", "bar"));
 		if (entry->scr_OC_pO2.mbar)
-			put_format_loc(&b, "%s: %.2f%s\n", translate("gettextFromC", "SCR ΔpO₂"), entry->scr_OC_pO2.mbar/1000.0 - entry->pressures.o2,
-					translate("gettextFromC", "bar"));
+			res += qasprintf_loc("%s: %.2f%s\n", translate("gettextFromC", "SCR ΔpO₂"), entry->scr_OC_pO2.mbar/1000.0 - entry->pressures.o2,
+					     translate("gettextFromC", "bar"));
 	}
 	if (prefs.pp_graphs.pn2 && entry->pressures.n2 > 0)
-		put_format_loc(&b, "%s: %.2f%s\n", translate("gettextFromC", "pN₂"), entry->pressures.n2, translate("gettextFromC", "bar"));
+		res += qasprintf_loc("%s: %.2f%s\n", translate("gettextFromC", "pN₂"), entry->pressures.n2, translate("gettextFromC", "bar"));
 	if (prefs.pp_graphs.phe && entry->pressures.he > 0)
-		put_format_loc(&b,"%s: %.2f%s\n", translate("gettextFromC", "pHe"), entry->pressures.he, translate("gettextFromC", "bar"));
+		res += qasprintf_loc("%s: %.2f%s\n", translate("gettextFromC", "pHe"), entry->pressures.he, translate("gettextFromC", "bar"));
 	if (prefs.mod && entry->mod > 0) {
 		mod = lrint(get_depth_units(entry->mod, NULL, &depth_unit));
-		put_format_loc(&b, "%s: %d%s\n", translate("gettextFromC", "MOD"), mod, depth_unit);
+		res += qasprintf_loc("%s: %d%s\n", translate("gettextFromC", "MOD"), mod, depth_unit);
 	}
 	eadd = lrint(get_depth_units(entry->eadd, NULL, &depth_unit));
 
@@ -363,20 +363,20 @@ static QString formatPlotInfoInternal(const dive *d, const plot_info *pi, int id
 		case plot_info::NITROX:
 			if (entry->ead > 0) {
 				ead = lrint(get_depth_units(entry->ead, NULL, &depth_unit));
-				put_format_loc(&b, "%s: %d%s\n", translate("gettextFromC", "EAD"), ead, depth_unit);
-				put_format_loc(&b, "%s: %d%s / %.1fg/ℓ\n", translate("gettextFromC", "EADO"), eadd, depth_unit, entry->density);
+				res += qasprintf_loc("%s: %d%s\n", translate("gettextFromC", "EAD"), ead, depth_unit);
+				res += qasprintf_loc("%s: %d%s / %.1fg/ℓ\n", translate("gettextFromC", "EADO"), eadd, depth_unit, entry->density);
 				break;
 			}
 		case plot_info::TRIMIX:
 			if (entry->end > 0) {
 				end = lrint(get_depth_units(entry->end, NULL, &depth_unit));
-				put_format_loc(&b, "%s: %d%s\n", translate("gettextFromC", "END"), end, depth_unit);
-				put_format_loc(&b, "%s: %d%s / %.1fg/ℓ\n", translate("gettextFromC", "EADO"), eadd, depth_unit, entry->density);
+				res += qasprintf_loc("%s: %d%s\n", translate("gettextFromC", "END"), end, depth_unit);
+				res += qasprintf_loc("%s: %d%s / %.1fg/ℓ\n", translate("gettextFromC", "EADO"), eadd, depth_unit, entry->density);
 				break;
 			}
 		case plot_info::AIR:
 			if (entry->density > 0) {
-				put_format_loc(&b, "%s: %.1fg/ℓ\n", translate("gettextFromC", "Density"), entry->density);
+				res += qasprintf_loc("%s: %.1fg/ℓ\n", translate("gettextFromC", "Density"), entry->density);
 			}
 		case plot_info::FREEDIVING:
 			/* nothing */
@@ -388,88 +388,86 @@ static QString formatPlotInfoInternal(const dive *d, const plot_info *pi, int id
 		if (entry->ndl > 0) {
 			/* this is a safety stop as we still have ndl */
 			if (entry->stoptime)
-				put_format_loc(&b, "%s: %u%s @ %.0f%s\n", translate("gettextFromC", "Safety stop"), DIV_UP(entry->stoptime, 60),
-					       translate("gettextFromC", "min"), depthvalue, depth_unit);
+				res += qasprintf_loc("%s: %u%s @ %.0f%s\n", translate("gettextFromC", "Safety stop"), DIV_UP(entry->stoptime, 60),
+						     translate("gettextFromC", "min"), depthvalue, depth_unit);
 			else
-				put_format_loc(&b, "%s: %s @ %.0f%s\n", translate("gettextFromC", "Safety stop"),
-					       translate("gettextFromC", "unknown time"), depthvalue, depth_unit);
+				res += qasprintf_loc("%s: %s @ %.0f%s\n", translate("gettextFromC", "Safety stop"),
+						     translate("gettextFromC", "unknown time"), depthvalue, depth_unit);
 		} else {
 			/* actual deco stop */
 			if (entry->stoptime)
-				put_format_loc(&b, "%s: %u%s @ %.0f%s\n", translate("gettextFromC", "Deco"), DIV_UP(entry->stoptime, 60),
-					       translate("gettextFromC", "min"), depthvalue, depth_unit);
+				res += qasprintf_loc("%s: %u%s @ %.0f%s\n", translate("gettextFromC", "Deco"), DIV_UP(entry->stoptime, 60),
+						     translate("gettextFromC", "min"), depthvalue, depth_unit);
 			else
-				put_format_loc(&b, "%s: %s @ %.0f%s\n", translate("gettextFromC", "Deco"),
-					       translate("gettextFromC", "unknown time"), depthvalue, depth_unit);
+				res += qasprintf_loc("%s: %s @ %.0f%s\n", translate("gettextFromC", "Deco"),
+						     translate("gettextFromC", "unknown time"), depthvalue, depth_unit);
 		}
 	} else if (entry->in_deco) {
-		put_string(&b, translate("gettextFromC", "In deco\n"));
+		res += gettextFromC::tr("In deco\n");
 	} else if (entry->ndl >= 0) {
-		put_format_loc(&b, "%s: %u%s\n", translate("gettextFromC", "NDL"), DIV_UP(entry->ndl, 60), translate("gettextFromC", "min"));
+		res += qasprintf_loc("%s: %u%s\n", translate("gettextFromC", "NDL"), DIV_UP(entry->ndl, 60), translate("gettextFromC", "min"));
 	}
 	if (entry->tts)
-		put_format_loc(&b, "%s: %u%s\n", translate("gettextFromC", "TTS"), DIV_UP(entry->tts, 60), translate("gettextFromC", "min"));
+		res += qasprintf_loc("%s: %u%s\n", translate("gettextFromC", "TTS"), DIV_UP(entry->tts, 60), translate("gettextFromC", "min"));
 	if (entry->stopdepth_calc && entry->stoptime_calc) {
 		depthvalue = get_depth_units(entry->stopdepth_calc, NULL, &depth_unit);
-		put_format_loc(&b, "%s: %u%s @ %.0f%s (%s)\n", translate("gettextFromC", "Deco"), DIV_UP(entry->stoptime_calc, 60),
-			       translate("gettextFromC", "min"), depthvalue, depth_unit, translate("gettextFromC", "calc"));
+		res += qasprintf_loc("%s: %u%s @ %.0f%s (%s)\n", translate("gettextFromC", "Deco"), DIV_UP(entry->stoptime_calc, 60),
+				     translate("gettextFromC", "min"), depthvalue, depth_unit, translate("gettextFromC", "calc"));
 	} else if (entry->in_deco_calc) {
 		/* This means that we have no NDL left,
 		 * and we have no deco stop,
 		 * so if we just accend to the surface slowly
 		 * (ascent_mm_per_step / ascent_s_per_step)
 		 * everything will be ok. */
-		put_string(&b, translate("gettextFromC", "In deco (calc)\n"));
+		res += gettextFromC::tr("In deco (calc)\n");
 	} else if (prefs.calcndltts && entry->ndl_calc != 0) {
 		if(entry->ndl_calc < MAX_PROFILE_DECO)
-			put_format_loc(&b, "%s: %u%s (%s)\n", translate("gettextFromC", "NDL"), DIV_UP(entry->ndl_calc, 60),
-				       translate("gettextFromC", "min"), translate("gettextFromC", "calc"));
+			res += qasprintf_loc("%s: %u%s (%s)\n", translate("gettextFromC", "NDL"), DIV_UP(entry->ndl_calc, 60),
+					    translate("gettextFromC", "min"), translate("gettextFromC", "calc"));
 		else
-			put_string(&b, translate("gettextFromC", "NDL: >2h (calc)\n"));
+			res += gettextFromC::tr("NDL: >2h (calc)\n");
 	}
 	if (entry->tts_calc) {
 		if (entry->tts_calc < MAX_PROFILE_DECO)
-			put_format_loc(&b, "%s: %u%s (%s)\n", translate("gettextFromC", "TTS"), DIV_UP(entry->tts_calc, 60),
-				       translate("gettextFromC", "min"), translate("gettextFromC", "calc"));
+			res += qasprintf_loc("%s: %u%s (%s)\n", translate("gettextFromC", "TTS"), DIV_UP(entry->tts_calc, 60),
+					    translate("gettextFromC", "min"), translate("gettextFromC", "calc"));
 		else
-			put_string(&b, translate("gettextFromC", "TTS: >2h (calc)\n"));
+			res += gettextFromC::tr("TTS: >2h (calc)\n");
 	}
 	if (entry->rbt)
-		put_format_loc(&b, "%s: %u%s\n", translate("gettextFromC", "RBT"), DIV_UP(entry->rbt, 60), translate("gettextFromC", "min"));
+		res += qasprintf_loc("%s: %u%s\n", translate("gettextFromC", "RBT"), DIV_UP(entry->rbt, 60), translate("gettextFromC", "min"));
 	if (prefs.decoinfo) {
 		if (entry->current_gf > 0.0)
-			put_format(&b, "%s %d%%\n", translate("gettextFromC", "GF"), (int)(100.0 * entry->current_gf));
+			res += qasprintf_loc("%s %d%%\n", translate("gettextFromC", "GF"), (int)(100.0 * entry->current_gf));
 		if (entry->surface_gf > 0.0)
-			put_format(&b, "%s %.0f%%\n", translate("gettextFromC", "Surface GF"), entry->surface_gf);
+			res += qasprintf_loc("%s %.0f%%\n", translate("gettextFromC", "Surface GF"), entry->surface_gf);
 		if (entry->ceiling) {
 			depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
-			put_format_loc(&b, "%s %.1f%s\n", translate("gettextFromC", "Calculated ceiling"), depthvalue, depth_unit);
+			res += qasprintf_loc("%s %.1f%s\n", translate("gettextFromC", "Calculated ceiling"), depthvalue, depth_unit);
 			if (prefs.calcalltissues) {
-				int k;
-				for (k = 0; k < 16; k++) {
+				for (int k = 0; k < 16; k++) {
 					if (entry->ceilings[k]) {
 						depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
-						put_format_loc(&b, "%s %.0f%s: %.1f%s\n", translate("gettextFromC", "Tissue"),
-								   buehlmann_N2_t_halflife[k], translate("gettextFromC", "min"),
-								   depthvalue, depth_unit);
+						res += qasprintf_loc("%s %.0f%s: %.1f%s\n", translate("gettextFromC", "Tissue"),
+								     buehlmann_N2_t_halflife[k], translate("gettextFromC", "min"),
+								     depthvalue, depth_unit);
 					}
 				}
 			}
 		}
 	}
 	if (entry->icd_warning)
-		put_string(&b, translate("gettextFromC", "ICD in leading tissue\n"));
+		res += gettextFromC::tr("ICD in leading tissue\n");
 	if (entry->heartbeat && prefs.hrgraph)
-		put_format_loc(&b, "%s: %d\n", translate("gettextFromC", "heart rate"), entry->heartbeat);
+		res += qasprintf_loc("%s: %d\n", translate("gettextFromC", "heart rate"), entry->heartbeat);
 	if (entry->bearing >= 0)
-		put_format_loc(&b, "%s: %d\n", translate("gettextFromC", "bearing"), entry->bearing);
+		res += qasprintf_loc("%s: %d\n", translate("gettextFromC", "bearing"), entry->bearing);
 	if (entry->running_sum) {
 		depthvalue = get_depth_units(entry->running_sum / entry->sec, NULL, &depth_unit);
-		put_format_loc(&b, "%s %.1f%s\n", translate("gettextFromC", "mean depth to here"), depthvalue, depth_unit);
+		res += qasprintf_loc("%s %.1f%s\n", translate("gettextFromC", "mean depth to here"), depthvalue, depth_unit);
 	}
 
-	strip_mb(&b);
-	return QString(mb_cstring(&b));
+	return res;
 }
 
 std::pair<QString, int> formatProfileInfo(const struct dive *d, const struct plot_info *pi, int time)
