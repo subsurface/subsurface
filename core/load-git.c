@@ -1365,6 +1365,22 @@ static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, st
 	char line[MAXLINE + 1];
 	int off = 0;
 
+	// Check the first character of a line: an empty line
+	// or a line starting with a TAB is invalid, and likely
+	// due to an early string end quote due to a merge
+	// conflict. Ignore such a line.
+	switch (*p) {
+	case '\n': case '\t':
+		do {
+			if (*p++ == '\n')
+				break;
+		} while (p < end);
+		SSRF_INFO("git storage: Ignoring line '%.*s'", (int)(p-buf-1), buf);
+		return p - buf;
+	default:
+		break;
+	}
+
 	while (p < end) {
 		char c = *p++;
 		if (c == '\n')
