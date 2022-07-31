@@ -304,6 +304,18 @@ QString formatTripTitleWithDives(const dive_trip *trip)
 	       gettextFromC::tr("(%n dive(s))", "", nr);
 }
 
+static QString formatTimeOfDay(timestamp_t when)
+{
+	auto [h, m, s] = utc_time_of_day(when);
+	QLocale loc;
+	QString format = loc.timeFormat(QLocale::LongFormat);
+	// We don't want to show the timezone, as that currently is the
+	// timezone the application is run in, not the timezone of the dive!
+	format.replace("t", "");
+	QTime time(h, m, s);
+	return loc.toString(time, format.trimmed());
+}
+
 #define DIV_UP(x, y) (((x) + (y) - 1) / (y))
 #define translate(x,y) qPrintable(QCoreApplication::translate(x,y))
 
@@ -316,9 +328,11 @@ static QString formatPlotInfoInternal(const dive *d, const plot_info *pi, int id
 	int decimals, cyl;
 	const char *unit;
 	const struct plot_data *entry = pi->entry + idx;
+	timestamp_t when = d->when + entry->sec;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
-	res = qasprintf_loc("%s: %d:%02d\n", translate("gettextFromC", "@"), FRACTION(entry->sec, 60));
+	res = qasprintf_loc("%s: %d:%02d (%s)\n", translate("gettextFromC", "@"), FRACTION(entry->sec, 60),
+						  qPrintable(formatTimeOfDay(when)));
 	res += qasprintf_loc("%s: %.1f%s\n", translate("gettextFromC", "D"), depthvalue, depth_unit);
 	for (cyl = 0; cyl < pi->nr_cylinders; cyl++) {
 		int mbar = get_plot_pressure(pi, idx, cyl);

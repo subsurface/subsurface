@@ -9,10 +9,15 @@
 extern "C" {
 #endif
 
+struct time_of_day {
+	int h, m, s;
+};
+
 extern timestamp_t utc_mktime(const struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);
 extern int utc_year(timestamp_t timestamp);
 extern int utc_weekday(timestamp_t timestamp);
+extern struct time_of_day utc_time_of_day(timestamp_t timestamp);
 
 /* parse and format date times of the form YYYY-MM-DD hh:mm:ss */
 extern timestamp_t parse_datetime(const char *s); /* returns 0 on error */

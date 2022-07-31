@@ -99,6 +99,37 @@ void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 	tm->tm_mon = m;
 }
 
+/*
+ * Convert 64-bit timestamp to time of day (split into h, m, s)
+ *
+ * On 32-bit machines, only do 64-bit arithmetic for the seconds
+ * part, after that we do everything in 'long'. 64-bit divides
+ * are unnecessary once you're counting minutes (32-bit minutes:
+ * 8000+ years).
+ */
+struct time_of_day utc_time_of_day(timestamp_t timestamp)
+{
+	struct time_of_day res = { 0 };
+	unsigned long val;
+
+	// Midnight at Jan 1, 1970 means "no date"
+	if (!timestamp)
+		return res;
+
+	/* Convert to seconds since 1900 */
+	timestamp += EPOCH_OFFSET;
+
+	/* minutes since 1900 */
+	res.s = timestamp % 60;
+	val = timestamp / 60;
+
+	res.m = val % 60;
+	val /= 60;
+	res.h = val % 24;
+
+	return res;
+}
+
 timestamp_t utc_mktime(const struct tm *tm)
 {
 	static const int mdays[] = {
