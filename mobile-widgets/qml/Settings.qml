@@ -61,6 +61,15 @@ TemplatePage {
 					text: describe[Backend.cloud_verification_status]
 					Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
 				}
+				TemplateButton {
+					id: deleteCloudAccount
+					enabled: Backend.cloud_verification_status !== Enums.CS_NOCLOUD
+					text: qsTr("Delete Account")
+					onClicked: {
+						manager.appendTextToLog("requesting account deletion");
+						showPage(deleteAccount)
+					}
+				}
 			}
 			TemplateLine {
 				visible: sectionGeneral.isExpanded

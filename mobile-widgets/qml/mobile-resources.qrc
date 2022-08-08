@@ -19,6 +19,7 @@
 		<!-- ********** qml ********** -->
 		<file>About.qml</file>
 		<file>CloudCredentials.qml</file>
+		<file>DeleteAccount.qml</file>
 		<file>DiveDetails.qml</file>
 		<file>DiveDetailsEdit.qml</file>
 		<file>DiveDetailsView.qml</file>

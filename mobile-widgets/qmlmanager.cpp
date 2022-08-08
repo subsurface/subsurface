@@ -725,6 +725,42 @@ bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
 	return true;
 }
 
+void QMLManager::deleteAccount()
+{
+	QString email(prefs.cloud_storage_email);
+	QString passwd(prefs.cloud_storage_password);
+	if (email.isEmpty() || passwd.isEmpty())
+		return;
+
+	setStartPageText(tr("Deleting cloud account..."));
+	appendTextToLog(QStringLiteral("user requested that we delete cloud account for email %1").arg(email));
+	CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
+	csa->deleteAccount(email, passwd);
+	// let's wait here for the signal to avoid too many more nested functions
+	QTimer myTimer;
+	myTimer.setSingleShot(true);
+	QEventLoop loop;
+	connect(csa, &CloudStorageAuthenticate::finishedDelete, &loop, &QEventLoop::quit);
+	connect(&myTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
+	myTimer.start(prefs.cloud_timeout * 3 * 1000); // give it extra time
+	loop.exec();
+	if (!myTimer.isActive()) {
+		// got no response from the server
+		setStartPageText(RED_FONT + tr("No response from cloud server to delete account") + END_FONT);
+		appendTextToLog(QStringLiteral("no response from cloud server to delete account"));
+		return;
+	}
+	myTimer.stop();
+	appendTextToLog(QStringLiteral("deleted the account"));
+	qPrefCloudStorage::set_cloud_storage_email("");
+	qPrefCloudStorage::set_cloud_storage_email_encoded("");
+	qPrefCloudStorage::set_cloud_storage_password("");
+	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
+	set_filename(qPrintable(nocloud_localstorage()));
+	setStartPageText(tr("Cloud storage account deleted."));
+	return;
+}
+
 void QMLManager::loadDivesWithValidCredentials()
 {
 	QString url;
