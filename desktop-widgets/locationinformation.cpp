@@ -37,7 +37,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteMessage->setText(tr("Dive site management"));
 	ui.diveSiteMessage->addAction(acceptAction);
 
-	connect(ui.geoCodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
+	connect(ui.geoCodeButton, &QPushButton::clicked, this, &LocationInformationWidget::reverseGeocode);
 	ui.diveSiteCoordinates->installEventFilter(this);
 
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &LocationInformationWidget::diveSiteChanged);
@@ -57,9 +57,8 @@ void LocationInformationWidget::keyPressEvent(QKeyEvent *e)
 	return QGroupBox::keyPressEvent(e);
 }
 
-bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
+bool LocationInformationWidget::eventFilter(QObject *, QEvent *ev)
 {
-	Q_UNUSED(object)
 	if (ev->type() == QEvent::ContextMenu) {
 		QContextMenuEvent *ctx = (QContextMenuEvent *)ev;
 		QMenu contextMenu;
@@ -436,9 +435,9 @@ bool DiveLocationModel::setData(const QModelIndex &index, const QVariant &value,
 }
 
 DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
-							      proxy(new DiveLocationFilterProxyModel()),
-							      model(new DiveLocationModel()),
-							      view(new DiveLocationListView()),
+							      proxy(new DiveLocationFilterProxyModel),
+							      model(new DiveLocationModel),
+							      view(new DiveLocationListView),
 							      currDs(nullptr)
 {
 	proxy->setSourceModel(model);
@@ -496,9 +495,8 @@ bool DiveLocationLineEdit::eventFilter(QObject *, QEvent *e)
 			view->hide();
 			return true;
 		}
-	}
-	else if (e->type() == QEvent::InputMethod) {
-		this->inputMethodEvent(static_cast<QInputMethodEvent *>(e));
+	} else if (e->type() == QEvent::InputMethod) {
+		inputMethodEvent(static_cast<QInputMethodEvent *>(e));
 	}
 
 	return false;
@@ -566,8 +564,13 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &name)
 	model->setData(i1, i1_name);
 	proxy->setFilter(name);
 	fixPopupPosition();
-	if (!view->isVisible())
+	if (!view->isVisible()) {
 		view->show();
+		// TODO: For some reason the show() call clears this flag,
+		// which breaks key composition. Find the real cause for
+		// this strange behavior!
+		view->setAttribute(Qt::WA_InputMethodEnabled);
+	}
 }
 
 void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
@@ -672,7 +675,7 @@ struct dive_site *DiveLocationLineEdit::currDiveSite() const
 	return text().trimmed().isEmpty() ? nullptr : currDs;
 }
 
-DiveLocationListView::DiveLocationListView(QWidget*)
+DiveLocationListView::DiveLocationListView(QWidget *parent) : QListView(parent)
 {
 }
 
