@@ -2,12 +2,12 @@
 #ifndef DIVETOOLTIPITEM_H
 #define DIVETOOLTIPITEM_H
 
-#include <QVector>
-#include <QPair>
 #include <QRectF>
 #include <QIcon>
 #include <QElapsedTimer>
 #include <QPainter>
+#include <memory>
+#include <vector>
 #include "backend-shared/roundrectitem.h"
 #include "core/profile.h"
 
@@ -45,8 +45,11 @@ slots:
 	void setRect(const QRectF &rect);
 
 private:
-	typedef QPair<QGraphicsPixmapItem *, QGraphicsSimpleTextItem *> ToolTip;
-	QVector<ToolTip> toolTips;
+	struct ToolTip {
+		std::unique_ptr<QGraphicsPixmapItem> pixmap;
+		std::unique_ptr<QGraphicsSimpleTextItem> text;
+	};
+	std::vector<ToolTip> toolTips;
 	ToolTip entryToolTip;
 	QGraphicsSimpleTextItem *title;
 	Status status;
@@ -60,7 +63,7 @@ private:
 	QElapsedTimer refreshTime;
 	QList<QGraphicsItem*> oldSelection;
 
-	void addToolTip(const QString &toolTip, const QPixmap &pixmap);
+	ToolTip makeToolTip(const QString &toolTip, const QPixmap &pixmap);
 	void collapse();
 	void expand();
 	void clear();

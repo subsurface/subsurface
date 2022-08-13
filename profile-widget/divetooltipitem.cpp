@@ -1,44 +1,37 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/divetooltipitem.h"
 #include "profile-widget/divecartesianaxis.h"
-#include "core/membuffer.h"
 #include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"
+#include "core/qthelper.h"
+#include "core/string-format.h"
 #include <QPropertyAnimation>
 #include <QGraphicsView>
-#include "core/qthelper.h"
 
-void ToolTipItem::addToolTip(const QString &toolTip, const QPixmap &pixmap)
+ToolTipItem::ToolTip ToolTipItem::makeToolTip(const QString &toolTip, const QPixmap &pixmap)
 {
 	const IconMetrics &iconMetrics = defaultIconMetrics();
 
-	QGraphicsPixmapItem *iconItem = 0;
 	double yValue = title->boundingRect().height() + iconMetrics.spacing;
-	Q_FOREACH (ToolTip t, toolTips) {
-		yValue += t.second->boundingRect().height();
-	}
-	if (entryToolTip.second) {
-		yValue += entryToolTip.second->boundingRect().height();
-	}
-	iconItem = new QGraphicsPixmapItem(this);
+	for (auto &[pixmap, text]: toolTips)
+		yValue += text->boundingRect().height();
+	if (entryToolTip.text)
+		yValue += entryToolTip.text->boundingRect().height();
+	std::unique_ptr<QGraphicsPixmapItem> iconItem = std::make_unique<QGraphicsPixmapItem>(this);
 	if (!pixmap.isNull())
 		iconItem->setPixmap(pixmap);
 	const int sp2 = iconMetrics.spacing * 2;
 	iconItem->setPos(sp2, yValue);
 
-	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
+	auto textItem = std::make_unique<QGraphicsSimpleTextItem>(toolTip, this);
 	textItem->setPos(sp2 + iconMetrics.sz_small + sp2, yValue);
 	textItem->setBrush(QBrush(Qt::white));
 	textItem->setFlag(ItemIgnoresTransformations);
-	toolTips.push_back(qMakePair(iconItem, textItem));
+	return { std::move(iconItem), std::move(textItem) };
 }
 
 void ToolTipItem::clear()
 {
-	Q_FOREACH (ToolTip t, toolTips) {
-		delete t.first;
-		delete t.second;
-	}
 	toolTips.clear();
 }
 
@@ -77,19 +70,17 @@ void ToolTipItem::expand()
 	const IconMetrics &iconMetrics = defaultIconMetrics();
 
 	double width = 0, height = title->boundingRect().height() + iconMetrics.spacing;
-	Q_FOREACH (const ToolTip &t, toolTips) {
-		QRectF sRect = t.second->boundingRect();
+	for (const auto &[pixmap, text]: toolTips) {
+		QRectF sRect = text->boundingRect();
 		if (sRect.width() > width)
 			width = sRect.width();
 		height += sRect.height();
 	}
 
-	if (entryToolTip.first) {
-		QRectF sRect = entryToolTip.second->boundingRect();
-		if (sRect.width() > width)
-			width = sRect.width();
-		height += sRect.height();
-	}
+	QRectF sRect = entryToolTip.text->boundingRect();
+	if (sRect.width() > width)
+		width = sRect.width();
+	height += sRect.height();
 
 	const int sp2 = iconMetrics.spacing * 2;
 	// pixmap left padding, icon, pixmap right padding, right padding
@@ -101,13 +92,9 @@ void ToolTipItem::expand()
 	if (width < title->boundingRect().width() + sp2)
 		width = title->boundingRect().width() + sp2;
 	// clip the height
-	if (entryToolTip.first) {
-		const int minH = lrint(entryToolTip.first->y() + entryToolTip.first->pixmap().height() + sp2);
-		if (height < minH)
-			height = minH;
-	} else if (height < iconMetrics.sz_small) {
-		height = iconMetrics.sz_small;
-	}
+	const int minH = lrint(entryToolTip.pixmap->y() + entryToolTip.pixmap->pixmap().height() + sp2);
+	if (height < minH)
+		height = minH;
 
 	nextRectangle.setWidth(width);
 	nextRectangle.setHeight(height);
@@ -136,8 +123,6 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : RoundRectItem(8.0, parent),
 	lastTime(-1)
 {
 	clearPlotInfo();
-	entryToolTip.first = NULL;
-	entryToolTip.second = NULL;
 	setFlags(ItemIgnoresTransformations | ItemIsMovable | ItemClipsChildrenToShape);
 
 	QColor c = QColor(Qt::black);
@@ -146,9 +131,7 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : RoundRectItem(8.0, parent),
 
 	setZValue(99);
 
-	addToolTip(QString(), QPixmap(16,60));
-	entryToolTip = toolTips.first();
-	toolTips.clear();
+	entryToolTip = makeToolTip(QString(), QPixmap(16,60));
 
 	title->setFlag(ItemIgnoresTransformations);
 	title->setPen(QPen(Qt::white, 1));
@@ -220,8 +203,6 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 
 void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 {
-	struct membufferpp mb;
-
 	if(refreshTime.elapsed() < 40)
 		return;
 	refreshTime.start();
@@ -231,7 +212,7 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 	lastTime = time;
 	clear();
 
-	int idx = get_plot_details_new(d, &pInfo, time, &mb);
+	auto [text, idx] = formatProfileInfo(d, &pInfo, time);
 
 	tissues.fill();
 	painter.setPen(QColor(0, 0, 0, 0));
@@ -251,15 +232,15 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 		painter.setPen(QColor(0, 0, 0, 127));
 		for (int i = 0; i < 16; i++)
 			painter.drawLine(i, 60, i, 60 - entry->percentages[i] / 2);
-		entryToolTip.second->setText(QString::fromUtf8(mb.buffer, mb.len));
+		entryToolTip.text->setText(text);
 	}
-	entryToolTip.first->setPixmap(tissues);
+	entryToolTip.pixmap->setPixmap(tissues);
 
 	const auto l = scene()->items(pos, Qt::IntersectsItemBoundingRect, Qt::DescendingOrder,
 			scene()->views().first()->transform());
 	for (QGraphicsItem *item: l) {
 		if (!item->toolTip().isEmpty())
-			addToolTip(item->toolTip(), QPixmap());
+			toolTips.push_back(makeToolTip(item->toolTip(), QPixmap()));
 	}
 	expand();
 }
