@@ -96,6 +96,18 @@ void TagWidget::inputMethodEvent(QInputMethodEvent *e)
 		reparse();
 }
 
+// Call complete on a QCompleter and set the WA_InputMethodEnabled on
+// the popup if a popup is opened. We need that flag, otherwise composition
+// events are not forwarded to the widget and the user cannot enter
+// multi-key characters as long as the popup is active.
+static void complete(QCompleter *completer)
+{
+	completer->complete();
+	QWidget *popup = completer->popup();
+	if (popup)
+		popup->setAttribute(Qt::WA_InputMethodEnabled);
+}
+
 void TagWidget::reparse()
 {
 	highlight();
@@ -112,10 +124,10 @@ void TagWidget::reparse()
 				if (popup)
 					popup->hide();
 			} else {
-				m_completer->complete();
+				complete(m_completer);
 			}
 		} else {
-			m_completer->complete();
+			complete(m_completer);
 		}
 	}
 }
