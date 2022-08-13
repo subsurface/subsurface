@@ -18,20 +18,20 @@ public:
 	void clear();
 	void setCursorPosition(int position);
 	void wheelEvent(QWheelEvent *event);
-public
+private
 slots:
-	void reparse();
 	void completionSelected(const QString &text);
 	void completionHighlighted(const QString &text);
 
-protected:
+private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void dragEnterEvent(QDragEnterEvent *e) override;
 	void dragLeaveEvent(QDragLeaveEvent *e) override;
 	void dragMoveEvent(QDragMoveEvent *e) override;
 	void dropEvent(QDropEvent *e) override;
-private:
 	void focusOutEvent(QFocusEvent *ev) override;
+	void inputMethodEvent(QInputMethodEvent *e) override;
+	void reparse();
 	QCompleter *m_completer;
 	bool lastFinishedTag;
 };
