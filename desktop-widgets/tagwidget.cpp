@@ -7,9 +7,6 @@
 
 TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NULL), lastFinishedTag(false)
 {
-	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(reparse()));
-	connect(this, SIGNAL(textChanged()), this, SLOT(reparse()));
-
 	QColor textColor = palette().color(QPalette::Text);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	float h, s, l, a;
@@ -39,8 +36,8 @@ void TagWidget::setCompleter(QCompleter *completer)
 {
 	m_completer = completer;
 	m_completer->setWidget(this);
-	connect(m_completer, SIGNAL(activated(QString)), this, SLOT(completionSelected(QString)));
-	connect(m_completer, SIGNAL(highlighted(QString)), this, SLOT(completionHighlighted(QString)));
+	connect(m_completer, QOverload<const QString &>::of(&QCompleter::activated), this, &TagWidget::completionSelected);
+	connect(m_completer, QOverload<const QString &>::of(&QCompleter::highlighted), this, &TagWidget::completionHighlighted);
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
@@ -90,6 +87,13 @@ void TagWidget::highlight()
 		addBlock(start, trimmed.size() + start);
 		lastPos = trimmed.size() + start;
 	}
+}
+
+void TagWidget::inputMethodEvent(QInputMethodEvent *e)
+{
+	GroupedLineEdit::inputMethodEvent(e);
+	if (!e->commitString().isEmpty())
+		reparse();
 }
 
 void TagWidget::reparse()
@@ -196,6 +200,7 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 		keyPressEvent(&fakeEvent);
 	} else {
 		GroupedLineEdit::keyPressEvent(e);
+		reparse();
 	}
 	lastFinishedTag = finishedTag;
 }
