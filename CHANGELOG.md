@@ -1,3 +1,4 @@
+desktop: fix key composition in tag widgets and dive site widget
 mobile: allow cloud account deletion (Apple app store requirement)
 
 ---
