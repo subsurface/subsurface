@@ -421,6 +421,16 @@ int DiveLocationModel::rowCount(const QModelIndex&) const
 	return dive_site_table.nr + 2;
 }
 
+Qt::ItemFlags DiveLocationModel::flags(const QModelIndex &index) const
+{
+	// This is crazy: If an entry is not marked as editable, the QListView
+	// (or rather the QAbstractItemView base class) clears the WA_InputMethod
+	// flag, which means that key-composition events are disabled. This
+	// breaks composition as long as the popup is openen. Therefore,
+	// make all items editable.
+	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+}
+
 bool DiveLocationModel::setData(const QModelIndex &index, const QVariant &value, int)
 {
 	if (!index.isValid())
