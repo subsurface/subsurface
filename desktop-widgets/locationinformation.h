@@ -67,12 +67,13 @@ class DiveLocationModel : public QAbstractTableModel {
 public:
 	DiveLocationModel(QObject *o = 0);
 	void resetModel();
-	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-	int rowCount(const QModelIndex& parent = QModelIndex()) const;
-	int columnCount(const QModelIndex& parent = QModelIndex()) const;
-	bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+	bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
 private:
 	QString new_ds_value[2];
+	Qt::ItemFlags flags(const QModelIndex &index) const override;
+	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 };
 
 class DiveLocationListView : public QListView {
