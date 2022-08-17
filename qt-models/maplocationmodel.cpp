@@ -10,6 +10,24 @@
 
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
 
+// MKW If "Map Short Names" preference is set, only return the last component
+// of the full dive site name.
+// Example:
+// Japan/Izu Peninsula/Atami/Chinsen-Aft
+//    Short name: Chinsen-Aft
+static QString siteMapDisplayName(const char *sitename)
+{
+	const char Separator = '/';
+	QString fullname(sitename);
+	QString name = fullname.section(Separator, -1).trimmed();
+
+	if (name.isEmpty()) {
+		name = fullname;
+	}
+	return name;
+}
+
+
 MapLocation::MapLocation(struct dive_site *dsIn, QGeoCoordinate coordIn, QString nameIn, bool selectedIn) :
     divesite(dsIn), coordinate(coordIn), name(nameIn), selected(selectedIn)
 {
@@ -159,7 +177,7 @@ void MapLocationModel::reload(QObject *map)
 		}
 		if (!diveSiteMode && hasSelectedDive(ds) && !m_selectedDs.contains(ds))
 			m_selectedDs.append(ds);
-		QString name(ds->name);
+		QString name = siteMapDisplayName(ds->name);
 		if (!diveSiteMode) {
 			// don't add dive locations with the same name, unless they are
 			// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
@@ -223,7 +241,7 @@ void MapLocationModel::diveSiteChanged(struct dive_site *ds, int field)
 		}
 		break;
 	case LocationInformationModel::NAME:
-		m_mapLocations[row]->name = ds->name;
+		m_mapLocations[row]->name = siteMapDisplayName(ds->name);
 		break;
 	default:
 		break;
