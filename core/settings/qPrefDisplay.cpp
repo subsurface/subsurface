@@ -68,6 +68,7 @@ void qPrefDisplay::loadSync(bool doSync)
 		load_singleColumnPortrait();
 	}
 	disk_three_m_based_grid(doSync);
+	disk_map_short_names(doSync);
 }
 
 void qPrefDisplay::set_divelist_font(const QString &value)
@@ -150,6 +151,8 @@ HANDLE_PREFERENCE_BOOL(Display, "displayinvalid", display_invalid_dives);
 HANDLE_PREFERENCE_BOOL(Display, "show_developer", show_developer);
 
 HANDLE_PREFERENCE_BOOL(Display, "three_m_based_grid", three_m_based_grid);
+
+HANDLE_PREFERENCE_BOOL(Display, "map_short_names", map_short_names);
 
 void qPrefDisplay::setCorrectFont()
 {

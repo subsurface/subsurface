@@ -29,6 +29,7 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	connect(this, &QQuickWidget::statusChanged, this, &MapWidget::doneLoading);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MapWidget::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &MapWidget::reload);
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MapWidget::reload);
 	setSource(urlMapWidget);
 }
 

@@ -86,12 +86,12 @@
        </widget>
       </item>
 
-      <item>  
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QLabel" name="label_15">
           <property name="text">
-            <string>Speed</string>
+           <string>Speed</string>
           </property>
          </widget>
         </item>
@@ -149,6 +149,29 @@
     </widget>
    </item>
    
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Map Display Options</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Short Names:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_map_short_names">
+        <property name="text">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
