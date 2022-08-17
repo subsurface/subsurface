@@ -104,6 +104,7 @@ struct preferences {
 	double      mobile_scale;
 	bool        show_developer;
 	bool        three_m_based_grid;
+	bool        map_short_names;
 
 	// ********** Equipment tab *******
 	const char *default_cylinder;

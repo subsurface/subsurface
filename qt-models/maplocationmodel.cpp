@@ -3,6 +3,7 @@
 #include "divelocationmodel.h"
 #include "core/divesite.h"
 #include "core/divefilter.h"
+#include "core/settings/qPrefDisplay.h"
 #if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
 #include "qt-models/filtermodels.h"
 #include "desktop-widgets/mapwidget.h"
@@ -19,8 +20,12 @@ static QString siteMapDisplayName(const char *sitename)
 {
 	const char Separator = '/';
 	QString fullname(sitename);
-	QString name = fullname.section(Separator, -1).trimmed();
 
+	if (!qPrefDisplay::map_short_names() ) {
+		return fullname;
+	}
+
+	QString name = fullname.section(Separator, -1).trimmed();
 	if (name.isEmpty()) {
 		name = fullname;
 	}
