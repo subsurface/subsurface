@@ -222,7 +222,7 @@ MapLocation *MapLocationModel::getMapLocation(const struct dive_site *ds)
 		if (ds == location->divesite)
 			return location;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void MapLocationModel::diveSiteChanged(struct dive_site *ds, int field)

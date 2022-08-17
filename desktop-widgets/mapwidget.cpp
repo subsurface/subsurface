@@ -19,7 +19,7 @@ static bool isReady = false;
 #define CHECK_IS_READY_RETURN_VOID() \
 	if (!isReady) return
 
-MapWidget *MapWidget::m_instance = NULL;
+MapWidget *MapWidget::m_instance = nullptr;
 
 MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 {
@@ -128,12 +128,12 @@ void MapWidget::divesChanged(const QVector<dive *> &, DiveField field)
 // the reference is cleared. Sad.
 MapWidget::~MapWidget()
 {
-	m_instance = NULL;
+	m_instance = nullptr;
 }
 
 MapWidget *MapWidget::instance()
 {
-	if (m_instance == NULL)
+	if (m_instance == nullptr)
 		m_instance = new MapWidget();
 	return m_instance;
 }
