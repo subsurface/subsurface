@@ -42,7 +42,7 @@ public:
 	static double font_size() { return prefs.font_size; }
 	static double mobile_scale() { return prefs.mobile_scale; }
 	static bool display_invalid_dives() { return prefs.display_invalid_dives; }
-	static QString lastDir() { return st_lastDir; ; }
+	static QString lastDir() { return st_lastDir; }
 	static bool show_developer() { return prefs.show_developer; }
 	static QString theme() { return st_theme; }
 	static QPointF tooltip_position() { return st_tooltip_position; }
