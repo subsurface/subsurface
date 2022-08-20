@@ -915,7 +915,7 @@ void DiveTripModelTree::divesHidden(dive_trip *trip, const QVector<dive *> &dive
 			removeTrip(idx); // If all dives are hidden, remove the whole trip!
 		} else {
 			removeDivesFromTrip(idx, dives);
-			// Note: if dives are shown and hidden from a trip, we send to signals. Shrug.
+			// Note: if dives are shown and hidden from a trip, we send two signals. Shrug.
 			dataChanged(createIndex(idx, 0, noParent), createIndex(idx, 0, noParent));
 		}
 	} else {

@@ -248,8 +248,8 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices)
 		if (std::find(affectedTrips.begin(), affectedTrips.end(), row) == affectedTrips.end())
 			affectedTrips.push_back(row);
 	}
-	// Disable animations when expanding trips. Otherwise, selection of
-	// a large number of dives becomes increadibly slow.
+	// Disable animations when expanding trips. With animations, selection of
+	// a large number of dives becomes unbearably slow.
 	bool oldAnimated = isAnimated();
 	setAnimated(false);
 	MultiFilterSortModel *m = MultiFilterSortModel::instance();
@@ -441,7 +441,7 @@ void DiveListView::mouseReleaseEvent(QMouseEvent *event)
 	// and the user clicks on one of them, the selection is unchanged.
 	// Only on mouse-release the selection is changed, but then
 	// setSelection() is not called.
-	// Notably, this happens when the user selects a trip and the clicks
+	// Notably, this happens when the user selects a trip and then clicks
 	// on a dive in the same trip.
 	// To solve this, we hook into the mouseReleseEvent here and detect
 	// selection changes changes by comparing the selection before and after
