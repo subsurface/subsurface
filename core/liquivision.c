@@ -16,7 +16,7 @@
 							+ ((p)[3]<<24))
 
 struct lv_event {
-	time_t time;
+	uint32_t time;
 	struct pressure {
 		int sensor;
 		int mbar;
@@ -326,7 +326,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 				ps_ptr += handle_event_ver2(event_code, ps, ps_ptr, &event);
 				continue;		// ignore all events
 			}
-			int sample_time, last_time;
+			uint32_t sample_time, last_time;
 			int depth_mm, last_depth, temp_mk, last_temp;
 
 			while (true) {
@@ -376,9 +376,9 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 						last_depth = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
 						last_temp = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
 						sample->depth.mm = last_depth + (depth_mm - last_depth)
-							* ((int)event.time - last_time) / sample_interval;
+							* ((int)event.time - (int)last_time) / sample_interval;
 						sample->temperature.mkelvin = last_temp + (temp_mk - last_temp)
-							* ((int)event.time - last_time) / sample_interval;
+							* ((int)event.time - (int)last_time) / sample_interval;
 					}
 					finish_sample(dc);
 
