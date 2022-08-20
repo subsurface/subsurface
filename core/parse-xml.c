@@ -1854,7 +1854,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	// ptr[14] >> 1 is scrubber used in %
 
 	// 3 bit dive type
-	switch((ptr[15] & 0x30) >> 3) {
+	switch((ptr[15] & 0x38) >> 3) {
 	case 0: // unknown
 	case 1:
 		state.cur_dc->divemode = OC;
