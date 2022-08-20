@@ -795,7 +795,7 @@ pressure_t calculate_surface_pressure(const struct dive *dive)
 	pressure_t res;
 	int sum = 0, nr = 0;
 
-	for_each_dc (dive, dc) {
+	for_each_relevant_dc(dive, dc) {
 		if (dc->surface_pressure.mbar) {
 			sum += dc->surface_pressure.mbar;
 			nr++;
@@ -826,7 +826,7 @@ static void fixup_water_salinity(struct dive *dive)
 	struct divecomputer *dc;
 	int sum = 0, nr = 0;
 
-	for_each_dc (dive, dc) {
+	for_each_relevant_dc (dive, dc) {
 		if (dc->salinity) {
 			if (dc->salinity < 500)
 				dc->salinity += FRESHWATER_SALINITY;
@@ -848,12 +848,13 @@ static void fixup_meandepth(struct dive *dive)
 	struct divecomputer *dc;
 	int sum = 0, nr = 0;
 
-	for_each_dc (dive, dc) {
+	for_each_relevant_dc (dive, dc) {
 		if (dc->meandepth.mm) {
 			sum += dc->meandepth.mm;
 			nr++;
 		}
 	}
+
 	if (nr)
 		dive->meandepth.mm = (sum + nr / 2) / nr;
 }
@@ -863,9 +864,9 @@ static void fixup_duration(struct dive *dive)
 	struct divecomputer *dc;
 	duration_t duration = { };
 
-	for_each_dc (dive, dc)
+	for_each_relevant_dc (dive, dc) {
 		duration.seconds = MAX(duration.seconds, dc->duration.seconds);
-
+	}
 	dive->duration.seconds = duration.seconds;
 }
 
@@ -981,8 +982,9 @@ static void fixup_dc_depths(struct dive *dive, struct divecomputer *dc)
 	}
 
 	update_depth(&dc->maxdepth, maxdepth);
-	if (maxdepth > dive->maxdepth.mm)
-		dive->maxdepth.mm = maxdepth;
+	if (!has_planned(dive, false) || !is_dc_planner(dc))
+		if (maxdepth > dive->maxdepth.mm)
+			dive->maxdepth.mm = maxdepth;
 }
 
 static void fixup_dc_ndl(struct divecomputer *dc)
@@ -2961,7 +2963,7 @@ static inline int dive_totaltime(const struct dive *dive)
 	int time =  dive->duration.seconds;
 	const struct divecomputer *dc;
 
-	for_each_dc(dive, dc) {
+	for_each_relevant_dc(dive, dc) {
 		int dc_time = dc_totaltime(dc);
 		if (dc_time > time)
 			time = dc_time;
@@ -3118,6 +3120,7 @@ struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number)
 	res->id = dive_getUniqID();
 
 	delete_divecomputer(res, dc_number);
+	force_fixup_dive(res);
 
 	return res;
 }
