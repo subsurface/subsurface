@@ -433,7 +433,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 	//DEBUG save_dives("/tmp/test.xml");
 
 	// if we bailed out of the loop, the dive hasn't been recorded and dive hasn't been set to NULL
-	free(dive);
+	free_dive(dive);
 }
 
 int try_to_open_liquivision(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
