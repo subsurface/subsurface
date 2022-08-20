@@ -821,7 +821,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		char *date_string = get_dive_date_c_string(dive->when);
 		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string);
 		free(date_string);
-		free(dive);
+		free_dive(dive);
 		return false;
 	}
 
@@ -844,7 +844,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 error_exit:
 	dc_parser_destroy(parser);
-	free(dive);
+	free_dive(dive);
 	return true;
 
 }

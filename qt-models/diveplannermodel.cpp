@@ -1272,7 +1272,7 @@ finish:
 	free(original_plan);
 	free(save);
 	free(cache);
-	free(dive);
+	free_dive(dive);
 }
 
 void DivePlannerPointsModel::computeVariationsDone(QString variations)

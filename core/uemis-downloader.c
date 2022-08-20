@@ -857,14 +857,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
 	}
 	if (dive) {
 		devdata->download_table->dives[--devdata->download_table->nr] = NULL;
-
-		free(dive->dc.sample);
-		free((void *)dive->notes);
-		free((void *)dive->diveguide);
-		free((void *)dive->buddy);
-		free((void *)dive->suit);
-		taglist_free(dive->tag_list);
-		free(dive);
+		free_dive(dive);
 
 		return true;
 	}
@@ -1030,7 +1023,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		if (dive->dc.diveid) {
 			record_dive_to_table(dive, devdata->download_table);
 		} else { /* partial dive */
-			free(dive);
+			free_dive(dive);
 			free(buf);
 			return false;
 		}

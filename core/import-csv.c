@@ -609,7 +609,7 @@ int parse_txt_file(const char *filename, const char *csv, struct dive_table *tab
 		 */
 
 		if (readfile(csv, &memcsv) < 0) {
-			free(dive);
+			free_dive(dive);
 			return report_error(translate("gettextFromC", "Poseidon import failed: unable to read '%s'"), csv);
 		}
 		lineptr = memcsv.buffer;
