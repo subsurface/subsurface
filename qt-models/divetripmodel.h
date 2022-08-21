@@ -84,8 +84,7 @@ signals:
 	// into QModelIndexes according to the current view (tree/list). Finally, the DiveListView transforms these
 	// indices into local indices according to current sorting/filtering and instructs the QSelectionModel to
 	// perform the appropriate actions.
-	void selectionChanged(const QVector<QModelIndex> &indices);
-	void currentDiveChanged(QModelIndex index);
+	void selectionChanged(const QVector<QModelIndex> &indices, QModelIndex currentDive);
 protected:
 	dive *oldCurrent;
 	QBrush invalidForeground;
@@ -97,7 +96,7 @@ protected:
 	static QString tripTitle(const dive_trip *trip);
 	static QString tripShortDate(const dive_trip *trip);
 	static QString getDescription(int column);
-	void currentChanged();
+	void currentChanged(dive *currentDive);
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
 	virtual void clearData() = 0;
@@ -116,7 +115,7 @@ public slots:
 	void divesChanged(const QVector<dive *> &dives);
 	void diveChanged(dive *d);
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
-	void divesSelected(const QVector<dive *> &dives);
+	void divesSelected(const QVector<dive *> &dives, dive *currentDive);
 	void tripChanged(dive_trip *trip, TripField);
 	void filterReset();
 
@@ -194,7 +193,7 @@ public slots:
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 	// Does nothing in list view.
 	//void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
-	void divesSelected(const QVector<dive *> &dives);
+	void divesSelected(const QVector<dive *> &dives, dive *currentDive);
 	void filterReset();
 
 public:
