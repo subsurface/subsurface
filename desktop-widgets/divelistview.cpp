@@ -40,7 +40,6 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	MultiFilterSortModel *m = MultiFilterSortModel::instance();
 	setModel(m);
 	connect(m, &MultiFilterSortModel::selectionChanged, this, &DiveListView::diveSelectionChanged);
-	connect(m, &MultiFilterSortModel::currentDiveChanged, this, &DiveListView::currentDiveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DiveListView::settingsChanged);
 
 	setSortingEnabled(true);
@@ -227,7 +226,7 @@ void DiveListView::reset()
 }
 
 // If items were selected, inform the selection model
-void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices)
+void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices, QModelIndex currentDive)
 {
 	// This is the entry point for programmatical selection changes.
 	// Set a flag so that selection changes are not further processed,
@@ -262,16 +261,13 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices)
 
 	selectionChangeDone();
 	programmaticalSelectionChange = false;
-}
 
-void DiveListView::currentDiveChanged(QModelIndex index)
-{
 	// Set the currently activated row.
 	// Note, we have to use the QItemSelectionModel::Current mode to avoid
 	// changing our selection (in contrast to Qt's documentation, which
 	// instructs to use QItemSelectionModel::NoUpdate, which results in
 	// funny side-effects).
-	selectionModel()->setCurrentIndex(index, QItemSelectionModel::Current);
+	selectionModel()->setCurrentIndex(currentDive, QItemSelectionModel::Current);
 }
 
 // If rows are added, check which of these rows is a trip and expand the first column

@@ -202,7 +202,7 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive, int c
 	auto selectedDives = setSelectionCore(selection, currentDive, currentDc);
 
 	// Send the new selection to the UI.
-	emit diveListNotifier.divesSelected(selectedDives);
+	emit diveListNotifier.divesSelected(selectedDives, current_dive);
 }
 
 // Set selection, but try to keep the current dive. If current dive is not in selection,
