@@ -52,17 +52,17 @@ slots:
 	void addDivesToTrip();
 	void shiftTimes();
 	void diveSelectionChanged(const QVector<QModelIndex> &indices, QModelIndex currentDive);
-	void tripChanged(dive_trip *trip, TripField);
+	void tripSelected(QModelIndex trip, QModelIndex currentDive);
 private:
 	void rowsInserted(const QModelIndex &parent, int start, int end) override;
 	void reset() override;
 	void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags) override;
-	void unselectDives();
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void keyPressEvent(QKeyEvent *event) override;
 	void selectAll() override;
 	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 	void selectionChangeDone();
+	void selectTripItems(QModelIndex index);
 	DiveTripModelBase::Layout currentLayout;
 	QModelIndex contextMenuIndex;
 	// Remember the initial column widths, to avoid writing unchanged widths to the settings

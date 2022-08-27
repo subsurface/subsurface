@@ -683,6 +683,7 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelTree::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelTree::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelTree::divesSelected);
+	connect(&diveListNotifier, &DiveListNotifier::tripSelected, this, &DiveTripModelTree::tripSelected);
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveTripModelTree::tripChanged);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelTree::filterReset);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelTree::diveChanged);
@@ -1425,6 +1426,24 @@ void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *>
 	}
 }
 
+void DiveTripModelTree::tripSelected(dive_trip *trip, dive *currentDive)
+{
+	if (!trip)
+		return;
+
+	// Find the trip.
+	int idx = findTripIdx(trip);
+	if (idx < 0) {
+		// We don't know the trip - this shouldn't happen. We seem to have
+		// missed some signals!
+		qWarning() << "DiveTripModelTree::tripSelected(): unknown trip";
+		return;
+	}
+
+	QModelIndex tripIdx = createIndex(idx, 0, noParent);
+	emit DiveTripModelBase::tripSelected(tripIdx, diveToIdx(currentDive));
+}
+
 bool DiveTripModelTree::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
 {
 	// In tree mode we don't support any sorting!
@@ -1445,6 +1464,7 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	//connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelList::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelList::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelList::divesSelected);
+	connect(&diveListNotifier, &DiveListNotifier::tripSelected, this, &DiveTripModelList::tripSelected);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelList::filterReset);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveTripModelList::diveChanged);
@@ -1663,6 +1683,21 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *curr
 
 	// The current dive has changed. Transform the current dive into an index and pass it on to the view.
 	currentChanged(currentDive);
+}
+
+void DiveTripModelList::tripSelected(dive_trip *trip, dive *currentDive)
+{
+	if (!trip)
+		return;
+
+	// In the list view, there are no trips, so simply transform this into
+	// a dive selection.
+	QVector<dive *> dives;
+	dives.reserve(trip->dives.nr);
+	for (int i = 0; i < trip->dives.nr; ++i)
+		dives.push_back(trip->dives.dives[i]);
+
+	divesSelected(dives, currentDive);
 }
 
 // Simple sorting helper for sorting against a criterium and if

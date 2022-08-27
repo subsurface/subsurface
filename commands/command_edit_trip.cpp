@@ -7,6 +7,7 @@
 namespace Command {
 
 EditTripBase::EditTripBase(dive_trip *tripIn, const QString &newValue) : trip(tripIn),
+	current(current_dive),
 	value(newValue)
 {
 }
@@ -26,6 +27,7 @@ void EditTripBase::undo()
 	value = old;
 
 	emit diveListNotifier.tripChanged(trip, fieldId());
+	setTripSelection(trip, current);
 }
 
 // Undo and redo do the same as just the stored value is exchanged
