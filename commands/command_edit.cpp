@@ -1177,34 +1177,11 @@ static bool same_cylinder_size(const cylinder_t &cyl1, const cylinder_t &cyl2)
 	       cyl1.type.workingpressure.mbar == cyl2.type.workingpressure.mbar;
 }
 
-static bool same_cylinder_pressure(const cylinder_t &cyl1, const cylinder_t &cyl2)
-{
-	return cyl1.start.mbar == cyl2.start.mbar &&
-	       cyl1.end.mbar == cyl2.end.mbar;
-}
-
 // Flags for comparing cylinders
 static constexpr int SAME_TYPE = 1 << 0;
 static constexpr int SAME_SIZE = 1 << 1;
 static constexpr int SAME_PRESS = 1 << 2;
 static constexpr int SAME_GAS = 1 << 3;
-
-static bool same_cylinder_with_flags(const cylinder_t &cyl1, const cylinder_t &cyl2, int sameCylinderFlags)
-{
-	return (((sameCylinderFlags & SAME_TYPE)  == 0 || same_cylinder_type(cyl1, cyl2)) &&
-		((sameCylinderFlags & SAME_SIZE)  == 0 || same_cylinder_size(cyl1, cyl2)) &&
-		((sameCylinderFlags & SAME_PRESS) == 0 || same_cylinder_pressure(cyl1, cyl2)) &&
-		((sameCylinderFlags & SAME_GAS)   == 0 || same_gasmix(cyl1.gasmix, cyl2.gasmix)));
-}
-
-static int find_cylinder_index(const struct dive *d, const cylinder_t &cyl, int sameCylinderFlags)
-{
-	for (int idx = 0; idx < d->cylinders.nr; ++idx) {
-		if (same_cylinder_with_flags(cyl, *get_cylinder(d, idx), sameCylinderFlags))
-			return idx;
-	}
-	return -1;
-}
 
 EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProtectedOnly, int sameCylinderFlags) :
 	EditDivesBase(currentDiveOnly)
