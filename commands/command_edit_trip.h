@@ -20,6 +20,7 @@ class EditTripBase : public Base {
 	bool workToBeDone() override;
 
 	dive_trip *trip; // Trip to be edited.
+	dive *current;
 public:
 	EditTripBase(dive_trip *trip, const QString &newValue);
 

@@ -112,6 +112,7 @@ signals:
 
 	// Selection changes
 	void divesSelected(const QVector<dive *> &dives, dive *currentDive);
+	void tripSelected(dive_trip *trip, dive *currentDive);
 
 	// Dive site signals. Add and delete events are sent per dive site and
 	// provide an index into the global dive site table.

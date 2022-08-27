@@ -57,6 +57,9 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive, int c
 // Does not send a signal.
 bool setSelectionKeepCurrent(const std::vector<dive *> &selection);
 
+// Select all dive in a trip and sends a trip-selected signal
+void setTripSelection(dive_trip *trip, dive *currentDive);
+
 // Get currently selected dives
 std::vector<dive *> getDiveSelection();
 bool diveInSelection(const std::vector<dive *> &selection, const dive *d);

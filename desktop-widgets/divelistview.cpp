@@ -40,6 +40,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	MultiFilterSortModel *m = MultiFilterSortModel::instance();
 	setModel(m);
 	connect(m, &MultiFilterSortModel::selectionChanged, this, &DiveListView::diveSelectionChanged);
+	connect(m, &MultiFilterSortModel::tripSelected, this, &DiveListView::tripSelected);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DiveListView::settingsChanged);
 
 	setSortingEnabled(true);
@@ -48,8 +49,6 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 
 	resetModel();
-
-	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveListView::tripChanged);
 
 	header()->setStretchLastSection(true);
 	header()->setSortIndicatorShown(true);
@@ -286,42 +285,28 @@ void DiveListView::rowsInserted(const QModelIndex &parent, int start, int end)
 	}
 }
 
-// This is a bit ugly: we hook directly into the tripChanged signal to
-// select the trip if it was edited. This feels like a layering violation:
-// Shouldn't the core-layer call us?
-void DiveListView::tripChanged(dive_trip *trip, TripField)
+void DiveListView::tripSelected(QModelIndex trip, QModelIndex currentDive)
 {
-	// First check if the trip is already selected (and only this trip, as only then is it displayed).
-	if (single_selected_trip() == trip)
-		return;
+	programmaticalSelectionChange = true;
 
-	unselectDives();
-	selectTrip(trip);
-	selectionChangeDone();
-}
-
-void DiveListView::selectTrip(dive_trip_t *trip)
-{
-	if (!trip)
-		return;
-
-	QAbstractItemModel *m = model();
-	QModelIndexList match = m->match(m->index(0, 0), DiveTripModelBase::TRIP_ROLE, QVariant::fromValue(trip), 2, Qt::MatchRecursive);
-	QItemSelectionModel::SelectionFlags flags;
-	if (!match.count())
-		return;
-	QModelIndex idx = match.first();
-	flags = QItemSelectionModel::Select;
-	flags |= QItemSelectionModel::Rows;
-	selectionModel()->select(idx, flags);
-	expand(idx);
-}
-
-void DiveListView::unselectDives()
-{
-	clear_selection();
 	// clear the Qt selection
 	selectionModel()->clearSelection();
+
+	if (trip.isValid()) {
+		QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::Select | QItemSelectionModel::Rows;
+		selectionModel()->select(trip, flags);
+		selectTripItems(trip);
+	}
+
+	// Set the currently activated row.
+	// Note, we have to use the QItemSelectionModel::Current mode to avoid
+	// changing our selection (in contrast to Qt's documentation, which
+	// instructs to use QItemSelectionModel::NoUpdate, which results in
+	// funny side-effects).
+	selectionModel()->setCurrentIndex(currentDive, QItemSelectionModel::Current);
+
+	selectionChangeDone();
+	programmaticalSelectionChange = false;
 }
 
 bool DiveListView::eventFilter(QObject *, QEvent *event)
@@ -527,6 +512,18 @@ void DiveListView::selectionChangeDone()
 	emit divesSelected();
 }
 
+void DiveListView::selectTripItems(QModelIndex index)
+{
+	const QAbstractItemModel *model = index.model();
+	if (model->rowCount(index)) {
+		QItemSelection selection;
+		selection.select(model->index(0, 0, index), model->index(model->rowCount(index) - 1, 0, index));
+		selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+		if (!isExpanded(index))
+			expand(index);
+	}
+}
+
 void DiveListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
 	if (programmaticalSelectionChange) {
@@ -570,14 +567,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			select_trip(trip);
 			for (int i = 0; i < trip->dives.nr; ++i)
 				addToSelection.push_back(trip->dives.dives[i]);
-			if (model->rowCount(index)) {
-				QItemSelection selection;
-				selection.select(model->index(0, 0, index), model->index(model->rowCount(index) - 1, 0, index));
-				selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-				selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select | QItemSelectionModel::NoUpdate);
-				if (!isExpanded(index))
-					expand(index);
-			}
+			selectTripItems(index);
 		}
 	}
 

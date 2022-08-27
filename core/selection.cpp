@@ -224,6 +224,27 @@ bool setSelectionKeepCurrent(const std::vector<dive *> &selection)
 	return current_dive != oldCurrent;
 }
 
+void setTripSelection(dive_trip *trip, dive *currentDive)
+{
+	if (!trip)
+		return;
+
+	current_dive = currentDive;
+	for (int i = 0; i < divelog.dives->nr; ++i) {
+		dive &d = *divelog.dives->dives[i];
+		d.selected = d.divetrip == trip;
+	}
+	for (int i = 0; i < divelog.trips->nr; ++i) {
+		dive_trip *t = divelog.trips->trips[i];
+		t->selected = t == trip;
+	}
+
+	amount_selected = trip->dives.nr;
+	amount_trips_selected = 1;
+
+	emit diveListNotifier.tripSelected(trip, currentDive);
+}
+
 extern "C" void select_single_dive(dive *d)
 {
 	if (d)
@@ -313,17 +334,4 @@ extern "C" struct dive_trip *single_selected_trip()
 	}
 	fprintf(stderr, "warning: found no selected trip even though one should be selected\n");
 	return NULL; // shouldn't happen
-}
-
-extern "C" void clear_selection(void)
-{
-	current_dive = nullptr;
-	amount_selected = 0;
-	amount_trips_selected = 0;
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive)
-		dive->selected = false;
-	for (int i = 0; i < divelog.trips->nr; ++i)
-		divelog.trips->trips[i]->selected = false;
 }
