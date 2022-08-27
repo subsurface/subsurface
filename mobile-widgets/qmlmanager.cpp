@@ -2300,7 +2300,7 @@ void QMLManager::importCacheRepo(QString repo)
 QStringList QMLManager::cloudCacheList() const
 {
 	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory()));
-	QStringList dirs = localCacheDir.entryList(QDir::NoDotAndDotDot);
+	QStringList dirs = localCacheDir.entryList();
 	QStringList result;
 	foreach(QString dir, dirs) {
 		QString originsDir = QString("%1/cloudstorage/%2/.git/refs/remotes/origin/").arg(system_default_directory()).arg(dir);
