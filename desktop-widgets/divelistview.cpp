@@ -505,6 +505,7 @@ void DiveListView::selectAll()
 
 void DiveListView::selectionChangeDone()
 {
+#ifdef MAP_SUPPORT
 	// When receiving the divesSelected signal the main window will
 	// instruct the map to update the flags. Thus, make sure that
 	// the selected maps are registered correctly.
@@ -523,10 +524,9 @@ void DiveListView::selectionChangeDone()
 			if (d->selected && !d->hidden_by_filter && d->dive_site && !selectedSites.contains(d->dive_site))
 				selectedSites.push_back(d->dive_site);
 		}
-#ifdef MAP_SUPPORT
 		MapWidget::instance()->setSelected(selectedSites);
-#endif
 	}
+#endif
 	emit divesSelected();
 }
 
