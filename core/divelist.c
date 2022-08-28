@@ -1314,15 +1314,6 @@ int get_dive_nr_at_idx(int idx)
 	return last_dive->number ? last_dive->number + 1 : 0;
 }
 
-void set_dive_nr_for_current_dive()
-{
-	int selected_dive = get_divenr(current_dive);
-	if (dive_table.nr == 1)
-		current_dive->number = 1;
-	else if (selected_dive == dive_table.nr - 1 && get_dive(dive_table.nr - 2)->number)
-		current_dive->number = get_dive(dive_table.nr - 2)->number + 1;
-}
-
 static int min_datafile_version;
 
 int get_min_datafile_version()

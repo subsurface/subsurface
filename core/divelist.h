@@ -53,7 +53,6 @@ extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2l
 extern int get_divenr(const struct dive *dive);
 extern int remove_dive(const struct dive *dive, struct dive_table *table);
 extern int get_dive_nr_at_idx(int idx);
-extern void set_dive_nr_for_current_dive();
 extern timestamp_t get_surface_interval(timestamp_t when);
 extern void delete_dive_from_table(struct dive_table *table, int idx);
 extern struct dive *find_next_visible_dive(timestamp_t when);
