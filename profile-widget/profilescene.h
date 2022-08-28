@@ -48,6 +48,7 @@ public:
 	void draw(QPainter *painter, const QRect &pos,
 		  const struct dive *d, int dc,
 		  DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false);
+	double calcZoomPosition(double zoom, double originalPos, double delta);
 
 	const struct dive *d;
 	int dc;

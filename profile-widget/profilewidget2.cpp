@@ -40,8 +40,12 @@
 // We might add more constants here for easier customability.
 static const double thumbnailBaseZValue = 100.0;
 
-// Base of exponential zoom function: one wheel-click will increase the zoom by 15%.
-static const double zoomFactor = 1.15;
+static double calcZoom(int zoomLevel)
+{
+	// Base of exponential zoom function: one wheel-click will increase the zoom by 15%.
+	constexpr double zoomFactor = 1.15;
+	return zoomLevel == 0 ? 1.0 : pow(zoomFactor, zoomLevel);
+}
 
 ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dpr, QWidget *parent) : QGraphicsView(parent),
 	profileScene(new ProfileScene(dpr, false, false)),
@@ -55,6 +59,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 	d(nullptr),
 	dc(0),
 	empty(true),
+	panning(false),
 #ifndef SUBSURFACE_MOBILE
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
@@ -202,7 +207,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 	DivePlannerPointsModel *model = currentState == EDIT || currentState == PLAN ? plannerModel : nullptr;
 	bool inPlanner = currentState == PLAN;
 
-	double zoom = zoomLevel == 0 ? 1.0 : pow(zoomFactor, zoomLevel);
+	double zoom = calcZoom(zoomLevel);
 	profileScene->plotDive(d, dc, model, inPlanner, flags & RenderFlags::Instant,
 			       flags & RenderFlags::DontRecalculatePlotInfo,
 			       shouldCalculateMax, zoom, zoomedPosition);
@@ -267,24 +272,22 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 #ifndef SUBSURFACE_MOBILE
 void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 {
-	if (zoomLevel)
-		return;
 	QGraphicsView::mousePressEvent(event);
-	if (currentState == PLAN || currentState == EDIT)
-		shouldCalculateMax = false;
+
+	if (!event->isAccepted()) {
+		panning = true;
+		panningOriginalMousePosition = mapToScene(event->pos()).x();
+		panningOriginalProfilePosition = zoomedPosition;
+	}
 }
 
 void ProfileWidget2::divePlannerHandlerClicked()
 {
-	if (zoomLevel)
-		return;
 	shouldCalculateMax = false;
 }
 
 void ProfileWidget2::divePlannerHandlerReleased()
 {
-	if (zoomLevel)
-		return;
 	if (currentState == EDIT)
 		emit stopMoved(1);
 	shouldCalculateMax = true;
@@ -293,9 +296,8 @@ void ProfileWidget2::divePlannerHandlerReleased()
 
 void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 {
-	if (zoomLevel)
-		return;
 	QGraphicsView::mouseReleaseEvent(event);
+	panning = false;
 	if (currentState == PLAN || currentState == EDIT) {
 		shouldCalculateMax = true;
 		replot();
@@ -306,12 +308,6 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 void ProfileWidget2::setZoom(int level)
 {
 	zoomLevel = level;
-	if (zoomLevel == 0) {
-		zoomedPosition = 0.0;
-	} else {
-		double pos = mapToScene(mapFromGlobal(QCursor::pos())).x();
-		zoomedPosition = pos / profileScene->width();
-	}
 	plotDive(d, dc, RenderFlags::DontRecalculatePlotInfo);
 }
 
@@ -320,6 +316,8 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
 	if (!d)
 		return;
+	if (panning)
+		return;	// No change in zoom level while panning.
 	if (event->buttons() == Qt::LeftButton)
 		return;
 	if (event->angleDelta().y() > 0 && zoomLevel < 20)
@@ -348,12 +346,16 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 	QGraphicsView::mouseMoveEvent(event);
 
 	QPointF pos = mapToScene(event->pos());
-	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
-
-	if (zoomLevel != 0) {
-		zoomedPosition = pos.x() / profileScene->width();
-		plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
+	if (panning) {
+		double oldPos = zoomedPosition;
+		zoomedPosition = profileScene->calcZoomPosition(calcZoom(zoomLevel),
+								panningOriginalProfilePosition,
+								panningOriginalMousePosition - pos.x());
+		if (oldPos != zoomedPosition)
+			plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
 	}
+
+	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 
 	if (currentState == PLAN || currentState == EDIT) {
 		QRectF rect = profileScene->profileRegion;
