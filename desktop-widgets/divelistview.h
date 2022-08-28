@@ -62,7 +62,7 @@ private:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void keyPressEvent(QKeyEvent *event) override;
 	void selectAll() override;
-	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 	void selectionChangeDone();
 	DiveTripModelBase::Layout currentLayout;
 	QModelIndex contextMenuIndex;
