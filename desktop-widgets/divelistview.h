@@ -56,10 +56,6 @@ slots:
 private:
 	void rowsInserted(const QModelIndex &parent, int start, int end) override;
 	void reset() override;
-	void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
-	void keyPressEvent(QKeyEvent *event) override;
-	void selectAll() override;
 	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 	void selectionChangeDone();
 	void selectTripItems(QModelIndex index);
