@@ -534,6 +534,12 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		return;
 	}
 
+	// Avoid recursion: if later we decide to select all dives of a trip,
+	// this function is called again. Avoid this by setting the
+	// programmaticalSelectionChange flag. Note that the recursion never
+	// was a problem, but it just feels correct to avoid this recursion.
+	programmaticalSelectionChange = true;
+
 	// This is a manual selection change. This means that the core does not yet know
 	// of the new selection. Update the core-structures accordingly and select/deselect
 	// all dives of a trip if a trip is selected/deselected.
@@ -587,6 +593,8 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 
 	// Display the new, processed, selection
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
+
+	programmaticalSelectionChange = false;
 }
 
 enum asked_user {NOTYET, MERGE, DONTMERGE};
