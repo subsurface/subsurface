@@ -13,7 +13,6 @@
 */
 
 #include <QTreeView>
-#include <QLineEdit>
 #include <QNetworkAccessManager>
 #include "qt-models/divetripmodel.h"
 #include "core/subsurface-qt/divelistnotifier.h"
