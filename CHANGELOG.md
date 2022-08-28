@@ -1,4 +1,6 @@
 import: allow import of divesites without UUID
+profile: implement panning of the profile
+planner: allow handle manipulation in zoomed in state
 divelist: do not include planned versions of a dive if there is real data
 desktop: fix key composition in tag widgets and dive site widget
 desktop: use combobox for moving sensor between cylinders

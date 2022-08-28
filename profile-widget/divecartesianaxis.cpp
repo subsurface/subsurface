@@ -436,6 +436,16 @@ double DiveCartesianAxis::valueAt(const QPointF &p) const
 	return fraction * (max - min) + min;
 }
 
+double DiveCartesianAxis::deltaToValue(double delta) const
+{
+	QLineF m = line();
+	double screenSize = position == Position::Bottom ? m.x2() - m.x1()
+							 : m.y2() - m.y1();
+	double axisSize = max - min;
+	double res = delta * axisSize / screenSize;
+	return ((position == Position::Bottom) == inverted) ? -res : res;
+}
+
 double DiveCartesianAxis::posAtValue(double value, double max, double min) const
 {
 	QLineF m = line();

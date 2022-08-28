@@ -142,6 +142,9 @@ private:
 	const struct dive *d;
 	int dc;
 	bool empty; // No dive shown.
+	bool panning; // Currently panning.
+	double panningOriginalMousePosition;
+	double panningOriginalProfilePosition;
 #ifndef SUBSURFACE_MOBILE
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;

@@ -31,6 +31,7 @@ public:
 	std::pair<double, double> screenMinMax() const;
 	double valueAt(const QPointF &p) const;
 	double posAtValue(double value) const;
+	double deltaToValue(double delta) const; // For panning: turn a screen distance to delta-value
 	void setPosition(const QRectF &rect);
 	double screenPosition(double pos) const; // 0.0 = begin, 1.0 = end of axis, independent of represented values
 	double pointInRange(double pos) const; // Point on screen is in range of axis

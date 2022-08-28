@@ -12,6 +12,7 @@
 #include "core/pref.h"
 #include "core/profile.h"
 #include "core/qthelper.h"	// for decoMode()
+#include "core/subsurface-float.h"
 #include "core/subsurface-string.h"
 #include "core/settings/qPrefDisplay.h"
 #include "qt-models/diveplannermodel.h"
@@ -491,11 +492,9 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	percentageAxis->updateTicks(animSpeed);
 	animatedAxes.push_back(percentageAxis);
 
-	if (calcMax) {
-		double relStart = (1.0 - 1.0/zoom) * zoomedPosition;
-		double relEnd = relStart + 1.0/zoom;
-		timeAxis->setBounds(round(relStart * maxtime), round(relEnd * maxtime));
-	}
+	double relStart = (1.0 - 1.0/zoom) * zoomedPosition;
+	double relEnd = relStart + 1.0/zoom;
+	timeAxis->setBounds(round(relStart * maxtime), round(relEnd * maxtime));
 
 	// Find first and last plotInfo entry
 	int firstSecond = lrint(timeAxis->minimum());
@@ -626,4 +625,20 @@ void ProfileScene::draw(QPainter *painter, const QRect &pos,
 		}
 	}
 	painter->drawImage(pos, image);
+}
+
+// Calculate the new zoom position when the mouse is dragged by delta.
+// This is annoyingly complex, because the zoom position is given as
+// a real between 0 and 1.
+double ProfileScene::calcZoomPosition(double zoom, double originalPos, double delta)
+{
+	double factor = 1.0 - 1.0/zoom;
+	if (nearly_0(factor))
+		return 0.0;
+	double relStart = factor * originalPos;
+	double start = relStart * maxtime;
+	double newStart = start + timeAxis->deltaToValue(delta);
+	double newRelStart = newStart / maxtime;
+	double newPos = newRelStart / factor;
+	return std::clamp(newPos, 0.0, 1.0);
 }
