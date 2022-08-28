@@ -415,76 +415,6 @@ void DiveListView::currentChanged(const QModelIndex &current, const QModelIndex&
 	scrollTo(current);
 }
 
-void DiveListView::mouseReleaseEvent(QMouseEvent *event)
-{
-	// Oy vey. We hook into QTreeView's setSelection() to update the UI
-	// after selection changes. However, there is a case when this doesn't
-	// work: when narrowing the selection. If multiple dives are selected,
-	// and the user clicks on one of them, the selection is unchanged.
-	// Only on mouse-release the selection is changed, but then
-	// setSelection() is not called.
-	// Notably, this happens when the user selects a trip and then clicks
-	// on a dive in the same trip.
-	// To solve this, we hook into the mouseReleseEvent here and detect
-	// selection changes changes by comparing the selection before and after
-	// processing of the event.
-	// We really should find another way to solve this.
-	QModelIndexList selectionBefore = selectionModel()->selectedRows();
-	QTreeView::mouseReleaseEvent(event);
-	QModelIndexList selectionAfter = selectionModel()->selectedRows();
-	if (selectionBefore != selectionAfter)
-		selectionChangeDone();
-}
-
-void DiveListView::keyPressEvent(QKeyEvent *event)
-{
-	// Hook into key events that change the selection (i.e. cursor-up, cursor-down,
-	// page-up, page-down, home and end) and update selection if necessary.
-	// See comment in mouseReleaseEvent().
-	switch (event->key()) {
-		case Qt::Key_Up:
-		case Qt::Key_Down:
-		case Qt::Key_PageUp:
-		case Qt::Key_PageDown:
-		case Qt::Key_Home:
-		case Qt::Key_End:
-			break;
-		default:
-			return QTreeView::keyPressEvent(event);
-	}
-
-	QModelIndexList selectionBefore = selectionModel()->selectedRows();
-	QTreeView::keyPressEvent(event);
-	QModelIndexList selectionAfter = selectionModel()->selectedRows();
-	if (selectionBefore != selectionAfter)
-		selectionChangeDone();
-}
-
-void DiveListView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags flags)
-{
-	// We hook into QTreeView's setSelection() to update the UI
-	// after selection changes. However, we must be careful:
-	// when the user clicks on an already selected dive, this is called
-	// with the QItemSelectionModel::NoUpdate flags. In this case, just
-	// route through. Moreover, we get setSelection() calls on every
-	// mouseMove event. To avoid excessive reloading of the UI check
-	// if the selection changed by comparing before and after processing
-	// the selection.
-	if (flags == QItemSelectionModel::NoUpdate)
-		return QTreeView::setSelection(rect, flags);
-	QModelIndexList selectionBefore = selectionModel()->selectedRows();
-	QTreeView::setSelection(rect, flags);
-	QModelIndexList selectionAfter = selectionModel()->selectedRows();
-	if (selectionBefore != selectionAfter)
-		selectionChangeDone();
-}
-
-void DiveListView::selectAll()
-{
-	QTreeView::selectAll();
-	selectionChangeDone();
-}
-
 void DiveListView::selectionChangeDone()
 {
 #ifdef MAP_SUPPORT
@@ -593,6 +523,8 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 
 	// Display the new, processed, selection
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
+
+	selectionChangeDone();
 
 	programmaticalSelectionChange = false;
 }
