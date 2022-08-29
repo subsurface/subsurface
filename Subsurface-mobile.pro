@@ -407,6 +407,12 @@ ios {
 	images.files = icons/subsurface-mobile-icon.png
 	QMAKE_BUNDLE_DATA += app_launch_images images
 
+	OBJECTIVE_SOURCES += ios/ios-share.mm
+	HEADERS += ios/ios-share.h
+	Q_ENABLE_BITCODE.name = ENABLE_BITCODE
+	Q_ENABLE_BITCODE.value = NO
+	QMAKE_MAC_XCODE_SETTINGS += Q_ENABLE_BITCODE
+
 	LIBS += ../install-root/ios/lib/libdivecomputer.a \
 		../install-root/ios/lib/libgit2.a \
 		../install-root/ios/lib/libzip.a \
@@ -416,6 +422,8 @@ ios {
 		-liconv \
 		-lsqlite3 \
 		-lxml2
+
+	LIBS += -framework MessageUI
 
 	INCLUDEPATH += ../install-root/ios/include/ \
 		../install-root/lib/libzip/include \
