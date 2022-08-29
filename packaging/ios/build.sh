@@ -31,6 +31,10 @@ while [[ $# -gt 0 ]] ; do
 			# build both debug and release for all devices
 			DEBUGRELEASE="All"
 			;;
+		-quick)
+			# don't rebuild googlemaps and kirigami
+			QUICK="1"
+			;;
 		*)
 			echo "Unknown command line argument $arg"
 			;;
@@ -87,6 +91,8 @@ popd
 
 # get all 3rd part libraries
 "$SUBSURFACE_SOURCE"/scripts/get-dep-lib.sh ios "$PARENT_DIR"
+
+if [ "$QUICK" != "1" ] ; then
 
 for ARCH in $ARCHS; do
 
@@ -258,21 +264,24 @@ fi
 popd
 
 # build Kirigami
-mkdir -p "$PARENT_DIR"/kirigami-build
-pushd "$PARENT_DIR"/kirigami-build
+mkdir -p "$PARENT_DIR"/kirigami-release-build
+pushd "$PARENT_DIR"/kirigami-release-build
 "$IOS_QT"/"$QT_VERSION"/ios/bin/qmake "$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami/kirigami.pro CONFIG+=release
 make
-#make install
-if [ "$DEBUGRELEASE" != "Release" ] ; then
-	"$IOS_QT"/"$QT_VERSION"/ios/bin/qmake "$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami/kirigami.pro CONFIG+=debug
-	make clean
-	make
-	#make install
-fi
 # since the install prefix for qmake is rather weirdly implemented, let's copy things by hand into the multiarch destination
 mkdir -p "$INSTALL_ROOT"/../lib/qml/
 cp -a org "$INSTALL_ROOT"/../lib/qml/
 popd
+if [ "$DEBUGRELEASE" != "Release" ] ; then
+	mkdir -p "$PARENT_DIR"/kirigami-debug-build
+	pushd "$PARENT_DIR"/kirigami-debug-build
+	"$IOS_QT"/"$QT_VERSION"/ios/bin/qmake "$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami/kirigami.pro CONFIG+=debug
+	make
+	# since the install prefix for qmake is rather weirdly implemented, let's copy things by hand into the multiarch destination
+	mkdir -p "$INSTALL_ROOT"/../lib/qml/
+	cp -a org "$INSTALL_ROOT"/../lib/qml/
+	popd
+fi
 
 # now combine the libraries into fat libraries
 ARCH_ROOT=$PARENT_DIR/install-root/ios
@@ -286,6 +295,8 @@ if [ "$TARGET" = "iphoneos" ] ; then
 		fi
 	done
 	popd
+fi
+
 fi
 
 pushd "$SUBSURFACE_SOURCE"/translations
