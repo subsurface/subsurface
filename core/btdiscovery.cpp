@@ -100,19 +100,19 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		else if (btName.mid(4,2) == "2-") product = "OSTC 2N";
 		else if (btName.mid(4,2) == "+ ") product = "OSTC 2";
 		// all BT/BLE enabled OSTCs are HW_FAMILY_OSTC_3, so when we do not know,
-		// just use a default product that allows the codoe to download from the
+		// just use a default product that allows the code to download from the
 		// user's dive computer
 		else product = "OSTC 2";
 	} else if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
 		// The Ratio bluetooth name looks like the Pelagic ones,
 		// but that seems to be just happenstance.
 		vendor = "Ratio";
-		product = "iX3M GPS Easy"; // we don't know which of the GPS models, so set one
+		product = "iX3M 2021 GPS Easy"; // we don't know which of the Bluetooth models, so set one that supports BLE
 	} else if (btName.contains(QRegularExpression("^IX5M\\d{6}"))) {
 		// The 2021 iX3M models (square buttons) report as iX5M,
 		// eventhough the physical model states iX3M.
 		vendor = "Ratio";
-		product = "iX3M GPS Easy"; // we don't know which of the GPS models, so set one
+		product = "iX3M 2021 GPS Easy"; // we don't know which of the Bluetooth models, so set one that supports BLE
 	} else if (btName.contains(QRegularExpression("^[A-Z]{2}\\d{6}"))) {
 		// try the Pelagic/Aqualung name patterns
 		// the source of truth for this data is in libdivecomputer/src/descriptor.c
@@ -142,11 +142,21 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	// check if we found a known dive computer
 	if (!vendor.isEmpty() && !product.isEmpty()) {
 		dc_descriptor_t *lookup = descriptorLookup.value(vendor.toLower() + product.toLower());
-		if (!lookup)
-			qWarning("known dive computer %s not found in descriptorLookup", qPrintable(QString(vendor + product)));
+		if (!lookup) {
+			// the Ratio dive computers come in BT only or BLE only and we can't tell
+			// which just from the name; so while this is fairly unlikely, the user
+			// could be on an older computer / device that only supports BT and no BLE
+			// and giving the BLE only name might therefore not work, so try the other
+			// one just in case
+			if (vendor == "Ratio" && product == "iX3M 2021 GPS Easy") {
+				product = "iX3M GPS Easy"; // this one is BT only
+				lookup = descriptorLookup.value(vendor.toLower() + product.toLower());
+			}
+			if (!lookup) // still nothing?
+				qWarning("known dive computer %s not found in descriptorLookup", qPrintable(QString(vendor + product)));
+		}
 		return lookup;
 	}
-
 	return nullptr;
 }
 
