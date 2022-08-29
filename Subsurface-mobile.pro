@@ -398,7 +398,7 @@ android {
 ios {
 	SOURCES += core/ios.cpp
 	RESOURCES += packaging/ios/translations.qrc
-	QMAKE_IOS_DEPLOYMENT_TARGET = 10.0
+	QMAKE_IOS_DEPLOYMENT_TARGET = 12.0
 	QMAKE_TARGET_BUNDLE_PREFIX = org.subsurface-divelog
 	QMAKE_BUNDLE = subsurface-mobile
 	QMAKE_INFO_PLIST = packaging/ios/Info.plist
