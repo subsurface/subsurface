@@ -247,13 +247,13 @@ void dive_site_end(struct parser_state *state)
 {
 	if (!state->cur_dive_site)
 		return;
-	if (state->cur_dive_site->uuid) {
-		struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, state->sites);
-		merge_dive_site(ds, state->cur_dive_site);
 
-		if (verbose > 3)
-			printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
-	}
+	struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, state->sites);
+	merge_dive_site(ds, state->cur_dive_site);
+
+	if (verbose > 3)
+		printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
+
 	free_dive_site(state->cur_dive_site);
 	state->cur_dive_site = NULL;
 }
