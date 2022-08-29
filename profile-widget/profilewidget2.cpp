@@ -278,6 +278,7 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 		panning = true;
 		panningOriginalMousePosition = mapToScene(event->pos()).x();
 		panningOriginalProfilePosition = zoomedPosition;
+		viewport()->setCursor(Qt::ClosedHandCursor);
 	}
 }
 
@@ -297,7 +298,10 @@ void ProfileWidget2::divePlannerHandlerReleased()
 void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseReleaseEvent(event);
-	panning = false;
+	if (panning) {
+		panning = false;
+		viewport()->setCursor(Qt::ArrowCursor);
+	}
 	if (currentState == PLAN || currentState == EDIT) {
 		shouldCalculateMax = true;
 		replot();
