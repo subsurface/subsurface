@@ -58,7 +58,6 @@
 #include <QtAndroid>
 #include "core/serial_usb_android.h"
 std::vector<android_usb_serial_device_descriptor> androidSerialDevices;
-
 #endif
 
 QMLManager *QMLManager::m_instance = NULL;
@@ -506,7 +505,16 @@ bool QMLManager::createSupportEmail()
 			return true;
 	}
 	qDebug() << __FUNCTION__ << "failed to share the logFiles via intent, use the fall-back mail body method";
+#elif defined(Q_OS_IOS)
+	// call into objC++ code to share on iOS
+	QString libdcLogFileName(logfile_name);
+	iosshare.supportEmail(appLogFileName, libdcLogFileName);
+	// Unfortunately I haven't been able to figure out how to wait until the mail was sent
+	// so that this could tell us whether this was successful or not
+	// We always assume it worked and return to the caller.
+	return true;
 #endif
+	// fallback code that tries to copy the logs into the message body and uses the Qt send email method
 	QString mailToLink = "mailto:in-app-support@subsurface-divelog.org?subject=Subsurface-mobile support request";
 	mailToLink += "&body=";
 	mailToLink += messageBody;

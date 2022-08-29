@@ -19,6 +19,8 @@
 
 #if defined(Q_OS_ANDROID)
 #include "core/serial_usb_android.h"
+#elif defined(Q_OS_IOS)
+#include "ios/ios-share.h"
 #endif
 
 class QAction;
@@ -266,6 +268,9 @@ private:
 	QString appLogFileName;
 	QFile appLogFile;
 	bool appLogFileOpen;
+#endif
+#if defined(Q_OS_IOS)
+	IosShare iosshare;
 #endif
 	qPrefCloudStorage::cloud_status m_oldStatus;
 
