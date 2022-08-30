@@ -137,7 +137,6 @@ TemplatePage {
 
 		TemplateRadioButton {
 			text: qsTr("Export Subsurface XML")
-			visible: Qt.platform.os !== "android"
 			checked: true
 			onClicked: {
 				selectedExport = ExportType.EX_DIVES_XML
@@ -146,7 +145,6 @@ TemplatePage {
 		}
 		TemplateRadioButton {
 			text: qsTr("Export Subsurface dive sites XML")
-			visible: Qt.platform.os !== "android"
 			onClicked: {
 				selectedExport = ExportType.EX_DIVE_SITES_XML
 				explain.text = qsTr("Subsurface dive sites native XML format.")
@@ -209,8 +207,12 @@ TemplatePage {
 					exportSelection.visible = false
 					textPassword.visible = false
 					uploadDialog.visible = true
-				} else if (Qt.platform.os !== "android") {
+				} else if (Qt.platform.os !== "android" && Qt.platform.os !== "ios") {
 					saveAsDialog.open()
+				} else {
+					manager.appendTextToLog("Send export of type " + selectedExport + " via email.")
+					manager.shareViaEmail(selectedExport, anonymize.checked)
+					pageStack.pop()
 				}
 			}
 		}
