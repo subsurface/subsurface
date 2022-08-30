@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "themeinterface.h"
-#include "core/subsurface-string.h"
+#include "core/subsurface-float.h"
 #include "qmlmanager.h"
 #include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"

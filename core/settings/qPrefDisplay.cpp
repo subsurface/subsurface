@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "core/subsurface-string.h"
 #include "qPrefDisplay.h"
 #include "qPrefPrivate.h"
+#include "core/subsurface-float.h"
 
 #include <QApplication>
 #include <QFont>

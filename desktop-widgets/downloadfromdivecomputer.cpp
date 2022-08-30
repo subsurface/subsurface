@@ -4,6 +4,7 @@
 #include "core/qthelper.h"
 #include "core/divelist.h"
 #include "core/settings/qPrefDiveComputer.h"
+#include "core/subsurface-float.h"
 #include "core/subsurface-string.h"
 #include "core/uemis.h"
 #include "core/downloadfromdcthread.h"
@@ -168,8 +169,6 @@ void DownloadFromDCWidget::DC##num##Clicked() \
 	} \
 }
 #endif
-
-
 
 DCBUTTON(1)
 DCBUTTON(2)

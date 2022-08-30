@@ -3,7 +3,7 @@
 #include "profilescene.h"
 #include "mobile-widgets/qmlmanager.h"
 #include "core/errorhelper.h"
-#include "core/subsurface-string.h"
+#include "core/subsurface-float.h"
 #include "core/metrics.h"
 #include <QTransform>
 #include <QScreen>
