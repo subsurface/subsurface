@@ -81,7 +81,7 @@ double ThemeInterface::currentScale()
 
 void ThemeInterface::set_currentScale(double newScale)
 {
-	if (!IS_FP_SAME(newScale, qPrefDisplay::mobile_scale())) {
+	if (!nearly_equal(newScale, qPrefDisplay::mobile_scale())) {
 		qPrefDisplay::set_mobile_scale(newScale);
 		emit currentScaleChanged();
 		m_needSignals = true;

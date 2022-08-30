@@ -96,7 +96,7 @@ void QMLProfile::setDevicePixelRatio(qreal dpr)
 // don't update the profile here, have the user update x and y and then manually trigger an update
 void QMLProfile::setXOffset(qreal value)
 {
-	if (IS_FP_SAME(value, m_xOffset))
+	if (nearly_equal(value, m_xOffset))
 		return;
 	m_xOffset = value;
 	emit xOffsetChanged();
@@ -105,7 +105,7 @@ void QMLProfile::setXOffset(qreal value)
 // don't update the profile here, have the user update x and y and then manually trigger an update
 void QMLProfile::setYOffset(qreal value)
 {
-	if (IS_FP_SAME(value, m_yOffset))
+	if (nearly_equal(value, m_yOffset))
 		return;
 	m_yOffset = value;
 	emit yOffsetChanged();
