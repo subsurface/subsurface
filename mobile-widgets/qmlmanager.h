@@ -74,7 +74,7 @@ public:
 	Q_INVOKABLE void exportToFile(export_types type, QString directory, bool anonymize);
 #endif
 	Q_INVOKABLE void exportToWEB(export_types type, QString userId, QString password, bool anonymize);
-
+	Q_INVOKABLE void shareViaEmail(export_types type, bool anonymize);
 
 	QString DC_vendor() const;
 	void DC_setVendor(const QString& vendor);

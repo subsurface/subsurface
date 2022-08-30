@@ -2234,6 +2234,63 @@ void QMLManager::exportToWEB(export_types type, QString userId, QString password
 	}
 }
 
+void QMLManager::shareViaEmail(export_types type, bool anonymize)
+{
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+	QString fileName = appLogFileName;
+#else
+	QString fileName = system_default_directory();
+#endif
+	QString body;
+	switch (type) {
+	case EX_DIVES_XML:
+		fileName.replace("subsurface.log", "subsurface.ssrf");
+		if (save_dives_logic(qPrintable(fileName), false, anonymize) == 0) {
+			// ok, we have a file, let's send it
+			body = "Subsurface dive log data";
+		} else {
+			appendTextToLog("failure to save dive log, aborting attempt to send via email");
+		}
+		break;
+	case EX_DIVE_SITES_XML:
+		fileName.replace("subsurface.log", "subsurface_divesites.xml");
+		{ // need a block so the compiler doesn't complain about creating the sites variable here
+			std::vector<const dive_site *> sites = getDiveSitesToExport(false);
+			if (save_dive_sites_logic(qPrintable(fileName), sites.data(), (int)sites.size(), anonymize) == 0) {
+				// ok, we have a file, let's send it
+				body = "Subsurface dive site data";
+			} else {
+				appendTextToLog("failure to save dive site data, aborting attempt to send via email");
+			}
+		}
+		break;
+	default:
+		qDebug() << "cannot export type " << type << " via email";
+		return;
+	}
+#if defined(Q_OS_ANDROID)
+	// let's use our nifty Java shareViaEmail function
+	QAndroidJniObject activity = QtAndroid::androidActivity();
+	if (activity.isValid()) {
+		QAndroidJniObject attachmentPath = QAndroidJniObject::fromString(fileName);
+		QAndroidJniObject subject = QAndroidJniObject::fromString("Subsurface export");
+		QAndroidJniObject bodyString = QAndroidJniObject::fromString(body);
+		QAndroidJniObject emptyString = QAndroidJniObject::fromString("");
+		bool success = activity.callMethod<jboolean>("shareViaEmail",
+					"(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z", // five string arguments, return bool
+					subject.object<jstring>(), emptyString.object<jstring>(), bodyString.object<jstring>(),
+							     attachmentPath.object<jstring>(), emptyString.object<jstring>());
+		qDebug() << __FUNCTION__ << "shareViaEmail" << (success ? "succeeded" : "failed");
+	}
+#elif defined(Q_OS_IOS)
+	// call into objC++ code to share on iOS
+	QString subject("Subsurface export");
+	QString emptyString("");
+	iosshare.shareViaEmail(subject, emptyString, body, fileName, emptyString);
+#else
+	appendTextToLog("on a mobile platform this would send" + fileName + "via email with body" + body);
+#endif
+}
 void QMLManager::uploadFinishSlot(bool success, const QString &text, const QByteArray &html)
 {
 	emit uploadFinish(success, text);
