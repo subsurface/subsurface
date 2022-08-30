@@ -66,7 +66,6 @@ public:
 	enum export_types {
 		EX_DIVES_XML,
 		EX_DIVE_SITES_XML,
-		EX_UDDF,
 		EX_DIVELOGS_DE,
 		EX_DIVESHARE
 	};

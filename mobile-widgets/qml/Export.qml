@@ -153,14 +153,6 @@ TemplatePage {
 			}
 		}
 		TemplateRadioButton {
-			text: qsTr("Export UDDF")
-			visible: Qt.platform.os !== "android"
-			onClicked: {
-				selectedExport = ExportType.EX_UDDF
-				explain.text = qsTr("Generic format that is used for data exchange between a variety of diving related programs.")
-			}
-		}
-		TemplateRadioButton {
 			text: qsTr("Upload divelogs.de")
 			onClicked: {
 				selectedExport = ExportType.EX_DIVELOGS_DE
