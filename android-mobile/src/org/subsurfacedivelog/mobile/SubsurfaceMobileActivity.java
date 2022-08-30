@@ -70,7 +70,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 		attachments.add(uri);
 
 		// if there is a second file name (that's for support emails) add it and set this up as support email as well
-		if (path2 != "") {
+		if (!path2.isEmpty()) {
 			fileToShare = new File(path2);
 			try {
 				uri = FileProvider.getUriForFile(QtNative.activity(), fileProviderAuthority, fileToShare);
