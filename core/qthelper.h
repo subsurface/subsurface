@@ -174,17 +174,14 @@ fraction_t string_to_fraction(const char *str);
 char *get_changes_made();
 void emit_reset_signal();
 
+extern void report_info(const char *fmt, ...);
+
 #ifdef __cplusplus
 }
 #endif
 
 // 4) SSRF_INFO macro to replace fprintf calls in our code
 //    (originally based on logging bits from libdivecomputer)
-#if !defined(Q_OS_ANDROID) && !defined(__ANDROID__)
-#define SSRF_INFO(fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
-#else
-#include <android/log.h>
-#define SSRF_INFO(fmt, ...)	__android_log_print(ANDROID_LOG_INFO, "Subsurface", "INFO: " fmt "\n", ##__VA_ARGS__);
-#endif
+#define SSRF_INFO(fmt, ...) report_info(fmt, ##__VA_ARGS__)
 
 #endif // QTHELPER_H
