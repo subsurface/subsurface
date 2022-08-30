@@ -497,10 +497,10 @@ bool QMLManager::createSupportEmail()
 	if (activity.isValid()) {
 		QAndroidJniObject applogfilepath = QAndroidJniObject::fromString(appLogFileName);
 		QAndroidJniObject libdcfilepath = QAndroidJniObject::fromString(logfile_name);
-		bool success = activity.callMethod<jboolean>("shareFiles",
+		bool success = activity.callMethod<jboolean>("supportEmail",
 					"(Ljava/lang/String;Ljava/lang/String;)Z", // two string arguments, return bool
 					applogfilepath.object<jstring>(), libdcfilepath.object<jstring>());
-		qDebug() << __FUNCTION__ << "shareFiles" << (success ? "succeeded" : "failed");
+		qDebug() << __FUNCTION__ << "supportEmail" << (success ? "succeeded" : "failed");
 		if (success)
 			return true;
 	}

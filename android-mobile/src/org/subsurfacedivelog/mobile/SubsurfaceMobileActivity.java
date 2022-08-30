@@ -37,18 +37,21 @@ public class SubsurfaceMobileActivity extends QtActivity
 	// FileProvider declares an 'authority' in AndroidManifest.xml
 	private static String fileProviderAuthority="org.subsurfacedivelog.mobile.fileprovider";
 
-	// you can share one file (for future use, I'm thinking divelist XML), or two files
-	// which is assumed to be a support request - maybe that shouldn't be implicit?
-	public boolean shareFiles(String path1, String path2) {
+	// you can share one or two files
+	public boolean shareViaEmail(String subject, String recipient, String body, String path1, String path2) {
 		// better save than sorry
 		if (QtNative.activity() == null)
 			return false;
 
-		Log.d(TAG + " shareFile - trying to share: ", path1 + " and " + path2);
+		Log.d(TAG + " shareFile - trying to share: ", path1 + " and " + path2 + " to " + recipient);
 
 		// Can't get this to work building my own intent, so let's use the IntentBuilder
 		Intent shareFileIntent = ShareCompat.IntentBuilder.from(QtNative.activity()).getIntent();
 		shareFileIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+		// recipients are always an array, even if there's only one
+		shareFileIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { recipient });
+		shareFileIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+		shareFileIntent.putExtra(Intent.EXTRA_TEXT, body);
 
 		// now figure out the URI we need to share the first file
 		File fileToShare = new File(path1);
@@ -77,10 +80,6 @@ public class SubsurfaceMobileActivity extends QtActivity
 			}
 			Log.d(TAG + " shareFile - URI for file: ", uri.toString());
 			attachments.add(uri);
-			// recipients are also always an array, even if there's only one
-			shareFileIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "in-app-support@subsurface-divelog.org" });
-			shareFileIntent.putExtra(Intent.EXTRA_SUBJECT, "Subsurface-mobile support request");
-			shareFileIntent.putExtra(Intent.EXTRA_TEXT, "Please describe your issue here and keep the attached logs.\n\n\n\n");
 		}
 		shareFileIntent.setType("text/plain");
 		shareFileIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
@@ -93,6 +92,12 @@ public class SubsurfaceMobileActivity extends QtActivity
 		return true;
 	}
 
+	public boolean supportEmail(String path1, String path2) {
+		return shareViaEmail("Subsurface-mobile support request",
+				"in-app-support@subsurface-divelog.org",
+				"Please describe your issue here and keep the attached logs.\n\n\n\n",
+				path1, path2);
+	}
 
 	public static boolean isIntentPending;
 	public static boolean isInitialized;
