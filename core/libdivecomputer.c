@@ -15,6 +15,7 @@
 #include "gettext.h"
 #include "divesite.h"
 #include "sample.h"
+#include "subsurface-float.h"
 #include "subsurface-string.h"
 #include "device.h"
 #include "dive.h"

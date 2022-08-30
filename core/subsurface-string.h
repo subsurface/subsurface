@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
-#include <math.h>
 
 // shared generic definitions and macros
 // mostly about strings, but a couple of math macros are here as well
@@ -26,16 +25,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-static inline bool nearly_equal(double a, double b)
-{
-	return fabs(a - b) <= 1e-6 * fmax(fabs(a), fabs(b));
-}
-
-static inline bool nearly_0(double fp)
-{
-	return fabs(fp) <= 1e-6;
-}
 
 // string handling
 

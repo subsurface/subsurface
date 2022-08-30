@@ -3,7 +3,7 @@
 #include "profile-widget/divetextitem.h"
 #include "core/profile.h"
 #include "core/qthelper.h"
-#include "core/subsurface-string.h"
+#include "core/subsurface-float.h"
 #include "profile-widget/animationfunctions.h"
 #include "profile-widget/divelineitem.h"
 #include "profile-widget/profilescene.h"
