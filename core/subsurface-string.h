@@ -24,11 +24,17 @@
 
 #define IS_FP_SAME(_a, _b) (fabs((_a) - (_b)) <= 0.000001 * MAX(fabs(_a), fabs(_b)))
 
-// string handling
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+static inline bool nearly_0(double fp)
+{
+	return fabs(fp) <= 1e-6;
+}
+
+// string handling
 
 static inline bool same_string(const char *a, const char *b)
 {
