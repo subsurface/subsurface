@@ -195,7 +195,7 @@ void DownloadFromDCWidget::updateProgressBar()
 		ui.progressText->setText(progress_bar_text);
 #endif
 	} else {
-		if (IS_FP_SAME(progress_bar_fraction, 0.0)) {
+		if (nearly_0(progress_bar_fraction)) {
 			// while we are waiting to connect, set the maximum to 0 so we get a busy indication
 			ui.progressBar->setMaximum(0);
 			ui.progressBar->setFormat(tr("Connecting to dive computer"));

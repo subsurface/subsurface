@@ -203,7 +203,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 					report_error("gasmix %d for tank %d doesn't match", tank.gasmix, i);
 				}
 			}
-			if (!IS_FP_SAME(tank.volume, 0.0))
+			if (!nearly_0(tank.volume))
 				no_volume = false;
 
 			// this new API also gives us the beginning and end pressure for the tank
@@ -212,8 +212,8 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			// that matches the consumption and an end pressure of always 0
 			// In order to make this work, we arbitrary shift this up by 30bar so the
 			// rest of the code treats this as if they were valid values
-			if (!IS_FP_SAME(tank.beginpressure, 0.0)) {
-				if (!IS_FP_SAME(tank.endpressure, 0.0)) {
+			if (!nearly_0(tank.beginpressure)) {
+				if (!nearly_0(tank.endpressure)) {
 					cyl.start.mbar = lrint(tank.beginpressure * 1000);
 					cyl.end.mbar = lrint(tank.endpressure * 1000);
 				} else if (same_string(devdata->vendor, "Uwatec")) {
