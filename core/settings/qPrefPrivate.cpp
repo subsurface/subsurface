@@ -25,7 +25,7 @@ void qPrefPrivate::propSetValue(const QString &key, const QVariant &value, const
 #else
 	if (value.isValid() && value.type() == QVariant::Double)
 #endif
-		isDefault = IS_FP_SAME(value.toDouble(), defaultValue.toDouble());
+		isDefault = nearly_equal(value.toDouble(), defaultValue.toDouble());
 	else
 		isDefault = (value == defaultValue);
 

@@ -183,7 +183,7 @@ void DownloadFromDCWidget::updateProgressBar()
 	if (empty_string(last_text)) {
 		// if we get the first actual text after the download is finished
 		// (which happens for example on the OSTC), then don't bother
-		if (!empty_string(progress_bar_text) && IS_FP_SAME(progress_bar_fraction, 1.0))
+		if (!empty_string(progress_bar_text) && nearly_equal(progress_bar_fraction, 1.0))
 			progress_bar_text = "";
 	}
 	if (!empty_string(progress_bar_text)) {

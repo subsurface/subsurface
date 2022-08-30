@@ -442,7 +442,7 @@ double DiveCartesianAxis::posAtValue(double value, double max, double min) const
 
 	double screenFrom = position == Position::Bottom ? m.x1() : m.y1();
 	double screenTo = position == Position::Bottom ? m.x2() : m.y2();
-	if (IS_FP_SAME(min, max))
+	if (nearly_equal(min, max))
 		return (screenFrom + screenTo) / 2.0;
 	if ((position == Position::Bottom) == inverted)
 		std::swap(screenFrom, screenTo);
