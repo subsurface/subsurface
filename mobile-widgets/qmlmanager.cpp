@@ -2211,9 +2211,6 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 				save_dive_sites_logic(qPrintable(fileName + ".xml"), sites.data(), (int)sites.size(), anonymize);
 				break;
 			}
-		case EX_UDDF:
-			exportUsingStyleSheet(fileName + ".uddf", true, 0, "uddf-export.xslt", anonymize);
-			break;
 		default:
 			qDebug() << "export to unknown type " << type << " using " << dir << " remove names " << anonymize;
 			break;
