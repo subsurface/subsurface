@@ -1,6 +1,7 @@
 import: allow import of divesites without UUID
 divelist: do not include planned versions of a dive if there is real data
 desktop: fix key composition in tag widgets and dive site widget
+desktop: use combobox for moving sensor between cylinders
 mobile: send log files as attachments for support emails on iOS
 mobile: allow cloud account deletion (Apple app store requirement)
 mobile: fix listing of local cloud cache directories

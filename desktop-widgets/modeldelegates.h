@@ -79,6 +79,15 @@ private:
 	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
 };
 
+class SensorDelegate : public QStyledItemDelegate {
+	Q_OBJECT
+public:
+	explicit SensorDelegate(QObject *parent = 0);
+private:
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+};
+
 class WSInfoDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
