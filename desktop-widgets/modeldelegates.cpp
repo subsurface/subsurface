@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "desktop-widgets/modeldelegates.h"
+#include "core/sample.h"
 #include "core/subsurface-string.h"
 #include "core/gettextfromc.h"
 #include "desktop-widgets/mainwindow.h"
@@ -279,6 +280,42 @@ void TankUseDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, c
 {
 	QComboBox *comboBox = qobject_cast<QComboBox *>(editor);
 	model->setData(index, comboBox->currentIndex());
+}
+
+
+SensorDelegate::SensorDelegate(QObject *parent) : QStyledItemDelegate(parent)
+{
+}
+
+QWidget *SensorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
+{
+	QComboBox *comboBox = new QComboBox(parent);
+	std::vector<int16_t> sensors;
+	const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
+	for (int i = 0; i < currentdc->samples; ++i) {
+		auto &sample = currentdc->sample[i];
+		for (int s = 0; s < MAX_SENSORS; ++s) {
+			if (sample.pressure[s].mbar) {
+				if (std::find(sensors.begin(), sensors.end(), sample.sensor[s]) == sensors.end())
+					sensors.push_back(sample.sensor[s]);
+			}
+		}
+	}
+	std::sort(sensors.begin(), sensors.end());
+	for (auto s : sensors)
+		comboBox->addItem(QString::number(s));
+
+	comboBox->setCurrentIndex(-1);
+	QString indexString = index.data().toString();
+	if (!indexString.isEmpty())
+		comboBox->setCurrentText(indexString);
+	return comboBox;
+}
+
+void SensorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+	QComboBox *comboBox = qobject_cast<QComboBox *>(editor);
+	model->setData(index, comboBox->currentText());
 }
 
 void WSInfoDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint hint)

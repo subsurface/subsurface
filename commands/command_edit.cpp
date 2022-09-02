@@ -1361,6 +1361,9 @@ void EditSensors::mapSensors(int toCyl, int fromCyl)
 		for (int s = 0; s < MAX_SENSORS; ++s) {
 			if (dc->sample[i].pressure[s].mbar && dc->sample[i].sensor[s] == fromCyl)
 				dc->sample[i].sensor[s] = toCyl;
+			// In case the cylinder we are moving to has a sensor attached, move it to the other cylinder
+			else if (dc->sample[i].pressure[s].mbar && dc->sample[i].sensor[s] == toCyl)
+				dc->sample[i].sensor[s] = fromCyl;
 		}
 	}
 	emit diveListNotifier.diveComputerEdited(dc);

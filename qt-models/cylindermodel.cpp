@@ -240,23 +240,17 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case SIZE_INT:
 			return static_cast<int>(cyl->type.size.mliter);
 		case SENSORS: {
-			std::vector<int16_t> sensors;
 			const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
 			for (int i = 0; i < currentdc->samples; ++i) {
 				auto &sample = currentdc->sample[i];
-				for (auto s = 0; s < MAX_SENSORS; ++s) {
+				for (int s = 0; s < MAX_SENSORS; ++s) {
 					if (sample.pressure[s].mbar) {
 						if (sample.sensor[s] == index.row())
-							return tr("Sensor attached, can't move another sensor here.");
-						else if (std::find(sensors.begin(), sensors.end(), sample.sensor[s]) == sensors.end())
-							sensors.push_back(sample.sensor[s]);
+							return QString::number(sample.sensor[s]);
 					}
 				}
 			}
-			QStringList sensorStrings;
-			for (auto s : sensors)
-				sensorStrings << QString::number(s);
-			return tr("Select one of these cylinders: ") + sensorStrings.join(",");
+			return QString();
 		}
 		}
 		break;
@@ -477,14 +471,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		type = Command::EditCylinderType::TYPE;
 		break;
 	case SENSORS: {
-		std::vector<int> sensors;
-		for (auto &sensor : vString.split(",")) {
-			bool ok = false;
-			int s = sensor.toInt(&ok);
-			if (ok && s < MAX_SENSORS)
-				sensors.push_back(s);
-		}
-
 		bool ok = false;
 		int s = vString.toInt(&ok);
 		if (ok) {
@@ -553,19 +539,6 @@ Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 {
 	if (index.column() == REMOVE || index.column() == USE)
 		return Qt::ItemIsEnabled;
-	if (index.column() == SENSORS) {
-		const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
-		for (int i = 0; i < currentdc->samples; ++i) {
-			auto &sample = currentdc->sample[i];
-			for (auto s = 0; s < MAX_SENSORS; ++s) {
-				if (sample.pressure[s].mbar) {
-					if (sample.sensor[s] == index.row())
-						// Sensor attached, not editable.
-						return QAbstractItemModel::flags(index);
-				}
-			}
-		}
-	}
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
