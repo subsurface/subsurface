@@ -35,13 +35,11 @@ static void exportHTMLsettings(const QString &filename, struct htmlExportSetting
 	} else if (prefs.unit_system == IMPERIAL) {
 		out << "\"unit_system\":\"Imperial\"";
 	} else {
-		QVariant v;
-		QString length, pressure, volume, temperature, weight;
-		length = prefs.units.length == units::METERS ? "METER" : "FEET";
-		pressure = prefs.units.pressure == units::BAR ? "BAR" : "PSI";
-		volume = prefs.units.volume == units::LITER ? "LITER" : "CUFT";
-		temperature = prefs.units.temperature == units::CELSIUS ? "CELSIUS" : "FAHRENHEIT";
-		weight = prefs.units.weight == units::KG ? "KG" : "LBS";
+		QString length = prefs.units.length == units::METERS ? "METER" : "FEET";
+		QString pressure = prefs.units.pressure == units::BAR ? "BAR" : "PSI";
+		QString volume = prefs.units.volume == units::LITER ? "LITER" : "CUFT";
+		QString temperature = prefs.units.temperature == units::CELSIUS ? "CELSIUS" : "FAHRENHEIT";
+		QString weight = prefs.units.weight == units::KG ? "KG" : "LBS";
 		out << "\"unit_system\":\"Personalize\",";
 		out << "\"units\":{\"depth\":\"" << length << "\",\"pressure\":\"" << pressure << "\",\"volume\":\"" << volume << "\",\"temperature\":\"" << temperature << "\",\"weight\":\"" << weight << "\"}";
 	}
