@@ -1949,21 +1949,22 @@ When importing a dive _Subsurface_ generally has to make some assumptions when i
 of these assumptions is which cylinder a pressure sensor is attached to. The following dive is a sidemount
 dive with two deco cylinders. Each of the main cylinders has a pressure sensor attached to them. In this
 case _Subsurface_ only knows about 3 gasses and 2 sensors so it makes the assumption that the sensors
-are attached to the first two cylinders, one bottom gas and one with deco gas.
+are attached to the first two cylinders, one bottom gas and one with deco gas. For the cylinders with
+attached sensors the cylinder index will be shown in the sensors column.
 
 image::images/sensors-import.png["FIGURE: Imported cylinders and sensors",align="center"]
 
-To fix this, you can add a new unused bottom gas cylinder.
+To fix this, you can add a new cylinder with bottom gas and pick the index for the deco cylinder in
+the sensors drop down.
 
 image::images/sensors-newcylinder.png["FIGURE: New cylinder added for sensor move",align="center"]
 
-To then move the sensor from the 2nd cylinder to the newly added one replace the text *Select one of these cylinders: 0,1*
-with *1* and press Enter.
+After this change the second sensor will be attached to the fourth cylinder and the two deco cylinders
+won't have any cylinders attached.
 
 image::images/sensors-moved.png["FIGURE: Sensor moved to new cylinder",align="center"]
 
-The sensor will then be associated with this new cylinder and the profile graph will be updated to
-reflect this change.
+The profile graph will also be updated to reflect this change.
 
 [[S_sSCR_dives]]
 ==== Passive semi-closed circuit rebreather (pSCR) dives
