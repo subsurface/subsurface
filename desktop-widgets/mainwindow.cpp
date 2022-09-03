@@ -337,9 +337,6 @@ void MainWindow::divesSelected(const std::vector<dive *> &selection, dive *curre
 	if (currentDive)
 		enableDisableOtherDCsActions();
 	profile->plotCurrentDive();
-#ifdef MAP_SUPPORT
-	MapWidget::instance()->selectionChanged();
-#endif
 }
 
 void MainWindow::on_actionNew_triggered()

@@ -23,7 +23,6 @@ public:
 
 	static MapWidget *instance();
 	void reload();
-	void selectionChanged();
 	void setSelected(const QVector<dive_site *> &divesites);
 	bool editMode() const;
 
