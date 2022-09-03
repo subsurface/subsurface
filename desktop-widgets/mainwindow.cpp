@@ -200,9 +200,6 @@ MainWindow::MainWindow() :
 	initialUiSetup();
 	readSettings();
 	diveList->setFocus();
-#ifdef MAP_SUPPORT
-	MapWidget::instance()->reload();
-#endif
 	diveList->expand(diveList->model()->index(0, 0));
 	diveList->scrollTo(diveList->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 #ifdef NO_USERMANUAL
@@ -507,9 +504,6 @@ void MainWindow::closeCurrentFile()
 	clear_dive_file_data(); // this clears all the core data structures and resets the models
 	setCurrentFile(nullptr);
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
-#ifdef MAP_SUPPORT
-	MapWidget::instance()->reload();
-#endif
 	if (!existing_filename)
 		setTitle();
 	disableShortcuts();
