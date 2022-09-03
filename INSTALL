@@ -223,7 +223,7 @@ Note that on Ubuntu Mate on the Raspberry Pi, you may need to configure
 some swap space in order for the build to complete successfully. There is no
 swap space configured by default. See the dphys-swapfile package.
 
-On Raspberry Pi OS with Desktop (64-bit) Released April 4th, 2022, this seems
+On Raspberry Pi OS with Desktop (64-bit) Released April 4th 2022, this seems
 to work
 
 sudo apt install \
