@@ -58,7 +58,6 @@ struct stats_summary {
 extern "C" {
 #endif
 
-extern char *get_minutes(int seconds);
 extern void init_stats_summary(struct stats_summary *stats);
 extern void free_stats_summary(struct stats_summary *stats);
 extern void calculate_stats_summary(struct stats_summary *stats, bool selected_only);
