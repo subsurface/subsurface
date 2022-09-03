@@ -223,6 +223,24 @@ Note that on Ubuntu Mate on the Raspberry Pi, you may need to configure
 some swap space in order for the build to complete successfully. There is no
 swap space configured by default. See the dphys-swapfile package.
 
+On Raspberry Pi OS with Desktop (64-bit) Released April 4th, 2022, this seems
+to work
+
+sudo apt install \
+	autoconf automake cmake g++ git libbluetooth-dev libcrypto++-dev \
+	libcurl4-gnutls-dev libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
+	libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libtool \
+	libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make pkg-config \
+	qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
+	qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
+	qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
+	qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev
+
+Note that you'll need to increase the swap space as the default of 100MB
+doesn't seem to be enough.  If maps aren't working, copy the googlemaps plugin
+from <build_dir>/subsurface/googlemaps/build/libqtgeoservices_googlemaps.so
+to /usr/lib/aarch64-linux-gnu/qt5/plugins/geoservices.
+
 On PCLinuxOS you appear to need the following packages
 
 su -c "apt-get install -y autoconf automake cmake gcc-c++ git libtool  \
