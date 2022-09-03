@@ -3,6 +3,7 @@
 #include "core/qthelper.h"
 #include "core/metrics.h"
 #include "core/statistics.h"
+#include "core/string-format.h"
 #include "core/dive.h" // For NUM_DIVEMODE
 
 class YearStatisticsItem : public TreeItem {
@@ -65,13 +66,13 @@ QVariant YearStatisticsItem::data(int column, int role) const
 		ret = get_dive_duration_string(stats_interval.total_time.seconds, tr("h"), tr("min"), tr("sec"), " ");
 		break;
 	case AVERAGE_TIME:
-		ret = get_minutes(stats_interval.total_time.seconds / stats_interval.selection_size);
+		ret = formatMinutes(stats_interval.total_time.seconds / stats_interval.selection_size);
 		break;
 	case SHORTEST_TIME:
-		ret = get_minutes(stats_interval.shortest_time.seconds);
+		ret = formatMinutes(stats_interval.shortest_time.seconds);
 		break;
 	case LONGEST_TIME:
-		ret = get_minutes(stats_interval.longest_time.seconds);
+		ret = formatMinutes(stats_interval.longest_time.seconds);
 		break;
 	case AVG_DEPTH:
 		ret = get_depth_string(stats_interval.avg_depth);

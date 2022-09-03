@@ -464,11 +464,11 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 			return get_dive_duration_string(object->total_time.seconds, gettextFromC::tr("h"),
 							gettextFromC::tr("min"), gettextFromC::tr("sec"), " ");
 		} else if (property == "avg_time") {
-			return get_minutes(object->total_time.seconds / object->selection_size);
+			return formatMinutes(object->total_time.seconds / object->selection_size);
 		} else if (property == "shortest_time") {
-			return get_minutes(object->shortest_time.seconds);
+			return formatMinutes(object->shortest_time.seconds);
 		} else if (property == "longest_time") {
-			return get_minutes(object->longest_time.seconds);
+			return formatMinutes(object->longest_time.seconds);
 		} else if (property == "avg_depth") {
 			return get_depth_string(object->avg_depth);
 		} else if (property == "min_depth") {

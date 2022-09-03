@@ -9,6 +9,7 @@
 #include "qthelper.h"
 #include "units.h"
 #include "statistics.h"
+#include "string-format.h"
 #include "save-html.h"
 
 static void file_copy_and_overwrite(const QString &fileName, const QString &newName)
@@ -93,9 +94,9 @@ static void exportHTMLstatistics(const QString filename, struct htmlExportSettin
 			out << "\"DIVES\":\"" << stats.stats_yearly[i].selection_size << "\",";
 			out << "\"TOTAL_TIME\":\"" << get_dive_duration_string(stats.stats_yearly[i].total_time.seconds,
 											gettextFromC::tr("h"), gettextFromC::tr("min"), gettextFromC::tr("sec"), " ") << "\",";
-			out << "\"AVERAGE_TIME\":\"" << get_minutes(stats.stats_yearly[i].total_time.seconds / stats.stats_yearly[i].selection_size) << "\",";
-			out << "\"SHORTEST_TIME\":\"" << get_minutes(stats.stats_yearly[i].shortest_time.seconds) << "\",";
-			out << "\"LONGEST_TIME\":\"" << get_minutes(stats.stats_yearly[i].longest_time.seconds) << "\",";
+			out << "\"AVERAGE_TIME\":\"" << formatMinutes(stats.stats_yearly[i].total_time.seconds / stats.stats_yearly[i].selection_size) << "\",";
+			out << "\"SHORTEST_TIME\":\"" << formatMinutes(stats.stats_yearly[i].shortest_time.seconds) << "\",";
+			out << "\"LONGEST_TIME\":\"" << formatMinutes(stats.stats_yearly[i].longest_time.seconds) << "\",";
 			out << "\"AVG_DEPTH\":\"" << get_depth_string(stats.stats_yearly[i].avg_depth) << "\",";
 			out << "\"MIN_DEPTH\":\"" << get_depth_string(stats.stats_yearly[i].min_depth) << "\",";
 			out << "\"MAX_DEPTH\":\"" << get_depth_string(stats.stats_yearly[i].max_depth) << "\",";

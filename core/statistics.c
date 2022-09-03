@@ -2,7 +2,6 @@
 /* statistics.c
  *
  * core logic for the Info & Stats page -
- * char *get_minutes(int seconds);
  * void calculate_stats_summary(struct stats_summary *out, bool selected_only);
  * void calculate_stats_selected(stats_t *stats_selection);
  */
@@ -82,13 +81,6 @@ static void process_dive(struct dive *dive, stats_t *stats)
 			stats->min_sac.mliter = dive->sac;
 		stats->total_sac_time.seconds = sac_time;
 	}
-}
-
-char *get_minutes(int seconds)
-{
-	static char buf[80];
-	snprintf(buf, sizeof(buf), "%d:%.2d", FRACTION(seconds, 60));
-	return buf;
 }
 
 /*
