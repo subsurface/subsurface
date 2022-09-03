@@ -225,7 +225,7 @@ void DiveListView::reset()
 }
 
 // If items were selected, inform the selection model
-void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices, QModelIndex currentDive)
+void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC)
 {
 	// This is the entry point for programmatical selection changes.
 	// Set a flag so that selection changes are not further processed,
@@ -258,7 +258,14 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices, QMo
 	}
 	setAnimated(oldAnimated);
 
-	selectionChangeDone();
+	// This is truly sad, but taking the list of selected indices and turning them
+	// into dives turned out to be unreasonably slow. Therefore, let's access
+	// the core list directly.
+	std::vector<dive *> selected = getDiveSelection();
+	selectDiveSitesOnMap(selected);
+	struct dive *current = currentDive.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
+	emit divesSelected(selected, current, currentDC);
+
 	programmaticalSelectionChange = false;
 
 	// Set the currently activated row.
@@ -305,7 +312,14 @@ void DiveListView::tripSelected(QModelIndex trip, QModelIndex currentDive)
 	// funny side-effects).
 	selectionModel()->setCurrentIndex(currentDive, QItemSelectionModel::Current);
 
-	selectionChangeDone();
+	// This is truly sad, but taking the list of selected indices and turning them
+	// into dives turned out to be unreasonably slow. Therefore, let's access
+	// the core list directly.
+	std::vector<dive *> selection = getDiveSelection();
+	selectDiveSitesOnMap(selection);
+	struct dive *current = currentDive.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
+	emit divesSelected(selection, current, -1);
+
 	programmaticalSelectionChange = false;
 }
 
@@ -415,7 +429,7 @@ void DiveListView::currentChanged(const QModelIndex &current, const QModelIndex&
 	scrollTo(current);
 }
 
-void DiveListView::selectionChangeDone()
+void DiveListView::selectDiveSitesOnMap(const std::vector<dive *> &dives)
 {
 #ifdef MAP_SUPPORT
 	// When receiving the divesSelected signal the main window will
@@ -425,21 +439,15 @@ void DiveListView::selectionChangeDone()
 	// the dive-site selection is controlled by the filter not
 	// by the selected dives.
 	if (!DiveFilter::instance()->diveSiteMode()) {
-		// This is truly sad, but taking the list of selected indices and turning them
-		// into dive sites turned out to be unreasonably slow. Therefore, let's access
-		// the core list directly. In my tests, this went down from 700 to 0 ms!
 		QVector<dive_site *> selectedSites;
-		selectedSites.reserve(amount_selected);
-		int i;
-		dive *d;
-		for_each_dive(i, d) {
-			if (d->selected && !d->hidden_by_filter && d->dive_site && !selectedSites.contains(d->dive_site))
+		selectedSites.reserve(dives.size());
+		for (dive *d: dives) {
+			if (!d->hidden_by_filter && d->dive_site && !selectedSites.contains(d->dive_site))
 				selectedSites.push_back(d->dive_site);
 		}
 		MapWidget::instance()->setSelected(selectedSites);
 	}
 #endif
-	emit divesSelected();
 }
 
 void DiveListView::selectTripItems(QModelIndex index)
@@ -524,7 +532,8 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 	// Display the new, processed, selection
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
 
-	selectionChangeDone();
+	selectDiveSitesOnMap(selection);
+	emit divesSelected(selection, newCurrent, -1);
 
 	programmaticalSelectionChange = false;
 }

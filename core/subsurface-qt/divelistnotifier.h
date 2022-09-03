@@ -111,7 +111,8 @@ signals:
 	void tripChanged(dive_trip *trip, TripField field);
 
 	// Selection changes
-	void divesSelected(const QVector<dive *> &dives, dive *currentDive);
+	// currentDC == -1 -> keep current dive computer
+	void divesSelected(const QVector<dive *> &dives, dive *currentDive, int currentDC);
 	void tripSelected(dive_trip *trip, dive *currentDive);
 
 	// Dive site signals. Add and delete events are sent per dive site and

@@ -29,7 +29,8 @@ public:
 	void loadImages();
 	void loadWebImages();
 signals:
-	void divesSelected();
+	// currentDC = -1: don't change dc number.
+	void divesSelected(const std::vector<dive *> &dives, dive *currentDive, int currentDC);
 public
 slots:
 	void settingsChanged();
@@ -51,13 +52,13 @@ slots:
 	void renumberDives();
 	void addDivesToTrip();
 	void shiftTimes();
-	void diveSelectionChanged(const QVector<QModelIndex> &indices, QModelIndex currentDive);
+	void diveSelectionChanged(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC);
 	void tripSelected(QModelIndex trip, QModelIndex currentDive);
 private:
 	void rowsInserted(const QModelIndex &parent, int start, int end) override;
 	void reset() override;
 	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
-	void selectionChangeDone();
+	void selectDiveSitesOnMap(const std::vector<dive *> &dives);
 	void selectTripItems(QModelIndex index);
 	DiveTripModelBase::Layout currentLayout;
 	QModelIndex contextMenuIndex;

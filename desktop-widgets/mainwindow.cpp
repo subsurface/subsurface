@@ -176,7 +176,7 @@ MainWindow::MainWindow() :
 	if (!QIcon::hasThemeIcon("window-close")) {
 		QIcon::setThemeName("subsurface");
 	}
-	connect(diveList.get(), &DiveListView::divesSelected, this, &MainWindow::selectionChanged);
+	connect(diveList.get(), &DiveListView::divesSelected, this, &MainWindow::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MainWindow::readSettings);
 	for (int i = 0; i < NUM_RECENT_FILES; i++) {
 		actionsRecent[i] = new QAction(this);
@@ -331,10 +331,10 @@ void MainWindow::updateAutogroup()
 	ui.actionAutoGroup->setChecked(divelog.autogroup);
 }
 
-void MainWindow::selectionChanged()
+void MainWindow::divesSelected(const std::vector<dive *> &selection, dive *currentDive, int currentDC)
 {
 	mainTab->updateDiveInfo();
-	if (current_dive)
+	if (currentDive)
 		enableDisableOtherDCsActions();
 	profile->plotCurrentDive();
 #ifdef MAP_SUPPORT

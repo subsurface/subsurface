@@ -129,7 +129,7 @@ slots:
 	void on_actionReplanDive_triggered();
 	void on_action_Check_for_Updates_triggered();
 
-	void selectionChanged();
+	void divesSelected(const std::vector<dive *> &selection, dive *currentDive, int currentDC);
 	void initialUiSetup();
 
 	void on_actionImportDiveLog_triggered();
