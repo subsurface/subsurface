@@ -49,6 +49,8 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 void MapWidgetHelper::setSelected(const QVector<dive_site *> &divesites)
 {
 	m_mapLocationModel->setSelected(divesites);
+	m_mapLocationModel->selectionChanged();
+	updateEditMode();
 }
 
 void MapWidgetHelper::centerOnSelectedDiveSite()
@@ -116,12 +118,6 @@ void MapWidgetHelper::reloadMapLocations()
 {
 	updateEditMode();
 	m_mapLocationModel->reload(m_map);
-}
-
-void MapWidgetHelper::selectionChanged()
-{
-	updateEditMode();
-	m_mapLocationModel->selectionChanged();
 }
 
 void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)

@@ -181,7 +181,6 @@ void DiveFilter::setFilterDiveSite(QVector<dive_site *> ds)
 	emit diveListNotifier.filterReset();
 #ifdef MAP_SUPPORT
 	MapWidget::instance()->setSelected(dive_sites);
-	MapWidget::instance()->selectionChanged();
 #endif
 	MainWindow::instance()->diveList->expandAll();
 }

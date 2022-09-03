@@ -83,12 +83,6 @@ void MapWidget::setSelected(const QVector<dive_site *> &divesites)
 {
 	CHECK_IS_READY_RETURN_VOID();
 	m_mapHelper->setSelected(divesites);
-}
-
-void MapWidget::selectionChanged()
-{
-	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->selectionChanged();
 	m_mapHelper->centerOnSelectedDiveSite();
 }
 
