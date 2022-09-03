@@ -1370,7 +1370,7 @@ QModelIndex DiveTripModelTree::diveToIdx(const dive *d) const
 	}
 }
 
-void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn, dive *currentDive)
+void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn, dive *currentDive, int currentDC)
 {
 	QVector <dive *> dives = visibleDives(divesIn);
 
@@ -1382,7 +1382,7 @@ void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn, dive *curr
 	processByTrip(dives, [this, &indices] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesSelectedTrip(trip, divesInTrip, indices); });
 
-	emit selectionChanged(indices, diveToIdx(currentDive));
+	emit selectionChanged(indices, diveToIdx(currentDive), currentDC);
 
 	// The current dive has changed. Transform the current dive into an index and pass it on to the view.
 	currentChanged(currentDive);
@@ -1659,7 +1659,7 @@ QModelIndex DiveTripModelList::diveToIdx(const dive *d) const
 	return createIndex(it - items.begin(), 0);
 }
 
-void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *currentDive)
+void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *currentDive, int currentDC)
 {
 	QVector<dive *> dives = visibleDives(divesIn);
 
@@ -1679,7 +1679,7 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *curr
 		indices.append(createIndex(j, 0, noParent));
 	}
 
-	emit selectionChanged(indices, diveToIdx(currentDive));
+	emit selectionChanged(indices, diveToIdx(currentDive), currentDC);
 
 	// The current dive has changed. Transform the current dive into an index and pass it on to the view.
 	currentChanged(currentDive);
@@ -1697,7 +1697,7 @@ void DiveTripModelList::tripSelected(dive_trip *trip, dive *currentDive)
 	for (int i = 0; i < trip->dives.nr; ++i)
 		dives.push_back(trip->dives.dives[i]);
 
-	divesSelected(dives, currentDive);
+	divesSelected(dives, currentDive, -1);
 }
 
 // Simple sorting helper for sorting against a criterium and if
