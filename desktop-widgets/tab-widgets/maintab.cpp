@@ -49,7 +49,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// call colorsChanged() for the initial setup now that the extraWidgets are loaded
 	colorsChanged();
 
-	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MainTab::updateDiveInfo);
+	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MainTab::settingsChanged);
 
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, &QShortcut::activated, this, &MainTab::escDetected);
@@ -70,7 +70,13 @@ void MainTab::nextInputField(QKeyEvent *event)
 	keyPressEvent(event);
 }
 
-void MainTab::updateDiveInfo()
+void MainTab::settingsChanged()
+{
+	// TODO: remember these
+	updateDiveInfo(getDiveSelection(), current_dive, dc_number);
+}
+
+void MainTab::updateDiveInfo(const std::vector<dive *> &selection, dive *currentDive, int currentDC)
 {
 	// don't execute this while planning a dive
 	if (DivePlannerPointsModel::instance()->isPlanner())
@@ -81,9 +87,9 @@ void MainTab::updateDiveInfo()
 	for (TabBase *widget: extraWidgets)
 		widget->setEnabled(enabled);
 
-	if (current_dive) {
+	if (currentDive) {
 		for (TabBase *widget: extraWidgets)
-			widget->updateData();
+			widget->updateData(selection, currentDive, currentDC);
 		if (single_selected_trip()) {
 			// Remember the tab selected for last dive but only if we're not on the dive site tab
 			if (lastSelectedDive)

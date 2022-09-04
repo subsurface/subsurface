@@ -19,9 +19,9 @@ TabDiveExtraInfo::~TabDiveExtraInfo()
 	delete ui;
 }
 
-void TabDiveExtraInfo::updateData()
+void TabDiveExtraInfo::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
 {
-	const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
+	const struct divecomputer *currentdc = get_dive_dc(currentDive, currentDC);
 	if (currentdc)
 		extraDataModel->updateDiveComputer(currentdc);
 }

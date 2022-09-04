@@ -203,23 +203,18 @@ void TabDiveInformation::showCurrentWidget(bool show, int position)
 	ui->diveInfoScrollAreaLayout->addWidget(ui->groupBox_current, 6, position, 1, 1);
 }
 
-void TabDiveInformation::updateData()
+void TabDiveInformation::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
 {
-	if (!current_dive) {
-		clear();
-		return;
-	}
-
 	int salinity_value;
-	manualDive = is_manually_added_dc(&current_dive->dc);
+	manualDive = is_manually_added_dc(&currentDive->dc);
 	updateWaterTypeWidget();
 	updateProfile();
 	updateWhen();
-	ui->watertemp->setText(get_temperature_string(current_dive->watertemp, true));
-	ui->airtemp->setText(get_temperature_string(current_dive->airtemp, true));
+	ui->watertemp->setText(get_temperature_string(currentDive->watertemp, true));
+	ui->airtemp->setText(get_temperature_string(currentDive->airtemp, true));
 	ui->atmPressType->setItemText(1, get_depth_unit());  // Check for changes in depth unit (imperial/metric)
 	ui->atmPressType->setCurrentIndex(0);                // Set the atmospheric pressure combo box to mbar
-	salinity_value = get_dive_salinity(current_dive);
+	salinity_value = get_dive_salinity(currentDive);
 	if (salinity_value) {			// Set water type indicator (EN13319 = 1.020 g/l)
 		if (prefs.salinityEditDefault) {   //If edit-salinity is enabled then set correct water type in combobox:
 			ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(salinity_value));
@@ -234,12 +229,12 @@ void TabDiveInformation::updateData()
 	}
 	checkDcSalinityOverWritten();  // If exclamation is needed (i.e. salinity overwrite by user), then show it
 
-	updateMode(current_dive);
-	ui->visibility->setCurrentStars(current_dive->visibility);
-	ui->wavesize->setCurrentStars(current_dive->wavesize);
-	ui->current->setCurrentStars(current_dive->current);
-	ui->surge->setCurrentStars(current_dive->surge);
-	ui->chill->setCurrentStars(current_dive->chill);
+	updateMode(currentDive);
+	ui->visibility->setCurrentStars(currentDive->visibility);
+	ui->wavesize->setCurrentStars(currentDive->wavesize);
+	ui->current->setCurrentStars(currentDive->current);
+	ui->surge->setCurrentStars(currentDive->surge);
+	ui->chill->setCurrentStars(currentDive->chill);
 	if (prefs.extraEnvironmentalDefault)
 		showCurrentWidget(true, 2);   // Show current star widget at 3rd position
 	else

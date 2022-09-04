@@ -11,7 +11,7 @@ class TabBase : public QWidget {
 
 public:
 	using QWidget::QWidget;
-	virtual void updateData() = 0;
+	virtual void updateData(const std::vector<dive *> &selection, dive *currentDive, int currentDC) = 0;
 	virtual void clear() = 0;
 	virtual void updateUi(QString titleColor);
 };
