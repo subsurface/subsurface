@@ -333,7 +333,7 @@ void MainWindow::updateAutogroup()
 
 void MainWindow::divesSelected(const std::vector<dive *> &selection, dive *currentDive, int currentDC)
 {
-	mainTab->updateDiveInfo();
+	mainTab->updateDiveInfo(selection, currentDive, currentDC);
 	if (currentDive)
 		enableDisableOtherDCsActions();
 	profile->plotCurrentDive();
@@ -827,7 +827,8 @@ void MainWindow::on_actionPreviousDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
 	profile->plotCurrentDive();
-	mainTab->updateDiveInfo();
+	// TODO: remove
+	mainTab->updateDiveInfo(getDiveSelection(), current_dive, dc_number);
 }
 
 void MainWindow::on_actionNextDC_triggered()
@@ -835,7 +836,8 @@ void MainWindow::on_actionNextDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
 	profile->plotCurrentDive();
-	mainTab->updateDiveInfo();
+	// TODO: remove
+	mainTab->updateDiveInfo(getDiveSelection(), current_dive, dc_number);
 }
 
 void MainWindow::on_actionFullScreen_triggered(bool checked)

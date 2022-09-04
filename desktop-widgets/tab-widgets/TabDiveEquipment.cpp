@@ -137,13 +137,13 @@ void TabDiveEquipment::toggleTriggeredColumn()
 	}
 }
 
-void TabDiveEquipment::updateData()
+void TabDiveEquipment::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
 {
-	cylindersModel->updateDive(current_dive, dc_number);
-	weightModel->updateDive(current_dive);
+	cylindersModel->updateDive(currentDive, currentDC);
+	weightModel->updateDive(currentDive);
 
-	if (current_dive && current_dive->suit)
-		ui.suit->setText(QString(current_dive->suit));
+	if (currentDive && currentDive->suit)
+		ui.suit->setText(QString(currentDive->suit));
 	else
 		ui.suit->clear();
 }

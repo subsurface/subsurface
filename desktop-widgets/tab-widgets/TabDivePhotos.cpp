@@ -48,7 +48,8 @@ TabDivePhotos::~TabDivePhotos()
 
 void TabDivePhotos::clear()
 {
-	updateData();
+	// TODO: clear model
+	divePictureModel->updateDivePictures();
 }
 
 void TabDivePhotos::contextMenuEvent(QContextMenuEvent *event)
@@ -159,8 +160,9 @@ void TabDivePhotos::removeAllPhotos()
 	}
 }
 
-void TabDivePhotos::updateData()
+void TabDivePhotos::updateData(const std::vector<dive *> &, dive *currentDive, int)
 {
+	// TODO: pass dive
 	divePictureModel->updateDivePictures();
 }
 

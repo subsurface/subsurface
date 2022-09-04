@@ -15,7 +15,7 @@ class TabDiveExtraInfo : public TabBase {
 public:
 	TabDiveExtraInfo(QWidget *parent = 0);
 	~TabDiveExtraInfo();
-	void updateData() override;
+	void updateData(const std::vector<dive *> &selection, dive *currentDive, int currentDC) override;
 	void clear() override;
 private:
 	Ui::TabDiveExtraInfo *ui;

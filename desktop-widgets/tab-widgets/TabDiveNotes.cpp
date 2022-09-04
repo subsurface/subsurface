@@ -191,7 +191,7 @@ void TabDiveNotes::updateDiveSite(struct dive *d)
 		ui.locationTags->show();
 }
 
-void TabDiveNotes::updateData()
+void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
 {
 	ui.location->refreshDiveSiteCache();
 
@@ -246,25 +246,25 @@ void TabDiveNotes::updateData()
 		ui.timeLabel->setVisible(true);
 		ui.timeEdit->setVisible(true);
 		/* and fill them from the dive */
-		ui.rating->setCurrentStars(current_dive->rating);
+		ui.rating->setCurrentStars(currentDive->rating);
 		// reset labels in case we last displayed trip notes
 		ui.LocationLabel->setText(tr("Location"));
 		ui.NotesLabel->setText(tr("Notes"));
-		ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
-		bool isManual = is_manually_added_dc(&current_dive->dc);
+		ui.tagWidget->setText(get_taglist_string(currentDive->tag_list));
+		bool isManual = is_manually_added_dc(&currentDive->dc);
 		ui.depth->setVisible(isManual);
 		ui.depthLabel->setVisible(isManual);
 		ui.duration->setVisible(isManual);
 		ui.durationLabel->setVisible(isManual);
 
-		updateNotes(current_dive);
-		updateDiveSite(current_dive);
-		updateDateTime(current_dive);
-		ui.diveguide->setText(current_dive->diveguide);
-		ui.buddy->setText(current_dive->buddy);
+		updateNotes(currentDive);
+		updateDiveSite(currentDive);
+		updateDateTime(currentDive);
+		ui.diveguide->setText(currentDive->diveguide);
+		ui.buddy->setText(currentDive->buddy);
 	}
-	ui.duration->setText(render_seconds_to_string(current_dive->duration.seconds));
-	ui.depth->setText(get_depth_string(current_dive->maxdepth, true));
+	ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
+	ui.depth->setText(get_depth_string(currentDive->maxdepth, true));
 
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 	/* unset the special value text for date and time, just in case someone dove at midnight */
