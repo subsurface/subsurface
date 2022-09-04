@@ -682,7 +682,7 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &DiveTripModelTree::diveSiteChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelTree::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelTree::divesTimeChanged);
-	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelTree::divesSelected);
+	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelTree::divesSelectedSlot);
 	connect(&diveListNotifier, &DiveListNotifier::tripSelected, this, &DiveTripModelTree::tripSelected);
 	connect(&diveListNotifier, &DiveListNotifier::tripChanged, this, &DiveTripModelTree::tripChanged);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelTree::filterReset);
@@ -1370,7 +1370,7 @@ QModelIndex DiveTripModelTree::diveToIdx(const dive *d) const
 	}
 }
 
-void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn, dive *currentDive, int currentDC)
+void DiveTripModelTree::divesSelectedSlot(const QVector<dive *> &divesIn, dive *currentDive, int currentDC)
 {
 	QVector <dive *> dives = visibleDives(divesIn);
 
@@ -1382,7 +1382,7 @@ void DiveTripModelTree::divesSelected(const QVector<dive *> &divesIn, dive *curr
 	processByTrip(dives, [this, &indices] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesSelectedTrip(trip, divesInTrip, indices); });
 
-	emit selectionChanged(indices, diveToIdx(currentDive), currentDC);
+	emit divesSelected(indices, diveToIdx(currentDive), currentDC);
 
 	// The current dive has changed. Transform the current dive into an index and pass it on to the view.
 	currentChanged(currentDive);
@@ -1463,7 +1463,7 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	// Does nothing in list-view
 	//connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelList::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelList::divesTimeChanged);
-	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelList::divesSelected);
+	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelList::divesSelectedSlot);
 	connect(&diveListNotifier, &DiveListNotifier::tripSelected, this, &DiveTripModelList::tripSelected);
 	connect(&diveListNotifier, &DiveListNotifier::filterReset, this, &DiveTripModelList::filterReset);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelList::diveChanged);
@@ -1659,7 +1659,7 @@ QModelIndex DiveTripModelList::diveToIdx(const dive *d) const
 	return createIndex(it - items.begin(), 0);
 }
 
-void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *currentDive, int currentDC)
+void DiveTripModelList::divesSelectedSlot(const QVector<dive *> &divesIn, dive *currentDive, int currentDC)
 {
 	QVector<dive *> dives = visibleDives(divesIn);
 
@@ -1679,7 +1679,7 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn, dive *curr
 		indices.append(createIndex(j, 0, noParent));
 	}
 
-	emit selectionChanged(indices, diveToIdx(currentDive), currentDC);
+	emit divesSelected(indices, diveToIdx(currentDive), currentDC);
 
 	// The current dive has changed. Transform the current dive into an index and pass it on to the view.
 	currentChanged(currentDive);
@@ -1697,7 +1697,7 @@ void DiveTripModelList::tripSelected(dive_trip *trip, dive *currentDive)
 	for (int i = 0; i < trip->dives.nr; ++i)
 		dives.push_back(trip->dives.dives[i]);
 
-	divesSelected(dives, currentDive, -1);
+	divesSelectedSlot(dives, currentDive, -1);
 }
 
 // Simple sorting helper for sorting against a criterium and if
