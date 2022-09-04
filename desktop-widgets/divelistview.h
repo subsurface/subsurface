@@ -52,7 +52,7 @@ slots:
 	void renumberDives();
 	void addDivesToTrip();
 	void shiftTimes();
-	void diveSelectionChanged(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC);
+	void divesSelectedSlot(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC);
 	void tripSelected(QModelIndex trip, QModelIndex currentDive);
 private:
 	void rowsInserted(const QModelIndex &parent, int start, int end) override;

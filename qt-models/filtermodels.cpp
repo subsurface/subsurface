@@ -26,14 +26,14 @@ void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 		model.reset(new DiveTripModelList);
 
 	setSourceModel(model.get());
-	connect(model.get(), &DiveTripModelBase::selectionChanged, this, &MultiFilterSortModel::selectionChangedSlot);
+	connect(model.get(), &DiveTripModelBase::divesSelected, this, &MultiFilterSortModel::divesSelectedSlot);
 	connect(model.get(), &DiveTripModelBase::tripSelected, this, &MultiFilterSortModel::tripSelectedSlot);
 	model->initSelection();
 	LocationInformationModel::instance()->update();
 }
 
 // Translate selection into local indices and re-emit signal
-void MultiFilterSortModel::selectionChangedSlot(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC)
+void MultiFilterSortModel::divesSelectedSlot(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC)
 {
 	QVector<QModelIndex> indicesLocal;
 	indicesLocal.reserve(indices.size());
@@ -43,7 +43,7 @@ void MultiFilterSortModel::selectionChangedSlot(const QVector<QModelIndex> &indi
 			indicesLocal.push_back(local);
 	}
 
-	emit selectionChanged(indicesLocal, mapFromSource(currentDive), currentDC);
+	emit divesSelected(indicesLocal, mapFromSource(currentDive), currentDC);
 }
 
 // Translate selection into local indices and re-emit signal

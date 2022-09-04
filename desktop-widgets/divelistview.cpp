@@ -39,7 +39,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	setItemDelegateForColumn(DiveTripModelBase::RATING, new StarWidgetsDelegate(this));
 	MultiFilterSortModel *m = MultiFilterSortModel::instance();
 	setModel(m);
-	connect(m, &MultiFilterSortModel::selectionChanged, this, &DiveListView::diveSelectionChanged);
+	connect(m, &MultiFilterSortModel::divesSelected, this, &DiveListView::divesSelectedSlot);
 	connect(m, &MultiFilterSortModel::tripSelected, this, &DiveListView::tripSelected);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DiveListView::settingsChanged);
 
@@ -225,7 +225,7 @@ void DiveListView::reset()
 }
 
 // If items were selected, inform the selection model
-void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC)
+void DiveListView::divesSelectedSlot(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC)
 {
 	// This is the entry point for programmatical selection changes.
 	// Set a flag so that selection changes are not further processed,
