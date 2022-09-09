@@ -13,7 +13,7 @@ class ExtraDataModel;
 class TabDiveExtraInfo : public TabBase {
 	Q_OBJECT
 public:
-	TabDiveExtraInfo(QWidget *parent = 0);
+	TabDiveExtraInfo(MainTab *parent);
 	~TabDiveExtraInfo();
 	void updateData(const std::vector<dive *> &selection, dive *currentDive, int currentDC) override;
 	void clear() override;

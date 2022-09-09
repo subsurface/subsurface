@@ -8,7 +8,7 @@
 #include <QLabel>
 #include <QIcon>
 
-TabDiveStatistics::TabDiveStatistics(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveStatistics())
+TabDiveStatistics::TabDiveStatistics(MainTab *parent) : TabBase(parent), ui(new Ui::TabDiveStatistics())
 {
 	ui->setupUi(this);
 	ui->sacLimits->overrideMaxToolTipText(tr("Highest total SAC of a dive"));

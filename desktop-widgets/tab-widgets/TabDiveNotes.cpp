@@ -20,7 +20,7 @@ struct Completers {
 	QCompleter *tags;
 };
 
-TabDiveNotes::TabDiveNotes(QWidget *parent) : TabBase(parent),
+TabDiveNotes::TabDiveNotes(MainTab *parent) : TabBase(parent),
 	ignoreInput(false),
 	currentTrip(0)
 {

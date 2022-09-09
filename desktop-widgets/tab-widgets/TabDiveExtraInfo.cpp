@@ -5,7 +5,7 @@
 #include "core/selection.h"
 #include "qt-models/divecomputerextradatamodel.h"
 
-TabDiveExtraInfo::TabDiveExtraInfo(QWidget *parent) :
+TabDiveExtraInfo::TabDiveExtraInfo(MainTab *parent) :
 	TabBase(parent),
 	ui(new Ui::TabDiveExtraInfo()),
 	extraDataModel(new ExtraDataModel(this))

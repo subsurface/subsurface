@@ -17,7 +17,7 @@ class CylindersModel;
 class TabDiveEquipment : public TabBase {
 	Q_OBJECT
 public:
-	TabDiveEquipment(QWidget *parent = 0);
+	TabDiveEquipment(MainTab *parent);
 	~TabDiveEquipment();
 	void updateData(const std::vector<dive *> &selection, dive *currentDive, int currentDC) override;
 	void clear() override;

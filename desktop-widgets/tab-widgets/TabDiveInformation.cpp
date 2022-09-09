@@ -16,7 +16,7 @@
 #define COMBO_CHANGED 0
 #define TEXT_EDITED 1
 
-TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
+TabDiveInformation::TabDiveInformation(MainTab *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {
 	ui->setupUi(this);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &TabDiveInformation::divesChanged);
