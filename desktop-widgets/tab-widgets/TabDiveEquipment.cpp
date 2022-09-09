@@ -28,7 +28,7 @@ static bool hiddenByDefault(int i)
 	return false;
 }
 
-TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
+TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 	cylindersModel(new CylindersModel(false, true, this)),
 	weightModel(new WeightModel(this))
 {

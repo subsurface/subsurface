@@ -16,7 +16,7 @@ class DivePictureModel;
 class TabDiveNotes : public TabBase {
 	Q_OBJECT
 public:
-	TabDiveNotes(QWidget *parent = 0);
+	TabDiveNotes(MainTab *parent);
 	void updateData(const std::vector<dive *> &selection, dive *currentDive, int currentDC) override;
 	void clear() override;
 	void closeWarning();

@@ -19,7 +19,7 @@
 #include "../mainwindow.h"
 #include "../divelistview.h"
 
-TabDivePhotos::TabDivePhotos(QWidget *parent)
+TabDivePhotos::TabDivePhotos(MainTab *parent)
 	: TabBase(parent),
 	ui(new Ui::TabDivePhotos()),
 	divePictureModel(DivePictureModel::instance())

@@ -5,15 +5,18 @@
 #include <QWidget>
 
 struct dive;
+class MainTab;
 
 class TabBase : public QWidget {
 	Q_OBJECT
 
 public:
-	using QWidget::QWidget;
+	TabBase(MainTab *parent);
 	virtual void updateData(const std::vector<dive *> &selection, dive *currentDive, int currentDC) = 0;
 	virtual void clear() = 0;
 	virtual void updateUi(QString titleColor);
+protected:
+	MainTab &parent;
 };
 
 #endif

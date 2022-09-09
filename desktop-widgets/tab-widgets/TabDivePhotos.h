@@ -13,7 +13,7 @@ class DivePictureModel;
 class TabDivePhotos : public TabBase {
 	Q_OBJECT
 public:
-	TabDivePhotos(QWidget *parent = 0);
+	TabDivePhotos(MainTab *parent);
 	~TabDivePhotos();
 	void updateData(const std::vector<dive *> &selection, dive *currentDive, int currentDC) override;
 	void clear() override;
