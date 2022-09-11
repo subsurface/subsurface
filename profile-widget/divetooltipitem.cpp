@@ -26,9 +26,10 @@ void ToolTipItem::addToolTip(const QString &toolTip, const QPixmap &pixmap)
 	const int sp2 = iconMetrics.spacing * 2;
 	iconItem->setPos(sp2, yValue);
 
-	QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(toolTip, this);
+	QGraphicsTextItem *textItem = new QGraphicsTextItem(this);
+	textItem->setHtml(toolTip);
 	textItem->setPos(sp2 + iconMetrics.sz_small + sp2, yValue);
-	textItem->setBrush(QBrush(Qt::white));
+	textItem->setDefaultTextColor(Qt::white);
 	textItem->setFlag(ItemIgnoresTransformations);
 	toolTips.push_back(qMakePair(iconItem, textItem));
 }
@@ -251,7 +252,7 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 		painter.setPen(QColor(0, 0, 0, 127));
 		for (int i = 0; i < 16; i++)
 			painter.drawLine(i, 60, i, 60 - entry->percentages[i] / 2);
-		entryToolTip.second->setText(QString::fromUtf8(mb.buffer, mb.len));
+		entryToolTip.second->setPlainText(QString::fromUtf8(mb.buffer, mb.len));
 	}
 	entryToolTip.first->setPixmap(tissues);
 
