@@ -170,7 +170,7 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 		name += ev->flags & SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
 								    ev->flags & SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
 	}
-	setToolTip(name);
+	setToolTip(QString("<img height=\"16\" src=\":status-warning-icon\">&nbsp;  ") + name);
 }
 
 void DiveEventItem::eventVisibilityChanged(const QString&, bool)
