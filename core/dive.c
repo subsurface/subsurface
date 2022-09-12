@@ -1240,11 +1240,11 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	/* Fix up gas switch events */
 	fixup_dc_gasswitch(dive, dc);
 
-	/* Fix up cylinder pressures based on DC info */
-	fixup_dive_pressures(dive, dc);
-
 	/* Fix up cylinder ids in pressure sensors */
 	fixup_dc_sample_sensors(dc, dive->cylinders.nr);
+
+	/* Fix up cylinder pressures based on DC info */
+	fixup_dive_pressures(dive, dc);
 
 	fixup_dc_events(dc);
 
