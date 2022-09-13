@@ -237,9 +237,22 @@ sudo apt install \
 	qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev
 
 Note that you'll need to increase the swap space as the default of 100MB
-doesn't seem to be enough.  If maps aren't working, copy the googlemaps plugin
+doesn't seem to be enough.  1024MB worked on a 3B+.
+
+If maps aren't working, copy the googlemaps plugin
 from <build_dir>/subsurface/googlemaps/build/libqtgeoservices_googlemaps.so
 to /usr/lib/aarch64-linux-gnu/qt5/plugins/geoservices.
+
+If Subsurface can't seem to see your dive computer on /dev/ttyUSB0, even after
+adjusting your account's group settings (see note below about usermod), it
+might be that the FTDI driver doesn't recognize the VendorID/ProductID of your
+computer.  Follow the instructions here:
+
+https://www.ftdichip.com/Support/Documents/TechnicalNotes/TN_101_Customising_FTDI_VID_PID_In_Linux(FT_000081).pdf 
+
+If you're unsure of the VID/PID of your device, plug your dive computer in to
+your host and run `dmesg`.  That should show the codes that are needed to
+follow TN_101.
 
 On PCLinuxOS you appear to need the following packages
 
