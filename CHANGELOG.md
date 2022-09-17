@@ -1,3 +1,4 @@
+mobile: implement paging through dive computers
 desktop: remove divesite list from tab-widgets
 infobox: show an icon for warnings
 import: allow import of divesites without UUID
