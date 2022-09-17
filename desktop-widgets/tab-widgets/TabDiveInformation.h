@@ -41,7 +41,7 @@ private:
 	int pressTypeIndex;
 	void updateWaterTypeWidget();
 	void updateTextBox(int event);
-	void updateMode(struct dive *d);
+	void updateMode();
 	void divesEdited(int);
 	void closeWarning();
 	void showCurrentWidget(bool show, int position);

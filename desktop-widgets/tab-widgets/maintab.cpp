@@ -26,6 +26,7 @@ static bool paletteIsDark(const QPalette &p)
 }
 
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
+	currentDive(nullptr),
 	lastSelectedDive(true),
 	lastTabSelectedDive(0),
 	lastTabSelectedDiveTrip(0)
@@ -73,11 +74,16 @@ void MainTab::nextInputField(QKeyEvent *event)
 void MainTab::settingsChanged()
 {
 	// TODO: remember these
-	updateDiveInfo(getDiveSelection(), current_dive, dc_number);
+	updateDiveInfo(getDiveSelection(), currentDive, currentDC);
 }
 
-void MainTab::updateDiveInfo(const std::vector<dive *> &selection, dive *currentDive, int currentDC)
+void MainTab::updateDiveInfo(const std::vector<dive *> &selection, dive *currentDiveIn, int currentDCIn)
 {
+	// Remember current dive and divecomputer. This is needed to refresh the
+	// display, for example when the settings change.
+	currentDive = currentDiveIn;
+	currentDC = currentDCIn;
+
 	// don't execute this while planning a dive
 	if (DivePlannerPointsModel::instance()->isPlanner())
 		return;
@@ -171,4 +177,16 @@ void MainTab::colorsChanged()
 	// finally call the individual updateUi() functions so they can overwrite these style sheets
 	for (TabBase *widget: extraWidgets)
 		widget->updateUi(colorText);
+}
+
+// Called when dives changed. Checks whether the currently displayed
+// dive is affected by the change.
+bool MainTab::includesCurrentDive(const QVector<dive *> &dives) const
+{
+	return currentDive && dives.contains(currentDive);
+}
+
+divecomputer *MainTab::getCurrentDC() const
+{
+	return get_dive_dc(currentDive, currentDC);
 }

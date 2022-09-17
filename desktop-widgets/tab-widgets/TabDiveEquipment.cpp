@@ -114,12 +114,11 @@ TabDiveEquipment::~TabDiveEquipment()
 // Refresh the corresponding UI field.
 void TabDiveEquipment::divesChanged(const QVector<dive *> &dives, DiveField field)
 {
-	// If the current dive is not in list of changed dives, do nothing
-	if (!current_dive || !dives.contains(current_dive))
+	if (!parent.includesCurrentDive(dives))
 		return;
 
 	if (field.suit)
-		ui.suit->setText(QString(current_dive->suit));
+		ui.suit->setText(QString(parent.currentDive->suit));
 }
 
 void TabDiveEquipment::toggleTriggeredColumn()
@@ -209,7 +208,7 @@ void TabDiveEquipment::divesEdited(int i)
 
 void TabDiveEquipment::on_suit_editingFinished()
 {
-	if (!current_dive)
+	if (!parent.currentDive)
 		return;
 	divesEdited(Command::editSuit(ui.suit->text(), false));
 }

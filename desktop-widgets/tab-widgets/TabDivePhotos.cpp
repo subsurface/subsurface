@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDivePhotos.h"
+#include "maintab.h"
 #include "ui_TabDivePhotos.h"
 #include "core/imagedownloader.h"
 
@@ -113,7 +114,7 @@ void TabDivePhotos::recalculateSelectedThumbnails()
 
 void TabDivePhotos::saveSubtitles()
 {
-	if (!current_dive)
+	if (!parent.currentDive)
 		return;
 	if (!ui->photosView->selectionModel()->hasSelection())
 		return;
@@ -131,7 +132,7 @@ void TabDivePhotos::saveSubtitles()
 				if (!duration)
 					continue;
 				struct membufferpp b;
-				save_subtitles_buffer(&b, current_dive, offset, duration);
+				save_subtitles_buffer(&b, parent.currentDive, offset, duration);
 				const char *data = mb_cstring(&b);
 				subtitlefile.open(QIODevice::WriteOnly);
 				subtitlefile.write(data, strlen(data));

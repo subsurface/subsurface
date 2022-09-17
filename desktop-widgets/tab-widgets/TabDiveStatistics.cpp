@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveStatistics.h"
+#include "maintab.h"
 #include "ui_TabDiveStatistics.h"
 
 #include "core/qthelper.h"
@@ -29,9 +30,8 @@ TabDiveStatistics::TabDiveStatistics(MainTab *parent) : TabBase(parent), ui(new 
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &TabDiveStatistics::cylinderChanged);
 
 	const auto l = findChildren<QLabel *>(QString(), Qt::FindDirectChildrenOnly);
-	for (QLabel *label: l) {
+	for (QLabel *label: l)
 		label->setAlignment(Qt::AlignHCenter);
-	}
 }
 
 TabDiveStatistics::~TabDiveStatistics()
@@ -59,7 +59,7 @@ void TabDiveStatistics::divesChanged(const QVector<dive *> &dives, DiveField fie
 
 	// TODO: make this more fine grained. Currently, the core can only calculate *all* statistics.
 	if (field.duration || field.depth || field.mode || field.air_temp || field.water_temp)
-		updateData(getDiveSelection(), current_dive, dc_number); // TODO: remember these data
+		updateData(getDiveSelection(), parent.currentDive, parent.currentDC); // TODO: remember dive selection
 }
 
 void TabDiveStatistics::cylinderChanged(dive *d)
@@ -67,7 +67,7 @@ void TabDiveStatistics::cylinderChanged(dive *d)
 	// If the changed dive is not selected, do nothing
 	if (!d->selected)
 		return;
-	updateData(getDiveSelection(), current_dive, dc_number); // TODO: remember these data
+	updateData(getDiveSelection(), parent.currentDive, parent.currentDC); // TODO: remember dive selection
 }
 
 void TabDiveStatistics::updateData(const std::vector<dive *> &, dive *currentDive, int)
