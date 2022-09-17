@@ -75,7 +75,6 @@ public:
 	void enterPreviousState();
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
-	void enableDisableOtherDCsActions();
 	void editDiveSite(dive_site *ds);
 	void setEnabledToolbar(bool arg1);
 

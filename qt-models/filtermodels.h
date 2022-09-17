@@ -18,7 +18,7 @@ public:
 
 	void resetModel(DiveTripModelBase::Layout layout);
 signals:
-	void divesSelected(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC);
+	void divesSelected(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC); // currentDC < 0 -> keep DC.
 	void tripSelected(QModelIndex trip, QModelIndex currentDive);
 private slots:
 	void divesSelectedSlot(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC);

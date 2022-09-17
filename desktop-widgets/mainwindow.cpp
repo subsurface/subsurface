@@ -300,14 +300,6 @@ void MainWindow::enableDisableCloudActions()
 	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED);
 }
 
-void MainWindow::enableDisableOtherDCsActions()
-{
-	bool nr = number_of_computers(current_dive) > 1;
-	enableShortcuts();
-	ui.actionNextDC->setEnabled(nr);
-	ui.actionPreviousDC->setEnabled(nr);
-}
-
 void MainWindow::setDefaultState()
 {
 	setApplicationState(ApplicationState::Default);
@@ -333,10 +325,19 @@ void MainWindow::updateAutogroup()
 
 void MainWindow::divesSelected(const std::vector<dive *> &selection, dive *currentDive, int currentDC)
 {
-	mainTab->updateDiveInfo(selection, currentDive, currentDC);
-	if (currentDive)
-		enableDisableOtherDCsActions();
-	profile->plotCurrentDive();
+	// We call plotDive first, so that the profile can decide which
+	// dive computer to plot. The plotted dive computer is then
+	// used for displaying data in the tab-widgets.
+	profile->plotDive(currentDive, currentDC);
+	mainTab->updateDiveInfo(selection, profile->d, profile->dc);
+
+	// Activate cursor keys to switch through DCs if there are more than one DC.
+	if (currentDive) {
+		bool nr = number_of_computers(current_dive) > 1;
+		enableShortcuts();
+		ui.actionNextDC->setEnabled(nr);
+		ui.actionPreviousDC->setEnabled(nr);
+	}
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -665,8 +666,8 @@ void MainWindow::on_actionReplanDive_triggered()
 
 	disableShortcuts(true);
 	copy_dive(current_dive, &displayed_dive); // Planning works on a copy of the dive (for now).
-	profile->setPlanState(&displayed_dive, dc_number);
-	plannerWidgets->replanDive(dc_number);
+	profile->setPlanState(&displayed_dive, profile->dc);
+	plannerWidgets->replanDive(profile->dc);
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
@@ -825,20 +826,16 @@ void MainWindow::restoreSplitterSizes()
 
 void MainWindow::on_actionPreviousDC_triggered()
 {
-	unsigned nrdc = number_of_computers(current_dive);
-	dc_number = (dc_number + nrdc - 1) % nrdc;
-	profile->plotCurrentDive();
+	profile->prevDC();
 	// TODO: remove
-	mainTab->updateDiveInfo(getDiveSelection(), current_dive, dc_number);
+	mainTab->updateDiveInfo(getDiveSelection(), profile->d, profile->dc);
 }
 
 void MainWindow::on_actionNextDC_triggered()
 {
-	unsigned nrdc = number_of_computers(current_dive);
-	dc_number = (dc_number + 1) % nrdc;
-	profile->plotCurrentDive();
+	profile->nextDC();
 	// TODO: remove
-	mainTab->updateDiveInfo(getDiveSelection(), current_dive, dc_number);
+	mainTab->updateDiveInfo(getDiveSelection(), profile->d, profile->dc);
 }
 
 void MainWindow::on_actionFullScreen_triggered(bool checked)
