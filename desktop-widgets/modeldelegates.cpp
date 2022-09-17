@@ -250,27 +250,24 @@ void TankInfoDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHin
 		mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, CylindersModel::COMMIT_ROLE);
 }
 
-TankUseDelegate::TankUseDelegate(QObject *parent) : QStyledItemDelegate(parent)
+TankUseDelegate::TankUseDelegate(QObject *parent) : QStyledItemDelegate(parent), currentdc(nullptr)
 {
+}
+
+void TankUseDelegate::setCurrentDC(divecomputer *dc)
+{
+	currentdc = dc;
 }
 
 QWidget *TankUseDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &) const
 {
-	struct divecomputer *currentDc;
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
-		currentDc = &displayed_dive.dc;
-	} else {
-		currentDc = get_dive_dc(current_dive, dc_number);
-	}
 	QComboBox *comboBox = new QComboBox(parent);
-	if (!currentDc) {
+	if (!currentdc)
 		return comboBox;
-	}
-	bool isCcrDive = currentDc->divemode == CCR;
+	bool isCcrDive = currentdc->divemode == CCR;
 	for (int i = 0; i < NUM_GAS_USE; i++) {
-		if (isCcrDive || (i != DILUENT && i != OXYGEN)) {
+		if (isCcrDive || (i != DILUENT && i != OXYGEN))
 			comboBox->addItem(gettextFromC::tr(cylinderuse_text[i]));
-		}
 	}
 	return comboBox;
 }
@@ -288,16 +285,23 @@ void TankUseDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, c
 	model->setData(index, cylinderuse_from_text(qPrintable(comboBox->currentText())));
 }
 
-
-SensorDelegate::SensorDelegate(QObject *parent) : QStyledItemDelegate(parent)
+SensorDelegate::SensorDelegate(QObject *parent) : QStyledItemDelegate(parent), currentdc(nullptr)
 {
+}
+
+void SensorDelegate::setCurrentDC(divecomputer *dc)
+{
+	currentdc = dc;
 }
 
 QWidget *SensorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
 	QComboBox *comboBox = new QComboBox(parent);
+
+	if (!currentdc)
+		return comboBox;
+
 	std::vector<int16_t> sensors;
-	const struct divecomputer *currentdc = get_dive_dc(current_dive, dc_number);
 	for (int i = 0; i < currentdc->samples; ++i) {
 		auto &sample = currentdc->sample[i];
 		for (int s = 0; s < MAX_SENSORS; ++s) {

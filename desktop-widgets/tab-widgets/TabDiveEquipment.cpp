@@ -138,8 +138,12 @@ void TabDiveEquipment::toggleTriggeredColumn()
 
 void TabDiveEquipment::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
 {
+	divecomputer *dc = get_dive_dc(currentDive, currentDC);
+
 	cylindersModel->updateDive(currentDive, currentDC);
 	weightModel->updateDive(currentDive);
+	sensorDelegate.setCurrentDC(dc);
+	tankUseDelegate.setCurrentDC(dc);
 
 	if (currentDive && currentDive->suit)
 		ui.suit->setText(QString(currentDive->suit));

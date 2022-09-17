@@ -6,7 +6,9 @@
 
 #include <QStyledItemDelegate>
 #include <QComboBox>
+
 class QPainter;
+struct divecomputer;
 
 class DiveListDelegate : public QStyledItemDelegate {
 public:
@@ -73,19 +75,23 @@ class TankUseDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit TankUseDelegate(QObject *parent = 0);
+	void setCurrentDC(divecomputer *dc);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+	divecomputer *currentdc;
 };
 
 class SensorDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit SensorDelegate(QObject *parent = 0);
+	void setCurrentDC(divecomputer *dc);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	divecomputer *currentdc;
 };
 
 class WSInfoDelegate : public ComboBoxDelegate {
