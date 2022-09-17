@@ -50,10 +50,10 @@ TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 	connect(cylindersModel, &CylindersModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 	connect(weightModel, &WeightModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 
-	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
-	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
-	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::SENSORS, new SensorDelegate(this));
-	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
+	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, &tankInfoDelegate);
+	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, &tankUseDelegate);
+	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::SENSORS, &sensorDelegate);
+	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, &wsInfoDelegate);
 	ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
 	ui.cylinders->view()->setColumnHidden(CylindersModel::WORKINGPRESS_INT, true);
 	ui.cylinders->view()->setColumnHidden(CylindersModel::SIZE_INT, true);
