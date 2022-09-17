@@ -1318,7 +1318,6 @@ void clear_dive_file_data()
 	current_dive = NULL;
 	clear_divelog(&divelog);
 
-	clear_dive(&displayed_dive);
 	clear_event_names();
 
 	reset_min_datafile_version();
