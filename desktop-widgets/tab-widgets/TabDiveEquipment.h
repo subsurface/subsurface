@@ -6,6 +6,7 @@
 #include "ui_TabDiveEquipment.h"
 #include "qt-models/completionmodels.h"
 #include "desktop-widgets/divelistview.h"
+#include "desktop-widgets/modeldelegates.h"
 
 namespace Ui {
 	class TabDiveEquipment;
@@ -38,6 +39,11 @@ private:
 	SuitCompletionModel suitModel;
 	CylindersModel *cylindersModel;
 	WeightModel *weightModel;
+
+	TankInfoDelegate tankInfoDelegate;
+	TankUseDelegate tankUseDelegate;
+	SensorDelegate sensorDelegate;
+	WSInfoDelegate wsInfoDelegate;
 };
 
 #endif // TAB_DIVE_EQUIPMENT_H
