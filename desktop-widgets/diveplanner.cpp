@@ -51,7 +51,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 	view->setColumnHidden(CylindersModel::SIZE_INT, true);
 	view->setColumnHidden(CylindersModel::SENSORS, true);
 	view->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
-	view->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
+	auto tankUseDelegate = new TankUseDelegate(this);
+	tankUseDelegate->setCurrentDC(get_dive_dc(&displayed_dive, 0));
+	view->setItemDelegateForColumn(CylindersModel::USE, tankUseDelegate);
 	connect(ui.cylinderTableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addCylinder_clicked);
 	connect(ui.tableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addDefaultStop);
 	connect(cylinders, &CylindersModel::dataChanged, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
@@ -543,7 +545,7 @@ PlannerWidgets::PlannerWidgets()
 		&plannerDetails, &PlannerDetails::setPlanNotes);
 }
 
-void PlannerWidgets::planDive()
+void PlannerWidgets::planDive(dive *currentDive)
 {
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	dc_number = 0;
@@ -552,11 +554,11 @@ void PlannerWidgets::planDive()
 	DivePlannerPointsModel::instance()->createSimpleDive(&displayed_dive);
 
 	// plan the dive in the same mode as the currently selected one
-	if (current_dive) {
-		plannerSettingsWidget.setDiveMode(current_dive->dc.divemode);
-		plannerSettingsWidget.setBailoutVisibility(current_dive->dc.divemode);
-		if (current_dive->salinity)
-			plannerWidget.setSalinity(current_dive->salinity);
+	if (currentDive) {
+		plannerSettingsWidget.setDiveMode(currentDive->dc.divemode);
+		plannerSettingsWidget.setBailoutVisibility(currentDive->dc.divemode);
+		if (currentDive->salinity)
+			plannerWidget.setSalinity(currentDive->salinity);
 		else	// No salinity means salt water
 			plannerWidget.setSalinity(SEAWATER_SALINITY);
 	}
@@ -565,13 +567,10 @@ void PlannerWidgets::planDive()
 	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));	// This will reload the profile!
 }
 
-void PlannerWidgets::replanDive()
+void PlannerWidgets::replanDive(int currentDC)
 {
-	if (!current_dive)
-		return;
-	copy_dive(current_dive, &displayed_dive); // Planning works on a copy of the dive (for now).
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive, dc_number);
+	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive, currentDC);
 
 	plannerWidget.setReplanButton(true);
 	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));
@@ -580,7 +579,7 @@ void PlannerWidgets::replanDive()
 	if (displayed_dive.salinity)
 		plannerWidget.setSalinity(displayed_dive.salinity);
 	reset_cylinders(&displayed_dive, true);
-	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(&displayed_dive, dc_number);
+	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(&displayed_dive, currentDC);
 }
 
 void PlannerWidgets::printDecoPlan()

@@ -9,6 +9,7 @@
 class QListView;
 class QModelIndex;
 class DivePlannerPointsModel;
+struct dive;
 
 #include "ui_diveplanner.h"
 
@@ -75,8 +76,8 @@ class PlannerWidgets : public QObject {
 	Q_OBJECT
 public:
 	PlannerWidgets();
-	void planDive();
-	void replanDive();
+	void planDive(dive *currentDive);
+	void replanDive(int currentDC);
 public
 slots:
 	void printDecoPlan();
