@@ -7,7 +7,6 @@
 struct dive;
 
 extern int amount_selected;
-extern unsigned int dc_number;
 extern struct dive *current_dive;
 
 /*** C and C++ functions ***/
@@ -45,7 +44,7 @@ extern void dump_selection(void);
 // "currentDive" must be an element of "selection" (or null if "seletion" is empty).
 // If "currentDc" is negative, an attempt will be made to keep the current computer number.
 // Returns the list of selected dives
-QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *currentDive, int currentDc);
+QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *currentDive);
 
 // As above, but sends a signal to inform the frontend of the changed selection.
 // Returns true if the current dive changed.

@@ -10,19 +10,8 @@
 #include <QVector>
 
 struct dive *current_dive = NULL;
-unsigned int dc_number = 0;
 int amount_selected;
 static int amount_trips_selected;
-
-static void fixup_current_dc()
-{
-	// Every dive is guaranteed to have a dc
-	if (!current_dive || dc_number == 0)
-		return;
-
-	// Note that number_of_computers returns at least 1, so subtraction is valid.
-	dc_number = std::min(dc_number, number_of_computers(current_dive) - 1);
-}
 
 extern "C" struct dive *first_selected_dive()
 {
@@ -139,7 +128,7 @@ static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &s
 // Set the current dive to "currentDive". "currentDive" must be an element of "selection" (or
 // null if "selection" is empty).
 // Does not send signals or clear the trip selection.
-QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *currentDive, int currentDc)
+QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *currentDive)
 {
 	// To do so, generate vectors of dives to be selected and deselected.
 	// We send signals batched by trip, so keep track of trip/dive pairs.
@@ -177,9 +166,6 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 		setClosestCurrentDive(currentDive->when, selection, divesToSelect);
 	}
 
-	if (currentDc >= 0)
-		dc_number = currentDc;
-	fixup_current_dc();
 	return divesToSelect;
 }
 
@@ -199,7 +185,7 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive, int c
 	// Since we select only dives, there are no selected trips!
 	clear_trip_selection();
 
-	auto selectedDives = setSelectionCore(selection, currentDive, currentDc);
+	auto selectedDives = setSelectionCore(selection, currentDive);
 
 	// Send the new selection to the UI.
 	emit diveListNotifier.divesSelected(selectedDives, current_dive, currentDc);
@@ -219,7 +205,7 @@ bool setSelectionKeepCurrent(const std::vector<dive *> &selection)
 	dive *newCurrent = current_dive;
 	if (current_dive && std::find(selection.begin(), selection.end(), current_dive) == selection.end())
 		newCurrent = closestInSelection(current_dive->when, selection);
-	setSelectionCore(selection, newCurrent, -1);
+	setSelectionCore(selection, newCurrent);
 
 	return current_dive != oldCurrent;
 }

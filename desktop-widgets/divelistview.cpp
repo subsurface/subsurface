@@ -527,7 +527,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 	std::vector<dive *> selection = getDiveSelection();
 	updateSelection(selection, addToSelection, removeFromSelection);
 	dive *newCurrent = selection.empty() ? nullptr : selection.front();
-	setSelectionCore(selection, newCurrent, -1);
+	setSelectionCore(selection, newCurrent);
 
 	// Display the new, processed, selection
 	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);

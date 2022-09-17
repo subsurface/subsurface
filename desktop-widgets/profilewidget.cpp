@@ -52,7 +52,7 @@ void EmptyView::resizeEvent(QResizeEvent *)
 	update();
 }
 
-ProfileWidget::ProfileWidget() : originalDive(nullptr), placingCommand(false)
+ProfileWidget::ProfileWidget() : d(nullptr), dc(0), originalDive(nullptr), placingCommand(false)
 {
 	ui.setupUi(this);
 
@@ -183,32 +183,70 @@ void ProfileWidget::setDive(const struct dive *d)
 
 void ProfileWidget::plotCurrentDive()
 {
+	plotDive(d, dc);
+}
+
+void ProfileWidget::plotDive(dive *dIn, int dcIn)
+{
+	d = dIn;
+
+	if (dcIn >= 0)
+		dc = dcIn;
+
+	// The following is valid because number_of_computers is always at least 1.
+	if (d)
+		dc = std::min(dc, (int)number_of_computers(current_dive) - 1);
+
 	// Exit edit mode if the dive changed
-	if (editedDive && (originalDive != current_dive || editedDc != dc_number))
+	if (editedDive && (originalDive != d || editedDc != dc))
 		exitEditMode();
 
 	// If this is a manually added dive and we are not in the planner
 	// or already editing the dive, switch to edit mode.
-	if (current_dive && !editedDive &&
+	if (d && !editedDive &&
 	    DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING) {
-		struct divecomputer *dc = get_dive_dc(current_dive, dc_number);
-		if (dc && is_manually_added_dc(dc) && dc->samples)
+		struct divecomputer *comp = get_dive_dc(d, dc);
+		if (comp && is_manually_added_dc(comp) && comp->samples)
 			editDive();
 	}
 
-	setEnabledToolbar(current_dive != nullptr);
+	setEnabledToolbar(d != nullptr);
 	if (editedDive) {
 		view->plotDive(editedDive.get(), editedDc);
 		setDive(editedDive.get());
-	} else if (current_dive) {
-		view->setProfileState(current_dive, dc_number);
+	} else if (d) {
+		view->setProfileState(d, dc);
 		view->resetZoom(); // when switching dive, reset the zoomLevel
-		view->plotDive(current_dive, dc_number);
-		setDive(current_dive);
+		view->plotDive(d, dc);
+		setDive(d);
 	} else {
 		view->clear();
 		stack->setCurrentIndex(0);
 	}
+}
+
+void ProfileWidget::nextDC()
+{
+	rotateDC(1);
+}
+
+void ProfileWidget::prevDC()
+{
+	rotateDC(-1);
+}
+
+void ProfileWidget::rotateDC(int dir)
+{
+	if (!d)
+		return;
+	int numDC = number_of_computers(d);
+	int newDC = (dc + dir) % numDC;
+	if (newDC < 0)
+		newDC += numDC;
+	if (newDC == dc)
+		return;
+
+	plotDive(d, newDC);
 }
 
 void ProfileWidget::divesChanged(const QVector<dive *> &dives, DiveField field)
@@ -218,13 +256,13 @@ void ProfileWidget::divesChanged(const QVector<dive *> &dives, DiveField field)
 	// Also, if we are currently placing a command, don't do anything.
 	// Note that we cannot use Command::placingCommand(), because placing
 	// a depth or time change on the maintab requires an update.
-	if (!current_dive || !dives.contains(current_dive) || !(field.duration || field.depth) || placingCommand)
+	if (!d || !dives.contains(d) || !(field.duration || field.depth) || placingCommand)
 		return;
 
 	// If were editing the current dive and not currently
 	// placing command, we have to update the edited dive.
 	if (editedDive) {
-		copy_dive(current_dive, editedDive.get());
+		copy_dive(d, editedDive.get());
 		// TODO: Holy moly that function sends too many signals. Fix it!
 		DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), editedDc);
 	}
@@ -254,9 +292,9 @@ void ProfileWidget::unsetProfTissues()
 void ProfileWidget::editDive()
 {
 	editedDive.reset(alloc_dive());
-	editedDc = dc_number;
-	copy_dive(current_dive, editedDive.get()); // Work on a copy of the dive
-	originalDive = current_dive;
+	editedDc = dc;
+	copy_dive(d, editedDive.get()); // Work on a copy of the dive
+	originalDive = d;
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), editedDc);
 	view->setEditState(editedDive.get(), editedDc);
@@ -267,7 +305,7 @@ void ProfileWidget::exitEditMode()
 	if (!editedDive)
 		return;
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-	view->setProfileState(current_dive, dc_number); // switch back to original dive before erasing the copy.
+	view->setProfileState(d, dc); // switch back to original dive before erasing the copy.
 	editedDive.reset();
 	originalDive = nullptr;
 }

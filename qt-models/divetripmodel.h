@@ -79,12 +79,14 @@ protected slots:
 signals:
 	// The propagation of selection changes is complex.
 	// The control flow of programmatical dive-selection goes:
-	// Commands/DiveListNotifier ---(dive */dive_trip *)---> DiveTripModel ---(QModelIndex)---> DiveListView
+	// Commands/DiveListNotifier ---(dive */dive_trip *)---> DiveTripModel
+	//			     ---(QModelIndex)---> MultiFilterSortModel
+	//			     ---(QModelIndex)---> DiveListView
 	// i.e. The command objects send changes in terms of pointer-to-dives, which the DiveTripModel transforms
-	// into QModelIndexes according to the current view (tree/list). Finally, the DiveListView transforms these
-	// indices into local indices according to current sorting/filtering and instructs the QSelectionModel to
+	// into QModelIndexes according to the current view (tree/list). These are modified according to current
+	// filtering/sorting. Finally, the DiveListView instructs the QSelectionModel to
 	// perform the appropriate actions.
-	void divesSelected(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC);
+	void divesSelected(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC); // currentDC < 0 -> keep DC.
 	void tripSelected(QModelIndex trip, QModelIndex currentDive);
 protected:
 	dive *oldCurrent;
