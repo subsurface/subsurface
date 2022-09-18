@@ -146,6 +146,4 @@ private:
 	Q_DISABLE_COPY(TextHyperlinkEventFilter)
 };
 
-bool isGnome3Session();
-
 #endif // SIMPLEWIDGETS_H

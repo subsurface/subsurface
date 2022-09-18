@@ -127,15 +127,6 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	currCombo.model = const_cast<QAbstractItemModel *>(index.model());
 	currCombo.activeText = currCombo.model->data(index).toString();
 
-	// Current display of things on Gnome3 looks like shit, so
-	// let's fix that.
-	if (isGnome3Session()) {
-		QPalette p;
-		p.setColor(QPalette::Window, QColor(Qt::white));
-		p.setColor(QPalette::Base, QColor(Qt::white));
-		comboDelegate->lineEdit()->setPalette(p);
-		comboDelegate->setPalette(p);
-	}
 	return comboDelegate;
 }
 

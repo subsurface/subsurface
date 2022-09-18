@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveEquipment.h"
 #include "maintab.h"
-#include "desktop-widgets/simplewidgets.h" // For isGnome3Session()
 #include "desktop-widgets/modeldelegates.h"
 #include "core/dive.h"
 #include "core/selection.h"
@@ -50,14 +49,6 @@ TabDiveEquipment::TabDiveEquipment(QWidget *parent) : TabBase(parent),
 	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
 	connect(cylindersModel, &CylindersModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 	connect(weightModel, &WeightModel::divesEdited, this, &TabDiveEquipment::divesEdited);
-
-	// Current display of things on Gnome3 looks like shit, so
-	// let's fix that.
-	if (isGnome3Session()) {
-		QPalette p;
-		p.setColor(QPalette::Window, QColor(Qt::white));
-		ui.scrollArea->viewport()->setPalette(p);
-	}
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
