@@ -28,6 +28,7 @@ class QSortFilterProxyModel;
 class DiveTripModel;
 class QItemSelection;
 class DiveListView;
+class DiveSiteListView;
 class MainTab;
 class MapWidget;
 class QWebView;
@@ -59,6 +60,7 @@ public:
 		EditDiveSite,
 		FilterDive,
 		Statistics,
+		DiveSites,
 		MapMaximized,
 		ProfileMaximized,
 		ListMaximized,
@@ -79,6 +81,7 @@ public:
 	std::unique_ptr<MainTab> mainTab;
 	std::unique_ptr<PlannerWidgets> plannerWidgets;
 	std::unique_ptr<StatsWidget> statistics;
+	std::unique_ptr<DiveSiteListView> diveSites;
 	std::unique_ptr<DiveListView> diveList;
 	std::unique_ptr<ProfileWidget> profile;
 	std::unique_ptr<MapWidget> mapWidget;
@@ -112,6 +115,7 @@ slots:
 	void on_actionViewProfile_triggered();
 	void on_actionViewInfo_triggered();
 	void on_actionViewMap_triggered();
+	void on_actionViewDiveSites_triggered();
 	void on_actionViewAll_triggered();
 	void on_actionPreviousDC_triggered();
 	void on_actionNextDC_triggered();

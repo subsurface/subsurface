@@ -1,20 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0
-#ifndef TAB_DIVE_SITE_H
-#define TAB_DIVE_SITE_H
+#ifndef DIVE_SITE_LIST_VIEW_H
+#define DIVE_SITE_LIST_VIEW_H
 
-#include "TabBase.h"
-#include "ui_TabDiveSite.h"
+#include "ui_divesitelistview.h"
 
 class DiveSiteSortedModel;
 
-class TabDiveSite : public TabBase {
+class DiveSiteListView : public QWidget {
 	Q_OBJECT
 public:
-	TabDiveSite(QWidget *parent = 0);
-	void updateData() override;
-	void clear() override;
+	DiveSiteListView(QWidget *parent = 0);
 private slots:
 	void add();
+	void done();
 	void diveSiteAdded(struct dive_site *, int idx);
 	void diveSiteChanged(struct dive_site *ds, int field);
 	void diveSiteClicked(const QModelIndex &);
@@ -22,7 +20,7 @@ private slots:
 	void on_filterText_textChanged(const QString &text);
 	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 private:
-	Ui::TabDiveSite ui;
+	Ui::DiveSiteListView ui;
 	DiveSiteSortedModel *model;
 	QVector<dive_site *> selectedDiveSites();
 	void hideEvent(QHideEvent *) override;

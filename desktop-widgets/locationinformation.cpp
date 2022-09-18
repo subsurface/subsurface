@@ -246,7 +246,6 @@ void LocationInformationWidget::initFields(dive_site *ds)
 	}
 }
 
-
 void LocationInformationWidget::on_GPSbutton_clicked()
 {
 	QFileInfo finfo(system_default_directory());

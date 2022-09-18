@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TabDiveSite</class>
- <widget class="QWidget" name="TabDiveSite">
+ <class>DiveSiteListView</class>
+ <widget class="QWidget" name="DiveSiteListView">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,6 +14,16 @@
    <string>Dive sites</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item row="0" column="0" colspan="5">
+    <widget class="KMessageWidget" name="diveSiteMessage">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="layout">
      <item>

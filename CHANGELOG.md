@@ -1,3 +1,4 @@
+desktop: remove divesite list from tab-widgets
 infobox: show an icon for warnings
 import: allow import of divesites without UUID
 profile: implement panning of the profile
