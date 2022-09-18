@@ -72,6 +72,7 @@ public:
 	void importFiles(const QStringList importFiles);
 	void setToolButtonsEnabled(bool enabled);
 	void setApplicationState(ApplicationState state);
+	void enterPreviousState();
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
 	void enableDisableOtherDCsActions();
@@ -162,6 +163,7 @@ slots:
 
 private:
 	ApplicationState appState;
+	std::vector<ApplicationState> state_stack;
 	Ui::MainWindow ui;
 	FilterWidget filterWidget;
 	std::unique_ptr<QSplitter> topSplitter;

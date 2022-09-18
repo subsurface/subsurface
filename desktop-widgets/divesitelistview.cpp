@@ -48,7 +48,7 @@ DiveSiteListView::DiveSiteListView(QWidget *parent) : QWidget(parent)
 
 void DiveSiteListView::done()
 {
-	MainWindow::instance()->setApplicationState(MainWindow::ApplicationState::Default);
+	MainWindow::instance()->enterPreviousState();
 }
 
 void DiveSiteListView::diveSiteClicked(const QModelIndex &index)

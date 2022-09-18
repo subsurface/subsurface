@@ -282,6 +282,7 @@ void MainWindow::editDiveSite(dive_site *ds)
 	if (!ds)
 		return;
 	diveSiteEdit->initFields(ds);
+	state_stack.push_back(appState);
 	setApplicationState(ApplicationState::EditDiveSite);
 }
 
@@ -765,6 +766,7 @@ void MainWindow::on_actionViewDiveSites_triggered()
 {
 	if (!userMayChangeAppState())
 		return;
+	state_stack.push_back(appState);
 	setApplicationState(ApplicationState::DiveSites);
 }
 
@@ -1470,6 +1472,17 @@ void MainWindow::setQuadrantWidgets(QSplitter &splitter, const Quadrant &left, c
 bool MainWindow::userMayChangeAppState() const
 {
 	return applicationState[(int)appState].allowUserChange;
+}
+
+// For the dive-site list view and the dive-site edit states,
+// we remember the previous state and then switch back to that.
+void MainWindow::enterPreviousState()
+{
+	if (state_stack.empty())
+		setApplicationState(ApplicationState::Default);
+	ApplicationState prev = state_stack.back();
+	state_stack.pop_back();
+	setApplicationState(prev);
 }
 
 void MainWindow::setApplicationState(ApplicationState state)
