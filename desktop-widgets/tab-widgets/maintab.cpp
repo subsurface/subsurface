@@ -107,11 +107,11 @@ void MainTab::updateDiveInfo()
 	if (DivePlannerPointsModel::instance()->isPlanner())
 		return;
 
-	// If there is no current dive, disable all widgets except the last two,
-	// which are the dive site tab and the dive computer tabs.
-	// TODO: Conceptually, these two shouldn't even be a tabs here!
+	// If there is no current dive, disable all widgets except the last one,
+	// which is the dive site tab
+	// TODO: Conceptually, this shouldn't even be a tab here!
 	bool enabled = current_dive != nullptr;
-	for (int i = 0; i < extraWidgets.size() - 2; ++i)
+	for (int i = 0; i < extraWidgets.size() - 1; ++i)
 		extraWidgets[i]->setEnabled(enabled);
 
 	if (current_dive) {
