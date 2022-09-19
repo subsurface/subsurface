@@ -246,9 +246,7 @@ void ProfileWidget2::divesChanged(const QVector<dive *> &dives, DiveField field)
 {
 	// If the mode of the currently displayed dive changed, replot
 	if (field.mode &&
-	    std::any_of(dives.begin(), dives.end(),
-			[id = displayed_dive.id] (const dive *d)
-			{ return d->id == id; } ))
+	    std::find(dives.begin(), dives.end(), d) != dives.end())
 		replot();
 }
 
