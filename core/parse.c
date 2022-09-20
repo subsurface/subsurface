@@ -393,7 +393,7 @@ void ws_end(struct parser_state *state)
 /*
  * If the given cylinder doesn't exist, return NO_SENSOR.
  */
-static uint8_t sanitize_sensor_id(const struct dive *d, int nr)
+static int sanitize_sensor_id(const struct dive *d, int nr)
 {
 	return d && nr >= 0 && nr < d->cylinders.nr ? nr : NO_SENSOR;
 }
