@@ -39,8 +39,9 @@
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/divelogexportdialog.h"
 #include "desktop-widgets/divelogimportdialog.h"
-#include "desktop-widgets/divesiteimportdialog.h"
 #include "desktop-widgets/diveplanner.h"
+#include "desktop-widgets/divesiteimportdialog.h"
+#include "desktop-widgets/divesitelistview.h"
 #include "desktop-widgets/downloadfromdivecomputer.h"
 #include "desktop-widgets/findmovedimagesdialog.h"
 #include "desktop-widgets/locationinformation.h"
@@ -139,6 +140,7 @@ MainWindow::MainWindow() :
 #endif
 	plannerWidgets.reset(new PlannerWidgets);
 	statistics.reset(new StatsWidget);
+	diveSites.reset(new DiveSiteListView);
 	profile.reset(new ProfileWidget);
 
 	diveSiteEdit.reset(new LocationInformationWidget);
@@ -155,6 +157,8 @@ MainWindow::MainWindow() :
 								       { diveList.get(), FLAG_NONE }, { &filterWidget, FLAG_NONE } });
 	registerApplicationState(ApplicationState::Statistics, { true, { statistics.get(), FLAG_NONE }, { nullptr, FLAG_NONE },
 								       { diveList.get(), FLAG_DISABLED },   { &filterWidget, FLAG_NONE } });
+	registerApplicationState(ApplicationState::DiveSites, { false, { diveSites.get(), FLAG_NONE },  { profile.get(), FLAG_NONE },
+								       { diveList.get(), FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
 	registerApplicationState(ApplicationState::MapMaximized, { true, { nullptr, FLAG_NONE }, { nullptr, FLAG_NONE },
 									 { nullptr, FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
 	registerApplicationState(ApplicationState::ProfileMaximized, { true, { nullptr, FLAG_NONE }, { profile.get(), FLAG_NONE },
@@ -278,6 +282,7 @@ void MainWindow::editDiveSite(dive_site *ds)
 	if (!ds)
 		return;
 	diveSiteEdit->initFields(ds);
+	state_stack.push_back(appState);
 	setApplicationState(ApplicationState::EditDiveSite);
 }
 
@@ -755,6 +760,14 @@ void MainWindow::on_actionViewMap_triggered()
 	if (!userMayChangeAppState())
 		return;
 	setApplicationState(ApplicationState::MapMaximized);
+}
+
+void MainWindow::on_actionViewDiveSites_triggered()
+{
+	if (!userMayChangeAppState())
+		return;
+	state_stack.push_back(appState);
+	setApplicationState(ApplicationState::DiveSites);
 }
 
 void MainWindow::on_actionViewAll_triggered()
@@ -1461,6 +1474,17 @@ bool MainWindow::userMayChangeAppState() const
 	return applicationState[(int)appState].allowUserChange;
 }
 
+// For the dive-site list view and the dive-site edit states,
+// we remember the previous state and then switch back to that.
+void MainWindow::enterPreviousState()
+{
+	if (state_stack.empty())
+		setApplicationState(ApplicationState::Default);
+	ApplicationState prev = state_stack.back();
+	state_stack.pop_back();
+	setApplicationState(prev);
+}
+
 void MainWindow::setApplicationState(ApplicationState state)
 {
 	if (appState == state)
@@ -1508,6 +1532,7 @@ void MainWindow::setApplicationState(ApplicationState state)
 	ui.actionViewProfile->setEnabled(allowChange);
 	ui.actionViewInfo->setEnabled(allowChange);
 	ui.actionViewMap->setEnabled(allowChange);
+	ui.actionViewDiveSites->setEnabled(allowChange);
 	ui.actionFilterTags->setEnabled(allowChange);
 }
 

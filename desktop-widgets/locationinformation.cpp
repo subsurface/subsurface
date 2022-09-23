@@ -220,7 +220,7 @@ void LocationInformationWidget::acceptChanges()
 
 	MainWindow::instance()->diveList->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
-	MainWindow::instance()->setApplicationState(MainWindow::ApplicationState::Default);
+	MainWindow::instance()->enterPreviousState();
 	DiveFilter::instance()->stopFilterDiveSites();
 
 	// Subtlety alert: diveSite must be cleared *after* exiting the dive-site mode.
@@ -245,7 +245,6 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		clearLabels();
 	}
 }
-
 
 void LocationInformationWidget::on_GPSbutton_clicked()
 {

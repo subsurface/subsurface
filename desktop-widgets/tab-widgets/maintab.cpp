@@ -13,7 +13,6 @@
 #include "TabDiveNotes.h"
 #include "TabDivePhotos.h"
 #include "TabDiveStatistics.h"
-#include "TabDiveSite.h"
 
 #include "core/selection.h"
 #include "qt-models/diveplannermodel.h"
@@ -43,8 +42,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	addTab(extraWidgets.last(), tr("Media"));
 	extraWidgets << new TabDiveExtraInfo(this);
 	addTab(extraWidgets.last(), tr("Extra Info"));
-	extraWidgets << new TabDiveSite(this);
-	addTab(extraWidgets.last(), tr("Dive sites"));
 
 	// make sure we know if this is a light or dark mode
 	isDark = paletteIsDark(palette());
@@ -79,39 +76,30 @@ void MainTab::updateDiveInfo()
 	if (DivePlannerPointsModel::instance()->isPlanner())
 		return;
 
-	// If there is no current dive, disable all widgets except the last one,
-	// which is the dive site tab
-	// TODO: Conceptually, this shouldn't even be a tab here!
+	// If there is no current dive, disable all widgets.
 	bool enabled = current_dive != nullptr;
-	for (int i = 0; i < extraWidgets.size() - 1; ++i)
-		extraWidgets[i]->setEnabled(enabled);
+	for (TabBase *widget: extraWidgets)
+		widget->setEnabled(enabled);
 
 	if (current_dive) {
 		for (TabBase *widget: extraWidgets)
 			widget->updateData();
-
-		// If we're on the dive-site tab, we don't want to switch tab when entering / exiting
-		// trip mode. The reason is that
-		// 1) this disrupts the user-experience and
-		// 2) the filter is reset, potentially erasing the current trip under our feet.
-		// TODO: Don't hard code tab location!
-		bool onDiveSiteTab = currentIndex() == 6;
 		if (single_selected_trip()) {
 			// Remember the tab selected for last dive but only if we're not on the dive site tab
-			if (lastSelectedDive && !onDiveSiteTab)
+			if (lastSelectedDive)
 				lastTabSelectedDive = currentIndex();
 			setTabText(0, tr("Trip notes"));
 			// Recover the tab selected for last dive trip but only if we're not on the dive site tab
-			if (lastSelectedDive && !onDiveSiteTab)
+			if (lastSelectedDive)
 				setCurrentIndex(lastTabSelectedDiveTrip);
 			lastSelectedDive = false;
 		} else {
 			// Remember the tab selected for last dive trip but only if we're not on the dive site tab
-			if (!lastSelectedDive && !onDiveSiteTab)
+			if (!lastSelectedDive)
 				lastTabSelectedDiveTrip = currentIndex();
 			setTabText(0, tr("Notes"));
 			// Recover the tab selected for last dive but only if we're not on the dive site tab
-			if (!lastSelectedDive && !onDiveSiteTab)
+			if (!lastSelectedDive)
 				setCurrentIndex(lastTabSelectedDive);
 			lastSelectedDive = true;
 		}
