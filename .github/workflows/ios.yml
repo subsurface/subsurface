@@ -9,7 +9,7 @@ on:
 
 jobs:
   iOSBuild:
-    runs-on: macOS-10.15
+    runs-on: macOS-11
     steps:
     - name: switch to Xcode 11
       run: sudo xcode-select -s "/Applications/Xcode_11.7.app"
