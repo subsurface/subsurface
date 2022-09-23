@@ -16,7 +16,6 @@
 #include "TabDiveSite.h"
 
 #include "core/selection.h"
-#include "desktop-widgets/simplewidgets.h" // for isGnome3Session()
 #include "qt-models/diveplannermodel.h"
 
 #include <QShortcut>
@@ -63,33 +62,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	else
 		setDocumentMode(false);
 
-	// Current display of things on Gnome3 looks like shit, so
-	// let's fix that.
-	if (isGnome3Session()) {
-		// TODO: Either do this for all scroll areas or none
-		//QPalette p;
-		//p.setColor(QPalette::Window, QColor(Qt::white));
-		//ui.scrollArea->viewport()->setPalette(p);
-
-		// GroupBoxes in Gnome3 looks like I'v drawn them...
-		static const QString gnomeCss = QStringLiteral(
-			"QGroupBox {"
-				"background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-				"stop: 0 #E0E0E0, stop: 1 #FFFFFF);"
-				"border: 2px solid gray;"
-				"border-radius: 5px;"
-				"margin-top: 1ex;"
-			"}"
-			"QGroupBox::title {"
-				"subcontrol-origin: margin;"
-				"subcontrol-position: top center;"
-				"padding: 0 3px;"
-				"background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-				"stop: 0 #E0E0E0, stop: 1 #FFFFFF);"
-			"}");
-		for (QGroupBox *box: findChildren<QGroupBox *>())
-			box->setStyleSheet(gnomeCss);
-	}
 	// QLineEdit and QLabels should have minimal margin on the left and right but not waste vertical space
 	QMargins margins(3, 2, 1, 0);
 	for (QLabel *label: findChildren<QLabel *>())

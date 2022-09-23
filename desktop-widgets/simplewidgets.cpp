@@ -282,21 +282,6 @@ QString URLDialog::url() const
 	return ui.urlField->toPlainText();
 }
 
-bool isGnome3Session()
-{
-#if defined(QT_OS_WIW) || defined(QT_OS_MAC)
-	return false;
-#else
-	if (qApp->style()->objectName() != "gtk+")
-		return false;
-	QProcess p;
-	p.start("pidof", QStringList() << "gnome-shell");
-	p.waitForFinished(-1);
-	QString p_stdout = p.readAllStandardOutput();
-	return !p_stdout.isEmpty();
-#endif
-}
-
 #define COMPONENT_FROM_UI(_component) what->_component = ui._component->isChecked()
 #define UI_FROM_COMPONENT(_component) ui._component->setChecked(what->_component)
 
