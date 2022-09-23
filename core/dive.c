@@ -1210,16 +1210,40 @@ static void fixup_no_o2sensors(struct divecomputer *dc)
 	}
 }
 
-static void fixup_dc_sample_sensors(struct divecomputer *dc, int nr_cylinders)
+static void fixup_dc_sample_sensors(struct dive *dive, struct divecomputer *dc)
 {
+	unsigned long sensor_mask = 0;
+
 	for (int i = 0; i < dc->samples; i++) {
 		struct sample *s = dc->sample + i;
 		for (int j = 0; j < MAX_SENSORS; j++) {
-			if (s->sensor[j] < 0 || s->sensor[j] >= nr_cylinders) {
+			int sensor = s->sensor[j];
+
+			// No invalid sensor ID's, please
+			if (sensor < 0 || sensor > MAX_SENSORS) {
 				s->sensor[j] = NO_SENSOR;
 				s->pressure[j].mbar = 0;
+				continue;
 			}
+
+			// Don't bother tracking sensors with no data
+			if (!s->pressure[j].mbar) {
+				s->sensor[j] = NO_SENSOR;
+				continue;
+			}
+
+			// Remember the set of sensors we had
+			sensor_mask |= 1ul << sensor;
 		}
+	}
+
+	// Ignore the sensors we have cylinders for
+	sensor_mask >>= dive->cylinders.nr;
+
+	// Do we need to add empty cylinders?
+	while (sensor_mask) {
+		add_empty_cylinder(&dive->cylinders);
+		sensor_mask >>= 1;
 	}
 }
 
@@ -1240,11 +1264,11 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	/* Fix up gas switch events */
 	fixup_dc_gasswitch(dive, dc);
 
+	/* Fix up cylinder ids in pressure sensors */
+	fixup_dc_sample_sensors(dive, dc);
+
 	/* Fix up cylinder pressures based on DC info */
 	fixup_dive_pressures(dive, dc);
-
-	/* Fix up cylinder ids in pressure sensors */
-	fixup_dc_sample_sensors(dc, dive->cylinders.nr);
 
 	fixup_dc_events(dc);
 
