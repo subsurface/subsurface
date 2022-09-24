@@ -5,6 +5,7 @@
 #include "core/imagedownloader.h"
 #include "core/picture.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "commands/command.h"
@@ -312,6 +313,6 @@ void DivePictureModel::pictureOffsetChanged(dive *d, const QString filenameIn, o
 	if (oldIndex == newIndex || oldIndex + 1 == newIndex)
 		return;
 	beginMoveRows(QModelIndex(), oldIndex, oldIndex, QModelIndex(), newIndex);
-	moveInVector(pictures, oldIndex, oldIndex + 1, newIndex);
+	move_in_range(pictures, oldIndex, oldIndex + 1, newIndex);
 	endMoveRows();
 }

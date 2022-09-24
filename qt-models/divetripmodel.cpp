@@ -10,6 +10,7 @@
 #include "core/string-format.h"
 #include "core/trip.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/divesite.h"
 #include "core/picture.h"
 #include "core/subsurface-string.h"
@@ -974,7 +975,7 @@ void DiveTripModelTree::topLevelChanged(int idx)
 	// If index changed, move items
 	if (newIdx != idx && newIdx != idx + 1) {
 		beginMoveRows(QModelIndex(), idx, idx, QModelIndex(), newIdx);
-		moveInVector(items, idx, idx + 1, newIdx);
+		move_in_range(items, idx, idx + 1, newIdx);
 		endMoveRows();
 	}
 
