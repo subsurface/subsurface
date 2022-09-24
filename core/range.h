@@ -3,6 +3,9 @@
 #ifndef RANGE_H
 #define RANGE_H
 
+#include <utility>	// for std::pair
+#include <vector>	// we need a declaration of std::begin() and std::end()
+
 // Move a range in a vector to a different position.
 // The parameters are given according to the usual STL-semantics:
 //	v: a container with STL-like random access iterator via std::begin(...)
@@ -28,5 +31,55 @@ void move_in_range(Range &v, int rangeBegin, int rangeEnd, int destination)
 	else if (destination < rangeBegin)
 		std::rotate(it + destination, it + rangeBegin, it + rangeEnd);
 }
+
+// A rudimentary adaptor for looping over ranges with an index:
+//	for (auto [idx, item]: enumerated_range(v)) ...
+// The index is a signed integer, since this is what we use more often.
+template <typename Range>
+class enumerated_range
+{
+	Range &base;
+public:
+	using base_iterator = decltype(std::begin(std::declval<Range>()));
+	class iterator {
+		int idx;
+		base_iterator it;
+	public:
+		std::pair<int, decltype(*it)> operator*() const
+		{
+			return { idx, *it };
+		}
+		iterator &operator++()
+		{
+			++idx;
+			++it;
+			return *this;
+		}
+		iterator(int idx, base_iterator it) : idx(idx), it(it)
+		{
+		}
+		bool operator==(const iterator &it2) const
+		{
+			return it == it2.it;
+		}
+		bool operator!=(const iterator &it2) const
+		{
+			return it != it2.it;
+		}
+	};
+
+	iterator begin()
+	{
+		return iterator(0, std::begin(base));
+	}
+	iterator end()
+	{
+		return iterator(-1, std::end(base));
+	}
+
+	enumerated_range(Range &base) : base(base)
+	{
+	}
+};
 
 #endif
