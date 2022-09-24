@@ -676,7 +676,7 @@ QString get_water_type_string(int salinity)
 QStringList getWaterTypesAsString()
 {
 	QStringList res;
-	res.reserve(std::end(waterTypes) - std::begin(waterTypes)); // Waiting for C++17's std::size()
+	res.reserve(std::size(waterTypes));
 	for (const char *t: waterTypes)
 		res.push_back(gettextFromC::tr(t));
 	return res;
