@@ -719,17 +719,17 @@ static const char *printing_templates = "printing_templates";
 
 QString getPrintingTemplatePathUser()
 {
-	static QString path = QString();
-	if (path.isEmpty())
-		path = QString(system_default_directory()) + QDir::separator() + QString(printing_templates);
+	// Function-local statics are initialized on first invocation
+	static QString path(QString(system_default_directory()) +
+			    QDir::separator() +
+			    QString(printing_templates));
 	return path;
 }
 
 QString getPrintingTemplatePathBundle()
 {
-	static QString path = QString();
-	if (path.isEmpty())
-		path = getSubsurfaceDataPath(printing_templates);
+	// Function-local statics are initialized on first invocation
+	static QString path(getSubsurfaceDataPath(printing_templates));
 	return path;
 }
 
