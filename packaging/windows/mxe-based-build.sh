@@ -171,6 +171,7 @@ if [ "$MXEBUILDTYPE" = "x86_64-w64-mingw32.shared" ] ; then
 			--host="$MXEBUILDTYPE" \
 			--enable-shared \
 			--prefix="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"
+		cd src
 		make $JOBS
 		make install
 	fi
