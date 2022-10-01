@@ -11,6 +11,8 @@
 
 QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
+	m_diveId(0),
+	m_dc(0),
 	m_devicePixelRatio(1.0),
 	m_margin(0),
 	m_xOffset(0.0),
@@ -60,7 +62,7 @@ void QMLProfile::paint(QPainter *painter)
 	struct dive *d = get_dive_by_uniq_id(m_diveId);
 	if (!d)
 		return;
-	m_profileWidget->draw(painter, painterRect, d, dc_number, nullptr, false);
+	m_profileWidget->draw(painter, painterRect, d, m_dc, nullptr, false);
 }
 
 void QMLProfile::setMargin(int margin)
@@ -76,6 +78,7 @@ int QMLProfile::diveId() const
 void QMLProfile::setDiveId(int diveId)
 {
 	m_diveId = diveId;
+	emit numDCChanged();
 }
 
 qreal QMLProfile::devicePixelRatio() const
@@ -125,4 +128,34 @@ void QMLProfile::divesChanged(const QVector<dive *> &dives, DiveField)
 			return;
 		}
 	}
+}
+
+void QMLProfile::nextDC()
+{
+	rotateDC(1);
+}
+
+void QMLProfile::prevDC()
+{
+	rotateDC(-1);
+}
+
+void QMLProfile::rotateDC(int dir)
+{
+	struct dive *d = get_dive_by_uniq_id(m_diveId);
+	if (!d)
+		return;
+	int numDC = number_of_computers(d);
+	if (numDC == 1)
+		return;
+	m_dc = (m_dc + dir) % numDC;
+	if (m_dc < 0)
+		m_dc += numDC;
+	triggerUpdate();
+}
+
+int QMLProfile::numDC() const
+{
+	struct dive *d = get_dive_by_uniq_id(m_diveId);
+	return d ? number_of_computers(d) : 0;
 }
