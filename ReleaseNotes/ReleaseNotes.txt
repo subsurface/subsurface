@@ -2,6 +2,19 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 5.0.10
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+- remove divesite list from tab-widgets
+- implement panning of the profile
+- infobox: show an icon for warnings
+- import: allow import of divesites without UUID
+- planner: allow handle manipulation in zoomed in state
+- divelist: do not include planned versions of a dive if there is real data
+- fix key composition in tag widgets and dive site widget
+- use combobox for moving sensor between cylinders
+- dive computer support:
+ - fix Ratio dive computer detection for BLE only devices
+
 New in _Subsurface_ 5.0.9
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - filter: normalize unicode code points to base letter (for searching ℓ, etc.)
