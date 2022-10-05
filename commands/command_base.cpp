@@ -86,11 +86,28 @@ QString getListOfDives(QVector<struct dive *> dives)
 
 // return a string that can be used for the commit message and should list the changes that
 // were made to the dive list
+// keep in mind that the changes could have been a number of undo commands, so we might have
+// to go backwards from the last one written; this isn't perfect as a user could undo a command
+// and then do something else instead of redoing that undo - the undo information is then lost
+// for the changelog -- but of course the git history will show what happened
 QString changesMade()
 {
+	static int nextToWrite = 0;
+	int curIdx = undoStack->index();
 	QString changeTexts;
-	for (int i = 0; i < undoStack->index(); i++)
-		changeTexts += undoStack->text(i) + "\n";
+
+	if (curIdx > nextToWrite) {
+		for (int i = nextToWrite; i < curIdx; i++)
+			changeTexts += undoStack->text(i) + "\n";
+	} else if (curIdx < nextToWrite) { // we walked back undoing things
+		for (int i = nextToWrite - 1; i >= curIdx; i--)
+			changeTexts += "(undo) " + undoStack->text(i) + "\n";
+	} else { // so this means we undid something (or more than one thing) and then did something else
+		 // so we lost the information of what was undone - and how many things were changed;
+		 // just show the last change
+		changeTexts += undoStack->text(curIdx - 1) + "\n";
+	}
+	nextToWrite = curIdx;
 	return changeTexts;
 }
 
