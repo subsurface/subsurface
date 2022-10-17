@@ -89,13 +89,6 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 		if (amount != 0)
 			Command::shiftTime(getDiveSelection(), amount);
 	}
-
-	ui.timeEdit->setTime(QTime(0, 0, 0, 0));
-	dive *d = first_selected_dive();
-	if (d) {
-		ui.currentTime->setText(get_dive_date_string(d->when));
-		ui.shiftedTime->setText(get_dive_date_string(d->when));
-	}
 }
 
 void ShiftTimesDialog::changeTime()
@@ -120,6 +113,12 @@ ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent),
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+	dive *d = first_selected_dive();
+	if (d) {
+		when = d->when;
+		ui.currentTime->setText(get_dive_date_string(when));
+		ui.shiftedTime->setText(get_dive_date_string(when));
+	}
 }
 
 void ShiftImageTimesDialog::syncCameraClicked()
