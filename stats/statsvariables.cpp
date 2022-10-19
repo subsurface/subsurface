@@ -924,7 +924,7 @@ struct DateMonthBinner : public SimpleContinuousBinner<DateMonthBinner, DateMont
 		year_month value = derived_bin(bin).value;
 		return QString("%1 %2").arg(monthname(value.second), QString::number(value.first));
 	}
-	// In histograms, output year for fill years, month otherwise
+	// In histograms, output year for full years, month otherwise
 	QString formatLowerBound(const StatsBin &bin) const override {
 		year_month value = derived_bin(bin).value;
 		return value.second == 0 ? QString::number(value.first)

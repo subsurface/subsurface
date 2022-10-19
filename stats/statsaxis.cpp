@@ -630,7 +630,7 @@ static std::vector<HistogramAxisEntry> timeRangeToBins(double from, double to)
 			} else if (act[2] == 0) {
 				res.push_back({ monthname(act[1]), val, true });
 			} else {
-				QString s = format.arg(QString::number(act[2]), sep, QString::number(act[1]));
+				QString s = format.arg(QString::number(act[2]), sep, QString::number(act[1] + 1));
 				res.push_back({s, val, true });
 			}
 		}
