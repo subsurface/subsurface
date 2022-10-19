@@ -194,7 +194,7 @@ private:
 // scatter item here, but so it is for now.
 class ChartScatterItem : public HideableChartProxyItem<QSGImageNode> {
 public:
-	ChartScatterItem(StatsView &v, ChartZValue z);
+	ChartScatterItem(StatsView &v, ChartZValue z, bool selected);
 	~ChartScatterItem();
 
 	// Currently, there is no highlighted and selected status.

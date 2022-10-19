@@ -111,8 +111,9 @@ QRectF ChartPixmapItem::getRect() const
 static const int scatterItemDiameter = 10;
 static const int scatterItemBorder = 1;
 
-ChartScatterItem::ChartScatterItem(StatsView &v, ChartZValue z) : HideableChartItem(v, z),
-	positionDirty(false), textureDirty(false), highlight(Highlight::Unselected)
+ChartScatterItem::ChartScatterItem(StatsView &v, ChartZValue z, bool selected) : HideableChartItem(v, z),
+	positionDirty(false), textureDirty(false),
+	highlight(selected ? Highlight::Selected : Highlight::Unselected)
 {
 	rect.setSize(QSizeF(static_cast<double>(scatterItemDiameter), static_cast<double>(scatterItemDiameter)));
 }
