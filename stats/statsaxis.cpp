@@ -623,7 +623,9 @@ static std::vector<HistogramAxisEntry> timeRangeToBins(double from, double to)
 		QString format = day_before_month ? QStringLiteral("%1%2%3")
 						  : QStringLiteral("%3%2%1");
 		QString sep = QString(separator);
-		for (auto act = day_from; act < day_to; inc(act)) {
+		// Attention: In a histogramm axis, we must add one more entries than
+		// histogram bins. The entries are the values *between* the histograms.
+		for (auto act = day_from; act <= day_to; inc(act)) {
 			double val = date_to_double(act[0], act[1], act[2]);
 			if (act[1] == 0) {
 				res.push_back({ QString::number(act[0]), val, true });
