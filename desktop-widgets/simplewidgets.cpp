@@ -300,11 +300,11 @@ DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *tar
 	UI_FROM_COMPONENT(weights);
 	UI_FROM_COMPONENT(number);
 	UI_FROM_COMPONENT(when);
-	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+	connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &DiveComponentSelection::buttonClicked);
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
-	connect(close, SIGNAL(activated()), this, SLOT(close()));
+	connect(close, &QShortcut::activated, this, &DiveComponentSelection::close);
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
-	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
+	connect(quit, &QShortcut::activated, parent, &QWidget::close);
 }
 
 void DiveComponentSelection::buttonClicked(QAbstractButton *button)
