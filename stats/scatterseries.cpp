@@ -25,7 +25,7 @@ ScatterSeries::~ScatterSeries()
 }
 
 ScatterSeries::Item::Item(StatsView &view, ScatterSeries *series, dive *d, double pos, double value) :
-	item(view.createChartItem<ChartScatterItem>(ChartZValue::Series)),
+	item(view.createChartItem<ChartScatterItem>(ChartZValue::Series, d->selected)),
 	d(d),
 	selected(d->selected),
 	pos(pos),
