@@ -210,7 +210,7 @@ void TabDiveInformation::updateData()
 	}
 
 	int salinity_value;
-	manualDive = same_string(current_dive->dc.model, "manually added dive");
+	manualDive = is_manually_added_dc(&current_dive->dc);
 	updateWaterTypeWidget();
 	updateProfile();
 	updateWhen();

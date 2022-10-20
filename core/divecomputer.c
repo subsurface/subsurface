@@ -548,3 +548,9 @@ void free_dc(struct divecomputer *dc)
 	free_dc_contents(dc);
 	free(dc);
 }
+
+bool is_manually_added_dc(const struct divecomputer *dc)
+{
+	return dc && dc->samples <= 50 &&
+	       same_string(dc->model, "manually added dive");
+}

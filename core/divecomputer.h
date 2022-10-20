@@ -69,6 +69,7 @@ extern void remove_event_from_dc(struct divecomputer *dc, struct event *event);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern bool is_dc_planner(const struct divecomputer *dc);
 extern uint32_t calculate_string_hash(const char *str);
+extern bool is_manually_added_dc(const struct divecomputer *dc);
 
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
 extern int match_one_dc(const struct divecomputer *a, const struct divecomputer *b);

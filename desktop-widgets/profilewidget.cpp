@@ -192,7 +192,7 @@ void ProfileWidget::plotCurrentDive()
 	if (current_dive && !editedDive &&
 	    DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING) {
 		struct divecomputer *dc = get_dive_dc(current_dive, dc_number);
-		if (dc && same_string(dc->model, "manually added dive") && dc->samples)
+		if (dc && is_manually_added_dc(dc) && dc->samples)
 			editDive();
 	}
 

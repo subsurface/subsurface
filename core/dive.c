@@ -2333,8 +2333,8 @@ static int likely_same_dive(const struct dive *a, const struct dive *b)
 	int match, fuzz = 20 * 60;
 
 	/* don't merge manually added dives with anything */
-	if (same_string(a->dc.model, "manually added dive") ||
-	    same_string(b->dc.model, "manually added dive"))
+	if (is_manually_added_dc(&a->dc) ||
+	    is_manually_added_dc(&b->dc))
 		return 0;
 
 	/*
