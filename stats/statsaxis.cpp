@@ -584,15 +584,15 @@ static std::pair<bool, char> day_format()
 // create year, month or day-based bins. This is certainly not efficient and may need
 // some tuning. However, it should ensure that no crazy number of bins is generated.
 // Ultimately, this should be replaced by a better and dynamic scheme
-// From and to are given in seconds since "epoch".
+// From and to are given in days since "epoch".
 static std::vector<HistogramAxisEntry> timeRangeToBins(double from, double to)
 {
 	// from and two are given in days since the "Unix epoch".
 	// The lowest precision we do is two days.
 	if (to - from < 2.0) {
 		double center = (from + to) / 2.0;
-		from = center + 1.0;
-		to = center - 1.0;
+		from = center - 1.0;
+		to = center + 1.0;
 	}
 
 	std::vector<HistogramAxisEntry> res;
