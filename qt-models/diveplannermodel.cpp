@@ -147,10 +147,10 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn)
 			break;
 		while (j * plansamples <= i * dc->samples) {
 			const sample &s = dc->sample[j];
-			const sample &prev = dc->sample[j-1];
 			if (s.time.seconds != 0 && (!hasMarkedSamples || s.manually_entered)) {
 				depthsum += s.depth.mm;
-				last_sp = prev.setpoint;
+				if (j > 0)
+					last_sp = dc->sample[j-1].setpoint;
 				++samplecount;
 				newtime = s.time;
 			}
