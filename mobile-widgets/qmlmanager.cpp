@@ -1127,7 +1127,7 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 			m = m6.captured(1).toInt();
 		}
 		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
-		if (same_string(d->dc.model, "manually added dive"))
+		if (is_manually_added_dc(&d->dc))
 			free_samples(&d->dc);
 		else
 			appendTextToLog("Cannot change the duration on a dive that wasn't manually added");
@@ -1145,7 +1145,7 @@ bool QMLManager::checkDepth(dive *d, QString depth)
 		// the depth <= 500m
 		if (0 <= depthValue && depthValue <= 500000) {
 			d->maxdepth.mm = depthValue;
-			if (same_string(d->dc.model, "manually added dive")) {
+			if (is_manually_added_dc(&d->dc)) {
 				d->dc.maxdepth.mm = d->maxdepth.mm;
 				free_samples(&d->dc);
 			}
@@ -1351,7 +1351,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	if (diveChanged) {
 		if (d->maxdepth.mm == d->dc.maxdepth.mm &&
 		    d->maxdepth.mm > 0 &&
-		    same_string(d->dc.model, "manually added dive") &&
+		    is_manually_added_dc(&d->dc) &&
 		    d->dc.samples == 0) {
 			// so we have depth > 0, a manually added dive and no samples
 			// let's create an actual profile so the desktop version can work it

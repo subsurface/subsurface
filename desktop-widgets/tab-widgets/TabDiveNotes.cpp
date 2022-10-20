@@ -251,7 +251,7 @@ void TabDiveNotes::updateData()
 		ui.LocationLabel->setText(tr("Location"));
 		ui.NotesLabel->setText(tr("Notes"));
 		ui.tagWidget->setText(get_taglist_string(current_dive->tag_list));
-		bool isManual = same_string(current_dive->dc.model, "manually added dive");
+		bool isManual = is_manually_added_dc(&current_dive->dc);
 		ui.depth->setVisible(isManual);
 		ui.depthLabel->setVisible(isManual);
 		ui.duration->setVisible(isManual);
