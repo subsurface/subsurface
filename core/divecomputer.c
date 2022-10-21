@@ -549,8 +549,15 @@ void free_dc(struct divecomputer *dc)
 	free(dc);
 }
 
+static const char *manual_dc_name = "manually added dive";
 bool is_manually_added_dc(const struct divecomputer *dc)
 {
 	return dc && dc->samples <= 50 &&
-	       same_string(dc->model, "manually added dive");
+	       same_string(dc->model, manual_dc_name);
+}
+
+void make_manually_added_dc(struct divecomputer *dc)
+{
+	free((void *)dc->model);
+	dc->model = strdup(manual_dc_name);
 }

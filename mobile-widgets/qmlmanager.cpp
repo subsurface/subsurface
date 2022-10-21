@@ -1716,7 +1716,7 @@ int QMLManager::addDive()
 	d.dc.duration.seconds = 40 * 60;
 	d.dc.maxdepth.mm = M_OR_FT(15, 45);
 	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	d.dc.model = strdup("manually added dive"); // don't translate! this is stored in the XML file
+	make_manually_added_dc(&d.dc);
 	fake_dc(&d.dc);
 	fixup_dive(&d);
 
