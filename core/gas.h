@@ -41,7 +41,6 @@ extern bool isobaric_counterdiffusion(struct gasmix oldgasmix, struct gasmix new
 
 extern double gas_compressibility_factor(struct gasmix gas, double bar);
 extern double isothermal_pressure(struct gasmix gas, double p1, int volume1, int volume2);
-extern double gas_density(struct gasmix gas, int pressure);
 extern int same_gasmix(struct gasmix a, struct gasmix b);
 
 static inline int get_o2(const struct gasmix mix)

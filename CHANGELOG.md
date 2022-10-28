@@ -1,3 +1,4 @@
+profile: Show correct gas density when in CCR mode
 statistics: show correct color of selected scatter items when switching to unbinned mode
 statistics: fix display of month number in continuous date axis
 statistics: fix range of continuous date axis
