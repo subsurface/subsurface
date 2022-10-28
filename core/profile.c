@@ -1160,6 +1160,11 @@ static int calculate_ccr_po2(struct plot_data *entry, const struct divecomputer 
 	}
 }
 
+static double gas_density(const struct gas_pressures *pressures)
+{
+	return (pressures->o2 * O2_DENSITY + pressures->he * HE_DENSITY + pressures->n2 * N2_DENSITY) / 1000.0;
+}
+
 static void calculate_gas_information_new(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi)
 {
 	int i;
@@ -1196,7 +1201,7 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 				       entry->pressures.n2 / amb_pressure * N2_DENSITY +
 				       entry->pressures.he / amb_pressure * HE_DENSITY) /
 				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000), dive);
-		entry->density = gas_density(gasmix, depth_to_mbar(entry->depth, dive));
+		entry->density = gas_density(&entry->pressures);
 		if (entry->mod < 0)
 			entry->mod = 0;
 		if (entry->ead < 0)
