@@ -90,6 +90,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	dpr(dpr),
 	printMode(printMode),
 	isGrayscale(isGrayscale),
+	empty(true),
 	maxtime(-1),
 	maxdepth(-1),
 	profileYAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Left, true, 3, 0, TIME_GRID, Qt::red, true, true,
@@ -200,6 +201,7 @@ void ProfileScene::clear()
 	qDeleteAll(eventItems);
 	eventItems.clear();
 	free_plot_info_data(&plotInfo);
+	empty = true;
 }
 
 static bool ppGraphsEnabled(const struct divecomputer *dc, bool simplified)
@@ -429,6 +431,11 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		return;
 	}
 
+	// If we come from the empty state, the plot info has to be recalculated.
+	if (empty)
+		keepPlotInfo = false;
+	empty = false;
+
 	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
 
 	// A non-null planner_ds signals to create_plot_info_new that the dive is currently planned.
@@ -465,9 +472,8 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	 */
 	int newMaxDepth = get_maxdepth(&plotInfo);
 	if (!calcMax) {
-		if (maxdepth < newMaxDepth) {
+		if (maxdepth < newMaxDepth)
 			maxdepth = newMaxDepth;
-		}
 	} else {
 		maxdepth = newMaxDepth;
 	}
