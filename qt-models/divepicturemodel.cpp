@@ -206,8 +206,8 @@ void DivePictureModel::picturesAdded(dive *d, QVector<PictureObj> picsIn)
 	// Convert the picture-data into our own format
 	std::vector<PictureEntry> pics;
 	pics.reserve(picsIn.size());
-	for (int i = 0; i < picsIn.size(); ++i)
-		pics.push_back(PictureEntry(d, picsIn[i]));
+	for (const PictureObj &pic: picsIn)
+		pics.push_back(PictureEntry(d, pic));
 
 	// Insert batch-wise to avoid too many reloads
 	pictures.reserve(pictures.size() + pics.size());
