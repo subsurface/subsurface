@@ -397,6 +397,8 @@ void ProfileWidget2::clear()
 	handles.clear();
 	gases.clear();
 	empty = true;
+	d = nullptr;
+	dc = 0;
 }
 
 void ProfileWidget2::setProfileState(const dive *dIn, int dcIn)
