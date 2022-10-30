@@ -65,6 +65,7 @@ private:
 	double dpr; // Device Pixel Ratio. A DPR of one corresponds to a "standard" PC screen.
 	bool printMode;
 	bool isGrayscale;
+	bool empty; // The profile currently shows nothing.
 	int maxtime;
 	int maxdepth;
 
