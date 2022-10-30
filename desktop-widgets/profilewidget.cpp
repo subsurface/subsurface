@@ -155,7 +155,6 @@ void ProfileWidget::setEnabledToolbar(bool enabled)
 
 void ProfileWidget::setDive(const struct dive *d)
 {
-	// If the user was currently editing a dive, exit edit mode.
 	stack->setCurrentIndex(1); // show profile
 
 	bool freeDiveMode = d->dc.divemode == FREEDIVE;
@@ -198,13 +197,13 @@ void ProfileWidget::plotCurrentDive()
 
 	setEnabledToolbar(current_dive != nullptr);
 	if (editedDive) {
-		setDive(originalDive);
 		view->plotDive(editedDive.get(), editedDc);
+		setDive(editedDive.get());
 	} else if (current_dive) {
-		setDive(current_dive);
 		view->setProfileState(current_dive, dc_number);
 		view->resetZoom(); // when switching dive, reset the zoomLevel
 		view->plotDive(current_dive, dc_number);
+		setDive(current_dive);
 	} else {
 		view->clear();
 		stack->setCurrentIndex(0);
@@ -235,8 +234,8 @@ void ProfileWidget::divesChanged(const QVector<dive *> &dives, DiveField field)
 void ProfileWidget::setPlanState(const struct dive *d, int dc)
 {
 	exitEditMode();
-	setDive(d);
 	view->setPlanState(d, dc);
+	setDive(d);
 }
 
 void ProfileWidget::unsetProfHR()
