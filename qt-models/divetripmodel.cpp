@@ -1008,29 +1008,19 @@ void DiveTripModelTree::addDivesToTrip(int trip, const QVector<dive *> &dives)
 
 int DiveTripModelTree::findTripIdx(const dive_trip *trip) const
 {
-	for (auto [i, item]: enumerated_range(items)) {
-		if (item.d_or_t.trip == trip)
-			return i;
-	}
-	return -1;
+	return index_of_if(items, [trip] (const Item &item)
+				  { return item.d_or_t.trip == trip; });
 }
 
 int DiveTripModelTree::findDiveIdx(const dive *d) const
 {
-	for (auto [i, item]: enumerated_range(items)) {
-		if (item.isDive(d))
-			return i;
-	}
-	return -1;
+	return index_of_if(items, [d] (const Item &item)
+				  { return item.isDive(d); });
 }
 
 int DiveTripModelTree::findDiveInTrip(int tripIdx, const dive *d) const
 {
-	const Item &item = items[tripIdx];
-	for (auto [i, dive]: enumerated_range(item.dives))
-		if (dive == d)
-			return i;
-	return -1;
+	return index_of(items[tripIdx].dives, d);
 }
 
 int DiveTripModelTree::findInsertionIndex(const dive_trip *trip) const

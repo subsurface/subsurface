@@ -242,10 +242,8 @@ int DivePictureModel::rowCount(const QModelIndex&) const
 
 int DivePictureModel::findPictureId(const std::string &filename)
 {
-	for (int i = 0; i < (int)pictures.size(); ++i)
-		if (pictures[i].filename == filename)
-			return i;
-	return -1;
+	return index_of_if(pictures, [&filename](const PictureEntry &p)
+				     { return p.filename == filename; });
 }
 
 static void addDurationToThumbnail(QImage &img, duration_t duration)

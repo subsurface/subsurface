@@ -82,4 +82,20 @@ public:
 	}
 };
 
+// Find the index of an element in a range. Return -1 if not found
+// Range must have a random access iterator.
+template <typename Range, typename Element>
+int index_of(const Range &range, const Element &e)
+{
+	auto it = std::find(std::begin(range), std::end(range), e);
+	return it == std::end(range) ? -1 : it - std::begin(range);
+}
+
+template <typename Range, typename Func>
+int index_of_if(const Range &range, Func f)
+{
+	auto it = std::find_if(std::begin(range), std::end(range), f);
+	return it == std::end(range) ? -1 : it - std::begin(range);
+}
+
 #endif
