@@ -544,7 +544,7 @@ void DivePlannerPointsModel::setRebreatherMode(int mode)
 
 divemode_t DivePlannerPointsModel::getRebreatherMode() const
 {
-	return d->dc.divemode;
+	return d ? d->dc.divemode : OC;
 }
 
 void DivePlannerPointsModel::setVpmbConservatism(int level)

@@ -18,9 +18,9 @@ Qt::ItemFlags GasSelectionModel::flags(const QModelIndex&) const
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-void GasSelectionModel::repopulate()
+void GasSelectionModel::repopulate(const dive *d)
 {
-	setStringList(get_dive_gas_list(&displayed_dive));
+	setStringList(get_dive_gas_list(d));
 }
 
 QVariant GasSelectionModel::data(const QModelIndex &index, int role) const

@@ -26,11 +26,6 @@
 #include "structured_list.h"
 #include "fulltext.h"
 
-/* one could argue about the best place to have this variable -
- * it's used in the UI, but it seems to make the most sense to have it
- * here */
-struct dive displayed_dive;
-
 // For user visible text but still not translated
 const char *divemode_text_ui[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "Open circuit"),
@@ -299,9 +294,8 @@ static void copy_dive_onedc(const struct dive *s, const struct divecomputer *sdc
 }
 
 /* make a clone of the source dive and clean out the source dive;
- * this is specifically so we can create a dive in the displayed_dive and then
- * add it to the divelist.
- * Note the difference to copy_dive() / clean_dive() */
+ * this allows us to create a dive on the stack and then
+ * add it to the divelist. */
 struct dive *move_dive(struct dive *s)
 {
 	struct dive *dive = alloc_dive();
