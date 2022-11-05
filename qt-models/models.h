@@ -19,6 +19,8 @@
 #include "cleanertablemodel.h"
 #include "treemodel.h"
 
+struct dive;
+
 class GasSelectionModel : public QStringListModel {
 	Q_OBJECT
 public:
@@ -26,7 +28,7 @@ public:
 	QVariant data(const QModelIndex &index, int role) const override;
 public
 slots:
-	void repopulate();
+	void repopulate(const dive *d);
 };
 
 class DiveTypeSelectionModel : public QStringListModel {
