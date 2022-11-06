@@ -151,8 +151,6 @@ MainWindow::MainWindow() :
 								    { diveList.get(), FLAG_NONE }, { mapWidget.get(), FLAG_NONE } });
 	registerApplicationState(ApplicationState::PlanDive, { false, { &plannerWidgets->plannerWidget, FLAG_NONE },         { profile.get(), FLAG_NONE },
 								      { &plannerWidgets->plannerSettingsWidget, FLAG_NONE }, { &plannerWidgets->plannerDetails, FLAG_NONE } });
-	registerApplicationState(ApplicationState::EditPlannedDive, { true, { &plannerWidgets->plannerWidget, FLAG_NONE }, { profile.get(), FLAG_NONE },
-									    { diveList.get(), FLAG_NONE },                 { mapWidget.get(), FLAG_NONE } });
 	registerApplicationState(ApplicationState::EditDiveSite, { false, { diveSiteEdit.get(), FLAG_NONE }, { profile.get(), FLAG_DISABLED },
 									  { diveList.get(), FLAG_DISABLED }, { mapWidget.get(), FLAG_NONE } });
 	registerApplicationState(ApplicationState::FilterDive, { true, { mainTab.get(), FLAG_NONE },  { profile.get(), FLAG_NONE },
@@ -550,7 +548,7 @@ void MainWindow::updateLastUsedDir(const QString &dir)
 void MainWindow::on_actionPrint_triggered()
 {
 #ifndef NO_PRINTING
-	bool in_planner = appState == ApplicationState::PlanDive || appState == ApplicationState::EditPlannedDive;
+	bool in_planner = inPlanner();
 	PrintDialog dlg(in_planner, this);
 
 	dlg.exec();

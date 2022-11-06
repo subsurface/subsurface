@@ -56,7 +56,6 @@ public:
 	enum class ApplicationState {
 		Default,
 		PlanDive,
-		EditPlannedDive,
 		EditDiveSite,
 		FilterDive,
 		Statistics,
