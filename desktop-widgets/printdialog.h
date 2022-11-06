@@ -7,6 +7,7 @@
 #include "templateedit.h"
 #include "printoptions.h"
 
+struct dive;
 class Printer;
 class QPrinter;
 class QProgressBar;
@@ -18,11 +19,12 @@ class PrintDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit PrintDialog(bool inPlanner, QWidget *parent = 0);
+	// If singleDive is non-null, print only that single dive
+	explicit PrintDialog(dive *singleDive, QWidget *parent = 0);
 	~PrintDialog();
 
 private:
-	bool inPlanner;
+	dive *singleDive;
 	PrintOptions *optionsWidget;
 	QProgressBar *progressBar;
 	Printer *printer;

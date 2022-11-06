@@ -95,24 +95,14 @@ TemplateLayout::TemplateLayout(const print_options &printOptions, const template
 {
 }
 
-QString TemplateLayout::generate(bool in_planner)
+QString TemplateLayout::generate(const std::vector<dive *> &dives)
 {
 	QString htmlContent;
 
 	State state;
 
-	if (in_planner) {
-		state.dives.append(&displayed_dive);
-	} else {
-		int i;
-		struct dive *dive;
-		for_each_dive (i, dive) {
-			//TODO check for exporting selected dives only
-			if (!dive->selected && printOptions.print_selected)
-				continue;
-			state.dives.append(dive);
-		}
-	}
+	for (dive *d: dives)
+		state.dives.append(d);
 
 	QString templateContents = readTemplate(printOptions.p_template);
 	numDives = state.dives.size();

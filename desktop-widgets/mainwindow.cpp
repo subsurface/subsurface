@@ -548,8 +548,10 @@ void MainWindow::updateLastUsedDir(const QString &dir)
 void MainWindow::on_actionPrint_triggered()
 {
 #ifndef NO_PRINTING
-	bool in_planner = inPlanner();
-	PrintDialog dlg(in_planner, this);
+	// When in planner, only print the planned dive.
+	dive *singleDive = appState == ApplicationState::PlanDive ? &displayed_dive
+								  : nullptr;
+	PrintDialog dlg(singleDive, this);
 
 	dlg.exec();
 #endif

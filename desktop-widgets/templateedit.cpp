@@ -59,7 +59,7 @@ void TemplateEdit::updatePreview()
 	int height = ui->label->height();
 	QPixmap map(width * 2, height * 2);
 	map.fill(QColor::fromRgb(255, 255, 255));
-	Printer printer(&map, printOptions, newTemplateOptions, Printer::PREVIEW, false);
+	Printer printer(&map, printOptions, newTemplateOptions, Printer::PREVIEW, nullptr);
 	printer.previewOnePage();
 	ui->label->setPixmap(map.scaled(width, height, Qt::IgnoreAspectRatio));
 
