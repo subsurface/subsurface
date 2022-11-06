@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "core/deco.h"
+#include "core/divemode.h"
 #include "core/planner.h"
 #include "qt-models/cylindermodel.h"
 
@@ -62,6 +63,7 @@ public:
 
 	void loadFromDive(dive *d, int dcNr);
 	void addStop(int millimeters, int seconds);
+	divemode_t getRebreatherMode() const;
 public
 slots:
 	void addDefaultStop();

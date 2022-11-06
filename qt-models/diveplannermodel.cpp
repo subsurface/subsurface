@@ -545,6 +545,11 @@ void DivePlannerPointsModel::setRebreatherMode(int mode)
 	emitDataChanged();
 }
 
+divemode_t DivePlannerPointsModel::getRebreatherMode() const
+{
+	return d->dc.divemode;
+}
+
 void DivePlannerPointsModel::setVpmbConservatism(int level)
 {
 	if (diveplan.vpmb_conservatism != level) {
