@@ -30,8 +30,8 @@ void clear();				// Reset the undo stack. Delete all commands.
 void setClean();			// Call after save - this marks a state where no changes need to be saved.
 bool isClean();				// Any changes need to be saved?
 QAction *undoAction(QObject *parent);	// Create an undo action.
-QAction *redoAction(QObject *parent);	// Create an redo action.
-QString changesMade();			// return a string with the texts from all commands on the undo stack -> for commit message
+QAction *redoAction(QObject *parent);	// Create a redo action.
+QString changesMade();			// Return a string with the texts from all commands on the undo stack -> for commit message.
 bool placingCommand();			// Currently executing a new command -> might not have to update the field the user just edited.
 
 // 2) Dive-list related commands
