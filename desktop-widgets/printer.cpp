@@ -2,6 +2,7 @@
 #include "printer.h"
 #include "templatelayout.h"
 #include "core/dive.h" // for get_dive_by_uniq_id()
+#include "core/selection.h"
 #include "core/statistics.h"
 #include "core/qthelper.h"
 #include "profile-widget/profilescene.h"
@@ -14,13 +15,13 @@
 #include <QWebElementCollection>
 #include <QWebElement>
 
-Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner) :
+Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, dive *singleDive) :
 	paintDevice(paintDevice),
 	webView(new QWebView),
 	printOptions(printOptions),
 	templateOptions(templateOptions),
 	printMode(printMode),
-	inPlanner(inPlanner),
+	singleDive(singleDive),
 	done(0)
 {
 }
@@ -151,6 +152,22 @@ void Printer::templateProgessUpdated(int value)
 	emit progessUpdated(done);
 }
 
+std::vector<dive *> Printer::getDives() const
+{
+	if (singleDive) {
+		return { singleDive };
+	} else if (printOptions.print_selected) {
+		return getDiveSelection();
+	} else {
+		std::vector<dive *> res;
+		int i;
+		struct dive *dive;
+		for_each_dive (i, dive)
+			res.push_back(dive);
+		return res;
+	}
+}
+
 QString Printer::exportHtml()
 {
 	TemplateLayout t(printOptions, templateOptions);
@@ -158,7 +175,7 @@ QString Printer::exportHtml()
 	QString html;
 
 	if (printOptions.type == print_options::DIVELIST)
-		html = t.generate(inPlanner);
+		html = t.generate(getDives());
 	else if (printOptions.type == print_options::STATISTICS )
 		html = t.generateStatistics();
 
@@ -188,7 +205,7 @@ void Printer::print()
 	// export border width with at least 1 pixel
 	// templateOptions.borderwidth = std::max(1, pageSize.width() / 1000);
 	if (printOptions.type == print_options::DIVELIST)
-		webView->setHtml(t.generate(inPlanner));
+		webView->setHtml(t.generate(getDives()));
 	else if (printOptions.type == print_options::STATISTICS )
 		webView->setHtml(t.generateStatistics());
 	if (printOptions.color_selected && printerPtr->colorMode())
@@ -222,7 +239,7 @@ void Printer::previewOnePage()
 		// initialize the border settings
 		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
 		if (printOptions.type == print_options::DIVELIST)
-			webView->setHtml(t.generate(inPlanner));
+			webView->setHtml(t.generate(getDives()));
 		else if (printOptions.type == print_options::STATISTICS )
 			webView->setHtml(t.generateStatistics());
 		bool ok;

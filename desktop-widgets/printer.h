@@ -5,6 +5,7 @@
 #include "printoptions.h"
 #include "templateedit.h"
 
+struct dive;
 class ProfileScene;
 class QPainter;
 class QPaintDevice;
@@ -27,10 +28,11 @@ private:
 	const template_options &templateOptions;
 	QSize pageSize;
 	PrintMode printMode;
-	bool inPlanner;
+	struct dive *singleDive;
 	int done;
 	void render(int Pages);
 	void flowRender();
+	std::vector<dive *> getDives() const;
 	void putProfileImage(const QRect &box, const QRect &viewPort, QPainter *painter,
 			     struct dive *dive, ProfileScene *profile);
 
@@ -38,7 +40,9 @@ private slots:
 	void templateProgessUpdated(int value);
 
 public:
-	Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, bool inPlanner);
+	// If singleDive is non-null, then only print this particular dive.
+	Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions,
+		PrintMode printMode, dive *singleDive);
 	~Printer();
 	void print();
 	void previewOnePage();

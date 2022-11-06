@@ -27,7 +27,7 @@ class TemplateLayout : public QObject {
 	Q_OBJECT
 public:
 	TemplateLayout(const print_options &printOptions, const template_options &templateOptions);
-	QString generate(bool in_planner);
+	QString generate(const std::vector<dive *> &dives);
 	QString generateStatistics();
 	static QString readTemplate(QString template_name);
 	static void writeTemplate(QString template_name, QString grantlee_template);
