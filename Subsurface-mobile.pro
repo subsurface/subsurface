@@ -206,6 +206,7 @@ HEADERS += \
 	core/extradata.h \
 	core/git-access.h \
 	core/globals.h \
+	core/owning_ptrs.h \
 	core/pref.h \
 	core/profile.h \
 	core/qthelper.h \

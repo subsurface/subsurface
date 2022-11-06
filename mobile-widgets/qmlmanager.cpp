@@ -897,7 +897,7 @@ void QMLManager::refreshDiveList()
 // The following structure describes such a change caused by a dive edit.
 // Hopefully, we can remove this in due course by using finer-grained undo-commands.
 struct DiveSiteChange {
-	Command::OwningDiveSitePtr createdDs; // not-null if we created a dive site.
+	OwningDiveSitePtr createdDs; // not-null if we created a dive site.
 
 	dive_site *editDs = nullptr; // not-null if we are supposed to edit an existing dive site.
 	location_t location = zero_location; // new value of the location if we edit an existing dive site.
@@ -1181,7 +1181,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				      QStringLiteral("state   :'%1'\n").arg(state);
 	}
 
-	Command::OwningDivePtr d_ptr(alloc_dive()); // Automatically delete dive if we exit early!
+	OwningDivePtr d_ptr(alloc_dive()); // Automatically delete dive if we exit early!
 	dive *d = d_ptr.get();
 	copy_dive(orig, d);
 

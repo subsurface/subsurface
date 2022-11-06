@@ -7,6 +7,7 @@
 #include "core/divesite.h"
 #include "core/trip.h"
 #include "core/dive.h"
+#include "core/owning_ptrs.h"
 
 #include <QUndoCommand>
 #include <QCoreApplication>	// For Q_DECLARE_TR_FUNCTIONS
@@ -152,26 +153,6 @@ QVector<T> stdToQt(const std::vector<T> &v)
 
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
-
-// Classes used to automatically call the appropriate free_*() function for owning pointers that go out of scope.
-struct DiveDeleter {
-	void operator()(dive *d) { free_dive(d); }
-};
-struct TripDeleter {
-	void operator()(dive_trip *t) { free_trip(t); }
-};
-struct DiveSiteDeleter {
-	void operator()(dive_site *ds) { free_dive_site(ds); }
-};
-struct EventDeleter {
-	void operator()(event *ev) { free(ev); }
-};
-
-// Owning pointers to dive, dive_trip, dive_site and event objects.
-typedef std::unique_ptr<dive, DiveDeleter> OwningDivePtr;
-typedef std::unique_ptr<dive_trip, TripDeleter> OwningTripPtr;
-typedef std::unique_ptr<dive_site, DiveSiteDeleter> OwningDiveSitePtr;
-typedef std::unique_ptr<event, EventDeleter> OwningEventPtr;
 
 // This is the base class of all commands.
 // It defines the Qt-translation functions

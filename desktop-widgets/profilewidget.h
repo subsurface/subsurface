@@ -5,10 +5,10 @@
 #define PROFILEWIDGET_H
 
 #include "ui_profilewidget.h"
+#include "core/owning_ptrs.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
 #include <vector>
-#include <memory>
 
 struct dive;
 class ProfileWidget2;
@@ -40,11 +40,6 @@ slots:
 	void stopRemoved(int count);
 	void stopMoved(int count);
 private:
-	// The same code is in command/command_base.h. Should we make that a global feature?
-	struct DiveDeleter {
-		void operator()(dive *d) { free_dive(d); }
-	};
-
 	std::unique_ptr<EmptyView> emptyView;
 	std::vector<QAction *> toolbarActions;
 	Ui::ProfileWidget ui;
@@ -53,7 +48,7 @@ private:
 	void editDive();
 	void exitEditMode();
 	void rotateDC(int dir);
-	std::unique_ptr<dive, DiveDeleter> editedDive;
+	OwningDivePtr editedDive;
 	int editedDc;
 	dive *originalDive;
 	bool placingCommand;
