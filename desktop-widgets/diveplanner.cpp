@@ -560,6 +560,8 @@ void PlannerWidgets::planDive(dive *currentDive)
 		else	// No salinity means salt water
 			plannerWidget.setSalinity(SEAWATER_SALINITY);
 	}
+	GasSelectionModel::instance()->repopulate();
+	DiveTypeSelectionModel::instance()->repopulate();
 	plannerWidget.setReplanButton(false);
 
 	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));	// This will reload the profile!
@@ -570,6 +572,7 @@ void PlannerWidgets::replanDive(int currentDC)
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive, currentDC);
 
+	DiveTypeSelectionModel::instance()->repopulate();
 	plannerWidget.setReplanButton(true);
 	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));
 	if (displayed_dive.surface_pressure.mbar)
