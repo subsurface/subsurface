@@ -18,12 +18,6 @@ Qt::ItemFlags GasSelectionModel::flags(const QModelIndex&) const
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-GasSelectionModel *GasSelectionModel::instance()
-{
-	static GasSelectionModel self;
-	return &self;
-}
-
 void GasSelectionModel::repopulate()
 {
 	setStringList(get_dive_gas_list(&displayed_dive));
@@ -41,12 +35,6 @@ QVariant GasSelectionModel::data(const QModelIndex &index, int role) const
 Qt::ItemFlags DiveTypeSelectionModel::flags(const QModelIndex&) const
 {
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-}
-
-DiveTypeSelectionModel *DiveTypeSelectionModel::instance()
-{
-	static DiveTypeSelectionModel self;
-	return &self;
 }
 
 void DiveTypeSelectionModel::repopulate()

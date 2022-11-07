@@ -22,7 +22,6 @@
 class GasSelectionModel : public QStringListModel {
 	Q_OBJECT
 public:
-	static GasSelectionModel *instance();
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	QVariant data(const QModelIndex &index, int role) const override;
 public
@@ -33,7 +32,6 @@ slots:
 class DiveTypeSelectionModel : public QStringListModel {
 	Q_OBJECT
 public:
-	static DiveTypeSelectionModel *instance();
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	QVariant data(const QModelIndex &index, int role) const override;
 public

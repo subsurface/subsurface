@@ -2,6 +2,7 @@
 #ifndef DIVEPLANNER_H
 #define DIVEPLANNER_H
 
+#include <memory>
 #include <QAbstractTableModel>
 #include <QAbstractButton>
 #include <QDateTime>
@@ -9,6 +10,9 @@
 class QListView;
 class QModelIndex;
 class DivePlannerPointsModel;
+class GasSelectionModel;
+class DiveTypeSelectionModel;
+class PlannerWidgets;
 struct dive;
 
 #include "ui_diveplanner.h"
@@ -16,7 +20,8 @@ struct dive;
 class DivePlannerWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit DivePlannerWidget(QWidget *parent = 0);
+	explicit DivePlannerWidget(PlannerWidgets *parent);
+	~DivePlannerWidget();
 	void setReplanButton(bool replan);
 public
 slots:
@@ -76,6 +81,7 @@ class PlannerWidgets : public QObject {
 	Q_OBJECT
 public:
 	PlannerWidgets();
+	~PlannerWidgets();
 	void planDive(dive *currentDive);
 	void replanDive(int currentDC);
 public
@@ -85,6 +91,8 @@ public:
 	DivePlannerWidget plannerWidget;
 	PlannerSettingsWidget plannerSettingsWidget;
 	PlannerDetails plannerDetails;
+	std::unique_ptr<GasSelectionModel> gasModel;
+	std::unique_ptr<DiveTypeSelectionModel> diveTypeModel;
 };
 
 #endif // DIVEPLANNER_H

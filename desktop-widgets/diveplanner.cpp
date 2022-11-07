@@ -23,7 +23,7 @@
 #include <QBuffer>
 #endif
 
-DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0))
+DivePlannerWidget::DivePlannerWidget(PlannerWidgets *parent)
 {
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	CylindersModel *cylinders = DivePlannerPointsModel::instance()->cylindersModel();
@@ -32,8 +32,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 	ui.tableWidget->setTitle(tr("Dive planner points"));
 	ui.tableWidget->setModel(plannerModel);
 	connect(ui.tableWidget, &TableView::itemClicked, plannerModel, &DivePlannerPointsModel::remove);
-	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(this));
-	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DIVEMODE, new DiveTypesDelegate(this));
+	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(parent->gasModel.get(), this));
+	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DIVEMODE, new DiveTypesDelegate(parent->diveTypeModel.get(), this));
 	ui.cylinderTableWidget->setTitle(tr("Available gases"));
 	ui.cylinderTableWidget->setBtnToolTip(tr("Add cylinder"));
 	ui.cylinderTableWidget->setModel(cylinders);
@@ -56,9 +56,9 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 	view->setItemDelegateForColumn(CylindersModel::USE, tankUseDelegate);
 	connect(ui.cylinderTableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addCylinder_clicked);
 	connect(ui.tableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addDefaultStop);
-	connect(cylinders, &CylindersModel::dataChanged, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
-	connect(cylinders, &CylindersModel::rowsInserted, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
-	connect(cylinders, &CylindersModel::rowsRemoved, GasSelectionModel::instance(), &GasSelectionModel::repopulate);
+	connect(cylinders, &CylindersModel::dataChanged, parent->gasModel.get(), &GasSelectionModel::repopulate);
+	connect(cylinders, &CylindersModel::rowsInserted, parent->gasModel.get(), &GasSelectionModel::repopulate);
+	connect(cylinders, &CylindersModel::rowsRemoved, parent->gasModel.get(), &GasSelectionModel::repopulate);
 	connect(cylinders, &CylindersModel::dataChanged, plannerModel, &DivePlannerPointsModel::emitDataChanged);
 	connect(cylinders, &CylindersModel::dataChanged, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
 	connect(cylinders, &CylindersModel::rowsInserted, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
@@ -97,6 +97,10 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
+}
+
+DivePlannerWidget::~DivePlannerWidget()
+{
 }
 
 void DivePlannerWidget::setReplanButton(bool replan)
@@ -537,11 +541,17 @@ void PlannerDetails::setPlanNotes(QString plan)
 	ui.divePlanOutput->setHtml(plan);
 }
 
-PlannerWidgets::PlannerWidgets()
+PlannerWidgets::PlannerWidgets() : plannerWidget(this)
 {
+	gasModel = std::make_unique<GasSelectionModel>();
+	diveTypeModel = std::make_unique<DiveTypeSelectionModel>();
 	connect(plannerDetails.printPlan(), &QPushButton::pressed, this, &PlannerWidgets::printDecoPlan);
 	connect(DivePlannerPointsModel::instance(), &DivePlannerPointsModel::calculatedPlanNotes,
 		&plannerDetails, &PlannerDetails::setPlanNotes);
+}
+
+PlannerWidgets::~PlannerWidgets()
+{
 }
 
 void PlannerWidgets::planDive(dive *currentDive)
@@ -560,8 +570,8 @@ void PlannerWidgets::planDive(dive *currentDive)
 		else	// No salinity means salt water
 			plannerWidget.setSalinity(SEAWATER_SALINITY);
 	}
-	GasSelectionModel::instance()->repopulate();
-	DiveTypeSelectionModel::instance()->repopulate();
+	gasModel->repopulate();
+	diveTypeModel->repopulate(); // TODO: this doesn't change anything!?
 	plannerWidget.setReplanButton(false);
 
 	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));	// This will reload the profile!
@@ -572,7 +582,7 @@ void PlannerWidgets::replanDive(int currentDC)
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->loadFromDive(&displayed_dive, currentDC);
 
-	DiveTypeSelectionModel::instance()->repopulate();
+	diveTypeModel->repopulate(); // TODO: this doesn't change anything!?
 	plannerWidget.setReplanButton(true);
 	plannerWidget.setupStartTime(timestampToDateTime(displayed_dive.when));
 	if (displayed_dive.surface_pressure.mbar)
