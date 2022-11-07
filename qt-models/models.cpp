@@ -51,7 +51,7 @@ DiveTypeSelectionModel *DiveTypeSelectionModel::instance()
 
 void DiveTypeSelectionModel::repopulate()
 {
-	QStringList modes = QStringList();
+	QStringList modes;
 	for (int i = 0; i < FREEDIVE; i++)
 		modes.append(gettextFromC::tr(divemode_text_ui[i]));
 	setStringList(modes);
