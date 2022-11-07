@@ -106,7 +106,7 @@ private:
 class AirTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
-	explicit AirTypesDelegate(QObject *parent = 0);
+	explicit AirTypesDelegate(QAbstractItemModel *model, QObject *parent = 0);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
@@ -115,7 +115,7 @@ private:
 class DiveTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
-	explicit DiveTypesDelegate(QObject *parent = 0);
+	explicit DiveTypesDelegate(QAbstractItemModel *model, QObject *parent = 0);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
