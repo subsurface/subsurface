@@ -14,6 +14,7 @@
 #include "core/filterpreset.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
+#include "core/divelog.h"
 #include "core/device.h"
 #include "core/trip.h"
 #include "core/import-csv.h"
@@ -879,19 +880,15 @@ void DiveLogImportDialog::parseTxtHeader(QString fileName, xml_params &params)
 
 void DiveLogImportDialog::on_buttonBox_accepted()
 {
-	struct dive_table table = empty_dive_table;
-	struct trip_table trips = empty_trip_table;
-	struct dive_site_table sites = empty_dive_site_table;
-	struct device_table devices;
-	struct filter_preset_table filter_presets;
+	struct divelog log;
 	QStringList r = resultModel->result();
 	if (ui->knownImports->currentText() != "Manual import") {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (ui->knownImports->currentText() == "Seabear CSV") {
-				parse_seabear_log(qPrintable(fileNames[i]), &table, &trips, &sites, &devices, &filter_presets);
+				parse_seabear_log(qPrintable(fileNames[i]), &log);
 			} else if (ui->knownImports->currentText() == "Poseidon MkVI") {
 				QPair<QString, QString> pair = poseidonFileNames(fileNames[i]);
-				parse_txt_file(qPrintable(pair.second), qPrintable(pair.first), &table, &trips, &sites, &devices);
+				parse_txt_file(qPrintable(pair.second), qPrintable(pair.first), &log);
 			} else {
 				xml_params params;
 
@@ -908,7 +905,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				setup_csv_params(r, params);
 				parse_csv_file(qPrintable(fileNames[i]), &params,
 						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv",
-						&table, &trips, &sites, &devices, &filter_presets);
+						&log);
 			}
 		}
 	} else {
@@ -944,7 +941,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				xml_params_add_int(&params, "visibilityField", r.indexOf(tr("Visibility")));
 				xml_params_add_int(&params, "ratingField", r.indexOf(tr("Rating")));
 
-				parse_manual_file(qPrintable(fileNames[i]), &params, &table, &trips, &sites, &devices, &filter_presets);
+				parse_manual_file(qPrintable(fileNames[i]), &params, &log);
 			} else {
 				xml_params params;
 
@@ -962,13 +959,13 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				setup_csv_params(r, params);
 				parse_csv_file(qPrintable(fileNames[i]), &params,
 						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv",
-						&table, &trips, &sites, &devices, &filter_presets);
+						&log);
 			}
 		}
 	}
 
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
-	Command::importDives(&table, &trips, &sites, &devices, nullptr, IMPORT_MERGE_ALL_TRIPS, source);
+	Command::importDives(log.dives, log.trips, log.sites, log.devices, nullptr, IMPORT_MERGE_ALL_TRIPS, source);
 }
 
 TagDragDelegate::TagDragDelegate(QObject *parent) : QStyledItemDelegate(parent)

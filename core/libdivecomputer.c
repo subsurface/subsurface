@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "gettext.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "sample.h"
 #include "subsurface-float.h"
@@ -512,8 +513,8 @@ static int find_dive(struct divecomputer *match)
 {
 	int i;
 
-	for (i = dive_table.nr - 1; i >= 0; i--) {
-		struct dive *old = dive_table.dives[i];
+	for (i = divelog.dives->nr - 1; i >= 0; i--) {
+		struct dive *old = divelog.dives->dives[i];
 
 		if (match_one_dive(match, old))
 			return 1;

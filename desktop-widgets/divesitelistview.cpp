@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divesitelistview.h"
 #include "core/subsurface-qt/divelistnotifier.h"
+#include "core/divelog.h"
 #include "core/divesite.h"
 #include "core/divefilter.h"
 #include "qt-models/divelocationmodel.h"
@@ -96,7 +97,7 @@ void DiveSiteListView::diveSiteAdded(struct dive_site *, int idx)
 
 void DiveSiteListView::diveSiteChanged(struct dive_site *ds, int field)
 {
-	int idx = get_divesite_idx(ds, &dive_site_table);
+	int idx = get_divesite_idx(ds, divelog.sites);
 	if (idx < 0)
 		return;
 	QModelIndex globalIdx = LocationInformationModel::instance()->index(idx, field);

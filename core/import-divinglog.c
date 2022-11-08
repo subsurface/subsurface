@@ -11,6 +11,7 @@
 #include "subsurface-string.h"
 #include "parse.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "device.h"
 #include "membuffer.h"
 #include "gettext.h"
@@ -390,9 +391,7 @@ static int divinglog_dive(void *param, int columns, char **data, char **column)
 }
 
 
-int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			    struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-			    struct device_table *devices)
+int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -401,10 +400,10 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = table;
-	state.trips = trips;
-	state.sites = sites;
-	state.devices = devices;
+	state.target_table = log->dives;
+	state.trips = log->trips;
+	state.sites = log->sites;
+	state.devices = log->devices;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility,SupplyType from Logbook where UUID not in (select UUID from DeletedRecords)";

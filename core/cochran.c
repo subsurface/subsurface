@@ -22,6 +22,7 @@
 #include "gettext.h"
 #include "cochran.h"
 #include "divelist.h"
+#include "divelog.h"
 
 #include <libdivecomputer/parser.h>
 
@@ -799,11 +800,9 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	free(buf);
 }
 
-int try_to_open_cochran(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+int try_to_open_cochran(const char *filename, struct memblock *mem, struct divelog *log)
 {
 	UNUSED(filename);
-	UNUSED(trips);
-	UNUSED(sites);
 	unsigned int i;
 	unsigned int mod;
 	unsigned int *offsets, dive1, dive2;
@@ -832,7 +831,7 @@ int try_to_open_cochran(const char *filename, struct memblock *mem, struct dive_
 			break;
 
 		cochran_parse_dive(decode, mod, mem->buffer + dive1,
-						dive2 - dive1, table);
+						dive2 - dive1, log->dives);
 	}
 
 	return 1; // no further processing needed

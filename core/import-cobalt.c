@@ -12,6 +12,7 @@
 #include "sample.h"
 #include "subsurface-string.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "device.h"
 #include "membuffer.h"
 #include "gettext.h"
@@ -219,9 +220,7 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 }
 
 
-int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			    struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-			    struct device_table *devices)
+int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -230,10 +229,10 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = table;
-	state.trips = trips;
-	state.sites = sites;
-	state.devices = devices;
+	state.target_table = log->dives;
+	state.trips = log->trips;
+	state.sites = log->sites;
+	state.devices = log->devices;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,(MaxDepthPressure*10000/SurfacePressure)-10000,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive where IsViewDeleted = 0";

@@ -2,15 +2,14 @@
 /* divesite.c */
 #include "divesite.h"
 #include "dive.h"
-#include "subsurface-string.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "membuffer.h"
+#include "subsurface-string.h"
 #include "table.h"
 #include "sha1.h"
 
 #include <math.h>
-
-struct dive_site_table dive_site_table;
 
 int get_divesite_idx(const struct dive_site *ds, struct dive_site_table *ds_table)
 {
@@ -110,7 +109,7 @@ struct dive_site *get_dive_site_by_gps_proximity(const location_t *loc, int dist
 
 int register_dive_site(struct dive_site *ds)
 {
-	return add_dive_site_to_table(ds, &dive_site_table);
+	return add_dive_site_to_table(ds, divelog.sites);
 }
 
 static int compare_sites(const struct dive_site *a, const struct dive_site *b)
@@ -232,7 +231,7 @@ void free_dive_site(struct dive_site *ds)
 
 int unregister_dive_site(struct dive_site *ds)
 {
-	return remove_dive_site(ds, &dive_site_table);
+	return remove_dive_site(ds, divelog.sites);
 }
 
 void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
@@ -319,7 +318,7 @@ struct dive_site *get_same_dive_site(const struct dive_site *site)
 {
 	int i;
 	struct dive_site *ds;
-	for_each_dive_site (i, ds, &dive_site_table)
+	for_each_dive_site (i, ds, divelog.sites)
 		if (same_dive_site(ds, site))
 			return ds;
 	return NULL;

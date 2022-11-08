@@ -11,6 +11,7 @@
 #include <time.h>
 
 #include "dive.h"
+#include "divelog.h"
 #include "subsurface-string.h"
 #include "errorhelper.h"
 #include "file.h"
@@ -76,8 +77,7 @@ out:
 }
 
 
-static void zip_read(struct zip_file *file, const char *filename, struct dive_table *table, struct trip_table *trips,
-		     struct dive_site_table *sites, struct device_table *devices, struct filter_preset_table *filter_presets)
+static void zip_read(struct zip_file *file, const char *filename, struct divelog *log)
 {
 	int size = 1024, n, read = 0;
 	char *mem = malloc(size);
@@ -88,12 +88,11 @@ static void zip_read(struct zip_file *file, const char *filename, struct dive_ta
 		mem = realloc(mem, size);
 	}
 	mem[read] = 0;
-	(void) parse_xml_buffer(filename, mem, read, table, trips, sites, devices, filter_presets, NULL);
+	(void) parse_xml_buffer(filename, mem, read, log, NULL);
 	free(mem);
 }
 
-int try_to_open_zip(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		    struct device_table *devices, struct filter_preset_table *filter_presets)
+int try_to_open_zip(const char *filename, struct divelog *log)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
@@ -108,7 +107,7 @@ int try_to_open_zip(const char *filename, struct dive_table *table, struct trip_
 			/* skip parsing the divelogs.de pictures */
 			if (strstr(zip_get_name(zip, index, 0), "pictures/"))
 				continue;
-			zip_read(file, filename, table, trips, sites, devices, filter_presets);
+			zip_read(file, filename, log);
 			zip_fclose(file);
 			success++;
 		}
@@ -128,8 +127,7 @@ static int db_test_func(void *param, int columns, char **data, char **column)
 	return *data[0] == '0';
 }
 
-static int try_to_open_db(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips,
-			  struct dive_site_table *sites, struct device_table *devices)
+static int try_to_open_db(const char *filename, struct memblock *mem, struct divelog *log)
 {
 	sqlite3 *handle;
 	char dm4_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%ProfileBlob%'";
@@ -151,7 +149,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Suunto DM5 database format */
 	retval = sqlite3_exec(handle, dm5_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_dm5_buffer(handle, filename, mem->buffer, mem->size, table, trips, sites, devices);
+		retval = parse_dm5_buffer(handle, filename, mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -159,7 +157,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Suunto DM4 database format */
 	retval = sqlite3_exec(handle, dm4_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_dm4_buffer(handle, filename, mem->buffer, mem->size, table, trips, sites, devices);
+		retval = parse_dm4_buffer(handle, filename, mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -167,7 +165,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Shearwater database format */
 	retval = sqlite3_exec(handle, shearwater_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_shearwater_buffer(handle, filename, mem->buffer, mem->size, table, trips, sites, devices);
+		retval = parse_shearwater_buffer(handle, filename, mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -175,7 +173,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Shearwater cloud database format */
 	retval = sqlite3_exec(handle, shearwater_cloud_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_shearwater_cloud_buffer(handle, filename, mem->buffer, mem->size, table, trips, sites, devices);
+		retval = parse_shearwater_cloud_buffer(handle, filename, mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -183,7 +181,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Atomic Cobalt database format */
 	retval = sqlite3_exec(handle, cobalt_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_cobalt_buffer(handle, filename, mem->buffer, mem->size, table, trips, sites, devices);
+		retval = parse_cobalt_buffer(handle, filename, mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -191,7 +189,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Divinglog database format */
 	retval = sqlite3_exec(handle, divinglog_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_divinglog_buffer(handle, filename, mem->buffer, mem->size, table, trips, sites, devices);
+		retval = parse_divinglog_buffer(handle, filename, mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -199,7 +197,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Seac database format */
 	retval = sqlite3_exec(handle, seacsync_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_seac_buffer(handle, filename, mem->buffer, mem->size, table, trips, sites, devices);
+		retval = parse_seac_buffer(handle, filename, mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -226,9 +224,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
  *
  * Followed by the data values (all comma-separated, all one long line).
  */
-static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem,
-			    struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-			    struct device_table *devices, struct filter_preset_table *filter_presets)
+static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem, struct divelog *log)
 {
 	// hack to be able to provide a comment for the translated string
 	static char *csv_warning = QT_TRANSLATE_NOOP3("gettextFromC",
@@ -237,40 +233,38 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 
 	/* Suunto Dive Manager files: SDE, ZIP; divelogs.de files: DLD */
 	if (!strcasecmp(fmt, "SDE") || !strcasecmp(fmt, "ZIP") || !strcasecmp(fmt, "DLD"))
-		return try_to_open_zip(filename, table, trips, sites, devices, filter_presets);
+		return try_to_open_zip(filename, log);
 
 	/* CSV files */
 	if (!strcasecmp(fmt, "CSV"))
 		return report_error(translate("gettextFromC", csv_warning), filename);
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
 	if (!strcasecmp(fmt, "CAN"))
-		return try_to_open_cochran(filename, mem, table, trips, sites);
+		return try_to_open_cochran(filename, mem, log);
 	/* Cochran export comma-separated-value files */
 	if (!strcasecmp(fmt, "DPT"))
-		return try_to_open_csv(mem, CSV_DEPTH, table, trips, sites);
+		return try_to_open_csv(mem, CSV_DEPTH, log);
 	if (!strcasecmp(fmt, "LVD"))
-		return try_to_open_liquivision(filename, mem, table, trips, sites);
+		return try_to_open_liquivision(filename, mem, log);
 	if (!strcasecmp(fmt, "TMP"))
-		return try_to_open_csv(mem, CSV_TEMP, table, trips, sites);
+		return try_to_open_csv(mem, CSV_TEMP, log);
 	if (!strcasecmp(fmt, "HP1"))
-		return try_to_open_csv(mem, CSV_PRESSURE, table, trips, sites);
+		return try_to_open_csv(mem, CSV_PRESSURE, log);
 
 	return 0;
 }
 
-static int parse_file_buffer(const char *filename, struct memblock *mem, struct dive_table *table,
-			     struct trip_table *trips, struct dive_site_table *sites,
-			     struct device_table *devices, struct filter_preset_table *filter_presets)
+static int parse_file_buffer(const char *filename, struct memblock *mem, struct divelog *log)
 {
 	int ret;
 	char *fmt = strrchr(filename, '.');
-	if (fmt && (ret = open_by_filename(filename, fmt + 1, mem, table, trips, sites, devices, filter_presets)) != 0)
+	if (fmt && (ret = open_by_filename(filename, fmt + 1, mem, log)) != 0)
 		return ret;
 
 	if (!mem->size || !mem->buffer)
 		return report_error("Out of memory parsing file %s\n", filename);
 
-	return parse_xml_buffer(filename, mem->buffer, mem->size, table, trips, sites, devices, filter_presets, NULL);
+	return parse_xml_buffer(filename, mem->buffer, mem->size, log, NULL);
 }
 
 bool remote_repo_uptodate(const char *filename, struct git_info *info)
@@ -292,8 +286,7 @@ bool remote_repo_uptodate(const char *filename, struct git_info *info)
 	return false;
 }
 
-int parse_file(const char *filename, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-	       struct device_table *devices, struct filter_preset_table *filter_presets)
+int parse_file(const char *filename, struct divelog *log)
 {
 	struct git_info info;
 	struct memblock mem;
@@ -312,7 +305,7 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 			}
 		}
 
-		ret = git_load_dives(&info, table, trips, sites, devices, filter_presets);
+		ret = git_load_dives(&info, log);
 		cleanup_git_info(&info);
 		return ret;
 	}
@@ -329,7 +322,7 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 
 	fmt = strrchr(filename, '.');
 	if (fmt && (!strcasecmp(fmt + 1, "DB") || !strcasecmp(fmt + 1, "BAK") || !strcasecmp(fmt + 1, "SQL"))) {
-		if (!try_to_open_db(filename, &mem, table, trips, sites, devices)) {
+		if (!try_to_open_db(filename, &mem, log)) {
 			free(mem.buffer);
 			return 0;
 		}
@@ -337,7 +330,7 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 
 	/* Divesoft Freedom */
 	if (fmt && (!strcasecmp(fmt + 1, "DLF"))) {
-		ret = parse_dlf_buffer(mem.buffer, mem.size, table, trips, sites, devices);
+		ret = parse_dlf_buffer(mem.buffer, mem.size, log);
 		free(mem.buffer);
 		return ret;
 	}
@@ -351,9 +344,9 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 		wl_name = strcat(wl_name, ".add");
 		if((ret = readfile(wl_name, &wl_mem)) < 0) {
 			fprintf(stderr, "No file %s found. No WLog extensions.\n", wl_name);
-			ret = datatrak_import(&mem, NULL, table, trips, sites, devices);
+			ret = datatrak_import(&mem, NULL, log);
 		} else {
-			ret = datatrak_import(&mem, &wl_mem, table, trips, sites, devices);
+			ret = datatrak_import(&mem, &wl_mem, log);
 			free(wl_mem.buffer);
 		}
 		free(mem.buffer);
@@ -364,11 +357,11 @@ int parse_file(const char *filename, struct dive_table *table, struct trip_table
 	/* OSTCtools */
 	if (fmt && (!strcasecmp(fmt + 1, "DIVE"))) {
 		free(mem.buffer);
-		ostctools_import(filename, table, trips, sites);
+		ostctools_import(filename, log);
 		return 0;
 	}
 
-	ret = parse_file_buffer(filename, &mem, table, trips, sites, devices, filter_presets);
+	ret = parse_file_buffer(filename, &mem, log);
 	free(mem.buffer);
 	return ret;
 }

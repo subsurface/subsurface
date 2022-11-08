@@ -4,6 +4,7 @@
 #include "ssrf.h"
 #include "divesite.h"
 #include "dive.h"
+#include "divelog.h"
 #include "file.h"
 #include "sample.h"
 #include "strndup.h"
@@ -436,10 +437,9 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 	free_dive(dive);
 }
 
-int try_to_open_liquivision(const char *filename, struct memblock *mem, struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites)
+int try_to_open_liquivision(const char *filename, struct memblock *mem, struct divelog *log)
 {
 	UNUSED(filename);
-	UNUSED(trips);
 	const unsigned char *buf = mem->buffer;
 	unsigned int buf_size = mem->size;
 	unsigned int ptr;
@@ -461,7 +461,7 @@ int try_to_open_liquivision(const char *filename, struct memblock *mem, struct d
 	}
 	ptr += 4;
 
-	parse_dives(log_version, buf + ptr, buf_size - ptr, table, sites);
+	parse_dives(log_version, buf + ptr, buf_size - ptr, log->dives, log->sites);
 
 	return 1;
 }

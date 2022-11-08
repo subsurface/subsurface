@@ -6,7 +6,8 @@
 #include <QFileDialog>
 #include <QFileInfo>
 
-extern "C" void smartrak_import(const char *file, struct dive_table *divetable);
+struct divelog;
+extern "C" void smartrak_import(const char *file, struct divelog *log);
 
 namespace Ui {
 class Smrtk2ssrfcWindow;

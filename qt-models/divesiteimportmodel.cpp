@@ -1,4 +1,5 @@
 #include "divesiteimportmodel.h"
+#include "core/divelog.h"
 #include "core/qthelper.h"
 #include "core/taxonomy.h"
 
@@ -67,7 +68,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 			// 40075000 is circumference of the earth in meters
 			struct dive_site *nearest_ds =
 				get_dive_site_by_gps_proximity(&ds->location,
-				40075000, &dive_site_table);
+				40075000, divelog.sites);
 			if (nearest_ds)
 				return nearest_ds->name;
 			else
@@ -77,7 +78,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 			unsigned int distance = 0;
 			struct dive_site *nearest_ds =
 				get_dive_site_by_gps_proximity(&ds->location,
-				40075000, &dive_site_table);
+				40075000, divelog.sites);
 			if (nearest_ds)
 				distance = get_distance(&ds->location,
 					&nearest_ds->location);
@@ -134,7 +135,7 @@ void DivesiteImportedModel::repopulate(struct dive_site_table *sites)
 	lastIndex = importedSitesTable->nr - 1;
 	checkStates.resize(importedSitesTable->nr);
 	for (int row = 0; row < importedSitesTable->nr; row++)
-		if (get_dive_site_by_gps(&importedSitesTable->dive_sites[row]->location, &dive_site_table))
+		if (get_dive_site_by_gps(&importedSitesTable->dive_sites[row]->location, divelog.sites))
 			checkStates[row] = false;
 		else
 			checkStates[row] = true;

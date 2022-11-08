@@ -3,6 +3,7 @@
 #include "divelocationmodel.h"
 #include "core/divesite.h"
 #include "core/divefilter.h"
+#include "core/divelog.h"
 #include "core/settings/qPrefDisplay.h"
 #if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
 #include "qt-models/filtermodels.h"
@@ -161,8 +162,8 @@ void MapLocationModel::reload(QObject *map)
 	if (diveSiteMode)
 		m_selectedDs = DiveFilter::instance()->filteredDiveSites();
 #endif
-	for (int i = 0; i < dive_site_table.nr; ++i) {
-		struct dive_site *ds = dive_site_table.dive_sites[i];
+	for (int i = 0; i < divelog.sites->nr; ++i) {
+		struct dive_site *ds = divelog.sites->dive_sites[i];
 		QGeoCoordinate dsCoord;
 
 		// Don't show dive sites of hidden dives, unless we're in dive site edit mode.

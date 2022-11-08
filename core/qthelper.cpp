@@ -2,6 +2,7 @@
 #include "qthelper.h"
 #include "dive.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "core/settings/qPrefLanguage.h"
 #include "core/settings/qPrefUpdateManager.h"
 #include "core/subsurface-qt/divelistnotifier.h"
@@ -1025,12 +1026,14 @@ static QString get_dive_only_date_string(timestamp_t when)
 
 QString get_first_dive_date_string()
 {
-	return dive_table.nr > 0 ? get_dive_only_date_string(dive_table.dives[0]->when) : gettextFromC::tr("no dives");
+	const dive_table *dives = divelog.dives;
+	return dives->nr > 0 ? get_dive_only_date_string(dives->dives[0]->when) : gettextFromC::tr("no dives");
 }
 
 QString get_last_dive_date_string()
 {
-	return dive_table.nr > 0 ? get_dive_only_date_string(dive_table.dives[dive_table.nr - 1]->when) : gettextFromC::tr("no dives");
+	const dive_table *dives = divelog.dives;
+	return dives->nr > 0 ? get_dive_only_date_string(dives->dives[dives->nr - 1]->when) : gettextFromC::tr("no dives");
 }
 
 extern "C" char *get_current_date()

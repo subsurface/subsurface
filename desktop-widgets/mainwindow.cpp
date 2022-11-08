@@ -19,6 +19,7 @@
 
 #include "core/color.h"
 #include "core/device.h"
+#include "core/divelog.h"
 #include "core/divesitehelpers.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
@@ -413,7 +414,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 
 	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
-	if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table))
+	if (!parse_file(fileNamePtr.data(), &divelog))
 		setCurrentFile(fileNamePtr.data());
 	process_loaded_dives();
 	hideProgressBar();
@@ -423,7 +424,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 // Return whether saving to cloud is OK. If it isn't, show an error return false.
 static bool saveToCloudOK()
 {
-	if (!dive_table.nr) {
+	if (divelog.dives->nr) {
 		report_error(qPrintable(gettextFromC::tr("Don't save an empty log to the cloud")));
 		return false;
 	}
@@ -1276,18 +1277,14 @@ void MainWindow::importFiles(const QStringList fileNames)
 		return;
 
 	QByteArray fileNamePtr;
-	struct dive_table table = empty_dive_table;
-	struct trip_table trips = empty_trip_table;
-	struct dive_site_table sites = empty_dive_site_table;
-	struct device_table devices;
-	struct filter_preset_table filter_presets;
+	struct divelog log;
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &table, &trips, &sites, &devices, &filter_presets);
+		parse_file(fileNamePtr.data(), &log);
 	}
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
-	Command::importDives(&table, &trips, &sites, &devices, &filter_presets, IMPORT_MERGE_ALL_TRIPS, source);
+	Command::importDives(log.dives, log.trips, log.sites, log.devices, log.filter_presets, IMPORT_MERGE_ALL_TRIPS, source);
 }
 
 void MainWindow::loadFiles(const QStringList fileNames)
@@ -1301,7 +1298,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	showProgressBar();
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		if (!parse_file(fileNamePtr.data(), &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table)) {
+		if (!parse_file(fileNamePtr.data(), &divelog)) {
 			setCurrentFile(fileNamePtr.data());
 			addRecentFile(fileNamePtr, false);
 		}
@@ -1372,28 +1369,19 @@ void MainWindow::on_actionImportDiveSites_triggered()
 		return;
 	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
 
-	struct dive_table table = empty_dive_table;
-	struct trip_table trips = empty_trip_table;
-	struct dive_site_table sites = empty_dive_site_table;
-	struct device_table devices;
-	struct filter_preset_table filter_presets;
+	struct divelog log;
 
 	for (const QString &s: fileNames) {
 		QByteArray fileNamePtr = QFile::encodeName(s);
-		parse_file(fileNamePtr.data(), &table, &trips, &sites, &devices, &filter_presets);
+		parse_file(fileNamePtr.data(), &log);
 	}
 	// The imported dive sites still have pointers to imported dives - remove them
-	for (int i = 0; i < sites.nr; ++i)
-		sites.dive_sites[i]->dives.nr = 0;
-
-	// Now we can clear the imported dives and trips.
-	clear_dive_table(&table);
-	clear_trip_table(&trips);
+	for (int i = 0; i < log.sites->nr; ++i)
+		log.sites->dive_sites[i]->dives.nr = 0;
 
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
 
-	// sites table will be cleared by DivesiteImportDialog constructor
-	DivesiteImportDialog divesiteImport(sites, source, this);
+	DivesiteImportDialog divesiteImport(*log.sites, source, this);
 	divesiteImport.exec();
 }
 

@@ -2,6 +2,7 @@
 #include "exportfuncs.h"
 #include "core/membuffer.h"
 #include "core/dive.h"
+#include "core/divelog.h"
 #include "core/divesite.h"
 #include "core/gettextfromc.h"
 #include "core/tag.h"
@@ -62,7 +63,7 @@ void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 		filename = filename.append(".png");
 	QFileInfo fi(filename);
 
-	int todo = selected_only ? amount_selected : dive_table.nr;
+	int todo = selected_only ? amount_selected : divelog.dives->nr;
 	int done = 0;
 	auto profile = getPrintProfile();
 	for_each_dive (i, dive) {
@@ -131,7 +132,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 	put_format(&buf, "\n%%%%%%%%%% Begin Dive Data: %%%%%%%%%%\n");
 
-	int todo = selected_only ? amount_selected : dive_table.nr;
+	int todo = selected_only ? amount_selected : divelog.dives->nr;
 	int done = 0;
 	auto profile = getPrintProfile();
 	for_each_dive (i, dive) {
@@ -330,9 +331,9 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 		return res;
 	}
 
-	res.reserve(dive_site_table.nr);
-	for (int i = 0; i < dive_site_table.nr; i++) {
-		struct dive_site *ds = get_dive_site(i, &dive_site_table);
+	res.reserve(divelog.sites->nr);
+	for (int i = 0; i < divelog.sites->nr; i++) {
+		struct dive_site *ds = get_dive_site(i, divelog.sites);
 		if (dive_site_is_empty(ds))
 			continue;
 		if (selectedOnly && !is_dive_site_selected(ds))
@@ -343,8 +344,8 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 	/* walk the dive site list */
 	int i;
 	const struct dive_site *ds;
-	for_each_dive_site (i, ds, &dive_site_table)
-		res.push_back(get_dive_site(i, &dive_site_table));
+	for_each_dive_site (i, ds, divelog.sites)
+		res.push_back(get_dive_site(i, divelog.sites));
 #endif
 	return res;
 }

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "diveplannermodel.h"
 #include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/subsurface-string.h"
 #include "qt-models/cylindermodel.h"
 #include "core/planner.h"
@@ -93,13 +94,12 @@ void DivePlannerPointsModel::setupStartTime()
 	// if the latest dive is in the future, then start an hour after it ends
 	// otherwise start an hour from now
 	startTime = QDateTime::currentDateTimeUtc().addSecs(3600 + gettimezoneoffset());
-	if (dive_table.nr) {
-		struct dive *d = get_dive(dive_table.nr - 1);
+	if (divelog.dives->nr > 0) {
+		struct dive *d = get_dive(divelog.dives->nr - 1);
 		time_t ends = dive_endtime(d);
 		time_t diff = ends - dateTimeToTimestamp(startTime);
-		if (diff > 0) {
+		if (diff > 0)
 			startTime = startTime.addSecs(diff + 3600);
-		}
 	}
 }
 

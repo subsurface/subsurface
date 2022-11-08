@@ -5,9 +5,7 @@
 #include "git2.h"
 #include "filterpreset.h"
 
-struct dive_table;
-struct dive_site_table;
-struct trip_table;
+struct dive_log;
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,7 +24,7 @@ enum remote_transport { RT_LOCAL, RT_HTTPS, RT_SSH, RT_OTHER };
 
 struct git_oid;
 struct git_repository;
-struct device_table;
+struct divelog;
 
 struct git_info {
 	const char *url;
@@ -43,9 +41,7 @@ extern bool open_git_repository(struct git_info *info);
 extern bool remote_repo_uptodate(const char *filename, struct git_info *info);
 extern int sync_with_remote(struct git_info *);
 extern int git_save_dives(struct git_info *, bool select_only);
-extern int git_load_dives(struct git_info *, struct dive_table *table, struct trip_table *trips,
-			  struct dive_site_table *sites, struct device_table *devices,
-			  struct filter_preset_table *filter_presets);
+extern int git_load_dives(struct git_info *, struct divelog *log);
 extern const char *get_sha(git_repository *repo, const char *branch);
 extern int do_git_save(struct git_info *, bool select_only, bool create_empty);
 extern void cleanup_git_info(struct git_info *);

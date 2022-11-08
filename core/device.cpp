@@ -2,12 +2,12 @@
 #include "device.h"
 #include "dive.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "subsurface-string.h"
 #include "errorhelper.h" // for verbose flag
 #include "selection.h"
 #include "core/settings/qPrefDiveComputer.h"
 
-struct device_table device_table;
 struct fingerprint_table fingerprint_table;
 
 static bool same_device(const device &dev1, const device &dev2)
@@ -140,7 +140,7 @@ extern "C" int is_default_dive_computer_device(const char *name)
 
 const char *get_dc_nickname(const struct divecomputer *dc)
 {
-	const device *existNode = get_device_for_dc(&device_table, dc);
+	const device *existNode = get_device_for_dc(divelog.devices, dc);
 
 	if (existNode && !existNode->nickName.empty())
 		return existNode->nickName.c_str();

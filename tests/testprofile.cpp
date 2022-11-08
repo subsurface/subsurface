@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testprofile.h"
 #include "core/device.h"
+#include "core/divelog.h"
 #include "core/divesite.h"
 #include "core/trip.h"
 #include "core/file.h"
@@ -34,7 +35,7 @@ void TestProfile::init()
 void TestProfile::testProfileExport()
 {
 	prefs.planner_deco_mode = BUEHLMANN;
-	parse_file(SUBSURFACE_TEST_DATA "/dives/abitofeverything.ssrf", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/abitofeverything.ssrf", &divelog);
 	save_profiledata("exportprofile.csv", false);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/exportprofilereference.csv");
 	QCOMPARE(org.open(QFile::ReadOnly), true);
@@ -50,7 +51,7 @@ void TestProfile::testProfileExport()
 void TestProfile::testProfileExportVPMB()
 {
 	prefs.planner_deco_mode = VPMB;
-	parse_file(SUBSURFACE_TEST_DATA "/dives/abitofeverything.ssrf", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/abitofeverything.ssrf", &divelog);
 	save_profiledata("exportprofileVPMB.csv", false);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/exportprofilereferenceVPMB.csv");
 	QCOMPARE(org.open(QFile::ReadOnly), true);

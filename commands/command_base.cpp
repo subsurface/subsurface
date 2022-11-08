@@ -2,6 +2,7 @@
 
 #include "command.h"
 #include "command_base.h"
+#include "core/divelog.h"
 #include "core/globals.h"
 #include "core/qthelper.h" // for updateWindowTitle()
 #include "core/subsurface-qt/divelistnotifier.h"
@@ -65,7 +66,7 @@ QString diveNumberOrDate(struct dive *d)
 QString getListOfDives(const std::vector<struct dive*> &dives)
 {
 	QString listOfDives;
-	if ((int)dives.size() == dive_table.nr)
+	if ((int)dives.size() == divelog.dives->nr)
 		return Base::tr("all dives");
 	int i = 0;
 	for (dive *d: dives) {

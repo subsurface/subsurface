@@ -15,6 +15,7 @@
 #include "gettext.h"
 #include "dive.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "pref.h"
 #include "subsurface-string.h"
 #include "table.h"
@@ -305,8 +306,8 @@ void reset_tank_info_table(struct tank_info_table *table)
 		add_default_tank_infos(table);
 
 	/* Add cylinders from dive list */
-	for (int i = 0; i < dive_table.nr; ++i) {
-		const struct dive *dive = dive_table.dives[i];
+	for (int i = 0; i < divelog.dives->nr; ++i) {
+		const struct dive *dive = divelog.dives->dives[i];
 		for (int j = 0; j < dive->cylinders.nr; j++) {
 			const cylinder_t *cyl = get_cylinder(dive, j);
 			add_cylinder_description(&cyl->type);

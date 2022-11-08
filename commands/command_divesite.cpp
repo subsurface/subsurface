@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_divesite.h"
+#include "core/divelog.h"
 #include "core/divesite.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/qthelper.h"
@@ -154,8 +155,8 @@ void DeleteDiveSites::undo()
 PurgeUnusedDiveSites::PurgeUnusedDiveSites()
 {
 	setText(Command::Base::tr("purge unused dive sites"));
-	for (int i = 0; i < dive_site_table.nr; ++i) {
-		dive_site *ds = dive_site_table.dive_sites[i];
+	for (int i = 0; i < divelog.sites->nr; ++i) {
+		dive_site *ds = divelog.sites->dive_sites[i];
 		if (ds->dives.nr == 0)
 			sitesToRemove.push_back(ds);
 	}
@@ -404,7 +405,7 @@ ApplyGPSFixes::ApplyGPSFixes(const std::vector<DiveAndLocation> &fixes)
 				siteLocations.push_back({ ds, dl.location });
 			}
 		} else {
-			ds = create_dive_site(qPrintable(dl.name), &dive_site_table);
+			ds = create_dive_site(qPrintable(dl.name), divelog.sites);
 			ds->location = dl.location;
 			add_dive_to_dive_site(dl.d, ds);
 			dl.d->dive_site = nullptr; // This will be set on redo()

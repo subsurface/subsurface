@@ -18,8 +18,6 @@
 #include "device.h"
 #include "gettext.h"
 
-struct dive_table dive_table;
-
 void init_parser_state(struct parser_state *state)
 {
 	memset(state, 0, sizeof(*state));

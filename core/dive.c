@@ -11,6 +11,7 @@
 #include "libdivecomputer.h"
 #include "device.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "event.h"
@@ -2859,7 +2860,7 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 	 * Otherwise the tail is unnumbered.
 	 */
 	if (d2->number) {
-		if (dive_table.nr == nr + 1)
+		if (divelog.dives->nr == nr + 1)
 			d2->number++;
 		else
 			d2->number = 0;
@@ -3331,9 +3332,9 @@ depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int rou
 
 struct dive *get_dive(int nr)
 {
-	if (nr >= dive_table.nr || nr < 0)
+	if (nr >= divelog.dives->nr || nr < 0)
 		return NULL;
-	return dive_table.dives[nr];
+	return divelog.dives->dives[nr];
 }
 
 struct dive_site *get_dive_site_for_dive(const struct dive *dive)

@@ -3,6 +3,7 @@
 
 #include "selection.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "trip.h"
 #include "subsurface-qt/divelistnotifier.h"
 
@@ -40,7 +41,7 @@ extern "C" void deselect_dive(struct dive *dive)
 				}
 			}
 			selected_dive = idx;
-			while (++selected_dive < dive_table.nr) {
+			while (++selected_dive < divelog.dives->nr) {
 				dive = get_dive(selected_dive);
 				if (dive && dive->selected) {
 					current_dive = dive;
@@ -163,8 +164,8 @@ void setSelection(const std::vector<dive *> &selection, dive *currentDive)
 
 	// Since we select only dives, there are no selected trips!
 	amount_trips_selected = 0;
-	for (int i = 0; i < trip_table.nr; ++i)
-		trip_table.trips[i]->selected = false;
+	for (int i = 0; i < divelog.trips->nr; ++i)
+		divelog.trips->trips[i]->selected = false;
 
 	// TODO: We might want to keep track of selected dives in a more efficient way!
 	int i;
@@ -233,8 +234,8 @@ std::vector<dive *> getDiveSelection()
 // Select the first dive that is visible
 extern "C" void select_newest_visible_dive()
 {
-	for (int i = dive_table.nr - 1; i >= 0; --i) {
-		dive *d = dive_table.dives[i];
+	for (int i = divelog.dives->nr - 1; i >= 0; --i) {
+		dive *d = divelog.dives->dives[i];
 		if (!d->hidden_by_filter)
 			return select_single_dive(d);
 	}
@@ -263,9 +264,9 @@ extern "C" struct dive_trip *single_selected_trip()
 {
 	if (amount_trips_selected != 1)
 		return NULL;
-	for (int i = 0; i < trip_table.nr; ++i) {
-		if (trip_table.trips[i]->selected)
-			return trip_table.trips[i];
+	for (int i = 0; i < divelog.trips->nr; ++i) {
+		if (divelog.trips->trips[i]->selected)
+			return divelog.trips->trips[i];
 	}
 	fprintf(stderr, "warning: found no selected trip even though one should be selected\n");
 	return NULL; // shouldn't happen
@@ -280,6 +281,6 @@ extern "C" void clear_selection(void)
 	struct dive *dive;
 	for_each_dive (i, dive)
 		dive->selected = false;
-	for (int i = 0; i < trip_table.nr; ++i)
-		trip_table.trips[i]->selected = false;
+	for (int i = 0; i < divelog.trips->nr; ++i)
+		divelog.trips->trips[i]->selected = false;
 }

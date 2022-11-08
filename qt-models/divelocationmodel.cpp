@@ -4,6 +4,7 @@
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/qthelper.h"
 #include "core/divesite.h"
+#include "core/divelog.h"
 #include "core/metrics.h"
 #ifndef SUBSURFACE_MOBILE
 #include "cleanertablemodel.h" // for trashIcon() and editIcon()
@@ -36,7 +37,7 @@ int LocationInformationModel::columnCount(const QModelIndex &) const
 
 int LocationInformationModel::rowCount(const QModelIndex &) const
 {
-	return dive_site_table.nr;
+	return divelog.sites->nr;
 }
 
 QVariant LocationInformationModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -124,7 +125,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 	if (!index.isValid())
 		return QVariant();
 
-	struct dive_site *ds = get_dive_site(index.row(), &dive_site_table);
+	struct dive_site *ds = get_dive_site(index.row(), divelog.sites);
 	return getDiveSiteData(ds, index.column(), role);
 }
 
@@ -136,7 +137,7 @@ void LocationInformationModel::update()
 
 void LocationInformationModel::diveSiteDiveCountChanged(dive_site *ds)
 {
-	int idx = get_divesite_idx(ds, &dive_site_table);
+	int idx = get_divesite_idx(ds, divelog.sites);
 	if (idx >= 0)
 		dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
 }
@@ -161,7 +162,7 @@ void LocationInformationModel::diveSiteDeleted(struct dive_site *, int idx)
 
 void LocationInformationModel::diveSiteChanged(struct dive_site *ds, int field)
 {
-	int idx = get_divesite_idx(ds, &dive_site_table);
+	int idx = get_divesite_idx(ds, divelog.sites);
 	if (idx < 0)
 		return;
 	dataChanged(createIndex(idx, field), createIndex(idx, field));
@@ -169,7 +170,7 @@ void LocationInformationModel::diveSiteChanged(struct dive_site *ds, int field)
 
 void LocationInformationModel::diveSiteDivesChanged(struct dive_site *ds)
 {
-	int idx = get_divesite_idx(ds, &dive_site_table);
+	int idx = get_divesite_idx(ds, divelog.sites);
 	if (idx < 0)
 		return;
 	dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
@@ -180,9 +181,9 @@ bool DiveSiteSortedModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 	if (fullText.isEmpty())
 		return true;
 
-	if (sourceRow < 0 || sourceRow > dive_site_table.nr)
+	if (sourceRow < 0 || sourceRow > divelog.sites->nr)
 		return false;
-	struct dive_site *ds = dive_site_table.dive_sites[sourceRow];
+	struct dive_site *ds = divelog.sites->dive_sites[sourceRow];
 	QString text = QString(ds->name) + QString(ds->description) + QString(ds->notes);
 	return text.contains(fullText, Qt::CaseInsensitive);
 }
@@ -192,8 +193,8 @@ bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2)
 	// The source indices correspond to indices in the global dive site table.
 	// Let's access them directly without going via the source model.
 	// Kind of dirty, but less effort.
-	struct dive_site *ds1 = get_dive_site(i1.row(), &dive_site_table);
-	struct dive_site *ds2 = get_dive_site(i2.row(), &dive_site_table);
+	struct dive_site *ds1 = get_dive_site(i1.row(), divelog.sites);
+	struct dive_site *ds2 = get_dive_site(i2.row(), divelog.sites);
 	if (!ds1 || !ds2) // Invalid dive sites compare as different
 		return false;
 	switch (i1.column()) {
@@ -229,18 +230,18 @@ QStringList DiveSiteSortedModel::allSiteNames() const
 		// This shouldn't happen, but if model and core get out of sync,
 		// (more precisely: the core has more sites than the model is aware of),
 		// we might get an invalid index.
-		if (idx < 0 || idx > dive_site_table.nr) {
+		if (idx < 0 || idx > divelog.sites->nr) {
 			SSRF_INFO("DiveSiteSortedModel::allSiteNames(): invalid index");
 			continue;
 		}
-		locationNames << QString(dive_site_table.dive_sites[idx]->name);
+		locationNames << QString(divelog.sites->dive_sites[idx]->name);
 	}
 	return locationNames;
 }
 
 struct dive_site *DiveSiteSortedModel::getDiveSite(const QModelIndex &idx)
 {
-	return get_dive_site(mapToSource(idx).row(), &dive_site_table);
+	return get_dive_site(mapToSource(idx).row(), divelog.sites);
 }
 
 #ifndef SUBSURFACE_MOBILE

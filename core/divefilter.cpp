@@ -2,6 +2,7 @@
 
 #include "divefilter.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "gettextfromc.h"
 #include "qthelper.h"
 #include "selection.h"
@@ -73,7 +74,7 @@ void DiveFilter::reset()
 {
 	int i;
 	dive *d;
-	shown_dives = dive_table.nr;
+	shown_dives = divelog.dives->nr;
 	for_each_dive(i, d)
 		d->hidden_by_filter = false;
 	updateAll();
@@ -201,10 +202,11 @@ bool DiveFilter::diveSiteMode() const
 
 QString DiveFilter::shownText() const
 {
+	int num = divelog.dives->nr;
 	if (diveSiteMode() || filterData.validFilter())
-		return gettextFromC::tr("%L1/%L2 shown").arg(shown_dives).arg(dive_table.nr);
+		return gettextFromC::tr("%L1/%L2 shown").arg(shown_dives).arg(num);
 	else
-		return gettextFromC::tr("%L1 dives").arg(dive_table.nr);
+		return gettextFromC::tr("%L1 dives").arg(num);
 }
 
 int DiveFilter::shownDives() const

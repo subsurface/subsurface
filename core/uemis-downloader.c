@@ -25,6 +25,7 @@
 #include "libdivecomputer.h"
 #include "uemis.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "file.h"
@@ -1051,7 +1052,7 @@ static char *uemis_get_divenr(char *deviceidstr, struct dive_table *table, int f
 	 * Otherwise, use the global dive table.
 	 */
 	if (!force && !table->nr)
-		table = &dive_table;
+		table = divelog.dives;
 
 	for (i = 0; i < table->nr; i++) {
 		struct dive *d = table->dives[i];

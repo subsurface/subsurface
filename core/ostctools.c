@@ -9,6 +9,7 @@
 #include "gettext.h"
 #include "dive.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "extradata.h"
 #include "file.h"
 #include "libdivecomputer.h"
@@ -39,10 +40,8 @@ static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t *
  * each file. So it's not necessary to iterate once and again on a parsing
  * function. Actually there's only one kind of archive for every DC model.
  */
-void ostctools_import(const char *file, struct dive_table *divetable, struct trip_table *trips, struct dive_site_table *sites)
+void ostctools_import(const char *file, struct divelog *log)
 {
-	UNUSED(trips);
-	UNUSED(sites);
 	FILE *archive;
 	device_data_t *devdata = calloc(1, sizeof(device_data_t));
 	dc_family_t dc_fam;
@@ -184,8 +183,8 @@ void ostctools_import(const char *file, struct dive_table *divetable, struct tri
 	} else {
 		add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
 	}
-	record_dive_to_table(ostcdive, divetable);
-	sort_dive_table(divetable);
+	record_dive_to_table(ostcdive, log->dives);
+	sort_dive_table(log->dives);
 
 close_out:
 	fclose(archive);
