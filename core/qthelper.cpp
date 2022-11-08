@@ -36,7 +36,6 @@
 #include <QApplication>
 #include <QTextDocument>
 #include <QPainter>
-#include <QProgressDialog>	// TODO: remove with convertThumbnails()
 #include <QSvgRenderer>
 #include <cstdarg>
 #include <cstdint>
@@ -676,7 +675,7 @@ QString get_water_type_string(int salinity)
 QStringList getWaterTypesAsString()
 {
 	QStringList res;
-	res.reserve(std::end(waterTypes) - std::begin(waterTypes)); // Waiting for C++17's std::size()
+	res.reserve(std::size(waterTypes));
 	for (const char *t: waterTypes)
 		res.push_back(gettextFromC::tr(t));
 	return res;
@@ -719,17 +718,17 @@ static const char *printing_templates = "printing_templates";
 
 QString getPrintingTemplatePathUser()
 {
-	static QString path = QString();
-	if (path.isEmpty())
-		path = QString(system_default_directory()) + QDir::separator() + QString(printing_templates);
+	// Function-local statics are initialized on first invocation
+	static QString path(QString(system_default_directory()) +
+			    QDir::separator() +
+			    QString(printing_templates));
 	return path;
 }
 
 QString getPrintingTemplatePathBundle()
 {
-	static QString path = QString();
-	if (path.isEmpty())
-		path = getSubsurfaceDataPath(printing_templates);
+	// Function-local statics are initialized on first invocation
+	static QString path(getSubsurfaceDataPath(printing_templates));
 	return path;
 }
 
@@ -1072,45 +1071,6 @@ extern "C" char *hashfile_name_string()
 	return copy_qstring(hashfile_name());
 }
 
-// During a transition period, convert old thumbnail-hashes to individual files
-// TODO: remove this code in due course
-static void convertThumbnails(const QHash <QString, QImage> &thumbnails)
-{
-	if (thumbnails.empty())
-		return;
-	// This is a singular occurrence, therefore translating the strings seems not worth it
-	QProgressDialog progress("Convert thumbnails...", "Abort", 0, thumbnails.size());
-	progress.setWindowModality(Qt::WindowModal);
-
-	int count = 0;
-	for (const QString &name: thumbnails.keys()) {
-		const QImage thumbnail = thumbnails[name];
-
-		if (thumbnail.isNull())
-			continue;
-
-		// This is duplicate code (see qt-models/divepicturemodel.cpp)
-		// Not a problem, since this routine will be removed in due course.
-		QString filename = thumbnailFileName(name);
-		if (filename.isEmpty())
-			continue;
-
-		QSaveFile file(filename);
-		if (!file.open(QIODevice::WriteOnly))
-			return;
-		QDataStream stream(&file);
-
-		quint32 type = MEDIATYPE_PICTURE;
-		stream << type;
-		stream << thumbnail;
-		file.commit();
-
-		progress.setValue(++count);
-		if (progress.wasCanceled())
-			break;
-	}
-}
-
 // TODO: This is a temporary helper struct. Remove in due course with convertLocalFilename().
 struct HashToFile {
 	QByteArray hash;
@@ -1129,7 +1089,7 @@ static void convertLocalFilename(const QHash<QString, QByteArray> &hashOf, const
 		return;
 
 	// Create a vector of hash/filename pairs and sort by hash.
-	// Elements can than be accessed with binary search.
+	// Elements can then be accessed with binary search.
 	QHash<QByteArray, QString> canonicalFilenameByHash;
 	QVector<HashToFile> h2f;
 	h2f.reserve(hashOf.size());
@@ -1166,7 +1126,6 @@ void read_hashes()
 		stream >> localFilenameOf;
 		locker.unlock();
 		hashfile.close();
-		convertThumbnails(thumbnailCache);
 		convertLocalFilename(hashOf, localFilenameByHash);
 	}
 	QMutexLocker locker(&hashOfMutex);

@@ -5,6 +5,7 @@
 #include "core/imagedownloader.h"
 #include "core/picture.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "commands/command.h"
@@ -205,8 +206,8 @@ void DivePictureModel::picturesAdded(dive *d, QVector<PictureObj> picsIn)
 	// Convert the picture-data into our own format
 	std::vector<PictureEntry> pics;
 	pics.reserve(picsIn.size());
-	for (int i = 0; i < picsIn.size(); ++i)
-		pics.push_back(PictureEntry(d, picsIn[i]));
+	for (const PictureObj &pic: picsIn)
+		pics.push_back(PictureEntry(d, pic));
 
 	// Insert batch-wise to avoid too many reloads
 	pictures.reserve(pictures.size() + pics.size());
@@ -241,10 +242,8 @@ int DivePictureModel::rowCount(const QModelIndex&) const
 
 int DivePictureModel::findPictureId(const std::string &filename)
 {
-	for (int i = 0; i < (int)pictures.size(); ++i)
-		if (pictures[i].filename == filename)
-			return i;
-	return -1;
+	return index_of_if(pictures, [&filename](const PictureEntry &p)
+				     { return p.filename == filename; });
 }
 
 static void addDurationToThumbnail(QImage &img, duration_t duration)
@@ -312,6 +311,6 @@ void DivePictureModel::pictureOffsetChanged(dive *d, const QString filenameIn, o
 	if (oldIndex == newIndex || oldIndex + 1 == newIndex)
 		return;
 	beginMoveRows(QModelIndex(), oldIndex, oldIndex, QModelIndex(), newIndex);
-	moveInVector(pictures, oldIndex, oldIndex + 1, newIndex);
+	move_in_range(pictures, oldIndex, oldIndex + 1, newIndex);
 	endMoveRows();
 }

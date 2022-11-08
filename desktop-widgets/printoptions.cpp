@@ -3,6 +3,7 @@
 #include "templateedit.h"
 #include "templatelayout.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 
 #include <QDebug>
 #include <QFileDialog>
@@ -63,10 +64,10 @@ void PrintOptions::setupTemplates()
 	currList.sort();
 	int current_index = 0;
 	ui.printTemplate->clear();
-	Q_FOREACH(const QString& theme, currList) {
+	for (auto [idx, theme]: enumerated_range(currList)) {
 		 // find the stored template in the list
 		if (theme == storedTemplate || theme == lastImportExportTemplate)
-			current_index = currList.indexOf(theme);
+			current_index = idx;
 		ui.printTemplate->addItem(theme.split('.')[0], theme);
 	}
 	ui.printTemplate->setCurrentIndex(current_index);

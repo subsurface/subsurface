@@ -5,6 +5,7 @@
 #include "core/event.h"
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "profile-widget/diveeventitem.h"
@@ -870,8 +871,8 @@ void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
 
 void ProfileWidget2::pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &, int row)
 {
-	moveInVector(handles, start, end + 1, row);
-	moveInVector(gases, start, end + 1, row);
+	move_in_range(handles, start, end + 1, row);
+	move_in_range(gases, start, end + 1, row);
 }
 
 void ProfileWidget2::repositionDiveHandlers()
@@ -1319,7 +1320,7 @@ void ProfileWidget2::pictureOffsetChanged(dive *dIn, QString filename, offset_t 
 			// Move image from old to new position
 			int oldIndex = oldPos - pictures.begin();
 			int newIndex = newPos - pictures.begin();
-			moveInVector(pictures, oldIndex, oldIndex + 1, newIndex);
+			move_in_range(pictures, oldIndex, oldIndex + 1, newIndex);
 		} else {
 			// Case 1b): remove picture
 			pictures.erase(oldPos);

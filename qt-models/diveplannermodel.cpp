@@ -7,6 +7,7 @@
 #include "qt-models/models.h"
 #include "core/device.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/sample.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefUnit.h"
@@ -877,7 +878,7 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 
 	if (newRow != row && newRow != row + 1) {
 		beginMoveRows(QModelIndex(), row, row, QModelIndex(), newRow);
-		moveInVector(divepoints, row, row + 1, newRow);
+		move_in_range(divepoints, row, row + 1, newRow);
 		endMoveRows();
 
 		// Account for moving the row backwards in the array.

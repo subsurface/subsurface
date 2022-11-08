@@ -104,26 +104,11 @@ static const char *negate_description[2] {
 	QT_TRANSLATE_NOOP("gettextFromC", "is not"),
 };
 
-static constexpr size_t type_descriptions_count()
-{
-	return std::size(type_descriptions);
-}
-
-static constexpr size_t string_mode_descriptions_count()
-{
-	return std::size(string_mode_descriptions);
-}
-
-static constexpr size_t range_mode_descriptions_count()
-{
-	return std::size(range_mode_descriptions);
-}
-
 static const type_description *get_type_description(enum filter_constraint_type type)
 {
-	for (size_t i = 0; i < type_descriptions_count(); ++i) {
-		if (type_descriptions[i].type == type)
-			return &type_descriptions[i];
+	for (const auto &desc: type_descriptions) {
+		if (desc.type == type)
+			return &desc;
 	}
 	report_error("unknown filter constraint type: %d", type);
 	return nullptr;
@@ -131,9 +116,9 @@ static const type_description *get_type_description(enum filter_constraint_type 
 
 static const string_mode_description *get_string_mode_description(enum filter_constraint_string_mode mode)
 {
-	for (size_t i = 0; i < string_mode_descriptions_count(); ++i) {
-		if (string_mode_descriptions[i].mode == mode)
-			return &string_mode_descriptions[i];
+	for (const auto &desc: string_mode_descriptions) {
+		if (desc.mode == mode)
+			return &desc;
 	}
 	report_error("unknown filter constraint string mode: %d", mode);
 	return nullptr;
@@ -141,9 +126,9 @@ static const string_mode_description *get_string_mode_description(enum filter_co
 
 static const range_mode_description *get_range_mode_description(enum filter_constraint_range_mode mode)
 {
-	for (size_t i = 0; i < range_mode_descriptions_count(); ++i) {
-		if (range_mode_descriptions[i].mode == mode)
-			return &range_mode_descriptions[i];
+	for (const auto &desc: range_mode_descriptions) {
+		if (desc.mode == mode)
+			return &desc;
 	}
 	report_error("unknown filter constraint range mode: %d", mode);
 	return nullptr;
@@ -151,9 +136,9 @@ static const range_mode_description *get_range_mode_description(enum filter_cons
 
 static enum filter_constraint_type filter_constraint_type_from_string(const char *s)
 {
-	for (size_t i = 0; i < type_descriptions_count(); ++i) {
-		if (same_string(type_descriptions[i].token, s))
-			return type_descriptions[i].type;
+	for (const auto &desc: type_descriptions) {
+		if (same_string(desc.token, s))
+			return desc.type;
 	}
 	report_error("unknown filter constraint type: %s", s);
 	return FILTER_CONSTRAINT_DATE;
@@ -161,9 +146,9 @@ static enum filter_constraint_type filter_constraint_type_from_string(const char
 
 static enum filter_constraint_string_mode filter_constraint_string_mode_from_string(const char *s)
 {
-	for (size_t i = 0; i < string_mode_descriptions_count(); ++i) {
-		if (same_string(string_mode_descriptions[i].token, s))
-			return string_mode_descriptions[i].mode;
+	for (const auto &desc: string_mode_descriptions) {
+		if (same_string(desc.token, s))
+			return desc.mode;
 	}
 	report_error("unknown filter constraint string mode: %s", s);
 	return FILTER_CONSTRAINT_EXACT;
@@ -171,9 +156,9 @@ static enum filter_constraint_string_mode filter_constraint_string_mode_from_str
 
 static enum filter_constraint_range_mode filter_constraint_range_mode_from_string(const char *s)
 {
-	for (size_t i = 0; i < range_mode_descriptions_count(); ++i) {
-		if (same_string(range_mode_descriptions[i].token, s))
-			return range_mode_descriptions[i].mode;
+	for (const auto &desc: range_mode_descriptions) {
+		if (same_string(desc.token, s))
+			return desc.mode;
 	}
 	report_error("unknown filter constraint range mode: %s", s);
 	return FILTER_CONSTRAINT_EQUAL;
@@ -217,21 +202,21 @@ extern "C" int filter_constraint_range_mode_to_index(enum filter_constraint_rang
 
 extern "C" enum filter_constraint_type filter_constraint_type_from_index(int index)
 {
-	if (index >= 0 && index < (int)type_descriptions_count())
+	if (index >= 0 && index < (int)std::size(type_descriptions))
 		return type_descriptions[index].type;
 	return (enum filter_constraint_type)-1;
 }
 
 extern "C" enum filter_constraint_string_mode filter_constraint_string_mode_from_index(int index)
 {
-	if (index >= 0 && index < (int)string_mode_descriptions_count())
+	if (index >= 0 && index < (int)std::size(string_mode_descriptions))
 		return string_mode_descriptions[index].mode;
 	return (enum filter_constraint_string_mode)-1;
 }
 
 extern "C" enum filter_constraint_range_mode filter_constraint_range_mode_from_index(int index)
 {
-	if (index >= 0 && index < (int)range_mode_descriptions_count())
+	if (index >= 0 && index < (int)std::size(range_mode_descriptions))
 		return range_mode_descriptions[index].mode;
 	return (enum filter_constraint_range_mode)-1;
 }
@@ -347,32 +332,32 @@ static double base_to_display_unit(int i, enum filter_constraint_type type)
 QStringList filter_constraint_type_list_translated()
 {
 	QStringList res;
-	for (size_t i = 0; i < type_descriptions_count(); ++i)
-		res.push_back(gettextFromC::tr(type_descriptions[i].text_ui));
+	for (const auto &desc: type_descriptions)
+		res.push_back(gettextFromC::tr(desc.text_ui));
 	return res;
 }
 
 QStringList filter_constraint_string_mode_list_translated()
 {
 	QStringList res;
-	for (size_t i = 0; i < string_mode_descriptions_count(); ++i)
-		res.push_back(gettextFromC::tr(string_mode_descriptions[i].text_ui));
+	for (const auto &desc: string_mode_descriptions)
+		res.push_back(gettextFromC::tr(desc.text_ui));
 	return res;
 }
 
 QStringList filter_constraint_range_mode_list_translated()
 {
 	QStringList res;
-	for (size_t i = 0; i < range_mode_descriptions_count(); ++i)
-		res.push_back(gettextFromC::tr(range_mode_descriptions[i].text_ui));
+	for (const auto &desc: range_mode_descriptions)
+		res.push_back(gettextFromC::tr(desc.text_ui));
 	return res;
 }
 
 QStringList filter_constraint_range_mode_list_translated_date()
 {
 	QStringList res;
-	for (size_t i = 0; i < range_mode_descriptions_count(); ++i)
-		res.push_back(gettextFromC::tr(range_mode_descriptions[i].text_ui_date));
+	for (const auto &desc: range_mode_descriptions)
+		res.push_back(gettextFromC::tr(desc.text_ui_date));
 	return res;
 }
 

@@ -206,6 +206,7 @@ HEADERS += \
 	core/pref.h \
 	core/profile.h \
 	core/qthelper.h \
+	core/range.h \
 	core/save-html.h \
 	core/statistics.h \
 	core/units.h \

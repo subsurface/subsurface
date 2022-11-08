@@ -92,7 +92,7 @@ int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_
 	return cylinder_idx;
 }
 
-int get_gasidx(struct dive *dive, struct gasmix mix)
+static int get_gasidx(struct dive *dive, struct gasmix mix)
 {
 	return find_best_gasmix_match(mix, &dive->cylinders);
 }

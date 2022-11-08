@@ -147,6 +147,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	qt-init.cpp
 	qthelper.cpp
 	qthelper.h
+	range.h
 	sample.c
 	sample.h
 	save-git.c

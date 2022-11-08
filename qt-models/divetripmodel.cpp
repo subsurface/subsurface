@@ -10,6 +10,7 @@
 #include "core/string-format.h"
 #include "core/trip.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/divesite.h"
 #include "core/picture.h"
 #include "core/subsurface-string.h"
@@ -205,8 +206,8 @@ static QPixmap &getPhotoIcon(int idx)
 	if (!icons) {
 		const IconMetrics &im = defaultIconMetrics();
 		icons = std::make_unique<QPixmap[]>(std::size(icon_names));
-		for (size_t i = 0; i < std::size(icon_names); ++i)
-			icons[i] = QIcon(icon_names[i]).pixmap(im.sz_small, im.sz_small);
+		for (auto [i, name]: enumerated_range(icon_names))
+			icons[i] = QIcon(name).pixmap(im.sz_small, im.sz_small);
 	}
 	return icons[idx];
 }
@@ -974,7 +975,7 @@ void DiveTripModelTree::topLevelChanged(int idx)
 	// If index changed, move items
 	if (newIdx != idx && newIdx != idx + 1) {
 		beginMoveRows(QModelIndex(), idx, idx, QModelIndex(), newIdx);
-		moveInVector(items, idx, idx + 1, newIdx);
+		move_in_range(items, idx, idx + 1, newIdx);
 		endMoveRows();
 	}
 
@@ -1007,34 +1008,26 @@ void DiveTripModelTree::addDivesToTrip(int trip, const QVector<dive *> &dives)
 
 int DiveTripModelTree::findTripIdx(const dive_trip *trip) const
 {
-	for (int i = 0; i < (int)items.size(); ++i)
-		if (items[i].d_or_t.trip == trip)
-			return i;
-	return -1;
+	return index_of_if(items, [trip] (const Item &item)
+				  { return item.d_or_t.trip == trip; });
 }
 
 int DiveTripModelTree::findDiveIdx(const dive *d) const
 {
-	for (int i = 0; i < (int)items.size(); ++i)
-		if (items[i].isDive(d))
-			return i;
-	return -1;
+	return index_of_if(items, [d] (const Item &item)
+				  { return item.isDive(d); });
 }
 
 int DiveTripModelTree::findDiveInTrip(int tripIdx, const dive *d) const
 {
-	const Item &item = items[tripIdx];
-	for (int i = 0; i < (int)item.dives.size(); ++i)
-		if (item.dives[i] == d)
-			return i;
-	return -1;
+	return index_of(items[tripIdx].dives, d);
 }
 
 int DiveTripModelTree::findInsertionIndex(const dive_trip *trip) const
 {
 	dive_or_trip d_or_t{ nullptr, (dive_trip *)trip };
-	for (int i = 0; i < (int)items.size(); ++i) {
-		if (dive_or_trip_less_than(d_or_t, items[i].d_or_t))
+	for (auto [i, item]: enumerated_range(items)) {
+		if (dive_or_trip_less_than(d_or_t, item.d_or_t))
 			return i;
 	}
 	return items.size();
@@ -1121,8 +1114,8 @@ static QVector<dive *> visibleDives(const QVector<dive *> &dives)
 #ifdef SUBSURFACE_MOBILE
 int DiveTripModelTree::tripInDirection(const struct dive *d, int direction) const
 {
-	for (int i = 0; i < (int)items.size(); ++i) {
-		if (items[i].d_or_t.dive == d || (items[i].d_or_t.trip && findDiveInTrip(i, d) != -1)) {
+	for (auto [i, item]: enumerated_range(items)) {
+		if (item.d_or_t.dive == d || (item.d_or_t.trip && findDiveInTrip(i, d) != -1)) {
 			// now walk in the direction given to find a trip
 			int offset = direction;
 			while (i + offset >= 0 && i + offset < (int)items.size()) {
@@ -1405,8 +1398,8 @@ void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *>
 		// Since both lists are sorted, we can do this linearly. Perhaps a binary search
 		// would be better?
 		int j = 0; // Index in items array
-		for (int i = 0; i < dives.size(); ++i) {
-			while (j < (int)items.size() && !items[j].isDive(dives[i]))
+		for (struct dive *dive: dives) {
+			while (j < (int)items.size() && !items[j].isDive(dive))
 				++j;
 			if (j >= (int)items.size())
 				break;
@@ -1426,8 +1419,8 @@ void DiveTripModelTree::divesSelectedTrip(dive_trip *trip, const QVector<dive *>
 		// would be better?
 		int j = 0; // Index in items array
 		const Item &entry = items[idx];
-		for (int i = 0; i < dives.size(); ++i) {
-			while (j < (int)entry.dives.size() && entry.dives[j] != dives[i])
+		for (struct dive *dive: dives) {
+			while (j < (int)entry.dives.size() && entry.dives[j] != dive)
 				++j;
 			if (j >= (int)entry.dives.size())
 				break;
@@ -1662,8 +1655,8 @@ void DiveTripModelList::divesSelected(const QVector<dive *> &divesIn)
 	// Since both lists are sorted, we can do this linearly. Perhaps a binary search
 	// would be better?
 	int j = 0; // Index in items array
-	for (int i = 0; i < dives.size(); ++i) {
-		while (j < (int)items.size() && items[j] != dives[i])
+	for (struct dive *dive: dives) {
+		while (j < (int)items.size() && items[j] != dive)
 			++j;
 		if (j >= (int)items.size())
 			break;
