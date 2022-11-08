@@ -582,7 +582,6 @@ void PlannerWidgets::planDive()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 
 	repopulateGasModel();
-	diveTypeModel->repopulate(); // TODO: this doesn't change anything!?
 	plannerWidget.setReplanButton(false);
 	plannerWidget.setupStartTime(timestampToDateTime(planned_dive->when));	// This will reload the profile!
 }
@@ -597,7 +596,6 @@ void PlannerWidgets::replanDive(int currentDC)
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->loadFromDive(planned_dive.get(), currentDC);
 
-	diveTypeModel->repopulate(); // TODO: this doesn't change anything!?
 	plannerWidget.setReplanButton(true);
 	plannerWidget.setupStartTime(timestampToDateTime(planned_dive->when));
 	if (planned_dive->surface_pressure.mbar)

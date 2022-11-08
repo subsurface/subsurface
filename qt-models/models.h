@@ -26,19 +26,15 @@ class GasSelectionModel : public QStringListModel {
 public:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	QVariant data(const QModelIndex &index, int role) const override;
-public
-slots:
 	void repopulate(const dive *d);
 };
 
 class DiveTypeSelectionModel : public QStringListModel {
 	Q_OBJECT
 public:
+	DiveTypeSelectionModel();
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 	QVariant data(const QModelIndex &index, int role) const override;
-public
-slots:
-	void repopulate();
 };
 
 class LanguageModel : public QAbstractListModel {
