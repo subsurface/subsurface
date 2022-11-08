@@ -28,6 +28,7 @@
 #include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/divefilter.h"
+#include "core/divelog.h"
 #include "core/filterconstraint.h"
 #include "core/qthelper.h"
 #include "core/qt-gui.h"
@@ -377,7 +378,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	 * we try to open this), parse_file (which is called by openAndMaybeSync) will ALWAYS connect
 	 * to the remote and populate the cache.
 	 * Otherwise parse_file will respect the git_local_only flag and only update if that isn't set */
-	int error = parse_file(encodedFilename.constData(), &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+	int error = parse_file(encodedFilename.constData(), &divelog);
 	if (error) {
 		/* there can be 2 reasons for this:
 		 * 1) we have cloud credentials, but there is no local repo (yet).
@@ -409,9 +410,9 @@ void QMLManager::openLocalThenRemote(QString url)
 		qPrefTechnicalDetails::set_show_ccr_sensors(git_prefs.show_ccr_sensors);
 		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
 		// the following steps can take a long time, so provide updates
-		setNotificationText(tr("Processing %1 dives").arg(dive_table.nr));
+		setNotificationText(tr("Processing %1 dives").arg(divelog.dives->nr));
 		process_loaded_dives();
-		setNotificationText(tr("%1 dives loaded from local dive data file").arg(dive_table.nr));
+		setNotificationText(tr("%1 dives loaded from local dive data file").arg(divelog.dives->nr));
 	}
 	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but still needs PIN"));
@@ -472,13 +473,9 @@ static QString nocloud_localstorage()
 
 void QMLManager::mergeLocalRepo()
 {
-	struct dive_table table = empty_dive_table;
-	struct trip_table trips = empty_trip_table;
-	struct dive_site_table sites = empty_dive_site_table;
-	struct device_table devices;
-	struct filter_preset_table filter_presets;
-	parse_file(qPrintable(nocloud_localstorage()), &table, &trips, &sites, &devices, &filter_presets);
-	add_imported_dives(&table, &trips, &sites, &devices, IMPORT_MERGE_ALL_TRIPS);
+	struct divelog log;
+	parse_file(qPrintable(nocloud_localstorage()), &log);
+	add_imported_dives(&log, IMPORT_MERGE_ALL_TRIPS);
 	mark_divelist_changed(true);
 }
 
@@ -578,7 +575,7 @@ void QMLManager::finishSetup()
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
 		appendTextToLog(tr("working in no-cloud mode"));
-		int error = parse_file(existing_filename, &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+		int error = parse_file(existing_filename, &divelog);
 		if (error) {
 			// we got an error loading the local file
 			setNotificationText(tr("Error parsing local storage, giving up"));
@@ -587,7 +584,7 @@ void QMLManager::finishSetup()
 			// successfully opened the local file, now add thigs to the dive list
 			consumeFinishedLoad();
 			updateHaveLocalChanges(true);
-			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(dive_table.nr).arg(existing_filename));
+			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(divelog.dives->nr).arg(existing_filename));
 		}
 	} else {
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
@@ -664,7 +661,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	qPrefCloudStorage::set_cloud_storage_email(email);
 	qPrefCloudStorage::set_cloud_storage_password(newPassword);
 
-	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && dive_table.nr) {
+	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && divelog.dives->nr) {
 		// we came from NOCLOUD and are connecting to a cloud account;
 		// since we already have dives in the table, let's remember that so we can keep them
 		noCloudToCloud = true;
@@ -795,10 +792,10 @@ void QMLManager::loadDivesWithValidCredentials()
 		}
 		if (info.repo) {
 			appendTextToLog(QString("have repository and branch %1").arg(info.branch));
-			error = git_load_dives(&info, &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+			error = git_load_dives(&info, &divelog);
 		} else {
 			appendTextToLog(QString("didn't receive valid git repo, try again"));
-			error = parse_file(fileNamePrt.data(), &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table);
+			error = parse_file(fileNamePrt.data(), &divelog);
 		}
 		setDiveListProcessing(false);
 		if (!error) {
@@ -822,7 +819,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (noCloudToCloud) {
 		git_storage_update_progress(qPrintable(tr("Loading dives from local storage ('no cloud' mode)")));
 		mergeLocalRepo();
-		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(dive_table.nr));
+		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(divelog.dives->nr));
 		noCloudToCloud = false;
 		mark_divelist_changed(true);
 		emit syncStateChanged();
@@ -886,8 +883,8 @@ void QMLManager::consumeFinishedLoad()
 	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
 	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
 	process_loaded_dives();
-	appendTextToLog(QStringLiteral("%1 dives loaded").arg(dive_table.nr));
-	if (dive_table.nr == 0)
+	appendTextToLog(QStringLiteral("%1 dives loaded").arg(divelog.dives->nr));
+	if (divelog.dives->nr == 0)
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
 }
 
@@ -1062,7 +1059,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString loca
 	bool changed = false;
 	QString oldLocation = get_dive_location(d);
 	if (oldLocation != location) {
-		ds = get_dive_site_by_name(qPrintable(location), &dive_site_table);
+		ds = get_dive_site_by_name(qPrintable(location), divelog.sites);
 		if (!ds && !location.isEmpty()) {
 			res.createdDs.reset(alloc_dive_site_with_name(qPrintable(location)));
 			res.changed = true;
@@ -1800,7 +1797,7 @@ QString QMLManager::getGpsFromSiteName(const QString &siteName)
 {
 	struct dive_site *ds;
 
-	ds = get_dive_site_by_name(qPrintable(siteName), &dive_site_table);
+	ds = get_dive_site_by_name(qPrintable(siteName), divelog.sites);
 	if (!ds)
 		return QString();
 	return printGPSCoords(&ds->location);
@@ -2347,15 +2344,11 @@ void QMLManager::setDiveListProcessing(bool value)
 
 void QMLManager::importCacheRepo(QString repo)
 {
-	struct dive_table table = empty_dive_table;
-	struct trip_table trips = empty_trip_table;
-	struct dive_site_table sites = empty_dive_site_table;
-	struct device_table devices;
-	struct filter_preset_table filter_presets;
+	struct divelog log;
 	QString repoPath = QString("%1/cloudstorage/%2").arg(system_default_directory()).arg(repo);
 	appendTextToLog(QString("importing %1").arg(repoPath));
-	parse_file(qPrintable(repoPath), &table, &trips, &sites, &devices, &filter_presets);
-	add_imported_dives(&table, &trips, &sites, &devices, IMPORT_MERGE_ALL_TRIPS);
+	parse_file(qPrintable(repoPath), &log);
+	add_imported_dives(&log, IMPORT_MERGE_ALL_TRIPS);
 	changesNeedSaving();
 }
 
@@ -2370,9 +2363,8 @@ QStringList QMLManager::cloudCacheList() const
 		if (dir == "localrepo") {
 			result << QString("localrepo[master]");
 		} else {
-			foreach(QString branch, remote.entryList().filter(QRegularExpression("...+"))) {
+			foreach(QString branch, remote.entryList().filter(QRegularExpression("...+")))
 				result << QString("%1[%2]").arg(dir).arg(branch);
-			}
 		}
 	}
 	return result;

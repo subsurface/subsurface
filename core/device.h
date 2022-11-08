@@ -14,7 +14,6 @@ struct device_table;
 struct dive_table;
 
 // global device table
-extern struct device_table device_table;
 extern struct fingerprint_table fingerprint_table;
 
 extern int create_device_node(struct device_table *table, const char *model, const char *serial, const char *nickname);

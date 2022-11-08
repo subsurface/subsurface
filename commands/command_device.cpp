@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_device.h"
+#include "core/divelog.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
 namespace Command {
@@ -8,7 +9,7 @@ namespace Command {
 EditDeviceNickname::EditDeviceNickname(const struct divecomputer *dc, const QString &nicknameIn) :
 	nickname(nicknameIn.toStdString())
 {
-	index = get_or_add_device_for_dc(&device_table, dc);
+	index = get_or_add_device_for_dc(divelog.devices, dc);
 	if (index == -1)
 		return;
 
@@ -17,12 +18,12 @@ EditDeviceNickname::EditDeviceNickname(const struct divecomputer *dc, const QStr
 
 bool EditDeviceNickname::workToBeDone()
 {
-	return get_device(&device_table, index) != nullptr;
+	return get_device(divelog.devices, index) != nullptr;
 }
 
 void EditDeviceNickname::redo()
 {
-	device *dev = get_device_mutable(&device_table, index);
+	device *dev = get_device_mutable(divelog.devices, index);
 	if (!dev)
 		return;
 	std::swap(dev->nickName, nickname);

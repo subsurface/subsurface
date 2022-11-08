@@ -7,8 +7,8 @@
 #include "desktop-widgets/mainwindow.h"
 #include "commands/command.h"
 #include "core/device.h"
-#include "core/divesite.h"
-#include "core/trip.h"
+#include "core/divelist.h" // For IMPORT_MERGE_ALL_TRIPS
+#include "core/divelog.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
 #include "desktop-widgets/mapwidget.h"
@@ -463,13 +463,9 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 			break;
 		}
 		/* parse file and import dives */
-		struct dive_table table = empty_dive_table;
-		struct trip_table trips = empty_trip_table;
-		struct dive_site_table sites = empty_dive_site_table;
-		struct device_table devices;
-		struct filter_preset_table filter_presets;
-		parse_file(QFile::encodeName(zipFile.fileName()), &table, &trips, &sites, &devices, &filter_presets);
-		Command::importDives(&table, &trips, &sites, &devices, nullptr, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
+		struct divelog log;
+		parse_file(QFile::encodeName(zipFile.fileName()), &log);
+		Command::importDives(log.dives, log.trips, log.sites, log.devices, nullptr, IMPORT_MERGE_ALL_TRIPS, QStringLiteral("divelogs.de"));
 
 		/* store last entered user/pass in config */
 		qPrefCloudStorage::set_divelogde_user(ui.userID->text());

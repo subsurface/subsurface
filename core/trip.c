@@ -2,13 +2,12 @@
 
 #include "trip.h"
 #include "dive.h"
+#include "divelog.h"
 #include "subsurface-time.h"
 #include "subsurface-string.h"
 #include "selection.h"
 #include "table.h"
 #include "core/qthelper.h"
-
-struct trip_table trip_table;
 
 #ifdef DEBUG_TRIP
 void dump_trip_list(void)
@@ -17,9 +16,9 @@ void dump_trip_list(void)
 	int i = 0;
 	timestamp_t last_time = 0;
 
-	for (i = 0; i < trip_table.nr; ++i) {
+	for (i = 0; i < divelog.trips->nr; ++i) {
 		struct tm tm;
-		trip = trip_table.trips[i];
+		trip = divelog.trips->trips[i];
 		utc_mkdate(trip_date(trip), &tm);
 		if (trip_date(trip) < last_time)
 			printf("\n\ntrip_table OUT OF ORDER!!!\n\n\n");
@@ -203,9 +202,9 @@ dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
 /* lookup of trip in main trip_table based on its id */
 dive_trip_t *get_trip_by_uniq_id(int tripId)
 {
-	for (int i = 0; i < trip_table.nr; i++) {
-		if (trip_table.trips[i]->id == tripId)
-			return trip_table.trips[i];
+	for (int i = 0; i < divelog.trips->nr; i++) {
+		if (divelog.trips->trips[i]->id == tripId)
+			return divelog.trips->trips[i];
 	}
 	return NULL;
 }

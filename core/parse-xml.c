@@ -22,6 +22,7 @@
 #include "gettext.h"
 
 #include "dive.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "parse.h"
@@ -1750,9 +1751,7 @@ static const char *preprocess_divelog_de(const char *buffer)
 	return buffer;
 }
 
-int parse_xml_buffer(const char *url, const char *buffer, int size,
-		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		     struct device_table *devices, struct filter_preset_table *filter_presets,
+int parse_xml_buffer(const char *url, const char *buffer, int size, struct divelog *log,
 		     const struct xml_params *params)
 {
 	UNUSED(size);
@@ -1762,12 +1761,12 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = table;
-	state.trips = trips;
-	state.sites = sites;
-	state.devices = devices;
+	state.target_table = log->dives;
+	state.trips = log->trips;
+	state.sites = log->sites;
+	state.devices = log->devices;
 	state.fingerprints = &fingerprint_table; // simply use the global table for now
-	state.filter_presets = filter_presets;
+	state.filter_presets = log->filter_presets;
 	doc = xmlReadMemory(res, strlen(res), url, NULL, XML_PARSE_HUGE | XML_PARSE_RECOVER);
 	if (!doc)
 		doc = xmlReadMemory(res, strlen(res), url, "latin1", XML_PARSE_HUGE | XML_PARSE_RECOVER);
@@ -1809,8 +1808,7 @@ static timestamp_t parse_dlf_timestamp(unsigned char *buffer)
 	return offset + 946684800;
 }
 
-int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table, struct trip_table *trips,
-		     struct dive_site_table *sites, struct device_table *devices)
+int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 {
 	unsigned char *ptr = buffer;
 	unsigned char event;
@@ -1831,10 +1829,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = table;
-	state.trips = trips;
-	state.sites = sites;
-	state.devices = devices;
+	state.target_table = log->dives;
+	state.trips = log->trips;
+	state.sites = log->sites;
+	state.devices = log->devices;
 
 	// Check for the correct file magic
 	if (ptr[0] != 'D' || ptr[1] != 'i' || ptr[2] != 'v' || ptr[3] != 'E')

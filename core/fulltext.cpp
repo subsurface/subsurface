@@ -2,6 +2,7 @@
 
 #include "fulltext.h"
 #include "dive.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "tag.h"
 #include "trip.h"
@@ -155,7 +156,7 @@ void FullText::populate()
 	dive *d;
 	for_each_dive(i, d)
 		registerDive(d);
-	uiNotification(QObject::tr("%1 dives processed").arg(dive_table.nr));
+	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives->nr));
 }
 
 void FullText::registerDive(struct dive *d)

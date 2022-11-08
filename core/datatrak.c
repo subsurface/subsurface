@@ -17,6 +17,7 @@
 #include "file.h"
 #include "divesite.h"
 #include "dive.h"
+#include "divelog.h"
 #include "errorhelper.h"
 #include "ssrf.h"
 #include "tag.h"
@@ -679,10 +680,8 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
  * Main function call from file.c memblock is allocated (and freed) there.
  * If parsing is aborted due to errors, stores correctly parsed dives.
  */
-int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct dive_table *table, struct trip_table *trips,
-		    struct dive_site_table *sites, struct device_table *devices)
+int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct divelog *log)
 {
-	UNUSED(trips);
 	unsigned char *runner;
 	int i = 0, numdives = 0, rc = 0;
 
@@ -712,7 +711,7 @@ int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct dive_t
 	while ((i < numdives) && ((long) runner < maxbuf)) {
 		struct dive *ptdive = alloc_dive();
 
-		runner = dt_dive_parser(runner, ptdive, sites, devices, maxbuf);
+		runner = dt_dive_parser(runner, ptdive, log->sites, log->devices, maxbuf);
 		if (wl_mem)
 			wlog_compl_parser(wl_mem, ptdive, i);
 		if (runner == NULL) {
@@ -721,13 +720,13 @@ int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct dive_t
 			rc = 1;
 			goto out;
 		} else {
-			record_dive_to_table(ptdive, table);
+			record_dive_to_table(ptdive, log->dives);
 		}
 		i++;
 	}
 out:
 	taglist_cleanup(&g_tag_list);
-	sort_dive_table(table);
+	sort_dive_table(log->dives);
 	return rc;
 bail:
 	return 1;

@@ -63,7 +63,6 @@ void clear_trip_table(struct trip_table *table);
 extern void dump_trip_list(void);
 #endif
 
-extern struct trip_table trip_table;
 #ifdef __cplusplus
 }
 

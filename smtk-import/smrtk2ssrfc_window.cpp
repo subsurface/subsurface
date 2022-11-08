@@ -3,6 +3,7 @@
 #include "ui_smrtk2ssrfc_window.h"
 #include "qt-models/filtermodels.h"
 #include "core/dive.h"
+#include "core/divelog.h"
 #include "core/divelist.h"
 #include "core/errorhelper.h"
 #include "core/settings/qPrefDisplay.h"
@@ -84,7 +85,7 @@ void Smrtk2ssrfcWindow::on_importButton_clicked()
 	for (int i = 0; i < inputFiles.size(); ++i) {
 		ui->progressBar->setValue(i);
 		fileNamePtr = QFile::encodeName(inputFiles.at(i));
-		smartrak_import(fileNamePtr.data(), &dive_table);
+		smartrak_import(fileNamePtr.data(), &divelog);
 		ui->plainTextEdit->appendPlainText(error_buf);
 	}
 	ui->progressBar->setValue(inputFiles.size());

@@ -3,11 +3,10 @@
 #include <stdio.h>
 #include "core/dive.h"
 #include "core/divelist.h"
+#include "core/divelog.h"
 #include "smrtk2ssrfc_window.h"
 #include <QApplication>
 #include <QDebug>
-
-extern "C" void smartrak_import(const char *file, struct dive_table *table);
 
 /*
  * Simple command line interface to call directly smartrak_import() or launch
@@ -48,7 +47,7 @@ int main(int argc, char *argv[])
 		for(i = 1; i < argc -1; i++) {
 			infile = argv[i];
 			qDebug() << "\t" << infile << "\n";
-			smartrak_import(infile, &dive_table);
+			smartrak_import(infile, &divelog);
 		}
 		qDebug() << "\n[Writing]\n\t" << outfile << "\n";
 		save_dives_logic(outfile, false, false);

@@ -27,6 +27,7 @@
 #endif
 
 #include "core/dive.h"
+#include "core/divelog.h"
 #include "core/subsurface-string.h"
 #include "core/gettext.h"
 #include "core/divelist.h"
@@ -321,7 +322,7 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
  * Location format:
  * | Idx | Text | Province | Country | Depth |
  */
-static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **location)
+static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **location, struct divelog *log)
 {
 	MdbTableDef *table;
 	MdbColumn *col[MDB_MAX_COLS];
@@ -373,7 +374,7 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 	do {
 		rc = mdb_fetch_row(table);
 	} while (strcasecmp(bound_values[0], loc_idx) && rc != 0);
-	if (rc == 0){
+	if (rc == 0) {
 		smtk_free(bound_values, table->num_cols);
 		mdb_free_tabledef(table);
 		if(notes)
@@ -393,12 +394,12 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 		str = smtk_concat_str(str, ", ", "%s", bound_values[1]); // Locality
 	str =  smtk_concat_str(str, ", ", "%s", site);
 
-	ds = get_dive_site_by_name(str, &dive_site_table);
+	ds = get_dive_site_by_name(str, log->sites);
 	if (!ds) {
 		if (!has_location(&loc))
-			ds = create_dive_site(str, &dive_site_table);
+			ds = create_dive_site(str, log->sites);
 		else
-			ds = create_dive_site_with_gps(str, &loc, &dive_site_table);
+			ds = create_dive_site_with_gps(str, &loc, log->sites);
 	}
 	*location = ds;
 	smtk_free(bound_values, table->num_cols);
@@ -928,7 +929,7 @@ static dc_status_t libdc_buffer_complete(device_data_t *dev_data, unsigned char 
  * a single DB breaks binded row data, and so would break the top loop.
  */
 
-void smartrak_import(const char *file, struct dive_table *divetable)
+void smartrak_import(const char *file, struct divelog *log)
 {
 	MdbHandle *mdb, *mdb_clon;
 	MdbTableDef *mdb_table;
@@ -1097,7 +1098,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		weightsystem_t ws = { {lrint(strtod(col[coln(WEIGHT)]->bind_ptr, NULL) * 1000)}, "", false };
 		add_cloned_weightsystem(&smtkdive->weightsystems, ws);
 		smtkdive->suit = copy_string(suit_list[atoi(col[coln(SUITIDX)]->bind_ptr) - 1]);
-		smtk_build_location(mdb_clon, col[coln(SITEIDX)]->bind_ptr, &smtkdive->dive_site);
+		smtk_build_location(mdb_clon, col[coln(SITEIDX)]->bind_ptr, &smtkdive->dive_site, log);
 		smtkdive->buddy = smtk_locate_buddy(mdb_clon, col[0]->bind_ptr, buddy_list);
 		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
 		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
@@ -1109,7 +1110,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		smtk_parse_bookmarks(mdb_clon, smtkdive, col[0]->bind_ptr);
 		smtkdive->notes = smtk_concat_str(smtkdive->notes, "\n", "%s", col[coln(REMARKS)]->bind_ptr);
 
-		record_dive_to_table(smtkdive, divetable);
+		record_dive_to_table(smtkdive, log->dives);
 		device_data_free(devdata);
 	}
 	mdb_free_tabledef(mdb_table);
@@ -1117,5 +1118,5 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 	mdb->catalog = NULL;
 	mdb_close(mdb_clon);
 	mdb_close(mdb);
-	sort_dive_table(divetable);
+	sort_dive_table(log->dives);
 }

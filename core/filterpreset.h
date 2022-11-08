@@ -32,7 +32,6 @@ struct filter_preset_table : public std::vector<filter_preset>
 {
 };
 
-extern struct filter_preset_table filter_preset_table;
 #else
 struct filter_preset;
 struct filter_preset_table;
@@ -44,7 +43,6 @@ extern "C" {
 #endif
 
 // The C IO code accesses the filter presets via integer indices.
-extern void clear_filter_presets(void);
 extern int filter_presets_count(void);
 extern char *filter_preset_name(int preset); // name of filter preset - caller must free the result.
 extern char *filter_preset_fulltext_query(int preset); // fulltext query of filter preset - caller must free the result.

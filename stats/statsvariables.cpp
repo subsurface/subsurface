@@ -2,6 +2,7 @@
 #include "statsvariables.h"
 #include "statstranslations.h"
 #include "core/dive.h"
+#include "core/divelog.h"
 #include "core/divemode.h"
 #include "core/divesite.h"
 #include "core/gas.h"
@@ -1380,7 +1381,7 @@ struct DiveNrVariable : public StatsVariableTemplate<StatsVariable::Type::Numeri
 		return StatsTranslations::tr("Dive #");
 	}
 	std::vector<const StatsBinner *> binners() const override {
-		if (dive_table.nr > 1000)
+		if (divelog.dives->nr > 1000)
 			return { &dive_nr_binner_20, &dive_nr_binner_50, &dive_nr_binner_100, &dive_nr_binner_200 };
 		else
 			return { &dive_nr_binner_5, &dive_nr_binner_10, &dive_nr_binner_20, &dive_nr_binner_50 };

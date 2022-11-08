@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "tripselectiondialog.h"
+#include "core/divelog.h"
 #include "core/string-format.h"
 #include "core/trip.h"
 #include <QShortcut>
@@ -17,9 +18,9 @@ TripSelectionDialog::TripSelectionDialog(QWidget *parent) : QDialog(parent)
 
 	// We could use a model, but it seems barely worth the hassle.
 	QStringList list;
-	list.reserve(trip_table.nr);
-	for (int i = 0; i < trip_table.nr; ++i)
-		list.push_back(formatTripTitleWithDives(trip_table.trips[i]));
+	list.reserve(divelog.trips->nr);
+	for (int i = 0; i < divelog.trips->nr; ++i)
+		list.push_back(formatTripTitleWithDives(divelog.trips->trips[i]));
 	ui.trips->addItems(list);
 }
 
@@ -36,9 +37,9 @@ dive_trip *TripSelectionDialog::selectedTrip() const
 	if (rows.size() != 1)
 		return nullptr;
 	int idx = rows[0].row();
-	if (idx < 0 || idx >= trip_table.nr)
+	if (idx < 0 || idx >= divelog.trips->nr)
 		return nullptr;
-	return trip_table.trips[idx];
+	return divelog.trips->trips[idx];
 }
 
 dive_trip *TripSelectionDialog::getTrip()

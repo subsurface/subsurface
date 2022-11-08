@@ -8,6 +8,7 @@
 
 #include "statistics.h"
 #include "dive.h"
+#include "divelog.h"
 #include "event.h"
 #include "gettext.h"
 #include "sample.h"
@@ -105,17 +106,17 @@ void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 	size_t size, tsize, dsize, tmsize;
 	stats_t stats = { 0 };
 
-	if (dive_table.nr > 0) {
-		stats.shortest_time.seconds = dive_table.dives[0]->duration.seconds;
-		stats.min_depth.mm = dive_table.dives[0]->maxdepth.mm;
-		stats.selection_size = dive_table.nr;
+	if (divelog.dives->nr > 0) {
+		stats.shortest_time.seconds = divelog.dives->dives[0]->duration.seconds;
+		stats.min_depth.mm = divelog.dives->dives[0]->maxdepth.mm;
+		stats.selection_size = divelog.dives->nr;
 	}
 
 	/* allocate sufficient space to hold the worst
 	 * case (one dive per year or all dives during
 	 * one month) for yearly and monthly statistics*/
 
-	size = sizeof(stats_t) * (dive_table.nr + 1);
+	size = sizeof(stats_t) * (divelog.dives->nr + 1);
 	tsize = sizeof(stats_t) * (NUM_DIVEMODE + 1);
 	dsize = sizeof(stats_t) * ((STATS_MAX_DEPTH / STATS_DEPTH_BUCKET) + 1);
 	tmsize = sizeof(stats_t) * ((STATS_MAX_TEMP / STATS_TEMP_BUCKET) + 1);

@@ -2,6 +2,7 @@
 
 #include "command_edit.h"
 #include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/fulltext.h"
 #include "core/qthelper.h" // for copy_qstring
 #include "core/sample.h"
@@ -1507,8 +1508,8 @@ void EditDive::exchangeDives()
 	QVector<dive *> dives = { oldDive };
 	timestamp_t delta = oldDive->when - newDive->when;
 	if (delta != 0) {
-		sort_dive_table(&dive_table);
-		sort_trip_table(&trip_table);
+		sort_dive_table(divelog.dives);
+		sort_trip_table(divelog.trips);
 		if (newDive->divetrip != oldDive->divetrip)
 			qWarning("Command::EditDive::redo(): This command does not support moving between trips!");
 		if (oldDive->divetrip)

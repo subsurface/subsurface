@@ -10,6 +10,7 @@
 #include "subsurface-string.h"
 #include "parse.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "device.h"
 #include "membuffer.h"
 #include "gettext.h"
@@ -487,9 +488,7 @@ static int shearwater_cloud_dive(void *param, int columns, char **data, char **c
 	return SQLITE_OK;
 }
 
-int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			    struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-			    struct device_table *devices)
+int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -498,10 +497,10 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = table;
-	state.trips = trips;
-	state.sites = sites;
-	state.devices = devices;
+	state.target_table = log->dives;
+	state.trips = log->trips;
+	state.sites = log->sites;
+	state.devices = log->devices;
 	state.sql_handle = handle;
 
 	// So far have not seen any sample rate in Shearwater Desktop
@@ -520,9 +519,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	return 0;
 }
 
-int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-			    struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-			    struct device_table *devices)
+int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -531,10 +528,10 @@ int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = table;
-	state.trips = trips;
-	state.sites = sites;
-	state.devices = devices;
+	state.target_table = log->dives;
+	state.trips = log->trips;
+	state.sites = log->sites;
+	state.devices = log->devices;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select l.number,strftime('%s', DiveDate),location||' / '||site,buddy,notes,imperialUnits,maxDepth,DiveLengthTime,startSurfacePressure,computerSerial,computerModel,d.diveId,l.sampleRateMs / 1000 FROM dive_details AS d JOIN dive_logs AS l ON d.diveId=l.diveId";

@@ -13,6 +13,7 @@
 #include <fcntl.h>
 
 #include "dive.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "extradata.h"
@@ -682,8 +683,8 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", DATAFORMAT_VERSION);
 
 	/* save the dive computer nicknames, if any */
-	for (int i = 0; i < nr_devices(&device_table); i++) {
-		const struct device *d = get_device(&device_table, i);
+	for (int i = 0; i < nr_devices(divelog.devices); i++) {
+		const struct device *d = get_device(divelog.devices, i);
 		if (!select_only || device_used_by_selected_dive(d))
 			save_one_device(b, d);
 	}
@@ -697,8 +698,8 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 
 	/* save the dive sites */
 	put_format(b, "<divesites>\n");
-	for (i = 0; i < dive_site_table.nr; i++) {
-		struct dive_site *ds = get_dive_site(i, &dive_site_table);
+	for (i = 0; i < divelog.sites->nr; i++) {
+		struct dive_site *ds = get_dive_site(i, divelog.sites);
 		/* Don't export empty dive sites */
 		if (dive_site_is_empty(ds))
 			continue;
@@ -726,8 +727,8 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 		put_format(b, "</site>\n");
 	}
 	put_format(b, "</divesites>\n<dives>\n");
-	for (i = 0; i < trip_table.nr; ++i)
-		trip_table.trips[i]->saved = 0;
+	for (i = 0; i < divelog.trips->nr; ++i)
+		divelog.trips->trips[i]->saved = 0;
 
 	/* save the filter presets */
 	save_filter_presets(b);

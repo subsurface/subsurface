@@ -2,10 +2,9 @@
 #include "testpicture.h"
 #include "core/device.h"
 #include "core/dive.h"
-#include "core/divesite.h"
+#include "core/divelog.h"
 #include "core/errorhelper.h"
 #include "core/picture.h"
-#include "core/trip.h"
 #include "core/file.h"
 #include "core/pref.h"
 #include <QString>
@@ -29,7 +28,7 @@ void TestPicture::addPicture()
 	struct picture *pic1, *pic2;
 	verbose = 1;
 
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test44.xml", &dive_table, &trip_table, &dive_site_table, &device_table, &filter_preset_table), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test44.xml", &divelog), 0);
 	dive = get_dive(0);
 	// Pictures will be added to selected dives
 	dive->selected = true;

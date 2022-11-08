@@ -11,6 +11,7 @@
 #include "subsurface-string.h"
 #include "parse.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "device.h"
 #include "membuffer.h"
 #include "gettext.h"
@@ -262,9 +263,7 @@ static int seac_dive(void *param, int columns, char **data, char **column)
  * The callback function performs another SQL query on the other
  * table, to read in the sample values.
  */
-int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
-		     struct dive_table *table, struct trip_table *trips, struct dive_site_table *sites,
-		     struct device_table *devices)
+int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
 {
 	UNUSED(buffer);
 	UNUSED(size);
@@ -274,10 +273,10 @@ int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int 
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = table;
-	state.trips = trips;
-	state.sites = sites;
-	state.devices = devices;
+	state.target_table = log->dives;
+	state.trips = log->trips;
+	state.sites = log->sites;
+	state.devices = log->devices;
 	state.sql_handle = handle;
 
 	const char *get_dives = "SELECT dive_number, device_sn, date, timezone, time, elapsed_surface_time, dive_type, start_mode, water_type, comment, total_dive_time, max_depth, firmware_version, dive_id FROM headers_dive";

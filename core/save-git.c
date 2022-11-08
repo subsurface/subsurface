@@ -17,6 +17,7 @@
 #include <git2.h>
 
 #include "dive.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "filterconstraint.h"
 #include "filterpreset.h"
@@ -883,8 +884,8 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	struct membuffer b = { 0 };
 
 	put_format(&b, "version %d\n", DATAFORMAT_VERSION);
-	for (int i = 0; i < nr_devices(&device_table); i++)
-		save_one_device(&b, get_device(&device_table, i));
+	for (int i = 0; i < nr_devices(divelog.devices); i++)
+		save_one_device(&b, get_device(divelog.devices, i));
 	/* save the fingerprint data */
 	for (unsigned int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
 		save_one_fingerprint(&b, i);
@@ -913,10 +914,10 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	subdir = new_directory(repo, tree, &dirname);
 	free_buffer(&dirname);
 
-	purge_empty_dive_sites(&dive_site_table);
-	for (int i = 0; i < dive_site_table.nr; i++) {
+	purge_empty_dive_sites(divelog.sites);
+	for (int i = 0; i < divelog.sites->nr; i++) {
 		struct membuffer b = { 0 };
-		struct dive_site *ds = get_dive_site(i, &dive_site_table);
+		struct dive_site *ds = get_dive_site(i, divelog.sites);
 		struct membuffer site_file_name = { 0 };
 		put_format(&site_file_name, "Site-%08x", ds->uuid);
 		show_utf8(&b, "name ", ds->name, "\n");
@@ -1029,8 +1030,8 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	save_divesites(repo, root);
 	save_filter_presets(repo, root);
 
-	for (i = 0; i < trip_table.nr; ++i)
-		trip_table.trips[i]->saved = 0;
+	for (i = 0; i < divelog.trips->nr; ++i)
+		divelog.trips->trips[i]->saved = 0;
 
 	/* save the dives */
 	git_storage_update_progress(translate("gettextFromC", "Start saving dives"));
@@ -1140,7 +1141,7 @@ int get_authorship(git_repository *repo, git_signature **authorp)
 
 static void create_commit_message(struct membuffer *msg, bool create_empty)
 {
-	int nr = dive_table.nr;
+	int nr = divelog.dives->nr;
 	struct dive *dive = get_dive(nr-1);
 	char* changes_made = get_changes_made();
 

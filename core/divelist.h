@@ -9,6 +9,7 @@ extern "C" {
 #endif
 
 struct dive;
+struct divelog;
 struct trip_table;
 struct dive_site_table;
 struct device_table;
@@ -19,7 +20,6 @@ struct dive_table {
 	struct dive **dives;
 };
 static const struct dive_table empty_dive_table = { 0, 0, (struct dive **)0 };
-extern struct dive_table dive_table;
 
 /* this is used for both git and xml format */
 #define DATAFORMAT_VERSION 3
@@ -35,9 +35,7 @@ extern void process_loaded_dives();
 #define	IMPORT_IS_DOWNLOADED (1 << 1)
 #define	IMPORT_MERGE_ALL_TRIPS (1 << 2)
 #define	IMPORT_ADD_TO_NEW_TRIP (1 << 3)
-extern void add_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table,
-			       struct dive_site_table *import_sites_table, struct device_table *devices_to_add,
-			       int flags);
+extern void add_imported_dives(struct divelog *log, int flags);
 extern void process_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table,
 				   struct dive_site_table *import_sites_table, struct device_table *import_devices_table,
 				   int flags,

@@ -3,6 +3,7 @@
 #include "commands/command.h"
 #include "core/qthelper.h"
 #include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/subsurface-float.h"
 #include "core/subsurface-string.h"
@@ -423,7 +424,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	qPrefDiveComputer::set_device(data->devName());
 
 	// before we start, remember where the dive_table ended
-	previousLast = dive_table.nr;
+	previousLast = divelog.dives->nr;
 	diveImportedModel->startDownload();
 
 	// FIXME: We should get the _actual_ device info instead of whatever

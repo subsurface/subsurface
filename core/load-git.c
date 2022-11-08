@@ -15,6 +15,7 @@
 #include "gettext.h"
 
 #include "dive.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "event.h"
 #include "errorhelper.h"
@@ -1961,17 +1962,16 @@ const char *get_sha(git_repository *repo, const char *branch)
  * If it is a git repository, we return zero for success,
  * or report an error and return 1 if the load failed.
  */
-int git_load_dives(struct git_info *info, struct dive_table *table, struct trip_table *trips,
-		   struct dive_site_table *sites, struct device_table *devices, struct filter_preset_table *filter_presets)
+int git_load_dives(struct git_info *info, struct divelog *log)
 {
 	int ret;
 	struct git_parser_state state = { 0 };
 	state.repo = info->repo;
-	state.table = table;
-	state.trips = trips;
-	state.sites = sites;
-	state.devices = devices;
-	state.filter_presets = filter_presets;
+	state.table = log->dives;
+	state.trips = log->trips;
+	state.sites = log->sites;
+	state.devices = log->devices;
+	state.filter_presets = log->filter_presets;
 
 	if (!info->repo)
 		return report_error("Unable to open git repository '%s[%s]'", info->url, info->branch);

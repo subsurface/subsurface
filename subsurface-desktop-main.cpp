@@ -7,6 +7,7 @@
 #include <time.h>
 
 #include "core/downloadfromdcthread.h" // for fill_computer_list
+#include "core/divelog.h"
 #include "core/errorhelper.h"
 #include "core/parse.h"
 #include "core/qt-gui.h"
@@ -109,6 +110,7 @@ int main(int argc, char **argv)
 	if (!quit)
 		run_ui();
 	exit_ui();
+	clear_divelog(&divelog);
 	taglist_free(g_tag_list);
 	parse_xml_exit();
 	free((void *)default_directory);
