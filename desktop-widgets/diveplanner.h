@@ -2,6 +2,7 @@
 #ifndef DIVEPLANNER_H
 #define DIVEPLANNER_H
 
+#include "core/divemode.h"
 #include "core/owning_ptrs.h"
 
 #include <QAbstractTableModel>
@@ -43,13 +44,13 @@ private:
 class PlannerSettingsWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit PlannerSettingsWidget(QWidget *parent = 0);
+	explicit PlannerSettingsWidget(PlannerWidgets *parent);
 	~PlannerSettingsWidget();
 public
 slots:
 	void settingsChanged();
 	void setBackgasBreaks(bool dobreaks);
-	void disableDecoElements(int mode);
+	void disableDecoElements(int mode, divemode_t rebreathermode);
 	void disableBackgasBreaks(bool enabled);
 	void setDiveMode(int mode);
 	void setBailoutVisibility(int mode);
@@ -86,6 +87,7 @@ public:
 	void prepareReplanDive(const dive *d); // Make a copy of the dive to be replanned
 	void replanDive(int currentDC);
 	struct dive *getDive() const;
+	divemode_t getRebreatherMode() const;
 public
 slots:
 	void printDecoPlan();

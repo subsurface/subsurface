@@ -63,7 +63,6 @@ public:
 
 	void loadFromDive(dive *d, int dcNr);
 	void addStop(int millimeters, int seconds);
-	divemode_t getRebreatherMode() const;
 public
 slots:
 	void addDefaultStop();

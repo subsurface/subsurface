@@ -216,9 +216,8 @@ void DivePlannerWidget::customSalinityChanged(double density)
 	}
 }
 
-void PlannerSettingsWidget::disableDecoElements(int mode)
+void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t rebreathermode)
 {
-	divemode_t rebreathermode = DivePlannerPointsModel::instance()->getRebreatherMode();
 	if (mode == RECREATIONAL) {
 		ui.label_gflow->setDisabled(false);
 		ui.label_gfhigh->setDisabled(false);
@@ -342,7 +341,7 @@ void PlannerSettingsWidget::disableBackgasBreaks(bool enabled)
 	}
 }
 
-PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent) : QWidget(parent, QFlag(0))
+PlannerSettingsWidget::PlannerSettingsWidget(PlannerWidgets *parent)
 {
 	ui.setupUi(this);
 
@@ -373,7 +372,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent) : QWidget(parent, 
 	ui.recreational_deco->setChecked(prefs.planner_deco_mode == RECREATIONAL);
 	ui.buehlmann_deco->setChecked(prefs.planner_deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.planner_deco_mode == VPMB);
-	disableDecoElements((int) prefs.planner_deco_mode);
+	disableDecoElements((int) prefs.planner_deco_mode, OC);
 
 	// should be the same order as in dive_comp_type!
 	QStringList rebreather_modes = QStringList();
@@ -412,9 +411,9 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent) : QWidget(parent, 
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), plannerModel, &DivePlannerPointsModel::setRebreatherMode);
 	connect(ui.rebreathermode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PlannerSettingsWidget::setBailoutVisibility);
 
-	connect(ui.recreational_deco, &QAbstractButton::clicked, [this] { disableDecoElements(RECREATIONAL); });
-	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [this] { disableDecoElements(BUEHLMANN); });
-	connect(ui.vpmb_deco, &QAbstractButton::clicked, [this] { disableDecoElements(VPMB); });
+	connect(ui.recreational_deco, &QAbstractButton::clicked, [this, parent] { disableDecoElements(RECREATIONAL, parent->getRebreatherMode()); });
+	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [this, parent] { disableDecoElements(BUEHLMANN, parent->getRebreatherMode()); });
+	connect(ui.vpmb_deco, &QAbstractButton::clicked, [this, parent] { disableDecoElements(VPMB, parent->getRebreatherMode()); });
 
 	connect(ui.sacfactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_sacfactor);
 	connect(ui.problemsolvingtime, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setProblemSolvingTime);
@@ -543,7 +542,8 @@ void PlannerDetails::setPlanNotes(QString plan)
 
 PlannerWidgets::PlannerWidgets() :
 	planned_dive(alloc_dive()),
-	plannerWidget(*planned_dive, this)
+	plannerWidget(*planned_dive, this),
+	plannerSettingsWidget(this)
 {
 	gasModel = std::make_unique<GasSelectionModel>();
 	diveTypeModel = std::make_unique<DiveTypeSelectionModel>();
@@ -559,6 +559,11 @@ PlannerWidgets::~PlannerWidgets()
 struct dive *PlannerWidgets::getDive() const
 {
 	return planned_dive.get();
+}
+
+divemode_t PlannerWidgets::getRebreatherMode() const
+{
+	return planned_dive->dc.divemode;
 }
 
 void PlannerWidgets::preparePlanDive(const dive *currentDive)
