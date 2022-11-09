@@ -177,7 +177,7 @@ static void parse_dive_gps(char *line, struct membuffer *str, struct git_parser_
 	if (!ds) {
 		ds = get_dive_site_by_gps(&location, state->sites);
 		if (!ds)
-			ds = create_dive_site_with_gps("", &location, &dive_site_table);
+			ds = create_dive_site_with_gps("", &location, state->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
@@ -197,9 +197,9 @@ static void parse_dive_location(char *line, struct membuffer *str, struct git_pa
 	char *name = detach_cstring(str);
 	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
 	if (!ds) {
-		ds = get_dive_site_by_name(name, &dive_site_table);
+		ds = get_dive_site_by_name(name, state->sites);
 		if (!ds)
-			ds = create_dive_site(name, &dive_site_table);
+			ds = create_dive_site(name, state->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		// we already had a dive site linked to the dive
@@ -227,7 +227,7 @@ static void parse_dive_notes(char *line, struct membuffer *str, struct git_parse
 { UNUSED(line); state->active_dive->notes = detach_cstring(str); }
 
 static void parse_dive_divesiteid(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(str); add_dive_to_dive_site(state->active_dive, get_dive_site_by_uuid(get_hex(line), &dive_site_table)); }
+{ UNUSED(str); add_dive_to_dive_site(state->active_dive, get_dive_site_by_uuid(get_hex(line), state->sites)); }
 
 /*
  * We can have multiple tags in the membuffer. They are separated by
@@ -1756,7 +1756,7 @@ static int parse_site_entry(struct git_parser_state *state, const git_tree_entry
 	if (*suffix == '\0')
 		return report_error("Dive site without uuid");
 	uint32_t uuid = strtoul(suffix, NULL, 16);
-	state->active_site = alloc_or_get_dive_site(uuid, &dive_site_table);
+	state->active_site = alloc_or_get_dive_site(uuid, state->sites);
 	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read dive site file");
