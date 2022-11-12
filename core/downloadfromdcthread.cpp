@@ -80,9 +80,7 @@ static QString getTransportString(unsigned int transport)
 	return ts;
 }
 
-DownloadThread::DownloadThread() : downloadTable({ 0 }),
-	diveSiteTable({ 0 }),
-	m_data(DCDeviceData::instance())
+DownloadThread::DownloadThread() : m_data(DCDeviceData::instance())
 {
 }
 
@@ -90,9 +88,7 @@ void DownloadThread::run()
 {
 	auto internalData = m_data->internalData();
 	internalData->descriptor = descriptorLookup[m_data->vendor().toLower() + m_data->product().toLower()];
-	internalData->download_table = &downloadTable;
-	internalData->sites = &diveSiteTable;
-	internalData->devices = &deviceTable;
+	internalData->log = &log;
 	internalData->btname = strdup(m_data->devBluetoothName().toUtf8());
 	if (!internalData->descriptor) {
 		qDebug() << "No download possible when DC type is unknown";
@@ -109,11 +105,9 @@ void DownloadThread::run()
 
 	qDebug() << "Starting download from " << getTransportString(transports);
 	qDebug() << "downloading" << (internalData->force_download ? "all" : "only new") << "dives";
-	clear_dive_table(&downloadTable);
-	clear_dive_site_table(&diveSiteTable);
-	clear_device_table(&deviceTable);
+	clear_divelog(&log);
 
-	Q_ASSERT(internalData->download_table != nullptr);
+	Q_ASSERT(internalData->log != nullptr);
 	const char *errorText;
 	import_thread_cancelled = false;
 	error.clear();
@@ -125,9 +119,9 @@ void DownloadThread::run()
 		error = str_error(errorText, internalData->devname, internalData->vendor, internalData->product);
 		qDebug() << "Finishing download thread:" << error;
 	} else {
-		if (!downloadTable.nr)
+		if (!log.dives->nr)
 			error = tr("No new dives downloaded from dive computer");
-		qDebug() << "Finishing download thread:" << downloadTable.nr << "dives downloaded";
+		qDebug() << "Finishing download thread:" << log.dives->nr << "dives downloaded";
 	}
 	qPrefDiveComputer::set_vendor(internalData->vendor);
 	qPrefDiveComputer::set_product(internalData->product);
@@ -216,7 +210,7 @@ void show_computer_list()
 DCDeviceData::DCDeviceData()
 {
 	memset(&data, 0, sizeof(data));
-	data.download_table = nullptr;
+	data.log = nullptr;
 	data.diveid = 0;
 #if defined(BT_SUPPORT)
 	data.bluetooth_mode = true;

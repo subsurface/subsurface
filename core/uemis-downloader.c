@@ -212,9 +212,9 @@ static struct dive *uemis_start_dive(uint32_t deviceid)
 
 static struct dive *get_dive_by_uemis_diveid(device_data_t *devdata, uint32_t object_id)
 {
-	for (int i = 0; i < devdata->download_table->nr; i++) {
-		if (object_id == devdata->download_table->dives[i]->dc.diveid)
-			return devdata->download_table->dives[i];
+	for (int i = 0; i < devdata->log->dives->nr; i++) {
+		if (object_id == devdata->log->dives->dives[i]->dc.diveid)
+			return devdata->log->dives->dives[i];
 	}
 	return NULL;
 }
@@ -844,20 +844,20 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
 {
 	struct dive *dive = NULL;
 
-	if (devdata->download_table->dives[devdata->download_table->nr - 1]->dc.diveid == diveid) {
+	if (devdata->log->dives->dives[devdata->log->dives->nr - 1]->dc.diveid == diveid) {
 		/* we hit the last one in the array */
-		dive = devdata->download_table->dives[devdata->download_table->nr - 1];
+		dive = devdata->log->dives->dives[devdata->log->dives->nr - 1];
 	} else {
-		for (int i = 0; i < devdata->download_table->nr - 1; i++) {
-			if (devdata->download_table->dives[i]->dc.diveid == diveid) {
-				dive = devdata->download_table->dives[i];
-				for (int x = i; x < devdata->download_table->nr - 1; x++)
-					devdata->download_table->dives[i] = devdata->download_table->dives[x + 1];
+		for (int i = 0; i < devdata->log->dives->nr - 1; i++) {
+			if (devdata->log->dives->dives[i]->dc.diveid == diveid) {
+				dive = devdata->log->dives->dives[i];
+				for (int x = i; x < devdata->log->dives->nr - 1; x++)
+					devdata->log->dives->dives[i] = devdata->log->dives->dives[x + 1];
 			}
 		}
 	}
 	if (dive) {
-		devdata->download_table->dives[--devdata->download_table->nr] = NULL;
+		devdata->log->dives->dives[--devdata->log->dives->nr] = NULL;
 		free_dive(dive);
 
 		return true;
@@ -997,7 +997,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		} else if (!is_log && dive && !strcmp(tag, "divespot_id")) {
 			int divespot_id = atoi(val);
 			if (divespot_id != -1) {
-				struct dive_site *ds = create_dive_site("from Uemis", devdata->sites);
+				struct dive_site *ds = create_dive_site("from Uemis", devdata->log->sites);
 				unregister_dive_from_dive_site(dive);
 				add_dive_to_dive_site(dive, ds);
 				uemis_mark_divelocation(dive->dc.diveid, divespot_id, ds);
@@ -1016,13 +1016,13 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		 * be a short read because of some error */
 		if (done && ++bp < endptr && *bp != '{' && strstr(bp, "{{")) {
 			done = false;
-			record_dive_to_table(dive, devdata->download_table);
+			record_dive_to_table(dive, devdata->log->dives);
 			dive = uemis_start_dive(deviceid);
 		}
 	}
 	if (is_log) {
 		if (dive->dc.diveid) {
-			record_dive_to_table(dive, devdata->download_table);
+			record_dive_to_table(dive, devdata->log->dives);
 		} else { /* partial dive */
 			free_dive(dive);
 			free(buf);
@@ -1195,11 +1195,11 @@ static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, in
 			 * we search all existing divesites if we have one with the same name already. The function
 			 * returns the first found which is luckily not the newly created.
 			 */
-			ods = get_dive_site_by_name(nds->name, devdata->sites);
+			ods = get_dive_site_by_name(nds->name, devdata->log->sites);
 			if (ods) {
 				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				if (nds->uuid != ods->uuid) {
-					delete_dive_site(nds, devdata->sites);
+					delete_dive_site(nds, devdata->log->sites);
 					unregister_dive_from_dive_site(dive);
 					add_dive_to_dive_site(dive, ods);
 				}
@@ -1209,14 +1209,14 @@ static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, in
 			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
 			*/
-			delete_dive_site(dive->dive_site, devdata->sites);
+			delete_dive_site(dive->dive_site, devdata->log->sites);
 		}
 	}
 }
 
 static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, device_data_t *data, const char *mountpath, const char deviceidnr)
 {
-	struct dive *dive = data->download_table->dives[idx];
+	struct dive *dive = data->log->dives->dives[idx];
 	char log_file_no_to_find[20];
 	char dive_to_read_buf[10];
 	bool found = false;
@@ -1238,7 +1238,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 #if UEMIS_DEBUG & 16
 		do_dump_buffer_to_file(mbuf, "Dive");
 #endif
-		*uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_SINGLE_DIVE);
+		*uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_SINGLE_DIVE);
 		if (*uemis_mem_status == UEMIS_MEM_OK) {
 			/* if the memory isn's completely full we can try to read more dive log vs. dive details
 			 * UEMIS_MEM_CRITICAL means not enough space for a full round but the dive details
@@ -1303,7 +1303,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 		} else {
 			/* At this point the memory of the UEMIS is full, let's cleanup all dive log files were
 			 * we could not match the details to. */
-			do_delete_dives(data->download_table, idx);
+			do_delete_dives(data->log->dives, idx);
 			return false;
 		}
 	}
@@ -1363,7 +1363,7 @@ const char *do_uemis_import(device_data_t *data)
 		goto bail;
 
 	param_buff[1] = "notempty";
-	newmax = uemis_get_divenr(deviceid, data->download_table, force_download);
+	newmax = uemis_get_divenr(deviceid, data->log->dives, force_download);
 	if (verbose)
 		fprintf(stderr, "Uemis downloader: start looking at dive nr %s\n", newmax);
 
@@ -1379,12 +1379,12 @@ const char *do_uemis_import(device_data_t *data)
 		fprintf(debugfile, "d_u_i inner loop start %d end %d newmax %s\n", start, end, newmax);
 #endif
 		/* start at the last filled download table index */
-		match_dive_and_log = data->download_table->nr;
+		match_dive_and_log = data->log->dives->nr;
 		sprintf(newmax, "%d", start);
 		param_buff[2] = newmax;
 		param_buff[3] = 0;
 		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
-		uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_DETAILS);
+		uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
 		/* first, remove any leading garbage... this needs to start with a '{' */
 		char *realmbuf = mbuf;
 		if (mbuf)
@@ -1422,7 +1422,7 @@ const char *do_uemis_import(device_data_t *data)
 			 * What the following part does is to optimize the mapping by using
 			 * dive_to_read = the dive details entry that need to be read using the object_id
 			 * logFileNoToFind = map the logfilenr of the dive details with the object_id = diveid from the get dive logs */
-			for (int i = match_dive_and_log; i < data->download_table->nr; i++) {
+			for (int i = match_dive_and_log; i < data->log->dives->nr; i++) {
 				bool success = get_matching_dive(i, newmax, &uemis_mem_status, data, mountpath, deviceidnr);
 				if (!success)
 					break;
@@ -1433,7 +1433,7 @@ const char *do_uemis_import(device_data_t *data)
 			start = end;
 
 			/* Do some memory checking here */
-			uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_LOG);
+			uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_LOG);
 			if (uemis_mem_status != UEMIS_MEM_OK) {
 #if UEMIS_DEBUG & 4
 				fprintf(debugfile, "d_u_i out of memory, bailing\n");
@@ -1447,7 +1447,7 @@ const char *do_uemis_import(device_data_t *data)
 				// Resetting to original state
 				filenr = 0;
 				max_mem_used = -1;
-				uemis_mem_status = get_memory(data->download_table, UEMIS_CHECK_DETAILS);
+				uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
 				if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
 					goto bail;
 				if (strcmp(deviceid, param_buff[0]) != 0) {
@@ -1490,7 +1490,7 @@ const char *do_uemis_import(device_data_t *data)
 			 * be deleted from the download_table.
 			 */
 			if (uemis_mem_status == UEMIS_MEM_FULL)
-				do_delete_dives(data->download_table, match_dive_and_log);
+				do_delete_dives(data->log->dives, match_dive_and_log);
 #if UEMIS_DEBUG & 4
 			fprintf(debugfile, "d_u_i out of memory, bailing instead of processing\n");
 #endif
@@ -1508,9 +1508,9 @@ const char *do_uemis_import(device_data_t *data)
 	/* Regardless on where we are with the memory situation, it's time now
 	 * to see if we have to clean some dead bodies from our download table */
 	next_table_index = 0;
-	while (next_table_index < data->download_table->nr) {
-		if (data->download_table->dives[next_table_index]->hidden_by_filter)
-			uemis_delete_dive(data, data->download_table->dives[next_table_index]->dc.diveid);
+	while (next_table_index < data->log->dives->nr) {
+		if (data->log->dives->dives[next_table_index]->hidden_by_filter)
+			uemis_delete_dive(data, data->log->dives->dives[next_table_index]->dc.diveid);
 		else
 			next_table_index++;
 	}
@@ -1528,7 +1528,7 @@ bail:
 	}
 	free(deviceid);
 	free(reqtxt_path);
-	if (!data->download_table->nr)
+	if (!data->log->dives->nr)
 		result = translate("gettextFromC", ERR_NO_FILES);
 	return result;
 }

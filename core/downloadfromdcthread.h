@@ -6,8 +6,7 @@
 #include <QHash>
 #include <QLoggingCategory>
 
-#include "divesite.h"
-#include "device.h"
+#include "divelog.h"
 #include "libdivecomputer.h"
 #include "connectionlistmodel.h"
 #if BT_SUPPORT
@@ -74,9 +73,7 @@ public:
 
 	DCDeviceData *data();
 	QString error;
-	struct dive_table downloadTable;
-	struct dive_site_table diveSiteTable;
-	struct device_table deviceTable;
+	struct divelog log;
 
 private:
 	DCDeviceData *m_data;

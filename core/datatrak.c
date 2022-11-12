@@ -158,8 +158,7 @@ static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_mo
  * Parses a mem buffer extracting its data and filling a subsurface's dive structure.
  * Returns a pointer to last position in buffer, or NULL on failure.
  */
-static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct dive_site_table *sites,
-				     struct device_table *devices, long maxbuf)
+static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct divelog *log, long maxbuf)
 {
 	int  rc, profile_length, libdc_model;
 	char *tmp_notes_str = NULL;
@@ -176,8 +175,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	char is_nitrox = 0, is_O2 = 0, is_SCR = 0;
 
 	device_data_t *devdata = calloc(1, sizeof(device_data_t));
-	devdata->sites = sites;
-	devdata->devices = devices;
+	devdata->log = log;
 
 	/*
 	 * Parse byte to byte till next dive entry
@@ -216,9 +214,9 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	 * Locality and Dive points.
 	 */
 	snprintf(buffer, sizeof(buffer), "%s, %s", locality, dive_point);
-	ds = get_dive_site_by_name(buffer, sites);
+	ds = get_dive_site_by_name(buffer, log->sites);
 	if (!ds)
-		ds = create_dive_site(buffer, sites);
+		ds = create_dive_site(buffer, log->sites);
 	add_dive_to_dive_site(dt_dive, ds);
 	free(locality);
 	locality = NULL;
@@ -711,7 +709,7 @@ int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct divelo
 	while ((i < numdives) && ((long) runner < maxbuf)) {
 		struct dive *ptdive = alloc_dive();
 
-		runner = dt_dive_parser(runner, ptdive, log->sites, log->devices, maxbuf);
+		runner = dt_dive_parser(runner, ptdive, log, maxbuf);
 		if (wl_mem)
 			wlog_compl_parser(wl_mem, ptdive, i);
 		if (runner == NULL) {
