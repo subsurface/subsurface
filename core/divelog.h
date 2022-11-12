@@ -22,6 +22,7 @@ struct divelog {
 	void clear();
 	divelog();
 	~divelog();
+	divelog(divelog &&log); // move constructor (argument is consumed).
 #endif
 };
 

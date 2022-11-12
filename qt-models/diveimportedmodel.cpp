@@ -1,11 +1,10 @@
 #include "diveimportedmodel.h"
+#include "core/dive.h"
 #include "core/qthelper.h"
 #include "core/divelist.h"
 #include "commands/command.h"
 
-DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
-	diveTable(empty_dive_table),
-	sitesTable(empty_dive_site_table)
+DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o)
 {
 	connect(&thread, &QThread::finished, this, &DiveImportedModel::downloadThreadFinished);
 }
@@ -17,7 +16,7 @@ int DiveImportedModel::columnCount(const QModelIndex&) const
 
 int DiveImportedModel::rowCount(const QModelIndex&) const
 {
-	return diveTable.nr;
+	return log.dives->nr;
 }
 
 QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -50,10 +49,10 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
-	if (index.row() >= diveTable.nr)
+	if (index.row() >= log.dives->nr)
 		return QVariant();
 
-	struct dive *d = get_dive_from_table(index.row(), &diveTable);
+	struct dive *d = get_dive_from_table(index.row(), log.dives);
 	if (!d)
 		return QVariant();
 
@@ -92,7 +91,7 @@ void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 void DiveImportedModel::selectAll()
 {
 	std::fill(checkStates.begin(), checkStates.end(), true);
-	dataChanged(index(0, 0), index(diveTable.nr - 1, 0), QVector<int>() << Qt::CheckStateRole << Selected);
+	dataChanged(index(0, 0), index(log.dives->nr - 1, 0), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 void DiveImportedModel::selectRow(int row)
@@ -104,7 +103,7 @@ void DiveImportedModel::selectRow(int row)
 void DiveImportedModel::selectNone()
 {
 	std::fill(checkStates.begin(), checkStates.end(), false);
-	dataChanged(index(0, 0), index(diveTable.nr - 1, 0 ), QVector<int>() << Qt::CheckStateRole << Selected);
+	dataChanged(index(0, 0), index(log.dives->nr - 1, 0 ), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
@@ -117,8 +116,7 @@ Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
 void DiveImportedModel::clearTable()
 {
 	beginResetModel();
-	clear_dive_table(&diveTable);
-	clear_dive_site_table(&sitesTable);
+	clear_divelog(&log);
 	endResetModel();
 }
 
@@ -127,11 +125,11 @@ void DiveImportedModel::downloadThreadFinished()
 	beginResetModel();
 
 	// Move the table data from thread to model
-	move_dive_table(&thread.downloadTable, &diveTable);
-	move_dive_site_table(&thread.diveSiteTable, &sitesTable);
-	deviceTable = std::move(thread.deviceTable);
+	move_dive_table(&thread.downloadTable, log.dives);
+	move_dive_site_table(&thread.diveSiteTable, log.sites);
+	*log.devices = std::move(thread.deviceTable);
 
-	checkStates.resize(diveTable.nr);
+	checkStates.resize(log.dives->nr);
 	std::fill(checkStates.begin(), checkStates.end(), true);
 
 	endResetModel();
@@ -150,46 +148,41 @@ void DiveImportedModel::waitForDownload()
 	downloadThreadFinished();
 }
 
-std::tuple<struct dive_table, struct dive_site_table, struct device_table> DiveImportedModel::consumeTables()
+struct divelog DiveImportedModel::consumeTables()
 {
 	beginResetModel();
 
 	// Move tables to result
-	struct dive_table dives = empty_dive_table;
-	struct dive_site_table sites = empty_dive_site_table;
-	struct device_table devices;
-	move_dive_table(&diveTable, &dives);
-	move_dive_site_table(&sitesTable, &sites);
-	devices = std::move(deviceTable);
+	struct divelog res(std::move(log));
 
 	// Reset indices
 	checkStates.clear();
 
 	endResetModel();
 
-	return std::make_tuple(dives, sites, devices);
+	return res;
 }
 
 int DiveImportedModel::numDives() const
 {
-	return diveTable.nr;
+	return log.dives->nr;
 }
 
 // Delete non-selected dives
 void DiveImportedModel::deleteDeselected()
 {
-	int total = diveTable.nr;
+	int total = log.dives->nr;
 	int j = 0;
 	for (int i = 0; i < total; i++) {
 		if (checkStates[i]) {
 			j++;
 		} else {
 			beginRemoveRows(QModelIndex(), j, j);
-			delete_dive_from_table(&diveTable, j);
+			delete_dive_from_table(log.dives, j);
 			endRemoveRows();
 		}
 	}
-	checkStates.resize(diveTable.nr);
+	checkStates.resize(log.dives->nr);
 	std::fill(checkStates.begin(), checkStates.end(), true);
 }
 
@@ -199,19 +192,11 @@ void DiveImportedModel::recordDives(int flags)
 	// delete non-selected dives
 	deleteDeselected();
 
-	// TODO: use structured bindings once we go C++17
-	std::tuple<struct dive_table, struct dive_site_table, struct device_table> tables = consumeTables();
-	if (std::get<0>(tables).nr > 0) {
+	struct divelog log = consumeTables();
+	if (log.dives->nr > 0) {
 		auto data = thread.data();
-		Command::importDives(&std::get<0>(tables), nullptr, &std::get<1>(tables),
-				     &std::get<2>(tables), nullptr, flags, data->devName());
-	} else {
-		clear_dive_site_table(&std::get<1>(tables));
+		Command::importDives(&log, flags, data->devName());
 	}
-	// The dives and dive sites have been consumed, but the arrays of the tables
-	// still exist. Free them.
-	free(std::get<0>(tables).dives);
-	free(std::get<1>(tables).dive_sites);
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {

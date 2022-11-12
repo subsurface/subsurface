@@ -57,6 +57,7 @@ extern bool is_trip_before_after(const struct dive *dive, bool before);
 extern bool trip_is_single_day(const struct dive_trip *trip);
 extern int trip_shown_dives(const struct dive_trip *trip);
 
+void move_trip_table(struct trip_table *src, struct trip_table *dst);
 void clear_trip_table(struct trip_table *table);
 
 #ifdef DEBUG_TRIP
