@@ -30,6 +30,8 @@
 #include "tag.h"
 #include "subsurface-time.h"
 
+#define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
+
 const char *saved_git_id = NULL;
 
 struct git_parser_state {
