@@ -47,11 +47,7 @@ struct git_parser_state {
 	struct picture active_pic;
 	struct dive_site *active_site;
 	struct filter_preset *active_filter;
-	struct dive_table *table;
-	struct trip_table *trips;
-	struct dive_site_table *sites;
-	struct device_table *devices;
-	struct filter_preset_table *filter_presets;
+	struct divelog *log;
 	int o2pressure_sensor;
 };
 
@@ -176,9 +172,9 @@ static void parse_dive_gps(char *line, struct membuffer *str, struct git_parser_
 
 	parse_location(line, &location);
 	if (!ds) {
-		ds = get_dive_site_by_gps(&location, state->sites);
+		ds = get_dive_site_by_gps(&location, state->log->sites);
 		if (!ds)
-			ds = create_dive_site_with_gps("", &location, state->sites);
+			ds = create_dive_site_with_gps("", &location, state->log->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
@@ -198,9 +194,9 @@ static void parse_dive_location(char *line, struct membuffer *str, struct git_pa
 	char *name = detach_cstring(str);
 	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
 	if (!ds) {
-		ds = get_dive_site_by_name(name, state->sites);
+		ds = get_dive_site_by_name(name, state->log->sites);
 		if (!ds)
-			ds = create_dive_site(name, state->sites);
+			ds = create_dive_site(name, state->log->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		// we already had a dive site linked to the dive
@@ -228,7 +224,7 @@ static void parse_dive_notes(char *line, struct membuffer *str, struct git_parse
 { UNUSED(line); state->active_dive->notes = detach_cstring(str); }
 
 static void parse_dive_divesiteid(char *line, struct membuffer *str, struct git_parser_state *state)
-{ UNUSED(str); add_dive_to_dive_site(state->active_dive, get_dive_site_by_uuid(get_hex(line), state->sites)); }
+{ UNUSED(str); add_dive_to_dive_site(state->active_dive, get_dive_site_by_uuid(get_hex(line), state->log->sites)); }
 
 /*
  * We can have multiple tags in the membuffer. They are separated by
@@ -1014,7 +1010,7 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, str
 			break;
 		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, str);
 	}
-	create_device_node(state->devices, id.model, id.serial, id.nickname);
+	create_device_node(state->log->devices, id.model, id.serial, id.nickname);
 }
 
 struct fingerprint_helper {
@@ -1429,7 +1425,7 @@ static void finish_active_trip(struct git_parser_state *state)
 
 	if (trip) {
 		state->active_trip = NULL;
-		insert_trip(trip, state->trips);
+		insert_trip(trip, state->log->trips);
 	}
 }
 
@@ -1439,7 +1435,7 @@ static void finish_active_dive(struct git_parser_state *state)
 
 	if (dive) {
 		state->active_dive = NULL;
-		record_dive_to_table(dive, state->table);
+		record_dive_to_table(dive, state->log->dives);
 	}
 }
 
@@ -1757,7 +1753,7 @@ static int parse_site_entry(struct git_parser_state *state, const git_tree_entry
 	if (*suffix == '\0')
 		return report_error("Dive site without uuid");
 	uint32_t uuid = strtoul(suffix, NULL, 16);
-	state->active_site = alloc_or_get_dive_site(uuid, state->sites);
+	state->active_site = alloc_or_get_dive_site(uuid, state->log->sites);
 	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read dive site file");
@@ -1833,7 +1829,7 @@ static int parse_filter_preset(struct git_parser_state *state, const git_tree_en
 
 	git_blob_free(blob);
 
-	add_filter_preset_to_table(state->active_filter, state->filter_presets);
+	add_filter_preset_to_table(state->active_filter, state->log->filter_presets);
 	free_filter_preset(state->active_filter);
 	state->active_filter = NULL;
 
@@ -1967,11 +1963,7 @@ int git_load_dives(struct git_info *info, struct divelog *log)
 	int ret;
 	struct git_parser_state state = { 0 };
 	state.repo = info->repo;
-	state.table = log->dives;
-	state.trips = log->trips;
-	state.sites = log->sites;
-	state.devices = log->devices;
-	state.filter_presets = log->filter_presets;
+	state.log = log;
 
 	if (!info->repo)
 		return report_error("Unable to open git repository '%s[%s]'", info->url, info->branch);
