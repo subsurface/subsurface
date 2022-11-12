@@ -18,8 +18,6 @@ extern "C" {
 #define CLOUD_HOST_PATTERN "ssrf-cloud-..\\.subsurface-divelog\\.org"
 #define CLOUD_HOST_GENERIC "cloud.subsurface-divelog.org"
 
-#define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
-
 enum remote_transport { RT_LOCAL, RT_HTTPS, RT_SSH, RT_OTHER };
 
 struct git_oid;
