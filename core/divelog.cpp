@@ -51,6 +51,16 @@ divelog::divelog(divelog &&log) :
 	move_dive_site_table(log.sites, sites);
 }
 
+struct divelog &divelog::operator=(divelog &&log)
+{
+	move_dive_table(log.dives, dives);
+	move_trip_table(log.trips, trips);
+	move_dive_site_table(log.sites, sites);
+	devices = std::move(log.devices);
+	filter_presets = std::move(log.filter_presets);
+	return *this;
+}
+
 void divelog::clear()
 {
 	while (dives->nr)

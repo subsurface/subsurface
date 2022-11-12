@@ -590,7 +590,7 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 
 		if (location.lat.udeg && location.lon.udeg) {
 			unregister_dive_from_dive_site(dive);
-			add_dive_to_dive_site(dive, create_dive_site_with_gps(str->value, &location, devdata->sites));
+			add_dive_to_dive_site(dive, create_dive_site_with_gps(str->value, &location, devdata->log->sites));
 		}
 	}
 }
@@ -847,7 +847,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	    dive->dc.sample[1].temperature.mkelvin > dive->dc.sample[0].temperature.mkelvin)
 		dive->dc.sample[0].temperature.mkelvin = dive->dc.sample[1].temperature.mkelvin;
 
-	record_dive_to_table(dive, devdata->download_table);
+	record_dive_to_table(dive, devdata->log->dives);
 	return true;
 
 error_exit:
@@ -1465,7 +1465,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 			/* TODO: Show the logfile to the user on error. */
 			dc_device_close(data->device);
 			data->device = NULL;
-			if (!data->download_table->nr)
+			if (!data->log->dives->nr)
 				dev_info(data, translate("gettextFromC", "No new dives downloaded from dive computer"));
 		}
 		dc_iostream_close(data->iostream);

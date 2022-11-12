@@ -23,6 +23,7 @@ struct divelog {
 	divelog();
 	~divelog();
 	divelog(divelog &&log); // move constructor (argument is consumed).
+	divelog &operator=(divelog &&log); // move assignment (argument is consumed).
 #endif
 };
 

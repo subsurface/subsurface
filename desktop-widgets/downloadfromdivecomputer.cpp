@@ -2,6 +2,7 @@
 #include "desktop-widgets/downloadfromdivecomputer.h"
 #include "commands/command.h"
 #include "core/qthelper.h"
+#include "core/device.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
 #include "core/settings/qPrefDiveComputer.h"
