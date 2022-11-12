@@ -40,7 +40,7 @@ class enumerated_range
 {
 	Range &base;
 public:
-	using base_iterator = decltype(std::begin(std::declval<Range>()));
+	using base_iterator = decltype(std::begin(std::declval<Range &>()));
 	class iterator {
 		int idx;
 		base_iterator it;

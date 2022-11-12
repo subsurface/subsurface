@@ -1,6 +1,7 @@
 #include "downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/divelist.h"
 #include <QDebug>
@@ -58,23 +59,22 @@ static void updateRememberedDCs()
 	qPrefDiveComputer::set_device1(qPrefDiveComputer::device());
 }
 
-#define NUMTRANSPORTS 7
-static QString transportStringTable[NUMTRANSPORTS] = {
+static QString transportStringTable[] = {
 	QStringLiteral("SERIAL"),
 	QStringLiteral("USB"),
 	QStringLiteral("USBHID"),
 	QStringLiteral("IRDA"),
 	QStringLiteral("BT"),
 	QStringLiteral("BLE"),
-	QStringLiteral("USBSTORAGE"),
+	QStringLiteral("USBSTORAGE")
 };
 
 static QString getTransportString(unsigned int transport)
 {
 	QString ts;
-	for (int i = 0; i < NUMTRANSPORTS; i++) {
+	for (auto [i, s]: enumerated_range(transportStringTable)) {
 		if (transport & 1 << i)
-			ts += transportStringTable[i] + ", ";
+			ts += s + ", ";
 	}
 	ts.chop(2);
 	return ts;
