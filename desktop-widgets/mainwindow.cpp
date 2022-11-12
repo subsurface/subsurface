@@ -323,7 +323,11 @@ void MainWindow::refreshDisplay()
 	setApplicationState(ApplicationState::Default);
 	diveList->setEnabled(true);
 	diveList->setFocus();
-	ui.actionAutoGroup->setChecked(autogroup);
+}
+
+void MainWindow::updateAutogroup()
+{
+	ui.actionAutoGroup->setChecked(divelog.autogroup);
 }
 
 void MainWindow::selectionChanged()
@@ -419,6 +423,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	process_loaded_dives();
 	hideProgressBar();
 	refreshDisplay();
+	updateAutogroup();
 }
 
 // Return whether saving to cloud is OK. If it isn't, show an error return false.
@@ -695,7 +700,7 @@ void MainWindow::on_actionAddDive_triggered()
 	fake_dc(&d.dc);
 	fixup_dive(&d);
 
-	Command::addDive(&d, autogroup, true);
+	Command::addDive(&d, divelog.autogroup, true);
 }
 
 void MainWindow::on_actionRenumber_triggered()
@@ -706,8 +711,8 @@ void MainWindow::on_actionRenumber_triggered()
 
 void MainWindow::on_actionAutoGroup_triggered()
 {
-	set_autogroup(ui.actionAutoGroup->isChecked());
-	if (autogroup)
+	divelog.autogroup = ui.actionAutoGroup->isChecked();
+	if (divelog.autogroup)
 		Command::autogroupDives();
 	else
 		Command::removeAutogenTrips();
@@ -1308,6 +1313,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	process_loaded_dives();
 
 	refreshDisplay();
+	updateAutogroup();
 
 	int min_datafile_version = get_min_datafile_version();
 	if (min_datafile_version >0 && min_datafile_version < DATAFORMAT_VERSION) {

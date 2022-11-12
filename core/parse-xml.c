@@ -690,13 +690,13 @@ static void eventtime(char *buffer, duration_t *duration, struct parser_state *s
 		duration->seconds += state->cur_sample->time.seconds;
 }
 
-static void try_to_match_autogroup(const char *name, char *buf)
+static void try_to_match_autogroup(const char *name, char *buf, struct parser_state *state)
 {
-	bool autogroupvalue;
+	bool autogroup;
 
 	start_match("autogroup", name, buf);
-	if (MATCH("state.autogroup", get_bool, &autogroupvalue)) {
-		set_autogroup(autogroupvalue);
+	if (MATCH("state.autogroup", get_bool, &autogroup)) {
+		state->log->autogroup = autogroup;
 		return;
 	}
 	nonmatch("autogroup", name, buf);
@@ -1503,7 +1503,7 @@ static bool entry(const char *name, char *buf, struct parser_state *state)
 	if (state->in_settings) {
 		try_to_fill_fingerprint(name, buf, state);
 		try_to_fill_dc_settings(name, buf, state);
-		try_to_match_autogroup(name, buf);
+		try_to_match_autogroup(name, buf, state);
 		return true;
 	}
 	if (state->cur_dive_site) {

@@ -22,15 +22,6 @@
 #include "table.h"
 #include "trip.h"
 
-bool autogroup = false;
-
-void set_autogroup(bool value)
-{
-	/* if we keep the UI paradigm, this needs to toggle
-	 * the checkbox on the autogroup menu item */
-	autogroup = value;
-}
-
 /*
  * Get "maximal" dive gas for a dive.
  * Rules:
@@ -724,7 +715,7 @@ static void autogroup_dives(struct dive_table *table, struct trip_table *trip_ta
 	int i, j;
 	bool alloc;
 
-	if (!autogroup)
+	if (!divelog.autogroup)
 		return;
 
 	for (i = 0; (trip = get_dives_to_autogroup(table, i, &from, &to, &alloc)) != NULL; i = to) {

@@ -901,12 +901,11 @@ static void parse_trip_location(char *line, struct membuffer *str, struct git_pa
 static void parse_trip_notes(char *line, struct membuffer *str, struct git_parser_state *state)
 { UNUSED(line); state->active_trip->notes = detach_cstring(str); }
 
-static void parse_settings_autogroup(char *line, struct membuffer *str, struct git_parser_state *_unused)
+static void parse_settings_autogroup(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	UNUSED(line);
 	UNUSED(str);
-	UNUSED(_unused);
-	set_autogroup(true);
+	state->log->autogroup = true;
 }
 
 static void parse_settings_units(char *line, struct membuffer *str, struct git_parser_state *unused)

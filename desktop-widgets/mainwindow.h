@@ -189,6 +189,7 @@ private:
 	void hideProgressBar();
 	void writeSettings();
 	void refreshDisplay();
+	void updateAutogroup();
 	void showProfile();
 	int file_save();
 	int file_save_as();

@@ -890,7 +890,7 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	for (unsigned int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
 		save_one_fingerprint(&b, i);
 
-	cond_put_format(autogroup, &b, "autogroup\n");
+	cond_put_format(divelog.autogroup, &b, "autogroup\n");
 	save_units(&b);
 	if (prefs.tankbar)
 		put_string(&b, "prefs TANKBAR\n");
