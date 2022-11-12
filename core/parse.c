@@ -9,6 +9,7 @@
 
 #include "parse.h"
 #include "dive.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "sample.h"
@@ -225,7 +226,7 @@ void dc_settings_start(struct parser_state *state)
 
 void dc_settings_end(struct parser_state *state)
 {
-	create_device_node(state->devices,
+	create_device_node(state->log->devices,
 		state->cur_settings.dc.model,
 		state->cur_settings.dc.serial_nr,
 		state->cur_settings.dc.nickname);
@@ -246,7 +247,7 @@ void dive_site_end(struct parser_state *state)
 	if (!state->cur_dive_site)
 		return;
 
-	struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, state->sites);
+	struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, state->log->sites);
 	merge_dive_site(ds, state->cur_dive_site);
 
 	if (verbose > 3)
@@ -265,7 +266,7 @@ void filter_preset_start(struct parser_state *state)
 
 void filter_preset_end(struct parser_state *state)
 {
-	add_filter_preset_to_table(state->cur_filter, state->filter_presets);
+	add_filter_preset_to_table(state->cur_filter, state->log->filter_presets);
 	free_filter_preset(state->cur_filter);
 	state->cur_filter = NULL;
 }
@@ -332,7 +333,7 @@ void dive_end(struct parser_state *state)
 	if (!is_dive(state)) {
 		free_dive(state->cur_dive);
 	} else {
-		record_dive_to_table(state->cur_dive, state->target_table);
+		record_dive_to_table(state->cur_dive, state->log->dives);
 		if (state->cur_trip)
 			add_dive_to_trip(state->cur_dive, state->cur_trip);
 	}
@@ -355,7 +356,7 @@ void trip_end(struct parser_state *state)
 {
 	if (!state->cur_trip)
 		return;
-	insert_trip(state->cur_trip, state->trips);
+	insert_trip(state->cur_trip, state->log->trips);
 	state->cur_trip = NULL;
 }
 
@@ -504,7 +505,7 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 		struct dive_site *ds = dive->dive_site;
 		if (!ds) {
 			// if the dive doesn't have a dive site, check if there's already a dive site by this name
-			ds = get_dive_site_by_name(buffer, state->sites);
+			ds = get_dive_site_by_name(buffer, state->log->sites);
 		}
 		if (ds) {
 			// we have a dive site, let's hope there isn't a different name
@@ -515,12 +516,12 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				struct dive_site *exact_match = get_dive_site_by_gps_and_name(buffer, &ds->location, state->sites);
+				struct dive_site *exact_match = get_dive_site_by_gps_and_name(buffer, &ds->location, state->log->sites);
 				if (exact_match) {
 					unregister_dive_from_dive_site(dive);
 					add_dive_to_dive_site(dive, exact_match);
 				} else {
-					struct dive_site *newds = create_dive_site(buffer, state->sites);
+					struct dive_site *newds = create_dive_site(buffer, state->log->sites);
 					unregister_dive_from_dive_site(dive);
 					add_dive_to_dive_site(dive, newds);
 					if (has_location(&state->cur_location)) {
@@ -537,7 +538,7 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				add_dive_to_dive_site(dive, ds);
 			}
 		} else {
-			add_dive_to_dive_site(dive, create_dive_site(buffer, state->sites));
+			add_dive_to_dive_site(dive, create_dive_site(buffer, state->log->sites));
 		}
 	}
 	free(to_free);

@@ -497,10 +497,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = log->dives;
-	state.trips = log->trips;
-	state.sites = log->sites;
-	state.devices = log->devices;
+	state.log = log;
 	state.sql_handle = handle;
 
 	// So far have not seen any sample rate in Shearwater Desktop
@@ -528,10 +525,7 @@ int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = log->dives;
-	state.trips = log->trips;
-	state.sites = log->sites;
-	state.devices = log->devices;
+	state.log = log;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select l.number,strftime('%s', DiveDate),location||' / '||site,buddy,notes,imperialUnits,maxDepth,DiveLengthTime,startSurfacePressure,computerSerial,computerModel,d.diveId,l.sampleRateMs / 1000 FROM dive_details AS d JOIN dive_logs AS l ON d.diveId=l.diveId";

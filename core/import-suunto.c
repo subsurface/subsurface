@@ -303,10 +303,7 @@ int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = log->dives;
-	state.trips = log->trips;
-	state.sites = log->sites;
-	state.devices = log->devices;
+	state.log = log;
 	state.sql_handle = handle;
 
 	/* StartTime is converted from Suunto's nano seconds to standard
@@ -588,10 +585,7 @@ int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = log->dives;
-	state.trips = log->trips;
-	state.sites = log->sites;
-	state.devices = log->devices;
+	state.log = log;
 	state.sql_handle = handle;
 
 	/* StartTime is converted from Suunto's nano seconds to standard
