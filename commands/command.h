@@ -2,17 +2,23 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#include "core/dive.h"
+#include "core/divelog.h"
+#include "core/equipment.h"
 #include "core/pictureobj.h"
 #include "core/taxonomy.h"
 #include <QVector>
 #include <QAction>
 #include <vector>
 
+struct divecomputer;
+struct divelog;
+struct dive_components;
+struct dive_site;
+struct dive_trip;
+struct event;
 struct DiveAndLocation;
 struct FilterData;
 struct filter_preset_table;
-struct device_table;
 
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
@@ -35,10 +41,7 @@ bool placingCommand();			// Currently executing a new command -> might not have 
 // If newNumber is true, the dive is assigned a new number, depending on the
 // insertion position.
 void addDive(dive *d, bool autogroup, bool newNumber);
-void importDives(struct dive_table *dives, struct trip_table *trips,
-		 struct dive_site_table *sites, struct device_table *devices,
-		 struct filter_preset_table *filter_presets,
-		 int flags, const QString &source); // The tables are consumed!
+void importDives(struct divelog *log, int flags, const QString &source); // The tables are consumed!
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const std::vector<dive *> &changedDives, int amount);
 void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);

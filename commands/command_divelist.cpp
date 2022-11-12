@@ -468,11 +468,9 @@ void AddDive::undoit()
 	setSelection(selection, currentDive);
 }
 
-ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, struct dive_site_table *sites,
-			 struct device_table *devices, struct filter_preset_table *filter_presets, int flags,
-			 const QString &source)
+ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 {
-	setText(Command::Base::tr("import %n dive(s) from %1", "", dives->nr).arg(source));
+	setText(Command::Base::tr("import %n dive(s) from %1", "", log->dives->nr).arg(source));
 
 	// this only matters if undoit were called before redoit
 	currentDive = nullptr;
@@ -481,7 +479,7 @@ ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, str
 	struct dive_table dives_to_remove = empty_dive_table;
 	struct trip_table trips_to_add = empty_trip_table;
 	struct dive_site_table sites_to_add = empty_dive_site_table;
-	process_imported_dives(dives, trips, sites, devices, flags,
+	process_imported_dives(log, flags,
 			       &dives_to_add, &dives_to_remove, &trips_to_add,
 			       &sites_to_add, &devicesToAddAndRemove);
 
@@ -515,18 +513,13 @@ ImportDives::ImportDives(struct dive_table *dives, struct trip_table *trips, str
 
 	// When encountering filter presets with equal names, check whether they are
 	// the same. If they are, ignore them.
-	if (filter_presets) {
-		for (const filter_preset &preset: *filter_presets) {
-			QString name = preset.name;
-			auto it = std::find_if(divelog.filter_presets->begin(), divelog.filter_presets->end(),
-					       [&name](const filter_preset &preset) { return preset.name == name; });
-			if (it != divelog.filter_presets->end() && it->data == preset.data)
-				continue;
-			filterPresetsToAdd.emplace_back(preset.name, preset.data);
-		}
-
-		// Consume the table for analogy with the other tables.
-		filter_presets->clear();
+	for (const filter_preset &preset: *log->filter_presets) {
+		QString name = preset.name;
+		auto it = std::find_if(divelog.filter_presets->begin(), divelog.filter_presets->end(),
+				       [&name](const filter_preset &preset) { return preset.name == name; });
+		if (it != divelog.filter_presets->end() && it->data == preset.data)
+			continue;
+		filterPresetsToAdd.emplace_back(preset.name, preset.data);
 	}
 }
 

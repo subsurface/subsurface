@@ -6,6 +6,7 @@
 
 #include "command_base.h"
 #include "command.h" // for EditCylinderType
+#include "core/divecomputer.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
 #include <QVector>

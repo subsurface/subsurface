@@ -979,8 +979,7 @@ void add_imported_dives(struct divelog *import_log, int flags)
 
 	/* Process imported dives and generate lists of dives
 	 * to-be-added and to-be-removed */
-	process_imported_dives(import_log->dives, import_log->trips, import_log->sites, import_log->devices,
-			       flags, &dives_to_add, &dives_to_remove, &trips_to_add,
+	process_imported_dives(import_log, flags, &dives_to_add, &dives_to_remove, &trips_to_add,
 			       &dive_sites_to_add, devices_to_add);
 
 	/* Add new dives to trip and site to get reference count correct. */
@@ -1098,9 +1097,7 @@ bool try_to_merge_trip(struct dive_trip *trip_import, struct dive_table *import_
  * - If IMPORT_ADD_TO_NEW_TRIP is true, dives that are not assigned
  *   to a trip will be added to a newly generated trip.
  */
-void process_imported_dives(struct dive_table *import_table, struct trip_table *import_trip_table,
-			    struct dive_site_table *import_sites_table, struct device_table *import_device_table,
-			    int flags,
+void process_imported_dives(struct divelog *import_log, int flags,
 			    /* output parameters: */
 			    struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
 			    struct trip_table *trips_to_add, struct dive_site_table *sites_to_add,
@@ -1112,13 +1109,6 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	bool new_dive_has_number = false;
 	bool last_old_dive_is_numbered;
 
-	/* If the caller didn't pass an import_trip_table because all
-	 * dives are tripless, provide a local table. This may be
-	 * necessary if the trips are autogrouped */
-	struct trip_table local_trip_table = empty_trip_table;
-	if (!import_trip_table)
-		import_trip_table = &local_trip_table;
-
 	/* Make sure that output parameters don't contain garbage */
 	clear_dive_table(dives_to_add);
 	clear_dive_table(dives_to_remove);
@@ -1129,45 +1119,45 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 	/* Check if any of the new dives has a number. This will be
 	 * important later to decide if we want to renumber the added
 	 * dives */
-	for (int i = 0; i < import_table->nr; i++) {
-		if (import_table->dives[i]->number > 0) {
+	for (int i = 0; i < import_log->dives->nr; i++) {
+		if (import_log->dives->dives[i]->number > 0) {
 			new_dive_has_number = true;
 			break;
 		}
 	}
 
 	/* If no dives were imported, don't bother doing anything */
-	if (!import_table->nr)
+	if (!import_log->dives->nr)
 		return;
 
 	/* Add only the devices that we don't know about yet. */
-	for (i = 0; i < nr_devices(import_device_table); i++) {
-		const struct device *dev = get_device(import_device_table, i);
+	for (i = 0; i < nr_devices(import_log->devices); i++) {
+		const struct device *dev = get_device(import_log->devices, i);
 		if (!device_exists(divelog.devices, dev))
 			add_to_device_table(devices_to_add, dev);
 	}
 
 	/* Sort the table of dives to be imported and combine mergable dives */
-	sort_dive_table(import_table);
-	merge_imported_dives(import_table);
+	sort_dive_table(import_log->dives);
+	merge_imported_dives(import_log->dives);
 
 	/* Autogroup tripless dives if desired by user. But don't autogroup
 	 * if tripless dives should be added to a new trip. */
 	if (!(flags & IMPORT_ADD_TO_NEW_TRIP))
-		autogroup_dives(import_table, import_trip_table);
+		autogroup_dives(import_log->dives, import_log->trips);
 
 	/* If dive sites already exist, use the existing versions. */
-	for (i = 0; i  < import_sites_table->nr; i++) {
-		struct dive_site *new_ds = import_sites_table->dive_sites[i];
+	for (i = 0; i  < import_log->sites->nr; i++) {
+		struct dive_site *new_ds = import_log->sites->dive_sites[i];
 		struct dive_site *old_ds = get_same_dive_site(new_ds);
 
 		/* Check if it dive site is actually used by new dives. */
-		for (j = 0; j < import_table->nr; j++) {
-			if (import_table->dives[j]->dive_site == new_ds)
+		for (j = 0; j < import_log->dives->nr; j++) {
+			if (import_log->dives->dives[j]->dive_site == new_ds)
 				break;
 		}
 
-		if (j == import_table->nr) {
+		if (j == import_log->dives->nr) {
 			/* Dive site not even used - free it and go to next. */
 			free_dive_site(new_ds);
 			continue;
@@ -1180,22 +1170,22 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 			continue;
 		}
 		/* Dive site already exists - use the old and free the new. */
-		for (j = 0; j < import_table->nr; j++) {
-			if (import_table->dives[j]->dive_site == new_ds)
-				import_table->dives[j]->dive_site = old_ds;
+		for (j = 0; j < import_log->dives->nr; j++) {
+			if (import_log->dives->dives[j]->dive_site == new_ds)
+				import_log->dives->dives[j]->dive_site = old_ds;
 		}
 		free_dive_site(new_ds);
 	}
-	import_sites_table->nr = 0; /* All dive sites were consumed */
+	import_log->sites->nr = 0; /* All dive sites were consumed */
 
 	/* Merge overlapping trips. Since both trip tables are sorted, we
 	 * could be smarter here, but realistically not a whole lot of trips
 	 * will be imported so do a simple n*m loop until someone complains.
 	 */
-	for (i = 0; i < import_trip_table->nr; i++) {
-		trip_import = import_trip_table->trips[i];
+	for (i = 0; i < import_log->trips->nr; i++) {
+		trip_import = import_log->trips->trips[i];
 		if ((flags & IMPORT_MERGE_ALL_TRIPS) || trip_import->autogen) {
-			if (try_to_merge_trip(trip_import, import_table, flags & IMPORT_PREFER_IMPORTED, dives_to_add, dives_to_remove,
+			if (try_to_merge_trip(trip_import, import_log->dives, flags & IMPORT_PREFER_IMPORTED, dives_to_add, dives_to_remove,
 					      &sequence_changed, &start_renumbering_at))
 				continue;
 		}
@@ -1209,34 +1199,34 @@ void process_imported_dives(struct dive_table *import_table, struct trip_table *
 			insert_dive(dives_to_add, d);
 			sequence_changed |= !dive_is_after_last(d);
 
-			remove_dive(d, import_table);
+			remove_dive(d, import_log->dives);
 		}
 
 		/* Then, add trip to list of trips to add */
 		insert_trip(trip_import, trips_to_add);
 		trip_import->dives.nr = 0; /* Caller is responsible for adding dives to trip */
 	}
-	import_trip_table->nr = 0; /* All trips were consumed */
+	import_log->trips->nr = 0; /* All trips were consumed */
 
-	if ((flags & IMPORT_ADD_TO_NEW_TRIP) && import_table->nr > 0) {
+	if ((flags & IMPORT_ADD_TO_NEW_TRIP) && import_log->dives->nr > 0) {
 		/* Create a new trip for unassigned dives, if desired. */
-		new_trip = create_trip_from_dive(import_table->dives[0]);
+		new_trip = create_trip_from_dive(import_log->dives->dives[0]);
 		insert_trip(new_trip, trips_to_add);
 
 		/* Add all remaining dives to this trip */
-		for (i = 0; i < import_table->nr; i++) {
-			struct dive *d = import_table->dives[i];
+		for (i = 0; i < import_log->dives->nr; i++) {
+			struct dive *d = import_log->dives->dives[i];
 			d->divetrip = new_trip;
 			insert_dive(dives_to_add, d);
 			sequence_changed |= !dive_is_after_last(d);
 		}
 
-		import_table->nr = 0; /* All dives were consumed */
-	} else if (import_table->nr > 0) {
-		/* The remaining dives in import_table are those that don't belong to
+		import_log->dives->nr = 0; /* All dives were consumed */
+	} else if (import_log->dives->nr > 0) {
+		/* The remaining dives in import_log->dives are those that don't belong to
 		 * a trip and the caller does not want them to be associated to a
 		 * new trip. Merge them into the global table. */
-		sequence_changed |= merge_dive_tables(import_table, NULL, divelog.dives, flags & IMPORT_PREFER_IMPORTED, NULL,
+		sequence_changed |= merge_dive_tables(import_log->dives, NULL, divelog.dives, flags & IMPORT_PREFER_IMPORTED, NULL,
 						      dives_to_add, dives_to_remove, &start_renumbering_at);
 	}
 

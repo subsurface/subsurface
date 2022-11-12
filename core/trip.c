@@ -53,6 +53,7 @@ static MAKE_REMOVE_FROM(trip_table, trips)
 MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
 MAKE_REMOVE(trip_table, struct dive_trip *, trip)
 MAKE_CLEAR_TABLE(trip_table, trips, trip)
+MAKE_MOVE_TABLE(trip_table, trips)
 
 timestamp_t trip_date(const struct dive_trip *trip)
 {
