@@ -106,11 +106,11 @@ bool CheckCloudConnection::nextServer()
 		{ CLOUD_HOST_US, false }
 	};
 	const char *server = nullptr;
-	for (unsigned int i = 0; i < ARRAY_SIZE(cloudServers); i++) {
-		if (strstr(prefs.cloud_base_url, cloudServers[i].server))
-			cloudServers[i].tried = true;
-		else if (cloudServers[i].tried == false)
-			server = cloudServers[i].server;
+	for (serverTried &item: cloudServers) {
+		if (strstr(prefs.cloud_base_url, item.server))
+			item.tried = true;
+		else if (item.tried == false)
+			server = item.server;
 	}
 	if (server) {
 		int s = strlen(server);
