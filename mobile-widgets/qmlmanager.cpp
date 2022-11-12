@@ -1720,7 +1720,7 @@ int QMLManager::addDive()
 	// addDive takes over the dive and clears out the structure passed in
 	// we do NOT save the modified data at this stage because of the UI flow here... this will
 	// be saved once the user finishes editing the newly added dive
-	Command::addDive(&d, autogroup, true);
+	Command::addDive(&d, divelog.autogroup, true);
 
 	if (verbose)
 		appendTextToLog(QString("Adding new dive with id '%1'").arg(diveId));

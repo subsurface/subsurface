@@ -692,7 +692,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 	for (int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
 		save_one_fingerprint(b, i);
 
-	if (autogroup)
+	if (divelog.autogroup)
 		put_format(b, "  <autogroup state='1' />\n");
 	put_format(b, "</settings>\n");
 

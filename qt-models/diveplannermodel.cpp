@@ -1338,7 +1338,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		// we were planning a new dive, not re-planning an existing one
 		d->divetrip = nullptr; // Should not be necessary, just in case!
 #if !defined(SUBSURFACE_TESTING)
-		Command::addDive(d, autogroup, true);
+		Command::addDive(d, divelog.autogroup, true);
 #endif // !SUBSURFACE_TESTING
 	} else {
 		copy_events_until(current_dive, d, preserved_until.seconds);
