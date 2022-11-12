@@ -282,7 +282,7 @@ static int divinglog_dive(void *param, int columns, char **data, char **column)
 	state->cur_dive->when = (time_t)(atol(data[1]));
 
 	if (data[2])
-		add_dive_to_dive_site(state->cur_dive, find_or_create_dive_site_with_name(data[2], state->sites));
+		add_dive_to_dive_site(state->cur_dive, find_or_create_dive_site_with_name(data[2], state->log->sites));
 
 	if (data[3])
 		utf8_string(data[3], &state->cur_dive->buddy);
@@ -400,10 +400,7 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = log->dives;
-	state.trips = log->trips;
-	state.sites = log->sites;
-	state.devices = log->devices;
+	state.log = log;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility,SupplyType from Logbook where UUID not in (select UUID from DeletedRecords)";

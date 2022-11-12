@@ -273,10 +273,7 @@ int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int 
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = log->dives;
-	state.trips = log->trips;
-	state.sites = log->sites;
-	state.devices = log->devices;
+	state.log = log;
 	state.sql_handle = handle;
 
 	const char *get_dives = "SELECT dive_number, device_sn, date, timezone, time, elapsed_surface_time, dive_type, start_mode, water_type, comment, total_dive_time, max_depth, firmware_version, dive_id FROM headers_dive";

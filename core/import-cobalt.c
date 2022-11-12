@@ -201,7 +201,7 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 			return 1;
 		}
 		sprintf(tmp, "%s / %s", location, location_site);
-		add_dive_to_dive_site(state->cur_dive, find_or_create_dive_site_with_name(tmp, state->sites));
+		add_dive_to_dive_site(state->cur_dive, find_or_create_dive_site_with_name(tmp, state->log->sites));
 		free(tmp);
 	}
 	free(location);
@@ -229,10 +229,7 @@ int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, in
 	struct parser_state state;
 
 	init_parser_state(&state);
-	state.target_table = log->dives;
-	state.trips = log->trips;
-	state.sites = log->sites;
-	state.devices = log->devices;
+	state.log = log;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,(MaxDepthPressure*10000/SurfacePressure)-10000,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive where IsViewDeleted = 0";

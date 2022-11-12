@@ -87,12 +87,8 @@ struct parser_state {
 	int sample_rate;
 	struct extra_data cur_extra_data;
 	struct units xml_parsing_units;
-	struct dive_table *target_table;		/* non-owning */
-	struct trip_table *trips;			/* non-owning */
-	struct dive_site_table *sites;			/* non-owning */
-	struct device_table *devices;			/* non-owning */
+	struct divelog *log;				/* non-owning */
 	struct fingerprint_table *fingerprints;         /* non-owning */
-	struct filter_preset_table *filter_presets;	/* non-owning */
 
 	sqlite3 *sql_handle;			/* for SQL based parsers */
 	event_allocation_t event_allocation;
