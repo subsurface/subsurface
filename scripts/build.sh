@@ -253,7 +253,9 @@ if [ -n "$CMAKE_PREFIX_PATH" ] ; then
 	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
 fi
 if [[ -z $QMAKE  ||  ! -x $QMAKE ]] ; then
-	hash qmake > /dev/null 2> /dev/null && QMAKE=qmake
+	[ -z $QMAKE ] && [ "$BUILD_WITH_QT6" = "1" ] && hash qmake6 > /dev/null 2> /dev/null && QMAKE=qmake6
+	[ -z $QMAKE ] && [ "$BUILD_WITH_QT6" = "1" ] && hash qmake-qt6 > /dev/null 2> /dev/null && QMAKE=qmake-qt6
+	[ -z $QMAKE ] && hash qmake > /dev/null 2> /dev/null && QMAKE=qmake
 	[ -z $QMAKE ] && hash qmake-qt5 > /dev/null 2> /dev/null && QMAKE=qmake-qt5
 	[ -z $QMAKE ] && hash qmake-qt6 > /dev/null 2> /dev/null && QMAKE=qmake-qt6
 	[ -z $QMAKE ] && echo "cannot find qmake, qmake-qt5, or qmake-qt6" && exit 1
