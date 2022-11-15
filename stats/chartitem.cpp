@@ -383,8 +383,8 @@ void ChartLineItem::render(const StatsTheme &)
 void ChartRectLineItem::render(const StatsTheme &)
 {
 	if (!node) {
-		geometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 4));
-		geometry->setDrawingMode(QSGGeometry::DrawLineLoop);
+		geometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 5));
+		geometry->setDrawingMode(QSGGeometry::DrawLineStrip);
 		material.reset(new QSGFlatColorMaterial);
 		createNode();
 		node->setGeometry(geometry.get());
@@ -402,6 +402,7 @@ void ChartRectLineItem::render(const StatsTheme &)
 		setPoint(vertices[1], QPointF(from.x(), to.y()));
 		setPoint(vertices[2], to);
 		setPoint(vertices[3], QPointF(to.x(), from.y()));
+		setPoint(vertices[4], from);
 		node->markDirty(QSGNode::DirtyGeometry);
 	}
 
@@ -440,8 +441,8 @@ void ChartBarItem::render(const StatsTheme &theme)
 	if (!node) {
 		createNode(view.w()->createRectangleNode());
 
-		borderGeometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 4));
-		borderGeometry->setDrawingMode(QSGGeometry::DrawLineLoop);
+		borderGeometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 5));
+		borderGeometry->setDrawingMode(QSGGeometry::DrawLineStrip);
 		borderGeometry->setLineWidth(static_cast<float>(borderWidth));
 		borderMaterial.reset(new QSGFlatColorMaterial);
 		borderNode.reset(new QSGGeometryNode);
@@ -468,6 +469,7 @@ void ChartBarItem::render(const StatsTheme &theme)
 		setPoint(vertices[1], rect.topRight());
 		setPoint(vertices[2], rect.bottomRight());
 		setPoint(vertices[3], rect.bottomLeft());
+		setPoint(vertices[4], rect.topLeft());
 		node->node->markDirty(QSGNode::DirtyGeometry);
 		borderNode->markDirty(QSGNode::DirtyGeometry);
 	}
@@ -477,7 +479,7 @@ void ChartBarItem::render(const StatsTheme &theme)
 			if (!selectionNode) {
 				// Create the selection overlay if it didn't exist up to now.
 				selectionGeometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4));
-				selectionGeometry->setDrawingMode(QSGGeometry::DrawTriangleFan);
+				selectionGeometry->setDrawingMode(QSGGeometry::DrawTriangleStrip);
 				selectionMaterial.reset(new QSGTextureMaterial);
 				selectionMaterial->setTexture(getSelectedTexture(theme));
 				selectionMaterial->setHorizontalWrapMode(QSGTexture::Repeat);
@@ -503,8 +505,8 @@ void ChartBarItem::render(const StatsTheme &theme)
 		selectionNode->markDirty(QSGNode::DirtyGeometry);
 		setPoint(selectionVertices[0], rect.topLeft(), QPointF());
 		setPoint(selectionVertices[1], rect.topRight(), QPointF(rect.width() / pixelFactor, 0.0));
-		setPoint(selectionVertices[2], rect.bottomRight(), QPointF(rect.width() / pixelFactor, rect.height() / pixelFactor));
-		setPoint(selectionVertices[3], rect.bottomLeft(), QPointF(0.0, rect.height() / pixelFactor));
+		setPoint(selectionVertices[2], rect.bottomLeft(), QPointF(0.0, rect.height() / pixelFactor));
+		setPoint(selectionVertices[3], rect.bottomRight(), QPointF(rect.width() / pixelFactor, rect.height() / pixelFactor));
 	}
 
 	positionDirty = colorDirty = selectedDirty = false;
