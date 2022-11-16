@@ -284,7 +284,7 @@ void ValueAxis::updateLabels()
 	// Use full decimal increments
 	double height = max - min;
 	double inc = height / numTicks;
-	double digits = floor(log10(inc));
+	double digits = std::max(floor(log10(inc)), static_cast<double>(-decimals));
 	int digits_int = lrint(digits);
 	double digits_factor = pow(10.0, digits);
 	int inc_int = std::max((int)ceil(inc / digits_factor), 1);
@@ -294,11 +294,14 @@ void ValueAxis::updateLabels()
 	if (inc_int == 3)
 		inc_int = 4;
 	inc = inc_int * digits_factor;
-	if (-digits_int > decimals)
-		decimals = -digits_int;
+	int show_decimals = std::max(-digits_int, decimals);
 
-	double actMin = floor(min /  inc) * inc;
-	double actMax = ceil(max /  inc) * inc;
+	double actMin = floor(min / inc) * inc;
+	double actMax = ceil(max / inc) * inc;
+	if (actMax - actMin < inc) {
+		actMax += inc;
+		actMin -= inc;
+	}
 	int num = lrint((actMax - actMin) / inc);
 	setRange(actMin, actMax);
 
@@ -308,7 +311,7 @@ void ValueAxis::updateLabels()
 	ticks.reserve(num + 1);
 	QFontMetrics fm(theme.axisLabelFont);
 	for (int i = 0; i <= num; ++i) {
-		addLabel(fm, loc.toString(act, 'f', decimals), act);
+		addLabel(fm, loc.toString(act, 'f', show_decimals), act);
 		addTick(act);
 		act += actStep;
 	}
