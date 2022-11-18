@@ -181,21 +181,12 @@ endif()
 
 source_group("Subsurface Interface" FILES ${SUBSURFACE_INTERFACE})
 
-# the yearly statistics widget.
-set(SUBSURFACE_STATISTICS_LIB_SRCS
-	statistics/statisticswidget.cpp
-	statistics/statisticswidget.h
-)
-source_group("Subsurface Statistics" FILES ${SUBSURFACE_STATISTICS_LIB_SRCS})
-
 if(NOT USINGQT6)
 	qt5_wrap_ui(SUBSURFACE_UI_SRCS ${SUBSURFACE_UI})
 else()
 	qt_wrap_ui(SUBSURFACE_UI_SRCS ${SUBSURFACE_UI})
 endif()
 
-add_library(subsurface_statistics STATIC ${SUBSURFACE_STATISTICS_LIB_SRCS})
-target_link_libraries(subsurface_statistics ${QT_LIBRARIES})
 add_library(subsurface_generated_ui STATIC ${SUBSURFACE_UI_HDRS})
 target_link_libraries(subsurface_generated_ui ${QT_LIBRARIES})
 add_library(subsurface_interface STATIC ${SUBSURFACE_INTERFACE} ${SUBSURFACE_UI_SRCS})
