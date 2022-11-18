@@ -493,7 +493,6 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface_generated_ui
 		subsurface_interface
 		subsurface_profile
-		subsurface_statistics
 		${SUBSURFACE_MAPWIDGET}
 		subsurface_backend_shared
 		subsurface_models_desktop
@@ -503,7 +502,6 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
 	add_dependencies(subsurface_desktop_preferences subsurface_generated_ui)
-	add_dependencies(subsurface_statistics subsurface_generated_ui)
 	add_dependencies(subsurface_interface subsurface_generated_ui)
 	add_dependencies(subsurface_profile subsurface_generated_ui)
 	add_dependencies(subsurface_models_desktop subsurface_generated_ui)
