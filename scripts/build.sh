@@ -178,13 +178,10 @@ if [ "$PLATFORM" = Darwin ] ; then
 		exit 1;
 	fi
 	# find a 10.x base SDK to use, or if none can be found, find a numbered 11.x base SDK to use
-	BASESDK=$(ls $SDKROOT | grep "MacOSX10\.1.\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
+	BASESDK=$(ls $SDKROOT | grep -E "MacOSX1[0-6]\.[0-9]+\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
 	if [ -z "$BASESDK" ] ; then
-		BASESDK=$(ls $SDKROOT | grep -E "MacOSX11\.[0-9]+\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
-		if [ -z "$BASESDK" ] ; then
-			echo "Cannot find a base SDK of type 10.x or 11.x under the SDK root of ${SDKROOT}"
-			exit 1;
-		fi
+		echo "Cannot find a base SDK of type 1[0-6].x under the SDK root of ${SDKROOT}"
+		exit 1;
 	fi
 	if [ "$ARCHS" != "" ] ; then
 		# we do assume that the two architectures mentioned are x86_64 and arm64 .. that's kinda wrong
