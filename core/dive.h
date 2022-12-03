@@ -40,6 +40,7 @@ struct dive {
 	int rating;
 	int wavesize, current, visibility, surge, chill; /* 0 - 5 star ratings */
 	int sac, otu, cns, maxcns;
+	int end_gf;
 
 	/* Calculated based on dive computer data */
 	temperature_t mintemp, maxtemp, watertemp, airtemp;
