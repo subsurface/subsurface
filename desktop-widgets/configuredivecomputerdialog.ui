@@ -2501,6 +2501,11 @@
              <widget class="QComboBox" name="brightnessComboBox_4">
               <item>
                <property name="text">
+                <string>Cave</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
                 <string>Eco</string>
                </property>
               </item>
