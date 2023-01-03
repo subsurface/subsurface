@@ -4,6 +4,7 @@ statistics: show correct color of selected scatter items when switching to unbin
 statistics: fix display of month number in continuous date axis
 statistics: fix range of continuous date axis
 desktop: fix dive time display in time shift dialog
+libdivecomputer: garmin: relax string parsing sanity checks
 
 ---
 * Always add new entries at the very top of this file above other existing entries and this note.
