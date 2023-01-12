@@ -101,7 +101,7 @@ window.onload=function(){
 
 	//initializing default searchers
 	searchingModules["location"] = new SearchModule(true);
-	searchingModules["divemaster"] = new SearchModule(true);
+	searchingModules["diveguide"] = new SearchModule(true);
 	searchingModules["buddy"] = new SearchModule(true);
 	searchingModules["notes"] = new SearchModule(true);
 	searchingModules["tags"] = new SearchModule(true);
@@ -112,7 +112,7 @@ window.onload=function(){
 	for(var i=0;i<items.length;i++){
 		searchingModules["location"].Enter_search_string(items[i].location,i);
 
-		searchingModules["divemaster"].Enter_search_string(items[i].divemaster,i);
+		searchingModules["diveguide"].Enter_search_string(items[i].diveguide,i);
 
 		searchingModules["buddy"].Enter_search_string(items[i].buddy,i);
 
@@ -140,7 +140,7 @@ window.onload=function(){
 
 var user_search_preference = {
 	location : true,
-	divemaster : true,
+	diveguide : true,
 	buddy : true,
 	notes : true,
 	tags : true
@@ -152,8 +152,8 @@ function set_search_dropdown(search_preference)
 	searchingModules["location"].enabled = search_preference.location;
 	document.getElementById("search_item_location").checked = search_preference.location;
 
-	searchingModules["divemaster"].enabled = search_preference.divemaster;
-	document.getElementById("search_item_divemaster").checked = search_preference.divemaster;
+	searchingModules["diveguide"].enabled = search_preference.diveguide;
+	document.getElementById("diveguide").checked = search_preference.diveguide;
 
 	searchingModules["buddy"].enabled = search_preference.buddy;
 	document.getElementById("search_item_Buddy").checked = search_preference.buddy;
@@ -190,7 +190,7 @@ function changeAdvSearch(e){
 		<a id="adv_srch_sp" onClick="showdiv()" >Advanced search</a>
 		<div id="advanced_search">
 		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_location" value="location" checked>Location<br>
-		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_divemaster" value="divemaster" checked>Divemaster<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" id="diveguide" value="diveguide" checked>Diveguide<br>
 		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_Buddy" value="buddy" checked>Buddy<br>
 		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_Notes" value="notes" checked>Notes<br>
 		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_Tags" value="tags" checked>Tags<br>
