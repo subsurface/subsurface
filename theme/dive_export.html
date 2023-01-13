@@ -153,7 +153,7 @@ function set_search_dropdown(search_preference)
 	document.getElementById("search_item_location").checked = search_preference.location;
 
 	searchingModules["diveguide"].enabled = search_preference.diveguide;
-	document.getElementById("diveguide").checked = search_preference.diveguide;
+	document.getElementById("search_item_diveguide").checked = search_preference.diveguide;
 
 	searchingModules["buddy"].enabled = search_preference.buddy;
 	document.getElementById("search_item_Buddy").checked = search_preference.buddy;
@@ -190,7 +190,7 @@ function changeAdvSearch(e){
 		<a id="adv_srch_sp" onClick="showdiv()" >Advanced search</a>
 		<div id="advanced_search">
 		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_location" value="location" checked>Location<br>
-		<input type="checkbox" onchange="changeAdvSearch(this)" id="diveguide" value="diveguide" checked>Diveguide<br>
+		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_diveguide" value="diveguide" checked>Diveguide<br>
 		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_Buddy" value="buddy" checked>Buddy<br>
 		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_Notes" value="notes" checked>Notes<br>
 		<input type="checkbox" onchange="changeAdvSearch(this)" id="search_item_Tags" value="tags" checked>Tags<br>
