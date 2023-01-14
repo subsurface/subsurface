@@ -56,8 +56,7 @@ Also, please write good git commit messages. A good commit message looks like th
 
 That header line really should be meaningful, and really should be just one line. The header line is what is shown by tools like gitk and shortlog, and should summarize the change in one readable line of text, independently of the longer explanation.
 
-The preferred way to write a commit message is using imperative mood, e.g. "Make foo do xyz" instead of "This patch makes foo do xyz" or "I made foo do xyz", as if you are giving commands or requests to the code base.
-https://en.wikipedia.org/wiki/Imperative_mood
+The preferred way to write a commit message is using [imperative mood][11], e.g. "Make foo do xyz" instead of "This patch makes foo do xyz" or "I made foo do xyz", as if you are giving commands or requests to the code base.
 
 ![gitk sample][9]
 
@@ -97,3 +96,4 @@ In order to make reviews simpler and have contributions merged faster in the cod
 [8]: https://gerrit-review.googlesource.com/Documentation/user-signedoffby.html
 [9]: https://subsurface-divelog.org/wp-content/uploads/2011/10/Screenshot-gitk-subsurface-1.png "Example with gitk"
 [10]: https://github.com/Subsurface/subsurface/blob/master/CodingStyle
+[11]: https://en.wikipedia.org/wiki/Imperative_mood
