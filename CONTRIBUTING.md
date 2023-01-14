@@ -71,6 +71,7 @@ When multiple areas are affected list the areas separated with a /:
     Area1/Area2: Detail about the change [reference thread / issue]
 
 Here is a (non exhaustive) list of Areas that can be used:
+
 * Bluetooth
 * Cloud-storage
 * Desktop
