@@ -2,11 +2,11 @@
 
 # Contributing | Subsurface
 
-It might be a good idea to join our [mailing list][1]. Conversation there is in English -- even though this site (and Subsurface itself) are available in many languages, the shared language we all communicate in is English. Actually "Broken English" is just fine… :-)
+It might be a good idea to join our [mailing list][1]. Conversation there is in English – even though this site (and Subsurface itself) are available in many languages, the shared language we all communicate in is English. Actually "Broken English" is just fine… :-)
 
 We also tend to have some developers hanging out in the `#subsurface` channel on [Freenode][2].
 
-There are many ways in which you can contribute. We are always looking for testers who are willing to test the code while it is being developed. We especially need people running Windows and Mac (as the majority of the active developers are Linux people). We are also always looking for volunteers who help reviewing and improving the documentation. And very importantly we are looking for translators willing to translate the software into different languages. Our translations are centrally handled at [Transifex][3] \-- please sign up for an account there and then request to join the [Subsurface Team][4].
+There are many ways in which you can contribute. We are always looking for testers who are willing to test the code while it is being developed. We especially need people running Windows and Mac (as the majority of the active developers are Linux people). We are also always looking for volunteers who help reviewing and improving the documentation. And very importantly we are looking for translators willing to translate the software into different languages. Our translations are centrally handled at [Transifex][3] – please sign up for an account there and then request to join the [Subsurface Team][4].
 
 If you would like to contribute patches that fix bugs or add new features, that is of course especially welcome. If you are looking for places to start, look at the open bugs in our [bug tracker][5].
 
@@ -20,7 +20,7 @@ ok, now we know you're on the latest version. Create a working branch to keep yo
 `git checkout -b devel`  
 Edit the code (or documentation), compile, test… then create a commit:  
 `git commit -s -a`  
-Depending on your OS this will open a default editor -- usually you can define which by setting the environment variable `GIT_EDITOR`. Here you enter your commit message. The first line is the title of your commit. Keep it brief and to the point. Then a longer explanation (more on this and the fact that we insist on all contributions containing a Signed-off-by: line below).  
+Depending on your OS this will open a default editor – usually you can define which by setting the environment variable `GIT_EDITOR`. Here you enter your commit message. The first line is the title of your commit. Keep it brief and to the point. Then a longer explanation (more on this and the fact that we insist on all contributions containing a Signed-off-by: line below).  
 If you want to change the commit message, "git commit --amend" is the way to go. Feel free to break your changes into multiple smaller commits. Then, when you are done there are two directions to go, which one you find easier depends a bit on how familiar you are with GitHub. You can either push your branch to GitHub and create a [pull requests on GitHub][6], or you run  
 `git format-patch master..devel`  
 Which creates a number of files that have names like 0001-Commit-title.patch, which you can then send to our developer mailing list.
