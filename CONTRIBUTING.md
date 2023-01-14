@@ -12,17 +12,25 @@ If you would like to contribute patches that fix bugs or add new features, that 
 
 Here is a very brief introduction on creating commits that you can either send as [pull requests][6] on our main GitHub repository or send as emails to the mailing list. Much more details on how to use git can be found at the [git user manual][7].
 
-Start with getting the latest source.  
-`cd subsurface`  
-`git checkout master`  
-`git pull`  
-ok, now we know you're on the latest version. Create a working branch to keep your development in:  
-`git checkout -b devel`  
-Edit the code (or documentation), compile, test… then create a commit:  
-`git commit -s -a`  
+Start with getting the latest source.
+
+    cd subsurface
+    git checkout master
+    git pull
+
+ok, now we know you're on the latest version. Create a working branch to keep your development in:
+
+    git checkout -b devel
+
+Edit the code (or documentation), compile, test… then create a commit:
+
+    git commit -s -a
+
 Depending on your OS this will open a default editor – usually you can define which by setting the environment variable `GIT_EDITOR`. Here you enter your commit message. The first line is the title of your commit. Keep it brief and to the point. Then a longer explanation (more on this and the fact that we insist on all contributions containing a Signed-off-by: line below).  
-If you want to change the commit message, "git commit --amend" is the way to go. Feel free to break your changes into multiple smaller commits. Then, when you are done there are two directions to go, which one you find easier depends a bit on how familiar you are with GitHub. You can either push your branch to GitHub and create a [pull requests on GitHub][6], or you run  
-`git format-patch master..devel`  
+If you want to change the commit message, "git commit --amend" is the way to go. Feel free to break your changes into multiple smaller commits. Then, when you are done there are two directions to go, which one you find easier depends a bit on how familiar you are with GitHub. You can either push your branch to GitHub and create a [pull requests on GitHub][6], or you run:
+
+    git format-patch master..devel
+
 Which creates a number of files that have names like 0001-Commit-title.patch, which you can then send to our developer mailing list.
 
 When sending code, please either send signed-off patches or a pull request with signed-off commits. If you don't sign off on them, we will not accept them. This means adding a line that says "Signed-off-by: Name \<Email\>" at the end of each commit, indicating that you wrote the code and have the right to pass it on as an open source patch.
