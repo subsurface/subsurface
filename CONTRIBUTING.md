@@ -26,7 +26,8 @@ Edit the code (or documentation), compile, test… then create a commit:
 
     git commit -s -a
 
-Depending on your OS this will open a default editor – usually you can define which by setting the environment variable `GIT_EDITOR`. Here you enter your commit message. The first line is the title of your commit. Keep it brief and to the point. Then a longer explanation (more on this and the fact that we insist on all contributions containing a Signed-off-by: line below).  
+Depending on your OS this will open a default editor – usually you can define which by setting the environment variable `GIT_EDITOR`. Here you enter your commit message. The first line is the title of your commit. Keep it brief and to the point. Then a longer explanation (more on this and the fact that we insist on all contributions containing a Signed-off-by: line below).
+
 If you want to change the commit message, `git commit --amend` is the way to go. Feel free to break your changes into multiple smaller commits. Then, when you are done there are two directions to go, which one you find easier depends a bit on how familiar you are with GitHub. You can either push your branch to GitHub and create a [pull requests on GitHub][6], or you run:
 
     git format-patch master..devel
