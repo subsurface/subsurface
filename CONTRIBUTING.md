@@ -39,19 +39,19 @@ See: [Signed-off-by Lines][8]
 
 Also, please write good git commit messages. A good commit message looks like this:
 
-Header line: explaining the commit in one line
-
-Body of commit message is a few lines of text, explaining things  
-in more detail, possibly giving some background about the issue  
-being fixed, etc etc.
-
-The body of the commit message can be several paragraphs, and  
-please do proper word-wrap and keep columns shorter than about  
-74 characters or so. That way "git log" will show things  
-nicely even when it's indented.
-
-Reported-by: whoever-reported-it  
-Signed-off-by: Your Name \<you@example.com\>
+    Header line: explaining the commit in one line
+    
+    Body of commit message is a few lines of text, explaining things
+    in more detail, possibly giving some background about the issue
+    being fixed, etc etc.
+    
+    The body of the commit message can be several paragraphs, and
+    please do proper word-wrap and keep columns shorter than about
+    74 characters or so. That way "git log" will show things
+    nicely even when it's indented.
+    
+    Reported-by: whoever-reported-it
+    Signed-off-by: Your Name <you@example.com>
 
 That header line really should be meaningful, and really should be just one line. The header line is what is shown by tools like gitk and shortlog, and should summarize the change in one readable line of text, independently of the longer explanation.
 
@@ -64,11 +64,11 @@ Example with gitk
 
 Additionally when important changes to behaviors, fixes or new feature are introduced an entry must be added to  CHANGELOG.md file. Always add new entries at the very top of the file above other existing entries. Use this layout for new entries:
 
-Area: Details about the change [reference thread / issue]
+    Area: Details about the change [reference thread / issue]
 
 When multiple areas are affected list the areas separated with a /:
 
-Area1/Area2: Detail about the change [reference thread / issue]
+    Area1/Area2: Detail about the change [reference thread / issue]
 
 Here is a (non exhaustive) list of Areas that can be used:
 * Bluetooth
