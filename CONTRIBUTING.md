@@ -10,7 +10,7 @@ There are many ways in which you can contribute. We are always looking for teste
 
 If you would like to contribute patches that fix bugs or add new features, that is of course especially welcome. If you are looking for places to start, look at the open bugs in our [bug tracker][5].
 
-Here is a very brief introduction on creating commits that you can either send as [pull requests][6] on our main GitHub repository or send as emails to the mailing list. Much more details on how to use git can be found at the [git user manual][7].
+Here is a very brief introduction on creating commits that you can either send as [pull requests][6] on our main GitHub repository or send as emails to the mailing list. Much more details on how to use Git can be found at the [Git user manual][7].
 
 Start with getting the latest source.
 
@@ -38,7 +38,7 @@ When sending code, please either send signed-off patches or a pull request with 
 
 See: [Signed-off-by Lines][8]
 
-Also, please write good git commit messages. A good commit message looks like this:
+Also, please write good Git commit messages. A good commit message looks like this:
 
     Header line: explaining the commit in one line
     
