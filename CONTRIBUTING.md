@@ -31,7 +31,7 @@ If you want to change the commit message, `git commit --amend` is the way to go.
 
     git format-patch master..devel
 
-Which creates a number of files that have names like 0001-Commit-title.patch, which you can then send to our developer mailing list.
+Which creates a number of files that have names like `0001-Commit-title.patch`, which you can then send to our developer mailing list.
 
 When sending code, please either send signed-off patches or a pull request with signed-off commits. If you don't sign off on them, we will not accept them. This means adding a line that says "Signed-off-by: Name \<Email\>" at the end of each commit, indicating that you wrote the code and have the right to pass it on as an open source patch.
 
@@ -62,7 +62,7 @@ https://en.wikipedia.org/wiki/Imperative_mood
 
 Example with gitk
 
-Additionally when important changes to behaviors, fixes or new feature are introduced an entry must be added to  CHANGELOG.md file. Always add new entries at the very top of the file above other existing entries. Use this layout for new entries:
+Additionally when important changes to behaviors, fixes or new feature are introduced an entry must be added to `CHANGELOG.md` file. Always add new entries at the very top of the file above other existing entries. Use this layout for new entries:
 
     Area: Details about the change [reference thread / issue]
 
