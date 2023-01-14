@@ -89,7 +89,7 @@ In order to make reviews simpler and have contributions merged faster in the cod
 [1]: http://lists.subsurface-divelog.org/cgi-bin/mailman/listinfo/subsurface
 [2]: http://freenode.net/
 [3]: https://www.transifex.com/
-[4]: https://www.transifex.com/projects/p/subsurface/
+[4]: https://explore.transifex.com/subsurface/subsurface/
 [5]: https://github.com/Subsurface/subsurface/issues
 [6]: https://github.com/Subsurface/subsurface/pulls
 [7]: https://www.kernel.org/pub/software/scm/git/docs/user-manual.html
