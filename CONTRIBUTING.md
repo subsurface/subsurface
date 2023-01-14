@@ -60,7 +60,7 @@ The preferred way to write a commit message is using [imperative mood][11], e.g.
 
 ![gitk sample][9]
 
-Example with gitk
+_Example with gitk_
 
 Additionally when important changes to behaviors, fixes or new feature are introduced an entry must be added to `CHANGELOG.md` file. Always add new entries at the very top of the file above other existing entries. Use this layout for new entries:
 
