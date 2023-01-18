@@ -87,7 +87,7 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 		if (ui.backwards->isChecked())
 			amount *= -1;
 		if (amount != 0)
-			Command::shiftTime(getDiveSelection(), amount);
+			Command::shiftTime(dives, amount);
 	}
 }
 
@@ -102,8 +102,8 @@ void ShiftTimesDialog::changeTime()
 	ui.shiftedTime->setText(get_dive_date_string(amount + when));
 }
 
-ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent),
-	when(0)
+ShiftTimesDialog::ShiftTimesDialog(std::vector<dive *> dives_in, QWidget *parent) : QDialog(parent),
+	when(0), dives(std::move(dives_in))
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
@@ -113,12 +113,9 @@ ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent),
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
-	dive *d = first_selected_dive();
-	if (d) {
-		when = d->when;
-		ui.currentTime->setText(get_dive_date_string(when));
-		ui.shiftedTime->setText(get_dive_date_string(when));
-	}
+	when = dives[0]->when;
+	ui.currentTime->setText(get_dive_date_string(when));
+	ui.shiftedTime->setText(get_dive_date_string(when));
 }
 
 void ShiftImageTimesDialog::syncCameraClicked()
