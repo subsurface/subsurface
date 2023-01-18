@@ -845,7 +845,10 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 
 void DiveListView::shiftTimes()
 {
-	ShiftTimesDialog dialog(MainWindow::instance());
+	std::vector<dive *> dives = getDiveSelection();
+	if (dives.empty())
+		return;
+	ShiftTimesDialog dialog(std::move(dives), MainWindow::instance());
 	dialog.exec();
 }
 

@@ -55,7 +55,8 @@ private:
 class ShiftTimesDialog : public QDialog {
 	Q_OBJECT
 public:
-	explicit ShiftTimesDialog(QWidget *parent);
+	// Must be called with non-empty dives vector!
+	explicit ShiftTimesDialog(std::vector<dive *> dives, QWidget *parent);
 private
 slots:
 	void buttonClicked(QAbstractButton *button);
@@ -63,6 +64,7 @@ slots:
 
 private:
 	int64_t when;
+	std::vector<dive *> dives;
 	Ui::ShiftTimesDialog ui;
 };
 
