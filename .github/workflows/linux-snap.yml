@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 60
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         # Needed for version determination to work
         fetch-depth: 0
@@ -36,10 +36,10 @@ jobs:
 
         # Find common base between master and HEAD to use as cache key.
         git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules origin master
-        echo "::set-output name=key::$( git merge-base origin/master ${{ github.sha }} )"
+        echo "key=$( git merge-base origin/master ${{ github.sha }} )" >> $GITHUB_OUTPUT
 
     - name: CCache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: ccache-${{ runner.os }}-${{ steps.setup-ccache.outputs.key }}
         restore-keys: |
