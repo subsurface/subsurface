@@ -150,6 +150,11 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			cyl.gasmix.he.permille = he;
 		}
 
+		if (dive->dc.divemode == CCR)
+			cyl.cylinder_use = DILUENT;
+		else
+			cyl.cylinder_use = OC_GAS;
+
 		if (i < ntanks) {
 			dc_tank_t tank = { 0 };
 			rc = dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank);
@@ -157,11 +162,11 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				cyl.type.size.mliter = lrint(tank.volume * 1000);
 				cyl.type.workingpressure.mbar = lrint(tank.workpressure * 1000);
 
-				cyl.cylinder_use = OC_GAS;
-				if (tank.type & DC_TANKINFO_CC_O2)
-					cyl.cylinder_use = OXYGEN;
+				// libdivecomputer treats these as independent, but a tank cannot be used for diluent and O2 at the same time
 				if (tank.type & DC_TANKINFO_CC_DILUENT)
 					cyl.cylinder_use = DILUENT;
+				else if (tank.type & DC_TANKINFO_CC_O2)
+					cyl.cylinder_use = OXYGEN;
 
 				if (tank.type & DC_TANKINFO_IMPERIAL) {
 					if (same_string(devdata->model, "Suunto EON Steel")) {
