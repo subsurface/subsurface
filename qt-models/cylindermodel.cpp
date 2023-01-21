@@ -537,7 +537,7 @@ void CylindersModel::updateDive(dive *dIn)
 
 Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 {
-	if (index.column() == REMOVE || index.column() == USE)
+	if (index.column() == REMOVE)
 		return Qt::ItemIsEnabled;
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
@@ -549,15 +549,6 @@ void CylindersModel::remove(QModelIndex index)
 {
 	if (!d)
 		return;
-	if (index.column() == USE) {
-		cylinder_t *cyl = cylinderAt(index);
-		if (cyl->cylinder_use == OC_GAS)
-			cyl->cylinder_use = NOT_USED;
-		else if (cyl->cylinder_use == NOT_USED)
-			cyl->cylinder_use = OC_GAS;
-		dataChanged(index, index);
-		return;
-	}
 
 	if (index.column() != REMOVE)
 		return;

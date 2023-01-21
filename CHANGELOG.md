@@ -1,3 +1,4 @@
+desktop: use dynamic tank use drop down in equipment tab and planner
 desktop: fix brightness configuration for OSTC4
 equipment: Use 'diluent' as default gas use type if the dive mode is 'CCR'
 htmlexport: fix search in HTML export

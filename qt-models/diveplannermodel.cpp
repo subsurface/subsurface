@@ -1042,7 +1042,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	struct divedatapoint *dp = NULL;
 	for (int i = 0; i < d->cylinders.nr; i++) {
 		cylinder_t *cyl = get_cylinder(d, i);
-		if (cyl->depth.mm && cyl->cylinder_use != NOT_USED) {
+		if (cyl->depth.mm && cyl->cylinder_use == OC_GAS) {
 			dp = create_dp(0, cyl->depth.mm, i, 0);
 			if (diveplan.dp) {
 				dp->next = diveplan.dp;

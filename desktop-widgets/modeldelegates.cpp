@@ -12,6 +12,7 @@
 #include "qt-models/tankinfomodel.h"
 #include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/weightmodel.h"
+#include "qt-models/diveplannermodel.h"
 #include "qt-models/divetripmodel.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/qthelper.h"
@@ -254,9 +255,22 @@ TankUseDelegate::TankUseDelegate(QObject *parent) : QStyledItemDelegate(parent)
 
 QWidget *TankUseDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &) const
 {
+	struct divecomputer *currentDc;
+	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
+		currentDc = &displayed_dive.dc;
+	} else {
+		currentDc = get_dive_dc(current_dive, dc_number);
+	}
 	QComboBox *comboBox = new QComboBox(parent);
-	for (int i = 0; i < NUM_GAS_USE; i++)
-		comboBox->addItem(gettextFromC::tr(cylinderuse_text[i]));
+	if (!currentDc) {
+		return comboBox;
+	}
+	bool isCcrDive = currentDc->divemode == CCR;
+	for (int i = 0; i < NUM_GAS_USE; i++) {
+		if (isCcrDive || (i != DILUENT && i != OXYGEN)) {
+			comboBox->addItem(gettextFromC::tr(cylinderuse_text[i]));
+		}
+	}
 	return comboBox;
 }
 
@@ -270,7 +284,7 @@ void TankUseDelegate::setEditorData(QWidget *editor, const QModelIndex &index) c
 void TankUseDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
 	QComboBox *comboBox = qobject_cast<QComboBox *>(editor);
-	model->setData(index, comboBox->currentIndex());
+	model->setData(index, cylinderuse_from_text(qPrintable(comboBox->currentText())));
 }
 
 

@@ -142,11 +142,6 @@ void TabDiveEquipment::updateData()
 	cylindersModel->updateDive(current_dive);
 	weightModel->updateDive(current_dive);
 
-	bool is_ccr = current_dive && get_dive_dc(current_dive, dc_number)->divemode == CCR;
-	if (is_ccr)
-		ui.cylinders->view()->showColumn(CylindersModel::USE);
-	else
-		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 	if (current_dive && current_dive->suit)
 		ui.suit->setText(QString(current_dive->suit));
 	else
