@@ -26,7 +26,6 @@ class DeviceDetails : public QObject
 public:
 	explicit DeviceDetails(QObject *parent = 0);
 
-	device_data_t *data;
 	QString serialNo;
 	QString firmwareVersion;
 	QString customText;
