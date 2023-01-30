@@ -293,7 +293,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 
 	if (latestFirmwareAvailableNumber > firmwareOnDevice) {
 		QMessageBox response(parent);
-		QString message = tr("You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2")
+		QString message = tr("A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2.\nNot using the latest available stable firmware version on your dive computer means that Subsurface may not work correctly with it.")
 					  .arg(firmwareOnDeviceString)
 					  .arg(latestFirmwareAvailable);
 		message += tr("\n\nIf your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update");
