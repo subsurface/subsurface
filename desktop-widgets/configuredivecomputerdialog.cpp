@@ -264,7 +264,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 {
 	devData = *data;
 	parent = _parent;
-	// If we didn't find a current firmware version stop this hole thing here.
+	// If we didn't find a current firmware version stop this whole thing here.
 	if (latestFirmwareAvailable.isEmpty())
 		return;
 
@@ -274,7 +274,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 
 	int firmwareOnDevice = devData.devinfo.firmware;
 	QString firmwareOnDeviceString;
-	// Convert the latestFirmwareAvailable to a integear we can compare with
+	// Convert the latestFirmwareAvailable to a integer we can compare with
 	QStringList fwParts = latestFirmwareAvailable.split(".");
 	int latestFirmwareAvailableNumber;
 
