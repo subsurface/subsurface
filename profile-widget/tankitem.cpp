@@ -79,16 +79,10 @@ void TankItem::setData(const struct dive *d, const struct divecomputer *dc, int 
 	if (d->cylinders.nr <= 0)
 		return;
 
-	// start with the first gasmix and at the start of the dive
-	int cyl = explicit_first_cylinder(d, dc);
-	struct gasmix gasmix = get_cylinder(d, cyl)->gasmix;
-
-	// skip over all gas changes before the plotted range
-	const struct event *ev = get_next_event(dc->events, "gaschange");
-	while (ev && (int)ev->time.seconds <= plotStartTime) {
-		gasmix = get_gasmix_from_event(d, ev);
-		ev = get_next_event(ev->next, "gaschange");
-	}
+	// start with the first gasmix and at the start of the plotted range
+	const struct event *ev = NULL;
+	struct gasmix gasmix = gasmix_air;
+	gasmix = get_gasmix(d, dc, plotStartTime, &ev, gasmix);
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
 	int startTime = plotStartTime;
