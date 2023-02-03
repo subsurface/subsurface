@@ -1165,16 +1165,20 @@ void AddCylinder::redo()
 	}
 }
 
-static bool same_cylinder_type(const cylinder_t &cyl1, const cylinder_t &cyl2)
+static bool same_cylinder_type(const cylinder_t *cyl1, const cylinder_t *cyl2)
 {
-	return same_string(cyl1.type.description, cyl2.type.description) &&
-	       cyl1.cylinder_use == cyl2.cylinder_use;
+	if (cyl1 == NULL || cyl2 == NULL)
+		return 0;
+	return same_string(cyl1->type.description, cyl2->type.description) &&
+	       cyl1->cylinder_use == cyl2->cylinder_use;
 }
 
-static bool same_cylinder_size(const cylinder_t &cyl1, const cylinder_t &cyl2)
+static bool same_cylinder_size(const cylinder_t *cyl1, const cylinder_t *cyl2)
 {
-	return cyl1.type.size.mliter == cyl2.type.size.mliter &&
-	       cyl1.type.workingpressure.mbar == cyl2.type.workingpressure.mbar;
+	if (cyl1 == NULL || cyl2 == NULL)
+		return 0;
+	return cyl1->type.size.mliter == cyl2->type.size.mliter &&
+	       cyl1->type.workingpressure.mbar == cyl2->type.workingpressure.mbar;
 }
 
 // Flags for comparing cylinders
@@ -1202,7 +1206,7 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 		if (nonProtectedOnly && is_cylinder_prot(d, index))
 			continue;
 		if (d != current &&
-		    (!same_cylinder_size(orig, *get_cylinder(d, index)) || !same_cylinder_type(orig, *get_cylinder(d, index))))
+		    (!same_cylinder_size(&orig, get_cylinder(d, index)) || !same_cylinder_type(&orig, get_cylinder(d, index))))
 			// when editing cylinders, we assume that the user wanted to edit the 'n-th' cylinder
 			// and we only do edit that cylinder, if it was the same type as the one in the current dive
 			continue;
