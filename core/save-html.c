@@ -370,7 +370,7 @@ static void write_one_dive(struct membuffer *b, struct dive *dive, const char *p
 	put_HTML_watertemp(b, dive, "\"water\":\"", "\"");
 	put_string(b, "	},");
 	write_attribute(b, "buddy", dive->buddy, ", ");
-	write_attribute(b, "divemaster", dive->diveguide, ", ");
+	write_attribute(b, "diveguide", dive->diveguide, ", ");
 	write_attribute(b, "suit", dive->suit, ", ");
 	put_HTML_tags(b, dive, "\"tags\":", ",");
 	if (!list_only) {
