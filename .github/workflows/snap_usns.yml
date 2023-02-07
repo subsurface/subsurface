@@ -1,9 +1,9 @@
 name: SnapUSNs
 
 on:
-  workflow_dispatch
-#  schedule:
-#  - cron: '0 5 * * *'
+  workflow_dispatch:
+  schedule:
+  - cron: '0 5 * * *'
 
 jobs:
   CheckUSNs:
@@ -25,7 +25,7 @@ jobs:
 
     - name: Install Snap dependencies
       run: |
-        sudo snap install review-tools
+        sudo snap install review-tools --edge
 
     - name: Set up Launchpad credentials
       uses: DamianReeves/write-file-action@v1.0
