@@ -498,9 +498,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libmtp
 	patch -p1 < ../${SRC_DIR}/scripts/libmtp.patch || true
 	echo 'N' | NOCONFIGURE="1" bash ./autogen.sh
-	mkdir -p build
-	cd build
-	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT"
+	CFLAGS="$MAC_OPTS" ./configure --prefix="$INSTALL_ROOT"
 	make -j4
 	make install
 	popd
