@@ -162,6 +162,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				cyl.type.size.mliter = lrint(tank.volume * 1000);
 				cyl.type.workingpressure.mbar = lrint(tank.workpressure * 1000);
 
+				cyl.cylinder_use = OC_GAS;
 				// libdivecomputer treats these as independent, but a tank cannot be used for diluent and O2 at the same time
 				if (tank.type & DC_TANKINFO_CC_DILUENT)
 					cyl.cylinder_use = DILUENT;
