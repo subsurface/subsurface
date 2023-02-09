@@ -135,14 +135,14 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			if (o2 + he <= O2_IN_AIR || o2 > 1000) {
 				if (!shown_warning) {
 					shown_warning = true;
-					report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+					report_error("unlikely dive gas data from libdivecomputer: o2 = %.3f he = %.3f", gasmix.oxygen, gasmix.helium);
 				}
 				o2 = 0;
 			}
 			if (he < 0 || o2 + he > 1000) {
 				if (!shown_warning) {
 					shown_warning = true;
-					report_error("unlikely dive gas data from libdivecomputer: o2 = %d he = %d", o2, he);
+					report_error("unlikely dive gas data from libdivecomputer: o2 = %.3f he = %.3f", gasmix.oxygen, gasmix.helium);
 				}
 				he = 0;
 			}
