@@ -1199,19 +1199,24 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 	cyl.reserve(dives.size());
 
 	for (dive *d: dives) {
+		if (index >= d->cylinders.nr)
+			continue;
 		if (nonProtectedOnly && is_cylinder_prot(d, index))
 			continue;
+		// We checked that the cylinder exists above.
+		const cylinder_t &cylinder = *get_cylinder(d, index);
 		if (d != current &&
-		    (!same_cylinder_size(orig, *get_cylinder(d, index)) || !same_cylinder_type(orig, *get_cylinder(d, index))))
+		    (!same_cylinder_size(orig, cylinder) || !same_cylinder_type(orig, cylinder))) {
 			// when editing cylinders, we assume that the user wanted to edit the 'n-th' cylinder
 			// and we only do edit that cylinder, if it was the same type as the one in the current dive
 			continue;
+		}
 
 		divesNew.push_back(d);
 		// that's silly as it's always the same value - but we need this vector of indices in the case where we add
 		// a cylinder to several dives as the spot will potentially be different in different dives
 		indexes.push_back(index);
-		cyl.push_back(clone_cylinder(*get_cylinder(d, index)));
+		cyl.push_back(clone_cylinder(cylinder));
 	}
 	dives = std::move(divesNew);
 }
