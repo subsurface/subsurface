@@ -12,10 +12,7 @@ struct divecomputer;
 
 class DiveListDelegate : public QStyledItemDelegate {
 public:
-	explicit DiveListDelegate(QObject *parent = 0)
-	    : QStyledItemDelegate(parent)
-	{
-	}
+	using QStyledItemDelegate::QStyledItemDelegate;
 	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
