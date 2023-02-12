@@ -51,6 +51,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/divecomputer.c \
 	core/divefilter.cpp \
 	core/event.c \
+	core/eventname.cpp \
 	core/filterconstraint.cpp \
 	core/filterpreset.cpp \
 	core/divelist.c \
@@ -200,6 +201,7 @@ HEADERS += \
 	core/dive.h \
 	core/divecomputer.h \
 	core/event.h \
+	core/eventname.h \
 	core/extradata.h \
 	core/git-access.h \
 	core/globals.h \

@@ -3,6 +3,7 @@
 #include "profile-widget/profilescene.h"
 #include "core/device.h"
 #include "core/event.h"
+#include "core/eventname.h"
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
 #include "core/range.h"
@@ -643,14 +644,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 #endif
 	}
-	bool some_hidden = false;
-	for (int i = 0; i < evn_used; i++) {
-		if (ev_namelist[i].plot_ev == false) {
-			some_hidden = true;
-			break;
-		}
-	}
-	if (some_hidden)
+	if (any_events_hidden())
 		m.addAction(tr("Unhide all events"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
 }
@@ -694,12 +688,7 @@ void ProfileWidget2::hideEvents(DiveEventItem *item)
 				  TITLE_OR_TEXT(tr("Hide events"), tr("Hide all %1 events?").arg(event->name)),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
 		if (!empty_string(event->name)) {
-			for (int i = 0; i < evn_used; i++) {
-				if (same_string(event->name, ev_namelist[i].ev_name)) {
-					ev_namelist[i].plot_ev = false;
-					break;
-				}
-			}
+			hide_event(event->name);
 			Q_FOREACH (DiveEventItem *evItem, profileScene->eventItems) {
 				if (same_string(evItem->getEvent()->name, event->name))
 					evItem->hide();
@@ -712,9 +701,7 @@ void ProfileWidget2::hideEvents(DiveEventItem *item)
 
 void ProfileWidget2::unhideEvents()
 {
-	for (int i = 0; i < evn_used; i++) {
-		ev_namelist[i].plot_ev = true;
-	}
+	show_all_events();
 	Q_FOREACH (DiveEventItem *item, profileScene->eventItems)
 		item->show();
 }
