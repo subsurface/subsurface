@@ -8,6 +8,7 @@
 #include "divesite.h"
 #include "dive.h"
 #include "event.h"
+#include "eventname.h"
 #include "filterpreset.h"
 #include "fulltext.h"
 #include "interpolate.h"
@@ -1375,7 +1376,7 @@ void clear_dive_file_data()
 
 	clear_dive(&displayed_dive);
 	clear_device_table(&device_table);
-	clear_events();
+	clear_event_names();
 	clear_filter_presets();
 
 	reset_min_datafile_version();
