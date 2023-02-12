@@ -2,7 +2,6 @@
 
 #include "divecomputer.h"
 #include "event.h"
-#include "eventname.h"
 #include "extradata.h"
 #include "pref.h"
 #include "sample.h"
@@ -443,7 +442,6 @@ struct event *add_event(struct divecomputer *dc, unsigned int time, int type, in
 
 	add_event_to_dc(dc, ev);
 
-	remember_event_name(name);
 	return ev;
 }
 
