@@ -689,7 +689,7 @@ void ProfileWidget2::hideEvents(DiveEventItem *item)
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
 		if (!empty_string(event->name)) {
 			hide_event(event->name);
-			Q_FOREACH (DiveEventItem *evItem, profileScene->eventItems) {
+			for (DiveEventItem *evItem: profileScene->eventItems) {
 				if (same_string(evItem->getEvent()->name, event->name))
 					evItem->hide();
 			}
@@ -702,7 +702,7 @@ void ProfileWidget2::hideEvents(DiveEventItem *item)
 void ProfileWidget2::unhideEvents()
 {
 	show_all_events();
-	Q_FOREACH (DiveEventItem *item, profileScene->eventItems)
+	for (DiveEventItem *item: profileScene->eventItems)
 		item->show();
 }
 
