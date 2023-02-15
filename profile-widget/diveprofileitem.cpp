@@ -826,7 +826,7 @@ void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphics
 
 	QPolygonF poly;
 	painter->setPen(QPen(alertColor, pWidth));
-	Q_FOREACH (const QPolygonF &poly, alertPolygons)
+	for (const QPolygonF &poly: alertPolygons)
 		painter->drawPolyline(poly);
 	painter->restore();
 }

@@ -14,12 +14,10 @@ void ToolTipItem::addToolTip(const QString &toolTip, const QPixmap &pixmap)
 
 	QGraphicsPixmapItem *iconItem = 0;
 	double yValue = title->boundingRect().height() + iconMetrics.spacing;
-	Q_FOREACH (ToolTip t, toolTips) {
+	for (ToolTip t: toolTips)
 		yValue += t.second->boundingRect().height();
-	}
-	if (entryToolTip.second) {
+	if (entryToolTip.second)
 		yValue += entryToolTip.second->boundingRect().height();
-	}
 	iconItem = new QGraphicsPixmapItem(this);
 	if (!pixmap.isNull())
 		iconItem->setPixmap(pixmap);
@@ -36,7 +34,7 @@ void ToolTipItem::addToolTip(const QString &toolTip, const QPixmap &pixmap)
 
 void ToolTipItem::clear()
 {
-	Q_FOREACH (ToolTip t, toolTips) {
+	for (ToolTip t: toolTips) {
 		delete t.first;
 		delete t.second;
 	}
@@ -78,7 +76,7 @@ void ToolTipItem::expand()
 	const IconMetrics &iconMetrics = defaultIconMetrics();
 
 	double width = 0, height = title->boundingRect().height() + iconMetrics.spacing;
-	Q_FOREACH (const ToolTip &t, toolTips) {
+	for (const ToolTip &t: toolTips) {
 		QRectF sRect = t.second->boundingRect();
 		if (sRect.width() > width)
 			width = sRect.width();
@@ -186,9 +184,8 @@ void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	persistPos();
 	QGraphicsRectItem::mouseReleaseEvent(event);
-	Q_FOREACH (QGraphicsItem *item, oldSelection) {
+	for (QGraphicsItem *item: oldSelection)
 		item->setSelected(true);
-	}
 }
 
 void ToolTipItem::persistPos() const
