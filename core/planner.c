@@ -405,7 +405,7 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 	int nr = 0;
 	struct gaschanges *gaschanges = NULL;
 	struct divedatapoint *dp = diveplan->dp;
-	int best_depth = get_cylinder(dive, *asc_cylinder)->depth.mm;
+	struct divedatapoint *best_ascent_dp = NULL;
 	bool total_time_zero = true;
 	while (dp) {
 		if (dp->time == 0 && total_time_zero && (ccr == (bool) setpoint_change(dive, dp->cylinderid))) {
@@ -425,9 +425,8 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 				assert(gaschanges[i].gasidx != -1);
 			} else {
 				/* is there a better mix to start deco? */
-				if (dp->depth.mm < best_depth) {
-					best_depth = dp->depth.mm;
-					*asc_cylinder = dp->cylinderid;
+				if (!best_ascent_dp || dp->depth.mm < best_ascent_dp->depth.mm) {
+					best_ascent_dp = dp;
 				}
 			}
 		} else {
@@ -436,6 +435,9 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 		dp = dp->next;
 	}
 	*gaschangenr = nr;
+	if (best_ascent_dp) {
+		*asc_cylinder = best_ascent_dp->cylinderid;
+	}
 #if DEBUG_PLAN & 16
 	for (nr = 0; nr < *gaschangenr; nr++) {
 		int idx = gaschanges[nr].gasidx;
@@ -678,7 +680,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	int clock, previous_point_time;
 	int avg_depth, max_depth;
 	int last_ascend_rate;
-	int best_first_ascend_cylinder;
+	int best_first_ascend_cylinder = -1;
 	struct gasmix gas, bottom_gas;
 	bool o2break_next = false;
 	int break_cylinder = -1, breakfrom_cylinder = 0;
@@ -752,7 +754,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	printf("current_cylinder %i\n", current_cylinder);
 #endif
 
-	best_first_ascend_cylinder = current_cylinder;
 	/* Find the gases available for deco */
 
 	gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr, depth, &best_first_ascend_cylinder, divemode == CCR && !prefs.dobailout);
@@ -827,7 +828,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		return false;
 	}
 
-	if (best_first_ascend_cylinder != current_cylinder) {
+	if (best_first_ascend_cylinder != -1 && best_first_ascend_cylinder != current_cylinder) {
 		current_cylinder = best_first_ascend_cylinder;
 		gas = get_cylinder(dive, current_cylinder)->gasmix;
 
@@ -886,7 +887,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 		/* Always prefer the best_first_ascend_cylinder if it has the right gasmix.
 		 * Otherwise take first cylinder from list with rightgasmix  */
-		if (same_gasmix(gas, get_cylinder(dive, best_first_ascend_cylinder)->gasmix))
+		if (best_first_ascend_cylinder != -1 && same_gasmix(gas, get_cylinder(dive, best_first_ascend_cylinder)->gasmix))
 			current_cylinder = best_first_ascend_cylinder;
 		else
 			current_cylinder = get_gasidx(dive, gas);
@@ -1032,7 +1033,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 					 * backgas.  This could be customized if there were demand.
 					 */
 					if (break_cylinder == -1) {
-						if (get_o2(get_cylinder(dive, best_first_ascend_cylinder)->gasmix) <= 320)
+						if (best_first_ascend_cylinder != -1 && get_o2(get_cylinder(dive, best_first_ascend_cylinder)->gasmix) <= 320)
 							break_cylinder = best_first_ascend_cylinder;
 						else
 							break_cylinder = 0;
