@@ -372,6 +372,39 @@ void setupPlanSeveralGases(struct diveplan *dp)
 	plan_add_segment(dp, 5 * 60, 10000, 0, 0, true, OC);
 }
 
+void setupPlanCcr(struct diveplan *dp)
+{
+	dp->salinity = 10300;
+	dp->surface_pressure = 1013;
+	dp->gflow = 50;
+	dp->gfhigh = 70;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
+
+	pressure_t po2 = {1600};
+	struct gasmix diluent = {{200}, {210}};
+	struct gasmix ean53 = {{530}, {0}};
+	struct gasmix tx19_33 = {{190}, {330}};
+	cylinder_t *cyl0 = get_or_create_cylinder(&displayed_dive, 0);
+	cylinder_t *cyl1 = get_or_create_cylinder(&displayed_dive, 1);
+	cylinder_t *cyl2 = get_or_create_cylinder(&displayed_dive, 2);
+	cyl0->gasmix = diluent;
+	cyl0->depth = gas_mod(diluent, po2, &displayed_dive, M_OR_FT(3, 10));
+	cyl0->type.size.mliter = 3000;
+	cyl0->type.workingpressure.mbar = 200000;
+	cyl0->cylinder_use = DILUENT;
+	cyl1->gasmix = ean53;
+	cyl1->depth = gas_mod(ean53, po2, &displayed_dive, M_OR_FT(3, 10));
+	cyl2->gasmix = tx19_33;
+	cyl2->depth = gas_mod(tx19_33, po2, &displayed_dive, M_OR_FT(3, 10));
+	reset_cylinders(&displayed_dive, true);
+	free_dps(dp);
+
+	plan_add_segment(dp, 0, cyl1->depth.mm, 1, 0, false, OC);
+	plan_add_segment(dp, 0, cyl2->depth.mm, 2, 0, false, OC);
+	plan_add_segment(dp, 20 * 60, M_OR_FT(60, 197), 0, 1300, true, CCR);
+}
+
 /* We compare the calculated runtimes against two values:
  * - Known runtime calculated by Subsurface previously (to detect if anything has changed)
  * - Benchmark runtime (we should be close, but not always exactly the same)
@@ -883,6 +916,52 @@ void TestPlan::testVpmbMetricRepeat()
 	// check runtime is exactly the same as the first time
 	int finalDiveRunTimeSeconds = displayed_dive.dc.duration.seconds;
 	QCOMPARE(finalDiveRunTimeSeconds, firstDiveRunTimeSeconds);
+}
+
+
+// Test that the correct gases are selected during a CCR dive with bailout ascent
+// Includes a regression test for https://groups.google.com/g/subsurface-divelog/c/8N3cTz2Zv5E
+
+void TestPlan::testCcrBailoutGasSelection()
+{
+	struct deco_state *cache = NULL;
+
+	setupPrefs();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+	prefs.planner_deco_mode = BUEHLMANN;
+	displayed_dive.dc.divemode = CCR;
+	prefs.dobailout = true;
+
+	struct diveplan testPlan = {};
+	setupPlanCcr(&testPlan);
+
+	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, true, false);
+
+#if DEBUG
+	free(displayed_dive.notes);
+	displayed_dive.notes = NULL;
+	save_dive(stdout, &displayed_dive, false);
+#endif
+
+	// check diluent used
+	cylinder_t *cylinder = get_cylinder(&displayed_dive, get_cylinderid_at_time(&displayed_dive, &displayed_dive.dc, { 20 * 60 - 1 }));
+	QCOMPARE(cylinder->cylinder_use, DILUENT);
+	QCOMPARE(get_o2(cylinder->gasmix), 200);
+
+	// check deep bailout used
+	cylinder = get_cylinder(&displayed_dive, get_cylinderid_at_time(&displayed_dive, &displayed_dive.dc, { 20 * 60 + 1 }));
+	QCOMPARE(cylinder->cylinder_use, OC_GAS);
+	QCOMPARE(get_o2(cylinder->gasmix), 190);
+
+	// check shallow bailout used
+	cylinder = get_cylinder(&displayed_dive, get_cylinderid_at_time(&displayed_dive, &displayed_dive.dc, { 30 * 60 }));
+	QCOMPARE(cylinder->cylinder_use, OC_GAS);
+	QCOMPARE(get_o2(cylinder->gasmix), 530);
+
+	// check expected run time of 51 minutes
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 51 * 60, 51 * 60));
+
 }
 
 QTEST_GUILESS_MAIN(TestPlan)

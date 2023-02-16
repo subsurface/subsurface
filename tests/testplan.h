@@ -19,6 +19,7 @@ private slots:
 	void testVpmbMetric100m10min();
 	void testVpmbMetricRepeat();
 	void testMultipleGases();
+	void testCcrBailoutGasSelection();
 };
 
 #endif // TESTPLAN_H

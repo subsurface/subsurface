@@ -1,3 +1,4 @@
+desktop: fix bug in bailout gas selection for CCR dives
 desktop: fix crash on cylinder update of multiple dives
 desktop: use dynamic tank use drop down in equipment tab and planner
 desktop: fix brightness configuration for OSTC4
