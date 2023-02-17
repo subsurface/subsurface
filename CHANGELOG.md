@@ -1,3 +1,4 @@
+desktop: fix bug when printing a dive plan with multiple segments
 desktop: fix bug in bailout gas selection for CCR dives
 desktop: fix crash on cylinder update of multiple dives
 desktop: use dynamic tank use drop down in equipment tab and planner
