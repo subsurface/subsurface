@@ -325,15 +325,15 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				/* Normally a gas change is displayed on the stopping segment, so only display a gas change at the end of
 				 * an ascent segment if it is not followed by a stop
 				 */
-				if ((isascent || dp->entered) && gaschange_after && dp->next && nextdp && (dp->depth.mm != nextdp->depth.mm || nextdp->entered)) {
-					if (dp->setpoint) {
-						asprintf_loc(&temp, translate("gettextFromC", "(SP = %.1fbar CCR)"), dp->setpoint / 1000.0);
+				if (isascent && gaschange_after && dp->next && nextdp && nextdp->entered) {
+					if (nextdp->setpoint) {
+						asprintf_loc(&temp, translate("gettextFromC", "(SP = %.1fbar CCR)"), nextdp->setpoint / 1000.0);
 						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
 							gasname(newgasmix), temp);
 						free(temp);
 					} else {
 						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
-							gasname(newgasmix), lastdivemode == UNDEF_COMP_TYPE || lastdivemode == dp->divemode ? "" : translate("gettextFromC", divemode_text_ui[dp->divemode]));
+							gasname(newgasmix), dp->divemode == UNDEF_COMP_TYPE || dp->divemode == nextdp->divemode ? "" : translate("gettextFromC", divemode_text_ui[nextdp->divemode]));
 						if (isascent && (get_he(lastprintgasmix) > 0)) { // For a trimix gas change on ascent, save ICD info if previous cylinder had helium
 							if (isobaric_counterdiffusion(lastprintgasmix, newgasmix, &icdvalues)) // Do icd calulations
 								icdwarning = true;
@@ -343,9 +343,9 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							}
 						}
 					}
-					lastprintsetpoint = dp->setpoint;
+					lastprintsetpoint = nextdp->setpoint;
 					lastprintgasmix = newgasmix;
-					lastdivemode = dp->divemode;
+					lastdivemode = nextdp->divemode;
 					gaschange_after = false;
 				} else if (gaschange_before || rebreatherchange_before) {
 					// If a new gas has been used for this segment, now is the time to show it
