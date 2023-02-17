@@ -339,7 +339,7 @@ void free_dps(struct diveplan *diveplan)
 	diveplan->dp = NULL;
 }
 
-struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po2)
+static struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po2)
 {
 	struct divedatapoint *dp;
 

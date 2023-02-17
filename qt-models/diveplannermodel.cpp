@@ -1025,6 +1025,14 @@ void DivePlannerPointsModel::createTemporaryPlan()
 {
 	// Get the user-input and calculate the dive info
 	free_dps(&diveplan);
+
+	for (int i = 0; i < d->cylinders.nr; i++) {
+		cylinder_t *cyl = get_cylinder(d, i);
+		if (cyl->depth.mm && cyl->cylinder_use == OC_GAS) {
+			plan_add_segment(&diveplan, 0, cyl->depth.mm, i, 0, false, OC);
+		}
+	}
+
 	int lastIndex = -1;
 	for (int i = 0; i < rowCount(); i++) {
 		divedatapoint p = at(i);
@@ -1039,20 +1047,6 @@ void DivePlannerPointsModel::createTemporaryPlan()
 			plan_add_segment(&diveplan, deltaT, p.depth.mm, p.cylinderid, p.setpoint, true, p.divemode);
 	}
 
-	struct divedatapoint *dp = NULL;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		cylinder_t *cyl = get_cylinder(d, i);
-		if (cyl->depth.mm && cyl->cylinder_use == OC_GAS) {
-			dp = create_dp(0, cyl->depth.mm, i, 0);
-			if (diveplan.dp) {
-				dp->next = diveplan.dp;
-				diveplan.dp = dp;
-			} else {
-				dp->next = NULL;
-				diveplan.dp = dp;
-			}
-		}
-	}
 #if DEBUG_PLAN
 	dump_plan(&diveplan);
 #endif
