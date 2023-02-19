@@ -1,5 +1,5 @@
 git:
-filters:
+  filters:
   - filter_type: file
     file_format: QT
     source_file: translations/subsurface_source.ts
