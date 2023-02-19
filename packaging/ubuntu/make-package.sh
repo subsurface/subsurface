@@ -117,7 +117,7 @@ debuild -S -d
 # file when building the newer ones
 sed -i.bak "/qt5-default/d" debian/control
 rel=bionic
-others="focal jammy"
+others="focal jammy kinetic"
 for next in $others
 do
 	sed -i "s/${rel}/${next}/g" debian/changelog
