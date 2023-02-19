@@ -1,7 +1,7 @@
-git
+git:
 filters:
   - filter_type: file
-    source_language: en
+    file_format: QT
     source_file: translations/subsurface_source.ts
-    translation_files_expression: translations/subsurface_<lang>.ts
-    file_format: Qt
+    source_language: en
+    translation_files_expression: 'translations/subsurface_<lang>.ts'
