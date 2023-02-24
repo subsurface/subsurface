@@ -43,7 +43,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &LocationInformationWidget::diveSiteChanged);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteDeleted, this, &LocationInformationWidget::diveSiteDeleted);
 	connect(qPrefUnits::instance(), &qPrefUnits::unit_systemChanged, this, &LocationInformationWidget::unitsChanged);
-	unitsChanged();
 
 	ui.diveSiteListView->setModel(&filter_model);
 	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
@@ -244,6 +243,8 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		filter_model.set(0, zero_location);
 		clearLabels();
 	}
+
+	unitsChanged();
 }
 
 void LocationInformationWidget::on_GPSbutton_clicked()
