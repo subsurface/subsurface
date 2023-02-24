@@ -369,7 +369,7 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 	dc_status_t rc = DC_STATUS_SUCCESS;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 23;
+	progress.maximum = 47;
 
 	EMIT_PROGRESS();
 
