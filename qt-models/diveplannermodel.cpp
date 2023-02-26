@@ -383,8 +383,6 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 				p.divemode = (enum divemode_t) value.toInt();
 				p.setpoint = p.divemode == CCR ? prefs.defaultsetpoint : 0;
 			}
-			if (index.row() == 0)
-				d->dc.divemode = (enum divemode_t) value.toInt();
 			break;
 		}
 		editStop(index.row(), p);
