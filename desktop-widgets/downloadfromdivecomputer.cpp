@@ -19,6 +19,11 @@
 #include <QTimer>
 #include <QUndoStack>
 
+static bool is_vendor_searchable(QString vendor)
+{
+	return vendor == "Uemis" || vendor == "Garmin";
+}
+
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent) : QDialog(parent, QFlag(0)),
 	downloading(false),
 	previousLast(0),
@@ -51,6 +56,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent) : QDialog(parent, QF
 	ui.selectAllButton->setEnabled(false);
 	ui.unselectAllButton->setEnabled(false);
 	ui.vendor->setModel(&vendorModel);
+	ui.search->setEnabled(is_vendor_searchable(ui.vendor->currentText()));
 	ui.product->setModel(&productModel);
 
 	progress_bar_text = "";
@@ -319,6 +325,7 @@ void DownloadFromDCWidget::on_vendor_currentTextChanged(const QString &vendor)
 	descriptor = descriptorLookup.value(ui.vendor->currentText().toLower() + ui.product->currentText().toLower());
 	transport = dc_descriptor_get_transports(descriptor);
 	fill_device_list(transport);
+	ui.search->setEnabled(is_vendor_searchable(vendor));
 }
 
 void DownloadFromDCWidget::on_product_currentTextChanged(const QString &)
@@ -342,7 +349,7 @@ void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
 
 void DownloadFromDCWidget::on_search_clicked()
 {
-	if (ui.vendor->currentText() == "Uemis" || ui.vendor->currentText() == "Garmin") {
+	if (is_vendor_searchable(ui.vendor->currentText())) {
 		QString dialogTitle = ui.vendor->currentText() == "Uemis" ?
 					tr("Find Uemis dive computer") : tr("Find Garmin dive computer");
 		QString dirName = QFileDialog::getExistingDirectory(this,
