@@ -147,10 +147,13 @@ void DownloadFromDCWidget::DC##num##Clicked() \
 	ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor##num())); \
 	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
 	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
-	ui.bluetoothMode->setChecked(isBluetoothAddress(qPrefDiveComputer::device##num())); \
-	if (ui.device->currentIndex() == -1) \
+	bool isBluetoothDevice = isBluetoothAddress(qPrefDiveComputer::device##num()); \
+	bool isMacOs = QSysInfo::kernelType() == "darwin"; \
+	ui.bluetoothMode->setChecked(isBluetoothDevice); \
+	if (ui.device->currentIndex() == -1 || (isBluetoothDevice && !isMacOs)) \
+		/* macOS seems to have a problem connecting to remembered bluetooth devices  if it hasn't already had a connection in the current session */ \
 		ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
-	if (QSysInfo::kernelType() == "darwin") { \
+	if (isMacOs) { \
 		/* it makes no sense that this would be needed on macOS but not Linux */ \
 		QCoreApplication::processEvents(); \
 		ui.vendor->update(); \

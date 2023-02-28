@@ -1,5 +1,6 @@
 desktop: add column for dive notes to the dive list table
 desktop: fix bug when printing a dive plan with multiple segments
+desktop: fix remembering of bluetooth address for remembered dive computers (not MacOS)
 desktop: fix bug in bailout gas selection for CCR dives
 desktop: fix crash on cylinder update of multiple dives
 desktop: use dynamic tank use drop down in equipment tab and planner
