@@ -566,7 +566,7 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 #endif
 				return surface_time;
 			}
-			add_segment(ds, surface_pressure, air, surface_time, 0, dive->dc.divemode, prefs.decosac, in_planner);
+			add_segment(ds, surface_pressure, air, surface_time, 0, OC, prefs.decosac, in_planner);
 #if DECO_CALC_DEBUG & 2
 			printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
 			dump_tissues(ds);
@@ -603,7 +603,7 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 #endif
 			return surface_time;
 		}
-		add_segment(ds, surface_pressure, air, surface_time, 0, dive->dc.divemode, prefs.decosac, in_planner);
+		add_segment(ds, surface_pressure, air, surface_time, 0, OC, prefs.decosac, in_planner);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
 		dump_tissues(ds);
