@@ -44,11 +44,12 @@ private:
 class FirmwareUpdateThread : public DeviceThread {
 	Q_OBJECT
 public:
-	FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName);
+	FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName, bool forceUpdate);
 	void run();
 
 private:
 	QString m_fileName;
+	bool m_forceUpdate;
 };
 
 class ResetSettingsThread : public DeviceThread {

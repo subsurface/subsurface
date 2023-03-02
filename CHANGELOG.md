@@ -1,3 +1,4 @@
+desktop: add option to force firmware update on OSTC4
 desktop: add column for dive notes to the dive list table
 desktop: fix bug when printing a dive plan with multiple segments
 desktop: fix bug in bailout gas selection for CCR dives

@@ -346,7 +346,7 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 	connect(config, &ConfigureDiveComputer::error, dialog, &QProgressDialog::setLabelText);
 	connect(config, &ConfigureDiveComputer::progress, dialog, &QProgressDialog::setValue);
 	config->dc_open(&devData);
-	config->startFirmwareUpdate(storeFirmware, &devData);
+	config->startFirmwareUpdate(storeFirmware, &devData, false);
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
@@ -869,6 +869,7 @@ void ConfigureDiveComputerDialog::readSettings()
 	ui.progressBar->setTextVisible(true);
 	// Fw update is no longer a option, needs to be done on a untouched device
 	ui.updateFirmwareButton->setEnabled(false);
+	ui.forceUpdateFirmware->setEnabled(false);
 
 	config->readSettings(&device_data);
 }
@@ -1387,6 +1388,7 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 	if (!restorePath.isEmpty()) {
 		// Fw update is no longer a option, needs to be done on a untouched device
 		ui.updateFirmwareButton->setEnabled(false);
+		ui.forceUpdateFirmware->setEnabled(false);
 		if (!config->restoreXMLBackup(restorePath, deviceDetails)) {
 			QMessageBox::critical(this, tr("XML restore error"),
 					      tr("An error occurred while restoring the backup file.\n%1")
@@ -1411,7 +1413,7 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 		ui.progressBar->setFormat("%p%");
 		ui.progressBar->setTextVisible(true);
 
-		config->startFirmwareUpdate(firmwarePath, &device_data);
+		config->startFirmwareUpdate(firmwarePath, &device_data, ui.forceUpdateFirmware->isChecked());
 	}
 }
 
@@ -1503,7 +1505,6 @@ void ConfigureDiveComputerDialog::dc_open()
 	ui.retrieveDetails->setEnabled(true);
 	ui.resetButton->setEnabled(true);
 	ui.resetButton_4->setEnabled(true);
-	ui.updateFirmwareButton->setEnabled(true);
 	ui.disconnectButton->setEnabled(true);
 	ui.restoreBackupButton->setEnabled(true);
 	ui.connectButton->setEnabled(false);
@@ -1511,6 +1512,7 @@ void ConfigureDiveComputerDialog::dc_open()
 	ui.DiveComputerList->setEnabled(false);
 	ui.logToFile->setEnabled(false);
 	ui.updateFirmwareButton->setEnabled(fw_upgrade_possible);
+	ui.forceUpdateFirmware->setEnabled(selected_product == "OSTC 4");
 	ui.progressBar->setFormat(tr("Connected to device"));
 }
 
@@ -1521,7 +1523,6 @@ void ConfigureDiveComputerDialog::dc_close()
 	ui.retrieveDetails->setEnabled(false);
 	ui.resetButton->setEnabled(false);
 	ui.resetButton_4->setEnabled(false);
-	ui.updateFirmwareButton->setEnabled(false);
 	ui.disconnectButton->setEnabled(false);
 	ui.connectButton->setEnabled(true);
 	ui.bluetoothMode->setEnabled(true);
@@ -1531,6 +1532,7 @@ void ConfigureDiveComputerDialog::dc_close()
 	ui.DiveComputerList->setEnabled(true);
 	ui.logToFile->setEnabled(true);
 	ui.updateFirmwareButton->setEnabled(false);
+	ui.forceUpdateFirmware->setEnabled(false);
 	ui.progressBar->setFormat(tr("Disconnected from device"));
 	ui.progressBar->setValue(0);
 }
