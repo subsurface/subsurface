@@ -36,7 +36,7 @@ public:
 	void fetchDeviceDetails();
 	bool saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data);
 	bool restoreXMLBackup(QString fileName, DeviceDetails *details);
-	void startFirmwareUpdate(QString fileName, device_data_t *data);
+	void startFirmwareUpdate(QString fileName, device_data_t *data, bool forceUpdate);
 	void resetSettings(device_data_t *data);
 
 	QString dc_open(device_data_t *data);

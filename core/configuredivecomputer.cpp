@@ -491,13 +491,13 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 	return true;
 }
 
-void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t *data)
+void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t *data, bool forceUpdate)
 {
 	setState(FWUPDATE);
 	if (firmwareThread)
 		firmwareThread->deleteLater();
 
-	firmwareThread = new FirmwareUpdateThread(this, data, fileName);
+	firmwareThread = new FirmwareUpdateThread(this, data, fileName, forceUpdate);
 	connectThreadSignals(firmwareThread);
 
 	firmwareThread->start();

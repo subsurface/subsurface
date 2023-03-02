@@ -1,4 +1,5 @@
 core: fix bug when save sea water salinity given by DC
+desktop: add option to force firmware update on OSTC4
 desktop: add column for dive notes to the dive list table
 desktop: Add an option for printing in landscape mode
 desktop: fix bug when printing a dive plan with multiple segments
