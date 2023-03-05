@@ -816,6 +816,29 @@ void DivePlannerPointsModel::addStop(depth_t depth, int seconds)
 	updateDiveProfile();
 }
 
+void DivePlannerPointsModel::addReverseProfile(){
+	if (divepoints.size() <= 1)
+		return;
+
+	int runtime = divepoints.back().time;
+
+	beginInsertRows(QModelIndex(), divepoints.size(), 2 * divepoints.size() - (prefs.drop_stone_mode ? 1 : 2));
+	for (int i = divepoints.count() - 2; i >= 0; --i) {
+		divepoints << divepoints[i];
+		runtime += divepoints[i+1].time - divepoints[i].time;
+		divepoints.back().time = runtime;
+	}
+
+	if (prefs.drop_stone_mode) {
+		divepoints << divepoints[0];
+		divepoints.back().time = runtime + divepoints[0].time - divepoints[0].depth.mm / prefs.descrate;
+	}
+
+	endInsertRows();
+
+	emitDataChanged();
+}
+
 // cylinderid_in == -1 means same gas as before.
 // divemode == UNDEF_COMP_TYPE means determine from previous point.
 int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t divemode)
