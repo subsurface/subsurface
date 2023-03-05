@@ -19,6 +19,7 @@
 #include <QApplication>
 #include <QTextDocument>
 #include <QtConcurrent>
+#include <deque>
 
 #define VARIATIONS_IN_BACKGROUND 1
 
@@ -753,6 +754,55 @@ void DivePlannerPointsModel::addStop(int milimeters, int seconds)
 	removeDeco();
 	addStop(milimeters, seconds, -1, 0, true, UNDEF_COMP_TYPE);
 	updateDiveProfile();
+}
+
+std::deque<int> DivePlannerPointsModel::getTimeDeltas(){
+	std::deque<int> timeDeltas{};
+
+	auto it = divepoints.begin();
+	const auto itEnd = divepoints.end();
+
+	int prevTime = 0;
+
+	for (; it != itEnd; ++it) {
+		int timeDelta = it->time - prevTime;
+		timeDeltas.push_front(timeDelta);
+		prevTime = it->time;
+	}
+	return timeDeltas;
+}
+
+void DivePlannerPointsModel::addReverseProfile(){
+	if (divepoints.size() <= 1)
+		return;
+
+	// Reserve additional space to prevent iterator invalidation
+	const int newsize = 2 * divepoints.size() + 10;
+	if (newsize > divepoints.capacity())
+		divepoints.reserve(newsize);
+
+	std::deque<int> timeDeltas = getTimeDeltas();
+
+	const int firstrow = divepoints.size();
+	const int lastrow = firstrow + timeDeltas.size() - 2;
+
+	int runtime = divepoints.back().time;
+
+	auto it = divepoints.rbegin();
+	const auto itend = divepoints.rend();
+
+	++it;
+
+	beginInsertRows(QModelIndex(), firstrow, lastrow);
+	for (; it != itend; ++it) {
+		divepoints.push_back(*it);
+		runtime += timeDeltas.front();
+		divepoints.back().time = runtime;
+		timeDeltas.pop_front();
+	}
+	endInsertRows();
+
+	emitDataChanged();
 }
 
 // cylinderid_in == -1 means same gas as before.
