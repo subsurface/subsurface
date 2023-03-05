@@ -108,6 +108,7 @@ slots:
 	void setAscratestopsDisplay(int rate);
 	void setAscratelast6mDisplay(int rate);
 	void setDescrateDisplay(int rate);
+	void addReverseProfile();
 
 signals:
 	void planCreated();

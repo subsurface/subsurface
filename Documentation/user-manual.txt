@@ -4148,6 +4148,10 @@ The waypoints listed in the _Dive Planner Points_ dialog can be edited by hand i
 order to get a precise presentation of the dive plan. In fact, it is sometimes more easy to create the
 whole dive profile by editing the _Dive Planner Points_ dialog.
 
+For planning a dive which has an exit profile which is a mirror image of the entry
+(e.g. cave diving), there is a shortcut to mirror the first half of the dive. Once the intial half of
+the dive is planned, press CTRL+M to create a mirrored exit profile.
+
 Show any changes in gas cylinder used by indicating gas changes as explained
 in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should
 reflect the cylinders and gas compositions defined in the table with _Available Gases_.

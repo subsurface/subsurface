@@ -90,7 +90,10 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, &QShortcut::activated, plannerModel, &DivePlannerPointsModel::cancelPlan);
 
-	// This makes sure the spinbox gets a setMinimum(0) on it so we can't have negative time or depth.
+	QShortcut *mirrorProfileShortcut = new QShortcut(QKeySequence(Qt::Key_M + Qt::CTRL), this);
+	connect(mirrorProfileShortcut, &QShortcut::activated, plannerModel, &DivePlannerPointsModel::addReverseProfile);
+
+	// This makes shure the spinbox gets a setMinimum(0) on it so we can't have negative time or depth.
 	// Limit segments to a depth of 1000 m/3300 ft and a duration of 100 h. Setting the limit for
 	// the depth will be done in settingChanged() since this depends on the chosen units.
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::RUNTIME, new SpinBoxDelegate(0, INT_MAX, 1, this));
