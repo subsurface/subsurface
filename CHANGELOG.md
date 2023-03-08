@@ -31,6 +31,7 @@ core: fix bug when save sea water salinity given by DC
 desktop: add option to force firmware update on OSTC4
 desktop: add column for dive notes to the dive list table
 desktop: Add an option for printing in landscape mode
+planner: allow mirroring of profile with Ctrl-M
 desktop: fix bug when printing a dive plan with multiple segments
 desktop: fix remembering of bluetooth address for remembered dive computers (not MacOS)
 desktop: fix bug in bailout gas selection for CCR dives
