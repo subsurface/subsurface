@@ -47,7 +47,6 @@ void DivePlannerPointsModel::removeSelectedPoints(const std::vector<int> &rows)
 {
 	removePoints(rows);
 
-	updateDiveProfile();
 	emitDataChanged();
 	cylinders.updateTrashIcon();
 }
@@ -179,7 +178,6 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn)
 	DiveTypeSelectionModel::instance()->repopulate();
 	preserved_until = d->duration;
 
-	updateDiveProfile();
 	emitDataChanged();
 }
 
@@ -921,7 +919,6 @@ void DivePlannerPointsModel::removeControlPressed(const QModelIndex &index)
 	if (divepoints[0].cylinderid != old_first_cylid)
 		cylinders.moveAtFirst(divepoints[0].cylinderid);
 
-	updateDiveProfile();
 	emitDataChanged();
 }
 
@@ -958,7 +955,6 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 	if (divepoints[0].cylinderid != old_first_cylid)
 		cylinders.moveAtFirst(divepoints[0].cylinderid);
 
-	updateDiveProfile();
 	emitDataChanged();
 }
 
