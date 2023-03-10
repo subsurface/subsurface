@@ -49,6 +49,11 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 	plusBtn = new QPushButton(plusIcon, QString(), this);
 	plusBtn->setFlat(true);
 
+	QIcon mirrorIcon(":mirror-icon");
+	mirrorBtn = new QPushButton(mirrorIcon, QString(), this);
+	mirrorBtn->setFlat(true);
+	mirrorBtn->setToolTip(tr("Mirror Dive Profile"));
+
 	/* now determine the icon and button size. Since the button will be
 	 * placed in the label, make sure that we do not overflow, as it might
 	 * get clipped
@@ -60,11 +65,14 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 		iconSize = btnSize - 2*min_gap;
 	}
 	plusBtn->setIconSize(QSize(iconSize, iconSize));
+	mirrorBtn->setIconSize(QSize(iconSize, iconSize));
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
 	// with Qt 5.15, this leads to an inoperable button
 	plusBtn->resize(btnSize, btnSize);
+	mirrorBtn->resize(btnSize, btnSize);
 #endif
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
+	mirrorBtn->setVisible(false);
 }
 
 TableView::~TableView()
@@ -114,26 +122,27 @@ void TableView::setModel(QAbstractItemModel *model)
 	ui.tableView->horizontalHeader()->setMinimumHeight(metrics.header_ht);
 }
 
-void TableView::fixPlusPosition()
+void TableView::fixButtonPosition()
 {
 	QStyleOptionGroupBox option;
 	initStyleOption(&option);
 	QRect labelRect = style()->subControlRect(QStyle::CC_GroupBox, &option, QStyle::SC_GroupBoxLabel, this);
 	QRect contentsRect = style()->subControlRect(QStyle::CC_GroupBox, &option, QStyle::QStyle::SC_GroupBoxFrame, this);
 	plusBtn->setGeometry( contentsRect.width() - plusBtn->width(), labelRect.y(), plusBtn->width(), labelRect.height());
+	mirrorBtn->setGeometry(contentsRect.width() - plusBtn->width() - mirrorBtn->width(), labelRect.y(), mirrorBtn->width(), labelRect.height());
 }
 
 // We need to manually position the 'plus' on cylinder and weight.
 void TableView::resizeEvent(QResizeEvent *event)
 {
-	fixPlusPosition();
+	fixButtonPosition();
 	QWidget::resizeEvent(event);
 }
 
 void TableView::showEvent(QShowEvent *event)
 {
 	QWidget::showEvent(event);
-	fixPlusPosition();
+	fixButtonPosition();
 }
 
 void TableView::edit(const QModelIndex &index)
@@ -160,4 +169,14 @@ int TableView::defaultColumnWidth(int col)
 QTableView *TableView::view()
 {
 	return ui.tableView;
+}
+
+QPushButton *TableView::mirrorButton()
+{
+	return mirrorBtn;
+}
+
+void TableView::showMirrorButton()
+{
+	mirrorBtn->setVisible(true);
 }
