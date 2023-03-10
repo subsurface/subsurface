@@ -839,6 +839,11 @@ void DivePlannerPointsModel::addReverseProfile(){
 	emitDataChanged();
 }
 
+void DivePlannerPointsModel::mirror_clicked()
+{
+	addReverseProfile();
+}
+
 // cylinderid_in == -1 means same gas as before.
 // divemode == UNDEF_COMP_TYPE means determine from previous point.
 int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t divemode)
