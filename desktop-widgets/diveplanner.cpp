@@ -49,6 +49,10 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	ui.cylinderTableWidget->setTitle(tr("Available gases"));
 	ui.cylinderTableWidget->setBtnToolTip(tr("Add cylinder"));
 	ui.cylinderTableWidget->setModel(cylinders);
+
+	ui.tableWidget->showMirrorButton();
+	connect(ui.tableWidget->mirrorButton(), &QPushButton::clicked, plannerModel, &DivePlannerPointsModel::mirror_clicked);
+
 	QTableView *view = ui.cylinderTableWidget->view();
 	connect(ui.cylinderTableWidget, &TableView::itemClicked, cylinders, &CylindersModel::remove);
 	view->setColumnHidden(CylindersModel::START, true);

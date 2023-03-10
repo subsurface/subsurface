@@ -30,10 +30,12 @@ public:
 	~TableView();
 	void setModel(QAbstractItemModel *model);
 	void setBtnToolTip(const QString &tooltip);
-	void fixPlusPosition();
+	void fixButtonPosition();
 	void edit(const QModelIndex &index);
 	int  defaultColumnWidth(int col); // default column width for column col
 	QTableView *view();
+	void showMirrorButton();
+	QPushButton *mirrorButton();
 
 protected:
 	void showEvent(QShowEvent *) override;
@@ -45,7 +47,7 @@ signals:
 
 private:
 	Ui::TableView ui;
-	QPushButton *plusBtn;
+	QPushButton *plusBtn, *mirrorBtn;
 	TableMetrics metrics;
 };
 

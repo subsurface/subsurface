@@ -71,6 +71,7 @@ public
 slots:
 	void addDefaultStop();
 	void addCylinder_clicked();
+	void mirror_clicked();
 	void setGFHigh(const int gfhigh);
 	void setGFLow(const int gflow);
 	void setVpmbConservatism(int level);

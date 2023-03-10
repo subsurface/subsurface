@@ -3954,6 +3954,14 @@ image::images/PlannerWindow1.png["FIGURE: Dive planner startup window",align="ce
 image::images/Planner_issues.png["FIGURE: Dive planner: Issue display",align="center"]
 
 
+- With the _mirror button_ on the top of the table, you can add copies
+  of the dive points in reverse order to mirror the dive profile. This
+  can be useful for example when planning a cave dive when the way
+  back will follow the same depth profile as the way in. The same can
+  be done by pressing Ctrl-M. If this results in waypoints above
+  the ceiling (and the background turns red) you have to adjust them
+  manually not to violate decompression obligations.
+
 ==== Recreational dives
 
 Recreational mode is intended for what most divers would call "recreational", "sports"or "nontechnical" dives,
