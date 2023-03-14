@@ -1,9 +1,9 @@
 <RCC>
 	<qresource prefix="/">
 		<!-- ************ icons used in the profile ***************** -->
-		<file alias="status-warning-icon">icons/warning-icon.png</file>
-		<file alias="status-violation-icon">icons/violation-icon.png</file>
-		<file alias="status-info-icon">icons/info-icon.png</file>
+		<file alias="status-warning-icon">icons/warning-icon.svg</file>
+		<file alias="status-violation-icon">icons/violation-icon.svg</file>
+		<file alias="status-info-icon">icons/info-icon.svg</file>
 		<file alias="bailout-icon">icons/OC.png</file>
 		<file alias="onCCRLoop-icon">icons/CCR.png</file>
 		<file alias="dive-bookmark-icon">icons/flag.svg</file>
