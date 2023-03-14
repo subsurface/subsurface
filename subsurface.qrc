@@ -3,7 +3,7 @@
         <file alias="satellite-icon">icons/satellite.svg</file>
         <file alias="graph-icon">icons/pref_tech.png</file>
         <file alias="star-icon">icons/star.svg</file>
-        <file alias="subsurface-icon">icons/subsurface-icon.png</file>
+        <file alias="subsurface-icon">icons/subsurface-icon.svg</file>
         <file alias="subsurface-mobile-icon">icons/subsurface-mobile-icon.png</file>
         <file alias="list-add-icon">icons/plus.png</file>
         <file alias="list-remove-icon">icons/trash.png</file>
@@ -17,13 +17,13 @@
         <file alias="preferences-log-icon">icons/pref_log.png</file>
         <file alias="preferences-display-icon">icons/pref_display.png</file>
         <file alias="preferences-reset-icon">icons/pref_reset.png</file>
-        <file alias="preferences-reset-warning-icon">icons/warning.png</file>
+        <file alias="preferences-reset-warning-icon">icons/warning-icon.svg</file>
         <file alias="scale-graph-icon">icons/graph.png</file>
-        <file alias="value-minimum-icon">icons/minimum.png</file>
-        <file alias="value-maximum-icon">icons/maximum.png</file>
-        <file alias="value-average-icon">icons/average.png</file>
+        <file alias="value-minimum-icon">icons/minimum.svg</file>
+        <file alias="value-maximum-icon">icons/maximum.svg</file>
+        <file alias="value-average-icon">icons/average.svg</file>
         <file alias="salinity-warning-icon">icons/bluewarning.png</file>
-        <file alias="ruler-icon">icons/ruler.png</file>
+        <file alias="ruler-icon">icons/ruler.svg</file>
         <file alias="poster-icon">icons/poster.png</file>
         <file>xslt/commonTemplates.xsl</file>
         <file>xslt/csv2xml.xslt</file>
