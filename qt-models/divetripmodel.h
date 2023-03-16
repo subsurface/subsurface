@@ -43,6 +43,7 @@ public:
 		DIVEGUIDE,
 		COUNTRY,
 		LOCATION,
+		NOTES,
 		COLUMNS
 	};
 
