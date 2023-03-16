@@ -57,6 +57,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModelBase::BUDDIES:
 	case DiveTripModelBase::DIVEGUIDE:
 	case DiveTripModelBase::LOCATION:
+	case DiveTripModelBase::NOTES:
 		return int(Qt::AlignLeft | Qt::AlignVCenter);
 	}
 	return QVariant();
@@ -256,6 +257,8 @@ QString DiveTripModelBase::getDescription(int column)
 		return tr("Dive guide");
 	case LOCATION:
 		return tr("Location");
+	case NOTES:
+		return tr("Notes");
 	default:
 		return QString();
 	}
@@ -352,10 +355,14 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case LOCATION:
 			return QString(get_dive_location(d));
 		case GAS:
-			char *gas_string = get_dive_gas_string(d);
-			QString ret(gas_string);
-			free(gas_string);
-			return ret;
+			{
+				char *gas_string = get_dive_gas_string(d);
+				QString ret(gas_string);
+				free(gas_string);
+				return ret;
+			}
+		case NOTES:
+			return QString(d->notes);
 		}
 		break;
 	case Qt::DecorationRole:
@@ -444,6 +451,8 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 			return tr("Dive guide");
 		case LOCATION:
 			return tr("Location");
+		case NOTES:
+			return tr("Notes");
 		}
 		break;
 	case Qt::ToolTipRole:
@@ -1745,5 +1754,7 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 		return lessThanHelper(strCmp(d1->diveguide, d2->diveguide), row_diff);
 	case LOCATION:
 		return lessThanHelper(strCmp(get_dive_location(d1), get_dive_location(d2)), row_diff);
+	case NOTES:
+		return lessThanHelper(strCmp(d1->notes, d2->notes), row_diff);
 	}
 }

@@ -69,15 +69,16 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 		QString title = QString("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
 		QString settingName = QString("showColumn%1").arg(i);
 		QAction *a = new QAction(title, header());
-		bool showHeaderFirstRun = !(i == DiveTripModelBase::MAXCNS ||
-					    i == DiveTripModelBase::GAS ||
-					    i == DiveTripModelBase::OTU ||
-					    i == DiveTripModelBase::TEMPERATURE ||
-					    i == DiveTripModelBase::TOTALWEIGHT ||
-					    i == DiveTripModelBase::SUIT ||
-					    i == DiveTripModelBase::CYLINDER ||
-					    i == DiveTripModelBase::SAC ||
-					    i == DiveTripModelBase::TAGS);
+		bool showHeaderFirstRun = i == DiveTripModelBase::NR ||
+					  i == DiveTripModelBase::DATE ||
+					  i == DiveTripModelBase::RATING ||
+					  i == DiveTripModelBase::DEPTH ||
+					  i == DiveTripModelBase::DURATION ||
+					  i == DiveTripModelBase::PHOTOS ||
+					  i == DiveTripModelBase::BUDDIES ||
+					  i == DiveTripModelBase::DIVEGUIDE ||
+					  i == DiveTripModelBase::COUNTRY ||
+					  i == DiveTripModelBase::LOCATION;
 		bool shown = s.value(settingName, showHeaderFirstRun).toBool();
 		a->setCheckable(true);
 		a->setChecked(shown);
