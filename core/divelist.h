@@ -44,7 +44,6 @@ extern void process_imported_dives(struct dive_table *import_table, struct trip_
 				   struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
 				   struct trip_table *trips_to_add, struct dive_site_table *sites_to_add,
 				   struct device_table *devices_to_add);
-extern char *get_dive_gas_string(const struct dive *dive);
 
 extern int dive_table_get_insertion_index(struct dive_table *table, struct dive *dive);
 extern void add_to_dive_table(struct dive_table *table, int idx, struct dive *dive);

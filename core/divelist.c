@@ -625,36 +625,6 @@ void update_cylinder_related_info(struct dive *dive)
 	}
 }
 
-#define MAX_GAS_STRING 80
-
-/* callers needs to free the string */
-char *get_dive_gas_string(const struct dive *dive)
-{
-	int o2, he, o2max;
-	char *buffer = malloc(MAX_GAS_STRING);
-
-	if (buffer) {
-		get_dive_gas(dive, &o2, &he, &o2max);
-		o2 = (o2 + 5) / 10;
-		he = (he + 5) / 10;
-		o2max = (o2max + 5) / 10;
-
-		if (he)
-			if (o2 == o2max)
-				snprintf(buffer, MAX_GAS_STRING, "%d/%d", o2, he);
-			else
-				snprintf(buffer, MAX_GAS_STRING, "%d/%d…%d%%", o2, he, o2max);
-		else if (o2)
-			if (o2 == o2max)
-				snprintf(buffer, MAX_GAS_STRING, "%d%%", o2);
-			else
-				snprintf(buffer, MAX_GAS_STRING, "%d…%d%%", o2, o2max);
-		else
-			strcpy(buffer, translate("gettextFromC", "air"));
-	}
-	return buffer;
-}
-
 /* Like strcmp(), but don't crash on null-pointers */
 static int safe_strcmp(const char *s1, const char *s2)
 {

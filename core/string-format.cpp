@@ -1,6 +1,7 @@
 #include "string-format.h"
 #include "dive.h"
 #include "divesite.h"
+#include "format.h"
 #include "qthelper.h"
 #include "subsurface-string.h"
 #include "trip.h"
@@ -259,6 +260,29 @@ QString formatDiveDateTime(const dive *d)
 	QDateTime localTime = timestampToDateTime(d->when);
 	return QStringLiteral("%1 %2").arg(localTime.date().toString(prefs.date_format_short),
 					   localTime.time().toString(prefs.time_format));
+}
+
+QString formatDiveGasString(const dive *d)
+{
+	int o2, he, o2max;
+	get_dive_gas(d, &o2, &he, &o2max);
+	o2 = (o2 + 5) / 10;
+	he = (he + 5) / 10;
+	o2max = (o2max + 5) / 10;
+
+	if (he) {
+		if (o2 == o2max)
+			return qasprintf_loc("%d/%d", o2, he);
+		else
+			return qasprintf_loc("%d/%d…%d%%", o2, he, o2max);
+	} else if (o2) {
+		if (o2 == o2max)
+			return qasprintf_loc("%d%%", o2);
+		else
+			return qasprintf_loc("%d…%d%%", o2, o2max);
+	} else {
+		return gettextFromC::tr("air");
+	}
 }
 
 QString formatDayOfWeek(int day)
