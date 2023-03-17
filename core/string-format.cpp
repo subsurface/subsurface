@@ -287,8 +287,6 @@ QString formatDiveGasString(const dive *d)
 
 QString formatDayOfWeek(int day)
 {
-	// I can't wrap my head around the fact that Sunday is the
-	// first day of the week, but that's how it is.
 	switch (day) {
 	default:
 	case 0:	return gettextFromC::tr("Sunday");
