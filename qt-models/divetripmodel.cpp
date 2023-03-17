@@ -355,12 +355,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case LOCATION:
 			return QString(get_dive_location(d));
 		case GAS:
-			{
-				char *gas_string = get_dive_gas_string(d);
-				QString ret(gas_string);
-				free(gas_string);
-				return ret;
-			}
+			return formatDiveGasString(d);
 		case NOTES:
 			return QString(d->notes);
 		}
