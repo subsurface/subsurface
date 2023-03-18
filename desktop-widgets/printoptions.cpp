@@ -37,6 +37,7 @@ void PrintOptions::setup()
 	// general print option checkboxes
 	ui.printInColor->setChecked(printOptions.color_selected);
 	ui.printSelected->setChecked(printOptions.print_selected);
+	ui.printLandscape->setChecked(printOptions.landscape);
 
 	// resolution
 	ui.resolution->setValue(printOptions.resolution);
@@ -45,9 +46,16 @@ void PrintOptions::setup()
 	if (hasSetupSlots)
 		return;
 
-	connect(ui.printInColor, SIGNAL(clicked(bool)), this, SLOT(printInColorClicked(bool)));
-	connect(ui.printSelected, SIGNAL(clicked(bool)), this, SLOT(printSelectedClicked(bool)));
-	connect(ui.resolution, QOverload<int>::of(&QSpinBox::valueChanged), [this](int value) {
+	connect(ui.printInColor, &QCheckBox::clicked, this, [this](bool value) {
+		printOptions.color_selected = value;
+	});
+	connect(ui.printSelected, &QCheckBox::clicked, this, [this](bool value) {
+		printOptions.print_selected = value;
+	});
+	connect(ui.printLandscape, &QCheckBox::clicked, this, [this](bool value) {
+		printOptions.landscape = value;
+	});
+	connect(ui.resolution, QOverload<int>::of(&QSpinBox::valueChanged), this,  [this](int value) {
 		printOptions.resolution = value;
 	});
 	hasSetupSlots = true;
@@ -108,18 +116,6 @@ void PrintOptions::on_radioStatisticsPrint_toggled(bool check)
 		setupTemplates();
 	}
 }
-
-// general print option checkboxes
-void PrintOptions::printInColorClicked(bool check)
-{
-	printOptions.color_selected = check;
-}
-
-void PrintOptions::printSelectedClicked(bool check)
-{
-	printOptions.print_selected = check;
-}
-
 
 void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 {

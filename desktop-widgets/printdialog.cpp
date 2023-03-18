@@ -155,6 +155,7 @@ void PrintDialog::onFinished()
 	s.setValue("color_selected", printOptions.color_selected);
 	s.setValue("template_selected", printOptions.p_template);
 	s.setValue("resolution", printOptions.resolution);
+	s.setValue("landscape", printOptions.landscape);
 
 	// save template settings
 	s.setValue("font", templateOptions.font_index);
