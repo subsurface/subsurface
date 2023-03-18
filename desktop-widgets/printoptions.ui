@@ -94,6 +94,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="printLandscape">
+        <property name="text">
+         <string>Page orientation landscape</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QSpinBox" name="resolution">
