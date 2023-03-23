@@ -28,7 +28,6 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent) : QWidget(parent, QFlag(0)
 	CylindersModel *cylinders = DivePlannerPointsModel::instance()->cylindersModel();
 
 	ui.setupUi(this);
-	ui.dateEdit->setDisplayFormat(prefs.date_format);
 	ui.tableWidget->setTitle(tr("Dive planner points"));
 	ui.tableWidget->setModel(plannerModel);
 	connect(ui.tableWidget, &TableView::itemClicked, plannerModel, &DivePlannerPointsModel::remove);
@@ -158,6 +157,9 @@ void DivePlannerWidget::settingsChanged()
 	ui.atmHeight->blockSignals(true);
 	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(DivePlannerPointsModel::instance()->getSurfacePressure()), NULL,NULL));
 	ui.atmHeight->blockSignals(false);
+
+	ui.dateEdit->setDisplayFormat(prefs.date_format);
+	ui.startTime->setDisplayFormat(prefs.time_format);
 }
 
 void DivePlannerWidget::atmPressureChanged(const int pressure)
