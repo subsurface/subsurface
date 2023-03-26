@@ -152,7 +152,7 @@ other editors that implement this coding style, please add them here.
   at the place where the resource is needed.
 
 * The `*`, `&` and `&&` declarators are grouped with the name, not the type
- (classical C-style) as in `char *string` instead of `char* string`. This
+  (classical C-style) as in `char *string` instead of `char* string`. This
   reflects the precedence rules of the language: `int &i` means that the name
   `i` stands for a reference [to an object with type `int`], not that
   `i` stands for an object of the type [reference to `int`].
