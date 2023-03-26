@@ -187,7 +187,7 @@ other editors that implement this coding style, please add them here.
   - If the variable is a container that is only assigned to a local variable to
     be able to use it in a range-based for loop
     ```
-    const auto l = device.serviceUuids();
+    const auto serviceUuids = device.serviceUuids();
     for (QBluetoothUuid id: serviceUuids) {
     ```
     The variable has also to be const to avoid that Qt containers will do a
