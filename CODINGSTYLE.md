@@ -6,11 +6,11 @@ not yet fully consistent to these rules, but following these rules will make
 sure that no one yells at you about your patches.
 
 We have a script that can be used to reformat code to be reasonably close
-to these rules; it's in scripts/whitespace.pl – this script requires
+to these rules; it's in `scripts/whitespace.pl` – this script requires
 clang-format to be installed (which sadly isn't installed by default on
 any of our platforms; even on Mac where clang is the default compiler).
 
-At the end of this file are some ideas for your .emacs file (if that's
+At the end of this file are some ideas for your `.emacs` file (if that's
 your editor of choice) as well as for QtCreator. If you have settings for
 other editors that implement this coding style, please add them here.
 
@@ -46,7 +46,7 @@ other editors that implement this coding style, please add them here.
   }
   ```
 
-* both sides of an if / else clause either use or do not use curly braces:
+* both sides of an `if` / `else` clause either use or do not use curly braces:
   ```
   if (condition)
   	i = 4;
@@ -125,7 +125,7 @@ other editors that implement this coding style, please add them here.
   case. Where it seems appropriate, multiple, closely related classes can be
   in a single file with a more generic name.
 
-* switch statements with blocks are a little bit special (to avoid indenting
+* `switch` statements with blocks are a little bit special (to avoid indenting
   too far)
   ```
   switch (foo) {
@@ -185,20 +185,20 @@ other editors that implement this coding style, please add them here.
     QLowEnergyService *service = qobject_cast<QLowEnergyService*>(sender());
     ```
   - If the variable is a container that is only assigned to a local variable to
-    be able to use it in a range-based for loop
+    be able to use it in a range-based `for` loop
     ```
     const auto serviceUuids = device.serviceUuids();
     for (QBluetoothUuid id: serviceUuids) {
     ```
     The variable has also to be const to avoid that Qt containers will do a
-    deep copy when the range bases for loop will call the begin() method
+    deep copy when the range bases `for` loop will call the `begin()` method
     internally.
 
 * text strings
 
   The default language of subsurface is US English so please use US English
   spelling and terminology.
-  User-visible strings should be passed to the tr() function to enable
+  User-visible strings should be passed to the `tr()` function to enable
   translation into other languages.
   - like this
     ```
@@ -209,10 +209,10 @@ other editors that implement this coding style, please add them here.
     QString msgTitle = "Check for updates.";
     ```
 
-  This works by default in classes (indirectly) derived from QObject. Each
+  This works by default in classes (indirectly) derived from `QObject`. Each
   string to be translated is associated with a context, which corresponds
-  to the class name. Classes that are not derived from QObject can generate
-  the tr() functions by using the `Q_DECLARE_TR_FUNCTIONS` macro:
+  to the class name. Classes that are not derived from `QObject` can generate
+  the `tr()` functions by using the `Q_DECLARE_TR_FUNCTIONS` macro:
   ```
   #include <QCoreApplication>
   
@@ -222,23 +222,23 @@ other editors that implement this coding style, please add them here.
   };
   ```
 
-  As an alternative, which also works outside of class context, the tr()
+  As an alternative, which also works outside of class context, the `tr()`
   function of a different class can be called. This avoids creating multiple
   translations for the same string:
   ```
   gettextFromC::tr("%1km")
   ```
 
-  The gettextFromC class in the above example was created as a catch-all
+  The `gettextFromC` class in the above example was created as a catch-all
   context for translations accessed in C code. But it can also be used
-  from C++ helper functions. To use it from C, include the "core/gettext.h"
-  header and invoke the translate() macro:
+  from C++ helper functions. To use it from C, include the `"core/gettext.h"`
+  header and invoke the `translate()` macro:
   ```
   #include "core/gettext.h"
   
   report_error(translate("gettextFromC", "Remote storage and local data diverged"));
   ```
-  It is crucial to pass "gettextFromC" as a first macro argument so that Qt
+  It is crucial to pass `"gettextFromC"` as a first macro argument so that Qt
   is able to associate the string with the correct context.
   The translate macro returns a cached C-style string, which is generated at runtime
   when the particular translation string is encountered for the first time.
@@ -254,10 +254,10 @@ other editors that implement this coding style, please add them here.
   	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
   };
   ```
-  Note that here, the texts will be scheduled for translation with the "gettextFromC"
+  Note that here, the texts will be scheduled for translation with the `"gettextFromC"`
   context, but the array is only initialized with the original text. The actual
   translation has to be performed later in code. For C-code, the `QT_TRANSLATE_NOOP`
-  macro is defined in the "core/gettext.h" header.
+  macro is defined in the `"core/gettext.h"` header.
 
 * UI text style
 
@@ -282,8 +282,8 @@ other editors that implement this coding style, please add them here.
 
  * user interface
 
-    In UI part of the code use of QString methods is preferred, see this pretty
-    good guide in [QString documentation][1]
+    In UI part of the code use of `QString` methods is preferred, see this pretty
+    good guide in [`QString` documentation][1]
 
  * core components
 
@@ -297,7 +297,7 @@ other editors that implement this coding style, please add them here.
 
 ### Emacs
 
-These lines in your .emacs file should get you fairly close when it comes
+These lines in your `.emacs` file should get you fairly close when it comes
 to indentation – many of the other rules you have to follow manually
 
 ```
@@ -393,7 +393,7 @@ style that you can select which should work well for our coding style.
 ### Vim
 
 As everybody knows vim is a way better editor than emacs and thus needs to be
-in this file too. Put this into your .vimrc and this should produce something
+in this file too. Put this into your `.vimrc` and this should produce something
 close to our coding standards.
 
 ```
