@@ -21,14 +21,14 @@ other editors that implement this coding style, please add them here.
 
 * all keywords followed by a '(' have a space in between
   ```
-	if (condition)
-
-	for (i = 0; i < 5; i++)
+  if (condition)
+  
+  for (i = 0; i < 5; i++)
   ```
 
 * function calls do NOT have a space between their name and argument
   ```
-	i = some_function(argument);
+  i = some_function(argument);
   ```
 
 * usually there is no space on the inside of parenthesis (see examples
@@ -40,63 +40,63 @@ other editors that implement this coding style, please add them here.
 * all other opening curly braces follow at the end of the line, with a
   space separating them:
   ```
-	if (condition) {
-		dosomething();
-		dosomethingelse();
-	}
+  if (condition) {
+  	dosomething();
+  	dosomethingelse();
+  }
   ```
 
 * both sides of an if / else clause either use or do not use curly braces:
   ```
-	if (condition)
-		i = 4;
-	else
-		j = 6;
-
-	if (condition) {
-		i = 6;
-	} else {
-		i = 4;
-		j = 6;
-	}
+  if (condition)
+  	i = 4;
+  else
+  	j = 6;
+  
+  if (condition) {
+  	i = 6;
+  } else {
+  	i = 4;
+  	j = 6;
+  }
   ```
 
 * use space to make visual separation easier
   ```
-	a = b + 3 + e / 4;
+  a = b + 3 + e / 4;
   ```
 
 * continuation lines have the operator / comma at the end
   ```
-	if (very_long_condition_1 ||
-	    condition_2)
-
-	b = a + (c + d +
-		 f + z);
+  if (very_long_condition_1 ||
+      condition_2)
+  
+  b = a + (c + d +
+  	 f + z);
   ```
 
 * in a C++ constructor initialization list, the colon is on the same line and
   continuation lines are aligned as the rule above:
   ```
-	ClassName::ClassName() : x(1),
-		y(2),
-		z(3)
-	{
-	}
+  ClassName::ClassName() : x(1),
+  	y(2),
+  	z(3)
+  {
+  }
   ```
 
 * unfortunate inconsistency
   - C code usually uses underscores to structure names
     ```
-	variable_in_C
+    variable_in_C
     ```
   - In contrast, C++ code usually uses camelCase
     ```
-	variableInCPlusPlus
+    variableInCPlusPlus
     ```
     for variable names and PascalCase
     ```
-	ClassInCPlusPlus
+    ClassInCPlusPlus
     ```
     for names of classes and other types
 
@@ -127,16 +127,16 @@ other editors that implement this coding style, please add them here.
 * switch statements with blocks are a little bit special (to avoid indenting
   too far)
   ```
-	switch (foo) {
-	case FIRST:
-		whatever();
-		break;
-	case SECOND: {
-		int i;
-		for (i = 0; i < 5; i++)
-			do_something(i);
-	}
-	}
+  switch (foo) {
+  case FIRST:
+  	whatever();
+  	break;
+  case SECOND: {
+  	int i;
+  	for (i = 0; i < 5; i++)
+  		do_something(i);
+  }
+  }
   ```
 
 ## Coding conventions
@@ -158,39 +158,39 @@ other editors that implement this coding style, please add them here.
   have the same effect) it is crucial in the
   definition of multiple variables, such
   as
-	```
-	struct dive *next, **pprev;
-	```
+  ```
+  struct dive *next, **pprev;
+  ```
 
 * In C++ code, we generally use explicit types in variable declarations for clarity.
   Use `auto` sparingly and only in cases where code readability improves.
   Two classical examples are:
   - Iterators, whose type names often are verbose:
-	```
-	auto it = m_trackers.find(when);
-	```
-  	is not only distinctly shorter than
-	```
-	QMap<qint64, gpsTracker>::iterator it = m_trackers.find(when);
-	```
-  	it will also continue working if a different data structure is chosen.
+    ```
+    auto it = m_trackers.find(when);
+    ```
+    is not only distinctly shorter than
+    ```
+    QMap<qint64, gpsTracker>::iterator it = m_trackers.find(when);
+    ```
+    it will also continue working if a different data structure is chosen.
   - If the type is given in the same line anyway. Thus,
-	```
-	auto service = qobject_cast<QLowEnergyService*>(sender());
-	```
-  	is easier to read than and conveys the same information as
-	```
-	QLowEnergyService *service = qobject_cast<QLowEnergyService*>(sender());
-	```
+    ```
+    auto service = qobject_cast<QLowEnergyService*>(sender());
+    ```
+    is easier to read than and conveys the same information as
+    ```
+    QLowEnergyService *service = qobject_cast<QLowEnergyService*>(sender());
+    ```
   - If the variable is a container that is only assigned to a local variable to
-	be able to use it in a range-based for loop
-	```
-	const auto l = device.serviceUuids();
-	for (QBluetoothUuid id: serviceUuids) {
-	```
-	The variable has also to be const to avoid that Qt containers will do a
-	deep copy when the range bases for loop will call the begin() method
-	internally.
+    be able to use it in a range-based for loop
+    ```
+    const auto l = device.serviceUuids();
+    for (QBluetoothUuid id: serviceUuids) {
+    ```
+    The variable has also to be const to avoid that Qt containers will do a
+    deep copy when the range bases for loop will call the begin() method
+    internally.
 
 * text strings
   The default language of subsurface is US English so please use US English
@@ -199,11 +199,11 @@ other editors that implement this coding style, please add them here.
   translation into other languages.
   - like this
     ```
-	QString msgTitle = tr("Check for updates.");
+    QString msgTitle = tr("Check for updates.");
     ```
   - rather than
     ```
-	QString msgTitle = "Check for updates.";
+    QString msgTitle = "Check for updates.";
     ```
 
   This works by default in classes (indirectly) derived from QObject. Each
@@ -211,19 +211,19 @@ other editors that implement this coding style, please add them here.
   to the class name. Classes that are not derived from QObject can generate
   the tr() functions by using the `Q_DECLARE_TR_FUNCTIONS` macro:
   ```
-	#include <QCoreApplication>
-
-	class myClass {
-		Q_DECLARE_TR_FUNCTIONS(gettextfromC)
-		...
-	};
+  #include <QCoreApplication>
+  
+  class myClass {
+  	Q_DECLARE_TR_FUNCTIONS(gettextfromC)
+  	...
+  };
   ```
 
   As an alternative, which also works outside of class context, the tr()
   function of a different class can be called. This avoids creating multiple
   translations for the same string:
   ```
-	gettextFromC::tr("%1km")
+  gettextFromC::tr("%1km")
   ```
 
   The gettextFromC class in the above example was created as a catch-all
@@ -231,9 +231,9 @@ other editors that implement this coding style, please add them here.
   from C++ helper functions. To use it from C, include the "core/gettext.h"
   header and invoke the translate() macro:
   ```
-	#include "core/gettext.h"
-
-	report_error(translate("gettextFromC", "Remote storage and local data diverged"));
+  #include "core/gettext.h"
+  
+  report_error(translate("gettextFromC", "Remote storage and local data diverged"));
   ```
   It is crucial to pass "gettextFromC" as a first macro argument so that Qt
   is able to associate the string with the correct context.
@@ -244,11 +244,11 @@ other editors that implement this coding style, please add them here.
   Outside of function context, the `QT_TRANSLATE_NOOP` macro can be used as in
   ```
   struct ws_info_t ws_info[100] = {
-	{ QT_TRANSLATE_NOOP("gettextFromC", "integrated"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC", "belt"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
+  	{ QT_TRANSLATE_NOOP("gettextFromC", "integrated"), 0 },
+  	{ QT_TRANSLATE_NOOP("gettextFromC", "belt"), 0 },
+  	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), 0 },
+  	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate"), 0 },
+  	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
   };
   ```
   Note that here, the texts will be scheduled for translation with the "gettextFromC"
