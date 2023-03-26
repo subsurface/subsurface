@@ -86,6 +86,7 @@ other editors that implement this coding style, please add them here.
   ```
 
 * unfortunate inconsistency
+
   - C code usually uses underscores to structure names
     ```
     variable_in_C
@@ -142,6 +143,7 @@ other editors that implement this coding style, please add them here.
 ## Coding conventions
 
 * variable declarations
+
   In C code we really like them to be at the beginning of a code block,
   not interspersed in the middle.
   in C++ we are a bit less strict about this - but still, try not to go
@@ -193,6 +195,7 @@ other editors that implement this coding style, please add them here.
     internally.
 
 * text strings
+
   The default language of subsurface is US English so please use US English
   spelling and terminology.
   User-visible strings should be passed to the tr() function to enable
@@ -257,6 +260,7 @@ other editors that implement this coding style, please add them here.
   macro is defined in the "core/gettext.h" header.
 
 * UI text style
+
   These guidelines are designed to ensure consistency in presentation within
   Subsurface.
   Only the first word of multi-word text strings should be capitalized unless
@@ -275,10 +279,14 @@ other editors that implement this coding style, please add them here.
 
 
 * string manipulation
+
  * user interface
+
     In UI part of the code use of QString methods is preferred, see this pretty
     good guide in [QString documentation][1]
+
  * core components
+
     In the core part of the code, C-string should be used.
     C-string manipulation is not always straightforward specifically when
     it comes to memory allocation, a set of helper functions has been developed
