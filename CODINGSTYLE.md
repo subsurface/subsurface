@@ -6,7 +6,7 @@ not yet fully consistent to these rules, but following these rules will make
 sure that no one yells at you about your patches.
 
 We have a script that can be used to reformat code to be reasonably close
-to these rules; it's in scripts/whitespace.pl - this script requires
+to these rules; it's in scripts/whitespace.pl – this script requires
 clang-format to be installed (which sadly isn't installed by default on
 any of our platforms; even on Mac where clang is the default compiler).
 
@@ -146,7 +146,7 @@ other editors that implement this coding style, please add them here.
 
   In C code we really like them to be at the beginning of a code block,
   not interspersed in the middle.
-  in C++ we are a bit less strict about this - but still, try not to go
+  in C++ we are a bit less strict about this – but still, try not to go
   crazy. Notably, in C++ the lifetime of a variable often coincides with the
   lifetime of a resource (e.g. file) and therefore the variable is defined
   at the place where the resource is needed.
@@ -298,7 +298,7 @@ other editors that implement this coding style, please add them here.
 ### Emacs
 
 These lines in your .emacs file should get you fairly close when it comes
-to indentation - many of the other rules you have to follow manually
+to indentation – many of the other rules you have to follow manually
 
 ```
 ;; indentation
