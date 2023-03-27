@@ -152,8 +152,7 @@ static void save_airpressure(struct membuffer *b, struct divecomputer *dc)
 
 static void save_salinity(struct membuffer *b, struct divecomputer *dc)
 {
-	/* only save if we have a value that isn't the default of sea water */
-	if (!dc->salinity || dc->salinity == SEAWATER_SALINITY)
+	if (!dc->salinity)
 		return;
 	put_string(b, "  <water");
 	put_salinity(b, dc->salinity, " salinity='", " g/l'");
