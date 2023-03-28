@@ -2,11 +2,16 @@
 
 # Contributing | Subsurface
 
+## Introduction
+
 It might be a good idea to join our [mailing list][1]. Conversation there is in English – even though this site (and Subsurface itself) are available in many languages, the shared language we all communicate in is English. Actually "Broken English" is just fine… :-)
 
 We also tend to have some developers hanging out in the `#subsurface` channel on [Freenode][2].
 
 There are many ways in which you can contribute. We are always looking for testers who are willing to test the code while it is being developed. We especially need people running Windows and Mac (as the majority of the active developers are Linux people). We are also always looking for volunteers who help reviewing and improving the documentation. And very importantly we are looking for translators willing to translate the software into different languages. Our translations are centrally handled at [Transifex][3] – please sign up for an account there and then request to join the [Subsurface Team][4].
+
+
+## Code Change Submissions
 
 If you would like to contribute patches that fix bugs or add new features, that is of course especially welcome. If you are looking for places to start, look at the open bugs in our [bug tracker][5].
 
@@ -34,9 +39,15 @@ If you want to change the commit message, `git commit --amend` is the way to go.
 
 Which creates a number of files that have names like `0001-Commit-title.patch`, which you can then send to our developer mailing list.
 
+
+## Developer Certificate of Origin (DCO)
+
 When sending code, please either send signed-off patches or a pull request with signed-off commits. If you don't sign off on them, we will not accept them. This means adding a line that says "Signed-off-by: Name \<Email\>" at the end of each commit, indicating that you wrote the code and have the right to pass it on as an open source patch.
 
 See: [Signed-off-by Lines][8]
+
+
+## Commit Messages
 
 Also, please write good Git commit messages. A good commit message looks like this:
 
@@ -62,6 +73,9 @@ The preferred way to write a commit message is using [imperative mood][11], e.g.
 
 _Example with gitk_
 
+
+## Changelog
+
 Additionally when important changes to behaviors, fixes or new feature are introduced an entry must be added to `CHANGELOG.md` file. Always add new entries at the very top of the file above other existing entries. Use this layout for new entries:
 
     Area: Details about the change [reference thread / issue]
@@ -83,6 +97,9 @@ Here is a (non exhaustive) list of Areas that can be used:
 * Planner
 * Printing
 * Profile
+
+
+## Coding Style
 
 In order to make reviews simpler and have contributions merged faster in the code base, please follow Subsurface project's coding style and coding conventions described in the [CodingStyle][10] file.
 
