@@ -2203,7 +2203,7 @@ void WriteSettingsThread::run()
 }
 
 
-FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName) : DeviceThread(parent, data), m_fileName(fileName)
+FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName, bool forceUpdate) : DeviceThread(parent, data), m_fileName(fileName), m_forceUpdate(forceUpdate)
 {
 }
 
@@ -2218,7 +2218,7 @@ void FirmwareUpdateThread::run()
 	}
 	switch (dc_device_get_type(m_data->device)) {
 	case DC_FAMILY_HW_OSTC3:
-		rc = hw_ostc3_device_fwupdate(m_data->device, qPrintable(m_fileName));
+		rc = hw_ostc3_device_fwupdate(m_data->device, qPrintable(m_fileName), m_forceUpdate);
 		break;
 	case DC_FAMILY_HW_OSTC:
 		rc = hw_ostc_device_fwupdate(m_data->device, qPrintable(m_fileName));
