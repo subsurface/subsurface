@@ -79,6 +79,9 @@ QMLInterface::QMLInterface()
 			this, &QMLInterface::verbatim_planChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_variationsChanged,
 			this, &QMLInterface::display_variationsChanged);
+
+	connect(qPrefDiveComputer::instance(), &qPrefDiveComputer::sync_dc_timeChanged,
+			this, &QMLInterface::sync_dc_timeChanged);
 }
 
 void QMLInterface::setup(QQmlContext *ct)

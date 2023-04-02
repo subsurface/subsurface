@@ -374,6 +374,13 @@ of the dive computer (at least for those not charging while connected via USB).
  - Do *not* check the checkboxes labelled _Save libdivecomputer logfile_ and
    _Save libdivecomputer dumpfile_. These are only used as diagnostic tools
    when there are problems with downloads(see below).
+
+ - With some dive computers it is possible to adjust the clock on the dive
+   computer based on the PC clock. This can be very helpful when dealing with
+   daylight savings time changes, or when travelling between different time
+   zones. In order to synchronise the dive computer clock with the PC clock
+   every time dives are imported, check _Sync dive computer time_.
+
  - Then select the _Download_ button.
    With communication established, you can see how the data are
    retrieved from the dive computer.
@@ -396,6 +403,7 @@ of the dive computer (at least for those not charging while connected via USB).
  - If there is a problem in communicating with the dive computer, an error
    message is shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
    (Puck Pro)". Refer to the text in the box below.
+
 
 
 ****

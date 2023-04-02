@@ -96,6 +96,7 @@ struct preferences {
 	dive_computer_prefs_t dive_computer2;
 	dive_computer_prefs_t dive_computer3;
 	dive_computer_prefs_t dive_computer4;
+	bool sync_dc_time;
 
 	// ********** Display *************
 	bool        display_invalid_dives;

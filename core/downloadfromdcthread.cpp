@@ -227,6 +227,7 @@ DCDeviceData::DCDeviceData()
 #if defined(Q_OS_ANDROID)
 	data.androidUsbDeviceDescriptor = nullptr;
 #endif
+	data.sync_time = false;
 }
 
 DCDeviceData *DCDeviceData::instance()
@@ -291,6 +292,11 @@ int DCDeviceData::diveId() const
 	return data.diveid;
 }
 
+bool DCDeviceData::syncTime() const
+{
+	return data.sync_time;
+}
+
 void DCDeviceData::setVendor(const QString &vendor)
 {
 	data.vendor = copy_qstring(vendor);
@@ -348,6 +354,11 @@ void DCDeviceData::setForceDownload(bool force)
 void DCDeviceData::setDiveId(int diveId)
 {
 	data.diveid = diveId;
+}
+
+void DCDeviceData::setSyncTime(bool syncTime)
+{
+	data.sync_time = syncTime;
 }
 
 void DCDeviceData::setSaveDump(bool save)

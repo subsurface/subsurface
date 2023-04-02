@@ -93,6 +93,7 @@ struct preferences default_prefs = {
 	.extract_video_thumbnails = true,
 	.extract_video_thumbnails_position = 20,		// The first fifth seems like a reasonable place
 	.three_m_based_grid = false,
+	.sync_dc_time = false,
 };
 
 /* copy a preferences block, including making copies of all included strings */

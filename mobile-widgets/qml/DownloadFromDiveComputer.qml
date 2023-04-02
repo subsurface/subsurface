@@ -397,7 +397,7 @@ Kirigami.Page {
 		}
 
 		RowLayout {
-			id: downloadOptions
+			id: forceDownloadOption
 			Layout.fillWidth: true
 			Layout.topMargin: 0
 			spacing: Kirigami.Units.smallSpacing
@@ -415,6 +415,31 @@ Kirigami.Page {
 			TemplateLabel {
 				id: forceAllLabel
 				text: qsTr("force downloading all dives")
+				visible: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 &&
+					 comboConnection.currentIndex != -1
+				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			}
+		}
+
+		RowLayout {
+			id: syncTimeOption
+			Layout.fillWidth: true
+			Layout.topMargin: 0
+			spacing: Kirigami.Units.smallSpacing
+			TemplateCheckBox {
+				id: syncTimeWithDiveComputer
+				checked: Backend.sync_dc_time
+				enabled: syncTimeLabel.visible
+				visible: enabled
+				height: syncTimeLabel.height - Kirigami.Units.smallSpacing;
+				width: height
+				onClicked: {
+					Backend.sync_dc_time = checked
+				}
+			}
+			TemplateLabel {
+				id: syncTimeLabel
+				text: qsTr("Sync dive computer time")
 				visible: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 &&
 					 comboConnection.currentIndex != -1
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere

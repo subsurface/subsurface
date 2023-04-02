@@ -60,6 +60,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent) : QDialog(parent, QF
 	ui.vendor->setModel(&vendorModel);
 	ui.search->setEnabled(is_vendor_searchable(ui.vendor->currentText()));
 	ui.product->setModel(&productModel);
+	ui.syncDiveComputerTime->setChecked(prefs.sync_dc_time);
 
 	progress_bar_text = "";
 
@@ -72,6 +73,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent) : QDialog(parent, QF
 	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
 	connect(ui.selectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectAll()));
 	connect(ui.unselectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectNone()));
+	connect(ui.syncDiveComputerTime, &QAbstractButton::toggled, qPrefDiveComputer::instance(), &qPrefDiveComputer::set_sync_dc_time);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
@@ -419,6 +421,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data->setForceDownload(ui.forceDownload->isChecked());
 	data->setSaveLog(ui.logToFile->isChecked());
 	data->setSaveDump(ui.dumpToFile->isChecked());
+	data->setSyncTime(ui.syncDiveComputerTime->isChecked());
 
 	qPrefDiveComputer::set_vendor(data->vendor());
 	qPrefDiveComputer::set_product(data->product());
@@ -582,6 +585,7 @@ void DownloadFromDCWidget::markChildrenAsDisabled()
 	ui.unselectAllButton->setEnabled(false);
 	ui.bluetoothMode->setEnabled(false);
 	ui.chooseBluetoothDevice->setEnabled(false);
+	ui.syncDiveComputerTime->setEnabled(false);
 }
 
 void DownloadFromDCWidget::markChildrenAsEnabled()
@@ -605,6 +609,7 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 	ui.bluetoothMode->setEnabled(true);
 	ui.chooseBluetoothDevice->setEnabled(true);
 #endif
+	ui.syncDiveComputerTime->setEnabled(true);
 }
 
 #if defined(BT_SUPPORT)
