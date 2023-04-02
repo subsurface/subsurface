@@ -46,6 +46,7 @@ typedef struct {
 	bool libdc_log;
 	bool libdc_dump;
 	bool bluetooth_mode;
+	bool sync_time;
 	FILE *libdc_logfile;
 	struct divelog *log;
 	void *androidUsbDeviceDescriptor;

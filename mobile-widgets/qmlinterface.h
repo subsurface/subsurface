@@ -2,10 +2,12 @@
 #ifndef QMLINTERFACE_H
 #define QMLINTERFACE_H
 #include "core/qthelper.h"
+#include "core/downloadfromdcthread.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefUnit.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefTechnicalDetails.h"
+#include "core/settings/qPrefDiveComputer.h"
 #include "qt-models/diveplannermodel.h"
 #include "backend-shared/plannershared.h"
 
@@ -77,6 +79,8 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY display_transitionsChanged);
 	Q_PROPERTY(bool verbatim_plan READ verbatim_plan WRITE set_verbatim_plan NOTIFY verbatim_planChanged);
 	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variationsChanged);
+
+	Q_PROPERTY(bool sync_dc_time READ sync_dc_time WRITE set_sync_dc_time NOTIFY sync_dc_timeChanged);
 
 public:
 	// function to do the needed setup
@@ -212,6 +216,8 @@ public:
 	bool verbatim_plan() { return prefs.verbatim_plan; }
 	bool display_variations() { return prefs.display_variations; }
 
+	bool sync_dc_time() { return prefs.sync_dc_time; }
+
 public slots:
 	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }
 	void set_duration_units(DURATION value) { qPrefUnits::set_duration_units((units::DURATION)value); }
@@ -258,6 +264,10 @@ public slots:
 	void set_display_transitions(bool value) { DivePlannerPointsModel::instance()->setDisplayTransitions(value); }
 	void set_verbatim_plan(bool value) { DivePlannerPointsModel::instance()->setVerbatim(value); }
 	void set_display_variations(bool value) { DivePlannerPointsModel::instance()->setDisplayVariations(value); }
+	void set_sync_dc_time(bool value) {
+		qPrefDiveComputer::set_sync_dc_time(value);
+		DCDeviceData::instance()->setSyncTime(value);
+	}
 	QString firstDiveDate() { return get_first_dive_date_string(); }
 	QString lastDiveDate() { return get_last_dive_date_string(); }
 
@@ -307,6 +317,8 @@ signals:
 	void display_transitionsChanged(bool value);
 	void verbatim_planChanged(bool value);
 	void display_variationsChanged(bool value);
+
+	void sync_dc_timeChanged(bool value);
 private:
 	QMLInterface();
 };

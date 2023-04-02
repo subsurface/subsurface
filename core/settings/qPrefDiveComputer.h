@@ -35,6 +35,8 @@ class qPrefDiveComputer : public QObject {
 	Q_PROPERTY(QString vendor3 READ vendor3 WRITE set_vendor3 NOTIFY vendor3Changed)
 	Q_PROPERTY(QString vendor4 READ vendor4 WRITE set_vendor4 NOTIFY vendor4Changed)
 
+	Q_PROPERTY(bool sync_dc_time READ sync_dc_time WRITE set_sync_dc_time NOTIFY sync_dc_timeChanged)
+
 public:
 	static qPrefDiveComputer *instance();
 
@@ -48,6 +50,8 @@ public:
 	IMPLEMENT5GETTERS(device_name)
 	IMPLEMENT5GETTERS(product)
 	IMPLEMENT5GETTERS(vendor)
+
+	static bool sync_dc_time() { return prefs.sync_dc_time; }
 
 public slots:
 	static void set_device(const QString &device);
@@ -74,6 +78,8 @@ public slots:
 	static void set_vendor3(const QString &vendor);
 	static void set_vendor4(const QString &vendor);
 
+	static void set_sync_dc_time(bool value);
+
 signals:
 	void deviceChanged(const QString &device);
 	void device1Changed(const QString &device);
@@ -98,6 +104,8 @@ signals:
 	void vendor2Changed(const QString &vendor);
 	void vendor3Changed(const QString &vendor);
 	void vendor4Changed(const QString &vendor);
+
+	void sync_dc_timeChanged(bool value);
 
 private:
 	qPrefDiveComputer() {}
@@ -127,6 +135,8 @@ private:
 	static void disk_vendor2(bool doSync);
 	static void disk_vendor3(bool doSync);
 	static void disk_vendor4(bool doSync);
+
+	static void disk_sync_dc_time(bool doSync);
 };
 
 #endif

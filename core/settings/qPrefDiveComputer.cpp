@@ -29,6 +29,8 @@ void qPrefDiveComputer::loadSync(bool doSync)
 	DISK_DC(2)
 	DISK_DC(3)
 	DISK_DC(4)
+
+	disk_sync_dc_time(doSync);
 }
 
 // these are the 'active' settings
@@ -54,3 +56,5 @@ HANDLE_PREFERENCE_TXT_EXT_ALT(DiveComputer, "dive_computer_vendor1", vendor, div
 HANDLE_PREFERENCE_TXT_EXT_ALT(DiveComputer, "dive_computer_vendor2", vendor, dive_computer, 2)
 HANDLE_PREFERENCE_TXT_EXT_ALT(DiveComputer, "dive_computer_vendor3", vendor, dive_computer, 3)
 HANDLE_PREFERENCE_TXT_EXT_ALT(DiveComputer, "dive_computer_vendor4", vendor, dive_computer, 4)
+
+HANDLE_PREFERENCE_BOOL(DiveComputer, "sync_dive_computer_time", sync_dc_time);

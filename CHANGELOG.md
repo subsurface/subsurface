@@ -1,3 +1,4 @@
+import: add option to synchronise dive computer time when downloading dives
 core: fix bug when save sea water salinity given by DC
 desktop: add option to force firmware update on OSTC4
 desktop: add column for dive notes to the dive list table

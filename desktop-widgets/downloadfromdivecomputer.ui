@@ -185,6 +185,16 @@
            </item>
           </layout>
          </item>
+         <item row="13" column="0">
+          <widget class="QCheckBox" name="syncDiveComputerTime">
+           <property name="text">
+            <string>Sync dive computer time</string>
+           </property>
+           <property name="toolTip">
+            <string>Adjust the time on the dive computer to match the time on the PC (if supported by the dive computer model).</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>

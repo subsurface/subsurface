@@ -1518,6 +1518,9 @@ const char *do_uemis_import(device_data_t *data)
 	if (uemis_mem_status != UEMIS_MEM_OK)
 		result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
 
+	if (data->sync_time)
+		uemis_info(translate("gettextFromC", "Time sync not supported by dive computer"));
+
 bail:
 	(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
 	if (!strcmp(param_buff[0], "error")) {

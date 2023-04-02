@@ -1413,6 +1413,14 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	return DC_STATUS_UNSUPPORTED;
 }
 
+static dc_status_t sync_divecomputer_time(dc_device_t *device)
+{
+	dc_datetime_t now;
+	dc_datetime_localtime(&now, dc_datetime_now());
+
+	return dc_device_timesync(device, &now);
+}
+
 const char *do_libdivecomputer_import(device_data_t *data)
 {
 	dc_status_t rc;
@@ -1463,6 +1471,28 @@ const char *do_libdivecomputer_import(device_data_t *data)
 			dev_info(data, "Starting import ...");
 			err = do_device_import(data);
 			/* TODO: Show the logfile to the user on error. */
+			dev_info(data, "Import complete");
+
+			if (!err && data->sync_time) {
+				dev_info(data, "Syncing dive computer time ...");
+				rc = sync_divecomputer_time(data->device);
+
+				switch (rc) {
+				case DC_STATUS_SUCCESS:
+					dev_info(data, "Time sync complete");
+
+					break;
+				case DC_STATUS_UNSUPPORTED:
+					dev_info(data, "Time sync not supported by dive computer");
+
+					break;
+				default:
+					dev_info(data, "Time sync failed");
+
+					break;
+				}
+			}
+
 			dc_device_close(data->device);
 			data->device = NULL;
 			if (!data->log->dives->nr)

@@ -85,6 +85,7 @@ private:
 	BtDeviceSelectionDialog *btDeviceSelectionDialog;
 	BTDiscovery *btd;
 #endif
+	void setSyncDiveComputerTime(bool value);
 
 public:
 	bool preferDownloaded();

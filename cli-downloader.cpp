@@ -29,6 +29,7 @@ void cliDownloader(const char *vendor, const char *product, const char *device)
 	data->setForceDownload(false);
 	data->setSaveLog(true);
 	data->setSaveDump(false);
+	data->setSyncTime(false);
 
 	diveImportedModel.startDownload();
 	diveImportedModel.waitForDownload();

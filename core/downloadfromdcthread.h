@@ -32,6 +32,7 @@ public:
 	bool forceDownload() const;
 	bool saveLog() const;
 	int diveId() const;
+	bool syncTime() const;
 
 	/* this needs to be a pointer to make the C-API happy */
 	device_data_t *internalData();
@@ -54,6 +55,7 @@ public:
 #if defined(Q_OS_ANDROID)
 	void setUsbDevice(const android_usb_serial_device_descriptor &usbDescriptor);
 #endif
+	void setSyncTime(bool syncTime);
 private:
 #if defined(Q_OS_ANDROID)
 	struct android_usb_serial_device_descriptor androidUsbDescriptor;
