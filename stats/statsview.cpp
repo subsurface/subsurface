@@ -21,7 +21,6 @@
 #include "core/selection.h"
 #include "core/trip.h"
 
-#include <array> // for std::array
 #include <cmath>
 #include <QQuickItem>
 #include <QQuickWindow>
@@ -35,6 +34,7 @@ static const double titleBorder = 2.0;			// Border between title and chart
 static const double selectionLassoWidth = 2.0;		// Border between title and chart
 
 StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
+	maxZ(ChartZValue::Count),
 	backgroundDirty(true),
 	currentTheme(&getStatsTheme(false)),
 	backgroundColor(currentTheme->backgroundColor),
@@ -129,16 +129,18 @@ using ZNode = HideableQSGNode<QSGNode>;
 class RootNode : public QSGNode
 {
 public:
-	RootNode(StatsView &view, QColor backgroundColor);
+	RootNode(StatsView &view, QColor backgroundColor, size_t maxZ);
 	~RootNode();
 	StatsView &view;
 	std::unique_ptr<QSGRectangleNode> backgroundNode; // solid background
 	// We entertain one node per Z-level.
-	std::array<std::unique_ptr<ZNode>, (size_t)ChartZValue::Count> zNodes;
+	std::vector<std::unique_ptr<ZNode>> zNodes;
 };
 
-RootNode::RootNode(StatsView &view, QColor backgroundColor) : view(view)
+RootNode::RootNode(StatsView &view, QColor backgroundColor, size_t maxZ) : view(view)
 {
+	zNodes.resize(maxZ);
+
 	// Add a background rectangle with a solid color. This could
 	// also be done on the widget level, but would have to be done
 	// separately for desktop and mobile, so do it here.
@@ -172,7 +174,7 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	// This is just a copy of what is found in Qt's documentation.
 	RootNode *n = static_cast<RootNode *>(oldNode);
 	if (!n)
-		n = rootNode = new RootNode(*this, backgroundColor);
+		n = rootNode = new RootNode(*this, backgroundColor, maxZ);
 
 	// Delete all chart items that are marked for deletion.
 	freeDeletedChartItems();
@@ -217,9 +219,9 @@ void StatsView::emergencyShutdown()
 	rootNode = nullptr;
 }
 
-void StatsView::addQSGNode(QSGNode *node, ChartZValue z)
+void StatsView::addQSGNode(QSGNode *node, size_t z)
 {
-	int idx = std::clamp((int)z, 0, (int)ChartZValue::Count - 1);
+	size_t idx = std::clamp(z, (size_t)0, maxZ);
 	rootNode->zNodes[idx]->appendChildNode(node);
 }
 
@@ -617,7 +619,7 @@ void StatsView::updateFeatures()
 
 	// For labels, we are brutal: simply show/hide the whole z-level with the labels
 	if (rootNode)
-		rootNode->zNodes[(int)ChartZValue::SeriesLabels]->setVisible(state.labels);
+		rootNode->zNodes[ChartZValue::SeriesLabels]->setVisible(state.labels);
 
 	if (meanMarker)
 		meanMarker->setVisible(state.mean);
