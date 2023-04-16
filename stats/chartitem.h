@@ -18,7 +18,6 @@ class QSGTexture;
 class QSGTextureMaterial;
 class StatsTheme;
 class StatsView;
-enum class ChartZValue : int;
 
 class ChartItem {
 public:
@@ -26,10 +25,10 @@ public:
 	virtual void render() = 0;
 	bool dirty;				// If true, call render() when rebuilding the scene
 	ChartItem *prev, *next;			// Double linked list of items
-	const ChartZValue zValue;
+	const size_t zValue;
 	virtual ~ChartItem();			// Attention: must only be called by render thread.
 protected:
-	ChartItem(StatsView &v, ChartZValue z);
+	ChartItem(StatsView &v, size_t z);
 	QSizeF sceneSize() const;
 	StatsView &view;
 	void markDirty();
@@ -38,7 +37,7 @@ protected:
 template <typename Node>
 class HideableChartItem : public ChartItem {
 protected:
-	HideableChartItem(StatsView &v, ChartZValue z);
+	HideableChartItem(StatsView &v, size_t z);
 	std::unique_ptr<Node> node;
 	bool visible;
 	bool visibleChanged;
@@ -56,7 +55,7 @@ using HideableChartProxyItem = HideableChartItem<HideableQSGNode<QSGProxyNode<No
 // A chart item that blits a precalculated pixmap onto the scene.
 class ChartPixmapItem : public HideableChartProxyItem<QSGImageNode> {
 public:
-	ChartPixmapItem(StatsView &v, ChartZValue z);
+	ChartPixmapItem(StatsView &v, size_t z);
 	~ChartPixmapItem();
 
 	void setPos(QPointF pos);
@@ -78,7 +77,7 @@ private:
 // Draw a rectangular background after resize. Children are responsible for calling update().
 class ChartRectItem : public ChartPixmapItem {
 public:
-	ChartRectItem(StatsView &v, ChartZValue z, const QPen &pen, const QBrush &brush, double radius);
+	ChartRectItem(StatsView &v, size_t z, const QPen &pen, const QBrush &brush, double radius);
 	~ChartRectItem();
 	void resize(QSizeF size);
 private:
@@ -90,8 +89,8 @@ private:
 // Attention: text is only drawn after calling setColor()!
 class ChartTextItem : public ChartPixmapItem {
 public:
-	ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const std::vector<QString> &text, bool center);
-	ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const QString &text);
+	ChartTextItem(StatsView &v, size_t z, const QFont &f, const std::vector<QString> &text, bool center);
+	ChartTextItem(StatsView &v, size_t z, const QFont &f, const QString &text);
 	void setColor(const QColor &color); // Draw on transparent background
 	void setColor(const QColor &color, const QColor &background); // Fill rectangle with given background color
 private:
@@ -108,7 +107,7 @@ private:
 // A pie chart item: draws disk segments onto a pixmap.
 class ChartPieItem : public ChartPixmapItem {
 public:
-	ChartPieItem(StatsView &v, ChartZValue z, const StatsTheme &theme, double borderWidth);
+	ChartPieItem(StatsView &v, size_t z, const StatsTheme &theme, double borderWidth);
 	void drawSegment(double from, double to, QColor fill, QColor border, bool selected); // from and to are relative (0-1 is full disk).
 	void resize(QSizeF size);	// As in base class, but clears the canvas
 private:
@@ -119,7 +118,7 @@ private:
 // Common data for line and rect items. Both are represented by two points.
 class ChartLineItemBase : public HideableChartItem<HideableQSGNode<QSGGeometryNode>> {
 public:
-	ChartLineItemBase(StatsView &v, ChartZValue z, QColor color, double width);
+	ChartLineItemBase(StatsView &v, size_t z, QColor color, double width);
 	~ChartLineItemBase();
 	void setLine(QPointF from, QPointF to);
 protected:
@@ -148,7 +147,7 @@ public:
 // A bar in a bar chart: a rectangle bordered by lines.
 class ChartBarItem : public HideableChartProxyItem<QSGRectangleNode> {
 public:
-	ChartBarItem(StatsView &v, ChartZValue z, const StatsTheme &theme, double borderWidth);
+	ChartBarItem(StatsView &v, size_t z, const StatsTheme &theme, double borderWidth);
 	~ChartBarItem();
 	void setColor(QColor color, QColor borderColor);
 	void setRect(const QRectF &rect);
@@ -178,7 +177,7 @@ private:
 // A box-and-whiskers item. This is a bit lazy: derive from the bar item and add whiskers.
 class ChartBoxItem : public ChartBarItem {
 public:
-	ChartBoxItem(StatsView &v, ChartZValue z, const StatsTheme &theme, double borderWidth);
+	ChartBoxItem(StatsView &v, size_t z, const StatsTheme &theme, double borderWidth);
 	~ChartBoxItem();
 	void setBox(const QRectF &rect, double min, double max, double median); // The rect describes Q1, Q3.
 	QRectF getRect() const;		// Note: this extends the center rectangle to include the whiskers.
@@ -196,7 +195,7 @@ private:
 // scatter item here, but so it is for now.
 class ChartScatterItem : public HideableChartProxyItem<QSGImageNode> {
 public:
-	ChartScatterItem(StatsView &v, ChartZValue z, const StatsTheme &theme, bool selected);
+	ChartScatterItem(StatsView &v, size_t z, const StatsTheme &theme, bool selected);
 	~ChartScatterItem();
 
 	// Currently, there is no highlighted and selected status.
@@ -240,7 +239,7 @@ void HideableChartItem<Node>::createNode(Args&&... args)
 }
 
 template <typename Node>
-HideableChartItem<Node>::HideableChartItem(StatsView &v, ChartZValue z) : ChartItem(v, z),
+HideableChartItem<Node>::HideableChartItem(StatsView &v, size_t z) : ChartItem(v, z),
 	visible(true), visibleChanged(false)
 {
 }

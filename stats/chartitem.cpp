@@ -19,7 +19,7 @@ static int round_up(double f)
 	return static_cast<int>(ceil(f));
 }
 
-ChartItem::ChartItem(StatsView &v, ChartZValue z) :
+ChartItem::ChartItem(StatsView &v, size_t z) :
 	dirty(false), prev(nullptr), next(nullptr),
 	zValue(z), view(v)
 {
@@ -42,7 +42,7 @@ void ChartItem::markDirty()
 	view.registerDirtyChartItem(*this);
 }
 
-ChartPixmapItem::ChartPixmapItem(StatsView &v, ChartZValue z) : HideableChartItem(v, z),
+ChartPixmapItem::ChartPixmapItem(StatsView &v, size_t z) : HideableChartItem(v, z),
 	positionDirty(false), textureDirty(false)
 {
 }
@@ -111,7 +111,7 @@ QRectF ChartPixmapItem::getRect() const
 static const int scatterItemDiameter = 10;
 static const int scatterItemBorder = 1;
 
-ChartScatterItem::ChartScatterItem(StatsView &v, ChartZValue z, const StatsTheme &theme, bool selected) : HideableChartItem(v, z),
+ChartScatterItem::ChartScatterItem(StatsView &v, size_t z, const StatsTheme &theme, bool selected) : HideableChartItem(v, z),
 	theme(theme),
 	positionDirty(false), textureDirty(false),
 	highlight(selected ? Highlight::Selected : Highlight::Unselected)
@@ -214,7 +214,7 @@ QRectF ChartScatterItem::getRect() const
 	return rect;
 }
 
-ChartRectItem::ChartRectItem(StatsView &v, ChartZValue z,
+ChartRectItem::ChartRectItem(StatsView &v, size_t z,
 			     const QPen &pen, const QBrush &brush, double radius) : ChartPixmapItem(v, z),
 	pen(pen), brush(brush), radius(radius)
 {
@@ -236,7 +236,7 @@ void ChartRectItem::resize(QSizeF size)
 	painter->drawRoundedRect(rect, radius, radius, Qt::AbsoluteSize);
 }
 
-ChartTextItem::ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const std::vector<QString> &text, bool center) :
+ChartTextItem::ChartTextItem(StatsView &v, size_t z, const QFont &f, const std::vector<QString> &text, bool center) :
 	ChartPixmapItem(v, z), f(f), center(center)
 {
 	QFontMetrics fm(f);
@@ -254,7 +254,7 @@ ChartTextItem::ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const 
 	resize(QSizeF(totalWidth, totalHeight));
 }
 
-ChartTextItem::ChartTextItem(StatsView &v, ChartZValue z, const QFont &f, const QString &text) :
+ChartTextItem::ChartTextItem(StatsView &v, size_t z, const QFont &f, const QString &text) :
 	ChartTextItem(v, z, f, std::vector<QString>({ text }), true)
 {
 }
@@ -280,7 +280,7 @@ void ChartTextItem::setColor(const QColor &c, const QColor &background)
 	setTextureDirty();
 }
 
-ChartPieItem::ChartPieItem(StatsView &v, ChartZValue z, const StatsTheme &theme, double borderWidth) : ChartPixmapItem(v, z),
+ChartPieItem::ChartPieItem(StatsView &v, size_t z, const StatsTheme &theme, double borderWidth) : ChartPixmapItem(v, z),
 	theme(theme),
 	borderWidth(borderWidth)
 {
@@ -322,7 +322,7 @@ void ChartPieItem::resize(QSizeF size)
 	img->fill(Qt::transparent);
 }
 
-ChartLineItemBase::ChartLineItemBase(StatsView &v, ChartZValue z, QColor color, double width) : HideableChartItem(v, z),
+ChartLineItemBase::ChartLineItemBase(StatsView &v, size_t z, QColor color, double width) : HideableChartItem(v, z),
 	color(color), width(width), positionDirty(false), materialDirty(false)
 {
 }
@@ -416,7 +416,7 @@ void ChartRectLineItem::render()
 	positionDirty = materialDirty = false;
 }
 
-ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, const StatsTheme &theme, double borderWidth) : HideableChartItem(v, z),
+ChartBarItem::ChartBarItem(StatsView &v, size_t z, const StatsTheme &theme, double borderWidth) : HideableChartItem(v, z),
 	theme(theme),
 	borderWidth(borderWidth), selected(false),
 	positionDirty(false), colorDirty(false), selectedDirty(false)
@@ -548,7 +548,7 @@ QRectF ChartBarItem::getRect() const
 	return rect;
 }
 
-ChartBoxItem::ChartBoxItem(StatsView &v, ChartZValue z, const StatsTheme &theme, double borderWidth) :
+ChartBoxItem::ChartBoxItem(StatsView &v, size_t z, const StatsTheme &theme, double borderWidth) :
 	ChartBarItem(v, z, theme, borderWidth)
 {
 }

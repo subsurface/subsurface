@@ -34,7 +34,6 @@ class QSGTexture;
 class RootNode;	// Internal implementation detail
 
 enum class ChartSubType : int;
-enum class ChartZValue : int;
 enum class StatsOperation : int;
 enum class ChartSortMode : int;
 
@@ -56,7 +55,7 @@ public:
 	void setBackgroundColor(QColor color);		// Chart must be replot for color to become effective.
 	void setTheme(bool dark);			// Chart must be replot for theme to become effective.
 	const StatsTheme &getCurrentTheme() const;
-	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
+	void addQSGNode(QSGNode *node, size_t z);	// Must only be called in render thread!
 	void registerChartItem(ChartItem &item);
 	void registerDirtyChartItem(ChartItem &item);
 	void emergencyShutdown();			// Called when QQuick decides to delete our root node.
@@ -76,6 +75,7 @@ private slots:
 	void divesSelected(const QVector<dive *> &dives);
 private:
 	// QtQuick related things
+	size_t maxZ;
 	bool backgroundDirty;
 	QRectF plotRect;
 	QSGNode *updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
