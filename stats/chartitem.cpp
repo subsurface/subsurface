@@ -64,7 +64,7 @@ void ChartPixmapItem::setPositionDirty()
 	markDirty();
 }
 
-void ChartPixmapItem::render(const StatsTheme &)
+void ChartPixmapItem::render()
 {
 	if (!node) {
 		createNode(view.w()->createImageNode());
@@ -111,7 +111,8 @@ QRectF ChartPixmapItem::getRect() const
 static const int scatterItemDiameter = 10;
 static const int scatterItemBorder = 1;
 
-ChartScatterItem::ChartScatterItem(StatsView &v, ChartZValue z, bool selected) : HideableChartItem(v, z),
+ChartScatterItem::ChartScatterItem(StatsView &v, ChartZValue z, const StatsTheme &theme, bool selected) : HideableChartItem(v, z),
+	theme(theme),
 	positionDirty(false), textureDirty(false),
 	highlight(selected ? Highlight::Selected : Highlight::Unselected)
 {
@@ -138,7 +139,7 @@ static QSGTexture *createScatterTexture(StatsView &view, const QColor &color, co
 	return view.w()->createTextureFromImage(img, QQuickWindow::TextureHasAlphaChannel);
 }
 
-QSGTexture *ChartScatterItem::getTexture(const StatsTheme &theme) const
+QSGTexture *ChartScatterItem::getTexture() const
 {
 	switch (highlight) {
 	default:
@@ -151,7 +152,7 @@ QSGTexture *ChartScatterItem::getTexture(const StatsTheme &theme) const
 	}
 }
 
-void ChartScatterItem::render(const StatsTheme &theme)
+void ChartScatterItem::render()
 {
 	if (!theme.scatterItemTexture) {
 		theme.scatterItemTexture = register_global(createScatterTexture(view, theme.fillColor, theme.borderColor));
@@ -165,7 +166,7 @@ void ChartScatterItem::render(const StatsTheme &theme)
 	}
 	updateVisible();
 	if (textureDirty) {
-		node->node->setTexture(getTexture(theme));
+		node->node->setTexture(getTexture());
 		textureDirty = false;
 	}
 	if (positionDirty) {
@@ -279,7 +280,8 @@ void ChartTextItem::setColor(const QColor &c, const QColor &background)
 	setTextureDirty();
 }
 
-ChartPieItem::ChartPieItem(StatsView &v, ChartZValue z, double borderWidth) : ChartPixmapItem(v, z),
+ChartPieItem::ChartPieItem(StatsView &v, ChartZValue z, const StatsTheme &theme, double borderWidth) : ChartPixmapItem(v, z),
+	theme(theme),
 	borderWidth(borderWidth)
 {
 }
@@ -300,7 +302,7 @@ static QBrush makeBrush(QColor fill, bool selected, const StatsTheme &theme)
 	return QBrush(img);
 }
 
-void ChartPieItem::drawSegment(double from, double to, QColor fill, QColor border, bool selected, const StatsTheme &theme)
+void ChartPieItem::drawSegment(double from, double to, QColor fill, QColor border, bool selected)
 {
 	painter->setPen(QPen(border, borderWidth));
 	painter->setBrush(makeBrush(fill, selected, theme));
@@ -349,7 +351,7 @@ void setPoint(QSGGeometry::TexturedPoint2D &v, const QPointF &p, const QPointF &
 	      static_cast<float>(t.x()), static_cast<float>(t.y()));
 }
 
-void ChartLineItem::render(const StatsTheme &)
+void ChartLineItem::render()
 {
 	if (!node) {
 		geometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 2));
@@ -380,7 +382,7 @@ void ChartLineItem::render(const StatsTheme &)
 	positionDirty = materialDirty = false;
 }
 
-void ChartRectLineItem::render(const StatsTheme &)
+void ChartRectLineItem::render()
 {
 	if (!node) {
 		geometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 5));
@@ -414,7 +416,8 @@ void ChartRectLineItem::render(const StatsTheme &)
 	positionDirty = materialDirty = false;
 }
 
-ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, double borderWidth) : HideableChartItem(v, z),
+ChartBarItem::ChartBarItem(StatsView &v, ChartZValue z, const StatsTheme &theme, double borderWidth) : HideableChartItem(v, z),
+	theme(theme),
 	borderWidth(borderWidth), selected(false),
 	positionDirty(false), colorDirty(false), selectedDirty(false)
 {
@@ -424,7 +427,7 @@ ChartBarItem::~ChartBarItem()
 {
 }
 
-QSGTexture *ChartBarItem::getSelectedTexture(const StatsTheme &theme) const
+QSGTexture *ChartBarItem::getSelectedTexture() const
 {
 	if (!theme.selectedTexture) {
 		QImage img(2, 2, QImage::Format_ARGB32);
@@ -436,7 +439,7 @@ QSGTexture *ChartBarItem::getSelectedTexture(const StatsTheme &theme) const
 	return theme.selectedTexture;
 }
 
-void ChartBarItem::render(const StatsTheme &theme)
+void ChartBarItem::render()
 {
 	if (!node) {
 		createNode(view.w()->createRectangleNode());
@@ -481,7 +484,7 @@ void ChartBarItem::render(const StatsTheme &theme)
 				selectionGeometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4));
 				selectionGeometry->setDrawingMode(QSGGeometry::DrawTriangleStrip);
 				selectionMaterial.reset(new QSGTextureMaterial);
-				selectionMaterial->setTexture(getSelectedTexture(theme));
+				selectionMaterial->setTexture(getSelectedTexture());
 				selectionMaterial->setHorizontalWrapMode(QSGTexture::Repeat);
 				selectionMaterial->setVerticalWrapMode(QSGTexture::Repeat);
 				selectionNode.reset(new QSGGeometryNode);
@@ -545,8 +548,8 @@ QRectF ChartBarItem::getRect() const
 	return rect;
 }
 
-ChartBoxItem::ChartBoxItem(StatsView &v, ChartZValue z, double borderWidth) :
-	ChartBarItem(v, z, borderWidth)
+ChartBoxItem::ChartBoxItem(StatsView &v, ChartZValue z, const StatsTheme &theme, double borderWidth) :
+	ChartBarItem(v, z, theme, borderWidth)
 {
 }
 
@@ -554,12 +557,12 @@ ChartBoxItem::~ChartBoxItem()
 {
 }
 
-void ChartBoxItem::render(const StatsTheme &theme)
+void ChartBoxItem::render()
 {
 	// Remember old dirty values, since ChartBarItem::render() will clear them
 	bool oldPositionDirty = positionDirty;
 	bool oldColorDirty = colorDirty;
-	ChartBarItem::render(theme);		// This will create the base node, so no need to check for that.
+	ChartBarItem::render();		// This will create the base node, so no need to check for that.
 	if (!whiskersNode) {
 		whiskersGeometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 10));
 		whiskersGeometry->setDrawingMode(QSGGeometry::DrawLines);

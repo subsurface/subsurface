@@ -183,7 +183,7 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	}
 
 	for (ChartItem *item = dirtyItems.first; item; item = item->next) {
-		item->render(*currentTheme);
+		item->render();
 		item->dirty = false;
 	}
 	dirtyItems.splice(cleanItems);
