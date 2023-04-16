@@ -53,6 +53,7 @@ public:
 	QQuickWindow *w() const;			// Make window available to items
 	QSizeF size() const;
 	QRectF plotArea() const;
+	void setBackgroundColor(QColor color);		// Chart must be replot for color to become effective.
 	void setTheme(bool dark);			// Chart must be replot for theme to become effective.
 	const StatsTheme &getCurrentTheme() const;
 	void addQSGNode(QSGNode *node, ChartZValue z);	// Must only be called in render thread!
@@ -143,6 +144,7 @@ private:
 
 	StatsState state;
 	const StatsTheme *currentTheme;
+	QColor backgroundColor;
 	std::vector<std::unique_ptr<StatsSeries>> series;
 	std::unique_ptr<StatsGrid> grid;
 	std::vector<ChartItemPtr<QuartileMarker>> quartileMarkers;

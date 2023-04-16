@@ -37,6 +37,7 @@ static const double selectionLassoWidth = 2.0;		// Border between title and char
 StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
 	backgroundDirty(true),
 	currentTheme(&getStatsTheme(false)),
+	backgroundColor(currentTheme->backgroundColor),
 	highlightedSeries(nullptr),
 	xAxis(nullptr),
 	yAxis(nullptr),
@@ -128,7 +129,7 @@ using ZNode = HideableQSGNode<QSGNode>;
 class RootNode : public QSGNode
 {
 public:
-	RootNode(StatsView &view);
+	RootNode(StatsView &view, QColor backgroundColor);
 	~RootNode();
 	StatsView &view;
 	std::unique_ptr<QSGRectangleNode> backgroundNode; // solid background
@@ -136,13 +137,12 @@ public:
 	std::array<std::unique_ptr<ZNode>, (size_t)ChartZValue::Count> zNodes;
 };
 
-RootNode::RootNode(StatsView &view) : view(view)
+RootNode::RootNode(StatsView &view, QColor backgroundColor) : view(view)
 {
 	// Add a background rectangle with a solid color. This could
 	// also be done on the widget level, but would have to be done
 	// separately for desktop and mobile, so do it here.
 	backgroundNode.reset(view.w()->createRectangleNode());
-	backgroundNode->setColor(view.getCurrentTheme().backgroundColor);
 	appendChildNode(backgroundNode.get());
 
 	for (auto &zNode: zNodes) {
@@ -172,7 +172,7 @@ QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	// This is just a copy of what is found in Qt's documentation.
 	RootNode *n = static_cast<RootNode *>(oldNode);
 	if (!n)
-		n = rootNode = new RootNode(*this);
+		n = rootNode = new RootNode(*this, backgroundColor);
 
 	// Delete all chart items that are marked for deletion.
 	freeDeletedChartItems();
@@ -298,10 +298,16 @@ QQuickWindow *StatsView::w() const
 	return window();
 }
 
+void StatsView::setBackgroundColor(QColor color)
+{
+	backgroundColor = color;
+	rootNode->backgroundNode->setColor(color);
+}
+
 void StatsView::setTheme(bool dark)
 {
 	currentTheme = &getStatsTheme(dark);
-	rootNode->backgroundNode->setColor(currentTheme->backgroundColor);
+	setBackgroundColor(currentTheme->backgroundColor);
 }
 
 const StatsTheme &StatsView::getCurrentTheme() const
