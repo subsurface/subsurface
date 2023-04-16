@@ -7,8 +7,8 @@
 
 static const double quartileMarkerSize = 15.0;
 
-QuartileMarker::QuartileMarker(StatsView &view, double pos, double value, StatsAxis *xAxis, StatsAxis *yAxis) :
-	ChartLineItem(view, ChartZValue::ChartFeatures, view.getCurrentTheme().quartileMarkerColor, 2.0),
+QuartileMarker::QuartileMarker(ChartView &view, const StatsTheme &theme, double pos, double value, StatsAxis *xAxis, StatsAxis *yAxis) :
+	ChartLineItem(view, ChartZValue::ChartFeatures, theme.quartileMarkerColor, 2.0),
 	xAxis(xAxis), yAxis(yAxis),
 	pos(pos),
 	value(value)

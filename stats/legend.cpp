@@ -14,12 +14,12 @@ static const double legendBoxBorderRadius = 4.0;	// radius of rounded corners
 static const double legendBoxScale = 0.8;		// 1.0: text-height of the used font
 static const double legendInternalBorderSize = 2.0;
 
-Legend::Legend(StatsView &view, const std::vector<QString> &names) :
+Legend::Legend(ChartView &view, const StatsTheme &theme, const std::vector<QString> &names) :
 	ChartRectItem(view, ChartZValue::Legend,
-		      QPen(view.getCurrentTheme().legendBorderColor, legendBorderSize),
-		      QBrush(view.getCurrentTheme().legendColor), legendBoxBorderRadius),
+		      QPen(theme.legendBorderColor, legendBorderSize),
+		      QBrush(theme.legendColor), legendBoxBorderRadius),
 	displayedItems(0), width(0.0), height(0.0),
-	theme(view.getCurrentTheme()),
+	theme(theme),
 	posInitialized(false)
 {
 	entries.reserve(names.size());

@@ -127,6 +127,8 @@ SOURCES += subsurface-mobile-main.cpp \
 	backend-shared/exportfuncs.cpp \
 	backend-shared/plannershared.cpp \
 	backend-shared/roundrectitem.cpp \
+	qt-quick/chartitem.cpp \
+	qt-quick/chartview.cpp \
 	stats/statsvariables.cpp \
 	stats/statsview.cpp \
 	stats/barseries.cpp \
@@ -283,6 +285,10 @@ HEADERS += \
 	backend-shared/exportfuncs.h \
 	backend-shared/plannershared.h \
 	backend-shared/roundrectitem.h \
+	qt-quick/chartitem.h \
+	qt-quick/chartitemhelper.h \
+	qt-quick/chartitem_ptr.h \
+	qt-quick/chartview.h \
 	stats/barseries.h \
 	stats/boxseries.h \
 	stats/chartitem.h \
