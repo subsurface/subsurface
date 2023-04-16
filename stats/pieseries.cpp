@@ -78,13 +78,13 @@ void PieSeries::Item::highlight(ChartPieItem &item, int bin_nr, bool highlight, 
 	QColor border = highlight ? theme.highlightedBorderColor : theme.borderColor;
 	if (innerLabel)
 		innerLabel->setColor(highlight ? theme.darkLabelColor : theme.labelColor(bin_nr, numBins), fill);
-	item.drawSegment(angleFrom, angleTo, fill, border, selected, theme);
+	item.drawSegment(angleFrom, angleTo, fill, border, selected);
 }
 
 PieSeries::PieSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis, const QString &categoryName,
 		     std::vector<std::pair<QString, std::vector<dive *>>> data, ChartSortMode sortMode) :
 	StatsSeries(view, xAxis, yAxis),
-	item(view.createChartItem<ChartPieItem>(ChartZValue::Series, pieBorderWidth)),
+	item(view.createChartItem<ChartPieItem>(ChartZValue::Series, theme, pieBorderWidth)),
 	categoryName(categoryName),
 	radius(0),
 	highlighted(-1),

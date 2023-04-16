@@ -24,8 +24,8 @@ ScatterSeries::~ScatterSeries()
 {
 }
 
-ScatterSeries::Item::Item(StatsView &view, ScatterSeries *series, dive *d, double pos, double value) :
-	item(view.createChartItem<ChartScatterItem>(ChartZValue::Series, d->selected)),
+ScatterSeries::Item::Item(StatsView &view, ScatterSeries *series, const StatsTheme &theme, dive *d, double pos, double value) :
+	item(view.createChartItem<ChartScatterItem>(ChartZValue::Series, theme, d->selected)),
 	d(d),
 	selected(d->selected),
 	pos(pos),
@@ -50,7 +50,7 @@ void ScatterSeries::Item::highlight(bool highlight)
 
 void ScatterSeries::append(dive *d, double pos, double value)
 {
-	items.emplace_back(view, this, d, pos, value);
+	items.emplace_back(view, this, theme, d, pos, value);
 }
 
 void ScatterSeries::updatePositions()

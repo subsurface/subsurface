@@ -41,7 +41,7 @@ private:
 		dive *d;
 		bool selected;
 		double pos, value;
-		Item(StatsView &view, ScatterSeries *series, dive *d, double pos, double value);
+		Item(StatsView &view, ScatterSeries *series, const StatsTheme &theme, dive *d, double pos, double value);
 		void updatePosition(ScatterSeries *series);
 		void highlight(bool highlight);
 	};

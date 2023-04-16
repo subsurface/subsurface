@@ -266,7 +266,7 @@ std::vector<BarSeries::SubItem> BarSeries::makeSubItems(std::vector<SubItemDesc>
 	for (auto &[v, dives, label]: items) {
 		if (v > 0.0) {
 			bool selected = allDivesSelected(dives);
-			res.push_back({ view.createChartItem<ChartBarItem>(ChartZValue::Series, barBorderWidth),
+			res.push_back({ view.createChartItem<ChartBarItem>(ChartZValue::Series, theme, barBorderWidth),
 					std::move(dives),
 					{}, from, from + v, bin_nr, selected });
 			if (!label.empty())
