@@ -22,29 +22,21 @@
 #include "core/trip.h"
 
 #include <cmath>
-#include <QQuickItem>
-#include <QQuickWindow>
-#include <QSGImageNode>
-#include <QSGRectangleNode>
-#include <QSGTexture>
 
 // Constants that control the graph layouts
 static const double sceneBorder = 5.0;			// Border between scene edges and statitistics view
 static const double titleBorder = 2.0;			// Border between title and chart
 static const double selectionLassoWidth = 2.0;		// Border between title and chart
 
-StatsView::StatsView(QQuickItem *parent) : QQuickItem(parent),
-	maxZ(ChartZValue::Count),
-	backgroundDirty(true),
+StatsView::StatsView(QQuickItem *parent) : ChartView(parent, ChartZValue::Count),
 	currentTheme(&getStatsTheme(false)),
-	backgroundColor(currentTheme->backgroundColor),
 	highlightedSeries(nullptr),
 	xAxis(nullptr),
 	yAxis(nullptr),
 	draggedItem(nullptr),
-	restrictDives(false),
-	rootNode(nullptr)
+	restrictDives(false)
 {
+	setBackgroundColor(currentTheme->backgroundColor);
 	setFlag(ItemHasContents, true);
 
 	connect(&diveListNotifier, &DiveListNotifier::numShownChanged, this, &StatsView::replotIfVisible);
@@ -122,190 +114,6 @@ void StatsView::mouseReleaseEvent(QMouseEvent *)
 	}
 }
 
-// Define a hideable dummy QSG node that is used as a parent node to make
-// all objects of a z-level visible / invisible.
-using ZNode = HideableQSGNode<QSGNode>;
-
-class RootNode : public QSGNode
-{
-public:
-	RootNode(StatsView &view, QColor backgroundColor, size_t maxZ);
-	~RootNode();
-	StatsView &view;
-	std::unique_ptr<QSGRectangleNode> backgroundNode; // solid background
-	// We entertain one node per Z-level.
-	std::vector<std::unique_ptr<ZNode>> zNodes;
-};
-
-RootNode::RootNode(StatsView &view, QColor backgroundColor, size_t maxZ) : view(view)
-{
-	zNodes.resize(maxZ);
-
-	// Add a background rectangle with a solid color. This could
-	// also be done on the widget level, but would have to be done
-	// separately for desktop and mobile, so do it here.
-	backgroundNode.reset(view.w()->createRectangleNode());
-	appendChildNode(backgroundNode.get());
-
-	for (auto &zNode: zNodes) {
-		zNode.reset(new ZNode(true));
-		appendChildNode(zNode.get());
-	}
-}
-
-RootNode::~RootNode()
-{
-	view.emergencyShutdown();
-}
-
-void StatsView::freeDeletedChartItems()
-{
-	ChartItem *nextitem;
-	for (ChartItem *item = deletedItems.first; item; item = nextitem) {
-		nextitem = item->next;
-		delete item;
-	}
-	deletedItems.clear();
-}
-
-QSGNode *StatsView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
-{
-	// The QtQuick drawing interface is utterly bizzare with a distinct 1980ies-style memory management.
-	// This is just a copy of what is found in Qt's documentation.
-	RootNode *n = static_cast<RootNode *>(oldNode);
-	if (!n)
-		n = rootNode = new RootNode(*this, backgroundColor, maxZ);
-
-	// Delete all chart items that are marked for deletion.
-	freeDeletedChartItems();
-
-	if (backgroundDirty) {
-		rootNode->backgroundNode->setRect(plotRect);
-		backgroundDirty = false;
-	}
-
-	for (ChartItem *item = dirtyItems.first; item; item = item->next) {
-		item->render();
-		item->dirty = false;
-	}
-	dirtyItems.splice(cleanItems);
-
-	return n;
-}
-
-// When reparenting the QQuickWidget, QtQuick decides to delete our rootNode
-// and with it all the QSG nodes, even though we have *not* given the
-// permission to do so! If the widget is reused, we try to delete the
-// stale items, whose nodes have already been deleted by QtQuick, leading
-// to a double-free(). Instead of searching for the cause of this behavior,
-// let's just hook into the rootNodes destructor and delete the objects
-// in a controlled manner, so that QtQuick has no more access to them.
-void StatsView::emergencyShutdown()
-{
-	// Mark clean and dirty chart items for deletion...
-	cleanItems.splice(deletedItems);
-	dirtyItems.splice(deletedItems);
-
-	// ...and delete them.
-	freeDeletedChartItems();
-
-	// Now delete all the pointers we might have to chart features,
-	// axes, etc. Note that all pointers to chart items are non
-	// owning, so this only resets stale references, but does not
-	// lead to any additional deletion of chart items.
-	reset();
-
-	// The rootNode is being deleted -> remove the reference to that
-	rootNode = nullptr;
-}
-
-void StatsView::addQSGNode(QSGNode *node, size_t z)
-{
-	size_t idx = std::clamp(z, (size_t)0, maxZ);
-	rootNode->zNodes[idx]->appendChildNode(node);
-}
-
-void StatsView::registerChartItem(ChartItem &item)
-{
-	cleanItems.append(item);
-}
-
-void StatsView::registerDirtyChartItem(ChartItem &item)
-{
-	if (item.dirty)
-		return;
-	cleanItems.remove(item);
-	dirtyItems.append(item);
-	item.dirty = true;
-}
-
-void StatsView::deleteChartItemInternal(ChartItem &item)
-{
-	if (item.dirty)
-		dirtyItems.remove(item);
-	else
-		cleanItems.remove(item);
-	deletedItems.append(item);
-}
-
-StatsView::ChartItemList::ChartItemList() : first(nullptr), last(nullptr)
-{
-}
-
-void StatsView::ChartItemList::clear()
-{
-	first = last = nullptr;
-}
-
-void StatsView::ChartItemList::remove(ChartItem &item)
-{
-	if (item.next)
-		item.next->prev = item.prev;
-	else
-		last = item.prev;
-	if (item.prev)
-		item.prev->next = item.next;
-	else
-		first = item.next;
-	item.prev = item.next = nullptr;
-}
-
-void StatsView::ChartItemList::append(ChartItem &item)
-{
-	if (!first) {
-		first = &item;
-	} else {
-		item.prev = last;
-		last->next = &item;
-	}
-	last = &item;
-}
-
-void StatsView::ChartItemList::splice(ChartItemList &l2)
-{
-	if (!first) // if list is empty -> nothing to do.
-		return;
-	if (!l2.first) {
-		l2 = *this;
-	} else {
-		l2.last->next = first;
-		first->prev = l2.last;
-		l2.last = last;
-	}
-	clear();
-}
-
-QQuickWindow *StatsView::w() const
-{
-	return window();
-}
-
-void StatsView::setBackgroundColor(QColor color)
-{
-	backgroundColor = color;
-	rootNode->backgroundNode->setColor(color);
-}
-
 void StatsView::setTheme(bool dark)
 {
 	currentTheme = &getStatsTheme(dark);
@@ -315,34 +123,6 @@ void StatsView::setTheme(bool dark)
 const StatsTheme &StatsView::getCurrentTheme() const
 {
 	return *currentTheme;
-}
-
-QSizeF StatsView::size() const
-{
-	return boundingRect().size();
-}
-
-QRectF StatsView::plotArea() const
-{
-	return plotRect;
-}
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-void StatsView::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
-#else
-void StatsView::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
-#endif
-{
-	plotRect = QRectF(QPointF(0.0, 0.0), newGeometry.size());
-	backgroundDirty = true;
-	plotAreaChanged(plotRect.size());
-
-	// Do we need to call the base-class' version of geometryChanged? Probably for QML?
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	QQuickItem::geometryChange(newGeometry, oldGeometry);
-#else
-	QQuickItem::geometryChanged(newGeometry, oldGeometry);
-#endif
 }
 
 void StatsView::plotAreaChanged(const QSizeF &s)
@@ -491,7 +271,7 @@ void StatsView::updateTitlePos()
 template <typename T, class... Args>
 T *StatsView::createAxis(const QString &title, Args&&... args)
 {
-	return &*createChartItem<T>(title, std::forward<Args>(args)...);
+	return &*createChartItem<T>(*currentTheme, title, std::forward<Args>(args)...);
 }
 
 void StatsView::setAxes(StatsAxis *x, StatsAxis *y)
@@ -504,6 +284,12 @@ void StatsView::setAxes(StatsAxis *x, StatsAxis *y)
 
 void StatsView::reset()
 {
+	resetPointers();
+	clearItems();
+}
+
+void StatsView::resetPointers()
+{
 	highlightedSeries = nullptr;
 	xAxis = yAxis = nullptr;
 	draggedItem = nullptr;
@@ -513,10 +299,6 @@ void StatsView::reset()
 	meanMarker.reset();
 	medianMarker.reset();
 	selectionRect.reset();
-
-	// Mark clean and dirty chart items for deletion
-	cleanItems.splice(deletedItems);
-	dirtyItems.splice(deletedItems);
 
 	series.clear();
 	quartileMarkers.clear();
@@ -547,7 +329,7 @@ void StatsView::plot(const StatsState &stateIn)
 	state = stateIn;
 	plotChart();
 	updateFeatures(); // Show / hide chart features, such as legend, etc.
-	plotAreaChanged(plotRect.size());
+	plotAreaChanged(plotArea().size());
 	update();
 }
 
@@ -618,8 +400,7 @@ void StatsView::updateFeatures()
 		legend->setVisible(state.legend);
 
 	// For labels, we are brutal: simply show/hide the whole z-level with the labels
-	if (rootNode)
-		rootNode->zNodes[ChartZValue::SeriesLabels]->setVisible(state.labels);
+	setLayerVisibility(ChartZValue::SeriesLabels, state.labels);
 
 	if (meanMarker)
 		meanMarker->setVisible(state.mean);
@@ -772,7 +553,7 @@ void StatsView::plotBarChart(const std::vector<dive *> &dives,
 		setAxes(catAxis, valAxis);
 
 	// Paint legend first, because the bin-names will be moved away from.
-	legend = createChartItem<Legend>(data.vbinNames);
+	legend = createChartItem<Legend>(*currentTheme, data.vbinNames);
 
 	std::vector<BarSeries::MultiItem> items;
 	items.reserve(data.hbins.size());
@@ -997,7 +778,7 @@ void StatsView::plotPieChart(const std::vector<dive *> &dives, ChartSortMode sor
 
 	PieSeries *series = createSeries<PieSeries>(categoryVariable->name(), std::move(data), sortMode);
 
-	legend = createChartItem<Legend>(series->binNames());
+	legend = createChartItem<Legend>(*currentTheme, series->binNames());
 }
 
 void StatsView::plotDiscreteBoxChart(const std::vector<dive *> &dives,
@@ -1067,11 +848,11 @@ void StatsView::plotDiscreteScatter(const std::vector<dive *> &dives,
 		StatsQuartiles quartiles = StatsVariable::quartiles(array);
 		if (quartiles.isValid()) {
 			quartileMarkers.push_back(createChartItem<QuartileMarker>(
-					x, quartiles.q1, catAxis, valAxis));
+					*currentTheme, x, quartiles.q1, catAxis, valAxis));
 			quartileMarkers.push_back(createChartItem<QuartileMarker>(
-					x, quartiles.q2, catAxis, valAxis));
+					*currentTheme, x, quartiles.q2, catAxis, valAxis));
 			quartileMarkers.push_back(createChartItem<QuartileMarker>(
-					x, quartiles.q3, catAxis, valAxis));
+					*currentTheme, x, quartiles.q3, catAxis, valAxis));
 		}
 		x += 1.0;
 	}
@@ -1222,7 +1003,7 @@ void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
 						     *categoryBinner, categoryBins, !isHorizontal);
 
 	BarPlotData data(categoryBins, *valueBinner);
-	legend = createChartItem<Legend>(data.vbinNames);
+	legend = createChartItem<Legend>(*currentTheme, data.vbinNames);
 
 	CountAxis *valAxis = createCountAxis(data.maxCategoryCount, isHorizontal);
 
@@ -1373,5 +1154,5 @@ void StatsView::plotScatter(const std::vector<dive *> &dives, const StatsVariabl
 	// y = ax + b
 	struct regression_data reg = linear_regression(points);
 	if (!std::isnan(reg.a))
-		regressionItem = createChartItem<RegressionItem>(reg, xAxis, yAxis);
+		regressionItem = createChartItem<RegressionItem>(*currentTheme, reg, xAxis, yAxis);
 }

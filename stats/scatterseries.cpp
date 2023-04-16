@@ -3,7 +3,6 @@
 #include "chartitem.h"
 #include "informationbox.h"
 #include "statscolors.h"
-#include "statshelper.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
 #include "statsview.h"
@@ -183,7 +182,7 @@ bool ScatterSeries::hover(QPointF pos)
 		return false;
 	} else {
 		if (!information)
-			information = view.createChartItem<InformationBox>();
+			information = view.createChartItem<InformationBox>(theme);
 
 		std::vector<QString> text;
 		text.reserve(highlighted.size() * 5);

@@ -3,12 +3,10 @@
 #define STATS_AXIS_H
 
 #include "chartitem.h"
-#include "statshelper.h"
 
 #include <memory>
 #include <vector>
 
-class StatsView;
 class ChartLineItem;
 class QFontMetrics;
 
@@ -34,7 +32,7 @@ public:
 
 	std::vector<double> ticksPositions() const; // Positions in screen coordinates
 protected:
-	StatsAxis(StatsView &view, const QString &title, bool horizontal, bool labelsBetweenTicks);
+	StatsAxis(ChartView &view, const StatsTheme &theme, const QString &title, bool horizontal, bool labelsBetweenTicks);
 
 	const StatsTheme &theme; // Initialized once in constructor.
 	ChartItemPtr<ChartLineItem> line;
@@ -73,7 +71,8 @@ private:
 
 class ValueAxis : public StatsAxis {
 public:
-	ValueAxis(StatsView &view, const QString &title, double min, double max, int decimals, bool horizontal);
+	ValueAxis(ChartView &view, const StatsTheme &theme, const QString &title,
+		  double min, double max, int decimals, bool horizontal);
 private:
 	double min, max;
 	int decimals;
@@ -83,7 +82,7 @@ private:
 
 class CountAxis : public ValueAxis {
 public:
-	CountAxis(StatsView &view, const QString &title, int count, bool horizontal);
+	CountAxis(ChartView &view, const StatsTheme &theme, const QString &title, int count, bool horizontal);
 private:
 	int count;
 	void updateLabels() override;
@@ -92,7 +91,8 @@ private:
 
 class CategoryAxis : public StatsAxis {
 public:
-	CategoryAxis(StatsView &view, const QString &title, const std::vector<QString> &labels, bool horizontal);
+	CategoryAxis(ChartView &view, const StatsTheme &theme, const QString &title,
+		     const std::vector<QString> &labels, bool horizontal);
 private:
 	std::vector<QString> labelsText;
 	void updateLabels();
@@ -107,7 +107,8 @@ struct HistogramAxisEntry {
 
 class HistogramAxis : public StatsAxis {
 public:
-	HistogramAxis(StatsView &view, const QString &title, std::vector<HistogramAxisEntry> bin_values, bool horizontal);
+	HistogramAxis(ChartView &view, const StatsTheme &theme, const QString &title,
+		      std::vector<HistogramAxisEntry> bin_values, bool horizontal);
 private:
 	void updateLabels() override;
 	std::pair<QString, QString> getFirstLastLabel() const override;
@@ -117,7 +118,7 @@ private:
 
 class DateAxis : public HistogramAxis {
 public:
-	DateAxis(StatsView &view, const QString &title, double from, double to, bool horizontal);
+	DateAxis(ChartView &view, const StatsTheme &theme, const QString &title, double from, double to, bool horizontal);
 };
 
 #endif

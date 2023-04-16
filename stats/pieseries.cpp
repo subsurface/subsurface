@@ -257,7 +257,7 @@ bool PieSeries::hover(QPointF pos)
 	if (highlighted >= 0 && highlighted < (int)items.size()) {
 		items[highlighted].highlight(*item, highlighted, true, (int)items.size(), theme);
 		if (!information)
-			information = view.createChartItem<InformationBox>();
+			information = view.createChartItem<InformationBox>(theme);
 		information->setText(makeInfo(highlighted), pos);
 		information->setVisible(true);
 	} else {

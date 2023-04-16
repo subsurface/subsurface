@@ -3,7 +3,7 @@
 #ifndef STATS_LEGEND_H
 #define STATS_LEGEND_H
 
-#include "chartitem.h"
+#include "qt-quick/chartitem.h"
 
 #include <memory>
 #include <vector>
@@ -13,7 +13,7 @@ class StatsTheme;
 
 class Legend : public ChartRectItem {
 public:
-	Legend(StatsView &view, const std::vector<QString> &names);
+	Legend(ChartView &view, const StatsTheme &theme, const std::vector<QString> &names);
 	void resize(); // called when the chart size changes.
 	void setPos(QPointF pos); // Attention: not virtual - always call on this class.
 private:

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 // The background grid of a chart
 
-#include "statshelper.h"
+#include "qt-quick/chartitem_ptr.h"
 
 #include <memory>
 #include <vector>

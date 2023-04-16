@@ -1,6 +1,5 @@
 #include "informationbox.h"
 #include "statscolors.h"
-#include "statsview.h"
 #include "zvalues.h"
 
 #include <QFontMetrics>
@@ -9,11 +8,11 @@ static const int informationBorder = 2;
 static const double informationBorderRadius = 4.0; // Radius of rounded corners
 static const int distanceFromPointer = 10; // Distance to place box from mouse pointer or scatter item
 
-InformationBox::InformationBox(StatsView &v) :
+InformationBox::InformationBox(ChartView &v, const StatsTheme &theme) :
 	ChartRectItem(v, ChartZValue::InformationBox,
-		      QPen(v.getCurrentTheme().informationBorderColor, informationBorder),
-		      QBrush(v.getCurrentTheme().informationColor), informationBorderRadius),
-	theme(v.getCurrentTheme()),
+		      QPen(theme.informationBorderColor, informationBorder),
+		      QBrush(theme.informationColor), informationBorderRadius),
+	theme(theme),
 	width(0.0),
 	height(0.0)
 {
