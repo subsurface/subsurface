@@ -40,8 +40,8 @@ divelog::divelog(divelog &&log) :
 	dives(new dive_table),
 	trips(new trip_table),
 	sites(new dive_site_table),
-	devices(std::move(log.devices)),
-	filter_presets(std::move(log.filter_presets))
+	devices(new device_table),
+	filter_presets(new filter_preset_table)
 {
 	*dives = empty_dive_table;
 	*trips = empty_trip_table;
@@ -49,6 +49,8 @@ divelog::divelog(divelog &&log) :
 	move_dive_table(log.dives, dives);
 	move_trip_table(log.trips, trips);
 	move_dive_site_table(log.sites, sites);
+	*devices = std::move(*log.devices);
+	*filter_presets = std::move(*log.filter_presets);
 }
 
 struct divelog &divelog::operator=(divelog &&log)
@@ -56,8 +58,8 @@ struct divelog &divelog::operator=(divelog &&log)
 	move_dive_table(log.dives, dives);
 	move_trip_table(log.trips, trips);
 	move_dive_site_table(log.sites, sites);
-	devices = std::move(log.devices);
-	filter_presets = std::move(log.filter_presets);
+	*devices = std::move(*log.devices);
+	*filter_presets = std::move(*log.filter_presets);
 	return *this;
 }
 
