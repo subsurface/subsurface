@@ -4,6 +4,7 @@
 // with smaller z-values. For the same z-value objects are
 // drawn in order of addition to the scene.
 #ifndef ZVALUES_H
+#define ZVALUES_H
 
 // Encapsulating an enum in a struct is stupid, but allows us
 // to not poison the namespace and yet autoconvert to int
