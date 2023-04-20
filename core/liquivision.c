@@ -18,7 +18,7 @@
 
 struct lv_event {
 	uint32_t time;
-	struct pressure {
+	struct {
 		int sensor;
 		int mbar;
 	} pressure;

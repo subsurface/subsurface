@@ -2,15 +2,11 @@
 #ifndef UNITS_H
 #define UNITS_H
 
+#include "units_operators.h"
+
 #include <math.h>
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
-#endif
-
-#ifdef __cplusplus
-extern "C" {
-#else
-#include <stdbool.h>
 #endif
 
 #define FRACTION(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
@@ -77,64 +73,100 @@ extern "C" {
  */
 typedef int64_t timestamp_t;
 
-typedef struct
+typedef struct duration
+#ifdef __cplusplus
+	: public VectorType<duration>
+#endif
 {
 	int32_t seconds; // durations up to 34 yrs
 } duration_t;
 
 static const duration_t zero_duration = { 0 };
 
-typedef struct
+typedef struct offset
+#ifdef __cplusplus
+	: public VectorType<offset>
+#endif
 {
 	int32_t seconds; // offsets up to +/- 34 yrs
 } offset_t;
 
-typedef struct
+typedef struct depth
+#ifdef __cplusplus
+	: public VectorType<depth>
+#endif
 {
 	int32_t mm;
 } depth_t; // depth to 2000 km
 
-typedef struct
+typedef struct pressure
+#ifdef __cplusplus
+	: public VectorType<pressure>
+#endif
 {
 	int32_t mbar; // pressure up to 2000 bar
 } pressure_t;
 
-typedef struct
+typedef struct o2pressure
+#ifdef __cplusplus
+	: public VectorType<o2pressure>
+#endif
 {
 	uint16_t mbar;
 } o2pressure_t; // pressure up to 65 bar
 
-typedef struct
+typedef struct bearing
+#ifdef __cplusplus
+	: public VectorType<bearing>
+#endif
 {
 	int16_t degrees;
 } bearing_t; // compass bearing
 
-typedef struct
+typedef struct temperature
+#ifdef __cplusplus
+	: public VectorType<temperature>
+#endif
 {
 	uint32_t mkelvin; // up to 4 MK (temperatures in K are always positive)
 } temperature_t;
 
-typedef struct
+typedef struct temperature_sum
+#ifdef __cplusplus
+	: public VectorType<temperature_sum>
+#endif
 {
 	uint64_t mkelvin; // up to 18446744073 MK (temperatures in K are always positive)
 } temperature_sum_t;
 
-typedef struct
+typedef struct volume
+#ifdef __cplusplus
+	: public VectorType<volume>
+#endif
 {
 	int mliter;
 } volume_t;
 
-typedef struct
+typedef struct fraction
+#ifdef __cplusplus
+	: public VectorType<fraction>
+#endif
 {
 	int permille;
 } fraction_t;
 
-typedef struct
+typedef struct weight
+#ifdef __cplusplus
+	: public VectorType<weight>
+#endif
 {
 	int grams;
 } weight_t;
 
-typedef struct
+typedef struct degrees
+#ifdef __cplusplus
+	: public VectorType<degrees>
+#endif
 {
 	int udeg;
 } degrees_t;
@@ -144,6 +176,12 @@ typedef struct pos {
 } location_t;
 
 static const location_t zero_location = { { 0 }, { 0 }};
+
+#ifdef __cplusplus
+extern "C" {
+#else
+#include <stdbool.h>
+#endif
 
 extern void parse_location(const char *, location_t *);
 
