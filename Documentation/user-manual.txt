@@ -1650,6 +1650,8 @@ Select the dive site to be merged by right-clicking it. A confirmation
 message is presented (see image above). Clicking the confirmation message merges the selected dive with
 the dive named at the top of the panel and returns you to the dive sites management panel.
 
+Alternatively, if exactly one dive site is selected in the 'Near dive sites' list, there is an additional function 'Merge current site into this site' available in the context menu. This can be helpful if the name of the destination dive site is not known, e.g. when importing dive sites from a third party source.
+
 ==== Add a dive site
 
 At the top right of the dive sites management table is a round button with a "+". Clicking that button inserts a

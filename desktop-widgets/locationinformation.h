@@ -34,6 +34,7 @@ public slots:
 	void on_diveSiteDistance_textChanged(const QString &s);
 	void reverseGeocode();
 	void mergeSelectedDiveSites();
+	void mergeIntoSelectedDiveSite();
 	void on_GPSbutton_clicked();
 private slots:
 	void updateLabels();
