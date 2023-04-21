@@ -64,6 +64,9 @@ bool LocationInformationWidget::eventFilter(QObject *, QEvent *ev)
 		QContextMenuEvent *ctx = (QContextMenuEvent *)ev;
 		QMenu contextMenu;
 		contextMenu.addAction(tr("Merge into current site"), this, &LocationInformationWidget::mergeSelectedDiveSites);
+		const QModelIndexList selection = ui.diveSiteListView->selectionModel()->selectedIndexes();
+		if (selection.count() == 1)
+			contextMenu.addAction(tr("Merge current site into this site"), this, &LocationInformationWidget::mergeIntoSelectedDiveSite);
 		contextMenu.exec(ctx->globalPos());
 		return true;
 	}
@@ -89,6 +92,24 @@ void LocationInformationWidget::mergeSelectedDiveSites()
 			selected_dive_sites.push_back(ds);
 	}
 	Command::mergeDiveSites(diveSite, selected_dive_sites);
+}
+
+void LocationInformationWidget::mergeIntoSelectedDiveSite()
+{
+	if (!diveSite)
+		return;
+
+	const QModelIndexList selection = ui.diveSiteListView->selectionModel()->selectedIndexes();
+	if (selection.count() != 1)
+		return;
+
+	dive_site *selected_dive_site = selection[0].data(LocationInformationModel::DIVESITE_ROLE).value<dive_site *>();
+	if (!selected_dive_site)
+		return;
+
+	QVector<dive_site *> dive_sites;
+	dive_sites.push_back(diveSite);
+	Command::mergeDiveSites(selected_dive_site, dive_sites);
 }
 
 // If we can't parse the coordinates, inform the user with a visual clue
