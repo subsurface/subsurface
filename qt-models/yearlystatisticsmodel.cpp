@@ -54,7 +54,7 @@ QVariant YearStatisticsItem::data(int column, int role) const
 	switch (column) {
 	case YEAR:
 		if (stats_interval.is_trip) {
-			ret = stats_interval.location;
+			ret = QString(stats_interval.location);
 		} else {
 			ret = stats_interval.period;
 		}
