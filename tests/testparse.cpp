@@ -293,7 +293,7 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	xml_params_add_int(&params, "weightField", 23);
 	xml_params_add_int(&params, "tagsField", 24);
 	// Numbers are indices of possible options
-	xml_params_add_int(&params, "separatorIndex", 0);
+	xml_params_add_int(&params, "separatorIndex", 1);
 	xml_params_add_int(&params, "datefmt", 2);
 	xml_params_add_int(&params, "durationfmt", 2);
 	xml_params_add_int(&params, "units", units);
@@ -351,7 +351,7 @@ void TestParse::exportSubsurfaceCSV()
 
 	clear_dive_file_data();
 
-	xml_params_add_int(&params, "separatorIndex", 0);
+	xml_params_add_int(&params, "separatorIndex", 1);
 	xml_params_add_int(&params, "units", 1);
 	parse_csv_file("testcsvexportmanualimperial-cyl.csv", &params, "SubsurfaceCSV", &divelog);
 
