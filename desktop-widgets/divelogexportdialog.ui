@@ -267,7 +267,7 @@
           <item>
            <widget class="QRadioButton" name="exportCSV">
             <property name="text">
-             <string>CSV Dive computer dive profile</string>
+             <string>CSV dive computer dive profile</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
@@ -277,7 +277,7 @@
           <item>
            <widget class="QRadioButton" name="exportProfileData">
             <property name="text">
-             <string>CSV Computed Profile Panel data</string>
+             <string>CSV computed profile panel data</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
