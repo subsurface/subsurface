@@ -91,19 +91,24 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent)
 
 	ui.stats->setSource(urlStatsView);
 	ui.stats->setResizeMode(QQuickWidget::SizeRootObjectToView);
-	(void)getView();
 }
 
-// hack around the Qt6 bug where the QML object gets destroyed and recreated
+// The Qt-developers do not have their ownership management under control.
+// This is not surprising to anyone who has looked at their source code.
+// In contradiction to the documentation, starting with Qt6, QQuickItems
+// _will_ be deleted when the parent widgets are reparented, even when
+// CppOwnership is set. This can be prevented for OpenGL backends, but not
+// for others. Therefore, we have to _always_ refetch the view from the QML page.
+// For details and precise conditions, see comments and code in
+// QQuickWidgetPrivate::handleWindowChange().
+// Ultimately, we will have to change the way widgets are hidden/shown in
+// the MainWindow.
 StatsView *StatsWidget::getView()
 {
 	StatsView *view = qobject_cast<StatsView *>(ui.stats->rootObject());
 	if (!view)
 		qWarning("Oops. The root of the StatsView is not a StatsView.");
 	if (view) {
-		// try to prevent the JS garbage collection from freeing the object
-		// this appears to fail with Qt6 which is why we still look up the
-		// object from the ui.stats rootObject
 		ui.stats->engine()->setObjectOwnership(view, QQmlEngine::CppOwnership);
 		view->setParent(this);
 		view->setVisible(isVisible()); // Synchronize visibility of widget and QtQuick-view.
