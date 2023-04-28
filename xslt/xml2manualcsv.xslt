@@ -6,7 +6,7 @@
   <xsl:param name="units" select="units"/>
   <xsl:output method="text" encoding="UTF-8"/>
 
-  <xsl:variable name="fs"><xsl:text>	</xsl:text></xsl:variable>
+  <xsl:variable name="fs"><xsl:text>,</xsl:text></xsl:variable>
   <xsl:variable name="lf"><xsl:text>
 </xsl:text></xsl:variable>
 
@@ -398,8 +398,8 @@
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:call-template name="quote">
-      <xsl:with-param name="line" select="substring-before(translate(translate(@tags, $fs, ' '), $lf, ' '), '&quot;')"/>
-      <xsl:with-param name="remaining" select="substring-after(translate(translate(@tags, $fs, ' '), $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="line" select="substring-before(translate(@tags, $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(@tags, $lf, ' '), '&quot;')"/>
       <xsl:with-param name="all" select="@tags"/>
     </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
@@ -509,9 +509,9 @@
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:call-template name="quote">
-      <xsl:with-param name="line" select="substring-before(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
-      <xsl:with-param name="remaining" select="substring-after(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
-      <xsl:with-param name="all" select="translate(., $fs, ' ')"/>
+      <xsl:with-param name="line" select="substring-before(translate(., $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(., $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="all" select="."/>
     </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
@@ -519,8 +519,8 @@
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:call-template name="quote">
-      <xsl:with-param name="line" select="substring-before(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
-      <xsl:with-param name="remaining" select="substring-after(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="line" select="substring-before(translate(., $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(., $lf, ' '), '&quot;')"/>
       <xsl:with-param name="all" select="."/>
     </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
@@ -529,8 +529,8 @@
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:call-template name="quote">
-      <xsl:with-param name="line" select="substring-before(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
-      <xsl:with-param name="remaining" select="substring-after(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="line" select="substring-before(translate(., $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(., $lf, ' '), '&quot;')"/>
       <xsl:with-param name="all" select="."/>
     </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
@@ -539,9 +539,9 @@
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:call-template name="quote">
-      <xsl:with-param name="line" select="substring-before(translate(translate(., $fs, ' '), $lf, '\n'), '&quot;')"/>
-      <xsl:with-param name="remaining" select="substring-after(translate(translate(., $fs, ' '), $lf, '\n'), '&quot;')"/>
-      <xsl:with-param name="all" select="translate(translate(., $fs, ' '), $lf, '\n')"/>
+      <xsl:with-param name="line" select="substring-before(translate(., $lf, '\n'), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(., $lf, '\n'), '&quot;')"/>
+      <xsl:with-param name="all" select="translate(., $lf, '\n')"/>
     </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
