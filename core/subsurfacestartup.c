@@ -91,6 +91,7 @@ static void print_help()
 	printf("\n --dc-product=product  Set the dive computer to download from");
 	printf("\n --device=device       Set the device to download from");
 #endif
+	printf("\n --no-opengl-sharing   Don't share OpenGL contexts between QQuickItems (for testing)");
 	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)\n\n");
 }
 
@@ -147,6 +148,10 @@ void parse_argument(const char *arg)
 			}
 			if (strcmp(arg, "--allow_run_as_root") == 0) {
 				++force_root;
+				return;
+			}
+			if (strcmp(arg, "--no-opengl-sharing") == 0) {
+				// This was already checked in main()
 				return;
 			}
 #if SUBSURFACE_DOWNLOADER

@@ -13,6 +13,7 @@
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
+#include "core/subsurface-string.h"
 #include "core/settings/qPref.h"
 #include "core/tag.h"
 #include "desktop-widgets/mainwindow.h"
@@ -41,6 +42,20 @@ int main(int argc, char **argv)
 	int i;
 	bool no_filenames = true;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
+
+	// Allow OpenGL-based QtQuick backends to share OpenGL contexts.
+	// This avoids destruction of QQuickItems if their parent widgets are moved between widgets in Qt6.
+	// Sadly, this does not help when running on non-OpenGL backends.
+	// Allow for turning this off to test destruction of QQuickItems.
+	// The parameter is checked here because QCoreApplication::parameters() only
+	// works after instantiation of the QApplication class, but the flag has
+	// to be set bofore.
+	if (std::any_of(argv + 1, argv + argc,
+	    [](char *arg) { return same_string(arg, "--no-opengl-sharing"); })) {
+		fprintf(stderr, "Disabling sharing of OpenGL contexts\n");
+	} else {
+		QGuiApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+	}
 	std::unique_ptr<QApplication> app(new QApplication(argc, argv));
 	QStringList files;
 	QStringList importedFiles;
