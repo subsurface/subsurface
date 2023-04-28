@@ -39,7 +39,6 @@ int main(int argc, char **argv)
 	if (verbose) /* print the version if the Win32 console_init() code enabled verbose. */
 		print_version();
 
-	int i;
 	bool no_filenames = true;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 
@@ -65,7 +64,7 @@ int main(int argc, char **argv)
 	const char *default_filename = system_default_filename();
 	subsurface_mkdir(default_directory);
 
-	for (i = 1; i < arguments.length(); i++) {
+	for (int i = 1; i < arguments.length(); i++) {
 		QString a = arguments.at(i);
 		if (a.isEmpty())
 			continue;
