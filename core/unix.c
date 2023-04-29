@@ -90,7 +90,6 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 	size_t i;
 	FILE *file;
 	char *line = NULL;
-	char *fname;
 	size_t len;
 	if (transport & DC_TRANSPORT_SERIAL) {
 		const char *dirname = "/dev";
@@ -155,15 +154,13 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 					end++;
 
 				*end = '\0';
-				fname = strdup(start);
 
-				callback(fname, userdata);
+				callback(start, userdata);
 
-				if (is_default_dive_computer_device(fname))
+				if (is_default_dive_computer_device(start))
 					index = entries;
 				entries++;
 				num_uemis++;
-				free((void *)fname);
 			}
 		}
 		free(line);
