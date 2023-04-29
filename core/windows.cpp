@@ -25,7 +25,7 @@
  * note: the standard library's <codecvt> was deprecated and is in
  * an ominous state, so use the native Windows version for now.
  */
-static std::string utf16_to_utf8_fl(const std::wstring &utf16, char *file, int line)
+static std::string utf16_to_utf8_fl(const std::wstring &utf16, const char *file, int line)
 {
 	assert(utf16 != NULL);
 	assert(file != NULL);
@@ -108,7 +108,7 @@ bool subsurface_ignore_font(const char *font)
 /* this function converts a utf-8 string to win32's utf-16 2 byte string.
  * the caller function should manage the allocated memory.
  */
-static wchar_t *utf8_to_utf16_fl(const char *utf8, char *file, int line)
+static wchar_t *utf8_to_utf16_fl(const char *utf8, const char *file, int line)
 {
 	assert(utf8 != NULL);
 	assert(file != NULL);
