@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <zip.h>
+#include <string>
 
 #include <QtAndroidExtras/QtAndroidExtras>
 #include <QtAndroidExtras/QAndroidJniObject>
@@ -26,8 +27,19 @@
 #define LOG(x) qDebug() << x;
 #endif
 
-
 #define USB_SERVICE "usb"
+
+static std::string system_default_path()
+{
+	// Qt appears to find a working path for us - let's just go with that
+	// AppDataLocation allows potential sharing of the files we put there
+	return QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).first().toStdString();
+}
+
+static std::string make_default_filename()
+{
+	return system_default_path() + "/subsurface.xml";
+}
 
 extern "C" {
 
@@ -46,34 +58,18 @@ bool subsurface_ignore_font(const char *font)
 	return false;
 }
 
-static const char *system_default_path_append(const char *append)
-{
-	// Qt appears to find a working path for us - let's just go with that
-	// AppDataLocation allows potential sharing of the files we put there
-	QString path = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).first();
-
-	if (append)
-		path += QString("/%1").arg(append);
-
-	return copy_qstring(path);
-}
-
 const char *system_default_directory(void)
 {
-	static const char *path = NULL;
-	if (!path)
-		path = system_default_path_append(NULL);
-	return path;
+	static const std::string path = system_default_path();
+	return path.c_str();
 }
 
 const char *system_default_filename(void)
 {
-	static const char *filename = "subsurface.xml";
-	static const char *path = NULL;
-	if (!path)
-		path = system_default_path_append(filename);
-	return path;
+	static const std::string fn = make_default_filename();
+	return fn.c_str();
 }
+
 
 int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport)
 {

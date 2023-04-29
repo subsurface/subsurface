@@ -19,6 +19,71 @@
 #include <dirent.h>
 #include <zip.h>
 #include <lmcons.h>
+#include <string>
+
+/* this function converts a win32's utf-16 2 byte string to utf-8.
+ * note: the standard library's <codecvt> was deprecated and is in
+ * an ominous state, so use the native Windows version for now.
+ */
+static std::string utf16_to_utf8_fl(const std::wstring &utf16, char *file, int line)
+{
+	assert(utf16 != NULL);
+	assert(file != NULL);
+	assert(line);
+	/* estimate buffer size */
+	const int sz = WideCharToMultiByte(CP_UTF8, 0, utf16.c_str(), -1, NULL, 0, NULL, NULL);
+	if (!sz) {
+		fprintf(stderr, "%s:%d: cannot estimate buffer size\n", file, line);
+		return std::string();
+	}
+	std::string utf8(sz, ' '); // Note: includes the terminating '\0', just in case.
+	if (WideCharToMultiByte(CP_UTF8, 0, utf16.c_str(), -1, &utf8[0], sz, NULL, NULL)) {
+		utf8.resize(sz - 1); // Chop off final '\0' byte
+		return utf8;
+	}
+	fprintf(stderr, "%s:%d: cannot convert string\n", file, line);
+	return std::string();
+}
+
+#define utf16_to_utf8(s) utf16_to_utf8_fl(s, __FILE__, __LINE__)
+
+/* this function returns the Win32 Roaming path for the current user as UTF-8.
+ * it never returns an empty string but fallsback to .\ instead!
+ */
+static std::wstring system_default_path()
+{
+	wchar_t wpath[MAX_PATH] = { 0 };
+	const char *fname = "system_default_path()";
+
+	/* obtain the user path via SHGetFolderPathW.
+	 * this API is deprecated but still supported on modern Win32.
+	 * fallback to .\ if it fails.
+	 */
+	std::wstring path;
+	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, wpath))) {
+		path = wpath;
+	} else {
+		fprintf(stderr, "%s: cannot obtain path!\n", fname);
+		path = L'.';
+	}
+	return path + L"\\Subsurface";
+}
+
+/* obtain the Roaming path and append "\\<USERNAME>.xml" to it.
+ */
+static std::wstring make_default_filename()
+{
+	wchar_t username[UNLEN + 1] = { 0 };
+	DWORD username_len = UNLEN + 1;
+	GetUserNameW(username, &username_len);
+	std::wstring filename = username;
+	filename += L".xml";
+
+	std::wstring path = system_default_path();
+	return path + L"\\" + filename;
+}
+
+extern "C" {
 
 const char non_standard_system_divelist_default_font[] = "Calibri";
 const char current_system_divelist_default_font[] = "Segoe UI";
@@ -39,35 +104,6 @@ bool subsurface_ignore_font(const char *font)
 		return true;
 	return false;
 }
-
-/* this function converts a win32's utf-16 2 byte string to utf-8.
- * the caller function should manage the allocated memory.
- */
-static char *utf16_to_utf8_fl(const wchar_t *utf16, char *file, int line)
-{
-	assert(utf16 != NULL);
-	assert(file != NULL);
-	assert(line);
-	/* estimate buffer size */
-	const int sz = WideCharToMultiByte(CP_UTF8, 0, utf16, -1, NULL, 0, NULL, NULL);
-	if (!sz) {
-		fprintf(stderr, "%s:%d: cannot estimate buffer size\n", file, line);
-		return NULL;
-	}
-	char *utf8 = (char *)malloc(sz);
-	if (!utf8) {
-		fprintf(stderr, "%s:%d: cannot allocate buffer of size: %d\n", file, line, sz);
-		return NULL;
-	}
-	if (WideCharToMultiByte(CP_UTF8, 0, utf16, -1, utf8, sz, NULL, NULL)) {
-		return utf8;
-	}
-	fprintf(stderr, "%s:%d: cannot convert string\n", file, line);
-	free((void *)utf8);
-	return NULL;
-}
-
-#define utf16_to_utf8(s) utf16_to_utf8_fl(s, __FILE__, __LINE__)
 
 /* this function converts a utf-8 string to win32's utf-16 2 byte string.
  * the caller function should manage the allocated memory.
@@ -93,68 +129,18 @@ static wchar_t *utf8_to_utf16_fl(const char *utf8, char *file, int line)
 
 #define utf8_to_utf16(s) utf8_to_utf16_fl(s, __FILE__, __LINE__)
 
-/* this function returns the Win32 Roaming path for the current user as UTF-8.
- * it never returns NULL but fallsback to .\ instead!
- * the append argument will append a wchar_t string to the end of the path.
- */
-static wchar_t *system_default_path_append(const wchar_t *append)
-{
-	wchar_t wpath[MAX_PATH] = { 0 };
-	const char *fname = "system_default_path_append()";
-
-	/* obtain the user path via SHGetFolderPathW.
-	 * this API is deprecated but still supported on modern Win32.
-	 * fallback to .\ if it fails.
-	 */
-	if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, wpath))) {
-		fprintf(stderr, "%s: cannot obtain path!\n", fname);
-		wpath[0] = L'.';
-		wpath[1] = L'\0';
-	}
-
-	wcscat(wpath, L"\\Subsurface");
-	if (append) {
-		wcscat(wpath, L"\\");
-		wcscat(wpath, append);
-	}
-
-	wchar_t *result = wcsdup(wpath);
-	if (!result)
-		fprintf(stderr, "%s: cannot allocate memory for path!\n", fname);
-	return result;
-}
-
-/* by passing NULL to system_default_path_append() we obtain the pure path.
- * '\' not included at the end.
+/* '\' not included at the end.
  */
 const char *system_default_directory(void)
 {
-	static const char *path = NULL;
-	if (!path) {
-		wchar_t *wpath = system_default_path_append(NULL);
-		path = utf16_to_utf8(wpath);
-		free((void *)wpath);
-	}
-	return path;
+	static std::string path = utf16_to_utf8(system_default_path());
+	return path.c_str();
 }
 
-/* obtain the Roaming path and append "\\<USERNAME>.xml" to it.
- */
 const char *system_default_filename(void)
 {
-	static const char *path = NULL;
-	if (!path) {
-		wchar_t username[UNLEN + 1] = { 0 };
-		DWORD username_len = UNLEN + 1;
-		GetUserNameW(username, &username_len);
-		wchar_t filename[UNLEN + 5] = { 0 };
-		wcscat(filename, username);
-		wcscat(filename, L".xml");
-		wchar_t *wpath = system_default_path_append(filename);
-		path = utf16_to_utf8(wpath);
-		free((void *)wpath);
-	}
-	return path;
+	static std::string path = utf16_to_utf8(make_default_filename());
+	return path.c_str();
 }
 
 int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport)
@@ -400,15 +386,16 @@ int subsurface_zip_close(struct zip *zip)
 }
 
 /* win32 console */
+#ifndef WIN32_CONSOLE_APP
 static struct {
 	bool allocated;
 	UINT cp;
 	FILE *out, *err;
 } console_desc;
+#endif
 
 void subsurface_console_init(void)
 {
-	UNUSED(console_desc);
 	/* if this is a console app already, do nothing */
 #ifndef WIN32_CONSOLE_APP
 
@@ -427,14 +414,11 @@ void subsurface_console_init(void)
 		console_desc.err = freopen("CON", "w", stderr);
 	} else {
 		verbose = 1; /* set the verbose level to '1' */
-		wchar_t *wpath_out = system_default_path_append(L"subsurface_out.log");
-		wchar_t *wpath_err = system_default_path_append(L"subsurface_err.log");
-		if (wpath_out && wpath_err) {
-			console_desc.out = _wfreopen(wpath_out, L"w", stdout);
-			console_desc.err = _wfreopen(wpath_err, L"w", stderr);
-		}
-		free((void *)wpath_out);
-		free((void *)wpath_err);
+		std::wstring path = system_default_path();
+		std::wstring wpath_out = path + L"\\subsurface_out.log";
+		std::wstring wpath_err = path + L"\\subsurface_err.log";
+		console_desc.out = _wfreopen(wpath_out.c_str(), L"w", stdout);
+		console_desc.err = _wfreopen(wpath_err.c_str(), L"w", stderr);
 	}
 
 	puts(""); /* add an empty line */
@@ -461,4 +445,6 @@ bool subsurface_user_is_root()
 {
 	/* FIXME: Detect admin rights */
 	return false;
+}
+
 }

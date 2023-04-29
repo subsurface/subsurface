@@ -17,6 +17,25 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <zip.h>
+#include <string>
+
+static std::string system_default_path()
+{
+	std::string home(getenv("HOME"));
+	if (home.empty())
+		home = "~";
+	return home + "/.subsurface";
+}
+
+static std::string make_default_filename()
+{
+	std::string user = getenv("LOGNAME");
+	if (user.empty())
+		user = "username";
+	return system_default_path() + "/" + user + ".xml";
+}
+
+extern "C" {
 
 // the DE should provide us with a default font and font size...
 const char unix_system_divelist_default_font[] = "Sans";
@@ -28,58 +47,22 @@ void subsurface_OS_pref_setup(void)
 	// nothing
 }
 
-bool subsurface_ignore_font(const char *font)
+bool subsurface_ignore_font(const char *)
 {
 	// there are no old default fonts to ignore
-	UNUSED(font);
 	return false;
-}
-
-static const char *system_default_path_append(const char *append)
-{
-	const char *home = getenv("HOME");
-	if (!home)
-		home = "~";
-	const char *path = "/.subsurface";
-
-	int len = strlen(home) + strlen(path) + 1;
-	if (append)
-		len += strlen(append) + 1;
-
-	char *buffer = (char *)malloc(len);
-	memset(buffer, 0, len);
-	strcat(buffer, home);
-	strcat(buffer, path);
-	if (append) {
-		strcat(buffer, "/");
-		strcat(buffer, append);
-	}
-
-	return buffer;
 }
 
 const char *system_default_directory(void)
 {
-	static const char *path = NULL;
-	if (!path)
-		path = system_default_path_append(NULL);
-	return path;
+	static const std::string path = system_default_path();
+	return path.c_str();
 }
 
 const char *system_default_filename(void)
 {
-	static const char *path = NULL;
-	if (!path) {
-		const char *user = getenv("LOGNAME");
-		if (empty_string(user))
-			user = "username";
-		char *filename = calloc(strlen(user) + 5, 1);
-		strcat(filename, user);
-		strcat(filename, ".xml");
-		path = system_default_path_append(filename);
-		free(filename);
-	}
-	return path;
+	static const std::string fn = make_default_filename();
+	return fn.c_str();
 }
 
 int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport)
@@ -227,4 +210,6 @@ void subsurface_console_exit(void)
 bool subsurface_user_is_root()
 {
 	return geteuid() == 0;
+}
+
 }
