@@ -47,7 +47,6 @@ int main(int argc, char **argv)
 	QStringList arguments = QCoreApplication::arguments();
 
 	const char *default_directory = system_default_directory();
-	const char *default_filename = system_default_filename();
 	subsurface_mkdir(default_directory);
 
 	for (i = 1; i < arguments.length(); i++) {
@@ -113,8 +112,6 @@ int main(int argc, char **argv)
 	clear_divelog(&divelog);
 	taglist_free(g_tag_list);
 	parse_xml_exit();
-	free((void *)default_directory);
-	free((void *)default_filename);
 	subsurface_console_exit();
 
 	// Sync struct preferences to disk
