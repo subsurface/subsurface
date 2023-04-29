@@ -27,7 +27,6 @@
  */
 static std::string utf16_to_utf8_fl(const std::wstring &utf16, const char *file, int line)
 {
-	assert(utf16 != NULL);
 	assert(file != NULL);
 	assert(line);
 	/* estimate buffer size */
@@ -43,6 +42,24 @@ static std::string utf16_to_utf8_fl(const std::wstring &utf16, const char *file,
 	}
 	fprintf(stderr, "%s:%d: cannot convert string\n", file, line);
 	return std::string();
+}
+
+/* this function converts a utf-8 string to win32's utf-16 2 byte string.
+ */
+static std::wstring utf8_to_utf16_fl(const char *utf8, const char *file, int line)
+{
+	assert(file != NULL);
+	assert(line);
+	/* estimate buffer size */
+	const int sz = strlen(utf8) + 1;
+	std::wstring utf16(sz, ' '); // Note: includes the terminating '\0', just in case.
+	int actual_size = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, &utf16[0], sz);
+	if (actual_size) {
+		utf16.resize(actual_size - 1); // Chop off final '\0' character
+		return utf16;
+	}
+	fprintf(stderr, "%s:%d: cannot convert string\n", file, line);
+	return std::wstring();
 }
 
 #define utf16_to_utf8(s) utf16_to_utf8_fl(s, __FILE__, __LINE__)
@@ -103,28 +120,6 @@ bool subsurface_ignore_font(const char *font)
 	if (isWin7Or8() && strcmp(font, non_standard_system_divelist_default_font) == 0)
 		return true;
 	return false;
-}
-
-/* this function converts a utf-8 string to win32's utf-16 2 byte string.
- * the caller function should manage the allocated memory.
- */
-static wchar_t *utf8_to_utf16_fl(const char *utf8, const char *file, int line)
-{
-	assert(utf8 != NULL);
-	assert(file != NULL);
-	assert(line);
-	/* estimate buffer size */
-	const int sz = strlen(utf8) + 1;
-	wchar_t *utf16 = (wchar_t *)malloc(sizeof(wchar_t) * sz);
-	if (!utf16) {
-		fprintf(stderr, "%s:%d: cannot allocate buffer of size: %d\n", file, line, sz);
-		return NULL;
-	}
-	if (MultiByteToWideChar(CP_UTF8, 0, utf8, -1, utf16, sz))
-		return utf16;
-	fprintf(stderr, "%s:%d: cannot convert string\n", file, line);
-	free((void *)utf16);
-	return NULL;
 }
 
 #define utf8_to_utf16(s) utf8_to_utf16_fl(s, __FILE__, __LINE__)
@@ -236,18 +231,15 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
  */
 int subsurface_rename(const char *path, const char *newpath)
 {
-	int ret = -1;
 	if (!path || !newpath)
-		return ret;
+		return -1;
 
-	wchar_t *wpath = utf8_to_utf16(path);
-	wchar_t *wnewpath = utf8_to_utf16(newpath);
+	std::wstring wpath = utf8_to_utf16(path);
+	std::wstring wnewpath = utf8_to_utf16(newpath);
 
-	if (wpath && wnewpath)
-		ret = _wrename(wpath, wnewpath);
-	free((void *)wpath);
-	free((void *)wnewpath);
-	return ret;
+	if (!wpath.empty() && !wnewpath.empty())
+		return _wrename(wpath.c_str(), wnewpath.c_str());
+	return -1;
 }
 
 // if the QDir based rename fails, we try this one
@@ -296,69 +288,58 @@ int subsurface_dir_rename(const char *path, const char *newpath)
 
 int subsurface_open(const char *path, int oflags, mode_t mode)
 {
-	int ret = -1;
 	if (!path)
-		return ret;
-	wchar_t *wpath = utf8_to_utf16(path);
-	if (wpath)
-		ret = _wopen(wpath, oflags, mode);
-	free((void *)wpath);
-	return ret;
+		return -1;
+	std::wstring wpath = utf8_to_utf16(path);
+	if (!wpath.empty())
+		return _wopen(wpath.c_str(), oflags, mode);
+	return -1;
 }
 
 FILE *subsurface_fopen(const char *path, const char *mode)
 {
-	FILE *ret = NULL;
 	if (!path)
-		return ret;
-	wchar_t *wpath = utf8_to_utf16(path);
-	if (wpath) {
+		return NULL;
+	std::wstring wpath = utf8_to_utf16(path);
+	if (!wpath.empty()) {
 		const int len = strlen(mode);
-		wchar_t wmode[len + 1];
+		std::wstring wmode(len, ' ');
 		for (int i = 0; i < len; i++)
 			wmode[i] = (wchar_t)mode[i];
-		wmode[len] = 0;
-		ret = _wfopen(wpath, wmode);
+		return _wfopen(wpath.c_str(), wmode.c_str());
 	}
-	free((void *)wpath);
-	return ret;
+	return NULL;
 }
 
 /* here we return a void pointer instead of _WDIR or DIR pointer */
 void *subsurface_opendir(const char *path)
 {
-	_WDIR *ret = NULL;
 	if (!path)
-		return ret;
-	wchar_t *wpath = utf8_to_utf16(path);
-	if (wpath)
-		ret = _wopendir(wpath);
-	free((void *)wpath);
-	return (void *)ret;
+		return NULL;
+	std::wstring wpath = utf8_to_utf16(path);
+	if (!wpath.empty())
+		return (void *)_wopendir(wpath.c_str());
+	return NULL;
 }
 
 int subsurface_access(const char *path, int mode)
 {
-	int ret = -1;
 	if (!path)
-		return ret;
-	wchar_t *wpath = utf8_to_utf16(path);
-	if (wpath)
-		ret = _waccess(wpath, mode);
-	free((void *)wpath);
-	return ret;
+		return -1;
+	std::wstring wpath = utf8_to_utf16(path);
+	if (!wpath.empty())
+		return _waccess(wpath.c_str(), mode);
+	return -1;
 }
 
 int subsurface_stat(const char* path, struct stat* buf)
 {
-	int ret = -1;
 	if (!path)
-		return ret;
-	wchar_t *wpath = utf8_to_utf16(path);
-	if (wpath)
-		ret = wstat(wpath, buf);
-	free((void *)wpath);
-	return ret;
+		return -1;
+	std::wstring wpath = utf8_to_utf16(path);
+	if (!wpath.empty())
+		return wstat(wpath.c_str(), buf);
+	return -1;
 }
 
 #ifndef O_BINARY
