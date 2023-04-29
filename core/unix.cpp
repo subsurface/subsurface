@@ -70,7 +70,6 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 	int index = -1, entries = 0;
 	DIR *dp = NULL;
 	struct dirent *ep = NULL;
-	size_t i;
 	FILE *file;
 	char *line = NULL;
 	size_t len;
@@ -79,16 +78,14 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 #ifdef __OpenBSD__
 		const char *patterns[] = {
 			"ttyU*",
-			"ttyC*",
-			NULL
+			"ttyC*"
 		};
 #else
 		const char *patterns[] = {
 			"ttyUSB*",
 			"ttyS*",
 			"ttyACM*",
-			"rfcomm*",
-			NULL
+			"rfcomm*"
 		};
 #endif
 
@@ -98,16 +95,11 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 		}
 
 		while ((ep = readdir(dp)) != NULL) {
-			for (i = 0; patterns[i] != NULL; ++i) {
-				if (fnmatch(patterns[i], ep->d_name, 0) == 0) {
-					char filename[1024];
-					int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
-					if (n >= (int)sizeof(filename)) {
-						closedir(dp);
-						return -1;
-					}
-					callback(filename, userdata);
-					if (is_default_dive_computer_device(filename))
+			for (const char *pattern: patterns) {
+				if (fnmatch(pattern, ep->d_name, 0) == 0) {
+					std::string filename = std::string(dirname) + "/" + ep->d_name;
+					callback(filename.c_str(), userdata);
+					if (is_default_dive_computer_device(filename.c_str()))
 						index = entries;
 					entries++;
 					break;
