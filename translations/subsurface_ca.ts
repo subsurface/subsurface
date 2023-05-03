@@ -2418,7 +2418,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DeleteAccount.qml" line="68"/>
         <source>never mind</source>
-        <translation>Tan se val</translation>
+        <translation>Tant se val</translation>
     </message>
 </context>
 <context>
@@ -5188,7 +5188,7 @@ a la llista d&apos;immersions.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="154"/>
         <source>Upload divelogs.de</source>
-        <translation>Publica a divelogs.de</translation>
+        <translation>Publica a «divelogs.de»</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="157"/>
@@ -6532,7 +6532,7 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="110"/>
         <source>To create a new cloud account:</source>
-        <translation>Pera a crear un compte nou en el núvol:</translation>
+        <translation>Per a crear un compte nou en el núvol:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
@@ -13097,7 +13097,7 @@ Està connectat correctament el Uemis Zurich?</translation>
     <message>
         <location filename="../core/uemis-downloader.c" line="569"/>
         <source>dive spot #</source>
-        <translation>Lloc de la immersió núm.</translation>
+        <translation>Lloc d&apos;immersió núm.</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="571"/>
@@ -14030,7 +14030,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="343"/>
         <source>divelogs.de not responding</source>
-        <translation>divelogs.de no respon</translation>
+        <translation>«divelogs.de» no respon</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="357"/>
