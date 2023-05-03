@@ -1776,7 +1776,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1379"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2687"/>
         <source>Reset device to default settings</source>
-        <translation>Restableix el dispositiu a l&apos;arranjament per omissió</translation>
+        <translation>Restableix el dispositiu a la configuració predeterminada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1393"/>
@@ -2418,7 +2418,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DeleteAccount.qml" line="68"/>
         <source>never mind</source>
-        <translation>Tan se val</translation>
+        <translation>Tant se val</translation>
     </message>
 </context>
 <context>
@@ -3355,12 +3355,12 @@
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="489"/>
         <source>Font</source>
-        <translation>Tipus de lletra</translation>
+        <translation>Lletra</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="499"/>
         <source>Font size</source>
-        <translation>Mida del tipus de lletra</translation>
+        <translation>Mida de la lletra</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="510"/>
@@ -5188,7 +5188,7 @@ a la llista d&apos;immersions.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="154"/>
         <source>Upload divelogs.de</source>
-        <translation>Publica a divelogs.de</translation>
+        <translation>Publica a «divelogs.de»</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Export.qml" line="157"/>
@@ -5456,7 +5456,7 @@ a la llista d&apos;immersions.</translation>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="308"/>
         <source>By how many hours did the international time zone at the dive site differ from UTC (also regarded as Greenwich Mean Time)? Normally one would specify this value in whole hours (h:00):</source>
-        <translation>En quantes hores ha diferit la zona horària internacional al lloc d&apos;immersió des de l&apos;UTC (també considerada com l&apos;hora mitjana de Greenwich)? Normalment s&apos;especifica aquest valor en hores senceres (h:00):</translation>
+        <translation>En quantes hores ha diferit la zona horària internacional al lloc d&apos;immersió des de l&apos;UTC (també considerada com l&apos;hora mitjana de Greenwich)? Normalment, s&apos;especifica aquest valor en hores senceres (h:00):</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="374"/>
@@ -6532,7 +6532,7 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="110"/>
         <source>To create a new cloud account:</source>
-        <translation>Pera a crear un compte nou en el núvol:</translation>
+        <translation>Per a crear un compte nou en el núvol:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
@@ -6626,17 +6626,17 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="21"/>
         <source>Font for lists and tables</source>
-        <translation>Tipus de lletra per a les llistes i taules</translation>
+        <translation>Lletra per a les llistes i taules</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="31"/>
         <source>Font</source>
-        <translation>Tipus de lletra</translation>
+        <translation>Lletra</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="53"/>
         <source>Font size</source>
-        <translation>Mida del tipus de lletra</translation>
+        <translation>Mida de la lletra</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="68"/>
@@ -6933,7 +6933,7 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="32"/>
         <source>Use system default</source>
-        <translation>Empra el per omissió del sistema</translation>
+        <translation>Empra el predeterminat del sistema</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="55"/>
@@ -6949,7 +6949,7 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="80"/>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="138"/>
         <source>Use UI language default</source>
-        <translation>Empra l&apos;idioma per omissió per a la IU</translation>
+        <translation>Empra l&apos;idioma predeterminat per a la IU</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="90"/>
@@ -7034,7 +7034,7 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="44"/>
         <source>Default dive log file</source>
-        <translation>Fitxer per omissió per al diari de busseig</translation>
+        <translation>Fitxer predeterminat per al diari de busseig</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="53"/>
@@ -7044,12 +7044,12 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="60"/>
         <source>&amp;Local default file</source>
-        <translation>Fitxer per omissió &amp;local</translation>
+        <translation>Fitxer predeterminat &amp;local</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="67"/>
         <source>Clo&amp;ud storage default file</source>
-        <translation>Fitxer per omissió al &amp;núvol</translation>
+        <translation>Fitxer predeterminat al &amp;núvol</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="76"/>
@@ -7094,7 +7094,7 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
         <source>Open default log file</source>
-        <translation>Obre el fitxer de registre per omissió</translation>
+        <translation>Obre el fitxer de registre predeterminat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="28"/>
@@ -8365,7 +8365,7 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="314"/>
         <source>Font size</source>
-        <translation>Mida del tipus de lletra</translation>
+        <translation>Mida de la lletra</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="325"/>
@@ -10037,7 +10037,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="104"/>
         <source>Font</source>
-        <translation>Tipus de lletra</translation>
+        <translation>Lletra</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="112"/>
@@ -10067,7 +10067,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="144"/>
         <source>Font size</source>
-        <translation>Mida del tipus de lletra</translation>
+        <translation>Mida de la lletra</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="165"/>
@@ -10077,7 +10077,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="173"/>
         <source>Default</source>
-        <translation>Omissió</translation>
+        <translation>Predeterminada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="178"/>
@@ -13097,7 +13097,7 @@ Està connectat correctament el Uemis Zurich?</translation>
     <message>
         <location filename="../core/uemis-downloader.c" line="569"/>
         <source>dive spot #</source>
-        <translation>Lloc de la immersió núm.</translation>
+        <translation>Lloc d&apos;immersió núm.</translation>
     </message>
     <message>
         <location filename="../core/uemis-downloader.c" line="571"/>
@@ -13622,7 +13622,7 @@ Està connectat correctament el Uemis Zurich?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="581"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
-        <translation>La mida del tipus de lletra probablement és massa gran per a la pantalla, se suggereix canviar-la a una més petita</translation>
+        <translation>La mida de la lletra probablement és massa gran per a la pantalla, se suggereix canviar-la a una més petita</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="741"/>
@@ -14030,7 +14030,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="343"/>
         <source>divelogs.de not responding</source>
-        <translation>divelogs.de no respon</translation>
+        <translation>«divelogs.de» no respon</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="357"/>
