@@ -2347,8 +2347,13 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params
 		if ((strcasecmp((const char *)root_element->name, info->root) == 0)) {
 			if (info->attribute == NULL)
 				break;
-			else if (xmlGetProp(root_element, (const xmlChar *)info->attribute) != NULL)
+
+			void *prop = xmlGetProp(root_element, (const xmlChar *)info->attribute);
+			if (prop != NULL) {
+				free(prop);
+
 				break;
+			}
 		}
 		info++;
 	}
