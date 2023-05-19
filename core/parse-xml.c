@@ -2341,16 +2341,16 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params
 	xmlDoc *transformed;
 	xsltStylesheetPtr xslt = NULL;
 	xmlNode *root_element = xmlDocGetRootElement(doc);
-	char *attribute;
+	xmlChar *attribute;
 
 	while (info->root) {
 		if ((strcasecmp((const char *)root_element->name, info->root) == 0)) {
 			if (info->attribute == NULL)
 				break;
 
-			void *prop = xmlGetProp(root_element, (const xmlChar *)info->attribute);
+			xmlChar *prop = xmlGetProp(root_element, (const xmlChar *)info->attribute);
 			if (prop != NULL) {
-				free(prop);
+				xmlFree(prop);
 
 				break;
 			}
@@ -2359,13 +2359,13 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params
 	}
 
 	if (info->root) {
-		attribute = (char *)xmlGetProp(xmlFirstElementChild(root_element), (const xmlChar *)"name");
+		attribute = xmlGetProp(xmlFirstElementChild(root_element), (const xmlChar *)"name");
 		if (attribute) {
-			if (strcasecmp(attribute, "subsurface") == 0) {
-				free((void *)attribute);
+			if (strcasecmp((char *)attribute, "subsurface") == 0) {
+				xmlFree(attribute);
 				return doc;
 			}
-			free((void *)attribute);
+			xmlFree(attribute);
 		}
 		xmlSubstituteEntitiesDefault(1);
 		xslt = get_stylesheet(info->file);
