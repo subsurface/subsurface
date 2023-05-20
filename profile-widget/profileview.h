@@ -26,12 +26,16 @@ public:
 
 	void plotDive(const struct dive *d, int dc, int flags = RenderFlags::None);
 	void clear();
+	void resetZoom();
 	void anim(double fraction);
 private:
 	const struct dive *d;
 	int dc;
 	int zoomLevel;
 	double zoomedPosition;	// Position when zoomed: 0.0 = beginning, 1.0 = end.
+	bool panning; // Currently panning.
+	double panningOriginalMousePosition;
+	double panningOriginalProfilePosition;
 	bool empty; // No dive shown.
 	bool shouldCalculateMax; // Calculate maximum time and depth (default). False when dragging handles.
 	QColor background;
@@ -42,6 +46,12 @@ private:
 	void plotAreaChanged(const QSizeF &size) override;
 	void resetPointers() override;
 	void replot();
+	void setZoom(int level);
+
+	void wheelEvent(QWheelEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 };
 
 #endif

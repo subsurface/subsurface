@@ -10,6 +10,7 @@
 #include "qt-quick/chartitem.h"
 
 #include <QAbstractAnimation>
+#include <QCursor>
 #include <QDebug>
 #include <QElapsedTimer>
 
@@ -52,6 +53,7 @@ ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::
 	dc(0),
 	zoomLevel(0),
 	zoomedPosition(0.0),
+	panning(false),
 	empty(true),
 	shouldCalculateMax(true)
 {
@@ -85,6 +87,8 @@ ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::
 	connect(pp_gas, &qPrefPartialPressureGas::pheChanged, this, &ProfileView::replot);
 	connect(pp_gas, &qPrefPartialPressureGas::pn2Changed, this, &ProfileView::replot);
 	connect(pp_gas, &qPrefPartialPressureGas::po2Changed, this, &ProfileView::replot);
+
+	setAcceptTouchEvents(true);
 }
 
 ProfileView::ProfileView() : ProfileView(nullptr)
@@ -211,4 +215,83 @@ void ProfileView::anim(double fraction)
 	profileScene->anim(fraction);
 	profileItem->draw(size(), background, *profileScene);
 	update();
+}
+
+void ProfileView::resetZoom()
+{
+	zoomLevel = 0;
+	zoomedPosition = 0.0;
+}
+
+void ProfileView::setZoom(int level)
+{
+	zoomLevel = level;
+	plotDive(d, dc, RenderFlags::DontRecalculatePlotInfo);
+}
+
+void ProfileView::wheelEvent(QWheelEvent *event)
+{
+	if (!d)
+		return;
+	if (panning)
+		return;	// No change in zoom level while panning.
+	if (event->buttons() == Qt::LeftButton)
+		return;
+	if (event->angleDelta().y() > 0 && zoomLevel < 20)
+		setZoom(++zoomLevel);
+	else if (event->angleDelta().y() < 0 && zoomLevel > 0)
+		setZoom(--zoomLevel);
+	else if (event->angleDelta().x() && zoomLevel > 0) {
+		double oldPos = zoomedPosition;
+		zoomedPosition = profileScene->calcZoomPosition(calcZoom(zoomLevel),
+								oldPos,
+								oldPos - event->angleDelta().x());
+		if (oldPos != zoomedPosition)
+			plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo);
+	}
+}
+
+void ProfileView::mousePressEvent(QMouseEvent *event)
+{
+	panning = true;
+	panningOriginalMousePosition = mapToScene(event->pos()).x();
+	panningOriginalProfilePosition = zoomedPosition;
+	setCursor(Qt::ClosedHandCursor);
+	event->accept();
+}
+
+void ProfileView::mouseReleaseEvent(QMouseEvent *)
+{
+	if (panning) {
+		panning = false;
+		unsetCursor();
+	}
+	//if (currentState == PLAN || currentState == EDIT) {
+	//	shouldCalculateMax = true;
+	//	replot();
+	//}
+}
+
+void ProfileView::mouseMoveEvent(QMouseEvent *event)
+{
+	QPointF pos = mapToScene(event->pos());
+	if (panning) {
+		double oldPos = zoomedPosition;
+		zoomedPosition = profileScene->calcZoomPosition(calcZoom(zoomLevel),
+								panningOriginalProfilePosition,
+								panningOriginalMousePosition - pos.x());
+		if (oldPos != zoomedPosition)
+			plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
+	}
+
+	//toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
+
+	//if (currentState == PLAN || currentState == EDIT) {
+		//QRectF rect = profileScene->profileRegion;
+		//auto [miny, maxy] = profileScene->profileYAxis->screenMinMax();
+		//double x = std::clamp(pos.x(), rect.left(), rect.right());
+		//double y = std::clamp(pos.y(), miny, maxy);
+		//mouseFollowerHorizontal->setLine(rect.left(), y, rect.right(), y);
+		//mouseFollowerVertical->setLine(x, rect.top(), x, rect.bottom());
+	//}
 }

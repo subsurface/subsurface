@@ -157,12 +157,6 @@ void ProfileWidget2::setupSceneAndFlags()
 	setMouseTracking(true);
 }
 
-void ProfileWidget2::resetZoom()
-{
-	zoomLevel = 0;
-	zoomedPosition = 0.0;
-}
-
 // Currently just one dive, but the plan is to enable All of the selected dives.
 void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 {
@@ -246,18 +240,6 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::mousePressEvent(QMouseEvent *event)
-{
-	QGraphicsView::mousePressEvent(event);
-
-	if (!event->isAccepted()) {
-		panning = true;
-		panningOriginalMousePosition = mapToScene(event->pos()).x();
-		panningOriginalProfilePosition = zoomedPosition;
-		viewport()->setCursor(Qt::ClosedHandCursor);
-	}
-}
-
 void ProfileWidget2::divePlannerHandlerClicked()
 {
 	shouldCalculateMax = false;
@@ -271,49 +253,9 @@ void ProfileWidget2::divePlannerHandlerReleased()
 	replot();
 }
 
-void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
-{
-	QGraphicsView::mouseReleaseEvent(event);
-	if (panning) {
-		panning = false;
-		viewport()->setCursor(Qt::ArrowCursor);
-	}
-	if (currentState == PLAN || currentState == EDIT) {
-		shouldCalculateMax = true;
-		replot();
-	}
-}
 #endif
 
-void ProfileWidget2::setZoom(int level)
-{
-	zoomLevel = level;
-	plotDive(d, dc, RenderFlags::DontRecalculatePlotInfo);
-}
-
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::wheelEvent(QWheelEvent *event)
-{
-	if (!d)
-		return;
-	if (event->angleDelta().x() && zoomLevel > 0) {
-		double oldPos = zoomedPosition;
-		zoomedPosition = profileScene->calcZoomPosition(calcZoom(zoomLevel),
-								oldPos,
-								oldPos - event->angleDelta().x());
-		if (oldPos != zoomedPosition)
-			plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo);
-	}
-	if (panning)
-		return;	// No change in zoom level while panning.
-	if (event->buttons() == Qt::LeftButton)
-		return;
-	if (event->angleDelta().y() > 0 && zoomLevel < 20)
-		setZoom(++zoomLevel);
-	else if (event->angleDelta().y() < 0 && zoomLevel > 0)
-		setZoom(--zoomLevel);
-}
-
 void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	if ((currentState == PLAN || currentState == EDIT) && plannerModel) {
@@ -326,32 +268,6 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 		plannerModel->addStop(milimeters, minutes * 60);
 		if (currentState == EDIT)
 			emit stopAdded();
-	}
-}
-
-void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
-{
-	QGraphicsView::mouseMoveEvent(event);
-
-	QPointF pos = mapToScene(event->pos());
-	if (panning) {
-		double oldPos = zoomedPosition;
-		zoomedPosition = profileScene->calcZoomPosition(calcZoom(zoomLevel),
-								panningOriginalProfilePosition,
-								panningOriginalMousePosition - pos.x());
-		if (oldPos != zoomedPosition)
-			plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
-	}
-
-	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
-
-	if (currentState == PLAN || currentState == EDIT) {
-		QRectF rect = profileScene->profileRegion;
-		auto [miny, maxy] = profileScene->profileYAxis->screenMinMax();
-		double x = std::clamp(pos.x(), rect.left(), rect.right());
-		double y = std::clamp(pos.y(), miny, maxy);
-		mouseFollowerHorizontal->setLine(rect.left(), y, rect.right(), y);
-		mouseFollowerVertical->setLine(x, rect.top(), x, rect.bottom());
 	}
 }
 
