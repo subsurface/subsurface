@@ -13,10 +13,6 @@ ChartView::ChartView(QQuickItem *parent, size_t maxZ) : QQuickItem(parent),
 	setFlag(ItemHasContents, true);
 }
 
-ChartView::~ChartView()
-{
-}
-
 // Define a hideable dummy QSG node that is used as a parent node to make
 // all objects of a z-level visible / invisible.
 using ZNode = HideableQSGNode<QSGNode>;
@@ -24,22 +20,22 @@ using ZNode = HideableQSGNode<QSGNode>;
 class RootNode : public QSGNode
 {
 public:
-	RootNode(ChartView &view, QColor backgroundColor, size_t maxZ);
+	RootNode(ChartView *view, QColor backgroundColor, size_t maxZ);
 	~RootNode();
-	ChartView &view;
+	ChartView *view;
 	std::unique_ptr<QSGRectangleNode> backgroundNode; // solid background
 	// We entertain one node per Z-level.
 	std::vector<std::unique_ptr<ZNode>> zNodes;
 };
 
-RootNode::RootNode(ChartView &view, QColor backgroundColor, size_t maxZ) : view(view)
+RootNode::RootNode(ChartView *view, QColor backgroundColor, size_t maxZ) : view(view)
 {
 	zNodes.resize(maxZ);
 
 	// Add a background rectangle with a solid color. This could
 	// also be done on the widget level, but would have to be done
 	// separately for desktop and mobile, so do it here.
-	backgroundNode.reset(view.w()->createRectangleNode());
+	backgroundNode.reset(view->w()->createRectangleNode());
 	appendChildNode(backgroundNode.get());
 
 	for (auto &zNode: zNodes) {
@@ -50,7 +46,16 @@ RootNode::RootNode(ChartView &view, QColor backgroundColor, size_t maxZ) : view(
 
 RootNode::~RootNode()
 {
-	view.emergencyShutdown();
+	if (view)
+		view->emergencyShutdown();
+}
+
+ChartView::~ChartView()
+{
+	// Sometimes the rootNode is destructed before the view,
+	// sometimes the other way around. QtQuick is a mess!
+	if (rootNode)
+		rootNode->view = nullptr;
 }
 
 void ChartView::freeDeletedChartItems()
@@ -69,7 +74,7 @@ QSGNode *ChartView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 	// This is just a copy of what is found in Qt's documentation.
 	RootNode *n = static_cast<RootNode *>(oldNode);
 	if (!n)
-		n = rootNode = new RootNode(*this, backgroundColor, maxZ);
+		n = rootNode = new RootNode(this, backgroundColor, maxZ);
 
 	// Delete all chart items that are marked for deletion.
 	freeDeletedChartItems();
@@ -93,7 +98,7 @@ QSGNode *ChartView::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNod
 // permission to do so! If the widget is reused, we try to delete the
 // stale items, whose nodes have already been deleted by QtQuick, leading
 // to a double-free(). Instead of searching for the cause of this behavior,
-// let's just hook into the rootNodes destructor and delete the objects
+// let's just hook into the rootNode's destructor and delete the objects
 // in a controlled manner, so that QtQuick has no more access to them.
 void ChartView::emergencyShutdown()
 {

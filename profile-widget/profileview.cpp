@@ -3,6 +3,7 @@
 #include "profilescene.h"
 #include "zvalues.h"
 #include "core/dive.h"
+#include "core/divelog.h"
 #include "core/errorhelper.h"
 #include "core/pref.h"
 #include "core/settings/qPrefDisplay.h"
@@ -42,17 +43,10 @@ public:
 	}
 };
 
-static double calcZoom(int zoomLevel)
-{
-	// Base of exponential zoom function: one wheel-click will increase the zoom by 15%.
-	constexpr double zoomFactor = 1.15;
-	return zoomLevel == 0 ? 1.0 : pow(zoomFactor, zoomLevel);
-}
-
 ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::Count),
 	d(nullptr),
 	dc(0),
-	zoomLevel(0),
+	zoomLevel(1.00),
 	zoomedPosition(0.0),
 	panning(false),
 	empty(true),
@@ -141,7 +135,7 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 
 	// We can't create the scene in the constructor, because we can't get the DPR property there. Oh joy!
 	if (!profileScene) {
-		double dpr = std::clamp(property("dpr").toReal(), 1.0, 100.0);
+		double dpr = std::clamp(property("dpr").toReal(), 0.5, 100.0);
 		profileScene = std::make_unique<ProfileScene>(dpr, false, false);
 	}
 	// If there was no previously displayed dive, turn off animations
@@ -162,14 +156,12 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	DivePlannerPointsModel *model = nullptr;
 	bool inPlanner = flags & RenderFlags::PlanMode;
 
-	double zoom = calcZoom(zoomLevel);
-
 	int animSpeed = flags & RenderFlags::Instant ? 0 : qPrefDisplay::animation_speed();
 
 	profileScene->resize(size());
 	profileScene->plotDive(d, dc, animSpeed, model, inPlanner,
 			       flags & RenderFlags::DontRecalculatePlotInfo,
-			       shouldCalculateMax, zoom, zoomedPosition);
+			       shouldCalculateMax, zoomLevel, zoomedPosition);
 	background = inPlanner ? QColor("#D7E3EF") : getColor(::BACKGROUND, false);
 	profileItem->draw(size(), background, *profileScene);
 
@@ -220,14 +212,17 @@ void ProfileView::anim(double fraction)
 
 void ProfileView::resetZoom()
 {
-	zoomLevel = 0;
+	zoomLevel = 1.0;
 	zoomedPosition = 0.0;
 }
 
-void ProfileView::setZoom(int level)
+void ProfileView::setZoom(double level)
 {
-	zoomLevel = level;
-	plotDive(d, dc, RenderFlags::DontRecalculatePlotInfo);
+	level = std::clamp(level, 1.0, 20.0);
+	double old = std::exchange(zoomLevel, level);
+	if (level != old)
+		plotDive(d, dc, RenderFlags::DontRecalculatePlotInfo);
+	emit zoomLevelChanged();
 }
 
 void ProfileView::wheelEvent(QWheelEvent *event)
@@ -238,13 +233,13 @@ void ProfileView::wheelEvent(QWheelEvent *event)
 		return;	// No change in zoom level while panning.
 	if (event->buttons() == Qt::LeftButton)
 		return;
-	if (event->angleDelta().y() > 0 && zoomLevel < 20)
-		setZoom(++zoomLevel);
-	else if (event->angleDelta().y() < 0 && zoomLevel > 0)
-		setZoom(--zoomLevel);
+	if (event->angleDelta().y() > 0)
+		setZoom(zoomLevel * 1.15);
+	else if (event->angleDelta().y() < 0)
+		setZoom(zoomLevel / 1.15);
 	else if (event->angleDelta().x() && zoomLevel > 0) {
 		double oldPos = zoomedPosition;
-		zoomedPosition = profileScene->calcZoomPosition(calcZoom(zoomLevel),
+		zoomedPosition = profileScene->calcZoomPosition(zoomLevel,
 								oldPos,
 								oldPos - event->angleDelta().x());
 		if (oldPos != zoomedPosition)
@@ -255,8 +250,8 @@ void ProfileView::wheelEvent(QWheelEvent *event)
 void ProfileView::mousePressEvent(QMouseEvent *event)
 {
 	panning = true;
-	panningOriginalMousePosition = mapToScene(event->pos()).x();
-	panningOriginalProfilePosition = zoomedPosition;
+	QPointF pos = mapToScene(event->pos());
+	panStart(pos.x(), pos.y());
 	setCursor(Qt::ClosedHandCursor);
 	event->accept();
 }
@@ -276,14 +271,8 @@ void ProfileView::mouseReleaseEvent(QMouseEvent *)
 void ProfileView::mouseMoveEvent(QMouseEvent *event)
 {
 	QPointF pos = mapToScene(event->pos());
-	if (panning) {
-		double oldPos = zoomedPosition;
-		zoomedPosition = profileScene->calcZoomPosition(calcZoom(zoomLevel),
-								panningOriginalProfilePosition,
-								panningOriginalMousePosition - pos.x());
-		if (oldPos != zoomedPosition)
-			plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
-	}
+	if (panning)
+		pan(pos.x(), pos.y());
 
 	//toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 
@@ -295,4 +284,66 @@ void ProfileView::mouseMoveEvent(QMouseEvent *event)
 		//mouseFollowerHorizontal->setLine(rect.left(), y, rect.right(), y);
 		//mouseFollowerVertical->setLine(x, rect.top(), x, rect.bottom());
 	//}
+}
+
+int ProfileView::getDiveId() const
+{
+	return d ? d->id : -1;
+}
+
+void ProfileView::setDiveId(int id)
+{
+	plotDive(divelog.dives.get_by_uniq_id(id), 0);
+}
+
+int ProfileView::numDC() const
+{
+	return d ? d->number_of_computers() : 0;
+}
+
+void ProfileView::pinchStart()
+{
+	zoomLevelPinchStart = zoomLevel;
+}
+
+void ProfileView::pinch(double factor)
+{
+	setZoom(zoomLevelPinchStart * factor);
+}
+
+void ProfileView::nextDC()
+{
+	rotateDC(1);
+}
+
+void ProfileView::prevDC()
+{
+	rotateDC(-1);
+}
+
+void ProfileView::rotateDC(int dir)
+{
+	int num = numDC();
+	if (num <= 1)
+		return;
+	dc = (dc + dir) % num;
+	if (dc < 0)
+		dc += num;
+	replot();
+}
+
+void ProfileView::panStart(double x, double y)
+{
+	panningOriginalMousePosition = x;
+	panningOriginalProfilePosition = zoomedPosition;
+}
+
+void ProfileView::pan(double x, double y)
+{
+	double oldPos = zoomedPosition;
+	zoomedPosition = profileScene->calcZoomPosition(zoomLevel,
+							panningOriginalProfilePosition,
+							panningOriginalMousePosition - x);
+	if (oldPos != zoomedPosition)
+		plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
 }

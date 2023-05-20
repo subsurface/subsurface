@@ -171,7 +171,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	qt-models/weightsysteminfomodel.cpp \
 	qt-models/filterconstraintmodel.cpp \
 	qt-models/filterpresetmodel.cpp \
-	profile-widget/qmlprofile.cpp \
 	profile-widget/divecartesianaxis.cpp \
 	profile-widget/diveeventitem.cpp \
 	profile-widget/divepercentageitem.cpp \
@@ -337,7 +336,6 @@ HEADERS += \
 	qt-models/weightsysteminfomodel.h \
 	qt-models/filterconstraintmodel.h \
 	qt-models/filterpresetmodel.h \
-	profile-widget/qmlprofile.h \
 	profile-widget/divepercentageitem.h \
 	profile-widget/diveprofileitem.h \
 	profile-widget/profilescene.h \
