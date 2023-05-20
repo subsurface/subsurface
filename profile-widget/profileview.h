@@ -6,6 +6,7 @@
 #include <memory>
 
 class ChartGraphicsSceneItem;
+class ProfileAnimation;
 class ProfileScene;
 
 class ProfileView : public ChartView {
@@ -25,6 +26,7 @@ public:
 
 	void plotDive(const struct dive *d, int dc, int flags = RenderFlags::None);
 	void clear();
+	void anim(double fraction);
 private:
 	const struct dive *d;
 	int dc;
@@ -32,8 +34,10 @@ private:
 	double zoomedPosition;	// Position when zoomed: 0.0 = beginning, 1.0 = end.
 	bool empty; // No dive shown.
 	bool shouldCalculateMax; // Calculate maximum time and depth (default). False when dragging handles.
+	QColor background;
 	std::unique_ptr<ProfileScene> profileScene;
 	ChartItemPtr<ChartGraphicsSceneItem> profileItem;
+	std::unique_ptr<ProfileAnimation> animation;
 
 	void plotAreaChanged(const QSizeF &size) override;
 	void resetPointers() override;

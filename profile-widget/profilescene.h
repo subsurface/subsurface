@@ -27,7 +27,6 @@ class DiveReportedCeiling;
 class DiveTemperatureItem;
 class DiveTextItem;
 class PartialPressureGasItem;
-class ProfileAnimation;
 class TankItem;
 
 class ProfileScene : public QGraphicsScene {
@@ -42,8 +41,8 @@ public:
 				    // Can be compared with literal 1.0 to determine "end" state.
 
 	// If a plannerModel is passed, the deco-information is taken from there.
-	void plotDive(const struct dive *d, int dc, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
-		      bool instant = false, bool keepPlotInfo = false, bool calcMax = true, double zoom = 1.0, double zoomedPosition = 0.0);
+	void plotDive(const struct dive *d, int dc, int animSpeed, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
+		      bool keepPlotInfo = false, bool calcMax = true, double zoom = 1.0, double zoomedPosition = 0.0);
 
 	void draw(QPainter *painter, const QRect &pos,
 		  const struct dive *d, int dc,
@@ -61,7 +60,6 @@ private:
 	void updateVisibility(bool diveHasHeartBeat, bool simplified); // Update visibility of non-interactive chart features according to preferences
 	void updateAxes(bool diveHasHeartBeat, bool simplified); // Update axes according to preferences
 
-	friend class ProfileWidget2; // For now, give the ProfileWidget full access to the objects on the scene
 	double dpr; // Device Pixel Ratio. A DPR of one corresponds to a "standard" PC screen.
 	bool printMode;
 	bool isGrayscale;
@@ -101,7 +99,6 @@ private:
 	DivePercentageItem *percentageItem;
 	TankItem *tankItem;
 	std::shared_ptr<const DivePixmaps> pixmaps;
-	std::unique_ptr<ProfileAnimation> animation;
 	std::vector<DiveCartesianAxis *> animatedAxes;
 };
 

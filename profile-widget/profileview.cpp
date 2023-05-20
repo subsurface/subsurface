@@ -5,10 +5,39 @@
 #include "core/errorhelper.h"
 #include "core/pref.h"
 #include "core/settings/qPrefTechnicalDetails.h"
+#include "core/settings/qPrefDisplay.h"
 #include "qt-quick/chartitem.h"
 
+#include <QAbstractAnimation>
 #include <QDebug>
 #include <QElapsedTimer>
+
+// Class for animations (if any). Might want to do our own.
+class ProfileAnimation : public QAbstractAnimation {
+	ProfileView &view;
+	// For historical reasons, speed is actually the duration
+	// (i.e. the reciprocal of speed). Ouch, that hurts.
+	int speed;
+
+	int duration() const override
+	{
+		return speed;
+	}
+	void updateCurrentTime(int time) override
+	{
+		// Note: we explicitly pass 1.0 at the end, so that
+		// the callee can do a simple float comparison for "end".
+		view.anim(time == speed ? 1.0
+					: static_cast<double>(time) / speed);
+	}
+public:
+	ProfileAnimation(ProfileView &view, int animSpeed) :
+		view(view),
+		speed(animSpeed)
+	{
+		start();
+	}
+};
 
 static double calcZoom(int zoomLevel)
 {
@@ -96,16 +125,16 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	DivePlannerPointsModel *model = nullptr;
 	bool inPlanner = flags & RenderFlags::PlanMode;
 
-	QColor backgroundColor = inPlanner ? QColor("#D7E3EF")
-					   : getColor(::BACKGROUND, false);
-
 	double zoom = calcZoom(zoomLevel);
 
+	int animSpeed = flags & RenderFlags::Instant ? 0 : qPrefDisplay::animation_speed();
+
 	profileScene->resize(size());
-	profileScene->plotDive(d, dc, model, inPlanner, true, //flags & RenderFlags::Instant,
+	profileScene->plotDive(d, dc, animSpeed, model, inPlanner,
 			       flags & RenderFlags::DontRecalculatePlotInfo,
 			       shouldCalculateMax, zoom, zoomedPosition);
-	profileItem->draw(size(), backgroundColor, *profileScene);
+	background = inPlanner ? QColor("#D7E3EF") : getColor(::BACKGROUND, false);
+	profileItem->draw(size(), background, *profileScene);
 
 	//rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
 	//toolTipItem->setPlotInfo(profileScene->plotInfo);
@@ -135,4 +164,19 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 		qPrefTechnicalDetails::set_calcndltts(false);
 		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
+
+	// Reset animation.
+	if (animSpeed <= 0)
+		animation.reset();
+	else
+		animation = std::make_unique<ProfileAnimation>(*this, animSpeed);
+}
+
+void ProfileView::anim(double fraction)
+{
+	if (!profileScene || !profileItem)
+		return;
+	profileScene->anim(fraction);
+	profileItem->draw(size(), background, *profileScene);
+	update();
 }
