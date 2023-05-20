@@ -41,6 +41,7 @@ private:
 
 	void plotAreaChanged(const QSizeF &size) override;
 	void resetPointers() override;
+	void replot();
 };
 
 #endif
