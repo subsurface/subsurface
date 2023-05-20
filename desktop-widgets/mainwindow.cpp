@@ -56,7 +56,6 @@
 #include "commands/command.h"
 
 #include "profilewidget.h"
-#include "profile-widget/profilewidget2.h"
 
 #ifndef NO_PRINTING
 #include "desktop-widgets/printdialog.h"

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "profile-widget/profilewidget2.h"
 #include "profile-widget/profilescene.h"
 #include "core/device.h"
 #include "core/event.h"
@@ -397,21 +396,6 @@ static void hideAll(const T &container)
 {
 	for (auto &item: container)
 		item->setVisible(false);
-}
-
-void ProfileWidget2::clear()
-{
-	currentState = INIT;
-#ifndef SUBSURFACE_MOBILE
-	clearPictures();
-#endif
-	disconnectTemporaryConnections();
-	profileScene->clear();
-	handles.clear();
-	gases.clear();
-	empty = true;
-	d = nullptr;
-	dc = 0;
 }
 
 void ProfileWidget2::setProfileState(const dive *dIn, int dcIn)

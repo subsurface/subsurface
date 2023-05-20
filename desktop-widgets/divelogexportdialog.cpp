@@ -22,7 +22,6 @@
 #include "desktop-widgets/divelogexportdialog.h"
 #include "desktop-widgets/diveshareexportdialog.h"
 #include "desktop-widgets/subsurfacewebservices.h"
-#include "profile-widget/profilewidget2.h"
 
 // Retrieves the current unit settings defined in the Subsurface preferences.
 #define GET_UNIT(name, field, f, t)           \

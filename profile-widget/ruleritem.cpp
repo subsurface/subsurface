@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/ruleritem.h"
-#include "profile-widget/profilewidget2.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 
-#include <qgraphicssceneevent.h>
-
 #include "core/profile.h"
+
+#include <QFont>
+#include <QFontMetrics>
+#include <QGraphicsScene>
+#include <QGraphicsSceneEvent>
+#include <QGraphicsView>
 
 RulerNodeItem2::RulerNodeItem2() :
 	pInfo(NULL),
@@ -77,18 +80,16 @@ RulerItem2::RulerItem2() : pInfo(NULL),
 	textItemBack->setPen(QColor(Qt::white));
 	textItemBack->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	setPen(QPen(QColor(Qt::black), 0.0));
-#ifndef SUBSURFACE_MOBILE
 	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::rulergraphChanged, this, &RulerItem2::settingsChanged);
-#endif
 }
 
 void RulerItem2::settingsChanged(bool value)
 {
-	ProfileWidget2 *profWidget = NULL;
-	if (scene() && scene()->views().count())
-		profWidget = qobject_cast<ProfileWidget2 *>(scene()->views().first());
+	//ProfileWidget2 *profWidget = NULL;
+	//if (scene() && scene()->views().count())
+		//profWidget = qobject_cast<ProfileWidget2 *>(scene()->views().first());
 
-	setVisible( (profWidget && profWidget->currentState == ProfileWidget2::PROFILE) ? value : false);
+	//setVisible( (profWidget && profWidget->currentState == ProfileWidget2::PROFILE) ? value : false);
 }
 
 void RulerItem2::recalculate()

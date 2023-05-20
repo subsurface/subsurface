@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divehandler.h"
-#include "profilewidget2.h"
 #include "profilescene.h"
 #include "core/dive.h"
 #include "core/gettextfromc.h"
@@ -22,8 +21,9 @@ DiveHandler::DiveHandler(const struct dive *d) : dive(d)
 
 int DiveHandler::parentIndex()
 {
-	ProfileWidget2 *view = qobject_cast<ProfileWidget2 *>(scene()->views().first());
-	return view->handleIndex(this);
+	//ProfileWidget2 *view = qobject_cast<ProfileWidget2 *>(scene()->views().first());
+	//return view->handleIndex(this);
+	return 0; // FIXME
 }
 
 void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
@@ -53,11 +53,9 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
 void DiveHandler::selfRemove()
 {
-#ifndef SUBSURFACE_MOBILE
 	setSelected(true);
-	ProfileWidget2 *view = qobject_cast<ProfileWidget2 *>(scene()->views().first());
-	view->keyDeleteAction();
-#endif
+	//ProfileWidget2 *view = qobject_cast<ProfileWidget2 *>(scene()->views().first());
+	//view->keyDeleteAction();
 }
 
 void DiveHandler::changeGas()
@@ -74,9 +72,9 @@ void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	t.start();
 
-	ProfileWidget2 *view = qobject_cast<ProfileWidget2*>(scene()->views().first());
-	if(!view->profileScene->pointOnProfile(event->scenePos()))
-		return;
+	//ProfileWidget2 *view = qobject_cast<ProfileWidget2*>(scene()->views().first());
+	//if(!view->profileScene->pointOnProfile(event->scenePos()))
+		//return;
 
 	QGraphicsEllipseItem::mouseMoveEvent(event);
 	emit moved();

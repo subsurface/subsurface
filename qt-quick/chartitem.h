@@ -11,6 +11,7 @@
 #include <QPainter>
 
 class ChartView;
+class QGraphicsScene;
 class QSGGeometry;
 class QSGGeometryNode;
 class QSGFlatColorMaterial;
@@ -72,6 +73,14 @@ private:
 	bool positionDirty;		// true if the position changed since last render
 	bool textureDirty;		// true if the pixmap changed since last render
 	std::unique_ptr<QSGTexture> texture;
+};
+
+// Renders a QGraphicsScene
+class ChartGraphicsSceneItem : public ChartPixmapItem
+{
+public:
+	using ChartPixmapItem::ChartPixmapItem;
+	void draw(QSizeF s, QColor background, QGraphicsScene &scene);
 };
 
 // Draw a rectangular background after resize. Children are responsible for calling update().

@@ -182,7 +182,8 @@ SOURCES += subsurface-mobile-main.cpp \
 	profile-widget/tankitem.cpp \
 	profile-widget/divelineitem.cpp \
 	profile-widget/diverectitem.cpp \
-	profile-widget/divetextitem.cpp
+	profile-widget/divetextitem.cpp \
+	profile-widget/profileview.cpp
 
 HEADERS += \
 	commands/command_base.h \
@@ -346,7 +347,8 @@ HEADERS += \
 	profile-widget/divepixmapcache.h \
 	profile-widget/divepixmapitem.h \
 	profile-widget/diverectitem.h \
-	profile-widget/divetextitem.h
+	profile-widget/divetextitem.h \
+	profile-widget/profileview.h
 
 RESOURCES += mobile-widgets/qml/mobile-resources.qrc \
 		mobile-widgets/3rdparty/icons.qrc \

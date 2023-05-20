@@ -7,6 +7,7 @@
 #include "qt-models/maplocationmodel.h"
 #endif
 
+#include "profile-widget/profileview.h"
 #include "stats/statsview.h"
 #include "core/globals.h"
 #include "core/qt-gui.h"
@@ -228,5 +229,6 @@ static void register_qml_types(QQmlEngine *engine)
 	register_qml_type<MapWidgetHelper>("MapWidgetHelper");
 	register_qml_type<MapLocationModel>("MapLocationModel");
 #endif
+	register_qml_type<ProfileView>("ProfileView");
 	register_qml_type<StatsView>("StatsView");
 }

@@ -11,8 +11,9 @@
 #include <vector>
 
 struct dive;
-class ProfileWidget2;
+class ProfileView;
 class EmptyView;
+class QQuickWidget;
 class QStackedWidget;
 
 extern "C" void free_dive(struct dive *);
@@ -22,7 +23,6 @@ class ProfileWidget : public QWidget {
 public:
 	ProfileWidget();
 	~ProfileWidget();
-	std::unique_ptr<ProfileWidget2> view;
 	void plotDive(struct dive *d, int dc); // Attempt to keep DC number id dc < 0
 	void plotCurrentDive();
 	void setPlanState(const struct dive *d, int dc);
@@ -40,6 +40,8 @@ slots:
 	void stopRemoved(int count);
 	void stopMoved(int count);
 private:
+	ProfileView *getView();
+	std::unique_ptr<QQuickWidget> viewWidget;
 	std::unique_ptr<EmptyView> emptyView;
 	std::vector<QAction *> toolbarActions;
 	Ui::ProfileWidget ui;
