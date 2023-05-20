@@ -19,36 +19,8 @@
 #include "core/subsurface-string.h"
 #include "core/settings/qPrefDisplay.h"
 #include "qt-models/diveplannermodel.h"
-#include <QAbstractAnimation>
 
 static const double diveComputerTextBorder = 1.0;
-
-// Class for animations (if any). Might want to do our own.
-class ProfileAnimation : public QAbstractAnimation {
-	ProfileScene &scene;
-	// For historical reasons, speed is actually the duration
-	// (i.e. the reciprocal of speed). Ouch, that hurts.
-	int speed;
-
-	int duration() const override
-	{
-		return speed;
-	}
-	void updateCurrentTime(int time) override
-	{
-		// Note: we explicitly pass 1.0 at the end, so that
-		// the callee can do a simple float comparison for "end".
-		scene.anim(time == speed ? 1.0
-					 : static_cast<double>(time) / speed);
-	}
-public:
-	ProfileAnimation(ProfileScene &scene, int animSpeed) :
-		scene(scene),
-		speed(animSpeed)
-	{
-		start();
-	}
-};
 
 template<typename T, class... Args>
 T *ProfileScene::createItem(const DiveCartesianAxis &vAxis, DataAccessor accessor, int z, Args&&... args)
@@ -404,8 +376,8 @@ static double max_gas(const plot_info &pi, double gas_pressures::*gas)
 	return ret;
 }
 
-void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsModel *plannerModel,
-			   bool inPlanner, bool instant, bool keepPlotInfo, bool calcMax, double zoom, double zoomedPosition)
+void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, DivePlannerPointsModel *plannerModel,
+			   bool inPlanner, bool keepPlotInfo, bool calcMax, double zoom, double zoomedPosition)
 {
 	d = dIn;
 	dc = dcIn;
@@ -438,8 +410,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	if (empty)
 		keepPlotInfo = false;
 	empty = false;
-
-	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
 
 	// A non-null planner_ds signals to create_plot_info_new that the dive is currently planned.
 	struct deco_state *planner_ds = inPlanner && plannerModel ? &plannerModel->final_deco_state : nullptr;
@@ -589,12 +559,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	if (nr > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc + 1).arg(nr);
 	diveComputerText->set(dcText, getColor(TIME_TEXT, isGrayscale));
-
-	// Reset animation.
-	if (animSpeed <= 0)
-		animation.reset();
-	else
-		animation = std::make_unique<ProfileAnimation>(*this, animSpeed);
 }
 
 void ProfileScene::anim(double fraction)
@@ -609,7 +573,7 @@ void ProfileScene::draw(QPainter *painter, const QRect &pos,
 {
 	QSize size = pos.size();
 	resize(QSizeF(size));
-	plotDive(d, dc, plannerModel, inPlanner, true, false, true);
+	plotDive(d, dc, 0, plannerModel, inPlanner, false, true);
 
 	QImage image(pos.size(), QImage::Format_ARGB32);
 	image.fill(getColor(::BACKGROUND, isGrayscale));
