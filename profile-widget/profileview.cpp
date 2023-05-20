@@ -24,8 +24,7 @@ ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::
 	zoomLevel(0),
 	zoomedPosition(0.0),
 	empty(true),
-	shouldCalculateMax(true),
-	profileScene(std::make_unique<ProfileScene>(1.0, false, false))
+	shouldCalculateMax(true)
 {
 	setBackgroundColor(Qt::black);
 	setFlag(ItemHasContents, true);
@@ -57,7 +56,8 @@ void ProfileView::clear()
 {
 	//clearPictures();
 	//disconnectPlannerConnections();
-	profileScene->clear();
+	if (profileScene)
+		profileScene->clear();
 	//handles.clear();
 	//gases.clear();
 	empty = true;
@@ -74,6 +74,11 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 		return;
 	}
 
+	// We can't create the scene in the constructor, because we can't get the DPR property there. Oh joy!
+	if (!profileScene) {
+		double dpr = std::clamp(property("dpr").toReal(), 1.0, 100.0);
+		profileScene = std::make_unique<ProfileScene>(dpr, false, false);
+	}
 	// If there was no previously displayed dive, turn off animations
 	if (empty)
 		flags |= RenderFlags::Instant;
