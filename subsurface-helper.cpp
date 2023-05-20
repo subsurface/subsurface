@@ -26,7 +26,6 @@
 #include "qt-models/divesummarymodel.h"
 #include "qt-models/messagehandlermodel.h"
 #include "qt-models/mobilelistmodel.h"
-#include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
 #include "core/subsurfacestartup.h" // for testqml
 #include "core/metrics.h"
@@ -219,7 +218,6 @@ static void register_qml_types(QQmlEngine *engine)
 #ifdef SUBSURFACE_MOBILE
 	register_qml_type<QMLManager>("QMLManager");
 	register_qml_type<StatsManager>("StatsManager");
-	register_qml_type<QMLProfile>("QMLProfile");
 	register_qml_type<DiveImportedModel>("DCImportModel");
 	register_qml_type<DiveSummaryModel>("DiveSummaryModel");
 	register_qml_type<ChartListModel>("ChartListModel");
