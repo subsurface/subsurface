@@ -4,8 +4,9 @@
 #include "zvalues.h"
 #include "core/errorhelper.h"
 #include "core/pref.h"
-#include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefDisplay.h"
+#include "core/settings/qPrefPartialPressureGas.h"
+#include "core/settings/qPrefTechnicalDetails.h"
 #include "qt-quick/chartitem.h"
 
 #include <QAbstractAnimation>
@@ -59,6 +60,31 @@ ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::
 
 	setAcceptHoverEvents(true);
 	setAcceptedMouseButtons(Qt::LeftButton);
+
+	auto tec = qPrefTechnicalDetails::instance();
+	connect(tec, &qPrefTechnicalDetails::calcalltissuesChanged           , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::calcceilingChanged              , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::gflowChanged                    , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::gfhighChanged                   , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::dcceilingChanged                , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::eadChanged                      , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::calcceiling3mChanged            , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::modChanged                      , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::calcndlttsChanged               , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::hrgraphChanged                  , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::rulergraphChanged               , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::show_sacChanged                 , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::zoomed_plotChanged              , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::decoinfoChanged                 , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::show_pictures_in_profileChanged , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::tankbarChanged                  , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::percentagegraphChanged          , this, &ProfileView::replot);
+	connect(tec, &qPrefTechnicalDetails::infoboxChanged                  , this, &ProfileView::replot);
+
+	auto pp_gas = qPrefPartialPressureGas::instance();
+	connect(pp_gas, &qPrefPartialPressureGas::pheChanged, this, &ProfileView::replot);
+	connect(pp_gas, &qPrefPartialPressureGas::pn2Changed, this, &ProfileView::replot);
+	connect(pp_gas, &qPrefPartialPressureGas::po2Changed, this, &ProfileView::replot);
 }
 
 ProfileView::ProfileView() : ProfileView(nullptr)
@@ -78,6 +104,12 @@ void ProfileView::plotAreaChanged(const QSizeF &s)
 {
 	if (!empty)
 		plotDive(d, dc, RenderFlags::Instant);
+}
+
+void ProfileView::replot()
+{
+	if (!empty)
+		plotDive(d, dc, RenderFlags::None);
 }
 
 void ProfileView::clear()
