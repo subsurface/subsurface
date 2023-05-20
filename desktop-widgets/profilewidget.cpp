@@ -255,7 +255,7 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 		setDive(editedDive.get(), dc);
 	} else if (d) {
 		//view->setProfileState(d, dc);
-		//view->resetZoom(); // when switching dive, reset the zoomLevel
+		view->resetZoom(); // when switching dive, reset the zoomLevel
 		view->plotDive(d, dc);
 		setDive(d, dc);
 	} else {
