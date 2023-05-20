@@ -4,6 +4,7 @@
 #include "chartview.h"
 
 #include <cmath>
+#include <QGraphicsScene>
 #include <QQuickWindow>
 #include <QSGFlatColorMaterial>
 #include <QSGImageNode>
@@ -83,10 +84,15 @@ void ChartPixmapItem::render()
 
 void ChartPixmapItem::resize(QSizeF size)
 {
+	QSize s_int(round_up(size.width()), round_up(size.height()));
+	if (img && s_int == img->size())
+		return;
 	painter.reset();
-	img.reset(new QImage(round_up(size.width()), round_up(size.height()), QImage::Format_ARGB32));
-	painter.reset(new QPainter(img.get()));
-	painter->setRenderHint(QPainter::Antialiasing);
+	img.reset(new QImage(s_int, QImage::Format_ARGB32));
+	if (!img->isNull()) {
+		painter.reset(new QPainter(img.get()));
+		painter->setRenderHint(QPainter::Antialiasing);
+	}
 	rect.setSize(size);
 	setTextureDirty();
 }
@@ -100,6 +106,16 @@ void ChartPixmapItem::setPos(QPointF pos)
 QRectF ChartPixmapItem::getRect() const
 {
 	return rect;
+}
+
+void ChartGraphicsSceneItem::draw(QSizeF s, QColor background, QGraphicsScene &scene)
+{
+	resize(s); // Noop if size doesn't change
+	if (!painter)
+		return;		// Happens if we resize to (0,0)
+	img->fill(background);
+	scene.render(painter.get(), QRect(QPoint(), img->size()), scene.sceneRect(), Qt::IgnoreAspectRatio);
+	setTextureDirty();
 }
 
 ChartRectItem::ChartRectItem(ChartView &v, size_t z,

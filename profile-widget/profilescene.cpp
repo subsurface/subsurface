@@ -465,6 +465,10 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	updateVisibility(hasHeartBeat, simplified);
 	updateAxes(hasHeartBeat, simplified);
 
+	// When we found that we don't have enough place to draw, the state was set to empty.
+	if (empty)
+		return;
+
 	int newMaxtime = get_maxtime(plotInfo);
 	if (calcMax || newMaxtime > maxtime)
 		maxtime = newMaxtime;

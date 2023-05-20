@@ -60,7 +60,6 @@ public:
 #ifndef SUBSURFACE_MOBILE
 	bool eventFilter(QObject *, QEvent *) override;
 #endif
-	std::unique_ptr<ProfileScene> profileScene;
 	State currentState;
 
 signals:
