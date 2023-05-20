@@ -253,7 +253,7 @@ Item {
 						// before realizing that this is actually a pinch/zoom. So let's reset this
 						// just in case
 						qmlProfile.opacity = 1.0
-						if (manager.verboseEnabebled)
+						if (manager.verboseEnabled)
 							manager.appendTextToLog("pinch started w/ previousScale " + qmlProfile.lastScale)
 					}
 					onPinchUpdated: {
