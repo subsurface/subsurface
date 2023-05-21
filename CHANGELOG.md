@@ -1,3 +1,4 @@
+export: fix bug resulting in invalid CSV for '""' in 'CSV summary dive details'
 desktop: add support for multiple tanks to the profile ruler
 export: change format produced by 'CSV summary dive details' from TSV (tab separated) to CSV
 desktop: add function to merge dive site into site selected in list
