@@ -282,7 +282,7 @@ static void calculate_max_limits_new(const struct dive *dive, const struct divec
 		int mbar_end = get_cylinder(dive, cyl)->end.mbar;
 		if (mbar_start > maxpressure)
 			maxpressure = mbar_start;
-		if (mbar_end < minpressure)
+		if (mbar_end && mbar_end < minpressure)
 			minpressure = mbar_end;
 	}
 
