@@ -305,19 +305,22 @@ static void calculate_max_limits_new(const struct dive *dive, const struct divec
 
 		while (--i >= 0) {
 			int depth = s->depth.mm;
-			int pressure = s->pressure[0].mbar;
 			int temperature = s->temperature.mkelvin;
 			int heartbeat = s->heartbeat;
+
+			for (int sensor = 0; sensor < MAX_SENSORS; ++sensor) {
+				int pressure = s->pressure[sensor].mbar;
+				if (pressure && pressure < minpressure)
+					minpressure = pressure;
+				if (pressure > maxpressure)
+					maxpressure = pressure;
+			}
 
 			if (!mintemp && temperature < mintemp)
 				mintemp = temperature;
 			if (temperature > maxtemp)
 				maxtemp = temperature;
 
-			if (pressure && pressure < minpressure)
-				minpressure = pressure;
-			if (pressure > maxpressure)
-				maxpressure = pressure;
 			if (heartbeat > maxhr)
 				maxhr = heartbeat;
 			if (heartbeat && heartbeat < minhr)
