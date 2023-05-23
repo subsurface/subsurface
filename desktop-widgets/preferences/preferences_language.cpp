@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QSortFilterProxyModel>
+#include <QCompleter>
 
 #include "qt-models/models.h"
 
@@ -28,12 +29,14 @@ PreferencesLanguage::PreferencesLanguage() : AbstractPreferencesWidget(tr("Langu
 	dateFormatShortMap.insert("yyyy-MM-dd", "yy-M-d");
 	foreach (QString format, dateFormatShortMap.keys())
 		ui->dateFormatEntry->addItem(format);
+	ui->dateFormatEntry->completer()->setCaseSensitivity(Qt::CaseSensitive);
 	connect(ui->dateFormatEntry, SIGNAL(currentIndexChanged(const QString&)),
 		this, SLOT(dateFormatChanged(const QString&)));
 
 	ui->timeFormatEntry->addItem("hh:mm");
 	ui->timeFormatEntry->addItem("h:mm AP");
 	ui->timeFormatEntry->addItem("hh:mm AP");
+	ui->timeFormatEntry->completer()->setCaseSensitivity(Qt::CaseSensitive);
 }
 
 PreferencesLanguage::~PreferencesLanguage()
@@ -94,15 +97,15 @@ void PreferencesLanguage::syncSettings()
 	// Therefore, refresh the UI fields to give the user a visual feedback of the new formats.
 	refreshSettings();
 
-	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString");
-	QRegularExpression tfillegalchars("[^hHmszaApPt\\s:;\\.,]");
-	if (tfillegalchars.match(ui->timeFormatEntry->currentText()).hasMatch())
+	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended. To avoid this warning wrap the literal parts in quotes (').\nSee https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString");
+	QRegularExpression timeStandardFormat("^([hHmszaApP\\s:\\.]|'[^']*')*$");
+	if (!timeStandardFormat.match(ui->timeFormatEntry->currentText()).hasMatch())
 		QMessageBox::warning(this, tr("Literal characters"),
-			tr("Non-special character(s) in time format.\n") + qDateTimeWeb);
+			tr("Non-standard character(s) in time format.\n") + qDateTimeWeb);
 
-	QRegularExpression dfillegalchars("[^dMy/\\s:;\\.,\\-]");
-	if (dfillegalchars.match(ui->dateFormatEntry->currentText()).hasMatch() ||
-	    dfillegalchars.match(ui->shortDateFormatEntry->text()).hasMatch())
+	QRegularExpression dateStandardFormat("^([dMy\\s/\\.,\\-]|'[^']*')*$");
+	if (!dateStandardFormat.match(ui->dateFormatEntry->currentText()).hasMatch() ||
+	    !dateStandardFormat.match(ui->shortDateFormatEntry->text()).hasMatch())
 		QMessageBox::warning(this, tr("Literal characters"),
-			tr("Non-special character(s) in date format.\n") + qDateTimeWeb);
+			tr("Non-standard character(s) in date format.\n") + qDateTimeWeb);
 }
