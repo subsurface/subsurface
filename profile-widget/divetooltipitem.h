@@ -25,11 +25,6 @@ class ToolTipItem : public QObject, public RoundRectItem {
 	Q_PROPERTY(QRectF rect READ rect WRITE setRect)
 
 public:
-	enum Status {
-		COLLAPSED,
-		EXPANDED
-	};
-
 	explicit ToolTipItem(QGraphicsItem *parent = 0);
 	~ToolTipItem();
 
@@ -49,7 +44,6 @@ private:
 	QVector<ToolTip> toolTips;
 	ToolTip entryToolTip;
 	QGraphicsSimpleTextItem *title;
-	Status status;
 	QPixmap tissues;
 	QPainter painter;
 	QRectF rectangle;
@@ -61,10 +55,7 @@ private:
 	QList<QGraphicsItem*> oldSelection;
 
 	void addToolTip(const QString &toolTip, const QPixmap &pixmap);
-	void collapse();
-	void expand();
 	void clear();
-	bool isExpanded() const;
 	void persistPos() const;
 	void updateTitlePosition();
 };
