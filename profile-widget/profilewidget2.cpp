@@ -230,6 +230,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 	else
 		plotPicturesInternal(d, flags & RenderFlags::Instant);
 
+	toolTipItem->readPos();
 	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 #endif
 
@@ -422,7 +423,6 @@ void ProfileWidget2::setProfileState()
 	setBackgroundBrush(getColor(::BACKGROUND, profileScene->isGrayscale));
 
 #ifndef SUBSURFACE_MOBILE
-	toolTipItem->readPos();
 	toolTipItem->setVisible(true);
 	rulerItem->setVisible(prefs.rulergraph);
 	mouseFollowerHorizontal->setVisible(false);

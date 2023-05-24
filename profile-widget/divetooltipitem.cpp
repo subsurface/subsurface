@@ -114,8 +114,6 @@ void ToolTipItem::persistPos() const
 void ToolTipItem::readPos()
 {
 	QPointF value = qPrefDisplay::tooltip_position();
-	if (!scene()->sceneRect().contains(value))
-		value = QPointF(0, 0);
 	setPos(value);
 }
 
