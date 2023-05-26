@@ -632,8 +632,8 @@ TemplatePage {
 				}
 				TemplateSpinBox {
 					id: gfLow
-					from: 1
-					to: 100
+					from: 10
+					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gflow
 					textFromValue: function (value, locale) {
@@ -649,8 +649,8 @@ TemplatePage {
 				}
 				TemplateSpinBox {
 					id: gfHigh
-					from: 1
-					to: 100
+					from: 10
+					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gfhigh
 					textFromValue: function (value, locale) {

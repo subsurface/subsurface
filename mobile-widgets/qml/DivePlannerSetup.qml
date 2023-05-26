@@ -227,8 +227,8 @@ TemplatePage {
 					leftPadding: Kirigami.Units.smallSpacing * 2
 				}
 				TemplateSpinBox {
-					from: 1
-					to: 100
+					from: 10
+					to: 150
 					stepSize: 1
 					value: Backend.gflow
 					textFromValue: function (value, locale) {
@@ -244,8 +244,8 @@ TemplatePage {
 					leftPadding: Kirigami.Units.smallSpacing * 2
 				}
 				TemplateSpinBox {
-					from: 1
-					to: 100
+					from: 10
+					to: 150
 					stepSize: 1
 					value: Backend.gfhigh
 					textFromValue: function (value, locale) {
