@@ -585,16 +585,16 @@ TemplatePage {
 						PrefDisplay.singleColumnPortrait = checked
 					}
 				}
-                TemplateLabel {
-                    text: qsTr("Depth line based on ×3 intervals")
-                }
-                SsrfSwitch {
-                    checked: PrefDisplay.three_m_based_grid
-                    onClicked: {
-                        PrefDisplay.three_m_based_grid = checked
-                        rootItem.settingsChanged()
-                    }
-                }
+		TemplateLabel {
+		    text: qsTr("Depth line based on ×3 intervals")
+		}
+		SsrfSwitch {
+		    checked: PrefDisplay.three_m_based_grid
+		    onClicked: {
+			PrefDisplay.three_m_based_grid = checked
+			rootItem.settingsChanged()
+		    }
+		}
 				TemplateLine {
 					visible: sectionAdvanced.isExpanded
 					Layout.columnSpan: 2
@@ -630,12 +630,16 @@ TemplatePage {
 				TemplateLabel {
 					text: qsTr("GFLow")
 				}
-				TemplateTextField {
+				TemplateSpinBox {
 					id: gfLow
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-					text: PrefTechnicalDetails.gflow
-					inputMask: "99"
-					onEditingFinished: {
+					from: 1
+					to: 100
+					stepSize: 1
+					value: PrefTechnicalDetails.gflow
+					textFromValue: function (value, locale) {
+						return value + "%"
+					}
+					onValueModified: {
 						PrefTechnicalDetails.gflow = gfLow.text
 						rootItem.settingsChanged()
 					}
@@ -643,12 +647,16 @@ TemplatePage {
 				TemplateLabel {
 					text: qsTr("GFHigh")
 				}
-				TemplateTextField {
+				TemplateSpinBox {
 					id: gfHigh
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-					text: PrefTechnicalDetails.gfhigh
-					inputMask: "99"
-					onEditingFinished: {
+					from: 1
+					to: 100
+					stepSize: 1
+					value: PrefTechnicalDetails.gfhigh
+					textFromValue: function (value, locale) {
+						return value + "%"
+					}
+					onValueModified: {
 						PrefTechnicalDetails.gfhigh = gfHigh.text
 						rootItem.settingsChanged()
 					}

@@ -228,7 +228,7 @@ TemplatePage {
 				}
 				TemplateSpinBox {
 					from: 1
-					to: 99
+					to: 100
 					stepSize: 1
 					value: Backend.gflow
 					textFromValue: function (value, locale) {
@@ -245,7 +245,7 @@ TemplatePage {
 				}
 				TemplateSpinBox {
 					from: 1
-					to: 99
+					to: 100
 					stepSize: 1
 					value: Backend.gfhigh
 					textFromValue: function (value, locale) {
