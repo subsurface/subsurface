@@ -1511,9 +1511,8 @@ void compare_samples(const struct dive *d, const struct plot_info *pi, int idx1,
 	char *buf2 = malloc(bufsize);
 	int avg_speed, max_asc_speed, max_desc_speed;
 	int delta_depth, avg_depth, max_depth, min_depth;
-	int bar_used, last_pressure, next_pressure, pressurevalue;
+	int pressurevalue;
 	int last_sec, delta_time;
-	bool crossed_tankchange = false;
 
 	double depthvalue, speedvalue;
 
@@ -1544,10 +1543,15 @@ void compare_samples(const struct dive *d, const struct plot_info *pi, int idx1,
 	avg_depth = 0;
 	max_depth = 0;
 	min_depth = INT_MAX;
-	bar_used = 0;
 
 	last_sec = start->sec;
-	last_pressure = get_plot_pressure(pi, idx1, 0);
+
+	volume_t cylinder_volume = { .mliter = 0, };
+	int *start_pressures = calloc((size_t)pi->nr_cylinders, sizeof(int));
+	int *last_pressures = calloc((size_t)pi->nr_cylinders, sizeof(int));
+	int *bar_used = calloc((size_t)pi->nr_cylinders, sizeof(int));
+	int *volumes_used = calloc((size_t)pi->nr_cylinders, sizeof(int));
+	bool *cylinder_is_used = calloc((size_t)pi->nr_cylinders, sizeof(bool));
 
 	data = start;
 	for (int i = idx1; i < idx2; ++i) {
@@ -1567,14 +1571,36 @@ void compare_samples(const struct dive *d, const struct plot_info *pi, int idx1,
 			min_depth = data->depth;
 		if (data->depth > max_depth)
 			max_depth = data->depth;
-		/* Try to detect gas changes - this hack might work for some side mount scenarios? */
-		next_pressure = get_plot_pressure(pi, i, 0);
-		if (next_pressure < last_pressure + 2000)
-			bar_used += last_pressure - next_pressure;
+
+		for (unsigned cylinder_index = 0; cylinder_index < pi->nr_cylinders; cylinder_index++) {
+			int next_pressure = get_plot_pressure(pi, i, cylinder_index);
+			if (next_pressure && !start_pressures[cylinder_index])
+				start_pressures[cylinder_index] = next_pressure;
+
+			if (start_pressures[cylinder_index]) {
+				if (last_pressures[cylinder_index]) {
+					bar_used[cylinder_index] += last_pressures[cylinder_index] - next_pressure;
+
+					cylinder_t *cyl = get_cylinder(d, cylinder_index);
+
+					volumes_used[cylinder_index] += gas_volume(cyl, (pressure_t){ last_pressures[cylinder_index] }) - gas_volume(cyl, (pressure_t){ next_pressure });
+				}
+
+				// check if the gas in this cylinder is being used
+				if (next_pressure < start_pressures[cylinder_index] - 1000 && !cylinder_is_used[cylinder_index]) {
+					cylinder_is_used[cylinder_index] = true;
+				}
+			}
+
+			last_pressures[cylinder_index] = next_pressure;
+		}
 
 		last_sec = data->sec;
-		last_pressure = next_pressure;
 	}
+
+	free(start_pressures);
+	free(last_pressures);
+
 	avg_depth /= stop->sec - start->sec;
 	avg_speed /= stop->sec - start->sec;
 
@@ -1607,39 +1633,52 @@ void compare_samples(const struct dive *d, const struct plot_info *pi, int idx1,
 
 	speedvalue = get_vertical_speed_units(abs(avg_speed), NULL, &vertical_speed_unit);
 	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s øV:%.2f%s"), buf2, speedvalue, vertical_speed_unit);
-	memcpy(buf2, buf, bufsize);
 
-	/* Only print if gas has been used */
-	if (bar_used && d->cylinders.nr > 0) {
-		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
-		memcpy(buf2, buf, bufsize);
-		snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ΔP:%d%s"), buf2, pressurevalue, pressure_unit);
-		cylinder_t *cyl = get_cylinder(d, 0);
-		/* if we didn't cross a tank change and know the cylidner size as well, show SAC rate */
-		if (!crossed_tankchange && cyl->type.size.mliter) {
-			double volume_value;
-			int volume_precision;
-			const char *volume_unit;
-			int first = idx1;
-			int last = idx2;
-			while (first < last && get_plot_pressure(pi, first, 0) == 0)
-				first++;
-			while (last > first && get_plot_pressure(pi, last, 0) == 0)
-				last--;
+	int total_bar_used = 0;
+	int total_volume_used = 0;
+	bool cylindersizes_are_identical = true;
+	bool sac_is_determinable = true;
+	for (unsigned cylinder_index = 0; cylinder_index < pi->nr_cylinders; cylinder_index++)
+		if (cylinder_is_used[cylinder_index]) {
+			total_bar_used += bar_used[cylinder_index];
+			total_volume_used += volumes_used[cylinder_index];
 
-			pressure_t first_pressure = { get_plot_pressure(pi, first, 0) };
-			pressure_t stop_pressure = { get_plot_pressure(pi, last, 0) };
-			int volume_used = gas_volume(cyl, first_pressure) - gas_volume(cyl, stop_pressure);
-
-			/* Mean pressure in ATM */
-			double atm = depth_to_atm(avg_depth, d);
-
-			/* milliliters per minute */
-			int sac = lrint(volume_used / atm * 60 / delta_time);
-			memcpy(buf2, buf, bufsize);
-			volume_value = get_volume_units(sac, &volume_precision, &volume_unit);
-			snprintf_loc(buf, bufsize, translate("gettextFromC", "%s SAC:%.*f%s/min"), buf2, volume_precision, volume_value, volume_unit);
+			cylinder_t *cyl = get_cylinder(d, cylinder_index);
+			if (cyl->type.size.mliter) {
+				if (cylinder_volume.mliter && cylinder_volume.mliter != cyl->type.size.mliter) {
+					cylindersizes_are_identical = false;
+				} else {
+					cylinder_volume.mliter = cyl->type.size.mliter;
+				}
+			} else {
+				sac_is_determinable = false;
+			}
 		}
+	free(bar_used);
+	free(volumes_used);
+	free(cylinder_is_used);
+
+	// No point printing 'bar used' if we know it's meaningless because cylinders of different size were used
+	if (cylindersizes_are_identical && total_bar_used) {
+			pressurevalue = get_pressure_units(total_bar_used, &pressure_unit);
+			memcpy(buf2, buf, bufsize);
+			snprintf_loc(buf, bufsize, translate("gettextFromC", "%s ΔP:%d%s"), buf2, pressurevalue, pressure_unit);
+	}
+
+	// We can't calculate the SAC if the volume for some of the cylinders used is unknown
+	if (sac_is_determinable && total_volume_used) {
+		double volume_value;
+		int volume_precision;
+		const char *volume_unit;
+
+		/* Mean pressure in ATM */
+		double atm = depth_to_atm(avg_depth, d);
+
+		/* milliliters per minute */
+		int sac = lrint(total_volume_used / atm * 60 / delta_time);
+		memcpy(buf2, buf, bufsize);
+		volume_value = get_volume_units(sac, &volume_precision, &volume_unit);
+		snprintf_loc(buf, bufsize, translate("gettextFromC", "%s SAC:%.*f%s/min"), buf2, volume_precision, volume_value, volume_unit);
 	}
 
 	free(buf2);

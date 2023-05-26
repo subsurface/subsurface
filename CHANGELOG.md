@@ -1,3 +1,4 @@
+desktop: add support for multiple tanks to the profile ruler
 export: change format produced by 'CSV summary dive details' from TSV (tab separated) to CSV
 desktop: add function to merge dive site into site selected in list
 import: add option to synchronise dive computer time when downloading dives
