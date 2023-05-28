@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <QString>
 #include <QImageReader>
+#include <QSvgRenderer>
 #include <QDataStream>
 #include <QPainter>
 
@@ -153,12 +154,18 @@ Thumbnailer::Thumbnail Thumbnailer::getHashedImage(const QString &filename, bool
 	return thumbnail;
 }
 
-Thumbnailer::Thumbnailer() : failImage(renderSVGIcon(":filter-close", maxThumbnailSize(), false)), // TODO: Don't misuse filter close icon
-			     dummyImage(renderSVGIcon(":camera-icon", maxThumbnailSize(), false)),
-			     videoImage(renderSVGIcon(":video-icon", maxThumbnailSize(), false)),
-			     videoOverlayImage(renderSVGIconWidth(":video-overlay", maxThumbnailSize())),
-			     unknownImage(renderSVGIcon(":unknown-icon", maxThumbnailSize(), false))
+Thumbnailer::Thumbnailer() : failImage(QPixmap(":filter-close").scaled(maxThumbnailSize(), maxThumbnailSize(), Qt::KeepAspectRatio).toImage()), // TODO: Don't misuse filter close icon
+			     dummyImage(QPixmap(":camera-icon").scaled(maxThumbnailSize(), maxThumbnailSize(), Qt::KeepAspectRatio).toImage()),
+			     videoImage(QPixmap(":video-icon").scaled(maxThumbnailSize(), maxThumbnailSize(), Qt::KeepAspectRatio).toImage()),
+			     unknownImage(QPixmap(":unknown-icon").scaled(maxThumbnailSize(), maxThumbnailSize(), Qt::KeepAspectRatio).toImage())
 {
+	// We have to do this little song and dance because QSvgRenderer produces artifacts when used with Qt::KeepAspectRatio
+	QSvgRenderer videoOverlayRenderer{QString(":video-overlay")};
+	QSize svgSize = videoOverlayRenderer.defaultSize();
+	videoOverlayImage = QImage(maxThumbnailSize(), maxThumbnailSize() * svgSize.height() / svgSize.width(), QImage::Format_ARGB32);
+	videoOverlayImage.fill(Qt::transparent);
+	QPainter painter(&videoOverlayImage);
+	videoOverlayRenderer.render(&painter);
 	// Currently, we only process one image at a time. Stefan Fuchs reported problems when
 	// calculating multiple thumbnails at once and this hopefully helps.
 	pool.setMaxThreadCount(1);

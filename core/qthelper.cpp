@@ -36,8 +36,6 @@
 #include <QFont>
 #include <QApplication>
 #include <QTextDocument>
-#include <QPainter>
-#include <QSvgRenderer>
 #include <cstdarg>
 #include <cstdint>
 #ifdef Q_OS_UNIX
@@ -1686,27 +1684,4 @@ std::vector<int> get_cylinder_map_for_add(int count, int n)
 extern "C" void emit_reset_signal()
 {
 	emit diveListNotifier.dataReset();
-}
-
-QImage renderSVGIcon(const char *id, int size, bool transparent)
-{
-	QImage res(size, size, transparent ? QImage::Format_ARGB32 : QImage::Format_RGB32);
-	res.fill(transparent ? Qt::transparent : Qt::white);
-	QSvgRenderer svg{QString(id)};
-	QPainter painter(&res);
-	svg.render(&painter);
-	return res;
-}
-
-// As renderSVGIcon(), but render to a fixed width and scale height accordingly
-// and have a transparent background.
-QImage renderSVGIconWidth(const char *id, int size)
-{
-	QSvgRenderer svg{QString(id)};
-	QSize svgSize = svg.defaultSize();
-	QImage res(size, size * svgSize.height() / svgSize.width(), QImage::Format_ARGB32);
-	res.fill(Qt::transparent);
-	QPainter painter(&res);
-	svg.render(&painter);
-	return res;
 }
