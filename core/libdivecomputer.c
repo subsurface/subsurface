@@ -94,11 +94,6 @@ const char *errmsg (dc_status_t rc)
 	}
 }
 
-static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
-{
-	return dc_parser_new(parser, devdata->device);
-}
-
 static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, unsigned int ngases)
 {
 	static bool shown_warning = false;
@@ -167,7 +162,12 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				cyl.type.workingpressure.mbar = lrint(tank.workpressure * 1000);
 
 				cyl.cylinder_use = OC_GAS;
-#ifdef DC_TANKINFO_CC_O2
+#if DC_VERSION_CHECK(0,9,0)
+				if (tank.usage == DC_USAGE_DILUENT)
+					cyl.cylinder_use = DILUENT;
+				else if (tank.usage == DC_USAGE_OXYGEN)
+					cyl.cylinder_use = OXYGEN;
+#elif defined(DC_TANKINFO_CC_O2)
 				// libdivecomputer treats these as independent, but a tank cannot be used for diluent and O2 at the same time
 				if (tank.type & DC_TANKINFO_CC_DILUENT)
 					cyl.cylinder_use = DILUENT;
@@ -175,7 +175,9 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 					cyl.cylinder_use = OXYGEN;
 #endif
 
-#ifdef DC_TANKINFO_IMPERIAL
+#if DC_VERSION_CHECK(0,9,0)
+				if (tank.type == DC_TANKVOLUME_IMPERIAL) {
+#elif defined(DC_TANKINFO_IMPERIAL)
 				if (tank.type & DC_TANKINFO_IMPERIAL) {
 #else
 				if (tank.type == DC_TANKVOLUME_IMPERIAL) {
@@ -322,8 +324,15 @@ static void handle_gasmix(struct divecomputer *dc, struct sample *sample, int id
 }
 
 void
+#if DC_VERSION_CHECK(0,9,0)
+sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata)
+#else
 sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
+#endif
 {
+#if DC_VERSION_CHECK(0,9,0)
+	dc_sample_value_t value = *pvalue;
+#endif
 	static unsigned int nsensor = 0;
 	struct divecomputer *dc = userdata;
 	struct sample *sample;
@@ -348,7 +357,11 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		// Create a new sample.
 		// Mark depth as negative
 		sample = prepare_sample(dc);
+#if DC_VERSION_CHECK(0,9,0)
+		sample->time.seconds = value.time / 1000;
+#else
 		sample->time.seconds = value.time;
+#endif
 		sample->depth.mm = -1;
 		// The current sample gets some sticky values
 		// that may have been around from before, these
@@ -407,7 +420,11 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		break;
 	case DC_SAMPLE_PPO2:
 		if (nsensor < 3)
+#if DC_VERSION_CHECK(0,9,0)
+			sample->o2sensor[nsensor].mbar = lrint(value.ppo2.value * 1000);
+#else
 			sample->o2sensor[nsensor].mbar = lrint(value.ppo2 * 1000);
+#endif
 		else
 			report_error("%d is more o2 sensors than we can handle", nsensor);
 		nsensor++;
@@ -434,6 +451,9 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample->stoptime.seconds = stoptime = value.deco.time;
 		}
+#if DC_VERSION_CHECK(0,9,0)
+		sample->tts.seconds = value.deco.tts;
+#endif
 	default:
 		break;
 	}
@@ -787,17 +807,23 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	import_dive_number++;
 
-	rc = create_parser(devdata, &parser);
+#if DC_VERSION_CHECK(0,9,0)
+	rc = dc_parser_new(&parser, devdata->device, data, size);
+#else
+	rc = dc_parser_new(&parser, devdata->device);
+#endif
 	if (rc != DC_STATUS_SUCCESS) {
 		download_error(translate("gettextFromC", "Unable to create parser for %s %s"), devdata->vendor, devdata->product);
 		return true;
 	}
 
+#if !DC_VERSION_CHECK(0,9,0)
 	rc = dc_parser_set_data(parser, data, size);
 	if (rc != DC_STATUS_SUCCESS) {
 		download_error(translate("gettextFromC", "Error registering the data"));
 		goto error_exit;
 	}
+#endif
 
 	dive = alloc_dive();
 
@@ -1575,7 +1601,11 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 	case DC_FAMILY_HW_OSTC:
 	case DC_FAMILY_HW_FROG:
 	case DC_FAMILY_HW_OSTC3:
+#if DC_VERSION_CHECK(0,9,0)
+		rc = dc_parser_new2(&parser, data->context, data->descriptor, buffer, size);
+#else
 		rc = dc_parser_new2(&parser, data->context, data->descriptor, 0, 0);
+#endif
 		break;
 	default:
 		report_error("Device type not handled!");
@@ -1586,12 +1616,14 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 		dc_parser_destroy (parser);
 		return rc;
 	}
+#if !DC_VERSION_CHECK(0,9,0)
 	rc = dc_parser_set_data(parser, buffer, size);
 	if (rc != DC_STATUS_SUCCESS) {
 		report_error("Error registering the data.");
 		dc_parser_destroy (parser);
 		return rc;
 	}
+#endif
 	// Do not parse Aladin/Memomouse headers as they are fakes
 	// Do not return on error, we can still parse the samples
 	if (dc_descriptor_get_type(data->descriptor) != DC_FAMILY_UWATEC_ALADIN && dc_descriptor_get_type(data->descriptor) != DC_FAMILY_UWATEC_MEMOMOUSE) {
