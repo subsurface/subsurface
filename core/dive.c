@@ -3254,12 +3254,20 @@ static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, i
 
 int depth_to_mbar(int depth, const struct dive *dive)
 {
-	return lrint(calculate_depth_to_mbarf(depth, dive->surface_pressure, dive->salinity));
+	return lrint(depth_to_mbarf(depth, dive));
 }
 
 double depth_to_mbarf(int depth, const struct dive *dive)
 {
-	return calculate_depth_to_mbarf(depth, dive->surface_pressure, dive->salinity);
+	// To downloaded and planned dives, use DC's values
+	int salinity = dive->dc.salinity;
+	pressure_t surface_pressure = dive->dc.surface_pressure;
+
+	if (is_manually_added_dc(&dive->dc)) { // To manual dives, salinity and pressure in another place...
+		surface_pressure = dive->surface_pressure;
+		salinity = dive->user_salinity;
+	}
+	return calculate_depth_to_mbarf(depth, surface_pressure, salinity);
 }
 
 double depth_to_bar(int depth, const struct dive *dive)
@@ -3278,20 +3286,26 @@ double depth_to_atm(int depth, const struct dive *dive)
  * take care of this, but the Uemis we support natively */
 int rel_mbar_to_depth(int mbar, const struct dive *dive)
 {
-	double specific_weight = salinity_to_specific_weight(SEAWATER_SALINITY);
-	if (dive->dc.salinity)
-		specific_weight = salinity_to_specific_weight(dive->dc.salinity);
+	// To downloaded and planned dives, use DC's salinity. Manual dives, use user's salinity
+	int salinity = is_manually_added_dc(&dive->dc) ? dive->user_salinity : dive->dc.salinity;
+	if (!salinity)
+		salinity = SEAWATER_SALINITY;
+
 	/* whole mbar gives us cm precision */
+	double specific_weight = salinity_to_specific_weight(salinity);
 	return (int)lrint(mbar / specific_weight);
 }
 
 int mbar_to_depth(int mbar, const struct dive *dive)
 {
-	pressure_t surface_pressure;
-	if (dive->surface_pressure.mbar)
-		surface_pressure = dive->surface_pressure;
-	else
+	// To downloaded and planned dives, use DC's pressure. Manual dives, use user's pressure
+	pressure_t surface_pressure = is_manually_added_dc(&dive->dc)
+		? dive->surface_pressure
+		: dive->dc.surface_pressure;
+
+	if (!surface_pressure.mbar)
 		surface_pressure.mbar = SURFACE_PRESSURE;
+		
 	return rel_mbar_to_depth(mbar - surface_pressure.mbar, dive);
 }
 

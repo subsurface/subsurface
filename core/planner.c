@@ -695,9 +695,20 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	set_gf(diveplan->gflow, diveplan->gfhigh);
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);
-	if (!diveplan->surface_pressure)
-		diveplan->surface_pressure = SURFACE_PRESSURE;
-	dive->surface_pressure.mbar = diveplan->surface_pressure;
+
+	if (!diveplan->surface_pressure) {
+		// Lets use dive's surface pressure in planner, if have one...
+		if (dive->dc.surface_pressure.mbar) { // First from DC...
+			diveplan->surface_pressure = dive->dc.surface_pressure.mbar;
+		}
+		else if (dive->surface_pressure.mbar) { // After from user...
+			diveplan->surface_pressure = dive->surface_pressure.mbar;
+		}
+		else {
+			diveplan->surface_pressure = SURFACE_PRESSURE;
+		}
+	}
+	
 	clear_deco(ds, dive->surface_pressure.mbar / 1000.0, true);
 	ds->max_bottom_ceiling_pressure.mbar = ds->first_ceiling_pressure.mbar = 0;
 	create_dive_from_plan(diveplan, dive, is_planner);

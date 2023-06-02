@@ -1,5 +1,6 @@
 desktop: added button to hide the infobox in the dive profile
 desktop: use persisted device information for the dive computer configuration
+core: fix bug using salinity and pressure values in mbar <-> depth conversion
 export: fix bug resulting in invalid CSV for '""' in 'CSV summary dive details'
 desktop: add support for multiple tanks to the profile ruler
 export: change format produced by 'CSV summary dive details' from TSV (tab separated) to CSV
