@@ -59,14 +59,14 @@
     <addaction name="actionCloudstorageopen"/>
     <addaction name="actionCloudstoragesave"/>
     <addaction name="actionCloudOnline"/>
-    <addaction name="separator"/>
     <addaction name="actionClose"/>
+    <addaction name="separator"/>
     <addaction name="actionExport"/>
     <addaction name="actionPrint"/>
-    <addaction name="actionPreferences"/>
-    <addaction name="separator"/>
     <addaction name="actionHash_images"/>
+    <addaction name="actionPreferences"/>
     <addaction name="actionConfigure_Dive_Computer"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuLog">
