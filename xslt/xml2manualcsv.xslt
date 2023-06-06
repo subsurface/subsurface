@@ -177,100 +177,84 @@
     </xsl:choose>
     <xsl:value-of select="$fs"/>
 
+    <!-- Cylinders -->
     <xsl:for-each select="cylinder">
-      <xsl:choose>
-        <xsl:when test="position() &lt;= $cylinders">
-          <xsl:call-template name="CsvEscape">
-            <xsl:with-param name="value">
-              <xsl:choose>
-                <xsl:when test="$units = 1">
-                  <xsl:value-of select="concat(format-number((substring-before(@size, ' ') div 14.7 * 3000) * 0.035315, '#.#'), '')"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="substring-before(@size, ' ')"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:with-param>
-	  </xsl:call-template>
-          <xsl:value-of select="$fs"/>
-          <xsl:call-template name="CsvEscape">
-            <xsl:with-param name="value">
-              <xsl:choose>
-                <xsl:when test="@start|@end != ''">
-                  <xsl:choose>
-                    <xsl:when test="$units = 1">
-                      <xsl:value-of select="concat(format-number((substring-before(@start, ' ') * 14.5037738007), '#'), '')"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="substring-before(@start, ' ')"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="$units = 1">
-                      <xsl:choose>
-                        <xsl:when test="substring-before(../divecomputer[1]/sample[@pressure]/@pressure, ' ') &gt; 0">
-                          <xsl:value-of select="concat(format-number((substring-before(../divecomputer[1]/sample[@pressure]/@pressure, ' ') * 14.5037738007), '#'), '')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="''"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure]/@pressure, ' ')"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:with-param>
-	  </xsl:call-template>
-          <xsl:value-of select="$fs"/>
-          <xsl:call-template name="CsvEscape">
-            <xsl:with-param name="value">
-              <xsl:choose>
-                <xsl:when test="@start|@end != ''">
-                  <xsl:choose>
-                    <xsl:when test="$units = 1">
-                      <xsl:value-of select="concat(format-number((substring-before(@end, ' ') * 14.5037738007), '#'), '')"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="substring-before(@end, ' ')"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-                    <xsl:when test="$units = 1">
-                      <xsl:choose>
-                        <xsl:when test="substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') &gt; 0">
-                          <xsl:value-of select="concat(format-number((substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') * 14.5037738007), '#'), '')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="''"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ')"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:with-param>
-	  </xsl:call-template>
-          <xsl:value-of select="$fs"/>
-          <xsl:call-template name="CsvEscape">
-            <xsl:with-param name="value" select="substring-before(@o2, '%')"/>
-          </xsl:call-template>
-          <xsl:value-of select="$fs"/>
-          <xsl:call-template name="CsvEscape">
-            <xsl:with-param name="value" select="substring-before(@he, '%')"/>
-          </xsl:call-template>
-          <xsl:value-of select="$fs"/>
-        </xsl:when>
-      </xsl:choose>
+      <xsl:call-template name="CsvEscape">
+        <xsl:with-param name="value">
+          <xsl:choose>
+            <xsl:when test="$units = 1">
+              <xsl:value-of select="concat(format-number((substring-before(@size, ' ') div 14.7 * 3000) * 0.035315, '#.#'), '')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="substring-before(@size, ' ')"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:with-param>
+      </xsl:call-template>
+      <xsl:value-of select="$fs"/>
+
+      <xsl:variable name="pressureAttribute" select="concat('pressure', position() - 1)"/>
+      <xsl:call-template name="CsvEscape">
+        <xsl:with-param name="value">
+          <xsl:choose>
+            <xsl:when test="@start != ''">
+              <xsl:call-template name="ConvertPressure">
+                <xsl:with-param name="pressureBar" select="@start"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:when test="substring-before(../divecomputer[1]/sample/@*[name() = $pressureAttribute], ' ') > 0">
+              <xsl:call-template name="ConvertPressure">
+                <xsl:with-param name="pressureBar" select="../divecomputer[1]/sample/@*[name() = $pressureAttribute]"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:when test="(position() = 1) and (substring-before(../divecomputer[1]/sample/@pressure, ' ') > 0)">
+              <xsl:call-template name="ConvertPressure">
+                <xsl:with-param name="pressureBar" select="../divecomputer[1]/sample/@pressure"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="''"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:with-param>
+      </xsl:call-template>
+      <xsl:value-of select="$fs"/>
+
+      <xsl:call-template name="CsvEscape">
+        <xsl:with-param name="value">
+          <xsl:choose>
+            <xsl:when test="@end != ''">
+              <xsl:call-template name="ConvertPressure">
+                <xsl:with-param name="pressureBar" select="@end"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:when test="substring-before(../divecomputer[1]/sample[@*[name() = $pressureAttribute]][last()]/@*[name() = $pressureAttribute], ' ') > 0">
+              <xsl:call-template name="ConvertPressure">
+                <xsl:with-param name="pressureBar" select="../divecomputer[1]/sample[@*[name() = $pressureAttribute]][last()]/@*[name() = $pressureAttribute]"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:when test="(position() = 1) and (substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') > 0)">
+              <xsl:call-template name="ConvertPressure">
+                <xsl:with-param name="pressureBar" select="../divecomputer[1]/sample[@pressure][last()]/@pressure"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="''"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:with-param>
+      </xsl:call-template>
+      <xsl:value-of select="$fs"/>
+
+      <xsl:call-template name="CsvEscape">
+        <xsl:with-param name="value" select="substring-before(@o2, '%')"/>
+      </xsl:call-template>
+      <xsl:value-of select="$fs"/>
+
+      <xsl:call-template name="CsvEscape">
+        <xsl:with-param name="value" select="substring-before(@he, '%')"/>
+      </xsl:call-template>
+      <xsl:value-of select="$fs"/>
     </xsl:for-each>
 
     <xsl:if test="count(cylinder) &lt; $cylinders">
@@ -291,25 +275,21 @@
       <xsl:otherwise>
         <xsl:call-template name="CsvEscape">
           <xsl:with-param name="value">
-            <xsl:if test="string-length(@divesiteid) &gt; 0">
-              <xsl:variable name="uuid">
-                <xsl:value-of select="@divesiteid" />
-              </xsl:variable>
+            <xsl:if test="string-length(@divesiteid) > 0">
+              <xsl:variable name="uuid" select="@divesiteid"/>
               <xsl:value-of select="//divesites/site[@uuid = $uuid]/@name"/>
             </xsl:if>
           </xsl:with-param>
-	</xsl:call-template>
+        </xsl:call-template>
         <xsl:value-of select="$fs"/>
         <xsl:call-template name="CsvEscape">
           <xsl:with-param name="value">
-            <xsl:if test="string-length(@divesiteid) &gt; 0">
-              <xsl:variable name="uuid">
-                <xsl:value-of select="@divesiteid" />
-              </xsl:variable>
+            <xsl:if test="string-length(@divesiteid) > 0">
+              <xsl:variable name="uuid" select="@divesiteid"/>
               <xsl:value-of select="//divesites/site[@uuid = $uuid]/@gps"/>
             </xsl:if>
           </xsl:with-param>
-	</xsl:call-template>
+        </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:value-of select="$fs"/>
@@ -367,6 +347,32 @@
     <xsl:value-of select="$lf"/>
   </xsl:template>
 
+  <!-- Convert pressure values to the correct units -->
+  <xsl:template name="ConvertPressure">
+    <xsl:param name="pressureBar"/>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="concat(format-number((substring-before($pressureBar, ' ') * 14.5037738007), '#'), '')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="substring-before($pressureBar, ' ')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Convert distance values to the correct units -->
+  <xsl:template name="ConvertDistance">
+    <xsl:param name="distanceM"/>
+    <xsl:choose>
+      <xsl:when test="$units = 1">
+        <xsl:value-of select="concat(format-number((substring-before($distanceM, ' ') div 0.3048), '#.##'), '')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="format-number(substring-before($distanceM, ' '), '#.##')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- Print the header -->
   <xsl:template name="printHeaders">
     <xsl:param name="cylinders"/>
@@ -393,11 +399,11 @@
     </xsl:call-template>
     <xsl:value-of select="$fs"/>
     <xsl:call-template name="CsvEscape">
-	    <xsl:with-param name="value" select="concat('sac [', $volumeUnits, '/min]')"/>
+            <xsl:with-param name="value" select="concat('sac [', $volumeUnits, '/min]')"/>
     </xsl:call-template>
     <xsl:value-of select="$fs"/>
     <xsl:call-template name="CsvEscape">
-	    <xsl:with-param name="value" select="concat('maxdepth [', $distanceUnits, ']')"/>
+            <xsl:with-param name="value" select="concat('maxdepth [', $distanceUnits, ']')"/>
     </xsl:call-template>
     <xsl:value-of select="$fs"/>
     <xsl:call-template name="CsvEscape">
@@ -477,23 +483,23 @@
 
     <xsl:if test="$index &lt;= $count">
       <xsl:call-template name="CsvEscape">
-	      <xsl:with-param name="value" select="concat('cylinder size (', $index, ') [', $volumeUnits, ']')"/>
+              <xsl:with-param name="value" select="concat('cylinder size (', $index, ') [', $volumeUnits, ']')"/>
       </xsl:call-template>
       <xsl:value-of select="$fs"/>
       <xsl:call-template name="CsvEscape">
-	      <xsl:with-param name="value" select="concat('startpressure (', $index, ') [', $pressureUnits, ']')"/>
+              <xsl:with-param name="value" select="concat('startpressure (', $index, ') [', $pressureUnits, ']')"/>
       </xsl:call-template>
       <xsl:value-of select="$fs"/>
       <xsl:call-template name="CsvEscape">
-	      <xsl:with-param name="value" select="concat('endpressure (', $index, ') [', $pressureUnits, ']')"/>
+              <xsl:with-param name="value" select="concat('endpressure (', $index, ') [', $pressureUnits, ']')"/>
       </xsl:call-template>
       <xsl:value-of select="$fs"/>
       <xsl:call-template name="CsvEscape">
-	      <xsl:with-param name="value" select="concat('o2 (', $index, ') [%]')"/>
+              <xsl:with-param name="value" select="concat('o2 (', $index, ') [%]')"/>
       </xsl:call-template>
       <xsl:value-of select="$fs"/>
       <xsl:call-template name="CsvEscape">
-	      <xsl:with-param name="value" select="concat('he (', $index, ') [%]')"/>
+              <xsl:with-param name="value" select="concat('he (', $index, ') [%]')"/>
       </xsl:call-template>
       <xsl:value-of select="$fs"/>
 
@@ -510,27 +516,17 @@
   <xsl:template match="divecomputer/depth">
     <xsl:call-template name="CsvEscape">
       <xsl:with-param name="value">
-        <xsl:choose>
-          <xsl:when test="$units = 1">
-            <xsl:value-of select="concat(format-number((substring-before(@max, ' ') div 0.3048), '#.##'), '')"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="substring-before(@max, ' ')"/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:call-template name="ConvertDistance">
+          <xsl:with-param name="distanceM" select="@max"/>
+        </xsl:call-template>
       </xsl:with-param>
     </xsl:call-template>
     <xsl:value-of select="$fs"/>
     <xsl:call-template name="CsvEscape">
       <xsl:with-param name="value">
-        <xsl:choose>
-          <xsl:when test="$units = 1">
-            <xsl:value-of select="concat(format-number((substring-before(@mean, ' ') div 0.3048), '#.##'), '')"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="format-number(substring-before(@mean, ' '), '#.##')"/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:call-template name="ConvertDistance">
+          <xsl:with-param name="distanceM" select="@mean"/>
+        </xsl:call-template>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -543,7 +539,7 @@
       <xsl:with-param name="value">
         <xsl:choose>
           <xsl:when test="$units = 1">
-            <xsl:if test="substring-before($temp, ' ') &gt; 0">
+            <xsl:if test="substring-before($temp, ' ') > 0">
               <xsl:value-of select="concat(format-number((substring-before($temp, ' ') * 1.8) + 32, '0.0'), '')"/>
             </xsl:if>
           </xsl:when>
@@ -558,7 +554,7 @@
   <!-- Fill in non-existent cylinder info -->
   <xsl:template name="printEmptyCylinders">
     <xsl:param name="count"/>
-    <xsl:if test="$count &gt; 0">
+    <xsl:if test="$count > 0">
       <xsl:value-of select="$fs"/>
       <xsl:value-of select="$fs"/>
       <xsl:value-of select="$fs"/>
