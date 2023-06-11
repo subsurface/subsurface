@@ -100,8 +100,7 @@ void AbstractProfilePolygonItem::makePolygon(int fromIn, int toIn)
 
 DiveProfileItem::DiveProfileItem(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
 				 const DiveCartesianAxis &vAxis, DataAccessor accessor, double dpr) :
-	AbstractProfilePolygonItem(pInfo, hAxis, vAxis, accessor, dpr),
-	show_reported_ceiling(0), reported_ceiling_in_red(0)
+	AbstractProfilePolygonItem(pInfo, hAxis, vAxis, accessor, dpr)
 {
 }
 
@@ -145,8 +144,6 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 	if (polygon().isEmpty())
 		return;
 
-	show_reported_ceiling = prefs.dcceiling;
-	reported_ceiling_in_red = prefs.redceiling;
 	profileColor = pInfo.waypoint_above_ceiling ? QColor(Qt::red)
 						    : getColor(DEPTH_BOTTOM);
 

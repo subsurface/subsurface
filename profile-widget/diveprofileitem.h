@@ -59,8 +59,6 @@ public:
 	int maxCeiling(int row);
 
 private:
-	unsigned int show_reported_ceiling;
-	unsigned int reported_ceiling_in_red;
 	QColor profileColor;
 };
 
