@@ -82,7 +82,6 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 	int index = -1, entries = 0;
 	DIR *dp = NULL;
 	struct dirent *ep = NULL;
-	size_t i;
 	if (transport & DC_TRANSPORT_SERIAL) {
 		// on Mac we always support FTDI now
 		callback("FTDI", userdata);
