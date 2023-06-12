@@ -72,7 +72,7 @@ slots:
 	void resetSettings();
 	void configMessage(QString msg);
 	void configError(QString err);
-	void on_cancel_clicked();
+	void on_close_clicked();
 	void on_saveSettingsPushButton_clicked();
 	void deviceDetailsReceived(DeviceDetails *newDeviceDetails);
 	void reloadValues();
@@ -114,10 +114,6 @@ private:
 	void reloadValuesOSTC();
 	void reloadValuesSuuntoVyper();
 	void reloadValuesOSTC4();
-
-	QString selected_vendor;
-	QString selected_product;
-	bool fw_upgrade_possible;
 
 #ifdef BT_SUPPORT
 	BtDeviceSelectionDialog *btDeviceSelectionDialog;

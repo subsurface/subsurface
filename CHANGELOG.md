@@ -1,3 +1,4 @@
+desktop: use persisted device information for the dive computer configuration
 export: fix bug resulting in invalid CSV for '""' in 'CSV summary dive details'
 desktop: add support for multiple tanks to the profile ruler
 export: change format produced by 'CSV summary dive details' from TSV (tab separated) to CSV

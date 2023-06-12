@@ -42,9 +42,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="bluetoothMode">
+        <widget class="QPushButton" name="connectBluetoothButton">
          <property name="text">
-          <string>Connect via Bluetooth</string>
+          <string>Select Bluetooth Device</string>
          </property>
         </widget>
        </item>
@@ -182,9 +182,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="cancel">
+      <widget class="QPushButton" name="close">
        <property name="text">
-        <string>Cancel</string>
+        <string>Close</string>
        </property>
       </widget>
      </item>
@@ -3972,7 +3972,7 @@
   <tabstop>saveSettingsPushButton</tabstop>
   <tabstop>backupButton</tabstop>
   <tabstop>restoreBackupButton</tabstop>
-  <tabstop>cancel</tabstop>
+  <tabstop>close</tabstop>
  </tabstops>
  <resources>
   <include location="../subsurface.qrc"/>
