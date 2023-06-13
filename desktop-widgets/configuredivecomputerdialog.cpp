@@ -99,31 +99,19 @@ void GasTypeComboBoxItemDelegate::setModelData(QWidget *editor, QAbstractItemMod
 		QStyledItemDelegate::setModelData(editor, model, index);
 }
 
-class DiveComputerEntry
-{
-public:
-	DiveComputerEntry(QString vendor, QString product, unsigned int transport, bool fwUpgradePossible) :
-		vendorInt(vendor), productInt(product), transportInt(transport), fwUpgradePossibleInt(fwUpgradePossible) {}
-
-	QString vendor() const { return vendorInt; }
-	QString product() const { return productInt; }
-
-	unsigned int transport() const { return transportInt; }
-	bool fwUpgradePossible() const { return fwUpgradePossibleInt; }
-private:
-	QString vendorInt;
-	QString productInt;
-
-	unsigned int transportInt;
-	bool fwUpgradePossibleInt;
+struct DiveComputerEntry {
+	QString vendor;
+	QString product;
+	unsigned int transport;
+	bool fwUpgradePossible;
 };
 
-static std::array<DiveComputerEntry, 4> supportedDiveComputers = {
-	DiveComputerEntry("Heinrichs Weikamp", "OSTC 2N", DC_TRANSPORT_SERIAL, true),
-	DiveComputerEntry("Heinrichs Weikamp", "OSTC Plus", DC_TRANSPORT_BLUETOOTH, true),
-	DiveComputerEntry("Heinrichs Weikamp", "OSTC 4", DC_TRANSPORT_BLUETOOTH, true),
-	DiveComputerEntry("Suunto", "Vyper", DC_TRANSPORT_SERIAL, false),
-};
+static std::array<struct DiveComputerEntry, 4> supportedDiveComputers = {{
+	{ "Heinrichs Weikamp", "OSTC 2N", DC_TRANSPORT_SERIAL, true },
+	{ "Heinrichs Weikamp", "OSTC Plus", DC_TRANSPORT_BLUETOOTH, true },
+	{ "Heinrichs Weikamp", "OSTC 4", DC_TRANSPORT_BLUETOOTH, true },
+	{ "Suunto", "Vyper", DC_TRANSPORT_SERIAL, false },
+}};
 
 ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDialog(parent),
 	config(0),
@@ -161,8 +149,8 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 
 	unsigned int selectedDiveComputerIndex = 0;
 	for (unsigned i = 0; i < supportedDiveComputers.size(); ++i) {
-		if (supportedDiveComputers[i].vendor() == qPrefDiveComputer::vendor() &&
-			supportedDiveComputers[i].product() == qPrefDiveComputer::product()) {
+		if (supportedDiveComputers[i].vendor == qPrefDiveComputer::vendor() &&
+			supportedDiveComputers[i].product == qPrefDiveComputer::product()) {
 			selectedDiveComputerIndex = i;
 
 			break;
@@ -960,8 +948,8 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	device_data.devname = copy_qstring(device);
 
 	unsigned int selectedDiveComputerIndex = ui.DiveComputerList->currentRow();
-	QString vendor = supportedDiveComputers[selectedDiveComputerIndex].vendor();
-	QString product = supportedDiveComputers[selectedDiveComputerIndex].product();
+	QString vendor = supportedDiveComputers[selectedDiveComputerIndex].vendor;
+	QString product = supportedDiveComputers[selectedDiveComputerIndex].product;
 	device_data.vendor = copy_qstring(vendor);
 	device_data.product = copy_qstring(product);
 	device_data.descriptor = descriptorLookup.value(vendor.toLower() + product.toLower());
@@ -1473,7 +1461,7 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 
 void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int currentRow)
 {
-	unsigned int transport = supportedDiveComputers[currentRow].transport();
+	unsigned int transport = supportedDiveComputers[currentRow].transport;
 
 	if (transport != DC_TRANSPORT_BLUETOOTH)
 		ui.connectBluetoothButton->setEnabled(false);
@@ -1548,8 +1536,8 @@ void ConfigureDiveComputerDialog::dc_open()
 	ui.logToFile->setEnabled(false);
 
 	unsigned int selectedDiveComputerIndex = ui.DiveComputerList->currentRow();
-	ui.updateFirmwareButton->setEnabled(supportedDiveComputers[selectedDiveComputerIndex].fwUpgradePossible());
-	ui.forceUpdateFirmware->setEnabled(supportedDiveComputers[selectedDiveComputerIndex].product() == "OSTC 4");
+	ui.updateFirmwareButton->setEnabled(supportedDiveComputers[selectedDiveComputerIndex].fwUpgradePossible);
+	ui.forceUpdateFirmware->setEnabled(supportedDiveComputers[selectedDiveComputerIndex].product == "OSTC 4");
 
 	ui.progressBar->setFormat(tr("Connected to device"));
 
