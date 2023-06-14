@@ -1138,13 +1138,23 @@ static const char *do_device_import(device_data_t *data)
 		}
 
 		dc_buffer_free(buffer);
+
+		if (rc != DC_STATUS_SUCCESS) {
+			progress_bar_fraction = 0.0;
+
+			if (rc == DC_STATUS_UNSUPPORTED)
+				return translate("gettextFromC", "Dumping not supported on this device");
+
+			return translate("gettextFromC", "Dive data dumping error");
+		}
 	} else {
 		rc = dc_device_foreach(device, dive_cb, data);
-	}
 
-	if (rc != DC_STATUS_SUCCESS) {
-		progress_bar_fraction = 0.0;
-		return translate("gettextFromC", "Dive data import error");
+		if (rc != DC_STATUS_SUCCESS) {
+			progress_bar_fraction = 0.0;
+
+			return translate("gettextFromC", "Dive data import error");
+		}
 	}
 
 	/* All good */
