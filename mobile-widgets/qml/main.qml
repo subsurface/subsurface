@@ -347,7 +347,7 @@ Kirigami.ApplicationWindow {
 				icon {
 					name: PrefCloudStorage.cloud_auto_sync ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
-				text: PrefCloudStorage.cloud_auto_sync ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
+text: (PrefCloudStorage.cloud_auto_sync ? "\u2610 " : "\u2611 ") + qsTr("Auto cloud sync")
 					visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD
 					onTriggered: {
 						PrefCloudStorage.cloud_auto_sync = !PrefCloudStorage.cloud_auto_sync
