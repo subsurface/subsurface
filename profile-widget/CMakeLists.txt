@@ -20,14 +20,15 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	diverectitem.h
 	divetextitem.cpp
 	divetextitem.h
-	divetooltipitem.cpp
-	divetooltipitem.h
 	profilescene.cpp
 	profilescene.h
+	profiletranslations.h
 	profileview.cpp
 	profileview.h
 	tankitem.cpp
 	tankitem.h
+	tooltipitem.h
+	tooltipitem.cpp
 )
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 set(SUBSURFACE_PROFILE_LIB_SRCS

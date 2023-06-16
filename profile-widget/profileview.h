@@ -8,6 +8,7 @@
 class ChartGraphicsSceneItem;
 class ProfileAnimation;
 class ProfileScene;
+class ToolTipItem;
 
 class ProfileView : public ChartView {
 	Q_OBJECT
@@ -47,6 +48,7 @@ signals:
 private:
 	const struct dive *d;
 	int dc;
+	double dpr;
 	double zoomLevel, zoomLevelPinchStart;
 	double zoomedPosition;	// Position when zoomed: 0.0 = beginning, 1.0 = end.
 	bool panning; // Currently panning.
@@ -64,10 +66,14 @@ private:
 	void replot();
 	void setZoom(double level);
 
+	void hoverEnterEvent(QHoverEvent *event) override;
+	void hoverMoveEvent(QHoverEvent *event) override;
 	void wheelEvent(QWheelEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
+
+	ChartItemPtr<ToolTipItem> tooltip;
 
 	// For mobile
 	int getDiveId() const;

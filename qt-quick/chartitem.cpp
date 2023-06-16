@@ -94,6 +94,7 @@ void ChartPixmapItem::resize(QSizeF size)
 		painter->setRenderHint(QPainter::Antialiasing);
 	}
 	rect.setSize(size);
+	setPositionDirty(); // position includes the size.
 	setTextureDirty();
 }
 
