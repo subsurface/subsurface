@@ -128,7 +128,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/subsurface-qt/divelistnotifier.cpp \
 	backend-shared/exportfuncs.cpp \
 	backend-shared/plannershared.cpp \
-	backend-shared/roundrectitem.cpp \
 	qt-quick/chartitem.cpp \
 	qt-quick/chartview.cpp \
 	stats/statsvariables.cpp \
@@ -179,8 +178,8 @@ SOURCES += subsurface-mobile-main.cpp \
 	profile-widget/animationfunctions.cpp \
 	profile-widget/divepixmapcache.cpp \
 	profile-widget/divepixmapitem.cpp \
-	profile-widget/divetooltipitem.cpp \
 	profile-widget/tankitem.cpp \
+	profile-widget/tooltipitem.cpp \
 	profile-widget/divelineitem.cpp \
 	profile-widget/diverectitem.cpp \
 	profile-widget/divetextitem.cpp \
@@ -287,7 +286,6 @@ HEADERS += \
 	core/subsurface-qt/divelistnotifier.h \
 	backend-shared/exportfuncs.h \
 	backend-shared/plannershared.h \
-	backend-shared/roundrectitem.h \
 	qt-quick/chartitem.h \
 	qt-quick/chartitemhelper.h \
 	qt-quick/chartitem_ptr.h \
@@ -340,8 +338,8 @@ HEADERS += \
 	profile-widget/diveprofileitem.h \
 	profile-widget/profilescene.h \
 	profile-widget/diveeventitem.h \
-	profile-widget/divetooltipitem.h \
 	profile-widget/tankitem.h \
+	profile-widget/tooltipitem.h \
 	profile-widget/animationfunctions.h \
 	profile-widget/divecartesianaxis.h \
 	profile-widget/divelineitem.h \

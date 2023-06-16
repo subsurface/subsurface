@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profileview.h"
 #include "profilescene.h"
+#include "tooltipitem.h"
 #include "zvalues.h"
 #include "core/dive.h"
 #include "core/divelog.h"
@@ -46,6 +47,7 @@ public:
 ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::Count),
 	d(nullptr),
 	dc(0),
+	dpr(1.0),
 	zoomLevel(1.00),
 	zoomedPosition(0.0),
 	panning(false),
@@ -84,6 +86,7 @@ ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::
 	connect(pp_gas, &qPrefPartialPressureGas::po2Changed, this, &ProfileView::replot);
 
 	setAcceptTouchEvents(true);
+	setAcceptHoverEvents(true);
 }
 
 ProfileView::ProfileView() : ProfileView(nullptr)
@@ -119,6 +122,7 @@ void ProfileView::clear()
 		profileScene->clear();
 	//handles.clear();
 	//gases.clear();
+	tooltip.reset();
 	empty = true;
 	d = nullptr;
 	dc = 0;
@@ -135,7 +139,7 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 
 	// We can't create the scene in the constructor, because we can't get the DPR property there. Oh joy!
 	if (!profileScene) {
-		double dpr = std::clamp(property("dpr").toReal(), 0.5, 100.0);
+		dpr = std::clamp(property("dpr").toReal(), 0.5, 100.0);
 		profileScene = std::make_unique<ProfileScene>(dpr, false, false);
 	}
 	// If there was no previously displayed dive, turn off animations
@@ -166,7 +170,6 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	profileItem->draw(size(), background, *profileScene);
 
 	//rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
-	//toolTipItem->setPlotInfo(profileScene->plotInfo);
 	//rulerItem->setPlotInfo(d, profileScene->plotInfo);
 
 	//if ((currentState == EDIT || currentState == PLAN) && plannerModel) {
@@ -192,6 +195,15 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	if (elapsedTime > 1000 && prefs.calcndltts) {
 		qPrefTechnicalDetails::set_calcndltts(false);
 		report_error("%s", qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
+	}
+
+	if (!tooltip)
+		tooltip = createChartItem<ToolTipItem>(dpr);
+	if (prefs.infobox) {
+		tooltip->setVisible(true);
+		tooltip->update(d, dpr, 0, profileScene->getPlotInfo(), flags & RenderFlags::PlanMode);
+	} else {
+		tooltip->setVisible(false);
 	}
 
 	// Reset animation.
@@ -346,4 +358,24 @@ void ProfileView::pan(double x, double y)
 							panningOriginalMousePosition - x);
 	if (oldPos != zoomedPosition)
 		plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
+}
+
+void ProfileView::hoverEnterEvent(QHoverEvent *)
+{
+}
+
+void ProfileView::hoverMoveEvent(QHoverEvent *event)
+{
+	if (!profileScene)
+		return;
+	QPointF pos = event->pos();
+	int time = profileScene->timeAt(pos);
+	bool requires_update = false;
+	if (tooltip) {
+		tooltip->update(d, dpr, time, profileScene->getPlotInfo(), false); // TODO: plan mode
+		requires_update = true;
+	}
+
+	if (requires_update)
+		update();
 }

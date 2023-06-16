@@ -48,6 +48,8 @@ public:
 		  const struct dive *d, int dc,
 		  DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false);
 	double calcZoomPosition(double zoom, double originalPos, double delta);
+	const plot_info &getPlotInfo() const;
+	int timeAt(QPointF pos) const;
 
 	const struct dive *d;
 	int dc;

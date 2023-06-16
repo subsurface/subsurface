@@ -162,6 +162,11 @@ ProfileScene::~ProfileScene()
 {
 }
 
+const plot_info &ProfileScene::getPlotInfo() const
+{
+	return plotInfo;
+}
+
 void ProfileScene::clear()
 {
 	for (AbstractProfilePolygonItem *item: profileItems)
@@ -612,4 +617,9 @@ double ProfileScene::calcZoomPosition(double zoom, double originalPos, double de
 	double newRelStart = newStart / maxtime;
 	double newPos = newRelStart / factor;
 	return std::clamp(newPos, 0.0, 1.0);
+}
+
+int ProfileScene::timeAt(QPointF pos) const
+{
+	return lrint(timeAxis->valueAt(pos));
 }
