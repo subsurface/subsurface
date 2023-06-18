@@ -106,12 +106,15 @@ struct DiveComputerEntry {
 	bool fwUpgradePossible;
 };
 
-static std::array<struct DiveComputerEntry, 4> supportedDiveComputers = {{
+//WARNING: Do not edit this list or even just change its order without
+// making corresponding changes to the `DiveComputerList` element
+// in `configuredivecomputerdialog.ui` or this functionality will stop working.
+static const DiveComputerEntry supportedDiveComputers[] = {
 	{ "Heinrichs Weikamp", "OSTC 2N", DC_TRANSPORT_SERIAL, true },
 	{ "Heinrichs Weikamp", "OSTC Plus", DC_TRANSPORT_BLUETOOTH, true },
 	{ "Heinrichs Weikamp", "OSTC 4", DC_TRANSPORT_BLUETOOTH, true },
 	{ "Suunto", "Vyper", DC_TRANSPORT_SERIAL, false },
-}};
+};
 
 ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDialog(parent),
 	config(0),
@@ -148,13 +151,11 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	fill_computer_list();
 
 	unsigned int selectedDiveComputerIndex = 0;
-	for (unsigned i = 0; i < supportedDiveComputers.size(); ++i) {
-		if (supportedDiveComputers[i].vendor == qPrefDiveComputer::vendor() &&
-			supportedDiveComputers[i].product == qPrefDiveComputer::product()) {
-			selectedDiveComputerIndex = i;
-
-			break;
-		}
+	const auto it = std::find_if(std::begin(supportedDiveComputers), std::end(supportedDiveComputers), [](const DiveComputerEntry &entry) {
+		return entry.vendor == qPrefDiveComputer::vendor() && entry.product == qPrefDiveComputer::product();
+	});
+	if (it != std::end(supportedDiveComputers)) {
+		selectedDiveComputerIndex = it - std::begin(supportedDiveComputers);
 	}
 
 	ui.DiveComputerList->setCurrentRow(selectedDiveComputerIndex);
@@ -947,9 +948,10 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	}
 	device_data.devname = copy_qstring(device);
 
-	unsigned int selectedDiveComputerIndex = ui.DiveComputerList->currentRow();
-	QString vendor = supportedDiveComputers[selectedDiveComputerIndex].vendor;
-	QString product = supportedDiveComputers[selectedDiveComputerIndex].product;
+	const DiveComputerEntry selectedDiveComputer = supportedDiveComputers[ui.DiveComputerList->currentRow()];
+
+	QString vendor = selectedDiveComputer.vendor;
+	QString product = selectedDiveComputer.product;
 	device_data.vendor = copy_qstring(vendor);
 	device_data.product = copy_qstring(product);
 	device_data.descriptor = descriptorLookup.value(vendor.toLower() + product.toLower());
@@ -1462,11 +1464,10 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int currentRow)
 {
 	unsigned int transport = supportedDiveComputers[currentRow].transport;
-
-	if (transport != DC_TRANSPORT_BLUETOOTH)
-		ui.connectBluetoothButton->setEnabled(false);
-	else
+	if (transport == DC_TRANSPORT_BLUETOOTH)
 		ui.connectBluetoothButton->setEnabled(true);
+	else
+		ui.connectBluetoothButton->setEnabled(false);
 
 	fill_device_list(transport);
 }
@@ -1535,8 +1536,8 @@ void ConfigureDiveComputerDialog::dc_open()
 	ui.DiveComputerList->setEnabled(false);
 	ui.logToFile->setEnabled(false);
 
-	unsigned int selectedDiveComputerIndex = ui.DiveComputerList->currentRow();
-	ui.updateFirmwareButton->setEnabled(supportedDiveComputers[selectedDiveComputerIndex].fwUpgradePossible);
+	const DiveComputerEntry selectedDiveComputer = supportedDiveComputers[ui.DiveComputerList->currentRow()];
+	ui.updateFirmwareButton->setEnabled(selectedDiveComputer.fwUpgradePossible);
 	ui.forceUpdateFirmware->setEnabled(supportedDiveComputers[selectedDiveComputerIndex].product == "OSTC 4");
 
 	ui.progressBar->setFormat(tr("Connected to device"));
