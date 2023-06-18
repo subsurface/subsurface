@@ -2331,6 +2331,10 @@ M-value, corresponds to 100%), the time to surface (TTS), the calculated ceiling
 as of the statistics in the Information Box, shown as four
 buttons on the left of the profile panel. These are:
 
+[icon="images/icons/InfoBox.png"]
+[NOTE]
+Show or hide the *Information Box*. This allows the Information Box to be hidden in order to see the entire dive profile without any obstructions.
+
 [icon="images/icons/MOD.jpg"]
 [NOTE]
 Show the *Maximum Operating Depth (MOD)* of the dive, given the

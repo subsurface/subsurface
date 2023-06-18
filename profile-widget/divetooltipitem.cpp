@@ -4,6 +4,7 @@
 #include "core/membuffer.h"
 #include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"
+#include "core/settings/qPrefTechnicalDetails.h"
 #include <QPropertyAnimation>
 #include <QGraphicsView>
 #include "core/qthelper.h"
@@ -154,6 +155,9 @@ ToolTipItem::ToolTipItem(QGraphicsItem *parent) : RoundRectItem(8.0, parent),
 	title->setBrush(Qt::white);
 
 	setPen(QPen(Qt::white, 2));
+
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::infoboxChanged, this, &ToolTipItem::settingsChanged);
+
 	refreshTime.start();
 }
 
@@ -267,4 +271,9 @@ void ToolTipItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	oldSelection = scene()->selectedItems();
 	scene()->clearSelection();
 	QGraphicsItem::mousePressEvent(event);
+}
+
+void ToolTipItem::settingsChanged(bool value)
+{
+	setVisible(value);
 }

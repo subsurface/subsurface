@@ -33,6 +33,7 @@ class qPrefTechnicalDetails : public QObject {
 	Q_PROPERTY(bool tankbar READ tankbar WRITE set_tankbar NOTIFY tankbarChanged)
 	Q_PROPERTY(int vpmb_conservatism READ vpmb_conservatism WRITE set_vpmb_conservatism NOTIFY vpmb_conservatismChanged)
 	Q_PROPERTY(bool zoomed_plot READ zoomed_plot WRITE set_zoomed_plot NOTIFY zoomed_plotChanged)
+	Q_PROPERTY(bool infobox READ infobox WRITE set_infobox NOTIFY infoboxChanged)
 
 public:
 	static qPrefTechnicalDetails *instance();
@@ -69,6 +70,7 @@ public:
 	static bool tankbar() { return prefs.tankbar; }
 	static int  vpmb_conservatism() { return prefs.vpmb_conservatism; }
 	static bool zoomed_plot() { return prefs.zoomed_plot; }
+	static bool infobox() { return prefs.infobox; }
 
 public slots:
 	static void set_calcalltissues(bool value);
@@ -97,6 +99,7 @@ public slots:
 	static void set_tankbar(bool value);
 	static void set_vpmb_conservatism(int value);
 	static void set_zoomed_plot(bool value);
+	static void set_infobox(bool value);
 
 signals:
 	void calcalltissuesChanged(bool value);
@@ -125,6 +128,7 @@ signals:
 	void tankbarChanged(bool value);
 	void vpmb_conservatismChanged(int value);
 	void zoomed_plotChanged(bool value);
+	void infoboxChanged(bool value);
 
 private:
 	qPrefTechnicalDetails() {}
@@ -155,6 +159,7 @@ private:
 	static void disk_tankbar(bool doSync);
 	static void disk_vpmb_conservatism(bool doSync);
 	static void disk_zoomed_plot(bool doSync);
+	static void disk_infobox(bool doSync);
 };
 
 #endif

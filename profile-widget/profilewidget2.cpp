@@ -111,6 +111,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 	connect(tec, &qPrefTechnicalDetails::show_pictures_in_profileChanged , this, &ProfileWidget2::actionRequestedReplot);
 	connect(tec, &qPrefTechnicalDetails::tankbarChanged                  , this, &ProfileWidget2::actionRequestedReplot);
 	connect(tec, &qPrefTechnicalDetails::percentagegraphChanged          , this, &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::infoboxChanged                  , this, &ProfileWidget2::actionRequestedReplot);
 
 	auto pp_gas = qPrefPartialPressureGas::instance();
 	connect(pp_gas, &qPrefPartialPressureGas::pheChanged, this, &ProfileWidget2::actionRequestedReplot);
@@ -215,8 +216,9 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 			       shouldCalculateMax, zoom, zoomedPosition);
 
 #ifndef SUBSURFACE_MOBILE
-	rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
+	toolTipItem->setVisible(prefs.infobox);
 	toolTipItem->setPlotInfo(profileScene->plotInfo);
+	rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
 	rulerItem->setPlotInfo(d, profileScene->plotInfo);
 
 	if ((currentState == EDIT || currentState == PLAN) && plannerModel) {
@@ -423,7 +425,7 @@ void ProfileWidget2::setProfileState()
 
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->readPos();
-	toolTipItem->setVisible(true);
+	toolTipItem->setVisible(prefs.infobox);
 	rulerItem->setVisible(prefs.rulergraph);
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);

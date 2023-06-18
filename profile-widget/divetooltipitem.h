@@ -40,6 +40,7 @@ public:
 	void setTimeAxis(DiveCartesianAxis *axis);
 	void setPlotInfo(const plot_info &plot);
 	void clearPlotInfo();
+	void settingsChanged(bool value);
 public
 slots:
 	void setRect(const QRectF &rect);
