@@ -1,3 +1,4 @@
+desktop: added button to hide the infobox in the dive profile
 desktop: use persisted device information for the dive computer configuration
 export: fix bug resulting in invalid CSV for '""' in 'CSV summary dive details'
 desktop: add support for multiple tanks to the profile ruler

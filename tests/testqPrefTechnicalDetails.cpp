@@ -48,6 +48,7 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	prefs.tankbar = true;
 	prefs.vpmb_conservatism = 123;
 	prefs.zoomed_plot = true;
+	prefs.infobox = true;
 
 	QCOMPARE(tst->calcceiling(), prefs.calcceiling);
 	QCOMPARE(tst->calcceiling3m(), prefs.calcceiling3m);
@@ -73,6 +74,7 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	QCOMPARE(tst->tankbar(), prefs.tankbar);
 	QCOMPARE(tst->vpmb_conservatism(), prefs.vpmb_conservatism);
 	QCOMPARE(tst->zoomed_plot(), prefs.zoomed_plot);
+	QCOMPARE(tst->infobox(), prefs.infobox);
 }
 
 void TestQPrefTechnicalDetails::test_set_struct()
@@ -106,6 +108,7 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	tst->set_tankbar(false);
 	tst->set_vpmb_conservatism(64);
 	tst->set_zoomed_plot(false);
+	tst->set_infobox(false);
 
 	QCOMPARE(prefs.calcceiling, false);
 	QCOMPARE(prefs.calcceiling3m, false);
@@ -131,6 +134,7 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	QCOMPARE(prefs.tankbar, false);
 	QCOMPARE(prefs.vpmb_conservatism, 64);
 	QCOMPARE(prefs.zoomed_plot, false);
+	QCOMPARE(prefs.infobox, false);
 }
 
 void TestQPrefTechnicalDetails::test_set_load_struct()
@@ -164,6 +168,7 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	tst->set_tankbar(true);
 	tst->set_vpmb_conservatism(64);
 	tst->set_zoomed_plot(true);
+	tst->set_infobox(true);
 
 	prefs.calcalltissues = true;
 	prefs.calcceiling = true;
@@ -190,6 +195,7 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	prefs.tankbar = false;
 	prefs.vpmb_conservatism = 123;
 	prefs.zoomed_plot = false;
+	prefs.infobox = false;
 
 	tst->load();
 	QCOMPARE(prefs.calcceiling, false);
@@ -216,6 +222,7 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	QCOMPARE(prefs.tankbar, true);
 	QCOMPARE(prefs.vpmb_conservatism, 64);
 	QCOMPARE(prefs.zoomed_plot, true);
+	QCOMPARE(prefs.infobox, true);
 }
 
 void TestQPrefTechnicalDetails::test_struct_disk()
@@ -249,6 +256,7 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	prefs.tankbar = true;
 	prefs.vpmb_conservatism = 15;
 	prefs.zoomed_plot = true;
+	prefs.infobox = true;
 
 	tst->sync();
 	prefs.calcalltissues = false;
@@ -302,6 +310,7 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	QCOMPARE(prefs.tankbar, true);
 	QCOMPARE(prefs.vpmb_conservatism, 15);
 	QCOMPARE(prefs.zoomed_plot, true);
+	QCOMPARE(prefs.infobox, true);
 }
 
 void TestQPrefTechnicalDetails::test_multiple()
@@ -381,6 +390,8 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	TEST(tecDetails->show_sac(), true);
 	tecDetails->set_show_pictures_in_profile(true);
 	TEST(tecDetails->show_pictures_in_profile(), true);
+	tecDetails->set_infobox(true);
+	TEST(tecDetails->infobox(), true);
 
 	tecDetails->set_ead(false);
 	TEST(tecDetails->ead(), false);
@@ -416,6 +427,8 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	TEST(tecDetails->show_sac(), false);
 	tecDetails->set_show_pictures_in_profile(false);
 	TEST(tecDetails->show_pictures_in_profile(), false);
+	tecDetails->set_infobox(false);
+	TEST(tecDetails->infobox(), false);
 }
 
 void TestQPrefTechnicalDetails::test_signals()
@@ -445,6 +458,7 @@ void TestQPrefTechnicalDetails::test_signals()
 	QSignalSpy spy25(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::tankbarChanged);
 	QSignalSpy spy26(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::vpmb_conservatismChanged);
 	QSignalSpy spy27(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::zoomed_plotChanged);
+	QSignalSpy spy28(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::infoboxChanged);
 
 	prefs.calcalltissues = true;
 	qPrefTechnicalDetails::set_calcalltissues(false);
@@ -491,6 +505,8 @@ void TestQPrefTechnicalDetails::test_signals()
 	qPrefTechnicalDetails::set_vpmb_conservatism(-64);
 	prefs.zoomed_plot = true;
 	qPrefTechnicalDetails::set_zoomed_plot(false);
+	prefs.infobox = true;
+	qPrefTechnicalDetails::set_infobox(false);
 
 	QCOMPARE(spy1.count(), 1);
 	QCOMPARE(spy2.count(), 1);
@@ -517,6 +533,7 @@ void TestQPrefTechnicalDetails::test_signals()
 	QCOMPARE(spy25.count(), 1);
 	QCOMPARE(spy26.count(), 1);
 	QCOMPARE(spy27.count(), 1);
+	QCOMPARE(spy28.count(), 1);
 
 	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy2.takeFirst().at(0).toBool() == false);
@@ -543,6 +560,7 @@ void TestQPrefTechnicalDetails::test_signals()
 	QVERIFY(spy25.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy26.takeFirst().at(0).toInt() == -64);
 	QVERIFY(spy27.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy28.takeFirst().at(0).toBool() == false);
 }
 
 

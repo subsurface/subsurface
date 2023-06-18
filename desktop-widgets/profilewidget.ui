@@ -2,6 +2,18 @@
 <ui version="4.0">
  <class>ProfileWidget</class>
  <widget class="QWidget" name="ProfileWidget">
+  <action name="profInfobox">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:status-info-icon</normaloff>:status-info-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle infobox</string>
+   </property>
+  </action>
   <action name="profTissues">
    <property name="checkable">
     <bool>true</bool>

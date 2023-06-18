@@ -59,7 +59,8 @@ ProfileWidget::ProfileWidget() : d(nullptr), dc(0), originalDive(nullptr), placi
 	// what is a sane order for those icons? we should have the ones the user is
 	// most likely to want towards the top so they are always visible
 	// and the ones that someone likely sets and then never touches again towards the bottom
-	toolbarActions = { ui.profCalcCeiling, ui.profCalcAllTissues, // start with various ceilings
+	toolbarActions = { ui.profInfobox, // show / hide the infobox
+			   ui.profCalcCeiling, ui.profCalcAllTissues, // various ceilings
 			   ui.profIncrement3m, ui.profDcCeiling,
 			   ui.profPhe, ui.profPn2, ui.profPO2, // partial pressure graphs
 			   ui.profRuler, ui.profScaled, // measuring and scaling
@@ -109,6 +110,7 @@ ProfileWidget::ProfileWidget() : d(nullptr), dc(0), originalDive(nullptr), placi
 	connect(ui.profTogglePicture,  &QAction::triggered, tec, &qPrefTechnicalDetails::set_show_pictures_in_profile);
 	connect(ui.profTankbar,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_tankbar);
 	connect(ui.profTissues,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_percentagegraph);
+	connect(ui.profInfobox,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_infobox);
 
 	connect(ui.profTissues,        &QAction::triggered, this, &ProfileWidget::unsetProfHR);
 	connect(ui.profHR,             &QAction::triggered, this, &ProfileWidget::unsetProfTissues);
@@ -142,6 +144,7 @@ ProfileWidget::ProfileWidget() : d(nullptr), dc(0), originalDive(nullptr), placi
 	ui.profTankbar->setChecked(qPrefTechnicalDetails::tankbar());
 	ui.profTissues->setChecked(qPrefTechnicalDetails::percentagegraph());
 	ui.profScaled->setChecked(qPrefTechnicalDetails::zoomed_plot());
+	ui.profInfobox->setChecked(qPrefTechnicalDetails::infobox());
 }
 
 ProfileWidget::~ProfileWidget()
@@ -179,6 +182,7 @@ void ProfileWidget::setDive(const struct dive *d)
 	ui.profScaled->setDisabled(false); // measuring and scaling
 	ui.profTogglePicture->setDisabled(false);
 	ui.profHR->setDisabled(false);
+	ui.profInfobox->setDisabled(false);
 }
 
 void ProfileWidget::plotCurrentDive()

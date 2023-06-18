@@ -39,6 +39,7 @@ void qPrefTechnicalDetails::loadSync(bool doSync)
 	disk_tankbar(doSync);
 	disk_vpmb_conservatism(doSync);
 	disk_zoomed_plot(doSync);
+	disk_infobox(doSync);
 }
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "calcalltissues", calcalltissues);
@@ -100,6 +101,8 @@ void qPrefTechnicalDetails::disk_gflow(bool doSync)
 }
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "gf_low_at_maxdepth", gf_low_at_maxdepth);
+
+HANDLE_PREFERENCE_BOOL(TechnicalDetails, "InfoBox", infobox);
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "hrgraph", hrgraph);
 

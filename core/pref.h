@@ -204,6 +204,7 @@ struct preferences {
 	bool                        tankbar;
 	int                         vpmb_conservatism;
 	bool                        zoomed_plot;
+	bool                        infobox;
 
 	// ********** Units **********
 	bool                    coordinates_traditional;
