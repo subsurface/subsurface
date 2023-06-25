@@ -282,6 +282,8 @@ void ChartView::mousePressEvent(QMouseEvent *event)
 void ChartView::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (draggedItem) {
+		QPointF pos = event->localPos();
+		draggedItem->stopDrag(pos);
 		draggedItem.reset();
 		ungrabMouse();
 		event->accept();

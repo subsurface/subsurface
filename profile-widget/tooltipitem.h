@@ -22,6 +22,8 @@ private:
 	double width, height;
 
 	QPixmap stringToPixmap(const QString &s) const;
+
+	void stopDrag(QPointF pos) override;
 };
 
 
