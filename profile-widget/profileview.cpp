@@ -120,7 +120,8 @@ void ProfileView::clear()
 		profileScene->clear();
 	//handles.clear();
 	//gases.clear();
-	tooltip.reset();
+	if (tooltip)
+		tooltip->setVisible(false);
 	empty = true;
 	d = nullptr;
 	dc = 0;
@@ -259,6 +260,11 @@ void ProfileView::wheelEvent(QWheelEvent *event)
 
 void ProfileView::mousePressEvent(QMouseEvent *event)
 {
+	// Handle dragging of items
+	ChartView::mousePressEvent(event);
+	if (event->isAccepted())
+		return;
+
 	panning = true;
 	QPointF pos = mapToScene(event->pos());
 	panStart(pos.x(), pos.y());
@@ -266,8 +272,10 @@ void ProfileView::mousePressEvent(QMouseEvent *event)
 	event->accept();
 }
 
-void ProfileView::mouseReleaseEvent(QMouseEvent *)
+void ProfileView::mouseReleaseEvent(QMouseEvent *event)
 {
+	ChartView::mouseReleaseEvent(event);
+
 	if (panning) {
 		panning = false;
 		unsetCursor();
@@ -280,6 +288,8 @@ void ProfileView::mouseReleaseEvent(QMouseEvent *)
 
 void ProfileView::mouseMoveEvent(QMouseEvent *event)
 {
+	ChartView::mouseMoveEvent(event);
+
 	QPointF pos = mapToScene(event->pos());
 	if (panning)
 		pan(pos.x(), pos.y());

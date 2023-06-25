@@ -41,6 +41,10 @@ void ChartItem::setPos(QPointF)
 {
 }
 
+void ChartItem::stopDrag(QPointF pos)
+{
+}
+
 static int round_up(double f)
 {
 	return static_cast<int>(ceil(f));

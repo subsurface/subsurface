@@ -7,6 +7,7 @@
 #include "core/membuffer.h"
 #include "core/profile.h"
 #include "core/qthelper.h" // for decoMode
+#include "core/settings/qPrefDisplay.h"
 
 #include <cmath>
 #include <QApplication>
@@ -37,12 +38,16 @@ static QFont makeFont(double dpr)
 ToolTipItem::ToolTipItem(ChartView &view, double dpr) :
 	ChartRectItem(view, ProfileZValue::ToolTipItem,
 		      QPen(tooltipBorderColor, tooltipBorder),
-		      QBrush(tooltipColor), tooltipBorderRadius),
+		      QBrush(tooltipColor), tooltipBorderRadius,
+		      true),
 	font(makeFont(dpr)),
 	fm(font),
 	fontHeight(fm.height())
 {
 	title = stringToPixmap(ProfileTranslations::tr("Information"));
+
+	QPointF pos = qPrefDisplay::tooltip_position();
+	setPos(pos);
 }
 
 QPixmap ToolTipItem::stringToPixmap(const QString &str) const
@@ -156,4 +161,9 @@ void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &p
 		y += fontHeight;
 	}
 	setTextureDirty();
+}
+
+void ToolTipItem::stopDrag(QPointF pos)
+{
+	qPrefDisplay::set_tooltip_position(pos);
 }

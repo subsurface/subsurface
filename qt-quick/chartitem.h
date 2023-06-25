@@ -31,6 +31,7 @@ public:
 	virtual ~ChartItem();			// Attention: must only be called by render thread.
 	QRectF getRect() const;
 	virtual void setPos(QPointF pos);	// Called when dragging the item
+	virtual void stopDrag(QPointF pos);	// Called when dragging the item finished
 protected:
 	ChartItem(ChartView &v, size_t z, bool dragable = false);
 	QSizeF sceneSize() const;
