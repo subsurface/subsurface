@@ -64,25 +64,6 @@ QPixmap ToolTipItem::stringToPixmap(const QString &str) const
 	return res;
 }
 
-// Split a membuffer into strings, skip empty lines.
-// Return string / width (in pixels) pairs.
-static std::vector<std::pair<QString, int>> split_mb_into_strings(const membuffer &mb, const QFontMetrics &fm)
-{
-	std::vector<std::pair<QString, int>> res;
-	for (size_t i = 0; i < mb.len; ++i) {
-		size_t j;
-		for (j = i; j < mb.len && mb.buffer[j] != '\n'; ++j)
-			;
-		if (j > i) {
-			QString s = QString::fromUtf8(mb.buffer + i, j - i);
-			int width = fm.size(Qt::TextSingleLine, s).width();
-			res.emplace_back(s, width);
-		}
-		i = j; // Note: loop iteration will skip over '\n'
-	}
-	return res;
-}
-
 static QPixmap drawTissues(const plot_info &pInfo, double dpr, int idx, bool inPlanner)
 {
 	QPixmap tissues(16,60);
@@ -120,12 +101,9 @@ static QPixmap drawTissues(const plot_info &pInfo, double dpr, int idx, bool inP
 
 void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &pInfo, bool inPlanner)
 {
-	struct membufferpp mb;
-
-	int idx = get_plot_details_new(d, &pInfo, time, &mb);
+	auto [idx, lines] = get_plot_details_new(d, pInfo, time);
 
 	QPixmap tissues = drawTissues(pInfo, dpr, idx, inPlanner);
-	std::vector<std::pair<QString, int>> strings = split_mb_into_strings(mb, fm);
 
 	//TODO: add event tool tips!
 	//const auto l = scene()->items(pos, Qt::IntersectsItemBoundingRect, Qt::DescendingOrder,
@@ -136,8 +114,17 @@ void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &p
 	//}
 
 	width = title.size().width();
-	for (auto &[s,w]: strings)
+
+	// Turn strings into QString/width pairs and increase width if needed
+	std::vector<std::pair<QString, int>> strings;
+	strings.reserve(lines.size());
+	for (auto &s_std: lines) {
+		auto s = QString::fromStdString(s_std);
+		int w = fm.size(Qt::TextSingleLine, s).width();
 		width = std::max(width, static_cast<double>(w));
+		strings.push_back(std::make_pair(s, w));
+	}
+
 	width += tissues.width();
 	width += 6.0 * tooltipBorder;
 
