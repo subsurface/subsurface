@@ -27,18 +27,22 @@ public:
 	bool dirty;				// If true, call render() when rebuilding the scene
 	ChartItem *prev, *next;			// Double linked list of items
 	const size_t zValue;
+	const bool dragable;			// Item can be dragged with the mouse. Must be set in constructor.
 	virtual ~ChartItem();			// Attention: must only be called by render thread.
+	QRectF getRect() const;
+	virtual void setPos(QPointF pos);	// Called when dragging the item
 protected:
-	ChartItem(ChartView &v, size_t z);
+	ChartItem(ChartView &v, size_t z, bool dragable = false);
 	QSizeF sceneSize() const;
 	ChartView &view;
 	void markDirty();
+	QRectF rect;
 };
 
 template <typename Node>
 class HideableChartItem : public ChartItem {
 protected:
-	HideableChartItem(ChartView &v, size_t z);
+	HideableChartItem(ChartView &v, size_t z, bool dragable = false);
 	std::unique_ptr<Node> node;
 	bool visible;
 	bool visibleChanged;
@@ -56,19 +60,17 @@ using HideableChartProxyItem = HideableChartItem<HideableQSGNode<QSGProxyNode<No
 // A chart item that blits a precalculated pixmap onto the scene.
 class ChartPixmapItem : public HideableChartProxyItem<QSGImageNode> {
 public:
-	ChartPixmapItem(ChartView &v, size_t z);
+	ChartPixmapItem(ChartView &v, size_t z, bool dragable = false);
 	~ChartPixmapItem();
 
-	void setPos(QPointF pos);
+	void setPos(QPointF pos) override;
 	void render() override;
-	QRectF getRect() const;
 protected:
 	void resize(QSizeF size);	// Resets the canvas. Attention: image is *unitialized*.
 	std::unique_ptr<QPainter> painter;
 	std::unique_ptr<QImage> img;
 	void setTextureDirty();
 	void setPositionDirty();
-	QRectF rect;
 private:
 	bool positionDirty;		// true if the position changed since last render
 	bool textureDirty;		// true if the pixmap changed since last render
@@ -86,7 +88,7 @@ public:
 // Draw a rectangular background after resize. Children are responsible for calling update().
 class ChartRectItem : public ChartPixmapItem {
 public:
-	ChartRectItem(ChartView &v, size_t z, const QPen &pen, const QBrush &brush, double radius);
+	ChartRectItem(ChartView &v, size_t z, const QPen &pen, const QBrush &brush, double radius, bool dragable = false);
 	~ChartRectItem();
 	void resize(QSizeF size);
 private:
@@ -113,14 +115,15 @@ private:
 	std::vector<Item> items;
 };
 
-// Common data for line and rect items. Both are represented by two points.
+// Common data for line and rect items.
+// Both use the "QRect rect" item of the base class.
+// Lines are drawn from top-left to bottom-right.
 class ChartLineItemBase : public HideableChartItem<HideableQSGNode<QSGGeometryNode>> {
 public:
 	ChartLineItemBase(ChartView &v, size_t z, QColor color, double width);
 	~ChartLineItemBase();
 	void setLine(QPointF from, QPointF to);
 protected:
-	QPointF from, to;
 	QColor color;
 	double width;
 	bool positionDirty;
@@ -162,7 +165,7 @@ void HideableChartItem<Node>::createNode(Args&&... args)
 }
 
 template <typename Node>
-HideableChartItem<Node>::HideableChartItem(ChartView &v, size_t z) : ChartItem(v, z),
+HideableChartItem<Node>::HideableChartItem(ChartView &v, size_t z, bool dragable) : ChartItem(v, z, dragable),
 	visible(true), visibleChanged(false)
 {
 }

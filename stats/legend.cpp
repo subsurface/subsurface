@@ -17,7 +17,8 @@ static const double legendInternalBorderSize = 2.0;
 Legend::Legend(ChartView &view, const StatsTheme &theme, const std::vector<QString> &names) :
 	ChartRectItem(view, ChartZValue::Legend,
 		      QPen(theme.legendBorderColor, legendBorderSize),
-		      QBrush(theme.legendColor), legendBoxBorderRadius),
+		      QBrush(theme.legendColor), legendBoxBorderRadius,
+		      true),
 	displayedItems(0), width(0.0), height(0.0),
 	theme(theme),
 	posInitialized(false)
