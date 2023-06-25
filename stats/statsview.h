@@ -120,10 +120,9 @@ private:
 	StatsAxis *xAxis, *yAxis;
 	ChartItemPtr<ChartTextItem> title;
 	ChartItemPtr<Legend> legend;
-	Legend *draggedItem;
 	ChartItemPtr<RegressionItem> regressionItem;
 	ChartItemPtr<ChartRectLineItem> selectionRect;
-	QPointF dragStartMouse, dragStartItem;
+	QPointF selectionStartMouse;
 	SelectionModifier selectionModifier;
 	std::vector<dive *> oldSelection;
 	bool restrictDives;

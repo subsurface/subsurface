@@ -33,7 +33,6 @@ StatsView::StatsView(QQuickItem *parent) : ChartView(parent, ChartZValue::Count)
 	highlightedSeries(nullptr),
 	xAxis(nullptr),
 	yAxis(nullptr),
-	draggedItem(nullptr),
 	restrictDives(false)
 {
 	setBackgroundColor(currentTheme->backgroundColor);
@@ -60,22 +59,12 @@ StatsView::~StatsView()
 
 void StatsView::mousePressEvent(QMouseEvent *event)
 {
+	// Handle dragging of items
+	ChartView::mousePressEvent(event);
+	if (event->isAccepted())
+		return;
+
 	QPointF pos = event->localPos();
-
-	// Currently, we only support dragging of the legend. If other objects
-	// should be made draggable, this needs to be generalized.
-	if (legend) {
-		QRectF rect = legend->getRect();
-		if (legend->getRect().contains(pos)) {
-			dragStartMouse = pos;
-			dragStartItem = rect.topLeft();
-			draggedItem = &*legend;
-			grabMouse();
-			setKeepMouseGrab(true); // don't allow Qt to steal the grab
-			return;
-		}
-	}
-
 	SelectionModifier modifier;
 	modifier.shift = (event->modifiers() & Qt::ShiftModifier) != 0;
 	modifier.ctrl = (event->modifiers() & Qt::ControlModifier) != 0;
@@ -90,7 +79,7 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 					 { return s->supportsLassoSelection(); })) {
 		if (selectionRect)
 			deleteChartItem(selectionRect); // Ooops. Already a selection in place.
-		dragStartMouse = pos;
+		selectionStartMouse = pos;
 		selectionRect = createChartItem<ChartRectLineItem>(ChartZValue::Selection, currentTheme->selectionLassoColor, selectionLassoWidth);
 		selectionModifier = modifier;
 		oldSelection = modifier.ctrl ? getDiveSelection() : std::vector<dive *>();
@@ -100,12 +89,9 @@ void StatsView::mousePressEvent(QMouseEvent *event)
 	}
 }
 
-void StatsView::mouseReleaseEvent(QMouseEvent *)
+void StatsView::mouseReleaseEvent(QMouseEvent *event)
 {
-	if (draggedItem) {
-		draggedItem = nullptr;
-		ungrabMouse();
-	}
+	ChartView::mouseReleaseEvent(event);
 
 	if (selectionRect) {
 		deleteChartItem(selectionRect);
@@ -192,17 +178,11 @@ void StatsView::divesSelected(const QVector<dive *> &dives)
 
 void StatsView::mouseMoveEvent(QMouseEvent *event)
 {
-	if (draggedItem) {
-		QSizeF sceneSize = size();
-		if (sceneSize.width() <= 1.0 || sceneSize.height() <= 1.0)
-			return;
-		draggedItem->setPos(event->pos() - dragStartMouse + dragStartItem);
-		update();
-	}
+	ChartView::mouseMoveEvent(event);
 
 	if (selectionRect) {
 		QPointF p1 = event->pos();
-		QPointF p2 = dragStartMouse;
+		QPointF p2 = selectionStartMouse;
 		selectionRect->setLine(p1, p2);
 		QRectF rect(std::min(p1.x(), p2.x()), std::min(p1.y(), p2.y()),
 			    fabs(p2.x() - p1.x()), fabs(p2.y() - p1.y()));
@@ -292,7 +272,6 @@ void StatsView::resetPointers()
 {
 	highlightedSeries = nullptr;
 	xAxis = yAxis = nullptr;
-	draggedItem = nullptr;
 	title.reset();
 	legend.reset();
 	regressionItem.reset();

@@ -43,6 +43,10 @@ protected:
 	// This is called when Qt decided to reset our rootNode, which invalidates all items on the chart.
 	// The base class must invalidate all pointers and references.
 	virtual void resetPointers() = 0;
+
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
 private:
 	// QtQuick related things
 	size_t maxZ;
@@ -77,10 +81,17 @@ private:
 	ChartItemList cleanItems, dirtyItems, deletedItems;
 	void deleteChartItemInternal(ChartItem &item);
 	void freeDeletedChartItems();
+
+	// Keep a list of dragable items. For now, there are no many,
+	// so keep it unsorted. In the future we might want to sort by
+	// coordinates.
+	std::vector<ChartItem *> dragableItems;
+	ChartItemPtr<ChartItem> draggedItem;
+	QPointF dragStartMouse, dragStartItem;
 };
 
 // This implementation detail must be known to users of the class.
-// Perhaps move it into a statsview_impl.h file.
+// Perhaps move it into a chartview_impl.h file.
 template <typename T, class... Args>
 ChartItemPtr<T> ChartView::createChartItem(Args&&... args)
 {

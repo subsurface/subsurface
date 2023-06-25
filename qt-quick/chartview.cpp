@@ -105,6 +105,8 @@ void ChartView::emergencyShutdown()
 	// Mark clean and dirty chart items for deletion...
 	cleanItems.splice(deletedItems);
 	dirtyItems.splice(deletedItems);
+	dragableItems.clear();
+	draggedItem.reset();
 
 	// ...and delete them.
 	freeDeletedChartItems();
@@ -134,6 +136,8 @@ void ChartView::addQSGNode(QSGNode *node, size_t z)
 void ChartView::registerChartItem(ChartItem &item)
 {
 	cleanItems.append(item);
+	if (item.dragable)
+		dragableItems.push_back(&item);
 }
 
 void ChartView::registerDirtyChartItem(ChartItem &item)
@@ -152,6 +156,14 @@ void ChartView::deleteChartItemInternal(ChartItem &item)
 	else
 		cleanItems.remove(item);
 	deletedItems.append(item);
+	if (item.dragable) {
+		// This becomes inefficient if there are many dragable items!
+		auto it = std::find(dragableItems.begin(), dragableItems.end(), &item);
+		if (it == dragableItems.end())
+			fprintf(stderr, "warning: dragable item not found\n");
+		else
+			dragableItems.erase(it);
+	}
 }
 
 ChartView::ChartItemList::ChartItemList() : first(nullptr), last(nullptr)
@@ -245,4 +257,44 @@ void ChartView::setLayerVisibility(size_t z, bool visible)
 {
 	if (rootNode && z < rootNode->zNodes.size())
 		rootNode->zNodes[z]->setVisible(visible);
+}
+
+void ChartView::mousePressEvent(QMouseEvent *event)
+{
+	QPointF pos = event->localPos();
+
+	for (auto item: dragableItems) {
+		QRectF rect = item->getRect();
+		if (rect.contains(pos)) {
+			dragStartMouse = pos;
+			dragStartItem = rect.topLeft();
+			draggedItem = item;
+			grabMouse();
+			setKeepMouseGrab(true); // don't allow Qt to steal the grab
+			event->accept();
+			return;
+		}
+	}
+
+	event->ignore();
+}
+
+void ChartView::mouseReleaseEvent(QMouseEvent *event)
+{
+	if (draggedItem) {
+		draggedItem.reset();
+		ungrabMouse();
+		event->accept();
+	}
+}
+
+void ChartView::mouseMoveEvent(QMouseEvent *event)
+{
+	if (draggedItem) {
+		QSizeF sceneSize = size();
+		if (sceneSize.width() <= 1.0 || sceneSize.height() <= 1.0)
+			return;
+		draggedItem->setPos(event->pos() - dragStartMouse + dragStartItem);
+		update();
+	}
 }

@@ -9,9 +9,9 @@
 #include <QSGFlatColorMaterial>
 #include <QSGImageNode>
 
-ChartItem::ChartItem(ChartView &v, size_t z) :
+ChartItem::ChartItem(ChartView &v, size_t z, bool dragable) :
 	dirty(false), prev(nullptr), next(nullptr),
-	zValue(z), view(v)
+	zValue(z), dragable(dragable), view(v)
 {
 	// Register before the derived constructors run, so that the
 	// derived classes can mark the item as dirty in the constructor.
@@ -32,12 +32,21 @@ void ChartItem::markDirty()
 	view.registerDirtyChartItem(*this);
 }
 
+QRectF ChartItem::getRect() const
+{
+	return rect;
+}
+
+void ChartItem::setPos(QPointF)
+{
+}
+
 static int round_up(double f)
 {
 	return static_cast<int>(ceil(f));
 }
 
-ChartPixmapItem::ChartPixmapItem(ChartView &v, size_t z) : HideableChartItem(v, z),
+ChartPixmapItem::ChartPixmapItem(ChartView &v, size_t z, bool dragable) : HideableChartItem(v, z, dragable),
 	positionDirty(false), textureDirty(false)
 {
 }
@@ -104,11 +113,6 @@ void ChartPixmapItem::setPos(QPointF pos)
 	setPositionDirty();
 }
 
-QRectF ChartPixmapItem::getRect() const
-{
-	return rect;
-}
-
 void ChartGraphicsSceneItem::draw(QSizeF s, QColor background, QGraphicsScene &scene)
 {
 	resize(s); // Noop if size doesn't change
@@ -119,8 +123,9 @@ void ChartGraphicsSceneItem::draw(QSizeF s, QColor background, QGraphicsScene &s
 	setTextureDirty();
 }
 
-ChartRectItem::ChartRectItem(ChartView &v, size_t z,
-			     const QPen &pen, const QBrush &brush, double radius) : ChartPixmapItem(v, z),
+ChartRectItem::ChartRectItem(ChartView &v, size_t z, const QPen &pen,
+			     const QBrush &brush, double radius, bool dragable) :
+	ChartPixmapItem(v, z, dragable),
 	pen(pen), brush(brush), radius(radius)
 {
 }
@@ -189,10 +194,9 @@ ChartLineItemBase::~ChartLineItemBase()
 {
 }
 
-void ChartLineItemBase::setLine(QPointF fromIn, QPointF toIn)
+void ChartLineItemBase::setLine(QPointF from, QPointF to)
 {
-	from = fromIn;
-	to = toIn;
+	rect = QRectF(from, to);
 	positionDirty = true;
 	markDirty();
 }
@@ -215,8 +219,8 @@ void ChartLineItem::render()
 		// Attention: width is a geometry property and therefore handled by position dirty!
 		geometry->setLineWidth(static_cast<float>(width));
 		auto vertices = geometry->vertexDataAsPoint2D();
-		setPoint(vertices[0], from);
-		setPoint(vertices[1], to);
+		setPoint(vertices[0], rect.topLeft());
+		setPoint(vertices[1], rect.bottomRight());
 		node->markDirty(QSGNode::DirtyGeometry);
 	}
 
@@ -246,11 +250,11 @@ void ChartRectLineItem::render()
 		// Attention: width is a geometry property and therefore handled by position dirty!
 		geometry->setLineWidth(static_cast<float>(width));
 		auto vertices = geometry->vertexDataAsPoint2D();
-		setPoint(vertices[0], from);
-		setPoint(vertices[1], QPointF(from.x(), to.y()));
-		setPoint(vertices[2], to);
-		setPoint(vertices[3], QPointF(to.x(), from.y()));
-		setPoint(vertices[4], from);
+		setPoint(vertices[0], rect.topLeft());
+		setPoint(vertices[1], rect.bottomLeft());
+		setPoint(vertices[2], rect.bottomRight());
+		setPoint(vertices[3], rect.topRight());
+		setPoint(vertices[4], rect.topLeft());
 		node->markDirty(QSGNode::DirtyGeometry);
 	}
 
