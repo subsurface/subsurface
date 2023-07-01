@@ -50,6 +50,7 @@ public:
 	double calcZoomPosition(double zoom, double originalPos, double delta);
 	const plot_info &getPlotInfo() const;
 	int timeAt(QPointF pos) const;
+	std::vector<std::pair<QString, QPixmap>> eventsAt(QPointF pos) const;
 
 	const struct dive *d;
 	int dc;

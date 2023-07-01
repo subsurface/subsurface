@@ -182,8 +182,6 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	//else
 		//plotPicturesInternal(d, flags & RenderFlags::Instant);
 
-	//toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
-
 	update();
 
 	// OK, how long did this take us? Anything above the second is way too long,
@@ -199,8 +197,9 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	if (!tooltip)
 		tooltip = createChartItem<ToolTipItem>(dpr);
 	if (prefs.infobox) {
+		QPoint pos = mapFromGlobal(QCursor::pos()).toPoint();
 		tooltip->setVisible(true);
-		tooltip->update(d, dpr, 0, profileScene->getPlotInfo(), flags & RenderFlags::PlanMode);
+		updateTooltip(pos, flags & RenderFlags::PlanMode);
 	} else {
 		tooltip->setVisible(false);
 	}
@@ -294,8 +293,6 @@ void ProfileView::mouseMoveEvent(QMouseEvent *event)
 	if (panning)
 		pan(pos.x(), pos.y());
 
-	//toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
-
 	//if (currentState == PLAN || currentState == EDIT) {
 		//QRectF rect = profileScene->profileRegion;
 		//auto [miny, maxy] = profileScene->profileYAxis->screenMinMax();
@@ -376,14 +373,15 @@ void ProfileView::hoverMoveEvent(QHoverEvent *event)
 {
 	if (!profileScene)
 		return;
-	QPointF pos = event->pos();
-	int time = profileScene->timeAt(pos);
-	bool requires_update = false;
-	if (tooltip) {
-		tooltip->update(d, dpr, time, profileScene->getPlotInfo(), false); // TODO: plan mode
-		requires_update = true;
-	}
-
-	if (requires_update)
+	if (tooltip && prefs.infobox) {
+		updateTooltip(event->pos(), false); // TODO: plan mode
 		update();
+	}
+}
+
+void ProfileView::updateTooltip(QPointF pos, bool plannerMode)
+{
+	int time = profileScene->timeAt(pos);
+	auto events = profileScene->eventsAt(pos);
+	tooltip->update(d, dpr, time, profileScene->getPlotInfo(), events, plannerMode);
 }

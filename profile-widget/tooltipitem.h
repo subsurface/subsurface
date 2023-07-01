@@ -13,7 +13,8 @@ struct plot_info;
 class ToolTipItem : public ChartRectItem {
 public:
 	ToolTipItem(ChartView &view, double dpr);
-	void update(const dive *d, double dpr, int time, const plot_info &pInfo, bool inPlanner);
+	void update(const dive *d, double dpr, int time, const plot_info &pInfo,
+		    const std::vector<std::pair<QString, QPixmap>> &events, bool inPlanner);
 private:
 	QFont font;
 	QFontMetrics fm;

@@ -74,6 +74,7 @@ private:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 
 	ChartItemPtr<ToolTipItem> tooltip;
+	void updateTooltip(QPointF pos, bool plannerMode);
 
 	// For mobile
 	int getDiveId() const;

@@ -118,7 +118,8 @@ static QPixmap drawTissues(const plot_info &pInfo, double dpr, int idx, bool inP
 	return tissues.scaled(new_width, new_height);
 }
 
-void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &pInfo, bool inPlanner)
+void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &pInfo,
+			 const std::vector<std::pair<QString, QPixmap>> &events, bool inPlanner)
 {
 	struct membufferpp mb;
 
@@ -126,24 +127,27 @@ void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &p
 
 	QPixmap tissues = drawTissues(pInfo, dpr, idx, inPlanner);
 	std::vector<std::pair<QString, int>> strings = split_mb_into_strings(mb, fm);
-
-	//TODO: add event tool tips!
-	//const auto l = scene()->items(pos, Qt::IntersectsItemBoundingRect, Qt::DescendingOrder,
-			//scene()->views().first()->transform());
-	//for (QGraphicsItem *item: l) {
-		//if (!item->toolTip().isEmpty())
-			//addToolTip(item->toolTip(), QPixmap());
-	//}
+	std::vector<QSizeF> event_sizes;
 
 	width = title.size().width();
 	for (auto &[s,w]: strings)
 		width = std::max(width, static_cast<double>(w));
+
+	height = (static_cast<double>(strings.size()) + 1.0) * fontHeight;
+
+	for (auto &[s, pixmap]: events) {
+		double text_width = fm.size(Qt::TextSingleLine, s).width();
+		double total_width = pixmap.width() + text_width;
+		double h = std::max(static_cast<double>(pixmap.height()), fontHeight);
+		width = std::max(width, total_width);
+		height += h;
+		event_sizes.emplace_back(text_width, h);
+	}
+
 	width += tissues.width();
 	width += 6.0 * tooltipBorder;
-
-	height = 4.0 * tooltipBorder + title.height() +
-		std::max((static_cast<double>(strings.size()) + 1.0) * fontHeight,
-			 static_cast<double>(tissues.height()));
+	height = std::max(height, static_cast<double>(tissues.height()));
+	height += 4.0 * tooltipBorder + title.height();
 
 	ChartRectItem::resize(QSizeF(width, height));
 	painter->setFont(font);
@@ -159,6 +163,15 @@ void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &p
 		QRectF rect(x, y, w, fontHeight);
 		painter->drawText(rect, s);
 		y += fontHeight;
+	}
+	for (size_t i = 0; i < events.size(); ++i) {
+		QSizeF size = event_sizes[i];
+		auto &[s, pixmap] = events[i];
+		painter->drawPixmap(lrint(x), lrint(y + (size.height() - pixmap.height())/2.0), pixmap,
+				    0, 0, pixmap.width(), pixmap.height());
+		QRectF rect(x + pixmap.width(), round(y + (size.height() - fontHeight) / 2.0), size.width(), fontHeight);
+		painter->drawText(rect, s);
+		y += size.height();
 	}
 	setTextureDirty();
 }
