@@ -615,3 +615,14 @@ int ProfileScene::timeAt(QPointF pos) const
 {
 	return lrint(timeAxis->valueAt(pos));
 }
+
+std::vector<std::pair<QString, QPixmap>> ProfileScene::eventsAt(QPointF pos) const
+{
+	std::vector<std::pair<QString, QPixmap>> res;
+	for (const auto &item: eventItems) {
+		if (!item->contains(item->mapFromScene(pos)))
+			continue;
+		res.emplace_back(item->text, item->pixmap);
+	}
+	return res;
+}
