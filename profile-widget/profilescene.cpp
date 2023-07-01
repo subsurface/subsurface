@@ -172,10 +172,6 @@ void ProfileScene::clear()
 	for (AbstractProfilePolygonItem *item: profileItems)
 		item->clear();
 
-	// the events will have connected slots which can fire after
-	// the dive and its data have been deleted - so explictly delete
-	// the DiveEventItems
-	qDeleteAll(eventItems);
 	eventItems.clear();
 	free_plot_info_data(&plotInfo);
 	empty = true;
@@ -525,10 +521,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, Div
 	if (prefs.percentagegraph)
 		percentageItem->replot(d, currentdc, plotInfo);
 
-	// The event items are a bit special since we don't know how many events are going to
-	// exist on a dive, so I cant create cache items for that. that's why they are here
-	// while all other items are up there on the constructor.
-	qDeleteAll(eventItems);
 	eventItems.clear();
 	struct event *event = currentdc->events;
 	struct gasmix lastgasmix = get_gasmix_at_time(d, currentdc, duration_t{1});
@@ -546,11 +538,11 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, Div
 			}
 		}
 		if (DiveEventItem::isInteresting(d, currentdc, event, plotInfo, firstSecond, lastSecond)) {
-			auto item = new DiveEventItem(d, event, lastgasmix, plotInfo,
-						      timeAxis, profileYAxis, animSpeed, *pixmaps);
+			auto item = std::make_unique<DiveEventItem>(d, event, lastgasmix, plotInfo,
+								    timeAxis, profileYAxis, animSpeed, *pixmaps);
 			item->setZValue(2);
-			addItem(item);
-			eventItems.push_back(item);
+			addItem(item.get());
+			eventItems.push_back(std::move(item));
 		}
 		if (event_is_gaschange(event))
 			lastgasmix = get_gasmix_from_event(d, event);

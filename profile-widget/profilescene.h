@@ -83,7 +83,7 @@ private:
 	DiveTemperatureItem *temperatureItem;
 	DiveMeanDepthItem *meanDepthItem;
 	DiveGasPressureItem *gasPressureItem;
-	QList<DiveEventItem *> eventItems;
+	std::vector<std::unique_ptr<DiveEventItem>> eventItems;
 	DiveTextItem *diveComputerText;
 	DiveReportedCeiling *reportedCeiling;
 	PartialPressureGasItem *pn2GasItem;
