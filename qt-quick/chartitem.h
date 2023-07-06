@@ -98,6 +98,20 @@ private:
 	double radius;
 };
 
+// A ChartRectItem that is animated on size change.
+// Same as ChartPixmapItem, but resize is called with a "speed" parameter
+// (which is actually a time parameter for historical reasons).
+class AnimatedChartRectItem : public ChartRectItem {
+public:
+	using ChartRectItem::ChartRectItem;
+	~AnimatedChartRectItem();
+	void setPixmap(const QPixmap &pixmap, int animSpeed);
+	void anim(double progress);
+private:
+	QPixmap pixmap;
+	QSize originalSize;
+};
+
 // Attention: text is only drawn after calling setColor()!
 class ChartTextItem : public ChartPixmapItem {
 public:

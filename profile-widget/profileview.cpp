@@ -15,32 +15,51 @@
 #include <QDebug>
 #include <QElapsedTimer>
 
-// Class for animations (if any). Might want to do our own.
+// Class templates for animations (if any). Might want to do our own.
+// Calls the function object passed in the constructor with a time argument,
+// where 0.0 = start at 1.0 = end..
+// On the last invocation, a 1.0 literal is passed, so floating-point
+// comparison is OK.
 class ProfileAnimation : public QAbstractAnimation {
-	ProfileView &view;
-	// For historical reasons, speed is actually the duration
-	// (i.e. the reciprocal of speed). Ouch, that hurts.
-	int speed;
-
 	int duration() const override
 	{
 		return speed;
 	}
+protected:
+	// For historical reasons, speed is actually the duration
+	// (i.e. the reciprocal of speed). Ouch, that hurts.
+	int speed;
+public:
+	ProfileAnimation(int animSpeed) : speed(animSpeed)
+	{
+	}
+};
+
+template <typename FUNC>
+class ProfileAnimationTemplate : public ProfileAnimation {
 	void updateCurrentTime(int time) override
 	{
 		// Note: we explicitly pass 1.0 at the end, so that
 		// the callee can do a simple float comparison for "end".
-		view.anim(time == speed ? 1.0
-					: static_cast<double>(time) / speed);
+		func(time == speed ? 1.0
+				   : static_cast<double>(time) / speed);
 	}
+	FUNC func;
 public:
-	ProfileAnimation(ProfileView &view, int animSpeed) :
-		view(view),
-		speed(animSpeed)
+	ProfileAnimationTemplate(FUNC func, int animSpeed) :
+		ProfileAnimation(animSpeed),
+		func(func)
 	{
 		start();
 	}
 };
+
+// Helper function to make creation of animations somewhat more palatable
+template <typename FUNC>
+std::unique_ptr<ProfileAnimationTemplate<FUNC>> make_anim(FUNC func, int animSpeed)
+{
+	return std::make_unique<ProfileAnimationTemplate<FUNC>>(func, animSpeed);
+}
 
 ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::Count),
 	d(nullptr),
@@ -199,7 +218,7 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	if (prefs.infobox) {
 		QPoint pos = mapFromGlobal(QCursor::pos()).toPoint();
 		tooltip->setVisible(true);
-		updateTooltip(pos, flags & RenderFlags::PlanMode);
+		updateTooltip(pos, flags & RenderFlags::PlanMode, animSpeed);
 	} else {
 		tooltip->setVisible(false);
 	}
@@ -208,7 +227,7 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	if (animSpeed <= 0)
 		animation.reset();
 	else
-		animation = std::make_unique<ProfileAnimation>(*this, animSpeed);
+		animation = make_anim([this](double progress) { anim(progress); }, animSpeed);
 }
 
 void ProfileView::anim(double fraction)
@@ -373,15 +392,30 @@ void ProfileView::hoverMoveEvent(QHoverEvent *event)
 {
 	if (!profileScene)
 		return;
+
+	// This is incredibly stupid: For some weird reason (a bug?), when
+	// resizing the ToolTipItem we get spurious hoverMoveEvents, which
+	// restarts the animation, giving an infinite loop.
+	// Prevent this by comparing to the old mouse position.
+	if (std::exchange(previousHoveMovePosition, event->pos()) == previousHoveMovePosition)
+		return;
+
 	if (tooltip && prefs.infobox) {
-		updateTooltip(event->pos(), false); // TODO: plan mode
+		updateTooltip(event->pos(), false, qPrefDisplay::animation_speed()); // TODO: plan mode
 		update();
 	}
 }
 
-void ProfileView::updateTooltip(QPointF pos, bool plannerMode)
+void ProfileView::updateTooltip(QPointF pos, bool plannerMode, int animSpeed)
 {
 	int time = profileScene->timeAt(pos);
 	auto events = profileScene->eventsAt(pos);
-	tooltip->update(d, dpr, time, profileScene->getPlotInfo(), events, plannerMode);
+	tooltip->update(d, dpr, time, profileScene->getPlotInfo(), events, plannerMode, animSpeed);
+
+	// Reset animation.
+	if (animSpeed <= 0)
+		tooltip_animation.reset();
+	else
+		tooltip_animation = make_anim([this](double progress)
+			{ if (tooltip) tooltip->anim(progress); update(); }, animSpeed);
 }

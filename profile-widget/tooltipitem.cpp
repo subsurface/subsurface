@@ -36,10 +36,10 @@ static QFont makeFont(double dpr)
 }
 
 ToolTipItem::ToolTipItem(ChartView &view, double dpr) :
-	ChartRectItem(view, ProfileZValue::ToolTipItem,
-		      QPen(tooltipBorderColor, tooltipBorder),
-		      QBrush(tooltipColor), tooltipBorderRadius,
-		      true),
+	AnimatedChartRectItem(view, ProfileZValue::ToolTipItem,
+			      QPen(tooltipBorderColor, tooltipBorder),
+			      QBrush(tooltipColor), tooltipBorderRadius,
+			      true),
 	font(makeFont(dpr)),
 	fm(font),
 	fontHeight(fm.height())
@@ -119,7 +119,7 @@ static QPixmap drawTissues(const plot_info &pInfo, double dpr, int idx, bool inP
 }
 
 void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &pInfo,
-			 const std::vector<std::pair<QString, QPixmap>> &events, bool inPlanner)
+			 const std::vector<std::pair<QString, QPixmap>> &events, bool inPlanner, int animSpeed)
 {
 	struct membufferpp mb;
 
@@ -149,31 +149,35 @@ void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &p
 	height = std::max(height, static_cast<double>(tissues.height()));
 	height += 4.0 * tooltipBorder + title.height();
 
-	ChartRectItem::resize(QSizeF(width, height));
-	painter->setFont(font);
-	painter->setPen(QPen(tooltipFontColor)); // QPainter uses QPen to set text color!
+	QPixmap pixmap(lrint(width), lrint(height));
+	pixmap.fill(Qt::transparent);
+	QPainter painter(&pixmap);
+
+	painter.setFont(font);
+	painter.setPen(QPen(tooltipFontColor)); // QPainter uses QPen to set text color!
 	double x = 4.0 * tooltipBorder + tissues.width();
 	double y = 2.0 * tooltipBorder;
 	double titleOffset = (width - title.width()) / 2.0;
-	painter->drawPixmap(lrint(titleOffset), lrint(y), title, 0, 0, title.width(), title.height());
+	painter.drawPixmap(lrint(titleOffset), lrint(y), title, 0, 0, title.width(), title.height());
 	y += round(fontHeight);
-	painter->drawPixmap(lrint(2.0 * tooltipBorder), lrint(y), tissues, 0, 0, tissues.width(), tissues.height());
+	painter.drawPixmap(lrint(2.0 * tooltipBorder), lrint(y), tissues, 0, 0, tissues.width(), tissues.height());
 	y += round(fontHeight);
 	for (auto &[s,w]: strings) {
 		QRectF rect(x, y, w, fontHeight);
-		painter->drawText(rect, s);
+		painter.drawText(rect, s);
 		y += fontHeight;
 	}
 	for (size_t i = 0; i < events.size(); ++i) {
 		QSizeF size = event_sizes[i];
 		auto &[s, pixmap] = events[i];
-		painter->drawPixmap(lrint(x), lrint(y + (size.height() - pixmap.height())/2.0), pixmap,
-				    0, 0, pixmap.width(), pixmap.height());
+		painter.drawPixmap(lrint(x), lrint(y + (size.height() - pixmap.height())/2.0), pixmap,
+				   0, 0, pixmap.width(), pixmap.height());
 		QRectF rect(x + pixmap.width(), round(y + (size.height() - fontHeight) / 2.0), size.width(), fontHeight);
-		painter->drawText(rect, s);
+		painter.drawText(rect, s);
 		y += size.height();
 	}
-	setTextureDirty();
+
+	AnimatedChartRectItem::setPixmap(pixmap, animSpeed);
 }
 
 void ToolTipItem::stopDrag(QPointF pos)
