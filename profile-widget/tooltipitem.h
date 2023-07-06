@@ -10,11 +10,11 @@
 struct dive;
 struct plot_info;
 
-class ToolTipItem : public ChartRectItem {
+class ToolTipItem : public AnimatedChartRectItem {
 public:
 	ToolTipItem(ChartView &view, double dpr);
 	void update(const dive *d, double dpr, int time, const plot_info &pInfo,
-		    const std::vector<std::pair<QString, QPixmap>> &events, bool inPlanner);
+		    const std::vector<std::pair<QString, QPixmap>> &events, bool inPlanner, int animSpeed);
 private:
 	QFont font;
 	QFontMetrics fm;

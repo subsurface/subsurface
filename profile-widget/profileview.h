@@ -74,7 +74,10 @@ private:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 
 	ChartItemPtr<ToolTipItem> tooltip;
-	void updateTooltip(QPointF pos, bool plannerMode);
+	void updateTooltip(QPointF pos, bool plannerMode, int animSpeed);
+	std::unique_ptr<ProfileAnimation> tooltip_animation;
+
+	QPointF previousHoveMovePosition;
 
 	// For mobile
 	int getDiveId() const;

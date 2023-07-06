@@ -150,6 +150,37 @@ void ChartRectItem::resize(QSizeF size)
 	painter->drawRoundedRect(rect, radius, radius, Qt::AbsoluteSize);
 }
 
+AnimatedChartRectItem::~AnimatedChartRectItem()
+{
+}
+
+void AnimatedChartRectItem::setPixmap(const QPixmap &p, int animSpeed)
+{
+	if (animSpeed <= 0) {
+		resize(p.size());
+		painter->drawPixmap(0, 0, p, 0, 0, p.width(), p.height());
+		setTextureDirty();
+		return;
+	}
+	pixmap = p;
+	originalSize = img ? img->size() : QSize(1,1);
+}
+
+static int mid(int from, int to, double fraction)
+{
+	return fraction == 1.0 ? to
+			       : lrint(from + (to - from) * fraction);
+}
+
+void AnimatedChartRectItem::anim(double fraction)
+{
+	QSize s(mid(originalSize.width(), pixmap.width(), fraction),
+		mid(originalSize.height(), pixmap.height(), fraction));
+	resize(s);
+	painter->drawPixmap(0, 0, pixmap, 0, 0, s.width(), s.height());
+	setTextureDirty();
+}
+
 ChartTextItem::ChartTextItem(ChartView &v, size_t z, const QFont &f, const std::vector<QString> &text, bool center) :
 	ChartPixmapItem(v, z), f(f), center(center)
 {
