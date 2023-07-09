@@ -317,12 +317,6 @@ bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc,
 			return true;
 		event = get_next_event(event->next, "gaschange");
 	}
-	if (dc->divemode == CCR) {
-		if (idx == get_cylinder_idx_by_use(dive, DILUENT))
-			return true;
-		if (idx == get_cylinder_idx_by_use(dive, OXYGEN))
-			return true;
-	}
 	return !first_gas_explicit && idx == 0;
 }
 
@@ -342,6 +336,8 @@ bool is_cylinder_used(const struct dive *dive, int idx)
 
 	for_each_dc(dive, dc) {
 		if (has_gaschange_event(dive, dc, idx))
+			return true;
+		else if (dc->divemode == CCR && idx == get_cylinder_idx_by_use(dive, OXYGEN))
 			return true;
 	}
 	return false;
