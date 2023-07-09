@@ -151,7 +151,10 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			cyl.gasmix.he.permille = he;
 		}
 
-		if (dive->dc.divemode == CCR)
+		if (rc == DC_STATUS_UNSUPPORTED)
+			// Gasmix is inactive
+			cyl.cylinder_use = NOT_USED;
+		else if (dive->dc.divemode == CCR)
 			cyl.cylinder_use = DILUENT;
 		else
 			cyl.cylinder_use = OC_GAS;

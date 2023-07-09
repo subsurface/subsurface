@@ -1,3 +1,4 @@
+equipment: mark gas mixes reported by the dive computer as 'inactive' as 'not used'
 desktop: added button to hide the infobox in the dive profile
 desktop: use persisted device information for the dive computer configuration
 core: fix bug using salinity and pressure values in mbar <-> depth conversion
