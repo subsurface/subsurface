@@ -616,7 +616,7 @@ int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *
 		if (ev && ((dc->sample && ev->time.seconds == dc->sample[0].time.seconds) || ev->time.seconds <= 1))
 			res = get_cylinder_index(dive, ev);
 		else if (dc->divemode == CCR)
-			res = MAX(get_cylinder_idx_by_use(dive, DILUENT), 0);
+			res = MAX(get_cylinder_idx_by_use(dive, DILUENT), res);
 	}
 	return res < dive->cylinders.nr ? res : 0;
 }
