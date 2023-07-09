@@ -191,7 +191,7 @@ void DivePlannerPointsModel::setupCylinders()
 	clear_cylinder_table(&d->cylinders);
 	if (mode == PLAN && current_dive) {
 		// take the displayed cylinders from the selected dive as starting point
-		copy_used_cylinders(current_dive, d, !prefs.display_unused_tanks);
+		copy_used_cylinders(current_dive, d, !prefs.include_unused_tanks);
 		reset_cylinders(d, true);
 
 		if (d->cylinders.nr > 0) {
@@ -445,7 +445,7 @@ int DivePlannerPointsModel::rowCount(const QModelIndex&) const
 
 DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent),
 	d(nullptr),
-	cylinders(true, false),
+	cylinders(true),
 	mode(NOTHING)
 {
 	memset(&diveplan, 0, sizeof(diveplan));

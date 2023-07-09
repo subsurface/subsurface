@@ -29,7 +29,7 @@ static bool hiddenByDefault(int i)
 }
 
 TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
-	cylindersModel(new CylindersModel(false, true, this)),
+	cylindersModel(new CylindersModel(false, this)),
 	weightModel(new WeightModel(this))
 {
 	QCompleter *suitCompleter;

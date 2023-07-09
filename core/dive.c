@@ -1908,7 +1908,7 @@ static bool cylinder_in_use(const struct dive *dive, int idx)
 		return false;
 
 	/* This tests for gaschange events or pressure changes */
-	if (is_cylinder_used(dive, idx))
+	if (is_cylinder_used(dive, idx) || prefs.include_unused_tanks)
 		return true;
 
 	/* This tests for typenames or gas contents */

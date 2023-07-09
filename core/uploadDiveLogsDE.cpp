@@ -152,7 +152,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 			return false;
 		}
 
-		xml_params_add_int(params, "allcylinders", prefs.display_unused_tanks);
+		xml_params_add_int(params, "allcylinders", prefs.include_unused_tanks);
 		transformed = xsltApplyStylesheet(xslt, doc, xml_params_get(params));
 		free_xml_params(params);
 		if (!transformed) {

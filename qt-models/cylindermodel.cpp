@@ -13,10 +13,9 @@
 #include "core/subsurface-string.h"
 #include <string>
 
-CylindersModel::CylindersModel(bool planner, bool hideUnused, QObject *parent) : CleanerTableModel(parent),
+CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableModel(parent),
 	d(nullptr),
 	inPlanner(planner),
-	hideUnused(hideUnused),
 	numRows(0),
 	tempRow(-1),
 	tempCyl(empty_cylinder)
@@ -134,13 +133,14 @@ static QVariant percent_string(fraction_t fraction)
 	return QString("%L1%").arg(permille / 10.0, 0, 'f', 1);
 }
 
-// Calculate the number of displayed cylinders: If hideUnused
-// is set, we don't show unused cylinders at the end of the list.
+// Calculate the number of displayed cylinders: If we are in planner
+// or prefs.include_unused_tanks is set we show unused cylinders
+// at the end of the list.
 int CylindersModel::calcNumRows() const
 {
 	if (!d)
 		return 0;
-	if (!hideUnused || prefs.display_unused_tanks)
+	if (inPlanner || prefs.include_unused_tanks)
 		return d->cylinders.nr;
 	return first_hidden_cylinder(d);
 }
