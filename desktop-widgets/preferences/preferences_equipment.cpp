@@ -23,7 +23,7 @@ PreferencesEquipment::~PreferencesEquipment()
 
 void PreferencesEquipment::refreshSettings()
 {
-	ui->display_unused_tanks->setChecked(prefs.display_unused_tanks);
+	ui->include_unused_tanks->setChecked(prefs.include_unused_tanks);
 	ui->display_default_tank_infos->setChecked(prefs.display_default_tank_infos);
 	ui->default_cylinder->clear();
 	for (int i = 0; i < tank_info_table.nr; i++) {
@@ -37,7 +37,7 @@ void PreferencesEquipment::refreshSettings()
 void PreferencesEquipment::syncSettings()
 {
 	auto equipment = qPrefEquipment::instance();
-	qPrefEquipment::set_display_unused_tanks(ui->display_unused_tanks->isChecked());
+	qPrefEquipment::set_include_unused_tanks(ui->include_unused_tanks->isChecked());
 	qPrefEquipment::set_display_default_tank_infos(ui->display_default_tank_infos->isChecked());
 	equipment->set_default_cylinder(ui->default_cylinder->currentText());
 

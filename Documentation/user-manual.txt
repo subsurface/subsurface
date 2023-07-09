@@ -3654,6 +3654,8 @@ image::images/Pref_eqpmnt.jpg["FIGURE: Preferences: equipment",align="center"]
 
   ** *Show unused cylinders*: Checking this checkbox allows showing all cylinders entered for a dive
      in the Cylinder Table of the *Equipment* tab, even if one or more cylinders were actually not used.
+     This will also include unused cylinders in data exports and when dives are cloned for the planner
+     or merged into one dive.
 
 === Media
 

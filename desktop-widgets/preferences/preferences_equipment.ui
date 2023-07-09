@@ -62,9 +62,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="display_unused_tanks">
+    <widget class="QCheckBox" name="include_unused_tanks">
      <property name="text">
-      <string>Show unused cylinders in the Cylinders table of the Equipment tab</string>
+      <string>Show unused cylinders in the Cylinders table of the Equipment tab and include them in export / copy / merge</string>
      </property>
     </widget>
    </item>

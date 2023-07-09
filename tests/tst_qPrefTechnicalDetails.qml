@@ -30,9 +30,9 @@ TestCase {
 //TBD	PrefTechnicalDetails.display_deco_mode = BUEHLMANN
 //TBD	compare(PrefTechnicalDetails.display_deco_mode, BUEHLMANN)
 
-		var x07 = PrefTechnicalDetails.display_unused_tanks
-		PrefTechnicalDetails.display_unused_tanks = true
-		compare(PrefTechnicalDetails.display_unused_tanks, true)
+		var x07 = PrefTechnicalDetails.include_unused_tanks
+		PrefTechnicalDetails.include_unused_tanks = true
+		compare(PrefTechnicalDetails.include_unused_tanks, true)
 
 		var x08 = PrefTechnicalDetails.ead
 		PrefTechnicalDetails.ead = true
@@ -183,7 +183,7 @@ TestCase {
 		PrefTechnicalDetails.calcndltts = ! PrefTechnicalDetails.calcndltts
 		PrefTechnicalDetails.dcceiling = ! PrefTechnicalDetails.dcceiling
 		// 6 does not emit signal
-		PrefTechnicalDetails.display_unused_tanks = ! PrefTechnicalDetails.display_unused_tanks
+		PrefTechnicalDetails.include_unused_tanks = ! PrefTechnicalDetails.include_unused_tanks
 		PrefTechnicalDetails.ead = ! PrefTechnicalDetails.ead
 		PrefTechnicalDetails.gfhigh = -27
 		PrefTechnicalDetails.gflow = -25
