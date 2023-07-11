@@ -104,16 +104,17 @@ struct DiveComputerEntry {
 	QString product;
 	unsigned int transport;
 	bool fwUpgradePossible;
+	bool forcedFirmwareUpgradeSupported;
 };
 
 //WARNING: Do not edit this list or even just change its order without
 // making corresponding changes to the `DiveComputerList` element
 // in `configuredivecomputerdialog.ui` or this functionality will stop working.
 static const DiveComputerEntry supportedDiveComputers[] = {
-	{ "Heinrichs Weikamp", "OSTC 2N", DC_TRANSPORT_SERIAL, true },
-	{ "Heinrichs Weikamp", "OSTC Plus", DC_TRANSPORT_BLUETOOTH, true },
-	{ "Heinrichs Weikamp", "OSTC 4", DC_TRANSPORT_BLUETOOTH, true },
-	{ "Suunto", "Vyper", DC_TRANSPORT_SERIAL, false },
+	{ "Heinrichs Weikamp", "OSTC 2N", DC_TRANSPORT_SERIAL, true, false },
+	{ "Heinrichs Weikamp", "OSTC Plus", DC_TRANSPORT_BLUETOOTH, true, false },
+	{ "Heinrichs Weikamp", "OSTC 4", DC_TRANSPORT_BLUETOOTH, true, true },
+	{ "Suunto", "Vyper", DC_TRANSPORT_SERIAL, false, false },
 };
 
 ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDialog(parent),
@@ -1538,7 +1539,7 @@ void ConfigureDiveComputerDialog::dc_open()
 
 	const DiveComputerEntry selectedDiveComputer = supportedDiveComputers[ui.DiveComputerList->currentRow()];
 	ui.updateFirmwareButton->setEnabled(selectedDiveComputer.fwUpgradePossible);
-	ui.forceUpdateFirmware->setEnabled(supportedDiveComputers[selectedDiveComputerIndex].product == "OSTC 4");
+	ui.forceUpdateFirmware->setEnabled(selectedDiveComputer.forcedFirmwareUpgradeSupported);
 
 	ui.progressBar->setFormat(tr("Connected to device"));
 
