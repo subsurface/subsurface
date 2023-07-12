@@ -95,7 +95,7 @@ void TabDiveInformation::closeWarning()
 void TabDiveInformation::updateWaterTypeWidget()
 {
 	// Decide on whether to show the water type/salinity combobox or not
-	bool hasDCSalinity = parent.currentDive->salinity != 0;
+	bool hasDCSalinity = parent.currentDive && parent.currentDive->salinity != 0;
 	if (prefs.salinityEditDefault || !hasDCSalinity) {   // if the preference setting has been checked or DC doesnt have salinity info
 		ui->waterTypeText->setVisible(false);
 		ui->waterTypeCombo->setVisible(true); // show combobox
