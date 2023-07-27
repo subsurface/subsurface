@@ -600,7 +600,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
-		m.addAction(tr("Hide similar events"), [this, item] { hideEvents(item); });
+		m.addAction(tr("Hide event"), [this, item] { hideEvent(item); });
+		m.addAction(tr("Hide similar events"), [this, item] { hideSimilarEvents(item); });
 		const struct event *dcEvent = item->getEvent();
 		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK)
 			m.addAction(tr("Edit name"), [this, item] { editName(item); });
@@ -682,21 +683,21 @@ void ProfileWidget2::renameCurrentDC()
 		Command::editDeviceNickname(currentdc, newName);
 }
 
-void ProfileWidget2::hideEvents(DiveEventItem *item)
+void ProfileWidget2::hideEvent(DiveEventItem *item)
+{
+	item->hide();
+}
+
+void ProfileWidget2::hideSimilarEvents(DiveEventItem *item)
 {
 	const struct event *event = item->getEvent();
 
-	if (QMessageBox::question(this,
-				  TITLE_OR_TEXT(tr("Hide events"), tr("Hide all %1 events?").arg(event->name)),
-				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
-		if (!empty_string(event->name)) {
-			hide_event(event->name);
-			for (DiveEventItem *evItem: profileScene->eventItems) {
-				if (same_string(evItem->getEvent()->name, event->name))
-					evItem->hide();
-			}
-		} else {
-			item->hide();
+	hideEvent(item);
+
+	if (!empty_string(event->name)) {
+		for (DiveEventItem *evItem: profileScene->eventItems) {
+			if (same_string(evItem->getEvent()->name, event->name) && evItem->getEvent()->flags == event->flags)
+				evItem->hide();
 		}
 	}
 }

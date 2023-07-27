@@ -10,7 +10,6 @@ extern "C" {
 extern void clear_event_names(void);
 extern void remember_event_name(const char *eventname);
 extern bool is_event_hidden(const char *eventname);
-extern void hide_event(const char *eventname);
 extern void show_all_events();
 extern bool any_events_hidden();
 

@@ -39,13 +39,6 @@ extern "C" bool is_event_hidden(const char *eventname)
 	return it != event_names.end() && !it->plot;
 }
 
-extern "C" void hide_event(const char *eventname)
-{
-	auto it = std::find(event_names.begin(), event_names.end(), eventname);
-	if (it != event_names.end())
-		it->plot = false;
-}
-
 extern "C" void show_all_events()
 {
 	for (event_name &en: event_names)
