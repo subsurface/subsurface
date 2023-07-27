@@ -125,7 +125,8 @@ private:
 	void splitDive(int seconds);
 	void addSetpointChange(int seconds);
 	void removeEvent(DiveEventItem *item);
-	void hideEvents(DiveEventItem *item);
+	void hideEvent(DiveEventItem *item);
+	void hideSimilarEvents(DiveEventItem *item);
 	void editName(DiveEventItem *item);
 	void unhideEvents();
 	void makeFirstDC();
