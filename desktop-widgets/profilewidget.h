@@ -29,6 +29,7 @@ public:
 	void setEnabledToolbar(bool enabled);
 	void nextDC();
 	void prevDC();
+	void dropPicture(const QString &filename, QPoint p);
 	dive *d;
 	int dc;
 private

@@ -21,6 +21,9 @@ public:
 	ChartItemPtr(const ChartItemPtr &p) : ptr(p.ptr)
 	{
 	}
+	ChartItemPtr(ChartItemPtr &&p) : ptr(p.ptr)
+	{
+	}
 	void reset()
 	{
 		ptr = nullptr;

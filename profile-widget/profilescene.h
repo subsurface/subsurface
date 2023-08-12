@@ -41,7 +41,8 @@ public:
 				    // Can be compared with literal 1.0 to determine "end" state.
 
 	// If a plannerModel is passed, the deco-information is taken from there.
-	void plotDive(const struct dive *d, int dc, int animSpeed, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
+	void plotDive(const struct dive *d, int dc, int animSpeed, bool simplified,
+		      DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
 		      bool keepPlotInfo = false, bool calcMax = true, double zoom = 1.0, double zoomedPosition = 0.0);
 
 	void draw(QPainter *painter, const QRect &pos,
@@ -49,7 +50,10 @@ public:
 		  DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false);
 	double calcZoomPosition(double zoom, double originalPos, double delta);
 	const plot_info &getPlotInfo() const;
-	int timeAt(QPointF pos) const;
+	int timeAt(QPointF pos) const; // time in seconds
+	std::pair<double, double> minMaxTime(); // time in seconds
+	double posAtTime(double time); // time in seconds
+	double yToScreen(double y); // For pictures: depth given in fration of displayed range.
 	std::vector<std::pair<QString, QPixmap>> eventsAt(QPointF pos) const;
 
 	const struct dive *d;

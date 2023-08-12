@@ -12,6 +12,7 @@
 struct ProfileZValue {
 	enum ZValues {
 		Profile = 0,
+		Pictures,
 		ToolTipItem,
 		Count
 	};
