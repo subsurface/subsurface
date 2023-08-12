@@ -18,7 +18,7 @@ static int depthAtTime(const plot_info &pi, duration_t time);
 
 DiveEventItem::DiveEventItem(const struct dive *d, int idx, const struct event &ev, struct gasmix lastgasmix,
 			     const plot_info &pi, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
-			     int speed, const DivePixmaps &pixmaps, QGraphicsItem *parent) : DivePixmapItem(parent),
+			     int speed, const DivePixmaps &pixmaps, QGraphicsItem *parent) : QGraphicsPixmapItem(parent),
 	text(setupToolTipString(d, ev, lastgasmix)),
 	pixmap(setupPixmap(d, ev, lastgasmix, pixmaps)),
 	vAxis(vAxis),
