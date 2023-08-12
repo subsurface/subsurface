@@ -2,15 +2,16 @@
 #ifndef DIVEEVENTITEM_H
 #define DIVEEVENTITEM_H
 
-#include "divepixmapitem.h"
+#include <QCoreApplication> // for Q_DECLARE_TR_FUNCTIONS
+#include <QGraphicsPixmapItem>
 
 class DiveCartesianAxis;
 class DivePixmaps;
 struct event;
 struct plot_info;
 
-class DiveEventItem : public DivePixmapItem {
-	Q_OBJECT
+class DiveEventItem : public QGraphicsPixmapItem {
+	Q_DECLARE_TR_FUNCTIONS(DiveEventItem)
 public:
 	DiveEventItem(const struct dive *d, struct event *ev, struct gasmix lastgasmix,
 		      const struct plot_info &pi, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,

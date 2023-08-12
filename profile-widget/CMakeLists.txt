@@ -10,8 +10,6 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	divelineitem.h
 	divepixmapcache.cpp
 	divepixmapcache.h
-	divepixmapitem.cpp
-	divepixmapitem.h
 	divepercentageitem.cpp
 	divepercentageitem.h
 	diveprofileitem.cpp
