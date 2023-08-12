@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "chartitem.h"
 #include "chartitemhelper.h"
-#include "chartview.h"
+#include "chartitem_private.h"
 
 #include <cmath>
 #include <QGraphicsScene>
@@ -51,7 +51,7 @@ static int round_up(double f)
 }
 
 ChartPixmapItem::ChartPixmapItem(ChartView &v, size_t z, bool dragable) : HideableChartItem(v, z, dragable),
-	positionDirty(false), textureDirty(false)
+	scale(1.0), positionDirty(false), textureDirty(false)
 {
 }
 
@@ -74,9 +74,10 @@ void ChartPixmapItem::setPositionDirty()
 
 void ChartPixmapItem::render()
 {
+	doRearrange();
 	if (!node) {
 		createNode(view.w()->createImageNode());
-		view.addQSGNode(node.get(), zValue);
+		addNodeToView();
 	}
 	updateVisible();
 
@@ -95,6 +96,13 @@ void ChartPixmapItem::render()
 	}
 }
 
+// Scale size and round to integer (because non-integers give strange artifacts for me).
+static QSizeF scaleSize(const QSizeF &s, double scale)
+{
+	return { round(s.width() * scale),
+		 round(s.height() * scale) };
+}
+
 void ChartPixmapItem::resize(QSizeF size)
 {
 	QSize s_int(round_up(size.width()), round_up(size.height()));
@@ -106,7 +114,7 @@ void ChartPixmapItem::resize(QSizeF size)
 		painter.reset(new QPainter(img.get()));
 		painter->setRenderHint(QPainter::Antialiasing);
 	}
-	rect.setSize(size);
+	rect.setSize(scaleSize(size, scale));
 	setPositionDirty(); // position includes the size.
 	setTextureDirty();
 }
@@ -115,6 +123,15 @@ void ChartPixmapItem::setPos(QPointF pos)
 {
 	rect.moveTopLeft(pos);
 	setPositionDirty();
+}
+
+void ChartPixmapItem::setScale(double scaleIn)
+{
+	scale = scaleIn;
+	if (img) {
+		rect.setSize(scaleSize(img->size(), scale));
+		setPositionDirty(); // position includes the size.
+	}
 }
 
 void ChartGraphicsSceneItem::draw(QSizeF s, QColor background, QGraphicsScene &scene)
@@ -238,6 +255,7 @@ void ChartLineItemBase::setLine(QPointF from, QPointF to)
 
 void ChartLineItem::render()
 {
+	doRearrange();
 	if (!node) {
 		geometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 2));
 		geometry->setDrawingMode(QSGGeometry::DrawLines);
@@ -245,7 +263,7 @@ void ChartLineItem::render()
 		createNode();
 		node->setGeometry(geometry.get());
 		node->setMaterial(material.get());
-		view.addQSGNode(node.get(), zValue);
+		addNodeToView();
 		positionDirty = materialDirty = true;
 	}
 	updateVisible();
@@ -269,6 +287,7 @@ void ChartLineItem::render()
 
 void ChartRectLineItem::render()
 {
+	doRearrange();
 	if (!node) {
 		geometry.reset(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 5));
 		geometry->setDrawingMode(QSGGeometry::DrawLineStrip);
@@ -276,7 +295,7 @@ void ChartRectLineItem::render()
 		createNode();
 		node->setGeometry(geometry.get());
 		node->setMaterial(material.get());
-		view.addQSGNode(node.get(), zValue);
+		addNodeToView();
 		positionDirty = materialDirty = true;
 	}
 	updateVisible();

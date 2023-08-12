@@ -12,12 +12,13 @@
 #include "core/subsurface-string.h"
 #include "qt-models/diveplannermodel.h"
 
-#include <QToolBar>
 #include <QHBoxLayout>
+#include <QLabel>
+#include <QMimeData>
 #include <QQmlEngine>
 #include <QQuickWidget>
 #include <QStackedWidget>
-#include <QLabel>
+#include <QToolBar>
 
 // A resizing display of the Subsurface logo when no dive is shown
 class EmptyView : public QLabel {
@@ -56,6 +57,57 @@ void EmptyView::resizeEvent(QResizeEvent *)
 	update();
 }
 
+// We subclass the QQuickWidget so that we can easily react to drag&drop events
+class ProfileViewWidget : public QQuickWidget
+{
+public:
+	ProfileViewWidget(ProfileWidget &w) : w(w)
+	{
+		setAcceptDrops(true);
+	}
+private:
+	static constexpr const char *picture_mime_format = "application/x-subsurfaceimagedrop";
+	ProfileWidget &w;
+	void dropEvent(QDropEvent *event) override
+	{
+		if (event->mimeData()->hasFormat(picture_mime_format)) {
+			QByteArray itemData = event->mimeData()->data(picture_mime_format);
+			QDataStream dataStream(&itemData, QIODevice::ReadOnly);
+
+			QString filename;
+			dataStream >> filename;
+			w.dropPicture(filename, event->pos());
+
+			if (event->source() == this) {
+				event->setDropAction(Qt::MoveAction);
+				event->accept();
+			} else {
+				event->acceptProposedAction();
+			}
+		} else {
+			event->ignore();
+		}
+	}
+	void dragEnterEvent(QDragEnterEvent *event) override
+	{
+		// Does the same thing as dragMove event...?
+		dragMoveEvent(event);
+	}
+	void dragMoveEvent(QDragMoveEvent *event) override
+	{
+		if (event->mimeData()->hasFormat(picture_mime_format)) {
+			if (event->source() == this) {
+				event->setDropAction(Qt::MoveAction);
+				event->accept();
+			} else {
+				event->acceptProposedAction();
+			}
+		} else {
+			event->ignore();
+		}
+	}
+};
+
 static const QUrl urlProfileView = QUrl(QStringLiteral("qrc:/qml/profileview.qml"));
 ProfileWidget::ProfileWidget() : d(nullptr), dc(0), placingCommand(false)
 {
@@ -77,7 +129,7 @@ ProfileWidget::ProfileWidget() : d(nullptr), dc(0), placingCommand(false)
 
 	emptyView.reset(new EmptyView);
 
-	viewWidget.reset(new QQuickWidget);
+	viewWidget.reset(new ProfileViewWidget(*this));
 	viewWidget->setSource(urlProfileView);
 	viewWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 
@@ -420,4 +472,13 @@ void ProfileWidget::stopEdited()
 
 	Setter s(placingCommand, true);
 	Command::editProfile(editedDive.get(), dc, Command::EditProfileType::EDIT, 0);
+}
+
+void ProfileWidget::dropPicture(const QString &filename, QPoint pos)
+{
+	auto view = getView();
+	if (!d || !view)
+		return;
+	offset_t offset { .seconds = int_cast<int32_t>(view->timeAt(pos)) };
+	Command::setPictureOffset(d, filename, offset);
 }

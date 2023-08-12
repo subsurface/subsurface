@@ -377,7 +377,8 @@ static double max_gas(const plot_info &pi, double gas_pressures::*gas)
 	return ret;
 }
 
-void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, DivePlannerPointsModel *plannerModel,
+void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, bool simplified,
+			   DivePlannerPointsModel *plannerModel,
 			   bool inPlanner, bool keepPlotInfo, bool calcMax, double zoom, double zoomedPosition)
 {
 	d = dIn;
@@ -428,11 +429,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, Div
 
 	bool hasHeartBeat = plotInfo.maxhr;
 	// For mobile we might want to turn of some features that are normally shown.
-#ifdef SUBSURFACE_MOBILE
-	bool simplified = true;
-#else
-	bool simplified = false;
-#endif
 	updateVisibility(hasHeartBeat, simplified);
 	updateAxes(hasHeartBeat, simplified);
 
@@ -570,7 +566,7 @@ void ProfileScene::draw(QPainter *painter, const QRect &pos,
 {
 	QSize size = pos.size();
 	resize(QSizeF(size));
-	plotDive(d, dc, 0, plannerModel, inPlanner, false, true);
+	plotDive(d, dc, 0, false, plannerModel, inPlanner, false, true);
 
 	QImage image(pos.size(), QImage::Format_ARGB32);
 	image.fill(getColor(::BACKGROUND, isGrayscale));
@@ -614,6 +610,22 @@ double ProfileScene::calcZoomPosition(double zoom, double originalPos, double de
 int ProfileScene::timeAt(QPointF pos) const
 {
 	return lrint(timeAxis->valueAt(pos));
+}
+
+std::pair<double, double> ProfileScene::minMaxTime()
+{
+	return { timeAxis->minimum(), timeAxis->maximum() };
+}
+
+double ProfileScene::yToScreen(double y)
+{
+	auto [min, max] = profileYAxis->screenMinMax();
+	return min + (max - min) * y;
+}
+
+double ProfileScene::posAtTime(double time)
+{
+	return timeAxis->posAtValue(time);
 }
 
 std::vector<std::pair<QString, QPixmap>> ProfileScene::eventsAt(QPointF pos) const

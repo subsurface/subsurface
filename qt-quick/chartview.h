@@ -20,7 +20,13 @@ public:
 	QSizeF size() const;
 	QRectF plotArea() const;
 	void setBackgroundColor(QColor color);		// Chart must be replot for color to become effective.
-	void addQSGNode(QSGNode *node, size_t z);	// Must only be called in render thread!
+	void addQSGNode(QSGNode *node, size_t z, bool moveAfter, QSGNode *node2);
+							// Must only be called in render thread!
+							// If node2 is nullptr move to begin or end of list.
+	void moveNodeBefore(QSGNode *node, size_t z, QSGNode *before);
+	void moveNodeBack(QSGNode *node, size_t z);
+	void moveNodeAfter(QSGNode *node, size_t z, QSGNode *after);
+	void moveNodeFront(QSGNode *node, size_t z);
 	void registerChartItem(ChartItem &item);
 	void registerDirtyChartItem(ChartItem &item);
 	void emergencyShutdown();			// Called when QQuick decides to delete our root node.

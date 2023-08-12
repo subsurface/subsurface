@@ -27,6 +27,7 @@ public:
 	void nextDC();
 	void prevDC();
 	void exitEditMode();
+	void dropPicture(const QString &filename, QPoint p);
 	dive *d;
 	int dc;
 private

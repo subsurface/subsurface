@@ -47,11 +47,27 @@ protected:
 	std::unique_ptr<Node> node;
 	bool visible;
 	bool visibleChanged;
+	enum class MoveMode {
+		none, before, after
+	} moveMode;				// Node will be moved before or after other node.
+	QSGNode *moveNode;			// Node to be moved before/after, or nullptr if move to beginning/end.
 	template<class... Args>
 	void createNode(Args&&... args);	// Call to create node with visibility flag.
+
 	void updateVisible();			// Must be called by child class to update visibility flag!
+	void addNodeToView();			// Must be called by child class after creating and initializing the QSG node.
+	void doRearrange();			// Call at beginning of render(), so that the node can be rearranged, if necessary.
 public:
+	template <typename Node2>
+	friend class HideableChartItem;
+	template <typename Node2>
+	void moveBefore(HideableChartItem<Node2> &item);
+	void moveBack();
+	template <typename Node2>
+	void moveAfter(HideableChartItem<Node2> &item);
+	void moveFront();
 	void setVisible(bool visible);
+	bool isVisible() const;
 };
 
 // A shortcut for ChartItems based on a hideable proxy item
@@ -59,12 +75,14 @@ template <typename Node>
 using HideableChartProxyItem = HideableChartItem<HideableQSGNode<QSGProxyNode<Node>>>;
 
 // A chart item that blits a precalculated pixmap onto the scene.
+// Can be scaled with setScale().
 class ChartPixmapItem : public HideableChartProxyItem<QSGImageNode> {
 public:
 	ChartPixmapItem(ChartView &v, size_t z, bool dragable = false);
 	~ChartPixmapItem();
 
 	void setPos(QPointF pos) override;
+	void setScale(double scale);
 	void render() override;
 protected:
 	void resize(QSizeF size);	// Resets the canvas. Attention: image is *unitialized*.
@@ -72,6 +90,7 @@ protected:
 	std::unique_ptr<QImage> img;
 	void setTextureDirty();
 	void setPositionDirty();
+	double scale;
 private:
 	bool positionDirty;		// true if the position changed since last render
 	bool textureDirty;		// true if the pixmap changed since last render
@@ -161,6 +180,41 @@ public:
 };
 
 // Implementation detail of templates - move to serparate header file
+
+template <typename Node>
+template <typename Node2>
+void HideableChartItem<Node>::moveBefore(HideableChartItem<Node2> &item)
+{
+	moveMode = MoveMode::before;
+	moveNode = item.node.get();
+	markDirty();
+}
+
+template <typename Node>
+void HideableChartItem<Node>::moveBack()
+{
+	moveMode = MoveMode::before;
+	moveNode = nullptr;
+	markDirty();
+}
+
+template <typename Node>
+template <typename Node2>
+void HideableChartItem<Node>::moveAfter(HideableChartItem<Node2> &item)
+{
+	moveMode = MoveMode::after;
+	moveNode = item.node.get();
+	markDirty();
+}
+
+template <typename Node>
+void HideableChartItem<Node>::moveFront()
+{
+	moveMode = MoveMode::after;
+	moveNode = nullptr;
+	markDirty();
+}
+
 template <typename Node>
 void HideableChartItem<Node>::setVisible(bool visibleIn)
 {
@@ -172,25 +226,9 @@ void HideableChartItem<Node>::setVisible(bool visibleIn)
 }
 
 template <typename Node>
-template<class... Args>
-void HideableChartItem<Node>::createNode(Args&&... args)
+bool HideableChartItem<Node>::isVisible() const
 {
-	node.reset(new Node(visible, std::forward<Args>(args)...));
-	visibleChanged = false;
-}
-
-template <typename Node>
-HideableChartItem<Node>::HideableChartItem(ChartView &v, size_t z, bool dragable) : ChartItem(v, z, dragable),
-	visible(true), visibleChanged(false)
-{
-}
-
-template <typename Node>
-void HideableChartItem<Node>::updateVisible()
-{
-	if (visibleChanged)
-		node->setVisible(visible);
-	visibleChanged = false;
+	return visible;
 }
 
 #endif

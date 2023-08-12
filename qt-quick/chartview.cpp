@@ -127,10 +127,54 @@ void ChartView::clearItems()
 	dirtyItems.splice(deletedItems);
 }
 
-void ChartView::addQSGNode(QSGNode *node, size_t z)
+static ZNode &getZNode(RootNode &rootNode, size_t z)
 {
-	size_t idx = std::clamp(z, (size_t)0, maxZ);
-	rootNode->zNodes[idx]->appendChildNode(node);
+	size_t idx = std::clamp(z, (size_t)0, rootNode.zNodes.size());
+	return *rootNode.zNodes[idx];
+}
+
+void ChartView::addQSGNode(QSGNode *node, size_t z, bool moveAfter, QSGNode *node2)
+{
+	auto &parent = getZNode(*rootNode, z);
+	if (node2) {
+		if (moveAfter)
+			parent.insertChildNodeAfter(node, node2);
+		else
+			parent.insertChildNodeBefore(node, node2);
+	} else {
+		if (moveAfter)
+			parent.prependChildNode(node);
+		else
+			parent.appendChildNode(node);
+	}
+}
+
+void ChartView::moveNodeBefore(QSGNode *node, size_t z, QSGNode *before)
+{
+	auto &parent = getZNode(*rootNode, z);
+	parent.removeChildNode(node);
+	parent.insertChildNodeBefore(node, before);
+}
+
+void ChartView::moveNodeBack(QSGNode *node, size_t z)
+{
+	auto &parent = getZNode(*rootNode, z);
+	parent.removeChildNode(node);
+	parent.appendChildNode(node);
+}
+
+void ChartView::moveNodeAfter(QSGNode *node, size_t z, QSGNode *before)
+{
+	auto &parent = getZNode(*rootNode, z);
+	parent.removeChildNode(node);
+	parent.insertChildNodeAfter(node, before);
+}
+
+void ChartView::moveNodeFront(QSGNode *node, size_t z)
+{
+	auto &parent = getZNode(*rootNode, z);
+	parent.removeChildNode(node);
+	parent.prependChildNode(node);
 }
 
 void ChartView::registerChartItem(ChartItem &item)

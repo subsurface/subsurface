@@ -29,7 +29,6 @@ class DivePlannerPointsModel;
 class DiveHandler;
 class QGraphicsSimpleTextItem;
 class QModelIndex;
-class DivePictureItem;
 
 class ProfileWidget2 : public QGraphicsView {
 	Q_OBJECT
@@ -74,17 +73,12 @@ slots: // Necessary to call from QAction's signals.
 	void actionRequestedReplot(bool triggered);
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
 #ifndef SUBSURFACE_MOBILE
-	void plotPictures();
-	void picturesRemoved(dive *d, QVector<QString> filenames);
-	void picturesAdded(dive *d, QVector<picture> pics);
 	void pointsReset();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &destination, int row);
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
 	void profileChanged(dive *d);
-	void pictureOffsetChanged(dive *d, QString filename, offset_t offset);
-	void removePicture(const QString &fileUrl);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void divePlannerHandlerMoved();
@@ -105,10 +99,6 @@ private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void addGasChangeMenu(QMenu &m, QString menuTitle, const struct dive &d, int dcNr, int changeTime);
 #endif
-	void dropEvent(QDropEvent *event) override;
-	void dragEnterEvent(QDragEnterEvent *event) override;
-	void dragMoveEvent(QDragMoveEvent *event) override;
-
 	void replot();
 	void setZoom(int level);
 	void addGasSwitch(int tank, int seconds);
@@ -117,8 +107,6 @@ private:
 	void addItemsToScene();
 	void setupItemOnScene();
 	struct plot_data *getEntryFromPos(QPointF pos);
-	void clearPictures();
-	void plotPicturesInternal(const struct dive *d, bool synchronous);
 	void updateThumbnails();
 	void addDivemodeSwitch(int seconds, int divemode);
 	void addBookmark(int seconds);
@@ -156,25 +144,6 @@ private:
 	std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> gases;
 
 #ifndef SUBSURFACE_MOBILE
-	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
-	// For the same offset, sort by filename.
-	// Pictures that are outside of the dive time are not shown.
-	struct PictureEntry {
-		offset_t offset;
-		duration_t duration;
-		std::string filename;
-		std::unique_ptr<DivePictureItem> thumbnail;
-		// For videos with known duration, we represent the duration of the video by a line
-		std::unique_ptr<QGraphicsRectItem> durationLine;
-		PictureEntry (offset_t offsetIn, const std::string &filenameIn, ProfileWidget2 *profile, bool synchronous);
-		bool operator< (const PictureEntry &e) const;
-	};
-	void updateThumbnailXPos(PictureEntry &e);
-	std::vector<PictureEntry> pictures;
-	void calculatePictureYPositions();
-	void updateDurationLine(PictureEntry &e);
-	void updateThumbnailPaintOrder();
-
 	void keyDeleteAction();
 	void keyUpAction();
 	void keyDownAction();

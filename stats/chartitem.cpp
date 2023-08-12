@@ -4,6 +4,7 @@
 #include "statsview.h"
 #include "core/globals.h"
 #include "qt-quick/chartitemhelper.h"
+#include "qt-quick/chartitem_private.h"
 
 #include <cmath>
 #include <QQuickWindow>
@@ -61,6 +62,7 @@ QSGTexture *ChartScatterItem::getTexture() const
 
 void ChartScatterItem::render()
 {
+	doRearrange();
 	if (!theme.scatterItemTexture) {
 		theme.scatterItemTexture = register_global(createScatterTexture(view, theme.fillColor, theme.borderColor));
 		theme.scatterItemSelectedTexture = register_global(createScatterTexture(view, theme.selectedColor, theme.selectedBorderColor));
@@ -68,7 +70,7 @@ void ChartScatterItem::render()
 	}
 	if (!node) {
 		createNode(view.w()->createImageNode());
-		view.addQSGNode(node.get(), zValue);
+		addNodeToView();
 		textureDirty = positionDirty = true;
 	}
 	updateVisible();
@@ -193,6 +195,7 @@ QSGTexture *ChartBarItem::getSelectedTexture() const
 
 void ChartBarItem::render()
 {
+	doRearrange();
 	if (!node) {
 		createNode(view.w()->createRectangleNode());
 
@@ -205,7 +208,7 @@ void ChartBarItem::render()
 		borderNode->setMaterial(borderMaterial.get());
 
 		node->node->appendChildNode(borderNode.get());
-		view.addQSGNode(node.get(), zValue);
+		addNodeToView();
 		positionDirty = colorDirty = selectedDirty = true;
 	}
 	updateVisible();
@@ -311,6 +314,7 @@ ChartBoxItem::~ChartBoxItem()
 
 void ChartBoxItem::render()
 {
+	doRearrange();
 	// Remember old dirty values, since ChartBarItem::render() will clear them
 	bool oldPositionDirty = positionDirty;
 	bool oldColorDirty = colorDirty;

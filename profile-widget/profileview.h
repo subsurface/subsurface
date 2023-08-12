@@ -3,12 +3,16 @@
 #define PROFILE_VIEW_H
 
 #include "qt-quick/chartview.h"
+#include "core/units.h"
 #include <memory>
 
 class ChartGraphicsSceneItem;
+class ChartRectItem;
+class PictureItem;
 class ProfileAnimation;
 class ProfileScene;
 class ToolTipItem;
+struct picture;
 
 class ProfileView : public ChartView {
 	Q_OBJECT
@@ -28,9 +32,11 @@ public:
 		static constexpr int DontRecalculatePlotInfo = 1 << 1;
 		static constexpr int EditMode = 1 << 2;
 		static constexpr int PlanMode = 1 << 3;
+		static constexpr int Simplified = 1 << 4; // For mobile's overview page
 	};
 
 	void plotDive(const struct dive *d, int dc, int flags = RenderFlags::None);
+	int timeAt(QPointF pos) const;
 	void clear();
 	void resetZoom();
 	void anim(double fraction);
@@ -48,6 +54,7 @@ signals:
 private:
 	const struct dive *d;
 	int dc;
+	bool simplified;
 	double dpr;
 	double zoomLevel, zoomLevelPinchStart;
 	double zoomedPosition;	// Position when zoomed: 0.0 = beginning, 1.0 = end.
@@ -77,7 +84,44 @@ private:
 	void updateTooltip(QPointF pos, bool plannerMode, int animSpeed);
 	std::unique_ptr<ProfileAnimation> tooltip_animation;
 
-	QPointF previousHoveMovePosition;
+	QPointF previousHoverMovePosition;
+
+	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
+	// For the same offset, sort by filename.
+	// Pictures that are outside of the dive time are not shown.
+	struct PictureEntry {
+		offset_t offset;
+		double x, y;
+		duration_t duration;
+		QString filename;
+		ChartItemPtr<PictureItem> thumbnail;
+		// For videos with known duration, we represent the duration of the video by a line
+		ChartItemPtr<ChartRectItem> durationLine;
+		std::unique_ptr<ProfileAnimation> animation;
+		PictureEntry (offset_t offset, const QString &filename, ChartItemPtr<PictureItem> thumbnail, double dpr, bool synchronous);
+		bool operator< (const PictureEntry &e) const;
+	};
+	std::vector<PictureEntry> pictures;
+	PictureEntry *highlightedPicture;
+
+	// Picture (media) related functions
+	void picturesRemoved(dive *d, QVector<QString> filenames);
+	void picturesAdded(dive *d, QVector<picture> pics);
+	void pictureOffsetChanged(dive *d, QString filename, offset_t offset);
+	void updateDurationLine(PictureEntry &e);
+	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
+	void updateThumbnailPaintOrder();
+	void calculatePictureYPositions();
+	void updateThumbnailXPos(PictureEntry &e);
+	void plotPictures(const struct dive *d, bool synchronous);
+	void updateThumbnails();
+	void clearPictures();
+	void removePictureThumbnail(PictureEntry &entry);
+	void unhighlightPicture();
+	void shrinkPictureItem(PictureEntry &e, int animSpeed);
+	void growPictureItem(PictureEntry &e, int animSpeed);
+	void moveThumbnailBefore(PictureEntry &e, std::vector<PictureEntry>::iterator &before);
+	PictureEntry *getPictureUnderMouse(QPointF pos);
 
 	// For mobile
 	int getDiveId() const;

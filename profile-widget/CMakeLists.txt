@@ -20,6 +20,8 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	diverectitem.h
 	divetextitem.cpp
 	divetextitem.h
+	pictureitem.h
+	pictureitem.cpp
 	profilescene.cpp
 	profilescene.h
 	profiletranslations.h
