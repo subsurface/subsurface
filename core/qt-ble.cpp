@@ -673,6 +673,12 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 
 			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
 			WAITFOR(ble->descriptorWritten(), 1000);
+			if (!ble->descriptorWritten()) {
+				qDebug() << "Bluetooth: Failed to enable notifications for characteristic" << c.uuid();
+				report_error("Bluetooth: Failed to enable notifications.");
+				delete ble;
+				return DC_STATUS_TIMEOUT;
+			}
 			break;
 		}
 	}
