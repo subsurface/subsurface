@@ -156,7 +156,7 @@ sudo dnf install autoconf automake bluez-libs-devel cmake gcc-c++ git \
     qt5-qtbase-devel qt5-qtconnectivity-devel qt5-qtdeclarative-devel \
     qt5-qtlocation-devel qt5-qtscript-devel qt5-qtsvg-devel \
     qt5-qttools-devel qt5-qtwebkit-devel redhat-rpm-config \
-    bluez-libs-devel libgit2-devel libzip-devel libmtp-devel
+    bluez-libs-devel libgit2-devel libzip-devel libmtp-devel libraw-devel
 ```
 
 
@@ -169,8 +169,7 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
     libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
     libqt5-qtscript-devel libqt5-qtdeclarative-devel \
     libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel \
-    bluez-devel libgit2-devel libmtp-devel
-```
+    bluez-devel libgit2-devel libmtp-devel libraw-devel
 
 On Debian Bookworm this seems to work
 
@@ -183,7 +182,7 @@ sudo apt install \
     qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
     qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
     qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev
+    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
 ```
 
 In order to build and run mobile-on-desktop, you also need
@@ -207,7 +206,7 @@ sudo apt install \
     qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
     qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
     qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev
+    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
 ```
 
 In order to build and run mobile-on-desktop, you also need
@@ -231,7 +230,7 @@ sudo apt install \
     qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
     qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
     qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev
+    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
 ```
 
 In order to build and run mobile-on-desktop, you also need
@@ -260,7 +259,7 @@ sudo apt install \
     qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
     qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
     qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev
+    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
 ```
 
 Note that you'll need to increase the swap space as the default of 100MB
