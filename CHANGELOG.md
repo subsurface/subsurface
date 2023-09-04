@@ -8,6 +8,7 @@ desktop: fix gas switches in UDDF exports
 core: allow of up to 6 O2 sensors (and corresponding voting logic)
 desktop: add divemode as a possible dive list column
 profile-widget: Now zomed in profiles can be panned with horizontal scroll.
+media: support raw files if libraw is installed
 desktop: hide only events with the same severity when 'Hide similar events' is used
 equipment: mark gas mixes reported by the dive computer as 'inactive' as 'not used'
 equipment: include unused cylinders in merged dive if the preference is enabled
