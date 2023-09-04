@@ -14,6 +14,9 @@
 #include <QSvgRenderer>
 #include <QDataStream>
 #include <QPainter>
+#ifdef LIBRAW_SUPPORT
+#include <libraw/libraw.h>
+#endif
 
 #include <QtConcurrent>
 
@@ -79,12 +82,40 @@ static bool hasVideoFileExtension(const QString &filename)
 	return false;
 }
 
-// Fetch a picture from the given filename and determine its type (picture of video).
+#ifdef LIBRAW_SUPPORT
+QImage fetchRawThumbnail(const QString &filename)
+{
+	LibRaw raw; // Might think about reusing that, one instance per thread
+
+	// TODO: Convert filename to UTF-16 for windows
+	if (raw.open_file(qPrintable(filename)) != LIBRAW_SUCCESS ||
+	    raw.unpack_thumb() != LIBRAW_SUCCESS) {
+		return QImage();
+	}
+
+	switch (raw.imgdata.thumbnail.tformat) {
+	case LIBRAW_THUMBNAIL_JPEG: {
+		QImage res;
+		res.loadFromData(reinterpret_cast<unsigned char *>(raw.imgdata.thumbnail.thumb),
+				 raw.imgdata.thumbnail.tlength);
+		return res;
+	}
+	case LIBRAW_THUMBNAIL_BITMAP:
+		return QImage(reinterpret_cast<unsigned char *>(raw.imgdata.thumbnail.thumb),
+			      raw.imgdata.thumbnail.twidth, raw.imgdata.thumbnail.theight,
+			      QImage::Format_RGB888);
+	default: // Unsupported
+		return QImage();
+	}
+}
+
+#endif
+
+// Fetch a picture from the given filename and determine its type (picture or video).
 // If this is a non-remote file, fetch it from disk. Remote files are fetched from the
 // net in a background thread. In such a case, the output-type is set to MEDIATYPE_STILL_LOADING.
 // If the input-flag "tryDownload" is set to false, no download attempt is made. This is to
 // prevent infinite loops, where failed image downloads would be repeated ad infinitum.
-// Returns: fetched image, type
 Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &urlfilename, const QString &originalFilename, bool tryDownload)
 {
 	QUrl url = QUrl::fromUserInput(urlfilename);
@@ -102,6 +133,12 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &urlfilename, const
 
 		// Try if Qt can parse this image. If it does, use this as a thumbnail.
 		QImage thumb(filename);
+
+#ifdef LIBRAW_SUPPORT
+		// If note, perhaps a raw image?
+		if (thumb.isNull())
+			thumb = fetchRawThumbnail(filename);
+#endif
 		if (!thumb.isNull()) {
 			int size = maxThumbnailSize();
 			thumb = thumb.scaled(size, size, Qt::KeepAspectRatio);

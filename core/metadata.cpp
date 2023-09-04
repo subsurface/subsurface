@@ -7,6 +7,9 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDateTime>
+#ifdef LIBRAW_SUPPORT
+#include <libraw/libraw.h>
+#endif
 
 // Weirdly, android builds fail owing to undefined UINT64_MAX
 #ifndef UINT64_MAX
@@ -528,12 +531,44 @@ static bool parseASF(QFile &f, metadata *metadata)
 	return false;
 }
 
+// Transform a (deg, min, sec) float triple into microdegrees
+degrees_t degminsec_to_udeg(float a[3])
+{
+	if (a[0] == 0.0 && a[1] == 0.0 && a[2] == 0.0)
+		return { 0 };
+	return { static_cast<int>(round(a[0] * 1'000'000.0 +
+					a[1] * (1'000'000.0/60.0) +
+					a[2] * (1'000'000.0/3600.0))) };
+}
+
+#ifdef LIBRAW_SUPPORT
+static bool parseRaw(const char *fn, metadata *metadata)
+{
+	LibRaw raw; // Might think about reusing that
+
+	// TODO: Convert filename to UTF-16 for windows
+	if (raw.open_file(fn) != LIBRAW_SUCCESS)
+		return false;
+
+	metadata->timestamp = raw.imgdata.other.timestamp;
+	metadata->location.lat = degminsec_to_udeg(raw.imgdata.other.parsed_gps.latitude);
+	metadata->location.lon = degminsec_to_udeg(raw.imgdata.other.parsed_gps.longitude);
+
+	return true;
+}
+#endif
+
 mediatype_t get_metadata(const char *filename_in, metadata *data)
 {
 	data->timestamp = 0;
 	data->duration.seconds = 0;
 	data->location.lat.udeg = 0;
 	data->location.lon.udeg = 0;
+
+#ifdef LIBRAW_SUPPORT
+	if (parseRaw(filename_in, data))
+		return MEDIATYPE_PICTURE;
+#endif
 
 	QString filename = localFilePath(QString(filename_in));
 	QFile f(filename);
