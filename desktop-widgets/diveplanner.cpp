@@ -568,6 +568,7 @@ divemode_t PlannerWidgets::getRebreatherMode() const
 
 void PlannerWidgets::preparePlanDive(const dive *currentDive)
 {
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	// create a simple starting dive, using the first gas from the just copied cylinders
 	DivePlannerPointsModel::instance()->createSimpleDive(planned_dive.get());
 

@@ -393,6 +393,7 @@ static void hideAll(const T &container)
 
 void ProfileWidget2::clear()
 {
+	currentState = INIT;
 #ifndef SUBSURFACE_MOBILE
 	clearPictures();
 #endif
