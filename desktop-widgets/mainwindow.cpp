@@ -581,7 +581,7 @@ void MainWindow::enableShortcuts()
 void MainWindow::showProfile()
 {
 	enableShortcuts();
-	profile->plotCurrentDive();
+	profile->plotDive(current_dive, profile->dc);
 	setApplicationState(ApplicationState::Default);
 }
 
