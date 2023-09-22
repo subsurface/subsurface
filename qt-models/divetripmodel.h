@@ -44,6 +44,7 @@ public:
 		COUNTRY,
 		LOCATION,
 		NOTES,
+		DIVEMODE,
 		COLUMNS
 	};
 
