@@ -59,6 +59,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModelBase::DIVEGUIDE:
 	case DiveTripModelBase::LOCATION:
 	case DiveTripModelBase::NOTES:
+	case DiveTripModelBase::DIVEMODE:
 		return int(Qt::AlignLeft | Qt::AlignVCenter);
 	}
 	return QVariant();
@@ -260,6 +261,8 @@ QString DiveTripModelBase::getDescription(int column)
 		return tr("Location");
 	case NOTES:
 		return tr("Notes");
+	case DIVEMODE:
+		return tr("Divemode");
 	default:
 		return QString();
 	}
@@ -359,6 +362,8 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			return formatDiveGasString(d);
 		case NOTES:
 			return QString(d->notes);
+		case DIVEMODE:
+			return QString(divemode_text_ui[(int)d->dc.divemode]);
 		}
 		break;
 	case Qt::DecorationRole:
@@ -449,6 +454,8 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 			return tr("Location");
 		case NOTES:
 			return tr("Notes");
+		case DIVEMODE:
+			return tr("Divemode");
 		}
 		break;
 	case Qt::ToolTipRole:
@@ -1778,5 +1785,7 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 		return lessThanHelper(strCmp(get_dive_location(d1), get_dive_location(d2)), row_diff);
 	case NOTES:
 		return lessThanHelper(strCmp(d1->notes, d2->notes), row_diff);
+	case DIVEMODE:
+		return lessThanHelper((int)d1->dc.divemode - (int)d2->dc.divemode, row_diff);
 	}
 }
