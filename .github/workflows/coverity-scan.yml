@@ -29,35 +29,20 @@ jobs:
         qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
         qtquickcontrols2-5-dev libbluetooth-dev libmtp-dev
 
-    - name: Download Coverity Build Tool
-      run: |
-        cd ..
-        wget -q https://scan.coverity.com/download/cxx/linux64 --post-data "token=$TOKEN&project=Subsurface-divelog%2Fsubsurface" -O cov-analysis-linux64.tar.gz
-        mkdir cov-analysis-linux64
-        tar xzf cov-analysis-linux64.tar.gz --strip 1 -C cov-analysis-linux64
-      env:
-        TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
-
-    - name: run build
+    - name: configure environment
       env:
          SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
-        cd ..
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
-        export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
-        cov-build --dir cov-int bash -x subsurface/scripts/build.sh -desktop -build-with-webkit
 
-    - name: Submit the result to Coverity Scan
-      run: |
-        cd ..
-        tar czvf subsurface.tgz cov-int
-        curl \
-          --form token=$TOKEN \
-          --form email=glance@acc.umu.se \
-          --form file=@subsurface.tgz \
-          --form version=$(/scripts/get-version linux) \
-          --form description="Automatic scan on github actions" \
-          https://scan.coverity.com/builds?project=Subsurface-divelog%2Fsubsurface
-      env:
-        TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+    - name: run coverity scan
+      uses: vapier/coverity-scan-action@v1
+      with:
+        project: Subsurface-divelog/subsurface
+        token: ${{ secrets.COVERITY_SCAN_TOKEN }}
+        email: glance@acc.umu.se
+        command: subsurface/scripts/build.sh -desktop -build-with-webkit
+        working-directory: ${{ github.workspace }}/..
+        version: $(/scripts/get-version linux)
+        description: Automatic scan on github actions
