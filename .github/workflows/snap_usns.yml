@@ -19,16 +19,16 @@ jobs:
         python-version: '3.x'
 
     - name: Install Python dependencies
-      uses: brettcannon/pip-secure-install@v1
+      uses: insightsengineering/pip-action@v2.0.0
       with:
-        requirements-file: .github/workflows/scripts/requirements.txt
+        requirements: .github/workflows/scripts/requirements.txt
 
     - name: Install Snap dependencies
       run: |
         sudo snap install review-tools --edge
 
     - name: Set up Launchpad credentials
-      uses: DamianReeves/write-file-action@v1
+      uses: DamianReeves/write-file-action@v1.2
       with:
         path: lp_credentials
         contents: ${{ secrets.LAUNCHPAD_CREDENTIALS }}
