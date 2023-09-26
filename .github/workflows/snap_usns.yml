@@ -28,7 +28,7 @@ jobs:
         sudo snap install review-tools --edge
 
     - name: Set up Launchpad credentials
-      uses: DamianReeves/write-file-action@v1
+      uses: DamianReeves/write-file-action@v1.2
       with:
         path: lp_credentials
         contents: ${{ secrets.LAUNCHPAD_CREDENTIALS }}
