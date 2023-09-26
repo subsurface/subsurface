@@ -4,8 +4,6 @@
 # we need to build the google maps plugin which is not part of our sources, so let's make sure
 # it is included in our source tar file
 #
-# also, for bionic we need newer versions of libgit2 than what ships with the
-# distro, so let's just use libgit2 1.0 everywhere
 
 if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivecomputer ]] ; then
 	echo "Please start this script from the folder ABOVE the subsurface source directory"
@@ -99,11 +97,11 @@ rev=$(($rev+1))
 	fi
 done
 
-# we need to do this for each Ubuntu release we support - right now the oldest is 18.04/Bionic
+# we need to do this for each Ubuntu release we support - right now the oldest is 20.04/Focal
 if [[ "$GITREVISION" = "" ]] ; then
-	dch -v $VERSION-$rev~bionic -D bionic -M -m "Next release build - please check https://subsurface-divelog.org/category/news/ for details"
+	dch -v $VERSION-$rev~focal -D focal -M -m "Next release build - please check https://subsurface-divelog.org/category/news/ for details"
 else
-	dch -v $VERSION-$rev~bionic -D bionic -M -m "next daily build"
+	dch -v $VERSION-$rev~focal -D focal -M -m "next daily build"
 fi
 
 cp debian/changelog ../changelog$SUFFIX
@@ -112,10 +110,6 @@ debuild -S -d
 
 # create builds for the newer Ubuntu releases that Launchpad supports
 #
-# the bionic release is the last that needs the qt5-default package for a successful build,
-# and as of hirsute this package no longer exists. So simply remove it from the control
-# file when building the newer ones
-sed -i.bak "/qt5-default/d" debian/control
 rel=focal
 others="jammy lunar mantic"
 for next in $others
