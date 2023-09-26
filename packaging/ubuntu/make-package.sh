@@ -116,8 +116,8 @@ debuild -S -d
 # and as of hirsute this package no longer exists. So simply remove it from the control
 # file when building the newer ones
 sed -i.bak "/qt5-default/d" debian/control
-rel=bionic
-others="focal jammy kinetic"
+rel=focal
+others="jammy lunar mantic"
 for next in $others
 do
 	sed -i "s/${rel}/${next}/g" debian/changelog
