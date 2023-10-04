@@ -313,9 +313,9 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 		// if we are connecting to the cloud server we alrady called 'canReachCloudServer()'
 		// which will fail if the SSL certificate isn't valid, so let's simply always
 		// tell the caller that this certificate is valid
-		return 1;
+		return 0;
 	}
-	return valid;
+	return valid ? 0 : -1;
 }
 
 static int update_remote(struct git_info *info, git_remote *origin, git_reference *local, git_reference *remote)
