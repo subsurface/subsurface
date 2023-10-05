@@ -108,7 +108,8 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		// but that seems to be just happenstance.
 		vendor = "Ratio";
 		product = "iX3M 2021 GPS Easy"; // we don't know which of the Bluetooth models, so set one that supports BLE
-	} else if (btName.contains(QRegularExpression("^IX5M\\d{6}"))) {
+	} else if (btName.contains(QRegularExpression("^IX5M\\d{6}")) ||
+		btName.contains(QRegularExpression("^RATIO-\\d{6}"))) {
 		// The 2021 iX3M models (square buttons) report as iX5M,
 		// eventhough the physical model states iX3M.
 		vendor = "Ratio";
