@@ -17,7 +17,7 @@ RUN apt-get -y update && apt-get install -y \
     gcc-7 g++-7 make git autoconf automake libtool pkg-config \
     curl libdbus-1-3 libexpat1 libfontconfig1 libfreetype6 \
     libexpat1-dev libgl1-mesa-dev libgl1-mesa-glx \
-    ruby gperf bison libx11-6 libx11-xcb1 libjpeg-dev libpng-dev \
+    ruby gperf bison libx11-6 libx11-xcb1 libjpeg-dev libpng-dev libraw-dev \
     libicu-dev libXcomposite-dev libXrender-dev libgstreamer-plugins-base1.0 \
     libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev \
     libssl-dev libssh2-1-dev libcurl4-openssl-dev mesa-common-dev libqt5gui5 \

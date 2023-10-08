@@ -1,3 +1,4 @@
+media: support raw files if libraw is installed
 desktop: hide only events with the same severity when 'Hide similar events' is used
 equipment: mark gas mixes reported by the dive computer as 'inactive' as 'not used'
 equipment: include unused cylinders in merged dive if the preference is enabled
