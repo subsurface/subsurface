@@ -41,6 +41,8 @@ void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 
 		if (!is_cylinder_used(dive, i))
 			continue;
+		if (cyl->cylinder_use == OXYGEN)
+			continue;
 		if (o2 > maxo2)
 			maxo2 = o2;
 		if (he > maxhe)
