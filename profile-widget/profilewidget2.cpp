@@ -322,6 +322,14 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
 	if (!d)
 		return;
+	if (event->angleDelta().x() && zoomLevel > 0) {
+		double oldPos = zoomedPosition;
+		zoomedPosition = profileScene->calcZoomPosition(calcZoom(zoomLevel),
+								oldPos,
+								oldPos - event->angleDelta().x());
+		if (oldPos != zoomedPosition)
+			plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo);
+	}
 	if (panning)
 		return;	// No change in zoom level while panning.
 	if (event->buttons() == Qt::LeftButton)
