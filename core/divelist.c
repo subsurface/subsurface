@@ -47,6 +47,8 @@ void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 			continue;
 		if (o2 > maxo2)
 			maxo2 = o2;
+		if (o2 < mino2)
+			mino2 = o2;
 		if (he > maxhe)
 			goto newmax;
 		if (he < maxhe)
