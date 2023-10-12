@@ -150,6 +150,44 @@ void TestformatDiveGasString::test_reverse_trimix_deco() {
 	QCOMPARE(formatDiveGasString(&dive), "21/35…100%");
 }
 
+void TestformatDiveGasString::test_trimix_and_nitrox_same_o2() {
+	struct dive dive = {0};
+	cylinder_t *cylinder = get_or_create_cylinder(&dive, 0);
+
+	cylinder->gasmix.o2.permille = 250;
+	cylinder->gasmix.he.permille = 0;
+	cylinder->start.mbar = 230000;
+	cylinder->end.mbar = 100000;
+
+	cylinder = get_or_create_cylinder(&dive, 1);
+
+	cylinder->gasmix.o2.permille = 250;
+	cylinder->gasmix.he.permille = 250;
+	cylinder->start.mbar = 230000;
+	cylinder->end.mbar = 100000;
+
+	QCOMPARE(formatDiveGasString(&dive), "25/25");
+}
+
+void TestformatDiveGasString::test_trimix_and_nitrox_lower_o2() {
+	struct dive dive = {0};
+	cylinder_t *cylinder = get_or_create_cylinder(&dive, 0);
+
+	cylinder->gasmix.o2.permille = 220;
+	cylinder->gasmix.he.permille = 0;
+	cylinder->start.mbar = 230000;
+	cylinder->end.mbar = 100000;
+
+	cylinder = get_or_create_cylinder(&dive, 1);
+
+	cylinder->gasmix.o2.permille = 250;
+	cylinder->gasmix.he.permille = 250;
+	cylinder->start.mbar = 230000;
+	cylinder->end.mbar = 100000;
+
+	QCOMPARE(formatDiveGasString(&dive), "25/25");
+}
+
 void TestformatDiveGasString::test_ccr() {
 	struct dive dive = {0};
 	cylinder_t *cylinder = get_or_create_cylinder(&dive, 0);

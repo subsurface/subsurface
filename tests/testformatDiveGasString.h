@@ -15,5 +15,7 @@ private slots:
 	void test_trimix();
 	void test_trimix_deco();
 	void test_reverse_trimix_deco();
+	void test_trimix_and_nitrox_same_o2();
+	void test_trimix_and_nitrox_lower_o2();
 	void test_ccr();
 };
