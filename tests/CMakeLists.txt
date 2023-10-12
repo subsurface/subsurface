@@ -146,6 +146,7 @@ TEST(TestQPrefProxy testqPrefProxy.cpp)
 TEST(TestQPrefTechnicalDetails testqPrefTechnicalDetails.cpp)
 TEST(TestQPrefUnits testqPrefUnits.cpp)
 TEST(TestQPrefUpdateManager testqPrefUpdateManager.cpp)
+TEST(TestformatDiveGasString testformatDiveGasString.cpp)
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> -input ${SUBSURFACE_SOURCE}/tests)
 
 # this is currently broken
