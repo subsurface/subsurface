@@ -177,7 +177,7 @@ if [ "$MXEBUILDTYPE" = "x86_64-w64-mingw32.shared" ] ; then
 fi
 
 cd "$BUILDDIR"
-CURRENT_SHA=$(cd "$BASEDIR"/subsurface/libdivecomputer ; git describe)
+CURRENT_SHA=$(cd "$BASEDIR"/subsurface/libdivecomputer ; git describe --always --long)
 PREVIOUS_SHA=$(cat "libdivecomputer.SHA" 2>/dev/null || echo)
 if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] || [ ! -d libdivecomputer ] || [ -f build.libdivecomputer ] ; then
 	rm -f build.libdivecomputer
