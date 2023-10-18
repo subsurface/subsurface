@@ -18,4 +18,5 @@ private slots:
 	void test_trimix_and_nitrox_same_o2();
 	void test_trimix_and_nitrox_lower_o2();
 	void test_ccr();
+	void test_ccr_bailout();
 };
