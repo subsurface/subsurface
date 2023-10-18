@@ -68,7 +68,7 @@ void TestformatDiveGasString::test_nitrox_deco() {
 	cylinder->start.mbar = 230000;
 	cylinder->end.mbar = 100000;
 
-	QCOMPARE(formatDiveGasString(&dive), QString("32…100%"));
+	QCOMPARE(formatDiveGasString(&dive), "32…100%");
 }
 
 void TestformatDiveGasString::test_reverse_nitrox_deco() {
@@ -85,7 +85,7 @@ void TestformatDiveGasString::test_reverse_nitrox_deco() {
 	cylinder->start.mbar = 230000;
 	cylinder->end.mbar = 100000;
 
-	QCOMPARE(formatDiveGasString(&dive), QString("27…100%"));
+	QCOMPARE(formatDiveGasString(&dive), "27…100%");
 }
 
 void TestformatDiveGasString::test_trimix() {
