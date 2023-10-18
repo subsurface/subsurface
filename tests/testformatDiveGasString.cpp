@@ -208,4 +208,31 @@ void TestformatDiveGasString::test_ccr() {
 	QCOMPARE(formatDiveGasString(&dive), "21/35");
 }
 
+void TestformatDiveGasString::test_ccr_bailout() {
+	struct dive dive = {0};
+	cylinder_t *cylinder = get_or_create_cylinder(&dive, 0);
+
+	cylinder->gasmix.o2.permille = 1000;
+	cylinder->cylinder_use = OXYGEN;
+	cylinder->start.mbar = 230000;
+	cylinder->end.mbar = 100000;
+
+	cylinder = get_or_create_cylinder(&dive, 1);
+
+	cylinder->gasmix.o2.permille = 220;
+	cylinder->gasmix.he.permille = 200;
+	cylinder->cylinder_use = DILUENT;
+	cylinder->start.mbar = 230000;
+	cylinder->end.mbar = 100000;
+
+	cylinder = get_or_create_cylinder(&dive, 2);
+
+	cylinder->gasmix.o2.permille = 210;
+	cylinder->gasmix.he.permille = 0;
+	cylinder->start.mbar = 230000;
+	cylinder->end.mbar = 100000;
+
+	QCOMPARE(formatDiveGasString(&dive), "22/20");
+}
+
 QTEST_GUILESS_MAIN(TestformatDiveGasString)
