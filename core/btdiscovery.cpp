@@ -35,7 +35,9 @@ static struct modelPattern model[] = {
 	{ 0x4654, "Oceanic", "Veo 4.0" },
 	{ 0x4655, "Sherwood", "Wisdom 4" },
 	{ 0x4656, "Oceanic", "Pro Plus 4" },
-	{ 0x4743, "Aqualung", "i470TC" }
+	{ 0x4741, "Apeks", "DSX" },
+	{ 0x4743, "Aqualung", "i470TC" },
+	{ 0x4744, "Aqualung", "i330R" },
 };
 
 struct namePattern {
