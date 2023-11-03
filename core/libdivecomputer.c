@@ -1343,7 +1343,7 @@ static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *d
 
 dc_status_t divecomputer_device_open(device_data_t *data)
 {
-	dc_status_t rc;
+	dc_status_t rc = DC_STATUS_UNSUPPORTED;
 	dc_context_t *context = data->context;
 	unsigned int transports, supported;
 
@@ -1423,7 +1423,7 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 			return rc;
 	}
 
-	return DC_STATUS_UNSUPPORTED;
+	return rc;
 }
 
 static dc_status_t sync_divecomputer_time(dc_device_t *device)
