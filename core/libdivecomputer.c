@@ -1353,74 +1353,59 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	transports &= supported;
 	if (!transports) {
 		report_error("Dive computer transport not supported");
-		return DC_STATUS_UNSUPPORTED;
-	}
-
+	} else {
+		switch (transports) {
 #ifdef BT_SUPPORT
-	if (transports & DC_TRANSPORT_BLUETOOTH) {
-		dev_info(data, "Opening rfcomm stream %s", data->devname);
+		case DC_TRANSPORT_BLUETOOTH:
+			dev_info(data, "Opening rfcomm stream %s", data->devname);
 #if defined(__ANDROID__) || defined(__APPLE__)
-		// we don't have BT on iOS in the first place, so this is for Android and macOS
-		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
+			// we don't have BT on iOS in the first place, so this is for Android and macOS
+			rc = rfcomm_stream_open(&data->iostream, context, data->devname);
 #else
-		rc = bluetooth_device_open(context, data);
+			rc = bluetooth_device_open(context, data);
 #endif
-		if (rc == DC_STATUS_SUCCESS)
-			return rc;
-	}
+			break;
 #endif
 
 #ifdef BLE_SUPPORT
-	if (transports & DC_TRANSPORT_BLE) {
-		dev_info(data, "Connecting to BLE device %s", data->devname);
-		rc = ble_packet_open(&data->iostream, context, data->devname, data);
-		if (rc == DC_STATUS_SUCCESS)
-			return rc;
-	}
+		case DC_TRANSPORT_BLE:
+			dev_info(data, "Connecting to BLE device %s", data->devname);
+			rc = ble_packet_open(&data->iostream, context, data->devname, data);
+			break;
 #endif
+		case DC_TRANSPORT_USBHID:
+			dev_info(data, "Connecting to USB HID device");
+			rc = usbhid_device_open(&data->iostream, context, data);
+			break;
 
-	if (transports & DC_TRANSPORT_USBHID) {
-		dev_info(data, "Connecting to USB HID device");
-		rc = usbhid_device_open(&data->iostream, context, data);
-		if (rc == DC_STATUS_SUCCESS)
-			return rc;
-	}
+		case DC_TRANSPORT_USB:
+			dev_info(data, "Connecting to native USB device");
+			rc = usb_device_open(&data->iostream, context, data);
+			break;
 
-	if (transports & DC_TRANSPORT_USB) {
-		dev_info(data, "Connecting to native USB device");
-		rc = usb_device_open(&data->iostream, context, data);
-		if (rc == DC_STATUS_SUCCESS)
-			return rc;
-	}
-
-	if (transports & DC_TRANSPORT_SERIAL) {
-		dev_info(data, "Opening serial device %s", data->devname);
+		case DC_TRANSPORT_SERIAL:
+			dev_info(data, "Opening serial device %s", data->devname);
 #ifdef SERIAL_FTDI
-		if (!strcasecmp(data->devname, "ftdi"))
-			return ftdi_open(&data->iostream, context);
+			if (!strcasecmp(data->devname, "ftdi"))
+				return ftdi_open(&data->iostream, context);
 #endif
 #ifdef __ANDROID__
-		if (data->androidUsbDeviceDescriptor)
-			return serial_usb_android_open(&data->iostream, context, data->androidUsbDeviceDescriptor);
+			if (data->androidUsbDeviceDescriptor)
+				return serial_usb_android_open(&data->iostream, context, data->androidUsbDeviceDescriptor);
 #endif
-		rc = dc_serial_open(&data->iostream, context, data->devname);
-		if (rc == DC_STATUS_SUCCESS)
-			return rc;
+			rc = dc_serial_open(&data->iostream, context, data->devname);
+			break;
 
-	}
+		case DC_TRANSPORT_IRDA:
+			dev_info(data, "Connecting to IRDA device");
+			rc = irda_device_open(&data->iostream, context, data);
+			break;
 
-	if (transports & DC_TRANSPORT_IRDA) {
-		dev_info(data, "Connecting to IRDA device");
-		rc = irda_device_open(&data->iostream, context, data);
-		if (rc == DC_STATUS_SUCCESS)
-			return rc;
-	}
-
-	if (transports & DC_TRANSPORT_USBSTORAGE) {
-		dev_info(data, "Opening USB storage at %s", data->devname);
-		rc = dc_usb_storage_open(&data->iostream, context, data->devname);
-		if (rc == DC_STATUS_SUCCESS)
-			return rc;
+		case DC_TRANSPORT_USBSTORAGE:
+			dev_info(data, "Opening USB storage at %s", data->devname);
+			rc = dc_usb_storage_open(&data->iostream, context, data->devname);
+			break;
+		}
 	}
 
 	return rc;
