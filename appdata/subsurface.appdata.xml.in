@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2014 Pedro Neves <nevesdiver@gmail.com> -->
 <component type="desktop-application">
-  <id>subsurface</id>
+  <id>org.subsurface_divelog.subsurface</id>
   <metadata_license>CC-BY-SA-3.0</metadata_license>
   <project_license>GPL-2.0-only</project_license>
   <name>Subsurface</name>
