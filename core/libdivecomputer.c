@@ -113,14 +113,16 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			report_error("Warning: different number of gases (%d) and cylinders (%d)", ngases, ntanks);
 		} else if (ntanks > ngases) {
 			shown_warning = true;
-			report_error("Warning: smaller number of gases (%d) than cylinders (%d). Assuming air.", ngases, ntanks);
+			report_error("Warning: smaller number of gases (%d) than cylinders (%d).", ngases, ntanks);
 		}
 	}
 	bool no_volume = true;
+	cylinder_t cyl = empty_cylinder;
+	struct gasmix last_mix = gasmix_air; /* default to air */
 
 	clear_cylinder_table(&dive->cylinders);
-	for (i = 0; i < ngases || i < ntanks; i++) {
-		cylinder_t cyl = empty_cylinder;
+	for (i = 0; i < MAX(ngases, ntanks); i++) {
+		cyl = empty_cylinder;
 		if (i < ngases) {
 			dc_gasmix_t gasmix = { 0 };
 			int o2, he;
@@ -147,9 +149,10 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				}
 				he = 0;
 			}
-			cyl.gasmix.o2.permille = o2;
-			cyl.gasmix.he.permille = he;
+			last_mix.o2.permille = o2;
+			last_mix.he.permille = he;
 		}
+		cyl.gasmix = last_mix;
 
 		if (rc == DC_STATUS_UNSUPPORTED)
 			// Gasmix is inactive
