@@ -117,11 +117,11 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		}
 	}
 	bool no_volume = true;
-	cylinder_t cyl = empty_cylinder;
 	struct gasmix last_mix = gasmix_air; /* default to air */
 
 	clear_cylinder_table(&dive->cylinders);
 	for (i = 0; i < MAX(ngases, ntanks); i++) {
+		cylinder_t cyl = empty_cylinder;
 		cyl = empty_cylinder;
 		if (i < ngases) {
 			dc_gasmix_t gasmix = { 0 };
