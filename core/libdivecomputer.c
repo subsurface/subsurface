@@ -123,7 +123,7 @@ static struct gasmix get_deeper_gasmix(struct gasmix a, struct gasmix b)
 	if (get_o2(a) < get_o2(b)) {
 		return a;
 	}
-	if (get_o2(a) > get_o2(b))
+	if (get_o2(a) > get_o2(b)) {
 		return b;
 	}
 	return get_he(a) < get_he(b) ? b : a;
@@ -161,7 +161,10 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		}
 	}
 	bool no_volume = true;
-	struct gasmix bottom_gas = { {1000}, {0} }; /* Default to pure O2 */
+	struct gasmix bottom_gas = { {1000}, {0} }; /* Default to pure O2, or air if there are no mixes defined */
+	if (ngases == 0) {
+		bottom_gas = gasmix_air;
+	}
 
 	clear_cylinder_table(&dive->cylinders);
 	for (i = 0; i < MAX(ngases, ntanks); i++) {
