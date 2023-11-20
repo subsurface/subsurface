@@ -99,6 +99,50 @@ static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
 	return dc_parser_new(parser, devdata->device);
 }
 
+/**
+ * @brief get_deeper_gasmix Returns the gas mix with the deeper MOD.
+ * NOTE: Parameters are passed by value in order to use them as local working
+ * storage.
+ * Invalid gas mixes are converted to air for the purpose of this operation.
+ * The gas mix with the lower MOD is taken as the one with the lower O2 content,
+ * or, if equal, the one with the higher HE content. No actual MOD calculations
+ * are performed.
+ * @param a The first gas mix to compare.
+ * @param b The second gas mix to compare.
+ * @return The gas mix with the deeper MOD.
+ */
+static struct gasmix get_deeper_gasmix(struct gasmix a, struct gasmix b)
+{
+	if (same_gasmix(a, gasmix_invalid)) {
+		a = gasmix_air;
+	}
+	if (same_gasmix(b, gasmix_invalid)) {
+		b = gasmix_air;
+	}
+
+	if (get_o2(a) < get_o2(b)) {
+		return a;
+	}
+	if (get_o2(a) > get_o2(b))
+		return b;
+	}
+	return get_he(a) < get_he(b) ? b : a;
+}
+
+/**
+ * @brief parse_gasmixes matches gas mixes with cylinders
+ * This function retrieves all tanks and gas mixes reported by libdivecomputer
+ * and attepmts to match them. The matching logic assigns the mixes to the
+ * tanks in a 1:1 ordering.
+ * If there are more gas mixes than tanks, additional tanks are created.
+ * If there are fewer gas mixes than tanks, the remaining tanks are assigned to
+ * the gas mix with the lowest (deepest) MOD.
+ * @param devdata The dive computer data.
+ * @param dive The dive to which these tanks and gas mixes will be assigned.
+ * @param parser The libdivecomputer parser data.
+ * @param ngases The number of gas mixes to process.
+ * @return DC_STATUS_SUCCESS on success, otherwise an error code.
+ */
 static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, unsigned int ngases)
 {
 	static bool shown_warning = false;
@@ -117,12 +161,11 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 		}
 	}
 	bool no_volume = true;
-	struct gasmix last_mix = gasmix_air; /* default to air */
+	struct gasmix bottom_gas = { {1000}, {0} }; /* Default to pure O2 */
 
 	clear_cylinder_table(&dive->cylinders);
 	for (i = 0; i < MAX(ngases, ntanks); i++) {
 		cylinder_t cyl = empty_cylinder;
-		cyl = empty_cylinder;
 		if (i < ngases) {
 			dc_gasmix_t gasmix = { 0 };
 			int o2, he;
@@ -149,10 +192,10 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				}
 				he = 0;
 			}
-			last_mix.o2.permille = o2;
-			last_mix.he.permille = he;
+			cyl.gasmix.o2.permille = o2;
+			cyl.gasmix.he.permille = he;
+			bottom_gas = get_deeper_gasmix(bottom_gas, cyl.gasmix);
 		}
-		cyl.gasmix = last_mix;
 
 		if (rc == DC_STATUS_UNSUPPORTED)
 			// Gasmix is inactive
@@ -163,6 +206,12 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			cyl.cylinder_use = OC_GAS;
 
 		if (i < ntanks) {
+			// If we've run out of gas mixes, assign this cylinder to bottom
+			// gas. Note that this can be overridden below if the dive computer
+			// explicitly reports a gas mix for this tank.
+			if (i >= ngases) {
+				cyl.gasmix = bottom_gas;
+			}
 			dc_tank_t tank = { 0 };
 			rc = dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank);
 			if (rc == DC_STATUS_SUCCESS) {
