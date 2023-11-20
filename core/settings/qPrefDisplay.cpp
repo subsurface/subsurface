@@ -69,6 +69,7 @@ void qPrefDisplay::loadSync(bool doSync)
 	}
 	disk_three_m_based_grid(doSync);
 	disk_map_short_names(doSync);
+	disk_graph_hide_first_gaschange(doSync);
 }
 
 void qPrefDisplay::set_divelist_font(const QString &value)
@@ -153,6 +154,8 @@ HANDLE_PREFERENCE_BOOL(Display, "show_developer", show_developer);
 HANDLE_PREFERENCE_BOOL(Display, "three_m_based_grid", three_m_based_grid);
 
 HANDLE_PREFERENCE_BOOL(Display, "map_short_names", map_short_names);
+
+HANDLE_PREFERENCE_BOOL(Display, "graph_hide_first_gaschange", graph_hide_first_gaschange);
 
 void qPrefDisplay::setCorrectFont()
 {

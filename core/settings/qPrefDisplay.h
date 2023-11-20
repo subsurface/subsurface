@@ -27,6 +27,7 @@ class qPrefDisplay : public QObject {
 	Q_PROPERTY(bool singleColumnPortrait READ singleColumnPortrait WRITE set_singleColumnPortrait NOTIFY singleColumnPortraitChanged)
 	Q_PROPERTY(bool three_m_based_grid READ three_m_based_grid WRITE set_three_m_based_grid NOTIFY three_m_based_gridChanged)
 	Q_PROPERTY(bool map_short_names READ map_short_names WRITE set_map_short_names NOTIFY map_short_namesChanged)
+	Q_PROPERTY(bool graph_hide_first_gaschange READ graph_hide_first_gaschange WRITE set_graph_hide_first_gaschange NOTIFY graph_hide_first_gaschangeChanged)
 
 public:
 	static qPrefDisplay *instance();
@@ -56,6 +57,7 @@ public:
 	static bool singleColumnPortrait() { return st_singleColumnPortrait; }
 	static bool three_m_based_grid() { return prefs.three_m_based_grid; }
 	static bool map_short_names() { return prefs.map_short_names; }
+	static bool graph_hide_first_gaschange() { return prefs.graph_hide_first_gaschange; }
 
 public slots:
 	static void set_animation_speed(int value);
@@ -77,6 +79,7 @@ public slots:
 	static void set_singleColumnPortrait(bool value);
 	static void set_three_m_based_grid(bool value);
 	static void set_map_short_names(bool value);
+	static void set_graph_hide_first_gaschange(bool value);
 
 signals:
 	void animation_speedChanged(int value);
@@ -98,6 +101,7 @@ signals:
 	void singleColumnPortraitChanged(bool value);
 	void three_m_based_gridChanged(bool value);
 	void map_short_namesChanged(bool value);
+	void graph_hide_first_gaschangeChanged(bool value);
 
 private:
 	qPrefDisplay() {}
@@ -111,6 +115,7 @@ private:
 	static void disk_show_developer(bool doSync);
 	static void disk_three_m_based_grid(bool doSync);
 	static void disk_map_short_names(bool doSync);
+	static void disk_graph_hide_first_gaschange(bool doSync);
 
 	// functions to handle class variables
 	static void load_lastDir();

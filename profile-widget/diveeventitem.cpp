@@ -9,6 +9,7 @@
 #include "core/profile.h"
 #include "core/gettextfromc.h"
 #include "core/sample.h"
+#include "core/settings/qPrefDisplay.h"
 #include "core/subsurface-string.h"
 
 #define DEPTH_NOT_FOUND (-2342)
@@ -204,14 +205,22 @@ bool DiveEventItem::isInteresting(const struct dive *d, const struct divecompute
 	/*
 	 * Some gas change events are special. Some dive computers just tell us the initial gas this way.
 	 * Don't bother showing those
+	 * MKW - actually, _DO_ bother showing those since some dive computers / imports add a gas change
+	 * event for phantom cylinders which don't actually physically exist (Shearwater). Having an invisible
+	 * gas change event for a phantom cylinder means there's no way for a user to get rid of this using
+	 * the UI since the phantom cylinder, attached to this gas change event is marked as "in use" and
+	 * can't be deleted. So by showing this event, it can be edited or deleted and thus allows phantom
+	 * cylinders to be deleted as well.
 	 */
-	const struct sample *first_sample = &dc->sample[0];
-	if (!strcmp(ev->name, "gaschange") &&
-	    (ev->time.seconds == 0 ||
-	     (first_sample && ev->time.seconds == first_sample->time.seconds) ||
-	     depthAtTime(pi, ev->time) < SURFACE_THRESHOLD))
-		return false;
-
+	if (qPrefDisplay::graph_hide_first_gaschange() ) {
+		const struct sample *first_sample = &dc->sample[0];
+		if (!strcmp(ev->name, "gaschange") &&
+			  (ev->time.seconds == 0 ||
+			  (first_sample && ev->time.seconds == first_sample->time.seconds) ||
+			  depthAtTime(pi, ev->time) < SURFACE_THRESHOLD)) {
+			return false;
+		}
+	}
 	/*
 	 * Some divecomputers give "surface" events that just aren't interesting.
 	 * Like at the beginning or very end of a dive. Well, duh.
