@@ -1,0 +1,6 @@
+[copr-cli]
+login = API_LOGIN
+username = dirkhh
+token = API_TOKEN
+copr_url = https://copr.fedorainfracloud.org
+# expiration date: 2024-05-31

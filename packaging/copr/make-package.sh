@@ -9,7 +9,7 @@
 # to make changes as they can't write to the OBS/COPR repos that I own... but this should be a great
 # starting point.
 
-if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivecomputer ]] ; then
+if [[ ! -d subsurface || ! -d subsurface/libdivecomputer ]] ; then
 	echo "Please start this script from the folder ABOVE the subsurface source directory"
 	exit 1;
 fi
@@ -18,6 +18,8 @@ if [[ ! -d googlemaps ]] ; then
 	echo "checked out in parallel to the Subsurface directory"
 	exit 1;
 fi
+
+TOPDIR=$(pwd)
 
 # ensure that the libdivecomputer module is there and current
 cd subsurface
@@ -34,18 +36,21 @@ FOLDER="subsurface-$VERSION"
 
 echo "building Subsurface" $VERSION "with libdivecomputer" $LIBDCREVISION
 
-# we put all of the files into the distrobuilds directory in order not to clutter the 'src' directory
-mkdir -p distrobuilds
-cd distrobuilds
+# create the file system structure that the rpmbuild tools expect
+rpmdev-setuptree
+
+# in order for the tools to work as expected, let's run this from the HOME directory
+cd $HOME
 
 if [[ ! -d $FOLDER ]]; then
 	mkdir $FOLDER
 	echo "copying sources"
 
-	(cd ../subsurface ; tar cf - . ) | (cd $FOLDER ; tar xf - )
+	(cd "$TOPDIR"/subsurface ; tar cf - . ) | (cd $FOLDER ; tar xf - )
 	cd $FOLDER
-	cp -a ../../googlemaps .
+	cp -a "$TOPDIR"/googlemaps .
 
+	# make sure we only have the files we want (the builds should all be empty when running on GitHub)
 	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
 	echo $GITVERSION > .gitversion
 	echo $GITDATE > .gitdate
@@ -73,11 +78,11 @@ if [[ "$1" = "post" ]] ; then
 		DESCRIPTION="This is the official Subsurface build, provided by the Subsurface team, including our own custom libdivecomputer."
 	else
 		REPO="Subsurface-test"
-		SUMMARY="test build of the latest development version of Subsurface"
-		DESCRIPTION="This is a test build of Subsurface, provided by the Subsurface team, based on the latest sources. Only use if you need the bleeding edge of development."
+		SUMMARY="rolling build of the latest development version of Subsurface"
+		DESCRIPTION="This is a 'daily' build of Subsurface, provided by the Subsurface team, based on the latest sources. The builds aren't always well tested."
 	fi
-	cd rpmbuild
-	cat ../../subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $VERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
+	cd "$HOME"/rpmbuild
+	cat "$TOPDIR"/subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $VERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
 	rpmbuild --verbose -bs $(pwd)/SPECS/subsurface.spec
 	copr build --nowait $REPO $(pwd)/SRPMS/subsurface-$VERSION-1.fc*.src.rpm
 fi
