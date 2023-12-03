@@ -11,6 +11,7 @@
 
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 
 extern void show_computer_list();
 

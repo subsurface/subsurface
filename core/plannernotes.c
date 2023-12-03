@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 #include "dive.h"
 #include "deco.h"
 #include "units.h"

@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include <stdlib.h>
 #include "ssrf.h"
 #include "dive.h"
 #include "divesite.h"
