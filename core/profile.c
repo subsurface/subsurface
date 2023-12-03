@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <string.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #include "dive.h"
 #include "divelist.h"

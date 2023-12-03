@@ -17,6 +17,7 @@
  * restore_deco_state()
  * dump_tissues()
  */
+#include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include <assert.h>
