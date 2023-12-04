@@ -28,7 +28,8 @@ We frequently make new test versions of Subsurface available at
 http://subsurface-divelog.org/downloads/test/ and there you can always get
 the latest builds for Mac, Windows, Linux AppImage and Android (with some
 caveats about installability). Additionally, those same versions are
-posted to the Subsurface-daily repos on Launchpad and OBS.
+posted to the Subsurface-daily repos on Ubuntu Launchpad, Fedora COPR, and
+OpenSUSE OBS.
 
 These tend to contain the latest bug fixes and features, but also
 occasionally the latest bugs and issues. Please understand when using them
