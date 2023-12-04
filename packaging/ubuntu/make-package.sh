@@ -15,12 +15,6 @@ if [[ ! -d googlemaps ]] ; then
 	exit 1;
 fi
 
-if [[ ! -d libgit2 ]] ; then
-	echo "Please make sure you have libgit2 1.0 from https://github.com/libgit2/libgit2"
-	echo "checked out in parallel to the Subsurface directory"
-	exit 1;
-fi
-
 # ensure that the libdivecomputer module is there and current
 cd subsurface
 git submodule init
@@ -52,14 +46,8 @@ if [[ ! -d subsurface_$VERSION ]]; then
 	(cd ../subsurface ; tar cf - . ) | (cd subsurface_$VERSION ; tar xf - )
 	cd subsurface_$VERSION;
 	cp -a ../../googlemaps .
-	cp -a ../../libgit2 .
 
-	# now make sure we have libgit2 1.0
-	cd libgit2
-	git fetch
-	git checkout v1.0.0
-	cd ..
-	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build libgit2/.git libgit2/build
+	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
 	echo $GITVERSION > .gitversion
 	echo $GITDATE > .gitdate
 	echo $LIBDCREVISION > libdivecomputer/revision
