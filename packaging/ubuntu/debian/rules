@@ -36,7 +36,6 @@ override_dh_auto_clean:
 	rm -f libdivecomputer/missing
 	rm -f libdivecomputer/src/Makefile.in
 	rm -rf install-root
-	rm -rf libgit2/build
 	rm -rf googlemaps/build
 	rm -rf subsurface-build
 
@@ -53,15 +52,10 @@ override_dh_auto_configure:
 		./configure --disable-examples --prefix=$(MY_INSTALL_ROOT) --disable-shared ; \
 		make -j8 ; \
 		make install)
-	(mkdir libgit2/build ; cd libgit2/build ; \
-		cmake -DCMAKE_INSTALL_PREFIX=$(MY_INSTALL_ROOT) -DBUILD_SHARED_LIBS=OFF -DBUILD_CLAR=OFF -DREGEX_BACKEND=builtin .. ; \
-		make -j8 ; \
-		make install)
 	(mkdir subsurface-build ; cd subsurface-build ;  \
 		cmake -DCMAKE_BUILD_TYPE=Release \
 			-DCMAKE_INSTALL_PREFIX=/usr \
 			-DLIBGIT2_INCLUDE_DIR=$(MY_INSTALL_ROOT)/include \
-			-DLIBGIT2_LIBRARIES=$(MY_INSTALL_ROOT)/lib/libgit2.a \
 			-DLIBDIVECOMPUTER_INCLUDE_DIR=$(MY_INSTALL_ROOT)/include \
 			-DLIBDIVECOMPUTER_LIBRARIES=$(MY_INSTALL_ROOT)/lib/libdivecomputer.a \
 			-DFORCE_LIBSSH=1 \
