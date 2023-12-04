@@ -5,7 +5,7 @@
 # it is included in our source tar file
 #
 
-if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivecomputer ]] ; then
+if [[ ! -d subsurface || ! -d subsurface/libdivecomputer ]] ; then
 	echo "Please start this script from the folder ABOVE the subsurface source directory"
 	exit 1;
 fi
@@ -26,6 +26,9 @@ GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 GITDATE=$(cd subsurface ; git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
 LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
+
+export DEBSIGN_PROGRAM="gpg --passphrase-file passphrase_file.txt --batch --no-use-agent"
+export DEBSIGN_KEYID="F58109E3"
 
 if [[ "$GITVERSION" = "" ]] ; then
 	SUFFIX=".release"
@@ -65,7 +68,7 @@ echo "preparing the debian directory"
 
 # this uses my (Dirk's) email address by default... simply set that variable in your
 # environment prior to starting the script
-test -z $DEBEMAIL && export DEBEMAIL=dirk@hohndel.org
+test -z $DEBEMAIL && export DEBEMAIL=dirk@subsurface-divelog.org
 
 # copy over the debian files and allow maintaining a release and daily changelog files
 rm -rf debian
