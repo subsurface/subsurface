@@ -17,6 +17,24 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v1
 
+    - name: create release name
+      id: tag
+      run: |
+        export tag=""
+        export is_latest=false
+        if [ "${{ github.ref_type }}" = "tag" ] ; then tag="${{ github.ref_name }}" ; else tag="latest"; is_latest=true ; fi
+        echo "tag=${tag}" >> $GITHUB_OUTPUT
+        echo "is_latest=${is_latest}" >> $GITHUB_OUTPUT
+
+    - name: tag current version as latest if we don't have a tag
+      if: ${{ steps.tag.outputs.is_latest == true }}
+      uses: rickstaa/action-create-tag@v1
+      with:
+        tag: "latest"
+        tag_exists_error: false
+        force_push_tag: true
+        message: "latest commit to allow 'release' uploads"
+
     - name: get other dependencies
       env:
          SUBSURFACE_REPO_PATH: ${{ github.workspace }}
@@ -27,21 +45,23 @@ jobs:
         cd /win
         ln -s /__w/subsurface/subsurface .
         bash -x subsurface/.github/workflows/scripts/windows-container-prep.sh 2>&1 | tee pre-build.log
+
     - name: run build
       run: |
         cd /win
         bash -x subsurface/.github/workflows/scripts/windows-in-container-build.sh 2>&1 | tee build.log
         grep "Built target installer" build.log
 
-    - name: prepare PR artifacts
-      if: github.event_name == 'pull_request'
-      run: |
-        mkdir -p Windows-artifacts
-        mv ./subsurface-installer.exe ./subsurface.exe ./subsurface.exe.debug ./smtk2ssrf-installer.exe ./smtk2ssrf.exe Windows-artifacts
-
-    - name: PR artifacts
-      if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@master
+    - name: upload binaries
+      uses: softprops/action-gh-release@v1
       with:
-        name: Windows-artifacts
-        path: Windows-artifacts
+        tag_name: ${{ steps.tag.outputs.tag }}
+        prerelease: ${{ steps.tag.outputs.is_latest }}
+        body: CICD release artifact
+        fail_on_unmatched_files: false
+        files: |
+         ./subsurface-installer.exe
+         ./subsurface.exe
+         ./subsurface.exe.debug
+         ./smtk2ssrf-installer.exe
+         ./smtk2ssrf.exe
