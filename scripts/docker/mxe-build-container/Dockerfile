@@ -3,7 +3,7 @@
 #
 
 # Start from Ubuntu
-From ubuntu:20.04
+From ubuntu:22.04
 
 # very often master is broken, so we pass in a known good SHA
 ARG mxe_sha=master
@@ -40,7 +40,8 @@ DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     patch \
     perl \
     pkg-config \
-    python \
+    python3 \
+    python3-mako \
     ruby \
     sed \
     unzip \
@@ -62,6 +63,7 @@ ADD qtconnectivity-1.patch /win/mxe/src/qtconnectivity-1.patch
 # Move the settings into place to build everything that we need
 # separate download from build so that we can redo the build
 ADD settings.mk /win/mxe/settings.mk
+RUN [ -f /usr/bin/python ] || ln -s /usr/bin/python3 /usr/bin/python
 RUN cd /win/mxe ; \
     make -j 6 download 2>&1 | tee mxe-build.log
 RUN cd /win/mxe ; \
