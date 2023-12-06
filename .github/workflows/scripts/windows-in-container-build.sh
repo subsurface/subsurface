@@ -1,6 +1,6 @@
 #!/bin/bash
 # this gets executed inside the container when building a Windows
-# installer on Travis
+# installer as GitHub Action
 #
 # working directory is assumed to be the directory including all the
 # source directories (subsurface, googlemaps, grantlee, etc)

@@ -63,7 +63,7 @@ ADD qtconnectivity-1.patch /win/mxe/src/qtconnectivity-1.patch
 # Move the settings into place to build everything that we need
 # separate download from build so that we can redo the build
 ADD settings.mk /win/mxe/settings.mk
-RUN [ -f /usr/bin/python ] || ln -s /usr/bin/python3 /usr/bin/python
+RUN cd /usr/bin ; ln -s -f python3 python
 RUN cd /win/mxe ; \
     make -j 6 download 2>&1 | tee mxe-build.log
 RUN cd /win/mxe ; \

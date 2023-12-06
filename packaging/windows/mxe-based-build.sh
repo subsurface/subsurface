@@ -150,7 +150,6 @@ fi
 if [ ! -f libdivecomputer/configure ] ; then
 	cd libdivecomputer
 	autoreconf --install
-	autoreconf --install
 fi
 
 # if this is a 64bit build then build libmtp as that isn't available via MXE
