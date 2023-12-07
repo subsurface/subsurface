@@ -404,4 +404,4 @@ fi
 
 # now build the Subsurface aab
 make aab
-mv subsurface-mobile-build/android-build/build/outputs/apk/debug/android-build-debug.apk Subsurface-mobile-"$CANONICAL_VERSION".apk
+mv $(find . -name android-build-debug.apk) "$GITHUB_WORKSPACE"/Subsurface-mobile-"$CANONICALVERSION".apk
