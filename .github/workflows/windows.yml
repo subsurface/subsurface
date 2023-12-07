@@ -67,8 +67,5 @@ jobs:
         body: CICD release artifact
         fail_on_unmatched_files: false
         files: |
-         ./subsurface-installer.exe
-         ./subsurface.exe
-         ./subsurface.exe.debug
-         ./smtk2ssrf-installer.exe
-         ./smtk2ssrf.exe
+         ./subsurface*.exe*
+         ./smtk2ssrf*.exe
