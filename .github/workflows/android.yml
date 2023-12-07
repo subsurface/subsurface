@@ -52,7 +52,9 @@ jobs:
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         bash -x ./subsurface/packaging/android/qmake-build.sh
 
+    # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
+      if: github.event_name == 'push'
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ steps.tag.outputs.tag }}

@@ -59,7 +59,9 @@ jobs:
         bash -x subsurface/.github/workflows/scripts/windows-in-container-build.sh 2>&1 | tee build.log
         grep "Built target installer" build.log
 
+    # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
+      if: github.event_name == 'push'
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ steps.tag.outputs.tag }}
