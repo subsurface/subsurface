@@ -16,7 +16,7 @@ export CXX=g++-5
 # Sorry Travis, fetching the whole thing and the tags as well...
 git fetch --unshallow
 git pull --tags
-git describe
+git describe --match "v[0-9]*"
 
 . /opt/qt510/bin/qt510-env.sh
 export QT_ROOT=/opt/qt510

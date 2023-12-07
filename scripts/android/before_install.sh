@@ -4,7 +4,7 @@
 # Sorry Travis, fetching the whole thing and the tags as well...
 git fetch --unshallow
 git pull --tags
-git describe
+git describe --match "v[0-9]*"
 
 # setup build dir on the host, not inside of the container
 mkdir -p ../subsurface-mobile-build-docker-arm

@@ -12,7 +12,7 @@ set -x
 # Sorry Travis, fetching the whole thing and the tags as well...
 git fetch --unshallow
 git pull --tags
-git describe
+git describe --match "v[0-9]*"
 
 export QT_ROOT=$PWD/Qt/5.9.3
 rm -rf Qt

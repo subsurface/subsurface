@@ -10,7 +10,7 @@ TRAVIS_BUILD_DIR=${TRAVIS_BUILD_DIR:-$PWD}
 git fetch --unshallow || true # if running locally, unshallow could fail
 git pull --tags
 git submodule init
-git describe
+git describe --match "v[0-9]*"
 
 # make sure we have libdivecomputer
 echo "Get libdivecomputer"

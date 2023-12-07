@@ -84,7 +84,7 @@ mkdir -p "$BUILDROOT"/subsurface-mobile-build
 pushd "$BUILDROOT"/subsurface-mobile-build
 
 # set up the Subsurface versions by hand
-GITVERSION=$(cd "$SUBSURFACE_SOURCE" ; git describe --abbrev=12)
+GITVERSION=$(cd "$SUBSURFACE_SOURCE" ; git describe --match "v[0-9]*" --abbrev=12)
 CANONICALVERSION=$(echo "$GITVERSION" | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
 MOBILEVERSION=$(grep MOBILE "$SUBSURFACE_SOURCE"/cmake/Modules/version.cmake | cut -d\" -f 2)
 echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > ssrf-version.h

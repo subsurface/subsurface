@@ -4,7 +4,7 @@
 # Sorry Travis, fetching the whole thing and the tags as well...
 git fetch --unshallow
 git pull --tags
-git describe
+git describe --match "v[0-9]*"
 
 # Ugly, but keeps it running during the build
 docker run -v $PWD:/workspace/subsurface --name=builder -w /workspace -d fedora:26 /bin/sleep 60m

@@ -13,7 +13,7 @@ unset -f popd
 # Sorry Travis, fetching the whole thing and the tags as well...
 git fetch --unshallow
 git pull --tags
-git describe
+git describe --match "v[0-9]*"
 
 # prep things so we can build for Mac
 # we have a custom built Qt some gives us just what we need, including QtWebKit
