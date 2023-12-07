@@ -51,8 +51,6 @@ jobs:
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         bash -x ./subsurface/packaging/android/qmake-build.sh
-        artifacts=$(find $(pwd) -name \*.apk)
-        echo "artifacts=$artifacts" >> $GITHUB_OUTPUT
 
     - name: upload binaries
       uses: softprops/action-gh-release@v1
@@ -62,4 +60,4 @@ jobs:
         body: CICD release artifact
         fail_on_unmatched_files: false
         files: |
-          ${{ steps.build.ouputs.artifacts }}
+          Subsurface-mobile*.apk
