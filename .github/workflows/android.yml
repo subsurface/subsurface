@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - master
+    - github-action-test
   pull_request:
     branches:
     - master
@@ -17,7 +18,17 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v1
 
+    - name: create release name
+      id: tag
+      run: |
+        export tag=""
+        export is_latest=false
+        if [ "${{ github.ref_type }}" = "tag" ] ; then tag="${{ github.ref_name }}" ; else tag="latest"; is_latest=true ; fi
+        echo "tag=${tag}" >> $GITHUB_OUTPUT
+        echo "is_latest=${is_latest}" >> $GITHUB_OUTPUT
+
     - name: run build
+      id: build
       env:
          SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
@@ -40,4 +51,15 @@ jobs:
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         bash -x ./subsurface/packaging/android/qmake-build.sh
+        artifacts=$(find $(pwd) -name \*.apk)
+        echo "artifacts=$artifacts" >> $GITHUB_OUTPUT
 
+    - name: upload binaries
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.tag.outputs.tag }}
+        prerelease: ${{ steps.tag.outputs.is_latest }}
+        body: CICD release artifact
+        fail_on_unmatched_files: false
+        files: |
+          ${{ steps.build.ouputs.artifacts }}
