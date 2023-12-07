@@ -23,12 +23,18 @@ jobs:
       run: |
         export tag=""
         export is_latest=false
-        if [ "${{ github.ref_type }}" = "tag" ] ; then tag="${{ github.ref_name }}" ; else tag="latest"; is_latest=true ; fi
+        if [ "${{ github.ref_type }}" = "tag" ]
+        then
+          tag="${{ github.ref_name }}"
+        else
+          tag="latest"
+          is_latest=true
+        fi
         echo "tag=${tag}" >> $GITHUB_OUTPUT
         echo "is_latest=${is_latest}" >> $GITHUB_OUTPUT
 
     - name: tag current version as latest if we don't have a tag
-      if: ${{ steps.tag.outputs.is_latest == true }}
+      if: ${{ steps.tag.outputs.is_latest == 'true' }}
       uses: rickstaa/action-create-tag@v1
       with:
         tag: "latest"
