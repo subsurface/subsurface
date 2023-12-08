@@ -12,7 +12,7 @@ CURRENT_LIBSSH2="libssh2-1.8.0"
 CURRENT_XSLT="v1.1.34"
 CURRENT_SQLITE="3190200"
 CURRENT_LIBXML2="v2.9.4"
-CURRENT_LIBFTDI="1.3"
+CURRENT_LIBFTDI="abd19b721f7e9b4d514ed319ece173ebc7b1ea72"
 CURRENT_KIRIGAMI="v5.76.0"
 CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
 CURRENT_MDBTOOLS="master"
@@ -190,7 +190,7 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library libzip $CURRENT_LIBZIP https://github.com/nih-at/libzip.git
 			;;
 		libftdi1)
-			curl_download_library libftdi1 https://www.intra2net.com/en/developer/libftdi/download/ libftdi1-${CURRENT_LIBFTDI}.tar.bz2
+			git_checkout_library libftdi1 $CURRENT_LIBFTDI git://developer.intra2net.com/libftdi
 			;;
 		sqlite)
 			curl_download_library sqlite https://www.sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
