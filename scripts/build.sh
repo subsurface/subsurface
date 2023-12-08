@@ -610,7 +610,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		EXTRA_OPTS="-DNO_USERMANUAL=ON -DNO_PRINTING=ON"
 	fi
 	if [ "$FTDI" = "1" ] ; then
-		EXTRA_OPTSi="$EXTRA_OPTS -DFTDISUPPORT"
+		EXTRA_OPTSi="$EXTRA_OPTS -DFTDISUPPORT=ON"
 	fi
 	if [ "$BUILD_WITH_QT6" = "1" ] ; then
 		EXTRA_OPTS="$EXTRA_OPTS -DBUILD_WITH_QT6=ON"

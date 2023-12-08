@@ -48,7 +48,9 @@ jobs:
       run: |
         # build export-html to make sure that didn't get broken
         cd ${GITHUB_WORKSPACE}/build
-        make export-html
+        cmake -DMAKE_TESTS=ON
+        make -j
+        make -j export-html
         echo "------------------------------------"
         echo "run tests for desktop build"
         export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64

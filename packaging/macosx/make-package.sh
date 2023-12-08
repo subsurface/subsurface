@@ -31,7 +31,13 @@ BASESDK=$(ls $SDKROOT | grep "MacOSX1.*\.sdk" | head -1 | sed -e "s/MacOSX//;s/\
 OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
 export PKG_CONFIG_PATH=${DIR}/install-root/lib/pkgconfig:$PKG_CONFIG_PATH
 
-cmake $OLDER_MAC_CMAKE .
+cmake $OLDER_MAC_CMAKE \
+	-DLIBGIT2_FROM_PKGCONFIG=ON \
+	-DLIBGIT2_DYNAMIC=ON \
+	-DFTDISUPPORT=ON \
+	-DMAKE_TESTS=Off \
+	.
+
 LIBRARY_PATH=${DIR}/install-root/lib make -j
 LIBRARY_PATH=${DIR}/install-root/lib make install
 
