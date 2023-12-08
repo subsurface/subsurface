@@ -137,6 +137,10 @@ while [[ $# -gt 0 ]] ; do
 			BUILD_DESKTOP="1"
 			BUILD_DOWNLOADER="1"
 			;;
+		-ftdi)
+			# make sure we include the user space FTDI drivers
+			FTDI="1"
+			;;
 		-create-appdir)
 			# we are building an AppImage as by product
 			CREATE_APPDIR="1"
@@ -147,7 +151,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-fat-build] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-build-with-map] [-mobile] [-desktop] [-downloader] [-both] [-all] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-fat-build] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-build-with-map] [-mobile] [-desktop] [-downloader] [-both] [-all] [-ftdi] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
@@ -572,13 +576,6 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VE
 	else
 		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
 	fi
-	# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
-	# since things compile fine with c++11, let's just hack that away
-	# similarly, don't use -Wdata-time
-	if [ "$TRAVIS" = "true" ] ; then
-		mv Makefile Makefile.bak
-		cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
-	fi
 	make -j4
 	if [ "$PLATFORM" = Darwin ]  && [[ $QT_VERSION == 6* ]] && [[ $ARCHS == *" "* ]] ; then
 		# we can't build fat binaries directly here, so let's do it in two steps
@@ -611,6 +608,9 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		EXTRA_OPTS="-DNO_USERMANUAL=OFF -DNO_PRINTING=OFF"
 	else
 		EXTRA_OPTS="-DNO_USERMANUAL=ON -DNO_PRINTING=ON"
+	fi
+	if [ "$FTDI" = "1" ] ; then
+		EXTRA_OPTSi="$EXTRA_OPTS -DFTDISUPPORT"
 	fi
 	if [ "$BUILD_WITH_QT6" = "1" ] ; then
 		EXTRA_OPTS="$EXTRA_OPTS -DBUILD_WITH_QT6=ON"

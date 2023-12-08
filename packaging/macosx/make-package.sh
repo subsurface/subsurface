@@ -7,17 +7,7 @@
 # find the directory above the sources - typically ~/src
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd ../../.. && pwd )
 
-# install location of create-dmg
-# by default we assume it's next to subsurface in ~/src/yoursway-create-dmg
-DMGCREATE=${DIR}/yoursway-create-dmg/create-dmg
-if [ ! -x $DMGCREATE ] ; then
-	# well, this app changed its github name, so it may be in a different directory now
-	DMGCREATE=${DIR}/create-dmg/create-dmg
-	if [ ! -x $DMGCREATE ] ; then
-		echo "Can't find working create-dmg, aborting"
-		exit 1
-	fi
-fi
+DMGCREATE=create-dmg
 
 # same git version magic as in the Makefile
 # for the naming of volume and dmg we want the 3 digits of the full version number
@@ -42,7 +32,7 @@ OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${
 export PKG_CONFIG_PATH=${DIR}/install-root/lib/pkgconfig:$PKG_CONFIG_PATH
 
 cmake $OLDER_MAC_CMAKE .
-LIBRARY_PATH=${DIR}/install-root/lib make -j8
+LIBRARY_PATH=${DIR}/install-root/lib make -j
 LIBRARY_PATH=${DIR}/install-root/lib make install
 
 # now adjust a few references that macdeployqt appears to miss
@@ -93,6 +83,10 @@ done
 
 if [ "$1" = "-nodmg" ] ; then
 	exit 0
+elif [ "$1" = "-sign" ] ; then
+	SIGN=1
+else
+	SIGN=0
 fi
 
 # copy things into staging so we can create a nice DMG
@@ -100,7 +94,9 @@ rm -rf ./staging
 mkdir ./staging
 cp -a ./Subsurface.app ./staging
 
-sh ${DIR}/subsurface/packaging/macosx/sign
+if [ "$SIGN" = "1" ] ; then
+	sh ${DIR}/subsurface/packaging/macosx/sign
+fi
 
 if [ -f ./Subsurface-$VERSION.dmg ]; then
 	rm ./Subsurface-$VERSION.dmg.bak
