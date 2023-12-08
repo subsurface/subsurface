@@ -403,5 +403,5 @@ if [ "$QUICK" = "" ] ; then
 fi
 
 # now build the Subsurface aab
-make aab
-mv $(find . -name android-build-debug.apk) "$GITHUB_WORKSPACE"/Subsurface-mobile-"$CANONICALVERSION".apk
+make apk
+mv $(find . -name Subsurface-mobile.apk) "$GITHUB_WORKSPACE"/Subsurface-mobile-"$CANONICALVERSION".apk
