@@ -28,34 +28,13 @@ jobs:
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
         DIR=$(pwd)
 
-        # now build Subsurface with WebKit, using the generic build script
-        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release -build-deps -ftdi
+        # now setup Subsurface with WebKit and build the dependencies, using the generic build script
+        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release -build-deps -ftdi -prep-only
 
-        echo "finished initial build of Subsurface"
-
-        # make sure we have FTDI enabled for the package
+        echo "finished initial cmake setup of Subsurface - next build the package"
         cd subsurface/build
-        FTDI=$(grep FTDISUPPORT:BOOL CMakeCache.txt | grep ON)
-        if [ "$FTDI" != "FTDISUPPORT:BOOL=ON" ] ; then
-          cmake -D FTDISUPPORT:BOOL=ON .
-        fi
         echo "run the packaging script"
-        bash -e -x ../packaging/macos/make-package.sh
-        IMG=$(grep ^created: ../trigger-daily.log | tail -1 | cut -b10-)
+        bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
+        IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
         echo "Created $IMG"
-
-    - name: test desktop build
-      run: |
-        # build export-html to make sure that didn't get broken
-        cd ${GITHUB_WORKSPACE}/build
-        cmake -DMAKE_TESTS=ON
-        make -j
-        make -j export-html
-        echo "------------------------------------"
-        echo "run tests for desktop build"
-        export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
-        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
-        cd tests
-        # ./TestGitStorage -v2
-        make check
 

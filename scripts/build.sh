@@ -77,6 +77,11 @@ while [[ $# -gt 0 ]] ; do
 			# call this script with -build-deps
 			BUILD_DEPS="1"
 			;;
+		-prep-only)
+			# use this script to build dependencies and set things up with default values, but don't actually run
+			# the build
+			PREP_ONLY="1"
+			;;
 		-fat-build)
 			# build a fat binary for macOS
 			# ignored on other platforms
@@ -151,7 +156,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-fat-build] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-build-with-map] [-mobile] [-desktop] [-downloader] [-both] [-all] [-ftdi] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-prep-only] [-fat-build] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-build-with-map] [-mobile] [-desktop] [-downloader] [-both] [-all] [-ftdi] [-create-appdir] [-release]"
 			exit 1
 			;;
 	esac
@@ -645,17 +650,19 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		rm -rf Subsurface-mobile.app
 	fi
 
-	LIBRARY_PATH=$INSTALL_ROOT/lib make -j4
-	LIBRARY_PATH=$INSTALL_ROOT/lib make install
+	if [ ! "$PREP_ONLY" = "1" ] ; then
+		LIBRARY_PATH=$INSTALL_ROOT/lib make -j4
+		LIBRARY_PATH=$INSTALL_ROOT/lib make install
 
-	if [ "$CREATE_APPDIR" = "1" ] ; then
-		# if we create an AppImage this makes gives us a sane starting point
-		cd "$SRC"
-		mkdir -p ./appdir
-		mkdir -p appdir/usr/share/metainfo
-		mkdir -p appdir/usr/share/icons/hicolor/256x256/apps
-		cp -r ./install-root/* ./appdir/usr
-		cp ${SRC_DIR}/appdata/subsurface.appdata.xml appdir/usr/share/metainfo/
-		cp ${SRC_DIR}/icons/subsurface-icon.png appdir/usr/share/icons/hicolor/256x256/apps/
+		if [ "$CREATE_APPDIR" = "1" ] ; then
+			# if we create an AppImage this makes gives us a sane starting point
+			cd "$SRC"
+			mkdir -p ./appdir
+			mkdir -p appdir/usr/share/metainfo
+			mkdir -p appdir/usr/share/icons/hicolor/256x256/apps
+			cp -r ./install-root/* ./appdir/usr
+			cp ${SRC_DIR}/appdata/subsurface.appdata.xml appdir/usr/share/metainfo/
+			cp ${SRC_DIR}/icons/subsurface-icon.png appdir/usr/share/icons/hicolor/256x256/apps/
+		fi
 	fi
 done
