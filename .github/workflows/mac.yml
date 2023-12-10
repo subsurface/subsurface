@@ -20,6 +20,7 @@ jobs:
         curl --output ssrf-Qt-5.15.2-mac.tar.xz https://f002.backblazeb2.com/file/Subsurface-Travis/ssrf-Qt5.15.2.tar.xz
         tar -xJf ssrf-Qt-5.15.2-mac.tar.xz
     - name: build Subsurface
+      id: build
       run: |
         cd ${GITHUB_WORKSPACE}/..
         export QT_ROOT=${GITHUB_WORKSPACE}/Qt5.15.2/5.15.2/clang_64
@@ -37,4 +38,21 @@ jobs:
         bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
         IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
         echo "Created $IMG"
+        echo "dmg=$IMG" >> $GITHUB_OUTPUT
 
+    - name: Get current date
+      id: date
+      run: echo "today=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
+
+    # only publish a 'release' on push events (those include merging a PR)
+    - name: upload binaries
+      if: github.event_name == 'push'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.date.outputs.today }}.${{ github.run_number }}
+        repository: subsurface/nightly-builds
+        token: ${{ secrets.NIGHTLY_BUILDS }}
+        prerelease: false
+        body: CICD release artifact
+        fail_on_unmatched_files: true
+        files: ${{ steps.build.outputs.dmg }}
