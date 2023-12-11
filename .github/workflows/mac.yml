@@ -42,7 +42,7 @@ jobs:
 
     - name: Get current date
       id: date
-      run: echo "today=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
+      run: echo "today=$(date '+%Y-%m-%d')" >> $GITHUB_OUTPUT
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries

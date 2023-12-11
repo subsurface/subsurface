@@ -51,14 +51,20 @@ jobs:
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         bash -x ./subsurface/packaging/android/qmake-build.sh
 
+    - name: Get current date
+      id: date
+      run: echo "today=$(date '+%Y-%m-%d')" >> $GITHUB_OUTPUT
+
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
       if: github.event_name == 'push'
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.tag.outputs.tag }}
-        prerelease: ${{ steps.tag.outputs.is_latest }}
+        tag_name: v${{ steps.date.outputs.today }}.${{ github.run_number }}
+        repository: subsurface/nightly-builds
+        token: ${{ secrets.NIGHTLY_BUILDS }}
+        prerelease: false
         body: CICD release artifact
-        fail_on_unmatched_files: false
+        fail_on_unmatched_files: true
         files: |
           Subsurface-mobile*.apk
