@@ -32,15 +32,6 @@ jobs:
         echo "tag=${tag}" >> $GITHUB_OUTPUT
         echo "is_latest=${is_latest}" >> $GITHUB_OUTPUT
 
-    - name: tag current version as latest if we don't have a tag
-      if: ${{ steps.tag.outputs.is_latest == 'true' }}
-      uses: rickstaa/action-create-tag@v1
-      with:
-        tag: "latest"
-        tag_exists_error: false
-        force_push_tag: true
-        message: "latest commit to allow 'release' uploads"
-
     - name: get other dependencies
       env:
          SUBSURFACE_REPO_PATH: ${{ github.workspace }}
