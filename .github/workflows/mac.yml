@@ -53,6 +53,19 @@ jobs:
         repository: subsurface/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
-        body: CICD release artifact
         fail_on_unmatched_files: true
         files: ${{ steps.build.outputs.dmg }}
+        body: |
+          CICD release artifact
+
+          These builds are created on every merge or push into the [Subsurface repo](http://github.com/subsurface/subsurface).
+          This build is based on http://github.com/subsurface/subsurface/commit/${{ github.sha }}
+
+          None of these artifacts are signed.
+          The Android APK can be side-loaded on most Android devices. If you had a previous Subsurface-mobile version installed from the Google Play store, you'll have to uninstall that first.
+          The Windows installer will ask you to confirm installation of an app from an unknown developer.
+          The macOS DMG makes it even harder with a multi-step dance that requires opening the Privacy & Security settings in the System Preferences and explicitly confirming that you are willing to install this app.
+
+          You can find similar Subsurface-Daily builds for [Ubuntu](https://ppa.launchpadcontent.net/subsurface) and Subsurface-test for [Fedora](https://copr.fedorainfracloud.org/coprs/dirkhh/Subsurface-test).
+
+          Please report any issues with these builds in the [Subsurface user forum](https://groups.google.com/g/subsurface-divelog).
