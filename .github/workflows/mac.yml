@@ -13,6 +13,20 @@ jobs:
     steps:
     - name: checkout sources
       uses: actions/checkout@v1
+    - name: atomically create or retrieve the build number
+      id: build_nr
+      run: |
+        cd .. # check out parallel to subsurface sources
+        url="https://subsurface:${{ secrets.NIGHTLY_BUILDS }}@github.com/subsurface/nightly-builds"
+        # the clone followed by the pointless push should verify that the password is stored in the config
+        # that way the script doesn't need the password
+        git clone -b main https://github.com/subsurface/nightly-builds
+        cd nightly-builds
+        git remote set-url origin "$url"
+        git push origin main
+        cd ..
+        bash -x subsurface/scripts/get-or-create-build-nr.sh ${{ github.sha }}
+
     - name: setup Homebrew
       run: brew install hidapi libxslt libjpg libmtp create-dmg confuse
     - name: set our Qt build
@@ -40,16 +54,20 @@ jobs:
         echo "Created $IMG"
         echo "dmg=$IMG" >> $GITHUB_OUTPUT
 
-    - name: Get current date
-      id: date
-      run: echo "today=$(date '+%Y-%m-%d')" >> $GITHUB_OUTPUT
+    - name: create version number
+      id: version_number
+      run: |
+        latest=$(cat ../nightly-builds/latest-subsurface-buildnumber)
+        today=$(date '+%Y-%m-%d')
+        version="$today.$latest"
+        echo "version=$version" >> $GITHUB_OUTPUT
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
       if: github.event_name == 'push'
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v${{ steps.date.outputs.today }}.${{ github.run_number }}
+        tag_name: v${{ steps.version_number.outputs.version }}
         repository: subsurface/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
