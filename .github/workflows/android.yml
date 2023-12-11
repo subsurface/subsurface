@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - master
+    - github-action-test
   pull_request:
     branches:
     - master
