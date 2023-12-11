@@ -32,6 +32,9 @@ Kirigami.ScrollablePage {
 			Layout.margins: Kirigami.Units.gridUnit
 			Layout.topMargin: Kirigami.Units.gridUnit * 3
 			text: qsTr("To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.<br/><br/>" +
+				"<font color=\"red\">If you are an existing user with dives stored in the cloud then " +
+				"synchronisation can take a few minutes. Please be patient and wait until your dives appear in " +
+				"the list.</font><br/><br/>" +
 				"If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) " +
 				"and a password of your choice (letters and numbers).<br/><br/>" +
 				"To use Subsurface-mobile only with local data on this device, select " +
