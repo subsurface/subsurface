@@ -9,68 +9,81 @@ on:
 
 jobs:
   buildMac:
-    runs-on: macOS-latest
+    runs-on: macOS-11
     steps:
     - name: checkout sources
       uses: actions/checkout@v1
+    - name: atomically create or retrieve the build number
+      id: build_nr
+      run: |
+        cd .. # check out parallel to subsurface sources
+        url="https://subsurface:${{ secrets.NIGHTLY_BUILDS }}@github.com/subsurface/nightly-builds"
+        # the clone followed by the pointless push should verify that the password is stored in the config
+        # that way the script doesn't need the password
+        git clone -b main https://github.com/subsurface/nightly-builds
+        cd nightly-builds
+        git remote set-url origin "$url"
+        git push origin main
+        cd ..
+        bash -x subsurface/scripts/get-or-create-build-nr.sh ${{ github.sha }}
+
     - name: setup Homebrew
-      run: brew install autoconf automake libtool xz hidapi libusb libxml2 libxslt libzip openssl pkg-config libgit2 libssh2 libjpg libpng libmtp
+      run: brew install hidapi libxslt libjpg libmtp create-dmg confuse
     - name: set our Qt build
       run: |
-        mkdir -p Qt/5.13.0
-        curl --output Qt-5.13.0-mac.tar.xz https://f002.backblazeb2.com/file/Subsurface-Travis/Qt-5.13.0-mac.tar.xz
-        tar -xJ -C Qt/5.13.0 -f Qt-5.13.0-mac.tar.xz
-    - name: build Subsurface-mobile
-      env:
-         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
-      run: |
-        cd ${GITHUB_WORKSPACE}/..
-        export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
-        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
-        export PATH=$QT_ROOT/bin:$PATH
-        export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
-        DIR=$(pwd)
-        git config --global user.email "ci@subsurface-divelog.org"
-        git config --global user.name "Subsurface CI"
-        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
-        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
-        # first build Subsurface-mobile to ensure this didn't get broken
-        bash -e -x ./subsurface/scripts/build.sh -mobile
-
-    - name: test mobile build
-      run: |
-        echo "------------------------------------"
-        echo "run tests for mobile build"
-        export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
-        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
-        cd ${GITHUB_WORKSPACE}/build-mobile/tests
-        # ./TestGitStorage -v2
-        make check
-
+        curl --output ssrf-Qt-5.15.2-mac.tar.xz https://f002.backblazeb2.com/file/Subsurface-Travis/ssrf-Qt5.15.2.tar.xz
+        tar -xJf ssrf-Qt-5.15.2-mac.tar.xz
     - name: build Subsurface
+      id: build
       run: |
         cd ${GITHUB_WORKSPACE}/..
-        export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
+        export QT_ROOT=${GITHUB_WORKSPACE}/Qt5.15.2/5.15.2/clang_64
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         export PATH=$QT_ROOT/bin:$PATH
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
         DIR=$(pwd)
 
-        # now Subsurface with WebKit
-        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release
+        # now setup Subsurface with WebKit and build the dependencies, using the generic build script
+        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release -build-deps -ftdi -prep-only
 
-        cd ${GITHUB_WORKSPACE}/build
+        echo "finished initial cmake setup of Subsurface - next build the package"
+        cd subsurface/build
+        echo "run the packaging script"
+        bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
+        IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
+        echo "Created $IMG"
+        echo "dmg=$IMG" >> $GITHUB_OUTPUT
 
-        # build export-html to make sure that didn't get broken
-        make export-html
-
-    - name: test desktop build
+    - name: create version number
+      id: version_number
       run: |
-        echo "------------------------------------"
-        echo "run tests for desktop build"
-        export QT_ROOT=${GITHUB_WORKSPACE}/Qt/5.13.0/clang_64
-        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
-        cd ${GITHUB_WORKSPACE}/build/tests
-        # ./TestGitStorage -v2
-        make check
+        latest=$(cat ../nightly-builds/latest-subsurface-buildnumber)
+        today=$(date '+%Y-%m-%d')
+        version="$today.$latest"
+        echo "version=$version" >> $GITHUB_OUTPUT
 
+    # only publish a 'release' on push events (those include merging a PR)
+    - name: upload binaries
+      if: github.event_name == 'push'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version_number.outputs.version }}
+        repository: subsurface/nightly-builds
+        token: ${{ secrets.NIGHTLY_BUILDS }}
+        prerelease: false
+        fail_on_unmatched_files: true
+        files: ${{ steps.build.outputs.dmg }}
+        body: |
+          CICD release artifact
+
+          These builds are created on every merge or push into the [Subsurface repo](http://github.com/subsurface/subsurface).
+          This build is based on http://github.com/subsurface/subsurface/commit/${{ github.sha }}
+
+          None of these artifacts are signed.
+          The Android APK can be side-loaded on most Android devices. If you had a previous Subsurface-mobile version installed from the Google Play store, you'll have to uninstall that first.
+          The Windows installer will ask you to confirm installation of an app from an unknown developer.
+          The macOS DMG makes it even harder with a multi-step dance that requires opening the Privacy & Security settings in the System Preferences and explicitly confirming that you are willing to install this app.
+
+          You can find similar Subsurface-Daily builds for [Ubuntu](https://ppa.launchpadcontent.net/subsurface) and Subsurface-test for [Fedora](https://copr.fedorainfracloud.org/coprs/dirkhh/Subsurface-test).
+
+          Please report any issues with these builds in the [Subsurface user forum](https://groups.google.com/g/subsurface-divelog).
