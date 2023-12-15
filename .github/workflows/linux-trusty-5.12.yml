@@ -35,7 +35,7 @@ jobs:
 
     - name: PR artifacts
       if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v3
       with:
         name: Linux-artifacts
         path: Linux-artifacts
