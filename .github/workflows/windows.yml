@@ -50,6 +50,7 @@ jobs:
 
     - name: create version number
       id: version_number
+      if: github.event_name == 'push'
       run: |
         latest=$(cat ../nightly-builds/latest-subsurface-buildnumber)
         today=$(date '+%Y-%m-%d')
