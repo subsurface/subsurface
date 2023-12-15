@@ -61,7 +61,7 @@ git clone https://github.com/Subsurface/googlemaps.git
 
 echo "Get mdbtools"
 cd ${TRAVIS_BUILD_DIR}/..
-git clone https://github.com/brianb/mdbtools.git
+git clone https://github.com/mdbtools/mdbtools.git
 
 # get prebuilt mxe libraries for mdbtools and glib.
 # do not overwrite upstream prebuilt mxe binaries if there is any coincidence.
