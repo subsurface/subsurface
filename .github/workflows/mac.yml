@@ -15,6 +15,7 @@ jobs:
       uses: actions/checkout@v1
     - name: atomically create or retrieve the build number
       id: build_nr
+      if: github.event_name == 'push'
       run: |
         cd .. # check out parallel to subsurface sources
         url="https://subsurface:${{ secrets.NIGHTLY_BUILDS }}@github.com/subsurface/nightly-builds"
