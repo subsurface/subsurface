@@ -15,7 +15,7 @@ CURRENT_LIBXML2="v2.9.4"
 CURRENT_LIBFTDI="abd19b721f7e9b4d514ed319ece173ebc7b1ea72"
 CURRENT_KIRIGAMI="v5.76.0"
 CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
-CURRENT_MDBTOOLS="master"
+CURRENT_MDBTOOLS="v1.0.0"
 CURRENT_QT_ANDROID_CMAKE="master"
 CURRENT_LIBMTP="master"
 
@@ -196,7 +196,7 @@ for package in "${PACKAGES[@]}" ; do
 			curl_download_library sqlite https://www.sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
 			;;
 		mdbtools)
-			git_checkout_library mdbtools $CURRENT_MDBTOOLS https://github.com/brianb/mdbtools.git
+			git_checkout_library mdbtools $CURRENT_MDBTOOLS https://github.com/mdbtools/mdbtools.git
 			;;
 		qt-android-cmake)
 			git_checkout_library qt-android-cmake $CURRENT_QT_ANDROID_CMAKE https://github.com/LaurentGomila/qt-android-cmake.git

@@ -108,15 +108,16 @@ else
 		cd "$BASEDIR"/mdbtools || aborting "Couldn't cd into $BASEDIR/mdbtools"
 		git pull --rebase || aborting "Problem downloading/updating mdbtools"
 	else
-		git clone https://github.com/brianb/mdbtools.git "$BASEDIR"/mdbtools || \
+		git clone https://github.com/mdbtools/mdbtools.git "$BASEDIR"/mdbtools || \
 			aborting "Problem downloading/updating mdbtools"
 	fi
 
 	echo "----> Building mdbtools ..."
 	echo "----> This will display a lot of errors and warnings"
 	cd "$BASEDIR"/mdbtools || aborting "Couldn't cd into $BASEDIR/mdbtools"
+	git checkout "v1.0.0"
 	autoreconf -i -f
-	./configure --prefix "$INSTALL_ROOT" --disable-man --disable-gmdb2 >/dev/null
+	./configure --prefix "$INSTALL_ROOT" --disable-man --without-bash-completion-dir >/dev/null
 	make "$JOBS">/dev/null || aborting "Building mdbtools failed"
 	make install
 fi
