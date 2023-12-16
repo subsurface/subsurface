@@ -52,12 +52,15 @@ static void smtk_free(char **array, int count)
 }
 
 /*
- * There are AFAIK two versions of Smarttrak. The newer one supports trimix and up
- * to 10 tanks. The other one just 3 tanks and no trimix but only nitrox. This is a
+ * There are AFAIK three versions of Smarttrak DB format. The newer one supports trimix and up
+ * to 10 tanks. The intermediate one just 3 tanks and no trimix but only nitrox. This is a
  * problem for an automated parser which has to support both formats.
  * In this solution I made an enum of fields with the same order they would have in
  * a smarttrak db, and a tiny function which returns the number of the column where
- * a field is expected to be, taking into account the different db formats .
+ * a field is expected to be, taking into account the different db formats.
+ * The older version (version 10000), just one tank (nitrox) but it's critically different from
+ * the newer version, not only in the Dives table format, but it has different tables. We won't
+ * give support for this oldest DB format.
  */
 enum field_pos {IDX = 0, DIVENUM, _DATE, INTIME, INTVAL, DURATION, OUTTIME, DESATBEFORE, DESATAFTER, NOFLYBEFORE,
 		NOFLYAFTER, NOSTOPDECO, MAXDEPTH, VISIBILITY, WEIGHT, O2FRAC, HEFRAC, PSTART, PEND, AIRTEMP,
@@ -980,8 +983,15 @@ void smartrak_import(const char *file, struct divelog *log)
 	smtk_build_list(mdb_clon, "Surface", surface_list);
 	smtk_build_buddies(mdb_clon, buddy_list);
 
-	/* Check Smarttrak version (different number of supported tanks, mixes and so) */
+	/* Check Smarttrak version (different number of supported tanks, mixes and so).
+	 * File format 10000 is quite different from other formats, just drop it and give
+	 * a tip to the user.
+	 */
 	smtk_version = atoi(smtk_ver[0]);
+	if (smtk_version == 10000) {
+		report_error("[Error]\t File %s is SmartTrak file format %d which is not supported. Please load the file in a newer SmartTrak software version and upgrade it.", file, smtk_version);
+		return;
+	}
 	tanks = (smtk_version < 10213) ? 3 : 10;
 
 	mdb_table = smtk_open_table(mdb, "Dives", bound_values, bound_lens);
