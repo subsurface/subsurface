@@ -55,7 +55,7 @@ jobs:
         apt-get install --reinstall cpp-7 gcc-7-base libgcc-7-dev libcc1-0 gcc-7
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
-        bash -x ./subsurface/packaging/android/qmake-build.sh
+        OUTPUT_DIR=$GITHUB_WORKSPACE bash -x ./subsurface/packaging/android/qmake-build.sh
 
     - name: create version number
       id: version_number

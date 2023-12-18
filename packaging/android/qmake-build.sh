@@ -404,4 +404,7 @@ fi
 
 # now build the Subsurface aab
 make apk
-mv $(find . -name Subsurface-mobile.apk) "$GITHUB_WORKSPACE"/Subsurface-mobile-"$CANONICALVERSION".apk
+
+if [ -n "${OUTPUT_DIR+X}" ] ; then
+	mv $(find . -name Subsurface-mobile.apk) "$OUTPUT_DIR"/Subsurface-mobile-"$CANONICALVERSION".apk
+fi
