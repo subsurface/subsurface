@@ -306,7 +306,11 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 	UNUSED(payload);
 	if (verbose)
 		SSRF_INFO("git storage: certificate callback for host %s with validity %d\n", host, valid);
-	if ((same_string(host, CLOUD_HOST_GENERIC) || same_string(host, CLOUD_HOST_US) || same_string(host, CLOUD_HOST_EU)) &&
+	if ((same_string(host, CLOUD_HOST_GENERIC) ||
+	     same_string(host, CLOUD_HOST_US) ||
+	     same_string(host, CLOUD_HOST_U2) ||
+	     same_string(host, CLOUD_HOST_EU) ||
+	     same_string(host, CLOUD_HOST_E2)) &&
 			cert->cert_type == GIT_CERT_X509) {
 		// for some reason the LetsEncrypt certificate makes libgit2 throw up on some
 		// platforms but not on others
