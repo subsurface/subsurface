@@ -103,7 +103,9 @@ bool CheckCloudConnection::nextServer()
 	};
 	static struct serverTried cloudServers[] = {
 		{ CLOUD_HOST_EU, false },
-		{ CLOUD_HOST_US, false }
+		{ CLOUD_HOST_US, false },
+		{ CLOUD_HOST_E2, false },
+		{ CLOUD_HOST_U2, false }
 	};
 	const char *server = nullptr;
 	for (serverTried &item: cloudServers) {
