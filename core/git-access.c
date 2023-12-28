@@ -887,6 +887,8 @@ static bool create_local_repo(struct git_info *info)
 		if (giterr_last()) {
 			 msg = giterr_last()->message;
 			 SSRF_INFO("git storage: error message was %s\n", msg);
+		} else {
+			 SSRF_INFO("git storage: giterr_last() is null\n");
 		}
 		char *pattern = format_string("reference 'refs/remotes/origin/%s' not found", info->branch);
 		// it seems that we sometimes get 'Reference' and sometimes 'reference'
