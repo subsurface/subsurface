@@ -85,7 +85,7 @@ DivePlannerWidget::DivePlannerWidget(dive &planned_dive, PlannerWidgets *parent)
 	// the depth will be done in settingChanged() since this depends on the chosen units.
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::RUNTIME, new SpinBoxDelegate(0, INT_MAX, 1, this));
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DURATION, new SpinBoxDelegate(0, 6000, 1, this));
-	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::CCSETPOINT, new DoubleSpinBoxDelegate(0, 2, 0.1, this));
+	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::CCSETPOINT, new DoubleSpinBoxDelegate(0, 2, 0.01, this));
 
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DivePlannerWidget::settingsChanged);
 

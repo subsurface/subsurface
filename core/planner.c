@@ -1130,25 +1130,36 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 }
 
 /*
- * Get a value in tenths (so "10.2" == 102, "9" = 90)
+ * Get a value with a given number of decimals:
+ * - get_decimals("10.2", &"10.2", 1) == 102
+ * - get_decimals("9", &"9", 1) = 90
+ * - get_decimals("1.35", &"1.35", 2) == 135))
  *
  * Return negative for errors.
  */
-static int get_tenths(const char *begin, const char **endp)
+static int get_decimals(const char *begin, const char **endp, const unsigned decimals)
 {
 	char *end;
 	int value = strtol(begin, &end, 10);
 
 	if (begin == end)
 		return -1;
-	value *= 10;
 
 	/* Fraction? We only look at the first digit */
 	if (*end == '.') {
-		end++;
-		if (!isdigit(*end))
-			return -1;
-		value += *end - '0';
+		unsigned fraction = 0;
+		for (unsigned i = 0; i < decimals; i++) {
+			value *= 10;
+
+			end++;
+
+			if (!isdigit(*end))
+				return -1;
+
+			fraction = 10 * fraction + (*end - '0');
+		}
+		value += fraction;
+
 		do {
 			end++;
 		} while (isdigit(*end));
@@ -1159,7 +1170,7 @@ static int get_tenths(const char *begin, const char **endp)
 
 static int get_permille(const char *begin, const char **end)
 {
-	int value = get_tenths(begin, end);
+	int value = get_decimals(begin, end, 1);
 	if (value >= 0) {
 		/* Allow a percentage sign */
 		if (**end == '%')
@@ -1222,18 +1233,15 @@ int validate_po2(const char *text, int *mbar_po2)
 	if (!text)
 		return 0;
 
-	po2 = get_tenths(text, &text);
+	po2 = get_decimals(text, &text, 2);
 	if (po2 < 0)
 		return 0;
-
-	while (isspace(*text))
-		text++;
 
 	while (isspace(*text))
 		text++;
 	if (*text)
 		return 0;
 
-	*mbar_po2 = po2 * 100;
+	*mbar_po2 = po2 * 10;
 	return 1;
 }
