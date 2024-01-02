@@ -419,11 +419,11 @@ ios {
 	Q_ENABLE_BITCODE.value = NO
 	QMAKE_MAC_XCODE_SETTINGS += Q_ENABLE_BITCODE
 
-	LIBS += ../install-root/ios/lib/libdivecomputer.a \
-		../install-root/ios/lib/libgit2.a \
-		../install-root/ios/lib/libzip.a \
-		../install-root/ios/lib/libxslt.a \
-		../install-root/ios/lib/qml/org/kde/kirigami.2/libkirigamiplugin.a \
+	LIBS += ../install-root/ios/$${QT_ARCH}/lib/libdivecomputer.a \
+		../install-root/ios/$${QT_ARCH}/lib/libgit2.a \
+		../install-root/ios/$${QT_ARCH}/lib/libzip.a \
+		../install-root/ios/$${QT_ARCH}/lib/libxslt.a \
+		../install-root/ios/$${QT_ARCH}/lib/qml/org/kde/kirigami.2/libkirigamiplugin.a \
 		../googlemaps-build/libqtgeoservices_googlemaps.a \
 		-liconv \
 		-lsqlite3 \
@@ -431,14 +431,14 @@ ios {
 
 	LIBS += -framework MessageUI
 
-	INCLUDEPATH += ../install-root/ios/include/ \
-		../install-root/lib/libzip/include \
-		../install-root/ios/include/libxstl \
-		../install-root/ios/include/libexstl \
-		../install-root/ios/include/openssl \
+	INCLUDEPATH += ../install-root/ios/$${QT_ARCH}/include/ \
+		../install-root/ios/$${QT_ARCH}/include \
+		../install-root/ios/$${QT_ARCH}/include/libxstl \
+		../install-root/ios/$${QT_ARCH}/include/libexstl \
+		../install-root/ios/$${QT_ARCH}/include/openssl \
 		. \
 		./core \
 		./mobile-widgets/3rdparty/kirigami/src/libkirigami \
-		/usr/include/libxml2
+		../install-root/ios/$${QT_ARCH}/include/libxml2
 
 }
