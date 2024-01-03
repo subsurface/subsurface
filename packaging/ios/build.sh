@@ -346,9 +346,11 @@ for BUILD_NOW in $BUILD_LOOP; do
 	rm -f ssrf-version.h
 	ln -s "$SUBSURFACE_SOURCE"/ssrf-version.h .
 	# shellcheck disable=SC2086
-	"$QMAKE" $QMAKEARG "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro \
+	"$QMAKE" $QMAKEARG ARCH=$ARCH "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro \
 		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
 
-	make -j
+	# it appears that a first make fails with a missing generated file, which a second
+	# invocation of make will happily build
+	make || make
 	popd
 done
