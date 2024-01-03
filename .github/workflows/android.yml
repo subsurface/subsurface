@@ -55,6 +55,8 @@ jobs:
         apt-get install --reinstall cpp-7 gcc-7-base libgcc-7-dev libcc1-0 gcc-7
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
+        # get the build number via curl so this works both for a pull request as well as a push
+        curl -q https://raw.githubusercontent.com/subsurface/nightly-builds/main/latest-subsurface-buildnumber > buildnr.dat
         OUTPUT_DIR=$GITHUB_WORKSPACE bash -x ./subsurface/packaging/android/qmake-build.sh
 
     - name: create version number
