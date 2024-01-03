@@ -79,10 +79,8 @@ fi
 # set up the Subsurface versions by hand
 GITVERSION=$(cd "$SUBSURFACE_SOURCE" ; git describe --match "v[0-9]*" --abbrev=12)
 CANONICALVERSION=$(echo "$GITVERSION" | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
-MOBILEVERSION=$(grep MOBILE "$SUBSURFACE_SOURCE"/cmake/Modules/version.cmake | cut -d\" -f 2)
 echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > "$SUBSURFACE_SOURCE"/ssrf-version.h
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
-echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
 
 BUNDLE=org.subsurface-divelog.subsurface-mobile
 if [ "${IOS_BUNDLE_PRODUCT_IDENTIFIER}" != "" ] ; then
@@ -92,7 +90,7 @@ fi
 pushd "$SUBSURFACE_SOURCE"/packaging/ios
 # create Info.plist with the correct versions
 # shellcheck disable=SC2002
-cat Info.plist.in | sed "s/@MOBILE_VERSION@/$MOBILEVERSION/;s/@CANONICAL_VERSION@/$CANONICALVERSION/;s/@PRODUCT_BUNDLE_IDENTIFIER@/$BUNDLE/" > Info.plist
+cat Info.plist.in | sed "s/@CANONICAL_VERSION@/$CANONICALVERSION/;s/@PRODUCT_BUNDLE_IDENTIFIER@/$BUNDLE/" > Info.plist
 
 popd
 if [ "$versionOnly" = "1" ] ; then

@@ -86,11 +86,8 @@ pushd "$BUILDROOT"/subsurface-mobile-build
 # set up the Subsurface versions by hand
 GITVERSION=$(cd "$SUBSURFACE_SOURCE" ; git describe --match "v[0-9]*" --abbrev=12)
 CANONICALVERSION=$(echo "$GITVERSION" | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
-MOBILEVERSION=$(grep MOBILE "$SUBSURFACE_SOURCE"/cmake/Modules/version.cmake | cut -d\" -f 2)
 echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > ssrf-version.h
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> ssrf-version.h
-echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> ssrf-version.h
-SUBSURFACE_MOBILE_VERSION="$MOBILEVERSION ($CANONICALVERSION)"
 popd
 
 if [ "$versionOnly" = "1" ] ; then
@@ -387,7 +384,7 @@ popd
 
 # call qmake to set up the build
 echo "Run qmake to setup the Subsurface-mobile build for all architectures"
-$QMAKE BUILD_NR="$BUILDNR" BUILD_VERSION_NAME="$SUBSURFACE_MOBILE_VERSION" ANDROID_ABIS="$BUILD_ABIS" "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro
+$QMAKE BUILD_NR="$BUILDNR" BUILD_VERSION_NAME="$CANONICALVERSION" ANDROID_ABIS="$BUILD_ABIS" "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro
 
 # if this isn't just a quick rebuild compile the translations
 if [ "$QUICK" = "" ] ; then
