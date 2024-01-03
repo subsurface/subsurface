@@ -59,9 +59,9 @@ jobs:
       id: version_number
       if: github.event_name == 'push'
       run: |
+        gitversion=$(bash scripts/get-version win)
         latest=$(cat ../nightly-builds/latest-subsurface-buildnumber)
-        today=$(date '+%Y-%m-%d')
-        version="$today.$latest"
+        version="$gitversion-$latest"
         echo "version=$version" >> $GITHUB_OUTPUT
 
     # only publish a 'release' on push events (those include merging a PR)
