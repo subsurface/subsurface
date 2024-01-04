@@ -402,6 +402,29 @@ fi
 # now build the Subsurface aab
 make apk
 
-if [ -n "${OUTPUT_DIR+X}" ] ; then
-	mv $(find . -name Subsurface-mobile.apk) "$OUTPUT_DIR"/Subsurface-mobile-"$CANONICALVERSION".apk
+popd
+
+APK=$(find . -name Subsurface-mobile.apk)
+APK_DIR=$(dirname ${APK})
+APK_FILE=$(basename ${APK})
+
+pushd ${APK_DIR}
+if [ -n "${KEYSTORE_STRING+X}" ] ; then
+	# Generate the string to be supplied to the script with 'openssl base64 < subsurface.keystore | tr -d '\n''
+	set +x
+	echo ${KEYSTORE_STRING} | base64 -di > /tmp/subsurface.keystore
+	set -x
+
+	zip -d ${APK_FILE} 'META-INF/*.SF' 'META-INF/*.RSA'
+	${BUILDROOT}/build-tools/29.0.3/zipalign -p 4 ${APK_FILE} $(basename ${APK_FILE} .apk)-aligned.apk
+	${BUILDROOT}/build-tools/29.0.3/apksigner sign -ks /tmp/subsurface.keystore -ks-pass pass:nopass -in $(basename ${APK_FILE} .apk)-aligned.apk -out Subsurface-mobile-"${CANONICALVERSION}".apk
+
+	rm /tmp/subsurface.keystore
+else
+	mv ${APK_FILE} Subsurface-mobile-"${CANONICALVERSION}".apk
 fi
+
+if [ -n "${OUTPUT_DIR+X}" ] ; then
+	mv Subsurface-mobile-"${CANONICALVERSION}".apk "${OUTPUT_DIR}"/
+fi
+popd

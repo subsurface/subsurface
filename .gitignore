@@ -37,6 +37,10 @@ Subsurface.app
 build*
 nightly-builds/
 mobile-widgets/qml/kirigami
+mobile-widgets/3rdparty/ECM/
+mobile-widgets/3rdparty/breeze-icons/
+mobile-widgets/3rdparty/extra-cmake-modules/
+mobile-widgets/3rdparty/kirigami/
 packaging/ios/install-root
 packaging/ios/Info.plist
 packaging/ios/Qt
@@ -44,4 +48,4 @@ packaging/ios/asset_catalog_compiler.Info.plist
 appdata/subsurface.appdata.xml
 scripts/docker/android-build-container/android-build-setup.sh
 scripts/docker/android-build-container/variables.sh
-
+android-mobile/Roboto-Regular.ttf
