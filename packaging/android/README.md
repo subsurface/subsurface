@@ -19,29 +19,24 @@ CONTAINER_ID=$(docker container ls -a -q -f name=${CONTAINER_NAME})
 
 # Create the image if it does not exist
 if [[ -z "${CONTAINER_ID}" ]]; then
-        docker create -v ${SUBSURFACE_ROOT}:/android/subsurface -w /android --name=${CONTAINER_NAME} subsurface/android-build-container:5.15.1 sleep infinity
+    docker create -v ${SUBSURFACE_ROOT}:/android/subsurface --name=${CONTAINER_NAME} subsurface/android-build:5.15.1 sleep infinity
 fi
 
 docker start ${CONTAINER_NAME}
 
 BUILD_PARAMETERS=""
 if [[ -n "${CONTAINER_ID}" ]]; then
-        BUILD_PARAMETERS="-quick"
+    BUILD_PARAMETERS="-quick"
 else
-        # Prepare the image for first use
-        docker exec -t ${CONTAINER_NAME} rm /android/5.15.1/android/lib/cmake/Qt5Test/Qt5TestConfig.cmake
-        docker exec -t ${CONTAINER_NAME} apt-get install --reinstall cpp-7 gcc-7-base libgcc-7-dev libcc1-0 gcc-7
+    # Prepare the image for first use
 
-        # Set the git id
-        docker exec -t ${CONTAINER_NAME} git config --global user.name "${GIT_NAME}"
-        docker exec -t ${CONTAINER_NAME} git config --global user.email "${GIT_EMAIL}"
+    # Set the git id
+    docker exec -t ${CONTAINER_NAME} git config --global user.name "${GIT_NAME}"
+    docker exec -t ${CONTAINER_NAME} git config --global user.email "${GIT_EMAIL}"
 fi
 
 # Build. Do not rebuild the dependencies if this is not the first build
-docker exec -t ${CONTAINER_NAME} /bin/bash -x ./subsurface/packaging/android/qmake-build.sh ${BUILD_PARAMETERS}
-
-# Copy the output files into the 'android-debug' directory in the source directory
-docker cp ${CONTAINER_NAME}:/android/subsurface-mobile-build/android-build/build/outputs/apk/debug/. ${SUBSURFACE_ROOT}/android-debug/
+docker exec -e OUTPUT_DIR="/android/subsurface/android-debug" -t ${CONTAINER_NAME} /bin/bash -x ./subsurface/packaging/android/qmake-build.sh ${BUILD_PARAMETERS}
 
 # Stop the container
 docker stop ${CONTAINER_NAME}
