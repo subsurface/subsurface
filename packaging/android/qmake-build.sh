@@ -21,15 +21,6 @@ popd
 # is this a release or debug build
 BUILD_TYPE=Debug
 
-# and now we need a monotonic build number...
-if [ ! -f ./buildnr.dat ] ; then
-	BUILDNR=0
-else
-	BUILDNR=$(cat ./buildnr.dat)
-fi
-BUILDNR=$((BUILDNR+1))
-echo "${BUILDNR}" > ./buildnr.dat
-
 # Read build variables
 source $SUBSURFACE_SOURCE/packaging/android/variables.sh
 
@@ -79,6 +70,17 @@ while [ "$#" -gt 0 ] ; do
 			;;
 	esac
 done
+
+if [ -z "${BUILDNR+X}" ] ; then
+	# we need a monotonic build number...
+	if [ ! -f ./buildnr.dat ] ; then
+		BUILDNR=0
+	else
+		BUILDNR=$(cat ./buildnr.dat)
+	fi
+	BUILDNR=$((BUILDNR+1))
+fi
+echo "${BUILDNR}" > ./buildnr.dat
 
 mkdir -p "$BUILDROOT"/subsurface-mobile-build
 pushd "$BUILDROOT"/subsurface-mobile-build
@@ -409,17 +411,15 @@ APK_DIR=$(dirname ${APK})
 APK_FILE=$(basename ${APK})
 
 pushd ${APK_DIR}
-if [ -n "${KEYSTORE_STRING+X}" ] ; then
-	# Generate the string to be supplied to the script with 'openssl base64 < subsurface.keystore | tr -d '\n''
-	set +x
-	echo ${KEYSTORE_STRING} | base64 -di > /tmp/subsurface.keystore
-	set -x
+if [ -n "${KEYSTORE_FILE+X}" -a -n "${KEYSTORE_PASSWORD+X}" ]; then
+	APKSIGNER_PARAMS=""
+	if [ -n "${KEYSTORE_ALIAS+X}" ]; then
+		APKSIGNER_PARAMS="${APKSIGNER_PARAMS} --ks-key-alias ${KEYSTORE_ALIAS}"
+	fi
 
 	zip -d ${APK_FILE} 'META-INF/*.SF' 'META-INF/*.RSA'
 	${BUILDROOT}/build-tools/29.0.3/zipalign -p 4 ${APK_FILE} $(basename ${APK_FILE} .apk)-aligned.apk
-	${BUILDROOT}/build-tools/29.0.3/apksigner sign -ks /tmp/subsurface.keystore -ks-pass pass:nopass -in $(basename ${APK_FILE} .apk)-aligned.apk -out Subsurface-mobile-"${CANONICALVERSION}".apk
-
-	rm /tmp/subsurface.keystore
+	${BUILDROOT}/build-tools/29.0.3/apksigner sign -ks ${KEYSTORE_FILE} -ks-pass ${KEYSTORE_PASSWORD} ${APKSIGNER_PARAMS} -in $(basename ${APK_FILE} .apk)-aligned.apk -out Subsurface-mobile-"${CANONICALVERSION}".apk
 else
 	mv ${APK_FILE} Subsurface-mobile-"${CANONICALVERSION}".apk
 fi

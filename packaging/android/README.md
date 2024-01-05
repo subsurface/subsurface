@@ -19,7 +19,7 @@ CONTAINER_ID=$(docker container ls -a -q -f name=${CONTAINER_NAME})
 
 # Create the image if it does not exist
 if [[ -z "${CONTAINER_ID}" ]]; then
-    docker create -v ${SUBSURFACE_ROOT}:/android/subsurface --name=${CONTAINER_NAME} subsurface/android-build:5.15.1 sleep infinity
+    docker create -v ${SUBSURFACE_ROOT}:/android/subsurface --name=${CONTAINER_NAME} subsurface/android-build:5.15.2 sleep infinity
 fi
 
 docker start ${CONTAINER_NAME}
