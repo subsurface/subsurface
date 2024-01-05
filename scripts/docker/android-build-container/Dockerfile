@@ -1,43 +1,33 @@
-From ubuntu:18.04
+FROM subsurface/android-build-container:5.15.1 as base
+
+FROM ubuntu:22.04 as build
 
 RUN apt-get update  && \
     apt-get upgrade -y && \
     apt-get install -y \
-    autoconf \
-    automake \
-    cmake \
-    git \
-    libtool-bin \
-    make \
-    wget \
     unzip \
-    python \
-    python3-pip \
-    bzip2 \
-    pkg-config \
-    libx11-xcb1 \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
+    git \
+    cmake \
+    autoconf \
+    libtool-bin \
     openjdk-8-jdk \
-    curl \
-    coreutils \
-    p7zip-full
+    wget
 
-# create our working directory and place the local copies of the Qt
+WORKDIR /android
+
+COPY --from=base /android/5.15.1 5.15.1
+
 # install, NDK and SDK there, plus the three files from the Subsurface
 # sources that we need to get the prep routines to run
-RUN mkdir -p /android
-ADD commandlinetools-linux-*.zip /android/
-RUN cd /android && unzip commandlinetools-linux-*.zip
-ADD android-build-setup.sh variables.sh /android/
+RUN wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip && \
+    unzip commandlinetools-linux-*.zip
+ADD android-build-setup.sh variables.sh .
 
 # run the build setup
-RUN ls -l /android
-RUN cd /android && bash -x /android/android-build-setup.sh
+RUN bash -x android-build-setup.sh
 
 # clean up the files that we don't need to keep the container smaller
-RUN cd /android && \
-    rm -rf \
+RUN rm -rf \
 	   5*/android/lib/*x86* \
 	   5*/android/doc \
 	   5*/android/include/QtHelp \
@@ -48,6 +38,7 @@ RUN cd /android && \
 	   5*/android/include/QtTest \
 	   5*/android/include/QtXml \
 	   5*/android/plugins/geoservices/libqtgeoservices_mapboxgl.so \
+	   5*/android/lib/cmake/Qt5Test/Qt5TestConfig.cmake \
 	   commandlinetools-linux-*.zip \
 	   $( find platforms -name arch-mips -o -name arch-x86 ) \
 	   toolchains/x86-* android-ndk*/toolchains/llvm/prebuilt/x86-* \
@@ -69,10 +60,50 @@ RUN cd /android && \
 	   emulator \
 	   platform-tools-2 \
 	   variables.sh \
-	   android-build-setup.sh
-	   /usr/lib/gcc && \
-    ls -l && \
-    du -sh *
-RUN apt-get clean
-#RUN cd /android/android-ndk-r18b/toolchains && ln -s x86_64-4.9 x86-64-4.9
-RUN touch /android/finished-"`date`"
+	   android-build-setup.sh \
+	   /usr/lib/gcc
+
+FROM ubuntu:22.04
+
+# Repeat exactly the same step as in the 'build' image above, so it can be reused
+RUN apt-get update  && \
+    apt-get upgrade -y && \
+    apt-get install -y \
+    unzip \
+    git \
+    cmake \
+    autoconf \
+    libtool-bin \
+    openjdk-8-jdk \
+    wget
+
+RUN apt-get install -y \
+    autoconf \
+    automake \
+    cmake \
+    git \
+    make \
+    wget \
+    zip \
+    unzip \
+    python3 \
+    python3-pip \
+    bzip2 \
+    pkg-config \
+    libx11-xcb1 \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    openjdk-8-jdk \
+    curl \
+    coreutils \
+    p7zip-full && \
+    apt-get clean
+
+WORKDIR /android
+
+COPY --from=build /android/ .
+
+RUN git config --global --add safe.directory /android/subsurface && \
+    git config --global --add safe.directory /android/subsurface/libdivecomputer
+
+RUN touch finished-"`date`"
