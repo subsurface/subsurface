@@ -18,7 +18,7 @@ cd nightly-builds
 latest=$(<latest-subsurface-buildnumber)
 
 # now let's see if a branch for the current SHA exists
-if git checkout $SHA_BRANCH
+if git checkout "$SHA_BRANCH"
 then
   # one of the other workflows created a release number already
   latest=$(<latest-subsurface-buildnumber)
@@ -27,13 +27,13 @@ else
   # the main branch should have held the previous release number
   # increment by one and write as new build number into the named branch
   latest=$((latest+1))
-  git checkout -b $SHA_BRANCH
+  git checkout -b "$SHA_BRANCH"
   echo $latest > latest-subsurface-buildnumber
   git commit -a -m "record build number for this SHA"
 
   # now comes the moment of truth - are we the first one?
   # the push will succeed for exactly one of the workflows
-  if git push https://github.com/subsurface/nightly-builds $SHA_BRANCH
+  if git push https://github.com/subsurface/nightly-builds "$SHA_BRANCH"
   then
     # yay - we win! now let's make sure that we remember this number for next time
     git checkout main
@@ -42,16 +42,16 @@ else
     if ! git push https://github.com/subsurface/nightly-builds main
     then
       echo "push to main failed - we'll lose monotonic property"
-      exit -1
+      exit 1
     fi
   else
     # someone else was faster - get the number they wrote
-    git checkout main
-    git branch -D $SHA_BRANCH
-    if ! git checkout -b $SHA_BRANCH
+    git checkout main &> /dev/null
+    git branch -D "$SHA_BRANCH" &> /dev/null
+    if ! git checkout -b "$SHA_BRANCH" &> /dev/null
     then
       echo "push to $SHA_BRANCH failed, but switching to it failed as well"
-      exit -2
+      exit 2
     fi
     latest=$(<latest-subsurface-buildnumber)
   fi
