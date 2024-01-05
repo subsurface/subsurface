@@ -33,6 +33,11 @@ jobs:
         bluez-libs-devel libgit2-devel libzip-devel libmtp-devel \
         xorg-x11-server-Xvfb
 
+    - name: store dummy version and build number for test build
+      run: |
+        echo "100" > latest-subsurface-buildnumber
+        echo "CICD-test-build" > latest-subsurface-buildnumber-extension
+
     - name: build Subsurface
       env:
          SUBSURFACE_REPO_PATH: ${{ github.workspace }}

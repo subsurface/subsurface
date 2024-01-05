@@ -17,6 +17,31 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v1
 
+    - name: atomically create or retrieve the build number
+      id: version_number
+      if: github.event_name == 'push'
+      run: |
+        cd .. # check out parallel to subsurface sources
+        url="https://subsurface:${{ secrets.NIGHTLY_BUILDS }}@github.com/subsurface/nightly-builds"
+        # the clone followed by the pointless push should verify that the password is stored in the config
+        # that way the script doesn't need the password
+        git clone -b main https://github.com/subsurface/nightly-builds
+        cd nightly-builds
+        git remote set-url origin "$url"
+        git push origin main
+        cd ..
+        bash -x subsurface/scripts/get-or-create-build-nr.sh ${{ github.sha }}
+        cp nightly-builds/latest-subsurface-buildnumber subsurface
+        echo "CICD-release" > subsurface/latest-subsurface-buildnumber-extension
+        version=$(bash subsurface/scripts/get-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
+
+    - name: store dummy version and build number for pull request
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "100" > latest-subsurface-buildnumber
+        echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
+
     - name: run build
       env:
          SUBSURFACE_REPO_PATH: ${{ github.workspace }}
@@ -39,3 +64,35 @@ jobs:
       with:
         name: Linux-artifacts
         path: Linux-artifacts
+
+    - name: prepare release artifacts
+      if: github.event_name == 'push'
+      run: |
+        mv Subsurface.AppImage Subsurface-v${{ steps.version_number.outputs.version }}.AppImage
+
+    # only publish a 'release' on push events (those include merging a PR)
+    - name: upload binaries
+      if: github.event_name == 'push'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version_number.outputs.version }}
+        repository: subsurface/nightly-builds
+        token: ${{ secrets.NIGHTLY_BUILDS }}
+        prerelease: false
+        fail_on_unmatched_files: true
+        files: |
+         ./Subsurface*.AppImage
+        body: |
+          CICD release artifact
+
+          These builds are created on every merge or push into the [Subsurface repo](http://github.com/subsurface/subsurface).
+          This build is based on http://github.com/subsurface/subsurface/commit/${{ github.sha }}
+
+          None of these artifacts are signed.
+          The Android APK can be side-loaded on most Android devices. If you had a previous Subsurface-mobile version installed from the Google Play store, you'll have to uninstall that first.
+          The Windows installer will ask you to confirm installation of an app from an unknown developer.
+          The macOS DMG makes it even harder with a multi-step dance that requires opening the Privacy & Security settings in the System Preferences and explicitly confirming that you are willing to install this app.
+
+          You can find similar Subsurface-Daily builds for [Ubuntu](https://ppa.launchpadcontent.net/subsurface) and Subsurface-test for [Fedora](https://copr.fedorainfracloud.org/coprs/dirkhh/Subsurface-test).
+
+          Please report any issues with these builds in the [Subsurface user forum](https://groups.google.com/g/subsurface-divelog).

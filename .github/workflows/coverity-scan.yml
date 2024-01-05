@@ -44,5 +44,5 @@ jobs:
         email: glance@acc.umu.se
         command: subsurface/scripts/build.sh -desktop -build-with-webkit
         working-directory: ${{ github.workspace }}/..
-        version: $(/scripts/get-version linux)
+        version: $(/scripts/get-version)
         description: Automatic scan on github actions

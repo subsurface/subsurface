@@ -84,10 +84,10 @@ mkdir -p "$BUILDROOT"/subsurface-mobile-build
 pushd "$BUILDROOT"/subsurface-mobile-build
 
 # set up the Subsurface versions by hand
-GITVERSION=$(cd "$SUBSURFACE_SOURCE" ; git describe --match "v[0-9]*" --abbrev=12)
-CANONICALVERSION=$(echo "$GITVERSION" | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
-echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > ssrf-version.h
+CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version)
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> ssrf-version.h
+CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version 4)
+echo "#define CANONICAL_VERSION_STRING_4 \"$CANONICALVERSION_4\"" >> ssrf-version.h
 popd
 
 if [ "$versionOnly" = "1" ] ; then

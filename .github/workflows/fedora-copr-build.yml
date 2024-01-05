@@ -15,6 +15,25 @@ jobs:
     - name: Check out sources
       uses: actions/checkout@v1
 
+    - name: atomically create or retrieve the build number
+      id: version_number
+      if: github.event_name == 'push'
+      run: |
+        cd .. # check out parallel to subsurface sources
+        url="https://subsurface:${{ secrets.NIGHTLY_BUILDS }}@github.com/subsurface/nightly-builds"
+        # the clone followed by the pointless push should verify that the password is stored in the config
+        # that way the script doesn't need the password
+        git clone -b main https://github.com/subsurface/nightly-builds
+        cd nightly-builds
+        git remote set-url origin "$url"
+        git push origin main
+        cd ..
+        bash -x subsurface/scripts/get-or-create-build-nr.sh ${{ github.sha }}
+        cp nightly-builds/latest-subsurface-buildnumber subsurface
+        echo "CICD-release" > subsurface/latest-subsurface-buildnumber-extension
+        version=$(bash subsurface/scripts/get-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
+
     - name: Setup API token for copr-cli
       env:
         API_TOKEN: ${{ secrets.COPR_TOKEN }}
@@ -43,4 +62,4 @@ jobs:
       run: |
         cd ..
         bash -x subsurface/packaging/copr/make-package.sh post
-          
+

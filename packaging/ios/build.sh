@@ -77,10 +77,10 @@ if [[ $QT_VERSION = 5.15* ]] ; then
 fi
 
 # set up the Subsurface versions by hand
-GITVERSION=$(cd "$SUBSURFACE_SOURCE" ; git describe --match "v[0-9]*" --abbrev=12)
-CANONICALVERSION=$(echo "$GITVERSION" | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
-echo "#define GIT_VERSION_STRING \"$GITVERSION\"" > "$SUBSURFACE_SOURCE"/ssrf-version.h
+CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version)
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
+CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version 4)
+echo "#define CANONICAL_VERSION_STRING_4 \"$CANONICALVERSION_4\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
 
 BUNDLE=org.subsurface-divelog.subsurface-mobile
 if [ "${IOS_BUNDLE_PRODUCT_IDENTIFIER}" != "" ] ; then
@@ -264,7 +264,7 @@ if [ "$QUICK" != "1" ] ; then
 	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] ; then
 		echo "$CURRENT_SHA" > "${PARENT_DIR}/libdivecomputer-build-${ARCH}/git.SHA"
 		pushd "${PARENT_DIR}/libdivecomputer-build-${ARCH}"
-		"${SUBSURFACE_SOURCE}/libdivecomputer/configure" --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi 
+		"${SUBSURFACE_SOURCE}/libdivecomputer/configure" --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi
 		make -j
 		make install
 		popd

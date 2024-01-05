@@ -320,7 +320,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	execute_process(
-		COMMAND sh scripts/get-version linux
+		COMMAND bash scripts/get-version
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		OUTPUT_VARIABLE SSRF_VERSION_STRING
 		OUTPUT_STRIP_TRAILING_WHITESPACE

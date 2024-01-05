@@ -20,6 +20,31 @@ jobs:
         # Needed for version determination to work
         fetch-depth: 0
 
+    - name: atomically create or retrieve the build number
+      id: version_number
+      if: github.event_name == 'push'
+      run: |
+        cd .. # check out parallel to subsurface sources
+        url="https://subsurface:${{ secrets.NIGHTLY_BUILDS }}@github.com/subsurface/nightly-builds"
+        # the clone followed by the pointless push should verify that the password is stored in the config
+        # that way the script doesn't need the password
+        git clone -b main https://github.com/subsurface/nightly-builds
+        cd nightly-builds
+        git remote set-url origin "$url"
+        git push origin main
+        cd ..
+        bash -x subsurface/scripts/get-or-create-build-nr.sh ${{ github.sha }}
+        cp nightly-builds/latest-subsurface-buildnumber subsurface
+        echo "CICD-release" > subsurface/latest-subsurface-buildnumber-extension
+        version=$(bash subsurface/scripts/get-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
+
+    - name: store dummy version and build number for pull request
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "100" > latest-subsurface-buildnumber
+        echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
+
     - name: Set up LXD
       uses: canonical/setup-lxd@main
 
@@ -56,6 +81,7 @@ jobs:
       run: ccache --show-stats --zero-stats
 
     - name: Upload the snap
+      if: github.event_name == 'push'
       uses: actions/upload-artifact@v2
       with:
         name: ${{ steps.build-snap.outputs.snap-name }}
