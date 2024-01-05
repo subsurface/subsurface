@@ -35,6 +35,11 @@ jobs:
         qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
         qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev
 
+    - name: store dummy version and build number for test build
+      run: |
+        echo "100" > latest-subsurface-buildnumber
+        echo "CICD-test-build" > latest-subsurface-buildnumber-extension
+
     - name: build Subsurface-mobile
       env:
          SUBSURFACE_REPO_PATH: ${{ github.workspace }}

@@ -13,16 +13,25 @@ jobs:
     steps:
     - name: switch to Xcode 11
       run: sudo xcode-select -s "/Applications/Xcode_11.7.app"
+
     - name: checkout sources
       uses: actions/checkout@v1
+
     - name: setup Homebrew
       run: brew install autoconf automake libtool pkg-config
+
     - name: set our Qt build
       run: |
         env
         curl -L --output Qt-5.14.1-ios.tar.xz https://f002.backblazeb2.com/file/Subsurface-Travis/Qt-5.14.1-ios.tar.xz
         mkdir -p $HOME/Qt
         xzcat Qt-5.14.1-ios.tar.xz | tar -x -C $HOME/Qt -f -
+
+    - name: store dummy version and build number for test build
+      run: |
+        echo "100" > latest-subsurface-buildnumber
+        echo "CICD-test-build" > latest-subsurface-buildnumber-extension
+
     - name: build Subsurface-mobile for iOS
       env:
          SUBSURFACE_REPO_PATH: ${{ github.workspace }}

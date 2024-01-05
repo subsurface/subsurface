@@ -7,7 +7,7 @@ cd /__w
 
 # grab the version number
 cd subsurface
-VERSION=$(./scripts/get-version linux)
+VERSION=$(./scripts/get-version)
 cd ..
 
 # prep the container

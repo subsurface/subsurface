@@ -11,7 +11,7 @@ DMGCREATE=create-dmg
 
 # same git version magic as in the Makefile
 # for the naming of volume and dmg we want the 3 digits of the full version number
-VERSION=$(cd ${DIR}/subsurface; ./scripts/get-version linux)
+VERSION=$(cd ${DIR}/subsurface; ./scripts/get-version)
 
 # first build and install Subsurface and then clean up the staging area
 # make sure we didn't lose the minimum OS version

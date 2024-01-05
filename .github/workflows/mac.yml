@@ -13,8 +13,9 @@ jobs:
     steps:
     - name: checkout sources
       uses: actions/checkout@v1
+
     - name: atomically create or retrieve the build number
-      id: build_nr
+      id: version_number
       if: github.event_name == 'push'
       run: |
         cd .. # check out parallel to subsurface sources
@@ -27,6 +28,16 @@ jobs:
         git push origin main
         cd ..
         bash -x subsurface/scripts/get-or-create-build-nr.sh ${{ github.sha }}
+        cp nightly-builds/latest-subsurface-buildnumber subsurface
+        echo "CICD-release" > subsurface/latest-subsurface-buildnumber-extension
+        version=$(bash subsurface/scripts/get-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
+
+    - name: store dummy version and build number for pull request
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "100" > latest-subsurface-buildnumber
+        echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
 
     - name: setup Homebrew
       run: brew install hidapi libxslt libjpg libmtp create-dmg confuse
@@ -54,15 +65,6 @@ jobs:
         IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
         echo "Created $IMG"
         echo "dmg=$IMG" >> $GITHUB_OUTPUT
-
-    - name: create version number
-      id: version_number
-      if: github.event_name == 'push'
-      run: |
-        gitversion=$(bash scripts/get-version win)
-        latest=$(cat ../nightly-builds/latest-subsurface-buildnumber)
-        version="$gitversion-$latest"
-        echo "version=$version" >> $GITHUB_OUTPUT
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries

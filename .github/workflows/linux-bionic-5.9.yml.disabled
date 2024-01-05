@@ -31,6 +31,11 @@ jobs:
         qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
         qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev
 
+    - name: store dummy version and build number for pull request
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "6.0.100" > latest-subsurface-buildnumber
+
     - name: build Subsurface
       env:
          SUBSURFACE_REPO_PATH: ${{ github.workspace }}

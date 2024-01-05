@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: atomically create or retrieve the build number
-      id: build_nr
+      id: version_number
       if: github.event_name == 'push'
       run: |
         cd .. # check out parallel to subsurface sources
@@ -31,6 +31,16 @@ jobs:
         git push origin main
         cd ..
         bash -x subsurface/scripts/get-or-create-build-nr.sh ${{ github.sha }}
+        cp nightly-builds/latest-subsurface-buildnumber subsurface
+        echo "CICD-release" > subsurface/latest-subsurface-buildnumber-extension
+        version=$(bash subsurface/scripts/get-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
+
+    - name: store dummy version and build number for pull request
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "100" > latest-subsurface-buildnumber
+        echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
 
     - name: run build
       id: build
@@ -58,15 +68,6 @@ jobs:
         # get the build number via curl so this works both for a pull request as well as a push
         curl -q https://raw.githubusercontent.com/subsurface/nightly-builds/main/latest-subsurface-buildnumber > buildnr.dat
         OUTPUT_DIR=$GITHUB_WORKSPACE bash -x ./subsurface/packaging/android/qmake-build.sh
-
-    - name: create version number
-      id: version_number
-      if: github.event_name == 'push'
-      run: |
-        gitversion=$(bash scripts/get-version win)
-        latest=$(cat ../nightly-builds/latest-subsurface-buildnumber)
-        version="$gitversion-$latest"
-        echo "version=$version" >> $GITHUB_OUTPUT
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
