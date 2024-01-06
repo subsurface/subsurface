@@ -104,6 +104,7 @@ WORKDIR /android
 COPY --from=build /android/ .
 
 RUN git config --global --add safe.directory /android/subsurface && \
-    git config --global --add safe.directory /android/subsurface/libdivecomputer
+    git config --global --add safe.directory /android/subsurface/libdivecomputer && \
+    git config --global --add safe.directory /android/subsurface/nightly-builds
 
 RUN touch finished-"`date`"
