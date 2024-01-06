@@ -6399,7 +6399,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="322"/>
         <source>Firmware files</source>
-        <translation>Firmware Dateien</translation>
+        <translation>Firmwaredateien</translation>
     </message>
 </context>
 <context>
