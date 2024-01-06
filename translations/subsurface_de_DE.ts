@@ -5999,7 +5999,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="473"/>
         <source>&amp;Find moved media files</source>
-        <translation>Suche verschobene Mediendateien</translation>
+        <translation>&amp;Verschobene Mediendateien suchen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="478"/>
