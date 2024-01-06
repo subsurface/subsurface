@@ -43,8 +43,8 @@ if [ ! -f latest-subsurface-buildnumber ] ; then
 	fi
 	cd nightly-builds
 	git fetch &> /dev/null
-	LAST_BUILD_BRANCHS=$(git branch -a --sort=-committerdate --list | grep remotes/origin/branch-for | head -50 | cut -d/ -f3)
-	for LAST_BUILD_BRANCH in $LAST_BUILD_BRANCHS "not-found" ; do
+	LAST_BUILD_BRANCHES=$(git branch -a --sort=-committerdate --list | grep remotes/origin/branch-for | head -50 | cut -d/ -f3)
+	for LAST_BUILD_BRANCH in $LAST_BUILD_BRANCHES "not-found" ; do
 		LAST_BUILD_SHA=$(cut -d- -f 3 <<< "$LAST_BUILD_BRANCH")
 		git -C "$SUBSURFACE_SOURCE" merge-base --is-ancestor "$LAST_BUILD_SHA" HEAD && break
 	done
