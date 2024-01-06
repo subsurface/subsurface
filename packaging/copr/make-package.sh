@@ -87,5 +87,5 @@ if [[ "$1" = "post" ]] ; then
 	# shellcheck disable=SC2002
 	cat "$TOPDIR"/subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $GITVERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
 	rpmbuild --verbose -bs "$(pwd)/SPECS/subsurface.spec"
-	copr build --nowait $REPO "$(pwd)/SRPMS/subsurface-$GITVERSION-1.fc*.src.rpm"
+	copr build --nowait $REPO "$(pwd)/SRPMS/subsurface-$GITVERSION"-1.fc*.src.rpm
 fi

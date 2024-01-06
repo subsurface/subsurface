@@ -122,8 +122,8 @@ if [[ "$1" = "post" ]] ; then
 	# daily vs. release
 	if [[ "$GITREVISION" == "" ]] ; then
 		# this is a release
-		dput ppa:subsurface/subsurface "$FOLDER-$rev~*.changes"
+		dput ppa:subsurface/subsurface "$FOLDER-$rev"~*.changes
 	else
-		dput ppa:subsurface/subsurface-daily "$FOLDER-$rev~*.changes"
+		dput ppa:subsurface/subsurface-daily "$FOLDER-$rev"~*.changes
 	fi
 fi
