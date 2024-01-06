@@ -15,6 +15,16 @@ jobs:
     - name: Check out sources
       uses: actions/checkout@v1
 
+    - name: Setup build dependencies in the Fedora container
+      run: |
+        dnf -y install @development-tools @rpm-development-tools
+        dnf -y install copr-cli make
+
+    - name: setup git
+      run: |
+        git config --global --add safe.directory /__w/subsurface/subsurface
+        git config --global --add safe.directory /__w/subsurface/subsurface/libdivecomputer
+
     - name: atomically create or retrieve the build number
       id: version_number
       if: github.event_name == 'push'
@@ -42,16 +52,6 @@ jobs:
         mkdir -p "$HOME/.config"
         cp packaging/copr/config.copr "$HOME/.config/copr"
         sed -i "s/API_TOKEN/$API_TOKEN/;s/API_LOGIN/$API_LOGIN/" "$HOME/.config/copr"
-
-    - name: Setup build dependencies in the Fedora container
-      run: |
-        dnf -y install @development-tools @rpm-development-tools
-        dnf -y install copr-cli make
-
-    - name: setup git
-      run: |
-        git config --global --add safe.directory /__w/subsurface/subsurface
-        git config --global --add safe.directory /__w/subsurface/subsurface/libdivecomputer
 
     - name: Checkout googlemaps
       run: |
