@@ -25,41 +25,43 @@ TOPDIR=$(pwd)
 cd subsurface
 git submodule init
 git submodule update
+
+GITVERSION=$(bash scripts/get-version 4)
+GITDATE=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
+LIBDCREVISION=$(cd libdivecomputer ; git rev-parse --verify HEAD)
+FOLDER="subsurface-$GITVERSION"
+
+# hardcode to 1 to mark that this is a test build, not a full release
+GITREVISION=1
+
 cd -
 
-GITVERSION=$(cd subsurface ; git describe --match "v[0-9]*" --abbrev=12 | sed -e 's/-g.*$// ; s/^v//')
-GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
-VERSION=$(echo $GITVERSION | sed -e 's/-/./')
-GITDATE=$(cd subsurface ; git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
-LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
-FOLDER="subsurface-$VERSION"
-
-echo "building Subsurface" $VERSION "with libdivecomputer" $LIBDCREVISION
+echo "building Subsurface $GITVERSION with libdivecomputer $LIBDCREVISION"
 
 # create the file system structure that the rpmbuild tools expect
 rpmdev-setuptree
 
 # in order for the tools to work as expected, let's run this from the HOME directory
-cd $HOME
+cd "$HOME"
 
 if [[ ! -d $FOLDER ]]; then
-	mkdir $FOLDER
+	mkdir "$FOLDER"
 	echo "copying sources"
 
-	(cd "$TOPDIR"/subsurface ; tar cf - . ) | (cd $FOLDER ; tar xf - )
-	cd $FOLDER
+	(cd "$TOPDIR"/subsurface ; tar cf - . ) | (cd "$FOLDER" ; tar xf - )
+	cd "$FOLDER"
 	cp -a "$TOPDIR"/googlemaps .
 
 	# make sure we only have the files we want (the builds should all be empty when running on GitHub)
 	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
-	echo $GITVERSION > .gitversion
-	echo $GITDATE > .gitdate
-	echo $LIBDCREVISION > libdivecomputer/revision
+	echo "$GITVERSION" > .gitversion
+	echo "$GITDATE" > .gitdate
+	echo "$LIBDCREVISION" > libdivecomputer/revision
 	cd ..
 fi
 
-if [[ ! -f rpmbuild/SOURCES/subsurface-$VERSION.orig.tar.xz ]] ; then
-	tar ch $FOLDER | xz > rpmbuild/SOURCES/subsurface-$VERSION.orig.tar.xz
+if [[ ! -f rpmbuild/SOURCES/subsurface-$GITVERSION.orig.tar.xz ]] ; then
+	tar ch "$FOLDER" | xz > "rpmbuild/SOURCES/subsurface-$GITVERSION.orig.tar.xz"
 fi
 
 # if the user wanted to post this automatically, do so
@@ -82,7 +84,8 @@ if [[ "$1" = "post" ]] ; then
 		DESCRIPTION="This is a 'daily' build of Subsurface, provided by the Subsurface team, based on the latest sources. The builds aren't always well tested."
 	fi
 	cd "$HOME"/rpmbuild
-	cat "$TOPDIR"/subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $VERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
-	rpmbuild --verbose -bs $(pwd)/SPECS/subsurface.spec
-	copr build --nowait $REPO $(pwd)/SRPMS/subsurface-$VERSION-1.fc*.src.rpm
+	# shellcheck disable=SC2002
+	cat "$TOPDIR"/subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $GITVERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
+	rpmbuild --verbose -bs "$(pwd)/SPECS/subsurface.spec"
+	copr build --nowait $REPO "$(pwd)/SRPMS/subsurface-$GITVERSION-1.fc*.src.rpm"
 fi
