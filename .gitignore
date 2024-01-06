@@ -35,6 +35,7 @@ Subsurface.app
 .DS_Store
 !android/**/*.xml
 build*
+nightly-builds/
 mobile-widgets/qml/kirigami
 packaging/ios/install-root
 packaging/ios/Info.plist
