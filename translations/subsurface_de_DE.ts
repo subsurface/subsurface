@@ -6716,7 +6716,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="67"/>
         <source>Show unused cylinders in the Cylinders table of the Equipment tab</source>
-        <translation>Zeige unbenutzte Flaschen in der Flaschentabelle des Ausrüstungstabs</translation>
+        <translation>Unbenutzte Flaschen in der Flaschentabelle des Ausrüstungstabs anzeigen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="74"/>
