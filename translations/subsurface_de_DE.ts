@@ -6848,7 +6848,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
-        <translation>Zeige äquivalente OC pO₂ zur pSCR pO₂</translation>
+        <translation>Äquivalente OC pO₂ zur pSCR pO₂ anzeigen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
