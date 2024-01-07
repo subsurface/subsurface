@@ -1451,19 +1451,6 @@ void init_proxy()
 	QNetworkProxy::setApplicationProxy(proxy);
 }
 
-QString getUUID()
-{
-	QString uuidString;
-	uuidString = qPrefUpdateManager::uuidString();
-	if (uuidString != "") {
-		QUuid uuid = QUuid::createUuid();
-		uuidString = uuid.toString();
-		qPrefUpdateManager::set_uuidString(uuidString);
-	}
-	uuidString.replace("{", "").replace("}", "");
-	return uuidString;
-}
-
 void parse_seabear_header(const char *filename, struct xml_params *params)
 {
 	QFile f(filename);

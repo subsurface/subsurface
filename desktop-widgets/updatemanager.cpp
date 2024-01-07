@@ -41,8 +41,7 @@ void UpdateManager::checkForUpdates(bool automatic)
 #endif
 	isAutomaticCheck = automatic;
 	QString version = subsurface_canonical_version();
-	QString uuidString = getUUID();
-	QString url = QString("http://updatecheck.subsurface-divelog.org/updatecheck.html?os=%1&version=%2&uuid=%3").arg(os, version, uuidString);
+	QString url = QString("http://updatecheck.subsurface-divelog.org/updatecheck.html?os=%1&version=%2").arg(os, version);
 	QNetworkRequest request;
 	request.setUrl(url);
 	request.setRawHeader("Accept", "text/xml");

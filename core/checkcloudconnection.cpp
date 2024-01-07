@@ -42,7 +42,6 @@ bool CheckCloudConnection::checkServer()
 		QNetworkRequest request;
 		request.setRawHeader("Accept", "text/plain");
 		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
-		request.setRawHeader("Client-Id", getUUID().toUtf8());
 		request.setUrl(QString(prefs.cloud_base_url) + TEAPOT);
 		reply = mgr->get(request);
 		QTimer timer;
