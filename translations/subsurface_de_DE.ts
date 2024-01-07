@@ -6813,7 +6813,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
-        <translation>Zeige O₂-Sensoren in pO₂-Darstellung</translation>
+        <translation>O₂-Sensoren in pO₂-Darstellung anzeigen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
