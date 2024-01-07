@@ -16,5 +16,9 @@
 cp ../../../packaging/android/android-build-setup.sh .
 cp ../../../packaging/android/variables.sh .
 
+if [ "$1X" == "-no-docker-buildX" ]; then
+    exit 0
+fi
+
 # create the container (this takes a while)
 docker build -t android-build .

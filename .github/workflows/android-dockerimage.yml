@@ -1,24 +1,18 @@
 name: Android Docker Image CI
 
-# -- disabled for now, as the resulting image is HUGE and causes our
-#    Android builds to fail
-#on:
-#  push:
-#    paths:
-#    - scripts/docker/android-build-container/Dockerfile
-#    - .github/workflows/android-docker*
-
-# this is here to prevent errors about not having an on: clause
 on:
-  repository_dispatch:
-    types:
-    - unused
+  push:
+    paths:
+    - scripts/docker/android-build-container
+    - .github/workflows/android-docker*
+    - packaging/android/android-build-setup.sh
+    - packaging/android/variables.sh
 
 jobs:
   android-build-container:
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ '5.13.10' }} # the version numbers here is based on the Qt version, the third digit is the rev of the docker image
+      VERSION: ${{ '5.15.2' }} # the version numbers here is based on the Qt version, the third digit is the rev of the docker image
 
     steps:
     - uses: actions/checkout@v1
@@ -26,23 +20,22 @@ jobs:
     - name: Get our pre-reqs
       run: |
           cd scripts/docker/android-build-container
-          bash download.sh
-          sed -ie 's/^sudo/#sudo/' setup-docker.sh
-          bash setup-docker.sh
+          bash setup-docker.sh -no-docker-build
 
-    - name: set env
+    - name: Build the name for the docker image
+      id: build_name
       run: |
         v=${{ env.VERSION }}
         b=${{ github.ref }} # -BRANCH suffix, unless the branch is master
         b=${b/refs\/heads\//}
         b=${b,,} # the name needs to be all lower case
         if [ $b = "master" ] ; then b="" ; else b="-$b" ; fi
-        echo "::set-env name=NAME::subsurface/android-build-container${b}:${v}"
+        echo "NAME=subsurface/android-build${b}:${v}" >> $GITHUB_OUTPUT
 
     - name: Build and Publish Linux Docker image to Dockerhub
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
-        name:       ${{ env.NAME }}
+        name:       ${{ steps.build_name.outputs.NAME }}
         username:   ${{ secrets.DOCKER_USERNAME }}
         password:   ${{ secrets.DOCKER_PASSWORD }}
         dockerfile: 'Dockerfile'
