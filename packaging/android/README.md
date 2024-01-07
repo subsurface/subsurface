@@ -85,7 +85,7 @@ unzip commandlinetools-linux-*.zip
 git clone https://github.com/subsurface/subsurface
 
 # now get the SDK, NDK, Qt, everything that's needed
-bash /android/subsurface/packaging/android/android-build-setup.sh
+bash /android/subsurface/scripts/docker/android-build-container/android-build-setup.sh
 ```
 
 Once this has completed, you should have a working build environment.

@@ -5,8 +5,6 @@ on:
     paths:
     - scripts/docker/android-build-container
     - .github/workflows/android-docker*
-    - packaging/android/android-build-setup.sh
-    - packaging/android/variables.sh
 
 jobs:
   android-build-container:
@@ -16,11 +14,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-
-    - name: Get our pre-reqs
-      run: |
-          cd scripts/docker/android-build-container
-          bash setup-docker.sh -no-docker-build
 
     - name: Build the name for the docker image
       id: build_name

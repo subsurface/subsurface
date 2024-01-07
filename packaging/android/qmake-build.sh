@@ -4,7 +4,7 @@
 #
 # this requires Qt5.14 or newer with matching NDK
 #
-# the packaging/android/android-build-setup.sh sets up an environment that works for this
+# the scripts/docker/android-build-container/android-build-setup.sh sets up an environment that works for this
 
 set -eu
 
@@ -22,7 +22,7 @@ popd
 BUILD_TYPE=Debug
 
 # Read build variables
-source $SUBSURFACE_SOURCE/packaging/android/variables.sh
+source $SUBSURFACE_SOURCE/scripts/docker/android-build-container/variables.sh
 
 # this assumes that the Subsurface source directory is in the same
 # directory hierarchy as the SDK and NDK
