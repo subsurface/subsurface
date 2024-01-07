@@ -138,7 +138,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation>Zeige alle BT-Geräte</translation>
+        <translation>Alle BT-Geräte anzeigen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
