@@ -12,13 +12,5 @@
 # If this fails, go to https://developer.android.com/studio#cmdline-tools and
 # click through for yourself, and then update the URL in the Dockerfile
 
-# copy the dependency script into this folder
-cp ../../../packaging/android/android-build-setup.sh .
-cp ../../../packaging/android/variables.sh .
-
-if [ "$1X" == "-no-docker-buildX" ]; then
-    exit 0
-fi
-
 # create the container (this takes a while)
 docker build -t android-build .
