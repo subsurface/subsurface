@@ -7068,7 +7068,7 @@ siehe http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <source>In the Information tab, show tools for recording wave height, surge and chill during a dive</source>
-        <translation>Zeige die Werkzeuge um Wellenhöhe, Brandung und Wind bei einem Tauchgang zu erfassen im Informations-Tab anzuzeigen.</translation>
+        <translation>Werkzeuge um Wellenhöhe, Brandung und Wind bei einem Tauchgang zu erfassen im Informations-Tab anzeigen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="127"/>
