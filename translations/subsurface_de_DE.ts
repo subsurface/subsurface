@@ -7063,7 +7063,7 @@ siehe http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="111"/>
         <source>In the Dive List, show dives that you have marked as invalid, e.g. pool dives</source>
-        <translation>Zeige als ungültig markierte Tauchgänge in der Tauchgangsliste, etwa Pool-Tauchgänge</translation>
+        <translation>Tauchgänge in der Tauchgangsliste anzeigen, welche als ungültig markiert sind, z.B. Pooltauchgänge</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="119"/>
