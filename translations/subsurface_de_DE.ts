@@ -7073,7 +7073,7 @@ siehe http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="127"/>
         <source>In the Dive Profile, show mean depth</source>
-        <translation>Zeige die mittlere Tiefe im Tauchgangsprofil</translation>
+        <translation>Mittlere Tiefe im Tauchgangsprofil anzeigen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="135"/>
