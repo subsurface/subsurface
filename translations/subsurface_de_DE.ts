@@ -13858,7 +13858,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="595"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
-        <translation>Zeige Aufstiege im Tauchplan oder behandle sie als implizit</translation>
+        <translation>Aufstiege im Tauchplan anzeigen oder sie als implizit behandeln</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="598"/>
