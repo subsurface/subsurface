@@ -31,9 +31,9 @@ void print_version()
 	if (version_printed)
 		return;
 #if defined(SUBSURFACE_DOWNLOADER)
-	printf("Subsurface-downloader v%s,\n", subsurface_git_version());
+	printf("Subsurface-downloader v%s,\n", subsurface_canonical_version());
 #else
-	printf("Subsurface v%s,\n", subsurface_git_version());
+	printf("Subsurface v%s,\n", subsurface_canonical_version());
 #endif
 	printf("built with libdivecomputer v%s\n", dc_version(NULL));
 	print_qt_versions();
