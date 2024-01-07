@@ -6655,7 +6655,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="130"/>
         <source>Depth line intevals.</source>
-        <translation>Intervalle für die Tiefenlinie.</translation>
+        <translation>Intervalle für die Tiefenlinie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="137"/>
