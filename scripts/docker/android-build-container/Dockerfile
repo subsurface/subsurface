@@ -15,6 +15,7 @@ RUN apt-get update  && \
 
 WORKDIR /android
 
+# Scrape the manually curated Qt install from the previous build image
 COPY --from=base /android/5.15.1 5.15.1
 
 # install, NDK and SDK there, plus the three files from the Subsurface
