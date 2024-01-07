@@ -13878,7 +13878,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="618"/>
         <source>In dive plan, show duration (relative time) of stops</source>
-        <translation>Zeige Dauer (relative Zeit) der Stopps im Tauchplan</translation>
+        <translation>Dauer (relative Zeit) der Stopps im Tauchplan anzeigen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="621"/>
