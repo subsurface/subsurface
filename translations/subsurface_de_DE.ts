@@ -6721,7 +6721,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="74"/>
         <source>Show default cylinder sizes in the cylinders selection of the equipment tab</source>
-        <translation>Zeige Größe der Standardflaschen in der Flaschenauswahl des Ausrüstungstabs</translation>
+        <translation>Größe der Standardflaschen in der Flaschenauswahl des Ausrüstungstabs anzeigen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.cpp" line="13"/>
