@@ -24,11 +24,11 @@
         <source>Version: %1
 
 © Subsurface developer team
-2011-2022</source>
+2011-2024</source>
         <translation>Версия: %1
 
 © Subsurface екипа
-2011-2022</translation>
+2011-2024</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="65"/>
@@ -9395,8 +9395,8 @@ Files with inappropriate date/time</source>
     </message>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="15"/>
-        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2022&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;мулти-платформен, гмуркачески регистър софтуер&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Линус Торвалдс, Дърк Хондел, Томаз Канабрава, Бертхолд Щогер и други, 2011-2022&lt;/span&gt;</translation>
+        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2024&lt;/span&gt;</source>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;мулти-платформен, гмуркачески регистър софтуер&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Линус Торвалдс, Дърк Хондел, Томаз Канабрава, Бертхолд Щогер и други, 2011-2024&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
