@@ -78,7 +78,7 @@ fi
 
 # set up the Subsurface versions by hand
 CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version)
-echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
+echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" > "$SUBSURFACE_SOURCE"/ssrf-version.h
 CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version 4)
 echo "#define CANONICAL_VERSION_STRING_4 \"$CANONICALVERSION_4\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
 
