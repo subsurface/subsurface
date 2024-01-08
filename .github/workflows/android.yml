@@ -30,10 +30,10 @@ jobs:
         # the clone followed by the pointless push should verify that the password is stored in the config
         # that way the script doesn't need the password
         git clone -b main https://github.com/subsurface/nightly-builds
-        pushd nightly-builds
+        cd nightly-builds
         git remote set-url origin "$url"
         git push origin main
-        popd
+        cd ..
         bash -x subsurface/scripts/get-or-create-build-nr.sh ${{ github.sha }}
         cp nightly-builds/latest-subsurface-buildnumber subsurface
         echo "CICD-release" > subsurface/latest-subsurface-buildnumber-extension
