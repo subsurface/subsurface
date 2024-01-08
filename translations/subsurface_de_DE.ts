@@ -138,7 +138,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation>Alle BT-Geräte anzeigen</translation>
+        <translation>Zeige alle BT-Geräte</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
@@ -5999,7 +5999,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="473"/>
         <source>&amp;Find moved media files</source>
-        <translation>&amp;Verschobene Mediendateien suchen</translation>
+        <translation>Suche verschobene Mediendateien</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="478"/>
@@ -6399,7 +6399,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="322"/>
         <source>Firmware files</source>
-        <translation>Firmwaredateien</translation>
+        <translation>Firmware Dateien</translation>
     </message>
 </context>
 <context>
@@ -6655,7 +6655,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="130"/>
         <source>Depth line intevals.</source>
-        <translation>Intervalle für die Tiefenlinie</translation>
+        <translation>Intervalle für die Tiefenlinie.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="137"/>
@@ -6716,12 +6716,12 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="67"/>
         <source>Show unused cylinders in the Cylinders table of the Equipment tab</source>
-        <translation>Unbenutzte Flaschen in der Flaschentabelle des Ausrüstungstabs anzeigen</translation>
+        <translation>Zeige unbenutzte Flaschen in der Flaschentabelle des Ausrüstungstabs</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="74"/>
         <source>Show default cylinder sizes in the cylinders selection of the equipment tab</source>
-        <translation>Größe der Standardflaschen in der Flaschenauswahl des Ausrüstungstabs anzeigen</translation>
+        <translation>Zeige Größe der Standardflaschen in der Flaschenauswahl des Ausrüstungstabs</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.cpp" line="13"/>
@@ -6813,7 +6813,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
-        <translation>O₂-Sensoren in pO₂-Darstellung anzeigen</translation>
+        <translation>Zeige O₂-Sensoren in pO₂-Darstellung</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
@@ -6848,7 +6848,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
-        <translation>Äquivalente OC pO₂ zur pSCR pO₂ anzeigen</translation>
+        <translation>Zeige äquivalente OC pO₂ zur pSCR pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
@@ -7063,17 +7063,17 @@ siehe http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="111"/>
         <source>In the Dive List, show dives that you have marked as invalid, e.g. pool dives</source>
-        <translation>Tauchgänge in der Tauchgangsliste anzeigen, welche als ungültig markiert sind, z.B. Pooltauchgänge</translation>
+        <translation>Zeige als ungültig markierte Tauchgänge in der Tauchgangsliste, etwa Pool-Tauchgänge</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <source>In the Information tab, show tools for recording wave height, surge and chill during a dive</source>
-        <translation>Werkzeuge um Wellenhöhe, Brandung und Wind bei einem Tauchgang zu erfassen im Informations-Tab anzeigen</translation>
+        <translation>Zeige die Werkzeuge um Wellenhöhe, Brandung und Wind bei einem Tauchgang zu erfassen im Informations-Tab anzuzeigen.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="127"/>
         <source>In the Dive Profile, show mean depth</source>
-        <translation>Mittlere Tiefe im Tauchgangsprofil anzeigen</translation>
+        <translation>Zeige die mittlere Tiefe im Tauchgangsprofil</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="135"/>
@@ -7410,7 +7410,7 @@ siehe http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="243"/>
         <source>Show hours in duration</source>
-        <translation>Anzeige der Dauer in Stunden</translation>
+        <translation>Zeige Stunden für die Dauer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="250"/>
@@ -13858,7 +13858,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="595"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
-        <translation>Aufstiege im Tauchplan anzeigen oder sie als implizit behandeln</translation>
+        <translation>Zeige Aufstiege im Tauchplan oder behandle sie als implizit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="598"/>
@@ -13878,7 +13878,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="618"/>
         <source>In dive plan, show duration (relative time) of stops</source>
-        <translation>Dauer (relative Zeit) der Stopps im Tauchplan anzeigen</translation>
+        <translation>Zeige Dauer (relative Zeit) der Stopps im Tauchplan</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="621"/>
