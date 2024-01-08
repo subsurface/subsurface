@@ -89,7 +89,9 @@ jobs:
           CICD release artifact
 
           These builds are created on every merge or push into the [Subsurface repo](http://github.com/subsurface/subsurface).
-          This build is based on http://github.com/subsurface/subsurface/commit/${{ github.sha }}
+
+          This build is based on changeset ${{ github.event.head_commit.id }} ([link](${{ github.event.head_commit.url }})):
+          ${{ github.event.head_commit.message }}
 
           None of these artifacts are signed with an official key.
           The Android APK can be side-loaded on most Android devices. If you had a previous Subsurface-mobile version installed from the Google Play store, you'll have to uninstall that first.
@@ -97,6 +99,8 @@ jobs:
           The macOS DMG makes it even harder with a multi-step dance that requires opening the Privacy & Security settings in the System Preferences and explicitly confirming that you are willing to install this app.
 
           You can find similar Subsurface-Daily builds for [Ubuntu](https://ppa.launchpadcontent.net/subsurface) and Subsurface-test for [Fedora](https://copr.fedorainfracloud.org/coprs/dirkhh/Subsurface-test).
+
+          **Note:** Due to the asynchronous nature of our build process the artifacts for the individual platforms are added to the release one by one, whenever their build is finished. So if you can not find a particular artifact on a recent (less than 2 hours old) build, please come back later and check again.
 
           Please report any issues with these builds in the [Subsurface user forum](https://groups.google.com/g/subsurface-divelog).
 
