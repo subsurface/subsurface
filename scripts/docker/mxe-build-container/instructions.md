@@ -23,7 +23,7 @@ docker exec -t mybuilder bash subsurface/.github/workflows/scripts/windows-in-co
 
 To get the built binary out of the container
 ```
-docker exec -t mybuilder bash cp /subsurface-installer.exe /win/win32
+docker exec -t mybuilder bash -c "cp /subsurface-*-installer.exe /win/win32"
 ```
 Which will copy the installer into the win32 folder which will be a sibling of the subsurface folder.
 
