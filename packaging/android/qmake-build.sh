@@ -411,7 +411,7 @@ APK_DIR=$(dirname ${APK})
 APK_FILE=$(basename ${APK})
 
 pushd ${APK_DIR}
-if [ -n "${KEYSTORE_FILE+X}" -a -n "${KEYSTORE_PASSWORD+X}" ]; then
+if [ -n "${KEYSTORE_FILE+X}" -a -f "${KEYSTORE_FILE}" -a -n "${KEYSTORE_PASSWORD+X}" ]; then
 	APKSIGNER_PARAMS=""
 	if [ -n "${KEYSTORE_ALIAS+X}" ]; then
 		APKSIGNER_PARAMS="${APKSIGNER_PARAMS} --ks-key-alias ${KEYSTORE_ALIAS}"
