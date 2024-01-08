@@ -30,7 +30,9 @@ IosShare::IosShare() : self(NULL) {
 }
 
 IosShare::~IosShare() {
-	[(id)self dealloc];
+//  this call below apparently caused a crash at exit.
+//  since at exit I really don't care much about a memory leak, this should be fine.
+//	[(id)self dealloc];
 }
 
 // simplified method that fills subject, recipient, and body for support emails
