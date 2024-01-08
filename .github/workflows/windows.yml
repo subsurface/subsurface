@@ -73,11 +73,6 @@ jobs:
          ./subsurface*.exe*
          ./smtk2ssrf*.exe
         body: |
-          | :warning: WARNING          |
-          |:---------------------------|
-          | We made some fairly drastic changes to the version numbering methodology. |
-          | It's possible that this causes some confusion / surprising behavior in the next couple of CICD releases.     |
-
           CICD release artifact
 
           These builds are created on every merge or push into the [Subsurface repo](http://github.com/subsurface/subsurface).
