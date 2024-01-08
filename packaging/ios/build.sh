@@ -81,6 +81,8 @@ CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version)
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" > "$SUBSURFACE_SOURCE"/ssrf-version.h
 CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version 4)
 echo "#define CANONICAL_VERSION_STRING_4 \"$CANONICALVERSION_4\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
+CANONICALVERSION_3=$("$SUBSURFACE_SOURCE"/scripts/get-version 3)
+echo "#define CANONICAL_VERSION_STRING_3 \"$CANONICALVERSION_3\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
 
 BUNDLE=org.subsurface-divelog.subsurface-mobile
 if [ "${IOS_BUNDLE_PRODUCT_IDENTIFIER}" != "" ] ; then
@@ -90,7 +92,7 @@ fi
 pushd "$SUBSURFACE_SOURCE"/packaging/ios
 # create Info.plist with the correct versions
 # shellcheck disable=SC2002
-cat Info.plist.in | sed "s/@CANONICAL_VERSION@/$CANONICALVERSION/;s/@PRODUCT_BUNDLE_IDENTIFIER@/$BUNDLE/" > Info.plist
+cat Info.plist.in | sed "s/@SHORT_VERSION@/$CANONICALVERSION_3/;s/@FULL_VERSION@/$CANONICALVERSION_4/;s/@PRODUCT_BUNDLE_IDENTIFIER@/$BUNDLE/" > Info.plist
 
 popd
 if [ "$versionOnly" = "1" ] ; then

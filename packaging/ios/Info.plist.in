@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>@CANONICAL_VERSION@</string>
+	<string>@SHORT_VERSION@</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>@CANONICAL_VERSION@</string>
+	<string>@FULL_VERSION@</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NOTE</key>
