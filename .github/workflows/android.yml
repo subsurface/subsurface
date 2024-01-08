@@ -7,49 +7,56 @@ on:
     branches:
     - master
 
+env:
+  BUILD_ROOT: ${{ github.workspace }}/..
+  KEYSTORE_FILE: ${{ github.workspace }}/../subsurface.keystore
+
 jobs:
   buildAndroid:
     runs-on: ubuntu-latest
     container:
-      image: docker://subsurface/android-build-container:5.15.1
+      image: docker://subsurface/android-build:5.15.2
 
     steps:
     - name: checkout sources
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
 
     - name: atomically create or retrieve the build number
       id: version_number
       if: github.event_name == 'push'
       run: |
-        cd .. # check out parallel to subsurface sources
+        cd $BUILD_ROOT # check out parallel to subsurface sources
         url="https://subsurface:${{ secrets.NIGHTLY_BUILDS }}@github.com/subsurface/nightly-builds"
         # the clone followed by the pointless push should verify that the password is stored in the config
         # that way the script doesn't need the password
         git clone -b main https://github.com/subsurface/nightly-builds
-        cd nightly-builds
+        pushd nightly-builds
         git remote set-url origin "$url"
         git push origin main
-        cd ..
+        popd
         bash -x subsurface/scripts/get-or-create-build-nr.sh ${{ github.sha }}
         cp nightly-builds/latest-subsurface-buildnumber subsurface
         echo "CICD-release" > subsurface/latest-subsurface-buildnumber-extension
         version=$(bash subsurface/scripts/get-version)
         echo "version=$version" >> $GITHUB_OUTPUT
 
-    - name: store dummy version and build number for pull request
-      if: github.event_name == 'pull_request'
+    - name: store dummy version and build number for non-push build runs
+      if: github.event_name != 'push'
       run: |
         echo "100" > latest-subsurface-buildnumber
         echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
 
+    - name: set up the keystore
+      if: github.event_name == 'push'
+      run: |
+        echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > $KEYSTORE_FILE
+
     - name: run build
       id: build
-      env:
-         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         # this is rather awkward, but it allows us to use the preinstalled
         # Android and Qt versions with relative paths
-        cd $GITHUB_WORKSPACE/..
+        cd $BUILD_ROOT
         ln -s /android/5.15.* .
         ln -s /android/build-tools .
         ln -s /android/cmdline-tools .
@@ -60,14 +67,11 @@ jobs:
         ls -l
         git config --global user.email "ci@subsurface-divelog.org"
         git config --global user.name "Subsurface CI"
-        # it turns out our build container doesn't have a native compiler
-        # yet ECM needs that
-        apt-get install --reinstall cpp-7 gcc-7-base libgcc-7-dev libcc1-0 gcc-7
-        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
-        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
         # get the build number via curl so this works both for a pull request as well as a push
-        curl -q https://raw.githubusercontent.com/subsurface/nightly-builds/main/latest-subsurface-buildnumber > buildnr.dat
-        OUTPUT_DIR=$GITHUB_WORKSPACE bash -x ./subsurface/packaging/android/qmake-build.sh
+        BUILDNR=$(curl -q https://raw.githubusercontent.com/subsurface/nightly-builds/main/latest-subsurface-buildnumber)
+        OUTPUT_DIR=$GITHUB_WORKSPACE KEYSTORE_FILE="$KEYSTORE_FILE" KEYSTORE_PASSWORD="pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" KEYSTORE_ALIAS="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" bash -x ./subsurface/packaging/android/qmake-build.sh -buildnr ${BUILDNR}
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
@@ -87,7 +91,7 @@ jobs:
           These builds are created on every merge or push into the [Subsurface repo](http://github.com/subsurface/subsurface).
           This build is based on http://github.com/subsurface/subsurface/commit/${{ github.sha }}
 
-          None of these artifacts are signed.
+          None of these artifacts are signed with an official key.
           The Android APK can be side-loaded on most Android devices. If you had a previous Subsurface-mobile version installed from the Google Play store, you'll have to uninstall that first.
           The Windows installer will ask you to confirm installation of an app from an unknown developer.
           The macOS DMG makes it even harder with a multi-step dance that requires opening the Privacy & Security settings in the System Preferences and explicitly confirming that you are willing to install this app.
@@ -95,3 +99,8 @@ jobs:
           You can find similar Subsurface-Daily builds for [Ubuntu](https://ppa.launchpadcontent.net/subsurface) and Subsurface-test for [Fedora](https://copr.fedorainfracloud.org/coprs/dirkhh/Subsurface-test).
 
           Please report any issues with these builds in the [Subsurface user forum](https://groups.google.com/g/subsurface-divelog).
+
+    - name: delete the keystore
+      if: github.event_name == 'push'
+      run: |
+        rm $KEYSTORE_FILE

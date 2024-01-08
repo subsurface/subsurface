@@ -78,7 +78,7 @@ jobs:
           These builds are created on every merge or push into the [Subsurface repo](http://github.com/subsurface/subsurface).
           This build is based on http://github.com/subsurface/subsurface/commit/${{ github.sha }}
 
-          None of these artifacts are signed.
+          None of these artifacts are signed with an official key.
           The Android APK can be side-loaded on most Android devices. If you had a previous Subsurface-mobile version installed from the Google Play store, you'll have to uninstall that first.
           The Windows installer will ask you to confirm installation of an app from an unknown developer.
           The macOS DMG makes it even harder with a multi-step dance that requires opening the Privacy & Security settings in the System Preferences and explicitly confirming that you are willing to install this app.
