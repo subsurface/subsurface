@@ -7,10 +7,10 @@ on:
     branches:
     - master
 
-
 env:
   BUILD_ROOT: ${{ github.workspace }}/..
   KEYSTORE_FILE: ${{ github.workspace }}/../subsurface.keystore
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   buildAndroid:
@@ -22,25 +22,13 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v4
 
-    - name: get pull request information from corresponding merge
-      if: github.event_name == 'push'
-      id: get_pr
-      uses: pablogamboa/action-get-merged-pull-request@v1.1
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: atomically create or retrieve the build number
+    - name: atomically create or retrieve the build number and assemble release notes
       id: version_number
       if: github.event_name == 'push'
       run: |
         version="$(bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")"
         echo "version=$version" >> $GITHUB_OUTPUT
-        pr_num="${{ steps.get_pr.outputs.number }}"
-        pr_url="${{ steps.get_pr.outputs.html_url }}"
-        pr_title="${{ steps.get_pr.outputs.title }}"
-        commit_id="${{ github.event.head_commit.id }}"
-        commit_url="${{ github.event.head_commit.url }}"
-        bash scripts/create-releasenotes.sh "$pr_num" "$pr_url" "$pr_title" "$commit_id" "$commit_url"
+        bash scripts/create-releasenotes.sh ${{ github.event.head_commit.id }}
 
     - name: store dummy version and build number for non-push build runs
       if: github.event_name != 'push'
