@@ -32,5 +32,5 @@ jobs:
         repository: subsurface/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
-        files: gh_release_notes
+        files: gh_release_notes.md
         body_path: gh_release_notes
