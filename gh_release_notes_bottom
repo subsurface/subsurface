@@ -1,8 +1,3 @@
-CICD release artifact
-
-These builds are created on every merge or push into the [Subsurface repo](http://github.com/subsurface/subsurface).
-
-This build was created by [merging PR PRNUM ("PRTITLE")](PRURL) and is based on changeset COMMITID ([link](COMMITURL))
 
 None of these artifacts are signed with an official key.
 The Android APK can be side-loaded on most Android devices. If you had a previous Subsurface-mobile version installed from the Google Play store, you'll have to uninstall that first.
