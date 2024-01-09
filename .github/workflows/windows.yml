@@ -21,7 +21,7 @@ jobs:
       id: version_number
       if: github.event_name == 'push'
       run: |
-        version=$(bash subsurface/scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")
+        version=$(bash ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")
         echo "version=$version" >> $GITHUB_OUTPUT
 
     - name: store dummy version and build number for pull request
