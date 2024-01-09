@@ -4,5 +4,5 @@
 #
 # Usage: create-releasenotes.sh pr_num pr_url pr_title commit_id commit_url
 
-sed "s/PRNUM/$1/;s/PRURL/$2/;s/PRTITLE/$3/;s/COMMITID/$4/;s/COMMITURL/$5/" < gh_release_notes.in > gh_release_notes
+awk "{sub(\"PRNUM\", \"$1\"); sub(\"PRURL\", \"$2\"); sub(\"PRTITLE\", \"$3\"); sub(\"COMMITID\", \"$4\"); sub(\"COMMITURL\", \"$5\"); print}" < gh_release_notes.in > gh_release_notes
 
