@@ -47,3 +47,4 @@ packaging/ios/Qt
 packaging/ios/asset_catalog_compiler.Info.plist
 appdata/subsurface.appdata.xml
 android-mobile/Roboto-Regular.ttf
+gh_release_notes.md
