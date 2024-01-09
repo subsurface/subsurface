@@ -15,7 +15,7 @@ cd nightly-builds
 git remote set-url origin "$url"
 git push origin main
 cd ..
-bash -x subsurface/scripts/get-or-create-build-nr.sh "$1"
+bash -x subsurface/scripts/get-or-create-build-nr.sh "$1" &> /dev/null
 cp nightly-builds/latest-subsurface-buildnumber subsurface
 [[ -n $3 ]] && echo "$3" > subsurface/latest-subsurface-buildnumber-extension
 bash subsurface/scripts/get-version
