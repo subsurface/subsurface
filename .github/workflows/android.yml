@@ -33,13 +33,13 @@ jobs:
       id: version_number
       if: github.event_name == 'push'
       run: |
-        version=$(bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")
+        version="$(bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")"
         echo "version=$version" >> $GITHUB_OUTPUT
-        pr_num=${{ steps.get_pr.outputs.number }}
-        pr_url=${{ steps.get_pr.outputs.html_url }}
-        pr_title=${{ steps.get_pr.outputs.title }}
-        commit_id=${{ github.event.head_commit.id }}
-        commit_url=${{ github.event.head_commit.url }}
+        pr_num="${{ steps.get_pr.outputs.number }}"
+        pr_url="${{ steps.get_pr.outputs.html_url }}"
+        pr_title="${{ steps.get_pr.outputs.title }}"
+        commit_id="${{ github.event.head_commit.id }}"
+        commit_url="${{ github.event.head_commit.url }}"
         bash scripts/create-releasenotes.sh "$pr_num" "$pr_url" "$pr_title" "$commit_id" "$commit_url"
 
     - name: store dummy version and build number for non-push build runs
@@ -73,7 +73,11 @@ jobs:
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
         # get the build number via curl so this works both for a pull request as well as a push
         BUILDNR=$(curl -q https://raw.githubusercontent.com/subsurface/nightly-builds/main/latest-subsurface-buildnumber)
-        OUTPUT_DIR=$GITHUB_WORKSPACE KEYSTORE_FILE="$KEYSTORE_FILE" KEYSTORE_PASSWORD="pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" KEYSTORE_ALIAS="${{ secrets.ANDROID_KEYSTORE_ALIAS }}" bash -x ./subsurface/packaging/android/qmake-build.sh -buildnr ${BUILDNR}
+        OUTPUT_DIR="$GITHUB_WORKSPACE"
+        KEYSTORE_FILE="$KEYSTORE_FILE"
+        KEYSTORE_PASSWORD="pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}"
+        KEYSTORE_ALIAS="${{ secrets.ANDROID_KEYSTORE_ALIAS }}"
+        bash -x ./subsurface/packaging/android/qmake-build.sh -buildnr ${BUILDNR}
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
