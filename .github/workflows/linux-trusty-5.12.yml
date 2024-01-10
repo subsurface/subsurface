@@ -22,6 +22,8 @@ jobs:
       if: github.event_name == 'push'
       run: |
         bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
+        version=$(<release-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
 
     - name: store dummy version and build number for pull request
       if: github.event_name == 'pull_request'
@@ -55,14 +57,14 @@ jobs:
     - name: prepare release artifacts
       if: github.event_name == 'push'
       run: |
-        mv Subsurface.AppImage Subsurface-v(<release-version).AppImage
+        mv Subsurface.AppImage Subsurface-v${{ steps.version_number.outputs.version }}.AppImage
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
       if: github.event_name == 'push'
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v$(<release-version)
+        tag_name: v${{ steps.version_number.outputs.version }}
         repository: subsurface/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
