@@ -12,20 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: checkout sources
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
 
     - name: atomically create or retrieve the build number and assemble release notes
       id: version_number
       run: |
-        version=$(bash ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")
-        echo "version=$version" >> $GITHUB_OUTPUT
+        bash -x ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
         bash scripts/create-releasenotes.sh ${{ github.event.head_commit.id }}
 
+    # ironically, we have to upload a file, otherwise this won't create a release with just the release notes
     - name: publish release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v${{ steps.version_number.outputs.version }}
+        tag_name: v$(<release-version)
         repository: subsurface/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
+        files: gh_release_notes
         body_path: gh_release_notes

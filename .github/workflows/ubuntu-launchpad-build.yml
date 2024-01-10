@@ -18,8 +18,7 @@ jobs:
       id: version_number
       if: github.event_name == 'push'
       run: |
-        version=$(bash ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")
-        echo "version=$version" >> $GITHUB_OUTPUT
+        bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
 
     - name: Setup build dependencies
       run: |
