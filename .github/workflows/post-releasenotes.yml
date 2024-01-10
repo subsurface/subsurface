@@ -23,13 +23,15 @@ jobs:
       run: |
         bash -x ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
         bash scripts/create-releasenotes.sh ${{ github.event.head_commit.id }}
+        version=$(<release-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
 
     # ironically, we have to upload a file, otherwise this won't create a release with just the release notes
     - name: publish release
       if: github.event_name == 'push'
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v$(<release-version)
+        tag_name: v${{ steps.version_number.outputs.version }}
         repository: subsurface/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
