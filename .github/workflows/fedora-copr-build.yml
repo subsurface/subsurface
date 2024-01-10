@@ -29,7 +29,8 @@ jobs:
       id: version_number
       if: github.event_name == 'push'
       run: |
-        version=$(bash ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")
+        bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
+        version=$(<release-version)
         echo "version=$version" >> $GITHUB_OUTPUT
 
     - name: Setup API token for copr-cli

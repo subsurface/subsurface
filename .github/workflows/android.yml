@@ -25,8 +25,7 @@ jobs:
       id: version_number
       if: github.event_name == 'push'
       run: |
-        version="$(bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")"
-        echo "version=$version" >> $GITHUB_OUTPUT
+        bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
 
     - name: store dummy version and build number for non-push build runs
       if: github.event_name != 'push'
@@ -70,13 +69,13 @@ jobs:
       if: github.event_name == 'push'
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v${{ steps.version_number.outputs.version }}
+        tag_name: v$(<release-version)
         repository: subsurface/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
         fail_on_unmatched_files: true
         files: |
-          Subsurface-mobile*.apk
+          "$GITHUB_WORKSPACE"/Subsurface-mobile*.apk
 
     - name: delete the keystore
       if: github.event_name == 'push'
