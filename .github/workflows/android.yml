@@ -60,10 +60,10 @@ jobs:
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
         # get the build number via curl so this works both for a pull request as well as a push
         BUILDNR=$(curl -q https://raw.githubusercontent.com/subsurface/nightly-builds/main/latest-subsurface-buildnumber)
-        OUTPUT_DIR="$GITHUB_WORKSPACE"
-        KEYSTORE_FILE="$KEYSTORE_FILE"
-        KEYSTORE_PASSWORD="pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}"
-        KEYSTORE_ALIAS="${{ secrets.ANDROID_KEYSTORE_ALIAS }}"
+        export OUTPUT_DIR="$GITHUB_WORKSPACE"
+        export KEYSTORE_FILE="$KEYSTORE_FILE"
+        export KEYSTORE_PASSWORD="pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}"
+        export KEYSTORE_ALIAS="${{ secrets.ANDROID_KEYSTORE_ALIAS }}"
         bash -x ./subsurface/packaging/android/qmake-build.sh -buildnr ${BUILDNR}
 
     # only publish a 'release' on push events (those include merging a PR)
