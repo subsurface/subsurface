@@ -7,9 +7,6 @@ on:
     branches:
     - master
 
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   buildAppImage:
     runs-on: ubuntu-latest
@@ -26,7 +23,6 @@ jobs:
       run: |
         version=$(bash ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")
         echo "version=$version" >> $GITHUB_OUTPUT
-        bash scripts/create-releasenotes.sh ${{ github.event.head_commit.id }}
 
     - name: store dummy version and build number for pull request
       if: github.event_name == 'pull_request'
@@ -74,4 +70,3 @@ jobs:
         fail_on_unmatched_files: true
         files: |
          ./Subsurface*.AppImage
-        body_path: gh_release_notes
