@@ -14,8 +14,6 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	divepercentageitem.h
 	diveprofileitem.cpp
 	diveprofileitem.h
-	diverectitem.cpp
-	diverectitem.h
 	divetextitem.cpp
 	divetextitem.h
 	pictureitem.h
