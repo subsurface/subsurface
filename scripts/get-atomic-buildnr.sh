@@ -19,7 +19,7 @@ git remote set-url origin "$url"
 git push origin main
 echo "build number prior to get-or-create was $(<latest-subsurface-buildnumber)"
 cd ..
-bash -x subsurface/scripts/get-or-create-build-nr.sh "$1" &> /dev/null
+bash -x subsurface/scripts/get-or-create-build-nr.sh "$1"
 echo "build number after get-or-create is $(<subsurface/latest-subsurface-buildnumber)"
 cp nightly-builds/latest-subsurface-buildnumber subsurface
 [[ -n $3 ]] && echo "$3" > subsurface/latest-subsurface-buildnumber-extension
