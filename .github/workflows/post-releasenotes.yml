@@ -1,0 +1,31 @@
+name: Post Release
+on:
+  push:
+    branches:
+    - master
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  postRelease:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v1
+
+    - name: atomically create or retrieve the build number and assemble release notes
+      id: version_number
+      run: |
+        version=$(bash ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release")
+        echo "version=$version" >> $GITHUB_OUTPUT
+        bash scripts/create-releasenotes.sh ${{ github.event.head_commit.id }}
+
+    - name: publish release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version_number.outputs.version }}
+        repository: subsurface/nightly-builds
+        token: ${{ secrets.NIGHTLY_BUILDS }}
+        prerelease: false
+        body_path: gh_release_notes
