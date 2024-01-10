@@ -3,6 +3,9 @@ on:
   push:
     branches:
     - master
+  pull_request:
+    branches:
+    - master
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -14,6 +17,7 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v4
 
+    # since we are running this step on a pull request, we will skip build numbers in releases
     - name: atomically create or retrieve the build number and assemble release notes
       id: version_number
       run: |
@@ -22,6 +26,7 @@ jobs:
 
     # ironically, we have to upload a file, otherwise this won't create a release with just the release notes
     - name: publish release
+      if: github.event_name == 'push'
       uses: softprops/action-gh-release@v1
       with:
         tag_name: v$(<release-version)
