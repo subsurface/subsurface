@@ -33,13 +33,13 @@ else
 
   # now comes the moment of truth - are we the first one?
   # the push will succeed for exactly one of the workflows
-  if git push https://github.com/subsurface/nightly-builds "$SHA_BRANCH"
+  if git push origin "$SHA_BRANCH"
   then
     # yay - we win! now let's make sure that we remember this number for next time
     git checkout main
     echo $latest > latest-subsurface-buildnumber
     git commit -a -m "record latest build number in main branch"
-    if ! git push https://github.com/subsurface/nightly-builds main
+    if ! git push origin main
     then
       echo "push to main failed - we'll lose monotonic property"
       exit 1
