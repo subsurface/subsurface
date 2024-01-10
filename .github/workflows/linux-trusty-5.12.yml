@@ -55,7 +55,7 @@ jobs:
     - name: prepare release artifacts
       if: github.event_name == 'push'
       run: |
-        mv Subsurface.AppImage Subsurface-v(<release-version).AppImage
+        mv Subsurface.AppImage Subsurface-v$(<release-version).AppImage
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
