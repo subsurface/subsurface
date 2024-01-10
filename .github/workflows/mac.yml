@@ -42,7 +42,6 @@ jobs:
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         export PATH=$QT_ROOT/bin:$PATH
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
-        DIR=$(pwd)
 
         # now setup Subsurface with WebKit and build the dependencies, using the generic build script
         bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release -build-deps -ftdi -prep-only
