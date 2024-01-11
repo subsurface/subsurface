@@ -77,7 +77,7 @@ jobs:
         prerelease: false
         fail_on_unmatched_files: true
         files: |
-          "$GITHUB_WORKSPACE"/Subsurface-mobile*.apk
+          Subsurface-mobile-${{ steps.version_number.outputs.version }}.apk
 
     - name: delete the keystore
       if: github.event_name == 'push'
