@@ -8,7 +8,6 @@ on:
     - master
 
 env:
-  BUILD_ROOT: ${{ github.workspace }}/..
   KEYSTORE_FILE: ${{ github.workspace }}/../subsurface.keystore
 
 jobs:
@@ -45,7 +44,7 @@ jobs:
       run: |
         # this is rather awkward, but it allows us to use the preinstalled
         # Android and Qt versions with relative paths
-        cd $BUILD_ROOT
+        cd ..
         ln -s /android/5.15.* .
         ln -s /android/build-tools .
         ln -s /android/cmdline-tools .
@@ -53,7 +52,6 @@ jobs:
         ln -s /android/platform-tools .
         ln -s /android/platforms .
         ln -s /android/tools .
-        ls -l
         git config --global user.email "ci@subsurface-divelog.org"
         git config --global user.name "Subsurface CI"
         git config --global --add safe.directory $GITHUB_WORKSPACE
@@ -72,12 +70,12 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: v${{ steps.version_number.outputs.version }}
-        repository: subsurface/nightly-builds
+        repository:  ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
         fail_on_unmatched_files: true
         files: |
-          "$GITHUB_WORKSPACE"/Subsurface-mobile*.apk
+          "GITHUB_WORKSPACE"/Subsurface-mobile*.apk
 
     - name: delete the keystore
       if: github.event_name == 'push'
