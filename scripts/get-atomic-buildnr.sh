@@ -21,11 +21,8 @@ git remote set-url origin "$url"
 git push origin main
 echo "build number prior to get-or-create was $(<latest-subsurface-buildnumber)"
 cd "$PARENT_DIR"
-bash -x subsurface/scripts/get-or-create-build-nr.sh "$1"
+bash subsurface/scripts/get-or-create-build-nr.sh "$1"
 echo "build number after get-or-create is $(<nightly-builds/latest-subsurface-buildnumber)"
 cp nightly-builds/latest-subsurface-buildnumber subsurface/
 [[ -n $3 ]] && echo "$3" > subsurface/latest-subsurface-buildnumber-extension
 bash subsurface/scripts/get-version > subsurface/release-version
-echo "$PARENT_DIR"
-ls -l "$PARENT_DIR"/subsurface/release-version
-cat "$PARENT_DIR"/subsurface/release-version
