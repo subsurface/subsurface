@@ -60,7 +60,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: v${{ steps.version_number.outputs.version }}
-        repository: subsurface/nightly-builds
+        repository: ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
         fail_on_unmatched_files: true
