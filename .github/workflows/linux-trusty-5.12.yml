@@ -25,7 +25,8 @@ jobs:
         echo "in yml we have PWD $(pwd)"
         ls -l release-version
         cat release-version
-        version=$(<release-version)
+        echo
+        version=$(cat release-version)
         echo "version=$version"
         echo "version=$version" >> $GITHUB_OUTPUT
 

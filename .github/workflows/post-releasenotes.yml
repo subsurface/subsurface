@@ -23,7 +23,7 @@ jobs:
       run: |
         bash -x ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
         bash scripts/create-releasenotes.sh ${{ github.event.head_commit.id }}
-        version=$(<release-version)
+        version=$(cat release-version)
         echo "version=$version" >> $GITHUB_OUTPUT
 
     # ironically, we have to upload a file, otherwise this won't create a release with just the release notes
