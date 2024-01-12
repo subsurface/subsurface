@@ -235,11 +235,13 @@ void ChartView::ChartItemList::remove(ChartItem &item)
 void ChartView::ChartItemList::append(ChartItem &item)
 {
 	if (!first) {
+		item.prev = nullptr;
 		first = &item;
 	} else {
 		item.prev = last;
 		last->next = &item;
 	}
+	item.next = nullptr;
 	last = &item;
 }
 
