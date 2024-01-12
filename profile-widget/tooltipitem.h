@@ -5,6 +5,7 @@
 #include "qt-quick/chartitem.h"
 
 #include <QFont>
+#include <QFontMetrics>
 #include <QPixmap>
 
 struct dive;

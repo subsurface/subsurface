@@ -23,6 +23,8 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	profiletranslations.h
 	profileview.cpp
 	profileview.h
+	ruleritem.cpp
+	ruleritem.h
 	tankitem.cpp
 	tankitem.h
 	tooltipitem.h
@@ -37,8 +39,6 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	${SUBSURFACE_PROFILE_LIB_SRCS}
 	divehandler.cpp
 	divehandler.h
-	ruleritem.cpp
-	ruleritem.h
 )
 endif ()
 source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})

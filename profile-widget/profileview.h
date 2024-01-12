@@ -13,6 +13,7 @@ class PictureItem;
 class ProfileAnimation;
 class ProfileScene;
 class ToolTipItem;
+class RulerItem;
 
 class ProfileView : public ChartView {
 	Q_OBJECT
@@ -40,6 +41,7 @@ public:
 	void clear();
 	void resetZoom();
 	void anim(double fraction);
+	void rulerDragged();		// Called by the RulterItem when a handle was dragged.
 
 	// For mobile
 	Q_INVOKABLE void pinchStart();
@@ -84,10 +86,11 @@ private:
 	void updateTooltip(QPointF pos, bool plannerMode, int animSpeed);
 	std::unique_ptr<ProfileAnimation> tooltip_animation;
 
-	QPointF previousHoverMovePosition;
 	std::unique_ptr<RulerItem> ruler;
 	void updateRuler(int animSpeed);
 	std::unique_ptr<ProfileAnimation> ruler_animation;
+
+	QPointF previousHoverMovePosition;
 
 	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
 	// For the same offset, sort by filename.

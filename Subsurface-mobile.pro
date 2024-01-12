@@ -178,6 +178,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	profile-widget/divelineitem.cpp \
 	profile-widget/divetextitem.cpp \
 	profile-widget/profileview.cpp \
+	profile-widget/ruleritem.cpp \
 	qt-quick/chartitem.cpp \
 	qt-quick/chartview.cpp
 
@@ -337,6 +338,7 @@ HEADERS += \
 	profile-widget/divepixmapcache.h \
 	profile-widget/divetextitem.h \
 	profile-widget/profileview.h \
+	profile-widget/ruleritem.h \
 	profile-widget/profiletranslations.h \
 	qt-quick/chartitem.h \
 	qt-quick/chartitemhelper.h \

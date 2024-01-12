@@ -51,9 +51,12 @@ public:
 	double calcZoomPosition(double zoom, double originalPos, double delta);
 	const plot_info &getPlotInfo() const;
 	int timeAt(QPointF pos) const; // time in seconds
-	std::pair<double, double> minMaxTime(); // time in seconds
-	double posAtTime(double time); // time in seconds
-	double yToScreen(double y); // For pictures: depth given in fration of displayed range.
+	std::pair<double, double> minMaxTime() const; // time in seconds
+	std::pair<double, double> minMaxX() const; // minimum and maximum x positions of canvas
+	std::pair<double, double> minMaxY() const; // minimum and maximum y positions of canvas
+	double posAtTime(double time) const; // time in seconds
+	double posAtDepth(double depth) const;
+	double yToScreen(double y) const; // For pictures: depth given in fration of displayed range.
 	std::vector<std::pair<QString, QPixmap>> eventsAt(QPointF pos) const;
 
 	const struct dive *d;

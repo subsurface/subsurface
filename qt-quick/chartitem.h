@@ -30,7 +30,7 @@ public:
 	const bool dragable;			// Item can be dragged with the mouse. Must be set in constructor.
 	virtual ~ChartItem();			// Attention: must only be called by render thread.
 	QRectF getRect() const;
-	virtual void setPos(QPointF pos);	// Called when dragging the item
+	virtual void drag(QPointF pos);		// Called when dragging the item
 	virtual void stopDrag(QPointF pos);	// Called when dragging the item finished
 protected:
 	ChartItem(ChartView &v, size_t z, bool dragable = false);
@@ -81,7 +81,8 @@ public:
 	ChartPixmapItem(ChartView &v, size_t z, bool dragable = false);
 	~ChartPixmapItem();
 
-	void setPos(QPointF pos) override;
+	virtual void setPos(QPointF pos);
+	void drag(QPointF pos) override; // calls setPos() by default
 	void setScale(double scale);
 	void render() override;
 protected:
@@ -129,6 +130,19 @@ public:
 private:
 	QPixmap pixmap;
 	QSize originalSize;
+};
+
+// A solid disk, potentially with border.
+class ChartDiskItem : public ChartPixmapItem {
+public:
+	ChartDiskItem(ChartView &v, size_t z, const QPen &pen, const QBrush &brush, bool dragable = false);
+	~ChartDiskItem();
+	void resize(double radius);
+	void setPos(QPointF pos) override;
+	QPointF getPos() const;
+private:
+	QPen pen;
+	QBrush brush;
 };
 
 // Attention: text is only drawn after calling setColor()!

@@ -342,7 +342,7 @@ void ChartView::mouseMoveEvent(QMouseEvent *event)
 		QSizeF sceneSize = size();
 		if (sceneSize.width() <= 1.0 || sceneSize.height() <= 1.0)
 			return;
-		draggedItem->setPos(event->pos() - dragStartMouse + dragStartItem);
+		draggedItem->drag(event->pos() - dragStartMouse + dragStartItem);
 		update();
 	}
 }

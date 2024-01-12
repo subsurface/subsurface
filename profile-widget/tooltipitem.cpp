@@ -11,7 +11,6 @@
 
 #include <cmath>
 #include <QApplication>
-#include <QFontMetrics>
 
 static const int tooltipBorder = 2;
 static const double tooltipBorderRadius = 4.0; // Radius of rounded corners
@@ -37,8 +36,8 @@ static QFont makeFont(double dpr)
 
 ToolTipItem::ToolTipItem(ChartView &view, double dpr) :
 	AnimatedChartRectItem(view, ProfileZValue::ToolTipItem,
-			      QPen(tooltipBorderColor, tooltipBorder),
-			      QBrush(tooltipColor), tooltipBorderRadius,
+			      QPen(tooltipBorderColor, lrint(tooltipBorder * dpr)),
+			      QBrush(tooltipColor), tooltipBorderRadius * dpr,
 			      true),
 	font(makeFont(dpr)),
 	fm(font),
@@ -66,6 +65,7 @@ QPixmap ToolTipItem::stringToPixmap(const QString &str) const
 
 // Split a membuffer into strings, skip empty lines.
 // Return string / width (in pixels) pairs.
+// TODO: Don't concatenate in the first place
 static std::vector<std::pair<QString, int>> split_mb_into_strings(const membuffer &mb, const QFontMetrics &fm)
 {
 	std::vector<std::pair<QString, int>> res;
@@ -145,9 +145,9 @@ void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &p
 	}
 
 	width += tissues.width();
-	width += 6.0 * tooltipBorder;
+	width += 6.0 * tooltipBorder * dpr;
 	height = std::max(height, static_cast<double>(tissues.height()));
-	height += 4.0 * tooltipBorder + title.height();
+	height += 4.0 * tooltipBorder * dpr + title.height();
 
 	QPixmap pixmap(lrint(width), lrint(height));
 	pixmap.fill(Qt::transparent);
@@ -155,12 +155,12 @@ void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &p
 
 	painter.setFont(font);
 	painter.setPen(QPen(tooltipFontColor)); // QPainter uses QPen to set text color!
-	double x = 4.0 * tooltipBorder + tissues.width();
-	double y = 2.0 * tooltipBorder;
+	double x = 4.0 * tooltipBorder * dpr + tissues.width();
+	double y = 2.0 * tooltipBorder * dpr;
 	double titleOffset = (width - title.width()) / 2.0;
 	painter.drawPixmap(lrint(titleOffset), lrint(y), title, 0, 0, title.width(), title.height());
 	y += round(fontHeight);
-	painter.drawPixmap(lrint(2.0 * tooltipBorder), lrint(y), tissues, 0, 0, tissues.width(), tissues.height());
+	painter.drawPixmap(lrint(2.0 * tooltipBorder * dpr), lrint(y), tissues, 0, 0, tissues.width(), tissues.height());
 	y += round(fontHeight);
 	for (auto &[s,w]: strings) {
 		QRectF rect(x, y, w, fontHeight);

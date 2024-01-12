@@ -37,7 +37,7 @@ QRectF ChartItem::getRect() const
 	return rect;
 }
 
-void ChartItem::setPos(QPointF)
+void ChartItem::drag(QPointF)
 {
 }
 
@@ -119,6 +119,11 @@ void ChartPixmapItem::resize(QSizeF size)
 	setTextureDirty();
 }
 
+void ChartPixmapItem::drag(QPointF pos)
+{
+	setPos(pos);
+}
+
 void ChartPixmapItem::setPos(QPointF pos)
 {
 	rect.moveTopLeft(pos);
@@ -158,6 +163,8 @@ ChartRectItem::~ChartRectItem()
 void ChartRectItem::resize(QSizeF size)
 {
 	ChartPixmapItem::resize(size);
+	if (!painter)
+		return;
 	img->fill(Qt::transparent);
 	painter->setPen(pen);
 	painter->setBrush(brush);
@@ -175,7 +182,8 @@ void AnimatedChartRectItem::setPixmap(const QPixmap &p, int animSpeed)
 {
 	if (animSpeed <= 0) {
 		resize(p.size());
-		painter->drawPixmap(0, 0, p, 0, 0, p.width(), p.height());
+		if (painter)
+			painter->drawPixmap(0, 0, p, 0, 0, p.width(), p.height());
 		setTextureDirty();
 		return;
 	}
@@ -194,8 +202,45 @@ void AnimatedChartRectItem::anim(double fraction)
 	QSize s(mid(originalSize.width(), pixmap.width(), fraction),
 		mid(originalSize.height(), pixmap.height(), fraction));
 	resize(s);
-	painter->drawPixmap(0, 0, pixmap, 0, 0, s.width(), s.height());
+	if (painter)
+		painter->drawPixmap(0, 0, pixmap, 0, 0, s.width(), s.height());
 	setTextureDirty();
+}
+
+ChartDiskItem::ChartDiskItem(ChartView &v, size_t z, const QPen &pen, const QBrush &brush, bool dragable) :
+	ChartPixmapItem(v, z, dragable),
+	pen(pen), brush(brush)
+{
+}
+
+ChartDiskItem::~ChartDiskItem()
+{
+}
+
+void ChartDiskItem::resize(double radius)
+{
+	ChartPixmapItem::resize(QSizeF(2.0 * radius, 2.0 * radius));
+	if (!painter)
+		return;
+	img->fill(Qt::transparent);
+	painter->setPen(pen);
+	painter->setBrush(brush);
+	QSize imgSize = img->size();
+	int width = pen.width();
+	QRect rect(width / 2, width / 2, imgSize.width() - width, imgSize.height() - width);
+	painter->drawEllipse(rect);
+}
+
+// Moves the _center_ of the disk to given position.
+void ChartDiskItem::setPos(QPointF pos)
+{
+	rect.moveCenter(pos);
+	setPositionDirty();
+}
+
+QPointF ChartDiskItem::getPos() const
+{
+	return rect.center();
 }
 
 ChartTextItem::ChartTextItem(ChartView &v, size_t z, const QFont &f, const std::vector<QString> &text, bool center) :

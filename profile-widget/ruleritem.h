@@ -2,59 +2,31 @@
 #ifndef RULERITEM_H
 #define RULERITEM_H
 
-#include <QObject>
-#include <QGraphicsEllipseItem>
-#include <QGraphicsObject>
-#include "profile-widget/divecartesianaxis.h"
+#include "qt-quick/chartitem.h"
 
-struct plot_data;
+#include <QFont>
+#include <QFontMetrics>
+
+class ProfileView;
+class ProfileScene;
+class RulerItemHandle;
 struct plot_info;
-class RulerItem2;
+struct dive;
 
-class RulerNodeItem2 : public QObject, public QGraphicsEllipseItem {
-	Q_OBJECT
-	friend class RulerItem2;
+class RulerItem {
+	ChartItemPtr<ChartLineItem> line;
+	ChartItemPtr<RulerItemHandle> handle1, handle2;
+	ChartItemPtr<AnimatedChartRectItem> tooltip;
 
+	QFont font;
+	QFontMetrics fm;
+	double fontHeight;
+	QPixmap title;
 public:
-	explicit RulerNodeItem2();
-	void setRuler(RulerItem2 *r);
-	void setPlotInfo(const struct plot_info &info);
-	void recalculate();
-
-private:
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-	const struct plot_info *pInfo;
-	int idx;
-	RulerItem2 *ruler;
-	DiveCartesianAxis *timeAxis;
-	DiveCartesianAxis *depthAxis;
-};
-
-class RulerItem2 : public QObject, public QGraphicsLineItem {
-	Q_OBJECT
-public:
-	explicit RulerItem2();
-	void recalculate();
-
-	void setPlotInfo(const struct dive *d, const struct plot_info &pInfo);
-	RulerNodeItem2 *sourceNode() const;
-	RulerNodeItem2 *destNode() const;
-	void setAxis(DiveCartesianAxis *time, DiveCartesianAxis *depth);
+	RulerItem(ProfileView &view, double dpr);
 	void setVisible(bool visible);
-
-public
-slots:
-	void settingsChanged(bool toggled);
-
-private:
-	const struct dive *dive;
-	const struct plot_info *pInfo;
-	QPointF startPoint, endPoint;
-	RulerNodeItem2 *source, *dest;
-	QString text;
-	DiveCartesianAxis *timeAxis;
-	DiveCartesianAxis *depthAxis;
-	QGraphicsRectItem *textItemBack;
-	QGraphicsSimpleTextItem *textItem;
+	void update(const dive *d, double dpr, const ProfileScene &scene, const plot_info &info, int animspeed);
+	void anim(double progress);
 };
+
 #endif

@@ -2,6 +2,7 @@
 #include "profileview.h"
 #include "pictureitem.h"
 #include "profilescene.h"
+#include "ruleritem.h"
 #include "tooltipitem.h"
 #include "zvalues.h"
 #include "commands/command.h"
@@ -140,6 +141,7 @@ void ProfileView::resetPointers()
 {
 	profileItem.reset();
 	tooltip.reset();
+	ruler.reset();
 	pictures.clear();
 	highlightedPicture = nullptr;
 }
@@ -168,6 +170,8 @@ void ProfileView::clear()
 	//gases.clear();
 	if (tooltip)
 		tooltip->setVisible(false);
+	if (ruler)
+		ruler->setVisible(false);
 	empty = true;
 	d = nullptr;
 	dc = 0;
@@ -215,9 +219,6 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	background = inPlanner ? QColor("#D7E3EF") : getColor(::BACKGROUND, false);
 	profileItem->draw(size(), background, *profileScene);
 
-	//rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
-	//rulerItem->setPlotInfo(d, profileScene->plotInfo);
-
 	//if ((currentState == EDIT || currentState == PLAN) && plannerModel) {
 		//repositionDiveHandlers();
 		//plannerModel->deleteTemporaryPlan();
@@ -253,6 +254,15 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 		updateTooltip(pos, flags & RenderFlags::PlanMode, animSpeed);
 	} else {
 		tooltip->setVisible(false);
+	}
+
+	if (!ruler)
+		ruler = std::make_unique<RulerItem>(*this, dpr);
+	if (prefs.rulergraph && !(flags & RenderFlags::PlanMode) && !(flags & RenderFlags::EditMode)) {
+		ruler->setVisible(true);
+		updateRuler(animSpeed);
+	} else {
+		ruler->setVisible(false);
 	}
 
 	// Reset animation.
@@ -545,6 +555,20 @@ void ProfileView::updateTooltip(QPointF pos, bool plannerMode, int animSpeed)
 	// Reset animation.
 	tooltip_animation = make_anim([this](double progress)
 		{ if (tooltip) tooltip->anim(progress); update(); }, animSpeed);
+}
+
+void ProfileView::rulerDragged()
+{
+	updateRuler(qPrefDisplay::animation_speed());
+}
+
+void ProfileView::updateRuler(int animSpeed)
+{
+	ruler->update(d, dpr, *profileScene, profileScene->getPlotInfo(), animSpeed);
+
+	// Reset animation.
+	ruler_animation = make_anim([this](double progress)
+		{ if (ruler) ruler->anim(progress); update(); }, animSpeed);
 }
 
 // Create a PictureEntry object and add its thumbnail to the scene if profile pictures are shown.
