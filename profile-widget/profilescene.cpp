@@ -612,20 +612,35 @@ int ProfileScene::timeAt(QPointF pos) const
 	return lrint(timeAxis->valueAt(pos));
 }
 
-std::pair<double, double> ProfileScene::minMaxTime()
+std::pair<double, double> ProfileScene::minMaxTime() const
 {
 	return { timeAxis->minimum(), timeAxis->maximum() };
 }
 
-double ProfileScene::yToScreen(double y)
+std::pair<double, double> ProfileScene::minMaxX() const
+{
+	return timeAxis->screenMinMax();
+}
+
+std::pair<double, double> ProfileScene::minMaxY() const
+{
+	return profileYAxis->screenMinMax();
+}
+
+double ProfileScene::yToScreen(double y) const
 {
 	auto [min, max] = profileYAxis->screenMinMax();
 	return min + (max - min) * y;
 }
 
-double ProfileScene::posAtTime(double time)
+double ProfileScene::posAtTime(double time) const
 {
 	return timeAxis->posAtValue(time);
+}
+
+double ProfileScene::posAtDepth(double depth) const
+{
+	return profileYAxis->posAtValue(depth);
 }
 
 std::vector<std::pair<QString, QPixmap>> ProfileScene::eventsAt(QPointF pos) const
