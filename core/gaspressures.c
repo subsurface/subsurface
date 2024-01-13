@@ -2,7 +2,7 @@
 /*  gaspressures.c
  *  ---------------
  *  This file contains the routines to calculate the gas pressures in the cylinders.
- *  The functions below support the code in profile.c.
+ *  The functions below support the code in profile.cpp.
  *  The high-level function is populate_pressure_information(), called by function
  *  create_plot_info_new() in profile.c. The other functions below are, in turn,
  *  called by populate_pressure_information(). The calling sequence is as follows:
