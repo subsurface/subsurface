@@ -63,26 +63,6 @@ QPixmap ToolTipItem::stringToPixmap(const QString &str) const
 	return res;
 }
 
-// Split a membuffer into strings, skip empty lines.
-// Return string / width (in pixels) pairs.
-// TODO: Don't concatenate in the first place
-static std::vector<std::pair<QString, int>> split_mb_into_strings(const membuffer &mb, const QFontMetrics &fm)
-{
-	std::vector<std::pair<QString, int>> res;
-	for (size_t i = 0; i < mb.len; ++i) {
-		size_t j;
-		for (j = i; j < mb.len && mb.buffer[j] != '\n'; ++j)
-			;
-		if (j > i) {
-			QString s = QString::fromUtf8(mb.buffer + i, j - i);
-			int width = fm.size(Qt::TextSingleLine, s).width();
-			res.emplace_back(s, width);
-		}
-		i = j; // Note: loop iteration will skip over '\n'
-	}
-	return res;
-}
-
 static QPixmap drawTissues(const plot_info &pInfo, double dpr, int idx, bool inPlanner)
 {
 	QPixmap tissues(16,60);
@@ -121,17 +101,19 @@ static QPixmap drawTissues(const plot_info &pInfo, double dpr, int idx, bool inP
 void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &pInfo,
 			 const std::vector<std::pair<QString, QPixmap>> &events, bool inPlanner, int animSpeed)
 {
-	struct membufferpp mb;
-
-	int idx = get_plot_details_new(d, &pInfo, time, &mb);
+	auto [idx, strings] = get_plot_details_new(d, &pInfo, time);
 
 	QPixmap tissues = drawTissues(pInfo, dpr, idx, inPlanner);
-	std::vector<std::pair<QString, int>> strings = split_mb_into_strings(mb, fm);
 	std::vector<QSizeF> event_sizes;
 
+	std::vector<int> string_widths;
+	string_widths.reserve(strings.size());
 	width = title.size().width();
-	for (auto &[s,w]: strings)
+	for (const QString &s: strings) {
+		int w = fm.size(Qt::TextSingleLine, s).width();
 		width = std::max(width, static_cast<double>(w));
+		string_widths.push_back(w);
+	}
 
 	height = (static_cast<double>(strings.size()) + 1.0) * fontHeight;
 
@@ -162,9 +144,9 @@ void ToolTipItem::update(const dive *d, double dpr, int time, const plot_info &p
 	y += round(fontHeight);
 	painter.drawPixmap(lrint(2.0 * tooltipBorder * dpr), lrint(y), tissues, 0, 0, tissues.width(), tissues.height());
 	y += round(fontHeight);
-	for (auto &[s,w]: strings) {
-		QRectF rect(x, y, w, fontHeight);
-		painter.drawText(rect, s);
+	for (size_t i = 0; i < strings.size(); ++i) {
+		QRectF rect(x, y, string_widths[i], fontHeight);
+		painter.drawText(rect, strings[i]);
 		y += fontHeight;
 	}
 	for (size_t i = 0; i < events.size(); ++i) {

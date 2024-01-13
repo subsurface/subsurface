@@ -70,28 +70,6 @@ static ChartItemPtr<RulerItemHandle> makeHandle(ProfileView &view, double dpr)
 	return res;
 }
 
-// Split a membuffer into strings, skip empty lines.
-// Return string / width (in pixels) pairs.
-// TODO: Don't concatenate in the first place
-static std::vector<std::pair<QString, int>> split_string(const char *buf, const QFontMetrics &fm)
-{
-	std::vector<std::pair<QString, int>> res;
-	for (size_t i = 0; buf[i] != '\0'; ++i) {
-		size_t j;
-		for (j = i; buf[j] != '\0' && buf[j] != '\n'; ++j)
-			;
-		if (j > i) {
-			QString s = QString::fromUtf8(buf + i, j - i);
-			int width = fm.size(Qt::TextSingleLine, s).width();
-			res.emplace_back(s, width);
-		}
-		if (!buf[j])
-			break;
-		i = j; // Note: loop iteration will skip over '\n'
-	}
-	return res;
-}
-
 RulerItem::RulerItem(ProfileView &view, double dpr) :
 	line(view.createChartItem<ChartLineItem>(ProfileZValue::RulerItem,
 						   lineColor, lineWidth * dpr)),
@@ -154,15 +132,23 @@ void RulerItem::update(const dive *d, double dpr, const ProfileScene &scene, con
 		tooltip->setVisible(false);
 		return;
 	}
+
+	auto strings = compare_samples(d, &info, idx1, idx2, true);
+	if (strings.empty()) {
+		tooltip->setVisible(false);
+		return;
+	}
 	tooltip->setVisible(true);
 
-	char buffer[500];
-	compare_samples(d, &info, idx1, idx2, buffer, 500, 1);
-	auto strings = split_string(buffer, fm);
-
 	double width = 0;
-	for (auto &[s,w]: strings)
+	std::vector<int> string_widths;
+	string_widths.reserve(strings.size());
+	for (const QString &s: strings) {
+		int w = fm.size(Qt::TextSingleLine, s).width();
 		width = std::max(width, static_cast<double>(w));
+		string_widths.push_back(w);
+	}
+
 	width += 6.0 * tooltipBorder * dpr;
 
 	double height = static_cast<double>(strings.size()) * fontHeight +
@@ -176,9 +162,9 @@ void RulerItem::update(const dive *d, double dpr, const ProfileScene &scene, con
 	painter.setPen(QPen(tooltipFontColor)); // QPainter uses QPen to set text color!
 	double x = 4.0 * tooltipBorder * dpr;
 	double y = 2.0 * tooltipBorder * dpr;
-	for (auto &[s,w]: strings) {
-		QRectF rect(x, y, w, fontHeight);
-		painter.drawText(rect, s);
+	for (size_t i = 0; i < strings.size(); ++i) {
+		QRectF rect(x, y, string_widths[i], fontHeight);
+		painter.drawText(rect, strings[i]);
 		y += fontHeight;
 	}
 
