@@ -1302,9 +1302,9 @@ void create_plot_info_new(const struct dive *dive, const struct divecomputer *dc
 	free_plot_info_data(pi);
 	calculate_max_limits_new(dive, dc, pi, in_planner);
 	get_dive_gas(dive, &o2, &he, &o2max);
-	if (dc->divemode == FREEDIVE){
-		pi->dive_type = FREEDIVE;
-	} else 	if (he > 0) {
+	if (dc->divemode == FREEDIVE) {
+		pi->dive_type = FREEDIVING;
+	} else if (he > 0) {
 		pi->dive_type = TRIMIX;
 	} else {
 		if (o2)
