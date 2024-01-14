@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2014 Pedro Neves <nevesdiver@gmail.com> -->
 <component type="desktop-application">
-  <id>org.subsurface_divelog.subsurface</id>
+  <id>org.subsurface_divelog.Subsurface</id>
   <metadata_license>CC-BY-SA-3.0</metadata_license>
   <project_license>GPL-2.0-only</project_license>
   <name>Subsurface</name>
@@ -12,7 +12,7 @@
    weights and exposure protection used, divemasters and dive buddies, etc.
    Subsurface also enables the users to rate their dives and provide additional dive notes.</p>
     <p>Dives can be downloaded from a variety of dive computers, inserted manually or imported from other programs.
-   A wide array of diving statistics and information is calculated and displayed, like the user’s SAC rate,
+   A wide array of diving statistics and information is calculated and displayed, like the user's SAC rate,
    partial pressures of O2, N2 and He, calculated deco information, and many more.</p>
     <p>The dive profiles (and the tank pressure curves) can be visualized in a comprehensive and clean way, that
    provides the user with additional information on relative velocity (and momentary air consumption) during the dive.
@@ -21,9 +21,11 @@
   </description>
   <screenshots>
     <screenshot type="default">
+      <caption>The main interface</caption>
       <image>https://raw.githubusercontent.com/Subsurface/subsurface/master/metainfo/main.png</image>
     </screenshot>
     <screenshot>
+      <caption>The dive planner</caption>
       <image>https://raw.githubusercontent.com/Subsurface/subsurface/master/metainfo/diveplanner.png</image>
     </screenshot>
   </screenshots>
@@ -31,11 +33,17 @@
   <url type="bugtracker">https://github.com/Subsurface/subsurface/issues</url>
   <url type="faq">https://subsurface-divelog.org/faq/</url>
   <url type="help">https://subsurface-divelog.org/documentation/</url>
+  <url type="donation">https://github.com/sponsors/subsurface</url>
   <url type="translate">https://www.transifex.com/subsurface/subsurface/</url>
+  <url type="vcs-browser">https://github.com/subsurface/subsurface</url>
+  <url type="contribute">https://github.com/subsurface/subsurface/blob/master/CONTRIBUTING.md</url>
+  <launchable type="desktop-id">subsurface.desktop</launchable>
   <releases>
     <release version="" date="" />
   </releases>
-  <developer_name>The Subsurface development team</developer_name>
+  <developer id="subsurface-divelog.org">
+    <name>The Subsurface development team</name>
+  </developer>
   <update_contact>subsurface@subsurface-divelog.org</update_contact>
   <content_rating type="oars-1.1" />
   <provides>
