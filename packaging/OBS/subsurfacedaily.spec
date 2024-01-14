@@ -127,11 +127,11 @@ mkdir -p %{buildroot}/%{_libdir}
 (cd googlemaps/build ; make install_target INSTALL_ROOT=$RPM_BUILD_ROOT )
 (cd subsurface-build ; make VERBOSE=1 install )
 install subsurface.debug %{buildroot}%{_bindir}
-install appdata/subsurface.appdata.xml %{buildroot}%{_datadir}/metainfo
+install metainfo/subsurface.metainfo.xml %{buildroot}%{_datadir}/metainfo
 %if 0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desktop
-cat %{buildroot}%{_datadir}/metainfo/subsurface.appdata.xml
-appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/subsurface.appdata.xml
+cat %{buildroot}%{_datadir}/metainfo/subsurface.metainfo.xml
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/subsurface.metainfo.xml
 %else
 %suse_update_desktop_file -r subsurface Utility DesktopUtility
 %endif
@@ -152,7 +152,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/subsurfac
 %{_libdir}/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so
 %{_datadir}/applications/subsurface.desktop
 %dir %{_datadir}/metainfo
-%{_datadir}/metainfo/subsurface.appdata.xml
+%{_datadir}/metainfo/subsurface.metainfo.xml
 %{_datadir}/icons/hicolor/*/apps/subsurface-icon.*
 %{_datadir}/subsurface/
 

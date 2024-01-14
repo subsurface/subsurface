@@ -661,7 +661,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 			mkdir -p appdir/usr/share/metainfo
 			mkdir -p appdir/usr/share/icons/hicolor/256x256/apps
 			cp -r ./install-root/* ./appdir/usr
-			cp ${SRC_DIR}/appdata/subsurface.appdata.xml appdir/usr/share/metainfo/
+			cp ${SRC_DIR}/metainfo/subsurface.metainfo.xml appdir/usr/share/metainfo/
 			cp ${SRC_DIR}/icons/subsurface-icon.png appdir/usr/share/icons/hicolor/256x256/apps/
 		fi
 	fi

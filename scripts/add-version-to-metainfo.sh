@@ -10,4 +10,4 @@ DATE=$(git log -1 --format="%ct" | xargs -I{} date -d @{} +%Y-%m-%d)
 if [ "$DATE" = "" ] ; then
 	DATE=$(cat "$SCRIPT_DIR"/../.gitdate)
 fi
-sed -e "s|<release version=\"\" date=\"\" />|<release version=\"$VERSION\" date=\"$DATE\" />|" appdata/subsurface.appdata.xml.in > appdata/subsurface.appdata.xml
+sed -e "s|<release version=\"\" date=\"\" />|<release version=\"$VERSION\" date=\"$DATE\" />|" metainfo/subsurface.metainfo.xml.in > metainfo/subsurface.metainfo.xml
