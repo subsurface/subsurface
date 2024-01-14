@@ -96,7 +96,7 @@ mkdir -p %{buildroot}/%{_libdir}
 ( cd googlemaps/build ; make install_target INSTALL_ROOT=%{buildroot} )
 %cmake_install
 install subsurface.debug %{buildroot}%{_bindir}
-install appdata/subsurface.appdata.xml %{buildroot}%{_datadir}/metainfo
+install metainfo/subsurface.metainfo.xml %{buildroot}%{_datadir}/metainfo
 desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desktop
 
 %fdupes %{buildroot}
@@ -116,7 +116,7 @@ desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desk
 %{_libdir}/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so
 %{_datadir}/applications/subsurface.desktop
 %dir %{_datadir}/metainfo
-%{_datadir}/metainfo/subsurface.appdata.xml
+%{_datadir}/metainfo/subsurface.metainfo.xml
 %{_datadir}/icons/hicolor/*/apps/subsurface-icon.*
 %{_datadir}/subsurface/
 
