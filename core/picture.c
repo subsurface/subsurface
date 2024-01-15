@@ -123,7 +123,7 @@ static bool dive_check_picture_time(const struct dive *d, timestamp_t timestamp)
  * The caller is responsible for actually adding the picture to the dive.
  * If no appropriate dive was found, no picture is created and NULL is returned.
  */
-struct picture *create_picture(const char *filename, int shift_time, bool match_all, struct dive **dive)
+struct picture *create_picture(const char *filename, timestamp_t shift_time, bool match_all, struct dive **dive)
 {
 	struct metadata metadata;
 	timestamp_t timestamp;
@@ -146,7 +146,7 @@ struct picture *create_picture(const char *filename, int shift_time, bool match_
 	return picture;
 }
 
-bool picture_check_valid_time(timestamp_t timestamp, int shift_time)
+bool picture_check_valid_time(timestamp_t timestamp, timestamp_t shift_time)
 {
 	int i;
 	struct dive *dive;
