@@ -123,7 +123,7 @@ private:
 class OstcFirmwareCheck : public QObject {
 	Q_OBJECT
 public:
-	explicit OstcFirmwareCheck(QString product);
+	explicit OstcFirmwareCheck(const QString &product);
 	void checkLatest(QWidget *parent, device_data_t *data);
 public
 slots:

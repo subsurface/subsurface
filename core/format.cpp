@@ -33,7 +33,7 @@ enum length_modifier_t {
 };
 
 // Helper function to insert '+' or ' ' after last space
-static QString insert_sign(QString s, char sign)
+static QString insert_sign(const QString &s, char sign)
 {
 	// For space we can take a shortcut: insert in front
 	if (sign == ' ')

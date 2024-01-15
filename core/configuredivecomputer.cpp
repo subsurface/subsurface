@@ -65,7 +65,7 @@ static QString writeGasDetails(gas g)
 		}).join(QLatin1Char(','));
 }
 
-bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data)
+bool ConfigureDiveComputer::saveXMLBackup(const QString &fileName, DeviceDetails *details, device_data_t *data)
 {
 	QString xml = "";
 	QString vendor = data->vendor;
@@ -192,7 +192,7 @@ bool ConfigureDiveComputer::saveXMLBackup(QString fileName, DeviceDetails *detai
 	return true;
 }
 
-bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *details)
+bool ConfigureDiveComputer::restoreXMLBackup(const QString &fileName, DeviceDetails *details)
 {
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly)) {
@@ -491,7 +491,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(QString fileName, DeviceDetails *de
 	return true;
 }
 
-void ConfigureDiveComputer::startFirmwareUpdate(QString fileName, device_data_t *data, bool forceUpdate)
+void ConfigureDiveComputer::startFirmwareUpdate(const QString &fileName, device_data_t *data, bool forceUpdate)
 {
 	setState(FWUPDATE);
 	if (firmwareThread)

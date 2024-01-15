@@ -186,7 +186,7 @@ Thumbnailer::Thumbnail Thumbnailer::getPictureThumbnailFromStream(QDataStream &s
 {
 	QImage res;
 	stream >> res;
-	return { res, MEDIATYPE_PICTURE, zero_duration };
+	return { std::move(res), MEDIATYPE_PICTURE, zero_duration };
 }
 
 void Thumbnailer::markVideoThumbnail(QImage &img)
@@ -362,7 +362,7 @@ void Thumbnailer::frameExtracted(QString filename, QImage thumbnail, duration_t 
 		addVideoThumbnailToCache(filename, duration, thumbnail, offset);
 		QMutexLocker l(&lock);
 		workingOn.remove(filename);
-		emit thumbnailChanged(filename, thumbnail, duration);
+		emit thumbnailChanged(filename, std::move(thumbnail), duration);
 	}
 }
 

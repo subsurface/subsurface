@@ -12,7 +12,7 @@ class QTextStream;
 
 void find_all_templates();
 void set_bundled_templates_as_read_only();
-void copy_bundled_templates(QString src, QString dst, QStringList *templateBackupList);
+void copy_bundled_templates(QString src, const QString &dst, QStringList *templateBackupList);
 
 enum token_t {LITERAL, FORSTART, FORSTOP, BLOCKSTART, BLOCKSTOP, IFSTART, IFSTOP, PARSERERROR};
 

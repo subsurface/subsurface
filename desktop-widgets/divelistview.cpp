@@ -823,7 +823,7 @@ void DiveListView::loadImages()
 	matchImagesToDives(fileNames);
 }
 
-void DiveListView::matchImagesToDives(QStringList fileNames)
+void DiveListView::matchImagesToDives(const QStringList &fileNames)
 {
 	ShiftImageTimesDialog shiftDialog(this, fileNames);
 	shiftDialog.setOffset(lastImageTimeOffset());
@@ -843,9 +843,9 @@ void DiveListView::matchImagesToDives(QStringList fileNames)
 
 		auto it = std::find_if(pics.begin(), pics.end(), [d](const Command::PictureListForAddition &l) { return l.d == d; });
 		if (it == pics.end())
-			pics.push_back(Command::PictureListForAddition { d, { pObj } });
+			pics.push_back(Command::PictureListForAddition { d, { std::move(pObj) } });
 		else
-			it->pics.push_back(pObj);
+			it->pics.push_back(std::move(pObj));
 	}
 
 	if (pics.empty())
@@ -862,7 +862,7 @@ void DiveListView::loadWebImages()
 	loadImagesFromURLs(urlDialog.url());
 }
 
-void DiveListView::loadImagesFromURLs(QString urls)
+void DiveListView::loadImagesFromURLs(const QString &urls)
 {
 	QStringList validUrls;
 	QStringList urlList = urls.split('\n');

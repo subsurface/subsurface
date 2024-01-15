@@ -59,7 +59,7 @@ void set_bundled_templates_as_read_only()
 		QFile::setPermissions(pathUser + QDir::separator() + f, QFileDevice::ReadOwner | QFileDevice::ReadUser);
 }
 
-void copy_bundled_templates(QString src, QString dst, QStringList *templateBackupList)
+void copy_bundled_templates(QString src, const QString &dst, QStringList *templateBackupList)
 {
 	QDir dir(src);
 	if (!dir.exists())

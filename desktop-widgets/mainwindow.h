@@ -67,8 +67,8 @@ public:
 		Count
 	};
 
-	void loadFiles(const QStringList files);
-	void importFiles(const QStringList importFiles);
+	void loadFiles(const QStringList &files);
+	void importFiles(const QStringList &importFiles);
 	void setToolButtonsEnabled(bool enabled);
 	void setApplicationState(ApplicationState state);
 	void enterPreviousState();

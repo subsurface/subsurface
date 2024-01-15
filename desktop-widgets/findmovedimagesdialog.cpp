@@ -94,7 +94,8 @@ struct Dir {
 	double progressFrom, progressTo;
 };
 
-QVector<FindMovedImagesDialog::Match> FindMovedImagesDialog::learnImages(const QString &rootdir, int maxRecursions, QVector<QString> imagePathsIn)
+QVector<FindMovedImagesDialog::Match> FindMovedImagesDialog::learnImages(const QString &rootdir, int maxRecursions,
+									 QVector<QString> imagePathsIn)
 {
 	QMap<QString, ImageMatch> matches;
 
@@ -193,7 +194,7 @@ void FindMovedImagesDialog::on_scanButton_clicked()
 	QFuture<QVector<Match>> future = QtConcurrent::run(
 			// Note that we capture everything but "this" by copy to avoid dangling references.
 			[this, dirName, imagePaths]()
-			{ return learnImages(dirName, 20, imagePaths);}
+			{ return learnImages(dirName, 20, std::move(imagePaths)); }
 	);
 	watcher.setFuture(future);
 }

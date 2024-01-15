@@ -179,7 +179,7 @@ static QString displaySac(const struct dive *d, bool units)
 	if (!d->sac)
 		return QString();
 	QString s = get_volume_string(d->sac, units);
-	return units ? s + gettextFromC::tr("/min") : s;
+	return units ? s + gettextFromC::tr("/min") : std::move(s);
 }
 
 static QString displayWeight(const struct dive *d, bool units)

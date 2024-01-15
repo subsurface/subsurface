@@ -234,7 +234,7 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	if (!change.newShown.empty() || !change.newHidden.empty())
 		emit diveListNotifier.numShownChanged();
 
-	return { res, sites };
+	return { std::move(res), std::move(sites) };
 }
 
 // This helper function renumbers dives according to an array of id/number pairs.
