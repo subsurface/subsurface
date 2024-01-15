@@ -145,10 +145,10 @@ bool DiveFilter::showDive(const struct dive *d) const
 void DiveFilter::startFilterDiveSites(QVector<dive_site *> ds)
 {
 	if (++diveSiteRefCount > 1) {
-		setFilterDiveSite(ds);
+		setFilterDiveSite(std::move(ds));
 	} else {
 		std::sort(ds.begin(), ds.end());
-		dive_sites = ds;
+		dive_sites = std::move(ds);
 		// When switching into dive site mode, reload the dive sites.
 		// TODO: why here? why not catch the filterReset signal in the map widget
 #ifdef MAP_SUPPORT
@@ -176,7 +176,7 @@ void DiveFilter::setFilterDiveSite(QVector<dive_site *> ds)
 	std::sort(ds.begin(), ds.end());
 	if (ds == dive_sites)
 		return;
-	dive_sites = ds;
+	dive_sites = std::move(ds);
 
 	emit diveListNotifier.filterReset();
 #ifdef MAP_SUPPORT

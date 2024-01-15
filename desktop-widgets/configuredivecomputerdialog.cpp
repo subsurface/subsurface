@@ -267,7 +267,7 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	settings.endGroup();
 }
 
-OstcFirmwareCheck::OstcFirmwareCheck(QString product) : parent(0)
+OstcFirmwareCheck::OstcFirmwareCheck(const QString &product) : parent(0)
 {
 	QUrl url;
 	memset(&devData, 1, sizeof(devData));

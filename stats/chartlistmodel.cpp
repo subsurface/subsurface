@@ -35,8 +35,8 @@ void ChartListModel::initIcon(ChartSubType type, const char *name, int iconSize)
 	QPixmap iconWarning = icon.copy();
 	QPainter painter(&iconWarning);
 	painter.drawPixmap(0, 0, warningPixmap);
-	subTypeIcons[(size_t)type].normal = icon;
-	subTypeIcons[(size_t)type].warning = iconWarning;
+	subTypeIcons[(size_t)type].normal = std::move(icon);
+	subTypeIcons[(size_t)type].warning = std::move(iconWarning);
 }
 
 const QPixmap &ChartListModel::getIcon(ChartSubType type, bool warning) const

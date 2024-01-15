@@ -710,7 +710,7 @@ static std::vector<QString> makePercentageLabels(int count, int total, bool isHo
 	if (isHorizontal)
 		return { QString("%1 (%2)").arg(countString, percentageString) };
 	else
-		return { countString, percentageString };
+		return { std::move(countString), std::move(percentageString) };
 }
 
 // From a list of dive bins, make (dives, label) pairs, where the label

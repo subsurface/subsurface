@@ -34,9 +34,9 @@ public:
 	states currentState;
 	void saveDeviceDetails(DeviceDetails *details, device_data_t *data);
 	void fetchDeviceDetails();
-	bool saveXMLBackup(QString fileName, DeviceDetails *details, device_data_t *data);
-	bool restoreXMLBackup(QString fileName, DeviceDetails *details);
-	void startFirmwareUpdate(QString fileName, device_data_t *data, bool forceUpdate);
+	bool saveXMLBackup(const QString &fileName, DeviceDetails *details, device_data_t *data);
+	bool restoreXMLBackup(const QString &fileName, DeviceDetails *details);
+	void startFirmwareUpdate(const QString &fileName, device_data_t *data, bool forceUpdate);
 	void resetSettings(device_data_t *data);
 
 	QString dc_open(device_data_t *data);

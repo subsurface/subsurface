@@ -515,7 +515,7 @@ QString TextHyperlinkEventFilter::tryToFormulateUrl(QTextCursor *cursor)
 		maybeUrlStr = left + right;
 	}
 
-	return stringMeetsOurUrlRequirements(maybeUrlStr) ? maybeUrlStr : QString();
+	return stringMeetsOurUrlRequirements(maybeUrlStr) ? std::move(maybeUrlStr) : QString();
 }
 
 QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, bool searchBackwards)

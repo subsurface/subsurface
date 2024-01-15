@@ -361,7 +361,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	ui(new Ui::DiveLogImportDialog)
 {
 	ui->setupUi(this);
-	fileNames = fn;
+	fileNames = std::move(fn);
 	column = 0;
 	delta = "0";
 	hw = "";

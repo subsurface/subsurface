@@ -1273,7 +1273,7 @@ void MainWindow::setTitle()
 	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved + shown);
 }
 
-void MainWindow::importFiles(const QStringList fileNames)
+void MainWindow::importFiles(const QStringList &fileNames)
 {
 	if (fileNames.isEmpty())
 		return;
@@ -1289,7 +1289,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 	Command::importDives(&log, IMPORT_MERGE_ALL_TRIPS, source);
 }
 
-void MainWindow::loadFiles(const QStringList fileNames)
+void MainWindow::loadFiles(const QStringList &fileNames)
 {
 	if (fileNames.isEmpty()) {
 		refreshDisplay();
@@ -1359,7 +1359,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 	}
 
 	if (csvFiles.size()) {
-		DiveLogImportDialog diveLogImport(csvFiles, this);
+		DiveLogImportDialog diveLogImport(std::move(csvFiles), this);
 		diveLogImport.exec();
 	}
 }

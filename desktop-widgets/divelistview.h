@@ -76,8 +76,8 @@ private:
 	void updateLastImageTimeOffset(int offset);
 	int lastImageTimeOffset();
 	void addToTrip(int delta);
-	void matchImagesToDives(QStringList fileNames);
-	void loadImagesFromURLs(QString urls);
+	void matchImagesToDives(const QStringList &fileNames);
+	void loadImagesFromURLs(const QString &urls);
 	bool eventFilter(QObject *, QEvent *) override;
 	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void contextMenuEvent(QContextMenuEvent *event) override;
