@@ -542,11 +542,11 @@ void PlannerDetails::setPlanNotes(QString plan)
 
 PlannerWidgets::PlannerWidgets() :
 	planned_dive(alloc_dive()),
+	gasModel(std::make_unique<GasSelectionModel>()),
+	diveTypeModel(std::make_unique<DiveTypeSelectionModel>()),
 	plannerWidget(*planned_dive, this),
 	plannerSettingsWidget(this)
 {
-	gasModel = std::make_unique<GasSelectionModel>();
-	diveTypeModel = std::make_unique<DiveTypeSelectionModel>();
 	connect(plannerDetails.printPlan(), &QPushButton::pressed, this, &PlannerWidgets::printDecoPlan);
 	connect(DivePlannerPointsModel::instance(), &DivePlannerPointsModel::calculatedPlanNotes,
 		&plannerDetails, &PlannerDetails::setPlanNotes);
