@@ -6,7 +6,6 @@
 #include "gettext.h"
 #include <limits.h>
 #include <string.h>
-#include <assert.h>
 #include <stdlib.h>
 
 #include "dive.h"
@@ -1156,7 +1155,8 @@ static int calculate_ccr_po2(struct plot_data *entry, const struct divecomputer 
 				return sump / 3;
 		}
 	default: // This should not happen
-		assert(np <= 3);
+		// assert(np <= 3);
+		printf("calculate_ccr_po2: np > 3 -- that's a problem, but maybe not enough to crash the app\n");
 		return 0;
 	}
 }
