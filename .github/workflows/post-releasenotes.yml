@@ -33,4 +33,4 @@ jobs:
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
         files: gh_release_notes.md
-        body_path: gh_release_notes
+        body_path: gh_release_notes.md
