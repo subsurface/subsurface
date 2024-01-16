@@ -281,7 +281,7 @@ void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, durat
 			addDurationToThumbnail(thumbnail, duration);	// If we know the duration paint it on top of the thumbnail
 			pictures[i].length = duration;
 		}
-		pictures[i].image = thumbnail;
+		pictures[i].image = std::move(thumbnail);
 		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
 	}
 }
@@ -295,7 +295,7 @@ void DivePictureModel::pictureOffsetChanged(dive *d, const QString filenameIn, o
 	auto to = std::find_if(from, pictures.end(), [d](const PictureEntry &e) { return e.d != d; });
 
 	// Find picture with the given filename
-	auto oldPos = std::find_if(from, to, [filename](const PictureEntry &e) { return e.filename == filename; });
+	auto oldPos = std::find_if(from, to, [&filename](const PictureEntry &e) { return e.filename == filename; });
 	if (oldPos == to)
 		return;
 

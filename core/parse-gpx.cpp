@@ -8,7 +8,7 @@
 // Find the coordinates at the time specified in coords.start_dive
 // by searching the gpx file "fileName". Here is a typical trkpt element in GPX:
 // <trkpt lat="-26.84" lon="32.88"><ele>-53.7</ele><time>2017-08-06T04:56:42Z</time></trkpt>
-int getCoordsFromGPXFile(struct dive_coords *coords, QString fileName)
+int getCoordsFromGPXFile(struct dive_coords *coords, const QString &fileName)
 {
 	struct tm tm1;
 	time_t trkpt_time = 0;

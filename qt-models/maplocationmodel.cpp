@@ -22,14 +22,12 @@ static QString siteMapDisplayName(const char *sitename)
 	const char Separator = '/';
 	QString fullname(sitename);
 
-	if (!qPrefDisplay::map_short_names() ) {
+	if (!qPrefDisplay::map_short_names() )
 		return fullname;
-	}
 
 	QString name = fullname.section(Separator, -1).trimmed();
-	if (name.isEmpty()) {
-		name = fullname;
-	}
+	if (name.isEmpty())
+		name = std::move(fullname);
 	return name;
 }
 

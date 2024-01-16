@@ -530,7 +530,7 @@ void ConfigureDiveComputer::setState(ConfigureDiveComputer::states newState)
 void ConfigureDiveComputer::setError(QString err)
 {
 	lastError = err;
-	emit error(err);
+	emit error(std::move(err));
 }
 
 void ConfigureDiveComputer::readThreadFinished()

@@ -404,7 +404,7 @@ void TabDiveNotes::on_notes_editingFinished()
 		return;
 
 	QString html = ui.notes->toHtml();
-	QString notes = isHtml(html) ? html : ui.notes->toPlainText();
+	QString notes = isHtml(html) ? std::move(html) : ui.notes->toPlainText();
 
 	if (currentTrip)
 		Command::editTripNotes(currentTrip, notes);

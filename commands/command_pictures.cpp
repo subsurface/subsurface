@@ -113,7 +113,7 @@ static std::vector<PictureListForDeletion> addPictures(std::vector<PictureListFo
 		if (!toRemove.filenames.empty())
 			res.push_back(toRemove);
 		invalidate_dive_cache(list.d);
-		emit diveListNotifier.picturesAdded(list.d, picsForSignal);
+		emit diveListNotifier.picturesAdded(list.d, std::move(picsForSignal));
 	}
 	picturesToAdd.clear();
 	return res;

@@ -15,6 +15,6 @@ struct dive_coords {         // This structure holds important information after
 	int64_t timeZone_offset;      // UTC international time zone offset of dive site
 };
 
-int getCoordsFromGPXFile(dive_coords *coords, QString fileName);
+int getCoordsFromGPXFile(dive_coords *coords, const QString &fileName);
 
 #endif

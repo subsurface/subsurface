@@ -326,7 +326,7 @@ void ColumnNameResult::setColumnValues(QList<QStringList> columns)
 	endInsertColumns();
 
 	beginInsertRows(QModelIndex(), 0, columns.count()-1);
-	columnValues = columns;
+	columnValues = std::move(columns);
 	endInsertRows();
 }
 
@@ -799,10 +799,11 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	}
 
 	if (rows > 0)
-		resultModel->setColumnValues(fileColumns);
-	for (int i = 0; i < headers.count(); i++)
+		resultModel->setColumnValues(std::move(fileColumns));
+	for (int i = 0; i < headers.count(); i++) {
 		if (!headers.at(i).isEmpty())
 			resultModel->setData(resultModel->index(0, i),headers.at(i),Qt::EditRole);
+	}
 }
 
 void DiveLogImportDialog::setup_csv_params(QStringList r, xml_params &params)

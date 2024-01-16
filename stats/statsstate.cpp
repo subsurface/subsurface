@@ -537,8 +537,9 @@ void StatsState::featureChanged(int id, bool state)
 // Creates the new chart-type from the current chart-type and a list of possible chart types.
 // If the flag "varChanged" is true, the current chart-type will be changed if the
 // current chart-type is undesired.
-const ChartTypeDesc &newChartType(ChartType type, std::vector<std::pair<const ChartTypeDesc &, bool>> charts,
-			      bool varChanged)
+static const ChartTypeDesc &newChartType(ChartType type,
+					 const std::vector<std::pair<const ChartTypeDesc &, bool>> &charts,
+					 bool varChanged)
 {
 	for (auto [desc, warn]: charts) {
 		// Found it, but if the axis was changed, we change anyway if the chart is "undesired"

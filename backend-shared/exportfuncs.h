@@ -17,7 +17,7 @@ void exportProfile(QString filename, bool selected_only, ExportCallback &cb);
 void export_TeX(const char *filename, bool selected_only, bool plain, ExportCallback &cb);
 void export_depths(const char *filename, bool selected_only);
 std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly);
-QFuture<int> exportUsingStyleSheet(QString filename, bool doExport, int units, QString stylesheet, bool anonymize);
+QFuture<int> exportUsingStyleSheet(const QString &filename, bool doExport, int units, const QString &stylesheet, bool anonymize);
 
 // prepareDivesForUploadDiveLog
 // prepareDivesForUploadDiveShare

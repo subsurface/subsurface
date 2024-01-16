@@ -1354,9 +1354,8 @@ void MainWindow::on_actionImportDiveLog_triggered()
 			logFiles.append(fn);
 	}
 
-	if (logFiles.size()) {
+	if (logFiles.size())
 		importFiles(logFiles);
-	}
 
 	if (csvFiles.size()) {
 		DiveLogImportDialog diveLogImport(std::move(csvFiles), this);
@@ -1553,9 +1552,8 @@ void MainWindow::hideProgressBar()
 	}
 }
 
-void MainWindow::divesChanged(const QVector<dive *> &dives, DiveField field)
+void MainWindow::divesChanged(const QVector<dive *> &dives, DiveField)
 {
-	Q_UNUSED(field)
 	for (struct dive *d: dives) {
 		qDebug() << "dive #" << d->number << "changed, cache is" << (dive_cache_is_valid(d) ? "valid" : "invalidated");
 		// a brute force way to deal with that would of course be to call

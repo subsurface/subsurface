@@ -1386,7 +1386,7 @@ void DiveTripModelTree::divesSelectedSlot(const QVector<dive *> &divesIn, dive *
 	QVector<QModelIndex> indices;
 	indices.reserve(dives.count());
 
-	processByTrip(dives, [this, &indices] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+	processByTrip(std::move(dives), [this, &indices] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesSelectedTrip(trip, divesInTrip, indices); });
 
 	emit divesSelected(indices, diveToIdx(currentDive), currentDC);

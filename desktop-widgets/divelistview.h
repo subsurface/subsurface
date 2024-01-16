@@ -73,7 +73,7 @@ private:
 	void restoreExpandedRows(const std::vector<int> &);
 	int lastVisibleColumn();
 	void selectTrip(dive_trip *trip);
-	void updateLastImageTimeOffset(int offset);
+	void updateLastImageTimeOffset(timestamp_t offset);
 	int lastImageTimeOffset();
 	void addToTrip(int delta);
 	void matchImagesToDives(const QStringList &fileNames);

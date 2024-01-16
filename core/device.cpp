@@ -81,7 +81,7 @@ static int addDC(std::vector<device> &dcs, const std::string &m, const std::stri
 		return it - dcs.begin();
 	} else {
 		dev.deviceId = calculate_string_hash(s.c_str());
-		dcs.insert(it, dev);
+		it = dcs.insert(it, dev);
 		return it - dcs.begin();
 	}
 }
