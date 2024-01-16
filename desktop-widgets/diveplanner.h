@@ -94,11 +94,11 @@ slots:
 public:
 	void repopulateGasModel();
 	OwningDivePtr planned_dive;
+	std::unique_ptr<GasSelectionModel> gasModel;
+	std::unique_ptr<DiveTypeSelectionModel> diveTypeModel;
 	DivePlannerWidget plannerWidget;
 	PlannerSettingsWidget plannerSettingsWidget;
 	PlannerDetails plannerDetails;
-	std::unique_ptr<GasSelectionModel> gasModel;
-	std::unique_ptr<DiveTypeSelectionModel> diveTypeModel;
 };
 
 #endif // DIVEPLANNER_H
