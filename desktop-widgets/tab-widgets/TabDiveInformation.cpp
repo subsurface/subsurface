@@ -155,7 +155,7 @@ void TabDiveInformation::updateProfile()
 	ui->diveTimeText->setText(get_dive_duration_string(currentDive->duration.seconds, tr("h"), tr("min"), tr("sec"),
 			" ", currentDive->dc.divemode == FREEDIVE));
 
-	ui->sacText->setText(currentDive->cylinders.nr > 0 && mean[0] && currentDive->dc.divemode != CCR ? SACs : QString());
+	ui->sacText->setText(currentDive->cylinders.nr > 0 && mean[0] && currentDive->dc.divemode != CCR ? std::move(SACs) : QString());
 
 	if (currentDive->surface_pressure.mbar == 0) {
 		ui->atmPressVal->clear();			// If no atm pressure for dive then clear text box

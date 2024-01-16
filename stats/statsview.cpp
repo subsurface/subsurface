@@ -892,7 +892,7 @@ void StatsView::plotValueChart(const std::vector<dive *> &dives,
 		if (res.isValid()) {
 			double height = res.get(valueAxisOperation);
 			QString value = QString("%L1").arg(height, 0, 'f', decimals);
-			std::vector<QString> label = std::vector<QString> { value };
+			std::vector<QString> label = std::vector<QString> { std::move(value) };
 			items.push_back({ pos - 0.5, pos + 0.5, height, label,
 					  categoryBinner->formatWithUnit(*bin), res });
 		}
@@ -1080,7 +1080,7 @@ HistogramAxis *StatsView::createHistogramAxis(const QString &name, const StatsBi
 		QString label = binner.formatLowerBound(*bin);
 		double lowerBound = binner.lowerBoundToFloat(*bin);
 		bool prefer = binner.preferBin(*bin);
-		labels.push_back({ label, lowerBound, prefer });
+		labels.push_back({ std::move(label), lowerBound, prefer });
 	}
 
 	const StatsBin &lastBin = *bins.back().bin;
@@ -1129,7 +1129,7 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
 		std::vector<QString> label = makePercentageLabels((int)dives.size(), total, isHorizontal);
 
-		items.push_back({ lowerBound, upperBound, std::move(dives), label,
+		items.push_back({ lowerBound, upperBound, std::move(dives), std::move(label),
 				  categoryBinner->formatWithUnit(*bin), total });
 	}
 

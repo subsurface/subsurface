@@ -777,8 +777,8 @@ int parseDurationToSeconds(const QString &text)
 			seconds = numOnly.right(numOnly.length() - minutes.length() - 1);
 		}
 	} else {
-		hours = "0";
-		minutes = numOnly;
+		hours = QStringLiteral("0");
+		minutes = std::move(numOnly);
 	}
 	secs = lrint(hours.toDouble() * 3600 + minutes.toDouble() * 60 + seconds.toDouble());
 	return secs;

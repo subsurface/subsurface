@@ -279,7 +279,7 @@ void ValueAxis::updateLabels()
 {
 	QLocale loc;
 	auto [minString, maxString] = getFirstLastLabel();
-	int numTicks = guessNumTicks({ minString, maxString});
+	int numTicks = guessNumTicks({ std::move(minString), std::move(maxString)});
 
 	// Use full decimal increments
 	double height = max - min;

@@ -329,14 +329,14 @@ QString StatsVariable::nameWithUnit() const
 {
 	QString s = name();
 	QString symb = unitSymbol();
-	return symb.isEmpty() ? s : QStringLiteral("%1 [%2]").arg(s, symb);
+	return symb.isEmpty() ? std::move(s) : QStringLiteral("%1 [%2]").arg(s, symb);
 }
 
 QString StatsVariable::nameWithBinnerUnit(const StatsBinner &binner) const
 {
 	QString s = name();
 	QString symb = binner.unitSymbol();
-	return symb.isEmpty() ? s : QStringLiteral("%1 [%2]").arg(s, symb);
+	return symb.isEmpty() ? std::move(s) : QStringLiteral("%1 [%2]").arg(s, symb);
 }
 
 const StatsBinner *StatsVariable::getBinner(int idx) const
@@ -551,7 +551,7 @@ std::vector<StatsBinValue<T>> bin_convert(const StatsVariable &variable, const S
 		T v = func(dives);
 		if (is_invalid_value(v) && (res.empty() || !fill_empty))
 			continue;
-		res.push_back({ std::move(bin), v });
+		res.push_back({ std::move(bin), std::move(v) });
 	}
 	if (res.empty())
 		return res;

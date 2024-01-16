@@ -1312,7 +1312,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 			disclaimerBegin = disclaimer.left(disclaimerMid);
 			disclaimerEnd = disclaimer.mid(disclaimerMid + 2);
 		} else {
-			disclaimerBegin = disclaimer;
+			disclaimerBegin = std::move(disclaimer);
 		}
 		int disclaimerPositionStart = oldnotes.indexOf(disclaimerBegin);
 		if (disclaimerPositionStart >= 0) {

@@ -275,7 +275,7 @@ FullTextResult FullText::find(const FullTextQuery &q, StringFilterMode mode) con
 				[&res2] (dive *d) { return std::find(res2.begin(), res2.end(), d) == res2.end(); }), res.end());
 	}
 
-	return { res };
+	return { std::move(res) };
 }
 
 FullTextQuery &FullTextQuery::operator=(const QString &s)

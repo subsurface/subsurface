@@ -15,6 +15,7 @@
 
 CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableModel(parent),
 	d(nullptr),
+	dcNr(-1),
 	inPlanner(planner),
 	numRows(0),
 	tempRow(-1),

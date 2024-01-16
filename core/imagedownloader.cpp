@@ -42,11 +42,11 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	QString filename = reply->request().attribute(QNetworkRequest::User).toString();
 
 	if (reply->error() != QNetworkReply::NoError) {
-		emit failed(filename);
+		emit failed(std::move(filename));
 	} else {
 		QByteArray imageData = reply->readAll();
 		if (imageData.isEmpty()) {
-			emit failed(filename);
+			emit failed(std::move(filename));
 		} else {
 			QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
 			QDir dir(path);
@@ -63,7 +63,7 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 				imageFile.close();
 				learnPictureFilename(filename, imageFile.fileName());
 			}
-			emit loaded(filename);
+			emit loaded(std::move(filename));
 		}
 	}
 
@@ -353,7 +353,7 @@ Thumbnailer::Thumbnail Thumbnailer::addUnknownThumbnailToCache(const QString &pi
 void Thumbnailer::frameExtracted(QString filename, QImage thumbnail, duration_t duration, duration_t offset)
 {
 	if (thumbnail.isNull()) {
-		frameExtractionFailed(filename, duration);
+		frameExtractionFailed(std::move(filename), duration);
 		return;
 	} else {
 		int size = maxThumbnailSize();

@@ -938,11 +938,12 @@ int DiveListView::lastImageTimeOffset()
 	return offset;
 }
 
-void DiveListView::updateLastImageTimeOffset(const int offset)
+void DiveListView::updateLastImageTimeOffset(timestamp_t offset)
 {
 	QSettings s;
 	s.beginGroup("MainWindow");
-	s.setValue("LastImageTimeOffset", offset);
+	// Can't create a QVariant from int64_t, for whatever reason.
+	s.setValue("LastImageTimeOffset", static_cast<long long>(offset));
 }
 
 void DiveListView::mouseDoubleClickEvent(QMouseEvent*)

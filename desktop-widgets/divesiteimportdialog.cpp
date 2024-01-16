@@ -13,7 +13,7 @@
 // Caller keeps ownership of "imported". The contents of "imported" will be consumed on execution of the dialog.
 // On return, it will be empty.
 DivesiteImportDialog::DivesiteImportDialog(struct dive_site_table &imported, QString source, QWidget *parent) : QDialog(parent),
-	importedSource(source)
+	importedSource(std::move(source))
 {
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);

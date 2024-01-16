@@ -112,7 +112,7 @@ void VideoFrameExtractor::processItem(QString originalFilename, QString filename
 		return fail(originalFilename, duration, true);
 	}
 
-	emit extracted(originalFilename, img, duration, position);
+	emit extracted(originalFilename, std::move(img), duration, position);
 	QMutexLocker l(&lock);
 	workingOn.remove(originalFilename);
 }
