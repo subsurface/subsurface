@@ -15,8 +15,10 @@
  */
 bool isobaric_counterdiffusion(struct gasmix oldgasmix, struct gasmix newgasmix, struct icd_data *results)
 {
-	if (!prefs.show_icd)
+	if (!prefs.show_icd) {
+		results->dN2 = results->dHe = 0;
 		return false;
+	}
 	results->dN2 = get_n2(newgasmix) - get_n2(oldgasmix);
 	results->dHe = get_he(newgasmix) - get_he(oldgasmix);
 	return get_he(oldgasmix) > 0 && results->dN2 > 0 && results->dHe < 0 && get_he(oldgasmix) && results->dN2 > 0 && 5 * results->dN2 > -results->dHe;
