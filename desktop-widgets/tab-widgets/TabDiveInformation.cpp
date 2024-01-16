@@ -13,8 +13,18 @@
 #include "core/statistics.h"
 #include "core/divelist.h"
 
+#include <QSignalBlocker>
+
 #define COMBO_CHANGED 0
 #define TEXT_EDITED 1
+
+// Helper function to set index of combobox without emitting a signal
+// that would fire an editing event.
+static void setIndexNoSignal(QComboBox *combobox, int index)
+{
+	QSignalBlocker blocker(combobox);
+	combobox->setCurrentIndex(index);
+}
 
 TabDiveInformation::TabDiveInformation(MainTab *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {
@@ -74,7 +84,7 @@ void TabDiveInformation::clear()
 	ui->atmPressVal->clear();
 	ui->salinityText->clear();
 	ui->waterTypeText->clear();
-	ui->waterTypeCombo->setCurrentIndex(0);
+	setIndexNoSignal(ui->waterTypeCombo, 0);
 }
 
 void TabDiveInformation::divesEdited(int i)
@@ -211,17 +221,17 @@ void TabDiveInformation::updateData(const std::vector<dive *> &, dive *currentDi
 	ui->watertemp->setText(get_temperature_string(currentDive->watertemp, true));
 	ui->airtemp->setText(get_temperature_string(currentDive->airtemp, true));
 	ui->atmPressType->setItemText(1, get_depth_unit());  // Check for changes in depth unit (imperial/metric)
-	ui->atmPressType->setCurrentIndex(0);                // Set the atmospheric pressure combo box to mbar
+	setIndexNoSignal(ui->atmPressType, 0);		     // Set the atmospheric pressure combo box to mbar
 	salinity_value = get_dive_salinity(currentDive);
 	if (salinity_value) {			// Set water type indicator (EN13319 = 1.020 g/l)
 		if (ui->waterTypeCombo->isVisible()) {   // If water salinity is editable then set correct water type in combobox:
-			ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(salinity_value));
+			setIndexNoSignal(ui->waterTypeCombo, updateSalinityComboIndex(salinity_value));
 		} else {         // If water salinity is not editable: show water type as a text label
 			ui->waterTypeText->setText(get_water_type_string(salinity_value));
 		}
 		ui->salinityText->setText(get_salinity_string(salinity_value));
 	} else {
-		ui->waterTypeCombo->setCurrentIndex(-1);
+		setIndexNoSignal(ui->waterTypeCombo, -1);
 		ui->waterTypeText->setText(tr("unknown"));
 		ui->salinityText->clear();
 	}
@@ -273,7 +283,7 @@ void TabDiveInformation::on_waterTypeCombo_activated(int index)
 		break;
 	case DC_WATERTYPE:
 		combobox_salinity = dc_salinity;
-		ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(combobox_salinity));
+		setIndexNoSignal(ui->waterTypeCombo, updateSalinityComboIndex(combobox_salinity));
 		break;
 	default:
 		// the index was set to -1 to indicate an unknown water type
@@ -338,7 +348,7 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 		salinity_value = currentDive->user_salinity;
 	else
 		salinity_value = currentDive->salinity;
-	ui->waterTypeCombo->setCurrentIndex(updateSalinityComboIndex(salinity_value));
+	setIndexNoSignal(ui->waterTypeCombo, updateSalinityComboIndex(salinity_value));
 	ui->salinityText->setText(QString("%L1g/ℓ").arg(salinity_value / 10.0));
 }
 
@@ -376,7 +386,7 @@ void TabDiveInformation::updateMode()
 {
 	divecomputer *currentDC = parent.getCurrentDC();
 	if (currentDC)
-		ui->diveType->setCurrentIndex(currentDC->divemode);
+		setIndexNoSignal(ui->diveType, currentDC->divemode);
 }
 
 void TabDiveInformation::diveModeChanged(int index)
@@ -436,7 +446,7 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 					altitudeVal = altitudeVal * 1000;     // metric: convert altitude from meters to mm
 				atmpress.mbar = altitude_to_pressure((int32_t) altitudeVal); // convert altitude (mm) to pressure (mbar)
 				ui->atmPressVal->setText(QString::number(atmpress.mbar));
-				ui->atmPressType->setCurrentIndex(0);    // reset combobox to mbar
+				setIndexNoSignal(ui->atmPressType, 0);    // reset combobox to mbar
 			} else { // i.e. event == COMBO_CHANGED, that is, "m" or "ft" was selected from combobox
 				 // Show estimated altitude
 				bool ok;
@@ -452,7 +462,7 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 		case 2:          // i.e. event = COMBO_CHANGED, that is, the option "Use dc" was selected from combobox
 			atmpress = calculate_surface_pressure(currentDive);	// re-calculate air pressure from dc data
 			ui->atmPressVal->setText(QString::number(atmpress.mbar)); // display it in text box
-			ui->atmPressType->setCurrentIndex(0);          // reset combobox to mbar
+			setIndexNoSignal(ui->atmPressType, 0);          // reset combobox to mbar
 			break;
 		default:
 			atmpress.mbar = 1013;    // This line should never execute
