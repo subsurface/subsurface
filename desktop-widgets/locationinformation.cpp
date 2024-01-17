@@ -632,7 +632,7 @@ void DiveLocationLineEdit::fixPopupPosition()
 	const int maxVisibleItems = 5;
 	QPoint pos;
 	int rh, w;
-	int h = (view->sizeHintForRow(0) * qMin(maxVisibleItems, view->model()->rowCount()) + 3) + 3;
+	int h = (view->sizeHintForRow(0) * std::min(maxVisibleItems, view->model()->rowCount()) + 3) + 3;
 	QScrollBar *hsb = view->horizontalScrollBar();
 	if (hsb && hsb->isVisible())
 		h += view->horizontalScrollBar()->sizeHint().height();
@@ -650,9 +650,9 @@ void DiveLocationLineEdit::fixPopupPosition()
 
 	int top = pos.y() - rh - screen.top() + 2;
 	int bottom = screen.bottom() - pos.y();
-	h = qMax(h, view->minimumHeight());
+	h = std::max(h, view->minimumHeight());
 	if (h > bottom) {
-		h = qMin(qMax(top, bottom), h);
+		h = std::min(std::max(top, bottom), h);
 		if (top > bottom)
 			pos.setY(pos.y() - h - rh + 2);
 	}

@@ -35,7 +35,7 @@
 QSize DiveListDelegate::sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const
 {
 	const QFontMetrics metrics(qApp->font());
-	return QSize(50, qMax(22, metrics.height()));
+	return QSize(50, std::max(22, metrics.height()));
 }
 
 // Gets the index of the model in the currentRow and column.
