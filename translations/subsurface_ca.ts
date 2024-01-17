@@ -27,7 +27,7 @@
 2011-2024</source>
         <translation>Versió: %1
 
-© Equip de desenvolupament del Subsurface
+© Equip de desenvolupadors del Subsurface
 2011-2024</translation>
     </message>
     <message>
@@ -9400,7 +9400,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2024&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Un programari multiplataforma per a enregistrar un diari de busseig&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger i altres, 2011-2024&lt;/span&gt;</translation>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1&lt;/span&gt;&lt;br&gt;&lt;br&gt;Programari de busseig multiplataforma&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger i altres, 2011-2024&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
