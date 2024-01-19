@@ -1,6 +1,4 @@
-FROM subsurface/android-build-container:5.15.1 as base
-
-FROM ubuntu:22.04 as build
+FROM ubuntu:22.04 as base
 
 RUN apt-get update  && \
     apt-get upgrade -y && \
@@ -11,12 +9,16 @@ RUN apt-get update  && \
     autoconf \
     libtool-bin \
     openjdk-8-jdk \
-    wget
+    wget && \
+    apt-get clean
+
+
+FROM base as build
 
 WORKDIR /android
 
 # Scrape the manually curated Qt install from the previous build image
-COPY --from=base /android/5.15.1 5.15.1
+COPY --from=subsurface/android-build-container:5.15.1 /android/5.15.1 5.15.1
 
 # install, NDK and SDK there, plus the three files from the Subsurface
 # sources that we need to get the prep routines to run
@@ -64,19 +66,8 @@ RUN rm -rf \
 	   android-build-setup.sh \
 	   /usr/lib/gcc
 
-FROM ubuntu:22.04
 
-# Repeat exactly the same step as in the 'build' image above, so it can be reused
-RUN apt-get update  && \
-    apt-get upgrade -y && \
-    apt-get install -y \
-    unzip \
-    git \
-    cmake \
-    autoconf \
-    libtool-bin \
-    openjdk-8-jdk \
-    wget
+FROM base as final
 
 RUN apt-get install -y \
     autoconf \
@@ -107,5 +98,3 @@ COPY --from=build /android/ .
 RUN git config --global --add safe.directory /android/subsurface && \
     git config --global --add safe.directory /android/subsurface/libdivecomputer && \
     git config --global --add safe.directory /android/subsurface/nightly-builds
-
-RUN touch finished-"`date`"
