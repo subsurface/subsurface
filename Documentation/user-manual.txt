@@ -742,8 +742,7 @@ New dive locations can be recorded in one of four ways:
 
 1. xref:S_existing_locations[Typing in known coordinates by hand]
 2. xref:S_dive_map_location[Positioning the dive site flag on the dive map]
-3. xref:S_Subsurface_mobile[Dive site coordinates from the Subsurface-Mobile phone app]
-4. xref:S_GPS[Dive site coordinates from a GPS track]
+3. xref:S_GPS[Dive site coordinates from a GPS track]
 
 [[S_existing_locations]]
 *(1): Enter coordinates by hand* if they are known, using one of
@@ -793,18 +792,9 @@ image::images/Globe_image3.jpg["FIGURE:Location creation panel",align="center"]
 Once the dive location data have been saved, the dive on the Dive List has
 a globe icon immediately to the left of the location name of a particular dive.
 
-[[S_Subsurface_mobile]]
-
-[[S_Using_mobile]]
-*(3): Dive coordinates from a mobile device with GPS using Subsurface-Mobile.*
-Most smartphones have an integrated GPS, useful for collecting the coordinates of dive sites.
-The https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user manual for _Subsurface-mobile_] (accessible from within that app)
-contains detailed instructions for
-performing the collection of GPS data and for managing, uploading and
-synchronising the coordinates with a dive log.
 
 [[S_GPS]]
-*(4): Import coordinates from GPS equipment.* Some divers prefer to take a GPS
+*(3): Import coordinates from GPS equipment.* Some divers prefer to take a GPS
 onto the boat and record a GPS track while diving. Subsurface can extract the
 dive site from this track and store the dive site coordinates as part of the dive log.
 Follow the next steps:
