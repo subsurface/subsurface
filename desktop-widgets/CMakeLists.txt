@@ -16,6 +16,8 @@ include_directories(.
 	${CMAKE_BINARY_DIR}
 )
 
+set(CMAKE_AUTOMOC ON)
+
 add_subdirectory(preferences)
 
 set (SUBSURFACE_UI
