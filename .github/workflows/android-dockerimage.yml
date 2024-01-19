@@ -3,8 +3,8 @@ name: Android Docker Image CI
 on:
   push:
     paths:
-    - scripts/docker/android-build-container
-    - .github/workflows/android-docker*
+    - scripts/docker/android-build-container/**
+    - .github/workflows/android-dockerimage.yml
 
 jobs:
   android-build-container:
