@@ -932,7 +932,13 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("sensor2.sample", double_to_o2pressure, &sample->o2sensor[1]))
 		return;
-	if (MATCH("sensor3.sample", double_to_o2pressure, &sample->o2sensor[2])) // up to 3 CCR sensors
+	if (MATCH("sensor3.sample", double_to_o2pressure, &sample->o2sensor[2]))
+		return;
+	if (MATCH("sensor4.sample", double_to_o2pressure, &sample->o2sensor[3]))
+		return;
+	if (MATCH("sensor5.sample", double_to_o2pressure, &sample->o2sensor[4]))
+		return;
+	if (MATCH("sensor6.sample", double_to_o2pressure, &sample->o2sensor[5])) // up to 6 CCR sensors
 		return;
 	if (MATCH("po2.sample", double_to_o2pressure, &sample->setpoint))
 		return;
@@ -2230,8 +2236,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 				state.cur_sample->o2sensor[0].mbar = ( ((ptr[5] << 8) + ptr[4]) * o2_sensor_calibration_values[0]) / 10000;
 				state.cur_sample->o2sensor[1].mbar = ( ((ptr[7] << 8) + ptr[6]) * o2_sensor_calibration_values[1]) / 10000;
 				state.cur_sample->o2sensor[2].mbar = ( ((ptr[9] << 8) + ptr[8]) * o2_sensor_calibration_values[2]) / 10000;
-				// Subsurface only handles 3 o2 sensors.
-				//state.cur_sample->o2sensor[3].mbar = ( ((ptr[11] << 8) + ptr[10]) * o2_sensor_calibration_values[3]) / 10000;
+				state.cur_sample->o2sensor[3].mbar = ( ((ptr[11] << 8) + ptr[10]) * o2_sensor_calibration_values[3]) / 10000;
 				sample_end(&state);
 				break;
 			case 4:

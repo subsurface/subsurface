@@ -9,6 +9,7 @@ extern "C" {
 #endif
 
 #define MAX_SENSORS 2
+#define MAX_O2_SENSORS 6
 #define NO_SENSOR -1
 
 struct sample                         // BASE TYPE BYTES  UNITS    RANGE               DESCRIPTION
@@ -23,7 +24,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE        
 	temperature_t temperature;        // uint32_t   4    mK     (0-4 MK)               ambient temperature
 	pressure_t pressure[MAX_SENSORS]; // int32_t  2x4    mbar   (0-2 Mbar)             cylinder pressures (main and CCR o2)
 	o2pressure_t setpoint;            // uint16_t   2    mbar   (0-65 bar)             O2 partial pressure (will be setpoint)
-	o2pressure_t o2sensor[3];         // uint16_t 3x2    mbar   (0-65 bar)             Up to 3 PO2 sensor values (rebreather)
+	o2pressure_t o2sensor[MAX_O2_SENSORS];// uint16_t 6x2    mbar   (0-65 bar)             Up to 6 PO2 sensor values (rebreather)
 	bearing_t bearing;                // int16_t    2  degrees  (-1 no val, 0-360 deg) compass bearing
 	int16_t sensor[MAX_SENSORS];      // int16_t  2x2  sensorID (0-16k)                ID of cylinder pressure sensor
 	uint16_t cns;                     // uint16_t   2     %     (0-64k %)              cns% accumulated

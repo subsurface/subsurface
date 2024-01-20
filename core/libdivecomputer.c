@@ -456,7 +456,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		sample->setpoint.mbar = po2 = lrint(value.setpoint * 1000);
 		break;
 	case DC_SAMPLE_PPO2:
-		if (nsensor < 3)
+		if (nsensor < MAX_O2_SENSORS)
 			sample->o2sensor[nsensor].mbar = lrint(value.ppo2 * 1000);
 		else
 			report_error("%d is more o2 sensors than we can handle", nsensor);

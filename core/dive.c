@@ -1184,23 +1184,20 @@ static void fixup_no_o2sensors(struct divecomputer *dc)
 		return;
 
 	for (int i = 0; i < dc->samples; i++) {
-		int nsensor = 0;
+		int nsensor = 0, j;
 		struct sample *s = dc->sample + i;
 
 		// How many o2 sensors can we find in this sample?
-		if (s->o2sensor[0].mbar)
-			nsensor++;
-		if (s->o2sensor[1].mbar)
-			nsensor++;
-		if (s->o2sensor[2].mbar)
-			nsensor++;
+		for (j = 0; j < MAX_O2_SENSORS; j++)
+			if (s->o2sensor[j].mbar)
+				nsensor++;
 
 		// If we fond more than the previous found max, record it.
 		if (nsensor > dc->no_o2sensors)
 			dc->no_o2sensors = nsensor;
 
 		// Already found the maximum posible amount.
-		if (nsensor == 3)
+		if (nsensor == MAX_O2_SENSORS)
 			return;
 	}
 }

@@ -476,9 +476,9 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 		entry->cns = sample->cns;
 		if (dc->divemode == CCR || (dc->divemode == PSCR && dc->no_o2sensors)) {
 			entry->o2pressure.mbar = entry->o2setpoint.mbar = sample->setpoint.mbar;     // for rebreathers
-			entry->o2sensor[0].mbar = sample->o2sensor[0].mbar; // for up to three rebreather O2 sensors
-			entry->o2sensor[1].mbar = sample->o2sensor[1].mbar;
-			entry->o2sensor[2].mbar = sample->o2sensor[2].mbar;
+			int i;
+			for (i = 0; i < MAX_O2_SENSORS; i++)
+				entry->o2sensor[i].mbar = sample->o2sensor[i].mbar;
 		} else {
 			entry->pressures.o2 = sample->setpoint.mbar / 1000.0;
 		}
@@ -1117,48 +1117,71 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 	unlock_planner();
 }
 
+/* Sort the o2 pressure values. There are so few that a simple bubble sort
+ * will do */
+
+void sort_o2_pressures(int *sensorn, int np, struct plot_data *entry)
+{
+	int smallest, position, old;
+
+	for (int i = 0; i < np - 1; i++) {
+		position = i;
+		smallest = entry->o2sensor[sensorn[i]].mbar;
+		for (int j = i+1; j < np; j++)
+			if (entry->o2sensor[sensorn[j]].mbar < smallest) {
+				position = j;
+				smallest = entry->o2sensor[sensorn[j]].mbar;
+			}
+		old = sensorn[i];
+		sensorn[i] = position;
+		sensorn[position] = old;
+	}
+}
 
 /* Function calculate_ccr_po2: This function takes information from one plot_data structure (i.e. one point on
  * the dive profile), containing the oxygen sensor values of a CCR system and, for that plot_data structure,
- * calculates the po2 value from the sensor data. Several rules are applied, depending on how many o2 sensors
- * there are and the differences among the readings from these sensors.
+ * calculates the po2 value from the sensor data. If there are at least 3 sensors, sensors are voted out until
+ * their span is within diff_limit.
  */
 static int calculate_ccr_po2(struct plot_data *entry, const struct divecomputer *dc)
 {
-	int sump = 0, minp = 999999, maxp = -999999;
-	int diff_limit = 100; // The limit beyond which O2 sensor differences are considered significant (default = 100 mbar)
+	int sump = 0, minp = 0, maxp = 0;
+	int sensorn[MAX_O2_SENSORS];
 	int i, np = 0;
 
-	for (i = 0; i < dc->no_o2sensors; i++)
+	for (i = 0; i < dc->no_o2sensors && i < MAX_O2_SENSORS; i++)
 		if (entry->o2sensor[i].mbar) { // Valid reading
-			++np;
+			sensorn[np++] = i;
 			sump += entry->o2sensor[i].mbar;
-			minp = MIN(minp, entry->o2sensor[i].mbar);
-			maxp = MAX(maxp, entry->o2sensor[i].mbar);
 		}
-	switch (np) {
-	case 0: // Uhoh
+	if (np == 0)
 		return entry->o2pressure.mbar;
-	case 1: // Return what we have
-		return sump;
-	case 2: // Take the average
-		return sump / 2;
-	case 3:						   // Voting logic
-		if (2 * maxp - sump + minp < diff_limit) { // Upper difference acceptable...
-			if (2 * minp - sump + maxp)	// ...and lower difference acceptable
-				return sump / 3;
-			else
-				return (sump - minp) / 2;
-		} else {
-			if (2 * minp - sump + maxp) // ...but lower difference acceptable
-				return (sump - maxp) / 2;
-			else
-				return sump / 3;
+	else if (np == 1)
+		return entry->o2sensor[sensorn[0]].mbar;
+
+	maxp = np - 1;
+	sort_o2_pressures(sensorn, np, entry);
+
+	// This is the Shearwater voting logic: If there are still at least three sensors and one
+	// differs by more than 20% from the closest it is voted out.
+	while (maxp - minp > 1) {
+		if (entry->o2sensor[sensorn[minp + 1]].mbar - entry->o2sensor[sensorn[minp]].mbar >
+		    sump / (maxp - minp + 1) / 5) {
+			sump -= entry->o2sensor[sensorn[minp]].mbar;
+			++minp;
+			continue;
 		}
-	default: // This should not happen
-		assert(np <= 3);
-		return 0;
+		if (entry->o2sensor[sensorn[maxp]].mbar - entry->o2sensor[sensorn[maxp - 1]].mbar >
+		    sump / (maxp - minp +1) / 5) {
+			sump -= entry->o2sensor[sensorn[maxp]].mbar;
+			--maxp;
+			continue;
+		}
+		break;
 	}
+
+	return sump / (maxp - minp + 1);
+
 }
 
 static double gas_density(const struct gas_pressures *pressures)

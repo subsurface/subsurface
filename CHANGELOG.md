@@ -1,3 +1,4 @@
+core: allow of up to 6 O2 sensors (and corresponding voting logic)
 desktop: add divemode as a possible dive list column
 profile-widget: Now zomed in profiles can be panned with horizontal scroll.
 desktop: hide only events with the same severity when 'Hide similar events' is used

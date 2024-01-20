@@ -71,9 +71,8 @@ static void put_pd(struct membuffer *b, const struct plot_info *pi, int idx)
 	put_double(b, entry->pressures.n2);
 	put_double(b, entry->pressures.he);
 	put_int(b, entry->o2pressure.mbar);
-	put_int(b, entry->o2sensor[0].mbar);
-	put_int(b, entry->o2sensor[1].mbar);
-	put_int(b, entry->o2sensor[2].mbar);
+	for (int i = 0; i < MAX_O2_SENSORS; i++)
+		put_int(b, entry->o2sensor[i].mbar);
 	put_int(b, entry->o2setpoint.mbar);
 	put_int(b, entry->scr_OC_pO2.mbar);
 	put_int(b, entry->mod);
