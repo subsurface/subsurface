@@ -1,9 +1,13 @@
 name: Ubuntu 14.04 / Qt 5.12 for AppImage--
 on:
   push:
+    paths-ignore:
+    - scripts/docker/**
     branches:
     - master
   pull_request:
+    paths-ignore:
+    - scripts/docker/**
     branches:
     - master
 

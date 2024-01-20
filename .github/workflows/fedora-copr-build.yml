@@ -1,6 +1,8 @@
 name: Fedora Copr Build
 on:
   push:
+    paths-ignore:
+    - scripts/docker/**
     branches:
     - master
 

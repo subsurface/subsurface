@@ -1,0 +1,36 @@
+name: Windows (MXE) Docker Image
+
+on:
+  push:
+    paths:
+    - scripts/docker/mxe-build-container/**
+    - .github/workflows/windows-mxe-dockerimage.yml
+
+jobs:
+  windows-mxe:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ '3.1.0' }}    # 'official' images should have a dot-zero version
+      mxe_sha: 'c0bfefc57a00fdf6cb5278263e21a478e47b0bf5'
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Build the name for the docker image
+      id: build_name
+      run: |
+        v=${{ env.VERSION }}
+        b=${{ github.ref }} # -BRANCH suffix, unless the branch is master
+        b=${b/refs\/heads\//}
+        b=${b,,} # the name needs to be all lower case
+        if [ $b = "master" ] ; then b="" ; else b="-$b" ; fi
+        echo "NAME=${{ github.repository_owner }}/mxe-build${b}:${v}" >> $GITHUB_OUTPUT
+
+    - name: Build and Publish Linux Docker image to Dockerhub
+      uses: elgohr/Publish-Docker-Github-Action@v5
+      with:
+        name:       ${{ steps.build_name.outputs.NAME }}
+        username:   ${{ secrets.DOCKER_USERNAME }}
+        password:   ${{ secrets.DOCKER_PASSWORD }}
+        workdir:    './scripts/docker/mxe-build-container/'
+        buildargs:  mxe_sha

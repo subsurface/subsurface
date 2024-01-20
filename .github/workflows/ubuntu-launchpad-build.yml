@@ -1,6 +1,8 @@
 name: Ubuntu Launchpad Build
 on:
   push:
+    paths-ignore:
+    - scripts/docker/**
     branches:
     - master
 

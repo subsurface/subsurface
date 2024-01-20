@@ -1,9 +1,13 @@
 name: Ubuntu 22.04 / Qt 5.15--
 on:
   push:
+    paths-ignore:
+    - scripts/docker/**
     branches:
     - master
   pull_request:
+    paths-ignore:
+    - scripts/docker/**
     branches:
     - master
 

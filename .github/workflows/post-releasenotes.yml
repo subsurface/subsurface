@@ -1,6 +1,8 @@
 name: Post Release
 on:
   push:
+    paths-ignore:
+    - scripts/docker/**
     branches:
     - master
 
