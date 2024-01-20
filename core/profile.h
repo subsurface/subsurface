@@ -3,6 +3,7 @@
 #define PROFILE_H
 
 #include "dive.h"
+#include "sample.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,7 +54,7 @@ struct plot_data {
 	int running_sum;
 	struct gas_pressures pressures;
 	pressure_t o2pressure;  // for rebreathers, this is consensus measured po2, or setpoint otherwise. 0 for OC.
-	pressure_t o2sensor[3]; //for rebreathers with up to 3 PO2 sensors
+	pressure_t o2sensor[MAX_O2_SENSORS]; //for rebreathers with several sensors
 	pressure_t o2setpoint;
 	pressure_t scr_OC_pO2;
 	int mod, ead, end, eadd;

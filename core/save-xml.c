@@ -328,6 +328,21 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		old->o2sensor[2] = sample->o2sensor[2];
 	}
 
+	if ((sample->o2sensor[3].mbar) && (sample->o2sensor[3].mbar != old->o2sensor[3].mbar)) {
+		put_milli(b, " sensor4='", sample->o2sensor[3].mbar, " bar'");
+		old->o2sensor[3] = sample->o2sensor[3];
+	}
+
+	if ((sample->o2sensor[4].mbar) && (sample->o2sensor[4].mbar != old->o2sensor[4].mbar)) {
+		put_milli(b, " sensor5='", sample->o2sensor[4].mbar, " bar'");
+		old->o2sensor[4] = sample->o2sensor[4];
+	}
+
+	if ((sample->o2sensor[5].mbar) && (sample->o2sensor[5].mbar != old->o2sensor[5].mbar)) {
+		put_milli(b, " sensor6='", sample->o2sensor[5].mbar, " bar'");
+		old->o2sensor[5] = sample->o2sensor[5];
+	}
+
 	if (sample->setpoint.mbar != old->setpoint.mbar) {
 		put_milli(b, " po2='", sample->setpoint.mbar, " bar'");
 		old->setpoint = sample->setpoint;
