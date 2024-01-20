@@ -3,10 +3,10 @@
 
 # This variable controls the number of compilation processes
 # within one package ("intra-package parallelism").
-JOBS := 8
+#JOBS := 8
 
 # This variable controls the targets that will build.
-MXE_TARGETS :=  x86_64-w64-mingw32.shared i686-w64-mingw32.shared
+MXE_TARGETS :=  x86_64-w64-mingw32.shared
 
 # MXE_PLUGIN_DIRS := plugins/gcc10
 
