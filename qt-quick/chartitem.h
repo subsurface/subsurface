@@ -30,9 +30,11 @@ public:
 	const bool dragable;			// Item can be dragged with the mouse. Must be set in constructor.
 	virtual ~ChartItem();			// Attention: must only be called by render thread.
 	QRectF getRect() const;
+	virtual void startDrag(QPointF pos);	// Called when user clicks on a draggable item
 	virtual void drag(QPointF pos);		// Called when dragging the item
 	virtual void stopDrag(QPointF pos);	// Called when dragging the item finished
 protected:
+	template <typename T> friend class ChartItemPtr;
 	ChartItem(ChartView &v, size_t z, bool dragable = false);
 	QSizeF sceneSize() const;
 	ChartView &view;

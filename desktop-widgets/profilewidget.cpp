@@ -15,6 +15,7 @@
 #include <QMimeData>
 #include <QQmlEngine>
 #include <QQuickWidget>
+#include <QSignalBlocker>
 #include <QStackedWidget>
 #include <QToolBar>
 
@@ -199,11 +200,6 @@ ProfileWidget::ProfileWidget() : d(nullptr), dc(0), originalDive(nullptr), placi
 	ui.profTissues->setChecked(qPrefTechnicalDetails::percentagegraph());
 	ui.profScaled->setChecked(qPrefTechnicalDetails::zoomed_plot());
 	ui.profInfobox->setChecked(qPrefTechnicalDetails::infobox());
-
-	//connect(&diveListNotifier, &DiveListNotifier::settingsChanged, view.get(), &ProfileWidget2::settingsChanged);
-	//connect(view.get(), &ProfileWidget2::stopAdded, this, &ProfileWidget::stopAdded);
-	//connect(view.get(), &ProfileWidget2::stopRemoved, this, &ProfileWidget::stopRemoved);
-	//connect(view.get(), &ProfileWidget2::stopMoved, this, &ProfileWidget::stopMoved);
 }
 
 ProfileWidget::~ProfileWidget()
@@ -223,6 +219,16 @@ ProfileView *ProfileWidget::getView()
 		viewWidget->engine()->setObjectOwnership(view, QQmlEngine::CppOwnership);
 		view->setParent(this);
 		view->setVisible(isVisible()); // Synchronize visibility of widget and QtQuick-view.
+
+		if (!view->initialized) {
+			view->setPlannerModel(*DivePlannerPointsModel::instance());
+
+			//connect(&diveListNotifier, &DiveListNotifier::settingsChanged, view.get(), &ProfileWidget2::settingsChanged);
+			connect(view, &ProfileView::stopAdded, this, &ProfileWidget::stopAdded);
+			connect(view, &ProfileView::stopRemoved, this, &ProfileWidget::stopRemoved);
+			connect(view, &ProfileView::stopMoved, this, &ProfileWidget::stopMoved);
+			view->initialized = true;
+		}
 	}
 	return view;
 }
@@ -293,7 +299,7 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 	auto view = getView();
 	setEnabledToolbar(d != nullptr);
 	if (editedDive) {
-		view->plotDive(editedDive.get(), editedDc);
+		view->plotDive(editedDive.get(), editedDc, ProfileView::RenderFlags::EditMode);
 		setDive(editedDive.get());
 	} else if (d) {
 		//view->setProfileState(d, dc);
@@ -376,6 +382,11 @@ void ProfileWidget::editDive()
 	editedDc = dc;
 	copy_dive(d, editedDive.get()); // Work on a copy of the dive
 	originalDive = d;
+
+	// We don't want the DivePlannerPointsModel send signals while reloading,
+	// because that would reload the just deleted dive. And we will be reloading
+	// the dive anyway. Control-flow here is truly horrible.
+	QSignalBlocker blocker(DivePlannerPointsModel::instance());
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), editedDc);
 	//view->setEditState(editedDive.get(), editedDc);

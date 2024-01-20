@@ -142,12 +142,13 @@ static inline int get_plot_pressure(const struct plot_info *pi, int idx, int cyl
 }
 
 #ifdef __cplusplus
+}
+
 // C++ only formatting functions
 #include <QString>
 // Returns index of sample and array of strings describing the dive details at given time
 std::pair<int, std::vector<QString>> get_plot_details_new(const struct dive *d, const struct plot_info *pi, int time);
 std::vector<QString> compare_samples(const struct dive *d, const struct plot_info *pi, int idx1, int idx2, bool sum);
 
-}
 #endif
 #endif // PROFILE_H
