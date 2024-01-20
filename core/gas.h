@@ -15,6 +15,15 @@ struct gasmix {
 	fraction_t o2;
 	fraction_t he;
 	std::string name() const;
+	// TODO: use spaceship operator once we move to C++20
+	bool operator==(const gasmix &g2) const
+	{
+		return o2.permille == g2.o2.permille && he.permille == g2.he.permille;
+	}
+	bool operator!=(const gasmix &g2) const
+	{
+		return !(*this == g2);
+	}
 };
 static const struct gasmix gasmix_invalid = { { .permille = -1 }, { .permille = -1 } };
 static const struct gasmix gasmix_air = { 0_percent, 0_percent };

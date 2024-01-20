@@ -16,6 +16,8 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	diveprofileitem.h
 	divetextitem.cpp
 	divetextitem.h
+	handleitem.cpp
+	handleitem.h
 	pictureitem.h
 	pictureitem.cpp
 	profilescene.cpp
@@ -37,8 +39,6 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 else ()
 set(SUBSURFACE_PROFILE_LIB_SRCS
 	${SUBSURFACE_PROFILE_LIB_SRCS}
-	divehandler.cpp
-	divehandler.h
 )
 endif ()
 source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})

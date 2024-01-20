@@ -73,10 +73,6 @@ slots: // Necessary to call from QAction's signals.
 	void actionRequestedReplot(bool triggered);
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
 #ifndef SUBSURFACE_MOBILE
-	void pointsReset();
-	void pointInserted(const QModelIndex &parent, int start, int end);
-	void pointsRemoved(const QModelIndex &, int start, int end);
-	void pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &destination, int row);
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
 	void profileChanged(dive *d);
 
@@ -141,25 +137,8 @@ private:
 	RulerItem2 *rulerItem;
 #endif
 
-	std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> gases;
-
 #ifndef SUBSURFACE_MOBILE
-	void keyDeleteAction();
-	void keyUpAction();
-	void keyDownAction();
-	void keyLeftAction();
-	void keyRightAction();
-#endif
-
-	std::vector<std::unique_ptr<DiveHandler>> handles;
-	int handleIndex(const DiveHandler *h) const;
-	void disconnectPlannerModel();
-#ifndef SUBSURFACE_MOBILE
-	void connectPlannerModel();
 	void repositionDiveHandlers();
-	int fixHandlerIndex(DiveHandler *activeHandler);
-	DiveHandler *createHandle();
-	QGraphicsSimpleTextItem *createGas();
 #endif
 	friend class DiveHandler;
 	bool shouldCalculateMax; // Calculate maximum time and depth (default). False when dragging handles.

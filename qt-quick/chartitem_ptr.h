@@ -49,6 +49,12 @@ public:
 	{
 		return ptr;
 	}
+	void del()
+	{
+		if (!ptr)
+			return;
+		ptr->view.deleteChartItem(*this);
+	}
 };
 
 #endif

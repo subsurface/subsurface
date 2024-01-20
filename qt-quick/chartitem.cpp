@@ -37,6 +37,10 @@ QRectF ChartItem::getRect() const
 	return rect;
 }
 
+void ChartItem::startDrag(QPointF pos)
+{
+}
+
 void ChartItem::drag(QPointF)
 {
 }

@@ -236,37 +236,6 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::divePlannerHandlerClicked()
-{
-	shouldCalculateMax = false;
-}
-
-void ProfileWidget2::divePlannerHandlerReleased()
-{
-	if (currentState == EDIT)
-		emit stopMoved(1);
-	shouldCalculateMax = true;
-	replot();
-}
-
-#endif
-
-#ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
-{
-	if ((currentState == PLAN || currentState == EDIT) && plannerModel) {
-		QPointF mappedPos = mapToScene(event->pos());
-		if (!profileScene->pointOnProfile(mappedPos))
-			return;
-
-		int minutes = lrint(profileScene->timeAxis->valueAt(mappedPos) / 60);
-		int milimeters = lrint(profileScene->profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-		plannerModel->addStop(milimeters, minutes * 60);
-		if (currentState == EDIT)
-			emit stopAdded();
-	}
-}
-
 bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
 {
 	QGraphicsScene *s = qobject_cast<QGraphicsScene *>(object);
@@ -298,8 +267,6 @@ void ProfileWidget2::setProfileState()
 	if (currentState == PROFILE)
 		return;
 
-	disconnectPlannerModel();
-
 	currentState = PROFILE;
 	setBackgroundBrush(getColor(::BACKGROUND, profileScene->isGrayscale));
 
@@ -325,11 +292,8 @@ void ProfileWidget2::setEditState(const dive *d, int dc)
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
 
-	connectPlannerModel();
-
 	currentState = EDIT;
 
-	pointsReset();
 	repositionDiveHandlers();
 }
 
@@ -342,12 +306,9 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
 
-	connectPlannerModel();
-
 	currentState = PLAN;
 	setBackgroundBrush(QColor("#D7E3EF"));
 
-	pointsReset();
 	repositionDiveHandlers();
 }
 #endif
@@ -676,242 +637,6 @@ void ProfileWidget2::connectPlannerModel()
 	connect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
 }
 #endif
-
-void ProfileWidget2::disconnectPlannerModel()
-{
-#ifndef SUBSURFACE_MOBILE
-	if (plannerModel) {
-		disconnect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
-		disconnect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
-
-		disconnect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
-		disconnect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
-		disconnect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
-		disconnect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
-	}
-#endif
-}
-
-int ProfileWidget2::handleIndex(const DiveHandler *h) const
-{
-	auto it = std::find_if(handles.begin(), handles.end(),
-			       [h] (const std::unique_ptr<DiveHandler> &h2)
-			       { return h == h2.get(); });
-	return it != handles.end() ? it - handles.begin() : -1;
-}
-
-#ifndef SUBSURFACE_MOBILE
-
-DiveHandler *ProfileWidget2::createHandle()
-{
-	DiveHandler *item = new DiveHandler(d, dc);
-	scene()->addItem(item);
-	connect(item, &DiveHandler::moved, this, &ProfileWidget2::divePlannerHandlerMoved);
-	connect(item, &DiveHandler::clicked, this, &ProfileWidget2::divePlannerHandlerClicked);
-	connect(item, &DiveHandler::released, this, &ProfileWidget2::divePlannerHandlerReleased);
-	return item;
-}
-
-QGraphicsSimpleTextItem *ProfileWidget2::createGas()
-{
-	QGraphicsSimpleTextItem *gasChooseBtn = new QGraphicsSimpleTextItem();
-	scene()->addItem(gasChooseBtn);
-	gasChooseBtn->setZValue(10);
-	gasChooseBtn->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-	return gasChooseBtn;
-}
-
-void ProfileWidget2::pointsReset()
-{
-	handles.clear();
-	gases.clear();
-	int count = plannerModel->rowCount();
-	for (int i = 0; i < count; ++i) {
-		handles.emplace_back(createHandle());
-		gases.emplace_back(createGas());
-	}
-}
-
-void ProfileWidget2::pointInserted(const QModelIndex &, int from, int to)
-{
-	for (int i = from; i <= to; ++i) {
-		handles.emplace(handles.begin() + i, createHandle());
-		gases.emplace(gases.begin() + i, createGas());
-	}
-
-	// Note: we don't replot the dive here, because when removing multiple
-	// points, these might trickle in one-by-one. Instead, the model will
-	// emit a data-changed signal.
-}
-
-void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
-{
-	// Qt's model/view API is mad. The end-point is inclusive, which means that the empty range is [0,-1]!
-	handles.erase(handles.begin() + start, handles.begin() + end + 1);
-	gases.erase(gases.begin() + start, gases.begin() + end + 1);
-	scene()->clearSelection();
-
-	// Note: we don't replot the dive here, because when removing multiple
-	// points, these might trickle in one-by-one. Instead, the model will
-	// emit a data-changed signal.
-}
-
-void ProfileWidget2::pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &, int row)
-{
-	move_in_range(handles, start, end + 1, row);
-	move_in_range(gases, start, end + 1, row);
-}
-
-void ProfileWidget2::repositionDiveHandlers()
-{
-	hideAll(gases);
-	// Re-position the user generated dive handlers
-	for (int i = 0; i < plannerModel->rowCount(); i++) {
-		struct divedatapoint datapoint = plannerModel->at(i);
-		if (datapoint.time == 0) // those are the magic entries for tanks
-			continue;
-		DiveHandler *h = handles[i].get();
-		h->setVisible(datapoint.entered);
-		h->setPos(profileScene->timeAxis->posAtValue(datapoint.time), profileScene->profileYAxis->posAtValue(datapoint.depth.mm));
-		QPointF p1;
-		if (i == 0) {
-			if (prefs.drop_stone_mode)
-				// place the text on the straight line from the drop to stone position
-				p1 = QPointF(profileScene->timeAxis->posAtValue(datapoint.depth.mm / prefs.descrate),
-					     profileScene->profileYAxis->posAtValue(datapoint.depth.mm));
-			else
-				// place the text on the straight line from the origin to the first position
-				p1 = QPointF(profileScene->timeAxis->posAtValue(0), profileScene->profileYAxis->posAtValue(0));
-		} else {
-			// place the text on the line from the last position
-			p1 = handles[i - 1]->pos();
-		}
-		QPointF p2 = handles[i]->pos();
-		QLineF line(p1, p2);
-		QPointF pos = line.pointAt(0.5);
-		gases[i]->setPos(pos);
-		if (datapoint.cylinderid >= 0 && datapoint.cylinderid < static_cast<int>(d->cylinders.size()))
-			gases[i]->setText(get_gas_string(d->get_cylinder(datapoint.cylinderid)->gasmix));
-		else
-			gases[i]->setText(QString());
-		gases[i]->setVisible(datapoint.entered &&
-				(i == 0 || gases[i]->text() != gases[i-1]->text()));
-	}
-}
-
-void ProfileWidget2::divePlannerHandlerMoved()
-{
-	DiveHandler *activeHandler = qobject_cast<DiveHandler *>(sender());
-	int index = handleIndex(activeHandler);
-
-	// Grow the time axis if necessary.
-	int minutes = lrint(profileScene->timeAxis->valueAt(activeHandler->pos()) / 60);
-	if (minutes * 60 > profileScene->timeAxis->maximum() * 0.9)
-		profileScene->timeAxis->setBounds(0.0, profileScene->timeAxis->maximum() * 1.02);
-
-	divedatapoint data = plannerModel->at(index);
-	data.depth.mm = lrint(profileScene->profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-	data.time = lrint(profileScene->timeAxis->valueAt(activeHandler->pos()));
-
-	plannerModel->editStop(index, data);
-}
-
-std::vector<int> ProfileWidget2::selectedDiveHandleIndices() const
-{
-	std::vector<int> res;
-	res.reserve(scene()->selectedItems().size());
-	for (QGraphicsItem *item: scene()->selectedItems()) {
-		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(item))
-			res.push_back(handleIndex(handler));
-	}
-	return res;
-}
-
-void ProfileWidget2::keyDownAction()
-{
-	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
-		return;
-
-	std::vector<int> handleIndices = selectedDiveHandleIndices();
-	for (int row: handleIndices) {
-		divedatapoint dp = plannerModel->at(row);
-
-		dp.depth.mm += M_OR_FT(1, 5);
-		plannerModel->editStop(row, dp);
-	}
-	if (currentState == EDIT && !handleIndices.empty())
-		emit stopMoved(handleIndices.size()); // TODO: Accumulate key moves
-}
-
-void ProfileWidget2::keyUpAction()
-{
-	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
-		return;
-
-	std::vector<int> handleIndices = selectedDiveHandleIndices();
-	for (int row: handleIndices) {
-		divedatapoint dp = plannerModel->at(row);
-
-		if (dp.depth.mm <= 0)
-			continue;
-
-		dp.depth.mm -= M_OR_FT(1, 5);
-		plannerModel->editStop(row, dp);
-	}
-	if (currentState == EDIT && !handleIndices.empty())
-		emit stopMoved(handleIndices.size()); // TODO: Accumulate key moves
-}
-
-void ProfileWidget2::keyLeftAction()
-{
-	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
-		return;
-
-	std::vector<int> handleIndices = selectedDiveHandleIndices();
-	for (int row: handleIndices) {
-		divedatapoint dp = plannerModel->at(row);
-
-		if (dp.time / 60 <= 0)
-			continue;
-
-		dp.time -= 60;
-		plannerModel->editStop(row, dp);
-	}
-	if (currentState == EDIT && !handleIndices.empty())
-		emit stopMoved(handleIndices.size()); // TODO: Accumulate key moves
-}
-
-void ProfileWidget2::keyRightAction()
-{
-	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
-		return;
-
-	std::vector<int> handleIndices = selectedDiveHandleIndices();
-	for (int row: handleIndices) {
-		divedatapoint dp = plannerModel->at(row);
-
-		dp.time += 60;
-		plannerModel->editStop(row, dp);
-	}
-	if (currentState == EDIT && !handleIndices.empty())
-		emit stopMoved(handleIndices.size()); // TODO: Accumulate key moves
-}
-
-void ProfileWidget2::keyDeleteAction()
-{
-	if ((currentState != EDIT && currentState != PLAN) || !plannerModel)
-		return;
-
-	std::vector<int> handleIndices = selectedDiveHandleIndices();
-	// For now, we have to convert to QVector.
-	for (int index: handleIndices)
-		handles[index]->hide();
-	if (!handleIndices.empty()) {
-		plannerModel->removeSelectedPoints(handleIndices);
-		if (currentState == EDIT)
-			emit stopRemoved(handleIndices.size());
-	}
-}
 
 void ProfileWidget2::profileChanged(dive *dive)
 {

@@ -14,6 +14,8 @@ struct ProfileZValue {
 		Profile = 0,
 		Pictures,
 		RulerItem,
+		Handles,
+		MouseFollower,
 		ToolTipItem,
 		Count
 	};

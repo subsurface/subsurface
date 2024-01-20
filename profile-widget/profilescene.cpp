@@ -612,6 +612,11 @@ int ProfileScene::timeAt(QPointF pos) const
 	return lrint(timeAxis->valueAt(pos));
 }
 
+int ProfileScene::depthAt(QPointF pos) const
+{
+	return lrint(profileYAxis->valueAt(pos));
+}
+
 std::pair<double, double> ProfileScene::minMaxTime() const
 {
 	return { timeAxis->minimum(), timeAxis->maximum() };

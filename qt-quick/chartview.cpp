@@ -315,6 +315,7 @@ void ChartView::mousePressEvent(QMouseEvent *event)
 			dragStartMouse = pos;
 			dragStartItem = rect.topLeft();
 			draggedItem = item;
+			draggedItem->startDrag(pos);
 			grabMouse();
 			setKeepMouseGrab(true); // don't allow Qt to steal the grab
 			event->accept();

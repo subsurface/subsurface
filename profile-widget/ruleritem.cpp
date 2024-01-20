@@ -85,6 +85,10 @@ RulerItem::RulerItem(ProfileView &view, double dpr) :
 {
 }
 
+RulerItem::~RulerItem()
+{
+}
+
 void RulerItem::setVisible(bool visible)
 {
 	line->setVisible(visible);

@@ -2,6 +2,7 @@
 #include "profileview.h"
 #include "pictureitem.h"
 #include "profilescene.h"
+#include "handleitem.h"
 #include "ruleritem.h"
 #include "tooltipitem.h"
 #include "zvalues.h"
@@ -17,6 +18,7 @@
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/subsurface-qt/divelistnotifier.h"
+#include "qt-models/diveplannermodel.h"
 #include "qt-quick/chartitem.h"
 
 #include <QAbstractAnimation>
@@ -24,6 +26,8 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QElapsedTimer>
+
+static const QColor mouseFollowerColor = QColor(Qt::red).lighter();
 
 // Class templates for animations (if any). Might want to do our own.
 // Calls the function object passed in the constructor with a time argument,
@@ -73,16 +77,20 @@ std::unique_ptr<ProfileAnimationTemplate<FUNC>> make_anim(FUNC func, int animSpe
 			     : std::unique_ptr<ProfileAnimationTemplate<FUNC>>();
 }
 
-ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::Count),
+ProfileView::ProfileView(QQuickItem *parent) :
+	ChartView(parent, ProfileZValue::Count),
+	initialized(false),
 	d(nullptr),
 	dc(0),
+	plannerModel(nullptr),
+	mode(Mode::Normal),
 	simplified(false),
 	dpr(1.0),
 	zoomLevel(1.00),
 	zoomedPosition(0.0),
 	panning(false),
 	empty(true),
-	shouldCalculateMax(true),
+	selectedHandleIdx(-1),
 	highlightedPicture(nullptr)
 {
 	setBackgroundColor(Qt::black);
@@ -129,6 +137,7 @@ ProfileView::ProfileView(QQuickItem *parent) : ChartView(parent, ProfileZValue::
 
 	setAcceptTouchEvents(true);
 	setAcceptHoverEvents(true);
+	setFocus(true); // Necessary to get keyPress events
 }
 
 ProfileView::ProfileView() : ProfileView(nullptr)
@@ -139,27 +148,54 @@ ProfileView::~ProfileView()
 {
 }
 
+// Since this is a QML object, we can't easily pass the planner model in the constructor. :(
+void ProfileView::setPlannerModel(DivePlannerPointsModel &model)
+{
+	if (plannerModel)
+		fprintf(stderr, "Warning: setting plannerModel twice is not supported\n");
+	plannerModel = &model;
+	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileView::replot);
+	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileView::replot);
+	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileView::resetHandles);
+	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileView::pointsInserted);
+	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileView::pointsRemoved);
+	connect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileView::pointsMoved);
+}
+
 void ProfileView::resetPointers()
 {
 	profileItem.reset();
 	tooltip.reset();
 	ruler.reset();
+	mouseFollowerHorizontal.reset();
+	mouseFollowerVertical.reset();
 	pictures.clear();
+	handles.clear();
 	highlightedPicture = nullptr;
+}
+
+// Calculate render flags for the current state.
+// Used when replotting the current plit.
+int ProfileView::rerenderFlags() const
+{
+	int flags = simplified ? RenderFlags::Simplified : RenderFlags::None;
+	if (mode == Mode::Edit)
+		flags |= RenderFlags::EditMode;
+	else if (mode == Mode::Plan)
+		flags |= RenderFlags::PlanMode;
+	return flags;
 }
 
 void ProfileView::plotAreaChanged(const QSizeF &s)
 {
-	int flags = simplified ? RenderFlags::Simplified : RenderFlags::None;
 	if (!empty)
-		plotDive(d, dc, flags | RenderFlags::Instant);
+		plotDive(d, dc, rerenderFlags() | RenderFlags::Instant);
 }
 
 void ProfileView::replot()
 {
-	int flags = simplified ? RenderFlags::Simplified : RenderFlags::None;
 	if (!empty)
-		plotDive(d, dc, flags);
+		plotDive(d, dc, rerenderFlags());
 }
 
 void ProfileView::clear()
@@ -168,12 +204,15 @@ void ProfileView::clear()
 	//disconnectPlannerConnections();
 	if (profileScene)
 		profileScene->clear();
-	//handles.clear();
-	//gases.clear();
+	clearHandles();
 	if (tooltip)
 		tooltip->setVisible(false);
 	if (ruler)
 		ruler->setVisible(false);
+	if (mouseFollowerHorizontal)
+		mouseFollowerHorizontal->setVisible(false);
+	if (mouseFollowerVertical)
+		mouseFollowerVertical->setVisible(false);
 	empty = true;
 	d = nullptr;
 	dc = 0;
@@ -181,13 +220,20 @@ void ProfileView::clear()
 
 void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 {
-	d = dIn;
-	dc = dcIn;
+	bool diveChanged = std::exchange(d, dIn) != d;
+	diveChanged |= std::exchange(dc, dcIn) != dc;
 	simplified = flags & RenderFlags::Simplified;
 	if (!d) {
 		clear();
 		return;
 	}
+
+	if (flags & RenderFlags::PlanMode)
+		mode = Mode::Plan;
+	else if (flags & RenderFlags::EditMode)
+		mode = Mode::Edit;
+	else
+		mode = Mode::Normal;
 
 	// We can't create the scene in the constructor, because we can't get the DPR property there. Oh joy!
 	if (!profileScene) {
@@ -195,9 +241,8 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 		profileScene = std::make_unique<ProfileScene>(dpr, false, false);
 	}
 	// If there was no previously displayed dive, turn off animations
-	if (empty)
+	if (std::exchange(empty, false))
 		flags |= RenderFlags::Instant;
-	empty = false;
 
 	// If Qt decided to destroy our canvas, recreate it
 	if (!profileItem)
@@ -208,23 +253,27 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 	QElapsedTimer measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
 
-	//DivePlannerPointsModel *model = currentState == EDIT || currentState == PLAN ? plannerModel : nullptr;
-	DivePlannerPointsModel *model = nullptr;
+	DivePlannerPointsModel *model = flags & (RenderFlags::EditMode | RenderFlags::PlanMode) ? plannerModel : nullptr;
 	bool inPlanner = flags & RenderFlags::PlanMode;
 
 	int animSpeed = flags & RenderFlags::Instant ? 0 : qPrefDisplay::animation_speed();
+	bool calculateMax = !(flags & RenderFlags::DontCalculateMax);
 
 	profileScene->resize(size());
 	profileScene->plotDive(d, dc, animSpeed, simplified, model, inPlanner,
 			       flags & RenderFlags::DontRecalculatePlotInfo,
-			       shouldCalculateMax, zoomLevel, zoomedPosition);
+			       calculateMax, zoomLevel, zoomedPosition);
 	background = inPlanner ? QColor("#D7E3EF") : getColor(::BACKGROUND, false);
 	profileItem->draw(size(), background, *profileScene);
 
-	//if ((currentState == EDIT || currentState == PLAN) && plannerModel) {
-		//repositionDiveHandlers();
-		//plannerModel->deleteTemporaryPlan();
-	//}
+	if ((mode == Mode::Edit || mode == Mode::Plan) && plannerModel) {
+		if (diveChanged)
+			resetHandles();
+		placeHandles();
+		plannerModel->deleteTemporaryPlan();
+	} else {
+		clearHandles();
+	}
 
 	// On zoom / pan don't recreate the picture thumbnails, only change their position.
 	if (!inPlanner) {
@@ -267,6 +316,15 @@ void ProfileView::plotDive(const struct dive *dIn, int dcIn, int flags)
 		ruler->setVisible(false);
 	}
 
+	if (!mouseFollowerHorizontal)
+		mouseFollowerHorizontal = createChartItem<ChartLineItem>(ProfileZValue::MouseFollower,
+									 mouseFollowerColor, 1.0 * dpr);
+	if (!mouseFollowerVertical)
+		mouseFollowerVertical = createChartItem<ChartLineItem>(ProfileZValue::MouseFollower,
+								       mouseFollowerColor, 1.0 * dpr);
+	mouseFollowerHorizontal->setVisible(mode == Mode::Edit || mode == Mode::Plan);
+	mouseFollowerVertical->setVisible(mode == Mode::Edit || mode == Mode::Plan);
+
 	// Reset animation.
 	animation = make_anim([this](double progress) { anim(progress); }, animSpeed);
 }
@@ -290,9 +348,8 @@ void ProfileView::setZoom(double level)
 {
 	level = std::clamp(level, 1.0, 20.0);
 	double old = std::exchange(zoomLevel, level);
-	int flags = simplified ? RenderFlags::Simplified : RenderFlags::None;
 	if (level != old)
-		plotDive(d, dc, flags | RenderFlags::DontRecalculatePlotInfo);
+		plotDive(d, dc, rerenderFlags() | RenderFlags::DontRecalculatePlotInfo);
 	emit zoomLevelChanged();
 }
 
@@ -361,10 +418,8 @@ void ProfileView::mouseReleaseEvent(QMouseEvent *event)
 		panning = false;
 		unsetCursor();
 	}
-	//if (currentState == PLAN || currentState == EDIT) {
-	//	shouldCalculateMax = true;
-	//	replot();
-	//}
+	if (mode == Mode::Plan || mode == Mode::Edit)
+		replot();
 }
 
 void ProfileView::mouseMoveEvent(QMouseEvent *event)
@@ -375,14 +430,7 @@ void ProfileView::mouseMoveEvent(QMouseEvent *event)
 	if (panning)
 		pan(pos.x(), pos.y());
 
-	//if (currentState == PLAN || currentState == EDIT) {
-		//QRectF rect = profileScene->profileRegion;
-		//auto [miny, maxy] = profileScene->profileYAxis->screenMinMax();
-		//double x = std::clamp(pos.x(), rect.left(), rect.right());
-		//double y = std::clamp(pos.y(), miny, maxy);
-		//mouseFollowerHorizontal->setLine(rect.left(), y, rect.right(), y);
-		//mouseFollowerVertical->setLine(x, rect.top(), x, rect.bottom());
-	//}
+	updateMouseFollowers(pos);
 }
 
 int ProfileView::getDiveId() const
@@ -444,9 +492,8 @@ void ProfileView::pan(double x, double y)
 	zoomedPosition = profileScene->calcZoomPosition(zoomLevel,
 							panningOriginalProfilePosition,
 							panningOriginalMousePosition - x);
-	int flags = simplified ? RenderFlags::Simplified : RenderFlags::None;
 	if (oldPos != zoomedPosition)
-		plotDive(d, dc, flags | RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
+		plotDive(d, dc, rerenderFlags() | RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // TODO: animations don't work when scrolling
 }
 
 void ProfileView::hoverEnterEvent(QHoverEvent *)
@@ -533,6 +580,211 @@ void ProfileView::hoverMoveEvent(QHoverEvent *event)
 		highlightedPicture = nullptr;
 		update();
 	}
+
+	updateMouseFollowers(pos);
+}
+
+void ProfileView::updateMouseFollowers(QPointF pos)
+{
+	if (!mouseFollowerHorizontal || !mouseFollowerVertical)
+		return;
+	if (mode != Mode::Plan && mode != Mode::Edit)
+		return;
+	QRectF rect = profileScene->profileRegion;
+	double x = std::clamp(pos.x(), rect.left(), rect.right());
+	double y = std::clamp(pos.y(), rect.top(), rect.bottom());
+	mouseFollowerHorizontal->setLine(QPointF(rect.left(), y), QPointF(rect.right(), y));
+	mouseFollowerVertical->setLine(QPointF(x, rect.top()), QPointF(x, rect.bottom()));
+}
+
+void ProfileView::placeHandles()
+{
+	if (!plannerModel)
+		return;
+
+	int count = plannerModel->rowCount();
+	if ((size_t)count != handles.size()) {
+		fprintf(stderr, "Handle number inconsistent with planner model\n");
+		return;
+	}
+
+	// Place the dive handles
+	gasmix prevgas = gasmix_invalid;
+	for (int i = 0; i < count; i++) {
+		struct divedatapoint datapoint = plannerModel->at(i);
+		if (datapoint.time == 0) // those are the magic entries for tanks
+			continue;
+		auto &h = *handles[i];
+		if (!datapoint.entered) {
+			h.setVisible(false, false);
+			continue;
+		}
+
+		h.setPos(QPointF(profileScene->posAtTime(datapoint.time), profileScene->posAtDepth(datapoint.depth.mm)));
+
+		gasmix gas = d->get_cylinder(datapoint.cylinderid)->gasmix;
+		bool textVisible = datapoint.cylinderid >= 0 && datapoint.cylinderid < static_cast<int>(d->cylinders.size()) && prevgas != gas;
+		prevgas = gas;
+		if (textVisible) {
+			h.setText(get_gas_string(gas));
+			QPointF p1;
+			if (i == 0) {
+				if (prefs.drop_stone_mode)
+					// place the text on the straight line from the drop to stone position
+					p1 = QPointF(profileScene->posAtTime(datapoint.depth.mm / prefs.descrate),
+						     profileScene->posAtDepth(datapoint.depth.mm));
+				else
+					// place the text on the straight line from the origin to the first position
+					p1 = QPointF(profileScene->posAtTime(0), profileScene->posAtDepth(0));
+			} else {
+				// place the text on the line from the last position
+				p1 = handles[i - 1]->getPos();
+			}
+			QPointF p2 = h.getPos();
+			QLineF line(p1, p2);
+			QPointF pos = line.pointAt(0.5);
+			h.setTextPos(pos);
+		}
+		h.setVisible(true, textVisible);
+	}
+}
+
+void ProfileView::handleSelected(int idx)
+{
+	selectedHandleIdx = idx;
+}
+
+// TODO: Move the editing code from the desktop-widget to here.
+// The problem is that the dragging tramples on the dive struct, so we work on a copy of the dive.
+void ProfileView::handleReleased(int)
+{
+	if (mode == Mode::Edit)
+		emit stopMoved(1);
+	replot();
+}
+
+void ProfileView::keyPressEvent(QKeyEvent *e)
+{
+	if ((mode != Mode::Edit && mode != Mode::Plan) || !plannerModel || selectedHandleIdx < 0)
+		return ChartView::keyPressEvent(e);
+
+	switch (e->key()) {
+		case Qt::Key_Delete: return deleteHandle();
+		case Qt::Key_Up: return moveHandle(0, -M_OR_FT(1, 5));
+		case Qt::Key_Down: return moveHandle(0, M_OR_FT(1, 5));
+		case Qt::Key_Left: return moveHandle(-60, 0);
+		case Qt::Key_Right: return moveHandle(60, 0);
+	}
+	ChartView::keyPressEvent(e);
+}
+
+// TODO: Handle multi-selection
+void ProfileView::moveHandle(int time, int mm)
+{
+	if (!plannerModel || selectedHandleIdx < 0 || selectedHandleIdx >= plannerModel->rowCount())
+		return;
+
+	divedatapoint dp = plannerModel->at(selectedHandleIdx);
+
+	dp.depth.mm += mm;
+	dp.time += time;
+	if (dp.depth.mm < 0 || dp.time < 0)
+		return;
+	plannerModel->editStop(selectedHandleIdx, dp);
+
+	if (mode == Mode::Edit)
+		emit stopMoved(1); // TODO: Accumulate key moves
+	replot();
+}
+
+// TODO: Handle multi-selection
+void ProfileView::deleteHandle()
+{
+	if (!plannerModel || selectedHandleIdx < 0 || selectedHandleIdx >= plannerModel->rowCount())
+		return;
+
+	std::vector<int> handleIndices { selectedHandleIdx };
+	plannerModel->removeSelectedPoints(handleIndices);
+	if (mode == Mode::Edit)
+		emit stopRemoved(handleIndices.size());
+	replot();
+}
+
+void ProfileView::handleDragged(int idx, QPointF pos)
+{
+	if (!plannerModel || (size_t)idx >= handles.size())
+		return;
+
+	if (!profileScene->pointOnProfile(pos))
+		return;
+	// Grow the time axis if necessary.
+	//int minutes = lrint(profileScene->timeAxis->valueAt(pos) / 60);
+	//if (minutes * 60 > profileScene->timeAxis->maximum() * 0.9)
+		//profileScene->timeAxis->setBounds(0.0, profileScene->timeAxis->maximum() * 1.02);
+
+	divedatapoint data = plannerModel->at(idx);
+	data.depth.mm = profileScene->depthAt(pos) / M_OR_FT(1, 1) * M_OR_FT(1, 1);
+	data.time = profileScene->timeAt(pos);
+
+	plannerModel->editStop(idx, data);
+	plotDive(d, dc, rerenderFlags() | RenderFlags::DontCalculateMax);
+}
+
+void ProfileView::pointsInserted(const QModelIndex &, int from, int to)
+{
+	for (int i = from; i <= to; ++i)
+		handles.emplace(handles.begin() + i, std::make_unique<HandleItem>(*this, dpr, i));
+	reindexHandles();
+
+	// Note: we don't replot the dive here, because when adding multiple
+	// points, these might trickle in one-by-one. Instead, the model will
+	// emit a data-changed signal.
+}
+
+void ProfileView::pointsRemoved(const QModelIndex &, int start, int end)
+{
+	// Qt's model/view API is mad. The end-point is inclusive, which means that the empty range is [0,-1]!
+	if (selectedHandleIdx >= start && selectedHandleIdx <= end)
+		selectedHandleIdx = -1;
+	handles.erase(handles.begin() + start, handles.begin() + end + 1);
+	reindexHandles();
+
+	// Note: we don't replot the dive here, because when removing multiple
+	// points, these might trickle in one-by-one. Instead, the model will
+	// emit a data-changed signal.
+}
+
+void ProfileView::pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &, int row)
+{
+	move_in_range(handles, start, end + 1, row);
+	reindexHandles();
+}
+
+void ProfileView::reindexHandles()
+{
+	HandleItem *old_selected = selectedHandleIdx >= 0 ? handles[selectedHandleIdx].get()
+							  : nullptr;
+	for (int i = 0; (size_t)i < handles.size(); ++i) {
+		if (handles[i].get() == old_selected)
+			selectedHandleIdx = i;
+		handles[i]->setIdx(i);
+	}
+}
+
+void ProfileView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	if (mode != Mode::Edit && mode != Mode::Plan)
+		return;
+
+	QPointF pos = event->pos();
+	if (!profileScene->pointOnProfile(pos))
+		return;
+
+	int minutes = lrint(timeAt(pos) / 60);
+	int milimeters = lrint(profileScene->depthAt(pos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
+	plannerModel->addStop(milimeters, minutes * 60);
+	if (mode == Mode::Edit)
+		emit stopAdded();
 }
 
 void ProfileView::unhighlightPicture()
@@ -702,6 +954,25 @@ void ProfileView::clearPictures()
 	}
 	pictures.clear();
 	highlightedPicture = nullptr;
+}
+
+void ProfileView::clearHandles()
+{
+	// The ChartItemPtrs are non-owning, so we have to delete the handles manually. Sad.
+	for (auto &handle: handles)
+		handle->del();
+	handles.clear();
+	selectedHandleIdx = -1;
+}
+
+void ProfileView::resetHandles()
+{
+	if (!plannerModel)
+		return;
+	clearHandles();
+	int count = plannerModel->rowCount();
+	for (int i = 0; i < count; ++i)
+		handles.push_back(std::make_unique<HandleItem>(*this, dpr, i));
 }
 
 // Helper function to compare offset_ts.

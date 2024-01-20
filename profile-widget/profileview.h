@@ -7,13 +7,17 @@
 #include <memory>
 
 class ChartGraphicsSceneItem;
+class ChartLineItem;
 class ChartRectItem;
+class DivePlannerPointsModel;
+class HandleItem;
 class PictureItem;
 class ProfileAnimation;
 class ProfileScene;
 class ToolTipItem;
 struct picture;
 class RulerItem;
+class QModelIndex;
 
 class ProfileView : public ChartView {
 	Q_OBJECT
@@ -27,6 +31,10 @@ public:
 	ProfileView(QQuickItem *parent);
 	~ProfileView();
 
+	// Flag set when constructing the object. Because QtQuick may decide to destroy the old one. :(
+	bool initialized;
+	void setPlannerModel(DivePlannerPointsModel &model); // enables planning and edit mdoe
+
 	struct RenderFlags {
 		static constexpr int None = 0;
 		static constexpr int Instant = 1 << 0;
@@ -34,6 +42,7 @@ public:
 		static constexpr int EditMode = 1 << 2;
 		static constexpr int PlanMode = 1 << 3;
 		static constexpr int Simplified = 1 << 4; // For mobile's overview page
+		static constexpr int DontCalculateMax = 1 << 5;
 	};
 
 	void plotDive(const struct dive *d, int dc, int flags = RenderFlags::None);
@@ -41,7 +50,10 @@ public:
 	void clear();
 	void resetZoom();
 	void anim(double fraction);
-	void rulerDragged();		// Called by the RulterItem when a handle was dragged.
+	void rulerDragged();				// Called by the RulterItem when a handle was dragged.
+	void handleSelected(int idx);			// Called by the HandleItem when it is clicked.
+	void handleDragged(int idx, QPointF pos);	// Called by the HandleItem when it is dragged.
+	void handleReleased(int idx);			// Called by the HandleItem when it is released.
 
 	// For mobile
 	Q_INVOKABLE void pinchStart();
@@ -50,12 +62,23 @@ public:
 	Q_INVOKABLE void prevDC();
 	Q_INVOKABLE void panStart(double x, double y);
 	Q_INVOKABLE void pan(double x, double y);
+
 signals:
 	void numDCChanged();
 	void zoomLevelChanged();
+	void stopAdded(); // only emitted in edit mode
+	void stopRemoved(int count); // only emitted in edit mode
+	void stopMoved(int count); // only emitted in edit mode
 private:
+	enum Mode {
+		Normal,
+		Edit,
+		Plan
+	};
 	const struct dive *d;
 	int dc;
+	DivePlannerPointsModel *plannerModel;
+	Mode mode;
 	bool simplified;
 	double dpr;
 	double zoomLevel, zoomLevelPinchStart;
@@ -64,15 +87,16 @@ private:
 	double panningOriginalMousePosition;
 	double panningOriginalProfilePosition;
 	bool empty; // No dive shown.
-	bool shouldCalculateMax; // Calculate maximum time and depth (default). False when dragging handles.
 	QColor background;
 	std::unique_ptr<ProfileScene> profileScene;
 	ChartItemPtr<ChartGraphicsSceneItem> profileItem;
 	std::unique_ptr<ProfileAnimation> animation;
+	ChartItemPtr<ChartLineItem> mouseFollowerHorizontal, mouseFollowerVertical;
 
 	void plotAreaChanged(const QSizeF &size) override;
 	void resetPointers() override;
 	void replot();
+	int rerenderFlags() const;
 	void setZoom(double level);
 
 	void hoverEnterEvent(QHoverEvent *event) override;
@@ -81,6 +105,8 @@ private:
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void keyPressEvent(QKeyEvent *e) override;
 
 	ChartItemPtr<ToolTipItem> tooltip;
 	void updateTooltip(QPointF pos, bool plannerMode, int animSpeed);
@@ -90,7 +116,21 @@ private:
 	void updateRuler(int animSpeed);
 	std::unique_ptr<ProfileAnimation> ruler_animation;
 
+	void updateMouseFollowers(QPointF pos);
+
 	QPointF previousHoverMovePosition;
+	std::vector<std::unique_ptr<HandleItem>> handles;
+	int selectedHandleIdx;
+	void clearHandles();
+	void resetHandles();
+	void placeHandles();
+	void reindexHandles();
+	void moveHandle(int time, int depth);
+	void deleteHandle();
+
+	void pointsInserted(const QModelIndex &, int from, int to);
+	void pointsRemoved(const QModelIndex &, int start, int end);
+	void pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &destination, int row);
 
 	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
 	// For the same offset, sort by filename.

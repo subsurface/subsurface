@@ -51,6 +51,7 @@ public:
 	double calcZoomPosition(double zoom, double originalPos, double delta);
 	const plot_info &getPlotInfo() const;
 	int timeAt(QPointF pos) const; // time in seconds
+	int depthAt(QPointF pos) const; // depth in mm
 	std::pair<double, double> minMaxTime() const; // time in seconds
 	std::pair<double, double> minMaxX() const; // minimum and maximum x positions of canvas
 	std::pair<double, double> minMaxY() const; // minimum and maximum y positions of canvas
@@ -61,6 +62,7 @@ public:
 
 	const struct dive *d;
 	int dc;
+	QRectF profileRegion; // Region inside the axes, where the crosshair is painted in plan and edit mode.
 private:
 	using DataAccessor = double (*)(const plot_data &data);
 	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, DataAccessor accessor, int z, Args&&... args);
@@ -78,7 +80,6 @@ private:
 	int maxdepth;
 
 	struct plot_info plotInfo;
-	QRectF profileRegion; // Region inside the axes, where the crosshair is painted in plan and edit mode.
 	DiveCartesianAxis *profileYAxis;
 	DiveCartesianAxis *gasYAxis;
 	DiveCartesianAxis *temperatureAxis;

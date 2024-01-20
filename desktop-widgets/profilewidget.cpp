@@ -17,6 +17,7 @@
 #include <QMimeData>
 #include <QQmlEngine>
 #include <QQuickWidget>
+#include <QSignalBlocker>
 #include <QStackedWidget>
 #include <QToolBar>
 
@@ -201,15 +202,6 @@ ProfileWidget::ProfileWidget() : d(nullptr), dc(0), placingCommand(false)
 	ui.profTissues->setChecked(qPrefTechnicalDetails::percentagegraph());
 	ui.profScaled->setChecked(qPrefTechnicalDetails::zoomed_plot());
 	ui.profInfobox->setChecked(qPrefTechnicalDetails::infobox());
-
-	//connect(&diveListNotifier, &DiveListNotifier::settingsChanged, view.get(), &ProfileWidget2::settingsChanged);
-	//connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &ProfileWidget::cylindersChanged);
-	//connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &ProfileWidget::cylindersChanged);
-	//connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &ProfileWidget::cylindersChanged);
-	//connect(view.get(), &ProfileWidget2::stopAdded, this, &ProfileWidget::stopAdded);
-	//connect(view.get(), &ProfileWidget2::stopRemoved, this, &ProfileWidget::stopRemoved);
-	//connect(view.get(), &ProfileWidget2::stopMoved, this, &ProfileWidget::stopMoved);
-	//connect(view.get(), &ProfileWidget2::stopEdited, this, &ProfileWidget::stopEdited);
 }
 
 ProfileWidget::~ProfileWidget()
@@ -229,6 +221,16 @@ ProfileView *ProfileWidget::getView()
 		viewWidget->engine()->setObjectOwnership(view, QQmlEngine::CppOwnership);
 		view->setParent(this);
 		view->setVisible(isVisible()); // Synchronize visibility of widget and QtQuick-view.
+
+		if (!view->initialized) {
+			view->setPlannerModel(*DivePlannerPointsModel::instance());
+
+			//connect(&diveListNotifier, &DiveListNotifier::settingsChanged, view.get(), &ProfileWidget2::settingsChanged);
+			connect(view, &ProfileView::stopAdded, this, &ProfileWidget::stopAdded);
+			connect(view, &ProfileView::stopRemoved, this, &ProfileWidget::stopRemoved);
+			connect(view, &ProfileView::stopMoved, this, &ProfileWidget::stopMoved);
+			view->initialized = true;
+		}
 	}
 	return view;
 }
@@ -303,7 +305,7 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 	auto view = getView();
 	setEnabledToolbar(d != nullptr);
 	if (editedDive) {
-		view->plotDive(editedDive.get(), dc);
+		view->plotDive(editedDive.get(), dc, ProfileView::RenderFlags::EditMode);
 		setDive(editedDive.get(), dc);
 	} else if (d) {
 		//view->setProfileState(d, dc);
@@ -404,9 +406,14 @@ void ProfileWidget::editDive()
 {
 	editedDive = std::make_unique<dive>();
 	copy_dive(d, editedDive.get()); // Work on a copy of the dive
+
+	// We don't want the DivePlannerPointsModel send signals while reloading,
+	// because that would reload the just deleted dive. And we will be reloading
+	// the dive anyway. Control-flow here is truly horrible.
+	QSignalBlocker blocker(DivePlannerPointsModel::instance());
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::EDIT);
 	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), dc);
-	//view->setEditState(editedDive.get(), dc);
+	//view->setEditState(editedDive.get(), editedDc);
 }
 
 void ProfileWidget::exitEditMode()

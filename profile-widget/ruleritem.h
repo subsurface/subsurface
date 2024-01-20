@@ -24,6 +24,7 @@ class RulerItem {
 	QPixmap title;
 public:
 	RulerItem(ProfileView &view, double dpr);
+	~RulerItem();
 	void setVisible(bool visible);
 	void update(const dive *d, double dpr, const ProfileScene &scene, const plot_info &info, int animspeed);
 	void anim(double progress);
