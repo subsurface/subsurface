@@ -12,7 +12,7 @@ git clone https://github.com/subsurface/subsurface
 cd subsurface
 git submodule init
 git submodule update
-docker run -v /some/path/windows:/__w subsurface/mxe-build-container:2.2 /bin/bash /__w/subsurface/packaging/windows/create-win-installer.sh
+docker run -v /some/path/windows:/__w subsurface/mxe-build:3.1.0 /bin/bash /__w/subsurface/packaging/windows/create-win-installer.sh
 ```
 
 This will result in subsurface-VERSION.exe and smtk2ssrf-VERSION.exe to be created.
