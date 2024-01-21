@@ -4,7 +4,6 @@ Priority: optional
 Maintainer: Subsurface CI Bot <dirk@subsurface-divelog.org>
 Build-Depends: asciidoc,
                debhelper (>= 9),
-               libgconf2-dev,
                libtool,
                libxml2-dev,
                libxslt-dev,
