@@ -5,7 +5,7 @@
   <xsl:output method="xml" encoding="utf-8" indent="yes"/>
   <xsl:param name="units" select="units"/>
 
-  <xsl:key name="gases" match="cylinder" use="concat(substring-before(@o2, '.'), '/', substring-before(@he, '.'))" />
+  <xsl:key name="gases" match="cylinder" use="concat(number(substring-before(@o2, '%')), '/', number(substring-before(@he, '%')))" />
   <xsl:key name="images" match="picture" use="concat(../../dive/@number|../dive/@number, ':', @filename, '@', @offset)" />
   <xsl:key name="divecomputer" match="divecomputer" use="@deviceid" />
 
@@ -134,15 +134,15 @@
       <!-- Define all the unique gases found in the dive log -->
       <gasdefinitions>
         <!-- Get unique gas mixes from all the recorded dives -->
-        <xsl:for-each select="//dive/cylinder[generate-id() = generate-id(key('gases', concat(substring-before(@o2, '.'), '/', substring-before(@he, '.')))[1])]">
+        <xsl:for-each select="//dive/cylinder[generate-id() = generate-id(key('gases', concat(number(substring-before(@o2, '%')), '/', number(substring-before(@he, '%'))))[1])]">
 
           <xsl:variable name="o2">
             <xsl:choose>
               <xsl:when test="@o2 != ''">
-                <xsl:value-of select="substring-before(@o2, '.')"/>
+                <xsl:value-of select="number(substring-before(@o2, '%'))"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="'21'"/>
+                <xsl:value-of select="21"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
@@ -150,10 +150,10 @@
           <xsl:variable name="he">
             <xsl:choose>
               <xsl:when test="@he != ''">
-                <xsl:value-of select="substring-before(@he, '.')"/>
+                <xsl:value-of select="number(substring-before(@he, '%'))"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="'0'"/>
+                <xsl:value-of select="0"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
@@ -163,9 +163,25 @@
                just use the same references used internally on
                Subsurface.
           -->
-          <mix id="mix{$o2}">
+          <mix id="mix({$o2}/{$he})">
             <name>
-              <xsl:value-of select="concat($o2, '/', $he)"/>
+              <xsl:choose>
+                <xsl:when test="$he + $o2 &gt; 100">
+                  <xsl:value-of select="concat('Impossible mix: ', $o2, '/', $he)"/>
+                </xsl:when>
+                <xsl:when test="$he &gt; 0">
+                  <xsl:value-of select="concat('TMx ', $o2, '/', $he)"/>
+                </xsl:when>
+                <xsl:when test="$o2 = 21">
+                  <xsl:value-of select="'air'"/>
+                </xsl:when>
+                <xsl:when test="$o2 = 100">
+                  <xsl:value-of select="'oxygen'"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="concat('EANx ', $o2)"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </name>
             <o2>
               <xsl:value-of select="format-number($o2 div 100, '0.00')"/>
@@ -334,19 +350,31 @@
       </informationbeforedive>
 
       <xsl:for-each select="cylinder">
+
+        <xsl:variable name="o2">
+          <xsl:choose>
+            <xsl:when test="@o2 != ''">
+              <xsl:value-of select="number(substring-before(@o2, '%'))"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="21"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="he">
+          <xsl:choose>
+            <xsl:when test="@he != ''">
+              <xsl:value-of select="number(substring-before(@he, '%'))"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="0"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
         <tankdata>
-          <link>
-            <xsl:attribute name="ref">
-              <xsl:choose>
-                <xsl:when test="@o2 != ''">
-                  <xsl:value-of select="concat('mix', substring-before(@o2, '.'))"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="'mix21'"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:attribute>
-          </link>
+          <link ref="mix({$o2}/{$he})"/>
 
           <xsl:if test="@size">
 
@@ -501,11 +529,29 @@
                   <divetime><xsl:value-of select="$time"/></divetime>
 
                   <xsl:if test="@name = 'gaschange'">
-                    <switchmix>
-                      <xsl:attribute name="ref">
-                        <xsl:value-of select="concat('mix', @value)"/>
-                      </xsl:attribute>
-                    </switchmix>
+                    <xsl:variable name="o2">
+                      <xsl:choose>
+                        <xsl:when test="@o2 != ''">
+                          <xsl:value-of select="number(substring-before(@o2, '%'))"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="21"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
+
+                    <xsl:variable name="he">
+                      <xsl:choose>
+                        <xsl:when test="@he != ''">
+                          <xsl:value-of select="number(substring-before(@he, '%'))"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="0"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
+
+                    <switchmix ref="mix({$o2}/{$he})"/>
                   </xsl:if>
 
                   <xsl:if test="@name = 'heading'">
@@ -555,12 +601,30 @@
                   </heading>
                 </xsl:for-each>
 
-                <xsl:for-each select="preceding-sibling::event[@time = $time and @name='gaschange']/@value">
-                  <switchmix>
-                    <xsl:attribute name="ref">
-                      <xsl:value-of select="concat('mix', .)"/>
-                    </xsl:attribute>
-                  </switchmix>
+                <xsl:for-each select="preceding-sibling::event[@time = $time and @name='gaschange']">
+                  <xsl:variable name="o2">
+                    <xsl:choose>
+                      <xsl:when test="@o2 != ''">
+                        <xsl:value-of select="number(substring-before(@o2, '%'))"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="21"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+
+                  <xsl:variable name="he">
+                    <xsl:choose>
+                      <xsl:when test="@he != ''">
+                        <xsl:value-of select="number(substring-before(@he, '%'))"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="0"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+
+                  <switchmix ref="mix({$o2}/{$he})"/>
                 </xsl:for-each>
 
                 <xsl:if test="./@pressure != ''">
