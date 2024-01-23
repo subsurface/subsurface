@@ -106,6 +106,7 @@ struct preferences {
 	bool        show_developer;
 	bool        three_m_based_grid;
 	bool        map_short_names;
+	bool        graph_hide_first_gaschange;
 
 	// ********** Equipment tab *******
 	const char *default_cylinder;

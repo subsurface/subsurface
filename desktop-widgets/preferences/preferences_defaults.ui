@@ -6,27 +6,34 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>561</width>
-    <height>558</height>
+    <width>610</width>
+    <height>438</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBox_fonts">
      <property name="title">
       <string>Font for lists and tables</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_1">
-      <property name="margin">
+      <property name="leftMargin">
        <number>5</number>
       </property>
-
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
       <item>
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="label_font">
         <property name="text">
          <string>Font</string>
         </property>
@@ -35,20 +42,18 @@
       <item>
        <widget class="QFontComboBox" name="font"/>
       </item>
-
       <item>
        <widget class="QLabel" name="label_default1">
+        <property name="text">
+         <string/>
+        </property>
         <property name="wordWrap">
          <bool>true</bool>
         </property>
-        <property name="text">
-         <string></string>
-        </property>
        </widget>
       </item>
-
       <item>
-       <widget class="QLabel" name="label_8">
+       <widget class="QLabel" name="label_fontsize">
         <property name="text">
          <string>Font size</string>
         </property>
@@ -57,35 +62,40 @@
       <item>
        <widget class="QDoubleSpinBox" name="fontsize"/>
       </item>
-
      </layout>
     </widget>
    </item>
-
    <item>
-    <widget class="QGroupBox" name="groupBox_7">
+    <widget class="QGroupBox" name="groupBox_animations">
      <property name="title">
       <string>Animations</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
-      <property name="margin">
+      <property name="leftMargin">
        <number>5</number>
       </property>
-
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
       <item>
        <widget class="QLabel" name="label_help4">
         <property name="toolTip">
          <string extracomment="Help info 1"/>
         </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
         <property name="text">
          <string>In some actions, e.g. when zooming the dive profile, the changing axis values are animated. Select the speed with which this animation should occur (maximum = 500):</string>
         </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
-
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
@@ -114,49 +124,69 @@
         </item>
        </layout>
       </item>
-
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_gridDepth">
+    <widget class="QGroupBox" name="groupBox_diveProfile">
      <property name="title">
-      <string>Dive profile depth grid</string>
+      <string>Dive profile options</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Depth line intevals.</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_depthgrid">
+          <property name="text">
+           <string>Depth grid line intevals:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="gridGeneric">
+          <property name="text">
+           <string>generic ( 1, 2, 4, 5, 10 )</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="grid3MBased">
+          <property name="text">
+           <string>based on ×3 intervals ( 1, 3, 6, 15 )</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
-       <widget class="QRadioButton" name="gridGeneric">
-        <property name="text">
-         <string>generic ( 1, 2, 4, 5, 10 )</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="grid3MBased">
-        <property name="text">
-         <string>based on ×3 intervals ( 1, 3, 6, 15 )</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_hide_first_gaschange">
+          <property name="text">
+           <string>Hide first Gas Change:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBox_hide_first_gaschange">
+          <property name="text">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
    </item>
-   
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="groupBox_mapDisplay">
      <property name="title">
       <string>Map Display Options</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_short_names">
         <property name="text">
          <string>Short Names:</string>
         </property>

@@ -34,6 +34,7 @@ void PreferencesDefaults::refreshSettings()
 		ui->gridGeneric->setChecked(true);
 
 	ui->checkBox_map_short_names->setChecked(qPrefDisplay::map_short_names());
+	ui->checkBox_hide_first_gaschange->setChecked(qPrefDisplay::graph_hide_first_gaschange());
 }
 
 void PreferencesDefaults::syncSettings()
@@ -43,4 +44,5 @@ void PreferencesDefaults::syncSettings()
 	qPrefDisplay::set_animation_speed(ui->velocitySlider->value());
 	qPrefDisplay::set_three_m_based_grid(ui->grid3MBased->isChecked());
 	qPrefDisplay::set_map_short_names(ui->checkBox_map_short_names->isChecked());
+	qPrefDisplay::set_graph_hide_first_gaschange(ui->checkBox_hide_first_gaschange->isChecked());
 }

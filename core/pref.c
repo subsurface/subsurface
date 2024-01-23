@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "pref.h"
 #include "subsurface-string.h"
+#include "units.h"
 #include "git-access.h" // for CLOUD_HOST
+
+#include <stdbool.h>
 
 struct preferences prefs, git_prefs;
 struct preferences default_prefs = {
@@ -93,6 +96,8 @@ struct preferences default_prefs = {
 	.extract_video_thumbnails = true,
 	.extract_video_thumbnails_position = 20,		// The first fifth seems like a reasonable place
 	.three_m_based_grid = false,
+	.map_short_names = false,
+	.graph_hide_first_gaschange = true,
 	.sync_dc_time = false,
 };
 
