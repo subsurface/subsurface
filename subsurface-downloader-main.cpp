@@ -102,7 +102,14 @@ int main(int argc, char **argv)
 			cliDownloader(prefs.dive_computer.vendor, prefs.dive_computer.product, prefs.dive_computer.device);
 		}
 	}
-	save_dives(qPrintable(files.first()));
+	if (!files.isEmpty()) {
+		qDebug() << "saving dive data to" << files;
+		save_dives(qPrintable(files.first()));
+	}
+	else {
+		printf("No log files given, not saving dive data.\n");
+		printf("Give a log file name as argument, or configure a cloud URL.\n");
+	}
 	clear_divelog(&divelog);
 	taglist_free(g_tag_list);
 	parse_xml_exit();
