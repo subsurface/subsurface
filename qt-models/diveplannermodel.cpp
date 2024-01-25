@@ -523,12 +523,22 @@ void DivePlannerPointsModel::setGFHigh(const int gfhigh)
 	}
 }
 
+int DivePlannerPointsModel::gfHigh() const
+{
+	return diveplan.gfhigh;
+}
+
 void DivePlannerPointsModel::setGFLow(const int gflow)
 {
 	if (diveplan.gflow != gflow) {
 		diveplan.gflow = gflow;
 		emitDataChanged();
 	}
+}
+
+int DivePlannerPointsModel::gfLow() const
+{
+	return diveplan.gflow;
 }
 
 void DivePlannerPointsModel::setRebreatherMode(int mode)
