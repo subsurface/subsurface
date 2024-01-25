@@ -102,6 +102,24 @@
     </widget>
    </item>
    <item row="3" column="0">
+    <layout class="QHBoxLayout" name="pwdResetLayout">
+     <item>
+      <widget class="QLabel" name="label_pwd_help">
+       <property name="text">
+        <string>If you have a cloud account and forgot your password, you can reset it here:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="resetPassword">
+       <property name="text">
+        <string>Reset Password</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0">
     <widget class="QLabel" name="label_help1">
      <property name="toolTip">
       <string extracomment="Help info 1"/>
@@ -111,7 +129,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="label_help2">
      <property name="toolTip">
       <string extracomment="Help info 1"/>
@@ -121,7 +139,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="label_help3">
      <property name="toolTip">
       <string extracomment="Help info 1"/>
@@ -131,7 +149,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <widget class="QLabel" name="label_help4">
      <property name="toolTip">
       <string extracomment="Help info 1"/>

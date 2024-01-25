@@ -20,6 +20,7 @@ public:
 public slots:
 	void updateCloudAuthenticationState();
 	void passwordUpdateSuccessful();
+	void on_resetPassword_clicked();
 
 private:
 	Ui::PreferencesCloud *ui;

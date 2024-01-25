@@ -7,6 +7,7 @@
 #include "core/settings/qPrefCloudStorage.h"
 #include <QRegularExpression>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 PreferencesCloud::PreferencesCloud() : AbstractPreferencesWidget(tr("Cloud"),QIcon(":preferences-cloud-icon"), 9), ui(new Ui::PreferencesCloud())
 {
@@ -20,6 +21,11 @@ PreferencesCloud::PreferencesCloud() : AbstractPreferencesWidget(tr("Cloud"),QIc
 PreferencesCloud::~PreferencesCloud()
 {
 	delete ui;
+}
+
+void PreferencesCloud::on_resetPassword_clicked()
+{
+	QDesktopServices::openUrl(QUrl("https://cloud.subsurface-divelog.org/passwordreset"));
 }
 
 void PreferencesCloud::refreshSettings()
