@@ -54,8 +54,8 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(DECO_MODE planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_modeChanged);
 	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gasChanged);
 	Q_PROPERTY(bool safetystop READ safetystop WRITE set_safetystop NOTIFY safetystopChanged);
-	Q_PROPERTY(int gflow READ gflow WRITE set_gflow NOTIFY gflowChanged);
-	Q_PROPERTY(int gfhigh READ gfhigh WRITE set_gfhigh NOTIFY gfhighChanged);
+	Q_PROPERTY(int planner_gflow READ planner_gflow WRITE set_planner_gflow NOTIFY planner_gflowChanged);
+	Q_PROPERTY(int planner_gfhigh READ planner_gfhigh WRITE set_planner_gfhigh NOTIFY planner_gfhighChanged);
 	Q_PROPERTY(int vpmb_conservatism READ vpmb_conservatism WRITE set_vpmb_conservatism NOTIFY vpmb_conservatismChanged);
 	Q_PROPERTY(bool dobailout READ dobailout WRITE set_dobailout NOTIFY dobailoutChanged);
 	Q_PROPERTY(bool drop_stone_mode READ drop_stone_mode WRITE set_drop_stone_mode NOTIFY drop_stone_modeChanged);
@@ -190,8 +190,8 @@ public:
 	DECO_MODE planner_deco_mode() { return (DECO_MODE)PlannerShared::planner_deco_mode(); }
 	int reserve_gas() { return PlannerShared::reserve_gas(); }
 	bool safetystop() { return prefs.safetystop; }
-	int gflow() { return prefs.gflow; }
-	int gfhigh() { return prefs.gfhigh; }
+	int planner_gflow() { return DivePlannerPointsModel::instance()->gfLow(); }
+	int planner_gfhigh() { return DivePlannerPointsModel::instance()->gfHigh(); }
 	int vpmb_conservatism() { return prefs.vpmb_conservatism; }
 	bool dobailout() { return PlannerShared::dobailout(); }
 	bool drop_stone_mode() { return prefs.drop_stone_mode; }
@@ -239,8 +239,8 @@ public slots:
 	void set_planner_deco_mode(DECO_MODE value) { PlannerShared::set_planner_deco_mode((deco_mode)value); }
 	void set_reserve_gas(int value) { PlannerShared::set_reserve_gas(value); }
 	void set_safetystop(bool value) { DivePlannerPointsModel::instance()->setSafetyStop(value); }
-	void set_gflow(int value) { DivePlannerPointsModel::instance()->setGFLow(value); }
-	void set_gfhigh(int value) { DivePlannerPointsModel::instance()->setGFHigh(value); }
+	void set_planner_gflow(int value) { DivePlannerPointsModel::instance()->setGFLow(value); }
+	void set_planner_gfhigh(int value) { DivePlannerPointsModel::instance()->setGFHigh(value); }
 	void set_vpmb_conservatism(int value) { DivePlannerPointsModel::instance()->setVpmbConservatism(value); }
 	void set_dobailout(bool value) { PlannerShared::set_dobailout(value); }
 	void set_drop_stone_mode(bool value) { DivePlannerPointsModel::instance()->setDropStoneMode(value); }
@@ -292,8 +292,8 @@ signals:
 	void planner_deco_modeChanged(DECO_MODE value);
 	void reserve_gasChanged(int value);
 	void safetystopChanged(bool value);
-	void gflowChanged(int value);
-	void gfhighChanged(int value);
+	void planner_gflowChanged(int value);
+	void planner_gfhighChanged(int value);
 	void vpmb_conservatismChanged(int value);
 	void dobailoutChanged(bool value);
 	void drop_stone_modeChanged(bool value);

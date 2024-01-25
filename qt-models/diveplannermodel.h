@@ -52,6 +52,8 @@ public:
 	int ascratelast6mDisplay() const;
 	int descrateDisplay() const;
 	int getSurfacePressure() const;
+	int gfLow() const;
+	int gfHigh() const;
 
 	/**
 	 * @return the row number.

@@ -639,8 +639,8 @@ TemplatePage {
 					textFromValue: function (value, locale) {
 						return value + "%"
 					}
-					onValueModified: {
-						PrefTechnicalDetails.gflow = gfLow.text
+					onValueChanged: {
+						PrefTechnicalDetails.gflow = value
 						rootItem.settingsChanged()
 					}
 				}
@@ -656,8 +656,8 @@ TemplatePage {
 					textFromValue: function (value, locale) {
 						return value + "%"
 					}
-					onValueModified: {
-						PrefTechnicalDetails.gfhigh = gfHigh.text
+					onValueChanged: {
+						PrefTechnicalDetails.gfhigh = value
 						rootItem.settingsChanged()
 					}
 				}
