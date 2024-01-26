@@ -67,6 +67,11 @@ add_custom_target (translations ALL DEPENDS ${TRANSLATIONS})
 #
 #  DO NOT DO THIS MANUALLY -- USE THE SCRIPT IN ORDER TO FIX NUMERUSFORM
 #  =====================================================================
-# qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${TRANSLATION_FILES})
-# qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${US_EN_PLURALS} OPTIONS -pluralonly)
-# add_custom_target(translations_update DEPENDS ${TRANSLATION_MESSAGES})
+#!# if(NOT USINGQT6)
+#!#     qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${TRANSLATION_FILES})
+#!#     qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${US_EN_PLURALS} OPTIONS -pluralonly)
+#!# else()
+#!#     qt6_add_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${TRANSLATION_FILES})
+#!#     qt6_add_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${US_EN_PLURALS} OPTIONS -pluralonly)
+#!# endif()
+#!# add_custom_target(translations_update DEPENDS ${TRANSLATION_MESSAGES})

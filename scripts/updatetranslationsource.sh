@@ -33,7 +33,7 @@ chmod 000 mobile-widgets/3rdparty
 rm translations/subsurface_source.ts
 
 # enable creating the translation strings
-sed -i.bak 's/# qt5_create_translation/ qt5_create_translation/ ; s/# add_custom_target(translations_update/ add_custom_target(translations_update/' translations/CMakeLists.txt
+sed -i.bak 's/#!#//' translations/CMakeLists.txt
 
 popd
 
