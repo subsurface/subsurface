@@ -91,7 +91,10 @@ int main(int argc, char **argv)
 	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
 	if (!files.isEmpty()) {
 		qDebug() << "loading dive data from" << files;
-		parse_file(qPrintable(files.first()), &divelog);
+		if (parse_file(qPrintable(files.first()), &divelog) < 0) {
+			printf("Failed to load dives from file '%s', aborting.\n", qPrintable(files.first()));
+			exit(1);
+		}
 	}
 	print_files();
 	if (!quit) {
