@@ -41,7 +41,6 @@ int main(int argc, char **argv)
 	QStringList files;
 	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
-	struct divelog log;
 
 	// set a default logfile name for libdivecomputer so we always get a logfile
 	logfile_name = strdup("subsurface-downloader.log");
@@ -92,7 +91,7 @@ int main(int argc, char **argv)
 	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
 	if (!files.isEmpty()) {
 		qDebug() << "loading dive data from" << files;
-		parse_file(qPrintable(files.first()), &log);
+		parse_file(qPrintable(files.first()), &divelog);
 	}
 	print_files();
 	if (!quit) {
