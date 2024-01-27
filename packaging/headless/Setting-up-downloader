@@ -38,18 +38,23 @@ sudo ln -s /etc/apache2/mods-available/cgi* /etc/apache2/mods-enabled/
 
 and restart apache2
 
-6) copy ~/src/subsurface/scripts/downloader.pl to /usr/lib/cgi-bin and run
+6) Install two perl modules:
+
+sudo cpan CGI
+sudo cpan Get:Repository
+
+7) copy ~/src/subsurface/scripts/downloader.pl to /usr/lib/cgi-bin and run
 sudo chmod a+x /usr/lib/cgi-bin/downloader.pl
 It should then be there when you direct your browser to
 subsurfacepi.local/cgi-bin/downloader.pl
 
-7) Give the www user access to the serial interface
+8) Give the www user access to the serial interface
 sudo adduser pi dialout
 and restart apache2
 
-8) Create a directory to store the data
+9) Create a directory to store the data
 sudo mkdir /opt/ssrf/
 sudo touch /opt/ssrf/ssrf.conf
 sudo chown -R www-data.www-data /opt/ssrf
 
-9) If you want to use the pi with an iPhone where the iPhone provides the internet connectivity, follow https://gist.github.com/antronic/157e047cdefa98b3150195c2eacb56b8
+10) If you want to use the pi with an iPhone where the iPhone provides the internet connectivity, follow https://gist.github.com/antronic/157e047cdefa98b3150195c2eacb56b8

@@ -17,6 +17,10 @@ my %conf;
 # Use unbuffered output
 $| = 1;
 
+# Setup some environemnt variables to make subsurface startup happy
+$ENV{HOME} = '/tmp';
+$ENV{LOGNAME} = 'www-data';
+
 my $q = CGI->new;
 
 print $q->header('text/html');
@@ -114,7 +118,7 @@ print $q->end_form();
 print $q->br(), $q->a({-href => $q->url() . "?action=config"}, "Configure cloud credentials");
 
 sub load_supported_dcs {
-  open IN, "/home/pi/src/subsurface/build/subsurface-downloader --list-dc|";
+  open IN, "$downloader --list-dc|" || die "Cannot run $downloader: $!";
   
   while(<IN>) {
     last if /Supported dive computers:/;
