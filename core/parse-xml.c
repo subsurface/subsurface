@@ -2348,6 +2348,9 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params
 	xmlNode *root_element = xmlDocGetRootElement(doc);
 	xmlChar *attribute;
 
+	if (!root_element)
+		return NULL;
+
 	while (info->root) {
 		if ((strcasecmp((const char *)root_element->name, info->root) == 0)) {
 			if (info->attribute == NULL)
