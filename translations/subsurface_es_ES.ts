@@ -5030,7 +5030,7 @@ más cercano</translation>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="194"/>
         <source>Adjust the time on the dive computer to match the time on the PC (if supported by the dive computer model).</source>
-        <translation>Ajusta la hora del ordenador de buceo para que coincida con la del PC (si esto está soportado por el modelo de ordenador).</translation>
+        <translation>Ajusta la hora del ordenador de buceo para que coincida con la del PC (si esto es compatible con el modelo de ordenador).</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="221"/>
