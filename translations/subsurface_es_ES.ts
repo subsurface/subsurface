@@ -13240,7 +13240,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/uemis-downloader.c" line="1523"/>
         <source>Time sync not supported by dive computer</source>
-        <translation>Sincronización de hora no soportada en este ordenador de buceo</translation>
+        <translation>Sincronización de hora no compatible con este ordenador de buceo</translation>
     </message>
     <message>
         <location filename="../core/uemis.c" line="203"/>
