@@ -3011,7 +3011,7 @@ Este gas se está usando. Solo se pueden borrar botellas que no se usen en la in
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="331"/>
         <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
-        <translation>Pulsa el botón &apos;+&apos; para añadir una inmersión (o descargar inmersiones desde un ordenador soportado)</translation>
+        <translation>Pulsa el botón &apos;+&apos; para añadir una inmersión (o descargar inmersiones desde un ordenador compatible)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="337"/>
