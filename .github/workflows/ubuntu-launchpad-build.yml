@@ -5,6 +5,7 @@ on:
     - scripts/docker/**
     branches:
     - master
+    - current
 
 jobs:
   push-to-ppa:
@@ -47,5 +48,5 @@ jobs:
     - name: run the launchpad make-package script
       run: |
         cd ..
-        bash -x subsurface/packaging/ubuntu/make-package.sh post
+        bash -x subsurface/packaging/ubuntu/make-package.sh ${{ github.ref_name }}
 

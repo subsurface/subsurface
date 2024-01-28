@@ -70,22 +70,18 @@ fi
 # file, this is hard coded to 1 - it's entirely possible that there will be use cases where we
 # need to push additional versions... but it seems impossible to predict what exactly would drive
 # those and how to automate them
-if [[ "$1" = "post" ]] ; then
-	# daily vs. release
-	if [[ "$GITREVISION" == "" ]] ; then
-		# this is a release
-		echo "RELEASE PROCESS IS NOT WELL TESTED"
-		REPO="Subsurface"
-		SUMMARY="official Fedora RPMs from the Subsurface project"
-		DESCRIPTION="This is the official Subsurface build, provided by the Subsurface team, including our own custom libdivecomputer."
-	else
-		REPO="Subsurface-test"
-		SUMMARY="rolling build of the latest development version of Subsurface"
-		DESCRIPTION="This is a 'daily' build of Subsurface, provided by the Subsurface team, based on the latest sources. The builds aren't always well tested."
-	fi
-	cd "$HOME"/rpmbuild
-	# shellcheck disable=SC2002
-	cat "$TOPDIR"/subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $GITVERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
-	rpmbuild --verbose -bs "$(pwd)/SPECS/subsurface.spec"
-	copr build --nowait $REPO "$(pwd)/SRPMS/subsurface-$GITVERSION"-1.fc*.src.rpm
+if [[ "$1" = "current" ]] ; then
+	# this is a release
+	REPO="Subsurface"
+	SUMMARY="official Fedora RPMs from the Subsurface project"
+	DESCRIPTION="This is the current (or roughly 'weekly') Subsurface release build, provided by the Subsurface team, including our own custom libdivecomputer."
+else
+	REPO="Subsurface-test"
+	SUMMARY="rolling build of the latest development version of Subsurface"
+	DESCRIPTION="This is a 'daily' build of Subsurface, provided by the Subsurface team, based on the latest sources. The builds aren't always well tested."
 fi
+cd "$HOME"/rpmbuild
+# shellcheck disable=SC2002
+cat "$TOPDIR"/subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $GITVERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
+rpmbuild --verbose -bs "$(pwd)/SPECS/subsurface.spec"
+copr build --nowait $REPO "$(pwd)/SRPMS/subsurface-$GITVERSION"-1.fc*.src.rpm
