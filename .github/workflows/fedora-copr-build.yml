@@ -53,5 +53,5 @@ jobs:
     - name: run the copr build script
       run: |
         cd ..
-        bash -x subsurface/packaging/copr/make-package.sh ${{ github.refname }}
+        bash -x subsurface/packaging/copr/make-package.sh ${{ github.ref_name }}
 
