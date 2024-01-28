@@ -13,6 +13,7 @@
 #include "core/file.h"
 #include "core/trip.h"
 #include "core/libdivecomputer.h"
+#include "commands/command.h"
 
 #include <QApplication>
 #include <QLoggingCategory>
@@ -25,6 +26,7 @@ extern void cliDownloader(const char *vendor, const char *product, const char *d
 
 int main(int argc, char **argv)
 {
+	Command::init();
 	qInstallMessageHandler(messageHandler);
 	// we always run this in verbose mode as there is no UI
 	verbose = 1;
