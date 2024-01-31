@@ -25,7 +25,7 @@ jobs:
         version=$(cat release-version)
         echo "version=$version" >> $GITHUB_OUTPUT
 
-    # ironically, we have to upload a file, otherwise this won't create a release with just the release notes
+    # add a file containing the release title so it can be picked up and listed on the release page on our web server
     - name: publish release
       if: github.event_name == 'push'
       uses: softprops/action-gh-release@v1
@@ -34,5 +34,5 @@ jobs:
         repository: ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         prerelease: false
-        files: gh_release_notes.md
+        files: release_content_title.txt
         body_path: gh_release_notes.md
