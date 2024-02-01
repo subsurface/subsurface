@@ -95,11 +95,6 @@ const char *errmsg (dc_status_t rc)
 	}
 }
 
-static dc_status_t create_parser(device_data_t *devdata, dc_parser_t **parser)
-{
-	return dc_parser_new(parser, devdata->device);
-}
-
 /**
  * @brief get_deeper_gasmix Returns the gas mix with the deeper MOD.
  * NOTE: Parameters are passed by value in order to use them as local working
@@ -170,44 +165,59 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 	clear_cylinder_table(&dive->cylinders);
 	for (i = 0; i < MAX(ngases, ntanks); i++) {
 		cylinder_t cyl = empty_cylinder;
+		cyl.cylinder_use = NOT_USED;
+
 		if (i < ngases) {
 			dc_gasmix_t gasmix = { 0 };
 			int o2, he;
 
 			rc = dc_parser_get_field(parser, DC_FIELD_GASMIX, i, &gasmix);
-			if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED)
-				return rc;
+			if (rc == DC_STATUS_SUCCESS) {
+				o2 = lrint(gasmix.oxygen * 1000);
+				he = lrint(gasmix.helium * 1000);
 
-			o2 = lrint(gasmix.oxygen * 1000);
-			he = lrint(gasmix.helium * 1000);
+				/* Ignore bogus data - libdivecomputer does some crazy stuff */
+				if (o2 + he <= O2_IN_AIR || o2 > 1000) {
+					if (!shown_warning) {
+						shown_warning = true;
+						report_error("unlikely dive gas data from libdivecomputer: o2 = %.3f he = %.3f", gasmix.oxygen, gasmix.helium);
+					}
+					o2 = 0;
+				}
+				if (he < 0 || o2 + he > 1000) {
+					if (!shown_warning) {
+						shown_warning = true;
+						report_error("unlikely dive gas data from libdivecomputer: o2 = %.3f he = %.3f", gasmix.oxygen, gasmix.helium);
+					}
+					he = 0;
+				}
+				cyl.gasmix.o2.permille = o2;
+				cyl.gasmix.he.permille = he;
+				bottom_gas = get_deeper_gasmix(bottom_gas, cyl.gasmix);
 
-			/* Ignore bogus data - libdivecomputer does some crazy stuff */
-			if (o2 + he <= O2_IN_AIR || o2 > 1000) {
-				if (!shown_warning) {
-					shown_warning = true;
-					report_error("unlikely dive gas data from libdivecomputer: o2 = %.3f he = %.3f", gasmix.oxygen, gasmix.helium);
+				switch (gasmix.usage) {
+				case DC_USAGE_DILUENT:
+					cyl.cylinder_use = DILUENT;
+
+					break;
+				case DC_USAGE_OXYGEN:
+					cyl.cylinder_use = OXYGEN;
+
+					break;
+				case DC_USAGE_OPEN_CIRCUIT:
+					cyl.cylinder_use = OC_GAS;
+
+					break;
+				default:
+					if (dive->dc.divemode == CCR)
+						cyl.cylinder_use = DILUENT;
+					else
+						cyl.cylinder_use = OC_GAS;
+
+					break;
 				}
-				o2 = 0;
 			}
-			if (he < 0 || o2 + he > 1000) {
-				if (!shown_warning) {
-					shown_warning = true;
-					report_error("unlikely dive gas data from libdivecomputer: o2 = %.3f he = %.3f", gasmix.oxygen, gasmix.helium);
-				}
-				he = 0;
-			}
-			cyl.gasmix.o2.permille = o2;
-			cyl.gasmix.he.permille = he;
-			bottom_gas = get_deeper_gasmix(bottom_gas, cyl.gasmix);
 		}
-
-		if (rc == DC_STATUS_UNSUPPORTED)
-			// Gasmix is inactive
-			cyl.cylinder_use = NOT_USED;
-		else if (dive->dc.divemode == CCR)
-			cyl.cylinder_use = DILUENT;
-		else
-			cyl.cylinder_use = OC_GAS;
 
 		if (i < ntanks) {
 			// If we've run out of gas mixes, assign this cylinder to bottom
@@ -222,14 +232,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				cyl.type.size.mliter = lrint(tank.volume * 1000);
 				cyl.type.workingpressure.mbar = lrint(tank.workpressure * 1000);
 
-				cyl.cylinder_use = OC_GAS;
-				// libdivecomputer treats these as independent, but a tank cannot be used for diluent and O2 at the same time
-				if (tank.type & DC_TANKINFO_CC_DILUENT)
-					cyl.cylinder_use = DILUENT;
-				else if (tank.type & DC_TANKINFO_CC_O2)
-					cyl.cylinder_use = OXYGEN;
-
-				if (tank.type & DC_TANKINFO_IMPERIAL) {
+				if (tank.type & DC_TANKVOLUME_IMPERIAL) {
 					if (same_string(devdata->model, "Suunto EON Steel")) {
 						/* Suunto EON Steele gets this wrong. Badly.
 						 * but on the plus side it only supports a few imperial sizes,
@@ -372,9 +375,10 @@ static void handle_gasmix(struct divecomputer *dc, struct sample *sample, int id
 }
 
 void
-sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
+sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata)
 {
 	static unsigned int nsensor = 0;
+	dc_sample_value_t value = *pvalue;
 	struct divecomputer *dc = userdata;
 	struct sample *sample;
 
@@ -398,7 +402,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		// Create a new sample.
 		// Mark depth as negative
 		sample = prepare_sample(dc);
-		sample->time.seconds = value.time;
+		sample->time.seconds = value.time / 1000;
 		sample->depth.mm = -1;
 		// The current sample gets some sticky values
 		// that may have been around from before, these
@@ -457,7 +461,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		break;
 	case DC_SAMPLE_PPO2:
 		if (nsensor < MAX_O2_SENSORS)
-			sample->o2sensor[nsensor].mbar = lrint(value.ppo2 * 1000);
+			sample->o2sensor[nsensor].mbar = lrint(value.ppo2.value * 1000);
 		else
 			report_error("%d is more o2 sensors than we can handle", nsensor);
 		nsensor++;
@@ -484,6 +488,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample->stoptime.seconds = stoptime = value.deco.time;
 		}
+		sample->tts.seconds = value.deco.tts;
 	default:
 		break;
 	}
@@ -833,16 +838,10 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	import_dive_number++;
 
-	rc = create_parser(devdata, &parser);
+	rc = dc_parser_new(&parser, devdata->device, data, size);
 	if (rc != DC_STATUS_SUCCESS) {
 		download_error(translate("gettextFromC", "Unable to create parser for %s %s"), devdata->vendor, devdata->product);
 		return true;
-	}
-
-	rc = dc_parser_set_data(parser, data, size);
-	if (rc != DC_STATUS_SUCCESS) {
-		download_error(translate("gettextFromC", "Error registering the data"));
-		goto error_exit;
 	}
 
 	dive = alloc_dive();
@@ -1621,7 +1620,7 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 	case DC_FAMILY_HW_OSTC:
 	case DC_FAMILY_HW_FROG:
 	case DC_FAMILY_HW_OSTC3:
-		rc = dc_parser_new2(&parser, data->context, data->descriptor, 0, 0);
+		rc = dc_parser_new2(&parser, data->context, data->descriptor, buffer, size);
 		break;
 	default:
 		report_error("Device type not handled!");
@@ -1629,12 +1628,6 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 	}
 	if  (rc != DC_STATUS_SUCCESS) {
 		report_error("Error creating parser.");
-		dc_parser_destroy (parser);
-		return rc;
-	}
-	rc = dc_parser_set_data(parser, buffer, size);
-	if (rc != DC_STATUS_SUCCESS) {
-		report_error("Error registering the data.");
 		dc_parser_destroy (parser);
 		return rc;
 	}
