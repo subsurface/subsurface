@@ -1,3 +1,5 @@
+diff --git a/snap/snapcraft.yaml b/snap/snapcraft.yaml
+index 6b9542555..7f5ccabf2 100644
 --- a/snap/snapcraft.yaml
 +++ b/snap/snapcraft.yaml
 @@ -35,6 +35,7 @@ parts:
@@ -28,13 +30,12 @@
      - libbluetooth-dev
      - libhidapi-dev
      - libusb-dev
-@@ -131,9 +137,12 @@ parts:
+@@ -131,8 +137,11 @@ parts:
      - -DFTDISUPPORT=ON
      - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/usr/local/lib/libdivecomputer.so
      - -DLIBDIVECOMPUTER_INCLUDE_DIR=../../../stage/usr/local/include
 +    - -DCMAKE_C_COMPILER_LAUNCHER=ccache
 +    - -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
-     source-type: git
      build-packages:
      - build-essential
 +    - ccache
