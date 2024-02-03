@@ -131,7 +131,6 @@ parts:
     - -DFTDISUPPORT=ON
     - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/usr/local/lib/libdivecomputer.so
     - -DLIBDIVECOMPUTER_INCLUDE_DIR=../../../stage/usr/local/include
-    source-type: git
     build-packages:
     - build-essential
     - libcurl4-gnutls-dev
