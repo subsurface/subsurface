@@ -1,5 +1,4 @@
 name: subsurface
-version: git
 icon: icons/subsurface-icon.svg
 summary: Open source divelog program for recreational, tech, and free-divers
 description: |
@@ -12,6 +11,7 @@ description: |
 grade: stable
 confinement: strict
 base: core20
+adopt-info: subsurface
 
 apps:
   subsurface:
@@ -151,6 +151,13 @@ parts:
     - qtlocation5-dev
     - qtpositioning5-dev
     - qttools5-dev
+    override-pull: |
+      snapcraftctl pull
+      if [ ! -f latest-subsurface-buildnumber ]; then
+        git fetch --depth=1 https://github.com/subsurface/nightly-builds.git branch-for-$( git rev-parse HEAD )
+        git checkout FETCH_HEAD latest-subsurface-buildnumber
+      fi
+      snapcraftctl set-version $( scripts/get-version )
     override-build: |
       mkdir -p ../install-root
       ln -sf ../../../stage/usr/lib/*/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so \
