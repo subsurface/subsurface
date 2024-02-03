@@ -28,6 +28,7 @@ TEAM = "subsurface"
 SOURCE_NAME = "subsurface"
 SNAPS = {
     "subsurface": {"stable": {"recipe": "subsurface-stable"}},
+    "subsurface": {"candidate": {"recipe": "subsurface-candidate"}},
 }
 
 STORE_URL = "https://api.snapcraft.io/api/v1/snaps" "/details/{snap}?channel={channel}"
