@@ -13586,7 +13586,7 @@ Is de Uemis Zurich correct aangesloten?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="356"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
-        <translation>Door automatische synchronisatie uit te zetten, wordt de data alleen lokaal opgeslagen. Dit kan nuttig zijn op plekken zonder mobiel netwerk. Door &quot;Handmatig synchroniseren met cloud&quot; te kiezen, wordt de data alsnog met de cloud gesynchroniseerd.</translation>
+        <translation>Door automatische synchronisatie met de cloud uit te zetten, worden alle gegevens alleen lokaal opgeslagen. Dit kan nuttig zijn op plekken met beperkte of geen netwerktoegang. Door &quot;Handmatig synchroniseren met cloud&quot; te kiezen, wordt de data alsnog met de cloud gesynchroniseerd.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="366"/>
