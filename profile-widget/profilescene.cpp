@@ -218,6 +218,11 @@ void ProfileScene::updateVisibility(bool diveHasHeartBeat, bool simplified)
 		return;
 	bool ppGraphs = ppGraphsEnabled(currentdc, simplified);
 
+	diveCeiling->setVisible(prefs.calcceiling);
+	for (DiveCalculatedTissue *tissue: allTissues)
+		tissue->setVisible(prefs.calcalltissues && prefs.calcceiling);
+	reportedCeiling->setVisible(prefs.dcceiling);
+
 	if (simplified) {
 		pn2GasItem->setVisible(false);
 		po2GasItem->setVisible(ppGraphs);
@@ -231,6 +236,8 @@ void ProfileScene::updateVisibility(bool diveHasHeartBeat, bool simplified)
 		ccrsensor2GasItem->setVisible(ppGraphs && prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
 		ccrsensor3GasItem->setVisible(ppGraphs && prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
 		ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
+		// No point to show the gradient factor if we're not showing the calculated ceiling that is derived from it
+		decoModelParameters->setVisible(prefs.calcceiling);
 	} else {
 		pn2GasItem->setVisible(prefs.pp_graphs.pn2);
 		po2GasItem->setVisible(prefs.pp_graphs.po2);
@@ -246,15 +253,11 @@ void ProfileScene::updateVisibility(bool diveHasHeartBeat, bool simplified)
 
 		heartBeatItem->setVisible(prefs.hrgraph && diveHasHeartBeat);
 
-		diveCeiling->setVisible(prefs.calcceiling);
 		decoModelParameters->setVisible(prefs.decoinfo);
 
-		for (DiveCalculatedTissue *tissue: allTissues)
-			tissue->setVisible(prefs.calcalltissues && prefs.calcceiling);
 		percentageItem->setVisible(prefs.percentagegraph);
 
 		meanDepthItem->setVisible(prefs.show_average_depth);
-		reportedCeiling->setVisible(prefs.dcceiling);
 		tankItem->setVisible(prefs.tankbar);
 		temperatureItem->setVisible(true);
 	}

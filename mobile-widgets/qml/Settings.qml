@@ -628,9 +628,11 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
+					enabled: PrefTechnicalDetails.calcceiling
 					text: qsTr("GFLow")
 				}
 				TemplateSpinBox {
+					enabled: PrefTechnicalDetails.calcceiling
 					id: gfLow
 					from: 10
 					to: 150
@@ -645,9 +647,11 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
+					enabled: PrefTechnicalDetails.calcceiling
 					text: qsTr("GFHigh")
 				}
 				TemplateSpinBox {
+					enabled: PrefTechnicalDetails.calcceiling
 					id: gfHigh
 					from: 10
 					to: 150

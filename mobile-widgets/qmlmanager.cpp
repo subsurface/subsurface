@@ -405,7 +405,6 @@ void QMLManager::openLocalThenRemote(QString url)
 			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 		qPrefUnits::set_unit_system(git_prefs.unit_system);
 		qPrefTechnicalDetails::set_tankbar(git_prefs.tankbar);
-		qPrefTechnicalDetails::set_dcceiling(git_prefs.dcceiling);
 		qPrefTechnicalDetails::set_show_ccr_setpoint(git_prefs.show_ccr_setpoint);
 		qPrefTechnicalDetails::set_show_ccr_sensors(git_prefs.show_ccr_sensors);
 		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
@@ -878,7 +877,6 @@ void QMLManager::consumeFinishedLoad()
 		git_prefs.units = SI_units;
 	prefs.units = git_prefs.units;
 	prefs.tankbar = git_prefs.tankbar;
-	prefs.dcceiling = git_prefs.dcceiling;
 	prefs.show_ccr_setpoint = git_prefs.show_ccr_setpoint;
 	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
 	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
