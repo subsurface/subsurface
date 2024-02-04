@@ -3048,8 +3048,6 @@ void set_git_prefs(const char *prefs)
 {
 	if (strstr(prefs, "TANKBAR"))
 		git_prefs.tankbar = 1;
-	if (strstr(prefs, "DCCEILING"))
-		git_prefs.dcceiling = 1;
 	if (strstr(prefs, "SHOW_SETPOINT"))
 		git_prefs.show_ccr_setpoint = 1;
 	if (strstr(prefs, "SHOW_SENSORS"))

@@ -227,7 +227,6 @@ extern void subsurface_OS_pref_setup();
 extern void copy_prefs(struct preferences *src, struct preferences *dest);
 
 extern void set_informational_units(const char *units);
-extern void set_git_prefs(const char *prefs);
 
 #ifdef __cplusplus
 }
