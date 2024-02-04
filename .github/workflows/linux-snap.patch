@@ -1,24 +1,24 @@
 diff --git a/snap/snapcraft.yaml b/snap/snapcraft.yaml
-index 6b9542555..7f5ccabf2 100644
+index 9f34d0169..0d5a89fd9 100644
 --- a/snap/snapcraft.yaml
 +++ b/snap/snapcraft.yaml
 @@ -35,6 +35,7 @@ parts:
-   googlemaps:
      source: https://github.com/Subsurface/googlemaps.git
+     plugin: make
      build-packages:
 +    - ccache
+     - qtbase5-dev
      - wget
      override-pull: |
-       snapcraftctl pull
-@@ -78,6 +79,7 @@ parts:
-     plugin: qmake
-     qmake-parameters:
-     - INCLUDEPATH+=QtHeaders
-+    - CONFIG+=ccache
+@@ -79,6 +80,7 @@ parts:
+     override-build: |
+       qmake \
+         INCLUDEPATH+=${CRAFT_PART_SRC}/QtHeaders \
++        CONFIG+=ccache \
+         ${CRAFT_PART_SRC}
+       craftctl default
  
-   desktop-qt5:
-     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-@@ -108,7 +110,11 @@ parts:
+@@ -111,7 +113,11 @@ parts:
      source: .
      source-type: git
      source-subdir: libdivecomputer
@@ -30,7 +30,7 @@ index 6b9542555..7f5ccabf2 100644
      - libbluetooth-dev
      - libhidapi-dev
      - libusb-dev
-@@ -131,8 +137,11 @@ parts:
+@@ -134,8 +140,11 @@ parts:
      - -DFTDISUPPORT=ON
      - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/usr/local/lib/libdivecomputer.so
      - -DLIBDIVECOMPUTER_INCLUDE_DIR=../../../stage/usr/local/include
