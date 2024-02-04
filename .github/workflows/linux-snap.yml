@@ -1,4 +1,4 @@
-name: Linux Snap
+name: Snap
 
 on:
   push:
