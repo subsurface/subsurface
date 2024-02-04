@@ -22,13 +22,15 @@ apps:
     desktop: usr/local/share/applications/subsurface.desktop
     plugs:
     - bluez
+    - desktop
+    - desktop-legacy
     - home
     - network
     - opengl
     - raw-usb
     - removable-media
-    - unity7
     - wayland
+    - x11
 
 parts:
   googlemaps:
