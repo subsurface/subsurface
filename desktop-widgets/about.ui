@@ -92,6 +92,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="contributeButton">
+       <property name="text">
+        <string>C&amp;ontribute</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="websiteButton">
        <property name="text">
         <string>&amp;Website</string>
@@ -125,6 +132,7 @@
  <tabstops>
   <tabstop>licenseButton</tabstop>
   <tabstop>creditButton</tabstop>
+  <tabstop>contributeButton</tabstop>
   <tabstop>websiteButton</tabstop>
   <tabstop>closeButton</tabstop>
  </tabstops>
