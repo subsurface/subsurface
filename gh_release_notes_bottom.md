@@ -18,3 +18,6 @@ Finally, there is a Linux AppImage (named **Subsurface-\<version\>-CICD-release.
 **Note:** Due to the asynchronous nature of our build process the artifacts for the individual platforms are added to the release one by one, whenever their build is finished. So if you can not find a particular artifact on a recent (less than 2 hours old) build, please come back later and check again.
 
 Please report any issues with these builds in the [Subsurface user forum](https://groups.google.com/g/subsurface-divelog).
+
+Also please note - the source tar and zip files below are created by GitHub and are essentially empty. You'll find the sources over in the [Subsurface repo](https://github.com/subsurface/subsurface)
+
