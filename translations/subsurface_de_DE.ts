@@ -7121,7 +7121,7 @@ Siehe https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="135"/>
         <source>In the Information tab, allow editing of water salinity</source>
-        <translation>Im Informations-Tab die Bearbeitung des Salzgehalts des Wassers erlauben</translation>
+        <translation>Bearbeitung des Salzgehalts des Wassers im Informations-Tab erlauben</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.cpp" line="15"/>
