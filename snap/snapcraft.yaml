@@ -8,15 +8,14 @@ description: |
   equipment used and names of other divers, and lets users rate dives and
   provide additional notes.
 
-grade: stable
 confinement: strict
-base: core20
+base: core22
 adopt-info: subsurface
 
 apps:
   subsurface:
     environment:
-      LD_LIBRARY_PATH: ${SNAP}/usr/local/lib
+      LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}:${SNAP}/usr/local/lib
     command-chain:
     - bin/desktop-launch
     command: usr/local/bin/subsurface
@@ -34,10 +33,14 @@ apps:
 parts:
   googlemaps:
     source: https://github.com/Subsurface/googlemaps.git
+    plugin: make
+    make-parameters:
+    - INSTALL_ROOT=${CRAFT_PART_INSTALL}
     build-packages:
+    - qtbase5-dev
     - wget
     override-pull: |
-      snapcraftctl pull
+      craftctl default
       export QT_SELECT=5
       export QT_VERSION=$( qmake -query QT_VERSION )
       mkdir -p QtHeaders/QtLocation/private QtHeaders/QtPositioning/private
@@ -62,7 +65,7 @@ parts:
           places/unsupportedreplies
       do
         wget --no-verbose --content-disposition \
-          http://code.qt.io/cgit/qt/qtlocation.git/plain/src/location/${HEADER}_p.h?h=v${QT_VERSION}
+          http://code.qt.io/cgit/qt/qtlocation.git/plain/src/location/${HEADER}_p.h?h=v${QT_VERSION}-lts-lgpl
       done
       cd -
       cd QtHeaders/QtPositioning/private
@@ -73,11 +76,13 @@ parts:
           qpositioningglobal
       do
         wget --no-verbose --content-disposition \
-          http://code.qt.io/cgit/qt/qtlocation.git/plain/src/positioning/${HEADER}_p.h?h=v${QT_VERSION}
+          http://code.qt.io/cgit/qt/qtlocation.git/plain/src/positioning/${HEADER}_p.h?h=v${QT_VERSION}-lts-lgpl
       done
-    plugin: qmake
-    qmake-parameters:
-    - INCLUDEPATH+=QtHeaders
+    override-build: |
+      qmake \
+        INCLUDEPATH+=${CRAFT_PART_SRC}/QtHeaders \
+        ${CRAFT_PART_SRC}
+      craftctl default
 
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
@@ -90,7 +95,7 @@ parts:
       - dpkg-dev
     stage-packages:
       - libxkbcommon0
-      - ttf-ubuntu-font-family
+      - fonts-ubuntu
       - dmz-cursor-theme
       - light-themes
       - adwaita-icon-theme
@@ -114,7 +119,7 @@ parts:
     - libusb-dev
     override-build: |
       sed -i 's/\[HIDAPI\], \[hidapi\]/[HIDAPI], [hidapi-libusb]/' libdivecomputer/configure.ac
-      snapcraftctl build
+      craftctl default
     stage-packages:
     - libbluetooth3
     - libftdi1-2
@@ -151,24 +156,27 @@ parts:
     - qtpositioning5-dev
     - qttools5-dev
     override-pull: |
-      snapcraftctl pull
+      craftctl default
+      craftctl set grade=devel
       if [ ! -f latest-subsurface-buildnumber ]; then
         git fetch --depth=1 https://github.com/subsurface/nightly-builds.git branch-for-$( git rev-parse HEAD )
         git checkout FETCH_HEAD latest-subsurface-buildnumber
+        # We succeeded getting the release version, allow publishing above `beta`
+        craftctl set grade=stable
       fi
-      snapcraftctl set-version $( scripts/get-version )
+      craftctl set version=$( scripts/get-version )
     override-build: |
       mkdir -p ../install-root
       ln -sf ../../../stage/usr/lib/*/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so \
         ../install-root/
       sed -i 's@^Icon=.*@Icon=${SNAP}/share/icons/hicolor/scalable/apps/subsurface-icon.svg@' ../src/subsurface.desktop
-      snapcraftctl build
+      craftctl default
     stage-packages:
     - libcap2
     - libcurl3-gnutls
     - libdb5.3
     - libftdi1-2
-    - libgit2-28
+    - libgit2-1.1
     - libqt5bluetooth5
     - libqt5charts5
     - libqt5concurrent5
@@ -186,11 +194,11 @@ parts:
     - libqt5widgets5
     - libsqlite3-0
     - libssh2-1
-    - libssl1.1
+    - libssl3
     - libusb-1.0-0
     - libxml2
     - libxslt1.1
-    - libzip5
+    - libzip4
     - qml-module-qtlocation
     - qml-module-qtpositioning
     - qml-module-qtquick2
