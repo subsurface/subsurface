@@ -30,12 +30,17 @@ void SubsurfaceAbout::on_licenseButton_clicked()
 	QDesktopServices::openUrl(QUrl("http://www.gnu.org/licenses/gpl-2.0.txt"));
 }
 
+void SubsurfaceAbout::on_contributeButton_clicked()
+{
+	QDesktopServices::openUrl(QUrl("http://subsurface-divelog.org/contribute/"));
+}
+
 void SubsurfaceAbout::on_websiteButton_clicked()
 {
-	QDesktopServices::openUrl(QUrl("http://subsurface-divelog.org"));
+	QDesktopServices::openUrl(QUrl("http://subsurface-divelog.org/"));
 }
 
 void SubsurfaceAbout::on_creditButton_clicked()
 {
-	QDesktopServices::openUrl(QUrl("http://subsurface-divelog.org/misc/credits"));
+	QDesktopServices::openUrl(QUrl("http://subsurface-divelog.org/credits/"));
 }
