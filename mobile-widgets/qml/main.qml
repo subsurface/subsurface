@@ -457,7 +457,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					}
 					text: qsTr("Show user manual")
 					onTriggered: {
-						Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-v3-user-manual/")
+						Qt.openUrlExternally("https://www.subsurface-divelog.org/subsurface-mobile-user-manual/")
 					}
 				}
 				Kirigami.Action {
