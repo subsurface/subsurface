@@ -97,6 +97,7 @@
 		<file alias="icons/ic_filter_list.svg">icons/ic_filter_list_24px.svg</file>
 		<file alias="icons/ic_sort.svg">icons/ic_sort_24px.svg</file>
 		<file alias="icons/trip_details.svg">icons/local_offer.svg</file>
+		<file alias="icons/recycle.svg">icons/recycle.svg</file>
 
 	</qresource>
 

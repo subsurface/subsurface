@@ -462,6 +462,15 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 				Kirigami.Action {
 					icon {
+						name: ":/icons/recycle.svg"
+					}
+					text: qsTr("Contribute to Subsurface")
+					onTriggered: {
+						Qt.openUrlExternally("https://www.subsurface-divelog.org/contribute/")
+					}
+				}
+				Kirigami.Action {
+					icon {
 						name: ":/icons/contact_support.svg"
 					}
 					text: qsTr("Ask for support")
