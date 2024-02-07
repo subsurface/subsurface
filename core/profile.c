@@ -751,12 +751,14 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	if (pi->nr_cylinders == 0)
 		return;
 
-	int *seen = malloc(pi->nr_cylinders * sizeof(*seen));
-	int *first = malloc(pi->nr_cylinders * sizeof(*first));
-	int *last = malloc(pi->nr_cylinders * sizeof(*last));
+	/* FIXME: The planner uses a dummy one-past-end cylinder for surface air! */
+	int num_cyl = pi->nr_cylinders + 1;
+	int *seen = malloc(num_cyl * sizeof(*seen));
+	int *first = malloc(num_cyl * sizeof(*first));
+	int *last = malloc(num_cyl * sizeof(*last));
 	const struct divecomputer *secondary;
 
-	for (i = 0; i < pi->nr_cylinders; i++) {
+	for (i = 0; i < num_cyl; i++) {
 		seen[i] = 0;
 		first[i] = 0;
 		last[i] = INT_MAX;
@@ -769,7 +771,11 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 		int sec = ev->time.seconds;
 
 		if (cyl < 0)
+			continue; // unknown cylinder
+		if (cyl >= num_cyl) {
+			fprintf(stderr, "setup_gas_sensor_pressure(): invalid cylinder idx %d\n", cyl);
 			continue;
+		}
 
 		last[prev] = sec;
 		prev = cyl;
