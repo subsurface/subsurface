@@ -117,6 +117,6 @@ In order to make reviews simpler and have contributions merged faster in the cod
 [7]: https://github.com/Subsurface/subsurface/pulls
 [8]: https://www.kernel.org/pub/software/scm/git/docs/user-manual.html
 [9]: https://gerrit-review.googlesource.com/Documentation/user-signedoffby.html
-[10]: https://subsurface-divelog.org/wp-content/uploads/2011/10/Screenshot-gitk-subsurface-1.png "Example with gitk"
+[10]: https://github.com/subsurface/subsurface/Documentation/images/Screenshot-gitk-subsurface-1.png "Example with gitk"
 [11]: https://github.com/Subsurface/subsurface/blob/master/CODINGSTYLE.md
 [12]: https://en.wikipedia.org/wiki/Imperative_mood
