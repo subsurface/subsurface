@@ -156,7 +156,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-no-bt] [-quick] [-build-deps] [-prep-only] [-fat-build] [-src-dir <SUBSURFACE directory>] [-build-prefix <PREFIX>] [-build-with-webkit] [-build-with-map] [-mobile] [-desktop] [-downloader] [-both] [-all] [-ftdi] [-create-appdir] [-release]"
+			echo "Usage: build.sh [-all] [-both] [-build-deps] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-prep-only] [-quick] [-release] [-src-dir <SUBSURFACE directory>] "
 			exit 1
 			;;
 	esac
