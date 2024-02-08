@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.10" />
+<meta name="generator" content="AsciiDoc 10.1.2" />
 <title></title>
 <style type="text/css">
 /*
@@ -17,7 +17,7 @@
  */
 
 *   { padding: 0;  margin: 0; }
-img { border: 0; }
+img { border: 0; margin: 15px; max-width:90% }
 
 /*** Layout ***/
 
@@ -78,12 +78,12 @@ body                        { font-family: Verdana, sans-serif; }
 #footer                     { font-size: 0.8em; }
 
 h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
-h2                          { font-size: 1.5em; }
+h2                          { font-size: 160%; }
 .sectionbody                { font-size: 0.85em; }
 .sectionbody .sectionbody   { font-size: inherit; }
-h3                          { font-size: 159%; } /* 1.35em */
-h4                          { font-size: 141%; } /* 1.2em */
-h5                          { font-size: 118%; } /* 1em */
+h3                          { font-size: 150%; } /* 1.35em */
+h4                          { font-size: 140%; } /* 1.2em */
+h5                          { font-size: 130%; } /* 1em */
 .title                      { font-size: 106%;   /* 0.9em */
 			      font-weight: bold;
 			    }
@@ -514,7 +514,7 @@ moet installeren staat uitgelegd op <em>Downloaden</em> page on the
 <a href="https://subsurface-divelog.org/"><em>Subsurface</em> website</a>. Vragen over of problemen met
 het programma kunnen bij de ontwikkelaars gemeld worden via email op
 <a href="mailto:subsurface@subsurface-divelog.org">onze mailinglijst</a>. Fouten kunnen
-ook gemeld worden op <a href="https://github.com/Subsurface-divelog/subsurface/issues">onze bugtracker</a>.
+ook gemeld worden op <a href="https://github.com/Subsurface/subsurface/issues">onze bugtracker</a>.
 Instructies hoe <em>Subsurface</em> zelf te compileren vanuit de broncode staan ook op
 onze website en in het INSTALL bestand in de broncode.</p></div>
 <div class="paragraph"><p><strong>Doelgroep</strong>: Recreatieve duikers, Tec duikers, Apneu duikers,
@@ -2119,7 +2119,7 @@ met een duik, en op deze manier zichtbaar zijn via het <em>Media</em> tabblad va
 het <strong>Notities</strong> paneel.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_media_bekijken">5.5.2. Media bekijken</h4>
+<h4 id="S_ViewMedia">5.5.2. Media bekijken</h4>
 <div class="sidebarblock">
 <div class="content">
 <div class="paragraph"><p><strong>Zorg ervoor dat thumbnails voor video kunnen worden gemaakt</strong></p></div>
@@ -3529,58 +3529,12 @@ grotduik met Bob).</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Exporteer duikinformatie naar <em>Facebook</em>
-</p>
-</li>
-<li>
-<p>
 <a href="#S_Export_other">Exporteer duikinformatie naar andere bestemmingen of formaten</a>
 </p>
 </li>
 </ul></div>
 <div class="sect2">
-<h3 id="S_Facebook">8.1. Exporteer duikinformatie naar <em>Facebook</em></h3>
-<div class="paragraph"><p>Exporteren naar <em>Facebook</em> werkt op een andere manier dan andere vormen van
-export, met name omdat er een verbinding met <em>Facebook</em> aanwezig moet zijn die
-is ingelogd. Selecteer vanuit het hoofdmenu <em>Deel via &#8594; Facebook</em> (zie figuur
-<strong>A</strong> hieronder). Een inlogscherm voor <em>Facebook</em>  verschijnt (zie figuur
-<strong>B</strong> hieronder), en log in bij <em>Facebook</em>.</p></div>
-<div class="paragraph"><p>Het is eenvoudig te zien in het hoofdmenu of er een verbinding met <em>Facebook</em>
-actief is. In het <em>Deel via</em> menu is de <em>Facebook knop</em> grijs en niet-selecteerbaar
-als er geen verbinding is (figuur <strong>A</strong> hieronder).</p></div>
-<div class="paragraph"><p>Eenmaal ingelogd op <em>Facebook</em> wordt er een paneel getoond met het bericht:
-"Gebruik het <em>Deel via</em> menu om de verbinding van Subsurface met uw Facebook
-account te sluiten.". Sluit dit paneel.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/facebook1.jpg" alt="Figuur: Facebook login" />
-</div>
-</div>
-<div class="paragraph"><p>Met de verbinding met <em>Facebook</em> geactiveerd is het overdragen van een duik naar
-<em>Facebook</em> eenvoudig. Selecteer eerst de duik in de <strong>Duiklijst</strong>. Selecteer dan
-uit het hoofdmenu <em>Deel via &#8594; Facebook</em>. Er verschijnt een dialoog, waarin
-aangegeven kan worden welke informatie naast het duikprofiel, moet worden
-overgedragen naar <em>Facebook</em> (zie figuur <strong>A</strong> hieronder).</p></div>
-<div class="paragraph"><p>Om een duikprofiel naar <em>Facebook</em> te exporteren is de naam van een (foto) album
-nodig. De keuzevakjes aan de linker zijde bepalen welke data uit het logboek
-eveneens wordt geëxporteerd. Deze verschijnen in het tekst veld aan de rechter zijde,
-welke verder handmatig kan worden aangepast. Nadat alles naar wens is ingevuld,
-kan via de <em>OK</em> knop de feitelijke export worden gedaan. Als de export gereed is
-volgt een bevestiging.</p></div>
-<div class="paragraph"><p>Zowel het album als de geëxporteerde profiel (met annotaties) is in <em>Facebook</em> als
-privé aangemerkt, en de rechten van de geëxporteerde data moeten dus handmatig
-in <em>Facebook</em> worden gezet zoals gewenst.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/facebook2.jpg" alt="Figuur: Facebook data submission" />
-</div>
-</div>
-<div class="paragraph"><p>De verbinding met <em>Facebook</em> kan nu worden afgesloten als dat gewenst is. Gebruik
-hiervoor uit het hoofdmenu <em>Deel via &#8594; Verbinding verbreken met &#8594; Facebook</em> (
-figuur <strong>B</strong> hierboven).</p></div>
-</div>
-<div class="sect2">
-<h3 id="S_Export_other">8.2. Exporteer duikinformatie naar andere bestemmingen of formaten</h3>
+<h3 id="S_Export_other">8.1. Exporteer duikinformatie naar andere bestemmingen of formaten</h3>
 <div class="paragraph"><p>Andere dan <em>Facebook</em> exports kunnen gevonden worden door in het hoofdmenu
 <em>Bestand &#8594; Exporteren</em> te kiezen. De exporteer dialoog biedt de mogelijkheid
 om ALLE, of alleen de in de <strong>Duiklijst</strong> geselecteerde duiken, te exporteren. Kies
@@ -5484,17 +5438,7 @@ tegelijktijd.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_deel_via">16.6. Deel via</h3>
-<div class="ulist"><ul>
-<li>
-<p>
-<a href="#S_Facebook"><em>Facebook</em></a> - Deel de geselecteerde duik op de Facebook tijdslijn.
-</p>
-</li>
-</ul></div>
-</div>
-<div class="sect2">
-<h3 id="_help">16.7. Help</h3>
+<h3 id="_help">16.6. Help</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -7105,7 +7049,7 @@ alleen als deze nog niet zijn overschreven door nieuwere duiken.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-09-19 08:04:33 PDT
+ 2024-02-08 08:55:00 PST
 </div>
 </div>
 </body>

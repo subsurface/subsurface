@@ -3667,10 +3667,8 @@ image::images/Pref_media.jpg["FIGURE: Preferences: media",align="center"]
 
 This tab sets common variables used for decompression calculations pertaining to technical diving.
 
-image::images/Pref_tech.jpg["FIGURE: Preferences: Tech setup",align="center"]
-
 [[S_CCR_options]]
-[[S_GradientFactors]]
+image::images/Pref_tech.jpg["FIGURE: Preferences: Tech setup",align="center"]
 
 * *Gas pressure display setup*. Even though nitrogen and helium pressures are also included here,
 these items mainly pertain to oxygen management:
@@ -3996,7 +3994,7 @@ used without changing the original values in the _Preferences_.
 Gradient Factor settings strongly affect the calculated ceilings and their depths.
 A very low GFLow value brings on decompression stops early during the dive.
 
- ** For more information about Gradient factors, see the section on xref:S_GradientFactors[Gradient Factor Preference settings].
+ ** For more information about Gradient factors, see the section on xref:S_CCR_options[Gradient Factor Preference settings].
 
 If the VPM-B model is selected, the Conservatism_level needs to be specified on a scale of 0 (least conservative) to 4 (most conservative).
 This model tends to give deco stops at deeper levels than the Bühlmann model and often results in slightly shorter

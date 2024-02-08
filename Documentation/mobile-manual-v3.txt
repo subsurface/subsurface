@@ -103,8 +103,6 @@ actions on that screen (see image on the left). Some screens have only
 the round central button, others have one or two additional
 actions on either side of the central button.
 
-unfloat::[]
-
 On Android devices, use the Android Back
 button for "cancel", "discard" or "back" actions. For example, when
 editing dive information, tapping the action button saves the changes while the
@@ -269,8 +267,6 @@ Filter to achieve this. The filter mechanism searches through all the informatio
 looking for one or more key words. Only the dives containing these key words are listed in the dive
 list. To Filter the dive list, tap the Filter action button:
 
-unfloat::[]
-
 image::mobile-images/FilterButton.jpg["FIGURE: Filter button",align="center"]
 
 at the bottom of the dive list. A text box appears at the top of the screen (image below). Type the
@@ -341,7 +337,7 @@ _Forget remembered dive computers_ in the xref:S_Settings[_Settings_] menu.
 ==== Download from USB serial dive computers
 This feature is not supported on iOS.
 
-[width="100%", frame="None"]
+[width="100%"]
 |=======
 a|image::mobile-images/USB-OTG.jpg["FIGURE: USB-OTG cable",align="center"] |
 Most current Android devices now have a USB
@@ -494,7 +490,7 @@ and the dives during the last six months.
 [[S_Stats]]
 == Dive Statistics
 
-[width="100%", frame="None", cols="2,3"]
+[width="100%", cols="2,3"]
 |===
 a|image::mobile-images/StatsPanel.jpg["Image: Statistics panel",float="left"] |
 Creating meaningful statistics that convey the information you are looking for is surprisingly hard.
@@ -661,7 +657,7 @@ image::mobile-images/StatsBarchartSubdivided.jpg["Stats subdivided barchart",ali
 
 === Scattergraphs
 
-[width="100%", cols="2,3", frame="None"]
+[width="100%", cols="2,3"]
 |=======
 a|image::mobile-images/StatsRegression.jpg["Regression data example",align="center"] |
 Sometimes you might wish to investigate the relationship between two dive variables. Has my SAC rate decreased over
@@ -760,7 +756,7 @@ buttons on the _Download from dive computer_ page.
 
 ==== Color theme
 
-[width="100%", frame="None"]
+[width="100%"]
 |=======
 a|image::mobile-images/ThemeSettings.jpg["FIGURE: Theme Settings",align="center"] |
 Besides the default blue color scheme, _Subsurface-mobile_ supports two additional color schemes

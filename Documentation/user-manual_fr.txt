@@ -365,8 +365,7 @@ cette communication, les utilisateurs doivent trouver l'information
 appropriée pour renseigner à _Subsurface_ d'où et comment importer les
 informations de
 plongée.
-xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Annexe
-A] donne les informations techniques pour aider l'utilisateur à configurer
+xref:appendix_a[Annexe A] donne les informations techniques pour aider l'utilisateur à configurer
 ceci pour les différents systèmes d'exploitation et
 xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Annexe
 B] contient des informations spécifiques à chaque ordinateur de plongée.
@@ -406,8 +405,7 @@ plongée (en tout cas pour ceux qui ne se rechargent pas via USB).
  - Le menu déroulant *Périphérique ou point de montage* le nom du port USB ou
    Bluetooth dont _Subsurface_ a besoin pour communiquer avec l'ordinateur de
    plongée. Le port approprié doit être sélectionné. Consultez
-   xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Annexe
-   A] et
+   xref:appendix_a[Annexe A] et
    xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Annexe
    B] pour obtenir des détails techniques sur la façon de trouver des
    informations sur le port approprié à chaque ordinateur de plongée et, dans
@@ -493,14 +491,12 @@ Vérifiez les éléments suivants:
    sont-ils propres ?
 
  - Consultez
-   xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Annexe
-   A] pour être certain que le point de montage correct a été spécifié (voir
+   xref:appendix_a[Annexe A] pour être certain que le point de montage correct a été spécifié (voir
    ci-dessus).
 
  - Sur les systèmes d'exploitation de type Unix, l'utilisateur a-t-il les
    droits d'écriture sur le port USB? Si non, consultez
-   xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Annexe
-   A]
+   xref:appendix_a[Annexe A]
 
 Si l'ordinateur utilisant _Subsurface_ ne reconnaît pas l'adaptateur USB en
 ne montrant pas le bon nom de périphérique à côté du Point de montage, il
@@ -2307,8 +2303,8 @@ panel. These are:
 Affiche la *Profondeur maximale d'utilisation (MOD)* d'une plongée, en
 fonction du mélange gazeux utilisé. La MOD dépend de la concentration en
 oxygène du gaz respiré. Pour l'air (21% d'oxygène), il vaut envuron 57m si
-une pO~2 maximale de 1.4 est choisie dans la section *Préférences*
-(sélectionnez _Fichier -> Préférences -> Profil_ et éditez le champ _pO~2
+une pO~2~ maximale de 1.4 est choisie dans la section *Préférences*
+(sélectionnez _Fichier -> Préférences -> Profil_ et éditez le champ _pO~2~
 dans le calcul de MOD_).  En plongeant sous la MOD, il y a un risque
 important d'exposition aux dangers liés à la toxicité de l'oxygène.
 
@@ -2982,8 +2978,6 @@ those dives that have either one OR both of these tags.
 
 Il y a deux façons d'exporter des informations de plongée depuis Subsurface:
 
-- Exporter les informations de plongée vers _Facebook_
-
 - xref:S_Export_other[Exporter des informations de plongée vers d'autres
   destinations ou formats]
 
@@ -3305,8 +3299,7 @@ ces ordinateurs de plongée peuvent être lues et modifiées. Pour commencer,
 assurez vous que les pilotes pour votre ordinateur de plongée sont installés
 (également nécessaire pour télécharger les plongées) et que le nom de
 périphérique de l'ordinateur de plongée est connu. Voir
-<<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,
-ANNEXE A>> pour plus d'informations sur la manière de procéder.
+<<appendix_a,ANNEXE A>> pour plus d'informations sur la manière de procéder.
 
 Une fois que l'ordinateur de plongée est connecté à _Subsurface_,
 sélectionner _Fichier -> Configurer l'ordinateur de plongée_, à partir du
@@ -4337,10 +4330,6 @@ des sections de ce manuel traitant des opérations relatives.
 - _Ordinateur suivant_  - Passer à l'ordinateur de plongée suivant.
 - _Plein écran_  - Passer en mode plein écran.
 
-=== Share on
-- <<S_Facebook,_Facebook_>> - Partager la plongée sélectionnée sur votre
-  Facebook.
-
 === Aide
 - _À propos de Subsurface_  - Affiche un panneau avec le numéro de version de
   _Subsurface_ ainsi que les informations de licence.
@@ -4354,6 +4343,7 @@ des sections de ce manuel traitant des opérations relatives.
 
 
 
+[[appendix_a]]
 == ANNEXE A : informations spécifiques au système d'exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.
 
 === Assurez-vous que les pilotes (drivers) nécessaires sont installés

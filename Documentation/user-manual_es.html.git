@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.10" />
+<meta name="generator" content="AsciiDoc 10.1.2" />
 <title></title>
 <style type="text/css">
 /*
@@ -17,7 +17,7 @@
  */
 
 *   { padding: 0;  margin: 0; }
-img { border: 0; }
+img { border: 0; margin: 15px; max-width:90% }
 
 /*** Layout ***/
 
@@ -78,12 +78,12 @@ body                        { font-family: Verdana, sans-serif; }
 #footer                     { font-size: 0.8em; }
 
 h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
-h2                          { font-size: 1.5em; }
+h2                          { font-size: 160%; }
 .sectionbody                { font-size: 0.85em; }
 .sectionbody .sectionbody   { font-size: inherit; }
-h3                          { font-size: 159%; } /* 1.35em */
-h4                          { font-size: 141%; } /* 1.2em */
-h5                          { font-size: 118%; } /* 1em */
+h3                          { font-size: 150%; } /* 1.35em */
+h4                          { font-size: 140%; } /* 1.2em */
+h5                          { font-size: 130%; } /* 1em */
 .title                      { font-size: 106%;   /* 0.9em */
 			      font-weight: bold;
 			    }
@@ -446,7 +446,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><strong>Autores</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
 Pedro Neves, Stefan Fuchs</p></div>
-<div class="paragraph"><p><span class="BLUE"><em>Versión 4.8, Septiembre 2018</em></span></p></div>
+<div class="paragraph"><p><span class="BLUE"><em>Versión 4.9, Febrero 2019</em></span></p></div>
 <div class="paragraph"><p>Bienvenido como usuario de <em>Subsurface</em>, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
 interpretar buceos en apnea o con botella. <em>Subsurface</em> ofrece muchas ventajas
@@ -515,7 +515,7 @@ y libdivecomputer.</p></div>
 el software, consulta la página Descargas en <a href="https://subsurface-divelog.org/">la
 web</a>. Por favor, comenta los problemas que tengas con este programa enviando un
 mail a <a href="mailto:subsurface@subsurface-divelog.org">nuestra lista de correo</a> e informa de
-fallos en <a href="https://github.com/Subsurface-divelog/subsurface/issues">nuestro bugtracker</a>.
+fallos en <a href="https://github.com/Subsurface/subsurface/issues">nuestro bugtracker</a>.
 Para instrucciones acerca de como compilar el software y (en caso necesario)
 sus dependencias, por favor, consulta el archivo INSTALL incluido con el código
 fuente.</p></div>
@@ -591,7 +591,7 @@ se puede hacer lanzando <em>Subsurface</em> desde la línea de comandos con la o
 <h2 id="S_StartUsing">3. Empezar a usar el programa</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>La ventana <em>Subsurface</em> está, habitualmente, dividida en cuatro paneles con un
-<strong>Menú principal</strong> (Archivo Importar Registro Vista Compartir Ayuda) en la parte
+<strong>Menú principal</strong> (Archivo Importar Registro Vista Ayuda) en la parte
 superior (en Windows y Linux) o en la parte superior de la pantalla (en Mac y
 Ubuntu Unity). Los cuatro paneles son:</p></div>
 <div class="olist arabic"><ol class="arabic">
@@ -642,7 +642,7 @@ temperaturas del agua, consumos de gases; el tiempo total y el número de
 inmersiones seleccionadas).</p></div>
 <div class="imageblock" id="S_ViewPanels" style="text-align:center;">
 <div class="content">
-<img src="images/main_window_f22.jpg" alt="La ventana principal" />
+<img src="images/MainWindow.jpg" alt="La ventana principal" />
 </div>
 </div>
 <div class="paragraph"><p>El usuario puede elegir cual de los cuatro paneles se mostrará seleccionando la
@@ -906,6 +906,19 @@ El desplegable <strong>Dispositivo o punto de montaje</strong> contiene el nombr
    para detalles técnicos de como encontrar la información apropiada sobre
    puertos, para un ordenador en concreto y, en algunos casos, como hacer los
    ajustes correctos al Sistema Operativo del ordenador que ejecuta <em>Subsurface</em>.
+   Algunos ordenadores de buceo desactivan este desplegable ya que usan otras
+   formas de conectar con el dispositivo. Para algunos ordenadores, el dato
+   introducido aquí es en realidad el punto de montaje del dispositivo de
+   almacenamiento USB con el que el ordenador de buceo se identifica a sí
+   mismo.
+</p>
+</li>
+<li>
+<p>
+Bajo los desplegables hay hasta cuatro botones que te permiten cambiar
+   fácilmente entre varios ordenadores desde los que descargues
+   frecuentemente. Estos botones solo aparecen después de que hayas descargado
+   desde diferentes ordenadores de buceo.
 </p>
 </li>
 <li>
@@ -1207,6 +1220,19 @@ de descarga _Bluetooth</em>.</p></div>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
+<td class="content">El soporte de Subsurface en Windows para ordenadores de buceo BTLE es
+<strong>EXPERIMENTAL</strong> y solo está soportado en Windows10.
+Por favor, asegúrate de tener la última versión de Windows10.
+<a href="https://en.wikipedia.org/wiki/Windows_10_version_history#Version_1803_(April_2018_Update)">La
+versión 1803</a> is el requerimiento mínimo. Asegúrate también de tener
+instalados los últimos drivers para tu placa base o receptor BTLE.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
 <td class="content"><strong>EN CASO DE PROBLEMAS</strong>: Si el adaptador Bluetooth del ordenador con <em>Subsurface</em>
 se cuelga y el proceso de descarga falla repetidamente, <em>desempareja</em> los
 dispositivos y repite los pasos indicados anteriormente. Si a pesar de ello
@@ -1289,13 +1315,14 @@ aire ya que el cambio en la lectura del sensor de temperatura es bastante lento
 para seguir los cambios en el entorno. Si fuera necesario, no hay que teclear
 las unidades de temperatura: <em>Subsurface</em> las suministra automáticamente de
 acuerdo con las <em>Preferencias</em> (métricas o imperiales).</p></div>
-<div class="paragraph"><p><strong>Ubicación</strong>:</p></div>
+<div class="paragraph" id="S_locations"><p><strong>Ubicación</strong>:</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/warning2.png" alt="Warning" />
 </td>
-<td class="content">Las localizaciones de buceo se gestionan como una parte <strong>separada</strong> del divelog.
+<td class="content">Las localizaciones de buceo se gestionan como una parte <strong>separada</strong> del divelog
+(Visita la sección llamada <a href="#S_DiveSiteManagement">Manipular información de puntos de buceo</a>).
 La información de buceo de las pestañas <strong>Notas</strong> y <strong>Equipo</strong> no se puede editar
 al mismo tiempo que la información de los puntos de buceo. Guarda toda la otra
 información (p.e. divemaster, compañero, equipo, etc) seleccionando <em>Aplicar
@@ -1746,9 +1773,24 @@ diarios de CCR APD.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Seleccionar el archivo correspondiente en la lista del diálogo abre el archivo
-importado directamente en la <strong>Lista de Inmersiones</strong> de <em>Subsurface</em>. También
-están soportados algunos otros formatos, no accesibles desde el diálogo
+<div class="paragraph"><p>Selecciona el formato correspondiente en la lista del diálogo y el archivo de
+la lista de la ventana principal. Luego haz clic en el botón _Abrir_abajo a la
+derecha.</p></div>
+<div class="paragraph"><p>Si el archivo que se está importando está en formato CSV, se da al usuario la
+ocasión de efectuar ediciones manuales en las cabeceras de las columnas antes
+de importarlas a <em>Subsurface</em> (ver imagen a continuación).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Import_csv.jpg" alt="FIGURA: Diálogo de importación: paso 2" />
+</div>
+</div>
+<div class="paragraph"><p>Para más información sobre como configurar la importación CSV, visita
+<a href="#S_ImportingCSVDives">Importar datos en formato CSV</a>.
+En muchos casos no se requiere hacer cambios en las cabeceras de las columnas
+porque están pre configuradas para el tipo de importación en concreto y la
+pantalla de importación CSV se puede saltar pulsando el botón <em>OK</em>.
+Esto abrirá el divelog importado en la <strong>Lista de inmersiones</strong> de <em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>También están soportados algunos otros formatos, no accesibles desde el diálogo
 Importar, como se explica a continuación.</p></div>
 </div>
 <div class="sect3">
@@ -2144,7 +2186,126 @@ asegurarse de que el resto funciona.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importar_coordenadas_de_buceo_desde_un_dispositivo_movil_con_gps">5.4. Importar coordenadas de buceo desde un dispositivo movil con GPS</h3>
+<h3 id="S_DiveSiteManagement">5.4. Manipular la información de puntos de buceo</h3>
+<div class="paragraph"><p>La información de los puntos de buceo se gestiona como una entidad separada de
+la información de la inmersión.
+Al seleccionar la pestaña llamada "Puntos de buceo" en el panel <strong>Notas</strong>,
+aparecerá el <em>panel de gestión de puntos de inmersión</em> (ver imagen a
+continuación). Asignar un punto de buceo a una inmersión se hace desde la
+pestaña Notas que muestra la información de la inmersión (visita la sección
+<a href="#S_locations">Ubicaciones</a>). Por otra parte, el panel de gestión de puntos
+de buceo permite manejar datos independientes de las inmersiones. Un punto de
+buceo nuevo se puede crear mientras se edita una inmersión o bien desde el
+panel de gestión de puntos de buceo (ver imagen a continuación).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveSitesTab.jpg" alt="FIGURE: Pestaña puntos de buceo" />
+</div>
+</div>
+<div class="paragraph"><p>Si se ha creado previamente la descripción de un punto de buceo, este se
+mostrará en el panel, así como el número de inmersiones en cada punto. La
+lista de puntos puede ordenarse haciendo clic en cualquiera de los
+encabezamientos. A la derecha de cada punto de buceo hay un icono de papelera
+y otro de edición, Se pueden efectuar las siguientes acciones para gestionar
+la colección de puntos de buceo:</p></div>
+<div class="sect3">
+<h4 id="_filtrar_la_lista_de_puntos_de_inmersion">5.4.1. Filtrar la lista de puntos de inmersión</h4>
+<div class="paragraph"><p>Arriba a la derecha en el panel hay una casilla de texto (ver imanterior). Si
+solo quieres visualizar inmersiones de un punto en concreto, teclea un nombre
+parcial como "Genova", así se mostrarán solo los nombres que contengan la
+palabra "Genova" en el nombre o la descripción.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_editar_un_punto_de_buceo">5.4.2. Editar un punto de buceo</h4>
+<div class="paragraph"><p>La información de cada punto de buceo puede editarse, bien desde la pestaña
+<strong>Notas</strong>, bien desde la pestaña <strong>Puntos de buceo</strong>. Para editar la información,
+selecciona el icono Editar de la izquierda del nombre del punto de  buceo (ver
+imagen anterior). La edición desde la pestaña <strong>Notas</strong> se comenta en la sección
+<a href="#S_locations">Ubicaciones</a> donde se explica cada uno de los campos del
+panel de edición.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveSiteEdit.jpg" alt="FIGURA: Edición de puntos de buceo" />
+</div>
+</div>
+<div class="paragraph"><p>Añade cualquier información que desees en la pestaña. Como editar las
+coordenadas se explica en la sección sobre <a href="#S_locations">Ubicaciones</a>.
+Cuando termines de editar la información del punto de inmersión, selecciona el
+botón <strong>Terminado</strong> en la parte de arriba. Esto te devolverá al panel de gestión
+de puntos de buceo.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_mezclar_puntos_de_inmersion">5.4.3. Mezclar puntos de inmersión</h4>
+<div class="paragraph"><p>Mezclar dos o más puntos de inmersión se consigue desde el panel de edición de
+puntos de buceo (ver imagen anterior). Asumimos que los puntos que se están
+mezclando no están a mucha distancia. La mezcla se efectúa seleccionando un
+punto y luego mezclando otros con este primero. En la parte superior del panel
+de edición, selecciona la casilla de texto etiquetada "Mostrar los puntos de
+buceo en el rango:" e introduce la distancia que consideres oportuna para
+considerar que los diversos puntos son el mismo.
+Se te presentará una lista con los puntos en el radio que hayas introducido
+(ver imaden a continuación).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveSiteMerge.jpg" alt="FIGURA: Mezcla de puntos de buceo" />
+</div>
+</div>
+<div class="paragraph"><p>Selecciona el punto a mezclar haciendo clic derecho sobre él. Se mostrará un
+mensaje de confirmación (ver imagen anterior). Al aceptar el mensaje de
+confirmación se mezcla la inmersión seleccionada con la de arriba del panel y
+se regresa al panel de gestión de puntos de buceo.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_anadir_un_punto_de_buceo">5.4.4. Añadir un punto de buceo</h4>
+<div class="paragraph"><p>En la parte alta de la tabla de gestión de puntos de buceo hay un botón
+redondo con un "+". Haciendo clic en este botón se inserta un nuevo punto de
+buceo llamado "Nuevo punto de buceo" (imagen a continuación). El nuevo punto
+puede borrarse si nos hubiéramos equivocado seleccionando <em>Editar &#8594; Deshacer</em>
+en el menú principal o tecleando Ctrl-Z mientras mantenemos enfocada la tabla
+de gestión de puntos de buceo.  El punto nuevo se edita seleccionando su botón
+de edición y proporcionando un nombre, coordenadas y, si se desea, una
+descripción. Al pulsar el botón "Terminado" en el panel de edición se regresa
+a al panel de gestión de puntos de buceo.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveSiteInsert.jpg" alt="FIGURA: Añadir un punto de buceo" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_borrar_un_punto_de_inmersion">5.4.5. Borrar un punto de inmersión</h4>
+<div class="paragraph"><p>A la izquierda de cada punto de buceo hay una papelera. Pulsar este icono
+borrará el punto de buceo asociado. Si hay varias inmersiones asociadas a este
+punto, se mostrará un mensaje de aviso (ver imagen a continuación). Si el
+punto se borra, será necesario crear ubicaciones para las inmersiones que
+estuvieran asociadas al punto borrado.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/DiveSiteDelete.jpg" alt="FIGURA: Borrar un punto de buceo" />
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_aproximacion_general_al_uso_de_la_lista_de_puntos_de_buceo">5.4.6. Aproximación general al uso de la lista de puntos de buceo</h4>
+<div class="paragraph"><p>Ya que la lista de puntos de buceo se gestiona separadamente de la lista de
+inmersiones, es posible añadir puntos de buceo aunque no se hayan utilizado en
+ninguna inmersión. En este caso, la columna etiquetada "# de buceos" muestra
+un cero.
+Esto posibilita que los buceadores que comparten puntos de buceo puedan
+crearlos antes de haberlos buceado. Además, un punto puede crearse con
+mucha información en la descripción, de esta forma la lista de puntos de buceo
+se convierte en un útil repositorio de información fuera de la lista de
+inmersiones.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_borrar_puntos_de_buceo_no_utilizados">5.4.7. Borrar puntos de buceo no utilizados</h4>
+<div class="paragraph"><p>Arriba a la izquierda en el panel de gestión de inmersiones hay un botón
+"Purgar puntos de buceo no usados". Al pulsar este botón se borran todos los
+puntos de buceo que no tengan inmersiones asociadas.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_importar_coordenadas_de_buceo_desde_un_dispositivo_movil_con_gps">5.5. Importar coordenadas de buceo desde un dispositivo movil con GPS</h3>
 <div class="paragraph"><p>Un smartphone con GPS incorporado puede utilizarse para guardar las
 ubicaciones de las inmersiones. Esto se hace como sigue:</p></div>
 <div class="paragraph"><p>1) Llevar el dispositivo móvil en el barco de buceo o vida abordo, para
@@ -2161,7 +2322,7 @@ El antiguo servicio de posiciones GPS en internet se cerrará a finales de 2018
 y a partir de ese momento, la app <em>Companion</em> ya no se podrá utilizar. Por
 favor, usa la app <em>Subsurface-mobile</em> en su lugar.</p></div>
 <div class="sect3">
-<h4 id="_guardar_y_utilizar_coordenadas_gps_utilizando_em_subsurface_mobile_em">5.4.1. Guardar y utilizar coordenadas GPS utilizando <em>Subsurface-mobile</em></h4>
+<h4 id="_guardar_y_utilizar_coordenadas_gps_utilizando_em_subsurface_mobile_em">5.5.1. Guardar y utilizar coordenadas GPS utilizando <em>Subsurface-mobile</em></h4>
 <div class="sect4">
 <h5 id="_instalar_em_subsurface_mobile_em">Instalar <em>Subsurface-mobile</em></h5>
 <div class="paragraph"><p>Busca <em>Subsurface-mobile</em> en Google Play e instálala en el dispositivo
@@ -2245,7 +2406,7 @@ recogida, subida, gestión y sincronizado de estas información.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_LoadImage">5.5. Añadir fotografías o vídeos a las inmersiones</h3>
+<h3 id="S_LoadImage">5.6. Añadir fotografías o vídeos a las inmersiones</h3>
 <div class="paragraph"><p>Muchos buceadores (si no la mayoría) toman fotografías o vídeos durante sus
 inmersiones. LLamaremos a estos archivos "medios" refiriendonos a fotos o
 vídeos.
@@ -2255,7 +2416,7 @@ donde se tomaron. Los medios pueden visualizarse desde el perfil o desde la
 pestaña <em>Medios</em> en el <strong>Panel de Notas</strong>. <em>Subsurface</em> permite visualizar las
 fotos o vídeos en un interfaz unificado.</p></div>
 <div class="sect3">
-<h4 id="_cargar_medios_y_sincronizar_la_camara_con_el_ordenador_de_buceo">5.5.1. Cargar medios y sincronizar la cámara con el ordenador de buceo</h4>
+<h4 id="_cargar_medios_y_sincronizar_la_camara_con_el_ordenador_de_buceo">5.6.1. Cargar medios y sincronizar la cámara con el ordenador de buceo</h4>
 <div class="paragraph"><p>Se selecciona una inmersión o un grupo de ellas en la lista. Luego se hace
 clic-derecho en la selección lo que nos mostrará el <a href="#S_DiveListContextMenu">Menú contextual de la lista de inmersiones</a>.
 Hacemos click-izquierdo en la opción apropiada para cargar los medios desde
@@ -2342,7 +2503,7 @@ que todas las fotos o videos asociados con un buceo puedan visualizarse,
 incluidos los que se hayan tomado antes o despues de la inmersión.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_ViewMedia">5.5.2. Visualizar los medios</h4>
+<h4 id="S_ViewMedia">5.6.2. Visualizar los medios</h4>
 <div class="sidebarblock">
 <div class="content">
 <div class="paragraph"><p><strong>Asegurarse de que se crean las miniaturas para los archivos de vídeo</strong></p></div>
@@ -2422,7 +2583,7 @@ sobre las imágenes. Las imágenes  también puede borrase desde la pestaña
 </div>
 </div>
 <div class="sect3">
-<h4 id="_la_pestana_em_medios_em">5.5.3. La pestaña <em>Medios</em></h4>
+<h4 id="_la_pestana_em_medios_em">5.6.3. La pestaña <em>Medios</em></h4>
 <div class="paragraph"><p>Los medios asociados a una inmersión se muestran como miniaturas en la
 pestaña <em>Medios</em> del <em>Panel de Notas</em>. Se puede acceder con facilidad a las
 fotos hechas en rápida sucesión durante la inmersión, desde la pestaña <em>Medios</em>.
@@ -2437,9 +2598,22 @@ video superpuesto a la ventana de <em>Subsurface</em>. Podemos borrar un medio d
 la pestaña <em>Medios</em> seleccionándolo (un solo clic) y pulsando a continuación la
 tecla <em>Supr</em> en el teclado. Esto eliminará el medio tanto de la pestaña
 <em>Medios</em> como del <em>Perfil de la inmersión</em>.</p></div>
+<div class="paragraph"><p>Haciendo clic derecho en un vídeo y seleccionando "Guardar datos como
+subtitulos", se creará un archivo con el mismo nombre que el vídeo y con
+extensión ".ass" que contendrá datos de la inmersión en función del tiempo
+(tiempo transcurrido, profundidad, temperatura, LND, TTS, y GF) que se
+superpondrán al vídeo. El reproductor de medios VLC encuentra automáticamente
+este archivo y lo utiliza al reproducir un vídeo. Como alternativa, puede
+utilizarse el codificador de vídeo ffmpeg para crear un nuevo archivo de vídeo
+con los datos codificados en él. Para ello, ejecuta</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>ffmpeg -v video.mp4 -vf "ass=video.ass" video_with_data.mp4</code></pre>
+</div></div>
+<div class="paragraph"><p>desde la línea de comandos. Es necesario tener instalada la librería libass,</p></div>
 </div>
 <div class="sect3">
-<h4 id="_fotos_en_disco_duro_externo">5.5.4. Fotos en disco duro externo</h4>
+<h4 id="_fotos_en_disco_duro_externo">5.6.4. Fotos en disco duro externo</h4>
 <div class="paragraph"><p>La mayoría de fotosubs guardan sus fotografías en un disco duro externo. Si este
 disco puede mapearse (como es casi siempre el caso) <em>Subsurface</em> puede acceder
 directamente a los medios. Esto facilita la interacción entre <em>Subsurface</em> y un
@@ -2454,7 +2628,7 @@ Si, posteriormente, el disco externo con los medios se vuelve a conectar, los
 medios podrán visualizarse normalmente.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_averiguar_que_inmersiones_tienen_medios_asociados">5.5.5. Averiguar que inmersiones tienen medios asociados</h4>
+<h4 id="_averiguar_que_inmersiones_tienen_medios_asociados">5.6.5. Averiguar que inmersiones tienen medios asociados</h4>
 <div class="paragraph"><p>Inspeccionar cada inmersión individual para saber si tiene asociados medios
 puede llevarnos mucho tiempo. Hay una forma rápida de saber que inmersiones
 tiene asociados medios y cuales no: activa la casilla <em>Medios</em> en la lista
@@ -2465,7 +2639,7 @@ después o todo ello. Hay más información en la sección del manual que cubre
 los <a href="#S_Divelist_columns">iconos de fotos en la <strong>Lista de Inmersiones</strong></a>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_FindMovedImages">5.5.6. Mover medios entre directorios, discos duros u ordenadores</h4>
+<h4 id="S_FindMovedImages">5.6.6. Mover medios entre directorios, discos duros u ordenadores</h4>
 <div class="paragraph"><p>Tras haber cargado un medio en <em>subsurface</em> y haberlo asociado a un buceo
 determinado, se archiva el directorio donde el archivo permanece guardado, para poder
 encontrarlo cuando se vuelva a abrir la inmersión. Si la foto, la colección
@@ -2498,11 +2672,11 @@ sus posiciones conocidas. Los cambios propuestos pueden aplicarse clicando en
 </div>
 </div>
 <div class="sect2">
-<h3 id="_registrar_tipos_de_inmersion_especiales">5.6. Registrar tipos de inmersión especiales</h3>
+<h3 id="_registrar_tipos_de_inmersion_especiales">5.7. Registrar tipos de inmersión especiales</h3>
 <div class="paragraph"><p>Esta sección da ejemplos de la verstilidad de <em>Subsurface</em> como herramienta de
 registro de inmersiones.</p></div>
 <div class="sect3">
-<h4 id="S_MulticylinderDives">5.6.1. Inmersiones multi botella</h4>
+<h4 id="S_MulticylinderDives">5.7.1. Inmersiones multi botella</h4>
 <div class="paragraph"><p><em>Subsurface</em> maneja fácilmente inmersiones que requieren más de una botella. El
 buceo multi botella se produce habitualmente cuando (a) un buceador no tiene
 bastante gas para completar una inmersión con una sola botella o (b) cuando el
@@ -2572,7 +2746,7 @@ en lateral (en las que utilicen dos botellas). Visita el link
 de ordenadores de buceo soportados</a>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_inmersiones_en_montaje_lateral_sidemount">5.6.2. Inmersiones en montaje lateral (sidemount)</h4>
+<h4 id="_inmersiones_en_montaje_lateral_sidemount">5.7.2. Inmersiones en montaje lateral (sidemount)</h4>
 <div class="paragraph"><p>El buceo en montaje lateral es solo otra forma de buceo multi botella, a menudo
 con ambas o todas las botellas conteniendo la misma mezcla. Aunque es una
 configuración popular entre los espeleo buceadores, el buceo en lateral se
@@ -2628,7 +2802,7 @@ exactamente como con las inmersiones multi botella anteriores:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_sSCR_dives">5.6.3. Inmersiones con rebreather pasivo de circuito semi cerrado (pSCR)</h4>
+<h4 id="S_sSCR_dives">5.7.3. Inmersiones con rebreather pasivo de circuito semi cerrado (pSCR)</h4>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2727,7 +2901,7 @@ naranja).</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_CCR_dives">5.6.4. Inmersiones con rebreather de circuito cerrado (CCR)</h4>
+<h4 id="S_CCR_dives">5.7.4. Inmersiones con rebreather de circuito cerrado (CCR)</h4>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3138,10 +3312,13 @@ Entre ellas se incluyen: Momento de tiempo en la inmersión (indicado por un
 ascenso y descenso, el Consumo de aire en superficie (CAS), la presión
 parcial de oxigeno, la profundidad máxima operativa de la mezcla (POM o MOD),
 la profundidad equivalente a aire (PEA o EAD), la profundidad narcótica equivalente
-(PNE o END), la profundidad equivalenta a la densidad del aire (EADD), los
-requisitos descompresivos en ese instante de tiempo (Deco), el Tiempo hasta la
-superficie (TTS), el techo calculado así como el techo calculado para varios
-compartimentos de tejidos de Bühlmann.</p></div>
+(PNE o END), la profundidad equivalente a la densidad del aire (EADD), los
+requisitos descompresivos en ese instante de tiempo (Deco), el GF en
+superficie (una medida de la carga de gas inerte en el cuerpo del buzo
+definida como el exceso sobre la presión en superficie normalizada tal que la
+la presión máxima permitida en superficie, el valor M, corresponde al 100%), el
+Tiempo hasta la superficie (TTS), el techo calculado así como el techo
+calculado para varios compartimentos de tejidos de Bühlmann.</p></div>
 <div class="paragraph"><p>El usuario tiene control sobre varios de los datos que se muestran en la Caja
 de Información, mostrados como cuatro de los botones en la columna a la
 izquierda del panel del perfil. Estos son:</p></div>
@@ -3177,6 +3354,19 @@ utilizando en gas que se está usando en el momento, aunque existan cambios de
 gas previstos.
 Los TTS mayores a 2 horas resultan muy imprecisos y Subsurface solo indicará
 <em>TTS &gt; 2h</em>.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/GFLow.jpg" alt="Note" />
+</td>
+<td class="content">Muestra información de deco. Si está activado, la caja de información muestra
+el GF en superficie y los techos para los compartimentos de tejidos
+individuales. El GF en superficie es un indicador de hasta que punto la
+presión parcial de nitrógeno en la sangre excede la presión parcial que se
+necesita para llegar a superficie con seguridad. Un GF en superficie superior
+al 100% significa que emerger no es seguro.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -3481,6 +3671,13 @@ ha eliminado a través de la respiración por lo que, aunque el buceador
 técnicamente encontrara un techo, la inmersión aún no requiere explícitamente
 una parada de descompresión. Esta característica permite a los ordenadores de
 buceo ofrecer tiempos de fondo más largos.</p></div>
+<div class="paragraph"><p>Estríctamente hablando, el techo verde calculado es solo una representación directa
+de las cargas de gas inerte de los tejidos simulados y es independiente de
+cualquier velocidad de ascenso asumida. Indica la profundidad mínima permitida
+por el modelo de descompresión en ese instante de tiempo para unas cargas de
+gas determinadas y no es una afirmación acerca de una posible tabla de ascenso
+para el resto de la inmersión. Para obtener esta última utiliza la opción
+"Editar inmersión en el Planificador_" en el menú Registro.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3712,6 +3909,87 @@ un marcador preexistente, el menú se extiende añadiendo opciones para permitir
 el borrado del marcador o permitir ocultar todos los marcadores de ese tipo.</p></div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="S_Filter">6.5. Filtrar la lista de inmersiones</h3>
+<div class="paragraph"><p>Los buceos de la <strong>Lista de Inmersiones</strong> se pueden filtrar seleccionando solo
+algunos de ellos basándonos en atributos como etiquetas, puntos de buceo,
+compañero o divemaster. Por ejemplo, el filtrado nos permite ver las
+inmersiones de un año en concreto en cierto punto de buceo, o, por otro lado,
+las inmersiones en cuevas con determinado compañero. El filtrado puede hacerse
+en base a cualquier dato del <em>Panel de Información</em>.</p></div>
+<div class="paragraph"><p>Para abrir el filtro, seleccionamos <em>Registro &#8594; Filtrar lista de inmersiones</em>
+desde el menú principal. Esto reemplazará el <em>Panel Mapa</em> por el <em>Panel
+Filtro</em>. La barra superior contiene el número de buceos que satisfacen las
+selecciones efectuadas en el filtro (ver imagen a continuación).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/FilterWindowBar.jpg" alt="Figura: Barra de la ventana de filtrado" />
+</div>
+</div>
+<div class="paragraph"><p>Al abrirse, el filtro contiene valores por defecto que incluyen todas los
+buceos de la <em>Lista de Inmersiones</em>. Fíltrala cambiando algunos de los valores
+por defecto del panel o tecleando valores concretos o palabras en cualquiera
+de los campos de texto. Por ejemplo, en la imagen a continuación se muestran
+inmersiones en circuito abierto, con traje seco, en una ubicación específica
+(Simonstad). No hay botón para activar la acción de filtrado: el hecho de
+teclear en uno de los campos de texto o especificar un rango en cualquiera de
+los campos, efectúa automáticamente el filtrado.</p></div>
+<div class="paragraph"><p>Durante el filtrado, el modo de buceo (Circuito abierto, CCR, pSCR, Apnea) se
+añade a la lista de etiquetas de una inmersión, lo que permite seleccionar
+solo determinados tipos de buceo (p.e. CCR) en el filtro. Esto resulta útil
+para buceadores con reciclador o apneistas que también buceen en circuito
+abierto.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/FilterPanel.jpg" alt="Figura: Panel de filtrado" />
+</div>
+</div>
+<div class="paragraph"><p>El criterio de filtrado puede ser cualquiera de los siguientes:</p></div>
+<div class="paragraph"><p>1) Usar varios campos de texto en el panel de filtrado produce una operación
+   "AND" en los atributos. Por ejemplo, al teclear "Peter" en el atributo
+   Personas y "Sipadan" en el atributo Ubicación se obtiene una lista de
+   inmersiones que contienen a Peter y a Sipadan.</p></div>
+<div class="paragraph"><p>2) En un atributo único, el criterio "All of" implementa un operador "AND". En
+   la imagen a continuación, para el atributo <em>Personas</em>, la lista de inmersiones
+   contiene los buceos en los que aparecen Bob Smith Y Stephan Schultz como
+   compañeros/divemaster en base a la información de personas del <em>Panel
+   Información</em>.</p></div>
+<div class="paragraph"><p>3) El criterio "Any of" implementa una operación "OR". Para el atributo
+   <em>Ubicación</em> de la imagen a continuación, la lista filtrada contiene las
+   inmersiones efectuadas en Simonstad "O" en Hout Bay.</p></div>
+<div class="paragraph"><p>4) El criterio "None of" implementa una operación "NOT". Para el atributo
+   <em>Traje</em> en la imagen a continuación, la lista de inmersiones EXCLUYE todas
+   las inmersiones en las que se usó traje seco,</p></div>
+<div class="paragraph"><p>5) Campo vacío. El resultado de los campos vacíos para <em>Notas</em> y <em>Etiquetas</em>
+   en la imagen a continuación, es que estos atributos no se tienen en cuenta
+   durante el filtrado.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/FilterOptions.jpg" alt="Figura: Opciones de filtrado" />
+</div>
+</div>
+<div class="paragraph"><p>En la parte superior del <em>Panel de Filtrado</em>, la <strong>flecha amarilla hacia
+arriba</strong> se usa para reiniciar el filtro y mostrar todos los buceos. El botón
+rojo con el aspa blanca se usa para cerrar el panel.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="./images/icons/important.png" alt="Important" />
+</td>
+<td class="content">La acción de filtrado solo se puede detener usando el botón "flecha
+amarilla hacia arriba" o limpiando manualmente todos los campos de texto.
+Cerrar el <em>Panel de filtrado</em> no acaba con la acción de filtrado: la lista
+permanece sin cambios. Esto resulta obvio al indicar la barra superior de
+<em>Subsurface</em> que solo se están mostrando parte de las inmersiones.  Cerrar el
+<em>Panel de filtrado</em> reabre el <em>Panel Mapa</em>, permitiendo visualizar las
+posiciones de la lista filtrada. Por ejemplo, podemos querer filtrar a Bob
+Smith como compañero. Al cerrar el <em>Panel de filtrado</em> se visualizan las
+ubicaciones en las que hemos buceado con este compañero. Para reabrir el
+<em>Panel de filtrado</em>, en este caso, seleccionamos <em>Registro &#8594; Filtrar lista de
+inmersiones</em> desde el <em>Menú Principal</em>.</td>
+</tr></table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3941,117 +4219,11 @@ selecciona <em>Editar</em> desde el <strong>Menú Principal</strong>, lo que pre
 con las posibilidades <em>Deshacer</em> y <em>Rehacer</em>.</p></div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="S_Filter">7.5. Filtrar la Lista de Inmersiones</h3>
-<div class="paragraph"><p>Los buceos del panel <strong>Lista de inmersiones</strong> pueden filtrarse, esto es, se pueden
-seleccionar únicamente algunos de los buceos basándose en sus atributos, p.e.
-las etiquetas, el lugar de buceo, el divemaster, compañeros o traje protector.
-El filtrado permite, por ejemplo, listar las inmersiones profundas en un punto
-determinado o, por el contrario, las inmersiones en cuevas con cierto
-compañero.</p></div>
-<div class="paragraph"><p>Para abrir el filtrado, seleccionar <em>Registro &#8594; Filtrar la lista de inmersiones</em>
-desde el menú principal. Esto abrirá el <em>Panel de filtrado</em> en la parte de arriba
-de la ventana de <em>Subsurface</em>. Arriba a la derecha del panel se ubican tres
-iconos (ver imagen a continuación).
-El <em>Panel de filtrado</em> puede reiniciarse (p.e. limpiar todos los filtros
-actuales) seleccionando la flecha amarilla. El <em>Panel de filtrado</em> también puede
-minimizarse seleccionando la <strong>flecha verde</strong>. Cuando está minimizado solo se
-muestran los tres iconos. El panel puede maximizarse clicando el icono que lo
-minimizó. El filtro se cierra y reinicia seleccionando el <strong>botón rojo</strong> con la
-cruz blanca.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Filterpanel.jpg" alt="Figura: Panel de filtrado" />
-</div>
-</div>
-<div class="paragraph"><p>Se pueden utilizar cuatro criterios para filtrar la lista de inmersiones:
-las etiquetas, las personas (compañeros/divemasters), punto de inmersión y traje
-de buceo, cada uno de los cuales viene representado por una lista seleccionable.
-Sobre cada lista hay un segundo nivel de filtrado. Por ejemplo, tecleando "<em>Ba</em>"
-en la casilla de texto sobre las ubicaciones, la lista podría quedar reducida a
-"<em>Bajo Piles I</em>", "<em>Bajo Piles II</em>" y "<em>Bajo de Testa</em>". Filtrar la lista
-permite encontrar rápidamente términos de búsqueda para filtrar la lista de
-inmersiones.</p></div>
-<div class="paragraph"><p>Para activar el filtrado de la lista de inmersiones, se necesita seleccionar
-al menos una casilla en una de las cuatro listas. La lista de inmersiones se
-reduce para mostrar solo los buceos que cumplen los criterios seleccionados en
-las listas. Las cuatro listas funcionan como un filtro con operadores <em>Y</em>,
-<em>Subsurface</em> filtraría, pues, para "<em>cueva</em>" como etiqueta y "<em>José García</em>"
-como compañero; pero los filtros dentro de una categoría son inclusivos, esto
-es, filtrar por etiquetas con "cueva" y "barco" mostraría todas las inmersiones
-en las que aparezcan las etiquetas "cueva" <em>O</em> "barco", solas o conjuntamente.</p></div>
-</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="S_ExportLog">8. Exportar el registro de inmersiones o parte del mismo</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Hay dos posibilidades de exportar información de buceo desde <em>Subsurface</em>:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Exportar información de buceo a <em>Facebook</em>
-</p>
-</li>
-<li>
-<p>
-<a href="#S_Export_other">Exportar información de buceo a otros destinos o formatos</a>
-</p>
-</li>
-</ul></div>
-<div class="sect2">
-<h3 id="S_Facebook">8.1. Exportar información de buceo a <em>Facebook</em></h3>
-<div class="paragraph"><p>La exportación de inmersiones a <em>Facebook</em> se maneja de forma diferente a otros
-tipos de exportación porque se requiere una
-conexión a esta red social y se necesita un usuario de <em>Facebook</em> y su password.
-Si, desde el menú principal, seleccionamos <em>Compartir &#8594; Conectar a &#8594;
-Facebook</em> (imagen <strong>A</strong> siguiente), se nos presentará una pantalla de acceso
-(imagen <strong>B</strong> a continuación). Introducimos nuestro usuario y password de
-<em>Facebook</em>.
-Desde la ventana de <em>Subsurface</em> es fácil saber si se tiene una conexión válida
-con <em>Facebook</em>. Desde el <strong>Menú principal</strong>, selecciona <em>Compartir</em>
-(ver imagen <strong>A</strong> a continuación). Normalmente la opción <em>Facebook</em> está
-desactivada, pero, si hay una conexión establecida, la opción está activa y
-puede ser seleccionada.
-Tras haber establecido una conexión con <em>Facebook</em>, se mostrará un panel con
-un mensaje: "<em>Para desconectar Subsurface de tu cuenta de Facebook, utiliza la
-entrada del menú 'Compartir'</em>."
-Cierra este panel.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/facebook1.jpg" alt="Figure: Facebook login" />
-</div>
-</div>
-<div class="paragraph"><p>Habiendo establecido una conexión a <em>Facebook</em>, transferir un perfil al
-historial es fácil.
-Selecciona en la <strong>Lista de Inmersiones</strong> de <em>Subsurface</em> el buceo que quieras
-transferir; entonces, desde el <strong>Menú</strong> selecciona <em>Compartir &#8594; Facebook</em>,
-aparecerá un diálogo en el que se definirá la cantidad de información
-adicional que se desea compartir en el historial junto con el perfil (ver imagen
-<strong>A</strong>, a continuación). Se necesita proporcionar el nombre de un álbum de <em>Facebook</em>
-para poder enviar el perfil de inmersión. Las casillas seleccionables de la
-izquierda nos permiten seleccionar la información que vamos a enviar. Esta
-información se muestra en la ventana de texto de la derecha (ver imagen <strong>A</strong>
-a continuación). El mensaje que se va a enviar se puede editar directamente en
-esta ventana de texto. Tras haber elegido la información y verificado lo que se va
-a subir, se selecciona el botón <em>OK</em> lo que inicia la transferencia a <em>Facebook</em>.
-Unos momentos después aparecerá un mensaje indicando una transferencia correcta.</p></div>
-<div class="paragraph"><p>El álbum creado y el post al historial se marcarán como privados. Para que
-los amigos puedan ver el post habrá que cambiar los permisos desde un acceso
-normal a <em>Facebook</em> desde un navegador o desde la app de <em>Facebook</em>. Aunque
-esto suponga un paso de más, los desarrolladores entienden que esta es la mejor
-solución para evitar subidas no deseadas en el historial público.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/facebook2.jpg" alt="Figure: Facebook data submission" />
-</div>
-</div>
-<div class="paragraph"><p>Si se considera necesario, cierra la conexión a <em>Facebook</em>, seleccionando
-desde el <strong>Menú principal</strong>, <em>Compartir &#8594; Desconectar de &#8594; Facebook</em> (imagen
-<strong>B</strong> anterior).</p></div>
-</div>
-<div class="sect2">
-<h3 id="S_Export_other">8.2. Exportar información de buceo a otros destinos o formatos</h3>
 <div class="paragraph"><p>Para exportar a otros destinos,
 se llega a la función de exportación seleccionando <em>Archivo &#8594; Exportar</em> lo que
 despliega el diálogo de exportación. Este diálogo siempre ofrece dos opciones:
@@ -4109,6 +4281,20 @@ Universal Dive Data format (UDDF). Ver <a href="http://uddf.org">http://uddf.org
 </li>
 <li>
 <p>
+<em>Perfil de Inmersión</em>, que permite compartir facilmente el perfil usando
+  redes sociales. Esta opción escribe la imagen del perfil de buceo en un
+  archivo en formato gráfico <em>.PNG</em> en la carpeta indicada en el diálogo
+  <em>Guardar Archivo</em>. La imagen guardada es exactamente la que se puede ver en
+  el perfil en la pantalla, así que comprueba que tienes activadas las
+  opciones correctas de la caja de herramientas del perfil.  Si se seleccionan
+  varias inmersiones las imagenes se escriben en archivos separados. Al
+  seleccionar la opción <em>Perfil de Inmersión</em> se abre una ventana para elegir
+  el nombre que queremos asignar a los archivos a los que escribir los
+  perfiles. Pulsa <em>Guardar</em> tras haber escrito el nombre.
+</p>
+</li>
+<li>
+<p>
 Formato <em>HTML</em>, en el cual los buceos se guardan en archivos HTML,
   visualizables con un navegador de internet.Se soportan la mayoría de navegadores
   modernos, pero debe estar activado Javascript. Este archivo <strong>NO</strong> es editable. El
@@ -4155,6 +4341,12 @@ Formato <em>TeX</em>, un archivo para imprimir usando el software tipográfico T
 </div>
 </div>
 <div class="ulist"><ul>
+<li>
+<p>
+<em>LaTeX</em>. Escribe la inmersión a un documento Latex, en el que los ajustes
+  tipográficos se efectuan automáticamente usando TeX.
+</p>
+</li>
 <li>
 <p>
 <em>Profundidad de imágenes</em>, que crea un fichero de texto que contiene los
@@ -4206,7 +4398,6 @@ Solo exportar lista: Solo se exportará una lista de inmersiones. No se
 </p>
 </li>
 </ul></div>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -4558,7 +4749,7 @@ el nombre de dispositivo asignado al ordenador por el sistema operativo.
 Ver el <a href="#_apendice_a_informacion_especifica_del_sistema_operativo_para_importar_inmersiones_desde_un_ordenador_de_buceo">APÉNDICE A</a>
 para información sobre como hacerlo.</p></div>
 <div class="paragraph"><p>Una vez que el ordenador de buceo está al PC con <em>Subsurface</em>, se selecciona
-<em>Archivo &#8594; Configurar ordenador de buceo</em> en el menú principal. Si se ha
+<em>Archivo &#8594; Cambiar ajustes del ordenador de buceo</em> en el menú principal. Si se ha
 indicado el nombre de dispositivo correcto en el campo de texto de la parte
 superior, esto abrirá y seleccionará el modelo correcto en el panel de la
 izquierda (ver imagen a continuación).</p></div>
@@ -5666,7 +5857,15 @@ circuito por la caída de oxígeno en la boquilla del equipo pSCR.</p></div>
 <td class="content">Bucear en circuito abierto forma parte amenudo de las inmersiones con pSCR,
 porque a pequeñas profundidades la pO<sub>2</sub> en el circuito es demasiado baja. El
 cambio de rebreather a circuito abierto y viceversa se indica usando eventos
-de "bailout". La imagen a la izquierda muestra un plan con pSCR (utilizando
+de "bailout". Hay dos formas de planificar bailouts en inmersiones con
+reciclador: 1) Seleccionar la casilla <em>Bailout</em> en la sección <em>Modo de
+Inmersión</em> del planificador; en este caso, las necesidades del bailout se
+calcularán empezando por el último segmento especificado en la tabla del
+planificador. 2) Si el bailout tiene lugar en otro punto de la inmersión (ver
+el ejemplo de buceo en cuevas a continuación), el bailout se planifica
+manipulando la columna <em>Modo de Inmersión</em> en la tabla <strong>Puntos del
+Planificador</strong>.
+La imagen a la izquierda muestra un plan con pSCR (utilizando
 tres botellas) en el que las partes más superficiales se llevan a cabo usando
 EAN50 para poder tener una pO<sub>2</sub> suficiente. La parte profunda se lleva a cabo
 usando con EAN31 (bot. 2 en la tabla de gases disponibles, también indicada en
@@ -5690,7 +5889,7 @@ la botella en la tabla <strong>Puntos del Planificador de inmersiones</strong> c
 en la imagen de la derecha (<strong>B</strong>). El icono del perfil mostrará ahora un evento
 de bailout superpuesto con un cambio de botella. Como en el gráfico de la
 izquierda, los valores apropiados de pO<sub>2</sub> se muestran en el perfil. Los
-volumenes de gas necesarios se encuentran al final del panel <strong>Detalles del
+volúmenes de gas necesarios se encuentran al final del panel <strong>Detalles del
 Plan de Buceo</strong>.</td>
 </tr></table>
 </div>
@@ -5700,12 +5899,13 @@ Plan de Buceo</strong>.</td>
 </div>
 </div>
 <div class="paragraph"><p>En el caso de un plan de inmersión en aguas abiertas con pSCR, el "peor
-escenacio" es, probablemente, una emergencia al final de la parte más profunda
-de la inmersión. Crea un segmento de 1 minuto al final de la parte más
-profunda del plan. Luego manipula el segmento utilizando las columnas <strong>Modo de
-buceo</strong> y <strong>Gas usado</strong>, como en el ejemplo anterior de la cueva. Visita el
-ejemplo de emergencia para una inmersión con CCR, a continuación, que utiliza
-esta aproximación.</p></div>
+escenario" es, probablemente, una emergencia al final de la parte más profunda
+de la inmersión y esto puede simularse usando la casilla <em>Bailout</em> del
+planificador. Como alternativa, se puede crear un segmento de 1 minuto al final
+de la parte más profunda del plan. Luego manipula el segmento utilizando las
+columnas <strong>Modo de buceo</strong> y <strong>Gas usado</strong>, como en el ejemplo anterior de la cueva.
+Visita el ejemplo de emergencia para una inmersión con CCR, a continuación, que
+utiliza esta aproximación.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -5743,12 +5943,15 @@ gas para un segmento en CCR, por tanto, lo normal es obtener valores de 0 l.</p>
 <td class="icon">
 <img src="images/CCR_b1.jpg" alt="Note" />
 </td>
-<td class="content">A menudo es necerario planificar casos de "peor escenario" para asegurarnos de
+<td class="content">A menudo es necesario planificar casos de "peor escenario" para asegurarnos de
 que dispondremos de gas suficiente, en caso de emergencia, para alcanzar la
-superficie, teniendo en cuenta la descompresión. Esto se hace definiendo
-segmentos de 1 minuto al final de la parte de fondo de la inmersión, como se
-muestra en la imagen de la izquierda donde se planifica una inmersión a 40m
-durante 21 minutos.</td>
+superficie, teniendo en cuenta la descompresión. Esto se hace: 1)
+seleccionando la casilla <em>Bailout</em> del planificador (el bailout se calculará
+empezando en el último segmento de inmersión definido en la tabla); 2)
+Definiendo segmentos de 1 minuto al final de la parte de fondo de la inmersión,
+como se muestra en la imagen de la izquierda donde se planifica una inmersión a
+40m durante 21 minutos; 3) Cambiando a un gas en circuito abierto en cualquier
+segmento de la tabla de <em>Puntos del Planificador</em>.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -7876,7 +8079,7 @@ sido sobrescritos.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-09-23 17:52:40 PDT
+ 2024-02-08 08:36:54 PST
 </div>
 </div>
 </body>

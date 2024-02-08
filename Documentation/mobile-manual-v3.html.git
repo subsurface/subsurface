@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc" />
+<meta name="generator" content="AsciiDoc 10.1.2" />
 <title></title>
 <style type="text/css">
 /*
@@ -539,7 +539,6 @@ the lower right corner and that can be opened by tapping and holding a dive or t
 actions on that screen (see image on the left). Some screens have only
 the round central button, others have one or two additional
 actions on either side of the central button.</p></div>
-<div style="clear:both;"></div>
 <div class="paragraph"><p>On Android devices, use the Android Back
 button for "cancel", "discard" or "back" actions. For example, when
 editing dive information, tapping the action button saves the changes while the
@@ -726,7 +725,6 @@ type, e.g. those at a particular dive site or those with a specific buddy or div
 Filter to achieve this. The filter mechanism searches through all the information for each dive,
 looking for one or more key words. Only the dives containing these key words are listed in the dive
 list. To Filter the dive list, tap the Filter action button:</p></div>
-<div style="clear:both;"></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="mobile-images/FilterButton.jpg" alt="FIGURE: Filter button" />
@@ -803,7 +801,7 @@ computers that you do not use any more. Achieve this by selecting the option
 <div class="tableblock">
 <table rules="all"
 width="100%"
-frame=""
+frame="border"
 cellspacing="0" cellpadding="4">
 <col width="50%" />
 <col width="50%" />
@@ -982,7 +980,7 @@ and the dives during the last six months.</p></div>
 <div class="tableblock">
 <table rules="all"
 width="100%"
-frame=""
+frame="border"
 cellspacing="0" cellpadding="4">
 <col width="40%" />
 <col width="60%" />
@@ -1169,7 +1167,7 @@ similar to image B, below, is produced. Here the subdivision within each gas typ
 <div class="tableblock">
 <table rules="all"
 width="100%"
-frame=""
+frame="border"
 cellspacing="0" cellpadding="4">
 <col width="40%" />
 <col width="60%" />
@@ -1284,7 +1282,7 @@ buttons on the <em>Download from dive computer</em> page.</p></div>
 <div class="tableblock">
 <table rules="all"
 width="100%"
-frame=""
+frame="border"
 cellspacing="0" cellpadding="4">
 <col width="50%" />
 <col width="50%" />
@@ -1380,7 +1378,7 @@ you to reset the password for your <em>Subsurface Cloud</em> account.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-10-30 08:48:42 PDT
+ 2024-02-08 09:34:56 PST
 </div>
 </div>
 </body>

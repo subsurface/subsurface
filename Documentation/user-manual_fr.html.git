@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 10.1.2" />
 <title></title>
 <style type="text/css">
 /*
@@ -16,7 +17,7 @@
  */
 
 *   { padding: 0;  margin: 0; }
-img { border: 0; }
+img { border: 0; margin: 15px; max-width:90% }
 
 /*** Layout ***/
 
@@ -77,12 +78,12 @@ body                        { font-family: Verdana, sans-serif; }
 #footer                     { font-size: 0.8em; }
 
 h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
-h2                          { font-size: 1.5em; }
+h2                          { font-size: 160%; }
 .sectionbody                { font-size: 0.85em; }
 .sectionbody .sectionbody   { font-size: inherit; }
-h3                          { font-size: 159%; } /* 1.35em */
-h4                          { font-size: 141%; } /* 1.2em */
-h5                          { font-size: 118%; } /* 1em */
+h3                          { font-size: 150%; } /* 1.35em */
+h4                          { font-size: 140%; } /* 1.2em */
+h5                          { font-size: 130%; } /* 1em */
 .title                      { font-size: 106%;   /* 0.9em */
 			      font-weight: bold;
 			    }
@@ -576,7 +577,7 @@ meilleur manière qui soit, il est important d&#8217;avoir des informations sur 
 utilisateurs. À l&#8217;ouverture de <em>Subsurface</em> après avoir utilisé le logiciel
 pendant une semaine environ, une fenêtre de sondage apparait. Cela est
 complètement optionnel et l&#8217;utilisateur contrôle quelles informations sont
-envoyées ou non à l'équipe de développement de <em>Subsurface</em>. Toutes les
+envoyées ou non à l&#8217;équipe de développement de <em>Subsurface</em>. Toutes les
 données que l&#8217;utilisateur envoie sont utiles et ne seront utilisées que pour
 les futurs développements et modifications du logiciel pour coller au mieux
 aux besoins des utilisateurs de <em>Subsurface</em>. Si vous complétez le sondage
@@ -592,7 +593,7 @@ envoyer un nouveau sondage en démarrant <em>Subsurface</em> avec l&#8217;option
 <div class="sectionbody">
 <div class="paragraph"><p>La fenêtre <em>Subsurface</em> est généralement divisée en 4 panneaux avec un <strong>Menu
 principal</strong> (Fichier Édition Importer Journal Vue Partager Aide) en haut de
-la fenêtre (pour Windows et Linux) ou en haut de l'écran (pour Mac et Ubuntu
+la fenêtre (pour Windows et Linux) ou en haut de l&#8217;écran (pour Mac et Ubuntu
 Unity). Les quatre panneaux sont :</p></div>
 <div class="paragraph"><p>La <strong>liste des plongées</strong> en bas à gauche, affichant toutes les plongées du
 journal (carnet) de plongées de l&#8217;utilisateur. Une plongée peut être
@@ -602,7 +603,7 @@ d&#8217;une plongée à l&#8217;autre. La <strong>liste des plongées</strong> e
 manipuler un journal (carnet) de plongée.</p></div>
 <div class="paragraph"><p>La <strong>carte de plongée</strong> en bas à droite, affiche les sites de plongées de
 l&#8217;utilisateur, sur une carte mondiale et centrée sur le site de la dernière
-plongée sélectionnée dans la <strong>liste des plongées</strong>. L'échelle de la carte
+plongée sélectionnée dans la <strong>liste des plongées</strong>. L&#8217;échelle de la carte
 peut être augmentée ou réduite.</p></div>
 <div class="paragraph"><p>Les <strong>informations</strong> en haut à gauche, fournissent des informations détaillées
 sur la plongée sélectionnée dans la <strong>liste des plongées</strong>, dont des
@@ -632,7 +633,7 @@ plongées sélectionnées).</p></div>
 <div class="paragraph"><p>Décider quels panneaux sont affichés, parmi les 4, en sélectionnant l&#8217;option
 <strong>Vue</strong> dans le menu principal. Cette fonctionnalité permet plusieurs choix
 d&#8217;affichage :</p></div>
-<div class="paragraph"><p><strong>Tout</strong> : affiche les quatre panneaux tels que sur la capture d'écran ci-dessus.</p></div>
+<div class="paragraph"><p><strong>Tout</strong> : affiche les quatre panneaux tels que sur la capture d&#8217;écran ci-dessus.</p></div>
 <div class="paragraph"><p><strong>Liste des plongées</strong> : affiche uniquement la liste des plongées.</p></div>
 <div class="paragraph"><p><strong>Profil</strong> : affiche uniquement le profile de plongée de la plongée sélectionnée.</p></div>
 <div class="paragraph"><p><strong>Info</strong> : affiche uniquement les notes de plongées de la dernière plongée sélectionnée et les statistiques pour
@@ -761,7 +762,7 @@ doit être enregistré sur le disque ou non.</p></div>
 <div class="paragraph"><p>Le <strong>Profil de plongée</strong> (une représentation graphique de la profondeur d&#8217;une
 plongée en fonction du temps) est affiché dans le panneau en haut à droite
 de la fenêtre de <em>Subsurface</em>. Lorsqu&#8217;il est ajouté manuellement au carnet,
-<em>Subsurface</em> affiche un profil de plongée par défaut qui nécessite d'être
+<em>Subsurface</em> affiche un profil de plongée par défaut qui nécessite d&#8217;être
 modifié pour représenter au mieux la plongée décrite:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
@@ -777,7 +778,7 @@ en haut de la boîte noire d&#8217;information (@ et D). Les unités
 ligne séparés par des points de passage (les points blancs sur le profil,
 voir ci-dessous). La profondeur par défaut d&#8217;une plongée est de 15m. Si la
 prfondeur de votre plongée était de 20m, vous devez glisser le point de
-passage approprié jusqu'à 20m. Pour ajouter un point de passage,
+passage approprié jusqu&#8217;à 20m. Pour ajouter un point de passage,
 double-cliquez sur n&#8217;importe quel segment de la ligne. Pour bouger un point
 de passage supplémentaire, glissez-le. Le bouger peut également être réalisé
 en le sélectionnant et en utilisant les flèches du clavier. Pour supprimer
@@ -831,7 +832,7 @@ de plongée supportés</a>.</p></div>
 <td class="icon">
 <img src="images/icons/warning2.png" alt="Warning" />
 </td>
-<td class="content">Certains ordinateurs de plongée consomme plus d'énergie lorsqu&#8217;ils sont en
+<td class="content">Certains ordinateurs de plongée consomme plus d&#8217;énergie lorsqu&#8217;ils sont en
 mode Communication PC. <strong>Ceci peut consommer une grande partie de la
 batterie de votre ordinateur de plongée</strong>. Nous recommandons à l&#8217;utilisateur
 de vérifier que l&#8217;ordinateur de plongée est chargé lorsqu&#8217;il est connecté au
@@ -843,7 +844,7 @@ au port USB.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>Pour importer les informations depuis un ordinateur de plongée vers un
-ordinateur utilisant <em>Subsurface</em>, les deux pièces d'équipement doivent
+ordinateur utilisant <em>Subsurface</em>, les deux pièces d&#8217;équipement doivent
 communiquer entre elles. Ceci implique la configuration des ports de
 communication (ou point de montage) de l&#8217;ordinateur sur lequel tourne
 <em>Subsurface</em> qui communique avec l&#8217;ordinateur de plongée. Pour configurer
@@ -851,8 +852,7 @@ cette communication, les utilisateurs doivent trouver l&#8217;information
 appropriée pour renseigner à <em>Subsurface</em> d&#8217;où et comment importer les
 informations de
 plongée.
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
-A</a> donne les informations techniques pour aider l&#8217;utilisateur à configurer
+<a href="#appendix_a">Annexe A</a> donne les informations techniques pour aider l&#8217;utilisateur à configurer
 ceci pour les différents systèmes d&#8217;exploitation et
 <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Annexe
 B</a> contient des informations spécifiques à chaque ordinateur de plongée.</p></div>
@@ -908,8 +908,7 @@ La boîte de dialogue propose deux menus déroulants, <strong>Fournisseur</stron
 Le menu déroulant <strong>Périphérique ou point de montage</strong> le nom du port USB ou
    Bluetooth dont <em>Subsurface</em> a besoin pour communiquer avec l&#8217;ordinateur de
    plongée. Le port approprié doit être sélectionné. Consultez
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
-   A</a> et
+   <a href="#appendix_a">Annexe A</a> et
    <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Annexe
    B</a> pour obtenir des détails techniques sur la façon de trouver des
    informations sur le port approprié à chaque ordinateur de plongée et, dans
@@ -1035,17 +1034,15 @@ Le câble de connexion est-il fautif ? Le câble fonctionne-t-il avec d&#8217;au
 <li>
 <p>
 Consultez
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
-   A</a> pour être certain que le point de montage correct a été spécifié (voir
+   <a href="#appendix_a">Annexe A</a> pour être certain que le point de montage correct a été spécifié (voir
    ci-dessus).
 </p>
 </li>
 <li>
 <p>
 Sur les systèmes d&#8217;exploitation de type Unix, l&#8217;utilisateur a-t-il les
-   droits d'écriture sur le port USB? Si non, consultez
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
-   A</a>
+   droits d&#8217;écriture sur le port USB? Si non, consultez
+   <a href="#appendix_a">Annexe A</a>
 </p>
 </li>
 </ul></div>
@@ -1142,7 +1139,7 @@ start by scanning for Bluetooth devices from an empty list (on the desktop)
 of Bluetooth devices. Once <em>Subsurface</em> has recognised the Bluetooth dive
 computer, subsequent divelog downloads are likely to be simple.</p></div>
 <div class="paragraph"><p>Sur les plateformes <em>Linux</em> ou -MacOS_, le nom de l&#8217;ordinateur utilisant
-Subsurface_ et son adresse Bluetooth sont affichées du côté droit. L'état
+Subsurface_ et son adresse Bluetooth sont affichées du côté droit. L&#8217;état
 (allumé/éteint) de l&#8217;adaptateur Bluetooth est affiché sous l&#8217;adresse et peut
 être modifié en cliquer sur la case <em>Allumer/éteindre</em>. Si l&#8217;adresse
 Bluetooth n&#8217;est pas affichée, <em>Subsurface</em> ne détecte pas le périphérique
@@ -1221,10 +1218,10 @@ ci-dessus). Si l&#8217;ordinateur de plongée est connecté à Subsurface pour l
 première fois, il est possible que Subsurface demande un nombre ou un code
 PIN. Entrez le code indiqué dans le manuel utilisateur de l&#8217;ordinatuer de
 plongée. Un code ou PIN de 0000 est souvent le code par défaut.</p></div>
-<div class="paragraph"><p>L'étape de jumelage est vérifiée et réalisée automatiquement durant le
+<div class="paragraph"><p>L&#8217;étape de jumelage est vérifiée et réalisée automatiquement durant le
 processus de téléchargement. Si les périphériques n&#8217;ont pas encore été
 jumelés, le système demandera l&#8217;autorisation de le faire et affichera un
-message sur la partie droite de l'écran. <em>Ajouter un périphérique</em>, <em>Tapez
+message sur la partie droite de l&#8217;écran. <em>Ajouter un périphérique</em>, <em>Tapez
 pour configurer votre périphérique</em>. <em>Toujours autoriser le jumelage. Après
 la sélection d&#8217;un item découvert, cliquez sur le bouton
 _Enregistrer</em>. Enfin, sélectionnez le bouton "Télécharger_ dans la boîte de
@@ -1278,7 +1275,7 @@ avec <em>Subsurface</em>.</td>
 </div>
 <div class="sect3">
 <h4 id="S_DeviceNames">5.2.3. Changement du nom d&#8217;un ordinateur de plongée</h4>
-<div class="paragraph"><p>Il peut être nécessaire d'établir une distinction entre différents
+<div class="paragraph"><p>Il peut être nécessaire d&#8217;établir une distinction entre différents
 ordinateurs de plongée utilisés pour télécharger des données de plongée vers
 <em>Subsurface</em>. Par exemple, si l&#8217;ordinateur d&#8217;un équipier provient du même
 fabriquant et est dun même modèle que le votre et que les données sont
@@ -1349,7 +1346,7 @@ dans des boîtes de texte à droite de l&#8217;heure de début de plongée. De n
 renseignent la température de l&#8217;eau, et cette boîte peut contenir cette information.
 Si la température de l&#8217;air n&#8217;est pas renseignée par l&#8217;ordinateur de plongée, la première température pour l&#8217;eau
 peut être utilisée comme température de l&#8217;air. En général, elle est proche de la température de l&#8217;air.
-S&#8217;il est nécessaire d'éditer ces informations, seule une valeur est nécessaire, l&#8217;unité de température étant
+S&#8217;il est nécessaire d&#8217;éditer ces informations, seule une valeur est nécessaire, l&#8217;unité de température étant
 automatiquement fournie par
 <em>Subsurface</em> (sur base des <em>Préférences</em>, les unités métriques ou impériales
 seront utilisées).</p></div>
@@ -1365,7 +1362,7 @@ plongée.  Les informations de plongée dans les onglets <strong>Notes</strong> 
 informations sur le site de plongée. Enregistrez toutes les autres
 informations (p. ex. instructeur, équipier, équipement, notes à propos de la
 plongée) en sélectionnant <em>Appliquer les modifications</em> dans l&#8217;onglet
-<strong>Notes</strong> AVANT d'éditer les informations sur le site de plongée. Ensuite,
+<strong>Notes</strong> AVANT d&#8217;éditer les informations sur le site de plongée. Ensuite,
 nommez le site de plongée dans la bpîte de texte <em>Lieu</em> dans l&#8217;onglet
 <strong>Notes</strong>.</td>
 </tr></table>
@@ -1488,11 +1485,11 @@ Une sélection automatique est disponible.
 Certains utilisateurs de vêtement étanche peuvent utiliser ce champ pour enregistrer quelle ensemble de
 combinaison et souris ils ont utilisé.</p></div>
 <div class="paragraph"><p><strong>Évaluation</strong>: attribue une évaluation subjective à une plongée sur une
-échelle de 5 points en cliquant sur l'étoile correspondante.</p></div>
+échelle de 5 points en cliquant sur l&#8217;étoile correspondante.</p></div>
 <div class="paragraph"><p><strong>Visibilité</strong>: attribue une évaluation de la visibilité à une plongée sur une
-échelle de 5 points en cliquant sur l'étoile correspondante.</p></div>
+échelle de 5 points en cliquant sur l&#8217;étoile correspondante.</p></div>
 <div class="paragraph"><p><strong>Étiquettes</strong>: il est possible de définir ici des étiquettes qui décrivent le
-type de plongée (séparées par des virgules). Des exemples courants d'étiquettes sont bateau,
+type de plongée (séparées par des virgules). Des exemples courants d&#8217;étiquettes sont bateau,
 plongée dérivante, exercice, grotte, etc.
 <em>Subsurface</em> contient de nombreuses étiquettes. En commençant à taper une étiquette, <em>Subsurface</em> liste
 les étiquettes correspondant à la frappe. Par exemple, en entrant
@@ -1515,7 +1512,7 @@ message dans la boîte bleue en haut du panneau:</p></div>
 <img src="images/BlueEditBar_f22.jpg" alt="FIGURE: Blue edit bar" />
 </div>
 </div>
-<div class="paragraph"><p>indique que l'équipement a été édité. C&#8217;est une partie hautement interactive
+<div class="paragraph"><p>indique que l&#8217;équipement a été édité. C&#8217;est une partie hautement interactive
 de <em>Subsurface</em> et les informations sur les blocs et les gaz (entrées ici)
 déterminent le comportement du <strong>Profil de plongée</strong> (panneau en haut à
 droite).</p></div>
@@ -1892,7 +1889,7 @@ not currently supported on Mac.</p></div>
 your system before building: <em>glib2.0</em> and <em>mdbtools</em> (see below).</p></div>
 <div class="paragraph"><p>In addition, a web service is available for divelog convertions from
 SmartTrak to <em>Subsurface</em> (see below).</p></div>
-<div class="paragraph"><p>N&#8217;hésitez pas à contacter l'équipe de développement de <em>Subsurface</em> via
+<div class="paragraph"><p>N&#8217;hésitez pas à contacter l&#8217;équipe de développement de <em>Subsurface</em> via
 <a href="mailto:subsurface@subsurface-divelog.org">notre liste de diffusion</a> pour de
 l&#8217;aide à l&#8217;importation des lofs <em>SmartTrak</em>.</p></div>
 <div class="sect4">
@@ -3192,7 +3189,7 @@ profondeur à un moment précis de la plongée.</p></div>
 <img src="images/icons/scale.jpg" alt="Note" />
 </td>
 <td class="content">Dans certains cas, le profil de plongée ne remplit pas toute la zone du
-panneau <strong>Profil de plongée</strong>. Cliquer sur le bouton <strong>Ajuster l'échelle du
+panneau <strong>Profil de plongée</strong>. Cliquer sur le bouton <strong>Ajuster l&#8217;échelle du
 graphique</strong> dans la barre d&#8217;outils sur la gauche du profil de plongée
 augmente la taille du profil de plongée pour remplir la zone du panneau.</td>
 </tr></table>
@@ -3237,8 +3234,8 @@ panel. These are:</p></div>
 <td class="content">Affiche la <strong>Profondeur maximale d&#8217;utilisation (MOD)</strong> d&#8217;une plongée, en
 fonction du mélange gazeux utilisé. La MOD dépend de la concentration en
 oxygène du gaz respiré. Pour l&#8217;air (21% d&#8217;oxygène), il vaut envuron 57m si
-une pO<sub>2 maximale de 1.4 est choisie dans la section <strong>Préférences</strong>
-(sélectionnez <em>Fichier &#8594; Préférences &#8594; Profil</em> et éditez le champ <em>pO</sub>2
+une pO<sub>2</sub> maximale de 1.4 est choisie dans la section <strong>Préférences</strong>
+(sélectionnez <em>Fichier &#8594; Préférences &#8594; Profil</em> et éditez le champ <em>pO<sub>2</sub>
 dans le calcul de MOD</em>).  En plongeant sous la MOD, il y a un risque
 important d&#8217;exposition aux dangers liés à la toxicité de l&#8217;oxygène.</td>
 </tr></table>
@@ -4049,66 +4046,13 @@ those dives that have either one OR both of these tags.</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Exporter les informations de plongée vers <em>Facebook</em>
-</p>
-</li>
-<li>
-<p>
 <a href="#S_Export_other">Exporter des informations de plongée vers d&#8217;autres
   destinations ou formats</a>
 </p>
 </li>
 </ul></div>
 <div class="sect2">
-<h3 id="S_Facebook">8.1. Export des informations de plongée vers <em>Facebook</em></h3>
-<div class="paragraph"><p>L&#8217;export des plongées vers <em>Facebook</em> est géré différemment des autres types
-d&#8217;export car une connexion vers <em>Facebook</em> est nécessaire, nécessitant un
-identifiant et un mot de passe. À partir du menu principal, sélectionnez
-<em>Partager sur &#8594; Connecter à &#8594; Facebook</em> (image <strong>A</strong> ci-dessous). Un écran
-de connexion s&#8217;affiche (image <strong>B</strong> ci dessous). Entrez l&#8217;identifiant et le
-mot de passe <em>Facebook</em>. Depuis la fenêtre <em>Subsurface</em>, il est facile de
-vérifier si <em>Subsurface</em> a une connection valide vers <em>Facebook</em> : Depuis le
-"Menu principal", sélectionnez <em>Partager sur</em> (image <strong>A</strong>
-ci-dessous). Normalement, l&#8217;option <em>Facebook</em> est grisée. Mais si une
-connection vers <em>Facebook</em> existe, cette option est active (c&#8217;est à dire
-écrit en noir et sélectionnable).</p></div>
-<div class="paragraph"><p>Once logged into to <em>Facebook</em> , a panel is shown with a message: "<em>To
-disconnect Subsurface from your Facebook account, use the <em>Share on</em> menu
-entry</em>." Close this message panel.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/facebook1.jpg" alt="Figure: Facebook login" />
-</div>
-</div>
-<div class="paragraph"><p>Une fois qu&#8217;une connexion à <em>Facebook</em> est établie, transférer un profil de
-plongée vers <em>Facebook</em> est facile. Dans le panneau <strong>Liste des plongées</strong> de
-<em>Subsurface</em>, sélectionnez la plongée à transférer. Ensuite, à partir du
-<strong>menu principal</strong>, sélectionnez <em>Partager sur &#8594; Facebook</em>. Une fenêtre
-s&#8217;affiche, pour déterminer quelles informations seront transférées avec le
-profil de plongée (image <strong>A</strong> ci-dessous). Pour transférer un profil de
-plongée vers <em>Facebook</em>, le nom d&#8217;un album <em>Facebook</em> doit être fourni. Les
-cases à cocher sur la partie gauche permettent de sélectionner des
-informations supplémentaires à transférer avec le profil de plongée. Ces
-informations sont affichées dans le champs de texte sur la partie droite du
-panneau. (image <strong>A</strong> ci dessous). Personnalisez le message qui sera envoyé
-avec le profil de plongée en modifiant les informations. Une fois les
-informations supplémentaires ajoutées et vérifiées, sélectionner le bouton
-<em>OK</em> qui effectue le transfert vers <em>Facebook</em>. Après le transfert, une
-fenêtre de confirmation apparait ,indiquant le succès du transfert.</p></div>
-<div class="paragraph"><p>À la fois l&#8217;album créé et la publication sur votre ligne temporelle seront
-marquées comme privés. Pour que vos amis puissent la voir, connectez-vous à
-<em>Facebook</em> depuis un navigateur ou l&#8217;application Facebook et modifiez les
-permissions.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/facebook2.jpg" alt="Figure: Facebook data submission" />
-</div>
-</div>
-<div class="paragraph"><p>If required, then close the <em>Facebook</em> connection by selecting, from the
-<strong>Main Menu</strong>, <em>Share on &#8594; Disconnect from &#8594; Facebook</em> (image <strong>B</strong> above).</p></div>
-</div>
-<div class="sect2">
-<h3 id="S_Export_other">8.2. Exporter des informations de plongée vers d&#8217;autres destinations ou formats</h3>
+<h3 id="S_Export_other">8.1. Exporter des informations de plongée vers d&#8217;autres destinations ou formats</h3>
 <div class="paragraph"><p>For non-<em>Facebook exports</em>, the export function can be found by selecting
 <em>File &#8594; Export</em>, which brings up the Export dialog. This dialog always
 gives two options: save ALL dives, or save only the dives selected in <strong>Dive
@@ -4600,7 +4544,7 @@ ces ordinateurs de plongée peuvent être lues et modifiées. Pour commencer,
 assurez vous que les pilotes pour votre ordinateur de plongée sont installés
 (également nécessaire pour télécharger les plongées) et que le nom de
 périphérique de l&#8217;ordinateur de plongée est connu. Voir
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">ANNEXE A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
+<a href="#appendix_a">ANNEXE A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
 <div class="paragraph"><p>Une fois que l&#8217;ordinateur de plongée est connecté à <em>Subsurface</em>,
 sélectionner <em>Fichier &#8594; Configurer l&#8217;ordinateur de plongée</em>, à partir du
 menu principal. Sélectionner le nom du périphérique (ou le point de montage)
@@ -5035,7 +4979,7 @@ L&#8217;utilisateur planifie des plongées dans les limites de sa certification.
 <li>
 <p>
 La planification de plongée se base sur les caractéristiques d&#8217;une <em>personne
-  normale</em> et ne peut compenser les caractéristiques physiologiques, l'état de
+  normale</em> et ne peut compenser les caractéristiques physiologiques, l&#8217;état de
   santé, l&#8217;historique personnel et les caractéristiques du mode de vie.
 </p>
 </li>
@@ -5059,7 +5003,7 @@ Un utilisateur qui n&#8217;est pas absolument certain d&#8217;un des prérequis 
 </ul></div>
 </div></div>
 <div class="sect2">
-<h3 id="_l_écran_du_planificateur_de_plongée_em_subsurface_em">14.1. L'écran du planificateur de plongée <em>Subsurface</em></h3>
+<h3 id="_l_8217_écran_du_planificateur_de_plongée_em_subsurface_em">14.1. L&#8217;écran du planificateur de plongée <em>Subsurface</em></h3>
 <div class="paragraph"><p>Like the <em>Subsurface</em> dive log, the planner screen is divided into several
 sections (see image below). The <strong>setup</strong> parameters for a dive are entered
 into the sections on the left hand and bottom side of the screen.  They are:
@@ -6162,18 +6106,7 @@ The Edit option allows one to undo or redo an action, e.g. deleting dives.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_share_on">16.6. Share on</h3>
-<div class="ulist"><ul>
-<li>
-<p>
-<a href="#S_Facebook"><em>Facebook</em></a> - Partager la plongée sélectionnée sur votre
-  Facebook.
-</p>
-</li>
-</ul></div>
-</div>
-<div class="sect2">
-<h3 id="_aide">16.7. Aide</h3>
+<h3 id="_aide">16.6. Aide</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -6205,7 +6138,7 @@ The Edit option allows one to undo or redo an action, e.g. deleting dives.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_annexe_a_informations_spécifiques_au_système_d_8217_exploitation_utilisé_pour_importer_les_informations_de_plongées_depuis_un_ordinateur_de_plongée">17. ANNEXE A : informations spécifiques au système d&#8217;exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.</h2>
+<h2 id="appendix_a">17. ANNEXE A : informations spécifiques au système d&#8217;exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_assurez_vous_que_les_pilotes_drivers_nécessaires_sont_installés">17.1. Assurez-vous que les pilotes (drivers) nécessaires sont installés</h3>
@@ -6315,14 +6248,14 @@ ftdi_sio: v1.6.0:USB FTDI Serial Converters Driver</code></pre>
 détecté et connecté sur <code>ttyUSB3</code>. Cette information peut à présent être
 utilisée pour les paramètres d&#8217;importation en tant que <code>/dev/ttyUSB3</code> pour
 que Subsurface utilise le bon port USB.</p></div>
-<div class="paragraph"><p>S&#8217;assurer que l&#8217;utilisateur possède les droits d'écriture sur le port série
+<div class="paragraph"><p>S&#8217;assurer que l&#8217;utilisateur possède les droits d&#8217;écriture sur le port série
 USB :</p></div>
 <div class="paragraph"><p>Sur les systèmes similaires à Unix, les ports USB ne peuvent être accédés
 que par des utilisateurs membres d&#8217;un groupe spécial qui peut être <code>dialout</code>
 ou <code>uucp</code>. Cela peut être vérifié en listant les permissions associées au
 périphérique, par exemple via <code>ls - l /dev/ttyUSB0</code>. Notez que le numéro
 dans le nom de fichier dépend du nombre de périphériques USB que vous avez
-branchés et peut être ajusté au besoin.Si vous n'êtes pas root, vous n'êtes
+branchés et peut être ajusté au besoin.Si vous n&#8217;êtes pas root, vous n&#8217;êtes
 peut-être pas membre de ce groupe et ne pouvez donc pas utiliser le port
 USB. Admettons que votre nom d&#8217;utilisateur soit <em>johnB</em>.</p></div>
 <div class="paragraph"><p>En tant que root, tapez : usermod -a -G dialout johnB+ (utilisateurs
@@ -7854,7 +7787,7 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-11-05 09:24:27 CET
+ 2024-02-08 08:51:28 PST
 </div>
 </div>
 </body>
