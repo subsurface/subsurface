@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc" />
+<meta name="generator" content="AsciiDoc 10.1.2" />
 <title></title>
 <style type="text/css">
 /*
@@ -882,6 +882,15 @@ Do <strong>not</strong> check the checkboxes labelled <em>Save libdivecomputer l
 </li>
 <li>
 <p>
+With some dive computers it is possible to adjust the clock on the dive
+   computer based on the PC clock. This can be very helpful when dealing with
+   daylight savings time changes, or when travelling between different time
+   zones. In order to synchronise the dive computer clock with the PC clock
+   every time dives are imported, check <em>Sync dive computer time</em>.
+</p>
+</li>
+<li>
+<p>
 Then select the <em>Download</em> button.
    With communication established, you can see how the data are
    retrieved from the dive computer.
@@ -1334,11 +1343,6 @@ data here are the geographic coordinates of the dive location.</p></div>
 </li>
 <li>
 <p>
-<a href="#S_Subsurface_mobile">Dive site coordinates from the Subsurface-Mobile phone app</a>
-</p>
-</li>
-<li>
-<p>
 <a href="#S_GPS">Dive site coordinates from a GPS track</a>
 </p>
 </li>
@@ -1394,13 +1398,7 @@ dive site name in the <strong>Notes tab</strong>.</p></div>
 </div>
 <div class="paragraph"><p>Once the dive location data have been saved, the dive on the Dive List has
 a globe icon immediately to the left of the location name of a particular dive.</p></div>
-<div class="paragraph" id="S_Using_mobile"><p><strong>(3): Dive coordinates from a mobile device with GPS using Subsurface-Mobile.</strong>
-Most smartphones have an integrated GPS, useful for collecting the coordinates of dive sites.
-The <a href="https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual">user manual for <em>Subsurface-mobile</em></a> (accessible from within that app)
-contains detailed instructions for
-performing the collection of GPS data and for managing, uploading and
-synchronising the coordinates with a dive log.</p></div>
-<div class="paragraph" id="S_GPS"><p><strong>(4): Import coordinates from GPS equipment.</strong> Some divers prefer to take a GPS
+<div class="paragraph" id="S_GPS"><p><strong>(3): Import coordinates from GPS equipment.</strong> Some divers prefer to take a GPS
 onto the boat and record a GPS track while diving. Subsurface can extract the
 dive site from this track and store the dive site coordinates as part of the dive log.
 Follow the next steps:</p></div>
@@ -2446,6 +2444,7 @@ A list of sites within this range is presented (see image below).</p></div>
 <div class="paragraph"><p>Select the dive site to be merged by right-clicking it. A confirmation
 message is presented (see image above). Clicking the confirmation message merges the selected dive with
 the dive named at the top of the panel and returns you to the dive sites management panel.</p></div>
+<div class="paragraph"><p>Alternatively, if exactly one dive site is selected in the <em>Near dive sites</em> list, there is an additional function <em>Merge current site into this site</em> available in the context menu. This can be helpful if the name of the destination dive site is not known, e.g. when importing dive sites from a third party source.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_add_a_dive_site">4.4.4. Add a dive site</h4>
@@ -2827,7 +2826,36 @@ logging of cylinder pressures during sidemount involves three steps, exactly as 
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_sSCR_dives">4.6.3. Passive semi-closed circuit rebreather (pSCR) dives</h4>
+<h4 id="_fixing_sensor_being_attached_to_wrong_cylinder">4.6.3. Fixing sensor being attached to wrong cylinder</h4>
+<div class="paragraph"><p>When importing a dive <em>Subsurface</em> generally has to make some assumptions when importing dives. One
+of these assumptions is which cylinder a pressure sensor is attached to. The following dive is a sidemount
+dive with two deco cylinders. Each of the main cylinders has a pressure sensor attached to them. In this
+case <em>Subsurface</em> only knows about 3 gasses and 2 sensors so it makes the assumption that the sensors
+are attached to the first two cylinders, one bottom gas and one with deco gas. For the cylinders with
+attached sensors the cylinder index will be shown in the sensors column.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/sensors-import.png" alt="FIGURE: Imported cylinders and sensors" />
+</div>
+</div>
+<div class="paragraph"><p>To fix this, you can add a new cylinder with bottom gas and pick the index for the deco cylinder in
+the sensors drop down.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/sensors-newcylinder.png" alt="FIGURE: New cylinder added for sensor move" />
+</div>
+</div>
+<div class="paragraph"><p>After this change the second sensor will be attached to the fourth cylinder and the two deco cylinders
+won&#8217;t have any cylinders attached.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/sensors-moved.png" alt="FIGURE: Sensor moved to new cylinder" />
+</div>
+</div>
+<div class="paragraph"><p>The profile graph will also be updated to reflect this change.</p></div>
+</div>
+<div class="sect3">
+<h4 id="S_sSCR_dives">4.6.4. Passive semi-closed circuit rebreather (pSCR) dives</h4>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2909,7 +2937,7 @@ differs from the OC-pO<sub>2</sub> (orange line).</td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_CCR_dives">4.6.4. Closed circuit rebreather (CCR) dives</h4>
+<h4 id="S_CCR_dives">4.6.5. Closed circuit rebreather (CCR) dives</h4>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3308,6 +3336,14 @@ over the surface pressure normalized such that the maximally allowed over pressu
 M-value, corresponds to 100%), the time to surface (TTS), the calculated ceiling, as well
 as of the statistics in the Information Box, shown as four
 buttons on the left of the profile panel. These are:</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/InfoBox.png" alt="Note" />
+</td>
+<td class="content">Show or hide the <strong>Information Box</strong>. This allows the Information Box to be hidden in order to see the entire dive profile without any obstructions.</td>
+</tr></table>
+</div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -5094,6 +5130,8 @@ the log.</p></div>
 <p>
 <strong>Show unused cylinders</strong>: Checking this checkbox allows showing all cylinders entered for a dive
      in the Cylinder Table of the <strong>Equipment</strong> tab, even if one or more cylinders were actually not used.
+     This will also include unused cylinders in data exports and when dives are cloned for the planner
+     or merged into one dive.
 </p>
 </li>
 </ul></div>
@@ -5128,12 +5166,12 @@ the log.</p></div>
 <div class="sect2">
 <h3 id="_tech_setup">12.8. Tech setup</h3>
 <div class="paragraph"><p>This tab sets common variables used for decompression calculations pertaining to technical diving.</p></div>
-<div class="imageblock" style="text-align:center;">
+<div class="imageblock" id="S_CCR_options" style="text-align:center;">
 <div class="content">
 <img src="images/Pref_tech.jpg" alt="FIGURE: Preferences: Tech setup" />
 </div>
 </div>
-<div class="ulist" id="S_GradientFactors"><ul>
+<div class="ulist"><ul>
 <li>
 <p>
 <strong>Gas pressure display setup</strong>. Even though nitrogen and helium pressures are also included here,
@@ -5665,7 +5703,7 @@ A very low GFLow value brings on decompression stops early during the dive.</p><
 <div class="ulist"><ul>
 <li>
 <p>
-For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>.
+For more information about Gradient factors, see the section on <a href="#S_CCR_options">Gradient Factor Preference settings</a>.
 </p>
 </li>
 </ul></div>
@@ -8189,7 +8227,7 @@ cannot be salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2022-03-04 12:02:35 PST
+ 2024-02-08 08:33:02 PST
 </div>
 </div>
 </body>

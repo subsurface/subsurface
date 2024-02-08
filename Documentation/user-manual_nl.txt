@@ -1409,6 +1409,7 @@ met een duik, en op deze manier zichtbaar zijn via het _Media_ tabblad van
 het *Notities* paneel.
 
 
+[[S_ViewMedia]]
 ==== Media bekijken
 
 ****
@@ -2540,8 +2541,6 @@ grotduik met Bob).
 
 Er zijn twee manieren om duik informatie uit _Subsurface_ te exporteren:
 
-
-- Exporteer duikinformatie naar _Facebook_
 
 - xref:S_Export_other[Exporteer duikinformatie naar andere bestemmingen of formaten]
 
@@ -3771,9 +3770,6 @@ tegelijktijd.
 tegelijkertijd gebruiken>> en  <<S_MergeDivePlan, combineren van een duik en zijn plan>>.
 - _Volgende duikcomputer_ - Kies de volgende duikcomputer.
 - _Volledig scherm_ - Volledig gevuld scherm aan en uit.
-
-=== Deel via
-- <<S_Facebook,_Facebook_>> - Deel de geselecteerde duik op de Facebook tijdslijn.
 
 === Help
 - _Over Subsurface_ - Toont een paneel met versienummer van _Subsurface_ en

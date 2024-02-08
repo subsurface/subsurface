@@ -7,19 +7,19 @@
 # submitting patches to the user manual, only submit the changes to the .txt
 # file - the maintainer will recreate the .html.git file
 
-DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_ru user-manual_nl mobile-manual-v2 mobile-manual-v3
+DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_nl mobile-manual-v3
 
 HTMLDOCS = $(patsubst %,$(OUT)%.html,$(DOCNAMES))
 TEXTDOCS = $(patsubst %,$(OUT)%.text,$(DOCNAMES))
 PDFDOCS = $(patsubst %,$(OUT)%.pdf,$(DOCNAMES))
 
 ASCIIDOC = asciidoc
-A2X = a2x
+A2X = a2x -L
 BROWSER = firefox
 THEME = compact_subsurface
 PWD = $(realpath .)
 
-all: $(HTMLEDOCS) $(TEXTDOCS) $(PDFDOCS)
+all: $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
 
 doc: $(HTMLDOCS)
 
@@ -30,7 +30,7 @@ $(OUT)%.pdf: %.txt
 	-$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf $<
 
 $(OUT)%.html: %.txt
-	@echo "if asciidoc isn't found the html file included in the sources is copied"
+	$(ASCIIDOC) --version > /dev/null 2>&1 || echo "if asciidoc isn't found the html file included in the sources is copied"
 	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -o $@ $< || \
 		cp $(<:%.txt=%.html.git) $@
 

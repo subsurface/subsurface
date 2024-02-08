@@ -727,6 +727,7 @@ para seguir los cambios en el entorno. Si fuera necesario, no hay que teclear
 las unidades de temperatura: _Subsurface_ las suministra automáticamente de
 acuerdo con las _Preferencias_ (métricas o imperiales).
 
+[[S_locations]]
 *Ubicación*:
 [icon="images/icons/warning2.png"]
 [WARNING]
