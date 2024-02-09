@@ -367,6 +367,11 @@ bool ProfileScene::pointOnProfile(const QPointF &point) const
 	return timeAxis->pointInRange(point.x()) && profileYAxis->pointInRange(point.y());
 }
 
+bool ProfileScene::pointOnDiveComputerText(const QPointF &point) const
+{
+	return diveComputerText->boundingRect().contains(point - diveComputerText->pos());
+}
+
 static double max_gas(const plot_info &pi, double gas_pressures::*gas)
 {
 	double ret = -1;

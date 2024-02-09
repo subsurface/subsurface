@@ -362,26 +362,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	QMenu m;
 	if (!d)
 		return;
-	// figure out if we are ontop of the dive computer name in the profile
-	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
-	if (isDiveTextItem(sceneItem, profileScene->diveComputerText)) {
-		const struct divecomputer *currentdc = d->get_dc(dc);
-		if (!currentdc->deviceid && dc == 0 && d->number_of_computers() == 1)
-			// nothing to do, can't rename, delete or reorder
-			return;
-		// create menu to show when right clicking on dive computer name
-		if (dc > 0)
-			m.addAction(tr("Make first dive computer"), this, &ProfileWidget2::makeFirstDC);
-		if (d->number_of_computers() > 1) {
-			m.addAction(tr("Delete this dive computer"), this, &ProfileWidget2::deleteCurrentDC);
-			m.addAction(tr("Split this dive computer into own dive"), this, &ProfileWidget2::splitCurrentDC);
-		}
-		if (currentdc->deviceid)
-			m.addAction(tr("Rename this dive computer"), this, &ProfileWidget2::renameCurrentDC);
-		m.exec(event->globalPos());
-		// don't show the regular profile context menu
-		return;
-	}
 
 	// create the profile context menu
 	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
@@ -477,38 +457,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	    [] (auto &ev) { return ev.hidden; }))
 		m.addAction(tr("Unhide individually hidden events of this dive"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
-}
-
-void ProfileWidget2::deleteCurrentDC()
-{
-	if (d)
-		Command::deleteDiveComputer(mutable_dive(), dc);
-}
-
-void ProfileWidget2::splitCurrentDC()
-{
-	if (d)
-		Command::splitDiveComputer(mutable_dive(), dc);
-}
-
-void ProfileWidget2::makeFirstDC()
-{
-	if (d)
-		Command::moveDiveComputerToFront(mutable_dive(), dc);
-}
-
-void ProfileWidget2::renameCurrentDC()
-{
-	if (!d)
-		return;
-	bool ok;
-	struct divecomputer *currentdc = mutable_dive()->get_dc(dc);
-	QString newName = QInputDialog::getText(this, tr("Edit nickname"),
-						tr("Set new nickname for %1 (serial %2):").arg(QString::fromStdString(currentdc->model)).
-						arg(QString::fromStdString(currentdc->serial)),
-						QLineEdit::Normal, QString::fromStdString(get_dc_nickname(currentdc)), &ok);
-	if (ok)
-		Command::editDeviceNickname(currentdc, newName);
 }
 
 void ProfileWidget2::hideEvent(DiveEventItem *item)
