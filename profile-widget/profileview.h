@@ -92,6 +92,7 @@ private:
 	ChartItemPtr<ChartGraphicsSceneItem> profileItem;
 	std::unique_ptr<ProfileAnimation> animation;
 	ChartItemPtr<ChartLineItem> mouseFollowerHorizontal, mouseFollowerVertical;
+	dive *mutable_dive() const; // for functions manipulating the dive
 
 	void plotAreaChanged(const QSizeF &size) override;
 	void resetPointers() override;
@@ -131,6 +132,9 @@ private:
 	void pointsInserted(const QModelIndex &, int from, int to);
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void pointsMoved(const QModelIndex &, int start, int end, const QModelIndex &destination, int row);
+
+	// DC related
+	void renameCurrentDC();
 
 	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
 	// For the same offset, sort by filename.

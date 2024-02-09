@@ -25,6 +25,12 @@
 #include <QDesktopServices>
 #include <QElapsedTimer>
 
+#ifndef SUBSURFACE_MOBILE
+#include "core/device.h"
+#include <QMenu>
+#include <QInputDialog>
+#endif
+
 static const QColor mouseFollowerColor = QColor(Qt::red).lighter();
 
 // Class templates for animations (if any). Might want to do our own.
@@ -373,12 +379,79 @@ void ProfileView::wheelEvent(QWheelEvent *event)
 	}
 }
 
+// Helper to make menus on mobile and desktop
+struct MenuEntry {
+	QString text;
+	std::function<void()> action;
+	MenuEntry(QString text, std::function<void()> action)
+		: text(text), action(std::move(action))
+	{
+	}
+};
+
+static void execMenu(const std::vector<MenuEntry> &entries, QPoint pos)
+{
+	if (entries.empty())
+		return;
+#ifndef SUBSURFACE_MOBILE
+	QMenu m;
+	for (const MenuEntry &e: entries) {
+		// Dang. Qt doesn't support std::function! This is too many indirections for my taste. :(
+		m.addAction(e.text, [f = e.action] { f(); });
+	}
+	m.exec(pos);
+#endif
+}
+
+// TODO: How should that work on mobile?
+void ProfileView::renameCurrentDC()
+{
+#ifndef SUBSURFACE_MOBILE
+	bool ok;
+	struct divecomputer *currentdc = get_dive_dc(mutable_dive(), dc);
+	if (!currentdc)
+		return;
+	// TODO: center on window by passing a QWidget as first argument!
+	QString newName = QInputDialog::getText(nullptr, tr("Edit nickname"),
+						tr("Set new nickname for %1 (serial %2):").arg(currentdc->model).arg(currentdc->serial),
+						QLineEdit::Normal, get_dc_nickname(currentdc), &ok);
+	if (ok)
+		Command::editDeviceNickname(currentdc, newName);
+#endif
+}
+
 void ProfileView::mousePressEvent(QMouseEvent *event)
 {
 	// Handle dragging of items
 	ChartView::mousePressEvent(event);
 	if (event->isAccepted())
 		return;
+
+	// Open context menu if computer name is clicked
+	if (d && profileScene->pointOnDiveComputerText(event->pos())) {
+		std::vector<MenuEntry> m;
+		const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
+		if (!currentdc->deviceid && dc == 0 && number_of_computers(d) == 1)
+			// nothing to do, can't rename, delete or reorder
+			return;
+		// create menu to show when right clicking on dive computer name
+		if (dc > 0)
+			m.emplace_back(tr("Make first dive computer"), [this]() {
+					Command::moveDiveComputerToFront(mutable_dive(), dc);
+				});
+		if (number_of_computers(d) > 1) {
+			m.emplace_back(tr("Delete this dive computer"), [this]() {
+					Command::deleteDiveComputer(mutable_dive(), dc);
+				});
+			m.emplace_back(tr("Split this dive computer into own dive"), [this]() {
+					Command::splitDiveComputer(mutable_dive(), dc);
+				});
+		}
+		if (currentdc->deviceid)
+			m.emplace_back(tr("Rename this dive computer"), [this] { renameCurrentDC(); });
+		execMenu(m, event->globalPos());
+		return;
+	}
 
 	// Check if current picture is clicked
 	if (highlightedPicture &&
@@ -1186,4 +1259,9 @@ void ProfileView::pictureOffsetChanged(dive *dIn, QString filename, offset_t off
 		}
 	}
 	update();
+}
+
+dive *ProfileView::mutable_dive() const
+{
+	return const_cast<dive *>(d);
 }
