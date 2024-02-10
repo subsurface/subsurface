@@ -2,6 +2,8 @@ name: Android Docker Image CI
 
 on:
   push:
+    branches:
+    - master
     paths:
     - scripts/docker/android-build-container/**
     - .github/workflows/android-dockerimage.yml
