@@ -5291,7 +5291,7 @@ see thumbnails that represent individual videos, _Subsurface_ uses an
 external program calle _FFmpeg_.  To create thumbnails for videos, do two
 things:
 
-Install _FFmpeg_ on the computer that runs _Subsurface_. The program can be
+1. Install _FFmpeg_ on the computer that runs _Subsurface_. The program can be
 downloaded from the FFmpeg web site:
 https://www.ffmpeg.org/download.html. Most Linux distributions ship with an
 _ffmpeg_ package and therefore do not need an additional download.

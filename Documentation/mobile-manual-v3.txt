@@ -339,7 +339,7 @@ This feature is not supported on iOS.
 
 [width="100%"]
 |=======
-a|image::mobile-images/USB-OTG.jpg["FIGURE: USB-OTG cable",align="center"] |
+a|image:mobile-images/USB-OTG.jpg["FIGURE: USB-OTG cable",align="center"] |
 Most current Android devices now have a USB
 Type C port and come with a simple A-to-C adapter plug, which lets you plug in
 the dive computer cable into the phone or tablet.
@@ -492,7 +492,7 @@ and the dives during the last six months.
 
 [width="100%", cols="2,3"]
 |===
-a|image::mobile-images/StatsPanel.jpg["Image: Statistics panel",float="left"] |
+a|image:mobile-images/StatsPanel.jpg["Image: Statistics panel",float="left"] |
 Creating meaningful statistics that convey the information you are looking for is surprisingly hard.
 Different users have very different needs and very different expectations. Subsurface-Mobile provides
 a rather detailed set of statistics features to summarize information from the dive log in a graphical
@@ -659,7 +659,7 @@ image::mobile-images/StatsBarchartSubdivided.jpg["Stats subdivided barchart",ali
 
 [width="100%", cols="2,3"]
 |=======
-a|image::mobile-images/StatsRegression.jpg["Regression data example",align="center"] |
+a|image:mobile-images/StatsRegression.jpg["Regression data example",align="center"] |
 Sometimes you might wish to investigate the relationship between two dive variables. Has my SAC rate decreased over
 the years? Is the water temperature colder at greater dive depth? One of the ways of investigating these questions
 is to draw a scattergraph where the values of one variable is plotted against the other variable (see image on the left).
@@ -758,7 +758,7 @@ buttons on the _Download from dive computer_ page.
 
 [width="100%"]
 |=======
-a|image::mobile-images/ThemeSettings.jpg["FIGURE: Theme Settings",align="center"] |
+a|image:mobile-images/ThemeSettings.jpg["FIGURE: Theme Settings",align="center"] |
 Besides the default blue color scheme, _Subsurface-mobile_ supports two additional color schemes
 for users with different tastes (see image on left). All screenshots shown in this user manual are
 based on the blue default color scheme. You can pick the _pink_ or _dark_ color theme from
