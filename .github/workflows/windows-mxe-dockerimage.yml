@@ -2,6 +2,8 @@ name: Windows (MXE) Docker Image
 
 on:
   push:
+    branches:
+    - master
     paths:
     - scripts/docker/mxe-build-container/**
     - .github/workflows/windows-mxe-dockerimage.yml
