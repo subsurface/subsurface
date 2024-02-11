@@ -4,7 +4,6 @@
 #include "profile-widget/divepixmapcache.h"
 #include "profile-widget/animationfunctions.h"
 #include "core/event.h"
-#include "core/eventname.h"
 #include "core/format.h"
 #include "core/profile.h"
 #include "core/gettextfromc.h"
@@ -224,11 +223,6 @@ bool DiveEventItem::isInteresting(const struct dive *d, const struct divecompute
 	return true;
 }
 
-bool DiveEventItem::shouldBeHidden()
-{
-	return is_event_hidden(ev->name);
-}
-
 void DiveEventItem::recalculatePos()
 {
 	if (!ev)
@@ -238,7 +232,6 @@ void DiveEventItem::recalculatePos()
 		hide();
 		return;
 	}
-	setVisible(!shouldBeHidden());
 	double x = hAxis->posAtValue(ev->time.seconds);
 	double y = vAxis->posAtValue(depth);
 	setPos(x, y);

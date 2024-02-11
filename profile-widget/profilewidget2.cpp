@@ -3,7 +3,6 @@
 #include "profile-widget/profilescene.h"
 #include "core/device.h"
 #include "core/event.h"
-#include "core/eventname.h"
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
 #include "core/range.h"
@@ -656,7 +655,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 #endif
 	}
-	if (any_events_hidden())
+	if (std::any_of(profileScene->eventItems.begin(), profileScene->eventItems.end(),
+			[](const DiveEventItem *ev) { return !ev->isVisible(); }))
 		m.addAction(tr("Unhide all events"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
 }
@@ -713,7 +713,6 @@ void ProfileWidget2::hideSimilarEvents(DiveEventItem *item)
 
 void ProfileWidget2::unhideEvents()
 {
-	show_all_events();
 	for (DiveEventItem *item: profileScene->eventItems)
 		item->show();
 }

@@ -81,8 +81,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	downloadfromdcthread.h
 	event.c
 	event.h
-	eventname.cpp
-	eventname.h
 	equipment.c
 	equipment.h
 	errorhelper.c
