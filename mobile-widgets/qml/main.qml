@@ -334,7 +334,7 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
-					enabled: Backend.cloud_verification_status === Enums.CS_VERIFIED
+					visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD
 					onTriggered: {
 						globalDrawer.close()
 						detailsWindow.endEditMode()
@@ -344,14 +344,14 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
-				icon {
-					name: PrefCloudStorage.cloud_auto_sync ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
-				}
-text: (PrefCloudStorage.cloud_auto_sync ? "\u2610 " : "\u2611 ") + qsTr("Auto cloud sync")
+					icon {
+						name: PrefCloudStorage.cloud_auto_sync ?  ":/icons/ic_cloud_done.svg" : ":/icons/ic_cloud_off.svg"
+					}
+					text: (PrefCloudStorage.cloud_auto_sync ? "\u2611 " : "\u2610 ") + qsTr("Auto cloud sync")
 					visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD
 					onTriggered: {
 						PrefCloudStorage.cloud_auto_sync = !PrefCloudStorage.cloud_auto_sync
-						manager.setGitLocalOnly(PrefCloudStorage.cloud_auto_sync)
+						manager.setGitLocalOnly(!PrefCloudStorage.cloud_auto_sync)
 						if (!PrefCloudStorage.cloud_auto_sync) {
 							showPassiveNotification(qsTr("Turning off automatic sync to cloud causes all data to only be \
 stored locally. This can be very useful in situations with limited or no network access. Please choose 'Manual sync with cloud' \
