@@ -656,7 +656,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 #endif
 	}
-	if (any_events_hidden())
+	if (any_events_hidden() || std::any_of(profileScene->eventItems.begin(), profileScene->eventItems.end(), [] (const DiveEventItem *item) { return !item->isVisible(); }))
 		m.addAction(tr("Unhide all events"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
 }
@@ -701,13 +701,10 @@ void ProfileWidget2::hideSimilarEvents(DiveEventItem *item)
 {
 	const struct event *event = item->getEvent();
 
-	hideEvent(item);
-
 	if (!empty_string(event->name)) {
-		for (DiveEventItem *evItem: profileScene->eventItems) {
-			if (same_string(evItem->getEvent()->name, event->name) && evItem->getEvent()->flags == event->flags)
-				evItem->hide();
-		}
+		hide_similar_events(event->name, event->flags);
+
+		replot();
 	}
 }
 
