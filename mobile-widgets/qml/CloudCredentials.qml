@@ -125,6 +125,7 @@ Item {
 				id: signin_register_normal
 				text: qsTr("Sign-in or Register")
 				onClicked: {
+					PrefCloudStorage.cloud_auto_sync = true
 					manager.saveCloudCredentials(login.text, password.text, "")
 				}
 			}
