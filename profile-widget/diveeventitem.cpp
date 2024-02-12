@@ -226,7 +226,7 @@ bool DiveEventItem::isInteresting(const struct dive *d, const struct divecompute
 
 bool DiveEventItem::shouldBeHidden()
 {
-	return is_event_hidden(ev->name);
+	return is_event_hidden(ev->name, ev->flags);
 }
 
 void DiveEventItem::recalculatePos()
