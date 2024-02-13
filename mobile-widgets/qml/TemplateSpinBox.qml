@@ -12,6 +12,7 @@ SpinBox {
 
 	contentItem: TextInput {
 		z: 2
+		width: Kirigami.Units.gridUnit * 3
 		text: control.textFromValue(control.value, control.locale)
 		font: control.font
 		color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.disabledTextColor
@@ -25,14 +26,14 @@ SpinBox {
 
 	up.indicator: Rectangle {
 		x: control.mirrored ? 0 : parent.width - width
-		height: Kirigami.Units.gridUnit * 2
-		implicitWidth: Kirigami.Units.gridUnit * 1.5
-		implicitHeight: Kirigami.Units.gridUnit * 1.5
+		height: Kirigami.Units.gridUnit * 1.5
+		implicitWidth: Kirigami.Units.gridUnit
+		implicitHeight: Kirigami.Units.gridUnit
 		color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		border.color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		Text {
 			text: "+"
-			font.pixelSize: control.font.pixelSize * 2
+			font.pixelSize: control.font.pixelSize * 1.5
 			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
@@ -43,14 +44,14 @@ SpinBox {
 
 	down.indicator: Rectangle {
 		x: control.mirrored ? parent.width - width : 0
-		height: Kirigami.Units.gridUnit * 2
-		implicitWidth: Kirigami.Units.gridUnit * 1.5
-		implicitHeight: Kirigami.Units.gridUnit * 1.5
+		height: Kirigami.Units.gridUnit * 1.5
+		implicitWidth: Kirigami.Units.gridUnit
+		implicitHeight: Kirigami.Units.gridUnit
 		color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		border.color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		Text {
 			text: "-"
-			font.pixelSize: control.font.pixelSize * 2
+			font.pixelSize: control.font.pixelSize * 1.5
 			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit

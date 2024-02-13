@@ -536,11 +536,11 @@ TemplatePage {
 			GridLayout {
 				visible: sectionAdvanced.isExpanded
 				width: parent.width
-				columns: 2
+				columns: 3
 
 				TemplateLine {
 					visible: sectionAdvanced.isExpanded
-					Layout.columnSpan: 2
+					Layout.columnSpan: 3
 				}
 				TemplateLabel {
 					text: qsTr("Bluetooth")
@@ -548,11 +548,12 @@ TemplatePage {
 					font.weight: Font.Light
 					Layout.topMargin: Kirigami.Units.largeSpacing
 					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-					Layout.columnSpan: 2
+					Layout.columnSpan: 3
 				}
 				TemplateLabel {
 					text: qsTr("Temporarily show all bluetooth devices \neven if not recognized as dive computers.\nPlease report DCs that need this setting")
 					Layout.fillWidth: true
+					Layout.columnSpan: 2
 				}
 				SsrfSwitch {
 					id: nonDCButton
@@ -564,7 +565,7 @@ TemplatePage {
 
 				TemplateLine {
 					visible: sectionAdvanced.isExpanded
-					Layout.columnSpan: 2
+					Layout.columnSpan: 3
 				}
 				TemplateLabel {
 					text: qsTr("Display")
@@ -572,11 +573,12 @@ TemplatePage {
 					font.weight: Font.Light
 					Layout.topMargin: Kirigami.Units.largeSpacing
 					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-					Layout.columnSpan: 2
+					Layout.columnSpan: 3
 				}
 				TemplateLabel {
 					text: qsTr("Show only one column in Portrait mode")
 					Layout.fillWidth: true
+					Layout.columnSpan: 2
 				}
 				SsrfSwitch {
 					id: singleColumnButton
@@ -585,19 +587,20 @@ TemplatePage {
 						PrefDisplay.singleColumnPortrait = checked
 					}
 				}
-		TemplateLabel {
-		    text: qsTr("Depth line based on ×3 intervals")
-		}
-		SsrfSwitch {
-		    checked: PrefDisplay.three_m_based_grid
-		    onClicked: {
-			PrefDisplay.three_m_based_grid = checked
-			rootItem.settingsChanged()
-		    }
-		}
+				TemplateLabel {
+					text: qsTr("Depth line based on ×3 intervals")
+					Layout.columnSpan: 2
+				}
+				SsrfSwitch {
+					checked: PrefDisplay.three_m_based_grid
+					onClicked: {
+					PrefDisplay.three_m_based_grid = checked
+					rootItem.settingsChanged()
+					}
+				}
 				TemplateLine {
 					visible: sectionAdvanced.isExpanded
-					Layout.columnSpan: 2
+					Layout.columnSpan: 3
 				}
 				TemplateLabel {
 					text: qsTr("Profile deco ceiling")
@@ -605,10 +608,11 @@ TemplatePage {
 					font.weight: Font.Light
 					Layout.topMargin: Kirigami.Units.largeSpacing
 					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-					Layout.columnSpan: 2
+					Layout.columnSpan: 3
 				}
 				TemplateLabel {
 					text: qsTr("Show DC reported ceiling")
+					Layout.columnSpan: 2
 				}
 				SsrfSwitch {
 					checked: PrefTechnicalDetails.dcceiling
@@ -619,6 +623,7 @@ TemplatePage {
 				}
 				TemplateLabel {
 					text: qsTr("Show calculated ceiling")
+					Layout.columnSpan: 2
 				}
 				SsrfSwitch {
 					checked: PrefTechnicalDetails.calcceiling
@@ -628,12 +633,14 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					enabled: PrefTechnicalDetails.calcceiling
+					visible: PrefTechnicalDetails.calcceiling
 					text: qsTr("GFLow")
 				}
 				TemplateSpinBox {
-					enabled: PrefTechnicalDetails.calcceiling
+					visible: PrefTechnicalDetails.calcceiling
 					id: gfLow
+					Layout.columnSpan: 2
+					Layout.alignment: Qt.AlignHCenter
 					from: 10
 					to: 150
 					stepSize: 1
@@ -647,12 +654,14 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					enabled: PrefTechnicalDetails.calcceiling
+					visible: PrefTechnicalDetails.calcceiling
 					text: qsTr("GFHigh")
 				}
 				TemplateSpinBox {
-					enabled: PrefTechnicalDetails.calcceiling
+					visible: PrefTechnicalDetails.calcceiling
 					id: gfHigh
+					Layout.columnSpan: 2
+					Layout.alignment: Qt.AlignHCenter
 					from: 10
 					to: 150
 					stepSize: 1
@@ -667,7 +676,7 @@ TemplatePage {
 				}
 				TemplateLine {
 					visible: sectionAdvanced.isExpanded
-					Layout.columnSpan: 2
+					Layout.columnSpan: 3
 				}
 				TemplateLabel {
 					text: qsTr("Developer")
@@ -675,11 +684,12 @@ TemplatePage {
 					font.weight: Font.Light
 					Layout.topMargin: Kirigami.Units.largeSpacing
 					Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-					Layout.columnSpan: 2
+					Layout.columnSpan: 3
 				}
 				TemplateLabel {
 					text: qsTr("Display Developer menu")
 					Layout.fillWidth: true
+					Layout.columnSpan: 2
 				}
 				SsrfSwitch {
 					id: developerButton
