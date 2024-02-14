@@ -102,3 +102,17 @@ bool same_event(const struct event *a, const struct event *b)
 		return 0;
 	return !strcmp(a->name, b->name);
 }
+
+extern enum event_severity get_event_severity(const struct event *ev)
+{
+	switch (ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) {
+	case SAMPLE_FLAGS_SEVERITY_INFO:
+		return EVENT_SEVERITY_INFO;
+	case SAMPLE_FLAGS_SEVERITY_WARN:
+		return EVENT_SEVERITY_WARN;
+	case SAMPLE_FLAGS_SEVERITY_ALARM:
+		return EVENT_SEVERITY_ALARM;
+	default:
+		return EVENT_SEVERITY_NONE;
+	}
+}

@@ -9,10 +9,12 @@
 
 struct event_type {
 	std::string name;
-	int flags;
+	event_severity severity;
 	bool plot;
-	event_type(const struct event *ev)
-		: name(ev->name), flags(ev->flags), plot(true)
+	event_type(const struct event *ev) :
+		name(ev->name),
+		severity(get_event_severity(ev)),
+		plot(true)
 	{
 	}
 };
@@ -21,7 +23,7 @@ static std::vector<event_type> event_types;
 
 static bool operator==(const event_type &en1, const event_type &en2)
 {
-	return en1.name == en2.name && en1.flags == en2.flags;
+	return en1.name == en2.name && en1.severity == en2.severity;
 }
 
 extern "C" void clear_event_types()
