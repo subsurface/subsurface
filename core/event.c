@@ -80,7 +80,7 @@ struct event *create_event(unsigned int time, int type, int flags, int value, co
 		break;
 	}
 
-	remember_event_type(name, flags);
+	remember_event_type(ev);
 
 	return ev;
 }

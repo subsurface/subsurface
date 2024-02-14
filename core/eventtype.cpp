@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "eventtype.h"
+#include "event.h"
 #include "subsurface-string.h"
 
 #include <string>
@@ -10,6 +11,10 @@ struct event_type {
 	std::string name;
 	int flags;
 	bool plot;
+	event_type(const struct event *ev)
+		: name(ev->name), flags(ev->flags), plot(true)
+	{
+	}
 };
 
 static std::vector<event_type> event_types;
@@ -24,24 +29,25 @@ extern "C" void clear_event_types()
 	event_types.clear();
 }
 
-extern "C" void remember_event_type(const char *eventname, const int flags)
+extern "C" void remember_event_type(const struct event *ev)
 {
-	if (empty_string(eventname))
+	if (empty_string(ev->name))
 		return;
-	if (std::find(event_types.begin(), event_types.end(), event_type{ eventname, flags }) != event_types.end())
+	event_type type(ev);
+	if (std::find(event_types.begin(), event_types.end(), type) != event_types.end())
 		return;
-	event_types.push_back({ eventname, flags, true });
+	event_types.push_back(std::move(type));
 }
 
-extern "C" bool is_event_type_hidden(const char *eventname, const int flags)
+extern "C" bool is_event_type_hidden(const struct event *ev)
 {
-	auto it = std::find(event_types.begin(), event_types.end(), event_type{ eventname, flags });
+	auto it = std::find(event_types.begin(), event_types.end(), ev);
 	return it != event_types.end() && !it->plot;
 }
 
-extern "C" void hide_event_type(const char *eventname, const int flags)
+extern "C" void hide_event_type(const struct event *ev)
 {
-	auto it = std::find(event_types.begin(), event_types.end(), event_type{ eventname, flags });
+	auto it = std::find(event_types.begin(), event_types.end(), ev);
 	if (it != event_types.end())
 		it->plot = false;
 }

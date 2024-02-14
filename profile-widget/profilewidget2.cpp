@@ -702,7 +702,7 @@ void ProfileWidget2::hideSimilarEvents(DiveEventItem *item)
 	const struct event *event = item->getEvent();
 
 	if (!empty_string(event->name)) {
-		hide_event_type(event->name, event->flags);
+		hide_event_type(event);
 
 		replot();
 	}

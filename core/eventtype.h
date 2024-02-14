@@ -8,9 +8,9 @@ extern "C" {
 #endif
 
 extern void clear_event_types(void);
-extern void remember_event_type(const char *eventname, const int flags);
-extern bool is_event_type_hidden(const char *eventname, const int flags);
-extern void hide_event_type(const char *eventname, const int flags);
+extern void remember_event_type(const struct event *ev);
+extern bool is_event_type_hidden(const struct event *ev);
+extern void hide_event_type(const struct event *ev);
 extern void show_all_event_types();
 extern bool any_event_types_hidden();
 
