@@ -633,8 +633,8 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					visible: PrefTechnicalDetails.calcceiling
-					text: qsTr("GFLow")
+					enabled: PrefTechnicalDetails.calcceiling
+					text: qsTr("GFLow (10 to 150)")
 				}
 				TemplateSpinBox {
 					visible: PrefTechnicalDetails.calcceiling
@@ -645,8 +645,21 @@ TemplatePage {
 					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gflow
+					validator: RegExpValidator { regExp: /1?\d{0,2}%?/ }
 					textFromValue: function (value, locale) {
 						return value + "%"
+					}
+					valueFromText: function(text, locale) {
+						var result = parseInt(text);
+
+						if (result < 10)
+							result = 10;
+						else if (result > 150)
+							result = 150;
+						else if (isNaN(result))
+							result = 35;
+
+						return result;
 					}
 					onValueChanged: {
 						PrefTechnicalDetails.gflow = value
@@ -654,8 +667,8 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					visible: PrefTechnicalDetails.calcceiling
-					text: qsTr("GFHigh")
+					enabled: PrefTechnicalDetails.calcceiling
+					text: qsTr("GFHigh (10 to 150")
 				}
 				TemplateSpinBox {
 					visible: PrefTechnicalDetails.calcceiling
@@ -666,8 +679,21 @@ TemplatePage {
 					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gfhigh
+					validator: RegExpValidator { regExp: /1?\d{0,2}%?/ }
 					textFromValue: function (value, locale) {
 						return value + "%"
+					}
+					valueFromText: function(text, locale) {
+						var result = parseInt(text);
+
+						if (result < 10)
+							result = 10;
+						else if (result > 150)
+							result = 150;
+						else if (isNaN(result))
+							result = 70;
+
+						return result;
 					}
 					onValueChanged: {
 						PrefTechnicalDetails.gfhigh = value
