@@ -224,11 +224,6 @@ bool DiveEventItem::isInteresting(const struct dive *d, const struct divecompute
 	return true;
 }
 
-bool DiveEventItem::shouldBeHidden()
-{
-	return is_event_type_hidden(ev->name, ev->flags);
-}
-
 void DiveEventItem::recalculatePos()
 {
 	if (!ev)
@@ -238,7 +233,7 @@ void DiveEventItem::recalculatePos()
 		hide();
 		return;
 	}
-	setVisible(!shouldBeHidden());
+	setVisible(!is_event_type_hidden(ev));
 	double x = hAxis->posAtValue(ev->time.seconds);
 	double y = vAxis->posAtValue(depth);
 	setPos(x, y);

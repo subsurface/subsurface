@@ -21,7 +21,6 @@ public:
 	void eventVisibilityChanged(const QString &eventName, bool visible);
 	void setVerticalAxis(DiveCartesianAxis *axis, int speed);
 	void setHorizontalAxis(DiveCartesianAxis *axis);
-	bool shouldBeHidden();
 	static bool isInteresting(const struct dive *d, const struct divecomputer *dc,
 				  const struct event *ev, const struct plot_info &pi,
 				  int firstSecond, int lastSecond);
