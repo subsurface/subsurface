@@ -9,7 +9,7 @@
 #include "divelog.h"
 #include "divesite.h"
 #include "event.h"
-#include "eventname.h"
+#include "eventtype.h"
 #include "filterpreset.h"
 #include "fulltext.h"
 #include "interpolate.h"
@@ -1319,7 +1319,7 @@ void clear_dive_file_data()
 	current_dive = NULL;
 	clear_divelog(&divelog);
 
-	clear_event_names();
+	clear_event_types();
 
 	reset_min_datafile_version();
 	clear_git_id();

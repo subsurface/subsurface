@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "event.h"
-#include "eventname.h"
+#include "eventtype.h"
 #include "subsurface-string.h"
 
 #include <string.h>
@@ -80,7 +80,7 @@ struct event *create_event(unsigned int time, int type, int flags, int value, co
 		break;
 	}
 
-	remember_event_name(name, flags);
+	remember_event_type(name, flags);
 
 	return ev;
 }

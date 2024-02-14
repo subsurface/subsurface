@@ -4,7 +4,7 @@
 #include "profile-widget/divepixmapcache.h"
 #include "profile-widget/animationfunctions.h"
 #include "core/event.h"
-#include "core/eventname.h"
+#include "core/eventtype.h"
 #include "core/format.h"
 #include "core/profile.h"
 #include "core/gettextfromc.h"
@@ -226,7 +226,7 @@ bool DiveEventItem::isInteresting(const struct dive *d, const struct divecompute
 
 bool DiveEventItem::shouldBeHidden()
 {
-	return is_event_hidden(ev->name, ev->flags);
+	return is_event_type_hidden(ev->name, ev->flags);
 }
 
 void DiveEventItem::recalculatePos()
