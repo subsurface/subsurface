@@ -40,7 +40,7 @@ DivePixmaps::DivePixmaps(int dpr) : dpr(dpr)
 	gaschangeEANICD = createPixmap(":gaschange-ean-ICD-icon", sz_bigger);
 	gaschangeEAN = createPixmap(":gaschange-ean-icon", sz_bigger);
 
-	// The transparen pixmap is a very obscure feature to enable tooltips without showing a pixmap.
+	// The transparent pixmap is a very obscure feature to enable tooltips without showing a pixmap.
 	// See code in diveeventitem.cpp. This should probably be replaced by a different mechanism.
 	QPixmap transparentPixmap(lrint(4 * dprf), lrint(20 * dprf));
 	transparentPixmap.fill(makeColor(1.0, 1.0, 1.0, 0.01));
@@ -52,7 +52,7 @@ static std::vector<std::shared_ptr<const DivePixmaps>> cache;
 // Note that the idiomatic way would be to store std::weak_ptr<>s.
 // That would mean that the pixmaps are destroyed when the last user uses
 // them. We want to keep them around at least until the next caller!
-// Therefore we also std::shared_ptr<>s.
+// Therefore we also store std::shared_ptr<>s.
 std::shared_ptr<const DivePixmaps> getDivePixmaps(double dprIn)
 {
 	using ptr = std::shared_ptr<const DivePixmaps>;
