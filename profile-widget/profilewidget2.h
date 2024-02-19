@@ -126,9 +126,10 @@ private:
 	void addSetpointChange(int seconds);
 	void removeEvent(DiveEventItem *item);
 	void hideEvent(DiveEventItem *item);
-	void hideSimilarEvents(DiveEventItem *item);
+	void hideEventType(DiveEventItem *item);
 	void editName(DiveEventItem *item);
 	void unhideEvents();
+	void unhideEventTypes();
 	void makeFirstDC();
 	void deleteCurrentDC();
 	void splitCurrentDC();

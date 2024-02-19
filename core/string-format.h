@@ -7,6 +7,7 @@
 
 struct dive;
 struct dive_trip;
+struct event;
 
 QString formatSac(const dive *d);
 QString formatNotes(const dive *d);
