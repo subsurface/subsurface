@@ -4009,7 +4009,7 @@
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1207"/>
         <source>ft</source>
-        <translation>ft</translation>
+        <translation>피트</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1254"/>
