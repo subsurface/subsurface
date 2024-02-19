@@ -42,7 +42,8 @@ struct event {
 			struct gasmix mix;
 		} gas;
 	};
-	bool deleted;
+	bool deleted; // used internally in the parser and in fixup_dive().
+	bool hidden;
 	char name[];
 };
 

@@ -1,6 +1,7 @@
 #include "string-format.h"
 #include "dive.h"
 #include "divesite.h"
+#include "event.h"
 #include "format.h"
 #include "qthelper.h"
 #include "subsurface-string.h"

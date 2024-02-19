@@ -608,10 +608,11 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
+		const struct event *dcEvent = item->getEvent();
 		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
 		m.addAction(tr("Hide event"), [this, item] { hideEvent(item); });
-		m.addAction(tr("Hide similar events"), [this, item] { hideSimilarEvents(item); });
-		const struct event *dcEvent = item->getEvent();
+		m.addAction(tr("Hide events of type '%1'").arg(event_type_name(dcEvent)),
+			    [this, item] { hideEventType(item); });
 		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK)
 			m.addAction(tr("Edit name"), [this, item] { editName(item); });
 #if 0 // TODO::: FINISH OR DISABLE
@@ -656,8 +657,19 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 #endif
 	}
-	if (any_event_types_hidden() || std::any_of(profileScene->eventItems.begin(), profileScene->eventItems.end(), [] (const DiveEventItem *item) { return !item->isVisible(); }))
-		m.addAction(tr("Unhide all events"), this, &ProfileWidget2::unhideEvents);
+	if (any_event_types_hidden()) {
+		QMenu *m2 = m.addMenu(tr("Unhide event type"));
+		for (int i: hidden_event_types()) {
+			m2->addAction(event_type_name(i), [this, i]() {
+				show_event_type(i);
+				replot();
+			});
+		}
+		m2->addAction(tr("All event types"), this, &ProfileWidget2::unhideEventTypes);
+	}
+	if (std::any_of(profileScene->eventItems.begin(), profileScene->eventItems.end(),
+	    [] (const DiveEventItem *item) { return item->getEvent()->hidden; }))
+		m.addAction(tr("Unhide individually hidden events of this dive"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
 }
 
@@ -694,10 +706,11 @@ void ProfileWidget2::renameCurrentDC()
 
 void ProfileWidget2::hideEvent(DiveEventItem *item)
 {
+	item->getEventMutable()->hidden = true;
 	item->hide();
 }
 
-void ProfileWidget2::hideSimilarEvents(DiveEventItem *item)
+void ProfileWidget2::hideEventType(DiveEventItem *item)
 {
 	const struct event *event = item->getEvent();
 
@@ -710,9 +723,17 @@ void ProfileWidget2::hideSimilarEvents(DiveEventItem *item)
 
 void ProfileWidget2::unhideEvents()
 {
-	show_all_event_types();
-	for (DiveEventItem *item: profileScene->eventItems)
+	for (DiveEventItem *item: profileScene->eventItems) {
+		item->getEventMutable()->hidden = false;
 		item->show();
+	}
+}
+
+void ProfileWidget2::unhideEventTypes()
+{
+	show_all_event_types();
+
+	replot();
 }
 
 void ProfileWidget2::removeEvent(DiveEventItem *item)
