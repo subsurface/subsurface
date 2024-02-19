@@ -1325,7 +1325,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2872"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2991"/>
         <source>m</source>
-        <translation>분</translation>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="583"/>
