@@ -1732,7 +1732,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1269"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2577"/>
         <source>ft/°F</source>
-        <translation>ft/°F</translation>
+        <translation>피트/°F</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1311"/>
