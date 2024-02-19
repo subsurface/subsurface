@@ -20,6 +20,7 @@ set(TRANSLATION_FILES
 	subsurface_he.ts
 	subsurface_hr_HR.ts
 	subsurface_it_IT.ts
+	subsurface_ko_KR.ts
 	subsurface_nb_NO.ts
 	subsurface_nl_NL.ts
 	subsurface_pl_PL.ts
