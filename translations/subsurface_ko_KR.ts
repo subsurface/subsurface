@@ -4599,12 +4599,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="229"/>
         <source>m</source>
-        <translation>분</translation>
+        <translation>미터</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="229"/>
         <source>ft</source>
-        <translation>ft</translation>
+        <translation>피트</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="231"/>
