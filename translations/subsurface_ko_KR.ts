@@ -4037,7 +4037,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <source> l/min</source>
-        <translation> l/분</translation>
+        <translation> 리터/분</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
