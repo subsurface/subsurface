@@ -393,16 +393,20 @@ void QMLManager::openLocalThenRemote(QString url)
 		if (credStatus != qPrefCloudStorage::CS_NOCLOUD) {
 			appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 			setNotificationText(tr("Opening local data file failed"));
-			if (credStatus != qPrefCloudStorage::CS_INCORRECT_USER_PASSWD)
+			if (credStatus != qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
 				qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NEED_TO_VERIFY);
+				emit passwordStateChanged();
+			}
 		}
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
 		// and we know that there was at least one successful sync with the cloud when
 		// that local cache was created - so there is a common ancestor
 		setLoadFromCloud(true);
-		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_UNKNOWN)
+		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_UNKNOWN) {
 			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
+			emit passwordStateChanged();
+		}
 		qPrefUnits::set_unit_system(git_prefs.unit_system);
 		qPrefTechnicalDetails::set_tankbar(git_prefs.tankbar);
 		qPrefTechnicalDetails::set_show_ccr_setpoint(git_prefs.show_ccr_setpoint);
@@ -572,6 +576,7 @@ void QMLManager::finishSetup()
 		rememberOldStatus();
 		set_filename(qPrintable(nocloud_localstorage()));
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
+		emit passwordStateChanged();
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
 		appendTextToLog(tr("working in no-cloud mode"));
 		int error = parse_file(existing_filename, &divelog);
@@ -587,6 +592,7 @@ void QMLManager::finishSetup()
 		}
 	} else {
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
+		emit passwordStateChanged();
 		appendTextToLog(tr("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
@@ -651,6 +657,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		!cloudCredentialsChanged) {
 		// just go back to the dive list
 		qPrefCloudStorage::set_cloud_verification_status(m_oldStatus);
+		emit passwordStateChanged();
 	}
 
 	if (!noCloud && !verifyCredentials(email, newPassword, pin)) {
@@ -760,6 +767,7 @@ void QMLManager::deleteAccount()
 	qPrefCloudStorage::set_cloud_storage_email_encoded("");
 	qPrefCloudStorage::set_cloud_storage_password("");
 	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
+	emit passwordStateChanged();
 	set_filename(qPrintable(nocloud_localstorage()));
 	setStartPageText(tr("Cloud storage account deleted."));
 	return;
@@ -863,6 +871,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		qPrefCloudStorage::set_cloud_storage_password("");
 		rememberOldStatus();
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
+		emit passwordStateChanged();
 		set_filename(qPrintable(nocloud_localstorage()));
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
@@ -2382,4 +2391,13 @@ QString QMLManager::getSyncState() const
 	if (localChanges)
 		return tr("(changes synced locally)");
 	return tr("(synced with cloud)");
+}
+
+// show the state of the cloud login
+QString QMLManager::getPasswordState() const
+{
+	auto credStatus = qPrefCloudStorage::cloud_verification_status();
+	if (credStatus == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD)
+		return tr("(incorrect cloud email or password)");
+	return QString();
 }
