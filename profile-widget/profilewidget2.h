@@ -109,8 +109,6 @@ private:
 	void splitDive(int seconds);
 	void addSetpointChange(int seconds);
 	void removeEvent(DiveEventItem *item);
-	void hideEvent(DiveEventItem *item);
-	void hideEventType(DiveEventItem *item);
 	void editName(DiveEventItem *item);
 	void unhideEvents();
 	void unhideEventTypes();

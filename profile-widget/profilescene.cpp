@@ -526,6 +526,8 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, boo
 	struct gasmix lastgasmix = d->get_gasmix_at_time(*currentdc, 1_sec);
 
 	for (auto [idx, event]: enumerated_range(currentdc->events)) {
+		if (event.hidden)
+			continue;
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
 			if (event.name.empty() ||
@@ -662,4 +664,13 @@ std::vector<std::pair<QString, QPixmap>> ProfileScene::eventsAt(QPointF pos) con
 		res.emplace_back(item->text, item->pixmap);
 	}
 	return res;
+}
+
+DiveEventItem *ProfileScene::eventAtPosition(QPointF pos) const
+{
+	for (const auto &item: eventItems) {
+		if (item->contains(item->mapFromScene(pos)))
+			return item.get();
+	}
+	return nullptr;
 }

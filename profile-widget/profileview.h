@@ -9,6 +9,7 @@
 class ChartGraphicsSceneItem;
 class ChartLineItem;
 class ChartRectItem;
+class DiveEventItem;
 class DivePlannerPointsModel;
 class HandleItem;
 class PictureItem;
@@ -135,6 +136,12 @@ private:
 
 	// DC related
 	void renameCurrentDC();
+
+	// Event related
+	void editEventName(const struct event &event, int idx);
+	void hideEvent(DiveEventItem &item);
+	void hideEventType(DiveEventItem &item);
+	void removeEvent(DiveEventItem &item);
 
 	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
 	// For the same offset, sort by filename.

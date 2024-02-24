@@ -371,7 +371,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 
 	// Add or edit Gas Change
 	if (d && item && item->ev.is_gaschange()) {
-		addGasChangeMenu(m, tr("Edit gas change"), *d, dc, item->ev.time.seconds);
 	} else if (d && d->cylinders.size() > 1) {
 		// if we have more than one gas, offer to switch to another one
 		const struct divecomputer *currentdc = d->get_dc(dc);
@@ -397,51 +396,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		changeMode->addAction(gettextFromC::tr(divemode_text_ui[PSCR]),
 				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
-	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
-		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
-		m.addAction(tr("Hide event"), [this, item] { hideEvent(item); });
-		m.addAction(tr("Hide events of type '%1'").arg(event_type_name(item->ev)),
-			    [this, item] { hideEventType(item); });
-		if (item->ev.type == SAMPLE_EVENT_BOOKMARK)
-			m.addAction(tr("Edit name"), [this, item] { editName(item); });
-#if 0 // TODO::: FINISH OR DISABLE
-		QPointF scenePos = mapToScene(event->pos());
-		int idx = getEntryFromPos(scenePos);
-		// this shows how to figure out if we should ask the user if they want adjust interpolated pressures
-		// at either side of a gas change
-		if (item->ev->type == SAMPLE_EVENT_GASCHANGE || item->ev->type == SAMPLE_EVENT_GASCHANGE2) {
-			int gasChangeIdx = idx;
-			while (gasChangeIdx > 0) {
-				--gasChangeIdx;
-				if (plotInfo.entry[gasChangeIdx].sec <= item->ev->time.seconds)
-					break;
-			}
-			const struct plot_data &gasChangeEntry = plotInfo.entry[newGasIdx];
-			// now gasChangeEntry points at the gas change, that entry has the final pressure of
-			// the old tank, the next entry has the starting pressure of the next tank
-			if (gasChangeIdx < plotInfo.nr - 1) {
-				int newGasIdx = gasChangeIdx + 1;
-				const struct plot_data &newGasEntry = plotInfo.entry[newGasIdx];
-				if (get_plot_sensor_pressure(&plotInfo, gasChangeIdx) == 0 || d->get_cylinder(gasChangeEntry->sensor[0])->sample_start.mbar == 0) {
-					// if we have no sensorpressure or if we have no pressure from samples we can assume that
-					// we only have interpolated pressure (the pressure in the entry may be stored in the sensor
-					// pressure field if this is the first or last entry for this tank... see details in gaspressures.c
-					pressure_t pressure;
-					pressure.mbar = get_plot_interpolated_pressure(&plotInfo, gasChangeIdx) ? : get_plot_sensor_pressure(&plotInfo, gasChangeIdx);
-					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of cyl. %1 (currently interpolated as %2)")
-										 .arg(gasChangeEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
-				}
-				if (get_plot_sensor_pressure(&plotInfo, newGasIdx) == 0 || d->get_cylinder(newGasEntry->sensor[0])->sample_start.mbar == 0) {
-					// we only have interpolated press -- see commend above
-					pressure_t pressure;
-					pressure.mbar = get_plot_interpolated_pressure(&plotInfo, newGasIdx) ? : get_plot_sensor_pressure(&plotInfo, newGasIdx);
-					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of cyl. %1 (currently interpolated as %2)")
-										 .arg(newGasEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
-				}
-			}
-		}
-#endif
-	}
 	if (any_event_types_hidden()) {
 		QMenu *m2 = m.addMenu(tr("Unhide event type"));
 		for (int i: hidden_event_types()) {
@@ -457,27 +411,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	    [] (auto &ev) { return ev.hidden; }))
 		m.addAction(tr("Unhide individually hidden events of this dive"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
-}
-
-void ProfileWidget2::hideEvent(DiveEventItem *item)
-{
-	if (!d)
-		return;
-	struct divecomputer *currentdc = mutable_dive()->get_dc(dc);
-	int idx = item->idx;
-	if (!currentdc || idx < 0 || static_cast<size_t>(idx) >= currentdc->events.size())
-		return;
-	currentdc->events[idx].hidden = true;
-	item->hide();
-}
-
-void ProfileWidget2::hideEventType(DiveEventItem *item)
-{
-	if (!item->ev.name.empty()) {
-		hide_event_type(&item->ev);
-
-		replot();
-	}
 }
 
 void ProfileWidget2::unhideEvents()
@@ -498,16 +431,6 @@ void ProfileWidget2::unhideEventTypes()
 	show_all_event_types();
 
 	replot();
-}
-
-void ProfileWidget2::removeEvent(DiveEventItem *item)
-{
-	const struct event &ev = item->ev;
-	if (QMessageBox::question(this, TITLE_OR_TEXT(
-					  tr("Remove the selected event?"),
-					  tr("%1 @ %2:%3").arg(QString::fromStdString(ev.name)).arg(ev.time.seconds / 60).arg(ev.time.seconds % 60, 2, 10, QChar('0'))),
-				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
-		Command::removeEvent(mutable_dive(), dc, item->idx);
 }
 
 void ProfileWidget2::addBookmark(int seconds)
@@ -535,44 +458,6 @@ void ProfileWidget2::splitDive(int seconds)
 	if (!d)
 		return;
 	Command::splitDives(mutable_dive(), duration_t{ .seconds = seconds });
-}
-
-void ProfileWidget2::addGasSwitch(int tank, int seconds)
-{
-	if (!d || tank < 0 || static_cast<size_t>(tank) >= d->cylinders.size())
-		return;
-
-	Command::addGasSwitch(mutable_dive(), dc, seconds, tank);
-}
-
-void ProfileWidget2::changeGas(int index, int newCylinderId)
-{
-	if ((currentState == PLAN || currentState == EDIT) && plannerModel) {
-		QModelIndex modelIndex = plannerModel->index(index, DivePlannerPointsModel::GAS);
-		plannerModel->gasChange(modelIndex.sibling(modelIndex.row() + 1, modelIndex.column()), newCylinderId);
-
-		if (currentState == EDIT)
-			emit stopEdited();
-	}
-}
-
-void ProfileWidget2::editName(DiveEventItem *item)
-{
-	if (!d)
-		return;
-	bool ok;
-	QString newName = QInputDialog::getText(this, tr("Edit name of bookmark"),
-						tr("Custom name:"), QLineEdit::Normal,
-						item->ev.name.c_str(), &ok);
-	if (ok && !newName.isEmpty()) {
-		if (newName.length() > 22) { //longer names will display as garbage.
-			QMessageBox lengthWarning;
-			lengthWarning.setText(tr("Name is too long!"));
-			lengthWarning.exec();
-			return;
-		}
-		Command::renameEvent(mutable_dive(), dc, item->idx, newName.toStdString());
-	}
 }
 
 void ProfileWidget2::connectPlannerModel()

@@ -2,6 +2,7 @@
 #include "profileview.h"
 #include "pictureitem.h"
 #include "profilescene.h"
+#include "diveeventitem.h"
 #include "handleitem.h"
 #include "ruleritem.h"
 #include "tooltipitem.h"
@@ -10,10 +11,13 @@
 #include "core/divelog.h"
 #include "commands/command.h"
 #include "core/errorhelper.h"
+#include "core/event.h"
+#include "core/eventtype.h"
 #include "core/imagedownloader.h"
 #include "core/pref.h"
 #include "core/qthelper.h" // for localFilePath()
 #include "core/range.h"
+#include "core/subsurface-string.h" // for empty_string()
 #include "core/settings/qPrefDisplay.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefTechnicalDetails.h"
@@ -29,8 +33,9 @@
 
 #ifndef SUBSURFACE_MOBILE
 #include "core/device.h"
-#include <QMenu>
 #include <QInputDialog>
+#include <QMenu>
+#include <QMessageBox>
 #endif
 
 static const QColor mouseFollowerColor = QColor(Qt::red).lighter();
@@ -385,22 +390,38 @@ void ProfileView::wheelEvent(QWheelEvent *event)
 struct MenuEntry {
 	QString text;
 	std::function<void()> action;
+	std::vector<MenuEntry> subitems;
 	MenuEntry(QString text, std::function<void()> action)
 		: text(text), action(std::move(action))
 	{
 	}
+	MenuEntry(QString text, std::vector<MenuEntry> subitems)
+		: text(text), subitems(std::move(subitems))
+	{
+	}
 };
+
+#ifndef SUBSURFACE_MOBILE
+static void makeMenu(QMenu &m, const std::vector<MenuEntry> &entries)
+{
+	for (const MenuEntry &e: entries) {
+		if (!e.subitems.empty())
+			makeMenu(*m.addMenu(e.text), e.subitems);
+		else if(e.action)
+			m.addAction(e.text, [f = e.action] { f(); }); // Dang. Qt doesn't support std::function!
+								      // This is too many indirections for my taste. :(
+	}
+}
+#endif
 
 static void execMenu(const std::vector<MenuEntry> &entries, QPoint pos)
 {
 	if (entries.empty())
 		return;
+
 #ifndef SUBSURFACE_MOBILE
 	QMenu m;
-	for (const MenuEntry &e: entries) {
-		// Dang. Qt doesn't support std::function! This is too many indirections for my taste. :(
-		m.addAction(e.text, [f = e.action] { f(); });
-	}
+	makeMenu(m, entries);
 	m.exec(pos);
 #endif
 }
@@ -420,6 +441,72 @@ void ProfileView::renameCurrentDC()
 	if (ok)
 		Command::editDeviceNickname(currentdc, newName);
 #endif
+}
+
+// TODO: How should that work on mobile?
+void ProfileView::editEventName(const struct event &event, int idx)
+{
+#ifndef SUBSURFACE_MOBILE
+	bool ok;
+	// TODO: center on window by passing a QWidget as first argument!
+	QString newName = QInputDialog::getText(nullptr, tr("Edit name of bookmark"),
+						tr("Custom name:"), QLineEdit::Normal,
+						event.name.c_str(), &ok);
+	if (ok && !newName.isEmpty()) {
+		if (newName.length() > 22) { //longer names will display as garbage.
+			QMessageBox lengthWarning;
+			lengthWarning.setText(tr("Name is too long!"));
+			lengthWarning.exec();
+			return;
+		}
+		Command::renameEvent(mutable_dive(), dc, idx, qPrintable(newName));
+	}
+#endif
+}
+
+void ProfileView::hideEvent(DiveEventItem &item)
+{
+	if(!d)
+		return;
+	struct divecomputer *currentdc = mutable_dive()->get_dc(dc);
+	int idx = item.idx;
+	if (!currentdc || idx < 0 || static_cast<size_t>(idx) >= currentdc->events.size())
+		return;
+	currentdc->events[idx].hidden = true;
+	replot();
+}
+
+void ProfileView::hideEventType(DiveEventItem &item)
+{
+	if (!item.ev.name.empty()) {
+		hide_event_type(&item.ev);
+		replot();
+	}
+}
+
+// TODO: How should that work on mobile?
+void ProfileView::removeEvent(DiveEventItem &item)
+{
+	if(!d)
+		return;
+#ifndef SUBSURFACE_MOBILE
+	const struct event &ev = item.ev;
+	if (QMessageBox::question(nullptr, TITLE_OR_TEXT(
+					   tr("Remove the selected event?"),
+					   tr("%1 @ %2:%3").arg(QString::fromStdString(ev.name)).arg(ev.time.seconds / 60).arg(ev.time.seconds % 60, 2, 10, QChar('0'))),
+				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
+		Command::removeEvent(mutable_dive(), dc, item.idx);
+#endif
+}
+
+// Formats cylinder information for display.
+// eg : "Cyl 1 (AL80 EAN32)"
+static QString formatCylinderDescription(int i, const cylinder_t &cylinder)
+{
+	QString label = gettextFromC::tr("Cyl") + QString(" %1").arg(i+1);
+	QString mix = get_gas_string(cylinder.gasmix);
+	label += QString(" (%2 %3)").arg(QString::fromStdString(cylinder.type.description), mix);
+	return label;
 }
 
 void ProfileView::mousePressEvent(QMouseEvent *event)
@@ -451,8 +538,42 @@ void ProfileView::mousePressEvent(QMouseEvent *event)
 		}
 		if (currentdc->deviceid)
 			m.emplace_back(tr("Rename this dive computer"), [this] { renameCurrentDC(); });
-		execMenu(m, event->globalPos());
-		return;
+		return execMenu(m, event->globalPos());
+	}
+
+	DiveEventItem *item = profileScene->eventAtPosition(event->pos());
+	if (d && item) {
+		std::vector<MenuEntry> m;
+		const struct event &ev = item->ev;
+		if (ev.is_gaschange()) {
+			std::vector<MenuEntry> gas_menu;
+			for (auto [idx, cylinder]: enumerated_range(d->cylinders)) {
+				QString label = formatCylinderDescription(idx, cylinder);
+				gas_menu.emplace_back(label, [this, i = idx, time = ev.time.seconds] {
+					Command::addGasSwitch(mutable_dive(), dc, time, i);
+				});
+			}
+			m.emplace_back(tr("Edit gas change"), std::move(gas_menu));
+		}
+
+		m.emplace_back(tr("Remove event"), [this, item] {
+				removeEvent(*item);
+			});
+		m.emplace_back(tr("Hide event"), [this, item] {
+				hideEvent(*item);
+			});
+		if (!item->ev.name.empty()) {
+			m.emplace_back(tr("Hide events of type '%1'").arg(event_type_name(ev)), [this, item] {
+					hideEventType(*item);
+				});
+		}
+		if (ev.type == SAMPLE_EVENT_BOOKMARK) {
+			m.emplace_back(tr("Edit name"), [this, item] {
+					editEventName(item->ev, item->idx);
+				});
+		}
+
+		return execMenu(m, event->globalPos());
 	}
 
 	// Check if current picture is clicked
