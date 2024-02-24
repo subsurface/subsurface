@@ -270,6 +270,22 @@ Kirigami.ApplicationWindow {
 						visible: text.length > 0
 						level: 5
 						color: "white"
+						text: manager.passwordState
+						wrapMode: Text.NoWrap
+						elide: Text.ElideRight
+						font.weight: Font.Normal
+					}
+				}
+
+				RowLayout {
+					Layout.leftMargin: Kirigami.Units.smallSpacing
+					Layout.topMargin: 0
+					Kirigami.Heading {
+						Layout.fillWidth: true
+						Layout.topMargin: 0
+						visible: text.length > 0
+						level: 5
+						color: "white"
 						text: manager.syncState
 						wrapMode: Text.NoWrap
 						elide: Text.ElideRight

@@ -58,7 +58,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool diveListProcessing MEMBER m_diveListProcessing  WRITE setDiveListProcessing NOTIFY diveListProcessingChanged)
 	Q_PROPERTY(bool initialized MEMBER m_initialized NOTIFY initializedChanged)
 	Q_PROPERTY(QString syncState READ getSyncState NOTIFY syncStateChanged)
-
+	Q_PROPERTY(QString passwordState READ getPasswordState NOTIFY passwordStateChanged)
 public:
 	QMLManager();
 	~QMLManager();
@@ -162,6 +162,7 @@ public:
 	void rememberOldStatus();
 
 	QString getSyncState() const;
+	QString getPasswordState() const;
 
 public slots:
 	void appInitialized();
@@ -297,6 +298,7 @@ signals:
 	void redoTextChanged();
 	void restartDownloadSignal();
 	void syncStateChanged();
+	void passwordStateChanged();
 
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
