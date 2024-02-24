@@ -523,10 +523,11 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, boo
 		percentageItem->replot(d, currentdc, plotInfo);
 
 	eventItems.clear();
-	struct event *event = currentdc->events;
 	struct gasmix lastgasmix = get_gasmix_at_time(d, currentdc, duration_t{1});
 
-	while (event) {
+	for (struct event *event = currentdc->events; event; event = event->next) {
+		if (event->hidden)
+			continue;
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
 			if (empty_string(event->name) ||
@@ -534,7 +535,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, boo
 			      (same_string(event->name, "SP change") && event->time.seconds == 0) ||
 			      event_is_gaschange(event) ||
 			      event->type == SAMPLE_EVENT_BOOKMARK)) {
-				event = event->next;
 				continue;
 			}
 		}
@@ -547,7 +547,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, boo
 		}
 		if (event_is_gaschange(event))
 			lastgasmix = get_gasmix_from_event(d, event);
-		event = event->next;
 	}
 
 	QString dcText = get_dc_nickname(currentdc);
@@ -666,4 +665,13 @@ std::vector<std::pair<QString, QPixmap>> ProfileScene::eventsAt(QPointF pos) con
 		res.emplace_back(item->text, item->pixmap);
 	}
 	return res;
+}
+
+DiveEventItem *ProfileScene::eventAtPosition(QPointF pos) const
+{
+	for (const auto &item: eventItems) {
+		if (item->contains(item->mapFromScene(pos)))
+			return item.get();
+	}
+	return nullptr;
 }

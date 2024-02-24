@@ -335,17 +335,6 @@ struct int ProfileWidget2::getEntryFromPos(QPointF pos)
 #endif
 
 #ifndef SUBSURFACE_MOBILE
-/// Prints cylinder information for display.
-/// eg : "Cyl 1 (AL80 EAN32)"
-static QString printCylinderDescription(int i, const cylinder_t *cylinder)
-{
-	QString label = gettextFromC::tr("Cyl") + QString(" %1").arg(i+1);
-	if( cylinder != NULL ) {
-		QString mix = get_gas_string(cylinder->gasmix);
-		label += QString(" (%2 %3)").arg(cylinder->type.description).arg(mix);
-	}
-	return label;
-}
 
 static bool isDiveTextItem(const QGraphicsItem *item, const DiveTextItem *textItem)
 {
@@ -375,13 +364,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 
 	// Add or edit Gas Change
 	if (d && item && event_is_gaschange(item->getEvent())) {
-		int eventTime = item->getEvent()->time.seconds;
-		QMenu *gasChange = m.addMenu(tr("Edit Gas Change"));
-		for (int i = 0; i < d->cylinders.nr; i++) {
-			const cylinder_t *cylinder = get_cylinder(d, i);
-			QString label = printCylinderDescription(i, cylinder);
-			gasChange->addAction(label, [this, i, eventTime] { changeGas(i, eventTime); });
-		}
 	} else if (d && d->cylinders.nr > 1) {
 		// if we have more than one gas, offer to switch to another one
 		QMenu *gasChange = m.addMenu(tr("Add gas change"));
@@ -409,56 +391,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		changeMode->addAction(gettextFromC::tr(divemode_text_ui[PSCR]),
 				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
-	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
-		const struct event *dcEvent = item->getEvent();
-		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
-		m.addAction(tr("Hide event"), [this, item] { hideEvent(item); });
-		m.addAction(tr("Hide events of type '%1'").arg(event_type_name(dcEvent)),
-			    [this, item] { hideEventType(item); });
-		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK)
-			m.addAction(tr("Edit name"), [this, item] { editName(item); });
-#if 0 // TODO::: FINISH OR DISABLE
-		QPointF scenePos = mapToScene(event->pos());
-		int idx = getEntryFromPos(scenePos);
-		// this shows how to figure out if we should ask the user if they want adjust interpolated pressures
-		// at either side of a gas change
-		if (dcEvent->type == SAMPLE_EVENT_GASCHANGE || dcEvent->type == SAMPLE_EVENT_GASCHANGE2) {
-			qDebug() << "figure out if there are interpolated pressures";
-			int gasChangeIdx = idx;
-			while (gasChangeIdx > 0) {
-				--gasChangeIdx;
-				if (plotInfo.entry[gasChangeIdx].sec <= dcEvent->time.seconds)
-					break;
-			}
-			const struct plot_data &gasChangeEntry = plotInfo.entry[newGasIdx];
-			qDebug() << "at gas change at" << gasChangeEntry->sec << ": sensor pressure" << get_plot_sensor_pressure(&plotInfo, newGasIdx)
-				 << "interpolated" << ;get_plot_sensor_pressure(&plotInfo, newGasIdx);
-			// now gasChangeEntry points at the gas change, that entry has the final pressure of
-			// the old tank, the next entry has the starting pressure of the next tank
-			if (gasChangeIdx < plotInfo.nr - 1) {
-				int newGasIdx = gasChangeIdx + 1;
-				const struct plot_data &newGasEntry = plotInfo.entry[newGasIdx];
-				qDebug() << "after gas change at " << newGasEntry->sec << ": sensor pressure" << newGasEntry->pressure[0] << "interpolated" << newGasEntry->pressure[1];
-				if (get_plot_sensor_pressure(&plotInfo, gasChangeIdx) == 0 || get_cylinder(d, gasChangeEntry->sensor[0])->sample_start.mbar == 0) {
-					// if we have no sensorpressure or if we have no pressure from samples we can assume that
-					// we only have interpolated pressure (the pressure in the entry may be stored in the sensor
-					// pressure field if this is the first or last entry for this tank... see details in gaspressures.c
-					pressure_t pressure;
-					pressure.mbar = get_plot_interpolated_pressure(&plotInfo, gasChangeIdx) ? : get_plot_sensor_pressure(&plotInfo, gasChangeIdx);
-					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of cyl. %1 (currently interpolated as %2)")
-										 .arg(gasChangeEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
-				}
-				if (get_plot_sensor_pressure(&plotInfo, newGasIdx) == 0 || get_cylinder(d, newGasEntry->sensor[0])->sample_start.mbar == 0) {
-					// we only have interpolated press -- see commend above
-					pressure_t pressure;
-					pressure.mbar = get_plot_interpolated_pressure(&plotInfo, newGasIdx) ? : get_plot_sensor_pressure(&plotInfo, newGasIdx);
-					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of cyl. %1 (currently interpolated as %2)")
-										 .arg(newGasEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
-				}
-			}
-		}
-#endif
-	}
 	if (any_event_types_hidden()) {
 		QMenu *m2 = m.addMenu(tr("Unhide event type"));
 		for (int i: hidden_event_types()) {
@@ -475,23 +407,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	m.exec(event->globalPos());
 }
 
-void ProfileWidget2::hideEvent(DiveEventItem *item)
-{
-	item->getEventMutable()->hidden = true;
-	item->hide();
-}
-
-void ProfileWidget2::hideEventType(DiveEventItem *item)
-{
-	const struct event *event = item->getEvent();
-
-	if (!empty_string(event->name)) {
-		hide_event_type(event);
-
-		replot();
-	}
-}
-
 void ProfileWidget2::unhideEvents()
 {
 	for (DiveEventItem *item: profileScene->eventItems) {
@@ -505,19 +420,6 @@ void ProfileWidget2::unhideEventTypes()
 	show_all_event_types();
 
 	replot();
-}
-
-void ProfileWidget2::removeEvent(DiveEventItem *item)
-{
-	struct event *event = item->getEventMutable();
-	if (!event || !d)
-		return;
-
-	if (QMessageBox::question(this, TITLE_OR_TEXT(
-					  tr("Remove the selected event?"),
-					  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
-				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
-		Command::removeEvent(mutable_dive(), dc, event);
 }
 
 void ProfileWidget2::addBookmark(int seconds)
@@ -547,35 +449,6 @@ void ProfileWidget2::splitDive(int seconds)
 	Command::splitDives(mutable_dive(), duration_t{ seconds });
 }
 
-void ProfileWidget2::changeGas(int tank, int seconds)
-{
-	if (!d || tank < 0 || tank >= d->cylinders.nr)
-		return;
-
-	Command::addGasSwitch(mutable_dive(), dc, seconds, tank);
-}
-#endif
-
-#ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::editName(DiveEventItem *item)
-{
-	struct event *event = item->getEventMutable();
-	if (!event || !d)
-		return;
-	bool ok;
-	QString newName = QInputDialog::getText(this, tr("Edit name of bookmark"),
-						tr("Custom name:"), QLineEdit::Normal,
-						event->name, &ok);
-	if (ok && !newName.isEmpty()) {
-		if (newName.length() > 22) { //longer names will display as garbage.
-			QMessageBox lengthWarning;
-			lengthWarning.setText(tr("Name is too long!"));
-			lengthWarning.exec();
-			return;
-		}
-		Command::renameEvent(mutable_dive(), dc, event, qPrintable(newName));
-	}
-}
 #endif
 
 #ifndef SUBSURFACE_MOBILE

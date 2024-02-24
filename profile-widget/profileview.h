@@ -136,6 +136,9 @@ private:
 	// DC related
 	void renameCurrentDC();
 
+	// Event related
+	void editEventName(struct event *event);
+
 	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
 	// For the same offset, sort by filename.
 	// Pictures that are outside of the dive time are not shown.

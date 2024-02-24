@@ -60,6 +60,7 @@ public:
 	double posAtDepth(double depth) const;
 	double yToScreen(double y) const; // For pictures: depth given in fration of displayed range.
 	std::vector<std::pair<QString, QPixmap>> eventsAt(QPointF pos) const;
+	DiveEventItem *eventAtPosition(QPointF pos) const; // null if no event icon at position.
 
 	const struct dive *d;
 	int dc;
