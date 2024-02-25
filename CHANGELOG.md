@@ -1,3 +1,4 @@
+import: update libdivecomputer version, add support for the Scubapro G3 / Luna and Shearwater Tern
 desktop: add a button linking to the 'Contribute' page
 mobile: fix configuration of decompression ceiling and gradient factors
 desktop: fix gas switches in UDDF exports

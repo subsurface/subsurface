@@ -62,6 +62,7 @@ static struct namePattern name[] = {
 	{ "NERD 2", "Shearwater", "NERD 2" },
 	{ "NERD", "Shearwater", "NERD" }, // order is important, test for the more specific one first
 	{ "Predator", "Shearwater", "Predator" },
+	{ "Tern", "Shearwater", "Tern" },
 	// Suunto dive computers
 	{ "EON Steel", "Suunto", "EON Steel" },
 	{ "EON Core", "Suunto", "EON Core" },
@@ -69,9 +70,12 @@ static struct namePattern name[] = {
 	// Scubapro dive computers
 	{ "G2", "Scubapro", "G2" },
 	{ "HUD", "Scubapro", "G2 HUD" },
+	{ "G3", "Scubapro", "G3" },
 	{ "Aladin", "Scubapro", "Aladin Sport Matrix" },
 	{ "A1", "Scubapro", "Aladin A1" },
 	{ "A2", "Scubapro", "Aladin A2" },
+	{ "Luna 2.0 AI", "Scubapro", "Luna 2.0 AI" },
+	{ "Luna 2.0", "Scubapro", "Luna 2.0" },
 	// Mares dive computers
 	{ "Mares Genius", "Mares", "Genius" },
 	{ "Mares", "Mares", "Quad" }, // we actually don't know and just pick a common one - user needs to fix in UI
