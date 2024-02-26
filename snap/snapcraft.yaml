@@ -159,12 +159,13 @@ parts:
     - qttools5-dev
     override-pull: |
       craftctl default
-      craftctl set grade=devel
       if [ ! -f latest-subsurface-buildnumber ]; then
         git fetch --depth=1 https://github.com/subsurface/nightly-builds.git branch-for-$( git rev-parse HEAD )
         git checkout FETCH_HEAD latest-subsurface-buildnumber
         # We succeeded getting the release version, allow publishing above `beta`
         craftctl set grade=stable
+      else
+        craftctl set grade=devel
       fi
       craftctl set version=$( scripts/get-version )
     override-build: |
