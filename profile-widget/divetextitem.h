@@ -2,17 +2,12 @@
 #ifndef DIVETEXTITEM_H
 #define DIVETEXTITEM_H
 
-#include <QObject>
-#include <QFont>
 #include <QGraphicsPixmapItem>
 
 class QBrush;
 
 /* A Line Item that has animated-properties. */
-class DiveTextItem : public QObject, public QGraphicsPixmapItem {
-	Q_OBJECT
-	Q_PROPERTY(QPointF pos READ pos WRITE setPos)
-	Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
+class DiveTextItem : public QGraphicsPixmapItem {
 public:
 	// Note: vertical centring is based on the actual rendered text, not on the font metrics.
 	// This is fine for placing text in the "tankbar", but it will look disastrous when
