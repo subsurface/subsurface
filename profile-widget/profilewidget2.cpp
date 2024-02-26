@@ -13,7 +13,6 @@
 #include "profile-widget/divetooltipitem.h"
 #include "profile-widget/divehandler.h"
 #include "core/planner.h"
-#include "profile-widget/ruleritem.h"
 #include "core/pref.h"
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/models.h"
@@ -60,11 +59,6 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 	dc(0),
 	empty(true),
 	panning(false),
-#ifndef SUBSURFACE_MOBILE
-	mouseFollowerVertical(new DiveLineItem()),
-	mouseFollowerHorizontal(new DiveLineItem()),
-	rulerItem(new RulerItem2()),
-#endif
 	shouldCalculateMax(true)
 {
 	setupSceneAndFlags();
@@ -113,15 +107,8 @@ void ProfileWidget2::addItemsToScene()
 {
 #ifndef SUBSURFACE_MOBILE
 	scene()->addItem(toolTipItem);
-	scene()->addItem(rulerItem);
-	scene()->addItem(rulerItem->sourceNode());
-	scene()->addItem(rulerItem->destNode());
-	scene()->addItem(mouseFollowerHorizontal);
-	scene()->addItem(mouseFollowerVertical);
 	QPen pen(QColor(Qt::red).lighter());
 	pen.setWidth(0);
-	mouseFollowerHorizontal->setPen(pen);
-	mouseFollowerVertical->setPen(pen);
 #endif
 }
 
@@ -130,10 +117,6 @@ void ProfileWidget2::setupItemOnScene()
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->setZValue(9998);
 	toolTipItem->setTimeAxis(profileScene->timeAxis);
-	rulerItem->setZValue(9997);
-	rulerItem->setAxis(profileScene->timeAxis, profileScene->profileYAxis);
-	mouseFollowerHorizontal->setZValue(9996);
-	mouseFollowerVertical->setZValue(9995);
 #endif
 }
 
@@ -182,8 +165,6 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->setVisible(prefs.infobox);
 	toolTipItem->setPlotInfo(profileScene->plotInfo);
-	rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
-	rulerItem->setPlotInfo(d, profileScene->plotInfo);
 
 	if ((currentState == EDIT || currentState == PLAN) && plannerModel) {
 		repositionDiveHandlers();
@@ -273,9 +254,6 @@ void ProfileWidget2::setProfileState()
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->readPos();
 	toolTipItem->setVisible(prefs.infobox);
-	rulerItem->setVisible(prefs.rulergraph);
-	mouseFollowerHorizontal->setVisible(false);
-	mouseFollowerVertical->setVisible(false);
 #endif
 
 	handles.clear();
@@ -289,8 +267,6 @@ void ProfileWidget2::setEditState(const dive *d, int dc)
 		return;
 
 	setProfileState(d, dc);
-	mouseFollowerHorizontal->setVisible(true);
-	mouseFollowerVertical->setVisible(true);
 
 	currentState = EDIT;
 
@@ -303,8 +279,6 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 		return;
 
 	setProfileState(d, dc);
-	mouseFollowerHorizontal->setVisible(true);
-	mouseFollowerVertical->setVisible(true);
 
 	currentState = PLAN;
 	setBackgroundBrush(QColor("#D7E3EF"));

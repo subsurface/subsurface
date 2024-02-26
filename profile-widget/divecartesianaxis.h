@@ -10,7 +10,6 @@
 
 class ProfileScene;
 class DiveTextItem;
-class DiveLineItem;
 
 class DiveCartesianAxis : public QGraphicsLineItem {
 private:
@@ -57,7 +56,7 @@ private:
 		QLineF lineStart;
 		QLineF lineEnd;
 		std::unique_ptr<DiveTextItem> label;
-		std::unique_ptr<DiveLineItem> line;
+		std::unique_ptr<QGraphicsLineItem> line;
 	};
 	Position position;
 	bool inverted; // Top-to-bottom or right-to-left axis.

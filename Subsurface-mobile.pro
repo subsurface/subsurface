@@ -180,7 +180,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	profile-widget/pictureitem.cpp \
 	profile-widget/tankitem.cpp \
 	profile-widget/tooltipitem.cpp \
-	profile-widget/divelineitem.cpp \
 	profile-widget/divetextitem.cpp \
 	profile-widget/handleitem.cpp \
 	profile-widget/profileview.cpp \
@@ -344,7 +343,6 @@ HEADERS += \
 	profile-widget/tooltipitem.h \
 	profile-widget/animationfunctions.h \
 	profile-widget/divecartesianaxis.h \
-	profile-widget/divelineitem.h \
 	profile-widget/divepixmapcache.h \
 	profile-widget/divetextitem.h \
 	profile-widget/handleitem.h \

@@ -5,7 +5,6 @@
 #include "core/qthelper.h"
 #include "core/subsurface-float.h"
 #include "profile-widget/animationfunctions.h"
-#include "profile-widget/divelineitem.h"
 #include "profile-widget/profilescene.h"
 
 static const double labelSpaceHorizontal = 2.0; // space between label and ticks
@@ -277,7 +276,7 @@ DiveCartesianAxis::Label DiveCartesianAxis::createLabel(double value, double pos
 	if (lineVisibility) {
 		label.lineStart = linePos(posStart);
 		label.lineEnd = linePos(pos);
-		label.line = std::make_unique<DiveLineItem>(this);
+		label.line = std::make_unique<QGraphicsLineItem>(this);
 		label.line->setPen(gridPen);
 		label.line->setZValue(0);
 		label.line->setLine(animSpeed <= 0 ? label.lineEnd : label.lineStart);

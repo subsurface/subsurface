@@ -16,7 +16,6 @@
 //  *
 //  * It needs to be dynamic, things should *flow* on it, not just appear / disappear.
 //  */
-#include "profile-widget/divelineitem.h"
 #include "core/units.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
@@ -129,11 +128,6 @@ private:
 	bool panning; // Currently panning.
 	double panningOriginalMousePosition;
 	double panningOriginalProfilePosition;
-#ifndef SUBSURFACE_MOBILE
-	DiveLineItem *mouseFollowerVertical;
-	DiveLineItem *mouseFollowerHorizontal;
-	RulerItem2 *rulerItem;
-#endif
 
 #ifndef SUBSURFACE_MOBILE
 	void repositionDiveHandlers();
