@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <memory>
 #include "dive.h"
 #include "gettext.h"
 #include "subsurface-string.h"
@@ -455,8 +456,8 @@ static bool has_unknown_used_cylinders(const struct dive *dive, const struct div
 {
 	int idx;
 	const struct event *ev;
-	bool *used_and_unknown = (bool *)malloc(dive->cylinders.nr * sizeof(bool));
-	memcpy(used_and_unknown, used_cylinders, dive->cylinders.nr * sizeof(bool));
+	auto used_and_unknown = std::make_unique<bool[]>(dive->cylinders.nr);
+	std::copy(used_cylinders, used_cylinders + dive->cylinders.nr, used_and_unknown.get());
 
 	/* We know about using the O2 cylinder in a CCR dive */
 	if (dc->divemode == CCR) {
@@ -485,18 +486,15 @@ static bool has_unknown_used_cylinders(const struct dive *dive, const struct div
 		ev = get_next_event(ev->next, "gaschange");
 	}
 
-	free(used_and_unknown);
 	return num > 0;
 }
 
 extern "C" void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
 {
 	int i;
-	int *depthtime;
 	int32_t lasttime = 0;
 	int lastdepth = 0;
 	int idx = 0;
-	bool *used_cylinders;
 	int num_used_cylinders;
 
 	if (dive->cylinders.nr <= 0)
@@ -512,18 +510,16 @@ extern "C" void per_cylinder_mean_depth(const struct dive *dive, struct divecomp
 	 * if we don't actually know about the usage of all the
 	 * used cylinders.
 	 */
-	used_cylinders = (bool *)malloc(dive->cylinders.nr * sizeof(bool));
-	num_used_cylinders = get_cylinder_used(dive, used_cylinders);
-	if (has_unknown_used_cylinders(dive, dc, used_cylinders, num_used_cylinders)) {
+	auto used_cylinders = std::make_unique<bool[]>(dive->cylinders.nr);
+	num_used_cylinders = get_cylinder_used(dive, used_cylinders.get());
+	if (has_unknown_used_cylinders(dive, dc, used_cylinders.get(), num_used_cylinders)) {
 		/*
 		 * If we had more than one used cylinder, but
 		 * do not know usage of them, we simply cannot
 		 * account mean depth to them.
 		 */
-		if (num_used_cylinders > 1) {
-			free(used_cylinders);
+		if (num_used_cylinders > 1)
 			return;
-		}
 
 		/*
 		 * For a single cylinder, use the overall mean
@@ -536,15 +532,12 @@ extern "C" void per_cylinder_mean_depth(const struct dive *dive, struct divecomp
 			}
 		}
 
-		free(used_cylinders);
 		return;
 	}
-	free(used_cylinders);
 	if (!dc->samples)
 		fake_dc(dc);
 	const struct event *ev = get_next_event(dc->events, "gaschange");
-	depthtime = (int*)malloc(dive->cylinders.nr * sizeof(*depthtime));
-	memset(depthtime, 0, dive->cylinders.nr * sizeof(*depthtime));
+	std::vector<int> depthtime(dive->cylinders.nr, 0);
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		int32_t time = sample->time.seconds;
@@ -577,7 +570,6 @@ extern "C" void per_cylinder_mean_depth(const struct dive *dive, struct divecomp
 		if (duration[i])
 			mean[i] = (depthtime[i] + duration[i] / 2) / duration[i];
 	}
-	free(depthtime);
 }
 
 static void update_min_max_temperatures(struct dive *dive, temperature_t temperature)
@@ -1798,7 +1790,7 @@ static int different_manual_pressures(const cylinder_t *a, const cylinder_t *b)
  * same cylinder use (ie OC/Diluent/Oxygen), and if pressures
  * have been added manually they need to match.
  */
-static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, const bool *try_match)
+static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, const bool try_match[])
 {
 	int i;
 
@@ -1926,24 +1918,22 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 {
 	int i;
 	int max_cylinders = a->cylinders.nr + b->cylinders.nr;
-	bool *used_in_a = (bool *)malloc(max_cylinders * sizeof(bool));
-	bool *used_in_b = (bool *)malloc(max_cylinders * sizeof(bool));
-	bool *try_to_match = (bool *)malloc(max_cylinders * sizeof(bool));
+	auto used_in_a = std::make_unique<bool[]>(max_cylinders);
+	auto used_in_b = std::make_unique<bool[]>(max_cylinders);
+	auto try_to_match = std::make_unique<bool[]>(max_cylinders);
+	std::fill(try_to_match.get(), try_to_match.get() + max_cylinders, false);
 
 	/* First, clear all cylinders in destination */
 	clear_cylinder_table(&res->cylinders);
 
 	/* Clear all cylinder mappings */
-	for (i = 0; i < a->cylinders.nr; i++)
-		mapping_a[i] = -1;
-	for (i = 0; i < b->cylinders.nr; i++)
-		mapping_b[i] = -1;
+	std::fill(mapping_a, mapping_a + a->cylinders.nr, -1);
+	std::fill(mapping_b, mapping_b + b->cylinders.nr, -1);
 
 	/* Calculate usage map of cylinders, clear matching map */
 	for (i = 0; i < max_cylinders; i++) {
 		used_in_a[i] = cylinder_in_use(a, i);
 		used_in_b[i] = cylinder_in_use(b, i);
-		try_to_match[i] = false;
 	}
 
 	/*
@@ -1969,7 +1959,7 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 		if (!used_in_b[i])
 			continue;
 
-		j = match_cylinder(get_cylinder(b, i), res, try_to_match);
+		j = match_cylinder(get_cylinder(b, i), res, try_to_match.get());
 
 		/* No match? Add it to the result */
 		if (j < 0) {
@@ -1986,10 +1976,6 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 		/* Don't match the same target more than once */
 		try_to_match[j] = false;
 	}
-
-	free(used_in_a);
-	free(used_in_b);
-	free(try_to_match);
 }
 
 /* Check whether a weightsystem table contains a given weightsystem */
@@ -2609,7 +2595,6 @@ extern "C" bool has_planned(const struct dive *dive, bool planned)
 extern "C" struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip, struct dive_site **site)
 {
 	struct dive *res = alloc_dive();
-	int *cylinders_map_a, *cylinders_map_b;
 
 	if (offset) {
 		/*
@@ -2646,18 +2631,18 @@ extern "C" struct dive *merge_dives(const struct dive *a, const struct dive *b, 
 	taglist_merge(&res->tag_list, a->tag_list, b->tag_list);
 	/* if we get dives without any gas / cylinder information in an import, make sure
 	 * that there is at leatst one entry in the cylinder map for that dive */
-	cylinders_map_a = (int *)malloc(MAX(1, a->cylinders.nr) * sizeof(*cylinders_map_a));
-	cylinders_map_b = (int *)malloc(MAX(1, b->cylinders.nr) * sizeof(*cylinders_map_b));
-	merge_cylinders(res, a, b, cylinders_map_a, cylinders_map_b);
+	auto cylinders_map_a = std::make_unique<int[]>(std::max(1, a->cylinders.nr));
+	auto cylinders_map_b = std::make_unique<int[]>(std::max(1, b->cylinders.nr));
+	merge_cylinders(res, a, b, cylinders_map_a.get(), cylinders_map_b.get());
 	merge_equipment(res, a, b);
 	merge_temperatures(res, a, b);
 	if (prefer_downloaded) {
 		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */
-		join_dive_computers(res, &res->dc, &b->dc, &a->dc, cylinders_map_b, cylinders_map_a, 1);
+		join_dive_computers(res, &res->dc, &b->dc, &a->dc, cylinders_map_b.get(), cylinders_map_a.get(), 1);
 	} else if (offset && might_be_same_device(&a->dc, &b->dc))
-		interleave_dive_computers(res, &res->dc, &a->dc, &b->dc, cylinders_map_a, cylinders_map_b, offset);
+		interleave_dive_computers(res, &res->dc, &a->dc, &b->dc, cylinders_map_a.get(), cylinders_map_b.get(), offset);
 	else
-		join_dive_computers(res, &res->dc, &a->dc, &b->dc, cylinders_map_a, cylinders_map_b, 0);
+		join_dive_computers(res, &res->dc, &a->dc, &b->dc, cylinders_map_a.get(), cylinders_map_b.get(), 0);
 
 	/* The CNS values will be recalculated from the sample in fixup_dive() */
 	res->cns = res->maxcns = 0;
@@ -2671,8 +2656,6 @@ extern "C" struct dive *merge_dives(const struct dive *a, const struct dive *b, 
 		(*site)->location = b->dive_site->location;
 	}
 	fixup_dive(res);
-	free(cylinders_map_a);
-	free(cylinders_map_b);
 	return res;
 }
 
@@ -2702,7 +2685,7 @@ static void force_fixup_dive(struct dive *d)
 	int old_mintemp = d->mintemp.mkelvin;
 	int old_maxtemp = d->maxtemp.mkelvin;
 	duration_t old_duration = d->duration;
-	struct start_end_pressure *old_pressures = (start_end_pressure *)malloc(d->cylinders.nr * sizeof(*old_pressures));
+	std::vector<start_end_pressure> old_pressures(d->cylinders.nr);
 
 	d->maxdepth.mm = 0;
 	dc->maxdepth.mm = 0;
@@ -2741,7 +2724,6 @@ static void force_fixup_dive(struct dive *d)
 		if (!get_cylinder(d, i)->end.mbar)
 			get_cylinder(d, i)->end = old_pressures[i].end;
 	}
-	free(old_pressures);
 }
 
 /*
