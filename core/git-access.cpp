@@ -136,16 +136,15 @@ extern "C" char *get_local_dir(const char *url, const char *branch)
 	// That's trivial with QString operations and painful to do right in plain C, so
 	// let's be lazy and call a C++ helper function
 	// just remember to free the string we get back
-	const char *remote = normalize_cloud_name(url);
+	std::string remote = normalize_cloud_name(url);
 
 	// That zero-byte update is so that we don't get hash
 	// collisions for "repo1 branch" vs "repo 1branch".
 	SHA1_Init(&ctx);
-	SHA1_Update(&ctx, remote, strlen(remote));
+	SHA1_Update(&ctx, remote.c_str(), remote.size());
 	SHA1_Update(&ctx, "", 1);
 	SHA1_Update(&ctx, branch, strlen(branch));
 	SHA1_Final(hash, &ctx);
-	free((void *)remote);
 	return format_string("%s/cloudstorage/%02x%02x%02x%02x%02x%02x%02x%02x",
 			system_default_directory(),
 			hash[0], hash[1], hash[2], hash[3],
@@ -432,9 +431,8 @@ static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_
 			goto write_error;
 		if (get_authorship(info->repo, &author) < 0)
 			goto write_error;
-		const char *user_agent = subsurface_user_agent();
-		put_format(&msg, "Automatic merge\n\nCreated by %s\n", user_agent);
-		free((void *)user_agent);
+		std::string user_agent = subsurface_user_agent();
+		put_format(&msg, "Automatic merge\n\nCreated by %s\n", user_agent.c_str());
 		if (git_commit_create_v(&commit_oid, info->repo, NULL, author, author, NULL, mb_cstring(&msg), merged_tree, 2, local_commit, remote_commit))
 			goto write_error;
 		if (git_commit_lookup(&commit, info->repo, &commit_oid))

@@ -98,6 +98,9 @@ std::vector<int> get_cylinder_map_for_add(int count, int n);
 
 extern QString (*changesCallback)();
 void uiNotification(const QString &msg);
+std::string get_changes_made();
+std::string subsurface_user_agent();
+std::string normalize_cloud_name(const char *remote_in);
 
 #if defined __APPLE__
 #define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m
@@ -126,10 +129,8 @@ void copy_image_and_overwrite(const char *cfileName, const char *path, const cha
 char *move_away(const char *path);
 const char *local_file_path(struct picture *picture);
 char *cloud_url();
-const char *normalize_cloud_name(const char *remote_in);
 char *hashfile_name_string();
 char *picturedir_string();
-const char *subsurface_user_agent();
 enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
 char *get_current_date();
@@ -143,7 +144,6 @@ depth_t string_to_depth(const char *str);
 pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
-char *get_changes_made();
 void emit_reset_signal();
 
 extern void report_info(const char *fmt, ...);

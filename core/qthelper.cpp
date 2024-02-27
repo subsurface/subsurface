@@ -434,11 +434,9 @@ QString getUserAgent()
 
 }
 
-extern "C" const char *subsurface_user_agent()
+std::string subsurface_user_agent()
 {
-	static QString uA = getUserAgent();
-
-	return copy_qstring(uA);
+	return getUserAgent().toStdString();
 }
 
 QString getUiLanguage()
@@ -1396,13 +1394,13 @@ extern "C" char *cloud_url()
 	return copy_qstring(filename);
 }
 
-extern "C" const char *normalize_cloud_name(const char *remote_in)
+std::string normalize_cloud_name(const char *remote_in)
 {
 	// replace ssrf-cloud-XX.subsurface... names with cloud.subsurface... names
 	// that trailing '/' is to match old code
 	QString ri(remote_in);
 	ri.replace(QRegularExpression(CLOUD_HOST_PATTERN), CLOUD_HOST_GENERIC "/");
-	return strdup(ri.toUtf8().constData());
+	return ri.toStdString();
 }
 
 extern "C" bool getProxyString(char **buffer)
@@ -1627,12 +1625,10 @@ void uiNotification(const QString &msg)
 // function to call to get changes for a git commit
 QString (*changesCallback)() = nullptr;
 
-extern "C" char *get_changes_made()
+std::string get_changes_made()
 {
-	if (changesCallback != nullptr)
-		return copy_qstring(changesCallback());
-	else
-		return nullptr;
+	return changesCallback != nullptr ? changesCallback().toStdString()
+					  : std::string();
 }
 
 // Generate a cylinder-renumber map for use when the n-th cylinder
