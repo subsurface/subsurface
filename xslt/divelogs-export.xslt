@@ -23,6 +23,11 @@
     <TIME>
       <xsl:value-of select="@time"/>
     </TIME>
+    <xsl:if test="divecomputer/@model != ''">
+      <COMPUTERMODEL>
+        <xsl:value-of select="divecomputer/@model"/>
+      </COMPUTERMODEL>
+    </xsl:if>
 
     <xsl:variable name="duration">
       <xsl:call-template name="time2sec">
@@ -385,6 +390,11 @@
                     <DEPTH>
                       <xsl:value-of select="substring-before(./@depth, ' ')"/>
                     </DEPTH>
+		    <xsl:if test="./@temp != ''">
+                      <TEMP>
+                        <xsl:value-of select="substring-before(./@temp, ' ')"/>
+                      </TEMP>
+                    </xsl:if>
                   </SAMPLE>
                 </xsl:when>
               </xsl:choose>
@@ -394,6 +404,11 @@
                 <DEPTH>
                   <xsl:value-of select="substring-before(./@depth, ' ')"/>
                 </DEPTH>
+		<xsl:if test="./@temp != ''">
+                  <TEMP>
+                    <xsl:value-of select="substring-before(./@temp, ' ')"/>
+                  </TEMP>
+                </xsl:if>
               </SAMPLE>
             </xsl:otherwise>
           </xsl:choose>
