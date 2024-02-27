@@ -47,7 +47,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/pref.c \
 	core/profile.c \
 	core/device.cpp \
-	core/dive.c \
+	core/dive.cpp \
 	core/divecomputer.c \
 	core/divefilter.cpp \
 	core/event.c \
