@@ -1143,12 +1143,12 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 {
 	int nr = divelog.dives->nr;
 	struct dive *dive = get_dive(nr-1);
-	char* changes_made = get_changes_made();
+	std::string changes_made = get_changes_made();
 
 	if (create_empty) {
 		put_string(msg, "Initial commit to create empty repo.\n\n");
-	} else if (!empty_string(changes_made)) {
-		put_format(msg, "Changes made: \n\n%s\n", changes_made);
+	} else if (!changes_made.empty()) {
+		put_format(msg, "Changes made: \n\n%s\n", changes_made.c_str());
 	} else if (dive) {
 		dive_trip_t *trip = dive->divetrip;
 		const char *location = get_dive_location(dive) ? : "no location";
@@ -1170,10 +1170,7 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 		} while ((dc = dc->next) != NULL);
 		put_format(msg, "\n");
 	}
-	const char *user_agent = subsurface_user_agent();
-	put_format(msg, "Created by %s\n", user_agent);
-	free((void *)user_agent);
-	free(changes_made);
+	put_format(msg, "Created by %s\n", subsurface_user_agent().c_str());
 	if (verbose)
 		SSRF_INFO("Commit message:\n\n%s\n", mb_cstring(msg));
 }
