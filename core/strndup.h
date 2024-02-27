@@ -8,7 +8,7 @@ static char *strndup (const char *s, size_t n)
 	size_t len = strlen(s);
 	if (n < len)
 		len = n;
-	if ((cpy = malloc(len + 1)) !=
+	if ((cpy = (char *)malloc(len + 1)) !=
 	    NULL) {
 		cpy[len] =
 				'\0';

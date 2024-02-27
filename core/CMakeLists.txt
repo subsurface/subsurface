@@ -107,7 +107,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	gettext.h
 	gettextfromc.cpp
 	gettextfromc.h
-	git-access.c
+	git-access.cpp
 	git-access.h
 	globals.cpp
 	globals.h

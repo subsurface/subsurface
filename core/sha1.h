@@ -8,6 +8,10 @@
 #ifndef SHA1_H
 #define SHA1_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct
 {
 	unsigned long long size;
@@ -34,5 +38,9 @@ static inline void SHA1(const void *dataIn, unsigned long len, unsigned char has
 	SHA1_Update(&ctx, dataIn, len);
 	SHA1_Final(hashout, &ctx);
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // SHA1_H
