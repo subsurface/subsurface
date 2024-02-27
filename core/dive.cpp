@@ -1337,7 +1337,7 @@ static void merge_one_sample(const struct sample *sample, int time, struct divec
 		 * a minute apart, and shallower than 5m
 		 */
 		if (time > last_time + 60 && last_depth < 5000) {
-			struct sample surface = { 0 };
+			struct sample surface;
 
 			/* Init a few values from prev sample to avoid useless info in XML */
 			surface.bearing.degrees = prev->bearing.degrees;
@@ -1388,7 +1388,7 @@ static void merge_samples(struct divecomputer *res,
 	for (;;) {
 		int j;
 		int at, bt;
-		struct sample sample = { .ndl{ -1 } , .bearing{ -1 } };
+		struct sample sample;
 
 		if (!res)
 			return;

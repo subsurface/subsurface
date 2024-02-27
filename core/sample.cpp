@@ -2,6 +2,28 @@
 
 #include "sample.h"
 
+sample::sample() :
+	time({ 0 }),
+	stoptime({ 0 }),
+	ndl({ -1 }),
+	tts({ 0 }),
+	rbt({ 0 }),
+	depth({ 0 }),
+	stopdepth({ 0 }),
+	temperature({ 0 }),
+	pressure { { 0 }, { 0 } },
+	setpoint({ 0 }),
+	o2sensor { { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 } },
+	bearing({ -1 }),
+	sensor { 0, 0 },
+	cns(0),
+	heartbeat(0),
+	sac({ 0 }),
+	in_deco(false),
+	manually_entered(false)
+{
+}
+
 /*
  * Adding a cylinder pressure sample field is not quite as trivial as it
  * perhaps should be.
@@ -15,7 +37,7 @@
  * from the previous sample, so the indices are pre-populated (but the
  * pressures obviously are not)
  */
-void add_sample_pressure(struct sample *sample, int sensor, int mbar)
+extern "C" void add_sample_pressure(struct sample *sample, int sensor, int mbar)
 {
 	int idx;
 
@@ -42,4 +64,3 @@ void add_sample_pressure(struct sample *sample, int sensor, int mbar)
 	/* We do not have enough slots for the pressure samples. */
 	/* Should we warn the user about dropping pressure data? */
 }
-

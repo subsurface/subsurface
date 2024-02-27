@@ -153,7 +153,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	qthelper.cpp
 	qthelper.h
 	range.h
-	sample.c
+	sample.cpp
 	sample.h
 	save-git.c
 	save-html.c
