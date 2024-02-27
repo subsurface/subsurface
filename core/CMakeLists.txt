@@ -59,7 +59,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	device.h
 	devicedetails.cpp
 	devicedetails.h
-	dive.c
+	dive.cpp
 	dive.h
 	divecomputer.c
 	divecomputer.h

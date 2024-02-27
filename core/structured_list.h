@@ -13,17 +13,17 @@
 		}                                  \
 	}
 
-#define STRUCTURED_LIST_COPY(_type, _first, _dest, _cpy) \
-	{                                                \
-		_type *_sptr = _first;                   \
-		_type **_dptr = &_dest;                  \
-		while (_sptr) {                          \
-			*_dptr = malloc(sizeof(_type));  \
-			_cpy(_sptr, *_dptr);             \
-			_sptr = _sptr->next;             \
-			_dptr = &(*_dptr)->next;         \
-		}                                        \
-		*_dptr = 0;                              \
+#define STRUCTURED_LIST_COPY(_type, _first, _dest, _cpy)          \
+	{                                                         \
+		_type *_sptr = _first;                            \
+		_type **_dptr = &_dest;                           \
+		while (_sptr) {                                   \
+			*_dptr = (_type *)malloc(sizeof(_type));  \
+			_cpy(_sptr, *_dptr);                      \
+			_sptr = _sptr->next;                      \
+			_dptr = &(*_dptr)->next;                  \
+		}                                                 \
+		*_dptr = 0;                                       \
 	}
 
 #endif
