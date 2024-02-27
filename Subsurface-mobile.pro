@@ -78,7 +78,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/worldmap-save.c \
 	core/libdivecomputer.c \
 	core/version.c \
-	core/save-git.c \
+	core/save-git.cpp \
 	core/datatrak.c \
 	core/ostctools.c \
 	core/planner.c \

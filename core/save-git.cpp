@@ -373,7 +373,7 @@ static void save_samples(struct membuffer *b, struct dive *dive, struct divecomp
 	int nr;
 	int o2sensor;
 	struct sample *s;
-	struct sample dummy = { .bearing.degrees = -1, .ndl.seconds = -1 };
+	struct sample dummy;
 
 	/* Is this a CCR dive with the old-style "o2pressure" sensor? */
 	o2sensor = legacy_format_o2pressures(dive, dc);
@@ -498,7 +498,7 @@ struct dir {
 	char unique, name[1];
 };
 
-static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git_oid *id, unsigned mode)
+static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git_oid *id, git_filemode_t mode)
 {
 	int ret;
 	struct membuffer uniquename = { 0 };
@@ -534,7 +534,7 @@ static struct dir *new_directory(git_repository *repo, struct dir *parent, struc
 	const char *name = mb_cstring(namebuf);
 	int len = namebuf->len;
 
-	subdir = malloc(sizeof(*subdir)+len);
+	subdir = (struct dir *)malloc(sizeof(*subdir)+len);
 
 	/*
 	 * It starts out empty: no subdirectories of its own,
@@ -851,19 +851,19 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *tr
 
 static void save_units(void *_b)
 {
-	struct membuffer *b =_b;
+	struct membuffer *b = (membuffer *)_b;
 	if (prefs.unit_system == METRIC)
 		put_string(b, "units METRIC\n");
 	else if (prefs.unit_system == IMPERIAL)
 		put_string(b, "units IMPERIAL\n");
 	else
 		put_format(b, "units PERSONALIZE %s %s %s %s %s %s\n",
-			   prefs.units.length == METERS ? "METERS" : "FEET",
-			   prefs.units.volume == LITER ? "LITER" : "CUFT",
-			   prefs.units.pressure == BAR ? "BAR" : "PSI",
-			   prefs.units.temperature == CELSIUS ? "CELSIUS" : prefs.units.temperature == FAHRENHEIT ? "FAHRENHEIT" : "KELVIN",
-			   prefs.units.weight == KG ? "KG" : "LBS",
-			   prefs.units.vertical_speed_time == SECONDS ? "SECONDS" : "MINUTES");
+			   prefs.units.length == units::METERS ? "METERS" : "FEET",
+			   prefs.units.volume == units::LITER ? "LITER" : "CUFT",
+			   prefs.units.pressure == units::BAR ? "BAR" : "PSI",
+			   prefs.units.temperature == units::CELSIUS ? "CELSIUS" : prefs.units.temperature == units::FAHRENHEIT ? "FAHRENHEIT" : "KELVIN",
+			   prefs.units.weight == units::KG ? "KG" : "LBS",
+			   prefs.units.vertical_speed_time == units::SECONDS ? "SECONDS" : "MINUTES");
 }
 
 static void save_one_device(struct membuffer *b, const struct device *d)
@@ -884,7 +884,7 @@ static void save_one_device(struct membuffer *b, const struct device *d)
 	put_string(b, "\n");
 }
 
-static void save_one_fingerprint(struct membuffer *b, unsigned int i)
+static void save_one_fingerprint(struct membuffer *b, int i)
 {
 	char *fp_data = fp_get_data(&fingerprint_table, i);
 	put_format(b, "fingerprint model=%08x serial=%08x deviceid=%08x diveid=%08x data=\"%s\"\n",
@@ -904,7 +904,7 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	for (int i = 0; i < nr_devices(divelog.devices); i++)
 		save_one_device(&b, get_device(divelog.devices, i));
 	/* save the fingerprint data */
-	for (unsigned int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
+	for (int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
 		save_one_fingerprint(&b, i);
 
 	cond_put_format(divelog.autogroup, &b, "autogroup\n");
@@ -1105,18 +1105,13 @@ static git_object *try_to_find_parent(const char *hex_id, git_repository *repo)
 	return (git_object *)commit;
 }
 
-static int notify_cb(git_checkout_notify_t why,
+static int notify_cb(git_checkout_notify_t,
 	const char *path,
-	const git_diff_file *baseline,
-	const git_diff_file *target,
-	const git_diff_file *workdir,
-	void *payload)
+	const git_diff_file *,
+	const git_diff_file *,
+	const git_diff_file *,
+	void *)
 {
-	UNUSED(baseline);
-	UNUSED(target);
-	UNUSED(workdir);
-	UNUSED(payload);
-	UNUSED(why);
 	report_error("File '%s' does not match in working tree", path);
 	return 0; /* Continue with checkout */
 }
@@ -1131,7 +1126,7 @@ static git_tree *get_git_tree(git_repository *repo, git_object *parent)
 	return tree;
 }
 
-int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree)
+extern "C" int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 
@@ -1142,7 +1137,7 @@ int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree
 	return git_checkout_tree(repo, (git_object *) tree, &opts);
 }
 
-int get_authorship(git_repository *repo, git_signature **authorp)
+extern "C" int get_authorship(git_repository *repo, git_signature **authorp)
 {
 	if (git_signature_default(authorp, repo) == 0)
 		return 0;
@@ -1329,7 +1324,7 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 	return ret;
 }
 
-int do_git_save(struct git_info *info, bool select_only, bool create_empty)
+extern "C" int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 {
 	struct dir tree;
 	git_oid id;
@@ -1377,7 +1372,7 @@ int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 	return 0;
 }
 
-int git_save_dives(struct git_info *info, bool select_only)
+extern "C" int git_save_dives(struct git_info *info, bool select_only)
 {
 	/*
 	 * First, just try to open the local git repo without
