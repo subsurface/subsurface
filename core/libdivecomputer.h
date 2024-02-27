@@ -28,7 +28,6 @@ extern "C" {
 
 struct dive;
 struct divelog;
-struct dive_computer;
 struct devices;
 
 typedef struct {
