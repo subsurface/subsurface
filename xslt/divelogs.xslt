@@ -162,6 +162,11 @@
           <xsl:attribute name="depth">
             <xsl:value-of select="concat(., ' m')"/>
           </xsl:attribute>
+	  <xsl:if test="../TEMP != ''">
+            <xsl:attribute name="temp">
+              <xsl:value-of select="../TEMP"/>
+            </xsl:attribute>
+          </xsl:if>
         </sample>
       </xsl:for-each>
 
