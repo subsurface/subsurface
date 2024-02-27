@@ -55,7 +55,7 @@ static bool includes_string_caseinsensitive(const char *haystack, const char *ne
 	return 0;
 }
 
-void set_git_update_cb(int(*cb)(const char *))
+extern "C" void set_git_update_cb(int(*cb)(const char *))
 {
 	update_progress_cb = cb;
 }
@@ -66,7 +66,7 @@ void set_git_update_cb(int(*cb)(const char *))
 // proportional - some parts are based on compute performance, some on network speed)
 // they also provide information where in the process we are so we can analyze the log
 // to understand which parts of the process take how much time.
-int git_storage_update_progress(const char *text)
+extern "C" int git_storage_update_progress(const char *text)
 {
 	int ret = 0;
 	if (update_progress_cb)
@@ -76,10 +76,8 @@ int git_storage_update_progress(const char *text)
 
 // the checkout_progress_cb doesn't allow canceling of the operation
 // map the git progress to 20% of overall progress
-static void progress_cb(const char *path, size_t completed_steps, size_t total_steps, void *payload)
+static void progress_cb(const char *, size_t completed_steps, size_t total_steps, void *)
 {
-	UNUSED(path);
-	UNUSED(payload);
 	char buf[80];
 	snprintf(buf, sizeof(buf),  translate("gettextFromC", "Checkout from storage (%lu/%lu)"), completed_steps, total_steps);
 	(void)git_storage_update_progress(buf);
@@ -88,10 +86,8 @@ static void progress_cb(const char *path, size_t completed_steps, size_t total_s
 // this randomly assumes that 80% of the time is spent on the objects and 20% on the deltas
 // map the git progress to 20% of overall progress
 // if the user cancels the dialog this is passed back to libgit2
-static int transfer_progress_cb(const git_transfer_progress *stats, void *payload)
+static int transfer_progress_cb(const git_transfer_progress *stats, void *)
 {
-	UNUSED(payload);
-
 	static int last_done = -1;
 	char buf[80];
 	int done = 0;
@@ -119,16 +115,14 @@ static int transfer_progress_cb(const git_transfer_progress *stats, void *payloa
 }
 
 // the initial push to sync the repos is mapped to 10% of overall progress
-static int push_transfer_progress_cb(unsigned int current, unsigned int total, size_t bytes, void *payload)
+static int push_transfer_progress_cb(unsigned int current, unsigned int total, size_t, void *)
 {
-	UNUSED(bytes);
-	UNUSED(payload);
 	char buf[80];
 	snprintf(buf, sizeof(buf), translate("gettextFromC", "Transfer to storage (%d/%d)"), current, total);
 	return git_storage_update_progress(buf);
 }
 
-char *get_local_dir(const char *url, const char *branch)
+extern "C" char *get_local_dir(const char *url, const char *branch)
 {
 	SHA_CTX ctx;
 	unsigned char hash[20];
@@ -192,7 +186,7 @@ static int reset_to_remote(struct git_info *info, git_reference *local, const gi
 	if (verbose)
 		SSRF_INFO("git storage: reset to remote\n");
 
-	// If it's not checked out (bare or not HEAD), just update the reference */
+	/* If it's not checked out (bare or not HEAD), just update the reference */
 	if (git_repository_is_bare(info->repo) || git_branch_is_head(local) != 1) {
 		git_reference *out;
 
@@ -244,16 +238,12 @@ static bool exceeded_auth_attempts()
 	return false;
 }
 
-int credential_ssh_cb(git_cred **out,
-		  const char *url,
-		  const char *username_from_url,
+extern "C" int credential_ssh_cb(git_cred **out,
+		  const char *,
+		  const char *,
 		  unsigned int allowed_types,
-		  void *payload)
+		  void *)
 {
-	UNUSED(url);
-	UNUSED(payload);
-	UNUSED(username_from_url);
-
 	const char *username = prefs.cloud_storage_email_encoded;
 	const char *passphrase = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
 
@@ -283,17 +273,12 @@ int credential_ssh_cb(git_cred **out,
 	return GIT_EUSER;
 }
 
-int credential_https_cb(git_cred **out,
-			const char *url,
-			const char *username_from_url,
-			unsigned int allowed_types,
-			void *payload)
+extern "C" int credential_https_cb(git_cred **out,
+			const char *,
+			const char *,
+			unsigned int,
+			void *)
 {
-	UNUSED(url);
-	UNUSED(username_from_url);
-	UNUSED(payload);
-	UNUSED(allowed_types);
-
 	if (exceeded_auth_attempts())
 		return GIT_EUSER;
 
@@ -303,9 +288,8 @@ int credential_https_cb(git_cred **out,
 	return git_cred_userpass_plaintext_new(out, username, password);
 }
 
-int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payload)
+extern "C" int certificate_check_cb(git_cert *cert, int valid, const char *host, void *)
 {
-	UNUSED(payload);
 	if (verbose)
 		SSRF_INFO("git storage: certificate callback for host %s with validity %d\n", host, valid);
 	if ((same_string(host, CLOUD_HOST_GENERIC) ||
@@ -324,10 +308,8 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 	return valid ? 0 : -1;
 }
 
-static int update_remote(struct git_info *info, git_remote *origin, git_reference *local, git_reference *remote)
+static int update_remote(struct git_info *info, git_remote *origin, git_reference *local, git_reference *)
 {
-	UNUSED(remote);
-
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
 	git_strarray refspec;
 	const char *name = git_reference_name(local);
@@ -357,11 +339,10 @@ static int update_remote(struct git_info *info, git_remote *origin, git_referenc
 	return 0;
 }
 
-extern int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree);
+extern "C" int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree);
 
-static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_reference *remote, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
+static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_reference *, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
 {
-	UNUSED(remote);
 	git_tree *local_tree, *remote_tree, *base_tree;
 	git_commit *local_commit, *remote_commit, *base_commit;
 	git_index *merged_index;
@@ -439,39 +420,41 @@ static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_
 		git_index_conflict_iterator_free(iter);
 		report_error(translate("gettextFromC", "Remote storage and local data diverged. Cannot combine local and remote changes"));
 	}
-	git_oid merge_oid, commit_oid;
-	git_tree *merged_tree;
-	git_signature *author;
-	git_commit *commit;
+	{
+		git_oid merge_oid, commit_oid;
+		git_tree *merged_tree;
+		git_signature *author;
+		git_commit *commit;
 
-	if (git_index_write_tree_to(&merge_oid, merged_index, info->repo))
-		goto write_error;
-	if (git_tree_lookup(&merged_tree, info->repo, &merge_oid))
-		goto write_error;
-	if (get_authorship(info->repo, &author) < 0)
-		goto write_error;
-	const char *user_agent = subsurface_user_agent();
-	put_format(&msg, "Automatic merge\n\nCreated by %s\n", user_agent);
-	free((void *)user_agent);
-	if (git_commit_create_v(&commit_oid, info->repo, NULL, author, author, NULL, mb_cstring(&msg), merged_tree, 2, local_commit, remote_commit))
-		goto write_error;
-	if (git_commit_lookup(&commit, info->repo, &commit_oid))
-		goto write_error;
-	if (git_branch_is_head(*local_p) && !git_repository_is_bare(info->repo)) {
-		git_object *parent;
-		git_reference_peel(&parent, *local_p, GIT_OBJ_COMMIT);
-		if (update_git_checkout(info->repo, parent, merged_tree)) {
+		if (git_index_write_tree_to(&merge_oid, merged_index, info->repo))
 			goto write_error;
+		if (git_tree_lookup(&merged_tree, info->repo, &merge_oid))
+			goto write_error;
+		if (get_authorship(info->repo, &author) < 0)
+			goto write_error;
+		const char *user_agent = subsurface_user_agent();
+		put_format(&msg, "Automatic merge\n\nCreated by %s\n", user_agent);
+		free((void *)user_agent);
+		if (git_commit_create_v(&commit_oid, info->repo, NULL, author, author, NULL, mb_cstring(&msg), merged_tree, 2, local_commit, remote_commit))
+			goto write_error;
+		if (git_commit_lookup(&commit, info->repo, &commit_oid))
+			goto write_error;
+		if (git_branch_is_head(*local_p) && !git_repository_is_bare(info->repo)) {
+			git_object *parent;
+			git_reference_peel(&parent, *local_p, GIT_OBJ_COMMIT);
+			if (update_git_checkout(info->repo, parent, merged_tree)) {
+				goto write_error;
+			}
 		}
+		if (git_reference_set_target(local_p, *local_p, &commit_oid, "Subsurface merge event"))
+			goto write_error;
+		set_git_id(&commit_oid);
+		git_signature_free(author);
+		if (verbose)
+			SSRF_INFO("git storage: successfully merged repositories");
+		free_buffer(&msg);
+		return 0;
 	}
-	if (git_reference_set_target(local_p, *local_p, &commit_oid, "Subsurface merge event"))
-		goto write_error;
-	set_git_id(&commit_oid);
-	git_signature_free(author);
-	if (verbose)
-		SSRF_INFO("git storage: successfully merged repositories");
-	free_buffer(&msg);
-	return 0;
 
 diverged_error:
 	return report_error(translate("gettextFromC", "Remote storage and local data diverged"));
@@ -632,7 +615,7 @@ static int check_remote_status(struct git_info *info, git_remote *origin)
  * we test as part of the tests, it's a helper to not leave loads of dead branches on
  * the server)
  */
-void delete_remote_branch(git_repository *repo, const char *remote, const char *branch)
+extern "C" void delete_remote_branch(git_repository *repo, const char *remote, const char *branch)
 {
 	int error;
 	char *proxy_string;
@@ -678,7 +661,7 @@ void delete_remote_branch(git_repository *repo, const char *remote, const char *
 	return;
 }
 
-int sync_with_remote(struct git_info *info)
+extern "C" int sync_with_remote(struct git_info *info)
 {
 	int error;
 	git_remote *origin;
@@ -788,9 +771,8 @@ static bool update_local_repo(struct git_info *info)
 	return true;
 }
 
-static int repository_create_cb(git_repository **out, const char *path, int bare, void *payload)
+static int repository_create_cb(git_repository **out, const char *path, int bare, void *)
 {
-	UNUSED(payload);
 	char *proxy_string;
 	git_config *conf;
 
@@ -885,7 +867,7 @@ static bool create_local_repo(struct git_info *info)
 		SSRF_INFO("git storage: returned from git_clone() with return value %d\n", error);
 	if (error) {
 		SSRF_INFO("git storage: clone of %s failed", info->url);
-		char *msg = "";
+		const char *msg = "";
 		if (giterr_last()) {
 			 msg = giterr_last()->message;
 			 SSRF_INFO("git storage: error message was %s\n", msg);
@@ -1017,7 +999,7 @@ static void extract_username(struct git_info *info, char *url)
 	prefs.cloud_storage_email_encoded = strdup(info->username);
 }
 
-void cleanup_git_info(struct git_info *info)
+extern "C" void cleanup_git_info(struct git_info *info)
 {
 	if (info->repo)
 		git_repository_free(info->repo);
@@ -1038,7 +1020,7 @@ void cleanup_git_info(struct git_info *info)
  *    https://host/repo[branch]
  *    file://repo[branch]
  */
-bool is_git_repository(const char *filename, struct git_info *info)
+extern "C" bool is_git_repository(const char *filename, struct git_info *info)
 {
 	int flen, blen;
 	int offset = 1;
@@ -1137,7 +1119,7 @@ bool is_git_repository(const char *filename, struct git_info *info)
 	return true;
 }
 
-bool open_git_repository(struct git_info *info)
+extern "C" bool open_git_repository(struct git_info *info)
 {
 	/*
 	 * If the repository is local, just open it. There's nothing
@@ -1165,7 +1147,7 @@ bool open_git_repository(struct git_info *info)
 	return get_remote_repo(info);
 }
 
-int git_create_local_repo(const char *filename)
+extern "C" int git_create_local_repo(const char *filename)
 {
 	git_repository *repo;
 	char *path = strdup(filename);
