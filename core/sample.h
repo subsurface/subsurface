@@ -33,6 +33,9 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE        
 	bool in_deco;                     // bool       1    y/n      y/n                  this sample is part of deco
 	bool manually_entered;            // bool       1    y/n      y/n                  this sample was entered by the user,
 					  //                                               not calculated when planning a dive
+#ifdef __cplusplus
+	sample();			  // Default constructor
+#endif
 };	                                  // Total size of structure: 63 bytes, excluding padding at end
 
 extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);

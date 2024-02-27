@@ -66,7 +66,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/parse.c \
 	core/picture.c \
 	core/pictureobj.cpp \
-	core/sample.c \
+	core/sample.cpp \
 	core/import-suunto.c \
 	core/import-shearwater.c \
 	core/import-seac.c \
