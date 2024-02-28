@@ -19,7 +19,7 @@
 #include "device.h"
 #include "gettext.h"
 
-void init_parser_state(struct parser_state *state)
+extern "C" void init_parser_state(struct parser_state *state)
 {
 	memset(state, 0, sizeof(*state));
 	state->metric = true;
@@ -27,7 +27,7 @@ void init_parser_state(struct parser_state *state)
 	state->sample_rate = 0;
 }
 
-void free_parser_state(struct parser_state *state)
+extern "C" void free_parser_state(struct parser_state *state)
 {
 	free_dive(state->cur_dive);
 	free_trip(state->cur_trip);
@@ -53,63 +53,40 @@ void free_parser_state(struct parser_state *state)
  * If we don't have an explicit dive computer,
  * we use the implicit one that every dive has..
  */
-struct divecomputer *get_dc(struct parser_state *state)
+extern "C" struct divecomputer *get_dc(struct parser_state *state)
 {
 	return state->cur_dc ?: &state->cur_dive->dc;
-}
-
-/* Trim a character string by removing leading and trailing white space characters.
- * Parameter: a pointer to a null-terminated character string (buffer);
- * Return value: length of the trimmed string, excluding the terminal 0x0 byte
- * The original pointer (buffer) remains valid after this function has been called
- * and points to the trimmed string */
-int trimspace(char *buffer)
-{
-	int i, size, start, end;
-	size = strlen(buffer);
-
-	if (!size)
-		return 0;
-	for(start = 0; isspace(buffer[start]); start++)
-		if (start >= size) return 0;	// Find 1st character following leading whitespace
-	for(end = size - 1; isspace(buffer[end]); end--) // Find last character before trailing whitespace
-		if (end <= 0) return 0;
-	for(i = start; i <= end; i++)		// Move the nonspace characters to the start of the string
-		buffer[i-start] = buffer[i];
-	size = end - start + 1;
-	buffer[size] = 0x0;			// then terminate the string
-	return size;				// return string length
 }
 
 /*
  * Add a dive into the dive_table array
  */
-void record_dive_to_table(struct dive *dive, struct dive_table *table)
+extern "C" void record_dive_to_table(struct dive *dive, struct dive_table *table)
 {
 	add_to_dive_table(table, table->nr, fixup_dive(dive));
 }
 
-void start_match(const char *type, const char *name, char *buffer)
+extern "C" void start_match(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 2)
 		printf("Matching %s '%s' (%s)\n",
 		       type, name, buffer);
 }
 
-void nonmatch(const char *type, const char *name, char *buffer)
+extern "C" void nonmatch(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 1)
 		printf("Unable to match %s '%s' (%s)\n",
 		       type, name, buffer);
 }
 
-void event_start(struct parser_state *state)
+extern "C" void event_start(struct parser_state *state)
 {
 	memset(&state->cur_event, 0, sizeof(state->cur_event));
 	state->cur_event.deleted = 0;	/* Active */
 }
 
-void event_end(struct parser_state *state)
+extern "C" void event_end(struct parser_state *state)
 {
 	struct divecomputer *dc = get_dc(state);
 	if (state->cur_event.type == 123) {
@@ -159,20 +136,19 @@ void event_end(struct parser_state *state)
  * to make a dive valid, but if it has no location, no date and no
  * samples I'm pretty sure it's useless.
  */
-bool is_dive(struct parser_state *state)
+extern "C" bool is_dive(struct parser_state *state)
 {
 	return state->cur_dive &&
 		(state->cur_dive->dive_site || state->cur_dive->when || state->cur_dive->dc.samples);
 }
 
-void reset_dc_info(struct divecomputer *dc, struct parser_state *state)
+extern "C" void reset_dc_info(struct divecomputer *, struct parser_state *state)
 {
 	/* WARN: reset dc info does't touch the dc? */
-	UNUSED(dc);
 	state->lastcylinderindex = 0;
 }
 
-void reset_dc_settings(struct parser_state *state)
+extern "C" void reset_dc_settings(struct parser_state *state)
 {
 	free((void *)state->cur_settings.dc.model);
 	free((void *)state->cur_settings.dc.nickname);
@@ -185,7 +161,7 @@ void reset_dc_settings(struct parser_state *state)
 	state->cur_settings.dc.deviceid = 0;
 }
 
-void reset_fingerprint(struct parser_state *state)
+extern "C" void reset_fingerprint(struct parser_state *state)
 {
 	free((void *)state->cur_settings.fingerprint.data);
 	state->cur_settings.fingerprint.data = NULL;
@@ -195,22 +171,22 @@ void reset_fingerprint(struct parser_state *state)
 	state->cur_settings.fingerprint.fdiveid = 0;
 }
 
-void settings_start(struct parser_state *state)
+extern "C" void settings_start(struct parser_state *state)
 {
 	state->in_settings = true;
 }
 
-void settings_end(struct parser_state *state)
+extern "C" void settings_end(struct parser_state *state)
 {
 	state->in_settings = false;
 }
 
-void fingerprint_settings_start(struct parser_state *state)
+extern "C" void fingerprint_settings_start(struct parser_state *state)
 {
 	reset_fingerprint(state);
 }
 
-void fingerprint_settings_end(struct parser_state *state)
+extern "C" void fingerprint_settings_end(struct parser_state *state)
 {
 	create_fingerprint_node_from_hex(state->fingerprints,
 			state->cur_settings.fingerprint.model,
@@ -219,12 +195,13 @@ void fingerprint_settings_end(struct parser_state *state)
 			state->cur_settings.fingerprint.fdeviceid,
 			state->cur_settings.fingerprint.fdiveid);
 }
-void dc_settings_start(struct parser_state *state)
+
+extern "C" void dc_settings_start(struct parser_state *state)
 {
 	reset_dc_settings(state);
 }
 
-void dc_settings_end(struct parser_state *state)
+extern "C" void dc_settings_end(struct parser_state *state)
 {
 	create_device_node(state->log->devices,
 		state->cur_settings.dc.model,
@@ -233,16 +210,16 @@ void dc_settings_end(struct parser_state *state)
 	reset_dc_settings(state);
 }
 
-void dive_site_start(struct parser_state *state)
+extern "C" void dive_site_start(struct parser_state *state)
 {
 	if (state->cur_dive_site)
 		return;
 	state->taxonomy_category = -1;
 	state->taxonomy_origin = -1;
-	state->cur_dive_site = calloc(1, sizeof(struct dive_site));
+	state->cur_dive_site = (dive_site *)calloc(1, sizeof(struct dive_site));
 }
 
-void dive_site_end(struct parser_state *state)
+extern "C" void dive_site_end(struct parser_state *state)
 {
 	if (!state->cur_dive_site)
 		return;
@@ -257,28 +234,28 @@ void dive_site_end(struct parser_state *state)
 	state->cur_dive_site = NULL;
 }
 
-void filter_preset_start(struct parser_state *state)
+extern "C" void filter_preset_start(struct parser_state *state)
 {
 	if (state->cur_filter)
 		return;
 	state->cur_filter = alloc_filter_preset();
 }
 
-void filter_preset_end(struct parser_state *state)
+extern "C" void filter_preset_end(struct parser_state *state)
 {
 	add_filter_preset_to_table(state->cur_filter, state->log->filter_presets);
 	free_filter_preset(state->cur_filter);
 	state->cur_filter = NULL;
 }
 
-void fulltext_start(struct parser_state *state)
+extern "C" void fulltext_start(struct parser_state *state)
 {
 	if (!state->cur_filter)
 		return;
 	state->in_fulltext = true;
 }
 
-void fulltext_end(struct parser_state *state)
+extern "C" void fulltext_end(struct parser_state *state)
 {
 	if (!state->in_fulltext)
 		return;
@@ -290,14 +267,14 @@ void fulltext_end(struct parser_state *state)
 	state->in_fulltext = false;
 }
 
-void filter_constraint_start(struct parser_state *state)
+extern "C" void filter_constraint_start(struct parser_state *state)
 {
 	if (!state->cur_filter)
 		return;
 	state->in_filter_constraint = true;
 }
 
-void filter_constraint_end(struct parser_state *state)
+extern "C" void filter_constraint_end(struct parser_state *state)
 {
 	if (!state->in_filter_constraint)
 		return;
@@ -316,7 +293,7 @@ void filter_constraint_end(struct parser_state *state)
 	state->in_filter_constraint = false;
 }
 
-void dive_start(struct parser_state *state)
+extern "C" void dive_start(struct parser_state *state)
 {
 	if (state->cur_dive)
 		return;
@@ -326,7 +303,7 @@ void dive_start(struct parser_state *state)
 	state->o2pressure_sensor = 1;
 }
 
-void dive_end(struct parser_state *state)
+extern "C" void dive_end(struct parser_state *state)
 {
 	if (!state->cur_dive)
 		return;
@@ -343,7 +320,7 @@ void dive_end(struct parser_state *state)
 	state->cur_location.lon.udeg = 0;
 }
 
-void trip_start(struct parser_state *state)
+extern "C" void trip_start(struct parser_state *state)
 {
 	if (state->cur_trip)
 		return;
@@ -352,7 +329,7 @@ void trip_start(struct parser_state *state)
 	memset(&state->cur_tm, 0, sizeof(state->cur_tm));
 }
 
-void trip_end(struct parser_state *state)
+extern "C" void trip_end(struct parser_state *state)
 {
 	if (!state->cur_trip)
 		return;
@@ -360,32 +337,32 @@ void trip_end(struct parser_state *state)
 	state->cur_trip = NULL;
 }
 
-void picture_start(struct parser_state *state)
+extern "C" void picture_start(struct parser_state *state)
 {
 }
 
-void picture_end(struct parser_state *state)
+extern "C" void picture_end(struct parser_state *state)
 {
 	add_picture(&state->cur_dive->pictures, state->cur_picture);
 	/* dive_add_picture took ownership, we can just clear out copy of the data */
 	state->cur_picture = empty_picture;
 }
 
-cylinder_t *cylinder_start(struct parser_state *state)
+extern "C" cylinder_t *cylinder_start(struct parser_state *state)
 {
 	return add_empty_cylinder(&state->cur_dive->cylinders);
 }
 
-void cylinder_end(struct parser_state *state)
+extern "C" void cylinder_end(struct parser_state *state)
 {
 }
 
-void ws_start(struct parser_state *state)
+extern "C" void ws_start(struct parser_state *state)
 {
 	add_cloned_weightsystem(&state->cur_dive->weightsystems, empty_weightsystem);
 }
 
-void ws_end(struct parser_state *state)
+extern "C" void ws_end(struct parser_state *state)
 {
 }
 
@@ -415,7 +392,7 @@ static int sanitize_sensor_id(const struct dive *d, int nr)
  * or the second cylinder depending on what isn't an
  * oxygen cylinder.
  */
-void sample_start(struct parser_state *state)
+extern "C" void sample_start(struct parser_state *state)
 {
 	struct divecomputer *dc = get_dc(state);
 	struct sample *sample = prepare_sample(dc);
@@ -432,7 +409,7 @@ void sample_start(struct parser_state *state)
 	state->next_o2_sensor = 0;
 }
 
-void sample_end(struct parser_state *state)
+extern "C" void sample_end(struct parser_state *state)
 {
 	if (!state->cur_dive)
 		return;
@@ -441,7 +418,7 @@ void sample_end(struct parser_state *state)
 	state->cur_sample = NULL;
 }
 
-void divecomputer_start(struct parser_state *state)
+extern "C" void divecomputer_start(struct parser_state *state)
 {
 	struct divecomputer *dc;
 
@@ -452,7 +429,7 @@ void divecomputer_start(struct parser_state *state)
 
 	/* Did we already fill that in? */
 	if (dc->samples || dc->model || dc->when) {
-		struct divecomputer *newdc = calloc(1, sizeof(*newdc));
+		struct divecomputer *newdc = (divecomputer *)calloc(1, sizeof(*newdc));
 		if (newdc) {
 			dc->next = newdc;
 			dc = newdc;
@@ -464,19 +441,19 @@ void divecomputer_start(struct parser_state *state)
 	reset_dc_info(dc, state);
 }
 
-void divecomputer_end(struct parser_state *state)
+extern "C" void divecomputer_end(struct parser_state *state)
 {
 	if (!state->cur_dc->when)
 		state->cur_dc->when = state->cur_dive->when;
 	state->cur_dc = NULL;
 }
 
-void userid_start(struct parser_state *state)
+extern "C" void userid_start(struct parser_state *state)
 {
 	state->in_userid = true;
 }
 
-void userid_stop(struct parser_state *state)
+extern "C" void userid_stop(struct parser_state *state)
 {
 	state->in_userid = false;
 }
@@ -486,42 +463,64 @@ void userid_stop(struct parser_state *state)
  * therefore make sure to only pass in to NULL-initialized pointers or pointers
  * to owned strings
  */
-void utf8_string(char *buffer, void *_res)
+extern "C" void utf8_string(const char *buffer, void *_res)
 {
-	char **res = _res;
-	int size;
+	char **res = (char **)_res;
 	free(*res);
-	size = trimspace(buffer);
-	if(size)
-		*res = strdup(buffer);
+	while (isspace(*buffer))
+		++buffer;
+	if (!*buffer) {
+		*res = strdup("");
+		return;
+	}
+	const char *end = buffer + strlen(buffer);
+	while (isspace(end[-1]))
+		--end;
+	size_t len = end - buffer;
+	*res = (char *)malloc(len + 1);
+	memcpy(*res, buffer, len);
+	(*res)[len] = '\0';
 }
 
-void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
+void utf8_string_std(const char *buffer, std::string *res)
 {
-	char *buffer = ds_name;
-	char *to_free = NULL;
-	int size = trimspace(buffer);
-	if (size) {
+	while (isspace(*buffer))
+		++buffer;
+	if (!*buffer) {
+		res->clear();
+		return;
+	}
+	const char *end = buffer + strlen(buffer);
+	while (isspace(end[-1]))
+		--end;
+	*res = std::string(buffer, end - buffer);
+}
+
+extern "C" void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *state)
+{
+	const char *buffer = ds_name;
+	std::string trimmed = trimspace(buffer);
+	if (!trimmed.empty()) {
 		struct dive_site *ds = dive->dive_site;
 		if (!ds) {
 			// if the dive doesn't have a dive site, check if there's already a dive site by this name
-			ds = get_dive_site_by_name(buffer, state->log->sites);
+			ds = get_dive_site_by_name(trimmed.c_str(), state->log->sites);
 		}
 		if (ds) {
 			// we have a dive site, let's hope there isn't a different name
 			if (empty_string(ds->name)) {
-				ds->name = copy_string(buffer);
-			} else if (!same_string(ds->name, buffer)) {
+				ds->name = copy_string(trimmed.c_str());
+			} else if (trimmed != ds->name) {
 				// if it's not the same name, it's not the same dive site
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				struct dive_site *exact_match = get_dive_site_by_gps_and_name(buffer, &ds->location, state->log->sites);
+				struct dive_site *exact_match = get_dive_site_by_gps_and_name(trimmed.c_str(), &ds->location, state->log->sites);
 				if (exact_match) {
 					unregister_dive_from_dive_site(dive);
 					add_dive_to_dive_site(dive, exact_match);
 				} else {
-					struct dive_site *newds = create_dive_site(buffer, state->log->sites);
+					struct dive_site *newds = create_dive_site(trimmed.c_str(), state->log->sites);
 					unregister_dive_from_dive_site(dive);
 					add_dive_to_dive_site(dive, newds);
 					if (has_location(&state->cur_location)) {
@@ -538,13 +537,12 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				add_dive_to_dive_site(dive, ds);
 			}
 		} else {
-			add_dive_to_dive_site(dive, create_dive_site(buffer, state->log->sites));
+			add_dive_to_dive_site(dive, create_dive_site(trimmed.c_str(), state->log->sites));
 		}
 	}
-	free(to_free);
 }
 
-int atoi_n(char *ptr, unsigned int len)
+extern "C" int atoi_n(char *ptr, unsigned int len)
 {
 	if (len < 10) {
 		char buf[10];

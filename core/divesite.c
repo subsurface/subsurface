@@ -62,7 +62,7 @@ struct dive_site *get_dive_site_by_gps(const location_t *loc, struct dive_site_t
 /* to avoid a bug where we have two dive sites with different name and the same GPS coordinates
  * and first get the gps coordinates (reading a V2 file) and happen to get back "the other" name,
  * this function allows us to verify if a very specific name/GPS combination already exists */
-struct dive_site *get_dive_site_by_gps_and_name(char *name, const location_t *loc, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_gps_and_name(const char *name, const location_t *loc, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds;

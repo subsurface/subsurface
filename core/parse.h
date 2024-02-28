@@ -102,7 +102,6 @@ extern "C" {
 void init_parser_state(struct parser_state *state);
 void free_parser_state(struct parser_state *state);
 
-int trimspace(char *buffer);
 void start_match(const char *type, const char *name, char *buffer);
 void nonmatch(const char *type, const char *name, char *buffer);
 void event_start(struct parser_state *state);
@@ -143,9 +142,9 @@ void divecomputer_start(struct parser_state *state);
 void divecomputer_end(struct parser_state *state);
 void userid_start(struct parser_state *state);
 void userid_stop(struct parser_state *state);
-void utf8_string(char *buffer, void *_res);
+void utf8_string(const char *buffer, void *_res);
 
-void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state);
+void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *state);
 int atoi_n(char *ptr, unsigned int len);
 
 void parse_xml_init(void);
@@ -161,6 +160,8 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buf, in
 int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log);
 #ifdef __cplusplus
 }
+#include <string>
+std::string trimspace(const char *buffer);
 #endif
 
 #endif

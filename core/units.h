@@ -333,12 +333,6 @@ struct units {
 		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false         \
         }
 
-#define IMPERIAL_UNITS                                                                                     \
-        {                                                                                                  \
-	        .length = FEET, .volume = CUFT, .pressure = PSI, .temperature = FAHRENHEIT, .weight = LBS, \
-		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false         \
-        }
-
 extern const struct units SI_units, IMPERIAL_units;
 
 extern const struct units *get_units(void);

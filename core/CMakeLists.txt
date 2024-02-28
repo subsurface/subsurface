@@ -134,8 +134,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	ostctools.c
 	owning_ptrs.h
 	parse-gpx.cpp
-	parse-xml.c
-	parse.c
+	parse-xml.cpp
+	parse.cpp
 	parse.h
 	picture.c
 	picture.h

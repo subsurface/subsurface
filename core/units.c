@@ -3,6 +3,15 @@
 #include "gettext.h"
 #include "pref.h"
 
+#define IMPERIAL_UNITS                                                                                     \
+        {                                                                                                  \
+	        .length = FEET, .volume = CUFT, .pressure = PSI, .temperature = FAHRENHEIT, .weight = LBS, \
+		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false         \
+        }
+
+const struct units SI_units = SI_UNITS;
+const struct units IMPERIAL_units = IMPERIAL_UNITS;
+
 int get_pressure_units(int mb, const char **units)
 {
 	int pressure;
