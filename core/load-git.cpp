@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <git2.h>
+#include <memory>
 #include <libdivecomputer/parser.h>
 
 #include "gettext.h"
@@ -32,7 +33,8 @@
 
 #define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
-const char *saved_git_id = NULL;
+// TODO: Should probably be moved to struct divelog to allow for multi-document
+std::string saved_git_id;
 
 struct git_parser_state {
 	git_repository *repo;
@@ -1878,8 +1880,7 @@ static int load_dives_from_tree(git_repository *repo, git_tree *tree, struct git
 
 extern "C" void clear_git_id(void)
 {
-	free((void *)saved_git_id);
-	saved_git_id = NULL;
+	saved_git_id.clear();
 }
 
 extern "C" void set_git_id(const struct git_oid *id)
@@ -1887,8 +1888,7 @@ extern "C" void set_git_id(const struct git_oid *id)
 	char git_id_buffer[GIT_OID_HEXSZ + 1];
 
 	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), id);
-	free((void *)saved_git_id);
-	saved_git_id = strdup(git_id_buffer);
+	saved_git_id = git_id_buffer;
 }
 
 static int find_commit(git_repository *repo, const char *branch, git_commit **commit_p)
