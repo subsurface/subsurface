@@ -41,7 +41,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/qt-init.cpp \
 	core/subsurfacesysinfo.cpp \
 	core/windowtitleupdate.cpp \
-	core/file.c \
+	core/file.cpp \
 	core/fulltext.cpp \
 	core/subsurfacestartup.cpp \
 	core/pref.c \
