@@ -173,7 +173,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	strtod.c
 	subsurface-float.h
 	subsurface-string.h
-	subsurfacestartup.c
+	subsurfacestartup.cpp
 	subsurfacestartup.h
 	subsurfacesysinfo.cpp
 	subsurfacesysinfo.h
