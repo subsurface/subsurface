@@ -89,7 +89,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	exif.cpp
 	exif.h
 	extradata.h
-	file.c
+	file.cpp
 	file.h
 	filterconstraint.cpp
 	filterconstraint.h

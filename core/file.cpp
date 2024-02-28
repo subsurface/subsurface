@@ -31,7 +31,7 @@
 #define O_BINARY 0
 #endif
 
-int readfile(const char *filename, struct memblock *mem)
+extern "C" int readfile(const char *filename, struct memblock *mem)
 {
 	int ret, fd;
 	struct stat st;
@@ -52,7 +52,7 @@ int readfile(const char *filename, struct memblock *mem)
 	ret = 0;
 	if (!st.st_size)
 		goto out;
-	buf = malloc(st.st_size + 1);
+	buf = (char *)malloc(st.st_size + 1);
 	ret = -1;
 	errno = ENOMEM;
 	if (!buf)
@@ -80,19 +80,18 @@ out:
 static void zip_read(struct zip_file *file, const char *filename, struct divelog *log)
 {
 	int size = 1024, n, read = 0;
-	char *mem = malloc(size);
+	std::vector<char> mem(size);
 
-	while ((n = zip_fread(file, mem + read, size - read)) > 0) {
+	while ((n = zip_fread(file, mem.data() + read, size - read)) > 0) {
 		read += n;
 		size = read * 3 / 2;
-		mem = realloc(mem, size);
+		mem.resize(size);
 	}
 	mem[read] = 0;
-	(void) parse_xml_buffer(filename, mem, read, log, NULL);
-	free(mem);
+	(void) parse_xml_buffer(filename, mem.data(), read, log, NULL);
 }
 
-int try_to_open_zip(const char *filename, struct divelog *log)
+extern "C" int try_to_open_zip(const char *filename, struct divelog *log)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
@@ -119,11 +118,8 @@ int try_to_open_zip(const char *filename, struct divelog *log)
 	return success;
 }
 
-static int db_test_func(void *param, int columns, char **data, char **column)
+static int db_test_func(void *, int, char **data, char **)
 {
-	UNUSED(param);
-	UNUSED(columns);
-	UNUSED(column);
 	return *data[0] == '0';
 }
 
@@ -149,7 +145,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Suunto DM5 database format */
 	retval = sqlite3_exec(handle, dm5_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_dm5_buffer(handle, filename, mem->buffer, mem->size, log);
+		retval = parse_dm5_buffer(handle, filename, (char *)mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -157,7 +153,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Suunto DM4 database format */
 	retval = sqlite3_exec(handle, dm4_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_dm4_buffer(handle, filename, mem->buffer, mem->size, log);
+		retval = parse_dm4_buffer(handle, filename, (char *)mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -165,7 +161,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Shearwater database format */
 	retval = sqlite3_exec(handle, shearwater_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_shearwater_buffer(handle, filename, mem->buffer, mem->size, log);
+		retval = parse_shearwater_buffer(handle, filename, (char *)mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -173,7 +169,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Shearwater cloud database format */
 	retval = sqlite3_exec(handle, shearwater_cloud_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_shearwater_cloud_buffer(handle, filename, mem->buffer, mem->size, log);
+		retval = parse_shearwater_cloud_buffer(handle, filename, (char *)mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -181,7 +177,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Atomic Cobalt database format */
 	retval = sqlite3_exec(handle, cobalt_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_cobalt_buffer(handle, filename, mem->buffer, mem->size, log);
+		retval = parse_cobalt_buffer(handle, filename, (char *)mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -189,7 +185,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Divinglog database format */
 	retval = sqlite3_exec(handle, divinglog_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_divinglog_buffer(handle, filename, mem->buffer, mem->size, log);
+		retval = parse_divinglog_buffer(handle, filename, (char *)mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -197,7 +193,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 	/* Testing if DB schema resembles Seac database format */
 	retval = sqlite3_exec(handle, seacsync_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_seac_buffer(handle, filename, mem->buffer, mem->size, log);
+		retval = parse_seac_buffer(handle, filename, (char *)mem->buffer, mem->size, log);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -227,9 +223,10 @@ static int try_to_open_db(const char *filename, struct memblock *mem, struct div
 static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem, struct divelog *log)
 {
 	// hack to be able to provide a comment for the translated string
-	static char *csv_warning = QT_TRANSLATE_NOOP3("gettextFromC",
-						      "Cannot open CSV file %s; please use Import log file dialog",
-						      "'Import log file' should be the same text as corresponding label in Import menu");
+	static struct { const char *s; const char *comment; } csv_warning =
+		QT_TRANSLATE_NOOP3("gettextFromC",
+				   "Cannot open CSV file %s; please use Import log file dialog",
+				   "'Import log file' should be the same text as corresponding label in Import menu");
 
 	/* Suunto Dive Manager files: SDE, ZIP; divelogs.de files: DLD */
 	if (!strcasecmp(fmt, "SDE") || !strcasecmp(fmt, "ZIP") || !strcasecmp(fmt, "DLD"))
@@ -237,7 +234,7 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 
 	/* CSV files */
 	if (!strcasecmp(fmt, "CSV"))
-		return report_error(translate("gettextFromC", csv_warning), filename);
+		return report_error(translate("gettextFromC", csv_warning.s), filename);
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
 	if (!strcasecmp(fmt, "CAN"))
 		return try_to_open_cochran(filename, mem, log);
@@ -257,17 +254,17 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 static int parse_file_buffer(const char *filename, struct memblock *mem, struct divelog *log)
 {
 	int ret;
-	char *fmt = strrchr(filename, '.');
+	const char *fmt = strrchr(filename, '.');
 	if (fmt && (ret = open_by_filename(filename, fmt + 1, mem, log)) != 0)
 		return ret;
 
 	if (!mem->size || !mem->buffer)
 		return report_error("Out of memory parsing file %s\n", filename);
 
-	return parse_xml_buffer(filename, mem->buffer, mem->size, log, NULL);
+	return parse_xml_buffer(filename, (char *)mem->buffer, mem->size, log, NULL);
 }
 
-bool remote_repo_uptodate(const char *filename, struct git_info *info)
+extern "C" bool remote_repo_uptodate(const char *filename, struct git_info *info)
 {
 	char *current_sha = copy_string(saved_git_id);
 
@@ -286,11 +283,11 @@ bool remote_repo_uptodate(const char *filename, struct git_info *info)
 	return false;
 }
 
-int parse_file(const char *filename, struct divelog *log)
+extern "C" int parse_file(const char *filename, struct divelog *log)
 {
 	struct git_info info;
 	struct memblock mem;
-	char *fmt;
+	const char *fmt;
 	int ret;
 
 	if (is_git_repository(filename, &info)) {
@@ -330,7 +327,7 @@ int parse_file(const char *filename, struct divelog *log)
 
 	/* Divesoft Freedom */
 	if (fmt && (!strcasecmp(fmt + 1, "DLF"))) {
-		ret = parse_dlf_buffer(mem.buffer, mem.size, log);
+		ret = parse_dlf_buffer((unsigned char *)mem.buffer, mem.size, log);
 		free(mem.buffer);
 		return ret;
 	}
@@ -339,18 +336,15 @@ int parse_file(const char *filename, struct divelog *log)
 	if (fmt && !strcasecmp(fmt + 1, "LOG")) {
 		struct memblock wl_mem;
 		const char *t = strrchr(filename, '.');
-		char *wl_name = memcpy(calloc(t - filename + 1, 1), filename, t - filename);
-		wl_name = realloc(wl_name, strlen(wl_name) + 5);
-		wl_name = strcat(wl_name, ".add");
-		if((ret = readfile(wl_name, &wl_mem)) < 0) {
-			fprintf(stderr, "No file %s found. No WLog extensions.\n", wl_name);
+		std::string wl_name = std::string(filename, t - filename) + ".add";
+		if((ret = readfile(wl_name.c_str(), &wl_mem)) < 0) {
+			fprintf(stderr, "No file %s found. No WLog extensions.\n", wl_name.c_str());
 			ret = datatrak_import(&mem, NULL, log);
 		} else {
 			ret = datatrak_import(&mem, &wl_mem, log);
 			free(wl_mem.buffer);
 		}
 		free(mem.buffer);
-		free(wl_name);
 		return ret;
 	}
 
