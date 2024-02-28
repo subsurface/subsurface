@@ -159,7 +159,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	save-html.c
 	save-html.h
 	save-profiledata.c
-	save-xml.c
+	save-xml.cpp
 	selection.cpp
 	selection.h
 	sha1.c

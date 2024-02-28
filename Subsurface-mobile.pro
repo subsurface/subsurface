@@ -82,7 +82,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/datatrak.c \
 	core/ostctools.c \
 	core/planner.c \
-	core/save-xml.c \
+	core/save-xml.cpp \
 	core/cochran.c \
 	core/deco.c \
 	core/divesite.c \
