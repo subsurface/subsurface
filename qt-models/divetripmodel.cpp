@@ -287,13 +287,13 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 										      formatDiveDuration(d));
 	case MobileListModel::RatingRole: return d->rating;
 	case MobileListModel::VizRole: return d->visibility;
-	case MobileListModel::SuitRole: return d->suit;
+	case MobileListModel::SuitRole: return QString(d->suit);
 	case MobileListModel::AirTempRole: return get_temperature_string(d->airtemp, true);
 	case MobileListModel::WaterTempRole: return get_temperature_string(d->watertemp, true);
 	case MobileListModel::SacRole: return formatSac(d);
 	case MobileListModel::SumWeightRole: return formatSumWeight(d);
-	case MobileListModel::DiveGuideRole: return d->diveguide;
-	case MobileListModel::BuddyRole: return d->buddy;
+	case MobileListModel::DiveGuideRole: return QString(d->diveguide);
+	case MobileListModel::BuddyRole: return QString(d->buddy);
 	case MobileListModel::TagsRole: return get_taglist_string(d->tag_list);
 	case MobileListModel::NotesRole: return formatNotes(d);
 	case MobileListModel::GpsRole: return formatDiveGPS(d);
