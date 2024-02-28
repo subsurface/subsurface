@@ -17,7 +17,7 @@ extern void show_computer_list();
 
 int quit, force_root, ignore_bt;
 #ifdef SUBSURFACE_MOBILE_DESKTOP
-char *testqml = NULL;
+std::string testqml;
 #endif
 
 /*
@@ -169,8 +169,7 @@ extern "C" void parse_argument(const char *arg)
 			}
 #elif SUBSURFACE_MOBILE_DESKTOP
 			if (strncmp(arg, "--testqml=", sizeof("--testqml=") - 1) == 0) {
-				testqml = (char *)malloc(strlen(arg) - sizeof("--testqml=") + 1);
-				strcpy(testqml, arg + sizeof("--testqml=") - 1);
+				testqml = arg + sizeof("--testqml=") - 1;
 				return;
 			}
 #endif
