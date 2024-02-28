@@ -43,7 +43,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/windowtitleupdate.cpp \
 	core/file.c \
 	core/fulltext.cpp \
-	core/subsurfacestartup.c \
+	core/subsurfacestartup.cpp \
 	core/pref.c \
 	core/profile.c \
 	core/device.cpp \
