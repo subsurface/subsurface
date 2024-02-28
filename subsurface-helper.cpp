@@ -133,8 +133,8 @@ void run_mobile_ui(double initial_font_size)
 	qmlRegisterUncreatableType<QMLManager>("org.subsurfacedivelog.mobile",1,0,"ExportType","Enum is not a type");
 
 #ifdef SUBSURFACE_MOBILE_DESKTOP
-	if (testqml) {
-		QString fileLoad(testqml);
+	if (!testqml.empty()) {
+		QString fileLoad(testqml.c_str());
 		fileLoad += "/main.qml";
 		engine.load(QUrl(fileLoad));
 	} else {
