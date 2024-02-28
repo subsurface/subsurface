@@ -1193,19 +1193,19 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 		return report_error("Invalid branch name '%s'", info->branch);
 	case GIT_ENOTFOUND: /* We'll happily create it */
 		ref = NULL;
-		parent = try_to_find_parent(saved_git_id, info->repo);
+		parent = try_to_find_parent(saved_git_id.c_str(), info->repo);
 		break;
 	case 0:
 		if (git_reference_peel(&parent, ref, GIT_OBJ_COMMIT))
 			return report_error("Unable to look up parent in branch '%s'", info->branch);
 
-		if (saved_git_id) {
+		if (!saved_git_id.empty()) {
 			if (existing_filename && verbose)
 				SSRF_INFO("existing filename %s\n", existing_filename);
 			const git_oid *id = git_commit_id((const git_commit *) parent);
 			/* if we are saving to the same git tree we got this from, let's make
 			 * sure there is no confusion */
-			if (same_string(existing_filename, info->url) && git_oid_strcmp(id, saved_git_id))
+			if (same_string(existing_filename, info->url) && git_oid_strcmp(id, saved_git_id.c_str()))
 				return report_error("The git branch does not match the git parent of the source");
 		}
 
@@ -1321,7 +1321,7 @@ extern "C" int do_git_save(struct git_info *info, bool select_only, bool create_
 	 * Check if we can do the cached writes - we need to
 	 * have the original git commit we loaded in the repo
 	 */
-	cached_ok = try_to_find_parent(saved_git_id, info->repo);
+	cached_ok = try_to_find_parent(saved_git_id.c_str(), info->repo);
 
 	/* Start with an empty tree: no subdirectories, no files */
 	if (git_treebuilder_new(&tree.files, info->repo, NULL))

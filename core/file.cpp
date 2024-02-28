@@ -266,20 +266,18 @@ static int parse_file_buffer(const char *filename, struct memblock *mem, struct 
 
 extern "C" bool remote_repo_uptodate(const char *filename, struct git_info *info)
 {
-	char *current_sha = copy_string(saved_git_id);
+	std::string current_sha = saved_git_id;
 
 	if (is_git_repository(filename, info) && open_git_repository(info)) {
 		const char *sha = get_sha(info->repo, info->branch);
-		if (!empty_string(sha) && same_string(sha, current_sha)) {
+		if (!sha.empty() && current_sha == sha) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
-			free(current_sha);
 			return true;
 		}
 	}
 
 	// Either the repository couldn't be opened, or the SHA couldn't
 	// be found.
-	free(current_sha);
 	return false;
 }
 
