@@ -41,13 +41,13 @@ struct git_parser_state {
 	struct divecomputer *active_dc;
 	struct dive *active_dive;
 	dive_trip_t *active_trip;
-	char *fulltext_mode;
-	char *fulltext_query;
-	char *filter_constraint_type;
-	char *filter_constraint_string_mode;
-	char *filter_constraint_range_mode;
+	std::string fulltext_mode;
+	std::string fulltext_query;
+	std::string filter_constraint_type;
+	std::string filter_constraint_string_mode;
+	std::string filter_constraint_range_mode;
 	bool filter_constraint_negate;
-	char *filter_constraint_data;
+	std::string filter_constraint_data;
 	struct picture active_pic;
 	struct dive_site *active_site;
 	struct filter_preset *active_filter;
@@ -385,7 +385,7 @@ static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *)
 
 static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char *value)
 {
-	cylinder_t *cylinder = (cylinder *)_cylinder;
+	cylinder_t *cylinder = (cylinder_t *)_cylinder;
 	if (!strcmp(key, "vol")) {
 		cylinder->type.size = get_volume(value);
 		return;
@@ -457,7 +457,7 @@ static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_pa
 
 static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *value)
 {
-	weightsystem_t *ws = (wightsystem *)_ws;
+	weightsystem_t *ws = (weightsystem_t *)_ws;
 	if (!strcmp(key, "weight")) {
 		ws->weight = get_weight(value);
 		return;
@@ -528,7 +528,7 @@ report_error("Unmatched action '%s'", line);
 /* FIXME! We should do the array thing here too. */
 static void parse_sample_keyvalue(void *_sample, const char *key, const char *value)
 {
-	struct sample *sample = (sample *)_sample;
+	struct sample *sample = (struct sample *)_sample;
 
 	if (!strcmp(key, "sensor")) {
 		sample->sensor[0] = atoi(value);
@@ -1163,18 +1163,15 @@ static void parse_filter_preset_constraint_keyvalue(void *_state, const char *ke
 {
 	struct git_parser_state *state = (git_parser_state *)_state;
 	if (!strcmp(key, "type")) {
-		free(state->filter_constraint_type);
-		state->filter_constraint_type = strdup(value);
+		state->filter_constraint_type = value;
 		return;
 	}
 	if (!strcmp(key, "rangemode")) {
-		free(state->filter_constraint_range_mode);
-		state->filter_constraint_range_mode = strdup(value);
+		state->filter_constraint_range_mode = value;
 		return;
 	}
 	if (!strcmp(key, "stringmode")) {
-		free(state->filter_constraint_string_mode);
-		state->filter_constraint_string_mode = strdup(value);
+		state->filter_constraint_string_mode = value;
 		return;
 	}
 	if (!strcmp(key, "negate")) {
@@ -1182,8 +1179,7 @@ static void parse_filter_preset_constraint_keyvalue(void *_state, const char *ke
 		return;
 	}
 	if (!strcmp(key, "data")) {
-		free(state->filter_constraint_data);
-		state->filter_constraint_data = strdup(value);
+		state->filter_constraint_data = value;
 		return;
 	}
 
@@ -1201,30 +1197,26 @@ static void parse_filter_preset_constraint(char *line, struct membuffer *str, st
 		line = parse_keyvalue_entry(parse_filter_preset_constraint_keyvalue, state, line, str);
 	}
 
-	filter_preset_add_constraint(state->active_filter, state->filter_constraint_type, state->filter_constraint_string_mode,
-				     state->filter_constraint_range_mode, state->filter_constraint_negate, state->filter_constraint_data);
-	free(state->filter_constraint_type);
-	free(state->filter_constraint_string_mode);
-	free(state->filter_constraint_range_mode);
-	free(state->filter_constraint_data);
-	state->filter_constraint_type = NULL;
-	state->filter_constraint_string_mode = NULL;
-	state->filter_constraint_range_mode = NULL;
+	filter_preset_add_constraint(state->active_filter, state->filter_constraint_type.c_str(),
+				     state->filter_constraint_string_mode.c_str(),
+				     state->filter_constraint_range_mode.c_str(),
+				     state->filter_constraint_negate, state->filter_constraint_data.c_str());
+	state->filter_constraint_type.clear();
+	state->filter_constraint_string_mode.clear();
+	state->filter_constraint_range_mode.clear();
 	state->filter_constraint_negate = false;
-	state->filter_constraint_data = NULL;
+	state->filter_constraint_data.clear();
 }
 
 static void parse_filter_preset_fulltext_keyvalue(void *_state, const char *key, const char *value)
 {
 	struct git_parser_state *state = (git_parser_state *)_state;
 	if (!strcmp(key, "mode")) {
-		free(state->fulltext_mode);
-		state->fulltext_mode = strdup(value);
+		state->fulltext_mode = value;
 		return;
 	}
 	if (!strcmp(key, "query")) {
-		free(state->fulltext_query);
-		state->fulltext_query = strdup(value);
+		state->fulltext_query = value;
 		return;
 	}
 
@@ -1242,11 +1234,9 @@ static void parse_filter_preset_fulltext(char *line, struct membuffer *str, stru
 		line = parse_keyvalue_entry(parse_filter_preset_fulltext_keyvalue, state, line, str);
 	}
 
-	filter_preset_set_fulltext(state->active_filter, state->fulltext_query, state->fulltext_mode);
-	free(state->fulltext_mode);
-	free(state->fulltext_query);
-	state->fulltext_mode = NULL;
-	state->fulltext_query = NULL;
+	filter_preset_set_fulltext(state->active_filter, state->fulltext_query.c_str(), state->fulltext_mode.c_str());
+	state->fulltext_mode.clear();
+	state->fulltext_query.clear();
 }
 
 static void parse_filter_preset_name(char *, struct membuffer *str, struct git_parser_state *state)
