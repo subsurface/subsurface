@@ -37,22 +37,22 @@
 std::string saved_git_id;
 
 struct git_parser_state {
-	git_repository *repo;
-	struct divecomputer *active_dc;
-	struct dive *active_dive;
-	dive_trip_t *active_trip;
+	git_repository *repo = nullptr;
+	struct divecomputer *active_dc = nullptr;
+	struct dive *active_dive = nullptr;
+	dive_trip_t *active_trip = nullptr;
 	std::string fulltext_mode;
 	std::string fulltext_query;
 	std::string filter_constraint_type;
 	std::string filter_constraint_string_mode;
 	std::string filter_constraint_range_mode;
-	bool filter_constraint_negate;
+	bool filter_constraint_negate = false;
 	std::string filter_constraint_data;
-	struct picture active_pic;
-	struct dive_site *active_site;
-	struct filter_preset *active_filter;
-	struct divelog *log;
-	int o2pressure_sensor;
+	struct picture active_pic = { 0 };
+	struct dive_site *active_site = nullptr;
+	struct filter_preset *active_filter = nullptr;
+	struct divelog *log = nullptr;
+	int o2pressure_sensor = 0;
 };
 
 struct keyword_action {
@@ -203,6 +203,7 @@ static void parse_dive_location(char *, struct membuffer *str, struct git_parser
 	} else {
 		// we already had a dive site linked to the dive
 		if (empty_string(ds->name)) {
+			free(ds->name); // empty_string could mean pointer to a 0-byte!
 			ds->name = strdup(name);
 		} else {
 			// and that dive site had a name. that's weird - if our name is different, add it to the notes
@@ -320,42 +321,34 @@ static void parse_site_geo(char *line, struct membuffer *str, struct git_parser_
 			      mb_cstring(str), (taxonomy_origin)origin);
 }
 
-static char *remove_from_front(struct membuffer *str, int len)
+static std::string remove_from_front(struct membuffer *str, int len)
 {
-	char *prefix;
+	len = std::min(len, (int)str->len);
 
-	if ((unsigned int)len >= str->len)
-		return detach_cstring(str);
-
-	/* memdup() - oh well */
-	prefix = (char *)malloc(len);
-	if (!prefix) {
-		report_error("git-load: out of memory");
-		return NULL;
-	}
-	memcpy(prefix, str->buffer, len);
+	std::string prefix(str->buffer, len);
 
 	str->len -= len;
 	memmove(str->buffer, str->buffer+len, str->len);
+
 	return prefix;
 }
 
-static char *pop_cstring(struct membuffer *str, const char *err)
+static std::string pop_cstring(struct membuffer *str, const char *err)
 {
 	int len;
 
 	if (!str) {
 		report_error("git-load: string marker without any strings ('%s')", err);
-		return strdup("");
+		return std::string();
 	}
 	len = strlen(mb_cstring(str)) + 1;
 	return remove_from_front(str, len);
 }
 
 /* Parse key=val parts of samples and cylinders etc */
-static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *), void *fndata, char *line, struct membuffer *str)
+static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const std::string &), void *fndata, char *line, struct membuffer *str)
 {
-	char *key = line, *val, c;
+	char *key = line, c;
 
 	while ((c = *line) != 0) {
 		if (isspace(c) || c == '=')
@@ -365,64 +358,65 @@ static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *)
 
 	if (c == '=')
 		*line++ = 0;
-	val = line;
 
-	/* Did we get a string? Take it from the list of strings */
-	if (*val == '"')
-		val = pop_cstring(str, key);
-
+	char *start_val = line;
 	while ((c = *line) != 0) {
 		if (isspace(c))
 			break;
 		line++;
 	}
+
+	/* Did we get a string? Take it from the list of strings */
+	std::string val = start_val[0] == '"' ? pop_cstring(str, key)
+					      : std::string(start_val, line - start_val);
+
 	if (c)
-		*line++ = 0;
+		line++;
 
 	fn(fndata, key, val);
 	return line;
 }
 
-static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char *value)
+static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const std::string &value)
 {
 	cylinder_t *cylinder = (cylinder_t *)_cylinder;
 	if (!strcmp(key, "vol")) {
-		cylinder->type.size = get_volume(value);
+		cylinder->type.size = get_volume(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "workpressure")) {
-		cylinder->type.workingpressure = get_pressure(value);
+		cylinder->type.workingpressure = get_pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "description")) {
-		cylinder->type.description = value;
+		cylinder->type.description = strdup(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "o2")) {
-		cylinder->gasmix.o2 = get_fraction(value);
+		cylinder->gasmix.o2 = get_fraction(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "he")) {
-		cylinder->gasmix.he = get_fraction(value);
+		cylinder->gasmix.he = get_fraction(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "start")) {
-		cylinder->start = get_pressure(value);
+		cylinder->start = get_pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "end")) {
-		cylinder->end = get_pressure(value);
+		cylinder->end = get_pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "use")) {
-		cylinder->cylinder_use = cylinderuse_from_text(value);
+		cylinder->cylinder_use = cylinderuse_from_text(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "depth")) {
-		cylinder->depth = get_depth(value);
+		cylinder->depth = get_depth(value.c_str());
 		return;
 	}
-	if ((*key == 'm') && strlen(value) == 0) {
+	if ((*key == 'm') && value.empty()) {
 		/* found a bogus key/value pair in the cylinder, consisting
 		 * of a lonely "m" or m<single quote> without value. This
 		 * is caused by commit 46004c39e26 and fixed in 48d9c8eb6eb0 and
@@ -434,7 +428,7 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char
 		 */
 		return;
 	}
-	report_error("Unknown cylinder key/value pair (%s/%s)", key, value);
+	report_error("Unknown cylinder key/value pair (%s/%s)", key, value.c_str());
 }
 
 static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_parser_state *state)
@@ -455,18 +449,18 @@ static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_pa
 	add_cylinder(&state->active_dive->cylinders, state->active_dive->cylinders.nr, cylinder);
 }
 
-static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *value)
+static void parse_weightsystem_keyvalue(void *_ws, const char *key, const std::string &value)
 {
 	weightsystem_t *ws = (weightsystem_t *)_ws;
 	if (!strcmp(key, "weight")) {
-		ws->weight = get_weight(value);
+		ws->weight = get_weight(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "description")) {
-		ws->description = value;
+		ws->description = strdup(value.c_str());
 		return;
 	}
-	report_error("Unknown weightsystem key/value pair (%s/%s)", key, value);
+	report_error("Unknown weightsystem key/value pair (%s/%s)", key, value.c_str());
 }
 
 static void parse_dive_weightsystem(char *line, struct membuffer *str, struct git_parser_state *state)
@@ -526,94 +520,94 @@ report_error("Unmatched action '%s'", line);
 }
 
 /* FIXME! We should do the array thing here too. */
-static void parse_sample_keyvalue(void *_sample, const char *key, const char *value)
+static void parse_sample_keyvalue(void *_sample, const char *key, const std::string &value)
 {
 	struct sample *sample = (struct sample *)_sample;
 
 	if (!strcmp(key, "sensor")) {
-		sample->sensor[0] = atoi(value);
+		sample->sensor[0] = atoi(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "ndl")) {
-		sample->ndl = get_duration(value);
+		sample->ndl = get_duration(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "tts")) {
-		sample->tts = get_duration(value);
+		sample->tts = get_duration(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "in_deco")) {
-		sample->in_deco = atoi(value);
+		sample->in_deco = atoi(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "stoptime")) {
-		sample->stoptime = get_duration(value);
+		sample->stoptime = get_duration(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "stopdepth")) {
-		sample->stopdepth = get_depth(value);
+		sample->stopdepth = get_depth(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "cns")) {
-		sample->cns = atoi(value);
+		sample->cns = atoi(value.c_str());
 		return;
 	}
 
 	if (!strcmp(key, "rbt")) {
-		sample->rbt = get_duration(value);
+		sample->rbt = get_duration(value.c_str());
 		return;
 	}
 
 	if (!strcmp(key, "po2")) {
-		pressure_t p = get_pressure(value);
+		pressure_t p = get_pressure(value.c_str());
 		sample->setpoint.mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "sensor1")) {
-		pressure_t p = get_pressure(value);
+		pressure_t p = get_pressure(value.c_str());
 		sample->o2sensor[0].mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "sensor2")) {
-		pressure_t p = get_pressure(value);
+		pressure_t p = get_pressure(value.c_str());
 		sample->o2sensor[1].mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "sensor3")) {
-		pressure_t p = get_pressure(value);
+		pressure_t p = get_pressure(value.c_str());
 		sample->o2sensor[2].mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "sensor4")) {
-		pressure_t p = get_pressure(value);
+		pressure_t p = get_pressure(value.c_str());
 		sample->o2sensor[3].mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "sensor5")) {
-		pressure_t p = get_pressure(value);
+		pressure_t p = get_pressure(value.c_str());
 		sample->o2sensor[4].mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "sensor6")) {
-		pressure_t p = get_pressure(value);
+		pressure_t p = get_pressure(value.c_str());
 		sample->o2sensor[5].mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "o2pressure")) {
-		pressure_t p = get_pressure(value);
+		pressure_t p = get_pressure(value.c_str());
 		sample->pressure[1].mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "heartbeat")) {
-		sample->heartbeat = atoi(value);
+		sample->heartbeat = atoi(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "bearing")) {
-		sample->bearing.degrees = atoi(value);
+		sample->bearing.degrees = atoi(value.c_str());
 		return;
 	}
 
-	report_error("Unexpected sample key/value pair (%s/%s)", key, value);
+	report_error("Unexpected sample key/value pair (%s/%s)", key, value.c_str());
 }
 
 static char *parse_sample_unit(struct sample *sample, double val, char *unit)
@@ -792,15 +786,15 @@ static int get_divemode(const char *divemodestring) {
  * Thus this initial 'parse_event' with a separate name pointer.
  */
 struct parse_event {
-	const char *name;
-	int has_divemode;
-	struct event ev;
+	std::string name;
+	int has_divemode = false;
+	struct event ev = { 0 };
 };
 
-static void parse_event_keyvalue(void *_parse, const char *key, const char *value)
+static void parse_event_keyvalue(void *_parse, const char *key, const std::string &value)
 {
 	struct parse_event *parse = (parse_event *)_parse;
-	int val = atoi(value);
+	int val = atoi(value.c_str());
 
 	if (!strcmp(key, "type")) {
 		parse->ev.type = val;
@@ -811,17 +805,17 @@ static void parse_event_keyvalue(void *_parse, const char *key, const char *valu
 	} else if (!strcmp(key, "name")) {
 		parse->name = value;
 	} else if (!strcmp(key,"divemode")) {
-		parse->ev.value = get_divemode(value);
+		parse->ev.value = get_divemode(value.c_str());
 		parse->has_divemode = 1;
 	} else if (!strcmp(key, "cylinder")) {
 		/* NOTE! We add one here as a marker that "yes, we got a cylinder index" */
-		parse->ev.gas.index = 1 + get_index(value);
+		parse->ev.gas.index = 1 + get_index(value.c_str());
 	} else if (!strcmp(key, "o2")) {
-		parse->ev.gas.mix.o2 = get_fraction(value);
+		parse->ev.gas.mix.o2 = get_fraction(value.c_str());
 	} else if (!strcmp(key, "he")) {
-		parse->ev.gas.mix.he = get_fraction(value);
+		parse->ev.gas.mix.he = get_fraction(value.c_str());
 	} else
-		report_error("Unexpected event key/value pair (%s/%s)", key, value);
+		report_error("Unexpected event key/value pair (%s/%s)", key, value.c_str());
 }
 
 /* keyvalue "key" "value"
@@ -852,7 +846,7 @@ static void parse_dc_keyvalue(char *line, struct membuffer *str, struct git_pars
 static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_state *state)
 {
 	int m, s = 0;
-	struct parse_event p = { NULL, };
+	struct parse_event p;
 	struct event *ev;
 
 	m = strtol(line, &line, 10);
@@ -870,10 +864,10 @@ static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_
 	}
 
 	/* Only modechange events should have a divemode - fix up any corrupted names */
-	if (p.has_divemode && strcmp(p.name, "modechange"))
+	if (p.has_divemode && p.name !=  "modechange")
 		p.name = "modechange";
 
-	ev = add_event(state->active_dc, p.ev.time.seconds, p.ev.type, p.ev.flags, p.ev.value, p.name);
+	ev = add_event(state->active_dc, p.ev.time.seconds, p.ev.type, p.ev.flags, p.ev.value, p.name.c_str());
 
 	/*
 	 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00.
@@ -954,14 +948,13 @@ static void parse_settings_subsurface(char *, struct membuffer *, struct git_par
 }
 
 struct divecomputerid {
-	const char *model;
-	const char *nickname;
-	const char *firmware;
-	const char *serial;
-	unsigned int deviceid;
+	std::string model;
+	std::string nickname;
+	std::string serial;
+	unsigned int deviceid = 0;
 };
 
-static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const char *value)
+static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const std::string &value)
 {
 	struct divecomputerid *cid = (divecomputerid *)_cid;
 
@@ -974,14 +967,14 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
 	// Serial number and nickname matter
 	if (!strcmp(key, "serial")) {
 		cid->serial = value;
-		cid->deviceid = calculate_string_hash(value);
+		cid->deviceid = calculate_string_hash(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "nickname")) {
 		cid->nickname = value;
 		return;
 	}
-	report_error("Unknown divecomputerid key/value pair (%s/%s)", key, value);
+	report_error("Unknown divecomputerid key/value pair (%s/%s)", key, value.c_str());
 }
 
 /*
@@ -991,7 +984,8 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
  */
 static void parse_settings_divecomputerid(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	struct divecomputerid id = { pop_cstring(str, line) };
+	struct divecomputerid id;
+	id.model = pop_cstring(str, line);
 
 	/* Skip the '"' that stood for the model string */
 	line++;
@@ -1005,48 +999,48 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, str
 			break;
 		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, str);
 	}
-	create_device_node(state->log->devices, id.model, id.serial, id.nickname);
+	create_device_node(state->log->devices, id.model.c_str(), id.serial.c_str(), id.nickname.c_str());
 }
 
 struct fingerprint_helper {
-	uint32_t model;
-	uint32_t serial;
-	uint32_t fdeviceid;
-	uint32_t fdiveid;
-	const char *hex_data;
+	uint32_t model = 0;
+	uint32_t serial = 0;
+	uint32_t fdeviceid = 0;
+	uint32_t fdiveid = 0;
+	std::string hex_data;
 };
 
-static void parse_fingerprint_keyvalue(void *_fph, const char *key, const char *value)
+static void parse_fingerprint_keyvalue(void *_fph, const char *key, const std::string &value)
 {
 	struct fingerprint_helper *fph = (fingerprint_helper *)_fph;
 
 	if (!strcmp(key, "model")) {
-		fph->model = get_hex(value);
+		fph->model = get_hex(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "serial")) {
-		fph->serial = get_hex(value);
+		fph->serial = get_hex(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "deviceid")) {
-		fph->fdeviceid = get_hex(value);
+		fph->fdeviceid = get_hex(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "diveid")) {
-		fph->fdiveid = get_hex(value);
+		fph->fdiveid = get_hex(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "data")) {
-		fph->hex_data = value;
+		fph->hex_data = value.c_str();
 		return;
 	}
-	report_error("Unknown fingerprint key/value pair (%s/%s)", key, value);
+	report_error("Unknown fingerprint key/value pair (%s/%s)", key, value.c_str());
 }
 
 
 static void parse_settings_fingerprint(char *line, struct membuffer *str, struct git_parser_state *state)
 {
-	struct fingerprint_helper fph = { 0, 0, 0, 0 };
+	struct fingerprint_helper fph;
 	for (;;) {
 		char c;
 		while (isspace(c = *line))
@@ -1056,9 +1050,9 @@ static void parse_settings_fingerprint(char *line, struct membuffer *str, struct
 		line = parse_keyvalue_entry(parse_fingerprint_keyvalue, &fph, line, str);
 	}
 	if (verbose > 1)
-		SSRF_INFO("fingerprint %08x %08x %08x %08x %s\n", fph.model, fph.serial, fph.fdeviceid, fph.fdiveid, fph.hex_data);
+		SSRF_INFO("fingerprint %08x %08x %08x %08x %s\n", fph.model, fph.serial, fph.fdeviceid, fph.fdiveid, fph.hex_data.c_str());
 	create_fingerprint_node_from_hex(&fingerprint_table, fph.model, fph.serial,
-					 fph.hex_data, fph.fdeviceid, fph.fdiveid);
+					 fph.hex_data.c_str(), fph.fdeviceid, fph.fdiveid);
 }
 
 static void parse_picture_filename(char *, struct membuffer *str, struct git_parser_state *state)
@@ -1159,7 +1153,7 @@ static void picture_parser(char *line, struct membuffer *str, struct git_parser_
 	match_action(line, str, state, picture_action, ARRAY_SIZE(picture_action));
 }
 
-static void parse_filter_preset_constraint_keyvalue(void *_state, const char *key, const char *value)
+static void parse_filter_preset_constraint_keyvalue(void *_state, const char *key, const std::string &value)
 {
 	struct git_parser_state *state = (git_parser_state *)_state;
 	if (!strcmp(key, "type")) {
@@ -1183,7 +1177,7 @@ static void parse_filter_preset_constraint_keyvalue(void *_state, const char *ke
 		return;
 	}
 
-	report_error("Unknown filter preset constraint key/value pair (%s/%s)", key, value);
+	report_error("Unknown filter preset constraint key/value pair (%s/%s)", key, value.c_str());
 }
 
 static void parse_filter_preset_constraint(char *line, struct membuffer *str, struct git_parser_state *state)
@@ -1208,7 +1202,7 @@ static void parse_filter_preset_constraint(char *line, struct membuffer *str, st
 	state->filter_constraint_data.clear();
 }
 
-static void parse_filter_preset_fulltext_keyvalue(void *_state, const char *key, const char *value)
+static void parse_filter_preset_fulltext_keyvalue(void *_state, const char *key, const std::string &value)
 {
 	struct git_parser_state *state = (git_parser_state *)_state;
 	if (!strcmp(key, "mode")) {
@@ -1220,7 +1214,7 @@ static void parse_filter_preset_fulltext_keyvalue(void *_state, const char *key,
 		return;
 	}
 
-	report_error("Unknown filter preset fulltext key/value pair (%s/%s)", key, value);
+	report_error("Unknown filter preset fulltext key/value pair (%s/%s)", key, value.c_str());
 }
 
 static void parse_filter_preset_fulltext(char *line, struct membuffer *str, struct git_parser_state *state)
@@ -1382,7 +1376,7 @@ static void for_each_line(git_blob *blob, line_fn_t *fn, struct git_parser_state
 {
 	const char *content = (const char *)git_blob_rawcontent(blob);
 	unsigned int size = git_blob_rawsize(blob);
-	struct membuffer str = { 0 };
+	struct membufferpp str;
 
 	while (size) {
 		unsigned int n = parse_one_line(content, size, fn, state, &str);
@@ -1392,7 +1386,6 @@ static void for_each_line(git_blob *blob, line_fn_t *fn, struct git_parser_state
 		/* Re-use the allocation, but forget the data */
 		str.len = 0;
 	}
-	free_buffer(&str);
 }
 
 #define GIT_WALK_OK   0
@@ -1935,7 +1928,7 @@ extern "C" const char *get_sha(git_repository *repo, const char *branch)
 extern "C" int git_load_dives(struct git_info *info, struct divelog *log)
 {
 	int ret;
-	struct git_parser_state state = { 0 };
+	struct git_parser_state state ;
 	state.repo = info->repo;
 	state.log = log;
 
