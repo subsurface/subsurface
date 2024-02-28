@@ -70,7 +70,7 @@ struct weightsystem_table {
 
 #define MAX_WS_INFO (100)
 
-extern int cylinderuse_from_text(const char *text);
+extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d);
 extern void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d);
 extern weightsystem_t clone_weightsystem(weightsystem_t ws);

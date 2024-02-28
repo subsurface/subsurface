@@ -124,7 +124,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	libdivecomputer.c
 	libdivecomputer.h
 	liquivision.c
-	load-git.c
+	load-git.cpp
 	membuffer.cpp
 	membuffer.h
 	metadata.cpp

@@ -61,7 +61,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/git-access.cpp \
 	core/globals.cpp \
 	core/liquivision.c \
-	core/load-git.c \
+	core/load-git.cpp \
 	core/parse-xml.c \
 	core/parse.c \
 	core/picture.c \
