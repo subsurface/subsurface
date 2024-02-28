@@ -161,7 +161,9 @@ char *get_local_dir(const char *url, const char *branch)
 static char *move_local_cache(struct git_info *info)
 {
 	char *old_path = get_local_dir(info->url, info->branch);
-	return move_away(old_path);
+	char *new_path = move_away(old_path);
+	free(old_path);
+	return new_path;
 }
 
 static int check_clean(const char *path, unsigned int status, void *payload)
