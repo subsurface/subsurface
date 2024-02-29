@@ -269,9 +269,9 @@ extern "C" bool remote_repo_uptodate(const char *filename, struct git_info *info
 	std::string current_sha = saved_git_id;
 
 	if (is_git_repository(filename, info) && open_git_repository(info)) {
-		const char *sha = get_sha(info->repo, info->branch);
+		std::string sha = get_sha(info->repo, info->branch);
 		if (!sha.empty() && current_sha == sha) {
-			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
+			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha.c_str());
 			return true;
 		}
 	}
