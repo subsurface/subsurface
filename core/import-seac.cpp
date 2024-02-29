@@ -205,8 +205,10 @@ static int seac_dive(void *param, int, char **data, char **)
 	settings_start(state);
 	dc_settings_start(state);
 
-	utf8_string(data[1], &state->cur_dive->dc.serial);
-	utf8_string(data[12], &state->cur_dive->dc.fw_version);
+	// These dc values are const char *, therefore we have to cast.
+	// Will be fixed by converting to std::string
+	utf8_string(data[1], (char **)&state->cur_dive->dc.serial);
+	utf8_string(data[12], (char **)&state->cur_dive->dc.fw_version);
 	state->cur_dive->dc.model = strdup("Seac Action");
 
 	state->cur_dive->dc.deviceid = calculate_string_hash(data[1]);
@@ -268,7 +270,6 @@ extern "C" int parse_seac_buffer(sqlite3 *handle, const char *url, const char *,
 	char *err = NULL;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.sql_handle = handle;
 
@@ -290,7 +291,6 @@ extern "C" int parse_seac_buffer(sqlite3 *handle, const char *url, const char *,
 		 */
 
 	retval = sqlite3_exec(handle, get_dives, &seac_dive, &state, &err);
-	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);

@@ -383,11 +383,10 @@ static void duration(const char *buffer, duration_t *time)
 	 * store the dive time as 44.00 instead of 44:00;
 	 * This attempts to parse this in a fairly robust way */
 	if (!strchr(buffer, ':') && strchr(buffer, '.')) {
-		char *mybuffer = strdup(buffer);
-		char *dot = strchr(mybuffer, '.');
+		std::string mybuffer(buffer);
+		char *dot = strchr(mybuffer.data(), '.');
 		*dot = ':';
-		sampletime(mybuffer, time);
-		free(mybuffer);
+		sampletime(mybuffer.data(), time);
 	} else {
 		sampletime(buffer, time);
 	}
@@ -739,15 +738,15 @@ static void parse_libdc_deco(const char *buffer, struct sample *s)
 static void try_to_fill_dc_settings(const char *name, char *buf, struct parser_state *state)
 {
 	start_match("divecomputerid", name, buf);
-	if (MATCH("model.divecomputerid", utf8_string, &state->cur_settings.dc.model))
+	if (MATCH("model.divecomputerid", utf8_string_std, &state->cur_settings.dc.model))
 		return;
 	if (MATCH("deviceid.divecomputerid", hex_value, &state->cur_settings.dc.deviceid))
 		return;
-	if (MATCH("nickname.divecomputerid", utf8_string, &state->cur_settings.dc.nickname))
+	if (MATCH("nickname.divecomputerid", utf8_string_std, &state->cur_settings.dc.nickname))
 		return;
-	if (MATCH("serial.divecomputerid", utf8_string, &state->cur_settings.dc.serial_nr))
+	if (MATCH("serial.divecomputerid", utf8_string_std, &state->cur_settings.dc.serial_nr))
 		return;
-	if (MATCH("firmware.divecomputerid", utf8_string, &state->cur_settings.dc.firmware))
+	if (MATCH("firmware.divecomputerid", utf8_string_std, &state->cur_settings.dc.firmware))
 		return;
 
 	nonmatch("divecomputerid", name, buf);
@@ -764,7 +763,7 @@ static void try_to_fill_fingerprint(const char *name, char *buf, struct parser_s
 		return;
 	if (MATCH("diveid.fingerprint", hex_value, &state->cur_settings.fingerprint.fdiveid))
 		return;
-	if (MATCH("data.fingerprint", utf8_string, &state->cur_settings.fingerprint.data))
+	if (MATCH("data.fingerprint", utf8_string_std, &state->cur_settings.fingerprint.data))
 		return;
 	nonmatch("fingerprint", name, buf);
 }
@@ -830,9 +829,9 @@ static int match_dc_data_fields(struct divecomputer *dc, const char *name, char 
 		return 1;
 	if (MATCH("salinity.water", salinity, &dc->salinity))
 		return 1;
-	if (MATCH("key.extradata", utf8_string, &state->cur_extra_data.key))
+	if (MATCH("key.extradata", utf8_string, (char **)&state->cur_extra_data.key))
 		return 1;
-	if (MATCH("value.extradata", utf8_string, &state->cur_extra_data.value))
+	if (MATCH("value.extradata", utf8_string, (char **)&state->cur_extra_data.value))
 		return 1;
 	if (MATCH("divemode", get_dc_type, &dc->divemode))
 		return 1;
@@ -854,7 +853,7 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf,
 		return;
 	if (MATCH_STATE("time", divetime, &dc->when))
 		return;
-	if (MATCH("model", utf8_string, &dc->model))
+	if (MATCH("model", utf8_string, (char **)&dc->model))
 		return;
 	if (MATCH("deviceid", hex_value, &deviceid))
 		return;
@@ -968,11 +967,11 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 
 	switch (state->import_source) {
-	case DIVINGLOG:
+	case parser_state::DIVINGLOG:
 		if (divinglog_fill_sample(sample, name, buf, state))
 			return;
 		break;
-	case UDDF:
+	case parser_state::UDDF:
 		if (uddf_fill_sample(sample, name, buf, state))
 			return;
 		break;
@@ -992,27 +991,25 @@ static void divinglog_place(const char *place, struct dive *d, struct parser_sta
 	snprintf(buffer, sizeof(buffer),
 		 "%s%s%s%s%s",
 		 place,
-		 state->city ? ", " : "",
-		 state->city ? state->city : "",
-		 state->country ? ", " : "",
-		 state->country ? state->country : "");
+		 !state->city.empty() ? ", " : "",
+		 !state->city.empty() ? state->city.c_str() : "",
+		 !state->country.empty() ? ", " : "",
+		 !state->country.empty() ? state->country.c_str() : "");
 	ds = get_dive_site_by_name(buffer, state->log->sites);
 	if (!ds)
 		ds = create_dive_site(buffer, state->log->sites);
 	add_dive_to_dive_site(d, ds);
 
 	// TODO: capture the country / city info in the taxonomy instead
-	free(state->city);
-	free(state->country);
-	state->city = NULL;
-	state->country = NULL;
+	state->city.clear();
+	state->country.clear();
 }
 
 static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
 	/* For cylinder related fields, we might have to create a cylinder first. */
 	cylinder_t cyl = empty_cylinder;
-	if (MATCH("tanktype", utf8_string, &cyl.type.description)) {
+	if (MATCH("tanktype", utf8_string, (char **)&cyl.type.description)) {
 		cylinder_t *cyl0 = get_or_create_cylinder(dive, 0);
 		free((void *)cyl0->type.description);
 		cyl0->type.description = cyl.type.description;
@@ -1041,8 +1038,8 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, 
 	       MATCH_STATE("depthavg", depth, &dive->dc.meandepth) ||
 	       MATCH("comments", utf8_string, &dive->notes) ||
 	       MATCH("names.buddy", utf8_string, &dive->buddy) ||
-	       MATCH("name.country", utf8_string, &state->country) ||
-	       MATCH("name.city", utf8_string, &state->city) ||
+	       MATCH("name.country", utf8_string_std, &state->country) ||
+	       MATCH("name.city", utf8_string_std, &state->city) ||
 	       MATCH_STATE("name.place", divinglog_place, dive) ||
 	       0;
 }
@@ -1259,12 +1256,12 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	start_match("dive", name, buf);
 
 	switch (state->import_source) {
-	case DIVINGLOG:
+	case parser_state::DIVINGLOG:
 		if (divinglog_dive_match(dive, name, buf, state))
 			return;
 		break;
 
-	case UDDF:
+	case parser_state::UDDF:
 		if (uddf_dive_match(dive, name, buf, state))
 			return;
 		break;
@@ -1362,7 +1359,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	if (MATCH_STATE("airpressure.dive", pressure, &dive->surface_pressure))
 		return;
 	if (ws) {
-		if (MATCH("description.weightsystem", utf8_string, &ws->description))
+		if (MATCH("description.weightsystem", utf8_string, (char **)&ws->description))
 			return;
 		if (MATCH_STATE("weight.weightsystem", weight, &ws->weight))
 			return;
@@ -1378,7 +1375,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 			return;
 		if (MATCH_STATE("workpressure.cylinder", pressure, &cyl->type.workingpressure))
 			return;
-		if (MATCH("description.cylinder", utf8_string, &cyl->type.description))
+		if (MATCH("description.cylinder", utf8_string, (char **)&cyl->type.description))
 			return;
 		if (MATCH_STATE("start.cylinder", pressure, &cyl->start))
 			return;
@@ -1424,7 +1421,7 @@ static void try_to_fill_trip(dive_trip_t *dive_trip, const char *name, char *buf
 static void try_to_fill_dive_site(struct parser_state *state, const char *name, char *buf)
 {
 	struct dive_site *ds = state->cur_dive_site;
-	char *taxonomy_value = NULL;
+	std::string taxonomy_value;
 
 	start_match("divesite", name, buf);
 
@@ -1442,7 +1439,7 @@ static void try_to_fill_dive_site(struct parser_state *state, const char *name, 
 		return;
 	if (MATCH("origin.geo", get_index, &state->taxonomy_origin))
 		return;
-	if (MATCH("value.geo", utf8_string, &taxonomy_value)) {
+	if (MATCH("value.geo", utf8_string_std, &taxonomy_value)) {
 		/* The code assumes that "value.geo" comes last, which is against
 		 * the expectations of an XML file. Let's at least make sure that
 		 * cat and origin have been set! */
@@ -1450,10 +1447,9 @@ static void try_to_fill_dive_site(struct parser_state *state, const char *name, 
 			report_error("Warning: taxonomy value without origin or category");
 		} else {
 			taxonomy_set_category(&ds->taxonomy, (taxonomy_category)state->taxonomy_category,
-					      taxonomy_value, (taxonomy_origin)state->taxonomy_origin);
+					      taxonomy_value.c_str(), (taxonomy_origin)state->taxonomy_origin);
 		}
 		state->taxonomy_category = state->taxonomy_origin = -1;
-		free(taxonomy_value);
 		return;
 	}
 
@@ -1464,10 +1460,9 @@ static void try_to_fill_filter(struct filter_preset *filter, const char *name, c
 {
 	start_match("filterpreset", name, buf);
 
-	char *s = NULL;
-	if (MATCH("name", utf8_string, &s)) {
-		filter_preset_set_name(filter, s);
-		free(s);
+	std::string s;
+	if (MATCH("name", utf8_string_std, &s)) {
+		filter_preset_set_name(filter, s.c_str());
 		return;
 	}
 
@@ -1478,9 +1473,9 @@ static void try_to_fill_fulltext(const char *name, char *buf, struct parser_stat
 {
 	start_match("fulltext", name, buf);
 
-	if (MATCH("mode", utf8_string, &state->fulltext_string_mode))
+	if (MATCH("mode", utf8_string_std, &state->fulltext_string_mode))
 		return;
-	if (MATCH("fulltext", utf8_string, &state->fulltext))
+	if (MATCH("fulltext", utf8_string_std, &state->fulltext))
 		return;
 
 	nonmatch("fulltext", name, buf);
@@ -1490,15 +1485,15 @@ static void try_to_fill_filter_constraint(const char *name, char *buf, struct pa
 {
 	start_match("fulltext", name, buf);
 
-	if (MATCH("type", utf8_string, &state->filter_constraint_type))
+	if (MATCH("type", utf8_string_std, &state->filter_constraint_type))
 		return;
-	if (MATCH("string_mode", utf8_string, &state->filter_constraint_string_mode))
+	if (MATCH("string_mode", utf8_string_std, &state->filter_constraint_string_mode))
 		return;
-	if (MATCH("range_mode", utf8_string, &state->filter_constraint_range_mode))
+	if (MATCH("range_mode", utf8_string_std, &state->filter_constraint_range_mode))
 		return;
 	if (MATCH("negate", get_bool, &state->filter_constraint_negate))
 		return;
-	if (MATCH("constraint", utf8_string, &state->filter_constraint))
+	if (MATCH("constraint", utf8_string_std, &state->filter_constraint))
 		return;
 
 	nonmatch("fulltext", name, buf);
@@ -1536,7 +1531,7 @@ static bool entry(const char *name, char *buf, struct parser_state *state)
 		try_to_fill_filter(state->cur_filter, name, buf);
 		return true;
 	}
-	if (!state->cur_event.deleted) {
+	if (state->event_active) {
 		try_to_fill_event(name, buf, state);
 		return true;
 	}
@@ -1633,7 +1628,7 @@ static bool visit(xmlNode *n, struct parser_state *state)
 
 static void DivingLog_importer(struct parser_state *state)
 {
-	state->import_source = DIVINGLOG;
+	state->import_source = parser_state::DIVINGLOG;
 
 	/*
 	 * Diving Log units are really strange.
@@ -1650,7 +1645,7 @@ static void DivingLog_importer(struct parser_state *state)
 
 static void uddf_importer(struct parser_state *state)
 {
-	state->import_source = UDDF;
+	state->import_source = parser_state::UDDF;
 	state->xml_parsing_units = SI_units;
 	state->xml_parsing_units.pressure = units::PASCALS;
 	state->xml_parsing_units.temperature = units::KELVIN;
@@ -1737,7 +1732,7 @@ static void reset_all(struct parser_state *state)
 	 * dive for that format.
 	 */
 	state->xml_parsing_units = SI_units;
-	state->import_source = UNKNOWN;
+	state->import_source = parser_state::UNKNOWN;
 }
 
 /* divelog.de sends us xml files that claim to be iso-8859-1
@@ -1773,7 +1768,6 @@ extern "C" int parse_xml_buffer(const char *url, const char *buffer, int, struct
 	int ret = 0;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.fingerprints = &fingerprint_table; // simply use the global table for now
 	doc = xmlReadMemory(res, strlen(res), url, NULL, XML_PARSE_HUGE | XML_PARSE_RECOVER);
@@ -1794,7 +1788,6 @@ extern "C" int parse_xml_buffer(const char *url, const char *buffer, int, struct
 		ret = -1;
 	}
 	dive_end(&state);
-	free_parser_state(&state);
 	xmlFreeDoc(doc);
 	return ret;
 }
@@ -1837,7 +1830,6 @@ extern "C" int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divel
 	cylinder_t *cyl;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 
 	// Check for the correct file magic
@@ -2307,7 +2299,6 @@ extern "C" int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divel
 
 	divecomputer_end(&state);
 	dive_end(&state);
-	free_parser_state(&state);
 	return 0;
 }
 
