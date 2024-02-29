@@ -18,9 +18,9 @@ struct filter_constraint;
 #ifdef __cplusplus
 #include "divefilter.h"
 #include <vector>
-#include <QStringList>
+#include <string>
 struct filter_preset {
-	QString name;
+	std::string name;
 	FilterData data;
 };
 
@@ -44,8 +44,6 @@ extern "C" {
 
 // The C IO code accesses the filter presets via integer indices.
 extern int filter_presets_count(void);
-extern char *filter_preset_name(int preset); // name of filter preset - caller must free the result.
-extern char *filter_preset_fulltext_query(int preset); // fulltext query of filter preset - caller must free the result.
 extern const char *filter_preset_fulltext_mode(int preset); // string mode of fulltext query. ownership is *not* passed to caller.
 extern int filter_preset_constraint_count(int preset); // number of constraints in the filter preset.
 extern const struct filter_constraint *filter_preset_constraint(int preset, int constraint); // get constraint. ownership is *not* passed to caller.
@@ -66,12 +64,13 @@ extern void filter_preset_add_constraint(struct filter_preset *preset, const cha
 
 struct FilterData;
 
-int filter_preset_id(const QString &s); // for now, we assume that names are unique. returns -1 if no preset with that name.
-QString filter_preset_name_qstring(int preset);
+int filter_preset_id(const std::string &s); // for now, we assume that names are unique. returns -1 if no preset with that name.
 void filter_preset_set(int preset, const FilterData &d); // this will override a preset if the name already exists.
 FilterData filter_preset_get(int preset);
-int filter_preset_add(const QString &name, const FilterData &d); // returns point of insertion
+int filter_preset_add(const std::string &name, const FilterData &d); // returns point of insertion
 void filter_preset_delete(int preset);
+std::string filter_preset_name(int preset); // name of filter preset - caller must free the result.
+std::string filter_preset_fulltext_query(int preset); // fulltext query of filter preset - caller must free the result.
 
 #endif
 

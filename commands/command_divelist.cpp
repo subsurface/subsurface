@@ -514,7 +514,7 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 	// When encountering filter presets with equal names, check whether they are
 	// the same. If they are, ignore them.
 	for (const filter_preset &preset: *log->filter_presets) {
-		QString name = preset.name;
+		std::string name = preset.name;
 		auto it = std::find_if(divelog.filter_presets->begin(), divelog.filter_presets->end(),
 				       [&name](const filter_preset &preset) { return preset.name == name; });
 		if (it != divelog.filter_presets->end() && it->data == preset.data)
@@ -580,7 +580,7 @@ void ImportDives::undoit()
 	// Remove filter presets. Do this in reverse order.
 	for (auto it = filterPresetsToRemove.rbegin(); it != filterPresetsToRemove.rend(); ++it) {
 		int index = *it;
-		QString oldName = filter_preset_name_qstring(index);
+		std::string oldName = filter_preset_name(index);
 		FilterData oldData = filter_preset_get(index);
 		filter_preset_delete(index);
 		emit diveListNotifier.filterPresetRemoved(index);

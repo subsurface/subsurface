@@ -984,18 +984,14 @@ static void format_one_filter_constraint(int preset_id, int constraint_id, struc
  */
 static void format_one_filter_preset(int preset_id, struct membuffer *b)
 {
-	char *name, *fulltext;
+	std::string name = filter_preset_name(preset_id);
+	show_utf8(b, "name ", name.c_str(), "\n");
 
-	name = filter_preset_name(preset_id);
-	show_utf8(b, "name ", name, "\n");
-	free(name);
-
-	fulltext = filter_preset_fulltext_query(preset_id);
-	if (!empty_string(fulltext)) {
+	std::string fulltext = filter_preset_fulltext_query(preset_id);
+	if (!fulltext.empty()) {
 		show_utf8(b, "fulltext mode=", filter_preset_fulltext_mode(preset_id), "");
-		show_utf8(b, " query=", fulltext, "\n");
+		show_utf8(b, " query=", fulltext.c_str(), "\n");
 	}
-	free(fulltext);
 
 	for (int i = 0; i < filter_preset_constraint_count(preset_id); i++)
 		format_one_filter_constraint(preset_id, i, b);

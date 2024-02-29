@@ -17,7 +17,7 @@ public:
 	CreateFilterPreset(const QString &name, const FilterData &data);
 private:
 	// for redo
-	QString name;
+	std::string name;
 	FilterData data;
 
 	// for undo
@@ -33,7 +33,7 @@ public:
 	RemoveFilterPreset(int index);
 private:
 	// for undo
-	QString name;
+	std::string name;
 	FilterData data;
 
 	// for redo

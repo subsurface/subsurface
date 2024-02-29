@@ -32,7 +32,7 @@ QVariant FilterPresetModel::data(const QModelIndex &index, int role) const
 	switch (role) {
 	case Qt::DisplayRole:
 		if (index.column() == NAME)
-			return filter_preset_name_qstring(index.row());
+			return QString(filter_preset_name(index.row()).c_str());
 		break;
 	case Qt::DecorationRole:
 		if (index.column() == REMOVE)
