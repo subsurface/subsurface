@@ -115,9 +115,9 @@ QString printGPSCoords(const location_t *location)
 	return result;
 }
 
-extern "C" char *printGPSCoordsC(const location_t *location)
+std::string printGPSCoordsC(const location_t *location)
 {
-	return copy_qstring(printGPSCoords(location));
+	return printGPSCoords(location).toStdString();
 }
 
 /**
