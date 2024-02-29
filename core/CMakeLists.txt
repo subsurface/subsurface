@@ -113,13 +113,13 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	globals.h
 	imagedownloader.cpp
 	imagedownloader.h
-	import-cobalt.c
-	import-csv.c
+	import-cobalt.cpp
+	import-csv.cpp
 	import-csv.h
-	import-divinglog.c
-	import-shearwater.c
-	import-suunto.c
-	import-seac.c
+	import-divinglog.cpp
+	import-shearwater.cpp
+	import-suunto.cpp
+	import-seac.cpp
 	interpolate.h
 	libdivecomputer.c
 	libdivecomputer.h

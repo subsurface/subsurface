@@ -41,10 +41,8 @@ static int seac_gaschange(void *param, sqlite3_stmt *sqlstmt)
 /* Callback function to parse seac dives. Reads headers_dive table to read dive
  * information into divecomputer struct.
  */
-static int seac_dive(void *param, int columns, char **data, char **column)
+static int seac_dive(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	int retval = 0, cylnum = 0;
 	int year, month, day, hour, min, sec, tz;
 	char isodatetime[30];
@@ -264,11 +262,8 @@ static int seac_dive(void *param, int columns, char **data, char **column)
  * The callback function performs another SQL query on the other
  * table, to read in the sample values.
  */
-int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
+extern "C" int parse_seac_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
-	UNUSED(buffer);
-	UNUSED(size);
-
 	int retval;
 	char *err = NULL;
 	struct parser_state state;
