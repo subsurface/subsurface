@@ -1230,9 +1230,8 @@ static void gps_in_dive(const char *buffer, struct dive *dive, struct parser_sta
 			fprintf(stderr, "dive site uuid in dive, but gps location (%10.6f/%10.6f) different from dive location (%10.6f/%10.6f)\n",
 				ds->location.lat.udeg / 1000000.0, ds->location.lon.udeg / 1000000.0,
 				location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
-			char *coords = printGPSCoordsC(&location);
-			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords);
-			free(coords);
+			std::string coords = printGPSCoordsC(&location);
+			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords.c_str());
 		} else {
 			ds->location = location;
 		}

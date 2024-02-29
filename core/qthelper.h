@@ -93,6 +93,7 @@ QLocale getLocale();
 QVector<QPair<QString, int>> selectedDivesGasUsed();
 QString getUserAgent();
 QString printGPSCoords(const location_t *loc);
+std::string printGPSCoordsC(const location_t *loc);
 std::vector<int> get_cylinder_map_for_remove(int count, int n);
 std::vector<int> get_cylinder_map_for_add(int count, int n);
 
@@ -118,7 +119,6 @@ extern "C" {
 
 struct git_info;
 
-char *printGPSCoordsC(const location_t *loc);
 bool getProxyString(char **buffer);
 bool canReachCloudServer(struct git_info *);
 void updateWindowTitle();

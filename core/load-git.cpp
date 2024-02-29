@@ -181,10 +181,9 @@ static void parse_dive_gps(char *line, struct membuffer *, struct git_parser_sta
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
-			char *coords = printGPSCoordsC(&location);
+			std::string coords = printGPSCoordsC(&location);
 			// we have a dive site that already has GPS coordinates
-			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords);
-			free(coords);
+			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords.c_str());
 		}
 		ds->location = location;
 	}
