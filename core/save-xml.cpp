@@ -620,14 +620,12 @@ static void save_one_device(struct membuffer *b, const struct device *d)
 
 static void save_one_fingerprint(struct membuffer *b, int i)
 {
-	char *data = fp_get_data(&fingerprint_table, i);
 	put_format(b, "<fingerprint model='%08x' serial='%08x' deviceid='%08x' diveid='%08x' data='%s'/>\n",
 		   fp_get_model(&fingerprint_table, i),
 		   fp_get_serial(&fingerprint_table, i),
 		   fp_get_deviceid(&fingerprint_table, i),
 		   fp_get_diveid(&fingerprint_table, i),
-		   data);
-	free(data);
+		   fp_get_data(&fingerprint_table, i).c_str());
 }
 
 extern "C" int save_dives(const char *filename)
