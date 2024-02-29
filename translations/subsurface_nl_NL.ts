@@ -11168,7 +11168,7 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="50"/>
         <source>visibility</source>
-        <translation>Zicht</translation>
+        <translation>zicht</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="51"/>
@@ -11194,7 +11194,7 @@ Maximum</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="56"/>
         <source>weight</source>
-        <translation>Gewicht</translation>
+        <translation>gewicht</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="57"/>
