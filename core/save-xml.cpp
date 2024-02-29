@@ -657,7 +657,6 @@ static void save_filter_presets(struct membuffer *b)
 		free(fulltext);
 
 		for (int j = 0; j < filter_preset_constraint_count(i); j++) {
-			char *data;
 			const struct filter_constraint *constraint = filter_preset_constraint(i, j);
 			const char *type = filter_constraint_type_to_string(constraint->type);
 			put_format(b, "  <constraint");
@@ -673,9 +672,8 @@ static void save_filter_presets(struct membuffer *b)
 			if (constraint->negate)
 				put_format(b, " negate='1'");
 			put_format(b, ">");
-			data = filter_constraint_data_to_string(constraint);
-			show_utf8(b, data, "", "", 0);
-			free(data);
+			std::string data = filter_constraint_data_to_string(constraint);
+			show_utf8(b, data.c_str(), "", "", 0);
 			put_format(b, "</constraint>\n");
 		}
 		put_format(b, " </filterpreset>\n");
