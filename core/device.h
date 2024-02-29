@@ -54,7 +54,6 @@ extern uint32_t fp_get_model(struct fingerprint_table *table, unsigned int i);
 extern uint32_t fp_get_serial(struct fingerprint_table *table, unsigned int i);
 extern uint32_t fp_get_deviceid(struct fingerprint_table *table, unsigned int i);
 extern uint32_t fp_get_diveid(struct fingerprint_table *table, unsigned int i);
-extern char *fp_get_data(struct fingerprint_table *table, unsigned int i);
 
 extern int is_default_dive_computer_device(const char *);
 
@@ -99,6 +98,8 @@ struct fingerprint_table {
 	// Keep the fingerprint records in a vector sorted by (model, serial) - these are uint32_t here
 	std::vector<fingerprint_record> fingerprints;
 };
+
+std::string fp_get_data(struct fingerprint_table *table, unsigned int i);
 
 #endif
 
