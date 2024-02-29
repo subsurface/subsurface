@@ -385,7 +385,7 @@ AddFilterPresetDialog::AddFilterPresetDialog(const QString &defaultName, QWidget
 	int count = filter_presets_count();
 	presets.reserve(count);
 	for (int i = 0; i < count; ++i)
-		presets.push_back(filter_preset_name_qstring(i));
+		presets.push_back(QString(filter_preset_name(i).c_str()));
 	QCompleter *completer = new QCompleter(presets, this);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	ui.name->setCompleter(completer);
@@ -395,7 +395,7 @@ void AddFilterPresetDialog::nameChanged(const QString &text)
 {
 	QString trimmed = text.trimmed();
 	bool isEmpty = trimmed.isEmpty();
-	bool exists = !isEmpty && filter_preset_id(trimmed) >= 0;
+	bool exists = !isEmpty && filter_preset_id(trimmed.toStdString()) >= 0;
 	ui.duplicateWarning->setVisible(exists);
 	ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!isEmpty);
 }

@@ -641,20 +641,17 @@ static void save_filter_presets(struct membuffer *b)
 		return;
 	put_format(b, "<filterpresets>\n");
 	for (i = 0; i < filter_presets_count(); i++) {
-		char *name, *fulltext;
-		name = filter_preset_name(i);
+		std::string name = filter_preset_name(i);
 		put_format(b, " <filterpreset");
-		show_utf8(b, name, " name='", "'", 1);
+		show_utf8(b, name.c_str(), " name='", "'", 1);
 		put_format(b, ">\n");
-		free(name);
 
-		fulltext = filter_preset_fulltext_query(i);
-		if (!empty_string(fulltext)) {
+		std::string fulltext = filter_preset_fulltext_query(i);
+		if (!fulltext.empty()) {
 			const char *fulltext_mode = filter_preset_fulltext_mode(i);
 			show_utf8(b, fulltext_mode, "  <fulltext mode='", "'>", 1);
-			show_utf8(b, fulltext, "", "</fulltext>\n", 0);
+			show_utf8(b, fulltext.c_str(), "", "</fulltext>\n", 0);
 		}
-		free(fulltext);
 
 		for (int j = 0; j < filter_preset_constraint_count(i); j++) {
 			const struct filter_constraint *constraint = filter_preset_constraint(i, j);

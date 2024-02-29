@@ -14,14 +14,9 @@ extern "C" int filter_presets_count(void)
 	return (int)global_table().size();
 }
 
-extern "C" char *filter_preset_name(int preset)
+extern std::string filter_preset_fulltext_query(int preset)
 {
-	return copy_qstring(filter_preset_name_qstring(preset));
-}
-
-extern "C" char *filter_preset_fulltext_query(int preset)
-{
-	return copy_qstring(global_table()[preset].data.fullText.originalQuery);
+	return global_table()[preset].data.fullText.originalQuery.toStdString();
 }
 
 extern "C" const char *filter_preset_fulltext_mode(int preset)
@@ -73,7 +68,7 @@ extern "C" void filter_preset_set_name(struct filter_preset *preset, const char 
 	preset->name = name;
 }
 
-static int filter_preset_add_to_table(const QString &name, const FilterData &d, struct filter_preset_table &table)
+static int filter_preset_add_to_table(const std::string name, const FilterData &d, struct filter_preset_table &table)
 {
 	// std::lower_bound does a binary search - the vector must be sorted.
 	filter_preset newEntry { name, d };
@@ -85,14 +80,14 @@ static int filter_preset_add_to_table(const QString &name, const FilterData &d, 
 }
 
 // Take care that the name doesn't already exist by adding numbers
-static QString get_unique_preset_name(const QString &orig, const struct filter_preset_table &table)
+static std::string get_unique_preset_name(const std::string &orig, const struct filter_preset_table &table)
 {
-	QString res = orig;
+	std::string res = orig;
 	int count = 2;
 	while (std::find_if(table.begin(), table.end(),
 			    [&res](const filter_preset &preset)
 			    { return preset.name == res; }) != table.end()) {
-		res = orig + "#" + QString::number(count);
+		res = orig + "#" + std::to_string(count);
 		++count;
 	}
 	return res;
@@ -100,7 +95,7 @@ static QString get_unique_preset_name(const QString &orig, const struct filter_p
 
 extern "C" void add_filter_preset_to_table(const struct filter_preset *preset, struct filter_preset_table *table)
 {
-	QString name = get_unique_preset_name(preset->name, *table);
+	std::string name = get_unique_preset_name(preset->name, *table);
 	filter_preset_add_to_table(name, preset->data, *table);
 }
 
@@ -110,14 +105,14 @@ extern "C" void filter_preset_add_constraint(struct filter_preset *preset, const
 	preset->data.constraints.emplace_back(type, string_mode, range_mode, negate, data);
 }
 
-int filter_preset_id(const QString &name)
+int filter_preset_id(const std::string &name)
 {
 	auto it = std::find_if(global_table().begin(), global_table().end(),
 			       [&name] (filter_preset &p) { return p.name == name; });
 	return it != global_table().end() ? it - global_table().begin() : -1;
 }
 
-QString filter_preset_name_qstring(int preset)
+std::string filter_preset_name(int preset)
 {
 	return global_table()[preset].name;
 }
@@ -132,9 +127,9 @@ FilterData filter_preset_get(int preset)
 	return global_table()[preset].data;
 }
 
-int filter_preset_add(const QString &nameIn, const FilterData &d)
+int filter_preset_add(const std::string &nameIn, const FilterData &d)
 {
-	QString name = get_unique_preset_name(nameIn, global_table());
+	std::string name = get_unique_preset_name(nameIn, global_table());
 	return filter_preset_add_to_table(name, d, global_table());
 }
 
