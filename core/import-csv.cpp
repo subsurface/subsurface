@@ -123,16 +123,16 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
 
 	/* Determine NL (new line) character and the start of CSV data */
-	if ((ptr = strstr(mem.buffer, "\r\n")) != NULL) {
+	if ((ptr = strstr((char *)mem.buffer, "\r\n")) != NULL) {
 		NL = "\r\n";
-	} else if ((ptr = strstr(mem.buffer, "\n")) != NULL) {
+	} else if ((ptr = strstr((char *)mem.buffer, "\n")) != NULL) {
 		NL = "\n";
 	} else {
 		fprintf(stderr, "DEBUG: failed to detect NL\n");
 		return -1;
 	}
 
-	while ((end_ptr < mem.size) && (ptr = strstr(mem.buffer + end_ptr, "ZDH"))) {
+	while ((end_ptr < mem.size) && (ptr = strstr((char *)mem.buffer + end_ptr, "ZDH"))) {
 		xml_params_resize(params, params_orig_size); // restart with original parameter block
 		char *iter_end = NULL;
 
@@ -234,7 +234,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 
 		/* Copy the current dive data to start of mem_csv buffer */
 		memcpy(mem_csv.buffer, ptr, mem.size - (ptr - (char *)mem.buffer));
-		ptr = strstr(mem_csv.buffer, "ZDP}");
+		ptr = strstr((char *)mem_csv.buffer, "ZDP}");
 		if (ptr) {
 			*ptr = 0;
 		} else {
@@ -265,7 +265,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 		if (try_to_xslt_open_csv(filename, &mem_csv, "csv"))
 			return -1;
 
-		ret |= parse_xml_buffer(filename, mem_csv.buffer, mem_csv.size, log, params);
+		ret |= parse_xml_buffer(filename, (char *)mem_csv.buffer, mem_csv.size, log, params);
 
 		free(mem_csv.buffer);
 	}
@@ -275,7 +275,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 	return ret;
 }
 
-int parse_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log)
+extern "C" int parse_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log)
 {
 	int ret;
 	struct memblock mem;
@@ -327,7 +327,7 @@ int parse_csv_file(const char *filename, struct xml_params *params, const char *
 		fprintf(stderr, "%s/xslt/%s -\n", SUBSURFACE_SOURCE, csvtemplate);
 	}
 #endif
-	ret = parse_xml_buffer(filename, mem.buffer, mem.size, log, params);
+	ret = parse_xml_buffer(filename, (char *)mem.buffer, mem.size, log, params);
 
 	free(mem.buffer);
 
@@ -357,13 +357,13 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, cons
 	 * Tag markers take: strlen("<></>") = 5
 	 * Reserve also room for encoding ampersands "&" => "&amp;"
 	 */
-	buf = realloc(mem->buffer, mem->size + 7 + strlen(tag) * 2 + amp * 4);
+	buf = (char *)realloc((char *)mem->buffer, mem->size + 7 + strlen(tag) * 2 + amp * 4);
 	if (buf != NULL) {
 		char *starttag = NULL;
 		char *endtag = NULL;
 
-		starttag = malloc(3 + strlen(tag));
-		endtag = malloc(5 + strlen(tag));
+		starttag = (char *)malloc(3 + strlen(tag));
+		endtag = (char *)malloc(5 + strlen(tag));
 
 		if (starttag == NULL || endtag == NULL) {
 			/* this is fairly silly - so the malloc fails, but we strdup the error?
@@ -406,7 +406,7 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, cons
 
 int try_to_open_csv(struct memblock *mem, enum csv_format type, struct divelog *log)
 {
-	char *p = mem->buffer;
+	char *p = (char *)mem->buffer;
 	char *header[8];
 	int i, time;
 	timestamp_t date;
@@ -458,7 +458,7 @@ int try_to_open_csv(struct memblock *mem, enum csv_format type, struct divelog *
 	return 1;
 }
 
-static char *parse_mkvi_value(const char *haystack, const char *needle)
+static char *parse_mkvi_value(char *haystack, const char *needle)
 {
 	char *lineptr, *valueptr, *endptr, *ret = NULL;
 
@@ -481,7 +481,7 @@ static char *parse_mkvi_value(const char *haystack, const char *needle)
 	return ret;
 }
 
-static char *next_mkvi_key(const char *haystack)
+static char *next_mkvi_key(char *haystack)
 {
 	char *valueptr, *endptr, *ret = NULL;
 
@@ -520,7 +520,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		struct divecomputer *dc;
 		struct tm cur_tm;
 
-		value = parse_mkvi_value(memtxt.buffer, "Dive started at");
+		value = parse_mkvi_value((char *)memtxt.buffer, "Dive started at");
 		if (sscanf(value, "%d-%d-%d %d:%d:%d", &y, &m, &d, &hh, &mm, &ss) != 6) {
 			free(value);
 			return -1;
@@ -536,7 +536,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		dive = alloc_dive();
 		dive->when = utc_mktime(&cur_tm);;
 		dive->dc.model = strdup("Poseidon MkVI Discovery");
-		value = parse_mkvi_value(memtxt.buffer, "Rig Serial number");
+		value = parse_mkvi_value((char *)memtxt.buffer, "Rig Serial number");
 		dive->dc.deviceid = atoi(value);
 		free(value);
 		dive->dc.divemode = CCR;
@@ -556,16 +556,16 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		cyl.type.size.mliter = 3000;
 		cyl.type.workingpressure.mbar = 200000;
 		cyl.type.description = "3l Mk6";
-		value = parse_mkvi_value(memtxt.buffer, "Helium percentage");
+		value = parse_mkvi_value((char *)memtxt.buffer, "Helium percentage");
 		he = atoi(value);
 		free(value);
-		value = parse_mkvi_value(memtxt.buffer, "Nitrogen percentage");
+		value = parse_mkvi_value((char *)memtxt.buffer, "Nitrogen percentage");
 		cyl.gasmix.o2.permille = (100 - atoi(value) - he) * 10;
 		free(value);
 		cyl.gasmix.he.permille = he * 10;
 		add_cloned_cylinder(&dive->cylinders, cyl);
 
-		lineptr = strstr(memtxt.buffer, "Dive started at");
+		lineptr = strstr((char *)memtxt.buffer, "Dive started at");
 		while (!empty_string(lineptr) && (lineptr = strchr(lineptr, '\n'))) {
 			++lineptr;	// Skip over '\n'
 			key = next_mkvi_key(lineptr);
@@ -603,7 +603,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 			free_dive(dive);
 			return report_error(translate("gettextFromC", "Poseidon import failed: unable to read '%s'"), csv);
 		}
-		lineptr = memcsv.buffer;
+		lineptr = (char *)memcsv.buffer;
 		for (;;) {
 			struct sample *sample;
 			int type;
@@ -812,7 +812,7 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 	time_t now;
 	struct tm *timep = NULL;
 	char *ptr, *ptr_old = NULL;
-	char *NL = NULL;
+	const char *NL = NULL;
 	char tmpbuf[MAXCOLDIGITS];
 
 	/* Increase the limits for recursion and variables on XSLT
@@ -840,7 +840,7 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
 
 	/* Determine NL (new line) character and the start of CSV data */
-	ptr = mem.buffer;
+	ptr = (char *)mem.buffer;
 	while ((ptr = strstr(ptr, "\r\n\r\n")) != NULL) {
 		ptr_old = ptr;
 		ptr += 1;
@@ -848,7 +848,7 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 	}
 
 	if (!ptr_old) {
-		ptr = mem.buffer;
+		ptr = (char *)mem.buffer;
 		while ((ptr = strstr(ptr, "\n\n")) != NULL) {
 			ptr_old = ptr;
 			ptr += 1;
@@ -872,7 +872,7 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 	 * line and step through from there. That is the line after
 	 * Serial number.
 	 */
-	ptr = strstr(mem.buffer, "Serial number:");
+	ptr = strstr((char *)mem.buffer, "Serial number:");
 	if (ptr)
 		ptr = strstr(ptr, NL);
 
@@ -923,7 +923,7 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 		fprintf(stderr, "xslt/csv2xml.xslt\n");
 	}
 
-	ret = parse_xml_buffer(filename, mem.buffer, mem.size, log, params);
+	ret = parse_xml_buffer(filename, (char *)mem.buffer, mem.size, log, params);
 	free(mem.buffer);
 
 	return ret;
@@ -965,7 +965,7 @@ int parse_manual_file(const char *filename, struct xml_params *params, struct di
 		fprintf(stderr, "%s/xslt/manualcsv2xml.xslt -\n", SUBSURFACE_SOURCE);
 	}
 #endif
-	ret = parse_xml_buffer(filename, mem.buffer, mem.size, log, params);
+	ret = parse_xml_buffer(filename, (char *)mem.buffer, mem.size, log, params);
 
 	free(mem.buffer);
 	return ret;

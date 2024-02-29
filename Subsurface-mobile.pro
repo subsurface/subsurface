@@ -67,12 +67,12 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/picture.c \
 	core/pictureobj.cpp \
 	core/sample.cpp \
-	core/import-suunto.c \
-	core/import-shearwater.c \
-	core/import-seac.c \
-	core/import-cobalt.c \
-	core/import-divinglog.c \
-	core/import-csv.c \
+	core/import-suunto.cpp \
+	core/import-shearwater.cpp \
+	core/import-seac.cpp \
+	core/import-cobalt.cpp \
+	core/import-divinglog.cpp \
+	core/import-csv.cpp \
 	core/save-html.c \
 	core/statistics.c \
 	core/worldmap-save.c \
