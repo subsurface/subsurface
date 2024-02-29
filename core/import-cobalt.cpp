@@ -131,7 +131,7 @@ static int cobalt_dive(void *param, int, char **data, char **)
 	settings_start(state);
 	dc_settings_start(state);
 	if (data[9]) {
-		utf8_string(data[9], &state->cur_settings.dc.serial_nr);
+		utf8_string_std(data[9], &state->cur_settings.dc.serial_nr);
 		state->cur_settings.dc.deviceid = atoi(data[9]);
 		state->cur_settings.dc.model = strdup("Cobalt import");
 	}
@@ -211,14 +211,12 @@ extern "C" int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char 
 	int retval;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,(MaxDepthPressure*10000/SurfacePressure)-10000,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive where IsViewDeleted = 0";
 
 	retval = sqlite3_exec(handle, get_dives, &cobalt_dive, &state, NULL);
-	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);

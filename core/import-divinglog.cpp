@@ -388,14 +388,12 @@ extern "C" int parse_divinglog_buffer(sqlite3 *handle, const char *url, const ch
 	int retval;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility,SupplyType from Logbook where UUID not in (select UUID from DeletedRecords)";
 
 	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, &state, NULL);
-	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);

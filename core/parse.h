@@ -21,89 +21,85 @@ typedef union {
 	char allocation[sizeof(struct event) + MAX_EVENT_NAME];
 } event_allocation_t;
 
+#ifdef __cplusplus
+
 /*
  * Dive info as it is being built up..
+ * C++-only so we can use std::string
  */
 
 struct parser_settings {
 	struct {
-		const char *model;
-		uint32_t deviceid;
-		const char *nickname, *serial_nr, *firmware;
+		std::string model;
+		uint32_t deviceid = 0;
+		std::string nickname, serial_nr, firmware;
 	} dc;
 	struct {
 		 uint32_t model;
 		 uint32_t serial;
 		 uint32_t fdeviceid;
 		 uint32_t fdiveid;
-		 const char *data;
+		 std::string data;
 	} fingerprint;
-};
-
-enum import_source {
-	UNKNOWN,
-	LIBDIVECOMPUTER,
-	DIVINGLOG,
-	UDDF,
 };
 
 /*
  * parser_state is the state needed by the parser(s). It is initialized
- * with init_parser_state() and resources are freed with free_parser_state().
- * "owning" marks pointers to objects that are freed in free_parser_state().
+ * "owning" marks pointers to objects that are freed in the destructor.
  * In contrast, "non-owning" marks pointers to objects that are owned
  * by other data-structures.
  */
 struct parser_state {
-	bool metric;
+	enum import_source {
+		UNKNOWN,
+		LIBDIVECOMPUTER,
+		DIVINGLOG,
+		UDDF,
+	};
+
+	bool metric = true;
 	struct parser_settings cur_settings;
-	enum import_source import_source;
+	enum import_source import_source = UNKNOWN;
 
-	struct divecomputer *cur_dc;		/* non-owning */
-	struct dive *cur_dive;			/* owning */
-	struct dive_site *cur_dive_site;	/* owning */
-	location_t cur_location;
-	struct dive_trip *cur_trip;		/* owning */
-	struct sample *cur_sample;		/* non-owning */
-	struct picture cur_picture;		/* owning */
-	struct filter_preset *cur_filter;	/* owning */
-	char *fulltext;				/* owning */
-	char *fulltext_string_mode;		/* owning */
-	char *filter_constraint_type;		/* owning */
-	char *filter_constraint_string_mode;	/* owning */
-	char *filter_constraint_range_mode;	/* owning */
-	bool filter_constraint_negate;
-	char *filter_constraint;		/* owning */
-	char *country, *city;			/* owning */
-	int taxonomy_category, taxonomy_origin;
+	struct divecomputer *cur_dc = nullptr;			/* non-owning */
+	struct dive *cur_dive = nullptr;			/* owning */
+	struct dive_site *cur_dive_site = nullptr;		/* owning */
+	location_t cur_location { 0 };
+	struct dive_trip *cur_trip = nullptr;			/* owning */
+	struct sample *cur_sample = nullptr;			/* non-owning */
+	struct picture cur_picture { 0 };			/* owning */
+	struct filter_preset *cur_filter = nullptr;		/* owning */
+	std::string fulltext;					/* owning */
+	std::string fulltext_string_mode;			/* owning */
+	std::string filter_constraint_type;			/* owning */
+	std::string filter_constraint_string_mode;		/* owning */
+	std::string filter_constraint_range_mode;		/* owning */
+	bool filter_constraint_negate = false;
+	std::string filter_constraint;				/* owning */
+	std::string country, city;				/* owning */
+	int taxonomy_category = 0, taxonomy_origin = 0;
 
-	bool in_settings;
-	bool in_userid;
-	bool in_fulltext;
-	bool in_filter_constraint;
-	struct tm cur_tm;
-	int lastcylinderindex, next_o2_sensor;
-	int o2pressure_sensor;
-	int sample_rate;
-	struct extra_data cur_extra_data;
+	bool in_settings = false;
+	bool in_userid = false;
+	bool in_fulltext = false;
+	bool in_filter_constraint = false;
+	struct tm cur_tm{ 0 };
+	int lastcylinderindex = 0, next_o2_sensor = 0;
+	int o2pressure_sensor = 0;
+	int sample_rate = 0;
+	struct extra_data cur_extra_data{ 0 };
 	struct units xml_parsing_units;
-	struct divelog *log;				/* non-owning */
-	struct fingerprint_table *fingerprints;         /* non-owning */
+	struct divelog *log = nullptr;				/* non-owning */
+	struct fingerprint_table *fingerprints = nullptr;	/* non-owning */
 
-	sqlite3 *sql_handle;			/* for SQL based parsers */
+	sqlite3 *sql_handle = nullptr;				/* for SQL based parsers */
+	bool event_active = false;
 	event_allocation_t event_allocation;
+	~parser_state();
 };
 
 #define cur_event event_allocation.event
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-void init_parser_state(struct parser_state *state);
-void free_parser_state(struct parser_state *state);
-
-void start_match(const char *type, const char *name, char *buffer);
-void nonmatch(const char *type, const char *name, char *buffer);
 void event_start(struct parser_state *state);
 void event_end(struct parser_state *state);
 struct divecomputer *get_dc(struct parser_state *state);
@@ -142,10 +138,18 @@ void divecomputer_start(struct parser_state *state);
 void divecomputer_end(struct parser_state *state);
 void userid_start(struct parser_state *state);
 void userid_stop(struct parser_state *state);
-void utf8_string(const char *buffer, void *_res);
+void utf8_string_std(const char *buffer, std::string *res);
 
 void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *state);
+
+extern "C" {
+#endif
+
+int trimspace(char *buffer);
+void start_match(const char *type, const char *name, char *buffer);
+void nonmatch(const char *type, const char *name, char *buffer);
 int atoi_n(char *ptr, unsigned int len);
+void utf8_string(const char *buffer, char **res);
 
 void parse_xml_init(void);
 int parse_xml_buffer(const char *url, const char *buf, int size, struct divelog *log, const struct xml_params *params);

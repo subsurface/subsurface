@@ -198,9 +198,9 @@ static int dm4_dive(void *param, int, char **data, char **)
 	settings_start(state);
 	dc_settings_start(state);
 	if (data[4])
-		utf8_string(data[4], &state->cur_settings.dc.serial_nr);
+		utf8_string_std(data[4], &state->cur_settings.dc.serial_nr);
 	if (data[5])
-		utf8_string(data[5], &state->cur_settings.dc.model);
+		utf8_string_std(data[5], &state->cur_settings.dc.model);
 
 	state->cur_settings.dc.deviceid = 0xffffffff;
 	dc_settings_end(state);
@@ -293,7 +293,6 @@ extern "C" int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *, 
 	char *err = NULL;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.sql_handle = handle;
 
@@ -302,7 +301,6 @@ extern "C" int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *, 
 	char get_dives[] = "select D.DiveId,StartTime/10000000-62135596800,Note,Duration,SourceSerialNumber,Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,D.StartPressure,D.EndPressure,Size,CylinderWorkPressure,SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,Oxygen,Helium,MIX.StartPressure,MIX.EndPressure FROM Dive AS D JOIN DiveMixture AS MIX ON D.DiveId=MIX.DiveId";
 
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, &state, &err);
-	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);
@@ -391,11 +389,11 @@ static int dm5_dive(void *param, int, char **data, char **)
 	settings_start(state);
 	dc_settings_start(state);
 	if (data[4]) {
-		utf8_string(data[4], &state->cur_settings.dc.serial_nr);
+		utf8_string_std(data[4], &state->cur_settings.dc.serial_nr);
 		state->cur_settings.dc.deviceid = atoi(data[4]);
 	}
 	if (data[5])
-		utf8_string(data[5], &state->cur_settings.dc.model);
+		utf8_string_std(data[5], &state->cur_settings.dc.model);
 
 	dc_settings_end(state);
 	settings_end(state);
@@ -410,8 +408,10 @@ static int dm5_dive(void *param, int, char **data, char **)
 	if (data[4]) {
 		state->cur_dive->dc.deviceid = atoi(data[4]);
 	}
+	// Ugh. dc.model is const char * -> we are not supposed to write into it. This will
+	// change when we convert to std::string.
 	if (data[5])
-		utf8_string(data[5], &state->cur_dive->dc.model);
+		utf8_string(data[5], (char **)&state->cur_dive->dc.model);
 
 	if (data[25]) {
 		switch(atoi(data[25])) {
@@ -565,7 +565,6 @@ extern "C" int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *, 
 	char *err = NULL;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.sql_handle = handle;
 
@@ -574,7 +573,6 @@ extern "C" int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *, 
 	char get_dives[] = "select DiveId,StartTime/10000000-62135596800,Note,Duration,coalesce(SourceSerialNumber,SerialNumber),Source,MaxDepth,SampleInterval,StartTemperature,BottomTemperature,StartPressure,EndPressure,'','',SurfacePressure,DiveTime,SampleInterval,ProfileBlob,TemperatureBlob,PressureBlob,'','','','',SampleBlob,Mode FROM Dive where Deleted is null";
 
 	retval = sqlite3_exec(handle, get_dives, &dm5_dive, &state, &err);
-	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);
@@ -583,4 +581,3 @@ extern "C" int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *, 
 
 	return 0;
 }
-
