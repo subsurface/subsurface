@@ -957,7 +957,6 @@ static void format_one_filter_constraint(int preset_id, int constraint_id, struc
 {
 	const struct filter_constraint *constraint = filter_preset_constraint(preset_id, constraint_id);
 	const char *type = filter_constraint_type_to_string(constraint->type);
-	char *data;
 
 	show_utf8(b, "constraint type=", type, "");
 	if (filter_constraint_has_string_mode(constraint->type)) {
@@ -970,9 +969,8 @@ static void format_one_filter_constraint(int preset_id, int constraint_id, struc
 	}
 	if (constraint->negate)
 		put_format(b, " negate");
-	data = filter_constraint_data_to_string(constraint);
-	show_utf8(b, " data=", data, "\n");
-	free(data);
+	std::string data = filter_constraint_data_to_string(constraint);
+	show_utf8(b, " data=", data.c_str(), "\n");
 }
 
 /*

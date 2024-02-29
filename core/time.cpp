@@ -2,6 +2,7 @@
 #include "subsurface-time.h"
 #include "subsurface-string.h"
 #include "gettext.h"
+#include <QtCore> // for QT_TRANSLATE_NOOP
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +33,7 @@
  * are unnecessary once you're counting minutes (32-bit minutes:
  * 8000+ years).
  */
-void utc_mkdate(timestamp_t timestamp, struct tm *tm)
+extern "C" void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 {
 	static const unsigned int mdays[] = {
 		31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
@@ -99,7 +100,7 @@ void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 	tm->tm_mon = m;
 }
 
-timestamp_t utc_mktime(const struct tm *tm)
+extern "C" timestamp_t utc_mktime(const struct tm *tm)
 {
 	static const int mdays[] = {
 		0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
@@ -146,7 +147,7 @@ timestamp_t utc_mktime(const struct tm *tm)
  * out unused calculations. If it turns out to be a bottle neck
  * we will have to cache a struct tm per dive.
  */
-int utc_year(timestamp_t timestamp)
+extern "C" int utc_year(timestamp_t timestamp)
 {
 	struct tm tm;
 	utc_mkdate(timestamp, &tm);
@@ -161,7 +162,7 @@ int utc_year(timestamp_t timestamp)
  * at throwing out unused calculations, so this is more efficient
  * than it looks.
  */
-int utc_weekday(timestamp_t timestamp)
+extern "C" int utc_weekday(timestamp_t timestamp)
 {
 	struct tm tm;
 	utc_mkdate(timestamp, &tm);
@@ -173,7 +174,7 @@ int utc_weekday(timestamp_t timestamp)
  * an 64-bit decimal and return 64-bit timestamp. On failure or
  * if passed an empty string, return 0.
  */
-extern timestamp_t parse_datetime(const char *s)
+extern "C" timestamp_t parse_datetime(const char *s)
 {
 	int y, m, d;
 	int hr, min, sec;
@@ -200,19 +201,19 @@ extern timestamp_t parse_datetime(const char *s)
  * Format 64-bit timestamp in the form "YYYY-MM-DD hh:mm:ss".
  * Returns the empty string for timestamp = 0
  */
-extern char *format_datetime(timestamp_t timestamp)
+std::string format_datetime(timestamp_t timestamp)
 {
 	char buf[32];
 	struct tm tm;
 
 	if (!timestamp)
-		return strdup("");
+		return std::string();
 
 	utc_mkdate(timestamp, &tm);
 	snprintf(buf, sizeof(buf), "%04u-%02u-%02u %02u:%02u:%02u",
 		 tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
-	return strdup(buf);
+	return std::string(buf);
 }
 
 /* Turn month (0-12) into three-character short name */

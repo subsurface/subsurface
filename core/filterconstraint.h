@@ -116,7 +116,6 @@ extern bool filter_constraint_has_date_widget(enum filter_constraint_type);
 extern bool filter_constraint_has_time_widget(enum filter_constraint_type);
 extern int filter_constraint_num_decimals(enum filter_constraint_type);
 extern bool filter_constraint_is_valid(const struct filter_constraint *constraint);
-extern char *filter_constraint_data_to_string(const struct filter_constraint *constraint); // caller takes ownership of returned string
 
 #ifdef __cplusplus
 }
@@ -152,6 +151,8 @@ void filter_constraint_set_timestamp_from(filter_constraint &c, timestamp_t from
 void filter_constraint_set_timestamp_to(filter_constraint &c, timestamp_t to); // convert according to current units (metric or imperial)
 void filter_constraint_set_multiple_choice(filter_constraint &c, uint64_t);
 bool filter_constraint_match_dive(const filter_constraint &c, const struct dive *d);
+std::string filter_constraint_data_to_string(const struct filter_constraint *constraint); // caller takes ownership of returned string
+
 #endif
 
 #endif

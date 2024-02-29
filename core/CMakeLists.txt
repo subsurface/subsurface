@@ -181,7 +181,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	tag.h
 	taxonomy.c
 	taxonomy.h
-	time.c
+	time.cpp
 	timer.c
 	timer.h
 	trip.c
