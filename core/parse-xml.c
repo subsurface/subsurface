@@ -2261,7 +2261,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 	/* Recording the starting battery status to extra data */
 	if (battery_start.volt1) {
 		size_t stringsize = snprintf(NULL, 0, "%dmV (%d%%)", battery_start.volt1, battery_start.percent1) + 1;
-		char *ptr = malloc(size);
+		char *ptr = malloc(stringsize);
 
 		if (ptr) {
 			snprintf(ptr, stringsize, "%dmV (%d%%)", battery_start.volt1, battery_start.percent1);
