@@ -41,8 +41,8 @@ static const struct models_table_t g_models[] = {
 	{0xEE,	0x44,	"Uwatec Unknown model",		DC_FAMILY_UWATEC_ALADIN},
 };
 
-#define JUMP(_ptr, _n) if ((long) (_ptr += _n) > maxbuf) goto bail
-#define CHECK(_ptr, _n) if ((long) _ptr + _n > maxbuf) goto bail
+#define JUMP(_ptr, _n) if ((char *) (_ptr += _n) > (char *)maxbuf) goto bail
+#define CHECK(_ptr, _n) if ((char *) _ptr + _n > (char *)maxbuf) goto bail
 #define read_bytes(_n) \
 	switch (_n) { \
 		case 1: \
@@ -62,10 +62,12 @@ static const struct models_table_t g_models[] = {
 
 #define read_string(_property) \
 	CHECK(membuf, tmp_1byte); \
+	{ \
 	unsigned char *_property##tmp = (unsigned char *)calloc(tmp_1byte + 1, 1); \
-	_property##tmp = memcpy(_property##tmp, membuf, tmp_1byte);\
+	_property##tmp = (unsigned char*)memcpy(_property##tmp, membuf, tmp_1byte);\
 	_property = (unsigned char *)strcat(to_utf8(_property##tmp), ""); \
 	free(_property##tmp);\
-	JUMP(membuf, tmp_1byte);
+	JUMP(membuf, tmp_1byte); \
+	}
 
 #endif // DATATRAK_HEADER_H
