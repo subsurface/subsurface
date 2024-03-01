@@ -222,10 +222,8 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 			continue;
 		}
 
-		if (ptr && ptr[4] == '}') {
-			end_ptr += ptr - (char *)mem_csv.buffer;
+		if (ptr && ptr[4] == '}')
 			return report_error(translate("gettextFromC", "No dive profile found from '%s'"), filename);
-		}
 
 		if (ptr)
 			ptr = parse_dan_new_line(ptr, NL);
