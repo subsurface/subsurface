@@ -41,7 +41,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	checkcloudconnection.h
 	cloudstorage.cpp
 	cloudstorage.h
-	cochran.c
+	cochran.cpp
 	cochran.h
 	color.cpp
 	color.h
@@ -51,7 +51,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	configuredivecomputerthreads.h
 	connectionlistmodel.cpp
 	connectionlistmodel.h
-	datatrak.c
+	datatrak.cpp
 	datatrak.h
 	deco.c
 	deco.h
@@ -121,9 +121,9 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	import-suunto.cpp
 	import-seac.cpp
 	interpolate.h
-	libdivecomputer.c
+	libdivecomputer.cpp
 	libdivecomputer.h
-	liquivision.c
+	liquivision.cpp
 	load-git.cpp
 	membuffer.cpp
 	membuffer.h

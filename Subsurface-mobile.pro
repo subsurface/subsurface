@@ -60,7 +60,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/gaspressures.c \
 	core/git-access.cpp \
 	core/globals.cpp \
-	core/liquivision.c \
+	core/liquivision.cpp \
 	core/load-git.cpp \
 	core/parse-xml.cpp \
 	core/parse.cpp \
@@ -76,14 +76,14 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/save-html.c \
 	core/statistics.c \
 	core/worldmap-save.c \
-	core/libdivecomputer.c \
+	core/libdivecomputer.cpp \
 	core/version.c \
 	core/save-git.cpp \
-	core/datatrak.c \
+	core/datatrak.cpp \
 	core/ostctools.c \
 	core/planner.c \
 	core/save-xml.cpp \
-	core/cochran.c \
+	core/cochran.cpp \
 	core/deco.c \
 	core/divesite.c \
 	core/equipment.c \

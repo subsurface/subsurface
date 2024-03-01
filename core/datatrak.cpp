@@ -67,7 +67,7 @@ static char *to_utf8(unsigned char *in_string)
 	inlen = strlen((char *)in_string);
 	outlen = inlen * 2 + 1;
 
-	char *out_string = calloc(outlen, 1);
+	char *out_string = (char *)calloc(outlen, 1);
 	for (i = 0; i < inlen; i++) {
 		if (in_string[i] < 127) {
 			out_string[j] = in_string[i];
@@ -158,7 +158,7 @@ static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_mo
  * Parses a mem buffer extracting its data and filling a subsurface's dive structure.
  * Returns a pointer to last position in buffer, or NULL on failure.
  */
-static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct divelog *log, long maxbuf)
+static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct divelog *log, char *maxbuf)
 {
 	int  rc, profile_length, libdc_model;
 	char *tmp_notes_str = NULL;
@@ -174,7 +174,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 	struct dive_site *ds;
 	char is_nitrox = 0, is_O2 = 0, is_SCR = 0;
 
-	device_data_t *devdata = calloc(1, sizeof(device_data_t));
+	device_data_t *devdata = (device_data_t *)calloc(1, sizeof(device_data_t));
 	devdata->log = log;
 
 	/*
@@ -478,8 +478,8 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 				   tmp_notes_str ? tmp_notes_str : "",
 				   QT_TRANSLATE_NOOP("gettextFromC", "Datatrak/Wlog notes"),
 				   tmp_string1);
-		dt_dive->notes = calloc((len +1), 1);
-		dt_dive->notes = memcpy(dt_dive->notes, buffer, len);
+		dt_dive->notes = (char *)calloc((len +1), 1);
+		memcpy(dt_dive->notes, buffer, len);
 		free(tmp_string1);
 	}
 	free(tmp_notes_str);
@@ -571,7 +571,7 @@ static unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive
 			((get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000);
 	}
 	free(devdata);
-	return membuf;
+	return (char *)membuf;
 bail:
 	free(locality);
 	free(devdata);
@@ -582,10 +582,10 @@ bail:
  * Parses the header of the .add file, returns the number of dives in
  * the archive (must be the same than number of dives in .log file).
  */
-static int wlog_header_parser (struct memblock *mem)
+static int wlog_header_parser (std::string &mem)
 {
 	int tmp;
-	unsigned char *runner = (unsigned char *) mem->buffer;
+	unsigned char *runner = (unsigned char *) mem.data();
 	if (!runner)
 		return -1;
 	if (!memcmp(runner, "\x52\x02", 2)) {
@@ -600,7 +600,7 @@ static int wlog_header_parser (struct memblock *mem)
 
 #define NOTES_LENGTH 256
 #define SUIT_LENGTH 26
-static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int dcount)
+static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dcount)
 {
 	int tmp = 0, offset = 12 + (dcount * 850),
 	    pos_weight =  offset + 256,
@@ -608,7 +608,7 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
 	    pos_tank_init = offset + 266,
 	    pos_suit = offset + 268;
 	char *wlog_notes = NULL, *wlog_suit = NULL, *buffer = NULL;
-	unsigned char *runner = (unsigned char *) wl_mem->buffer;
+	unsigned char *runner = (unsigned char *) wl_mem.data();
 
 	/*
 	 * Extended notes string. Fixed length 256 bytes. 0 padded if not complete
@@ -620,7 +620,7 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
 		wlog_notes = to_utf8((unsigned char *) wlog_notes_temp);
 	}
 	if (dt_dive->notes && wlog_notes) {
-		buffer = calloc (strlen(dt_dive->notes) + strlen(wlog_notes) + 1, 1);
+		buffer = (char *)calloc (strlen(dt_dive->notes) + strlen(wlog_notes) + 1, 1);
 		sprintf(buffer, "%s%s", dt_dive->notes, wlog_notes);
 		free(dt_dive->notes);
 		dt_dive->notes = copy_string(buffer);
@@ -635,7 +635,7 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
 	 */
 	tmp = (int) two_bytes_to_int(runner[pos_weight + 1], runner[pos_weight]);
 	if (tmp != 0x7fff) {
-		weightsystem_t ws = { {lrint(tmp * 10)}, QT_TRANSLATE_NOOP("gettextFromC", "unknown"), false };
+		weightsystem_t ws = { {tmp * 10}, QT_TRANSLATE_NOOP("gettextFromC", "unknown"), false };
 		add_cloned_weightsystem(&dt_dive->weightsystems, ws);
 	}
 
@@ -675,42 +675,40 @@ static void wlog_compl_parser(struct memblock *wl_mem, struct dive *dt_dive, int
 }
 
 /*
- * Main function call from file.c memblock is allocated (and freed) there.
+ * Main function call from file.c data is allocated (and freed) there.
  * If parsing is aborted due to errors, stores correctly parsed dives.
  */
-int datatrak_import(struct memblock *mem, struct memblock *wl_mem, struct divelog *log)
+int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log)
 {
-	unsigned char *runner;
+	char *runner;
 	int i = 0, numdives = 0, rc = 0;
 
-	long maxbuf = (long) mem->buffer + mem->size;
+	char *maxbuf = mem.data() + mem.size();
 
 	// Verify fileheader,  get number of dives in datatrak divelog, zero on error
-	numdives = read_file_header((unsigned char *)mem->buffer);
+	numdives = read_file_header((unsigned char *)mem.data());
 	if (!numdives) {
 		report_error(translate("gettextFromC", "[Error] File is not a DataTrak file. Aborted"));
 		goto bail;
 	}
 	// Verify WLog .add file, Beginning sequence and Nº dives
-	if(wl_mem) {
+	if(!wl_mem.empty()) {
 		int compl_dives_n = wlog_header_parser(wl_mem);
 		if (compl_dives_n != numdives) {
 			report_error("ERROR: Not the same number of dives in .log %d and .add file %d.\nWill not parse .add file", numdives , compl_dives_n);
-			free(wl_mem->buffer);
-			wl_mem->buffer = NULL;
-			wl_mem = NULL;
+			wl_mem.clear();
 		}
 	}
 	// Point to the expected begining of 1st. dive data
-	runner = (unsigned char *)mem->buffer;
+	runner = mem.data();
 	JUMP(runner, 12);
 
 	// Secuential parsing. Abort if received NULL from dt_dive_parser.
-	while ((i < numdives) && ((long) runner < maxbuf)) {
+	while ((i < numdives) && (runner < maxbuf)) {
 		struct dive *ptdive = alloc_dive();
 
-		runner = dt_dive_parser(runner, ptdive, log, maxbuf);
-		if (wl_mem)
+		runner = dt_dive_parser((unsigned char *)runner, ptdive, log, maxbuf);
+		if (!wl_mem.empty())
 			wlog_compl_parser(wl_mem, ptdive, i);
 		if (runner == NULL) {
 			report_error(translate("gettextFromC", "Error: no dive"));
