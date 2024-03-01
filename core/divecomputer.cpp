@@ -334,6 +334,12 @@ struct event *get_event(struct divecomputer *dc, int idx)
 	return &dc->events[idx];
 }
 
+bool divecomputer::has_individually_hidden_events() const
+{
+	return std::any_of(events.begin(), events.end(),
+			[] (const event &ev) { return ev.hidden; });
+}
+
 void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value)
 {
 	if (key == "Serial") {

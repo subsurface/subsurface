@@ -90,6 +90,11 @@ double DiveTextItem::fontHeight(double dpr, double scale)
 	return (double)fm.height();
 }
 
+double DiveTextItem::width() const
+{
+	return boundingRect().width();
+}
+
 double DiveTextItem::height() const
 {
 	return fontHeight(dpr, scale) + outlineSize * dpr;

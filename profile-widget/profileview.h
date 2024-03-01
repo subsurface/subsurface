@@ -142,6 +142,7 @@ private:
 	void hideEvent(DiveEventItem &item);
 	void hideEventType(DiveEventItem &item);
 	void removeEvent(DiveEventItem &item);
+	void unhideEvents();
 
 	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
 	// For the same offset, sort by filename.

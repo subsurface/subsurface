@@ -205,7 +205,7 @@ void DiveEventItem::recalculatePos()
 		hide();
 		return;
 	}
-	setVisible(!ev.hidden && !is_event_type_hidden(&ev));
+	setVisible(!ev.hidden && !is_event_type_hidden(ev));
 	double x = hAxis->posAtValue(ev.time.seconds);
 	double y = vAxis->posAtValue(depth);
 	setPos(x, y);

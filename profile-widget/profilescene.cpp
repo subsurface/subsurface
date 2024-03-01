@@ -11,6 +11,7 @@
 #include "core/device.h"
 #include "core/divecomputer.h"
 #include "core/event.h"
+#include "core/eventtype.h"
 #include "core/pref.h"
 #include "core/profile.h"
 #include "core/qthelper.h"	// for decoMode()
@@ -95,6 +96,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 							[](const plot_data &item) { return 0.0; }, // unused
 							1, dpr)),
 	diveComputerText(new DiveTextItem(dpr, 1.0, Qt::AlignRight | Qt::AlignTop, nullptr)),
+	eventsHiddenText(new DiveTextItem(dpr, 1.0, Qt::AlignRight | Qt::AlignTop, nullptr)),
 	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis,
 							[](const plot_data &item) { return (double)item.ceiling; },
 							1, dpr)),
@@ -143,6 +145,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 	// Add items to scene
 	addItem(diveComputerText);
+	addItem(eventsHiddenText);
 	addItem(tankItem);
 	addItem(decoModelParameters);
 	addItem(profileYAxis);
@@ -156,6 +159,8 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 	for (AbstractProfilePolygonItem *item: profileItems)
 		addItem(item);
+
+	eventsHiddenText->set(tr("Hidden events!"), getColor(TIME_TEXT, isGrayscale));
 }
 
 ProfileScene::~ProfileScene()
@@ -287,8 +292,10 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	profileYAxis->setGridIsMultipleOfThree( qPrefDisplay::three_m_based_grid() );
 
 	// Place the fixed dive computer text at the bottom
-	double bottomBorder = sceneRect().height() - diveComputerText->height() - 2.0 * dpr * diveComputerTextBorder;
-	diveComputerText->setPos(0.0, bottomBorder + dpr * diveComputerTextBorder);
+	double bottomTextHeight = std::max(diveComputerText->height(), eventsHiddenText->height());
+	double bottomBorder = sceneRect().height() - bottomTextHeight - 2.0 * dpr * diveComputerTextBorder;
+	diveComputerText->setPos(0.0, round(bottomBorder + dpr * diveComputerTextBorder));
+	eventsHiddenText->setPos(width - dpr * diveComputerTextBorder - eventsHiddenText->width(), bottomBorder + dpr * diveComputerTextBorder);
 
 	double topBorder = 0.0;
 
@@ -370,6 +377,12 @@ bool ProfileScene::pointOnProfile(const QPointF &point) const
 bool ProfileScene::pointOnDiveComputerText(const QPointF &point) const
 {
 	return diveComputerText->boundingRect().contains(point - diveComputerText->pos());
+}
+
+bool ProfileScene::pointOnEventsHiddenText(const QPointF &point) const
+{
+	return eventsHiddenText->isVisible() &&
+	       eventsHiddenText->boundingRect().contains(point - eventsHiddenText->pos());
 }
 
 static double max_gas(const plot_info &pi, double gas_pressures::*gas)
@@ -525,9 +538,12 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, boo
 	eventItems.clear();
 	struct gasmix lastgasmix = d->get_gasmix_at_time(*currentdc, 1_sec);
 
+	bool has_hidden_events = false;
 	for (auto [idx, event]: enumerated_range(currentdc->events)) {
-		if (event.hidden)
+		if (event.hidden || is_event_type_hidden(event)) {
+			has_hidden_events = true;
 			continue;
+		}
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
 			if (event.name.empty() ||
@@ -547,6 +563,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, boo
 		if (event.is_gaschange())
 			lastgasmix = d->get_gasmix_from_event(event);
 	}
+	eventsHiddenText->setVisible(has_hidden_events);
 
 	QString dcText = QString::fromStdString(get_dc_nickname(currentdc));
 	if (is_dc_planner(currentdc))

@@ -38,6 +38,7 @@ public:
 	void clear();
 	bool pointOnProfile(const QPointF &point) const;
 	bool pointOnDiveComputerText(const QPointF &point) const;
+	bool pointOnEventsHiddenText(const QPointF &point) const;
 	void anim(double fraction); // Called by the animation with 0.0-1.0 (start to stop).
 				    // Can be compared with literal 1.0 to determine "end" state.
 
@@ -96,6 +97,7 @@ private:
 	DiveGasPressureItem *gasPressureItem;
 	std::vector<std::unique_ptr<DiveEventItem>> eventItems;
 	DiveTextItem *diveComputerText;
+	DiveTextItem *eventsHiddenText;
 	DiveReportedCeiling *reportedCeiling;
 	PartialPressureGasItem *pn2GasItem;
 	PartialPressureGasItem *pheGasItem;

@@ -64,6 +64,8 @@ public:
 	const struct event *next(); // nullptr -> end
 };
 
+extern bool has_individually_hidden_events(const struct divecomputer *dc);
+
 /* Get gasmixes at increasing timestamps. */
 class gasmix_loop {
 	const struct dive &dive;

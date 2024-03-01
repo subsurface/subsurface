@@ -44,6 +44,8 @@ struct divecomputer {
 	std::vector<struct event> events;
 	std::vector<struct extra_data> extra_data;
 
+	bool has_individually_hidden_events() const;
+
 	divecomputer();
 	~divecomputer();
 	divecomputer(const divecomputer &);

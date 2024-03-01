@@ -370,41 +370,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		changeMode->addAction(gettextFromC::tr(divemode_text_ui[PSCR]),
 				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
-	if (any_event_types_hidden()) {
-		QMenu *m2 = m.addMenu(tr("Unhide event type"));
-		for (int i: hidden_event_types()) {
-			m2->addAction(event_type_name(i), [this, i]() {
-				show_event_type(i);
-				replot();
-			});
-		}
-		m2->addAction(tr("All event types"), this, &ProfileWidget2::unhideEventTypes);
-	}
-	const struct divecomputer *currentdc = d->get_dc(dc);
-	if (currentdc && std::any_of(currentdc->events.begin(), currentdc->events.end(),
-	    [] (auto &ev) { return ev.hidden; }))
-		m.addAction(tr("Unhide individually hidden events of this dive"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
-}
-
-void ProfileWidget2::unhideEvents()
-{
-	if (!d)
-		return;
-	struct divecomputer *currentdc = mutable_dive()->get_dc(dc);
-	if (!currentdc)
-		return;
-	for (auto &ev: currentdc->events)
-		ev.hidden = false;
-	for (DiveEventItem *item: profileScene->eventItems)
-		item->show();
-}
-
-void ProfileWidget2::unhideEventTypes()
-{
-	show_all_event_types();
-
-	replot();
 }
 
 void ProfileWidget2::addBookmark(int seconds)
