@@ -88,7 +88,7 @@ struct parser_state {
 	int lastcylinderindex = 0, next_o2_sensor = 0;
 	int o2pressure_sensor = 0;
 	int sample_rate = 0;
-	struct extra_data cur_extra_data{ 0 };
+	struct { std::string key; std::string value; } cur_extra_data;
 	struct units xml_parsing_units;
 	struct divelog *log = nullptr;				/* non-owning */
 	struct fingerprint_table *fingerprints = nullptr;	/* non-owning */

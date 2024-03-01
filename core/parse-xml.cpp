@@ -278,17 +278,15 @@ static void depth(const char *buffer, depth_t *depth, struct parser_state *state
 
 static void extra_data_start(struct parser_state *state)
 {
-	memset(&state->cur_extra_data, 0, sizeof(struct extra_data));
+	state->cur_extra_data.key.clear();
+	state->cur_extra_data.value.clear();
 }
 
 static void extra_data_end(struct parser_state *state)
 {
 	// don't save partial structures - we must have both key and value
-	if (state->cur_extra_data.key && state->cur_extra_data.value)
-		add_extra_data(get_dc(state), state->cur_extra_data.key, state->cur_extra_data.value);
-	free((void *)state->cur_extra_data.key);
-	free((void *)state->cur_extra_data.value);
-	state->cur_extra_data.key = state->cur_extra_data.value = NULL;
+	if (!state->cur_extra_data.key.empty() && !state->cur_extra_data.value.empty())
+		add_extra_data(get_dc(state), state->cur_extra_data.key.c_str(), state->cur_extra_data.value.c_str());
 }
 
 static void weight(const char *buffer, weight_t *weight, struct parser_state *state)
@@ -829,9 +827,9 @@ static int match_dc_data_fields(struct divecomputer *dc, const char *name, char 
 		return 1;
 	if (MATCH("salinity.water", salinity, &dc->salinity))
 		return 1;
-	if (MATCH("key.extradata", utf8_string, (char **)&state->cur_extra_data.key))
+	if (MATCH("key.extradata", utf8_string_std, &state->cur_extra_data.key))
 		return 1;
-	if (MATCH("value.extradata", utf8_string, (char **)&state->cur_extra_data.value))
+	if (MATCH("value.extradata", utf8_string_std, &state->cur_extra_data.value))
 		return 1;
 	if (MATCH("divemode", get_dc_type, &dc->divemode))
 		return 1;

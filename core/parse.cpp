@@ -24,8 +24,6 @@ parser_state::~parser_state()
 	free_dive(cur_dive);
 	free_trip(cur_trip);
 	free_dive_site(cur_dive_site);
-	free((void *)cur_extra_data.key);
-	free((void *)cur_extra_data.value);
 }
 
 /*
