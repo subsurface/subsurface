@@ -50,7 +50,7 @@ struct git_parser_state {
 	std::string filter_constraint_data;
 	struct picture active_pic = { 0 };
 	struct dive_site *active_site = nullptr;
-	struct filter_preset *active_filter = nullptr;
+	std::unique_ptr<filter_preset> active_filter;
 	struct divelog *log = nullptr;
 	int o2pressure_sensor = 0;
 };
@@ -1190,7 +1190,7 @@ static void parse_filter_preset_constraint(char *line, struct membuffer *str, st
 		line = parse_keyvalue_entry(parse_filter_preset_constraint_keyvalue, state, line, str);
 	}
 
-	filter_preset_add_constraint(state->active_filter, state->filter_constraint_type.c_str(),
+	filter_preset_add_constraint(state->active_filter.get(), state->filter_constraint_type.c_str(),
 				     state->filter_constraint_string_mode.c_str(),
 				     state->filter_constraint_range_mode.c_str(),
 				     state->filter_constraint_negate, state->filter_constraint_data.c_str());
@@ -1227,14 +1227,14 @@ static void parse_filter_preset_fulltext(char *line, struct membuffer *str, stru
 		line = parse_keyvalue_entry(parse_filter_preset_fulltext_keyvalue, state, line, str);
 	}
 
-	filter_preset_set_fulltext(state->active_filter, state->fulltext_query.c_str(), state->fulltext_mode.c_str());
+	filter_preset_set_fulltext(state->active_filter.get(), state->fulltext_query.c_str(), state->fulltext_mode.c_str());
 	state->fulltext_mode.clear();
 	state->fulltext_query.clear();
 }
 
 static void parse_filter_preset_name(char *, struct membuffer *str, struct git_parser_state *state)
 {
-	filter_preset_set_name(state->active_filter, detach_cstring(str));
+	filter_preset_set_name(state->active_filter.get(), detach_cstring(str));
 }
 
 /* These need to be sorted! */
@@ -1792,14 +1792,13 @@ static int parse_filter_preset(struct git_parser_state *state, const git_tree_en
 	if (!blob)
 		return report_error("Unable to read filter preset file");
 
-	state->active_filter = alloc_filter_preset();
+	state->active_filter = std::make_unique<filter_preset>();
 	for_each_line(blob, filter_preset_parser, state);
 
 	git_blob_free(blob);
 
-	add_filter_preset_to_table(state->active_filter, state->log->filter_presets);
-	free_filter_preset(state->active_filter);
-	state->active_filter = NULL;
+	add_filter_preset_to_table(state->active_filter.get(), state->log->filter_presets);
+	state->active_filter.reset();
 
 	return 0;
 }

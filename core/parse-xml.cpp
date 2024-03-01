@@ -1527,7 +1527,7 @@ static bool entry(const char *name, char *buf, struct parser_state *state)
 		return true;
 	}
 	if (state->cur_filter) {
-		try_to_fill_filter(state->cur_filter, name, buf);
+		try_to_fill_filter(state->cur_filter.get(), name, buf);
 		return true;
 	}
 	if (state->event_active) {

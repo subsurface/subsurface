@@ -10,6 +10,7 @@
 #include "filterpreset.h"
 #include "picture.h"
 
+#include <memory>
 #include <sqlite3.h>
 #include <time.h>
 
@@ -68,7 +69,7 @@ struct parser_state {
 	struct dive_trip *cur_trip = nullptr;			/* owning */
 	struct sample *cur_sample = nullptr;			/* non-owning */
 	struct picture cur_picture { 0 };			/* owning */
-	struct filter_preset *cur_filter = nullptr;		/* owning */
+	std::unique_ptr<filter_preset> cur_filter;		/* owning */
 	std::string fulltext;					/* owning */
 	std::string fulltext_string_mode;			/* owning */
 	std::string filter_constraint_type;			/* owning */

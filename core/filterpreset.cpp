@@ -53,16 +53,6 @@ extern "C" const filter_constraint *filter_preset_constraint(int preset, int con
 	return &global_table()[preset].data.constraints[constraint];
 }
 
-extern "C" struct filter_preset *alloc_filter_preset()
-{
-	return new filter_preset;
-}
-
-extern "C" void free_filter_preset(const struct filter_preset *preset)
-{
-	delete preset;
-}
-
 extern "C" void filter_preset_set_name(struct filter_preset *preset, const char *name)
 {
 	preset->name = name;
