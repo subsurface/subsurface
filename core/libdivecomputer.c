@@ -1081,7 +1081,6 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
-	UNUSED(device);
 	static unsigned int last = 0;
 	const dc_event_progress_t *progress = data;
 	const dc_event_devinfo_t *devinfo = data;
@@ -1244,15 +1243,6 @@ void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, un
 		fprintf(fp, "[%li.%06li] %s: %s\n", seconds, microseconds, loglevels[loglevel], msg);
 	}
 }
-
-char *transport_string[] = {
-	"SERIAL",
-	"USB",
-	"USBHID",
-	"IRDA",
-	"BT",
-	"BLE"
-};
 
 /*
  * Get the transports supported by us (as opposed to
