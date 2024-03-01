@@ -138,6 +138,7 @@ private:
 
 	// Event related
 	void editEventName(struct event *event);
+	void unhideEvents();
 
 	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
 	// For the same offset, sort by filename.

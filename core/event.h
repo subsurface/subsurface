@@ -8,6 +8,8 @@
 
 #include <libdivecomputer/parser.h>
 
+struct divecomputer;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -55,6 +57,7 @@ extern struct event *create_event(unsigned int time, int type, int flags, int va
 extern struct event *clone_event_rename(const struct event *ev, const char *name);
 extern bool same_event(const struct event *a, const struct event *b);
 extern enum event_severity get_event_severity(const struct event *ev);
+extern bool has_individually_hidden_events(const struct divecomputer *dc);
 
 /* Since C doesn't have parameter-based overloading, two versions of get_next_event. */
 extern const struct event *get_next_event(const struct event *event, const char *name);

@@ -365,35 +365,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		changeMode->addAction(gettextFromC::tr(divemode_text_ui[PSCR]),
 				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
-	if (any_event_types_hidden()) {
-		QMenu *m2 = m.addMenu(tr("Unhide event type"));
-		for (int i: hidden_event_types()) {
-			m2->addAction(event_type_name(i), [this, i]() {
-				show_event_type(i);
-				replot();
-			});
-		}
-		m2->addAction(tr("All event types"), this, &ProfileWidget2::unhideEventTypes);
-	}
-	if (std::any_of(profileScene->eventItems.begin(), profileScene->eventItems.end(),
-	    [] (const DiveEventItem *item) { return item->getEvent()->hidden; }))
-		m.addAction(tr("Unhide individually hidden events of this dive"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
-}
-
-void ProfileWidget2::unhideEvents()
-{
-	for (DiveEventItem *item: profileScene->eventItems) {
-		item->getEventMutable()->hidden = false;
-		item->show();
-	}
-}
-
-void ProfileWidget2::unhideEventTypes()
-{
-	show_all_event_types();
-
-	replot();
 }
 
 void ProfileWidget2::addBookmark(int seconds)

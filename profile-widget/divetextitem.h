@@ -17,6 +17,7 @@ public:
 	const QString &text();
 	static double fontHeight(double dpr, double scale);
 	static std::pair<double, double> getLabelSize(double dpr, double scale, const QString &label);
+	double width() const;
 	double height() const;
 
 private:

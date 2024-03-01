@@ -474,6 +474,16 @@ static QString formatCylinderDescription(int i, const cylinder_t *cylinder)
 	return label;
 }
 
+void ProfileView::unhideEvents()
+{
+	if (!d)
+		return;
+	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
+	for (struct event *ev = currentdc->events; ev; ev = ev->next)
+		ev->hidden = false;
+	replot();
+}
+
 void ProfileView::mousePressEvent(QMouseEvent *event)
 {
 	// Handle dragging of items
@@ -506,6 +516,34 @@ void ProfileView::mousePressEvent(QMouseEvent *event)
 		return execMenu(m, event->globalPos());
 	}
 
+	// Open context menu for event unhiding
+	if (d && profileScene->pointOnEventsHiddenText(event->pos())) {
+		std::vector<MenuEntry> m;
+		const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
+		if (has_individually_hidden_events(currentdc)) {
+			m.emplace_back(tr("Unhide individually hidden events of this dive"), [this, &currentdc] {
+					unhideEvents();
+				});
+		}
+		std::vector<int> types = hidden_event_types(currentdc);
+		if (!types.empty()) {
+			std::vector<MenuEntry> m2;
+			for (int i: types) {
+				m2.emplace_back(event_type_name(i), [this, i]() {
+						show_event_type(i);
+						replot();
+					});
+			}
+			if (types.size() > 1) {
+				m2.emplace_back(tr("All types"), [this, currentdc]() {
+						show_all_event_types(currentdc);
+						replot();
+					});
+			}
+			m.emplace_back(tr("Unhide event type"), std::move(m2));
+		}
+		return execMenu(m, event->globalPos());
+	}
 	DiveEventItem *item = profileScene->eventAtPosition(event->pos());
 	if (d && item) {
 		std::vector<MenuEntry> m;

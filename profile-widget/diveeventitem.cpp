@@ -4,7 +4,6 @@
 #include "profile-widget/divepixmapcache.h"
 #include "profile-widget/animationfunctions.h"
 #include "core/event.h"
-#include "core/eventtype.h"
 #include "core/format.h"
 #include "core/profile.h"
 #include "core/gettextfromc.h"
@@ -217,7 +216,6 @@ void DiveEventItem::recalculatePos()
 		hide();
 		return;
 	}
-	setVisible(!ev->hidden && !is_event_type_hidden(ev));
 	double x = hAxis->posAtValue(ev->time.seconds);
 	double y = vAxis->posAtValue(depth);
 	setPos(x, y);
