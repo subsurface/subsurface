@@ -47,8 +47,6 @@ extern int filter_presets_count(void);
 extern const char *filter_preset_fulltext_mode(int preset); // string mode of fulltext query. ownership is *not* passed to caller.
 extern int filter_preset_constraint_count(int preset); // number of constraints in the filter preset.
 extern const struct filter_constraint *filter_preset_constraint(int preset, int constraint); // get constraint. ownership is *not* passed to caller.
-extern struct filter_preset *alloc_filter_preset();
-extern void free_filter_preset(const struct filter_preset *preset);
 extern void filter_preset_set_name(struct filter_preset *preset, const char *name);
 extern void filter_preset_set_fulltext(struct filter_preset *preset, const char *fulltext, const char *fulltext_string_mode);
 extern void add_filter_preset_to_table(const struct filter_preset *preset, struct filter_preset_table *table);
