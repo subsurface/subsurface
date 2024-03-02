@@ -24,7 +24,6 @@
 #include "subsurface-string.h"
 #include "trip.h"
 #include "device.h"
-#include "membuffer.h"
 #include "git-access.h"
 #include "picture.h"
 #include "qthelper.h"
@@ -53,11 +52,12 @@ struct git_parser_state {
 	std::unique_ptr<filter_preset> active_filter;
 	struct divelog *log = nullptr;
 	int o2pressure_sensor = 0;
+	std::vector<std::string> converted_strings;
 };
 
 struct keyword_action {
 	const char *keyword;
-	void (*fn)(char *, struct membuffer *, struct git_parser_state *);
+	void (*fn)(char *, struct git_parser_state *);
 };
 
 static git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry);
@@ -168,7 +168,7 @@ static int get_index(const char *line)
 static int get_hex(const char *line)
 { return strtoul(line, NULL, 16); }
 
-static void parse_dive_gps(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_gps(char *line, struct git_parser_state *state)
 {
 	location_t location;
 	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
@@ -183,169 +183,172 @@ static void parse_dive_gps(char *line, struct membuffer *, struct git_parser_sta
 		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
 			std::string coords = printGPSCoordsC(&location);
 			// we have a dive site that already has GPS coordinates
-			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords.c_str());
+			// note 1: there will be much less copying once the core
+			// structures are converted to std::string.
+			// note 2: we could include the first newline in the
+			// translation string, but that would be weird and cause
+			// a new string.
+			std::string new_text = std::string(ds->notes) + '\n' +
+					       format_string_std(translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords.c_str());
+			free(ds->notes);
+			ds->notes = strdup(new_text.c_str());
 		}
 		ds->location = location;
 	}
 
 }
 
-static void parse_dive_location(char *, struct membuffer *str, struct git_parser_state *state)
+// Gets the first converted string and consumes it.
+// Note: does not remove the string from the vector.
+// This is supposed to be used for parsers that expect
+// only one string.
+static std::string get_first_converted_string(struct git_parser_state *state)
 {
-	char *name = detach_cstring(str);
+	if (state->converted_strings.empty())
+		return std::string();
+	return std::move(state->converted_strings.front());
+}
+
+// This is a dummy function that converts the first
+// converted string to a newly allocated C-string.
+// Will be removed when the core data structures are
+// converted to std::string.
+static char *get_first_converted_string_c(struct git_parser_state *state)
+{
+	return strdup(get_first_converted_string(state).c_str());
+}
+
+static void parse_dive_location(char *, struct git_parser_state *state)
+{
+	std::string name = get_first_converted_string(state);
 	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
 	if (!ds) {
-		ds = get_dive_site_by_name(name, state->log->sites);
+		ds = get_dive_site_by_name(name.c_str(), state->log->sites);
 		if (!ds)
-			ds = create_dive_site(name, state->log->sites);
+			ds = create_dive_site(name.c_str(), state->log->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		// we already had a dive site linked to the dive
 		if (empty_string(ds->name)) {
 			free(ds->name); // empty_string could mean pointer to a 0-byte!
-			ds->name = strdup(name);
+			ds->name = strdup(name.c_str());
 		} else {
 			// and that dive site had a name. that's weird - if our name is different, add it to the notes
-			if (!same_string(ds->name, name))
-				ds->notes = add_to_string(ds->notes, translate("gettextFromC", "additional name for site: %s\n"), name);
+			if (!same_string(ds->name, name.c_str())) {
+				std::string new_string = std::string(ds->notes) + '\n' +
+							 format_string_std(translate("gettextFromC", "additional name for site: %s\n"), name.c_str());
+				ds->notes = strdup(new_string.c_str());
+			}
 		}
 	}
-	free(name);
 }
 
-static void parse_dive_diveguide(char *, struct membuffer *str, struct git_parser_state *state)
-{ state->active_dive->diveguide = detach_cstring(str); }
+static void parse_dive_diveguide(char *, struct git_parser_state *state)
+{ state->active_dive->diveguide = get_first_converted_string_c(state); }
 
-static void parse_dive_buddy(char *, struct membuffer *str, struct git_parser_state *state)
-{ state->active_dive->buddy = detach_cstring(str); }
+static void parse_dive_buddy(char *, struct git_parser_state *state)
+{ state->active_dive->buddy = get_first_converted_string_c(state); }
 
-static void parse_dive_suit(char *, struct membuffer *str, struct git_parser_state *state)
-{ state->active_dive->suit = detach_cstring(str); }
+static void parse_dive_suit(char *, struct git_parser_state *state)
+{ state->active_dive->suit = get_first_converted_string_c(state); }
 
-static void parse_dive_notes(char *, struct membuffer *str, struct git_parser_state *state)
-{ state->active_dive->notes = detach_cstring(str); }
+static void parse_dive_notes(char *, struct git_parser_state *state)
+{ state->active_dive->notes = get_first_converted_string_c(state); }
 
-static void parse_dive_divesiteid(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_divesiteid(char *line, struct git_parser_state *state)
 { add_dive_to_dive_site(state->active_dive, get_dive_site_by_uuid(get_hex(line), state->log->sites)); }
 
 /*
- * We can have multiple tags in the membuffer. They are separated by
- * NUL bytes.
+ * We can have multiple tags.
  */
-static void parse_dive_tags(char *, struct membuffer *str, struct git_parser_state *state)
+static void parse_dive_tags(char *, struct git_parser_state *state)
 {
-	const char *tag;
-	int len = str->len;
-
-	if (!len)
-		return;
-
-	/* Make sure there is a NUL at the end too */
-	tag = mb_cstring(str);
-	for (;;) {
-		int taglen = strlen(tag);
-		if (taglen)
-			taglist_add_tag(&state->active_dive->tag_list, tag);
-		len -= taglen;
-		if (!len)
-			return;
-		tag += taglen + 1;
-		len--;
+	for  (const std::string &tag: state->converted_strings) {
+		if (!tag.empty())
+			taglist_add_tag(&state->active_dive->tag_list, tag.c_str());
 	}
 }
 
-static void parse_dive_airtemp(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_airtemp(char *line, struct git_parser_state *state)
 { state->active_dive->airtemp = get_temperature(line); }
 
-static void parse_dive_watertemp(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_watertemp(char *line, struct git_parser_state *state)
 { state->active_dive->watertemp = get_temperature(line); }
 
-static void parse_dive_airpressure(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_airpressure(char *line, struct git_parser_state *state)
 { state->active_dive->surface_pressure = get_airpressure(line); }
 
-static void parse_dive_duration(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_duration(char *line, struct git_parser_state *state)
 { state->active_dive->duration = get_duration(line); }
 
-static void parse_dive_rating(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_rating(char *line, struct git_parser_state *state)
 { state->active_dive->rating = get_index(line); }
 
-static void parse_dive_visibility(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_visibility(char *line, struct git_parser_state *state)
 { state->active_dive->visibility = get_index(line); }
 
-static void parse_dive_wavesize(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_wavesize(char *line, struct git_parser_state *state)
 { state->active_dive->wavesize = get_index(line); }
 
-static void parse_dive_current(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_current(char *line, struct git_parser_state *state)
 { state->active_dive->current = get_index(line); }
 
-static void parse_dive_surge(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_surge(char *line, struct git_parser_state *state)
 { state->active_dive->surge = get_index(line); }
 
-static void parse_dive_chill(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_chill(char *line, struct git_parser_state *state)
 { state->active_dive->chill = get_index(line); }
 
-static void parse_dive_watersalinity(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_watersalinity(char *line, struct git_parser_state *state)
 { state->active_dive->user_salinity = get_salinity(line); }
 
-static void parse_dive_notrip(char *, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_notrip(char *, struct git_parser_state *state)
 {
 	state->active_dive->notrip = true;
 }
 
-static void parse_dive_invalid(char *, struct membuffer *, struct git_parser_state *state)
+static void parse_dive_invalid(char *, struct git_parser_state *state)
 {
 	state->active_dive->invalid = true;
 }
 
-static void parse_site_description(char *, struct membuffer *str, struct git_parser_state *state)
-{ state->active_site->description = detach_cstring(str); }
+static void parse_site_description(char *, struct git_parser_state *state)
+{ state->active_site->description = get_first_converted_string_c(state); }
 
-static void parse_site_name(char *, struct membuffer *str, struct git_parser_state *state)
-{ state->active_site->name = detach_cstring(str); }
+static void parse_site_name(char *, struct git_parser_state *state)
+{ state->active_site->name = get_first_converted_string_c(state); }
 
-static void parse_site_notes(char *, struct membuffer *str, struct git_parser_state *state)
-{ state->active_site->notes = detach_cstring(str); }
+static void parse_site_notes(char *, struct git_parser_state *state)
+{ state->active_site->notes = get_first_converted_string_c(state); }
 
-static void parse_site_gps(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_site_gps(char *line, struct git_parser_state *state)
 {
 	parse_location(line, &state->active_site->location);
 }
 
-static void parse_site_geo(char *line, struct membuffer *str, struct git_parser_state *state)
+static void parse_site_geo(char *line, struct git_parser_state *state)
 {
 	int origin;
 	int category;
 	sscanf(line, "cat %d origin %d \"", &category, &origin);
 	taxonomy_set_category(&state->active_site->taxonomy, (taxonomy_category)category,
-			      mb_cstring(str), (taxonomy_origin)origin);
+			      get_first_converted_string(state).c_str(), (taxonomy_origin)origin);
 }
 
-static std::string remove_from_front(struct membuffer *str, int len)
+static std::string pop_cstring(struct git_parser_state *state, const char *err)
 {
-	len = std::min(len, (int)str->len);
-
-	std::string prefix(str->buffer, len);
-
-	str->len -= len;
-	memmove(str->buffer, str->buffer+len, str->len);
-
-	return prefix;
-}
-
-static std::string pop_cstring(struct membuffer *str, const char *err)
-{
-	int len;
-
-	if (!str) {
+	if (state->converted_strings.empty()) {
 		report_error("git-load: string marker without any strings ('%s')", err);
 		return std::string();
 	}
-	len = strlen(mb_cstring(str)) + 1;
-	return remove_from_front(str, len);
+	std::string res = std::move(state->converted_strings.front());
+	// This copies the whole vector. Keep an index instead!
+	state->converted_strings.erase(state->converted_strings.begin());
+	return res;
 }
 
 /* Parse key=val parts of samples and cylinders etc */
-static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const std::string &), void *fndata, char *line, struct membuffer *str)
+static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const std::string &), void *fndata, char *line, struct git_parser_state *state)
 {
 	char *key = line, c;
 
@@ -366,7 +369,7 @@ static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const std::st
 	}
 
 	/* Did we get a string? Take it from the list of strings */
-	std::string val = start_val[0] == '"' ? pop_cstring(str, key)
+	std::string val = start_val[0] == '"' ? pop_cstring(state, key)
 					      : std::string(start_val, line - start_val);
 
 	if (c)
@@ -430,7 +433,7 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const std:
 	report_error("Unknown cylinder key/value pair (%s/%s)", key, value.c_str());
 }
 
-static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_parser_state *state)
+static void parse_dive_cylinder(char *line, struct git_parser_state *state)
 {
 	cylinder_t cylinder = empty_cylinder;
 
@@ -440,7 +443,7 @@ static void parse_dive_cylinder(char *line, struct membuffer *str, struct git_pa
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_cylinder_keyvalue, &cylinder, line, str);
+		line = parse_keyvalue_entry(parse_cylinder_keyvalue, &cylinder, line, state);
 	}
 	if (cylinder.cylinder_use == OXYGEN)
 		state->o2pressure_sensor = state->active_dive->cylinders.nr;
@@ -462,7 +465,7 @@ static void parse_weightsystem_keyvalue(void *_ws, const char *key, const std::s
 	report_error("Unknown weightsystem key/value pair (%s/%s)", key, value.c_str());
 }
 
-static void parse_dive_weightsystem(char *line, struct membuffer *str, struct git_parser_state *state)
+static void parse_dive_weightsystem(char *line, struct git_parser_state *state)
 {
 	weightsystem_t ws = empty_weightsystem;
 
@@ -472,13 +475,13 @@ static void parse_dive_weightsystem(char *line, struct membuffer *str, struct gi
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_weightsystem_keyvalue, &ws, line, str);
+		line = parse_keyvalue_entry(parse_weightsystem_keyvalue, &ws, line, state);
 	}
 
 	add_to_weightsystem_table(&state->active_dive->weightsystems, state->active_dive->weightsystems.nr, ws);
 }
 
-static int match_action(char *line, struct membuffer *str, void *data,
+static int match_action(char *line, void *data,
 	struct keyword_action *action, unsigned nr_action)
 {
 	char *p = line, c;
@@ -506,9 +509,9 @@ static int match_action(char *line, struct membuffer *str, void *data,
 		struct keyword_action *a = action + mid;
 		int cmp = strcmp(line, a->keyword);
 		if (!cmp) {	// attribute found:
-			a->fn(p, str, (git_parser_state *)data);	// Execute appropriate function,
-			return 0;					// .. passing 2n word from above
-		}							// (p) as a function argument.
+			a->fn(p, (git_parser_state *)data);	// Execute appropriate function,
+			return 0;				// .. passing 2n word from above
+		}						// (p) as a function argument.
 		if (cmp < 0)
 			high = mid;
 		else
@@ -702,7 +705,7 @@ static void sample_parser(char *line, struct git_parser_state *state)
 			break;
 		/* Less common sample entries have a name */
 		if (c >= 'a' && c <= 'z') {
-			line = parse_keyvalue_entry(parse_sample_keyvalue, sample, line, NULL);
+			line = parse_keyvalue_entry(parse_sample_keyvalue, sample, line, state);
 		} else {
 			const char *end;
 			double val = ascii_strtod(line, &end);
@@ -717,54 +720,54 @@ static void sample_parser(char *line, struct git_parser_state *state)
 	finish_sample(state->active_dc);
 }
 
-static void parse_dc_airtemp(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_airtemp(char *line, struct git_parser_state *state)
 { state->active_dc->airtemp = get_temperature(line); }
 
-static void parse_dc_date(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_date(char *line, struct git_parser_state *state)
 { update_date(&state->active_dc->when, line); }
 
-static void parse_dc_deviceid(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_deviceid(char *line, struct git_parser_state *state)
 {
 	get_hex(line); // legacy
 }
 
-static void parse_dc_diveid(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_diveid(char *line, struct git_parser_state *state)
 { state->active_dc->diveid = get_hex(line); }
 
-static void parse_dc_duration(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_duration(char *line, struct git_parser_state *state)
 { state->active_dc->duration = get_duration(line); }
 
-static void parse_dc_dctype(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_dctype(char *line, struct git_parser_state *state)
 { state->active_dc->divemode = get_dctype(line); }
 
-static void parse_dc_lastmanualtime(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_lastmanualtime(char *line, struct git_parser_state *state)
 { state->active_dc->last_manual_time = get_duration(line); }
 
-static void parse_dc_maxdepth(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_maxdepth(char *line, struct git_parser_state *state)
 { state->active_dc->maxdepth = get_depth(line); }
 
-static void parse_dc_meandepth(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_meandepth(char *line, struct git_parser_state *state)
 { state->active_dc->meandepth = get_depth(line); }
 
-static void parse_dc_model(char *, struct membuffer *str, struct git_parser_state *state)
-{  state->active_dc->model = detach_cstring(str); }
+static void parse_dc_model(char *, struct git_parser_state *state)
+{  state->active_dc->model = get_first_converted_string_c(state); }
 
-static void parse_dc_numberofoxygensensors(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_numberofoxygensensors(char *line, struct git_parser_state *state)
 { state->active_dc->no_o2sensors = get_index(line); }
 
-static void parse_dc_surfacepressure(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_surfacepressure(char *line, struct git_parser_state *state)
 { state->active_dc->surface_pressure = get_pressure(line); }
 
-static void parse_dc_salinity(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_salinity(char *line, struct git_parser_state *state)
 { state->active_dc->salinity = get_salinity(line); }
 
-static void parse_dc_surfacetime(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_surfacetime(char *line, struct git_parser_state *state)
 { state->active_dc->surfacetime = get_duration(line); }
 
-static void parse_dc_time(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_time(char *line, struct git_parser_state *state)
 { update_time(&state->active_dc->when, line); }
 
-static void parse_dc_watertemp(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_dc_watertemp(char *line, struct git_parser_state *state)
 { state->active_dc->watertemp = get_temperature(line); }
 
 
@@ -818,31 +821,17 @@ static void parse_event_keyvalue(void *_parse, const char *key, const std::strin
 }
 
 /* keyvalue "key" "value"
- * so we have two strings (possibly empty) in the membuffer, separated by a '\0' */
-static void parse_dc_keyvalue(char *line, struct membuffer *str, struct git_parser_state *state)
+ * so we have two strings (possibly empty) */
+static void parse_dc_keyvalue(char *line, struct git_parser_state *state)
 {
-	const char *key, *value;
-
 	// Let's make sure we have two strings...
-	int string_counter = 0;
-	while(*line) {
-		if (*line == '"')
-			string_counter++;
-		line++;
-	}
-	if (string_counter != 2)
+	if (state->converted_strings.size() != 2)
 		return;
 
-	// stupidly the second string in the membuffer isn't NUL terminated;
-	// asking for a cstring fixes that; interestingly enough, given that there are two
-	// strings in the mb, the next command at the same time assigns a pointer to the
-	// first string to 'key' and NUL terminates the second string (which then goes to 'value')
-	key = mb_cstring(str);
-	value = key + strlen(key) + 1;
-	add_extra_data(state->active_dc, key, value);
+	add_extra_data(state->active_dc, state->converted_strings[0].c_str(), state->converted_strings[1].c_str());
 }
 
-static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_state *state)
+static void parse_dc_event(char *line, struct git_parser_state *state)
 {
 	int m, s = 0;
 	struct parse_event p;
@@ -859,7 +848,7 @@ static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_event_keyvalue, &p, line, str);
+		line = parse_keyvalue_entry(parse_event_keyvalue, &p, line, state);
 	}
 
 	/* Only modechange events should have a divemode - fix up any corrupted names */
@@ -889,38 +878,38 @@ static void parse_dc_event(char *line, struct membuffer *str, struct git_parser_
 }
 
 /* Not needed anymore - trip date calculated implicitly from first dive */
-static void parse_trip_date(char *, struct membuffer *, struct git_parser_state *)
+static void parse_trip_date(char *, struct git_parser_state *)
 { }
 
 /* Not needed anymore - trip date calculated implicitly from first dive */
-static void parse_trip_time(char *, struct membuffer *, struct git_parser_state *)
+static void parse_trip_time(char *, struct git_parser_state *)
 { }
 
-static void parse_trip_location(char *, struct membuffer *str, struct git_parser_state *state)
-{ state->active_trip->location = detach_cstring(str); }
+static void parse_trip_location(char *, struct git_parser_state *state)
+{ state->active_trip->location = get_first_converted_string_c(state); }
 
-static void parse_trip_notes(char *, struct membuffer *str, struct git_parser_state *state)
-{ state->active_trip->notes = detach_cstring(str); }
+static void parse_trip_notes(char *, struct git_parser_state *state)
+{ state->active_trip->notes = get_first_converted_string_c(state); }
 
-static void parse_settings_autogroup(char *, struct membuffer *, struct git_parser_state *state)
+static void parse_settings_autogroup(char *, struct git_parser_state *state)
 {
 	state->log->autogroup = true;
 }
 
-static void parse_settings_units(char *line, struct membuffer *, struct git_parser_state *)
+static void parse_settings_units(char *line, struct git_parser_state *)
 {
 	if (line)
 		set_informational_units(line);
 }
 
-static void parse_settings_userid(char *, struct membuffer *, struct git_parser_state *)
+static void parse_settings_userid(char *, struct git_parser_state *)
 /* Keep this despite removal of the webservice as there are legacy logbook around
  * that still have this defined.
  */
 {
 }
 
-static void parse_settings_prefs(char *line, struct membuffer *, struct git_parser_state *)
+static void parse_settings_prefs(char *line, struct git_parser_state *)
 {
 	if (line)
 		set_git_prefs(line);
@@ -933,7 +922,7 @@ static void parse_settings_prefs(char *line, struct membuffer *, struct git_pars
  * We MUST keep this in sync with the XML version (so we can report a consistent
  * minimum datafile version)
  */
-static void parse_settings_version(char *line, struct membuffer *, struct git_parser_state *)
+static void parse_settings_version(char *line, struct git_parser_state *)
 {
 	int version = atoi(line);
 	report_datafile_version(version);
@@ -941,8 +930,8 @@ static void parse_settings_version(char *line, struct membuffer *, struct git_pa
 		report_error("Git save file version %d is newer than version %d I know about", version, DATAFORMAT_VERSION);
 }
 
-/* The string in the membuffer is the version string of subsurface that saved things, just FYI */
-static void parse_settings_subsurface(char *, struct membuffer *, struct git_parser_state *)
+/* The argument string is the version string of subsurface that saved things, just FYI */
+static void parse_settings_subsurface(char *, struct git_parser_state *)
 {
 }
 
@@ -981,10 +970,10 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const std
  * it can have multiple strings (but see the tag parsing for another example of
  * that) in addition to the non-string entries.
  */
-static void parse_settings_divecomputerid(char *line, struct membuffer *str, struct git_parser_state *state)
+static void parse_settings_divecomputerid(char *line, struct git_parser_state *state)
 {
 	struct divecomputerid id;
-	id.model = pop_cstring(str, line);
+	id.model = pop_cstring(state, line);
 
 	/* Skip the '"' that stood for the model string */
 	line++;
@@ -996,7 +985,7 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, str
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, str);
+		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, state);
 	}
 	create_device_node(state->log->devices, id.model.c_str(), id.serial.c_str(), id.nickname.c_str());
 }
@@ -1037,7 +1026,7 @@ static void parse_fingerprint_keyvalue(void *_fph, const char *key, const std::s
 }
 
 
-static void parse_settings_fingerprint(char *line, struct membuffer *str, struct git_parser_state *state)
+static void parse_settings_fingerprint(char *line, struct git_parser_state *state)
 {
 	struct fingerprint_helper fph;
 	for (;;) {
@@ -1046,7 +1035,7 @@ static void parse_settings_fingerprint(char *line, struct membuffer *str, struct
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_fingerprint_keyvalue, &fph, line, str);
+		line = parse_keyvalue_entry(parse_fingerprint_keyvalue, &fph, line, state);
 	}
 	if (verbose > 1)
 		SSRF_INFO("fingerprint %08x %08x %08x %08x %s\n", fph.model, fph.serial, fph.fdeviceid, fph.fdiveid, fph.hex_data.c_str());
@@ -1054,17 +1043,17 @@ static void parse_settings_fingerprint(char *line, struct membuffer *str, struct
 					 fph.hex_data.c_str(), fph.fdeviceid, fph.fdiveid);
 }
 
-static void parse_picture_filename(char *, struct membuffer *str, struct git_parser_state *state)
+static void parse_picture_filename(char *, struct git_parser_state *state)
 {
-	state->active_pic.filename = detach_cstring(str);
+	state->active_pic.filename = get_first_converted_string_c(state);
 }
 
-static void parse_picture_gps(char *line, struct membuffer *, struct git_parser_state *state)
+static void parse_picture_gps(char *line, struct git_parser_state *state)
 {
 	parse_location(line, &state->active_pic.location);
 }
 
-static void parse_picture_hash(char *, struct membuffer *, struct git_parser_state *)
+static void parse_picture_hash(char *, struct git_parser_state *)
 {
 	// we no longer use hashes to identify pictures, but we shouldn't
 	// remove this parser lest users get an ugly red warning when
@@ -1081,12 +1070,12 @@ struct keyword_action dc_action[] = {
 };
 
 /* Sample lines start with a space or a number */
-static void divecomputer_parser(char *line, struct membuffer *str, struct git_parser_state *state)
+static void divecomputer_parser(char *line, struct git_parser_state *state)
 {
 	char c = *line;
 	if (c < 'a' || c > 'z')
 		sample_parser(line, state);
-	match_action(line, str, state, dc_action, ARRAY_SIZE(dc_action));
+	match_action(line, state, dc_action, ARRAY_SIZE(dc_action));
 }
 
 /* These need to be sorted! */
@@ -1099,9 +1088,9 @@ struct keyword_action dive_action[] = {
 	D(tags), D(visibility), D(watersalinity), D(watertemp), D(wavesize), D(weightsystem)
 };
 
-static void dive_parser(char *line, struct membuffer *str, struct git_parser_state *state)
+static void dive_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, str, state, dive_action, ARRAY_SIZE(dive_action));
+	match_action(line, state, dive_action, ARRAY_SIZE(dive_action));
 }
 
 /* These need to be sorted! */
@@ -1111,9 +1100,9 @@ struct keyword_action site_action[] = {
 	D(description), D(geo), D(gps), D(name), D(notes)
 };
 
-static void site_parser(char *line, struct membuffer *str, struct git_parser_state *state)
+static void site_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, str, state, site_action, ARRAY_SIZE(site_action));
+	match_action(line, state, site_action, ARRAY_SIZE(site_action));
 }
 
 /* These need to be sorted! */
@@ -1123,9 +1112,9 @@ struct keyword_action trip_action[] = {
 	D(date), D(location), D(notes), D(time),
 };
 
-static void trip_parser(char *line, struct membuffer *str, struct git_parser_state *state)
+static void trip_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, str, state, trip_action, ARRAY_SIZE(trip_action));
+	match_action(line, state, trip_action, ARRAY_SIZE(trip_action));
 }
 
 /* These need to be sorted! */
@@ -1135,9 +1124,9 @@ static struct keyword_action settings_action[] = {
 	D(autogroup), D(divecomputerid), D(fingerprint), D(prefs), D(subsurface), D(units), D(userid), D(version)
 };
 
-static void settings_parser(char *line, struct membuffer *str, struct git_parser_state *state)
+static void settings_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, str, state, settings_action, ARRAY_SIZE(settings_action));
+	match_action(line, state, settings_action, ARRAY_SIZE(settings_action));
 }
 
 /* These need to be sorted! */
@@ -1147,9 +1136,9 @@ static struct keyword_action picture_action[] = {
 	D(filename), D(gps), D(hash)
 };
 
-static void picture_parser(char *line, struct membuffer *str, struct git_parser_state *state)
+static void picture_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, str, state, picture_action, ARRAY_SIZE(picture_action));
+	match_action(line, state, picture_action, ARRAY_SIZE(picture_action));
 }
 
 static void parse_filter_preset_constraint_keyvalue(void *_state, const char *key, const std::string &value)
@@ -1179,7 +1168,7 @@ static void parse_filter_preset_constraint_keyvalue(void *_state, const char *ke
 	report_error("Unknown filter preset constraint key/value pair (%s/%s)", key, value.c_str());
 }
 
-static void parse_filter_preset_constraint(char *line, struct membuffer *str, struct git_parser_state *state)
+static void parse_filter_preset_constraint(char *line, struct git_parser_state *state)
 {
 	for (;;) {
 		char c;
@@ -1187,7 +1176,7 @@ static void parse_filter_preset_constraint(char *line, struct membuffer *str, st
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_filter_preset_constraint_keyvalue, state, line, str);
+		line = parse_keyvalue_entry(parse_filter_preset_constraint_keyvalue, state, line, state);
 	}
 
 	filter_preset_add_constraint(state->active_filter.get(), state->filter_constraint_type.c_str(),
@@ -1216,7 +1205,7 @@ static void parse_filter_preset_fulltext_keyvalue(void *_state, const char *key,
 	report_error("Unknown filter preset fulltext key/value pair (%s/%s)", key, value.c_str());
 }
 
-static void parse_filter_preset_fulltext(char *line, struct membuffer *str, struct git_parser_state *state)
+static void parse_filter_preset_fulltext(char *line, struct git_parser_state *state)
 {
 	for (;;) {
 		char c;
@@ -1224,7 +1213,7 @@ static void parse_filter_preset_fulltext(char *line, struct membuffer *str, stru
 			line++;
 		if (!c)
 			break;
-		line = parse_keyvalue_entry(parse_filter_preset_fulltext_keyvalue, state, line, str);
+		line = parse_keyvalue_entry(parse_filter_preset_fulltext_keyvalue, state, line, state);
 	}
 
 	filter_preset_set_fulltext(state->active_filter.get(), state->fulltext_query.c_str(), state->fulltext_mode.c_str());
@@ -1232,9 +1221,9 @@ static void parse_filter_preset_fulltext(char *line, struct membuffer *str, stru
 	state->fulltext_query.clear();
 }
 
-static void parse_filter_preset_name(char *, struct membuffer *str, struct git_parser_state *state)
+static void parse_filter_preset_name(char *, struct git_parser_state *state)
 {
-	filter_preset_set_name(state->active_filter.get(), detach_cstring(str));
+	filter_preset_set_name(state->active_filter.get(), get_first_converted_string_c(state));
 }
 
 /* These need to be sorted! */
@@ -1244,9 +1233,9 @@ struct keyword_action filter_preset_action[] = {
 	D(constraint), D(fulltext), D(name)
 };
 
-static void filter_preset_parser(char *line, struct membuffer *str, struct git_parser_state *state)
+static void filter_preset_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, str, state, filter_preset_action, ARRAY_SIZE(filter_preset_action));
+	match_action(line, state, filter_preset_action, ARRAY_SIZE(filter_preset_action));
 }
 
 /*
@@ -1279,21 +1268,18 @@ static void filter_preset_parser(char *line, struct membuffer *str, struct git_p
  *  - each string will be represented as a single '"'
  *    character in the output.
  *
- *  - all string will exist in the same 'membuffer',
- *    separated by NUL characters (that cannot exist
- *    in a string, not even quoted).
+ *  - all string will be stores in converted_strings.
  */
-static const char *parse_one_string(const char *buf, const char *end, struct membuffer *b)
+static const char *parse_one_string(const char *buf, const char *end, std::vector<std::string> &converted_strings)
 {
 	const char *p = buf;
 
 	/*
-	 * We turn multiple strings one one line (think dive tags) into one
-	 * membuffer that has NUL characters in between strings.
+	 * We turn multiple strings one one line (think dive tags) into the
+	 * converted_strings vector.
 	 */
-	if (b->len)
-		put_bytes(b, "", 1);
 
+	std::string s;
 	while (p < end) {
 		char replace;
 
@@ -1316,18 +1302,19 @@ static const char *parse_one_string(const char *buf, const char *end, struct mem
 			replace = 0;
 			break;
 		}
-		put_bytes(b, buf, p - buf - 1);
+		s.append(buf, p - buf - 1);
 		if (!replace)
 			break;
-		put_bytes(b, &replace, 1);
+		s += replace;
 		buf = ++p;
 	}
+	converted_strings.push_back(std::move(s));
 	return p;
 }
 
-typedef void (line_fn_t)(char *, struct membuffer *, struct git_parser_state *);
+typedef void (line_fn_t)(char *, struct git_parser_state *);
 #define MAXLINE 500
-static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, struct git_parser_state *state, struct membuffer *b)
+static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, struct git_parser_state *state)
 {
 	const char *end = buf + size;
 	const char *p = buf;
@@ -1359,31 +1346,28 @@ static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, st
 		if (off > MAXLINE)
 			off = MAXLINE;
 		if (c == '"')
-			p = parse_one_string(p, end, b);
+			p = parse_one_string(p, end, state->converted_strings);
 	}
 	line[off] = 0;
-	fn(line, b, state);
+	fn(line, state);
 	return p - buf;
 }
 
 /*
- * We keep on re-using the membuffer that we use for
- * strings, but the callback function can "steal" it by
- * saving its value and just clear the original.
+ * We keep on re-using the vector that stores converted
+ * strings, but the callback function can consume the
+ * strings.
  */
 static void for_each_line(git_blob *blob, line_fn_t *fn, struct git_parser_state *state)
 {
 	const char *content = (const char *)git_blob_rawcontent(blob);
 	unsigned int size = git_blob_rawsize(blob);
-	struct membufferpp str;
 
 	while (size) {
-		unsigned int n = parse_one_line(content, size, fn, state, &str);
+		state->converted_strings.clear();
+		unsigned int n = parse_one_line(content, size, fn, state);
 		content += n;
 		size -= n;
-
-		/* Re-use the allocation, but forget the data */
-		str.len = 0;
 	}
 }
 
@@ -1926,7 +1910,7 @@ std::string get_sha(git_repository *repo, const char *branch)
 extern "C" int git_load_dives(struct git_info *info, struct divelog *log)
 {
 	int ret;
-	struct git_parser_state state ;
+	struct git_parser_state state;
 	state.repo = info->repo;
 	state.log = log;
 
