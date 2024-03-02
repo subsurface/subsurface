@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <git2.h>
+#include <array>
 #include <memory>
 #include <libdivecomputer/parser.h>
 
@@ -29,8 +30,6 @@
 #include "qthelper.h"
 #include "tag.h"
 #include "subsurface-time.h"
-
-#define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
 // TODO: Should probably be moved to struct divelog to allow for multi-document
 std::string saved_git_id;
@@ -481,7 +480,7 @@ static void parse_dive_weightsystem(char *line, struct git_parser_state *state)
 }
 
 static int match_action(char *line, void *data,
-	struct keyword_action *action, unsigned nr_action)
+	const struct keyword_action *action, unsigned nr_action)
 {
 	char *p = line, c;
 	unsigned low, high;
@@ -505,7 +504,7 @@ static int match_action(char *line, void *data,
 	high = nr_action;
 	while (low < high) {
 		unsigned mid = (low + high)/2;
-		struct keyword_action *a = action + mid;
+		const struct keyword_action *a = action + mid;
 		int cmp = strcmp(line, a->keyword);
 		if (!cmp) {	// attribute found:
 			a->fn(p, (git_parser_state *)data);	// Execute appropriate function,
@@ -518,6 +517,12 @@ static int match_action(char *line, void *data,
 	}
 report_error("Unmatched action '%s'", line);
 	return -1;
+}
+
+template<size_t N>
+static int match_action(char *line, void *data, const std::array<keyword_action, N> &action)
+{
+	return match_action(line, data, &action[0], N);
 }
 
 /* FIXME! We should do the array thing here too. */
@@ -1060,9 +1065,9 @@ static void parse_picture_hash(char *, struct git_parser_state *)
 }
 
 /* These need to be sorted! */
-struct keyword_action dc_action[] = {
+static const std::array dc_action {
 #undef D
-#define D(x) { #x, parse_dc_ ## x }
+#define D(x) keyword_action { #x, parse_dc_ ## x }
 	D(airtemp), D(date), D(dctype), D(deviceid), D(diveid), D(duration),
 	D(event), D(keyvalue), D(lastmanualtime), D(maxdepth), D(meandepth), D(model), D(numberofoxygensensors),
 	D(salinity), D(surfacepressure), D(surfacetime), D(time), D(watertemp)
@@ -1074,70 +1079,71 @@ static void divecomputer_parser(char *line, struct git_parser_state *state)
 	char c = *line;
 	if (c < 'a' || c > 'z')
 		sample_parser(line, state);
-	match_action(line, state, dc_action, ARRAY_SIZE(dc_action));
+	match_action(line, state, dc_action);
 }
 
 /* These need to be sorted! */
-struct keyword_action dive_action[] = {
+static const std::array dive_action {
 #undef D
-#define D(x) { #x, parse_dive_ ## x }
+#define D(x) keyword_action { #x, parse_dive_ ## x }
 	/* For historical reasons, we accept divemaster and diveguide */
-	D(airpressure), D(airtemp), D(buddy), D(chill), D(current), D(cylinder), D(diveguide), { "divemaster", parse_dive_diveguide },
+	D(airpressure), D(airtemp), D(buddy), D(chill), D(current), D(cylinder), D(diveguide),
+	keyword_action { "divemaster", parse_dive_diveguide },
 	D(divesiteid), D(duration), D(gps), D(invalid), D(location), D(notes), D(notrip), D(rating), D(suit), D(surge),
 	D(tags), D(visibility), D(watersalinity), D(watertemp), D(wavesize), D(weightsystem)
 };
 
 static void dive_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, state, dive_action, ARRAY_SIZE(dive_action));
+	match_action(line, state, dive_action);
 }
 
 /* These need to be sorted! */
-struct keyword_action site_action[] = {
+static const std::array site_action {
 #undef D
-#define D(x) { #x, parse_site_ ## x }
+#define D(x) keyword_action { #x, parse_site_ ## x }
 	D(description), D(geo), D(gps), D(name), D(notes)
 };
 
 static void site_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, state, site_action, ARRAY_SIZE(site_action));
+	match_action(line, state, site_action);
 }
 
 /* These need to be sorted! */
-struct keyword_action trip_action[] = {
+static const std::array trip_action {
 #undef D
-#define D(x) { #x, parse_trip_ ## x }
+#define D(x) keyword_action { #x, parse_trip_ ## x }
 	D(date), D(location), D(notes), D(time),
 };
 
 static void trip_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, state, trip_action, ARRAY_SIZE(trip_action));
+	match_action(line, state, trip_action);
 }
 
 /* These need to be sorted! */
-static struct keyword_action settings_action[] = {
+static const std::array settings_action {
 #undef D
-#define D(x) { #x, parse_settings_ ## x }
+#define D(x) keyword_action { #x, parse_settings_ ## x }
 	D(autogroup), D(divecomputerid), D(fingerprint), D(prefs), D(subsurface), D(units), D(userid), D(version)
 };
 
 static void settings_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, state, settings_action, ARRAY_SIZE(settings_action));
+	match_action(line, state, settings_action);
 }
 
 /* These need to be sorted! */
-static struct keyword_action picture_action[] = {
+static const std::array picture_action {
 #undef D
-#define D(x) { #x, parse_picture_ ## x }
+#define D(x) keyword_action { #x, parse_picture_ ## x }
 	D(filename), D(gps), D(hash)
 };
 
 static void picture_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, state, picture_action, ARRAY_SIZE(picture_action));
+	match_action(line, state, picture_action);
 }
 
 static void parse_filter_preset_constraint_keyvalue(void *_state, const char *key, const std::string &value)
@@ -1226,15 +1232,15 @@ static void parse_filter_preset_name(char *, struct git_parser_state *state)
 }
 
 /* These need to be sorted! */
-struct keyword_action filter_preset_action[] = {
+const std::array filter_preset_action {
 #undef D
-#define D(x) { #x, parse_filter_preset_ ## x }
+#define D(x) keyword_action { #x, parse_filter_preset_ ## x }
 	D(constraint), D(fulltext), D(name)
 };
 
 static void filter_preset_parser(char *line, struct git_parser_state *state)
 {
-	match_action(line, state, filter_preset_action, ARRAY_SIZE(filter_preset_action));
+	match_action(line, state, filter_preset_action);
 }
 
 /*
