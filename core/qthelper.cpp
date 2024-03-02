@@ -1007,10 +1007,9 @@ QString get_short_dive_date_string(timestamp_t when)
 	return loc.toString(ts.toUTC(), QString(prefs.date_format_short) + " " + prefs.time_format);
 }
 
-char *get_dive_date_c_string(timestamp_t when)
+std::string get_dive_date_c_string(timestamp_t when)
 {
-	QString text = get_short_dive_date_string(when);
-	return copy_qstring(text);
+	return get_short_dive_date_string(when).toStdString();
 }
 
 static QString get_dive_only_date_string(timestamp_t when)

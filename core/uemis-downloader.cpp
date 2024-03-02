@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * uemis-downloader.c
+ * uemis-downloader.cpp
  *
  * Copyright (c) Dirk Hohndel <dirk@hohndel.org>
  * released under GPL2
@@ -32,6 +32,7 @@
 #include "file.h"
 #include "tag.h"
 #include "subsurface-time.h"
+#include "core/qthelper.h"
 #include "core/subsurface-string.h"
 
 #define ACTION_RECONNECT QT_TRANSLATE_NOOP("gettextFromC", "Disconnect/reconnect the SDA")
@@ -44,7 +45,7 @@
 #define NUM_PARAM_BUFS 10
 
 // debugging setup
-// #define UEMIS_DEBUG 1 + 2 + 4 + 8 + 16 + 32
+//#define UEMIS_DEBUG 1 + 2 + 4 + 8 + 16 + 32
 
 #define UEMIS_MAX_FILES 4000
 #define UEMIS_MEM_FULL 1
@@ -57,7 +58,7 @@
 #define UEMIS_CHECK_SINGLE_DIVE 3
 
 #if UEMIS_DEBUG
-const char *home, *user, *d_time;
+static std::string home, user, d_time;
 static int debug_round = 0;
 #define debugfile stderr
 #endif
@@ -72,7 +73,7 @@ static int debug_round = 0;
 #define UEMIS_MAX_TIMEOUT 2000000	/* 2s */
 #endif
 
-static char *param_buff[NUM_PARAM_BUFS];
+static const char *param_buff[NUM_PARAM_BUFS];
 static char *reqtxt_path;
 static int reqtxt_file;
 static int filenr;
@@ -148,7 +149,7 @@ static struct dive_site *get_dive_site_by_divespot_id(int divespot_id)
 static void uemis_ts(char *buffer, void *_when)
 {
 	struct tm tm;
-	timestamp_t *when = _when;
+	timestamp_t *when = (timestamp_t *)_when;
 
 	memset(&tm, 0, sizeof(tm));
 	sscanf(buffer, "%d-%d-%dT%d:%d:%d",
@@ -185,7 +186,7 @@ static void uemis_add_string(const char *buffer, char **text, const char *delimi
 	if (!*text) {
 		*text = strdup(buffer);
 	} else {
-		char *buf = malloc(strlen(buffer) + strlen(*text) + 2);
+		char *buf = (char *)malloc(strlen(buffer) + strlen(*text) + 2);
 		strcpy(buf, *text);
 		strcat(buf, delimit);
 		strcat(buf, buffer);
@@ -282,7 +283,7 @@ static int number_of_file(char *path)
 static char *build_filename(const char *path, const char *name)
 {
 	int len = strlen(path) + strlen(name) + 2;
-	char *buf = malloc(len);
+	char *buf = (char *)malloc(len);
 #if WIN32
 	snprintf(buf, len, "%s\\%s", path, name);
 #else
@@ -340,7 +341,7 @@ static bool uemis_init(const char *path)
 	return true;
 }
 
-static void str_append_with_delim(char *s, char *t)
+static void str_append_with_delim(char *s, const char *t)
 {
 	int len = strlen(s);
 	snprintf(s + len, BUFLEN - len, "%s{", t);
@@ -352,7 +353,7 @@ static void str_append_with_delim(char *s, char *t)
  * file (prefixed by 'n' or 'r') and then again at the very end of it, after
  * the full request (this time without the prefix).
  * Then it syncs (not needed on Windows) and closes the file. */
-static void trigger_response(int file, char *command, int nr, long tailpos)
+static void trigger_response(int file, const char *command, int nr, long tailpos)
 {
 	char fl[10];
 
@@ -410,7 +411,7 @@ static char *next_segment(char *buf, int *offset, int size)
 	seg_size = i - *offset - 1;
 	if (seg_size < 0)
 		seg_size = 0;
-	segment = malloc(seg_size + 1);
+	segment = (char *)malloc(seg_size + 1);
 	memcpy(segment, buf + *offset, seg_size);
 	segment[seg_size] = '\0';
 	*offset = i;
@@ -428,7 +429,7 @@ static void buffer_add(char **buffer, int *buffer_size, char *buf)
 		*buffer_size = strlen(*buffer) + 1;
 	} else {
 		*buffer_size += strlen(buf);
-		*buffer = realloc(*buffer, *buffer_size);
+		*buffer = (char *)realloc(*buffer, *buffer_size);
 		strcat(*buffer, buf);
 	}
 #if UEMIS_DEBUG & 8
@@ -531,7 +532,7 @@ static char *build_ans_path(const char *path, int filenumber)
 }
 
 /* send a request to the dive computer and collect the answer */
-static bool uemis_get_answer(const char *path, char *request, int n_param_in,
+static bool uemis_get_answer(const char *path, const char *request, int n_param_in,
 			     int n_param_out, const char **error_text)
 {
 	int i = 0, file_length;
@@ -682,7 +683,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 				int r;
 				if (lseek(ans_file, 3, SEEK_CUR) == -1)
 					goto fs_error;
-				buf = malloc(size - 2);
+				buf = (char *)malloc(size - 2);
 				if ((r = read(ans_file, buf, size - 3)) != size - 3) {
 					free(buf);
 					goto fs_error;
@@ -719,7 +720,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 				int r;
 				if (lseek(ans_file, 3, SEEK_CUR) == -1)
 					goto fs_error;
-				buf = malloc(size - 2);
+				buf = (char *)malloc(size - 2);
 				if ((r = read(ans_file, buf, size - 3)) != size - 3) {
 					free(buf);
 					goto fs_error;
@@ -799,9 +800,9 @@ static bool parse_divespot(char *buf)
 	return true;
 }
 
-static char *suit[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "wetsuit"), QT_TRANSLATE_NOOP("gettextFromC", "semidry"), QT_TRANSLATE_NOOP("gettextFromC", "drysuit")};
-static char *suit_type[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "shorty"), QT_TRANSLATE_NOOP("gettextFromC", "vest"), QT_TRANSLATE_NOOP("gettextFromC", "long john"), QT_TRANSLATE_NOOP("gettextFromC", "jacket"), QT_TRANSLATE_NOOP("gettextFromC", "full suit"), QT_TRANSLATE_NOOP("gettextFromC", "2 pcs full suit")};
-static char *suit_thickness[] = {"", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", QT_TRANSLATE_NOOP("gettextFromC", "membrane")};
+static const char *suit[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "wetsuit"), QT_TRANSLATE_NOOP("gettextFromC", "semidry"), QT_TRANSLATE_NOOP("gettextFromC", "drysuit")};
+static const char *suit_type[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "shorty"), QT_TRANSLATE_NOOP("gettextFromC", "vest"), QT_TRANSLATE_NOOP("gettextFromC", "long john"), QT_TRANSLATE_NOOP("gettextFromC", "jacket"), QT_TRANSLATE_NOOP("gettextFromC", "full suit"), QT_TRANSLATE_NOOP("gettextFromC", "2 pcs full suit")};
+static const char *suit_thickness[] = {"", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", QT_TRANSLATE_NOOP("gettextFromC", "membrane")};
 
 static void parse_tag(struct dive *dive, char *tag, char *val)
 {
@@ -1076,7 +1077,7 @@ static char *uemis_get_divenr(char *deviceidstr, struct dive_table *table, int f
 
 #if UEMIS_DEBUG
 static int bufCnt = 0;
-static bool do_dump_buffer_to_file(char *buf, char *prefix)
+static bool do_dump_buffer_to_file(char *buf, const char *prefix)
 {
 	char path[100];
 	char date[40];
@@ -1102,11 +1103,11 @@ static bool do_dump_buffer_to_file(char *buf, char *prefix)
 	char *pobid = next_token(&ptr2);
 	pobid = next_token(&ptr2);
 	pobid = next_token(&ptr2);
-	snprintf(path, sizeof(path), "/%s/%s/UEMIS Dump/%s_%s_Uemis_dump_%s_in_round_%d_%d.txt", home, user, prefix, pdate, pobid, debug_round, bufCnt);
+	snprintf(path, sizeof(path), "/%s/%s/UEMIS Dump/%s_%s_Uemis_dump_%s_in_round_%d_%d.txt", home.c_str(), user.c_str(), prefix, pdate, pobid, debug_round, bufCnt);
 	int dumpFile = subsurface_open(path, O_RDWR | O_CREAT, 0666);
 	if (dumpFile == -1)
 		return false;
-	success = write(dumpFile, buf, strlen(buf)) == strlen(buf);
+	success = (size_t)write(dumpFile, buf, strlen(buf)) == strlen(buf);
 	close(dumpFile);
 	bufCnt++;
 	return success;
@@ -1259,7 +1260,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 						 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
 #if UEMIS_DEBUG & 2
 						d_time = get_dive_date_c_string(dive->when);
-						fprintf(debugfile, "Matching dive log id %d from %s with dive details %d\n", dive->dc.diveid, d_time, dive_to_read);
+						fprintf(debugfile, "Matching dive log id %d from %s with dive details %d\n", dive->dc.diveid, d_time.c_str(), dive_to_read);
 #endif
 						int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
 						if (divespot_id >= 0)
@@ -1269,13 +1270,13 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 						/* in this case we found a deleted file, so let's increment */
 #if UEMIS_DEBUG & 2
 						d_time = get_dive_date_c_string(dive->when);
-						fprintf(debugfile, "TRY matching dive log id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time, dive_to_read);
+						fprintf(debugfile, "TRY matching dive log id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time.c_str(), dive_to_read);
 #endif
 						deleted_files++;
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
 						dive->hidden_by_filter = true;
 #if UEMIS_DEBUG & 2
-						fprintf(debugfile, "Deleted dive from %s, with id %d from table -- newmax is %s\n", d_time, dive->dc.diveid, newmax);
+						fprintf(debugfile, "Deleted dive from %s, with id %d from table -- newmax is %s\n", d_time.c_str(), dive->dc.diveid, newmax);
 #endif
 					}
 				} else {
@@ -1369,7 +1370,7 @@ const char *do_uemis_import(device_data_t *data)
 		fprintf(stderr, "Uemis downloader: start looking at dive nr %s\n", newmax);
 
 	first = start = atoi(newmax);
-	dive_to_read = mindiveid < first ? first - mindiveid : first;
+	dive_to_read = (int)mindiveid < first ? first - mindiveid : first;
 	if (dive_offset > 0)
 		start += dive_offset;
 	for (;;) {

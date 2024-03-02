@@ -186,7 +186,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	timer.h
 	trip.c
 	trip.h
-	uemis-downloader.c
+	uemis-downloader.cpp
 	uemis.c
 	uemis.h
 	units.h

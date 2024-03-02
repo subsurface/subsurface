@@ -220,7 +220,6 @@ extern struct gasmix get_gasmix(const struct dive *dive, const struct divecomput
 /* Get gasmix at a given time */
 extern struct gasmix get_gasmix_at_time(const struct dive *dive, const struct divecomputer *dc, duration_t time);
 
-extern char *get_dive_date_c_string(timestamp_t when);
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
 
 #ifdef __cplusplus

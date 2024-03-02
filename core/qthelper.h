@@ -84,6 +84,7 @@ QString render_seconds_to_string(int seconds);
 QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText = gettextFromC::tr("sec"), QString separator = ":", bool isFreeDive = false);
 QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator = " ", int maxdays = 4);
 QString get_dive_date_string(timestamp_t when);
+std::string get_dive_date_c_string(timestamp_t when);
 QString get_first_dive_date_string();
 QString get_last_dive_date_string();
 QString get_short_dive_date_string(timestamp_t when);

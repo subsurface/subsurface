@@ -683,9 +683,8 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	}
 
 	// Parse the divetime.
-	char *date_string = get_dive_date_c_string(dive->when);
-	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string);
-	free(date_string);
+	std::string date_string = get_dive_date_c_string(dive->when);
+	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string.c_str());
 
 	unsigned int divetime = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
@@ -882,9 +881,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	/* If we already saw this dive, abort. */
 	if (!devdata->force_download && find_dive(&dive->dc)) {
-		char *date_string = get_dive_date_c_string(dive->when);
-		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string);
-		free(date_string);
+		std::string date_string = get_dive_date_c_string(dive->when);
+		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string.c_str());
 		free_dive(dive);
 		return false;
 	}
