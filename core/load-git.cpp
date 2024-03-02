@@ -53,6 +53,7 @@ struct git_parser_state {
 	struct divelog *log = nullptr;
 	int o2pressure_sensor = 0;
 	std::vector<std::string> converted_strings;
+	size_t act_converted_string = 0;
 };
 
 struct keyword_action {
@@ -337,14 +338,12 @@ static void parse_site_geo(char *line, struct git_parser_state *state)
 
 static std::string pop_cstring(struct git_parser_state *state, const char *err)
 {
-	if (state->converted_strings.empty()) {
+	if (state->act_converted_string >= state->converted_strings.size()) {
 		report_error("git-load: string marker without any strings ('%s')", err);
 		return std::string();
 	}
-	std::string res = std::move(state->converted_strings.front());
-	// This copies the whole vector. Keep an index instead!
-	state->converted_strings.erase(state->converted_strings.begin());
-	return res;
+	size_t idx = state->act_converted_string++;
+	return std::move(state->converted_strings[idx]);
 }
 
 /* Parse key=val parts of samples and cylinders etc */
@@ -1365,6 +1364,7 @@ static void for_each_line(git_blob *blob, line_fn_t *fn, struct git_parser_state
 
 	while (size) {
 		state->converted_strings.clear();
+		state->act_converted_string = 0;
 		unsigned int n = parse_one_line(content, size, fn, state);
 		content += n;
 		size -= n;
