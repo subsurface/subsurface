@@ -445,42 +445,33 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 	return 1;
 }
 
-static char *parse_mkvi_value(char *haystack, const char *needle)
+static std::string parse_mkvi_value(const char *haystack, const char *needle)
 {
-	char *lineptr, *valueptr, *endptr, *ret = NULL;
+	const char *lineptr, *valueptr, *endptr;
 
 	if ((lineptr = strstr(haystack, needle)) != NULL) {
 		if ((valueptr = strstr(lineptr, ": ")) != NULL) {
 			valueptr += 2;
 		}
 		if ((endptr = strstr(lineptr, "\n")) != NULL) {
-			char terminator = '\n';
-			if (*(endptr - 1) == '\r') {
+			if (*(endptr - 1) == '\r')
 				--endptr;
-				terminator = '\r';
-			}
-			*endptr = 0;
-			ret = copy_string(valueptr);
-			*endptr = terminator;
-
+			return std::string(valueptr, endptr - valueptr);
 		}
 	}
-	return ret;
+	return std::string();
 }
 
-static char *next_mkvi_key(char *haystack)
+static std::string next_mkvi_key(const char *haystack)
 {
-	char *valueptr, *endptr, *ret = NULL;
+	const char *valueptr, *endptr;
 
 	if ((valueptr = strstr(haystack, "\n")) != NULL) {
 		valueptr += 1;
-		if ((endptr = strstr(valueptr, ": ")) != NULL) {
-			*endptr = 0;
-			ret = strdup(valueptr);
-			*endptr = ':';
-		}
+		if ((endptr = strstr(valueptr, ": ")) != NULL)
+			return std::string(valueptr, endptr - valueptr);
 	}
-	return ret;
+	return std::string();
 }
 
 int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
@@ -498,7 +489,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		int hh = 0, mm = 0, ss = 0;
 		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1, prev_ndl = -1;
 		bool has_depth = false, has_setpoint = false, has_ndl = false;
-		char *lineptr, *key, *value;
+		char *lineptr;
 		int prev_time = 0;
 		cylinder_t cyl = empty_cylinder;
 
@@ -506,12 +497,9 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		struct divecomputer *dc;
 		struct tm cur_tm;
 
-		value = parse_mkvi_value(memtxt.data(), "Dive started at");
-		if (sscanf(value, "%d-%d-%d %d:%d:%d", &y, &m, &d, &hh, &mm, &ss) != 6) {
-			free(value);
+		std::string value = parse_mkvi_value(memtxt.data(), "Dive started at");
+		if (sscanf(value.c_str(), "%d-%d-%d %d:%d:%d", &y, &m, &d, &hh, &mm, &ss) != 6)
 			return -1;
-		}
-		free(value);
 		cur_tm.tm_year = y;
 		cur_tm.tm_mon = m - 1;
 		cur_tm.tm_mday = d;
@@ -523,8 +511,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		dive->when = utc_mktime(&cur_tm);;
 		dive->dc.model = strdup("Poseidon MkVI Discovery");
 		value = parse_mkvi_value(memtxt.data(), "Rig Serial number");
-		dive->dc.deviceid = atoi(value);
-		free(value);
+		dive->dc.deviceid = atoi(value.c_str());
 		dive->dc.divemode = CCR;
 		dive->dc.no_o2sensors = 2;
 
@@ -543,28 +530,22 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		cyl.type.workingpressure.mbar = 200000;
 		cyl.type.description = "3l Mk6";
 		value = parse_mkvi_value(memtxt.data(), "Helium percentage");
-		he = atoi(value);
-		free(value);
+		he = atoi(value.c_str());
 		value = parse_mkvi_value(memtxt.data(), "Nitrogen percentage");
-		cyl.gasmix.o2.permille = (100 - atoi(value) - he) * 10;
-		free(value);
+		cyl.gasmix.o2.permille = (100 - atoi(value.c_str()) - he) * 10;
 		cyl.gasmix.he.permille = he * 10;
 		add_cloned_cylinder(&dive->cylinders, cyl);
 
 		lineptr = strstr(memtxt.data(), "Dive started at");
 		while (!empty_string(lineptr) && (lineptr = strchr(lineptr, '\n'))) {
 			++lineptr;	// Skip over '\n'
-			key = next_mkvi_key(lineptr);
-			if (!key)
+			std::string key = next_mkvi_key(lineptr);
+			if (key.empty())
 				break;
-			value = parse_mkvi_value(lineptr, key);
-			if (!value) {
-				free(key);
+			std::string value = parse_mkvi_value(lineptr, key.c_str());
+			if (value.empty())
 				break;
-			}
-			add_extra_data(&dive->dc, key, value);
-			free(key);
-			free(value);
+			add_extra_data(&dive->dc, key.c_str(), value.c_str());
 		}
 		dc = &dive->dc;
 
