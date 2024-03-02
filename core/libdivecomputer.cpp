@@ -37,7 +37,6 @@
 #include "libdivecomputer.h"
 #include "core/version.h"
 #include "core/qthelper.h"
-#include "core/membuffer.h"
 #include "core/file.h"
 #include <QtGlobal>
 #include <array>
@@ -947,7 +946,7 @@ static void do_save_fingerprint(device_data_t *devdata, const char *tmp, const c
 	unlink(tmp);
 }
 
-static char *fingerprint_file(device_data_t *devdata)
+static std::string fingerprint_file(device_data_t *devdata)
 {
 	uint32_t model, serial;
 
@@ -955,7 +954,7 @@ static char *fingerprint_file(device_data_t *devdata)
 	model = calculate_string_hash(devdata->model);
 	serial = devdata->devinfo.serial;
 
-	return format_string("%s/fingerprints/%04x.%u",
+	return format_string_std("%s/fingerprints/%04x.%u",
 		system_default_directory(),
 		model, serial);
 }
@@ -992,23 +991,18 @@ static char *fingerprint_file(device_data_t *devdata)
  */
 static void save_fingerprint(device_data_t *devdata)
 {
-	char *dir, *tmp, *final;
-
 	// Don't try to save nonexistent fingerprint data
 	if (!devdata->fingerprint || !devdata->fdiveid)
 		return;
 
 	// Make sure the fingerprints directory exists
-	dir = format_string("%s/fingerprints", system_default_directory());
-	subsurface_mkdir(dir);
+	std::string dir = format_string_std("%s/fingerprints", system_default_directory());
+	subsurface_mkdir(dir.c_str());
 
-	final = fingerprint_file(devdata);
-	tmp = format_string("%s.tmp", final);
-	free(dir);
+	std::string final = fingerprint_file(devdata);
+	std::string tmp = final + ".tmp";
 
-	do_save_fingerprint(devdata, tmp, final);
-	free(tmp);
-	free(final);
+	do_save_fingerprint(devdata, tmp.c_str(), final.c_str());
 }
 
 /*
@@ -1050,7 +1044,6 @@ static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, cons
  */
 static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 {
-	char *cachename;
 	const unsigned char *raw_data;
 
 	if (devdata->force_download)
@@ -1065,16 +1058,15 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 		return;
 	}
 	/* now check if we have a fingerprint on disk */
-	cachename = fingerprint_file(devdata);
+	std::string cachename = fingerprint_file(devdata);
 	if (verbose)
-		dev_info(devdata, "Looking for fingerprint in '%s'", cachename);
-	auto [mem, err] = readfile(cachename);
+		dev_info(devdata, "Looking for fingerprint in '%s'", cachename.c_str());
+	auto [mem, err] = readfile(cachename.c_str());
 	if (err > 0) {
 		if (verbose)
 			dev_info(devdata, " ... got %zu bytes", mem.size());
 		verify_fingerprint(device, devdata, (unsigned char *)mem.data(), mem.size());
 	}
-	free(cachename);
 }
 
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
