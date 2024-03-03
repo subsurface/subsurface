@@ -109,6 +109,8 @@ private:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void keyPressEvent(QKeyEvent *e) override;
+	void contextMenu(const QPointF pos, const QPoint globalPos);
+	void addSetpointChange(int seconds);
 
 	ChartItemPtr<ToolTipItem> tooltip;
 	void updateTooltip(QPointF pos, bool plannerMode, int animSpeed);

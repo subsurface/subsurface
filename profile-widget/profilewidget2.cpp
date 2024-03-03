@@ -292,21 +292,8 @@ bool ProfileWidget2::isPlanner() const
 	return currentState == PLAN;
 }
 
-#if 0 // TODO::: FINISH OR DISABLE
-struct int ProfileWidget2::getEntryFromPos(QPointF pos)
-{
-	// find the time stamp corresponding to the mouse position
-	int seconds = lrint(timeAxis->valueAt(pos));
-
-	for (int i = 0; i < plotInfo.nr; i++) {
-		if (plotInfo.entry[i].sec >= seconds)
-			return i;
-	}
-	return plotInfo.nr - 1;
-}
-#endif
-
 #ifndef SUBSURFACE_MOBILE
+<<<<<<< HEAD
 static bool isDiveTextItem(const QGraphicsItem *item, const DiveTextItem *textItem)
 {
 	while (item) {
@@ -410,6 +397,8 @@ void ProfileWidget2::connectPlannerModel()
 	connect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
 }
 #endif
+=======
+>>>>>>> 28d057ffb (profile: port context menu to QtQuick)
 
 void ProfileWidget2::profileChanged(dive *dive)
 {

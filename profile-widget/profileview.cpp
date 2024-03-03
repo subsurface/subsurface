@@ -33,6 +33,7 @@
 
 #ifndef SUBSURFACE_MOBILE
 #include "core/device.h"
+#include "desktop-widgets/simplewidgets.h"
 #include <QInputDialog>
 #include <QMenu>
 #include <QMessageBox>
@@ -108,7 +109,7 @@ ProfileView::ProfileView(QQuickItem *parent) :
 	setFlag(ItemHasContents, true);
 
 	setAcceptHoverEvents(true);
-	setAcceptedMouseButtons(Qt::LeftButton);
+	setAcceptedMouseButtons(Qt::RightButton | Qt::LeftButton);
 
 	auto tec = qPrefTechnicalDetails::instance();
 	connect(tec, &qPrefTechnicalDetails::calcalltissuesChanged           , this, &ProfileView::replot);
@@ -499,6 +500,15 @@ void ProfileView::removeEvent(DiveEventItem &item)
 #endif
 }
 
+// TODO: How should that work on mobile?
+void ProfileView::addSetpointChange(int seconds)
+{
+#ifndef SUBSURFACE_MOBILE
+	SetpointDialog dialog(mutable_dive(), dc, seconds);
+	dialog.exec();
+#endif
+}
+
 // Formats cylinder information for display.
 // eg : "Cyl 1 (AL80 EAN32)"
 static QString formatCylinderDescription(int i, const cylinder_t &cylinder)
@@ -519,12 +529,76 @@ void ProfileView::unhideEvents()
 	replot();
 }
 
+void ProfileView::contextMenu(const QPointF pos, const QPoint globalPos)
+{
+	// No context menu in Plan mode
+	if (mode == Mode::Plan)
+		return;
+
+	// Only open the contextmenu on the profile
+	if (!d || !profileScene->pointOnProfile(pos))
+		return;
+
+	std::vector<MenuEntry> m;
+	int seconds = profileScene->timeAt(pos);
+
+	// if we have more than one gas, offer to switch to another one
+	if (d->cylinders.size() > 1) {
+		std::vector<MenuEntry> gasChangeMenu;
+		// If this is before the first sample, offer an "initial gas change".
+		// This is signaled by seconds = 0
+		const struct divecomputer *currentdc = d->get_dc(dc);
+		if (seconds < 0 || (!currentdc->samples.empty() && seconds <= currentdc->samples[0].time.seconds))
+			seconds = 0;
+		for (auto [i, cylinder]: enumerated_range(d->cylinders)) {
+			QString label = formatCylinderDescription(i, cylinder);
+			gasChangeMenu.emplace_back(label, [this, idx = i, seconds] {
+					Command::addGasSwitch(mutable_dive(), dc, seconds, idx);
+				});
+		}
+		m.emplace_back(seconds == 0 ? tr("Set initial gas") : tr("Add gas change"), std::move(gasChangeMenu));
+	}
+
+	m.emplace_back(tr("Add setpoint change"), [this, seconds]() { addSetpointChange(seconds); });
+	m.emplace_back(tr("Add bookmark"), [this, seconds]() {
+			Command::addEventBookmark(mutable_dive(), dc, seconds);
+		});
+	m.emplace_back(tr("Split dive into two"), [this, seconds]() {
+			Command::splitDives(mutable_dive(), duration_t{ seconds });
+		});
+
+	std::vector<MenuEntry> changeModeMenu;
+	divemode_loop loop(*d->get_dc(dc));
+	divemode_t divemode = loop.at(seconds);
+	if (divemode != OC)
+		changeModeMenu.emplace_back(gettextFromC::tr(divemode_text_ui[OC]), [this, seconds]() {
+				Command::addEventDivemodeSwitch(mutable_dive(), dc, seconds, OC);
+			});
+	if (divemode != CCR)
+		changeModeMenu.emplace_back(gettextFromC::tr(divemode_text_ui[CCR]), [this, seconds]() {
+				Command::addEventDivemodeSwitch(mutable_dive(), dc, seconds, CCR);
+			});
+	if (divemode != PSCR)
+		changeModeMenu.emplace_back(gettextFromC::tr(divemode_text_ui[PSCR]), [this, seconds]() {
+				Command::addEventDivemodeSwitch(mutable_dive(), dc, seconds, PSCR);
+			});
+	m.emplace_back(tr("Change divemode"), changeModeMenu);
+
+	execMenu(m, globalPos);
+}
+
 void ProfileView::mousePressEvent(QMouseEvent *event)
 {
 	// Handle dragging of items
 	ChartView::mousePressEvent(event);
 	if (event->isAccepted())
 		return;
+
+	// On Desktop, the right botton opens the menu.
+	// For Mobile, we will have to think about something.
+	// Perhaps a "hamburger menu"?
+	if (event->button() == Qt::RightButton)
+		return contextMenu(event->pos(), event->globalPos());
 
 	// Open context menu if computer name is clicked
 	if (d && profileScene->pointOnDiveComputerText(event->pos())) {

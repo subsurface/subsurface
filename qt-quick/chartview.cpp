@@ -307,6 +307,10 @@ void ChartView::setLayerVisibility(size_t z, bool visible)
 
 void ChartView::mousePressEvent(QMouseEvent *event)
 {
+	// Only left-button for drag events.
+	if (event->button() != Qt::LeftButton)
+		return event->ignore();
+
 	QPointF pos = event->localPos();
 
 	for (auto item: dragableItems) {
