@@ -8607,7 +8607,7 @@ busseig. Informeu dels que necessitin aquest ajustament.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="671"/>
         <source>GFHigh (10 to 150</source>
-        <translation>GFAlt (de 10 fins a 150)</translation>
+        <translation>GFAlt (de 10 fins a 150</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="708"/>
