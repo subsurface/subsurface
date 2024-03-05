@@ -149,6 +149,7 @@ int DownloadFromDCWidget::deviceIndex(QString deviceText)
 void DownloadFromDCWidget::DC##num##Clicked() \
 { \
 	ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor##num())); \
+	ui.device->setCurrentText(qPrefDiveComputer::device##num()); \
 	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
 	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
 	bool isBluetoothDevice = isBluetoothAddress(qPrefDiveComputer::device##num()); \
@@ -639,10 +640,13 @@ void DownloadFromDCWidget::enableBluetoothMode(int state)
 {
 	ui.chooseBluetoothDevice->setEnabled(state == Qt::Checked);
 
-	if (state == Qt::Checked)
-		selectRemoteBluetoothDevice();
-	else
-		ui.device->setCurrentIndex(-1);
+	if (state == Qt::Checked) {
+      		if (ui.device->currentText().isEmpty()) {
+         		selectRemoteBluetoothDevice();
+   		} else {
+      			ui.device->setCurrentIndex(-1);
+   		}
+	}
 }
 #endif
 
