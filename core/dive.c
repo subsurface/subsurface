@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "dive.h"
+#include "deco.h"
 #include "gettext.h"
 #include "subsurface-string.h"
 #include "libdivecomputer.h"
@@ -1314,6 +1315,25 @@ struct dive *fixup_dive(struct dive *dive)
 	 * but we want to make sure... */
 	if (!dive->id)
 		dive->id = dive_getUniqID();
+
+	struct deco_state ds;
+	/* Load tissues from previous dives */
+	init_decompression(&ds, dive, false);
+	/* Load tissues from this dive */
+	add_dive_to_deco(&ds, dive, false, true);
+
+	double surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
+
+	/* Sets buehlmann_inertgas_[ab] */
+	tissue_tolerance_calc(&ds, dive, surface_pressure, false);
+
+	dive->end_gf = 0;
+	for (int j = 0; j < 16; j++) {
+		double surface_m_value = ds.buehlmann_inertgas_a[j] + surface_pressure / ds.buehlmann_inertgas_b[j];
+		double surface_gf = 100.0 * (ds.tissue_inertgas_saturation[j] - surface_pressure) / (surface_m_value - surface_pressure);
+		if (surface_gf > dive->end_gf)
+			dive->end_gf = (int)ceil(surface_gf);
+	}
 
 	return dive;
 }

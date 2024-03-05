@@ -37,6 +37,7 @@ public:
 		SAC,
 		OTU,
 		MAXCNS,
+		ENDGF,
 		TAGS,
 		PHOTOS,
 		BUDDIES,

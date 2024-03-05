@@ -43,6 +43,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModelBase::SAC:
 	case DiveTripModelBase::OTU:
 	case DiveTripModelBase::MAXCNS:
+	case DiveTripModelBase::ENDGF:
 		// Right align numeric columns
 		return int(Qt::AlignRight | Qt::AlignVCenter);
 	// NR needs to be left aligned because its the indent marker for trips too
@@ -247,6 +248,8 @@ QString DiveTripModelBase::getDescription(int column)
 		return tr("OTU");
 	case MAXCNS:
 		return tr("Max. CNS");
+	case ENDGF:
+		return tr("EndGF");
 	case TAGS:
 		return tr("Tags");
 	case PHOTOS:
@@ -346,6 +349,8 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 				return QString("%1%").arg(d->maxcns);
 			else
 				return d->maxcns;
+		case ENDGF:
+			return d->end_gf;
 		case TAGS:
 			return get_taglist_string(d->tag_list);
 		case PHOTOS:
@@ -440,6 +445,8 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 			return tr("OTU");
 		case MAXCNS:
 			return tr("Max CNS");
+		case ENDGF:
+			return tr("EndGF");
 		case TAGS:
 			return tr("Tags");
 		case PHOTOS:
@@ -1765,6 +1772,8 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 		return lessThanHelper(d1->otu - d2->otu, row_diff);
 	case MAXCNS:
 		return lessThanHelper(d1->maxcns - d2->maxcns, row_diff);
+	case ENDGF:
+		return lessThanHelper(d1->end_gf - d2->end_gf, row_diff);
 	case TAGS: {
 		char *s1 = taglist_get_tagstring(d1->tag_list);
 		char *s2 = taglist_get_tagstring(d2->tag_list);

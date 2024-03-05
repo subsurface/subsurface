@@ -396,7 +396,7 @@ static int calculate_sac(const struct dive *dive)
 }
 
 /* for now we do this based on the first divecomputer */
-static void add_dive_to_deco(struct deco_state *ds, struct dive *dive, bool in_planner)
+void add_dive_to_deco(struct deco_state *ds, struct dive *dive, bool in_planner, bool early_exit)
 {
 	struct divecomputer *dc = &dive->dc;
 	struct gasmix gasmix = gasmix_air;
@@ -413,6 +413,10 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive, bool in_p
 		int t0 = psample->time.seconds;
 		int t1 = sample->time.seconds;
 		int j;
+
+		/* Early exit for when there are a lot of surface samples at the end */
+		if (early_exit && t1 > dive->duration.seconds)
+			break;
 
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
@@ -489,6 +493,12 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 		printf("Check if dive #%d %d has to be considered as prev dive: ", i, get_dive(i)->number);
 #endif
 		struct dive *pdive = get_dive(i);
+		if (!pdive || pdive->when >= dive->when || dive_endtime(pdive) + 48 * 60 * 60 < last_starttime) {
+#if DECO_CALC_DEBUG & 2
+			printf("No\n");
+#endif
+			break;
+		}
 		/* we don't want to mix dives from different trips as we keep looking
 		 * for how far back we need to go */
 		if (dive->divetrip && pdive->divetrip != dive->divetrip) {
@@ -496,12 +506,6 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 			printf("No - other dive trip\n");
 #endif
 			continue;
-		}
-		if (!pdive || pdive->when >= dive->when || dive_endtime(pdive) + 48 * 60 * 60 < last_starttime) {
-#if DECO_CALC_DEBUG & 2
-			printf("No\n");
-#endif
-			break;
 		}
 		last_starttime = pdive->when;
 #if DECO_CALC_DEBUG & 2
@@ -566,7 +570,7 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 #endif
 		}
 
-		add_dive_to_deco(ds, pdive, in_planner);
+		add_dive_to_deco(ds, pdive, in_planner, false);
 
 		last_starttime = pdive->when;
 		last_endtime = dive_endtime(pdive);
