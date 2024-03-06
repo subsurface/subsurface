@@ -637,7 +637,7 @@ void DownloadFromDCWidget::enableBluetoothMode(int state)
 
 	if (state == Qt::Checked) {
 		if (ui.device->currentText().isEmpty()) 
-         		selectRemoteBluetoothDevice();
+			selectRemoteBluetoothDevice();
 	} else {
 		ui.device->setCurrentIndex(-1);
 	}
