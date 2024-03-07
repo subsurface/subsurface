@@ -218,7 +218,7 @@ static double vpmb_tolerated_ambient_pressure(struct deco_state *ds, double refe
 	return ds->tissue_n2_sat[ci] + ds->tissue_he_sat[ci] + vpmb_config.other_gases_pressure - total_gradient;
 }
 
-double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, double pressure, bool in_planner)
+extern "C" double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, double pressure, bool in_planner)
 {
 	int ci = -1;
 	double ret_tolerance_limit_ambient_pressure = 0.0;
@@ -325,7 +325,7 @@ static double calc_surface_phase(double surface_pressure, double he_pressure, do
 	return 0;
 }
 
-void vpmb_start_gradient(struct deco_state *ds)
+extern "C" void vpmb_start_gradient(struct deco_state *ds)
 {
 	int ci;
 
@@ -335,7 +335,7 @@ void vpmb_start_gradient(struct deco_state *ds)
 	}
 }
 
-void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure, bool in_planner)
+extern "C" void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure, bool in_planner)
 {
 	int ci;
 	double n2_b, n2_c;
@@ -381,7 +381,7 @@ static double solve_cubic(double A, double B, double C)
 }
 
 
-void nuclear_regeneration(struct deco_state *ds, double time)
+extern "C" void nuclear_regeneration(struct deco_state *ds, double time)
 {
 	time /= 60.0;
 	int ci;
@@ -413,7 +413,7 @@ static double calc_inner_pressure(double crit_radius, double onset_tension, doub
 }
 
 // Calculates the crushing pressure in the given moment. Updates crushing_onset_tension and critical radius if needed
-void calc_crushing_pressure(struct deco_state *ds, double pressure)
+extern "C" void calc_crushing_pressure(struct deco_state *ds, double pressure)
 {
 	int ci;
 	double gradient;
@@ -445,9 +445,8 @@ void calc_crushing_pressure(struct deco_state *ds, double pressure)
 }
 
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
-void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int ccpo2, enum divemode_t divemode, int sac, bool in_planner)
+extern "C" void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int ccpo2, enum divemode_t divemode, int, bool in_planner)
 {
-	UNUSED(sac);
 	int ci;
 	struct gas_pressures pressures;
 	bool icd = false;
@@ -479,7 +478,7 @@ void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, i
 }
 
 #if DECO_CALC_DEBUG
-void dump_tissues(struct deco_state *ds)
+extern "C" void dump_tissues(struct deco_state *ds)
 {
 	int ci;
 	printf("N2 tissues:");
@@ -492,7 +491,7 @@ void dump_tissues(struct deco_state *ds)
 }
 #endif
 
-void clear_vpmb_state(struct deco_state *ds)
+extern "C" void clear_vpmb_state(struct deco_state *ds)
 {
 	int ci;
 	for (ci = 0; ci < 16; ci++) {
@@ -504,7 +503,7 @@ void clear_vpmb_state(struct deco_state *ds)
 	ds->max_bottom_ceiling_pressure.mbar = 0;
 }
 
-void clear_deco(struct deco_state *ds, double surface_pressure, bool in_planner)
+extern "C" void clear_deco(struct deco_state *ds, double surface_pressure, bool in_planner)
 {
 	int ci;
 
@@ -523,18 +522,18 @@ void clear_deco(struct deco_state *ds, double surface_pressure, bool in_planner)
 	ds->ci_pointing_to_guiding_tissue = -1;
 }
 
-void cache_deco_state(struct deco_state *src, struct deco_state **cached_datap)
+extern "C" void cache_deco_state(struct deco_state *src, struct deco_state **cached_datap)
 {
 	struct deco_state *data = *cached_datap;
 
 	if (!data) {
-		data = malloc(sizeof(struct deco_state));
+		data = (deco_state *)malloc(sizeof(struct deco_state));
 		*cached_datap = data;
 	}
 	*data = *src;
 }
 
-void restore_deco_state(struct deco_state *data, struct deco_state *target, bool keep_vpmb_state)
+extern "C" void restore_deco_state(struct deco_state *data, struct deco_state *target, bool keep_vpmb_state)
 {
 	if (keep_vpmb_state) {
 		int ci;
@@ -551,7 +550,7 @@ void restore_deco_state(struct deco_state *data, struct deco_state *target, bool
 
 }
 
-int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth)
+extern "C" int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth)
 {
 	int depth;
 	double pressure_delta;
@@ -570,7 +569,7 @@ int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const 
 	return depth;
 }
 
-void set_gf(short gflow, short gfhigh)
+extern "C" void set_gf(short gflow, short gfhigh)
 {
 	if (gflow != -1)
 		buehlmann_config.gf_low = (double)gflow / 100.0;
@@ -578,7 +577,7 @@ void set_gf(short gflow, short gfhigh)
 		buehlmann_config.gf_high = (double)gfhigh / 100.0;
 }
 
-void set_vpmb_conservatism(short conservatism)
+extern "C" void set_vpmb_conservatism(short conservatism)
 {
 	if (conservatism < 0)
 		vpmb_config.conservatism = 0;
@@ -588,7 +587,7 @@ void set_vpmb_conservatism(short conservatism)
 		vpmb_config.conservatism = conservatism;
 }
 
-double get_gf(struct deco_state *ds, double ambpressure_bar, const struct dive *dive)
+extern "C" double get_gf(struct deco_state *ds, double ambpressure_bar, const struct dive *dive)
 {
 	double surface_pressure_bar = get_surface_pressure_in_mbar(dive, true) / 1000.0;
 	double gf_low = buehlmann_config.gf_low;
@@ -602,7 +601,7 @@ double get_gf(struct deco_state *ds, double ambpressure_bar, const struct dive *
 	return gf;
 }
 
-double regressiona(const struct deco_state *ds)
+extern "C" double regressiona(const struct deco_state *ds)
 {
 	if (ds->sum1 > 1) {
 		double avxy = ds->sumxy / ds->sum1;
@@ -615,7 +614,7 @@ double regressiona(const struct deco_state *ds)
 		return 0.0;
 }
 
-double regressionb(const struct deco_state *ds)
+extern "C" double regressionb(const struct deco_state *ds)
 {
 	if (ds->sum1)
 		return ds->sumy / ds->sum1 - ds->sumx * regressiona(ds) / ds->sum1;
@@ -623,14 +622,14 @@ double regressionb(const struct deco_state *ds)
 		return 0.0;
 }
 
-void reset_regression(struct deco_state *ds)
+extern "C" void reset_regression(struct deco_state *ds)
 {
 	ds->sum1 = 0;
 	ds->sumxx = ds->sumx = 0L;
 	ds->sumy = ds->sumxy = 0.0;
 }
 
-void update_regression(struct deco_state *ds, const struct dive *dive)
+extern "C" void update_regression(struct deco_state *ds, const struct dive *dive)
 {
 	if (!ds->plot_depth)
 		return;

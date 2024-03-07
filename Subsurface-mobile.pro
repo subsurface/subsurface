@@ -25,7 +25,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/devicedetails.cpp \
 	core/downloadfromdcthread.cpp \
 	core/qtserialbluetooth.cpp \
-	core/plannernotes.c \
+	core/plannernotes.cpp \
 	core/uemis-downloader.cpp \
 	core/qthelper.cpp \
 	core/checkcloudconnection.cpp \
@@ -45,7 +45,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/fulltext.cpp \
 	core/subsurfacestartup.cpp \
 	core/pref.c \
-	core/profile.c \
+	core/profile.cpp \
 	core/device.cpp \
 	core/dive.cpp \
 	core/divecomputer.c \
@@ -81,10 +81,10 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/save-git.cpp \
 	core/datatrak.cpp \
 	core/ostctools.c \
-	core/planner.c \
+	core/planner.cpp \
 	core/save-xml.cpp \
 	core/cochran.cpp \
-	core/deco.c \
+	core/deco.cpp \
 	core/divesite.c \
 	core/equipment.c \
 	core/gas.c \

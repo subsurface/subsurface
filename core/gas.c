@@ -117,7 +117,7 @@ int pscr_o2(const double amb_pressure, struct gasmix mix)
  *			*pressures = structure for communicating o2 sensor values from and gas pressures to the calling function.
  *			*mix = structure containing cylinder gas mixture information.
  *			divemode = the dive mode pertaining to this point in the dive profile.
- * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
+ * This function called by: calculate_gas_information_new() in profile.cpp; add_segment() in deco.cpp.
  */
 void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, struct gasmix mix, double po2, enum divemode_t divemode)
 {
