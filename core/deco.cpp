@@ -13,8 +13,6 @@
  * set_gf()		- set Buehlmann gradient factors
  * set_vpmb_conservatism() - set VPM-B conservatism value
  * clear_deco()
- * cache_deco_state()
- * restore_deco_state()
  * dump_tissues()
  */
 #include <stdlib.h>
@@ -522,19 +520,17 @@ extern "C" void clear_deco(struct deco_state *ds, double surface_pressure, bool 
 	ds->ci_pointing_to_guiding_tissue = -1;
 }
 
-extern "C" void cache_deco_state(struct deco_state *src, struct deco_state **cached_datap)
+void deco_state_cache::cache(const struct deco_state *src)
 {
-	struct deco_state *data = *cached_datap;
-
-	if (!data) {
-		data = (deco_state *)malloc(sizeof(struct deco_state));
-		*cached_datap = data;
-	}
+	if (!data)
+		data = std::make_unique<deco_state>();
 	*data = *src;
 }
 
-extern "C" void restore_deco_state(struct deco_state *data, struct deco_state *target, bool keep_vpmb_state)
+void deco_state_cache::restore(struct deco_state *target, bool keep_vpmb_state) const
 {
+	if (!data)
+		return;
 	if (keep_vpmb_state) {
 		int ci;
 		for (ci = 0; ci < 16; ci++) {
@@ -547,7 +543,6 @@ extern "C" void restore_deco_state(struct deco_state *data, struct deco_state *t
 		data->max_bottom_ceiling_pressure = target->max_bottom_ceiling_pressure;
 	}
 	*target = *data;
-
 }
 
 extern "C" int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth)
