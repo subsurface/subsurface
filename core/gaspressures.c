@@ -2,9 +2,9 @@
 /*  gaspressures.c
  *  ---------------
  *  This file contains the routines to calculate the gas pressures in the cylinders.
- *  The functions below support the code in profile.c.
+ *  The functions below support the code in profile.cpp.
  *  The high-level function is populate_pressure_information(), called by function
- *  create_plot_info_new() in profile.c. The other functions below are, in turn,
+ *  create_plot_info_new() in profile.cpp. The other functions below are, in turn,
  *  called by populate_pressure_information(). The calling sequence is as follows:
  *
  *  populate_pressure_information() -> calc_pressure_time()
@@ -362,7 +362,7 @@ static void debug_print_pressures(struct plot_info *pi)
  * pr_track_alloc structures for each cylinder. These pr_track_alloc structures ultimately allow for filling
  * the missing tank pressure values on the dive profile using the depth_pressure of the dive. To do this, it
  * calculates the summed pressure-time value for the duration of the dive and stores these * in the pr_track_alloc
- * structures. This function is called by create_plot_info_new() in profile.c
+ * structures. This function is called by create_plot_info_new() in profile.cpp
  */
 void populate_pressure_information(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, int sensor)
 {

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-/* planner.c
+/* plannernotes.cpp
  *
  * code that allows us to plan future dives
  *
@@ -75,7 +75,7 @@ static void add_icd_entry(struct membuffer *b, struct icd_data *icdvalues, bool 
 		ambientpressure_mbar * -icdvalues->dHe / 5e6f, translate("gettextFromC", "bar"));
 }
 
-const char *get_planner_disclaimer()
+extern "C" const char *get_planner_disclaimer()
 {
 	return translate("gettextFromC", "DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s "
 			 "ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS "
@@ -84,7 +84,7 @@ const char *get_planner_disclaimer()
 }
 
 /* Returns newly allocated buffer. Must be freed by caller */
-char *get_planner_disclaimer_formatted()
+extern "C" char *get_planner_disclaimer_formatted()
 {
 	struct membuffer buf = { 0 };
 	const char *deco = decoMode(true) == VPMB ? translate("gettextFromC", "VPM-B")
@@ -93,7 +93,7 @@ char *get_planner_disclaimer_formatted()
 	return detach_cstring(&buf);
 }
 
-void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
+extern "C" void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
 {
 	struct membuffer buf = { 0 };
 	struct membuffer icdbuf = { 0 };
@@ -436,30 +436,34 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 	put_string(&buf, "<br/>\n");
 
-	const char *depth_unit;
-	int altitude = (int) get_depth_units((int) (pressure_to_altitude(diveplan->surface_pressure)), NULL, &depth_unit);
+	{
+		const char *depth_unit;
+		int altitude = (int) get_depth_units((int) (pressure_to_altitude(diveplan->surface_pressure)), NULL, &depth_unit);
 
-	put_format_loc(&buf, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br/>\n</div>\n"), diveplan->surface_pressure, altitude, depth_unit);
+		put_format_loc(&buf, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br/>\n</div>\n"), diveplan->surface_pressure, altitude, depth_unit);
+	}
 
 	/* Get SAC values and units for printing it in gas consumption */
-	double bottomsacvalue, decosacvalue;
-	int sacdecimals;
-	const char* sacunit;
+	{
+		double bottomsacvalue, decosacvalue;
+		int sacdecimals;
+		const char* sacunit;
 
-	bottomsacvalue = get_volume_units(prefs.bottomsac, &sacdecimals, &sacunit);
-	decosacvalue = get_volume_units(prefs.decosac, NULL, NULL);
+		bottomsacvalue = get_volume_units(prefs.bottomsac, &sacdecimals, &sacunit);
+		decosacvalue = get_volume_units(prefs.decosac, NULL, NULL);
 
-	/* Reduce number of decimals from 1 to 0 for bar/min, keep 2 for cuft/min */
-	if (sacdecimals==1) sacdecimals--;
+		/* Reduce number of decimals from 1 to 0 for bar/min, keep 2 for cuft/min */
+		if (sacdecimals==1) sacdecimals--;
 
-	/* Print the gas consumption next.*/
-	if (dive->dc.divemode == CCR)
-		temp = strdup(translate("gettextFromC", "Gas consumption (CCR legs excluded):"));
-	else
-		asprintf_loc(&temp, "%s %.*f|%.*f%s/min):", translate("gettextFromC", "Gas consumption (based on SAC"),
-			     sacdecimals, bottomsacvalue, sacdecimals, decosacvalue, sacunit);
-	put_format(&buf, "<div>\n%s<br/>\n", temp);
-	free(temp);
+		/* Print the gas consumption next.*/
+		if (dive->dc.divemode == CCR)
+			temp = strdup(translate("gettextFromC", "Gas consumption (CCR legs excluded):"));
+		else
+			asprintf_loc(&temp, "%s %.*f|%.*f%s/min):", translate("gettextFromC", "Gas consumption (based on SAC"),
+				     sacdecimals, bottomsacvalue, sacdecimals, decosacvalue, sacunit);
+		put_format(&buf, "<div>\n%s<br/>\n", temp);
+		free(temp);
+	}
 
 	/* Print gas consumption: This loop covers all cylinders */
 	for (int gasidx = 0; gasidx < dive->cylinders.nr; gasidx++) {
@@ -570,53 +574,55 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 	free_buffer(&icdbuf);
 
-	/* Print warnings for pO2 */
-	dp = diveplan->dp;
-	bool o2warning_exist = false;
-	enum divemode_t current_divemode;
-	double amb;
-	const struct event *evd = NULL;
-	current_divemode = UNDEF_COMP_TYPE;
+	/* Print warnings for pO2 (move into separate function?) */
+	{
+		dp = diveplan->dp;
+		bool o2warning_exist = false;
+		enum divemode_t current_divemode;
+		double amb;
+		const struct event *evd = NULL;
+		current_divemode = UNDEF_COMP_TYPE;
 
-	if (dive->dc.divemode != CCR) {
-		while (dp) {
-			if (dp->time != 0) {
-				struct gas_pressures pressures;
-				struct gasmix gasmix = get_cylinder(dive, dp->cylinderid)->gasmix;
+		if (dive->dc.divemode != CCR) {
+			while (dp) {
+				if (dp->time != 0) {
+					struct gas_pressures pressures;
+					struct gasmix gasmix = get_cylinder(dive, dp->cylinderid)->gasmix;
 
-				current_divemode = get_current_divemode(&dive->dc, dp->time, &evd, &current_divemode);
-				amb = depth_to_atm(dp->depth.mm, dive);
-				fill_pressures(&pressures, amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix.o2.permille / 1000.0, current_divemode);
+					current_divemode = get_current_divemode(&dive->dc, dp->time, &evd, &current_divemode);
+					amb = depth_to_atm(dp->depth.mm, dive);
+					fill_pressures(&pressures, amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix.o2.permille / 1000.0, current_divemode);
 
-				if (pressures.o2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
-					const char *depth_unit;
-					int decimals;
-					double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
-					if (!o2warning_exist)
-						put_string(&buf, "<div>\n");
-					o2warning_exist = true;
-					asprintf_loc(&temp, translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
-						pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
-					put_format(&buf, "<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp);
-					free(temp);
-				} else if (pressures.o2 < 0.16) {
-					const char *depth_unit;
-					int decimals;
-					double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
-					if (!o2warning_exist)
-						put_string(&buf, "<div>");
-					o2warning_exist = true;
-					asprintf_loc(&temp, translate("gettextFromC", "low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
-						pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
-					put_format(&buf, "<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp);
-					free(temp);
+					if (pressures.o2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
+						const char *depth_unit;
+						int decimals;
+						double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
+						if (!o2warning_exist)
+							put_string(&buf, "<div>\n");
+						o2warning_exist = true;
+						asprintf_loc(&temp, translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
+							pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
+						put_format(&buf, "<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp);
+						free(temp);
+					} else if (pressures.o2 < 0.16) {
+						const char *depth_unit;
+						int decimals;
+						double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
+						if (!o2warning_exist)
+							put_string(&buf, "<div>");
+						o2warning_exist = true;
+						asprintf_loc(&temp, translate("gettextFromC", "low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
+							pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
+						put_format(&buf, "<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp);
+						free(temp);
+					}
 				}
+				dp = dp->next;
 			}
-			dp = dp->next;
 		}
+		if (o2warning_exist)
+			put_string(&buf, "</div>\n");
 	}
-	if (o2warning_exist)
-		put_string(&buf, "</div>\n");
 finished:
 	free(dive->notes);
 	dive->notes = detach_cstring(&buf);
