@@ -1073,12 +1073,12 @@ void DivePlannerPointsModel::updateDiveProfile()
 	if (diveplan_empty(&diveplan))
 		return;
 
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 	struct decostop stoptable[60];
 	struct deco_state plan_deco_state;
 
 	memset(&plan_deco_state, 0, sizeof(struct deco_state));
-	plan(&plan_deco_state, &diveplan, d, DECOTIMESTEP, stoptable, &cache, isPlanner(), false);
+	plan(&plan_deco_state, &diveplan, d, DECOTIMESTEP, stoptable, cache, isPlanner(), false);
 	updateMaxDepth();
 
 	if (isPlanner() && shouldComputeVariations()) {
@@ -1103,8 +1103,6 @@ void DivePlannerPointsModel::updateDiveProfile()
 	emit calculatedPlanNotes(QString(d->notes));
 
 
-	// throw away the cache
-	free(cache);
 #if DEBUG_PLAN
 	save_dive(stderr, d);
 	dump_plan(&diveplan);
@@ -1196,13 +1194,13 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	struct dive *dive = alloc_dive();
 	copy_dive(d, dive);
 	struct decostop original[60], deeper[60], shallower[60], shorter[60], longer[60];
-	struct deco_state *cache = NULL, *save = NULL;
+	deco_state_cache cache, save;
 	struct diveplan plan_copy;
 	struct divedatapoint *last_segment;
 	struct deco_state ds = *previous_ds;
 
 	int my_instance = ++instanceCounter;
-	cache_deco_state(&ds, &save);
+	save.cache(&ds);
 
 	duration_t delta_time = { .seconds = 60 };
 	QString time_units = tr("min");
@@ -1222,43 +1220,43 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 		goto finish;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, original, &cache, true, false);
+	plan(&ds, &plan_copy, dive, 1, original, cache, true, false);
 	free_dps(&plan_copy);
-	restore_deco_state(save, &ds, false);
+	save.restore(&ds, false);
 
 	last_segment = cloneDiveplan(original_plan, &plan_copy);
 	last_segment->depth.mm += delta_depth.mm;
 	last_segment->next->depth.mm += delta_depth.mm;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, deeper, &cache, true, false);
+	plan(&ds, &plan_copy, dive, 1, deeper, cache, true, false);
 	free_dps(&plan_copy);
-	restore_deco_state(save, &ds, false);
+	save.restore(&ds, false);
 
 	last_segment = cloneDiveplan(original_plan, &plan_copy);
 	last_segment->depth.mm -= delta_depth.mm;
 	last_segment->next->depth.mm -= delta_depth.mm;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, shallower, &cache, true, false);
+	plan(&ds, &plan_copy, dive, 1, shallower, cache, true, false);
 	free_dps(&plan_copy);
-	restore_deco_state(save, &ds, false);
+	save.restore(&ds, false);
 
 	last_segment = cloneDiveplan(original_plan, &plan_copy);
 	last_segment->next->time += delta_time.seconds;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, longer, &cache, true, false);
+	plan(&ds, &plan_copy, dive, 1, longer, cache, true, false);
 	free_dps(&plan_copy);
-	restore_deco_state(save, &ds, false);
+	save.restore(&ds, false);
 
 	last_segment = cloneDiveplan(original_plan, &plan_copy);
 	last_segment->next->time -= delta_time.seconds;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, shorter, &cache, true, false);
+	plan(&ds, &plan_copy, dive, 1, shorter, cache, true, false);
 	free_dps(&plan_copy);
-	restore_deco_state(save, &ds, false);
+	save.restore(&ds, false);
 
 	char buf[200];
 	sprintf(buf, ", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
@@ -1273,8 +1271,6 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 finish:
 	free_dps(original_plan);
 	free(original_plan);
-	free(save);
-	free(cache);
 	free_dive(dive);
 }
 
@@ -1289,13 +1285,12 @@ void DivePlannerPointsModel::computeVariationsDone(QString variations)
 void DivePlannerPointsModel::createPlan(bool replanCopy)
 {
 	// Ok, so, here the diveplan creates a dive
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 	removeDeco();
 	createTemporaryPlan();
 
-	//TODO: C-based function here?
 	struct decostop stoptable[60];
-	plan(&ds_after_previous_dives, &diveplan, d, DECOTIMESTEP, stoptable, &cache, isPlanner(), true);
+	plan(&ds_after_previous_dives, &diveplan, d, DECOTIMESTEP, stoptable, cache, isPlanner(), true);
 
 	if (shouldComputeVariations()) {
 		struct diveplan *plan_copy;
@@ -1305,8 +1300,6 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		unlock_planner();
 		computeVariations(plan_copy, &ds_after_previous_dives);
 	}
-
-	free(cache);
 
 	// Fixup planner notes.
 	if (current_dive && d->id == current_dive->id) {

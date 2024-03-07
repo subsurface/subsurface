@@ -111,7 +111,7 @@ static void interpolate_transition(struct deco_state *ds, struct dive *dive, dur
 }
 
 /* returns the tissue tolerance at the end of this (partial) dive */
-static int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_state **cached_datap)
+static int tissue_at_end(struct deco_state *ds, struct dive *dive, deco_state_cache &cache)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
@@ -123,11 +123,11 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_s
 
 	if (!dive)
 		return 0;
-	if (*cached_datap) {
-		restore_deco_state(*cached_datap, ds, true);
+	if (cache) {
+		cache.restore(ds, true);
 	} else {
 		surface_interval = init_decompression(ds, dive, true);
-		cache_deco_state(ds, cached_datap);
+		cache.cache(ds);
 	}
 	dc = &dive->dc;
 	if (!dc->samples)
@@ -544,12 +544,12 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 {
 
 	bool clear_to_ascend = true;
-	struct deco_state *trial_cache = NULL;
+	deco_state_cache trial_cache;
 
 	// For consistency with other VPM-B implementations, we should not start the ascent while the ceiling is
 	// deeper than the next stop (thus the offgasing during the ascent is ignored).
 	// However, we still need to make sure we don't break the ceiling due to on-gassing during ascent.
-	cache_deco_state(ds, &trial_cache);
+	trial_cache.cache(ds);
 	if (wait_time)
 		add_segment(ds, depth_to_bar(trial_depth, dive),
 			    gasmix,
@@ -558,8 +558,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 		double tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(stoplevel, dive), true);
 		update_regression(ds, dive);
 		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1) > stoplevel) {
-			restore_deco_state(trial_cache, ds, false);
-			free(trial_cache);
+			trial_cache.restore(ds, false);
 			return false;
 		}
 	}
@@ -582,8 +581,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 		}
 		trial_depth -= deltad;
 	}
-	restore_deco_state(trial_cache, ds, false);
-	free(trial_cache);
+	trial_cache.restore(ds, false);
 	return clear_to_ascend;
 }
 
@@ -654,7 +652,7 @@ static void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_de
 		*avg_depth = *max_depth = 0;
 }
 
-extern "C" bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer)
+bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer)
 {
 
 	int bottom_depth;
@@ -663,7 +661,7 @@ extern "C" bool plan(struct deco_state *ds, struct diveplan *diveplan, struct di
 	bool is_final_plan = true;
 	int bottom_time;
 	int previous_deco_time;
-	struct deco_state *bottom_cache = NULL;
+	deco_state_cache bottom_cache;
 	struct sample *sample;
 	int po2;
 	int transitiontime, gi;
@@ -782,7 +780,7 @@ extern "C" bool plan(struct deco_state *ds, struct diveplan *diveplan, struct di
 	gi = gaschangenr - 1;
 
 	/* Set tissue tolerance and initial vpmb gradient at start of ascent phase */
-	diveplan->surface_interval = tissue_at_end(ds, dive, cached_datap);
+	diveplan->surface_interval = tissue_at_end(ds, dive, cache);
 	nuclear_regeneration(ds, clock);
 	vpmb_start_gradient(ds);
 	if (decoMode(true) == RECREATIONAL) {
@@ -850,7 +848,7 @@ extern "C" bool plan(struct deco_state *ds, struct diveplan *diveplan, struct di
 	}
 
 	// VPM-B or Buehlmann Deco
-	tissue_at_end(ds, dive, cached_datap);
+	tissue_at_end(ds, dive, cache);
 	if ((divemode == CCR || divemode == PSCR) && prefs.dobailout) {
 		divemode = OC;
 		po2 = 0;
@@ -864,7 +862,7 @@ extern "C" bool plan(struct deco_state *ds, struct diveplan *diveplan, struct di
 	}
 	previous_deco_time = 100000000;
 	ds->deco_time = 10000000;
-	cache_deco_state(ds, &bottom_cache);  // Lets us make several iterations
+	bottom_cache.cache(ds);  // Lets us make several iterations
 	bottom_depth = depth;
 	bottom_gi = gi;
 	bottom_gas = gas;
@@ -878,7 +876,7 @@ extern "C" bool plan(struct deco_state *ds, struct diveplan *diveplan, struct di
 			vpmb_next_gradient(ds, ds->deco_time, diveplan->surface_pressure / 1000.0, true);
 
 		previous_deco_time = ds->deco_time;
-		restore_deco_state(bottom_cache, ds, true);
+		bottom_cache.restore(ds, true);
 
 		depth = bottom_depth;
 		gi = bottom_gi;
@@ -1124,7 +1122,6 @@ extern "C" bool plan(struct deco_state *ds, struct diveplan *diveplan, struct di
 
 	free(stoplevels);
 	free(gaschanges);
-	free(bottom_cache);
 	return decodive;
 }
 
