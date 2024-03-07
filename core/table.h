@@ -96,6 +96,9 @@
 	{									\
 		for (int i = 0; i < table->nr; i++)				\
 			free_##item_name(table->array_name[i]);			\
+		free(table->array_name);					\
+		table->array_name = NULL;					\
+		table->allocated = 0;						\
 		table->nr = 0;							\
 	}
 
