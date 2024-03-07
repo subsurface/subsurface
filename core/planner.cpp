@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-/* planner.c
+/* planner.cpp
  *
  * code that allows us to plan future dives
  *
@@ -42,7 +42,7 @@ static int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 1828
 					325120, 345440, 365760, 386080 };
 
 #if DEBUG_PLAN
-void dump_plan(struct diveplan *diveplan)
+extern "C" void dump_plan(struct diveplan *diveplan)
 {
 	struct divedatapoint *dp;
 	struct tm tm;
@@ -65,7 +65,7 @@ void dump_plan(struct diveplan *diveplan)
 }
 #endif
 
-bool diveplan_empty(struct diveplan *diveplan)
+extern "C" bool diveplan_empty(struct diveplan *diveplan)
 {
 	struct divedatapoint *dp;
 	if (!diveplan || !diveplan->dp)
@@ -80,7 +80,7 @@ bool diveplan_empty(struct diveplan *diveplan)
 }
 
 /* get the cylinder index at a certain time during the dive */
-int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time)
+extern "C" int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time)
 {
 	// we start with the first cylinder unless an event tells us otherwise
 	int cylinder_idx = 0;
@@ -327,7 +327,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	return;
 }
 
-void free_dps(struct diveplan *diveplan)
+extern "C" void free_dps(struct diveplan *diveplan)
 {
 	if (!diveplan)
 		return;
@@ -344,7 +344,7 @@ static struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid,
 {
 	struct divedatapoint *dp;
 
-	dp = malloc(sizeof(struct divedatapoint));
+	dp = (divedatapoint *)malloc(sizeof(struct divedatapoint));
 	dp->time = time_incr;
 	dp->depth.mm = depth;
 	dp->cylinderid = cylinderid;
@@ -371,7 +371,7 @@ static void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoi
 		dp->time += lasttime;
 }
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode)
+extern "C" struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode)
 {
 	struct divedatapoint *dp = create_dp(duration, depth, cylinderid, divemode == CCR ? po2 : 0);
 	dp->entered = entered;
@@ -413,7 +413,7 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 			if (dp->depth.mm <= depth) {
 				int i = 0;
 				nr++;
-				gaschanges = realloc(gaschanges, nr * sizeof(struct gaschanges));
+				gaschanges = (struct gaschanges *)realloc(gaschanges, nr * sizeof(struct gaschanges));
 				while (i < nr - 1) {
 					if (dp->depth.mm < gaschanges[i].depth) {
 						memmove(gaschanges + i + 1, gaschanges + i, (nr - i - 1) * sizeof(struct gaschanges));
@@ -454,7 +454,7 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 {
 	int i, gi, di;
 	int total = dnr + gnr;
-	int *stoplevels = malloc(total * sizeof(int));
+	int *stoplevels = (int *)malloc(total * sizeof(int));
 
 	/* no gaschanges */
 	if (gnr == 0) {
@@ -502,9 +502,8 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 	return stoplevels;
 }
 
-int ascent_velocity(int depth, int avg_depth, int bottom_time)
+extern "C" int ascent_velocity(int depth, int avg_depth, int)
 {
-	UNUSED(bottom_time);
 	/* We need to make this configurable */
 
 	/* As an example (and possibly reasonable default) this is the Tech 1 provedure according
@@ -655,7 +654,7 @@ static void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_de
 		*avg_depth = *max_depth = 0;
 }
 
-bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer)
+extern "C" bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer)
 {
 
 	int bottom_depth;
@@ -715,7 +714,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	create_dive_from_plan(diveplan, dive, is_planner);
 
 	// Do we want deco stop array in metres or feet?
-	if (prefs.units.length == METERS ) {
+	if (prefs.units.length == units::METERS ) {
 		decostoplevels = decostoplevels_metric;
 		decostoplevelcount = sizeof(decostoplevels_metric) / sizeof(int);
 	} else {
@@ -929,7 +928,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				last_segment_min_switch = false;
 				clock += TIMESTEP;
 				depth -= deltad;
-				/* Print VPM-Gradient as gradient factor, this has to be done from within deco.c */
+				/* Print VPM-Gradient as gradient factor, this has to be done from within deco.cpp */
 				if (decodive)
 					ds->plot_depth = depth;
 			} while (depth > 0 && depth > stoplevels[stopidx]);
@@ -1179,7 +1178,7 @@ static int get_permille(const char *begin, const char **end)
 	return value;
 }
 
-int validate_gas(const char *text, struct gasmix *gas)
+extern "C" int validate_gas(const char *text, struct gasmix *gas)
 {
 	int o2, he;
 
@@ -1226,7 +1225,7 @@ int validate_gas(const char *text, struct gasmix *gas)
 	return 1;
 }
 
-int validate_po2(const char *text, int *mbar_po2)
+extern "C" int validate_po2(const char *text, int *mbar_po2)
 {
 	int po2;
 

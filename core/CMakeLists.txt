@@ -53,7 +53,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	connectionlistmodel.h
 	datatrak.cpp
 	datatrak.h
-	deco.c
+	deco.cpp
 	deco.h
 	device.cpp
 	device.h
@@ -141,12 +141,12 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	picture.h
 	pictureobj.cpp
 	pictureobj.h
-	planner.c
+	planner.cpp
 	planner.h
-	plannernotes.c
+	plannernotes.cpp
 	pref.h
 	pref.c
-	profile.c
+	profile.cpp
 	profile.h
 	qt-gui.h
 	qt-init.cpp
