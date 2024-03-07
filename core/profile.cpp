@@ -943,11 +943,11 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 		ds->deco_time = planner_ds->deco_time;
 		ds->first_ceiling_pressure = planner_ds->first_ceiling_pressure;
 	}
-	struct deco_state *cache_data_initial = NULL;
+	deco_state_cache cache_data_initial;
 	lock_planner();
 	/* For VPM-B outside the planner, cache the initial deco state for CVA iterations */
 	if (decoMode(in_planner) == VPMB) {
-		cache_deco_state(ds, &cache_data_initial);
+		cache_data_initial.cache(ds);
 	}
 	/* For VPM-B outside the planner, iterate until deco time converges (usually one or two iterations after the initial)
 	 * Set maximum number of iterations to 10 just in case */
@@ -1078,14 +1078,13 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				last_ndl_tts_calc_time = entry->sec;
 
 				/* We are going to mess up deco state, so store it for later restore */
-				struct deco_state *cache_data = NULL;
-				cache_deco_state(ds, &cache_data);
+				deco_state_cache cache_data;
+				cache_data.cache(ds);
 				calculate_ndl_tts(ds, dive, entry, gasmix, surface_pressure, current_divemode, in_planner);
 				if (decoMode(in_planner) == VPMB && !in_planner && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
-				restore_deco_state(cache_data, ds, decoMode(in_planner) == VPMB);
-				free(cache_data);
+				cache_data.restore(ds, decoMode(in_planner) == VPMB);
 			}
 		}
 		if (decoMode(in_planner) == VPMB && !in_planner) {
@@ -1107,7 +1106,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			first_iteration = false;
 			count_iteration ++;
 			this_deco_time = ds->deco_time;
-			restore_deco_state(cache_data_initial, ds, true);
+			cache_data_initial.restore(ds, true);
 			ds->deco_time = this_deco_time;
 		} else {
 			// With Buhlmann iterating isn't needed.  This makes the while condition false.
@@ -1115,7 +1114,6 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 		}
 	}
 
-	free(cache_data_initial);
 #if DECO_CALC_DEBUG & 1
 	dump_tissues(ds);
 #endif

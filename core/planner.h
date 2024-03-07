@@ -36,6 +36,8 @@ struct diveplan {
 	int surface_interval;
 };
 
+struct deco_state_cache;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -58,9 +60,10 @@ struct decostop {
 	int depth;
 	int time;
 };
-extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
 
 #ifdef __cplusplus
 }
+
+extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
 #endif
 #endif // PLANNER_H
