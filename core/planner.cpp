@@ -401,10 +401,10 @@ static int setpoint_change(struct dive *dive, int cylinderid)
 	}
 }
 
-static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int *gaschangenr, int depth, int *asc_cylinder, bool ccr)
+static std::vector<gaschanges> analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int depth, int *asc_cylinder, bool ccr)
 {
-	int nr = 0;
-	struct gaschanges *gaschanges = NULL;
+	size_t nr = 0;
+	std::vector<gaschanges> gaschanges;
 	struct divedatapoint *dp = diveplan->dp;
 	struct divedatapoint *best_ascent_dp = NULL;
 	bool total_time_zero = true;
@@ -413,10 +413,11 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 			if (dp->depth.mm <= depth) {
 				int i = 0;
 				nr++;
-				gaschanges = (struct gaschanges *)realloc(gaschanges, nr * sizeof(struct gaschanges));
-				while (i < nr - 1) {
+				gaschanges.resize(nr);
+				while (i < static_cast<int>(nr) - 1) {
 					if (dp->depth.mm < gaschanges[i].depth) {
-						memmove(gaschanges + i + 1, gaschanges + i, (nr - i - 1) * sizeof(struct gaschanges));
+						for (int j = static_cast<int>(nr) - 2; j >= i; j--)
+							gaschanges[j + 1] = gaschanges[j];
 						break;
 					}
 					i++;
@@ -435,12 +436,11 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 		}
 		dp = dp->next;
 	}
-	*gaschangenr = nr;
 	if (best_ascent_dp) {
 		*asc_cylinder = best_ascent_dp->cylinderid;
 	}
 #if DEBUG_PLAN & 16
-	for (nr = 0; nr < *gaschangenr; nr++) {
+	for (size_t nr = 0; nr < gaschanges.size(); nr++) {
 		int idx = gaschanges[nr].gasidx;
 		printf("gaschange nr %d: @ %5.2lfm gasidx %d (%s)\n", nr, gaschanges[nr].depth / 1000.0,
 		       idx, gasname(&get_cylinder(&dive, idx)->gasmix));
@@ -450,20 +450,23 @@ static struct gaschanges *analyze_gaslist(struct diveplan *diveplan, struct dive
 }
 
 /* sort all the stops into one ordered list */
-static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
+static std::vector<int> sort_stops(int dstops[], size_t dnr, std::vector<gaschanges> gstops)
 {
-	int i, gi, di;
-	int total = dnr + gnr;
-	int *stoplevels = (int *)malloc(total * sizeof(int));
+	int total = dnr + gstops.size();
+	std::vector<int> stoplevels(total);
+
+	/* Can't happen. */
+	if (dnr == 0)
+		return std::vector<int>();
 
 	/* no gaschanges */
-	if (gnr == 0) {
-		memcpy(stoplevels, dstops, dnr * sizeof(int));
+	if (gstops.empty()) {
+		std::copy(dstops, dstops + dnr, stoplevels.begin());
 		return stoplevels;
 	}
-	i = total - 1;
-	gi = gnr - 1;
-	di = dnr - 1;
+	int i = static_cast<int>(total) - 1;
+	int gi = static_cast<int>(gstops.size()) - 1;
+	int di = static_cast<int>(dnr) - 1;
 	while (i >= 0) {
 		if (dstops[di] > gstops[gi].depth) {
 			stoplevels[i] = dstops[di];
@@ -493,7 +496,7 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 
 #if DEBUG_PLAN & 16
 	int k;
-	for (k = gnr + dnr - 1; k >= 0; k--) {
+	for (k = static_cast<int>(gstops.size()) + dnr - 1; k >= 0; k--) {
 		printf("stoplevel[%d]: %5.2lfm\n", k, stoplevels[k] / 1000.0);
 		if (stoplevels[k] == 0)
 			break;
@@ -666,13 +669,11 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	int po2;
 	int transitiontime, gi;
 	int current_cylinder, stop_cylinder;
-	int stopidx;
+	size_t stopidx;
 	int depth;
-	struct gaschanges *gaschanges = NULL;
-	int gaschangenr;
 	int *decostoplevels;
-	int decostoplevelcount;
-	int *stoplevels = NULL;
+	size_t decostoplevelcount;
+	std::vector<int> stoplevels;
 	bool stopping = false;
 	bool pendinggaschange = false;
 	int clock, previous_point_time;
@@ -714,14 +715,15 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	// Do we want deco stop array in metres or feet?
 	if (prefs.units.length == units::METERS ) {
 		decostoplevels = decostoplevels_metric;
-		decostoplevelcount = sizeof(decostoplevels_metric) / sizeof(int);
+		decostoplevelcount = std::size(decostoplevels_metric);
 	} else {
 		decostoplevels = decostoplevels_imperial;
-		decostoplevelcount = sizeof(decostoplevels_imperial) / sizeof(int);
+		decostoplevelcount = std::size(decostoplevels_imperial);
 	}
 
 	/* If the user has selected last stop to be at 6m/20', we need to get rid of the 3m/10' stop.
 	 * Otherwise reinstate the last stop 3m/10' stop.
+	 * Remark: not reentrant, but the user probably won't change preferences while this is running.
 	 */
 	if (prefs.last_stop)
 		*(decostoplevels + 1) = 0;
@@ -765,7 +767,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	/* Find the gases available for deco */
 
-	gaschanges = analyze_gaslist(diveplan, dive, &gaschangenr, depth, &best_first_ascend_cylinder, divemode == CCR && !prefs.dobailout);
+	std::vector<gaschanges> gaschanges = analyze_gaslist(diveplan, dive, depth, &best_first_ascend_cylinder, divemode == CCR && !prefs.dobailout);
 
 	/* Find the first potential decostopdepth above current depth */
 	for (stopidx = 0; stopidx < decostoplevelcount; stopidx++)
@@ -774,10 +776,10 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	if (stopidx > 0)
 		stopidx--;
 	/* Stoplevels are either depths of gas changes or potential deco stop depths. */
-	stoplevels = sort_stops(decostoplevels, stopidx + 1, gaschanges, gaschangenr);
-	stopidx += gaschangenr;
+	stoplevels = sort_stops(decostoplevels, stopidx + 1, gaschanges);
+	stopidx += gaschanges.size();
 
-	gi = gaschangenr - 1;
+	gi = static_cast<int>(gaschanges.size()) - 1;
 
 	/* Set tissue tolerance and initial vpmb gradient at start of ascent phase */
 	diveplan->surface_interval = tissue_at_end(ds, dive, cache);
@@ -832,8 +834,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		add_plan_to_notes(diveplan, dive, show_disclaimer, error);
 		fixup_dc_duration(&dive->dc);
 
-		free(stoplevels);
-		free(gaschanges);
 		return false;
 	}
 
@@ -1120,8 +1120,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	add_plan_to_notes(diveplan, dive, show_disclaimer, error);
 	fixup_dc_duration(&dive->dc);
 
-	free(stoplevels);
-	free(gaschanges);
 	return decodive;
 }
 
