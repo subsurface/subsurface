@@ -684,7 +684,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	bool o2break_next = false;
 	int break_cylinder = -1, breakfrom_cylinder = 0;
 	bool last_segment_min_switch = false;
-	int error = 0;
+	bool error = false;
 	bool decodive = false;
 	int first_stop_depth = 0;
 	int laststoptime = timestep;
@@ -1031,7 +1031,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				laststoptime = new_clock - clock;
 				/* Finish infinite deco */
 				if (laststoptime >= 48 * 3600 && depth >= 6000) {
-					error = LONGDECO;
+					error = true;
 					break;
 				}
 
