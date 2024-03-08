@@ -2,9 +2,6 @@
 #ifndef PLANNER_H
 #define PLANNER_H
 
-#define LONGDECO 1
-#define NOT_RECREATIONAL 2
-
 #include "units.h"
 #include "divemode.h"
 
@@ -44,7 +41,7 @@ extern int validate_gas(const char *text, struct gasmix *gas);
 extern int validate_po2(const char *text, int *mbar_po2);
 extern int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time);
 extern bool diveplan_empty(struct diveplan *diveplan);
-extern void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error);
+extern void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, bool error);
 extern const char *get_planner_disclaimer();
 
 extern void free_dps(struct diveplan *diveplan);
