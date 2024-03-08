@@ -609,13 +609,12 @@ void PlannerWidgets::replanDive(int currentDC)
 void PlannerWidgets::printDecoPlan()
 {
 #ifndef NO_PRINTING
-	char *disclaimer = get_planner_disclaimer_formatted();
+	std::string disclaimer = get_planner_disclaimer_formatted();
 	// Prepend a logo and a disclaimer to the plan.
 	// Save the old plan so that it can be restored at the end of the function.
 	QString origPlan = plannerDetails.divePlanOutput()->toHtml();
 	QString diveplan = QStringLiteral("<img height=50 src=\":subsurface-icon\"> ") +
-			   QString(disclaimer) + origPlan;
-	free(disclaimer);
+			   QString::fromStdString(disclaimer) + origPlan;
 
 	QPrinter printer;
 	QPrintDialog dialog(&printer, MainWindow::instance());
