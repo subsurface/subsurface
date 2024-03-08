@@ -203,7 +203,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	windowtitleupdate.cpp
 	windowtitleupdate.h
 	worldmap-options.h
-	worldmap-save.c
+	worldmap-save.cpp
 	worldmap-save.h
 	xmlparams.cpp
 	xmlparams.h

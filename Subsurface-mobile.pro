@@ -75,7 +75,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/import-csv.cpp \
 	core/save-html.c \
 	core/statistics.c \
-	core/worldmap-save.c \
+	core/worldmap-save.cpp \
 	core/libdivecomputer.cpp \
 	core/version.c \
 	core/save-git.cpp \
