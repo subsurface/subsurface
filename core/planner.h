@@ -8,8 +8,6 @@
 #include "units.h"
 #include "divemode.h"
 
-#define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
-
 /* this should be converted to use our types */
 struct divedatapoint {
 	int time;

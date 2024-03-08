@@ -799,7 +799,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				      po2, diveplan->surface_pressure / 1000.0, dive, divemode) &&
 			 enough_gas(dive, current_cylinder) && clock < 6 * 3600);
 
-		// We did stay one DECOTIMESTEP too many.
+		// We did stay one timestep too many.
 		// In the best of all worlds, we would roll back also the last add_segment in terms of caching deco state, but
 		// let's ignore that since for the eventual ascent in recreational mode, nobody looks at the ceiling anymore,
 		// so we don't really have to compute the deco state.
