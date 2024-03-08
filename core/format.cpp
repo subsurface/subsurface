@@ -407,3 +407,13 @@ extern "C" void put_vformat_loc(struct membuffer *b, const char *fmt, va_list ar
 	memcpy(b->buffer + b->len, data, utf8_size);
 	b->len += utf8_size;
 }
+
+// TODO: Avoid back-and-forth conversion between UTF16 and UTF8.
+std::string casprintf_loc(const char *cformat, ...)
+{
+	va_list ap;
+	va_start(ap, cformat);
+	QByteArray utf8 = vqasprintf_loc(cformat, ap).toUtf8();
+	va_end(ap);
+	return std::string(utf8.constData(), utf8.size());
+}
