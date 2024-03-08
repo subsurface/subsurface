@@ -27,6 +27,8 @@
 
 #define UNIT_FACTOR ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0)
 
+static constexpr int decotimestep = 60; // seconds
+
 CylindersModel *DivePlannerPointsModel::cylindersModel()
 {
 	return &cylinders;
@@ -1078,7 +1080,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 	struct deco_state plan_deco_state;
 
 	memset(&plan_deco_state, 0, sizeof(struct deco_state));
-	plan(&plan_deco_state, &diveplan, d, DECOTIMESTEP, stoptable, cache, isPlanner(), false);
+	plan(&plan_deco_state, &diveplan, d, decotimestep, stoptable, cache, isPlanner(), false);
 	updateMaxDepth();
 
 	if (isPlanner() && shouldComputeVariations()) {
@@ -1290,7 +1292,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	createTemporaryPlan();
 
 	struct decostop stoptable[60];
-	plan(&ds_after_previous_dives, &diveplan, d, DECOTIMESTEP, stoptable, cache, isPlanner(), true);
+	plan(&ds_after_previous_dives, &diveplan, d, decotimestep, stoptable, cache, isPlanner(), true);
 
 	if (shouldComputeVariations()) {
 		struct diveplan *plan_copy;
