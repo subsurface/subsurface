@@ -48,7 +48,6 @@ extern int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, du
 extern bool diveplan_empty(struct diveplan *diveplan);
 extern void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error);
 extern const char *get_planner_disclaimer();
-extern char *get_planner_disclaimer_formatted();
 
 extern void free_dps(struct diveplan *diveplan);
 
@@ -64,6 +63,8 @@ struct decostop {
 #ifdef __cplusplus
 }
 
+#include <string>
+extern std::string get_planner_disclaimer_formatted();
 extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
 #endif
 #endif // PLANNER_H

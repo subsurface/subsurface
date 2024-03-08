@@ -97,6 +97,7 @@ QString printGPSCoords(const location_t *loc);
 std::string printGPSCoordsC(const location_t *loc);
 std::vector<int> get_cylinder_map_for_remove(int count, int n);
 std::vector<int> get_cylinder_map_for_add(int count, int n);
+std::string get_current_date();
 
 extern QString (*changesCallback)();
 void uiNotification(const QString &msg);
@@ -132,7 +133,6 @@ char *cloud_url();
 char *hashfile_name_string();
 enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
-char *get_current_date();
 time_t get_dive_datetime_from_isostring(char *when);
 void print_qt_versions();
 void lock_planner();

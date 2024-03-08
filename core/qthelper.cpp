@@ -1025,14 +1025,14 @@ QString get_last_dive_date_string()
 	return dives->nr > 0 ? get_dive_only_date_string(dives->dives[dives->nr - 1]->when) : gettextFromC::tr("no dives");
 }
 
-extern "C" char *get_current_date()
+std::string get_current_date()
 {
 	QDateTime ts(QDateTime::currentDateTime());;
 	QString current_date;
 
 	current_date = loc.toString(ts, QString(prefs.date_format_short));
 
-	return copy_qstring(current_date);
+	return current_date.toStdString();
 }
 
 static QMutex hashOfMutex;
