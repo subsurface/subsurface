@@ -93,7 +93,7 @@ extern std::string get_planner_disclaimer_formatted()
 	return format_string_std(get_planner_disclaimer(), deco);
 }
 
-extern "C" void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error)
+extern "C" void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, bool error)
 {
 	std::string buf;
 	std::string icdbuf;
