@@ -26,7 +26,7 @@
 #include "qthelper.h"
 #include "version.h"
 
-#define TIMESTEP 2 /* second */
+static constexpr int base_timestep = 2; // seconds
 
 static int decostoplevels_metric[] = { 0, 3000, 6000, 9000, 12000, 15000, 18000, 21000, 24000, 27000,
 					30000, 33000, 36000, 39000, 42000, 45000, 48000, 51000, 54000, 57000,
@@ -530,10 +530,10 @@ static void track_ascent_gas(int depth, struct dive *dive, int cylinder_id, int 
 {
 	cylinder_t *cylinder = get_cylinder(dive, cylinder_id);
 	while (depth > 0) {
-		int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+		int deltad = ascent_velocity(depth, avg_depth, bottom_time) * base_timestep;
 		if (deltad > depth)
 			deltad = depth;
-		update_cylinder_pressure(dive, depth, depth - deltad, TIMESTEP, prefs.decosac, cylinder, true, divemode);
+		update_cylinder_pressure(dive, depth, depth - deltad, base_timestep, prefs.decosac, cylinder, true, divemode);
 		if (depth <= 5000 && depth >= (5000 - deltad) && safety_stop) {
 			update_cylinder_pressure(dive, 5000, 5000, 180, prefs.decosac, cylinder, true, divemode);
 			safety_stop = false;
@@ -568,12 +568,12 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
 
 	while (trial_depth > stoplevel) {
 		double tolerance_limit;
-		int deltad = ascent_velocity(trial_depth, avg_depth, bottom_time) * TIMESTEP;
+		int deltad = ascent_velocity(trial_depth, avg_depth, bottom_time) * base_timestep;
 		if (deltad > trial_depth) /* don't test against depth above surface */
 			deltad = trial_depth;
 		add_segment(ds, depth_to_bar(trial_depth, dive),
 			    gasmix,
-			    TIMESTEP, po2, divemode, prefs.decosac, true);
+			    base_timestep, po2, divemode, prefs.decosac, true);
 		tolerance_limit = tissue_tolerance_calc(ds, dive, depth_to_bar(trial_depth, dive), true);
 		if (decoMode(true) == VPMB)
 			update_regression(ds, dive);
@@ -809,7 +809,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		previous_point_time = clock;
 		do {
 			/* Ascend to surface */
-			int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+			int deltad = ascent_velocity(depth, avg_depth, bottom_time) * base_timestep;
 			if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
 				plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
@@ -818,7 +818,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			if (depth - deltad < 0)
 				deltad = depth;
 
-			clock += TIMESTEP;
+			clock += base_timestep;
 			depth -= deltad;
 			if (depth <= 5000 && depth >= (5000 - deltad) && safety_stop) {
 				plan_add_segment(diveplan, clock - previous_point_time, 5000, current_cylinder, po2, false, divemode);
@@ -909,7 +909,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			/* We will break out when we hit the surface */
 			do {
 				/* Ascend to next stop depth */
-				int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+				int deltad = ascent_velocity(depth, avg_depth, bottom_time) * base_timestep;
 				if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
 					if (is_final_plan)
 						plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
@@ -922,9 +922,9 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 				add_segment(ds, depth_to_bar(depth, dive),
 								get_cylinder(dive, current_cylinder)->gasmix,
-								TIMESTEP, po2, divemode, prefs.decosac, true);
+								base_timestep, po2, divemode, prefs.decosac, true);
 				last_segment_min_switch = false;
-				clock += TIMESTEP;
+				clock += base_timestep;
 				depth -= deltad;
 				/* Print VPM-Gradient as gradient factor, this has to be done from within deco.cpp */
 				if (decodive)
