@@ -17,7 +17,7 @@ PreferencesNetwork::PreferencesNetwork() : AbstractPreferencesWidget(tr("Network
 	ui->proxyType->addItem(tr("SOCKS proxy"), QNetworkProxy::Socks5Proxy);
 	ui->proxyType->setCurrentIndex(-1);
 
-	connect(ui->proxyType, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyType_changed(int)));
+	connect(ui->proxyType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PreferencesNetwork::proxyType_changed);
 }
 
 PreferencesNetwork::~PreferencesNetwork()
@@ -47,7 +47,6 @@ void PreferencesNetwork::syncSettings()
 	proxy->set_proxy_pass(ui->proxyPassword->text());
 }
 
-
 void PreferencesNetwork::proxyType_changed(int idx)
 {
 	if (idx == -1) {
@@ -63,4 +62,3 @@ void PreferencesNetwork::proxyType_changed(int idx)
 	ui->proxyPassword->setEnabled(hpEnabled & ui->proxyAuthRequired->isChecked());
 	ui->proxyAuthRequired->setChecked(ui->proxyAuthRequired->isChecked());
 }
-
