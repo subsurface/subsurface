@@ -713,7 +713,7 @@
     <message>
         <location filename="../commands/command_divesite.cpp" line="101"/>
         <source>import dive sites from %1</source>
-        <translation>importiere Tauchplätze von %1</translation>
+        <translation>Tauchplätze von %1 importieren</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divesite.cpp" line="137"/>
