@@ -77,14 +77,19 @@ void PreferencesGraph::syncSettings()
 	qPrefTechnicalDetails::set_display_deco_mode(ui->vpmb->isChecked() ? VPMB : BUEHLMANN);
 }
 
-#define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
+static const char *danger_gf(int gf)
+{
+	return (gf > 100) ? "* { color: red; }" : "";
+}
+
 void PreferencesGraph::on_gflow_valueChanged(int gf)
 {
-	ui->gflow->setStyleSheet(DANGER_GF);
+	ui->gflow->setStyleSheet(danger_gf(gf));
 }
+
 void PreferencesGraph::on_gfhigh_valueChanged(int gf)
 {
-	ui->gfhigh->setStyleSheet(DANGER_GF);
+	ui->gfhigh->setStyleSheet(danger_gf(gf));
 }
 
 void PreferencesGraph::on_buehlmann_toggled(bool buehlmann)
@@ -96,5 +101,3 @@ void PreferencesGraph::on_buehlmann_toggled(bool buehlmann)
 	ui->vpmb_conservatism->setEnabled(!buehlmann);
 	ui->label_VPMB->setEnabled(!buehlmann);
 }
-
-#undef DANGER_GF
