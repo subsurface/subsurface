@@ -5962,7 +5962,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="376"/>
         <source>&amp;Import dive sites</source>
-        <translation>&amp;Importiere Tauchplätze</translation>
+        <translation>Tauchplätze &amp;importieren </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="379"/>
