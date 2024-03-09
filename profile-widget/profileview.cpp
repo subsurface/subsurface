@@ -564,7 +564,7 @@ void ProfileView::contextMenu(const QPointF pos, const QPoint globalPos)
 			Command::addEventBookmark(mutable_dive(), dc, seconds);
 		});
 	m.emplace_back(tr("Split dive into two"), [this, seconds]() {
-			Command::splitDives(mutable_dive(), duration_t{ seconds });
+			Command::splitDives(mutable_dive(), duration_t{ .seconds = seconds });
 		});
 
 	std::vector<MenuEntry> changeModeMenu;
