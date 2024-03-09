@@ -460,16 +460,12 @@ void initUiLanguage()
 		loc = QLocale(QLocale().uiLanguages().first());
 	}
 
+	// Find language code with one '-', or use the first entry.
 	QStringList languages = loc.uiLanguages();
 	QString uiLang;
-	if (languages[0].contains('-'))
-		uiLang = languages[0];
-	else if (languages.count() > 1 && languages[1].contains('-'))
-		uiLang = languages[1];
-	else if (languages.count() > 2 && languages[2].contains('-'))
-		uiLang = languages[2];
-	else
-		uiLang = languages[0];
+	auto it = std::find_if(languages.begin(), languages.end(), [](const QString &s)
+				{ return s.count('-') == 1; });
+	uiLang = it == languages.end() ? languages[0] : *it;
 
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
 	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
