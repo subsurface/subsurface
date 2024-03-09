@@ -5967,7 +5967,7 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="379"/>
         <source>Import dive sites from other users</source>
-        <translation>Importiere Tauchplätze von anderem Benutzer</translation>
+        <translation>Tauchplätze von anderem Benutzer importieren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
