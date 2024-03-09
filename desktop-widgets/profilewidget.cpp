@@ -272,7 +272,7 @@ void ProfileWidget::plotCurrentDive()
 	plotDive(d, dc);
 }
 
-void ProfileWidget::plotDive(dive *dIn, int dcIn)
+void ProfileWidget::plotDive(dive *dIn, int dcIn, bool planMode)
 {
 	d = dIn;
 
@@ -302,9 +302,10 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 		view->plotDive(editedDive.get(), editedDc, ProfileView::RenderFlags::EditMode);
 		setDive(editedDive.get());
 	} else if (d) {
-		//view->setProfileState(d, dc);
+		int flags = planMode ? ProfileView::RenderFlags::PlanMode
+				     : ProfileView::RenderFlags::None;
 		view->resetZoom(); // when switching dive, reset the zoomLevel
-		view->plotDive(d, dc);
+		view->plotDive(d, dc, flags);
 		setDive(d);
 	} else {
 		view->clear();
@@ -357,13 +358,6 @@ void ProfileWidget::divesChanged(const QVector<dive *> &dives, DiveField field)
 	plotCurrentDive();
 }
 
-void ProfileWidget::setPlanState(const struct dive *d, int dc)
-{
-	exitEditMode();
-	//view->setPlanState(d, dc);
-	setDive(d);
-}
-
 void ProfileWidget::unsetProfHR()
 {
 	ui.profHR->setChecked(false);
@@ -389,7 +383,6 @@ void ProfileWidget::editDive()
 	QSignalBlocker blocker(DivePlannerPointsModel::instance());
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), editedDc);
-	//view->setEditState(editedDive.get(), editedDc);
 }
 
 void ProfileWidget::exitEditMode()
