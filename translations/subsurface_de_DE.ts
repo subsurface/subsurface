@@ -7930,7 +7930,7 @@ Bitte die Vorlage mit einem neuen Dateinamen exportieren.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="416"/>
         <source>Processing %1 dives</source>
-        <translation>Bearbeite %1 Tauchgänge</translation>
+        <translation>Verarbeite %1 Tauchgänge</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
