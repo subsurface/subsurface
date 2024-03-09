@@ -20,9 +20,8 @@ class ProfileWidget : public QWidget {
 public:
 	ProfileWidget();
 	~ProfileWidget();
-	void plotDive(struct dive *d, int dc); // Attempt to keep DC number id dc < 0
+	void plotDive(struct dive *d, int dc, bool planMode = false); // Attempt to keep DC number id dc < 0
 	void plotCurrentDive();
-	void setPlanState(const struct dive *d, int dc);
 	void setEnabledToolbar(bool enabled);
 	void nextDC();
 	void prevDC();
