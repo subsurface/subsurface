@@ -30,6 +30,8 @@ void TestProfile::init()
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");
+
+	setlocale(LC_ALL, "C");
 }
 void TestProfile::testProfileExport()
 {
