@@ -37,4 +37,3 @@ void PreferencesDc::refreshSettings()
 void PreferencesDc::syncSettings()
 {
 }
-
