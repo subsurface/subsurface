@@ -309,12 +309,10 @@ void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_
 char *add_to_string_va(char *old, const char *fmt, va_list args)
 {
 	char *res;
-	struct membuffer o = { 0 }, n = { 0 };
+	struct membufferpp o, n;
 	put_vformat(&n, fmt, args);
 	put_format(&o, "%s\n%s", old ?: "", mb_cstring(&n));
 	res = strdup(mb_cstring(&o));
-	free_buffer(&o);
-	free_buffer(&n);
 	free((void *)old);
 	return res;
 }
