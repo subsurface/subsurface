@@ -17,19 +17,16 @@ void TestTagList::cleanupTestCase()
 void TestTagList::testGetTagstringNoTags()
 {
 	struct tag_entry *tag_list = NULL;
-	char *tagstring = taglist_get_tagstring(tag_list);
-	QVERIFY(tagstring != NULL);
-	QCOMPARE(*tagstring, '\0');
+	std::string tagstring = taglist_get_tagstring(tag_list);
+	QVERIFY(tagstring.empty());
 }
 
 void TestTagList::testGetTagstringSingleTag()
 {
 	struct tag_entry *tag_list = NULL;
 	taglist_add_tag(&tag_list, "A new tag");
-	char *tagstring = taglist_get_tagstring(tag_list);
-	QVERIFY(tagstring != NULL);
-	QCOMPARE(QString::fromUtf8(tagstring), QString::fromUtf8("A new tag"));
-	free(tagstring);
+	std::string tagstring = taglist_get_tagstring(tag_list);
+	QCOMPARE(QString::fromStdString(tagstring), QString::fromUtf8("A new tag"));
 }
 
 void TestTagList::testGetTagstringMultipleTags()
@@ -41,9 +38,8 @@ void TestTagList::testGetTagstringMultipleTags()
 	taglist_add_tag(&tag_list, "A new tag 3");
 	taglist_add_tag(&tag_list, "A new tag 4");
 	taglist_add_tag(&tag_list, "A new tag 5");
-	char *tagstring = taglist_get_tagstring(tag_list);
-	QVERIFY(tagstring != NULL);
-	QCOMPARE(QString::fromUtf8(tagstring),
+	std::string tagstring = taglist_get_tagstring(tag_list);
+	QCOMPARE(QString::fromStdString(tagstring),
 		 QString::fromUtf8(
 			 "A new tag, "
 			 "A new tag 1, "
@@ -51,7 +47,6 @@ void TestTagList::testGetTagstringMultipleTags()
 			 "A new tag 3, "
 			 "A new tag 4, "
 			 "A new tag 5"));
-	free(tagstring);
 }
 
 void TestTagList::testGetTagstringWithAnEmptyTag()
@@ -60,24 +55,20 @@ void TestTagList::testGetTagstringWithAnEmptyTag()
 	taglist_add_tag(&tag_list, "A new tag");
 	taglist_add_tag(&tag_list, "A new tag 1");
 	taglist_add_tag(&tag_list, "");
-	char *tagstring = taglist_get_tagstring(tag_list);
-	QVERIFY(tagstring != NULL);
-	QCOMPARE(QString::fromUtf8(tagstring),
+	std::string tagstring = taglist_get_tagstring(tag_list);
+	QCOMPARE(QString::fromStdString(tagstring),
 		 QString::fromUtf8(
 			 "A new tag, "
 			 "A new tag 1"));
-	free(tagstring);
 }
 
 void TestTagList::testGetTagstringEmptyTagOnly()
 {
 	struct tag_entry *tag_list = NULL;
 	taglist_add_tag(&tag_list, "");
-	char *tagstring = taglist_get_tagstring(tag_list);
-	QVERIFY(tagstring != NULL);
-	QCOMPARE(QString::fromUtf8(tagstring),
+	std::string tagstring = taglist_get_tagstring(tag_list);
+	QCOMPARE(QString::fromStdString(tagstring),
 		 QString::fromUtf8(""));
-	free(tagstring);
 }
 
 QTEST_GUILESS_MAIN(TestTagList)

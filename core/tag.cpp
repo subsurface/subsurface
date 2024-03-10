@@ -7,6 +7,7 @@
 #include "gettext.h"
 
 #include <stdlib.h>
+#include <QtGlobal> // for QT_TRANSLATE_NOOP
 
 struct tag_entry *g_tag_list = NULL;
 
@@ -23,7 +24,7 @@ static const char *default_tags[] = {
 /* copy an element in a list of tags */
 static void copy_tl(struct tag_entry *st, struct tag_entry *dt)
 {
-	dt->tag = malloc(sizeof(struct divetag));
+	dt->tag = (divetag *)malloc(sizeof(struct divetag));
 	dt->tag->name = copy_string(st->tag->name);
 	dt->tag->source = copy_string(st->tag->source);
 }
@@ -39,7 +40,7 @@ static bool tag_seen_before(struct tag_entry *start, struct tag_entry *before)
 }
 
 /* remove duplicates and empty nodes */
-void taglist_cleanup(struct tag_entry **tag_list)
+extern "C" void taglist_cleanup(struct tag_entry **tag_list)
 {
 	struct tag_entry **tl = tag_list;
 	while (*tl) {
@@ -52,27 +53,21 @@ void taglist_cleanup(struct tag_entry **tag_list)
 	}
 }
 
-char *taglist_get_tagstring(struct tag_entry *tag_list)
+std::string taglist_get_tagstring(struct tag_entry *tag_list)
 {
 	bool first_tag = true;
-	struct membuffer b = { 0 };
+	std::string res;
 	struct tag_entry *tmp = tag_list;
 	while (tmp != NULL) {
 		if (!empty_string(tmp->tag->name)) {
-			if (first_tag) {
-				put_format(&b, "%s", tmp->tag->name);
-				first_tag = false;
-			} else {
-				put_format(&b, ", %s", tmp->tag->name);
-			}
+			if (!first_tag)
+				res += ", ";
+			res += tmp->tag->name;
+			first_tag = false;
 		}
 		tmp = tmp->next;
 	}
-	/* Ensures we do return null terminated empty string for:
-	 *  - empty tag list
-	 *  - tag list with empty tag only
-	 */
-	return detach_cstring(&b);
+	return strdup(res.c_str());
 }
 
 static inline void taglist_free_divetag(struct divetag *tag)
@@ -103,22 +98,22 @@ static struct divetag *taglist_add_divetag(struct tag_entry **tag_list, struct d
 	}
 
 	/* Insert in front of it */
-	entry = malloc(sizeof(struct tag_entry));
+	entry = (tag_entry *)malloc(sizeof(struct tag_entry));
 	entry->next = next;
 	entry->tag = tag;
 	*tag_list = entry;
 	return tag;
 }
 
-struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag)
+extern "C" struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag)
 {
 	size_t i = 0;
 	int is_default_tag = 0;
 	struct divetag *ret_tag, *new_tag;
 	const char *translation;
-	new_tag = malloc(sizeof(struct divetag));
+	new_tag = (divetag *)malloc(sizeof(struct divetag));
 
-	for (i = 0; i < sizeof(default_tags) / sizeof(char *); i++) {
+	for (i = 0; i < std::size(default_tags); i++) {
 		if (strcmp(default_tags[i], tag) == 0) {
 			is_default_tag = 1;
 			break;
@@ -127,13 +122,13 @@ struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag)
 	/* Only translate default tags */
 	if (is_default_tag) {
 		translation = translate("gettextFromC", tag);
-		new_tag->name = malloc(strlen(translation) + 1);
+		new_tag->name = (char *)malloc(strlen(translation) + 1);
 		memcpy(new_tag->name, translation, strlen(translation) + 1);
-		new_tag->source = malloc(strlen(tag) + 1);
+		new_tag->source = (char *)malloc(strlen(tag) + 1);
 		memcpy(new_tag->source, tag, strlen(tag) + 1);
 	} else {
 		new_tag->source = NULL;
-		new_tag->name = malloc(strlen(tag) + 1);
+		new_tag->name = (char *)malloc(strlen(tag) + 1);
 		memcpy(new_tag->name, tag, strlen(tag) + 1);
 	}
 	/* Try to insert new_tag into g_tag_list if we are not operating on it */
@@ -151,12 +146,12 @@ struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag)
 	return ret_tag;
 }
 
-void taglist_free(struct tag_entry *entry)
+extern "C" void taglist_free(struct tag_entry *entry)
 {
 	STRUCTURED_LIST_FREE(struct tag_entry, entry, free)
 }
 
-struct tag_entry *taglist_copy(struct tag_entry *s)
+extern "C" struct tag_entry *taglist_copy(struct tag_entry *s)
 {
 	struct tag_entry *res;
 	STRUCTURED_LIST_COPY(struct tag_entry, s, res, copy_tl);
@@ -164,7 +159,7 @@ struct tag_entry *taglist_copy(struct tag_entry *s)
 }
 
 /* Merge src1 and src2, write to *dst */
-void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct tag_entry *src2)
+extern "C" void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct tag_entry *src2)
 {
 	struct tag_entry *entry;
 
@@ -174,10 +169,10 @@ void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct tag_en
 		taglist_add_divetag(dst, entry->tag);
 }
 
-void taglist_init_global()
+extern "C" void taglist_init_global()
 {
 	size_t i;
 
-	for (i = 0; i < sizeof(default_tags) / sizeof(char *); i++)
+	for (i = 0; i < std::size(default_tags); i++)
 		taglist_add_tag(&g_tag_list, default_tags[i]);
 }
