@@ -97,11 +97,9 @@ struct plot_info {
 
 #define AMB_PERCENTAGE 50.0
 
-extern void compare_samples(const struct dive *d, const struct plot_info *pi, int idx1, int idx2, char *buf, int bufsize, bool sum);
 extern void init_plot_info(struct plot_info *pi);
 /* when planner_dc is non-null, this is called in planner mode. */
 extern void create_plot_info_new(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, const struct deco_state *planner_ds);
-extern int get_plot_details_new(const struct dive *d, const struct plot_info *pi, int time, struct membuffer *);
 extern void free_plot_info_data(struct plot_info *pi);
 
 /*
@@ -145,5 +143,13 @@ static inline int get_plot_pressure(const struct plot_info *pi, int idx, int cyl
 
 #ifdef __cplusplus
 }
+
+// C++ only formatting functions
+#include <string>
+#include <vector>
+// Returns index of sample and array of strings describing the dive details at given time
+std::pair<int, std::vector<std::string>> get_plot_details_new(const struct dive *d, const struct plot_info *pi, int time);
+std::vector<std::string> compare_samples(const struct dive *d, const struct plot_info *pi, int idx1, int idx2, bool sum);
+
 #endif
 #endif // PROFILE_H
