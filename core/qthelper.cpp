@@ -466,18 +466,22 @@ void initUiLanguage()
 	auto it = std::find_if(languages.begin(), languages.end(), [](const QString &s)
 				{ return s.count('-') == 1; });
 	uiLang = it == languages.end() ? languages[0] : *it;
+#ifdef SUBSURFACE_MOBILE
+	qDebug() << "uiLanguages was" << languages << ", picked" << uiLang;
+#endif
 
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
 	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
 		QLocale loc2(loc.bcp47Name());
 		loc = loc2;
 		QStringList languages = loc2.uiLanguages();
-		if (languages[0].contains('-'))
-			uiLang = languages[0];
-		else if (languages.count() > 1 && languages[1].contains('-'))
-			uiLang = languages[1];
-		else if (languages.count() > 2 && languages[2].contains('-'))
-			uiLang = languages[2];
+
+		it = std::find_if(languages.begin(), languages.end(), [](const QString &s)
+				{ return s.contains('-'); });
+		uiLang = it == languages.end() ? languages[0] : *it;
+#ifdef SUBSURFACE_MOBILE
+		qDebug() << "bcp47 based languages was" << languages << ", picked" << uiLang;
+#endif
 	}
 
 	free((void*)prefs.locale.lang_locale);
