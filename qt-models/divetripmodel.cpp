@@ -1766,11 +1766,9 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 	case MAXCNS:
 		return lessThanHelper(d1->maxcns - d2->maxcns, row_diff);
 	case TAGS: {
-		char *s1 = taglist_get_tagstring(d1->tag_list);
-		char *s2 = taglist_get_tagstring(d2->tag_list);
-		int diff = strCmp(s1, s2);
-		free(s1);
-		free(s2);
+		std::string s1 = taglist_get_tagstring(d1->tag_list);
+		std::string s2 = taglist_get_tagstring(d2->tag_list);
+		int diff = strCmp(s1.c_str(), s2.c_str());
 		return lessThanHelper(diff, row_diff);
 	}
 	case PHOTOS:
