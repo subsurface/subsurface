@@ -358,10 +358,10 @@ extern "C" char *move_away(const char *old_path)
 	return copy_qstring(newPath);
 }
 
-extern "C" char *get_file_name(const char *fileName)
+std::string get_file_name(const char *fileName)
 {
 	QFileInfo fileInfo(fileName);
-	return copy_qstring(fileInfo.fileName());
+	return fileInfo.fileName().toStdString();
 }
 
 extern "C" void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName)
