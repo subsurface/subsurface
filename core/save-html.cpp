@@ -36,7 +36,7 @@ static void save_photos(struct membuffer *b, const char *photos_dir, struct dive
 	if (dive->pictures.nr <= 0)
 		return;
 
-	char *separator = "\"photos\":[";
+	const char *separator = "\"photos\":[";
 	FOR_EACH_PICTURE(dive) {
 		put_string(b, separator);
 		separator = ", ";
@@ -54,7 +54,7 @@ static void write_divecomputers(struct membuffer *b, struct dive *dive)
 {
 	put_string(b, "\"divecomputers\":[");
 	struct divecomputer *dc;
-	char *separator = "";
+	const char *separator = "";
 	for_each_dc (dive, dc) {
 		put_string(b, separator);
 		separator = ", ";
@@ -87,7 +87,7 @@ static void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
 	if (!ev)
 		return;
 
-	char *separator = "\"events\":[";
+	const char *separator = "\"events\":[";
 	do {
 		put_string(b, separator);
 		separator = ", ";
@@ -110,7 +110,7 @@ static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
 
 	put_string(b, "\"Weights\":[");
 
-	char *separator = "";
+	const char *separator = "";
 
 	for (i = 0; i < nr; i++) {
 		weightsystem_t ws = dive->weightsystems.weightsystems[i];
@@ -130,7 +130,7 @@ static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
 static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 {
 	int i, nr;
-	char *separator = "\"Cylinders\":[";
+	const char *separator = "\"Cylinders\":[";
 	nr = nr_cylinders(dive);
 
 	if (!nr)
@@ -143,7 +143,7 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 		write_attribute(b, "Type", cylinder->type.description, ", ");
 		if (cylinder->type.size.mliter) {
 			int volume = cylinder->type.size.mliter;
-			if (prefs.units.volume == CUFT && cylinder->type.workingpressure.mbar)
+			if (prefs.units.volume == units::CUFT && cylinder->type.workingpressure.mbar)
 				volume = lrint(volume * bar_to_atm(cylinder->type.workingpressure.mbar / 1000.0));
 			put_HTML_volume_units(b, volume, "\"Size\":\"", " \", ");
 		} else {
@@ -187,7 +187,7 @@ static void put_HTML_samples(struct membuffer *b, struct dive *dive)
 	if (!dive->dc.samples)
 		return;
 
-	char *separator = "\"samples\":[";
+	const char *separator = "\"samples\":[";
 	for (i = 0; i < dive->dc.samples; i++) {
 		put_format(b, "%s[%d,%d,%d,%d]", separator, s->time.seconds, s->depth.mm, s->pressure[0].mbar, s->temperature.mkelvin);
 		separator = ", ";
@@ -292,11 +292,11 @@ void put_HTML_depth(struct membuffer *b, struct dive *dive, const char *pre, con
 	value = get_depth_units(dive->maxdepth.mm, NULL, &unit);
 
 	switch (units_p->length) {
-	case METERS:
+	case units::METERS:
 	default:
 		put_format(b, "%s%.1f %s%s", pre, value, unit, post);
 		break;
-	case FEET:
+	case units::FEET:
 		put_format(b, "%s%.0f %s%s", pre, value, unit, post);
 		break;
 	}
@@ -336,7 +336,7 @@ static void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pr
 	if (!tag)
 		put_string(b, "[\"--\"");
 
-	char *separator = "[";
+	const char *separator = "[";
 	while (tag) {
 		put_format(b, "%s\"", separator);
 		separator = ", ";
@@ -393,7 +393,7 @@ static void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only,
 {
 	int i;
 	struct dive *dive;
-	char *separator = "";
+	const char *separator = "";
 	bool found_sel_dive = 0;
 
 	for_each_dive (i, dive) {
@@ -419,7 +419,7 @@ static void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only,
 static void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
 	struct dive *dive;
-	char *separator = "";
+	const char *separator = "";
 	bool found_sel_dive = 0;
 
 	for (int i = 0; i < trip->dives.nr; i++) {
