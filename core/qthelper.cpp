@@ -1220,10 +1220,8 @@ QStringList get_dive_gas_list(const struct dive *d)
 
 QString get_taglist_string(struct tag_entry *tag_list)
 {
-	char *buffer = taglist_get_tagstring(tag_list);
-	QString ret = QString::fromUtf8(buffer);
-	free(buffer);
-	return ret;
+	std::string tags = taglist_get_tagstring(tag_list);
+	return QString::fromStdString(tags);
 }
 
 QStringList stringToList(const QString &s)

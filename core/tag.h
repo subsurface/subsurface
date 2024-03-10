@@ -36,15 +36,6 @@ extern struct tag_entry *g_tag_list;
 
 struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag);
 
-/*
- * Writes all divetags form tag_list into internally allocated buffer
- * Function returns pointer to allocated buffer
- * Buffer contains comma separated list of tags names or null terminated string
- *
- * NOTE! The returned buffer must be freed once used.
- */
-char *taglist_get_tagstring(struct tag_entry *tag_list);
-
 /* cleans up a list: removes empty tags and duplicates */
 void taglist_cleanup(struct tag_entry **tag_list);
 
@@ -55,6 +46,14 @@ void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct tag_en
 
 #ifdef __cplusplus
 }
+
+// C++ only functions
+
+#include <string>
+
+/* Comma separated list of tags names or null terminated string */
+std::string taglist_get_tagstring(struct tag_entry *tag_list);
+
 #endif
 
 #endif
