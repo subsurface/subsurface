@@ -93,7 +93,6 @@ void RulerItem2::settingsChanged(bool value)
 
 void RulerItem2::recalculate()
 {
-	char buffer[500];
 	QPointF tmp;
 	QFont font;
 	QFontMetrics fm(font);
@@ -112,8 +111,13 @@ void RulerItem2::recalculate()
 	}
 	QLineF line(startPoint, endPoint);
 	setLine(line);
-	compare_samples(dive, pInfo, source->idx, dest->idx, buffer, 500, 1);
-	text = QString(buffer);
+
+	QString text;
+	for (const std::string &s: compare_samples(dive, pInfo, source->idx, dest->idx, 1)) {
+		if (!text.isEmpty())
+			text += '\n';
+		text += QString::fromStdString(s);
+	}
 
 	// draw text
 	QGraphicsView *view = scene()->views().first();
