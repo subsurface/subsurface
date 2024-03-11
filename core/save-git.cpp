@@ -1177,19 +1177,19 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 	git_commit *commit;
 	git_tree *tree;
 
-	ret = git_branch_lookup(&ref, info->repo, info->branch, GIT_BRANCH_LOCAL);
+	ret = git_branch_lookup(&ref, info->repo, info->branch.c_str(), GIT_BRANCH_LOCAL);
 	switch (ret) {
 	default:
-		return report_error("Bad branch '%s' (%s)", info->branch, strerror(errno));
+		return report_error("Bad branch '%s' (%s)", info->branch.c_str(), strerror(errno));
 	case GIT_EINVALIDSPEC:
-		return report_error("Invalid branch name '%s'", info->branch);
+		return report_error("Invalid branch name '%s'", info->branch.c_str());
 	case GIT_ENOTFOUND: /* We'll happily create it */
 		ref = NULL;
 		parent = try_to_find_parent(saved_git_id.c_str(), info->repo);
 		break;
 	case 0:
 		if (git_reference_peel(&parent, ref, GIT_OBJ_COMMIT))
-			return report_error("Unable to look up parent in branch '%s'", info->branch);
+			return report_error("Unable to look up parent in branch '%s'", info->branch.c_str());
 
 		if (!saved_git_id.empty()) {
 			if (!existing_filename.empty() && verbose)
@@ -1238,8 +1238,8 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 	git_signature_free(author);
 
 	if (!ref) {
-		if (git_branch_create(&ref, info->repo, info->branch, commit, 0))
-			return report_error("Failed to create branch '%s'", info->branch);
+		if (git_branch_create(&ref, info->repo, info->branch.c_str(), commit, 0))
+			return report_error("Failed to create branch '%s'", info->branch.c_str());
 	}
 	/*
 	 * If it's a checked-out branch, try to also update the working
@@ -1253,12 +1253,12 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 			const git_error *err = giterr_last();
 			const char *errstr = err ? err->message : strerror(errno);
 			report_error("Git branch '%s' is checked out, but worktree is dirty (%s)",
-				info->branch, errstr);
+				info->branch.c_str(), errstr);
 		}
 	}
 
 	if (git_reference_set_target(&ref, ref, &commit_id, "Subsurface save event"))
-		return report_error("Failed to update branch '%s'", info->branch);
+		return report_error("Failed to update branch '%s'", info->branch.c_str());
 
 	/*
 	 * if this was the empty commit to initialize a new repo, don't remember the
@@ -1294,14 +1294,14 @@ static int write_git_tree(git_repository *repo, const struct dir *tree, git_oid 
 	return ret;
 }
 
-extern "C" int do_git_save(struct git_info *info, bool select_only, bool create_empty)
+int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 {
 	struct dir tree;
 	git_oid id;
 	bool cached_ok;
 
 	if (!info->repo)
-		return report_error("Unable to open git repository '%s[%s]'", info->url, info->branch);
+		return report_error("Unable to open git repository '%s[%s]'", info->url.c_str(), info->branch.c_str());
 
 	if (verbose)
 		report_info("git storage: do git save\n");
@@ -1335,12 +1335,12 @@ extern "C" int do_git_save(struct git_info *info, bool select_only, bool create_
 		return report_error("creating commit failed");
 
 	/* now sync the tree with the remote server */
-	if (info->url && !git_local_only)
+	if (!info->url.empty() && !git_local_only)
 		return sync_with_remote(info);
 	return 0;
 }
 
-extern "C" int git_save_dives(struct git_info *info, bool select_only)
+int git_save_dives(struct git_info *info, bool select_only)
 {
 	/*
 	 * First, just try to open the local git repo without
@@ -1357,7 +1357,7 @@ extern "C" int git_save_dives(struct git_info *info, bool select_only)
 	 * at least the local state will be saved early in
 	 * case something goes wrong.
 	 */
-	if (!git_repository_open(&info->repo, info->localdir))
+	if (!git_repository_open(&info->repo, info->localdir.c_str()))
 		return do_git_save(info, select_only, false);
 
 	/*
@@ -1369,7 +1369,7 @@ extern "C" int git_save_dives(struct git_info *info, bool select_only)
 	 * This shouldn't be the common case.
 	 */
 	if (!open_git_repository(info))
-		return report_error(translate("gettextFromC", "Failed to save dives to %s[%s] (%s)"), info->url, info->branch, strerror(errno));
+		return report_error(translate("gettextFromC", "Failed to save dives to %s[%s] (%s)"), info->url.c_str(), info->branch.c_str(), strerror(errno));
 
 	return do_git_save(info, select_only, false);
 }

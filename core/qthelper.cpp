@@ -22,7 +22,6 @@
 #include "tag.h"
 #include "imagedownloader.h"
 #include "xmlparams.h"
-#include "core/git-access.h" // for CLOUD_HOST definitions
 #include <QFile>
 #include <QRegularExpression>
 #include <QDir>
@@ -331,31 +330,31 @@ extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
 	return xslt;
 }
 
-extern "C" char *move_away(const char *old_path)
+std::string move_away(const std::string &old_path)
 {
 	if (verbose > 1)
-		qDebug() << "move away" << old_path;
-	QDir oldDir(old_path);
+		qDebug() << "move away" << old_path.c_str();
+	QDir oldDir(old_path.c_str());
 	QDir newDir;
-	QString newPath;
+	std::string newPath;
 	int i = 0;
 	do {
-		newPath = QString(old_path) + QString(".%1").arg(++i);
-		newDir.setPath(newPath);
+		newPath = old_path + "." + std::to_string(++i);
+		newDir.setPath(newPath.c_str());
 	} while(newDir.exists());
 	if (verbose > 1)
-		qDebug() << "renaming to" << newPath;
-	if (!oldDir.rename(old_path, newPath)) {
+		qDebug() << "renaming to" << newPath.c_str();
+	if (!oldDir.rename(old_path.c_str(), newPath.c_str())) {
 		if (verbose)
-			qDebug() << "rename of" << old_path << "to" << newPath << "failed";
+			qDebug() << "rename of" << old_path.c_str() << "to" << newPath.c_str() << "failed";
 		// this next one we only try on Windows... if we are on a different platform
 		// we simply give up and return an empty string
 #ifdef WIN32
-		if (subsurface_dir_rename(old_path, qPrintable(newPath)) == 0)
+		if (subsurface_dir_rename(old_path.c_str(), newPath.c_str()) == 0)
 #endif
-			return strdup("");
+			return std::string();
 	}
-	return copy_qstring(newPath);
+	return newPath;
 }
 
 std::string get_file_name(const char *fileName)
@@ -1373,31 +1372,6 @@ extern "C" char *cloud_url()
 	QString filename;
 	getCloudURL(filename);
 	return copy_qstring(filename);
-}
-
-std::string normalize_cloud_name(const char *remote_in)
-{
-	// replace ssrf-cloud-XX.subsurface... names with cloud.subsurface... names
-	// that trailing '/' is to match old code
-	QString ri(remote_in);
-	ri.replace(QRegularExpression(CLOUD_HOST_PATTERN), CLOUD_HOST_GENERIC "/");
-	return ri.toStdString();
-}
-
-extern "C" bool getProxyString(char **buffer)
-{
-	if (prefs.proxy_type == QNetworkProxy::HttpProxy) {
-		QString proxy;
-		if (prefs.proxy_auth)
-			proxy = QString("http://%1:%2@%3:%4").arg(prefs.proxy_user).arg(prefs.proxy_pass)
-					.arg(prefs.proxy_host).arg(prefs.proxy_port);
-		else
-			proxy = QString("http://%1:%2").arg(prefs.proxy_host).arg(prefs.proxy_port);
-		if (buffer)
-			*buffer = copy_qstring(proxy);
-		return true;
-	}
-	return false;
 }
 
 extern "C" void subsurface_mkdir(const char *dir)

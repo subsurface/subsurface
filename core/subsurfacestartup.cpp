@@ -45,7 +45,7 @@ extern "C" void print_version()
 
 extern "C" void print_files()
 {
-	struct git_info info = { };
+	struct git_info info;
 	const char *filename;
 
 	printf("\nFile locations:\n\n");
@@ -58,12 +58,11 @@ extern "C" void print_files()
 		/* strdup so the free below works in either case */
 		filename = strdup("No valid cloud credentials set.\n");
 	}
-	if (info.localdir) {
-		printf("Local git storage: %s\n", info.localdir);
+	if (!info.localdir.empty()) {
+		printf("Local git storage: %s\n", info.localdir.c_str());
 	} else {
 		printf("Unable to get local git directory\n");
 	}
-	cleanup_git_info(&info);
 	printf("Cloud URL: %s\n", filename);
 	free((void *)filename);
 	char *tmp = hashfile_name_string();

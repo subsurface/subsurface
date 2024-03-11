@@ -1895,11 +1895,11 @@ static int do_git_load(git_repository *repo, const char *branch, struct git_pars
 	return ret;
 }
 
-std::string get_sha(git_repository *repo, const char *branch)
+std::string get_sha(git_repository *repo, const std::string &branch)
 {
 	char git_id_buffer[GIT_OID_HEXSZ + 1];
 	git_commit *commit;
-	if (find_commit(repo, branch, &commit))
+	if (find_commit(repo, branch.c_str(), &commit))
 		return std::string();
 	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), (const git_oid *)commit);
 	return std::string(git_id_buffer);
@@ -1913,7 +1913,7 @@ std::string get_sha(git_repository *repo, const char *branch)
  * If it is a git repository, we return zero for success,
  * or report an error and return 1 if the load failed.
  */
-extern "C" int git_load_dives(struct git_info *info, struct divelog *log)
+int git_load_dives(struct git_info *info, struct divelog *log)
 {
 	int ret;
 	struct git_parser_state state;
@@ -1921,8 +1921,8 @@ extern "C" int git_load_dives(struct git_info *info, struct divelog *log)
 	state.log = log;
 
 	if (!info->repo)
-		return report_error("Unable to open git repository '%s[%s]'", info->url, info->branch);
-	ret = do_git_load(info->repo, info->branch, &state);
+		return report_error("Unable to open git repository '%s[%s]'", info->url.c_str(), info->branch.c_str());
+	ret = do_git_load(info->repo, info->branch.c_str(), &state);
 	finish_active_dive(&state);
 	finish_active_trip(&state);
 	return ret;
