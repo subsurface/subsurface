@@ -823,7 +823,6 @@ extern "C" int save_dives_logic(const char *filename, const bool select_only, bo
 
 	if (is_git_repository(filename, &info)) {
 		error = git_save_dives(&info, select_only);
-		cleanup_git_info(&info);
 		return error;
 	}
 

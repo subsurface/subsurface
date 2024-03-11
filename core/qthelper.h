@@ -103,8 +103,8 @@ extern QString (*changesCallback)();
 void uiNotification(const QString &msg);
 std::string get_changes_made();
 std::string subsurface_user_agent();
-std::string normalize_cloud_name(const char *remote_in);
 std::string get_file_name(const char *fileName);
+std::string move_away(const std::string &path);
 
 #if defined __APPLE__
 #define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m
@@ -122,12 +122,10 @@ extern "C" {
 
 struct git_info;
 
-bool getProxyString(char **buffer);
 bool canReachCloudServer(struct git_info *);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName);
-char *move_away(const char *path);
 const char *local_file_path(struct picture *picture);
 char *cloud_url();
 char *hashfile_name_string();

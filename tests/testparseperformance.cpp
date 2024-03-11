@@ -42,8 +42,8 @@ void TestParsePerformance::initTestCase()
 	QNetworkProxy::setApplicationProxy(proxy);
 
 	// now cleanup the cache dir in case there's something weird from previous runs
-	QString localCacheDir(get_local_dir(LARGE_TEST_REPO, "git"));
-	QDir localCacheDirectory(localCacheDir);
+	std::string localCacheDir = get_local_dir(LARGE_TEST_REPO, "git");
+	QDir localCacheDirectory(localCacheDir.c_str());
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 }
 

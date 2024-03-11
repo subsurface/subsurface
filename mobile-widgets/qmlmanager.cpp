@@ -804,7 +804,7 @@ void QMLManager::loadDivesWithValidCredentials()
 			appendTextToLog("Switching from no cloud mode; keep in memory dive data");
 		}
 		if (info.repo) {
-			appendTextToLog(QString("have repository and branch %1").arg(info.branch));
+			appendTextToLog(QString("have repository and branch %1").arg(info.branch.c_str()));
 			error = git_load_dives(&info, &divelog);
 		} else {
 			appendTextToLog(QString("didn't receive valid git repo, try again"));
@@ -823,7 +823,6 @@ void QMLManager::loadDivesWithValidCredentials()
 		}
 		consumeFinishedLoad();
 	}
-	cleanup_git_info(&info);
 
 	setLoadFromCloud(true);
 
@@ -1501,7 +1500,7 @@ void QMLManager::openNoCloudRepo()
 	appendTextToLog(QString("User asked not to connect to cloud, using %1 as repo.").arg(filename));
 	if (is_git_repository(qPrintable(filename), &info) && !open_git_repository(&info)) {
 		// repo doesn't exist, create it and write the empty dive list to it
-		git_create_local_repo(qPrintable(filename));
+		git_create_local_repo(filename.toStdString());
 		save_dives(qPrintable(filename));
 		existing_filename = filename.toStdString();
 		auto s = qPrefLog::instance();
@@ -1517,7 +1516,7 @@ void QMLManager::saveChangesLocal()
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
 			if (existing_filename.empty()) {
 				QString filename = nocloud_localstorage();
-				git_create_local_repo(qPrintable(filename));
+				git_create_local_repo(filename.toStdString());
 				existing_filename = filename.toStdString();
 				auto s = qPrefLog::instance();
 				s->set_default_filename(qPrintable(filename));
