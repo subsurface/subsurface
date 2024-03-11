@@ -280,6 +280,7 @@ QMLManager::QMLManager() :
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	appendTextToLog(QStringLiteral("built with libgit2 %1.%2.%3").arg(git_maj).arg(git_min).arg(git_rev));
 	appendTextToLog(QStringLiteral("Running on %1").arg(QSysInfo::prettyProductName()));
+	appendTextToLog(QStringLiteral("Locale Languages offered %1, picked %2").arg(QLocale().uiLanguages().join(", ")).arg(prefs.locale.lang_locale));
 #if defined(Q_OS_ANDROID)
 	extern QString getAndroidHWInfo();
 	appendTextToLog(getAndroidHWInfo());
