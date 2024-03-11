@@ -296,7 +296,7 @@ std::string fp_get_data(struct fingerprint_table *table, unsigned int i)
 	if (!table || i >= table->fingerprints.size())
 		return std::string();
 	struct fingerprint_record *fpr = &table->fingerprints[i];
-	std::string res(' ', fpr->fsize * 2);
+	std::string res(fpr->fsize * 2, ' ');
 	for (unsigned int i = 0; i < fpr->fsize; ++i) {
 		res[2 * i] = to_hex_digit((fpr->raw_data[i] >> 4) & 0xf);
 		res[2 * i + 1] = to_hex_digit(fpr->raw_data[i] & 0xf);
