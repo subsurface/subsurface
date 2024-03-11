@@ -13,6 +13,7 @@
 #include "dive.h"
 #include "divelog.h"
 #include "subsurface-string.h"
+#include "format.h"
 #include "errorhelper.h"
 #include "file.h"
 #include "git-access.h"
@@ -250,7 +251,7 @@ static int parse_file_buffer(const char *filename, std::string &mem, struct dive
 	return parse_xml_buffer(filename, mem.data(), mem.size(), log, NULL);
 }
 
-extern "C" bool remote_repo_uptodate(const char *filename, struct git_info *info)
+bool remote_repo_uptodate(const char *filename, struct git_info *info)
 {
 	std::string current_sha = saved_git_id;
 
@@ -278,14 +279,11 @@ extern "C" int parse_file(const char *filename, struct divelog *log)
 			 * Opening the cloud storage repository failed for some reason
 			 * give up here and don't send errors about git repositories
 			 */
-			if (info.is_subsurface_cloud) {
-				cleanup_git_info(&info);
+			if (info.is_subsurface_cloud)
 				return -1;
-			}
 		}
 
 		int ret = git_load_dives(&info, log);
-		cleanup_git_info(&info);
 		return ret;
 	}
 
