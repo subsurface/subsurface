@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "event.h"
 #include "eventtype.h"
+#include "divecomputer.h"
 #include "subsurface-string.h"
 
 #include <string.h>
@@ -115,4 +116,13 @@ extern enum event_severity get_event_severity(const struct event *ev)
 	default:
 		return EVENT_SEVERITY_NONE;
 	}
+}
+
+extern bool has_individually_hidden_events(const struct divecomputer *dc)
+{
+	for (const struct event *ev = dc->events; ev; ev = ev->next) {
+		if (ev->hidden)
+			return true;
+	}
+	return false;
 }

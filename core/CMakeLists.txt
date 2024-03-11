@@ -146,7 +146,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	plannernotes.c
 	pref.h
 	pref.c
-	profile.c
+	profile.cpp
 	profile.h
 	qt-gui.h
 	qt-init.cpp

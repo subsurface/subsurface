@@ -6,42 +6,37 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	divecartesianaxis.h
 	diveeventitem.cpp
 	diveeventitem.h
-	divelineitem.cpp
-	divelineitem.h
 	divepixmapcache.cpp
 	divepixmapcache.h
-	divepixmapitem.cpp
-	divepixmapitem.h
 	divepercentageitem.cpp
 	divepercentageitem.h
 	diveprofileitem.cpp
 	diveprofileitem.h
-	diverectitem.cpp
-	diverectitem.h
 	divetextitem.cpp
 	divetextitem.h
-	divetooltipitem.cpp
-	divetooltipitem.h
+	handleitem.cpp
+	handleitem.h
+	pictureitem.h
+	pictureitem.cpp
 	profilescene.cpp
 	profilescene.h
+	profiletranslations.h
+	profileview.cpp
+	profileview.h
+	ruleritem.cpp
+	ruleritem.h
 	tankitem.cpp
 	tankitem.h
+	tooltipitem.h
+	tooltipitem.cpp
 )
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 set(SUBSURFACE_PROFILE_LIB_SRCS
 	${SUBSURFACE_PROFILE_LIB_SRCS}
-	qmlprofile.cpp
-	qmlprofile.h
 )
 else ()
 set(SUBSURFACE_PROFILE_LIB_SRCS
 	${SUBSURFACE_PROFILE_LIB_SRCS}
-	divehandler.cpp
-	divehandler.h
-	profilewidget2.cpp
-	profilewidget2.h
-	ruleritem.cpp
-	ruleritem.h
 )
 endif ()
 source_group("Subsurface Profile" FILES ${SUBSURFACE_PROFILE_LIB_SRCS})

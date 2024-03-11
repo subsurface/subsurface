@@ -2,7 +2,6 @@
 #include "TabDiveInformation.h"
 #include "maintab.h"
 #include "ui_TabDiveInformation.h"
-#include "profile-widget/profilewidget2.h"
 #include "../tagwidget.h"
 #include "commands/command.h"
 #include "core/subsurface-string.h"

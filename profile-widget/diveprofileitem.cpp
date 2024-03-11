@@ -9,7 +9,8 @@
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefLog.h"
 #include "libdivecomputer/parser.h"
-#include "profile-widget/profilewidget2.h"
+
+#include <QPainter>
 
 AbstractProfilePolygonItem::AbstractProfilePolygonItem(const plot_info &pInfo, const DiveCartesianAxis &horizontal,
 						       const DiveCartesianAxis &vertical, DataAccessor accessor,

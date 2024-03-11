@@ -3,8 +3,8 @@
 #ifndef PIE_SERIES_H
 #define PIE_SERIES_H
 
-#include "statshelper.h"
 #include "statsseries.h"
+#include "qt-quick/chartitem_ptr.h"
 
 #include <memory>
 #include <vector>
