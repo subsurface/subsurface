@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "messagehandlermodel.h"
-#include "core/qthelper.h"
+#include "core/errorhelper.h"
 #include "QRegularExpression"
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
@@ -62,6 +62,7 @@ const QString MessageHandlerModel::logAsString()
 		copyString += data.message + "\n";
 	return copyString;
 }
+
 QVariant MessageHandlerModel::data(const QModelIndex& idx, int role) const
 {
 	switch(role) {

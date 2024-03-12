@@ -19,6 +19,7 @@
 #include "profile.h"
 #include "gaspressures.h"
 #include "deco.h"
+#include "errorhelper.h"
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 #include "membuffer.h"
