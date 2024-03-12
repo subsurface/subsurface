@@ -47,7 +47,7 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 	m_data.append({message, type});
 	endInsertRows();
-	SSRF_INFO("%s", qPrintable(message));
+	report_info("%s", qPrintable(message));
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	writeToAppLogFile(message);
 #endif

@@ -231,7 +231,7 @@ QStringList DiveSiteSortedModel::allSiteNames() const
 		// (more precisely: the core has more sites than the model is aware of),
 		// we might get an invalid index.
 		if (idx < 0 || idx > divelog.sites->nr) {
-			SSRF_INFO("DiveSiteSortedModel::allSiteNames(): invalid index");
+			report_info("DiveSiteSortedModel::allSiteNames(): invalid index");
 			continue;
 		}
 		locationNames << QString(divelog.sites->dive_sites[idx]->name);
