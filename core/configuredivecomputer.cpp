@@ -594,7 +594,7 @@ QString ConfigureDiveComputer::dc_open(device_data_t *data)
 	rc = divecomputer_device_open(data);
 
 	if (rc != DC_STATUS_SUCCESS) {
-		report_error(errmsg(rc));
+		report_error("%s", errmsg(rc));
 	} else {
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
 	}

@@ -100,7 +100,7 @@ void uploadDiveShare::uploadTimeoutSlot()
 		reply = NULL;
 	}
 	QString err(tr("dive-share.com not responding"));
-	report_error(err.toUtf8());
+	report_error("%s", qPrintable(err));
 	emit uploadFinish(false, err, QByteArray());
 }
 
@@ -113,6 +113,6 @@ void uploadDiveShare::uploadErrorSlot(QNetworkReply::NetworkError error)
 		reply = NULL;
 	}
 	QString err(tr("network error %1").arg(error));
-	report_error(err.toUtf8());
+	report_error("%s", qPrintable(err));
 	emit uploadFinish(false, err, QByteArray());
 }

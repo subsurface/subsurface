@@ -688,7 +688,7 @@ int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log)
 	// Verify fileheader,  get number of dives in datatrak divelog, zero on error
 	numdives = read_file_header((unsigned char *)mem.data());
 	if (!numdives) {
-		report_error(translate("gettextFromC", "[Error] File is not a DataTrak file. Aborted"));
+		report_error("%s", translate("gettextFromC", "[Error] File is not a DataTrak file. Aborted"));
 		goto bail;
 	}
 	// Verify WLog .add file, Beginning sequence and Nº dives
@@ -711,7 +711,7 @@ int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log)
 		if (!wl_mem.empty())
 			wlog_compl_parser(wl_mem, ptdive, i);
 		if (runner == NULL) {
-			report_error(translate("gettextFromC", "Error: no dive"));
+			report_error("%s", translate("gettextFromC", "Error: no dive"));
 			free(ptdive);
 			rc = 1;
 			goto out;

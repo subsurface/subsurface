@@ -90,11 +90,11 @@ void VideoFrameExtractor::processItem(QString originalFilename, QString filename
 		// Since we couldn't sart ffmpeg, turn off thumbnailing
 		// TODO: call the proper preferences-functions
 		prefs.extract_video_thumbnails = false;
-		report_error(qPrintable(tr("ffmpeg failed to start - video thumbnail creation suspended. To enable video thumbnailing, set working executable in preferences.")));
+		report_error("%s", qPrintable(tr("ffmpeg failed to start - video thumbnail creation suspended. To enable video thumbnailing, set working executable in preferences.")));
 		return fail(originalFilename, duration, false);
 	}
 	if (!ffmpeg.waitForFinished()) {
-		report_error(qPrintable(tr("Failed waiting for ffmpeg - video thumbnail creation suspended. To enable video thumbnailing, set working executable in preferences.")));
+		report_error("%s", qPrintable(tr("Failed waiting for ffmpeg - video thumbnail creation suspended. To enable video thumbnailing, set working executable in preferences.")));
 		return fail(originalFilename, duration, false);
 	}
 

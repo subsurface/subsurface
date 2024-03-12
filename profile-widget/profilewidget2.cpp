@@ -242,7 +242,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 		qDebug() << "Profile calculation for dive " << d->number << "took" << elapsedTime << "ms" << " -- calculated ceiling preference is" << prefs.calcceiling;
 	if (elapsedTime > 1000 && prefs.calcndltts) {
 		qPrefTechnicalDetails::set_calcndltts(false);
-		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
+		report_error("%s", qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
 }
 

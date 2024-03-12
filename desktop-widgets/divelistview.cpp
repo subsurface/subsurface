@@ -884,7 +884,7 @@ void DiveListView::loadImagesFromURLs(const QString &urls)
 			if (image.isNull()) {
 				// If this is not an image, maybe it's an html file and Miika can provide some xslr magic to extract images.
 				// In this case we would call the function recursively on the list of image source urls;
-				report_error(qPrintable(tr("%1 does not appear to be an image").arg(url.toString())));
+				report_error("%s", qPrintable(tr("%1 does not appear to be an image").arg(url.toString())));
 				return;
 			}
 

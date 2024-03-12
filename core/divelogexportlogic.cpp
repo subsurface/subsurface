@@ -149,7 +149,7 @@ void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes)
 
 	QString searchPath = getSubsurfaceDataPath("theme");
 	if (searchPath.isEmpty()) {
-		report_error(qPrintable(gettextFromC::tr("Cannot find a folder called 'theme' in the standard locations")));
+		report_error("%s", qPrintable(gettextFromC::tr("Cannot find a folder called 'theme' in the standard locations")));
 		return;
 	}
 
