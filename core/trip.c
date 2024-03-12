@@ -7,7 +7,7 @@
 #include "subsurface-string.h"
 #include "selection.h"
 #include "table.h"
-#include "core/qthelper.h"
+#include "core/errorhelper.h"
 
 #ifdef DEBUG_TRIP
 void dump_trip_list(void)

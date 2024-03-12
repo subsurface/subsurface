@@ -2,7 +2,7 @@
 #include "core/units.h"
 #include "qt-models/divelocationmodel.h"
 #include "core/subsurface-qt/divelistnotifier.h"
-#include "core/qthelper.h"
+#include "core/errorhelper.h"
 #include "core/divesite.h"
 #include "core/divelog.h"
 #include "core/metrics.h"

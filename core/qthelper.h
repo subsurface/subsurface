@@ -147,14 +147,8 @@ volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
 void emit_reset_signal();
 
-extern void report_info(const char *fmt, ...);
-
 #ifdef __cplusplus
 }
 #endif
-
-// 4) SSRF_INFO macro to replace fprintf calls in our code
-//    (originally based on logging bits from libdivecomputer)
-#define SSRF_INFO(fmt, ...) report_info(fmt, ##__VA_ARGS__)
 
 #endif // QTHELPER_H
