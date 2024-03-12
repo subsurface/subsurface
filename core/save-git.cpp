@@ -473,7 +473,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	if (dive->dive_site)
 		put_format(b, "divesiteid %08x\n", dive->dive_site->uuid);
 	if (verbose && dive->dive_site)
-		SSRF_INFO("removed reference to non-existant dive site with uuid %08x\n", dive->dive_site->uuid);
+		report_info("removed reference to non-existant dive site with uuid %08x\n", dive->dive_site->uuid);
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
 	save_weightsystem_info(b, dive);
@@ -526,7 +526,7 @@ static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git
 	if (ret) {
 		const git_error *gerr = giterr_last();
 		if (gerr) {
-			SSRF_INFO("tree_insert failed with return %d error %s\n", ret, gerr->message);
+			report_info("tree_insert failed with return %d error %s\n", ret, gerr->message);
 		}
 	}
 	return ret;
@@ -1164,7 +1164,7 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 	}
 	put_format(msg, "Created by %s\n", subsurface_user_agent().c_str());
 	if (verbose)
-		SSRF_INFO("Commit message:\n\n%s\n", mb_cstring(msg));
+		report_info("Commit message:\n\n%s\n", mb_cstring(msg));
 }
 
 static int create_new_commit(struct git_info *info, git_oid *tree_id, bool create_empty)
@@ -1193,7 +1193,7 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 
 		if (!saved_git_id.empty()) {
 			if (existing_filename && verbose)
-				SSRF_INFO("existing filename %s\n", existing_filename);
+				report_info("existing filename %s\n", existing_filename);
 			const git_oid *id = git_commit_id((const git_commit *) parent);
 			/* if we are saving to the same git tree we got this from, let's make
 			 * sure there is no confusion */
@@ -1288,7 +1288,7 @@ static int write_git_tree(git_repository *repo, const struct dir *tree, git_oid 
 	if (ret && verbose) {
 		const git_error *gerr = giterr_last();
 		if (gerr)
-			SSRF_INFO("tree_insert failed with return %d error %s\n", ret, gerr->message);
+			report_info("tree_insert failed with return %d error %s\n", ret, gerr->message);
 	}
 
 	return ret;
@@ -1304,7 +1304,7 @@ extern "C" int do_git_save(struct git_info *info, bool select_only, bool create_
 		return report_error("Unable to open git repository '%s[%s]'", info->url, info->branch);
 
 	if (verbose)
-		SSRF_INFO("git storage: do git save\n");
+		report_info("git storage: do git save\n");
 
 	if (!create_empty) // so we are actually saving the dives
 		git_storage_update_progress(translate("gettextFromC", "Preparing to save data"));
@@ -1325,7 +1325,7 @@ extern "C" int do_git_save(struct git_info *info, bool select_only, bool create_
 			return -1;
 
 	if (verbose)
-		SSRF_INFO("git storage, write git tree\n");
+		report_info("git storage, write git tree\n");
 
 	if (write_git_tree(info->repo, &tree, &id))
 		return report_error("git tree write failed");

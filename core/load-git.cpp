@@ -1042,7 +1042,7 @@ static void parse_settings_fingerprint(char *line, struct git_parser_state *stat
 		line = parse_keyvalue_entry(parse_fingerprint_keyvalue, &fph, line, state);
 	}
 	if (verbose > 1)
-		SSRF_INFO("fingerprint %08x %08x %08x %08x %s\n", fph.model, fph.serial, fph.fdeviceid, fph.fdiveid, fph.hex_data.c_str());
+		report_info("fingerprint %08x %08x %08x %08x %s\n", fph.model, fph.serial, fph.fdeviceid, fph.fdiveid, fph.hex_data.c_str());
 	create_fingerprint_node_from_hex(&fingerprint_table, fph.model, fph.serial,
 					 fph.hex_data.c_str(), fph.fdeviceid, fph.fdiveid);
 }
@@ -1336,7 +1336,7 @@ static unsigned parse_one_line(const char *buf, unsigned size, line_fn_t *fn, st
 			if (*p++ == '\n')
 				break;
 		} while (p < end);
-		SSRF_INFO("git storage: Ignoring line '%.*s'", (int)(p-buf-1), buf);
+		report_info("git storage: Ignoring line '%.*s'", (int)(p-buf-1), buf);
 		return p - buf;
 	default:
 		break;
@@ -1799,7 +1799,7 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, struct 
 	dive_trip_t *trip = state->active_trip;
 	const char *name = git_tree_entry_name(entry);
 	if (verbose > 1)
-		SSRF_INFO("git load handling file %s\n", name);
+		report_info("git load handling file %s\n", name);
 	switch (*name) {
 	case '-': case '+':
 		if (dive)

@@ -199,7 +199,7 @@ int get_cylinder_index(const struct dive *dive, const struct event *ev)
 	 * We now match up gas change events with their cylinders at dive
 	 * event fixup time.
 	 */
-	SSRF_INFO("Still looking up cylinder based on gas mix in get_cylinder_index()!\n");
+	report_info("Still looking up cylinder based on gas mix in get_cylinder_index()!\n");
 
 	mix = get_gasmix_from_event(dive, ev);
 	best = find_best_gasmix_match(mix, &dive->cylinders);
@@ -972,7 +972,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			entry->ambpressure = depth_to_bar(entry->depth, dive);
 			entry->gfline = get_gf(ds, entry->ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
 			if (t0 > t1) {
-				SSRF_INFO("non-monotonous dive stamps %d %d\n", t0, t1);
+				report_info("non-monotonous dive stamps %d %d\n", t0, t1);
 				int xchg = t1;
 				t1 = t0;
 				t0 = xchg;
