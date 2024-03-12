@@ -427,7 +427,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 static bool saveToCloudOK()
 {
 	if (!divelog.dives->nr) {
-		report_error(qPrintable(gettextFromC::tr("Don't save an empty log to the cloud")));
+		report_error("%s", qPrintable(gettextFromC::tr("Don't save an empty log to the cloud")));
 		return false;
 	}
 	return true;
@@ -486,7 +486,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 			on_actionCloudstorageopen_triggered();
 		}
 		if (git_local_only)
-			report_error(qPrintable(tr("Failure taking cloud storage online")));
+			report_error("%s", qPrintable(tr("Failure taking cloud storage online")));
 	}
 
 	setTitle();

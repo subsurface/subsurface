@@ -8,9 +8,15 @@
 extern "C" {
 #endif
 
+#ifdef __GNUC__
+#define __printf(x, y) __attribute__((__format__(__printf__, x, y)))
+#else
+#define __printf(x, y)
+#endif
+
 extern int verbose;
-extern int report_error(const char *fmt, ...);
-extern void report_info(const char *fmt, ...);
+extern int __printf(1, 2) report_error(const char *fmt, ...);
+extern void __printf(1, 2) report_info(const char *fmt, ...);
 extern void set_error_cb(void(*cb)(char *));	// Callback takes ownership of passed string
 #define SSRF_INFO(fmt, ...) report_info(fmt, ##__VA_ARGS__)
 

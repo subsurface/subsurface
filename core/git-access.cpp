@@ -191,7 +191,7 @@ static int reset_to_remote(struct git_info *info, git_reference *local, const gi
 
 		if (git_reference_set_target(&out, local, new_id, "Update to remote")) {
 			SSRF_INFO("git storage: could not update local cache to newer remote data");
-			return report_error(translate("gettextFromC", "Could not update local cache to newer remote data"));
+			return report_error("%s", translate("gettextFromC", "Could not update local cache to newer remote data"));
 		}
 		git_reference_free(out);
 
@@ -205,7 +205,7 @@ static int reset_to_remote(struct git_info *info, git_reference *local, const gi
 	if (git_object_lookup(&target, info->repo, new_id, GIT_OBJ_COMMIT)) {
 		SSRF_INFO("git storage: could not look up remote commit");
 		if (info->is_subsurface_cloud)
-			return report_error(translate("gettextFromC", "Subsurface cloud storage corrupted"));
+			return report_error("%s", translate("gettextFromC", "Subsurface cloud storage corrupted"));
 		else
 			return report_error("Could not look up remote commit");
 	}
@@ -213,7 +213,7 @@ static int reset_to_remote(struct git_info *info, git_reference *local, const gi
 	if (git_reset(info->repo, target, GIT_RESET_HARD, &opts)) {
 		SSRF_INFO("git storage: local head checkout failed after update");
 		if (info->is_subsurface_cloud)
-			return report_error(translate("gettextFromC", "Could not update local cache to newer remote data"));
+			return report_error("%s", translate("gettextFromC", "Could not update local cache to newer remote data"));
 		else
 			return report_error("Local head checkout failed after update");
 	}
@@ -331,7 +331,7 @@ static int update_remote(struct git_info *info, git_remote *origin, git_referenc
 		const char *msg = giterr_last()->message;
 		SSRF_INFO("git storage: unable to update remote with current local cache state, error: %s", msg);
 		if (info->is_subsurface_cloud)
-			return report_error(translate("gettextFromC", "Could not update Subsurface cloud storage, try again later"));
+			return report_error("%s", translate("gettextFromC", "Could not update Subsurface cloud storage, try again later"));
 		else
 			return report_error("Unable to update remote with current local cache state (%s)", msg);
 	}
@@ -417,7 +417,7 @@ static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_
 		}
 		git_index_conflict_cleanup(merged_index);
 		git_index_conflict_iterator_free(iter);
-		report_error(translate("gettextFromC", "Remote storage and local data diverged. Cannot combine local and remote changes"));
+		report_error("%s", translate("gettextFromC", "Remote storage and local data diverged. Cannot combine local and remote changes"));
 	}
 	{
 		git_oid merge_oid, commit_oid;
@@ -455,7 +455,7 @@ static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_
 	}
 
 diverged_error:
-	return report_error(translate("gettextFromC", "Remote storage and local data diverged"));
+	return report_error("%s", translate("gettextFromC", "Remote storage and local data diverged"));
 
 write_error:
 	free_buffer(&msg);
@@ -469,7 +469,7 @@ static int cleanup_local_cache(struct git_info *info)
 {
 	char *backup_path = move_local_cache(info);
 	SSRF_INFO("git storage: problems with local cache, moved to %s", backup_path);
-	report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
+	report_error("%s", translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
 	report_error(translate("gettextFromC", "Moved cache data to %s. Please try the operation again."), backup_path);
 	free(backup_path);
 	return -1;
@@ -884,7 +884,7 @@ static bool create_local_repo(struct git_info *info)
 				error = 0;
 #if !defined(DEBUG) && !defined(SUBSURFACE_MOBILE)
 		} else if (info->is_subsurface_cloud) {
-			report_error(translate("gettextFromC", "Error connecting to Subsurface cloud storage"));
+			report_error("%s", translate("gettextFromC", "Error connecting to Subsurface cloud storage"));
 #endif
 		} else {
 			report_error(translate("gettextFromC", "git clone of %s failed (%s)"), info->url, msg);
