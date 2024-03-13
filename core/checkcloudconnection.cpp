@@ -10,6 +10,7 @@
 #include "qthelper.h"
 #include "git-access.h"
 #include "errorhelper.h"
+#include "core/format.h"
 #include "core/subsurface-string.h"
 #include "core/membuffer.h"
 #include "core/settings/qPrefCloudStorage.h"

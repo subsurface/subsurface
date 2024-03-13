@@ -19,6 +19,7 @@
 #include "sample.h"
 #include "subsurface-float.h"
 #include "subsurface-string.h"
+#include "format.h"
 #include "device.h"
 #include "dive.h"
 #include "errorhelper.h"

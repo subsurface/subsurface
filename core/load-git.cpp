@@ -23,6 +23,7 @@
 #include "errorhelper.h"
 #include "sample.h"
 #include "subsurface-string.h"
+#include "format.h"
 #include "trip.h"
 #include "device.h"
 #include "git-access.h"
