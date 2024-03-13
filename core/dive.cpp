@@ -470,7 +470,7 @@ static bool has_unknown_used_cylinders(const struct dive *dive, const struct div
 
 	/* We know about the explicit first cylinder (or first) */
 	idx = explicit_first_cylinder(dive, dc);
-	if (used_and_unknown[idx]) {
+	if (idx >= 0 && used_and_unknown[idx]) {
 		used_and_unknown[idx] = false;
 		num--;
 	}

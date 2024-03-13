@@ -452,11 +452,12 @@ static std::string parse_mkvi_value(const char *haystack, const char *needle)
 	if ((lineptr = strstr(haystack, needle)) != NULL) {
 		if ((valueptr = strstr(lineptr, ": ")) != NULL) {
 			valueptr += 2;
-		}
-		if ((endptr = strstr(lineptr, "\n")) != NULL) {
-			if (*(endptr - 1) == '\r')
-				--endptr;
-			return std::string(valueptr, endptr - valueptr);
+
+			if ((endptr = strstr(lineptr, "\n")) != NULL) {
+				if (*(endptr - 1) == '\r')
+					--endptr;
+				return std::string(valueptr, endptr - valueptr);
+			}
 		}
 	}
 	return std::string();
