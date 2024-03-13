@@ -15,7 +15,7 @@
 #include "errorhelper.h"
 #include "file.h"
 #include "save-html.h"
-#include "subsurface-string.h"
+#include "format.h"
 #include "worldmap-save.h"
 #include "worldmap-options.h"
 #include "gettext.h"
