@@ -141,7 +141,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		 * transform it to divelogs.de format, finally dumping
 		 * the XML into a character buffer.
 		 */
-		xmlDoc *doc = xmlReadMemory(mb.buffer, mb.len, "divelog", NULL, XML_PARSE_HUGE | XML_PARSE_RECOVER);
+		xmlDoc *doc = xmlReadMemory(mb.buffer, mb.len, "divelog", NULL, XML_PARSE_HUGE);
 		if (!doc) {
 			qWarning() << errPrefix << "could not parse back into memory the XML file we've just created!";
 			report_error("%s", qPrintable(tr("internal error")));
