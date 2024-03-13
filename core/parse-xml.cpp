@@ -26,6 +26,7 @@
 #include "divesite.h"
 #include "errorhelper.h"
 #include "parse.h"
+#include "format.h"
 #include "subsurface-float.h"
 #include "subsurface-string.h"
 #include "subsurface-time.h"

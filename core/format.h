@@ -25,6 +25,9 @@ __printf(2, 0) int vasprintf_loc(char **dst, const char *cformat, va_list ap);
 
 #ifdef __cplusplus
 }
+
+__printf(1, 2) std::string format_string_std(const char *fmt, ...);
+
 #endif
 
 #endif
