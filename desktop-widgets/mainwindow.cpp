@@ -1395,7 +1395,8 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::on_actionConfigure_Dive_Computer_triggered()
 {
-	ConfigureDiveComputerDialog *dcConfig = new ConfigureDiveComputerDialog(this);
+	QString filename = existing_filename ?: prefs.default_filename;
+	ConfigureDiveComputerDialog *dcConfig = new ConfigureDiveComputerDialog(filename, this);
 	dcConfig->show();
 }
 

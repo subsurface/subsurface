@@ -58,7 +58,7 @@ class ConfigureDiveComputerDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit ConfigureDiveComputerDialog(QWidget *parent = 0);
+	explicit ConfigureDiveComputerDialog(const QString &filename, QWidget *parent = 0);
 	~ConfigureDiveComputerDialog();
 
 private
@@ -77,7 +77,6 @@ slots:
 
 	void on_restoreBackupButton_clicked();
 
-
 	void on_updateFirmwareButton_clicked();
 
 	void on_DiveComputerList_currentRowChanged(int currentRow);
@@ -94,6 +93,7 @@ private:
 	Ui::ConfigureDiveComputerDialog ui;
 
 	QString logFile;
+	QString filename;
 
 	void closeEvent(QCloseEvent *event);
 
