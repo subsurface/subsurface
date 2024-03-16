@@ -430,7 +430,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		git_local_only = false;
 		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
 	}
-	set_filename(encodedFilename.constData());
+	existing_filename = encodedFilename.toStdString();
 	if (git_local_only && qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD)
 		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 
@@ -572,24 +572,24 @@ void QMLManager::finishSetup()
 	    !qPrefCloudStorage::cloud_storage_password().isEmpty() &&
 	    getCloudURL(url) == 0) {
 		openLocalThenRemote(url);
-	} else if (!empty_string(existing_filename) &&
+	} else if (!existing_filename.empty() &&
 		   qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
 		rememberOldStatus();
-		set_filename(qPrintable(nocloud_localstorage()));
+		existing_filename = nocloud_localstorage().toStdString();
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		emit passwordStateChanged();
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
 		appendTextToLog(tr("working in no-cloud mode"));
-		int error = parse_file(existing_filename, &divelog);
+		int error = parse_file(existing_filename.c_str(), &divelog);
 		if (error) {
 			// we got an error loading the local file
 			setNotificationText(tr("Error parsing local storage, giving up"));
-			set_filename(NULL);
+			existing_filename.clear();
 		} else {
 			// successfully opened the local file, now add thigs to the dive list
 			consumeFinishedLoad();
 			updateHaveLocalChanges(true);
-			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(divelog.dives->nr).arg(existing_filename));
+			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(divelog.dives->nr).arg(existing_filename.c_str()));
 		}
 	} else {
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
@@ -769,7 +769,7 @@ void QMLManager::deleteAccount()
 	qPrefCloudStorage::set_cloud_storage_password("");
 	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 	emit passwordStateChanged();
-	set_filename(qPrintable(nocloud_localstorage()));
+	existing_filename = nocloud_localstorage().toStdString();
 	setStartPageText(tr("Cloud storage account deleted."));
 	return;
 }
@@ -808,12 +808,12 @@ void QMLManager::loadDivesWithValidCredentials()
 		setDiveListProcessing(false);
 		if (!error) {
 			report_error("filename is now %s", fileNamePrt.data());
-			set_filename(fileNamePrt.data());
+			existing_filename = fileNamePrt.toStdString();
 		} else {
 			report_error("failed to open file %s", fileNamePrt.data());
 			setNotificationText(consumeError());
 			revertToNoCloudIfNeeded();
-			set_filename(NULL);
+			existing_filename.clear();
 			return;
 		}
 		consumeFinishedLoad();
@@ -873,7 +873,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		rememberOldStatus();
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		emit passwordStateChanged();
-		set_filename(qPrintable(nocloud_localstorage()));
+		existing_filename = nocloud_localstorage().toStdString();
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
 }
@@ -1477,7 +1477,7 @@ void QMLManager::openNoCloudRepo()
 		// repo doesn't exist, create it and write the empty dive list to it
 		git_create_local_repo(qPrintable(filename));
 		save_dives(qPrintable(filename));
-		set_filename(qPrintable(filename));
+		existing_filename = filename.toStdString();
 		auto s = qPrefLog::instance();
 		s->set_default_filename(qPrintable(filename));
 		s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
@@ -1489,10 +1489,10 @@ void QMLManager::saveChangesLocal(bool fromUndo)
 {
 	if (unsavedChanges()) {
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
-			if (empty_string(existing_filename)) {
+			if (existing_filename.empty()) {
 				QString filename = nocloud_localstorage();
 				git_create_local_repo(qPrintable(filename));
-				set_filename(qPrintable(filename));
+				existing_filename = filename.toStdString();
 				auto s = qPrefLog::instance();
 				s->set_default_filename(qPrintable(filename));
 				s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
@@ -1505,11 +1505,11 @@ void QMLManager::saveChangesLocal(bool fromUndo)
 		}
 		bool glo = git_local_only;
 		git_local_only = true;
-		int error = save_dives(existing_filename);
+		int error = save_dives(existing_filename.c_str());
 		git_local_only = glo;
 		if (error) {
 			setNotificationText(consumeError());
-			set_filename(NULL);
+			existing_filename.clear();
 			return;
 		}
 		mark_divelist_changed(false);

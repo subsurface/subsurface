@@ -512,22 +512,22 @@ void MainWindow::closeCurrentFile()
 	clear_dive_file_data(); // this clears all the core data structures and resets the models
 	setCurrentFile(nullptr);
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
-	if (!existing_filename)
+	if (existing_filename.empty())
 		setTitle();
 	disableShortcuts();
 }
 
 void MainWindow::updateCloudOnlineStatus()
 {
-	bool is_cloud = existing_filename && prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED &&
-			strstr(existing_filename, prefs.cloud_base_url);
+	bool is_cloud = !existing_filename.empty() && prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED &&
+			existing_filename.find(prefs.cloud_base_url) != std::string::npos;
 	ui.actionCloudOnline->setEnabled(is_cloud);
 	ui.actionCloudOnline->setChecked(is_cloud && !git_local_only);
 }
 
 void MainWindow::setCurrentFile(const char *f)
 {
-	set_filename(f);
+	existing_filename = f;
 	setTitle();
 	updateCloudOnlineStatus();
 }
@@ -545,13 +545,18 @@ void MainWindow::updateLastUsedDir(const QString &dir)
 	qPrefDisplay::set_lastDir(dir);
 }
 
+static QString get_current_filename()
+{
+	return existing_filename.empty() ? QString(prefs.default_filename)
+					 : QString::fromStdString(existing_filename);
+}
 void MainWindow::on_actionPrint_triggered()
 {
 #ifndef NO_PRINTING
 	// When in planner, only print the planned dive.
 	dive *singleDive = appState == ApplicationState::PlanDive ? plannerWidgets->getDive()
 								  : nullptr;
-	QString filename = existing_filename ?: prefs.default_filename;
+	QString filename = get_current_filename();
 	PrintDialog dlg(singleDive, filename, this);
 
 	dlg.exec();
@@ -608,7 +613,7 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionDownloadDC_triggered()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
+	QString filename = get_current_filename();
 	DownloadFromDCWidget dlg(filename, this);
 	dlg.exec();
 }
@@ -980,7 +985,7 @@ bool MainWindow::askSaveChanges()
 {
 	QMessageBox response(this);
 
-	QString message = existing_filename ?
+	QString message = !existing_filename.empty() ?
 		tr("Do you want to save the changes that you made in the file %1?").arg(displayedFilename(existing_filename)) :
 		tr("Do you want to save the changes that you made in the data file?");
 
@@ -1157,23 +1162,23 @@ void MainWindow::recentFileTriggered(bool)
 int MainWindow::file_save_as(void)
 {
 	QString filename;
-	const char *default_filename = existing_filename;
+	std::string default_filename = existing_filename;
 
 	// if the default is to save to cloud storage, pick something that will work as local file:
 	// simply extract the branch name which should be the users email address
-	if (default_filename && QString(default_filename).contains(QRegularExpression(CLOUD_HOST_PATTERN))) {
-		QString filename(default_filename);
+	if (!default_filename.empty() && QString::fromStdString(default_filename).contains(QRegularExpression(CLOUD_HOST_PATTERN))) {
+		QString filename = QString::fromStdString(default_filename);
 		filename.remove(0, filename.indexOf("[") + 1);
 		filename.replace("]", ".ssrf");
-		default_filename = copy_qstring(filename);
+		default_filename = filename.toStdString();
 	}
 	// create a file dialog that allows us to save to a new file
-	QFileDialog selection_dialog(this, tr("Save file as"), default_filename,
+	QFileDialog selection_dialog(this, tr("Save file as"), default_filename.c_str(),
 					 tr("Subsurface files") + " (*.ssrf *.xml)");
 	selection_dialog.setAcceptMode(QFileDialog::AcceptSave);
 	selection_dialog.setFileMode(QFileDialog::AnyFile);
 	selection_dialog.setDefaultSuffix("");
-	if (empty_string(default_filename)) {
+	if (default_filename.empty()) {
 		QFileInfo defaultFile(system_default_filename());
 		selection_dialog.setDirectory(qPrintable(defaultFile.absolutePath()));
 	}
@@ -1207,15 +1212,15 @@ int MainWindow::file_save(void)
 	const char *current_default;
 	bool is_cloud = false;
 
-	if (!existing_filename)
+	if (existing_filename.empty())
 		return file_save_as();
 
-	is_cloud = (strncmp(existing_filename, "http", 4) == 0);
+	is_cloud = (starts_with(existing_filename, "http") == 0);
 	if (is_cloud && !saveToCloudOK())
 		return -1;
 
 	current_default = prefs.default_filename;
-	if (strcmp(existing_filename, current_default) == 0) {
+	if (existing_filename == current_default) {
 		/* if we are using the default filename the directory
 		 * that we are creating the file in may not exist */
 		QDir current_def_dir = QFileInfo(current_default).absoluteDir();
@@ -1224,7 +1229,7 @@ int MainWindow::file_save(void)
 	}
 	if (is_cloud)
 		showProgressBar();
-	if (save_dives(existing_filename)) {
+	if (save_dives(existing_filename.c_str())) {
 		if (is_cloud)
 			hideProgressBar();
 		return -1;
@@ -1232,7 +1237,7 @@ int MainWindow::file_save(void)
 	if (is_cloud)
 		hideProgressBar();
 	Command::setClean();
-	addRecentFile(QString(existing_filename), true);
+	addRecentFile(QString::fromStdString(existing_filename), true);
 	return 0;
 }
 
@@ -1241,13 +1246,13 @@ NotificationWidget *MainWindow::getNotificationWidget()
 	return ui.mainErrorMessage;
 }
 
-QString MainWindow::displayedFilename(QString fullFilename)
+QString MainWindow::displayedFilename(const std::string &fullFilename)
 {
-	QFile f(fullFilename);
+	QFile f(fullFilename.c_str());
 	QFileInfo fileInfo(f);
 	QString fileName(fileInfo.fileName());
 
-	if (fullFilename.contains(prefs.cloud_base_url)) {
+	if (fullFilename.find(prefs.cloud_base_url) != std::string::npos) {
 		QString email = fileName.left(fileName.indexOf('['));
 		return git_local_only ?
 			tr("[local cache for] %1").arg(email) :
@@ -1265,7 +1270,7 @@ void MainWindow::setAutomaticTitle()
 
 void MainWindow::setTitle()
 {
-	if (empty_string(existing_filename)) {
+	if (existing_filename.empty()) {
 		setWindowTitle("Subsurface");
 		return;
 	}
@@ -1397,7 +1402,7 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::on_actionConfigure_Dive_Computer_triggered()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
+	QString filename = get_current_filename();
 	ConfigureDiveComputerDialog *dcConfig = new ConfigureDiveComputerDialog(filename, this);
 	dcConfig->show();
 }

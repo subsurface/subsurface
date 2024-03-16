@@ -76,5 +76,11 @@ std::string format_string_std(const char *fmt, Args&&... args)
 	return res;
 }
 
+// Sadly, starts_with only with C++20!
+inline bool starts_with(const std::string &s, const char *s2)
+{
+	return s.rfind(s2, 0) == 0;
+}
+
 #endif
 #endif // SUBSURFACE_STRING_H

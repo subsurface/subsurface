@@ -67,7 +67,6 @@ void init_ui()
 void exit_ui()
 {
 	free_globals();
-	free((void *)existing_filename);
 }
 
 #ifdef SUBSURFACE_MOBILE

@@ -79,9 +79,9 @@ int main(int argc, char **argv)
 	}
 	init_ui();
 	if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE)
-		set_filename(prefs.default_filename);
+		existing_filename = prefs.default_filename;
 	else
-		set_filename(NULL);
+		existing_filename.clear();
 
 	// some hard coded settings
 	qPrefCloudStorage::set_save_password_local(true);
