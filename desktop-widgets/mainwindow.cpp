@@ -551,7 +551,8 @@ void MainWindow::on_actionPrint_triggered()
 	// When in planner, only print the planned dive.
 	dive *singleDive = appState == ApplicationState::PlanDive ? plannerWidgets->getDive()
 								  : nullptr;
-	PrintDialog dlg(singleDive, this);
+	QString filename = existing_filename ?: prefs.default_filename;
+	PrintDialog dlg(singleDive, filename, this);
 
 	dlg.exec();
 #endif
