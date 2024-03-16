@@ -99,7 +99,7 @@ endif()
 set(SMTK_LINK_LIBRARIES ${SMTK_LINK_LIBRARIES} ${LIBMDB_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES})
 
 set(SMTK_IMPORT_SRCS
-	smartrak.c
+	smartrak.cpp
 	smrtk2ssrfc_window.ui
 	smrtk2ssrfc_window.h
 	smrtk2ssrfc_window.cpp
