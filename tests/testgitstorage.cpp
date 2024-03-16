@@ -58,7 +58,7 @@ static void localRemoteCleanup()
 
 	// this odd comparison is used to tell that we were able to connect to the remote repo;
 	// in the error case we get the full cloudTestRepo name back as "branch"
-	if (info.branch != randomBranch) {
+	if (info.branch != randomBranch || info.repo == nullptr) {
 		// dang, we weren't able to connect to the server - let's not fail the test
 		// but just give up
 		QSKIP("wasn't able to connect to server");
