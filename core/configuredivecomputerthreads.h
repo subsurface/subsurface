@@ -27,18 +27,18 @@ public:
 	ReadSettingsThread(QObject *parent, device_data_t *data);
 	void run();
 signals:
-	void devicedetails(DeviceDetails *newDeviceDetails);
+	void devicedetails(DeviceDetails newDeviceDetails);
 };
 
 class WriteSettingsThread : public DeviceThread {
 	Q_OBJECT
 public:
 	WriteSettingsThread(QObject *parent, device_data_t *data);
-	void setDeviceDetails(DeviceDetails *details);
+	void setDeviceDetails(const DeviceDetails &details);
 	void run();
 
 private:
-	DeviceDetails *m_deviceDetails;
+	DeviceDetails m_deviceDetails;
 };
 
 class FirmwareUpdateThread : public DeviceThread {
