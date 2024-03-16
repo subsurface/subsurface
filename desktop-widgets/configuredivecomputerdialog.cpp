@@ -294,7 +294,7 @@ void OstcFirmwareCheck::parseOstcFwVersion(QNetworkReply *reply)
 	disconnect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::parseOstcFwVersion);
 }
 
-void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
+void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const QString &filename)
 {
 	devData = *data;
 	parent = _parent;
@@ -339,21 +339,20 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 		response.setWindowModality(Qt::WindowModal);
 		int ret = response.exec();
 		if (ret == QMessageBox::Accepted)
-			upgradeFirmware();
+			upgradeFirmware(filename);
 	}
 }
 
-void OstcFirmwareCheck::upgradeFirmware()
+void OstcFirmwareCheck::upgradeFirmware(const QString &filename)
 {
 	// start download of latestFirmwareHexFile
 	QString saveFileName = latestFirmwareHexFile;
 	saveFileName.replace("http://www.heinrichsweikamp.net/autofirmware/", "");
 	saveFileName.replace("firmware", latestFirmwareAvailable);
-	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append(saveFileName);
+	saveFileName = fi.absolutePath().append(QDir::separator()).append(saveFileName);
 	storeFirmware = QFileDialog::getSaveFileName(parent, tr("Save the downloaded firmware as"),
-						     filename, tr("Firmware files") + " (*.hex *.bin)");
+						     saveFileName, tr("Firmware files") + " (*.hex *.bin)");
 	if (storeFirmware.isEmpty())
 		return;
 

@@ -607,7 +607,8 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionDownloadDC_triggered()
 {
-	DownloadFromDCWidget dlg(this);
+	QString filename = existing_filename ?: prefs.default_filename;
+	DownloadFromDCWidget dlg(filename, this);
 	dlg.exec();
 }
 

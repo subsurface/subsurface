@@ -123,14 +123,14 @@ class OstcFirmwareCheck : public QObject {
 	Q_OBJECT
 public:
 	explicit OstcFirmwareCheck(const QString &product);
-	void checkLatest(QWidget *parent, device_data_t *data);
+	void checkLatest(QWidget *parent, device_data_t *data, const QString &filename);
 public
 slots:
 	void parseOstcFwVersion(QNetworkReply *reply);
 	void saveOstcFirmware(QNetworkReply *reply);
 
 private:
-	void upgradeFirmware();
+	void upgradeFirmware(const QString &filename);
 	device_data_t devData;
 	QString latestFirmwareAvailable;
 	QString latestFirmwareHexFile;
