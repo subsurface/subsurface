@@ -32,10 +32,10 @@ public:
 
 	QString lastError;
 	states currentState;
-	void saveDeviceDetails(DeviceDetails *details, device_data_t *data);
+	void saveDeviceDetails(const DeviceDetails &details, device_data_t *data);
 	void fetchDeviceDetails();
-	bool saveXMLBackup(const QString &fileName, DeviceDetails *details, device_data_t *data);
-	bool restoreXMLBackup(const QString &fileName, DeviceDetails *details);
+	bool saveXMLBackup(const QString &fileName, const DeviceDetails &details, device_data_t *data);
+	bool restoreXMLBackup(const QString &fileName, DeviceDetails &details);
 	void startFirmwareUpdate(const QString &fileName, device_data_t *data, bool forceUpdate);
 	void resetSettings(device_data_t *data);
 
@@ -48,7 +48,7 @@ signals:
 	void message(QString msg);
 	void error(QString err);
 	void stateChanged(states newState);
-	void deviceDetailsChanged(DeviceDetails *newDetails);
+	void deviceDetailsChanged(DeviceDetails newDetails);
 
 private:
 	ReadSettingsThread *readThread;

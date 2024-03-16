@@ -8,6 +8,7 @@
 #endif
 
 #include "stats/statsview.h"
+#include "core/devicedetails.h"
 #include "core/globals.h"
 #include "core/qt-gui.h"
 #include "core/settings/qPref.h"
@@ -201,6 +202,7 @@ Q_DECLARE_METATYPE(duration_t)
 static void register_meta_types()
 {
 	qRegisterMetaType<duration_t>();
+	qRegisterMetaType<DeviceDetails>();
 }
 
 template <typename T>

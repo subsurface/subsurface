@@ -74,7 +74,7 @@ slots:
 	void configError(QString err);
 	void on_close_clicked();
 	void on_saveSettingsPushButton_clicked();
-	void deviceDetailsReceived(DeviceDetails *newDeviceDetails);
+	void deviceDetailsReceived(DeviceDetails newDeviceDetails);
 	void reloadValues();
 	void on_backupButton_clicked();
 
@@ -104,7 +104,7 @@ private:
 
 	void fill_device_list(unsigned int transport);
 
-	DeviceDetails *deviceDetails;
+	DeviceDetails deviceDetails;
 	void populateDeviceDetails();
 	void populateDeviceDetailsOSTC3();
 	void populateDeviceDetailsOSTC();

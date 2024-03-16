@@ -20,11 +20,10 @@ struct setpoint {
 	setpoint(unsigned char sp = 0, unsigned char depth = 0);
 };
 
-class DeviceDetails : public QObject
+class DeviceDetails
 {
-	Q_OBJECT
 public:
-	explicit DeviceDetails(QObject *parent = 0);
+	DeviceDetails();
 
 	QString serialNo;
 	QString firmwareVersion;
@@ -103,5 +102,6 @@ public:
 	unsigned safetyStopResetDepth;
 };
 
+Q_DECLARE_METATYPE(DeviceDetails);
 
 #endif // DEVICEDETAILS_H
