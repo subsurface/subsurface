@@ -1481,10 +1481,8 @@ void ConfigureDiveComputerDialog::pickLogFile()
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
 	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
 					       filename, tr("Log files") + " (*.log)");
-	if (!logFile.isEmpty()) {
-		free(logfile_name);
-		logfile_name = copy_qstring(logFile);
-	}
+	if (!logFile.isEmpty())
+		logfile_name = logFile.toStdString();
 }
 
 #ifdef BT_SUPPORT

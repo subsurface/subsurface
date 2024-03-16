@@ -38,11 +38,10 @@
 #include "core/version.h"
 #include "core/qthelper.h"
 #include "core/file.h"
-#include <QtGlobal>
 #include <array>
 
-char *dumpfile_name;
-char *logfile_name;
+std::string dumpfile_name;
+std::string logfile_name;
 const char *progress_bar_text = "";
 void (*progress_callback)(const char *text) = NULL;
 double progress_bar_fraction = 0.0;
@@ -1173,8 +1172,8 @@ static const char *do_device_import(device_data_t *data)
 		dc_buffer_t *buffer = dc_buffer_new(0);
 
 		rc = dc_device_dump(device, buffer);
-		if (rc == DC_STATUS_SUCCESS && dumpfile_name) {
-			FILE *fp = subsurface_fopen(dumpfile_name, "wb");
+		if (rc == DC_STATUS_SUCCESS && !dumpfile_name.empty()) {
+			FILE *fp = subsurface_fopen(dumpfile_name.c_str(), "wb");
 			if (fp != NULL) {
 				fwrite(dc_buffer_get_data(buffer), 1, dc_buffer_get_size(buffer), fp);
 				fclose(fp);
@@ -1479,8 +1478,8 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	data->fingerprint = NULL;
 	data->fsize = 0;
 
-	if (data->libdc_log && logfile_name)
-		fp = subsurface_fopen(logfile_name, "w");
+	if (data->libdc_log && !logfile_name.empty())
+		fp = subsurface_fopen(logfile_name.c_str(), "w");
 
 	data->libdc_logfile = fp;
 

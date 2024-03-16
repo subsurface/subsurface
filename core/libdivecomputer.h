@@ -62,8 +62,6 @@ extern int import_thread_cancelled;
 extern const char *progress_bar_text;
 extern void (*progress_callback)(const char *text);
 extern double progress_bar_fraction;
-extern char *logfile_name;
-extern char *dumpfile_name;
 
 dc_status_t ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr, void *userdata);
 dc_status_t rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr);
@@ -76,6 +74,11 @@ unsigned int get_supported_transports(device_data_t *data);
 
 #ifdef __cplusplus
 }
+
+#include <string>
+extern std::string logfile_name;
+extern std::string dumpfile_name;
+
 #endif
 
 #endif // LIBDIVECOMPUTER_H

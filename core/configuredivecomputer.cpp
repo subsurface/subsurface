@@ -574,8 +574,8 @@ QString ConfigureDiveComputer::dc_open(device_data_t *data)
 	FILE *fp = NULL;
 	dc_status_t rc;
 
-	if (data->libdc_log)
-		fp = subsurface_fopen(logfile_name, "w");
+	if (data->libdc_log && !logfile_name.empty())
+		fp = subsurface_fopen(logfile_name.c_str(), "w");
 
 	data->libdc_logfile = fp;
 
