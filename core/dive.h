@@ -207,8 +207,6 @@ extern void invalidate_dive_cache(struct dive *dc);
 
 extern int total_weight(const struct dive *);
 
-extern const char *existing_filename;
-
 extern bool has_planned(const struct dive *dive, bool planned);
 
 /* Get gasmixes at increasing timestamps.
@@ -229,7 +227,10 @@ extern void update_setpoint_events(const struct dive *dive, struct divecomputer 
  * QVariants and through QML.
  */
 #include <QObject>
+#include <string>
 Q_DECLARE_METATYPE(struct dive *);
+
+extern std::string existing_filename;
 
 #endif
 

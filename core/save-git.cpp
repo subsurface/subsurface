@@ -1192,12 +1192,12 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 			return report_error("Unable to look up parent in branch '%s'", info->branch);
 
 		if (!saved_git_id.empty()) {
-			if (existing_filename && verbose)
-				report_info("existing filename %s\n", existing_filename);
+			if (!existing_filename.empty() && verbose)
+				report_info("existing filename %s\n", existing_filename.c_str());
 			const git_oid *id = git_commit_id((const git_commit *) parent);
 			/* if we are saving to the same git tree we got this from, let's make
 			 * sure there is no confusion */
-			if (same_string(existing_filename, info->url) && git_oid_strcmp(id, saved_git_id.c_str()))
+			if (existing_filename == info->url && git_oid_strcmp(id, saved_git_id.c_str()))
 				return report_error("The git branch does not match the git parent of the source");
 		}
 

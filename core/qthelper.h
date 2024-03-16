@@ -125,7 +125,6 @@ bool canReachCloudServer(struct git_info *);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 char *get_file_name(const char *fileName);
-void set_filename(const char *filename);
 void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName);
 char *move_away(const char *path);
 const char *local_file_path(struct picture *picture);

@@ -44,7 +44,7 @@
 
 #include <libxslt/documents.h>
 
-const char *existing_filename;
+std::string existing_filename;
 static QLocale loc;
 
 static inline QString degreeSigns()
@@ -519,12 +519,6 @@ void initUiLanguage()
 QLocale getLocale()
 {
 	return loc;
-}
-
-void set_filename(const char *filename)
-{
-	free((void *)existing_filename);
-	existing_filename = copy_string(filename);
 }
 
 QString get_depth_string(int mm, bool showunit, bool showdecimal)
