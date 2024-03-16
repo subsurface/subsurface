@@ -61,9 +61,6 @@ public:
 	explicit ConfigureDiveComputerDialog(QWidget *parent = 0);
 	~ConfigureDiveComputerDialog();
 
-protected:
-	void closeEvent(QCloseEvent *event);
-
 private
 slots:
 	void checkLogFile(int state);
@@ -97,6 +94,8 @@ private:
 	Ui::ConfigureDiveComputerDialog ui;
 
 	QString logFile;
+
+	void closeEvent(QCloseEvent *event);
 
 	ConfigureDiveComputer *config;
 	device_data_t device_data;
