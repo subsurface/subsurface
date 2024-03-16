@@ -3,7 +3,7 @@
 my $input = $ARGV[0];
 my $source = `clang-format $input`;
 
-# for_each_dive (...) and Q_FOREACH and friends...
+# for_each_dive (...) and friends...
 $source =~ s/(?:\G|^)(.*each.*\(.*) \* (\S.*\))$/$1 *$2/img; # if a variable is declared in the argument, '*' is an indicator for a pointer, not arithmatic
 $source =~ s/(?:\G|^)(.*each.*\(.*) \& (\S.*\))$/$1 &$2/img; # if a variable is declared in the argument, '&' is an indicator for a reference, not bit logic
 $source =~ s/(?:\G|^)(.*each[^\s(]*)\s*(\(.*)$/$1 $2/img;    # we want exactly one space between keyword and opening parenthesis '('

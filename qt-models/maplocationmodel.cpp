@@ -216,8 +216,7 @@ void MapLocationModel::setSelected(const QVector<dive_site *> &divesites)
 
 MapLocation *MapLocationModel::getMapLocation(const struct dive_site *ds)
 {
-	MapLocation *location;
-	foreach(location, m_mapLocations) {
+	for (MapLocation *location: m_mapLocations) {
 		if (ds == location->divesite)
 			return location;
 	}

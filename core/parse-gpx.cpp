@@ -47,7 +47,7 @@ int getCoordsFromGPXFile(struct dive_coords *coords, const QString &fileName)
 			if (nameCmp(gpxReader, "trkpt") == 0) {
 				trkpt_found = true;
 				line++;
-				foreach (const QXmlStreamAttribute &attr, gpxReader.attributes()) {
+				for (const QXmlStreamAttribute &attr: gpxReader.attributes()) {
 					if (attr.name().toString() == QLatin1String("lat"))
 						lat = attr.value().toString().toDouble();
 					else if (attr.name().toString() == QLatin1String("lon"))

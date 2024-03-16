@@ -111,7 +111,7 @@ void KMessageWidgetPrivate::createLayout()
     qDeleteAll(buttons);
     buttons.clear();
 
-    Q_FOREACH (QAction *action, q->actions()) {
+    for (QAction *action: q->actions()) {
         QToolButton *button = new QToolButton(content);
         button->setDefaultAction(action);
         button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -131,7 +131,7 @@ void KMessageWidgetPrivate::createLayout()
 
         QHBoxLayout *buttonLayout = new QHBoxLayout;
         buttonLayout->addStretch();
-        Q_FOREACH (QToolButton *button, buttons) {
+        for (QToolButton *button: buttons) {
             // For some reason, calling show() is necessary if wordwrap is true,
             // otherwise the buttons do not show up. It is not needed if
             // wordwrap is false.
@@ -145,9 +145,8 @@ void KMessageWidgetPrivate::createLayout()
         layout->addWidget(iconLabel);
         layout->addWidget(textLabel);
 
-        Q_FOREACH (QToolButton *button, buttons) {
+        for (QToolButton *button: buttons)
             layout->addWidget(button);
-        }
 
         layout->addWidget(closeButton);
     };

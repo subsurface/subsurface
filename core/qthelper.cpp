@@ -1176,7 +1176,7 @@ QStringList mediaExtensionFilters()
 QStringList imageExtensionFilters()
 {
 	QStringList filters;
-	foreach (const QString &format, QImageReader::supportedImageFormats())
+	for (QString format: QImageReader::supportedImageFormats())
 		filters.append("*." + format);
 	return filters;
 }

@@ -495,7 +495,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		firstLine = f.readLine().trimmed();
 
 		currColumns = firstLine.split(';');
-		Q_FOREACH (QString columnText, currColumns) {
+		for (const QString &columnText: currColumns) {
 			if (columnText == "Time") {
 				headers.append("Sample time");
 			} else if (columnText == "Depth") {
@@ -613,7 +613,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		if (line.length() > 0)
 			columns = line.split(separator);
 		// now try and guess the columns
-		Q_FOREACH (QString columnText, currColumns) {
+		for (QString columnText: currColumns) {
 			count++;
 			/*
 			 * We have to skip the conversion of 2 to ₂ for APD Log

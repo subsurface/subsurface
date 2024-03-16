@@ -379,7 +379,7 @@ void MainWindow::on_actionOpen_triggered()
 	QStringList cleanFilenames;
 	QRegularExpression reg(".*\\[[^]]+]\\.ssrf", QRegularExpression::CaseInsensitiveOption);
 
-	Q_FOREACH (QString filename, filenames) {
+	for (QString filename: filenames) {
 		if (reg.match(filename).hasMatch())
 			filename.remove(QRegularExpression("\\.ssrf$", QRegularExpression::CaseInsensitiveOption));
 		cleanFilenames << filename;
@@ -1071,7 +1071,7 @@ void MainWindow::loadRecentFiles()
 	recentFiles.clear();
 	QSettings s;
 	s.beginGroup("Recent_Files");
-	foreach (const QString &key, s.childKeys()) {
+	for (const QString &key: s.childKeys()) {
 		// TODO Sorting only correct up to 9 entries. Currently, only 4 used, so no problem.
 		if (!key.startsWith("File_"))
 			continue;
