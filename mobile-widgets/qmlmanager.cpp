@@ -266,7 +266,7 @@ QMLManager::QMLManager() :
 		// remove the existing libdivecomputer logfile so we don't copy an old one by mistake
 		QFile libdcLog(libdcLogFileName);
 		libdcLog.remove();
-		logfile_name = copy_qstring(libdcLogFileName);
+		logfile_name = libdcLogFileName.toStdString();
 	} else {
 		appendTextToLog("No writeable location found, in-memory log only and no libdivecomputer log");
 	}
@@ -497,7 +497,7 @@ bool QMLManager::createSupportEmail()
 	QAndroidJniObject activity = QtAndroid::androidActivity();
 	if (activity.isValid()) {
 		QAndroidJniObject applogfilepath = QAndroidJniObject::fromString(appLogFileName);
-		QAndroidJniObject libdcfilepath = QAndroidJniObject::fromString(logfile_name);
+		QAndroidJniObject libdcfilepath = QAndroidJniObject::fromString(QString::fromStdString(logfile_name));
 		bool success = activity.callMethod<jboolean>("supportEmail",
 					"(Ljava/lang/String;Ljava/lang/String;)Z", // two string arguments, return bool
 					applogfilepath.object<jstring>(), libdcfilepath.object<jstring>());
@@ -508,7 +508,7 @@ bool QMLManager::createSupportEmail()
 	qDebug() << __FUNCTION__ << "failed to share the logFiles via intent, use the fall-back mail body method";
 #elif defined(Q_OS_IOS)
 	// call into objC++ code to share on iOS
-	QString libdcLogFileName(logfile_name);
+	QString libdcLogFileName = QString::fromStdString(logfile_name);
 	iosshare.supportEmail(appLogFileName, libdcLogFileName);
 	// Unfortunately I haven't been able to figure out how to wait until the mail was sent
 	// so that this could tell us whether this was successful or not
@@ -536,7 +536,7 @@ QString QMLManager::getCombinedLogs()
 	copyString += MessageHandlerModel::self()->logAsString();
 
 	// Add heading and append libdivecomputer.log
-	QFile f(logfile_name);
+	QFile f(logfile_name.c_str());
 	if (f.open(QFile::ReadOnly | QFile::Text)) {
 		copyString += "\n\n\n---------- libdivecomputer.log ----------\n";
 
