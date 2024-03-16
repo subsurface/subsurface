@@ -19,9 +19,10 @@
 
 template_options::color_palette_struct ssrf_colors, almond_colors, blueshades_colors, custom_colors;
 
-PrintDialog::PrintDialog(dive *singleDive, QWidget *parent) :
+PrintDialog::PrintDialog(dive *singleDive, const QString &filename, QWidget *parent) :
 	QDialog(parent, QFlag(0)),
 	singleDive(singleDive),
+	filename(filename),
 	printer(NULL),
 	qprinter(NULL)
 {
@@ -197,11 +198,10 @@ void PrintDialog::exportHtmlClicked(void)
 {
 	createPrinterObj();
 	QString saveFileName = printOptions.p_template;
-	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append(saveFileName);
+	QString printfilename = fi.absolutePath().append(QDir::separator()).append(saveFileName);
 	QString htmlExportFilename = QFileDialog::getSaveFileName(this, tr("Filename to export html to"),
-							  filename, tr("Html file") + " (*.html)");
+							  printfilename, tr("Html file") + " (*.html)");
 	if (!htmlExportFilename.isEmpty()) {
 		QFile file(htmlExportFilename);
 		file.open(QIODevice::WriteOnly);
