@@ -486,7 +486,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 	QItemSelection newSelected = selected.size() ? selected : selectionModel()->selection();
 
 	std::vector<dive *> addToSelection, removeFromSelection;
-	Q_FOREACH (const QModelIndex &index, newDeselected.indexes()) {
+	for (const QModelIndex &index: newDeselected.indexes()) {
 		if (index.column() != 0)
 			continue;
 		const QAbstractItemModel *model = index.model();
@@ -499,7 +499,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 				removeFromSelection.push_back(trip->dives.dives[i]);
 		}
 	}
-	Q_FOREACH (const QModelIndex &index, newSelected.indexes()) {
+	for (const QModelIndex &index: newSelected.indexes()) {
 		if (index.column() != 0)
 			continue;
 

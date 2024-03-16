@@ -2365,13 +2365,13 @@ QStringList QMLManager::cloudCacheList() const
 	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory()));
 	QStringList dirs = localCacheDir.entryList();
 	QStringList result;
-	foreach(QString dir, dirs) {
+	for (const QString &dir: dirs) {
 		QString originsDir = QString("%1/cloudstorage/%2/.git/refs/remotes/origin/").arg(system_default_directory()).arg(dir);
 		QDir remote(originsDir);
 		if (dir == "localrepo") {
 			result << QString("localrepo[master]");
 		} else {
-			foreach(QString branch, remote.entryList().filter(QRegularExpression("...+")))
+			for (const QString &branch: remote.entryList().filter(QRegularExpression("...+")))
 				result << QString("%1[%2]").arg(dir).arg(branch);
 		}
 	}

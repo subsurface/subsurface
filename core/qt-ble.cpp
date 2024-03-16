@@ -308,7 +308,7 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 		} while (!receivedPackets.isEmpty());
 	}
 
-	foreach (const QLowEnergyCharacteristic &c, preferredService()->characteristics()) {
+	for (const QLowEnergyCharacteristic &c: preferredService()->characteristics()) {
 		if (!is_write_characteristic(c))
 			continue;
 
@@ -398,7 +398,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 dc_status_t BLEObject::select_preferred_service(void)
 {
 	// Wait for each service to finish discovering
-	foreach (const QLowEnergyService *s, services) {
+	for (const QLowEnergyService *s: services) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 		WAITFOR(s->state() != QLowEnergyService::RemoteServiceDiscovering, BLE_TIMEOUT);
 		if (s->state() == QLowEnergyService::RemoteServiceDiscovering)
@@ -410,19 +410,19 @@ dc_status_t BLEObject::select_preferred_service(void)
 	}
 
 	// Print out the services for debugging
-	foreach (const QLowEnergyService *s, services) {
+	for (const QLowEnergyService *s: services) {
 		qDebug() << "Found service" << s->serviceUuid() << s->serviceName();
 
-		foreach (const QLowEnergyCharacteristic &c, s->characteristics()) {
+		for (const QLowEnergyCharacteristic &c: s->characteristics()) {
 			qDebug() << "   c:" << c.uuid();
 
-			foreach (const QLowEnergyDescriptor &d, c.descriptors())
+			for (const QLowEnergyDescriptor &d: c.descriptors())
 				qDebug() << "        d:" << d.uuid();
 		}
 	}
 
 	// Pick the preferred one
-	foreach (QLowEnergyService *s, services) {
+	for (QLowEnergyService *s: services) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 		if (s->state() != QLowEnergyService::RemoteServiceDiscovered)
 #else
@@ -434,7 +434,7 @@ dc_status_t BLEObject::select_preferred_service(void)
 		bool haswrite = false;
 		QBluetoothUuid uuid = s->serviceUuid();
 
-		foreach (const QLowEnergyCharacteristic &c, s->characteristics()) {
+		for (const QLowEnergyCharacteristic &c: s->characteristics()) {
 			hasread |= is_read_characteristic(c);
 			haswrite |= is_write_characteristic(c);
 		}
@@ -615,9 +615,8 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 	// Finish discovering the services, then add all those services and discover their characteristics.
 	ble->connect(controller, &QLowEnergyController::discoveryFinished, [=] {
 		qDebug() << "finished service discovery, start discovering characteristics";
-		foreach(QBluetoothUuid s, controller->services()) {
+		for (QBluetoothUuid s: controller->services())
 			ble->addService(s);
-		}
 	});
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	ble->connect(controller, &QLowEnergyController::errorOccurred, [=](QLowEnergyController::Error newError) {
