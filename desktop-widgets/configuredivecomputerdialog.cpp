@@ -117,10 +117,11 @@ static const DiveComputerEntry supportedDiveComputers[] = {
 	{ "Suunto", "Vyper", DC_TRANSPORT_SERIAL, false, false },
 };
 
-ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDialog(parent),
-	config(0),
+ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(const QString &filename, QWidget *parent) : QDialog(parent),
+	filename(filename),
+	config(0)
 #ifdef BT_SUPPORT
-	btDeviceSelectionDialog(0)
+	, btDeviceSelectionDialog(0)
 #endif
 {
 	ui.setupUi(this);
@@ -1399,7 +1400,6 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC4()
 
 void ConfigureDiveComputerDialog::on_backupButton_clicked()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
 	QString backupPath = QFileDialog::getSaveFileName(this, tr("Backup dive computer settings"),
@@ -1420,7 +1420,6 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 
 void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
 	QString restorePath = QFileDialog::getOpenFileName(this, tr("Restore dive computer settings"),
@@ -1443,7 +1442,6 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 
 void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
 	filename = fi.absolutePath();
 	QString firmwarePath = QFileDialog::getOpenFileName(this, tr("Select firmware file"),
@@ -1480,7 +1478,6 @@ void ConfigureDiveComputerDialog::checkLogFile(int state)
 
 void ConfigureDiveComputerDialog::pickLogFile()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
 	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
