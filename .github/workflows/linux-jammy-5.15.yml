@@ -22,6 +22,8 @@ jobs:
       uses: actions/checkout@v1
 
     - name: get container ready for build
+      env:
+         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
         echo "--------------------------------------------------------------"
         echo "update distro and install dependencies"
@@ -39,21 +41,20 @@ jobs:
         qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
         qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev
 
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
+        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
+
     - name: store dummy version and build number for test build
       run: |
         echo "100" > latest-subsurface-buildnumber
         echo "CICD-test-build" > latest-subsurface-buildnumber-extension
 
-    - name: build Subsurface-mobile
-      env:
-         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
+    - name: build subsurface-mobile
       run: |
         echo "--------------------------------------------------------------"
         echo "building mobile"
-        git config --global user.email "ci@subsurface-divelog.org"
-        git config --global user.name "Subsurface CI"
-        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
-        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         cd ..
         bash -e -x subsurface/scripts/build.sh -mobile
 
@@ -82,4 +83,11 @@ jobs:
         cd build/tests
         # xvfb-run --auto-servernum ./TestGitStorage -v2
         xvfb-run --auto-servernum make check
+
+    - name: build subsurface-downloader
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building downloader"
+        cd ..
+        bash -e -x subsurface/scripts/build.sh -downloader
 
