@@ -35,7 +35,6 @@ struct tag_entry {
 extern struct tag_entry *g_tag_list;
 
 struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag);
-struct tag_entry *taglist_added(struct tag_entry *original_list, struct tag_entry *new_list);
 
 /*
  * Writes all divetags form tag_list into internally allocated buffer
@@ -52,7 +51,6 @@ void taglist_cleanup(struct tag_entry **tag_list);
 void taglist_init_global();
 void taglist_free(struct tag_entry *tag_list);
 struct tag_entry *taglist_copy(struct tag_entry *s);
-bool taglist_contains(struct tag_entry *tag_list, const char *tag);
 void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct tag_entry *src2);
 
 #ifdef __cplusplus
