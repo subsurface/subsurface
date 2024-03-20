@@ -713,7 +713,7 @@
     <message>
         <location filename="../commands/command_divesite.cpp" line="101"/>
         <source>import dive sites from %1</source>
-        <translation>importiere Tauchplätze von %1</translation>
+        <translation>Tauchplätze von %1 importieren</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_divesite.cpp" line="137"/>
@@ -5962,12 +5962,12 @@ Existing Site</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="376"/>
         <source>&amp;Import dive sites</source>
-        <translation>&amp;Importiere Tauchplätze</translation>
+        <translation>Tauchplätze &amp;importieren </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="379"/>
         <source>Import dive sites from other users</source>
-        <translation>Importiere Tauchplätze von anderem Benutzer</translation>
+        <translation>Tauchplätze von anderem Benutzer importieren</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
@@ -7930,7 +7930,7 @@ Bitte die Vorlage mit einem neuen Dateinamen exportieren.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="416"/>
         <source>Processing %1 dives</source>
-        <translation>Bearbeite %1 Tauchgänge</translation>
+        <translation>Verarbeite %1 Tauchgänge</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
