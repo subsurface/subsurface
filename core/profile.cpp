@@ -79,7 +79,7 @@ extern "C" int get_maxtime(const struct plot_info *pi)
 {
 	int seconds = pi->maxtime;
 	int min = prefs.zoomed_plot ? 30 : 30 * 60;
-	return MAX(min, seconds);
+	return std::max(min, seconds);
 }
 
 /* get the maximum depth to which we want to plot */
@@ -87,7 +87,7 @@ extern "C" int get_maxdepth(const struct plot_info *pi)
 {
 	/* 3m to spare */
 	int mm = pi->maxdepth + 3000;
-	return prefs.zoomed_plot ? mm : MAX(30000, mm);
+	return prefs.zoomed_plot ? mm : std::max(30000, mm);
 }
 
 /* UNUSED! */
@@ -1265,7 +1265,7 @@ static void fill_o2_values(const struct dive *dive, const struct divecomputer *d
 			} // having initialised the empty o2 sensor values for this point on the profile,
 			amb_pressure.mbar = depth_to_mbar(entry->depth, dive);
 			o2pressure.mbar = calculate_ccr_po2(entry, dc); // ...calculate the po2 based on the sensor data
-			entry->o2pressure.mbar = MIN(o2pressure.mbar, amb_pressure.mbar);
+			entry->o2pressure.mbar = std::min(o2pressure.mbar, amb_pressure.mbar);
 		} else {
 			entry->o2pressure.mbar = 0; // initialise po2 to zero for dctype = OC
 		}

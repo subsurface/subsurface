@@ -487,8 +487,8 @@ static bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
  * Macros are copied from dive.c
  */
 
-#define MERGE_MAX(res, a, b, n) res->n = MAX(a->n, b->n)
-#define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? MIN(a->n, b->n) : (a->n) : (b->n)
+#define MERGE_MAX(res, a, b, n) res->n = std::max(a->n, b->n)
+#define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? std::min(a->n, b->n) : (a->n) : (b->n)
 
 static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
 {

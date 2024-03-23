@@ -852,7 +852,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	if ((divemode == CCR || divemode == PSCR) && prefs.dobailout) {
 		divemode = OC;
 		po2 = 0;
-		int bailoutsegment = MAX(prefs.min_switch_duration, 60 * prefs.problemsolvingtime);
+		int bailoutsegment = std::max(prefs.min_switch_duration, 60 * prefs.problemsolvingtime);
 		add_segment(ds, depth_to_bar(depth, dive),
 			get_cylinder(dive, current_cylinder)->gasmix,
 			bailoutsegment, po2, divemode, prefs.bottomsac, true);
