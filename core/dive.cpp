@@ -608,7 +608,7 @@ extern "C" int explicit_first_cylinder(const struct dive *dive, const struct div
 		if (ev && ((dc->sample && ev->time.seconds == dc->sample[0].time.seconds) || ev->time.seconds <= 1))
 			res = get_cylinder_index(dive, ev);
 		else if (dc->divemode == CCR)
-			res = MAX(get_cylinder_idx_by_use(dive, DILUENT), res);
+			res = std::max(get_cylinder_idx_by_use(dive, DILUENT), res);
 	}
 	return res < dive->cylinders.nr ? res : 0;
 }
@@ -852,7 +852,7 @@ static void fixup_duration(struct dive *dive)
 	duration_t duration = { };
 
 	for_each_relevant_dc (dive, dc) {
-		duration.seconds = MAX(duration.seconds, dc->duration.seconds);
+		duration.seconds = std::max(duration.seconds, dc->duration.seconds);
 	}
 	dive->duration.seconds = duration.seconds;
 }
@@ -1311,8 +1311,8 @@ extern "C" struct dive *fixup_dive(struct dive *dive)
 }
 
 /* Don't pick a zero for MERGE_MIN() */
-#define MERGE_MAX(res, a, b, n) res->n = MAX(a->n, b->n)
-#define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? MIN(a->n, b->n) : (a->n) : (b->n)
+#define MERGE_MAX(res, a, b, n) res->n = std::max(a->n, b->n)
+#define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? std::min(a->n, b->n) : (a->n) : (b->n)
 #define MERGE_TXT(res, a, b, n, sep) res->n = merge_text(a->n, b->n, sep)
 #define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
 
@@ -2333,7 +2333,7 @@ static int likely_same_dive(const struct dive *a, const struct dive *b)
 	 * Allow a time difference due to dive computer time
 	 * setting etc. Check if they overlap.
 	 */
-	fuzz = MAX(a->duration.seconds, b->duration.seconds) / 2;
+	fuzz = std::max(a->duration.seconds, b->duration.seconds) / 2;
 	if (fuzz < 60)
 		fuzz = 60;
 
