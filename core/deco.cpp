@@ -436,10 +436,10 @@ extern "C" void calc_crushing_pressure(struct deco_state *ds, double pressure)
 			n2_crushing_pressure = pressure - n2_inner_pressure;
 			he_crushing_pressure = pressure - he_inner_pressure;
 		}
-		ds->max_n2_crushing_pressure[ci] = MAX(ds->max_n2_crushing_pressure[ci], n2_crushing_pressure);
-		ds->max_he_crushing_pressure[ci] = MAX(ds->max_he_crushing_pressure[ci], he_crushing_pressure);
+		ds->max_n2_crushing_pressure[ci] = std::max(ds->max_n2_crushing_pressure[ci], n2_crushing_pressure);
+		ds->max_he_crushing_pressure[ci] = std::max(ds->max_he_crushing_pressure[ci], he_crushing_pressure);
 	}
-	ds->max_ambient_pressure = MAX(pressure, ds->max_ambient_pressure);
+	ds->max_ambient_pressure = std::max(pressure, ds->max_ambient_pressure);
 }
 
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
@@ -589,7 +589,7 @@ extern "C" double get_gf(struct deco_state *ds, double ambpressure_bar, const st
 	double gf_high = buehlmann_config.gf_high;
 	double gf;
 	if (ds->gf_low_pressure_this_dive > surface_pressure_bar)
-		gf = MAX((double)gf_low, (ambpressure_bar - surface_pressure_bar) /
+		gf = std::max((double)gf_low, (ambpressure_bar - surface_pressure_bar) /
 			(ds->gf_low_pressure_this_dive - surface_pressure_bar) * (gf_low - gf_high) + gf_high);
 	else
 		gf = gf_low;
