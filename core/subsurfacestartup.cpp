@@ -69,9 +69,6 @@ extern "C" void print_files()
 	char *tmp = hashfile_name_string();
 	printf("Image filename table: %s\n", tmp);
 	free(tmp);
-	tmp = picturedir_string();
-	printf("Local picture directory: %s\n\n", tmp);
-	free(tmp);
 }
 
 static void print_help()
