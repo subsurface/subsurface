@@ -404,17 +404,17 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
 		return;
 
-	QString filename;
-	if (getCloudURL(filename))
+	auto filename = getCloudURL();
+	if (!filename)
 		return;
 
 	if (verbose)
-		qDebug() << "Opening cloud storage from:" << filename;
+		report_info("Opening cloud storage from: %s", filename->c_str());
 
 	closeCurrentFile();
 
 	showProgressBar();
-	QByteArray fileNamePtr = QFile::encodeName(filename);
+	QByteArray fileNamePtr = QFile::encodeName(QString::fromStdString(*filename));
 	if (!parse_file(fileNamePtr.data(), &divelog))
 		setCurrentFile(fileNamePtr.toStdString());
 	process_loaded_dives();
@@ -435,23 +435,23 @@ static bool saveToCloudOK()
 
 void MainWindow::on_actionCloudstoragesave_triggered()
 {
-	QString filename;
 	if (!saveToCloudOK())
 		return;
-	if (getCloudURL(filename))
+	auto filename = getCloudURL();
+	if (!filename)
 		return;
 
 	if (verbose)
-		qDebug() << "Saving cloud storage to:" << filename;
+		report_info("Saving cloud storage to: %s", filename->c_str());
 	mainTab->stealFocus(); // Make sure that any currently edited field is updated before saving.
 
 	showProgressBar();
-	int error = save_dives(qPrintable(filename));
+	int error = save_dives(filename->c_str());
 	hideProgressBar();
 	if (error)
 		return;
 
-	setCurrentFile(filename.toStdString());
+	setCurrentFile(*filename);
 	Command::setClean();
 }
 

@@ -1351,27 +1351,34 @@ fraction_t string_to_fraction(const char *str)
 	return fraction;
 }
 
-int getCloudURL(QString &filename)
+// Sadly, the standard C++ library's regexp support is mediocre at best.
+static void sanitize_email(std::string &email)
 {
-	QString email = QString(prefs.cloud_storage_email);
-	email.replace(QRegularExpression("[^a-zA-Z0-9@._+-]"), "");
-	if (email.isEmpty() || empty_string(prefs.cloud_storage_password))
-		return report_error("Please configure Cloud storage email and password in the preferences");
-	if (email != prefs.cloud_storage_email_encoded) {
-		free((void *)prefs.cloud_storage_email_encoded);
-		prefs.cloud_storage_email_encoded = copy_qstring(email);
+	size_t j = 0;
+	for (char c: email) {
+		if (isalnum(c) || c == '@' || c == '.' ||
+		    c == '_' || c == '+' || c == '-')
+			email[j++] = c;
 	}
-	filename = QString(QString(prefs.cloud_base_url) + "git/%1[%1]").arg(email);
-	if (verbose)
-		qDebug() << "returning cloud URL" << filename;
-	return 0;
+	email.resize(j);
 }
 
-extern "C" char *cloud_url()
+std::optional<std::string> getCloudURL()
 {
-	QString filename;
-	getCloudURL(filename);
-	return copy_qstring(filename);
+	std::string email(prefs.cloud_storage_email);
+	sanitize_email(email);
+	if (email.empty() || empty_string(prefs.cloud_storage_password)) {
+		report_error("Please configure Cloud storage email and password in the preferences");
+		return {};
+	}
+	if (email != prefs.cloud_storage_email_encoded) {
+		free((void *)prefs.cloud_storage_email_encoded);
+		prefs.cloud_storage_email_encoded = strdup(email.c_str());
+	}
+	std::string filename = std::string(prefs.cloud_base_url) + "git/" + email + "[" + email + "]";
+	if (verbose)
+		report_info("returning cloud URL %s", filename.c_str());
+	return filename;
 }
 
 extern "C" void subsurface_mkdir(const char *dir)
