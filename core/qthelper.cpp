@@ -1194,16 +1194,6 @@ extern "C" const char *local_file_path(struct picture *picture)
 	return copy_qstring(localFilePath(picture->filename));
 }
 
-const QString picturedir()
-{
-	return QString(system_default_directory()).append("/picturedata/");
-}
-
-extern "C" char *picturedir_string()
-{
-	return copy_qstring(picturedir());
-}
-
 QString get_gas_string(struct gasmix gas)
 {
 	uint o2 = (get_o2(gas) + 5) / 10, he = (get_he(gas) + 5) / 10;

@@ -130,7 +130,6 @@ char *move_away(const char *path);
 const char *local_file_path(struct picture *picture);
 char *cloud_url();
 char *hashfile_name_string();
-char *picturedir_string();
 enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
 char *get_current_date();
