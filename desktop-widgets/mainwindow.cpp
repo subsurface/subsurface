@@ -416,7 +416,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
 	if (!parse_file(fileNamePtr.data(), &divelog))
-		setCurrentFile(fileNamePtr.data());
+		setCurrentFile(fileNamePtr.toStdString());
 	process_loaded_dives();
 	hideProgressBar();
 	refreshDisplay();
@@ -451,7 +451,7 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	if (error)
 		return;
 
-	setCurrentFile(qPrintable(filename));
+	setCurrentFile(filename.toStdString());
 	Command::setClean();
 }
 
@@ -510,7 +510,7 @@ void MainWindow::closeCurrentFile()
 	/* free the dives and trips */
 	clear_git_id();
 	clear_dive_file_data(); // this clears all the core data structures and resets the models
-	setCurrentFile(nullptr);
+	setCurrentFile(std::string());
 	diveList->setSortOrder(DiveTripModelBase::NR, Qt::DescendingOrder);
 	if (existing_filename.empty())
 		setTitle();
@@ -525,7 +525,7 @@ void MainWindow::updateCloudOnlineStatus()
 	ui.actionCloudOnline->setChecked(is_cloud && !git_local_only);
 }
 
-void MainWindow::setCurrentFile(const char *f)
+void MainWindow::setCurrentFile(const std::string &f)
 {
 	existing_filename = f;
 	setTitle();
@@ -1201,7 +1201,7 @@ int MainWindow::file_save_as(void)
 	if (save_dives(qPrintable(filename)))
 		return -1;
 
-	setCurrentFile(qPrintable(filename));
+	setCurrentFile(filename.toStdString());
 	Command::setClean();
 	addRecentFile(filename, true);
 	return 0;
@@ -1308,7 +1308,7 @@ void MainWindow::loadFiles(const QStringList &fileNames)
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		if (!parse_file(fileNamePtr.data(), &divelog)) {
-			setCurrentFile(fileNamePtr.data());
+			setCurrentFile(fileNamePtr.toStdString());
 			addRecentFile(fileNamePtr, false);
 		}
 	}
