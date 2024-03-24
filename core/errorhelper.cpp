@@ -6,7 +6,6 @@
 #include <stdarg.h>
 #include "errorhelper.h"
 #include "membuffer.h"
-#include "qthelper.h"
 
 #if !defined(Q_OS_ANDROID) && !defined(__ANDROID__)
 #define LOG_MSG(fmt, ...)	fprintf(stderr, fmt, ##__VA_ARGS__)
@@ -21,7 +20,7 @@ int verbose;
 
 void report_info(const char *fmt, ...)
 {
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 
 	VA_BUF(&buf, fmt);
 	strip_mb(&buf);
@@ -32,7 +31,7 @@ static void (*error_cb)(char *) = NULL;
 
 int report_error(const char *fmt, ...)
 {
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 
 	VA_BUF(&buf, fmt);
 	strip_mb(&buf);

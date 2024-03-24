@@ -85,7 +85,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	eventtype.h
 	equipment.c
 	equipment.h
-	errorhelper.c
+	errorhelper.cpp
 	exif.cpp
 	exif.h
 	extradata.h

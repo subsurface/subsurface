@@ -33,7 +33,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/configuredivecomputer.cpp \
 	core/divelogexportlogic.cpp \
 	core/divesitehelpers.cpp \
-	core/errorhelper.c \
+	core/errorhelper.cpp \
 	core/exif.cpp \
 	core/format.cpp \
 	core/gettextfromc.cpp \
