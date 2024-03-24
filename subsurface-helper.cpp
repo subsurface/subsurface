@@ -87,11 +87,11 @@ void run_mobile_ui(double initial_font_size)
 			newDefaultFont.setFamily(family);
 			newDefaultFont.setPointSize(basePointSize);
 			(static_cast<QApplication *>(QCoreApplication::instance()))->setFont(newDefaultFont);
-			qDebug() << "Detected OnePlus device, trying to force bundled font" << family;
+			report_info("Detected OnePlus device, trying to force bundled font %s", qPrintable(family));
 			QFont defaultFont = (static_cast<QApplication *>(QCoreApplication::instance()))->font();
-			qDebug() << "Qt reports default font is set as" << defaultFont.family();
+			report_info("Qt reports default font is set as", qPrintable(defaultFont.family()));
 		} else {
-			qDebug() << "Detected OnePlus device, but can't determine font family used";
+			report_info("Detected OnePlus device, but can't determine font family used");
 		}
 	}
 #endif
@@ -144,7 +144,7 @@ void run_mobile_ui(double initial_font_size)
 #else
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 #endif
-	qDebug() << "loaded main.qml";
+	report_info("loaded main.qml");
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {
 		report_info("can't create window object");
@@ -152,18 +152,18 @@ void run_mobile_ui(double initial_font_size)
 	}
 	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(qqWindowObject);
 	qml_window->setIcon(QIcon(":subsurface-mobile-icon"));
-	qDebug() << "qqwindow devicePixelRatio" << qml_window->devicePixelRatio() << qml_window->screen()->devicePixelRatio();
+	report_info("qqwindow devicePixelRatio %f %f", qml_window->devicePixelRatio(), qml_window->screen()->devicePixelRatio());
 	QScreen *screen = qml_window->screen();
 	int qmlWW = qml_window->width();
 	int qmlSW = screen->size().width();
-	qDebug() << "qml_window reports width as" << qmlWW << "associated screen width" << qmlSW << "Qt screen reports width as" << availableScreenWidth;
+	report_info("qml_window reports width as %d associated screen width %d Qt screen reports width as %d", qmlWW, qmlSW, availableScreenWidth);
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
 	QMLManager *manager = QMLManager::instance();
 
 	manager->setDevicePixelRatio(qml_window->devicePixelRatio(), qml_window->screen());
 	manager->qmlWindow = qqWindowObject;
 	manager->screenChanged(screen);
-	qDebug() << "qqwindow screen has ldpi/pdpi" << screen->logicalDotsPerInch() << screen->physicalDotsPerInch();
+	report_info("qqwindow screen has ldpi/pdpi %f %f", screen->logicalDotsPerInch(), screen->physicalDotsPerInch());
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
 	int width = 800;
 	int height = 1200;
@@ -172,7 +172,7 @@ void run_mobile_ui(double initial_font_size)
 		int width_override = qEnvironmentVariableIntValue("SUBSURFACE_MOBILE_WIDTH", &ok);
 		if (ok) {
 			width = width_override;
-			qDebug() << "overriding window width:" << width;
+			report_info("overriding window width: %d", width);
 		}
 	}
 	if (qEnvironmentVariableIsSet("SUBSURFACE_MOBILE_HEIGHT")) {
@@ -180,7 +180,7 @@ void run_mobile_ui(double initial_font_size)
 		int height_override = qEnvironmentVariableIntValue("SUBSURFACE_MOBILE_HEIGHT", &ok);
 		if (ok) {
 			height = height_override;
-			qDebug() << "overriding window height:" << height;
+			report_info("overriding window height: %d", height);
 		}
 	}
 	qml_window->setHeight(height);
