@@ -15,6 +15,7 @@
 
 #include "uemis.h"
 #include "divesite.h"
+#include "errorhelper.h"
 #include "sample.h"
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
@@ -85,7 +86,7 @@ static int uemis_convert_base64(char *base64, uint8_t **data)
 	datalen = (len / 4 + 1) * 3;
 	if (datalen < 0x123 + 0x25)
 		/* less than header + 1 sample??? */
-		fprintf(stderr, "suspiciously short data block %d\n", datalen);
+		report_info("suspiciously short data block %d", datalen);
 
 	*data = malloc(datalen);
 	if (!*data) {
@@ -95,7 +96,7 @@ static int uemis_convert_base64(char *base64, uint8_t **data)
 	decode((unsigned char *)base64, *data, len);
 
 	if (memcmp(*data, "Dive\01\00\00", 7))
-		fprintf(stderr, "Missing Dive100 header\n");
+		report_info("Missing Dive100 header");
 
 	return datalen;
 }
@@ -350,7 +351,7 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	while ((i <= datalen) && (data[i] != 0 || data[i + 1] != 0)) {
 		if (u_sample->active_tank != active) {
 			if (u_sample->active_tank >= dive->cylinders.nr) {
-				fprintf(stderr, "got invalid sensor #%d was #%d\n", u_sample->active_tank, active);
+				report_info("got invalid sensor #%d was #%d", u_sample->active_tank, active);
 			} else {
 				active = u_sample->active_tank;
 				add_gas_switch_event(dive, dc, u_sample->dive_time, active);

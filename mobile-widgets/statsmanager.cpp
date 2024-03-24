@@ -2,6 +2,7 @@
 #include "statsmanager.h"
 #include "themeinterface.h"
 #include "stats/chartlistmodel.h"
+#include "core/errorhelper.h"
 
 StatsManager::StatsManager() : view(nullptr), charts(nullptr), themeInitialized(false)
 {
@@ -15,9 +16,9 @@ StatsManager::~StatsManager()
 void StatsManager::init(StatsView *v, ChartListModel *m)
 {
 	if (!v)
-		fprintf(stderr, "StatsManager::init(): no StatsView - statistics will not work.\n");
+		report_info("StatsManager::init(): no StatsView - statistics will not work.");
 	if (!m)
-		fprintf(stderr, "StatsManager::init(): no ChartListModel - statistics will not work.\n");
+		report_info("StatsManager::init(): no ChartListModel - statistics will not work.");
 	view = v;
 	charts = m;
 

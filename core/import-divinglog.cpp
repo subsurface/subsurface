@@ -13,6 +13,7 @@
 #include "divelist.h"
 #include "divelog.h"
 #include "device.h"
+#include "errorhelper.h"
 #include "membuffer.h"
 #include "gettext.h"
 
@@ -336,14 +337,14 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder0_template, diveid);
 	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query divinglog_cylinder0 failed.\n");
+		report_info("Database query divinglog_cylinder0 failed.");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, diveid);
 	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query divinglog_cylinder failed.\n");
+		report_info("Database query divinglog_cylinder failed.");
 		return 1;
 	}
 
@@ -373,7 +374,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, diveid);
 	retval = sqlite3_exec(handle, get_buffer, &divinglog_profile, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query divinglog_profile failed.\n");
+		report_info("Database query divinglog_profile failed.");
 		return 1;
 	}
 
@@ -396,7 +397,7 @@ extern "C" int parse_divinglog_buffer(sqlite3 *handle, const char *url, const ch
 	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, &state, NULL);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "Database query failed '%s'.\n", url);
+		report_info("Database query failed '%s'.", url);
 		return 1;
 	}
 
