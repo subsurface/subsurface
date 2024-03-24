@@ -6,6 +6,7 @@
 #include "divesite.h"
 #include "dive.h"
 #include "divelog.h"
+#include "errorhelper.h"
 #include "file.h"
 #include "sample.h"
 #include "strndup.h"
@@ -279,11 +280,11 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		}
 
 		if (sample_count == 0) {
-			fprintf(stderr, "DEBUG: sample count 0 - terminating parser\n");
+			report_info("DEBUG: sample count 0 - terminating parser");
 			break;
 		}
 		if (ptr + sample_count * 4 + 4 > buf_size) {
-			fprintf(stderr, "DEBUG: BOF - terminating parser\n");
+			report_info("DEBUG: BOF - terminating parser");
 			break;
 		}
 		// we aren't using the start_cns, dive_mode, and algorithm, yet

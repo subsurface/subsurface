@@ -12,6 +12,7 @@
 #include "divelist.h"
 #include "divelog.h"
 #include "device.h"
+#include "errorhelper.h"
 #include "membuffer.h"
 #include "gettext.h"
 #include "tag.h"
@@ -260,30 +261,19 @@ static int dm4_dive(void *param, int, char **data, char **)
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query dm4_events failed.\n");
+		report_info("Database query dm4_events failed.");
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_tags, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query dm4_tags failed.\n");
+		report_info("Database query dm4_tags failed.");
 		return 1;
 	}
 
 	dive_end(state);
 
-	/*
-	for (i=0; i<columns;++i) {
-		fprintf(stderr, "%s\t", column[i]);
-	}
-	fprintf(stderr, "\n");
-	for (i=0; i<columns;++i) {
-		fprintf(stderr, "%s\t", data[i]);
-	}
-	fprintf(stderr, "\n");
-	//exit(0);
-	*/
 	return SQLITE_OK;
 }
 
@@ -303,7 +293,7 @@ extern "C" int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *, 
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, &state, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "Database query failed '%s'.\n", url);
+		report_info("Database query failed '%s'.", url);
 		return 1;
 	}
 
@@ -430,7 +420,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 	snprintf(get_events, sizeof(get_events) - 1, get_cylinders_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm5_cylinders, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query dm5_cylinders failed.\n");
+		report_info("Database query dm5_cylinders failed.");
 		return 1;
 	}
 
@@ -536,21 +526,21 @@ static int dm5_dive(void *param, int, char **data, char **)
 	snprintf(get_events, sizeof(get_events) - 1, get_gaschange_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm5_gaschange, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query dm5_gaschange failed.\n");
+		report_info("Database query dm5_gaschange failed.");
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_events_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_events, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query dm4_events failed.\n");
+		report_info("Database query dm4_events failed.");
 		return 1;
 	}
 
 	snprintf(get_events, sizeof(get_events) - 1, get_tags_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_events, &dm4_tags, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query dm4_tags failed.\n");
+		report_info("Database query dm4_tags failed.");
 		return 1;
 	}
 
@@ -575,7 +565,7 @@ extern "C" int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *, 
 	retval = sqlite3_exec(handle, get_dives, &dm5_dive, &state, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "Database query failed '%s'.\n", url);
+		report_info("Database query failed '%s'.", url);
 		return 1;
 	}
 

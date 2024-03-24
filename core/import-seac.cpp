@@ -143,7 +143,7 @@ static int seac_dive(void *param, int, char **data, char **)
 			break;
 		default:
 			if (verbose) {
-				fprintf(stderr, "Unknown divetype %i", atoi(data[6]));
+				report_info("Unknown divetype %i", atoi(data[6]));
 			}
 		}
 	}
@@ -174,7 +174,7 @@ static int seac_dive(void *param, int, char **data, char **)
 			break;
 		default:
 			if (verbose) {
-				fprintf(stderr, "Unknown salinity %i", atoi(data[8]));
+				report_info("Unknown salinity %i", atoi(data[8]));
 			}
 		}
 	}
@@ -187,7 +187,7 @@ static int seac_dive(void *param, int, char **data, char **)
 	// Create sql_stmt type to query DB
 	retval = sqlite3_prepare_v2(handle, get_samples, -1, &sqlstmt, 0);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Preparing SQL object failed when getting SeacSync dives.\n");
+		report_info("Preparing SQL object failed when getting SeacSync dives.");
 		return 1;
 	}
 
@@ -198,7 +198,7 @@ static int seac_dive(void *param, int, char **data, char **)
 	// Catch a bad query
 	retval = sqlite3_step(sqlstmt);
 	if (retval == SQLITE_ERROR) {
-		fprintf(stderr, "%s", "Getting dive data from SeacSync DB failed.\n");
+		report_info("Getting dive data from SeacSync DB failed.");
 		return 1;
 	}
 
@@ -293,7 +293,7 @@ extern "C" int parse_seac_buffer(sqlite3 *handle, const char *url, const char *,
 	retval = sqlite3_exec(handle, get_dives, &seac_dive, &state, &err);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "Database query failed '%s'.\n", url);
+		report_info("Database query failed '%s'.", url);
 		return 1;
 	}
 

@@ -125,7 +125,7 @@ static int try_to_open_db(const char *filename, std::string &mem, struct divelog
 	retval = sqlite3_open(filename, &handle);
 
 	if (retval) {
-		fprintf(stderr, "Database connection failed '%s'.\n", filename);
+		report_info("Database connection failed '%s'", filename);
 		return 1;
 	}
 
@@ -258,7 +258,7 @@ bool remote_repo_uptodate(const char *filename, struct git_info *info)
 	if (is_git_repository(filename, info) && open_git_repository(info)) {
 		std::string sha = get_sha(info->repo, info->branch);
 		if (!sha.empty() && current_sha == sha) {
-			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha.c_str());
+			report_info("already have loaded SHA %s - don't load again", sha.c_str());
 			return true;
 		}
 	}
@@ -314,7 +314,7 @@ extern "C" int parse_file(const char *filename, struct divelog *log)
 		std::string wl_name = std::string(filename, t - filename) + ".add";
 		auto [wl_mem, err] = readfile(wl_name.c_str());
 		if (err < 0) {
-			fprintf(stderr, "No file %s found. No WLog extensions.\n", wl_name.c_str());
+			report_info("No file %s found. No WLog extensions.", wl_name.c_str());
 			wl_mem.clear();
 		}
 		return datatrak_import(mem, wl_mem, log);

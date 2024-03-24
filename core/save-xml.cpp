@@ -865,7 +865,7 @@ static int export_dives_xslt_doit(const char *filename, struct xml_params *param
 	int res = 0;
 
 	if (verbose)
-		fprintf(stderr, "export_dives_xslt with stylesheet %s\n", export_xslt);
+		report_info("export_dives_xslt with stylesheet %s", export_xslt);
 
 	if (!filename)
 		return report_error("No filename for export");

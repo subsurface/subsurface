@@ -4,6 +4,7 @@
 #include "selection.h"
 #include "divelist.h"
 #include "divelog.h"
+#include "errorhelper.h"
 #include "trip.h"
 #include "subsurface-qt/divelistnotifier.h"
 
@@ -318,6 +319,6 @@ extern "C" struct dive_trip *single_selected_trip()
 		if (divelog.trips->trips[i]->selected)
 			return divelog.trips->trips[i];
 	}
-	fprintf(stderr, "warning: found no selected trip even though one should be selected\n");
+	report_info("warning: found no selected trip even though one should be selected");
 	return NULL; // shouldn't happen
 }

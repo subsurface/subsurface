@@ -3,6 +3,7 @@
 #include "divelist.h"
 #include "divesite.h"
 #include "device.h"
+#include "errorhelper.h"
 #include "filterpreset.h"
 #include "trip.h"
 
@@ -70,7 +71,7 @@ void divelog::clear()
 	while (sites->nr)
 		delete_dive_site(get_dive_site(0, sites), sites);
 	if (trips->nr != 0) {
-		fprintf(stderr, "Warning: trip table not empty in divelog::clear()!\n");
+		report_info("Warning: trip table not empty in divelog::clear()!");
 		trips->nr = 0;
 	}
 	clear_device_table(devices);
