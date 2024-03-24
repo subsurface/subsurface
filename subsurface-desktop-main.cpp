@@ -89,9 +89,9 @@ int main(int argc, char **argv)
 			if (!defaultFile.isEmpty())
 				files.push_back(QString(prefs.default_filename));
 		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
-			QString cloudURL;
-			if (getCloudURL(cloudURL) == 0)
-				files.push_back(cloudURL);
+			auto cloudURL = getCloudURL();
+			if (cloudURL)
+				files.push_back(QString::fromStdString(*cloudURL));
 		}
 	}
 	MainWindow *m = MainWindow::instance();

@@ -46,25 +46,23 @@ extern "C" void print_version()
 extern "C" void print_files()
 {
 	struct git_info info;
-	const char *filename;
+	std::optional<std::string> filename;
 
 	printf("\nFile locations:\n\n");
 	printf("Cloud email:%s\n", prefs.cloud_storage_email);
 	if (!empty_string(prefs.cloud_storage_email) && !empty_string(prefs.cloud_storage_password)) {
-		filename = cloud_url();
-
-		is_git_repository(filename, &info);
-	} else {
-		/* strdup so the free below works in either case */
-		filename = strdup("No valid cloud credentials set.\n");
+		filename = getCloudURL();
+		if (filename)
+			is_git_repository(filename->c_str(), &info);
 	}
+	if (!filename)
+		filename = std::string("No valid cloud credentials set.\n");
 	if (!info.localdir.empty()) {
 		printf("Local git storage: %s\n", info.localdir.c_str());
 	} else {
 		printf("Unable to get local git directory\n");
 	}
-	printf("Cloud URL: %s\n", filename);
-	free((void *)filename);
+	printf("Cloud URL: %s\n", filename->c_str());
 	char *tmp = hashfile_name_string();
 	printf("Image filename table: %s\n", tmp);
 	free(tmp);

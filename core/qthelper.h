@@ -20,6 +20,8 @@ enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYP
 #ifdef __cplusplus
 
 #include <QString>
+#include <optional>
+#include <string>
 #include "core/gettextfromc.h"
 class QImage;
 
@@ -41,7 +43,7 @@ void write_hashes();
 QString thumbnailFileName(const QString &filename);
 void learnPictureFilename(const QString &originalName, const QString &localName);
 QString localFilePath(const QString &originalFilename);
-int getCloudURL(QString &filename);
+std::optional<std::string> getCloudURL(); // move to prefs.h, probably.
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 void init_proxy();
 QStringList getWaterTypesAsString();
@@ -127,7 +129,6 @@ void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName);
 const char *local_file_path(struct picture *picture);
-char *cloud_url();
 char *hashfile_name_string();
 enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
