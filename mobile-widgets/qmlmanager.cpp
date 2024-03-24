@@ -567,11 +567,11 @@ void QMLManager::finishSetup()
 	// Initialize cloud credentials.
 	git_local_only = !prefs.cloud_auto_sync;
 
-	QString url;
+	std::optional<std::string> url;
 	if (!qPrefCloudStorage::cloud_storage_email().isEmpty() &&
 	    !qPrefCloudStorage::cloud_storage_password().isEmpty() &&
-	    getCloudURL(url) == 0) {
-		openLocalThenRemote(url);
+	    (url = getCloudURL())) {
+		openLocalThenRemote(QString::fromStdString(*url));
 	} else if (!existing_filename.empty() &&
 		   qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
 		rememberOldStatus();
@@ -781,13 +781,13 @@ void QMLManager::deleteAccount()
 
 void QMLManager::loadDivesWithValidCredentials()
 {
-	QString url;
-	if (getCloudURL(url)) {
+	auto url = getCloudURL();
+	if (!url) {
 		setStartPageText(RED_FONT + tr("Cloud storage error: %1").arg(consumeError()) + END_FONT);
 		revertToNoCloudIfNeeded();
 		return;
 	}
-	QByteArray fileNamePrt = QFile::encodeName(url);
+	QByteArray fileNamePrt = QFile::encodeName(QString::fromStdString(*url));
 	struct git_info info;
 	int error;
 
