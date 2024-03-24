@@ -8,6 +8,7 @@
 #include "ssrf.h"
 #include "dive.h"
 #include "divesite.h"
+#include "errorhelper.h"
 #include "gas.h"
 #include "parse.h"
 #include "sample.h"
@@ -147,35 +148,35 @@ static int cobalt_dive(void *param, int, char **data, char **)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_cylinders, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query cobalt_cylinders failed.\n");
+		report_info("Database query cobalt_cylinders failed.");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_buddy_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_buddies, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query cobalt_buddies failed.\n");
+		report_info("Database query cobalt_buddies failed.");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_visibility_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_visibility, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query cobalt_visibility failed.\n");
+		report_info("Database query cobalt_visibility failed.");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_location_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, &location, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query cobalt_location failed.\n");
+		report_info("Database query cobalt_location failed.");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_site_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, &location_site, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query cobalt_location (site) failed.\n");
+		report_info("Database query cobalt_location (site) failed.");
 		return 1;
 	}
 
@@ -196,7 +197,7 @@ static int cobalt_dive(void *param, int, char **data, char **)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_profile_sample, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query cobalt_profile_sample failed.\n");
+		report_info("Database query cobalt_profile_sample failed.");
 		return 1;
 	}
 
@@ -219,7 +220,7 @@ extern "C" int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char 
 	retval = sqlite3_exec(handle, get_dives, &cobalt_dive, &state, NULL);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "Database query failed '%s'.\n", url);
+		report_info("Database query failed '%s'.\n", url);
 		return 1;
 	}
 

@@ -16,6 +16,7 @@
 #include "dive.h"
 #include "divelist.h"
 #include "divelog.h"
+#include "errorhelper.h"
 #include "pref.h"
 #include "subsurface-string.h"
 #include "table.h"
@@ -460,7 +461,7 @@ cylinder_t *get_cylinder(const struct dive *d, int idx)
 	 * in the table to mark no-cylinder surface interavals. This is horrendous. Fix ASAP. */
 	// if (idx < 0 || idx >= d->cylinders.nr) {
 	if (idx < 0 || idx >= d->cylinders.nr + 1 || idx >= d->cylinders.allocated) {
-		fprintf(stderr, "Warning: accessing invalid cylinder %d (%d existing)\n", idx, d->cylinders.nr);
+		report_info("Warning: accessing invalid cylinder %d (%d existing)", idx, d->cylinders.nr);
 		return NULL;
 	}
 	return &d->cylinders.cylinders[idx];
@@ -469,7 +470,7 @@ cylinder_t *get_cylinder(const struct dive *d, int idx)
 cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 {
 	if (idx < 0) {
-		fprintf(stderr, "Warning: accessing invalid cylinder %d\n", idx);
+		report_info("Warning: accessing invalid cylinder %d", idx);
 		return NULL;
 	}
 	while (idx >= d->cylinders.nr)

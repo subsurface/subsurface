@@ -658,7 +658,7 @@ extern "C" void update_setpoint_events(const struct dive *dive, struct divecompu
 		ev->value = new_setpoint;
 	} else {
 		if (!add_event(dc, 0, SAMPLE_EVENT_PO2, 0, new_setpoint, "SP change"))
-			fprintf(stderr, "Could not add setpoint change event\n");
+			report_info("Could not add setpoint change event");
 	}
 }
 
@@ -3063,7 +3063,7 @@ extern "C" struct dive *make_first_dc(const struct dive *d, int dc_number)
 		;
 	if (!dc) {
 		free(newdc);
-		fprintf(stderr, "data inconsistent: can't find the current DC");
+		report_info("data inconsistent: can't find the current DC");
 		return res;
 	}
 	dc->next = old_dc->next;
@@ -3386,7 +3386,7 @@ extern "C" struct dive *get_dive_by_uniq_id(int id)
 	}
 #ifdef DEBUG
 	if (dive == NULL) {
-		fprintf(stderr, "Invalid id %x passed to get_dive_by_diveid, try to fix the code\n", id);
+		report_info("Invalid id %x passed to get_dive_by_diveid, try to fix the code", id);
 		exit(1);
 	}
 #endif
@@ -3404,7 +3404,7 @@ extern "C" int get_idx_by_uniq_id(int id)
 	}
 #ifdef DEBUG
 	if (dive == NULL) {
-		fprintf(stderr, "Invalid id %x passed to get_dive_by_diveid, try to fix the code\n", id);
+		report_info("Invalid id %x passed to get_dive_by_diveid, try to fix the code", id);
 		exit(1);
 	}
 #endif

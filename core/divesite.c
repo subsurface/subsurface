@@ -4,6 +4,7 @@
 #include "dive.h"
 #include "divelist.h"
 #include "divelog.h"
+#include "errorhelper.h"
 #include "membuffer.h"
 #include "subsurface-string.h"
 #include "table.h"
@@ -371,17 +372,17 @@ void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
 {
 	int idx;
 	if (!d) {
-		fprintf(stderr, "Warning: add_dive_to_dive_site called with NULL dive\n");
+		report_info("Warning: add_dive_to_dive_site called with NULL dive");
 		return;
 	}
 	if (!ds) {
-		fprintf(stderr, "Warning: add_dive_to_dive_site called with NULL dive site\n");
+		report_info("Warning: add_dive_to_dive_site called with NULL dive site");
 		return;
 	}
 	if (d->dive_site == ds)
 		return;
 	if (d->dive_site) {
-		fprintf(stderr, "Warning: adding dive that already belongs to a dive site to a different site\n");
+		report_info("Warning: adding dive that already belongs to a dive site to a different site");
 		unregister_dive_from_dive_site(d);
 	}
 	idx = dive_table_get_insertion_index(&ds->dives, d);

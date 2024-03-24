@@ -5,6 +5,7 @@
 #include "core/device.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
+#include "core/errorhelper.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/subsurface-float.h"
 #include "core/subsurface-string.h"
@@ -433,7 +434,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 
 		if ((colon = strstr(devname, ":\\ (UEMISSDA)")) != NULL) {
 			*(colon + 2) = '\0';
-			fprintf(stderr, "shortened devname to \"%s\"", devname);
+			report_info("shortened devname to \"%s\"", devname);
 		}
 		data->setDevName(devname);
 	} else {

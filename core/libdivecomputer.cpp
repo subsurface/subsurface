@@ -51,15 +51,8 @@ static int stoptime, stopdepth, ndl, po2, cns, heartbeat, bearing;
 static bool in_deco, first_temp_is_air;
 static int current_gas_index;
 
-/* logging bits from libdivecomputer */
-#ifndef __ANDROID__
-#define INFO(context, fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
-#define ERROR(context, fmt, ...)	fprintf(stderr, "ERROR: " fmt "\n", ##__VA_ARGS__)
-#else
-#include <android/log.h>
-#define INFO(context, fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__)
-#define ERROR(context, fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "ERROR: " fmt "\n", ##__VA_ARGS__)
-#endif
+#define INFO(context, fmt, ...)	report_info("INFO: " fmt, ##__VA_ARGS__)
+#define ERROR(context, fmt, ...)	report_info("ERROR: " fmt, ##__VA_ARGS__)
 
 /*
  * Directly taken from libdivecomputer's examples/common.c to improve
@@ -504,7 +497,7 @@ static void dev_info(device_data_t *, const char *fmt, ...)
 	va_end(ap);
 	progress_bar_text = buffer;
 	if (verbose)
-		INFO(0, "dev_info: %s\n", buffer);
+		INFO(0, "dev_info: %s", buffer);
 
 	if (progress_callback)
 		(*progress_callback)(buffer);
@@ -1099,14 +1092,14 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		if (dc_descriptor_get_model(devdata->descriptor) != devinfo->model) {
 			dc_descriptor_t *better_descriptor = get_descriptor(dc_descriptor_get_type(devdata->descriptor), devinfo->model);
 			if (better_descriptor != NULL) {
-				fprintf(stderr, "EVENT_DEVINFO gave us a different detected product (model %d instead of %d), which we are using now.\n",
+				report_info("EVENT_DEVINFO gave us a different detected product (model %d instead of %d), which we are using now.",
 					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 				devdata->descriptor = better_descriptor;
 				devdata->product = dc_descriptor_get_product(better_descriptor);
 				devdata->vendor = dc_descriptor_get_vendor(better_descriptor);
 				devdata->model = str_printf("%s %s", devdata->vendor, devdata->product);
 			} else {
-				fprintf(stderr, "EVENT_DEVINFO gave us a different detected product (model %d instead of %d), but that one is unknown.\n",
+				report_info("EVENT_DEVINFO gave us a different detected product (model %d instead of %d), but that one is unknown.",
 					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 			}
 		}
@@ -1288,7 +1281,7 @@ static dc_status_t usbhid_device_open(dc_iostream_t **iostream, dc_context_t *co
 	dc_iterator_free (iterator);
 
 	if (!device) {
-		ERROR(context, "didn't find HID device\n");
+		ERROR(context, "didn't find HID device");
 		return DC_STATUS_NODEVICE;
 	}
 	dev_info(data, "Opening USB HID device for %04x:%04x",
@@ -1639,7 +1632,7 @@ dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model)
 
 	rc = dc_descriptor_iterator(&iterator);
 	if (rc != DC_STATUS_SUCCESS) {
-		fprintf(stderr, "Error creating the device descriptor iterator.\n");
+		report_info("Error creating the device descriptor iterator.");
 		return NULL;
 	}
 	while ((dc_iterator_next(iterator, &descriptor)) == DC_STATUS_SUCCESS) {

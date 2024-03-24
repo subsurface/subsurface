@@ -10,6 +10,7 @@
 #include "divelist.h"
 #include "divelog.h"
 #include "file.h"
+#include "format.h"
 #include "parse.h"
 #include "sample.h"
 #include "divelist.h"
@@ -100,7 +101,7 @@ static char *parse_dan_new_line(char *buf, const char *NL)
 	if (iter) {
 		iter += strlen(NL);
 	} else {
-		fprintf(stderr, "DEBUG: No new line found\n");
+		report_info("DEBUG: No new line found");
 		return NULL;
 	}
 	return iter;
@@ -128,7 +129,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 	} else if ((ptr = strstr(mem.data(), "\n")) != NULL) {
 		NL = "\n";
 	} else {
-		fprintf(stderr, "DEBUG: failed to detect NL\n");
+		report_info("DEBUG: failed to detect NL");
 		return -1;
 	}
 
@@ -144,7 +145,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 			xml_params_add(params, "diveNro", tmpbuf);
 		}
 
-		//fprintf(stderr, "DEBUG: BEGIN end_ptr %d round %d <%s>\n", end_ptr, j++, ptr);
+		//report_info("DEBUG: BEGIN end_ptr %d round %d <%s>", end_ptr, j++, ptr);
 		iter = ptr + 1;
 		for (i = 0; i <= 4 && iter; ++i) {
 			iter = strchr(iter, '|');
@@ -153,7 +154,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 		}
 
 		if (!iter) {
-			fprintf(stderr, "DEBUG: Data corrupt");
+			report_info("DEBUG: Data corrupt");
 			return -1;
 		}
 
@@ -214,7 +215,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 
 		/* After ZDH we should get either ZDT (above) or ZDP */
 		if (strncmp(iter, "ZDP{", 4) != 0) {
-			fprintf(stderr, "DEBUG: Input appears to violate DL7 specification\n");
+			report_info("DEBUG: Input appears to violate DL7 specification");
 			end_ptr = iter - mem.data();
 			continue;
 		}
@@ -236,7 +237,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 		if (ptr) {
 			*ptr = 0;
 		} else {
-			fprintf(stderr, "DEBUG: failed to find end ZDP\n");
+			report_info("DEBUG: failed to find end ZDP");
 			return -1;
 		}
 		mem_csv.resize(ptr - mem_csv.data());
@@ -313,10 +314,11 @@ extern "C" int parse_csv_file(const char *filename, struct xml_params *params, c
 
 #ifndef SUBSURFACE_MOBILE
 	if (verbose >= 2) {
-		fprintf(stderr, "(echo '<csv>'; cat %s;echo '</csv>') | xsltproc ", filename);
+		std::string info = format_string_std("(echo '<csv>'; cat %s;echo '</csv>') | xsltproc ", filename);
 		for (int i = 0; i < xml_params_count(params); i++)
-			fprintf(stderr, "--stringparam %s %s ", xml_params_get_key(params, i), xml_params_get_value(params, i));
-		fprintf(stderr, "%s/xslt/%s -\n", SUBSURFACE_SOURCE, csvtemplate);
+			info += format_string_std("--stringparam %s %s ", xml_params_get_key(params, i), xml_params_get_value(params, i));
+		info += format_string_std("%s/xslt/%s -", SUBSURFACE_SOURCE, csvtemplate);
+		report_info("%s", info.c_str());
 	}
 #endif
 	ret = parse_xml_buffer(filename, mem.data(), mem.size(), log, params);
@@ -385,8 +387,11 @@ static int try_to_xslt_open_csv(const char *filename, std::string &mem, const ch
 	memcpy(ptr_out, tag, tag_name_size);
 	*--ptr_out = '<';
 
+	// On Windows, ptrdiff_t is long long int, on Linux it is long int.
+	// Windows doesn't support the ptrdiff_t format specifier "%td", so
+	// let's cast to long int.
 	if (ptr_out != mem.data())
-		fprintf(stderr, "try_to_xslt_open_csv(): ptr_out off by %ld. This shouldn't happen\n", ptr_out - mem.data());
+		report_info("try_to_xslt_open_csv(): ptr_out off by %ld. This shouldn't happen", static_cast<long int>(ptr_out - mem.data()));
 
 	return 0;
 }
@@ -719,7 +724,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 				case EOF:
 					break;
 				default:
-					printf("Unable to parse input: %s\n", lineptr);
+					report_info("Unable to parse input: %s\n", lineptr);
 					break;
 				}
 
@@ -886,10 +891,11 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 	 */
 
 	if (verbose >= 2) {
-		fprintf(stderr, "xsltproc ");
+		std::string info = "xsltproc ";
 		for (i = 0; i < xml_params_count(params); i++)
-			fprintf(stderr, "--stringparam %s %s ", xml_params_get_key(params, i), xml_params_get_value(params, i));
-		fprintf(stderr, "xslt/csv2xml.xslt\n");
+			info += format_string_std("--stringparam %s %s ", xml_params_get_key(params, i), xml_params_get_value(params, i));
+		info += "xslt/csv2xml.xslt";
+		report_info("%s", info.c_str());
 	}
 
 	ret = parse_xml_buffer(filename, mem.data(), mem.size(), log, params);
@@ -926,10 +932,11 @@ int parse_manual_file(const char *filename, struct xml_params *params, struct di
 
 #ifndef SUBSURFACE_MOBILE
 	if (verbose >= 2) {
-		fprintf(stderr, "(echo '<manualCSV>'; cat %s;echo '</manualCSV>') | xsltproc ", filename);
+		std::string info = format_string_std("(echo '<manualCSV>'; cat %s;echo '</manualCSV>') | xsltproc ", filename);
 		for (int i = 0; i < xml_params_count(params); i++)
-			fprintf(stderr, "--stringparam %s %s ", xml_params_get_key(params, i), xml_params_get_value(params, i));
-		fprintf(stderr, "%s/xslt/manualcsv2xml.xslt -\n", SUBSURFACE_SOURCE);
+			info += format_string_std("--stringparam %s %s ", xml_params_get_key(params, i), xml_params_get_value(params, i));
+		info += format_string_std("%s/xslt/manualcsv2xml.xslt -", SUBSURFACE_SOURCE);
+		report_info("%s", info.c_str());
 	}
 #endif
 	ret = parse_xml_buffer(filename, mem.data(), mem.size(), log, params);

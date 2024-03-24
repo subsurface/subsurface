@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_pictures.h"
+#include "core/errorhelper.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/divelocationmodel.h"
 
@@ -24,7 +25,7 @@ void SetPictureOffset::redo()
 {
 	picture *pic = dive_get_picture(d, filename);
 	if (!pic) {
-		fprintf(stderr, "SetPictureOffset::redo(): picture disappeared!\n");
+		report_info("SetPictureOffset::redo(): picture disappeared!");
 		return;
 	}
 	std::swap(pic->offset, offset);
@@ -73,7 +74,7 @@ static std::vector<PictureListForAddition> removePictures(std::vector<PictureLis
 		for (const std::string &fn: list.filenames) {
 			int idx = get_picture_idx(&list.d->pictures, fn.c_str());
 			if (idx < 0) {
-				fprintf(stderr, "removePictures(): picture disappeared!\n");
+				report_info("removePictures(): picture disappeared!");
 				continue; // Huh? We made sure that this can't happen by filtering out non-existent pictures.
 			}
 			filenames.push_back(QString::fromStdString(fn));
@@ -103,7 +104,7 @@ static std::vector<PictureListForDeletion> addPictures(std::vector<PictureListFo
 		for (const PictureObj &pic: list.pics) {
 			int idx = get_picture_idx(&list.d->pictures, pic.filename.c_str()); // This should *not* already exist!
 			if (idx >= 0) {
-				fprintf(stderr, "addPictures(): picture disappeared!\n");
+				report_info("addPictures(): picture disappeared!");
 				continue; // Huh? We made sure that this can't happen by filtering out existing pictures.
 			}
 			picsForSignal.push_back(pic);

@@ -11,6 +11,7 @@
 
 #include "dive.h"
 #include "divelist.h"
+#include "errorhelper.h"
 #include "event.h"
 #include "interpolate.h"
 #include "sample.h"
@@ -208,7 +209,7 @@ extern "C" int get_cylinder_index(const struct dive *dive, const struct event *e
 	 * We now match up gas change events with their cylinders at dive
 	 * event fixup time.
 	 */
-	report_info("Still looking up cylinder based on gas mix in get_cylinder_index()!\n");
+	report_info("Still looking up cylinder based on gas mix in get_cylinder_index()!");
 
 	mix = get_gasmix_from_event(dive, ev);
 	best = find_best_gasmix_match(mix, &dive->cylinders);
@@ -771,7 +772,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 		if (cyl < 0)
 			continue; // unknown cylinder
 		if (cyl >= num_cyl) {
-			fprintf(stderr, "setup_gas_sensor_pressure(): invalid cylinder idx %d\n", cyl);
+			report_info("setup_gas_sensor_pressure(): invalid cylinder idx %d", cyl);
 			continue;
 		}
 
@@ -965,7 +966,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			entry->ambpressure = depth_to_bar(entry->depth, dive);
 			entry->gfline = get_gf(ds, entry->ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
 			if (t0 > t1) {
-				report_info("non-monotonous dive stamps %d %d\n", t0, t1);
+				report_info("non-monotonous dive stamps %d %d", t0, t1);
 				int xchg = t1;
 				t1 = t0;
 				t0 = xchg;

@@ -37,14 +37,9 @@
 #include <time.h>       // nanosleep
 #endif
 
-#ifndef __ANDROID__
-#define INFO(context, fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
-#define ERROR(context, fmt, ...)	fprintf(stderr, "ERROR: " fmt "\n", ##__VA_ARGS__)
-#else
-#include <android/log.h>
-#define INFO(context, fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__)
-#define ERROR(context, fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "ERROR: " fmt "\n", ##__VA_ARGS__)
-#endif
+#include "errorhelper.h"
+#define INFO(context, fmt, ...)	report_info(stderr, "INFO: " fmt, ##__VA_ARGS__)
+#define ERROR(context, fmt, ...)	report_info(stderr, "ERROR: " fmt, ##__VA_ARGS__)
 //#define SYSERROR(context, errcode)	ERROR(__FILE__ ":" __LINE__ ": %s", strerror(errcode))
 #define SYSERROR(context, errcode)	;
 
@@ -161,7 +156,7 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 	for (i = 0; i < num_accepted_pids; i++) {
 		pid = accepted_pids[i];
 		ret = ftdi_usb_open (ftdi_ctx, VID, pid);
-		INFO(0, "FTDI tried VID %04x pid %04x ret %d\n", VID, pid, ret);
+		INFO(0, "FTDI tried VID %04x pid %04x ret %d", VID, pid, ret);
 		if (ret == -3) // Device not found
 			continue;
 		else
@@ -257,7 +252,7 @@ static dc_status_t serial_ftdi_close (void *io)
 
 	int ret = ftdi_usb_close(device->ftdi_ctx);
 	if (ret < 0) {
-		ERROR (device->context, "Unable to close the ftdi device : %d (%s)\n",
+		ERROR (device->context, "Unable to close the ftdi device : %d (%s)",
 		       ret, ftdi_get_error_string(device->ftdi_ctx));
 		return ret;
 	}

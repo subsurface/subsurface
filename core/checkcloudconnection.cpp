@@ -35,7 +35,7 @@ CheckCloudConnection::CheckCloudConnection(QObject *parent) :
 bool CheckCloudConnection::checkServer()
 {
 	if (verbose)
-		fprintf(stderr, "Checking cloud connection...\n");
+		report_info("Checking cloud connection...");
 
 	QEventLoop loop;
 	QNetworkAccessManager *mgr = new QNetworkAccessManager();

@@ -56,7 +56,7 @@ static void divedate(const char *buffer, timestamp_t *when, struct parser_state 
 	} else if (sscanf(buffer, "%d-%d-%d %d:%d:%d", &y, &m, &d, &hh, &mm, &ss) >= 3) {
 		/* This is also ok */
 	} else {
-		fprintf(stderr, "Unable to parse date '%s'\n", buffer);
+		report_info("Unable to parse date '%s'", buffer);
 		return;
 	}
 	state->cur_tm.tm_year = y;
@@ -166,7 +166,7 @@ static enum number_type parse_float(const char *buffer, double *res, const char 
 			 * as this is likely indication of a bug - but right now we don't have
 			 * that information available */
 			if (first_time) {
-				fprintf(stderr, "Floating point value with decimal comma (%s)?\n", buffer);
+				report_info("Floating point value with decimal comma (%s)?", buffer);
 				first_time = false;
 			}
 			/* Try again in permissive mode*/
@@ -218,7 +218,7 @@ static void pressure(const char *buffer, pressure_t *pressure, struct parser_sta
 		}
 	/* fallthrough */
 	default:
-		printf("Strange pressure reading %s\n", buffer);
+		report_info("Strange pressure reading %s", buffer);
 	}
 }
 
@@ -253,7 +253,7 @@ static void salinity(const char *buffer, int *salinity)
 		*salinity = lrint(val.fp * 10.0);
 		break;
 	default:
-		printf("Strange salinity reading %s\n", buffer);
+		report_info("Strange salinity reading %s", buffer);
 	}
 }
 
@@ -273,7 +273,7 @@ static void depth(const char *buffer, depth_t *depth, struct parser_state *state
 		}
 		break;
 	default:
-		printf("Strange depth reading %s\n", buffer);
+		report_info("Strange depth reading %s", buffer);
 	}
 }
 
@@ -306,7 +306,7 @@ static void weight(const char *buffer, weight_t *weight, struct parser_state *st
 		}
 		break;
 	default:
-		printf("Strange weight reading %s\n", buffer);
+		report_info("Strange weight reading %s", buffer);
 	}
 }
 
@@ -329,7 +329,7 @@ static void temperature(const char *buffer, temperature_t *temperature, struct p
 		}
 		break;
 	default:
-		printf("Strange temperature reading %s\n", buffer);
+		report_info("Strange temperature reading %s", buffer);
 	}
 	/* temperatures outside -40C .. +70C should be ignored */
 	if (temperature->mkelvin < ZERO_C_IN_MKELVIN - 40000 ||
@@ -358,7 +358,7 @@ static void sampletime(const char *buffer, duration_t *time)
 		break;
 	default:
 		time->seconds = 0;
-		printf("Strange sample time reading %s\n", buffer);
+		report_info("Strange sample time reading %s", buffer);
 	}
 }
 
@@ -412,7 +412,7 @@ static void percent(const char *buffer, fraction_t *fraction)
 			break;
 		}
 	default:
-		printf(translate("gettextFromC", "Strange percentage reading %s\n"), buffer);
+		report_info(translate("gettextFromC", "Strange percentage reading %s"), buffer);
 		break;
 	}
 }
@@ -440,7 +440,7 @@ static void cylindersize(const char *buffer, volume_t *volume)
 		break;
 
 	default:
-		printf("Strange volume reading %s\n", buffer);
+		report_info("Strange volume reading %s", buffer);
 		break;
 	}
 }
@@ -620,7 +620,7 @@ static void fahrenheit(const char *buffer, temperature_t *temperature)
 			temperature->mkelvin = F_to_mkelvin(val.fp);
 		break;
 	default:
-		fprintf(stderr, "Crazy Diving Log temperature reading %s\n", buffer);
+		report_info("Crazy Diving Log temperature reading %s", buffer);
 	}
 }
 
@@ -656,7 +656,7 @@ static void psi_or_bar(const char *buffer, pressure_t *pressure)
 			pressure->mbar = lrint(val.fp * 1000);
 		break;
 	default:
-		fprintf(stderr, "Crazy Diving Log PSI reading %s\n", buffer);
+		report_info("Crazy Diving Log PSI reading %s", buffer);
 	}
 }
 
@@ -1069,7 +1069,7 @@ static void uddf_datetime(const char *buffer, timestamp_t *when, struct parser_s
 	if (i == 6)
 		goto success;
 bad_date:
-	printf("Bad date time %s\n", buffer);
+	report_info("Bad date time %s", buffer);
 	return;
 
 success:
@@ -1169,7 +1169,7 @@ static void gps_lat(const char *buffer, struct dive *dive, struct parser_state *
 		add_dive_to_dive_site(dive, create_dive_site_with_gps(NULL, &location, state->log->sites));
 	} else {
 		if (ds->location.lat.udeg && ds->location.lat.udeg != location.lat.udeg)
-			fprintf(stderr, "Oops, changing the latitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
+			report_info("Oops, changing the latitude of existing dive site id %8x name %s; not good", ds->uuid, ds->name ?: "(unknown)");
 		ds->location.lat = location.lat;
 	}
 }
@@ -1185,7 +1185,7 @@ static void gps_long(const char *buffer, struct dive *dive, struct parser_state 
 		add_dive_to_dive_site(dive, create_dive_site_with_gps(NULL, &location, state->log->sites));
 	} else {
 		if (ds->location.lon.udeg && ds->location.lon.udeg != location.lon.udeg)
-			fprintf(stderr, "Oops, changing the longitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
+			report_info("Oops, changing the longitude of existing dive site id %8x name %s; not good", ds->uuid, ds->name ?: "(unknown)");
 		ds->location.lon = location.lon;
 	}
 }
@@ -1226,7 +1226,7 @@ static void gps_in_dive(const char *buffer, struct dive *dive, struct parser_sta
 		if (dive_site_has_gps_location(ds) &&
 		    has_location(&location) && !same_location(&ds->location, &location)) {
 			// Houston, we have a problem
-			fprintf(stderr, "dive site uuid in dive, but gps location (%10.6f/%10.6f) different from dive location (%10.6f/%10.6f)\n",
+			report_info("dive site uuid in dive, but gps location (%10.6f/%10.6f) different from dive location (%10.6f/%10.6f)",
 				ds->location.lat.udeg / 1000000.0, ds->location.lon.udeg / 1000000.0,
 				location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
 			std::string coords = printGPSCoordsC(&location);
@@ -2219,11 +2219,11 @@ extern "C" int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divel
 				break;
 			case 2:
 				/* Measure He */
-				//printf("%ds he2 cells(0.01 mV): %d %d\n", time, (ptr[5] << 8) + ptr[4], (ptr[9] << 8) + ptr[8]);
+				//report_info("%ds he2 cells(0.01 mV): %d %d", time, (ptr[5] << 8) + ptr[4], (ptr[9] << 8) + ptr[8]);
 				break;
 			case 3:
 				/* Measure Oxygen */
-				//printf("%d s: o2 cells(0.01 mV): %d %d %d %d\n", time, (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
+				//report_info("%d s: o2 cells(0.01 mV): %d %d %d %d", time, (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
 				// [Pa/mV] coeficient O2
 				// 100 Pa == 1 mbar
 				sample_start(&state);

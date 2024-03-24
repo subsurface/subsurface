@@ -9,6 +9,7 @@
 
 #include "stats/statsview.h"
 #include "core/devicedetails.h"
+#include "core/errorhelper.h"
 #include "core/globals.h"
 #include "core/qt-gui.h"
 #include "core/settings/qPref.h"
@@ -146,7 +147,7 @@ void run_mobile_ui(double initial_font_size)
 	qDebug() << "loaded main.qml";
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {
-		fprintf(stderr, "can't create window object\n");
+		report_info("can't create window object");
 		exit(1);
 	}
 	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(qqWindowObject);
