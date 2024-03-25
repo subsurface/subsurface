@@ -66,12 +66,15 @@ extern double strtod_flags(const char *str, const char **ptr, unsigned int flags
 }
 
 #include <string>
+#include <vector>
 
 // Sadly, starts_with only with C++20!
 inline bool starts_with(const std::string &s, const char *s2)
 {
 	return s.rfind(s2, 0) == 0;
 }
+
+std::string join(const std::vector<std::string> &l, const std::string &separator, bool skip_empty = false);
 
 #endif
 

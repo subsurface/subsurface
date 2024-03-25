@@ -36,11 +36,10 @@ int main(int argc, char **argv)
 	// supporting BT makes sense when used with an iPhone and an rfcomm BT device?
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 
-	int i;
 	bool no_filenames = true;
 	std::unique_ptr<QCoreApplication> app(new QCoreApplication(argc, argv));
-	QStringList files;
-	QStringList importedFiles;
+	std::vector<std::string> files;
+	std::vector<std::string> importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
 
 	// set a default logfile name for libdivecomputer so we always get a logfile
@@ -60,12 +59,12 @@ int main(int argc, char **argv)
 
 	// now handle the arguments
 	fill_computer_list();
-	for (i = 1; i < arguments.length(); i++) {
-		QString a = arguments.at(i);
-		if (a.isEmpty())
+	for (int i = 1; i < arguments.length(); i++) {
+		std::string a = arguments[i].toStdString();
+		if (a.empty())
 			continue;
-		if (a.at(0) == '-') {
-			parse_argument(qPrintable(a));
+		if (a[0] == '-') {
+			parse_argument(a.c_str());
 			continue;
 		}
 		if (imported) {
@@ -80,19 +79,18 @@ int main(int argc, char **argv)
 
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
-			QString defaultFile(prefs.default_filename);
-			if (!defaultFile.isEmpty())
-				files.push_back(QString(prefs.default_filename));
+			if (!empty_string(prefs.default_filename))
+				files.emplace_back(prefs.default_filename ? prefs.default_filename : "");
 		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
 			auto cloudURL = getCloudURL();
 			if (cloudURL)
-				files.push_back(QString::fromStdString(*cloudURL));
+				files.emplace_back(*cloudURL);
 		}
 	}
-	if (!files.isEmpty()) {
-		qDebug() << "loading dive data from" << files;
-		if (parse_file(qPrintable(files.first()), &divelog) < 0) {
-			printf("Failed to load dives from file '%s', aborting.\n", qPrintable(files.first()));
+	if (!files.empty()) {
+		report_info("loading dive data from %s", join(files, ", ").c_str());
+		if (parse_file(files.front().c_str(), &divelog) < 0) {
+			printf("Failed to load dives from file '%s', aborting.\n", files.front().c_str());
 			exit(1);
 		}
 	}
@@ -104,11 +102,10 @@ int main(int argc, char **argv)
 			cliDownloader(prefs.dive_computer.vendor, prefs.dive_computer.product, prefs.dive_computer.device);
 		}
 	}
-	if (!files.isEmpty()) {
-		qDebug() << "saving dive data to" << files;
-		save_dives(qPrintable(files.first()));
-	}
-	else {
+	if (!files.empty()) {
+		report_info("saving dive data to %s", join(files, ", ").c_str());
+		save_dives(files.front().c_str());
+	} else {
 		printf("No log files given, not saving dive data.\n");
 		printf("Give a log file name as argument, or configure a cloud URL.\n");
 	}
