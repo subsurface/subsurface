@@ -376,13 +376,13 @@ void MainWindow::on_actionOpen_triggered()
 	// some file dialogs decide to add the default extension to a filename without extension
 	// so we would get dir[branch].ssrf when trying to select dir[branch].
 	// let's detect that and remove the incorrect extension
-	QStringList cleanFilenames;
+	std::vector<std::string> cleanFilenames;
 	QRegularExpression reg(".*\\[[^]]+]\\.ssrf", QRegularExpression::CaseInsensitiveOption);
 
 	for (QString filename: filenames) {
 		if (reg.match(filename).hasMatch())
 			filename.remove(QRegularExpression("\\.ssrf$", QRegularExpression::CaseInsensitiveOption));
-		cleanFilenames << filename;
+		cleanFilenames.push_back(filename.toStdString());
 	}
 	loadFiles(cleanFilenames);
 }
@@ -397,6 +397,11 @@ void MainWindow::on_actionSaveAs_triggered()
 {
 	mainTab->stealFocus(); // Make sure that any currently edited field is updated before saving.
 	file_save_as();
+}
+
+static std::string encodeFileName(const std::string &fn)
+{
+	return QFile::encodeName(QString::fromStdString(fn)).toStdString();
 }
 
 void MainWindow::on_actionCloudstorageopen_triggered()
@@ -414,9 +419,9 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	closeCurrentFile();
 
 	showProgressBar();
-	QByteArray fileNamePtr = QFile::encodeName(QString::fromStdString(*filename));
-	if (!parse_file(fileNamePtr.data(), &divelog))
-		setCurrentFile(fileNamePtr.toStdString());
+	std::string encoded = encodeFileName(*filename);
+	if (!parse_file(encoded.c_str(), &divelog))
+		setCurrentFile(encoded);
 	process_loaded_dives();
 	hideProgressBar();
 	refreshDisplay();
@@ -1156,7 +1161,7 @@ void MainWindow::recentFileTriggered(bool)
 
 	updateLastUsedDir(QFileInfo(filename).dir().path());
 	closeCurrentFile();
-	loadFiles(QStringList() << filename);
+	loadFiles(std::vector<std::string> { filename.toStdString() });
 }
 
 int MainWindow::file_save_as(void)
@@ -1280,33 +1285,32 @@ void MainWindow::setTitle()
 	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved + shown);
 }
 
-void MainWindow::importFiles(const QStringList &fileNames)
+void MainWindow::importFiles(const std::vector<std::string> &fileNames)
 {
-	if (fileNames.isEmpty())
+	if (fileNames.empty())
 		return;
 
-	QByteArray fileNamePtr;
 	struct divelog log;
 
-	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &log);
+	for (const std::string &fn: fileNames) {
+		std::string encoded = encodeFileName(fn);
+		parse_file(encoded.c_str(), &log);
 	}
-	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
+	QString source = fileNames.size() == 1 ? QString::fromStdString(fileNames[0]) : tr("multiple files");
 	Command::importDives(&log, IMPORT_MERGE_ALL_TRIPS, source);
 }
 
-void MainWindow::loadFiles(const QStringList &fileNames)
+void MainWindow::loadFiles(const std::vector<std::string> &fileNames)
 {
-	if (fileNames.isEmpty()) {
+	if (fileNames.empty()) {
 		refreshDisplay();
 		return;
 	}
 	QByteArray fileNamePtr;
 
 	showProgressBar();
-	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = QFile::encodeName(fileNames.at(i));
+	for (const std::string &fn: fileNames) {
+		fileNamePtr = QFile::encodeName(QString::fromStdString(fn));
 		if (!parse_file(fileNamePtr.data(), &divelog)) {
 			setCurrentFile(fileNamePtr.toStdString());
 			addRecentFile(fileNamePtr, false);
@@ -1352,13 +1356,13 @@ void MainWindow::on_actionImportDiveLog_triggered()
 		return;
 	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
 
-	QStringList logFiles;
+	std::vector<std::string> logFiles;
 	QStringList csvFiles;
 	for (const QString &fn: fileNames) {
 		if (isCsvFile(fn))
 			csvFiles.append(fn);
 		else
-			logFiles.append(fn);
+			logFiles.push_back(fn.toStdString());
 	}
 
 	if (logFiles.size())

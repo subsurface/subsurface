@@ -44,6 +44,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/file.cpp \
 	core/fulltext.cpp \
 	core/subsurfacestartup.cpp \
+	core/subsurface-string.cpp \
 	core/pref.c \
 	core/profile.cpp \
 	core/device.cpp \

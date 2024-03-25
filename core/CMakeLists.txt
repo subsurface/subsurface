@@ -172,6 +172,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	string-format.cpp
 	strtod.c
 	subsurface-float.h
+	subsurface-string.cpp
 	subsurface-string.h
 	subsurfacestartup.cpp
 	subsurfacestartup.h
