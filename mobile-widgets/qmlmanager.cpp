@@ -618,9 +618,6 @@ QMLManager *QMLManager::instance()
 	return m_instance;
 }
 
-#define CLOUDURL QString(prefs.cloud_base_url)
-#define CLOUDREDIRECTURL CLOUDURL + "/cgi-bin/redirect.pl"
-
 void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &newPassword, const QString &pin)
 {
 	bool cloudCredentialsChanged = false;
