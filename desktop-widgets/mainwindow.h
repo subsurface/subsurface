@@ -67,8 +67,8 @@ public:
 		Count
 	};
 
-	void loadFiles(const QStringList &files);
-	void importFiles(const QStringList &importFiles);
+	void loadFiles(const std::vector<std::string> &files);
+	void importFiles(const std::vector<std::string> &importFiles);
 	void setToolButtonsEnabled(bool enabled);
 	void setApplicationState(ApplicationState state);
 	void enterPreviousState();
