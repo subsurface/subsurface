@@ -2,7 +2,6 @@
 #include "qmlmanager.h"
 #include <QUrl>
 #include <QSettings>
-#include <QDebug>
 #include <QNetworkAccessManager>
 #include <QAuthenticator>
 #include <QDesktopServices>
@@ -156,7 +155,7 @@ void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
 {
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
 
-	qDebug() << "btHostModeChange to " << state;
+	report_info("btHostModeChange to %d", static_cast<int>(state));
 	if (state != QBluetoothLocalDevice::HostPoweredOff) {
 		connectionListModel.removeAllAddresses();
 		btDiscovery->BTDiscoveryReDiscover();
@@ -501,11 +500,11 @@ bool QMLManager::createSupportEmail()
 		bool success = activity.callMethod<jboolean>("supportEmail",
 					"(Ljava/lang/String;Ljava/lang/String;)Z", // two string arguments, return bool
 					applogfilepath.object<jstring>(), libdcfilepath.object<jstring>());
-		qDebug() << __FUNCTION__ << "supportEmail" << (success ? "succeeded" : "failed");
+		report_info("%s supportEmail %s", __func__, success ? "succeeded" : "failed");
 		if (success)
 			return true;
 	}
-	qDebug() << __FUNCTION__ << "failed to share the logFiles via intent, use the fall-back mail body method";
+	report_info("%s failed to share the logFiles via intent, use the fall-back mail body method", __func__);
 #elif defined(Q_OS_IOS)
 	// call into objC++ code to share on iOS
 	QString libdcLogFileName = QString::fromStdString(logfile_name);
@@ -1089,7 +1088,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString loca
 			if (location.isEmpty())
 				location = gps;
 			if (verbose)
-				qDebug() << "parsed GPS" << gps << ", using it for dive site" << location;
+				report_info("parsed GPS %s, using it for dive site %s", qPrintable(gps), qPrintable(location));
 			// there are valid GPS coordinates - just use them
 			setupDivesite(res, d, ds, lat, lon, qPrintable(location));
 		} else {
@@ -1176,21 +1175,21 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		return;
 	}
 	if (verbose) {
-		qDebug().noquote() << QStringLiteral("diveId  :'%1'\n").arg(diveId) <<
-				      QStringLiteral("number  :'%1'\n").arg(number) <<
-				      QStringLiteral("date    :'%1'\n").arg(date) <<
-				      QStringLiteral("location:'%1'\n").arg(location) <<
-				      QStringLiteral("gps     :'%1'\n").arg(gps) <<
-				      QStringLiteral("duration:'%1'\n").arg(duration) <<
-				      QStringLiteral("depth   :'%1'\n").arg(depth) <<
-				      QStringLiteral("airtemp :'%1'\n").arg(airtemp) <<
-				      QStringLiteral("watertmp:'%1'\n").arg(watertemp) <<
-				      QStringLiteral("suit    :'%1'\n").arg(suit) <<
-				      QStringLiteral("buddy   :'%1'\n").arg(buddy) <<
-				      QStringLiteral("diveGde :'%1'\n").arg(diveGuide) <<
-				      QStringLiteral("tags    :'%1'\n").arg(tags) <<
-				      QStringLiteral("weight  :'%1'\n").arg(weight) <<
-				      QStringLiteral("state   :'%1'\n").arg(state);
+		report_info("diveId  :'%s'", qPrintable(diveId));
+		report_info("number  :'%s'", qPrintable(number));
+		report_info("date    :'%s'", qPrintable(date));
+		report_info("location:'%s'", qPrintable(location));
+		report_info("gps     :'%s'", qPrintable(gps));
+		report_info("duration:'%s'", qPrintable(duration));
+		report_info("depth   :'%s'", qPrintable(depth));
+		report_info("airtemp :'%s'", qPrintable(airtemp));
+		report_info("watertmp:'%s'", qPrintable(watertemp));
+		report_info("suit    :'%s'", qPrintable(suit));
+		report_info("buddy   :'%s'", qPrintable(buddy));
+		report_info("diveGde :'%s'", qPrintable(diveGuide));
+		report_info("tags    :'%s'", qPrintable(tags));
+		report_info("weight  :'%s'", qPrintable(weight));
+		report_info("state   :'%s'", qPrintable(state));
 	}
 
 	OwningDivePtr d_ptr(alloc_dive()); // Automatically delete dive if we exit early!
@@ -1380,7 +1379,7 @@ void QMLManager::updateTripDetails(QString tripIdString, QString tripLocation, Q
 	int tripId = tripIdString.toInt();
 	dive_trip_t *trip = get_trip_by_uniq_id(tripId);
 	if (!trip) {
-		qDebug() << "updateTripData: cannot find trip for tripId" << tripIdString;
+		report_info("updateTripData: cannot find trip for tripId %s", qPrintable(tripIdString));
 		return;
 	}
 	bool changed = false;
@@ -1595,7 +1594,7 @@ void QMLManager::selectDive(int id)
 			amount_selected++;
 	}
 	if (amount_selected == 0)
-		qWarning("QManager::selectDive() called with unknown id %d",id);
+		report_error("QManager::selectDive() called with unknown id %d",id);
 }
 
 void QMLManager::deleteDive(int id)
@@ -1754,7 +1753,7 @@ int QMLManager::addDive()
 
 void QMLManager::appendTextToLog(const QString &newText)
 {
-	qDebug() << QString::number(timer.elapsed() / 1000.0,'f', 3) + ": " + newText;
+	report_info("%.3f: %s", timer.elapsed() / 1000.0, qPrintable(newText));
 }
 
 void QMLManager::setVerboseEnabled(bool verboseMode)
@@ -1855,7 +1854,7 @@ void QMLManager::setDevicePixelRatio(qreal dpr, QScreen *screen)
 
 void QMLManager::screenChanged(QScreen *screen)
 {
-	qDebug("QMLManager received screen changed notification (%d,%d)", screen->size().width(), screen->size().height());
+	report_info("QMLManager received screen changed notification (%d,%d)", screen->size().width(), screen->size().height());
 	m_lastDevicePixelRatio = screen->devicePixelRatio();
 	emit sendScreenChanged(screen);
 }
@@ -1969,7 +1968,7 @@ void QMLManager::retrieveBluetoothName()
 	QString name = DC_devName();
 	const QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 	for (BTDiscovery::btVendorProduct btDC: btDCs) {
-		qDebug() << "compare" <<name << btDC.btpdi.address;
+		report_info("compare %s %s", qPrintable(name), qPrintable(btDC.btpdi.address));
 		if (name.contains(btDC.btpdi.address))
 			DC_setDevBluetoothName(btDC.btpdi.name);
 	}
@@ -2233,7 +2232,7 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 				break;
 			}
 		default:
-			qDebug() << "export to unknown type " << type << " using " << dir << " remove names " << anonymize;
+			report_info("export to unknown type %d using %s remove names %d", static_cast<int>(type), qPrintable(dir), anonymize);
 			break;
 	}
 }
@@ -2250,7 +2249,7 @@ void QMLManager::exportToWEB(export_types type, QString userId, QString password
 			uploadDiveShare::instance()->doUpload(false, userId, anonymize);
 			break;
 		default:
-			qDebug() << "upload to unknown type " << type << " using " << userId << "/" <<  password << " remove names " << anonymize;
+			report_info("upload to unknown type %d using %s/%s remove names %d", static_cast<int>(type), qPrintable(userId), qPrintable(password), anonymize);
 			break;
 	}
 }
@@ -2286,7 +2285,7 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 		}
 		break;
 	default:
-		qDebug() << "cannot export type " << type << " via email";
+		report_info("cannot export type %d via email", static_cast<int>(type));
 		return;
 	}
 #if defined(Q_OS_ANDROID)
@@ -2301,7 +2300,7 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 					"(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z", // five string arguments, return bool
 					subject.object<jstring>(), emptyString.object<jstring>(), bodyString.object<jstring>(),
 							     attachmentPath.object<jstring>(), emptyString.object<jstring>());
-		qDebug() << __FUNCTION__ << "shareViaEmail" << (success ? "succeeded" : "failed");
+		report_info("%s shareViaEmail %s", __func__, success ? "succeeded" : "failed");
 	}
 #elif defined(Q_OS_IOS)
 	// call into objC++ code to share on iOS
@@ -2339,7 +2338,7 @@ void QMLManager::divesChanged(const QVector<dive *> &dives, DiveField field)
 {
 	Q_UNUSED(field)
 	for (struct dive *d: dives) {
-		qDebug() << "dive #" << d->number << "changed, cache is" << (dive_cache_is_valid(d) ? "valid" : "invalidated");
+		report_info("dive #%d changed, cache is %s", d->number, dive_cache_is_valid(d) ? "valid" : "invalidated");
 		// a brute force way to deal with that would of course be to call
 		// invalidate_dive_cache(d);
 	}
