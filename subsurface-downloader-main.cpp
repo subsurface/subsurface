@@ -20,7 +20,6 @@
 #include <QStringList>
 #include <git2.h>
 
-static bool filesOnCommandLine = false;
 static void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 extern void cliDownloader(const char *vendor, const char *product, const char *device);
 
@@ -90,7 +89,6 @@ int main(int argc, char **argv)
 				files.push_back(cloudURL);
 		}
 	}
-	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
 	if (!files.isEmpty()) {
 		qDebug() << "loading dive data from" << files;
 		if (parse_file(qPrintable(files.first()), &divelog) < 0) {
