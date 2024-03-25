@@ -124,7 +124,7 @@ void QMLProfile::divesChanged(const QVector<dive *> &dives, DiveField)
 {
 	for (struct dive *d: dives) {
 		if (d->id == m_diveId) {
-			qDebug() << "dive #" << d->number << "changed, trigger profile update";
+			report_info("dive #%d changed, trigger profile update", d->number);
 			triggerUpdate();
 			return;
 		}
