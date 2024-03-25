@@ -123,11 +123,11 @@ int main(int argc, char **argv)
 
 void validateGL()
 {
-	QString quickBackend = qgetenv("QT_QUICK_BACKEND");
+	std::string quickBackend = qgetenv("QT_QUICK_BACKEND").toStdString();
 	/* on macOS with Qt6 (maybe others), things only work with the software backend */
 #if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	if (quickBackend.isEmpty()) {
-		quickBackend = QStringLiteral("software");
+	if (quickBackend.empty()) {
+		quickBackend = "software";
 		qputenv("QT_QUICK_BACKEND", "software");
 	}
 #endif
@@ -135,12 +135,11 @@ void validateGL()
 	 * only validate OpenGL; for everything else print out and return.
 	 * https://doc.qt.io/qt-5/qtquick-visualcanvas-adaptations.html
 	 */
-	if (!quickBackend.isEmpty()) {
+	if (!quickBackend.empty()) {
 		if (verbose) {
-			qDebug() << QStringLiteral(VALIDATE_GL_PREFIX
-						   "'QT_QUICK_BACKEND' is set to '%1'. "
-						   "Skipping validation.")
-					    .arg(quickBackend);
+			report_info(VALIDATE_GL_PREFIX
+				    "'QT_QUICK_BACKEND' is set to '%s'. "
+				    "Skipping validation.", quickBackend.c_str());
 		}
 		return;
 	}
@@ -158,7 +157,7 @@ void validateGL()
 		goto exit;
 	}
 	if (verbose)
-		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "created OpenGLContext.");
+		report_info(VALIDATE_GL_PREFIX "created OpenGLContext.");
 	ctx.makeCurrent(&surface);
 	func = ctx.functions();
 	if (!func) {
@@ -166,18 +165,18 @@ void validateGL()
 		goto exit;
 	}
 	if (verbose)
-		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "obtained QOpenGLFunctions.");
+		report_info(VALIDATE_GL_PREFIX "obtained QOpenGLFunctions.");
 	// detect version for legacy profiles
 	verChar = (const char *)func->glGetString(GL_VERSION);
 	if (verChar) {
 		// detect GLES, show a warning and return early as we don't handle it's versioning
 		if (strstr(verChar, " ES ") != NULL) {
-			qWarning() << QStringLiteral(VALIDATE_GL_PREFIX
-						     "WARNING: Detected OpenGL ES!\n"
-						     "Attempting to run with the available profile!\n"
-						     "If this fails try manually setting the environment variable\n"
-						     "'QT_QUICK_BACKEND' with the value of 'software'\n"
-						     "before running Subsurface!\n");
+			report_error(VALIDATE_GL_PREFIX
+				     "WARNING: Detected OpenGL ES!\n"
+				     "Attempting to run with the available profile!\n"
+				     "If this fails try manually setting the environment variable\n"
+				     "'QT_QUICK_BACKEND' with the value of 'software'\n"
+				     "before running Subsurface!\n");
 			return;
 		}
 		int min, maj;
@@ -196,7 +195,7 @@ void validateGL()
 		goto exit;
 	}
 	if (verbose)
-		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "detected OpenGL version %1.%2.").arg(verMajor).arg(verMinor);
+		report_info(VALIDATE_GL_PREFIX "detected OpenGL version %d.%d.", verMajor, verMinor);
 	if (verMajor * 10 + verMinor < 21) { // set 2.1 as the minimal version
 		glError = "OpenGL 2.1 or later is required";
 		goto exit;
@@ -206,7 +205,7 @@ exit:
 	ctx.makeCurrent(NULL);
 	surface.destroy();
 	if (glError) {
-		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError);
+		report_error(VALIDATE_GL_PREFIX "WARNING: %s. Using a software renderer!", glError);
 		QQuickWindow::setSceneGraphBackend("software");
 	}
 }
