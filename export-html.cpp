@@ -4,7 +4,6 @@
 #include <QString>
 #include <QCommandLineParser>
 #include <QApplication>
-#include <QDebug>
 
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
@@ -43,12 +42,12 @@ int main(int argc, char **argv)
 	QString output = parser.value(outputDirectoryOption);
 
 	if (source.isEmpty() || output.isEmpty()) {
-		qDebug() << "need --source and --output";
+		report_info("need --source and --output");
 		exit(1);
 	}
 	int ret = parse_file(qPrintable(source), &divelog);
 	if (ret) {
-		fprintf(stderr, "parse_file returned %d\n", ret);
+		report_info("parse_file returned %d", ret);
 		exit(1);
 	}
 
