@@ -25,7 +25,6 @@
 #include <QFile>
 #include <QRegularExpression>
 #include <QDir>
-#include <QDebug>
 #include <QStandardPaths>
 #include <QJsonDocument>
 #include <QNetworkProxy>
@@ -296,10 +295,11 @@ bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_te
 
 static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
 {
-	QFile f(QLatin1String(":/xslt/") + (const char *)uri);
+	std::string filename = std::string(":/xslt/") + (const char *)uri;
+	QFile f(filename.c_str());
 	if (!f.open(QIODevice::ReadOnly)) {
 		if (verbose > 0) {
-			qDebug() << "cannot open stylesheet" << QLatin1String(":/xslt/") + (const char *)uri << f.errorString();
+			report_info("cannot open stylesheet %s %s", filename.c_str(), qPrintable(f.errorString()));
 			return NULL;
 		}
 	}
@@ -333,7 +333,7 @@ extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
 std::string move_away(const std::string &old_path)
 {
 	if (verbose > 1)
-		qDebug() << "move away" << old_path.c_str();
+		report_info("move away %s", old_path.c_str());
 	QDir oldDir(old_path.c_str());
 	QDir newDir;
 	std::string newPath;
@@ -343,10 +343,10 @@ std::string move_away(const std::string &old_path)
 		newDir.setPath(newPath.c_str());
 	} while(newDir.exists());
 	if (verbose > 1)
-		qDebug() << "renaming to" << newPath.c_str();
+		report_info("renaming toi %s", newPath.c_str());
 	if (!oldDir.rename(old_path.c_str(), newPath.c_str())) {
 		if (verbose)
-			qDebug() << "rename of" << old_path.c_str() << "to" << newPath.c_str() << "failed";
+			report_info("rename of %s to %s failed", old_path.c_str(), newPath.c_str());
 		// this next one we only try on Windows... if we are on a different platform
 		// we simply give up and return an empty string
 #ifdef WIN32
@@ -372,7 +372,7 @@ extern "C" void copy_image_and_overwrite(const char *cfileName, const char *path
 	if (file.exists())
 		file.remove();
 	if (!QFile::copy(fileName, newName))
-		qDebug() << "copy of" << fileName << "to" << newName << "failed";
+		report_info("copy of %s to %s failed", cfileName, qPrintable(newName));
 }
 
 static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
@@ -443,6 +443,14 @@ QString getUiLanguage()
 	return prefs.locale.lang_locale;
 }
 
+static std::vector<std::string> get_languages(const QLocale &loc)
+{
+	std::vector<std::string> res;
+	for (const QString &s: loc.uiLanguages())
+		res.push_back(s.toStdString());
+	return res;
+}
+
 /* TOOD: Move this to SettingsObjectWrapper, and also fix this complexity.
  * gezus.
  */
@@ -460,31 +468,35 @@ void initUiLanguage()
 	}
 
 	// Find language code with one '-', or use the first entry.
-	QStringList languages = loc.uiLanguages();
-	QString uiLang;
-	auto it = std::find_if(languages.begin(), languages.end(), [](const QString &s)
-				{ return s.count('-') == 1; });
-	uiLang = it == languages.end() ? languages[0] : *it;
+	std::vector<std::string> languages = get_languages(loc);
+	std::string uiLang;
+	if (!languages.empty()) {
+		auto it = std::find_if(languages.begin(), languages.end(), [](const std::string &s)
+					{ return std::count(s.begin(), s.end(), '-') == 1; });
+		uiLang = it == languages.end() ? languages[0] : *it;
+	}
 #ifdef SUBSURFACE_MOBILE
-	qDebug() << "uiLanguages was" << languages << ", picked" << uiLang;
+	report_info("uiLanguages was %s, picked %s", join(languages, ", ").c_str(), uiLang.c_str());
 #endif
 
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
-	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
+	if (!contains(uiLang, '-') && uiLang != loc.bcp47Name().toStdString()) {
 		QLocale loc2(loc.bcp47Name());
 		loc = loc2;
-		QStringList languages = loc2.uiLanguages();
+		std::vector<std::string> languages = get_languages(loc2);
 
-		it = std::find_if(languages.begin(), languages.end(), [](const QString &s)
-				{ return s.contains('-'); });
-		uiLang = it == languages.end() ? languages[0] : *it;
+		if (!languages.empty()) {
+			auto it = std::find_if(languages.begin(), languages.end(), [](const std::string &s)
+					{ return contains(s, '-'); });
+			uiLang = it == languages.end() ? languages[0] : *it;
+		}
 #ifdef SUBSURFACE_MOBILE
-		qDebug() << "bcp47 based languages was" << languages << ", picked" << uiLang;
+		report_info("bcp47 based languages was %s, picked %s", join(languages, ", ").c_str(), uiLang.c_str());
 #endif
 	}
 
 	free((void*)prefs.locale.lang_locale);
-	prefs.locale.lang_locale = copy_qstring(uiLang);
+	prefs.locale.lang_locale = strdup(uiLang.c_str());
 
 	if (!prefs.date_format_override || empty_string(prefs.date_format)) {
 		// derive our standard date format from what the locale gives us
@@ -1385,7 +1397,7 @@ extern "C" void subsurface_mkdir(const char *dir)
 {
 	QDir directory;
 	if (!directory.mkpath(QString(dir)))
-		qDebug() << "failed to create path" << dir;
+		report_info("failed to create path %s", dir);
 }
 
 extern "C" enum deco_mode decoMode(bool in_planner)
@@ -1535,7 +1547,7 @@ void parse_seabear_header(const char *filename, struct xml_params *params)
 			xml_params_add_int(params, "pressureField", index++);
 		} else {
 			// We do not know about this value
-			qDebug() << "Seabear import found an un-handled field: " << columnText;
+			report_info("Seabear import found an un-handled field: %s", qPrintable(columnText));
 		}
 	}
 
