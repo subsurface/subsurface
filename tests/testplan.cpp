@@ -3,11 +3,11 @@
 #include "core/deco.h"
 #include "core/dive.h"
 #include "core/event.h"
+#include "core/errorhelper.h"
 #include "core/planner.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
 #include "core/units.h"
-#include <QDebug>
 
 #define DEBUG 1
 
@@ -425,18 +425,18 @@ bool compareDecoTime(int actualRunTimeSeconds, int benchmarkRunTimeSeconds, int 
 		int totalDifferenceAllowed = lrint(0.001 * permilDifferenceAllowed * benchmarkRunTimeSeconds + absoluteDifferenceAllowedSeconds);
 		int totalDifference = abs(actualRunTimeSeconds - benchmarkRunTimeSeconds);
 
-		qDebug("Calculated run time = %d seconds", actualRunTimeSeconds);
-		qDebug("Expected run time = %d seconds", benchmarkRunTimeSeconds);
-		qDebug("Allowed time difference is %g percent plus %d seconds = %d seconds",
+		report_info("Calculated run time = %d seconds", actualRunTimeSeconds);
+		report_info("Expected run time = %d seconds", benchmarkRunTimeSeconds);
+		report_info("Allowed time difference is %g percent plus %d seconds = %d seconds",
 		       permilDifferenceAllowed * 0.1, absoluteDifferenceAllowedSeconds, totalDifferenceAllowed);
-		qDebug("total difference = %d seconds", totalDifference);
+		report_info("total difference = %d seconds", totalDifference);
 
 		result = (totalDifference <= totalDifferenceAllowed);
 	}
 	if ((knownSsrfRunTimeSeconds > 0) && (actualRunTimeSeconds != knownSsrfRunTimeSeconds)) {
-		QWARN("Calculated run time does not match known Subsurface runtime");
-		qWarning("Calculated runtime: %d", actualRunTimeSeconds);
-		qWarning("Known Subsurface runtime: %d", knownSsrfRunTimeSeconds);
+		report_error("Calculated run time does not match known Subsurface runtime");
+		report_error("Calculated runtime: %d", actualRunTimeSeconds);
+		report_error("Known Subsurface runtime: %d", knownSsrfRunTimeSeconds);
 	}
 	return result;
 }
