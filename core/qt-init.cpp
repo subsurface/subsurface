@@ -1,7 +1,6 @@
 
 // SPDX-License-Identifier: GPL-2.0
 #include <QApplication>
-#include <Qt>
 #include <QNetworkProxy>
 #include <QLibraryInfo>
 #include <QTextCodec>
@@ -33,9 +32,9 @@ void init_qt_late()
 	if (settings_suffix) {
 		if (verbose)
 #if defined(SUBSURFACE_MOBILE) && ((defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || (defined(Q_OS_DARWIN) && !defined(Q_OS_IOS)))
-			qDebug() << "using custom config for" << QString("Subsurface-Mobile-%1").arg(settings_suffix);
+			report_info("using custom config for Subsurface-Mobile-%s", settings_suffix);
 #else
-			qDebug() << "using custom config for" << QString("Subsurface-%1").arg(settings_suffix);
+			report_info("using custom config for Subsurface-%s", settings_suffix);
 #endif
 #if defined(SUBSURFACE_MOBILE) && ((defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || (defined(Q_OS_DARWIN) && !defined(Q_OS_IOS)))
 		QCoreApplication::setApplicationName(QString("Subsurface-Mobile-%1").arg(settings_suffix));
@@ -93,7 +92,7 @@ void init_qt_late()
 			    qtTranslator.load(loc, "qt", "_", getSubsurfaceDataPath("../translations"))) {
 				application->installTranslator(&qtTranslator);
 			} else {
-				qDebug() << "can't find Qt base localization for locale" << uiLang << "searching in" << translationLocation;
+				report_info("can't find Qt base localization for locale %s searching in %s", qPrintable(uiLang), qPrintable(translationLocation));
 			}
 		}
 	}
@@ -117,10 +116,10 @@ void init_qt_late()
 			    parentLanguageTranslator.load(parentLoc, "subsurface", "_", getSubsurfaceDataPath("translations")) ||
 			    parentLanguageTranslator.load(parentLoc, "subsurface", "_", getSubsurfaceDataPath("../translations"))) {
 				if (verbose)
-					qDebug() << "loading" << parentLoc.name() << "translations";
+					report_info("loading %s translations", qPrintable(parentLoc.name()));
 				application->installTranslator(&parentLanguageTranslator);
 			} else {
-				qDebug() << "can't find Subsurface localization for locale" << parentLoc.name();
+				report_info("can't find Subsurface localization for locale %s", qPrintable(parentLoc.name()));
 			}
 		}
 
@@ -130,9 +129,9 @@ void init_qt_late()
 	    ssrfTranslator.load(loc, "subsurface", "_", getSubsurfaceDataPath("translations")) ||
 	    ssrfTranslator.load(loc, "subsurface", "_", getSubsurfaceDataPath("../translations"))) {
 		if (verbose)
-			qDebug() << "loading" << uiLang << "translations";
+			report_info("loading %s translations", qPrintable(uiLang));
 		application->installTranslator(&ssrfTranslator);
 	} else {
-		qDebug() << "can't find Subsurface localization for locale" << uiLang;
+		report_info("can't find Subsurface localization for locale %s", qPrintable(uiLang));
 	}
 }
