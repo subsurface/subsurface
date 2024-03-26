@@ -85,7 +85,7 @@ namespace {
 extern "C" int updateProgress(const char *text)
 {
 	if (verbose)
-		qDebug() << "git storage:" << text;
+		report_info("git storage: %s", text);
 	if (progressDialog) {
 		// apparently we don't always get enough space to show the full label
 		// so let's manually make enough space (but don't shrink the existing size)
@@ -1567,7 +1567,7 @@ void MainWindow::hideProgressBar()
 void MainWindow::divesChanged(const QVector<dive *> &dives, DiveField)
 {
 	for (struct dive *d: dives) {
-		qDebug() << "dive #" << d->number << "changed, cache is" << (dive_cache_is_valid(d) ? "valid" : "invalidated");
+		report_info("dive #%d changed, cache is %s", d->number, dive_cache_is_valid(d) ? "valid" : "invalidated");
 		// a brute force way to deal with that would of course be to call
 		// invalidate_dive_cache(d);
 	}

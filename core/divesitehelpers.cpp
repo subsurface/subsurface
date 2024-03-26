@@ -9,7 +9,6 @@
 #include "errorhelper.h"
 #include "subsurface-string.h"
 #include "qthelper.h"
-#include <QDebug>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -124,7 +123,6 @@ taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude)
 		}
 	} else {
 		report_error("geonames.org did not provide reverse lookup information");
-		//qDebug() << "no reverse geo lookup; geonames returned\n" << fullReply;
 	}
 
 	return taxonomy;

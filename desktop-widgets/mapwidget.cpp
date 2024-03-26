@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QQmlContext>
-#include <QDebug>
 #include <QQuickItem>
 #include <QModelIndex>
 
 #include "mapwidget.h"
 #include "core/divesite.h"
+#include "core/errorhelper.h"
 #include "core/selection.h"
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
@@ -37,7 +37,7 @@ void MapWidget::doneLoading(QQuickWidget::Status status)
 {
 	// the default map widget QML failed; load the error QML.
 	if (source() == urlMapWidget && status != QQuickWidget::Ready) {
-		qDebug() << urlMapWidget << "failed to load with status:" << status;
+		report_info("%s failed to load with status: %d", qPrintable(urlMapWidget.toString()), static_cast<int>(status));
 		setSource(urlMapWidgetError);
 		return;
 	} else if (source() == urlMapWidgetError) { // the error QML finished loading.
