@@ -5,6 +5,7 @@
 #include "core/qthelper.h"
 #include "core/selection.h"
 #include "core/subsurface-string.h"
+#include "core/tag.h"
 #include "core/trip.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/mapwidget.h"
@@ -117,7 +118,7 @@ void TabDiveNotes::divesChanged(const QVector<dive *> &dives, DiveField field)
 	if (field.divesite)
 		updateDiveSite(currentDive);
 	if (field.tags)
-		ui.tagWidget->setText(get_taglist_string(currentDive->tag_list));
+		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tag_list)));
 	if (field.buddy)
 		ui.buddy->setText(currentDive->buddy);
 	if (field.diveguide)
@@ -252,7 +253,7 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		// reset labels in case we last displayed trip notes
 		ui.LocationLabel->setText(tr("Location"));
 		ui.NotesLabel->setText(tr("Notes"));
-		ui.tagWidget->setText(get_taglist_string(currentDive->tag_list));
+		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tag_list)));
 		bool isManual = is_manually_added_dc(&currentDive->dc);
 		ui.depth->setVisible(isManual);
 		ui.depthLabel->setVisible(isManual);

@@ -387,10 +387,10 @@ static void save_tags(struct membuffer *b, struct tag_entry *entry)
 	if (entry) {
 		const char *sep = " tags='";
 		do {
-			struct divetag *tag = entry->tag;
+			const struct divetag *tag = entry->tag;
 			put_string(b, sep);
 			/* If the tag has been translated, write the source to the xml file */
-			quote(b, tag->source ?: tag->name, 1);
+			quote(b, tag->source.empty() ? tag->name.c_str() : tag->source.c_str(), 1);
 			sep = ", ";
 		} while ((entry = entry->next) != NULL);
 		put_string(b, "'");

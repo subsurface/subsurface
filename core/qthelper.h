@@ -36,7 +36,6 @@ QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
 QString get_gas_string(struct gasmix gas);
 QStringList get_dive_gas_list(const struct dive *d);
-QString get_taglist_string(struct tag_entry *tag_list);
 QStringList stringToList(const QString &s);
 void read_hashes();
 void write_hashes();

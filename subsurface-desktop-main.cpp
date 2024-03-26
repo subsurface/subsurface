@@ -107,7 +107,6 @@ int main(int argc, char **argv)
 		run_ui();
 	exit_ui();
 	clear_divelog(&divelog);
-	taglist_free(g_tag_list);
 	parse_xml_exit();
 	subsurface_console_exit();
 

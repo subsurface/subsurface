@@ -128,7 +128,7 @@ static std::vector<QString> getWords(const dive *d)
 	tokenize(QString(d->buddy), res);
 	tokenize(QString(d->suit), res);
 	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
-		tokenize(QString(tag->tag->name), res);
+		tokenize(QString::fromStdString(tag->tag->name), res);
 	for (int i = 0; i < d->cylinders.nr; ++i) {
 		const cylinder_t &cyl = *get_cylinder(d, i);
 		tokenize(QString(cyl.type.description), res);

@@ -10,8 +10,7 @@ void TestTagList::initTestCase()
 
 void TestTagList::cleanupTestCase()
 {
-	taglist_free(g_tag_list);
-	g_tag_list = NULL;
+	g_tag_list.clear();
 }
 
 void TestTagList::testGetTagstringNoTags()
