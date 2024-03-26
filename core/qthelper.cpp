@@ -1409,11 +1409,6 @@ extern "C" void subsurface_mkdir(const char *dir)
 		qDebug() << "failed to create path" << dir;
 }
 
-extern "C" void parse_display_units(char *line)
-{
-	qDebug() << line;
-}
-
 extern "C" enum deco_mode decoMode(bool in_planner)
 {
 	return in_planner ? prefs.planner_deco_mode : prefs.display_deco_mode;
