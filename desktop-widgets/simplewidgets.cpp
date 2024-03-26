@@ -342,7 +342,7 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 			text << tr("Tags: ");
 			tag_entry *entry = current_dive->tag_list;
 			while (entry) {
-				text << entry->tag->name << " ";
+				text << entry->tag->name.c_str() << " ";
 				entry = entry->next;
 			}
 			text << "\n";

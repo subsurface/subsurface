@@ -339,7 +339,7 @@ static void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pr
 	while (tag) {
 		put_format(b, "%s\"", separator);
 		separator = ", ";
-		put_HTML_quoted(b, tag->tag->name);
+		put_HTML_quoted(b, tag->tag->name.c_str());
 		put_string(b, "\"");
 		tag = tag->next;
 	}

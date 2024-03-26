@@ -113,7 +113,7 @@ static void save_tags(struct membuffer *b, struct tag_entry *tags)
 		return;
 	put_string(b, "tags");
 	while (tags) {
-		show_utf8(b, sep, tags->tag->source ? : tags->tag->name, "");
+		show_utf8(b, sep, tags->tag->source.empty() ? tags->tag->name.c_str() : tags->tag->source.c_str(), "");
 		sep = ", ";
 		tags = tags->next;
 	}

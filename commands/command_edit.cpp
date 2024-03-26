@@ -566,7 +566,7 @@ QStringList EditTags::data(struct dive *d) const
 {
 	QStringList res;
 	for (const struct tag_entry *tag = d->tag_list; tag; tag = tag->next)
-		res.push_back(tag->tag->name);
+		res.push_back(QString::fromStdString(tag->tag->name));
 	return res;
 }
 
@@ -1426,7 +1426,7 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 		changedFields |= DiveField::CHILL;
 	if (!same_string(oldDive->suit, newDive->suit))
 		changedFields |= DiveField::SUIT;
-	if (get_taglist_string(oldDive->tag_list) != get_taglist_string(newDive->tag_list)) // This is cheating. Do we have a taglist comparison function?
+	if (taglist_get_tagstring(oldDive->tag_list) != taglist_get_tagstring(newDive->tag_list)) // This is cheating. Do we have a taglist comparison function?
 		changedFields |= DiveField::TAGS;
 	if (oldDive->dc.divemode != newDive->dc.divemode)
 		changedFields |= DiveField::MODE;

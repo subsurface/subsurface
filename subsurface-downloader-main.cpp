@@ -110,7 +110,6 @@ int main(int argc, char **argv)
 		printf("Give a log file name as argument, or configure a cloud URL.\n");
 	}
 	clear_divelog(&divelog);
-	taglist_free(g_tag_list);
 	parse_xml_exit();
 
 	// Sync struct preferences to disk

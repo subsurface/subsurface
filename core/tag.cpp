@@ -7,9 +7,10 @@
 #include "gettext.h"
 
 #include <stdlib.h>
+#include <algorithm>
 #include <QtGlobal> // for QT_TRANSLATE_NOOP
 
-struct tag_entry *g_tag_list = NULL;
+std::vector<std::unique_ptr<divetag>> g_tag_list;
 
 static const char *default_tags[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "boat"), QT_TRANSLATE_NOOP("gettextFromC", "shore"), QT_TRANSLATE_NOOP("gettextFromC", "drift"),
@@ -24,15 +25,13 @@ static const char *default_tags[] = {
 /* copy an element in a list of tags */
 static void copy_tl(struct tag_entry *st, struct tag_entry *dt)
 {
-	dt->tag = (divetag *)malloc(sizeof(struct divetag));
-	dt->tag->name = copy_string(st->tag->name);
-	dt->tag->source = copy_string(st->tag->source);
+	dt->tag = st->tag;
 }
 
 static bool tag_seen_before(struct tag_entry *start, struct tag_entry *before)
 {
 	while (start && start != before) {
-		if (same_string(start->tag->name, before->tag->name))
+		if (start->tag->name == before->tag->name)
 			return true;
 		start = start->next;
 	}
@@ -45,7 +44,7 @@ extern "C" void taglist_cleanup(struct tag_entry **tag_list)
 	struct tag_entry **tl = tag_list;
 	while (*tl) {
 		/* skip tags that are empty or that we have seen before */
-		if (empty_string((*tl)->tag->name) || tag_seen_before(*tag_list, *tl)) {
+		if ((*tl)->tag->name.empty() || tag_seen_before(*tag_list, *tl)) {
 			*tl = (*tl)->next;
 			continue;
 		}
@@ -57,39 +56,28 @@ std::string taglist_get_tagstring(struct tag_entry *tag_list)
 {
 	bool first_tag = true;
 	std::string res;
-	struct tag_entry *tmp = tag_list;
-	while (tmp != NULL) {
-		if (!empty_string(tmp->tag->name)) {
-			if (!first_tag)
-				res += ", ";
-			res += tmp->tag->name;
-			first_tag = false;
-		}
-		tmp = tmp->next;
+	for (struct tag_entry *tmp = tag_list; tmp != NULL; tmp = tmp->next) {
+		if (tmp->tag->name.empty())
+			continue;
+		if (!first_tag)
+			res += ", ";
+		res += tmp->tag->name;
+		first_tag = false;
 	}
-	return strdup(res.c_str());
-}
-
-static inline void taglist_free_divetag(struct divetag *tag)
-{
-	if (tag->name != NULL)
-		free(tag->name);
-	if (tag->source != NULL)
-		free(tag->source);
-	free(tag);
+	return res;
 }
 
 /* Add a tag to the tag_list, keep the list sorted */
-static struct divetag *taglist_add_divetag(struct tag_entry **tag_list, struct divetag *tag)
+static void taglist_add_divetag(struct tag_entry **tag_list, const struct divetag *tag)
 {
 	struct tag_entry *next, *entry;
 
 	while ((next = *tag_list) != NULL) {
-		int cmp = strcmp(next->tag->name, tag->name);
+		int cmp = next->tag->name.compare(tag->name);
 
 		/* Already have it? */
 		if (!cmp)
-			return next->tag;
+			return;
 		/* Is the entry larger? If so, insert here */
 		if (cmp > 0)
 			break;
@@ -102,48 +90,33 @@ static struct divetag *taglist_add_divetag(struct tag_entry **tag_list, struct d
 	entry->next = next;
 	entry->tag = tag;
 	*tag_list = entry;
-	return tag;
 }
 
-extern "C" struct divetag *taglist_add_tag(struct tag_entry **tag_list, const char *tag)
+static const divetag *register_tag(const char *s, const char *source)
 {
-	size_t i = 0;
-	int is_default_tag = 0;
-	struct divetag *ret_tag, *new_tag;
-	const char *translation;
-	new_tag = (divetag *)malloc(sizeof(struct divetag));
+	// binary search
+	auto it = std::lower_bound(g_tag_list.begin(), g_tag_list.end(), s,
+				   [](const std::unique_ptr<divetag> &tag, const char *s)
+				   { return tag->name < s; });
+	if (it == g_tag_list.end() || (*it)->name != s) {
+		std::string source_s = empty_string(source) ? std::string() : std::string(source);
+		it = g_tag_list.insert(it, std::make_unique<divetag>(s, source));
+	}
+	return it->get();
+}
 
-	for (i = 0; i < std::size(default_tags); i++) {
-		if (strcmp(default_tags[i], tag) == 0) {
-			is_default_tag = 1;
-			break;
-		}
-	}
+extern "C" void taglist_add_tag(struct tag_entry **tag_list, const char *tag)
+{
+	bool is_default_tag = std::find_if(std::begin(default_tags), std::end(default_tags),
+			[&tag] (const char *default_tag) { return tag == default_tag; });
+
 	/* Only translate default tags */
-	if (is_default_tag) {
-		translation = translate("gettextFromC", tag);
-		new_tag->name = (char *)malloc(strlen(translation) + 1);
-		memcpy(new_tag->name, translation, strlen(translation) + 1);
-		new_tag->source = (char *)malloc(strlen(tag) + 1);
-		memcpy(new_tag->source, tag, strlen(tag) + 1);
-	} else {
-		new_tag->source = NULL;
-		new_tag->name = (char *)malloc(strlen(tag) + 1);
-		memcpy(new_tag->name, tag, strlen(tag) + 1);
-	}
-	/* Try to insert new_tag into g_tag_list if we are not operating on it */
-	if (tag_list != &g_tag_list) {
-		ret_tag = taglist_add_divetag(&g_tag_list, new_tag);
-		/* g_tag_list already contains new_tag, free the duplicate */
-		if (ret_tag != new_tag)
-			taglist_free_divetag(new_tag);
-		ret_tag = taglist_add_divetag(tag_list, ret_tag);
-	} else {
-		ret_tag = taglist_add_divetag(tag_list, new_tag);
-		if (ret_tag != new_tag)
-			taglist_free_divetag(new_tag);
-	}
-	return ret_tag;
+	/* TODO: Do we really want to translate user-supplied tags if they happen to be known!? */
+	const char *translation = is_default_tag ? translate("gettextFromC", tag) : tag;
+	const char *source = is_default_tag ? tag : nullptr;
+	const struct divetag *d_tag = register_tag(translation, source);
+
+	taglist_add_divetag(tag_list, d_tag);
 }
 
 extern "C" void taglist_free(struct tag_entry *entry)
@@ -171,8 +144,6 @@ extern "C" void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, st
 
 extern "C" void taglist_init_global()
 {
-	size_t i;
-
-	for (i = 0; i < std::size(default_tags); i++)
-		taglist_add_tag(&g_tag_list, default_tags[i]);
+	for (const char *s: default_tags)
+		register_tag(translate("gettextFromC", s), s);
 }

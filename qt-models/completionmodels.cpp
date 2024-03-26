@@ -84,14 +84,9 @@ bool SuitCompletionModel::relevantDiveField(const DiveField &f)
 
 QStringList TagCompletionModel::getStrings()
 {
-	if (g_tag_list == NULL)
-		return {};
 	QStringList list;
-	struct tag_entry *current_tag_entry = g_tag_list;
-	while (current_tag_entry != NULL) {
-		list.append(QString(current_tag_entry->tag->name));
-		current_tag_entry = current_tag_entry->next;
-	}
+	for (const std::unique_ptr<divetag> &tag: g_tag_list)
+		list.append(QString::fromStdString(tag->name));
 	std::sort(list.begin(), list.end());
 	return list;
 }
