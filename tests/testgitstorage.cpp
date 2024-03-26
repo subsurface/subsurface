@@ -6,6 +6,7 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
+#include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/subsurface-string.h"
 #include "core/format.h"
@@ -19,7 +20,6 @@
 #include <QTextStream>
 #include <QNetworkProxy>
 #include <QTextCodec>
-#include <QDebug>
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
 #endif
@@ -132,8 +132,8 @@ void TestGitStorage::initTestCase()
 	cloudTestRepo = gitUrl + "[" + randomBranch + ']';
 	localCacheDir = get_local_dir(gitUrl.c_str(), randomBranch.c_str());
 	localCacheRepo = localCacheDir + "[" + randomBranch + "]";
-	qDebug() << "repo used:" << cloudTestRepo.c_str();
-	qDebug() << "local cache:" << localCacheRepo.c_str();
+	report_info("repo used: %s", cloudTestRepo.c_str());
+	report_info("local cache: %s", localCacheRepo.c_str());
 
 	// make sure we deal with any proxy settings that are needed
 	QNetworkProxy proxy;
