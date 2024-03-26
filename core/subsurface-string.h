@@ -74,6 +74,12 @@ inline bool starts_with(const std::string &s, const char *s2)
 	return s.rfind(s2, 0) == 0;
 }
 
+// Sadly, std::string::contains only with C++23!
+inline bool contains(const std::string &s, char c)
+{
+	return s.find(c) != std::string::npos;
+}
+
 std::string join(const std::vector<std::string> &l, const std::string &separator, bool skip_empty = false);
 
 #endif
