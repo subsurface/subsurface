@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "uploadDiveLogsDE.h"
 #include <QDir>
-#include <QDebug>
 #include <QTemporaryFile>
 #include <zip.h>
 #include <errno.h>
@@ -72,7 +71,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 
 	xslt = get_stylesheet("divelogs-export.xslt");
 	if (!xslt) {
-		qDebug() << errPrefix << "missing stylesheet";
+		report_info("%s missing stylesheet", errPrefix);
 		report_error("%s", qPrintable(tr("Stylesheet to export to divelogs.de is not found")));
 		return false;
 	}
@@ -143,7 +142,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		 */
 		xmlDoc *doc = xmlReadMemory(mb.buffer, mb.len, "divelog", NULL, XML_PARSE_HUGE);
 		if (!doc) {
-			qWarning() << errPrefix << "could not parse back into memory the XML file we've just created!";
+			report_info("%s could not parse back into memory the XML file we've just created!", errPrefix);
 			report_error("%s", qPrintable(tr("internal error")));
 			zip_close(zip);
 			QFile::remove(tempfile);
@@ -156,7 +155,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		transformed = xsltApplyStylesheet(xslt, doc, xml_params_get(params));
 		free_xml_params(params);
 		if (!transformed) {
-			qWarning() << errPrefix << "XSLT transform failed for dive: " << i;
+			report_info("%s XSLT transform failed for dive: %d", errPrefix, i);
 			report_error("%s", qPrintable(tr("Conversion of dive %1 to divelogs.de format failed").arg(i)));
 			continue;
 		}
@@ -172,7 +171,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		if (s) {
 			int64_t ret = zip_add(zip, filename, s);
 			if (ret == -1)
-				qDebug() << errPrefix << "failed to include dive:" << i;
+				report_info("%s failed to include dive: %d", errPrefix, i);
 		}
 	}
 	xsltFreeStylesheet(xslt);
@@ -228,7 +227,7 @@ void uploadDiveLogsDE::uploadDives(const QString &filename, const QString &useri
 	cleanupTempFile();
 	tempFile.setFileName(filename);
 	if (!tempFile.open(QIODevice::ReadOnly)) {
-		qDebug() << "ERROR opening zip file: " << filename;
+		report_info("ERROR opening zip file: %s", qPrintable(filename));
 		return;
 	}
 	part1.setBodyDevice(&tempFile);

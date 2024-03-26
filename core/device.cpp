@@ -4,7 +4,7 @@
 #include "divelist.h"
 #include "divelog.h"
 #include "subsurface-string.h"
-#include "errorhelper.h" // for verbose flag
+#include "errorhelper.h"
 #include "selection.h"
 #include "core/settings/qPrefDiveComputer.h"
 
@@ -60,9 +60,9 @@ void device::showchanges(const std::string &n) const
 {
 	if (nickName != n) {
 		if (!n.empty())
-			qDebug("new nickname %s for DC model %s serial %s", n.c_str(), model.c_str(), serialNumber.c_str());
+			report_info("new nickname %s for DC model %s serial %s", n.c_str(), model.c_str(), serialNumber.c_str());
 		else
-			qDebug("deleted nickname %s for DC model %s serial %s", nickName.c_str(), model.c_str(), serialNumber.c_str());
+			report_info("deleted nickname %s for DC model %s serial %s", nickName.c_str(), model.c_str(), serialNumber.c_str());
 	}
 }
 

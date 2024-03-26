@@ -2,6 +2,7 @@
 #include "dive.h"
 #include "metrics.h"
 #include "divelist.h"
+#include "errorhelper.h"
 #include "qthelper.h"
 #include "imagedownloader.h"
 #include "videoframeextractor.h"
@@ -56,7 +57,7 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 			hash.addData(filename.toUtf8());
 			QFile imageFile(path.append("/").append(hash.result().toHex()));
 			if (imageFile.open(QIODevice::WriteOnly)) {
-				qDebug() << "Write image to" << imageFile.fileName();
+				report_info("Write image to %s", qPrintable(imageFile.fileName()));
 				QDataStream stream(&imageFile);
 				stream.writeRawData(imageData.data(), imageData.length());
 				imageFile.waitForBytesWritten(-1);
