@@ -16,6 +16,7 @@
 #include "core/divesite.h"
 #include "core/divelog.h"
 #include "core/device.h"
+#include "core/errorhelper.h"
 #include "core/trip.h"
 #include "core/import-csv.h"
 #include "core/xmlparams.h"
@@ -518,7 +519,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 				headers.append("Sample pressure");
 			} else {
 				// We do not know about this value
-				qDebug() << "Seabear import found an un-handled field: " << columnText;
+				report_info("Seabear import found an un-handled field: %s", qPrintable(columnText));
 				headers.append("");
 			}
 		}
