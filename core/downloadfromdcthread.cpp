@@ -1,10 +1,10 @@
 #include "downloadfromdcthread.h"
+#include "core/errorhelper.h"
 #include "core/libdivecomputer.h"
 #include "core/qthelper.h"
 #include "core/range.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/divelist.h"
-#include <QDebug>
 #if defined(Q_OS_ANDROID)
 #include "core/subsurface-string.h"
 #endif
@@ -91,7 +91,7 @@ void DownloadThread::run()
 	internalData->log = &log;
 	internalData->btname = strdup(m_data->devBluetoothName().toUtf8());
 	if (!internalData->descriptor) {
-		qDebug() << "No download possible when DC type is unknown";
+		report_info("No download possible when DC type is unknown");
 		return;
 	}
 	// get the list of transports that this device supports and filter depending on Bluetooth option
@@ -103,8 +103,8 @@ void DownloadThread::run()
 	if (transports == DC_TRANSPORT_USBHID)
 		internalData->devname = "";
 
-	qDebug() << "Starting download from " << getTransportString(transports);
-	qDebug() << "downloading" << (internalData->force_download ? "all" : "only new") << "dives";
+	report_info("Starting download from %s", qPrintable(getTransportString(transports)));
+	report_info("downloading %s dives", internalData->force_download ? "all" : "only new");
 	clear_divelog(&log);
 
 	Q_ASSERT(internalData->log != nullptr);
@@ -117,11 +117,11 @@ void DownloadThread::run()
 		errorText = do_libdivecomputer_import(internalData);
 	if (errorText) {
 		error = str_error(errorText, internalData->devname, internalData->vendor, internalData->product);
-		qDebug() << "Finishing download thread:" << error;
+		report_info("Finishing download thread: %s", qPrintable(error));
 	} else {
 		if (!log.dives->nr)
 			error = tr("No new dives downloaded from dive computer");
-		qDebug() << "Finishing download thread:" << log.dives->nr << "dives downloaded";
+		report_info("Finishing download thread: %d dives downloaded", log.dives->nr);
 	}
 	qPrefDiveComputer::set_vendor(internalData->vendor);
 	qPrefDiveComputer::set_product(internalData->product);
@@ -193,7 +193,7 @@ void fill_computer_list()
 void show_computer_list()
 {
 	unsigned int transportMask = get_supported_transports(NULL);
-	qDebug() << "Supported dive computers:";
+	report_info("Supported dive computers:");
 	for (const QString &vendor: vendorList) {
 		QString msg = vendor + ": ";
 		for (const QString &product: productList[vendor]) {
@@ -203,7 +203,7 @@ void show_computer_list()
 			msg += product + " (" + transportString + "), ";
 		}
 		msg.chop(2);
-		qDebug() << msg;
+		report_info("%s", qPrintable(msg));
 	}
 }
 
@@ -274,7 +274,7 @@ QString DCDeviceData::devBluetoothName() const
 
 QString DCDeviceData::descriptor() const
 {
-	return "";
+	return QString();
 }
 
 bool DCDeviceData::bluetoothMode() const
