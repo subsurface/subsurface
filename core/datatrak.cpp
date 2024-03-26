@@ -721,7 +721,6 @@ int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log)
 		i++;
 	}
 out:
-	taglist_cleanup(&g_tag_list);
 	sort_dive_table(log->dives);
 	return rc;
 bail:

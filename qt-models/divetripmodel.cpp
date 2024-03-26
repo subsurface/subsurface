@@ -294,7 +294,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::SumWeightRole: return formatSumWeight(d);
 	case MobileListModel::DiveGuideRole: return QString(d->diveguide);
 	case MobileListModel::BuddyRole: return QString(d->buddy);
-	case MobileListModel::TagsRole: return get_taglist_string(d->tag_list);
+	case MobileListModel::TagsRole: return QString::fromStdString(taglist_get_tagstring(d->tag_list));
 	case MobileListModel::NotesRole: return formatNotes(d);
 	case MobileListModel::GpsRole: return formatDiveGPS(d);
 	case MobileListModel::GpsDecimalRole: return format_gps_decimal(d);
@@ -347,7 +347,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			else
 				return d->maxcns;
 		case TAGS:
-			return get_taglist_string(d->tag_list);
+			return QString::fromStdString(taglist_get_tagstring(d->tag_list));
 		case PHOTOS:
 			break;
 		case COUNTRY:

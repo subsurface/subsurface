@@ -819,7 +819,7 @@ static bool has_tags(const filter_constraint &c, const struct dive *d)
 {
 	QStringList dive_tags;
 	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
-		dive_tags.push_back(QString(tag->tag->name).trimmed());
+		dive_tags.push_back(QString::fromStdString(tag->tag->name).trimmed());
 	dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]).trimmed());
 	return check(c, dive_tags);
 }

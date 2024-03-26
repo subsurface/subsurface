@@ -94,7 +94,6 @@ int main(int argc, char **argv)
 		run_mobile_ui(initial_font_size);
 	exit_ui();
 	clear_divelog(&divelog);
-	taglist_free(g_tag_list);
 	parse_xml_exit();
 	subsurface_console_exit();
 

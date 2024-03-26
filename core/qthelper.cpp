@@ -1229,12 +1229,6 @@ QStringList get_dive_gas_list(const struct dive *d)
 	return list;
 }
 
-QString get_taglist_string(struct tag_entry *tag_list)
-{
-	std::string tags = taglist_get_tagstring(tag_list);
-	return QString::fromStdString(tags);
-}
-
 QStringList stringToList(const QString &s)
 {
 	QStringList res = s.split(",", SKIP_EMPTY);
