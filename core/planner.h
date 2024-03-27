@@ -2,13 +2,8 @@
 #ifndef PLANNER_H
 #define PLANNER_H
 
-#define LONGDECO 1
-#define NOT_RECREATIONAL 2
-
 #include "units.h"
 #include "divemode.h"
-
-#define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
 
 /* this should be converted to use our types */
 struct divedatapoint {
@@ -36,6 +31,8 @@ struct diveplan {
 	int surface_interval;
 };
 
+struct deco_state_cache;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -44,9 +41,8 @@ extern int validate_gas(const char *text, struct gasmix *gas);
 extern int validate_po2(const char *text, int *mbar_po2);
 extern int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time);
 extern bool diveplan_empty(struct diveplan *diveplan);
-extern void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, int error);
+extern void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, bool error);
 extern const char *get_planner_disclaimer();
-extern char *get_planner_disclaimer_formatted();
 
 extern void free_dps(struct diveplan *diveplan);
 
@@ -58,9 +54,12 @@ struct decostop {
 	int depth;
 	int time;
 };
-extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
 
 #ifdef __cplusplus
 }
+
+#include <string>
+extern std::string get_planner_disclaimer_formatted();
+extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
 #endif
 #endif // PLANNER_H

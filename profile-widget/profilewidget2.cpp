@@ -28,7 +28,6 @@
 
 #include <QMessageBox>
 #include <QInputDialog>
-#include <QDebug>
 #include <QWheelEvent>
 #include <QMenu>
 #include <QMimeData>
@@ -239,7 +238,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 	// so if we are calculation TTS / NDL then let's force that off.
 	qint64 elapsedTime = measureDuration.elapsed();
 	if (verbose)
-		qDebug() << "Profile calculation for dive " << d->number << "took" << elapsedTime << "ms" << " -- calculated ceiling preference is" << prefs.calcceiling;
+		report_info("Profile calculation for dive %d took %lld ms -- calculated ceiling preference is %d", d->number, elapsedTime, prefs.calcceiling);
 	if (elapsedTime > 1000 && prefs.calcndltts) {
 		qPrefTechnicalDetails::set_calcndltts(false);
 		report_error("%s", qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
@@ -621,7 +620,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		// this shows how to figure out if we should ask the user if they want adjust interpolated pressures
 		// at either side of a gas change
 		if (dcEvent->type == SAMPLE_EVENT_GASCHANGE || dcEvent->type == SAMPLE_EVENT_GASCHANGE2) {
-			qDebug() << "figure out if there are interpolated pressures";
 			int gasChangeIdx = idx;
 			while (gasChangeIdx > 0) {
 				--gasChangeIdx;
@@ -629,14 +627,11 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 					break;
 			}
 			const struct plot_data &gasChangeEntry = plotInfo.entry[newGasIdx];
-			qDebug() << "at gas change at" << gasChangeEntry->sec << ": sensor pressure" << get_plot_sensor_pressure(&plotInfo, newGasIdx)
-				 << "interpolated" << ;get_plot_sensor_pressure(&plotInfo, newGasIdx);
 			// now gasChangeEntry points at the gas change, that entry has the final pressure of
 			// the old tank, the next entry has the starting pressure of the next tank
 			if (gasChangeIdx < plotInfo.nr - 1) {
 				int newGasIdx = gasChangeIdx + 1;
 				const struct plot_data &newGasEntry = plotInfo.entry[newGasIdx];
-				qDebug() << "after gas change at " << newGasEntry->sec << ": sensor pressure" << newGasEntry->pressure[0] << "interpolated" << newGasEntry->pressure[1];
 				if (get_plot_sensor_pressure(&plotInfo, gasChangeIdx) == 0 || get_cylinder(d, gasChangeEntry->sensor[0])->sample_start.mbar == 0) {
 					// if we have no sensorpressure or if we have no pressure from samples we can assume that
 					// we only have interpolated pressure (the pressure in the entry may be stored in the sensor

@@ -3,13 +3,13 @@
 #include "core/device.h"
 #include "core/divelog.h"
 #include "core/divesite.h"
+#include "core/errorhelper.h"
 #include "core/trip.h"
 #include "core/file.h"
 #include "core/git-access.h"
 #include "core/settings/qPrefProxy.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include <QFile>
-#include <QDebug>
 #include <QNetworkProxy>
 #include "QTextCodec"
 
@@ -42,8 +42,8 @@ void TestParsePerformance::initTestCase()
 	QNetworkProxy::setApplicationProxy(proxy);
 
 	// now cleanup the cache dir in case there's something weird from previous runs
-	QString localCacheDir(get_local_dir(LARGE_TEST_REPO, "git"));
-	QDir localCacheDirectory(localCacheDir);
+	std::string localCacheDir = get_local_dir(LARGE_TEST_REPO, "git");
+	QDir localCacheDirectory(localCacheDir.c_str());
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 }
 
@@ -61,8 +61,8 @@ void TestParsePerformance::parseSsrf()
 	// parsing of a V2 file should work
 	QFile largeSsrfFile(SUBSURFACE_TEST_DATA "/dives/large-anon.ssrf");
 	if (!largeSsrfFile.exists()) {
-		qDebug() << "missing large sample data file - available at " LARGE_TEST_REPO;
-		qDebug() << "clone the repo, uncompress the file and copy it to " SUBSURFACE_TEST_DATA "/dives/large-anon.ssrf";
+		report_info("missing large sample data file - available at " LARGE_TEST_REPO);
+		report_info("clone the repo, uncompress the file and copy it to " SUBSURFACE_TEST_DATA "/dives/large-anon.ssrf");
 		return;
 	}
 	QBENCHMARK {

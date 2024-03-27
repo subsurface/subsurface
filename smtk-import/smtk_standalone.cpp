@@ -4,9 +4,9 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
+#include "core/errorhelper.h"
 #include "smrtk2ssrfc_window.h"
 #include <QApplication>
-#include <QDebug>
 
 /*
  * Simple command line interface to call directly smartrak_import() or launch
@@ -32,24 +32,24 @@ int main(int argc, char *argv[])
 #endif
 		break;
 	case 2:
-		qDebug() << "\nUsage:\n";
-		qDebug() << "Smrtk2ssrfc importer can be used without arguments (in a graphical UI)";
-		qDebug() << "or with, at least, two arguments (in a CLI, the file to be imported and";
-		qDebug() << "the file to store the Subsurface formatted dives), so you have to use one";
-		qDebug() << "of these examples:\n";
-		qDebug() << "$smrtk2ssrfc";
-		qDebug() << "or";
-		qDebug() << "$smrtk2ssrfc /input/file.slg[ file_2[ file_n]] /output/file.xml\n\n";
+		report_info("\nUsage:\n");
+		report_info("Smrtk2ssrfc importer can be used without arguments (in a graphical UI)");
+		report_info("or with, at least, two arguments (in a CLI, the file to be imported and");
+		report_info("the file to store the Subsurface formatted dives), so you have to use one");
+		report_info("of these examples:\n");
+		report_info("$smrtk2ssrfc");
+		report_info("or");
+		report_info("$smrtk2ssrfc /input/file.slg[ file_2[ file_n]] /output/file.xml\n\n");
 		break;
 	default:
 		outfile = argv[argc - 1];
-		qDebug() << "\n[Importing]\n";
+		report_info("\n[Importing]\n");
 		for(i = 1; i < argc -1; i++) {
 			infile = argv[i];
-			qDebug() << "\t" << infile << "\n";
+			report_info("\t%s\n", infile);
 			smartrak_import(infile, &divelog);
 		}
-		qDebug() << "\n[Writing]\n\t" << outfile << "\n";
+		report_info("\n[Writing]\n\t %s\n", outfile);
 		save_dives_logic(outfile, false, false);
 		break;
 	}

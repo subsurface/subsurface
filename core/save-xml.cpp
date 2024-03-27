@@ -387,10 +387,10 @@ static void save_tags(struct membuffer *b, struct tag_entry *entry)
 	if (entry) {
 		const char *sep = " tags='";
 		do {
-			struct divetag *tag = entry->tag;
+			const struct divetag *tag = entry->tag;
 			put_string(b, sep);
 			/* If the tag has been translated, write the source to the xml file */
-			quote(b, tag->source ?: tag->name, 1);
+			quote(b, tag->source.empty() ? tag->name.c_str() : tag->source.c_str(), 1);
 			sep = ", ";
 		} while ((entry = entry->next) != NULL);
 		put_string(b, "'");
@@ -823,7 +823,6 @@ extern "C" int save_dives_logic(const char *filename, const bool select_only, bo
 
 	if (is_git_repository(filename, &info)) {
 		error = git_save_dives(&info, select_only);
-		cleanup_git_info(&info);
 		return error;
 	}
 
@@ -866,7 +865,7 @@ static int export_dives_xslt_doit(const char *filename, struct xml_params *param
 	int res = 0;
 
 	if (verbose)
-		fprintf(stderr, "export_dives_xslt with stylesheet %s\n", export_xslt);
+		report_info("export_dives_xslt with stylesheet %s", export_xslt);
 
 	if (!filename)
 		return report_error("No filename for export");

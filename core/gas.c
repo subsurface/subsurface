@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "gas.h"
 #include "pref.h"
+#include "errorhelper.h"
 #include "gettext.h"
 #include <stdio.h>
 #include <string.h>
@@ -59,7 +60,7 @@ void sanitize_gasmix(struct gasmix *mix)
 	/* Sane mix? */
 	if (o2 <= 1000 && he <= 1000 && o2 + he <= 1000)
 		return;
-	fprintf(stderr, "Odd gasmix: %u O2 %u He\n", o2, he);
+	report_info("Odd gasmix: %u O2 %u He", o2, he);
 	memset(mix, 0, sizeof(*mix));
 }
 
@@ -117,7 +118,7 @@ int pscr_o2(const double amb_pressure, struct gasmix mix)
  *			*pressures = structure for communicating o2 sensor values from and gas pressures to the calling function.
  *			*mix = structure containing cylinder gas mixture information.
  *			divemode = the dive mode pertaining to this point in the dive profile.
- * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
+ * This function called by: calculate_gas_information_new() in profile.cpp; add_segment() in deco.cpp.
  */
 void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, struct gasmix mix, double po2, enum divemode_t divemode)
 {

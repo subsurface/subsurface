@@ -222,8 +222,6 @@ void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
 
 void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 {
-	struct membufferpp mb;
-
 	if(refreshTime.elapsed() < 40)
 		return;
 	refreshTime.start();
@@ -233,7 +231,7 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 	lastTime = time;
 	clear();
 
-	int idx = get_plot_details_new(d, &pInfo, time, &mb);
+	auto [idx, lines] = get_plot_details_new(d, &pInfo, time);
 
 	tissues.fill();
 	painter.setPen(QColor(0, 0, 0, 0));
@@ -253,7 +251,13 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 		painter.setPen(QColor(0, 0, 0, 127));
 		for (int i = 0; i < 16; i++)
 			painter.drawLine(i, 60, i, 60 - entry->percentages[i] / 2);
-		entryToolTip.second->setPlainText(QString::fromUtf8(mb.buffer, mb.len));
+		QString text;
+		for (const std::string &s: lines) {
+			if (!text.isEmpty())
+				text += '\n';
+			text += QString::fromStdString(s);
+		}
+		entryToolTip.second->setPlainText(text);
 	}
 	entryToolTip.first->setPixmap(tissues);
 

@@ -407,3 +407,31 @@ extern "C" void put_vformat_loc(struct membuffer *b, const char *fmt, va_list ar
 	memcpy(b->buffer + b->len, data, utf8_size);
 	b->len += utf8_size;
 }
+
+// TODO: Avoid back-and-forth conversion between UTF16 and UTF8.
+std::string casprintf_loc(const char *cformat, ...)
+{
+	va_list ap;
+	va_start(ap, cformat);
+	QByteArray utf8 = vqasprintf_loc(cformat, ap).toUtf8();
+	va_end(ap);
+	return std::string(utf8.constData(), utf8.size());
+}
+
+std::string __printf(1, 2) format_string_std(const char *fmt, ...)
+{
+	va_list ap;
+	va_start(ap, fmt);
+	size_t stringsize = vsnprintf(NULL, 0, fmt, ap);
+	va_end(ap);
+	if (stringsize == 0)
+		return std::string();
+	std::string res;
+	res.resize(stringsize); // Pointless clearing, oh my.
+	// This overwrites the terminal null-byte of std::string.
+	// That's probably "undefined behavior". Oh my.
+	va_start(ap, fmt);
+	vsnprintf(res.data(), stringsize + 1, fmt, ap);
+	va_end(ap);
+	return res;
+}

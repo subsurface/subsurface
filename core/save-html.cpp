@@ -36,16 +36,15 @@ static void save_photos(struct membuffer *b, const char *photos_dir, struct dive
 	if (dive->pictures.nr <= 0)
 		return;
 
-	char *separator = "\"photos\":[";
+	const char *separator = "\"photos\":[";
 	FOR_EACH_PICTURE(dive) {
 		put_string(b, separator);
 		separator = ", ";
-		char *fname = get_file_name(local_file_path(picture));
+		std::string fname = get_file_name(local_file_path(picture));
 		put_string(b, "{\"filename\":\"");
-		put_quoted(b, fname, 1, 0);
+		put_quoted(b, fname.c_str(), 1, 0);
 		put_string(b, "\"}");
-		copy_image_and_overwrite(local_file_path(picture), photos_dir, fname);
-		free(fname);
+		copy_image_and_overwrite(local_file_path(picture), photos_dir, fname.c_str());
 	}
 	put_string(b, "],");
 }
@@ -54,7 +53,7 @@ static void write_divecomputers(struct membuffer *b, struct dive *dive)
 {
 	put_string(b, "\"divecomputers\":[");
 	struct divecomputer *dc;
-	char *separator = "";
+	const char *separator = "";
 	for_each_dc (dive, dc) {
 		put_string(b, separator);
 		separator = ", ";
@@ -87,7 +86,7 @@ static void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
 	if (!ev)
 		return;
 
-	char *separator = "\"events\":[";
+	const char *separator = "\"events\":[";
 	do {
 		put_string(b, separator);
 		separator = ", ";
@@ -110,7 +109,7 @@ static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
 
 	put_string(b, "\"Weights\":[");
 
-	char *separator = "";
+	const char *separator = "";
 
 	for (i = 0; i < nr; i++) {
 		weightsystem_t ws = dive->weightsystems.weightsystems[i];
@@ -130,7 +129,7 @@ static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
 static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 {
 	int i, nr;
-	char *separator = "\"Cylinders\":[";
+	const char *separator = "\"Cylinders\":[";
 	nr = nr_cylinders(dive);
 
 	if (!nr)
@@ -143,7 +142,7 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 		write_attribute(b, "Type", cylinder->type.description, ", ");
 		if (cylinder->type.size.mliter) {
 			int volume = cylinder->type.size.mliter;
-			if (prefs.units.volume == CUFT && cylinder->type.workingpressure.mbar)
+			if (prefs.units.volume == units::CUFT && cylinder->type.workingpressure.mbar)
 				volume = lrint(volume * bar_to_atm(cylinder->type.workingpressure.mbar / 1000.0));
 			put_HTML_volume_units(b, volume, "\"Size\":\"", " \", ");
 		} else {
@@ -187,7 +186,7 @@ static void put_HTML_samples(struct membuffer *b, struct dive *dive)
 	if (!dive->dc.samples)
 		return;
 
-	char *separator = "\"samples\":[";
+	const char *separator = "\"samples\":[";
 	for (i = 0; i < dive->dc.samples; i++) {
 		put_format(b, "%s[%d,%d,%d,%d]", separator, s->time.seconds, s->depth.mm, s->pressure[0].mbar, s->temperature.mkelvin);
 		separator = ", ";
@@ -292,11 +291,11 @@ void put_HTML_depth(struct membuffer *b, struct dive *dive, const char *pre, con
 	value = get_depth_units(dive->maxdepth.mm, NULL, &unit);
 
 	switch (units_p->length) {
-	case METERS:
+	case units::METERS:
 	default:
 		put_format(b, "%s%.1f %s%s", pre, value, unit, post);
 		break;
-	case FEET:
+	case units::FEET:
 		put_format(b, "%s%.0f %s%s", pre, value, unit, post);
 		break;
 	}
@@ -336,11 +335,11 @@ static void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pr
 	if (!tag)
 		put_string(b, "[\"--\"");
 
-	char *separator = "[";
+	const char *separator = "[";
 	while (tag) {
 		put_format(b, "%s\"", separator);
 		separator = ", ";
-		put_HTML_quoted(b, tag->tag->name);
+		put_HTML_quoted(b, tag->tag->name.c_str());
 		put_string(b, "\"");
 		tag = tag->next;
 	}
@@ -393,7 +392,7 @@ static void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only,
 {
 	int i;
 	struct dive *dive;
-	char *separator = "";
+	const char *separator = "";
 	bool found_sel_dive = 0;
 
 	for_each_dive (i, dive) {
@@ -419,7 +418,7 @@ static void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only,
 static void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
 	struct dive *dive;
-	char *separator = "";
+	const char *separator = "";
 	bool found_sel_dive = 0;
 
 	for (int i = 0; i < trip->dives.nr; i++) {
@@ -483,7 +482,7 @@ void export_HTML(const char *file_name, const char *photos_dir, const bool selec
 {
 	FILE *f;
 
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 	export_list(&buf, photos_dir, selected_only, list_only);
 
 	f = subsurface_fopen(file_name, "w+");
@@ -493,88 +492,86 @@ void export_HTML(const char *file_name, const char *photos_dir, const bool selec
 		flush_buffer(&buf, f); /*check for writing errors? */
 		fclose(f);
 	}
-	free_buffer(&buf);
 }
 
 void export_translation(const char *file_name)
 {
 	FILE *f;
 
-	struct membuffer buf = { 0 };
-	struct membuffer *b = &buf;
+	struct membufferpp buf;
 
 	//export translated words here
-	put_format(b, "translate={");
+	put_format(&buf, "translate={");
 
 	//Dive list view
-	write_attribute(b, "Number", translate("gettextFromC", "Number"), ", ");
-	write_attribute(b, "Date", translate("gettextFromC", "Date"), ", ");
-	write_attribute(b, "Time", translate("gettextFromC", "Time"), ", ");
-	write_attribute(b, "Location", translate("gettextFromC", "Location"), ", ");
-	write_attribute(b, "Air_Temp", translate("gettextFromC", "Air temp."), ", ");
-	write_attribute(b, "Water_Temp", translate("gettextFromC", "Water temp."), ", ");
-	write_attribute(b, "dives", translate("gettextFromC", "Dives"), ", ");
-	write_attribute(b, "Expand_All", translate("gettextFromC", "Expand all"), ", ");
-	write_attribute(b, "Collapse_All", translate("gettextFromC", "Collapse all"), ", ");
-	write_attribute(b, "trips", translate("gettextFromC", "Trips"), ", ");
-	write_attribute(b, "Statistics", translate("gettextFromC", "Statistics"), ", ");
-	write_attribute(b, "Advanced_Search", translate("gettextFromC", "Advanced search"), ", ");
+	write_attribute(&buf, "Number", translate("gettextFromC", "Number"), ", ");
+	write_attribute(&buf, "Date", translate("gettextFromC", "Date"), ", ");
+	write_attribute(&buf, "Time", translate("gettextFromC", "Time"), ", ");
+	write_attribute(&buf, "Location", translate("gettextFromC", "Location"), ", ");
+	write_attribute(&buf, "Air_Temp", translate("gettextFromC", "Air temp."), ", ");
+	write_attribute(&buf, "Water_Temp", translate("gettextFromC", "Water temp."), ", ");
+	write_attribute(&buf, "dives", translate("gettextFromC", "Dives"), ", ");
+	write_attribute(&buf, "Expand_All", translate("gettextFromC", "Expand all"), ", ");
+	write_attribute(&buf, "Collapse_All", translate("gettextFromC", "Collapse all"), ", ");
+	write_attribute(&buf, "trips", translate("gettextFromC", "Trips"), ", ");
+	write_attribute(&buf, "Statistics", translate("gettextFromC", "Statistics"), ", ");
+	write_attribute(&buf, "Advanced_Search", translate("gettextFromC", "Advanced search"), ", ");
 
 	//Dive expanded view
 
-	write_attribute(b, "Rating", translate("gettextFromC", "Rating"), ", ");
-	write_attribute(b, "WaveSize", translate("gettextFromC", "WaveSize"), ", ");
-	write_attribute(b, "Visibility", translate("gettextFromC", "Visibility"), ", ");
-	write_attribute(b, "Current", translate("gettextFromC", "Current"), ", ");
-	write_attribute(b, "Surge", translate("gettextFromC", "Surge"), ", ");
-	write_attribute(b, "Chill", translate("gettextFromC", "Chill"), ", ");
-	write_attribute(b, "Duration", translate("gettextFromC", "Duration"), ", ");
-	write_attribute(b, "DiveGuide", translate("gettextFromC", "Diveguide"), ", ");
-	write_attribute(b, "DiveMaster", translate("gettextFromC", "Divemaster"), ", ");
-	write_attribute(b, "Buddy", translate("gettextFromC", "Buddy"), ", ");
-	write_attribute(b, "Suit", translate("gettextFromC", "Suit"), ", ");
-	write_attribute(b, "Tags", translate("gettextFromC", "Tags"), ", ");
-	write_attribute(b, "Notes", translate("gettextFromC", "Notes"), ", ");
-	write_attribute(b, "Show_more_details", translate("gettextFromC", "Show more details"), ", ");
+	write_attribute(&buf, "Rating", translate("gettextFromC", "Rating"), ", ");
+	write_attribute(&buf, "WaveSize", translate("gettextFromC", "WaveSize"), ", ");
+	write_attribute(&buf, "Visibility", translate("gettextFromC", "Visibility"), ", ");
+	write_attribute(&buf, "Current", translate("gettextFromC", "Current"), ", ");
+	write_attribute(&buf, "Surge", translate("gettextFromC", "Surge"), ", ");
+	write_attribute(&buf, "Chill", translate("gettextFromC", "Chill"), ", ");
+	write_attribute(&buf, "Duration", translate("gettextFromC", "Duration"), ", ");
+	write_attribute(&buf, "DiveGuide", translate("gettextFromC", "Diveguide"), ", ");
+	write_attribute(&buf, "DiveMaster", translate("gettextFromC", "Divemaster"), ", ");
+	write_attribute(&buf, "Buddy", translate("gettextFromC", "Buddy"), ", ");
+	write_attribute(&buf, "Suit", translate("gettextFromC", "Suit"), ", ");
+	write_attribute(&buf, "Tags", translate("gettextFromC", "Tags"), ", ");
+	write_attribute(&buf, "Notes", translate("gettextFromC", "Notes"), ", ");
+	write_attribute(&buf, "Show_more_details", translate("gettextFromC", "Show more details"), ", ");
 
 	//Yearly statistics view
-	write_attribute(b, "Yearly_statistics", translate("gettextFromC", "Yearly statistics"), ", ");
-	write_attribute(b, "Year", translate("gettextFromC", "Year"), ", ");
-	write_attribute(b, "Total_Time", translate("gettextFromC", "Total time"), ", ");
-	write_attribute(b, "Average_Time", translate("gettextFromC", "Average time"), ", ");
-	write_attribute(b, "Shortest_Time", translate("gettextFromC", "Shortest time"), ", ");
-	write_attribute(b, "Longest_Time", translate("gettextFromC", "Longest time"), ", ");
-	write_attribute(b, "Average_Depth", translate("gettextFromC", "Average depth"), ", ");
-	write_attribute(b, "Min_Depth", translate("gettextFromC", "Min. depth"), ", ");
-	write_attribute(b, "Max_Depth", translate("gettextFromC", "Max. depth"), ", ");
-	write_attribute(b, "Average_SAC", translate("gettextFromC", "Average SAC"), ", ");
-	write_attribute(b, "Min_SAC", translate("gettextFromC", "Min. SAC"), ", ");
-	write_attribute(b, "Max_SAC", translate("gettextFromC", "Max. SAC"), ", ");
-	write_attribute(b, "Average_Temp", translate("gettextFromC", "Average temp."), ", ");
-	write_attribute(b, "Min_Temp", translate("gettextFromC", "Min. temp."), ", ");
-	write_attribute(b, "Max_Temp", translate("gettextFromC", "Max. temp."), ", ");
-	write_attribute(b, "Back_to_List", translate("gettextFromC", "Back to list"), ", ");
+	write_attribute(&buf, "Yearly_statistics", translate("gettextFromC", "Yearly statistics"), ", ");
+	write_attribute(&buf, "Year", translate("gettextFromC", "Year"), ", ");
+	write_attribute(&buf, "Total_Time", translate("gettextFromC", "Total time"), ", ");
+	write_attribute(&buf, "Average_Time", translate("gettextFromC", "Average time"), ", ");
+	write_attribute(&buf, "Shortest_Time", translate("gettextFromC", "Shortest time"), ", ");
+	write_attribute(&buf, "Longest_Time", translate("gettextFromC", "Longest time"), ", ");
+	write_attribute(&buf, "Average_Depth", translate("gettextFromC", "Average depth"), ", ");
+	write_attribute(&buf, "Min_Depth", translate("gettextFromC", "Min. depth"), ", ");
+	write_attribute(&buf, "Max_Depth", translate("gettextFromC", "Max. depth"), ", ");
+	write_attribute(&buf, "Average_SAC", translate("gettextFromC", "Average SAC"), ", ");
+	write_attribute(&buf, "Min_SAC", translate("gettextFromC", "Min. SAC"), ", ");
+	write_attribute(&buf, "Max_SAC", translate("gettextFromC", "Max. SAC"), ", ");
+	write_attribute(&buf, "Average_Temp", translate("gettextFromC", "Average temp."), ", ");
+	write_attribute(&buf, "Min_Temp", translate("gettextFromC", "Min. temp."), ", ");
+	write_attribute(&buf, "Max_Temp", translate("gettextFromC", "Max. temp."), ", ");
+	write_attribute(&buf, "Back_to_List", translate("gettextFromC", "Back to list"), ", ");
 
 	//dive detailed view
-	write_attribute(b, "Dive_No", translate("gettextFromC", "Dive #"), ", ");
-	write_attribute(b, "Dive_profile", translate("gettextFromC", "Dive profile"), ", ");
-	write_attribute(b, "Dive_information", translate("gettextFromC", "Dive information"), ", ");
-	write_attribute(b, "Dive_equipment", translate("gettextFromC", "Dive equipment"), ", ");
-	write_attribute(b, "Type", translate("gettextFromC", "Type"), ", ");
-	write_attribute(b, "Size", translate("gettextFromC", "Size"), ", ");
-	write_attribute(b, "Work_Pressure", translate("gettextFromC", "Work pressure"), ", ");
-	write_attribute(b, "Start_Pressure", translate("gettextFromC", "Start pressure"), ", ");
-	write_attribute(b, "End_Pressure", translate("gettextFromC", "End pressure"), ", ");
-	write_attribute(b, "Gas", translate("gettextFromC", "Gas"), ", ");
-	write_attribute(b, "Weight", translate("gettextFromC", "Weight"), ", ");
-	write_attribute(b, "Type", translate("gettextFromC", "Type"), ", ");
-	write_attribute(b, "Events", translate("gettextFromC", "Events"), ", ");
-	write_attribute(b, "Name", translate("gettextFromC", "Name"), ", ");
-	write_attribute(b, "Value", translate("gettextFromC", "Value"), ", ");
-	write_attribute(b, "Coordinates", translate("gettextFromC", "Coordinates"), ", ");
-	write_attribute(b, "Dive_Status", translate("gettextFromC", "Dive status"), " ");
+	write_attribute(&buf, "Dive_No", translate("gettextFromC", "Dive #"), ", ");
+	write_attribute(&buf, "Dive_profile", translate("gettextFromC", "Dive profile"), ", ");
+	write_attribute(&buf, "Dive_information", translate("gettextFromC", "Dive information"), ", ");
+	write_attribute(&buf, "Dive_equipment", translate("gettextFromC", "Dive equipment"), ", ");
+	write_attribute(&buf, "Type", translate("gettextFromC", "Type"), ", ");
+	write_attribute(&buf, "Size", translate("gettextFromC", "Size"), ", ");
+	write_attribute(&buf, "Work_Pressure", translate("gettextFromC", "Work pressure"), ", ");
+	write_attribute(&buf, "Start_Pressure", translate("gettextFromC", "Start pressure"), ", ");
+	write_attribute(&buf, "End_Pressure", translate("gettextFromC", "End pressure"), ", ");
+	write_attribute(&buf, "Gas", translate("gettextFromC", "Gas"), ", ");
+	write_attribute(&buf, "Weight", translate("gettextFromC", "Weight"), ", ");
+	write_attribute(&buf, "Type", translate("gettextFromC", "Type"), ", ");
+	write_attribute(&buf, "Events", translate("gettextFromC", "Events"), ", ");
+	write_attribute(&buf, "Name", translate("gettextFromC", "Name"), ", ");
+	write_attribute(&buf, "Value", translate("gettextFromC", "Value"), ", ");
+	write_attribute(&buf, "Coordinates", translate("gettextFromC", "Coordinates"), ", ");
+	write_attribute(&buf, "Dive_Status", translate("gettextFromC", "Dive status"), " ");
 
-	put_format(b, "}");
+	put_format(&buf, "}");
 
 	f = subsurface_fopen(file_name, "w+");
 	if (!f) {
@@ -583,5 +580,4 @@ void export_translation(const char *file_name)
 		flush_buffer(&buf, f); /*check for writing errors? */
 		fclose(f);
 	}
-	free_buffer(&buf);
 }

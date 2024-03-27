@@ -25,7 +25,6 @@
 #include <QXmlStreamReader>
 #include <qdesktopservices.h>
 #include <QShortcut>
-#include <QDebug>
 #include <errno.h>
 #include <zip.h>
 
@@ -175,15 +174,12 @@ static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 		if (nameCmp(reader, "DiveDates") != 0) {
 			if (nameCmp(reader, "Login") == 0) {
 				QString status = reader.readElementText();
-				// qDebug() << "Login status:" << status;
 
 				// Note: there has to be a better way to determine a successful login...
 				if (status == "failed") {
 					result.errorCondition = "Login failed";
 					goto out;
 				}
-			} else {
-				// qDebug() << "Skipping" << reader.name();
 			}
 			continue;
 		}
@@ -191,12 +187,9 @@ static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 		// process <DiveDates>
 		seenDiveDates = true;
 		while (reader.readNextStartElement()) {
-			if (nameCmp(reader, "date") != 0) {
-				// qDebug() << "Skipping" << reader.name();
+			if (nameCmp(reader, "date") != 0)
 				continue;
-			}
 			auto id = reader.attributes().value("divelogsId");
-			// qDebug() << "Found" << reader.name() << "with id =" << id;
 			if (!id.isEmpty()) {
 				result.idList += id.toLatin1();
 				result.idList += ',';

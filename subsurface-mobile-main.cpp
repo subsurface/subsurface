@@ -33,7 +33,6 @@
 
 int main(int argc, char **argv)
 {
-	int i;
 	QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 
@@ -45,7 +44,7 @@ int main(int argc, char **argv)
 
 	subsurface_console_init();
 
-	for (i = 1; i < arguments.length(); i++) {
+	for (int i = 1; i < arguments.length(); i++) {
 		QString a = arguments.at(i);
 		if (!a.isEmpty() && a.at(0) == '-') {
 			parse_argument(qPrintable(a));
@@ -95,7 +94,6 @@ int main(int argc, char **argv)
 		run_mobile_ui(initial_font_size);
 	exit_ui();
 	clear_divelog(&divelog);
-	taglist_free(g_tag_list);
 	parse_xml_exit();
 	subsurface_console_exit();
 

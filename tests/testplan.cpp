@@ -3,11 +3,11 @@
 #include "core/deco.h"
 #include "core/dive.h"
 #include "core/event.h"
+#include "core/errorhelper.h"
 #include "core/planner.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
 #include "core/units.h"
-#include <QDebug>
 
 #define DEBUG 1
 
@@ -15,7 +15,7 @@
 static struct dive dive = { 0 };
 static struct decostop stoptable[60];
 static struct deco_state test_deco_state;
-extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
+extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
 void setupPrefs()
 {
 	copy_prefs(&default_prefs, &prefs);
@@ -425,25 +425,25 @@ bool compareDecoTime(int actualRunTimeSeconds, int benchmarkRunTimeSeconds, int 
 		int totalDifferenceAllowed = lrint(0.001 * permilDifferenceAllowed * benchmarkRunTimeSeconds + absoluteDifferenceAllowedSeconds);
 		int totalDifference = abs(actualRunTimeSeconds - benchmarkRunTimeSeconds);
 
-		qDebug("Calculated run time = %d seconds", actualRunTimeSeconds);
-		qDebug("Expected run time = %d seconds", benchmarkRunTimeSeconds);
-		qDebug("Allowed time difference is %g percent plus %d seconds = %d seconds",
+		report_info("Calculated run time = %d seconds", actualRunTimeSeconds);
+		report_info("Expected run time = %d seconds", benchmarkRunTimeSeconds);
+		report_info("Allowed time difference is %g percent plus %d seconds = %d seconds",
 		       permilDifferenceAllowed * 0.1, absoluteDifferenceAllowedSeconds, totalDifferenceAllowed);
-		qDebug("total difference = %d seconds", totalDifference);
+		report_info("total difference = %d seconds", totalDifference);
 
 		result = (totalDifference <= totalDifferenceAllowed);
 	}
 	if ((knownSsrfRunTimeSeconds > 0) && (actualRunTimeSeconds != knownSsrfRunTimeSeconds)) {
-		QWARN("Calculated run time does not match known Subsurface runtime");
-		qWarning("Calculated runtime: %d", actualRunTimeSeconds);
-		qWarning("Known Subsurface runtime: %d", knownSsrfRunTimeSeconds);
+		report_error("Calculated run time does not match known Subsurface runtime");
+		report_error("Calculated runtime: %d", actualRunTimeSeconds);
+		report_error("Known Subsurface runtime: %d", knownSsrfRunTimeSeconds);
 	}
 	return result;
 }
 
 void TestPlan::testMetric()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefs();
 	prefs.unit_system = METRIC;
@@ -453,7 +453,7 @@ void TestPlan::testMetric()
 	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -484,7 +484,7 @@ void TestPlan::testMetric()
 
 void TestPlan::testImperial()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefs();
 	prefs.unit_system = IMPERIAL;
@@ -494,7 +494,7 @@ void TestPlan::testImperial()
 	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -525,7 +525,7 @@ void TestPlan::testImperial()
 
 void TestPlan::testVpmbMetric45m30minTx()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -534,7 +534,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 	struct diveplan testPlan = {};
 	setupPlanVpmb45m30mTx(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -555,7 +555,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 
 void TestPlan::testVpmbMetric60m10minTx()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -564,7 +564,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m10mTx(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -585,7 +585,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 
 void TestPlan::testVpmbMetric60m30minAir()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -594,7 +594,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minAir(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -615,7 +615,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 
 void TestPlan::testVpmbMetric60m30minEan50()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -624,7 +624,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minEan50(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -651,7 +651,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 
 void TestPlan::testVpmbMetric60m30minTx()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -660,7 +660,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minTx(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -687,7 +687,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 
 void TestPlan::testVpmbMetric100m60min()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -696,7 +696,7 @@ void TestPlan::testVpmbMetric100m60min()
 	struct diveplan testPlan = {};
 	setupPlanVpmb100m60min(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -729,7 +729,7 @@ void TestPlan::testVpmbMetric100m60min()
 
 void TestPlan::testMultipleGases()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -739,7 +739,7 @@ void TestPlan::testMultipleGases()
 
 	setupPlanSeveralGases(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -755,7 +755,7 @@ void TestPlan::testMultipleGases()
 
 void TestPlan::testVpmbMetricMultiLevelAir()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -764,7 +764,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 	struct diveplan testPlan = {};
 	setupPlanVpmbMultiLevelAir(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -785,7 +785,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 
 void TestPlan::testVpmbMetric100m10min()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -794,7 +794,7 @@ void TestPlan::testVpmbMetric100m10min()
 	struct diveplan testPlan = {};
 	setupPlanVpmb100m10min(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -831,7 +831,7 @@ void TestPlan::testVpmbMetric100m10min()
  */
 void TestPlan::testVpmbMetricRepeat()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefsVpmb();
 	prefs.unit_system = METRIC;
@@ -840,7 +840,7 @@ void TestPlan::testVpmbMetricRepeat()
 	struct diveplan testPlan = {};
 	setupPlanVpmb30m20min(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -861,7 +861,7 @@ void TestPlan::testVpmbMetricRepeat()
 	int firstDiveRunTimeSeconds = dive.dc.duration.seconds;
 
 	setupPlanVpmb100mTo70m30min(&testPlan);
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -898,7 +898,7 @@ void TestPlan::testVpmbMetricRepeat()
 	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 127u * 60u + 20u, 127u * 60u + 20u));
 
 	setupPlanVpmb30m20min(&testPlan);
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -925,7 +925,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 void TestPlan::testCcrBailoutGasSelection()
 {
-	struct deco_state *cache = NULL;
+	deco_state_cache cache;
 
 	setupPrefs();
 	prefs.unit_system = METRIC;
@@ -937,7 +937,7 @@ void TestPlan::testCcrBailoutGasSelection()
 	struct diveplan testPlan = {};
 	setupPlanCcr(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, &cache, true, false);
+	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, true, false);
 
 #if DEBUG
 	free(dive.notes);

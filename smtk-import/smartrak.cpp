@@ -15,12 +15,26 @@
  * to call smartrak_import()
  */
 
+/*
+ * This is a workaround around a mdbtools bug.
+ * mdbtools includes <glib.h> in an extern "C"
+ * block. However, the latter includes C++ only
+ * headers for C++ source files leading to a
+ * torrent of compile errors. Include <glib.h>
+ * first so that the include guards prevent it
+ * from being included by mdbtools.
+ */
+#include <glib.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <mdbtools.h>
 #include <stdarg.h>
 #include <locale.h>
+#include <array>
+#include <string_view>
+#include <vector>
 
 #if defined(WIN32) || defined(_WIN32)
 #include <windows.h>
@@ -34,22 +48,14 @@
 #include "core/event.h"
 #include "core/libdivecomputer.h"
 #include "core/divesite.h"
-#include "core/membuffer.h"
+#include "core/errorhelper.h"
+#include "core/format.h"
 #include "core/tag.h"
 #include "core/device.h"
 
 /* SmartTrak version, constant for every single file */
 int smtk_version;
 int tanks;
-
-/* Freeing temp char arrays utility */
-static void smtk_free(char **array, int count)
-{
-	int n;
-	for (n = 0; n < count; n++)
-		free(array[n]);
-	array = NULL;
-}
 
 /*
  * There are AFAIK three versions of Smarttrak DB format. The newer one supports trimix and up
@@ -72,8 +78,9 @@ enum field_pos {IDX = 0, DIVENUM, _DATE, INTIME, INTVAL, DURATION, OUTTIME, DESA
  * tanks (10) in later versions than in older (3).
  * Older versions also lacks of 3 columns storing he fraction, one for each tank.
  */
-static int coln(enum field_pos pos)
+static int coln(enum field_pos pos_in)
 {
+	int pos = static_cast<int>(pos_in);
 	int amnd = (smtk_version < 10213) ? 3 : 0;
 
 	if (pos <= O2FRAC)
@@ -91,6 +98,9 @@ static int coln(enum field_pos pos)
 		return pos;
 	case PEND:
 		pos = O2FRAC + 2 * tanks + 1 - amnd;
+		return pos;
+	default:
+		report_error("smartrak: unknown field_pos (shouldn't happen)");
 		return pos;
 	}
 }
@@ -122,7 +132,7 @@ static void smtk_date_to_tm(char *d_buffer, struct tm *tm_date)
  * Fills the time part of a tm structure with the string data obtained
  * from smartrak in format "DD/MM/YY HH:MM:SS" where date is irrelevant.
  */
-static void smtk_time_to_tm(char *t_buffer, struct tm *tm_date)
+static void smtk_time_to_tm(const char *t_buffer, struct tm *tm_date)
 {
 	int n, hr, min, sec;
 
@@ -147,7 +157,7 @@ static void smtk_time_to_tm(char *t_buffer, struct tm *tm_date)
  * TODO: modify to support times > 24h where date means difference in days
  * from 29/12/99.
  */
-static unsigned int smtk_time_to_secs(char *t_buffer)
+static unsigned int smtk_time_to_secs(const char *t_buffer)
 {
 	int n, hr, min, sec;
 
@@ -170,79 +180,108 @@ static time_t smtk_timegm(struct tm *tm)
 	char *tz, *str;
 
 	tz = getenv("TZ");
-	putenv("TZ=");
+	putenv(strdup("TZ="));
 	tzset();
 	ret = mktime(tm);
 	if (tz) {
-		str = calloc(strlen(tz)+4, 1);
+		str = (char *)calloc(strlen(tz)+4, 1);
 		sprintf(str, "TZ=%s", tz);
 		putenv(str);
 	} else {
-		putenv("TZ");
+		putenv(strdup("TZ"));
 	}
 	tzset();
 	return ret;
 }
 
+class SmtkTable {
+	struct Entry {
+		std::array<char, MDB_BIND_SIZE> value;
+		int len;
+	};
+	std::vector<Entry> data;
+public:
+	MdbTableDef *table;
+	SmtkTable(MdbHandle *mdb, const char *name);
+	~SmtkTable();
+	size_t size() const {
+		return data.size();
+	}
+	operator bool() const {
+		return !!table;
+	}
+	int fetch_row() {
+		return table ? mdb_fetch_row(table) : 0;
+	}
+	const char *get_data(size_t col) const {
+		return data[col].value.data();
+	}
+	std::string_view get_string_view(size_t col) const {
+		return std::string_view(get_data(col));
+	}
+	int get_len(size_t col) const {
+		return data[col].len;
+	}
+};
+
 /*
- * Returns an opened table given its name and mdb. outcol and outbounder have to be allocated
- * by the caller and are filled here.
+ * Returns an opened table given its name and mdb.
  */
-static  MdbTableDef *smtk_open_table(MdbHandle *mdb, char *tablename, char **outbounder, int *outlens[])
+SmtkTable::SmtkTable(MdbHandle *mdb, const char *tablename)
+	: table(nullptr)
 {
 	MdbCatalogEntry *entry;
-	MdbTableDef *table;
-	int i;
 
 	entry = mdb_get_catalogentry_by_name(mdb, tablename);
 	if (!entry)
-		return NULL;
+		return;
 	table = mdb_read_table(entry);
 	if (!table)
-		return NULL;
+		return;
 	mdb_read_columns(table);
-	for (i = 0;  i < table->num_cols; i++) {
-		outbounder[i] = (char *) g_malloc(MDB_BIND_SIZE);
-		if (outlens) {
-			outlens[i] = (int *) g_malloc(sizeof(int));
-			mdb_bind_column(table, i+1, outbounder[i], outlens[i]);
-		} else {
-			mdb_bind_column(table, i+1, outbounder[i], NULL);
-		}
-	}
+	data.resize(table->num_cols);
+	for (size_t i = 0; i < table->num_cols; i++)
+		mdb_bind_column(table, i+1, data[i].value.data(), &data[i].len);
 	mdb_rewind_table(table);
+}
 
-	return table;
+SmtkTable::~SmtkTable()
+{
+	if (table)
+		mdb_free_tabledef(table);
 }
 
 /*
  * Utility function which joins three strings, being the second a separator string,
  * usually a "\n". The third is a format string with an argument list.
- * If the original string is NULL, then just returns the third.
- * This is based in add_to_string() and add_to_string_va(), and, as its parents
- * frees the original string.
+ * If the original string is empty, then just returns the third.
+ * The first argument is overwritten with the concatenated string.
  */
-static char *smtk_concat_str(char *orig, const char *sep, const char *fmt, ...)
+static void concat(std::string &orig, const char *sep, std::string_view s)
 {
-	char *str;
-	va_list args;
-	struct membuffer out = { 0 }, in = { 0 };
+	if (!orig.empty())
+		orig += sep;
+	orig += s;
+}
 
-	va_start(args, fmt);
-	put_vformat(&in, fmt, args);
-	if (orig != NULL) {
-		put_format(&out, "%s%s%s", orig, sep, mb_cstring(&in));
-		str = copy_string(mb_cstring(&out));
-	} else {
-		str = copy_string(mb_cstring(&in));
-	}
-	va_end(args);
-
-	free_buffer(&out);
-	free_buffer(&in);
-	free(orig);
-
-	return str;
+/*
+ * Temporary funcion as long as core still has C-strings.
+ * Equivalent to concat, but takes a C-string as first argument and
+ * frees it. Returns a newly allocated copy.
+ *
+ * Note: taking "const char * const *" is an ugly hack to
+ * allow passing pointer to "const char *" as well as
+ * "char *". Which in turn is necessary, as this function currently
+ * replaces "const char *" strings.
+ */
+static void concat(const char * const *orig_in, const char *sep, std::string_view s)
+{
+	char **orig = const_cast<char **>(orig_in);
+	char *to_free = *orig;
+	std::string orig_std(*orig ? *orig : "");
+	concat(orig_std, sep, s);
+	*orig = strdup(orig_std.c_str());
+	free(to_free);
 }
 
 /*
@@ -254,10 +293,8 @@ static char *smtk_concat_str(char *orig, const char *sep, const char *fmt, ...)
  */
 static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds)
 {
-	MdbTableDef *table;
-	char *bound_values[MDB_MAX_COLS];
-	char *tmp = NULL, *notes = NULL;
-	int rc, i;
+	std::string notes;
+	int i;
 	uint32_t d;
 	const char *wreck_fields[] = {QT_TRANSLATE_NOOP("gettextFromC", "Built"), QT_TRANSLATE_NOOP("gettextFromC", "Sank"), QT_TRANSLATE_NOOP("gettextFromC", "Sank Time"),
 				      QT_TRANSLATE_NOOP("gettextFromC", "Reason"), QT_TRANSLATE_NOOP("gettextFromC", "Nationality"), QT_TRANSLATE_NOOP("gettextFromC", "Shipyard"),
@@ -265,54 +302,55 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 				      QT_TRANSLATE_NOOP("gettextFromC", "Draught"), QT_TRANSLATE_NOOP("gettextFromC", "Displacement"), QT_TRANSLATE_NOOP("gettextFromC", "Cargo"),
 				      QT_TRANSLATE_NOOP("gettextFromC", "Notes")};
 
-	table = smtk_open_table(mdb, "Wreck", bound_values, NULL);
+	SmtkTable table(mdb, "Wreck");
 
 	/* Sanity check for table, unlikely but ... */
 	if (!table)
 		return;
 
 	/* Begin parsing. Write strings to notes only if available.*/
-	while (mdb_fetch_row(table)) {
-		if (!strcmp(bound_values[1], site_idx)) {
-			notes = smtk_concat_str(notes, "\n", translate("gettextFromC", "Wreck Data"));
+	while (table.fetch_row()) {
+		if (!strcmp(table.get_data(1), site_idx)) {
+			concat(notes, "\n", translate("gettextFromC", "Wreck Data"));
 			for (i = 3; i < 16; i++) {
 				switch (i) {
 				case 3:
-				case 4:
-					tmp = copy_string(bound_values[i]);
-					if (tmp)
-						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], strtok(tmp , " "));
-					free(tmp);
+				case 4: {
+					std::string_view tmp = table.get_string_view(i);
+					if (!tmp.empty()) {
+						tmp = tmp.substr(0, tmp.find(' '));
+						concat(notes, "\n", format_string_std("%s: %s", wreck_fields[i - 3], std::string(tmp).c_str()));
+					}
 					break;
-				case 5:
-					tmp = copy_string(bound_values[i]);
-					if (tmp)
-						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], strrchr(tmp, ' '));
-					free(tmp);
+				}
+				case 5: {
+					std::string_view tmp = table.get_string_view(i);
+					if (!tmp.empty()) {
+						size_t pos = tmp.rfind(' ');
+						tmp.remove_prefix(pos + 1);
+						concat(notes, "\n", format_string_std("%s: %s", wreck_fields[i - 3], std::string(tmp).c_str()));
+					}
 					break;
+				}
 				case 6 ... 9:
 				case 14:
-				case 15:
-					tmp = copy_string(bound_values[i]);
-					if (tmp)
-						notes = smtk_concat_str(notes, "\n", "%s: %s", wreck_fields[i - 3], tmp);
-					free(tmp);
+				case 15: {
+					const char *tmp = table.get_data(i);
+					if (!empty_string(tmp))
+						concat(notes, "\n", format_string_std("%s: %s", wreck_fields[i - 3], tmp));
 					break;
+				}
 				default:
-					d = lrintl(strtold(bound_values[i], NULL));
+					d = lrintl(strtold(table.get_data(1), NULL));
 					if (d)
-						notes = smtk_concat_str(notes, "\n", "%s: %d", wreck_fields[i - 3], d);
+						concat(notes, "\n", format_string_std("%s: %d", wreck_fields[i - 3], d));
 					break;
 				}
 			}
-			ds->notes = smtk_concat_str(ds->notes, "\n", "%s", notes);
+			concat(&ds->notes, "\n", notes);
 			break;
 		}
 	}
-	/* Clean up and exit */
-	smtk_free(bound_values, table->num_cols);
-	mdb_free_tabledef(table);
-	free(notes);
 }
 
 /*
@@ -327,126 +365,101 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
  */
 static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **location, struct divelog *log)
 {
-	MdbTableDef *table;
-	MdbColumn *col[MDB_MAX_COLS];
-	char *bound_values[MDB_MAX_COLS];
 	int i, rc;
 	uint32_t d;
 	struct dive_site *ds;
 	location_t loc;
-	char *str = NULL, *loc_idx = NULL, *site = NULL, *notes = NULL;
+	std::string str, loc_idx, site, notes;
 	const char *site_fields[] = {QT_TRANSLATE_NOOP("gettextFromC", "Altitude"), QT_TRANSLATE_NOOP("gettextFromC", "Depth"),
 				     QT_TRANSLATE_NOOP("gettextFromC", "Notes")};
 
 	/* Read data from Site table. Format notes for the dive site if any.*/
-	table = smtk_open_table(mdb, "Site", bound_values, NULL);
-	if (!table)
-		return;
-	do {
-		rc = mdb_fetch_row(table);
-	} while (strcasecmp(bound_values[0], idx) && rc != 0);
-	if (rc == 0) {
-		smtk_free(bound_values, table->num_cols);
-		mdb_free_tabledef(table);
-		return;
-	}
-	loc_idx = copy_string(bound_values[2]);
-	site = copy_string(bound_values[1]);
-	loc = create_location(strtod(bound_values[6], NULL), strtod(bound_values[7], NULL));
+	{
+		SmtkTable table(mdb, "Site");
+		if (!table)
+			return;
+		do {
+			rc = table.fetch_row();
+		} while (strcasecmp(table.get_data(0), idx) && rc != 0);
+		if (rc == 0)
+			return;
+		loc_idx = table.get_data(2);
+		site = table.get_data(1);
+		loc = create_location(strtod(table.get_data(6), NULL), strtod(table.get_data(7), NULL));
 
-	for (i = 8; i < 11; i++) {
-		switch (i) {
-		case 8:
-		case 9:
-			d = lrintl(strtold(bound_values[i], NULL));
-			if (d)
-				notes = smtk_concat_str(notes, "\n", "%s: %d m", site_fields[i - 8], d);
-			break;
-		case 10:
-			if (memcmp(bound_values[i], "\0", 1))
-				notes = smtk_concat_str(notes, "\n", "%s: %s", site_fields[i - 8], bound_values[i]);
-			break;
+		for (i = 8; i < 11; i++) {
+			switch (i) {
+			case 8:
+			case 9:
+				d = lrintl(strtold(table.get_data(i), NULL));
+				if (d)
+					concat(notes, "\n", format_string_std("%s: %d m", site_fields[i - 8], d));
+				break;
+			case 10:
+				if (!empty_string(table.get_data(i)))
+					concat(notes, "\n", format_string_std("%s: %s", site_fields[i - 8], table.get_data(i)));
+				break;
+			}
 		}
 	}
-	smtk_free(bound_values, table->num_cols);
-	mdb_free_tabledef(table);
 
 	/* Read data from Location table, linked to Site by loc_idx */
-	table = smtk_open_table(mdb, "Location", bound_values, NULL);
-	mdb_rewind_table(table);
+	SmtkTable table(mdb, "Location");
 	do {
-		rc = mdb_fetch_row(table);
-	} while (strcasecmp(bound_values[0], loc_idx) && rc != 0);
-	if (rc == 0) {
-		smtk_free(bound_values, table->num_cols);
-		mdb_free_tabledef(table);
-		if(notes)
-			free(notes);
+		rc = table.fetch_row();
+	} while (strcasecmp(table.get_data(0), loc_idx.c_str()) && rc != 0);
+	if (rc == 0)
 		return;
-	}
 
 	/*
 	 * Create a string for Subsurface's dive site structure with coordinates
 	 * if available, if the site's name doesn't previously exists.
 	 */
-	if (memcmp(bound_values[3], "\0", 1))
-		str = smtk_concat_str(str, ", ", "%s", bound_values[3]); // Country
-	if (memcmp(bound_values[2], "\0", 1))
-		str = smtk_concat_str(str, ", ", "%s", bound_values[2]); // State - Province
-	if (memcmp(bound_values[1], "\0", 1))
-		str = smtk_concat_str(str, ", ", "%s", bound_values[1]); // Locality
-	str =  smtk_concat_str(str, ", ", "%s", site);
+	if (!empty_string(table.get_data(3)))
+		concat(str, ", ", table.get_string_view(3)); // Country
+	if (!empty_string(table.get_data(2)))
+		concat(str, ", ", table.get_string_view(2)); // State - Province
+	if (!empty_string(table.get_data(1)))
+		concat(str, ", ", table.get_string_view(1)); // Locality
+	concat(str, ", ", site);
 
-	ds = get_dive_site_by_name(str, log->sites);
+	ds = get_dive_site_by_name(str.c_str(), log->sites);
 	if (!ds) {
 		if (!has_location(&loc))
-			ds = create_dive_site(str, log->sites);
+			ds = create_dive_site(str.c_str(), log->sites);
 		else
-			ds = create_dive_site_with_gps(str, &loc, log->sites);
+			ds = create_dive_site_with_gps(str.c_str(), &loc, log->sites);
 	}
 	*location = ds;
-	smtk_free(bound_values, table->num_cols);
 
 	/* Insert site notes */
-	ds->notes = copy_string(notes);
-	free(notes);
+	free(ds->notes);
+	ds->notes = strdup(notes.c_str());
 
 	/* Check if we have a wreck */
 	smtk_wreck_site(mdb, idx, ds);
-
-	/* Clean up and exit */
-	mdb_free_tabledef(table);
-	free(loc_idx);
-	free(site);
-	free(str);
 }
 
 static void smtk_build_tank_info(MdbHandle *mdb, cylinder_t *tank, char *idx)
 {
-	MdbTableDef *table;
-	MdbColumn *col[MDB_MAX_COLS];
-	char *bound_values[MDB_MAX_COLS];
 	int i;
 
-	table = smtk_open_table(mdb, "Tank", bound_values, NULL);
+	SmtkTable table(mdb, "Tank");
 	if (!table)
 		return;
 
 	for (i = 1; i <= atoi(idx); i++)
-		mdb_fetch_row(table);
-	tank->type.description = copy_string(bound_values[1]);
-	tank->type.size.mliter = lrint(strtod(bound_values[2], NULL) * 1000);
-	tank->type.workingpressure.mbar = lrint(strtod(bound_values[4], NULL) * 1000);
-
-	smtk_free(bound_values, table->num_cols);
-	mdb_free_tabledef(table);
+		table.fetch_row();
+	tank->type.description = copy_string(table.get_data(1));
+	tank->type.size.mliter = lrint(strtod(table.get_data(2), NULL) * 1000);
+	tank->type.workingpressure.mbar = lrint(strtod(table.get_data(4), NULL) * 1000);
 }
 
 /*
  * Under some circustances we can get the same tank from DC and from
  * the smartrak DB. Will use this utility to check and clean .
  */
-bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
+static bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
 {
 	// different gasmixes (non zero)
 	if (cyl_a->gasmix.o2.permille - cyl_b->gasmix.o2.permille != 0 &&
@@ -474,8 +487,8 @@ bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
  * Macros are copied from dive.c
  */
 
-#define MERGE_MAX(res, a, b, n) res->n = MAX(a->n, b->n)
-#define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? MIN(a->n, b->n) : (a->n) : (b->n)
+#define MERGE_MAX(res, a, b, n) res->n = std::max(a->n, b->n)
+#define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? std::min(a->n, b->n) : (a->n) : (b->n)
 
 static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
 {
@@ -513,7 +526,7 @@ static void merge_cylinder_info(cylinder_t *src, cylinder_t *dst)
  * both the same, merge and delete the higher number (as lower numbers are
  * most probably returned by libdivecomputer raw data parse.
  */
-static int smtk_clean_cylinders(struct dive *d)
+static void smtk_clean_cylinders(struct dive *d)
 {
 	int i = tanks - 1;
 	cylinder_t  *cyl, *base = get_cylinder(d, 0);
@@ -541,54 +554,6 @@ struct types_list {
 	struct types_list *next;
 };
 
-/* Head insert types_list items in a list */
-static void smtk_head_insert(struct types_list **head, int index, char *txt)
-{
-	struct types_list *item = (struct types_list *) malloc(sizeof(struct types_list));
-
-	item->next = *head;
-	item->idx = index;
-	item->text = txt;
-	*head = item;
-	item = NULL;
-}
-
-/* Clean types_list lists */
-static void smtk_list_free(struct types_list *head)
-{
-	struct types_list *p = head;
-	while (p) {
-		struct types_list *nxt = p->next;
-		free(p->text);
-		free(p);
-		p = nxt;
-	}
-}
-
-/* Return the number of rows in a given table */
-static int get_rows_num(MdbHandle *mdb,  char *table_name)
-{
-	MdbTableDef *table;
-	char *bound_values[MDB_MAX_COLS];
-	int n = 0, i = 0;
-
-	table = smtk_open_table(mdb, table_name, bound_values, NULL);
-	if (!table)
-		return n;
-
-	/* We can get an sparse array (less rows in the table than
-	 * index). Ensure we allocate as many strings as greater
-	 * index, at least */
-	while (mdb_fetch_row(table)) {
-		i = atoi(bound_values[0]);
-		if (i > n)
-			n = i;
-	}
-	smtk_free(bound_values, table->num_cols);
-	mdb_free_tabledef(table);
-	return n;
-}
-
 /*
  * Build a list from a given table_name (Type, Gear, etc)
  * Managed tables formats: Just consider Idx and Text
@@ -604,26 +569,26 @@ static int get_rows_num(MdbHandle *mdb,  char *table_name)
  * be using some other like Vendor (in Gear) or Latin name (in Fish). I'll take a look at this
  * in the future, may be something like Buddy table...
  */
-static void smtk_build_list(MdbHandle *mdb,  char *table_name, char *array[])
+static std::vector<std::string> smtk_build_list(MdbHandle *mdb, const char *table_name)
 {
-	MdbTableDef *table;
-	char *bound_values[MDB_MAX_COLS], *str;
-
-	table = smtk_open_table(mdb, table_name, bound_values, NULL);
+	SmtkTable table(mdb, table_name);
 	if (!table)
-		return;
+		return {};
 
 	/* Read the table items into the array */
-	while (mdb_fetch_row(table)) {
-		str = bound_values[1];
-		if (str && (!strcmp(str, "---") || !strcmp(str, "--")))
-	               str = NULL;
-		array[atoi(bound_values[0]) - 1] = copy_string(str);
+	std::vector<std::string> res;
+	while (table.fetch_row()) {
+		std::string str(table.get_data(1));
+		if (str == "---" || str == "--")
+	               str.clear();
+		int pos = atoi(table.get_data(0)) - 1;
+		if (pos < 0)
+			continue;
+		if (pos >= (int)res.size())
+			res.resize(pos + 1);
+		res[pos] = std::move(str);
 	}
-
-	/* clean up and exit */
-	smtk_free(bound_values, table->num_cols);
-	mdb_free_tabledef(table);
+	return res;
 }
 
 /*
@@ -633,28 +598,22 @@ static void smtk_build_list(MdbHandle *mdb,  char *table_name, char *array[])
  * Table relation format:
  * | Diveidx | Idx |
  */
-static struct types_list *smtk_index_list(MdbHandle *mdb, char *table_name, char *dive_idx)
+static std::vector<int> smtk_index_list(MdbHandle *mdb, const char *table_name, char *dive_idx)
 {
-	MdbTableDef *table;
-	char *bounders[MDB_MAX_COLS];
-	struct types_list *item, *head = NULL;
-
-	table = smtk_open_table(mdb, table_name, bounders, NULL);
+	SmtkTable table(mdb, table_name);
 
 	/* Sanity check */
 	if (!table)
-		return NULL;
+		return {};
 
 	/* Parse the table searching for dive_idx */
-	while (mdb_fetch_row(table)) {
-		if (!strcmp(dive_idx, bounders[0]))
-			smtk_head_insert(&head, atoi(bounders[1]), NULL);
+	std::vector<int> res;
+	while (table.fetch_row()) {
+		if (!strcmp(dive_idx, table.get_data(0)))
+			res.push_back(atoi(table.get_data(1)));
 	}
 
-	/* Clean up and exit */
-	smtk_free(bounders, table->num_cols);
-	mdb_free_tabledef(table);
-	return head;
+	return res;
 }
 
 /*
@@ -665,52 +624,55 @@ static struct types_list *smtk_index_list(MdbHandle *mdb, char *table_name, char
  * Buddy table format:
  * | Idx | Text (nickname) | Name | Firstname | Middlename | Title | Picture | Phone | ...
  */
-static void smtk_build_buddies(MdbHandle *mdb, char *array[])
+static std::vector<std::string> smtk_build_buddies(MdbHandle *mdb)
 {
-	MdbTableDef *table;
-	char *bound_values[MDB_MAX_COLS], *fullname = NULL, *str = NULL;
-
-	table = smtk_open_table(mdb, "Buddy", bound_values, NULL);
+	SmtkTable table(mdb, "Buddy");
 	if (!table)
-		return;
+		return {};
 
-	while (mdb_fetch_row(table)) {
-		if (!empty_string(bound_values[3]))
-			fullname = smtk_concat_str(fullname, " ", "%s", bound_values[3]);
-		if (!empty_string(bound_values[4]))
-			fullname = smtk_concat_str(fullname, " ", "%s", bound_values[4]);
-		if (!empty_string(bound_values[2]))
-			fullname = smtk_concat_str(fullname, " ", "%s", bound_values[2]);
-		if (fullname && !same_string(bound_values[1], fullname))
-			array[atoi(bound_values[0]) - 1] = smtk_concat_str(str, "", "%s (%s)", bound_values[1], fullname);
-		else
-			array[atoi(bound_values[0]) - 1] = smtk_concat_str(str, "", "%s", bound_values[1]);
-		free(fullname);
-		fullname = NULL;
+	std::vector<std::string> res;
+	while (table.fetch_row()) {
+		std::string fullname;
+		if (!empty_string(table.get_data(3)))
+			concat(fullname, " ", table.get_string_view(3));
+		if (!empty_string(table.get_data(4)))
+			concat(fullname, " ", table.get_string_view(4));
+		if (!empty_string(table.get_data(2)))
+			concat(fullname, " ", table.get_string_view(2));
+		std::string str = !fullname.empty() && fullname != table.get_data(1) ?
+			format_string_std("%s (%s)", table.get_data(1), fullname.c_str()) :
+			std::string(table.get_string_view(1));
+		int pos = atoi(table.get_data(0)) - 1;
+		if (pos < 0)
+			continue;
+		if (static_cast<size_t>(pos) >= res.size())
+			res.resize(pos + 1);
+		res[pos] = std::move(str);
 	}
+	return res;
+}
 
-	free(str);
-	smtk_free(bound_values, table->num_cols);
-	mdb_free_tabledef(table);
+/*
+ * Helper function that gets an element of a vector or a default constructed value
+ * if out-of-bounds.
+ */
+template <typename T>
+T get(const std::vector<T> &v, int idx)
+{
+	return idx >= 0 && static_cast<size_t>(idx) < v.size() ? v[idx] : T();
 }
 
 /*
  * Returns string with buddies names as registered in smartrak (may be a nickname).
  */
-static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx, char *buddies_list[])
+static std::string smtk_locate_buddy(MdbHandle *mdb, char *dive_idx, const std::vector<std::string> &buddies_list)
 {
-	char *str = NULL;
-	struct types_list *rel, *rel_head;
+	std::string str;
 
-	rel_head = smtk_index_list(mdb, "BuddyRelation", dive_idx);
-	if (!rel_head)
-		return str;
+	std::vector<int> rel_list = smtk_index_list(mdb, "BuddyRelation", dive_idx);
+	for (int idx: rel_list)
+		concat(str, ", ", std::string(get(buddies_list, idx - 1)));
 
-	for (rel = rel_head; rel; rel = rel->next)
-		str = smtk_concat_str(str, ", ", "%s", buddies_list[rel->idx - 1]);
-
-	/* Clean up and exit */
-	smtk_list_free(rel_head);
 	return str;
 }
 
@@ -720,32 +682,27 @@ static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx, char *buddies_lis
  * The "tag" parameter is used to mark if we want this table to be imported
  * into tags or into notes.
  */
-static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_idx, char *table_name, char *rel_table_name, char *list[], bool tag)
+static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_idx, const char *table_name, const char *rel_table_name, const std::vector<std::string> &list, bool tag)
 {
-	char *tmp = NULL;
-	struct types_list *diverel_head, *d_runner;
-
-	diverel_head = smtk_index_list(mdb, rel_table_name, dive_idx);
-	if (!diverel_head)
-		return;
+	std::string tmp;
 
 	/* Get the text associated with the relations */
-	for (d_runner = diverel_head; d_runner; d_runner = d_runner->next) {
-		if (!list[d_runner->idx - 1])
+	std::vector<int> diverel_list = smtk_index_list(mdb, rel_table_name, dive_idx);
+	for (int idx: diverel_list) {
+		const std::string str = get(list, idx - 1);
+		if (str.empty())
 			continue;
 		if (tag)
-			taglist_add_tag(&dive->tag_list, list[d_runner->idx - 1]);
+			taglist_add_tag(&dive->tag_list, str.c_str());
 		else
-			tmp = smtk_concat_str(tmp, ", ", "%s", list[d_runner->idx - 1]);
-		if (strstr(list[d_runner->idx - 1], "SCR"))
+			concat(tmp, ", ", str);
+		if (str.find("SCR") != std::string::npos)
 			dive->dc.divemode = PSCR;
-		else if (strstr(list[d_runner->idx -1], "CCR"))
+		else if (str.find("CCR") != std::string::npos)
 			dive->dc.divemode = CCR;
 	}
-	if (tmp)
-		dive->notes = smtk_concat_str(dive->notes, "\n", "Smartrak %s: %s", table_name, tmp);
-	free(tmp);
-	smtk_list_free(diverel_head);
+	if (!tmp.empty())
+		concat(&dive->notes, "\n", format_string_std("Smartrak %s: %s", table_name, tmp.c_str()));
 }
 
 /*
@@ -753,17 +710,18 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
  * in Subsurface. Write them as tags or dive notes by setting true or false the
  * boolean parameter "tag".
  */
-static void smtk_parse_other(struct dive *dive, char *list[], char *data_name, char *idx, bool tag)
+static void smtk_parse_other(struct dive *dive, const std::vector<std::string> &list, const char *data_name, char *idx, bool tag)
 {
        int i = atoi(idx) - 1;
-       char *str = NULL;
+       if (i < 0 || i >= (int)list.size())
+	       return;
 
-       str = list[i];
-       if (str) {
+       const std::string &str = list[i];
+       if (!str.empty()) {
                if (tag)
-                       taglist_add_tag(&dive->tag_list, str);
+                       taglist_add_tag(&dive->tag_list, str.c_str());
                else
-                       dive->notes = smtk_concat_str(dive->notes, "\n", "Smartrak %s: %s", data_name, str);
+                       concat(&dive->notes, "\n", format_string_std("Smartrak %s: %s", data_name, str.c_str()));
        }
 }
 
@@ -771,7 +729,7 @@ static void smtk_parse_other(struct dive *dive, char *list[], char *data_name, c
  * Returns a pointer to a bookmark event in an event list if it exists for
  * a given time. Return NULL otherwise.
  */
-static struct event *find_bookmark(struct event *orig, unsigned int t)
+static struct event *find_bookmark(struct event *orig, int t)
 {
 	struct event *ev = orig;
 
@@ -794,20 +752,18 @@ static struct event *find_bookmark(struct event *orig, unsigned int t)
  */
 static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 {
-	MdbTableDef *table;
-	char *bound_values[MDB_MAX_COLS], *tmp = NULL;
-	unsigned int time;
+	int time;
 	struct event *ev;
 
-	table = smtk_open_table(mdb, "Marker", bound_values, NULL);
+	SmtkTable table(mdb, "Marker");
 	if (!table) {
 		report_error("[smtk-import] Error - Couldn't open table 'Marker', dive %d", d->number);
 		return;
 	}
-	while (mdb_fetch_row(table)) {
-		if (same_string(bound_values[0], dive_idx)) {
-			time = lrint(strtod(bound_values[4], NULL) * 60);
-			tmp = strdup(bound_values[2]);
+	while (table.fetch_row()) {
+		if (same_string(table.get_data(0), dive_idx)) {
+			time = lrint(strtod(table.get_data(4), NULL) * 60);
+			const char *tmp = table.get_data(2);
 			ev = find_bookmark(d->dc.events, time);
 			if (ev)
 				update_event_name(d, 0, ev, tmp);
@@ -817,12 +773,7 @@ static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 						     d->number, tmp);
 		}
 	}
-	free(tmp);
-	smtk_free(bound_values, table->num_cols);
-	mdb_free_tabledef(table);
 }
-
-
 
 /*
  * Returns a dc_descriptor_t structure based on dc  model's number.
@@ -868,7 +819,7 @@ static dc_descriptor_t *get_data_descriptor(int data_model, dc_family_t data_fam
  * DC.  dc_family_t is certainly known *only* if it is Aladin/Memomouse family
  * otherwise it will be known after get_data_descriptor call.
  */
-static int prepare_data(int data_model, char *serial, dc_family_t dc_fam, device_data_t *dev_data)
+static dc_status_t prepare_data(int data_model, char *serial, dc_family_t dc_fam, device_data_t *dev_data)
 {
 	dev_data->device = NULL;
 	dev_data->context = NULL;
@@ -881,7 +832,7 @@ static int prepare_data(int data_model, char *serial, dc_family_t dc_fam, device
 	if (dev_data->descriptor) {
 		dev_data->vendor = dc_descriptor_get_vendor(dev_data->descriptor);
 		dev_data->product = dc_descriptor_get_product(dev_data->descriptor);
-		dev_data->model = smtk_concat_str(dev_data->model, "", "%s %s", dev_data->vendor, dev_data->product);
+		concat(&dev_data->model, "", format_string_std("%s %s", dev_data->vendor, dev_data->product));
 		dev_data->devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
 		return DC_STATUS_SUCCESS;
 	} else {
@@ -919,9 +870,9 @@ static dc_status_t libdc_buffer_complete(device_data_t *dev_data, unsigned char 
 		memcpy(compl_buf+hdr_length, prf_buffer, prf_length);
 		break;
 	default:
-		return -2;
+		return DC_STATUS_UNSUPPORTED;
 	}
-	return 0;
+	return DC_STATUS_SUCCESS;
 }
 
 /*
@@ -931,15 +882,11 @@ static dc_status_t libdc_buffer_complete(device_data_t *dev_data, unsigned char 
  * a DB clone is necessary as calling mdb_fetch_row() over different tables in
  * a single DB breaks binded row data, and so would break the top loop.
  */
-
-void smartrak_import(const char *file, struct divelog *log)
+extern "C" void smartrak_import(const char *file, struct divelog *log)
 {
 	MdbHandle *mdb, *mdb_clon;
-	MdbTableDef *mdb_table;
 	MdbColumn *col[MDB_MAX_COLS];
-	char *bound_values[MDB_MAX_COLS];
-	int i, dc_model, *bound_lens[MDB_MAX_COLS];
-	struct device_table *devices = alloc_device_table();
+	int i, dc_model;
 
 	// Set an european style locale to work date/time conversion
 	setlocale(LC_TIME, "POSIX");
@@ -955,102 +902,85 @@ void smartrak_import(const char *file, struct divelog *log)
 	mdb_clon = mdb_clone_handle(mdb);
 	mdb_read_catalog(mdb_clon, MDB_TABLE);
 
-	/* Define arrays for the tables */
-	int	type_num = get_rows_num(mdb_clon, "Type"),
-		activity_num = get_rows_num(mdb_clon, "Activity"),
-		gear_num = get_rows_num(mdb_clon, "Gear"),
-		fish_num = get_rows_num(mdb_clon, "Fish"),
-		suit_num = get_rows_num(mdb_clon, "Suit"),
-		weather_num = get_rows_num(mdb_clon, "Weather"),
-		underwater_num = get_rows_num(mdb_clon, "Underwater"),
-		surface_num = get_rows_num(mdb_clon, "Surface"),
-		buddy_num = get_rows_num(mdb_clon, "Buddy");
-
-	char	*type_list[type_num], *activity_list[activity_num], *gear_list[gear_num],
-		*fish_list[fish_num], *buddy_list[buddy_num], *suit_list[suit_num],
-		*weather_list[weather_num], *underwater_list[underwater_num],
-		*surface_list[surface_num], *smtk_ver[1];
-
 	/* Load auxiliary tables */
-	smtk_build_list(mdb_clon, "Type", type_list);
-	smtk_build_list(mdb_clon, "Activity", activity_list);
-	smtk_build_list(mdb_clon, "Gear", gear_list);
-	smtk_build_list(mdb_clon, "Fish", fish_list);
-	smtk_build_list(mdb_clon, "SmartTrak", smtk_ver);
-	smtk_build_list(mdb_clon, "Suit", suit_list);
-	smtk_build_list(mdb_clon, "Weather", weather_list);
-	smtk_build_list(mdb_clon, "Underwater", underwater_list);
-	smtk_build_list(mdb_clon, "Surface", surface_list);
-	smtk_build_buddies(mdb_clon, buddy_list);
+	std::vector<std::string> type_list = smtk_build_list(mdb_clon, "Type");
+	std::vector<std::string> activity_list = smtk_build_list(mdb_clon, "Activity");
+	std::vector<std::string> gear_list = smtk_build_list(mdb_clon, "Gear");
+	std::vector<std::string> fish_list = smtk_build_list(mdb_clon, "Fish");
+	std::vector<std::string> smtk_ver = smtk_build_list(mdb_clon, "SmartTrak");
+	std::vector<std::string> suit_list = smtk_build_list(mdb_clon, "Suit");
+	std::vector<std::string> weather_list = smtk_build_list(mdb_clon, "Weather");
+	std::vector<std::string> underwater_list = smtk_build_list(mdb_clon, "Underwater");
+	std::vector<std::string> surface_list = smtk_build_list(mdb_clon, "Surface");
+	std::vector<std::string> buddy_list = smtk_build_buddies(mdb_clon);
 
 	/* Check Smarttrak version (different number of supported tanks, mixes and so).
 	 * File format 10000 is quite different from other formats, just drop it and give
 	 * a tip to the user.
 	 */
-	smtk_version = atoi(smtk_ver[0]);
+	smtk_version = atoi(get(smtk_ver, 0).c_str());
 	if (smtk_version == 10000) {
 		report_error("[Error]\t File %s is SmartTrak file format %d which is not supported. Please load the file in a newer SmartTrak software version and upgrade it.", file, smtk_version);
 		return;
 	}
 	tanks = (smtk_version < 10213) ? 3 : 10;
 
-	mdb_table = smtk_open_table(mdb, "Dives", bound_values, bound_lens);
+	SmtkTable mdb_table(mdb, "Dives");
 	if (!mdb_table) {
 		report_error("[Error][smartrak_import]\tFile %s does not seem to be an SmartTrak file.", file);
 		return;
 	}
-	while (mdb_fetch_row(mdb_table)) {
-		device_data_t *devdata = calloc(1, sizeof(device_data_t));
+	while (mdb_table.fetch_row()) {
+		device_data_t *devdata = (device_data_t *)calloc(1, sizeof(device_data_t));
 		dc_family_t dc_fam = DC_FAMILY_NULL;
-		unsigned char *prf_buffer, *hdr_buffer, *compl_buffer;
+		unsigned char *prf_buffer, *hdr_buffer;
 		struct dive *smtkdive = alloc_dive();
-		struct tm *tm_date = malloc(sizeof(struct tm));
+		struct tm tm_date;
 		size_t hdr_length, prf_length;
-		dc_status_t rc = 0;
+		dc_status_t rc = DC_STATUS_SUCCESS;
 
-		for (int j = 0; j < mdb_table->num_cols; j++)
-			col[j] = g_ptr_array_index(mdb_table->columns, j);
-		smtkdive->number = lrint(strtod(bound_values[1], NULL));
+		for (size_t j = 0; j < mdb_table.table->num_cols; j++)
+			col[j] = static_cast<MdbColumn *>(g_ptr_array_index(mdb_table.table->columns, j));
+		smtkdive->number = lrint(strtod(mdb_table.get_data(1), NULL));
 		/*
 		 * If there is a DC model (no zero) try to create a buffer for the
 		 * dive and parse it with libdivecomputer
 		 */
-		dc_model = lrint(strtod(bound_values[coln(DCMODEL)], NULL)) & 0xFF;
-		if (*bound_lens[coln(LOG)]) {
-			hdr_buffer = mdb_ole_read_full(mdb, col[coln(LOG)], &hdr_length);
+		dc_model = lrint(strtod(mdb_table.get_data(coln(DCMODEL)), NULL)) & 0xFF;
+		if (mdb_table.get_len(coln(LOG))) {
+			hdr_buffer = static_cast<unsigned char *>(mdb_ole_read_full(mdb, col[coln(LOG)], &hdr_length));
 			if (hdr_length > 0 && hdr_length < 20)	// We have a profile but it's imported from datatrak
 				dc_fam = DC_FAMILY_UWATEC_ALADIN;
 		}
-		rc = prepare_data(dc_model, copy_string(col[coln(DCNUMBER)]->bind_ptr), dc_fam, devdata);
+		rc = prepare_data(dc_model, copy_string((char *)col[coln(DCNUMBER)]->bind_ptr), dc_fam, devdata);
 		smtkdive->dc.model = copy_string(devdata->model);
-		if (rc == DC_STATUS_SUCCESS && *bound_lens[coln(PROFILE)]) {
-			prf_buffer = mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length);
+		if (rc == DC_STATUS_SUCCESS && mdb_table.get_len(coln(PROFILE))) {
+			prf_buffer = static_cast<unsigned char *>(mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length));
 			if (prf_length > 0) {
 				if (dc_descriptor_get_type(devdata->descriptor) == DC_FAMILY_UWATEC_ALADIN || dc_descriptor_get_type(devdata->descriptor) == DC_FAMILY_UWATEC_MEMOMOUSE)
 					hdr_length = 18;
-				compl_buffer = calloc(hdr_length+prf_length, sizeof(char));
-				rc = libdc_buffer_complete(devdata, hdr_buffer, hdr_length, prf_buffer, prf_length, compl_buffer);
+				std::vector<unsigned char> compl_buffer(hdr_length+prf_length);
+				rc = libdc_buffer_complete(devdata, hdr_buffer, hdr_length, prf_buffer, prf_length, compl_buffer.data());
 				if (rc != DC_STATUS_SUCCESS) {
 					report_error("[Error][smartrak_import]\t- %s - for dive %d", errmsg(rc), smtkdive->number);
 				} else {
-					rc = libdc_buffer_parser(smtkdive, devdata, compl_buffer, hdr_length + prf_length);
+					rc = libdc_buffer_parser(smtkdive, devdata, compl_buffer.data(), hdr_length + prf_length);
 					if (rc != DC_STATUS_SUCCESS)
 						report_error("[Error][libdc]\t\t- %s - for dive %d", errmsg(rc), smtkdive->number);
 				}
-				free(compl_buffer);
 			} else {
 				/* Dives without profile samples (usual in older aladin series) */
 				report_error("[Warning][smartrak_import]\t No profile for dive %d", smtkdive->number);
-				smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs(col[coln(DURATION)]->bind_ptr);
-				smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod(col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
+				smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
+				smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
 			}
 			free(hdr_buffer);
 			free(prf_buffer);
 		} else {
 			/* Manual dives or unknown DCs */
 			report_error("[Warning][smartrak_import]\t Manual or unknown dive computer for dive %d", smtkdive->number);
-			smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs(col[coln(DURATION)]->bind_ptr);
-			smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod(col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
+			smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
+			smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
 		}
 		/*
 		 * Cylinder and gasmixes completion.
@@ -1067,63 +997,61 @@ void smartrak_import(const char *file, struct divelog *log)
 			if (!tmptank)
 				break;
 			if (tmptank->start.mbar == 0)
-				tmptank->start.mbar = lrint(strtod(col[(i * 2) + pstartcol]->bind_ptr, NULL) * 1000);
+				tmptank->start.mbar = lrint(strtod((char *)col[(i * 2) + pstartcol]->bind_ptr, NULL) * 1000);
 			/*
 			 * If there is a start pressure ensure that end pressure is not zero as
 			 * will be registered in DCs which only keep track of differential pressures,
 			 * and collect the data registered  by the user in mdb
 			 */
 			if (tmptank->end.mbar == 0 && tmptank->start.mbar != 0)
-				tmptank->end.mbar = lrint(strtod(col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
+				tmptank->end.mbar = lrint(strtod((char *)col[(i * 2) + 1 + pstartcol]->bind_ptr, NULL) * 1000 ? : 1000);
 			if (tmptank->gasmix.o2.permille == 0)
-				tmptank->gasmix.o2.permille = lrint(strtod(col[i + o2fraccol]->bind_ptr, NULL) * 10);
+				tmptank->gasmix.o2.permille = lrint(strtod((char *)col[i + o2fraccol]->bind_ptr, NULL) * 10);
 			if (smtk_version == 10213) {
 				if (tmptank->gasmix.he.permille == 0)
-					tmptank->gasmix.he.permille = lrint(strtod(col[i + hefraccol]->bind_ptr, NULL) * 10);
+					tmptank->gasmix.he.permille = lrint(strtod((char *)col[i + hefraccol]->bind_ptr, NULL) * 10);
 			} else {
 				tmptank->gasmix.he.permille = 0;
 			}
-			smtk_build_tank_info(mdb_clon, tmptank, col[i + tankidxcol]->bind_ptr);
+			smtk_build_tank_info(mdb_clon, tmptank, (char *)col[i + tankidxcol]->bind_ptr);
 		}
 		/* Check for duplicated cylinders and clean them */
 		smtk_clean_cylinders(smtkdive);
 
 		/* Date issues with libdc parser - Take date time from mdb */
-		smtk_date_to_tm(col[coln(_DATE)]->bind_ptr, tm_date);
-		smtk_time_to_tm(col[coln(INTIME)]->bind_ptr, tm_date);
-		smtkdive->dc.when = smtkdive->when = smtk_timegm(tm_date);
-		free(tm_date);
-		smtkdive->dc.surfacetime.seconds = smtk_time_to_secs(col[coln(INTVAL)]->bind_ptr);
+		smtk_date_to_tm((char *)col[coln(_DATE)]->bind_ptr, &tm_date);
+		smtk_time_to_tm((char *)col[coln(INTIME)]->bind_ptr, &tm_date);
+		smtkdive->dc.when = smtkdive->when = smtk_timegm(&tm_date);
+		smtkdive->dc.surfacetime.seconds = smtk_time_to_secs((char *)col[coln(INTVAL)]->bind_ptr);
 
 		/* Data that user may have registered manually if not supported by DC, or not parsed */
 		if (!smtkdive->airtemp.mkelvin)
-			smtkdive->airtemp.mkelvin = C_to_mkelvin(lrint(strtod(col[coln(AIRTEMP)]->bind_ptr, NULL)));
+			smtkdive->airtemp.mkelvin = C_to_mkelvin(lrint(strtod((char *)col[coln(AIRTEMP)]->bind_ptr, NULL)));
 		if (!smtkdive->watertemp.mkelvin)
-			smtkdive->watertemp.mkelvin = smtkdive->mintemp.mkelvin = C_to_mkelvin(lrint(strtod(col[coln(MINWATERTEMP)]->bind_ptr, NULL)));
+			smtkdive->watertemp.mkelvin = smtkdive->mintemp.mkelvin = C_to_mkelvin(lrint(strtod((char *)col[coln(MINWATERTEMP)]->bind_ptr, NULL)));
 		if (!smtkdive->maxtemp.mkelvin)
-			smtkdive->maxtemp.mkelvin = C_to_mkelvin(lrint(strtod(col[coln(MAXWATERTEMP)]->bind_ptr, NULL)));
+			smtkdive->maxtemp.mkelvin = C_to_mkelvin(lrint(strtod((char *)col[coln(MAXWATERTEMP)]->bind_ptr, NULL)));
 
 		/* No DC related data */
-		smtkdive->visibility = strtod(col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : lrint(strtod(col[13]->bind_ptr, NULL) / 5);
-		weightsystem_t ws = { {lrint(strtod(col[coln(WEIGHT)]->bind_ptr, NULL) * 1000)}, "", false };
+		smtkdive->visibility = strtod((char *)col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : lrint(strtod((char *)col[13]->bind_ptr, NULL) / 5);
+		weightsystem_t ws = { {(int)lrint(strtod((char *)col[coln(WEIGHT)]->bind_ptr, NULL) * 1000)}, "", false };
 		add_cloned_weightsystem(&smtkdive->weightsystems, ws);
-		smtkdive->suit = copy_string(suit_list[atoi(col[coln(SUITIDX)]->bind_ptr) - 1]);
-		smtk_build_location(mdb_clon, col[coln(SITEIDX)]->bind_ptr, &smtkdive->dive_site, log);
-		smtkdive->buddy = smtk_locate_buddy(mdb_clon, col[0]->bind_ptr, buddy_list);
-		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
-		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
-		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Gear", "GearRelation", gear_list, false);
-		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Fish", "FishRelation", fish_list, false);
-		smtk_parse_other(smtkdive, weather_list, "Weather", col[coln(WEATHERIDX)]->bind_ptr, false);
-		smtk_parse_other(smtkdive, underwater_list, "Underwater", col[coln(UNDERWATERIDX)]->bind_ptr, false);
-		smtk_parse_other(smtkdive, surface_list, "Surface", col[coln(SURFACEIDX)]->bind_ptr, false);
-		smtk_parse_bookmarks(mdb_clon, smtkdive, col[0]->bind_ptr);
-		smtkdive->notes = smtk_concat_str(smtkdive->notes, "\n", "%s", col[coln(REMARKS)]->bind_ptr);
+		smtkdive->suit = strdup(get(suit_list, atoi((char *)col[coln(SUITIDX)]->bind_ptr) - 1).c_str());
+		smtk_build_location(mdb_clon, (char *)col[coln(SITEIDX)]->bind_ptr, &smtkdive->dive_site, log);
+		smtkdive->buddy = strdup(smtk_locate_buddy(mdb_clon, (char *)col[0]->bind_ptr, buddy_list).c_str());
+		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
+		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
+		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Gear", "GearRelation", gear_list, false);
+		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Fish", "FishRelation", fish_list, false);
+		smtk_parse_other(smtkdive, weather_list, "Weather", (char *)col[coln(WEATHERIDX)]->bind_ptr, false);
+		smtk_parse_other(smtkdive, underwater_list, "Underwater", (char *)col[coln(UNDERWATERIDX)]->bind_ptr, false);
+		smtk_parse_other(smtkdive, surface_list, "Surface", (char *)col[coln(SURFACEIDX)]->bind_ptr, false);
+		smtk_parse_bookmarks(mdb_clon, smtkdive, (char *)col[0]->bind_ptr);
+		concat(&smtkdive->notes, "\n", std::string((char *)col[coln(REMARKS)]->bind_ptr));
 
 		record_dive_to_table(smtkdive, log->dives);
 		device_data_free(devdata);
 	}
-	mdb_free_tabledef(mdb_table);
 	mdb_free_catalog(mdb_clon);
 	mdb->catalog = NULL;
 	mdb_close(mdb_clon);

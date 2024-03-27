@@ -13,6 +13,7 @@
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
+#include "core/subsurface-string.h"
 #include "core/settings/qPref.h"
 #include "core/tag.h"
 #include "desktop-widgets/mainwindow.h"
@@ -37,23 +38,22 @@ int main(int argc, char **argv)
 	if (verbose) /* print the version if the Win32 console_init() code enabled verbose. */
 		print_version();
 
-	int i;
 	bool no_filenames = true;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 	std::unique_ptr<QApplication> app(new QApplication(argc, argv));
-	QStringList files;
-	QStringList importedFiles;
+	std::vector<std::string> files;
+	std::vector<std::string> importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
 
 	const char *default_directory = system_default_directory();
 	subsurface_mkdir(default_directory);
 
-	for (i = 1; i < arguments.length(); i++) {
-		QString a = arguments.at(i);
-		if (a.isEmpty())
+	for (int i = 1; i < arguments.length(); i++) {
+		std::string a = arguments[i].toStdString();
+		if (a.empty())
 			continue;
-		if (a.at(0) == '-') {
-			parse_argument(qPrintable(a));
+		if (a[0] == '-') {
+			parse_argument(a.c_str());
 			continue;
 		}
 		if (imported) {
@@ -85,21 +85,20 @@ int main(int argc, char **argv)
 	init_ui();
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
-			QString defaultFile(prefs.default_filename);
-			if (!defaultFile.isEmpty())
-				files.push_back(QString(prefs.default_filename));
+			if (!empty_string(prefs.default_filename))
+				files.emplace_back(prefs.default_filename ? prefs.default_filename : "");
 		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
-			QString cloudURL;
-			if (getCloudURL(cloudURL) == 0)
-				files.push_back(cloudURL);
+			auto cloudURL = getCloudURL();
+			if (cloudURL)
+				files.push_back(*cloudURL);
 		}
 	}
 	MainWindow *m = MainWindow::instance();
-	if (verbose && !files.isEmpty())
-		qDebug() << "loading dive data from" << files;
+	if (verbose && !files.empty())
+		report_info("loading dive data from: %s", join(files, std::string(", ")).c_str());
 	m->loadFiles(files);
-	if (verbose && !importedFiles.isEmpty())
-		qDebug() << "importing dive data from" << importedFiles;
+	if (verbose && !importedFiles.empty())
+		report_info("importing dive data from %s", join(importedFiles, std::string(", ")).c_str());
 	m->importFiles(importedFiles);
 
 	if (verbose > 0)
@@ -108,7 +107,6 @@ int main(int argc, char **argv)
 		run_ui();
 	exit_ui();
 	clear_divelog(&divelog);
-	taglist_free(g_tag_list);
 	parse_xml_exit();
 	subsurface_console_exit();
 
@@ -124,11 +122,11 @@ int main(int argc, char **argv)
 
 void validateGL()
 {
-	QString quickBackend = qgetenv("QT_QUICK_BACKEND");
+	std::string quickBackend = qgetenv("QT_QUICK_BACKEND").toStdString();
 	/* on macOS with Qt6 (maybe others), things only work with the software backend */
 #if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	if (quickBackend.isEmpty()) {
-		quickBackend = QStringLiteral("software");
+	if (quickBackend.empty()) {
+		quickBackend = "software";
 		qputenv("QT_QUICK_BACKEND", "software");
 	}
 #endif
@@ -136,12 +134,11 @@ void validateGL()
 	 * only validate OpenGL; for everything else print out and return.
 	 * https://doc.qt.io/qt-5/qtquick-visualcanvas-adaptations.html
 	 */
-	if (!quickBackend.isEmpty()) {
+	if (!quickBackend.empty()) {
 		if (verbose) {
-			qDebug() << QStringLiteral(VALIDATE_GL_PREFIX
-						   "'QT_QUICK_BACKEND' is set to '%1'. "
-						   "Skipping validation.")
-					    .arg(quickBackend);
+			report_info(VALIDATE_GL_PREFIX
+				    "'QT_QUICK_BACKEND' is set to '%s'. "
+				    "Skipping validation.", quickBackend.c_str());
 		}
 		return;
 	}
@@ -159,7 +156,7 @@ void validateGL()
 		goto exit;
 	}
 	if (verbose)
-		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "created OpenGLContext.");
+		report_info(VALIDATE_GL_PREFIX "created OpenGLContext.");
 	ctx.makeCurrent(&surface);
 	func = ctx.functions();
 	if (!func) {
@@ -167,18 +164,18 @@ void validateGL()
 		goto exit;
 	}
 	if (verbose)
-		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "obtained QOpenGLFunctions.");
+		report_info(VALIDATE_GL_PREFIX "obtained QOpenGLFunctions.");
 	// detect version for legacy profiles
 	verChar = (const char *)func->glGetString(GL_VERSION);
 	if (verChar) {
 		// detect GLES, show a warning and return early as we don't handle it's versioning
 		if (strstr(verChar, " ES ") != NULL) {
-			qWarning() << QStringLiteral(VALIDATE_GL_PREFIX
-						     "WARNING: Detected OpenGL ES!\n"
-						     "Attempting to run with the available profile!\n"
-						     "If this fails try manually setting the environment variable\n"
-						     "'QT_QUICK_BACKEND' with the value of 'software'\n"
-						     "before running Subsurface!\n");
+			report_error(VALIDATE_GL_PREFIX
+				     "WARNING: Detected OpenGL ES!\n"
+				     "Attempting to run with the available profile!\n"
+				     "If this fails try manually setting the environment variable\n"
+				     "'QT_QUICK_BACKEND' with the value of 'software'\n"
+				     "before running Subsurface!\n");
 			return;
 		}
 		int min, maj;
@@ -197,7 +194,7 @@ void validateGL()
 		goto exit;
 	}
 	if (verbose)
-		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "detected OpenGL version %1.%2.").arg(verMajor).arg(verMinor);
+		report_info(VALIDATE_GL_PREFIX "detected OpenGL version %d.%d.", verMajor, verMinor);
 	if (verMajor * 10 + verMinor < 21) { // set 2.1 as the minimal version
 		glError = "OpenGL 2.1 or later is required";
 		goto exit;
@@ -207,7 +204,7 @@ exit:
 	ctx.makeCurrent(NULL);
 	surface.destroy();
 	if (glError) {
-		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError);
+		report_error(VALIDATE_GL_PREFIX "WARNING: %s. Using a software renderer!", glError);
 		QQuickWindow::setSceneGraphBackend("software");
 	}
 }

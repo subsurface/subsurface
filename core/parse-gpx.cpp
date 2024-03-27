@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/parse-gpx.h"
+#include "core/errorhelper.h"
 #include "core/subsurface-time.h"
 #include "core/namecmp.h"
 #include <QFile>
@@ -25,7 +26,7 @@ int getCoordsFromGPXFile(struct dive_coords *coords, const QString &fileName)
 	if (!gpxFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		QByteArray local8bitBAString1 = fileName.toLocal8Bit();
 		char *fname = local8bitBAString1.data();   // convert QString to a C string fileName
-		fprintf(stderr, "GPS file open error: file name = %s\n", fname);
+		report_info("GPS file open error: file name = %s", fname);
 		return 1;
 	}
 
@@ -76,7 +77,7 @@ int getCoordsFromGPXFile(struct dive_coords *coords, const QString &fileName)
 
 #ifdef GPSDEBUG
 				utc_mkdate(trkpt_time, &time); // print coordinates and time of each trkpt element of the GPX file as well as dive start time
-				fprintf(stderr, " %02d: lat=%f lon=%f timestamp=%ld (%ld) %02d/%02d/%02d %02d:%02d  dt=%ld  %02d/%02d/%02d %02d:%02d\n", line, lat,
+				report_info(" %02d: lat=%f lon=%f timestamp=%ld (%ld) %02d/%02d/%02d %02d:%02d  dt=%ld  %02d/%02d/%02d %02d:%02d", line, lat,
 				lon, trkpt_time, time_offset, time.tm_year, time.tm_mon+1, time.tm_mday, time.tm_hour, time.tm_min, divetime, dyr, dmon+1, dday,dhr, dmin);
 #endif
 

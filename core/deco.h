@@ -56,8 +56,6 @@ extern void clear_deco(struct deco_state *ds, double surface_pressure, bool in_p
 extern void dump_tissues(struct deco_state *ds);
 extern void set_gf(short gflow, short gfhigh);
 extern void set_vpmb_conservatism(short conservatism);
-extern void cache_deco_state(struct deco_state *source, struct deco_state **datap);
-extern void restore_deco_state(struct deco_state *data, struct deco_state *target, bool keep_vpmb_state);
 extern void nuclear_regeneration(struct deco_state *ds, double time);
 extern void vpmb_start_gradient(struct deco_state *ds);
 extern void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure, bool in_planner);
@@ -74,6 +72,21 @@ extern void update_regression(struct deco_state *ds, const struct dive *dive);
 
 #ifdef __cplusplus
 }
+
+// C++ only functions
+
+#include <memory>
+struct deco_state_cache {
+	// Test if there is cached data
+	operator bool () {
+		return !!data;
+	}
+	void cache(const struct deco_state *source);
+	void restore(struct deco_state *target, bool keep_vpmb_state) const;
+private:
+	std::unique_ptr<deco_state> data;
+};
+
 #endif
 
 #endif // DECO_H

@@ -2,9 +2,9 @@
 
 #include "btdiscovery.h"
 #include "downloadfromdcthread.h"
-#include "core/libdivecomputer.h"
+#include "libdivecomputer.h"
+#include "errorhelper.h"
 #include <QTimer>
-#include <QDebug>
 #include <QLoggingCategory>
 #include <QRegularExpression>
 #include <QElapsedTimer>
@@ -177,7 +177,7 @@ BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
 	discoveryAgent(nullptr)
 {
 	if (m_instance) {
-		qDebug() << "trying to create an additional BTDiscovery object";
+		report_info("trying to create an additional BTDiscovery object");
 		return;
 	}
 	m_instance = this;
@@ -195,11 +195,11 @@ void BTDiscovery::showNonDiveComputers(bool show)
 void BTDiscovery::BTDiscoveryReDiscover()
 {
 #if !defined(Q_OS_IOS)
-	qDebug() << "BTDiscoveryReDiscover: localBtDevice.isValid()" << localBtDevice.isValid();
+	report_info("BTDiscoveryReDiscover: localBtDevice.isValid() %d", localBtDevice.isValid());
 	if (localBtDevice.isValid() &&
 	    localBtDevice.hostMode() != QBluetoothLocalDevice::HostPoweredOff) {
 		btPairedDevices.clear();
-		qDebug() <<  "BTDiscoveryReDiscover: localDevice " + localBtDevice.name() + " is powered on, starting discovery";
+		report_info("BTDiscoveryReDiscover: localDevice %s is powered on, starting discovery", qPrintable(localBtDevice.name()));
 #else
 	// for iOS we can't use the localBtDevice as iOS is BLE only
 	// we need to find some other way to test if Bluetooth is enabled, though
@@ -220,13 +220,13 @@ void BTDiscovery::BTDiscoveryReDiscover()
 			connect(discoveryAgent, QOverload<QBluetoothDeviceDiscoveryAgent::Error>::of(&QBluetoothDeviceDiscoveryAgent::error),
 #endif
 				[this](QBluetoothDeviceDiscoveryAgent::Error error){
-					qDebug() << "device discovery received error" << discoveryAgent->errorString();
+					report_info("device discovery received error %s", qPrintable(discoveryAgent->errorString()));
 				});
-			qDebug() << "discovery methods" << (int)QBluetoothDeviceDiscoveryAgent::supportedDiscoveryMethods();
+			report_info("discovery methods %d", (int)QBluetoothDeviceDiscoveryAgent::supportedDiscoveryMethods());
 		}
 #if defined(Q_OS_ANDROID)
 		// on Android, we cannot scan for classic devices - we just get the paired ones
-		qDebug() << "starting BLE discovery";
+		report_info("starting BLE discovery");
 		discoveryAgent->start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
 		getBluetoothDevices();
 		// and add the paired devices to the internal data
@@ -235,10 +235,10 @@ void BTDiscovery::BTDiscoveryReDiscover()
 		for (int i = 0; i < btPairedDevices.length(); i++)
 			btDeviceDiscoveredMain(btPairedDevices[i], true);
 #else
-		qDebug() << "starting BT/BLE discovery";
+		report_info("starting BT/BLE discovery");
 		discoveryAgent->start();
 		for (int i = 0; i < btPairedDevices.length(); i++)
-			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address;
+			report_info("Paired = %s %s", qPrintable( btPairedDevices[i].name), qPrintable(btPairedDevices[i].address));
 #endif
 
 #if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
@@ -248,7 +248,7 @@ void BTDiscovery::BTDiscoveryReDiscover()
 		timer.start(3000);
 #endif
 	} else {
-		qDebug() << "localBtDevice isn't valid or not connectable";
+		report_info("localBtDevice isn't valid or not connectable");
 		m_btValid = false;
 	}
 }
@@ -291,10 +291,10 @@ QString markBLEAddress(const QBluetoothDeviceInfo *device)
 
 void BTDiscovery::btDeviceDiscoveryFinished()
 {
-	qDebug() << "BT/BLE finished discovery";
+	report_info("BT/BLE finished discovery");
 	QList<QBluetoothDeviceInfo> devList = discoveryAgent->discoveredDevices();
 	for (QBluetoothDeviceInfo device: devList) {
-		qDebug() << device.name() << device.address().toString();
+		report_info("%s %s", qPrintable(device.name()), qPrintable(device.address().toString()));
 	}
 }
 
@@ -308,7 +308,7 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 	const auto serviceUuids = device.serviceUuids();
 	for (QBluetoothUuid id: serviceUuids) {
 		addBtUuid(id);
-		qDebug() << id.toByteArray();
+		report_info("%s", qPrintable(id.toByteArray()));
 	}
 
 #if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_WIN)
@@ -337,7 +337,7 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device, bool from
 	msg = QString("%1 device: '%2' [%3]: ").arg(fromPaired ? "Paired" : "Discovered new").arg(newDevice).arg(device.address);
 	if (newDC) {
 		QString vendor = dc_descriptor_get_vendor(newDC);
-		qDebug() << msg << "this could be a " + vendor;
+		report_info("%s this could be a %s", qPrintable(msg), qPrintable(vendor));
 		btVP.btpdi = device;
 		btVP.dcDescriptor = newDC;
 		btVP.vendorIdx = vendorList.indexOf(vendor);
@@ -352,7 +352,7 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device, bool from
 			newDevice += " ";
 		connectionListModel.addAddress(newDevice + device.address);
 	}
-	qDebug() << msg << "not recognized as dive computer";
+	report_info("%s not recognized as dive computer", qPrintable(msg));
 }
 
 QList<BTDiscovery::btVendorProduct> BTDiscovery::getBtDcs()
@@ -407,12 +407,12 @@ void BTDiscovery::getBluetoothDevices()
 			result.address = dev.callObjectMethod("getAddress","()Ljava/lang/String;").toString();
 			result.name = dev.callObjectMethod("getName", "()Ljava/lang/String;").toString();
 			if (btType & 1) { // DEVICE_TYPE_CLASSIC
-				qDebug() << "paired BT classic device type" << btType << "with address" << result.address;
+				report_info("paired BT classic device type %d with address %s", btType, qPrintable(result.address));
 				btPairedDevices.append(result);
 			}
 			if (btType & 2) { // DEVICE_TYPE_LE
 				result.address = QString("LE:%1").arg(result.address);
-				qDebug() << "paired BLE device type" << btType << "with address" << result.address;
+				report_info("paired BLE device type %d with address %s", btType, qPrintable(result.address));
 				btPairedDevices.append(result);
 			}
 		}
@@ -451,7 +451,7 @@ void BTDiscovery::discoverAddress(QString address)
 	btAddress = extractBluetoothAddress(address);
 
 	if (!btDeviceInfo.keys().contains(address) && !discoveryAgent->isActive()) {
-		qDebug() << "restarting discovery agent";
+		report_info("restarting discovery agent");
 		discoveryAgent->start();
 	}
 }
@@ -460,7 +460,7 @@ void BTDiscovery::stopAgent()
 {
 	if (!discoveryAgent)
 		return;
-	qDebug() << "---> stopping the discovery agent";
+	report_info("---> stopping the discovery agent");
 	discoveryAgent->stop();
 }
 
@@ -491,7 +491,7 @@ QString extractBluetoothNameAddress(const QString &address, QString &name)
 		name = m.captured(1).trimmed();
 		return extractedAddress;
 	}
-	qDebug() << "can't parse address" << address;
+	report_info("can't parse address %s", qPrintable(address));
 	return QString();
 }
 
@@ -507,7 +507,7 @@ QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr)
 		return btDeviceInfo[devaddr];
 	}
 	if(!btDeviceInfo.keys().contains(devaddr)) {
-		qDebug() << "still looking scan is still running, we should just wait for a few moments";
+		report_info("still looking scan is still running, we should just wait for a few moments");
 		// wait for a maximum of 30 more seconds
 		// yes, that seems crazy, but on my Mac I see this take more than 20 seconds
 		QElapsedTimer timer;
@@ -521,7 +521,7 @@ QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr)
 			QThread::msleep(100);
 		} while (timer.elapsed() < 30000);
 	}
-	qDebug() << "notify user that we can't find" << devaddr;
+	report_info("notify user that we can't find %s", qPrintable(devaddr));
 	return QBluetoothDeviceInfo();
 }
 #endif // BT_SUPPORT

@@ -12,6 +12,7 @@
 #include "divelist.h"
 #include "divelog.h"
 #include "device.h"
+#include "errorhelper.h"
 #include "membuffer.h"
 #include "gettext.h"
 
@@ -300,7 +301,7 @@ static int shearwater_dive(void *param, int, char **data, char **)
 		snprintf(get_buffer, sizeof(get_buffer) - 1, get_mode_template, dive_id);
 		retval = sqlite3_exec(handle, get_buffer, &shearwater_mode, state, NULL);
 		if (retval != SQLITE_OK) {
-			fprintf(stderr, "%s", "Database query shearwater_mode failed.\n");
+			report_info("Database query shearwater_mode failed.");
 			return 1;
 		}
 	}
@@ -308,14 +309,14 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, dive_id);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_cylinders, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query shearwater_cylinders failed.\n");
+		report_info("Database query shearwater_cylinders failed.");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, dive_id);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query shearwater_changes failed.\n");
+		report_info("Database query shearwater_changes failed.");
 		return 1;
 	}
 
@@ -325,7 +326,7 @@ static int shearwater_dive(void *param, int, char **data, char **)
 		snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, dive_id);
 		retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, state, NULL);
 		if (retval != SQLITE_OK) {
-			fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
+			report_info("Database query shearwater_profile_sample failed.");
 			return 1;
 		}
 	}
@@ -430,7 +431,7 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 		snprintf(get_buffer, sizeof(get_buffer) - 1, get_mode_template, dive_id);
 		retval = sqlite3_exec(handle, get_buffer, &shearwater_mode, state, NULL);
 		if (retval != SQLITE_OK) {
-			fprintf(stderr, "%s", "Database query shearwater_mode failed.\n");
+			report_info("Database query shearwater_mode failed.");
 			return 1;
 		}
 	}
@@ -438,21 +439,21 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, dive_id);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_cylinders, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query shearwater_cylinders failed.\n");
+		report_info("Database query shearwater_cylinders failed.");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_first_gas_template, dive_id);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query shearwater_changes failed.\n");
+		report_info("Database query shearwater_changes failed.");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, dive_id);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, state, NULL);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query shearwater_changes failed.\n");
+		report_info("Database query shearwater_changes failed.");
 		return 1;
 	}
 
@@ -462,7 +463,7 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 		snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, dive_id, dive_id);
 		retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, state, NULL);
 		if (retval != SQLITE_OK) {
-			fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
+			report_info("Database query shearwater_profile_sample failed.");
 			return 1;
 		}
 	}
@@ -488,7 +489,7 @@ extern "C" int parse_shearwater_buffer(sqlite3 *handle, const char *url, const c
 	retval = sqlite3_exec(handle, get_dives, &shearwater_dive, &state, NULL);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "Database query failed '%s'.\n", url);
+		report_info("Database query failed '%s'.", url);
 		return 1;
 	}
 
@@ -508,7 +509,7 @@ extern "C" int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, c
 	retval = sqlite3_exec(handle, get_dives, &shearwater_cloud_dive, &state, NULL);
 
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "Database query failed '%s'.\n", url);
+		report_info("Database query failed '%s'.", url);
 		return 1;
 	}
 

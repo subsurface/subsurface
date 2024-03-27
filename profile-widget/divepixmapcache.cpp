@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divepixmapcache.h"
+#include "core/errorhelper.h"
 #include "core/metrics.h"
 #include "core/color.h"
 
@@ -23,7 +24,7 @@ DivePixmaps::DivePixmaps(int dpr) : dpr(dpr)
 	sz_bigger = lrint(sz_bigger * dprf);
 	int sz_pix = sz_bigger / 2; // ex 20px
 	if (verbose)
-		qDebug("%s DPR: %f metrics: %d %d sz_bigger: %d", __FUNCTION__, dprf, metrics.sz_med, metrics.sz_small, sz_bigger);
+		report_info("%s DPR: %f metrics: %d %d sz_bigger: %d", __func__, dprf, metrics.sz_med, metrics.sz_small, sz_bigger);
 
 	warning = createPixmap(":status-warning-icon", sz_pix);
 	info = createPixmap(":status-info-icon", sz_pix);

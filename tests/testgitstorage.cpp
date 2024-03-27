@@ -6,7 +6,10 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
+#include "core/errorhelper.h"
 #include "core/file.h"
+#include "core/subsurface-string.h"
+#include "core/format.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
 #include "core/settings/qPrefProxy.h"
@@ -17,44 +20,45 @@
 #include <QTextStream>
 #include <QNetworkProxy>
 #include <QTextCodec>
-#include <QDebug>
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
 #endif
 
 // provide declarations for two local helper functions in git-access.c
-extern "C" char *get_local_dir(const char *remote, const char *branch);
-extern "C" void delete_remote_branch(git_repository *repo, const char *remote, const char *branch);
+std::string get_local_dir(const std::string &remote, const std::string &branch);
+void delete_remote_branch(git_repository *repo, const std::string &remote, const std::string &branch);
 
-QString email;
-QString gitUrl;
-QString cloudTestRepo;
-QString localCacheDir;
-QString localCacheRepo;
-QString randomBranch;
+Q_DECLARE_METATYPE(std::string);
 
-static void moveDir(QString oldName, QString newName)
+std::string email;
+std::string gitUrl;
+std::string cloudTestRepo;
+std::string localCacheDir;
+std::string localCacheRepo;
+std::string randomBranch;
+
+static void moveDir(const std::string &oldName, const std::string &newName)
 {
-	QDir oldDir(oldName);
-	QDir newDir(newName);
+	QDir oldDir(oldName.c_str());
+	QDir newDir(newName.c_str());
 	QCOMPARE(newDir.removeRecursively(), true);
-	QCOMPARE(oldDir.rename(oldName, newName), true);
+	QCOMPARE(oldDir.rename(oldName.c_str(), newName.c_str()), true);
 }
 
 static void localRemoteCleanup()
 {
 	// cleanup the local cache dir
-	struct git_info info = { };
-	QDir localCacheDirectory(localCacheDir);
+	struct git_info info;
+	QDir localCacheDirectory(localCacheDir.c_str());
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 
 	// when this is first executed, we expect the branch not to exist on the remote server;
 	// if that's true, this will print a harmless error to stderr
-	is_git_repository(qPrintable(cloudTestRepo), &info) && open_git_repository(&info);
+	is_git_repository(cloudTestRepo.c_str(), &info) && open_git_repository(&info);
 
 	// this odd comparison is used to tell that we were able to connect to the remote repo;
 	// in the error case we get the full cloudTestRepo name back as "branch"
-	if (info.branch != randomBranch) {
+	if (info.branch != randomBranch || info.repo == nullptr) {
 		// dang, we weren't able to connect to the server - let's not fail the test
 		// but just give up
 		QSKIP("wasn't able to connect to server");
@@ -65,8 +69,6 @@ static void localRemoteCleanup()
 
 	// and since this will have created a local repo, remove that one, again so the tests start clean
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
-
-	cleanup_git_info(&info);
 }
 
 void TestGitStorage::initTestCase()
@@ -88,50 +90,50 @@ void TestGitStorage::initTestCase()
 	//
 	// To reduce the risk of collisions on the server, we have ten accounts set up for this purpose
 	// please don't use them for other reasons as they will get deleted regularly
-	email = qgetenv("SSRF_USER_EMAIL");
-	QString password = qgetenv("SSRF_USER_PASSWORD");
+	email = qgetenv("SSRF_USER_EMAIL").toStdString();
+	std::string password(qgetenv("SSRF_USER_PASSWORD").data());
 
-	if (email.isEmpty()) {
+	if (email.empty()) {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-		email = QString("gitstorage%1@hohndel.org").arg(QRandomGenerator::global()->bounded(10));
+		email = format_string_std("gitstorage%d@hohndel.org", QRandomGenerator::global()->bounded(10));
 #else
 		// on Qt 5.9 we go back to using qsrand()/qrand()
 		qsrand(time(NULL));
-		email = QString("gitstorage%1@hohndel.org").arg(qrand() % 10);
+		email = format_string_std("gitstorage%d@hohndel.org", qrand() % 10);
 #endif
 	}
-	if (password.isEmpty())
+	if (password.empty())
 		password = "please-only-use-this-in-the-git-tests";
 	gitUrl = prefs.cloud_base_url;
-	if (gitUrl.right(1) != "/")
+	if (gitUrl.empty() || gitUrl.back() != '/')
 		gitUrl += "/";
 	gitUrl += "git";
-	prefs.cloud_storage_email_encoded = copy_qstring(email);
-	prefs.cloud_storage_password = copy_qstring(password);
+	prefs.cloud_storage_email_encoded = strdup(email.c_str());
+	prefs.cloud_storage_password = strdup(password.c_str());
 	gitUrl += "/" + email;
 	// all user storage for historical reasons always uses the user's email both as
 	// repo name and as branch. To allow us to keep testing and not step on parallel
 	// runs we'll use actually random branch names - yes, this still has a chance of
 	// conflict, but I'm not going to implement a distributed lock manager for this
-	if (email.startsWith("gitstorage")) {
+	if (starts_with(email, "gitstorage")) {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-		randomBranch = QString::number(QRandomGenerator::global()->bounded(0x1000000), 16) +
-				QString::number(QRandomGenerator::global()->bounded(0x1000000), 16);
+		randomBranch = format_string_std("%x%x", QRandomGenerator::global()->bounded(0x1000000),
+				QRandomGenerator::global()->bounded(0x1000000));
 #else
 		// on Qt 5.9 we go back to using qsrand()/qrand() -- if we get to this code, qsrand() was already called
 		// even on a 32bit system RAND_MAX is at least 32767 so this will also give us 12 random hex digits
-		randomBranch = QString::number(qrand() % 0x1000, 16) + QString::number(qrand() % 0x1000, 16) +
-				QString::number(qrand() % 0x1000, 16) + QString::number(qrand() % 0x1000, 16);
+		randomBranch = format_string_std("%x%x%x%x", qrand() % 0x1000, qrand() % 0x1000,
+				qrand() % 0x1000, qrand() % 0x1000);
 #endif
 	} else {
 		// user supplied their own credentials, fall back to the usual "email is branch" pattern
 		randomBranch = email;
 	}
-	cloudTestRepo = gitUrl + QStringLiteral("[%1]").arg(randomBranch);
-	localCacheDir = get_local_dir(qPrintable(gitUrl), qPrintable(randomBranch));
-	localCacheRepo = localCacheDir + QStringLiteral("[%1]").arg(randomBranch);
-	qDebug() << "repo used:" << cloudTestRepo;
-	qDebug() << "local cache:" << localCacheRepo;
+	cloudTestRepo = gitUrl + "[" + randomBranch + ']';
+	localCacheDir = get_local_dir(gitUrl.c_str(), randomBranch.c_str());
+	localCacheRepo = localCacheDir + "[" + randomBranch + "]";
+	report_info("repo used: %s", cloudTestRepo.c_str());
+	report_info("local cache: %s", localCacheRepo.c_str());
 
 	// make sure we deal with any proxy settings that are needed
 	QNetworkProxy proxy;
@@ -152,7 +154,7 @@ void TestGitStorage::initTestCase()
 
 	// cleanup local and remote branches
 	localRemoteCleanup();
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 }
 
 void TestGitStorage::cleanupTestCase()
@@ -169,15 +171,16 @@ void TestGitStorage::testGitStorageLocal_data()
 {
 	// Test different paths we may encounter (since storage depends on user name)
 	// as well as with and without "file://" URL prefix.
-	QTest::addColumn<QString>("testDirName");
-	QTest::addColumn<QString>("prefixRead");
-	QTest::addColumn<QString>("prefixWrite");
-	QTest::newRow("ASCII path") << "./gittest" << "" << "";
-	QTest::newRow("Non ASCII path") << "./gittest_éèêôàüäößíñóúäåöø" << "" << "";
-	QTest::newRow("ASCII path with file:// prefix on read") << "./gittest2" << "file://" << "";
-	QTest::newRow("Non ASCII path with file:// prefix on read") << "./gittest2_éèêôàüäößíñóúäåöø" << "" << "file://";
-	QTest::newRow("ASCII path with file:// prefix on write") << "./gittest3" << "file://" << "";
-	QTest::newRow("Non ASCII path with file:// prefix on write") << "./gittest3_éèêôàüäößíñóúäåöø" << "" << "file://";
+	using namespace std::string_literals; // For std::string literals: "some string"s.
+	QTest::addColumn<std::string>("testDirName");
+	QTest::addColumn<std::string>("prefixRead");
+	QTest::addColumn<std::string>("prefixWrite");
+	QTest::newRow("ASCII path") << "./gittest"s << ""s << ""s;
+	QTest::newRow("Non ASCII path") << "./gittest_éèêôàüäößíñóúäåöø"s << ""s << ""s;
+	QTest::newRow("ASCII path with file:// prefix on read") << "./gittest2"s << "file://"s << ""s;
+	QTest::newRow("Non ASCII path with file:// prefix on read") << "./gittest2_éèêôàüäößíñóúäåöø"s << ""s << "file://"s;
+	QTest::newRow("ASCII path with file:// prefix on write") << "./gittest3"s << "file://"s << ""s;
+	QTest::newRow("Non ASCII path with file:// prefix on write") << "./gittest3_éèêôàüäößíñóúäåöø"s << ""s << "file://"s;
 }
 
 void TestGitStorage::testGitStorageLocal()
@@ -185,19 +188,19 @@ void TestGitStorage::testGitStorageLocal()
 	// test writing and reading back from local git storage
 	git_repository *repo;
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/SampleDivesV2.ssrf", &divelog), 0);
-	QFETCH(QString, testDirName);
-	QFETCH(QString, prefixRead);
-	QFETCH(QString, prefixWrite);
-	QDir testDir(testDirName);
+	QFETCH(std::string, testDirName);
+	QFETCH(std::string, prefixRead);
+	QFETCH(std::string, prefixWrite);
+	QDir testDir(testDirName.c_str());
 	QCOMPARE(testDir.removeRecursively(), true);
-	QCOMPARE(QDir().mkdir(testDirName), true);
-	QString repoNameRead = prefixRead + testDirName;
-	QString repoNameWrite = prefixWrite + testDirName;
-	QCOMPARE(git_repository_init(&repo, qPrintable(testDirName), false), 0);
-	QCOMPARE(save_dives(qPrintable(repoNameWrite + "[test]")), 0);
+	QCOMPARE(QDir().mkdir(testDirName.c_str()), true);
+	std::string repoNameRead = prefixRead + testDirName;
+	std::string repoNameWrite = prefixWrite + testDirName;
+	QCOMPARE(git_repository_init(&repo, testDirName.c_str(), false), 0);
+	QCOMPARE(save_dives((repoNameWrite + "[test]").c_str()), 0);
 	QCOMPARE(save_dives("./SampleDivesV3.ssrf"), 0);
 	clear_dive_file_data();
-	QCOMPARE(parse_file(qPrintable(repoNameRead + "[test]"), &divelog), 0);
+	QCOMPARE(parse_file((repoNameRead + "[test]").c_str(), &divelog), 0);
 	QCOMPARE(save_dives("./SampleDivesV3viagit.ssrf"), 0);
 	QFile org("./SampleDivesV3.ssrf");
 	org.open(QFile::ReadOnly);
@@ -216,9 +219,9 @@ void TestGitStorage::testGitStorageCloud()
 	// connect to the ssrftest repository on the cloud server
 	// and repeat the same test as before with the local git storage
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/SampleDivesV2.ssrf", &divelog), 0);
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(save_dives("./SampleDivesV3viacloud.ssrf"), 0);
 	QFile org("./SampleDivesV3.ssrf");
 	org.open(QFile::ReadOnly);
@@ -236,19 +239,19 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	// make a change to local cache repo (pretending that we did some offline changes)
 	// and then open the remote one again and check that things were propagated correctly
 	// read the local repo from the previous test and add dive 10
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test10.xml", &divelog), 0);
 	// calling process_loaded_dives() sorts the table, but calling add_imported_dives()
 	// causes it to try to update the window title... let's not do that
 	process_loaded_dives();
 	// now save only to the local cache but not to the remote server
 	git_local_only = true;
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	QCOMPARE(save_dives("./SampleDivesV3plus10local.ssrf"), 0);
 	clear_dive_file_data();
 	// now pretend that we are online again and open the cloud storage and compare
 	git_local_only = false;
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(save_dives("./SampleDivesV3plus10viacloud.ssrf"), 0);
 	QFile org("./SampleDivesV3plus10local.ssrf");
 	org.open(QFile::ReadOnly);
@@ -260,10 +263,10 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
 	// write back out to cloud storage, move away the local cache, open again and compare
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 	moveDir(localCacheDir, localCacheDir + "save");
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(save_dives("./SampleDivesV3plus10fromcloud.ssrf"), 0);
 	org.close();
 	org.open(QFile::ReadOnly);
@@ -292,10 +295,10 @@ void TestGitStorage::testGitStorageCloudMerge()
 
 	// (1) open the repo, add dive test11 and save to the cloud
 	git_local_only = false;
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test11.xml", &divelog), 0);
 	process_loaded_dives();
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
 	// (2) switch to the second client by moving the old cache back in place
@@ -304,15 +307,15 @@ void TestGitStorage::testGitStorageCloudMerge()
 
 	// (3) open the repo from the old cache and add dive test12 while offline
 	git_local_only = true;
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test12.xml", &divelog), 0);
 	process_loaded_dives();
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
 	// (4) now take things back online
 	git_local_only = false;
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	clear_dive_file_data();
 
 	// (5) now we should have all the dives in our repo on the second client
@@ -324,7 +327,7 @@ void TestGitStorage::testGitStorageCloudMerge()
 	QCOMPARE(save_dives("./SampleDivesV3plus10-11-12.ssrf"), 0);
 	// then load from the cloud
 	clear_dive_file_data();
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	QCOMPARE(save_dives("./SampleDivesV3plus10-11-12-merged.ssrf"), 0);
 	// finally compare what we have
@@ -341,7 +344,7 @@ void TestGitStorage::testGitStorageCloudMerge()
 
 	// (6) move ourselves back to the first client and compare data there
 	moveDir(localCacheDir + "client1", localCacheDir);
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	QCOMPARE(save_dives("./SampleDivesV3plus10-11-12-merged-client1.ssrf"), 0);
 	QFile client1("./SampleDivesV3plus10-11-12-merged-client1.ssrf");
@@ -357,13 +360,13 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	// edit the same dive in the cloud repo
 	// merge
 	// (1) open repo, delete second dive, save offline
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	struct dive *dive = get_dive(1);
 	delete_single_dive(1);
 	QCOMPARE(save_dives("./SampleDivesMinus1.ssrf"), 0);
 	git_local_only = true;
-	QCOMPARE(save_dives(qPrintable(localCacheRepo)), 0);
+	QCOMPARE(save_dives(localCacheRepo.c_str()), 0);
 	git_local_only = false;
 	clear_dive_file_data();
 
@@ -371,21 +374,21 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	moveDir(localCacheDir, localCacheDir + "save");
 
 	// (3) now we open the cloud storage repo and modify that second dive
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	dive = get_dive(1);
 	QVERIFY(dive != NULL);
 	free(dive->notes);
 	dive->notes = strdup("These notes have been modified by TestGitStorage");
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
 	// (4) move the saved local cache  backinto place and try to open the cloud repo
 	//     -> this forces a merge
 	moveDir(localCacheDir + "save", localCacheDir);
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(save_dives("./SampleDivesMinus1-merged.ssrf"), 0);
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	QFile org("./SampleDivesMinus1-merged.ssrf");
 	org.open(QFile::ReadOnly);
 	QFile out("./SampleDivesMinus1.ssrf");
@@ -406,7 +409,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 
 
 	// (1) open repo, edit notes of first three dives
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	struct dive *dive;
 	QVERIFY((dive = get_dive(0)) != 0);
@@ -418,11 +421,11 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	QVERIFY((dive = get_dive(2)) != 0);
 	free(dive->notes);
 	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
 	// (2) make different edits offline
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	QVERIFY((dive = get_dive(0)) != 0);
 	free(dive->notes);
@@ -434,14 +437,14 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	free(dive->notes);
 	dive->notes = strdup("single line dive notes");
 	git_local_only = true;
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	git_local_only = false;
 	clear_dive_file_data();
 
 	// (3) simulate a second system by moving the cache away and open the cloud storage repo and modify
 	//     those first dive notes differently while online
 	moveDir(localCacheDir, localCacheDir + "save");
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	QVERIFY((dive = get_dive(0)) != 0);
 	free(dive->notes);
@@ -452,12 +455,12 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	QVERIFY((dive = get_dive(2)) != 0);
 	free(dive->notes);
 	dive->notes = strdup("Line 2\nLine 3\nLine 4\nLine 5"); // keep the middle, remove first and last");
-	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
+	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
 	// (4) move the saved local cache back into place and open the cloud repo -> this forces a merge
 	moveDir(localCacheDir + "save", localCacheDir);
-	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &divelog), 0);
+	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(save_dives("./SampleDivesMerge3.ssrf"), 0);
 	// we are not trying to compare this to a pre-determined result... what this test
 	// checks is that there are no parsing errors with the merge

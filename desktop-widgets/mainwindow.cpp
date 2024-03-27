@@ -85,7 +85,7 @@ namespace {
 extern "C" int updateProgress(const char *text)
 {
 	if (verbose)
-		qDebug() << "git storage:" << text;
+		report_info("git storage: %s", text);
 	if (progressDialog) {
 		// apparently we don't always get enough space to show the full label
 		// so let's manually make enough space (but don't shrink the existing size)
@@ -376,13 +376,13 @@ void MainWindow::on_actionOpen_triggered()
 	// some file dialogs decide to add the default extension to a filename without extension
 	// so we would get dir[branch].ssrf when trying to select dir[branch].
 	// let's detect that and remove the incorrect extension
-	QStringList cleanFilenames;
+	std::vector<std::string> cleanFilenames;
 	QRegularExpression reg(".*\\[[^]]+]\\.ssrf", QRegularExpression::CaseInsensitiveOption);
 
 	for (QString filename: filenames) {
 		if (reg.match(filename).hasMatch())
 			filename.remove(QRegularExpression("\\.ssrf$", QRegularExpression::CaseInsensitiveOption));
-		cleanFilenames << filename;
+		cleanFilenames.push_back(filename.toStdString());
 	}
 	loadFiles(cleanFilenames);
 }
@@ -399,24 +399,29 @@ void MainWindow::on_actionSaveAs_triggered()
 	file_save_as();
 }
 
+static std::string encodeFileName(const std::string &fn)
+{
+	return QFile::encodeName(QString::fromStdString(fn)).toStdString();
+}
+
 void MainWindow::on_actionCloudstorageopen_triggered()
 {
 	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
 		return;
 
-	QString filename;
-	if (getCloudURL(filename))
+	auto filename = getCloudURL();
+	if (!filename)
 		return;
 
 	if (verbose)
-		qDebug() << "Opening cloud storage from:" << filename;
+		report_info("Opening cloud storage from: %s", filename->c_str());
 
 	closeCurrentFile();
 
 	showProgressBar();
-	QByteArray fileNamePtr = QFile::encodeName(filename);
-	if (!parse_file(fileNamePtr.data(), &divelog))
-		setCurrentFile(fileNamePtr.toStdString());
+	std::string encoded = encodeFileName(*filename);
+	if (!parse_file(encoded.c_str(), &divelog))
+		setCurrentFile(encoded);
 	process_loaded_dives();
 	hideProgressBar();
 	refreshDisplay();
@@ -435,23 +440,23 @@ static bool saveToCloudOK()
 
 void MainWindow::on_actionCloudstoragesave_triggered()
 {
-	QString filename;
 	if (!saveToCloudOK())
 		return;
-	if (getCloudURL(filename))
+	auto filename = getCloudURL();
+	if (!filename)
 		return;
 
 	if (verbose)
-		qDebug() << "Saving cloud storage to:" << filename;
+		report_info("Saving cloud storage to: %s", filename->c_str());
 	mainTab->stealFocus(); // Make sure that any currently edited field is updated before saving.
 
 	showProgressBar();
-	int error = save_dives(qPrintable(filename));
+	int error = save_dives(filename->c_str());
 	hideProgressBar();
 	if (error)
 		return;
 
-	setCurrentFile(filename.toStdString());
+	setCurrentFile(*filename);
 	Command::setClean();
 }
 
@@ -1156,7 +1161,7 @@ void MainWindow::recentFileTriggered(bool)
 
 	updateLastUsedDir(QFileInfo(filename).dir().path());
 	closeCurrentFile();
-	loadFiles(QStringList() << filename);
+	loadFiles(std::vector<std::string> { filename.toStdString() });
 }
 
 int MainWindow::file_save_as(void)
@@ -1280,33 +1285,32 @@ void MainWindow::setTitle()
 	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved + shown);
 }
 
-void MainWindow::importFiles(const QStringList &fileNames)
+void MainWindow::importFiles(const std::vector<std::string> &fileNames)
 {
-	if (fileNames.isEmpty())
+	if (fileNames.empty())
 		return;
 
-	QByteArray fileNamePtr;
 	struct divelog log;
 
-	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &log);
+	for (const std::string &fn: fileNames) {
+		std::string encoded = encodeFileName(fn);
+		parse_file(encoded.c_str(), &log);
 	}
-	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
+	QString source = fileNames.size() == 1 ? QString::fromStdString(fileNames[0]) : tr("multiple files");
 	Command::importDives(&log, IMPORT_MERGE_ALL_TRIPS, source);
 }
 
-void MainWindow::loadFiles(const QStringList &fileNames)
+void MainWindow::loadFiles(const std::vector<std::string> &fileNames)
 {
-	if (fileNames.isEmpty()) {
+	if (fileNames.empty()) {
 		refreshDisplay();
 		return;
 	}
 	QByteArray fileNamePtr;
 
 	showProgressBar();
-	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = QFile::encodeName(fileNames.at(i));
+	for (const std::string &fn: fileNames) {
+		fileNamePtr = QFile::encodeName(QString::fromStdString(fn));
 		if (!parse_file(fileNamePtr.data(), &divelog)) {
 			setCurrentFile(fileNamePtr.toStdString());
 			addRecentFile(fileNamePtr, false);
@@ -1352,13 +1356,13 @@ void MainWindow::on_actionImportDiveLog_triggered()
 		return;
 	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
 
-	QStringList logFiles;
+	std::vector<std::string> logFiles;
 	QStringList csvFiles;
 	for (const QString &fn: fileNames) {
 		if (isCsvFile(fn))
 			csvFiles.append(fn);
 		else
-			logFiles.append(fn);
+			logFiles.push_back(fn.toStdString());
 	}
 
 	if (logFiles.size())
@@ -1563,7 +1567,7 @@ void MainWindow::hideProgressBar()
 void MainWindow::divesChanged(const QVector<dive *> &dives, DiveField)
 {
 	for (struct dive *d: dives) {
-		qDebug() << "dive #" << d->number << "changed, cache is" << (dive_cache_is_valid(d) ? "valid" : "invalidated");
+		report_info("dive #%d changed, cache is %s", d->number, dive_cache_is_valid(d) ? "valid" : "invalidated");
 		// a brute force way to deal with that would of course be to call
 		// invalidate_dive_cache(d);
 	}

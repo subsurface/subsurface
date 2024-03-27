@@ -10,6 +10,7 @@
 #include "qthelper.h"
 #include "git-access.h"
 #include "errorhelper.h"
+#include "core/format.h"
 #include "core/subsurface-string.h"
 #include "core/membuffer.h"
 #include "core/settings/qPrefCloudStorage.h"
@@ -34,7 +35,7 @@ CheckCloudConnection::CheckCloudConnection(QObject *parent) :
 bool CheckCloudConnection::checkServer()
 {
 	if (verbose)
-		fprintf(stderr, "Checking cloud connection...\n");
+		report_info("Checking cloud connection...");
 
 	QEventLoop loop;
 	QNetworkAccessManager *mgr = new QNetworkAccessManager();
@@ -72,10 +73,10 @@ bool CheckCloudConnection::checkServer()
 			}
 		}
 		if (verbose)
-			qDebug() << "connection test to cloud server" << prefs.cloud_base_url << "failed" <<
-				    reply->error() << reply->errorString() <<
-				    reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() <<
-				    reply->readAll();
+			report_info("connection test to cloud server %s failed %d %s %d %s", prefs.cloud_base_url,
+				    static_cast<int>(reply->error()), qPrintable(reply->errorString()),
+				    reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(),
+				    qPrintable(reply->readAll()));
 	} while (nextServer());
 	// if none of the servers was reachable, update the user and switch to git_local_only
 	git_storage_update_progress(qPrintable(tr("Cloud connection failed")));
@@ -89,9 +90,9 @@ bool CheckCloudConnection::checkServer()
 
 void CheckCloudConnection::sslErrors(const QList<QSslError> &errorList)
 {
-	qDebug() << "Received error response trying to set up https connection with cloud storage backend:";
+	report_info("Received error response trying to set up https connection with cloud storage backend:");
 	for (QSslError err: errorList)
-		qDebug() << err.errorString();
+		report_info("%s", qPrintable(err.errorString()));
 }
 
 bool CheckCloudConnection::nextServer()
@@ -119,12 +120,12 @@ bool CheckCloudConnection::nextServer()
 		strcpy(baseurl, "https://");
 		strncat(baseurl, server, s);
 		strcat(baseurl, "/");
-		qDebug() << "failed to connect to" << prefs.cloud_base_url << "next server to try: " << baseurl;
+		report_info("failed to connect to %s next server to try: %s", prefs.cloud_base_url, baseurl);
 		prefs.cloud_base_url = baseurl;
 		git_storage_update_progress(qPrintable(tr("Trying different cloud server...")));
 		return true;
 	}
-	qDebug() << "failed to connect to any of the Subsurface cloud servers, giving up";
+	report_info("failed to connect to any of the Subsurface cloud servers, giving up");
 	return false;
 }
 
@@ -143,7 +144,7 @@ void CheckCloudConnection::gotIP(QNetworkReply *reply)
 	if (reply->error() != QNetworkReply::NoError) {
 		// whatever, just use the default host
 		if (verbose)
-			qDebug() << __FUNCTION__ << "got error reply from ip webservice - not changing cloud host";
+			report_info("%s got error reply from ip webservice - not changing cloud host", __func__);
 		return;
 	}
 	QString addressString = reply->readAll();
@@ -153,11 +154,11 @@ void CheckCloudConnection::gotIP(QNetworkReply *reply)
 	if (addr.isNull()) {
 		// this isn't an address, don't try to update the cloud host
 		if (verbose)
-			qDebug() << __FUNCTION__ << "returned address doesn't appear to be valid (" << addressString << ") - not changing cloud host";
+			report_info("%s returned address doesn't appear to be valid (%s) - not changing cloud host", __func__, qPrintable(addressString));
 		return;
 	}
 	if (verbose)
-		qDebug() << "IP used for cloud server access" << addressString;
+		report_info("IP used for cloud server access %s", qPrintable(addressString));
 	// now figure out which continent we are on
 	QNetworkRequest request(QString(GET_CONTINENT_API).arg(addressString));
 	request.setRawHeader("Accept", "text/plain");
@@ -172,7 +173,7 @@ void CheckCloudConnection::gotContinent(QNetworkReply *reply)
 	if (reply->error() != QNetworkReply::NoError) {
 		// whatever, just use the default host
 		if (verbose)
-			qDebug() << __FUNCTION__ << "got error reply from ip location webservice - not changing cloud host";
+			report_info("%s got error reply from ip location webservice - not changing cloud host", __func__);
 		return;
 	}
 	QString continentString = reply->readAll();
@@ -193,7 +194,7 @@ void CheckCloudConnection::gotContinent(QNetworkReply *reply)
 		base_url = "https://" CLOUD_HOST_EU "/";
 	if (!same_string(base_url, prefs.cloud_base_url)) {
 		if (verbose)
-			qDebug() << "remember cloud server" << base_url << "based on IP location in " << continentString;
+			report_info("remember cloud server %s based on IP location in %s", base_url, qPrintable(continentString));
 		qPrefCloudStorage::instance()->store_cloud_base_url(base_url);
 	}
 }
@@ -202,17 +203,18 @@ void CheckCloudConnection::gotContinent(QNetworkReply *reply)
 extern "C" bool canReachCloudServer(struct git_info *info)
 {
 	if (verbose)
-		qWarning() << "Cloud storage: checking connection to cloud server" << info->url;
+		qWarning() << "Cloud storage: checking connection to cloud server" << info->url.c_str();
 	bool connection = CheckCloudConnection().checkServer();
-	if (strstr(info->url, prefs.cloud_base_url) == nullptr) {
+	if (info->url.find(prefs.cloud_base_url) == std::string::npos) {
 		// we switched the cloud URL - likely because we couldn't reach the server passed in
 		// the strstr with the offset is designed so we match the right component in the name;
 		// the cloud_base_url ends with a '/', so we need the text starting at "git/..."
-		char *newremote = format_string("%s%s", prefs.cloud_base_url, strstr(info->url, "org/git/") + 4);
-		if (verbose)
-			qDebug() << "updating remote to: " << newremote;
-		free((void*)info->url);
-		info->url = newremote;
+		size_t pos = info->url.find("org/git/");
+		if (pos != std::string::npos) {
+			info->url = format_string_std("%s%s", prefs.cloud_base_url, info->url.c_str() + pos + 4);
+			if (verbose)
+				report_info("updating remote to: %s", info->url.c_str());
+		}
 	}
 	return connection;
 }

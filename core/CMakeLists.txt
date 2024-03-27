@@ -53,7 +53,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	connectionlistmodel.h
 	datatrak.cpp
 	datatrak.h
-	deco.c
+	deco.cpp
 	deco.h
 	device.cpp
 	device.h
@@ -85,7 +85,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	eventtype.h
 	equipment.c
 	equipment.h
-	errorhelper.c
+	errorhelper.cpp
 	exif.cpp
 	exif.h
 	extradata.h
@@ -141,12 +141,12 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	picture.h
 	pictureobj.cpp
 	pictureobj.h
-	planner.c
+	planner.cpp
 	planner.h
-	plannernotes.c
+	plannernotes.cpp
 	pref.h
 	pref.c
-	profile.c
+	profile.cpp
 	profile.h
 	qt-gui.h
 	qt-init.cpp
@@ -156,7 +156,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	sample.cpp
 	sample.h
 	save-git.cpp
-	save-html.c
+	save-html.cpp
 	save-html.h
 	save-profiledata.c
 	save-xml.cpp
@@ -172,12 +172,13 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	string-format.cpp
 	strtod.c
 	subsurface-float.h
+	subsurface-string.cpp
 	subsurface-string.h
 	subsurfacestartup.cpp
 	subsurfacestartup.h
 	subsurfacesysinfo.cpp
 	subsurfacesysinfo.h
-	tag.c
+	tag.cpp
 	tag.h
 	taxonomy.c
 	taxonomy.h
@@ -203,7 +204,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	windowtitleupdate.cpp
 	windowtitleupdate.h
 	worldmap-options.h
-	worldmap-save.c
+	worldmap-save.cpp
 	worldmap-save.h
 	xmlparams.cpp
 	xmlparams.h

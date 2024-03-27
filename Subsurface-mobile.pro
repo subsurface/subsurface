@@ -25,7 +25,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/devicedetails.cpp \
 	core/downloadfromdcthread.cpp \
 	core/qtserialbluetooth.cpp \
-	core/plannernotes.c \
+	core/plannernotes.cpp \
 	core/uemis-downloader.cpp \
 	core/qthelper.cpp \
 	core/checkcloudconnection.cpp \
@@ -33,7 +33,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/configuredivecomputer.cpp \
 	core/divelogexportlogic.cpp \
 	core/divesitehelpers.cpp \
-	core/errorhelper.c \
+	core/errorhelper.cpp \
 	core/exif.cpp \
 	core/format.cpp \
 	core/gettextfromc.cpp \
@@ -44,8 +44,9 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/file.cpp \
 	core/fulltext.cpp \
 	core/subsurfacestartup.cpp \
+	core/subsurface-string.cpp \
 	core/pref.c \
-	core/profile.c \
+	core/profile.cpp \
 	core/device.cpp \
 	core/dive.cpp \
 	core/divecomputer.c \
@@ -73,18 +74,18 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/import-cobalt.cpp \
 	core/import-divinglog.cpp \
 	core/import-csv.cpp \
-	core/save-html.c \
+	core/save-html.cpp \
 	core/statistics.c \
-	core/worldmap-save.c \
+	core/worldmap-save.cpp \
 	core/libdivecomputer.cpp \
 	core/version.c \
 	core/save-git.cpp \
 	core/datatrak.cpp \
 	core/ostctools.c \
-	core/planner.c \
+	core/planner.cpp \
 	core/save-xml.cpp \
 	core/cochran.cpp \
-	core/deco.c \
+	core/deco.cpp \
 	core/divesite.c \
 	core/equipment.c \
 	core/gas.c \
@@ -93,7 +94,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/sha1.c \
 	core/string-format.cpp \
 	core/strtod.c \
-	core/tag.c \
+	core/tag.cpp \
 	core/taxonomy.c \
 	core/time.cpp \
 	core/trip.c \

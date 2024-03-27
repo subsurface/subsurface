@@ -232,7 +232,7 @@ static void uemis_info(const char *fmt, ...)
 	va_end(ap);
 	progress_bar_text = buffer;
 	if (verbose)
-		fprintf(stderr, "Uemis downloader: %s\n", buffer);
+		report_info("Uemis downloader: %s", buffer);
 }
 
 static long bytes_available(int file)
@@ -643,7 +643,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 				reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 				if (reqtxt_file < 0) {
 					*error_text = "can't open req.txt";
-					fprintf(stderr, "open %s failed with errno %d\n", reqtxt_path, errno);
+					report_info("open %s failed with errno %d", reqtxt_path, errno);
 					return false;
 				}
 				trigger_response(reqtxt_file, "n", filenr, file_length);
@@ -658,7 +658,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 			reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
 			if (reqtxt_file < 0) {
 				*error_text = "can't open req.txt";
-				fprintf(stderr, "open %s failed with errno %d\n", reqtxt_path, errno);
+				report_info("open %s failed with errno %d", reqtxt_path, errno);
 				return false;
 			}
 			trigger_response(reqtxt_file, "r", filenr, file_length);
@@ -1294,7 +1294,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 							dive_to_read = -1;
 					} else if (!strstr(mbuf, "act{") && ++fail_count == 10) {
 						if (verbose)
-							fprintf(stderr, "Uemis downloader: Cannot access dive details - searching from start\n");
+							report_info("Uemis downloader: Cannot access dive details - searching from start");
 						dive_to_read = -1;
 					}
 				}
@@ -1367,7 +1367,7 @@ const char *do_uemis_import(device_data_t *data)
 	param_buff[1] = "notempty";
 	newmax = uemis_get_divenr(deviceid, data->log->dives, force_download);
 	if (verbose)
-		fprintf(stderr, "Uemis downloader: start looking at dive nr %s\n", newmax);
+		report_info("Uemis downloader: start looking at dive nr %s", newmax);
 
 	first = start = atoi(newmax);
 	dive_to_read = (int)mindiveid < first ? first - mindiveid : first;
@@ -1453,7 +1453,7 @@ const char *do_uemis_import(device_data_t *data)
 				if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
 					goto bail;
 				if (strcmp(deviceid, param_buff[0]) != 0) {
-					fprintf(stderr, "Uemis: Device id has changed after reconnect!\n");
+					report_info("Uemis: Device id has changed after reconnect!");
 					goto bail;
 				}
 				param_buff[0] = strdup(deviceid);

@@ -644,7 +644,7 @@ std::string filter_constraint_data_to_string(const filter_constraint *c)
 void filter_constraint_set_stringlist(filter_constraint &c, const QString &s)
 {
 	if (!filter_constraint_is_string(c.type)) {
-		fprintf(stderr, "Setting strings in non-string constraint!\n");
+		report_info("Setting strings in non-string constraint!");
 		return;
 	}
 	c.data.string_list->clear();
@@ -655,7 +655,7 @@ void filter_constraint_set_stringlist(filter_constraint &c, const QString &s)
 void filter_constraint_set_timestamp_from(filter_constraint &c, timestamp_t from)
 {
 	if (!filter_constraint_is_timestamp(c.type)) {
-		fprintf(stderr, "Setting timestamp from in non-timestamp constraint!\n");
+		report_info("Setting timestamp from in non-timestamp constraint!");
 		return;
 	}
 	c.data.timestamp_range.from = from;
@@ -664,7 +664,7 @@ void filter_constraint_set_timestamp_from(filter_constraint &c, timestamp_t from
 void filter_constraint_set_timestamp_to(filter_constraint &c, timestamp_t to)
 {
 	if (!filter_constraint_is_timestamp(c.type)) {
-		fprintf(stderr, "Setting timestamp to in non-timestamp constraint!\n");
+		report_info("Setting timestamp to in non-timestamp constraint!");
 		return;
 	}
 	c.data.timestamp_range.to = to;
@@ -673,7 +673,7 @@ void filter_constraint_set_timestamp_to(filter_constraint &c, timestamp_t to)
 void filter_constraint_set_integer_from(filter_constraint &c, int from)
 {
 	if (!is_numerical_constraint(c.type)) {
-		fprintf(stderr, "Setting integer from of non-numerical constraint!\n");
+		report_info("Setting integer from of non-numerical constraint!");
 		return;
 	}
 	c.data.numerical_range.from = from;
@@ -682,7 +682,7 @@ void filter_constraint_set_integer_from(filter_constraint &c, int from)
 void filter_constraint_set_integer_to(filter_constraint &c, int to)
 {
 	if (!is_numerical_constraint(c.type)) {
-		fprintf(stderr, "Setting integer to of non-numerical constraint!\n");
+		report_info("Setting integer to of non-numerical constraint!");
 		return;
 	}
 	c.data.numerical_range.to = to;
@@ -691,7 +691,7 @@ void filter_constraint_set_integer_to(filter_constraint &c, int to)
 void filter_constraint_set_float_from(filter_constraint &c, double from)
 {
 	if (!is_numerical_constraint(c.type)) {
-		fprintf(stderr, "Setting float from of non-numerical constraint!\n");
+		report_info("Setting float from of non-numerical constraint!");
 		return;
 	}
 	c.data.numerical_range.from = display_to_base_unit(from, c.type);
@@ -700,7 +700,7 @@ void filter_constraint_set_float_from(filter_constraint &c, double from)
 void filter_constraint_set_float_to(filter_constraint &c, double to)
 {
 	if (!is_numerical_constraint(c.type)) {
-		fprintf(stderr, "Setting float to of non-numerical constraint!\n");
+		report_info("Setting float to of non-numerical constraint!");
 		return;
 	}
 	c.data.numerical_range.to = display_to_base_unit(to, c.type);
@@ -709,7 +709,7 @@ void filter_constraint_set_float_to(filter_constraint &c, double to)
 void filter_constraint_set_multiple_choice(filter_constraint &c, uint64_t multiple_choice)
 {
 	if (!filter_constraint_is_multiple_choice(c.type)) {
-		fprintf(stderr, "Setting multiple-choice to of non-multiple-choice constraint!\n");
+		report_info("Setting multiple-choice to of non-multiple-choice constraint!");
 		return;
 	}
 	c.data.multiple_choice = multiple_choice;
@@ -718,7 +718,7 @@ void filter_constraint_set_multiple_choice(filter_constraint &c, uint64_t multip
 QString filter_constraint_get_string(const filter_constraint &c)
 {
 	if (!filter_constraint_is_string(c.type)) {
-		fprintf(stderr, "Getting string of non-string constraint!\n");
+		report_info("Getting string of non-string constraint!");
 		return QString();
 	}
 	return c.data.string_list->join(",");
@@ -727,7 +727,7 @@ QString filter_constraint_get_string(const filter_constraint &c)
 int filter_constraint_get_integer_from(const filter_constraint &c)
 {
 	if (!is_numerical_constraint(c.type)) {
-		fprintf(stderr, "Getting integer from of non-numerical constraint!\n");
+		report_info("Getting integer from of non-numerical constraint!");
 		return -1;
 	}
 	return c.data.numerical_range.from;
@@ -736,7 +736,7 @@ int filter_constraint_get_integer_from(const filter_constraint &c)
 int filter_constraint_get_integer_to(const filter_constraint &c)
 {
 	if (!is_numerical_constraint(c.type)) {
-		fprintf(stderr, "Getting integer to of non-numerical constraint!\n");
+		report_info("Getting integer to of non-numerical constraint!");
 		return -1;
 	}
 	return c.data.numerical_range.to;
@@ -745,7 +745,7 @@ int filter_constraint_get_integer_to(const filter_constraint &c)
 double filter_constraint_get_float_from(const filter_constraint &c)
 {
 	if (!is_numerical_constraint(c.type)) {
-		fprintf(stderr, "Getting float from of non-numerical constraint!\n");
+		report_info("Getting float from of non-numerical constraint!");
 		return 0.0;
 	}
 	return base_to_display_unit(c.data.numerical_range.from, c.type);
@@ -754,7 +754,7 @@ double filter_constraint_get_float_from(const filter_constraint &c)
 double filter_constraint_get_float_to(const filter_constraint &c)
 {
 	if (!is_numerical_constraint(c.type)) {
-		fprintf(stderr, "Getting float to of non-numerical constraint!\n");
+		report_info("Getting float to of non-numerical constraint!");
 		return 0.0;
 	}
 	return base_to_display_unit(c.data.numerical_range.to, c.type);
@@ -763,7 +763,7 @@ double filter_constraint_get_float_to(const filter_constraint &c)
 timestamp_t filter_constraint_get_timestamp_from(const filter_constraint &c)
 {
 	if (!filter_constraint_is_timestamp(c.type)) {
-		fprintf(stderr, "Getting timestamp from of non-timestamp constraint!\n");
+		report_info("Getting timestamp from of non-timestamp constraint!");
 		return 0;
 	}
 	return c.data.timestamp_range.from;
@@ -772,7 +772,7 @@ timestamp_t filter_constraint_get_timestamp_from(const filter_constraint &c)
 timestamp_t filter_constraint_get_timestamp_to(const filter_constraint &c)
 {
 	if (!filter_constraint_is_timestamp(c.type)) {
-		fprintf(stderr, "Getting timestamp to of non-timestamp constraint!\n");
+		report_info("Getting timestamp to of non-timestamp constraint!");
 		return 0;
 	}
 	return c.data.timestamp_range.to;
@@ -781,7 +781,7 @@ timestamp_t filter_constraint_get_timestamp_to(const filter_constraint &c)
 uint64_t filter_constraint_get_multiple_choice(const filter_constraint &c)
 {
 	if (!filter_constraint_is_multiple_choice(c.type)) {
-		fprintf(stderr, "Getting multiple-choice of non-multiple choice constraint!\n");
+		report_info("Getting multiple-choice of non-multiple choice constraint!");
 		return 0;
 	}
 	return c.data.multiple_choice;
@@ -819,7 +819,7 @@ static bool has_tags(const filter_constraint &c, const struct dive *d)
 {
 	QStringList dive_tags;
 	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
-		dive_tags.push_back(QString(tag->tag->name).trimmed());
+		dive_tags.push_back(QString::fromStdString(tag->tag->name).trimmed());
 	dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]).trimmed());
 	return check(c, dive_tags);
 }

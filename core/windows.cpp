@@ -32,7 +32,7 @@ static std::string utf16_to_utf8_fl(const std::wstring &utf16, const char *file,
 	/* estimate buffer size */
 	const int sz = WideCharToMultiByte(CP_UTF8, 0, utf16.c_str(), -1, NULL, 0, NULL, NULL);
 	if (!sz) {
-		fprintf(stderr, "%s:%d: cannot estimate buffer size\n", file, line);
+		report_info("%s:%d: cannot estimate buffer size", file, line);
 		return std::string();
 	}
 	std::string utf8(sz, ' '); // Note: includes the terminating '\0', just in case.
@@ -40,7 +40,7 @@ static std::string utf16_to_utf8_fl(const std::wstring &utf16, const char *file,
 		utf8.resize(sz - 1); // Chop off final '\0' byte
 		return utf8;
 	}
-	fprintf(stderr, "%s:%d: cannot convert string\n", file, line);
+	report_info("%s:%d: cannot convert string", file, line);
 	return std::string();
 }
 
@@ -58,7 +58,7 @@ static std::wstring utf8_to_utf16_fl(const char *utf8, const char *file, int lin
 		utf16.resize(actual_size - 1); // Chop off final '\0' character
 		return utf16;
 	}
-	fprintf(stderr, "%s:%d: cannot convert string\n", file, line);
+	report_info("%s:%d: cannot convert string", file, line);
 	return std::wstring();
 }
 
@@ -80,7 +80,7 @@ static std::wstring system_default_path()
 	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, wpath))) {
 		path = wpath;
 	} else {
-		fprintf(stderr, "%s: cannot obtain path!\n", fname);
+		report_info("%s: cannot obtain path!", fname);
 		path = L'.';
 	}
 	return path + L"\\Subsurface";
@@ -251,7 +251,7 @@ int subsurface_dir_rename(const char *path, const char *newpath)
 	if (attrib != INVALID_FILE_ATTRIBUTES && attrib & FILE_ATTRIBUTE_DIRECTORY)
 		exists = TRUE;
 	if (!exists && verbose) {
-		fprintf(stderr, "folder not found or path is not a folder: %s\n", path);
+		report_info("folder not found or path is not a folder: %s", path);
 		return EXIT_FAILURE;
 	}
 
@@ -265,11 +265,11 @@ int subsurface_dir_rename(const char *path, const char *newpath)
 	if (h == INVALID_HANDLE_VALUE) {
 		errorCode = GetLastError();
 		if (verbose)
-			fprintf(stderr, "cannot obtain exclusive write access for folder: %u\n", (unsigned int)errorCode );
+			report_info("cannot obtain exclusive write access for folder: %u", (unsigned int)errorCode );
 		return EXIT_FAILURE;
 	} else {
 		if (verbose)
-			fprintf(stderr, "exclusive write access obtained...closing handle!");
+			report_info("exclusive write access obtained...closing handle!");
 		CloseHandle(h);
 
 		// attempt to rename
@@ -277,11 +277,11 @@ int subsurface_dir_rename(const char *path, const char *newpath)
 		if (!result) {
 			errorCode = GetLastError();
 			if (verbose)
-				fprintf(stderr, "rename failed: %u\n", (unsigned int)errorCode);
+				report_info("rename failed: %u", (unsigned int)errorCode);
 			return EXIT_FAILURE;
 		}
 		if (verbose > 1)
-			fprintf(stderr, "folder rename success: %s ---> %s\n", path, newpath);
+			report_info("folder rename success: %s ---> %s", path, newpath);
 	}
 	return EXIT_SUCCESS;
 }

@@ -6,7 +6,6 @@
 #include <QBluetoothLocalDevice>
 #include <QEventLoop>
 #include <QTimer>
-#include <QDebug>
 #include <QThread>
 
 #include <libdivecomputer/version.h>
@@ -17,12 +16,19 @@
 #ifdef BLE_SUPPORT
 # include "qt-ble.h"
 #endif
+#include "errorhelper.h"
 
 QList<QBluetoothUuid> registeredUuids;
 
 void addBtUuid(QBluetoothUuid uuid)
 {
 	registeredUuids << uuid;
+}
+
+template<typename T>
+static std::string to_str(const T &v)
+{
+	return v.toString().toStdString();
 }
 
 extern "C" {
@@ -34,7 +40,7 @@ typedef struct qt_serial_t {
 	long timeout;
 } qt_serial_t;
 
-static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* devaddr)
+static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char *devaddr)
 {
 	// Allocate memory.
 	qt_serial_t *serial_port = (qt_serial_t *) malloc (sizeof (qt_serial_t));
@@ -62,13 +68,13 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 	QBluetoothAddress remoteDeviceAddress(devaddr);
 #if defined(Q_OS_ANDROID)
 	QBluetoothUuid uuid = QBluetoothUuid(QUuid("{00001101-0000-1000-8000-00805f9b34fb}"));
-	qDebug() << "connecting to Uuid" << uuid;
+	report_info("connecting to Uuid %s", to_str(uuid).c_str());
 	serial_port->socket->setPreferredSecurityFlags(QBluetooth::Security::NoSecurity);
 	serial_port->socket->connectToService(remoteDeviceAddress, uuid, QIODevice::ReadWrite | QIODevice::Unbuffered);
 #else
 	QBluetoothLocalDevice dev;
 	QBluetoothUuid uuid = QBluetoothUuid(QUuid("{00001101-0000-1000-8000-00805f9b34fb}"));
-	qDebug() << "Linux Bluez connecting to Uuid" << uuid;
+	report_info("Linux Bluez connecting to Uuid %s", to_str(uuid).c_str());
 	serial_port->socket->connectToService(remoteDeviceAddress, uuid, QIODevice::ReadWrite | QIODevice::Unbuffered);
 #endif
 	timer.start(msec);
@@ -77,7 +83,7 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 	if (serial_port->socket->state() == QBluetoothSocket::SocketState::ConnectingState ||
 	    serial_port->socket->state() == QBluetoothSocket::SocketState::ServiceLookupState) {
 		// It seems that the connection step took more than expected. Wait another 20 seconds.
-		qDebug() << "The connection step took more than expected. Wait another 20 seconds";
+		report_info("The connection step took more than expected. Wait another 20 seconds");
 		timer.start(4 * msec);
 		loop.exec();
 	}
@@ -86,7 +92,7 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char* d
 
 		// Get the latest error and try to match it with one from libdivecomputer
 		QBluetoothSocket::SocketError err = serial_port->socket->error();
-		qDebug() << "Failed to connect to device " << devaddr << ". Device state " << serial_port->socket->state() << ". Error: " << err;
+		report_info("Failed to connect to device %s. Device state %d. Error: %d", devaddr, static_cast<int>(serial_port->socket->state()), static_cast<int>(err));
 
 		free (serial_port);
 		switch(err) {
