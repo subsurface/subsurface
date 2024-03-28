@@ -124,8 +124,8 @@ if (SUBSURFACE_ASAN_BUILD)
 endif()
 
 # every compiler understands -Wall
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror=format")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror=format")
 
 # by detault optimize with -O2 even for debug builds
 set (GCC_OPTIMIZATION_FLAGS "-O2" CACHE STRING "GCC optimization flags")
