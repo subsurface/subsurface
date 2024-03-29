@@ -167,7 +167,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	ssrf.h
 	statistics.c
 	statistics.h
-	strndup.h
 	string-format.h
 	string-format.cpp
 	strtod.c

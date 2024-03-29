@@ -245,7 +245,6 @@ HEADERS += \
 	core/sample.h \
 	core/selection.h \
 	core/sha1.h \
-	core/strndup.h \
 	core/string-format.h \
 	core/subsurfacestartup.h \
 	core/subsurfacesysinfo.h \

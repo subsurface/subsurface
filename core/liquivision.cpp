@@ -7,9 +7,9 @@
 #include "dive.h"
 #include "divelog.h"
 #include "errorhelper.h"
+#include "subsurface-string.h"
 #include "file.h"
 #include "sample.h"
-#include "strndup.h"
 
 // Convert bytes into an INT
 #define array_uint16_le(p) ((unsigned int) (p)[0] \
@@ -175,28 +175,23 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 
 		// Dive location, assemble Location and Place
 		unsigned int len, place_len;
-		char *location;
+		std::string location;
 		len = array_uint32_le(buf + ptr);
 		ptr += 4;
 		place_len = array_uint32_le(buf + ptr + len);
 
 		if (len && place_len) {
-			location = (char *)malloc(len + place_len + 4);
-			memset(location, 0, len + place_len + 4);
-			memcpy(location, buf + ptr, len);
-			memcpy(location + len, ", ", 2);
-			memcpy(location + len + 2, buf + ptr + len + 4, place_len);
+			location = std::string((char *)buf + ptr, len) + ", " +
+				   std::string((char *)buf + ptr + len + 4, place_len);
 		} else if (len) {
-			location = strndup((char *)buf + ptr, len);
+			location = std::string((char *)buf + ptr, len);
 		} else if (place_len) {
-			location = strndup((char *)buf + ptr + len + 4, place_len);
+			location = std::string((char *)buf + ptr + len + 4, place_len);
 		}
 
 		/* Store the location only if we have one */
-		if (len || place_len) {
-			add_dive_to_dive_site(dive, find_or_create_dive_site_with_name(location, sites));
-			free(location);
-		}
+		if (!location.empty())
+			add_dive_to_dive_site(dive, find_or_create_dive_site_with_name(location.c_str(), sites));
 
 		ptr += len + 4 + place_len;
 
@@ -205,9 +200,9 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		ptr += 4;
 
 		// Blank notes are better than the default text
-		if (len && strncmp((char *)buf + ptr, "Comment ...", 11)) {
-			dive->notes = strndup((char *)buf + ptr, len);
-		}
+		std::string notes((char *)buf + ptr, len);
+		if (!starts_with(notes, "Comment ..."))
+			dive->notes = strdup(notes.c_str());
 		ptr += len;
 
 		dive->id = array_uint32_le(buf + ptr);

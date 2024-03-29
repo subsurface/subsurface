@@ -24,7 +24,6 @@
 #include "subsurface-string.h"
 #include "format.h"
 #include "membuffer.h"
-#include "strndup.h"
 #include "qthelper.h"
 #include "file.h"
 #include "errorhelper.h"

@@ -28,7 +28,6 @@
 #include "file.h"
 #include "membuffer.h"
 #include "picture.h"
-#include "strndup.h"
 #include "git-access.h"
 #include "qthelper.h"
 #include "gettext.h"
