@@ -5,66 +5,27 @@
 #include "core/metrics.h"
 #include "core/gettextfromc.h"
 
-WSInfoModel *WSInfoModel::instance()
-{
-	static WSInfoModel self;
-	return &self;
-}
-
-bool WSInfoModel::insertRows(int, int count, const QModelIndex &parent)
-{
-	beginInsertRows(parent, rowCount(), rowCount());
-	rows += count;
-	endInsertRows();
-	return true;
-}
-
-bool WSInfoModel::setData(const QModelIndex &index, const QVariant &value, int)
-{
-	//WARN: check for Qt::EditRole
-	struct ws_info_t *info = &ws_info[index.row()];
-	switch (index.column()) {
-	case DESCRIPTION:
-		info->name = strdup(value.toByteArray().data());
-		break;
-	case GR:
-		info->grams = value.toInt();
-		break;
-	}
-	emit dataChanged(index, index);
-	return true;
-}
-
-void WSInfoModel::clear()
-{
-}
-
 QVariant WSInfoModel::data(const QModelIndex &index, int role) const
 {
-	QVariant ret;
-	if (!index.isValid()) {
-		return ret;
-	}
+	if (!index.isValid() || index.row() >= rows)
+		return QVariant();
 	struct ws_info_t *info = &ws_info[index.row()];
 
 	int gr = info->grams;
 	switch (role) {
 	case Qt::FontRole:
-		ret = defaultModelFont();
-		break;
+		return defaultModelFont();
 	case Qt::DisplayRole:
 	case Qt::EditRole:
 		switch (index.column()) {
 		case GR:
-			ret = gr;
-			break;
+			return gr;
 		case DESCRIPTION:
-			ret = gettextFromC::tr(info->name);
-			break;
+			return gettextFromC::tr(info->name);
 		}
 		break;
 	}
-	return ret;
+	return QVariant();
 }
 
 int WSInfoModel::rowCount(const QModelIndex&) const
@@ -72,18 +33,10 @@ int WSInfoModel::rowCount(const QModelIndex&) const
 	return rows;
 }
 
-WSInfoModel::WSInfoModel()
+WSInfoModel::WSInfoModel(QObject *parent) : CleanerTableModel(parent)
 {
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("kg"));
-	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &WSInfoModel::update);
-	update();
-}
-
-void WSInfoModel::update()
-{
-	beginResetModel();
 	rows = 0;
 	for (struct ws_info_t *info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++)
 		;
-	endResetModel();
 }

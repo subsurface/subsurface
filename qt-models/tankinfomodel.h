@@ -9,22 +9,15 @@
 class TankInfoModel : public CleanerTableModel {
 	Q_OBJECT
 public:
-	static TankInfoModel *instance();
-
 	enum Column {
 		DESCRIPTION,
 		ML,
 		BAR
 	};
-	TankInfoModel();
+	TankInfoModel(QObject *parent);
 
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-	bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
-	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-public
-slots:
-	void update();
 };
 
 #endif

@@ -42,11 +42,8 @@ void PreferencesEquipment::syncSettings()
 	equipment->set_default_cylinder(ui->default_cylinder->currentText());
 
 	// In case the user changed the tank info settings,
-	// reset the tank_info_table and inform the TankInfoModel of
-	// the changed table. It is somewhat questionable to do this here.
-	// Moreover, it is a bit crude, as this will be called for *any*
-	// preferences change. Perhaps, the model should listen to the
-	// precise changed signal of the preferences system?
+	// reset the tank_info_table. It is somewhat questionable
+	// to do this here. Moreover, it is a bit crude, as this
+	// will be called for *any* preferences change.
 	reset_tank_info_table(&tank_info_table);
-	TankInfoModel::instance()->update();
 }
