@@ -1289,14 +1289,7 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 	else
 		setText(Command::Base::tr("Edit cylinder (%n dive(s))", "", dives.size()));
 
-	// Try to untranslate the cylinder type
 	QString description = cylIn.type.description;
-	for (int i = 0; i < tank_info_table.nr; ++i) {
-		if (gettextFromC::tr(tank_info_table.infos[i].name) == description) {
-			description = tank_info_table.infos[i].name;
-			break;
-		}
-	}
 
 	// The base class copied the cylinders for us, let's edit them
 	for (int i = 0; i < (int)indexes.size(); ++i) {
