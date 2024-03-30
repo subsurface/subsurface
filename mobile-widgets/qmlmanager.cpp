@@ -1452,11 +1452,21 @@ void QMLManager::changesNeedSaving(bool fromUndo)
 	mark_divelist_changed(true);
 	emit syncStateChanged();
 #if defined(Q_OS_IOS)
-	saveChangesLocal(fromUndo);
+	saveChangesLocal();
 #else
-	saveChangesCloud(false, fromUndo);
+	saveChangesCloud(false);
 #endif
 	updateAllGlobalLists();
+
+	// provide a useful undo/redo notification
+	// NOTE: the QML UI interprets a leading '[action]' (where only the two brackets are checked for)
+	//       as an indication to use the text between those two brackets as the label of a button that
+	//       can be used to open the context menu
+	QString msgFormat = tr("[%1]Changes saved:'%2'.\n%1 possible via context menu");
+	if (fromUndo)
+		setNotificationText(msgFormat.arg(tr("Redo")).arg(tr("Undo: %1").arg(getRedoText())));
+	else
+		setNotificationText(msgFormat.arg(tr("Undo")).arg(getUndoText()));
 }
 
 void QMLManager::openNoCloudRepo()
@@ -1482,7 +1492,7 @@ void QMLManager::openNoCloudRepo()
 	openLocalThenRemote(filename);
 }
 
-void QMLManager::saveChangesLocal(bool fromUndo)
+void QMLManager::saveChangesLocal()
 {
 	if (unsavedChanges()) {
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
@@ -1512,21 +1522,12 @@ void QMLManager::saveChangesLocal(bool fromUndo)
 		mark_divelist_changed(false);
 		Command::setClean();
 		updateHaveLocalChanges(true);
-		// provide a useful undo/redo notification
-		// NOTE: the QML UI interprets a leading '[action]' (where only the two brackets are checked for)
-		//       as an indication to use the text between those two brackets as the label of a button that
-		//       can be used to open the context menu
-		QString msgFormat = tr("[%1]Changes saved:'%2'.\n%1 possible via context menu");
-		if (fromUndo)
-			setNotificationText(msgFormat.arg(tr("Redo")).arg(tr("Undo: %1").arg(getRedoText())));
-		else
-			setNotificationText(msgFormat.arg(tr("Undo")).arg(getUndoText()));
 	} else {
 		appendTextToLog("local save requested with no unsaved changes");
 	}
 }
 
-void QMLManager::saveChangesCloud(bool forceRemoteSync, bool fromUndo)
+void QMLManager::saveChangesCloud(bool forceRemoteSync)
 {
 	if (!unsavedChanges() && !forceRemoteSync) {
 		appendTextToLog("asked to save changes but no unsaved changes");
@@ -1534,7 +1535,7 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync, bool fromUndo)
 	}
 	// first we need to store any unsaved changes to the local repo
 	gitProgressCB("Save changes to local cache");
-	saveChangesLocal(fromUndo);
+	saveChangesLocal();
 	// if the user asked not to push to the cloud we are done
 	if (git_local_only && !forceRemoteSync)
 		return;
