@@ -321,10 +321,6 @@ QMLManager::QMLManager() :
 	if (verbose)
 		connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &QMLManager::divesChanged);
 
-	// get updates to the undo/redo texts
-	connect(Command::getUndoStack(), &QUndoStack::undoTextChanged, this, &QMLManager::undoTextChanged);
-	connect(Command::getUndoStack(), &QUndoStack::redoTextChanged, this, &QMLManager::redoTextChanged);
-
 	// now that everything is setup, connect the application changed signal
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
@@ -334,6 +330,10 @@ QMLManager::QMLManager() :
 	// setup Command infrastructure
 	Command::init();
 	undoAction = Command::undoAction(this);
+
+	// get updates to the undo/redo texts
+	connect(Command::getUndoStack(), &QUndoStack::undoTextChanged, this, &QMLManager::undoTextChanged);
+	connect(Command::getUndoStack(), &QUndoStack::redoTextChanged, this, &QMLManager::redoTextChanged);
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
