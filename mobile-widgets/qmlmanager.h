@@ -9,6 +9,7 @@
 #include <QElapsedTimer>
 #include <QColor>
 #include <QFile>
+#include <QTimer>
 
 #include "core/btdiscovery.h"
 #include "core/downloadfromdcthread.h"
@@ -299,6 +300,7 @@ signals:
 	void restartDownloadSignal();
 	void syncStateChanged();
 	void passwordStateChanged();
+	void changesNeedSavingSignal();
 
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
@@ -306,6 +308,7 @@ signals:
 
 private slots:
 	void uploadFinishSlot(bool success, const QString &text, const QByteArray &html);
+	void saveUnsaved();
 };
 
 #endif

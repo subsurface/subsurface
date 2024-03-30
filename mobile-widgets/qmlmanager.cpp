@@ -602,6 +602,14 @@ void QMLManager::finishSetup()
 	// this could have brought in new cache directories, so make sure QML
 	// calls our getter function again and doesn't show us outdated information
 	emit cloudCacheListChanged();
+
+	// This is used to instruct the main-thread to sync the current state to disk/cloud.
+	// We must not sync to cloud from signal-handlers in the main thread, because cloud
+	// access runs the main event loop and that might delete the object that caused the
+	// signal. By using a connection of the "QueuedConnection" type, the signal will be
+	// queued and only executed once the signal handler finishes and the main event
+	// loop retakes control.
+	connect(this, &QMLManager::changesNeedSavingSignal, this, &QMLManager::saveUnsaved, Qt::QueuedConnection);
 }
 
 QMLManager::~QMLManager()
@@ -1441,21 +1449,29 @@ void QMLManager::addDiveToTrip(int id, int tripId)
 	changesNeedSaving();
 }
 
-void QMLManager::changesNeedSaving(bool fromUndo)
+void QMLManager::saveUnsaved()
 {
+	// There might have been spurious signals, so let's check if there is anything to save first.
+	if (!unsavedChanges())
+		return;
+
 	// we no longer save right away on iOS because file access is so slow; on the other hand,
 	// on Android the save as the user switches away doesn't seem to work... drat.
 	// as a compromise for now we save just to local storage on Android right away (that appears
 	// to be reasonably fast), but don't save at all (and only remember that we need to save things
 	// on iOS
 	// on all other platforms we just save the changes and be done with it
-	mark_divelist_changed(true);
-	emit syncStateChanged();
 #if defined(Q_OS_IOS)
 	saveChangesLocal();
 #else
 	saveChangesCloud(false);
 #endif
+}
+
+void QMLManager::changesNeedSaving(bool fromUndo)
+{
+	mark_divelist_changed(true);
+	emit syncStateChanged();
 	updateAllGlobalLists();
 
 	// provide a useful undo/redo notification
@@ -1467,6 +1483,9 @@ void QMLManager::changesNeedSaving(bool fromUndo)
 		setNotificationText(msgFormat.arg(tr("Redo")).arg(tr("Undo: %1").arg(getRedoText())));
 	else
 		setNotificationText(msgFormat.arg(tr("Undo")).arg(getUndoText()));
+
+	// Asl the main event loop to save the changes to disk
+	emit changesNeedSavingSignal();
 }
 
 void QMLManager::openNoCloudRepo()
