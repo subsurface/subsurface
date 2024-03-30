@@ -32,8 +32,8 @@ DivePlannerWidget::DivePlannerWidget(dive &planned_dive, PlannerWidgets *parent)
 	ui.tableWidget->setTitle(tr("Dive planner points"));
 	ui.tableWidget->setModel(plannerModel);
 	connect(ui.tableWidget, &TableView::itemClicked, plannerModel, &DivePlannerPointsModel::remove);
-	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(parent->gasModel.get(), this));
-	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DIVEMODE, new DiveTypesDelegate(parent->diveTypeModel.get(), this));
+	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new AirTypesDelegate(planned_dive, this));
+	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DIVEMODE, new DiveTypesDelegate(this));
 	ui.cylinderTableWidget->setTitle(tr("Available gases"));
 	ui.cylinderTableWidget->setBtnToolTip(tr("Add cylinder"));
 	ui.cylinderTableWidget->setModel(cylinders);
@@ -56,9 +56,6 @@ DivePlannerWidget::DivePlannerWidget(dive &planned_dive, PlannerWidgets *parent)
 	view->setItemDelegateForColumn(CylindersModel::USE, tankUseDelegate);
 	connect(ui.cylinderTableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addCylinder_clicked);
 	connect(ui.tableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addDefaultStop);
-	connect(cylinders, &CylindersModel::dataChanged, parent, &PlannerWidgets::repopulateGasModel);
-	connect(cylinders, &CylindersModel::rowsInserted, parent, &PlannerWidgets::repopulateGasModel);
-	connect(cylinders, &CylindersModel::rowsRemoved, parent, &PlannerWidgets::repopulateGasModel);
 	connect(cylinders, &CylindersModel::dataChanged, plannerModel, &DivePlannerPointsModel::emitDataChanged);
 	connect(cylinders, &CylindersModel::dataChanged, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
 	connect(cylinders, &CylindersModel::rowsInserted, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
@@ -542,8 +539,6 @@ void PlannerDetails::setPlanNotes(QString plan)
 
 PlannerWidgets::PlannerWidgets() :
 	planned_dive(alloc_dive()),
-	gasModel(std::make_unique<GasSelectionModel>()),
-	diveTypeModel(std::make_unique<DiveTypeSelectionModel>()),
 	plannerWidget(*planned_dive, this),
 	plannerSettingsWidget(this)
 {
@@ -587,7 +582,6 @@ void PlannerWidgets::planDive()
 {
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 
-	repopulateGasModel();
 	plannerWidget.setReplanButton(false);
 	plannerWidget.setupStartTime(timestampToDateTime(planned_dive->when));	// This will reload the profile!
 }
@@ -610,11 +604,6 @@ void PlannerWidgets::replanDive(int currentDC)
 		plannerWidget.setSalinity(planned_dive->salinity);
 	reset_cylinders(planned_dive.get(), true);
 	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(planned_dive.get(), currentDC);
-}
-
-void PlannerWidgets::repopulateGasModel()
-{
-	gasModel->repopulate(planned_dive.get());
 }
 
 void PlannerWidgets::printDecoPlan()

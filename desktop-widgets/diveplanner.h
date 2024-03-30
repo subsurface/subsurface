@@ -10,8 +10,6 @@
 #include <QDateTime>
 
 class DivePlannerPointsModel;
-class GasSelectionModel;
-class DiveTypeSelectionModel;
 class PlannerWidgets;
 struct dive;
 
@@ -92,10 +90,7 @@ public
 slots:
 	void printDecoPlan();
 public:
-	void repopulateGasModel();
 	OwningDivePtr planned_dive;
-	std::unique_ptr<GasSelectionModel> gasModel;
-	std::unique_ptr<DiveTypeSelectionModel> diveTypeModel;
 	DivePlannerWidget plannerWidget;
 	PlannerSettingsWidget plannerSettingsWidget;
 	PlannerDetails plannerDetails;

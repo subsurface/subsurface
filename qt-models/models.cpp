@@ -18,9 +18,10 @@ Qt::ItemFlags GasSelectionModel::flags(const QModelIndex&) const
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-void GasSelectionModel::repopulate(const dive *d)
+GasSelectionModel::GasSelectionModel(const dive &d, QObject *parent)
+	: QStringListModel(parent)
 {
-	setStringList(get_dive_gas_list(d));
+	setStringList(get_dive_gas_list(&d));
 }
 
 QVariant GasSelectionModel::data(const QModelIndex &index, int role) const
@@ -37,7 +38,7 @@ Qt::ItemFlags DiveTypeSelectionModel::flags(const QModelIndex&) const
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-DiveTypeSelectionModel::DiveTypeSelectionModel()
+DiveTypeSelectionModel::DiveTypeSelectionModel(QObject *parent) : QStringListModel(parent)
 {
 	QStringList modes;
 	for (int i = 0; i < FREEDIVE; i++)

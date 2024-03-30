@@ -108,6 +108,45 @@ void add_tank_info_imperial(struct tank_info_table *table, const char *name, int
 	add_to_tank_info_table(table, table->nr, info);
 }
 
+extern struct tank_info *get_tank_info(struct tank_info_table *table, const char *name)
+{
+	for (int i = 0; i < table->nr; ++i) {
+		if (same_string(table->infos[i].name, name))
+			return  &table->infos[i];
+	}
+	return NULL;
+}
+
+extern void set_tank_info_size(struct tank_info_table *table, const char *name, volume_t size)
+{
+	struct tank_info *info = get_tank_info(table, name);
+	if (info) {
+		// Try to be smart about metric vs. imperial
+		if (info->cuft == 0 && info->psi == 0)
+			info->ml = size.mliter;
+		else
+			info->cuft = lrint(ml_to_cuft(size.mliter));
+	} else {
+		// By default add metric...?
+		add_tank_info_metric(table, name, size.mliter, 0);
+	}
+}
+
+extern void set_tank_info_workingpressure(struct tank_info_table *table, const char *name, pressure_t working_pressure)
+{
+	struct tank_info *info = get_tank_info(table, name);
+	if (info) {
+		// Try to be smart about metric vs. imperial
+		if (info->cuft == 0 && info->psi == 0)
+			info->bar = working_pressure.mbar / 1000;
+		else
+			info->psi = lrint(mbar_to_PSI(working_pressure.mbar));
+	} else {
+		// By default add metric...?
+		add_tank_info_metric(table, name, 0, working_pressure.mbar / 1000);
+	}
+}
+
 /* placeholders for a few functions that we need to redesign for the Qt UI */
 void add_cylinder_description(const cylinder_type_t *type)
 {
@@ -131,7 +170,7 @@ void add_weightsystem_description(const weightsystem_t *weightsystem)
 	if (!desc)
 		return;
 	for (i = 0; i < MAX_WS_INFO && ws_info[i].name != NULL; i++) {
-		if (strcmp(ws_info[i].name, desc) == 0) {
+		if (same_string(ws_info[i].name, desc)) {
 			ws_info[i].grams = weightsystem->weight.grams;
 			return;
 		}
@@ -141,6 +180,17 @@ void add_weightsystem_description(const weightsystem_t *weightsystem)
 		ws_info[i].name = strdup(desc);
 		ws_info[i].grams = weightsystem->weight.grams;
 	}
+}
+
+struct ws_info_t *get_weightsystem_description(const char *name)
+{
+	for (int i = 0; i < MAX_WS_INFO && ws_info[i].name != NULL; i++) {
+		// Also finds translated names (TODO: should only consider non-user items).
+		if (same_string(ws_info[i].name, name) ||
+		    same_string(translate("gettextFromC", ws_info[i].name), name))
+			return &ws_info[i];
+	}
+	return NULL;
 }
 
 weightsystem_t clone_weightsystem(weightsystem_t ws)

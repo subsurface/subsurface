@@ -78,8 +78,10 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 // Ownership of passed in weight system will be taken. Caller must not use it any longer.
 void WeightModel::setTempWS(int row, weightsystem_t ws)
 {
-	if (!d || row < 0 || row >= d->weightsystems.nr) // Sanity check: row must exist
+	if (!d || row < 0 || row >= d->weightsystems.nr) { // Sanity check: row must exist
+		free_weightsystem(ws);
 		return;
+	}
 
 	clearTempWS(); // Shouldn't be necessary, just in case: Reset old temporary row.
 

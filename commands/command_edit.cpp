@@ -1090,11 +1090,6 @@ EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
 		dives.clear();
 		return;
 	}
-
-	WSInfoModel *wsim = WSInfoModel::instance();
-	QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, gettextFromC::tr(new_ws.description));
-	if (!matches.isEmpty())
-		wsim->setData(wsim->index(matches.first().row(), WSInfoModel::GR), new_ws.weight.grams);
 }
 
 EditWeight::~EditWeight()
@@ -1105,6 +1100,7 @@ EditWeight::~EditWeight()
 void EditWeight::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
+		add_weightsystem_description(&new_ws); // This updates the weightsystem info table
 		set_weightsystem(dives[i], indices[i], new_ws);
 		emit diveListNotifier.weightEdited(dives[i], indices[i]);
 		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
@@ -1302,16 +1298,6 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 		}
 	}
 
-	// Update the tank info model
-	TankInfoModel *tim = TankInfoModel::instance();
-	QModelIndexList matches = tim->match(tim->index(0, 0), Qt::DisplayRole, gettextFromC::tr(cylIn.type.description));
-	if (!matches.isEmpty()) {
-		if (cylIn.type.size.mliter != cyl[0].type.size.mliter)
-			tim->setData(tim->index(matches.first().row(), TankInfoModel::ML), cylIn.type.size.mliter);
-		if (cylIn.type.workingpressure.mbar != cyl[0].type.workingpressure.mbar)
-			tim->setData(tim->index(matches.first().row(), TankInfoModel::BAR), cylIn.type.workingpressure.mbar / 1000.0);
-	}
-
 	// The base class copied the cylinders for us, let's edit them
 	for (int i = 0; i < (int)indexes.size(); ++i) {
 		switch (type) {
@@ -1338,6 +1324,8 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 void EditCylinder::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
+		set_tank_info_size(&tank_info_table, cyl[i].type.description, cyl[i].type.size);
+		set_tank_info_workingpressure(&tank_info_table, cyl[i].type.description, cyl[i].type.workingpressure);
 		std::swap(*get_cylinder(dives[i], indexes[i]), cyl[i]);
 		update_cylinder_related_info(dives[i]);
 		emit diveListNotifier.cylinderEdited(dives[i], indexes[i]);
@@ -1358,7 +1346,6 @@ EditSensors::EditSensors(int toCylinderIn, int fromCylinderIn, int dcNr)
 		return;
 
 	setText(Command::Base::tr("Edit sensors"));
-
 }
 
 void EditSensors::mapSensors(int toCyl, int fromCyl)
