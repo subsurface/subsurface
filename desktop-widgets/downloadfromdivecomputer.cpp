@@ -150,14 +150,19 @@ int DownloadFromDCWidget::deviceIndex(QString deviceText)
 void DownloadFromDCWidget::DC##num##Clicked() \
 { \
 	ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor##num())); \
-	ui.device->setCurrentText(qPrefDiveComputer::device##num()); \
 	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
 	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
 	bool isBluetoothDevice = isBluetoothAddress(qPrefDiveComputer::device##num()); \
 	bool isMacOs = QSysInfo::kernelType() == "darwin"; \
+	/* If we have a Bluetooth address, use it instead of rescanning. For \
+	MacOs, save the mount point.  This may be the wrong thing to do, but for \
+	the Catalina 10.15.7 laptop and Oceanic Atom 3.1 I use, the mountpoint \
+	is /dev/tty.usbserial-20030001 and it doesn't change regardless of the \
+	USB port being used.   If it isn't saved, it must be reentered. */ \
+	if (isBluetoothDevice || isMacOs) \
+		ui.device->setCurrentText(qPrefDiveComputer::device##num()); \
 	ui.bluetoothMode->setChecked(isBluetoothDevice); \
-	if (ui.device->currentIndex() == -1 || (isBluetoothDevice && !isMacOs)) \
-		/* macOS seems to have a problem connecting to remembered bluetooth devices  if it hasn't already had a connection in the current session */ \
+	if (ui.device->currentIndex() == -1 || isBluetoothDevice) \
 		ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
 	if (isMacOs) { \
 		/* it makes no sense that this would be needed on macOS but not Linux */ \
