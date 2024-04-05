@@ -87,7 +87,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/cochran.cpp \
 	core/deco.cpp \
 	core/divesite.cpp \
-	core/equipment.c \
+	core/equipment.cpp \
 	core/gas.cpp \
 	core/membuffer.cpp \
 	core/selection.cpp \
