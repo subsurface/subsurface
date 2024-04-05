@@ -4,7 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-/* equipment.c */
+/* equipment.cpp */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -25,26 +25,26 @@
  * is freed, but the data it references. The object itself is passed in by value.
  * This is due to the fact how the table macros work.
  */
-void free_weightsystem(weightsystem_t ws)
+extern "C" void free_weightsystem(weightsystem_t ws)
 {
 	free((void *)ws.description);
 	ws.description = NULL;
 }
 
-void free_cylinder(cylinder_t c)
+extern "C" void free_cylinder(cylinder_t c)
 {
 	free((void *)c.type.description);
 	c.type.description = NULL;
 }
 
-void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d)
+extern "C" void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d)
 {
 	clear_weightsystem_table(d);
 	for (int i = 0; i < s->nr; i++)
 		add_cloned_weightsystem(d, s->weightsystems[i]);
 }
 
-void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d)
+extern "C" void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d)
 {
 	int i;
 	clear_cylinder_table(d);
@@ -87,23 +87,23 @@ const char *cylinderuse_text[NUM_GAS_USE] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
 };
 
-enum cylinderuse cylinderuse_from_text(const char *text)
+extern "C" enum cylinderuse cylinderuse_from_text(const char *text)
 {
-	for (enum cylinderuse i = 0; i < NUM_GAS_USE; i++) {
+	for (int i = 0; i < static_cast<int>(NUM_GAS_USE); i++) {
 		if (same_string(text, cylinderuse_text[i]) || same_string(text, translate("gettextFromC", cylinderuse_text[i])))
-			return i;
+			return static_cast<enum cylinderuse>(i);
 	}
-	return (enum cylinderuse)-1;
+	return static_cast<enum cylinderuse>(-1);
 }
 
 /* Add a metric or an imperial tank info structure. Copies the passed-in string. */
-void add_tank_info_metric(struct tank_info_table *table, const char *name, int ml, int bar)
+extern "C" void add_tank_info_metric(struct tank_info_table *table, const char *name, int ml, int bar)
 {
 	struct tank_info info = { strdup(name), .ml = ml, .bar = bar };
 	add_to_tank_info_table(table, table->nr, info);
 }
 
-void add_tank_info_imperial(struct tank_info_table *table, const char *name, int cuft, int psi)
+extern "C" void add_tank_info_imperial(struct tank_info_table *table, const char *name, int cuft, int psi)
 {
 	struct tank_info info = { strdup(name), .cuft = cuft, .psi = psi };
 	add_to_tank_info_table(table, table->nr, info);
@@ -118,7 +118,7 @@ static struct tank_info *get_tank_info(struct tank_info_table *table, const char
 	return NULL;
 }
 
-extern void set_tank_info_data(struct tank_info_table *table, const char *name, volume_t size, pressure_t working_pressure)
+extern "C" void set_tank_info_data(struct tank_info_table *table, const char *name, volume_t size, pressure_t working_pressure)
 {
 	struct tank_info *info = get_tank_info(table, name);
 	if (info) {
@@ -135,7 +135,7 @@ extern void set_tank_info_data(struct tank_info_table *table, const char *name, 
 	}
 }
 
-extern void extract_tank_info(const struct tank_info *info, volume_t *size, pressure_t *working_pressure)
+extern "C" void extract_tank_info(const struct tank_info *info, volume_t *size, pressure_t *working_pressure)
 {
 	working_pressure->mbar = info->bar != 0 ? info->bar * 1000 : psi_to_mbar(info->psi);
 	if (info->ml != 0)
@@ -144,7 +144,7 @@ extern void extract_tank_info(const struct tank_info *info, volume_t *size, pres
 		size->mliter = lrint(cuft_to_l(info->cuft) * 1000 / mbar_to_atm(working_pressure->mbar));
 }
 
-extern bool get_tank_info_data(struct tank_info_table *table, const char *name, volume_t *size, pressure_t *working_pressure)
+extern "C" bool get_tank_info_data(struct tank_info_table *table, const char *name, volume_t *size, pressure_t *working_pressure)
 {
 	struct tank_info *info = get_tank_info(table, name);
 	if (info) {
@@ -156,7 +156,7 @@ extern bool get_tank_info_data(struct tank_info_table *table, const char *name, 
 }
 
 /* placeholders for a few functions that we need to redesign for the Qt UI */
-void add_cylinder_description(const cylinder_type_t *type)
+extern "C" void add_cylinder_description(const cylinder_type_t *type)
 {
 	const char *desc = type->description;
 	if (empty_string(desc))
@@ -169,7 +169,7 @@ void add_cylinder_description(const cylinder_type_t *type)
 			     type->workingpressure.mbar / 1000);
 }
 
-void add_weightsystem_description(const weightsystem_t *weightsystem)
+extern "C" void add_weightsystem_description(const weightsystem_t *weightsystem)
 {
 	const char *desc;
 	int i;
@@ -190,7 +190,7 @@ void add_weightsystem_description(const weightsystem_t *weightsystem)
 	}
 }
 
-struct ws_info_t *get_weightsystem_description(const char *name)
+extern "C" struct ws_info_t *get_weightsystem_description(const char *name)
 {
 	for (int i = 0; i < MAX_WS_INFO && ws_info[i].name != NULL; i++) {
 		// Also finds translated names (TODO: should only consider non-user items).
@@ -201,7 +201,7 @@ struct ws_info_t *get_weightsystem_description(const char *name)
 	return NULL;
 }
 
-weightsystem_t clone_weightsystem(weightsystem_t ws)
+extern "C" weightsystem_t clone_weightsystem(weightsystem_t ws)
 {
 	weightsystem_t res = { ws.weight, copy_string(ws.description), ws.auto_filled };
 	return res;
@@ -209,19 +209,19 @@ weightsystem_t clone_weightsystem(weightsystem_t ws)
 
 /* Add a clone of a weightsystem to the end of a weightsystem table.
  * Cloned means that the description-string is copied. */
-void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws)
+extern "C" void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws)
 {
 	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
 }
 
-cylinder_t clone_cylinder(cylinder_t cyl)
+extern "C" cylinder_t clone_cylinder(cylinder_t cyl)
 {
 	cylinder_t res = cyl;
 	res.type.description = copy_string(res.type.description);
 	return res;
 }
 
-void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
+extern "C" void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
 {
 	add_to_cylinder_table(t, idx, cyl);
 	/* FIXME: This is a horrible hack: we make sure that at the end of
@@ -235,18 +235,18 @@ void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
 
 /* Add a clone of a cylinder to the end of a cylinder table.
  * Cloned means that the description-string is copied. */
-void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl)
+extern "C" void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl)
 {
 	add_cylinder(t, t->nr, clone_cylinder(cyl));
 }
 
-bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
+extern "C" bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
 {
 	return w1.weight.grams == w2.weight.grams &&
 	       same_string(w1.description, w2.description);
 }
 
-void get_gas_string(struct gasmix gasmix, char *text, int len)
+extern "C" void get_gas_string(struct gasmix gasmix, char *text, int len)
 {
 	if (gasmix_is_air(gasmix))
 		snprintf(text, len, "%s", translate("gettextFromC", "air"));
@@ -259,21 +259,21 @@ void get_gas_string(struct gasmix gasmix, char *text, int len)
 }
 
 /* Returns a static char buffer - only good for immediate use by printf etc */
-const char *gasname(struct gasmix gasmix)
+extern "C" const char *gasname(struct gasmix gasmix)
 {
 	static char gas[64];
 	get_gas_string(gasmix, gas, sizeof(gas));
 	return gas;
 }
 
-int gas_volume(const cylinder_t *cyl, pressure_t p)
+extern "C" int gas_volume(const cylinder_t *cyl, pressure_t p)
 {
 	double bar = p.mbar / 1000.0;
 	double z_factor = gas_compressibility_factor(cyl->gasmix, bar);
 	return lrint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
 }
 
-int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylinders)
+extern "C" int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylinders)
 {
 	int i;
 	int best = -1, score = INT_MAX;
@@ -350,7 +350,7 @@ static void add_default_tank_infos(struct tank_info_table *table)
 }
 
 struct tank_info_table tank_info_table;
-void reset_tank_info_table(struct tank_info_table *table)
+extern "C" void reset_tank_info_table(struct tank_info_table *table)
 {
 	clear_tank_info_table(table);
 	if (prefs.display_default_tank_infos)
@@ -378,18 +378,18 @@ struct ws_info_t ws_info[MAX_WS_INFO] = {
 	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
 };
 
-void remove_cylinder(struct dive *dive, int idx)
+extern "C" void remove_cylinder(struct dive *dive, int idx)
 {
 	remove_from_cylinder_table(&dive->cylinders, idx);
 }
 
-void remove_weightsystem(struct dive *dive, int idx)
+extern "C" void remove_weightsystem(struct dive *dive, int idx)
 {
 	remove_from_weightsystem_table(&dive->weightsystems, idx);
 }
 
 // ws is cloned.
-void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws)
+extern "C" void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws)
 {
 	if (idx < 0 || idx >= dive->weightsystems.nr)
 		return;
@@ -399,7 +399,7 @@ void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws)
 
 /* when planning a dive we need to make sure that all cylinders have a sane depth assigned
  * and if we are tracking gas consumption the pressures need to be reset to start = end = workingpressure */
-void reset_cylinders(struct dive *dive, bool track_gas)
+extern "C" void reset_cylinders(struct dive *dive, bool track_gas)
 {
 	pressure_t decopo2 = {.mbar = prefs.decopo2};
 
@@ -426,7 +426,7 @@ static void copy_cylinder_type(const cylinder_t *s, cylinder_t *d)
 }
 
 /* copy the equipment data part of the cylinders but keep pressures */
-void copy_cylinder_types(const struct dive *s, struct dive *d)
+extern "C" void copy_cylinder_types(const struct dive *s, struct dive *d)
 {
 	int i;
 	if (!s || !d)
@@ -439,7 +439,7 @@ void copy_cylinder_types(const struct dive *s, struct dive *d)
 		add_cloned_cylinder(&d->cylinders, *get_cylinder(s, i));
 }
 
-cylinder_t *add_empty_cylinder(struct cylinder_table *t)
+extern "C" cylinder_t *add_empty_cylinder(struct cylinder_table *t)
 {
 	cylinder_t cyl = empty_cylinder;
 	cyl.type.description = strdup("");
@@ -455,7 +455,7 @@ cylinder_t *add_empty_cylinder(struct cylinder_table *t)
  *   Multiple cylinders might be created if the index is bigger than the
  *   number of existing cylinders
  */
-cylinder_t *get_cylinder(const struct dive *d, int idx)
+extern "C" cylinder_t *get_cylinder(const struct dive *d, int idx)
 {
 	/* FIXME: The planner uses a dummy cylinder one past the official number of cylinders
 	 * in the table to mark no-cylinder surface interavals. This is horrendous. Fix ASAP. */
@@ -467,7 +467,7 @@ cylinder_t *get_cylinder(const struct dive *d, int idx)
 	return &d->cylinders.cylinders[idx];
 }
 
-cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
+extern "C" cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 {
 	if (idx < 0) {
 		report_info("Warning: accessing invalid cylinder %d", idx);
@@ -479,10 +479,10 @@ cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 }
 
 /* if a default cylinder is set, use that */
-void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
+extern "C" void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 {
 	const char *cyl_name = prefs.default_cylinder;
-	pressure_t pO2 = {.mbar = lrint(prefs.modpO2 * 1000.0)};
+	pressure_t pO2 = {.mbar = static_cast<int>(lrint(prefs.modpO2 * 1000.0))};
 
 	if (!cyl_name)
 		return;
@@ -505,7 +505,7 @@ void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 	}
 }
 
-cylinder_t create_new_cylinder(const struct dive *d)
+extern "C" cylinder_t create_new_cylinder(const struct dive *d)
 {
 	cylinder_t cyl = empty_cylinder;
 	fill_default_cylinder(d, &cyl);
@@ -561,7 +561,7 @@ static bool show_cylinder(const struct dive *d, int i)
 }
 
 /* The unused cylinders at the end of the cylinder list are hidden. */
-int first_hidden_cylinder(const struct dive *d)
+extern "C" int first_hidden_cylinder(const struct dive *d)
 {
 	int res = d->cylinders.nr;
 	while (res > 0 && !show_cylinder(d, res - 1))
@@ -570,7 +570,7 @@ int first_hidden_cylinder(const struct dive *d)
 }
 
 #ifdef DEBUG_CYL
-void dump_cylinders(struct dive *dive, bool verbose)
+extern "C" void dump_cylinders(struct dive *dive, bool verbose)
 {
 	printf("Cylinder list:\n");
 	for (int i = 0; i < dive->cylinders; i++) {
