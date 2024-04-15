@@ -153,24 +153,17 @@ void DownloadFromDCWidget::DC##num##Clicked() \
 	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
 	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
 	bool isBluetoothDevice = isBluetoothAddress(qPrefDiveComputer::device##num()); \
-	bool isMacOs = QSysInfo::kernelType() == "darwin"; \
-	/* If we have a Bluetooth address, use it instead of rescanning. For \
-	MacOs, save the mount point.  This may be the wrong thing to do, but for \
-	the Catalina 10.15.7 laptop and Oceanic Atom 3.1 I use, the mountpoint \
-	is /dev/tty.usbserial-20030001 and it doesn't change regardless of the \
-	USB port being used.   If it isn't saved, it must be reentered. */ \
-	if (isBluetoothDevice || isMacOs) \
+
+	/* If we have a Bluetooth device, set the ui.device->CurrentText to avoid starting \
+   	a Bluetooth scan in enableBluetoothMode(). \
+   	Note: enableBlueToothMode() will set ui.device.CurrentIndex to -1 unless \
+    	ui.bluetoothMode is checked. */ \
+
+	if (isBluetoothDevice) \
 		ui.device->setCurrentText(qPrefDiveComputer::device##num()); \
 	ui.bluetoothMode->setChecked(isBluetoothDevice); \
 	if (ui.device->currentIndex() == -1 || isBluetoothDevice) \
 		ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
-	if (isMacOs) { \
-		/* it makes no sense that this would be needed on macOS but not Linux */ \
-		QCoreApplication::processEvents(); \
-		ui.vendor->update(); \
-		ui.product->update(); \
-		ui.device->update(); \
-	} \
 }
 #else
 #define DCBUTTON(num) \
