@@ -153,12 +153,10 @@ void DownloadFromDCWidget::DC##num##Clicked() \
 	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
 	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
 	bool isBluetoothDevice = isBluetoothAddress(qPrefDiveComputer::device##num()); \
-
 	/* If we have a Bluetooth device, set the ui.device->CurrentText to avoid starting \
    	a Bluetooth scan in enableBluetoothMode(). \
    	Note: enableBlueToothMode() will set ui.device.CurrentIndex to -1 unless \
     	ui.bluetoothMode is checked. */ \
-
 	if (isBluetoothDevice) \
 		ui.device->setCurrentText(qPrefDiveComputer::device##num()); \
 	ui.bluetoothMode->setChecked(isBluetoothDevice); \
