@@ -152,16 +152,8 @@ void DownloadFromDCWidget::DC##num##Clicked() \
 	ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor##num())); \
 	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
 	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
-	bool isBluetoothDevice = isBluetoothAddress(qPrefDiveComputer::device##num()); \
-	/* If we have a Bluetooth device, set the ui.device->CurrentText to avoid starting \
-   	a Bluetooth scan in enableBluetoothMode(). \
-   	Note: enableBlueToothMode() will set ui.device.CurrentIndex to -1 unless \
-    	ui.bluetoothMode is checked. */ \
-	if (isBluetoothDevice) \
-		ui.device->setCurrentText(qPrefDiveComputer::device##num()); \
-	ui.bluetoothMode->setChecked(isBluetoothDevice); \
-	if (ui.device->currentIndex() == -1 || isBluetoothDevice) \
-		ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
+	ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
+	ui.bluetoothMode->setChecked(isBluetoothAddress(qPrefDiveComputer::device##num())); \
 }
 #else
 #define DCBUTTON(num) \
@@ -631,12 +623,17 @@ void DownloadFromDCWidget::enableBluetoothMode(int state)
 {
 	ui.chooseBluetoothDevice->setEnabled(state == Qt::Checked);
 
+	/*	This is convoluted enough to warrant explanation:
+ 		1. If we have a Bluetooth device, but no Bluetooth address then scan.
+		2. If we have a Bluetooth device and address, skip scan.
+		3. If it's not Bluetooth, clear the device address unless it's a Mac.
+		Mac USB addresses tend to be persistent and are better saved. */
 	if (state == Qt::Checked) {
 		if (!isBluetoothAddress(ui.device->currentText()))
 			selectRemoteBluetoothDevice();
-	} else {
-		ui.device->setCurrentIndex(-1);
-	}
+	} else
+		if (isBluetoothAddress(ui.device->currentText()) || QSysInfo::kernelType() != "darwin")
+			ui.device->setCurrentIndex(-1);
 }
 #endif
 
