@@ -624,15 +624,14 @@ void DownloadFromDCWidget::enableBluetoothMode(int state)
 	ui.chooseBluetoothDevice->setEnabled(state == Qt::Checked);
 
 	/*	This is convoluted enough to warrant explanation:
- 		1. If we have a Bluetooth device, but no Bluetooth address then scan.
-		2. If we have a Bluetooth device and address, skip scan.
-		3. If it's not Bluetooth, clear the device address unless it's a Mac.
-		Mac USB addresses tend to be persistent and are better saved. */
+ 		1. If Bluetooth is enabled, but no Bluetooth address then scan.
+		2. If Bluetooth is enabled and we have a Bluetooth address, skip scan.
+		3. If Bluetooth is not enabled, but it's a Bluetooth address, clear it. */
 	if (state == Qt::Checked) {
 		if (!isBluetoothAddress(ui.device->currentText()))
 			selectRemoteBluetoothDevice();
 	} else
-		if (isBluetoothAddress(ui.device->currentText()) || QSysInfo::kernelType() != "darwin")
+		if (isBluetoothAddress(ui.device->currentText()))
 			ui.device->setCurrentIndex(-1);
 }
 #endif
