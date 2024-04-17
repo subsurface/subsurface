@@ -339,10 +339,9 @@ void WSInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelI
 {
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
 	QString weightName = currCombo.activeText;
-	ws_info_t *info = get_weightsystem_description(qPrintable(weightName));
-	int grams = info ? info->grams : 0;
+	weight_t weight = get_weightsystem_weight(qPrintable(weightName));
 
-	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ { grams }, copy_qstring(weightName), false });
+	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ weight, copy_qstring(weightName), false });
 }
 
 static QAbstractItemModel *createWSInfoModel(QWidget *parent)

@@ -169,36 +169,28 @@ extern "C" void add_cylinder_description(const cylinder_type_t *type)
 			     type->workingpressure.mbar / 1000);
 }
 
-extern "C" void add_weightsystem_description(const weightsystem_t *weightsystem)
+void add_weightsystem_description(const weightsystem_t &weightsystem)
 {
-	const char *desc;
-	int i;
-
-	desc = weightsystem->description;
-	if (!desc)
+	if (empty_string(weightsystem.description))
 		return;
-	for (i = 0; i < MAX_WS_INFO && ws_info[i].name != NULL; i++) {
-		if (same_string(ws_info[i].name, desc)) {
-			ws_info[i].grams = weightsystem->weight.grams;
-			return;
-		}
+
+	auto it = std::find_if(ws_info_table.begin(), ws_info_table.end(),
+			       [&weightsystem](const ws_info &info)
+			       { return info.name == weightsystem.description; });
+	if (it != ws_info_table.end()) {
+		it->weight = weightsystem.weight;
+		return;
 	}
-	if (i < MAX_WS_INFO) {
-		// FIXME: leaked on exit
-		ws_info[i].name = strdup(desc);
-		ws_info[i].grams = weightsystem->weight.grams;
-	}
+	ws_info_table.push_back(ws_info { std::string(weightsystem.description), weightsystem.weight });
 }
 
-extern "C" struct ws_info_t *get_weightsystem_description(const char *name)
+weight_t get_weightsystem_weight(const std::string &name)
 {
-	for (int i = 0; i < MAX_WS_INFO && ws_info[i].name != NULL; i++) {
-		// Also finds translated names (TODO: should only consider non-user items).
-		if (same_string(ws_info[i].name, name) ||
-		    same_string(translate("gettextFromC", ws_info[i].name), name))
-			return &ws_info[i];
-	}
-	return NULL;
+	// Also finds translated names (TODO: should only consider non-user items).
+	auto it = std::find_if(ws_info_table.begin(), ws_info_table.end(),
+			       [&name](const ws_info &info)
+			       { return info.name == name || translate("gettextFromC", info.name.c_str()) == name; });
+	return it != ws_info_table.end() ? it->weight : weight_t();
 }
 
 extern "C" weightsystem_t clone_weightsystem(weightsystem_t ws)
@@ -370,12 +362,12 @@ extern "C" void reset_tank_info_table(struct tank_info_table *table)
  * We hardcode the most common weight system types
  * This is a bit odd as the weight system types don't usually encode weight
  */
-struct ws_info_t ws_info[MAX_WS_INFO] = {
-	{ QT_TRANSLATE_NOOP("gettextFromC", "integrated"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC", "belt"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate"), 0 },
-	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
+struct std::vector<ws_info> ws_info_table = {
+	{ QT_TRANSLATE_NOOP("gettextFromC", "integrated"), weight_t() },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "belt"), weight_t() },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), weight_t() },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate"), weight_t() },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), weight_t() },
 };
 
 extern "C" void remove_cylinder(struct dive *dive, int idx)

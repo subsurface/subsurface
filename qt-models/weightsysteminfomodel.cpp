@@ -1,17 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/weightsysteminfomodel.h"
-#include "core/subsurface-qt/divelistnotifier.h"
-#include "core/dive.h"
+#include "core/equipment.h"
 #include "core/metrics.h"
 #include "core/gettextfromc.h"
 
 QVariant WSInfoModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() >= rows)
+	if (index.row() < 0 || index.row() >= static_cast<int>(ws_info_table.size()))
 		return QVariant();
-	struct ws_info_t *info = &ws_info[index.row()];
+	const ws_info &info = ws_info_table[index.row()];
 
-	int gr = info->grams;
 	switch (role) {
 	case Qt::FontRole:
 		return defaultModelFont();
@@ -19,9 +17,10 @@ QVariant WSInfoModel::data(const QModelIndex &index, int role) const
 	case Qt::EditRole:
 		switch (index.column()) {
 		case GR:
-			return gr;
+			return info.weight.grams;
 		case DESCRIPTION:
-			return gettextFromC::tr(info->name);
+			// TODO: don't translate user supplied names
+			return gettextFromC::tr(info.name.c_str());
 		}
 		break;
 	}
@@ -30,13 +29,5 @@ QVariant WSInfoModel::data(const QModelIndex &index, int role) const
 
 int WSInfoModel::rowCount(const QModelIndex&) const
 {
-	return rows;
-}
-
-WSInfoModel::WSInfoModel(QObject *parent) : CleanerTableModel(parent)
-{
-	setHeaderDataStrings(QStringList() << tr("Description") << tr("kg"));
-	rows = 0;
-	for (struct ws_info_t *info = ws_info; info->name && info < ws_info + MAX_WS_INFO; info++, rows++)
-		;
+	return static_cast<int>(ws_info_table.size());
 }

@@ -1298,7 +1298,7 @@ extern "C" struct dive *fixup_dive(struct dive *dive)
 	}
 	update_cylinder_related_info(dive);
 	for (i = 0; i < dive->weightsystems.nr; i++) {
-		weightsystem_t *ws = &dive->weightsystems.weightsystems[i];
+		const weightsystem_t &ws = dive->weightsystems.weightsystems[i];
 		add_weightsystem_description(ws);
 	}
 	/* we should always have a uniq ID as that gets assigned during alloc_dive(),
