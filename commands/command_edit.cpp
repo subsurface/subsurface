@@ -1079,12 +1079,12 @@ EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
 	// Try to untranslate the weightsystem name
 	new_ws = clone_weightsystem(wsIn);
 	QString vString(new_ws.description);
-	for (int i = 0; i < MAX_WS_INFO && ws_info[i].name; ++i) {
-		if (gettextFromC::tr(ws_info[i].name) == vString) {
-			free_weightsystem(new_ws);
-			new_ws.description = copy_string(ws_info[i].name);
-			break;
-		}
+	auto it = std::find_if(ws_info_table.begin(), ws_info_table.end(),
+			       [&vString](const ws_info &info)
+			       { return gettextFromC::tr(info.name.c_str()) == vString; });
+	if (it != ws_info_table.end()) {
+		free_weightsystem(new_ws);
+		new_ws.description = strdup(it->name.c_str());
 	}
 
 	// If that doesn't change anything, do nothing
@@ -1102,7 +1102,7 @@ EditWeight::~EditWeight()
 void EditWeight::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		add_weightsystem_description(&new_ws); // This updates the weightsystem info table
+		add_weightsystem_description(new_ws); // This updates the weightsystem info table
 		set_weightsystem(dives[i], indices[i], new_ws);
 		emit diveListNotifier.weightEdited(dives[i], indices[i]);
 		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
