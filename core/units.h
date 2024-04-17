@@ -131,7 +131,11 @@ typedef struct
 
 typedef struct
 {
+#ifdef __cplusplus
+	int grams = 0;
+#else
 	int grams;
+#endif
 } weight_t;
 
 typedef struct

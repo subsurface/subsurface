@@ -12,13 +12,10 @@ public:
 		DESCRIPTION,
 		GR
 	};
-	WSInfoModel(QObject *parent);
+	using CleanerTableModel::CleanerTableModel;
 
-	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+	QVariant data(const QModelIndex &index, int role) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-
-private:
-	int rows;
 };
 
 #endif

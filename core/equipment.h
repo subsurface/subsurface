@@ -68,8 +68,6 @@ struct weightsystem_table {
 	weightsystem_t *weightsystems;
 };
 
-#define MAX_WS_INFO (100)
-
 extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d);
 extern void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d);
@@ -84,7 +82,6 @@ extern void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl);
 extern cylinder_t *get_cylinder(const struct dive *d, int idx);
 extern cylinder_t *get_or_create_cylinder(struct dive *d, int idx);
 extern void add_cylinder_description(const cylinder_type_t *);
-extern void add_weightsystem_description(const weightsystem_t *);
 extern bool same_weightsystem(weightsystem_t w1, weightsystem_t w2);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
@@ -130,15 +127,21 @@ extern void extract_tank_info(const struct tank_info *info, volume_t *size, pres
 extern bool get_tank_info_data(struct tank_info_table *table, const char *name, volume_t *size, pressure_t *pressure);
 extern void set_tank_info_data(struct tank_info_table *table, const char *name, volume_t size, pressure_t working_pressure);
 
-struct ws_info_t {
-	const char *name;
-	int grams;
-};
-extern struct ws_info_t ws_info[MAX_WS_INFO];
-extern struct ws_info_t *get_weightsystem_description(const char *name);
-
 #ifdef __cplusplus
 }
+
+#include <memory>
+#include <string>
+#include <vector>
+
+struct ws_info {
+	std::string name;
+	weight_t weight;
+};
+extern std::vector<ws_info> ws_info_table;
+extern weight_t get_weightsystem_weight(const std::string &name); // returns 0 if not found
+extern void add_weightsystem_description(const weightsystem_t &);
+
 #endif
 
 #endif // EQUIPMENT_H
