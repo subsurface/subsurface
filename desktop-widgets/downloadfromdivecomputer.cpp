@@ -163,13 +163,6 @@ void DownloadFromDCWidget::DC##num##Clicked() \
 	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
 	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
 	ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
-	if (QSysInfo::kernelType() == "darwin") { \
-		/* it makes no sense that this would be needed on macOS but not Linux */ \
-		QCoreApplication::processEvents(); \
-		ui.vendor->update(); \
-		ui.product->update(); \
-		ui.device->update(); \
-	} \
 }
 #endif
 
