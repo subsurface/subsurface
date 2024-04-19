@@ -98,4 +98,5 @@ public:
 	states currentState;
 };
 
+
 #endif // DOWNLOADFROMDIVECOMPUTER_H
