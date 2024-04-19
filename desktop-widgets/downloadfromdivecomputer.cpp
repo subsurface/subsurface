@@ -146,6 +146,9 @@ int DownloadFromDCWidget::deviceIndex(QString deviceText)
 }
 
 // DC button slots
+// we need two versions as one of the helper functions used is only available if
+// Bluetooth support is enabled
+#ifdef BT_SUPPORT
 #define DCBUTTON(num) \
 void DownloadFromDCWidget::DC##num##Clicked() \
 { \
@@ -155,6 +158,16 @@ void DownloadFromDCWidget::DC##num##Clicked() \
 	ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
 	ui.bluetoothMode->setChecked(isBluetoothAddress(qPrefDiveComputer::device##num())); \
 }
+#else
+#define DCBUTTON(num) \
+void DownloadFromDCWidget::DC##num##Clicked() \
+{ \
+   ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor##num())); \
+   productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
+   ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
+   ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
+}
+#endif
 
 DCBUTTON(1)
 DCBUTTON(2)
@@ -640,7 +653,6 @@ void DownloadFromDCWidget::bluetoothSelectionDialogIsFinished(int result)
 
 void DownloadFromDCWidget::enableBluetoothMode(int state)
 {
-#if defined(BT_SUPPORT)
 	ui.chooseBluetoothDevice->setEnabled(state == Qt::Checked);
 
 	/*	This is convoluted enough to warrant explanation:
@@ -653,7 +665,6 @@ void DownloadFromDCWidget::enableBluetoothMode(int state)
 	} else
 		if (isBluetoothAddress(ui.device->currentText()))
 			ui.device->setCurrentIndex(-1);
-#endif
 }
 #endif
 
