@@ -6,8 +6,10 @@
 
 #include <QStyledItemDelegate>
 #include <QComboBox>
+#include <functional>
 
 class QPainter;
+struct dive;
 struct divecomputer;
 
 class DiveListDelegate : public QStyledItemDelegate {
@@ -32,7 +34,8 @@ private:
 class ComboBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
-	explicit ComboBoxDelegate(QAbstractItemModel *model, QObject *parent = 0, bool allowEdit = true);
+	// First parameter: function that creates a model and makes it a child of the passed-in widget.
+	explicit ComboBoxDelegate(std::function<QAbstractItemModel *(QWidget *)> create_model_func, QObject *parent = 0, bool allowEdit = true);
 private
 slots:
 	void testActivationString(const QString &currString);
@@ -43,13 +46,13 @@ protected
 slots:
 	virtual void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) = 0;
 private:
+	std::function<QAbstractItemModel *(QWidget *)> create_model_func;
 	bool editable;
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
 	void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	bool eventFilter(QObject *object, QEvent *event) override;
 protected:
-	QAbstractItemModel *model;
 	mutable struct CurrSelected {
 		QComboBox *comboEditor;
 		int currRow;
@@ -103,7 +106,7 @@ private:
 class AirTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
-	explicit AirTypesDelegate(QAbstractItemModel *model, QObject *parent = 0);
+	explicit AirTypesDelegate(const dive &d, QObject *parent = 0);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
@@ -112,7 +115,7 @@ private:
 class DiveTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
-	explicit DiveTypesDelegate(QAbstractItemModel *model, QObject *parent = 0);
+	explicit DiveTypesDelegate(QObject *parent = 0);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;

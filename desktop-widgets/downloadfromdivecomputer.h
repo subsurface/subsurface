@@ -25,7 +25,7 @@ class BTDiscovery;
 class DownloadFromDCWidget : public QDialog {
 	Q_OBJECT
 public:
-	explicit DownloadFromDCWidget(QWidget *parent = 0);
+	explicit DownloadFromDCWidget(const QString &filename, QWidget *parent = 0);
 	void reject();
 
 	enum states {
@@ -72,6 +72,7 @@ private:
 	QStringListModel vendorModel;
 	QStringListModel productModel;
 	Ui::DownloadFromDiveComputer ui;
+	QString filename;
 	bool downloading;
 
 	int previousLast;

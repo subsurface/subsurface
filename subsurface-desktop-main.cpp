@@ -27,7 +27,6 @@
 #include <QStringList>
 #include <git2.h>
 
-static bool filesOnCommandLine = false;
 static void validateGL();
 static void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 
@@ -96,7 +95,6 @@ int main(int argc, char **argv)
 		}
 	}
 	MainWindow *m = MainWindow::instance();
-	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
 	if (verbose && !files.isEmpty())
 		qDebug() << "loading dive data from" << files;
 	m->loadFiles(files);

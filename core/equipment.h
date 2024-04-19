@@ -70,7 +70,7 @@ struct weightsystem_table {
 
 #define MAX_WS_INFO (100)
 
-extern int cylinderuse_from_text(const char *text);
+extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d);
 extern void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d);
 extern weightsystem_t clone_weightsystem(weightsystem_t ws);
@@ -125,12 +125,16 @@ extern void reset_tank_info_table(struct tank_info_table *table);
 extern void clear_tank_info_table(struct tank_info_table *table);
 extern void add_tank_info_metric(struct tank_info_table *table, const char *name, int ml, int bar);
 extern void add_tank_info_imperial(struct tank_info_table *table, const char *name, int cuft, int psi);
+extern void set_tank_info_size(struct tank_info_table *table, const char *name, volume_t size);
+extern void set_tank_info_workingpressure(struct tank_info_table *table, const char *name, pressure_t working_pressure);
+extern struct tank_info *get_tank_info(struct tank_info_table *table, const char *name);
 
 struct ws_info_t {
 	const char *name;
 	int grams;
 };
 extern struct ws_info_t ws_info[MAX_WS_INFO];
+extern struct ws_info_t *get_weightsystem_description(const char *name);
 
 #ifdef __cplusplus
 }

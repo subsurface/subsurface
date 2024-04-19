@@ -41,7 +41,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	checkcloudconnection.h
 	cloudstorage.cpp
 	cloudstorage.h
-	cochran.c
+	cochran.cpp
 	cochran.h
 	color.cpp
 	color.h
@@ -51,7 +51,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	configuredivecomputerthreads.h
 	connectionlistmodel.cpp
 	connectionlistmodel.h
-	datatrak.c
+	datatrak.cpp
 	datatrak.h
 	deco.c
 	deco.h
@@ -59,7 +59,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	device.h
 	devicedetails.cpp
 	devicedetails.h
-	dive.c
+	dive.cpp
 	dive.h
 	divecomputer.c
 	divecomputer.h
@@ -89,7 +89,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	exif.cpp
 	exif.h
 	extradata.h
-	file.c
+	file.cpp
 	file.h
 	filterconstraint.cpp
 	filterconstraint.h
@@ -107,24 +107,24 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	gettext.h
 	gettextfromc.cpp
 	gettextfromc.h
-	git-access.c
+	git-access.cpp
 	git-access.h
 	globals.cpp
 	globals.h
 	imagedownloader.cpp
 	imagedownloader.h
-	import-cobalt.c
-	import-csv.c
+	import-cobalt.cpp
+	import-csv.cpp
 	import-csv.h
-	import-divinglog.c
-	import-shearwater.c
-	import-suunto.c
-	import-seac.c
+	import-divinglog.cpp
+	import-shearwater.cpp
+	import-suunto.cpp
+	import-seac.cpp
 	interpolate.h
-	libdivecomputer.c
+	libdivecomputer.cpp
 	libdivecomputer.h
-	liquivision.c
-	load-git.c
+	liquivision.cpp
+	load-git.cpp
 	membuffer.cpp
 	membuffer.h
 	metadata.cpp
@@ -134,8 +134,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	ostctools.c
 	owning_ptrs.h
 	parse-gpx.cpp
-	parse-xml.c
-	parse.c
+	parse-xml.cpp
+	parse.cpp
 	parse.h
 	picture.c
 	picture.h
@@ -153,13 +153,13 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	qthelper.cpp
 	qthelper.h
 	range.h
-	sample.c
+	sample.cpp
 	sample.h
-	save-git.c
+	save-git.cpp
 	save-html.c
 	save-html.h
 	save-profiledata.c
-	save-xml.c
+	save-xml.cpp
 	selection.cpp
 	selection.h
 	sha1.c
@@ -173,7 +173,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	strtod.c
 	subsurface-float.h
 	subsurface-string.h
-	subsurfacestartup.c
+	subsurfacestartup.cpp
 	subsurfacestartup.h
 	subsurfacesysinfo.cpp
 	subsurfacesysinfo.h
@@ -181,12 +181,12 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	tag.h
 	taxonomy.c
 	taxonomy.h
-	time.c
+	time.cpp
 	timer.c
 	timer.h
 	trip.c
 	trip.h
-	uemis-downloader.c
+	uemis-downloader.cpp
 	uemis.c
 	uemis.h
 	units.h

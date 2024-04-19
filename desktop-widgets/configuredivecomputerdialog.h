@@ -58,11 +58,8 @@ class ConfigureDiveComputerDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit ConfigureDiveComputerDialog(QWidget *parent = 0);
+	explicit ConfigureDiveComputerDialog(const QString &filename, QWidget *parent = 0);
 	~ConfigureDiveComputerDialog();
-
-protected:
-	void closeEvent(QCloseEvent *event);
 
 private
 slots:
@@ -74,12 +71,11 @@ slots:
 	void configError(QString err);
 	void on_close_clicked();
 	void on_saveSettingsPushButton_clicked();
-	void deviceDetailsReceived(DeviceDetails *newDeviceDetails);
+	void deviceDetailsReceived(DeviceDetails newDeviceDetails);
 	void reloadValues();
 	void on_backupButton_clicked();
 
 	void on_restoreBackupButton_clicked();
-
 
 	void on_updateFirmwareButton_clicked();
 
@@ -97,6 +93,9 @@ private:
 	Ui::ConfigureDiveComputerDialog ui;
 
 	QString logFile;
+	QString filename;
+
+	void closeEvent(QCloseEvent *event);
 
 	ConfigureDiveComputer *config;
 	device_data_t device_data;
@@ -104,7 +103,7 @@ private:
 
 	void fill_device_list(unsigned int transport);
 
-	DeviceDetails *deviceDetails;
+	DeviceDetails deviceDetails;
 	void populateDeviceDetails();
 	void populateDeviceDetailsOSTC3();
 	void populateDeviceDetailsOSTC();
@@ -124,14 +123,14 @@ class OstcFirmwareCheck : public QObject {
 	Q_OBJECT
 public:
 	explicit OstcFirmwareCheck(const QString &product);
-	void checkLatest(QWidget *parent, device_data_t *data);
+	void checkLatest(QWidget *parent, device_data_t *data, const QString &filename);
 public
 slots:
 	void parseOstcFwVersion(QNetworkReply *reply);
 	void saveOstcFirmware(QNetworkReply *reply);
 
 private:
-	void upgradeFirmware();
+	void upgradeFirmware(const QString &filename);
 	device_data_t devData;
 	QString latestFirmwareAvailable;
 	QString latestFirmwareHexFile;

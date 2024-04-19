@@ -54,7 +54,6 @@ static void quote(struct membuffer *b, const char *text, int is_attribute)
 static void show_utf8(struct membuffer *b, const char *text, const char *pre, const char *post, int is_attribute)
 {
 	int len;
-	char *cleaned;
 
 	if (!text)
 		return;
@@ -69,27 +68,25 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 		return;
 	while (len && isascii(text[len - 1]) && isspace(text[len - 1]))
 		len--;
-	cleaned = strndup(text, len);
+	std::string cleaned(text, len);
 	put_string(b, pre);
-	quote(b, cleaned, is_attribute);
+	quote(b, cleaned.c_str(), is_attribute);
 	put_string(b, post);
-	free(cleaned);
 }
 
-static void blankout(char *c)
+static void blankout(std::string &s)
 {
-	while(*c) {
-		switch (*c) {
+	for(char &c: s) {
+		switch (c) {
 		case 'A'...'Z':
-			*c = 'X';
+			c = 'X';
 			break;
 		case 'a'...'z':
-			*c = 'x';
+			c = 'x';
 			break;
 		default:
 			;
 		}
-		++c;
 	}
 }
 
@@ -97,12 +94,11 @@ static void show_utf8_blanked(struct membuffer *b, const char *text, const char 
 {
 	if (!text)
 		return;
-	char *copy = strdup(text);
+	std::string copy(text);
 
 	if (anonymize)
 		blankout(copy);
-	show_utf8(b, copy, pre, post, is_attribute);
-	free(copy);
+	show_utf8(b, copy.c_str(), pre, post, is_attribute);
 }
 
 static void save_depths(struct membuffer *b, struct divecomputer *dc)
@@ -432,7 +428,7 @@ static void save_samples(struct membuffer *b, struct dive *dive, struct divecomp
 	int nr;
 	int o2sensor;
 	struct sample *s;
-	struct sample dummy = { .bearing.degrees = -1, .ndl.seconds = -1 };
+	struct sample dummy;
 
 	/* Set up default pressure sensor indices */
 	o2sensor = legacy_format_o2pressures(dive, dc);
@@ -464,9 +460,9 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	if (dc->duration.seconds && dc->duration.seconds != dive->dc.duration.seconds)
 		put_duration(b, dc->duration, " duration='", " min'");
 	if (dc->divemode != OC) {
-		for (enum divemode_t i = 0; i < NUM_DIVEMODE; i++)
-			if (dc->divemode == i)
-				show_utf8(b, divemode_text[i], " dctype='", "'", 1);
+		int i = (int)dc->divemode;
+		if (i >= 0 && i < NUM_DIVEMODE)
+			show_utf8(b, divemode_text[i], " dctype='", "'", 1);
 		if (dc->no_o2sensors)
 			put_format(b," no_o2sensors='%d'", dc->no_o2sensors);
 	}
@@ -502,7 +498,7 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 	put_string(b, "/>\n");
 }
 
-void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
+extern "C" void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 {
 	struct divecomputer *dc;
 	pressure_t surface_pressure = un_fixup_surface_pressure(dive);
@@ -561,9 +557,9 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 	put_format(b, "</dive>\n");
 }
 
-int save_dive(FILE *f, struct dive *dive, bool anonymize)
+extern "C" int save_dive(FILE *f, struct dive *dive, bool anonymize)
 {
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 
 	save_one_dive_to_mb(&buf, dive, anonymize);
 	flush_buffer(&buf, f);
@@ -624,17 +620,15 @@ static void save_one_device(struct membuffer *b, const struct device *d)
 
 static void save_one_fingerprint(struct membuffer *b, int i)
 {
-	char *data = fp_get_data(&fingerprint_table, i);
 	put_format(b, "<fingerprint model='%08x' serial='%08x' deviceid='%08x' diveid='%08x' data='%s'/>\n",
 		   fp_get_model(&fingerprint_table, i),
 		   fp_get_serial(&fingerprint_table, i),
 		   fp_get_deviceid(&fingerprint_table, i),
 		   fp_get_diveid(&fingerprint_table, i),
-		   data);
-	free(data);
+		   fp_get_data(&fingerprint_table, i).c_str());
 }
 
-int save_dives(const char *filename)
+extern "C" int save_dives(const char *filename)
 {
 	return save_dives_logic(filename, false, false);
 }
@@ -647,23 +641,19 @@ static void save_filter_presets(struct membuffer *b)
 		return;
 	put_format(b, "<filterpresets>\n");
 	for (i = 0; i < filter_presets_count(); i++) {
-		char *name, *fulltext;
-		name = filter_preset_name(i);
+		std::string name = filter_preset_name(i);
 		put_format(b, " <filterpreset");
-		show_utf8(b, name, " name='", "'", 1);
+		show_utf8(b, name.c_str(), " name='", "'", 1);
 		put_format(b, ">\n");
-		free(name);
 
-		fulltext = filter_preset_fulltext_query(i);
-		if (!empty_string(fulltext)) {
+		std::string fulltext = filter_preset_fulltext_query(i);
+		if (!fulltext.empty()) {
 			const char *fulltext_mode = filter_preset_fulltext_mode(i);
 			show_utf8(b, fulltext_mode, "  <fulltext mode='", "'>", 1);
-			show_utf8(b, fulltext, "", "</fulltext>\n", 0);
+			show_utf8(b, fulltext.c_str(), "", "</fulltext>\n", 0);
 		}
-		free(fulltext);
 
 		for (int j = 0; j < filter_preset_constraint_count(i); j++) {
-			char *data;
 			const struct filter_constraint *constraint = filter_preset_constraint(i, j);
 			const char *type = filter_constraint_type_to_string(constraint->type);
 			put_format(b, "  <constraint");
@@ -679,9 +669,8 @@ static void save_filter_presets(struct membuffer *b)
 			if (constraint->negate)
 				put_format(b, " negate='1'");
 			put_format(b, ">");
-			data = filter_constraint_data_to_string(constraint);
-			show_utf8(b, data, "", "", 0);
-			free(data);
+			std::string data = filter_constraint_data_to_string(constraint);
+			show_utf8(b, data.c_str(), "", "", 0);
 			put_format(b, "</constraint>\n");
 		}
 		put_format(b, " </filterpreset>\n");
@@ -780,8 +769,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 static void save_backup(const char *name, const char *ext, const char *new_ext)
 {
 	int len = strlen(name);
-	int a = strlen(ext), b = strlen(new_ext);
-	char *newname;
+	int a = strlen(ext);
 
 	/* len up to and including the final '.' */
 	len -= a;
@@ -793,20 +781,15 @@ static void save_backup(const char *name, const char *ext, const char *new_ext)
 	if (strncasecmp(name + len, ext, a))
 		return;
 
-	newname = malloc(len + b + 1);
-	if (!newname)
-		return;
-
-	memcpy(newname, name, len);
-	memcpy(newname + len, new_ext, b + 1);
+	std::string newname(name, len);
+	newname += new_ext;
 
 	/*
 	 * Ignore errors. Maybe we can't create the backup file,
 	 * maybe no old file existed.  Regardless, we'll write the
 	 * new file.
 	 */
-	(void) subsurface_rename(name, newname);
-	free(newname);
+	(void) subsurface_rename(name, newname.c_str());
 }
 
 static void try_to_backup(const char *filename)
@@ -820,11 +803,8 @@ static void try_to_backup(const char *filename)
 		int elen = strlen(extension[i]);
 		if (strcasecmp(filename + flen - elen, extension[i]) == 0) {
 			if (last_xml_version < DATAFORMAT_VERSION) {
-				int se_len = strlen(extension[i]) + 5;
-				char *special_ext = malloc(se_len);
-				snprintf(special_ext, se_len, "%s.v%d", extension[i], last_xml_version);
-				save_backup(filename, extension[i], special_ext);
-				free(special_ext);
+				std::string special_ext = std::string(extension[i]) + ".v" + std::to_string(last_xml_version);
+				save_backup(filename, extension[i], special_ext.c_str());
 			} else {
 				save_backup(filename, extension[i], "bak");
 			}
@@ -834,9 +814,9 @@ static void try_to_backup(const char *filename)
 	}
 }
 
-int save_dives_logic(const char *filename, const bool select_only, bool anonymize)
+extern "C" int save_dives_logic(const char *filename, const bool select_only, bool anonymize)
 {
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 	struct git_info info;
 	FILE *f;
 	int error = 0;
@@ -863,7 +843,6 @@ int save_dives_logic(const char *filename, const bool select_only, bool anonymiz
 	if (error)
 		report_error(translate("gettextFromC", "Failed to save dives to %s (%s)"), filename, strerror(errno));
 
-	free_buffer(&buf);
 	return error;
 }
 
@@ -880,7 +859,7 @@ int export_dives_xslt(const char *filename, const bool selected, const int units
 static int export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize)
 {
 	FILE *f;
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 	xmlDoc *doc;
 	xsltStylesheetPtr xslt = NULL;
 	xmlDoc *transformed;
@@ -900,8 +879,7 @@ static int export_dives_xslt_doit(const char *filename, struct xml_params *param
 	 * transform it to selected export format, finally dumping
 	 * the XML into a character buffer.
 	 */
-	doc = xmlReadMemory(buf.buffer, buf.len, "divelog", NULL, XML_PARSE_HUGE | XML_PARSE_RECOVER);
-	free_buffer(&buf);
+	doc = xmlReadMemory(buf.buffer, buf.len, "divelog", NULL, XML_PARSE_HUGE);
 	if (!doc)
 		return report_error("Failed to read XML memory");
 
@@ -961,9 +939,9 @@ static void save_dive_sites_buffer(struct membuffer *b, const struct dive_site *
 	put_format(b, "</divesites>\n");
 }
 
-int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize)
+extern "C" int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize)
 {
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 	FILE *f;
 	int error = 0;
 
@@ -983,6 +961,5 @@ int save_dive_sites_logic(const char *filename, const struct dive_site *sites[],
 	if (error)
 		report_error(translate("gettextFromC", "Failed to save divesites to %s (%s)"), filename, strerror(errno));
 
-	free_buffer(&buf);
 	return error;
 }

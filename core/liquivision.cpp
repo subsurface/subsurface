@@ -38,13 +38,8 @@ struct lv_sensor_ids {
 
 struct lv_sensor_ids sensor_ids;
 
-static int handle_event_ver2(int code, const unsigned char *ps, unsigned int ps_ptr, struct lv_event *event)
+static int handle_event_ver2(int, const unsigned char *, unsigned int, struct lv_event *)
 {
-	UNUSED(code);
-	UNUSED(ps);
-	UNUSED(ps_ptr);
-	UNUSED(event);
-
 	// Skip 4 bytes
 	return 4;
 }
@@ -99,7 +94,7 @@ static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_
 		// 1 byte ST
 		skip = 10;
 		break;
-	case 0x0010:
+	case 0x0010: {
 		// 4 byte time
 		// 2 byte primary transmitter S/N
 		// 2 byte buddy transmitter S/N
@@ -124,6 +119,7 @@ static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_
 
 		skip = 26;
 		break;
+	}
 	case 0x0015:	// Unknown
 		skip = 2;
 		break;
@@ -184,7 +180,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		place_len = array_uint32_le(buf + ptr + len);
 
 		if (len && place_len) {
-			location = malloc(len + place_len + 4);
+			location = (char *)malloc(len + place_len + 4);
 			memset(location, 0, len + place_len + 4);
 			memcpy(location, buf + ptr, len);
 			memcpy(location + len, ", ", 2);
@@ -266,8 +262,9 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 			sample_interval = intervals[*(buf + ptr)];
 		ptr += 1;
 
-		float start_cns = 0;
-		unsigned char dive_mode = 0, algorithm = 0;
+		[[maybe_unused]] float start_cns = 0;
+		[[maybe_unused]] unsigned char dive_mode = 0;
+		[[maybe_unused]] unsigned char algorithm = 0;
 		if (array_uint32_le(buf + ptr) != sample_count) {
 			// Xeo, with CNS and OTU
 			start_cns = *(float *) (buf + ptr);
@@ -290,9 +287,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 			break;
 		}
 		// we aren't using the start_cns, dive_mode, and algorithm, yet
-		UNUSED(start_cns);
-		UNUSED(dive_mode);
-		UNUSED(algorithm);
 
 		ptr += 4;
 
@@ -438,11 +432,10 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 	free_dive(dive);
 }
 
-int try_to_open_liquivision(const char *filename, struct memblock *mem, struct divelog *log)
+int try_to_open_liquivision(const char *, std::string &mem, struct divelog *log)
 {
-	UNUSED(filename);
-	const unsigned char *buf = mem->buffer;
-	unsigned int buf_size = mem->size;
+	const unsigned char *buf = (unsigned char *)mem.data();
+	unsigned int buf_size = (unsigned int)mem.size();
 	unsigned int ptr;
 	int log_version;
 

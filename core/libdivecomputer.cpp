@@ -37,12 +37,11 @@
 #include "libdivecomputer.h"
 #include "core/version.h"
 #include "core/qthelper.h"
-#include "core/membuffer.h"
 #include "core/file.h"
-#include <QtGlobal>
+#include <array>
 
-char *dumpfile_name;
-char *logfile_name;
+std::string dumpfile_name;
+std::string logfile_name;
 const char *progress_bar_text = "";
 void (*progress_callback)(const char *text) = NULL;
 double progress_bar_fraction = 0.0;
@@ -139,7 +138,7 @@ static struct gasmix get_deeper_gasmix(struct gasmix a, struct gasmix b)
  * @param ngases The number of gas mixes to process.
  * @return DC_STATUS_SUCCESS on success, otherwise an error code.
  */
-static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, unsigned int ngases)
+static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t *parser, unsigned int ngases)
 {
 	static bool shown_warning = false;
 	unsigned int i;
@@ -330,7 +329,7 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 		[SAMPLE_EVENT_SAFETYSTOP_MANDATORY]	= QT_TRANSLATE_NOOP("gettextFromC", "safety stop (mandatory)"),
 		[SAMPLE_EVENT_DEEPSTOP]			= QT_TRANSLATE_NOOP("gettextFromC", "deepstop"),
 		[SAMPLE_EVENT_CEILING_SAFETYSTOP]	= QT_TRANSLATE_NOOP("gettextFromC", "ceiling (safety stop)"),
-		[SAMPLE_EVENT_FLOOR]			= QT_TRANSLATE_NOOP3("gettextFromC", "below floor", "event showing dive is below deco floor and adding deco time"),
+		[SAMPLE_EVENT_FLOOR]			= std::array<const char *, 2>{QT_TRANSLATE_NOOP3("gettextFromC", "below floor", "event showing dive is below deco floor and adding deco time")}[1],
 		[SAMPLE_EVENT_DIVETIME]			= QT_TRANSLATE_NOOP("gettextFromC", "divetime"),
 		[SAMPLE_EVENT_MAXDEPTH]			= QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"),
 		[SAMPLE_EVENT_OLF]			= QT_TRANSLATE_NOOP("gettextFromC", "OLF"),
@@ -379,7 +378,7 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 {
 	static unsigned int nsensor = 0;
 	dc_sample_value_t value = *pvalue;
-	struct divecomputer *dc = userdata;
+	struct divecomputer *dc = (divecomputer *)userdata;
 	struct sample *sample;
 
 	/*
@@ -494,9 +493,8 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 	}
 }
 
-static void dev_info(device_data_t *devdata, const char *fmt, ...)
+static void dev_info(device_data_t *, const char *fmt, ...)
 {
-	UNUSED(devdata);
 	static char buffer[1024];
 	va_list ap;
 
@@ -524,9 +522,8 @@ static void download_error(const char *fmt, ...)
 	report_error("Dive %d: %s", import_dive_number, buffer);
 }
 
-static int parse_samples(device_data_t *devdata, struct divecomputer *dc, dc_parser_t *parser)
+static int parse_samples(device_data_t *, struct divecomputer *dc, dc_parser_t *parser)
 {
-	UNUSED(devdata);
 	// Parse the sample data.
 	return dc_parser_samples_foreach(parser, sample_cb, dc);
 }
@@ -661,7 +658,7 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 
 static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devdata, struct dive *dive)
 {
-	dc_status_t rc = 0;
+	dc_status_t rc = static_cast<dc_status_t>(0);
 	dc_datetime_t dt = { 0 };
 	struct tm tm;
 
@@ -685,9 +682,8 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	}
 
 	// Parse the divetime.
-	char *date_string = get_dive_date_c_string(dive->when);
-	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string);
-	free(date_string);
+	std::string date_string = get_dive_date_c_string(dive->when);
+	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string.c_str());
 
 	unsigned int divetime = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
@@ -827,7 +823,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 {
 	int rc;
 	dc_parser_t *parser = NULL;
-	device_data_t *devdata = userdata;
+	device_data_t *devdata = (device_data_t *)userdata;
 	struct dive *dive = NULL;
 
 	/* reset static data, that is only valid per dive */
@@ -873,7 +869,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	 * we have the final deviceid here.
 	 */
 	if (fingerprint && fsize && !devdata->fingerprint) {
-		devdata->fingerprint = calloc(fsize, 1);
+		devdata->fingerprint = (unsigned char *)calloc(fsize, 1);
 		if (devdata->fingerprint) {
 			devdata->fsize = fsize;
 			devdata->fdeviceid = dive->dc.deviceid;
@@ -884,9 +880,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	/* If we already saw this dive, abort. */
 	if (!devdata->force_download && find_dive(&dive->dc)) {
-		char *date_string = get_dive_date_c_string(dive->when);
-		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string);
-		free(date_string);
+		std::string date_string = get_dive_date_c_string(dive->when);
+		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string.c_str());
 		free_dive(dive);
 		return false;
 	}
@@ -941,14 +936,14 @@ static void do_save_fingerprint(device_data_t *devdata, const char *tmp, const c
 	if (close(fd) < 0)
 		written = -1;
 
-	if (written == devdata->fsize) {
+	if (written == (int)devdata->fsize) {
 		if (!subsurface_rename(tmp, final))
 			return;
 	}
 	unlink(tmp);
 }
 
-static char *fingerprint_file(device_data_t *devdata)
+static std::string fingerprint_file(device_data_t *devdata)
 {
 	uint32_t model, serial;
 
@@ -956,7 +951,7 @@ static char *fingerprint_file(device_data_t *devdata)
 	model = calculate_string_hash(devdata->model);
 	serial = devdata->devinfo.serial;
 
-	return format_string("%s/fingerprints/%04x.%u",
+	return format_string_std("%s/fingerprints/%04x.%u",
 		system_default_directory(),
 		model, serial);
 }
@@ -993,23 +988,18 @@ static char *fingerprint_file(device_data_t *devdata)
  */
 static void save_fingerprint(device_data_t *devdata)
 {
-	char *dir, *tmp, *final;
-
 	// Don't try to save nonexistent fingerprint data
 	if (!devdata->fingerprint || !devdata->fdiveid)
 		return;
 
 	// Make sure the fingerprints directory exists
-	dir = format_string("%s/fingerprints", system_default_directory());
-	subsurface_mkdir(dir);
+	std::string dir = format_string_std("%s/fingerprints", system_default_directory());
+	subsurface_mkdir(dir.c_str());
 
-	final = fingerprint_file(devdata);
-	tmp = format_string("%s.tmp", final);
-	free(dir);
+	std::string final = fingerprint_file(devdata);
+	std::string tmp = final + ".tmp";
 
-	do_save_fingerprint(devdata, tmp, final);
-	free(tmp);
-	free(final);
+	do_save_fingerprint(devdata, tmp.c_str(), final.c_str());
 }
 
 /*
@@ -1051,8 +1041,6 @@ static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, cons
  */
 static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 {
-	char *cachename;
-	struct memblock mem;
 	const unsigned char *raw_data;
 
 	if (devdata->force_download)
@@ -1067,26 +1055,25 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 		return;
 	}
 	/* now check if we have a fingerprint on disk */
-	cachename = fingerprint_file(devdata);
+	std::string cachename = fingerprint_file(devdata);
 	if (verbose)
-		dev_info(devdata, "Looking for fingerprint in '%s'", cachename);
-	if (readfile(cachename, &mem) > 0) {
+		dev_info(devdata, "Looking for fingerprint in '%s'", cachename.c_str());
+	auto [mem, err] = readfile(cachename.c_str());
+	if (err > 0) {
 		if (verbose)
-			dev_info(devdata, " ... got %zu bytes", mem.size);
-		verify_fingerprint(device, devdata, mem.buffer, mem.size);
-		free(mem.buffer);
+			dev_info(devdata, " ... got %zu bytes", mem.size());
+		verify_fingerprint(device, devdata, (unsigned char *)mem.data(), mem.size());
 	}
-	free(cachename);
 }
 
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
 	static unsigned int last = 0;
-	const dc_event_progress_t *progress = data;
-	const dc_event_devinfo_t *devinfo = data;
-	const dc_event_clock_t *clock = data;
-	const dc_event_vendor_t *vendor = data;
-	device_data_t *devdata = userdata;
+	const dc_event_progress_t *progress = (dc_event_progress_t *)data;
+	const dc_event_devinfo_t *devinfo = (dc_event_devinfo_t *)data;
+	const dc_event_clock_t *clock = (dc_event_clock_t *)data;
+	const dc_event_vendor_t *vendor = (dc_event_vendor_t *)data;
+	device_data_t *devdata = (device_data_t *)userdata;
 
 	switch (event) {
 	case DC_EVENT_WAITING:
@@ -1158,9 +1145,8 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 int import_thread_cancelled;
 
-static int cancel_cb(void *userdata)
+static int cancel_cb(void *)
 {
-	UNUSED(userdata);
 	return import_thread_cancelled;
 }
 
@@ -1186,8 +1172,8 @@ static const char *do_device_import(device_data_t *data)
 		dc_buffer_t *buffer = dc_buffer_new(0);
 
 		rc = dc_device_dump(device, buffer);
-		if (rc == DC_STATUS_SUCCESS && dumpfile_name) {
-			FILE *fp = subsurface_fopen(dumpfile_name, "wb");
+		if (rc == DC_STATUS_SUCCESS && !dumpfile_name.empty()) {
+			FILE *fp = subsurface_fopen(dumpfile_name.c_str(), "wb");
 			if (fp != NULL) {
 				fwrite(dc_buffer_get_data(buffer), 1, dc_buffer_get_size(buffer), fp);
 				fclose(fp);
@@ -1219,9 +1205,8 @@ static const char *do_device_import(device_data_t *data)
 }
 
 static dc_timer_t *logfunc_timer = NULL;
-void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
+void logfunc(dc_context_t *, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
 {
-	UNUSED(context);
 	const char *loglevels[] = { "NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL" };
 
 	if (logfunc_timer == NULL)
@@ -1493,8 +1478,8 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	data->fingerprint = NULL;
 	data->fsize = 0;
 
-	if (data->libdc_log && logfile_name)
-		fp = subsurface_fopen(logfile_name, "w");
+	if (data->libdc_log && !logfile_name.empty())
+		fp = subsurface_fopen(logfile_name.c_str(), "w");
 
 	data->libdc_logfile = fp;
 
@@ -1514,18 +1499,19 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	rc = divecomputer_device_open(data);
 
 	if (rc != DC_STATUS_SUCCESS) {
-		report_error(errmsg(rc));
+		report_error("%s", errmsg(rc));
 	} else {
 		dev_info(data, "Connecting ...");
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
-		INFO(0, "dc_device_open error value of %d", rc);
-		if (rc != DC_STATUS_SUCCESS && subsurface_access(data->devname, R_OK | W_OK) != 0)
+		if (rc != DC_STATUS_SUCCESS) {
+			INFO(0, "dc_device_open error value of %d", rc);
+			if (subsurface_access(data->devname, R_OK | W_OK) != 0)
 #if defined(SUBSURFACE_MOBILE)
-			err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.");
+				err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.");
 #else
-			err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
+				err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
 #endif
-		if (rc == DC_STATUS_SUCCESS) {
+		} else {
 			dev_info(data, "Starting import ...");
 			err = do_device_import(data);
 			/* TODO: Show the logfile to the user on error. */

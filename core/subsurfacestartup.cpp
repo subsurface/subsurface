@@ -17,7 +17,7 @@ extern void show_computer_list();
 
 int quit, force_root, ignore_bt;
 #ifdef SUBSURFACE_MOBILE_DESKTOP
-char *testqml = NULL;
+std::string testqml;
 #endif
 
 /*
@@ -25,7 +25,7 @@ char *testqml = NULL;
  */
 bool imported = false;
 
-void print_version()
+extern "C" void print_version()
 {
 	static bool version_printed = false;
 	if (version_printed)
@@ -43,7 +43,7 @@ void print_version()
 	version_printed = true;
 }
 
-void print_files()
+extern "C" void print_files()
 {
 	struct git_info info = { };
 	const char *filename;
@@ -69,9 +69,6 @@ void print_files()
 	char *tmp = hashfile_name_string();
 	printf("Image filename table: %s\n", tmp);
 	free(tmp);
-	tmp = picturedir_string();
-	printf("Local picture directory: %s\n\n", tmp);
-	free(tmp);
 }
 
 static void print_help()
@@ -95,7 +92,7 @@ static void print_help()
 	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)\n\n");
 }
 
-void parse_argument(const char *arg)
+extern "C" void parse_argument(const char *arg)
 {
 	const char *p = arg + 1;
 
@@ -169,8 +166,7 @@ void parse_argument(const char *arg)
 			}
 #elif SUBSURFACE_MOBILE_DESKTOP
 			if (strncmp(arg, "--testqml=", sizeof("--testqml=") - 1) == 0) {
-				testqml = malloc(strlen(arg) - sizeof("--testqml=") + 1);
-				strcpy(testqml, arg + sizeof("--testqml=") - 1);
+				testqml = arg + sizeof("--testqml=") - 1;
 				return;
 			}
 #endif
@@ -198,7 +194,7 @@ void parse_argument(const char *arg)
  * I guess Burma and Liberia should trigger this too. I'm too
  * lazy to look up the territory names, though.
  */
-void setup_system_prefs(void)
+extern "C" void setup_system_prefs(void)
 {
 	const char *env;
 

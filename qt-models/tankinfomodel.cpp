@@ -5,48 +5,9 @@
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 
-TankInfoModel *TankInfoModel::instance()
-{
-	static TankInfoModel self;
-	return &self;
-}
-
-bool TankInfoModel::insertRows(int, int count, const QModelIndex &parent)
-{
-	beginInsertRows(parent, rowCount(), rowCount() + count - 1);
-	for (int i = 0; i < count; ++i)
-		add_tank_info_metric(&tank_info_table, "", 0, 0);
-	endInsertRows();
-	return true;
-}
-
-bool TankInfoModel::setData(const QModelIndex &index, const QVariant &value, int)
-{
-	//WARN Seems wrong, we need to check for role == Qt::EditRole
-
-	if (index.row() < 0 || index.row() >= tank_info_table.nr )
-		return false;
-
-	struct tank_info &info = tank_info_table.infos[index.row()];
-	switch (index.column()) {
-	case DESCRIPTION:
-		free((void *)info.name);
-		info.name = strdup(value.toByteArray().data());
-		break;
-	case ML:
-		info.ml = value.toInt();
-		break;
-	case BAR:
-		info.bar = value.toInt();
-		break;
-	}
-	emit dataChanged(index, index);
-	return true;
-}
-
 QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() < 0 || index.row() >= tank_info_table.nr)
+	if (index.row() < 0 || index.row() >= tank_info_table.nr)
 		return QVariant();
 	if (role == Qt::FontRole)
 		return defaultModelFont();
@@ -75,16 +36,7 @@ int TankInfoModel::rowCount(const QModelIndex&) const
 	return tank_info_table.nr;
 }
 
-TankInfoModel::TankInfoModel()
+TankInfoModel::TankInfoModel(QObject *parent) : CleanerTableModel(parent)
 {
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("ml") << tr("bar"));
-	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &TankInfoModel::update);
-	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &TankInfoModel::update);
-	update();
-}
-
-void TankInfoModel::update()
-{
-	beginResetModel();
-	endResetModel();
 }

@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <git2.h>
+#include <memory>
 
 #include "dive.h"
 #include "divelog.h"
@@ -373,7 +374,7 @@ static void save_samples(struct membuffer *b, struct dive *dive, struct divecomp
 	int nr;
 	int o2sensor;
 	struct sample *s;
-	struct sample dummy = { .bearing.degrees = -1, .ndl.seconds = -1 };
+	struct sample dummy;
 
 	/* Is this a CCR dive with the old-style "o2pressure" sensor? */
 	o2sensor = legacy_format_o2pressures(dive, dc);
@@ -472,7 +473,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	if (dive->dive_site)
 		put_format(b, "divesiteid %08x\n", dive->dive_site->uuid);
 	if (verbose && dive->dive_site)
-		SSRF_INFO("removed reference to non-existant dive site with uuid %08x\n", dive->dive_site->uuid);
+		report_info("removed reference to non-existant dive site with uuid %08x\n", dive->dive_site->uuid);
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
 	save_weightsystem_info(b, dive);
@@ -494,14 +495,25 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
  */
 struct dir {
 	git_treebuilder *files;
-	struct dir *subdirs, *sibling;
-	char unique, name[1];
+	std::vector<std::unique_ptr<dir>> subdirs;
+	bool unique;
+	std::string name;
+
+	dir() : files(nullptr), unique(false)
+	{
+	}
+
+	~dir()
+	{
+		if (files)
+			git_treebuilder_free(files);
+	}
 };
 
-static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git_oid *id, unsigned mode)
+static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git_oid *id, git_filemode_t mode)
 {
 	int ret;
-	struct membuffer uniquename = { 0 };
+	membufferpp uniquename;
 
 	if (mkunique && git_treebuilder_get(dir, name)) {
 		char hex[8];
@@ -511,11 +523,10 @@ static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git
 		name = mb_cstring(&uniquename);
 	}
 	ret = git_treebuilder_insert(NULL, dir, name, id, mode);
-	free_buffer(&uniquename);
 	if (ret) {
 		const git_error *gerr = giterr_last();
 		if (gerr) {
-			SSRF_INFO("tree_insert failed with return %d error %s\n", ret, gerr->message);
+			report_info("tree_insert failed with return %d error %s\n", ret, gerr->message);
 		}
 	}
 	return ret;
@@ -530,47 +541,37 @@ static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git
  */
 static struct dir *new_directory(git_repository *repo, struct dir *parent, struct membuffer *namebuf)
 {
-	struct dir *subdir;
-	const char *name = mb_cstring(namebuf);
-	int len = namebuf->len;
-
-	subdir = malloc(sizeof(*subdir)+len);
+	auto subdir = std::make_unique<dir>();
+	subdir->name = mb_cstring(namebuf);
 
 	/*
 	 * It starts out empty: no subdirectories of its own,
 	 * and an empty treebuilder list of files.
 	 */
-	subdir->subdirs = NULL;
 	git_treebuilder_new(&subdir->files, repo, NULL);
-	memcpy(subdir->name, name, len);
-	subdir->unique = 0;
-	subdir->name[len] = 0;
 
-	/* Add it to the list of subdirs of the parent */
-	subdir->sibling = parent->subdirs;
-	parent->subdirs = subdir;
+	/* Add it to the list of subdirs of the parent
+	 * Note: append at front. Do we want that?
+	 */
+	parent->subdirs.insert(parent->subdirs.begin(), std::move(subdir));
 
-	return subdir;
+	return parent->subdirs.front().get();
 }
 
 static struct dir *mktree(git_repository *repo, struct dir *dir, const char *fmt, ...)
 {
-	struct membuffer buf = { 0 };
-	struct dir *subdir;
+	membufferpp buf;
 
 	VA_BUF(&buf, fmt);
-	for (subdir = dir->subdirs; subdir; subdir = subdir->sibling) {
+	for (auto &subdir: dir->subdirs) {
 		if (subdir->unique)
 			continue;
-		if (strncmp(subdir->name, buf.buffer, buf.len))
+		if (strncmp(subdir->name.c_str(), buf.buffer, buf.len))
 			continue;
 		if (!subdir->name[buf.len])
-			break;
+			return subdir.get();
 	}
-	if (!subdir)
-		subdir = new_directory(repo, dir, &buf);
-	free_buffer(&buf);
-	return subdir;
+	return new_directory(repo, dir, &buf);
 }
 
 /*
@@ -609,23 +610,21 @@ static int blob_insert(git_repository *repo, struct dir *tree, struct membuffer 
 {
 	int ret;
 	git_oid blob_id;
-	struct membuffer name = { 0 };
+	struct membufferpp name;
 
 	ret = git_blob_create_frombuffer(&blob_id, repo, b->buffer, b->len);
-	free_buffer(b);
 	if (ret)
 		return ret;
 
 	VA_BUF(&name, fmt);
 	ret = tree_insert(tree->files, mb_cstring(&name), 1, &blob_id, GIT_FILEMODE_BLOB);
-	free_buffer(&name);
 	return ret;
 }
 
 static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct dive *dive, struct divecomputer *dc, int idx)
 {
 	int ret;
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 
 	save_dc(&buf, dive, dc);
 	ret = blob_insert(repo, tree, &buf, "Divecomputer%c%03u", idx ? '-' : 0, idx);
@@ -637,7 +636,7 @@ static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct 
 static int save_one_picture(git_repository *repo, struct dir *dir, struct picture *pic)
 {
 	int offset = pic->offset.seconds;
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 	char sign = '+';
 	unsigned h;
 
@@ -671,7 +670,7 @@ static int save_pictures(git_repository *repo, struct dir *dir, struct dive *div
 static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *dive, struct tm *tm, bool cached_ok)
 {
 	struct divecomputer *dc;
-	struct membuffer buf = { 0 }, name = { 0 };
+	struct membufferpp buf, name;
 	struct dir *subdir;
 	int ret, nr;
 
@@ -687,15 +686,13 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
 		git_oid_fromraw(&oid, dive->git_id);
 		ret = tree_insert(tree->files, mb_cstring(&name), 1,
 			&oid, GIT_FILEMODE_TREE);
-		free_buffer(&name);
 		if (ret)
 			return report_error("cached dive tree insert failed");
 		return 0;
 	}
 
 	subdir = new_directory(repo, tree, &name);
-	subdir->unique = 1;
-	free_buffer(&name);
+	subdir->unique = true;
 
 	create_dive_buffer(dive, &buf);
 	nr = dive->number;
@@ -773,7 +770,7 @@ static int save_trip_description(git_repository *repo, struct dir *dir, dive_tri
 {
 	int ret;
 	git_oid blob_id;
-	struct membuffer desc = { 0 };
+	struct membufferpp desc;
 
 	put_format(&desc, "date %04u-%02u-%02u\n",
 		   tm->tm_year, tm->tm_mon + 1, tm->tm_mday);
@@ -784,7 +781,6 @@ static int save_trip_description(git_repository *repo, struct dir *dir, dive_tri
 	show_utf8(&desc, "notes ", trip->notes, "\n");
 
 	ret = git_blob_create_frombuffer(&blob_id, repo, desc.buffer, desc.len);
-	free_buffer(&desc);
 	if (ret)
 		return report_error("trip blob creation failed");
 	ret = tree_insert(dir->files, "00-Trip", 0, &blob_id, GIT_FILEMODE_BLOB);
@@ -814,14 +810,13 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *tr
 	int i;
 	struct dive *dive;
 	struct dir *subdir;
-	struct membuffer name = { 0 };
+	struct membufferpp name;
 	timestamp_t first, last;
 
 	/* Create trip directory */
 	create_trip_name(trip, &name, tm);
 	subdir = new_directory(repo, tree, &name);
-	subdir->unique = 1;
-	free_buffer(&name);
+	subdir->unique = true;
 
 	/* Trip description file */
 	save_trip_description(repo, subdir, trip, tm);
@@ -851,19 +846,19 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *tr
 
 static void save_units(void *_b)
 {
-	struct membuffer *b =_b;
+	struct membuffer *b = (membuffer *)_b;
 	if (prefs.unit_system == METRIC)
 		put_string(b, "units METRIC\n");
 	else if (prefs.unit_system == IMPERIAL)
 		put_string(b, "units IMPERIAL\n");
 	else
 		put_format(b, "units PERSONALIZE %s %s %s %s %s %s\n",
-			   prefs.units.length == METERS ? "METERS" : "FEET",
-			   prefs.units.volume == LITER ? "LITER" : "CUFT",
-			   prefs.units.pressure == BAR ? "BAR" : "PSI",
-			   prefs.units.temperature == CELSIUS ? "CELSIUS" : prefs.units.temperature == FAHRENHEIT ? "FAHRENHEIT" : "KELVIN",
-			   prefs.units.weight == KG ? "KG" : "LBS",
-			   prefs.units.vertical_speed_time == SECONDS ? "SECONDS" : "MINUTES");
+			   prefs.units.length == units::METERS ? "METERS" : "FEET",
+			   prefs.units.volume == units::LITER ? "LITER" : "CUFT",
+			   prefs.units.pressure == units::BAR ? "BAR" : "PSI",
+			   prefs.units.temperature == units::CELSIUS ? "CELSIUS" : prefs.units.temperature == units::FAHRENHEIT ? "FAHRENHEIT" : "KELVIN",
+			   prefs.units.weight == units::KG ? "KG" : "LBS",
+			   prefs.units.vertical_speed_time == units::SECONDS ? "SECONDS" : "MINUTES");
 }
 
 static void save_one_device(struct membuffer *b, const struct device *d)
@@ -884,27 +879,25 @@ static void save_one_device(struct membuffer *b, const struct device *d)
 	put_string(b, "\n");
 }
 
-static void save_one_fingerprint(struct membuffer *b, unsigned int i)
+static void save_one_fingerprint(struct membuffer *b, int i)
 {
-	char *fp_data = fp_get_data(&fingerprint_table, i);
 	put_format(b, "fingerprint model=%08x serial=%08x deviceid=%08x diveid=%08x data=\"%s\"\n",
 		   fp_get_model(&fingerprint_table, i),
 		   fp_get_serial(&fingerprint_table, i),
 		   fp_get_deviceid(&fingerprint_table, i),
 		   fp_get_diveid(&fingerprint_table, i),
-		   fp_data);
-	free(fp_data);
+		   fp_get_data(&fingerprint_table, i).c_str());
 }
 
 static void save_settings(git_repository *repo, struct dir *tree)
 {
-	struct membuffer b = { 0 };
+	struct membufferpp b;
 
 	put_format(&b, "version %d\n", DATAFORMAT_VERSION);
 	for (int i = 0; i < nr_devices(divelog.devices); i++)
 		save_one_device(&b, get_device(divelog.devices, i));
 	/* save the fingerprint data */
-	for (unsigned int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
+	for (int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
 		save_one_fingerprint(&b, i);
 
 	cond_put_format(divelog.autogroup, &b, "autogroup\n");
@@ -926,16 +919,15 @@ static void save_settings(git_repository *repo, struct dir *tree)
 static void save_divesites(git_repository *repo, struct dir *tree)
 {
 	struct dir *subdir;
-	struct membuffer dirname = { 0 };
+	struct membufferpp dirname;
 	put_format(&dirname, "01-Divesites");
 	subdir = new_directory(repo, tree, &dirname);
-	free_buffer(&dirname);
 
 	purge_empty_dive_sites(divelog.sites);
 	for (int i = 0; i < divelog.sites->nr; i++) {
-		struct membuffer b = { 0 };
+		struct membufferpp b;
 		struct dive_site *ds = get_dive_site(i, divelog.sites);
-		struct membuffer site_file_name = { 0 };
+		struct membufferpp site_file_name;
 		put_format(&site_file_name, "Site-%08x", ds->uuid);
 		show_utf8(&b, "name ", ds->name, "\n");
 		show_utf8(&b, "description ", ds->description, "\n");
@@ -949,7 +941,6 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 			}
 		}
 		blob_insert(repo, subdir, &b, mb_cstring(&site_file_name));
-		free_buffer(&site_file_name);
 	}
 }
 
@@ -966,7 +957,6 @@ static void format_one_filter_constraint(int preset_id, int constraint_id, struc
 {
 	const struct filter_constraint *constraint = filter_preset_constraint(preset_id, constraint_id);
 	const char *type = filter_constraint_type_to_string(constraint->type);
-	char *data;
 
 	show_utf8(b, "constraint type=", type, "");
 	if (filter_constraint_has_string_mode(constraint->type)) {
@@ -979,9 +969,8 @@ static void format_one_filter_constraint(int preset_id, int constraint_id, struc
 	}
 	if (constraint->negate)
 		put_format(b, " negate");
-	data = filter_constraint_data_to_string(constraint);
-	show_utf8(b, " data=", data, "\n");
-	free(data);
+	std::string data = filter_constraint_data_to_string(constraint);
+	show_utf8(b, " data=", data.c_str(), "\n");
 }
 
 /*
@@ -995,18 +984,14 @@ static void format_one_filter_constraint(int preset_id, int constraint_id, struc
  */
 static void format_one_filter_preset(int preset_id, struct membuffer *b)
 {
-	char *name, *fulltext;
+	std::string name = filter_preset_name(preset_id);
+	show_utf8(b, "name ", name.c_str(), "\n");
 
-	name = filter_preset_name(preset_id);
-	show_utf8(b, "name ", name, "\n");
-	free(name);
-
-	fulltext = filter_preset_fulltext_query(preset_id);
-	if (!empty_string(fulltext)) {
+	std::string fulltext = filter_preset_fulltext_query(preset_id);
+	if (!fulltext.empty()) {
 		show_utf8(b, "fulltext mode=", filter_preset_fulltext_mode(preset_id), "");
-		show_utf8(b, " query=", fulltext, "\n");
+		show_utf8(b, " query=", fulltext.c_str(), "\n");
 	}
-	free(fulltext);
 
 	for (int i = 0; i < filter_preset_constraint_count(preset_id); i++)
 		format_one_filter_constraint(preset_id, i, b);
@@ -1014,24 +999,20 @@ static void format_one_filter_preset(int preset_id, struct membuffer *b)
 
 static void save_filter_presets(git_repository *repo, struct dir *tree)
 {
-	struct membuffer dirname = { 0 };
+	struct membufferpp dirname;
 	struct dir *filter_dir;
 	put_format(&dirname, "02-Filterpresets");
 	filter_dir = new_directory(repo, tree, &dirname);
-	free_buffer(&dirname);
 
 	for (int i = 0; i < filter_presets_count(); i++)
 	{
-		struct membuffer preset_name = { 0 };
-		struct membuffer preset_buffer = { 0 };
+		membufferpp preset_name;
+		membufferpp preset_buffer;
 
 		put_format(&preset_name, "Preset-%03d", i);
 		format_one_filter_preset(i, &preset_buffer);
 
 		blob_insert(repo, filter_dir, &preset_buffer, mb_cstring(&preset_name));
-
-		free_buffer(&preset_name);
-		free_buffer(&preset_buffer);
 	}
 }
 
@@ -1055,7 +1036,6 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	for_each_dive(i, dive) {
 		struct tm tm;
 		struct dir *tree;
-
 
 		trip = dive->divetrip;
 
@@ -1105,18 +1085,13 @@ static git_object *try_to_find_parent(const char *hex_id, git_repository *repo)
 	return (git_object *)commit;
 }
 
-static int notify_cb(git_checkout_notify_t why,
+static int notify_cb(git_checkout_notify_t,
 	const char *path,
-	const git_diff_file *baseline,
-	const git_diff_file *target,
-	const git_diff_file *workdir,
-	void *payload)
+	const git_diff_file *,
+	const git_diff_file *,
+	const git_diff_file *,
+	void *)
 {
-	UNUSED(baseline);
-	UNUSED(target);
-	UNUSED(workdir);
-	UNUSED(payload);
-	UNUSED(why);
 	report_error("File '%s' does not match in working tree", path);
 	return 0; /* Continue with checkout */
 }
@@ -1131,7 +1106,7 @@ static git_tree *get_git_tree(git_repository *repo, git_object *parent)
 	return tree;
 }
 
-int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree)
+extern "C" int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 
@@ -1142,7 +1117,7 @@ int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree
 	return git_checkout_tree(repo, (git_object *) tree, &opts);
 }
 
-int get_authorship(git_repository *repo, git_signature **authorp)
+extern "C" int get_authorship(git_repository *repo, git_signature **authorp)
 {
 	if (git_signature_default(authorp, repo) == 0)
 		return 0;
@@ -1160,12 +1135,12 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 {
 	int nr = divelog.dives->nr;
 	struct dive *dive = get_dive(nr-1);
-	char* changes_made = get_changes_made();
+	std::string changes_made = get_changes_made();
 
 	if (create_empty) {
 		put_string(msg, "Initial commit to create empty repo.\n\n");
-	} else if (!empty_string(changes_made)) {
-		put_format(msg, "Changes made: \n\n%s\n", changes_made);
+	} else if (!changes_made.empty()) {
+		put_format(msg, "Changes made: \n\n%s\n", changes_made.c_str());
 	} else if (dive) {
 		dive_trip_t *trip = dive->divetrip;
 		const char *location = get_dive_location(dive) ? : "no location";
@@ -1187,12 +1162,9 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 		} while ((dc = dc->next) != NULL);
 		put_format(msg, "\n");
 	}
-	const char *user_agent = subsurface_user_agent();
-	put_format(msg, "Created by %s\n", user_agent);
-	free((void *)user_agent);
-	free(changes_made);
+	put_format(msg, "Created by %s\n", subsurface_user_agent().c_str());
 	if (verbose)
-		SSRF_INFO("Commit message:\n\n%s\n", mb_cstring(msg));
+		report_info("Commit message:\n\n%s\n", mb_cstring(msg));
 }
 
 static int create_new_commit(struct git_info *info, git_oid *tree_id, bool create_empty)
@@ -1213,19 +1185,19 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 		return report_error("Invalid branch name '%s'", info->branch);
 	case GIT_ENOTFOUND: /* We'll happily create it */
 		ref = NULL;
-		parent = try_to_find_parent(saved_git_id, info->repo);
+		parent = try_to_find_parent(saved_git_id.c_str(), info->repo);
 		break;
 	case 0:
 		if (git_reference_peel(&parent, ref, GIT_OBJ_COMMIT))
 			return report_error("Unable to look up parent in branch '%s'", info->branch);
 
-		if (saved_git_id) {
-			if (existing_filename && verbose)
-				SSRF_INFO("existing filename %s\n", existing_filename);
+		if (!saved_git_id.empty()) {
+			if (!existing_filename.empty() && verbose)
+				report_info("existing filename %s\n", existing_filename.c_str());
 			const git_oid *id = git_commit_id((const git_commit *) parent);
 			/* if we are saving to the same git tree we got this from, let's make
 			 * sure there is no confusion */
-			if (same_string(existing_filename, info->url) && git_oid_strcmp(id, saved_git_id))
+			if (existing_filename == info->url && git_oid_strcmp(id, saved_git_id.c_str()))
 				return report_error("The git branch does not match the git parent of the source");
 		}
 
@@ -1249,14 +1221,13 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 		/* Else we do want to create the new branch, but with the old commit */
 		commit = (git_commit *) parent;
 	} else {
-		struct membuffer commit_msg = { 0 };
+		struct membufferpp commit_msg;
 
 		create_commit_message(&commit_msg, create_empty);
 		if (git_commit_create_v(&commit_id, info->repo, NULL, author, author, NULL, mb_cstring(&commit_msg), tree, parent != NULL, parent)) {
 			git_signature_free(author);
 			return report_error("Git commit create failed (%s)", strerror(errno));
 		}
-		free_buffer(&commit_msg);
 
 		if (git_commit_lookup(&commit, info->repo, &commit_id)) {
 			git_signature_free(author);
@@ -1300,19 +1271,16 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 	return 0;
 }
 
-static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *result)
+static int write_git_tree(git_repository *repo, const struct dir *tree, git_oid *result)
 {
 	int ret;
-	struct dir *subdir;
 
 	/* Write out our subdirectories, add them to the treebuilder, and free them */
-	while ((subdir = tree->subdirs) != NULL) {
+	for (auto &subdir: tree->subdirs) {
 		git_oid id;
 
-		if (!write_git_tree(repo, subdir, &id))
-			tree_insert(tree->files, subdir->name, subdir->unique, &id, GIT_FILEMODE_TREE);
-		tree->subdirs = subdir->sibling;
-		free(subdir);
+		if (!write_git_tree(repo, subdir.get(), &id))
+			tree_insert(tree->files, subdir->name.c_str(), subdir->unique, &id, GIT_FILEMODE_TREE);
 	};
 
 	/* .. write out the resulting treebuilder */
@@ -1320,16 +1288,13 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 	if (ret && verbose) {
 		const git_error *gerr = giterr_last();
 		if (gerr)
-			SSRF_INFO("tree_insert failed with return %d error %s\n", ret, gerr->message);
+			report_info("tree_insert failed with return %d error %s\n", ret, gerr->message);
 	}
-
-	/* .. and free the now useless treebuilder */
-	git_treebuilder_free(tree->files);
 
 	return ret;
 }
 
-int do_git_save(struct git_info *info, bool select_only, bool create_empty)
+extern "C" int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 {
 	struct dir tree;
 	git_oid id;
@@ -1339,7 +1304,7 @@ int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 		return report_error("Unable to open git repository '%s[%s]'", info->url, info->branch);
 
 	if (verbose)
-		SSRF_INFO("git storage: do git save\n");
+		report_info("git storage: do git save\n");
 
 	if (!create_empty) // so we are actually saving the dives
 		git_storage_update_progress(translate("gettextFromC", "Preparing to save data"));
@@ -1348,11 +1313,9 @@ int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 	 * Check if we can do the cached writes - we need to
 	 * have the original git commit we loaded in the repo
 	 */
-	cached_ok = try_to_find_parent(saved_git_id, info->repo);
+	cached_ok = try_to_find_parent(saved_git_id.c_str(), info->repo);
 
 	/* Start with an empty tree: no subdirectories, no files */
-	tree.name[0] = 0;
-	tree.subdirs = NULL;
 	if (git_treebuilder_new(&tree.files, info->repo, NULL))
 		return report_error("git treebuilder failed");
 
@@ -1362,7 +1325,7 @@ int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 			return -1;
 
 	if (verbose)
-		SSRF_INFO("git storage, write git tree\n");
+		report_info("git storage, write git tree\n");
 
 	if (write_git_tree(info->repo, &tree, &id))
 		return report_error("git tree write failed");
@@ -1377,7 +1340,7 @@ int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 	return 0;
 }
 
-int git_save_dives(struct git_info *info, bool select_only)
+extern "C" int git_save_dives(struct git_info *info, bool select_only)
 {
 	/*
 	 * First, just try to open the local git repo without

@@ -7,7 +7,7 @@
 #include "subsurface-string.h"
 #include "selection.h"
 #include "table.h"
-#include "core/qthelper.h"
+#include "core/errorhelper.h"
 
 #ifdef DEBUG_TRIP
 void dump_trip_list(void)
@@ -92,7 +92,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	if (dive->divetrip == trip)
 		return;
 	if (dive->divetrip)
-		SSRF_INFO("Warning: adding dive to trip that has trip set\n");
+		report_info("Warning: adding dive to trip that has trip set\n");
 	insert_dive(&trip->dives, dive);
 	dive->divetrip = trip;
 }

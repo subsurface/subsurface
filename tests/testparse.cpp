@@ -237,10 +237,10 @@ void TestParse::testParseNewFormat()
 
 void TestParse::testParseDLD()
 {
-	struct memblock mem;
 	QString filename = SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.DLD";
 
-	QVERIFY(readfile(filename.toLatin1().data(), &mem) > 0);
+	auto [mem, err] = readfile(filename.toLatin1().data());
+	QVERIFY(err > 0);
 	QVERIFY(try_to_open_zip(filename.toLatin1().data(), &divelog) > 0);
 
 	fprintf(stderr, "number of dives from DLD: %d \n", divelog.dives->nr);

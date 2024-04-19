@@ -266,7 +266,7 @@ QMLManager::QMLManager() :
 		// remove the existing libdivecomputer logfile so we don't copy an old one by mistake
 		QFile libdcLog(libdcLogFileName);
 		libdcLog.remove();
-		logfile_name = copy_qstring(libdcLogFileName);
+		logfile_name = libdcLogFileName.toStdString();
 	} else {
 		appendTextToLog("No writeable location found, in-memory log only and no libdivecomputer log");
 	}
@@ -280,6 +280,7 @@ QMLManager::QMLManager() :
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	appendTextToLog(QStringLiteral("built with libgit2 %1.%2.%3").arg(git_maj).arg(git_min).arg(git_rev));
 	appendTextToLog(QStringLiteral("Running on %1").arg(QSysInfo::prettyProductName()));
+	appendTextToLog(QStringLiteral("Locale Languages offered %1, picked %2").arg(QLocale().uiLanguages().join(", ")).arg(prefs.locale.lang_locale));
 #if defined(Q_OS_ANDROID)
 	extern QString getAndroidHWInfo();
 	appendTextToLog(getAndroidHWInfo());
@@ -320,10 +321,6 @@ QMLManager::QMLManager() :
 	if (verbose)
 		connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &QMLManager::divesChanged);
 
-	// get updates to the undo/redo texts
-	connect(Command::getUndoStack(), &QUndoStack::undoTextChanged, this, &QMLManager::undoTextChanged);
-	connect(Command::getUndoStack(), &QUndoStack::redoTextChanged, this, &QMLManager::redoTextChanged);
-
 	// now that everything is setup, connect the application changed signal
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
@@ -333,6 +330,10 @@ QMLManager::QMLManager() :
 	// setup Command infrastructure
 	Command::init();
 	undoAction = Command::undoAction(this);
+
+	// get updates to the undo/redo texts
+	connect(Command::getUndoStack(), &QUndoStack::undoTextChanged, this, &QMLManager::undoTextChanged);
+	connect(Command::getUndoStack(), &QUndoStack::redoTextChanged, this, &QMLManager::redoTextChanged);
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
@@ -429,7 +430,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		git_local_only = false;
 		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
 	}
-	set_filename(encodedFilename.constData());
+	existing_filename = encodedFilename.toStdString();
 	if (git_local_only && qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD)
 		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 
@@ -496,7 +497,7 @@ bool QMLManager::createSupportEmail()
 	QAndroidJniObject activity = QtAndroid::androidActivity();
 	if (activity.isValid()) {
 		QAndroidJniObject applogfilepath = QAndroidJniObject::fromString(appLogFileName);
-		QAndroidJniObject libdcfilepath = QAndroidJniObject::fromString(logfile_name);
+		QAndroidJniObject libdcfilepath = QAndroidJniObject::fromString(QString::fromStdString(logfile_name));
 		bool success = activity.callMethod<jboolean>("supportEmail",
 					"(Ljava/lang/String;Ljava/lang/String;)Z", // two string arguments, return bool
 					applogfilepath.object<jstring>(), libdcfilepath.object<jstring>());
@@ -507,7 +508,7 @@ bool QMLManager::createSupportEmail()
 	qDebug() << __FUNCTION__ << "failed to share the logFiles via intent, use the fall-back mail body method";
 #elif defined(Q_OS_IOS)
 	// call into objC++ code to share on iOS
-	QString libdcLogFileName(logfile_name);
+	QString libdcLogFileName = QString::fromStdString(logfile_name);
 	iosshare.supportEmail(appLogFileName, libdcLogFileName);
 	// Unfortunately I haven't been able to figure out how to wait until the mail was sent
 	// so that this could tell us whether this was successful or not
@@ -535,7 +536,7 @@ QString QMLManager::getCombinedLogs()
 	copyString += MessageHandlerModel::self()->logAsString();
 
 	// Add heading and append libdivecomputer.log
-	QFile f(logfile_name);
+	QFile f(logfile_name.c_str());
 	if (f.open(QFile::ReadOnly | QFile::Text)) {
 		copyString += "\n\n\n---------- libdivecomputer.log ----------\n";
 
@@ -571,24 +572,24 @@ void QMLManager::finishSetup()
 	    !qPrefCloudStorage::cloud_storage_password().isEmpty() &&
 	    getCloudURL(url) == 0) {
 		openLocalThenRemote(url);
-	} else if (!empty_string(existing_filename) &&
+	} else if (!existing_filename.empty() &&
 		   qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
 		rememberOldStatus();
-		set_filename(qPrintable(nocloud_localstorage()));
+		existing_filename = nocloud_localstorage().toStdString();
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		emit passwordStateChanged();
 		saveCloudCredentials(qPrefCloudStorage::cloud_storage_email(), qPrefCloudStorage::cloud_storage_password(), qPrefCloudStorage::cloud_storage_pin());
 		appendTextToLog(tr("working in no-cloud mode"));
-		int error = parse_file(existing_filename, &divelog);
+		int error = parse_file(existing_filename.c_str(), &divelog);
 		if (error) {
 			// we got an error loading the local file
 			setNotificationText(tr("Error parsing local storage, giving up"));
-			set_filename(NULL);
+			existing_filename.clear();
 		} else {
 			// successfully opened the local file, now add thigs to the dive list
 			consumeFinishedLoad();
 			updateHaveLocalChanges(true);
-			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(divelog.dives->nr).arg(existing_filename));
+			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(divelog.dives->nr).arg(existing_filename.c_str()));
 		}
 	} else {
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
@@ -601,6 +602,14 @@ void QMLManager::finishSetup()
 	// this could have brought in new cache directories, so make sure QML
 	// calls our getter function again and doesn't show us outdated information
 	emit cloudCacheListChanged();
+
+	// This is used to instruct the main-thread to sync the current state to disk/cloud.
+	// We must not sync to cloud from signal-handlers in the main thread, because cloud
+	// access runs the main event loop and that might delete the object that caused the
+	// signal. By using a connection of the "QueuedConnection" type, the signal will be
+	// queued and only executed once the signal handler finishes and the main event
+	// loop retakes control.
+	connect(this, &QMLManager::changesNeedSavingSignal, this, &QMLManager::saveUnsaved, Qt::QueuedConnection);
 }
 
 QMLManager::~QMLManager()
@@ -616,9 +625,6 @@ QMLManager *QMLManager::instance()
 {
 	return m_instance;
 }
-
-#define CLOUDURL QString(prefs.cloud_base_url)
-#define CLOUDREDIRECTURL CLOUDURL + "/cgi-bin/redirect.pl"
 
 void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &newPassword, const QString &pin)
 {
@@ -768,7 +774,7 @@ void QMLManager::deleteAccount()
 	qPrefCloudStorage::set_cloud_storage_password("");
 	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 	emit passwordStateChanged();
-	set_filename(qPrintable(nocloud_localstorage()));
+	existing_filename = nocloud_localstorage().toStdString();
 	setStartPageText(tr("Cloud storage account deleted."));
 	return;
 }
@@ -807,12 +813,12 @@ void QMLManager::loadDivesWithValidCredentials()
 		setDiveListProcessing(false);
 		if (!error) {
 			report_error("filename is now %s", fileNamePrt.data());
-			set_filename(fileNamePrt.data());
+			existing_filename = fileNamePrt.toStdString();
 		} else {
 			report_error("failed to open file %s", fileNamePrt.data());
 			setNotificationText(consumeError());
 			revertToNoCloudIfNeeded();
-			set_filename(NULL);
+			existing_filename.clear();
 			return;
 		}
 		consumeFinishedLoad();
@@ -872,7 +878,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		rememberOldStatus();
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		emit passwordStateChanged();
-		set_filename(qPrintable(nocloud_localstorage()));
+		existing_filename = nocloud_localstorage().toStdString();
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
 }
@@ -1443,22 +1449,43 @@ void QMLManager::addDiveToTrip(int id, int tripId)
 	changesNeedSaving();
 }
 
-void QMLManager::changesNeedSaving(bool fromUndo)
+void QMLManager::saveUnsaved()
 {
+	// There might have been spurious signals, so let's check if there is anything to save first.
+	if (!unsavedChanges())
+		return;
+
 	// we no longer save right away on iOS because file access is so slow; on the other hand,
 	// on Android the save as the user switches away doesn't seem to work... drat.
 	// as a compromise for now we save just to local storage on Android right away (that appears
 	// to be reasonably fast), but don't save at all (and only remember that we need to save things
 	// on iOS
 	// on all other platforms we just save the changes and be done with it
+#if defined(Q_OS_IOS)
+	saveChangesLocal();
+#else
+	saveChangesCloud(false);
+#endif
+}
+
+void QMLManager::changesNeedSaving(bool fromUndo)
+{
 	mark_divelist_changed(true);
 	emit syncStateChanged();
-#if defined(Q_OS_IOS)
-	saveChangesLocal(fromUndo);
-#else
-	saveChangesCloud(false, fromUndo);
-#endif
 	updateAllGlobalLists();
+
+	// provide a useful undo/redo notification
+	// NOTE: the QML UI interprets a leading '[action]' (where only the two brackets are checked for)
+	//       as an indication to use the text between those two brackets as the label of a button that
+	//       can be used to open the context menu
+	QString msgFormat = tr("[%1]Changes saved:'%2'.\n%1 possible via context menu");
+	if (fromUndo)
+		setNotificationText(msgFormat.arg(tr("Redo")).arg(tr("Undo: %1").arg(getRedoText())));
+	else
+		setNotificationText(msgFormat.arg(tr("Undo")).arg(getUndoText()));
+
+	// Asl the main event loop to save the changes to disk
+	emit changesNeedSavingSignal();
 }
 
 void QMLManager::openNoCloudRepo()
@@ -1476,7 +1503,7 @@ void QMLManager::openNoCloudRepo()
 		// repo doesn't exist, create it and write the empty dive list to it
 		git_create_local_repo(qPrintable(filename));
 		save_dives(qPrintable(filename));
-		set_filename(qPrintable(filename));
+		existing_filename = filename.toStdString();
 		auto s = qPrefLog::instance();
 		s->set_default_filename(qPrintable(filename));
 		s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
@@ -1484,14 +1511,14 @@ void QMLManager::openNoCloudRepo()
 	openLocalThenRemote(filename);
 }
 
-void QMLManager::saveChangesLocal(bool fromUndo)
+void QMLManager::saveChangesLocal()
 {
 	if (unsavedChanges()) {
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
-			if (empty_string(existing_filename)) {
+			if (existing_filename.empty()) {
 				QString filename = nocloud_localstorage();
 				git_create_local_repo(qPrintable(filename));
-				set_filename(qPrintable(filename));
+				existing_filename = filename.toStdString();
 				auto s = qPrefLog::instance();
 				s->set_default_filename(qPrintable(filename));
 				s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
@@ -1504,31 +1531,22 @@ void QMLManager::saveChangesLocal(bool fromUndo)
 		}
 		bool glo = git_local_only;
 		git_local_only = true;
-		int error = save_dives(existing_filename);
+		int error = save_dives(existing_filename.c_str());
 		git_local_only = glo;
 		if (error) {
 			setNotificationText(consumeError());
-			set_filename(NULL);
+			existing_filename.clear();
 			return;
 		}
 		mark_divelist_changed(false);
 		Command::setClean();
 		updateHaveLocalChanges(true);
-		// provide a useful undo/redo notification
-		// NOTE: the QML UI interprets a leading '[action]' (where only the two brackets are checked for)
-		//       as an indication to use the text between those two brackets as the label of a button that
-		//       can be used to open the context menu
-		QString msgFormat = tr("[%1]Changes saved:'%2'.\n%1 possible via context menu");
-		if (fromUndo)
-			setNotificationText(msgFormat.arg(tr("Redo")).arg(tr("Undo: %1").arg(getRedoText())));
-		else
-			setNotificationText(msgFormat.arg(tr("Undo")).arg(getUndoText()));
 	} else {
 		appendTextToLog("local save requested with no unsaved changes");
 	}
 }
 
-void QMLManager::saveChangesCloud(bool forceRemoteSync, bool fromUndo)
+void QMLManager::saveChangesCloud(bool forceRemoteSync)
 {
 	if (!unsavedChanges() && !forceRemoteSync) {
 		appendTextToLog("asked to save changes but no unsaved changes");
@@ -1536,7 +1554,7 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync, bool fromUndo)
 	}
 	// first we need to store any unsaved changes to the local repo
 	gitProgressCB("Save changes to local cache");
-	saveChangesLocal(fromUndo);
+	saveChangesLocal();
 	// if the user asked not to push to the cloud we are done
 	if (git_local_only && !forceRemoteSync)
 		return;
@@ -2364,13 +2382,13 @@ QStringList QMLManager::cloudCacheList() const
 	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory()));
 	QStringList dirs = localCacheDir.entryList();
 	QStringList result;
-	foreach(QString dir, dirs) {
+	for (const QString &dir: dirs) {
 		QString originsDir = QString("%1/cloudstorage/%2/.git/refs/remotes/origin/").arg(system_default_directory()).arg(dir);
 		QDir remote(originsDir);
 		if (dir == "localrepo") {
 			result << QString("localrepo[master]");
 		} else {
-			foreach(QString branch, remote.entryList().filter(QRegularExpression("...+")))
+			for (const QString &branch: remote.entryList().filter(QRegularExpression("...+")))
 				result << QString("%1[%2]").arg(dir).arg(branch);
 		}
 	}

@@ -84,9 +84,11 @@ const QSize &StarWidgetsDelegate::starSize() const
 	return minStarSize;
 }
 
-ComboBoxDelegate::ComboBoxDelegate(QAbstractItemModel *model, QObject *parent, bool allowEdit) : QStyledItemDelegate(parent), model(model)
+ComboBoxDelegate::ComboBoxDelegate(std::function<QAbstractItemModel *(QWidget *)> create_model_func,
+				   QObject *parent, bool allowEdit) : QStyledItemDelegate(parent),
+	create_model_func(std::move(create_model_func)),
+	editable(allowEdit)
 {
-	editable = allowEdit;
 	connect(this, &ComboBoxDelegate::closeEditor, this, &ComboBoxDelegate::editorClosed);
 }
 
@@ -105,7 +107,7 @@ void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
 	QComboBox *comboDelegate = new QComboBox(parent);
-	comboDelegate->setModel(model);
+	comboDelegate->setModel(create_model_func(comboDelegate));
 	comboDelegate->setEditable(true);
 	comboDelegate->completer()->setCaseSensitivity(Qt::CaseInsensitive);
 	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
@@ -207,34 +209,34 @@ void ComboBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionV
 	editor->setGeometry(defaultRect);
 }
 
-void TankInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const
+void TankInfoDelegate::setModelData(QWidget *, QAbstractItemModel *model, const QModelIndex &index) const
 {
 	QAbstractItemModel *mymodel = currCombo.model;
-	TankInfoModel *tanks = TankInfoModel::instance();
 	QString cylinderName = currCombo.activeText.trimmed();
 	if (cylinderName.isEmpty()) {
 		mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, CylindersModel::TEMP_ROLE);
 		return;
 	}
-	QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cylinderName, 1, Qt::MatchFixedString | Qt::MatchWrap);
-	int row;
-	if (matches.isEmpty()) {
-		tanks->insertRows(tanks->rowCount(), 1);
-		tanks->setData(tanks->index(tanks->rowCount() - 1, 0), currCombo.activeText);
-		row = tanks->rowCount() - 1;
-	} else {
-		row = matches.first().row();
-		cylinderName = matches.first().data().toString();
+	int tankSize = 0;
+	int tankPressure = 0;
+	tank_info *info = get_tank_info(&tank_info_table, qPrintable(cylinderName));
+	if (info) {
+		// OMG, the units here are a mess.
+		tankSize = info->ml != 0 ? info->ml : lrint(cuft_to_l(info->cuft) * 1000.0);
+		tankPressure = info->bar != 0 ? info->bar * 1000 : psi_to_mbar(info->psi);
 	}
-	int tankSize = tanks->data(tanks->index(row, TankInfoModel::ML)).toInt();
-	int tankPressure = tanks->data(tanks->index(row, TankInfoModel::BAR)).toInt();
 
 	mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, CylindersModel::TEMP_ROLE);
 	mymodel->setData(IDX(CylindersModel::WORKINGPRESS), tankPressure, CylindersModel::TEMP_ROLE);
 	mymodel->setData(IDX(CylindersModel::SIZE), tankSize, CylindersModel::TEMP_ROLE);
 }
 
-TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoModel::instance(), parent, true)
+static QAbstractItemModel *createTankInfoModel(QWidget *parent)
+{
+	return new TankInfoModel(parent);
+}
+
+TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(&createTankInfoModel, parent, true)
 {
 }
 
@@ -340,20 +342,19 @@ void WSInfoDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint 
 void WSInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const
 {
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
-	WSInfoModel *wsim = WSInfoModel::instance();
 	QString weightName = currCombo.activeText;
-	QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, weightName, 1, Qt::MatchFixedString | Qt::MatchWrap);
-	int grams = 0;
-	if (!matches.isEmpty()) {
-		int row = matches.first().row();
-		weightName = matches.first().data().toString();
-		grams = wsim->data(wsim->index(row, WSInfoModel::GR)).toInt();
-	}
+	ws_info_t *info = get_weightsystem_description(qPrintable(weightName));
+	int grams = info ? info->grams : 0;
 
 	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ { grams }, copy_qstring(weightName), false });
 }
 
-WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(WSInfoModel::instance(), parent, true)
+static QAbstractItemModel *createWSInfoModel(QWidget *parent)
+{
+	return new WSInfoModel(parent);
+}
+
+WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(&createWSInfoModel, parent, true)
 {
 }
 
@@ -369,7 +370,9 @@ void AirTypesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
 	model->setData(index, QVariant(combo->currentIndex()));
 }
 
-AirTypesDelegate::AirTypesDelegate(QAbstractItemModel *model, QObject *parent) : ComboBoxDelegate(model, parent, false)
+AirTypesDelegate::AirTypesDelegate(const dive &d, QObject *parent) :
+	ComboBoxDelegate([d] (QWidget *parent) { return new GasSelectionModel(d, parent); },
+			      parent, false)
 {
 }
 
@@ -385,7 +388,12 @@ void DiveTypesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
 	model->setData(index, QVariant(combo->currentIndex()));
 }
 
-DiveTypesDelegate::DiveTypesDelegate(QAbstractItemModel *model, QObject *parent) : ComboBoxDelegate(model, parent, false)
+static QAbstractItemModel *createDiveTypeSelectionModel(QWidget *parent)
+{
+	return new DiveTypeSelectionModel(parent);
+}
+
+DiveTypesDelegate::DiveTypesDelegate(QObject *parent) : ComboBoxDelegate(&createDiveTypeSelectionModel, parent, false)
 {
 }
 

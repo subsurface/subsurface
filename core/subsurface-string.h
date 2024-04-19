@@ -60,5 +60,27 @@ extern double strtod_flags(const char *str, const char **ptr, unsigned int flags
 
 #ifdef __cplusplus
 }
+
+#include <string>
+template <class... Args>
+std::string format_string_std(const char *fmt, Args&&... args)
+{
+	size_t stringsize = snprintf(NULL, 0, fmt, std::forward<Args>(args)...);
+	if (stringsize == 0)
+		return std::string();
+	std::string res;
+	res.resize(stringsize); // Pointless clearing, oh my.
+	// This overwrites the terminal null-byte of std::string.
+	// That's probably "undefined behavior". Oh my.
+	snprintf(res.data(), stringsize + 1, fmt, std::forward<Args>(args)...);
+	return res;
+}
+
+// Sadly, starts_with only with C++20!
+inline bool starts_with(const std::string &s, const char *s2)
+{
+	return s.rfind(s2, 0) == 0;
+}
+
 #endif
 #endif // SUBSURFACE_STRING_H

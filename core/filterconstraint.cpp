@@ -622,27 +622,23 @@ filter_constraint::~filter_constraint()
 		delete data.string_list;
 }
 
-extern "C" char *filter_constraint_data_to_string(const filter_constraint *c)
+std::string filter_constraint_data_to_string(const filter_constraint *c)
 {
-	QString s;
 	if (filter_constraint_is_timestamp(c->type)) {
-		char *from_s = format_datetime(c->data.timestamp_range.from);
-		char *to_s = format_datetime(c->data.timestamp_range.to);
-		s = QString(from_s) + ',' + QString(to_s);
-		free(from_s);
-		free(to_s);
+		std::string from_s = format_datetime(c->data.timestamp_range.from);
+		std::string to_s = format_datetime(c->data.timestamp_range.to);
+		return from_s + ',' + to_s;
 	} else if (filter_constraint_is_string(c->type)) {
 		// TODO: this obviously breaks if the strings contain ",".
 		// That is currently not supported by the UI, but one day we might
 		// have to escape the strings.
-		s = c->data.string_list->join(",");
+		return c->data.string_list->join(",").toStdString();
 	} else if (filter_constraint_is_multiple_choice(c->type)) {
-		s = QString::number(c->data.multiple_choice);
+		return std::to_string(c->data.multiple_choice);
 	} else {
-		s = QString::number(c->data.numerical_range.from) + ',' +
-		    QString::number(c->data.numerical_range.to);
+		return std::to_string(c->data.numerical_range.from) + ',' +
+		       std::to_string(c->data.numerical_range.to);
 	}
-	return copy_qstring(s);
 }
 
 void filter_constraint_set_stringlist(filter_constraint &c, const QString &s)

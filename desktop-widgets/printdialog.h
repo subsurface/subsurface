@@ -20,11 +20,12 @@ class PrintDialog : public QDialog {
 
 public:
 	// If singleDive is non-null, print only that single dive
-	explicit PrintDialog(dive *singleDive, QWidget *parent = 0);
+	explicit PrintDialog(dive *singleDive, const QString &filename, QWidget *parent = 0);
 	~PrintDialog();
 
 private:
 	dive *singleDive;
+	QString filename;
 	PrintOptions *optionsWidget;
 	QProgressBar *progressBar;
 	Printer *printer;

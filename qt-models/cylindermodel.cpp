@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "cylindermodel.h"
-#include "tankinfomodel.h"
 #include "models.h"
 #include "commands/command.h"
 #include "core/qthelper.h"
@@ -381,23 +380,12 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		cyl.type.description = newType.c_str();
 		type = Command::EditCylinderType::TYPE;
 		break;
-	case SIZE: {
-			TankInfoModel *tanks = TankInfoModel::instance();
-			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl.type.description);
-
-			cyl.type.size = string_to_volume(qPrintable(vString), cyl.type.workingpressure);
-			if (!matches.isEmpty())
-				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl.type.size.mliter);
-		}
+	case SIZE:
+		cyl.type.size = string_to_volume(qPrintable(vString), cyl.type.workingpressure);
 		type = Command::EditCylinderType::TYPE;
 		break;
-	case WORKINGPRESS: {
-			TankInfoModel *tanks = TankInfoModel::instance();
-			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl.type.description);
-			cyl.type.workingpressure = string_to_pressure(qPrintable(vString));
-			if (!matches.isEmpty())
-				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl.type.workingpressure.mbar / 1000.0);
-		}
+	case WORKINGPRESS:
+		cyl.type.workingpressure = string_to_pressure(qPrintable(vString));
 		type = Command::EditCylinderType::TYPE;
 		break;
 	case START:

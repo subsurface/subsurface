@@ -13,7 +13,7 @@
 		<file alias="subsurface_fr_FR">build-ios/translations/subsurface_fr_FR.qm</file>
 		<file alias="subsurface_he">build-ios/translations/subsurface_he.qm</file>
 		<file alias="subsurface_it_IT">build-ios/translations/subsurface_it_IT.qm</file>
-		<file alias="subsurface_it_IT">build-ios/translations/subsurface_ko_KR.qm</file>
+		<file alias="subsurface_ko_KR">build-ios/translations/subsurface_ko_KR.qm</file>
 		<file alias="subsurface_nb_NO">build-ios/translations/subsurface_nb_NO.qm</file>
 		<file alias="subsurface_nl_NL">build-ios/translations/subsurface_nl_NL.qm</file>
 		<file alias="subsurface_pl_PL">build-ios/translations/subsurface_pl_PL.qm</file>

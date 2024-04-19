@@ -99,7 +99,7 @@ void GroupedLineEdit::addColor(QColor color)
 QStringList GroupedLineEdit::getBlockStringList()
 {
 	QStringList retList;
-	foreach (const Private::Block &block, d->blocks)
+	for (const Private::Block &block: d->blocks)
 		retList.append(block.text);
 	return retList;
 }
@@ -179,7 +179,7 @@ void GroupedLineEdit::paintEvent(QPaintEvent *e)
 
 	QVectorIterator<QColor> i(d->colors);
 	i.toFront();
-	foreach (const Private::Block &block, d->blocks) {
+	for (const Private::Block &block: d->blocks) {
 		qreal start_x = line.cursorToX(block.start, QTextLine::Leading);
 		qreal end_x = line.cursorToX(block.end-1, QTextLine::Trailing);
 

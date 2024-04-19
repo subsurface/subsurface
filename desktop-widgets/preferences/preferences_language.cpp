@@ -27,11 +27,11 @@ PreferencesLanguage::PreferencesLanguage() : AbstractPreferencesWidget(tr("Langu
 	dateFormatShortMap.insert("MM/dd/yyyy", "M/d/yy");
 	dateFormatShortMap.insert("dd.MM.yyyy", "d.M.yy");
 	dateFormatShortMap.insert("yyyy-MM-dd", "yy-M-d");
-	foreach (QString format, dateFormatShortMap.keys())
+	for (const QString &format: dateFormatShortMap.keys())
 		ui->dateFormatEntry->addItem(format);
 	ui->dateFormatEntry->completer()->setCaseSensitivity(Qt::CaseSensitive);
-	connect(ui->dateFormatEntry, SIGNAL(currentIndexChanged(const QString&)),
-		this, SLOT(dateFormatChanged(const QString&)));
+	connect(ui->dateFormatEntry, &QComboBox::currentTextChanged,
+		this, &PreferencesLanguage::dateFormatChanged);
 
 	ui->timeFormatEntry->addItem("hh:mm");
 	ui->timeFormatEntry->addItem("h:mm AP");

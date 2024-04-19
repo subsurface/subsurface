@@ -8,6 +8,7 @@
 #endif
 
 #include "stats/statsview.h"
+#include "core/devicedetails.h"
 #include "core/globals.h"
 #include "core/qt-gui.h"
 #include "core/settings/qPref.h"
@@ -66,7 +67,6 @@ void init_ui()
 void exit_ui()
 {
 	free_globals();
-	free((void *)existing_filename);
 }
 
 #ifdef SUBSURFACE_MOBILE
@@ -133,8 +133,8 @@ void run_mobile_ui(double initial_font_size)
 	qmlRegisterUncreatableType<QMLManager>("org.subsurfacedivelog.mobile",1,0,"ExportType","Enum is not a type");
 
 #ifdef SUBSURFACE_MOBILE_DESKTOP
-	if (testqml) {
-		QString fileLoad(testqml);
+	if (!testqml.empty()) {
+		QString fileLoad(testqml.c_str());
 		fileLoad += "/main.qml";
 		engine.load(QUrl(fileLoad));
 	} else {
@@ -201,6 +201,7 @@ Q_DECLARE_METATYPE(duration_t)
 static void register_meta_types()
 {
 	qRegisterMetaType<duration_t>();
+	qRegisterMetaType<DeviceDetails>();
 }
 
 template <typename T>

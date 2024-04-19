@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "messagehandlermodel.h"
-#include "core/qthelper.h"
+#include "core/errorhelper.h"
 #include "QRegularExpression"
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
@@ -47,7 +47,7 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 	m_data.append({message, type});
 	endInsertRows();
-	SSRF_INFO("%s", qPrintable(message));
+	report_info("%s", qPrintable(message));
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	writeToAppLogFile(message);
 #endif
@@ -62,6 +62,7 @@ const QString MessageHandlerModel::logAsString()
 		copyString += data.message + "\n";
 	return copyString;
 }
+
 QVariant MessageHandlerModel::data(const QModelIndex& idx, int role) const
 {
 	switch(role) {

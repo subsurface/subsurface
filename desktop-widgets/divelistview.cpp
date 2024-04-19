@@ -486,7 +486,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 	QItemSelection newSelected = selected.size() ? selected : selectionModel()->selection();
 
 	std::vector<dive *> addToSelection, removeFromSelection;
-	Q_FOREACH (const QModelIndex &index, newDeselected.indexes()) {
+	for (const QModelIndex &index: newDeselected.indexes()) {
 		if (index.column() != 0)
 			continue;
 		const QAbstractItemModel *model = index.model();
@@ -499,7 +499,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 				removeFromSelection.push_back(trip->dives.dives[i]);
 		}
 	}
-	Q_FOREACH (const QModelIndex &index, newSelected.indexes()) {
+	for (const QModelIndex &index: newSelected.indexes()) {
 		if (index.column() != 0)
 			continue;
 
@@ -884,7 +884,7 @@ void DiveListView::loadImagesFromURLs(const QString &urls)
 			if (image.isNull()) {
 				// If this is not an image, maybe it's an html file and Miika can provide some xslr magic to extract images.
 				// In this case we would call the function recursively on the list of image source urls;
-				report_error(qPrintable(tr("%1 does not appear to be an image").arg(url.toString())));
+				report_error("%s", qPrintable(tr("%1 does not appear to be an image").arg(url.toString())));
 				return;
 			}
 

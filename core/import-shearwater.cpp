@@ -17,10 +17,8 @@
 
 #include <stdlib.h>
 
-static int shearwater_cylinders(void *param, int columns, char **data, char **column)
+static int shearwater_cylinders(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
 	cylinder_t *cyl;
 
@@ -40,10 +38,8 @@ static int shearwater_cylinders(void *param, int columns, char **data, char **co
 	return 0;
 }
 
-static int shearwater_changes(void *param, int columns, char **data, char **column)
+static int shearwater_changes(void *param, int columns, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
 	cylinder_t *cyl;
 
@@ -83,10 +79,8 @@ static int shearwater_changes(void *param, int columns, char **data, char **colu
 	return 0;
 }
 
-static int shearwater_profile_sample(void *param, int columns, char **data, char **column)
+static int shearwater_profile_sample(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
 	int d6, d7;
 
@@ -146,10 +140,8 @@ static int shearwater_profile_sample(void *param, int columns, char **data, char
 	return 0;
 }
 
-static int shearwater_ai_profile_sample(void *param, int columns, char **data, char **column)
+static int shearwater_ai_profile_sample(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
 	int d6, d9;
 
@@ -217,10 +209,8 @@ static int shearwater_ai_profile_sample(void *param, int columns, char **data, c
 	return 0;
 }
 
-static int shearwater_mode(void *param, int columns, char **data, char **column)
+static int shearwater_mode(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
 
 	if (data[0])
@@ -229,11 +219,8 @@ static int shearwater_mode(void *param, int columns, char **data, char **column)
 	return 0;
 }
 
-static int shearwater_dive(void *param, int columns, char **data, char **column)
+static int shearwater_dive(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
-
 	int retval = 0;
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
@@ -275,7 +262,7 @@ static int shearwater_dive(void *param, int columns, char **data, char **column)
 	settings_start(state);
 	dc_settings_start(state);
 	if (data[9])
-		utf8_string(data[9], &state->cur_settings.dc.serial_nr);
+		utf8_string_std(data[9], &state->cur_settings.dc.serial_nr);
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
@@ -348,11 +335,8 @@ static int shearwater_dive(void *param, int columns, char **data, char **column)
 	return SQLITE_OK;
 }
 
-static int shearwater_cloud_dive(void *param, int columns, char **data, char **column)
+static int shearwater_cloud_dive(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
-
 	int retval = 0;
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
@@ -408,7 +392,7 @@ static int shearwater_cloud_dive(void *param, int columns, char **data, char **c
 	settings_start(state);
 	dc_settings_start(state);
 	if (data[9])
-		utf8_string(data[9], &state->cur_settings.dc.serial_nr);
+		utf8_string_std(data[9], &state->cur_settings.dc.serial_nr);
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
@@ -488,15 +472,11 @@ static int shearwater_cloud_dive(void *param, int columns, char **data, char **c
 	return SQLITE_OK;
 }
 
-int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
+extern "C" int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
-	UNUSED(buffer);
-	UNUSED(size);
-
 	int retval;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.sql_handle = handle;
 
@@ -506,7 +486,6 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	char get_dives[] = "select l.number,timestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel,i.diveId FROM dive_info AS i JOIN dive_logs AS l ON i.diveId=l.diveId";
 
 	retval = sqlite3_exec(handle, get_dives, &shearwater_dive, &state, NULL);
-	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);
@@ -516,22 +495,17 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	return 0;
 }
 
-int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
+extern "C" int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
-	UNUSED(buffer);
-	UNUSED(size);
-
 	int retval;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select l.number,strftime('%s', DiveDate),location||' / '||site,buddy,notes,imperialUnits,maxDepth,DiveLengthTime,startSurfacePressure,computerSerial,computerModel,d.diveId,l.sampleRateMs / 1000 FROM dive_details AS d JOIN dive_logs AS l ON d.diveId=l.diveId";
 
 	retval = sqlite3_exec(handle, get_dives, &shearwater_cloud_dive, &state, NULL);
-	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);

@@ -156,7 +156,7 @@ void fill_computer_list()
 		descriptorLookup[QString(vendor).toLower() + QString(product).toLower()] = descriptor;
 	}
 	dc_iterator_free(iterator);
-	Q_FOREACH (QString vendor, vendorList) {
+	for (const QString &vendor: vendorList) {
 		auto &l = productList[vendor];
 		std::sort(l.begin(), l.end());
 	}
@@ -194,9 +194,9 @@ void show_computer_list()
 {
 	unsigned int transportMask = get_supported_transports(NULL);
 	qDebug() << "Supported dive computers:";
-	Q_FOREACH (QString vendor, vendorList) {
+	for (const QString &vendor: vendorList) {
 		QString msg = vendor + ": ";
-		Q_FOREACH (QString product, productList[vendor]) {
+		for (const QString &product: productList[vendor]) {
 			dc_descriptor_t *descriptor = descriptorLookup[vendor.toLower() + product.toLower()];
 			unsigned int transport = dc_descriptor_get_transports(descriptor) & transportMask;
 			QString transportString = getTransportString(transport);

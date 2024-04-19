@@ -106,12 +106,11 @@ static char *parse_dan_new_line(char *buf, const char *NL)
 	return iter;
 }
 
-static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, const char *tag);
+static int try_to_xslt_open_csv(const char *filename, std::string &mem, const char *tag);
 static int parse_dan_format(const char *filename, struct xml_params *params, struct divelog *log)
 {
 	int ret = 0, i;
 	size_t end_ptr = 0;
-	struct memblock mem, mem_csv;
 	char tmpbuf[MAXCOLDIGITS];
 	int params_orig_size = xml_params_count(params);
 
@@ -119,25 +118,23 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 	const char *NL = NULL;
 	char *iter = NULL;
 
-	if (readfile(filename, &mem) < 0)
+	auto [mem, err] = readfile(filename);
+	if (err < 0)
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
 
 	/* Determine NL (new line) character and the start of CSV data */
-	if ((ptr = strstr(mem.buffer, "\r\n")) != NULL) {
+	if ((ptr = strstr(mem.data(), "\r\n")) != NULL) {
 		NL = "\r\n";
-	} else if ((ptr = strstr(mem.buffer, "\n")) != NULL) {
+	} else if ((ptr = strstr(mem.data(), "\n")) != NULL) {
 		NL = "\n";
 	} else {
 		fprintf(stderr, "DEBUG: failed to detect NL\n");
 		return -1;
 	}
 
-	while ((end_ptr < mem.size) && (ptr = strstr(mem.buffer + end_ptr, "ZDH"))) {
+	while ((end_ptr < mem.size()) && (ptr = strstr(mem.data() + end_ptr, "ZDH"))) {
 		xml_params_resize(params, params_orig_size); // restart with original parameter block
 		char *iter_end = NULL;
-
-		mem_csv.buffer = malloc(mem.size + 1);
-		mem_csv.size = mem.size;
 
 		iter = ptr + 4;
 		iter = strchr(iter, '|');
@@ -195,7 +192,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 
 		/* We got a trailer, no samples on this dive */
 		if (strncmp(iter, "ZDT", 3) == 0) {
-			end_ptr = iter - (char *)mem.buffer;
+			end_ptr = iter - mem.data();
 
 			/* Water temperature */
 			memset(tmpbuf, 0, sizeof(tmpbuf));
@@ -218,7 +215,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 		/* After ZDH we should get either ZDT (above) or ZDP */
 		if (strncmp(iter, "ZDP{", 4) != 0) {
 			fprintf(stderr, "DEBUG: Input appears to violate DL7 specification\n");
-			end_ptr = iter - (char *)mem.buffer;
+			end_ptr = iter - mem.data();
 			continue;
 		}
 
@@ -230,19 +227,20 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 		if (!ptr)
 			return -1;
 
-		end_ptr = ptr - (char *)mem.buffer;
+		end_ptr = ptr - mem.data();
 
 		/* Copy the current dive data to start of mem_csv buffer */
-		memcpy(mem_csv.buffer, ptr, mem.size - (ptr - (char *)mem.buffer));
-		ptr = strstr(mem_csv.buffer, "ZDP}");
+		std::string mem_csv(ptr,  mem.size() - (ptr - mem.data()));
+
+		ptr = strstr(mem_csv.data(), "ZDP}");
 		if (ptr) {
 			*ptr = 0;
 		} else {
 			fprintf(stderr, "DEBUG: failed to find end ZDP\n");
 			return -1;
 		}
-		mem_csv.size = ptr - (char*)mem_csv.buffer;
-		end_ptr += ptr - (char *)mem_csv.buffer;
+		mem_csv.resize(ptr - mem_csv.data());
+		end_ptr += ptr - mem_csv.data();
 
 		iter = parse_dan_new_line(ptr + 1, NL);
 		if (iter && strncmp(iter, "ZDT", 3) == 0) {
@@ -262,23 +260,19 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 			}
 		}
 
-		if (try_to_xslt_open_csv(filename, &mem_csv, "csv"))
+		if (try_to_xslt_open_csv(filename, mem_csv, "csv"))
 			return -1;
 
-		ret |= parse_xml_buffer(filename, mem_csv.buffer, mem_csv.size, log, params);
-
-		free(mem_csv.buffer);
+		ret |= parse_xml_buffer(filename, mem_csv.data(), mem_csv.size(), log, params);
 	}
-
-	free(mem.buffer);
 
 	return ret;
 }
 
-int parse_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log)
+extern "C" int parse_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log)
 {
 	int ret;
-	struct memblock mem;
+	std::string mem;
 	time_t now;
 	struct tm *timep = NULL;
 	char tmpbuf[MAXCOLDIGITS];
@@ -293,7 +287,6 @@ int parse_csv_file(const char *filename, struct xml_params *params, const char *
 	if (filename == NULL)
 		return report_error("No CSV filename");
 
-	mem.size = 0;
 	if (!strcmp("DL7", csvtemplate)) {
 		return parse_dan_format(filename, params, log);
 	} else if (strcmp(xml_params_get_key(params, 0), "date")) {
@@ -305,12 +298,11 @@ int parse_csv_file(const char *filename, struct xml_params *params, const char *
 
 		/* As the parameter is numeric, we need to ensure that the leading zero
 		 * is not discarded during the transform, thus prepend time with 1 */
-
 		strftime(tmpbuf, MAXCOLDIGITS, "1%H%M", timep);
 		xml_params_add(params, "time", tmpbuf);
 	}
 
-	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
+	if (try_to_xslt_open_csv(filename, mem, csvtemplate))
 		return -1;
 
 	/*
@@ -327,25 +319,28 @@ int parse_csv_file(const char *filename, struct xml_params *params, const char *
 		fprintf(stderr, "%s/xslt/%s -\n", SUBSURFACE_SOURCE, csvtemplate);
 	}
 #endif
-	ret = parse_xml_buffer(filename, mem.buffer, mem.size, log, params);
-
-	free(mem.buffer);
+	ret = parse_xml_buffer(filename, mem.data(), mem.size(), log, params);
 
 	return ret;
 }
 
 
-static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, const char *tag)
+static int try_to_xslt_open_csv(const char *filename, std::string &mem, const char *tag)
 {
-	char *buf;
-	size_t i, amp = 0, rest = 0;
+	size_t amp = 0;
 
-	if (mem->size == 0 && readfile(filename, mem) < 0)
-		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
+	if (mem.empty()) {
+		auto [mem2, err] = readfile(filename);
+		if (err < 0)
+			return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
+		if (mem2.empty())
+			return 0; // Empty file - nothing to do. Guess that's a "success".
+		mem = std::move(mem2);
+	}
 
 	/* Count ampersand characters */
-	for (i = 0; i < mem->size; ++i) {
-		if (((char *)mem->buffer)[i] == '&') {
+	for (size_t i = 0; i < mem.size(); ++i) {
+		if (mem[i] == '&') {
 			++amp;
 		}
 	}
@@ -356,57 +351,49 @@ static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, cons
 	 *
 	 * Tag markers take: strlen("<></>") = 5
 	 * Reserve also room for encoding ampersands "&" => "&amp;"
+	 *
+	 * Attention: This code is quite subtle, because we reserve one
+	 * more byte than we use and put a '\0' there.
 	 */
-	buf = realloc(mem->buffer, mem->size + 7 + strlen(tag) * 2 + amp * 4);
-	if (buf != NULL) {
-		char *starttag = NULL;
-		char *endtag = NULL;
 
-		starttag = malloc(3 + strlen(tag));
-		endtag = malloc(5 + strlen(tag));
+	size_t tag_name_size = strlen(tag);
+	size_t old_size = mem.size();
+	mem.resize(mem.size() + tag_name_size * 2 + 5 + amp * 4);
+	const char *ptr_in = mem.data() + old_size;
+	char *ptr_out = mem.data() + mem.size();
 
-		if (starttag == NULL || endtag == NULL) {
-			/* this is fairly silly - so the malloc fails, but we strdup the error?
-			 * let's complete the silliness by freeing the two pointers in case one malloc succeeded
-			 *  and the other one failed - this will make static analysis tools happy */
-			free(starttag);
-			free(endtag);
-			free(buf);
-			return report_error("Memory allocation failed in %s", __func__);
+	/* Add end tag */
+	*--ptr_out = '>';
+	ptr_out -= tag_name_size;
+	memcpy(ptr_out, tag, tag_name_size);
+	*--ptr_out = '/';
+	*--ptr_out = '<';
+
+	while (--ptr_in >= mem.data()) {
+		if (*ptr_in == '&') {
+			*--ptr_out = ';';
+			*--ptr_out = 'p';
+			*--ptr_out = 'm';
+			*--ptr_out = 'a';
 		}
-
-		sprintf(starttag, "<%s>", tag);
-		sprintf(endtag, "\n</%s>", tag);
-
-		memmove(buf + 2 + strlen(tag), buf, mem->size);
-		memcpy(buf, starttag, 2 + strlen(tag));
-		memcpy(buf + mem->size + 2 + strlen(tag), endtag, 5 + strlen(tag));
-		mem->size += (6 + 2 * strlen(tag));
-		mem->buffer = buf;
-
-		free(starttag);
-		free(endtag);
-
-		/* Expand ampersands to encoded version */
-		for (i = mem->size, rest = 0; i > 0; --i, ++rest) {
-			if (((char *)mem->buffer)[i] == '&') {
-				memmove(((char *)mem->buffer) + i + 4 + 1, ((char *)mem->buffer) + i + 1, rest);
-				memcpy(((char *)mem->buffer) + i + 1, "amp;", 4);
-				rest += 4;
-				mem->size += 4;
-			}
-		}
-	} else {
-		free(mem->buffer);
-		return report_error("realloc failed in %s", __func__);
+		*--ptr_out = *ptr_in;
 	}
+
+	/* Add start tag */
+	*--ptr_out = '>';
+	ptr_out -= tag_name_size;
+	memcpy(ptr_out, tag, tag_name_size);
+	*--ptr_out = '<';
+
+	if (ptr_out != mem.data())
+		fprintf(stderr, "try_to_xslt_open_csv(): ptr_out off by %ld. This shouldn't happen\n", ptr_out - mem.data());
 
 	return 0;
 }
 
-int try_to_open_csv(struct memblock *mem, enum csv_format type, struct divelog *log)
+int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 {
-	char *p = mem->buffer;
+	char *p = mem.data();
 	char *header[8];
 	int i, time;
 	timestamp_t date;
@@ -458,61 +445,52 @@ int try_to_open_csv(struct memblock *mem, enum csv_format type, struct divelog *
 	return 1;
 }
 
-static char *parse_mkvi_value(const char *haystack, const char *needle)
+static std::string parse_mkvi_value(const char *haystack, const char *needle)
 {
-	char *lineptr, *valueptr, *endptr, *ret = NULL;
+	const char *lineptr, *valueptr, *endptr;
 
 	if ((lineptr = strstr(haystack, needle)) != NULL) {
 		if ((valueptr = strstr(lineptr, ": ")) != NULL) {
 			valueptr += 2;
-		}
-		if ((endptr = strstr(lineptr, "\n")) != NULL) {
-			char terminator = '\n';
-			if (*(endptr - 1) == '\r') {
-				--endptr;
-				terminator = '\r';
-			}
-			*endptr = 0;
-			ret = copy_string(valueptr);
-			*endptr = terminator;
 
+			if ((endptr = strstr(lineptr, "\n")) != NULL) {
+				if (*(endptr - 1) == '\r')
+					--endptr;
+				return std::string(valueptr, endptr - valueptr);
+			}
 		}
 	}
-	return ret;
+	return std::string();
 }
 
-static char *next_mkvi_key(const char *haystack)
+static std::string next_mkvi_key(const char *haystack)
 {
-	char *valueptr, *endptr, *ret = NULL;
+	const char *valueptr, *endptr;
 
 	if ((valueptr = strstr(haystack, "\n")) != NULL) {
 		valueptr += 1;
-		if ((endptr = strstr(valueptr, ": ")) != NULL) {
-			*endptr = 0;
-			ret = strdup(valueptr);
-			*endptr = ':';
-		}
+		if ((endptr = strstr(valueptr, ": ")) != NULL)
+			return std::string(valueptr, endptr - valueptr);
 	}
-	return ret;
+	return std::string();
 }
 
 int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 {
-	struct memblock memtxt, memcsv;
-
-	if (readfile(filename, &memtxt) < 0)
+	auto [memtxt, err] = readfile(filename);
+	if (err < 0)
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
 
 	/*
 	 * MkVI stores some information in .txt file but the whole profile and events are stored in .csv file. First
 	 * make sure the input .txt looks like proper MkVI file, then start parsing the .csv.
 	 */
-	if (MATCH(memtxt.buffer, "MkVI_Config") == 0) {
+	if (MATCH(memtxt.data(), "MkVI_Config") == 0) {
 		int d, m, y, he;
 		int hh = 0, mm = 0, ss = 0;
 		int prev_depth = 0, cur_sampletime = 0, prev_setpoint = -1, prev_ndl = -1;
 		bool has_depth = false, has_setpoint = false, has_ndl = false;
-		char *lineptr, *key, *value;
+		char *lineptr;
 		int prev_time = 0;
 		cylinder_t cyl = empty_cylinder;
 
@@ -520,12 +498,9 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		struct divecomputer *dc;
 		struct tm cur_tm;
 
-		value = parse_mkvi_value(memtxt.buffer, "Dive started at");
-		if (sscanf(value, "%d-%d-%d %d:%d:%d", &y, &m, &d, &hh, &mm, &ss) != 6) {
-			free(value);
+		std::string value = parse_mkvi_value(memtxt.data(), "Dive started at");
+		if (sscanf(value.c_str(), "%d-%d-%d %d:%d:%d", &y, &m, &d, &hh, &mm, &ss) != 6)
 			return -1;
-		}
-		free(value);
 		cur_tm.tm_year = y;
 		cur_tm.tm_mon = m - 1;
 		cur_tm.tm_mday = d;
@@ -536,9 +511,8 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		dive = alloc_dive();
 		dive->when = utc_mktime(&cur_tm);;
 		dive->dc.model = strdup("Poseidon MkVI Discovery");
-		value = parse_mkvi_value(memtxt.buffer, "Rig Serial number");
-		dive->dc.deviceid = atoi(value);
-		free(value);
+		value = parse_mkvi_value(memtxt.data(), "Rig Serial number");
+		dive->dc.deviceid = atoi(value.c_str());
 		dive->dc.divemode = CCR;
 		dive->dc.no_o2sensors = 2;
 
@@ -556,29 +530,23 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		cyl.type.size.mliter = 3000;
 		cyl.type.workingpressure.mbar = 200000;
 		cyl.type.description = "3l Mk6";
-		value = parse_mkvi_value(memtxt.buffer, "Helium percentage");
-		he = atoi(value);
-		free(value);
-		value = parse_mkvi_value(memtxt.buffer, "Nitrogen percentage");
-		cyl.gasmix.o2.permille = (100 - atoi(value) - he) * 10;
-		free(value);
+		value = parse_mkvi_value(memtxt.data(), "Helium percentage");
+		he = atoi(value.c_str());
+		value = parse_mkvi_value(memtxt.data(), "Nitrogen percentage");
+		cyl.gasmix.o2.permille = (100 - atoi(value.c_str()) - he) * 10;
 		cyl.gasmix.he.permille = he * 10;
 		add_cloned_cylinder(&dive->cylinders, cyl);
 
-		lineptr = strstr(memtxt.buffer, "Dive started at");
+		lineptr = strstr(memtxt.data(), "Dive started at");
 		while (!empty_string(lineptr) && (lineptr = strchr(lineptr, '\n'))) {
 			++lineptr;	// Skip over '\n'
-			key = next_mkvi_key(lineptr);
-			if (!key)
+			std::string key = next_mkvi_key(lineptr);
+			if (key.empty())
 				break;
-			value = parse_mkvi_value(lineptr, key);
-			if (!value) {
-				free(key);
+			std::string value = parse_mkvi_value(lineptr, key.c_str());
+			if (value.empty())
 				break;
-			}
-			add_extra_data(&dive->dc, key, value);
-			free(key);
-			free(value);
+			add_extra_data(&dive->dc, key.c_str(), value.c_str());
 		}
 		dc = &dive->dc;
 
@@ -599,11 +567,12 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		 *	39	water temp
 		 */
 
-		if (readfile(csv, &memcsv) < 0) {
+		auto [memcsv, err] = readfile(csv);
+		if (err < 0) {
 			free_dive(dive);
 			return report_error(translate("gettextFromC", "Poseidon import failed: unable to read '%s'"), csv);
 		}
-		lineptr = memcsv.buffer;
+		lineptr = memcsv.data();
 		for (;;) {
 			struct sample *sample;
 			int type;
@@ -808,11 +777,10 @@ int parse_seabear_log(const char *filename, struct divelog *log)
 static int parse_seabear_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log)
 {
 	int ret, i;
-	struct memblock mem;
 	time_t now;
 	struct tm *timep = NULL;
 	char *ptr, *ptr_old = NULL;
-	char *NL = NULL;
+	const char *NL = NULL;
 	char tmpbuf[MAXCOLDIGITS];
 
 	/* Increase the limits for recursion and variables on XSLT
@@ -836,11 +804,12 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 	if (filename == NULL)
 		return report_error("No CSV filename");
 
-	if (readfile(filename, &mem) < 0)
+	auto [mem, err] = readfile(filename);
+	if (err < 0)
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
 
 	/* Determine NL (new line) character and the start of CSV data */
-	ptr = mem.buffer;
+	ptr = (char *)mem.data();
 	while ((ptr = strstr(ptr, "\r\n\r\n")) != NULL) {
 		ptr_old = ptr;
 		ptr += 1;
@@ -848,7 +817,7 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 	}
 
 	if (!ptr_old) {
-		ptr = mem.buffer;
+		ptr = (char *)mem.data();
 		while ((ptr = strstr(ptr, "\n\n")) != NULL) {
 			ptr_old = ptr;
 			ptr += 1;
@@ -872,7 +841,7 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 	 * line and step through from there. That is the line after
 	 * Serial number.
 	 */
-	ptr = strstr(mem.buffer, "Serial number:");
+	ptr = strstr((char *)mem.data(), "Serial number:");
 	if (ptr)
 		ptr = strstr(ptr, NL);
 
@@ -904,10 +873,10 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 	}
 
 	/* Move the CSV data to the start of mem buffer */
-	memmove(mem.buffer, ptr_old, mem.size - (ptr_old - (char*)mem.buffer));
-	mem.size = (int)mem.size - (ptr_old - (char*)mem.buffer);
+	memmove(mem.data(), ptr_old, mem.size() - (ptr_old - mem.data()));
+	mem.resize(mem.size() - (ptr_old - mem.data()));
 
-	if (try_to_xslt_open_csv(filename, &mem, csvtemplate))
+	if (try_to_xslt_open_csv(filename, mem, csvtemplate))
 		return -1;
 
 	/*
@@ -923,15 +892,14 @@ static int parse_seabear_csv_file(const char *filename, struct xml_params *param
 		fprintf(stderr, "xslt/csv2xml.xslt\n");
 	}
 
-	ret = parse_xml_buffer(filename, mem.buffer, mem.size, log, params);
-	free(mem.buffer);
+	ret = parse_xml_buffer(filename, mem.data(), mem.size(), log, params);
 
 	return ret;
 }
 
 int parse_manual_file(const char *filename, struct xml_params *params, struct divelog *log)
 {
-	struct memblock mem;
+	std::string mem;
 	time_t now;
 	struct tm *timep;
 	char curdate[9];
@@ -953,8 +921,7 @@ int parse_manual_file(const char *filename, struct xml_params *params, struct di
 	if (filename == NULL)
 		return report_error("No manual CSV filename");
 
-	mem.size = 0;
-	if (try_to_xslt_open_csv(filename, &mem, "manualCSV"))
+	if (try_to_xslt_open_csv(filename, mem, "manualCSV"))
 		return -1;
 
 #ifndef SUBSURFACE_MOBILE
@@ -965,8 +932,7 @@ int parse_manual_file(const char *filename, struct xml_params *params, struct di
 		fprintf(stderr, "%s/xslt/manualcsv2xml.xslt -\n", SUBSURFACE_SOURCE);
 	}
 #endif
-	ret = parse_xml_buffer(filename, mem.buffer, mem.size, log, params);
+	ret = parse_xml_buffer(filename, mem.data(), mem.size(), log, params);
 
-	free(mem.buffer);
 	return ret;
 }

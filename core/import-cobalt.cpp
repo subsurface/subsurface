@@ -18,10 +18,8 @@
 #include "membuffer.h"
 #include "gettext.h"
 
-static int cobalt_profile_sample(void *param, int columns, char **data, char **column)
+static int cobalt_profile_sample(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
 
 	sample_start(state);
@@ -37,10 +35,8 @@ static int cobalt_profile_sample(void *param, int columns, char **data, char **c
 }
 
 
-static int cobalt_cylinders(void *param, int columns, char **data, char **column)
+static int cobalt_cylinders(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
 	cylinder_t *cyl;
 
@@ -62,10 +58,8 @@ static int cobalt_cylinders(void *param, int columns, char **data, char **column
 	return 0;
 }
 
-static int cobalt_buddies(void *param, int columns, char **data, char **column)
+static int cobalt_buddies(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	struct parser_state *state = (struct parser_state *)param;
 
 	if (data[0])
@@ -79,30 +73,21 @@ static int cobalt_buddies(void *param, int columns, char **data, char **column)
  * Subsurface star rating.
  */
 
-static int cobalt_visibility(void *param, int columns, char **data, char **column)
+static int cobalt_visibility(void *, int, char **, char **)
 {
-	UNUSED(param);
-	UNUSED(columns);
-	UNUSED(column);
-	UNUSED(data);
 	return 0;
 }
 
-static int cobalt_location(void *param, int columns, char **data, char **column)
+static int cobalt_location(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	char **location = (char **)param;
 	*location = data[0] ? strdup(data[0]) : NULL;
 	return 0;
 }
 
 
-static int cobalt_dive(void *param, int columns, char **data, char **column)
+static int cobalt_dive(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
-
 	int retval = 0;
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
@@ -146,7 +131,7 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 	settings_start(state);
 	dc_settings_start(state);
 	if (data[9]) {
-		utf8_string(data[9], &state->cur_settings.dc.serial_nr);
+		utf8_string_std(data[9], &state->cur_settings.dc.serial_nr);
 		state->cur_settings.dc.deviceid = atoi(data[9]);
 		state->cur_settings.dc.model = strdup("Cobalt import");
 	}
@@ -195,7 +180,7 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 	}
 
 	if (location && location_site) {
-		char *tmp = malloc(strlen(location) + strlen(location_site) + 4);
+		char *tmp = (char *)malloc(strlen(location) + strlen(location_site) + 4);
 		if (!tmp) {
 			free(location);
 			free(location_site);
@@ -221,22 +206,17 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 }
 
 
-int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
+extern "C" int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
-	UNUSED(buffer);
-	UNUSED(size);
-
 	int retval;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.sql_handle = handle;
 
 	char get_dives[] = "select Id,strftime('%s',DiveStartTime),LocationId,'buddy','notes',Units,(MaxDepthPressure*10000/SurfacePressure)-10000,DiveMinutes,SurfacePressure,SerialNumber,'model' from Dive where IsViewDeleted = 0";
 
 	retval = sqlite3_exec(handle, get_dives, &cobalt_dive, &state, NULL);
-	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);

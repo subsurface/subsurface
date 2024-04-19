@@ -30,4 +30,3 @@ void PreferencesReset::refreshSettings()
 void PreferencesReset::syncSettings()
 {
 }
-

@@ -44,7 +44,7 @@
 
 #include <libxslt/documents.h>
 
-const char *existing_filename;
+std::string existing_filename;
 static QLocale loc;
 
 static inline QString degreeSigns()
@@ -115,9 +115,9 @@ QString printGPSCoords(const location_t *location)
 	return result;
 }
 
-extern "C" char *printGPSCoordsC(const location_t *location)
+std::string printGPSCoordsC(const location_t *location)
 {
-	return copy_qstring(printGPSCoords(location));
+	return printGPSCoords(location).toStdString();
 }
 
 /**
@@ -434,11 +434,9 @@ QString getUserAgent()
 
 }
 
-extern "C" const char *subsurface_user_agent()
+std::string subsurface_user_agent()
 {
-	static QString uA = getUserAgent();
-
-	return copy_qstring(uA);
+	return getUserAgent().toStdString();
 }
 
 QString getUiLanguage()
@@ -462,28 +460,28 @@ void initUiLanguage()
 		loc = QLocale(QLocale().uiLanguages().first());
 	}
 
+	// Find language code with one '-', or use the first entry.
 	QStringList languages = loc.uiLanguages();
 	QString uiLang;
-	if (languages[0].contains('-'))
-		uiLang = languages[0];
-	else if (languages.count() > 1 && languages[1].contains('-'))
-		uiLang = languages[1];
-	else if (languages.count() > 2 && languages[2].contains('-'))
-		uiLang = languages[2];
-	else
-		uiLang = languages[0];
+	auto it = std::find_if(languages.begin(), languages.end(), [](const QString &s)
+				{ return s.count('-') == 1; });
+	uiLang = it == languages.end() ? languages[0] : *it;
+#ifdef SUBSURFACE_MOBILE
+	qDebug() << "uiLanguages was" << languages << ", picked" << uiLang;
+#endif
 
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
 	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
 		QLocale loc2(loc.bcp47Name());
 		loc = loc2;
 		QStringList languages = loc2.uiLanguages();
-		if (languages[0].contains('-'))
-			uiLang = languages[0];
-		else if (languages.count() > 1 && languages[1].contains('-'))
-			uiLang = languages[1];
-		else if (languages.count() > 2 && languages[2].contains('-'))
-			uiLang = languages[2];
+
+		it = std::find_if(languages.begin(), languages.end(), [](const QString &s)
+				{ return s.contains('-'); });
+		uiLang = it == languages.end() ? languages[0] : *it;
+#ifdef SUBSURFACE_MOBILE
+		qDebug() << "bcp47 based languages was" << languages << ", picked" << uiLang;
+#endif
 	}
 
 	free((void*)prefs.locale.lang_locale);
@@ -521,12 +519,6 @@ void initUiLanguage()
 QLocale getLocale()
 {
 	return loc;
-}
-
-void set_filename(const char *filename)
-{
-	free((void *)existing_filename);
-	existing_filename = copy_string(filename);
 }
 
 QString get_depth_string(int mm, bool showunit, bool showdecimal)
@@ -1009,10 +1001,9 @@ QString get_short_dive_date_string(timestamp_t when)
 	return loc.toString(ts.toUTC(), QString(prefs.date_format_short) + " " + prefs.time_format);
 }
 
-char *get_dive_date_c_string(timestamp_t when)
+std::string get_dive_date_c_string(timestamp_t when)
 {
-	QString text = get_short_dive_date_string(when);
-	return copy_qstring(text);
+	return get_short_dive_date_string(when).toStdString();
 }
 
 static QString get_dive_only_date_string(timestamp_t when)
@@ -1185,7 +1176,7 @@ QStringList mediaExtensionFilters()
 QStringList imageExtensionFilters()
 {
 	QStringList filters;
-	foreach (const QString &format, QImageReader::supportedImageFormats())
+	for (QString format: QImageReader::supportedImageFormats())
 		filters.append("*." + format);
 	return filters;
 }
@@ -1201,16 +1192,6 @@ QStringList videoExtensionFilters()
 extern "C" const char *local_file_path(struct picture *picture)
 {
 	return copy_qstring(localFilePath(picture->filename));
-}
-
-const QString picturedir()
-{
-	return QString(system_default_directory()).append("/picturedata/");
-}
-
-extern "C" char *picturedir_string()
-{
-	return copy_qstring(picturedir());
 }
 
 QString get_gas_string(struct gasmix gas)
@@ -1396,13 +1377,13 @@ extern "C" char *cloud_url()
 	return copy_qstring(filename);
 }
 
-extern "C" const char *normalize_cloud_name(const char *remote_in)
+std::string normalize_cloud_name(const char *remote_in)
 {
 	// replace ssrf-cloud-XX.subsurface... names with cloud.subsurface... names
 	// that trailing '/' is to match old code
 	QString ri(remote_in);
 	ri.replace(QRegularExpression(CLOUD_HOST_PATTERN), CLOUD_HOST_GENERIC "/");
-	return strdup(ri.toUtf8().constData());
+	return ri.toStdString();
 }
 
 extern "C" bool getProxyString(char **buffer)
@@ -1426,11 +1407,6 @@ extern "C" void subsurface_mkdir(const char *dir)
 	QDir directory;
 	if (!directory.mkpath(QString(dir)))
 		qDebug() << "failed to create path" << dir;
-}
-
-extern "C" void parse_display_units(char *line)
-{
-	qDebug() << line;
 }
 
 extern "C" enum deco_mode decoMode(bool in_planner)
@@ -1627,12 +1603,10 @@ void uiNotification(const QString &msg)
 // function to call to get changes for a git commit
 QString (*changesCallback)() = nullptr;
 
-extern "C" char *get_changes_made()
+std::string get_changes_made()
 {
-	if (changesCallback != nullptr)
-		return copy_qstring(changesCallback());
-	else
-		return nullptr;
+	return changesCallback != nullptr ? changesCallback().toStdString()
+					  : std::string();
 }
 
 // Generate a cylinder-renumber map for use when the n-th cylinder

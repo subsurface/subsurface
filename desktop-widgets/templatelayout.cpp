@@ -55,7 +55,7 @@ void set_bundled_templates_as_read_only()
 		listStats[i] = stats + QDir::separator() + listStats.at(i);
 	list += listStats;
 
-	foreach (const QString& f, list)
+	for (const QString &f: list)
 		QFile::setPermissions(pathUser + QDir::separator() + f, QFileDevice::ReadOwner | QFileDevice::ReadUser);
 }
 

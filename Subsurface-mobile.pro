@@ -26,7 +26,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/downloadfromdcthread.cpp \
 	core/qtserialbluetooth.cpp \
 	core/plannernotes.c \
-	core/uemis-downloader.c \
+	core/uemis-downloader.cpp \
 	core/qthelper.cpp \
 	core/checkcloudconnection.cpp \
 	core/color.cpp \
@@ -41,13 +41,13 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/qt-init.cpp \
 	core/subsurfacesysinfo.cpp \
 	core/windowtitleupdate.cpp \
-	core/file.c \
+	core/file.cpp \
 	core/fulltext.cpp \
-	core/subsurfacestartup.c \
+	core/subsurfacestartup.cpp \
 	core/pref.c \
 	core/profile.c \
 	core/device.cpp \
-	core/dive.c \
+	core/dive.cpp \
 	core/divecomputer.c \
 	core/divefilter.cpp \
 	core/event.c \
@@ -58,32 +58,32 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/divelog.cpp \
 	core/gas-model.c \
 	core/gaspressures.c \
-	core/git-access.c \
+	core/git-access.cpp \
 	core/globals.cpp \
-	core/liquivision.c \
-	core/load-git.c \
-	core/parse-xml.c \
-	core/parse.c \
+	core/liquivision.cpp \
+	core/load-git.cpp \
+	core/parse-xml.cpp \
+	core/parse.cpp \
 	core/picture.c \
 	core/pictureobj.cpp \
-	core/sample.c \
-	core/import-suunto.c \
-	core/import-shearwater.c \
-	core/import-seac.c \
-	core/import-cobalt.c \
-	core/import-divinglog.c \
-	core/import-csv.c \
+	core/sample.cpp \
+	core/import-suunto.cpp \
+	core/import-shearwater.cpp \
+	core/import-seac.cpp \
+	core/import-cobalt.cpp \
+	core/import-divinglog.cpp \
+	core/import-csv.cpp \
 	core/save-html.c \
 	core/statistics.c \
 	core/worldmap-save.c \
-	core/libdivecomputer.c \
+	core/libdivecomputer.cpp \
 	core/version.c \
-	core/save-git.c \
-	core/datatrak.c \
+	core/save-git.cpp \
+	core/datatrak.cpp \
 	core/ostctools.c \
 	core/planner.c \
-	core/save-xml.c \
-	core/cochran.c \
+	core/save-xml.cpp \
+	core/cochran.cpp \
 	core/deco.c \
 	core/divesite.c \
 	core/equipment.c \
@@ -95,7 +95,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/strtod.c \
 	core/tag.c \
 	core/taxonomy.c \
-	core/time.c \
+	core/time.cpp \
 	core/trip.c \
 	core/units.c \
 	core/uemis.c \

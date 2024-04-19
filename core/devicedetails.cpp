@@ -11,8 +11,7 @@ setpoint::setpoint(unsigned char sp, unsigned char depth) :
 {
 }
 
-DeviceDetails::DeviceDetails(QObject *parent) :
-	QObject(parent),
+DeviceDetails::DeviceDetails() :
 	syncTime(false),
 	setPointFallback(0),
 	ccrMode(0),

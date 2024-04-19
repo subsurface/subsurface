@@ -41,10 +41,8 @@ static int seac_gaschange(void *param, sqlite3_stmt *sqlstmt)
 /* Callback function to parse seac dives. Reads headers_dive table to read dive
  * information into divecomputer struct.
  */
-static int seac_dive(void *param, int columns, char **data, char **column)
+static int seac_dive(void *param, int, char **data, char **)
 {
-	UNUSED(columns);
-	UNUSED(column);
 	int retval = 0, cylnum = 0;
 	int year, month, day, hour, min, sec, tz;
 	char isodatetime[30];
@@ -207,8 +205,10 @@ static int seac_dive(void *param, int columns, char **data, char **column)
 	settings_start(state);
 	dc_settings_start(state);
 
-	utf8_string(data[1], &state->cur_dive->dc.serial);
-	utf8_string(data[12], &state->cur_dive->dc.fw_version);
+	// These dc values are const char *, therefore we have to cast.
+	// Will be fixed by converting to std::string
+	utf8_string(data[1], (char **)&state->cur_dive->dc.serial);
+	utf8_string(data[12], (char **)&state->cur_dive->dc.fw_version);
 	state->cur_dive->dc.model = strdup("Seac Action");
 
 	state->cur_dive->dc.deviceid = calculate_string_hash(data[1]);
@@ -264,16 +264,12 @@ static int seac_dive(void *param, int columns, char **data, char **column)
  * The callback function performs another SQL query on the other
  * table, to read in the sample values.
  */
-int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int size, struct divelog *log)
+extern "C" int parse_seac_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
-	UNUSED(buffer);
-	UNUSED(size);
-
 	int retval;
 	char *err = NULL;
 	struct parser_state state;
 
-	init_parser_state(&state);
 	state.log = log;
 	state.sql_handle = handle;
 
@@ -295,7 +291,6 @@ int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buffer, int 
 		 */
 
 	retval = sqlite3_exec(handle, get_dives, &seac_dive, &state, &err);
-	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);

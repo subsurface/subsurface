@@ -207,7 +207,7 @@ static void cochran_debug_sample(const char *s, unsigned int sample_cnt)
 static void cochran_parse_header(const unsigned char *decode, unsigned mod,
 				 const unsigned char *in, unsigned size)
 {
-	unsigned char *buf = malloc(size);
+	unsigned char *buf = (unsigned char *)malloc(size);
 
 	/* Do the "null decode" using a one-byte decode array of '\0' */
 	/* Copies in plaintext, will be overwritten later */
@@ -441,7 +441,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	const unsigned char *s;
 	unsigned int offset = 0, profile_period = 1, sample_cnt = 0;
 	double depth = 0, temp = 0, depth_sample = 0, psi = 0, sgc_rate = 0;
-	int ascent_rate = 0;
+	//int ascent_rate = 0;
 	unsigned int ndl = 0;
 	unsigned int in_deco = 0, deco_ceiling = 0, deco_time = 0;
 
@@ -517,8 +517,8 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		switch (config.type) {
 		case TYPE_COMMANDER:
 			switch (sample_cnt % 2) {
-			case 0:	// Ascent rate
-				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1: -1);
+			case 0:	// Ascent rate (unused)
+				//ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1: -1);
 				break;
 			case 1:	// Temperature
 				temp = s[1] / 2 + 20;
@@ -528,8 +528,8 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		case TYPE_GEMINI:
 			// Gemini with tank pressure and SAC rate.
 			switch (sample_cnt % 4) {
-			case 0:	// Ascent rate
-				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1);
+			case 0:	// Ascent rate (unused)
+				//ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1);
 				break;
 			case 2:	// PSI change
 				psi -= (double)(s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 4;
@@ -544,8 +544,8 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 			break;
 		case TYPE_EMC:
 			switch (sample_cnt % 2) {
-			case 0:	// Ascent rate
-				ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1: -1);
+			case 0:	// Ascent rate (unused)
+				//ascent_rate = (s[1] & 0x7f) * (s[1] & 0x80 ? 1: -1);
 				break;
 			case 1:	// Temperature
 				temp = (double)s[1] / 2 + 20;
@@ -597,7 +597,6 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		offset += config.sample_size;
 		sample_cnt++;
 	}
-	UNUSED(ascent_rate); // mark the variable as unused
 
 	if (sample_cnt > 0)
 		*duration = sample_cnt * profile_period - 1;
@@ -607,7 +606,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			       const unsigned char *in, unsigned size,
 			       struct dive_table *table)
 {
-	unsigned char *buf = malloc(size);
+	unsigned char *buf = (unsigned char *)malloc(size);
 	struct dive *dive;
 	struct divecomputer *dc;
 	struct tm tm = {0};
@@ -712,9 +711,9 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->duration.seconds = (log[CMD_BT] + log[CMD_BT + 1] * 256) * 60;
 		dc->surfacetime.seconds = (log[CMD_SIT] + log[CMD_SIT + 1] * 256) * 60;
 		dc->maxdepth.mm = lrint((log[CMD_MAX_DEPTH] +
-			log[CMD_MAX_DEPTH + 1] * 256) / 4 * FEET * 1000);
+			log[CMD_MAX_DEPTH + 1] * 256) / 4.0 * FEET * 1000);
 		dc->meandepth.mm = lrint((log[CMD_AVG_DEPTH] +
-			log[CMD_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000);
+			log[CMD_AVG_DEPTH + 1] * 256) / 4.0 * FEET * 1000);
 		dc->watertemp.mkelvin = F_to_mkelvin(log[CMD_MIN_TEMP]);
 		dc->surface_pressure.mbar = lrint(ATM / BAR * pow(1 - 0.0000225577
 			* (double) log[CMD_ALTITUDE] * 250 * FEET, 5.25588) * 1000);
@@ -758,9 +757,9 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->duration.seconds = (log[EMC_BT] + log[EMC_BT + 1] * 256) * 60;
 		dc->surfacetime.seconds = (log[EMC_SIT] + log[EMC_SIT + 1] * 256) * 60;
 		dc->maxdepth.mm = lrint((log[EMC_MAX_DEPTH] +
-			log[EMC_MAX_DEPTH + 1] * 256) / 4 * FEET * 1000);
+			log[EMC_MAX_DEPTH + 1] * 256) / 4.0 * FEET * 1000);
 		dc->meandepth.mm = lrint((log[EMC_AVG_DEPTH] +
-			log[EMC_AVG_DEPTH + 1] * 256) / 4 * FEET * 1000);
+			log[EMC_AVG_DEPTH + 1] * 256) / 4.0 * FEET * 1000);
 		dc->watertemp.mkelvin = F_to_mkelvin(log[EMC_MIN_TEMP]);
 		dc->surface_pressure.mbar = lrint(ATM / BAR * pow(1 - 0.0000225577
 			* (double) log[EMC_ALTITUDE] * 250 * FEET, 5.25588) * 1000);
@@ -800,26 +799,25 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	free(buf);
 }
 
-int try_to_open_cochran(const char *filename, struct memblock *mem, struct divelog *log)
+int try_to_open_cochran(const char *, std::string &mem, struct divelog *log)
 {
-	UNUSED(filename);
 	unsigned int i;
 	unsigned int mod;
 	unsigned int *offsets, dive1, dive2;
-	unsigned char *decode = mem->buffer + 0x40001;
+	unsigned char *decode = (unsigned char *)mem.data() + 0x40001;
 
-	if (mem->size < 0x40000)
+	if (mem.size() < 0x40000)
 		return 0;
 
-	offsets = (unsigned int *) mem->buffer;
+	offsets = (unsigned int *) mem.data();
 	dive1 = offsets[0];
 	dive2 = offsets[1];
 
-	if (dive1 < 0x40000 || dive2 < dive1 || dive2 > mem->size)
+	if (dive1 < 0x40000 || dive2 < dive1 || dive2 > mem.size())
 		return 0;
 
 	mod = decode[0x100] + 1;
-	cochran_parse_header(decode, mod, mem->buffer + 0x40000, dive1 - 0x40000);
+	cochran_parse_header(decode, mod, (unsigned char *)mem.data() + 0x40000, dive1 - 0x40000);
 
 	// Decode each dive
 	for (i = 0; i < 65534; i++) {
@@ -827,10 +825,10 @@ int try_to_open_cochran(const char *filename, struct memblock *mem, struct divel
 		dive2 = offsets[i + 1];
 		if (dive2 < dive1)
 			break;
-		if (dive2 > mem->size)
+		if (dive2 > mem.size())
 			break;
 
-		cochran_parse_dive(decode, mod, mem->buffer + dive1,
+		cochran_parse_dive(decode, mod, (unsigned char *)mem.data() + dive1,
 						dive2 - dive1, log->dives);
 	}
 

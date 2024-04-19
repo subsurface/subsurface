@@ -227,7 +227,7 @@ void FilterWidget::updatePresetLabel()
 	int presetId = selectedPreset();
 	QString text;
 	if (presetId >= 0) {
-		text = filter_preset_name_qstring(presetId);
+		text = QString(filter_preset_name(presetId).c_str());
 		if (presetModified)
 			text += " (" + tr("modified") + ")";
 	}
@@ -240,13 +240,13 @@ void FilterWidget::on_addSetButton_clicked()
 	// Thus, if the user selects an item and modify the filter,
 	// they can simply overwrite the preset.
 	int presetId = selectedPreset();
-	QString selectedPreset = presetId >= 0 ? filter_preset_name_qstring(presetId) : QString();
+	QString selectedPreset = presetId >= 0 ? QString(filter_preset_name(presetId).c_str()) : QString();
 
 	AddFilterPresetDialog dialog(selectedPreset, this);
 	QString name = dialog.doit();
 	if (name.isEmpty())
 		return;
-	int idx = filter_preset_id(name);
+	int idx = filter_preset_id(name.toStdString());
 	if (idx >= 0)
 		Command::editFilterPreset(idx, createFilterData());
 	else

@@ -181,25 +181,3 @@ void taglist_init_global()
 	for (i = 0; i < sizeof(default_tags) / sizeof(char *); i++)
 		taglist_add_tag(&g_tag_list, default_tags[i]);
 }
-
-bool taglist_contains(struct tag_entry *tag_list, const char *tag)
-{
-	while (tag_list) {
-		if (same_string(tag_list->tag->name, tag))
-			return true;
-		tag_list = tag_list->next;
-	}
-	return false;
-}
-
-struct tag_entry *taglist_added(struct tag_entry *original_list, struct tag_entry *new_list)
-{
-	struct tag_entry *added_list = NULL;
-	while (new_list) {
-		if (!taglist_contains(original_list, new_list->tag->name))
-			taglist_add_tag(&added_list, new_list->tag->name);
-		new_list = new_list->next;
-	}
-	return added_list;
-}
-

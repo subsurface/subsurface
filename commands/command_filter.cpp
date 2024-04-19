@@ -6,16 +6,16 @@
 
 namespace Command {
 
-static int createFilterPreset(const QString &name, const FilterData &data)
+static int createFilterPreset(const std::string &name, const FilterData &data)
 {
 	int index = filter_preset_add(name, data);
 	emit diveListNotifier.filterPresetAdded(index);
 	return index;
 }
 
-static std::pair<QString, FilterData> removeFilterPreset(int index)
+static std::pair<std::string, FilterData> removeFilterPreset(int index)
 {
-	QString oldName = filter_preset_name_qstring(index);
+	std::string oldName = filter_preset_name(index);
 	FilterData oldData = filter_preset_get(index);
 	filter_preset_delete(index);
 	emit diveListNotifier.filterPresetRemoved(index);
@@ -23,7 +23,7 @@ static std::pair<QString, FilterData> removeFilterPreset(int index)
 }
 
 CreateFilterPreset::CreateFilterPreset(const QString &nameIn, const FilterData &dataIn) :
-	name(nameIn), data(dataIn), index(0)
+	name(nameIn.toStdString()), data(dataIn), index(0)
 {
 	setText(Command::Base::tr("Create filter preset %1").arg(nameIn));
 }
@@ -46,7 +46,7 @@ void CreateFilterPreset::undo()
 
 RemoveFilterPreset::RemoveFilterPreset(int indexIn) : index(indexIn)
 {
-	setText(Command::Base::tr("Delete filter preset %1").arg(filter_preset_name_qstring(index)));
+	setText(Command::Base::tr("Delete filter preset %1").arg(QString(filter_preset_name(index).c_str())));
 }
 
 bool RemoveFilterPreset::workToBeDone()
@@ -68,7 +68,7 @@ void RemoveFilterPreset::undo()
 EditFilterPreset::EditFilterPreset(int indexIn, const FilterData &dataIn) :
 	index(indexIn), data(dataIn)
 {
-	setText(Command::Base::tr("Edit filter preset %1").arg(filter_preset_name_qstring(index)));
+	setText(Command::Base::tr("Edit filter preset %1").arg(QString(filter_preset_name(index).c_str())));
 }
 
 bool EditFilterPreset::workToBeDone()

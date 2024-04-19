@@ -148,7 +148,7 @@ static void write_ostc_cf(unsigned char data[], unsigned char cf, unsigned char 
 		progress_cb(device, DC_EVENT_PROGRESS, &progress, userdata); \
 	} while (0)
 
-static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	unsigned char data[SUUNTO_VYPER_CUSTOM_TEXT_LENGTH + 1];
 	dc_status_t rc;
@@ -163,7 +163,7 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 		if (desc) {
 			// We found a supported device
 			// we can safely proceed with reading/writing to this device.
-			m_deviceDetails->model = dc_descriptor_get_product(desc);
+			deviceDetails.model = dc_descriptor_get_product(desc);
 			dc_descriptor_free(desc);
 		} else {
 			return DC_STATUS_UNSUPPORTED;
@@ -176,86 +176,86 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 		return rc;
 	// in ft * 128.0
 	int depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
-	m_deviceDetails->maxDepth = depth;
+	deviceDetails.maxDepth = depth;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_TOTAL_TIME, data, 2);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	int total_time = data[0] << 8 ^ data[1];
-	m_deviceDetails->totalTime = total_time;
+	deviceDetails.totalTime = total_time;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_NUMBEROFDIVES, data, 2);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	int number_of_dives = data[0] << 8 ^ data[1];
-	m_deviceDetails->numberOfDives = number_of_dives;
+	deviceDetails.numberOfDives = number_of_dives;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_FIRMWARE, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	m_deviceDetails->firmwareVersion = QString::number(data[0]) + ".0.0";
+	deviceDetails.firmwareVersion = QString::number(data[0]) + ".0.0";
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_SERIALNUMBER, data, 4);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	int serial_number = data[0] * 1000000 + data[1] * 10000 + data[2] * 100 + data[3];
-	m_deviceDetails->serialNo = QString::number(serial_number);
+	deviceDetails.serialNo = QString::number(serial_number);
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_CUSTOM_TEXT, data, SUUNTO_VYPER_CUSTOM_TEXT_LENGTH);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	data[SUUNTO_VYPER_CUSTOM_TEXT_LENGTH] = 0;
-	m_deviceDetails->customText = (const char *)data;
+	deviceDetails.customText = (const char *)data;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_SAMPLING_RATE, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	m_deviceDetails->samplingRate = (int)data[0];
+	deviceDetails.samplingRate = (int)data[0];
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_ALTITUDE_SAFETY, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	m_deviceDetails->altitude = data[0] & 0x03;
-	m_deviceDetails->personalSafety = data[0] >> 2 & 0x03;
+	deviceDetails.altitude = data[0] & 0x03;
+	deviceDetails.personalSafety = data[0] >> 2 & 0x03;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_TIMEFORMAT, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	m_deviceDetails->timeFormat = data[0] & 0x01;
+	deviceDetails.timeFormat = data[0] & 0x01;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_UNITS, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	m_deviceDetails->units = data[0] & 0x01;
+	deviceDetails.units = data[0] & 0x01;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_MODEL, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	m_deviceDetails->diveMode = data[0] & 0x03;
+	deviceDetails.diveMode = data[0] & 0x03;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_LIGHT, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	m_deviceDetails->lightEnabled = data[0] >> 7;
-	m_deviceDetails->light = data[0] & 0x7F;
+	deviceDetails.lightEnabled = data[0] >> 7;
+	deviceDetails.light = data[0] & 0x7F;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_DEPTH_TIME, data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	m_deviceDetails->alarmTimeEnabled = data[0] & 0x01;
-	m_deviceDetails->alarmDepthEnabled = data[0] >> 1 & 0x01;
+	deviceDetails.alarmTimeEnabled = data[0] & 0x01;
+	deviceDetails.alarmDepthEnabled = data[0] >> 1 & 0x01;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_TIME, data, 2);
@@ -263,22 +263,22 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 		return rc;
 	int time = data[0] << 8 ^ data[1];
 	// The stinger stores alarm time in seconds instead of minutes.
-	if (m_deviceDetails->model == "Stinger")
+	if (deviceDetails.model == "Stinger")
 		time /= 60;
-	m_deviceDetails->alarmTime = time;
+	deviceDetails.alarmTime = time;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_DEPTH, data, 2);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
-	m_deviceDetails->alarmDepth = depth;
+	deviceDetails.alarmDepth = depth;
 	EMIT_PROGRESS();
 
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
 	dc_event_progress_t progress;
@@ -290,62 +290,62 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 
 	// Maybee we should read the model from the device to sanity check it here too..
 	// For now we just check that we actually read a device before writing to one.
-	if (m_deviceDetails->model == "")
+	if (deviceDetails.model == "")
 		return DC_STATUS_UNSUPPORTED;
 
 	rc = dc_device_write(device, SUUNTO_VYPER_CUSTOM_TEXT,
 			     // Convert the customText to a 30 char wide padded with " "
-			     (const unsigned char *)qPrintable(QString("%1").arg(m_deviceDetails->customText, -30, QChar(' '))),
+			     (const unsigned char *)qPrintable(QString("%1").arg(deviceDetails.customText, -30, QChar(' '))),
 			     SUUNTO_VYPER_CUSTOM_TEXT_LENGTH);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
-	data = m_deviceDetails->samplingRate;
+	data = deviceDetails.samplingRate;
 	rc = dc_device_write(device, SUUNTO_VYPER_SAMPLING_RATE, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
-	data = m_deviceDetails->personalSafety << 2 ^ m_deviceDetails->altitude;
+	data = deviceDetails.personalSafety << 2 ^ deviceDetails.altitude;
 	rc = dc_device_write(device, SUUNTO_VYPER_ALTITUDE_SAFETY, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
-	data = m_deviceDetails->timeFormat;
+	data = deviceDetails.timeFormat;
 	rc = dc_device_write(device, SUUNTO_VYPER_TIMEFORMAT, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
-	data = m_deviceDetails->units;
+	data = deviceDetails.units;
 	rc = dc_device_write(device, SUUNTO_VYPER_UNITS, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
-	data = m_deviceDetails->diveMode;
+	data = deviceDetails.diveMode;
 	rc = dc_device_write(device, SUUNTO_VYPER_MODEL, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
-	data = m_deviceDetails->lightEnabled << 7 ^ (m_deviceDetails->light & 0x7F);
+	data = deviceDetails.lightEnabled << 7 ^ (deviceDetails.light & 0x7F);
 	rc = dc_device_write(device, SUUNTO_VYPER_LIGHT, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
-	data = m_deviceDetails->alarmDepthEnabled << 1 ^ m_deviceDetails->alarmTimeEnabled;
+	data = deviceDetails.alarmDepthEnabled << 1 ^ deviceDetails.alarmTimeEnabled;
 	rc = dc_device_write(device, SUUNTO_VYPER_ALARM_DEPTH_TIME, &data, 1);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
 	// The stinger stores alarm time in seconds instead of minutes.
-	time = m_deviceDetails->alarmTime;
-	if (m_deviceDetails->model == "Stinger")
+	time = deviceDetails.alarmTime;
+	if (deviceDetails.model == "Stinger")
 		time *= 60;
 	data2[0] = time >> 8;
 	data2[1] = time & 0xFF;
@@ -354,14 +354,14 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 		return rc;
 	EMIT_PROGRESS();
 
-	data2[0] = (int)(mm_to_feet(m_deviceDetails->alarmDepth) * 128) >> 8;
-	data2[1] = (int)(mm_to_feet(m_deviceDetails->alarmDepth) * 128) & 0x0FF;
+	data2[0] = (int)(mm_to_feet(deviceDetails.alarmDepth) * 128) >> 8;
+	data2[1] = (int)(mm_to_feet(deviceDetails.alarmDepth) * 128) & 0x0FF;
 	rc = dc_device_write(device, SUUNTO_VYPER_ALARM_DEPTH, data2, 2);
 	EMIT_PROGRESS();
 	return rc;
 }
 
-static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	// This code is really similar to the OSTC3 code, but there are minor
 	// differences in what the data means, and how to communicate with the
@@ -426,11 +426,11 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 	gas5.depth = gasData[3];
 	EMIT_PROGRESS();
 
-	m_deviceDetails->gas1 = gas1;
-	m_deviceDetails->gas2 = gas2;
-	m_deviceDetails->gas3 = gas3;
-	m_deviceDetails->gas4 = gas4;
-	m_deviceDetails->gas5 = gas5;
+	deviceDetails.gas1 = gas1;
+	deviceDetails.gas2 = gas2;
+	deviceDetails.gas3 = gas3;
+	deviceDetails.gas4 = gas4;
+	deviceDetails.gas5 = gas5;
 	EMIT_PROGRESS();
 
 	//Read Dil Values
@@ -486,11 +486,11 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 	dil5.depth = dilData[3];
 	EMIT_PROGRESS();
 
-	m_deviceDetails->dil1 = dil1;
-	m_deviceDetails->dil2 = dil2;
-	m_deviceDetails->dil3 = dil3;
-	m_deviceDetails->dil4 = dil4;
-	m_deviceDetails->dil5 = dil5;
+	deviceDetails.dil1 = dil1;
+	deviceDetails.dil2 = dil2;
+	deviceDetails.dil3 = dil3;
+	deviceDetails.dil4 = dil4;
+	deviceDetails.dil5 = dil5;
 
 	//Read setpoint Values
 	setpoint sp1;
@@ -535,11 +535,11 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 	sp5.depth = spData[1];
 	EMIT_PROGRESS();
 
-	m_deviceDetails->sp1 = sp1;
-	m_deviceDetails->sp2 = sp2;
-	m_deviceDetails->sp3 = sp3;
-	m_deviceDetails->sp4 = sp4;
-	m_deviceDetails->sp5 = sp5;
+	deviceDetails.sp1 = sp1;
+	deviceDetails.sp2 = sp2;
+	deviceDetails.sp3 = sp3;
+	deviceDetails.sp4 = sp4;
+	deviceDetails.sp5 = sp5;
 
 	//Read other settings
 	unsigned char uData[4] = { 0 };
@@ -549,7 +549,7 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 		rc = hw_ostc3_device_config_read(device, _OSTC4_SETTING, uData, sizeof(uData)); \
 		if (rc != DC_STATUS_SUCCESS)                                                    \
 			return rc;                                                              \
-		m_deviceDetails->_DEVICE_DETAIL = uData[0];                                     \
+		deviceDetails._DEVICE_DETAIL = uData[0];                                        \
 		EMIT_PROGRESS();                                                                \
 	} while (0)
 
@@ -597,14 +597,14 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	// OSTC3 stores the pressureSensorOffset in two-complement
-	m_deviceDetails->pressureSensorOffset = (signed char)uData[0];
+	deviceDetails.pressureSensorOffset = (signed char)uData[0];
 	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_TEMP_SENSOR_OFFSET, uData, sizeof(uData));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	// OSTC3 stores the tempSensorOffset in two-complement
-	m_deviceDetails->tempSensorOffset = (signed char)uData[0];
+	deviceDetails.tempSensorOffset = (signed char)uData[0];
 	EMIT_PROGRESS();
 
 	//read firmware settings
@@ -613,22 +613,22 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails *m_dev
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	int serial = fData[0] + (fData[1] << 8);
-	m_deviceDetails->serialNo = QString::number(serial);
+	deviceDetails.serialNo = QString::number(serial);
 	unsigned char X, Y, Z, beta;
 	unsigned int firmwareOnDevice = (fData[3] << 8) + fData[2];
 	X = (firmwareOnDevice & 0xF800) >> 11;
 	Y = (firmwareOnDevice & 0x07C0) >> 6;
 	Z = (firmwareOnDevice & 0x003E) >> 1;
 	beta = firmwareOnDevice & 0x0001;
-	m_deviceDetails->firmwareVersion = QString("%1.%2.%3%4").arg(X).arg(Y).arg(Z).arg(beta?" beta":"");
+	deviceDetails.firmwareVersion = QString("%1.%2.%3%4").arg(X).arg(Y).arg(Z).arg(beta?" beta":"");
 	QByteArray ar((char *)fData + 4, 60);
-	m_deviceDetails->customText = ar.trimmed();
+	deviceDetails.customText = ar.trimmed();
 	EMIT_PROGRESS();
 
 	return rc;
 }
 
-static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t write_ostc4_settings(dc_device_t *device, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	// This code is really similar to the OSTC3 code, but there are minor
 	// differences in what the data means, and how to communicate with the
@@ -640,38 +640,38 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write gas values
 	unsigned char gas1Data[4] = {
-		m_deviceDetails->gas1.oxygen,
-		m_deviceDetails->gas1.helium,
-		m_deviceDetails->gas1.type,
-		m_deviceDetails->gas1.depth
+		deviceDetails.gas1.oxygen,
+		deviceDetails.gas1.helium,
+		deviceDetails.gas1.type,
+		deviceDetails.gas1.depth
 	};
 
 	unsigned char gas2Data[4] = {
-		m_deviceDetails->gas2.oxygen,
-		m_deviceDetails->gas2.helium,
-		m_deviceDetails->gas2.type,
-		m_deviceDetails->gas2.depth
+		deviceDetails.gas2.oxygen,
+		deviceDetails.gas2.helium,
+		deviceDetails.gas2.type,
+		deviceDetails.gas2.depth
 	};
 
 	unsigned char gas3Data[4] = {
-		m_deviceDetails->gas3.oxygen,
-		m_deviceDetails->gas3.helium,
-		m_deviceDetails->gas3.type,
-		m_deviceDetails->gas3.depth
+		deviceDetails.gas3.oxygen,
+		deviceDetails.gas3.helium,
+		deviceDetails.gas3.type,
+		deviceDetails.gas3.depth
 	};
 
 	unsigned char gas4Data[4] = {
-		m_deviceDetails->gas4.oxygen,
-		m_deviceDetails->gas4.helium,
-		m_deviceDetails->gas4.type,
-		m_deviceDetails->gas4.depth
+		deviceDetails.gas4.oxygen,
+		deviceDetails.gas4.helium,
+		deviceDetails.gas4.type,
+		deviceDetails.gas4.depth
 	};
 
 	unsigned char gas5Data[4] = {
-		m_deviceDetails->gas5.oxygen,
-		m_deviceDetails->gas5.helium,
-		m_deviceDetails->gas5.type,
-		m_deviceDetails->gas5.depth
+		deviceDetails.gas5.oxygen,
+		deviceDetails.gas5.helium,
+		deviceDetails.gas5.type,
+		deviceDetails.gas5.depth
 	};
 	//gas 1
 	rc = hw_ostc3_device_config_write(device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
@@ -701,28 +701,28 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write setpoint values
 	unsigned char sp1Data[4] = {
-		m_deviceDetails->sp1.sp,
-		m_deviceDetails->sp1.depth
+		deviceDetails.sp1.sp,
+		deviceDetails.sp1.depth
 	};
 
 	unsigned char sp2Data[4] = {
-		m_deviceDetails->sp2.sp,
-		m_deviceDetails->sp2.depth
+		deviceDetails.sp2.sp,
+		deviceDetails.sp2.depth
 	};
 
 	unsigned char sp3Data[4] = {
-		m_deviceDetails->sp3.sp,
-		m_deviceDetails->sp3.depth
+		deviceDetails.sp3.sp,
+		deviceDetails.sp3.depth
 	};
 
 	unsigned char sp4Data[4] = {
-		m_deviceDetails->sp4.sp,
-		m_deviceDetails->sp4.depth
+		deviceDetails.sp4.sp,
+		deviceDetails.sp4.depth
 	};
 
 	unsigned char sp5Data[4] = {
-		m_deviceDetails->sp5.sp,
-		m_deviceDetails->sp5.depth
+		deviceDetails.sp5.sp,
+		deviceDetails.sp5.depth
 	};
 
 	//sp 1
@@ -753,38 +753,38 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write dil values
 	unsigned char dil1Data[4] = {
-		m_deviceDetails->dil1.oxygen,
-		m_deviceDetails->dil1.helium,
-		m_deviceDetails->dil1.type,
-		m_deviceDetails->dil1.depth
+		deviceDetails.dil1.oxygen,
+		deviceDetails.dil1.helium,
+		deviceDetails.dil1.type,
+		deviceDetails.dil1.depth
 	};
 
 	unsigned char dil2Data[4] = {
-		m_deviceDetails->dil2.oxygen,
-		m_deviceDetails->dil2.helium,
-		m_deviceDetails->dil2.type,
-		m_deviceDetails->dil2.depth
+		deviceDetails.dil2.oxygen,
+		deviceDetails.dil2.helium,
+		deviceDetails.dil2.type,
+		deviceDetails.dil2.depth
 	};
 
 	unsigned char dil3Data[4] = {
-		m_deviceDetails->dil3.oxygen,
-		m_deviceDetails->dil3.helium,
-		m_deviceDetails->dil3.type,
-		m_deviceDetails->dil3.depth
+		deviceDetails.dil3.oxygen,
+		deviceDetails.dil3.helium,
+		deviceDetails.dil3.type,
+		deviceDetails.dil3.depth
 	};
 
 	unsigned char dil4Data[4] = {
-		m_deviceDetails->dil4.oxygen,
-		m_deviceDetails->dil4.helium,
-		m_deviceDetails->dil4.type,
-		m_deviceDetails->dil4.depth
+		deviceDetails.dil4.oxygen,
+		deviceDetails.dil4.helium,
+		deviceDetails.dil4.type,
+		deviceDetails.dil4.depth
 	};
 
 	unsigned char dil5Data[4] = {
-		m_deviceDetails->dil5.oxygen,
-		m_deviceDetails->dil5.helium,
-		m_deviceDetails->dil5.type,
-		m_deviceDetails->dil5.depth
+		deviceDetails.dil5.oxygen,
+		deviceDetails.dil5.helium,
+		deviceDetails.dil5.type,
+		deviceDetails.dil5.depth
 	};
 	//dil 1
 	rc = hw_ostc3_device_config_write(device, OSTC3_DIL1, dil1Data, sizeof(gas1Data));
@@ -814,7 +814,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write general settings
 	//custom text
-	rc = hw_ostc3_device_customtext(device, qPrintable(m_deviceDetails->customText));
+	rc = hw_ostc3_device_customtext(device, qPrintable(deviceDetails.customText));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
@@ -822,7 +822,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 	unsigned char data[4] = { 0 };
 #define WRITE_SETTING(_OSTC4_SETTING, _DEVICE_DETAIL)                                          \
 	do {                                                                                   \
-		data[0] = m_deviceDetails->_DEVICE_DETAIL;                                     \
+		data[0] = deviceDetails._DEVICE_DETAIL;                                        \
 		rc = hw_ostc3_device_config_write(device, _OSTC4_SETTING, data, sizeof(data)); \
 		if (rc != DC_STATUS_SUCCESS)                                                   \
 			return rc;                                                             \
@@ -870,14 +870,14 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 #undef WRITE_SETTING
 
 	// OSTC3 stores the pressureSensorOffset in two-complement
-	data[0] = (unsigned char)m_deviceDetails->pressureSensorOffset;
+	data[0] = (unsigned char)deviceDetails.pressureSensorOffset;
 	rc = hw_ostc3_device_config_write(device, OSTC3_PRESSURE_SENSOR_OFFSET, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
 	// OSTC3 stores the tempSensorOffset in two-complement
-	data[0] = (unsigned char)m_deviceDetails->tempSensorOffset;
+	data[0] = (unsigned char)deviceDetails.tempSensorOffset;
 	rc = hw_ostc3_device_config_write(device, OSTC3_TEMP_SENSOR_OFFSET, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
@@ -885,7 +885,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 
 
 	//sync date and time
-	if (m_deviceDetails->syncTime) {
+	if (deviceDetails.syncTime) {
 		dc_datetime_t now;
 		dc_datetime_localtime(&now, dc_datetime_now());
 
@@ -897,7 +897,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 	return rc;
 }
 
-static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
 	dc_event_progress_t progress;
@@ -912,14 +912,14 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 
 	dc_descriptor_t *desc = get_descriptor(DC_FAMILY_HW_OSTC3, hardware[0]);
 	if (desc) {
-		m_deviceDetails->model = dc_descriptor_get_product(desc);
+		deviceDetails.model = dc_descriptor_get_product(desc);
 		dc_descriptor_free(desc);
 	} else {
 		return DC_STATUS_UNSUPPORTED;
 	}
 
-	if (m_deviceDetails->model == "OSTC 4")
-		return read_ostc4_settings(device, m_deviceDetails, progress_cb, userdata);
+	if (deviceDetails.model == "OSTC 4")
+		return read_ostc4_settings(device, deviceDetails, progress_cb, userdata);
 
 	EMIT_PROGRESS();
 
@@ -976,11 +976,11 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	gas5.depth = gasData[3];
 	EMIT_PROGRESS();
 
-	m_deviceDetails->gas1 = gas1;
-	m_deviceDetails->gas2 = gas2;
-	m_deviceDetails->gas3 = gas3;
-	m_deviceDetails->gas4 = gas4;
-	m_deviceDetails->gas5 = gas5;
+	deviceDetails.gas1 = gas1;
+	deviceDetails.gas2 = gas2;
+	deviceDetails.gas3 = gas3;
+	deviceDetails.gas4 = gas4;
+	deviceDetails.gas5 = gas5;
 	EMIT_PROGRESS();
 
 	//Read Dil Values
@@ -1036,11 +1036,11 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	dil5.depth = dilData[3];
 	EMIT_PROGRESS();
 
-	m_deviceDetails->dil1 = dil1;
-	m_deviceDetails->dil2 = dil2;
-	m_deviceDetails->dil3 = dil3;
-	m_deviceDetails->dil4 = dil4;
-	m_deviceDetails->dil5 = dil5;
+	deviceDetails.dil1 = dil1;
+	deviceDetails.dil2 = dil2;
+	deviceDetails.dil3 = dil3;
+	deviceDetails.dil4 = dil4;
+	deviceDetails.dil5 = dil5;
 
 	//Read setpoint Values
 	setpoint sp1;
@@ -1085,11 +1085,11 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	sp5.depth = spData[1];
 	EMIT_PROGRESS();
 
-	m_deviceDetails->sp1 = sp1;
-	m_deviceDetails->sp2 = sp2;
-	m_deviceDetails->sp3 = sp3;
-	m_deviceDetails->sp4 = sp4;
-	m_deviceDetails->sp5 = sp5;
+	deviceDetails.sp1 = sp1;
+	deviceDetails.sp2 = sp2;
+	deviceDetails.sp3 = sp3;
+	deviceDetails.sp4 = sp4;
+	deviceDetails.sp5 = sp5;
 
 	//Read other settings
 	unsigned char uData[1] = { 0 };
@@ -1099,7 +1099,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 		rc = hw_ostc3_device_config_read(device, _OSTC3_SETTING, uData, sizeof(uData)); \
 		if (rc != DC_STATUS_SUCCESS)                                                    \
 			return rc;                                                              \
-		m_deviceDetails->_DEVICE_DETAIL = uData[0];                                     \
+		deviceDetails._DEVICE_DETAIL = uData[0];                                        \
 		EMIT_PROGRESS();                                                                \
 	} while (0)
 
@@ -1147,14 +1147,14 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	// OSTC3 stores the pressureSensorOffset in two-complement
-	m_deviceDetails->pressureSensorOffset = (signed char)uData[0];
+	deviceDetails.pressureSensorOffset = (signed char)uData[0];
 	EMIT_PROGRESS();
 
 	rc = hw_ostc3_device_config_read(device, OSTC3_TEMP_SENSOR_OFFSET, uData, sizeof(uData));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	// OSTC3 stores the tempSensorOffset in two-complement
-	m_deviceDetails->tempSensorOffset = (signed char)uData[0];
+	deviceDetails.tempSensorOffset = (signed char)uData[0];
 	EMIT_PROGRESS();
 
 	//read firmware settings
@@ -1163,16 +1163,16 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	int serial = fData[0] + (fData[1] << 8);
-	m_deviceDetails->serialNo = QString::number(serial);
-	m_deviceDetails->firmwareVersion = QString::number(fData[2]) + "." + QString::number(fData[3]);
+	deviceDetails.serialNo = QString::number(serial);
+	deviceDetails.firmwareVersion = QString::number(fData[2]) + "." + QString::number(fData[3]);
 	QByteArray ar((char *)fData + 4, 60);
-	m_deviceDetails->customText = ar.trimmed();
+	deviceDetails.customText = ar.trimmed();
 	EMIT_PROGRESS();
 
 	return rc;
 }
 
-static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t write_ostc3_settings(dc_device_t *device, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
 	dc_event_progress_t progress;
@@ -1181,38 +1181,38 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write gas values
 	unsigned char gas1Data[4] = {
-		m_deviceDetails->gas1.oxygen,
-		m_deviceDetails->gas1.helium,
-		m_deviceDetails->gas1.type,
-		m_deviceDetails->gas1.depth
+		deviceDetails.gas1.oxygen,
+		deviceDetails.gas1.helium,
+		deviceDetails.gas1.type,
+		deviceDetails.gas1.depth
 	};
 
 	unsigned char gas2Data[4] = {
-		m_deviceDetails->gas2.oxygen,
-		m_deviceDetails->gas2.helium,
-		m_deviceDetails->gas2.type,
-		m_deviceDetails->gas2.depth
+		deviceDetails.gas2.oxygen,
+		deviceDetails.gas2.helium,
+		deviceDetails.gas2.type,
+		deviceDetails.gas2.depth
 	};
 
 	unsigned char gas3Data[4] = {
-		m_deviceDetails->gas3.oxygen,
-		m_deviceDetails->gas3.helium,
-		m_deviceDetails->gas3.type,
-		m_deviceDetails->gas3.depth
+		deviceDetails.gas3.oxygen,
+		deviceDetails.gas3.helium,
+		deviceDetails.gas3.type,
+		deviceDetails.gas3.depth
 	};
 
 	unsigned char gas4Data[4] = {
-		m_deviceDetails->gas4.oxygen,
-		m_deviceDetails->gas4.helium,
-		m_deviceDetails->gas4.type,
-		m_deviceDetails->gas4.depth
+		deviceDetails.gas4.oxygen,
+		deviceDetails.gas4.helium,
+		deviceDetails.gas4.type,
+		deviceDetails.gas4.depth
 	};
 
 	unsigned char gas5Data[4] = {
-		m_deviceDetails->gas5.oxygen,
-		m_deviceDetails->gas5.helium,
-		m_deviceDetails->gas5.type,
-		m_deviceDetails->gas5.depth
+		deviceDetails.gas5.oxygen,
+		deviceDetails.gas5.helium,
+		deviceDetails.gas5.type,
+		deviceDetails.gas5.depth
 	};
 	//gas 1
 	rc = hw_ostc3_device_config_write(device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
@@ -1242,28 +1242,28 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write setpoint values
 	unsigned char sp1Data[2] = {
-		m_deviceDetails->sp1.sp,
-		m_deviceDetails->sp1.depth
+		deviceDetails.sp1.sp,
+		deviceDetails.sp1.depth
 	};
 
 	unsigned char sp2Data[2] = {
-		m_deviceDetails->sp2.sp,
-		m_deviceDetails->sp2.depth
+		deviceDetails.sp2.sp,
+		deviceDetails.sp2.depth
 	};
 
 	unsigned char sp3Data[2] = {
-		m_deviceDetails->sp3.sp,
-		m_deviceDetails->sp3.depth
+		deviceDetails.sp3.sp,
+		deviceDetails.sp3.depth
 	};
 
 	unsigned char sp4Data[2] = {
-		m_deviceDetails->sp4.sp,
-		m_deviceDetails->sp4.depth
+		deviceDetails.sp4.sp,
+		deviceDetails.sp4.depth
 	};
 
 	unsigned char sp5Data[2] = {
-		m_deviceDetails->sp5.sp,
-		m_deviceDetails->sp5.depth
+		deviceDetails.sp5.sp,
+		deviceDetails.sp5.depth
 	};
 
 	//sp 1
@@ -1294,38 +1294,38 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write dil values
 	unsigned char dil1Data[4] = {
-		m_deviceDetails->dil1.oxygen,
-		m_deviceDetails->dil1.helium,
-		m_deviceDetails->dil1.type,
-		m_deviceDetails->dil1.depth
+		deviceDetails.dil1.oxygen,
+		deviceDetails.dil1.helium,
+		deviceDetails.dil1.type,
+		deviceDetails.dil1.depth
 	};
 
 	unsigned char dil2Data[4] = {
-		m_deviceDetails->dil2.oxygen,
-		m_deviceDetails->dil2.helium,
-		m_deviceDetails->dil2.type,
-		m_deviceDetails->dil2.depth
+		deviceDetails.dil2.oxygen,
+		deviceDetails.dil2.helium,
+		deviceDetails.dil2.type,
+		deviceDetails.dil2.depth
 	};
 
 	unsigned char dil3Data[4] = {
-		m_deviceDetails->dil3.oxygen,
-		m_deviceDetails->dil3.helium,
-		m_deviceDetails->dil3.type,
-		m_deviceDetails->dil3.depth
+		deviceDetails.dil3.oxygen,
+		deviceDetails.dil3.helium,
+		deviceDetails.dil3.type,
+		deviceDetails.dil3.depth
 	};
 
 	unsigned char dil4Data[4] = {
-		m_deviceDetails->dil4.oxygen,
-		m_deviceDetails->dil4.helium,
-		m_deviceDetails->dil4.type,
-		m_deviceDetails->dil4.depth
+		deviceDetails.dil4.oxygen,
+		deviceDetails.dil4.helium,
+		deviceDetails.dil4.type,
+		deviceDetails.dil4.depth
 	};
 
 	unsigned char dil5Data[4] = {
-		m_deviceDetails->dil5.oxygen,
-		m_deviceDetails->dil5.helium,
-		m_deviceDetails->dil5.type,
-		m_deviceDetails->dil5.depth
+		deviceDetails.dil5.oxygen,
+		deviceDetails.dil5.helium,
+		deviceDetails.dil5.type,
+		deviceDetails.dil5.depth
 	};
 	//dil 1
 	rc = hw_ostc3_device_config_write(device, OSTC3_DIL1, dil1Data, sizeof(gas1Data));
@@ -1355,14 +1355,14 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write general settings
 	//custom text
-	rc = hw_ostc3_device_customtext(device, qPrintable(m_deviceDetails->customText));
+	rc = hw_ostc3_device_customtext(device, qPrintable(deviceDetails.customText));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 
 	unsigned char data[1] = { 0 };
 #define WRITE_SETTING(_OSTC3_SETTING, _DEVICE_DETAIL)                                          \
 	do {                                                                                   \
-		data[0] = m_deviceDetails->_DEVICE_DETAIL;                                     \
+		data[0] = deviceDetails._DEVICE_DETAIL;                                        \
 		rc = hw_ostc3_device_config_write(device, _OSTC3_SETTING, data, sizeof(data)); \
 		if (rc != DC_STATUS_SUCCESS)                                                   \
 			return rc;                                                             \
@@ -1410,21 +1410,21 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 #undef WRITE_SETTING
 
 	// OSTC3 stores the pressureSensorOffset in two-complement
-	data[0] = (unsigned char)m_deviceDetails->pressureSensorOffset;
+	data[0] = (unsigned char)deviceDetails.pressureSensorOffset;
 	rc = hw_ostc3_device_config_write(device, OSTC3_PRESSURE_SENSOR_OFFSET, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
 	// OSTC3 stores the tempSensorOffset in two-complement
-	data[0] = (unsigned char)m_deviceDetails->tempSensorOffset;
+	data[0] = (unsigned char)deviceDetails.tempSensorOffset;
 	rc = hw_ostc3_device_config_write(device, OSTC3_TEMP_SENSOR_OFFSET, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
 
 	//sync date and time
-	if (m_deviceDetails->syncTime) {
+	if (deviceDetails.syncTime) {
 		dc_datetime_t now;
 		dc_datetime_localtime(&now, dc_datetime_now());
 
@@ -1435,7 +1435,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	return rc;
 }
 
-static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
 	dc_event_progress_t progress;
@@ -1451,8 +1451,8 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
-	m_deviceDetails->serialNo = QString::number(data[1] << 8 ^ data[0]);
-	m_deviceDetails->numberOfDives = data[3] << 8 ^ data[2];
+	deviceDetails.serialNo = QString::number(data[1] << 8 ^ data[0]);
+	deviceDetails.numberOfDives = data[3] << 8 ^ data[2];
 	//Byte5-6:
 	//Gas 1 default (%O2=21, %He=0)
 	gas gas1;
@@ -1480,7 +1480,7 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	gas5.helium = data[23];
 	//Byte25-26:
 	//Gas 6 current (%O2, %He)
-	m_deviceDetails->salinity = data[26];
+	deviceDetails.salinity = data[26];
 	// Active Gas Flag Register
 	gas1.type = data[27] & 0x01;
 	gas2.type = (data[27] & 0x02) >> 1;
@@ -1516,15 +1516,15 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 		break;
 	}
 	// Data filled up, set the gases.
-	m_deviceDetails->gas1 = gas1;
-	m_deviceDetails->gas2 = gas2;
-	m_deviceDetails->gas3 = gas3;
-	m_deviceDetails->gas4 = gas4;
-	m_deviceDetails->gas5 = gas5;
-	m_deviceDetails->decoType = data[34];
+	deviceDetails.gas1 = gas1;
+	deviceDetails.gas2 = gas2;
+	deviceDetails.gas3 = gas3;
+	deviceDetails.gas4 = gas4;
+	deviceDetails.gas5 = gas5;
+	deviceDetails.decoType = data[34];
 	//Byte36:
 	//Use O2 Sensor Module in CC Modes (0= OFF, 1= ON) (Only available in old OSTC1 - unused for OSTC Mk.2/2N)
-	//m_deviceDetails->ccrMode = data[35];
+	//deviceDetails.ccrMode = data[35];
 	setpoint sp1;
 	sp1.sp = data[36];
 	sp1.depth = 0;
@@ -1534,9 +1534,9 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	setpoint sp3;
 	sp3.sp = data[38];
 	sp3.depth = 0;
-	m_deviceDetails->sp1 = sp1;
-	m_deviceDetails->sp2 = sp2;
-	m_deviceDetails->sp3 = sp3;
+	deviceDetails.sp1 = sp1;
+	deviceDetails.sp2 = sp2;
+	deviceDetails.sp3 = sp3;
 	// Byte41-42:
 	// Lowest Battery voltage seen (in mV)
 	// Byte43:
@@ -1586,7 +1586,7 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 		char *term = strchr((char *)data + 65, (int)'}');
 		if (term)
 			*term = 0;
-		m_deviceDetails->customText = (const char *)data + 65;
+		deviceDetails.customText = (const char *)data + 65;
 	}
 	// Byte91:
 	// Dim OLED in Divemode (>0), Normal mode (=0)
@@ -1595,7 +1595,7 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	// =0: MM/DD/YY
 	// =1: DD/MM/YY
 	// =2: YY/MM/DD
-	m_deviceDetails->dateFormat = data[91];
+	deviceDetails.dateFormat = data[91];
 // Byte93:
 // Total number of CF used in installed firmware
 #ifdef DEBUG_OSTC_CF
@@ -1652,11 +1652,11 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 		//Error?
 		break;
 	}
-	m_deviceDetails->dil1 = dil1;
-	m_deviceDetails->dil2 = dil2;
-	m_deviceDetails->dil3 = dil3;
-	m_deviceDetails->dil4 = dil4;
-	m_deviceDetails->dil5 = dil5;
+	deviceDetails.dil1 = dil1;
+	deviceDetails.dil2 = dil2;
+	deviceDetails.dil3 = dil3;
+	deviceDetails.dil4 = dil4;
+	deviceDetails.dil5 = dil5;
 	// Byte117-128:
 	// not used/reserved
 	// Byte129-256:
@@ -1664,17 +1664,17 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 
 	// Decode the relevant ones
 	// CF11: Factor for saturation processes
-	m_deviceDetails->saturation = read_ostc_cf(data, 11);
+	deviceDetails.saturation = read_ostc_cf(data, 11);
 	// CF12: Factor for desaturation processes
-	m_deviceDetails->desaturation = read_ostc_cf(data, 12);
+	deviceDetails.desaturation = read_ostc_cf(data, 12);
 	// CF17: Lower threshold for ppO2 warning
-	m_deviceDetails->ppO2Min = read_ostc_cf(data, 17);
+	deviceDetails.ppO2Min = read_ostc_cf(data, 17);
 	// CF18: Upper threshold for ppO2 warning
-	m_deviceDetails->ppO2Max = read_ostc_cf(data, 18);
+	deviceDetails.ppO2Max = read_ostc_cf(data, 18);
 	// CF20: Depth sampling rate for Profile storage
-	m_deviceDetails->samplingRate = read_ostc_cf(data, 20);
+	deviceDetails.samplingRate = read_ostc_cf(data, 20);
 	// CF29: Depth of last decompression stop
-	m_deviceDetails->lastDeco = read_ostc_cf(data, 29);
+	deviceDetails.lastDeco = read_ostc_cf(data, 29);
 
 #ifdef DEBUG_OSTC_CF
 	for (int cf = 0; cf <= 31 && cf <= max_CF; cf++)
@@ -1689,7 +1689,7 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	// Logbook version indicator (Not writable!)
 	// Byte2-3:
 	// Last Firmware installed, 1st Byte.2nd Byte (e.g. „1.90“) (Not writable!)
-	m_deviceDetails->firmwareVersion = QString::number(data[1]) + "." + QString::number(data[2]);
+	deviceDetails.firmwareVersion = QString::number(data[1]) + "." + QString::number(data[2]);
 	// Byte4:
 	// OLED brightness (=0: Eco, =1 High) (Not writable!)
 	// Byte5-11:
@@ -1701,15 +1701,15 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 
 	// Decode the relevant ones
 	// CF32: Gradient Factor low
-	m_deviceDetails->gfLow = read_ostc_cf(data, 32);
+	deviceDetails.gfLow = read_ostc_cf(data, 32);
 	// CF33: Gradient Factor high
-	m_deviceDetails->gfHigh = read_ostc_cf(data, 33);
+	deviceDetails.gfHigh = read_ostc_cf(data, 33);
 	// CF56: Bottom gas consumption
-	m_deviceDetails->bottomGasConsumption = read_ostc_cf(data, 56);
+	deviceDetails.bottomGasConsumption = read_ostc_cf(data, 56);
 	// CF57: Ascent gas consumption
-	m_deviceDetails->decoGasConsumption = read_ostc_cf(data, 57);
+	deviceDetails.decoGasConsumption = read_ostc_cf(data, 57);
 	// CF58: Future time to surface setFutureTTS
-	m_deviceDetails->futureTTS = read_ostc_cf(data, 58);
+	deviceDetails.futureTTS = read_ostc_cf(data, 58);
 
 #ifdef DEBUG_OSTC_CF
 	for (int cf = 32; cf <= 63 && cf <= max_CF; cf++)
@@ -1729,23 +1729,23 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 
 	// Decode the relevant ones
 	// CF60: Graphic velocity
-	m_deviceDetails->graphicalSpeedIndicator = read_ostc_cf(data, 60);
+	deviceDetails.graphicalSpeedIndicator = read_ostc_cf(data, 60);
 	// CF65: Show safety stop
-	m_deviceDetails->safetyStop = read_ostc_cf(data, 65);
+	deviceDetails.safetyStop = read_ostc_cf(data, 65);
 	// CF67: Alternaitve Gradient Factor low
-	m_deviceDetails->aGFLow = read_ostc_cf(data, 67);
+	deviceDetails.aGFLow = read_ostc_cf(data, 67);
 	// CF68: Alternative Gradient Factor high
-	m_deviceDetails->aGFHigh = read_ostc_cf(data, 68);
+	deviceDetails.aGFHigh = read_ostc_cf(data, 68);
 	// CF69: Allow Gradient Factor change
-	m_deviceDetails->aGFSelectable = read_ostc_cf(data, 69);
+	deviceDetails.aGFSelectable = read_ostc_cf(data, 69);
 	// CF70: Safety Stop Duration [s]
-	m_deviceDetails->safetyStopLength = read_ostc_cf(data, 70);
+	deviceDetails.safetyStopLength = read_ostc_cf(data, 70);
 	// CF71: Safety Stop Start Depth [m]
-	m_deviceDetails->safetyStopStartDepth = read_ostc_cf(data, 71);
+	deviceDetails.safetyStopStartDepth = read_ostc_cf(data, 71);
 	// CF72: Safety Stop End Depth [m]
-	m_deviceDetails->safetyStopEndDepth = read_ostc_cf(data, 72);
+	deviceDetails.safetyStopEndDepth = read_ostc_cf(data, 72);
 	// CF73: Safety Stop Reset Depth [m]
-	m_deviceDetails->safetyStopResetDepth = read_ostc_cf(data, 73);
+	deviceDetails.safetyStopResetDepth = read_ostc_cf(data, 73);
 	// CF74: Battery Timeout [min]
 
 #ifdef DEBUG_OSTC_CF
@@ -1756,7 +1756,7 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_devi
 	return rc;
 }
 
-static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t write_ostc_settings(dc_device_t *device, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
 	dc_event_progress_t progress;
@@ -1773,32 +1773,32 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	EMIT_PROGRESS();
 	//Byte5-6:
 	//Gas 1 default (%O2=21, %He=0)
-	gas gas1 = m_deviceDetails->gas1;
+	gas gas1 = deviceDetails.gas1;
 	data[6] = gas1.oxygen;
 	data[7] = gas1.helium;
 	//Byte9-10:
 	//Gas 2 default (%O2=21, %He=0)
-	gas gas2 = m_deviceDetails->gas2;
+	gas gas2 = deviceDetails.gas2;
 	data[10] = gas2.oxygen;
 	data[11] = gas2.helium;
 	//Byte13-14:
 	//Gas 3 default (%O2=21, %He=0)
-	gas gas3 = m_deviceDetails->gas3;
+	gas gas3 = deviceDetails.gas3;
 	data[14] = gas3.oxygen;
 	data[15] = gas3.helium;
 	//Byte17-18:
 	//Gas 4 default (%O2=21, %He=0)
-	gas gas4 = m_deviceDetails->gas4;
+	gas gas4 = deviceDetails.gas4;
 	data[18] = gas4.oxygen;
 	data[19] = gas4.helium;
 	//Byte21-22:
 	//Gas 5 default (%O2=21, %He=0)
-	gas gas5 = m_deviceDetails->gas5;
+	gas gas5 = deviceDetails.gas5;
 	data[22] = gas5.oxygen;
 	data[23] = gas5.helium;
 	//Byte25-26:
 	//Gas 6 current (%O2, %He)
-	data[26] = m_deviceDetails->salinity;
+	data[26] = deviceDetails.salinity;
 	// Gas types, 0=Disabled, 1=Active, 2=Fist
 	// Active Gas Flag Register
 	data[27] = 0;
@@ -1835,13 +1835,13 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 		// Set gas 1 to first
 		data[33] = 1;
 
-	data[34] = m_deviceDetails->decoType;
+	data[34] = deviceDetails.decoType;
 	//Byte36:
 	//Use O2 Sensor Module in CC Modes (0= OFF, 1= ON) (Only available in old OSTC1 - unused for OSTC Mk.2/2N)
-	//m_deviceDetails->ccrMode = data[35];
-	data[36] = m_deviceDetails->sp1.sp;
-	data[37] = m_deviceDetails->sp2.sp;
-	data[38] = m_deviceDetails->sp3.sp;
+	//deviceDetails.ccrMode = data[35];
+	data[36] = deviceDetails.sp1.sp;
+	data[37] = deviceDetails.sp2.sp;
+	data[38] = deviceDetails.sp3.sp;
 	// Byte41-42:
 	// Lowest Battery voltage seen (in mV)
 	// Byte43:
@@ -1883,15 +1883,15 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	// Byte66-90:
 	// (25Bytes): Custom Text for Surfacemode (Real text must end with "}")
 	// Example: "OSTC Dive Computer}" (19 Characters incl. "}") Bytes 85-90 will be ignored.
-	if (m_deviceDetails->customText == "") {
+	if (deviceDetails.customText == "") {
 		data[64] = 0;
 	} else {
 		data[64] = 1;
 		// Copy the string to the right place in the memory, padded with 0x20 (" ")
-		strncpy((char *)data + 65, qPrintable(QString("%1").arg(m_deviceDetails->customText, -23, QChar(' '))), 23);
+		strncpy((char *)data + 65, qPrintable(QString("%1").arg(deviceDetails.customText, -23, QChar(' '))), 23);
 		// And terminate the string.
-		if (m_deviceDetails->customText.length() <= 23)
-			data[65 + m_deviceDetails->customText.length()] = '}';
+		if (deviceDetails.customText.length() <= 23)
+			data[65 + deviceDetails.customText.length()] = '}';
 		else
 			data[90] = '}';
 	}
@@ -1902,7 +1902,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	// =0: MM/DD/YY
 	// =1: DD/MM/YY
 	// =2: YY/MM/DD
-	data[91] = m_deviceDetails->dateFormat;
+	data[91] = deviceDetails.dateFormat;
 	// Byte93:
 	// Total number of CF used in installed firmware
 	max_CF = data[92];
@@ -1914,35 +1914,35 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	// Diluent 1 Default (%O2,%He)
 	// Byte98-99:
 	// Diluent 1 Current (%O2,%He)
-	gas dil1 = m_deviceDetails->dil1;
+	gas dil1 = deviceDetails.dil1;
 	data[97] = dil1.oxygen;
 	data[98] = dil1.helium;
 	// Byte100-101:
 	// Gasuent 2 Default (%O2,%He)
 	// Byte102-103:
 	// Gasuent 2 Current (%O2,%He)
-	gas dil2 = m_deviceDetails->dil2;
+	gas dil2 = deviceDetails.dil2;
 	data[101] = dil2.oxygen;
 	data[102] = dil2.helium;
 	// Byte104-105:
 	// Gasuent 3 Default (%O2,%He)
 	// Byte106-107:
 	// Gasuent 3 Current (%O2,%He)
-	gas dil3 = m_deviceDetails->dil3;
+	gas dil3 = deviceDetails.dil3;
 	data[105] = dil3.oxygen;
 	data[106] = dil3.helium;
 	// Byte108-109:
 	// Gasuent 4 Default (%O2,%He)
 	// Byte110-111:
 	// Gasuent 4 Current (%O2,%He)
-	gas dil4 = m_deviceDetails->dil4;
+	gas dil4 = deviceDetails.dil4;
 	data[109] = dil4.oxygen;
 	data[110] = dil4.helium;
 	// Byte112-113:
 	// Gasuent 5 Default (%O2,%He)
 	// Byte114-115:
 	// Gasuent 5 Current (%O2,%He)
-	gas dil5 = m_deviceDetails->dil5;
+	gas dil5 = deviceDetails.dil5;
 	data[113] = dil5.oxygen;
 	data[114] = dil5.helium;
 	// Byte116:
@@ -1969,17 +1969,17 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 
 	// Write the relevant ones
 	// CF11: Factor for saturation processes
-	write_ostc_cf(data, 11, max_CF, m_deviceDetails->saturation);
+	write_ostc_cf(data, 11, max_CF, deviceDetails.saturation);
 	// CF12: Factor for desaturation processes
-	write_ostc_cf(data, 12, max_CF, m_deviceDetails->desaturation);
+	write_ostc_cf(data, 12, max_CF, deviceDetails.desaturation);
 	// CF17: Lower threshold for ppO2 warning
-	write_ostc_cf(data, 17, max_CF, m_deviceDetails->ppO2Min);
+	write_ostc_cf(data, 17, max_CF, deviceDetails.ppO2Min);
 	// CF18: Upper threshold for ppO2 warning
-	write_ostc_cf(data, 18, max_CF, m_deviceDetails->ppO2Max);
+	write_ostc_cf(data, 18, max_CF, deviceDetails.ppO2Max);
 	// CF20: Depth sampling rate for Profile storage
-	write_ostc_cf(data, 20, max_CF, m_deviceDetails->samplingRate);
+	write_ostc_cf(data, 20, max_CF, deviceDetails.samplingRate);
 	// CF29: Depth of last decompression stop
-	write_ostc_cf(data, 29, max_CF, m_deviceDetails->lastDeco);
+	write_ostc_cf(data, 29, max_CF, deviceDetails.lastDeco);
 
 #ifdef DEBUG_OSTC_CF
 	for (int cf = 0; cf <= 31 && cf <= max_CF; cf++)
@@ -2009,15 +2009,15 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 
 	// Decode the relevant ones
 	// CF32: Gradient Factor low
-	write_ostc_cf(data, 32, max_CF, m_deviceDetails->gfLow);
+	write_ostc_cf(data, 32, max_CF, deviceDetails.gfLow);
 	// CF33: Gradient Factor high
-	write_ostc_cf(data, 33, max_CF, m_deviceDetails->gfHigh);
+	write_ostc_cf(data, 33, max_CF, deviceDetails.gfHigh);
 	// CF56: Bottom gas consumption
-	write_ostc_cf(data, 56, max_CF, m_deviceDetails->bottomGasConsumption);
+	write_ostc_cf(data, 56, max_CF, deviceDetails.bottomGasConsumption);
 	// CF57: Ascent gas consumption
-	write_ostc_cf(data, 57, max_CF, m_deviceDetails->decoGasConsumption);
+	write_ostc_cf(data, 57, max_CF, deviceDetails.decoGasConsumption);
 	// CF58: Future time to surface setFutureTTS
-	write_ostc_cf(data, 58, max_CF, m_deviceDetails->futureTTS);
+	write_ostc_cf(data, 58, max_CF, deviceDetails.futureTTS);
 #ifdef DEBUG_OSTC_CF
 	for (int cf = 32; cf <= 63 && cf <= max_CF; cf++)
 		printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
@@ -2040,23 +2040,23 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 
 	// Decode the relevant ones
 	// CF60: Graphic velocity
-	write_ostc_cf(data, 60, max_CF, m_deviceDetails->graphicalSpeedIndicator);
+	write_ostc_cf(data, 60, max_CF, deviceDetails.graphicalSpeedIndicator);
 	// CF65: Show safety stop
-	write_ostc_cf(data, 65, max_CF, m_deviceDetails->safetyStop);
+	write_ostc_cf(data, 65, max_CF, deviceDetails.safetyStop);
 	// CF67: Alternaitve Gradient Factor low
-	write_ostc_cf(data, 67, max_CF, m_deviceDetails->aGFLow);
+	write_ostc_cf(data, 67, max_CF, deviceDetails.aGFLow);
 	// CF68: Alternative Gradient Factor high
-	write_ostc_cf(data, 68, max_CF, m_deviceDetails->aGFHigh);
+	write_ostc_cf(data, 68, max_CF, deviceDetails.aGFHigh);
 	// CF69: Allow Gradient Factor change
-	write_ostc_cf(data, 69, max_CF, m_deviceDetails->aGFSelectable);
+	write_ostc_cf(data, 69, max_CF, deviceDetails.aGFSelectable);
 	// CF70: Safety Stop Duration [s]
-	write_ostc_cf(data, 70, max_CF, m_deviceDetails->safetyStopLength);
+	write_ostc_cf(data, 70, max_CF, deviceDetails.safetyStopLength);
 	// CF71: Safety Stop Start Depth [m]
-	write_ostc_cf(data, 71, max_CF, m_deviceDetails->safetyStopStartDepth);
+	write_ostc_cf(data, 71, max_CF, deviceDetails.safetyStopStartDepth);
 	// CF72: Safety Stop End Depth [m]
-	write_ostc_cf(data, 72, max_CF, m_deviceDetails->safetyStopEndDepth);
+	write_ostc_cf(data, 72, max_CF, deviceDetails.safetyStopEndDepth);
 	// CF73: Safety Stop Reset Depth [m]
-	write_ostc_cf(data, 73, max_CF, m_deviceDetails->safetyStopResetDepth);
+	write_ostc_cf(data, 73, max_CF, deviceDetails.safetyStopResetDepth);
 	// CF74: Battery Timeout [min]
 
 #ifdef DEBUG_OSTC_CF
@@ -2069,7 +2069,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	EMIT_PROGRESS();
 
 	//sync date and time
-	if (m_deviceDetails->syncTime) {
+	if (deviceDetails.syncTime) {
 		QDateTime timeToSet = QDateTime::currentDateTime();
 		dc_datetime_t time = { 0 };
 		time.year = timeToSet.date().year();
@@ -2119,12 +2119,12 @@ void ReadSettingsThread::run()
 {
 	dc_status_t rc;
 
-	DeviceDetails *m_deviceDetails = new DeviceDetails(0);
+	DeviceDetails deviceDetails;
 	switch (dc_device_get_type(m_data->device)) {
 	case DC_FAMILY_SUUNTO_VYPER:
-		rc = read_suunto_vyper_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		rc = read_suunto_vyper_settings(m_data->device, deviceDetails, DeviceThread::event_cb, this);
 		if (rc == DC_STATUS_SUCCESS) {
-			emit devicedetails(m_deviceDetails);
+			emit devicedetails(std::move(deviceDetails));
 		} else if (rc == DC_STATUS_UNSUPPORTED) {
 			emit error(tr("This feature is not yet available for the selected dive computer."));
 		} else {
@@ -2132,9 +2132,9 @@ void ReadSettingsThread::run()
 		}
 		break;
 	case DC_FAMILY_HW_OSTC3:
-		rc = read_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		rc = read_ostc3_settings(m_data->device, deviceDetails, DeviceThread::event_cb, this);
 		if (rc == DC_STATUS_SUCCESS)
-			emit devicedetails(m_deviceDetails);
+			emit devicedetails(std::move(deviceDetails));
 		else
 			emit error(tr("Failed!"));
 		break;
@@ -2143,9 +2143,9 @@ void ReadSettingsThread::run()
 	case DC_FAMILY_NULL:
 #endif
 	case DC_FAMILY_HW_OSTC:
-		rc = read_ostc_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		rc = read_ostc_settings(m_data->device, deviceDetails, DeviceThread::event_cb, this);
 		if (rc == DC_STATUS_SUCCESS)
-			emit devicedetails(m_deviceDetails);
+			emit devicedetails(std::move(deviceDetails));
 		else
 			emit error(tr("Failed!"));
 		break;
@@ -2156,12 +2156,11 @@ void ReadSettingsThread::run()
 }
 
 WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data) :
-	DeviceThread(parent, data),
-	m_deviceDetails(NULL)
+	DeviceThread(parent, data)
 {
 }
 
-void WriteSettingsThread::setDeviceDetails(DeviceDetails *details)
+void WriteSettingsThread::setDeviceDetails(const DeviceDetails &details)
 {
 	m_deviceDetails = details;
 }
@@ -2181,7 +2180,7 @@ void WriteSettingsThread::run()
 		break;
 	case DC_FAMILY_HW_OSTC3:
 		// Is this the best way?
-		if (m_deviceDetails->model == "OSTC 4")
+		if (m_deviceDetails.model == "OSTC 4")
 			rc = write_ostc4_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 		else
 			rc = write_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);

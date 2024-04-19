@@ -84,6 +84,7 @@ QString render_seconds_to_string(int seconds);
 QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText = gettextFromC::tr("sec"), QString separator = ":", bool isFreeDive = false);
 QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator = " ", int maxdays = 4);
 QString get_dive_date_string(timestamp_t when);
+std::string get_dive_date_c_string(timestamp_t when);
 QString get_first_dive_date_string();
 QString get_last_dive_date_string();
 QString get_short_dive_date_string(timestamp_t when);
@@ -93,11 +94,15 @@ QLocale getLocale();
 QVector<QPair<QString, int>> selectedDivesGasUsed();
 QString getUserAgent();
 QString printGPSCoords(const location_t *loc);
+std::string printGPSCoordsC(const location_t *loc);
 std::vector<int> get_cylinder_map_for_remove(int count, int n);
 std::vector<int> get_cylinder_map_for_add(int count, int n);
 
 extern QString (*changesCallback)();
 void uiNotification(const QString &msg);
+std::string get_changes_made();
+std::string subsurface_user_agent();
+std::string normalize_cloud_name(const char *remote_in);
 
 #if defined __APPLE__
 #define TITLE_OR_TEXT(_t, _m) "", _t + "\n" + _m
@@ -115,21 +120,16 @@ extern "C" {
 
 struct git_info;
 
-char *printGPSCoordsC(const location_t *loc);
 bool getProxyString(char **buffer);
 bool canReachCloudServer(struct git_info *);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 char *get_file_name(const char *fileName);
-void set_filename(const char *filename);
 void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName);
 char *move_away(const char *path);
 const char *local_file_path(struct picture *picture);
 char *cloud_url();
-const char *normalize_cloud_name(const char *remote_in);
 char *hashfile_name_string();
-char *picturedir_string();
-const char *subsurface_user_agent();
 enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
 char *get_current_date();
@@ -143,17 +143,10 @@ depth_t string_to_depth(const char *str);
 pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
-char *get_changes_made();
 void emit_reset_signal();
-
-extern void report_info(const char *fmt, ...);
 
 #ifdef __cplusplus
 }
 #endif
-
-// 4) SSRF_INFO macro to replace fprintf calls in our code
-//    (originally based on logging bits from libdivecomputer)
-#define SSRF_INFO(fmt, ...) report_info(fmt, ##__VA_ARGS__)
 
 #endif // QTHELPER_H

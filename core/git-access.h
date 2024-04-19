@@ -42,10 +42,8 @@ extern bool remote_repo_uptodate(const char *filename, struct git_info *info);
 extern int sync_with_remote(struct git_info *);
 extern int git_save_dives(struct git_info *, bool select_only);
 extern int git_load_dives(struct git_info *, struct divelog *log);
-extern const char *get_sha(git_repository *repo, const char *branch);
 extern int do_git_save(struct git_info *, bool select_only, bool create_empty);
 extern void cleanup_git_info(struct git_info *);
-extern const char *saved_git_id;
 extern bool git_local_only;
 extern bool git_remote_sync_successful;
 extern void clear_git_id(void);
@@ -58,6 +56,11 @@ int get_authorship(git_repository *repo, git_signature **authorp);
 
 #ifdef __cplusplus
 }
+
+#include <string>
+extern std::string saved_git_id;
+extern std::string get_sha(git_repository *repo, const char *branch);
+
 #endif
 #endif // GITACCESS_H
 

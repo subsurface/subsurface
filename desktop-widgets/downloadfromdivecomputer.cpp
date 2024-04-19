@@ -26,7 +26,8 @@ static bool is_vendor_searchable(QString vendor)
 	return vendor == "Uemis" || vendor == "Garmin";
 }
 
-DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent) : QDialog(parent, QFlag(0)),
+DownloadFromDCWidget::DownloadFromDCWidget(const QString &filename, QWidget *parent) : QDialog(parent, QFlag(0)),
+	filename(filename),
 	downloading(false),
 	previousLast(0),
 	timer(new QTimer(this)),
@@ -450,15 +451,12 @@ void DownloadFromDCWidget::checkLogFile(int state)
 
 void DownloadFromDCWidget::pickLogFile()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
+	QString logfilename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
 	QString logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
-						       filename, tr("Log files") + " (*.log)");
-	if (!logFile.isEmpty()) {
-		free(logfile_name);
-		logfile_name = copy_qstring(logFile);
-	}
+						       logfilename, tr("Log files") + " (*.log)");
+	if (!logFile.isEmpty())
+		logfile_name = logFile.toStdString();
 }
 
 void DownloadFromDCWidget::checkDumpFile(int state)
@@ -476,15 +474,12 @@ void DownloadFromDCWidget::checkDumpFile(int state)
 
 void DownloadFromDCWidget::pickDumpFile()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
 	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.bin");
+	QString dumpfilename = fi.absolutePath().append(QDir::separator()).append("subsurface.bin");
 	QString dumpFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer binary dump file"),
-							filename, tr("Dump files") + " (*.bin)");
-	if (!dumpFile.isEmpty()) {
-		free(dumpfile_name);
-		dumpfile_name = copy_qstring(dumpFile);
-	}
+							dumpfilename, tr("Dump files") + " (*.bin)");
+	if (!dumpFile.isEmpty())
+		dumpfile_name = dumpFile.toStdString();
 }
 
 void DownloadFromDCWidget::reject()
@@ -536,7 +531,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	diveImportedModel->recordDives(flags);
 
 	if (ostcFirmwareCheck && currentState == DONE)
-		ostcFirmwareCheck->checkLatest(this, diveImportedModel->thread.data()->internalData());
+		ostcFirmwareCheck->checkLatest(this, diveImportedModel->thread.data()->internalData(), filename);
 	accept();
 }
 

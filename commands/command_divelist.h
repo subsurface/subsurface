@@ -112,7 +112,7 @@ private:
 
 	// For redo
 	std::vector<OwningDiveSitePtr>	sitesToAdd;
-	std::vector<std::pair<QString,FilterData>>
+	std::vector<std::pair<std::string,FilterData>>
 					filterPresetsToAdd;
 
 	// For undo
