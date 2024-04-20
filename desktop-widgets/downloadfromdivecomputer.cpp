@@ -117,10 +117,13 @@ DownloadFromDCWidget::DownloadFromDCWidget(const QString &filename, QWidget *par
 #define SETUPDC(num) \
 	if (!qPrefDiveComputer::vendor##num().isEmpty()) { \
 		ui.DC##num->setVisible(true); \
+		ui.DDC##num->setVisible(true); \
 		ui.DC##num->setText(qPrefDiveComputer::vendor##num() + " - " + qPrefDiveComputer::product##num()); \
 		connect(ui.DC##num, &QPushButton::clicked, this, &DownloadFromDCWidget::DC##num##Clicked, Qt::UniqueConnection); \
+		connect(ui.DDC##num, &QPushButton::clicked, this, &DownloadFromDCWidget::DDC##num##Clicked, Qt::UniqueConnection); \
 	} else { \
 		ui.DC##num->setVisible(false); \
+		ui.DDC##num->setVisible(false); \
 	}
 
 void DownloadFromDCWidget::showRememberedDCs()
@@ -141,6 +144,7 @@ int DownloadFromDCWidget::deviceIndex(QString deviceText)
 	}
 	return rv;
 }
+
 
 // DC button slots
 // we need two versions as one of the helper functions used is only available if
@@ -170,6 +174,42 @@ DCBUTTON(1)
 DCBUTTON(2)
 DCBUTTON(3)
 DCBUTTON(4)
+
+// Delete DC button slots
+#define DDCBUTTON(num) \
+void DownloadFromDCWidget::DDC##num##Clicked() \
+{ \
+	ui.DC##num->setVisible(false); \
+	ui.DDC##num->setVisible(false); \
+	int dc = num; \
+	switch (dc) { \
+		case 1: \
+			qPrefDiveComputer::set_vendor1(qPrefDiveComputer::vendor2()); \
+			qPrefDiveComputer::set_product1(qPrefDiveComputer::product2()); \
+			qPrefDiveComputer::set_device1(qPrefDiveComputer::device2()); \
+		case 2: \
+			qPrefDiveComputer::set_vendor2(qPrefDiveComputer::vendor3()); \
+			qPrefDiveComputer::set_product2(qPrefDiveComputer::product3()); \
+			qPrefDiveComputer::set_device2(qPrefDiveComputer::device3()); \
+		case 3: \
+			qPrefDiveComputer::set_vendor3(qPrefDiveComputer::vendor4()); \
+			qPrefDiveComputer::set_product3(qPrefDiveComputer::product4()); \
+			qPrefDiveComputer::set_device3(qPrefDiveComputer::device4()); \
+		case 4: \
+			qPrefDiveComputer::set_vendor4(QString()); \
+			qPrefDiveComputer::set_product4(QString()); \
+			qPrefDiveComputer::set_device4(QString()); \
+	} \
+	qPrefDiveComputer::set_vendor(qPrefDiveComputer::vendor1()); \
+	qPrefDiveComputer::set_product(qPrefDiveComputer::product1()); \
+	qPrefDiveComputer::set_device(qPrefDiveComputer::device1()); \
+   DownloadFromDCWidget::showRememberedDCs(); \
+}
+
+DDCBUTTON(1)
+DDCBUTTON(2)
+DDCBUTTON(3)
+DDCBUTTON(4)
 
 void DownloadFromDCWidget::updateProgressBar()
 {
