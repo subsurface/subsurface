@@ -117,13 +117,15 @@ DownloadFromDCWidget::DownloadFromDCWidget(const QString &filename, QWidget *par
 #define SETUPDC(num) \
 	if (!qPrefDiveComputer::vendor##num().isEmpty()) { \
 		ui.DC##num->setVisible(true); \
-		ui.DDC##num->setVisible(true); \
+		ui.DCFrame##num->setVisible(true); \
+		ui.DeleteDC##num->setVisible(true); \
 		ui.DC##num->setText(qPrefDiveComputer::vendor##num() + " - " + qPrefDiveComputer::product##num()); \
 		connect(ui.DC##num, &QPushButton::clicked, this, &DownloadFromDCWidget::DC##num##Clicked, Qt::UniqueConnection); \
-		connect(ui.DDC##num, &QPushButton::clicked, this, &DownloadFromDCWidget::DDC##num##Clicked, Qt::UniqueConnection); \
+		connect(ui.DeleteDC##num, &QPushButton::clicked, this, &DownloadFromDCWidget::DeleteDC##num##Clicked, Qt::UniqueConnection); \
 	} else { \
 		ui.DC##num->setVisible(false); \
-		ui.DDC##num->setVisible(false); \
+		ui.DCFrame##num->setVisible(false); \
+		ui.DeleteDC##num->setVisible(false); \
 	}
 
 void DownloadFromDCWidget::showRememberedDCs()
@@ -176,11 +178,11 @@ DCBUTTON(3)
 DCBUTTON(4)
 
 // Delete DC button slots
-#define DDCBUTTON(num) \
-void DownloadFromDCWidget::DDC##num##Clicked() \
+#define DELETEDCBUTTON(num) \
+void DownloadFromDCWidget::DeleteDC##num##Clicked() \
 { \
 	ui.DC##num->setVisible(false); \
-	ui.DDC##num->setVisible(false); \
+	ui.DeleteDC##num->setVisible(false); \
 	int dc = num; \
 	switch (dc) { \
 		case 1: \
@@ -203,13 +205,13 @@ void DownloadFromDCWidget::DDC##num##Clicked() \
 	qPrefDiveComputer::set_vendor(qPrefDiveComputer::vendor1()); \
 	qPrefDiveComputer::set_product(qPrefDiveComputer::product1()); \
 	qPrefDiveComputer::set_device(qPrefDiveComputer::device1()); \
-   DownloadFromDCWidget::showRememberedDCs(); \
+	DownloadFromDCWidget::showRememberedDCs(); \
 }
 
-DDCBUTTON(1)
-DDCBUTTON(2)
-DDCBUTTON(3)
-DDCBUTTON(4)
+DELETEDCBUTTON(1)
+DELETEDCBUTTON(2)
+DELETEDCBUTTON(3)
+DELETEDCBUTTON(4)
 
 void DownloadFromDCWidget::updateProgressBar()
 {
