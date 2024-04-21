@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-2.0
-// SPDX-License-Identifier: GPL-2.0
 #ifndef DOWNLOADFROMDIVECOMPUTER_H
 #define DOWNLOADFROMDIVECOMPUTER_H
 
@@ -57,10 +56,10 @@ slots:
 	void DC2Clicked();
 	void DC3Clicked();
 	void DC4Clicked();
-	void DDC1Clicked();
-	void DDC2Clicked();
-	void DDC3Clicked();
-	void DDC4Clicked();
+	void DeleteDC1Clicked();
+	void DeleteDC2Clicked();
+	void DeleteDC3Clicked();
+	void DeleteDC4Clicked();
 	int deviceIndex(QString deviceText);
 
 #if defined(BT_SUPPORT)
