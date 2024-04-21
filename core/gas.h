@@ -18,6 +18,16 @@ enum gas_component { N2, HE, O2 };
 struct gasmix {
 	fraction_t o2;
 	fraction_t he;
+#ifdef __cplusplus
+	bool operator==(const gasmix &g2) const
+	{
+		return o2.permille == g2.o2.permille && he.permille == g2.he.permille;
+	}
+	bool operator!=(const gasmix &g2) const
+	{
+		return !(*this == g2);
+	}
+#endif
 };
 static const struct gasmix gasmix_invalid = { { -1 }, { -1 } };
 static const struct gasmix gasmix_air = { { 0 }, { 0 } };

@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divetextitem.h"
-#include "profilewidget2.h"
 #include "core/color.h"
 #include "core/errorhelper.h"
 
-#include <QBrush>
+#include <cmath>
 #include <QApplication>
+#include <QBrush>
+#include <QPainter>
 
 static const double outlineSize = 3.0;
 
@@ -87,6 +88,11 @@ double DiveTextItem::fontHeight(double dpr, double scale)
 	QFont fnt = getFont(dpr, scale);
 	QFontMetrics fm(fnt);
 	return (double)fm.height();
+}
+
+double DiveTextItem::width() const
+{
+	return boundingRect().width();
 }
 
 double DiveTextItem::height() const

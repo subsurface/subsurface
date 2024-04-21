@@ -2,7 +2,6 @@
 #ifndef TANKITEM_H
 #define TANKITEM_H
 
-#include "profile-widget/divelineitem.h"
 #include "core/gas.h"
 #include <QGraphicsRectItem>
 #include <QBrush>

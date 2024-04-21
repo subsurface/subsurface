@@ -395,9 +395,9 @@ if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 			qt_add_resources(SUBSURFACE_RESOURCES map-widget/qml/map-widget.qrc)
 			set(SUBSURFACE_MAPWIDGET subsurface_mapwidget)
 		endif()
-		qt_add_resources(SUBSURFACE_RESOURCES subsurface.qrc profile.qrc stats/statsicons.qrc desktop-widgets/qml/statsview2.qrc)
+		qt_add_resources(SUBSURFACE_RESOURCES subsurface.qrc profile.qrc stats/statsicons.qrc desktop-widgets/qml/statsview2.qrc desktop-widgets/qml/profileview.qrc)
 	else()
-		qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc profile.qrc stats/statsicons.qrc map-widget/qml/map-widget.qrc desktop-widgets/qml/statsview2.qrc)
+		qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc profile.qrc stats/statsicons.qrc map-widget/qml/map-widget.qrc desktop-widgets/qml/statsview2.qrc desktop-widgets/qml/profileview.qrc)
 		set(SUBSURFACE_MAPWIDGET subsurface_mapwidget)
 	endif()
 endif()
@@ -420,6 +420,7 @@ if(MAPSUPPORT)
 add_subdirectory(map-widget)
 endif()
 add_subdirectory(mobile-widgets)
+add_subdirectory(qt-quick)
 add_subdirectory(stats)
 endif()
 add_subdirectory(backend-shared)
@@ -473,6 +474,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_commands
 		subsurface_corelib
 		subsurface_stats
+		subsurface_qtquick
 		kirigamiplugin
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
@@ -499,6 +501,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		subsurface_commands
 		subsurface_corelib
 		subsurface_stats
+		subsurface_qtquick
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
 	add_dependencies(subsurface_desktop_preferences subsurface_generated_ui)

@@ -20,7 +20,6 @@
 #include "libdivecomputer/parser.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/selection.h"
-#include "profile-widget/profilewidget2.h"
 #include "commands/command.h"
 #include "core/metadata.h"
 #include "core/tag.h"

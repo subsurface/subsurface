@@ -56,7 +56,6 @@
 #include "commands/command.h"
 
 #include "profilewidget.h"
-#include "profile-widget/profilewidget2.h"
 
 #ifndef NO_PRINTING
 #include "desktop-widgets/printdialog.h"
@@ -671,7 +670,7 @@ void MainWindow::on_actionReplanDive_triggered()
 
 	disableShortcuts(true);
 	plannerWidgets->prepareReplanDive(current_dive);
-	profile->setPlanState(plannerWidgets->getDive(), profile->dc);
+	profile->plotDive(plannerWidgets->getDive(), profile->dc, true);
 	plannerWidgets->replanDive(profile->dc);
 }
 
@@ -685,7 +684,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 
 	disableShortcuts(true);
 	plannerWidgets->preparePlanDive(current_dive);
-	profile->setPlanState(plannerWidgets->getDive(), 0);
+	profile->plotDive(plannerWidgets->getDive(), 0, true);
 	plannerWidgets->planDive();
 }
 

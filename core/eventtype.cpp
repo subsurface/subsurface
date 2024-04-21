@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "eventtype.h"
 #include "event.h"
+#include "divecomputer.h"
 #include "gettextfromc.h"
 #include "subsurface-string.h"
 
@@ -55,10 +56,22 @@ extern "C" void hide_event_type(const struct event *ev)
 		it->plot = false;
 }
 
-extern "C" void show_all_event_types()
+static bool has_event_type(const divecomputer *dc, const event_type et)
 {
-	for (event_type &e: event_types)
-		e.plot = true;
+	for (const event *ev = dc->events; ev; ev = ev->next) {
+		if (ev->name == et.name &&
+		    get_event_severity(ev) == et.severity)
+			return true;
+	}
+	return false;
+}
+
+extern "C" void show_all_event_types(const divecomputer *dc)
+{
+	for (event_type &e: event_types) {
+		if (!e.plot && has_event_type(dc, e))
+			e.plot = true;
+	}
 }
 
 extern "C" void show_event_type(int idx)
@@ -68,17 +81,12 @@ extern "C" void show_event_type(int idx)
 	event_types[idx].plot = true;
 }
 
-extern "C" bool any_event_types_hidden()
-{
-	return std::any_of(event_types.begin(), event_types.end(),
-			   [] (const event_type &e) { return !e.plot; });
-}
-
-extern std::vector<int> hidden_event_types()
+extern std::vector<int> hidden_event_types(const divecomputer *dc)
 {
 	std::vector<int> res;
 	for (size_t i = 0; i < event_types.size(); ++i) {
-		if (!event_types[i].plot)
+		const event_type &e = event_types[i];
+		if (!e.plot && has_event_type(dc, e))
 			res.push_back(i);
 	}
 	return res;

@@ -5,9 +5,9 @@
 #ifndef BAR_SERIES_H
 #define BAR_SERIES_H
 
-#include "statshelper.h"
 #include "statsseries.h"
 #include "statsvariables.h"
+#include "qt-quick/chartitem_ptr.h"
 
 #include <memory>
 #include <vector>

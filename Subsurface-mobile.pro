@@ -45,7 +45,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/fulltext.cpp \
 	core/subsurfacestartup.cpp \
 	core/pref.c \
-	core/profile.c \
+	core/profile.cpp \
 	core/device.cpp \
 	core/dive.cpp \
 	core/divecomputer.c \
@@ -126,7 +126,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/subsurface-qt/divelistnotifier.cpp \
 	backend-shared/exportfuncs.cpp \
 	backend-shared/plannershared.cpp \
-	backend-shared/roundrectitem.cpp \
 	stats/statsvariables.cpp \
 	stats/statsview.cpp \
 	stats/barseries.cpp \
@@ -167,7 +166,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	qt-models/weightsysteminfomodel.cpp \
 	qt-models/filterconstraintmodel.cpp \
 	qt-models/filterpresetmodel.cpp \
-	profile-widget/qmlprofile.cpp \
 	profile-widget/divecartesianaxis.cpp \
 	profile-widget/diveeventitem.cpp \
 	profile-widget/divepercentageitem.cpp \
@@ -175,12 +173,14 @@ SOURCES += subsurface-mobile-main.cpp \
 	profile-widget/profilescene.cpp \
 	profile-widget/animationfunctions.cpp \
 	profile-widget/divepixmapcache.cpp \
-	profile-widget/divepixmapitem.cpp \
-	profile-widget/divetooltipitem.cpp \
-	profile-widget/tankitem.cpp \
-	profile-widget/divelineitem.cpp \
-	profile-widget/diverectitem.cpp \
-	profile-widget/divetextitem.cpp
+	profile-widget/pictureitem.cpp \
+	profile-widget/tooltipitem.cpp \
+	profile-widget/divetextitem.cpp \
+	profile-widget/handleitem.cpp \
+	profile-widget/profileview.cpp \
+	profile-widget/ruleritem.cpp \
+	qt-quick/chartitem.cpp \
+	qt-quick/chartview.cpp
 
 HEADERS += \
 	commands/command_base.h \
@@ -282,7 +282,6 @@ HEADERS += \
 	core/subsurface-qt/divelistnotifier.h \
 	backend-shared/exportfuncs.h \
 	backend-shared/plannershared.h \
-	backend-shared/roundrectitem.h \
 	stats/barseries.h \
 	stats/boxseries.h \
 	stats/chartitem.h \
@@ -327,20 +326,24 @@ HEADERS += \
 	qt-models/weightsysteminfomodel.h \
 	qt-models/filterconstraintmodel.h \
 	qt-models/filterpresetmodel.h \
-	profile-widget/qmlprofile.h \
 	profile-widget/divepercentageitem.h \
 	profile-widget/diveprofileitem.h \
 	profile-widget/profilescene.h \
 	profile-widget/diveeventitem.h \
-	profile-widget/divetooltipitem.h \
-	profile-widget/tankitem.h \
+	profile-widget/pictureitem.h \
+	profile-widget/tooltipitem.h \
 	profile-widget/animationfunctions.h \
 	profile-widget/divecartesianaxis.h \
-	profile-widget/divelineitem.h \
 	profile-widget/divepixmapcache.h \
-	profile-widget/divepixmapitem.h \
-	profile-widget/diverectitem.h \
-	profile-widget/divetextitem.h
+	profile-widget/divetextitem.h \
+	profile-widget/handleitem.h \
+	profile-widget/profileview.h \
+	profile-widget/ruleritem.h \
+	profile-widget/profiletranslations.h \
+	qt-quick/chartitem.h \
+	qt-quick/chartitemhelper.h \
+	qt-quick/chartitem_ptr.h \
+	qt-quick/chartview.h
 
 RESOURCES += mobile-widgets/qml/mobile-resources.qrc \
 		mobile-widgets/3rdparty/icons.qrc \

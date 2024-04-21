@@ -8,7 +8,6 @@
 #include "qt-models/cylindermodel.h"
 #include "qt-models/models.h"
 #include "desktop-widgets/starwidget.h"
-#include "profile-widget/profilewidget2.h"
 #include "qt-models/tankinfomodel.h"
 #include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/weightmodel.h"

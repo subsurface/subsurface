@@ -27,7 +27,6 @@ class DiveReportedCeiling;
 class DiveTemperatureItem;
 class DiveTextItem;
 class PartialPressureGasItem;
-class ProfileAnimation;
 class TankItem;
 
 class ProfileScene : public QGraphicsScene {
@@ -38,20 +37,35 @@ public:
 	void resize(QSizeF size);
 	void clear();
 	bool pointOnProfile(const QPointF &point) const;
+	bool pointOnDiveComputerText(const QPointF &point) const;
+	bool pointOnEventsHiddenText(const QPointF &point) const;
 	void anim(double fraction); // Called by the animation with 0.0-1.0 (start to stop).
 				    // Can be compared with literal 1.0 to determine "end" state.
 
 	// If a plannerModel is passed, the deco-information is taken from there.
-	void plotDive(const struct dive *d, int dc, DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
-		      bool instant = false, bool keepPlotInfo = false, bool calcMax = true, double zoom = 1.0, double zoomedPosition = 0.0);
+	void plotDive(const struct dive *d, int dc, int animSpeed, bool simplified,
+		      DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false,
+		      bool keepPlotInfo = false, bool calcMax = true, double zoom = 1.0, double zoomedPosition = 0.0);
 
 	void draw(QPainter *painter, const QRect &pos,
 		  const struct dive *d, int dc,
 		  DivePlannerPointsModel *plannerModel = nullptr, bool inPlanner = false);
 	double calcZoomPosition(double zoom, double originalPos, double delta);
+	const plot_info &getPlotInfo() const;
+	int timeAt(QPointF pos) const; // time in seconds
+	int depthAt(QPointF pos) const; // depth in mm
+	std::pair<double, double> minMaxTime() const; // time in seconds
+	std::pair<double, double> minMaxX() const; // minimum and maximum x positions of canvas
+	std::pair<double, double> minMaxY() const; // minimum and maximum y positions of canvas
+	double posAtTime(double time) const; // time in seconds
+	double posAtDepth(double depth) const;
+	double yToScreen(double y) const; // For pictures: depth given in fration of displayed range.
+	std::vector<std::pair<QString, QPixmap>> eventsAt(QPointF pos) const;
+	DiveEventItem *eventAtPosition(QPointF pos) const; // null if no event icon at position.
 
 	const struct dive *d;
 	int dc;
+	QRectF profileRegion; // Region inside the axes, where the crosshair is painted in plan and edit mode.
 private:
 	using DataAccessor = double (*)(const plot_data &data);
 	template<typename T, class... Args> T *createItem(const DiveCartesianAxis &vAxis, DataAccessor accessor, int z, Args&&... args);
@@ -61,7 +75,6 @@ private:
 	void updateVisibility(bool diveHasHeartBeat, bool simplified); // Update visibility of non-interactive chart features according to preferences
 	void updateAxes(bool diveHasHeartBeat, bool simplified); // Update axes according to preferences
 
-	friend class ProfileWidget2; // For now, give the ProfileWidget full access to the objects on the scene
 	double dpr; // Device Pixel Ratio. A DPR of one corresponds to a "standard" PC screen.
 	bool printMode;
 	bool isGrayscale;
@@ -70,7 +83,6 @@ private:
 	int maxdepth;
 
 	struct plot_info plotInfo;
-	QRectF profileRegion; // Region inside the axes, where the crosshair is painted in plan and edit mode.
 	DiveCartesianAxis *profileYAxis;
 	DiveCartesianAxis *gasYAxis;
 	DiveCartesianAxis *temperatureAxis;
@@ -83,8 +95,9 @@ private:
 	DiveTemperatureItem *temperatureItem;
 	DiveMeanDepthItem *meanDepthItem;
 	DiveGasPressureItem *gasPressureItem;
-	QList<DiveEventItem *> eventItems;
+	std::vector<std::unique_ptr<DiveEventItem>> eventItems;
 	DiveTextItem *diveComputerText;
+	DiveTextItem *eventsHiddenText;
 	DiveReportedCeiling *reportedCeiling;
 	PartialPressureGasItem *pn2GasItem;
 	PartialPressureGasItem *pheGasItem;
@@ -101,7 +114,6 @@ private:
 	DivePercentageItem *percentageItem;
 	TankItem *tankItem;
 	std::shared_ptr<const DivePixmaps> pixmaps;
-	std::unique_ptr<ProfileAnimation> animation;
 	std::vector<DiveCartesianAxis *> animatedAxes;
 };
 
