@@ -155,105 +155,166 @@
          </item>
          <item row="6" column="0">
           <layout class="QGridLayout" name="DCGrid">
-           <property name="verticalSpacing">
-             <number>0</number>
-           </property>
            <item row="0" column="0">
-            <layout class="QGridLayout" name="DC1Grid">
-             <property name="horizontalSpacing">
-              <number>0</number>
+            <widget class="QFrame" name="DCFrame1">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="DC1">
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="DDC1">
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>X</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="DC1Grid">
+              <property name="horizontalSpacing">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="DC1">
+                <property name="autoDefault">
+                 <bool>false</bool>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="DeleteDC1">
+                <property name="autoDefault">
+                 <bool>false</bool>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+                <property name="icon">
+                 <iconset>
+                   <normaloff>:list-remove-icon</normaloff>:list-remove-icon</iconset>
+                 </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
+
            <item row="0" column="1">
-            <layout class="QGridLayout" name="DC2Grid">
-             <property name="horizontalSpacing">
-              <number>0</number>
+            <widget class="QFrame" name="DCFrame2">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="DC2">
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="DDC2">
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>X</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="DC2Grid">
+              <property name="horizontalSpacing">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="DC2">
+                <property name="autoDefault">
+                 <bool>false</bool>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="DeleteDC2">
+                <property name="autoDefault">
+                 <bool>false</bool>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+                <property name="icon">
+                 <iconset>
+                   <normaloff>:list-remove-icon</normaloff>:list-remove-icon</iconset>
+                 </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
+
            <item row="1" column="0">
-            <layout class="QGridLayout" name="DC3Grid">
-             <property name="horizontalSpacing">
-              <number>0</number>
+            <widget class="QFrame" name="DCFrame3">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="DC3">
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="DDC3">
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>X</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="DC3Grid">
+              <property name="horizontalSpacing">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="DC3">
+                <property name="autoDefault">
+                 <bool>false</bool>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="DeleteDC3">
+                <property name="autoDefault">
+                 <bool>false</bool>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+                <property name="icon">
+                 <iconset>
+                   <normaloff>:list-remove-icon</normaloff>:list-remove-icon</iconset>
+                 </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
+
            <item row="1" column="1">
-            <layout class="QGridLayout" name="DC4Grid">
-             <property name="horizontalSpacing">
-              <number>0</number>
+            <widget class="QFrame" name="DCFrame4">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="DC4">
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="DDC4">
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>X</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QGridLayout" name="DC4Grid">
+              <property name="horizontalSpacing">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="DC4">
+                <property name="autoDefault">
+                 <bool>false</bool>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="DeleteDC4">
+                <property name="autoDefault">
+                 <bool>false</bool>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+                <property name="icon">
+                 <iconset>
+                   <normaloff>:list-remove-icon</normaloff>:list-remove-icon</iconset>
+                 </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
+
           </layout>
          </item>
          <item row="13" column="0">
