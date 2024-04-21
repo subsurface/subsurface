@@ -202,9 +202,6 @@ void DownloadFromDCWidget::DeleteDC##num##Clicked() \
 			qPrefDiveComputer::set_product4(QString()); \
 			qPrefDiveComputer::set_device4(QString()); \
 	} \
-	qPrefDiveComputer::set_vendor(qPrefDiveComputer::vendor1()); \
-	qPrefDiveComputer::set_product(qPrefDiveComputer::product1()); \
-	qPrefDiveComputer::set_device(qPrefDiveComputer::device1()); \
 	DownloadFromDCWidget::showRememberedDCs(); \
 }
 
