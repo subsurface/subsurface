@@ -91,7 +91,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/gas.c \
 	core/membuffer.cpp \
 	core/selection.cpp \
-	core/sha1.c \
+	core/sha1.cpp \
 	core/string-format.cpp \
 	core/strtod.cpp \
 	core/tag.cpp \

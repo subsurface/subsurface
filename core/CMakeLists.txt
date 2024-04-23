@@ -162,7 +162,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	save-xml.cpp
 	selection.cpp
 	selection.h
-	sha1.c
+	sha1.cpp
 	sha1.h
 	ssrf.h
 	statistics.c

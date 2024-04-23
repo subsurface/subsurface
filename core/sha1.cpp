@@ -8,7 +8,6 @@
 
 /* this is only to get definitions for memcpy(), ntohl() and htonl() */
 #include <string.h>
-#include <stdint.h>
 #ifdef WIN32
 #include <winsock2.h>
 #else
@@ -132,16 +131,16 @@
 #define T_40_59(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, ((B &C) + (D &(B ^ C))), 0x8f1bbcdc, A, B, C, D, E)
 #define T_60_79(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, (B ^ C ^ D), 0xca62c1d6, A, B, C, D, E)
 
-static void blk_SHA1_Block(blk_SHA_CTX *ctx, const void *block)
+static void blk_SHA1_Block(unsigned int H[], const void *block)
 {
 	unsigned int A, B, C, D, E;
 	unsigned int array[16];
 
-	A = ctx->H[0];
-	B = ctx->H[1];
-	C = ctx->H[2];
-	D = ctx->H[3];
-	E = ctx->H[4];
+	A = H[0];
+	B = H[1];
+	C = H[2];
+	D = H[3];
+	E = H[4];
 
 	/* Round 1 - iterations 0-16 take their input from 'block' */
 	T_0_15(0, A, B, C, D, E);
@@ -233,80 +232,84 @@ static void blk_SHA1_Block(blk_SHA_CTX *ctx, const void *block)
 	T_60_79(78, C, D, E, A, B);
 	T_60_79(79, B, C, D, E, A);
 
-	ctx->H[0] += A;
-	ctx->H[1] += B;
-	ctx->H[2] += C;
-	ctx->H[3] += D;
-	ctx->H[4] += E;
+	H[0] += A;
+	H[1] += B;
+	H[2] += C;
+	H[3] += D;
+	H[4] += E;
 }
 
-void blk_SHA1_Init(blk_SHA_CTX *ctx)
-{
-	ctx->size = 0;
-
+SHA1::SHA1() :
+	size(0),
 	/* Initialize H with the magic constants (see FIPS180 for constants) */
-	ctx->H[0] = 0x67452301;
-	ctx->H[1] = 0xefcdab89;
-	ctx->H[2] = 0x98badcfe;
-	ctx->H[3] = 0x10325476;
-	ctx->H[4] = 0xc3d2e1f0;
+	H { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0 }
+{
 }
 
-void blk_SHA1_Update(blk_SHA_CTX *ctx, const void *data, unsigned long len)
+void SHA1::update(const void *data, unsigned long len)
 {
-	unsigned int lenW = ctx->size & 63;
+	unsigned int lenW = size & 63;
 
-	ctx->size += len;
+	size += len;
 
 	/* Read the data into W and process blocks as they get full */
 	if (lenW) {
 		unsigned int left = 64 - lenW;
 		if (len < left)
 			left = len;
-		memcpy(lenW + (char *)ctx->W, data, left);
+		memcpy(lenW + (char *)W, data, left);
 		lenW = (lenW + left) & 63;
 		len -= left;
 		data = ((const char *)data + left);
 		if (lenW)
 			return;
-		blk_SHA1_Block(ctx, ctx->W);
+		blk_SHA1_Block(H, W);
 	}
 	while (len >= 64) {
-		blk_SHA1_Block(ctx, data);
+		blk_SHA1_Block(H, data);
 		data = ((const char *)data + 64);
 		len -= 64;
 	}
 	if (len)
-		memcpy(ctx->W, data, len);
+		memcpy(W, data, len);
 }
 
-void blk_SHA1_Final(unsigned char hashout[20], blk_SHA_CTX *ctx)
+void SHA1::update(const std::string &s)
 {
+	update(s.data(), s.size());
+}
+
+std::array<unsigned char, 20> SHA1::hash()
+{
+	std::array<unsigned char, 20> hashout;
 	static const unsigned char pad[64] = { 0x80 };
 	unsigned int padlen[2];
 	int i;
 
 	/* Pad with a binary 1 (ie 0x80), then zeroes, then length */
-	padlen[0] = htonl((uint32_t)(ctx->size >> 29));
-	padlen[1] = htonl((uint32_t)(ctx->size << 3));
+	padlen[0] = htonl((uint32_t)(size >> 29));
+	padlen[1] = htonl((uint32_t)(size << 3));
 
-	i = ctx->size & 63;
-	blk_SHA1_Update(ctx, pad, 1 + (63 & (55 - i)));
-	blk_SHA1_Update(ctx, padlen, 8);
+	i = size & 63;
+	update(pad, 1 + (63 & (55 - i)));
+	update(padlen, 8);
 
 	/* Output hash */
 	for (i = 0; i < 5; i++)
-		put_be32(hashout + i * 4, ctx->H[i]);
+		put_be32(&hashout[i * 4], H[i]);
+	return hashout;
+}
+
+uint32_t SHA1::hash_uint32()
+{
+	auto hashout = hash();
+	return (hashout[0] << 0) | (hashout[1] << 8) |
+	       (hashout[2] << 16) | (hashout[3] << 24);
 }
 
 uint32_t SHA1_uint32(const void *dataIn, unsigned long len)
 {
-	uint32_t hashout[5];
-	SHA_CTX ctx;
-
-	SHA1_Init(&ctx);
-	SHA1_Update(&ctx, dataIn, len);
-	SHA1_Final((unsigned char *)hashout, &ctx);
-
-	return hashout[0];
+	SHA1 sha;
+	sha.update(dataIn, len);
+	return sha.hash_uint32();
 }
