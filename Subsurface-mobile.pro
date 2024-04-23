@@ -86,7 +86,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/save-xml.cpp \
 	core/cochran.cpp \
 	core/deco.cpp \
-	core/divesite.c \
+	core/divesite.cpp \
 	core/equipment.c \
 	core/gas.c \
 	core/membuffer.cpp \
