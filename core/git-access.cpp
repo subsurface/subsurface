@@ -135,9 +135,6 @@ std::string normalize_cloud_name(const std::string &remote_in)
 
 std::string get_local_dir(const std::string &url, const std::string &branch)
 {
-	SHA_CTX ctx;
-	unsigned char hash[20];
-
 	// this optimization could in theory lead to odd things happening if the
 	// cloud backend servers ever get out of sync - but when a user switches
 	// between those servers (either because one is down, or because the algorithm
@@ -148,11 +145,11 @@ std::string get_local_dir(const std::string &url, const std::string &branch)
 
 	// That zero-byte update is so that we don't get hash
 	// collisions for "repo1 branch" vs "repo 1branch".
-	SHA1_Init(&ctx);
-	SHA1_Update(&ctx, remote.c_str(), remote.size());
-	SHA1_Update(&ctx, "", 1);
-	SHA1_Update(&ctx, branch.c_str(), branch.size());
-	SHA1_Final(hash, &ctx);
+	SHA1 sha;
+	sha.update(remote);
+	sha.update("", 1);
+	sha.update(branch);
+	auto hash = sha.hash();
 	return format_string_std("%s/cloudstorage/%02x%02x%02x%02x%02x%02x%02x%02x",
 			system_default_directory(),
 			hash[0], hash[1], hash[2], hash[3],

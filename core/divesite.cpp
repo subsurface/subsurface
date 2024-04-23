@@ -138,18 +138,14 @@ extern "C" int add_dive_site_to_table(struct dive_site *ds, struct dive_site_tab
 	/* If the site doesn't yet have an UUID, create a new one.
 	 * Make this deterministic for testing. */
 	if (!ds->uuid) {
-		SHA_CTX ctx;
-		uint32_t csum[5];
-
-		SHA1_Init(&ctx);
+		SHA1 sha;
 		if (ds->name)
-			SHA1_Update(&ctx, ds->name, strlen(ds->name));
+			sha.update(ds->name, strlen(ds->name));
 		if (ds->description)
-			SHA1_Update(&ctx, ds->description, strlen(ds->description));
+			sha.update(ds->description, strlen(ds->description));
 		if (ds->notes)
-			SHA1_Update(&ctx, ds->notes, strlen(ds->notes));
-		SHA1_Final((unsigned char *)csum, &ctx);
-		ds->uuid = csum[0];
+			sha.update(ds->notes, strlen(ds->notes));
+		ds->uuid = sha.hash_uint32();
 	}
 
 	/* Take care to never have the same uuid twice. This could happen on
