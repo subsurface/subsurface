@@ -44,12 +44,13 @@ jobs:
         git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
         cd /win
         ln -s /__w/subsurface/subsurface .
-        bash -x subsurface/.github/workflows/scripts/windows-container-prep.sh 2>&1 | tee pre-build.log
+        bash -x subsurface/packaging/windows/container-prep.sh 2>&1 | tee pre-build.log
 
     - name: run build
       run: |
+        export OUTPUT_DIR="$GITHUB_WORKSPACE"
         cd /win
-        bash -x subsurface/.github/workflows/scripts/windows-in-container-build.sh 2>&1 | tee build.log
+        bash -x subsurface/packaging/windows/in-container-build.sh 2>&1 | tee build.log
         grep "Built target installer" build.log
 
     # only publish a 'release' on push events (those include merging a PR)
