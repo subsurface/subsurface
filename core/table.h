@@ -6,20 +6,20 @@
 #define CORE_TABLE_H
 
 #define MAKE_GROW_TABLE(table_type, item_type, array_name) \
-	item_type *grow_##table_type(struct table_type *table)				\
-	{										\
-		int nr = table->nr, allocated = table->allocated;			\
-		item_type *items = table->array_name;					\
-											\
-		if (nr >= allocated) {							\
-			allocated = (nr + 32) * 3 / 2;					\
-			items = realloc(items, allocated * sizeof(item_type));		\
-			if (!items)							\
-				exit(1);						\
-			table->array_name = items;					\
-			table->allocated = allocated;					\
-		}									\
-		return items;								\
+	item_type *grow_##table_type(struct table_type *table)					\
+	{											\
+		int nr = table->nr, allocated = table->allocated;				\
+		item_type *items = table->array_name;						\
+												\
+		if (nr >= allocated) {								\
+			allocated = (nr + 32) * 3 / 2;						\
+			items = (item_type *)realloc(items, allocated * sizeof(item_type));	\
+			if (!items)								\
+				exit(1);							\
+			table->array_name = items;						\
+			table->allocated = allocated;						\
+		}										\
+		return items;									\
 	}
 
 /* get the index where we want to insert an object so that everything stays
