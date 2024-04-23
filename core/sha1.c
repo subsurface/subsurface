@@ -298,3 +298,15 @@ void blk_SHA1_Final(unsigned char hashout[20], blk_SHA_CTX *ctx)
 	for (i = 0; i < 5; i++)
 		put_be32(hashout + i * 4, ctx->H[i]);
 }
+
+uint32_t SHA1_uint32(const void *dataIn, unsigned long len)
+{
+	uint32_t hashout[5];
+	SHA_CTX ctx;
+
+	SHA1_Init(&ctx);
+	SHA1_Update(&ctx, dataIn, len);
+	SHA1_Final((unsigned char *)hashout, &ctx);
+
+	return hashout[0];
+}
