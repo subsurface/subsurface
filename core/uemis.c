@@ -290,14 +290,13 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 /*
  * parse uemis base64 data blob into struct dive
  */
-void uemis_parse_divelog_binary(char *base64, void *datap)
+void uemis_parse_divelog_binary(char *base64, struct dive *dive)
 {
 	int datalen;
 	int i;
 	uint8_t *data;
 	struct sample *sample = NULL;
 	uemis_sample_t *u_sample;
-	struct dive *dive = datap;
 	struct divecomputer *dc = &dive->dc;
 	int template, gasoffset;
 	uint8_t active = 0;
