@@ -6626,39 +6626,6 @@ Si tu dispositivo usa Bluetooth, efectúa los mismos preparativos que para desca
     </message>
 </context>
 <context>
-    <name>PreferencesDc</name>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formulario</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
-        <source>DIVE COMPUTER</source>
-        <translation>ORDENADOR DE BUCEO</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
-        <source>Delete connections</source>
-        <translation>Eliminar conexiones</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
-        <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>Al importar inmersiones de un ordenador de buceo (DC), Subsurface recuerda la(s) conexión(es), mostrándolas como botones seleccionables en el panel Descargas. Esto es útil para ordenadores de buceo que utilicen Bluetooth para la comunicación. Para limpiar toda esta información, pulsa el botón inferior. Tras eliminar la información, los botones desaparecen y es necesario crear una nueva conexión con el(los) ordenador(es) de buceo antes de poder importar inmersiones de nuevo.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
-        <source>Delete all dive computer connections</source>
-        <translation>Borrar todas las conexiones con ordenadores de buceo</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
-        <source>Dive download</source>
-        <translation>Descarga de inmersiones</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>

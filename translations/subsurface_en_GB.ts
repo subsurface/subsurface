@@ -6625,39 +6625,6 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     </message>
 </context>
 <context>
-    <name>PreferencesDc</name>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
-        <source>Form</source>
-        <translation>Form</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
-        <source>DIVE COMPUTER</source>
-        <translation>DIVE COMPUTER</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
-        <source>Delete connections</source>
-        <translation>Delete connections</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
-        <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
-        <source>Delete all dive computer connections</source>
-        <translation>Delete all dive computer connections</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
-        <source>Dive download</source>
-        <translation>Dive download</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>

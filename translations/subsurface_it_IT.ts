@@ -6510,39 +6510,6 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
     </message>
 </context>
 <context>
-    <name>PreferencesDc</name>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
-        <source>Form</source>
-        <translation>Form</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
-        <source>DIVE COMPUTER</source>
-        <translation>Computer</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
-        <source>Delete connections</source>
-        <translation>Elimina connessioni</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
-        <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>Quando le immersioni vengono importate da un computer subacqueo, Subsurface ricorda le connessioni e le mostra come bottoni nella schermata di scaricamento. Questo è utile se il computer comunica via Bluetooth. Cliccare il bottone qua sotto per cancellare queste informazioni; i bottoni nella schermata di scaricamento scompariranno e le connessioni con i computer andranno ristabilite prima di poter importare di nuovo le immersioni.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
-        <source>Delete all dive computer connections</source>
-        <translation>Cancella tutte le connessioni con i computer subacquei.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
-        <source>Dive download</source>
-        <translation>Scarica immersione</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>

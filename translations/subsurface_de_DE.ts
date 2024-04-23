@@ -6621,39 +6621,6 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     </message>
 </context>
 <context>
-    <name>PreferencesDc</name>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formular</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
-        <source>DIVE COMPUTER</source>
-        <translation>Tauchcomputer</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
-        <source>Delete connections</source>
-        <translation>Verbindungen löschen</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
-        <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>Beim Importieren von Tauchgängen von einem Tauchcomputer (TC) merkt sich Subsurface die Verbindung(en) und zeigt sie als auswählbare Schaltflächen im Downloadbereich an. Dies ist nützlich für TC, die Bluetooth für die Kommunikation verwenden. Um alle diese Informationen zu löschen, klicke auf die Schaltfläche unten. Nach dem Löschen der Informationen verschwinden die Schaltflächen im Downloadbereich und es ist erforderlich, neue Verbindung(en) mit Tauchcomputer(n) herzustellen, bevor Tauchgänge erneut importiert werden.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
-        <source>Delete all dive computer connections</source>
-        <translation>Lösche alle Verbindungen zu Tauchcomputern</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
-        <source>Dive download</source>
-        <translation>Tauchcomputer auslesen</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>

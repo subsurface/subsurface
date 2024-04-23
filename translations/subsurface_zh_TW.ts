@@ -6505,39 +6505,6 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     </message>
 </context>
 <context>
-    <name>PreferencesDc</name>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
-        <source>Form</source>
-        <translation>表單</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
-        <source>DIVE COMPUTER</source>
-        <translation>潛水電腦</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
-        <source>Delete connections</source>
-        <translation>刪除連結</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
-        <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>當自潛水電腦 (DC) 匯入潛水資料, Subsurface會記住連線方式 (s), 並顯示於下載面板. 於藍芽使用時便於連接使用. 也可以點選下方按鈕來清除此資訊. 若是清除此資訊後, 需要再次與潛水電腦 (DC) 建立連線方式 (s)才可再次匯入資料.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
-        <source>Delete all dive computer connections</source>
-        <translation>移除所有潛水電腦連結</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
-        <source>Dive download</source>
-        <translation>下載潛水</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>

@@ -6578,39 +6578,6 @@ Se o seu computador de mergulho usa Bluetooth, prepare o update do mesmo modo qu
     </message>
 </context>
 <context>
-    <name>PreferencesDc</name>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formulário</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
-        <source>DIVE COMPUTER</source>
-        <translation>COMPUTADOR DE MERGULHO</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
-        <source>Delete connections</source>
-        <translation>Eliminar ligações</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
-        <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>Ao importar mergulhos a partir de um computador de mergulho (DC), o Subsurface memoriza as ligações, apresentando-as como botões seleccionáveis no painel de download. Isto é útil para os DC&apos;s que usam Bluetooth para comunicação. De forma a limpar esta informação, carregue no botão abaixo. Após limpar esta informação, os botões no painel de Download desaparecem e é necessário estabelecer novas ligações com os computadores de mergulho antes de descarregar mergulhos novamente.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
-        <source>Delete all dive computer connections</source>
-        <translation>Eliminar todas as conexões a computadores de mergulho</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
-        <source>Dive download</source>
-        <translation>Descarregar mergulhos</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>

@@ -6624,39 +6624,6 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     </message>
 </context>
 <context>
-    <name>PreferencesDc</name>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
-        <source>Form</source>
-        <translation>폼</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
-        <source>DIVE COMPUTER</source>
-        <translation>다이브 컴퓨터</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
-        <source>Delete connections</source>
-        <translation>연결 삭제</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
-        <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>다이브 컴퓨터(DC)에서 다이빙을 가져올 때, Subsurface는 기존 연결(들)을 기억하고 다운로드 패널에서 선택 가능한 버튼으로 표시합니다. 이는 블루투스로 통신하는 DC의 경우에 유용합니다. 이 정보를 모두 지우려면 아래 버튼을 클릭하십시오. 정보를 지운 후에는 다운로드 패널의 버튼이 사라지고 다이빙을 다시 가져오기 전에 다이브 컴퓨터(들)과 새로운 연결(들)을 설정해야 합니다.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
-        <source>Delete all dive computer connections</source>
-        <translation>모든 다이브 컴퓨터 연결 삭제</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
-        <source>Dive download</source>
-        <translation>다이빙 다운로드</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>

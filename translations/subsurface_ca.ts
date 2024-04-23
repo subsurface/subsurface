@@ -6627,39 +6627,6 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
     </message>
 </context>
 <context>
-    <name>PreferencesDc</name>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formulari</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
-        <source>DIVE COMPUTER</source>
-        <translation>ORDINADOR DE BUSSEIG</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
-        <source>Delete connections</source>
-        <translation>Suprimeix les connexions</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
-        <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>En importar immersions des d&apos;un ordinador de busseig (DC), el Subsurface recordarà les connexions, mostrant-les com a botons seleccionables en el plafó «Baixa». Això és útil per als DC que fan servir Bluetooth per a la comunicació. Per a esborrar tota aquesta informació, feu clic al botó a sota. Després d&apos;esborrar la informació, els botons en el plafó «Baixa» desapareixen i caldrà establir noves connexions amb els ordinadors de busseig abans de tornar a importar les immersions.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
-        <source>Delete all dive computer connections</source>
-        <translation>Suprimeix totes les connexions d&apos;ordinador de busseig</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
-        <source>Dive download</source>
-        <translation>Baixada de les immersions</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>

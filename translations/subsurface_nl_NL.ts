@@ -6625,39 +6625,6 @@ Als uw apparaat Bluetooth gebruikt, doe dezelfde voorbereidingen als voor het do
     </message>
 </context>
 <context>
-    <name>PreferencesDc</name>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formulier</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
-        <source>DIVE COMPUTER</source>
-        <translation>DUIKCOMPUTER</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
-        <source>Delete connections</source>
-        <translation>Verbindingen verwijderen</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
-        <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>Bij het importeren van duiken vanuit een duikcomputer (DC), onthoudt Subsurface de verbinding(en) en toont deze als selecteerbare knoppen in het downloadvenster. Dit is handig voor DC&apos;s die Bluetooth gebruiken voor communicatie. Klik op de onderstaande knop om al deze informatie te wissen. Na het wissen van de informatie verdwijnen de knoppen op het downloadvenster en is het noodzakelijk om nieuwe verbinding(en) met duikcomputer(s) tot stand te brengen voordat u opnieuw duiken importeert.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
-        <source>Delete all dive computer connections</source>
-        <translation>Alle duikcomputer verbindingen verwijderen</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
-        <source>Dive download</source>
-        <translation>Duik downloaden</translation>
-    </message>
-</context>
-<context>
     <name>PreferencesDefaults</name>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="14"/>
