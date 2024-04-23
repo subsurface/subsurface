@@ -99,7 +99,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/time.cpp \
 	core/trip.c \
 	core/units.c \
-	core/uemis.c \
+	core/uemis.cpp \
 	core/btdiscovery.cpp \
 	core/connectionlistmodel.cpp \
 	core/qt-ble.cpp \

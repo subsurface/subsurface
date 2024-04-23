@@ -14,11 +14,42 @@
 #include "gettext.h"
 
 #include "uemis.h"
+#include "dive.h"
+#include "divecomputer.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "sample.h"
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
+
+struct uemis_sample
+{
+	uint16_t dive_time;
+	uint16_t water_pressure;   // (in cbar)
+	uint16_t dive_temperature; // (in dC)
+	uint8_t ascent_speed;      // (units unclear)
+	uint8_t work_fact;
+	uint8_t cold_fact;
+	uint8_t bubble_fact;
+	uint16_t ascent_time;
+	uint16_t ascent_time_opt;
+	uint16_t p_amb_tol;
+	uint16_t satt;
+	uint16_t hold_depth;
+	uint16_t hold_time;
+	uint8_t active_tank;
+	// bloody glib, when compiled for Windows, forces the whole program to use
+	// the Windows packing rules. So to avoid problems on Windows (and since
+	// only tank_pressure is currently used and that exactly once) I give in and
+	// make this silly low byte / high byte 8bit entries
+	uint8_t tank_pressure_low; // (in cbar)
+	uint8_t tank_pressure_high;
+	uint8_t consumption_low; // (units unclear)
+	uint8_t consumption_high;
+	uint8_t rgt; // (remaining gas time in minutes)
+	uint8_t cns;
+	uint8_t flags[8];
+} __attribute((packed));
 
 /*
  * following code is based on code found in at base64.sourceforge.net/b64.c
@@ -78,7 +109,7 @@ static void decode(uint8_t *inbuf, uint8_t *outbuf, int inbuf_len)
 /*
  * convert the base64 data blog
  */
-static int uemis_convert_base64(char *base64, uint8_t **data)
+static std::vector<uint8_t> convert_base64(char *base64)
 {
 	int len, datalen;
 
@@ -88,99 +119,57 @@ static int uemis_convert_base64(char *base64, uint8_t **data)
 		/* less than header + 1 sample??? */
 		report_info("suspiciously short data block %d", datalen);
 
-	*data = malloc(datalen);
-	if (!*data) {
-		fprintf(stderr, "Out of memory\n");
-		return 0;
-	}
-	decode((unsigned char *)base64, *data, len);
+	std::vector<uint8_t> res(datalen);
+	decode((unsigned char *)base64, res.data(), len);
 
-	if (memcmp(*data, "Dive\01\00\00", 7))
+	if (memcmp(res.data(), "Dive\01\00\00", 7))
 		report_info("Missing Dive100 header");
 
-	return datalen;
+	return res;
 }
 
-struct uemis_helper {
-	uint32_t diveid;
-	int lbs;
-	int divespot;
-	struct dive_site *dive_site;
-	struct uemis_helper *next;
-};
-static struct uemis_helper *uemis_helper = NULL;
-
-static struct uemis_helper *uemis_get_helper(uint32_t diveid)
+struct uemis::helper &uemis::get_helper(uint32_t diveid)
 {
-	struct uemis_helper **php = &uemis_helper;
-	struct uemis_helper *hp = *php;
-
-	while (hp) {
-		if (hp->diveid == diveid)
-			return hp;
-		if (hp->next) {
-			hp = hp->next;
-			continue;
-		}
-		php = &hp->next;
-		break;
-	}
-	hp = *php = calloc(1, sizeof(struct uemis_helper));
-	hp->diveid = diveid;
-	hp->next = NULL;
-	return hp;
+	return helper_table[diveid];
 }
 
-static void uemis_weight_unit(int diveid, int lbs)
+void uemis::weight_unit(int diveid, int lbs)
 {
-	struct uemis_helper *hp = uemis_get_helper(diveid);
-	if (hp)
-		hp->lbs = lbs;
+	struct uemis::helper &hp = get_helper(diveid);
+	hp.lbs = lbs;
 }
 
-int uemis_get_weight_unit(uint32_t diveid)
+int uemis::get_weight_unit(uint32_t diveid) const
 {
-	struct uemis_helper *hp = uemis_helper;
-	while (hp) {
-		if (hp->diveid == diveid)
-			return hp->lbs;
-		hp = hp->next;
-	}
-	/* odd - we should have found this; default to kg */
-	return 0;
+	auto it = helper_table.find(diveid);
+	return it != helper_table.end() ? it->second.lbs : 0;
 }
 
-void uemis_mark_divelocation(int diveid, int divespot, struct dive_site *ds)
+void uemis::mark_divelocation(int diveid, int divespot, struct dive_site *ds)
 {
-	struct uemis_helper *hp = uemis_get_helper(diveid);
-	hp->divespot = divespot;
-	hp->dive_site = ds;
+	struct uemis::helper &hp = get_helper(diveid);
+	hp.divespot = divespot;
+	hp.dive_site = ds;
 }
 
 /* support finding a dive spot based on the diveid */
-int uemis_get_divespot_id_by_diveid(uint32_t diveid)
+int uemis::get_divespot_id_by_diveid(uint32_t diveid) const
 {
-	struct uemis_helper *hp = uemis_helper;
-	while (hp) {
-		if (hp->diveid == diveid)
-			return hp->divespot;
-		hp = hp->next;
-	}
-	return -1;
+	auto it = helper_table.find(diveid);
+	return it != helper_table.end() ? it->second.divespot : -1;
 }
 
-void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude)
+void uemis::set_divelocation(int divespot, char *text, double longitude, double latitude)
 {
-	struct uemis_helper *hp = uemis_helper;
-	while (hp) {
-		if (hp->divespot == divespot) {
-			struct dive_site *ds = hp->dive_site;
+	for (auto it: helper_table) {
+		if (it.second.divespot == divespot) {
+			struct dive_site *ds = it.second.dive_site;
 			if (ds) {
+				free(ds->name);
 				ds->name = strdup(text);
 				ds->location = create_location(latitude, longitude);
 			}
 		}
-		hp = hp->next;
 	}
 }
 
@@ -194,9 +183,9 @@ void uemis_set_divelocation(int divespot, char *text, double longitude, double l
  * when we write them to the XML file we'll always have the English strings,
  * regardless of locale
  */
-static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sample *sample, uemis_sample_t *u_sample)
+void uemis::event(struct dive *dive, struct divecomputer *dc, struct sample *sample, const uemis_sample *u_sample)
 {
-	uint8_t *flags = u_sample->flags;
+	const uint8_t *flags = u_sample->flags;
 	int stopdepth;
 	static int lastndl;
 
@@ -290,32 +279,29 @@ static void uemis_event(struct dive *dive, struct divecomputer *dc, struct sampl
 /*
  * parse uemis base64 data blob into struct dive
  */
-void uemis_parse_divelog_binary(char *base64, struct dive *dive)
+void uemis::parse_divelog_binary(char *base64, struct dive *dive)
 {
-	int datalen;
-	int i;
-	uint8_t *data;
 	struct sample *sample = NULL;
-	uemis_sample_t *u_sample;
+	uemis_sample *u_sample;
 	struct divecomputer *dc = &dive->dc;
-	int template, gasoffset;
+	int dive_template, gasoffset;
 	uint8_t active = 0;
 
-	datalen = uemis_convert_base64(base64, &data);
-	dive->dc.airtemp.mkelvin = C_to_mkelvin((*(uint16_t *)(data + 45)) / 10.0);
-	dive->dc.surface_pressure.mbar = *(uint16_t *)(data + 43);
-	if (*(uint8_t *)(data + 19))
+	auto data = convert_base64(base64);
+	dive->dc.airtemp.mkelvin = C_to_mkelvin((*(uint16_t *)(data.data() + 45)) / 10.0);
+	dive->dc.surface_pressure.mbar = *(uint16_t *)(data.data() + 43);
+	if (*(uint8_t *)(data.data() + 19))
 		dive->dc.salinity = SEAWATER_SALINITY; /* avg grams per 10l sea water */
 	else
 		dive->dc.salinity = FRESHWATER_SALINITY; /* grams per 10l fresh water */
 
 	/* this will allow us to find the last dive read so far from this computer */
 	dc->model = strdup("Uemis Zurich");
-	dc->deviceid = *(uint32_t *)(data + 9);
-	dc->diveid = *(uint16_t *)(data + 7);
+	dc->deviceid = *(uint32_t *)(data.data() + 9);
+	dc->diveid = *(uint16_t *)(data.data() + 7);
 	/* remember the weight units used in this dive - we may need this later when
 	 * parsing the weight */
-	uemis_weight_unit(dc->diveid, *(uint8_t *)(data + 24));
+	weight_unit(dc->diveid, *(uint8_t *)(data.data() + 24));
 	/* dive template in use:
 	   0 = air
 	   1 = nitrox (B)
@@ -324,13 +310,13 @@ void uemis_parse_divelog_binary(char *base64, struct dive *dive)
 	   uemis cylinder data is insane - it stores seven tank settings in a block
 	   and the template tells us which of the four groups of tanks we need to look at
 	 */
-	gasoffset = template = *(uint8_t *)(data + 115);
-	if (template == 3)
+	gasoffset = dive_template = *(uint8_t *)(data.data() + 115);
+	if (dive_template == 3)
 		gasoffset = 4;
-	if (template == 0)
-		template = 1;
-	for (i = 0; i < template; i++) {
-		float volume = *(float *)(data + 116 + 25 * (gasoffset + i)) * 1000.0f;
+	if (dive_template == 0)
+		dive_template = 1;
+	for (int i = 0; i < dive_template; i++) {
+		float volume = *(float *)(data.data() + 116 + 25 * (gasoffset + i)) * 1000.0f;
 		/* uemis always assumes a working pressure of 202.6bar (!?!?) - I first thought
 		 * it was 3000psi, but testing against all my dives gets me that strange number.
 		 * Still, that's of course completely bogus and shows they don't get how
@@ -341,13 +327,13 @@ void uemis_parse_divelog_binary(char *base64, struct dive *dive)
 		cylinder_t *cyl = get_or_create_cylinder(dive, i);
 		cyl->type.size.mliter = lrintf(volume);
 		cyl->type.workingpressure.mbar = 202600;
-		cyl->gasmix.o2.permille = *(uint8_t *)(data + 120 + 25 * (gasoffset + i)) * 10;
+		cyl->gasmix.o2.permille = *(uint8_t *)(data.data() + 120 + 25 * (gasoffset + i)) * 10;
 		cyl->gasmix.he.permille = 0;
 	}
 	/* first byte of divelog data is at offset 0x123 */
-	i = 0x123;
-	u_sample = (uemis_sample_t *)(data + i);
-	while ((i <= datalen) && (data[i] != 0 || data[i + 1] != 0)) {
+	size_t i = 0x123;
+	u_sample = (uemis_sample *)(data.data() + i);
+	while ((i <= data.size()) && (data[i] != 0 || data[i + 1] != 0)) {
 		if (u_sample->active_tank != active) {
 			if (u_sample->active_tank >= dive->cylinders.nr) {
 				report_info("got invalid sensor #%d was #%d", u_sample->active_tank, active);
@@ -362,7 +348,7 @@ void uemis_parse_divelog_binary(char *base64, struct dive *dive)
 		sample->temperature.mkelvin = C_to_mkelvin(u_sample->dive_temperature / 10.0);
 		add_sample_pressure(sample, active, (u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10);
 		sample->cns = u_sample->cns;
-		uemis_event(dive, dc, sample, u_sample);
+		event(dive, dc, sample, u_sample);
 		finish_sample(dc);
 		i += 0x25;
 		u_sample++;
@@ -375,17 +361,17 @@ void uemis_parse_divelog_binary(char *base64, struct dive *dive)
 
 	snprintf(buffer, sizeof(buffer), "%1u.%02u", data[18], data[17]);
 	add_extra_data(dc, "FW Version", buffer);
-	snprintf(buffer, sizeof(buffer), "%08x", *(uint32_t *)(data + 9));
+	snprintf(buffer, sizeof(buffer), "%08x", *(uint32_t *)(data.data() + 9));
 	add_extra_data(dc, "Serial", buffer);
-	snprintf(buffer, sizeof(buffer), "%d", *(uint16_t *)(data + i + 35));
+	snprintf(buffer, sizeof(buffer), "%d", *(uint16_t *)(data.data() + i + 35));
 	add_extra_data(dc, "main battery after dive", buffer);
-	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data + i + 24), 60));
+	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data.data() + i + 24), 60));
 	add_extra_data(dc, "no fly time", buffer);
-	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data + i + 26), 60));
+	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data.data() + i + 26), 60));
 	add_extra_data(dc, "no dive time", buffer);
-	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data + i + 28), 60));
+	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data.data() + i + 28), 60));
 	add_extra_data(dc, "desat time", buffer);
-	snprintf(buffer, sizeof(buffer), "%u", *(uint16_t *)(data + i + 30));
+	snprintf(buffer, sizeof(buffer), "%u", *(uint16_t *)(data.data() + i + 30));
 	add_extra_data(dc, "allowed altitude", buffer);
 
 	return;
