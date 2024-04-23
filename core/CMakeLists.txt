@@ -195,7 +195,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	uploadDiveShare.h
 	uploadDiveLogsDE.cpp
 	uploadDiveLogsDE.h
-	version.c
+	version.cpp
 	version.h
 	videoframeextractor.cpp
 	videoframeextractor.h
