@@ -135,7 +135,7 @@ static bool parseMP4(QFile &f, metadata *metadata)
 	std::vector<uint64_t> atom_stack;
 	atom_stack.reserve(10);
 
-	// For the outmost level, set the atom-size the the maximum value representable in
+	// For the outmost level, set the atom-size to the maximum value representable in
 	// 64-bits, which effectively means parse to the end of file.
 	atom_stack.push_back(UINT64_MAX);
 
