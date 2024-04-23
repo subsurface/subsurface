@@ -215,16 +215,16 @@ Section "Uninstall"
     Delete "$DESKTOP\Smtk2ssrf.lnk"
 
     # remove the registry entires
-    ${If} $Checkbox_Reg_State == 1
-        DeleteRegKey HKCU "Software\Smtk2ssrf"
-    ${EndIf}
+#    ${If} $Checkbox_Reg_State == 1
+#        DeleteRegKey HKCU "Software\Smtk2ssrf"
+#    ${EndIf}
 
     # remove the user directory
-    ${If} $Checkbox_UserDir_State == 1
-    ${AndIf} $UserDir != ""
-    ${AndIf} ${FileExists} "$UserDir\*.*"
-        RMDir /r $UserDir
-    ${EndIf}
+#    ${If} $Checkbox_UserDir_State == 1
+#    ${AndIf} $UserDir != ""
+#    ${AndIf} ${FileExists} "$UserDir\*.*"
+#        RMDir /r $UserDir
+#    ${EndIf}
 
     # remove the uninstaller entry
     DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf"

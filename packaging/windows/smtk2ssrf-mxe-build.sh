@@ -216,4 +216,4 @@ if [ ! -z "$DATADIR" ]; then
 	cp -vf "$BUILDDIR"/smtk-import/smtk2ssrf-*.exe "$DATADIR"
 fi
 
-echo -e "$RED---> Building smtk2ssrf done$DEFAULT"
+echo -e "$BLUE---> Building smtk2ssrf done$DEFAULT"
