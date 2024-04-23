@@ -6,7 +6,6 @@ include_directories(.
 
 set(SUBSURFACE_PREFERENCES_UI
   preferences_cloud.ui
-  preferences_dc.ui
   preferences_defaults.ui
   preferences_equipment.ui
   preferences_georeference.ui
@@ -32,8 +31,6 @@ set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	abstractpreferenceswidget.h
 	preferences_cloud.cpp
 	preferences_cloud.h
-	preferences_dc.cpp
-	preferences_dc.h
 	preferences_defaults.cpp
 	preferences_defaults.h
 	preferences_equipment.cpp
