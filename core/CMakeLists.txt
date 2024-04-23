@@ -169,7 +169,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	statistics.h
 	string-format.h
 	string-format.cpp
-	strtod.c
+	strtod.cpp
 	subsurface-float.h
 	subsurface-string.cpp
 	subsurface-string.h
