@@ -23,8 +23,8 @@ static int shearwater_cylinders(void *param, int, char **data, char **)
 	struct parser_state *state = (struct parser_state *)param;
 	cylinder_t *cyl;
 
-	int o2 = lrint(strtod_flags(data[0], NULL, 0) * 1000);
-	int he = lrint(strtod_flags(data[1], NULL, 0) * 1000);
+	int o2 = lrint(permissive_strtod(data[0], NULL) * 1000);
+	int he = lrint(permissive_strtod(data[1], NULL) * 1000);
 
 	/* Shearwater allows entering only 99%, not 100%
 	 * so assume 99% to be pure oxygen */
@@ -50,8 +50,8 @@ static int shearwater_changes(void *param, int columns, char **data, char **)
 	if (!data[0] || !data[1] || !data[2]) {
 		return 2;
 	}
-	int o2 = lrint(strtod_flags(data[1], NULL, 0) * 1000);
-	int he = lrint(strtod_flags(data[2], NULL, 0) * 1000);
+	int o2 = lrint(permissive_strtod(data[1], NULL) * 1000);
+	int he = lrint(permissive_strtod(data[2], NULL) * 1000);
 
 	/* Shearwater allows entering only 99%, not 100%
 	 * so assume 99% to be pure oxygen */
@@ -101,11 +101,11 @@ static int shearwater_profile_sample(void *param, int, char **data, char **)
 
 
 	if (data[1])
-		state->cur_sample->depth.mm = state->metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
+		state->cur_sample->depth.mm = state->metric ? lrint(permissive_strtod(data[1], NULL) * 1000) : feet_to_mm(permissive_strtod(data[1], NULL));
 	if (data[2])
-		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(strtod_flags(data[2], NULL, 0)) : F_to_mkelvin(strtod_flags(data[2], NULL, 0));
+		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(permissive_strtod(data[2], NULL)) : F_to_mkelvin(permissive_strtod(data[2], NULL));
 	if (data[3]) {
-		state->cur_sample->setpoint.mbar = lrint(strtod_flags(data[3], NULL, 0) * 1000);
+		state->cur_sample->setpoint.mbar = lrint(permissive_strtod(data[3], NULL) * 1000);
 	}
 	if (data[4])
 		state->cur_sample->ndl.seconds = atoi(data[4]) * 60;
@@ -161,11 +161,11 @@ static int shearwater_ai_profile_sample(void *param, int, char **data, char **)
 		state->cur_sample->time.seconds = atoi(data[0]);
 
 	if (data[1])
-		state->cur_sample->depth.mm = state->metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
+		state->cur_sample->depth.mm = state->metric ? lrint(permissive_strtod(data[1], NULL) * 1000) : feet_to_mm(permissive_strtod(data[1], NULL));
 	if (data[2])
-		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(strtod_flags(data[2], NULL, 0)) : F_to_mkelvin(strtod_flags(data[2], NULL, 0));
+		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(permissive_strtod(data[2], NULL)) : F_to_mkelvin(permissive_strtod(data[2], NULL));
 	if (data[3]) {
-		state->cur_sample->setpoint.mbar = lrint(strtod_flags(data[3], NULL, 0) * 1000);
+		state->cur_sample->setpoint.mbar = lrint(permissive_strtod(data[3], NULL) * 1000);
 	}
 	if (data[4])
 		state->cur_sample->ndl.seconds = atoi(data[4]) * 60;
@@ -250,7 +250,7 @@ static int shearwater_dive(void *param, int, char **data, char **)
 
 	/* TODO: verify that metric calculation is correct */
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(strtod_flags(data[6], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[6], NULL, 0));
+		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(permissive_strtod(data[6], NULL) * 1000) : feet_to_mm(permissive_strtod(data[6], NULL));
 
 	if (data[7])
 		state->cur_dive->dc.duration.seconds = atoi(data[7]) * 60;
@@ -380,7 +380,7 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 
 	/* TODO: verify that metric calculation is correct */
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(strtod_flags(data[6], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[6], NULL, 0));
+		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(permissive_strtod(data[6], NULL) * 1000) : feet_to_mm(permissive_strtod(data[6], NULL));
 
 	if (data[7])
 		state->cur_dive->dc.duration.seconds = atoi(data[7]);

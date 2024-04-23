@@ -52,15 +52,8 @@ static inline char *copy_string(const char *s)
 	return (s && *s) ? strdup(s) : NULL;
 }
 
-#define STRTOD_NO_SIGN 0x01
-#define STRTOD_NO_DOT 0x02
-#define STRTOD_NO_COMMA 0x04
-#define STRTOD_NO_EXPONENT 0x08
-extern double strtod_flags(const char *str, const char **ptr, unsigned int flags);
-
-#define STRTOD_ASCII (STRTOD_NO_COMMA)
-
-#define ascii_strtod(str, ptr) strtod_flags(str, ptr, STRTOD_ASCII)
+extern double permissive_strtod(const char *str, const char **ptr);
+extern double ascii_strtod(const char *str, const char **ptr);
 
 #ifdef __cplusplus
 }
