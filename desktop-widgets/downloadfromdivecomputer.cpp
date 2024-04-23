@@ -9,7 +9,6 @@
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/subsurface-float.h"
 #include "core/subsurface-string.h"
-#include "core/uemis.h"
 #include "core/downloadfromdcthread.h"
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/mainwindow.h"
