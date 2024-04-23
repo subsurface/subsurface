@@ -26,13 +26,14 @@
 #include "gettext.h"
 #include "libdivecomputer.h"
 #include "uemis.h"
+#include "dive.h"
 #include "divelist.h"
 #include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "file.h"
-#include "tag.h"
 #include "subsurface-time.h"
+#include "tag.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
 
@@ -74,6 +75,7 @@ static int debug_round = 0;
 #define UEMIS_MAX_TIMEOUT 2000000	/* 2s */
 #endif
 
+static uemis uemis_obj;
 static const char *param_buff[NUM_PARAM_BUFS];
 static std::string reqtxt_path;
 static int reqtxt_file;
@@ -199,7 +201,7 @@ static void uemis_add_string(const char *buffer, char **text, const char *delimi
 /* still unclear if it ever reports lbs */
 static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 {
-	weight->weight.grams = uemis_get_weight_unit(diveid) ?
+	weight->weight.grams = uemis_obj.get_weight_unit(diveid) ?
 		lbs_to_grams(ascii_strtod(buffer, NULL)) :
 		lrint(ascii_strtod(buffer, NULL) * 1000);
 	weight->description = translate("gettextFromC", "unknown");
@@ -790,7 +792,7 @@ static bool parse_divespot(char *buf)
 		}
 	} while (tag && *tag);
 
-	uemis_set_divelocation(divespot, locationstring, longitude, latitude);
+	uemis_obj.set_divelocation(divespot, locationstring, longitude, latitude);
 	return true;
 }
 
@@ -813,7 +815,7 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	} else if (!strcmp(tag, "depth")) {
 		uemis_depth(val, &dive->dc.maxdepth);
 	} else if (!strcmp(tag, "file_content")) {
-		uemis_parse_divelog_binary(val, dive);
+		uemis_obj.parse_divelog_binary(val, dive);
 	} else if (!strcmp(tag, "altitude")) {
 		uemis_get_index(val, &dive->dc.surface_pressure.mbar);
 	} else if (!strcmp(tag, "f32Weight")) {
@@ -996,7 +998,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 				struct dive_site *ds = create_dive_site("from Uemis", devdata->log->sites);
 				unregister_dive_from_dive_site(dive);
 				add_dive_to_dive_site(dive, ds);
-				uemis_mark_divelocation(dive->dc.diveid, divespot_id, ds);
+				uemis_obj.mark_divelocation(dive->dc.diveid, divespot_id, ds);
 			}
 #if UEMIS_DEBUG & 2
 			fprintf(debugfile, "Created divesite %d for diveid : %d\n", dive->dive_site->uuid, dive->dc.diveid);
@@ -1256,7 +1258,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 						d_time = get_dive_date_c_string(dive->when);
 						fprintf(debugfile, "Matching dive log id %d from %s with dive details %d\n", dive->dc.diveid, d_time.c_str(), dive_to_read);
 #endif
-						int divespot_id = uemis_get_divespot_id_by_diveid(dive->dc.diveid);
+						int divespot_id = uemis_obj.get_divespot_id_by_diveid(dive->dc.diveid);
 						if (divespot_id >= 0)
 							get_uemis_divespot(data, mountpath, divespot_id, dive);
 
