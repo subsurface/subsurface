@@ -601,13 +601,10 @@ static char *str_printf(const char *fmt, ...)
  */
 static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int fsize)
 {
-	uint32_t csum[5];
-
 	if (!fingerprint || !fsize)
 		return 0;
 
-	SHA1(fingerprint, fsize, (unsigned char *)csum);
-	return csum[0];
+	return SHA1_uint32(fingerprint, fsize);
 }
 
 uint32_t calculate_string_hash(const char *str)
