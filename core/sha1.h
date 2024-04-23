@@ -29,15 +29,8 @@ void blk_SHA1_Final(unsigned char hashout[20], blk_SHA_CTX *ctx);
 #define SHA1_Update blk_SHA1_Update
 #define SHA1_Final blk_SHA1_Final
 
-/* Trivial helper function */
-static inline void SHA1(const void *dataIn, unsigned long len, unsigned char hashout[20])
-{
-	SHA_CTX ctx;
-
-	SHA1_Init(&ctx);
-	SHA1_Update(&ctx, dataIn, len);
-	SHA1_Final(hashout, &ctx);
-}
+/* Helper function that calculates an SHA1 has and returns the first 4 bytes as uint32_t */
+uint32_t SHA1_uint32(const void *dataIn, unsigned long len);
 
 #ifdef __cplusplus
 }

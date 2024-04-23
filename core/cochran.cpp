@@ -610,7 +610,6 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	struct dive *dive;
 	struct divecomputer *dc;
 	struct tm tm = {0};
-	uint32_t csum[5];
 
 	double max_depth, avg_depth, min_temp;
 	unsigned int duration = 0, corrupt_dive = 0;
@@ -719,8 +718,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			* (double) log[CMD_ALTITUDE] * 250 * FEET, 5.25588) * 1000);
 		dc->salinity = 10000 + 150 * log[CMD_WATER_CONDUCTIVITY];
 
-		SHA1(log + CMD_NUMBER, 2, (unsigned char *)csum);
-		dc->diveid = csum[0];
+		dc->diveid = SHA1_uint32(log + CMD_NUMBER, 2);
 
 		if (log[CMD_MAX_DEPTH] == 0xff && log[CMD_MAX_DEPTH + 1] == 0xff)
 			corrupt_dive = 1;
@@ -765,8 +763,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			* (double) log[EMC_ALTITUDE] * 250 * FEET, 5.25588) * 1000);
 		dc->salinity = 10000 + 150 * (log[EMC_WATER_CONDUCTIVITY] & 0x3);
 
-		SHA1(log + EMC_NUMBER, 2, (unsigned char *)csum);
-		dc->diveid = csum[0];
+		dc->diveid = SHA1_uint32(log + EMC_NUMBER, 2);
 
 		if (log[EMC_MAX_DEPTH] == 0xff && log[EMC_MAX_DEPTH + 1] == 0xff)
 			corrupt_dive = 1;
