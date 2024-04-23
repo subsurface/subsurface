@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-void uemis_parse_divelog_binary(char *base64, void *divep);
+void uemis_parse_divelog_binary(char *base64, struct dive *dive);
 int uemis_get_weight_unit(uint32_t diveid);
 void uemis_mark_divelocation(int diveid, int divespot, struct dive_site *ds);
 void uemis_set_divelocation(int divespot, char *text, double longitude, double latitude);
