@@ -10,7 +10,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <unistd.h>
 #include <assert.h>
 #include <libxml/parser.h>
@@ -151,16 +150,15 @@ enum number_type {
 	FLOATVAL
 };
 
-static enum number_type parse_float(const char *buffer, double *res, const char **endp)
+static enum number_type parse_float(const char *buffer, double &res, const char *&endp)
 {
 	double val;
 	static bool first_time = true;
 
-	errno = 0;
-	val = ascii_strtod(buffer, endp);
-	if (errno || *endp == buffer)
+	val = ascii_strtod(buffer, &endp);
+	if (endp == buffer)
 		return NEITHER;
-	if (**endp == ',') {
+	if (*endp == ',') {
 		if (nearly_equal(val, rint(val))) {
 			/* we really want to send an error if this is a Subsurface native file
 			 * as this is likely indication of a bug - but right now we don't have
@@ -170,46 +168,42 @@ static enum number_type parse_float(const char *buffer, double *res, const char 
 				first_time = false;
 			}
 			/* Try again in permissive mode*/
-			val = strtod_flags(buffer, endp, 0);
+			val = strtod_flags(buffer, &endp, 0);
 		}
 	}
 
-	*res = val;
+	res = val;
 	return FLOATVAL;
 }
 
-union int_or_float {
-	double fp;
-};
-
-static enum number_type integer_or_float(const char *buffer, union int_or_float *res)
+static enum number_type parse_float(const char *buffer, double &res)
 {
 	const char *end;
-	return parse_float(buffer, &res->fp, &end);
+	return parse_float(buffer, res, end);
 }
 
 static void pressure(const char *buffer, pressure_t *pressure, struct parser_state *state)
 {
 	double mbar = 0.0;
-	union int_or_float val;
+	double val;
 
-	switch (integer_or_float(buffer, &val)) {
+	switch (parse_float(buffer, val)) {
 	case FLOATVAL:
 		/* Just ignore zero values */
-		if (!val.fp)
+		if (!val)
 			break;
 		switch (state->xml_parsing_units.pressure) {
 		case units::PASCALS:
-			mbar = val.fp / 100;
+			mbar = val / 100;
 			break;
 		case units::BAR:
 			/* Assume mbar, but if it's really small, it's bar */
-			mbar = val.fp;
+			mbar = val;
 			if (fabs(mbar) < 5000)
 				mbar = mbar * 1000;
 			break;
 		case units::PSI:
-			mbar = psi_to_mbar(val.fp);
+			mbar = psi_to_mbar(val);
 			break;
 		}
 		if (fabs(mbar) > 5 && fabs(mbar) < 5000000) {
@@ -247,10 +241,10 @@ static void cylinder_use(const char *buffer, enum cylinderuse *cyl_use, struct p
 
 static void salinity(const char *buffer, int *salinity)
 {
-	union int_or_float val;
-	switch (integer_or_float(buffer, &val)) {
+	double val;
+	switch (parse_float(buffer, val)) {
 	case FLOATVAL:
-		*salinity = lrint(val.fp * 10.0);
+		*salinity = lrint(val * 10.0);
 		break;
 	default:
 		report_info("Strange salinity reading %s", buffer);
@@ -259,16 +253,16 @@ static void salinity(const char *buffer, int *salinity)
 
 static void depth(const char *buffer, depth_t *depth, struct parser_state *state)
 {
-	union int_or_float val;
+	double val;
 
-	switch (integer_or_float(buffer, &val)) {
+	switch (parse_float(buffer, val)) {
 	case FLOATVAL:
 		switch (state->xml_parsing_units.length) {
 		case units::METERS:
-			depth->mm = lrint(val.fp * 1000);
+			depth->mm = lrint(val * 1000.0);
 			break;
 		case units::FEET:
-			depth->mm = feet_to_mm(val.fp);
+			depth->mm = feet_to_mm(val);
 			break;
 		}
 		break;
@@ -292,16 +286,16 @@ static void extra_data_end(struct parser_state *state)
 
 static void weight(const char *buffer, weight_t *weight, struct parser_state *state)
 {
-	union int_or_float val;
+	double val;
 
-	switch (integer_or_float(buffer, &val)) {
+	switch (parse_float(buffer, val)) {
 	case FLOATVAL:
 		switch (state->xml_parsing_units.weight) {
 		case units::KG:
-			weight->grams = lrint(val.fp * 1000);
+			weight->grams = lrint(val * 1000.0);
 			break;
 		case units::LBS:
-			weight->grams = lbs_to_grams(val.fp);
+			weight->grams = lbs_to_grams(val);
 			break;
 		}
 		break;
@@ -312,19 +306,19 @@ static void weight(const char *buffer, weight_t *weight, struct parser_state *st
 
 static void temperature(const char *buffer, temperature_t *temperature, struct parser_state *state)
 {
-	union int_or_float val;
+	double val;
 
-	switch (integer_or_float(buffer, &val)) {
+	switch (parse_float(buffer, val)) {
 	case FLOATVAL:
 		switch (state->xml_parsing_units.temperature) {
 		case units::KELVIN:
-			temperature->mkelvin = lrint(val.fp * 1000);
+			temperature->mkelvin = lrint(val * 1000.0);
 			break;
 		case units::CELSIUS:
-			temperature->mkelvin = C_to_mkelvin(val.fp);
+			temperature->mkelvin = C_to_mkelvin(val);
 			break;
 		case units::FAHRENHEIT:
-			temperature->mkelvin = F_to_mkelvin(val.fp);
+			temperature->mkelvin = F_to_mkelvin(val);
 			break;
 		}
 		break;
@@ -396,7 +390,7 @@ static void percent(const char *buffer, fraction_t *fraction)
 	double val;
 	const char *end;
 
-	switch (parse_float(buffer, &val, &end)) {
+	switch (parse_float(buffer, val, end)) {
 	case FLOATVAL:
 		/* Turn fractions into percent unless explicit.. */
 		if (val <= 1.0) {
@@ -432,11 +426,11 @@ static void gasmix_nitrogen(const char *, struct gasmix *)
 
 static void cylindersize(const char *buffer, volume_t *volume)
 {
-	union int_or_float val;
+	double val;
 
-	switch (integer_or_float(buffer, &val)) {
+	switch (parse_float(buffer, val)) {
 	case FLOATVAL:
-		volume->mliter = lrint(val.fp * 1000);
+		volume->mliter = lrint(val * 1000.0);
 		break;
 
 	default:
@@ -608,16 +602,16 @@ static void get_notrip(const char *buffer, bool *notrip)
  */
 static void fahrenheit(const char *buffer, temperature_t *temperature)
 {
-	union int_or_float val;
+	double val;
 
-	switch (integer_or_float(buffer, &val)) {
+	switch (parse_float(buffer, val)) {
 	case FLOATVAL:
-		if (nearly_equal(val.fp, 32.0))
+		if (nearly_equal(val, 32.0))
 			break;
-		if (val.fp < 32.0)
-			temperature->mkelvin = C_to_mkelvin(val.fp);
+		if (val < 32.0)
+			temperature->mkelvin = C_to_mkelvin(val);
 		else
-			temperature->mkelvin = F_to_mkelvin(val.fp);
+			temperature->mkelvin = F_to_mkelvin(val);
 		break;
 	default:
 		report_info("Crazy Diving Log temperature reading %s", buffer);
@@ -646,14 +640,14 @@ static void fahrenheit(const char *buffer, temperature_t *temperature)
  */
 static void psi_or_bar(const char *buffer, pressure_t *pressure)
 {
-	union int_or_float val;
+	double val;
 
-	switch (integer_or_float(buffer, &val)) {
+	switch (parse_float(buffer, val)) {
 	case FLOATVAL:
-		if (val.fp > 400)
-			pressure->mbar = psi_to_mbar(val.fp);
+		if (val > 400)
+			pressure->mbar = psi_to_mbar(val);
 		else
-			pressure->mbar = lrint(val.fp * 1000);
+			pressure->mbar = lrint(val * 1000);
 		break;
 	default:
 		report_info("Crazy Diving Log PSI reading %s", buffer);
