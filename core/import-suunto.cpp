@@ -208,7 +208,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[6], NULL, 0) * 1000);
+		state->cur_dive->dc.maxdepth.mm = lrint(permissive_strtod(data[6], NULL) * 1000);
 	if (data[8])
 		state->cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
@@ -227,7 +227,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	if (data[11] && atoi(data[11]) > 0)
 		cyl->end.mbar = (atoi(data[11]));
 	if (data[12])
-		cyl->type.size.mliter = lrint((strtod_flags(data[12], NULL, 0)) * 1000);
+		cyl->type.size.mliter = lrint((permissive_strtod(data[12], NULL)) * 1000);
 	if (data[13])
 		cyl->type.workingpressure.mbar = (atoi(data[13]));
 	if (data[20])
@@ -314,10 +314,10 @@ static int dm5_cylinders(void *param, int, char **data, char **)
 		/* DM5 shows tank size of 12 liters when the actual
 		 * value is 0 (and using metric units). So we just use
 		 * the same 12 liters when size is not available */
-		if (strtod_flags(data[6], NULL, 0) == 0.0 && cyl->start.mbar)
+		if (permissive_strtod(data[6], NULL) == 0.0 && cyl->start.mbar)
 			cyl->type.size.mliter = 12000;
 		else
-			cyl->type.size.mliter = lrint((strtod_flags(data[6], NULL, 0)) * 1000);
+			cyl->type.size.mliter = lrint((permissive_strtod(data[6], NULL)) * 1000);
 	}
 	if (data[2])
 		cyl->gasmix.o2.permille = atoi(data[2]) * 10;
@@ -336,12 +336,12 @@ static int dm5_gaschange(void *param, int, char **data, char **)
 		state->cur_event.time.seconds = atoi(data[0]);
 	if (data[1]) {
 		strcpy(state->cur_event.name, "gaschange");
-		state->cur_event.value = lrint(strtod_flags(data[1], NULL, 0));
+		state->cur_event.value = lrint(permissive_strtod(data[1], NULL));
 	}
 
 	/* He part of the mix */
 	if (data[2])
-		state->cur_event.value += lrint(strtod_flags(data[2], NULL, 0)) << 16;
+		state->cur_event.value += lrint(permissive_strtod(data[2], NULL)) << 16;
 	event_end(state);
 
 	return 0;
@@ -389,7 +389,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[6], NULL, 0) * 1000);
+		state->cur_dive->dc.maxdepth.mm = lrint(permissive_strtod(data[6], NULL) * 1000);
 	if (data[8])
 		state->cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])

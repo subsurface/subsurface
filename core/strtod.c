@@ -3,76 +3,57 @@
  * Sane helper for 'strtod()'.
  *
  * Sad that we even need this, but the C library version has
- * insane locale behavior, and while the Qt "doDouble()" routines
+ * insane locale behavior, and while the Qt "toDouble()" routines
  * are better in that regard, they don't have an end pointer
  * (having replaced it with the completely idiotic "ok" boolean
  * pointer instead).
  *
- * I wonder what drugs people are on sometimes.
- *
- * Right now we support the following flags to limit the
- * parsing some ways:
- *
- *   STRTOD_NO_SIGN	- don't accept signs
- *   STRTOD_NO_DOT	- no decimal dots, I'm European
- *   STRTOD_NO_COMMA	- no comma, please, I'm C locale
- *   STRTOD_NO_EXPONENT	- no exponent parsing, I'm human
- *
- * The "negative" flags are so that the common case can just
- * use a flag value of 0, and only if you have some special
- * requirements do you need to state those with explicit flags.
- *
- * So if you want the C locale kind of parsing, you'd use the
- * STRTOD_NO_COMMA flag to disallow a decimal comma. But if you
- * want a more relaxed "Hey, Europeans are people too, even if
- * they have locales with commas", just pass in a zero flag.
+ * So if you want the C locale kind of parsing, use the
+ * ascii_strtod() function. But if you want a more relaxed
+ * "Hey, Europeans are people too, even if they have locales
+ * with commas", use general_strtod() instead.
  */
 #include <ctype.h>
 #include "subsurface-string.h"
 
-double strtod_flags(const char *str, const char **ptr, unsigned int flags)
+static double strtod_flags(const char *str, const char **ptr, bool no_comma)
 {
 	char c;
 	const char *p = str, *ep;
 	double val = 0.0;
 	double decimal = 1.0;
-	int sign = 0, esign = 0;
-	int numbers = 0, dot = 0;
+	bool sign = false, esign = false;
+	bool numbers = false, dot = false;
 
 	/* skip spaces */
 	while (isspace(c = *p++))
 		/* */;
 
 	/* optional sign */
-	if (!(flags & STRTOD_NO_SIGN)) {
-		switch (c) {
-		case '-':
-			sign = 1;
-		/* fallthrough */
-		case '+':
-			c = *p++;
-		}
+	switch (c) {
+	case '-':
+		sign = true;
+	/* fallthrough */
+	case '+':
+		c = *p++;
 	}
 
 	/* Mantissa */
 	for (;; c = *p++) {
-		if ((c == '.' && !(flags & STRTOD_NO_DOT)) ||
-		    (c == ',' && !(flags & STRTOD_NO_COMMA))) {
+		if (c == '.' || (c == ',' && !no_comma)) {
 			if (dot)
 				goto done;
-			dot = 1;
+			dot = true;
 			continue;
 		}
 		if (c >= '0' && c <= '9') {
-			numbers++;
+			numbers = true;
 			val = (val * 10) + (c - '0');
 			if (dot)
 				decimal *= 10;
 			continue;
 		}
 		if (c != 'e' && c != 'E')
-			goto done;
-		if (flags & STRTOD_NO_EXPONENT)
 			goto done;
 		break;
 	}
@@ -85,7 +66,7 @@ double strtod_flags(const char *str, const char **ptr, unsigned int flags)
 	c = *ep++;
 	switch (c) {
 	case '-':
-		esign = 1;
+		esign = true;
 	/* fallthrough */
 	case '+':
 		c = *ep++;
@@ -126,4 +107,14 @@ no_conversion:
 	if (ptr)
 		*ptr = str;
 	return 0.0;
+}
+
+double permissive_strtod(const char *str, const char **ptr)
+{
+	return strtod_flags(str, ptr, false);
+}
+
+double ascii_strtod(const char *str, const char **ptr)
+{
+	return strtod_flags(str, ptr, true);
 }

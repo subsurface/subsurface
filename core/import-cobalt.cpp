@@ -29,7 +29,7 @@ static int cobalt_profile_sample(void *param, int, char **data, char **)
 	if (data[1])
 		state->cur_sample->depth.mm = atoi(data[1]);
 	if (data[2])
-		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(strtod_flags(data[2], NULL, 0)) : F_to_mkelvin(strtod_flags(data[2], NULL, 0));
+		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(permissive_strtod(data[2], NULL)) : F_to_mkelvin(permissive_strtod(data[2], NULL));
 	sample_end(state);
 
 	return 0;

@@ -284,7 +284,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 		utf8_string(data[4], &state->cur_dive->notes);
 
 	if (data[5])
-		state->cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[5], NULL, 0) * 1000);
+		state->cur_dive->dc.maxdepth.mm = lrint(permissive_strtod(data[5], NULL) * 1000);
 
 	if (data[6])
 		state->cur_dive->dc.duration.seconds = atoi(data[6]) * 60;
