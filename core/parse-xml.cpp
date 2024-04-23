@@ -168,7 +168,7 @@ static enum number_type parse_float(const char *buffer, double &res, const char 
 				first_time = false;
 			}
 			/* Try again in permissive mode*/
-			val = strtod_flags(buffer, &endp, 0);
+			val = permissive_strtod(buffer, &endp);
 		}
 	}
 

@@ -1240,7 +1240,7 @@ QStringList stringToList(const QString &s)
 weight_t string_to_weight(const char *str)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	QString rest = QString(end).trimmed();
 	QString local_kg = gettextFromC::tr("kg");
 	QString local_lbs = gettextFromC::tr("lbs");
@@ -1264,7 +1264,7 @@ lbs:
 depth_t string_to_depth(const char *str)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	QString rest = QString(end).trimmed();
 	QString local_ft = gettextFromC::tr("ft");
 	QString local_m = gettextFromC::tr("m");
@@ -1289,7 +1289,7 @@ ft:
 pressure_t string_to_pressure(const char *str)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	QString rest = QString(end).trimmed();
 	QString local_psi = gettextFromC::tr("psi");
 	QString local_bar = gettextFromC::tr("bar");
@@ -1312,7 +1312,7 @@ psi:
 volume_t string_to_volume(const char *str, pressure_t workp)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	QString rest = QString(end).trimmed();
 	QString local_l = gettextFromC::tr("l");
 	QString local_cuft = gettextFromC::tr("cuft");
@@ -1343,7 +1343,7 @@ l:
 fraction_t string_to_fraction(const char *str)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	fraction_t fraction;
 
 	fraction.permille = lrint(value * 10);
