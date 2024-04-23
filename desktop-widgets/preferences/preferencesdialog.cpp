@@ -11,7 +11,6 @@
 #include "preferences_cloud.h"
 #include "preferences_equipment.h"
 #include "preferences_media.h"
-#include "preferences_dc.h"
 #include "preferences_log.h"
 #include "preferences_reset.h"
 
@@ -74,7 +73,6 @@ PreferencesDialog::PreferencesDialog()
 	pages.push_back(new PreferencesCloud);
 	pages.push_back(new PreferencesEquipment);
 	pages.push_back(new PreferencesMedia);
-	pages.push_back(new PreferencesDc);
 	pages.push_back(new PreferencesLog);
 	pages.push_back(new PreferencesReset);
 	std::sort(pages.begin(), pages.end(), abstractpreferenceswidget_lessthan);
