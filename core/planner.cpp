@@ -858,7 +858,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			bailoutsegment, po2, divemode, prefs.bottomsac, true);
 		plan_add_segment(diveplan, bailoutsegment, depth, current_cylinder, po2, false, divemode);
 		bottom_time += bailoutsegment;
-		last_segment_min_switch = true;
 	}
 	previous_deco_time = 100000000;
 	ds->deco_time = 10000000;
@@ -952,10 +951,10 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 						stopping = true;
 						previous_point_time = clock;
 						current_cylinder = gaschanges[gi].gasidx;
-						gas = get_cylinder(dive, current_cylinder)->gasmix;
 						if (divemode == CCR)
 							po2 = setpoint_change(dive, current_cylinder);
 #if DEBUG_PLAN & 16
+						gas = get_cylinder(dive, current_cylinder)->gasmix;
 						printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
 							(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
@@ -1008,10 +1007,10 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				 */
 				if (pendinggaschange) {
 					current_cylinder = gaschanges[gi + 1].gasidx;
-					gas = get_cylinder(dive, current_cylinder)->gasmix;
 					if (divemode == CCR)
 						po2 = setpoint_change(dive, current_cylinder);
 #if DEBUG_PLAN & 16
+					gas = get_cylinder(dive, current_cylinder)->gasmix;
 					printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi + 1].gasidx,
 						(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi + 1].depth / 1000.0);
 #endif
@@ -1021,7 +1020,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 							get_cylinder(dive, current_cylinder)->gasmix,
 							prefs.min_switch_duration, po2, divemode, prefs.decosac, true);
 						clock += prefs.min_switch_duration;
-						last_segment_min_switch = true;
 					}
 					pendinggaschange = false;
 				}
@@ -1058,7 +1056,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false, divemode);
 							previous_point_time = clock + laststoptime;
 							current_cylinder = break_cylinder;
-							gas = get_cylinder(dive, current_cylinder)->gasmix;
 						}
 					} else if (o2break_next) {
 						if (laststoptime >= 6 * 60) {
@@ -1070,7 +1067,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false, divemode);
 							previous_point_time = clock + laststoptime;
 							current_cylinder = breakfrom_cylinder;
-							gas = get_cylinder(dive, current_cylinder)->gasmix;
 						}
 					}
 				}
