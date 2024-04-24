@@ -1,20 +1,16 @@
 # Subsurface
 
-![Build Status](https://github.com/subsurface/subsurface/workflows/Windows/badge.svg)
-![Build Status](https://github.com/subsurface/subsurface/workflows/Mac/badge.svg)
-![Build Status](https://github.com/subsurface/subsurface/workflows/iOS/badge.svg)
-![Build Status](https://github.com/subsurface/subsurface/workflows/Android/badge.svg)
+[![Windows](https://github.com/subsurface/subsurface/actions/workflows/windows.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/windows.yml)
+[![Mac](https://github.com/subsurface/subsurface/actions/workflows/mac.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/mac.yml)
+[![iOS](https://github.com/subsurface/subsurface/actions/workflows/ios.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/ios.yml)
+[![Android](https://github.com/subsurface/subsurface/actions/workflows/android.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/android.yml)
 
-![Build Status](https://github.com/subsurface/subsurface/workflows/Linux%20Snap/badge.svg)
-![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2014.04%20/%20Qt%205.12%20for%20AppImage--/badge.svg)
-![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2018.04%20/%20Qt%205.9--/badge.svg)
-![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2020.04%20/%20Qt%205.12--/badge.svg)
-![Build Status](https://github.com/subsurface/subsurface/workflows/Ubuntu%2022.04%20/%20Qt%205.15--/badge.svg)
+[![Snap](https://github.com/subsurface/subsurface/actions/workflows/linux-snap.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-snap.yml)
+[![Ubuntu 14.04 / Qt 5.12 for AppImage--](https://github.com/subsurface/subsurface/actions/workflows/linux-trusty-5.12.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-trusty-5.12.yml)
+[![Ubuntu 22.04 / Qt 5.15--](https://github.com/subsurface/subsurface/actions/workflows/linux-jammy-5.15.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-jammy-5.15.yml)
+[![Fedora 35 / Qt 6--](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-qt6.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-qt6.yml)
 
-This is the README file for Subsurface 5.0.10
-
-Please check the `ReleaseNotes.txt` for details about new features and
-changes since Subsurface 5.0.9 (and earlier versions).
+[![Coverity Scan Results](https://scan.coverity.com/projects/14405/badge.svg)](https://scan.coverity.com/projects/subsurface-divelog-subsurface)
 
 Subsurface can be found at http://subsurface-divelog.org
 
