@@ -62,7 +62,6 @@
 #if UEMIS_DEBUG
 static std::string home, user, d_time;
 static int debug_round = 0;
-#define debugfile stderr
 #endif
 
 #if UEMIS_DEBUG & 64		/* we are reading from a copy of the filesystem, not the device - no need to wait */
@@ -318,7 +317,7 @@ static bool uemis_init(const char *path)
 	reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDONLY | O_CREAT, 0666);
 	if (reqtxt_file < 0) {
 #if UEMIS_DEBUG & 1
-		fprintf(debugfile, ":EE req.txt can't be opened\n");
+		report_info(":EE req.txt can't be opened\n");
 #endif
 		return false;
 	}
@@ -328,14 +327,14 @@ static bool uemis_init(const char *path)
 			return false;
 		tmp[5] = '\0';
 #if UEMIS_DEBUG & 2
-		fprintf(debugfile, "::r req.txt \"%s\"\n", tmp);
+		report_info("::r req.txt \"%s\"\n", tmp);
 #endif
 		if (sscanf(tmp + 1, "%d", &filenr) != 1)
 			return false;
 	} else {
 		filenr = 0;
 #if UEMIS_DEBUG & 2
-		fprintf(debugfile, "::r req.txt skipped as there were fewer than 5 bytes\n");
+		report_info("::r req.txt skipped as there were fewer than 5 bytes\n");
 #endif
 	}
 	close(reqtxt_file);
@@ -368,7 +367,7 @@ static void trigger_response(int file, const char *command, int nr, long tailpos
 
 	snprintf(fl, 8, "%s%04d", command, nr);
 #if UEMIS_DEBUG & 4
-	fprintf(debugfile, ":tr %s (after seeks)\n", fl);
+	report_info(":tr %s (after seeks)\n", fl);
 #endif
 	if (lseek(file, 0, SEEK_SET) == -1)
 		goto fs_error;
@@ -442,7 +441,7 @@ static void buffer_add(char **buffer, int *buffer_size, char *buf)
 		strcat(*buffer, buf);
 	}
 #if UEMIS_DEBUG & 8
-	fprintf(debugfile, "added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
+	report_info("added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
 #endif
 }
 
@@ -477,7 +476,7 @@ static char *first_object_id_val(char *buf)
 		char debugbuf[50];
 		strncpy(debugbuf, object, 49);
 		debugbuf[49] = '\0';
-		fprintf(debugfile, "buf |%s|\n", debugbuf);
+		report_info("buf |%s|\n", debugbuf);
 #endif
 		while (p < bufend && *p != '{' && t < tmp + 9)
 			*t++ = *p++;
@@ -510,7 +509,7 @@ static void show_progress(char *buf, const char *what)
 	if (val) {
 /* let the user know what we are working on */
 #if UEMIS_DEBUG & 8
-		fprintf(debugfile, "reading %s\n %s\n %s\n", what, val, buf);
+		report_info("reading %s\n %s\n %s\n", what, val, buf);
 #endif
 		uemis_info(translate("gettextFromC", "%s %s"), what, val);
 		free(val);
@@ -557,7 +556,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 	if (reqtxt_file < 0) {
 		*error_text = "can't open req.txt";
 #ifdef UEMIS_DEBUG
-		fprintf(debugfile, "open %s failed with errno %d\n", reqtxt_path, errno);
+		report_info("open %s failed with errno %d\n", reqtxt_path, errno);
 #endif
 		return false;
 	}
@@ -581,7 +580,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 	snprintf(fl, 10, "%08d", file_length - 13);
 	memcpy(sb + 5, fl, strlen(fl));
 #if UEMIS_DEBUG & 4
-	fprintf(debugfile, "::w req.txt \"%s\"\n", sb);
+	report_info("::w req.txt \"%s\"\n", sb);
 #endif
 	int written = write(reqtxt_file, sb, strlen(sb));
 	if (written == -1 || (size_t)written != strlen(sb)) {
@@ -606,7 +605,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 		if (ans_file < 0) {
 			*error_text = "can't open Uemis response file";
 #ifdef UEMIS_DEBUG
-			fprintf(debugfile, "open %s failed with errno %d\n", ans_path, errno);
+			report_info("open %s failed with errno %d\n", ans_path, errno);
 #endif
 			return false;
 		}
@@ -617,14 +616,14 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 		close(ans_file);
 #if UEMIS_DEBUG & 8
 		tmp[100] = '\0';
-		fprintf(debugfile, "::t %s \"%s\"\n", ans_path, tmp);
+		report_info("::t %s \"%s\"\n", ans_path, tmp);
 #elif UEMIS_DEBUG & 4
 		char pbuf[4];
 		pbuf[0] = tmp[0];
 		pbuf[1] = tmp[1];
 		pbuf[2] = tmp[2];
 		pbuf[3] = 0;
-		fprintf(debugfile, "::t %s \"%s...\"\n", ans_path, pbuf);
+		report_info("::t %s \"%s...\"\n", ans_path, pbuf);
 #endif
 		if (tmp[0] == '1') {
 			searching = false;
@@ -671,7 +670,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 			if (ans_file < 0) {
 				*error_text = "can't open Uemis response file";
 #ifdef UEMIS_DEBUG
-				fprintf(debugfile, "open %s failed with errno %d\n", ans_path, errno);
+				report_info("open %s failed with errno %d\n", ans_path, errno);
 #endif
 				return false;
 			}
@@ -707,7 +706,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 			if (ans_file < 0) {
 				*error_text = "can't open Uemis response file";
 #ifdef UEMIS_DEBUG
-				fprintf(debugfile, "open %s failed with errno %d\n", ans_path, errno);
+				report_info("open %s failed with errno %d\n", ans_path, errno);
 #endif
 				return false;
 			}
@@ -726,7 +725,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 				buffer_add(&mbuf, &mbuf_size, buf);
 				show_progress(buf, what);
 #if UEMIS_DEBUG & 8
-				fprintf(debugfile, "::r %s \"%s\"\n", ans_path, buf);
+				report_info("::r %s \"%s\"\n", ans_path, buf);
 #endif
 			}
 			size -= 3;
@@ -735,7 +734,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 			ismulti = false;
 		}
 #if UEMIS_DEBUG & 8
-		fprintf(debugfile, ":r: %s\n", buf);
+		report_info(":r: %s\n", buf ? buf : "(none)");
 #endif
 		if (!answer_in_mbuf)
 			for (i = 0; i < n_param_out && j < size; i++)
@@ -745,7 +744,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 	}
 #if UEMIS_DEBUG & 1
 	for (i = 0; i < n_param_out; i++)
-		fprintf(debugfile, "::: %d: %s\n", i, param_buff[i]);
+		report_info("::: %d: %s\n", i, param_buff[i]);
 #endif
 	return found_answer;
 fs_error:
@@ -806,7 +805,7 @@ static void parse_tag(struct dive *dive, char *tag, char *val)
 	 * with the binary data and would just get overwritten */
 #if UEMIS_DEBUG & 4
 	if (strcmp(tag, "file_content"))
-		fprintf(debugfile, "Adding to dive %d : %s = %s\n", dive->dc.diveid, tag, val);
+		report_info("Adding to dive %d : %s = %s\n", dive->dc.diveid, tag, val);
 #endif
 	if (!strcmp(tag, "date")) {
 		uemis_ts(val, &dive->when);
@@ -888,7 +887,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	char dive_no[10];
 
 #if UEMIS_DEBUG & 8
-	fprintf(debugfile, "p_r_b %s\n", inbuf);
+	report_info("p_r_b %s\n", inbuf);
 #endif
 	if (for_dive)
 		*for_dive = -1;
@@ -923,7 +922,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		 * so first test if this is even a valid entry */
 		if (strstr(inbuf, "deleted{bool{true")) {
 #if UEMIS_DEBUG & 2
-			fprintf(debugfile, "p_r_b entry deleted\n");
+			report_info("p_r_b entry deleted\n");
 #endif
 			/* oops, this one isn't valid, suggest to try the previous one */
 			free(buf);
@@ -967,7 +966,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			 * is of the format dive-<section> */
 			sections[nr_sections] = strchr(tag, '-') + 1;
 #if UEMIS_DEBUG & 4
-			fprintf(debugfile, "Expect to find section %s\n", sections[nr_sections]);
+			report_info("Expect to find section %s\n", sections[nr_sections]);
 #endif
 			if (nr_sections < sizeof(sections) / sizeof(*sections) - 1)
 				nr_sections++;
@@ -976,14 +975,14 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		val = next_token(&bp);
 #if UEMIS_DEBUG & 8
 		if (strlen(val) < 20)
-			fprintf(debugfile, "Parsed %s, %s, %s\n*************************\n", tag, type, val);
+			report_info("Parsed %s, %s, %s\n*************************\n", tag, type, val);
 #endif
 		if (is_log && strcmp(tag, "object_id") == 0) {
 			free(*max_divenr);
 			*max_divenr = strdup(val);
 			dive->dc.diveid = atoi(val);
 #if UEMIS_DEBUG % 2
-			fprintf(debugfile, "Adding new dive from log with object_id %d.\n", atoi(val));
+			report_info("Adding new dive from log with object_id %d.\n", atoi(val));
 #endif
 		} else if (is_dive && strcmp(tag, "logfilenr") == 0) {
 			/* this one tells us which dive we are adding data to */
@@ -1001,7 +1000,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 				uemis_obj.mark_divelocation(dive->dc.diveid, divespot_id, ds);
 			}
 #if UEMIS_DEBUG & 2
-			fprintf(debugfile, "Created divesite %d for diveid : %d\n", dive->dive_site->uuid, dive->dc.diveid);
+			report_info("Created divesite %d for diveid : %d\n", dive->dive_site->uuid, dive->dc.diveid);
 #endif
 		} else if (dive) {
 			parse_tag(dive, tag, val);
@@ -1131,7 +1130,7 @@ static int get_memory(struct dive_table *td, int checkpoint)
 
 		/* check if a full block of dive logs + dive details and dive spot fit into the UEMIS buffer */
 #if UEMIS_DEBUG & 4
-		fprintf(debugfile, "max_mem_used %d (from td->nr %d) * block_size %d > max_files %d - filenr %d?\n", max_mem_used, td->nr, UEMIS_LOG_BLOCK_SIZE, UEMIS_MAX_FILES, filenr);
+		report_info("max_mem_used %d (from td->nr %d) * block_size %d > max_files %d - filenr %d?\n", max_mem_used, td->nr, UEMIS_LOG_BLOCK_SIZE, UEMIS_MAX_FILES, filenr);
 #endif
 		if (max_mem_used * UEMIS_LOG_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
 			return UEMIS_MEM_FULL;
@@ -1163,7 +1162,7 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 	snprintf(divespotnr, sizeof(divespotnr), "%d", divespot_id);
 	param_buff[2] = divespotnr;
 #if UEMIS_DEBUG & 2
-	fprintf(debugfile, "getDivespot %d\n", divespot_id);
+	report_info("getDivespot %d\n", divespot_id);
 #endif
 	bool success = uemis_get_answer(mountpath, "getDivespot", 3, 0, NULL);
 	if (mbuf && success) {
@@ -1225,7 +1224,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 
 	snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dc.diveid);
 #if UEMIS_DEBUG & 2
-	fprintf(debugfile, "Looking for dive details to go with dive log id %d\n", dive->dc.diveid);
+	report_info("Looking for dive details to go with dive log id %d\n", dive->dc.diveid);
 #endif
 	while (!found) {
 		if (import_thread_cancelled)
@@ -1256,7 +1255,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 						 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
 #if UEMIS_DEBUG & 2
 						d_time = get_dive_date_c_string(dive->when);
-						fprintf(debugfile, "Matching dive log id %d from %s with dive details %d\n", dive->dc.diveid, d_time.c_str(), dive_to_read);
+						report_info("Matching dive log id %d from %s with dive details %d\n", dive->dc.diveid, d_time.c_str(), dive_to_read);
 #endif
 						int divespot_id = uemis_obj.get_divespot_id_by_diveid(dive->dc.diveid);
 						if (divespot_id >= 0)
@@ -1266,13 +1265,13 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 						/* in this case we found a deleted file, so let's increment */
 #if UEMIS_DEBUG & 2
 						d_time = get_dive_date_c_string(dive->when);
-						fprintf(debugfile, "TRY matching dive log id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time.c_str(), dive_to_read);
+						report_info("TRY matching dive log id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time.c_str(), dive_to_read);
 #endif
 						deleted_files++;
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
 						dive->hidden_by_filter = true;
 #if UEMIS_DEBUG & 2
-						fprintf(debugfile, "Deleted dive from %s, with id %d from table -- newmax is %s\n", d_time.c_str(), dive->dc.diveid, newmax);
+						report_info("Deleted dive from %s, with id %d from table -- newmax is %s\n", d_time.c_str(), dive->dc.diveid, newmax);
 #endif
 					}
 				} else {
@@ -1330,7 +1329,7 @@ const char *do_uemis_import(device_data_t *data)
 	// To speed up sync you can skip downloading old dives by defining UEMIS_DIVE_OFFSET
 	if (getenv("UEMIS_DIVE_OFFSET")) {
 		dive_offset = atoi(getenv("UEMIS_DIVE_OFFSET"));
-		printf("Uemis: Using dive # offset %d\n", dive_offset);
+		report_info("Uemis: Using dive # offset %d\n", dive_offset);
 	}
 
 #if UEMIS_DEBUG
@@ -1373,7 +1372,7 @@ const char *do_uemis_import(device_data_t *data)
 		debug_round++;
 #endif
 #if UEMIS_DEBUG & 4
-		fprintf(debugfile, "d_u_i inner loop start %d end %d newmax %s\n", start, end, newmax);
+		report_info("d_u_i inner loop start %d end %d newmax %s\n", start, end, newmax);
 #endif
 		/* start at the last filled download table index */
 		match_dive_and_log = data->log->dives->nr;
@@ -1411,7 +1410,7 @@ const char *do_uemis_import(device_data_t *data)
 			/* last object_id we parsed */
 			sscanf(newmax, "%d", &end);
 #if UEMIS_DEBUG & 4
-			fprintf(debugfile, "d_u_i after download and parse start %d end %d newmax %s progress %4.2f\n", start, end, newmax, progress_bar_fraction);
+			report_info("d_u_i after download and parse start %d end %d newmax %s progress %4.2f\n", start, end, newmax, progress_bar_fraction);
 #endif
 			/* The way this works is that I am reading the current dive from what has been loaded during the getDiveLogs call to the UEMIS.
 			 * As the object_id of the dive log entry and the object_id of the dive details are not necessarily the same, the match needs
@@ -1433,7 +1432,7 @@ const char *do_uemis_import(device_data_t *data)
 			uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_LOG);
 			if (uemis_mem_status != UEMIS_MEM_OK) {
 #if UEMIS_DEBUG & 4
-				fprintf(debugfile, "d_u_i out of memory, bailing\n");
+				report_info("d_u_i out of memory, bailing\n");
 #endif
 				(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
 				const char *errormsg = translate("gettextFromC", ACTION_RECONNECT);
@@ -1462,21 +1461,21 @@ const char *do_uemis_import(device_data_t *data)
 			/* if the user clicked cancel, exit gracefully */
 			if (import_thread_cancelled) {
 #if UEMIS_DEBUG & 4
-				fprintf(debugfile, "d_u_i thread canceled, bailing\n");
+				report_info("d_u_i thread canceled, bailing\n");
 #endif
 				break;
 			}
 			/* if we got an error or got nothing back, stop trying */
 			if (!success || !param_buff[3]) {
 #if UEMIS_DEBUG & 4
-				fprintf(debugfile, "d_u_i after download nothing found, giving up\n");
+				report_info("d_u_i after download nothing found, giving up\n");
 #endif
 				break;
 			}
 #if UEMIS_DEBUG & 2
 			if (debug_round != -1)
 				if (debug_round-- == 0) {
-					fprintf(debugfile, "d_u_i debug_round is now 0, bailing\n");
+					report_info("d_u_i debug_round is now 0, bailing\n");
 					goto bail;
 				}
 #endif
@@ -1489,7 +1488,7 @@ const char *do_uemis_import(device_data_t *data)
 			if (uemis_mem_status == UEMIS_MEM_FULL)
 				do_delete_dives(data->log->dives, match_dive_and_log);
 #if UEMIS_DEBUG & 4
-			fprintf(debugfile, "d_u_i out of memory, bailing instead of processing\n");
+			report_info("d_u_i out of memory, bailing instead of processing\n");
 #endif
 			break;
 		}
@@ -1499,7 +1498,7 @@ const char *do_uemis_import(device_data_t *data)
 		end = start;
 
 #if UEMIS_DEBUG & 2
-	fprintf(debugfile, "Done: read from object_id %d to %d\n", first, end);
+	report_info("Done: read from object_id %d to %d\n", first, end);
 #endif
 
 	/* Regardless on where we are with the memory situation, it's time now
