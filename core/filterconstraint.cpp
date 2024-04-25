@@ -1074,9 +1074,9 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 	case FILTER_CONSTRAINT_SAC:
 		return check_numerical_range_non_zero(c, d->sac);
 	case FILTER_CONSTRAINT_LOGGED:
-		return has_planned(d, false) != c.negate;
+		return is_logged(d) != c.negate;
 	case FILTER_CONSTRAINT_PLANNED:
-		return has_planned(d, true) != c.negate;
+		return is_planned(d) != c.negate;
 	case FILTER_CONSTRAINT_DIVE_MODE:
 		return check_multiple_choice(c, (int)d->dc.divemode); // should we be smarter and check all DCs?
 	case FILTER_CONSTRAINT_TAGS:
