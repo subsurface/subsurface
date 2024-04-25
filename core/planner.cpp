@@ -111,9 +111,8 @@ static void interpolate_transition(struct deco_state *ds, struct dive *dive, dur
 }
 
 /* returns the tissue tolerance at the end of this (partial) dive */
-static int tissue_at_end(struct deco_state *ds, struct dive *dive, deco_state_cache &cache)
+static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct divecomputer *dc, deco_state_cache &cache)
 {
-	struct divecomputer *dc;
 	struct sample *sample, *psample;
 	int i;
 	depth_t lastdepth = {};
@@ -129,7 +128,6 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, deco_state_ca
 		surface_interval = init_decompression(ds, dive, true);
 		cache.cache(ds);
 	}
-	dc = &dive->dc;
 	if (!dc->samples)
 		return 0;
 	psample = sample = dc->sample;
@@ -208,10 +206,9 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 
 /* overwrite the data in dive
  * return false if something goes wrong */
-static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, bool track_gas)
+static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, struct divecomputer *dc, bool track_gas)
 {
 	struct divedatapoint *dp;
-	struct divecomputer *dc;
 	struct sample *sample;
 	struct event *ev;
 	cylinder_t *cyl;
@@ -219,7 +216,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	int lasttime = 0, last_manual_point = 0;
 	depth_t lastdepth = {.mm = 0};
 	int lastcylid;
-	enum divemode_t type = dive->dc.divemode;
+	enum divemode_t type = dc->divemode;
 
 	if (!diveplan || !diveplan->dp)
 		return;
@@ -231,7 +228,6 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	// reset the cylinders and clear out the samples and events of the
 	// dive-to-be-planned so we can restart
 	reset_cylinders(dive, track_gas);
-	dc = &dive->dc;
 	dc->when = dive->when = diveplan->when;
 	dc->surface_pressure.mbar = diveplan->surface_pressure;
 	dc->salinity = diveplan->salinity;
@@ -319,7 +315,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		finish_sample(dc);
 		dp = dp->next;
 	}
-	dive->dc.last_manual_time.seconds = last_manual_point;
+	dc->last_manual_time.seconds = last_manual_point;
 
 #if DEBUG_PLAN & 32
 	save_dive(stdout, dive);
@@ -655,7 +651,7 @@ static void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_de
 		*avg_depth = *max_depth = 0;
 }
 
-bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer)
+bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int dcNr, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer)
 {
 
 	int bottom_depth;
@@ -690,15 +686,16 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	int laststoptime = timestep;
 	bool o2breaking = false;
 	int decostopcounter = 0;
-	enum divemode_t divemode = dive->dc.divemode;
+	struct divecomputer *dc = get_dive_dc(dive, dcNr);
+	enum divemode_t divemode = dc->divemode;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh);
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);
 
 	if (!diveplan->surface_pressure) {
 		// Lets use dive's surface pressure in planner, if have one...
-		if (dive->dc.surface_pressure.mbar) { // First from DC...
-			diveplan->surface_pressure = dive->dc.surface_pressure.mbar;
+		if (dc->surface_pressure.mbar) { // First from DC...
+			diveplan->surface_pressure = dc->surface_pressure.mbar;
 		}
 		else if (dive->surface_pressure.mbar) { // After from user...
 			diveplan->surface_pressure = dive->surface_pressure.mbar;
@@ -707,10 +704,10 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			diveplan->surface_pressure = SURFACE_PRESSURE;
 		}
 	}
-	
+
 	clear_deco(ds, dive->surface_pressure.mbar / 1000.0, true);
 	ds->max_bottom_ceiling_pressure.mbar = ds->first_ceiling_pressure.mbar = 0;
-	create_dive_from_plan(diveplan, dive, is_planner);
+	create_dive_from_plan(diveplan, dive, dc, is_planner);
 
 	// Do we want deco stop array in metres or feet?
 	if (prefs.units.length == units::METERS ) {
@@ -731,20 +728,20 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		*(decostoplevels + 1) = M_OR_FT(3,10);
 
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
-	sample = &dive->dc.sample[dive->dc.samples - 1];
+	sample = &dc->sample[dc->samples - 1];
 
 	/* Keep time during the ascend */
-	bottom_time = clock = previous_point_time = dive->dc.sample[dive->dc.samples - 1].time.seconds;
+	bottom_time = clock = previous_point_time = dc->sample[dc->samples - 1].time.seconds;
 
-	current_cylinder = get_cylinderid_at_time(dive, &dive->dc, sample->time);
+	current_cylinder = get_cylinderid_at_time(dive, dc, sample->time);
 	// Find the divemode at the end of the dive
 	const struct event *ev = NULL;
 	divemode = UNDEF_COMP_TYPE;
-	divemode = get_current_divemode(&dive->dc, bottom_time, &ev, &divemode);
+	divemode = get_current_divemode(dc, bottom_time, &ev, &divemode);
 	gas = get_cylinder(dive, current_cylinder)->gasmix;
 
 	po2 = sample->setpoint.mbar;
-	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
+	depth = dc->sample[dc->samples - 1].depth.mm;
 	average_max_depth(diveplan, &avg_depth, &max_depth);
 	last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 
@@ -755,7 +752,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		 */
 		transitiontime = lrint(depth / (double)prefs.ascratelast6m);
 		plan_add_segment(diveplan, transitiontime, 0, current_cylinder, po2, false, divemode);
-		create_dive_from_plan(diveplan, dive, is_planner);
+		create_dive_from_plan(diveplan, dive, dc, is_planner);
 		return false;
 	}
 
@@ -782,7 +779,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	gi = static_cast<int>(gaschanges.size()) - 1;
 
 	/* Set tissue tolerance and initial vpmb gradient at start of ascent phase */
-	diveplan->surface_interval = tissue_at_end(ds, dive, cache);
+	diveplan->surface_interval = tissue_at_end(ds, dive, dc, cache);
 	nuclear_regeneration(ds, clock);
 	vpmb_start_gradient(ds);
 	if (decoMode(true) == RECREATIONAL) {
@@ -830,9 +827,9 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			}
 		} while (depth > 0);
 		plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
-		create_dive_from_plan(diveplan, dive, is_planner);
+		create_dive_from_plan(diveplan, dive, dc, is_planner);
 		add_plan_to_notes(diveplan, dive, show_disclaimer, error);
-		fixup_dc_duration(&dive->dc);
+		fixup_dc_duration(dc);
 
 		return false;
 	}
@@ -848,7 +845,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	}
 
 	// VPM-B or Buehlmann Deco
-	tissue_at_end(ds, dive, cache);
+	tissue_at_end(ds, dive, dc, cache);
 	if ((divemode == CCR || divemode == PSCR) && prefs.dobailout) {
 		divemode = OC;
 		po2 = 0;
@@ -1112,9 +1109,9 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		current_cylinder = dive->cylinders.nr;
 		plan_add_segment(diveplan, prefs.surface_segment, 0, current_cylinder, 0, false, OC);
 	}
-	create_dive_from_plan(diveplan, dive, is_planner);
+	create_dive_from_plan(diveplan, dive, dc, is_planner);
 	add_plan_to_notes(diveplan, dive, show_disclaimer, error);
-	fixup_dc_duration(&dive->dc);
+	fixup_dc_duration(dc);
 
 	return decodive;
 }

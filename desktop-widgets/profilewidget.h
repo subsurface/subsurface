@@ -44,7 +44,7 @@ private:
 	std::vector<QAction *> toolbarActions;
 	Ui::ProfileWidget ui;
 	QStackedWidget *stack;
-	void setDive(const struct dive *d);
+	void setDive(const struct dive *d, int dcNr);
 	void editDive();
 	void exitEditMode();
 	void rotateDC(int dir);

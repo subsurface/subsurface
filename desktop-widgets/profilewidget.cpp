@@ -157,11 +157,11 @@ void ProfileWidget::setEnabledToolbar(bool enabled)
 		b->setEnabled(enabled);
 }
 
-void ProfileWidget::setDive(const struct dive *d)
+void ProfileWidget::setDive(const struct dive *d, int dcNr)
 {
 	stack->setCurrentIndex(1); // show profile
 
-	bool freeDiveMode = d->dc.divemode == FREEDIVE;
+	bool freeDiveMode = get_dive_dc_const(d, dcNr)->divemode == FREEDIVE;
 	ui.profCalcCeiling->setDisabled(freeDiveMode);
 	ui.profCalcCeiling->setDisabled(freeDiveMode);
 	ui.profCalcAllTissues ->setDisabled(freeDiveMode);
@@ -217,12 +217,12 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 	setEnabledToolbar(d != nullptr);
 	if (editedDive) {
 		view->plotDive(editedDive.get(), editedDc);
-		setDive(editedDive.get());
+		setDive(editedDive.get(), dc);
 	} else if (d) {
 		view->setProfileState(d, dc);
 		view->resetZoom(); // when switching dive, reset the zoomLevel
 		view->plotDive(d, dc);
-		setDive(d);
+		setDive(d, dc);
 	} else {
 		view->clear();
 		stack->setCurrentIndex(0);
@@ -274,11 +274,12 @@ void ProfileWidget::divesChanged(const QVector<dive *> &dives, DiveField field)
 	plotCurrentDive();
 }
 
-void ProfileWidget::setPlanState(const struct dive *d, int dc)
+void ProfileWidget::setPlanState(const struct dive *d, int dcNr)
 {
 	exitEditMode();
-	view->setPlanState(d, dc);
-	setDive(d);
+	dc = dcNr;
+	view->setPlanState(d, dcNr);
+	setDive(d, dcNr);
 }
 
 void ProfileWidget::unsetProfHR()

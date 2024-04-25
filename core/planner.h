@@ -60,6 +60,6 @@ struct decostop {
 
 #include <string>
 extern std::string get_planner_disclaimer_formatted();
-extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
+extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int dcNr, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
 #endif
 #endif // PLANNER_H
