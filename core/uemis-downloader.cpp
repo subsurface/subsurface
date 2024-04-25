@@ -873,7 +873,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
  * the addresses of those fields for every dive that references the dive spot. */
-static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *inbuf, char **max_divenr, int *for_dive)
+static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *inbuf, int &max_divenr, int *for_dive)
 {
 	char *buf = strdup(inbuf);
 	char *tp, *bp, *tag, *type, *val;
@@ -978,9 +978,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			report_info("Parsed %s, %s, %s\n*************************\n", tag, type, val);
 #endif
 		if (is_log && strcmp(tag, "object_id") == 0) {
-			free(*max_divenr);
-			*max_divenr = strdup(val);
-			dive->dc.diveid = atoi(val);
+			dive->dc.diveid = max_divenr = atoi(val);
 #if UEMIS_DEBUG % 2
 			report_info("Adding new dive from log with object_id %d.\n", atoi(val));
 #endif
@@ -1030,11 +1028,10 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	return true;
 }
 
-static char *uemis_get_divenr(char *deviceidstr, struct dive_table *table, int force)
+static int uemis_get_divenr(char *deviceidstr, struct dive_table *table, int force)
 {
 	uint32_t deviceid, maxdiveid = 0;
 	int i;
-	char divenr[10];
 	deviceid = atoi(deviceidstr);
 	mindiveid = 0xFFFFFFFF;
 
@@ -1066,8 +1063,7 @@ static char *uemis_get_divenr(char *deviceidstr, struct dive_table *table, int f
 			}
 		}
 	}
-	snprintf(divenr, 10, "%d", maxdiveid);
-	return strdup(divenr);
+	return maxdiveid;
 }
 
 #if UEMIS_DEBUG
@@ -1211,7 +1207,7 @@ static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, in
 	}
 }
 
-static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, device_data_t *data, const char *mountpath, const char deviceidnr)
+static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, device_data_t *data, const char *mountpath, const char deviceidnr)
 {
 	struct dive *dive = data->log->dives->dives[idx];
 	char log_file_no_to_find[20];
@@ -1249,7 +1245,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 					 * we mark the search successful even if the dive has been deleted. */
 					found = true;
 					if (strstr(mbuf, "deleted{bool{true") == NULL) {
-						process_raw_buffer(data, deviceidnr, mbuf, &newmax, NULL);
+						process_raw_buffer(data, deviceidnr, mbuf, newmax, NULL);
 						/* remember the last log file number as it is very likely that subsequent dives
 						 * have the same or higher logfile number.
 						 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
@@ -1271,7 +1267,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
 						dive->hidden_by_filter = true;
 #if UEMIS_DEBUG & 2
-						report_info("Deleted dive from %s, with id %d from table -- newmax is %s\n", d_time.c_str(), dive->dc.diveid, newmax);
+						report_info("Deleted dive from %s, with id %d from table -- newmax is %d\n", d_time.c_str(), dive->dc.diveid, newmax);
 #endif
 					}
 				} else {
@@ -1315,7 +1311,7 @@ const char *do_uemis_import(device_data_t *data)
 {
 	const char *mountpath = data->devname;
 	short force_download = data->force_download;
-	char *newmax = NULL;
+	int newmax = -1;
 	int first, start, end = -2;
 	uint32_t deviceidnr;
 	char *deviceid = NULL;
@@ -1361,9 +1357,9 @@ const char *do_uemis_import(device_data_t *data)
 	param_buff[1] = "notempty";
 	newmax = uemis_get_divenr(deviceid, data->log->dives, force_download);
 	if (verbose)
-		report_info("Uemis downloader: start looking at dive nr %s", newmax);
+		report_info("Uemis downloader: start looking at dive nr %d", newmax);
 
-	first = start = atoi(newmax);
+	first = start = newmax;
 	dive_to_read = (int)mindiveid < first ? first - mindiveid : first;
 	if (dive_offset > 0)
 		start += dive_offset;
@@ -1372,12 +1368,13 @@ const char *do_uemis_import(device_data_t *data)
 		debug_round++;
 #endif
 #if UEMIS_DEBUG & 4
-		report_info("d_u_i inner loop start %d end %d newmax %s\n", start, end, newmax);
+		report_info("d_u_i inner loop start %d end %d newmax %d\n", start, end, newmax);
 #endif
 		/* start at the last filled download table index */
 		match_dive_and_log = data->log->dives->nr;
-		sprintf(newmax, "%d", start);
-		param_buff[2] = newmax;
+		newmax = start;
+		std::string newmax_str = std::to_string(newmax);
+		param_buff[2] = newmax_str.c_str();
 		param_buff[3] = 0;
 		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
 		uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
@@ -1390,7 +1387,7 @@ const char *do_uemis_import(device_data_t *data)
 			do_dump_buffer_to_file(realmbuf, "Dive logs");
 #endif
 			/* process the buffer we have assembled */
-			if (!process_raw_buffer(data, deviceidnr, realmbuf, &newmax, NULL)) {
+			if (!process_raw_buffer(data, deviceidnr, realmbuf, newmax, NULL)) {
 				/* if no dives were downloaded, mark end appropriately */
 				if (end == -2)
 					end = start - 1;
@@ -1408,9 +1405,9 @@ const char *do_uemis_import(device_data_t *data)
 			if (endptr)
 				*(endptr + 2) = '\0';
 			/* last object_id we parsed */
-			sscanf(newmax, "%d", &end);
+			end = newmax;
 #if UEMIS_DEBUG & 4
-			report_info("d_u_i after download and parse start %d end %d newmax %s progress %4.2f\n", start, end, newmax, progress_bar_fraction);
+			report_info("d_u_i after download and parse start %d end %d newmax %d progress %4.2f\n", start, end, newmax, progress_bar_fraction);
 #endif
 			/* The way this works is that I am reading the current dive from what has been loaded during the getDiveLogs call to the UEMIS.
 			 * As the object_id of the dive log entry and the object_id of the dive details are not necessarily the same, the match needs
@@ -1494,8 +1491,8 @@ const char *do_uemis_import(device_data_t *data)
 		}
 	}
 
-	if (end == -2 && sscanf(newmax, "%d", &end) != 1)
-		end = start;
+	if (end == -2)
+		end = newmax;
 
 #if UEMIS_DEBUG & 2
 	report_info("Done: read from object_id %d to %d\n", first, end);
