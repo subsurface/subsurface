@@ -285,10 +285,12 @@ static char *build_filename(const char *path, const char *name)
 	int len = strlen(path) + strlen(name) + 2;
 	char *buf = (char *)malloc(len);
 #if WIN32
-	snprintf(buf, len, "%s\\%s", path, name);
+	l = snprintf(buf, len, "%s\\%s", path, name);
 #else
-	snprintf(buf, len, "%s/%s", path, name);
+	l = snprintf(buf, len, "%s/%s", path, name);
 #endif
+	if(l < 0 or l > len)
+		printf("this compiler is broken -- snprintf returned %d\n", l);
 	return buf;
 }
 
@@ -517,14 +519,10 @@ static void uemis_increased_timeout(int *timeout)
 
 static char *build_ans_path(const char *path, int filenumber)
 {
-	char *intermediate, *ans_path, fl[13];
+	char *intermediate, *ans_path, fl[15];
 
-	/* Clamp filenumber into the 0..9999 range. This is never necessary,
-	 * as filenumber can never go above UEMIS_MAX_FILES, but gcc doesn't
-	 * recognize that and produces very noisy warnings. */
-	filenumber = filenumber < 0 ? 0 : filenumber % 10000;
-
-	snprintf(fl, 13, "ANS%d.TXT", filenumber);
+	uint16_t fn =  (filenumber < 0 || filenumber > UEMIS_MAX_FILES) ? 0 : filenumber;
+	snprintf(fl, 15, "ANS%u.TXT", fn);
 	intermediate = build_filename(path, "ANS");
 	ans_path = build_filename(intermediate, fl);
 	free(intermediate);
