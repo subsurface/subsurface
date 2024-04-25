@@ -65,6 +65,7 @@ void DivePlannerPointsModel::createSimpleDive(struct dive *dIn)
 {
 	// clean out the dive and give it an id and the correct dc model
 	d = dIn;
+	dcNr = 0;
 	clear_dive(d);
 	d->id = dive_getUniqID();
 	d->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
@@ -117,7 +118,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	int depthsum = 0;
 	int samplecount = 0;
 	o2pressure_t last_sp;
-	struct divecomputer *dc = &(d->dc);
+	struct divecomputer *dc = get_dive_dc(d, dcNr);
 	const struct event *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 	cylinders.updateDive(d, dcNr);
@@ -180,9 +181,9 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 		}
 	}
 	// make sure we get the last point right so the duration is correct
-	current_divemode = get_current_divemode(dc, d->dc.duration.seconds, &evd, &current_divemode);
+	current_divemode = get_current_divemode(dc, dc->duration.seconds, &evd, &current_divemode);
 	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
-		addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
+		addStop(0, dc->duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
 	preserved_until = d->duration;
 
 	updateDiveProfile();
@@ -549,9 +550,8 @@ int DivePlannerPointsModel::gfLow() const
 
 void DivePlannerPointsModel::setRebreatherMode(int mode)
 {
-	int i;
-	d->dc.divemode = (divemode_t) mode;
-	for (i = 0; i < rowCount(); i++) {
+	get_dive_dc(d, dcNr)->divemode = (divemode_t) mode;
+	for (int i = 0; i < rowCount(); i++) {
 		divepoints[i].setpoint = mode == CCR ? prefs.defaultsetpoint : 0;
 		divepoints[i].divemode = (enum divemode_t) mode;
 	}
@@ -830,7 +830,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 		}
 	}
 	if (divemode == UNDEF_COMP_TYPE)
-		divemode = d->dc.divemode;
+		divemode = get_dive_dc_const(d, dcNr)->divemode;
 
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
@@ -1084,7 +1084,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 	struct deco_state plan_deco_state;
 
 	memset(&plan_deco_state, 0, sizeof(struct deco_state));
-	plan(&plan_deco_state, &diveplan, d, decotimestep, stoptable, cache, isPlanner(), false);
+	plan(&plan_deco_state, &diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), false);
 	updateMaxDepth();
 
 	if (isPlanner() && shouldComputeVariations()) {
@@ -1226,7 +1226,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 		goto finish;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, original, cache, true, false);
+	plan(&ds, &plan_copy, dive, dcNr, 1, original, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1235,7 +1235,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	last_segment->next->depth.mm += delta_depth.mm;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, deeper, cache, true, false);
+	plan(&ds, &plan_copy, dive, dcNr, 1, deeper, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1244,7 +1244,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	last_segment->next->depth.mm -= delta_depth.mm;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, shallower, cache, true, false);
+	plan(&ds, &plan_copy, dive, dcNr, 1, shallower, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1252,7 +1252,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	last_segment->next->time += delta_time.seconds;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, longer, cache, true, false);
+	plan(&ds, &plan_copy, dive, dcNr, 1, longer, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1260,7 +1260,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	last_segment->next->time -= delta_time.seconds;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, 1, shorter, cache, true, false);
+	plan(&ds, &plan_copy, dive, dcNr, 1, shorter, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1296,7 +1296,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	createTemporaryPlan();
 
 	struct decostop stoptable[60];
-	plan(&ds_after_previous_dives, &diveplan, d, decotimestep, stoptable, cache, isPlanner(), true);
+	plan(&ds_after_previous_dives, &diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), true);
 
 	if (shouldComputeVariations()) {
 		struct diveplan *plan_copy;
@@ -1349,7 +1349,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		Command::addDive(d, divelog.autogroup, true);
 #endif // !SUBSURFACE_TESTING
 	} else {
-		copy_events_until(current_dive, d, preserved_until.seconds);
+		copy_events_until(current_dive, d, dcNr, preserved_until.seconds);
 		if (replanCopy) {
 			// we were planning an old dive and save as a new dive
 			d->id = dive_getUniqID(); // Things will break horribly if we create dives with the same id.

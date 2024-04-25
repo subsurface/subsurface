@@ -186,7 +186,7 @@ extern int split_dive(const struct dive *dive, struct dive **new1, struct dive *
 extern int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2);
 extern struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip, struct dive_site **site);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
-extern void copy_events_until(const struct dive *sd, struct dive *dd, int time);
+extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int time);
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);

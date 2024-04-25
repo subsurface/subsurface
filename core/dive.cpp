@@ -339,28 +339,27 @@ extern "C" void selective_copy_dive(const struct dive *s, struct dive *d, struct
 }
 #undef CONDITIONAL_COPY_STRING
 
-/* copies all events from all dive computers before a given time
+/* copies all events from the given dive computer before a given time
    this is used when editing a dive in the planner to preserve the events
    of the old dive */
-extern "C" void copy_events_until(const struct dive *sd, struct dive *dd, int time)
+extern "C" void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int time)
 {
 	if (!sd || !dd)
 		return;
 
 	const struct divecomputer *s = &sd->dc;
-	struct divecomputer *d = &dd->dc;
+	struct divecomputer *d = get_dive_dc(dd, dcNr);
 
-	while (s && d) {
-		const struct event *ev;
-		ev = s->events;
-		while (ev != NULL) {
-			// Don't add events the planner knows about
-			if (ev->time.seconds < time && !event_is_gaschange(ev) && !event_is_divemodechange(ev))
-				add_event(d, ev->time.seconds, ev->type, ev->flags, ev->value, ev->name);
-			ev = ev->next;
-		}
-		s = s->next;
-		d = d->next;
+	if (!s || !d)
+		return;
+
+	const struct event *ev;
+	ev = s->events;
+	while (ev != NULL) {
+		// Don't add events the planner knows about
+		if (ev->time.seconds < time && !event_is_gaschange(ev) && !event_is_divemodechange(ev))
+			add_event(d, ev->time.seconds, ev->type, ev->flags, ev->value, ev->name);
+		ev = ev->next;
 	}
 }
 

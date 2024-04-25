@@ -15,7 +15,7 @@
 static struct dive dive = { 0 };
 static struct decostop stoptable[60];
 static struct deco_state test_deco_state;
-extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
+extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int dcNr, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
 void setupPrefs()
 {
 	copy_prefs(&default_prefs, &prefs);
@@ -453,7 +453,7 @@ void TestPlan::testMetric()
 	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -494,7 +494,7 @@ void TestPlan::testImperial()
 	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -534,7 +534,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 	struct diveplan testPlan = {};
 	setupPlanVpmb45m30mTx(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -564,7 +564,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m10mTx(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -594,7 +594,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minAir(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -624,7 +624,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minEan50(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -660,7 +660,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 	struct diveplan testPlan = {};
 	setupPlanVpmb60m30minTx(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -696,7 +696,7 @@ void TestPlan::testVpmbMetric100m60min()
 	struct diveplan testPlan = {};
 	setupPlanVpmb100m60min(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -739,7 +739,7 @@ void TestPlan::testMultipleGases()
 
 	setupPlanSeveralGases(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -764,7 +764,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 	struct diveplan testPlan = {};
 	setupPlanVpmbMultiLevelAir(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -794,7 +794,7 @@ void TestPlan::testVpmbMetric100m10min()
 	struct diveplan testPlan = {};
 	setupPlanVpmb100m10min(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -840,7 +840,7 @@ void TestPlan::testVpmbMetricRepeat()
 	struct diveplan testPlan = {};
 	setupPlanVpmb30m20min(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -861,7 +861,7 @@ void TestPlan::testVpmbMetricRepeat()
 	int firstDiveRunTimeSeconds = dive.dc.duration.seconds;
 
 	setupPlanVpmb100mTo70m30min(&testPlan);
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -898,7 +898,7 @@ void TestPlan::testVpmbMetricRepeat()
 	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 127u * 60u + 20u, 127u * 60u + 20u));
 
 	setupPlanVpmb30m20min(&testPlan);
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
 	free(dive.notes);
@@ -937,7 +937,7 @@ void TestPlan::testCcrBailoutGasSelection()
 	struct diveplan testPlan = {};
 	setupPlanCcr(&testPlan);
 
-	plan(&test_deco_state, &testPlan, &dive, 60, stoptable, cache, true, false);
+	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, true, false);
 
 #if DEBUG
 	free(dive.notes);

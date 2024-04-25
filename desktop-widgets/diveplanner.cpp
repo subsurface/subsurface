@@ -23,7 +23,7 @@
 #include <QBuffer>
 #endif
 
-DivePlannerWidget::DivePlannerWidget(dive &planned_dive, PlannerWidgets *parent)
+DivePlannerWidget::DivePlannerWidget(dive &planned_dive, int dcNr, PlannerWidgets *parent)
 {
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	CylindersModel *cylinders = DivePlannerPointsModel::instance()->cylindersModel();
@@ -52,7 +52,7 @@ DivePlannerWidget::DivePlannerWidget(dive &planned_dive, PlannerWidgets *parent)
 	view->setColumnHidden(CylindersModel::SENSORS, true);
 	view->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	auto tankUseDelegate = new TankUseDelegate(this);
-	tankUseDelegate->setCurrentDC(get_dive_dc(&planned_dive, 0));
+	tankUseDelegate->setCurrentDC(get_dive_dc(&planned_dive, dcNr));
 	view->setItemDelegateForColumn(CylindersModel::USE, tankUseDelegate);
 	connect(ui.cylinderTableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addCylinder_clicked);
 	connect(ui.tableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addDefaultStop);
@@ -539,7 +539,8 @@ void PlannerDetails::setPlanNotes(QString plan)
 
 PlannerWidgets::PlannerWidgets() :
 	planned_dive(alloc_dive()),
-	plannerWidget(*planned_dive, this),
+	dcNr(0),
+	plannerWidget(*planned_dive, dcNr, this),
 	plannerSettingsWidget(this)
 {
 	connect(plannerDetails.printPlan(), &QPushButton::pressed, this, &PlannerWidgets::printDecoPlan);
@@ -556,21 +557,27 @@ struct dive *PlannerWidgets::getDive() const
 	return planned_dive.get();
 }
 
-divemode_t PlannerWidgets::getRebreatherMode() const
+int PlannerWidgets::getDcNr()
 {
-	return planned_dive->dc.divemode;
+	return dcNr;
 }
 
-void PlannerWidgets::preparePlanDive(const dive *currentDive)
+divemode_t PlannerWidgets::getRebreatherMode() const
+{
+	return get_dive_dc_const(planned_dive.get(), dcNr)->divemode;
+}
+
+void PlannerWidgets::preparePlanDive(const dive *currentDive, int currentDcNr)
 {
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	// create a simple starting dive, using the first gas from the just copied cylinders
 	DivePlannerPointsModel::instance()->createSimpleDive(planned_dive.get());
+	dcNr = 0;
 
 	// plan the dive in the same mode as the currently selected one
 	if (currentDive) {
-		plannerSettingsWidget.setDiveMode(currentDive->dc.divemode);
-		plannerSettingsWidget.setBailoutVisibility(currentDive->dc.divemode);
+		plannerSettingsWidget.setDiveMode(get_dive_dc_const(currentDive, currentDcNr)->divemode);
+		plannerSettingsWidget.setBailoutVisibility(get_dive_dc_const(currentDive, currentDcNr)->divemode);
 		if (currentDive->salinity)
 			plannerWidget.setSalinity(currentDive->salinity);
 		else	// No salinity means salt water
@@ -586,15 +593,16 @@ void PlannerWidgets::planDive()
 	plannerWidget.setupStartTime(timestampToDateTime(planned_dive->when));	// This will reload the profile!
 }
 
-void PlannerWidgets::prepareReplanDive(const dive *d)
+void PlannerWidgets::prepareReplanDive(const dive *currentDive, int currentDcNr)
 {
-	copy_dive(d, planned_dive.get());
+	copy_dive(currentDive, planned_dive.get());
+	dcNr = currentDcNr;
 }
 
-void PlannerWidgets::replanDive(int currentDC)
+void PlannerWidgets::replanDive()
 {
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
-	DivePlannerPointsModel::instance()->loadFromDive(planned_dive.get(), currentDC);
+	DivePlannerPointsModel::instance()->loadFromDive(planned_dive.get(), dcNr);
 
 	plannerWidget.setReplanButton(true);
 	plannerWidget.setupStartTime(timestampToDateTime(planned_dive->when));
@@ -603,7 +611,7 @@ void PlannerWidgets::replanDive(int currentDC)
 	if (planned_dive->salinity)
 		plannerWidget.setSalinity(planned_dive->salinity);
 	reset_cylinders(planned_dive.get(), true);
-	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(planned_dive.get(), currentDC);
+	DivePlannerPointsModel::instance()->cylindersModel()->updateDive(planned_dive.get(), dcNr);
 }
 
 void PlannerWidgets::printDecoPlan()

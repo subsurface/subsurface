@@ -18,7 +18,7 @@ struct dive;
 class DivePlannerWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit DivePlannerWidget(dive &planned_dive, PlannerWidgets *parent);
+	explicit DivePlannerWidget(dive &planned_dive, int dcNr, PlannerWidgets *parent);
 	~DivePlannerWidget();
 	void setReplanButton(bool replan);
 public
@@ -80,17 +80,20 @@ class PlannerWidgets : public QObject {
 public:
 	PlannerWidgets();
 	~PlannerWidgets();
-	void preparePlanDive(const dive *currentDive); // Create a new planned dive
+	void preparePlanDive(const dive *currentDive, int currentDc); // Create a new planned dive
 	void planDive();
-	void prepareReplanDive(const dive *d); // Make a copy of the dive to be replanned
-	void replanDive(int currentDC);
+	void prepareReplanDive(const dive *currentDive, int currentDc); // Make a copy of the dive to be replanned
+	void replanDive();
 	struct dive *getDive() const;
+	int getDcNr();
 	divemode_t getRebreatherMode() const;
 public
 slots:
 	void printDecoPlan();
-public:
+private:
 	OwningDivePtr planned_dive;
+	int dcNr;
+public:
 	DivePlannerWidget plannerWidget;
 	PlannerSettingsWidget plannerSettingsWidget;
 	PlannerDetails plannerDetails;

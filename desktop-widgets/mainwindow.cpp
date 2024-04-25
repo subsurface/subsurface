@@ -665,8 +665,8 @@ void MainWindow::on_actionReplanDive_triggered()
 {
 	if (!plannerStateClean() || !current_dive || !userMayChangeAppState())
 		return;
-	else if (!is_dc_planner(&current_dive->dc)) {
-		if (QMessageBox::warning(this, tr("Warning"), tr("Trying to replan a dive that's not a planned dive."),
+	else if (!is_dc_planner(get_dive_dc(current_dive, profile->dc))) {
+		if (QMessageBox::warning(this, tr("Warning"), tr("Trying to replan a dive dive profile that is not a dive plan."),
 					 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel)
 					return;
 	}
@@ -675,9 +675,9 @@ void MainWindow::on_actionReplanDive_triggered()
 	setApplicationState(ApplicationState::PlanDive);
 
 	disableShortcuts(true);
-	plannerWidgets->prepareReplanDive(current_dive);
-	profile->setPlanState(plannerWidgets->getDive(), profile->dc);
-	plannerWidgets->replanDive(profile->dc);
+	plannerWidgets->prepareReplanDive(current_dive, profile->dc);
+	profile->setPlanState(plannerWidgets->getDive(), plannerWidgets->getDcNr());
+	plannerWidgets->replanDive();
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
@@ -689,8 +689,8 @@ void MainWindow::on_actionDivePlanner_triggered()
 	setApplicationState(ApplicationState::PlanDive);
 
 	disableShortcuts(true);
-	plannerWidgets->preparePlanDive(current_dive);
-	profile->setPlanState(plannerWidgets->getDive(), 0);
+	plannerWidgets->preparePlanDive(current_dive, profile->dc);
+	profile->setPlanState(plannerWidgets->getDive(), plannerWidgets->getDcNr());
 	plannerWidgets->planDive();
 }
 
