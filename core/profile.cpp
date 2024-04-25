@@ -762,7 +762,8 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	std::vector<int> last(num_cyl, INT_MAX);
 	const struct divecomputer *secondary;
 
-	unsigned prev = (unsigned)explicit_first_cylinder(dive, dc);
+	int prev = explicit_first_cylinder(dive, dc);
+	prev = prev >= 0 ? prev : 0;
 	seen[prev] = 1;
 
 	for (ev = get_next_event(dc->events, "gaschange"); ev != NULL; ev = get_next_event(ev->next, "gaschange")) {
