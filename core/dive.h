@@ -141,8 +141,7 @@ void split_divecomputer(const struct dive *src, int num, struct dive **out1, str
 	for (_dc = &_dive->dc; _dc; _dc = _dc->next)
 
 #define for_each_relevant_dc(_dive, _dc) \
-	bool _all_planned = !has_planned(_dive, false); \
-	for (_dc = &_dive->dc; _dc; _dc = _dc->next) if (_all_planned || !is_dc_planner(_dc))
+	for (_dc = &_dive->dc; _dc; _dc = _dc->next) if (!is_logged(_dive) || !is_dc_planner(_dc))
 
 extern struct dive *get_dive_by_uniq_id(int id);
 extern int get_idx_by_uniq_id(int id);
@@ -207,7 +206,8 @@ extern void invalidate_dive_cache(struct dive *dc);
 
 extern int total_weight(const struct dive *);
 
-extern bool has_planned(const struct dive *dive, bool planned);
+extern bool is_planned(const struct dive *dive);
+extern bool is_logged(const struct dive *dive);
 
 /* Get gasmixes at increasing timestamps.
  * In "evp", pass a pointer to a "struct event *" which is NULL-initialized on first invocation.
