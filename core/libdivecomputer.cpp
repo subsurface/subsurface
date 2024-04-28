@@ -136,7 +136,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 {
 	static bool shown_warning = false;
 	unsigned int i;
-	int rc;
+	dc_status_t rc;
 
 	unsigned int ntanks = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_TANK_COUNT, 0, &ntanks);
@@ -516,7 +516,7 @@ static void download_error(const char *fmt, ...)
 	report_error("Dive %d: %s", import_dive_number, buffer);
 }
 
-static int parse_samples(device_data_t *, struct divecomputer *dc, dc_parser_t *parser)
+static dc_status_t parse_samples(device_data_t *, struct divecomputer *dc, dc_parser_t *parser)
 {
 	// Parse the sample data.
 	return dc_parser_samples_foreach(parser, sample_cb, dc);
@@ -815,7 +815,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		   const unsigned char *fingerprint, unsigned int fsize,
 		   void *userdata)
 {
-	int rc;
+	dc_status_t rc;
 	dc_parser_t *parser = NULL;
 	device_data_t *devdata = (device_data_t *)userdata;
 	struct dive *dive = NULL;
@@ -830,7 +830,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	rc = dc_parser_new(&parser, devdata->device, data, size);
 	if (rc != DC_STATUS_SUCCESS) {
-		download_error(translate("gettextFromC", "Unable to create parser for %s %s"), devdata->vendor, devdata->product);
+		download_error(translate("gettextFromC", "Unable to create parser for %s %s: %d"), devdata->vendor, devdata->product, errmsg(rc));
 		return true;
 	}
 
@@ -843,14 +843,14 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	// Parse the dive's header data
 	rc = libdc_header_parser (parser, devdata, dive);
 	if (rc != DC_STATUS_SUCCESS) {
-		download_error(translate("getextFromC", "Error parsing the header"));
+		download_error(translate("getextFromC", "Error parsing the header: %s"), errmsg(rc));
 		goto error_exit;
 	}
 
 	// Initialize the sample data.
 	rc = parse_samples(devdata, &dive->dc, parser);
 	if (rc != DC_STATUS_SUCCESS) {
-		download_error(translate("gettextFromC", "Error parsing the samples"));
+		download_error(translate("gettextFromC", "Error parsing the samples: %s"), errmsg(rc));
 		goto error_exit;
 	}
 
@@ -1154,13 +1154,19 @@ static const char *do_device_import(device_data_t *data)
 	// Register the event handler.
 	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR;
 	rc = dc_device_set_events(device, events, event_cb, data);
-	if (rc != DC_STATUS_SUCCESS)
+	if (rc != DC_STATUS_SUCCESS) {
+		dev_info(data, "Import error: %s", errmsg(rc));
+
 		return translate("gettextFromC", "Error registering the event handler.");
+	}
 
 	// Register the cancellation handler.
 	rc = dc_device_set_cancel(device, cancel_cb, data);
-	if (rc != DC_STATUS_SUCCESS)
+	if (rc != DC_STATUS_SUCCESS) {
+		dev_info(data, "Import error: %s", errmsg(rc));
+
 		return translate("gettextFromC", "Error registering the cancellation handler.");
+	}
 
 	if (data->libdc_dump) {
 		dc_buffer_t *buffer = dc_buffer_new(0);
@@ -1182,6 +1188,8 @@ static const char *do_device_import(device_data_t *data)
 			if (rc == DC_STATUS_UNSUPPORTED)
 				return translate("gettextFromC", "Dumping not supported on this device");
 
+			dev_info(data, "Import error: %s", errmsg(rc));
+
 			return translate("gettextFromC", "Dive data dumping error");
 		}
 	} else {
@@ -1189,6 +1197,8 @@ static const char *do_device_import(device_data_t *data)
 
 		if (rc != DC_STATUS_SUCCESS) {
 			progress_bar_fraction = 0.0;
+
+			dev_info(data, "Import error: %s", errmsg(rc));
 
 			return translate("gettextFromC", "Dive data import error");
 		}
@@ -1356,7 +1366,7 @@ static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *d
 	dc_iterator_free (iterator);
 
 	if (!address) {
-		report_error("No rfcomm device found");
+		dev_info(data, "No rfcomm device found");
 		return DC_STATUS_NODEVICE;
 	}
 
@@ -1376,7 +1386,7 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 	transports &= supported;
 	if (!transports) {
-		report_error("Dive computer transport not supported");
+		dev_info(data, "Dive computer transport not supported");
 		return DC_STATUS_UNSUPPORTED;
 	}
 
@@ -1493,7 +1503,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	rc = divecomputer_device_open(data);
 
 	if (rc != DC_STATUS_SUCCESS) {
-		report_error("%s", errmsg(rc));
+		dev_info(data, "Import error: %s", errmsg(rc));
 	} else {
 		dev_info(data, "Connecting ...");
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
@@ -1606,12 +1616,12 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 	if (dc_descriptor_get_type(data->descriptor) != DC_FAMILY_UWATEC_ALADIN && dc_descriptor_get_type(data->descriptor) != DC_FAMILY_UWATEC_MEMOMOUSE) {
 		rc = libdc_header_parser (parser, data, dive);
 		if (rc != DC_STATUS_SUCCESS) {
-			report_error("Error parsing the dive header data. Dive # %d\nStatus = %s", dive->number, errmsg(rc));
+			report_error("Error parsing the dive header data. Dive # %d: %s", dive->number, errmsg(rc));
 		}
 	}
 	rc = dc_parser_samples_foreach (parser, sample_cb, &dive->dc);
 	if (rc != DC_STATUS_SUCCESS) {
-		report_error("Error parsing the sample data. Dive # %d\nStatus = %s", dive->number, errmsg(rc));
+		report_error("Error parsing the sample data. Dive # %d: %s", dive->number, errmsg(rc));
 		dc_parser_destroy (parser);
 		return rc;
 	}
@@ -1632,7 +1642,7 @@ dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model)
 
 	rc = dc_descriptor_iterator(&iterator);
 	if (rc != DC_STATUS_SUCCESS) {
-		report_info("Error creating the device descriptor iterator.");
+		report_info("Error creating the device descriptor iterator: %s", errmsg(rc));
 		return NULL;
 	}
 	while ((dc_iterator_next(iterator, &descriptor)) == DC_STATUS_SUCCESS) {
