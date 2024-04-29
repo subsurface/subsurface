@@ -1141,7 +1141,7 @@ static int cancel_cb(void *)
 	return import_thread_cancelled;
 }
 
-static const char *do_device_import(device_data_t *data)
+static std::string do_device_import(device_data_t *data)
 {
 	dc_status_t rc;
 	dc_device_t *device = data->device;
@@ -1202,7 +1202,7 @@ static const char *do_device_import(device_data_t *data)
 	}
 
 	/* All good */
-	return NULL;
+	return std::string();
 }
 
 static dc_timer_t *logfunc_timer = NULL;
@@ -1465,10 +1465,9 @@ static dc_status_t sync_divecomputer_time(dc_device_t *device)
 	return dc_device_timesync(device, &now);
 }
 
-const char *do_libdivecomputer_import(device_data_t *data)
+std::string do_libdivecomputer_import(device_data_t *data)
 {
 	dc_status_t rc;
-	const char *err;
 	FILE *fp = NULL;
 
 	import_dive_number = 0;
@@ -1495,7 +1494,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		fprintf(data->libdc_logfile, "built with libdivecomputer v%s\n", dc_version(NULL));
 	}
 
-	err = translate("gettextFromC", "Unable to open %s %s (%s)");
+	std::string err = translate("gettextFromC", "Unable to open %s %s (%s)");
 
 	rc = divecomputer_device_open(data);
 
@@ -1518,7 +1517,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 			/* TODO: Show the logfile to the user on error. */
 			dev_info(data, "Import complete");
 
-			if (!err && data->sync_time) {
+			if (err.empty() && data->sync_time) {
 				dev_info(data, "Syncing dive computer time ...");
 				rc = sync_divecomputer_time(data->device);
 
