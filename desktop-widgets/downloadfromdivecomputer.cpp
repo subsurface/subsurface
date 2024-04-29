@@ -330,7 +330,8 @@ void DownloadFromDCWidget::updateState(states state)
 	else if (state == ERRORED) {
 		timer->stop();
 
-		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), diveImportedModel->thread.error), QMessageBox::Ok);
+		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"),
+					QString::fromStdString(diveImportedModel->thread.error)), QMessageBox::Ok);
 		markChildrenAsEnabled();
 		progress_bar_text = "";
 		ui.progressBar->hide();
@@ -543,7 +544,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	showRememberedDCs();
 
 	if (currentState == DOWNLOADING) {
-		if (diveImportedModel->thread.error.isEmpty())
+		if (diveImportedModel->thread.error.empty())
 			updateState(DONE);
 		else
 			updateState(ERRORED);

@@ -109,18 +109,18 @@ static void decode(uint8_t *inbuf, uint8_t *outbuf, int inbuf_len)
 /*
  * convert the base64 data blog
  */
-static std::vector<uint8_t> convert_base64(char *base64)
+static std::vector<uint8_t> convert_base64(std::string_view base64)
 {
-	int len, datalen;
+	int datalen;
+	int len = (int)base64.size();
 
-	len = strlen(base64);
 	datalen = (len / 4 + 1) * 3;
 	if (datalen < 0x123 + 0x25)
 		/* less than header + 1 sample??? */
 		report_info("suspiciously short data block %d", datalen);
 
 	std::vector<uint8_t> res(datalen);
-	decode((unsigned char *)base64, res.data(), len);
+	decode((unsigned char *)base64.begin(), res.data(), len);
 
 	if (memcmp(res.data(), "Dive\01\00\00", 7))
 		report_info("Missing Dive100 header");
@@ -159,14 +159,14 @@ int uemis::get_divespot_id_by_diveid(uint32_t diveid) const
 	return it != helper_table.end() ? it->second.divespot : -1;
 }
 
-void uemis::set_divelocation(int divespot, char *text, double longitude, double latitude)
+void uemis::set_divelocation(int divespot, const std::string &text, double longitude, double latitude)
 {
 	for (auto it: helper_table) {
 		if (it.second.divespot == divespot) {
 			struct dive_site *ds = it.second.dive_site;
 			if (ds) {
 				free(ds->name);
-				ds->name = strdup(text);
+				ds->name = strdup(text.c_str());
 				ds->location = create_location(latitude, longitude);
 			}
 		}
@@ -279,7 +279,7 @@ void uemis::event(struct dive *dive, struct divecomputer *dc, struct sample *sam
 /*
  * parse uemis base64 data blob into struct dive
  */
-void uemis::parse_divelog_binary(char *base64, struct dive *dive)
+void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 {
 	struct sample *sample = NULL;
 	uemis_sample *u_sample;

@@ -21,7 +21,9 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <array>
 #include <string>
+#include <charconv>
 
 #include "gettext.h"
 #include "libdivecomputer.h"
@@ -32,6 +34,7 @@
 #include "divesite.h"
 #include "errorhelper.h"
 #include "file.h"
+#include "format.h"
 #include "subsurface-time.h"
 #include "tag.h"
 #include "core/qthelper.h"
@@ -42,9 +45,7 @@
 #define ERR_FS_FULL QT_TRANSLATE_NOOP("gettextFromC", "Uemis Zurich: the file system is full.\nDisconnect/reconnect the dive computer\nand click Retry")
 #define ERR_FS_SHORT_WRITE QT_TRANSLATE_NOOP("gettextFromC", "Short write to req.txt file.\nIs the Uemis Zurich plugged in correctly?")
 #define ERR_NO_FILES QT_TRANSLATE_NOOP("gettextFromC", "No dives to download.")
-#define BUFLEN 2048
-#define BUFLEN 2048
-#define NUM_PARAM_BUFS 10
+constexpr size_t num_param_bufs = 10;
 
 // debugging setup
 //#define UEMIS_DEBUG 1 + 2 + 4 + 8 + 16 + 32
@@ -75,13 +76,12 @@ static int debug_round = 0;
 #endif
 
 static uemis uemis_obj;
-static const char *param_buff[NUM_PARAM_BUFS];
+static std::array<std::string, num_param_bufs> param_buff;
 static std::string reqtxt_path;
 static int reqtxt_file;
 static int filenr;
 static int number_of_files;
-static char *mbuf = NULL;
-static int mbuf_size = 0;
+static std::string mbuf;
 
 static int max_mem_used = -1;
 static int next_table_index = 0;
@@ -148,62 +148,97 @@ static struct dive_site *get_dive_site_by_divespot_id(int divespot_id)
 }
 
 /* helper function to parse the Uemis data structures */
-static void uemis_ts(char *buffer, void *_when)
+static timestamp_t uemis_ts(std::string_view buffer)
 {
 	struct tm tm;
-	timestamp_t *when = (timestamp_t *)_when;
 
 	memset(&tm, 0, sizeof(tm));
-	sscanf(buffer, "%d-%d-%dT%d:%d:%d",
+	sscanf(buffer.begin(), "%d-%d-%dT%d:%d:%d",
 	       &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
 	       &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
 	tm.tm_mon -= 1;
-	*when = utc_mktime(&tm);
+	return utc_mktime(&tm);
+}
+
+/* helper function to make the std::from_chars() interface more
+ * palatable.
+ * std::from_chars(s.begin(), s.end(), v)
+ * works for the compilers we use, but is not guaranteed to work
+ * as per standard.
+ * see: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2007r0.html
+ */
+template <typename T>
+auto from_chars(std::string_view s, T &v)
+{
+	return std::from_chars(s.data(), s.data() + s.size(), v);
+}
+
+/* Sadly, a number of supported compilers do not support from_chars()
+ * to double. Therefore, implement our own version.
+ * Frustrating, but oh well. TODO: Try to find the proper check for the
+ * existence of this function.
+ */
+static std::from_chars_result from_chars(const std::string &s, double &v)
+{
+	const char *end;
+	double res = ascii_strtod(s.c_str(), &end);
+	if (end == s.c_str())
+		return { end, std::errc::invalid_argument };
+	v = res;
+	return { end, std::errc() };
+}
+
+template <>
+auto from_chars<double>(std::string_view sv, double &v)
+{
+	std::string s(sv); // Generate a null-terminated string to work on.
+	return from_chars(s, v);
 }
 
 /* float minutes */
-static void uemis_duration(char *buffer, duration_t *duration)
+static void uemis_duration(std::string_view buffer, duration_t &duration)
 {
-	duration->seconds = lrint(ascii_strtod(buffer, NULL) * 60);
+	from_chars(buffer, duration.seconds);
 }
 
 /* int cm */
-static void uemis_depth(char *buffer, depth_t *depth)
+static void uemis_depth(std::string_view buffer, depth_t &depth)
 {
-	depth->mm = atoi(buffer) * 10;
+	if (from_chars(buffer, depth.mm).ec != std::errc::invalid_argument)
+		depth.mm *= 10;
 }
 
-static void uemis_get_index(char *buffer, int *idx)
+static void uemis_get_index(std::string_view buffer, int &idx)
 {
-	*idx = atoi(buffer);
+	from_chars(buffer, idx);
 }
 
 /* space separated */
-static void uemis_add_string(const char *buffer, char **text, const char *delimit)
+static void uemis_add_string(std::string_view buffer, char **text, const char *delimit)
 {
 	/* do nothing if this is an empty buffer (Uemis sometimes returns a single
 	 * space for empty buffers) */
-	if (empty_string(buffer) || (*buffer == ' ' && *(buffer + 1) == '\0'))
+	if (buffer.empty() || buffer == " ")
 		return;
 	if (!*text) {
-		*text = strdup(buffer);
+		*text = strdup(std::string(buffer).c_str());
 	} else {
-		char *buf = (char *)malloc(strlen(buffer) + strlen(*text) + 2);
-		strcpy(buf, *text);
-		strcat(buf, delimit);
-		strcat(buf, buffer);
+		std::string res = std::string(*text) + delimit;
+		res += buffer;
 		free(*text);
-		*text = buf;
+		*text = strdup(res.c_str());
 	}
 }
 
 /* still unclear if it ever reports lbs */
-static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
+static void uemis_get_weight(std::string_view buffer, weightsystem_t &weight, int diveid)
 {
-	weight->weight.grams = uemis_obj.get_weight_unit(diveid) ?
-		lbs_to_grams(ascii_strtod(buffer, NULL)) :
-		lrint(ascii_strtod(buffer, NULL) * 1000);
-	weight->description = translate("gettextFromC", "unknown");
+	double val;
+	if (from_chars(buffer, val).ec != std::errc::invalid_argument) {
+		weight.weight.grams = uemis_obj.get_weight_unit(diveid) ?
+			lbs_to_grams(val) : lrint(val * 1000);
+	}
+	weight.description = translate("gettextFromC", "unknown");
 }
 
 static struct dive *uemis_start_dive(uint32_t deviceid)
@@ -334,15 +369,15 @@ static bool uemis_init(const std::string &path)
 	std::string ans_path = build_filename(path, "ANS"s);
 	number_of_files = number_of_file(ans_path);
 	/* initialize the array in which we collect the answers */
-	for (int i = 0; i < NUM_PARAM_BUFS; i++)
-		param_buff[i] = "";
+	for (std::string &s: param_buff)
+		s.clear();
 	return true;
 }
 
-static void str_append_with_delim(char *s, const char *t)
+static void str_append_with_delim(std::string &s, const std::string &t)
 {
-	int len = strlen(s);
-	snprintf(s + len, BUFLEN - len, "%s{", t);
+	s += t;
+	s += '{';
 }
 
 /* The communication protocol with the DC is truly funky.
@@ -374,65 +409,38 @@ fs_error:
 	close(file);
 }
 
-static char *next_token(char **buf)
+static std::string_view next_token(std::string_view &buf)
 {
-	char *q, *p = strchr(*buf, '{');
-	if (p)
-		*p = '\0';
-	else
-		p = *buf + strlen(*buf) - 1;
-	q = *buf;
-	*buf = p + 1;
-	return q;
+	size_t pos = buf.find('{');
+	std::string_view res;
+	if (pos == std::string::npos) {
+		res = buf;
+		buf = std::string_view();
+	} else {
+		res = buf.substr(0, pos);
+		buf = buf.substr(pos + 1);
+	}
+	return res;
 }
 
 /* poor man's tokenizer that understands a quoted delimiter ('{') */
-static char *next_segment(char *buf, int *offset, int size)
+static std::string next_segment(const std::string &buf, int &offset)
 {
-	int i = *offset;
-	int seg_size;
-	bool done = false;
-	char *segment;
+	size_t i = static_cast<size_t>(offset);
+	std::string segment;
 
-	while (!done) {
-		if (i < size) {
-			if (i < size - 1 && buf[i] == '\\' &&
-			    (buf[i + 1] == '\\' || buf[i + 1] == '{'))
-				memcpy(buf + i, buf + i + 1, size - i - 1);
-			else if (buf[i] == '{')
-				done = true;
+	while (i < buf.size()) {
+		if (i + 1 < buf.size() && buf[i] == '\\' &&
+		    (buf[i + 1] == '\\' || buf[i + 1] == '{')) {
 			i++;
-		} else {
-			done = true;
+		} else if (buf[i] == '{') {
+			i++;
+			break;
 		}
+		segment += buf[i++];
 	}
-	seg_size = i - *offset - 1;
-	if (seg_size < 0)
-		seg_size = 0;
-	segment = (char *)malloc(seg_size + 1);
-	memcpy(segment, buf + *offset, seg_size);
-	segment[seg_size] = '\0';
-	*offset = i;
+	offset = i;
 	return segment;
-}
-
-/* a dynamically growing buffer to store the potentially massive responses.
- * The binary data block can be more than 100k in size (base64 encoded) */
-static void buffer_add(char **buffer, int *buffer_size, char *buf)
-{
-	if (!buf)
-		return;
-	if (!*buffer) {
-		*buffer = strdup(buf);
-		*buffer_size = strlen(*buffer) + 1;
-	} else {
-		*buffer_size += strlen(buf);
-		*buffer = (char *)realloc(*buffer, *buffer_size);
-		strcat(*buffer, buf);
-	}
-#if UEMIS_DEBUG & 8
-	report_info("added \"%s\" to buffer - new length %d\n", buf, *buffer_size);
-#endif
 }
 
 /* are there more ANS files we can check? */
@@ -444,47 +452,42 @@ static bool next_file(int max)
 	return true;
 }
 
-/* try and do a quick decode - without trying to get to fancy in case the data
+/* try and do a quick decode - without trying to get too fancy in case the data
  * straddles a block boundary...
  * we are parsing something that looks like this:
  * object_id{int{2{date{ts{2011-04-05T12:38:04{duration{float{12.000...
  */
-static char *first_object_id_val(char *buf)
+static std::string first_object_id_val(std::string_view buf)
 {
-	char *object, *bufend;
-	if (!buf)
-		return NULL;
-	bufend = buf + strlen(buf);
-	object = strstr(buf, "object_id");
-	if (object && object + 14 < bufend) {
+	size_t object = buf.find( "object_id");
+	if (object != std::string::npos && object + 14 < buf.size()) {
 		/* get the value */
-		char tmp[36];
-		char *p = object + 14;
-		char *t = tmp;
+		size_t p = object + 14;
 
 #if UEMIS_DEBUG & 4
 		char debugbuf[50];
-		strncpy(debugbuf, object, 49);
+		strncpy(debugbuf, buf.begin() + object, 49);
 		debugbuf[49] = '\0';
 		report_info("buf |%s|\n", debugbuf);
 #endif
-		while (p < bufend && *p != '{' && t < tmp + 9)
-			*t++ = *p++;
-		if (*p == '{') {
+		std::string res;
+		while (p < buf.size() && buf[p] != '{' && res.size() < 9)
+			res += buf[p++];
+		if (buf[p] == '{') {
 			/* found the object_id - let's quickly look for the date */
-			if (strncmp(p, "{date{ts{", 9) == 0 && strstr(p, "{duration{") != NULL) {
+			std::string_view buf2 = buf.substr(p);
+			if (starts_with(buf2, "{date{ts{") && buf2.find("{duration{") != std::string::npos) {
 				/* cool - that was easy */
-				*t++ = ',';
-				*t++ = ' ';
+				res += ',';
+				res += ' ';
 				/* skip the 9 characters we just found and take the date, ignoring the seconds
 				 * and replace the silly 'T' in the middle with a space */
-				strncpy(t, p + 9, 16);
-				if (*(t + 10) == 'T')
-					*(t + 10) = ' ';
-				t += 16;
+				res += buf2.substr(9, 16);
+				size_t pos = res.size() - 16 + 10;
+				if (res[pos] == 'T')
+					res[pos] = ' ';
 			}
-			*t = '\0';
-			return strdup(tmp);
+			return res;
 		}
 	}
 	return NULL;
@@ -493,16 +496,15 @@ static char *first_object_id_val(char *buf)
 /* ultra-simplistic; it doesn't deal with the case when the object_id is
  * split across two chunks. It also doesn't deal with the discrepancy between
  * object_id and dive number as understood by the dive computer */
-static void show_progress(char *buf, const char *what)
+static void show_progress(const std::string &buf, const char *what)
 {
-	char *val = first_object_id_val(buf);
-	if (val) {
+	std::string val = first_object_id_val(buf);
+	if (!val.empty()) {
 /* let the user know what we are working on */
 #if UEMIS_DEBUG & 8
-		report_info("reading %s\n %s\n %s\n", what, val, buf);
+		report_info("reading %s\n %s\n %s\n", what, val.c_str(), buf.c_str());
 #endif
-		uemis_info(translate("gettextFromC", "%s %s"), what, val);
-		free(val);
+		uemis_info(translate("gettextFromC", "%s %s"), what, val.c_str());
 	}
 }
 
@@ -528,12 +530,10 @@ static std::string build_ans_path(const std::string &path, int filenumber)
 }
 
 /* send a request to the dive computer and collect the answer */
-static bool uemis_get_answer(const char *path, const char *request, int n_param_in,
-			     int n_param_out, const char **error_text)
+static bool uemis_get_answer(const char *path, const std::string &request, int n_param_in,
+			     int n_param_out, std::string &error_text)
 {
-	int i = 0, file_length;
-	char sb[BUFLEN];
-	char fl[13];
+	int i = 0;
 	char tmp[101];
 	const char *what = translate("gettextFromC", "data");
 	bool searching = true;
@@ -547,48 +547,46 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 
 	reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDWR | O_CREAT, 0666);
 	if (reqtxt_file < 0) {
-		*error_text = "can't open req.txt";
+		error_text = "can't open req.txt";
 #ifdef UEMIS_DEBUG
 		report_info("open %s failed with errno %d\n", reqtxt_path.c_str(), errno);
 #endif
 		return false;
 	}
-	snprintf(sb, BUFLEN, "n%04d12345678", filenr);
+	std::string sb;
 	str_append_with_delim(sb, request);
 	for (i = 0; i < n_param_in; i++)
 		str_append_with_delim(sb, param_buff[i]);
-	if (!strcmp(request, "getDivelogs") || !strcmp(request, "getDeviceData") || !strcmp(request, "getDirectory") ||
-	    !strcmp(request, "getDivespot") || !strcmp(request, "getDive")) {
+	if (request == "getDivelogs" || request == "getDeviceData" || request == "getDirectory" ||
+	    request == "getDivespot" || request == "getDive") {
 		answer_in_mbuf = true;
-		str_append_with_delim(sb, "");
-		if (!strcmp(request, "getDivelogs"))
+		str_append_with_delim(sb, std::string());
+		if (request == "getDivelogs")
 			what = translate("gettextFromC", "dive log #");
-		else if (!strcmp(request, "getDivespot"))
+		else if (request == "getDivespot")
 			what = translate("gettextFromC", "dive spot #");
-		else if (!strcmp(request, "getDive"))
+		else if (request == "getDive")
 			what = translate("gettextFromC", "details for #");
 	}
-	str_append_with_delim(sb, "");
-	file_length = strlen(sb);
-	snprintf(fl, 10, "%08d", file_length - 13);
-	memcpy(sb + 5, fl, strlen(fl));
+	str_append_with_delim(sb, std::string());
+	size_t file_length = sb.size();
+	std::string header = format_string_std("n%04d%08lu", filenr, (unsigned long)file_length);
+	sb = header + sb;
 #if UEMIS_DEBUG & 4
-	report_info("::w req.txt \"%s\"\n", sb);
+	report_info("::w req.txt \"%s\"\n", sb.c_str());
 #endif
-	int written = write(reqtxt_file, sb, strlen(sb));
-	if (written == -1 || (size_t)written != strlen(sb)) {
-		*error_text = translate("gettextFromC", ERR_FS_SHORT_WRITE);
+	int written = write(reqtxt_file, sb.c_str(), sb.size());
+	if (written == -1 || (size_t)written != sb.size()) {
+		error_text = translate("gettextFromC", ERR_FS_SHORT_WRITE);
 		return false;
 	}
 	if (!next_file(number_of_files)) {
-		*error_text = translate("gettextFromC", ERR_FS_FULL);
+		error_text = translate("gettextFromC", ERR_FS_FULL);
 		more_files = false;
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
 	usleep(timeout);
-	free(mbuf);
-	mbuf = NULL;
-	mbuf_size = 0;
+	mbuf.clear();
 	while (searching || assembling_mbuf) {
 		if (import_thread_cancelled)
 			return false;
@@ -596,7 +594,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 		std::string ans_path = build_ans_path(std::string(path), filenr - 1);
 		ans_file = subsurface_open(ans_path.c_str(), O_RDONLY, 0666);
 		if (ans_file < 0) {
-			*error_text = "can't open Uemis response file";
+			error_text = "can't open Uemis response file";
 #ifdef UEMIS_DEBUG
 			report_info("open %s failed with errno %d\n", ans_path.c_str(), errno);
 #endif
@@ -628,13 +626,13 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 				assembling_mbuf = false;
 			if (assembling_mbuf) {
 				if (!next_file(number_of_files)) {
-					*error_text = translate("gettextFromC", ERR_FS_FULL);
+					error_text = translate("gettextFromC", ERR_FS_FULL);
 					more_files = false;
 					assembling_mbuf = false;
 				}
 				reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDWR | O_CREAT, 0666);
 				if (reqtxt_file < 0) {
-					*error_text = "can't open req.txt";
+					error_text = "can't open req.txt";
 					report_info("open %s failed with errno %d", reqtxt_path.c_str(), errno);
 					return false;
 				}
@@ -642,14 +640,14 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 			}
 		} else {
 			if (!next_file(number_of_files - 1)) {
-				*error_text = translate("gettextFromC", ERR_FS_FULL);
+				error_text = translate("gettextFromC", ERR_FS_FULL);
 				more_files = false;
 				assembling_mbuf = false;
 				searching = false;
 			}
 			reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDWR | O_CREAT, 0666);
 			if (reqtxt_file < 0) {
-				*error_text = "can't open req.txt";
+				error_text = "can't open req.txt";
 				report_info("open %s failed with errno %d", reqtxt_path.c_str(), errno);
 				return false;
 			}
@@ -661,7 +659,7 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 			std::string ans_path = build_ans_path(std::string(path), assembling_mbuf ? filenr - 2 : filenr - 1);
 			ans_file = subsurface_open(ans_path.c_str(), O_RDONLY, 0666);
 			if (ans_file < 0) {
-				*error_text = "can't open Uemis response file";
+				error_text = "can't open Uemis response file";
 #ifdef UEMIS_DEBUG
 				report_info("open %s failed with errno %d\n", ans_path.c_str(), errno);
 #endif
@@ -669,20 +667,16 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 			}
 			size = bytes_available(ans_file);
 			if (size > 3) {
-				char *buf;
 				int r;
 				if (lseek(ans_file, 3, SEEK_CUR) == -1)
 					goto fs_error;
-				buf = (char *)malloc(size - 2);
-				if ((r = read(ans_file, buf, size - 3)) != size - 3) {
-					free(buf);
+				std::string buf(size - 3, ' ');
+				if ((r = read(ans_file, buf.data(), size - 3)) != size - 3)
 					goto fs_error;
-				}
-				buf[r] = '\0';
-				buffer_add(&mbuf, &mbuf_size, buf);
+				mbuf += buf;
 				show_progress(buf, what);
-				free(buf);
-				param_buff[3]++;
+				if (param_buff[3].size() > 1)
+					param_buff[3] = param_buff[3].substr(1);
 			}
 			close(ans_file);
 			timeout = UEMIS_TIMEOUT;
@@ -690,54 +684,49 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 		}
 	}
 	if (more_files) {
-		int size = 0, j = 0;
-		char *buf = NULL;
+		int j = 0;
+		std::string buf;
 
 		if (!ismulti) {
 			std::string ans_path = build_ans_path(std::string(path), filenr - 1);
 			ans_file = subsurface_open(ans_path.c_str(), O_RDONLY, 0666);
 			if (ans_file < 0) {
-				*error_text = "can't open Uemis response file";
+				error_text = "can't open Uemis response file";
 #ifdef UEMIS_DEBUG
 				report_info("open %s failed with errno %d\n", ans_path.c_str(), errno);
 #endif
 				return false;
 			}
 
-			size = bytes_available(ans_file);
+			int size = bytes_available(ans_file);
 			if (size > 3) {
 				int r;
 				if (lseek(ans_file, 3, SEEK_CUR) == -1)
 					goto fs_error;
-				buf = (char *)malloc(size - 2);
-				if ((r = read(ans_file, buf, size - 3)) != size - 3) {
-					free(buf);
+				buf = std::string(size - 3, ' ');
+				if ((r = read(ans_file, buf.data(), size - 3)) != size - 3)
 					goto fs_error;
-				}
-				buf[r] = '\0';
-				buffer_add(&mbuf, &mbuf_size, buf);
+				mbuf += buf;
 				show_progress(buf, what);
 #if UEMIS_DEBUG & 8
-				report_info("::r %s \"%s\"\n", ans_path.c_str(), buf);
+				report_info("::r %s \"%s\"\n", ans_path.c_str(), buf.c_str());
 #endif
 			}
-			size -= 3;
 			close(ans_file);
 		} else {
 			ismulti = false;
 		}
 #if UEMIS_DEBUG & 8
-		report_info(":r: %s\n", buf ? buf : "(none)");
+		report_info(":r: %s\n", buf.c_str());
 #endif
 		if (!answer_in_mbuf)
-			for (i = 0; i < n_param_out && j < size; i++)
-				param_buff[i] = next_segment(buf, &j, size);
+			for (i = 0; i < n_param_out && (size_t)j < buf.size(); i++)
+				param_buff[i] = next_segment(buf, j);
 		found_answer = true;
-		free(buf);
 	}
 #if UEMIS_DEBUG & 1
 	for (i = 0; i < n_param_out; i++)
-		report_info("::: %d: %s\n", i, param_buff[i]);
+		report_info("::: %d: %s\n", i, param_buff[i].c_str());
 #endif
 	return found_answer;
 fs_error:
@@ -745,44 +734,45 @@ fs_error:
 	return false;
 }
 
-static bool parse_divespot(char *buf)
+static bool parse_divespot(const std::string &buf)
 {
-	char *bp = buf + 1;
-	char *tp = next_token(&bp);
-	char *tag, *type, *val;
-	char locationstring[1024] = "";
-	int divespot, len;
+	std::string_view bp = std::string_view(buf).substr(1);
+	std::string_view tp = next_token(bp);
+	std::string_view tag, type, val;
+	std::string locationstring;
+	int divespot;
 	double latitude = 0.0, longitude = 0.0;
 
 	// dive spot got deleted, so fail here
-	if (strstr(bp, "deleted{bool{true"))
+	if (bp.find("deleted{bool{true") != std::string::npos)
 		return false;
 	// not a dive spot, fail here
-	if (strcmp(tp, "divespot"))
+	if (tp != "divespot")
 		return false;
 	do
-		tag = next_token(&bp);
-	while (*tag && strcmp(tag, "object_id"));
-	if (!*tag)
+		tag = next_token(bp);
+	while (!bp.empty() && tag != "object_id");
+	if (bp.empty())
 		return false;
-	next_token(&bp);
-	val = next_token(&bp);
-	divespot = atoi(val);
+	next_token(bp);
+	val = next_token(bp);
+	if (from_chars(val, divespot).ec == std::errc::invalid_argument)
+		return false;
 	do {
-		tag = next_token(&bp);
-		type = next_token(&bp);
-		val = next_token(&bp);
-		if (!strcmp(type, "string") && *val && strcmp(val, " ")) {
-			len = strlen(locationstring);
-			snprintf(locationstring + len, sizeof(locationstring) - len,
-				 "%s%s", len ? ", " : "", val);
-		} else if (!strcmp(type, "float")) {
-			if (!strcmp(tag, "longitude"))
-				longitude = ascii_strtod(val, NULL);
-			else if (!strcmp(tag, "latitude"))
-				latitude = ascii_strtod(val, NULL);
+		tag = next_token(bp);
+		type = next_token(bp);
+		val = next_token(bp);
+		if (type == "string" && !val.empty() && val != " ") {
+			if (!locationstring.empty())
+				locationstring += ", ";
+			locationstring += val;
+		} else if (type == "float") {
+			if (tag == "longitude")
+				from_chars(val, longitude);
+			else if (tag == "latitude")
+				from_chars(val, latitude);
 		}
-	} while (tag && *tag);
+	} while (!tag.empty());
 
 	uemis_obj.set_divelocation(divespot, locationstring, longitude, latitude);
 	return true;
@@ -792,40 +782,46 @@ static const char *suit[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "wetsuit"), Q
 static const char *suit_type[] = {"", QT_TRANSLATE_NOOP("gettextFromC", "shorty"), QT_TRANSLATE_NOOP("gettextFromC", "vest"), QT_TRANSLATE_NOOP("gettextFromC", "long john"), QT_TRANSLATE_NOOP("gettextFromC", "jacket"), QT_TRANSLATE_NOOP("gettextFromC", "full suit"), QT_TRANSLATE_NOOP("gettextFromC", "2 pcs full suit")};
 static const char *suit_thickness[] = {"", "0.5-2mm", "2-3mm", "3-5mm", "5-7mm", "8mm+", QT_TRANSLATE_NOOP("gettextFromC", "membrane")};
 
-static void parse_tag(struct dive *dive, char *tag, char *val)
+static void parse_tag(struct dive *dive, std::string_view tag, std::string_view val)
 {
 	/* we can ignore computer_id, water and gas as those are redundant
 	 * with the binary data and would just get overwritten */
 #if UEMIS_DEBUG & 4
-	if (strcmp(tag, "file_content"))
-		report_info("Adding to dive %d : %s = %s\n", dive->dc.diveid, tag, val);
+	if (tag == "file_content")
+		report_info("Adding to dive %d : %s = %s\n", dive->dc.diveid, std::string(tag).c_str(), std::string(val).c_str());
 #endif
-	if (!strcmp(tag, "date")) {
-		uemis_ts(val, &dive->when);
-	} else if (!strcmp(tag, "duration")) {
-		uemis_duration(val, &dive->dc.duration);
-	} else if (!strcmp(tag, "depth")) {
-		uemis_depth(val, &dive->dc.maxdepth);
-	} else if (!strcmp(tag, "file_content")) {
+	if (tag == "date") {
+		dive->when = uemis_ts(val);
+	} else if (tag == "duration") {
+		uemis_duration(val, dive->dc.duration);
+	} else if (tag == "depth") {
+		uemis_depth(val, dive->dc.maxdepth);
+	} else if (tag == "file_content") {
 		uemis_obj.parse_divelog_binary(val, dive);
-	} else if (!strcmp(tag, "altitude")) {
-		uemis_get_index(val, &dive->dc.surface_pressure.mbar);
-	} else if (!strcmp(tag, "f32Weight")) {
+	} else if (tag == "altitude") {
+		uemis_get_index(val, dive->dc.surface_pressure.mbar);
+	} else if (tag == "f32Weight") {
 		weightsystem_t ws = empty_weightsystem;
-		uemis_get_weight(val, &ws, dive->dc.diveid);
+		uemis_get_weight(val, ws, dive->dc.diveid);
 		add_cloned_weightsystem(&dive->weightsystems, ws);
-	} else if (!strcmp(tag, "notes")) {
+	} else if (tag == "notes") {
 		uemis_add_string(val, &dive->notes, " ");
-	} else if (!strcmp(tag, "u8DiveSuit")) {
-		if (*suit[atoi(val)])
-			uemis_add_string(translate("gettextFromC", suit[atoi(val)]), &dive->suit, " ");
-	} else if (!strcmp(tag, "u8DiveSuitType")) {
-		if (*suit_type[atoi(val)])
-			uemis_add_string(translate("gettextFromC", suit_type[atoi(val)]), &dive->suit, " ");
-	} else if (!strcmp(tag, "u8SuitThickness")) {
-		if (*suit_thickness[atoi(val)])
-			uemis_add_string(translate("gettextFromC", suit_thickness[atoi(val)]), &dive->suit, " ");
-	} else if (!strcmp(tag, "nickname")) {
+	} else if (tag == "u8DiveSuit") {
+		int idx = 0;
+		uemis_get_index(val, idx);
+		if (idx > 0 && idx < (int)std::size(suit))
+			uemis_add_string(translate("gettextFromC", suit[idx]), &dive->suit, " ");
+	} else if (tag == "u8DiveSuitType") {
+		int idx = 0;
+		uemis_get_index(val, idx);
+		if (idx > 0 && idx < (int)std::size(suit_type))
+			uemis_add_string(translate("gettextFromC", suit_type[idx]), &dive->suit, " ");
+	} else if (tag == "u8SuitThickness") {
+		int idx = 0;
+		uemis_get_index(val, idx);
+		if (idx > 0 && idx < (int)std::size(suit_thickness))
+			uemis_add_string(translate("gettextFromC", suit_thickness[idx]), &dive->suit, " ");
+	} else if (tag == "nickname") {
 		uemis_add_string(val, &dive->buddy, ",");
 	}
 }
@@ -866,46 +862,36 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
  * index into yet another data store that we read out later. In order to
  * correctly populate the location and gps data from that we need to remember
  * the addresses of those fields for every dive that references the dive spot. */
-static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *inbuf, int &max_divenr, int *for_dive)
+static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::string_view buf, int &max_divenr, int *for_dive)
 {
-	char *buf = strdup(inbuf);
-	char *tp, *bp, *tag, *type, *val;
 	bool done = false;
-	int inbuflen = strlen(inbuf);
-	char *endptr = buf + inbuflen;
 	bool is_log = false, is_dive = false;
-	char *sections[10];
-	size_t s, nr_sections = 0;
+	std::vector<std::string_view> sections;
 	struct dive *dive = NULL;
-	char dive_no[10];
+	int dive_no = 0;
 
 #if UEMIS_DEBUG & 8
-	report_info("p_r_b %s\n", inbuf);
+	report_info("p_r_b %s\n", std::string(buf).c_str());
 #endif
 	if (for_dive)
 		*for_dive = -1;
-	bp = buf + 1;
-	tp = next_token(&bp);
-	if (strcmp(tp, "divelog") == 0) {
+	std::string_view bp = buf.substr(1);
+	std::string_view tp = next_token(bp);
+	if (tp == "divelog") {
 		/* this is a dive log */
 		is_log = true;
-		tp = next_token(&bp);
+		tp = next_token(bp);
 		/* is it a valid entry or nothing ? */
-		if (strcmp(tp, "1.0") != 0 || strstr(inbuf, "divelog{1.0{{{{")) {
-			free(buf);
+		if (tp != "1.0" || buf.find("divelog{1.0{{{{") != std::string::npos)
 			return false;
-		}
-	} else if (strcmp(tp, "dive") == 0) {
+	} else if (tp == "dive") {
 		/* this is dive detail */
 		is_dive = true;
-		tp = next_token(&bp);
-		if (strcmp(tp, "1.0") != 0) {
-			free(buf);
+		tp = next_token(bp);
+		if (tp != "1.0")
 			return false;
-		}
 	} else {
 		/* don't understand the buffer */
-		free(buf);
 		return false;
 	}
 	if (is_log) {
@@ -913,12 +899,11 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	} else {
 		/* remember, we don't know if this is the right entry,
 		 * so first test if this is even a valid entry */
-		if (strstr(inbuf, "deleted{bool{true")) {
+		if (buf.find("deleted{bool{true") != std::string::npos) {
 #if UEMIS_DEBUG & 2
 			report_info("p_r_b entry deleted\n");
 #endif
 			/* oops, this one isn't valid, suggest to try the previous one */
-			free(buf);
 			return false;
 		}
 		/* quickhack and workaround to capture the original dive_no
@@ -927,64 +912,64 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		 * at the time it's being read the *dive variable is not set because
 		 * the dive_no tag comes before the object_id in the uemis ans file
 		 */
-		dive_no[0] = '\0';
-		char *dive_no_buf = strdup(inbuf);
-		char *dive_no_ptr = strstr(dive_no_buf, "dive_no{int{") + 12;
-		if (dive_no_ptr) {
-			char *dive_no_end = strstr(dive_no_ptr, "{");
-			if (dive_no_end) {
-				*dive_no_end = '\0';
-				strncpy(dive_no, dive_no_ptr, 9);
-				dive_no[9] = '\0';
+		size_t dive_no_pos = buf.find("dive_no{int{");
+		if (dive_no_pos != std::string::npos) {
+			dive_no_pos += 12;
+			size_t dive_no_end = buf.find('{', dive_no_pos);
+			if (dive_no_end != std::string::npos) {
+				std::string_view dive_no_str = buf.substr(dive_no_pos, dive_no_end - dive_no_pos);
+				if (from_chars(dive_no_str, dive_no).ec == std::errc::invalid_argument)
+					dive_no = 0;
 			}
 		}
-		free(dive_no_buf);
 	}
 	while (!done) {
 		/* the valid buffer ends with a series of delimiters */
-		if (bp >= endptr - 2 || !strcmp(bp, "{{"))
+		if (bp.size() < 2 || starts_with(bp, "{{"))
 			break;
-		tag = next_token(&bp);
+		std::string_view tag = next_token(bp);
 		/* we also end if we get an empty tag */
-		if (*tag == '\0')
+		if (tag.empty())
 			break;
-		for (s = 0; s < nr_sections; s++)
-			if (!strcmp(tag, sections[s])) {
-				tag = next_token(&bp);
-				break;
-			}
-		type = next_token(&bp);
-		if (!strcmp(type, "1.0")) {
+		if (std::find(sections.begin(), sections.end(), tag) != sections.end())
+			tag = next_token(bp);
+		std::string_view type = next_token(bp);
+		if (type == "1.0") {
 			/* this tells us the sections that will follow; the tag here
 			 * is of the format dive-<section> */
-			sections[nr_sections] = strchr(tag, '-') + 1;
+			size_t pos = tag.find('-');
+			if (pos != std::string::npos)
+				sections.push_back(tag.substr(pos + 1));
 #if UEMIS_DEBUG & 4
-			report_info("Expect to find section %s\n", sections[nr_sections]);
+			report_info("Expect to find section %s\n", std::string(sections.back()).c_str());
 #endif
-			if (nr_sections < sizeof(sections) / sizeof(*sections) - 1)
-				nr_sections++;
 			continue;
 		}
-		val = next_token(&bp);
+		std::string_view val = next_token(bp);
 #if UEMIS_DEBUG & 8
-		if (strlen(val) < 20)
-			report_info("Parsed %s, %s, %s\n*************************\n", tag, type, val);
+		if (val.size() < 20)
+			report_info("Parsed %s, %s, %s\n*************************\n", std::string(tag).c_str(),
+										      std::string(type).c_str(),
+										      std::string(val).c_str());
 #endif
-		if (is_log && strcmp(tag, "object_id") == 0) {
-			dive->dc.diveid = max_divenr = atoi(val);
+		if (is_log && tag == "object_id") {
+			from_chars(val, max_divenr);
+			dive->dc.diveid = max_divenr;
 #if UEMIS_DEBUG % 2
-			report_info("Adding new dive from log with object_id %d.\n", atoi(val));
+			report_info("Adding new dive from log with object_id %d.\n", max_divenr);
 #endif
-		} else if (is_dive && strcmp(tag, "logfilenr") == 0) {
+		} else if (is_dive && tag == "logfilenr") {
 			/* this one tells us which dive we are adding data to */
-			dive = get_dive_by_uemis_diveid(devdata, atoi(val));
-			if (strcmp(dive_no, "0"))
-				dive->number = atoi(dive_no);
+			int diveid = 0;
+			from_chars(val, diveid);
+			dive = get_dive_by_uemis_diveid(devdata, diveid);
+			if (dive_no != 0)
+				dive->number = dive_no;
 			if (for_dive)
-				*for_dive = atoi(val);
-		} else if (!is_log && dive && !strcmp(tag, "divespot_id")) {
-			int divespot_id = atoi(val);
-			if (divespot_id != -1) {
+				*for_dive = diveid;
+		} else if (!is_log && dive && tag == "divespot_id") {
+			int divespot_id;
+			if (from_chars(val, divespot_id).ec != std::errc::invalid_argument) {
 				struct dive_site *ds = create_dive_site("from Uemis", devdata->log->sites);
 				unregister_dive_from_dive_site(dive);
 				add_dive_to_dive_site(dive, ds);
@@ -996,16 +981,19 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		} else if (dive) {
 			parse_tag(dive, tag, val);
 		}
-		if (is_log && !strcmp(tag, "file_content"))
+		if (is_log && tag == "file_content")
 			done = true;
 		/* done with one dive (got the file_content tag), but there could be more:
 		 * a '{' indicates the end of the record - but we need to see another "{{"
 		 * later in the buffer to know that the next record is complete (it could
 		 * be a short read because of some error */
-		if (done && ++bp < endptr && *bp != '{' && strstr(bp, "{{")) {
-			done = false;
-			record_dive_to_table(dive, devdata->log->dives);
-			dive = uemis_start_dive(deviceid);
+		if (done && bp.size() > 3) {
+			bp = bp.substr(1);
+			if (bp[0] != '{' && bp.find("{{") != std::string::npos) {
+				done = false;
+				record_dive_to_table(dive, devdata->log->dives);
+				dive = uemis_start_dive(deviceid);
+			}
 		}
 	}
 	if (is_log) {
@@ -1013,19 +1001,16 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			record_dive_to_table(dive, devdata->log->dives);
 		} else { /* partial dive */
 			free_dive(dive);
-			free(buf);
 			return false;
 		}
 	}
-	free(buf);
 	return true;
 }
 
-static int uemis_get_divenr(char *deviceidstr, struct dive_table *table, int force)
+static int uemis_get_divenr(uint32_t deviceid, struct dive_table *table, int force)
 {
-	uint32_t deviceid, maxdiveid = 0;
+	uint32_t maxdiveid = 0;
 	int i;
-	deviceid = atoi(deviceidstr);
 	mindiveid = 0xFFFFFFFF;
 
 	/*
@@ -1060,38 +1045,37 @@ static int uemis_get_divenr(char *deviceidstr, struct dive_table *table, int for
 }
 
 #if UEMIS_DEBUG
-static int bufCnt = 0;
-static bool do_dump_buffer_to_file(char *buf, const char *prefix)
+static bool do_dump_buffer_to_file(std::string_view buf, const char *prefix)
 {
-	char path[100];
-	char date[40];
-	char obid[40];
-	bool success;
-	if (!buf)
+	using namespace std::string_literals;
+	static int bufCnt = 0;
+	if (buf.empty())
 		return false;
 
-	if (strstr(buf, "date{ts{"))
-		strncpy(date, strstr(buf, "date{ts{"), sizeof(date));
-	else
-		strncpy(date, "date{ts{no-date{", sizeof(date));
+	size_t datepos = buf.find("date{ts{");
+	std::string pdate;
+	if (datepos != std::string::npos) {
+		std::string_view ptr1 = buf.substr(datepos);
+		next_token(ptr1);
+		next_token(ptr1);
+		pdate = next_token(ptr1);
+	} else {
+		pdate = "date{ts{no-date{"s;
+	}
 
-	if (!strstr(buf, "object_id{int{"))
+	size_t obidpos = buf.find("object_id{int{");
+	if (obidpos == std::string::npos)
 		return false;
 
-	strncpy(obid, strstr(buf, "object_id{int{"), sizeof(obid));
-	char *ptr1 = strstr(date, "date{ts{");
-	char *ptr2 = strstr(obid, "object_id{int{");
-	char *pdate = next_token(&ptr1);
-	pdate = next_token(&ptr1);
-	pdate = next_token(&ptr1);
-	char *pobid = next_token(&ptr2);
-	pobid = next_token(&ptr2);
-	pobid = next_token(&ptr2);
-	snprintf(path, sizeof(path), "/%s/%s/UEMIS Dump/%s_%s_Uemis_dump_%s_in_round_%d_%d.txt", home.c_str(), user.c_str(), prefix, pdate, pobid, debug_round, bufCnt);
-	int dumpFile = subsurface_open(path, O_RDWR | O_CREAT, 0666);
+	std::string_view ptr2 = buf.substr(obidpos);
+	next_token(ptr2);
+	next_token(ptr2);
+	std::string pobid = std::string(next_token(ptr2));
+	std::string path = format_string_std("/%s/%s/UEMIS Dump/%s_%s_Uemis_dump_%s_in_round_%d_%d.txt", home.c_str(), user.c_str(), prefix, pdate.c_str(), pobid.c_str(), debug_round, bufCnt);
+	int dumpFile = subsurface_open(path.c_str(), O_RDWR | O_CREAT, 0666);
 	if (dumpFile == -1)
 		return false;
-	success = (size_t)write(dumpFile, buf, strlen(buf)) == strlen(buf);
+	bool success = (size_t)write(dumpFile, buf.data(), buf.size()) == buf.size();
 	close(dumpFile);
 	bufCnt++;
 	return success;
@@ -1147,14 +1131,13 @@ static void do_delete_dives(struct dive_table *td, int idx)
 
 static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 {
-	char divespotnr[32];
-	snprintf(divespotnr, sizeof(divespotnr), "%d", divespot_id);
-	param_buff[2] = divespotnr;
+	param_buff[2] = std::to_string(divespot_id);
 #if UEMIS_DEBUG & 2
 	report_info("getDivespot %d\n", divespot_id);
 #endif
-	bool success = uemis_get_answer(mountpath, "getDivespot", 3, 0, NULL);
-	if (mbuf && success) {
+	std::string error_text; // unused
+	bool success = uemis_get_answer(mountpath, "getDivespot", 3, 0, error_text);
+	if (!mbuf.empty() && success) {
 #if UEMIS_DEBUG & 16
 		do_dump_buffer_to_file(mbuf, "Spot");
 #endif
@@ -1204,7 +1187,6 @@ static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, devic
 {
 	struct dive *dive = data->log->dives->dives[idx];
 	char log_file_no_to_find[20];
-	char dive_to_read_buf[10];
 	bool found = false;
 	bool found_below = false;
 	bool found_above = false;
@@ -1218,9 +1200,9 @@ static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, devic
 	while (!found) {
 		if (import_thread_cancelled)
 			break;
-		snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", dive_to_read);
-		param_buff[2] = dive_to_read_buf;
-		(void)uemis_get_answer(mountpath, "getDive", 3, 0, NULL);
+		param_buff[2] = std::to_string(dive_to_read);
+		std::string error_text; // unused
+		(void)uemis_get_answer(mountpath, "getDive", 3, 0, error_text);
 #if UEMIS_DEBUG & 16
 		do_dump_buffer_to_file(mbuf, "Dive");
 #endif
@@ -1232,12 +1214,12 @@ static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, devic
 			 * The match we do here is to map the object_id to the logfilenr, we do this
 			 * by iterating through the last set of loaded dive logs and then find the corresponding
 			 * dive with the matching logfilenr */
-			if (mbuf) {
-				if (strstr(mbuf, log_file_no_to_find)) {
+			if (!mbuf.empty()) {
+				if (strstr(mbuf.c_str(), log_file_no_to_find)) {
 					/* we found the logfilenr that matches our object_id from the dive log we were looking for
 					 * we mark the search successful even if the dive has been deleted. */
 					found = true;
-					if (strstr(mbuf, "deleted{bool{true") == NULL) {
+					if (strstr(mbuf.c_str(), "deleted{bool{true") == NULL) {
 						process_raw_buffer(data, deviceidnr, mbuf, newmax, NULL);
 						/* remember the last log file number as it is very likely that subsequent dives
 						 * have the same or higher logfile number.
@@ -1265,9 +1247,9 @@ static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, devic
 					}
 				} else {
 					uint32_t nr_found = 0;
-					char *logfilenr = strstr(mbuf, "logfilenr");
-					if (logfilenr && strstr(mbuf, "act{")) {
-						sscanf(logfilenr, "logfilenr{int{%u", &nr_found);
+					size_t pos = mbuf.find("logfilenr");
+					if (pos != std::string::npos && mbuf.find("act{") != std::string::npos) {
+						sscanf(mbuf.c_str() + pos, "logfilenr{int{%u", &nr_found);
 						if (nr_found >= dive->dc.diveid || nr_found == 0) {
 							found_above = true;
 							dive_to_read = dive_to_read - 2;
@@ -1276,7 +1258,7 @@ static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, devic
 						}
 						if (dive_to_read < -1)
 							dive_to_read = -1;
-					} else if (!strstr(mbuf, "act{") && ++fail_count == 10) {
+					} else if (mbuf.find("act{") == std::string::npos && ++fail_count == 10) {
 						if (verbose)
 							report_info("Uemis downloader: Cannot access dive details - searching from start");
 						dive_to_read = -1;
@@ -1300,16 +1282,15 @@ static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, devic
 	return true;
 }
 
-const char *do_uemis_import(device_data_t *data)
+std::string do_uemis_import(device_data_t *data)
 {
 	const char *mountpath = data->devname;
 	short force_download = data->force_download;
 	int newmax = -1;
 	int first, start, end = -2;
 	uint32_t deviceidnr;
-	char *deviceid = NULL;
-	const char *result = NULL;
-	char *endptr;
+	std::string deviceid;
+	std::string result;
 	bool success, once = true;
 	int match_dive_and_log = 0;
 	int dive_offset = 0;
@@ -1330,17 +1311,17 @@ const char *do_uemis_import(device_data_t *data)
 		return translate("gettextFromC", "Uemis init failed");
 	}
 
-	if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
+	if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, result))
 		goto bail;
-	deviceid = strdup(param_buff[0]);
-	deviceidnr = atoi(deviceid);
+	deviceid = param_buff[0];
+	deviceidnr = atoi(deviceid.c_str());
 
 	/* param_buff[0] is still valid */
-	if (!uemis_get_answer(mountpath, "initSession", 1, 6, &result))
+	if (!uemis_get_answer(mountpath, "initSession", 1, 6, result))
 		goto bail;
 
 	uemis_info(translate("gettextFromC", "Start download"));
-	if (!uemis_get_answer(mountpath, "processSync", 0, 2, &result))
+	if (!uemis_get_answer(mountpath, "processSync", 0, 2, result))
 		goto bail;
 
 	/* before starting the long download, check if user pressed cancel */
@@ -1348,7 +1329,7 @@ const char *do_uemis_import(device_data_t *data)
 		goto bail;
 
 	param_buff[1] = "notempty";
-	newmax = uemis_get_divenr(deviceid, data->log->dives, force_download);
+	newmax = uemis_get_divenr(deviceidnr, data->log->dives, force_download);
 	if (verbose)
 		report_info("Uemis downloader: start looking at dive nr %d", newmax);
 
@@ -1368,14 +1349,15 @@ const char *do_uemis_import(device_data_t *data)
 		newmax = start;
 		std::string newmax_str = std::to_string(newmax);
 		param_buff[2] = newmax_str.c_str();
-		param_buff[3] = 0;
-		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, &result);
+		param_buff[3].clear();
+		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, result);
 		uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
 		/* first, remove any leading garbage... this needs to start with a '{' */
-		char *realmbuf = mbuf;
-		if (mbuf)
-			realmbuf = strchr(mbuf, '{');
-		if (success && realmbuf && uemis_mem_status != UEMIS_MEM_FULL) {
+		std::string_view realmbuf = mbuf;
+		size_t pos = realmbuf.find('{');
+		if (pos != std::string::npos)
+			realmbuf = realmbuf.substr(pos);
+		if (success && !realmbuf.empty() && uemis_mem_status != UEMIS_MEM_FULL) {
 #if UEMIS_DEBUG & 16
 			do_dump_buffer_to_file(realmbuf, "Dive logs");
 #endif
@@ -1387,16 +1369,19 @@ const char *do_uemis_import(device_data_t *data)
 				success = false;
 			}
 			if (once) {
-				char *t = first_object_id_val(realmbuf);
-				if (t && atoi(t) > start)
-					start = atoi(t);
-				free(t);
+				std::string t = first_object_id_val(realmbuf);
+				int val;
+				if (from_chars(t, val).ec != std::errc::invalid_argument) {
+					start = std::max(val, start);
+				}
 				once = false;
 			}
 			/* clean up mbuf */
-			endptr = strstr(realmbuf, "{{{");
+			/* reason unclear:
+			const char *endptr = strstr(realmbuf, "{{{");
 			if (endptr)
 				*(endptr + 2) = '\0';
+			*/
 			/* last object_id we parsed */
 			end = newmax;
 #if UEMIS_DEBUG & 4
@@ -1424,7 +1409,7 @@ const char *do_uemis_import(device_data_t *data)
 #if UEMIS_DEBUG & 4
 				report_info("d_u_i out of memory, bailing\n");
 #endif
-				(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
+				(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, result);
 				const char *errormsg = translate("gettextFromC", ACTION_RECONNECT);
 				for (int wait=60; wait >=0; wait--){
 					uemis_info("%s %ds", errormsg, wait);
@@ -1434,17 +1419,17 @@ const char *do_uemis_import(device_data_t *data)
 				filenr = 0;
 				max_mem_used = -1;
 				uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
-				if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, &result))
+				if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, result))
 					goto bail;
-				if (strcmp(deviceid, param_buff[0]) != 0) {
+				if (deviceid != param_buff[0]) {
 					report_info("Uemis: Device id has changed after reconnect!");
 					goto bail;
 				}
-				param_buff[0] = strdup(deviceid);
-				if (!uemis_get_answer(mountpath, "initSession", 1, 6, &result))
+				param_buff[0] = deviceid;
+				if (!uemis_get_answer(mountpath, "initSession", 1, 6, result))
 					goto bail;
 				uemis_info(translate("gettextFromC", "Start download"));
-				if (!uemis_get_answer(mountpath, "processSync", 0, 2, &result))
+				if (!uemis_get_answer(mountpath, "processSync", 0, 2, result))
 					goto bail;
 				param_buff[1] = "notempty";
 			}
@@ -1456,7 +1441,7 @@ const char *do_uemis_import(device_data_t *data)
 				break;
 			}
 			/* if we got an error or got nothing back, stop trying */
-			if (!success || !param_buff[3]) {
+			if (!success || param_buff[3].empty()) {
 #if UEMIS_DEBUG & 4
 				report_info("d_u_i after download nothing found, giving up\n");
 #endif
@@ -1508,14 +1493,13 @@ const char *do_uemis_import(device_data_t *data)
 		uemis_info(translate("gettextFromC", "Time sync not supported by dive computer"));
 
 bail:
-	(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, &result);
-	if (!strcmp(param_buff[0], "error")) {
-		if (!strcmp(param_buff[2], "Out of Memory"))
+	(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, result);
+	if (param_buff[0] == "error") {
+		if (param_buff[2] == "Out of Memory")
 			result = translate("gettextFromC", ERR_FS_FULL);
 		else
 			result = param_buff[2];
 	}
-	free(deviceid);
 	if (!data->log->dives->nr)
 		result = translate("gettextFromC", ERR_NO_FILES);
 	return result;
