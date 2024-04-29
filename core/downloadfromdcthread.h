@@ -74,7 +74,7 @@ public:
 	void run() override;
 
 	DCDeviceData *data();
-	QString error;
+	std::string error;
 	struct divelog log;
 
 private:

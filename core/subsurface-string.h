@@ -59,16 +59,17 @@ extern double ascii_strtod(const char *str, const char **ptr);
 }
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 // Sadly, starts_with only with C++20!
-inline bool starts_with(const std::string &s, const char *s2)
+inline bool starts_with(std::string_view s, const char *s2)
 {
 	return s.rfind(s2, 0) == 0;
 }
 
 // Sadly, std::string::contains only with C++23!
-inline bool contains(const std::string &s, char c)
+inline bool contains(std::string_view s, char c)
 {
 	return s.find(c) != std::string::npos;
 }

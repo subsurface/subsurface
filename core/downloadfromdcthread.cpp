@@ -1,8 +1,10 @@
 #include "downloadfromdcthread.h"
 #include "core/errorhelper.h"
+#include "core/format.h"
 #include "core/libdivecomputer.h"
 #include "core/qthelper.h"
 #include "core/range.h"
+#include "core/uemis.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/divelist.h"
 #if defined(Q_OS_ANDROID)
@@ -14,16 +16,6 @@ QHash<QString, QStringList> productList;
 static QHash<QString, QStringList> mobileProductList; // BT, BLE or FTDI supported DCs for mobile
 QMap<QString, dc_descriptor_t *> descriptorLookup;
 ConnectionListModel connectionListModel;
-
-static QString str_error(const char *fmt, ...)
-{
-	va_list args;
-	va_start(args, fmt);
-	const QString str = QString::vasprintf(fmt, args);
-	va_end(args);
-
-	return str;
-}
 
 static void updateRememberedDCs()
 {
@@ -108,19 +100,20 @@ void DownloadThread::run()
 	clear_divelog(&log);
 
 	Q_ASSERT(internalData->log != nullptr);
-	const char *errorText;
+	std::string errorText;
 	import_thread_cancelled = false;
 	error.clear();
 	if (!strcmp(internalData->vendor, "Uemis"))
 		errorText = do_uemis_import(internalData);
 	else
 		errorText = do_libdivecomputer_import(internalData);
-	if (errorText) {
-		error = str_error(errorText, internalData->devname, internalData->vendor, internalData->product);
-		report_info("Finishing download thread: %s", qPrintable(error));
+	if (!errorText.empty()) {
+		error = format_string_std(errorText.c_str(), internalData->devname.c_str(),
+					  internalData->vendor.c_str(), internalData->product.c_str());
+		report_info("Finishing download thread: %s", error.c_str());
 	} else {
 		if (!log.dives->nr)
-			error = tr("No new dives downloaded from dive computer");
+			error = tr("No new dives downloaded from dive computer").toStdString();
 		report_info("Finishing download thread: %d dives downloaded", log.dives->nr);
 	}
 	qPrefDiveComputer::set_vendor(internalData->vendor);
