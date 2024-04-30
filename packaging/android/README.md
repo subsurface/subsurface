@@ -1,49 +1,28 @@
-# Over-simplistic instructions to building the Android package from source
+# Instructions for building the Android package from source
 
 ## In a Container
 
-The easiest way to build things is using our container. The following script will download and build the dependencies on the first run of the container, and from there on in re-use the same container to speed up build time:
+The easiest way to build a .apk package for Android is to use
+our own docker image that has all of the build components
+pre-assembled.
+
+All it takes is this:
 
 ```.sh
-#!/bin/bash
+export GIT_AUTHOR_NAME=<your name>
+export GIT_AUTHOR_EMAIL=<email to be used with github>
 
-# Change these to match your setup
-SUBSURFACE_ROOT=<root directory of your local subsurface repository>
-GIT_NAME="<name to use in git>"
-GIT_EMAIL="<email to use in git>"
-
-CONTAINER_NAME=android-builder-docker
-
-# Check if our container exists
-CONTAINER_ID=$(docker container ls -a -q -f name=${CONTAINER_NAME})
-
-# Create the image if it does not exist
-if [[ -z "${CONTAINER_ID}" ]]; then
-    docker create -v ${SUBSURFACE_ROOT}:/android/subsurface --name=${CONTAINER_NAME} subsurface/android-build:5.15.2 sleep infinity
-fi
-
-docker start ${CONTAINER_NAME}
-
-BUILD_PARAMETERS=""
-if [[ -n "${CONTAINER_ID}" ]]; then
-    BUILD_PARAMETERS="-quick"
-else
-    # Prepare the image for first use
-
-    # Set the git id
-    docker exec -t ${CONTAINER_NAME} git config --global user.name "${GIT_NAME}"
-    docker exec -t ${CONTAINER_NAME} git config --global user.email "${GIT_EMAIL}"
-fi
-
-# Build. Do not rebuild the dependencies if this is not the first build
-docker exec -e OUTPUT_DIR="/android/subsurface/android-debug" -t ${CONTAINER_NAME} /bin/bash -x ./subsurface/packaging/android/qmake-build.sh ${BUILD_PARAMETERS}
-
-# Stop the container
-docker stop ${CONTAINER_NAME}
+cd /some/path
+git clone https://github.com/subsurface/subsurface
+cd subsurface
+git submodule init
+git submodule update
+./packaging/android/docker-build.sh
 ```
 
 _Caveat:_ With this build script `libdivecomputer` is pulled from git in the version specified in the submodule, so if you have changed `libdivecomputer` make sure to commit any changes and update the git submodule version before building.
 
+This will result in Subsurface-mobile-VERSION.apk to be created in /some/path/subsurface/output/android/.
 
 ## On a Linux host
 
@@ -102,6 +81,6 @@ your attached device:
 ```
 
 Note that since you don't have the same signing key that I have,
-you'll have to uninstalled the 'official' Subsurface-mobile binary in
+you'll have to uninstall the 'official' Subsurface-mobile binary in
 order for this to work. And likewise you have to uninstall yours
 before you'll be able to install an official binary again.
