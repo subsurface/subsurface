@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Build the Subsurface Windows installer and the Smtk2ssrf Windows installer in a Docker container
+# Build the Subsurface Android APK in a Docker container
 #
 
 croak() {
@@ -9,15 +9,15 @@ croak() {
 	exit 1
 }
 
-CONTAINER_NAME=subsurface-windows-builder
+CONTAINER_NAME=subsurface-android-builder
 
 pushd .
 cd "$(dirname "$0")/../.."
 SUBSURFACE_ROOT="${PWD}"
 popd
 
-OUTPUT_DIR=output/windows
-CONTAINER_ROOT_DIR=/win
+OUTPUT_DIR=output/android
+CONTAINER_ROOT_DIR=/android
 CONTAINER_SUBSURFACE_DIR=${CONTAINER_ROOT_DIR}/subsurface
 
 LOGIN_USER=$(id -u)
@@ -34,12 +34,14 @@ if [[ -z "${CONTAINER_ID}" ]]; then
 		croak "Please make sure GIT_AUTHOR_NAME and GIT_AUTHOR_EMAIL are set for the first run of this script."
 	fi
 
-	docker create -v ${SUBSURFACE_ROOT}:${CONTAINER_SUBSURFACE_DIR} --name=${CONTAINER_NAME} subsurface/mxe-build:3.1.0 sleep infinity
+	docker create -v ${SUBSURFACE_ROOT}:${CONTAINER_SUBSURFACE_DIR} --name=${CONTAINER_NAME} subsurface/android-build:5.15.2 sleep infinity
+
 fi
 
 # Start the container
 docker start ${CONTAINER_NAME}
 
+BUILD_PARAMETERS=""
 if [[ -z "${CONTAINER_ID}" ]]; then
 	# Prepare the image for first use
 	docker exec -t ${CONTAINER_NAME} groupadd $(id -g -n) -o -g ${LOGIN_GROUP}
@@ -48,13 +50,13 @@ if [[ -z "${CONTAINER_ID}" ]]; then
 
 	docker exec -u ${FULL_USER} -t ${CONTAINER_NAME} git config --global user.name "${GIT_AUTHOR_NAME}"
 	docker exec -u ${FULL_USER} -t ${CONTAINER_NAME} git config --global user.email "${GIT_AUTHOR_EMAIL}"
-
-	docker exec -u ${FULL_USER} -t ${CONTAINER_NAME} bash -x subsurface/packaging/windows/container-prep.sh
+else
+	BUILD_PARAMETERS="-quick"
 fi
 
 # Build
 mkdir -p "${SUBSURFACE_ROOT}/${OUTPUT_DIR}"
-docker exec -u ${FULL_USER} -e OUTPUT_DIR=${CONTAINER_SUBSURFACE_DIR}/${OUTPUT_DIR} -t ${CONTAINER_NAME} bash -x subsurface/packaging/windows/in-container-build.sh
+docker exec -u ${FULL_USER} -e OUTPUT_DIR=${CONTAINER_SUBSURFACE_DIR}/${OUTPUT_DIR} -t ${CONTAINER_NAME} bash -x subsurface/packaging/android/qmake-build.sh ${BUILD_PARAMETERS}
 
 # Stop the container
 docker stop ${CONTAINER_NAME}
