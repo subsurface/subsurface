@@ -51,10 +51,10 @@ constexpr size_t num_param_bufs = 10;
 // debugging setup
 //#define UEMIS_DEBUG 1 + 2 + 4 + 8 + 16 + 32
 
-#define UEMIS_MAX_FILES 4000
-#define UEMIS_SPOT_BLOCK_SIZE 1
-#define UEMIS_DIVE_DETAILS_SIZE 2
-#define UEMIS_LOG_BLOCK_SIZE 10
+static constexpr int uemis_max_files = 4000;
+static constexpr int uemis_spot_block_size = 1;
+static constexpr int uemis_dive_details_size = 2;
+static constexpr int uemis_log_block_size = 10;
 
 enum class uemis_mem_status {
 	ok, full
@@ -70,13 +70,13 @@ static int debug_round = 0;
 #endif
 
 #if UEMIS_DEBUG & 64		/* we are reading from a copy of the filesystem, not the device - no need to wait */
-#define UEMIS_TIMEOUT 50		/* 50ns */
-#define UEMIS_LONG_TIMEOUT 500		/* 500ns */
-#define UEMIS_MAX_TIMEOUT 2000		/* 2ms */
+static constexpr int uemis_timeout = 50;		/* 50ns */
+static constexpr int uemis_long_timeout = 500;		/* 500ns */
+static constexpr int uemis_max_timeout = 2000;		/* 2ms */
 #else
-#define UEMIS_TIMEOUT 50000		/* 50ms */
-#define UEMIS_LONG_TIMEOUT 500000	/* 500ms */
-#define UEMIS_MAX_TIMEOUT 2000000	/* 2s */
+static constexpr int uemis_timeout = 50000;		/* 50ms */
+static constexpr int uemis_long_timeout = 500000;	/* 500ms */
+static constexpr int uemis_max_timeout = 2000000;	/* 2s */
 #endif
 
 static uemis uemis_obj;
@@ -454,8 +454,8 @@ static void show_progress(const std::string &buf, const char *what)
 
 static void uemis_increased_timeout(int *timeout)
 {
-	if (*timeout < UEMIS_MAX_TIMEOUT)
-		*timeout += UEMIS_LONG_TIMEOUT;
+	if (*timeout < uemis_max_timeout)
+		*timeout += uemis_long_timeout;
 	usleep(*timeout);
 }
 
@@ -464,7 +464,7 @@ static std::string build_ans_path(const std::string &path, int filenumber)
 	using namespace std::string_literals;
 
 	/* Clamp filenumber into the 0..9999 range. This is never necessary,
-	 * as filenumber can never go above UEMIS_MAX_FILES, but gcc doesn't
+	 * as filenumber can never go above uemis_max_files, but gcc doesn't
 	 * recognize that and produces very noisy warnings. */
 	filenumber = filenumber < 0 ? 0 : filenumber % 10000;
 
@@ -487,7 +487,7 @@ static std::string uemis_get_answer(const char *path, const std::string &request
 	bool more_files = true;
 	bool answer_in_mbuf = false;
 	int ans_file;
-	int timeout = UEMIS_LONG_TIMEOUT;
+	int timeout = uemis_long_timeout;
 
 	int reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDWR | O_CREAT, 0666);
 	if (reqtxt_file < 0) {
@@ -534,7 +534,7 @@ static std::string uemis_get_answer(const char *path, const std::string &request
 	while (searching || assembling_mbuf) {
 		if (import_thread_cancelled)
 			return std::string();
-		progress_bar_fraction = filenr / (double)UEMIS_MAX_FILES;
+		progress_bar_fraction = filenr / (double)uemis_max_files;
 		std::string ans_path = build_ans_path(std::string(path), filenr - 1);
 		ans_file = subsurface_open(ans_path.c_str(), O_RDONLY, 0666);
 		if (ans_file < 0) {
@@ -623,8 +623,8 @@ static std::string uemis_get_answer(const char *path, const std::string &request
 					param_buff[3] = param_buff[3].substr(1);
 			}
 			close(ans_file);
-			timeout = UEMIS_TIMEOUT;
-			usleep(UEMIS_TIMEOUT);
+			timeout = uemis_timeout;
+			usleep(uemis_timeout);
 		}
 	}
 	if (more_files) {
@@ -1047,18 +1047,18 @@ static uemis_mem_status get_memory(struct dive_table *td, uemis_checkpoint check
 
 		/* check if a full block of dive logs + dive details and dive spot fit into the UEMIS buffer */
 #if UEMIS_DEBUG & 4
-		report_info("max_mem_used %d (from td->nr %d) * block_size %d > max_files %d - filenr %d?\n", max_mem_used, td->nr, UEMIS_LOG_BLOCK_SIZE, UEMIS_MAX_FILES, filenr);
+		report_info("max_mem_used %d (from td->nr %d) * block_size %d > max_files %d - filenr %d?\n", max_mem_used, td->nr, uemis_log_block_size, uemis_max_files, filenr);
 #endif
-		if (max_mem_used * UEMIS_LOG_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
+		if (max_mem_used * uemis_log_block_size > uemis_max_files - filenr)
 			return uemis_mem_status::full;
 		break;
 	case uemis_checkpoint::details:
 		/* check if the next set of dive details and dive spot fit into the UEMIS buffer */
-		if ((UEMIS_DIVE_DETAILS_SIZE + UEMIS_SPOT_BLOCK_SIZE) * UEMIS_LOG_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
+		if ((uemis_dive_details_size + uemis_spot_block_size) * uemis_log_block_size > uemis_max_files - filenr)
 			return uemis_mem_status::full;
 		break;
 	case uemis_checkpoint::single_dive:
-		if (UEMIS_DIVE_DETAILS_SIZE + UEMIS_SPOT_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
+		if (uemis_dive_details_size + uemis_spot_block_size > uemis_max_files - filenr)
 			return uemis_mem_status::full;
 		break;
 	}
