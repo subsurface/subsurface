@@ -163,8 +163,8 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 		}
 
 		if (cylinder->gasmix.o2.permille) {
-			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION(cylinder->gasmix.o2.permille, 10));
-			put_format(b, "\"He\":\"%u.%u%%\"", FRACTION(cylinder->gasmix.he.permille, 10));
+			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION_TUPLE(cylinder->gasmix.o2.permille, 10));
+			put_format(b, "\"He\":\"%u.%u%%\"", FRACTION_TUPLE(cylinder->gasmix.he.permille, 10));
 		} else {
 			write_attribute(b, "O2", "Air", "");
 		}
@@ -364,7 +364,7 @@ static void write_one_dive(struct membuffer *b, struct dive *dive, const char *p
 	put_format(b, "\"surge\":%d,", dive->surge);
 	put_format(b, "\"chill\":%d,", dive->chill);
 	put_format(b, "\"dive_duration\":\"%u:%02u min\",",
-		   FRACTION(dive->duration.seconds, 60));
+		   FRACTION_TUPLE(dive->duration.seconds, 60));
 	put_string(b, "\"temperature\":{");
 	put_HTML_airtemp(b, dive, "\"air\":\"", "\",");
 	put_HTML_watertemp(b, dive, "\"water\":\"", "\"");

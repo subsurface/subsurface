@@ -169,9 +169,9 @@ static void put_gasmix(struct membuffer *b, struct gasmix mix)
 	int he = mix.he.permille;
 
 	if (o2) {
-		put_format(b, " o2='%u.%u%%'", FRACTION(o2, 10));
+		put_format(b, " o2='%u.%u%%'", FRACTION_TUPLE(o2, 10));
 		if (he)
-			put_format(b, " he='%u.%u%%'", FRACTION(he, 10));
+			put_format(b, " he='%u.%u%%'", FRACTION_TUPLE(he, 10));
 	}
 }
 
@@ -236,7 +236,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 {
 	int idx;
 
-	put_format(b, "  <sample time='%u:%02u min'", FRACTION(sample->time.seconds, 60));
+	put_format(b, "  <sample time='%u:%02u min'", FRACTION_TUPLE(sample->time.seconds, 60));
 	put_milli(b, " depth='", sample->depth.mm, " m'");
 	if (sample->temperature.mkelvin && sample->temperature.mkelvin != old->temperature.mkelvin) {
 		put_temperature(b, sample->temperature, " temp='", " C'");
@@ -278,15 +278,15 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 
 	/* the deco/ndl values are stored whenever they change */
 	if (sample->ndl.seconds != old->ndl.seconds) {
-		put_format(b, " ndl='%u:%02u min'", FRACTION(sample->ndl.seconds, 60));
+		put_format(b, " ndl='%u:%02u min'", FRACTION_TUPLE(sample->ndl.seconds, 60));
 		old->ndl = sample->ndl;
 	}
 	if (sample->tts.seconds != old->tts.seconds) {
-		put_format(b, " tts='%u:%02u min'", FRACTION(sample->tts.seconds, 60));
+		put_format(b, " tts='%u:%02u min'", FRACTION_TUPLE(sample->tts.seconds, 60));
 		old->tts = sample->tts;
 	}
 	if (sample->rbt.seconds != old->rbt.seconds) {
-		put_format(b, " rbt='%u:%02u min'", FRACTION(sample->rbt.seconds, 60));
+		put_format(b, " rbt='%u:%02u min'", FRACTION_TUPLE(sample->rbt.seconds, 60));
 		old->rbt = sample->rbt;
 	}
 	if (sample->in_deco != old->in_deco) {
@@ -294,7 +294,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		old->in_deco = sample->in_deco;
 	}
 	if (sample->stoptime.seconds != old->stoptime.seconds) {
-		put_format(b, " stoptime='%u:%02u min'", FRACTION(sample->stoptime.seconds, 60));
+		put_format(b, " stoptime='%u:%02u min'", FRACTION_TUPLE(sample->stoptime.seconds, 60));
 		old->stoptime = sample->stoptime;
 	}
 
@@ -355,7 +355,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 
 static void save_one_event(struct membuffer *b, struct dive *dive, struct event *ev)
 {
-	put_format(b, "  <event time='%d:%02d min'", FRACTION(ev->time.seconds, 60));
+	put_format(b, "  <event time='%d:%02d min'", FRACTION_TUPLE(ev->time.seconds, 60));
 	show_index(b, ev->type, "type='", "'");
 	show_index(b, ev->flags, "flags='", "'");
 	if (!strcmp(ev->name,"modechange"))
@@ -490,7 +490,7 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 			sign = '-';
 			offset = -offset;
 		}
-		put_format(b, " offset='%c%u:%02u min'", sign, FRACTION(offset, 60));
+		put_format(b, " offset='%c%u:%02u min'", sign, FRACTION_TUPLE(offset, 60));
 	}
 	put_location(b, &pic->location, " gps='","'");
 
@@ -525,7 +525,7 @@ extern "C" void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool
 	// These three are calculated, and not read when loading.
 	// But saving them into the XML is useful for data export.
 	if (dive->sac > 100)
-		put_format(b, " sac='%d.%03d l/min'", FRACTION(dive->sac, 1000));
+		put_format(b, " sac='%d.%03d l/min'", FRACTION_TUPLE(dive->sac, 1000));
 	if (dive->otu)
 		put_format(b, " otu='%d'", dive->otu);
 	if (dive->maxcns)
@@ -541,7 +541,7 @@ extern "C" void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool
 		put_pressure(b, surface_pressure, " airpressure='", " bar'");
 	if (dive->dc.duration.seconds > 0)
 		put_format(b, " duration='%u:%02u min'>\n",
-			   FRACTION(dive->dc.duration.seconds, 60));
+			   FRACTION_TUPLE(dive->dc.duration.seconds, 60));
 	else
 		put_format(b, ">\n");
 	save_overview(b, dive, anonymize);

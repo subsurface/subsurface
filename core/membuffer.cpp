@@ -219,7 +219,7 @@ void put_depth(struct membuffer *b, depth_t depth, const char *pre, const char *
 void put_duration(struct membuffer *b, duration_t duration, const char *pre, const char *post)
 {
 	if (duration.seconds)
-		put_format(b, "%s%u:%02u%s", pre, FRACTION(duration.seconds, 60), post);
+		put_format(b, "%s%u:%02u%s", pre, FRACTION_TUPLE(duration.seconds, 60), post);
 }
 
 void put_pressure(struct membuffer *b, pressure_t pressure, const char *pre, const char *post)
@@ -243,7 +243,7 @@ void put_degrees(struct membuffer *b, degrees_t value, const char *pre, const ch
 		udeg = -udeg;
 		sign = "-";
 	}
-	put_format(b, "%s%s%u.%06u%s", pre, sign, FRACTION(udeg, 1000000), post);
+	put_format(b, "%s%s%u.%06u%s", pre, sign, FRACTION_TUPLE(udeg, 1000000), post);
 }
 
 void put_location(struct membuffer *b, const location_t *loc, const char *pre, const char *post)

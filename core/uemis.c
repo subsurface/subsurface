@@ -380,11 +380,11 @@ void uemis_parse_divelog_binary(char *base64, void *datap)
 	add_extra_data(dc, "Serial", buffer);
 	snprintf(buffer, sizeof(buffer), "%d", *(uint16_t *)(data + i + 35));
 	add_extra_data(dc, "main battery after dive", buffer);
-	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION(*(uint16_t *)(data + i + 24), 60));
+	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data + i + 24), 60));
 	add_extra_data(dc, "no fly time", buffer);
-	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION(*(uint16_t *)(data + i + 26), 60));
+	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data + i + 26), 60));
 	add_extra_data(dc, "no dive time", buffer);
-	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION(*(uint16_t *)(data + i + 28), 60));
+	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data + i + 28), 60));
 	add_extra_data(dc, "desat time", buffer);
 	snprintf(buffer, sizeof(buffer), "%u", *(uint16_t *)(data + i + 30));
 	add_extra_data(dc, "allowed altitude", buffer);

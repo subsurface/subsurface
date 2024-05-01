@@ -135,9 +135,9 @@ static void put_gasmix(struct membuffer *b, struct gasmix mix)
 	int he = mix.he.permille;
 
 	if (o2) {
-		put_format(b, " o2=%u.%u%%", FRACTION(o2, 10));
+		put_format(b, " o2=%u.%u%%", FRACTION_TUPLE(o2, 10));
 		if (he)
-			put_format(b, " he=%u.%u%%", FRACTION(he, 10));
+			put_format(b, " he=%u.%u%%", FRACTION_TUPLE(he, 10));
 	}
 }
 
@@ -251,7 +251,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 {
 	int idx;
 
-	put_format(b, "%3u:%02u", FRACTION(sample->time.seconds, 60));
+	put_format(b, "%3u:%02u", FRACTION_TUPLE(sample->time.seconds, 60));
 	put_milli(b, " ", sample->depth.mm, "m");
 	put_temperature(b, sample->temperature, " ", "°C");
 
@@ -293,11 +293,11 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 
 	/* the deco/ndl values are stored whenever they change */
 	if (sample->ndl.seconds != old->ndl.seconds) {
-		put_format(b, " ndl=%u:%02u", FRACTION(sample->ndl.seconds, 60));
+		put_format(b, " ndl=%u:%02u", FRACTION_TUPLE(sample->ndl.seconds, 60));
 		old->ndl = sample->ndl;
 	}
 	if (sample->tts.seconds != old->tts.seconds) {
-		put_format(b, " tts=%u:%02u", FRACTION(sample->tts.seconds, 60));
+		put_format(b, " tts=%u:%02u", FRACTION_TUPLE(sample->tts.seconds, 60));
 		old->tts = sample->tts;
 	}
 	if (sample->in_deco != old->in_deco) {
@@ -305,7 +305,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		old->in_deco = sample->in_deco;
 	}
 	if (sample->stoptime.seconds != old->stoptime.seconds) {
-		put_format(b, " stoptime=%u:%02u", FRACTION(sample->stoptime.seconds, 60));
+		put_format(b, " stoptime=%u:%02u", FRACTION_TUPLE(sample->stoptime.seconds, 60));
 		old->stoptime = sample->stoptime;
 	}
 
@@ -320,7 +320,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	}
 
 	if (sample->rbt.seconds != old->rbt.seconds) {
-		put_format(b, " rbt=%u:%02u", FRACTION(sample->rbt.seconds, 60));
+		put_format(b, " rbt=%u:%02u", FRACTION_TUPLE(sample->rbt.seconds, 60));
 		old->rbt.seconds = sample->rbt.seconds;
 	}
 
@@ -393,7 +393,7 @@ static void save_samples(struct membuffer *b, struct dive *dive, struct divecomp
 
 static void save_one_event(struct membuffer *b, struct dive *dive, struct event *ev)
 {
-	put_format(b, "event %d:%02d", FRACTION(ev->time.seconds, 60));
+	put_format(b, "event %d:%02d", FRACTION_TUPLE(ev->time.seconds, 60));
 	show_index(b, ev->type, "type=", "");
 	show_index(b, ev->flags, "flags=", "");
 
@@ -456,7 +456,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 {
 	pressure_t surface_pressure = un_fixup_surface_pressure(dive);
 	if (dive->dc.duration.seconds > 0)
-		put_format(b, "duration %u:%02u min\n", FRACTION(dive->dc.duration.seconds, 60));
+		put_format(b, "duration %u:%02u min\n", FRACTION_TUPLE(dive->dc.duration.seconds, 60));
 	SAVE("rating", rating);
 	SAVE("visibility", visibility);
 	SAVE("wavesize", wavesize);
@@ -653,7 +653,7 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 	h = offset / 3600;
 	offset -= h *3600;
 	return blob_insert(repo, dir, &buf, "%c%02u=%02u=%02u",
-		sign, h, FRACTION(offset, 60));
+		sign, h, FRACTION_TUPLE(offset, 60));
 }
 
 static int save_pictures(git_repository *repo, struct dir *dir, struct dive *dive)

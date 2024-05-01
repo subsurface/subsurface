@@ -102,8 +102,8 @@ static void dump_pr_track(int cyl, pr_track_t *track_pr)
 		printf("   start %f end %f t_start %d:%02d t_end %d:%02d pt %d\n",
 		       mbar_to_PSI(list->start),
 		       mbar_to_PSI(list->end),
-		       FRACTION(list->t_start, 60),
-		       FRACTION(list->t_end, 60),
+		       FRACTION_TUPLE(list->t_start, 60),
+		       FRACTION_TUPLE(list->t_end, 60),
 		       list->pressure_time);
 		list = list->next;
 	}
