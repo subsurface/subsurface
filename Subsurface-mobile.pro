@@ -55,7 +55,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/eventtype.cpp \
 	core/filterconstraint.cpp \
 	core/filterpreset.cpp \
-	core/divelist.c \
+	core/divelist.cpp \
 	core/divelog.cpp \
 	core/gas-model.c \
 	core/gaspressures.c \
