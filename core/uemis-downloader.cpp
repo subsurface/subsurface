@@ -83,7 +83,6 @@ static int number_of_files;
 
 static int max_mem_used = -1;
 static int dive_to_read = 0;
-static uint32_t mindiveid;
 
 /* Linked list to remember already executed divespot download requests */
 struct divespot_mapping {
@@ -1004,11 +1003,12 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 	return true;
 }
 
-static int uemis_get_divenr(uint32_t deviceid, struct dive_table *table, int force)
+// Returns (mindiveid, maxdiveid)
+static std::pair<uint32_t, uint32_t> uemis_get_divenr(uint32_t deviceid, struct dive_table *table, int force)
 {
 	uint32_t maxdiveid = 0;
+	uint32_t mindiveid = 0xFFFFFFFF;
 	int i;
-	mindiveid = 0xFFFFFFFF;
 
 	/*
 	 * If we are are retrying after a disconnect/reconnect, we
@@ -1038,7 +1038,7 @@ static int uemis_get_divenr(uint32_t deviceid, struct dive_table *table, int for
 			}
 		}
 	}
-	return maxdiveid;
+	return std::make_pair(mindiveid, maxdiveid);
 }
 
 #if UEMIS_DEBUG
@@ -1326,12 +1326,15 @@ std::string do_uemis_import(device_data_t *data)
 		goto bail;
 
 	param_buff[1] = "notempty";
-	newmax = uemis_get_divenr(deviceidnr, data->log->dives, force_download);
-	if (verbose)
-		report_info("Uemis downloader: start looking at dive nr %d", newmax);
+	{
+		auto [mindiveid, maxdiveid] = uemis_get_divenr(deviceidnr, data->log->dives, force_download);
+		newmax = maxdiveid;
+		if (verbose)
+			report_info("Uemis downloader: start looking at dive nr %d", newmax);
 
-	first = start = newmax;
-	dive_to_read = (int)mindiveid < first ? first - mindiveid : first;
+		first = start = newmax;
+		dive_to_read = (int)mindiveid < first ? first - mindiveid : first;
+	}
 	if (dive_offset > 0)
 		start += dive_offset;
 	for (;;) {
