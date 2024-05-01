@@ -5,6 +5,7 @@
 #endif
 
 #include "ssrf.h"
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -12,7 +13,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
+#include <chrono>
 #include "gettext.h"
 #include "divelog.h"
 #include "divesite.h"
@@ -26,7 +27,6 @@
 #include "event.h"
 #include "sha1.h"
 #include "subsurface-time.h"
-#include "timer.h"
 
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/usbhid.h>
@@ -1205,28 +1205,22 @@ static std::string do_device_import(device_data_t *data)
 	return std::string();
 }
 
-static dc_timer_t *logfunc_timer = NULL;
 void logfunc(dc_context_t *, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
 {
 	const char *loglevels[] = { "NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL" };
 
-	if (logfunc_timer == NULL)
-		dc_timer_new(&logfunc_timer);
+	static const auto start(std::chrono::steady_clock::now());
+	auto now(std::chrono::steady_clock::now());
+	double elapsed_seconds = std::chrono::duration<double>(now - start).count();
 
 	FILE *fp = (FILE *)userdata;
 
-	dc_usecs_t now = 0;
-	dc_timer_now(logfunc_timer, &now);
-
-	unsigned long seconds = now / 1000000;
-	unsigned long microseconds = now % 1000000;
-
 	if (loglevel == DC_LOGLEVEL_ERROR || loglevel == DC_LOGLEVEL_WARNING) {
-		fprintf(fp, "[%li.%06li] %s: %s [in %s:%d (%s)]\n",
-			seconds, microseconds,
+		fprintf(fp, "[%.6f] %s: %s [in %s:%d (%s)]\n",
+			elapsed_seconds,
 			loglevels[loglevel], msg, file, line, function);
 	} else {
-		fprintf(fp, "[%li.%06li] %s: %s\n", seconds, microseconds, loglevels[loglevel], msg);
+		fprintf(fp, "[%6f] %s: %s\n", elapsed_seconds, loglevels[loglevel], msg);
 	}
 }
 
