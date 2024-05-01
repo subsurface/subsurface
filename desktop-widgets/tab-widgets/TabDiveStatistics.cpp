@@ -72,8 +72,7 @@ void TabDiveStatistics::cylinderChanged(dive *d)
 
 void TabDiveStatistics::updateData(const std::vector<dive *> &, dive *currentDive, int)
 {
-	stats_t stats_selection;
-	calculate_stats_selected(&stats_selection);
+	stats_t stats_selection = calculate_stats_selected();
 	clear();
 	if (amount_selected > 1 && stats_selection.selection_size >= 1) {
 		ui->depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true));
@@ -135,13 +134,12 @@ void TabDiveStatistics::updateData(const std::vector<dive *> &, dive *currentDiv
 		vol.mliter = gasPair.second;
 		gasUsedString.append(gasPair.first).append(": ").append(get_volume_string(vol, true)).append("\n");
 	}
-	volume_t o2_tot = {}, he_tot = {};
-	selected_dives_gas_parts(&o2_tot, &he_tot);
+	auto [o2_tot, he_tot] = selected_dives_gas_parts();
 
 	/* No need to show the gas mixing information if diving
-		* with pure air, and only display the he / O2 part when
-		* it is used.
-		*/
+	 * with pure air, and only display the he / O2 part when
+	 * it is used.
+	 */
 	if (he_tot.mliter || o2_tot.mliter) {
 		gasUsedString.append(tr("These gases could be\nmixed from Air and using:\n"));
 		if (he_tot.mliter) {
