@@ -6,26 +6,6 @@
 #include <string.h>
 #include <time.h>
 
-// shared generic definitions and macros
-// mostly about strings, but a couple of math macros are here as well
-
-/* Windows has no MIN/MAX macros - so let's just roll our own */
-#ifndef MIN
-#define MIN(x, y) ({                \
-	__typeof__(x) _min1 = (x);          \
-	__typeof__(y) _min2 = (y);          \
-	(void) (&_min1 == &_min2);      \
-	_min1 < _min2 ? _min1 : _min2; })
-#endif
-
-#ifndef MAX
-#define MAX(x, y) ({                \
-	__typeof__(x) _max1 = (x);          \
-	__typeof__(y) _max2 = (y);          \
-	(void) (&_max1 == &_max2);      \
-	_max1 > _max2 ? _max1 : _max2; })
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
