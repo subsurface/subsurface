@@ -81,7 +81,6 @@ static std::string reqtxt_path;
 static int reqtxt_file;
 static int filenr;
 static int number_of_files;
-static std::string mbuf;
 
 static int max_mem_used = -1;
 static int next_table_index = 0;
@@ -530,8 +529,8 @@ static std::string build_ans_path(const std::string &path, int filenumber)
 }
 
 /* send a request to the dive computer and collect the answer */
-static bool uemis_get_answer(const char *path, const std::string &request, int n_param_in,
-			     int n_param_out, std::string &error_text)
+static std::string uemis_get_answer(const char *path, const std::string &request, int n_param_in,
+				   int n_param_out, std::string &error_text)
 {
 	int i = 0;
 	char tmp[101];
@@ -551,7 +550,7 @@ static bool uemis_get_answer(const char *path, const std::string &request, int n
 #ifdef UEMIS_DEBUG
 		report_info("open %s failed with errno %d\n", reqtxt_path.c_str(), errno);
 #endif
-		return false;
+		return std::string();
 	}
 	std::string sb;
 	str_append_with_delim(sb, request);
@@ -578,7 +577,7 @@ static bool uemis_get_answer(const char *path, const std::string &request, int n
 	int written = write(reqtxt_file, sb.c_str(), sb.size());
 	if (written == -1 || (size_t)written != sb.size()) {
 		error_text = translate("gettextFromC", ERR_FS_SHORT_WRITE);
-		return false;
+		return std::string();
 	}
 	if (!next_file(number_of_files)) {
 		error_text = translate("gettextFromC", ERR_FS_FULL);
@@ -586,10 +585,10 @@ static bool uemis_get_answer(const char *path, const std::string &request, int n
 	}
 	trigger_response(reqtxt_file, "n", filenr, file_length);
 	usleep(timeout);
-	mbuf.clear();
+	std::string mbuf;
 	while (searching || assembling_mbuf) {
 		if (import_thread_cancelled)
-			return false;
+			return std::string();
 		progress_bar_fraction = filenr / (double)UEMIS_MAX_FILES;
 		std::string ans_path = build_ans_path(std::string(path), filenr - 1);
 		ans_file = subsurface_open(ans_path.c_str(), O_RDONLY, 0666);
@@ -598,11 +597,11 @@ static bool uemis_get_answer(const char *path, const std::string &request, int n
 #ifdef UEMIS_DEBUG
 			report_info("open %s failed with errno %d\n", ans_path.c_str(), errno);
 #endif
-			return false;
+			return std::string();
 		}
 		if (read(ans_file, tmp, 100) < 3) {
 			close(ans_file);
-			return false;
+			return std::string();
 		}
 		close(ans_file);
 #if UEMIS_DEBUG & 8
@@ -634,7 +633,7 @@ static bool uemis_get_answer(const char *path, const std::string &request, int n
 				if (reqtxt_file < 0) {
 					error_text = "can't open req.txt";
 					report_info("open %s failed with errno %d", reqtxt_path.c_str(), errno);
-					return false;
+					return std::string();
 				}
 				trigger_response(reqtxt_file, "n", filenr, file_length);
 			}
@@ -649,7 +648,7 @@ static bool uemis_get_answer(const char *path, const std::string &request, int n
 			if (reqtxt_file < 0) {
 				error_text = "can't open req.txt";
 				report_info("open %s failed with errno %d", reqtxt_path.c_str(), errno);
-				return false;
+				return std::string();
 			}
 			trigger_response(reqtxt_file, "r", filenr, file_length);
 			uemis_increased_timeout(&timeout);
@@ -663,7 +662,7 @@ static bool uemis_get_answer(const char *path, const std::string &request, int n
 #ifdef UEMIS_DEBUG
 				report_info("open %s failed with errno %d\n", ans_path.c_str(), errno);
 #endif
-				return false;
+				return std::string();
 			}
 			size = bytes_available(ans_file);
 			if (size > 3) {
@@ -695,7 +694,7 @@ static bool uemis_get_answer(const char *path, const std::string &request, int n
 #ifdef UEMIS_DEBUG
 				report_info("open %s failed with errno %d\n", ans_path.c_str(), errno);
 #endif
-				return false;
+				return std::string();
 			}
 
 			int size = bytes_available(ans_file);
@@ -728,10 +727,10 @@ static bool uemis_get_answer(const char *path, const std::string &request, int n
 	for (i = 0; i < n_param_out; i++)
 		report_info("::: %d: %s\n", i, param_buff[i].c_str());
 #endif
-	return found_answer;
+	return found_answer ? mbuf : std::string();
 fs_error:
 	close(ans_file);
-	return false;
+	return std::string();
 }
 
 static bool parse_divespot(const std::string &buf)
@@ -1136,8 +1135,8 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 	report_info("getDivespot %d\n", divespot_id);
 #endif
 	std::string error_text; // unused
-	bool success = uemis_get_answer(mountpath, "getDivespot", 3, 0, error_text);
-	if (!mbuf.empty() && success) {
+	std::string mbuf = uemis_get_answer(mountpath, "getDivespot", 3, 0, error_text);
+	if (!mbuf.empty()) {
 #if UEMIS_DEBUG & 16
 		do_dump_buffer_to_file(mbuf, "Spot");
 #endif
@@ -1202,7 +1201,7 @@ static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, devic
 			break;
 		param_buff[2] = std::to_string(dive_to_read);
 		std::string error_text; // unused
-		(void)uemis_get_answer(mountpath, "getDive", 3, 0, error_text);
+		std::string mbuf = uemis_get_answer(mountpath, "getDive", 3, 0, error_text);
 #if UEMIS_DEBUG & 16
 		do_dump_buffer_to_file(mbuf, "Dive");
 #endif
@@ -1291,7 +1290,7 @@ std::string do_uemis_import(device_data_t *data)
 	uint32_t deviceidnr;
 	std::string deviceid;
 	std::string result;
-	bool success, once = true;
+	bool once = true;
 	int match_dive_and_log = 0;
 	int dive_offset = 0;
 	int uemis_mem_status = UEMIS_MEM_OK;
@@ -1311,17 +1310,17 @@ std::string do_uemis_import(device_data_t *data)
 		return translate("gettextFromC", "Uemis init failed");
 	}
 
-	if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, result))
+	if (uemis_get_answer(mountpath, "getDeviceId", 0, 1, result).empty())
 		goto bail;
 	deviceid = param_buff[0];
 	deviceidnr = atoi(deviceid.c_str());
 
 	/* param_buff[0] is still valid */
-	if (!uemis_get_answer(mountpath, "initSession", 1, 6, result))
+	if (uemis_get_answer(mountpath, "initSession", 1, 6, result).empty())
 		goto bail;
 
 	uemis_info(translate("gettextFromC", "Start download"));
-	if (!uemis_get_answer(mountpath, "processSync", 0, 2, result))
+	if (uemis_get_answer(mountpath, "processSync", 0, 2, result).empty())
 		goto bail;
 
 	/* before starting the long download, check if user pressed cancel */
@@ -1350,17 +1349,18 @@ std::string do_uemis_import(device_data_t *data)
 		std::string newmax_str = std::to_string(newmax);
 		param_buff[2] = newmax_str.c_str();
 		param_buff[3].clear();
-		success = uemis_get_answer(mountpath, "getDivelogs", 3, 0, result);
+		std::string mbuf = uemis_get_answer(mountpath, "getDivelogs", 3, 0, result);
 		uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
 		/* first, remove any leading garbage... this needs to start with a '{' */
 		std::string_view realmbuf = mbuf;
 		size_t pos = realmbuf.find('{');
 		if (pos != std::string::npos)
 			realmbuf = realmbuf.substr(pos);
-		if (success && !realmbuf.empty() && uemis_mem_status != UEMIS_MEM_FULL) {
+		if (!realmbuf.empty() && uemis_mem_status != UEMIS_MEM_FULL) {
 #if UEMIS_DEBUG & 16
 			do_dump_buffer_to_file(realmbuf, "Dive logs");
 #endif
+			bool success = true;
 			/* process the buffer we have assembled */
 			if (!process_raw_buffer(data, deviceidnr, realmbuf, newmax, NULL)) {
 				/* if no dives were downloaded, mark end appropriately */
@@ -1394,8 +1394,7 @@ std::string do_uemis_import(device_data_t *data)
 			 * dive_to_read = the dive details entry that need to be read using the object_id
 			 * logFileNoToFind = map the logfilenr of the dive details with the object_id = diveid from the get dive logs */
 			for (int i = match_dive_and_log; i < data->log->dives->nr; i++) {
-				bool success = get_matching_dive(i, newmax, &uemis_mem_status, data, mountpath, deviceidnr);
-				if (!success)
+				if (!get_matching_dive(i, newmax, &uemis_mem_status, data, mountpath, deviceidnr))
 					break;
 				if (import_thread_cancelled)
 					break;
@@ -1409,7 +1408,7 @@ std::string do_uemis_import(device_data_t *data)
 #if UEMIS_DEBUG & 4
 				report_info("d_u_i out of memory, bailing\n");
 #endif
-				(void)uemis_get_answer(mountpath, "terminateSync", 0, 3, result);
+				mbuf = uemis_get_answer(mountpath, "terminateSync", 0, 3, result);
 				const char *errormsg = translate("gettextFromC", ACTION_RECONNECT);
 				for (int wait=60; wait >=0; wait--){
 					uemis_info("%s %ds", errormsg, wait);
@@ -1419,17 +1418,17 @@ std::string do_uemis_import(device_data_t *data)
 				filenr = 0;
 				max_mem_used = -1;
 				uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
-				if (!uemis_get_answer(mountpath, "getDeviceId", 0, 1, result))
+				if (uemis_get_answer(mountpath, "getDeviceId", 0, 1, result).empty())
 					goto bail;
 				if (deviceid != param_buff[0]) {
 					report_info("Uemis: Device id has changed after reconnect!");
 					goto bail;
 				}
 				param_buff[0] = deviceid;
-				if (!uemis_get_answer(mountpath, "initSession", 1, 6, result))
+				if (uemis_get_answer(mountpath, "initSession", 1, 6, result).empty())
 					goto bail;
 				uemis_info(translate("gettextFromC", "Start download"));
-				if (!uemis_get_answer(mountpath, "processSync", 0, 2, result))
+				if (uemis_get_answer(mountpath, "processSync", 0, 2, result).empty())
 					goto bail;
 				param_buff[1] = "notempty";
 			}
