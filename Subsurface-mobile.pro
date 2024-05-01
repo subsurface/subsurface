@@ -49,7 +49,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/profile.cpp \
 	core/device.cpp \
 	core/dive.cpp \
-	core/divecomputer.c \
+	core/divecomputer.cpp \
 	core/divefilter.cpp \
 	core/event.c \
 	core/eventtype.cpp \
