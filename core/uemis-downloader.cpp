@@ -24,6 +24,7 @@
 #include <array>
 #include <string>
 #include <charconv>
+#include <unordered_map>
 
 #include "gettext.h"
 #include "libdivecomputer.h"
@@ -84,64 +85,8 @@ static int number_of_files;
 static int max_mem_used = -1;
 static int dive_to_read = 0;
 
-/* Linked list to remember already executed divespot download requests */
-struct divespot_mapping {
-	int divespot_id;
-	struct dive_site *dive_site;
-	struct divespot_mapping *next;
-};
-static struct divespot_mapping *divespot_mapping = NULL;
-
-static void erase_divespot_mapping()
-{
-	struct divespot_mapping *tmp;
-	while (divespot_mapping != NULL) {
-		tmp = divespot_mapping;
-		divespot_mapping = tmp->next;
-		free(tmp);
-	}
-	divespot_mapping = NULL;
-}
-
-static void add_to_divespot_mapping(int divespot_id, struct dive_site *ds)
-{
-	struct divespot_mapping *ndm = (struct divespot_mapping*)calloc(1, sizeof(struct divespot_mapping));
-	struct divespot_mapping **pdm = &divespot_mapping;
-	struct divespot_mapping *cdm = *pdm;
-
-	while (cdm && cdm->next)
-		cdm = cdm->next;
-
-	ndm->divespot_id = divespot_id;
-	ndm->dive_site = ds;
-	ndm->next = NULL;
-	if (cdm)
-		cdm->next = ndm;
-	else
-		cdm = *pdm = ndm;
-}
-
-static bool is_divespot_mappable(int divespot_id)
-{
-	struct divespot_mapping *dm = divespot_mapping;
-	while (dm) {
-		if (dm->divespot_id == divespot_id)
-			return true;
-		dm = dm->next;
-	}
-	return false;
-}
-
-static struct dive_site *get_dive_site_by_divespot_id(int divespot_id)
-{
-	struct divespot_mapping *dm = divespot_mapping;
-	while (dm) {
-		if (dm->divespot_id == divespot_id)
-			return dm->dive_site;
-		dm = dm->next;
-	}
-	return NULL;
-}
+/* Hash map to remember already executed divespot download requests */
+static std::unordered_map<int, dive_site *> divespot_mapping;
 
 /* helper function to parse the Uemis data structures */
 static timestamp_t uemis_ts(std::string_view buffer)
@@ -330,7 +275,7 @@ static bool uemis_init(const std::string &path)
 {
 	using namespace std::string_literals;
 
-	erase_divespot_mapping();
+	divespot_mapping.clear();
 	if (path.empty())
 		return false;
 	/* let's check if this is indeed a Uemis DC */
@@ -1147,8 +1092,9 @@ static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, in
 {
 	struct dive_site *nds = dive->dive_site;
 
-	if (is_divespot_mappable(divespot_id)) {
-		struct dive_site *ds = get_dive_site_by_divespot_id(divespot_id);
+	auto it = divespot_mapping.find(divespot_id);
+	if (it != divespot_mapping.end()) {
+		struct dive_site *ds = it->second;
 		unregister_dive_from_dive_site(dive);
 		add_dive_to_dive_site(dive, ds);
 	} else if (nds && nds->name && strstr(nds->name,"from Uemis")) {
@@ -1170,7 +1116,7 @@ static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, in
 					add_dive_to_dive_site(dive, ods);
 				}
 			}
-			add_to_divespot_mapping(divespot_id, dive->dive_site);
+			divespot_mapping[divespot_id] = dive->dive_site;
 		} else {
 			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
