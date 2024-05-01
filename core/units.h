@@ -13,8 +13,8 @@ extern "C" {
 #include <stdbool.h>
 #endif
 
-#define FRACTION(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
-#define SIGNED_FRAC(n, x) ((n) >= 0 ? '+': '-'), ((n) >= 0 ? (unsigned)(n) / (x) : (-(n) / (x))), ((unsigned)((n) >= 0 ? (n) : -(n)) % (x))
+#define FRACTION_TUPLE(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
+#define SIGNED_FRAC_TRIPLET(n, x) ((n) >= 0 ? '+': '-'), ((n) >= 0 ? (unsigned)(n) / (x) : (-(n) / (x))), ((unsigned)((n) >= 0 ? (n) : -(n)) % (x))
 
 #define O2_IN_AIR 209 // permille
 #define N2_IN_AIR 781

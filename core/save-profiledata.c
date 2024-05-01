@@ -179,7 +179,7 @@ static void put_st_event(struct membuffer *b, struct plot_data *entry, int offse
 	put_video_time(b, entry->sec - offset);
 	put_video_time(b, (entry+1)->sec - offset < length ? (entry+1)->sec - offset : length);
 	put_format(b, "Default,,0,0,0,,");
-	put_format(b, "%d:%02d ", FRACTION(entry->sec, 60));
+	put_format(b, "%d:%02d ", FRACTION_TUPLE(entry->sec, 60));
 	value = get_depth_units(entry->depth, &decimals, &unit);
 	put_format(b, "D=%02.2f %s ", value, unit);
 	if (entry->temperature) {
@@ -189,10 +189,10 @@ static void put_st_event(struct membuffer *b, struct plot_data *entry, int offse
 	// Only show NDL if it is not essentially infinite, show TTS for mandatory stops.
 	if (entry->ndl_calc < 3600) {
 		if (entry->ndl_calc > 0)
-			put_format(b, "NDL=%d:%02d ", FRACTION(entry->ndl_calc, 60));
+			put_format(b, "NDL=%d:%02d ", FRACTION_TUPLE(entry->ndl_calc, 60));
 		else
 			if (entry->tts_calc > 0)
-				put_format(b, "TTS=%d:%02d ", FRACTION(entry->tts_calc, 60));
+				put_format(b, "TTS=%d:%02d ", FRACTION_TUPLE(entry->tts_calc, 60));
 	}
 	if (entry->surface_gf > 0.0) {
 		put_format(b, "sGF=%.1f%% ", entry->surface_gf);

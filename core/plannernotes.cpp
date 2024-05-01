@@ -156,7 +156,7 @@ extern "C" void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, 
 			translate("gettextFromC", "Subsurface"),
 			subsurface_canonical_version(),
 			translate("gettextFromC", "dive plan</b> (surface interval "),
-			FRACTION(diveplan->surface_interval / 60, 60),
+			FRACTION_TUPLE(diveplan->surface_interval / 60, 60),
 			translate("gettextFromC", "created on"),
 			get_current_date().c_str());
 	}
@@ -234,16 +234,16 @@ extern "C" void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, 
 						buf += casprintf_loc(translate("gettextFromC", "%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
 							     dp->depth.mm < lastprintdepth ? translate("gettextFromC", "Ascend") : translate("gettextFromC", "Descend"),
 							     decimals, depthvalue, depth_unit,
-							     FRACTION(dp->time - lasttime, 60),
-							     FRACTION(dp->time, 60),
+							     FRACTION_TUPLE(dp->time - lasttime, 60),
+							     FRACTION_TUPLE(dp->time, 60),
 							     gasname(gasmix),
 							     (double) dp->setpoint / 1000.0);
 					} else {
 						buf += casprintf_loc(translate("gettextFromC", "%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s"),
 							     dp->depth.mm < lastprintdepth ? translate("gettextFromC", "Ascend") : translate("gettextFromC", "Descend"),
 							     decimals, depthvalue, depth_unit,
-							     FRACTION(dp->time - lasttime, 60),
-							     FRACTION(dp->time, 60),
+							     FRACTION_TUPLE(dp->time - lasttime, 60),
+							     FRACTION_TUPLE(dp->time, 60),
 							     gasname(gasmix));
 					}
 
@@ -256,15 +256,15 @@ extern "C" void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, 
 					if (dp->setpoint) {
 						buf += casprintf_loc(translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)"),
 							     decimals, depthvalue, depth_unit,
-							     FRACTION(dp->time - lasttime, 60),
-							     FRACTION(dp->time, 60),
+							     FRACTION_TUPLE(dp->time - lasttime, 60),
+							     FRACTION_TUPLE(dp->time, 60),
 							     gasname(gasmix),
 							     (double) dp->setpoint / 1000.0);
 					} else {
 						buf += casprintf_loc(translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s"),
 							     decimals, depthvalue, depth_unit,
-							     FRACTION(dp->time - lasttime, 60),
-							     FRACTION(dp->time, 60),
+							     FRACTION_TUPLE(dp->time - lasttime, 60),
+							     FRACTION_TUPLE(dp->time, 60),
 							     gasname(gasmix),
 							     translate("gettextFromC", divemode_text_ui[dp->divemode]));
 					}
@@ -594,7 +594,7 @@ extern "C" void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, 
 							buf += "<div>\n";
 						o2warning_exist = true;
 						temp = casprintf_loc(translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
-							pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
+							pressures.o2, FRACTION_TUPLE(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
 						buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp.c_str());
 					} else if (pressures.o2 < 0.16) {
 						const char *depth_unit;
@@ -604,7 +604,7 @@ extern "C" void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, 
 							buf += "<div>";
 						o2warning_exist = true;
 						temp = casprintf_loc(translate("gettextFromC", "low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
-							pressures.o2, FRACTION(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
+							pressures.o2, FRACTION_TUPLE(dp->time, 60), gasname(gasmix), decimals, depth_value, depth_unit);
 						buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp.c_str());
 					}
 				}

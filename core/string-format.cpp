@@ -302,7 +302,7 @@ QString formatDayOfWeek(int day)
 
 QString formatMinutes(int seconds)
 {
-	return QString::asprintf("%d:%.2d", FRACTION(seconds, 60));
+	return QString::asprintf("%d:%.2d", FRACTION_TUPLE(seconds, 60));
 }
 
 QString formatTripTitle(const dive_trip *trip)

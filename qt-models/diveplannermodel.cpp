@@ -1177,7 +1177,7 @@ int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decos
 	rightsum = maxsum - midsum;
 
 #ifdef DEBUG_STOPVAR
-	printf("Total + %d:%02d/%s +- %d s/%s\n\n", FRACTION((leftsum + rightsum) / 2, 60), unit,
+	printf("Total + %d:%02d/%s +- %d s/%s\n\n", FRACTION_TUPLE((leftsum + rightsum) / 2, 60), unit,
 						       (rightsum - leftsum) / 2, unit);
 #else
 	Q_UNUSED(unit)
@@ -1266,8 +1266,8 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 
 	char buf[200];
 	sprintf(buf, ", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
-		SIGNED_FRAC(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
-		SIGNED_FRAC(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
+		SIGNED_FRAC_TRIPLET(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
+		SIGNED_FRAC_TRIPLET(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
 
 	// By using a signal, we can transport the variations to the main thread.
 	emit variationsComputed(QString(buf));

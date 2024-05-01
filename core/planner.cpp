@@ -59,7 +59,7 @@ extern "C" void dump_plan(struct diveplan *diveplan)
 	       diveplan->surface_pressure);
 	dp = diveplan->dp;
 	while (dp) {
-		printf("\t%3u:%02u: %6dmm cylid: %2d setpoint: %d\n", FRACTION(dp->time, 60), dp->depth, dp->cylinderid, dp->setpoint);
+		printf("\t%3u:%02u: %6dmm cylid: %2d setpoint: %d\n", FRACTION_TUPLE(dp->time, 60), dp->depth, dp->cylinderid, dp->setpoint);
 		dp = dp->next;
 	}
 }

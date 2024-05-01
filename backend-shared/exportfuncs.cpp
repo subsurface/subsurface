@@ -181,7 +181,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		site ? put_format(&buf, "\\def\\%sgpslon{%f}\n", ssrf, site->location.lon.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
 		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dc.model);
 		put_format(&buf, "\\def\\%scountry{%s}\n", ssrf, country ?: "");
-		put_format(&buf, "\\def\\%stime{%u:%02u}\n", ssrf, FRACTION(dive->duration.seconds, 60));
+		put_format(&buf, "\\def\\%stime{%u:%02u}\n", ssrf, FRACTION_TUPLE(dive->duration.seconds, 60));
 
 		put_format(&buf, "\n%% Dive Profile Details:\n");
 		dive->maxtemp.mkelvin ? put_format(&buf, "\\def\\%smaxtemp{%.1f\\%stemperatureunit}\n", ssrf, get_temp_units(dive->maxtemp.mkelvin, &unit), ssrf) : put_format(&buf, "\\def\\%smaxtemp{}\n", ssrf);

@@ -441,7 +441,7 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 		break;
 #ifdef DEBUG_DC_VENDOR
 	case DC_SAMPLE_VENDOR:
-		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION(sample->time.seconds, 60),
+		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION_TUPLE(sample->time.seconds, 60),
 		       value.vendor.type, value.vendor.size);
 		for (int i = 0; i < value.vendor.size; ++i)
 			printf("%02X", ((unsigned char *)value.vendor.data)[i]);
