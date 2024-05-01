@@ -1368,8 +1368,8 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 	std::vector<std::string> res;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
-	res.push_back(casprintf_loc(translate("gettextFromC", "@: %d:%02d"), FRACTION(entry->sec, 60), depthvalue));
-	res.push_back(casprintf_loc(translate("gettextFromC", "D: %.1f%s"), depth_unit));
+	res.push_back(casprintf_loc(translate("gettextFromC", "@: %d:%02d"), FRACTION(entry->sec, 60)));
+	res.push_back(casprintf_loc(translate("gettextFromC", "D: %.1f%s"), depthvalue, depth_unit));
 	for (cyl = 0; cyl < pi->nr_cylinders; cyl++) {
 		int mbar = get_plot_pressure(pi, idx, cyl);
 		if (!mbar)
