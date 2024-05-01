@@ -82,7 +82,6 @@ static int filenr;
 static int number_of_files;
 
 static int max_mem_used = -1;
-static int next_table_index = 0;
 static int dive_to_read = 0;
 static uint32_t mindiveid;
 
@@ -1476,8 +1475,7 @@ std::string do_uemis_import(device_data_t *data)
 
 	/* Regardless on where we are with the memory situation, it's time now
 	 * to see if we have to clean some dead bodies from our download table */
-	next_table_index = 0;
-	while (next_table_index < data->log->dives->nr) {
+	for (int next_table_index = 0; next_table_index < data->log->dives->nr; ) {
 		if (data->log->dives->dives[next_table_index]->hidden_by_filter)
 			uemis_delete_dive(data, data->log->dives->dives[next_table_index]->dc.diveid);
 		else
