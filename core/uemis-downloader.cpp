@@ -78,7 +78,6 @@ static int debug_round = 0;
 static uemis uemis_obj;
 static std::array<std::string, num_param_bufs> param_buff;
 static std::string reqtxt_path;
-static int reqtxt_file;
 static int filenr;
 static int number_of_files;
 
@@ -338,7 +337,7 @@ static bool uemis_init(const std::string &path)
 		return false;
 	/* let's check if this is indeed a Uemis DC */
 	reqtxt_path = build_filename(path, "req.txt"s);
-	reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDONLY | O_CREAT, 0666);
+	int reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDONLY | O_CREAT, 0666);
 	if (reqtxt_file < 0) {
 #if UEMIS_DEBUG & 1
 		report_info(":EE req.txt can't be opened\n");
@@ -544,7 +543,7 @@ static std::string uemis_get_answer(const char *path, const std::string &request
 	int ans_file;
 	int timeout = UEMIS_LONG_TIMEOUT;
 
-	reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDWR | O_CREAT, 0666);
+	int reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDWR | O_CREAT, 0666);
 	if (reqtxt_file < 0) {
 		error_text = "can't open req.txt";
 #ifdef UEMIS_DEBUG
