@@ -90,8 +90,8 @@ static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc,
 		po2f = sample->o2sensor[0].mbar;	// then use data from the first o2 sensor
 		po2 = (po2f + po2i) / 2;
 	} else if (sample->setpoint.mbar > 0) {
-		po2 = MIN((int) sample->setpoint.mbar,
-			   depth_to_mbar(sample->depth.mm, dive));
+		po2 = std::min((int) sample->setpoint.mbar,
+				depth_to_mbar(sample->depth.mm, dive));
 	} else {
 		double amb_presure = depth_to_bar(sample->depth.mm, dive);
 		double pamb_pressure = depth_to_bar(psample->depth.mm , dive);
@@ -133,11 +133,11 @@ static int calculate_otu(const struct dive *dive)
 			po2f = sample->o2sensor[0].mbar;	// ... use data from the first o2 sensor
 		} else {
 			if (sample->setpoint.mbar > 0) {
-				po2f = MIN((int) sample->setpoint.mbar,
-					   depth_to_mbar(sample->depth.mm, dive));
+				po2f = std::min((int) sample->setpoint.mbar,
+						 depth_to_mbar(sample->depth.mm, dive));
 				if (psample->setpoint.mbar > 0)
-					po2i = MIN((int) psample->setpoint.mbar,
-						   depth_to_mbar(psample->depth.mm, dive));
+					po2i = std::min((int) psample->setpoint.mbar,
+							 depth_to_mbar(psample->depth.mm, dive));
 				else
 					po2i = po2f;
 			} else {						// For OC and rebreather without o2 sensor/setpoint
