@@ -123,10 +123,9 @@ QString TemplateLayout::generateStatistics()
 	State state;
 
 	int i = 0;
-	stats_summary_auto_free stats;
-	calculate_stats_summary(&stats, false);
-	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period) {
-		state.years.append(&stats.stats_yearly[i]);
+	stats_summary stats = calculate_stats_summary(false);
+	for (auto &s: stats.stats_yearly) {
+		state.years.append(&s);
 		i++;
 	}
 

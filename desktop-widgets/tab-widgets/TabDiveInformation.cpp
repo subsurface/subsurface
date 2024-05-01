@@ -124,7 +124,7 @@ void TabDiveInformation::updateProfile()
 	ui->maximumDepthText->setText(get_depth_string(currentDive->maxdepth, true));
 	ui->averageDepthText->setText(get_depth_string(currentDive->meandepth, true));
 
-	volume_t *gases = get_gas_used(currentDive);
+	std::vector<volume_t> gases = get_gas_used(currentDive);
 	QString volumes;
 	std::vector<int> mean(currentDive->cylinders.nr), duration(currentDive->cylinders.nr);
 	struct divecomputer *currentdc = parent.getCurrentDC();
@@ -148,7 +148,6 @@ void TabDiveInformation::updateProfile()
 			SACs.append(get_volume_string(sac, true).append(tr("/min")));
 		}
 	}
-	free(gases);
 	ui->gasUsedText->setText(volumes);
 	ui->oxygenHeliumText->setText(gaslist);
 

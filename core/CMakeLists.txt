@@ -165,7 +165,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	sha1.cpp
 	sha1.h
 	ssrf.h
-	statistics.c
+	statistics.cpp
 	statistics.h
 	string-format.h
 	string-format.cpp
