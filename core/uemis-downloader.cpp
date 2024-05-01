@@ -52,14 +52,16 @@ constexpr size_t num_param_bufs = 10;
 //#define UEMIS_DEBUG 1 + 2 + 4 + 8 + 16 + 32
 
 #define UEMIS_MAX_FILES 4000
-#define UEMIS_MEM_FULL 1
-#define UEMIS_MEM_OK 0
 #define UEMIS_SPOT_BLOCK_SIZE 1
 #define UEMIS_DIVE_DETAILS_SIZE 2
 #define UEMIS_LOG_BLOCK_SIZE 10
 #define UEMIS_CHECK_LOG 1
 #define UEMIS_CHECK_DETAILS 2
 #define UEMIS_CHECK_SINGLE_DIVE 3
+
+enum class uemis_mem_status {
+	ok, full
+};
 
 #if UEMIS_DEBUG
 static std::string home, user, d_time;
@@ -1029,14 +1031,13 @@ static bool do_dump_buffer_to_file(std::string_view buf, const char *prefix)
  * filenr holds now the uemis filenr after having read several logs including the dive details,
  * fCapacity will five us the average number of files needed for all currently loaded data
  * remember the maximum file usage per dive
- * return : UEMIS_MEM_OK       if there is enough memory for a full round
- *          UEMIS_MEM_CRITICAL if the memory is good for reading the dive logs
- *          UEMIS_MEM_FULL     if the memory is exhausted
+ * return : ok       if there is enough memory for a full round
+ *          full     if the memory is exhausted
  */
-static int get_memory(struct dive_table *td, int checkpoint)
+static uemis_mem_status get_memory(struct dive_table *td, int checkpoint)
 {
 	if (td->nr <= 0)
-		return UEMIS_MEM_OK;
+		return uemis_mem_status::ok;
 
 	switch (checkpoint) {
 	case UEMIS_CHECK_LOG:
@@ -1048,19 +1049,19 @@ static int get_memory(struct dive_table *td, int checkpoint)
 		report_info("max_mem_used %d (from td->nr %d) * block_size %d > max_files %d - filenr %d?\n", max_mem_used, td->nr, UEMIS_LOG_BLOCK_SIZE, UEMIS_MAX_FILES, filenr);
 #endif
 		if (max_mem_used * UEMIS_LOG_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
-			return UEMIS_MEM_FULL;
+			return uemis_mem_status::full;
 		break;
 	case UEMIS_CHECK_DETAILS:
 		/* check if the next set of dive details and dive spot fit into the UEMIS buffer */
 		if ((UEMIS_DIVE_DETAILS_SIZE + UEMIS_SPOT_BLOCK_SIZE) * UEMIS_LOG_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
-			return UEMIS_MEM_FULL;
+			return uemis_mem_status::full;
 		break;
 	case UEMIS_CHECK_SINGLE_DIVE:
 		if (UEMIS_DIVE_DETAILS_SIZE + UEMIS_SPOT_BLOCK_SIZE > UEMIS_MAX_FILES - filenr)
-			return UEMIS_MEM_FULL;
+			return uemis_mem_status::full;
 		break;
 	}
-	return UEMIS_MEM_OK;
+	return uemis_mem_status::ok;
 }
 
 /* we misuse the hidden_by_filter flag to mark a dive as deleted.
@@ -1126,7 +1127,7 @@ static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, in
 	}
 }
 
-static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, device_data_t *data, const char *mountpath, const char deviceidnr)
+static bool get_matching_dive(int idx, int &newmax, uemis_mem_status &mem_status, device_data_t *data, const char *mountpath, const char deviceidnr)
 {
 	struct dive *dive = data->log->dives->dives[idx];
 	char log_file_no_to_find[20];
@@ -1149,10 +1150,9 @@ static bool get_matching_dive(int idx, int &newmax, int *uemis_mem_status, devic
 #if UEMIS_DEBUG & 16
 		do_dump_buffer_to_file(mbuf, "Dive");
 #endif
-		*uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_SINGLE_DIVE);
-		if (*uemis_mem_status == UEMIS_MEM_OK) {
+		mem_status = get_memory(data->log->dives, UEMIS_CHECK_SINGLE_DIVE);
+		if (mem_status == uemis_mem_status::ok) {
 			/* if the memory isn's completely full we can try to read more dive log vs. dive details
-			 * UEMIS_MEM_CRITICAL means not enough space for a full round but the dive details
 			 * and the dive spots should fit into the UEMIS memory
 			 * The match we do here is to map the object_id to the logfilenr, we do this
 			 * by iterating through the last set of loaded dive logs and then find the corresponding
@@ -1237,7 +1237,7 @@ std::string do_uemis_import(device_data_t *data)
 	bool once = true;
 	int match_dive_and_log = 0;
 	int dive_offset = 0;
-	int uemis_mem_status = UEMIS_MEM_OK;
+	uemis_mem_status mem_status = uemis_mem_status::ok;
 
 	// To speed up sync you can skip downloading old dives by defining UEMIS_DIVE_OFFSET
 	if (getenv("UEMIS_DIVE_OFFSET")) {
@@ -1297,13 +1297,13 @@ std::string do_uemis_import(device_data_t *data)
 		param_buff[2] = newmax_str.c_str();
 		param_buff[3].clear();
 		std::string mbuf = uemis_get_answer(mountpath, "getDivelogs", 3, 0, result);
-		uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
+		mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
 		/* first, remove any leading garbage... this needs to start with a '{' */
 		std::string_view realmbuf = mbuf;
 		size_t pos = realmbuf.find('{');
 		if (pos != std::string::npos)
 			realmbuf = realmbuf.substr(pos);
-		if (!realmbuf.empty() && uemis_mem_status != UEMIS_MEM_FULL) {
+		if (!realmbuf.empty() && mem_status != uemis_mem_status::full) {
 #if UEMIS_DEBUG & 16
 			do_dump_buffer_to_file(realmbuf, "Dive logs");
 #endif
@@ -1341,7 +1341,7 @@ std::string do_uemis_import(device_data_t *data)
 			 * dive_to_read = the dive details entry that need to be read using the object_id
 			 * logFileNoToFind = map the logfilenr of the dive details with the object_id = diveid from the get dive logs */
 			for (int i = match_dive_and_log; i < data->log->dives->nr; i++) {
-				if (!get_matching_dive(i, newmax, &uemis_mem_status, data, mountpath, deviceidnr))
+				if (!get_matching_dive(i, newmax, mem_status, data, mountpath, deviceidnr))
 					break;
 				if (import_thread_cancelled)
 					break;
@@ -1350,8 +1350,8 @@ std::string do_uemis_import(device_data_t *data)
 			start = end;
 
 			/* Do some memory checking here */
-			uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_LOG);
-			if (uemis_mem_status != UEMIS_MEM_OK) {
+			mem_status = get_memory(data->log->dives, UEMIS_CHECK_LOG);
+			if (mem_status != uemis_mem_status::ok) {
 #if UEMIS_DEBUG & 4
 				report_info("d_u_i out of memory, bailing\n");
 #endif
@@ -1364,7 +1364,7 @@ std::string do_uemis_import(device_data_t *data)
 				// Resetting to original state
 				filenr = 0;
 				max_mem_used = -1;
-				uemis_mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
+				mem_status = get_memory(data->log->dives, UEMIS_CHECK_DETAILS);
 				if (uemis_get_answer(mountpath, "getDeviceId", 0, 1, result).empty())
 					goto bail;
 				if (deviceid != param_buff[0]) {
@@ -1406,7 +1406,7 @@ std::string do_uemis_import(device_data_t *data)
 			 * The loaded block of dive logs is useless and all new loaded dive logs need to
 			 * be deleted from the download_table.
 			 */
-			if (uemis_mem_status == UEMIS_MEM_FULL)
+			if (mem_status == uemis_mem_status::full)
 				do_delete_dives(data->log->dives, match_dive_and_log);
 #if UEMIS_DEBUG & 4
 			report_info("d_u_i out of memory, bailing instead of processing\n");
@@ -1431,7 +1431,7 @@ std::string do_uemis_import(device_data_t *data)
 			next_table_index++;
 	}
 
-	if (uemis_mem_status != UEMIS_MEM_OK)
+	if (mem_status != uemis_mem_status::ok)
 		result = translate("gettextFromC", ERR_FS_ALMOST_FULL);
 
 	if (data->sync_time)
