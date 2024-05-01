@@ -431,7 +431,7 @@ static bool cylinder_used(const cylinder_t *cyl)
 	start_mbar = cyl->start.mbar ?: cyl->sample_start.mbar;
 	end_mbar = cyl->end.mbar ?: cyl->sample_end.mbar;
 
-	// More than 5 bar used? This matches statistics.c
+	// More than 5 bar used? This matches statistics.cpp
 	// heuristics
 	return start_mbar > end_mbar + SOME_GAS;
 }

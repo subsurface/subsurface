@@ -13,81 +13,59 @@
 
 #define STATS_MAX_DEPTH 300	/* Max depth for stats bucket is 300m */
 #define STATS_DEPTH_BUCKET 10	/* Size of buckets for depth range */
-#define STATS_MAX_TEMP 40		/* Max temp for stats bucket is 40C */
-#define STATS_TEMP_BUCKET 5 /* Size of buckets for temp range */
+#define STATS_MAX_TEMP 40	/* Max temp for stats bucket is 40C */
+#define STATS_TEMP_BUCKET 5	/* Size of buckets for temp range */
 
 struct dive;
 
-typedef struct
+#ifdef __cplusplus
+
+#include <string>
+#include <vector>
+
+struct stats_t
 {
-	int period;
-	duration_t total_time;
+	int period = 0;
+	duration_t total_time = { 0 };
 	/* total time of dives with non-zero average depth */
-	duration_t total_average_depth_time;
+	duration_t total_average_depth_time = { 0 };
 	/* avg_time is simply total_time / nr -- let's not keep this */
-	duration_t shortest_time;
-	duration_t longest_time;
-	depth_t max_depth;
-	depth_t min_depth;
-	depth_t avg_depth;
-	depth_t combined_max_depth;
-	volume_t max_sac;
-	volume_t min_sac;
-	volume_t avg_sac;
-	temperature_t max_temp;
-	temperature_t min_temp;
-	temperature_sum_t combined_temp;
-	unsigned int combined_count;
-	unsigned int selection_size;
-	duration_t total_sac_time;
-	bool is_year;
-	bool is_trip;
-	char *location;
-} stats_t;
+	duration_t shortest_time = { 0 };
+	duration_t longest_time = { 0 };
+	depth_t max_depth = { 0 };
+	depth_t min_depth = { 0 };
+	depth_t avg_depth = { 0 };
+	depth_t combined_max_depth = { 0 };
+	volume_t max_sac = { 0 };
+	volume_t min_sac = { 0 };
+	volume_t avg_sac = { 0 };
+	temperature_t max_temp = { 0 };
+	temperature_t min_temp = { 0 };
+	temperature_sum_t combined_temp = { 0 };
+	unsigned int combined_count = 0;
+	unsigned int selection_size = 0;
+	duration_t total_sac_time = { 0 };
+	bool is_year = false;
+	bool is_trip = false;
+	std::string location;
+};
 
 struct stats_summary {
-	stats_t *stats_yearly;
-	stats_t *stats_monthly;
-	stats_t *stats_by_trip;
-	stats_t *stats_by_type;
-	stats_t *stats_by_depth;
-	stats_t *stats_by_temp;
+	stats_summary();
+	~stats_summary();
+	std::vector<stats_t> stats_yearly;
+	std::vector<stats_t> stats_monthly;
+	std::vector<stats_t> stats_by_trip;
+	std::vector<stats_t> stats_by_type;
+	std::vector<stats_t> stats_by_depth;
+	std::vector<stats_t> stats_by_temp;
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+extern stats_summary calculate_stats_summary(bool selected_only);
+extern stats_t calculate_stats_selected();
+extern std::vector<volume_t> get_gas_used(struct dive *dive);
+extern std::pair<volume_t, volume_t> selected_dives_gas_parts(); // returns (O2, He) tuple
 
-extern void init_stats_summary(struct stats_summary *stats);
-extern void free_stats_summary(struct stats_summary *stats);
-extern void calculate_stats_summary(struct stats_summary *stats, bool selected_only);
-extern void calculate_stats_selected(stats_t *stats_selection);
-extern volume_t *get_gas_used(struct dive *dive);
-extern void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot);
-
-#ifdef __cplusplus
-}
-#endif
-
-/*
- * For C++ code, provide a convenience version of stats_summary
- * that initializes the structure on construction and frees
- * resources when it goes out of scope. Apart from that, it
- * can be used as a stats_summary replacement.
- */
-#ifdef __cplusplus
-struct stats_summary_auto_free : public stats_summary {
-	stats_summary_auto_free();
-	~stats_summary_auto_free();
-};
-inline stats_summary_auto_free::stats_summary_auto_free()
-{
-	init_stats_summary(this);
-}
-inline stats_summary_auto_free::~stats_summary_auto_free()
-{
-	free_stats_summary(this);
-}
 #endif
 
 #endif // STATISTICS_H

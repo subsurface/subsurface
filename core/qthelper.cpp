@@ -385,14 +385,13 @@ QVector<QPair<QString, int>> selectedDivesGasUsed()
 	int j;
 	QMap<QString, int> gasUsed;
 	for (dive *d: getDiveSelection()) {
-		volume_t *diveGases = get_gas_used(d);
+		std::vector<volume_t> diveGases = get_gas_used(d);
 		for (j = 0; j < d->cylinders.nr; j++) {
 			if (diveGases[j].mliter) {
 				QString gasName = gasname(get_cylinder(d, j)->gasmix);
 				gasUsed[gasName] += diveGases[j].mliter;
 			}
 		}
-		free(diveGases);
 	}
 	QVector<QPair<QString, int>> gasUsedOrdered;
 	gasUsedOrdered.reserve(gasUsed.size());
