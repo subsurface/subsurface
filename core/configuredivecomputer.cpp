@@ -68,16 +68,14 @@ static QString writeGasDetails(gas g)
 bool ConfigureDiveComputer::saveXMLBackup(const QString &fileName, const DeviceDetails &details, device_data_t *data)
 {
 	QString xml = "";
-	QString vendor = data->vendor;
-	QString product = data->product;
 	QXmlStreamWriter writer(&xml);
 	writer.setAutoFormatting(true);
 
 	writer.writeStartDocument();
 	writer.writeStartElement("DiveComputerSettingsBackup");
 	writer.writeStartElement("DiveComputer");
-	writer.writeTextElement("Vendor", vendor);
-	writer.writeTextElement("Product", product);
+	writer.writeTextElement("Vendor", QString::fromStdString(data->vendor));
+	writer.writeTextElement("Product", QString::fromStdString(data->product));
 	writer.writeEndElement();
 	writer.writeStartElement("Settings");
 	writer.writeTextElement("CustomText", details.customText);

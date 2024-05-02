@@ -23,17 +23,12 @@ class BLEObject : public QObject
 	Q_OBJECT
 
 public:
-	BLEObject(QLowEnergyController *c, device_data_t *);
+	BLEObject(QLowEnergyController *c, device_data_t &);
 	~BLEObject();
 	inline void set_timeout(int value) { timeout = value; }
 	dc_status_t write(const void* data, size_t size, size_t *actual);
 	dc_status_t read(void* data, size_t size, size_t *actual);
-	inline dc_status_t get_name(char *res, size_t size)
-	{
-		if (!device->btname) return DC_STATUS_UNSUPPORTED;
-		strncpy(res, device->btname, size);
-		return DC_STATUS_SUCCESS;
-	}
+	dc_status_t get_name(char *res, size_t size);
 	dc_status_t poll(int timeout);
 
 	inline QLowEnergyService *preferredService() { return preferred; }
@@ -51,11 +46,11 @@ public slots:
 private:
 	QVector<QLowEnergyService *> services;
 
-	QLowEnergyController *controller = nullptr;
+	QLowEnergyController *controller;
 	QLowEnergyService *preferred = nullptr;
 	QList<QByteArray> receivedPackets;
 	bool isCharacteristicWritten;
-	device_data_t *device;
+	device_data_t &device;
 	unsigned int hw_credit = 0;
 	unsigned int desc_written = 0;
 	int timeout;

@@ -81,7 +81,7 @@ void DownloadThread::run()
 	auto internalData = m_data->internalData();
 	internalData->descriptor = descriptorLookup[m_data->vendor().toLower() + m_data->product().toLower()];
 	internalData->log = &log;
-	internalData->btname = strdup(m_data->devBluetoothName().toUtf8());
+	internalData->btname = m_data->devBluetoothName().toStdString();
 	if (!internalData->descriptor) {
 		report_info("No download possible when DC type is unknown");
 		return;
@@ -103,7 +103,7 @@ void DownloadThread::run()
 	std::string errorText;
 	import_thread_cancelled = false;
 	error.clear();
-	if (!strcmp(internalData->vendor, "Uemis"))
+	if (internalData->vendor == "Uemis")
 		errorText = do_uemis_import(internalData);
 	else
 		errorText = do_libdivecomputer_import(internalData);
@@ -116,9 +116,9 @@ void DownloadThread::run()
 			error = tr("No new dives downloaded from dive computer").toStdString();
 		report_info("Finishing download thread: %d dives downloaded", log.dives->nr);
 	}
-	qPrefDiveComputer::set_vendor(internalData->vendor);
-	qPrefDiveComputer::set_product(internalData->product);
-	qPrefDiveComputer::set_device(internalData->devname);
+	qPrefDiveComputer::set_vendor(internalData->vendor.c_str());
+	qPrefDiveComputer::set_product(internalData->product.c_str());
+	qPrefDiveComputer::set_device(internalData->devname.c_str());
 	qPrefDiveComputer::set_device_name(m_data->devBluetoothName());
 
 	updateRememberedDCs();
@@ -246,17 +246,17 @@ DCDeviceData *DownloadThread::data()
 
 QString DCDeviceData::vendor() const
 {
-	return data.vendor;
+	return QString::fromStdString(data.vendor);
 }
 
 QString DCDeviceData::product() const
 {
-	return data.product;
+	return QString::fromStdString(data.product);
 }
 
 QString DCDeviceData::devName() const
 {
-	return data.devname;
+	return QString::fromStdString(data.devname);
 }
 
 QString DCDeviceData::devBluetoothName() const
@@ -291,12 +291,12 @@ bool DCDeviceData::syncTime() const
 
 void DCDeviceData::setVendor(const QString &vendor)
 {
-	data.vendor = copy_qstring(vendor);
+	data.vendor = vendor.toStdString();
 }
 
 void DCDeviceData::setProduct(const QString &product)
 {
-	data.product = copy_qstring(product);
+	data.product = product.toStdString();
 }
 
 void DCDeviceData::setDevName(const QString &devName)
@@ -313,11 +313,11 @@ void DCDeviceData::setDevName(const QString &devName)
 			QString back = devName.mid(idx1 + 1, idx2 - idx1 - 1);
 			QString newDevName = back.indexOf(':') >= 0 ? back : front;
 			qWarning() << "Found invalid bluetooth device" << devName << "corrected to" << newDevName << ".";
-			data.devname = copy_qstring(newDevName);
+			data.devname = newDevName.toStdString();
 			return;
 		}
 	}
-	data.devname = copy_qstring(devName);
+	data.devname = devName.toStdString();
 }
 
 #if defined(Q_OS_ANDROID)

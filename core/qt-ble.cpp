@@ -25,10 +25,6 @@
 #define DEBUG_THRESHOLD 50
 static int debugCounter;
 
-#define IS_HW(_d) same_string((_d)->vendor, "Heinrichs Weikamp")
-#define IS_SHEARWATER(_d) same_string((_d)->vendor, "Shearwater")
-#define IS_GARMIN(_d) same_string((_d)->vendor, "Garmin")
-
 #define MAXIMAL_HW_CREDIT	254
 #define MINIMAL_HW_CREDIT	32
 
@@ -72,11 +68,26 @@ void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState newState)
 			report_info("%s %d", to_str(service->serviceUuid()).c_str(), static_cast<int>(newState));
 }
 
+static bool is_hw(const device_data_t &d)
+{
+	return d.vendor == "Heinrichs Weikamp";
+}
+
+static bool is_shearwater(const device_data_t &d)
+{
+	return d.vendor == "Shearwater";
+}
+
+static bool is_garmin(const device_data_t &d)
+{
+	return d.vendor == "Garmin";
+}
+
 void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
 	if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
 		report_info("%s packet RECV %s", current_time().c_str(), qPrintable(value.toHex()));
-	if (IS_HW(device)) {
+	if (is_hw(device)) {
 		if (c.uuid() == telit[TELIT_DATA_TX] || c.uuid() == ublox[UBLOX_DATA_TX]) {
 			hw_credit--;
 			receivedPackets.append(value);
@@ -92,7 +103,7 @@ void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, con
 
 void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
-	if (IS_HW(device)) {
+	if (is_hw(device)) {
 		if (c.uuid() == telit[TELIT_CREDITS_RX] || c.uuid() == ublox[UBLOX_CREDITS_RX]) {
 			bool ok;
 			hw_credit += value.toHex().toInt(&ok, 16);
@@ -246,13 +257,13 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	}
 }
 
-BLEObject::BLEObject(QLowEnergyController *c, device_data_t *d)
+BLEObject::BLEObject(QLowEnergyController *c, device_data_t &d) :
+	controller(c),
+	isCharacteristicWritten(false),
+	device(d),
+	timeout(BLE_TIMEOUT)
 {
-	controller = c;
-	device = d;
 	debugCounter = 0;
-	isCharacteristicWritten = false;
-	timeout = BLE_TIMEOUT;
 }
 
 BLEObject::~BLEObject()
@@ -549,9 +560,9 @@ dc_status_t BLEObject::setupHwTerminalIo(const QList<QLowEnergyCharacteristic> &
 // Bluez is broken, and doesn't have a sane way to query
 // whether to use a random address or not. So we have to
 // fake it.
-static int use_random_address(device_data_t *user_device)
+static int use_random_address(const device_data_t &user_device)
 {
-	return IS_SHEARWATER(user_device) || IS_GARMIN(user_device);
+	return is_shearwater(user_device) || is_garmin(user_device);
 }
 #endif
 
@@ -587,7 +598,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 	report_info("qt_ble_open(%s)", devaddr);
 
 #if !defined(Q_OS_WIN)
-	if (use_random_address(user_device))
+	if (use_random_address(*user_device))
 		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
 #endif
 
@@ -616,7 +627,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 	// We need to discover services etc here!
 	// Note that ble takes ownership of controller and henceforth deleting ble will
 	// take care of deleting controller.
-	BLEObject *ble = new BLEObject(controller, user_device);
+	BLEObject *ble = new BLEObject(controller, *user_device);
 	// we used to call our addService function the moment a service was discovered, but that
 	// could cause us to try to discover the details of a characteristic while we were still serching
 	// for services, which can cause a failure in the Qt BLE stack.
@@ -657,7 +668,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 
 	/* Enable notifications */
 	QList<QLowEnergyCharacteristic> list = ble->preferredService()->characteristics();
-	if (IS_HW(user_device)) {
+	if (is_hw(*user_device)) {
 		dc_status_t r = ble->setupHwTerminalIo(list);
 		if (r != DC_STATUS_SUCCESS) {
 			delete ble;
@@ -745,6 +756,14 @@ dc_status_t qt_ble_poll(void *io, int timeout)
 	BLEObject *ble = (BLEObject *) io;
 
 	return ble->poll(timeout);
+}
+
+dc_status_t BLEObject::get_name(char *data, size_t size)
+{
+	if (device.btname.empty())
+		return DC_STATUS_UNSUPPORTED;
+	strncpy(data, device.btname.c_str(), size);
+	return DC_STATUS_SUCCESS;
 }
 
 dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size)

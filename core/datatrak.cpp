@@ -111,10 +111,11 @@ static int dtrak_prepare_data(int model, device_data_t &dev_data)
 
 	while (model != g_models[i].model_num && g_models[i].model_num != 0xEE)
 		i++;
-	dev_data.model = copy_string(g_models[i].name);
-	dev_data.vendor = (const char *)malloc(strlen(g_models[i].name) + 1);
-	sscanf(g_models[i].name, "%[A-Za-z] ", (char *)dev_data.vendor);
-	dev_data.product = copy_string(strchr(g_models[i].name, ' ') + 1);
+	dev_data.model = g_models[i].name;
+	dev_data.vendor.clear();
+	for (const char *s = g_models[i].name; isalpha(*s); ++s)
+		dev_data.vendor += *s;
+	dev_data.product = strchr(g_models[i].name, ' ') + 1;
 
 	d = get_descriptor(g_models[i].type, g_models[i].libdc_num);
 	if (d)
@@ -520,7 +521,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	libdc_model = dtrak_prepare_data(tmp_1byte, devdata);
 	if (!libdc_model)
 		report_error(translate("gettextFromC", "[Warning] Manual dive # %d\n"), dt_dive->number);
-	dt_dive->dc.model = copy_string(devdata.model);
+	dt_dive->dc.model = copy_string(devdata.model.c_str());
 
 	/*
 	 * Air usage, unknown use. Probably allows or deny manually entering gas

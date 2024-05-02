@@ -311,7 +311,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 	QStringList fwParts = latestFirmwareAvailable.split(".");
 	int latestFirmwareAvailableNumber;
 
-	if (strcmp(data->product, "OSTC 4") == 0) {
+	if (data->product == "OSTC 4") {
 		unsigned char X, Y, Z, beta;
 		X = (firmwareOnDevice & 0xF800) >> 11;
 		Y = (firmwareOnDevice & 0x07C0) >> 6;
@@ -933,23 +933,23 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	QString device = ui.device->currentText();
 #ifdef BT_SUPPORT
 	if (isBluetoothAddress(device)) {
-		QString name;
-		device = copy_qstring(extractBluetoothNameAddress(device, name));
-		device_data.btname = copy_qstring(name);
+		auto [new_address, name] = extractBluetoothNameAddress(device);
+		device = new_address;
+		device_data.btname = name.toStdString();
 		device_data.bluetooth_mode = true;
 	} else
 #endif
 	{
 		device_data.bluetooth_mode = false;
 	}
-	device_data.devname = copy_qstring(device);
+	device_data.devname = device.toStdString();
 
 	const DiveComputerEntry selectedDiveComputer = supportedDiveComputers[ui.DiveComputerList->currentRow()];
 
 	QString vendor = selectedDiveComputer.vendor;
 	QString product = selectedDiveComputer.product;
-	device_data.vendor = copy_qstring(vendor);
-	device_data.product = copy_qstring(product);
+	device_data.vendor = vendor.toStdString();
+	device_data.product = product.toStdString();
 	device_data.descriptor = descriptorLookup.value(vendor.toLower() + product.toLower());
 
 	device_data.diveid = 0;
@@ -1532,10 +1532,10 @@ void ConfigureDiveComputerDialog::dc_open()
 
 	ui.progressBar->setFormat(tr("Connected to device"));
 
-	qPrefDiveComputer::set_device(device_data.devname);
-	qPrefDiveComputer::set_device_name(device_data.btname);
-	qPrefDiveComputer::set_vendor(device_data.vendor);
-	qPrefDiveComputer::set_product(device_data.product);
+	qPrefDiveComputer::set_device(device_data.devname.c_str());
+	qPrefDiveComputer::set_device_name(device_data.btname.c_str());
+	qPrefDiveComputer::set_vendor(device_data.vendor.c_str());
+	qPrefDiveComputer::set_product(device_data.product.c_str());
 }
 
 void ConfigureDiveComputerDialog::dc_close()
