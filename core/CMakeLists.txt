@@ -17,7 +17,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
 endif()
 
 if(FTDISUPPORT)
-	set(SERIAL_FTDI serial_ftdi.c)
+	set(SERIAL_FTDI serial_ftdi.cpp)
 endif()
 
 if(BTSUPPORT)
