@@ -202,7 +202,6 @@ void show_computer_list()
 
 DCDeviceData::DCDeviceData()
 {
-	memset(&data, 0, sizeof(data));
 	data.log = nullptr;
 	data.diveid = 0;
 #if defined(BT_SUPPORT)
