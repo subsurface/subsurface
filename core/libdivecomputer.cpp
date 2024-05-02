@@ -55,6 +55,16 @@ static int current_gas_index;
 #define INFO(fmt, ...) report_info("INFO: " fmt, ##__VA_ARGS__)
 #define ERROR(fmt, ...)	report_info("ERROR: " fmt, ##__VA_ARGS__)
 
+device_data_t::device_data_t()
+{
+}
+
+device_data_t::~device_data_t()
+{
+	if (descriptor)
+		dc_descriptor_free(descriptor);
+}
+
 /*
  * Directly taken from libdivecomputer's examples/common.c to improve
  * the error messages resulting from libdc's return codes

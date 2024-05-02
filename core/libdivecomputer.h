@@ -29,7 +29,7 @@ struct dive;
 struct divelog;
 struct devices;
 
-typedef struct {
+struct device_data_t {
 	dc_descriptor_t *descriptor = nullptr;
 	std::string vendor, product, devname;
 	std::string model, btname;
@@ -48,7 +48,9 @@ typedef struct {
 	FILE *libdc_logfile = nullptr;
 	struct divelog *log = nullptr;
 	void *androidUsbDeviceDescriptor = nullptr;
-} device_data_t;
+	device_data_t();
+	~device_data_t();
+};
 
 const char *errmsg (dc_status_t rc);
 std::string do_libdivecomputer_import(device_data_t *data);
