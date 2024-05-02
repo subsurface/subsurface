@@ -819,34 +819,33 @@ static dc_descriptor_t *get_data_descriptor(int data_model, dc_family_t data_fam
  * DC.  dc_family_t is certainly known *only* if it is Aladin/Memomouse family
  * otherwise it will be known after get_data_descriptor call.
  */
-static dc_status_t prepare_data(int data_model, const char *serial, dc_family_t dc_fam, device_data_t *dev_data)
+static dc_status_t prepare_data(int data_model, const char *serial, dc_family_t dc_fam, device_data_t &dev_data)
 {
-	dev_data->device = NULL;
-	dev_data->context = NULL;
+	dev_data.device = NULL;
+	dev_data.context = NULL;
 	if (!data_model) {
-		dev_data->model = copy_string(manual_dc_name);
-		dev_data->descriptor = NULL;
+		dev_data.model = copy_string(manual_dc_name);
+		dev_data.descriptor = NULL;
 		return DC_STATUS_NODEVICE;
 	}
-	dev_data->descriptor = get_data_descriptor(data_model, dc_fam);
-	if (dev_data->descriptor) {
-		dev_data->vendor = dc_descriptor_get_vendor(dev_data->descriptor);
-		dev_data->product = dc_descriptor_get_product(dev_data->descriptor);
-		concat(&dev_data->model, "", format_string_std("%s %s", dev_data->vendor, dev_data->product));
-		dev_data->devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
+	dev_data.descriptor = get_data_descriptor(data_model, dc_fam);
+	if (dev_data.descriptor) {
+		dev_data.vendor = dc_descriptor_get_vendor(dev_data.descriptor);
+		dev_data.product = dc_descriptor_get_product(dev_data.descriptor);
+		concat(&dev_data.model, "", format_string_std("%s %s", dev_data.vendor, dev_data.product));
+		dev_data.devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
 		return DC_STATUS_SUCCESS;
 	} else {
-		dev_data->model = copy_string("unsupported dive computer");
-		dev_data->devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
+		dev_data.model = copy_string("unsupported dive computer");
+		dev_data.devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
 		return DC_STATUS_UNSUPPORTED;
 	}
 }
 
-static void device_data_free(device_data_t *dev_data)
+static void device_data_free(device_data_t &dev_data)
 {
-	free((void *) dev_data->model);
-	dc_descriptor_free(dev_data->descriptor);
-	free(dev_data);
+	free((void *) dev_data.model);
+	dc_descriptor_free(dev_data.descriptor);
 }
 
 /*
@@ -931,7 +930,7 @@ extern "C" void smartrak_import(const char *file, struct divelog *log)
 		return;
 	}
 	while (mdb_table.fetch_row()) {
-		device_data_t *devdata = (device_data_t *)calloc(1, sizeof(device_data_t));
+		device_data_t devdata;
 		dc_family_t dc_fam = DC_FAMILY_NULL;
 		unsigned char *prf_buffer, *hdr_buffer;
 		struct dive *smtkdive = alloc_dive();
@@ -953,18 +952,18 @@ extern "C" void smartrak_import(const char *file, struct divelog *log)
 				dc_fam = DC_FAMILY_UWATEC_ALADIN;
 		}
 		rc = prepare_data(dc_model, (char *)col[coln(DCNUMBER)]->bind_ptr, dc_fam, devdata);
-		smtkdive->dc.model = copy_string(devdata->model);
+		smtkdive->dc.model = copy_string(devdata.model);
 		if (rc == DC_STATUS_SUCCESS && mdb_table.get_len(coln(PROFILE))) {
 			prf_buffer = static_cast<unsigned char *>(mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length));
 			if (prf_length > 0) {
-				if (dc_descriptor_get_type(devdata->descriptor) == DC_FAMILY_UWATEC_ALADIN || dc_descriptor_get_type(devdata->descriptor) == DC_FAMILY_UWATEC_MEMOMOUSE)
+				if (dc_descriptor_get_type(devdata.descriptor) == DC_FAMILY_UWATEC_ALADIN || dc_descriptor_get_type(devdata.descriptor) == DC_FAMILY_UWATEC_MEMOMOUSE)
 					hdr_length = 18;
 				std::vector<unsigned char> compl_buffer(hdr_length+prf_length);
-				rc = libdc_buffer_complete(devdata, hdr_buffer, hdr_length, prf_buffer, prf_length, compl_buffer.data());
+				rc = libdc_buffer_complete(&devdata, hdr_buffer, hdr_length, prf_buffer, prf_length, compl_buffer.data());
 				if (rc != DC_STATUS_SUCCESS) {
 					report_error("[Error][smartrak_import]\t- %s - for dive %d", errmsg(rc), smtkdive->number);
 				} else {
-					rc = libdc_buffer_parser(smtkdive, devdata, compl_buffer.data(), hdr_length + prf_length);
+					rc = libdc_buffer_parser(smtkdive, &devdata, compl_buffer.data(), hdr_length + prf_length);
 					if (rc != DC_STATUS_SUCCESS)
 						report_error("[Error][libdc]\t\t- %s - for dive %d", errmsg(rc), smtkdive->number);
 				}

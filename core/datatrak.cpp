@@ -104,21 +104,21 @@ static int read_file_header(unsigned char *buffer)
  * Returns libdc's equivalent model number (also from g_models) or zero if
  * this a manual dive.
  */
-static int dtrak_prepare_data(int model, device_data_t *dev_data)
+static int dtrak_prepare_data(int model, device_data_t &dev_data)
 {
 	dc_descriptor_t *d = NULL;
 	int i = 0;
 
 	while (model != g_models[i].model_num && g_models[i].model_num != 0xEE)
 		i++;
-	dev_data->model = copy_string(g_models[i].name);
-	dev_data->vendor = (const char *)malloc(strlen(g_models[i].name) + 1);
-	sscanf(g_models[i].name, "%[A-Za-z] ", (char *)dev_data->vendor);
-	dev_data->product = copy_string(strchr(g_models[i].name, ' ') + 1);
+	dev_data.model = copy_string(g_models[i].name);
+	dev_data.vendor = (const char *)malloc(strlen(g_models[i].name) + 1);
+	sscanf(g_models[i].name, "%[A-Za-z] ", (char *)dev_data.vendor);
+	dev_data.product = copy_string(strchr(g_models[i].name, ' ') + 1);
 
 	d = get_descriptor(g_models[i].type, g_models[i].libdc_num);
 	if (d)
-		dev_data->descriptor = d;
+		dev_data.descriptor = d;
 	else
 		return 0;
 	return g_models[i].libdc_num;
@@ -174,8 +174,8 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	struct dive_site *ds;
 	char is_nitrox = 0, is_O2 = 0, is_SCR = 0;
 
-	device_data_t *devdata = (device_data_t *)calloc(1, sizeof(device_data_t));
-	devdata->log = log;
+	device_data_t devdata;
+	devdata.log = log;
 
 	/*
 	 * Parse byte to byte till next dive entry
@@ -520,7 +520,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	libdc_model = dtrak_prepare_data(tmp_1byte, devdata);
 	if (!libdc_model)
 		report_error(translate("gettextFromC", "[Warning] Manual dive # %d\n"), dt_dive->number);
-	dt_dive->dc.model = copy_string(devdata->model);
+	dt_dive->dc.model = copy_string(devdata.model);
 
 	/*
 	 * Air usage, unknown use. Probably allows or deny manually entering gas
@@ -543,7 +543,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 		compl_buffer = (unsigned char *) calloc(18 + profile_length, 1);
 		rc = dt_libdc_buffer(membuf, profile_length, libdc_model, compl_buffer);
 		if (rc == DC_STATUS_SUCCESS) {
-			libdc_buffer_parser(dt_dive, devdata, compl_buffer, profile_length + 18);
+			libdc_buffer_parser(dt_dive, &devdata, compl_buffer, profile_length + 18);
 		} else {
 			report_error(translate("gettextFromC", "[Error] Out of memory for dive %d. Abort parsing."), dt_dive->number);
 			free(compl_buffer);
@@ -570,11 +570,9 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 		get_cylinder(dt_dive, 0)->end.mbar = get_cylinder(dt_dive, 0)->start.mbar -
 			((get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000);
 	}
-	free(devdata);
 	return (char *)membuf;
 bail:
 	free(locality);
-	free(devdata);
 	return NULL;
 }
 

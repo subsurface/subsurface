@@ -145,7 +145,6 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(const QString &filename
 	ui.connectBluetoothButton->setVisible(false);
 #endif
 
-	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
 
 	unsigned int selectedDiveComputerIndex = 0;
@@ -267,7 +266,7 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(const QString &filename
 OstcFirmwareCheck::OstcFirmwareCheck(const QString &product) : parent(0)
 {
 	QUrl url;
-	memset(&devData, 1, sizeof(devData));
+	devData = device_data_t();
 	if (product == "OSTC 3" || product == "OSTC 3+" || product == "OSTC cR" || product == "OSTC Plus") {
 		url = QUrl("http://www.heinrichsweikamp.net/autofirmware/ostc3_changelog.txt");
 		latestFirmwareHexFile = QString("http://www.heinrichsweikamp.net/autofirmware/ostc3_firmware.hex");
