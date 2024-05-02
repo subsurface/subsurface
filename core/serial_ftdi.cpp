@@ -22,7 +22,7 @@
  * MA 02110-1301 USA
  */
 
-#include <stdlib.h> // malloc, free
+#include <memory>
 #include <string.h>     // strerror
 #include <errno.h>      // errno
 #include <sys/time.h>   // gettimeofday
@@ -49,15 +49,15 @@
 
 #define VID 0x0403 // Vendor ID of FTDI
 
-typedef struct ftdi_serial_t {
+struct ftdi_serial_t {
 	/* Library context. */
-	dc_context_t *context;
+	dc_context_t *context = nullptr;
 	/*
 	 * The file descriptor corresponding to the serial port.
 	 * Also a libftdi_ftdi_ctx could be used?
 	 */
-	struct ftdi_context *ftdi_ctx;
-	long timeout;
+	struct ftdi_context *ftdi_ctx = nullptr;
+	long timeout = -1; // Default to blocking reads.
 	/*
 	 * Serial port settings are saved into this variable immediately
 	 * after the port is opened. These settings are restored when the
@@ -66,16 +66,21 @@ typedef struct ftdi_serial_t {
 	 * Custom implementation using libftdi functions could be done.
 	 */
 
-	unsigned int baudrate;
-	unsigned int nbits;
-	unsigned int databits;
-	unsigned int stopbits;
-	unsigned int parity;
-} ftdi_serial_t;
+	// Default to full-duplex.
+	unsigned int baudrate = 0;
+	unsigned int nbits = 0;
+	unsigned int databits = 0;
+	unsigned int stopbits = 0;
+	unsigned int parity = 0;
+	~ftdi_serial_t() {
+		if (ftdi_ctx)
+			ftdi_free(ftdi_ctx);
+	}
+};
 
 static dc_status_t serial_ftdi_get_available (void *io, size_t *value)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -114,7 +119,7 @@ static unsigned int serial_ftdi_get_msec(void)
 
 static dc_status_t serial_ftdi_sleep (void *io, unsigned int timeout)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -173,17 +178,11 @@ static dc_status_t serial_ftdi_open (void **io, dc_context_t *context)
 {
 	INFO("serial_ftdi_open called");
 	// Allocate memory.
-	ftdi_serial_t *device = (ftdi_serial_t *) malloc (sizeof (ftdi_serial_t));
-	if (device == NULL) {
-		INFO("couldn't allocate memory");
-		SYSERROR (errno);
-		return DC_STATUS_NOMEMORY;
-	}
+	auto device = std::make_unique<ftdi_serial_t>();
 	INFO("setting up ftdi_ctx");
 	struct ftdi_context *ftdi_ctx = ftdi_new();
 	if (ftdi_ctx == NULL) {
 		INFO("failed ftdi_new()");
-		free(device);
 		SYSERROR (errno);
 		return DC_STATUS_NOMEMORY;
 	}
@@ -191,48 +190,34 @@ static dc_status_t serial_ftdi_open (void **io, dc_context_t *context)
 	// Library context.
 	//device->context = context;
 
-	// Default to blocking reads.
-	device->timeout = -1;
-
-	// Default to full-duplex.
-	device->baudrate = 0;
-	device->nbits = 0;
-	device->databits = 0;
-	device->stopbits = 0;
-	device->parity = 0;
-
 	// Initialize device ftdi context
 	INFO("initialize ftdi_ctx");
 	ftdi_init(ftdi_ctx);
 
 	if (ftdi_set_interface(ftdi_ctx,INTERFACE_ANY)) {
-		free(device);
 		ERROR ("%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
 	INFO("call serial_ftdi_open_device");
 	if (serial_ftdi_open_device(ftdi_ctx) < 0) {
-		free(device);
 		ERROR ("%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
 	if (ftdi_usb_reset(ftdi_ctx)) {
-		free(device);
 		ERROR ("%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
 	if (ftdi_usb_purge_buffers(ftdi_ctx)) {
-		free(device);
 		ERROR ("%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
 	device->ftdi_ctx = ftdi_ctx;
 
-	*io = device;
+	*io = device.release();
 
 	return DC_STATUS_SUCCESS;
 }
@@ -242,7 +227,7 @@ static dc_status_t serial_ftdi_open (void **io, dc_context_t *context)
 //
 static dc_status_t serial_ftdi_close (void *io)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_SUCCESS;
@@ -254,13 +239,11 @@ static dc_status_t serial_ftdi_close (void *io)
 	if (ret < 0) {
 		ERROR ("Unable to close the ftdi device : %d (%s)",
 		       ret, ftdi_get_error_string(device->ftdi_ctx));
-		return ret;
+		return (dc_status_t)ret;
 	}
 
-	ftdi_free(device->ftdi_ctx);
-
 	// Free memory.
-	free (device);
+	delete device;
 
 	return DC_STATUS_SUCCESS;
 }
@@ -270,7 +253,7 @@ static dc_status_t serial_ftdi_close (void *io)
 //
 static dc_status_t serial_ftdi_configure (void *io, unsigned int baudrate, unsigned int databits, dc_parity_t parity, dc_stopbits_t stopbits, dc_flowcontrol_t flowcontrol)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -373,7 +356,7 @@ static dc_status_t serial_ftdi_configure (void *io, unsigned int baudrate, unsig
 //
 static dc_status_t serial_ftdi_set_timeout (void *io, int timeout)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -387,7 +370,7 @@ static dc_status_t serial_ftdi_set_timeout (void *io, int timeout)
 
 static dc_status_t serial_ftdi_read (void *io, void *data, size_t size, size_t *actual)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -396,7 +379,7 @@ static dc_status_t serial_ftdi_read (void *io, void *data, size_t size, size_t *
 	long timeout = device->timeout;
 
 	// Simulate blocking read as 10s timeout
-	if (timeout == -1)
+	if (timeout <= -1)
 		timeout = 10000;
 
 	unsigned int start_time = serial_ftdi_get_msec();
@@ -409,8 +392,8 @@ static dc_status_t serial_ftdi_read (void *io, void *data, size_t size, size_t *
 			ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO; //Error during read call.
 		} else if (n == 0) {
-			if (serial_ftdi_get_msec() - start_time > timeout) {
-				ERROR("FTDI read timed out.");
+			if (serial_ftdi_get_msec() - start_time > (unsigned int)timeout) {
+				ERROR("%s", "FTDI read timed out.");
 				return DC_STATUS_TIMEOUT;
 			}
 			serial_ftdi_sleep (device, 1);
@@ -429,7 +412,7 @@ static dc_status_t serial_ftdi_read (void *io, void *data, size_t size, size_t *
 
 static dc_status_t serial_ftdi_write (void *io, const void *data, size_t size, size_t *actual)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -460,7 +443,7 @@ static dc_status_t serial_ftdi_write (void *io, const void *data, size_t size, s
 
 static dc_status_t serial_ftdi_purge (void *io, dc_direction_t queue)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -497,14 +480,16 @@ static dc_status_t serial_ftdi_purge (void *io, dc_direction_t queue)
 
 static dc_status_t serial_ftdi_set_break (void *io, unsigned int level)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
 	INFO ("Break: value=%i", level);
 
-	if (ftdi_set_line_property2(device->ftdi_ctx, device->databits, device->stopbits, device->parity, level)) {
+	if (ftdi_set_line_property2(device->ftdi_ctx, (ftdi_bits_type)device->databits,
+				(ftdi_stopbits_type)device->stopbits, (ftdi_parity_type)device->parity,
+				(ftdi_break_type)level)) {
 		ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 		return DC_STATUS_IO;
 	}
@@ -514,7 +499,7 @@ static dc_status_t serial_ftdi_set_break (void *io, unsigned int level)
 
 static dc_status_t serial_ftdi_set_dtr (void *io, unsigned int value)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -531,7 +516,7 @@ static dc_status_t serial_ftdi_set_dtr (void *io, unsigned int value)
 
 static dc_status_t serial_ftdi_set_rts (void *io, unsigned int level)
 {
-	ftdi_serial_t *device = io;
+	ftdi_serial_t *device = (ftdi_serial_t *)io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
