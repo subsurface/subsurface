@@ -145,7 +145,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	planner.h
 	plannernotes.cpp
 	pref.h
-	pref.c
+	pref.cpp
 	profile.cpp
 	profile.h
 	qt-gui.h
@@ -188,7 +188,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	uemis.cpp
 	uemis.h
 	units.h
-	units.c
+	units.cpp
 	uploadDiveShare.cpp
 	uploadDiveShare.h
 	uploadDiveLogsDE.cpp

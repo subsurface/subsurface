@@ -45,7 +45,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/fulltext.cpp \
 	core/subsurfacestartup.cpp \
 	core/subsurface-string.cpp \
-	core/pref.c \
+	core/pref.cpp \
 	core/profile.cpp \
 	core/device.cpp \
 	core/dive.cpp \
@@ -98,7 +98,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/taxonomy.c \
 	core/time.cpp \
 	core/trip.c \
-	core/units.c \
+	core/units.cpp \
 	core/uemis.cpp \
 	core/btdiscovery.cpp \
 	core/connectionlistmodel.cpp \
