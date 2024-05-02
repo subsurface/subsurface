@@ -474,7 +474,7 @@ static std::string build_ans_path(const std::string &path, int filenumber)
 }
 
 /* send a request to the dive computer and collect the answer */
-static std::string uemis_get_answer(const char *path, const std::string &request, int n_param_in,
+static std::string uemis_get_answer(const std::string &path, const std::string &request, int n_param_in,
 				   int n_param_out, std::string &error_text)
 {
 	int i = 0;
@@ -535,7 +535,7 @@ static std::string uemis_get_answer(const char *path, const std::string &request
 		if (import_thread_cancelled)
 			return std::string();
 		progress_bar_fraction = filenr / (double)uemis_max_files;
-		std::string ans_path = build_ans_path(std::string(path), filenr - 1);
+		std::string ans_path = build_ans_path(path, filenr - 1);
 		ans_file = subsurface_open(ans_path.c_str(), O_RDONLY, 0666);
 		if (ans_file < 0) {
 			error_text = "can't open Uemis response file";
@@ -1073,7 +1073,7 @@ static void do_delete_dives(struct dive_table *td, int idx)
 		td->dives[x]->hidden_by_filter = true;
 }
 
-static bool load_uemis_divespot(const char *mountpath, int divespot_id)
+static bool load_uemis_divespot(const std::string &mountpath, int divespot_id)
 {
 	param_buff[2] = std::to_string(divespot_id);
 #if UEMIS_DEBUG & 2
@@ -1090,7 +1090,7 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 	return false;
 }
 
-static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, int divespot_id, struct dive *dive)
+static void get_uemis_divespot(device_data_t *devdata, const std::string &mountpath, int divespot_id, struct dive *dive)
 {
 	struct dive_site *nds = dive->dive_site;
 
@@ -1128,7 +1128,7 @@ static void get_uemis_divespot(device_data_t *devdata, const char *mountpath, in
 	}
 }
 
-static bool get_matching_dive(int idx, int &newmax, uemis_mem_status &mem_status, device_data_t *data, const char *mountpath, const char deviceidnr)
+static bool get_matching_dive(int idx, int &newmax, uemis_mem_status &mem_status, device_data_t *data, const std::string &mountpath, const char deviceidnr)
 {
 	struct dive *dive = data->log->dives->dives[idx];
 	char log_file_no_to_find[20];
@@ -1228,7 +1228,7 @@ static bool get_matching_dive(int idx, int &newmax, uemis_mem_status &mem_status
 
 std::string do_uemis_import(device_data_t *data)
 {
-	const char *mountpath = data->devname;
+	const std::string &mountpath = data->devname;
 	short force_download = data->force_download;
 	int newmax = -1;
 	int first, start, end = -2;

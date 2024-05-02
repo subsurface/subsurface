@@ -40,6 +40,7 @@
 #include "core/qthelper.h"
 #include "core/file.h"
 #include <array>
+#include <charconv>
 
 std::string dumpfile_name;
 std::string logfile_name;
@@ -226,7 +227,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 				cyl.type.workingpressure.mbar = lrint(tank.workpressure * 1000);
 
 				if (tank.type & DC_TANKVOLUME_IMPERIAL) {
-					if (same_string(devdata->model, "Suunto EON Steel")) {
+					if (devdata->model == "Suunto EON Steel") {
 						/* Suunto EON Steele gets this wrong. Badly.
 						 * but on the plus side it only supports a few imperial sizes,
 						 * so let's try and guess at least the most common ones.
@@ -279,7 +280,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 				if (!nearly_0(tank.endpressure)) {
 					cyl.start.mbar = lrint(tank.beginpressure * 1000);
 					cyl.end.mbar = lrint(tank.endpressure * 1000);
-				} else if (same_string(devdata->vendor, "Uwatec")) {
+				} else if (devdata->vendor == "Uwatec") {
 					cyl.start.mbar = lrint(tank.beginpressure * 1000 + 30000);
 					cyl.end.mbar = 30000;
 				}
@@ -578,22 +579,6 @@ static int find_dive(struct divecomputer *match)
 }
 
 /*
- * Like g_strdup_printf(), but without the stupid g_malloc/g_free confusion.
- * And we limit the string to some arbitrary size.
- */
-static char *str_printf(const char *fmt, ...)
-{
-	va_list args;
-	char buf[1024];
-
-	va_start(args, fmt);
-	vsnprintf(buf, sizeof(buf) - 1, fmt, args);
-	va_end(args);
-	buf[sizeof(buf) - 1] = 0;
-	return strdup(buf);
-}
-
-/*
  * The dive ID for libdivecomputer dives is the first word of the
  * SHA1 of the fingerprint, if it exists.
  *
@@ -827,14 +812,14 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	rc = dc_parser_new(&parser, devdata->device, data, size);
 	if (rc != DC_STATUS_SUCCESS) {
-		download_error(translate("gettextFromC", "Unable to create parser for %s %s: %d"), devdata->vendor, devdata->product, errmsg(rc));
+		download_error(translate("gettextFromC", "Unable to create parser for %s %s: %d"), devdata->vendor.c_str(), devdata->product.c_str(), errmsg(rc));
 		return true;
 	}
 
 	dive = alloc_dive();
 
 	// Fill in basic fields
-	dive->dc.model = strdup(devdata->model);
+	dive->dc.model = strdup(devdata->model.c_str());
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
 	// Parse the dive's header data
@@ -939,7 +924,7 @@ static std::string fingerprint_file(device_data_t *devdata)
 	uint32_t model, serial;
 
 	// Model hash and libdivecomputer 32-bit 'serial number' for the file name
-	model = calculate_string_hash(devdata->model);
+	model = calculate_string_hash(devdata->model.c_str());
 	serial = devdata->devinfo.serial;
 
 	return format_string_std("%s/fingerprints/%04x.%u",
@@ -1038,7 +1023,7 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 		return;
 
 	/* first try our in memory data - raw_data is owned by the table, the dc_device_set_fingerprint function copies the data */
-	int fsize = get_fingerprint_data(&fingerprint_table, calculate_string_hash(devdata->model), devdata->devinfo.serial, &raw_data);
+	int fsize = get_fingerprint_data(&fingerprint_table, calculate_string_hash(devdata->model.c_str()), devdata->devinfo.serial, &raw_data);
 	if (fsize) {
 		if (verbose)
 			dev_info(devdata, "... found fingerprint in dive table");
@@ -1094,14 +1079,14 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				devdata->descriptor = better_descriptor;
 				devdata->product = dc_descriptor_get_product(better_descriptor);
 				devdata->vendor = dc_descriptor_get_vendor(better_descriptor);
-				devdata->model = str_printf("%s %s", devdata->vendor, devdata->product);
+				devdata->model = devdata->vendor + " " + devdata->product;
 			} else {
 				report_info("EVENT_DEVINFO gave us a different detected product (model %d instead of %d), but that one is unknown.",
 					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 			}
 		}
 		dev_info(devdata, translate("gettextFromC", "model=%s firmware=%u serial=%u"),
-			 devdata->product, devinfo->firmware, devinfo->serial);
+			 devdata->product.c_str(), devinfo->firmware, devinfo->serial);
 		if (devdata->libdc_logfile) {
 			fprintf(devdata->libdc_logfile, "Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
 				devinfo->model, devinfo->model,
@@ -1146,7 +1131,7 @@ static std::string do_device_import(device_data_t *data)
 	dc_status_t rc;
 	dc_device_t *device = data->device;
 
-	data->model = str_printf("%s %s", data->vendor, data->product);
+	data->model = data->vendor + " " + data->product;
 
 	// Register the event handler.
 	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR;
@@ -1260,7 +1245,7 @@ unsigned int get_supported_transports(device_data_t *data)
 		 */
 		if (data->bluetooth_mode) {
 			supported &= (DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
-			if (!strncmp(data->devname, "LE:", 3))
+			if (starts_with(data->devname, "LE:"))
 				supported &= DC_TRANSPORT_BLE;
 		} else {
 			supported &= ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
@@ -1334,7 +1319,7 @@ static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *cont
 	// If that fails, use the device name. This will
 	// use address 0 if it's not a number.
 	if (!address)
-		address = strtoul(data->devname, NULL, 0);
+		std::from_chars(data->devname.c_str(), data->devname.c_str() + data->devname.size(), address);
 
 	dev_info(data, "Opening IRDA address %u", address);
 	return dc_irda_open(&data->iostream, context, address, 1);
@@ -1383,10 +1368,10 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 #ifdef BT_SUPPORT
 	if (transports & DC_TRANSPORT_BLUETOOTH) {
-		dev_info(data, "Opening rfcomm stream %s", data->devname);
+		dev_info(data, "Opening rfcomm stream %s", data->devname.c_str());
 #if defined(__ANDROID__) || defined(__APPLE__)
 		// we don't have BT on iOS in the first place, so this is for Android and macOS
-		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
+		rc = rfcomm_stream_open(&data->iostream, context, data->devname.c_str());
 #else
 		rc = bluetooth_device_open(context, data);
 #endif
@@ -1397,8 +1382,8 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 #ifdef BLE_SUPPORT
 	if (transports & DC_TRANSPORT_BLE) {
-		dev_info(data, "Connecting to BLE device %s", data->devname);
-		rc = ble_packet_open(&data->iostream, context, data->devname, data);
+		dev_info(data, "Connecting to BLE device %s", data->devname.c_str());
+		rc = ble_packet_open(&data->iostream, context, data->devname.c_str(), data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
@@ -1419,16 +1404,16 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	}
 
 	if (transports & DC_TRANSPORT_SERIAL) {
-		dev_info(data, "Opening serial device %s", data->devname);
+		dev_info(data, "Opening serial device %s", data->devname.c_str());
 #ifdef SERIAL_FTDI
-		if (!strcasecmp(data->devname, "ftdi"))
+		if (!strcasecmp(data->devname.c_str(), "ftdi"))
 			return ftdi_open(&data->iostream, context);
 #endif
 #ifdef __ANDROID__
 		if (data->androidUsbDeviceDescriptor)
 			return serial_usb_android_open(&data->iostream, context, data->androidUsbDeviceDescriptor);
 #endif
-		rc = dc_serial_open(&data->iostream, context, data->devname);
+		rc = dc_serial_open(&data->iostream, context, data->devname.c_str());
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 
@@ -1442,8 +1427,8 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	}
 
 	if (transports & DC_TRANSPORT_USBSTORAGE) {
-		dev_info(data, "Opening USB storage at %s", data->devname);
-		rc = dc_usb_storage_open(&data->iostream, context, data->devname);
+		dev_info(data, "Opening USB storage at %s", data->devname.c_str());
+		rc = dc_usb_storage_open(&data->iostream, context, data->devname.c_str());
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
@@ -1499,7 +1484,7 @@ std::string do_libdivecomputer_import(device_data_t *data)
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
 		if (rc != DC_STATUS_SUCCESS) {
 			INFO("dc_device_open error value of %d", rc);
-			if (subsurface_access(data->devname, R_OK | W_OK) != 0)
+			if (subsurface_access(data->devname.c_str(), R_OK | W_OK) != 0)
 #if defined(SUBSURFACE_MOBILE)
 				err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.");
 #else
@@ -1560,7 +1545,7 @@ std::string do_libdivecomputer_import(device_data_t *data)
 	 */
 	save_fingerprint(data);
 	if (data->fingerprint && data->fdiveid)
-		create_fingerprint_node(&fingerprint_table, calculate_string_hash(data->model), data->devinfo.serial,
+		create_fingerprint_node(&fingerprint_table, calculate_string_hash(data->model.c_str()), data->devinfo.serial,
 					data->fingerprint, data->fsize, data->fdeviceid, data->fdiveid);
 	free(data->fingerprint);
 	data->fingerprint = NULL;
