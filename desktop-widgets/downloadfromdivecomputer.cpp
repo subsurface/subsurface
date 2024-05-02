@@ -425,8 +425,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 			data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
 			data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
 		} else {
-			QString name, address;
-			address = extractBluetoothNameAddress(ui.device->currentText(), name);
+			auto [address, name] = extractBluetoothNameAddress(ui.device->currentText());
 			data->setDevName(address);
 			data->setDevBluetoothName(name);
 		}

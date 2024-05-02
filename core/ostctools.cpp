@@ -153,7 +153,7 @@ extern "C" void ostctools_import(const char *file, struct divelog *log)
 		report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
 		return;
 	}
-	std::string tmp = format_string_std("%s %s (Imported from OSTCTools)", devdata.vendor, devdata.model);
+	std::string tmp = devdata.vendor + " " + devdata.model + " (Imported from OSTCTools)";
 	ostcdive->dc.model = copy_string(tmp.c_str());
 
 	// Parse the dive data
