@@ -327,10 +327,10 @@ struct units {
  * actually use. Similarly, C instead of Kelvin.
  * And kg instead of g.
  */
-#define SI_UNITS                                                                                           \
-        {                                                                                                  \
-	        .length = METERS, .volume = LITER, .pressure = BAR, .temperature = CELSIUS, .weight = KG,  \
-		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false         \
+#define SI_UNITS 																\
+        {																	\
+	        .length = units::METERS, .volume = units::LITER, .pressure = units::BAR, .temperature = units::CELSIUS, .weight = units::KG,	\
+		.vertical_speed_time = units::MINUTES, .duration_units = units::MIXED, .show_units_table = false				\
         }
 
 extern const struct units SI_units, IMPERIAL_units;
