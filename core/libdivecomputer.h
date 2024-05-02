@@ -21,10 +21,9 @@
 #endif
 
 #ifdef __cplusplus
+#include <string>
+
 extern "C" {
-#else
-#include <stdbool.h>
-#endif
 
 struct dive;
 struct divelog;
@@ -32,8 +31,8 @@ struct devices;
 
 typedef struct {
 	dc_descriptor_t *descriptor = nullptr;
-	const char *vendor = nullptr, *product = nullptr, *devname = nullptr;
-	const char *model = nullptr, *btname = nullptr;
+	std::string vendor, product, devname;
+	std::string model, btname;
 	unsigned char *fingerprint = nullptr;
 	unsigned int fsize = 0, fdeviceid = 0, fdiveid = 0;
 	struct dc_event_devinfo_t devinfo = { };
@@ -71,13 +70,10 @@ dc_status_t divecomputer_device_open(device_data_t *data);
 
 unsigned int get_supported_transports(device_data_t *data);
 
-#ifdef __cplusplus
-}
-
-#include <string>
 extern std::string logfile_name;
 extern std::string dumpfile_name;
 
+}
 #endif
 
 #endif // LIBDIVECOMPUTER_H

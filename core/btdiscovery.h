@@ -20,7 +20,7 @@ void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo);
 bool isBluetoothAddress(const QString &address);
 bool matchesKnownDiveComputerNames(QString btName);
 QString extractBluetoothAddress(const QString &address);
-QString extractBluetoothNameAddress(const QString &address, QString &name);
+std::pair<QString, QString> extractBluetoothNameAddress(const QString &address); // returns address/name pair
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr);
 
 class BTDiscovery : public QObject {
