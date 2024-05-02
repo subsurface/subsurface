@@ -101,7 +101,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	fulltext.h
 	gas.c
 	gas.h
-	gas-model.c
+	gas-model.cpp
 	gaspressures.c
 	gaspressures.h
 	gettext.h
