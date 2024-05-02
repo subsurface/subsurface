@@ -842,11 +842,6 @@ static dc_status_t prepare_data(int data_model, const char *serial, dc_family_t 
 	}
 }
 
-static void device_data_free(device_data_t &dev_data)
-{
-	dc_descriptor_free(dev_data.descriptor);
-}
-
 /*
  * Returns a buffer prepared for libdc parsing.
  * Aladin and memomouse dives were imported from datatrak, so they lack of a
@@ -1048,7 +1043,6 @@ extern "C" void smartrak_import(const char *file, struct divelog *log)
 		concat(&smtkdive->notes, "\n", std::string((char *)col[coln(REMARKS)]->bind_ptr));
 
 		record_dive_to_table(smtkdive, log->dives);
-		device_data_free(devdata);
 	}
 	mdb_free_catalog(mdb_clon);
 	mdb->catalog = NULL;
