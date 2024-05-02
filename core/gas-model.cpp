@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
-/* gas-model.c */
+/* gas-model.cpp */
 /* gas compressibility model */
+#include <algorithm> // std::clamp
 #include <stdio.h>
 #include <stdlib.h>
 #include "dive.h"
@@ -46,23 +47,20 @@ double gas_compressibility_factor(struct gasmix gas, double bar)
 		-8.83632921053e-08,
 		+5.33304543646e-11
 	};
-	int o2, he;
-	double Z;
 
 	/*
 	 * The curve fitting range is only [0,500] bar.
 	 * Anything else is way out of range for cylinder
 	 * pressures.
 	 */
-	if (bar < 0) bar = 0;
-	if (bar > 500) bar = 500;
+	bar = std::clamp(bar, 0.0, 500.0);
 
-	o2 = get_o2(gas);
-	he = get_he(gas);
+	int o2 = get_o2(gas);
+	int he = get_he(gas);
 
-	Z = virial_m1(o2_coefficients, bar) * o2 +
-	    virial_m1(he_coefficients, bar) * he +
-	    virial_m1(n2_coefficients, bar) * (1000 - o2 - he);
+	double Z = virial_m1(o2_coefficients, bar) * o2 +
+		   virial_m1(he_coefficients, bar) * he +
+		   virial_m1(n2_coefficients, bar) * (1000 - o2 - he);
 
 	/*
 	 * We add the 1.0 at the very end - the linear mixing of the
