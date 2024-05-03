@@ -99,7 +99,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	format.h
 	fulltext.cpp
 	fulltext.h
-	gas.c
+	gas.cpp
 	gas.h
 	gas-model.cpp
 	gaspressures.cpp

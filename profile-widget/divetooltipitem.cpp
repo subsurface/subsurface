@@ -212,7 +212,7 @@ void ToolTipItem::setPlotInfo(const plot_info &plot)
 
 void ToolTipItem::clearPlotInfo()
 {
-	memset(&pInfo, 0, sizeof(pInfo));
+	pInfo = plot_info();
 }
 
 void ToolTipItem::setTimeAxis(DiveCartesianAxis *axis)
@@ -231,7 +231,7 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 	lastTime = time;
 	clear();
 
-	auto [idx, lines] = get_plot_details_new(d, &pInfo, time);
+	auto [idx, lines] = get_plot_details_new(d, pInfo, time);
 
 	tissues.fill();
 	painter.setPen(QColor(0, 0, 0, 0));

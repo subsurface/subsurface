@@ -1,9 +1,10 @@
+#include "core/save-profiledata.h"
+#include "core/dive.h"
 #include "core/profile.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/membuffer.h"
 #include "core/subsurface-string.h"
-#include "core/save-profiledata.h"
 #include "core/version.h"
 #include <errno.h>
 
@@ -41,45 +42,45 @@ static void put_video_time(struct membuffer *b, int secs)
 	put_format(b, "%d:%02d:%02d.000,", hours, mins, secs);
 }
 
-static void put_pd(struct membuffer *b, const struct plot_info *pi, int idx)
+static void put_pd(struct membuffer *b, const struct plot_info &pi, int idx)
 {
-	const struct plot_data *entry = pi->entry + idx;
+	const struct plot_data &entry = pi.entry[idx];
 
-	put_int(b, entry->in_deco);
-	put_int(b,  entry->sec);
-	for (int c = 0; c < pi->nr_cylinders; c++) {
+	put_int(b, entry.in_deco);
+	put_int(b, entry.sec);
+	for (int c = 0; c < pi.nr_cylinders; c++) {
 		put_int(b, get_plot_sensor_pressure(pi, idx, c));
 		put_int(b, get_plot_interpolated_pressure(pi, idx, c));
 	}
-	put_int(b, entry->temperature);
-	put_int(b, entry->depth);
-	put_int(b, entry->ceiling);
+	put_int(b, entry.temperature);
+	put_int(b, entry.depth);
+	put_int(b, entry.ceiling);
 	for (int i = 0; i < 16; i++)
-		put_int(b, entry->ceilings[i]);
+		put_int(b, entry.ceilings[i]);
 	for (int i = 0; i < 16; i++)
-		put_int(b, entry->percentages[i]);
-	put_int(b, entry->ndl);
-	put_int(b, entry->tts);
-	put_int(b, entry->rbt);
-	put_int(b, entry->stoptime);
-	put_int(b, entry->stopdepth);
-	put_int(b, entry->cns);
-	put_int(b, entry->smoothed);
-	put_int(b, entry->sac);
-	put_int(b, entry->running_sum);
-	put_double(b, entry->pressures.o2);
-	put_double(b, entry->pressures.n2);
-	put_double(b, entry->pressures.he);
-	put_int(b, entry->o2pressure.mbar);
+		put_int(b, entry.percentages[i]);
+	put_int(b, entry.ndl);
+	put_int(b, entry.tts);
+	put_int(b, entry.rbt);
+	put_int(b, entry.stoptime);
+	put_int(b, entry.stopdepth);
+	put_int(b, entry.cns);
+	put_int(b, entry.smoothed);
+	put_int(b, entry.sac);
+	put_int(b, entry.running_sum);
+	put_double(b, entry.pressures.o2);
+	put_double(b, entry.pressures.n2);
+	put_double(b, entry.pressures.he);
+	put_int(b, entry.o2pressure.mbar);
 	for (int i = 0; i < MAX_O2_SENSORS; i++)
-		put_int(b, entry->o2sensor[i].mbar);
-	put_int(b, entry->o2setpoint.mbar);
-	put_int(b, entry->scr_OC_pO2.mbar);
-	put_int(b, entry->mod);
-	put_int(b, entry->ead);
-	put_int(b, entry->end);
-	put_int(b, entry->eadd);
-	switch (entry->velocity) {
+		put_int(b, entry.o2sensor[i].mbar);
+	put_int(b, entry.o2setpoint.mbar);
+	put_int(b, entry.scr_OC_pO2.mbar);
+	put_int(b, entry.mod);
+	put_int(b, entry.ead);
+	put_int(b, entry.end);
+	put_int(b, entry.eadd);
+	switch (entry.velocity) {
 	case STABLE:
 		put_csv_string(b, "STABLE");
 		break;
@@ -96,20 +97,20 @@ static void put_pd(struct membuffer *b, const struct plot_info *pi, int idx)
 		put_csv_string(b, "CRAZY");
 		break;
 	}
-	put_int(b, entry->speed);
-	put_int(b, entry->in_deco_calc);
-	put_int(b, entry->ndl_calc);
-	put_int(b, entry->tts_calc);
-	put_int(b, entry->stoptime_calc);
-	put_int(b, entry->stopdepth_calc);
-	put_int(b, entry->pressure_time);
-	put_int(b, entry->heartbeat);
-	put_int(b, entry->bearing);
-	put_double(b, entry->ambpressure);
-	put_double(b, entry->gfline);
-	put_double(b, entry->surface_gf);
-	put_double(b, entry->density);
-	put_int_with_nl(b, entry->icd_warning ? 1 : 0);
+	put_int(b, entry.speed);
+	put_int(b, entry.in_deco_calc);
+	put_int(b, entry.ndl_calc);
+	put_int(b, entry.tts_calc);
+	put_int(b, entry.stoptime_calc);
+	put_int(b, entry.stopdepth_calc);
+	put_int(b, entry.pressure_time);
+	put_int(b, entry.heartbeat);
+	put_int(b, entry.bearing);
+	put_double(b, entry.ambpressure);
+	put_double(b, entry.gfline);
+	put_double(b, entry.surface_gf);
+	put_double(b, entry.density);
+	put_int_with_nl(b, entry.icd_warning ? 1 : 0);
 }
 
 static void put_headers(struct membuffer *b, int nr_cylinders)
@@ -166,36 +167,36 @@ static void put_headers(struct membuffer *b, int nr_cylinders)
 	put_csv_string_with_nl(b, "icd_warning");
 }
 
-static void put_st_event(struct membuffer *b, struct plot_data *entry, int offset, int length)
+static void put_st_event(struct membuffer *b, const plot_data &entry, const plot_data &next_entry, int offset, int length)
 {
 	double value;
 	int decimals;
 	const char *unit;
 
-	if (entry->sec < offset || entry->sec > offset + length)
+	if (entry.sec < offset || entry.sec > offset + length)
 		return;
 
 	put_format(b, "Dialogue: 0,");
-	put_video_time(b, entry->sec - offset);
-	put_video_time(b, (entry+1)->sec - offset < length ? (entry+1)->sec - offset : length);
+	put_video_time(b, entry.sec - offset);
+	put_video_time(b, next_entry.sec - offset < length ? next_entry.sec - offset : length);
 	put_format(b, "Default,,0,0,0,,");
-	put_format(b, "%d:%02d ", FRACTION_TUPLE(entry->sec, 60));
-	value = get_depth_units(entry->depth, &decimals, &unit);
+	put_format(b, "%d:%02d ", FRACTION_TUPLE(entry.sec, 60));
+	value = get_depth_units(entry.depth, &decimals, &unit);
 	put_format(b, "D=%02.2f %s ", value, unit);
-	if (entry->temperature) {
-		value = get_temp_units(entry->temperature, &unit);
+	if (entry.temperature) {
+		value = get_temp_units(entry.temperature, &unit);
 		put_format(b, "T=%.1f%s ", value, unit);
 	}
 	// Only show NDL if it is not essentially infinite, show TTS for mandatory stops.
-	if (entry->ndl_calc < 3600) {
-		if (entry->ndl_calc > 0)
-			put_format(b, "NDL=%d:%02d ", FRACTION_TUPLE(entry->ndl_calc, 60));
+	if (entry.ndl_calc < 3600) {
+		if (entry.ndl_calc > 0)
+			put_format(b, "NDL=%d:%02d ", FRACTION_TUPLE(entry.ndl_calc, 60));
 		else
-			if (entry->tts_calc > 0)
-				put_format(b, "TTS=%d:%02d ", FRACTION_TUPLE(entry->tts_calc, 60));
+			if (entry.tts_calc > 0)
+				put_format(b, "TTS=%d:%02d ", FRACTION_TUPLE(entry.tts_calc, 60));
 	}
-	if (entry->surface_gf > 0.0) {
-		put_format(b, "sGF=%.1f%% ", entry->surface_gf);
+	if (entry.surface_gf > 0.0) {
+		put_format(b, "sGF=%.1f%% ", entry.surface_gf);
 	}
 	put_format(b, "\n");
 }
@@ -204,30 +205,25 @@ static void save_profiles_buffer(struct membuffer *b, bool select_only)
 {
 	int i;
 	struct dive *dive;
-	struct plot_info pi;
 	struct deco_state *planner_deco_state = NULL;
 
-	init_plot_info(&pi);
 	for_each_dive(i, dive) {
 		if (select_only && !dive->selected)
 			continue;
-		create_plot_info_new(dive, &dive->dc, &pi, planner_deco_state);
+		plot_info pi = create_plot_info_new(dive, &dive->dc, planner_deco_state);
 		put_headers(b, pi.nr_cylinders);
 
 		for (int i = 0; i < pi.nr; i++)
-			put_pd(b, &pi, i);
+			put_pd(b, pi, i);
 		put_format(b, "\n");
-		free_plot_info_data(&pi);
 	}
 }
 
 void save_subtitles_buffer(struct membuffer *b, struct dive *dive, int offset, int length)
 {
-	struct plot_info pi;
 	struct deco_state *planner_deco_state = NULL;
 
-	init_plot_info(&pi);
-	create_plot_info_new(dive, &dive->dc, &pi, planner_deco_state);
+	plot_info pi = create_plot_info_new(dive, &dive->dc, planner_deco_state);
 
 	put_format(b, "[Script Info]\n");
 	put_format(b, "; Script generated by Subsurface %s\n", subsurface_canonical_version());
@@ -236,12 +232,9 @@ void save_subtitles_buffer(struct membuffer *b, struct dive *dive, int offset, i
 	put_format(b, "Style: Default,Arial,12,&Hffffff,&Hffffff,&H0,&H0,0,0,0,0,100,100,0,0,1,1,0,7,10,10,10,0\n\n");
 	put_format(b, "[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n");
 
-	for (int i = 0; i < pi.nr; i++) {
-		put_st_event(b, &pi.entry[i], offset, length);
-	}
+	for (int i = 0; i + 1 < pi.nr; i++)
+		put_st_event(b, pi.entry[i], pi.entry[i + 1], offset, length);
 	put_format(b, "\n");
-
-	free_plot_info_data(&pi);
 }
 
 int save_profiledata(const char *filename, bool select_only)
