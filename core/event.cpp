@@ -49,7 +49,7 @@ struct event *create_event(unsigned int time, int type, int flags, int value, co
 	unsigned int size, len = strlen(name);
 
 	size = sizeof(*ev) + len + 1;
-	ev = malloc(size);
+	ev = (struct event*) malloc(size);
 	if (!ev)
 		return NULL;
 	memset(ev, 0, size);

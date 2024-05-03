@@ -51,7 +51,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/dive.cpp \
 	core/divecomputer.cpp \
 	core/divefilter.cpp \
-	core/event.c \
+	core/event.cpp \
 	core/eventtype.cpp \
 	core/filterconstraint.cpp \
 	core/filterpreset.cpp \
