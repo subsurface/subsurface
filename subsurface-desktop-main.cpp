@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 	CheckCloudConnection ccc;
 	ccc.pickServer();
 	fill_computer_list();
-	reset_tank_info_table(&tank_info_table);
+	reset_tank_info_table(tank_info_table);
 	parse_xml_init();
 	taglist_init_global();
 	init_ui();
@@ -114,7 +114,6 @@ int main(int argc, char **argv)
 	qPref::sync();
 
 	free_prefs();
-	clear_tank_info_table(&tank_info_table);
 	return 0;
 }
 

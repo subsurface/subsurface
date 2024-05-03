@@ -1319,7 +1319,8 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 void EditCylinder::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		set_tank_info_data(&tank_info_table, cyl[i].type.description, cyl[i].type.size, cyl[i].type.workingpressure);
+		std::string name = cyl[i].type.description;
+		set_tank_info_data(tank_info_table, name, cyl[i].type.size, cyl[i].type.workingpressure);
 		std::swap(*get_cylinder(dives[i], indexes[i]), cyl[i]);
 		update_cylinder_related_info(dives[i]);
 		emit diveListNotifier.cylinderEdited(dives[i], indexes[i]);

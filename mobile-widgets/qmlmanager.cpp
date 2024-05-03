@@ -1283,9 +1283,8 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			if (state != "add" && !is_cylinder_used(d, j))
 				continue;
 
-			for (int i = 0; i < tank_info_table.nr; i++) {
-				const tank_info &ti = tank_info_table.infos[i];
-				if (ti.name == usedCylinder[k] ) {
+			for (const tank_info &ti: tank_info_table) {
+				if (ti.name == usedCylinder[k].toStdString()) {
 					if (ti.ml > 0){
 						size = ti.ml;
 						wp = ti.bar * 1000;

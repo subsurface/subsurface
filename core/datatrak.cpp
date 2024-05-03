@@ -130,14 +130,11 @@ static int dtrak_prepare_data(int model, device_data_t &dev_data)
  * Just get the first in the user's list for given size.
  * Reaching the end of the list means there is no tank of this size.
  */
-static const char *cyl_type_by_size(int size)
+static std::string cyl_type_by_size(int size)
 {
-	for (int i = 0; i < tank_info_table.nr; ++i) {
-		const struct tank_info *ti = &tank_info_table.infos[i];
-		if (ti->ml == size)
-			return ti->name;
-	}
-	return "";
+	auto it = std::find_if(tank_info_table.begin(), tank_info_table.end(),
+			       [size] (const tank_info &info) { return info.ml == size; });
+	return it != tank_info_table.end() ? it->name : std::string();
 }
 
 /*
@@ -337,8 +334,9 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF) {
 		cylinder_t cyl = empty_cylinder;
+		std::string desc = cyl_type_by_size(tmp_2bytes * 10);
 		cyl.type.size.mliter = tmp_2bytes * 10;
-		cyl.type.description = cyl_type_by_size(tmp_2bytes * 10);
+		cyl.type.description = desc.c_str();
 		cyl.start.mbar = 200000;
 		cyl.gasmix.he.permille = 0;
 		cyl.gasmix.o2.permille = 210;

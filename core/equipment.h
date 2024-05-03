@@ -81,7 +81,6 @@ extern cylinder_t *add_empty_cylinder(struct cylinder_table *t);
 extern void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl);
 extern cylinder_t *get_cylinder(const struct dive *d, int idx);
 extern cylinder_t *get_or_create_cylinder(struct dive *d, int idx);
-extern void add_cylinder_description(const cylinder_type_t *);
 extern bool same_weightsystem(weightsystem_t w1, weightsystem_t w2);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
@@ -108,25 +107,6 @@ extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
 void get_gas_string(struct gasmix gasmix, char *text, int len);
 const char *gasname(struct gasmix gasmix);
 
-typedef struct tank_info {
-	const char *name;
-	int cuft, ml, psi, bar;
-} tank_info_t;
-
-struct tank_info_table {
-	int nr, allocated;
-	struct tank_info *infos;
-};
-
-extern struct tank_info_table tank_info_table;
-extern void reset_tank_info_table(struct tank_info_table *table);
-extern void clear_tank_info_table(struct tank_info_table *table);
-extern void add_tank_info_metric(struct tank_info_table *table, const char *name, int ml, int bar);
-extern void add_tank_info_imperial(struct tank_info_table *table, const char *name, int cuft, int psi);
-extern void extract_tank_info(const struct tank_info *info, volume_t *size, pressure_t *working_pressure);
-extern bool get_tank_info_data(struct tank_info_table *table, const char *name, volume_t *size, pressure_t *pressure);
-extern void set_tank_info_data(struct tank_info_table *table, const char *name, volume_t size, pressure_t working_pressure);
-
 #ifdef __cplusplus
 }
 
@@ -141,6 +121,19 @@ struct ws_info {
 extern std::vector<ws_info> ws_info_table;
 extern weight_t get_weightsystem_weight(const std::string &name); // returns 0 if not found
 extern void add_weightsystem_description(const weightsystem_t &);
+
+struct tank_info {
+	std::string name;
+	int cuft, ml, psi, bar;
+};
+
+extern std::vector<tank_info> tank_info_table;
+extern struct tank_info *get_tank_info(std::vector<tank_info> &table, const std::string &name);
+extern void set_tank_info_data(std::vector<tank_info> &table, const std::string &name, volume_t size, pressure_t working_pressure);
+extern std::pair<volume_t, pressure_t> extract_tank_info(const struct tank_info &info);
+extern std::pair<volume_t, pressure_t> get_tank_info_data(const std::vector<tank_info> &table, const std::string &name);
+extern void add_cylinder_description(const cylinder_type_t &);
+extern void reset_tank_info_table(std::vector<tank_info> &table);
 
 #endif
 
