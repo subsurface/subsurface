@@ -58,7 +58,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/divelist.cpp \
 	core/divelog.cpp \
 	core/gas-model.cpp \
-	core/gaspressures.c \
+	core/gaspressures.cpp \
 	core/git-access.cpp \
 	core/globals.cpp \
 	core/liquivision.cpp \
