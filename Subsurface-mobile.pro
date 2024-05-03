@@ -105,7 +105,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/qt-ble.cpp \
 	core/uploadDiveShare.cpp \
 	core/uploadDiveLogsDE.cpp \
-	core/save-profiledata.c \
+	core/save-profiledata.cpp \
 	core/xmlparams.cpp \
 	core/settings/qPref.cpp \
 	core/settings/qPrefCloudStorage.cpp \
