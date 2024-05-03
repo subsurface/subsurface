@@ -49,7 +49,7 @@ void AbstractProfilePolygonItem::clipStop(double &x, double &y, double prev_x, d
 
 std::pair<double, double> AbstractProfilePolygonItem::getPoint(int i) const
 {
-	const struct plot_data *data = pInfo.entry;
+	const auto &data = pInfo.entry;
 	double x = data[i].sec;
 	double y = accessor(data[i]);
 
@@ -121,7 +121,7 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	QPolygonF poly = polygon();
-	const struct plot_data *data = pInfo.entry;
+	const auto &data = pInfo.entry;
 	// This paints the colors of the velocities.
 	for (int i = from + 1; i < to; i++) {
 		QColor color = getColor((color_index_t)(VELOCITY_COLORS_START_IDX + data[i].velocity));
@@ -150,7 +150,7 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 	/* Show any ceiling we may have encountered */
 	if (prefs.dcceiling && !prefs.redceiling) {
 		QPolygonF p = polygon();
-		plot_data *entry = pInfo.entry + to - 1;
+		auto entry = pInfo.entry.begin() + (to - 1);
 		for (int i = to - 1; i >= from; i--, entry--) {
 			if (!entry->in_deco) {
 				/* not in deco implies this is a safety stop, no ceiling */
@@ -176,7 +176,7 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 	const int half_interval = vAxis.getMinLabelDistance(hAxis);
 	const int min_depth = 2000; // in mm
 	const int min_prominence = 2000; // in mm (should this adapt to depth range?)
-	const plot_data *data = pInfo.entry;
+	const auto &data = pInfo.entry;
 	const int max_peaks = (data[to - 1].sec - data[from].sec) / half_interval + 1;
 	struct Peak {
 		int range_from;
@@ -185,7 +185,7 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 	};
 	std::vector<Peak> stack;
 	stack.reserve(max_peaks);
-	int highest_peak = std::max_element(data + from, data + to, comp_depth) - data;
+	int highest_peak = std::max_element(data.begin() + from, data.begin() + to, comp_depth) - data.begin();
 	if (data[highest_peak].depth < min_depth)
 		return;
 	stack.push_back(Peak{ from, to, highest_peak });
@@ -210,7 +210,7 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 		// Continue search until peaks reach the minimum prominence (height from valley).
 		for ( ; new_from + 3 < act_peak.range_to; ++new_from) {
 			if (data[new_from].depth >= data[valley].depth + min_prominence) {
-				int new_peak = std::max_element(data + new_from, data + act_peak.range_to, comp_depth) - data;
+				int new_peak = std::max_element(data.begin() + new_from, data.begin() + act_peak.range_to, comp_depth) - data.begin();
 				if (data[new_peak].depth < min_depth)
 					break;
 				stack.push_back(Peak{ new_from, act_peak.range_to, new_peak });
@@ -236,7 +236,7 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 		// Continue search until peaks reach the minimum prominence (height from valley).
 		for ( ; new_to >= act_peak.range_from + 3; --new_to) {
 			if (data[new_to].depth >= data[valley].depth + min_prominence) {
-				int new_peak = std::max_element(data + act_peak.range_from, data + new_to, comp_depth) - data;
+				int new_peak = std::max_element(data.begin() + act_peak.range_from, data.begin() + new_to, comp_depth) - data.begin();
 				if (data[new_peak].depth < min_depth)
 					break;
 				stack.push_back(Peak{ act_peak.range_from, new_to, new_peak });
@@ -533,17 +533,17 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 	segments.clear();
 
 	for (int i = from; i < to; i++) {
-		const struct plot_data *entry = pInfo.entry + i;
+		auto entry = pInfo.entry.begin() + i;
 
 		for (int cyl = 0; cyl < pInfo.nr_cylinders; cyl++) {
-			double mbar = static_cast<double>(get_plot_pressure(&pInfo, i, cyl));
+			double mbar = static_cast<double>(get_plot_pressure(pInfo, i, cyl));
 			double time = static_cast<double>(entry->sec);
 
 			if (mbar < 1.0)
 				continue;
 
 			if (i == from && i < to - 1) {
-				double mbar2 = static_cast<double>(get_plot_pressure(&pInfo, i+1, cyl));
+				double mbar2 = static_cast<double>(get_plot_pressure(pInfo, i+1, cyl));
 				double time2 = static_cast<double>(entry[1].sec);
 				if (mbar2 < 1.0)
 					continue;
@@ -551,7 +551,7 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 			}
 
 			if (i == to - 1 && i > from) {
-				double mbar2 = static_cast<double>(get_plot_pressure(&pInfo, i-1, cyl));
+				double mbar2 = static_cast<double>(get_plot_pressure(pInfo, i-1, cyl));
 				double time2 = static_cast<double>(entry[-1].sec);
 				if (mbar2 < 1.0)
 					continue;

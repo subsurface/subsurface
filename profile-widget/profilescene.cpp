@@ -7,6 +7,7 @@
 #include "diveprofileitem.h"
 #include "divetextitem.h"
 #include "tankitem.h"
+#include "core/dive.h"
 #include "core/device.h"
 #include "core/divecomputer.h"
 #include "core/event.h"
@@ -151,8 +152,6 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	tankItem(new TankItem(*timeAxis, dpr)),
 	pixmaps(getDivePixmaps(dpr))
 {
-	init_plot_info(&plotInfo);
-
 	setSceneRect(0, 0, 100, 100);
 	setItemIndexMethod(QGraphicsScene::NoIndex);
 
@@ -188,7 +187,6 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 ProfileScene::~ProfileScene()
 {
-	free_plot_info_data(&plotInfo);
 }
 
 void ProfileScene::clear()
@@ -201,7 +199,7 @@ void ProfileScene::clear()
 	// the DiveEventItems
 	qDeleteAll(eventItems);
 	eventItems.clear();
-	free_plot_info_data(&plotInfo);
+	plotInfo = plot_info();
 	empty = true;
 }
 
@@ -454,7 +452,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	 * create_plot_info_new() automatically frees old plot data.
 	 */
 	if (!keepPlotInfo)
-		create_plot_info_new(d, currentdc, &plotInfo, planner_ds);
+		plotInfo = create_plot_info_new(d, currentdc, planner_ds);
 
 	bool hasHeartBeat = plotInfo.maxhr;
 	// For mobile we might want to turn of some features that are normally shown.
@@ -466,7 +464,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	updateVisibility(hasHeartBeat, simplified);
 	updateAxes(hasHeartBeat, simplified);
 
-	int newMaxtime = get_maxtime(&plotInfo);
+	int newMaxtime = get_maxtime(plotInfo);
 	if (calcMax || newMaxtime > maxtime)
 		maxtime = newMaxtime;
 
@@ -474,7 +472,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	 * when we are dragging the handler to plan / add dive.
 	 * otherwhise, update normally.
 	 */
-	int newMaxDepth = get_maxdepth(&plotInfo);
+	int newMaxDepth = get_maxdepth(plotInfo);
 	if (!calcMax) {
 		if (maxdepth < newMaxDepth)
 			maxdepth = newMaxDepth;
@@ -509,18 +507,18 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// Find first and last plotInfo entry
 	int firstSecond = lrint(timeAxis->minimum());
 	int lastSecond = lrint(timeAxis->maximum());
-	auto it1 = std::lower_bound(plotInfo.entry, plotInfo.entry + plotInfo.nr, firstSecond,
+	auto it1 = std::lower_bound(plotInfo.entry.begin(), plotInfo.entry.end(), firstSecond,
 				   [](const plot_data &d, int s)
 				   { return d.sec < s; });
-	auto it2 = std::lower_bound(it1, plotInfo.entry + plotInfo.nr, lastSecond,
+	auto it2 = std::lower_bound(it1, plotInfo.entry.end(), lastSecond,
 				    [](const plot_data &d, int s)
 				    { return d.sec < s; });
-	if (it1 > plotInfo.entry && it1->sec > firstSecond)
+	if (it1 > plotInfo.entry.begin() && it1->sec > firstSecond)
 		--it1;
-	if (it2 < plotInfo.entry + plotInfo.nr)
+	if (it2 < plotInfo.entry.end())
 		++it2;
-	int from = it1 - plotInfo.entry;
-	int to = it2 - plotInfo.entry;
+	int from = it1 - plotInfo.entry.begin();
+	int to = it2 - plotInfo.entry.begin();
 
 	timeAxis->updateTicks(animSpeed);
 	animatedAxes.push_back(timeAxis);

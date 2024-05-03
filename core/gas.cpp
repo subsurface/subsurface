@@ -5,6 +5,7 @@
 #include "gettext.h"
 #include <stdio.h>
 #include <string.h>
+#include <QtGlobal> // for QT_TRANSLATE_NOOP
 
 /* Perform isobaric counterdiffusion calculations for gas changes in trimix dives.
  * Here we use the rule-of-fifths where, during a change involving trimix gas, the increase in nitrogen
