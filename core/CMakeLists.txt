@@ -158,7 +158,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	save-git.cpp
 	save-html.cpp
 	save-html.h
-	save-profiledata.c
+	save-profiledata.cpp
 	save-xml.cpp
 	selection.cpp
 	selection.h
