@@ -1290,7 +1290,7 @@ extern "C" struct dive *fixup_dive(struct dive *dive)
 	fixup_airtemp(dive);
 	for (i = 0; i < dive->cylinders.nr; i++) {
 		cylinder_t *cyl = get_cylinder(dive, i);
-		add_cylinder_description(&cyl->type);
+		add_cylinder_description(cyl->type);
 		if (same_rounded_pressure(cyl->sample_start, cyl->start))
 			cyl->start.mbar = 0;
 		if (same_rounded_pressure(cyl->sample_end, cyl->end))
