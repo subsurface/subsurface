@@ -116,21 +116,21 @@ QStringList formatFirstGas(const dive *d)
 
 // Add string to sorted QStringList, if it doesn't already exist and
 // it isn't the empty string.
-static void addStringToSortedList(QStringList &l, const char *s)
+static void addStringToSortedList(QStringList &l, const std::string &s)
 {
-	if (empty_string(s))
+	if (s.empty())
 		return;
 
 	// Do a binary search for the string. lower_bound() returns an iterator
 	// to either the searched-for element or the next higher element if it
 	// doesn't exist.
-	QString qs(s);
+	QString qs = QString::fromStdString(s);
 	auto it = std::lower_bound(l.begin(), l.end(), qs); // TODO: use locale-aware sorting
-	if (it != l.end() && *it == s)
+	if (it != l.end() && *it == qs)
 		return;
 
 	// Add new string at sorted position
-	l.insert(it, s);
+	l.insert(it, qs);
 }
 
 QStringList formatFullCylinderList()
@@ -143,8 +143,8 @@ QStringList formatFullCylinderList()
 			addStringToSortedList(cylinders, get_cylinder(d, j)->type.description);
 	}
 
-	for (int ti = 0; ti < tank_info_table.nr; ti++)
-		addStringToSortedList(cylinders, tank_info_table.infos[ti].name);
+	for (const auto &ti: tank_info_table)
+		addStringToSortedList(cylinders, ti.name);
 
 	return cylinders;
 }

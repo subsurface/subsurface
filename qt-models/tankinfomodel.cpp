@@ -7,15 +7,13 @@
 
 QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 {
-	if (index.row() < 0 || index.row() >= tank_info_table.nr)
+	if (index.row() < 0 || index.row() >= (int)tank_info_table.size())
 		return QVariant();
 	if (role == Qt::FontRole)
 		return defaultModelFont();
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
-		const struct tank_info &info = tank_info_table.infos[index.row()];
-		volume_t size = {0};
-		pressure_t pressure = {0};
-		extract_tank_info(&info, &size, &pressure);
+		const struct tank_info &info = tank_info_table[index.row()];
+		auto [size, pressure] = extract_tank_info(info);
 
 		switch (index.column()) {
 		case BAR:
@@ -23,7 +21,7 @@ QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 		case ML:
 			return size.mliter;
 		case DESCRIPTION:
-			return info.name;
+			return QString::fromStdString(info.name);
 		}
 	}
 	return QVariant();
@@ -31,7 +29,7 @@ QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 
 int TankInfoModel::rowCount(const QModelIndex&) const
 {
-	return tank_info_table.nr;
+	return (int)tank_info_table.size();
 }
 
 TankInfoModel::TankInfoModel(QObject *parent) : CleanerTableModel(parent)

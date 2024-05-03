@@ -52,11 +52,6 @@ extern "C" void copy_cylinders(const struct cylinder_table *s, struct cylinder_t
 		add_cloned_cylinder(d, s->cylinders[i]);
 }
 
-static void free_tank_info(struct tank_info info)
-{
-	free((void *)info.name);
-}
-
 /* weightsystem table functions */
 //static MAKE_GET_IDX(weightsystem_table, weightsystem_t, weightsystems)
 static MAKE_GROW_TABLE(weightsystem_table, weightsystem_t, weightsystems)
@@ -77,12 +72,6 @@ static MAKE_REMOVE_FROM(cylinder_table, cylinders)
 //MAKE_REMOVE(cylinder_table, cylinder_t, cylinder)
 MAKE_CLEAR_TABLE(cylinder_table, cylinders, cylinder)
 
-/* tank_info table functions */
-static MAKE_GROW_TABLE(tank_info_table, tank_info_t, infos)
-static MAKE_ADD_TO(tank_info_table, tank_info_t, infos)
-//static MAKE_REMOVE_FROM(tank_info_table, infos)
-MAKE_CLEAR_TABLE(tank_info_table, infos, tank_info)
-
 const char *cylinderuse_text[NUM_GAS_USE] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
 };
@@ -97,28 +86,24 @@ extern "C" enum cylinderuse cylinderuse_from_text(const char *text)
 }
 
 /* Add a metric or an imperial tank info structure. Copies the passed-in string. */
-extern "C" void add_tank_info_metric(struct tank_info_table *table, const char *name, int ml, int bar)
+static void add_tank_info_metric(std::vector<tank_info> &table, const std::string &name, int ml, int bar)
 {
-	struct tank_info info = { strdup(name), .ml = ml, .bar = bar };
-	add_to_tank_info_table(table, table->nr, info);
+	table.push_back(tank_info{ name, .ml = ml, .bar = bar });
 }
 
-extern "C" void add_tank_info_imperial(struct tank_info_table *table, const char *name, int cuft, int psi)
+static void add_tank_info_imperial(std::vector<tank_info> &table, const std::string &name, int cuft, int psi)
 {
-	struct tank_info info = { strdup(name), .cuft = cuft, .psi = psi };
-	add_to_tank_info_table(table, table->nr, info);
+	table.push_back(tank_info{ name, .cuft = cuft, .psi = psi });
 }
 
-static struct tank_info *get_tank_info(struct tank_info_table *table, const char *name)
+struct tank_info *get_tank_info(std::vector<tank_info> &table, const std::string &name)
 {
-	for (int i = 0; i < table->nr; ++i) {
-		if (same_string(table->infos[i].name, name))
-			return  &table->infos[i];
-	}
-	return NULL;
+	auto it = std::find_if(table.begin(), table.end(), [&name](const tank_info &info)
+			       { return info.name == name; });
+	return it != table.end() ? &*it : nullptr;
 }
 
-extern "C" void set_tank_info_data(struct tank_info_table *table, const char *name, volume_t size, pressure_t working_pressure)
+void set_tank_info_data(std::vector<tank_info> &table, const std::string &name, volume_t size, pressure_t working_pressure)
 {
 	struct tank_info *info = get_tank_info(table, name);
 	if (info) {
@@ -135,38 +120,38 @@ extern "C" void set_tank_info_data(struct tank_info_table *table, const char *na
 	}
 }
 
-extern "C" void extract_tank_info(const struct tank_info *info, volume_t *size, pressure_t *working_pressure)
+std::pair<volume_t, pressure_t> extract_tank_info(const struct tank_info &info)
 {
-	working_pressure->mbar = info->bar != 0 ? info->bar * 1000 : psi_to_mbar(info->psi);
-	if (info->ml != 0)
-		size->mliter = info->ml;
-	else if (working_pressure->mbar != 0)
-		size->mliter = lrint(cuft_to_l(info->cuft) * 1000 / mbar_to_atm(working_pressure->mbar));
+	pressure_t working_pressure {
+		static_cast<int32_t>(info.bar != 0 ? info.bar * 1000 : psi_to_mbar(info.psi))
+	};
+	volume_t size { 0 };
+	if (info.ml != 0)
+		size.mliter = info.ml;
+	else if (working_pressure.mbar != 0)
+		size.mliter = lrint(cuft_to_l(info.cuft) * 1000 / mbar_to_atm(working_pressure.mbar));
+	return std::make_pair(size, working_pressure);
 }
 
-extern "C" bool get_tank_info_data(struct tank_info_table *table, const char *name, volume_t *size, pressure_t *working_pressure)
+std::pair<volume_t, pressure_t> get_tank_info_data(const std::vector<tank_info> &table, const std::string &name)
 {
-	struct tank_info *info = get_tank_info(table, name);
-	if (info) {
-		extract_tank_info(info, size, working_pressure);
-
-		return true;
-	}
-	return false;
+	// Here, we would need a const version of get_tank_info().
+	auto it = std::find_if(table.begin(), table.end(), [&name](const tank_info &info)
+			       { return info.name == name; });
+	return it != table.end() ? extract_tank_info(*it)
+				 : std::make_pair(volume_t{0}, pressure_t{0});
 }
 
-/* placeholders for a few functions that we need to redesign for the Qt UI */
-extern "C" void add_cylinder_description(const cylinder_type_t *type)
+void add_cylinder_description(const cylinder_type_t &type)
 {
-	const char *desc = type->description;
-	if (empty_string(desc))
+	std::string desc = type.description ? type.description : std::string();
+	if (desc.empty())
 		return;
-	for (int i = 0; i < tank_info_table.nr; i++) {
-		if (strcmp(tank_info_table.infos[i].name, desc) == 0)
-			return;
-	}
-	add_tank_info_metric(&tank_info_table, desc, type->size.mliter,
-			     type->workingpressure.mbar / 1000);
+	if (std::any_of(tank_info_table.begin(), tank_info_table.end(),
+			[&type](const tank_info &info) { return info.name == type.description; }))
+		return;
+	add_tank_info_metric(tank_info_table, desc, type.size.mliter,
+			     type.workingpressure.mbar / 1000);
 }
 
 void add_weightsystem_description(const weightsystem_t &weightsystem)
@@ -289,7 +274,7 @@ extern "C" int find_best_gasmix_match(struct gasmix mix, const struct cylinder_t
  * we should pick up any other names from the dive
  * logs directly.
  */
-static void add_default_tank_infos(struct tank_info_table *table)
+static void add_default_tank_infos(std::vector<tank_info> &table)
 {
 	/* Size-only metric cylinders */
 	add_tank_info_metric(table, "10.0ℓ", 10000, 0);
@@ -341,10 +326,10 @@ static void add_default_tank_infos(struct tank_info_table *table)
 	add_tank_info_metric(table, "D20 232 bar", 40000, 232);
 }
 
-struct tank_info_table tank_info_table;
-extern "C" void reset_tank_info_table(struct tank_info_table *table)
+std::vector<tank_info> tank_info_table;
+void reset_tank_info_table(std::vector<tank_info> &table)
 {
-	clear_tank_info_table(table);
+	table.clear();
 	if (prefs.display_default_tank_infos)
 		add_default_tank_infos(table);
 
@@ -353,7 +338,7 @@ extern "C" void reset_tank_info_table(struct tank_info_table *table)
 		const struct dive *dive = divelog.dives->dives[i];
 		for (int j = 0; j < dive->cylinders.nr; j++) {
 			const cylinder_t *cyl = get_cylinder(dive, j);
-			add_cylinder_description(&cyl->type);
+			add_cylinder_description(cyl->type);
 		}
 	}
 }
@@ -478,17 +463,16 @@ extern "C" void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 
 	if (!cyl_name)
 		return;
-	for (int i = 0; i < tank_info_table.nr; ++i) {
-		struct tank_info *ti = &tank_info_table.infos[i];
-		if (strcmp(ti->name, cyl_name) == 0) {
-			cyl->type.description = strdup(ti->name);
-			if (ti->ml) {
-				cyl->type.size.mliter = ti->ml;
-				cyl->type.workingpressure.mbar = ti->bar * 1000;
+	for (auto &ti: tank_info_table) {
+		if (ti.name == cyl_name) {
+			cyl->type.description = strdup(ti.name.c_str());
+			if (ti.ml) {
+				cyl->type.size.mliter = ti.ml;
+				cyl->type.workingpressure.mbar = ti.bar * 1000;
 			} else {
-				cyl->type.workingpressure.mbar = psi_to_mbar(ti->psi);
-				if (ti->psi)
-					cyl->type.size.mliter = lrint(cuft_to_l(ti->cuft) * 1000 / bar_to_atm(psi_to_bar(ti->psi)));
+				cyl->type.workingpressure.mbar = psi_to_mbar(ti.psi);
+				if (ti.psi)
+					cyl->type.size.mliter = lrint(cuft_to_l(ti.cuft) * 1000 / bar_to_atm(psi_to_bar(ti.psi)));
 			}
 			// MOD of air
 			cyl->depth = gas_mod(cyl->gasmix, pO2, dive, 1);
