@@ -246,7 +246,7 @@ void save_subtitles_buffer(struct membuffer *b, struct dive *dive, int offset, i
 
 int save_profiledata(const char *filename, bool select_only)
 {
-	struct membuffer buf = { 0 };
+	struct membufferpp buf;
 	FILE *f;
 	int error = 0;
 
@@ -265,6 +265,5 @@ int save_profiledata(const char *filename, bool select_only)
 	if (error)
 		report_error("Save failed (%s)", strerror(errno));
 
-	free_buffer(&buf);
 	return error;
 }
