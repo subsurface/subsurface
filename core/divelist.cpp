@@ -1285,7 +1285,7 @@ void clear_dive_file_data()
 	min_datafile_version = 0;
 	clear_git_id();
 
-	reset_tank_info_table(&tank_info_table);
+	reset_tank_info_table(tank_info_table);
 
 	/* Inform frontend of reset data. This should reset all the models. */
 	emit_reset_signal();
