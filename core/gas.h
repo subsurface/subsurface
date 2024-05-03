@@ -60,9 +60,11 @@ static inline int get_n2(struct gasmix mix)
 
 int pscr_o2(const double amb_pressure, struct gasmix mix);
 
+#ifdef __cplusplus
 struct gas_pressures {
-	double o2, n2, he;
+	double o2 = 0.0, n2 = 0.0, he = 0.0;
 };
+#endif
 
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(struct gasmix a, struct gasmix b);

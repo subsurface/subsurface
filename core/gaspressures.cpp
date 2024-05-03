@@ -86,8 +86,6 @@ static void dump_pr_track(int cyl, std::vector<pr_track_t> &track_pr)
  */
 static void fill_missing_segment_pressures(std::vector<pr_track_t> &list, enum interpolation_strategy strategy)
 {
-	double magic;
-
 	for (auto it = list.begin(); it != list.end(); ++it) {
 		int start = it->start, end;
 		int pt_sum = 0, pt = 0;
@@ -134,7 +132,7 @@ static void fill_missing_segment_pressures(std::vector<pr_track_t> &list, enum i
 			break;
 		case TIME:
 			if (it->t_end && (tmp->t_start - tmp->t_end)) {
-				magic = (it->t_start - tmp->t_end) / (tmp->t_start - tmp->t_end);
+				double magic = (it->t_start - tmp->t_end) / (tmp->t_start - tmp->t_end);
 				it->end = lrint(start - (start - end) * magic);
 			} else {
 				it->end = start;
@@ -155,35 +153,33 @@ void dump_pr_interpolate(int i, pr_interpolate_t interpolate_pr)
 #endif
 
 
-static pr_interpolate_t get_pr_interpolate_data(const pr_track_t &segment, struct plot_info *pi, int cur)
-{ // cur = index to pi->entry corresponding to t_end of segment;
+static pr_interpolate_t get_pr_interpolate_data(const pr_track_t &segment, struct plot_info &pi, int cur)
+{ // cur = index to pi.entry corresponding to t_end of segment;
 	pr_interpolate_t interpolate;
 	int i;
-	struct plot_data *entry;
 
 	interpolate.start = segment.start;
 	interpolate.end = segment.end;
 	interpolate.acc_pressure_time = 0;
 	interpolate.pressure_time = 0;
 
-	for (i = 0; i < pi->nr; i++) {
-		entry = pi->entry + i;
+	for (i = 0; i < pi.nr; i++) {
+		const plot_data &entry = pi.entry[i];
 
-		if (entry->sec < segment.t_start)
+		if (entry.sec < segment.t_start)
 			continue;
-		interpolate.pressure_time += entry->pressure_time;
-		if (entry->sec >= segment.t_end)
+		interpolate.pressure_time += entry.pressure_time;
+		if (entry.sec >= segment.t_end)
 			break;
 		if (i <= cur)
-			interpolate.acc_pressure_time += entry->pressure_time;
+			interpolate.acc_pressure_time += entry.pressure_time;
 	}
 	return interpolate;
 }
 
-static void fill_missing_tank_pressures(const struct dive *dive, struct plot_info *pi, std::vector<pr_track_t> &track_pr, int cyl)
+static void fill_missing_tank_pressures(const struct dive *dive, struct plot_info &pi, std::vector<pr_track_t> &track_pr, int cyl)
 {
 	int i;
-	struct plot_data *entry;
 	pr_interpolate_t interpolate = { 0, 0, 0, 0 };
 	int cur_pr;
 	enum interpolation_strategy strategy;
@@ -214,13 +210,10 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 	 * The first two pi structures are "fillers", but in case we don't have a sample
 	 * at time 0 we need to process the second of them here, therefore i=1 */
 	auto last_segment = track_pr.end();
-	for (i = 1; i < pi->nr; i++) { // For each point on the profile:
-		double magic;
-		int pressure;
+	for (i = 1; i < pi.nr; i++) { // For each point on the profile:
+		const struct plot_data &entry = pi.entry[i];
 
-		entry = pi->entry + i;
-
-		pressure = get_plot_pressure(pi, i, cyl);
+		int pressure = get_plot_pressure(pi, i, cyl);
 
 		if (pressure) {				// If there is a valid pressure value,
 			last_segment = track_pr.end();	// get rid of interpolation data,
@@ -230,15 +223,15 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 		// If there is NO valid pressure value..
 		// Find the pressure segment corresponding to this entry..
 		auto it = track_pr.begin();
-		while (it != track_pr.end() && it->t_end < entry->sec) // Find the track_pr with end time..
-			++it;					       // ..that matches the plot_info time (entry->sec)
+		while (it != track_pr.end() && it->t_end < entry.sec) // Find the track_pr with end time..
+			++it;					       // ..that matches the plot_info time (entry.sec)
 
 		// After last segment? All done.
 		if (it == track_pr.end())
 			break;
 
 		// Before first segment, or between segments.. Go on, no interpolation.
-		if (it->t_start > entry->sec)
+		if (it->t_start > entry.sec)
 			continue;
 
 		if (!it->pressure_time) {		// Empty segment?
@@ -249,7 +242,7 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 
 		// If there is a valid segment but no tank pressure ..
 		if (it == last_segment) {
-			interpolate.acc_pressure_time += entry->pressure_time;
+			interpolate.acc_pressure_time += entry.pressure_time;
 		} else {
 			// Set up an interpolation structure
 			interpolate = get_pr_interpolate_data(*it, pi, i);
@@ -261,14 +254,14 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 			/* if this segment has pressure_time, then calculate a new interpolated pressure */
 			if (interpolate.pressure_time) {
 				/* Overall pressure change over total pressure-time for this segment*/
-				magic = (interpolate.end - interpolate.start) / (double)interpolate.pressure_time;
+				double magic = (interpolate.end - interpolate.start) / (double)interpolate.pressure_time;
 
 				/* Use that overall pressure change to update the current pressure */
 				cur_pr = lrint(interpolate.start + magic * interpolate.acc_pressure_time);
 			}
 		} else {
-			magic = (interpolate.end - interpolate.start) /  (it->t_end - it->t_start);
-			cur_pr = lrint(it->start + magic * (entry->sec - it->t_start));
+			double magic = (interpolate.end - interpolate.start) /  (it->t_end - it->t_start);
+			cur_pr = lrint(it->start + magic * (entry.sec - it->t_start));
 		}
 		set_plot_pressure_data(pi, i, INTERPOLATED_PR, cyl, cur_pr); // and store the interpolated data in plot_info
 	}
@@ -285,10 +278,10 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
  * scale pressures, so it ends up being a unitless scaling
  * factor.
  */
-static inline int calc_pressure_time(const struct dive *dive, struct plot_data *a, struct plot_data *b)
+static inline int calc_pressure_time(const struct dive *dive, const struct plot_data &a, const struct plot_data &b)
 {
-	int time = b->sec - a->sec;
-	int depth = (a->depth + b->depth) / 2;
+	int time = b.sec - a.sec;
+	int depth = (a.depth + b.depth) / 2;
 
 	if (depth <= SURFACE_THRESHOLD)
 		return 0;
@@ -298,10 +291,10 @@ static inline int calc_pressure_time(const struct dive *dive, struct plot_data *
 
 #ifdef PRINT_PRESSURES_DEBUG
 // A CCR debugging tool that prints the gas pressures in cylinder 0 and in the diluent cylinder, used in populate_pressure_information():
-static void debug_print_pressures(struct plot_info *pi)
+static void debug_print_pressures(struct plot_info &pi)
 {
 	int i;
-	for (i = 0; i < pi->nr; i++)
+	for (i = 0; i < pi.nr; i++)
 		printf("%5d |%9d | %9d |\n", i, get_plot_sensor_pressure(pi, i), get_plot_interpolated_pressure(pi, i));
 }
 #endif
@@ -315,8 +308,7 @@ static void debug_print_pressures(struct plot_info *pi)
  * calculates the summed pressure-time value for the duration of the dive and stores these in the pr_track_t
  * structures. This function is called by create_plot_info_new() in profile.cpp
  */
-extern "C"
-void populate_pressure_information(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, int sensor)
+void populate_pressure_information(const struct dive *dive, const struct divecomputer *dc, struct plot_info &pi, int sensor)
 {
 	int first, last, cyl;
 	cylinder_t *cylinder = get_cylinder(dive, sensor);
@@ -337,7 +329,7 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 
 	/* Get a rough range of where we have any pressures at all */
 	first = last = -1;
-	for (int i = 0; i < pi->nr; i++) {
+	for (int i = 0; i < pi.nr; i++) {
 		int pressure = get_plot_sensor_pressure(pi, i, sensor);
 
 		if (!pressure)
@@ -366,9 +358,9 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 	b_ev = get_next_event(dc->events, "modechange");
 
 	for (int i = first; i <= last; i++) {
-		struct plot_data *entry = pi->entry + i;
+		struct plot_data &entry = pi.entry[i];
 		int pressure = get_plot_sensor_pressure(pi, i, sensor);
-		int time = entry->sec;
+		int time = entry.sec;
 
 		while (ev && ev->time.seconds <= time) {   // Find 1st gaschange event after 
 			cyl = get_cylinder_index(dive, ev); // the current gas change.
@@ -383,9 +375,9 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 		}
 
 		if (current != std::string::npos) { // calculate pressure-time, taking into account the dive mode for this specific segment.
-			entry->pressure_time = (int)(calc_pressure_time(dive, entry - 1, entry) * gasfactor[dmode] + 0.5);
-			track[current].pressure_time += entry->pressure_time;
-			track[current].t_end = entry->sec;
+			entry.pressure_time = (int)(calc_pressure_time(dive, pi.entry[i - 1], entry) * gasfactor[dmode] + 0.5);
+			track[current].pressure_time += entry.pressure_time;
+			track[current].t_end = entry.sec;
 			if (pressure)
 				track[current].end = pressure;
 		}
@@ -422,7 +414,7 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 		// missing entries that need to be interpolated.
 		// Or maybe we didn't have a previous one at all,
 		// and this is the first pressure entry.
-		track.emplace_back(pressure, entry->sec);
+		track.emplace_back(pressure, entry.sec);
 		current = track.size() - 1;
 		dense = 1;
 	}
