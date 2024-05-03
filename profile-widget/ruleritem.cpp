@@ -113,7 +113,7 @@ void RulerItem2::recalculate()
 	setLine(line);
 
 	QString text;
-	for (const std::string &s: compare_samples(dive, pInfo, source->idx, dest->idx, 1)) {
+	for (const std::string &s: compare_samples(dive, *pInfo, source->idx, dest->idx, 1)) {
 		if (!text.isEmpty())
 			text += '\n';
 		text += QString::fromStdString(s);

@@ -3,6 +3,7 @@
 #include "profile-widget/divecartesianaxis.h"
 #include "profile-widget/divepixmapcache.h"
 #include "profile-widget/animationfunctions.h"
+#include "core/dive.h"
 #include "core/event.h"
 #include "core/eventtype.h"
 #include "core/format.h"
@@ -177,9 +178,9 @@ void DiveEventItem::eventVisibilityChanged(const QString&, bool)
 static int depthAtTime(const plot_info &pi, duration_t time)
 {
 	// Do a binary search for the timestamp
-	auto it = std::lower_bound(pi.entry, pi.entry + pi.nr, time,
+	auto it = std::lower_bound(pi.entry.begin(), pi.entry.end(), time,
 				   [](const plot_data &d1, duration_t t) { return d1.sec < t.seconds; });
-	if (it == pi.entry + pi.nr || it->sec != time.seconds) {
+	if (it == pi.entry.end() || it->sec != time.seconds) {
 		qWarning("can't find a spot in the dataModel");
 		return DEPTH_NOT_FOUND;
 	}
