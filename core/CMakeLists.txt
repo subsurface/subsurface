@@ -102,7 +102,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	gas.c
 	gas.h
 	gas-model.cpp
-	gaspressures.c
+	gaspressures.cpp
 	gaspressures.h
 	gettext.h
 	gettextfromc.cpp
