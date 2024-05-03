@@ -79,7 +79,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divesitehelpers.h
 	downloadfromdcthread.cpp
 	downloadfromdcthread.h
-	event.c
+	event.cpp
 	event.h
 	eventtype.cpp
 	eventtype.h
