@@ -152,7 +152,7 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteCoordinates->clear();
 	coordinatesSetWarning(false);
 
-	ui.locationTags->setText(constructLocationTags(diveSite->taxonomy, false));
+	ui.locationTags->setText(QString::fromStdString(constructLocationTags(diveSite->taxonomy, false)));
 }
 
 void LocationInformationWidget::unitsChanged()
@@ -182,7 +182,7 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 		return;
 	case LocationInformationModel::TAXONOMY:
 		ui.diveSiteCountry->setText(QString::fromStdString(taxonomy_get_country(diveSite->taxonomy)));
-		ui.locationTags->setText(constructLocationTags(diveSite->taxonomy, false));
+		ui.locationTags->setText(QString::fromStdString(constructLocationTags(diveSite->taxonomy, false)));
 		return;
 	case LocationInformationModel::LOCATION:
 		filter_model.setCoordinates(diveSite->location);
