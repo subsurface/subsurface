@@ -8,8 +8,6 @@
 #include <string>
 #include <vector>
 
-extern "C" {
-
 struct dive;
 
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
@@ -108,8 +106,6 @@ extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
 
 void get_gas_string(struct gasmix gasmix, char *text, int len);
 const char *gasname(struct gasmix gasmix);
-
-}
 
 struct ws_info {
 	std::string name;

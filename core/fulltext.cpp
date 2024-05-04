@@ -35,8 +35,6 @@ static FullText self;
 
 // C-interface functions
 
-extern "C" {
-
 void fulltext_register(struct dive *d)
 {
 	self.registerDive(d);
@@ -56,8 +54,6 @@ void fulltext_populate()
 {
 	self.populate();
 }
-
-} // extern "C"
 
 // C++-only interface functions
 FullTextResult fulltext_find_dives(const FullTextQuery &q, StringFilterMode mode)

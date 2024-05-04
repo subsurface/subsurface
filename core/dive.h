@@ -13,8 +13,6 @@
 #include <stdlib.h>
 #include <string>
 
-extern "C" {
-
 extern int last_xml_version;
 
 extern const char *divemode_text_ui[];
@@ -218,7 +216,6 @@ extern struct gasmix get_gasmix(const struct dive *dive, const struct divecomput
 extern struct gasmix get_gasmix_at_time(const struct dive *dive, const struct divecomputer *dc, duration_t time);
 
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
-}
 
 /* Make pointers to dive and dive_trip "Qt metatypes" so that they can be passed through
  * QVariants and through QML.

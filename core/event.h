@@ -8,8 +8,6 @@
 
 #include <libdivecomputer/parser.h>
 
-extern "C" {
-
 enum event_severity {
 	EVENT_SEVERITY_NONE = 0,
 	EVENT_SEVERITY_INFO,
@@ -57,7 +55,5 @@ extern enum event_severity get_event_severity(const struct event *ev);
 /* Since C doesn't have parameter-based overloading, two versions of get_next_event. */
 extern const struct event *get_next_event(const struct event *event, const char *name);
 extern struct event *get_next_event_mutable(struct event *event, const char *name);
-
-}
 
 #endif

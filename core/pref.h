@@ -5,8 +5,6 @@
 #include "units.h"
 #include "taxonomy.h"
 
-extern "C" {
-
 typedef struct
 {
 	bool po2;
@@ -223,7 +221,5 @@ extern void subsurface_OS_pref_setup();
 extern void copy_prefs(struct preferences *src, struct preferences *dest);
 
 extern void set_informational_units(const char *units);
-
-}
 
 #endif // PREF_H

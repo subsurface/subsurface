@@ -27,11 +27,7 @@ struct divelog {
 
 extern struct divelog divelog;
 
-extern "C" {
-
 void clear_divelog(struct divelog *);
 extern void delete_single_dive(struct divelog *, int idx);
-
-}
 
 #endif

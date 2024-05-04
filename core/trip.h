@@ -4,8 +4,6 @@
 
 #include "divelist.h"
 
-extern "C" {
-
 typedef struct dive_trip
 {
 	char *location;
@@ -57,8 +55,6 @@ void clear_trip_table(struct trip_table *table);
 #ifdef DEBUG_TRIP
 extern void dump_trip_list(void);
 #endif
-
-}
 
 /* Make pointers to dive_trip and trip_table "Qt metatypes" so that they can be
  * passed through QVariants and through QML. See comment in dive.h. */
