@@ -7,7 +7,4 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-// Macro to be used for silencing unused parameters
-#define UNUSED(x) (void)x
-
 #endif // SSRF_H
