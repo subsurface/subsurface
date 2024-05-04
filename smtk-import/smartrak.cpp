@@ -347,7 +347,7 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 					break;
 				}
 			}
-			concat(&ds->notes, "\n", notes);
+			concat(ds->notes, "\n", notes);
 			break;
 		}
 	}
@@ -423,18 +423,17 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 		concat(str, ", ", table.get_string_view(1)); // Locality
 	concat(str, ", ", site);
 
-	ds = get_dive_site_by_name(str.c_str(), log->sites);
+	ds = get_dive_site_by_name(str, log->sites);
 	if (!ds) {
 		if (!has_location(&loc))
-			ds = create_dive_site(str.c_str(), log->sites);
+			ds = create_dive_site(str, log->sites);
 		else
-			ds = create_dive_site_with_gps(str.c_str(), &loc, log->sites);
+			ds = create_dive_site_with_gps(str, &loc, log->sites);
 	}
 	*location = ds;
 
 	/* Insert site notes */
-	free(ds->notes);
-	ds->notes = strdup(notes.c_str());
+	ds->notes = notes.c_str();
 
 	/* Check if we have a wreck */
 	smtk_wreck_site(mdb, idx, ds);

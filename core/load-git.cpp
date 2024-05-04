@@ -178,7 +178,7 @@ static void parse_dive_gps(char *line, struct git_parser_state *state)
 	if (!ds) {
 		ds = get_dive_site_by_gps(&location, state->log->sites);
 		if (!ds)
-			ds = create_dive_site_with_gps("", &location, state->log->sites);
+			ds = create_dive_site_with_gps(std::string(), &location, state->log->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
@@ -189,10 +189,8 @@ static void parse_dive_gps(char *line, struct git_parser_state *state)
 			// note 2: we could include the first newline in the
 			// translation string, but that would be weird and cause
 			// a new string.
-			std::string new_text = std::string(ds->notes) + '\n' +
-					       format_string_std(translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords.c_str());
-			free(ds->notes);
-			ds->notes = strdup(new_text.c_str());
+			ds->notes += '\n';
+			ds->notes += format_string_std(translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords.c_str());
 		}
 		ds->location = location;
 	}
@@ -224,21 +222,19 @@ static void parse_dive_location(char *, struct git_parser_state *state)
 	std::string name = get_first_converted_string(state);
 	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
 	if (!ds) {
-		ds = get_dive_site_by_name(name.c_str(), state->log->sites);
+		ds = get_dive_site_by_name(name, state->log->sites);
 		if (!ds)
-			ds = create_dive_site(name.c_str(), state->log->sites);
+			ds = create_dive_site(name, state->log->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		// we already had a dive site linked to the dive
-		if (empty_string(ds->name)) {
-			free(ds->name); // empty_string could mean pointer to a 0-byte!
-			ds->name = strdup(name.c_str());
+		if (ds->name.empty()) {
+			ds->name = name.c_str();
 		} else {
 			// and that dive site had a name. that's weird - if our name is different, add it to the notes
-			if (!same_string(ds->name, name.c_str())) {
-				std::string new_string = std::string(ds->notes) + '\n' +
-							 format_string_std(translate("gettextFromC", "additional name for site: %s\n"), name.c_str());
-				ds->notes = strdup(new_string.c_str());
+			if (ds->name == name) {
+				ds->notes += '\n';
+				ds->notes += format_string_std(translate("gettextFromC", "additional name for site: %s\n"), name.c_str());
 			}
 		}
 	}
@@ -314,7 +310,7 @@ static void parse_dive_invalid(char *, struct git_parser_state *state)
 }
 
 static void parse_site_description(char *, struct git_parser_state *state)
-{ state->active_site->description = get_first_converted_string_c(state); }
+{ state->active_site->description = get_first_converted_string(state); }
 
 static void parse_site_name(char *, struct git_parser_state *state)
 { state->active_site->name = get_first_converted_string_c(state); }

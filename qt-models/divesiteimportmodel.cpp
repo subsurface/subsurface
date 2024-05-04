@@ -59,7 +59,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::DisplayRole) {
 		switch (index.column()) {
 		case NAME:
-			return QString(ds->name);
+			return QString::fromStdString(ds->name);
 		case LOCATION:
 			return printGPSCoords(&ds->location);
 		case COUNTRY:
@@ -70,7 +70,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 				get_dive_site_by_gps_proximity(&ds->location,
 				40075000, divelog.sites);
 			if (nearest_ds)
-				return QString(nearest_ds->name);
+				return QString::fromStdString(nearest_ds->name);
 			else
 				return QString();
 		}

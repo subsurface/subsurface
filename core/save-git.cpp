@@ -929,9 +929,9 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 		struct dive_site *ds = get_dive_site(i, divelog.sites);
 		struct membufferpp site_file_name;
 		put_format(&site_file_name, "Site-%08x", ds->uuid);
-		show_utf8(&b, "name ", ds->name, "\n");
-		show_utf8(&b, "description ", ds->description, "\n");
-		show_utf8(&b, "notes ", ds->notes, "\n");
+		show_utf8(&b, "name ", ds->name.c_str(), "\n");
+		show_utf8(&b, "description ", ds->description.c_str(), "\n");
+		show_utf8(&b, "notes ", ds->notes.c_str(), "\n");
 		put_location(&b, &ds->location, "gps ", "\n");
 		for (const auto &t: ds->taxonomy) {
 			if (t.category != TC_NONE && !t.value.empty()) {
@@ -1142,15 +1142,17 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 		put_format(msg, "Changes made: \n\n%s\n", changes_made.c_str());
 	} else if (dive) {
 		dive_trip_t *trip = dive->divetrip;
-		const char *location = get_dive_location(dive) ? : "no location";
+		std::string location = get_dive_location(dive);
+		if (location.empty())
+			location = "no location";
 		struct divecomputer *dc = &dive->dc;
 		const char *sep = "\n";
 
 		if (dive->number)
 			nr = dive->number;
 
-		put_format(msg, "dive %d: %s", nr, location);
-		if (trip && !empty_string(trip->location) && strcmp(trip->location, location))
+		put_format(msg, "dive %d: %s", nr, location.c_str());
+		if (trip && !empty_string(trip->location) && location != trip->location)
 			put_format(msg, " (%s)", trip->location);
 		put_format(msg, "\n");
 		do {
