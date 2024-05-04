@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include "errorhelper.h"
-#include "ssrf.h"
 #include "subsurface-string.h"
 #include "gettext.h"
 #include "dive.h"

@@ -12,7 +12,6 @@
  *                                                                   -> get_pr_interpolate_data()
  */
 
-#include "ssrf.h"
 #include "dive.h"
 #include "event.h"
 #include "profile.h"

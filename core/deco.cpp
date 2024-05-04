@@ -21,7 +21,6 @@
 #include <assert.h>
 
 #include "deco.h"
-#include "ssrf.h"
 #include "dive.h"
 #include "gas.h"
 #include "subsurface-string.h"

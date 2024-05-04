@@ -163,7 +163,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	selection.h
 	sha1.cpp
 	sha1.h
-	ssrf.h
 	statistics.cpp
 	statistics.h
 	string-format.h
