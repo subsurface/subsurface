@@ -18,8 +18,6 @@
 
 struct dive;
 
-#ifdef __cplusplus
-
 #include <string>
 #include <vector>
 
@@ -65,7 +63,5 @@ extern stats_summary calculate_stats_summary(bool selected_only);
 extern stats_t calculate_stats_selected();
 extern std::vector<volume_t> get_gas_used(struct dive *dive);
 extern std::pair<volume_t, volume_t> selected_dives_gas_parts(); // returns (O2, He) tuple
-
-#endif
 
 #endif // STATISTICS_H

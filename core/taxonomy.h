@@ -2,8 +2,6 @@
 #ifndef TAXONOMY_H
 #define TAXONOMY_H
 
-#ifdef __cplusplus
-
 #include <string>
 #include <vector>
 
@@ -42,5 +40,4 @@ std::string taxonomy_get_country(const taxonomy_data &t);
 void taxonomy_set_category(taxonomy_data &t, enum taxonomy_category category, const std::string &value, enum taxonomy_origin origin);
 void taxonomy_set_country(taxonomy_data &t, const std::string &country, enum taxonomy_origin origin);
 
-#endif
 #endif // TAXONOMY_H

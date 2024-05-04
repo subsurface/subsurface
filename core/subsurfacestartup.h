@@ -2,11 +2,7 @@
 #ifndef SUBSURFACESTARTUP_H
 #define SUBSURFACESTARTUP_H
 
-#ifdef __cplusplus
 extern "C" {
-#else
-#include <stdbool.h>
-#endif
 
 extern bool imported;
 extern int quit, force_root, ignore_bt;
@@ -19,14 +15,11 @@ void print_version(void);
 
 extern char *settings_suffix;
 
-#ifdef __cplusplus
 }
 
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 #include <string>
 extern std::string testqml;
-#endif
-
 #endif
 
 #endif // SUBSURFACESTARTUP_H

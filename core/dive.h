@@ -11,11 +11,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#ifdef __cplusplus
 #include <string>
+
 extern "C" {
-#endif
 
 extern int last_xml_version;
 
@@ -115,12 +113,8 @@ extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, 
 extern struct dive *get_dive(int nr);
 extern struct dive *get_dive_from_table(int nr, const struct dive_table *dt);
 extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
-#ifdef __cplusplus
-} // TODO: remove
 extern std::string get_dive_country(const struct dive *dive);
 extern std::string get_dive_location(const struct dive *dive);
-extern "C" {
-#endif
 extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern const struct divecomputer *get_dive_dc_const(const struct dive *dive, int nr);
@@ -224,8 +218,6 @@ extern struct gasmix get_gasmix(const struct dive *dive, const struct divecomput
 extern struct gasmix get_gasmix_at_time(const struct dive *dive, const struct divecomputer *dc, duration_t time);
 
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
-
-#ifdef __cplusplus
 }
 
 /* Make pointers to dive and dive_trip "Qt metatypes" so that they can be passed through
@@ -235,7 +227,5 @@ extern void update_setpoint_events(const struct dive *dive, struct divecomputer 
 Q_DECLARE_METATYPE(struct dive *);
 
 extern std::string existing_filename;
-
-#endif
 
 #endif // DIVE_H

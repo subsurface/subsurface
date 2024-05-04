@@ -46,8 +46,6 @@ struct membuffer {
 	char *buffer;
 };
 
-#ifdef __cplusplus
-
 // In C++ code use this - it automatically frees the buffer, when going out of scope.
 struct membufferpp : public membuffer {
 	membufferpp();
@@ -55,7 +53,6 @@ struct membufferpp : public membuffer {
 };
 
 extern "C" {
-#endif
 
 #ifdef __GNUC__
 #define __printf(x, y) __attribute__((__format__(__printf__, x, y)))
@@ -116,8 +113,6 @@ extern void put_salinity(struct membuffer *, int, const char *, const char *);
 extern void put_degrees(struct membuffer *b, degrees_t value, const char *, const char *);
 extern void put_location(struct membuffer *b, const location_t *, const char *, const char *);
 
-#ifdef __cplusplus
 }
-#endif
 
 #endif

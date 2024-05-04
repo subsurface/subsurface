@@ -5,11 +5,7 @@
 #include "divemode.h"
 #include "units.h"
 
-#ifdef __cplusplus
 extern "C" {
-#else
-#include <stdbool.h>
-#endif
 
 enum gas_component { N2, HE, O2 };
 
@@ -60,11 +56,9 @@ static inline int get_n2(struct gasmix mix)
 
 int pscr_o2(const double amb_pressure, struct gasmix mix);
 
-#ifdef __cplusplus
 struct gas_pressures {
 	double o2 = 0.0, n2 = 0.0, he = 0.0;
 };
-#endif
 
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(struct gasmix a, struct gasmix b);
@@ -77,8 +71,6 @@ extern enum gastype gasmix_to_type(struct gasmix mix);
 extern const char *gastype_name(enum gastype type);
 extern fraction_t make_fraction(int f);
 
-#ifdef __cplusplus
 }
-#endif
 
 #endif

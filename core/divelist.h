@@ -4,9 +4,7 @@
 
 #include "units.h"
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 struct dive;
 struct divelog;
@@ -62,8 +60,6 @@ void move_dive_table(struct dive_table *src, struct dive_table *dst);
 struct dive *unregister_dive(int idx);
 extern bool has_dive(unsigned int deviceid, unsigned int diveid);
 
-#ifdef __cplusplus
 }
-#endif
 
 #endif // DIVELIST_H

@@ -4,14 +4,14 @@
 
 #include "git2.h"
 #include "filterpreset.h"
+#include <string>
 
 struct dive_log;
+struct git_oid;
+struct git_repository;
+struct divelog;
 
-#ifdef __cplusplus
 extern "C" {
-#else
-#include <stdbool.h>
-#endif
 
 #define CLOUD_HOST_US "ssrf-cloud-us.subsurface-divelog.org"  // preferred (faster/bigger) server in the US
 #define CLOUD_HOST_U2 "ssrf-cloud-u2.subsurface-divelog.org"  // secondary (older) server in the US
@@ -30,14 +30,7 @@ void set_git_update_cb(int(*)(const char *));
 int git_storage_update_progress(const char *text);
 int get_authorship(git_repository *repo, git_signature **authorp);
 
-#ifdef __cplusplus
 }
-
-#include <string>
-
-struct git_oid;
-struct git_repository;
-struct divelog;
 
 struct git_info {
 	std::string url;
@@ -63,6 +56,4 @@ extern int git_load_dives(struct git_info *, struct divelog *log);
 extern int do_git_save(struct git_info *, bool select_only, bool create_empty);
 extern int git_create_local_repo(const std::string &filename);
 
-#endif
 #endif // GITACCESS_H
-

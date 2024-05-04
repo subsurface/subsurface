@@ -5,11 +5,7 @@
 #include "units.h"
 #include "taxonomy.h"
 
-#ifdef __cplusplus
 extern "C" {
-#else
-#include <stdbool.h>
-#endif
 
 typedef struct
 {
@@ -228,8 +224,6 @@ extern void copy_prefs(struct preferences *src, struct preferences *dest);
 
 extern void set_informational_units(const char *units);
 
-#ifdef __cplusplus
 }
-#endif
 
 #endif // PREF_H

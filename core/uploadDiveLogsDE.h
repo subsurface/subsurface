@@ -6,7 +6,6 @@
 #include <QTimer>
 #include <QFile>
 
-
 class uploadDiveLogsDE : public QObject {
 	Q_OBJECT
 	
@@ -39,4 +38,5 @@ private:
 	QHttpMultiPart *multipart;
 	QTimer timeout;
 };
+
 #endif // UPLOADDIVELOGSDE_H

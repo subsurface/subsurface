@@ -7,7 +7,6 @@
 #include "divelist.h"
 #include <stdlib.h>
 
-#ifdef __cplusplus
 #include <QObject>
 
 struct dive_site
@@ -74,7 +73,5 @@ std::string constructLocationTags(const taxonomy_data &taxonomy, bool for_mainta
 
 /* Make pointer-to-dive_site a "Qt metatype" so that we can pass it through QVariants */
 Q_DECLARE_METATYPE(dive_site *);
-
-#endif
 
 #endif // DIVESITE_H

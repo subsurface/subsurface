@@ -3,11 +3,10 @@
 #define TIME_H
 
 #include "units.h"
+#include <string>
 #include <time.h>
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 extern timestamp_t utc_mktime(const struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);
@@ -19,12 +18,8 @@ extern timestamp_t parse_datetime(const char *s); /* returns 0 on error */
 
 extern const char *monthname(int mon);
 
-#ifdef __cplusplus
 }
 
-#include <string>
 std::string format_datetime(timestamp_t timestamp); /* ownership of string passed to caller */
-
-#endif
 
 #endif

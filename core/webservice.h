@@ -2,9 +2,7 @@
 #ifndef WEBSERVICE_H
 #define WEBSERVICE_H
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 //extern void webservice_download_dialog(void);
 //extern bool webservice_request_user_xml(const gchar *, gchar **, unsigned int *, unsigned int *);
@@ -19,7 +17,5 @@ enum {
 };
 
 
-#ifdef __cplusplus
 }
-#endif
 #endif // WEBSERVICE_H
