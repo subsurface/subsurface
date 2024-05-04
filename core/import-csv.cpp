@@ -5,7 +5,6 @@
 
 #include "dive.h"
 #include "errorhelper.h"
-#include "ssrf.h"
 #include "subsurface-string.h"
 #include "divelist.h"
 #include "divelog.h"

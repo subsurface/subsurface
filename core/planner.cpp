@@ -10,7 +10,6 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <string.h>
-#include "ssrf.h"
 #include "dive.h"
 #include "divelist.h" // for init_decompression()
 #include "sample.h"

@@ -4,7 +4,6 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#include "ssrf.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

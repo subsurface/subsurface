@@ -5,7 +5,6 @@
 #endif
 
 #include <stdlib.h>
-#include "ssrf.h"
 #include "dive.h"
 #include "divesite.h"
 #include "errorhelper.h"

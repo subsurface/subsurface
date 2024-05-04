@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /* macos.c */
 /* implements Mac OS X specific functions */
-#include "ssrf.h"
 #include <stdlib.h>
 #include <dirent.h>
 #include <fnmatch.h>

@@ -29,7 +29,6 @@
 #include <git2.h>
 
 // Implementation of STP logging
-#include "core/ssrf.h"
 
 int main(int argc, char **argv)
 {

@@ -6,7 +6,6 @@
 
 #include <stdlib.h>
 #include "qthelper.h"
-#include "ssrf.h"
 #include "dive.h"
 #include "sample.h"
 #include "subsurface-string.h"

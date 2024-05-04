@@ -2,7 +2,6 @@
 /* profile.c */
 /* creates all the necessary data for drawing the dive profile
  */
-#include "ssrf.h"
 #include "gettext.h"
 #include <limits.h>
 #include <string.h>
