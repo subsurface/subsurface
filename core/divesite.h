@@ -15,7 +15,7 @@ struct dive_site
 {
 	uint32_t uuid = 0;
 	char *name = nullptr;
-	struct dive_table dives = { 0, 0, nullptr };
+	std::vector<dive *> dives;
 	location_t location = { { 9 }, { 0 } };
 	char *description = nullptr;
 	char *notes = nullptr;
@@ -50,8 +50,8 @@ void sort_dive_site_table(struct dive_site_table *ds_table);
 int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_table);
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table);
 struct dive_site *alloc_dive_site();
-int nr_of_dives_at_dive_site(struct dive_site *ds);
-bool is_dive_site_selected(struct dive_site *ds);
+size_t nr_of_dives_at_dive_site(const struct dive_site &ds);
+bool is_dive_site_selected(const struct dive_site &ds);
 int unregister_dive_site(struct dive_site *ds);
 int register_dive_site(struct dive_site *ds);
 void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table);

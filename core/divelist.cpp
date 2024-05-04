@@ -1150,7 +1150,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 
 		if (!old_ds) {
 			/* Dive site doesn't exist. Add it to list of dive sites to be added. */
-			new_ds->dives.nr = 0; /* Caller is responsible for adding dives to site */
+			new_ds->dives.clear(); /* Caller is responsible for adding dives to site */
 			add_dive_site_to_table(new_ds, sites_to_add);
 			continue;
 		}

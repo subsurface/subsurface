@@ -62,9 +62,9 @@ void DiveSiteListView::diveSiteClicked(const QModelIndex &index)
 		MainWindow::instance()->editDiveSite(ds);
 		break;
 	case LocationInformationModel::REMOVE:
-		if (ds->dives.nr > 0 &&
+		if (!ds->dives.empty() &&
 		    QMessageBox::warning(this, tr("Delete dive site?"),
-					 tr("This dive site has %n dive(s). Do you really want to delete it?\n", "", ds->dives.nr),
+					 tr("This dive site has %n dive(s). Do you really want to delete it?\n", "", ds->dives.size()),
 					 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
 				return;
 		Command::deleteDiveSites(QVector<dive_site *>{ds});
