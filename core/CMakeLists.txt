@@ -181,7 +181,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	taxonomy.cpp
 	taxonomy.h
 	time.cpp
-	trip.c
+	trip.cpp
 	trip.h
 	uemis-downloader.cpp
 	uemis.cpp
