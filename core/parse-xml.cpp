@@ -1209,7 +1209,7 @@ static void gps_in_dive(const char *buffer, struct dive *dive, struct parser_sta
 		add_dive_to_dive_site(dive, ds);
 	} else {
 		if (dive_site_has_gps_location(ds) &&
-		    has_location(&location) && !same_location(&ds->location, &location)) {
+		    has_location(&location) && ds->location != location) {
 			// Houston, we have a problem
 			report_info("dive site uuid in dive, but gps location (%10.6f/%10.6f) different from dive location (%10.6f/%10.6f)",
 				ds->location.lat.udeg / 1000000.0, ds->location.lon.udeg / 1000000.0,

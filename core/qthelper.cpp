@@ -268,31 +268,6 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 		pos == normalized.size();
 }
 
-#if 0 // we'll need something like this for the dive site management, eventually
-bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out)
-{
-	location_t location;
-	bool ignore;
-	bool *parsed = parsed_out ?: &ignore;
-	*parsed = true;
-
-	/* if we have a master and the dive's gps address is different from it,
-	 * don't change the dive */
-	if (master && !same_location(&master->location, &dive->location))
-		return false;
-
-	if (!(*parsed = parseGpsText(gps_text, location)))
-		return false;
-
-	/* if dive gps didn't change, nothing changed */
-	if (same_location(&dive->location, location))
-		return false;
-	/* ok, update the dive and mark things changed */
-	dive->location = location;
-	return true;
-}
-#endif
-
 static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
 {
 	std::string filename = std::string(":/xslt/") + (const char *)uri;
