@@ -652,7 +652,7 @@ void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 	// an "SP change" event at t=0 is currently our marker for OC vs CCR
 	// this will need to change to a saner setup, but for now we can just
 	// check if such an event is there and adjust it, or add that event
-	ev = get_next_event_mutable(dc->events, "SP change");
+	ev = get_next_event(dc->events, "SP change");
 	if (ev && ev->time.seconds == 0) {
 		ev->value = new_setpoint;
 	} else {

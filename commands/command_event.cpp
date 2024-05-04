@@ -166,7 +166,7 @@ AddGasSwitch::AddGasSwitch(struct dive *d, int dcNr, int seconds, int tank) : Ev
 	// support that anyway.
 	struct divecomputer *dc = get_dive_dc(d, dcNr);
 	struct event *gasChangeEvent = dc->events;
-	while ((gasChangeEvent = get_next_event_mutable(gasChangeEvent, "gaschange")) != NULL) {
+	while ((gasChangeEvent = get_next_event(gasChangeEvent, "gaschange")) != NULL) {
 		if (gasChangeEvent->time.seconds == seconds) {
 			eventsToRemove.push_back(gasChangeEvent);
 			int idx = gasChangeEvent->gas.index;
