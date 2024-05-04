@@ -4,6 +4,7 @@
 
 #include "divemode.h"
 #include "units.h"
+#include <string>
 
 struct extra_data;
 struct sample;
@@ -60,7 +61,7 @@ extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
 extern void swap_event(struct divecomputer *dc, struct event *from, struct event *to);
 extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
 extern void add_event_to_dc(struct divecomputer *dc, struct event *ev);
-extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
+extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const std::string &name);
 extern void remove_event_from_dc(struct divecomputer *dc, struct event *event);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern uint32_t calculate_string_hash(const char *str);

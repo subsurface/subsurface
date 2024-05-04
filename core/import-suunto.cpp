@@ -21,6 +21,7 @@
 
 static int dm4_events(void *param, int, char **data, char **)
 {
+	using namespace std::string_literals;
 	struct parser_state *state = (struct parser_state *)param;
 
 	event_start(state);
@@ -31,108 +32,108 @@ static int dm4_events(void *param, int, char **data, char **)
 		switch (atoi(data[2])) {
 		case 1:
 			/* 1 Mandatory Safety Stop */
-			strcpy(state->cur_event.name, "safety stop (mandatory)");
+			state->cur_event.name = "safety stop (mandatory)"s;
 			break;
 		case 3:
 			/* 3 Deco */
 			/* What is Subsurface's term for going to
 				 * deco? */
-			strcpy(state->cur_event.name, "deco");
+			state->cur_event.name = "deco"s;
 			break;
 		case 4:
 			/* 4 Ascent warning */
-			strcpy(state->cur_event.name, "ascent");
+			state->cur_event.name = "ascent"s;
 			break;
 		case 5:
 			/* 5 Ceiling broken */
-			strcpy(state->cur_event.name, "violation");
+			state->cur_event.name = "violation"s;
 			break;
 		case 6:
 			/* 6 Mandatory safety stop ceiling error */
-			strcpy(state->cur_event.name, "violation");
+			state->cur_event.name = "violation"s;
 			break;
 		case 7:
 			/* 7 Below deco floor */
-			strcpy(state->cur_event.name, "below floor");
+			state->cur_event.name = "below floor"s;
 			break;
 		case 8:
 			/* 8 Dive time alarm */
-			strcpy(state->cur_event.name, "divetime");
+			state->cur_event.name = "divetime"s;
 			break;
 		case 9:
 			/* 9 Depth alarm */
-			strcpy(state->cur_event.name, "maxdepth");
+			state->cur_event.name = "maxdepth"s;
 			break;
 		case 10:
 		/* 10 OLF 80% */
 		case 11:
 			/* 11 OLF 100% */
-			strcpy(state->cur_event.name, "OLF");
+			state->cur_event.name = "OLF"s;
 			break;
 		case 12:
 			/* 12 High pO₂ */
-			strcpy(state->cur_event.name, "PO2");
+			state->cur_event.name = "PO2"s;
 			break;
 		case 13:
 			/* 13 Air time */
-			strcpy(state->cur_event.name, "airtime");
+			state->cur_event.name = "airtime"s;
 			break;
 		case 17:
 			/* 17 Ascent warning */
-			strcpy(state->cur_event.name, "ascent");
+			state->cur_event.name = "ascent"s;
 			break;
 		case 18:
 			/* 18 Ceiling error */
-			strcpy(state->cur_event.name, "ceiling");
+			state->cur_event.name = "ceiling"s;
 			break;
 		case 19:
 			/* 19 Surfaced */
-			strcpy(state->cur_event.name, "surface");
+			state->cur_event.name = "surface"s;
 			break;
 		case 20:
 			/* 20 Deco */
-			strcpy(state->cur_event.name, "deco");
+			state->cur_event.name = "deco"s;
 			break;
 		case 22:
 		case 32:
 			/* 22 Mandatory safety stop violation */
 			/* 32 Deep stop violation */
-			strcpy(state->cur_event.name, "violation");
+			state->cur_event.name = "violation"s;
 			break;
 		case 30:
 			/* Tissue level warning */
-			strcpy(state->cur_event.name, "tissue warning");
+			state->cur_event.name = "tissue warning"s;
 			break;
 		case 37:
 			/* Tank pressure alarm */
-			strcpy(state->cur_event.name, "tank pressure");
+			state->cur_event.name = "tank pressure"s;
 			break;
 		case 257:
 			/* 257 Dive active */
 			/* This seems to be given after surface when
 			 * descending again. */
-			strcpy(state->cur_event.name, "surface");
+			state->cur_event.name = "surface"s;
 			break;
 		case 258:
 			/* 258 Bookmark */
 			if (data[3]) {
-				strcpy(state->cur_event.name, "heading");
+				state->cur_event.name = "heading"s;
 				state->cur_event.value = atoi(data[3]);
 			} else {
-				strcpy(state->cur_event.name, "bookmark");
+				state->cur_event.name = "bookmark"s;
 			}
 			break;
 		case 259:
 			/* Deep stop */
-			strcpy(state->cur_event.name, "Deep stop");
+			state->cur_event.name = "Deep stop"s;
 			break;
 		case 260:
 			/* Deep stop */
-			strcpy(state->cur_event.name, "Deep stop cleared");
+			state->cur_event.name = "Deep stop cleared"s;
 			break;
 		case 266:
 			/* Mandatory safety stop activated */
-			strcpy(state->cur_event.name, "safety stop (mandatory)");
+			state->cur_event.name = "safety stop (mandatory)"s;
 			break;
 		case 267:
 			/* Mandatory safety stop deactivated */
@@ -140,7 +141,7 @@ static int dm4_events(void *param, int, char **data, char **)
 			 * profile so skipping as well for now */
 			break;
 		default:
-			strcpy(state->cur_event.name, "unknown");
+			state->cur_event.name = "unknown"s;
 			state->cur_event.value = atoi(data[2]);
 			break;
 		}
@@ -329,13 +330,14 @@ static int dm5_cylinders(void *param, int, char **data, char **)
 
 static int dm5_gaschange(void *param, int, char **data, char **)
 {
+	using namespace std::string_literals;
 	struct parser_state *state = (struct parser_state *)param;
 
 	event_start(state);
 	if (data[0])
 		state->cur_event.time.seconds = atoi(data[0]);
 	if (data[1]) {
-		strcpy(state->cur_event.name, "gaschange");
+		state->cur_event.name = "gaschange"s;
 		state->cur_event.value = lrint(permissive_strtod(data[1], NULL));
 	}
 

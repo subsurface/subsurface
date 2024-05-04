@@ -91,7 +91,7 @@ static void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
 		put_string(b, separator);
 		separator = ", ";
 		put_string(b, "{\"name\":\"");
-		put_quoted(b, ev->name, 1, 0);
+		put_quoted(b, ev->name.c_str(), 1, 0);
 		put_string(b, "\",");
 		put_format(b, "\"value\":\"%d\",", ev->value);
 		put_format(b, "\"type\":\"%d\",", ev->type);
