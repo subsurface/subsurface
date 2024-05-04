@@ -165,8 +165,7 @@ void uemis::set_divelocation(int divespot, const std::string &text, double longi
 		if (it.second.divespot == divespot) {
 			struct dive_site *ds = it.second.dive_site;
 			if (ds) {
-				free(ds->name);
-				ds->name = strdup(text.c_str());
+				ds->name = text;
 				ds->location = create_location(latitude, longitude);
 			}
 		}

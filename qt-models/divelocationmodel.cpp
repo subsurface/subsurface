@@ -91,11 +91,11 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 	case Qt::DisplayRole:
 		switch(column) {
 		case DIVESITE: return QVariant::fromValue<dive_site *>((dive_site *)ds); // Not nice: casting away const
-		case NAME: return QString(ds->name);
+		case NAME: return QString::fromStdString(ds->name);
 		case NUM_DIVES: return static_cast<int>(ds->dives.size());
 		case LOCATION: return "TODO";
-		case DESCRIPTION: return QString(ds->description);
-		case NOTES: return QString(ds->name);
+		case DESCRIPTION: return QString::fromStdString(ds->description);
+		case NOTES: return QString::fromStdString(ds->notes);
 		case TAXONOMY: return "TODO";
 		}
 	break;
@@ -184,7 +184,7 @@ bool DiveSiteSortedModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 	if (sourceRow < 0 || sourceRow > divelog.sites->nr)
 		return false;
 	struct dive_site *ds = divelog.sites->dive_sites[sourceRow];
-	QString text = QString(ds->name) + QString(ds->description) + QString(ds->notes);
+	QString text = QString::fromStdString(ds->name + ds->description + ds->notes);
 	return text.contains(fullText, Qt::CaseInsensitive);
 }
 
@@ -200,18 +200,18 @@ bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2)
 	switch (i1.column()) {
 	case LocationInformationModel::NAME:
 	default:
-		return QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+		return QString::localeAwareCompare(QString::fromStdString(ds1->name), QString::fromStdString(ds2->name)) < 0; // TODO: avoid copy
 	case LocationInformationModel::DESCRIPTION: {
-		int cmp = QString::localeAwareCompare(QString(ds1->description), QString(ds2->description)); // TODO: avoid copy
+		int cmp = QString::localeAwareCompare(QString::fromStdString(ds1->description), QString::fromStdString(ds2->description)); // TODO: avoid copy
 		return cmp != 0 ? cmp < 0 :
-		       QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+		       QString::localeAwareCompare(QString::fromStdString(ds1->name), QString::fromStdString(ds2->name)) < 0; // TODO: avoid copy
 	}
 	case LocationInformationModel::NUM_DIVES: {
 		int cmp = static_cast<int>(ds1->dives.size()) - static_cast<int>(ds2->dives.size());
 		// Since by default nr dives is descending, invert sort direction of names, such that
 		// the names are listed as ascending.
 		return cmp != 0 ? cmp < 0 :
-		       QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+		       QString::localeAwareCompare(QString::fromStdString(ds1->name), QString::fromStdString(ds2->name)) < 0; // TODO: avoid copy
 	}
 	}
 }
@@ -234,7 +234,7 @@ QStringList DiveSiteSortedModel::allSiteNames() const
 			report_info("DiveSiteSortedModel::allSiteNames(): invalid index");
 			continue;
 		}
-		locationNames << QString(divelog.sites->dive_sites[idx]->name);
+		locationNames << QString::fromStdString(divelog.sites->dive_sites[idx]->name);
 	}
 	return locationNames;
 }

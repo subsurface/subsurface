@@ -47,7 +47,7 @@ struct DiveSiteWrapper {
 	const dive_site *ds;
 	QString name;
 	DiveSiteWrapper(const dive_site *ds) : ds(ds),
-		name(ds ? ds->name : "")
+		name(ds ? QString::fromStdString(ds->name) : QString())
 	{
 	}
 	bool operator<(const DiveSiteWrapper &d2) const {

@@ -76,7 +76,7 @@ AddDiveSite::AddDiveSite(const QString &name)
 {
 	setText(Command::Base::tr("add dive site"));
 	sitesToAdd.push_back(std::make_unique<dive_site>());
-	sitesToAdd.back()->name = copy_qstring(name);
+	sitesToAdd.back()->name = name.toStdString();
 }
 
 bool AddDiveSite::workToBeDone()
@@ -175,24 +175,15 @@ void PurgeUnusedDiveSites::undo()
 	sitesToRemove = addDiveSites(sitesToAdd);
 }
 
-// Helper function: swap C and Qt string
-static void swap(char *&c, QString &q)
-{
-	QString s = c;
-	free(c);
-	c = copy_qstring(q);
-	q = s;
-}
-
 EditDiveSiteName::EditDiveSiteName(dive_site *dsIn, const QString &name) : ds(dsIn),
-	value(name)
+	value(name.toStdString())
 {
 	setText(Command::Base::tr("Edit dive site name"));
 }
 
 bool EditDiveSiteName::workToBeDone()
 {
-	return value != QString(ds->name);
+	return value != ds->name;
 }
 
 void EditDiveSiteName::redo()
@@ -208,14 +199,14 @@ void EditDiveSiteName::undo()
 }
 
 EditDiveSiteDescription::EditDiveSiteDescription(dive_site *dsIn, const QString &description) : ds(dsIn),
-	value(description)
+	value(description.toStdString())
 {
 	setText(Command::Base::tr("Edit dive site description"));
 }
 
 bool EditDiveSiteDescription::workToBeDone()
 {
-	return value != QString(ds->description);
+	return value != ds->description;
 }
 
 void EditDiveSiteDescription::redo()
@@ -231,14 +222,14 @@ void EditDiveSiteDescription::undo()
 }
 
 EditDiveSiteNotes::EditDiveSiteNotes(dive_site *dsIn, const QString &notes) : ds(dsIn),
-	value(notes)
+	value(notes.toStdString())
 {
 	setText(Command::Base::tr("Edit dive site notes"));
 }
 
 bool EditDiveSiteNotes::workToBeDone()
 {
-	return value != QString(ds->notes);
+	return value != ds->notes;
 }
 
 void EditDiveSiteNotes::redo()
@@ -400,7 +391,7 @@ ApplyGPSFixes::ApplyGPSFixes(const std::vector<DiveAndLocation> &fixes)
 				siteLocations.push_back({ ds, dl.location });
 			}
 		} else {
-			ds = create_dive_site(qPrintable(dl.name), divelog.sites);
+			ds = create_dive_site(dl.name.toStdString(), divelog.sites);
 			ds->location = dl.location;
 			add_dive_to_dive_site(dl.d, ds);
 			dl.d->dive_site = nullptr; // This will be set on redo()

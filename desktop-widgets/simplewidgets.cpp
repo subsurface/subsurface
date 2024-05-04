@@ -325,7 +325,7 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		QString cliptext;
 		text.setString(&cliptext);
 		if (what->divesite && current_dive->dive_site)
-			text << tr("Dive site: ") << current_dive->dive_site->name << "\n";
+			text << tr("Dive site: ") << QString::fromStdString(current_dive->dive_site->name) << "\n";
 		if (what->diveguide)
 			text << tr("Dive guide: ") << current_dive->diveguide << "\n";
 		if (what->buddy)

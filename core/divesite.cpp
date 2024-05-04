@@ -5,6 +5,7 @@
 #include "divelist.h"
 #include "divelog.h"
 #include "errorhelper.h"
+#include "format.h"
 #include "gettextfromc.h"
 #include "membuffer.h"
 #include "pref.h"
@@ -39,12 +40,12 @@ struct dive_site *get_dive_site_by_uuid(uint32_t uuid, struct dive_site_table *d
 }
 
 /* there could be multiple sites of the same name - return the first one */
-struct dive_site *get_dive_site_by_name(const char *name, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_name(const std::string &name, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site (i, ds, ds_table) {
-		if (same_string(ds->name, name))
+		if (ds->name == name)
 			return ds;
 	}
 	return NULL;
@@ -65,12 +66,12 @@ struct dive_site *get_dive_site_by_gps(const location_t *loc, struct dive_site_t
 /* to avoid a bug where we have two dive sites with different name and the same GPS coordinates
  * and first get the gps coordinates (reading a V2 file) and happen to get back "the other" name,
  * this function allows us to verify if a very specific name/GPS combination already exists */
-struct dive_site *get_dive_site_by_gps_and_name(const char *name, const location_t *loc, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_gps_and_name(const std::string &name, const location_t *loc, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site (i, ds, ds_table) {
-		if (same_location(loc, &ds->location) && same_string(ds->name, name))
+		if (same_location(loc, &ds->location) && ds->name == name)
 			return ds;
 	}
 	return NULL;
@@ -146,12 +147,12 @@ int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_tabl
 	 * Make this deterministic for testing. */
 	if (!ds->uuid) {
 		SHA1 sha;
-		if (ds->name)
-			sha.update(ds->name, strlen(ds->name));
-		if (ds->description)
-			sha.update(ds->description, strlen(ds->description));
-		if (ds->notes)
-			sha.update(ds->notes, strlen(ds->notes));
+		if (!ds->name.empty())
+			sha.update(ds->name);
+		if (!ds->description.empty())
+			sha.update(ds->description);
+		if (!ds->notes.empty())
+			sha.update(ds->notes);
 		ds->uuid = sha.hash_uint32();
 	}
 
@@ -169,19 +170,16 @@ dive_site::dive_site()
 {
 }
 
-dive_site::dive_site(const char *name) : name(copy_string(name))
+dive_site::dive_site(const std::string &name) : name(name)
 {
 }
 
-dive_site::dive_site(const char *name, const location_t *loc) : name(copy_string(name)), location(*loc)
+dive_site::dive_site(const std::string &name, const location_t *loc) : name(name), location(*loc)
 {
 }
 
 dive_site::~dive_site()
 {
-	free(name);
-	free(notes);
-	free(description);
 }
 
 /* when parsing, dive sites are identified by uuid */
@@ -225,7 +223,7 @@ void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
 }
 
 /* allocate a new site and add it to the table */
-struct dive_site *create_dive_site(const char *name, struct dive_site_table *ds_table)
+struct dive_site *create_dive_site(const std::string &name, struct dive_site_table *ds_table)
 {
 	struct dive_site *ds = new dive_site(name);
 	add_dive_site_to_table(ds, ds_table);
@@ -233,7 +231,7 @@ struct dive_site *create_dive_site(const char *name, struct dive_site_table *ds_
 }
 
 /* same as before, but with GPS data */
-struct dive_site *create_dive_site_with_gps(const char *name, const location_t *loc, struct dive_site_table *ds_table)
+struct dive_site *create_dive_site_with_gps(const std::string &name, const location_t *loc, struct dive_site_table *ds_table)
 {
 	struct dive_site *ds = new dive_site(name, loc);
 	add_dive_site_to_table(ds, ds_table);
@@ -244,42 +242,26 @@ struct dive_site *create_dive_site_with_gps(const char *name, const location_t *
 bool dive_site_is_empty(struct dive_site *ds)
 {
 	return !ds ||
-	       (empty_string(ds->name) &&
-	       empty_string(ds->description) &&
-	       empty_string(ds->notes) &&
-	       !has_location(&ds->location));
+	       (ds->name.empty() &&
+	        ds->description.empty() &&
+	        ds->notes.empty() &&
+	        !has_location(&ds->location));
 }
 
-void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
+static void merge_string(std::string &a, const std::string &b)
 {
-	free(copy->name);
-	free(copy->notes);
-	free(copy->description);
-
-	copy->location = orig->location;
-	copy->name = copy_string(orig->name);
-	copy->notes = copy_string(orig->notes);
-	copy->description = copy_string(orig->description);
-	copy->taxonomy = orig->taxonomy;
-}
-
-static void merge_string(char **a, char **b)
-{
-	char *s1 = *a, *s2 = *b;
-
-	if (!s2)
+	if (b.empty())
 		return;
 
-	if (same_string(s1, s2))
+	if (a == b)
 		return;
 
-	if (!s1) {
-		*a = strdup(s2);
+	if (a.empty()) {
+		a = b;
 		return;
 	}
 
-	*a = format_string("(%s) or (%s)", s1, s2);
-	free(s1);
+	a = format_string_std("(%s) or (%s)", a.c_str(), b.c_str());
 }
 
 /* Used to check on import if two dive sites are equivalent.
@@ -290,10 +272,10 @@ static void merge_string(char **a, char **b)
  */
 static bool same_dive_site(const struct dive_site *a, const struct dive_site *b)
 {
-	return same_string(a->name, b->name)
+	return a->name == b->name
 	    && same_location(&a->location, &b->location)
-	    && same_string(a->description, b->description)
-	    && same_string(a->notes, b->notes);
+	    && a->description == b->description
+	    && a->notes == b->notes;
 }
 
 struct dive_site *get_same_dive_site(const struct dive_site *site)
@@ -309,20 +291,20 @@ struct dive_site *get_same_dive_site(const struct dive_site *site)
 void merge_dive_site(struct dive_site *a, struct dive_site *b)
 {
 	if (!has_location(&a->location)) a->location = b->location;
-	merge_string(&a->name, &b->name);
-	merge_string(&a->notes, &b->notes);
-	merge_string(&a->description, &b->description);
+	merge_string(a->name, b->name);
+	merge_string(a->notes, b->notes);
+	merge_string(a->description, b->description);
 
 	if (a->taxonomy.empty())
 		a->taxonomy = std::move(b->taxonomy);
 }
 
-struct dive_site *find_or_create_dive_site_with_name(const char *name, struct dive_site_table *ds_table)
+struct dive_site *find_or_create_dive_site_with_name(const std::string &name, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site(i,ds, ds_table) {
-		if (same_string(name, ds->name))
+		if (name == ds->name)
 			break;
 	}
 	if (ds)

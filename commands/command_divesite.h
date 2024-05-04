@@ -89,7 +89,7 @@ private:
 	void redo() override;
 
 	dive_site *ds;
-	QString value; // Value to be set
+	std::string value; // Value to be set
 };
 
 class EditDiveSiteDescription : public Base {
@@ -101,7 +101,7 @@ private:
 	void redo() override;
 
 	dive_site *ds;
-	QString value; // Value to be set
+	std::string value; // Value to be set
 };
 
 class EditDiveSiteNotes : public Base {
@@ -113,7 +113,7 @@ private:
 	void redo() override;
 
 	dive_site *ds;
-	QString value; // Value to be set
+	std::string value; // Value to be set
 };
 
 class EditDiveSiteCountry : public Base {

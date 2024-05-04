@@ -711,11 +711,11 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 			continue;
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
-		show_utf8_blanked(b, ds->name, " name='", "'", 1, anonymize);
+		show_utf8_blanked(b, ds->name.c_str(), " name='", "'", 1, anonymize);
 		put_location(b, &ds->location, " gps='", "'");
-		show_utf8_blanked(b, ds->description, " description='", "'", 1, anonymize);
+		show_utf8_blanked(b, ds->description.c_str(), " description='", "'", 1, anonymize);
 		put_format(b, ">\n");
-		show_utf8_blanked(b, ds->notes, "  <notes>", " </notes>\n", 0, anonymize);
+		show_utf8_blanked(b, ds->notes.c_str(), "  <notes>", " </notes>\n", 0, anonymize);
 		for (auto const &t: ds->taxonomy) {
 			if (t.category != TC_NONE && !t.value.empty()) {
 				put_format(b, "  <geo cat='%d'", t.category);
@@ -913,11 +913,11 @@ static void save_dive_sites_buffer(struct membuffer *b, const struct dive_site *
 		const struct dive_site *ds = sites[i];
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
-		show_utf8_blanked(b, ds->name, " name='", "'", 1, anonymize);
+		show_utf8_blanked(b, ds->name.c_str(), " name='", "'", 1, anonymize);
 		put_location(b, &ds->location, " gps='", "'");
-		show_utf8_blanked(b, ds->description, " description='", "'", 1, anonymize);
+		show_utf8_blanked(b, ds->description.c_str(), " description='", "'", 1, anonymize);
 		put_format(b, ">\n");
-		show_utf8_blanked(b, ds->notes, "  <notes>", " </notes>\n", 0, anonymize);
+		show_utf8_blanked(b, ds->notes.c_str(), "  <notes>", " </notes>\n", 0, anonymize);
 		for (const auto &t: ds->taxonomy) {
 			if (t.category != TC_NONE && !t.value.empty()) {
 				put_format(b, "  <geo cat='%d'", t.category);
