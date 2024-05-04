@@ -2,8 +2,6 @@
 #ifndef PARSE_H
 #define PARSE_H
 
-#define MAX_EVENT_NAME 128
-
 #include "event.h"
 #include "equipment.h" // for cylinder_t
 #include "extradata.h"
@@ -17,11 +15,6 @@
 
 struct xml_params;
 struct divelog;
-
-typedef union {
-	struct event event;
-	char allocation[sizeof(struct event) + MAX_EVENT_NAME];
-} event_allocation_t;
 
 /*
  * Dive info as it is being built up..
@@ -63,7 +56,7 @@ struct parser_state {
 	struct divecomputer *cur_dc = nullptr;			/* non-owning */
 	struct dive *cur_dive = nullptr;			/* owning */
 	std::unique_ptr<dive_site> cur_dive_site;		/* owning */
-	location_t cur_location { 0 };
+	location_t cur_location;
 	struct dive_trip *cur_trip = nullptr;			/* owning */
 	struct sample *cur_sample = nullptr;			/* non-owning */
 	struct picture cur_picture { 0 };			/* owning */
@@ -93,12 +86,10 @@ struct parser_state {
 
 	sqlite3 *sql_handle = nullptr;				/* for SQL based parsers */
 	bool event_active = false;
-	event_allocation_t event_allocation;
+	event cur_event;
 	parser_state();
 	~parser_state();
 };
-
-#define cur_event event_allocation.event
 
 void event_start(struct parser_state *state);
 void event_end(struct parser_state *state);

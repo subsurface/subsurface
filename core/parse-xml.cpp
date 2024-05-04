@@ -1000,7 +1000,7 @@ static void divinglog_place(const char *place, struct dive *d, struct parser_sta
 static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
 	/* For cylinder related fields, we might have to create a cylinder first. */
-	cylinder_t cyl = empty_cylinder;
+	cylinder_t cyl;
 	if (MATCH("tanktype", utf8_string, (char **)&cyl.type.description)) {
 		cylinder_t *cyl0 = get_or_create_cylinder(dive, 0);
 		free((void *)cyl0->type.description);

@@ -911,7 +911,7 @@ struct DiveSiteChange {
 	std::unique_ptr<dive_site> createdDs; // not-null if we created a dive site.
 
 	dive_site *editDs = nullptr; // not-null if we are supposed to edit an existing dive site.
-	location_t location = zero_location; // new value of the location if we edit an existing dive site.
+	location_t location; // new value of the location if we edit an existing dive site.
 
 	bool changed = false; // true if either a dive site or the dive was changed.
 };
