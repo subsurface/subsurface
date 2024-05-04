@@ -12,7 +12,6 @@
 struct divelog;
 struct zip;
 
-extern "C" {
 extern void ostctools_import(const char *file, struct divelog *log);
 
 extern int parse_file(const char *filename, struct divelog *log);
@@ -28,11 +27,7 @@ extern int subsurface_access(const char *path, int mode);
 extern int subsurface_stat(const char *path, struct stat *buf);
 extern struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp);
 extern int subsurface_zip_close(struct zip *zip);
-
-}
-
-// return data, errorcode pair.
-extern std::pair<std::string, int> readfile(const char *filename);
+extern std::pair<std::string, int> readfile(const char *filename); // return data, errorcode pair.
 extern int try_to_open_cochran(const char *filename, std::string &mem, struct divelog *log);
 extern int try_to_open_liquivision(const char *filename, std::string &mem, struct divelog *log);
 extern int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log);

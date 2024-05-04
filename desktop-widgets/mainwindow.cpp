@@ -82,7 +82,7 @@ namespace {
 	int progressCounter = 0;
 }
 
-extern "C" int updateProgress(const char *text)
+int updateProgress(const char *text)
 {
 	if (verbose)
 		report_info("git storage: %s", text);
@@ -107,7 +107,7 @@ extern "C" int updateProgress(const char *text)
 
 MainWindow *MainWindow::m_Instance = nullptr;
 
-extern "C" void showErrorFromC(char *buf)
+void showErrorFromC(char *buf)
 {
 	QString error(buf);
 	free(buf);

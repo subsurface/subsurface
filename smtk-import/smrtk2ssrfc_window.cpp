@@ -15,7 +15,7 @@ QStringList inputFiles;
 QString outputFile;
 QString error_buf;
 
-extern "C" void getErrorFromC(char *buf)
+void getErrorFromC(char *buf)
 {
 	QString error(buf);
 	free(buf);

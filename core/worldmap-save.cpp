@@ -106,7 +106,7 @@ static void export_doit(struct membuffer *b, const bool selected_only)
 	put_string(b, "\t</head>\n<body>\n<div id=\"map-canvas\"></div>\n</body>\n</html>");
 }
 
-extern "C" void export_worldmap_HTML(const char *file_name, const bool selected_only)
+void export_worldmap_HTML(const char *file_name, const bool selected_only)
 {
 	FILE *f;
 

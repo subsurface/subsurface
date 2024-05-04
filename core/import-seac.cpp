@@ -264,7 +264,7 @@ static int seac_dive(void *param, int, char **data, char **)
  * The callback function performs another SQL query on the other
  * table, to read in the sample values.
  */
-extern "C" int parse_seac_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_seac_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	char *err = NULL;

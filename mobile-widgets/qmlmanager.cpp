@@ -66,7 +66,7 @@ bool noCloudToCloud = false;
 #define RED_FONT QLatin1String("<font color=\"red\">")
 #define END_FONT QLatin1String("</font>")
 
-extern "C" void showErrorFromC(char *buf)
+void showErrorFromC(char *buf)
 {
 	QString error(buf);
 	free(buf);
@@ -124,7 +124,7 @@ static void showProgress(QString msg)
 }
 
 // show the git progress in the passive notification area
-extern "C" int gitProgressCB(const char *text)
+int gitProgressCB(const char *text)
 {
 	// regular users, during regular operation, likely really don't
 	// care at all about the git progress

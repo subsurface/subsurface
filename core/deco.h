@@ -7,8 +7,6 @@
 #include "divemode.h"
 #include <memory>
 
-extern "C" {
-
 struct dive;
 struct divecomputer;
 struct decostop;
@@ -68,8 +66,6 @@ extern double regressiona(const struct deco_state *ds);
 extern double regressionb(const struct deco_state *ds);
 extern void reset_regression(struct deco_state *ds);
 extern void update_regression(struct deco_state *ds, const struct dive *dive);
-
-}
 
 struct deco_state_cache {
 	// Test if there is cached data

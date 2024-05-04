@@ -9,8 +9,6 @@
 
 struct dive;
 
-extern "C" {
-
 enum filter_constraint_type {
 	FILTER_CONSTRAINT_DATE,
 	FILTER_CONSTRAINT_DATE_TIME,
@@ -110,8 +108,6 @@ extern bool filter_constraint_has_date_widget(enum filter_constraint_type);
 extern bool filter_constraint_has_time_widget(enum filter_constraint_type);
 extern int filter_constraint_num_decimals(enum filter_constraint_type);
 extern bool filter_constraint_is_valid(const struct filter_constraint *constraint);
-
-}
 
 QString filter_constraint_type_to_string_translated(enum filter_constraint_type);
 QString filter_constraint_negate_to_string_translated(bool negate);

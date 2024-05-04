@@ -109,12 +109,12 @@ no_conversion:
 	return 0.0;
 }
 
-extern "C" double permissive_strtod(const char *str, const char **ptr)
+double permissive_strtod(const char *str, const char **ptr)
 {
 	return strtod_flags(str, ptr, false);
 }
 
-extern "C" double ascii_strtod(const char *str, const char **ptr)
+double ascii_strtod(const char *str, const char **ptr)
 {
 	return strtod_flags(str, ptr, true);
 }
