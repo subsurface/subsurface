@@ -174,9 +174,9 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		put_format(&buf, "\\def\\%shour{%02u}\n", ssrf, tm.tm_hour);
 		put_format(&buf, "\\def\\%sminute{%02u}\n", ssrf, tm.tm_min);
 		put_format(&buf, "\\def\\%snumber{%d}\n", ssrf, dive->number);
-		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name : "");
+		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name.c_str() : "");
 		put_format(&buf, "\\def\\%sspot{}\n", ssrf);
-		put_format(&buf, "\\def\\%ssitename{%s}\n", ssrf, site ? site->name : "");
+		put_format(&buf, "\\def\\%ssitename{%s}\n", ssrf, site ? site->name.c_str() : "");
 		site ? put_format(&buf, "\\def\\%sgpslat{%f}\n", ssrf, site->location.lat.udeg / 1000000.0) : put_format(&buf, "\\def\\%sgpslat{}\n", ssrf);
 		site ? put_format(&buf, "\\def\\%sgpslon{%f}\n", ssrf, site->location.lon.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
 		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dc.model);
@@ -251,7 +251,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		// Legacy fields
 		put_format(&buf, "\\def\\%sspot{}\n", ssrf);
 		put_format(&buf, "\\def\\%sentrance{}\n", ssrf);
-		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name : "");
+		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name.c_str() : "");
 		dive->maxdepth.mm ? put_format(&buf, "\\def\\%sdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%sdepth{}\n", ssrf);
 
 		put_format(&buf, "\\%spage\n", ssrf);
