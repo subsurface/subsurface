@@ -13,6 +13,7 @@
 #include <stdlib.h>
 
 #ifdef __cplusplus
+#include <string>
 extern "C" {
 #endif
 
@@ -114,7 +115,11 @@ extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, 
 extern struct dive *get_dive(int nr);
 extern struct dive *get_dive_from_table(int nr, const struct dive_table *dt);
 extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
-extern const char *get_dive_country(const struct dive *dive);
+#ifdef __cplusplus
+} // TODO: remove
+extern std::string get_dive_country(const struct dive *dive);
+extern "C" {
+#endif
 extern const char *get_dive_location(const struct dive *dive);
 extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
@@ -227,7 +232,6 @@ extern void update_setpoint_events(const struct dive *dive, struct divecomputer 
  * QVariants and through QML.
  */
 #include <QObject>
-#include <string>
 Q_DECLARE_METATYPE(struct dive *);
 
 extern std::string existing_filename;

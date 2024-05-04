@@ -15,13 +15,13 @@ namespace Command {
 
 // Add a set of dive sites to the core. The dives that were associated with
 // that dive site will be restored to that dive site.
-static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sites)
+static std::vector<dive_site *> addDiveSites(std::vector<std::unique_ptr<dive_site>> &sites)
 {
 	std::vector<dive_site *> res;
 	QVector<dive *> changedDives;
 	res.reserve(sites.size());
 
-	for (OwningDiveSitePtr &ds: sites) {
+	for (std::unique_ptr<dive_site> &ds: sites) {
 		// Readd the dives that belonged to this site
 		for (int i = 0; i < ds->dives.nr; ++i) {
 			// TODO: send dive site changed signal
@@ -47,9 +47,9 @@ static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sit
 // Remove a set of dive sites. Get owning pointers to them. The dives are set to
 // being at no dive site, but the dive site will retain a list of dives, so
 // that the dives can be readded to the site on undo.
-static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &sites)
+static std::vector<std::unique_ptr<dive_site>> removeDiveSites(std::vector<dive_site *> &sites)
 {
-	std::vector<OwningDiveSitePtr> res;
+	std::vector<std::unique_ptr<dive_site>> res;
 	QVector<dive *> changedDives;
 	res.reserve(sites.size());
 
@@ -77,7 +77,7 @@ static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &
 AddDiveSite::AddDiveSite(const QString &name)
 {
 	setText(Command::Base::tr("add dive site"));
-	sitesToAdd.emplace_back(alloc_dive_site());
+	sitesToAdd.push_back(std::make_unique<dive_site>());
 	sitesToAdd.back()->name = copy_qstring(name);
 }
 
@@ -107,7 +107,7 @@ ImportDiveSites::ImportDiveSites(struct dive_site_table *sites, const QString &s
 		// the same name. We might want to be smarter here and merge dive site data, etc.
 		struct dive_site *old_ds = get_same_dive_site(new_ds);
 		if (old_ds) {
-			free_dive_site(new_ds);
+			delete new_ds;
 			continue;
 		}
 		sitesToAdd.emplace_back(new_ds);
@@ -256,20 +256,20 @@ void EditDiveSiteNotes::undo()
 }
 
 EditDiveSiteCountry::EditDiveSiteCountry(dive_site *dsIn, const QString &country) : ds(dsIn),
-	value(country)
+	value(country.toStdString())
 {
 	setText(Command::Base::tr("Edit dive site country"));
 }
 
 bool EditDiveSiteCountry::workToBeDone()
 {
-	return !same_string(qPrintable(value), taxonomy_get_country(&ds->taxonomy));
+	return value == taxonomy_get_country(ds->taxonomy);
 }
 
 void EditDiveSiteCountry::redo()
 {
-	QString old = taxonomy_get_country(&ds->taxonomy);
-	taxonomy_set_country(&ds->taxonomy, qPrintable(value), taxonomy_origin::GEOMANUAL);
+	std::string old = taxonomy_get_country(ds->taxonomy);
+	taxonomy_set_country(ds->taxonomy, value, taxonomy_origin::GEOMANUAL);
 	value = old;
 	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::TAXONOMY); // Inform frontend of changed dive site.
 }
@@ -310,14 +310,11 @@ void EditDiveSiteLocation::undo()
 EditDiveSiteTaxonomy::EditDiveSiteTaxonomy(dive_site *dsIn, taxonomy_data &taxonomy) : ds(dsIn),
 	value(taxonomy)
 {
-	// We did a dumb copy. Erase the source to remove double references to strings.
-	memset(&taxonomy, 0, sizeof(taxonomy));
 	setText(Command::Base::tr("Edit dive site taxonomy"));
 }
 
 EditDiveSiteTaxonomy::~EditDiveSiteTaxonomy()
 {
-	free_taxonomy(&value);
 }
 
 bool EditDiveSiteTaxonomy::workToBeDone()
@@ -364,7 +361,7 @@ void MergeDiveSites::redo()
 	// The dives of the above dive sites were reset to no dive sites.
 	// Add them to the merged-into dive site. Thankfully, we remember
 	// the dives in the sitesToAdd vector.
-	for (const OwningDiveSitePtr &site: sitesToAdd) {
+	for (const std::unique_ptr<dive_site> &site: sitesToAdd) {
 		for (int i = 0; i < site->dives.nr; ++i) {
 			add_dive_to_dive_site(site->dives.dives[i], ds);
 			divesChanged.push_back(site->dives.dives[i]);
@@ -380,7 +377,7 @@ void MergeDiveSites::undo()
 
 	// Before readding the dive sites, unregister the corresponding dives so that they can be
 	// readded to their old dive sites.
-	for (const OwningDiveSitePtr &site: sitesToAdd) {
+	for (const std::unique_ptr<dive_site> &site: sitesToAdd) {
 		for (int i = 0; i < site->dives.nr; ++i) {
 			unregister_dive_from_dive_site(site->dives.dives[i]);
 			divesChanged.push_back(site->dives.dives[i]);

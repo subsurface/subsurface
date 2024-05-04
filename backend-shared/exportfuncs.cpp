@@ -145,10 +145,10 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
-		const char *country = NULL;
+		std::string country;
 		dive_site *site = dive->dive_site;
 		if (site)
-			country = taxonomy_get_country(&site->taxonomy);
+			country = taxonomy_get_country(site->taxonomy);
 		pressure_t delta_p = {.mbar = 0};
 
 		QString star = "*";
@@ -180,7 +180,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		site ? put_format(&buf, "\\def\\%sgpslat{%f}\n", ssrf, site->location.lat.udeg / 1000000.0) : put_format(&buf, "\\def\\%sgpslat{}\n", ssrf);
 		site ? put_format(&buf, "\\def\\%sgpslon{%f}\n", ssrf, site->location.lon.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
 		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dc.model);
-		put_format(&buf, "\\def\\%scountry{%s}\n", ssrf, country ?: "");
+		put_format(&buf, "\\def\\%scountry{%s}\n", ssrf, country.c_str());
 		put_format(&buf, "\\def\\%stime{%u:%02u}\n", ssrf, FRACTION_TUPLE(dive->duration.seconds, 60));
 
 		put_format(&buf, "\n%% Dive Profile Details:\n");
