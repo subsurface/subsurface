@@ -133,9 +133,9 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteName->setText(diveSite->name);
 	else
 		ui.diveSiteName->clear();
-	const char *country = taxonomy_get_country(&diveSite->taxonomy);
-	if (country)
-		ui.diveSiteCountry->setText(country);
+	std::string country = taxonomy_get_country(diveSite->taxonomy);
+	if (!country.empty())
+		ui.diveSiteCountry->setText(QString::fromStdString(country));
 	else
 		ui.diveSiteCountry->clear();
 	if (diveSite->description)
@@ -152,7 +152,7 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteCoordinates->clear();
 	coordinatesSetWarning(false);
 
-	ui.locationTags->setText(constructLocationTags(&diveSite->taxonomy, false));
+	ui.locationTags->setText(constructLocationTags(diveSite->taxonomy, false));
 }
 
 void LocationInformationWidget::unitsChanged()
@@ -181,8 +181,8 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 		ui.diveSiteNotes->setText(diveSite->notes);
 		return;
 	case LocationInformationModel::TAXONOMY:
-		ui.diveSiteCountry->setText(taxonomy_get_country(&diveSite->taxonomy));
-		ui.locationTags->setText(constructLocationTags(&diveSite->taxonomy, false));
+		ui.diveSiteCountry->setText(QString::fromStdString(taxonomy_get_country(diveSite->taxonomy)));
+		ui.locationTags->setText(constructLocationTags(diveSite->taxonomy, false));
 		return;
 	case LocationInformationModel::LOCATION:
 		filter_model.setCoordinates(diveSite->location);
@@ -342,10 +342,8 @@ void LocationInformationWidget::reverseGeocode()
 	if (!ds || !has_location(&location))
 		return;
 	taxonomy_data taxonomy = reverseGeoLookup(location.lat, location.lon);
-	if (ds != diveSite) {
-		free_taxonomy(&taxonomy);
+	if (ds != diveSite)
 		return;
-	}
 	// This call transfers ownership of the taxonomy memory into an EditDiveSiteTaxonomy object
 	Command::editDiveSiteTaxonomy(ds, taxonomy);
 }

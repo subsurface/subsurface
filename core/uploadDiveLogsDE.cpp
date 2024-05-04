@@ -116,13 +116,14 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 			put_format(&mb, "'");
 			put_location(&mb, &ds->location, " gps='", "'");
 			put_format(&mb, ">\n");
-			if (ds->taxonomy.nr) {
-				for (int j = 0; j < ds->taxonomy.nr; j++) {
-					struct taxonomy *t = &ds->taxonomy.category[j];
-					if (t->category != TC_NONE && t->category == prefs.geocoding.category[j] && t->value) {
-						put_format(&mb, "  <geo cat='%d'", t->category);
-						put_format(&mb, " origin='%d' value='", t->origin);
-						put_quoted(&mb, t->value, 1, 0);
+			for (int i = 0; i < 3; i++) {
+				if (prefs.geocoding.category[i] == TC_NONE)
+					continue;
+				for (auto const &t: ds->taxonomy) {
+					if (t.category == prefs.geocoding.category[i] && !t.value.empty()) {
+						put_format(&mb, "  <geo cat='%d'", t.category);
+						put_format(&mb, " origin='%d' value='", t.origin);
+						put_quoted(&mb, t.value.c_str(), 1, 0);
 						put_format(&mb, "'/>\n");
 					}
 				}

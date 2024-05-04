@@ -351,7 +351,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case PHOTOS:
 			break;
 		case COUNTRY:
-			return QString(get_dive_country(d));
+			return QString::fromStdString(get_dive_country(d));
 		case BUDDIES:
 			return QString(d->buddy);
 		case DIVEGUIDE:
@@ -1770,7 +1770,7 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 	case PHOTOS:
 		return lessThanHelper(countPhotos(d1) - countPhotos(d2), row_diff);
 	case COUNTRY:
-		return lessThanHelper(strCmp(get_dive_country(d1), get_dive_country(d2)), row_diff);
+		return lessThanHelper(strCmp(get_dive_country(d1).c_str(), get_dive_country(d2).c_str()), row_diff);
 	case BUDDIES:
 		return lessThanHelper(strCmp(d1->buddy, d2->buddy), row_diff);
 	case DIVEGUIDE:

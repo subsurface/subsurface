@@ -908,7 +908,7 @@ void QMLManager::refreshDiveList()
 // The following structure describes such a change caused by a dive edit.
 // Hopefully, we can remove this in due course by using finer-grained undo-commands.
 struct DiveSiteChange {
-	OwningDiveSitePtr createdDs; // not-null if we created a dive site.
+	std::unique_ptr<dive_site> createdDs; // not-null if we created a dive site.
 
 	dive_site *editDs = nullptr; // not-null if we are supposed to edit an existing dive site.
 	location_t location = zero_location; // new value of the location if we edit an existing dive site.
@@ -923,7 +923,7 @@ static void setupDivesite(DiveSiteChange &res, struct dive *d, struct dive_site 
 		res.editDs = ds;
 		res.location = location;
 	} else {
-		res.createdDs.reset(alloc_dive_site_with_name(locationtext));
+		res.createdDs = std::make_unique<dive_site>(locationtext);
 		res.createdDs->location = location;
 		d->dive_site = res.createdDs.get();
 	}
@@ -1072,7 +1072,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString loca
 	if (oldLocation != location) {
 		ds = get_dive_site_by_name(qPrintable(location), divelog.sites);
 		if (!ds && !location.isEmpty()) {
-			res.createdDs.reset(alloc_dive_site_with_name(qPrintable(location)));
+			res.createdDs = std::make_unique<dive_site>(qPrintable(location));
 			res.changed = true;
 			ds = res.createdDs.get();
 		}

@@ -461,12 +461,12 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	for (int i = 0; i < 3; i++) {
 		if (prefs.geocoding.category[i] == TC_NONE)
 			continue;
-		const char *value = taxonomy_get_value(&ds->taxonomy, prefs.geocoding.category[i]);
-		if (empty_string(value))
+		std::string value = taxonomy_get_value(ds->taxonomy, prefs.geocoding.category[i]);
+		if (!value.empty())
 			continue;
 		if(!bottomText.isEmpty())
 			bottomText += " / ";
-		bottomText += QString(value);
+		bottomText += QString::fromStdString(value);
 	}
 
 	if (bottomText.isEmpty())

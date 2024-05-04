@@ -1144,7 +1144,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 
 		if (j == import_log->dives->nr) {
 			/* Dive site not even used - free it and go to next. */
-			free_dive_site(new_ds);
+			delete new_ds;
 			continue;
 		}
 
@@ -1159,7 +1159,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 			if (import_log->dives->dives[j]->dive_site == new_ds)
 				import_log->dives->dives[j]->dive_site = old_ds;
 		}
-		free_dive_site(new_ds);
+		delete new_ds;
 	}
 	import_log->sites->nr = 0; /* All dive sites were consumed */
 

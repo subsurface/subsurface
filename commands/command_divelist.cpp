@@ -125,7 +125,7 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 {
 	std::vector<DiveToAdd> divesToAdd;
 	std::vector<OwningTripPtr> tripsToAdd;
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 	divesToAdd.reserve(divesAndSitesToDelete.dives.size());
 	sitesToAdd.reserve(divesAndSitesToDelete.sites.size());
 
@@ -216,7 +216,7 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	toAdd.trips.clear();
 
 	// Finally, add any necessary dive sites
-	for (OwningDiveSitePtr &ds: toAdd.sites) {
+	for (std::unique_ptr<dive_site> &ds: toAdd.sites) {
 		sites.push_back(ds.get());
 		int idx = register_dive_site(ds.release()); // Return ownership to backend
 		emit diveListNotifier.diveSiteAdded(sites.back(), idx);

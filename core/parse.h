@@ -64,7 +64,7 @@ struct parser_state {
 
 	struct divecomputer *cur_dc = nullptr;			/* non-owning */
 	struct dive *cur_dive = nullptr;			/* owning */
-	struct dive_site *cur_dive_site = nullptr;		/* owning */
+	std::unique_ptr<dive_site> cur_dive_site;		/* owning */
 	location_t cur_location { 0 };
 	struct dive_trip *cur_trip = nullptr;			/* owning */
 	struct sample *cur_sample = nullptr;			/* non-owning */
@@ -96,6 +96,7 @@ struct parser_state {
 	sqlite3 *sql_handle = nullptr;				/* for SQL based parsers */
 	bool event_active = false;
 	event_allocation_t event_allocation;
+	parser_state();
 	~parser_state();
 };
 

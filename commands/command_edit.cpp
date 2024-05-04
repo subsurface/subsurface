@@ -376,7 +376,7 @@ void EditDiveSite::redo()
 
 static struct dive_site *createDiveSite(const QString &name)
 {
-	struct dive_site *ds = alloc_dive_site();
+	struct dive_site *ds = new dive_site;
 	struct dive_site *old = current_dive ? current_dive->dive_site : nullptr;
 	if (old) {
 		copy_dive_site(old, ds);

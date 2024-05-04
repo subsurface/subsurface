@@ -171,9 +171,8 @@ AddPictures::AddPictures(const std::vector<PictureListForAddition> &pictures) : 
 			if (!ds) {
 				// This dive doesn't yet have a dive site -> add a new dive site.
 				QString name = Command::Base::tr("unnamed dive site");
-				dive_site *ds = alloc_dive_site_with_gps(qPrintable(name), &it->location);
-				sitesToAdd.emplace_back(ds);
-				sitesToSet.push_back({ p.d, ds });
+				sitesToAdd.push_back(std::make_unique<dive_site>(qPrintable(name), &it->location));
+				sitesToSet.push_back({ p.d, sitesToAdd.back().get() });
 			} else if (!dive_site_has_gps_location(ds)) {
 				// This dive has a dive site, but without coordinates. Let's add them.
 				sitesToEdit.push_back({ ds, it->location });
@@ -228,7 +227,7 @@ void AddPictures::undo()
 void AddPictures::redo()
 {
 	// Add dive sites
-	for (OwningDiveSitePtr &siteToAdd: sitesToAdd) {
+	for (std::unique_ptr<dive_site> &siteToAdd: sitesToAdd) {
 		sitesToRemove.push_back(siteToAdd.get());
 		int idx = register_dive_site(siteToAdd.release()); // Return ownership to backend.
 		emit diveListNotifier.diveSiteAdded(sitesToRemove.back(), idx); // Inform frontend of new dive site.

@@ -208,7 +208,7 @@ public:
 // deriving from it and hooks into undo() and redo() to add / remove the dive site.
 class EditDiveSiteNew : public EditDiveSite {
 public:
-	OwningDiveSitePtr diveSiteToAdd;
+	std::unique_ptr<dive_site> diveSiteToAdd;
 	struct dive_site *diveSiteToRemove;
 	EditDiveSiteNew(const QString &newName, bool currentDiveOnly);
 	void undo() override;
@@ -470,7 +470,7 @@ private:
 	int changedFields;
 
 	dive_site *siteToRemove;
-	OwningDiveSitePtr siteToAdd;
+	std::unique_ptr<dive_site> siteToAdd;
 
 	dive_site *siteToEdit;
 	location_t dsLocation;

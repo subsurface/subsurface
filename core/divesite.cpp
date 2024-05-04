@@ -12,7 +12,7 @@
 
 #include <math.h>
 
-extern "C" int get_divesite_idx(const struct dive_site *ds, struct dive_site_table *ds_table)
+int get_divesite_idx(const struct dive_site *ds, struct dive_site_table *ds_table)
 {
 	int i;
 	const struct dive_site *d;
@@ -26,7 +26,7 @@ extern "C" int get_divesite_idx(const struct dive_site *ds, struct dive_site_tab
 }
 
 // TODO: keep table sorted by UUID and do a binary search?
-extern "C" struct dive_site *get_dive_site_by_uuid(uint32_t uuid, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_uuid(uint32_t uuid, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds;
@@ -37,7 +37,7 @@ extern "C" struct dive_site *get_dive_site_by_uuid(uint32_t uuid, struct dive_si
 }
 
 /* there could be multiple sites of the same name - return the first one */
-extern "C" struct dive_site *get_dive_site_by_name(const char *name, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_name(const char *name, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds;
@@ -49,7 +49,7 @@ extern "C" struct dive_site *get_dive_site_by_name(const char *name, struct dive
 }
 
 /* there could be multiple sites at the same GPS fix - return the first one */
-extern "C" struct dive_site *get_dive_site_by_gps(const location_t *loc, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_gps(const location_t *loc, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds;
@@ -63,7 +63,7 @@ extern "C" struct dive_site *get_dive_site_by_gps(const location_t *loc, struct 
 /* to avoid a bug where we have two dive sites with different name and the same GPS coordinates
  * and first get the gps coordinates (reading a V2 file) and happen to get back "the other" name,
  * this function allows us to verify if a very specific name/GPS combination already exists */
-extern "C" struct dive_site *get_dive_site_by_gps_and_name(const char *name, const location_t *loc, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_gps_and_name(const char *name, const location_t *loc, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds;
@@ -75,7 +75,7 @@ extern "C" struct dive_site *get_dive_site_by_gps_and_name(const char *name, con
 }
 
 // Calculate the distance in meters between two coordinates.
-extern "C" unsigned int get_distance(const location_t *loc1, const location_t *loc2)
+unsigned int get_distance(const location_t *loc1, const location_t *loc2)
 {
 	double lat1_r = udeg_to_radians(loc1->lat.udeg);
 	double lat2_r = udeg_to_radians(loc2->lat.udeg);
@@ -93,7 +93,7 @@ extern "C" unsigned int get_distance(const location_t *loc1, const location_t *l
 }
 
 /* find the closest one, no more than distance meters away - if more than one at same distance, pick the first */
-extern "C" struct dive_site *get_dive_site_by_gps_proximity(const location_t *loc, int distance, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_gps_proximity(const location_t *loc, int distance, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds, *res = NULL;
@@ -108,7 +108,7 @@ extern "C" struct dive_site *get_dive_site_by_gps_proximity(const location_t *lo
 	return res;
 }
 
-extern "C" int register_dive_site(struct dive_site *ds)
+int register_dive_site(struct dive_site *ds)
 {
 	return add_dive_site_to_table(ds, divelog.sites);
 }
@@ -123,6 +123,11 @@ static int site_less_than(const struct dive_site *a, const struct dive_site *b)
 	return compare_sites(a, b) < 0;
 }
 
+static void free_dive_site(struct dive_site *ds)
+{
+	delete ds;
+}
+
 static MAKE_GROW_TABLE(dive_site_table, struct dive_site *, dive_sites)
 static MAKE_GET_INSERTION_INDEX(dive_site_table, struct dive_site *, dive_sites, site_less_than)
 static MAKE_ADD_TO(dive_site_table, struct dive_site *, dive_sites)
@@ -133,7 +138,7 @@ static MAKE_REMOVE(dive_site_table, struct dive_site *, dive_site)
 MAKE_CLEAR_TABLE(dive_site_table, dive_sites, dive_site)
 MAKE_MOVE_TABLE(dive_site_table, dive_sites)
 
-extern "C" int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_table)
+int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_table)
 {
 	/* If the site doesn't yet have an UUID, create a new one.
 	 * Make this deterministic for testing. */
@@ -158,35 +163,35 @@ extern "C" int add_dive_site_to_table(struct dive_site *ds, struct dive_site_tab
 	return idx;
 }
 
-extern "C" struct dive_site *alloc_dive_site()
+dive_site::dive_site()
 {
-	return (struct dive_site *)calloc(1, sizeof(struct dive_site));
 }
 
-extern "C" struct dive_site *alloc_dive_site_with_name(const char *name)
+dive_site::dive_site(const char *name) : name(copy_string(name))
 {
-	struct dive_site *ds = alloc_dive_site();
-	ds->name = copy_string(name);
-	return ds;
 }
 
-extern "C" struct dive_site *alloc_dive_site_with_gps(const char *name, const location_t *loc)
+dive_site::dive_site(const char *name, const location_t *loc) : name(copy_string(name)), location(*loc)
 {
-	struct dive_site *ds = alloc_dive_site_with_name(name);
-	ds->location = *loc;
+}
 
-	return ds;
+dive_site::~dive_site()
+{
+	free(name);
+	free(notes);
+	free(description);
+	free(dives.dives);
 }
 
 /* when parsing, dive sites are identified by uuid */
-extern "C" struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table)
+struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table)
 {
 	struct dive_site *ds;
 
 	if (uuid && (ds = get_dive_site_by_uuid(uuid, ds_table)) != NULL)
 		return ds;
 
-	ds = alloc_dive_site();
+	ds = new dive_site;
 	ds->uuid = uuid;
 
 	add_dive_site_to_table(ds, ds_table);
@@ -194,12 +199,12 @@ extern "C" struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_s
 	return ds;
 }
 
-extern "C" int nr_of_dives_at_dive_site(struct dive_site *ds)
+int nr_of_dives_at_dive_site(struct dive_site *ds)
 {
 	return ds->dives.nr;
 }
 
-extern "C" bool is_dive_site_selected(struct dive_site *ds)
+bool is_dive_site_selected(struct dive_site *ds)
 {
 	int i;
 
@@ -210,49 +215,37 @@ extern "C" bool is_dive_site_selected(struct dive_site *ds)
 	return false;
 }
 
-extern "C" void free_dive_site(struct dive_site *ds)
-{
-	if (ds) {
-		free(ds->name);
-		free(ds->notes);
-		free(ds->description);
-		free(ds->dives.dives);
-		free_taxonomy(&ds->taxonomy);
-		free(ds);
-	}
-}
-
-extern "C" int unregister_dive_site(struct dive_site *ds)
+int unregister_dive_site(struct dive_site *ds)
 {
 	return remove_dive_site(ds, divelog.sites);
 }
 
-extern "C" void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
+void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
 {
 	if (!ds)
 		return;
 	remove_dive_site(ds, ds_table);
-	free_dive_site(ds);
+	delete ds;
 }
 
 /* allocate a new site and add it to the table */
-extern "C" struct dive_site *create_dive_site(const char *name, struct dive_site_table *ds_table)
+struct dive_site *create_dive_site(const char *name, struct dive_site_table *ds_table)
 {
-	struct dive_site *ds = alloc_dive_site_with_name(name);
+	struct dive_site *ds = new dive_site(name);
 	add_dive_site_to_table(ds, ds_table);
 	return ds;
 }
 
 /* same as before, but with GPS data */
-extern "C" struct dive_site *create_dive_site_with_gps(const char *name, const location_t *loc, struct dive_site_table *ds_table)
+struct dive_site *create_dive_site_with_gps(const char *name, const location_t *loc, struct dive_site_table *ds_table)
 {
-	struct dive_site *ds = alloc_dive_site_with_gps(name, loc);
+	struct dive_site *ds = new dive_site(name, loc);
 	add_dive_site_to_table(ds, ds_table);
 	return ds;
 }
 
 /* if all fields are empty, the dive site is pointless */
-extern "C" bool dive_site_is_empty(struct dive_site *ds)
+bool dive_site_is_empty(struct dive_site *ds)
 {
 	return !ds ||
 	       (empty_string(ds->name) &&
@@ -261,7 +254,7 @@ extern "C" bool dive_site_is_empty(struct dive_site *ds)
 	       !has_location(&ds->location));
 }
 
-extern "C" void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
+void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 {
 	free(copy->name);
 	free(copy->notes);
@@ -271,7 +264,7 @@ extern "C" void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	copy->name = copy_string(orig->name);
 	copy->notes = copy_string(orig->notes);
 	copy->description = copy_string(orig->description);
-	copy_taxonomy(&orig->taxonomy, &copy->taxonomy);
+	copy->taxonomy = orig->taxonomy;
 }
 
 static void merge_string(char **a, char **b)
@@ -307,7 +300,7 @@ static bool same_dive_site(const struct dive_site *a, const struct dive_site *b)
 	    && same_string(a->notes, b->notes);
 }
 
-extern "C" struct dive_site *get_same_dive_site(const struct dive_site *site)
+struct dive_site *get_same_dive_site(const struct dive_site *site)
 {
 	int i;
 	struct dive_site *ds;
@@ -317,20 +310,18 @@ extern "C" struct dive_site *get_same_dive_site(const struct dive_site *site)
 	return NULL;
 }
 
-extern "C" void merge_dive_site(struct dive_site *a, struct dive_site *b)
+void merge_dive_site(struct dive_site *a, struct dive_site *b)
 {
 	if (!has_location(&a->location)) a->location = b->location;
 	merge_string(&a->name, &b->name);
 	merge_string(&a->notes, &b->notes);
 	merge_string(&a->description, &b->description);
 
-	if (!a->taxonomy.category) {
-		a->taxonomy = b->taxonomy;
-		memset(&b->taxonomy, 0, sizeof(b->taxonomy));
-	}
+	if (a->taxonomy.empty())
+		a->taxonomy = std::move(b->taxonomy);
 }
 
-extern "C" struct dive_site *find_or_create_dive_site_with_name(const char *name, struct dive_site_table *ds_table)
+struct dive_site *find_or_create_dive_site_with_name(const char *name, struct dive_site_table *ds_table)
 {
 	int i;
 	struct dive_site *ds;
@@ -343,7 +334,7 @@ extern "C" struct dive_site *find_or_create_dive_site_with_name(const char *name
 	return create_dive_site(name, ds_table);
 }
 
-extern "C" void purge_empty_dive_sites(struct dive_site_table *ds_table)
+void purge_empty_dive_sites(struct dive_site_table *ds_table)
 {
 	int i, j;
 	struct dive *d;
@@ -360,7 +351,7 @@ extern "C" void purge_empty_dive_sites(struct dive_site_table *ds_table)
 	}
 }
 
-extern "C" void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
+void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
 {
 	int idx;
 	if (!d) {
@@ -382,7 +373,7 @@ extern "C" void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
 	d->dive_site = ds;
 }
 
-extern "C" struct dive_site *unregister_dive_from_dive_site(struct dive *d)
+struct dive_site *unregister_dive_from_dive_site(struct dive *d)
 {
 	struct dive_site *ds = d->dive_site;
 	if (!ds)
