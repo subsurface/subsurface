@@ -120,13 +120,13 @@ const QVector<dive_site *> &MapLocationModel::selectedDs() const
 
 static bool hasVisibleDive(const dive_site *ds)
 {
-	return std::any_of(&ds->dives.dives[0], &ds->dives.dives[ds->dives.nr],
+	return std::any_of(ds->dives.begin(), ds->dives.end(),
 			   [] (const dive *d) { return !d->hidden_by_filter; });
 }
 
 static bool hasSelectedDive(const dive_site *ds)
 {
-	return std::any_of(&ds->dives.dives[0], &ds->dives.dives[ds->dives.nr],
+	return std::any_of(ds->dives.begin(), ds->dives.end(),
 			   [] (const dive *d) { return d->selected; });
 }
 

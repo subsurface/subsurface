@@ -23,9 +23,8 @@ static std::vector<dive_site *> addDiveSites(std::vector<std::unique_ptr<dive_si
 
 	for (std::unique_ptr<dive_site> &ds: sites) {
 		// Readd the dives that belonged to this site
-		for (int i = 0; i < ds->dives.nr; ++i) {
+		for (dive *d: ds->dives) {
 			// TODO: send dive site changed signal
-			struct dive *d = ds->dives.dives[i];
 			d->dive_site = ds.get();
 			changedDives.push_back(d);
 		}
@@ -55,8 +54,7 @@ static std::vector<std::unique_ptr<dive_site>> removeDiveSites(std::vector<dive_
 
 	for (dive_site *ds: sites) {
 		// Reset the dive_site field of the affected dives
-		for (int i = 0; i < ds->dives.nr; ++i) {
-			struct dive *d = ds->dives.dives[i];
+		for (dive *d: ds->dives) {
 			d->dive_site = nullptr;
 			changedDives.push_back(d);
 		}
@@ -157,7 +155,7 @@ PurgeUnusedDiveSites::PurgeUnusedDiveSites()
 	setText(Command::Base::tr("purge unused dive sites"));
 	for (int i = 0; i < divelog.sites->nr; ++i) {
 		dive_site *ds = divelog.sites->dive_sites[i];
-		if (ds->dives.nr == 0)
+		if (ds->dives.empty())
 			sitesToRemove.push_back(ds);
 	}
 }
@@ -362,9 +360,9 @@ void MergeDiveSites::redo()
 	// Add them to the merged-into dive site. Thankfully, we remember
 	// the dives in the sitesToAdd vector.
 	for (const std::unique_ptr<dive_site> &site: sitesToAdd) {
-		for (int i = 0; i < site->dives.nr; ++i) {
-			add_dive_to_dive_site(site->dives.dives[i], ds);
-			divesChanged.push_back(site->dives.dives[i]);
+		for (dive *d: site->dives) {
+			add_dive_to_dive_site(d, ds);
+			divesChanged.push_back(d);
 		}
 	}
 	emit diveListNotifier.divesChanged(divesChanged, DiveField::DIVESITE);
@@ -378,9 +376,9 @@ void MergeDiveSites::undo()
 	// Before readding the dive sites, unregister the corresponding dives so that they can be
 	// readded to their old dive sites.
 	for (const std::unique_ptr<dive_site> &site: sitesToAdd) {
-		for (int i = 0; i < site->dives.nr; ++i) {
-			unregister_dive_from_dive_site(site->dives.dives[i]);
-			divesChanged.push_back(site->dives.dives[i]);
+		for (dive *d: site->dives) {
+			unregister_dive_from_dive_site(d);
+			divesChanged.push_back(d);
 		}
 	}
 

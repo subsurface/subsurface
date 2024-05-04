@@ -330,7 +330,7 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 		struct dive_site *ds = get_dive_site(i, divelog.sites);
 		if (dive_site_is_empty(ds))
 			continue;
-		if (selectedOnly && !is_dive_site_selected(ds))
+		if (selectedOnly && !is_dive_site_selected(*ds))
 			continue;
 		res.push_back(ds);
 	}

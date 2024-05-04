@@ -180,7 +180,6 @@ dive_site::~dive_site()
 	free(name);
 	free(notes);
 	free(description);
-	free(dives.dives);
 }
 
 /* when parsing, dive sites are identified by uuid */
@@ -199,20 +198,15 @@ struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *
 	return ds;
 }
 
-int nr_of_dives_at_dive_site(struct dive_site *ds)
+size_t nr_of_dives_at_dive_site(const dive_site &ds)
 {
-	return ds->dives.nr;
+	return ds.dives.size();
 }
 
-bool is_dive_site_selected(struct dive_site *ds)
+bool is_dive_site_selected(const struct dive_site &ds)
 {
-	int i;
-
-	for (i = 0; i < ds->dives.nr; i++) {
-		if (ds->dives.dives[i]->selected)
-			return true;
-	}
-	return false;
+	return any_of(ds.dives.begin(), ds.dives.end(),
+		      [](dive *dive) { return dive->selected; });
 }
 
 int unregister_dive_site(struct dive_site *ds)
@@ -353,7 +347,6 @@ void purge_empty_dive_sites(struct dive_site_table *ds_table)
 
 void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
 {
-	int idx;
 	if (!d) {
 		report_info("Warning: add_dive_to_dive_site called with NULL dive");
 		return;
@@ -368,8 +361,7 @@ void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
 		report_info("Warning: adding dive that already belongs to a dive site to a different site");
 		unregister_dive_from_dive_site(d);
 	}
-	idx = dive_table_get_insertion_index(&ds->dives, d);
-	add_to_dive_table(&ds->dives, idx, d);
+	ds->dives.push_back(d);
 	d->dive_site = ds;
 }
 
@@ -377,8 +369,12 @@ struct dive_site *unregister_dive_from_dive_site(struct dive *d)
 {
 	struct dive_site *ds = d->dive_site;
 	if (!ds)
-		return NULL;
-	remove_dive(d, &ds->dives);
-	d->dive_site = NULL;
+		return nullptr;
+	auto it = std::find(ds->dives.begin(), ds->dives.end(), d);
+	if (it != ds->dives.end())
+		ds->dives.erase(it);
+	else
+		report_info("Warning: dive not found in divesite table, even though it should be registered there.");
+	d->dive_site = nullptr;
 	return ds;
 }

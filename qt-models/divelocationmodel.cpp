@@ -92,7 +92,7 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 		switch(column) {
 		case DIVESITE: return QVariant::fromValue<dive_site *>((dive_site *)ds); // Not nice: casting away const
 		case NAME: return QString(ds->name);
-		case NUM_DIVES: return ds->dives.nr;
+		case NUM_DIVES: return static_cast<int>(ds->dives.size());
 		case LOCATION: return "TODO";
 		case DESCRIPTION: return QString(ds->description);
 		case NOTES: return QString(ds->name);
@@ -207,7 +207,7 @@ bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2)
 		       QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
 	}
 	case LocationInformationModel::NUM_DIVES: {
-		int cmp = ds1->dives.nr - ds2->dives.nr;
+		int cmp = static_cast<int>(ds1->dives.size()) - static_cast<int>(ds2->dives.size());
 		// Since by default nr dives is descending, invert sort direction of names, such that
 		// the names are listed as ascending.
 		return cmp != 0 ? cmp < 0 :
