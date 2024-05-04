@@ -17,15 +17,11 @@ enum mediatype_t {
 	MEDIATYPE_STILL_LOADING,	// Still processing in the background
 };
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 enum mediatype_t get_metadata(const char *filename, struct metadata *data);
 timestamp_t picture_get_timestamp(const char *filename);
 
-#ifdef __cplusplus
 }
-#endif
 
 #endif // METADATA_H

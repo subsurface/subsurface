@@ -8,8 +8,6 @@
 
 #include "libdivecomputer.h" // for device_data_t, which is a typedef, not a struct :(
 
-#ifdef __cplusplus
-
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -41,7 +39,5 @@ private:
 };
 
 std::string do_uemis_import(device_data_t *data);
-
-#endif
 
 #endif // UEMIS_H

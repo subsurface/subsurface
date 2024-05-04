@@ -8,8 +8,6 @@
 #ifndef SHA1_H
 #define SHA1_H
 
-#ifdef __cplusplus
-
 #include <array>
 #include <string>
 
@@ -30,7 +28,5 @@ private:
 
 /* Helper function that calculates an SHA1 has and returns the first 4 bytes as uint32_t */
 uint32_t SHA1_uint32(const void *dataIn, unsigned long len);
-
-#endif
 
 #endif // SHA1_H

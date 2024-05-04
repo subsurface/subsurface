@@ -9,15 +9,14 @@
 // To make this accessible from C, this does manual memory management:
 // Every dive is associated with a cache of words. Thus, when deleting
 // a dive, a function freeing that data has to be called.
+// TODO: remove this complexity.
 
 #ifndef FULLTEXT_H
 #define FULLTEXT_H
 
 // 1) The C-accessible interface
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 struct full_text_cache;
 struct dive;
@@ -26,12 +25,9 @@ void fulltext_unregister(struct dive *d); // Note: can be called repeatedly
 void fulltext_unregister_all(); // Unregisters all dives in the dive table
 void fulltext_populate(); // Registers all dives in the dive table
 
-#ifdef __cplusplus
 }
-#endif
 
 // 2) The C++-only interface
-#ifdef __cplusplus
 
 #include <QString>
 #include <vector>
@@ -62,5 +58,4 @@ struct FullTextResult {
 FullTextResult fulltext_find_dives(const FullTextQuery &q, StringFilterMode);
 bool fulltext_dive_matches(const struct dive *d, const FullTextQuery &q, StringFilterMode);
 
-#endif
 #endif

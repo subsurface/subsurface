@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <string>
 
 /* libdivecomputer */
 
@@ -19,9 +20,6 @@
 #define DC_TRANSPORT_USBSTORAGE (1 << 6)
 #define dc_usb_storage_open(stream, context, devname) (DC_STATUS_UNSUPPORTED)
 #endif
-
-#ifdef __cplusplus
-#include <string>
 
 extern "C" {
 
@@ -76,6 +74,5 @@ extern std::string logfile_name;
 extern std::string dumpfile_name;
 
 }
-#endif
 
 #endif // LIBDIVECOMPUTER_H

@@ -4,9 +4,11 @@
 
 #include "gas.h"
 
-#ifdef __cplusplus
+#include <memory>
+#include <string>
+#include <vector>
+
 extern "C" {
-#endif
 
 struct dive;
 
@@ -107,12 +109,7 @@ extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
 void get_gas_string(struct gasmix gasmix, char *text, int len);
 const char *gasname(struct gasmix gasmix);
 
-#ifdef __cplusplus
 }
-
-#include <memory>
-#include <string>
-#include <vector>
 
 struct ws_info {
 	std::string name;
@@ -134,7 +131,5 @@ extern std::pair<volume_t, pressure_t> extract_tank_info(const struct tank_info 
 extern std::pair<volume_t, pressure_t> get_tank_info_data(const std::vector<tank_info> &table, const std::string &name);
 extern void add_cylinder_description(const cylinder_type_t &);
 extern void reset_tank_info_table(std::vector<tank_info> &table);
-
-#endif
 
 #endif // EQUIPMENT_H

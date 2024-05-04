@@ -2,8 +2,6 @@
 #ifndef PROFILE_H
 #define PROFILE_H
 
-#ifdef __cplusplus
-
 #include "gas.h" // gas_pressures
 #include "sample.h" // MAX_O2_SENSORS
 
@@ -150,5 +148,4 @@ static inline int get_plot_pressure(const struct plot_info &pi, int idx, int cyl
 std::pair<int, std::vector<std::string>> get_plot_details_new(const struct dive *d, const struct plot_info &pi, int time);
 std::vector<std::string> compare_samples(const struct dive *d, const struct plot_info &pi, int idx1, int idx2, bool sum);
 
-#endif
 #endif // PROFILE_H

@@ -3,10 +3,10 @@
 #define DEVICE_H
 
 #include <stdint.h>
+#include <string>
+#include <vector>
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 struct divecomputer;
 struct device;
@@ -61,15 +61,9 @@ typedef void (*device_callback_t)(const char *name, void *userdata);
 
 extern int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport);
 
-#ifdef __cplusplus
 }
-#endif
 
 // Functions and global variables that are only available to C++ code
-#ifdef __cplusplus
-
-#include <string>
-#include <vector>
 struct device {
 	bool operator<(const device &a) const;
 	void showchanges(const std::string &n) const;
@@ -100,7 +94,5 @@ struct fingerprint_table {
 };
 
 std::string fp_get_data(struct fingerprint_table *table, unsigned int i);
-
-#endif
 
 #endif // DEVICE_H
