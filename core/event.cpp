@@ -9,7 +9,6 @@
 event::event() : next(nullptr), type(SAMPLE_EVENT_NONE), flags(0), value(0),
 	divemode(OC), deleted(false), hidden(false)
 {
-	memset(name, 0, MAX_EVENT_NAME);
 	/* That overwrites divemode. Is this a smart thing to do? */
 	gas.index = -1;
 	gas.mix = gasmix_air;
@@ -27,7 +26,7 @@ int event_is_gaschange(const struct event *ev)
 
 bool event_is_divemodechange(const struct event *ev)
 {
-	return same_string(ev->name, "modechange");
+	return ev->name == "modechange";
 }
 
 struct event *clone_event(const struct event *src_ev)
@@ -52,13 +51,13 @@ void free_events(struct event *ev)
 	}
 }
 
-struct event *create_event(unsigned int time, int type, int flags, int value, const char *name)
+struct event *create_event(unsigned int time, int type, int flags, int value, const std::string &name)
 {
 	int gas_index = -1;
 	struct event *ev;
 
 	ev = new event;
-	strncpy(ev->name, name, MAX_EVENT_NAME - 1);
+	ev->name = name;
 	ev->time.seconds = time;
 	ev->type = type;
 	ev->flags = flags;
@@ -90,7 +89,7 @@ struct event *create_event(unsigned int time, int type, int flags, int value, co
 	return ev;
 }
 
-struct event *clone_event_rename(const struct event *ev, const char *name)
+struct event *clone_event_rename(const struct event *ev, const std::string &name)
 {
 	return create_event(ev->time.seconds, ev->type, ev->flags, ev->value, name);
 }
@@ -105,7 +104,7 @@ bool same_event(const struct event *a, const struct event *b)
 		return 0;
 	if (a->value != b->value)
 		return 0;
-	return !strcmp(a->name, b->name);
+	return a->name == b->name;
 }
 
 extern enum event_severity get_event_severity(const struct event *ev)

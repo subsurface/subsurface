@@ -27,11 +27,12 @@
  */
 static int seac_gaschange(void *param, sqlite3_stmt *sqlstmt)
 {
+	using namespace std::string_literals;
 	struct parser_state *state = (struct parser_state *)param;
 
 	event_start(state);
 	state->cur_event.time.seconds = sqlite3_column_int(sqlstmt, 1);
-	strcpy(state->cur_event.name, "gaschange");
+	state->cur_event.name = "gaschange"s;
 	state->cur_event.gas.mix.o2.permille = 10 * sqlite3_column_int(sqlstmt, 4);
 	event_end(state);
 

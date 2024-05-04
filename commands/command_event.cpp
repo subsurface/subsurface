@@ -123,7 +123,7 @@ RemoveEvent::RemoveEvent(struct dive *d, int dcNr, struct event *ev) : EventBase
 	cylinder(ev->type == SAMPLE_EVENT_GASCHANGE2 || ev->type == SAMPLE_EVENT_GASCHANGE ?
 		 ev->gas.index : -1)
 {
-	setText(Command::Base::tr("Remove %1 event").arg(ev->name));
+	setText(Command::Base::tr("Remove %1 event").arg(ev->name.c_str()));
 }
 
 bool RemoveEvent::workToBeDone()

@@ -56,6 +56,8 @@ static int divinglog_cylinder(void *param, int, char **data, char **)
 
 static int divinglog_profile(void *param, int, char **data, char **)
 {
+	using namespace std::string_literals;
+
 	struct parser_state *state = (struct parser_state *)param;
 
 	int sinterval = 0;
@@ -136,7 +138,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 
 				event_start(state);
 				state->cur_event.time.seconds = time;
-				strcpy(state->cur_event.name, "gaschange");
+				state->cur_event.name = "gaschange"s;
 
 				o2 = (o2 + 5) / 10;
 				he = (he + 5) / 10;
@@ -223,7 +225,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		if (ptr1[6] - '0') {
 			event_start(state);
 			state->cur_event.time.seconds = time;
-			strcpy(state->cur_event.name, "rbt");
+			state->cur_event.name = "rbt"s;
 			event_end(state);
 		}
 
@@ -231,7 +233,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		if (ptr1[7] - '0') {
 			event_start(state);
 			state->cur_event.time.seconds = time;
-			strcpy(state->cur_event.name, "ascent");
+			state->cur_event.name = "ascent"s;
 			event_end(state);
 		}
 
@@ -239,7 +241,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		if (ptr1[8] - '0') {
 			event_start(state);
 			state->cur_event.time.seconds = time;
-			strcpy(state->cur_event.name, "violation");
+			state->cur_event.name = "violation"s;
 			event_end(state);
 		}
 
@@ -247,7 +249,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		if (ptr1[9] - '0') {
 			event_start(state);
 			state->cur_event.time.seconds = time;
-			strcpy(state->cur_event.name, "workload");
+			state->cur_event.name = "workload"s;
 			event_end(state);
 		}
 

@@ -750,11 +750,11 @@ static void sanitize_cylinder_info(struct dive *dive)
 /* some events should never be thrown away */
 static bool is_potentially_redundant(const struct event *event)
 {
-	if (!strcmp(event->name, "gaschange"))
+	if (event->name == "gaschange")
 		return false;
-	if (!strcmp(event->name, "bookmark"))
+	if (event->name == "bookmark")
 		return false;
-	if (!strcmp(event->name, "heading"))
+	if (event->name == "heading")
 		return false;
 	return true;
 }
@@ -765,10 +765,10 @@ static struct event *find_previous_event(struct divecomputer *dc, struct event *
 	struct event *ev = dc->events;
 	struct event *previous = NULL;
 
-	if (empty_string(event->name))
+	if (event->name.empty())
 		return NULL;
 	while (ev && ev != event) {
-		if (same_string(ev->name, event->name))
+		if (ev->name == event->name)
 			previous = ev;
 		ev = ev->next;
 	}
@@ -1546,12 +1546,12 @@ static int sort_event(const struct event *a, const struct event *b, int time_a, 
 	SORT_FIELD(a, b, type);
 	SORT_FIELD(a, b, flags);
 	SORT_FIELD(a, b, value);
-	return strcmp(a->name, b->name);
+	return a->name.compare(b->name);
 }
 
 static int same_gas(const struct event *a, const struct event *b)
 {
-	if (a->type == b->type && a->flags == b->flags && a->value == b->value && !strcmp(a->name, b->name) &&
+	if (a->type == b->type && a->flags == b->flags && a->value == b->value && a->name == b->name &&
 			same_gasmix(a->gas.mix, b->gas.mix)) {
 		return true;
 	}
