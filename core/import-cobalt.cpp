@@ -181,15 +181,8 @@ static int cobalt_dive(void *param, int, char **data, char **)
 	}
 
 	if (location && location_site) {
-		char *tmp = (char *)malloc(strlen(location) + strlen(location_site) + 4);
-		if (!tmp) {
-			free(location);
-			free(location_site);
-			return 1;
-		}
-		sprintf(tmp, "%s / %s", location, location_site);
+		std::string tmp = std::string(location) + " / " + location_site;
 		add_dive_to_dive_site(state->cur_dive, find_or_create_dive_site_with_name(tmp, state->log->sites));
-		free(tmp);
 	}
 	free(location);
 	free(location_site);
@@ -205,7 +198,6 @@ static int cobalt_dive(void *param, int, char **data, char **)
 
 	return SQLITE_OK;
 }
-
 
 extern "C" int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {

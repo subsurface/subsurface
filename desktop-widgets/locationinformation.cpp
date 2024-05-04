@@ -129,8 +129,8 @@ void LocationInformationWidget::updateLabels()
 		clearLabels();
 		return;
 	}
-	if (diveSite->name)
-		ui.diveSiteName->setText(diveSite->name);
+	if (!diveSite->name.empty())
+		ui.diveSiteName->setText(QString::fromStdString(diveSite->name));
 	else
 		ui.diveSiteName->clear();
 	std::string country = taxonomy_get_country(diveSite->taxonomy);
@@ -138,12 +138,12 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteCountry->setText(QString::fromStdString(country));
 	else
 		ui.diveSiteCountry->clear();
-	if (diveSite->description)
-		ui.diveSiteDescription->setText(diveSite->description);
+	if (!diveSite->description.empty())
+		ui.diveSiteDescription->setText(QString::fromStdString(diveSite->description));
 	else
 		ui.diveSiteDescription->clear();
-	if (diveSite->notes)
-		ui.diveSiteNotes->setPlainText(diveSite->notes);
+	if (!diveSite->notes.empty())
+		ui.diveSiteNotes->setPlainText(QString::fromStdString(diveSite->notes));
 	else
 		ui.diveSiteNotes->clear();
 	if (has_location(&diveSite->location))
@@ -172,13 +172,13 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 		return; // A different dive site was changed -> do nothing.
 	switch (field) {
 	case LocationInformationModel::NAME:
-		ui.diveSiteName->setText(diveSite->name);
+		ui.diveSiteName->setText(QString::fromStdString(diveSite->name));
 		return;
 	case LocationInformationModel::DESCRIPTION:
-		ui.diveSiteDescription->setText(diveSite->description);
+		ui.diveSiteDescription->setText(QString::fromStdString(diveSite->description));
 		return;
 	case LocationInformationModel::NOTES:
-		ui.diveSiteNotes->setText(diveSite->notes);
+		ui.diveSiteNotes->setText(QString::fromStdString(diveSite->notes));
 		return;
 	case LocationInformationModel::TAXONOMY:
 		ui.diveSiteCountry->setText(QString::fromStdString(taxonomy_get_country(diveSite->taxonomy)));
@@ -563,7 +563,7 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 	struct dive_site *ds;
 	int i;
 	for_each_dive_site (i, ds, divelog.sites) {
-		QString dsName(ds->name);
+		QString dsName = QString::fromStdString(ds->name);
 		if (dsName.toLower().startsWith(str.toLower()))
 			return ds;
 	}
@@ -585,10 +585,10 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &name)
 	// the user entered text.
 	QString i1_name;
 	if (struct dive_site *ds = get_dive_site_name_start_which_str(name)) {
-		const QString orig_name = QString(ds->name).toLower();
+		const QString orig_name = QString::fromStdString(ds->name).toLower();
 		const QString new_name = name.toLower();
 		if (new_name != orig_name)
-			i1_name = QString(ds->name);
+			i1_name = QString::fromStdString(ds->name);
 	}
 
 	model->setData(i1, i1_name);
@@ -674,7 +674,7 @@ void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 	if (!currDs)
 		clear();
 	else
-		setText(currDs->name);
+		setText(QString::fromStdString(currDs->name));
 	proxy->setCurrentLocation(currentLocation);
 	delegate.setCurrentLocation(currentLocation);
 }

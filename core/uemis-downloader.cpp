@@ -808,6 +808,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
  * the addresses of those fields for every dive that references the dive spot. */
 static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::string_view buf, int &max_divenr, int *for_dive)
 {
+	using namespace std::string_literals;
 	bool done = false;
 	bool is_log = false, is_dive = false;
 	std::vector<std::string_view> sections;
@@ -914,7 +915,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 		} else if (!is_log && dive && tag == "divespot_id") {
 			int divespot_id;
 			if (from_chars(val, divespot_id).ec != std::errc::invalid_argument) {
-				struct dive_site *ds = create_dive_site("from Uemis", devdata->log->sites);
+				struct dive_site *ds = create_dive_site("from Uemis"s, devdata->log->sites);
 				unregister_dive_from_dive_site(dive);
 				add_dive_to_dive_site(dive, ds);
 				uemis_obj.mark_divelocation(dive->dc.diveid, divespot_id, ds);
@@ -1099,17 +1100,16 @@ static void get_uemis_divespot(device_data_t *devdata, const std::string &mountp
 		struct dive_site *ds = it->second;
 		unregister_dive_from_dive_site(dive);
 		add_dive_to_dive_site(dive, ds);
-	} else if (nds && nds->name && strstr(nds->name,"from Uemis")) {
+	} else if (nds && !nds->name.empty() && nds->name.find("from Uemis") != std::string::npos) {
 		if (load_uemis_divespot(mountpath, divespot_id)) {
 			/* get the divesite based on the diveid, this should give us
 			* the newly created site
 			*/
-			struct dive_site *ods;
 			/* with the divesite name we got from parse_dive, that is called on load_uemis_divespot
 			 * we search all existing divesites if we have one with the same name already. The function
 			 * returns the first found which is luckily not the newly created.
 			 */
-			ods = get_dive_site_by_name(nds->name, devdata->log->sites);
+			struct dive_site *ods = get_dive_site_by_name(nds->name, devdata->log->sites);
 			if (ods) {
 				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				if (nds->uuid != ods->uuid) {

@@ -17,10 +17,10 @@
 // Example:
 // Japan/Izu Peninsula/Atami/Chinsen-Aft
 //    Short name: Chinsen-Aft
-static QString siteMapDisplayName(const char *sitename)
+static QString siteMapDisplayName(const std::string &sitename)
 {
 	const char Separator = '/';
-	QString fullname(sitename);
+	QString fullname = QString::fromStdString(sitename);
 
 	if (!qPrefDisplay::map_short_names() )
 		return fullname;

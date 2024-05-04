@@ -280,7 +280,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::DateTimeRole: return formatDiveDateTime(d);
 	case MobileListModel::IdRole: return d->id;
 	case MobileListModel::NumberRole: return d->number;
-	case MobileListModel::LocationRole: return get_dive_location(d);
+	case MobileListModel::LocationRole: return QString::fromStdString(get_dive_location(d));
 	case MobileListModel::DepthRole: return get_depth_string(d->dc.maxdepth.mm, true, true);
 	case MobileListModel::DurationRole: return formatDiveDuration(d);
 	case MobileListModel::DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dc.maxdepth.mm, true, true),
@@ -357,7 +357,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case DIVEGUIDE:
 			return QString(d->diveguide);
 		case LOCATION:
-			return QString(get_dive_location(d));
+			return QString::fromStdString(get_dive_location(d));
 		case GAS:
 			return formatDiveGasString(d);
 		case NOTES:
@@ -1776,7 +1776,7 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 	case DIVEGUIDE:
 		return lessThanHelper(strCmp(d1->diveguide, d2->diveguide), row_diff);
 	case LOCATION:
-		return lessThanHelper(strCmp(get_dive_location(d1), get_dive_location(d2)), row_diff);
+		return lessThanHelper(strCmp(get_dive_location(d1).c_str(), get_dive_location(d2).c_str()), row_diff);
 	case NOTES:
 		return lessThanHelper(strCmp(d1->notes, d2->notes), row_diff);
 	case DIVEMODE:

@@ -118,9 +118,9 @@ extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
 #ifdef __cplusplus
 } // TODO: remove
 extern std::string get_dive_country(const struct dive *dive);
+extern std::string get_dive_location(const struct dive *dive);
 extern "C" {
 #endif
-extern const char *get_dive_location(const struct dive *dive);
 extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern const struct divecomputer *get_dive_dc_const(const struct dive *dive, int nr);

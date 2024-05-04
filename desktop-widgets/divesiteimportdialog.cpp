@@ -68,7 +68,7 @@ void DivesiteImportDialog::on_ok_clicked()
 	for (int i = 0; i < importedSites.nr; i++)
 		if (divesiteImportedModel->data(divesiteImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked) {
 			struct dive_site *newSite = new dive_site;
-			copy_dive_site(importedSites.dive_sites[i], newSite);
+			*newSite = *importedSites.dive_sites[i];
 			add_dive_site_to_table(newSite, &selectedSites);
 		}
 

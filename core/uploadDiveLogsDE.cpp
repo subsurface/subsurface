@@ -112,7 +112,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 
 		if (ds) {
 			put_format(&mb, "<divelog><divesites><site uuid='%8x' name='", ds->uuid);
-			put_quoted(&mb, ds->name, 1, 0);
+			put_quoted(&mb, ds->name.c_str(), 1, 0);
 			put_format(&mb, "'");
 			put_location(&mb, &ds->location, " gps='", "'");
 			put_format(&mb, ">\n");

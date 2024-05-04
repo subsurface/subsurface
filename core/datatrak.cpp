@@ -169,7 +169,6 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	unsigned char tmp_1byte;
 	unsigned int tmp_2bytes;
 	unsigned long tmp_4bytes;
-	struct dive_site *ds;
 	char is_nitrox = 0, is_O2 = 0, is_SCR = 0;
 
 	device_data_t devdata;
@@ -211,11 +210,13 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Subsurface only have a location variable, so we have to merge DTrak's
 	 * Locality and Dive points.
 	 */
-	snprintf(buffer, sizeof(buffer), "%s, %s", locality, dive_point);
-	ds = get_dive_site_by_name(buffer, log->sites);
-	if (!ds)
-		ds = create_dive_site(buffer, log->sites);
-	add_dive_to_dive_site(dt_dive, ds);
+	{
+		std::string buffer2 = std::string((char *)locality) + " " + (char *)dive_point;
+		struct dive_site *ds = get_dive_site_by_name(buffer2, log->sites);
+		if (!ds)
+			ds = create_dive_site(buffer2, log->sites);
+		add_dive_to_dive_site(dt_dive, ds);
+	}
 	free(locality);
 	locality = NULL;
 	free(dive_point);

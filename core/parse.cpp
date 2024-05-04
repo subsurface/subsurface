@@ -12,6 +12,7 @@
 #include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
+#include "format.h"
 #include "sample.h"
 #include "subsurface-string.h"
 #include "picture.h"
@@ -203,7 +204,7 @@ void dive_site_end(struct parser_state *state)
 	merge_dive_site(ds, state->cur_dive_site.get());
 
 	if (verbose > 3)
-		printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
+		printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name.c_str());
 
 	state->cur_dive_site.reset();
 }
@@ -470,18 +471,18 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 		struct dive_site *ds = dive->dive_site;
 		if (!ds) {
 			// if the dive doesn't have a dive site, check if there's already a dive site by this name
-			ds = get_dive_site_by_name(trimmed.c_str(), state->log->sites);
+			ds = get_dive_site_by_name(trimmed, state->log->sites);
 		}
 		if (ds) {
 			// we have a dive site, let's hope there isn't a different name
-			if (empty_string(ds->name)) {
-				ds->name = copy_string(trimmed.c_str());
+			if (ds->name.empty()) {
+				ds->name = trimmed;
 			} else if (trimmed != ds->name) {
 				// if it's not the same name, it's not the same dive site
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				struct dive_site *exact_match = get_dive_site_by_gps_and_name(trimmed.c_str(), &ds->location, state->log->sites);
+				struct dive_site *exact_match = get_dive_site_by_gps_and_name(trimmed, &ds->location, state->log->sites);
 				if (exact_match) {
 					unregister_dive_from_dive_site(dive);
 					add_dive_to_dive_site(dive, exact_match);
@@ -495,7 +496,8 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 					} else {
 						newds->location = ds->location;
 					}
-					newds->notes = add_to_string(newds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
+					newds->notes += '\n';
+					newds->notes += format_string_std(translate("gettextFromC", "additional name for site: %s\n"), ds->name.c_str());
 				}
 			} else if (dive->dive_site != ds) {
 				// add the existing dive site to the current dive
@@ -503,7 +505,7 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 				add_dive_to_dive_site(dive, ds);
 			}
 		} else {
-			add_dive_to_dive_site(dive, create_dive_site(trimmed.c_str(), state->log->sites));
+			add_dive_to_dive_site(dive, create_dive_site(trimmed, state->log->sites));
 		}
 	}
 }

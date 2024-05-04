@@ -3341,12 +3341,10 @@ std::string get_dive_country(const struct dive *dive)
 	return ds ? taxonomy_get_country(ds->taxonomy) : std::string();
 }
 
-extern "C" const char *get_dive_location(const struct dive *dive)
+std::string get_dive_location(const struct dive *dive)
 {
 	const struct dive_site *ds = dive->dive_site;
-	if (ds && ds->name)
-		return ds->name;
-	return NULL;
+	return ds ? ds->name : std::string();
 }
 
 extern "C" unsigned int number_of_computers(const struct dive *dive)

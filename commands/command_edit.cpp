@@ -374,14 +374,11 @@ void EditDiveSite::redo()
 	EditDiveSite::undo(); // Undo and redo do the same
 }
 
-static struct dive_site *createDiveSite(const QString &name)
+static struct dive_site *createDiveSite(const std::string &name)
 {
 	struct dive_site *ds = new dive_site;
-	struct dive_site *old = current_dive ? current_dive->dive_site : nullptr;
-	if (old) {
-		copy_dive_site(old, ds);
-		free(ds->name); // Free name, as we will overwrite it with our own version
-	}
+	if (current_dive && current_dive->dive_site)
+		*ds = *current_dive->dive_site;
 
 	// If the current dive has a location, use that as location for the new dive site
 	if (current_dive) {
@@ -390,12 +387,12 @@ static struct dive_site *createDiveSite(const QString &name)
 			ds->location = loc;
 	}
 
-	ds->name = copy_qstring(name);
+	ds->name = name;
 	return ds;
 }
 
 EditDiveSiteNew::EditDiveSiteNew(const QString &newName, bool currentDiveOnly) :
-	EditDiveSite(createDiveSite(newName), currentDiveOnly),
+	EditDiveSite(createDiveSite(newName.toStdString()), currentDiveOnly),
 	diveSiteToAdd(value),
 	diveSiteToRemove(nullptr)
 {

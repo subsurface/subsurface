@@ -355,7 +355,7 @@ static void write_one_dive(struct membuffer *b, struct dive *dive, const char *p
 	put_format(b, "\"subsurface_number\":%d,", dive->number);
 	put_HTML_date(b, dive, "\"date\":\"", "\",");
 	put_HTML_time(b, dive, "\"time\":\"", "\",");
-	write_attribute(b, "location", get_dive_location(dive), ", ");
+	write_attribute(b, "location", get_dive_location(dive).c_str(), ", ");
 	put_HTML_coordinates(b, dive);
 	put_format(b, "\"rating\":%d,", dive->rating);
 	put_format(b, "\"visibility\":%d,", dive->visibility);

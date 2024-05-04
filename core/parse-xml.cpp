@@ -978,10 +978,9 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 
 static void divinglog_place(const char *place, struct dive *d, struct parser_state *state)
 {
-	char buffer[1024];
 	struct dive_site *ds;
 
-	snprintf(buffer, sizeof(buffer),
+	std::string buffer = format_string_std(
 		 "%s%s%s%s%s",
 		 place,
 		 !state->city.empty() ? ", " : "",
@@ -1160,10 +1159,11 @@ static void gps_lat(const char *buffer, struct dive *dive, struct parser_state *
 
 	location.lat = parse_degrees(buffer, &end);
 	if (!ds) {
-		add_dive_to_dive_site(dive, create_dive_site_with_gps(NULL, &location, state->log->sites));
+		add_dive_to_dive_site(dive, create_dive_site_with_gps(std::string(), &location, state->log->sites));
 	} else {
 		if (ds->location.lat.udeg && ds->location.lat.udeg != location.lat.udeg)
-			report_info("Oops, changing the latitude of existing dive site id %8x name %s; not good", ds->uuid, ds->name ?: "(unknown)");
+			report_info("Oops, changing the latitude of existing dive site id %8x name %s; not good", ds->uuid,
+					ds->name.empty() ? "(unknown)" : ds->name.c_str());
 		ds->location.lat = location.lat;
 	}
 }
@@ -1176,10 +1176,11 @@ static void gps_long(const char *buffer, struct dive *dive, struct parser_state 
 
 	location.lon = parse_degrees(buffer, &end);
 	if (!ds) {
-		add_dive_to_dive_site(dive, create_dive_site_with_gps(NULL, &location, state->log->sites));
+		add_dive_to_dive_site(dive, create_dive_site_with_gps(std::string(), &location, state->log->sites));
 	} else {
 		if (ds->location.lon.udeg && ds->location.lon.udeg != location.lon.udeg)
-			report_info("Oops, changing the longitude of existing dive site id %8x name %s; not good", ds->uuid, ds->name ?: "(unknown)");
+			report_info("Oops, changing the longitude of existing dive site id %8x name %s; not good", ds->uuid,
+					ds->name.empty() ? "(unknown)" : ds->name.c_str());
 		ds->location.lon = location.lon;
 	}
 }
@@ -1213,7 +1214,7 @@ static void gps_in_dive(const char *buffer, struct dive *dive, struct parser_sta
 			// remember the original coordinates so we can create the correct dive site later
 			state->cur_location = location;
 		} else {
-			ds = create_dive_site_with_gps("", &location, state->log->sites);
+			ds = create_dive_site_with_gps(std::string(), &location, state->log->sites);
 		}
 		add_dive_to_dive_site(dive, ds);
 	} else {
@@ -1224,7 +1225,8 @@ static void gps_in_dive(const char *buffer, struct dive *dive, struct parser_sta
 				ds->location.lat.udeg / 1000000.0, ds->location.lon.udeg / 1000000.0,
 				location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
 			std::string coords = printGPSCoordsC(&location);
-			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords.c_str());
+			ds->notes += '\n';
+			ds->notes += format_string_std(translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords.c_str());
 		} else {
 			ds->location = location;
 		}
@@ -1417,11 +1419,11 @@ static void try_to_fill_dive_site(struct parser_state *state, const char *name, 
 
 	if (MATCH("uuid", hex_value, &ds->uuid))
 		return;
-	if (MATCH("name", utf8_string, &ds->name))
+	if (MATCH("name", utf8_string_std, &ds->name))
 		return;
-	if (MATCH("description", utf8_string, &ds->description))
+	if (MATCH("description", utf8_string_std, &ds->description))
 		return;
-	if (MATCH("notes", utf8_string, &ds->notes))
+	if (MATCH("notes", utf8_string_std, &ds->notes))
 		return;
 	if (MATCH("gps", gps_location, ds.get()))
 		return;
@@ -1802,6 +1804,7 @@ static timestamp_t parse_dlf_timestamp(unsigned char *buffer)
 
 extern "C" int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 {
+	using namespace std::string_literals;
 	unsigned char *ptr = buffer;
 	unsigned char event;
 	bool found;
@@ -2232,7 +2235,7 @@ extern "C" int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divel
 				/* Measure GPS */
 				state.cur_location.lat.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
 				state.cur_location.lon.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
-				add_dive_to_dive_site(state.cur_dive, create_dive_site_with_gps("DLF imported", &state.cur_location, state.log->sites));
+				add_dive_to_dive_site(state.cur_dive, create_dive_site_with_gps("DLF imported"s, &state.cur_location, state.log->sites));
 				break;
 			default:
 				break;

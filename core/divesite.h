@@ -13,15 +13,15 @@
 struct dive_site
 {
 	uint32_t uuid = 0;
-	char *name = nullptr;
+	std::string name;
 	std::vector<dive *> dives;
 	location_t location = { { 9 }, { 0 } };
-	char *description = nullptr;
-	char *notes = nullptr;
+	std::string description;
+	std::string notes;
 	taxonomy_data taxonomy;
 	dive_site();
-	dive_site(const char *name);
-	dive_site(const char *name, const location_t *loc);
+	dive_site(const std::string &name);
+	dive_site(const std::string &name, const location_t *loc);
 	~dive_site();
 };
 
@@ -54,19 +54,17 @@ bool is_dive_site_selected(const struct dive_site &ds);
 int unregister_dive_site(struct dive_site *ds);
 int register_dive_site(struct dive_site *ds);
 void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table);
-struct dive_site *create_dive_site(const char *name, struct dive_site_table *ds_table);
-struct dive_site *create_dive_site_with_gps(const char *name, const location_t *, struct dive_site_table *ds_table);
-struct dive_site *get_dive_site_by_name(const char *name, struct dive_site_table *ds_table);
+struct dive_site *create_dive_site(const std::string &name, struct dive_site_table *ds_table);
+struct dive_site *create_dive_site_with_gps(const std::string &name, const location_t *, struct dive_site_table *ds_table);
+struct dive_site *get_dive_site_by_name(const std::string &name, struct dive_site_table *ds_table);
 struct dive_site *get_dive_site_by_gps(const location_t *, struct dive_site_table *ds_table);
-struct dive_site *get_dive_site_by_gps_and_name(const char *name, const location_t *, struct dive_site_table *ds_table);
+struct dive_site *get_dive_site_by_gps_and_name(const std::string &name, const location_t *, struct dive_site_table *ds_table);
 struct dive_site *get_dive_site_by_gps_proximity(const location_t *, int distance, struct dive_site_table *ds_table);
 struct dive_site *get_same_dive_site(const struct dive_site *);
 bool dive_site_is_empty(struct dive_site *ds);
-void copy_dive_site_taxonomy(struct dive_site *orig, struct dive_site *copy);
-void copy_dive_site(struct dive_site *orig, struct dive_site *copy);
 void merge_dive_site(struct dive_site *a, struct dive_site *b);
 unsigned int get_distance(const location_t *loc1, const location_t *loc2);
-struct dive_site *find_or_create_dive_site_with_name(const char *name, struct dive_site_table *ds_table);
+struct dive_site *find_or_create_dive_site_with_name(const std::string &name, struct dive_site_table *ds_table);
 void purge_empty_dive_sites(struct dive_site_table *ds_table);
 void clear_dive_site_table(struct dive_site_table *ds_table);
 void move_dive_site_table(struct dive_site_table *src, struct dive_site_table *dst);

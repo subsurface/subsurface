@@ -148,7 +148,7 @@ dive_trip_t *create_trip_from_dive(struct dive *dive)
 	dive_trip_t *trip;
 
 	trip = alloc_trip();
-	trip->location = copy_string(get_dive_location(dive));
+	trip->location = copy_string(get_dive_location(dive).c_str());
 
 	return trip;
 }
@@ -265,8 +265,9 @@ dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *fr
 			if (dive->divetrip || dive->notrip ||
 			    dive->when >= lastdive->when + TRIP_THRESHOLD)
 				break;
-			if (get_dive_location(dive) && !trip->location)
-				trip->location = copy_string(get_dive_location(dive));
+			std::string location = get_dive_location(dive);
+			if (!location.empty() && !trip->location)
+				trip->location = copy_string(get_dive_location(dive).c_str());
 			lastdive = dive;
 		}
 		return trip;
