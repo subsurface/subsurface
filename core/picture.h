@@ -13,11 +13,10 @@ extern "C" {
 struct dive;
 
 struct picture {
-	char *filename;
-	offset_t offset;
-	location_t location;
+	char *filename = nullptr;
+	offset_t offset = { 0 };
+	location_t location = { { 0 }, { 0 } };
 };
-static const struct picture empty_picture = { NULL, { 0 }, { { 0 }, { 0 } } };
 
 /* loop through all pictures of a dive */
 #define FOR_EACH_PICTURE(_dive)								\
