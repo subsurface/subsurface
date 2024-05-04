@@ -22,7 +22,7 @@ enum remote_transport { RT_LOCAL, RT_HTTPS, RT_SSH, RT_OTHER };
 
 extern bool git_local_only;
 extern bool git_remote_sync_successful;
-extern void clear_git_id(void);
+extern void clear_git_id();
 extern void set_git_id(const struct git_oid *);
 void set_git_update_cb(int(*)(const char *));
 int git_storage_update_progress(const char *text);

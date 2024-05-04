@@ -1184,7 +1184,7 @@ void MainWindow::recentFileTriggered(bool)
 	loadFiles(std::vector<std::string> { filename.toStdString() });
 }
 
-int MainWindow::file_save_as(void)
+int MainWindow::file_save_as()
 {
 	QString filename;
 	std::string default_filename = existing_filename;
@@ -1232,7 +1232,7 @@ int MainWindow::file_save_as(void)
 	return 0;
 }
 
-int MainWindow::file_save(void)
+int MainWindow::file_save()
 {
 	const char *current_default;
 	bool is_cloud = false;

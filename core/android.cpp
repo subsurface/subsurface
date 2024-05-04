@@ -46,7 +46,7 @@ const char *system_divelist_default_font = android_system_divelist_default_font;
 double system_divelist_default_font_size = -1;
 
 int get_usb_fd(uint16_t idVendor, uint16_t idProduct);
-void subsurface_OS_pref_setup(void)
+void subsurface_OS_pref_setup()
 {
 }
 
@@ -56,13 +56,13 @@ bool subsurface_ignore_font(const char *font)
 	return false;
 }
 
-const char *system_default_directory(void)
+const char *system_default_directory()
 {
 	static const std::string path = system_default_path();
 	return path.c_str();
 }
 
-const char *system_default_filename(void)
+const char *system_default_filename()
 {
 	static const std::string fn = make_default_filename();
 	return fn.c_str();
@@ -235,12 +235,12 @@ int subsurface_zip_close(struct zip *zip)
 }
 
 /* win32 console */
-void subsurface_console_init(void)
+void subsurface_console_init()
 {
 	/* NOP */
 }
 
-void subsurface_console_exit(void)
+void subsurface_console_exit()
 {
 	/* NOP */
 }

@@ -5,11 +5,11 @@
 extern bool imported;
 extern int quit, force_root, ignore_bt;
 
-void setup_system_prefs(void);
+void setup_system_prefs();
 void parse_argument(const char *arg);
-void free_prefs(void);
-void print_files(void);
-void print_version(void);
+void free_prefs();
+void print_files();
+void print_version();
 
 extern char *settings_suffix;
 

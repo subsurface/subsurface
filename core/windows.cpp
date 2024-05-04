@@ -105,7 +105,7 @@ const char current_system_divelist_default_font[] = "Segoe UI";
 const char *system_divelist_default_font = non_standard_system_divelist_default_font;
 double system_divelist_default_font_size = -1;
 
-void subsurface_OS_pref_setup(void)
+void subsurface_OS_pref_setup()
 {
 	if (isWin7Or8())
 		system_divelist_default_font = current_system_divelist_default_font;
@@ -124,13 +124,13 @@ bool subsurface_ignore_font(const char *font)
 
 /* '\' not included at the end.
  */
-const char *system_default_directory(void)
+const char *system_default_directory()
 {
 	static std::string path = utf16_to_utf8(system_default_path());
 	return path.c_str();
 }
 
-const char *system_default_filename(void)
+const char *system_default_filename()
 {
 	static std::string path = utf16_to_utf8(make_default_filename());
 	return path.c_str();
@@ -373,7 +373,7 @@ static struct {
 } console_desc;
 #endif
 
-void subsurface_console_init(void)
+void subsurface_console_init()
 {
 	/* if this is a console app already, do nothing */
 #ifndef WIN32_CONSOLE_APP
@@ -404,7 +404,7 @@ void subsurface_console_init(void)
 #endif
 }
 
-void subsurface_console_exit(void)
+void subsurface_console_exit()
 {
 #ifndef WIN32_CONSOLE_APP
 	/* close handles */

@@ -214,7 +214,7 @@ extern struct preferences prefs, default_prefs, git_prefs;
 extern const char *system_divelist_default_font;
 extern double system_divelist_default_font_size;
 
-extern const char *system_default_directory(void);
+extern const char *system_default_directory();
 extern const char *system_default_filename();
 extern bool subsurface_ignore_font(const char *font);
 extern void subsurface_OS_pref_setup();

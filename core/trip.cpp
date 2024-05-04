@@ -10,7 +10,7 @@
 #include "core/errorhelper.h"
 
 #ifdef DEBUG_TRIP
-void dump_trip_list(void)
+void dump_trip_list()
 {
 	dive_trip_t *trip;
 	int i = 0;
@@ -126,7 +126,7 @@ void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table_arg)
 		delete_trip(trip, trip_table_arg);
 }
 
-dive_trip_t *alloc_trip(void)
+dive_trip_t *alloc_trip()
 {
 	dive_trip_t *res = (dive_trip_t *)calloc(1, sizeof(dive_trip_t));
 	res->id = dive_getUniqID();

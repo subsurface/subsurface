@@ -37,7 +37,7 @@ extern bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
 extern int comp_trips(const struct dive_trip *a, const struct dive_trip *b);
 extern void sort_trip_table(struct trip_table *table);
 
-extern dive_trip_t *alloc_trip(void);
+extern dive_trip_t *alloc_trip();
 extern dive_trip_t *create_trip_from_dive(struct dive *dive);
 extern dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *from, int *to, bool *allocated);
 extern dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated);
@@ -53,7 +53,7 @@ void move_trip_table(struct trip_table *src, struct trip_table *dst);
 void clear_trip_table(struct trip_table *table);
 
 #ifdef DEBUG_TRIP
-extern void dump_trip_list(void);
+extern void dump_trip_list();
 #endif
 
 /* Make pointers to dive_trip and trip_table "Qt metatypes" so that they can be
