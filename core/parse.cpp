@@ -71,7 +71,7 @@ void event_end(struct parser_state *state)
 {
 	struct divecomputer *dc = get_dc(state);
 	if (state->cur_event.type == 123) {
-		struct picture pic = empty_picture;
+		struct picture pic;
 		pic.filename = strdup(state->cur_event.name);
 		/* theoretically this could fail - but we didn't support multi year offsets */
 		pic.offset.seconds = state->cur_event.time.seconds;
@@ -313,7 +313,7 @@ void picture_end(struct parser_state *state)
 {
 	add_picture(&state->cur_dive->pictures, state->cur_picture);
 	/* dive_add_picture took ownership, we can just clear out copy of the data */
-	state->cur_picture = empty_picture;
+	state->cur_picture = picture();
 }
 
 cylinder_t *cylinder_start(struct parser_state *state)

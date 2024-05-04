@@ -65,7 +65,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/load-git.cpp \
 	core/parse-xml.cpp \
 	core/parse.cpp \
-	core/picture.c \
+	core/picture.cpp \
 	core/pictureobj.cpp \
 	core/sample.cpp \
 	core/import-suunto.cpp \

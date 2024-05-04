@@ -136,7 +136,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	parse-xml.cpp
 	parse.cpp
 	parse.h
-	picture.c
+	picture.cpp
 	picture.h
 	pictureobj.cpp
 	pictureobj.h
