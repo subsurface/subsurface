@@ -9,8 +9,6 @@
 #include <string_view>
 #include <vector>
 
-extern "C" {
-
 // string handling
 
 static inline bool same_string(const char *a, const char *b)
@@ -35,8 +33,6 @@ static inline char *copy_string(const char *s)
 
 extern double permissive_strtod(const char *str, const char **ptr);
 extern double ascii_strtod(const char *str, const char **ptr);
-
-}
 
 // Sadly, starts_with only with C++20!
 inline bool starts_with(std::string_view s, const char *s2)

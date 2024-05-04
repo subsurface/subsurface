@@ -42,7 +42,7 @@ static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t &
  * each file. So it's not necessary to iterate once and again on a parsing
  * function. Actually there's only one kind of archive for every DC model.
  */
-extern "C" void ostctools_import(const char *file, struct divelog *log)
+void ostctools_import(const char *file, struct divelog *log)
 {
 	FILE *archive;
 	device_data_t devdata;

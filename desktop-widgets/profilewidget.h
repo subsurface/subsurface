@@ -15,8 +15,6 @@ class ProfileWidget2;
 class EmptyView;
 class QStackedWidget;
 
-extern "C" void free_dive(struct dive *);
-
 class ProfileWidget : public QWidget {
 	Q_OBJECT
 public:

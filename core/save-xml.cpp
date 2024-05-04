@@ -497,7 +497,7 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 	put_string(b, "/>\n");
 }
 
-extern "C" void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
+void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 {
 	struct divecomputer *dc;
 	pressure_t surface_pressure = un_fixup_surface_pressure(dive);
@@ -556,7 +556,7 @@ extern "C" void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool
 	put_format(b, "</dive>\n");
 }
 
-extern "C" int save_dive(FILE *f, struct dive *dive, bool anonymize)
+int save_dive(FILE *f, struct dive *dive, bool anonymize)
 {
 	struct membufferpp buf;
 
@@ -627,7 +627,7 @@ static void save_one_fingerprint(struct membuffer *b, int i)
 		   fp_get_data(&fingerprint_table, i).c_str());
 }
 
-extern "C" int save_dives(const char *filename)
+int save_dives(const char *filename)
 {
 	return save_dives_logic(filename, false, false);
 }
@@ -810,7 +810,7 @@ static void try_to_backup(const char *filename)
 	}
 }
 
-extern "C" int save_dives_logic(const char *filename, const bool select_only, bool anonymize)
+int save_dives_logic(const char *filename, const bool select_only, bool anonymize)
 {
 	struct membufferpp buf;
 	struct git_info info;
@@ -931,7 +931,7 @@ static void save_dive_sites_buffer(struct membuffer *b, const struct dive_site *
 	put_format(b, "</divesites>\n");
 }
 
-extern "C" int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize)
+int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize)
 {
 	struct membufferpp buf;
 	FILE *f;

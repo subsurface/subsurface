@@ -78,7 +78,7 @@ static void zip_read(struct zip_file *file, const char *filename, struct divelog
 	(void) parse_xml_buffer(filename, mem.data(), read, log, NULL);
 }
 
-extern "C" int try_to_open_zip(const char *filename, struct divelog *log)
+int try_to_open_zip(const char *filename, struct divelog *log)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
@@ -268,7 +268,7 @@ bool remote_repo_uptodate(const char *filename, struct git_info *info)
 	return false;
 }
 
-extern "C" int parse_file(const char *filename, struct divelog *log)
+int parse_file(const char *filename, struct divelog *log)
 {
 	struct git_info info;
 	const char *fmt;

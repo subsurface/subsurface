@@ -117,7 +117,7 @@ static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double s
 	}
 }
 
-extern "C" void fake_dc(struct divecomputer *dc)
+void fake_dc(struct divecomputer *dc)
 {
 	alloc_samples(dc, 6);
 	struct sample *fake = dc->sample;
@@ -199,7 +199,7 @@ extern "C" void fake_dc(struct divecomputer *dc)
  * saving the dive mode for each event. When the events occur AFTER 'time' seconds, the last stored divemode
  * is returned. This function is self-tracking, relying on setting the event pointer 'evp' so that, in each iteration
  * that calls this function, the search does not have to begin at the first event of the dive */
-extern "C" enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, const struct event **evp, enum divemode_t *divemode)
+enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, const struct event **evp, enum divemode_t *divemode)
 {
 	const struct event *ev = *evp;
 	if (dc) {
@@ -221,7 +221,7 @@ extern "C" enum divemode_t get_current_divemode(const struct divecomputer *dc, i
 
 /* helper function to make it easier to work with our structures
  * we don't interpolate here, just use the value from the last sample up to that time */
-extern "C" int get_depth_at_time(const struct divecomputer *dc, unsigned int time)
+int get_depth_at_time(const struct divecomputer *dc, unsigned int time)
 {
 	int depth = 0;
 	if (dc && dc->sample)
@@ -236,7 +236,7 @@ extern "C" int get_depth_at_time(const struct divecomputer *dc, unsigned int tim
 
 /* The first divecomputer is embedded in the dive structure. Free its data but not
  * the structure itself. For all remainding dcs in the list, free data *and* structures. */
-extern "C" void free_dive_dcs(struct divecomputer *dc)
+void free_dive_dcs(struct divecomputer *dc)
 {
 	free_dc_contents(dc);
 	STRUCTURED_LIST_FREE(struct divecomputer, dc->next, free_dc);
@@ -244,7 +244,7 @@ extern "C" void free_dive_dcs(struct divecomputer *dc)
 
 /* make room for num samples; if not enough space is available, the sample
  * array is reallocated and the existing samples are copied. */
-extern "C" void alloc_samples(struct divecomputer *dc, int num)
+void alloc_samples(struct divecomputer *dc, int num)
 {
 	if (num > dc->alloc_samples) {
 		dc->alloc_samples = (num * 3) / 2 + 10;
@@ -254,7 +254,7 @@ extern "C" void alloc_samples(struct divecomputer *dc, int num)
 	}
 }
 
-extern "C" void free_samples(struct divecomputer *dc)
+void free_samples(struct divecomputer *dc)
 {
 	if (dc) {
 		free(dc->sample);
@@ -264,7 +264,7 @@ extern "C" void free_samples(struct divecomputer *dc)
 	}
 }
 
-extern "C" struct sample *prepare_sample(struct divecomputer *dc)
+struct sample *prepare_sample(struct divecomputer *dc)
 {
 	if (dc) {
 		int nr = dc->samples;
@@ -291,12 +291,12 @@ extern "C" struct sample *prepare_sample(struct divecomputer *dc)
 }
 
 
-extern "C" void finish_sample(struct divecomputer *dc)
+void finish_sample(struct divecomputer *dc)
 {
 	dc->samples++;
 }
 
-extern "C" struct sample *add_sample(const struct sample *sample, int time, struct divecomputer *dc)
+struct sample *add_sample(const struct sample *sample, int time, struct divecomputer *dc)
 {
 	struct sample *p = prepare_sample(dc);
 
@@ -314,7 +314,7 @@ extern "C" struct sample *add_sample(const struct sample *sample, int time, stru
  *
  * This ignores any surface time in the middle of the dive.
  */
-extern "C" void fixup_dc_duration(struct divecomputer *dc)
+void fixup_dc_duration(struct divecomputer *dc)
 {
 	int duration, i;
 	int lasttime, lastdepth, depthtime;
@@ -347,7 +347,7 @@ extern "C" void fixup_dc_duration(struct divecomputer *dc)
  * What do the dive computers say the water temperature is?
  * (not in the samples, but as dc property for dcs that support that)
  */
-extern "C" unsigned int dc_watertemp(const struct divecomputer *dc)
+unsigned int dc_watertemp(const struct divecomputer *dc)
 {
 	int sum = 0, nr = 0;
 
@@ -365,7 +365,7 @@ extern "C" unsigned int dc_watertemp(const struct divecomputer *dc)
 /*
  * What do the dive computers say the air temperature is?
  */
-extern "C" unsigned int dc_airtemp(const struct divecomputer *dc)
+unsigned int dc_airtemp(const struct divecomputer *dc)
 {
 	int sum = 0, nr = 0;
 
@@ -381,7 +381,7 @@ extern "C" unsigned int dc_airtemp(const struct divecomputer *dc)
 }
 
 /* copies all events in this dive computer */
-extern "C" void copy_events(const struct divecomputer *s, struct divecomputer *d)
+void copy_events(const struct divecomputer *s, struct divecomputer *d)
 {
 	const struct event *ev;
 	struct event **pev;
@@ -398,7 +398,7 @@ extern "C" void copy_events(const struct divecomputer *s, struct divecomputer *d
 	*pev = NULL;
 }
 
-extern "C" void copy_samples(const struct divecomputer *s, struct divecomputer *d)
+void copy_samples(const struct divecomputer *s, struct divecomputer *d)
 {
 	/* instead of carefully copying them one by one and calling add_sample
 	 * over and over again, let's just copy the whole blob */
@@ -420,7 +420,7 @@ extern "C" void copy_samples(const struct divecomputer *s, struct divecomputer *
 		memcpy(d->sample, s->sample, nr * sizeof(struct sample));
 }
 
-extern "C" void add_event_to_dc(struct divecomputer *dc, struct event *ev)
+void add_event_to_dc(struct divecomputer *dc, struct event *ev)
 {
 	struct event **p;
 
@@ -433,7 +433,7 @@ extern "C" void add_event_to_dc(struct divecomputer *dc, struct event *ev)
 	*p = ev;
 }
 
-extern "C" struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
+struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
 {
 	struct event *ev = create_event(time, type, flags, value, name);
 
@@ -446,7 +446,7 @@ extern "C" struct event *add_event(struct divecomputer *dc, unsigned int time, i
 }
 
 /* Substitutes an event in a divecomputer for another. No reordering is performed! */
-extern "C" void swap_event(struct divecomputer *dc, struct event *from, struct event *to)
+void swap_event(struct divecomputer *dc, struct event *from, struct event *to)
 {
 	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
 		if (*ep == from) {
@@ -459,7 +459,7 @@ extern "C" void swap_event(struct divecomputer *dc, struct event *from, struct e
 }
 
 /* Remove given event from dive computer. Does *not* free the event. */
-extern "C" void remove_event_from_dc(struct divecomputer *dc, struct event *event)
+void remove_event_from_dc(struct divecomputer *dc, struct event *event)
 {
 	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
 		if (*ep == event) {
@@ -470,7 +470,7 @@ extern "C" void remove_event_from_dc(struct divecomputer *dc, struct event *even
 	}
 }
 
-extern "C" void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
+void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 {
 	struct extra_data **ed = &dc->extra_data;
 
@@ -492,13 +492,21 @@ extern "C" void add_extra_data(struct divecomputer *dc, const char *key, const c
 	}
 }
 
+<<<<<<< HEAD
+=======
+bool is_dc_planner(const struct divecomputer *dc)
+{
+	return same_string(dc->model, "planned dive");
+}
+
+>>>>>>> ed6cdf19f (build: remove extern "C" linkage)
 /*
  * Match two dive computer entries against each other, and
  * tell if it's the same dive. Return 0 if "don't know",
  * positive for "same dive" and negative for "definitely
  * not the same dive"
  */
-extern "C" int match_one_dc(const struct divecomputer *a, const struct divecomputer *b)
+int match_one_dc(const struct divecomputer *a, const struct divecomputer *b)
 {
 	/* Not same model? Don't know if matching.. */
 	if (!a->model || !b->model)
@@ -527,7 +535,7 @@ static void free_extra_data(struct extra_data *ed)
 	free((void *)ed->value);
 }
 
-extern "C" void free_dc_contents(struct divecomputer *dc)
+void free_dc_contents(struct divecomputer *dc)
 {
 	free(dc->sample);
 	free((void *)dc->model);
@@ -537,7 +545,7 @@ extern "C" void free_dc_contents(struct divecomputer *dc)
 	STRUCTURED_LIST_FREE(struct extra_data, dc->extra_data, free_extra_data);
 }
 
-extern "C" void free_dc(struct divecomputer *dc)
+void free_dc(struct divecomputer *dc)
 {
 	free_dc_contents(dc);
 	free(dc);
@@ -545,12 +553,12 @@ extern "C" void free_dc(struct divecomputer *dc)
 
 static const char *planner_dc_name = "planned dive";
 
-extern "C" bool is_dc_planner(const struct divecomputer *dc)
+bool is_dc_planner(const struct divecomputer *dc)
 {
 	return same_string(dc->model, planner_dc_name);
 }
 
-extern "C" void make_planner_dc(struct divecomputer *dc)
+void make_planner_dc(struct divecomputer *dc)
 {
 	free((void *)dc->model);
 	dc->model = strdup(planner_dc_name);
@@ -558,12 +566,12 @@ extern "C" void make_planner_dc(struct divecomputer *dc)
 
 const char *manual_dc_name = "manually added dive";
 
-extern "C" bool is_dc_manually_added_dive(const struct divecomputer *dc)
+bool is_dc_manually_added_dive(const struct divecomputer *dc)
 {
 	return dc && same_string(dc->model, manual_dc_name);
 }
 
-extern "C" void make_manually_added_dive_dc(struct divecomputer *dc)
+void make_manually_added_dive_dc(struct divecomputer *dc)
 {
 	free((void *)dc->model);
 	dc->model = strdup(manual_dc_name);

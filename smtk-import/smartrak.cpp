@@ -874,7 +874,7 @@ static dc_status_t libdc_buffer_complete(device_data_t *dev_data, unsigned char 
  * a DB clone is necessary as calling mdb_fetch_row() over different tables in
  * a single DB breaks binded row data, and so would break the top loop.
  */
-extern "C" void smartrak_import(const char *file, struct divelog *log)
+void smartrak_import(const char *file, struct divelog *log)
 {
 	MdbHandle *mdb, *mdb_clon;
 	MdbColumn *col[MDB_MAX_COLS];

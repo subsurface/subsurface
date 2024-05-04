@@ -31,7 +31,6 @@ static std::string to_str(const T &v)
 	return v.toString().toStdString();
 }
 
-extern "C" {
 typedef struct qt_serial_t {
 	/*
 	 * RFCOMM socket used for Bluetooth Serial communication.
@@ -346,6 +345,4 @@ rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, const char* 
 	}
 
 	return dc_custom_open (iostream, context, DC_TRANSPORT_BLUETOOTH, &callbacks, io);
-}
-
 }

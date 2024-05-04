@@ -67,8 +67,6 @@ private:
 	};
 };
 
-
-extern "C" {
 dc_status_t qt_ble_open(void **io, dc_context_t *context, const char *devaddr, device_data_t *user_device);
 dc_status_t qt_ble_set_timeout(void *io, int timeout);
 dc_status_t qt_ble_poll(void *io, int timeout);
@@ -76,6 +74,5 @@ dc_status_t qt_ble_read(void *io, void* data, size_t size, size_t *actual);
 dc_status_t qt_ble_write(void *io, const void* data, size_t size, size_t *actual);
 dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size);
 dc_status_t qt_ble_close(void *io);
-}
 
 #endif

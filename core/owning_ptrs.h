@@ -14,8 +14,8 @@ struct dive_trip;
 struct dive_site;
 struct event;
 
-extern "C" void free_dive(struct dive *);
-extern "C" void free_trip(struct dive_trip *);
+void free_dive(struct dive *);
+void free_trip(struct dive_trip *);
 
 // Classes used to automatically call the appropriate free_*() function for owning pointers that go out of scope.
 struct DiveDeleter {

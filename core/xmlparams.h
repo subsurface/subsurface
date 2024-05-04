@@ -12,8 +12,6 @@ struct xml_params {
 	mutable std::vector<const char *> data;
 };
 
-extern "C" {
-
 // Return values marked as "not stable" may be invalidated when calling
 // an xml_params_*() function that takes a non-const xml_params parameter.
 extern struct xml_params *alloc_xml_params();
@@ -26,7 +24,5 @@ extern const char *xml_params_get_key(const struct xml_params *params, int idx);
 extern const char *xml_params_get_value(const struct xml_params *params, int idx); // not stable
 extern void xml_params_set_value(struct xml_params *params, int idx, const char *value);
 extern const char **xml_params_get(const struct xml_params *params); // not stable
-
-}
 
 #endif

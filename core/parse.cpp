@@ -42,19 +42,19 @@ struct divecomputer *get_dc(struct parser_state *state)
 /*
  * Add a dive into the dive_table array
  */
-extern "C" void record_dive_to_table(struct dive *dive, struct dive_table *table)
+void record_dive_to_table(struct dive *dive, struct dive_table *table)
 {
 	add_to_dive_table(table, table->nr, fixup_dive(dive));
 }
 
-extern "C" void start_match(const char *type, const char *name, char *buffer)
+void start_match(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 2)
 		printf("Matching %s '%s' (%s)\n",
 		       type, name, buffer);
 }
 
-extern "C" void nonmatch(const char *type, const char *name, char *buffer)
+void nonmatch(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 1)
 		printf("Unable to match %s '%s' (%s)\n",
@@ -431,7 +431,7 @@ void userid_stop(struct parser_state *state)
  * therefore make sure to only pass in to NULL-initialized pointers or pointers
  * to owned strings
  */
-extern "C" void utf8_string(const char *buffer, char **res)
+void utf8_string(const char *buffer, char **res)
 {
 	free(*res);
 	while (isspace(*buffer))
@@ -510,7 +510,7 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 	}
 }
 
-extern "C" int atoi_n(char *ptr, unsigned int len)
+int atoi_n(char *ptr, unsigned int len)
 {
 	if (len < 10) {
 		char buf[10];

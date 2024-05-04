@@ -41,8 +41,6 @@ static std::string make_default_filename()
 	return system_default_path() + "/subsurface.xml";
 }
 
-extern "C" {
-
 const char android_system_divelist_default_font[] = "Roboto";
 const char *system_divelist_default_font = android_system_divelist_default_font;
 double system_divelist_default_font_size = -1;
@@ -250,7 +248,6 @@ void subsurface_console_exit(void)
 bool subsurface_user_is_root()
 {
 	return false;
-}
 }
 
 /* called from QML manager */

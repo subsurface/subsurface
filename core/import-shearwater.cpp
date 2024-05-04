@@ -473,7 +473,7 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	return SQLITE_OK;
 }
 
-extern "C" int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	struct parser_state state;
@@ -496,7 +496,7 @@ extern "C" int parse_shearwater_buffer(sqlite3 *handle, const char *url, const c
 	return 0;
 }
 
-extern "C" int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	struct parser_state state;

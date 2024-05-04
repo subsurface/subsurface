@@ -2,7 +2,7 @@
 #ifndef MYGETTEXT_H
 #define MYGETTEXT_H
 
-extern "C" const char *trGettext(const char *);
+const char *trGettext(const char *);
 static inline const char *translate(const char *, const char *arg)
 {
 	return trGettext(arg);

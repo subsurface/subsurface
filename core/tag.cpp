@@ -39,7 +39,7 @@ static bool tag_seen_before(struct tag_entry *start, struct tag_entry *before)
 }
 
 /* remove duplicates and empty nodes */
-extern "C" void taglist_cleanup(struct tag_entry **tag_list)
+void taglist_cleanup(struct tag_entry **tag_list)
 {
 	struct tag_entry **tl = tag_list;
 	while (*tl) {
@@ -105,7 +105,7 @@ static const divetag *register_tag(const char *s, const char *source)
 	return it->get();
 }
 
-extern "C" void taglist_add_tag(struct tag_entry **tag_list, const char *tag)
+void taglist_add_tag(struct tag_entry **tag_list, const char *tag)
 {
 	bool is_default_tag = std::find_if(std::begin(default_tags), std::end(default_tags),
 			[&tag] (const char *default_tag) { return tag == default_tag; });
@@ -119,12 +119,12 @@ extern "C" void taglist_add_tag(struct tag_entry **tag_list, const char *tag)
 	taglist_add_divetag(tag_list, d_tag);
 }
 
-extern "C" void taglist_free(struct tag_entry *entry)
+void taglist_free(struct tag_entry *entry)
 {
 	STRUCTURED_LIST_FREE(struct tag_entry, entry, free)
 }
 
-extern "C" struct tag_entry *taglist_copy(struct tag_entry *s)
+struct tag_entry *taglist_copy(struct tag_entry *s)
 {
 	struct tag_entry *res;
 	STRUCTURED_LIST_COPY(struct tag_entry, s, res, copy_tl);
@@ -132,7 +132,7 @@ extern "C" struct tag_entry *taglist_copy(struct tag_entry *s)
 }
 
 /* Merge src1 and src2, write to *dst */
-extern "C" void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct tag_entry *src2)
+void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct tag_entry *src2)
 {
 	struct tag_entry *entry;
 
@@ -142,7 +142,7 @@ extern "C" void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, st
 		taglist_add_divetag(dst, entry->tag);
 }
 
-extern "C" void taglist_init_global()
+void taglist_init_global()
 {
 	for (const char *s: default_tags)
 		register_tag(translate("gettextFromC", s), s);

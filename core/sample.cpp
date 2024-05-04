@@ -37,7 +37,7 @@ sample::sample() :
  * from the previous sample, so the indices are pre-populated (but the
  * pressures obviously are not)
  */
-extern "C" void add_sample_pressure(struct sample *sample, int sensor, int mbar)
+void add_sample_pressure(struct sample *sample, int sensor, int mbar)
 {
 	int idx;
 

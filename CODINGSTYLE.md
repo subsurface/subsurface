@@ -401,7 +401,6 @@ close to our coding standards.
 filetype plugin indent on
 filetype detect
 set cindent tabstop=8 shiftwidth=8 cinoptions=l1,:0,(0,g0
-" TODO: extern "C" gets indented
 
 " And some sane defaults, optional, but quite nice
 set nocompatible

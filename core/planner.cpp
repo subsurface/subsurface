@@ -42,7 +42,7 @@ static int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 1828
 					325120, 345440, 365760, 386080 };
 
 #if DEBUG_PLAN
-extern "C" void dump_plan(struct diveplan *diveplan)
+void dump_plan(struct diveplan *diveplan)
 {
 	struct divedatapoint *dp;
 	struct tm tm;
@@ -65,7 +65,7 @@ extern "C" void dump_plan(struct diveplan *diveplan)
 }
 #endif
 
-extern "C" bool diveplan_empty(struct diveplan *diveplan)
+bool diveplan_empty(struct diveplan *diveplan)
 {
 	struct divedatapoint *dp;
 	if (!diveplan || !diveplan->dp)
@@ -80,7 +80,7 @@ extern "C" bool diveplan_empty(struct diveplan *diveplan)
 }
 
 /* get the cylinder index at a certain time during the dive */
-extern "C" int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time)
+int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time)
 {
 	// we start with the first cylinder unless an event tells us otherwise
 	int cylinder_idx = 0;
@@ -323,7 +323,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	return;
 }
 
-extern "C" void free_dps(struct diveplan *diveplan)
+void free_dps(struct diveplan *diveplan)
 {
 	if (!diveplan)
 		return;
@@ -367,7 +367,7 @@ static void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoi
 		dp->time += lasttime;
 }
 
-extern "C" struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode)
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode)
 {
 	struct divedatapoint *dp = create_dp(duration, depth, cylinderid, divemode == CCR ? po2 : 0);
 	dp->entered = entered;
@@ -501,7 +501,7 @@ static std::vector<int> sort_stops(int dstops[], size_t dnr, std::vector<gaschan
 	return stoplevels;
 }
 
-extern "C" int ascent_velocity(int depth, int avg_depth, int)
+int ascent_velocity(int depth, int avg_depth, int)
 {
 	/* We need to make this configurable */
 
@@ -1166,7 +1166,7 @@ static int get_permille(const char *begin, const char **end)
 	return value;
 }
 
-extern "C" int validate_gas(const char *text, struct gasmix *gas)
+int validate_gas(const char *text, struct gasmix *gas)
 {
 	int o2, he;
 
@@ -1213,7 +1213,7 @@ extern "C" int validate_gas(const char *text, struct gasmix *gas)
 	return 1;
 }
 
-extern "C" int validate_po2(const char *text, int *mbar_po2)
+int validate_po2(const char *text, int *mbar_po2)
 {
 	int po2;
 

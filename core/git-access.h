@@ -11,8 +11,6 @@ struct git_oid;
 struct git_repository;
 struct divelog;
 
-extern "C" {
-
 #define CLOUD_HOST_US "ssrf-cloud-us.subsurface-divelog.org"  // preferred (faster/bigger) server in the US
 #define CLOUD_HOST_U2 "ssrf-cloud-u2.subsurface-divelog.org"  // secondary (older) server in the US
 #define CLOUD_HOST_EU "ssrf-cloud-eu.subsurface-divelog.org"  // preferred (faster/bigger) server in Germany
@@ -29,8 +27,6 @@ extern void set_git_id(const struct git_oid *);
 void set_git_update_cb(int(*)(const char *));
 int git_storage_update_progress(const char *text);
 int get_authorship(git_repository *repo, git_signature **authorp);
-
-}
 
 struct git_info {
 	std::string url;

@@ -34,8 +34,6 @@ struct diveplan {
 
 struct deco_state_cache;
 
-extern "C" {
-
 extern int validate_gas(const char *text, struct gasmix *gas);
 extern int validate_po2(const char *text, int *mbar_po2);
 extern int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time);
@@ -53,8 +51,6 @@ struct decostop {
 	int depth;
 	int time;
 };
-
-}
 
 extern std::string get_planner_disclaimer_formatted();
 extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int dcNr, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);

@@ -2,10 +2,6 @@
 #ifndef WORLDMAP_SAVE_H
 #define WORLDMAP_SAVE_H
 
-extern "C" {
-
 extern void export_worldmap_HTML(const char *file_name, bool selected_only);
-
-}
 
 #endif

@@ -35,8 +35,6 @@ static std::string make_default_filename()
 	return system_default_path() + "/" + user + ".xml";
 }
 
-extern "C" {
-
 // the DE should provide us with a default font and font size...
 const char unix_system_divelist_default_font[] = "Sans";
 const char *system_divelist_default_font = unix_system_divelist_default_font;
@@ -202,6 +200,4 @@ void subsurface_console_exit(void)
 bool subsurface_user_is_root()
 {
 	return geteuid() == 0;
-}
-
 }

@@ -29,7 +29,7 @@
  *  - Nitrox trumps air (even if hypoxic)
  * These are the same rules as the inter-dive sorting rules.
  */
-extern "C" void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
+void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 {
 	int i;
 	int maxo2 = -1, maxhe = -1, mino2 = 1000;
@@ -63,7 +63,7 @@ extern "C" void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int 
 	*o2max_p = maxo2;
 }
 
-extern "C" int total_weight(const struct dive *dive)
+int total_weight(const struct dive *dive)
 {
 	int i, total_grams = 0;
 
@@ -424,7 +424,7 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive, bool in_p
 	}
 }
 
-extern "C" int get_divenr(const struct dive *dive)
+int get_divenr(const struct dive *dive)
 {
 	int i;
 	const struct dive *d;
@@ -442,7 +442,7 @@ extern "C" int get_divenr(const struct dive *dive)
 /* return negative surface time if dives are overlapping */
 /* The place you call this function is likely the place where you want
  * to create the deco_state */
-extern "C" int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_planner)
+int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_planner)
 {
 	int i, divenr = -1;
 	int surface_time = 48 * 60 * 60;
@@ -656,7 +656,7 @@ static int comp_dc(const struct divecomputer *dc1, const struct divecomputer *dc
  * We might also consider sorting by end-time and other criteria,
  * but see the caveat above (editing means rearrangement of the dives).
  */
-extern "C" int comp_dives(const struct dive *a, const struct dive *b)
+int comp_dives(const struct dive *a, const struct dive *b)
 {
 	int cmp;
 	if (a->when < b->when)
@@ -697,7 +697,7 @@ MAKE_REMOVE(dive_table, struct dive *, dive)
 MAKE_CLEAR_TABLE(dive_table, dives, dive)
 MAKE_MOVE_TABLE(dive_table, dives)
 
-extern "C" void insert_dive(struct dive_table *table, struct dive *d)
+void insert_dive(struct dive_table *table, struct dive *d)
 {
 	int idx = dive_table_get_insertion_index(table, d);
 	add_to_dive_table(table, idx, d);
@@ -733,13 +733,13 @@ static void autogroup_dives(struct dive_table *table, struct trip_table *trip_ta
 /* Remove a dive from a dive table. This assumes that the
  * dive was already removed from any trip and deselected.
  * It simply shrinks the table and frees the trip */
-extern "C" void delete_dive_from_table(struct dive_table *table, int idx)
+void delete_dive_from_table(struct dive_table *table, int idx)
 {
 	free_dive(table->dives[idx]);
 	remove_from_dive_table(table, idx);
 }
 
-extern "C" struct dive *get_dive_from_table(int nr, const struct dive_table *dt)
+struct dive *get_dive_from_table(int nr, const struct dive_table *dt)
 {
 	if (nr >= dt->nr || nr < 0)
 		return NULL;
@@ -750,7 +750,7 @@ extern "C" struct dive *get_dive_from_table(int nr, const struct dive_table *dt)
  * resources associated with the dive. The caller must removed the dive
  * from the trip-list. Returns a pointer to the unregistered dive.
  * The unregistered dive has the selection- and hidden-flags cleared. */
-extern "C" struct dive *unregister_dive(int idx)
+struct dive *unregister_dive(int idx)
 {
 	struct dive *dive = get_dive(idx);
 	if (!dive)
@@ -765,7 +765,7 @@ extern "C" struct dive *unregister_dive(int idx)
 	return dive;
 }
 
-extern "C" void process_loaded_dives()
+void process_loaded_dives()
 {
 	sort_dive_table(divelog.dives);
 	sort_trip_table(divelog.trips);
@@ -944,7 +944,7 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 /* Merge the dives of the trip "from" and the dive_table "dives_from" into the trip "to"
  * and dive_table "dives_to". If "prefer_imported" is true, dive data of "from" takes
  * precedence */
-extern "C" void add_imported_dives(struct divelog *import_log, int flags)
+void add_imported_dives(struct divelog *import_log, int flags)
 {
 	int i, idx;
 	struct dive_table dives_to_add = empty_dive_table;
@@ -1024,7 +1024,6 @@ extern "C" void add_imported_dives(struct divelog *import_log, int flags)
  * Returns true if trip was merged. In this case, the trip will be
  * freed.
  */
-extern "C"
 bool try_to_merge_trip(struct dive_trip *trip_import, struct dive_table *import_table, bool prefer_imported,
 		       /* output parameters: */
 		       struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
@@ -1081,7 +1080,6 @@ bool try_to_merge_trip(struct dive_trip *trip_import, struct dive_table *import_
  * - If IMPORT_ADD_TO_NEW_TRIP is true, dives that are not assigned
  *   to a trip will be added to a newly generated trip.
  */
-extern "C"
 void process_imported_dives(struct divelog *import_log, int flags,
 			    /* output parameters: */
 			    struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
@@ -1249,7 +1247,7 @@ static struct dive *get_last_valid_dive()
  * 	- last_nr+1 for addition at end of log (if last dive had a number)
  * 	- 0 for all other cases
  */
-extern "C" int get_dive_nr_at_idx(int idx)
+int get_dive_nr_at_idx(int idx)
 {
 	if (idx < divelog.dives->nr)
 		return 0;
@@ -1261,12 +1259,12 @@ extern "C" int get_dive_nr_at_idx(int idx)
 
 static int min_datafile_version;
 
-extern "C" int get_min_datafile_version()
+int get_min_datafile_version()
 {
 	return min_datafile_version;
 }
 
-extern "C" void report_datafile_version(int version)
+void report_datafile_version(int version)
 {
 	if (min_datafile_version == 0 || min_datafile_version > version)
 		min_datafile_version = version;
@@ -1291,7 +1289,7 @@ void clear_dive_file_data()
 	emit_reset_signal();
 }
 
-extern "C" bool dive_less_than(const struct dive *a, const struct dive *b)
+bool dive_less_than(const struct dive *a, const struct dive *b)
 {
 	return comp_dives(a, b) < 0;
 }
@@ -1330,7 +1328,7 @@ static int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b)
 		return -comp_dive_to_trip(b.dive, a.trip);
 }
 
-extern "C" bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
+bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
 {
 	return comp_dive_or_trip(a, b) < 0;
 }
@@ -1345,7 +1343,7 @@ extern "C" bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_tri
  * that happened inside other dives. The interval will always be calculated
  * with respect to the dive that started previously.
  */
-extern "C" timestamp_t get_surface_interval(timestamp_t when)
+timestamp_t get_surface_interval(timestamp_t when)
 {
 	int i;
 	timestamp_t prev_end;
@@ -1366,7 +1364,7 @@ extern "C" timestamp_t get_surface_interval(timestamp_t when)
 
 /* Find visible dive close to given date. First search towards older,
  * then newer dives. */
-extern "C" struct dive *find_next_visible_dive(timestamp_t when)
+struct dive *find_next_visible_dive(timestamp_t when)
 {
 	int i, j;
 
@@ -1392,7 +1390,7 @@ extern "C" struct dive *find_next_visible_dive(timestamp_t when)
 	return NULL;
 }
 
-extern "C" bool has_dive(unsigned int deviceid, unsigned int diveid)
+bool has_dive(unsigned int deviceid, unsigned int diveid)
 {
        int i;
        struct dive *dive;

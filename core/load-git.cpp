@@ -1850,12 +1850,12 @@ static int load_dives_from_tree(git_repository *repo, git_tree *tree, struct git
 	return 0;
 }
 
-extern "C" void clear_git_id(void)
+void clear_git_id(void)
 {
 	saved_git_id.clear();
 }
 
-extern "C" void set_git_id(const struct git_oid *id)
+void set_git_id(const struct git_oid *id)
 {
 	char git_id_buffer[GIT_OID_HEXSZ + 1];
 

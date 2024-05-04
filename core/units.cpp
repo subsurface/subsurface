@@ -9,7 +9,7 @@ const struct units IMPERIAL_units = {
 	.vertical_speed_time = units::MINUTES, .duration_units = units::MIXED, .show_units_table = false
 };
 
-extern "C" int get_pressure_units(int mb, const char **units)
+int get_pressure_units(int mb, const char **units)
 {
 	int pressure;
 	const char *unit;
@@ -31,7 +31,7 @@ extern "C" int get_pressure_units(int mb, const char **units)
 	return pressure;
 }
 
-extern "C" double get_temp_units(unsigned int mk, const char **units)
+double get_temp_units(unsigned int mk, const char **units)
 {
 	double deg;
 	const char *unit;
@@ -49,7 +49,7 @@ extern "C" double get_temp_units(unsigned int mk, const char **units)
 	return deg;
 }
 
-extern "C" double get_volume_units(unsigned int ml, int *frac, const char **units)
+double get_volume_units(unsigned int ml, int *frac, const char **units)
 {
 	int decimals;
 	double vol;
@@ -76,7 +76,7 @@ extern "C" double get_volume_units(unsigned int ml, int *frac, const char **unit
 	return vol;
 }
 
-extern "C" int units_to_sac(double volume)
+int units_to_sac(double volume)
 {
 	if (get_units()->volume == units::CUFT)
 		return lrint(cuft_to_l(volume) * 1000.0);
@@ -84,7 +84,7 @@ extern "C" int units_to_sac(double volume)
 		return lrint(volume * 1000);
 }
 
-extern "C" depth_t units_to_depth(double depth)
+depth_t units_to_depth(double depth)
 {
 	depth_t internaldepth;
 	if (get_units()->length == units::METERS) {
@@ -95,7 +95,7 @@ extern "C" depth_t units_to_depth(double depth)
 	return internaldepth;
 }
 
-extern "C" double get_depth_units(int mm, int *frac, const char **units)
+double get_depth_units(int mm, int *frac, const char **units)
 {
 	int decimals;
 	double d;
@@ -122,7 +122,7 @@ extern "C" double get_depth_units(int mm, int *frac, const char **units)
 	return d;
 }
 
-extern "C" double get_vertical_speed_units(unsigned int mms, int *frac, const char **units)
+double get_vertical_speed_units(unsigned int mms, int *frac, const char **units)
 {
 	double d;
 	const char *unit;
@@ -153,7 +153,7 @@ extern "C" double get_vertical_speed_units(unsigned int mms, int *frac, const ch
 	return d;
 }
 
-extern "C" double get_weight_units(unsigned int grams, int *frac, const char **units)
+double get_weight_units(unsigned int grams, int *frac, const char **units)
 {
 	int decimals;
 	double value;
@@ -176,7 +176,7 @@ extern "C" double get_weight_units(unsigned int grams, int *frac, const char **u
 	return value;
 }
 
-extern "C" const struct units *get_units()
+const struct units *get_units()
 {
 	return &prefs.units;
 }

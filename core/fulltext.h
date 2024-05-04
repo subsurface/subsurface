@@ -14,9 +14,8 @@
 #ifndef FULLTEXT_H
 #define FULLTEXT_H
 
-// 1) The C-accessible interface
-
-extern "C" {
+#include <QString>
+#include <vector>
 
 struct full_text_cache;
 struct dive;
@@ -24,13 +23,6 @@ void fulltext_register(struct dive *d); // Note: can be called repeatedly
 void fulltext_unregister(struct dive *d); // Note: can be called repeatedly
 void fulltext_unregister_all(); // Unregisters all dives in the dive table
 void fulltext_populate(); // Registers all dives in the dive table
-
-}
-
-// 2) The C++-only interface
-
-#include <QString>
-#include <vector>
 
 enum class StringFilterMode {
 	SUBSTRING = 0,

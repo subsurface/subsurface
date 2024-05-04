@@ -7,8 +7,6 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-extern "C" {
-
 #define FRACTION_TUPLE(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
 #define SIGNED_FRAC_TRIPLET(n, x) ((n) >= 0 ? '+': '-'), ((n) >= 0 ? (unsigned)(n) / (x) : (-(n) / (x))), ((unsigned)((n) >= 0 ? (n) : -(n)) % (x))
 
@@ -338,6 +336,5 @@ extern double get_vertical_speed_units(unsigned int mms, int *frac, const char *
 
 extern depth_t units_to_depth(double depth);
 extern int units_to_sac(double volume);
-}
 
 #endif

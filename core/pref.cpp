@@ -124,7 +124,7 @@ struct preferences default_prefs = {
 };
 
 /* copy a preferences block, including making copies of all included strings */
-extern "C" void copy_prefs(struct preferences *src, struct preferences *dest)
+void copy_prefs(struct preferences *src, struct preferences *dest)
 {
 	*dest = *src;
 	dest->divelist_font = copy_string(src->divelist_font);
@@ -149,7 +149,7 @@ extern "C" void copy_prefs(struct preferences *src, struct preferences *dest)
  * These are not real leaks but they plug the holes found by eg.
  * valgrind so you can find the real leaks.
  */
-extern "C" void free_prefs(void)
+void free_prefs(void)
 {
 	// nop
 }
