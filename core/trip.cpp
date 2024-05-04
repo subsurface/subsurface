@@ -128,7 +128,7 @@ void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table_arg)
 
 dive_trip_t *alloc_trip(void)
 {
-	dive_trip_t *res = calloc(1, sizeof(dive_trip_t));
+	dive_trip_t *res = (dive_trip_t *)calloc(1, sizeof(dive_trip_t));
 	res->id = dive_getUniqID();
 	return res;
 }
