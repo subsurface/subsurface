@@ -24,25 +24,25 @@ struct dive;
 struct stats_t
 {
 	int period = 0;
-	duration_t total_time = { 0 };
+	duration_t total_time ;
 	/* total time of dives with non-zero average depth */
-	duration_t total_average_depth_time = { 0 };
+	duration_t total_average_depth_time;
 	/* avg_time is simply total_time / nr -- let's not keep this */
-	duration_t shortest_time = { 0 };
-	duration_t longest_time = { 0 };
-	depth_t max_depth = { 0 };
-	depth_t min_depth = { 0 };
-	depth_t avg_depth = { 0 };
-	depth_t combined_max_depth = { 0 };
-	volume_t max_sac = { 0 };
-	volume_t min_sac = { 0 };
-	volume_t avg_sac = { 0 };
-	temperature_t max_temp = { 0 };
-	temperature_t min_temp = { 0 };
-	temperature_sum_t combined_temp = { 0 };
+	duration_t shortest_time;
+	duration_t longest_time;
+	depth_t max_depth;
+	depth_t min_depth;
+	depth_t avg_depth;
+	depth_t combined_max_depth;
+	volume_t max_sac;
+	volume_t min_sac;
+	volume_t avg_sac;
+	temperature_t max_temp;
+	temperature_t min_temp;
+	temperature_sum_t combined_temp;
 	unsigned int combined_count = 0;
 	unsigned int selection_size = 0;
-	duration_t total_sac_time = { 0 };
+	duration_t total_sac_time;
 	bool is_year = false;
 	bool is_trip = false;
 	std::string location;

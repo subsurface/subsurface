@@ -24,13 +24,9 @@ struct DiveDeleter {
 struct TripDeleter {
 	void operator()(dive_trip *t) { free_trip(t); }
 };
-struct EventDeleter {
-	void operator()(event *ev) { free(ev); }
-};
 
 // Owning pointers to dive, dive_trip, dive_site and event objects.
 using OwningDivePtr = std::unique_ptr<dive, DiveDeleter>;
 using OwningTripPtr = std::unique_ptr<dive_trip, TripDeleter>;
-using OwningEventPtr = std::unique_ptr<event, EventDeleter>;
 
 #endif

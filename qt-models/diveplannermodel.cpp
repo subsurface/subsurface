@@ -122,9 +122,9 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	const struct event *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 	cylinders.updateDive(d, dcNr);
-	duration_t lasttime = { 0 };
-	duration_t lastrecordedtime = {};
-	duration_t newtime = {};
+	duration_t lasttime;
+	duration_t lastrecordedtime;
+	duration_t newtime;
 
 	clear();
 	removeDeco();

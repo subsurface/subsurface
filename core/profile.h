@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <array>
 #include <vector>
 
 enum velocity_t {
@@ -32,7 +33,7 @@ struct divecomputer;
  * sensor data for a given cylinder
  */
 struct plot_pressure_data {
-	int data[NUM_PLOT_PRESSURES];
+	std::array<int, NUM_PLOT_PRESSURES> data;
 };
 
 struct plot_data {
@@ -42,8 +43,8 @@ struct plot_data {
 	/* Depth info */
 	int depth = 0;
 	int ceiling = 0;
-	int ceilings[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	int percentages[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	std::array<int, 16> ceilings;
+	std::array<int, 16> percentages;
 	int ndl = 0;
 	int tts = 0;
 	int rbt = 0;
@@ -55,10 +56,10 @@ struct plot_data {
 	int running_sum = 0;
 	struct gas_pressures pressures;
 	// TODO: make pressure_t default to 0
-	pressure_t o2pressure = { 0 };  // for rebreathers, this is consensus measured po2, or setpoint otherwise. 0 for OC.
-	pressure_t o2sensor[MAX_O2_SENSORS] = {{ 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 }}; //for rebreathers with several sensors
-	pressure_t o2setpoint = { 0 };
-	pressure_t scr_OC_pO2 = { 0 };
+	pressure_t o2pressure;  // for rebreathers, this is consensus measured po2, or setpoint otherwise. 0 for OC.
+	std::array<pressure_t, MAX_O2_SENSORS> o2sensor; //for rebreathers with several sensors
+	pressure_t o2setpoint;
+	pressure_t scr_OC_pO2;
 	int mod = 0, ead = 0, end = 0, eadd = 0;
 	velocity_t velocity = STABLE;
 	int speed = 0;

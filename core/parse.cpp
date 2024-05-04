@@ -63,7 +63,7 @@ void nonmatch(const char *type, const char *name, char *buffer)
 
 void event_start(struct parser_state *state)
 {
-	memset(&state->cur_event, 0, sizeof(state->cur_event));
+	state->cur_event = event();
 	state->event_active = true;	/* Active */
 }
 
