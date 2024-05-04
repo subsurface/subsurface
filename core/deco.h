@@ -5,10 +5,9 @@
 #include "units.h"
 #include "gas.h"
 #include "divemode.h"
+#include <memory>
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 struct dive;
 struct divecomputer;
@@ -70,12 +69,8 @@ extern double regressionb(const struct deco_state *ds);
 extern void reset_regression(struct deco_state *ds);
 extern void update_regression(struct deco_state *ds, const struct dive *dive);
 
-#ifdef __cplusplus
 }
 
-// C++ only functions
-
-#include <memory>
 struct deco_state_cache {
 	// Test if there is cached data
 	operator bool () {
@@ -86,7 +81,5 @@ struct deco_state_cache {
 private:
 	std::unique_ptr<deco_state> data;
 };
-
-#endif
 
 #endif // DECO_H

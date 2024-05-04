@@ -4,9 +4,7 @@
 
 #include "divelist.h"
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 typedef struct dive_trip
 {
@@ -60,7 +58,6 @@ void clear_trip_table(struct trip_table *table);
 extern void dump_trip_list(void);
 #endif
 
-#ifdef __cplusplus
 }
 
 /* Make pointers to dive_trip and trip_table "Qt metatypes" so that they can be
@@ -68,7 +65,5 @@ extern void dump_trip_list(void);
 #include <QObject>
 Q_DECLARE_METATYPE(struct dive_trip *);
 Q_DECLARE_METATYPE(trip_table_t *);
-
-#endif
 
 #endif

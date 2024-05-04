@@ -4,6 +4,7 @@
 
 #include "units.h"
 #include "divemode.h"
+#include <string>
 
 /* this should be converted to use our types */
 struct divedatapoint {
@@ -33,9 +34,7 @@ struct diveplan {
 
 struct deco_state_cache;
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 extern int validate_gas(const char *text, struct gasmix *gas);
 extern int validate_po2(const char *text, int *mbar_po2);
@@ -55,11 +54,8 @@ struct decostop {
 	int time;
 };
 
-#ifdef __cplusplus
 }
 
-#include <string>
 extern std::string get_planner_disclaimer_formatted();
 extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int dcNr, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
-#endif
 #endif // PLANNER_H

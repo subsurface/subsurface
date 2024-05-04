@@ -2,9 +2,6 @@
 #ifndef GASPRESSURES_H
 #define GASPRESSURES_H
 
-#ifdef __cplusplus
-
 void populate_pressure_information(const struct dive *, const struct divecomputer *, struct plot_info &, int);
 
-#endif
 #endif // GASPRESSURES_H

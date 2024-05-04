@@ -4,7 +4,6 @@
 #include <QNetworkReply>
 #include <QTimer>
 
-
 class uploadDiveShare : public QObject {
 	Q_OBJECT
 	
@@ -29,4 +28,5 @@ private:
 	QNetworkReply *reply;
 	QTimer timeout;
 };
+
 #endif // UPLOADDIVESHARE_H

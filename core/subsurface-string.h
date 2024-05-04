@@ -5,10 +5,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <string>
+#include <string_view>
+#include <vector>
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 // string handling
 
@@ -35,12 +36,7 @@ static inline char *copy_string(const char *s)
 extern double permissive_strtod(const char *str, const char **ptr);
 extern double ascii_strtod(const char *str, const char **ptr);
 
-#ifdef __cplusplus
 }
-
-#include <string>
-#include <string_view>
-#include <vector>
 
 // Sadly, starts_with only with C++20!
 inline bool starts_with(std::string_view s, const char *s2)
@@ -55,7 +51,5 @@ inline bool contains(std::string_view s, char c)
 }
 
 std::string join(const std::vector<std::string> &l, const std::string &separator, bool skip_empty = false);
-
-#endif
 
 #endif // SUBSURFACE_STRING_H

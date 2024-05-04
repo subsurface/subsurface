@@ -21,7 +21,6 @@
 class BLEObject : public QObject
 {
 	Q_OBJECT
-
 public:
 	BLEObject(QLowEnergyController *c, device_data_t &);
 	~BLEObject();

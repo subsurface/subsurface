@@ -7,11 +7,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#ifdef __cplusplus
 extern "C" {
-#else
-#include <stdbool.h>
-#endif
 
 #define FRACTION_TUPLE(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
 #define SIGNED_FRAC_TRIPLET(n, x) ((n) >= 0 ? '+': '-'), ((n) >= 0 ? (unsigned)(n) / (x) : (-(n) / (x))), ((unsigned)((n) >= 0 ? (n) : -(n)) % (x))
@@ -24,11 +20,7 @@ extern "C" {
 #define SURFACE_PRESSURE 1013 // mbar
 #define ZERO_C_IN_MKELVIN 273150 // mKelvin
 
-#ifdef __cplusplus
 #define M_OR_FT(_m, _f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
-#else
-#define M_OR_FT(_m, _f) ((prefs.units.length == METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
-#endif
 
 /* Salinity is expressed in weight in grams per 10l */
 #define SEAWATER_SALINITY 10300
@@ -131,11 +123,7 @@ typedef struct
 
 typedef struct
 {
-#ifdef __cplusplus
 	int grams = 0;
-#else
-	int grams;
-#endif
 } weight_t;
 
 typedef struct
@@ -350,8 +338,6 @@ extern double get_vertical_speed_units(unsigned int mms, int *frac, const char *
 
 extern depth_t units_to_depth(double depth);
 extern int units_to_sac(double volume);
-#ifdef __cplusplus
 }
-#endif
 
 #endif

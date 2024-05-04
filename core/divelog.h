@@ -18,26 +18,20 @@ struct divelog {
 	struct device_table *devices;
 	struct filter_preset_table *filter_presets;
 	bool autogroup;
-#ifdef __cplusplus
 	void clear();
 	divelog();
 	~divelog();
 	divelog(divelog &&log); // move constructor (argument is consumed).
 	divelog &operator=(divelog &&log); // move assignment (argument is consumed).
-#endif
 };
 
 extern struct divelog divelog;
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 void clear_divelog(struct divelog *);
 extern void delete_single_dive(struct divelog *, int idx);
 
-#ifdef __cplusplus
 }
-#endif
 
 #endif
