@@ -84,14 +84,14 @@ taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude)
 
 	QString url;
 	QJsonObject obj;
-	taxonomy_data taxonomy = { 0, 0 };
+	taxonomy_data taxonomy;
 
 	// check the oceans API to figure out the body of water
 	url = geonamesOceanURL.arg(getUiLanguage().section(QRegularExpression("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
 	obj = doAsyncRESTGetRequest(url, 5000); // 5 secs. timeout
 	QVariantMap oceanName = obj.value("ocean").toVariant().toMap();
 	if (oceanName["name"].isValid())
-		taxonomy_set_category(&taxonomy, TC_OCEAN, qPrintable(oceanName["name"].toString()), taxonomy_origin::GEOCODED);
+		taxonomy_set_category(taxonomy, TC_OCEAN, oceanName["name"].toString().toStdString(), taxonomy_origin::GEOCODED);
 
 	// check the findNearbyPlaces API from geonames - that should give us country, state, city
 	url = geonamesNearbyPlaceNameURL.arg(getUiLanguage().section(QRegularExpression("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0);
@@ -110,16 +110,16 @@ taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude)
 		for (int idx = TC_COUNTRY; idx < TC_NR_CATEGORIES; idx++) {
 			if (firstData[taxonomy_api_names[idx]].isValid()) {
 				QString value = firstData[taxonomy_api_names[idx]].toString();
-				taxonomy_set_category(&taxonomy, (taxonomy_category)idx, qPrintable(value), taxonomy_origin::GEOCODED);
+				taxonomy_set_category(taxonomy, (taxonomy_category)idx, value.toStdString(), taxonomy_origin::GEOCODED);
 			}
 		}
-		const char *l3 = taxonomy_get_value(&taxonomy, TC_ADMIN_L3);
-		const char *lt = taxonomy_get_value(&taxonomy, TC_LOCALNAME);
-		if (empty_string(l3) && !empty_string(lt)) {
+		std::string l3 = taxonomy_get_value(taxonomy, TC_ADMIN_L3);
+		std::string lt = taxonomy_get_value(taxonomy, TC_LOCALNAME);
+		if (!l3.empty() && !lt.empty()) {
 			// basically this means we did get a local name (what we call town), but just like most places
 			// we didn't get an adminName_3 - which in some regions is the actual city that town belongs to,
 			// then we copy the town into the city
-			taxonomy_set_category(&taxonomy, TC_ADMIN_L3, lt, taxonomy_origin::GEOCOPIED);
+			taxonomy_set_category(taxonomy, TC_ADMIN_L3, lt, taxonomy_origin::GEOCOPIED);
 		}
 	} else {
 		report_error("geonames.org did not provide reverse lookup information");

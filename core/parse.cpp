@@ -19,11 +19,14 @@
 #include "device.h"
 #include "gettext.h"
 
+parser_state::parser_state()
+{
+}
+
 parser_state::~parser_state()
 {
 	free_dive(cur_dive);
 	free_trip(cur_trip);
-	free_dive_site(cur_dive_site);
 }
 
 /*
@@ -188,7 +191,7 @@ void dive_site_start(struct parser_state *state)
 		return;
 	state->taxonomy_category = -1;
 	state->taxonomy_origin = -1;
-	state->cur_dive_site = (dive_site *)calloc(1, sizeof(struct dive_site));
+	state->cur_dive_site = std::make_unique<dive_site>();
 }
 
 void dive_site_end(struct parser_state *state)
@@ -197,13 +200,12 @@ void dive_site_end(struct parser_state *state)
 		return;
 
 	struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, state->log->sites);
-	merge_dive_site(ds, state->cur_dive_site);
+	merge_dive_site(ds, state->cur_dive_site.get());
 
 	if (verbose > 3)
 		printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
 
-	free_dive_site(state->cur_dive_site);
-	state->cur_dive_site = NULL;
+	state->cur_dive_site.reset();
 }
 
 void filter_preset_start(struct parser_state *state)

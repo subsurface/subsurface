@@ -24,7 +24,7 @@ struct DiveToAdd {
 struct DivesAndTripsToAdd {
 	std::vector<DiveToAdd> dives;
 	std::vector<OwningTripPtr> trips;
-	std::vector<OwningDiveSitePtr> sites;
+	std::vector<std::unique_ptr<dive_site>> sites;
 };
 
 // Dives and sites that have to be removed for a command
@@ -111,7 +111,7 @@ private:
 	struct device_table	devicesToAddAndRemove;
 
 	// For redo
-	std::vector<OwningDiveSitePtr>	sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>>	sitesToAdd;
 	std::vector<std::pair<std::string,FilterData>>
 					filterPresetsToAdd;
 

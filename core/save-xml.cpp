@@ -716,15 +716,12 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 		show_utf8_blanked(b, ds->description, " description='", "'", 1, anonymize);
 		put_format(b, ">\n");
 		show_utf8_blanked(b, ds->notes, "  <notes>", " </notes>\n", 0, anonymize);
-		if (ds->taxonomy.nr) {
-			for (int j = 0; j < ds->taxonomy.nr; j++) {
-				struct taxonomy *t = &ds->taxonomy.category[j];
-				if (t->category != TC_NONE && t->value) {
-					put_format(b, "  <geo cat='%d'", t->category);
-					put_format(b, " origin='%d'", t->origin);
-					show_utf8_blanked(b, t->value, " value='", "'", 1, anonymize);
-					put_format(b, "/>\n");
-				}
+		for (auto const &t: ds->taxonomy) {
+			if (t.category != TC_NONE && !t.value.empty()) {
+				put_format(b, "  <geo cat='%d'", t.category);
+				put_format(b, " origin='%d'", t.origin);
+				show_utf8_blanked(b, t.value.c_str(), " value='", "'", 1, anonymize);
+				put_format(b, "/>\n");
 			}
 		}
 		put_format(b, "</site>\n");
@@ -921,15 +918,12 @@ static void save_dive_sites_buffer(struct membuffer *b, const struct dive_site *
 		show_utf8_blanked(b, ds->description, " description='", "'", 1, anonymize);
 		put_format(b, ">\n");
 		show_utf8_blanked(b, ds->notes, "  <notes>", " </notes>\n", 0, anonymize);
-		if (ds->taxonomy.nr) {
-			for (int j = 0; j < ds->taxonomy.nr; j++) {
-				struct taxonomy *t = &ds->taxonomy.category[j];
-				if (t->category != TC_NONE && t->value) {
-					put_format(b, "  <geo cat='%d'", t->category);
-					put_format(b, " origin='%d'", t->origin);
-					show_utf8_blanked(b, t->value, " value='", "'", 1, anonymize);
-					put_format(b, "/>\n");
-				}
+		for (const auto &t: ds->taxonomy) {
+			if (t.category != TC_NONE && !t.value.empty()) {
+				put_format(b, "  <geo cat='%d'", t.category);
+				put_format(b, " origin='%d'", t.origin);
+				show_utf8_blanked(b, t.value.c_str(), " value='", "'", 1, anonymize);
+				put_format(b, "/>\n");
 			}
 		}
 		put_format(b, "</site>\n");

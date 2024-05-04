@@ -2,14 +2,14 @@
 #ifndef PREF_H
 #define PREF_H
 
+#include "units.h"
+#include "taxonomy.h"
+
 #ifdef __cplusplus
 extern "C" {
 #else
 #include <stdbool.h>
 #endif
-
-#include "units.h"
-#include "taxonomy.h"
 
 typedef struct
 {

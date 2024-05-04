@@ -141,9 +141,9 @@ static std::vector<QString> getWords(const dive *d)
 	// take the tokens from a cache.
 	if (d->dive_site) {
 		tokenize(d->dive_site->name, res);
-		const char *country = taxonomy_get_country(&d->dive_site->taxonomy);
-		if (country)
-			tokenize(country, res);
+		std::string country = taxonomy_get_country(d->dive_site->taxonomy);
+		if (!country.empty())
+			tokenize(country.c_str(), res);
 	}
 	// TODO: We should index trips separately!
 	if (d->divetrip)

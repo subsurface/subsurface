@@ -95,7 +95,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/string-format.cpp \
 	core/strtod.cpp \
 	core/tag.cpp \
-	core/taxonomy.c \
+	core/taxonomy.cpp \
 	core/time.cpp \
 	core/trip.c \
 	core/units.cpp \

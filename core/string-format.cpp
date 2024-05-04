@@ -133,6 +133,12 @@ static void addStringToSortedList(QStringList &l, const std::string &s)
 	l.insert(it, qs);
 }
 
+// Safely treat null-strings. Remove once everyhting is converted to std::string
+static std::string c_to_std(const char *s)
+{
+	return s ? std::string(s) : std::string();
+}
+
 QStringList formatFullCylinderList()
 {
 	QStringList cylinders;
@@ -140,7 +146,7 @@ QStringList formatFullCylinderList()
 	int i = 0;
 	for_each_dive (i, d) {
 		for (int j = 0; j < d->cylinders.nr; j++)
-			addStringToSortedList(cylinders, get_cylinder(d, j)->type.description);
+			addStringToSortedList(cylinders, c_to_std(get_cylinder(d, j)->type.description));
 	}
 
 	for (const auto &ti: tank_info_table)

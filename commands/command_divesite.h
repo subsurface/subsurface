@@ -31,7 +31,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For redo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class ImportDiveSites : public Base {
@@ -47,7 +47,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For redo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class DeleteDiveSites : public Base {
@@ -62,7 +62,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For undo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class PurgeUnusedDiveSites : public Base {
@@ -77,7 +77,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For undo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class EditDiveSiteName : public Base {
@@ -125,7 +125,7 @@ private:
 	void redo() override;
 
 	dive_site *ds;
-	QString value; // Value to be set
+	std::string value; // Value to be set
 };
 
 class EditDiveSiteLocation : public Base {
@@ -167,7 +167,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For undo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class ApplyGPSFixes : public Base {
@@ -183,7 +183,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For redo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 
 	// For redo and undo
 	struct SiteAndLocation {

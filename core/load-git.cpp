@@ -332,8 +332,8 @@ static void parse_site_geo(char *line, struct git_parser_state *state)
 	int origin;
 	int category;
 	sscanf(line, "cat %d origin %d \"", &category, &origin);
-	taxonomy_set_category(&state->active_site->taxonomy, (taxonomy_category)category,
-			      get_first_converted_string(state).c_str(), (taxonomy_origin)origin);
+	taxonomy_set_category(state->active_site->taxonomy, (taxonomy_category)category,
+			      get_first_converted_string(state), (taxonomy_origin)origin);
 }
 
 static std::string pop_cstring(struct git_parser_state *state, const char *err)
