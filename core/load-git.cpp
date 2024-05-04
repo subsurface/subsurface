@@ -1850,7 +1850,7 @@ static int load_dives_from_tree(git_repository *repo, git_tree *tree, struct git
 	return 0;
 }
 
-void clear_git_id(void)
+void clear_git_id()
 {
 	saved_git_id.clear();
 }

@@ -6,7 +6,7 @@
 #include <vector>
 #include <QString>
 
-extern void clear_event_types(void);
+extern void clear_event_types();
 extern void remember_event_type(const struct event *ev);
 extern bool is_event_type_hidden(const struct event *ev);
 extern void hide_event_type(const struct event *ev);

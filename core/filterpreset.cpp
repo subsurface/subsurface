@@ -9,7 +9,7 @@ static filter_preset_table &global_table()
 	return *divelog.filter_presets;
 }
 
-int filter_presets_count(void)
+int filter_presets_count()
 {
 	return (int)global_table().size();
 }

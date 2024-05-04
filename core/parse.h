@@ -148,9 +148,9 @@ void nonmatch(const char *type, const char *name, char *buffer);
 int atoi_n(char *ptr, unsigned int len);
 void utf8_string(const char *buffer, char **res);
 
-void parse_xml_init(void);
+void parse_xml_init();
 int parse_xml_buffer(const char *url, const char *buf, int size, struct divelog *log, const struct xml_params *params);
-void parse_xml_exit(void);
+void parse_xml_exit();
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);

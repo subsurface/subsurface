@@ -63,7 +63,7 @@ bool consecutive_selected()
 }
 
 #if DEBUG_SELECTION_TRACKING
-void dump_selection(void)
+void dump_selection()
 {
 	int i;
 	struct dive *dive;

@@ -184,7 +184,7 @@ void PrintDialog::createPrinterObj()
 	}
 }
 
-void PrintDialog::previewClicked(void)
+void PrintDialog::previewClicked()
 {
 	createPrinterObj();
 	QPrintPreviewDialog previewDialog(qprinter, this, Qt::Window
@@ -194,7 +194,7 @@ void PrintDialog::previewClicked(void)
 	previewDialog.exec();
 }
 
-void PrintDialog::exportHtmlClicked(void)
+void PrintDialog::exportHtmlClicked()
 {
 	createPrinterObj();
 	QString saveFileName = printOptions.p_template;
@@ -212,7 +212,7 @@ void PrintDialog::exportHtmlClicked(void)
 	}
 }
 
-void PrintDialog::printClicked(void)
+void PrintDialog::printClicked()
 {
 	createPrinterObj();
 	QPrintDialog printDialog(qprinter, this);

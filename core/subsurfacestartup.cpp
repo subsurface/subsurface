@@ -191,7 +191,7 @@ void parse_argument(const char *arg)
  * I guess Burma and Liberia should trigger this too. I'm too
  * lazy to look up the territory names, though.
  */
-void setup_system_prefs(void)
+void setup_system_prefs()
 {
 	const char *env;
 

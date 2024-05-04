@@ -106,7 +106,7 @@ static dc_status_t serial_ftdi_get_transmitted (ftdi_serial_t *device)
 /*
  * Get an msec value on some random base
  */
-static unsigned int serial_ftdi_get_msec(void)
+static unsigned int serial_ftdi_get_msec()
 {
 #ifdef _WIN32
 	return GetTickCount();

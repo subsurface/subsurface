@@ -32,7 +32,7 @@ public:
 
 	inline QLowEnergyService *preferredService() { return preferred; }
 	inline int descriptorWritten() { return desc_written; }
-	dc_status_t select_preferred_service(void);
+	dc_status_t select_preferred_service();
 
 public slots:
 	void addService(const QBluetoothUuid &newService);

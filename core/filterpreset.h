@@ -30,7 +30,7 @@ struct filter_preset_table : public std::vector<filter_preset>
 };
 
 // The C IO code accesses the filter presets via integer indices.
-extern int filter_presets_count(void);
+extern int filter_presets_count();
 extern const char *filter_preset_fulltext_mode(int preset); // string mode of fulltext query. ownership is *not* passed to caller.
 extern int filter_preset_constraint_count(int preset); // number of constraints in the filter preset.
 extern const struct filter_constraint *filter_preset_constraint(int preset, int constraint); // get constraint. ownership is *not* passed to caller.

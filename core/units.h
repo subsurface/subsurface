@@ -325,7 +325,7 @@ struct units {
 
 extern const struct units SI_units, IMPERIAL_units;
 
-extern const struct units *get_units(void);
+extern const struct units *get_units();
 
 extern int get_pressure_units(int mb, const char **units);
 extern double get_depth_units(int mm, int *frac, const char **units);

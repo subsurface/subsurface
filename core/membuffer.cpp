@@ -63,7 +63,7 @@ void strip_mb(struct membuffer *b)
  * interface very complex, we'll just die. It won't happen
  * unless you're running on a potato.
  */
-static void oom(void)
+static void oom()
 {
 	fprintf(stderr, "Out of memory\n");
 	exit(1);
