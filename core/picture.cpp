@@ -139,7 +139,7 @@ struct picture *create_picture(const char *filename, timestamp_t shift_time, boo
 	if (!match_all && !dive_check_picture_time(*dive, timestamp))
 		return NULL;
 
-	struct picture *picture = malloc(sizeof(struct picture));
+	struct picture *picture = (struct picture *)malloc(sizeof(struct picture));
 	picture->filename = strdup(filename);
 	picture->offset.seconds = metadata.timestamp - (*dive)->when + shift_time;
 	picture->location = metadata.location;

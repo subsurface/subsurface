@@ -1773,7 +1773,7 @@ static int parse_picture_entry(struct git_parser_state *state, const git_tree_en
 
 	/* add_picture took ownership of the data -
 	 * clear out our copy just to be sure. */
-	state->active_pic = empty_picture;
+	state->active_pic = picture();
 	return 0;
 }
 
