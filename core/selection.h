@@ -11,9 +11,7 @@ extern struct dive *current_dive;
 
 /*** C and C++ functions ***/
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 extern struct dive *first_selected_dive(void);
 extern struct dive *last_selected_dive(void);
@@ -29,13 +27,10 @@ extern void clear_selection(void);
 extern void dump_selection(void);
 #endif
 
-#ifdef __cplusplus
 }
-#endif
 
 /*** C++-only functions ***/
 
-#ifdef __cplusplus
 #include <vector>
 #include <QVector>
 
@@ -63,7 +58,5 @@ void setTripSelection(dive_trip *trip, dive *currentDive);
 std::vector<dive *> getDiveSelection();
 bool diveInSelection(const std::vector<dive *> &selection, const dive *d);
 void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &add, const std::vector<dive *> &remove);
-
-#endif // __cplusplus
 
 #endif // SELECTION_H

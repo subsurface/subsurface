@@ -21,9 +21,7 @@ enum csv_format {
 
 #define MAXCOLDIGITS 10
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 int parse_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log);
 int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log);
@@ -32,8 +30,6 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log);
 int parse_seabear_log(const char *filename, struct divelog *log);
 int parse_manual_file(const char *filename, struct xml_params *params, struct divelog *log);
 
-#ifdef __cplusplus
 }
-#endif
 
 #endif // IMPORTCSV_H

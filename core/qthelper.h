@@ -17,8 +17,6 @@ enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYP
 
 // 2) Functions visible only to C++ parts
 
-#ifdef __cplusplus
-
 #include <QString>
 #include <optional>
 #include <string>
@@ -113,13 +111,9 @@ std::string move_away(const std::string &path);
 #define TITLE_OR_TEXT(_t, _m) _t, _m
 #endif
 
-#endif
-
 // 3) Functions visible to C and C++
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 struct git_info;
 
@@ -143,8 +137,6 @@ volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
 void emit_reset_signal();
 
-#ifdef __cplusplus
 }
-#endif
 
 #endif // QTHELPER_H
