@@ -707,7 +707,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 		if (dive_site_is_empty(ds))
 			continue;
 		/* Only write used dive sites when exporting selected dives */
-		if (select_only && !is_dive_site_selected(ds))
+		if (select_only && !is_dive_site_selected(*ds))
 			continue;
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);

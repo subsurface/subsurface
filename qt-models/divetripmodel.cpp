@@ -1199,10 +1199,10 @@ void DiveTripModelTree::divesDeletedInternal(dive_trip *trip, bool deleteTrip, c
 static QVector<dive *> getDivesForSite(struct dive_site *ds)
 {
 	QVector<dive *> diveSiteDives;
-	diveSiteDives.reserve(ds->dives.nr);
+	diveSiteDives.reserve(ds->dives.size());
 
-	for (int i = 0; i < ds->dives.nr; ++i)
-		diveSiteDives.push_back(ds->dives.dives[i]);
+	for (dive *d: ds->dives)
+		diveSiteDives.push_back(d);
 
 	return diveSiteDives;
 }
