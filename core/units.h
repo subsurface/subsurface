@@ -69,54 +69,52 @@ typedef int64_t timestamp_t;
 
 typedef struct
 {
-	int32_t seconds; // durations up to 34 yrs
+	int32_t seconds = 0; // durations up to 34 yrs
 } duration_t;
-
-static const duration_t zero_duration = { 0 };
 
 typedef struct
 {
-	int32_t seconds; // offsets up to +/- 34 yrs
+	int32_t seconds = 0; // offsets up to +/- 34 yrs
 } offset_t;
 
 typedef struct
 {
-	int32_t mm;
+	int32_t mm = 0;
 } depth_t; // depth to 2000 km
 
 typedef struct
 {
-	int32_t mbar; // pressure up to 2000 bar
+	int32_t mbar = 0; // pressure up to 2000 bar
 } pressure_t;
 
 typedef struct
 {
-	uint16_t mbar;
+	uint16_t mbar = 0;
 } o2pressure_t; // pressure up to 65 bar
 
 typedef struct
 {
-	int16_t degrees;
+	int16_t degrees = 0;
 } bearing_t; // compass bearing
 
 typedef struct
 {
-	uint32_t mkelvin; // up to 4 MK (temperatures in K are always positive)
+	uint32_t mkelvin = 0; // up to 4 MK (temperatures in K are always positive)
 } temperature_t;
 
 typedef struct
 {
-	uint64_t mkelvin; // up to 18446744073 MK (temperatures in K are always positive)
+	uint64_t mkelvin = 0; // up to 18446744073 MK (temperatures in K are always positive)
 } temperature_sum_t;
 
 typedef struct
 {
-	int mliter;
+	int mliter = 0;
 } volume_t;
 
 typedef struct
 {
-	int permille;
+	int permille = 0;
 } fraction_t;
 
 typedef struct
@@ -126,14 +124,12 @@ typedef struct
 
 typedef struct
 {
-	int udeg;
+	int udeg = 0;
 } degrees_t;
 
 typedef struct pos {
 	degrees_t lat, lon;
 } location_t;
-
-static const location_t zero_location = { { 0 }, { 0 }};
 
 extern void parse_location(const char *, location_t *);
 

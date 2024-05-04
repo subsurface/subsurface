@@ -19,6 +19,8 @@ enum event_severity {
  * Events are currently based straight on what libdivecomputer gives us.
  *  We need to wrap these into our own events at some point to remove some of the limitations.
  */
+#define MAX_EVENT_NAME 128
+
 struct event {
 	struct event *next;
 	duration_t time;
@@ -40,7 +42,9 @@ struct event {
 	};
 	bool deleted; // used internally in the parser and in fixup_dive().
 	bool hidden;
-	char name[];
+	char name[MAX_EVENT_NAME];
+	event();
+	~event();
 };
 
 extern int event_is_gaschange(const struct event *ev);

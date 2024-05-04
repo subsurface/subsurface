@@ -1115,8 +1115,7 @@ void EditWeight::undo()
 
 // ***** Add Cylinder *****
 AddCylinder::AddCylinder(bool currentDiveOnly) :
-	EditDivesBase(currentDiveOnly),
-	cyl(empty_cylinder)
+	EditDivesBase(currentDiveOnly)
 {
 	if (dives.empty())
 		return;

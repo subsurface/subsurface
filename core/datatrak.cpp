@@ -334,7 +334,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF) {
-		cylinder_t cyl = empty_cylinder;
+		cylinder_t cyl;
 		std::string desc = cyl_type_by_size(tmp_2bytes * 10);
 		cyl.type.size.mliter = tmp_2bytes * 10;
 		cyl.type.description = desc.c_str();

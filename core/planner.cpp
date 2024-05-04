@@ -234,7 +234,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	free_samples(dc);
 	while ((ev = dc->events)) {
 		dc->events = dc->events->next;
-		free(ev);
+		delete ev;
 	}
 	dp = diveplan->dp;
 	/* Create first sample at time = 0, not based on dp because

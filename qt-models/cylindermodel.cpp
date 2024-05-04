@@ -17,8 +17,7 @@ CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableMode
 	dcNr(-1),
 	inPlanner(planner),
 	numRows(0),
-	tempRow(-1),
-	tempCyl(empty_cylinder)
+	tempRow(-1)
 {
 	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, WORKINGPRESS_INT, SIZE_INT, SENSORS};
 	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")

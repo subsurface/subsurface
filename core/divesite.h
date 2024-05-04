@@ -14,7 +14,7 @@ struct dive_site
 	uint32_t uuid = 0;
 	std::string name;
 	std::vector<dive *> dives;
-	location_t location = { { 9 }, { 0 } };
+	location_t location;
 	std::string description;
 	std::string notes;
 	taxonomy_data taxonomy;

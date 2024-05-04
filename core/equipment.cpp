@@ -205,7 +205,7 @@ void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
 	 * every single cylinder table there is an empty cylinder that can
 	 * be used by the planner as "surface air" cylinder. Fix this.
 	 */
-	add_to_cylinder_table(t, t->nr, empty_cylinder);
+	add_to_cylinder_table(t, t->nr, cylinder_t());
 	t->nr--;
 	t->cylinders[t->nr].cylinder_use = NOT_USED;
 }
@@ -418,7 +418,7 @@ void copy_cylinder_types(const struct dive *s, struct dive *d)
 
 cylinder_t *add_empty_cylinder(struct cylinder_table *t)
 {
-	cylinder_t cyl = empty_cylinder;
+	cylinder_t cyl;
 	cyl.type.description = strdup("");
 	add_cylinder(t, t->nr, cyl);
 	return &t->cylinders[t->nr - 1];
@@ -483,7 +483,7 @@ void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 
 cylinder_t create_new_cylinder(const struct dive *d)
 {
-	cylinder_t cyl = empty_cylinder;
+	cylinder_t cyl;
 	fill_default_cylinder(d, &cyl);
 	cyl.start = cyl.type.workingpressure;
 	cyl.cylinder_use = OC_GAS;
@@ -507,7 +507,6 @@ void add_default_cylinder(struct dive *d)
 	if (!empty_string(prefs.default_cylinder)) {
 		cyl = create_new_cylinder(d);
 	} else {
-		cyl = empty_cylinder;
 		// roughly an AL80
 		cyl.type.description = strdup(translate("gettextFromC", "unknown"));
 		cyl.type.size.mliter = 11100;

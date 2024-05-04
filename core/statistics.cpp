@@ -97,13 +97,6 @@ stats_summary calculate_stats_summary(bool selected_only)
 	int current_month = 0;
 	int prev_month = 0, prev_year = 0;
 	dive_trip_t *trip_ptr = nullptr;
-	//stats_t stats = { 0 };
-
-	//if (divelog.dives->nr > 0) {
-	//	stats.shortest_time.seconds = divelog.dives->dives[0]->duration.seconds;
-	//	stats.min_depth.mm = divelog.dives->dives[0]->maxdepth.mm;
-	//	stats.selection_size = divelog.dives->nr;
-	//}
 
 	stats_summary out;
 
@@ -318,7 +311,7 @@ bool is_cylinder_prot(const struct dive *dive, int idx)
 /* Returns a vector with dive->cylinders.nr entries */
 std::vector<volume_t> get_gas_used(struct dive *dive)
 {
-	std::vector<volume_t> gases(dive->cylinders.nr, volume_t { 0 });
+	std::vector<volume_t> gases(dive->cylinders.nr);
 	for (int idx = 0; idx < dive->cylinders.nr; idx++) {
 		cylinder_t *cyl = get_cylinder(dive, idx);
 		pressure_t start, end;
@@ -351,7 +344,7 @@ std::pair<volume_t, volume_t> selected_dives_gas_parts()
 {
 	int i;
 	struct dive *d;
-	volume_t o2_tot = { 0 }, he_tot = { 0 };
+	volume_t o2_tot, he_tot;
 	for_each_dive (i, d) {
 		if (!d->selected || d->invalid)
 			continue;
