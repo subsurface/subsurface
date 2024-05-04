@@ -40,7 +40,7 @@ const char unix_system_divelist_default_font[] = "Sans";
 const char *system_divelist_default_font = unix_system_divelist_default_font;
 double system_divelist_default_font_size = -1.0;
 
-void subsurface_OS_pref_setup(void)
+void subsurface_OS_pref_setup()
 {
 	// nothing
 }
@@ -51,13 +51,13 @@ bool subsurface_ignore_font(const char *)
 	return false;
 }
 
-const char *system_default_directory(void)
+const char *system_default_directory()
 {
 	static const std::string path = system_default_path();
 	return path.c_str();
 }
 
-const char *system_default_filename(void)
+const char *system_default_filename()
 {
 	static const std::string fn = make_default_filename();
 	return fn.c_str();
@@ -187,12 +187,12 @@ int subsurface_zip_close(struct zip *zip)
 }
 
 /* win32 console */
-void subsurface_console_init(void)
+void subsurface_console_init()
 {
 	/* NOP */
 }
 
-void subsurface_console_exit(void)
+void subsurface_console_exit()
 {
 	/* NOP */
 }

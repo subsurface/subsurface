@@ -414,7 +414,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 //
 // That's wrong, but works for the simple case.
 //
-dc_status_t BLEObject::select_preferred_service(void)
+dc_status_t BLEObject::select_preferred_service()
 {
 	// Wait for each service to finish discovering
 	for (const QLowEnergyService *s: services) {

@@ -158,11 +158,11 @@ extern int save_dive_sites_logic(const char *filename, const struct dive_site *s
 struct membuffer;
 extern void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize);
 
-extern void subsurface_console_init(void);
-extern void subsurface_console_exit(void);
-extern bool subsurface_user_is_root(void);
+extern void subsurface_console_init();
+extern void subsurface_console_exit();
+extern bool subsurface_user_is_root();
 
-extern struct dive *alloc_dive(void);
+extern struct dive *alloc_dive();
 extern void free_dive(struct dive *);
 extern void record_dive_to_table(struct dive *dive, struct dive_table *table);
 extern void clear_dive(struct dive *dive);
