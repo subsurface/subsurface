@@ -6,8 +6,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-
-extern "C" {
+#include <string>
 
 struct divetag {
 	/*
@@ -53,12 +52,6 @@ extern std::vector<std::unique_ptr<divetag>> g_tag_list;
  * Buffer contains comma separated list of tags names or null terminated string
  */
 extern std::string taglist_get_tagstring(struct tag_entry *tag_list);
-
-}
-
-// C++ only functions
-
-#include <string>
 
 /* Comma separated list of tags names or null terminated string */
 std::string taglist_get_tagstring(struct tag_entry *tag_list);

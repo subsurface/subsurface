@@ -200,7 +200,7 @@ void CheckCloudConnection::gotContinent(QNetworkReply *reply)
 }
 
 // helper to be used from C code
-extern "C" bool canReachCloudServer(struct git_info *info)
+bool canReachCloudServer(struct git_info *info)
 {
 	if (verbose)
 		qWarning() << "Cloud storage: checking connection to cloud server" << info->url.c_str();

@@ -1186,7 +1186,7 @@ static void gps_long(const char *buffer, struct dive *dive, struct parser_state 
 }
 
 /* We allow either spaces or a comma between the decimal degrees */
-extern "C" void parse_location(const char *buffer, location_t *loc)
+void parse_location(const char *buffer, location_t *loc)
 {
 	const char *end;
 	loc->lat = parse_degrees(buffer, &end);
@@ -1752,7 +1752,7 @@ static const char *preprocess_divelog_de(const char *buffer)
 	return buffer;
 }
 
-extern "C" int parse_xml_buffer(const char *url, const char *buffer, int, struct divelog *log,
+int parse_xml_buffer(const char *url, const char *buffer, int, struct divelog *log,
 				const struct xml_params *params)
 {
 	xmlDoc *doc;
@@ -1802,7 +1802,7 @@ static timestamp_t parse_dlf_timestamp(unsigned char *buffer)
 	return offset + 946684800;
 }
 
-extern "C" int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
+int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 {
 	using namespace std::string_literals;
 	unsigned char *ptr = buffer;
@@ -2274,12 +2274,12 @@ extern "C" int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divel
 }
 
 
-extern "C" void parse_xml_init(void)
+void parse_xml_init(void)
 {
 	LIBXML_TEST_VERSION
 }
 
-extern "C" void parse_xml_exit(void)
+void parse_xml_exit(void)
 {
 	xmlCleanupParser();
 }

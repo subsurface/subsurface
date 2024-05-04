@@ -277,7 +277,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	return SQLITE_OK;
 }
 
-extern "C" int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	char *err = NULL;
@@ -549,7 +549,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 	return SQLITE_OK;
 }
 
-extern "C" int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	char *err = NULL;

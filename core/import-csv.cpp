@@ -270,7 +270,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 	return ret;
 }
 
-extern "C" int parse_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log)
+int parse_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log)
 {
 	int ret;
 	std::string mem;

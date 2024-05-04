@@ -21,8 +21,6 @@
 #define dc_usb_storage_open(stream, context, devname) (DC_STATUS_UNSUPPORTED)
 #endif
 
-extern "C" {
-
 struct dive;
 struct divelog;
 struct devices;
@@ -72,7 +70,5 @@ unsigned int get_supported_transports(device_data_t *data);
 
 extern std::string logfile_name;
 extern std::string dumpfile_name;
-
-}
 
 #endif // LIBDIVECOMPUTER_H

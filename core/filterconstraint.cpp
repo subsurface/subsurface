@@ -164,57 +164,57 @@ static enum filter_constraint_range_mode filter_constraint_range_mode_from_strin
 	return FILTER_CONSTRAINT_EQUAL;
 }
 
-extern "C" const char *filter_constraint_type_to_string(enum filter_constraint_type type)
+const char *filter_constraint_type_to_string(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc ? desc->token : "unknown";
 }
 
-extern "C" const char *filter_constraint_string_mode_to_string(enum filter_constraint_string_mode mode)
+const char *filter_constraint_string_mode_to_string(enum filter_constraint_string_mode mode)
 {
 	const string_mode_description *desc = get_string_mode_description(mode);
 	return desc ? desc->token : "unknown";
 }
 
-extern "C" const char *filter_constraint_range_mode_to_string(enum filter_constraint_range_mode mode)
+const char *filter_constraint_range_mode_to_string(enum filter_constraint_range_mode mode)
 {
 	const range_mode_description *desc = get_range_mode_description(mode);
 	return desc ? desc->token : "unknown";
 }
 
-extern "C" int filter_constraint_type_to_index(enum filter_constraint_type type)
+int filter_constraint_type_to_index(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc ? desc - type_descriptions : -1;
 }
 
-extern "C" int filter_constraint_string_mode_to_index(enum filter_constraint_string_mode mode)
+int filter_constraint_string_mode_to_index(enum filter_constraint_string_mode mode)
 {
 	const string_mode_description *desc = get_string_mode_description(mode);
 	return desc ? desc - string_mode_descriptions : -1;
 }
 
-extern "C" int filter_constraint_range_mode_to_index(enum filter_constraint_range_mode mode)
+int filter_constraint_range_mode_to_index(enum filter_constraint_range_mode mode)
 {
 	const range_mode_description *desc = get_range_mode_description(mode);
 	return desc ? desc - range_mode_descriptions : -1;
 }
 
-extern "C" enum filter_constraint_type filter_constraint_type_from_index(int index)
+enum filter_constraint_type filter_constraint_type_from_index(int index)
 {
 	if (index >= 0 && index < (int)std::size(type_descriptions))
 		return type_descriptions[index].type;
 	return (enum filter_constraint_type)-1;
 }
 
-extern "C" enum filter_constraint_string_mode filter_constraint_string_mode_from_index(int index)
+enum filter_constraint_string_mode filter_constraint_string_mode_from_index(int index)
 {
 	if (index >= 0 && index < (int)std::size(string_mode_descriptions))
 		return string_mode_descriptions[index].mode;
 	return (enum filter_constraint_string_mode)-1;
 }
 
-extern "C" enum filter_constraint_range_mode filter_constraint_range_mode_from_index(int index)
+enum filter_constraint_range_mode filter_constraint_range_mode_from_index(int index)
 {
 	if (index >= 0 && index < (int)std::size(range_mode_descriptions))
 		return range_mode_descriptions[index].mode;
@@ -390,7 +390,7 @@ QStringList filter_contraint_multiple_choice_translated(enum filter_constraint_t
 	return QStringList();
 }
 
-extern "C" bool filter_constraint_is_string(filter_constraint_type type)
+bool filter_constraint_is_string(filter_constraint_type type)
 {
 	// Currently a constraint is filter based if and only if it has a string
 	// mode (i.e. starts with, substring, exact). In the future we might also
@@ -398,7 +398,7 @@ extern "C" bool filter_constraint_is_string(filter_constraint_type type)
 	return filter_constraint_has_string_mode(type);
 }
 
-extern "C" bool filter_constraint_is_timestamp(filter_constraint_type type)
+bool filter_constraint_is_timestamp(filter_constraint_type type)
 {
 	return type == FILTER_CONSTRAINT_DATE || type == FILTER_CONSTRAINT_DATE_TIME;
 }
@@ -408,37 +408,37 @@ static bool is_numerical_constraint(filter_constraint_type type)
 	return !filter_constraint_is_string(type) && !filter_constraint_is_timestamp(type);
 }
 
-extern "C" bool filter_constraint_has_string_mode(enum filter_constraint_type type)
+bool filter_constraint_has_string_mode(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->has_string_mode;
 }
 
-extern "C" bool filter_constraint_has_range_mode(enum filter_constraint_type type)
+bool filter_constraint_has_range_mode(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->has_range_mode;
 }
 
-extern "C" bool filter_constraint_is_star(filter_constraint_type type)
+bool filter_constraint_is_star(filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->is_star_widget;
 }
 
-extern "C" bool filter_constraint_has_date_widget(filter_constraint_type type)
+bool filter_constraint_has_date_widget(filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->has_date;
 }
 
-extern "C" bool filter_constraint_has_time_widget(filter_constraint_type type)
+bool filter_constraint_has_time_widget(filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->has_time;
 }
 
-extern "C" int filter_constraint_num_decimals(enum filter_constraint_type type)
+int filter_constraint_num_decimals(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc ? desc->decimal_places : 1;
@@ -446,7 +446,7 @@ extern "C" int filter_constraint_num_decimals(enum filter_constraint_type type)
 
 // String constraints are valid if there is at least one term.
 // Other constraints are always valid.
-extern "C" bool filter_constraint_is_valid(const struct filter_constraint *constraint)
+bool filter_constraint_is_valid(const struct filter_constraint *constraint)
 {
 	if (!filter_constraint_is_string(constraint->type))
 		return true;

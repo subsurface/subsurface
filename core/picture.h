@@ -6,8 +6,6 @@
 #include "units.h"
 #include <stddef.h> // For NULL
 
-extern "C" {
-
 struct dive;
 
 struct picture {
@@ -45,7 +43,5 @@ extern void sort_picture_table(struct picture_table *);
 
 extern struct picture *create_picture(const char *filename, timestamp_t shift_time, bool match_all, struct dive **dive);
 extern bool picture_check_valid_time(timestamp_t timestamp, timestamp_t shift_time);
-
-}
 
 #endif // PICTURE_H

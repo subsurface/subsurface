@@ -33,7 +33,7 @@
  * are unnecessary once you're counting minutes (32-bit minutes:
  * 8000+ years).
  */
-extern "C" void utc_mkdate(timestamp_t timestamp, struct tm *tm)
+void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 {
 	static const unsigned int mdays[] = {
 		31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
@@ -100,7 +100,7 @@ extern "C" void utc_mkdate(timestamp_t timestamp, struct tm *tm)
 	tm->tm_mon = m;
 }
 
-extern "C" timestamp_t utc_mktime(const struct tm *tm)
+timestamp_t utc_mktime(const struct tm *tm)
 {
 	static const int mdays[] = {
 		0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
@@ -147,7 +147,7 @@ extern "C" timestamp_t utc_mktime(const struct tm *tm)
  * out unused calculations. If it turns out to be a bottle neck
  * we will have to cache a struct tm per dive.
  */
-extern "C" int utc_year(timestamp_t timestamp)
+int utc_year(timestamp_t timestamp)
 {
 	struct tm tm;
 	utc_mkdate(timestamp, &tm);
@@ -162,7 +162,7 @@ extern "C" int utc_year(timestamp_t timestamp)
  * at throwing out unused calculations, so this is more efficient
  * than it looks.
  */
-extern "C" int utc_weekday(timestamp_t timestamp)
+int utc_weekday(timestamp_t timestamp)
 {
 	struct tm tm;
 	utc_mkdate(timestamp, &tm);
@@ -174,7 +174,7 @@ extern "C" int utc_weekday(timestamp_t timestamp)
  * an 64-bit decimal and return 64-bit timestamp. On failure or
  * if passed an empty string, return 0.
  */
-extern "C" timestamp_t parse_datetime(const char *s)
+timestamp_t parse_datetime(const char *s)
 {
 	int y, m, d;
 	int hr, min, sec;

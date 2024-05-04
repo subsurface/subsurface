@@ -5,8 +5,6 @@
 #include "divemode.h"
 #include "units.h"
 
-extern "C" {
-
 enum gas_component { N2, HE, O2 };
 
 // o2 == 0 && he == 0 -> air
@@ -70,7 +68,5 @@ extern bool gasmix_is_invalid(struct gasmix mix);
 extern enum gastype gasmix_to_type(struct gasmix mix);
 extern const char *gastype_name(enum gastype type);
 extern fraction_t make_fraction(int f);
-
-}
 
 #endif

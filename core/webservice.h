@@ -2,8 +2,6 @@
 #ifndef WEBSERVICE_H
 #define WEBSERVICE_H
 
-extern "C" {
-
 //extern void webservice_download_dialog(void);
 //extern bool webservice_request_user_xml(const gchar *, gchar **, unsigned int *, unsigned int *);
 extern int divelogde_upload(char *fn, char **error);
@@ -16,6 +14,4 @@ enum {
 	DD_STATUS_ERROR_PARSE,
 };
 
-
-}
 #endif // WEBSERVICE_H

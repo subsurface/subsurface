@@ -48,8 +48,6 @@ static std::string make_default_filename()
 	return system_default_path() + "/" + user + ".xml";
 }
 
-extern "C" {
-
 const char mac_system_divelist_default_font[] = "Arial";
 const char *system_divelist_default_font = mac_system_divelist_default_font;
 double system_divelist_default_font_size = -1.0;
@@ -198,6 +196,4 @@ void subsurface_console_exit(void)
 bool subsurface_user_is_root()
 {
 	return geteuid() == 0;
-}
-
 }

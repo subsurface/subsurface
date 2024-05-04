@@ -1,42 +1,42 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "xmlparams.h"
 
-extern "C" struct xml_params *alloc_xml_params()
+struct xml_params *alloc_xml_params()
 {
 	return new xml_params;
 }
 
-extern "C" void free_xml_params(struct xml_params *params)
+void free_xml_params(struct xml_params *params)
 {
 	delete params;
 }
 
-extern "C" void xml_params_resize(struct xml_params *params, int count)
+void xml_params_resize(struct xml_params *params, int count)
 {
 	params->items.resize(count);
 }
 
-extern "C" void xml_params_add(struct xml_params *params, const char *key, const char *value)
+void xml_params_add(struct xml_params *params, const char *key, const char *value)
 {
 	params->items.push_back({ std::string(key), std::string(value) });
 }
 
-extern "C" void xml_params_add_int(struct xml_params *params, const char *key, int value)
+void xml_params_add_int(struct xml_params *params, const char *key, int value)
 {
 	params->items.push_back({ std::string(key), std::to_string(value) });
 }
 
-extern "C" int xml_params_count(const struct xml_params *params)
+int xml_params_count(const struct xml_params *params)
 {
 	return (int)params->items.size();
 }
 
-extern "C" const char *xml_params_get_key(const struct xml_params *params, int idx)
+const char *xml_params_get_key(const struct xml_params *params, int idx)
 {
 	return params->items[idx].first.c_str();
 }
 
-extern "C" const char *xml_params_get_value(const struct xml_params *params, int idx)
+const char *xml_params_get_value(const struct xml_params *params, int idx)
 {
 	return params->items[idx].second.c_str();
 }
@@ -48,7 +48,7 @@ extern void xml_params_set_value(struct xml_params *params, int idx, const char 
 	params->items[idx].second = value;
 }
 
-extern "C" const char **xml_params_get(const struct xml_params *params)
+const char **xml_params_get(const struct xml_params *params)
 {
 	if (!params)
 		return nullptr;

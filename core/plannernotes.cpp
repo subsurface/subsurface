@@ -77,7 +77,7 @@ static std::string icd_entry(struct icd_data *icdvalues, bool printheader, int t
 	return b;
 }
 
-extern "C" const char *get_planner_disclaimer()
+const char *get_planner_disclaimer()
 {
 	return translate("gettextFromC", "DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s "
 			 "ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS "
@@ -93,7 +93,7 @@ extern std::string get_planner_disclaimer_formatted()
 	return format_string_std(get_planner_disclaimer(), deco);
 }
 
-extern "C" void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, bool error)
+void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, bool error)
 {
 	std::string buf;
 	std::string icdbuf;

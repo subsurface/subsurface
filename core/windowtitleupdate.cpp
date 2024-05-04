@@ -3,7 +3,7 @@
 
 WindowTitleUpdate windowTitleUpdate;
 
-extern "C" void updateWindowTitle()
+void updateWindowTitle()
 {
 	emit windowTitleUpdate.updateTitle();
 }

@@ -92,7 +92,7 @@ void divelog::clear()
 	filter_presets->clear();
 }
 
-extern "C" void clear_divelog(struct divelog *log)
+void clear_divelog(struct divelog *log)
 {
 	log->clear();
 }

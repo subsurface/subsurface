@@ -4,8 +4,6 @@
 
 #include "units.h"
 
-extern "C" {
-
 #define MAX_SENSORS 2
 #define MAX_O2_SENSORS 6
 #define NO_SENSOR -1
@@ -35,7 +33,5 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE        
 };	                                  // Total size of structure: 63 bytes, excluding padding at end
 
 extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);
-
-}
 
 #endif

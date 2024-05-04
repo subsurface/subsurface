@@ -56,8 +56,6 @@ static std::string to_str(const T &v)
 	return v.toString().toStdString();
 }
 
-extern "C" {
-
 void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState newState)
 {
 	if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
@@ -777,5 +775,3 @@ dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size
 		return DC_STATUS_UNSUPPORTED;
 	}
 }
-
-} /* extern "C" */

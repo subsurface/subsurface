@@ -1105,7 +1105,7 @@ static git_tree *get_git_tree(git_repository *repo, git_object *parent)
 	return tree;
 }
 
-extern "C" int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree)
+int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 
@@ -1116,7 +1116,7 @@ extern "C" int update_git_checkout(git_repository *repo, git_object *parent, git
 	return git_checkout_tree(repo, (git_object *) tree, &opts);
 }
 
-extern "C" int get_authorship(git_repository *repo, git_signature **authorp)
+int get_authorship(git_repository *repo, git_signature **authorp)
 {
 	if (git_signature_default(authorp, repo) == 0)
 		return 0;

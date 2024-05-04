@@ -27,7 +27,7 @@ bool device::operator<(const device &a) const
 	return serialNumber < a.serialNumber;
 }
 
-extern "C" const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
+const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
 {
 	if (!dc->model || !dc->serial)
 		return NULL;
@@ -38,7 +38,7 @@ extern "C" const struct device *get_device_for_dc(const struct device_table *tab
 	return it != dcs.end() && same_device(*it, dev) ? &*it : NULL;
 }
 
-extern "C" int get_or_add_device_for_dc(struct device_table *table, const struct divecomputer *dc)
+int get_or_add_device_for_dc(struct device_table *table, const struct divecomputer *dc)
 {
 	if (!dc->model || !dc->serial)
 		return -1;
@@ -50,7 +50,7 @@ extern "C" int get_or_add_device_for_dc(struct device_table *table, const struct
 	return create_device_node(table, dc->model, dc->serial, "");
 }
 
-extern "C" bool device_exists(const struct device_table *device_table, const struct device *dev)
+bool device_exists(const struct device_table *device_table, const struct device *dev)
 {
 	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
 	return it != device_table->devices.end() && same_device(*it, *dev);
@@ -86,17 +86,17 @@ static int addDC(std::vector<device> &dcs, const std::string &m, const std::stri
 	}
 }
 
-extern "C" int create_device_node(struct device_table *device_table, const char *model, const char *serial, const char *nickname)
+int create_device_node(struct device_table *device_table, const char *model, const char *serial, const char *nickname)
 {
 	return addDC(device_table->devices, model ?: "", serial ?: "", nickname ?: "");
 }
 
-extern "C" int add_to_device_table(struct device_table *device_table, const struct device *dev)
+int add_to_device_table(struct device_table *device_table, const struct device *dev)
 {
 	return create_device_node(device_table, dev->model.c_str(), dev->serialNumber.c_str(), dev->nickName.c_str());
 }
 
-extern "C" int remove_device(struct device_table *device_table, const struct device *dev)
+int remove_device(struct device_table *device_table, const struct device *dev)
 {
 	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
 	if (it != device_table->devices.end() && same_device(*it, *dev)) {
@@ -108,20 +108,20 @@ extern "C" int remove_device(struct device_table *device_table, const struct dev
 	}
 }
 
-extern "C" void remove_from_device_table(struct device_table *device_table, int idx)
+void remove_from_device_table(struct device_table *device_table, int idx)
 {
 	if (idx < 0 || idx >= (int)device_table->devices.size())
 		return;
 	device_table->devices.erase(device_table->devices.begin() + idx);
 }
 
-extern "C" void clear_device_table(struct device_table *device_table)
+void clear_device_table(struct device_table *device_table)
 {
 	device_table->devices.clear();
 }
 
 /* Returns whether the given device is used by a selected dive. */
-extern "C" bool device_used_by_selected_dive(const struct device *dev)
+bool device_used_by_selected_dive(const struct device *dev)
 {
 	for (dive *d: getDiveSelection()) {
 		struct divecomputer *dc;
@@ -133,7 +133,7 @@ extern "C" bool device_used_by_selected_dive(const struct device *dev)
 	return false;
 }
 
-extern "C" int is_default_dive_computer_device(const char *name)
+int is_default_dive_computer_device(const char *name)
 {
 	return qPrefDiveComputer::device() == name;
 }
@@ -148,46 +148,46 @@ const char *get_dc_nickname(const struct divecomputer *dc)
 		return dc->model;
 }
 
-extern "C" int nr_devices(const struct device_table *table)
+int nr_devices(const struct device_table *table)
 {
 	return (int)table->devices.size();
 }
 
-extern "C" const struct device *get_device(const struct device_table *table, int i)
+const struct device *get_device(const struct device_table *table, int i)
 {
 	if (i < 0 || i > nr_devices(table))
 		return NULL;
 	return &table->devices[i];
 }
 
-extern "C" struct device *get_device_mutable(struct device_table *table, int i)
+struct device *get_device_mutable(struct device_table *table, int i)
 {
 	if (i < 0 || i > nr_devices(table))
 		return NULL;
 	return &table->devices[i];
 }
 
-extern "C" const char *device_get_model(const struct device *dev)
+const char *device_get_model(const struct device *dev)
 {
 	return dev ? dev->model.c_str() : NULL;
 }
 
-extern "C" const char *device_get_serial(const struct device *dev)
+const char *device_get_serial(const struct device *dev)
 {
 	return dev ? dev->serialNumber.c_str() : NULL;
 }
 
-extern "C" const char *device_get_nickname(const struct device *dev)
+const char *device_get_nickname(const struct device *dev)
 {
 	return dev ? dev->nickName.c_str() : NULL;
 }
 
-extern "C" struct device_table *alloc_device_table()
+struct device_table *alloc_device_table()
 {
 	return new struct device_table;
 }
 
-extern "C" void free_device_table(struct device_table *devices)
+void free_device_table(struct device_table *devices)
 {
 	delete devices;
 }
@@ -202,7 +202,7 @@ bool fingerprint_record::operator<(const fingerprint_record &a) const
 
 // annoyingly, the Cressi Edy doesn't support a serial number (it's always 0), but still uses fingerprints
 // so we can't bail on the serial number being 0
-extern "C" unsigned int get_fingerprint_data(const struct fingerprint_table *table, uint32_t model, uint32_t serial, const unsigned char **fp_out)
+unsigned int get_fingerprint_data(const struct fingerprint_table *table, uint32_t model, uint32_t serial, const unsigned char **fp_out)
 {
 	if (model == 0 || fp_out == nullptr)
 		return 0;
@@ -219,7 +219,7 @@ extern "C" unsigned int get_fingerprint_data(const struct fingerprint_table *tab
 	return 0;
 }
 
-extern "C" void create_fingerprint_node(struct fingerprint_table *table, uint32_t model, uint32_t serial,
+void create_fingerprint_node(struct fingerprint_table *table, uint32_t model, uint32_t serial,
 				       const unsigned char *raw_data_in, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid)
 {
 	// since raw data can contain \0 we copy this manually, not as string
@@ -245,7 +245,7 @@ extern "C" void create_fingerprint_node(struct fingerprint_table *table, uint32_
 	}
 }
 
-extern "C" void create_fingerprint_node_from_hex(struct fingerprint_table *table, uint32_t model, uint32_t serial,
+void create_fingerprint_node_from_hex(struct fingerprint_table *table, uint32_t model, uint32_t serial,
 						const char *hex_data, uint32_t fdeviceid, uint32_t fdiveid)
 {
 	QByteArray raw = QByteArray::fromHex(hex_data);
@@ -253,33 +253,33 @@ extern "C" void create_fingerprint_node_from_hex(struct fingerprint_table *table
 				(const unsigned char *)raw.constData(), raw.size(), fdeviceid, fdiveid);
 }
 
-extern "C" int nr_fingerprints(struct fingerprint_table *table)
+int nr_fingerprints(struct fingerprint_table *table)
 {
 	return table->fingerprints.size();
 }
 
-extern "C" uint32_t fp_get_model(struct fingerprint_table *table, unsigned int i)
+uint32_t fp_get_model(struct fingerprint_table *table, unsigned int i)
 {
 	if (!table || i >= table->fingerprints.size())
 		return 0;
 	return table->fingerprints[i].model;
 }
 
-extern "C" uint32_t fp_get_serial(struct fingerprint_table *table, unsigned int i)
+uint32_t fp_get_serial(struct fingerprint_table *table, unsigned int i)
 {
 	if (!table || i >= table->fingerprints.size())
 		return 0;
 	return table->fingerprints[i].serial;
 }
 
-extern "C" uint32_t fp_get_deviceid(struct fingerprint_table *table, unsigned int i)
+uint32_t fp_get_deviceid(struct fingerprint_table *table, unsigned int i)
 {
 	if (!table || i >= table->fingerprints.size())
 		return 0;
 	return table->fingerprints[i].fdeviceid;
 }
 
-extern "C" uint32_t fp_get_diveid(struct fingerprint_table *table, unsigned int i)
+uint32_t fp_get_diveid(struct fingerprint_table *table, unsigned int i)
 {
 	if (!table || i >= table->fingerprints.size())
 		return 0;

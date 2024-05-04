@@ -4,14 +4,13 @@
 #ifndef SELECTION_H
 #define SELECTION_H
 
+#include <vector>
+#include <QVector>
+
 struct dive;
 
 extern int amount_selected;
 extern struct dive *current_dive;
-
-/*** C and C++ functions ***/
-
-extern "C" {
 
 extern struct dive *first_selected_dive(void);
 extern struct dive *last_selected_dive(void);
@@ -26,13 +25,6 @@ extern void clear_selection(void);
 #if DEBUG_SELECTION_TRACKING
 extern void dump_selection(void);
 #endif
-
-}
-
-/*** C++-only functions ***/
-
-#include <vector>
-#include <QVector>
 
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
 // Set the current dive to "currentDive" and the current dive computer to "currentDc".

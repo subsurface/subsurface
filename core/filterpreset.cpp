@@ -9,7 +9,7 @@ static filter_preset_table &global_table()
 	return *divelog.filter_presets;
 }
 
-extern "C" int filter_presets_count(void)
+int filter_presets_count(void)
 {
 	return (int)global_table().size();
 }
@@ -19,7 +19,7 @@ extern std::string filter_preset_fulltext_query(int preset)
 	return global_table()[preset].data.fullText.originalQuery.toStdString();
 }
 
-extern "C" const char *filter_preset_fulltext_mode(int preset)
+const char *filter_preset_fulltext_mode(int preset)
 {
 	switch (global_table()[preset].data.fulltextStringMode) {
 	default:
@@ -32,7 +32,7 @@ extern "C" const char *filter_preset_fulltext_mode(int preset)
 	}
 }
 
-extern "C" void filter_preset_set_fulltext(struct filter_preset *preset, const char *fulltext, const char *fulltext_string_mode)
+void filter_preset_set_fulltext(struct filter_preset *preset, const char *fulltext, const char *fulltext_string_mode)
 {
 	if (same_string(fulltext_string_mode, "substring"))
 		preset->data.fulltextStringMode = StringFilterMode::SUBSTRING;
@@ -43,17 +43,17 @@ extern "C" void filter_preset_set_fulltext(struct filter_preset *preset, const c
 	preset->data.fullText = fulltext;
 }
 
-extern "C" int filter_preset_constraint_count(int preset)
+int filter_preset_constraint_count(int preset)
 {
 	return (int)global_table()[preset].data.constraints.size();
 }
 
-extern "C" const filter_constraint *filter_preset_constraint(int preset, int constraint)
+const filter_constraint *filter_preset_constraint(int preset, int constraint)
 {
 	return &global_table()[preset].data.constraints[constraint];
 }
 
-extern "C" void filter_preset_set_name(struct filter_preset *preset, const char *name)
+void filter_preset_set_name(struct filter_preset *preset, const char *name)
 {
 	preset->name = name;
 }
@@ -83,13 +83,13 @@ static std::string get_unique_preset_name(const std::string &orig, const struct 
 	return res;
 }
 
-extern "C" void add_filter_preset_to_table(const struct filter_preset *preset, struct filter_preset_table *table)
+void add_filter_preset_to_table(const struct filter_preset *preset, struct filter_preset_table *table)
 {
 	std::string name = get_unique_preset_name(preset->name, *table);
 	filter_preset_add_to_table(name, preset->data, *table);
 }
 
-extern "C" void filter_preset_add_constraint(struct filter_preset *preset, const char *type, const char *string_mode,
+void filter_preset_add_constraint(struct filter_preset *preset, const char *type, const char *string_mode,
 					     const char *range_mode, bool negate, const char *data)
 {
 	preset->data.constraints.emplace_back(type, string_mode, range_mode, negate, data);

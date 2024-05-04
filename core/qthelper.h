@@ -2,26 +2,22 @@
 #ifndef QTHELPER_H
 #define QTHELPER_H
 
+#include "core/pref.h"
+#include "core/gettextfromc.h"
+#include "subsurface-time.h"
+#include <QString>
+#include <optional>
+#include <string>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
-#include "core/pref.h"
-#include "subsurface-time.h"
 
 struct picture;
 struct dive_trip;
 struct xml_params;
-
-// 1) Types
+struct git_info;
+class QImage;
 
 enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYPE};
-
-// 2) Functions visible only to C++ parts
-
-#include <QString>
-#include <optional>
-#include <string>
-#include "core/gettextfromc.h"
-class QImage;
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 #define SKIP_EMPTY Qt::SkipEmptyParts
@@ -111,12 +107,6 @@ std::string move_away(const std::string &path);
 #define TITLE_OR_TEXT(_t, _m) _t, _m
 #endif
 
-// 3) Functions visible to C and C++
-
-extern "C" {
-
-struct git_info;
-
 bool canReachCloudServer(struct git_info *);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
@@ -136,7 +126,5 @@ pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
 void emit_reset_signal();
-
-}
 
 #endif // QTHELPER_H

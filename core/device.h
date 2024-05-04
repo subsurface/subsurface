@@ -6,8 +6,6 @@
 #include <string>
 #include <vector>
 
-extern "C" {
-
 struct divecomputer;
 struct device;
 struct device_table;
@@ -60,8 +58,6 @@ extern int is_default_dive_computer_device(const char *);
 typedef void (*device_callback_t)(const char *name, void *userdata);
 
 extern int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport);
-
-}
 
 // Functions and global variables that are only available to C++ code
 struct device {

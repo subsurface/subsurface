@@ -14,7 +14,7 @@ struct dive *current_dive = NULL;
 int amount_selected;
 static int amount_trips_selected;
 
-extern "C" struct dive *first_selected_dive()
+struct dive *first_selected_dive()
 {
 	int idx;
 	struct dive *d;
@@ -26,7 +26,7 @@ extern "C" struct dive *first_selected_dive()
 	return NULL;
 }
 
-extern "C" struct dive *last_selected_dive()
+struct dive *last_selected_dive()
 {
 	int idx;
 	struct dive *d, *ret = NULL;
@@ -38,7 +38,7 @@ extern "C" struct dive *last_selected_dive()
 	return ret;
 }
 
-extern "C" bool consecutive_selected()
+bool consecutive_selected()
 {
 	struct dive *d;
 	int i;
@@ -63,7 +63,7 @@ extern "C" bool consecutive_selected()
 }
 
 #if DEBUG_SELECTION_TRACKING
-extern "C" void dump_selection(void)
+void dump_selection(void)
 {
 	int i;
 	struct dive *dive;
@@ -232,7 +232,7 @@ void setTripSelection(dive_trip *trip, dive *currentDive)
 	emit diveListNotifier.tripSelected(trip, currentDive);
 }
 
-extern "C" void select_single_dive(dive *d)
+void select_single_dive(dive *d)
 {
 	if (d)
 		setSelection(std::vector<dive *>{ d }, d, -1);
@@ -283,7 +283,7 @@ void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &
 }
 
 // Select the first dive that is visible
-extern "C" void select_newest_visible_dive()
+void select_newest_visible_dive()
 {
 	for (int i = divelog.dives->nr - 1; i >= 0; --i) {
 		dive *d = divelog.dives->dives[i];
@@ -295,7 +295,7 @@ extern "C" void select_newest_visible_dive()
 	select_single_dive(nullptr);
 }
 
-extern "C" void select_trip(struct dive_trip *trip)
+void select_trip(struct dive_trip *trip)
 {
 	if (trip && !trip->selected) {
 		trip->selected = true;
@@ -303,7 +303,7 @@ extern "C" void select_trip(struct dive_trip *trip)
 	}
 }
 
-extern "C" void deselect_trip(struct dive_trip *trip)
+void deselect_trip(struct dive_trip *trip)
 {
 	if (trip && trip->selected) {
 		trip->selected = false;
@@ -311,7 +311,7 @@ extern "C" void deselect_trip(struct dive_trip *trip)
 	}
 }
 
-extern "C" struct dive_trip *single_selected_trip()
+struct dive_trip *single_selected_trip()
 {
 	if (amount_trips_selected != 1)
 		return NULL;

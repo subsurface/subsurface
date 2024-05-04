@@ -5,8 +5,6 @@
 #include "divemode.h"
 #include "units.h"
 
-extern "C" {
-
 struct extra_data;
 struct sample;
 
@@ -74,7 +72,5 @@ extern void make_manually_added_dive_dc(struct divecomputer *dc);
 
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
 extern int match_one_dc(const struct divecomputer *a, const struct divecomputer *b);
-
-}
 
 #endif

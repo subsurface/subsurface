@@ -58,7 +58,7 @@ static bool includes_string_caseinsensitive(const char *haystack, const char *ne
 	return 0;
 }
 
-extern "C" void set_git_update_cb(int(*cb)(const char *))
+void set_git_update_cb(int(*cb)(const char *))
 {
 	update_progress_cb = cb;
 }
@@ -69,7 +69,7 @@ extern "C" void set_git_update_cb(int(*cb)(const char *))
 // proportional - some parts are based on compute performance, some on network speed)
 // they also provide information where in the process we are so we can analyze the log
 // to understand which parts of the process take how much time.
-extern "C" int git_storage_update_progress(const char *text)
+int git_storage_update_progress(const char *text)
 {
 	int ret = 0;
 	if (update_progress_cb)
@@ -241,7 +241,7 @@ static bool exceeded_auth_attempts()
 	return false;
 }
 
-extern "C" int credential_ssh_cb(git_cred **out,
+int credential_ssh_cb(git_cred **out,
 		  const char *,
 		  const char *,
 		  unsigned int allowed_types,
@@ -273,7 +273,7 @@ extern "C" int credential_ssh_cb(git_cred **out,
 	return GIT_EUSER;
 }
 
-extern "C" int credential_https_cb(git_cred **out,
+int credential_https_cb(git_cred **out,
 			const char *,
 			const char *,
 			unsigned int,
@@ -288,7 +288,7 @@ extern "C" int credential_https_cb(git_cred **out,
 	return git_cred_userpass_plaintext_new(out, username, password);
 }
 
-extern "C" int certificate_check_cb(git_cert *cert, int valid, const char *host, void *)
+int certificate_check_cb(git_cert *cert, int valid, const char *host, void *)
 {
 	if (verbose)
 		report_info("git storage: certificate callback for host %s with validity %d\n", host, valid);
@@ -339,7 +339,7 @@ static int update_remote(struct git_info *info, git_remote *origin, git_referenc
 	return 0;
 }
 
-extern "C" int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree);
+int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree);
 
 static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_reference *, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
 {

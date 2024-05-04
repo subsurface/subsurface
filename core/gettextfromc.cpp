@@ -6,7 +6,7 @@
 static QHash<QByteArray, QByteArray> translationCache;
 static QMutex lock;
 
-extern "C" const char *trGettext(const char *text)
+const char *trGettext(const char *text)
 {
 	QByteArray key(text);
 	QMutexLocker l(&lock);

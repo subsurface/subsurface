@@ -52,8 +52,6 @@ struct membufferpp : public membuffer {
 	~membufferpp();
 };
 
-extern "C" {
-
 #ifdef __GNUC__
 #define __printf(x, y) __attribute__((__format__(__printf__, x, y)))
 #else
@@ -112,7 +110,5 @@ extern void put_pressure(struct membuffer *, pressure_t, const char *, const cha
 extern void put_salinity(struct membuffer *, int, const char *, const char *);
 extern void put_degrees(struct membuffer *b, degrees_t value, const char *, const char *);
 extern void put_location(struct membuffer *b, const location_t *, const char *, const char *);
-
-}
 
 #endif

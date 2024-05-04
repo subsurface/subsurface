@@ -7,7 +7,7 @@
 #include <QFileInfo>
 
 struct divelog;
-extern "C" void smartrak_import(const char *file, struct divelog *log);
+void smartrak_import(const char *file, struct divelog *log);
 
 namespace Ui {
 class Smrtk2ssrfcWindow;

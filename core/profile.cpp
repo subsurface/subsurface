@@ -31,7 +31,7 @@
 
 #define MAX_PROFILE_DECO 7200
 
-extern "C" int ascent_velocity(int depth, int avg_depth, int bottom_time);
+int ascent_velocity(int depth, int avg_depth, int bottom_time);
 
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */

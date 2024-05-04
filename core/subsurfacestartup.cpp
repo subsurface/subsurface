@@ -25,7 +25,7 @@ std::string testqml;
  */
 bool imported = false;
 
-extern "C" void print_version()
+void print_version()
 {
 	static bool version_printed = false;
 	if (version_printed)
@@ -43,7 +43,7 @@ extern "C" void print_version()
 	version_printed = true;
 }
 
-extern "C" void print_files()
+void print_files()
 {
 	struct git_info info;
 	std::optional<std::string> filename;
@@ -89,7 +89,7 @@ static void print_help()
 	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)\n\n");
 }
 
-extern "C" void parse_argument(const char *arg)
+void parse_argument(const char *arg)
 {
 	const char *p = arg + 1;
 
@@ -191,7 +191,7 @@ extern "C" void parse_argument(const char *arg)
  * I guess Burma and Liberia should trigger this too. I'm too
  * lazy to look up the territory names, though.
  */
-extern "C" void setup_system_prefs(void)
+void setup_system_prefs(void)
 {
 	const char *env;
 

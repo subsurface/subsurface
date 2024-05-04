@@ -142,8 +142,6 @@ void utf8_string_std(const char *buffer, std::string *res);
 
 void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *state);
 
-extern "C" {
-
 int trimspace(char *buffer);
 void start_match(const char *type, const char *name, char *buffer);
 void nonmatch(const char *type, const char *name, char *buffer);
@@ -161,7 +159,6 @@ int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *
 int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log);
-}
 std::string trimspace(const char *buffer);
 
 #endif

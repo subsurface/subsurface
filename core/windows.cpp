@@ -100,8 +100,6 @@ static std::wstring make_default_filename()
 	return path + L"\\" + filename;
 }
 
-extern "C" {
-
 const char non_standard_system_divelist_default_font[] = "Calibri";
 const char current_system_divelist_default_font[] = "Segoe UI";
 const char *system_divelist_default_font = non_standard_system_divelist_default_font;
@@ -426,6 +424,4 @@ bool subsurface_user_is_root()
 {
 	/* FIXME: Detect admin rights */
 	return false;
-}
-
 }

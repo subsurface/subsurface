@@ -310,7 +310,7 @@ static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *,
 	return doc;
 }
 
-extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
+xsltStylesheetPtr get_stylesheet(const char *name)
 {
 	// this needs to be done only once, but doesn't hurt to run every time
 	xsltSetLoaderFunc(get_stylesheet_doc);
@@ -363,7 +363,7 @@ std::string get_file_name(const char *fileName)
 	return fileInfo.fileName().toStdString();
 }
 
-extern "C" void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName)
+void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName)
 {
 	QString fileName(cfileName);
 	QString newName(path);
@@ -999,7 +999,7 @@ QString get_dive_date_string(timestamp_t when)
 }
 
 // Get local seconds since Epoch from ISO formatted UTC date time + offset string
-extern "C" time_t get_dive_datetime_from_isostring(char *when) {
+time_t get_dive_datetime_from_isostring(char *when) {
 	QDateTime divetime = QDateTime::fromString(when, Qt::ISODate);
 	return (time_t)(divetime.toSecsSinceEpoch());
 }
@@ -1068,7 +1068,7 @@ QString thumbnailFileName(const QString &filename)
 	return thumbnailDir() + hash.result().toHex();
 }
 
-extern "C" char *hashfile_name_string()
+char *hashfile_name_string()
 {
 	return copy_qstring(hashfile_name());
 }
@@ -1199,7 +1199,7 @@ QStringList videoExtensionFilters()
 	return filters;
 }
 
-extern "C" const char *local_file_path(struct picture *picture)
+const char *local_file_path(struct picture *picture)
 {
 	return copy_qstring(localFilePath(picture->filename));
 }
@@ -1386,14 +1386,14 @@ std::optional<std::string> getCloudURL()
 	return filename;
 }
 
-extern "C" void subsurface_mkdir(const char *dir)
+void subsurface_mkdir(const char *dir)
 {
 	QDir directory;
 	if (!directory.mkpath(QString(dir)))
 		report_info("failed to create path %s", dir);
 }
 
-extern "C" enum deco_mode decoMode(bool in_planner)
+enum deco_mode decoMode(bool in_planner)
 {
 	return in_planner ? prefs.planner_deco_mode : prefs.display_deco_mode;
 }
@@ -1553,19 +1553,19 @@ void parse_seabear_header(const char *filename, struct xml_params *params)
 	f.close();
 }
 
-extern "C" void print_qt_versions()
+void print_qt_versions()
 {
 	printf("%s\n", qPrintable(QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion())));
 }
 
 QMutex planLock;
 
-extern "C" void lock_planner()
+void lock_planner()
 {
 	planLock.lock();
 }
 
-extern "C" void unlock_planner()
+void unlock_planner()
 {
 	planLock.unlock();
 }
@@ -1626,7 +1626,7 @@ std::vector<int> get_cylinder_map_for_add(int count, int n)
 	return mapping;
 }
 
-extern "C" void emit_reset_signal()
+void emit_reset_signal()
 {
 	emit diveListNotifier.dataReset();
 }
