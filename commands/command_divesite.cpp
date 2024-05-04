@@ -281,7 +281,7 @@ bool EditDiveSiteLocation::workToBeDone()
 	bool old_ok = has_location(&ds->location);
 	if (ok != old_ok)
 		return true;
-	return ok && !same_location(&value, &ds->location);
+	return ok && value != ds->location;
 }
 
 void EditDiveSiteLocation::redo()

@@ -180,7 +180,7 @@ static void parse_dive_gps(char *line, struct git_parser_state *state)
 			ds = create_dive_site_with_gps(std::string(), &location, state->log->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
-		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
+		if (dive_site_has_gps_location(ds) && ds->location != location) {
 			std::string coords = printGPSCoordsC(&location);
 			// we have a dive site that already has GPS coordinates
 			// note 1: there will be much less copying once the core
