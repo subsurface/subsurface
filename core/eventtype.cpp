@@ -34,7 +34,7 @@ void clear_event_types()
 
 void remember_event_type(const struct event *ev)
 {
-	if (empty_string(ev->name))
+	if (ev->name.empty())
 		return;
 	event_type type(ev);
 	if (std::find(event_types.begin(), event_types.end(), type) != event_types.end())
@@ -104,10 +104,10 @@ static QString event_type_name(QString name, event_severity severity)
 
 QString event_type_name(const event *ev)
 {
-	if (!ev || empty_string(ev->name))
+	if (!ev || ev->name.empty())
 		return QString();
 
-	QString name = QString::fromUtf8(ev->name);
+	QString name = QString::fromStdString(ev->name);
 	return event_type_name(std::move(name), get_event_severity(ev));
 }
 

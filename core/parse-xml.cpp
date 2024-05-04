@@ -439,14 +439,6 @@ static void cylindersize(const char *buffer, volume_t *volume)
 	}
 }
 
-static void event_name(const char *buffer, char *name)
-{
-	std::string trimmed = trimspace(buffer);
-	size_t size = std::min(trimmed.size(), (size_t)MAX_EVENT_NAME);
-	memcpy(name, trimmed.data(), size);
-	name[size] = 0;
-}
-
 // We don't use gauge as a mode, and pscr doesn't exist as a libdc divemode
 static const char *libdc_divemode_text[] = { "oc", "cc", "pscr", "freedive", "gauge"};
 
@@ -764,9 +756,9 @@ static void try_to_fill_fingerprint(const char *name, char *buf, struct parser_s
 static void try_to_fill_event(const char *name, char *buf, struct parser_state *state)
 {
 	start_match("event", name, buf);
-	if (MATCH("event", event_name, state->cur_event.name))
+	if (MATCH("event", utf8_string_std, &state->cur_event.name))
 		return;
-	if (MATCH("name", event_name, state->cur_event.name))
+	if (MATCH("name", utf8_string_std, &state->cur_event.name))
 		return;
 	if (MATCH_STATE("time", eventtime, &state->cur_event.time))
 		return;
@@ -1931,39 +1923,39 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 			state.cur_event.time.seconds = time;
 			switch (ptr[4]) {
 			case 1:
-				strcpy(state.cur_event.name, "Setpoint Manual");
+				state.cur_event.name = "Setpoint Manual"s;
 				state.cur_event.value = ptr[6];
 				sample_start(&state);
 				state.cur_sample->setpoint.mbar = ptr[6] * 10;
 				sample_end(&state);
 				break;
 			case 2:
-				strcpy(state.cur_event.name, "Setpoint Auto");
+				state.cur_event.name = "Setpoint Auto"s;
 				state.cur_event.value = ptr[6];
 				sample_start(&state);
 				state.cur_sample->setpoint.mbar = ptr[6] * 10;
 				sample_end(&state);
 				switch (ptr[7]) {
 				case 0:
-					strcat(state.cur_event.name, " Manual");
+					state.cur_event.name += " Manual"s;
 					break;
 				case 1:
-					strcat(state.cur_event.name, " Auto Start");
+					state.cur_event.name += " Auto Start"s;
 					break;
 				case 2:
-					strcat(state.cur_event.name, " Auto Hypox");
+					state.cur_event.name += " Auto Hypox"s;
 					break;
 				case 3:
-					strcat(state.cur_event.name, " Auto Timeout");
+					state.cur_event.name += " Auto Timeout"s;
 					break;
 				case 4:
-					strcat(state.cur_event.name, " Auto Ascent");
+					state.cur_event.name += " Auto Ascent"s;
 					break;
 				case 5:
-					strcat(state.cur_event.name, " Auto Stall");
+					state.cur_event.name += " Auto Stall"s;
 					break;
 				case 6:
-					strcat(state.cur_event.name, " Auto SP Low");
+					state.cur_event.name += " Auto SP Low"s;
 					break;
 				default:
 					break;
@@ -1971,14 +1963,14 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 				break;
 			case 3:
 				// obsolete
-				strcpy(state.cur_event.name, "OC");
+				state.cur_event.name = "OC"s;
 				break;
 			case 4:
 				// obsolete
-				strcpy(state.cur_event.name, "CCR");
+				state.cur_event.name = "CCR"s;
 				break;
 			case 5:
-				strcpy(state.cur_event.name, "gaschange");
+				state.cur_event.name = "gaschange"s;
 				state.cur_event.type = SAMPLE_EVENT_GASCHANGE2;
 				state.cur_event.value = ptr[7] << 8 ^ ptr[6];
 
@@ -2001,40 +1993,40 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 				}
 				break;
 			case 6:
-				strcpy(state.cur_event.name, "Start");
+				state.cur_event.name = "Start"s;
 				break;
 			case 7:
-				strcpy(state.cur_event.name, "Too Fast");
+				state.cur_event.name = "Too Fast"s;
 				break;
 			case 8:
-				strcpy(state.cur_event.name, "Above Ceiling");
+				state.cur_event.name = "Above Ceiling"s;
 				break;
 			case 9:
-				strcpy(state.cur_event.name, "Toxic");
+				state.cur_event.name = "Toxic"s;
 				break;
 			case 10:
-				strcpy(state.cur_event.name, "Hypox");
+				state.cur_event.name = "Hypox"s;
 				break;
 			case 11:
-				strcpy(state.cur_event.name, "Critical");
+				state.cur_event.name = "Critical"s;
 				break;
 			case 12:
-				strcpy(state.cur_event.name, "Sensor Disabled");
+				state.cur_event.name = "Sensor Disabled"s;
 				break;
 			case 13:
-				strcpy(state.cur_event.name, "Sensor Enabled");
+				state.cur_event.name = "Sensor Enabled"s;
 				break;
 			case 14:
-				strcpy(state.cur_event.name, "O2 Backup");
+				state.cur_event.name = "O2 Backup"s;
 				break;
 			case 15:
-				strcpy(state.cur_event.name, "Peer Down");
+				state.cur_event.name = "Peer Down"s;
 				break;
 			case 16:
-				strcpy(state.cur_event.name, "HS Down");
+				state.cur_event.name = "HS Down"s;
 				break;
 			case 17:
-				strcpy(state.cur_event.name, "Inconsistent");
+				state.cur_event.name = "Inconsistent"s;
 				break;
 			case 18:
 				// key pressed - It should never get in here
@@ -2042,53 +2034,53 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 				break;
 			case 19:
 				// obsolete
-				strcpy(state.cur_event.name, "SCR");
+				state.cur_event.name = "SCR"s;
 				break;
 			case 20:
-				strcpy(state.cur_event.name, "Above Stop");
+				state.cur_event.name = "Above Stop"s;
 				break;
 			case 21:
-				strcpy(state.cur_event.name, "Safety Miss");
+				state.cur_event.name = "Safety Miss"s;
 				break;
 			case 22:
-				strcpy(state.cur_event.name, "Fatal");
+				state.cur_event.name = "Fatal"s;
 				break;
 			case 23:
-				strcpy(state.cur_event.name, "gaschange");
+				state.cur_event.name = "gaschange"s;
 				state.cur_event.type = SAMPLE_EVENT_GASCHANGE2;
 				state.cur_event.value = ptr[7] << 8 ^ ptr[6];
 				event_end(&state);
 				break;
 			case 24:
-				strcpy(state.cur_event.name, "gaschange");
+				state.cur_event.name = "gaschange"s;
 				state.cur_event.type = SAMPLE_EVENT_GASCHANGE2;
 				state.cur_event.value = ptr[7] << 8 ^ ptr[6];
 				event_end(&state);
 				// This is both a mode change and a gas change event
 				// so we encode it as two separate events.
 				event_start(&state);
-				strcpy(state.cur_event.name, "Change Mode");
+				state.cur_event.name = "Change Mode"s;
 				switch (ptr[8]) {
 				case 1:
-					strcat(state.cur_event.name, ": OC");
+					state.cur_event.name += ": OC"s;
 					break;
 				case 2:
-					strcat(state.cur_event.name, ": CCR");
+					state.cur_event.name += ": CCR"s;
 					break;
 				case 3:
-					strcat(state.cur_event.name, ": mCCR");
+					state.cur_event.name += ": mCCR"s;
 					break;
 				case 4:
-					strcat(state.cur_event.name, ": Free");
+					state.cur_event.name += ": Free"s;
 					break;
 				case 5:
-					strcat(state.cur_event.name, ": Gauge");
+					state.cur_event.name += ": Gauge"s;
 					break;
 				case 6:
-					strcat(state.cur_event.name, ": ASCR");
+					state.cur_event.name += ": ASCR"s;
 					break;
 				case 7:
-					strcat(state.cur_event.name, ": PSCR");
+					state.cur_event.name += ": PSCR"s;
 					break;
 				default:
 					break;
@@ -2098,22 +2090,22 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 			case 25:
 				// uint16_t solenoid_bitmap = (ptr[7] << 8) + (ptr[6] << 0);
 				// uint32_t time = (ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0);
-				snprintf(state.cur_event.name, MAX_EVENT_NAME, "CCR O2 solenoid %s", ptr[12] ? "opened": "closed");
+				state.cur_event.name = format_string_std("CCR O2 solenoid %s", ptr[12] ? "opened": "closed");
 				break;
 			case 26:
-				strcpy(state.cur_event.name, "User mark");
+				state.cur_event.name = "User mark"s;
 				break;
 			case 27:
-				snprintf(state.cur_event.name, MAX_EVENT_NAME, "%sGF Switch (%d/%d)", ptr[6] ? "Bailout, ": "", ptr[7], ptr[8]);
+				state.cur_event.name = format_string_std("%sGF Switch (%d/%d)", ptr[6] ? "Bailout, ": "", ptr[7], ptr[8]);
 				break;
 			case 28:
-				strcpy(state.cur_event.name, "Peer Up");
+				state.cur_event.name = "Peer Up"s;
 				break;
 			case 29:
-				strcpy(state.cur_event.name, "HS Up");
+				state.cur_event.name = "HS Up"s;
 				break;
 			case 30:
-				snprintf(state.cur_event.name, MAX_EVENT_NAME, "CNS %d%%", ptr[6]);
+				state.cur_event.name = format_string_std("CNS %d%%", ptr[6]);
 				break;
 			default:
 				// No values above 30 had any description

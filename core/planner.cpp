@@ -86,7 +86,7 @@ int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_
 	int cylinder_idx = 0;
 	struct event *event = dc->events;
 	while (event && event->time.seconds <= time.seconds) {
-		if (!strcmp(event->name, "gaschange"))
+		if (event->name == "gaschange")
 			cylinder_idx = get_cylinder_index(dive, event);
 		event = event->next;
 	}
