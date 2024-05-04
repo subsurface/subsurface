@@ -221,7 +221,7 @@ int get_cylinder_index(const struct dive *dive, const struct event *ev)
 	return best < 0 ? 0 : best;
 }
 
-struct event *get_next_event_mutable(struct event *event, const std::string &name)
+struct event *get_next_event(struct event *event, const std::string &name)
 {
 	if (name.empty())
 		return NULL;
@@ -235,7 +235,7 @@ struct event *get_next_event_mutable(struct event *event, const std::string &nam
 
 const struct event *get_next_event(const struct event *event, const std::string &name)
 {
-	return get_next_event_mutable((struct event *)event, name);
+	return get_next_event((struct event *)event, name);
 }
 
 static int count_events(const struct divecomputer *dc)
