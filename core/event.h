@@ -56,8 +56,7 @@ extern struct event *clone_event_rename(const struct event *ev, const std::strin
 extern bool same_event(const struct event *a, const struct event *b);
 extern enum event_severity get_event_severity(const struct event *ev);
 
-/* Since C doesn't have parameter-based overloading, two versions of get_next_event. */
 extern const struct event *get_next_event(const struct event *event, const std::string &name);
-extern struct event *get_next_event_mutable(struct event *event, const std::string &name);
+extern struct event *get_next_event(struct event *event, const std::string &name);
 
 #endif
