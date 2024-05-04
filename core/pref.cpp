@@ -149,7 +149,7 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
  * These are not real leaks but they plug the holes found by eg.
  * valgrind so you can find the real leaks.
  */
-void free_prefs(void)
+void free_prefs()
 {
 	// nop
 }

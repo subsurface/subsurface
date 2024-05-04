@@ -2274,12 +2274,12 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 }
 
 
-void parse_xml_init(void)
+void parse_xml_init()
 {
 	LIBXML_TEST_VERSION
 }
 
-void parse_xml_exit(void)
+void parse_xml_exit()
 {
 	xmlCleanupParser();
 }

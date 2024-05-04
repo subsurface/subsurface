@@ -163,7 +163,7 @@ int dive_getUniqID()
 	return maxId;
 }
 
-struct dive *alloc_dive(void)
+struct dive *alloc_dive()
 {
 	struct dive *dive;
 
