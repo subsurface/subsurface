@@ -72,7 +72,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divelog.h
 	divelogexportlogic.cpp
 	divelogexportlogic.h
-	divesite-helper.cpp
 	divesite.cpp
 	divesite.h
 	divesitehelpers.cpp

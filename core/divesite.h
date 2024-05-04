@@ -8,7 +8,6 @@
 #include <stdlib.h>
 
 #ifdef __cplusplus
-#include <QString>
 #include <QObject>
 
 struct dive_site
@@ -73,8 +72,7 @@ void clear_dive_site_table(struct dive_site_table *ds_table);
 void move_dive_site_table(struct dive_site_table *src, struct dive_site_table *dst);
 void add_dive_to_dive_site(struct dive *d, struct dive_site *ds);
 struct dive_site *unregister_dive_from_dive_site(struct dive *d);
-
-QString constructLocationTags(taxonomy_data &taxonomy, bool for_maintab);
+std::string constructLocationTags(const taxonomy_data &taxonomy, bool for_maintab);
 
 /* Make pointer-to-dive_site a "Qt metatype" so that we can pass it through QVariants */
 Q_DECLARE_METATYPE(dive_site *);

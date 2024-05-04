@@ -178,7 +178,7 @@ void TabDiveNotes::updateDiveSite(struct dive *d)
 	struct dive_site *ds = d->dive_site;
 	ui.location->setCurrentDiveSite(d);
 	if (ds) {
-		ui.locationTags->setText(constructLocationTags(ds->taxonomy, true));
+		ui.locationTags->setText(QString::fromStdString(constructLocationTags(ds->taxonomy, true)));
 
 		if (ui.locationTags->text().isEmpty() && has_location(&ds->location))
 			ui.locationTags->setText(printGPSCoords(&ds->location));
