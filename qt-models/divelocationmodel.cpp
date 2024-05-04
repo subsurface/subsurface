@@ -294,7 +294,7 @@ bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIn
 	if (!ds || ds == ignoreDs || ds == RECENTLY_ADDED_DIVESITE || !has_location(&ds->location))
 		return false;
 
-	return distance <= 0 ? same_location(&ds->location, &location)
+	return distance <= 0 ? ds->location == location
 			     : (int64_t)get_distance(&ds->location, &location) * 1000 <= distance; // We need 64 bit to represent distances in mm
 }
 

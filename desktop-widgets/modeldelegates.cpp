@@ -475,7 +475,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	if (dive_site_has_gps_location(ds) && currentDiveHasGPS) {
 		// so we are showing a completion and both the current dive site and the completion
 		// have a GPS fix... so let's show the distance
-		if (same_location(&ds->location, &currentLocation)) {
+		if (ds->location == currentLocation) {
 			bottomText += tr(" (same GPS fix)");
 		} else {
 			int distanceMeters = get_distance(&ds->location, &currentLocation);

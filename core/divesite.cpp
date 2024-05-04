@@ -57,7 +57,7 @@ struct dive_site *get_dive_site_by_gps(const location_t *loc, struct dive_site_t
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site (i, ds, ds_table) {
-		if (same_location(loc, &ds->location))
+		if (*loc == ds->location)
 			return ds;
 	}
 	return NULL;
@@ -71,7 +71,7 @@ struct dive_site *get_dive_site_by_gps_and_name(const std::string &name, const l
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site (i, ds, ds_table) {
-		if (same_location(loc, &ds->location) && ds->name == name)
+		if (*loc == ds->location && ds->name == name)
 			return ds;
 	}
 	return NULL;
@@ -273,7 +273,7 @@ static void merge_string(std::string &a, const std::string &b)
 static bool same_dive_site(const struct dive_site *a, const struct dive_site *b)
 {
 	return a->name == b->name
-	    && same_location(&a->location, &b->location)
+	    && a->location == b->location
 	    && a->description == b->description
 	    && a->notes == b->notes;
 }

@@ -138,9 +138,14 @@ static inline bool has_location(const location_t *loc)
 	return loc->lat.udeg || loc->lon.udeg;
 }
 
-static inline bool same_location(const location_t *a, const location_t *b)
+static inline bool operator==(const location_t &a, const location_t &b)
 {
-	return (a->lat.udeg == b->lat.udeg) && (a->lon.udeg == b->lon.udeg);
+	return (a.lat.udeg == b.lat.udeg) && (a.lon.udeg == b.lon.udeg);
+}
+
+static inline bool operator!=(const location_t &a, const location_t &b)
+{
+	return !(a == b);
 }
 
 static inline location_t create_location(double lat, double lon)
