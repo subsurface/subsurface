@@ -233,9 +233,8 @@ QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 	return productList[vendor];
 }
 
-int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &product)
+int DCDeviceData::getMatchingAddress(const QString &, const QString &product)
 {
-	Q_UNUSED(vendor)
 	return connectionListModel.indexOf(product);
 }
 

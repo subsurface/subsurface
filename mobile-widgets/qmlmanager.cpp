@@ -2331,9 +2331,8 @@ void QMLManager::rememberOldStatus()
 	setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
 }
 
-void QMLManager::divesChanged(const QVector<dive *> &dives, DiveField field)
+void QMLManager::divesChanged(const QVector<dive *> &dives, DiveField)
 {
-	Q_UNUSED(field)
 	for (struct dive *d: dives) {
 		report_info("dive #%d changed, cache is %s", d->number, dive_cache_is_valid(d) ? "valid" : "invalidated");
 		// a brute force way to deal with that would of course be to call
