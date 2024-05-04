@@ -10,20 +10,20 @@
 #ifdef __cplusplus
 #include <QString>
 #include <QObject>
-extern "C" {
-#else
-#include <stdbool.h>
-#endif
 
 struct dive_site
 {
-	uint32_t uuid;
-	char *name;
-	struct dive_table dives;
-	location_t location;
-	char *description;
-	char *notes;
-	struct taxonomy_data taxonomy;
+	uint32_t uuid = 0;
+	char *name = nullptr;
+	struct dive_table dives = { 0, 0, nullptr };
+	location_t location = { { 9 }, { 0 } };
+	char *description = nullptr;
+	char *notes = nullptr;
+	taxonomy_data taxonomy;
+	dive_site();
+	dive_site(const char *name);
+	dive_site(const char *name, const location_t *loc);
+	~dive_site();
 };
 
 typedef struct dive_site_table {
@@ -50,11 +50,8 @@ void sort_dive_site_table(struct dive_site_table *ds_table);
 int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_table);
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table);
 struct dive_site *alloc_dive_site();
-struct dive_site *alloc_dive_site_with_name(const char *name);
-struct dive_site *alloc_dive_site_with_gps(const char *name, const location_t *loc);
 int nr_of_dives_at_dive_site(struct dive_site *ds);
 bool is_dive_site_selected(struct dive_site *ds);
-void free_dive_site(struct dive_site *ds);
 int unregister_dive_site(struct dive_site *ds);
 int register_dive_site(struct dive_site *ds);
 void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table);
@@ -77,9 +74,7 @@ void move_dive_site_table(struct dive_site_table *src, struct dive_site_table *d
 void add_dive_to_dive_site(struct dive *d, struct dive_site *ds);
 struct dive_site *unregister_dive_from_dive_site(struct dive *d);
 
-#ifdef __cplusplus
-}
-QString constructLocationTags(struct taxonomy_data *taxonomy, bool for_maintab);
+QString constructLocationTags(taxonomy_data &taxonomy, bool for_maintab);
 
 /* Make pointer-to-dive_site a "Qt metatype" so that we can pass it through QVariants */
 Q_DECLARE_METATYPE(dive_site *);

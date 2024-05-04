@@ -1410,7 +1410,7 @@ static void try_to_fill_trip(dive_trip_t *dive_trip, const char *name, char *buf
 /* We're processing a divesite entry - try to fill the components */
 static void try_to_fill_dive_site(struct parser_state *state, const char *name, char *buf)
 {
-	struct dive_site *ds = state->cur_dive_site;
+	auto &ds = state->cur_dive_site;
 	std::string taxonomy_value;
 
 	start_match("divesite", name, buf);
@@ -1423,7 +1423,7 @@ static void try_to_fill_dive_site(struct parser_state *state, const char *name, 
 		return;
 	if (MATCH("notes", utf8_string, &ds->notes))
 		return;
-	if (MATCH("gps", gps_location, ds))
+	if (MATCH("gps", gps_location, ds.get()))
 		return;
 	if (MATCH("cat.geo", get_index, &state->taxonomy_category))
 		return;
@@ -1436,8 +1436,8 @@ static void try_to_fill_dive_site(struct parser_state *state, const char *name, 
 		if (state->taxonomy_category < 0 || state->taxonomy_origin < 0) {
 			report_error("Warning: taxonomy value without origin or category");
 		} else {
-			taxonomy_set_category(&ds->taxonomy, (taxonomy_category)state->taxonomy_category,
-					      taxonomy_value.c_str(), (taxonomy_origin)state->taxonomy_origin);
+			taxonomy_set_category(ds->taxonomy, (taxonomy_category)state->taxonomy_category,
+					      taxonomy_value, (taxonomy_origin)state->taxonomy_origin);
 		}
 		state->taxonomy_category = state->taxonomy_origin = -1;
 		return;

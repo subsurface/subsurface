@@ -63,7 +63,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 		case LOCATION:
 			return printGPSCoords(&ds->location);
 		case COUNTRY:
-			return taxonomy_get_country(&ds->taxonomy);
+			return QString::fromStdString(taxonomy_get_country(ds->taxonomy));
 		case NEAREST: {
 			// 40075000 is circumference of the earth in meters
 			struct dive_site *nearest_ds =
