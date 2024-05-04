@@ -433,7 +433,7 @@ void add_event_to_dc(struct divecomputer *dc, struct event *ev)
 	*p = ev;
 }
 
-struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name)
+struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const std::string &name)
 {
 	struct event *ev = create_event(time, type, flags, value, name);
 

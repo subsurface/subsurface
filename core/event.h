@@ -6,6 +6,7 @@
 #include "gas.h"
 #include "units.h"
 
+#include <string>
 #include <libdivecomputer/parser.h>
 
 enum event_severity {
@@ -19,7 +20,6 @@ enum event_severity {
  * Events are currently based straight on what libdivecomputer gives us.
  *  We need to wrap these into our own events at some point to remove some of the limitations.
  */
-#define MAX_EVENT_NAME 128
 
 struct event {
 	struct event *next;
@@ -42,7 +42,7 @@ struct event {
 	};
 	bool deleted; // used internally in the parser and in fixup_dive().
 	bool hidden;
-	char name[MAX_EVENT_NAME];
+	std::string name;
 	event();
 	~event();
 };
@@ -51,13 +51,13 @@ extern int event_is_gaschange(const struct event *ev);
 extern bool event_is_divemodechange(const struct event *ev);
 extern struct event *clone_event(const struct event *src_ev);
 extern void free_events(struct event *ev);
-extern struct event *create_event(unsigned int time, int type, int flags, int value, const char *name);
-extern struct event *clone_event_rename(const struct event *ev, const char *name);
+extern struct event *create_event(unsigned int time, int type, int flags, int value, const std::string &name);
+extern struct event *clone_event_rename(const struct event *ev, const std::string &name);
 extern bool same_event(const struct event *a, const struct event *b);
 extern enum event_severity get_event_severity(const struct event *ev);
 
 /* Since C doesn't have parameter-based overloading, two versions of get_next_event. */
-extern const struct event *get_next_event(const struct event *event, const char *name);
-extern struct event *get_next_event_mutable(struct event *event, const char *name);
+extern const struct event *get_next_event(const struct event *event, const std::string &name);
+extern struct event *get_next_event_mutable(struct event *event, const std::string &name);
 
 #endif

@@ -49,9 +49,9 @@ struct event *DiveEventItem::getEventMutable()
 void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pixmaps)
 {
 	event_severity severity = get_event_severity(ev);
-	if (empty_string(ev->name)) {
+	if (ev->name.empty()) {
 		setPixmap(pixmaps.warning);
-	} else if (same_string_caseinsensitive(ev->name, "modechange")) {
+	} else if (same_string_caseinsensitive(ev->name.c_str(), "modechange")) {
 		if (ev->value == 0)
 			setPixmap(pixmaps.bailout);
 		else
@@ -86,8 +86,8 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 		}
 	} else if ((((ev->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
 		    // those are useless internals of the dive computer
-		   same_string_caseinsensitive(ev->name, "heading") ||
-		   (same_string_caseinsensitive(ev->name, "SP change") && ev->time.seconds == 0)) {
+		   same_string_caseinsensitive(ev->name.c_str(), "heading") ||
+		   (same_string_caseinsensitive(ev->name.c_str(), "SP change") && ev->time.seconds == 0)) {
 		// 2 cases:
 		// a) some dive computers have heading in every sample
 		// b) at t=0 we might have an "SP change" to indicate dive type
@@ -102,19 +102,19 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 		setPixmap(pixmaps.warning);
 	} else if (severity == EVENT_SEVERITY_ALARM) {
 		setPixmap(pixmaps.violation);
-	} else if (same_string_caseinsensitive(ev->name, "violation") || // generic libdivecomputer
-		   same_string_caseinsensitive(ev->name, "Safety stop violation")  || // the rest are from the Uemis downloader
-		   same_string_caseinsensitive(ev->name, "pO₂ ascend alarm")  ||
-		   same_string_caseinsensitive(ev->name, "RGT alert")  ||
-		   same_string_caseinsensitive(ev->name, "Dive time alert")  ||
-		   same_string_caseinsensitive(ev->name, "Low battery alert")  ||
-		   same_string_caseinsensitive(ev->name, "Speed alarm")) {
+	} else if (same_string_caseinsensitive(ev->name.c_str(), "violation") || // generic libdivecomputer
+		   same_string_caseinsensitive(ev->name.c_str(), "Safety stop violation")  || // the rest are from the Uemis downloader
+		   same_string_caseinsensitive(ev->name.c_str(), "pO₂ ascend alarm")  ||
+		   same_string_caseinsensitive(ev->name.c_str(), "RGT alert")  ||
+		   same_string_caseinsensitive(ev->name.c_str(), "Dive time alert")  ||
+		   same_string_caseinsensitive(ev->name.c_str(), "Low battery alert")  ||
+		   same_string_caseinsensitive(ev->name.c_str(), "Speed alarm")) {
 		setPixmap(pixmaps.violation);
-	} else if (same_string_caseinsensitive(ev->name, "non stop time") || // generic libdivecomputer
-		   same_string_caseinsensitive(ev->name, "safety stop") ||
-		   same_string_caseinsensitive(ev->name, "safety stop (voluntary)") ||
-		   same_string_caseinsensitive(ev->name, "Tank change suggested") || // Uemis downloader
-		   same_string_caseinsensitive(ev->name, "Marker")) {
+	} else if (same_string_caseinsensitive(ev->name.c_str(), "non stop time") || // generic libdivecomputer
+		   same_string_caseinsensitive(ev->name.c_str(), "safety stop") ||
+		   same_string_caseinsensitive(ev->name.c_str(), "safety stop (voluntary)") ||
+		   same_string_caseinsensitive(ev->name.c_str(), "Tank change suggested") || // Uemis downloader
+		   same_string_caseinsensitive(ev->name.c_str(), "Marker")) {
 		setPixmap(pixmaps.info);
 	} else {
 		// we should do some guessing based on the type / name of the event;
@@ -126,7 +126,7 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 {
 	// we display the event on screen - so translate
-	QString name = gettextFromC::tr(ev->name);
+	QString name = gettextFromC::tr(ev->name.c_str());
 	int value = ev->value;
 	int type = ev->type;
 
@@ -147,19 +147,19 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 					      qPrintable(tr("ΔN₂")), icd_data.dN2 / 10.0,
 					      icd ? ">" : "<", lrint(-icd_data.dHe / 5.0) / 10.0);
 		}
-	} else if (same_string(ev->name, "modechange")) {
+	} else if (ev->name == "modechange") {
 		name += QString(": %1").arg(gettextFromC::tr(divemode_text_ui[ev->value]));
 	} else if (value) {
-		if (type == SAMPLE_EVENT_PO2 && same_string(ev->name, "SP change")) {
+		if (type == SAMPLE_EVENT_PO2 && ev->name == "SP change") {
 			name += QString(": %1bar").arg((double)value / 1000, 0, 'f', 1);
-		} else if (type == SAMPLE_EVENT_CEILING && same_string(ev->name, "planned waypoint above ceiling")) {
+		} else if (type == SAMPLE_EVENT_CEILING && ev->name == "planned waypoint above ceiling") {
 			const char *depth_unit;
 			double depth_value = get_depth_units(value*1000, NULL, &depth_unit);
 			name += QString(": %1%2").arg((int) round(depth_value)).arg(depth_unit);
 		} else {
 			name += QString(": %1").arg(value);
 		}
-	} else if (type == SAMPLE_EVENT_PO2 && same_string(ev->name, "SP change")) {
+	} else if (type == SAMPLE_EVENT_PO2 && ev->name == "SP change") {
 		// this is a bad idea - we are abusing an existing event type that is supposed to
 		// warn of high or low pO₂ and are turning it into a setpoint change event
 		name += ":\n" + tr("Manual switch to OC");
@@ -202,7 +202,7 @@ bool DiveEventItem::isInteresting(const struct dive *d, const struct divecompute
 	 * Don't bother showing those
 	 */
 	const struct sample *first_sample = &dc->sample[0];
-	if (!strcmp(ev->name, "gaschange") &&
+	if (ev->name == "gaschange" &&
 	    (ev->time.seconds == 0 ||
 	     (first_sample && ev->time.seconds == first_sample->time.seconds) ||
 	     depthAtTime(pi, ev->time) < SURFACE_THRESHOLD))
@@ -212,7 +212,7 @@ bool DiveEventItem::isInteresting(const struct dive *d, const struct divecompute
 	 * Some divecomputers give "surface" events that just aren't interesting.
 	 * Like at the beginning or very end of a dive. Well, duh.
 	 */
-	if (!strcmp(ev->name, "surface")) {
+	if (ev->name == "surface") {
 		int time = ev->time.seconds;
 		if (time <= 30 || time + 30 >= (int)dc->duration.seconds)
 			return false;

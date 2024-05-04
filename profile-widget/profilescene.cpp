@@ -556,9 +556,9 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	while (event) {
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
-			if (empty_string(event->name) ||
-			    !(strcmp(event->name, "heading") == 0 ||
-			      (same_string(event->name, "SP change") && event->time.seconds == 0) ||
+			if (event->name.empty() ||
+			    !(event->name == "heading" ||
+			      (event->name == "SP change" && event->time.seconds == 0) ||
 			      event_is_gaschange(event) ||
 			      event->type == SAMPLE_EVENT_BOOKMARK)) {
 				event = event->next;

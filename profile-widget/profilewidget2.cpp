@@ -697,7 +697,7 @@ void ProfileWidget2::hideEventType(DiveEventItem *item)
 {
 	const struct event *event = item->getEvent();
 
-	if (!empty_string(event->name)) {
+	if (!event->name.empty()) {
 		hide_event_type(event);
 
 		replot();
@@ -727,7 +727,7 @@ void ProfileWidget2::removeEvent(DiveEventItem *item)
 
 	if (QMessageBox::question(this, TITLE_OR_TEXT(
 					  tr("Remove the selected event?"),
-					  tr("%1 @ %2:%3").arg(event->name).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
+					  tr("%1 @ %2:%3").arg(QString::fromStdString(event->name)).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
 		Command::removeEvent(mutable_dive(), dc, event);
 }
@@ -786,7 +786,7 @@ void ProfileWidget2::editName(DiveEventItem *item)
 	bool ok;
 	QString newName = QInputDialog::getText(this, tr("Edit name of bookmark"),
 						tr("Custom name:"), QLineEdit::Normal,
-						event->name, &ok);
+						event->name.c_str(), &ok);
 	if (ok && !newName.isEmpty()) {
 		if (newName.length() > 22) { //longer names will display as garbage.
 			QMessageBox lengthWarning;

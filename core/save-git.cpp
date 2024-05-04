@@ -397,11 +397,11 @@ static void save_one_event(struct membuffer *b, struct dive *dive, struct event 
 	show_index(b, ev->type, "type=", "");
 	show_index(b, ev->flags, "flags=", "");
 
-	if (!strcmp(ev->name,"modechange"))
+	if (ev->name == "modechange")
 		show_utf8(b, " divemode=", divemode_text[ev->value], "");
 	else
 		show_index(b, ev->value, "value=", "");
-	show_utf8(b, " name=", ev->name, "");
+	show_utf8(b, " name=", ev->name.c_str(), "");
 	if (event_is_gaschange(ev)) {
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		if (ev->gas.index >= 0)

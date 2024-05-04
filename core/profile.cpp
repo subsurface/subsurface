@@ -221,19 +221,19 @@ int get_cylinder_index(const struct dive *dive, const struct event *ev)
 	return best < 0 ? 0 : best;
 }
 
-struct event *get_next_event_mutable(struct event *event, const char *name)
+struct event *get_next_event_mutable(struct event *event, const std::string &name)
 {
-	if (!name || !*name)
+	if (name.empty())
 		return NULL;
 	while (event) {
-		if (same_string(event->name, name))
+		if (event->name == name)
 			return event;
 		event = event->next;
 	}
 	return event;
 }
 
-const struct event *get_next_event(const struct event *event, const char *name)
+const struct event *get_next_event(const struct event *event, const std::string &name)
 {
 	return get_next_event_mutable((struct event *)event, name);
 }
