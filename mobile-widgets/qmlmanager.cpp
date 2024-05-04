@@ -39,7 +39,6 @@
 #include "core/string-format.h"
 #include "core/pref.h"
 #include "core/selection.h"
-#include "core/ssrf.h"
 #include "core/save-profiledata.h"
 #include "core/settings/qPrefLog.h"
 #include "core/settings/qPrefTechnicalDetails.h"

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /* windows.c */
 /* implements Windows specific functions */
-#include "ssrf.h"
 #include <io.h>
 #include "dive.h"
 #include "device.h"

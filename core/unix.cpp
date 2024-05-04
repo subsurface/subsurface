@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /* unix.c */
 /* implements UNIX specific functions */
-#include "ssrf.h"
 #include "dive.h"
 #include "file.h"
 #include "subsurface-string.h"

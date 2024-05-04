@@ -13,7 +13,6 @@
 #include "core/globals.h"
 #include "core/qt-gui.h"
 #include "core/settings/qPref.h"
-#include "core/ssrf.h"
 
 #ifdef SUBSURFACE_MOBILE
 #include <QApplication>
