@@ -156,12 +156,10 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 }
 
 JNIEXPORT void JNICALL
-Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setUsbDevice(JNIEnv *env,
-	jobject obj,
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setUsbDevice(JNIEnv *,
+	jobject,
 	jobject javaUsbDevice)
 {
-	Q_UNUSED (obj)
-	Q_UNUSED (env)
 	QAndroidJniObject usbDevice(javaUsbDevice);
 	if (usbDevice.isValid()) {
 		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
@@ -175,12 +173,10 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setUsbDevice(JNIEnv *
 }
 
 JNIEXPORT void JNICALL
-Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_restartDownload(JNIEnv *env,
-	jobject obj,
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_restartDownload(JNIEnv *,
+	jobject,
 	jobject javaUsbDevice)
 {
-	Q_UNUSED (obj)
-	Q_UNUSED (env)
 	QAndroidJniObject usbDevice(javaUsbDevice);
 	if (usbDevice.isValid()) {
 		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
