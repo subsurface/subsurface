@@ -423,7 +423,7 @@ void TabDiveInformation::on_atmPressVal_editingFinished()
 
 void TabDiveInformation::updateTextBox(int event) // Either the text box has been edited or the pressure type has changed.
 {                                       // Either way this gets a numeric value and puts it on the text box atmPressVal,
-	pressure_t atmpress = { 0 };    // then stores it in dive->surface_pressure.The undo stack for the text box content is
+	pressure_t atmpress;            // then stores it in dive->surface_pressure.The undo stack for the text box content is
 	double altitudeVal;             // maintained even though two independent events trigger saving the text box contents.
 	dive *currentDive = parent.currentDive;
 	if (currentDive) {

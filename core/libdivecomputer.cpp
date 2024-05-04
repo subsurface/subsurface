@@ -168,7 +168,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 
 	clear_cylinder_table(&dive->cylinders);
 	for (i = 0; i < std::max(ngases, ntanks); i++) {
-		cylinder_t cyl = empty_cylinder;
+		cylinder_t cyl;
 		cyl.cylinder_use = NOT_USED;
 
 		if (i < ngases) {

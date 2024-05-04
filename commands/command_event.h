@@ -42,8 +42,8 @@ protected:
 private:
 	bool workToBeDone() override;
 
-	OwningEventPtr eventToAdd;	// for redo
-	event *eventToRemove;		// for undo
+	std::unique_ptr<event> eventToAdd;	// for redo
+	event *eventToRemove;			// for undo
 };
 
 class AddEventBookmark : public AddEventBase {
@@ -73,8 +73,8 @@ private:
 	void undoit() override;
 	void redoit() override;
 
-	OwningEventPtr eventToAdd;	// for undo and redo
-	event *eventToRemove;		// for undo and redo
+	std::unique_ptr<event> eventToAdd;	// for undo and redo
+	event *eventToRemove;			// for undo and redo
 };
 
 class RemoveEvent : public EventBase {
@@ -86,9 +86,9 @@ private:
 	void redoit() override;
 	void post() const; // Called to fix up dives should a gas-change have happened.
 
-	OwningEventPtr eventToAdd;	// for undo
-	event *eventToRemove;		// for redo
-	int cylinder;			// affected cylinder (if removing gas switch). <0: not a gas switch.
+	std::unique_ptr<event> eventToAdd;	// for undo
+	event *eventToRemove;			// for redo
+	int cylinder;				// affected cylinder (if removing gas switch). <0: not a gas switch.
 };
 
 class AddGasSwitch : public EventBase {
@@ -100,7 +100,7 @@ private:
 	void redoit() override;
 
 	std::vector<int> cylinders; // cylinders that are modified
-	std::vector<OwningEventPtr> eventsToAdd;
+	std::vector<std::unique_ptr<event>> eventsToAdd;
 	std::vector<event *> eventsToRemove;
 };
 

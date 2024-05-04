@@ -17,24 +17,22 @@ typedef struct
 {
 	volume_t size;
 	pressure_t workingpressure;
-	const char *description; /* "LP85", "AL72", "AL80", "HP100+" or whatever */
+	const char *description = nullptr; /* "LP85", "AL72", "AL80", "HP100+" or whatever */
 } cylinder_type_t;
 
 typedef struct
 {
 	cylinder_type_t type;
-	struct gasmix gasmix;
+	struct gasmix gasmix = gasmix_air;
 	pressure_t start, end, sample_start, sample_end;
 	depth_t depth;
-	bool manually_added;
+	bool manually_added = false;
 	volume_t gas_used;
 	volume_t deco_gas_used;
-	enum cylinderuse cylinder_use;
-	bool bestmix_o2;
-	bool bestmix_he;
+	enum cylinderuse cylinder_use = OC_GAS;
+	bool bestmix_o2 = false;
+	bool bestmix_he = false;
 } cylinder_t;
-
-static const cylinder_t empty_cylinder = { { { 0 }, { 0 }, (const char *)0}, { { 0 }, { 0 } } , { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, false, { 0 }, { 0 }, OC_GAS, false, false };
 
 /* Table of cylinders. Attention: this stores cylinders,
  * *not* pointers to cylinders. This has two crucial consequences:

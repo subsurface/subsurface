@@ -497,7 +497,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		bool has_depth = false, has_setpoint = false, has_ndl = false;
 		char *lineptr;
 		int prev_time = 0;
-		cylinder_t cyl = empty_cylinder;
+		cylinder_t cyl;
 
 		struct dive *dive;
 		struct divecomputer *dc;

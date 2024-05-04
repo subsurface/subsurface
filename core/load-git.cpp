@@ -434,7 +434,7 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const std:
 
 static void parse_dive_cylinder(char *line, struct git_parser_state *state)
 {
-	cylinder_t cylinder = empty_cylinder;
+	cylinder_t cylinder;
 
 	for (;;) {
 		char c;
@@ -795,7 +795,7 @@ static int get_divemode(const char *divemodestring) {
 struct parse_event {
 	std::string name;
 	int has_divemode = false;
-	struct event ev = { 0 };
+	struct event ev;
 };
 
 static void parse_event_keyvalue(void *_parse, const char *key, const std::string &value)

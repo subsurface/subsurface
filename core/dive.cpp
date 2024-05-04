@@ -915,7 +915,7 @@ static void fixup_dc_events(struct divecomputer *dc)
 	while (event) {
 		if (event->next && event->next->deleted) {
 			struct event *nextnext = event->next->next;
-			free(event->next);
+			delete event->next;
 			event->next = nextnext;
 		} else {
 			event = event->next;
@@ -2814,7 +2814,7 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 		*evp = NULL;
 		while (event) {
 			struct event *next = event->next;
-			free(event);
+			delete event;
 			event = next;
 		}
 
@@ -2823,7 +2823,7 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 		while ((event = *evp) != NULL) {
 			if (event->time.seconds < t) {
 				*evp = event->next;
-				free(event);
+				delete event;
 			} else {
 				event->time.seconds -= t;
 			}

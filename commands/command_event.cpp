@@ -186,7 +186,7 @@ bool AddGasSwitch::workToBeDone()
 
 void AddGasSwitch::redoit()
 {
-	std::vector<OwningEventPtr> newEventsToAdd;
+	std::vector<std::unique_ptr<event>> newEventsToAdd;
 	std::vector<event *> newEventsToRemove;
 	newEventsToAdd.reserve(eventsToRemove.size());
 	newEventsToRemove.reserve(eventsToAdd.size());
@@ -196,7 +196,7 @@ void AddGasSwitch::redoit()
 		remove_event_from_dc(dc, ev);
 		newEventsToAdd.emplace_back(ev); // take ownership of event
 	}
-	for (OwningEventPtr &ev: eventsToAdd) {
+	for (auto &ev: eventsToAdd) {
 		newEventsToRemove.push_back(ev.get());
 		add_event_to_dc(dc, ev.release()); // return ownership to backend
 	}

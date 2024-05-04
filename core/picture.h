@@ -10,8 +10,8 @@ struct dive;
 
 struct picture {
 	char *filename = nullptr;
-	offset_t offset = { 0 };
-	location_t location = { { 0 }, { 0 } };
+	offset_t offset;
+	location_t location;
 };
 
 /* loop through all pictures of a dive */

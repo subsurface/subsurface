@@ -6,6 +6,19 @@
 #include <string.h>
 #include <stdlib.h>
 
+event::event() : next(nullptr), type(SAMPLE_EVENT_NONE), flags(0), value(0),
+	divemode(OC), deleted(false), hidden(false)
+{
+	memset(name, 0, MAX_EVENT_NAME);
+	/* That overwrites divemode. Is this a smart thing to do? */
+	gas.index = -1;
+	gas.mix = gasmix_air;
+}
+
+event::~event()
+{
+}
+
 int event_is_gaschange(const struct event *ev)
 {
 	return ev->type == SAMPLE_EVENT_GASCHANGE ||
@@ -23,11 +36,8 @@ struct event *clone_event(const struct event *src_ev)
 	if (!src_ev)
 		return NULL;
 
-	size_t size = sizeof(*src_ev) + strlen(src_ev->name) + 1;
-	ev = (struct event*) malloc(size);
-	if (!ev)
-		exit(1);
-	memcpy(ev, src_ev, size);
+	ev = new event;
+	*ev = *src_ev;
 	ev->next = NULL;
 
 	return ev;
@@ -37,7 +47,7 @@ void free_events(struct event *ev)
 {
 	while (ev) {
 		struct event *next = ev->next;
-		free(ev);
+		delete ev;
 		ev = next;
 	}
 }
@@ -46,14 +56,9 @@ struct event *create_event(unsigned int time, int type, int flags, int value, co
 {
 	int gas_index = -1;
 	struct event *ev;
-	unsigned int size, len = strlen(name);
 
-	size = sizeof(*ev) + len + 1;
-	ev = (struct event*) malloc(size);
-	if (!ev)
-		return NULL;
-	memset(ev, 0, size);
-	memcpy(ev->name, name, len);
+	ev = new event;
+	strncpy(ev->name, name, MAX_EVENT_NAME - 1);
 	ev->time.seconds = time;
 	ev->type = type;
 	ev->flags = flags;

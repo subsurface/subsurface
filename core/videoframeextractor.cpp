@@ -70,7 +70,7 @@ void VideoFrameExtractor::processItem(QString originalFilename, QString filename
 
 	// Determine the time where we want to extract the image.
 	// If the duration is < 10 sec, just snap the first frame
-	duration_t position = { 0 };
+	duration_t position;
 	if (duration.seconds > 10) {
 		// We round to second-precision. To be sure that we don't attempt reading past the
 		// video's end, round down by one second.
