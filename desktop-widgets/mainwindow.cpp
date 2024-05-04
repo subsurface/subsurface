@@ -1410,7 +1410,7 @@ void MainWindow::on_actionImportDiveSites_triggered()
 	}
 	// The imported dive sites still have pointers to imported dives - remove them
 	for (int i = 0; i < log.sites->nr; ++i)
-		log.sites->dive_sites[i]->dives.nr = 0;
+		log.sites->dive_sites[i]->dives.clear();
 
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
 
