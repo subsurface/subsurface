@@ -579,12 +579,11 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			while (dp) {
 				if (dp->time != 0) {
 					std::string temp;
-					struct gas_pressures pressures;
 					struct gasmix gasmix = get_cylinder(dive, dp->cylinderid)->gasmix;
 
 					current_divemode = get_current_divemode(&dive->dc, dp->time, &evd, &current_divemode);
 					amb = depth_to_atm(dp->depth.mm, dive);
-					fill_pressures(&pressures, amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix.o2.permille / 1000.0, current_divemode);
+					gas_pressures pressures = fill_pressures(amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix.o2.permille / 1000.0, current_divemode);
 
 					if (pressures.o2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
 						const char *depth_unit;

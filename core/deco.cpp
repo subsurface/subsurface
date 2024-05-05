@@ -445,9 +445,8 @@ void calc_crushing_pressure(struct deco_state *ds, double pressure)
 void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int ccpo2, enum divemode_t divemode, int, bool in_planner)
 {
 	int ci;
-	struct gas_pressures pressures;
 	bool icd = false;
-	fill_pressures(&pressures, pressure - ((in_planner && (decoMode(true) == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
+	gas_pressures pressures = fill_pressures(pressure - ((in_planner && (decoMode(true) == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
 		       gasmix, (double) ccpo2 / 1000.0, divemode);
 
 	for (ci = 0; ci < 16; ci++) {
