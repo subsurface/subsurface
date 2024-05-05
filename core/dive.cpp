@@ -637,13 +637,12 @@ void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 		const struct event *next = get_next_event(ev, "gaschange");
 
 		for (int i = 0; i < dc->samples; i++) {
-			struct gas_pressures pressures;
 			if (next && dc->sample[i].time.seconds >= next->time.seconds) {
 				ev = next;
 				gasmix = get_gasmix_from_event(dive, ev);
 				next = get_next_event(ev, "gaschange");
 			}
-			fill_pressures(&pressures, lrint(calculate_depth_to_mbarf(dc->sample[i].depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
+			gas_pressures pressures = fill_pressures(lrint(calculate_depth_to_mbarf(dc->sample[i].depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
 			if (abs(dc->sample[i].setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
 				dc->sample[i].setpoint.mbar = 0;
 		}

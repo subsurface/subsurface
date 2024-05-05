@@ -1195,7 +1195,7 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 		gasmix = get_gasmix(dive, dc, entry.sec, &evg, gasmix);
 		amb_pressure = depth_to_bar(entry.depth, dive);
 		current_divemode = get_current_divemode(dc, entry.sec, &evd, &current_divemode);
-		fill_pressures(&entry.pressures, amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry.o2pressure.mbar / 1000.0, current_divemode);
+		entry.pressures = fill_pressures(amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry.o2pressure.mbar / 1000.0, current_divemode);
 		fn2 = 1000.0 * entry.pressures.n2 / amb_pressure;
 		fhe = 1000.0 * entry.pressures.he / amb_pressure;
 		if (dc->divemode == PSCR) { // OC pO2 is calulated for PSCR with or without external PO2 monitoring.
