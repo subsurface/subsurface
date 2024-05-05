@@ -482,7 +482,7 @@ void export_HTML(const char *file_name, const char *photos_dir, const bool selec
 {
 	FILE *f;
 
-	struct membufferpp buf;
+	membuffer buf;
 	export_list(&buf, photos_dir, selected_only, list_only);
 
 	f = subsurface_fopen(file_name, "w+");
@@ -498,7 +498,7 @@ void export_translation(const char *file_name)
 {
 	FILE *f;
 
-	struct membufferpp buf;
+	membuffer buf;
 
 	//export translated words here
 	put_format(&buf, "translate={");

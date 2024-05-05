@@ -4,10 +4,6 @@
  * 'membuffer' functions will manage memory allocation avoiding performance
  * issues related to superfluous re-allocation. See 'make_room' function
  *
- * Before using it membuffer struct should be properly initialized
- *
- *     struct membuffer mb = { 0 };
- *
  * Internal membuffer buffer will not by default contain null terminator,
  * adding it should be done using 'mb_cstring' function
  *
@@ -28,10 +24,6 @@
  *	ptr = detach_cstring();
  *
  * where the caller now has a C string and is supposed to free it.
- *
- * Otherwise allocated memory should be freed
- *
- *     free_buffer(&mb);
  */
 #ifndef MEMBUFFER_H
 #define MEMBUFFER_H
@@ -42,14 +34,10 @@
 #include "units.h"
 
 struct membuffer {
-	unsigned int len, alloc;
-	char *buffer;
-};
-
-// In C++ code use this - it automatically frees the buffer, when going out of scope.
-struct membufferpp : public membuffer {
-	membufferpp();
-	~membufferpp();
+	unsigned int len = 0, alloc = 0;
+	char *buffer = nullptr;
+	membuffer();
+	~membuffer();
 };
 
 #ifdef __GNUC__

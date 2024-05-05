@@ -12,12 +12,11 @@
 #include "units.h"
 #include "membuffer.h"
 
-membufferpp::membufferpp()
-	: membuffer{0, 0, nullptr}
+membuffer::membuffer()
 {
 }
 
-membufferpp::~membufferpp()
+membuffer::~membuffer()
 {
 	free_buffer(this);
 }
@@ -144,7 +143,7 @@ void put_vformat(struct membuffer *b, const char *fmt, va_list args)
 /* Silly helper using membuffer */
 char *vformat_string(const char *fmt, va_list args)
 {
-	struct membuffer mb = { 0 };
+	struct membuffer mb;
 	put_vformat(&mb, fmt, args);
 	return detach_cstring(&mb);
 }
@@ -300,7 +299,7 @@ void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_
 char *add_to_string_va(char *old, const char *fmt, va_list args)
 {
 	char *res;
-	struct membufferpp o, n;
+	membuffer o, n;
 	put_vformat(&n, fmt, args);
 	put_format(&o, "%s\n%s", old ?: "", mb_cstring(&n));
 	res = strdup(mb_cstring(&o));

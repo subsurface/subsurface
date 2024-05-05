@@ -90,7 +90,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 	int i;
 	bool need_pagebreak = false;
 
-	struct membufferpp buf;
+	membuffer buf;
 
 	if (plain) {
 		ssrf = "";
@@ -280,7 +280,7 @@ void export_depths(const char *filename, bool selected_only)
 	int i;
 	const char *unit = NULL;
 
-	struct membufferpp buf;
+	membuffer buf;
 
 	for_each_dive (i, dive) {
 		if (selected_only && !dive->selected)
