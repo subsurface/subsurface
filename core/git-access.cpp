@@ -346,7 +346,7 @@ static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_
 	git_commit *local_commit, *remote_commit, *base_commit;
 	git_index *merged_index;
 	git_merge_options merge_options;
-	struct membufferpp msg;
+	membuffer msg;
 
 	if (verbose) {
 		char outlocal[41], outremote[41];
