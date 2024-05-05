@@ -110,7 +110,7 @@ void export_worldmap_HTML(const char *file_name, const bool selected_only)
 {
 	FILE *f;
 
-	struct membufferpp buf;
+	membuffer buf;
 	export_doit(&buf, selected_only);
 
 	f = subsurface_fopen(file_name, "w+");

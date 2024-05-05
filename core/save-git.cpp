@@ -512,7 +512,7 @@ struct dir {
 static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git_oid *id, git_filemode_t mode)
 {
 	int ret;
-	membufferpp uniquename;
+	membuffer uniquename;
 
 	if (mkunique && git_treebuilder_get(dir, name)) {
 		char hex[8];
@@ -559,7 +559,7 @@ static struct dir *new_directory(git_repository *repo, struct dir *parent, struc
 
 static struct dir *mktree(git_repository *repo, struct dir *dir, const char *fmt, ...)
 {
-	membufferpp buf;
+	membuffer buf;
 
 	VA_BUF(&buf, fmt);
 	for (auto &subdir: dir->subdirs) {
@@ -609,7 +609,7 @@ static int blob_insert(git_repository *repo, struct dir *tree, struct membuffer 
 {
 	int ret;
 	git_oid blob_id;
-	struct membufferpp name;
+	membuffer name;
 
 	ret = git_blob_create_frombuffer(&blob_id, repo, b->buffer, b->len);
 	if (ret)
@@ -623,7 +623,7 @@ static int blob_insert(git_repository *repo, struct dir *tree, struct membuffer 
 static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct dive *dive, struct divecomputer *dc, int idx)
 {
 	int ret;
-	struct membufferpp buf;
+	membuffer buf;
 
 	save_dc(&buf, dive, dc);
 	ret = blob_insert(repo, tree, &buf, "Divecomputer%c%03u", idx ? '-' : 0, idx);
@@ -635,7 +635,7 @@ static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct 
 static int save_one_picture(git_repository *repo, struct dir *dir, struct picture *pic)
 {
 	int offset = pic->offset.seconds;
-	struct membufferpp buf;
+	membuffer buf;
 	char sign = '+';
 	unsigned h;
 
@@ -669,7 +669,7 @@ static int save_pictures(git_repository *repo, struct dir *dir, struct dive *div
 static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *dive, struct tm *tm, bool cached_ok)
 {
 	struct divecomputer *dc;
-	struct membufferpp buf, name;
+	membuffer buf, name;
 	struct dir *subdir;
 	int ret, nr;
 
@@ -769,7 +769,7 @@ static int save_trip_description(git_repository *repo, struct dir *dir, dive_tri
 {
 	int ret;
 	git_oid blob_id;
-	struct membufferpp desc;
+	membuffer desc;
 
 	put_format(&desc, "date %04u-%02u-%02u\n",
 		   tm->tm_year, tm->tm_mon + 1, tm->tm_mday);
@@ -809,7 +809,7 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *tr
 	int i;
 	struct dive *dive;
 	struct dir *subdir;
-	struct membufferpp name;
+	membuffer name;
 	timestamp_t first, last;
 
 	/* Create trip directory */
@@ -890,7 +890,7 @@ static void save_one_fingerprint(struct membuffer *b, int i)
 
 static void save_settings(git_repository *repo, struct dir *tree)
 {
-	struct membufferpp b;
+	membuffer b;
 
 	put_format(&b, "version %d\n", DATAFORMAT_VERSION);
 	for (int i = 0; i < nr_devices(divelog.devices); i++)
@@ -918,15 +918,15 @@ static void save_settings(git_repository *repo, struct dir *tree)
 static void save_divesites(git_repository *repo, struct dir *tree)
 {
 	struct dir *subdir;
-	struct membufferpp dirname;
+	membuffer dirname;
 	put_format(&dirname, "01-Divesites");
 	subdir = new_directory(repo, tree, &dirname);
 
 	purge_empty_dive_sites(divelog.sites);
 	for (int i = 0; i < divelog.sites->nr; i++) {
-		struct membufferpp b;
+		membuffer b;
 		struct dive_site *ds = get_dive_site(i, divelog.sites);
-		struct membufferpp site_file_name;
+		membuffer site_file_name;
 		put_format(&site_file_name, "Site-%08x", ds->uuid);
 		show_utf8(&b, "name ", ds->name.c_str(), "\n");
 		show_utf8(&b, "description ", ds->description.c_str(), "\n");
@@ -997,15 +997,15 @@ static void format_one_filter_preset(int preset_id, struct membuffer *b)
 
 static void save_filter_presets(git_repository *repo, struct dir *tree)
 {
-	struct membufferpp dirname;
+	membuffer dirname;
 	struct dir *filter_dir;
 	put_format(&dirname, "02-Filterpresets");
 	filter_dir = new_directory(repo, tree, &dirname);
 
 	for (int i = 0; i < filter_presets_count(); i++)
 	{
-		membufferpp preset_name;
-		membufferpp preset_buffer;
+		membuffer preset_name;
+		membuffer preset_buffer;
 
 		put_format(&preset_name, "Preset-%03d", i);
 		format_one_filter_preset(i, &preset_buffer);
@@ -1221,7 +1221,7 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 		/* Else we do want to create the new branch, but with the old commit */
 		commit = (git_commit *) parent;
 	} else {
-		struct membufferpp commit_msg;
+		membuffer commit_msg;
 
 		create_commit_message(&commit_msg, create_empty);
 		if (git_commit_create_v(&commit_id, info->repo, NULL, author, author, NULL, mb_cstring(&commit_msg), tree, parent != NULL, parent)) {

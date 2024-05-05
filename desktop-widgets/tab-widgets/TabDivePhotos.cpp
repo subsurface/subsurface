@@ -131,7 +131,7 @@ void TabDivePhotos::saveSubtitles()
 				// Only videos have non-zero duration
 				if (!duration)
 					continue;
-				struct membufferpp b;
+				membuffer b;
 				save_subtitles_buffer(&b, parent.currentDive, offset, duration);
 				const char *data = mb_cstring(&b);
 				subtitlefile.open(QIODevice::WriteOnly);

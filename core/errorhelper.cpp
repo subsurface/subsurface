@@ -20,7 +20,7 @@ int verbose;
 
 void report_info(const char *fmt, ...)
 {
-	struct membufferpp buf;
+	membuffer buf;
 
 	VA_BUF(&buf, fmt);
 	strip_mb(&buf);
@@ -31,7 +31,7 @@ static void (*error_cb)(char *) = NULL;
 
 int report_error(const char *fmt, ...)
 {
-	struct membufferpp buf;
+	membuffer buf;
 
 	VA_BUF(&buf, fmt);
 	strip_mb(&buf);

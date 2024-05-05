@@ -95,7 +95,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		char *membuf;
 		xmlDoc *transformed;
 		struct zip_source *s;
-		struct membufferpp mb;
+		membuffer mb;
 		struct xml_params *params = alloc_xml_params();
 
 		/*
