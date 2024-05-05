@@ -558,7 +558,7 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 
 int save_dive(FILE *f, struct dive *dive, bool anonymize)
 {
-	struct membufferpp buf;
+	membuffer buf;
 
 	save_one_dive_to_mb(&buf, dive, anonymize);
 	flush_buffer(&buf, f);
@@ -812,7 +812,7 @@ static void try_to_backup(const char *filename)
 
 int save_dives_logic(const char *filename, const bool select_only, bool anonymize)
 {
-	struct membufferpp buf;
+	membuffer buf;
 	struct git_info info;
 	FILE *f;
 	int error = 0;
@@ -854,7 +854,7 @@ int export_dives_xslt(const char *filename, const bool selected, const int units
 static int export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize)
 {
 	FILE *f;
-	struct membufferpp buf;
+	membuffer buf;
 	xmlDoc *doc;
 	xsltStylesheetPtr xslt = NULL;
 	xmlDoc *transformed;
@@ -933,7 +933,7 @@ static void save_dive_sites_buffer(struct membuffer *b, const struct dive_site *
 
 int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize)
 {
-	struct membufferpp buf;
+	membuffer buf;
 	FILE *f;
 	int error = 0;
 
