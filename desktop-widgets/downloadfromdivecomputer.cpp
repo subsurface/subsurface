@@ -24,7 +24,7 @@
 
 static bool is_vendor_searchable(QString vendor)
 {
-	return vendor == "Uemis" || vendor == "Garmin";
+	return vendor == "Uemis" || vendor == "Garmin" || vendor == "FIT";
 }
 
 DownloadFromDCWidget::DownloadFromDCWidget(const QString &filename, QWidget *parent) : QDialog(parent, QFlag(0)),
@@ -380,8 +380,13 @@ void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
 void DownloadFromDCWidget::on_search_clicked()
 {
 	if (is_vendor_searchable(ui.vendor->currentText())) {
-		QString dialogTitle = ui.vendor->currentText() == "Uemis" ?
-					tr("Find Uemis dive computer") : tr("Find Garmin dive computer");
+		QString dialogTitle;
+		if (ui.vendor->currentText() == "Uemis")
+			dialogTitle = tr("Find Uemis dive computer");
+		else if (ui.vendor->currentText() == "Garmin")
+			dialogTitle = tr("Find Garmin dive computer");
+		else if (ui.vendor->currentText() == "FIT")
+			dialogTitle = tr("Select diretory to import .fit files from");
 		QString dirName = QFileDialog::getExistingDirectory(this,
 								    dialogTitle,
 								    QDir::homePath(),
