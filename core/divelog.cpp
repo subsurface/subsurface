@@ -66,8 +66,7 @@ struct divelog &divelog::operator=(divelog &&log)
 
 void divelog::clear()
 {
-	while (dives->nr)
-		delete_single_dive(0);
+	clear_dive_table(dives);
 	while (sites->nr)
 		delete_dive_site(get_dive_site(0, sites), sites);
 	if (trips->nr != 0) {
