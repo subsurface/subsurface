@@ -321,6 +321,11 @@ brew install autoconf automake libtool pkg-config gettext
 download the macOS installer from https://download.qt.io/official_releases/online_installers
 and use it to install the desired Qt version. At this point the latest Qt5 version is still
 preferred over Qt6.
+￼
+If you plan to deploy your build to an Apple Silicon Mac, you may have better results with
+Bluetooth connections if you install Qt5.15.13. If Qt5.15.13 is not available￼via the
+installer, you can download from https://download.qt.io/official_releases/qt/5.15/5.15.13
+and build using the usual configure, make, and make install.
 
 3) now build Subsurface
 
