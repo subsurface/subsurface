@@ -21,6 +21,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <string>
 
 #include "gettext.h"
 #include "libdivecomputer.h"
@@ -74,7 +75,7 @@ static int debug_round = 0;
 #endif
 
 static const char *param_buff[NUM_PARAM_BUFS];
-static char *reqtxt_path;
+static std::string reqtxt_path;
 static int reqtxt_file;
 static int filenr;
 static int number_of_files;
@@ -248,15 +249,15 @@ static long bytes_available(int file)
 	return result;
 }
 
-static int number_of_file(char *path)
+static int number_of_file(const std::string& path)
 {
 	int count = 0;
 #ifdef WIN32
 	struct _wdirent *entry;
-	_WDIR *dirp = (_WDIR *)subsurface_opendir(path);
+	_WDIR *dirp = (_WDIR *)subsurface_opendir(path.c_str());
 #else
 	struct dirent *entry;
-	DIR *dirp = (DIR *)subsurface_opendir(path);
+	DIR *dirp = (DIR *)subsurface_opendir(path.c_str());
 #endif
 
 	while (dirp) {
@@ -280,16 +281,23 @@ static int number_of_file(char *path)
 	return count;
 }
 
-static char *build_filename(const char *path, const char *name)
+static std::string build_filename(const std::string& path, const std::string& name)
 {
-	int len = strlen(path) + strlen(name) + 2;
-	char *buf = (char *)malloc(len);
+	std::string str;
 #if WIN32
-	snprintf(buf, len, "%s\\%s", path, name);
+	str = path + "\\" + name;
 #else
-	snprintf(buf, len, "%s/%s", path, name);
+	str = path + "/" + name;
 #endif
-	return buf;
+	return str;
+}
+static std::string build_filename(const std::string& path, const char* name)
+{
+	return build_filename(path, std::string(name));
+}
+static std::string build_filename(const char* path, const char* name)
+{
+	return build_filename(std::string(path), std::string(name));
 }
 
 /* Check if there's a req.txt file and get the starting filenr from it.
@@ -298,14 +306,14 @@ static char *build_filename(const char *path, const char *name)
  * code is easy enough */
 static bool uemis_init(const char *path)
 {
-	char *ans_path;
+	std::string ans_path;
 	int i;
 	erase_divespot_mapping();
 	if (!path)
 		return false;
 	/* let's check if this is indeed a Uemis DC */
 	reqtxt_path = build_filename(path, "req.txt");
-	reqtxt_file = subsurface_open(reqtxt_path, O_RDONLY | O_CREAT, 0666);
+	reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDONLY | O_CREAT, 0666);
 	if (reqtxt_file < 0) {
 #if UEMIS_DEBUG & 1
 		fprintf(debugfile, ":EE req.txt can't be opened\n");
@@ -334,7 +342,6 @@ static bool uemis_init(const char *path)
 	 * ANS files. But with a FAT filesystem that isn't possible */
 	ans_path = build_filename(path, "ANS");
 	number_of_files = number_of_file(ans_path);
-	free(ans_path);
 	/* initialize the array in which we collect the answers */
 	for (i = 0; i < NUM_PARAM_BUFS; i++)
 		param_buff[i] = "";
@@ -515,19 +522,13 @@ static void uemis_increased_timeout(int *timeout)
 	usleep(*timeout);
 }
 
-static char *build_ans_path(const char *path, int filenumber)
+static std::string build_ans_path(const std::string& path, int filenumber)
 {
-	char *intermediate, *ans_path, fl[13];
+	std::string intermediate, ans_path;
 
-	/* Clamp filenumber into the 0..9999 range. This is never necessary,
-	 * as filenumber can never go above UEMIS_MAX_FILES, but gcc doesn't
-	 * recognize that and produces very noisy warnings. */
-	filenumber = filenumber < 0 ? 0 : filenumber % 10000;
-
-	snprintf(fl, 13, "ANS%d.TXT", filenumber);
+	std::string fl = std::string("ANS") + std::to_string(filenumber) + ".TXT";
 	intermediate = build_filename(path, "ANS");
 	ans_path = build_filename(intermediate, fl);
-	free(intermediate);
 	return ans_path;
 }
 
@@ -546,11 +547,11 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 	bool found_answer = false;
 	bool more_files = true;
 	bool answer_in_mbuf = false;
-	char *ans_path;
+	std::string ans_path;
 	int ans_file;
 	int timeout = UEMIS_LONG_TIMEOUT;
 
-	reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+	reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDWR | O_CREAT, 0666);
 	if (reqtxt_file < 0) {
 		*error_text = "can't open req.txt";
 #ifdef UEMIS_DEBUG
@@ -599,17 +600,15 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 			return false;
 		progress_bar_fraction = filenr / (double)UEMIS_MAX_FILES;
 		ans_path = build_ans_path(path, filenr - 1);
-		ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
+		ans_file = subsurface_open(ans_path.c_str(), O_RDONLY, 0666);
 		if (ans_file < 0) {
 			*error_text = "can't open Uemis response file";
 #ifdef UEMIS_DEBUG
 			fprintf(debugfile, "open %s failed with errno %d\n", ans_path, errno);
 #endif
-			free(ans_path);
 			return false;
 		}
 		if (read(ans_file, tmp, 100) < 3) {
-			free(ans_path);
 			close(ans_file);
 			return false;
 		}
@@ -625,7 +624,6 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 		pbuf[3] = 0;
 		fprintf(debugfile, "::t %s \"%s...\"\n", ans_path, pbuf);
 #endif
-		free(ans_path);
 		if (tmp[0] == '1') {
 			searching = false;
 			if (tmp[1] == 'm') {
@@ -640,10 +638,10 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 					more_files = false;
 					assembling_mbuf = false;
 				}
-				reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+				reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDWR | O_CREAT, 0666);
 				if (reqtxt_file < 0) {
 					*error_text = "can't open req.txt";
-					report_info("open %s failed with errno %d", reqtxt_path, errno);
+					report_info("open %s failed with errno %d", reqtxt_path.c_str(), errno);
 					return false;
 				}
 				trigger_response(reqtxt_file, "n", filenr, file_length);
@@ -655,10 +653,10 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 				assembling_mbuf = false;
 				searching = false;
 			}
-			reqtxt_file = subsurface_open(reqtxt_path, O_RDWR | O_CREAT, 0666);
+			reqtxt_file = subsurface_open(reqtxt_path.c_str(), O_RDWR | O_CREAT, 0666);
 			if (reqtxt_file < 0) {
 				*error_text = "can't open req.txt";
-				report_info("open %s failed with errno %d", reqtxt_path, errno);
+				report_info("open %s failed with errno %d", reqtxt_path.c_str(), errno);
 				return false;
 			}
 			trigger_response(reqtxt_file, "r", filenr, file_length);
@@ -667,16 +665,14 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 		if (ismulti && more_files && tmp[0] == '1') {
 			int size;
 			ans_path = build_ans_path(path, assembling_mbuf ? filenr - 2 : filenr - 1);
-			ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
+			ans_file = subsurface_open(ans_path.c_str(), O_RDONLY, 0666);
 			if (ans_file < 0) {
 				*error_text = "can't open Uemis response file";
 #ifdef UEMIS_DEBUG
 				fprintf(debugfile, "open %s failed with errno %d\n", ans_path, errno);
 #endif
-				free(ans_path);
 				return false;
 			}
-			free(ans_path);
 			size = bytes_available(ans_file);
 			if (size > 3) {
 				char *buf;
@@ -705,13 +701,12 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 
 		if (!ismulti) {
 			ans_path = build_ans_path(path, filenr - 1);
-			ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
+			ans_file = subsurface_open(ans_path.c_str(), O_RDONLY, 0666);
 			if (ans_file < 0) {
 				*error_text = "can't open Uemis response file";
 #ifdef UEMIS_DEBUG
 				fprintf(debugfile, "open %s failed with errno %d\n", ans_path, errno);
 #endif
-				free(ans_path);
 				return false;
 			}
 
@@ -733,7 +728,6 @@ static bool uemis_get_answer(const char *path, const char *request, int n_param_
 #endif
 			}
 			size -= 3;
-			free(ans_path);
 			close(ans_file);
 		} else {
 			ismulti = false;
@@ -1343,7 +1337,6 @@ const char *do_uemis_import(device_data_t *data)
 #endif
 	uemis_info(translate("gettextFromC", "Initialise communication"));
 	if (!uemis_init(mountpath)) {
-		free(reqtxt_path);
 		return translate("gettextFromC", "Uemis init failed");
 	}
 
@@ -1532,7 +1525,6 @@ bail:
 			result = param_buff[2];
 	}
 	free(deviceid);
-	free(reqtxt_path);
 	if (!data->log->dives->nr)
 		result = translate("gettextFromC", ERR_NO_FILES);
 	return result;
