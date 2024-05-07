@@ -1,7 +1,7 @@
 FROM ubuntu:22.04 as base
 
 RUN apt-get update  && \
-    apt-get upgrade -y && \
+    apt-get dist-upgrade -y && \
     apt-get install -y \
     unzip \
     git \

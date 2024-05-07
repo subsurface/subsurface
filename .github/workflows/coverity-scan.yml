@@ -16,8 +16,8 @@ jobs:
     - name: add build dependencies
       run: |
         apt-get update
-        apt-get upgrade -y
-        DEBIAN_FRONTEND=noninteractive apt-get install -y -q --force-yes \
+        apt-get dist-upgrade -y
+        DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
         wget curl \
         autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
         libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \

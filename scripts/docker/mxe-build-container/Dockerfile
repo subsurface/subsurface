@@ -5,7 +5,7 @@ FROM ubuntu:22.04 as base
 
 # update and set up the packages we need for the build
 RUN apt-get update  &&  \
-    apt-get upgrade -y && \
+    apt-get dist-upgrade -y && \
     apt-get install -y \
     autoconf \
     automake \

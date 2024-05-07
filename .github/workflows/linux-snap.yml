@@ -48,7 +48,7 @@ jobs:
         /snap/bin/lxc profile device add default ccache disk source=${HOME}/.ccache/ path=/root/.ccache
 
         # Patch snapcraft.yaml to enable ccache
-        patch -p1 < .github/workflows/linux-snap.patch
+        patch -p1 < .github/workflows/scripts/linux-snap.patch
 
         # Find common base between master and HEAD to use as cache key.
         git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules origin master
@@ -73,7 +73,7 @@ jobs:
 
     - name: Upload the snap
       if: github.event_name == 'push'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.build-snap.outputs.snap-name }}
         path: ${{ steps.build-snap.outputs.snap-path }}
