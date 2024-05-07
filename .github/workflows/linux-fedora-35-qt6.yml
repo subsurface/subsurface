@@ -12,7 +12,7 @@ on:
     - master
 
 jobs:
-  buildFedoraQt6:
+  build:
     runs-on: ubuntu-latest
     container:
       image: fedora:35

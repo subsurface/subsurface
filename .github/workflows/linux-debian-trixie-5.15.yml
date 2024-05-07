@@ -1,4 +1,4 @@
-name: Ubuntu 22.04 / Qt 5.15--
+name: Debian trixie / Qt 5.15--
 on:
   push:
     paths-ignore:
@@ -12,10 +12,10 @@ on:
     - master
 
 jobs:
-  buildUbuntuJammy:
+  build:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:22.04
+      image: debian:trixie
 
     steps:
     - name: checkout sources
@@ -29,8 +29,8 @@ jobs:
         echo "update distro and install dependencies"
 
         apt-get update
-        apt-get upgrade -y
-        DEBIAN_FRONTEND=noninteractive apt-get install -y -q --force-yes \
+        apt-get dist-upgrade -y
+        DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
         autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
         libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
         libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \

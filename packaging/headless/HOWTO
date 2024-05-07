@@ -18,7 +18,7 @@ trac system.
 * Connected network cable from Laptop (enabled Internet sharing in System Preferences)
 * ifconfig suggests RPi got IP address 192.168.2.2
 * logged in as user pi and pw raspberry
-* sudo apt-get update and upgrade
+* sudo apt-get update and dist-upgrade
 * no space left on device. Hmm. Trying to reboot
 * ah running sudo rasps-config allows to extend the file system
 * sudo dpkg-reconfigure tzdata

@@ -38,7 +38,7 @@ jobs:
     - name: get container ready for build
       run: |
         sudo apt-get update
-        sudo apt-get install -y -q --force-yes \
+        sudo apt-get install -y -q \
         autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
         libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
         libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \

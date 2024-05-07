@@ -12,7 +12,7 @@ on:
     - master
 
 jobs:
-  buildMac:
+  build:
     runs-on: macOS-11
     steps:
     - name: checkout sources
