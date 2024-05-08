@@ -1,0 +1,161 @@
+name: Ubuntu 16.04 / Qt 5.15-- for AppImage
+on:
+  push:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+  pull_request:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:16.04
+
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v1
+
+    - name: get container ready for build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "update distro and install dependencies"
+
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
+        software-properties-common \
+        apt-transport-https \
+        curl
+
+        curl https://apt.kitware.com/keys/kitware-archive-latest.asc | apt-key add -
+
+        add-apt-repository -y ppa:savoury1/qt-5-15
+        add-apt-repository -y ppa:savoury1/kde-5-80
+        add-apt-repository -y ppa:savoury1/gpg
+        add-apt-repository -y ppa:savoury1/ffmpeg4
+        add-apt-repository -y ppa:savoury1/vlc3
+        add-apt-repository -y ppa:savoury1/gcc-9
+        add-apt-repository -y ppa:savoury1/display
+        add-apt-repository -y ppa:savoury1/apt-xenial
+        add-apt-repository -y ppa:savoury1/gtk-xenial
+        add-apt-repository -y ppa:savoury1/qt-xenial
+        add-apt-repository -y ppa:savoury1/kde-xenial
+        add-apt-repository -y ppa:mayeut-github/devtoolset-10
+        add-apt-repository -y 'deb https://apt.kitware.com/ubuntu/ xenial main'
+        apt-get update
+        apt-get dist-upgrade -y
+        DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
+        autoconf automake cmake g++ g++-9 git libcrypto++-dev libcurl4-gnutls-dev \
+        libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
+        libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
+        libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
+        pkg-config qml-module-qtlocation qml-module-qtpositioning \
+        qml-module-qtquick2 qt5-qmake qtchooser qtconnectivity5-dev \
+        qtdeclarative5-dev qtdeclarative5-private-dev qtlocation5-dev \
+        qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
+        qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev
+
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-9
+
+    - name: atomically create or retrieve the build number and assemble release notes
+      id: version_number
+      if: github.event_name == 'push'
+      run: |
+        bash ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
+        version=$(cat release-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
+
+    - name: store dummy version and build number for pull request
+      id: pull_request_version_number
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "100" > latest-subsurface-buildnumber
+        echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
+        version=$(scripts/get-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
+
+    - name: build Subsurface
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building desktop"
+
+        # now build the appimage
+        cd ..
+        bash -e -x subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit
+
+    - name: test desktop build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "running tests for desktop"
+        cd build/tests
+        # xvfb-run --auto-servernum ./TestGitStorage -v2
+        xvfb-run --auto-servernum make check
+
+    - name: build appimage
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "assembling AppImage"
+
+        export QT_PLUGIN_PATH=$QT_ROOT/plugins
+        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+        export QT_DEBUG_PLUGINS=1
+
+        cd ..
+
+        # set up the appdir
+        mkdir -p appdir/usr/plugins/
+
+        # mv googlemaps plugins into place
+        mv appdir/usr/usr/lib/x86_64-linux-gnu/qt5/plugins/* appdir/usr/plugins  # the usr/usr is not a typo, that's where it ends up
+        rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
+        rm -rf appdir/usr/usr appdir/usr/lib/x86_64-linux-gnu/cmake appdir/usr/lib/pkgconfig
+        cp /usr/lib/x86_64-linux-gnu/libssl.so.1.1 appdir/usr/lib/
+        cp /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1 appdir/usr/lib/
+
+        # get the linuxdeployqt tool and run it to collect the libraries
+        curl -L -O "https://github.com/probonopd/linuxdeployqt/releases/download/7/linuxdeployqt-7-x86_64.AppImage"
+        chmod a+x linuxdeployqt*.AppImage
+        unset QTDIR
+        unset QT_PLUGIN_PATH
+        unset LD_LIBRARY_PATH
+        ./linuxdeployqt*.AppImage --appimage-extract-and-run ./appdir/usr/share/applications/*.desktop -exclude-libs=libdbus-1.so.3 -bundle-non-qt-libs -qmldir=./subsurface/stats -qmldir=./subsurface/map-widget/ -verbose=2
+
+        # create the AppImage
+        export VERSION=$(cd subsurface/scripts ; ./get-version) # linuxdeployqt uses this for naming the file
+        ./linuxdeployqt*.AppImage --appimage-extract-and-run ./appdir/usr/share/applications/*.desktop -exclude-libs=libdbus-1.so.3 -appimage -qmldir=./subsurface/stats -qmldir=./subsurface/map-widget/ -verbose=2
+
+        # copy AppImage to the calling VM
+        # with GitHub Actions the /${GITHUB_WORKSPACE} directory is the current working directory at the start of a step
+        cp Subsurface*.AppImage* /${GITHUB_WORKSPACE}/Subsurface.AppImage
+
+    - name: PR artifacts
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@v3
+      with:
+        name: Subsurface-Linux-AppImage-${{ steps.pull_request_version_number.outputs.version }}
+        path: Subsurface.AppImage
+        compression-level: 0
+
+    - name: prepare release artifacts
+      if: github.event_name == 'push'
+      run: |
+        mv Subsurface.AppImage Subsurface-v${{ steps.version_number.outputs.version }}.AppImage
+
+    # only publish a 'release' on push events (those include merging a PR)
+    - name: upload binaries
+      if: github.event_name == 'push'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version_number.outputs.version }}
+        repository: ${{ github.repository_owner }}/nightly-builds
+        token: ${{ secrets.NIGHTLY_BUILDS }}
+        prerelease: false
+        fail_on_unmatched_files: true
+        files: |
+         ./Subsurface*.AppImage
