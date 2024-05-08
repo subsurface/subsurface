@@ -1,4 +1,0 @@
-# Written by ubuntu-advantage-tools
-Package: *
-Pin: release o=UbuntuESM, n=trusty
-Pin-Priority: never

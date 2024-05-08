@@ -6,7 +6,7 @@
 [![Android](https://github.com/subsurface/subsurface/actions/workflows/android.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/android.yml)
 
 [![Snap](https://github.com/subsurface/subsurface/actions/workflows/linux-snap.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-snap.yml)
-[![Ubuntu 14.04 / Qt 5.12 for AppImage--](https://github.com/subsurface/subsurface/actions/workflows/linux-trusty-5.12.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-trusty-5.12.yml)
+[![Ubuntu 16.04 / Qt 5.15-- for AppImage](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-16.04-5.12-appimage.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-16.04-5.12-appimage.yml)
 [![Ubuntu 24.04 / Qt 5.15--](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-24.04-5.15.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-24.04-5.15.yml)
 [![Fedora 35 / Qt 6--](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-35-qt6.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-35-qt6.yml)
 [![Debian trixie / Qt 5.15--](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-trixie-5.15.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-trixie-5.15.yml)
