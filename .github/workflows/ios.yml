@@ -12,7 +12,7 @@ on:
     - master
 
 jobs:
-  iOSBuild:
+  build:
     runs-on: macOS-11
     steps:
     - name: switch to Xcode 11
@@ -24,25 +24,34 @@ jobs:
     - name: setup Homebrew
       run: brew install autoconf automake libtool pkg-config
 
-    - name: set our Qt build
-      run: |
-        env
-        curl -L --output Qt-5.14.1-ios.tar.xz https://f002.backblazeb2.com/file/Subsurface-Travis/Qt-5.14.1-ios.tar.xz
-        mkdir -p $HOME/Qt
-        xzcat Qt-5.14.1-ios.tar.xz | tar -x -C $HOME/Qt -f -
+    - name: checkout Qt resources
+      uses: actions/checkout@v4
+      with:
+        repository: subsurface/qt-ios
+        ref: main
+        path: qt-ios
 
     - name: store dummy version and build number for test build
+      id: version_number
       run: |
         echo "100" > latest-subsurface-buildnumber
         echo "CICD-test-build" > latest-subsurface-buildnumber-extension
+        version=$(scripts/get-version)
+        echo "version=$version" >> $GITHUB_OUTPUT
 
     - name: build Subsurface-mobile for iOS
-      env:
-         SUBSURFACE_REPO_PATH: ${{ github.workspace }}
       run: |
-        cd ${SUBSURFACE_REPO_PATH}/..
-        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}
-        git config --global --add safe.directory ${SUBSURFACE_REPO_PATH}/libdivecomputer
-        ln -s $HOME/Qt Qt
+        cd ${{ github.workspace }}/..
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
+        export IOS_QT=$GITHUB_WORKSPACE/qt-ios
         echo "build for simulator"
         bash -x $GITHUB_WORKSPACE/packaging/ios/build.sh -simulator
+        # We need this in order to be able to access the file and publish it
+        mv build-Subsurface-mobile-Qt_5_14_1_for_iOS-Release/Release-iphonesimulator/Subsurface-mobile.app ${{ github.workspace }}/Subsurface-mobile-${{ steps.version_number.outputs.version }}.app
+
+    - name: publish artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Subsurface-iOS-${{ steps.version_number.outputs.version }}
+        path: Subsurface-mobile-*.app

@@ -11,13 +11,13 @@ on:
     branches:
     - master
 
-env:
-  BUILD_ROOT: ${{ github.workspace }}/..
-  KEYSTORE_FILE: ${{ github.workspace }}/../subsurface.keystore
 
 jobs:
   buildAndroid:
     runs-on: ubuntu-latest
+    env:
+      BUILD_ROOT: ${{ github.workspace }}/..
+      KEYSTORE_FILE: ${{ github.workspace }}/../subsurface.keystore
     container:
       image: docker://subsurface/android-build:5.15.2
 
