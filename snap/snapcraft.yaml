@@ -167,7 +167,7 @@ parts:
       else
         craftctl set grade=devel
       fi
-      craftctl set version=$( scripts/get-version )
+      craftctl set version=$( scripts/get-version.sh )
     override-build: |
       mkdir -p ../install-root
       ln -sf ../../../stage/usr/lib/*/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so \

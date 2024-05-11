@@ -86,9 +86,9 @@ mkdir -p "$BUILDROOT"/subsurface-mobile-build
 pushd "$BUILDROOT"/subsurface-mobile-build
 
 # set up the Subsurface versions by hand
-CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version)
+CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh)
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" > ssrf-version.h
-CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version 4)
+CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 4)
 echo "#define CANONICAL_VERSION_STRING_4 \"$CANONICALVERSION_4\"" >> ssrf-version.h
 popd
 

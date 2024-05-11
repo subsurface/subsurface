@@ -18,23 +18,9 @@ jobs:
     steps:
     - name: checkout sources
       uses: actions/checkout@v4
-
-    - name: atomically create or retrieve the build number and assemble release notes
-      id: version_number
-      if: github.event_name == 'push'
-      run: |
-        bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
-        version=$(cat release-version)
-        echo "version=$version" >> $GITHUB_OUTPUT
-
-    - name: store dummy version and build number for pull request
-      id: pull_request_version_number
-      if: github.event_name == 'pull_request'
-      run: |
-        echo "100" > latest-subsurface-buildnumber
-        echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
-        version=$(scripts/get-version)
-        echo "version=$version" >> $GITHUB_OUTPUT
+      with:
+        fetch-depth: 0
+        submodules: recursive
 
     - name: setup Homebrew
       run: brew install hidapi libxslt libjpg libmtp create-dmg confuse
@@ -45,6 +31,12 @@ jobs:
         repository: subsurface/qt-mac
         ref: main
         path: qt-mac
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
     - name: build Subsurface
       id: build
@@ -70,7 +62,7 @@ jobs:
       if: github.event_name == 'pull_request'
       uses: actions/upload-artifact@v4
       with:
-        name: Subsurface-MacOS-${{ steps.pull_request_version_number.outputs.version }}
+        name: Subsurface-MacOS-${{ steps.version_number.outputs.version }}
         path: ${{ steps.build.outputs.dmg }}
         compression-level: 0
 

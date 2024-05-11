@@ -77,11 +77,11 @@ if [[ $QT_VERSION = 5.15* ]] ; then
 fi
 
 # set up the Subsurface versions by hand
-CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version)
+CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh)
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" > "$SUBSURFACE_SOURCE"/ssrf-version.h
-CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version 4)
+CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 4)
 echo "#define CANONICAL_VERSION_STRING_4 \"$CANONICALVERSION_4\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
-CANONICALVERSION_3=$("$SUBSURFACE_SOURCE"/scripts/get-version 3)
+CANONICALVERSION_3=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 3)
 echo "#define CANONICAL_VERSION_STRING_3 \"$CANONICALVERSION_3\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
 
 BUNDLE=org.subsurface-divelog.subsurface-mobile

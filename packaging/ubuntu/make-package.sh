@@ -20,7 +20,7 @@ cd subsurface
 git submodule init
 git submodule update
 
-GITVERSION=$(bash scripts/get-version 4)
+GITVERSION=$(bash scripts/get-version.sh 4)
 GITDATE=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
 LIBDCREVISION=$(cd libdivecomputer ; git rev-parse --verify HEAD)
 FOLDER="subsurface_$GITVERSION"
