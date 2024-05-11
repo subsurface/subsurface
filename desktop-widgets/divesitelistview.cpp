@@ -97,10 +97,10 @@ void DiveSiteListView::diveSiteAdded(struct dive_site *, int idx)
 
 void DiveSiteListView::diveSiteChanged(struct dive_site *ds, int field)
 {
-	int idx = get_divesite_idx(ds, *divelog.sites);
-	if (idx < 0)
+	size_t idx = divelog.sites->get_idx(ds);
+	if (idx == std::string::npos)
 		return;
-	QModelIndex globalIdx = LocationInformationModel::instance()->index(idx, field);
+	QModelIndex globalIdx = LocationInformationModel::instance()->index(static_cast<int>(idx), field);
 	QModelIndex localIdx = model->mapFromSource(globalIdx);
 	ui.diveSites->view()->scrollTo(localIdx);
 }
