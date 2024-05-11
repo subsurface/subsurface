@@ -46,18 +46,18 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 	}
 }
 
-void MapWidgetHelper::setSelected(const QVector<dive_site *> &divesites)
+void MapWidgetHelper::setSelected(const std::vector<dive_site *> divesites)
 {
-	m_mapLocationModel->setSelected(divesites);
+	m_mapLocationModel->setSelected(std::move(divesites));
 	m_mapLocationModel->selectionChanged();
 	updateEditMode();
 }
 
 void MapWidgetHelper::centerOnSelectedDiveSite()
 {
-	QVector<struct dive_site *> selDS = m_mapLocationModel->selectedDs();
+	std::vector<struct dive_site *> selDS = m_mapLocationModel->selectedDs();
 
-	if (selDS.isEmpty()) {
+	if (selDS.empty()) {
 		// no selected dives with GPS coordinates
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
 		return;
@@ -128,7 +128,7 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 
 	if (!ds_in)
 		return;
-	MapLocation *location = m_mapLocationModel->getMapLocation(ds_in);
+	const MapLocation *location = m_mapLocationModel->getMapLocation(ds_in);
 	if (!location)
 		return;
 	QGeoCoordinate locationCoord = location->coordinate;

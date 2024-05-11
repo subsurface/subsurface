@@ -98,4 +98,11 @@ int index_of_if(const Range &range, Func f)
 	return it == std::end(range) ? -1 : it - std::begin(range);
 }
 
+// Not really appropriate here, but oh my.
+template<typename Range, typename Element>
+bool range_contains(const Range &v, const Element &item)
+{
+	return std::find(v.begin(), v.end(), item) != v.end();
+}
+
 #endif
