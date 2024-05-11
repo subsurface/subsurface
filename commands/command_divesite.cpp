@@ -383,7 +383,7 @@ ApplyGPSFixes::ApplyGPSFixes(const std::vector<DiveAndLocation> &fixes)
 				siteLocations.push_back({ ds, dl.location });
 			}
 		} else {
-			ds = create_dive_site(dl.name.toStdString(), *divelog.sites);
+			ds = divelog.sites->create(dl.name.toStdString());
 			ds->location = dl.location;
 			add_dive_to_dive_site(dl.d, ds);
 			dl.d->dive_site = nullptr; // This will be set on redo()
