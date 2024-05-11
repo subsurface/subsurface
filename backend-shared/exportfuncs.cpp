@@ -318,9 +318,7 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 	if (selectedOnly && DiveFilter::instance()->diveSiteMode()) {
 		// Special case in dive site mode: export all selected dive sites,
 		// not the dive sites of selected dives.
-		QVector<dive_site *> sites = DiveFilter::instance()->filteredDiveSites();
-		res.reserve(sites.size());
-		for (const dive_site *ds: sites)
+		for (auto ds: DiveFilter::instance()->filteredDiveSites())
 			res.push_back(ds);
 		return res;
 	}

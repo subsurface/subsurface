@@ -79,10 +79,10 @@ bool MapWidget::editMode() const
 	return isReady && m_mapHelper->editMode();
 }
 
-void MapWidget::setSelected(const QVector<dive_site *> &divesites)
+void MapWidget::setSelected(std::vector<dive_site *> divesites)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->setSelected(divesites);
+	m_mapHelper->setSelected(std::move(divesites));
 	m_mapHelper->centerOnSelectedDiveSite();
 }
 
@@ -97,7 +97,7 @@ void MapWidget::selectedDivesChanged(const QList<int> &list)
 		if (dive *d = get_dive(idx))
 			selection.push_back(d);
 	}
-	setSelection(selection, current_dive, -1);
+	setSelection(std::move(selection), current_dive, -1);
 }
 
 void MapWidget::coordinatesChanged(struct dive_site *ds, const location_t &location)

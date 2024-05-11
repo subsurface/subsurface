@@ -36,7 +36,7 @@ public:
 	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *ds, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
 	Q_INVOKABLE void selectedLocationChanged(struct dive_site *ds);
-	void setSelected(const QVector<dive_site *> &divesites);
+	void setSelected(const std::vector<dive_site *> divesites);
 	QString pluginObject();
 	bool editMode() const;
 

@@ -22,7 +22,7 @@ private slots:
 private:
 	Ui::DiveSiteListView ui;
 	DiveSiteSortedModel *model;
-	QVector<dive_site *> selectedDiveSites();
+	std::vector<dive_site *> selectedDiveSites();
 	void hideEvent(QHideEvent *) override;
 	void showEvent(QShowEvent *) override;
 };
