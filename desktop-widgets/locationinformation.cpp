@@ -390,7 +390,7 @@ bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, cons
 		// The dive sites are -2 because of the first two items.
 		auto loc1 = (*divelog.sites)[source_left.row() - 2]->location;
 		auto loc2 = (*divelog.sites)[source_right.row() - 2]->location;
-		return get_distance(&loc1, &currentLocation) < get_distance(&loc2, &currentLocation);
+		return get_distance(loc1, currentLocation) < get_distance(loc2, currentLocation);
 	}
 	return source_left.data().toString().compare(source_right.data().toString(), Qt::CaseInsensitive) < 0;
 }
