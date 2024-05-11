@@ -134,8 +134,8 @@ void LocationInformationModel::update()
 
 void LocationInformationModel::diveSiteDiveCountChanged(dive_site *ds)
 {
-	int idx = get_divesite_idx(ds, *divelog.sites);
-	if (idx >= 0)
+	size_t idx = divelog.sites->get_idx(ds);
+	if (idx != std::string::npos)
 		dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
 }
 
@@ -159,16 +159,16 @@ void LocationInformationModel::diveSiteDeleted(struct dive_site *, int idx)
 
 void LocationInformationModel::diveSiteChanged(struct dive_site *ds, int field)
 {
-	int idx = get_divesite_idx(ds, *divelog.sites);
-	if (idx < 0)
+	size_t idx = divelog.sites->get_idx(ds);
+	if (idx == std::string::npos)
 		return;
 	dataChanged(createIndex(idx, field), createIndex(idx, field));
 }
 
 void LocationInformationModel::diveSiteDivesChanged(struct dive_site *ds)
 {
-	int idx = get_divesite_idx(ds, *divelog.sites);
-	if (idx < 0)
+	size_t idx = divelog.sites->get_idx(ds);
+	if (idx == std::string::npos)
 		return;
 	dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
 }

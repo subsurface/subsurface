@@ -199,7 +199,7 @@ void dive_site_end(struct parser_state *state)
 	if (!state->cur_dive_site)
 		return;
 
-	struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, *state->log->sites);
+	struct dive_site *ds = state->log->sites->alloc_or_get(state->cur_dive_site->uuid);
 	merge_dive_site(ds, state->cur_dive_site.get());
 
 	if (verbose > 3)
@@ -470,7 +470,7 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 		struct dive_site *ds = dive->dive_site;
 		if (!ds) {
 			// if the dive doesn't have a dive site, check if there's already a dive site by this name
-			ds = get_dive_site_by_name(trimmed, *state->log->sites);
+			ds = state->log->sites->get_by_name(trimmed);
 		}
 		if (ds) {
 			// we have a dive site, let's hope there isn't a different name
@@ -481,12 +481,12 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				struct dive_site *exact_match = get_dive_site_by_gps_and_name(trimmed, &ds->location, *state->log->sites);
+				struct dive_site *exact_match = state->log->sites->get_by_gps_and_name(trimmed, &ds->location);
 				if (exact_match) {
 					unregister_dive_from_dive_site(dive);
 					add_dive_to_dive_site(dive, exact_match);
 				} else {
-					struct dive_site *newds = create_dive_site(trimmed.c_str(), *state->log->sites);
+					struct dive_site *newds = state->log->sites->create(trimmed.c_str());
 					unregister_dive_from_dive_site(dive);
 					add_dive_to_dive_site(dive, newds);
 					if (has_location(&state->cur_location)) {
@@ -504,7 +504,7 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 				add_dive_to_dive_site(dive, ds);
 			}
 		} else {
-			add_dive_to_dive_site(dive, create_dive_site(trimmed, *state->log->sites));
+			add_dive_to_dive_site(dive, state->log->sites->create(trimmed));
 		}
 	}
 }

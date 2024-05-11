@@ -67,8 +67,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 		case NEAREST: {
 			// 40075000 is circumference of the earth in meters
 			struct dive_site *nearest_ds =
-				get_dive_site_by_gps_proximity(&ds->location,
-				40075000, *divelog.sites);
+				divelog.sites->get_by_gps_proximity(&ds->location, 40075000);
 			if (nearest_ds)
 				return QString::fromStdString(nearest_ds->name);
 			else
@@ -77,8 +76,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 		case DISTANCE: {
 			unsigned int distance = 0;
 			struct dive_site *nearest_ds =
-				get_dive_site_by_gps_proximity(&ds->location,
-				40075000, *divelog.sites);
+				divelog.sites->get_by_gps_proximity(&ds->location, 40075000);
 			if (nearest_ds)
 				distance = get_distance(&ds->location,
 					&nearest_ds->location);
@@ -135,6 +133,6 @@ void DivesiteImportedModel::repopulate(dive_site_table *sites)
 	lastIndex = (int)importedSitesTable->size() - 1; // Qt: the "last index" is negative for empty lists. Insane.
 	checkStates.resize(importedSitesTable->size());
 	for (size_t row = 0; row < importedSitesTable->size(); row++)
-		checkStates[row] = !get_dive_site_by_gps(&(*importedSitesTable)[row]->location, *divelog.sites);
+		checkStates[row] = !divelog.sites->get_by_gps(&(*importedSitesTable)[row]->location);
 	endResetModel();
 }
