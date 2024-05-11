@@ -36,8 +36,8 @@ private:
 
 class ImportDiveSites : public Base {
 public:
-	// Note: the dive site table is consumed after the call it will be empty.
-	ImportDiveSites(struct dive_site_table *sites, const QString &source);
+	// Note: Takes ownership of dive site table
+	ImportDiveSites(dive_site_table sites, const QString &source);
 private:
 	bool workToBeDone() override;
 	void undo() override;

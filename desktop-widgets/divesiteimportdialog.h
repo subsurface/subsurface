@@ -21,7 +21,8 @@ class DivesiteImportedModel;
 class DivesiteImportDialog : public QDialog {
 	Q_OBJECT
 public:
-	DivesiteImportDialog(struct dive_site_table &imported, QString source, QWidget *parent = 0 );
+	// Note: takes ownership of importedd table
+	DivesiteImportDialog(dive_site_table imported, QString source, QWidget *parent = 0);
 	~DivesiteImportDialog();
 
 public
@@ -31,10 +32,10 @@ slots:
 
 private:
 	Ui::DivesiteImportDialog ui;
-	struct dive_site_table importedSites;
+	dive_site_table importedSites;
 	QString importedSource;
 
-	DivesiteImportedModel *divesiteImportedModel;
+	std::unique_ptr<DivesiteImportedModel> divesiteImportedModel;
 };
 
 #endif // DIVESITEIMPORTDIALOG_H

@@ -17,7 +17,7 @@ public:
 	QVariant data(const QModelIndex& index, int role) const;
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 	Qt::ItemFlags flags(const QModelIndex &index) const;
-	void repopulate(dive_site_table_t *sites);
+	void repopulate(dive_site_table *sites);
 public
 slots:
 	void changeSelected(QModelIndex clickedIndex);
@@ -29,7 +29,7 @@ private:
 	int firstIndex;
 	int lastIndex;
 	std::vector<char> checkStates; // char instead of bool to avoid silly pessimization of std::vector.
-	struct dive_site_table *importedSitesTable;
+	dive_site_table *importedSitesTable;
 };
 
 #endif

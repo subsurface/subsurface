@@ -10,20 +10,18 @@
 
 #include <QShortcut>
 
-// Caller keeps ownership of "imported". The contents of "imported" will be consumed on execution of the dialog.
-// On return, it will be empty.
-DivesiteImportDialog::DivesiteImportDialog(struct dive_site_table &imported, QString source, QWidget *parent) : QDialog(parent),
-	importedSource(std::move(source))
+DivesiteImportDialog::DivesiteImportDialog(dive_site_table imported, QString source, QWidget *parent) : QDialog(parent),
+	importedSites(std::move(imported)),
+	importedSource(std::move(source)),
+	divesiteImportedModel(std::make_unique<DivesiteImportedModel>())
 {
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 
-	divesiteImportedModel = new DivesiteImportedModel(this);
-
 	int startingWidth = defaultModelFont().pointSize();
 
 	ui.setupUi(this);
-	ui.importedDivesitesView->setModel(divesiteImportedModel);
+	ui.importedDivesitesView->setModel(divesiteImportedModel.get());
 	ui.importedDivesitesView->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui.importedDivesitesView->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui.importedDivesitesView->horizontalHeader()->setStretchLastSection(true);
@@ -35,45 +33,36 @@ DivesiteImportDialog::DivesiteImportDialog(struct dive_site_table &imported, QSt
 	ui.selectAllButton->setEnabled(true);
 	ui.unselectAllButton->setEnabled(true);
 
-	connect(ui.importedDivesitesView, &QTableView::clicked, divesiteImportedModel, &DivesiteImportedModel::changeSelected);
-	connect(ui.selectAllButton, &QPushButton::clicked, divesiteImportedModel, &DivesiteImportedModel::selectAll);
-	connect(ui.unselectAllButton, &QPushButton::clicked, divesiteImportedModel, &DivesiteImportedModel::selectNone);
+	connect(ui.importedDivesitesView, &QTableView::clicked, divesiteImportedModel.get(), &DivesiteImportedModel::changeSelected);
+	connect(ui.selectAllButton, &QPushButton::clicked, divesiteImportedModel.get(), &DivesiteImportedModel::selectAll);
+	connect(ui.unselectAllButton, &QPushButton::clicked, divesiteImportedModel.get(), &DivesiteImportedModel::selectNone);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 
 	ui.ok->setEnabled(true);
-
-	importedSites = imported;
-	imported.nr = imported.allocated = 0;
-	imported.dive_sites = nullptr;
 
 	divesiteImportedModel->repopulate(&importedSites);
 }
 
 DivesiteImportDialog::~DivesiteImportDialog()
 {
-	clear_dive_site_table(&importedSites);
 }
 
 void DivesiteImportDialog::on_cancel_clicked()
 {
-	clear_dive_site_table(&importedSites);
 	done(-1);
 }
 
 void DivesiteImportDialog::on_ok_clicked()
 {
 	// delete non-selected dive sites
-	struct dive_site_table selectedSites = empty_dive_site_table;
-	for (int i = 0; i < importedSites.nr; i++)
-		if (divesiteImportedModel->data(divesiteImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked) {
-			struct dive_site *newSite = new dive_site;
-			*newSite = *importedSites.dive_sites[i];
-			add_dive_site_to_table(newSite, &selectedSites);
-		}
+	dive_site_table selectedSites;
+	for (size_t i = 0; i < importedSites.size(); i++)  {
+		if (divesiteImportedModel->data(divesiteImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked)
+			selectedSites.push_back(std::move(importedSites[i]));
+	}
+	importedSites.clear(); // Hopefully, the model is not used thereafter!
 
-	Command::importDiveSites(&selectedSites, importedSource);
-	clear_dive_site_table(&selectedSites);
-	clear_dive_site_table(&importedSites);
+	Command::importDiveSites(std::move(selectedSites), importedSource);
 	accept();
 }
