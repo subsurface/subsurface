@@ -401,17 +401,17 @@ EditDiveSiteNew::EditDiveSiteNew(const QString &newName, bool currentDiveOnly) :
 void EditDiveSiteNew::undo()
 {
 	EditDiveSite::undo();
-	int idx = unregister_dive_site(diveSiteToRemove);
-	diveSiteToAdd.reset(diveSiteToRemove);
-	emit diveListNotifier.diveSiteDeleted(diveSiteToRemove, idx); // Inform frontend of removed dive site.
+	auto res = divelog.sites->pull(diveSiteToRemove);
+	diveSiteToAdd = std::move(res.ptr);
+	emit diveListNotifier.diveSiteDeleted(diveSiteToRemove, res.idx); // Inform frontend of removed dive site.
 	diveSiteToRemove = nullptr;
 }
 
 void EditDiveSiteNew::redo()
 {
-	diveSiteToRemove = diveSiteToAdd.get();
-	int idx = register_dive_site(diveSiteToAdd.release()); // Return ownership to backend.
-	emit diveListNotifier.diveSiteAdded(diveSiteToRemove, idx); // Inform frontend of new dive site.
+	auto res = divelog.sites->register_site(std::move(diveSiteToAdd)); // Return ownership to backend.
+	diveSiteToRemove = res.ptr;
+	emit diveListNotifier.diveSiteAdded(diveSiteToRemove, res.idx); // Inform frontend of new dive site.
 	EditDiveSite::redo();
 }
 
@@ -1439,9 +1439,9 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 void EditDive::undo()
 {
 	if (siteToRemove) {
-		int idx = unregister_dive_site(siteToRemove);
-		siteToAdd.reset(siteToRemove);
-		emit diveListNotifier.diveSiteDeleted(siteToRemove, idx); // Inform frontend of removed dive site.
+		auto res = divelog.sites->pull(siteToRemove);
+		siteToAdd = std::move(res.ptr);
+		emit diveListNotifier.diveSiteDeleted(siteToRemove, res.idx); // Inform frontend of removed dive site.
 	}
 
 	exchangeDives();
@@ -1451,9 +1451,9 @@ void EditDive::undo()
 void EditDive::redo()
 {
 	if (siteToAdd) {
-		siteToRemove = siteToAdd.get();
-		int idx = register_dive_site(siteToAdd.release()); // Return ownership to backend.
-		emit diveListNotifier.diveSiteAdded(siteToRemove, idx); // Inform frontend of new dive site.
+		auto res = divelog.sites->register_site(std::move(siteToAdd)); // Return ownership to backend.
+		siteToRemove = res.ptr;
+		emit diveListNotifier.diveSiteAdded(siteToRemove, res.idx); // Inform frontend of new dive site.
 	}
 
 	exchangeDives();

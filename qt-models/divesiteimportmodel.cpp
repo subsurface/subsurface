@@ -50,9 +50,9 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 	if (index.row() + firstIndex > lastIndex)
 		return QVariant();
 
-	struct dive_site *ds = get_dive_site(index.row() + firstIndex, importedSitesTable);
-	if (!ds)
+	if (index.row() < 0 || index.row() >= (int)importedSitesTable->size())
 		return QVariant();
+	struct dive_site *ds = (*importedSitesTable)[index.row()].get();
 
 	// widgets access the model via index.column()
 	// Not supporting QML access via roles
@@ -68,7 +68,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 			// 40075000 is circumference of the earth in meters
 			struct dive_site *nearest_ds =
 				get_dive_site_by_gps_proximity(&ds->location,
-				40075000, divelog.sites);
+				40075000, *divelog.sites);
 			if (nearest_ds)
 				return QString::fromStdString(nearest_ds->name);
 			else
@@ -78,7 +78,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 			unsigned int distance = 0;
 			struct dive_site *nearest_ds =
 				get_dive_site_by_gps_proximity(&ds->location,
-				40075000, divelog.sites);
+				40075000, *divelog.sites);
 			if (nearest_ds)
 				distance = get_distance(&ds->location,
 					&nearest_ds->location);
@@ -126,18 +126,15 @@ Qt::ItemFlags DivesiteImportedModel::flags(const QModelIndex &index) const
 	return QAbstractTableModel::flags(index) | Qt::ItemIsUserCheckable;
 }
 
-void DivesiteImportedModel::repopulate(struct dive_site_table *sites)
+void DivesiteImportedModel::repopulate(dive_site_table *sites)
 {
 	beginResetModel();
 
 	importedSitesTable = sites;
 	firstIndex = 0;
-	lastIndex = importedSitesTable->nr - 1;
-	checkStates.resize(importedSitesTable->nr);
-	for (int row = 0; row < importedSitesTable->nr; row++)
-		if (get_dive_site_by_gps(&importedSitesTable->dive_sites[row]->location, divelog.sites))
-			checkStates[row] = false;
-		else
-			checkStates[row] = true;
+	lastIndex = (int)importedSitesTable->size() - 1; // Qt: the "last index" is negative for empty lists. Insane.
+	checkStates.resize(importedSitesTable->size());
+	for (size_t row = 0; row < importedSitesTable->size(); row++)
+		checkStates[row] = !get_dive_site_by_gps(&(*importedSitesTable)[row]->location, *divelog.sites);
 	endResetModel();
 }

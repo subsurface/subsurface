@@ -118,15 +118,15 @@ const QVector<dive_site *> &MapLocationModel::selectedDs() const
 	return m_selectedDs;
 }
 
-static bool hasVisibleDive(const dive_site *ds)
+static bool hasVisibleDive(const dive_site &ds)
 {
-	return std::any_of(ds->dives.begin(), ds->dives.end(),
+	return std::any_of(ds.dives.begin(), ds.dives.end(),
 			   [] (const dive *d) { return !d->hidden_by_filter; });
 }
 
-static bool hasSelectedDive(const dive_site *ds)
+static bool hasSelectedDive(const dive_site &ds)
 {
-	return std::any_of(ds->dives.begin(), ds->dives.end(),
+	return std::any_of(ds.dives.begin(), ds.dives.end(),
 			   [] (const dive *d) { return d->selected; });
 }
 
@@ -160,18 +160,17 @@ void MapLocationModel::reload(QObject *map)
 	if (diveSiteMode)
 		m_selectedDs = DiveFilter::instance()->filteredDiveSites();
 #endif
-	for (int i = 0; i < divelog.sites->nr; ++i) {
-		struct dive_site *ds = divelog.sites->dive_sites[i];
+	for (const auto &ds: *divelog.sites) {
 		QGeoCoordinate dsCoord;
 
 		// Don't show dive sites of hidden dives, unless we're in dive site edit mode.
-		if (!diveSiteMode && !hasVisibleDive(ds))
+		if (!diveSiteMode && !hasVisibleDive(*ds))
 			continue;
-		if (!dive_site_has_gps_location(ds)) {
+		if (!dive_site_has_gps_location(ds.get())) {
 			// Dive sites that do not have a gps location are not shown in normal mode.
 			// In dive-edit mode, selected sites are placed at the center of the map,
 			// so that the user can drag them somewhere without having to enter coordinates.
-			if (!diveSiteMode || !m_selectedDs.contains(ds) || !map)
+			if (!diveSiteMode || !m_selectedDs.contains(ds.get()) || !map)
 				continue;
 			dsCoord = map->property("center").value<QGeoCoordinate>();
 		} else {
@@ -179,8 +178,8 @@ void MapLocationModel::reload(QObject *map)
 			qreal longitude = ds->location.lon.udeg * 0.000001;
 			dsCoord = QGeoCoordinate(latitude, longitude);
 		}
-		if (!diveSiteMode && hasSelectedDive(ds) && !m_selectedDs.contains(ds))
-			m_selectedDs.append(ds);
+		if (!diveSiteMode && hasSelectedDive(*ds) && !m_selectedDs.contains(ds.get()))
+			m_selectedDs.append(ds.get());
 		QString name = siteMapDisplayName(ds->name);
 		if (!diveSiteMode) {
 			// don't add dive locations with the same name, unless they are
@@ -192,8 +191,8 @@ void MapLocationModel::reload(QObject *map)
 					continue;
 			}
 		}
-		bool selected = m_selectedDs.contains(ds);
-		MapLocation *location = new MapLocation(ds, dsCoord, name, selected);
+		bool selected = m_selectedDs.contains(ds.get());
+		MapLocation *location = new MapLocation(ds.get(), dsCoord, name, selected);
 		m_mapLocations.append(location);
 		if (!diveSiteMode)
 			locationNameMap[name] = location;

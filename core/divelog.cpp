@@ -22,14 +22,12 @@ divelog::divelog() :
 {
 	*dives = empty_dive_table;
 	*trips = empty_trip_table;
-	*sites = empty_dive_site_table;
 }
 
 divelog::~divelog()
 {
 	clear_dive_table(dives);
 	clear_trip_table(trips);
-	clear_dive_site_table(sites);
 	delete dives;
 	delete trips;
 	delete sites;
@@ -40,16 +38,14 @@ divelog::~divelog()
 divelog::divelog(divelog &&log) :
 	dives(new dive_table),
 	trips(new trip_table),
-	sites(new dive_site_table),
+	sites(new dive_site_table(std::move(*log.sites))),
 	devices(new device_table),
 	filter_presets(new filter_preset_table)
 {
 	*dives = empty_dive_table;
 	*trips = empty_trip_table;
-	*sites = empty_dive_site_table;
 	move_dive_table(log.dives, dives);
 	move_trip_table(log.trips, trips);
-	move_dive_site_table(log.sites, sites);
 	*devices = std::move(*log.devices);
 	*filter_presets = std::move(*log.filter_presets);
 }
@@ -58,7 +54,7 @@ struct divelog &divelog::operator=(divelog &&log)
 {
 	move_dive_table(log.dives, dives);
 	move_trip_table(log.trips, trips);
-	move_dive_site_table(log.sites, sites);
+	*sites = std::move(*log.sites);
 	*devices = std::move(*log.devices);
 	*filter_presets = std::move(*log.filter_presets);
 	return *this;
@@ -82,8 +78,7 @@ void divelog::clear()
 {
 	while (dives->nr > 0)
 		delete_single_dive(this, dives->nr - 1);
-	while (sites->nr)
-		delete_dive_site(get_dive_site(0, sites), sites);
+	sites->clear();
 	if (trips->nr != 0) {
 		report_info("Warning: trip table not empty in divelog::clear()!");
 		trips->nr = 0;

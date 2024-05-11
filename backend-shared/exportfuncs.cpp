@@ -325,21 +325,18 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 		return res;
 	}
 
-	res.reserve(divelog.sites->nr);
-	for (int i = 0; i < divelog.sites->nr; i++) {
-		struct dive_site *ds = get_dive_site(i, divelog.sites);
-		if (dive_site_is_empty(ds))
+	res.reserve(divelog.sites->size());
+	for (const auto &ds: *divelog.sites) {
+		if (dive_site_is_empty(ds.get()))
 			continue;
 		if (selectedOnly && !is_dive_site_selected(*ds))
 			continue;
-		res.push_back(ds);
+		res.push_back(ds.get());
 	}
 #else
 	/* walk the dive site list */
-	int i;
-	const struct dive_site *ds;
-	for_each_dive_site (i, ds, divelog.sites)
-		res.push_back(get_dive_site(i, divelog.sites));
+	for (const auto &ds: *divelog.sites)
+		res.push_back(ds.get());
 #endif
 	return res;
 }

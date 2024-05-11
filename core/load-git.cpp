@@ -175,9 +175,9 @@ static void parse_dive_gps(char *line, struct git_parser_state *state)
 
 	parse_location(line, &location);
 	if (!ds) {
-		ds = get_dive_site_by_gps(&location, state->log->sites);
+		ds = get_dive_site_by_gps(&location, *state->log->sites);
 		if (!ds)
-			ds = create_dive_site_with_gps(std::string(), &location, state->log->sites);
+			ds = create_dive_site_with_gps(std::string(), &location, *state->log->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		if (dive_site_has_gps_location(ds) && ds->location != location) {
@@ -221,9 +221,9 @@ static void parse_dive_location(char *, struct git_parser_state *state)
 	std::string name = get_first_converted_string(state);
 	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
 	if (!ds) {
-		ds = get_dive_site_by_name(name, state->log->sites);
+		ds = get_dive_site_by_name(name, *state->log->sites);
 		if (!ds)
-			ds = create_dive_site(name, state->log->sites);
+			ds = create_dive_site(name, *state->log->sites);
 		add_dive_to_dive_site(state->active_dive, ds);
 	} else {
 		// we already had a dive site linked to the dive
@@ -252,7 +252,7 @@ static void parse_dive_notes(char *, struct git_parser_state *state)
 { state->active_dive->notes = get_first_converted_string_c(state); }
 
 static void parse_dive_divesiteid(char *line, struct git_parser_state *state)
-{ add_dive_to_dive_site(state->active_dive, get_dive_site_by_uuid(get_hex(line), state->log->sites)); }
+{ add_dive_to_dive_site(state->active_dive, get_dive_site_by_uuid(get_hex(line), *state->log->sites)); }
 
 /*
  * We can have multiple tags.
@@ -1711,7 +1711,7 @@ static int parse_site_entry(struct git_parser_state *state, const git_tree_entry
 	if (*suffix == '\0')
 		return report_error("Dive site without uuid");
 	uint32_t uuid = strtoul(suffix, NULL, 16);
-	state->active_site = alloc_or_get_dive_site(uuid, state->log->sites);
+	state->active_site = alloc_or_get_dive_site(uuid, *state->log->sites);
 	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read dive site file");
