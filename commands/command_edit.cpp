@@ -346,7 +346,7 @@ QString EditDepth::fieldName() const
 void EditDiveSite::set(struct dive *d, struct dive_site *dive_site) const
 {
 	unregister_dive_from_dive_site(d);
-	add_dive_to_dive_site(d, dive_site);
+	dive_site->add_dive(d);
 }
 
 struct dive_site *EditDiveSite::data(struct dive *d) const
@@ -1478,7 +1478,7 @@ void EditDive::exchangeDives()
 	std::swap(*newDive, *oldDive);
 	fulltext_register(oldDive);
 	if (newDiveSite)
-		add_dive_to_dive_site(oldDive, newDiveSite);
+		newDiveSite->add_dive(oldDive);
 	newDiveSite = oldDiveSite; // remember the previous dive site
 	invalidate_dive_cache(oldDive);
 

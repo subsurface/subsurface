@@ -917,7 +917,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 			if (from_chars(val, divespot_id).ec != std::errc::invalid_argument) {
 				struct dive_site *ds = devdata->log->sites->create("from Uemis"s);
 				unregister_dive_from_dive_site(dive);
-				add_dive_to_dive_site(dive, ds);
+				ds->add_dive(dive);
 				uemis_obj.mark_divelocation(dive->dc.diveid, divespot_id, ds);
 			}
 #if UEMIS_DEBUG & 2
@@ -1099,7 +1099,7 @@ static void get_uemis_divespot(device_data_t *devdata, const std::string &mountp
 	if (it != divespot_mapping.end()) {
 		struct dive_site *ds = it->second;
 		unregister_dive_from_dive_site(dive);
-		add_dive_to_dive_site(dive, ds);
+		ds->add_dive(dive);
 	} else if (nds && !nds->name.empty() && nds->name.find("from Uemis") != std::string::npos) {
 		if (load_uemis_divespot(mountpath, divespot_id)) {
 			/* get the divesite based on the diveid, this should give us
@@ -1113,7 +1113,7 @@ static void get_uemis_divespot(device_data_t *devdata, const std::string &mountp
 			if (ods && nds->uuid != ods->uuid) {
 				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				unregister_dive_from_dive_site(dive);
-				add_dive_to_dive_site(dive, ods);
+				ods->add_dive(dive);
 				devdata->log->sites->pull(nds);
 			}
 			divespot_mapping[divespot_id] = dive->dive_site;

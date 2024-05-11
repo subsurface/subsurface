@@ -703,10 +703,10 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 	put_format(b, "<divesites>\n");
 	for (const auto &ds: *divelog.sites) {
 		/* Don't export empty dive sites */
-		if (dive_site_is_empty(ds.get()))
+		if (ds->is_empty())
 			continue;
 		/* Only write used dive sites when exporting selected dives */
-		if (select_only && !is_dive_site_selected(*ds))
+		if (select_only && !ds->is_selected())
 			continue;
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);

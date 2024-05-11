@@ -178,7 +178,7 @@ static void parse_dive_gps(char *line, struct git_parser_state *state)
 		ds = state->log->sites->get_by_gps(&location);
 		if (!ds)
 			ds = state->log->sites->create(std::string(), &location);
-		add_dive_to_dive_site(state->active_dive, ds);
+		ds->add_dive(state->active_dive);
 	} else {
 		if (dive_site_has_gps_location(ds) && ds->location != location) {
 			std::string coords = printGPSCoordsC(&location);
@@ -224,7 +224,7 @@ static void parse_dive_location(char *, struct git_parser_state *state)
 		ds = state->log->sites->get_by_name(name);
 		if (!ds)
 			ds = state->log->sites->create(name);
-		add_dive_to_dive_site(state->active_dive, ds);
+		ds->add_dive(state->active_dive);
 	} else {
 		// we already had a dive site linked to the dive
 		if (ds->name.empty()) {
@@ -252,7 +252,7 @@ static void parse_dive_notes(char *, struct git_parser_state *state)
 { state->active_dive->notes = get_first_converted_string_c(state); }
 
 static void parse_dive_divesiteid(char *line, struct git_parser_state *state)
-{ add_dive_to_dive_site(state->active_dive, state->log->sites->get_by_uuid(get_hex(line))); }
+{ state->log->sites->get_by_uuid(get_hex(line))->add_dive(state->active_dive); }
 
 /*
  * We can have multiple tags.
