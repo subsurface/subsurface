@@ -810,7 +810,7 @@ static void merge_imported_dives(struct dive_table *table)
 		ds = merged->dive_site;
 		if (ds) {
 			merged->dive_site = NULL;
-			add_dive_to_dive_site(merged, ds);
+			ds->add_dive(merged);
 		}
 		unregister_dive_from_dive_site(prev);
 		unregister_dive_from_dive_site(dive);
@@ -969,7 +969,8 @@ void add_imported_dives(struct divelog *import_log, int flags)
 		d->divetrip = NULL;
 		d->dive_site = NULL;
 		add_dive_to_trip(d, trip);
-		add_dive_to_dive_site(d, site);
+		if (site)
+			site->add_dive(d);
 	}
 
 	/* Remove old dives */
