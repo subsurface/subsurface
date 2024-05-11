@@ -922,7 +922,7 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	put_format(&dirname, "01-Divesites");
 	subdir = new_directory(repo, tree, &dirname);
 
-	purge_empty_dive_sites(*divelog.sites);
+	divelog.sites->purge_empty();
 	for (const auto &ds: *divelog.sites) {
 		membuffer b;
 		membuffer site_file_name;

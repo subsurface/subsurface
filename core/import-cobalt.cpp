@@ -181,7 +181,7 @@ static int cobalt_dive(void *param, int, char **data, char **)
 
 	if (location && location_site) {
 		std::string tmp = std::string(location) + " / " + location_site;
-		add_dive_to_dive_site(state->cur_dive, find_or_create_dive_site_with_name(tmp, *state->log->sites));
+		add_dive_to_dive_site(state->cur_dive, state->log->sites->find_or_create(tmp));
 	}
 	free(location);
 	free(location_site);

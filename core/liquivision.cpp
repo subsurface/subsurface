@@ -190,7 +190,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 
 		/* Store the location only if we have one */
 		if (!location.empty())
-			add_dive_to_dive_site(dive, find_or_create_dive_site_with_name(location, sites));
+			add_dive_to_dive_site(dive, sites.find_or_create(location));
 
 		ptr += len + 4 + place_len;
 
