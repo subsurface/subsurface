@@ -37,6 +37,7 @@ using taxonomy_data = std::vector<taxonomy>;
 
 std::string taxonomy_get_value(const taxonomy_data &t, enum taxonomy_category cat);
 std::string taxonomy_get_country(const taxonomy_data &t);
+std::string taxonomy_get_location_tags(const taxonomy_data &taxonomy, bool for_maintab);
 void taxonomy_set_category(taxonomy_data &t, enum taxonomy_category category, const std::string &value, enum taxonomy_origin origin);
 void taxonomy_set_country(taxonomy_data &t, const std::string &country, enum taxonomy_origin origin);
 
