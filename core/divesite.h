@@ -52,11 +52,11 @@ public:
 	dive_site *get_by_gps(const location_t *) const;
 	dive_site *get_by_gps_and_name(const std::string &name, const location_t *) const;
 	dive_site *get_by_gps_proximity(location_t, int distance) const;
+	dive_site *get_same(const struct dive_site &) const;
 	void purge_empty();
 };
 
 struct dive_site *unregister_dive_from_dive_site(struct dive *d);
-struct dive_site *get_same_dive_site(const struct dive_site &); // accesses global dive list
 
 /* Make pointer-to-dive_site a "Qt metatype" so that we can pass it through QVariants */
 Q_DECLARE_METATYPE(dive_site *);

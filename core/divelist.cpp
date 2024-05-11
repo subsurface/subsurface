@@ -1130,7 +1130,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 
 	/* If dive sites already exist, use the existing versions. */
 	for (auto &new_ds: *import_log->sites) {
-		struct dive_site *old_ds = get_same_dive_site(*new_ds);
+		struct dive_site *old_ds = divelog.sites->get_same(*new_ds);
 
 		/* Check if it dive site is actually used by new dives. */
 		for (j = 0; j < import_log->dives->nr; j++) {
