@@ -1,13 +1,13 @@
 message(STATUS "processing version.cmake")
 execute_process(
-	COMMAND bash ${CMAKE_TOP_SRC_DIR}/../scripts/get-version
+	COMMAND bash ${CMAKE_TOP_SRC_DIR}/../scripts/get-version.sh
 	WORKING_DIRECTORY ${CMAKE_TOP_SRC_DIR}
 	OUTPUT_VARIABLE CANONICAL_VERSION_STRING
 	OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
 execute_process(
-	COMMAND bash ${CMAKE_TOP_SRC_DIR}/../scripts/get-version 4
+	COMMAND bash ${CMAKE_TOP_SRC_DIR}/../scripts/get-version.sh 4
 	WORKING_DIRECTORY ${CMAKE_TOP_SRC_DIR}
 	OUTPUT_VARIABLE CANONICAL_VERSION_STRING_4
 	OUTPUT_STRIP_TRAILING_WHITESPACE

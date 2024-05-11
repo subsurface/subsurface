@@ -15,13 +15,16 @@ jobs:
 
     steps:
     - name: Check out sources
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
 
-    - name: atomically create or retrieve the build number
+    - name: set the version information
       id: version_number
-      if: github.event_name == 'push'
-      run: |
-        bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
     - name: Setup build dependencies
       run: |
@@ -48,5 +51,5 @@ jobs:
     - name: run the launchpad make-package script
       run: |
         cd ..
-        bash -x subsurface/packaging/ubuntu/make-package.sh ${{ github.ref_name }}
+        bash -x subsurface/packaging/ubuntu/make-package.sh $GITHUB_REF_NAME
 

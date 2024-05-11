@@ -1,0 +1,56 @@
+name: Manage the Subsurface CICD versioning
+
+inputs:
+  no-increment:
+    description: Only get the current version, do not increment it even for pushevents
+    default: false
+  nightly-builds-secret:
+    description: The secret to access the nightly builds repository
+    default: ''
+
+outputs:
+  version:
+    description: The long form version number
+    value: ${{ steps.version_number.outputs.version }}
+  buildnr:
+    description: The build number
+    value: ${{ steps.version_number.outputs.buildnr }}
+
+runs:
+  using: composite
+  steps:
+    - name: atomically create or retrieve the build number and assemble release notes for a push (i.e. merging of a pull request)
+      if: github.event_name == 'push' && ! inputs.no-increment
+      env:
+        NIGHTLY_BUILDS_SECRET: ${{ inputs.nightly-builds-secret }}
+      shell: bash
+      run: |
+        if [ -z "$NIGHTLY_BUILDS_SECRET" ]; then
+          echo "Need to supply the secret for the nightly-builds repository to increment the version number, aborting."
+          exit 1
+        fi
+        scripts/get-atomic-buildnr.sh $GITHUB_SHA $NIGHTLY_BUILDS_SECRET "CICD-release"
+
+    - name: retrieve the current version number in all other cases
+      if: github.event_name != 'push' || inputs.no-increment
+      env:
+        PULL_REQUEST_BRANCH: ${{ github.event.pull_request.head.ref }}
+      shell: bash
+      run: |
+        echo "-pull-request-$PULL_REQUEST_BRANCH" > latest-subsurface-buildnumber-extension
+
+    - name: store version number for the build
+      id: version_number
+      env:
+        PULL_REQUEST_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      shell: bash
+      run: |
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        # For a pull request we need the information from the pull request branch
+        # and not from the merge branch on the pull request
+        git checkout $PULL_REQUEST_HEAD_SHA
+        version=$(scripts/get-version.sh)
+        echo "version=$version" >> $GITHUB_OUTPUT
+        buildnr=$(scripts/get-version.sh 1)
+        echo "buildnr=$buildnr" >> $GITHUB_OUTPUT
+        git checkout $GITHUB_SHA

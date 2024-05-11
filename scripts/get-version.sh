@@ -4,7 +4,7 @@
 # consistently name all builds, regardless of OS or desktop/mobile
 #
 # we do need to be able to create three digit (M.m.p) and four digit (M.m.p.c) version strings
-# default is VERSION_EXTENSION version - an argument of '4' or '3' gets you a digits only version string
+# default is VERSION_EXTENSION version - an argument of '1', '3', or '4' gets you a digits only version string
 #
 # we hardcode a base version - this will rarely change
 # (we actually haven't discussed a situation where it would change...)
@@ -16,18 +16,20 @@ croak() {
 	exit 1
 }
 croak_usage() {
-	croak "Usage: $0 [3|4]"
+	croak "Usage: $0 [1|3|4]"
 }
 
 if [[ $# -gt 1 ]] ; then croak_usage ; fi
 if [[ $# -eq 1 ]] ; then
-	if [[ $1 != "4" && $1 != "3" ]] ; then croak_usage ; fi
+	if [[ $1 != "1" && $1 != "3" && $1 != "4" ]] ; then croak_usage ; fi
 	DIGITS="$1"
 fi
 
 # figure out where we are in the file system
-cd "$(dirname "$0")/../"
+pushd "$(dirname "$0")/../" &> /dev/null
 export SUBSURFACE_SOURCE=$PWD
+
+VERSION_EXTENSION="-"
 
 # add the build number to this as 'patch' component
 # if we run in an environment where we are given a build number (e.g. CICD builds)
@@ -38,12 +40,12 @@ if [ ! -f latest-subsurface-buildnumber ] ; then
 	# (b) we have the ability to check out another git repo
 	# in situations where either of these isn't true, it's the caller's
 	# responsibility to ensure that the latest-subsurface-buildnumber file exists
-	if [ ! -d "$SUBSURFACE_SOURCE/nightly-builds" ] ; then
+	if [ ! -d "nightly-builds" ] ; then
 		git clone https://github.com/subsurface/nightly-builds &> /dev/null || croak "failed to clone nightly-builds repo"
 	fi
-	cd nightly-builds
+	pushd nightly-builds &> /dev/null
 	git fetch &> /dev/null
-	LAST_BUILD_BRANCHES=$(git branch -a --sort=-committerdate --list | grep remotes/origin/branch-for | head -50 | cut -d/ -f3)
+	LAST_BUILD_BRANCHES=$(git branch -a --sort=-committerdate --list | grep remotes/origin/branch-for | cut -d/ -f3)
 	for LAST_BUILD_BRANCH in $LAST_BUILD_BRANCHES "not-found" ; do
 		LAST_BUILD_SHA=$(cut -d- -f 3 <<< "$LAST_BUILD_BRANCH")
 		git -C "$SUBSURFACE_SOURCE" merge-base --is-ancestor "$LAST_BUILD_SHA" HEAD && break
@@ -51,30 +53,33 @@ if [ ! -f latest-subsurface-buildnumber ] ; then
 	[ "not-found" = "$LAST_BUILD_BRANCH" ] && croak "can't find a build number for the current working tree"
 	git checkout "$LAST_BUILD_BRANCH" &> /dev/null || croak "failed to check out $LAST_BUILD_BRANCH in nightly-builds"
 	BUILDNR=$(<./latest-subsurface-buildnumber)
-	cd "$SUBSURFACE_SOURCE"
-	VERSION_EXTENSION="-"
+	popd &> /dev/null
 	VERSION_EXTENSION+=$(git log --pretty="oneline" "${LAST_BUILD_SHA}...HEAD" | wc -l | tr -d '[:space:]')
 	VERSION_EXTENSION+="-"
 	[ "$VERSION_EXTENSION" = "-0-" ] && VERSION_EXTENSION="-"
-	VERSION_EXTENSION+="local"
 else
-	# use the files included with the sources
-	BUILDNR=$(<"$SUBSURFACE_SOURCE/latest-subsurface-buildnumber")
-	VERSION_EXTENSION=""
-	if [ -f "$SUBSURFACE_SOURCE/latest-subsurface-buildnumber-extension" ] ; then
-		VERSION_EXTENSION="-"
-		VERSION_EXTENSION+=$(<"$SUBSURFACE_SOURCE/latest-subsurface-buildnumber-extension")
-	fi
+	BUILDNR=$(<"latest-subsurface-buildnumber")
+fi
+
+if [ -f "latest-subsurface-buildnumber-extension" ] ; then
+	VERSION_EXTENSION+=$(<"latest-subsurface-buildnumber-extension")
+else
+	VERSION_EXTENSION+="local"
 fi
 
 COMMITS_SINCE=$(tr -cd "[:digit:]" <<<"$VERSION_EXTENSION")
 [[ -z $COMMITS_SINCE ]] && COMMITS_SINCE="0"
 
-if [[ $DIGITS == "3" ]] ; then
+if [[ $DIGITS == "1" ]] ; then
+	VERSION="${BUILDNR}"
+elif [[ $DIGITS == "3" ]] ; then
 	VERSION="${SUBSURFACE_BASE_VERSION}.${BUILDNR}"
 elif [[ $DIGITS == "4" ]] ; then
 	VERSION="${SUBSURFACE_BASE_VERSION}.${BUILDNR}.${COMMITS_SINCE}"
 else
 	VERSION="${SUBSURFACE_BASE_VERSION}.${BUILDNR}${VERSION_EXTENSION}"
 fi
+
 printf '%s' "$VERSION"
+
+popd &> /dev/null

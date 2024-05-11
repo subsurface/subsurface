@@ -9,7 +9,7 @@
 # To validate relevant files are up to date, you would run the script
 # from command line before tagging:
 #
-#	$ scripts/check-version -cr <tag>
+#	$ scripts/check-version.sh -cr <tag>
 
 set -eu
 #set -x

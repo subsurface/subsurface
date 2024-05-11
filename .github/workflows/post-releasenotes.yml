@@ -1,4 +1,5 @@
-name: Post Release
+name: Post Release Notes
+
 on:
   push:
     paths-ignore:
@@ -6,24 +7,28 @@ on:
     branches:
     - master
 
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   postRelease:
     runs-on: ubuntu-latest
     steps:
     - name: checkout sources
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
     # since we are running this step on a pull request, we will skip build numbers in releases
-    - name: atomically create or retrieve the build number and assemble release notes
-      id: version_number
+    - name: assemble release notes
+      env:
+        EVENT_HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
       run: |
-        bash -x ./scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
-        bash scripts/create-releasenotes.sh ${{ github.event.head_commit.id }}
-        version=$(cat release-version)
-        echo "version=$version" >> $GITHUB_OUTPUT
+        bash scripts/create-releasenotes.sh $EVENT_HEAD_COMMIT_ID
 
     # add a file containing the release title so it can be picked up and listed on the release page on our web server
     - name: publish release

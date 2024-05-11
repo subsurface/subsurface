@@ -11,12 +11,16 @@ jobs:
   setup-build:
     name: Submit build to Fedora COPR
     # this seems backwards, but we want to run under Fedora, but Github doesn' support that
-    container: fedora:latest
     runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
 
     steps:
     - name: Check out sources
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
 
     - name: Setup build dependencies in the Fedora container
       run: |
@@ -28,13 +32,11 @@ jobs:
         git config --global --add safe.directory /__w/subsurface/subsurface
         git config --global --add safe.directory /__w/subsurface/subsurface/libdivecomputer
 
-    - name: atomically create or retrieve the build number
+    - name: set the version information
       id: version_number
-      if: github.event_name == 'push'
-      run: |
-        bash scripts/get-atomic-buildnr.sh ${{ github.sha }} ${{ secrets.NIGHTLY_BUILDS }} "CICD-release"
-        version=$(cat release-version)
-        echo "version=$version" >> $GITHUB_OUTPUT
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
     - name: Setup API token for copr-cli
       env:
@@ -53,5 +55,5 @@ jobs:
     - name: run the copr build script
       run: |
         cd ..
-        bash -x subsurface/packaging/copr/make-package.sh ${{ github.ref_name }}
+        bash -x subsurface/packaging/copr/make-package.sh $GITHUB_REF_NAME
 
