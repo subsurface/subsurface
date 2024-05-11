@@ -19,7 +19,6 @@ extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 
 struct dive_site;
-struct dive_site_table;
 struct dive_table;
 struct dive_trip;
 struct full_text_cache;

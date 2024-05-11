@@ -423,12 +423,12 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 		concat(str, ", ", table.get_string_view(1)); // Locality
 	concat(str, ", ", site);
 
-	ds = get_dive_site_by_name(str, log->sites);
+	ds = get_dive_site_by_name(str, *log->sites);
 	if (!ds) {
 		if (!has_location(&loc))
-			ds = create_dive_site(str, log->sites);
+			ds = create_dive_site(str, *log->sites);
 		else
-			ds = create_dive_site_with_gps(str, &loc, log->sites);
+			ds = create_dive_site_with_gps(str, &loc, *log->sites);
 	}
 	*location = ds;
 

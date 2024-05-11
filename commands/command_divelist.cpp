@@ -142,9 +142,9 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	divesAndSitesToDelete.dives.clear();
 
 	for (dive_site *ds: divesAndSitesToDelete.sites) {
-		int idx = unregister_dive_site(ds);
-		sitesToAdd.emplace_back(ds);
-		emit diveListNotifier.diveSiteDeleted(ds, idx);
+		auto res = divelog.sites->pull(ds);
+		sitesToAdd.push_back(std::move(res.ptr));
+		emit diveListNotifier.diveSiteDeleted(ds, res.idx);
 	}
 	divesAndSitesToDelete.sites.clear();
 
@@ -217,9 +217,9 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 
 	// Finally, add any necessary dive sites
 	for (std::unique_ptr<dive_site> &ds: toAdd.sites) {
-		sites.push_back(ds.get());
-		int idx = register_dive_site(ds.release()); // Return ownership to backend
-		emit diveListNotifier.diveSiteAdded(sites.back(), idx);
+		auto res = divelog.sites->register_site(std::move(ds));
+		sites.push_back(res.ptr);
+		emit diveListNotifier.diveSiteAdded(sites.back(), res.idx);
 	}
 	toAdd.sites.clear();
 
@@ -478,10 +478,10 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 	struct dive_table dives_to_add = empty_dive_table;
 	struct dive_table dives_to_remove = empty_dive_table;
 	struct trip_table trips_to_add = empty_trip_table;
-	struct dive_site_table sites_to_add = empty_dive_site_table;
+	dive_site_table sites_to_add;
 	process_imported_dives(log, flags,
 			       &dives_to_add, &dives_to_remove, &trips_to_add,
-			       &sites_to_add, &devicesToAddAndRemove);
+			       sites_to_add, &devicesToAddAndRemove);
 
 	// Add trips to the divesToAdd.trips structure
 	divesToAdd.trips.reserve(trips_to_add.nr);
@@ -489,9 +489,7 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 		divesToAdd.trips.emplace_back(trips_to_add.trips[i]);
 
 	// Add sites to the divesToAdd.sites structure
-	divesToAdd.sites.reserve(sites_to_add.nr);
-	for (int i = 0; i < sites_to_add.nr; ++i)
-		divesToAdd.sites.emplace_back(sites_to_add.dive_sites[i]);
+	divesToAdd.sites = std::move(sites_to_add);
 
 	// Add dives to the divesToAdd.dives structure
 	divesToAdd.dives.reserve(dives_to_add.nr);
@@ -525,7 +523,6 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 	free(dives_to_add.dives);
 	free(dives_to_remove.dives);
 	free(trips_to_add.trips);
-	free(sites_to_add.dive_sites);
 }
 
 bool ImportDives::workToBeDone()

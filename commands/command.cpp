@@ -134,9 +134,9 @@ void addDiveSite(const QString &name)
 	execute(new AddDiveSite(name));
 }
 
-void importDiveSites(struct dive_site_table *sites, const QString &source)
+void importDiveSites(dive_site_table sites, const QString &source)
 {
-	execute(new ImportDiveSites(sites, source));
+	execute(new ImportDiveSites(std::move(sites), source));
 }
 
 void mergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites)

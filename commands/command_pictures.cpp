@@ -217,9 +217,9 @@ void AddPictures::undo()
 
 	// Remove dive sites
 	for (dive_site *siteToRemove: sitesToRemove) {
-		int idx = unregister_dive_site(siteToRemove);
-		sitesToAdd.emplace_back(siteToRemove);
-		emit diveListNotifier.diveSiteDeleted(siteToRemove, idx); // Inform frontend of removed dive site.
+		auto res = divelog.sites->pull(siteToRemove);
+		sitesToAdd.push_back(std::move(res.ptr));
+		emit diveListNotifier.diveSiteDeleted(siteToRemove, res.idx); // Inform frontend of removed dive site.
 	}
 	sitesToRemove.clear();
 }
@@ -228,9 +228,9 @@ void AddPictures::redo()
 {
 	// Add dive sites
 	for (std::unique_ptr<dive_site> &siteToAdd: sitesToAdd) {
-		sitesToRemove.push_back(siteToAdd.get());
-		int idx = register_dive_site(siteToAdd.release()); // Return ownership to backend.
-		emit diveListNotifier.diveSiteAdded(sitesToRemove.back(), idx); // Inform frontend of new dive site.
+		auto res = divelog.sites->register_site(std::move(siteToAdd)); // Return ownership to backend.
+		sitesToRemove.push_back(res.ptr);
+		emit diveListNotifier.diveSiteAdded(sitesToRemove.back(), res.idx); // Inform frontend of new dive site.
 	}
 	sitesToAdd.clear();
 

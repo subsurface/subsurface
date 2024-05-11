@@ -30,9 +30,9 @@ static std::vector<dive_site *> addDiveSites(std::vector<std::unique_ptr<dive_si
 		}
 
 		// Add dive site to core, but remember a non-owning pointer first.
-		res.push_back(ds.get());
-		int idx = register_dive_site(ds.release()); // Return ownership to backend.
-		emit diveListNotifier.diveSiteAdded(res.back(), idx); // Inform frontend of new dive site.
+		auto add_res = divelog.sites->put(std::move(ds)); // Return ownership to backend.
+		res.push_back(add_res.ptr);
+		emit diveListNotifier.diveSiteAdded(res.back(), add_res.idx); // Inform frontend of new dive site.
 	}
 
 	emit diveListNotifier.divesChanged(changedDives, DiveField::DIVESITE);
@@ -60,9 +60,9 @@ static std::vector<std::unique_ptr<dive_site>> removeDiveSites(std::vector<dive_
 		}
 
 		// Remove dive site from core and take ownership.
-		int idx = unregister_dive_site(ds);
-		res.emplace_back(ds);
-		emit diveListNotifier.diveSiteDeleted(ds, idx); // Inform frontend of removed dive site.
+		auto pull_res = divelog.sites->pull(ds);
+		res.push_back(std::move(pull_res.ptr));
+		emit diveListNotifier.diveSiteDeleted(ds, pull_res.idx); // Inform frontend of removed dive site.
 	}
 
 	emit diveListNotifier.divesChanged(changedDives, DiveField::DIVESITE);
@@ -94,25 +94,18 @@ void AddDiveSite::undo()
 	sitesToAdd = removeDiveSites(sitesToRemove);
 }
 
-ImportDiveSites::ImportDiveSites(struct dive_site_table *sites, const QString &source)
+ImportDiveSites::ImportDiveSites(dive_site_table sites, const QString &source)
 {
 	setText(Command::Base::tr("import dive sites from %1").arg(source));
 
-	for (int i = 0; i < sites->nr; ++i) {
-		struct dive_site *new_ds = sites->dive_sites[i];
-
+	for (auto &new_ds: sites) {
 		// Don't import dive sites that already exist. Currently we only check for
 		// the same name. We might want to be smarter here and merge dive site data, etc.
-		struct dive_site *old_ds = get_same_dive_site(new_ds);
-		if (old_ds) {
-			delete new_ds;
+		struct dive_site *old_ds = get_same_dive_site(*new_ds);
+		if (old_ds)
 			continue;
-		}
-		sitesToAdd.emplace_back(new_ds);
+		sitesToAdd.push_back(std::move(new_ds));
 	}
-
-	// All site have been consumed
-	sites->nr = 0;
 }
 
 bool ImportDiveSites::workToBeDone()
@@ -153,10 +146,9 @@ void DeleteDiveSites::undo()
 PurgeUnusedDiveSites::PurgeUnusedDiveSites()
 {
 	setText(Command::Base::tr("purge unused dive sites"));
-	for (int i = 0; i < divelog.sites->nr; ++i) {
-		dive_site *ds = divelog.sites->dive_sites[i];
+	for (const auto &ds: *divelog.sites) {
 		if (ds->dives.empty())
-			sitesToRemove.push_back(ds);
+			sitesToRemove.push_back(ds.get());
 	}
 }
 
@@ -391,7 +383,7 @@ ApplyGPSFixes::ApplyGPSFixes(const std::vector<DiveAndLocation> &fixes)
 				siteLocations.push_back({ ds, dl.location });
 			}
 		} else {
-			ds = create_dive_site(dl.name.toStdString(), divelog.sites);
+			ds = create_dive_site(dl.name.toStdString(), *divelog.sites);
 			ds->location = dl.location;
 			add_dive_to_dive_site(dl.d, ds);
 			dl.d->dive_site = nullptr; // This will be set on redo()

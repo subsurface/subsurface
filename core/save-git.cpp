@@ -922,10 +922,9 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	put_format(&dirname, "01-Divesites");
 	subdir = new_directory(repo, tree, &dirname);
 
-	purge_empty_dive_sites(divelog.sites);
-	for (int i = 0; i < divelog.sites->nr; i++) {
+	purge_empty_dive_sites(*divelog.sites);
+	for (const auto &ds: *divelog.sites) {
 		membuffer b;
-		struct dive_site *ds = get_dive_site(i, divelog.sites);
 		membuffer site_file_name;
 		put_format(&site_file_name, "Site-%08x", ds->uuid);
 		show_utf8(&b, "name ", ds->name.c_str(), "\n");

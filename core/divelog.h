@@ -5,7 +5,7 @@
 
 struct dive_table;
 struct trip_table;
-struct dive_site_table;
+class dive_site_table;
 struct device_table;
 struct filter_preset_table;
 
@@ -14,7 +14,7 @@ struct filter_preset_table;
 struct divelog {
 	struct dive_table *dives;
 	struct trip_table *trips;
-	struct dive_site_table *sites;
+	dive_site_table *sites;
 	struct device_table *devices;
 	struct filter_preset_table *filter_presets;
 	bool autogroup;
