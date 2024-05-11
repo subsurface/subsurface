@@ -22,6 +22,7 @@
 #include "commands/command_base.h"
 #include "core/errorhelper.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/trip.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/metrics.h"
@@ -439,13 +440,13 @@ void DiveListView::selectDiveSitesOnMap(const std::vector<dive *> &dives)
 	// the dive-site selection is controlled by the filter not
 	// by the selected dives.
 	if (!DiveFilter::instance()->diveSiteMode()) {
-		QVector<dive_site *> selectedSites;
+		std::vector<dive_site *> selectedSites;
 		selectedSites.reserve(dives.size());
 		for (dive *d: dives) {
-			if (!d->hidden_by_filter && d->dive_site && !selectedSites.contains(d->dive_site))
+			if (!d->hidden_by_filter && d->dive_site && !range_contains(selectedSites, d->dive_site))
 				selectedSites.push_back(d->dive_site);
 		}
-		MapWidget::instance()->setSelected(selectedSites);
+		MapWidget::instance()->setSelected(std::move(selectedSites));
 	}
 #endif
 }

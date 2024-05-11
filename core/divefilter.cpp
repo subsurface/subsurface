@@ -5,6 +5,7 @@
 #include "divelog.h"
 #include "gettextfromc.h"
 #include "qthelper.h"
+#include "range.h"
 #include "selection.h"
 #include "subsurface-qt/divelistnotifier.h"
 #if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
@@ -61,7 +62,7 @@ ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 	std::vector<dive *> removeFromSelection;
 	for (dive *d: dives) {
 		// There are three modes: divesite, fulltext, normal
-		bool newStatus = doDS        ? dive_sites.contains(d->dive_site) :
+		bool newStatus = doDS        ? range_contains(dive_sites, d->dive_site) :
 				 doFullText  ? fulltext_dive_matches(d, filterData.fullText, filterData.fulltextStringMode) && showDive(d) :
 					       showDive(d);
 		updateDiveStatus(d, newStatus, res, removeFromSelection);
@@ -91,7 +92,7 @@ ShownChange DiveFilter::updateAll() const
 	// There are three modes: divesite, fulltext, normal
 	if (diveSiteMode()) {
 		for_each_dive(i, d) {
-			bool newStatus = dive_sites.contains(d->dive_site);
+			bool newStatus = range_contains(dive_sites, d->dive_site);
 			updateDiveStatus(d, newStatus, res, removeFromSelection);
 		}
 	} else if (filterData.fullText.doit()) {
@@ -142,7 +143,7 @@ bool DiveFilter::showDive(const struct dive *d) const
 }
 
 #if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
-void DiveFilter::startFilterDiveSites(QVector<dive_site *> ds)
+void DiveFilter::startFilterDiveSites(std::vector<dive_site *> ds)
 {
 	if (++diveSiteRefCount > 1) {
 		setFilterDiveSite(std::move(ds));
@@ -169,7 +170,7 @@ void DiveFilter::stopFilterDiveSites()
 #endif
 }
 
-void DiveFilter::setFilterDiveSite(QVector<dive_site *> ds)
+void DiveFilter::setFilterDiveSite(std::vector<dive_site *> ds)
 {
 	// If the filter didn't change, return early to avoid a full
 	// map reload. For a well-defined comparison, sort the vector first.
@@ -185,7 +186,7 @@ void DiveFilter::setFilterDiveSite(QVector<dive_site *> ds)
 	MainWindow::instance()->diveList->expandAll();
 }
 
-const QVector<dive_site *> &DiveFilter::filteredDiveSites() const
+const std::vector<dive_site *> &DiveFilter::filteredDiveSites() const
 {
 	return dive_sites;
 }

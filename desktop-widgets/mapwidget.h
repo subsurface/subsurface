@@ -4,6 +4,7 @@
 
 #include "core/units.h"
 #include "core/subsurface-qt/divelistnotifier.h"
+#include <vector>
 #include <QQuickWidget>
 #include <QList>
 
@@ -23,7 +24,7 @@ public:
 
 	static MapWidget *instance();
 	void reload();
-	void setSelected(const QVector<dive_site *> &divesites);
+	void setSelected(std::vector<dive_site *> divesites);
 	bool editMode() const;
 
 public slots:

@@ -260,7 +260,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		filter_model.set(ds, ds->location);
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(ds));
-		DiveFilter::instance()->startFilterDiveSites(QVector<dive_site *>{ ds });
+		DiveFilter::instance()->startFilterDiveSites(std::vector<dive_site *>{ ds });
 		filter_model.invalidate();
 	} else {
 		filter_model.set(0, location_t());
