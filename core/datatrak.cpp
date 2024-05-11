@@ -214,7 +214,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 		struct dive_site *ds = log->sites->get_by_name(buffer2);
 		if (!ds)
 			ds = log->sites->create(buffer2);
-		add_dive_to_dive_site(dt_dive, ds);
+		ds->add_dive(dt_dive);
 	}
 	free(locality);
 	locality = NULL;

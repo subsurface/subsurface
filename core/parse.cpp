@@ -200,7 +200,7 @@ void dive_site_end(struct parser_state *state)
 		return;
 
 	struct dive_site *ds = state->log->sites->alloc_or_get(state->cur_dive_site->uuid);
-	merge_dive_site(ds, state->cur_dive_site.get());
+	ds->merge(*state->cur_dive_site);
 
 	if (verbose > 3)
 		printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name.c_str());
@@ -484,11 +484,11 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 				struct dive_site *exact_match = state->log->sites->get_by_gps_and_name(trimmed, &ds->location);
 				if (exact_match) {
 					unregister_dive_from_dive_site(dive);
-					add_dive_to_dive_site(dive, exact_match);
+					exact_match->add_dive(dive);
 				} else {
 					struct dive_site *newds = state->log->sites->create(trimmed.c_str());
 					unregister_dive_from_dive_site(dive);
-					add_dive_to_dive_site(dive, newds);
+					newds->add_dive(dive);
 					if (has_location(&state->cur_location)) {
 						// we started this uuid with GPS data, so lets use those
 						newds->location = state->cur_location;
@@ -501,10 +501,10 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 			} else if (dive->dive_site != ds) {
 				// add the existing dive site to the current dive
 				unregister_dive_from_dive_site(dive);
-				add_dive_to_dive_site(dive, ds);
+				ds->add_dive(dive);
 			}
 		} else {
-			add_dive_to_dive_site(dive, state->log->sites->create(trimmed));
+			state->log->sites->create(trimmed)->add_dive(dive);
 		}
 	}
 }

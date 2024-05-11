@@ -325,9 +325,9 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 
 	res.reserve(divelog.sites->size());
 	for (const auto &ds: *divelog.sites) {
-		if (dive_site_is_empty(ds.get()))
+		if (ds->is_empty())
 			continue;
-		if (selectedOnly && !is_dive_site_selected(*ds))
+		if (selectedOnly && !ds->is_selected())
 			continue;
 		res.push_back(ds.get());
 	}

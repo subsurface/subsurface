@@ -344,7 +344,7 @@ void MergeDiveSites::redo()
 	// the dives in the sitesToAdd vector.
 	for (const std::unique_ptr<dive_site> &site: sitesToAdd) {
 		for (dive *d: site->dives) {
-			add_dive_to_dive_site(d, ds);
+			ds->add_dive(d);
 			divesChanged.push_back(d);
 		}
 	}
@@ -385,7 +385,7 @@ ApplyGPSFixes::ApplyGPSFixes(const std::vector<DiveAndLocation> &fixes)
 		} else {
 			ds = divelog.sites->create(dl.name.toStdString());
 			ds->location = dl.location;
-			add_dive_to_dive_site(dl.d, ds);
+			ds->add_dive(dl.d);
 			dl.d->dive_site = nullptr; // This will be set on redo()
 			sitesToAdd.emplace_back(ds);
 		}
