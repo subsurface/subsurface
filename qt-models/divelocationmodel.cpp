@@ -298,7 +298,7 @@ bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIn
 		return false;
 
 	return distance <= 0 ? ds->location == location
-			     : (int64_t)get_distance(&ds->location, &location) * 1000 <= distance; // We need 64 bit to represent distances in mm
+			     : (int64_t)get_distance(ds->location, location) * 1000 <= distance; // We need 64 bit to represent distances in mm
 }
 
 GPSLocationInformationModel::GPSLocationInformationModel(QObject *parent) : QSortFilterProxyModel(parent),
