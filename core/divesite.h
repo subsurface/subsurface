@@ -57,7 +57,6 @@ public:
 
 struct dive_site *unregister_dive_from_dive_site(struct dive *d);
 struct dive_site *get_same_dive_site(const struct dive_site &); // accesses global dive list
-std::string constructLocationTags(const taxonomy_data &taxonomy, bool for_maintab);
 
 /* Make pointer-to-dive_site a "Qt metatype" so that we can pass it through QVariants */
 Q_DECLARE_METATYPE(dive_site *);

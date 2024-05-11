@@ -2,7 +2,9 @@
 #include "taxonomy.h"
 #include "errorhelper.h"
 #include "gettext.h"
+#include "pref.h"
 #include "subsurface-string.h"
+#include "gettextfromc.h"
 #include <algorithm>
 #include <stdlib.h>
 #include <stdio.h>
@@ -56,4 +58,53 @@ void taxonomy_set_country(taxonomy_data &t, const std::string &country, enum tax
 {
 	report_info("%s: set the taxonomy country to %s\n", __func__, country.c_str());
 	taxonomy_set_category(t, TC_COUNTRY, country, origin);
+}
+
+std::string taxonomy_get_location_tags(const taxonomy_data &taxonomy, bool for_maintab)
+{
+	using namespace std::string_literals;
+	std::string locationTag;
+
+	if (taxonomy.empty())
+		return locationTag;
+
+	/* Check if the user set any of the 3 geocoding categories */
+	bool prefs_set = false;
+	for (int i = 0; i < 3; i++) {
+		if (prefs.geocoding.category[i] != TC_NONE)
+			prefs_set = true;
+	}
+
+	if (!prefs_set && !for_maintab) {
+		locationTag = "<small><small>" + gettextFromC::tr("No dive site layout categories set in preferences!").toStdString() +
+			      "</small></small>"s;
+		return locationTag;
+	}
+	else if (!prefs_set)
+		return locationTag;
+
+	if (for_maintab)
+		locationTag = "<small><small>("s + gettextFromC::tr("Tags").toStdString() + ": "s;
+	else
+		locationTag = "<small><small>"s;
+	std::string connector;
+	for (int i = 0; i < 3; i++) {
+		if (prefs.geocoding.category[i] == TC_NONE)
+			continue;
+		for (auto const &t: taxonomy) {
+			if (t.category == prefs.geocoding.category[i]) {
+				if (!t.value.empty()) {
+					locationTag += connector + t.value;
+					connector = " / "s;
+				}
+				break;
+			}
+		}
+	}
+
+	if (for_maintab)
+		locationTag += ")</small></small>"s;
+	else
+		locationTag += "</small></small>"s;
+	return locationTag;
 }
