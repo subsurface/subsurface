@@ -45,9 +45,9 @@ public:
 	bool diveSiteMode() const; // returns true if we're filtering on dive site (on mobile always returns false)
 	std::vector<dive *> visibleDives() const;
 #ifndef SUBSURFACE_MOBILE
-	const QVector<dive_site *> &filteredDiveSites() const;
-	void startFilterDiveSites(QVector<dive_site *> ds);
-	void setFilterDiveSite(QVector<dive_site *> ds);
+	const std::vector<dive_site *> &filteredDiveSites() const;
+	void startFilterDiveSites(std::vector<dive_site *> ds);
+	void setFilterDiveSite(std::vector<dive_site *> ds);
 	void stopFilterDiveSites();
 #endif
 	void setFilter(const FilterData &data);
@@ -62,7 +62,7 @@ private:
 	void updateDiveStatus(dive *d, bool newStatus, ShownChange &change,
 			      std::vector<dive *> &removeFromSelection) const;
 
-	QVector<dive_site *> dive_sites;
+	std::vector<dive_site *> dive_sites;
 	FilterData filterData;
 	mutable int shown_dives;
 

@@ -2,6 +2,7 @@
 #ifndef SUBSURFACE_STRING_H
 #define SUBSURFACE_STRING_H
 
+#include <algorithm>
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>

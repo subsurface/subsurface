@@ -115,14 +115,14 @@ void DiveSiteListView::on_filterText_textChanged(const QString &text)
 	model->setFilter(text);
 }
 
-QVector<dive_site *> DiveSiteListView::selectedDiveSites()
+std::vector<dive_site *> DiveSiteListView::selectedDiveSites()
 {
 	const QModelIndexList indices = ui.diveSites->view()->selectionModel()->selectedRows();
-	QVector<dive_site *> sites;
+	std::vector<dive_site *> sites;
 	sites.reserve(indices.size());
 	for (const QModelIndex &idx: indices) {
 		struct dive_site *ds = model->getDiveSite(idx);
-		sites.append(ds);
+		sites.push_back(ds);
 	}
 	return sites;
 }
