@@ -132,6 +132,7 @@ typedef struct pos {
 } location_t;
 
 extern void parse_location(const char *, location_t *);
+extern unsigned int get_distance(location_t loc1, location_t loc2);
 
 static inline bool has_location(const location_t *loc)
 {

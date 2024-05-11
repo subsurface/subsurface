@@ -51,11 +51,10 @@ public:
 	dive_site *get_by_name(const std::string &name) const;
 	dive_site *get_by_gps(const location_t *) const;
 	dive_site *get_by_gps_and_name(const std::string &name, const location_t *) const;
-	dive_site *get_by_gps_proximity(const location_t *, int distance) const;
+	dive_site *get_by_gps_proximity(location_t, int distance) const;
 	void purge_empty();
 };
 
-unsigned int get_distance(const location_t *loc1, const location_t *loc2);
 struct dive_site *unregister_dive_from_dive_site(struct dive *d);
 struct dive_site *get_same_dive_site(const struct dive_site &); // accesses global dive list
 std::string constructLocationTags(const taxonomy_data &taxonomy, bool for_maintab);

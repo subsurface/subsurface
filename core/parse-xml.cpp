@@ -1197,7 +1197,7 @@ static void gps_in_dive(const char *buffer, struct dive *dive, struct parser_sta
 	parse_location(buffer, &location);
 	if (!ds) {
 		// check if we have a dive site within 20 meters of that gps fix
-		ds = state->log->sites->get_by_gps_proximity(&location, 20);
+		ds = state->log->sites->get_by_gps_proximity(location, 20);
 
 		if (ds) {
 			// found a site nearby; in case it turns out this one had a different name let's

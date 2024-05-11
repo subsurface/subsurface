@@ -50,32 +50,14 @@ dive_site *dive_site_table::get_by_gps_and_name(const std::string &name, const l
 									     ds->name == name; });
 }
 
-// Calculate the distance in meters between two coordinates.
-unsigned int get_distance(const location_t *loc1, const location_t *loc2)
-{
-	double lat1_r = udeg_to_radians(loc1->lat.udeg);
-	double lat2_r = udeg_to_radians(loc2->lat.udeg);
-	double lat_d_r = udeg_to_radians(loc2->lat.udeg - loc1->lat.udeg);
-	double lon_d_r = udeg_to_radians(loc2->lon.udeg - loc1->lon.udeg);
-
-	double a = sin(lat_d_r/2) * sin(lat_d_r/2) +
-		cos(lat1_r) * cos(lat2_r) * sin(lon_d_r/2) * sin(lon_d_r/2);
-	if (a < 0.0) a = 0.0;
-	if (a > 1.0) a = 1.0;
-	double c = 2 * atan2(sqrt(a), sqrt(1.0 - a));
-
-	// Earth radius in metres
-	return lrint(6371000 * c);
-}
-
 /* find the closest one, no more than distance meters away - if more than one at same distance, pick the first */
-dive_site *dive_site_table::get_by_gps_proximity(const location_t *loc, int distance) const
+dive_site *dive_site_table::get_by_gps_proximity(location_t loc, int distance) const
 {
 	struct dive_site *res = nullptr;
 	unsigned int cur_distance, min_distance = distance;
 	for (const auto &ds: *this) {
 		if (dive_site_has_gps_location(ds.get()) &&
-		    (cur_distance = get_distance(&ds->location, loc)) < min_distance) {
+		    (cur_distance = get_distance(ds->location, loc)) < min_distance) {
 			min_distance = cur_distance;
 			res = ds.get();
 		}
