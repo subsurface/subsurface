@@ -388,9 +388,9 @@ bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, cons
 	// If there is a current location, sort by that - otherwise use the provided column
 	if (has_location(&currentLocation)) {
 		// The dive sites are -2 because of the first two items.
-		struct dive_site *ds1 = get_dive_site(source_left.row() - 2, divelog.sites);
-		struct dive_site *ds2 = get_dive_site(source_right.row() - 2, divelog.sites);
-		return get_distance(&ds1->location, &currentLocation) < get_distance(&ds2->location, &currentLocation);
+		auto loc1 = (*divelog.sites)[source_left.row() - 2]->location;
+		auto loc2 = (*divelog.sites)[source_right.row() - 2]->location;
+		return get_distance(&loc1, &currentLocation) < get_distance(&loc2, &currentLocation);
 	}
 	return source_left.data().toString().compare(source_right.data().toString(), Qt::CaseInsensitive) < 0;
 }
@@ -411,6 +411,9 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 	static const QIcon plusIcon(":list-add-icon");
 	static const QIcon geoCode(":geotag-icon");
 
+	if (index.row() < 0 || index.row() >= (int)divelog.sites->size() + 2)
+		return QVariant();
+
 	if (index.row() <= 1) { // two special cases.
 		if (index.column() == LocationInformationModel::DIVESITE)
 			return QVariant::fromValue<dive_site *>(RECENTLY_ADDED_DIVESITE);
@@ -428,8 +431,8 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 	}
 
 	// The dive sites are -2 because of the first two items.
-	struct dive_site *ds = get_dive_site(index.row() - 2, divelog.sites);
-	return LocationInformationModel::getDiveSiteData(ds, index.column(), role);
+	const auto &ds = (*divelog.sites)[index.row() - 2];
+	return LocationInformationModel::getDiveSiteData(*ds, index.column(), role);
 }
 
 int DiveLocationModel::columnCount(const QModelIndex&) const
@@ -439,7 +442,7 @@ int DiveLocationModel::columnCount(const QModelIndex&) const
 
 int DiveLocationModel::rowCount(const QModelIndex&) const
 {
-	return divelog.sites->nr + 2;
+	return (int)divelog.sites->size() + 2;
 }
 
 Qt::ItemFlags DiveLocationModel::flags(const QModelIndex &index) const
@@ -560,12 +563,10 @@ void DiveLocationLineEdit::refreshDiveSiteCache()
 
 static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 {
-	struct dive_site *ds;
-	int i;
-	for_each_dive_site (i, ds, divelog.sites) {
+	for (const auto &ds: *divelog.sites) {
 		QString dsName = QString::fromStdString(ds->name);
 		if (dsName.toLower().startsWith(str.toLower()))
-			return ds;
+			return ds.get();
 	}
 	return NULL;
 }

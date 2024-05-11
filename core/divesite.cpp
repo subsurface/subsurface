@@ -10,71 +10,53 @@
 #include "membuffer.h"
 #include "pref.h"
 #include "subsurface-string.h"
-#include "table.h"
 #include "sha1.h"
 
 #include <math.h>
 
-int get_divesite_idx(const struct dive_site *ds, struct dive_site_table *ds_table)
+int get_divesite_idx(const struct dive_site *ds, dive_site_table &ds_table)
 {
-	int i;
-	const struct dive_site *d;
-	// tempting as it may be, don't die when called with ds=NULL
-	if (ds)
-		for_each_dive_site(i, d, ds_table) {
-			if (d == ds)
-				return i;
-		}
-	return -1;
+	auto it = std::find_if(ds_table.begin(), ds_table.end(), [ds] (const auto &ds2) { return ds2.get() == ds; });
+	return it != ds_table.end() ? it - ds_table.begin() : -1;
 }
 
-// TODO: keep table sorted by UUID and do a binary search?
-struct dive_site *get_dive_site_by_uuid(uint32_t uuid, struct dive_site_table *ds_table)
+template <typename PRED>
+struct dive_site *get_dive_site_by_predicate(dive_site_table &ds_table, PRED pred)
 {
-	int i;
-	struct dive_site *ds;
-	for_each_dive_site (i, ds, ds_table)
-		if (ds->uuid == uuid)
-			return get_dive_site(i, ds_table);
-	return NULL;
+	auto it = std::find_if(ds_table.begin(), ds_table.end(), pred);
+	return it != ds_table.end() ? it->get() : NULL;
+}
+
+struct dive_site *get_dive_site_by_uuid(uint32_t uuid, dive_site_table &ds_table)
+{
+	// The table is sorted by uuid
+	auto it = std::lower_bound(ds_table.begin(), ds_table.end(), uuid,
+				   [] (const auto &ds, auto uuid) { return ds->uuid < uuid; });
+	return it != ds_table.end() && (*it)->uuid == uuid ? it->get() : NULL;
 }
 
 /* there could be multiple sites of the same name - return the first one */
-struct dive_site *get_dive_site_by_name(const std::string &name, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_name(const std::string &name, dive_site_table &ds_table)
 {
-	int i;
-	struct dive_site *ds;
-	for_each_dive_site (i, ds, ds_table) {
-		if (ds->name == name)
-			return ds;
-	}
-	return NULL;
+	return get_dive_site_by_predicate(ds_table,
+			       [&name](const auto &ds) { return ds->name == name; });
 }
 
 /* there could be multiple sites at the same GPS fix - return the first one */
-struct dive_site *get_dive_site_by_gps(const location_t *loc, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_gps(const location_t *loc, dive_site_table &ds_table)
 {
-	int i;
-	struct dive_site *ds;
-	for_each_dive_site (i, ds, ds_table) {
-		if (*loc == ds->location)
-			return ds;
-	}
-	return NULL;
+	return get_dive_site_by_predicate(ds_table,
+			       [loc](const auto &ds) { return ds->location == *loc; });
 }
 
 /* to avoid a bug where we have two dive sites with different name and the same GPS coordinates
  * and first get the gps coordinates (reading a V2 file) and happen to get back "the other" name,
  * this function allows us to verify if a very specific name/GPS combination already exists */
-struct dive_site *get_dive_site_by_gps_and_name(const std::string &name, const location_t *loc, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_gps_and_name(const std::string &name, const location_t *loc, dive_site_table &ds_table)
 {
-	int i;
-	struct dive_site *ds;
-	for_each_dive_site (i, ds, ds_table) {
-		if (*loc == ds->location && ds->name == name)
-			return ds;
-	}
-	return NULL;
+	return get_dive_site_by_predicate(ds_table,
+			       [&name, loc](const auto &ds) { return ds->location == *loc &&
+			       					     ds->name == name; });
 }
 
 // Calculate the distance in meters between two coordinates.
@@ -96,52 +78,21 @@ unsigned int get_distance(const location_t *loc1, const location_t *loc2)
 }
 
 /* find the closest one, no more than distance meters away - if more than one at same distance, pick the first */
-struct dive_site *get_dive_site_by_gps_proximity(const location_t *loc, int distance, struct dive_site_table *ds_table)
+struct dive_site *get_dive_site_by_gps_proximity(const location_t *loc, int distance, dive_site_table &ds_table)
 {
-	int i;
-	struct dive_site *ds, *res = NULL;
+	struct dive_site *res = nullptr;
 	unsigned int cur_distance, min_distance = distance;
-	for_each_dive_site (i, ds, ds_table) {
-		if (dive_site_has_gps_location(ds) &&
+	for (const auto &ds: ds_table) {
+		if (dive_site_has_gps_location(ds.get()) &&
 		    (cur_distance = get_distance(&ds->location, loc)) < min_distance) {
 			min_distance = cur_distance;
-			res = ds;
+			res = ds.get();
 		}
 	}
 	return res;
 }
 
-int register_dive_site(struct dive_site *ds)
-{
-	return add_dive_site_to_table(ds, divelog.sites);
-}
-
-static int compare_sites(const struct dive_site *a, const struct dive_site *b)
-{
-	return a->uuid > b->uuid ? 1 : a->uuid == b->uuid ? 0 : -1;
-}
-
-static int site_less_than(const struct dive_site *a, const struct dive_site *b)
-{
-	return compare_sites(a, b) < 0;
-}
-
-static void free_dive_site(struct dive_site *ds)
-{
-	delete ds;
-}
-
-static MAKE_GROW_TABLE(dive_site_table, struct dive_site *, dive_sites)
-static MAKE_GET_INSERTION_INDEX(dive_site_table, struct dive_site *, dive_sites, site_less_than)
-static MAKE_ADD_TO(dive_site_table, struct dive_site *, dive_sites)
-static MAKE_REMOVE_FROM(dive_site_table, dive_sites)
-static MAKE_GET_IDX(dive_site_table, struct dive_site *, dive_sites)
-MAKE_SORT(dive_site_table, struct dive_site *, dive_sites, compare_sites)
-static MAKE_REMOVE(dive_site_table, struct dive_site *, dive_site)
-MAKE_CLEAR_TABLE(dive_site_table, dive_sites, dive_site)
-MAKE_MOVE_TABLE(dive_site_table, dive_sites)
-
-int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_table)
+dive_site_table::put_result dive_site_table::register_site(std::unique_ptr<dive_site> ds)
 {
 	/* If the site doesn't yet have an UUID, create a new one.
 	 * Make this deterministic for testing. */
@@ -158,12 +109,10 @@ int add_dive_site_to_table(struct dive_site *ds, struct dive_site_table *ds_tabl
 
 	/* Take care to never have the same uuid twice. This could happen on
 	 * reimport of a log where the dive sites have diverged */
-	while (ds->uuid == 0 || get_dive_site_by_uuid(ds->uuid, ds_table) != NULL)
+	while (ds->uuid == 0 || get_dive_site_by_uuid(ds->uuid, *this) != NULL)
 		++ds->uuid;
 
-	int idx = dive_site_table_get_insertion_index(ds_table, ds);
-	add_to_dive_site_table(ds_table, idx, ds);
-	return idx;
+	return put(std::move(ds));
 }
 
 dive_site::dive_site()
@@ -178,24 +127,23 @@ dive_site::dive_site(const std::string &name, const location_t *loc) : name(name
 {
 }
 
+dive_site::dive_site(uint32_t uuid) : uuid(uuid)
+{
+}
+
 dive_site::~dive_site()
 {
 }
 
 /* when parsing, dive sites are identified by uuid */
-struct dive_site *alloc_or_get_dive_site(uint32_t uuid, struct dive_site_table *ds_table)
+struct dive_site *alloc_or_get_dive_site(uint32_t uuid, dive_site_table &ds_table)
 {
 	struct dive_site *ds;
 
 	if (uuid && (ds = get_dive_site_by_uuid(uuid, ds_table)) != NULL)
 		return ds;
 
-	ds = new dive_site;
-	ds->uuid = uuid;
-
-	add_dive_site_to_table(ds, ds_table);
-
-	return ds;
+	return ds_table.register_site(std::make_unique<dive_site>(uuid)).ptr;
 }
 
 size_t nr_of_dives_at_dive_site(const dive_site &ds)
@@ -209,33 +157,16 @@ bool is_dive_site_selected(const struct dive_site &ds)
 		      [](dive *dive) { return dive->selected; });
 }
 
-int unregister_dive_site(struct dive_site *ds)
-{
-	return remove_dive_site(ds, divelog.sites);
-}
-
-void delete_dive_site(struct dive_site *ds, struct dive_site_table *ds_table)
-{
-	if (!ds)
-		return;
-	remove_dive_site(ds, ds_table);
-	delete ds;
-}
-
 /* allocate a new site and add it to the table */
-struct dive_site *create_dive_site(const std::string &name, struct dive_site_table *ds_table)
+struct dive_site *create_dive_site(const std::string &name, dive_site_table &ds_table)
 {
-	struct dive_site *ds = new dive_site(name);
-	add_dive_site_to_table(ds, ds_table);
-	return ds;
+	return ds_table.register_site(std::make_unique<dive_site>(name)).ptr;
 }
 
 /* same as before, but with GPS data */
-struct dive_site *create_dive_site_with_gps(const std::string &name, const location_t *loc, struct dive_site_table *ds_table)
+struct dive_site *create_dive_site_with_gps(const std::string &name, const location_t *loc, dive_site_table &ds_table)
 {
-	struct dive_site *ds = new dive_site(name, loc);
-	add_dive_site_to_table(ds, ds_table);
-	return ds;
+	return ds_table.register_site(std::make_unique<dive_site>(name, loc)).ptr;
 }
 
 /* if all fields are empty, the dive site is pointless */
@@ -270,22 +201,18 @@ static void merge_string(std::string &a, const std::string &b)
  * Taxonomy is not compared, as no taxonomy is generated on
  * import.
  */
-static bool same_dive_site(const struct dive_site *a, const struct dive_site *b)
+static bool same_dive_site(const struct dive_site &a, const struct dive_site &b)
 {
-	return a->name == b->name
-	    && a->location == b->location
-	    && a->description == b->description
-	    && a->notes == b->notes;
+	return a.name == b.name
+	    && a.location == b.location
+	    && a.description == b.description
+	    && a.notes == b.notes;
 }
 
-struct dive_site *get_same_dive_site(const struct dive_site *site)
+struct dive_site *get_same_dive_site(const struct dive_site &site)
 {
-	int i;
-	struct dive_site *ds;
-	for_each_dive_site (i, ds, divelog.sites)
-		if (same_dive_site(ds, site))
-			return ds;
-	return NULL;
+	return get_dive_site_by_predicate(*divelog.sites,
+			       [site](const auto &ds) { return same_dive_site(*ds, site); });
 }
 
 void merge_dive_site(struct dive_site *a, struct dive_site *b)
@@ -299,32 +226,27 @@ void merge_dive_site(struct dive_site *a, struct dive_site *b)
 		a->taxonomy = std::move(b->taxonomy);
 }
 
-struct dive_site *find_or_create_dive_site_with_name(const std::string &name, struct dive_site_table *ds_table)
+struct dive_site *find_or_create_dive_site_with_name(const std::string &name, dive_site_table &ds_table)
 {
-	int i;
-	struct dive_site *ds;
-	for_each_dive_site(i,ds, ds_table) {
-		if (name == ds->name)
-			break;
-	}
+	struct dive_site *ds = get_dive_site_by_name(name, ds_table);
 	if (ds)
 		return ds;
 	return create_dive_site(name, ds_table);
 }
 
-void purge_empty_dive_sites(struct dive_site_table *ds_table)
+void purge_empty_dive_sites(dive_site_table &ds_table)
 {
-	int i, j;
-	struct dive *d;
-	struct dive_site *ds;
-
-	for (i = 0; i < ds_table->nr; i++) {
-		ds = get_dive_site(i, ds_table);
-		if (!dive_site_is_empty(ds))
+	for (const auto &ds: ds_table) {
+		if (!dive_site_is_empty(ds.get()))
 			continue;
-		for_each_dive(j, d) {
-			if (d->dive_site == ds)
+		while (!ds->dives.empty()) {
+			struct dive *d = ds->dives.back();
+			if (d->dive_site != ds.get()) {
+				report_info("Warning: dive %d registered to wrong dive site in %s", d->number, __func__);
+				ds->dives.pop_back();
+			} else {
 				unregister_dive_from_dive_site(d);
+			}
 		}
 	}
 }

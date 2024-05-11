@@ -636,7 +636,7 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 
 		if (location.lat.udeg && location.lon.udeg) {
 			unregister_dive_from_dive_site(dive);
-			add_dive_to_dive_site(dive, create_dive_site_with_gps(std::string(str->value), &location, devdata->log->sites));
+			add_dive_to_dive_site(dive, create_dive_site_with_gps(std::string(str->value), &location, *devdata->log->sites));
 		}
 	}
 }

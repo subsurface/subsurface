@@ -950,13 +950,13 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	struct dive_table dives_to_add = empty_dive_table;
 	struct dive_table dives_to_remove = empty_dive_table;
 	struct trip_table trips_to_add = empty_trip_table;
-	struct dive_site_table dive_sites_to_add = empty_dive_site_table;
+	dive_site_table dive_sites_to_add;
 	struct device_table *devices_to_add = alloc_device_table();
 
 	/* Process imported dives and generate lists of dives
 	 * to-be-added and to-be-removed */
 	process_imported_dives(import_log, flags, &dives_to_add, &dives_to_remove, &trips_to_add,
-			       &dive_sites_to_add, devices_to_add);
+			       dive_sites_to_add, devices_to_add);
 
 	/* Start by deselecting all dives, so that we don't end up with an invalid selection */
 	select_single_dive(NULL);
@@ -990,9 +990,8 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	trips_to_add.nr = 0;
 
 	/* Add new dive sites */
-	for (i = 0; i < dive_sites_to_add.nr; i++)
-		register_dive_site(dive_sites_to_add.dive_sites[i]);
-	dive_sites_to_add.nr = 0;
+	for (auto &ds: dive_sites_to_add)
+		divelog.sites->register_site(std::move(ds));
 
 	/* Add new devices */
 	for (i = 0; i < nr_devices(devices_to_add); i++) {
@@ -1008,7 +1007,6 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	free(dives_to_add.dives);
 	free(dives_to_remove.dives);
 	free(trips_to_add.trips);
-	free(dive_sites_to_add.dive_sites);
 
 	/* Inform frontend of reset data. This should reset all the models. */
 	emit_reset_signal();
@@ -1083,7 +1081,7 @@ bool try_to_merge_trip(struct dive_trip *trip_import, struct dive_table *import_
 void process_imported_dives(struct divelog *import_log, int flags,
 			    /* output parameters: */
 			    struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
-			    struct trip_table *trips_to_add, struct dive_site_table *sites_to_add,
+			    struct trip_table *trips_to_add, dive_site_table &sites_to_add,
 			    struct device_table *devices_to_add)
 {
 	int i, j, nr, start_renumbering_at = 0;
@@ -1096,7 +1094,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 	clear_dive_table(dives_to_add);
 	clear_dive_table(dives_to_remove);
 	clear_trip_table(trips_to_add);
-	clear_dive_site_table(sites_to_add);
+	sites_to_add.clear();
 	clear_device_table(devices_to_add);
 
 	/* Check if any of the new dives has a number. This will be
@@ -1130,36 +1128,33 @@ void process_imported_dives(struct divelog *import_log, int flags,
 		autogroup_dives(import_log->dives, import_log->trips);
 
 	/* If dive sites already exist, use the existing versions. */
-	for (i = 0; i  < import_log->sites->nr; i++) {
-		struct dive_site *new_ds = import_log->sites->dive_sites[i];
-		struct dive_site *old_ds = get_same_dive_site(new_ds);
+	for (auto &new_ds: *import_log->sites) {
+		struct dive_site *old_ds = get_same_dive_site(*new_ds);
 
 		/* Check if it dive site is actually used by new dives. */
 		for (j = 0; j < import_log->dives->nr; j++) {
-			if (import_log->dives->dives[j]->dive_site == new_ds)
+			if (import_log->dives->dives[j]->dive_site == new_ds.get())
 				break;
 		}
 
 		if (j == import_log->dives->nr) {
-			/* Dive site not even used - free it and go to next. */
-			delete new_ds;
+			/* Dive site not even used. */
 			continue;
 		}
 
 		if (!old_ds) {
 			/* Dive site doesn't exist. Add it to list of dive sites to be added. */
 			new_ds->dives.clear(); /* Caller is responsible for adding dives to site */
-			add_dive_site_to_table(new_ds, sites_to_add);
-			continue;
+			sites_to_add.put(std::move(new_ds));
+		} else {
+			/* Dive site already exists - use the old one. */
+			for (j = 0; j < import_log->dives->nr; j++) {
+				if (import_log->dives->dives[j]->dive_site == new_ds.get())
+					import_log->dives->dives[j]->dive_site = old_ds;
+			}
 		}
-		/* Dive site already exists - use the old and free the new. */
-		for (j = 0; j < import_log->dives->nr; j++) {
-			if (import_log->dives->dives[j]->dive_site == new_ds)
-				import_log->dives->dives[j]->dive_site = old_ds;
-		}
-		delete new_ds;
 	}
-	import_log->sites->nr = 0; /* All dive sites were consumed */
+	import_log->sites->clear();
 
 	/* Merge overlapping trips. Since both trip tables are sorted, we
 	 * could be smarter here, but realistically not a whole lot of trips
