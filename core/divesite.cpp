@@ -137,14 +137,14 @@ dive_site *dive_site_table::alloc_or_get(uint32_t uuid)
 	return register_site(std::make_unique<dive_site>(uuid)).ptr;
 }
 
-size_t nr_of_dives_at_dive_site(const dive_site &ds)
+size_t dive_site::nr_of_dives() const
 {
-	return ds.dives.size();
+	return dives.size();
 }
 
-bool is_dive_site_selected(const struct dive_site &ds)
+bool dive_site::is_selected() const
 {
-	return any_of(ds.dives.begin(), ds.dives.end(),
+	return any_of(dives.begin(), dives.end(),
 		      [](dive *dive) { return dive->selected; });
 }
 
@@ -161,13 +161,12 @@ dive_site *dive_site_table::create(const std::string &name, const location_t *lo
 }
 
 /* if all fields are empty, the dive site is pointless */
-bool dive_site_is_empty(struct dive_site *ds)
+bool dive_site::is_empty() const
 {
-	return !ds ||
-	       (ds->name.empty() &&
-	        ds->description.empty() &&
-	        ds->notes.empty() &&
-	        !has_location(&ds->location));
+	return name.empty() &&
+	       description.empty() &&
+	       notes.empty() &&
+	       !has_location(&location);
 }
 
 static void merge_string(std::string &a, const std::string &b)
@@ -206,15 +205,15 @@ struct dive_site *get_same_dive_site(const struct dive_site &site)
 				[site](const auto &ds) { return same(*ds, site); });
 }
 
-void merge_dive_site(struct dive_site *a, struct dive_site *b)
+void dive_site::merge(dive_site &b)
 {
-	if (!has_location(&a->location)) a->location = b->location;
-	merge_string(a->name, b->name);
-	merge_string(a->notes, b->notes);
-	merge_string(a->description, b->description);
+	if (!has_location(&location)) location = b.location;
+	merge_string(name, b.name);
+	merge_string(notes, b.notes);
+	merge_string(description, b.description);
 
-	if (a->taxonomy.empty())
-		a->taxonomy = std::move(b->taxonomy);
+	if (taxonomy.empty())
+		taxonomy = std::move(b.taxonomy);
 }
 
 dive_site *dive_site_table::find_or_create(const std::string &name)
@@ -228,7 +227,7 @@ dive_site *dive_site_table::find_or_create(const std::string &name)
 void dive_site_table::purge_empty()
 {
 	for (const auto &ds: *this) {
-		if (!dive_site_is_empty(ds.get()))
+		if (!ds->is_empty())
 			continue;
 		while (!ds->dives.empty()) {
 			struct dive *d = ds->dives.back();
@@ -242,24 +241,20 @@ void dive_site_table::purge_empty()
 	}
 }
 
-void add_dive_to_dive_site(struct dive *d, struct dive_site *ds)
+void dive_site::add_dive(struct dive *d)
 {
 	if (!d) {
-		report_info("Warning: add_dive_to_dive_site called with NULL dive");
+		report_info("Warning: dive_site::add_dive() called with NULL dive");
 		return;
 	}
-	if (!ds) {
-		report_info("Warning: add_dive_to_dive_site called with NULL dive site");
-		return;
-	}
-	if (d->dive_site == ds)
+	if (d->dive_site == this)
 		return;
 	if (d->dive_site) {
 		report_info("Warning: adding dive that already belongs to a dive site to a different site");
 		unregister_dive_from_dive_site(d);
 	}
-	ds->dives.push_back(d);
-	d->dive_site = ds;
+	dives.push_back(d);
+	d->dive_site = this;
 }
 
 struct dive_site *unregister_dive_from_dive_site(struct dive *d)

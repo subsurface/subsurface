@@ -324,7 +324,7 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 		d->visibility = s->visibility;
 	if (what.divesite) {
 		unregister_dive_from_dive_site(d);
-		add_dive_to_dive_site(d, s->dive_site);
+		s->dive_site->add_dive(d);
 	}
 	if (what.tags)
 		d->tag_list = taglist_copy(s->tag_list);
@@ -2360,7 +2360,7 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded
 		return NULL;
 
 	res = merge_dives(a, b, 0, prefer_downloaded, NULL, &site);
-	res->dive_site = site; /* Caller has to call add_dive_to_dive_site()! */
+	res->dive_site = site; /* Caller has to call site->add_dive()! */
 	return res;
 }
 
@@ -2656,7 +2656,7 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	res->cns = res->maxcns = 0;
 
 	/* we take the first dive site, unless it's empty */
-	*site = a->dive_site && !dive_site_is_empty(a->dive_site) ? a->dive_site : b->dive_site;
+	*site = a->dive_site && !a->dive_site->is_empty() ? a->dive_site : b->dive_site;
 	if (!dive_site_has_gps_location(*site) && dive_site_has_gps_location(b->dive_site)) {
 		/* we picked the first dive site and that didn't have GPS data, but the new dive has
 		 * GPS data (that could be a download from a GPS enabled dive computer).

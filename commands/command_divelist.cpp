@@ -69,7 +69,7 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
 	if (d.site) {
-		add_dive_to_dive_site(d.dive.get(), d.site);
+		d.site->add_dive(d.dive.get());
 		diveSiteCountChanged(d.site);
 	}
 	dive *res = d.dive.release();		// Give up ownership of dive

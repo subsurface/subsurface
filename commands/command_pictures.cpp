@@ -200,7 +200,7 @@ void AddPictures::swapDiveSites()
 			unregister_dive_from_dive_site(entry.d); // the dive-site pointer in the dive is now NULL
 		std::swap(ds, entry.ds);
 		if (ds)
-			add_dive_to_dive_site(entry.d, ds);
+			ds->add_dive(entry.d);
 		emit diveListNotifier.divesChanged(QVector<dive *>{ entry.d }, DiveField::DIVESITE);
 	}
 
