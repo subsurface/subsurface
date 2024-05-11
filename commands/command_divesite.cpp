@@ -99,10 +99,9 @@ ImportDiveSites::ImportDiveSites(dive_site_table sites, const QString &source)
 	setText(Command::Base::tr("import dive sites from %1").arg(source));
 
 	for (auto &new_ds: sites) {
-		// Don't import dive sites that already exist. Currently we only check for
-		// the same name. We might want to be smarter here and merge dive site data, etc.
-		struct dive_site *old_ds = get_same_dive_site(*new_ds);
-		if (old_ds)
+		// Don't import dive sites that already exist.
+		// We might want to be smarter here and merge dive site data, etc.
+		if (divelog.sites->get_same(*new_ds))
 			continue;
 		sitesToAdd.push_back(std::move(new_ds));
 	}
