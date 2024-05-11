@@ -3,7 +3,6 @@
 #include "divesite.h"
 #include "dive.h"
 #include "divelist.h"
-#include "divelog.h"
 #include "errorhelper.h"
 #include "format.h"
 #include "membuffer.h"
@@ -179,10 +178,9 @@ static bool same(const struct dive_site &a, const struct dive_site &b)
 	    && a.notes == b.notes;
 }
 
-struct dive_site *get_same_dive_site(const struct dive_site &site)
+dive_site *dive_site_table::get_same(const struct dive_site &site) const
 {
-	return get_by_predicate(*divelog.sites,
-				[site](const auto &ds) { return same(*ds, site); });
+	return get_by_predicate(*this, [site](const auto &ds) { return same(*ds, site); });
 }
 
 void dive_site::merge(dive_site &b)
