@@ -41,9 +41,9 @@ dive_site *dive_site_table::get_by_gps(const location_t *loc) const
 /* to avoid a bug where we have two dive sites with different name and the same GPS coordinates
  * and first get the gps coordinates (reading a V2 file) and happen to get back "the other" name,
  * this function allows us to verify if a very specific name/GPS combination already exists */
-dive_site *dive_site_table::get_by_gps_and_name(const std::string &name, const location_t *loc) const
+dive_site *dive_site_table::get_by_gps_and_name(const std::string &name, const location_t loc) const
 {
-	return get_by_predicate(*this, [&name, loc](const auto &ds) { return ds->location == *loc &&
+	return get_by_predicate(*this, [&name, loc](const auto &ds) { return ds->location == loc &&
 									     ds->name == name; });
 }
 
@@ -93,7 +93,7 @@ dive_site::dive_site(const std::string &name) : name(name)
 {
 }
 
-dive_site::dive_site(const std::string &name, const location_t *loc) : name(name), location(*loc)
+dive_site::dive_site(const std::string &name, const location_t loc) : name(name), location(loc)
 {
 }
 
@@ -134,7 +134,7 @@ dive_site *dive_site_table::create(const std::string &name)
 }
 
 /* same as before, but with GPS data */
-dive_site *dive_site_table::create(const std::string &name, const location_t *loc)
+dive_site *dive_site_table::create(const std::string &name, const location_t loc)
 {
 	return register_site(std::make_unique<dive_site>(name, loc)).ptr;
 }

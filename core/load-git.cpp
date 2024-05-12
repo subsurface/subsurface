@@ -177,7 +177,7 @@ static void parse_dive_gps(char *line, struct git_parser_state *state)
 	if (!ds) {
 		ds = state->log->sites->get_by_gps(&location);
 		if (!ds)
-			ds = state->log->sites->create(std::string(), &location);
+			ds = state->log->sites->create(std::string(), location);
 		ds->add_dive(state->active_dive);
 	} else {
 		if (dive_site_has_gps_location(ds) && ds->location != location) {
