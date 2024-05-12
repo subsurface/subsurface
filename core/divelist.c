@@ -767,18 +767,6 @@ struct dive *unregister_dive(int idx)
 	return dive;
 }
 
-/* this implements the mechanics of removing the dive from the global
- * dive table and the trip, but doesn't deal with updating dive trips, etc */
-void delete_single_dive(int idx)
-{
-	struct dive *dive = get_dive(idx);
-	if (!dive)
-		return; /* this should never happen */
-	remove_dive_from_trip(dive, divelog.trips);
-	unregister_dive_from_dive_site(dive);
-	delete_dive_from_table(divelog.dives, idx);
-}
-
 void process_loaded_dives()
 {
 	sort_dive_table(divelog.dives);
@@ -989,7 +977,7 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	/* Remove old dives */
 	for (i = 0; i < dives_to_remove.nr; i++) {
 		idx = get_divenr(dives_to_remove.dives[i]);
-		delete_single_dive(idx);
+		delete_single_dive(&divelog, idx);
 	}
 	dives_to_remove.nr = 0;
 
