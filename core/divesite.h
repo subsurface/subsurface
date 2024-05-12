@@ -22,7 +22,7 @@ struct dive_site
 
 	dive_site();
 	dive_site(const std::string &name);
-	dive_site(const std::string &name, const location_t *loc);
+	dive_site(const std::string &name, const location_t loc);
 	dive_site(uint32_t uuid);
 	~dive_site();
 
@@ -46,11 +46,11 @@ public:
 	dive_site *get_by_uuid(uint32_t uuid) const;
 	dive_site *alloc_or_get(uint32_t uuid);
 	dive_site *create(const std::string &name);
-	dive_site *create(const std::string &name, const location_t *);
+	dive_site *create(const std::string &name, const location_t);
 	dive_site *find_or_create(const std::string &name);
 	dive_site *get_by_name(const std::string &name) const;
 	dive_site *get_by_gps(const location_t *) const;
-	dive_site *get_by_gps_and_name(const std::string &name, const location_t *) const;
+	dive_site *get_by_gps_and_name(const std::string &name, const location_t) const;
 	dive_site *get_by_gps_proximity(location_t, int distance) const;
 	dive_site *get_same(const struct dive_site &) const;
 	void purge_empty();
