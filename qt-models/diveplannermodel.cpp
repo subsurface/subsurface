@@ -381,7 +381,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			if (value.toInt() >= 0)
 				p.cylinderid = value.toInt();
 			/* Did we change the start (dp 0) cylinder to another cylinderid than 0? */
-			if (value.toInt() != 0 && index.row() == 0)
+			if (value.toInt() > 0 && index.row() == 0)
 				cylinders.moveAtFirst(value.toInt());
 			cylinders.updateTrashIcon();
 			break;
