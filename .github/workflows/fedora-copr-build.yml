@@ -16,16 +16,16 @@ jobs:
       image: fedora:latest
 
     steps:
+    - name: Setup build dependencies in the Fedora container
+      run: |
+        dnf -y install @development-tools @rpm-development-tools
+        dnf -y install copr-cli make
+
     - name: Check out sources
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
-
-    - name: Setup build dependencies in the Fedora container
-      run: |
-        dnf -y install @development-tools @rpm-development-tools
-        dnf -y install copr-cli make
 
     - name: setup git
       run: |
