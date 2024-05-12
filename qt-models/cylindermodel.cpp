@@ -614,9 +614,8 @@ void CylindersModel::updateNumRows()
 // Only invoked from planner.
 void CylindersModel::moveAtFirst(int cylid)
 {
-	if (!d)
+	if (!d || cylid <= 0 || cylid >= d->cylinders.nr)
 		return;
-
 	cylinder_t temp_cyl;
 
 	beginMoveRows(QModelIndex(), cylid, cylid, QModelIndex(), 0);
