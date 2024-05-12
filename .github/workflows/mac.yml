@@ -1,4 +1,5 @@
 name: Mac
+
 on:
   push:
     paths-ignore:

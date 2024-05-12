@@ -1,0 +1,21 @@
+name: Add artifact links to pull request
+
+on:
+  workflow_run:
+    workflows: ["Ubuntu 16.04 / Qt 5.15-- for AppImage", "Mac", "Windows", "Android", "iOS"]
+    types: [completed]
+
+jobs:
+  artifacts-url-comments:
+    name: Add artifact links to PR and issues
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Add artifact links to PR and issues
+        uses: tonyhallett/artifacts-url-comments@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+￼          prefix: "**Artifacts:**"
+￼          suffix: "_**WARNING:** Use at your own risk._"
+￼          format: name
+￼          addTo: pull
