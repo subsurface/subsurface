@@ -34,6 +34,7 @@ extern "C" {
 #endif
 
 void clear_divelog(struct divelog *);
+extern void delete_single_dive(struct divelog *, int idx);
 
 #ifdef __cplusplus
 }
