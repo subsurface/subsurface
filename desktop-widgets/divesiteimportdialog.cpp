@@ -13,7 +13,7 @@
 DivesiteImportDialog::DivesiteImportDialog(dive_site_table imported, QString source, QWidget *parent) : QDialog(parent),
 	importedSites(std::move(imported)),
 	importedSource(std::move(source)),
-	divesiteImportedModel(std::make_unique<DivesiteImportedModel>())
+	divesiteImportedModel(std::make_unique<DivesiteImportedModel>(importedSites))
 {
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
@@ -40,8 +40,6 @@ DivesiteImportDialog::DivesiteImportDialog(dive_site_table imported, QString sou
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 
 	ui.ok->setEnabled(true);
-
-	divesiteImportedModel->repopulate(&importedSites);
 }
 
 DivesiteImportDialog::~DivesiteImportDialog()
