@@ -11,13 +11,12 @@ class DivesiteImportedModel : public QAbstractTableModel
 public:
 	enum columnNames { NAME, LOCATION, COUNTRY, NEAREST, DISTANCE, SELECTED };
 
-	DivesiteImportedModel(QObject *parent = 0);
-	int columnCount(const QModelIndex& index = QModelIndex()) const;
-	int rowCount(const QModelIndex& index = QModelIndex()) const;
-	QVariant data(const QModelIndex& index, int role) const;
-	QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-	Qt::ItemFlags flags(const QModelIndex &index) const;
-	void repopulate(dive_site_table *sites);
+	DivesiteImportedModel(dive_site_table &, QObject *parent = 0);
+	int columnCount(const QModelIndex& index = QModelIndex()) const override;
+	int rowCount(const QModelIndex& index = QModelIndex()) const override;
+	QVariant data(const QModelIndex& index, int role) const override;
+	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+	Qt::ItemFlags flags(const QModelIndex &index) const override;
 public
 slots:
 	void changeSelected(QModelIndex clickedIndex);
@@ -29,7 +28,7 @@ private:
 	int firstIndex;
 	int lastIndex;
 	std::vector<char> checkStates; // char instead of bool to avoid silly pessimization of std::vector.
-	dive_site_table *importedSitesTable;
+	dive_site_table &importedSitesTable;
 };
 
 #endif
