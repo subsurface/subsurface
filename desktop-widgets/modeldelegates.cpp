@@ -130,6 +130,7 @@ QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	currCombo.currRow = index.row();
 	currCombo.model = const_cast<QAbstractItemModel *>(index.model());
 	currCombo.activeText = currCombo.model->data(index).toString();
+	currCombo.ignoreSelection = false;
 
 	return comboDelegate;
 }
