@@ -15,7 +15,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-￼          prefix: "**Artifacts:**"
-￼          suffix: "_**WARNING:** Use at your own risk._"
-￼          format: name
-￼          addTo: pull
+          prefix: "**Artifacts:**"
+          suffix: "_**WARNING:** Use at your own risk._"
+          format: name
+          addTo: pull
