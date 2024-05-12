@@ -1149,7 +1149,7 @@ static void gps_lat(const char *buffer, struct dive *dive, struct parser_state *
 
 	location.lat = parse_degrees(buffer, &end);
 	if (!ds) {
-		state->log->sites->create(std::string(), &location)->add_dive(dive);
+		state->log->sites->create(std::string(), location)->add_dive(dive);
 	} else {
 		if (ds->location.lat.udeg && ds->location.lat.udeg != location.lat.udeg)
 			report_info("Oops, changing the latitude of existing dive site id %8x name %s; not good", ds->uuid,
@@ -1166,7 +1166,7 @@ static void gps_long(const char *buffer, struct dive *dive, struct parser_state 
 
 	location.lon = parse_degrees(buffer, &end);
 	if (!ds) {
-		state->log->sites->create(std::string(), &location)->add_dive(dive);
+		state->log->sites->create(std::string(), location)->add_dive(dive);
 	} else {
 		if (ds->location.lon.udeg && ds->location.lon.udeg != location.lon.udeg)
 			report_info("Oops, changing the longitude of existing dive site id %8x name %s; not good", ds->uuid,
@@ -1204,7 +1204,7 @@ static void gps_in_dive(const char *buffer, struct dive *dive, struct parser_sta
 			// remember the original coordinates so we can create the correct dive site later
 			state->cur_location = location;
 		} else {
-			ds = state->log->sites->create(std::string(), &location);
+			ds = state->log->sites->create(std::string(), location);
 		}
 		ds->add_dive(dive);
 	} else {
@@ -2225,7 +2225,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 				/* Measure GPS */
 				state.cur_location.lat.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
 				state.cur_location.lon.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
-				state.log->sites->create("DLF imported"s, &state.cur_location)->add_dive(state.cur_dive);
+				state.log->sites->create("DLF imported"s, state.cur_location)->add_dive(state.cur_dive);
 				break;
 			default:
 				break;
