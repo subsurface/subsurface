@@ -481,7 +481,7 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				struct dive_site *exact_match = state->log->sites->get_by_gps_and_name(trimmed, &ds->location);
+				struct dive_site *exact_match = state->log->sites->get_by_gps_and_name(trimmed, ds->location);
 				if (exact_match) {
 					unregister_dive_from_dive_site(dive);
 					exact_match->add_dive(dive);
