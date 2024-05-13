@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 	if (!quit)
 		run_ui();
 	exit_ui();
-	clear_divelog(&divelog);
+	divelog.clear();
 	parse_xml_exit();
 	subsurface_console_exit();
 
