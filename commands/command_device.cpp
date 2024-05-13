@@ -9,7 +9,7 @@ namespace Command {
 EditDeviceNickname::EditDeviceNickname(const struct divecomputer *dc, const QString &nicknameIn) :
 	nickname(nicknameIn.toStdString())
 {
-	index = get_or_add_device_for_dc(divelog.devices, dc);
+	index = get_or_add_device_for_dc(divelog.devices.get(), dc);
 	if (index == -1)
 		return;
 
@@ -18,12 +18,12 @@ EditDeviceNickname::EditDeviceNickname(const struct divecomputer *dc, const QStr
 
 bool EditDeviceNickname::workToBeDone()
 {
-	return get_device(divelog.devices, index) != nullptr;
+	return get_device(divelog.devices.get(), index) != nullptr;
 }
 
 void EditDeviceNickname::redo()
 {
-	device *dev = get_device_mutable(divelog.devices, index);
+	device *dev = get_device_mutable(divelog.devices.get(), index);
 	if (!dev)
 		return;
 	std::swap(dev->nickName, nickname);

@@ -178,7 +178,7 @@ void dc_settings_start(struct parser_state *state)
 
 void dc_settings_end(struct parser_state *state)
 {
-	create_device_node(state->log->devices,
+	create_device_node(state->log->devices.get(),
 		state->cur_settings.dc.model.c_str(),
 		state->cur_settings.dc.serial_nr.c_str(),
 		state->cur_settings.dc.nickname.c_str());
@@ -217,7 +217,7 @@ void filter_preset_start(struct parser_state *state)
 
 void filter_preset_end(struct parser_state *state)
 {
-	add_filter_preset_to_table(state->cur_filter.get(), state->log->filter_presets);
+	add_filter_preset_to_table(state->cur_filter.get(), state->log->filter_presets.get());
 	state->cur_filter.reset();
 }
 
@@ -277,7 +277,7 @@ void dive_end(struct parser_state *state)
 	if (!is_dive(state)) {
 		free_dive(state->cur_dive);
 	} else {
-		record_dive_to_table(state->cur_dive, state->log->dives);
+		record_dive_to_table(state->cur_dive, state->log->dives.get());
 		if (state->cur_trip)
 			add_dive_to_trip(state->cur_dive, state->cur_trip);
 	}
@@ -300,7 +300,7 @@ void trip_end(struct parser_state *state)
 {
 	if (!state->cur_trip)
 		return;
-	insert_trip(state->cur_trip, state->log->trips);
+	insert_trip(state->cur_trip, state->log->trips.get());
 	state->cur_trip = NULL;
 }
 
