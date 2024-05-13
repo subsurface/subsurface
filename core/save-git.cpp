@@ -893,8 +893,8 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	membuffer b;
 
 	put_format(&b, "version %d\n", DATAFORMAT_VERSION);
-	for (int i = 0; i < nr_devices(divelog.devices); i++)
-		save_one_device(&b, get_device(divelog.devices, i));
+	for (int i = 0; i < nr_devices(divelog.devices.get()); i++)
+		save_one_device(&b, get_device(divelog.devices.get(), i));
 	/* save the fingerprint data */
 	for (int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
 		save_one_fingerprint(&b, i);

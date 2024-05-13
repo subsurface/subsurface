@@ -991,7 +991,7 @@ static void parse_settings_divecomputerid(char *line, struct git_parser_state *s
 			break;
 		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, state);
 	}
-	create_device_node(state->log->devices, id.model.c_str(), id.serial.c_str(), id.nickname.c_str());
+	create_device_node(state->log->devices.get(), id.model.c_str(), id.serial.c_str(), id.nickname.c_str());
 }
 
 struct fingerprint_helper {
@@ -1386,7 +1386,7 @@ static void finish_active_trip(struct git_parser_state *state)
 
 	if (trip) {
 		state->active_trip = NULL;
-		insert_trip(trip, state->log->trips);
+		insert_trip(trip, state->log->trips.get());
 	}
 }
 
@@ -1396,7 +1396,7 @@ static void finish_active_dive(struct git_parser_state *state)
 
 	if (dive) {
 		state->active_dive = NULL;
-		record_dive_to_table(dive, state->log->dives);
+		record_dive_to_table(dive, state->log->dives.get());
 	}
 }
 
@@ -1787,7 +1787,7 @@ static int parse_filter_preset(struct git_parser_state *state, const git_tree_en
 
 	git_blob_free(blob);
 
-	add_filter_preset_to_table(state->active_filter.get(), state->log->filter_presets);
+	add_filter_preset_to_table(state->active_filter.get(), state->log->filter_presets.get());
 	state->active_filter.reset();
 
 	return 0;

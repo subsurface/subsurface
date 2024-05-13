@@ -885,7 +885,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	    dive->dc.sample[1].temperature.mkelvin > dive->dc.sample[0].temperature.mkelvin)
 		dive->dc.sample[0].temperature.mkelvin = dive->dc.sample[1].temperature.mkelvin;
 
-	record_dive_to_table(dive, devdata->log->dives);
+	record_dive_to_table(dive, devdata->log->dives.get());
 	return true;
 
 error_exit:
