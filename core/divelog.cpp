@@ -62,22 +62,22 @@ struct divelog &divelog::operator=(divelog &&log)
 
 /* this implements the mechanics of removing the dive from the
  * dive log and the trip, but doesn't deal with updating dive trips, etc */
-void delete_single_dive(struct divelog *log, int idx)
+void divelog::delete_single_dive(int idx)
 {
-	if (idx < 0 || idx > log->dives->nr) {
+	if (idx < 0 || idx > dives->nr) {
 		report_info("Warning: deleting unexisting dive with index %d", idx);
 		return;
 	}
-	struct dive *dive = log->dives->dives[idx];
-	remove_dive_from_trip(dive, log->trips);
+	struct dive *dive = dives->dives[idx];
+	remove_dive_from_trip(dive, trips);
 	unregister_dive_from_dive_site(dive);
-	delete_dive_from_table(log->dives, idx);
+	delete_dive_from_table(dives, idx);
 }
 
 void divelog::clear()
 {
 	while (dives->nr > 0)
-		delete_single_dive(this, dives->nr - 1);
+		delete_single_dive(dives->nr - 1);
 	sites->clear();
 	if (trips->nr != 0) {
 		report_info("Warning: trip table not empty in divelog::clear()!");
@@ -85,9 +85,4 @@ void divelog::clear()
 	}
 	clear_device_table(devices);
 	filter_presets->clear();
-}
-
-void clear_divelog(struct divelog *log)
-{
-	log->clear();
 }
