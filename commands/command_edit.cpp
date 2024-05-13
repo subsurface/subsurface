@@ -1486,8 +1486,8 @@ void EditDive::exchangeDives()
 	QVector<dive *> dives = { oldDive };
 	timestamp_t delta = oldDive->when - newDive->when;
 	if (delta != 0) {
-		sort_dive_table(divelog.dives);
-		sort_trip_table(divelog.trips);
+		sort_dive_table(divelog.dives.get());
+		sort_trip_table(divelog.trips.get());
 		if (newDive->divetrip != oldDive->divetrip)
 			qWarning("Command::EditDive::redo(): This command does not support moving between trips!");
 		if (oldDive->divetrip)

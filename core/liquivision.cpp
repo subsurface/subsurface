@@ -450,7 +450,7 @@ int try_to_open_liquivision(const char *, std::string &mem, struct divelog *log)
 	}
 	ptr += 4;
 
-	parse_dives(log_version, buf + ptr, buf_size - ptr, log->dives, *log->sites);
+	parse_dives(log_version, buf + ptr, buf_size - ptr, log->dives.get(), *log->sites);
 
 	return 1;
 }

@@ -140,7 +140,7 @@ int is_default_dive_computer_device(const char *name)
 
 const char *get_dc_nickname(const struct divecomputer *dc)
 {
-	const device *existNode = get_device_for_dc(divelog.devices, dc);
+	const device *existNode = get_device_for_dc(divelog.devices.get(), dc);
 
 	if (existNode && !existNode->nickName.empty())
 		return existNode->nickName.c_str();

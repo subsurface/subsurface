@@ -686,8 +686,8 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", DATAFORMAT_VERSION);
 
 	/* save the dive computer nicknames, if any */
-	for (int i = 0; i < nr_devices(divelog.devices); i++) {
-		const struct device *d = get_device(divelog.devices, i);
+	for (int i = 0; i < nr_devices(divelog.devices.get()); i++) {
+		const struct device *d = get_device(divelog.devices.get(), i);
 		if (!select_only || device_used_by_selected_dive(d))
 			save_one_device(b, d);
 	}

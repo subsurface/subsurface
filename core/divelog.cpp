@@ -9,15 +9,12 @@
 
 struct divelog divelog;
 
-// We can't use smart pointers, since this is used from C
-// and it would be bold to presume that std::unique_ptr<>
-// and a plain pointer have the same memory layout.
 divelog::divelog() :
-	dives(new dive_table),
-	trips(new trip_table),
-	sites(new dive_site_table),
-	devices(new device_table),
-	filter_presets(new filter_preset_table),
+	dives(std::make_unique<dive_table>()),
+	trips(std::make_unique<trip_table>()),
+	sites(std::make_unique<dive_site_table>()),
+	devices(std::make_unique<device_table>()),
+	filter_presets(std::make_unique<filter_preset_table>()),
 	autogroup(false)
 {
 	*dives = empty_dive_table;
@@ -26,39 +23,14 @@ divelog::divelog() :
 
 divelog::~divelog()
 {
-	clear_dive_table(dives);
-	clear_trip_table(trips);
-	delete dives;
-	delete trips;
-	delete sites;
-	delete devices;
-	delete filter_presets;
+	if (dives)
+		clear_dive_table(dives.get());
+	if (trips)
+		clear_trip_table(trips.get());
 }
 
-divelog::divelog(divelog &&log) :
-	dives(new dive_table),
-	trips(new trip_table),
-	sites(new dive_site_table(std::move(*log.sites))),
-	devices(new device_table),
-	filter_presets(new filter_preset_table)
-{
-	*dives = empty_dive_table;
-	*trips = empty_trip_table;
-	move_dive_table(log.dives, dives);
-	move_trip_table(log.trips, trips);
-	*devices = std::move(*log.devices);
-	*filter_presets = std::move(*log.filter_presets);
-}
-
-struct divelog &divelog::operator=(divelog &&log)
-{
-	move_dive_table(log.dives, dives);
-	move_trip_table(log.trips, trips);
-	*sites = std::move(*log.sites);
-	*devices = std::move(*log.devices);
-	*filter_presets = std::move(*log.filter_presets);
-	return *this;
-}
+divelog::divelog(divelog &&) = default;
+struct divelog &divelog::operator=(divelog &&) = default;
 
 /* this implements the mechanics of removing the dive from the
  * dive log and the trip, but doesn't deal with updating dive trips, etc */
@@ -69,9 +41,9 @@ void divelog::delete_single_dive(int idx)
 		return;
 	}
 	struct dive *dive = dives->dives[idx];
-	remove_dive_from_trip(dive, trips);
+	remove_dive_from_trip(dive, trips.get());
 	unregister_dive_from_dive_site(dive);
-	delete_dive_from_table(dives, idx);
+	delete_dive_from_table(dives.get(), idx);
 }
 
 void divelog::clear()
@@ -83,6 +55,6 @@ void divelog::clear()
 		report_info("Warning: trip table not empty in divelog::clear()!");
 		trips->nr = 0;
 	}
-	clear_device_table(devices);
+	clear_device_table(devices.get());
 	filter_presets->clear();
 }

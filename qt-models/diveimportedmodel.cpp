@@ -52,7 +52,7 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	if (index.row() >= log.dives->nr)
 		return QVariant();
 
-	struct dive *d = get_dive_from_table(index.row(), log.dives);
+	struct dive *d = get_dive_from_table(index.row(), log.dives.get());
 	if (!d)
 		return QVariant();
 
@@ -124,8 +124,10 @@ void DiveImportedModel::downloadThreadFinished()
 {
 	beginResetModel();
 
-	// Move the table data from thread to model
-	log = std::move(thread.log);
+	// Move the table data from thread to model. Replace the downloads thread's log
+	// with an empty log, because it may reuse it.
+	log.clear();
+	std::swap(log, thread.log);
 
 	checkStates.resize(log.dives->nr);
 	std::fill(checkStates.begin(), checkStates.end(), true);
@@ -150,8 +152,9 @@ struct divelog DiveImportedModel::consumeTables()
 {
 	beginResetModel();
 
-	// Move tables to result
-	struct divelog res(std::move(log));
+	// Move tables to result and reset local tables (oldschool pre-C++11 flair).
+	struct divelog res;
+	std::swap(res, log);
 
 	// Reset indices
 	checkStates.clear();
@@ -176,7 +179,7 @@ void DiveImportedModel::deleteDeselected()
 			j++;
 		} else {
 			beginRemoveRows(QModelIndex(), j, j);
-			delete_dive_from_table(log.dives, j);
+			delete_dive_from_table(log.dives.get(), j);
 			endRemoveRows();
 		}
 	}
