@@ -18,7 +18,7 @@ static void remove_trip_from_backend(dive_trip *trip)
 {
 	if (trip->selected)
 		deselect_trip(trip);
-	remove_trip(trip, divelog.trips);	// Remove trip from backend
+	remove_trip(trip, divelog.trips.get());	// Remove trip from backend
 }
 
 // This helper function removes a dive, takes ownership of the dive and adds it to a DiveToAdd structure.
@@ -78,10 +78,10 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	// dives have been added, their status will be updated.
 	res->hidden_by_filter = true;
 
-	int idx = dive_table_get_insertion_index(divelog.dives, res);
-	fulltext_register(res);				// Register the dive's fulltext cache
-	add_to_dive_table(divelog.dives, idx, res);	// Return ownership to backend
-	invalidate_dive_cache(res);		// Ensure that dive is written in git_save()
+	int idx = dive_table_get_insertion_index(divelog.dives.get(), res);
+	fulltext_register(res);					// Register the dive's fulltext cache
+	add_to_dive_table(divelog.dives.get(), idx, res);	// Return ownership to backend
+	invalidate_dive_cache(res);				// Ensure that dive is written in git_save()
 
 	return res;
 }
@@ -211,7 +211,7 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	addedTrips.reserve(toAdd.trips.size());
 	for (OwningTripPtr &trip: toAdd.trips) {
 		addedTrips.push_back(trip.get());
-		insert_trip(trip.release(), divelog.trips); // Return ownership to backend
+		insert_trip(trip.release(), divelog.trips.get()); // Return ownership to backend
 	}
 	toAdd.trips.clear();
 
@@ -301,7 +301,7 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	for (OwningTripPtr &trip: dives.tripsToAdd) {
 		dive_trip *t = trip.release();	// Give up ownership
 		createdTrips.push_back(t);
-		insert_trip(t, divelog.trips);	// Return ownership to backend
+		insert_trip(t, divelog.trips.get());	// Return ownership to backend
 	}
 	dives.tripsToAdd.clear();
 
@@ -431,7 +431,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 			allocTrip.reset(trip);
 	}
 
-	int idx = dive_table_get_insertion_index(divelog.dives, divePtr.get());
+	int idx = dive_table_get_insertion_index(divelog.dives.get(), divePtr.get());
 	if (newNumber)
 		divePtr->number = get_dive_nr_at_idx(idx);
 
@@ -452,7 +452,7 @@ void AddDive::redoit()
 	currentDive = current_dive;
 
 	divesAndSitesToRemove = addDives(divesToAdd);
-	sort_trip_table(divelog.trips); // Though unlikely, adding a dive may reorder trips
+	sort_trip_table(divelog.trips.get()); // Though unlikely, adding a dive may reorder trips
 
 	// Select the newly added dive
 	setSelection(divesAndSitesToRemove.dives, divesAndSitesToRemove.dives[0], -1);
@@ -462,7 +462,7 @@ void AddDive::undoit()
 {
 	// Simply remove the dive that was previously added...
 	divesToAdd = removeDives(divesAndSitesToRemove);
-	sort_trip_table(divelog.trips); // Though unlikely, removing a dive may reorder trips
+	sort_trip_table(divelog.trips.get()); // Though unlikely, removing a dive may reorder trips
 
 	// ...and restore the selection
 	setSelection(selection, currentDive, -1);
@@ -549,7 +549,7 @@ void ImportDives::redoit()
 
 	// Add devices
 	for (const device &dev: devicesToAddAndRemove.devices)
-		add_to_device_table(divelog.devices, &dev);
+		add_to_device_table(divelog.devices.get(), &dev);
 
 	// Add new filter presets
 	for (auto &it: filterPresetsToAdd) {
@@ -577,7 +577,7 @@ void ImportDives::undoit()
 
 	// Remove devices
 	for (const device &dev: devicesToAddAndRemove.devices)
-		remove_device(divelog.devices, &dev);
+		remove_device(divelog.devices.get(), &dev);
 
 	// Remove filter presets. Do this in reverse order.
 	for (auto it = filterPresetsToRemove.rbegin(); it != filterPresetsToRemove.rend(); ++it) {
@@ -606,7 +606,7 @@ bool DeleteDive::workToBeDone()
 void DeleteDive::undoit()
 {
 	divesToDelete = addDives(divesToAdd);
-	sort_trip_table(divelog.trips); // Though unlikely, removing a dive may reorder trips
+	sort_trip_table(divelog.trips.get()); // Though unlikely, removing a dive may reorder trips
 
 	// Select all re-added dives and make the first one current
 	dive *currentDive = !divesToDelete.dives.empty() ? divesToDelete.dives[0] : nullptr;
@@ -616,7 +616,7 @@ void DeleteDive::undoit()
 void DeleteDive::redoit()
 {
 	divesToAdd = removeDives(divesToDelete);
-	sort_trip_table(divelog.trips); // Though unlikely, adding a dive may reorder trips
+	sort_trip_table(divelog.trips.get()); // Though unlikely, adding a dive may reorder trips
 
 	// Deselect all dives and select dive that was close to the first deleted dive
 	dive *newCurrent = nullptr;
@@ -644,8 +644,8 @@ void ShiftTime::redoit()
 	}
 
 	// Changing times may have unsorted the dive and trip tables
-	sort_dive_table(divelog.dives);
-	sort_trip_table(divelog.trips);
+	sort_dive_table(divelog.dives.get());
+	sort_trip_table(divelog.trips.get());
 	for (dive_trip *trip: trips)
 		sort_dive_table(&trip->dives); // Keep the trip-table in order
 
@@ -713,7 +713,7 @@ bool TripBase::workToBeDone()
 void TripBase::redoit()
 {
 	moveDivesBetweenTrips(divesToMove);
-	sort_trip_table(divelog.trips); // Though unlikely, moving dives may reorder trips
+	sort_trip_table(divelog.trips.get()); // Though unlikely, moving dives may reorder trips
 
 	// Select the moved dives
 	std::vector<dive *> dives;
@@ -786,7 +786,7 @@ AutogroupDives::AutogroupDives()
 	dive_trip *trip;
 	bool alloc;
 	int from, to;
-	for(int i = 0; (trip = get_dives_to_autogroup(divelog.dives, i, &from, &to, &alloc)) != NULL; i = to) {
+	for(int i = 0; (trip = get_dives_to_autogroup(divelog.dives.get(), i, &from, &to, &alloc)) != NULL; i = to) {
 		// If this is an allocated trip, take ownership
 		if (alloc)
 			divesToMove.tripsToAdd.emplace_back(trip);

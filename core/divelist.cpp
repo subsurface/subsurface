@@ -758,7 +758,7 @@ struct dive *unregister_dive(int idx)
 	/* When removing a dive from the global dive table,
 	 * we also have to unregister its fulltext cache. */
 	fulltext_unregister(dive);
-	remove_from_dive_table(divelog.dives, idx);
+	remove_from_dive_table(divelog.dives.get(), idx);
 	if (dive->selected)
 		amount_selected--;
 	dive->selected = false;
@@ -767,11 +767,11 @@ struct dive *unregister_dive(int idx)
 
 void process_loaded_dives()
 {
-	sort_dive_table(divelog.dives);
-	sort_trip_table(divelog.trips);
+	sort_dive_table(divelog.dives.get());
+	sort_trip_table(divelog.trips.get());
 
 	/* Autogroup dives if desired by user. */
-	autogroup_dives(divelog.dives, divelog.trips);
+	autogroup_dives(divelog.dives.get(), divelog.trips.get());
 
 	fulltext_populate();
 
@@ -982,12 +982,12 @@ void add_imported_dives(struct divelog *import_log, int flags)
 
 	/* Add new dives */
 	for (i = 0; i < dives_to_add.nr; i++)
-		insert_dive(divelog.dives, dives_to_add.dives[i]);
+		insert_dive(divelog.dives.get(), dives_to_add.dives[i]);
 	dives_to_add.nr = 0;
 
 	/* Add new trips */
 	for (i = 0; i < trips_to_add.nr; i++)
-		insert_trip(trips_to_add.trips[i], divelog.trips);
+		insert_trip(trips_to_add.trips[i], divelog.trips.get());
 	trips_to_add.nr = 0;
 
 	/* Add new dive sites */
@@ -997,7 +997,7 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	/* Add new devices */
 	for (i = 0; i < nr_devices(devices_to_add); i++) {
 		const struct device *dev = get_device(devices_to_add, i);
-		add_to_device_table(divelog.devices, dev);
+		add_to_device_table(divelog.devices.get(), dev);
 	}
 
 	/* We might have deleted the old selected dive.
@@ -1113,20 +1113,20 @@ void process_imported_dives(struct divelog *import_log, int flags,
 		return;
 
 	/* Add only the devices that we don't know about yet. */
-	for (i = 0; i < nr_devices(import_log->devices); i++) {
-		const struct device *dev = get_device(import_log->devices, i);
-		if (!device_exists(divelog.devices, dev))
+	for (i = 0; i < nr_devices(import_log->devices.get()); i++) {
+		const struct device *dev = get_device(import_log->devices.get(), i);
+		if (!device_exists(divelog.devices.get(), dev))
 			add_to_device_table(devices_to_add, dev);
 	}
 
 	/* Sort the table of dives to be imported and combine mergable dives */
-	sort_dive_table(import_log->dives);
-	merge_imported_dives(import_log->dives);
+	sort_dive_table(import_log->dives.get());
+	merge_imported_dives(import_log->dives.get());
 
 	/* Autogroup tripless dives if desired by user. But don't autogroup
 	 * if tripless dives should be added to a new trip. */
 	if (!(flags & IMPORT_ADD_TO_NEW_TRIP))
-		autogroup_dives(import_log->dives, import_log->trips);
+		autogroup_dives(import_log->dives.get(), import_log->trips.get());
 
 	/* If dive sites already exist, use the existing versions. */
 	for (auto &new_ds: *import_log->sites) {
@@ -1164,7 +1164,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 	for (i = 0; i < import_log->trips->nr; i++) {
 		trip_import = import_log->trips->trips[i];
 		if ((flags & IMPORT_MERGE_ALL_TRIPS) || trip_import->autogen) {
-			if (try_to_merge_trip(trip_import, import_log->dives, flags & IMPORT_PREFER_IMPORTED, dives_to_add, dives_to_remove,
+			if (try_to_merge_trip(trip_import, import_log->dives.get(), flags & IMPORT_PREFER_IMPORTED, dives_to_add, dives_to_remove,
 					      &sequence_changed, &start_renumbering_at))
 				continue;
 		}
@@ -1178,7 +1178,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 			insert_dive(dives_to_add, d);
 			sequence_changed |= !dive_is_after_last(d);
 
-			remove_dive(d, import_log->dives);
+			remove_dive(d, import_log->dives.get());
 		}
 
 		/* Then, add trip to list of trips to add */
@@ -1205,7 +1205,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 		/* The remaining dives in import_log->dives are those that don't belong to
 		 * a trip and the caller does not want them to be associated to a
 		 * new trip. Merge them into the global table. */
-		sequence_changed |= merge_dive_tables(import_log->dives, NULL, divelog.dives, flags & IMPORT_PREFER_IMPORTED, NULL,
+		sequence_changed |= merge_dive_tables(import_log->dives.get(), NULL, divelog.dives.get(), flags & IMPORT_PREFER_IMPORTED, NULL,
 						      dives_to_add, dives_to_remove, &start_renumbering_at);
 	}
 

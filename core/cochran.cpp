@@ -825,7 +825,7 @@ int try_to_open_cochran(const char *, std::string &mem, struct divelog *log)
 			break;
 
 		cochran_parse_dive(decode, mod, (unsigned char *)mem.data() + dive1,
-						dive2 - dive1, log->dives);
+						dive2 - dive1, log->dives.get());
 	}
 
 	return 1; // no further processing needed

@@ -700,7 +700,7 @@ int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log)
 	runner = mem.data();
 	JUMP(runner, 12);
 
-	// Secuential parsing. Abort if received NULL from dt_dive_parser.
+	// Sequential parsing. Abort if received NULL from dt_dive_parser.
 	while ((i < numdives) && (runner < maxbuf)) {
 		struct dive *ptdive = alloc_dive();
 
@@ -713,12 +713,12 @@ int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log)
 			rc = 1;
 			goto out;
 		} else {
-			record_dive_to_table(ptdive, log->dives);
+			record_dive_to_table(ptdive, log->dives.get());
 		}
 		i++;
 	}
 out:
-	sort_dive_table(log->dives);
+	sort_dive_table(log->dives.get());
 	return rc;
 bail:
 	return 1;
