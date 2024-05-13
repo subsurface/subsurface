@@ -2,7 +2,7 @@ name: Manage the Subsurface CICD versioning
 
 inputs:
   no-increment:
-    description: Only get the current version, do not increment it even for push events (Caution: not actually a boolean)
+    description: 'Only get the current version, do not increment it even for push events (Caution: not actually a boolean)'
     default: false
   nightly-builds-secret:
     description: The secret to access the nightly builds repository
