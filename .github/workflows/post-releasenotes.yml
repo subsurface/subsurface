@@ -27,8 +27,10 @@ jobs:
     - name: assemble release notes
       env:
         EVENT_HEAD_COMMIT_ID: ${{ github.event.head_commit.id }}
+        # Required because we are using the GitHub CLI in 'create-releasenotes.sh'
+        GH_TOKEN: ${{ github.token }}
       run: |
-        bash scripts/create-releasenotes.sh $EVENT_HEAD_COMMIT_ID
+        scripts/create-releasenotes.sh $EVENT_HEAD_COMMIT_ID
 
     # add a file containing the release title so it can be picked up and listed on the release page on our web server
     - name: publish release
