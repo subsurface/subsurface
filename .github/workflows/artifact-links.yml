@@ -10,6 +10,13 @@ jobs:
     name: Add artifact links to PR and issues
     runs-on: ubuntu-22.04
     steps:
+      - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "GitHub context: $GITHUB_CONTEXT"
+
+
       - name: Add artifact links to PR and issues
         uses: tonyhallett/artifacts-url-comments@v1.1.0
         env:
