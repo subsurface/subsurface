@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 		printf("No log files given, not saving dive data.\n");
 		printf("Give a log file name as argument, or configure a cloud URL.\n");
 	}
-	clear_divelog(&divelog);
+	divelog.clear();
 	parse_xml_exit();
 
 	// Sync struct preferences to disk

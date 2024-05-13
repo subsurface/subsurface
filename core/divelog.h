@@ -18,16 +18,15 @@ struct divelog {
 	struct device_table *devices;
 	struct filter_preset_table *filter_presets;
 	bool autogroup;
-	void clear();
 	divelog();
 	~divelog();
 	divelog(divelog &&log); // move constructor (argument is consumed).
 	divelog &operator=(divelog &&log); // move assignment (argument is consumed).
+	void delete_single_dive(int idx);
+	void clear();
 };
 
 extern struct divelog divelog;
 
-void clear_divelog(struct divelog *);
-extern void delete_single_dive(struct divelog *, int idx);
 
 #endif

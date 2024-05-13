@@ -976,7 +976,7 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	/* Remove old dives */
 	for (i = 0; i < dives_to_remove.nr; i++) {
 		idx = get_divenr(dives_to_remove.dives[i]);
-		delete_single_dive(&divelog, idx);
+		divelog.delete_single_dive(idx);
 	}
 	dives_to_remove.nr = 0;
 
@@ -1272,7 +1272,7 @@ void clear_dive_file_data()
 	select_single_dive(NULL);	// This is propagated up to the UI and clears all the information.
 
 	current_dive = NULL;
-	clear_divelog(&divelog);
+	divelog.clear();
 
 	clear_event_types();
 
