@@ -25,4 +25,4 @@ bash subsurface/scripts/get-or-create-build-nr.sh "$1"
 echo "build number after get-or-create is $(<nightly-builds/latest-subsurface-buildnumber)"
 cp nightly-builds/latest-subsurface-buildnumber subsurface/
 [[ -n $3 ]] && echo "$3" > subsurface/latest-subsurface-buildnumber-extension
-bash subsurface/scripts/get-version > subsurface/release-version
+bash subsurface/scripts/get-version.sh > subsurface/release-version
