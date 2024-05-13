@@ -97,7 +97,7 @@ void DownloadThread::run()
 
 	report_info("Starting download from %s", qPrintable(getTransportString(transports)));
 	report_info("downloading %s dives", internalData->force_download ? "all" : "only new");
-	clear_divelog(&log);
+	log.clear();
 
 	Q_ASSERT(internalData->log != nullptr);
 	std::string errorText;

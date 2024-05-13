@@ -116,7 +116,7 @@ Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
 void DiveImportedModel::clearTable()
 {
 	beginResetModel();
-	clear_divelog(&log);
+	log.clear();
 	endResetModel();
 }
 
