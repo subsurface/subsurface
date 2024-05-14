@@ -51,8 +51,8 @@ static int stoptime, stopdepth, ndl, po2, cns, heartbeat, bearing;
 static bool in_deco, first_temp_is_air;
 static int current_gas_index;
 
-#define INFO(context, fmt, ...)	report_info("INFO: " fmt, ##__VA_ARGS__)
-#define ERROR(context, fmt, ...)	report_info("ERROR: " fmt, ##__VA_ARGS__)
+#define INFO(fmt, ...) report_info("INFO: " fmt, ##__VA_ARGS__)
+#define ERROR(fmt, ...)	report_info("ERROR: " fmt, ##__VA_ARGS__)
 
 /*
  * Directly taken from libdivecomputer's examples/common.c to improve
@@ -497,7 +497,7 @@ static void dev_info(device_data_t *, const char *fmt, ...)
 	va_end(ap);
 	progress_bar_text = buffer;
 	if (verbose)
-		INFO(0, "dev_info: %s", buffer);
+		INFO("dev_info: %s", buffer);
 
 	if (progress_callback)
 		(*progress_callback)(buffer);
@@ -1291,7 +1291,7 @@ static dc_status_t usbhid_device_open(dc_iostream_t **iostream, dc_context_t *co
 	dc_iterator_free (iterator);
 
 	if (!device) {
-		ERROR(context, "didn't find HID device");
+		ERROR("didn't find HID device");
 		return DC_STATUS_NODEVICE;
 	}
 	dev_info(data, "Opening USB HID device for %04x:%04x",
@@ -1508,7 +1508,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		dev_info(data, "Connecting ...");
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
 		if (rc != DC_STATUS_SUCCESS) {
-			INFO(0, "dc_device_open error value of %d", rc);
+			INFO("dc_device_open error value of %d", rc);
 			if (subsurface_access(data->devname, R_OK | W_OK) != 0)
 #if defined(SUBSURFACE_MOBILE)
 				err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.");
