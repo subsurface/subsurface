@@ -43,7 +43,7 @@ jobs:
     - name: run build
       id: build
       env:
-        ANDROID_KEYSTORE_PASSWORD: pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        KEYSTORE_PASSWORD: pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
         BUILDNR: ${{ steps.version_number.outputs.buildnr }}
       run: |
