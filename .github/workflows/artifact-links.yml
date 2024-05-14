@@ -11,13 +11,6 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: |
-        echo "GitHub context: $GITHUB_CONTEXT"
-
-
     - name: Add artifact links to PR and issues
       if: github.event.workflow_run.event == 'pull_request'
       uses: tonyhallett/artifacts-url-comments@v1.1.0
