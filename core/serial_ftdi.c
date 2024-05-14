@@ -38,8 +38,8 @@
 #endif
 
 #include "errorhelper.h"
-#define INFO(context, fmt, ...)	report_info(stderr, "INFO: " fmt, ##__VA_ARGS__)
-#define ERROR(context, fmt, ...)	report_info(stderr, "ERROR: " fmt, ##__VA_ARGS__)
+#define INFO(context, fmt, ...)	report_info("INFO: " fmt, ##__VA_ARGS__)
+#define ERROR(context, fmt, ...)	report_info("ERROR: " fmt, ##__VA_ARGS__)
 //#define SYSERROR(context, errcode)	ERROR(__FILE__ ":" __LINE__ ": %s", strerror(errcode))
 #define SYSERROR(context, errcode)	;
 
@@ -467,7 +467,7 @@ static dc_status_t serial_ftdi_purge (void *io, dc_direction_t queue)
 
 	size_t input;
 	serial_ftdi_get_available (io, &input);
-	INFO (device->context, "Flush: queue=%u, input=%lu, output=%i", queue, input,
+	INFO (device->context, "Flush: queue=%u, input=%lu, output=%i", queue, (unsigned long)input,
 	      serial_ftdi_get_transmitted (device));
 
 	switch (queue) {
