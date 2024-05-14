@@ -15,13 +15,12 @@
 
 #include "serial_usb_android.h"
 
-#define INFO(context, fmt, ...)	 __android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__)
-#define ERROR(context, fmt, ...) __android_log_print(ANDROID_LOG_DEBUG, __FILE__, "ERROR: " fmt "\n", ##__VA_ARGS__)
+#define INFO(fmt, ...) __android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__)
 #define TRACE INFO
 
 static dc_status_t serial_usb_android_sleep(void *io, unsigned int timeout)
 {
-	TRACE (device->context, "%s: %i", __FUNCTION__, timeout);
+	TRACE ("%s: %i", __FUNCTION__, timeout);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == nullptr)
@@ -33,7 +32,7 @@ static dc_status_t serial_usb_android_sleep(void *io, unsigned int timeout)
 
 static dc_status_t serial_usb_android_set_timeout(void *io, int timeout)
 {
-	TRACE (device->context, "%s: %i", __FUNCTION__, timeout);
+	TRACE ("%s: %i", __FUNCTION__, timeout);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == nullptr)
@@ -44,7 +43,7 @@ static dc_status_t serial_usb_android_set_timeout(void *io, int timeout)
 
 static dc_status_t serial_usb_android_set_dtr(void *io, unsigned int value)
 {
-	TRACE (device->context, "%s: %i", __FUNCTION__, value);
+	TRACE ("%s: %i", __FUNCTION__, value);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == nullptr)
@@ -55,7 +54,7 @@ static dc_status_t serial_usb_android_set_dtr(void *io, unsigned int value)
 
 static dc_status_t serial_usb_android_set_rts(void *io, unsigned int value)
 {
-	TRACE (device->context, "%s: %i", __FUNCTION__, value);
+	TRACE ("%s: %i", __FUNCTION__, value);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == nullptr)
@@ -66,7 +65,7 @@ static dc_status_t serial_usb_android_set_rts(void *io, unsigned int value)
 
 static dc_status_t serial_usb_android_close(void *io)
 {
-	TRACE (device->context, "%s", __FUNCTION__);
+	TRACE ("%s", __FUNCTION__);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == nullptr)
@@ -79,7 +78,7 @@ static dc_status_t serial_usb_android_close(void *io)
 
 static dc_status_t serial_usb_android_purge(void *io, dc_direction_t direction)
 {
-	TRACE (device->context, "%s: %i", __FUNCTION__, direction);
+	TRACE ("%s: %i", __FUNCTION__, direction);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == nullptr)
@@ -91,7 +90,7 @@ static dc_status_t serial_usb_android_purge(void *io, dc_direction_t direction)
 static dc_status_t serial_usb_android_configure(void *io, unsigned int baudrate, unsigned int databits, dc_parity_t parity,
 			     dc_stopbits_t stopbits, dc_flowcontrol_t flowcontrol)
 {
-	TRACE (device->context, "%s: baudrate=%i, databits=%i, parity=%i, stopbits=%i, flowcontrol=%i", __FUNCTION__,
+	TRACE ("%s: baudrate=%i, databits=%i, parity=%i, stopbits=%i, flowcontrol=%i", __FUNCTION__,
 	       baudrate, databits, parity, stopbits, flowcontrol);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
@@ -101,30 +100,9 @@ static dc_status_t serial_usb_android_configure(void *io, unsigned int baudrate,
 	return static_cast<dc_status_t>(device->callMethod<jint>("configure", "(IIII)I", baudrate, databits, parity, stopbits));
 }
 
-/*
-static dc_status_t serial_usb_android_get_available (void *io, size_t *value)
-{
-	INFO (device->context, "%s", __FUNCTION__);
-
-	QAndroidJniObject *device = static_cast<QAndroidJniObject*>(io);
-	if (device == NULL)
-		return DC_STATUS_INVALIDARGS;
-
-
-	auto retval = device->callMethod<jint>("get_available", "()I");
-	if(retval < 0){
-		INFO (device->context, "Error in %s, retval %i", __FUNCTION__, retval);
-		return static_cast<dc_status_t>(retval);
-	}
-
-	*value = retval;
-	return DC_STATUS_SUCCESS;
-}
-*/
-
 static dc_status_t serial_usb_android_read(void *io, void *data, size_t size, size_t *actual)
 {
-	TRACE (device->context, "%s: size: %zu", __FUNCTION__, size);
+	TRACE ("%s: size: %zu", __FUNCTION__, size);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == NULL)
@@ -137,13 +115,13 @@ static dc_status_t serial_usb_android_read(void *io, void *data, size_t size, si
 	auto retval = device->callMethod<jint>("read", "([B)I", array);
 	if (retval < 0) {
 		env->DeleteLocalRef(array);
-		INFO (device->context, "Error in %s, retval %i", __FUNCTION__, retval);
+		INFO ("Error in %s, retval %i", __FUNCTION__, retval);
 		return static_cast<dc_status_t>(retval);
 	}
 	*actual = retval;
 	env->GetByteArrayRegion(array, 0, retval, (jbyte *) data);
 	env->DeleteLocalRef(array);
-	TRACE (device->context, "%s: actual read size: %i", __FUNCTION__, retval);
+	TRACE ("%s: actual read size: %i", __FUNCTION__, retval);
 
 	if (retval < size)
 		return DC_STATUS_TIMEOUT;
@@ -153,7 +131,7 @@ static dc_status_t serial_usb_android_read(void *io, void *data, size_t size, si
 
 static dc_status_t serial_usb_android_write(void *io, const void *data, size_t size, size_t *actual)
 {
-	TRACE (device->context, "%s: size: %zu", __FUNCTION__, size);
+	TRACE ("%s: size: %zu", __FUNCTION__, size);
 
 	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
 	if (device == NULL)
@@ -166,17 +144,17 @@ static dc_status_t serial_usb_android_write(void *io, const void *data, size_t s
 	auto retval = device->callMethod<jint>("write", "([B)I", array);
 	env->DeleteLocalRef(array);
 	if (retval < 0) {
-		INFO (device->context, "Error in %s, retval %i", __FUNCTION__, retval);
+		INFO ("Error in %s, retval %i", __FUNCTION__, retval);
 		return static_cast<dc_status_t>(retval);
 	}
 	*actual = retval;
-	TRACE (device->context, "%s: actual write size: %i", __FUNCTION__, retval);
+	TRACE ("%s: actual write size: %i", __FUNCTION__, retval);
 	return DC_STATUS_SUCCESS;
 }
 
 dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context, QAndroidJniObject usbDevice, std::string driverClassName)
 {
-	TRACE(device->contxt, "%s", __FUNCTION__);
+	TRACE("%s", __FUNCTION__);
 
 	static const dc_custom_cbs_t callbacks = {
 		.set_timeout = serial_usb_android_set_timeout, /* set_timeout */
@@ -200,7 +178,7 @@ dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *cont
 		return DC_STATUS_IO;
 
 	QAndroidJniObject *device = new QAndroidJniObject(localdevice);
-	TRACE(device->contxt, "%s", "calling dc_custom_open())");
+	TRACE("%s", "calling dc_custom_open())");
 	return dc_custom_open(iostream, context, DC_TRANSPORT_SERIAL, &callbacks, device);
 }
 

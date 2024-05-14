@@ -38,10 +38,10 @@
 #endif
 
 #include "errorhelper.h"
-#define INFO(context, fmt, ...)	report_info("INFO: " fmt, ##__VA_ARGS__)
-#define ERROR(context, fmt, ...)	report_info("ERROR: " fmt, ##__VA_ARGS__)
-//#define SYSERROR(context, errcode)	ERROR(__FILE__ ":" __LINE__ ": %s", strerror(errcode))
-#define SYSERROR(context, errcode)	;
+#define INFO(fmt, ...) report_info("INFO: " fmt, ##__VA_ARGS__)
+#define ERROR(fmt, ...) report_info("ERROR: " fmt, ##__VA_ARGS__)
+//#define SYSERROR(context, errcode) ERROR(__FILE__ ":" __LINE__ ": %s", strerror(errcode))
+#define SYSERROR(errcode) (void)errcode
 
 #include "libdivecomputer.h"
 #include <libdivecomputer/context.h>
@@ -119,7 +119,7 @@ static dc_status_t serial_ftdi_sleep (void *io, unsigned int timeout)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "Sleep: value=%u", timeout);
+	INFO ("Sleep: value=%u", timeout);
 
 #ifdef _WIN32
 	Sleep((DWORD)timeout);
@@ -130,7 +130,7 @@ static dc_status_t serial_ftdi_sleep (void *io, unsigned int timeout)
 
 	while (nanosleep (&ts, &ts) != 0) {
 		if (errno != EINTR ) {
-			SYSERROR (device->context, errno);
+			SYSERROR (errno);
 			return DC_STATUS_IO;
 		}
 	}
@@ -143,7 +143,7 @@ static dc_status_t serial_ftdi_sleep (void *io, unsigned int timeout)
 // Used internally for opening ftdi devices
 static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 {
-	INFO(0, "serial_ftdi_open_device called");
+	INFO("serial_ftdi_open_device called");
 	int accepted_pids[] = {
 		0x6001, 0x6010, 0x6011, // Suunto (Smart Interface), Heinrichs Weikamp
 		0x6015, // possibly Aqualung
@@ -156,7 +156,7 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 	for (i = 0; i < num_accepted_pids; i++) {
 		pid = accepted_pids[i];
 		ret = ftdi_usb_open (ftdi_ctx, VID, pid);
-		INFO(0, "FTDI tried VID %04x pid %04x ret %d", VID, pid, ret);
+		INFO("FTDI tried VID %04x pid %04x ret %d", VID, pid, ret);
 		if (ret == -3) // Device not found
 			continue;
 		else
@@ -171,20 +171,20 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 // Initialise ftdi_context and use it to open the device
 static dc_status_t serial_ftdi_open (void **io, dc_context_t *context)
 {
-	INFO(0, "serial_ftdi_open called");
+	INFO("serial_ftdi_open called");
 	// Allocate memory.
 	ftdi_serial_t *device = (ftdi_serial_t *) malloc (sizeof (ftdi_serial_t));
 	if (device == NULL) {
-		INFO(0, "couldn't allocate memory");
-		SYSERROR (context, errno);
+		INFO("couldn't allocate memory");
+		SYSERROR (errno);
 		return DC_STATUS_NOMEMORY;
 	}
-	INFO(0, "setting up ftdi_ctx");
+	INFO("setting up ftdi_ctx");
 	struct ftdi_context *ftdi_ctx = ftdi_new();
 	if (ftdi_ctx == NULL) {
-		INFO(0, "failed ftdi_new()");
+		INFO("failed ftdi_new()");
 		free(device);
-		SYSERROR (context, errno);
+		SYSERROR (errno);
 		return DC_STATUS_NOMEMORY;
 	}
 
@@ -202,31 +202,31 @@ static dc_status_t serial_ftdi_open (void **io, dc_context_t *context)
 	device->parity = 0;
 
 	// Initialize device ftdi context
-	INFO(0, "initialize ftdi_ctx");
+	INFO("initialize ftdi_ctx");
 	ftdi_init(ftdi_ctx);
 
 	if (ftdi_set_interface(ftdi_ctx,INTERFACE_ANY)) {
 		free(device);
-		ERROR (context, "%s", ftdi_get_error_string(ftdi_ctx));
+		ERROR ("%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
-	INFO(0, "call serial_ftdi_open_device");
+	INFO("call serial_ftdi_open_device");
 	if (serial_ftdi_open_device(ftdi_ctx) < 0) {
 		free(device);
-		ERROR (context, "%s", ftdi_get_error_string(ftdi_ctx));
+		ERROR ("%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
 	if (ftdi_usb_reset(ftdi_ctx)) {
 		free(device);
-		ERROR (context, "%s", ftdi_get_error_string(ftdi_ctx));
+		ERROR ("%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
 	if (ftdi_usb_purge_buffers(ftdi_ctx)) {
 		free(device);
-		ERROR (context, "%s", ftdi_get_error_string(ftdi_ctx));
+		ERROR ("%s", ftdi_get_error_string(ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
@@ -252,7 +252,7 @@ static dc_status_t serial_ftdi_close (void *io)
 
 	int ret = ftdi_usb_close(device->ftdi_ctx);
 	if (ret < 0) {
-		ERROR (device->context, "Unable to close the ftdi device : %d (%s)",
+		ERROR ("Unable to close the ftdi device : %d (%s)",
 		       ret, ftdi_get_error_string(device->ftdi_ctx));
 		return ret;
 	}
@@ -275,7 +275,7 @@ static dc_status_t serial_ftdi_configure (void *io, unsigned int baudrate, unsig
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "Configure: baudrate=%i, databits=%i, parity=%i, stopbits=%i, flowcontrol=%i",
+	INFO ("Configure: baudrate=%i, databits=%i, parity=%i, stopbits=%i, flowcontrol=%i",
 	      baudrate, databits, parity, stopbits, flowcontrol);
 
 	enum ftdi_bits_type ft_bits;
@@ -283,7 +283,7 @@ static dc_status_t serial_ftdi_configure (void *io, unsigned int baudrate, unsig
 	enum ftdi_parity_type ft_parity;
 
 	if (ftdi_set_baudrate(device->ftdi_ctx, baudrate) < 0) {
-		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+		ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
@@ -331,7 +331,7 @@ static dc_status_t serial_ftdi_configure (void *io, unsigned int baudrate, unsig
 
 	// Set the attributes
 	if (ftdi_set_line_property(device->ftdi_ctx, ft_bits, ft_stopbits, ft_parity)) {
-		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+		ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
@@ -339,19 +339,19 @@ static dc_status_t serial_ftdi_configure (void *io, unsigned int baudrate, unsig
 	switch (flowcontrol) {
 	case DC_FLOWCONTROL_NONE:     /**< No flow control */
 		if (ftdi_setflowctrl(device->ftdi_ctx, SIO_DISABLE_FLOW_CTRL) < 0) {
-			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+			ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
 		}
 		break;
 	case DC_FLOWCONTROL_HARDWARE: /**< Hardware (RTS/CTS) flow control */
 		if (ftdi_setflowctrl(device->ftdi_ctx, SIO_RTS_CTS_HS) < 0) {
-			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+			ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
 		}
 		break;
 	case DC_FLOWCONTROL_SOFTWARE:  /**< Software (XON/XOFF) flow control */
 		if (ftdi_setflowctrl(device->ftdi_ctx, SIO_XON_XOFF_HS) < 0) {
-			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+			ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
 		}
 		break;
@@ -378,7 +378,7 @@ static dc_status_t serial_ftdi_set_timeout (void *io, int timeout)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "Timeout: value=%i", timeout);
+	INFO ("Timeout: value=%i", timeout);
 
 	device->timeout = timeout;
 
@@ -406,11 +406,11 @@ static dc_status_t serial_ftdi_read (void *io, void *data, size_t size, size_t *
 		if (n < 0) {
 			if (n == LIBUSB_ERROR_INTERRUPTED)
 				continue; //Retry.
-			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+			ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO; //Error during read call.
 		} else if (n == 0) {
 			if (serial_ftdi_get_msec() - start_time > timeout) {
-				ERROR(device->context, "%s", "FTDI read timed out.");
+				ERROR("FTDI read timed out.");
 				return DC_STATUS_TIMEOUT;
 			}
 			serial_ftdi_sleep (device, 1);
@@ -419,7 +419,7 @@ static dc_status_t serial_ftdi_read (void *io, void *data, size_t size, size_t *
 		nbytes += n;
 	}
 
-	INFO (device->context, "Read %d bytes", nbytes);
+	INFO ("Read %d bytes", nbytes);
 
 	if (actual)
 		*actual = nbytes;
@@ -441,7 +441,7 @@ static dc_status_t serial_ftdi_write (void *io, const void *data, size_t size, s
 		if (n < 0) {
 			if (n == LIBUSB_ERROR_INTERRUPTED)
 				continue; // Retry.
-			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+			ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO; // Error during write call.
 		} else if (n == 0) {
 			break; // EOF.
@@ -450,7 +450,7 @@ static dc_status_t serial_ftdi_write (void *io, const void *data, size_t size, s
 		nbytes += n;
 	}
 
-	INFO (device->context, "Wrote %d bytes", nbytes);
+	INFO ("Wrote %d bytes", nbytes);
 
 	if (actual)
 		*actual = nbytes;
@@ -467,26 +467,26 @@ static dc_status_t serial_ftdi_purge (void *io, dc_direction_t queue)
 
 	size_t input;
 	serial_ftdi_get_available (io, &input);
-	INFO (device->context, "Flush: queue=%u, input=%lu, output=%i", queue, (unsigned long)input,
+	INFO ("Flush: queue=%u, input=%lu, output=%i", queue, (unsigned long)input,
 	      serial_ftdi_get_transmitted (device));
 
 	switch (queue) {
 	case DC_DIRECTION_INPUT:  /**< Input direction */
 		if (ftdi_usb_purge_tx_buffer(device->ftdi_ctx)) {
-			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+			ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
 		}
 		break;
 	case DC_DIRECTION_OUTPUT: /**< Output direction */
 		if (ftdi_usb_purge_rx_buffer(device->ftdi_ctx)) {
-			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+			ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
 		}
 		break;
 	case DC_DIRECTION_ALL: /**< All directions */
 	default:
 		if (ftdi_usb_reset(device->ftdi_ctx)) {
-			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+			ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
 		}
 		break;
@@ -502,10 +502,10 @@ static dc_status_t serial_ftdi_set_break (void *io, unsigned int level)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "Break: value=%i", level);
+	INFO ("Break: value=%i", level);
 
 	if (ftdi_set_line_property2(device->ftdi_ctx, device->databits, device->stopbits, device->parity, level)) {
-		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+		ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
@@ -519,10 +519,10 @@ static dc_status_t serial_ftdi_set_dtr (void *io, unsigned int value)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "DTR: value=%u", value);
+	INFO ("DTR: value=%u", value);
 
 	if (ftdi_setdtr(device->ftdi_ctx, value)) {
-		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+		ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
@@ -536,10 +536,10 @@ static dc_status_t serial_ftdi_set_rts (void *io, unsigned int level)
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "RTS: value=%u", level);
+	INFO ("RTS: value=%u", level);
 
 	if (ftdi_setrts(device->ftdi_ctx, level)) {
-		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+		ERROR ("%s", ftdi_get_error_string(device->ftdi_ctx));
 		return DC_STATUS_IO;
 	}
 
@@ -565,12 +565,12 @@ dc_status_t ftdi_open(dc_iostream_t **iostream, dc_context_t *context)
 		.close		= serial_ftdi_close,
 	};
 
-	INFO(device->contxt, "%s", "in ftdi_open");
+	INFO("in ftdi_open");
 	rc = serial_ftdi_open(&io, context);
 	if (rc != DC_STATUS_SUCCESS) {
-		INFO(device->contxt, "%s", "serial_ftdi_open() failed");
+		INFO("serial_ftdi_open() failed");
 		return rc;
 	}
-	INFO(device->contxt, "%s", "calling dc_custom_open())");
+	INFO("calling dc_custom_open())");
 	return dc_custom_open(iostream, context, DC_TRANSPORT_SERIAL, &callbacks, io);
 }
