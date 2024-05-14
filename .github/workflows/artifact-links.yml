@@ -19,6 +19,7 @@ jobs:
 
 
     - name: Add artifact links to PR and issues
+      if: github.event.workflow_run.event == 'pull_request'
       uses: tonyhallett/artifacts-url-comments@v1.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
