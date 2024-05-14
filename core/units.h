@@ -28,7 +28,7 @@
 
 #include <stdint.h>
 /*
- * Some silly typedefs to make our units very explicit.
+ * Some silly structs to make our units very explicit.
  *
  * Also, the units are chosen so that values can be expressible as
  * integers, so that we never have FP rounding issues. And they
@@ -65,71 +65,71 @@
  * We don't actually use these all yet, so maybe they'll change, but
  * I made a number of types as guidelines.
  */
-typedef int64_t timestamp_t;
+using timestamp_t = int64_t;
 
-typedef struct
+struct duration_t
 {
 	int32_t seconds = 0; // durations up to 34 yrs
-} duration_t;
+};
 
-typedef struct
+struct offset_t
 {
 	int32_t seconds = 0; // offsets up to +/- 34 yrs
-} offset_t;
+};
 
-typedef struct
+struct depth_t // depth to 2000 km
 {
 	int32_t mm = 0;
-} depth_t; // depth to 2000 km
+};
 
-typedef struct
+struct pressure_t
 {
 	int32_t mbar = 0; // pressure up to 2000 bar
-} pressure_t;
+};
 
-typedef struct
+struct o2pressure_t
 {
 	uint16_t mbar = 0;
-} o2pressure_t; // pressure up to 65 bar
+};
 
-typedef struct
+struct bearing_t
 {
 	int16_t degrees = 0;
-} bearing_t; // compass bearing
+};
 
-typedef struct
+struct temperature_t
 {
 	uint32_t mkelvin = 0; // up to 4 MK (temperatures in K are always positive)
-} temperature_t;
+};
 
-typedef struct
+struct  temperature_sum_t
 {
 	uint64_t mkelvin = 0; // up to 18446744073 MK (temperatures in K are always positive)
-} temperature_sum_t;
+};
 
-typedef struct
+struct volume_t
 {
 	int mliter = 0;
-} volume_t;
+};
 
-typedef struct
+struct fraction_t
 {
 	int permille = 0;
-} fraction_t;
+};
 
-typedef struct
+struct weight_t
 {
 	int grams = 0;
-} weight_t;
+};
 
-typedef struct
+struct degrees_t
 {
 	int udeg = 0;
-} degrees_t;
+};
 
-typedef struct pos {
+struct location_t {
 	degrees_t lat, lon;
-} location_t;
+};
 
 extern void parse_location(const char *, location_t *);
 extern unsigned int get_distance(location_t loc1, location_t loc2);
