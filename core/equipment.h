@@ -13,14 +13,14 @@ struct dive;
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
 extern const char *cylinderuse_text[NUM_GAS_USE];
 
-typedef struct
+struct cylinder_type_t
 {
 	volume_t size;
 	pressure_t workingpressure;
 	const char *description = nullptr; /* "LP85", "AL72", "AL80", "HP100+" or whatever */
-} cylinder_type_t;
+};
 
-typedef struct
+struct cylinder_t
 {
 	cylinder_type_t type;
 	struct gasmix gasmix = gasmix_air;
@@ -32,7 +32,7 @@ typedef struct
 	enum cylinderuse cylinder_use = OC_GAS;
 	bool bestmix_o2 = false;
 	bool bestmix_he = false;
-} cylinder_t;
+};
 
 /* Table of cylinders. Attention: this stores cylinders,
  * *not* pointers to cylinders. This has two crucial consequences:
@@ -45,12 +45,12 @@ struct cylinder_table {
 	cylinder_t *cylinders;
 };
 
-typedef struct
+struct weightsystem_t
 {
 	weight_t weight;
 	const char *description; /* "integrated", "belt", "ankle" */
 	bool auto_filled; /* weight was automatically derived from the type */
-} weightsystem_t;
+};
 
 static const weightsystem_t empty_weightsystem = { { 0 }, 0, false };
 
