@@ -5,8 +5,7 @@
 #include "units.h"
 #include "taxonomy.h"
 
-typedef struct
-{
+struct partial_pressure_graphs_t {
 	bool po2;
 	bool pn2;
 	bool phe;
@@ -14,17 +13,17 @@ typedef struct
 	double po2_threshold_max;
 	double pn2_threshold;
 	double phe_threshold;
-} partial_pressure_graphs_t;
+};
 
-typedef struct {
+struct geocoding_prefs_t {
 	enum taxonomy_category category[3];
-} geocoding_prefs_t;
+};
 
-typedef struct {
+struct locale_prefs_t {
 	const char *language;
 	const char *lang_locale;
 	bool use_system_language;
-} locale_prefs_t;
+};
 
 enum deco_mode {
 	BUEHLMANN,
@@ -39,18 +38,18 @@ enum def_file_behavior {
 	CLOUD_DEFAULT_FILE
 };
 
-typedef struct {
+struct update_manager_prefs_t {
 	bool dont_check_for_updates;
 	const char *last_version_used;
 	int next_check;
-} update_manager_prefs_t;
+};
 
-typedef struct {
+struct dive_computer_prefs_t {
 	const char *vendor;
 	const char *product;
 	const char *device;
 	const char *device_name;
-} dive_computer_prefs_t;
+};
 
 // NOTE: these enums are duplicated in mobile-widgets/qmlinterface.h
 enum unit_system_values {
