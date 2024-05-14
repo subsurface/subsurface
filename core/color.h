@@ -81,7 +81,7 @@ static inline QColor makeColor(double r, double g, double b, double a = 1.0)
 #define VELOCITY_COLORS_START_IDX VELO_STABLE
 #define VELOCITY_COLORS 5
 
-typedef enum {
+enum color_index_t {
 	/* SAC colors. Order is important, the SAC_COLORS_START_IDX define above. */
 	SAC_1,
 	SAC_2,
@@ -145,7 +145,7 @@ typedef enum {
 	CALC_CEILING_DEEP,
 	TISSUE_PERCENTAGE,
 	DURATION_LINE
-} color_index_t;
+};
 
 QColor getColor(const color_index_t i, bool isGrayscale = false);
 QColor getSacColor(int sac, int diveSac);
