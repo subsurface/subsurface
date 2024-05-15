@@ -29,7 +29,7 @@
  *  - Nitrox trumps air (even if hypoxic)
  * These are the same rules as the inter-dive sorting rules.
  */
-void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
+void get_max_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 {
 	int i;
 	int maxo2 = -1, maxhe = -1, mino2 = 1000;

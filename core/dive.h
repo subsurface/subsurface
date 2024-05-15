@@ -74,6 +74,7 @@ extern bool dive_cache_is_valid(const struct dive *dive);
 extern int get_cylinder_idx_by_use(const struct dive *dive, enum cylinderuse cylinder_use_type);
 extern void cylinder_renumber(struct dive *dive, int mapping[]);
 extern int same_gasmix_cylinder(const cylinder_t *cyl, int cylid, const struct dive *dive, bool check_unused);
+extern bool is_cylinder_use_appropriate(const struct divecomputer *dc, const cylinder_t *cyl, bool allowNonUsable);
 
 /* when selectively copying dive information, which parts should be copied? */
 struct dive_components {

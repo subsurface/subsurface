@@ -44,7 +44,7 @@ extern void process_imported_dives(struct divelog *import_log, int flags,
 extern int dive_table_get_insertion_index(struct dive_table *table, struct dive *dive);
 extern void add_to_dive_table(struct dive_table *table, int idx, struct dive *dive);
 extern void insert_dive(struct dive_table *table, struct dive *d);
-extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
+extern void get_max_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(const struct dive *dive);
 extern int remove_dive(const struct dive *dive, struct dive_table *table);
 extern int get_dive_nr_at_idx(int idx);
