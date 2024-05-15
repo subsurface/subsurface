@@ -1260,7 +1260,7 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 		setText(Command::Base::tr("Edit cylinder (%n dive(s))", "", dives.size()));
 
 	// The base class copied the cylinders for us, let's edit them
-	for (int i = 0; i < (int)indexes.size(); ++i) {
+	for (int i = 0; i < (int)cyl.size(); ++i) {
 		switch (type) {
 		case EditCylinderType::TYPE:
 			cyl[i].type = cylIn.type;

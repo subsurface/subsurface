@@ -246,24 +246,32 @@ void TankInfoDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHin
 		mymodel->setData(IDX(CylindersModel::TYPE), currCombo.activeText, CylindersModel::COMMIT_ROLE);
 }
 
-TankUseDelegate::TankUseDelegate(QObject *parent) : QStyledItemDelegate(parent), currentdc(nullptr)
+TankUseDelegate::TankUseDelegate(QObject *parent) : QStyledItemDelegate(parent), currentDive(nullptr), currentDcNr(0)
 {
 }
 
-void TankUseDelegate::setCurrentDC(divecomputer *dc)
+void TankUseDelegate::setDiveDc(const dive &d, int &dcNr)
 {
-	currentdc = dc;
+	currentDive = &d;
+	currentDcNr = &dcNr;
 }
 
 QWidget *TankUseDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &) const
 {
 	QComboBox *comboBox = new QComboBox(parent);
-	if (!currentdc)
+	const divecomputer *dc = currentDive->get_dc(*currentDcNr);
+	if (!dc)
 		return comboBox;
-	bool isCcrDive = currentdc->divemode == CCR;
+	bool isCcrDive = dc->divemode == CCR;
+	bool isFreeDive = dc->divemode == FREEDIVE;
 	for (int i = 0; i < NUM_GAS_USE; i++) {
-		if (isCcrDive || (i != DILUENT && i != OXYGEN))
-			comboBox->addItem(gettextFromC::tr(cylinderuse_text[i]));
+		if (isFreeDive && i != NOT_USED)
+			continue;
+
+		if (!isCcrDive && (i == DILUENT || i == OXYGEN))
+			continue;
+
+		comboBox->addItem(gettextFromC::tr(cylinderuse_text[i]));
 	}
 	return comboBox;
 }
@@ -350,21 +358,20 @@ WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(&createWSInfo
 {
 }
 
-void AirTypesDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint)
+void GasTypesDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint)
 {
 }
 
-void AirTypesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void GasTypesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
 	if (!index.isValid())
 		return;
 	QComboBox *combo = qobject_cast<QComboBox *>(editor);
-	model->setData(index, QVariant(combo->currentIndex()));
+	model->setData(index, combo->currentData(Qt::UserRole));
 }
 
-AirTypesDelegate::AirTypesDelegate(const dive &d, QObject *parent) :
-	ComboBoxDelegate([&d] (QWidget *parent) { return new GasSelectionModel(d, parent); },
-			       parent, false)
+GasTypesDelegate::GasTypesDelegate(const dive &d, int &dcNr, QObject *parent) :
+	ComboBoxDelegate([&d, &dcNr] (QWidget *parent) { return new GasSelectionModel(d, dcNr, parent); }, parent, false)
 {
 }
 
@@ -377,15 +384,11 @@ void DiveTypesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
 	if (!index.isValid())
 		return;
 	QComboBox *combo = qobject_cast<QComboBox *>(editor);
-	model->setData(index, QVariant(combo->currentIndex()));
+	model->setData(index, combo->currentData(Qt::UserRole));
 }
 
-static QAbstractItemModel *createDiveTypeSelectionModel(QWidget *parent)
-{
-	return new DiveTypeSelectionModel(parent);
-}
-
-DiveTypesDelegate::DiveTypesDelegate(QObject *parent) : ComboBoxDelegate(&createDiveTypeSelectionModel, parent, false)
+DiveTypesDelegate::DiveTypesDelegate(const dive &d, int &dcNr, QObject *parent) :
+	ComboBoxDelegate([&d, &dcNr] (QWidget *parent) { return new DiveTypeSelectionModel(d, dcNr, parent); }, parent, false)
 {
 }
 

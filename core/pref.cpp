@@ -93,6 +93,7 @@ preferences::preferences() :
 	vpmb_conservatism(3),
 	zoomed_plot(false),
 	infobox(true),
+	allowOcGasAsDiluent(false),
 	coordinates_traditional(true),
 	unit_system(METRIC),
 	units(SI_UNITS)

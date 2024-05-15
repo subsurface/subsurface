@@ -143,7 +143,7 @@ void TabDiveEquipment::updateData(const std::vector<dive *> &, dive *currentDive
 	cylindersModel->updateDive(currentDive, currentDC);
 	weightModel->updateDive(currentDive);
 	sensorDelegate.setCurrentDC(dc);
-	tankUseDelegate.setCurrentDC(dc);
+	tankUseDelegate.setDiveDc(*currentDive, currentDC);
 
 	if (currentDive && !currentDive->suit.empty())
 		ui.suit->setText(QString::fromStdString(currentDive->suit));

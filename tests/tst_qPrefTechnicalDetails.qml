@@ -113,6 +113,11 @@ TestCase {
 		var x27 = PrefTechnicalDetails.zoomed_plot
 		PrefTechnicalDetails.zoomed_plot = true
 		compare(PrefTechnicalDetails.zoomed_plot, true)
+
+		var x28 = PrefTechnicalDetails.allowOcGasAsDiluent
+		PrefTechnicalDetails.allowOcGasAsDiluent = true
+		compare(PrefTechnicalDetails.allowOcGasAsDiluent, true)
+
 	}
 
 	Item {
@@ -204,6 +209,7 @@ TestCase {
 		PrefTechnicalDetails.tankbar = ! PrefTechnicalDetails.tankbar
 		PrefTechnicalDetails.vpmb_conservatism = -127
 		PrefTechnicalDetails.zoomed_plot = ! PrefTechnicalDetails.zoomed_plot
+		PrefTechnicalDetails.allowOcGasAsDiluent = ! PrefTechnicalDetails.allowOcGasAsDiluent
 
 		compare(spyCatcher.spy1, true)
 		compare(spyCatcher.spy2, true)

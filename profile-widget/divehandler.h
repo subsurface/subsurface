@@ -10,7 +10,7 @@ struct dive;
 class DiveHandler : public QObject, public QGraphicsEllipseItem {
 	Q_OBJECT
 public:
-	DiveHandler(const struct dive *d);
+	DiveHandler(const struct dive *d, int currentDcNr);
 
 protected:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
@@ -29,6 +29,7 @@ slots:
 	void changeGas();
 private:
 	const struct dive *dive;
+	int dcNr;
 	QElapsedTimer t;
 };
 

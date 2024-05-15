@@ -62,7 +62,7 @@
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <item row="0" column="0">
+       <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="label">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -98,7 +98,30 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2" colspan="2">
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Dive mode</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+	<widget class="QComboBox" name="divemode">
+         <property name="currentText">
+          <string/>
+         </property>
+         <property name="maxVisibleItems">
+          <number>6</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3" colspan="2">
         <widget class="QDialogButtonBox" name="buttonBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -112,20 +135,20 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Altitude</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>ATM pressure</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="2">
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Altitude</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
         <widget class="QLabel" name="label_3">
          <property name="text">
           <string>Water type</string>
@@ -133,6 +156,25 @@
         </widget>
        </item>
        <item row="3" column="0">
+        <widget class="QSpinBox" name="ATMPressure">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="suffix">
+          <string>mbar</string>
+         </property>
+         <property name="minimum">
+          <number>689</number>
+         </property>
+         <property name="maximum">
+          <number>1100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
         <widget class="QSpinBox" name="atmHeight">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -154,26 +196,7 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QSpinBox" name="ATMPressure">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="suffix">
-          <string>mbar</string>
-         </property>
-         <property name="minimum">
-          <number>689</number>
-         </property>
-         <property name="maximum">
-          <number>1100</number>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
+       <item row="3" column="3">
         <widget class="QComboBox" name="waterType">
          <item>
           <property name="text">
@@ -197,7 +220,7 @@
          </item>
         </widget>
        </item>
-       <item row="3" column="3">
+       <item row="3" column="4">
         <widget class="QDoubleSpinBox" name="customSalinity">
          <property name="enabled">
           <bool>false</bool>
@@ -237,7 +260,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="4">
+       <item row="4" column="0" colspan="5">
         <widget class="TableView" name="cylinderTableWidget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -253,7 +276,7 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0" colspan="4">
+       <item row="5" column="0" colspan="5">
         <widget class="TableView" name="tableWidget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -285,6 +308,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>startTime</tabstop>
+  <tabstop>divemode</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>scrollArea</tabstop>
  </tabstops>

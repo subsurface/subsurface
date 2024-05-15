@@ -656,7 +656,7 @@ void DiveGasPressureItem::plotGasValue(double mbar, double sec, const cylinder_t
 	QString gas = get_gas_string(cylinder->gasmix);
 	QString label;
 	if (showDescription)
-		label = QStringLiteral("(%1) %2").arg(QString::fromStdString(cylinder->type.description), gas);
+		label = QStringLiteral("(%1) %2").arg(QString::fromStdString(cylinder->type.description), std::move(gas));
 	else
 		label = gas;
 	auto text = std::make_unique<DiveTextItem>(dpr, 1.0, align, this);

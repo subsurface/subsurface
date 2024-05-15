@@ -146,6 +146,7 @@ struct dive_or_trip {
 
 extern void cylinder_renumber(struct dive &dive, int mapping[]);
 extern int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct dive *dive, bool check_unused);
+extern bool is_cylinder_use_appropriate(const struct divecomputer &dc, const cylinder_t &cyl, bool allowNonUsable);
 
 /* Data stored when copying a dive */
 struct dive_paste_data {

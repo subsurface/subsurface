@@ -26,6 +26,7 @@ public:
 	void setEnabledToolbar(bool enabled);
 	void nextDC();
 	void prevDC();
+	void exitEditMode();
 	dive *d;
 	int dc;
 private
@@ -45,7 +46,6 @@ private:
 	QStackedWidget *stack;
 	void setDive(const struct dive *d, int dcNr);
 	void editDive();
-	void exitEditMode();
 	void rotateDC(int dir);
 	std::unique_ptr<dive> editedDive;
 	bool placingCommand;

@@ -688,6 +688,7 @@ void MainWindow::on_actionDivePlanner_triggered()
 	setApplicationState(ApplicationState::PlanDive);
 
 	disableShortcuts(true);
+	profile->exitEditMode();
 	plannerWidgets->preparePlanDive(current_dive, profile->dc);
 	profile->setPlanState(plannerWidgets->getDive(), plannerWidgets->getDcNr());
 	plannerWidgets->planDive();
