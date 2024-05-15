@@ -157,8 +157,9 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 	const cylinder_t *cyl = index.row() == tempRow ? &tempCyl : get_cylinder(d, index.row());
 
+	bool isInappropriateUse = !is_cylinder_use_appropriate(get_dive_dc_const(d, dcNr), cyl, true);
 	switch (role) {
-	case Qt::BackgroundRole: {
+	case Qt::BackgroundRole:
 		switch (index.column()) {
 		// mark the cylinder start / end pressure in red if the values
 		// seem implausible
@@ -171,11 +172,17 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 					(endp.mbar && startp.mbar <= endp.mbar))
 				return REDORANGE1_HIGH_TRANS;
 			break;
+		case USE:
+			if (isInappropriateUse)
+				return REDORANGE1_HIGH_TRANS;
+
+			break;
 		}
+
 		break;
-	}
 	case Qt::FontRole: {
 		QFont font = defaultModelFont();
+
 		switch (index.column()) {
 		// if we don't have manually set pressure data use italic font
 		case START:
@@ -185,6 +192,9 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			font.setItalic(!cyl->end.mbar);
 			break;
 		}
+
+		font.setItalic(isInappropriateUse);
+
 		return font;
 	}
 	case Qt::TextAlignmentRole:
@@ -242,7 +252,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			return static_cast<int>(cyl->type.size.mliter);
 		case SENSORS: {
 			std::vector<int16_t> sensors;
-			const struct divecomputer *currentdc = get_dive_dc(d, dcNr);
+			const struct divecomputer *currentdc = get_dive_dc_const(d, dcNr);
 			for (int i = 0; i < currentdc->samples; ++i) {
 				auto &sample = currentdc->sample[i];
 				for (int s = 0; s < MAX_SENSORS; ++s) {

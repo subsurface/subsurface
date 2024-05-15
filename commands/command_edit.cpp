@@ -1294,7 +1294,7 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 	QString description = cylIn.type.description;
 
 	// The base class copied the cylinders for us, let's edit them
-	for (int i = 0; i < (int)indexes.size(); ++i) {
+	for (int i = 0; i < (int)cyl.size(); ++i) {
 		switch (type) {
 		case EditCylinderType::TYPE:
 			free((void *)cyl[i].type.description);

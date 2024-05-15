@@ -1902,6 +1902,38 @@ static bool cylinder_in_use(const struct dive *dive, int idx)
 	return cylinder_has_data(get_cylinder(dive, idx));
 }
 
+bool is_cylinder_use_appropriate(const struct divecomputer *dc, const cylinder_t *cyl, bool allowNonUsable)
+{
+	if (!dc || !cyl)
+		return false;
+
+	switch (cyl->cylinder_use) {
+	case OC:
+		if (dc->divemode == FREEDIVE)
+			return false;
+
+		break;
+	case OXYGEN:
+		if (!allowNonUsable)
+			return false;
+
+	case DILUENT:
+		if (dc->divemode != CCR)
+			return false;
+
+		break;
+	case NOT_USED:
+		if (!allowNonUsable)
+			return false;
+
+		break;
+	default:
+		return false;
+	}
+
+	return true;
+}
+
 /*
  * Merging cylinder information is non-trivial, because the two dive computers
  * may have different ideas of what the different cylinder indexing is.
@@ -3290,7 +3322,7 @@ extern "C" int mbar_to_depth(int mbar, const struct dive *dive)
 
 	if (!surface_pressure.mbar)
 		surface_pressure.mbar = SURFACE_PRESSURE;
-		
+
 	return rel_mbar_to_depth(mbar - surface_pressure.mbar, dive);
 }
 

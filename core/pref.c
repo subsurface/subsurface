@@ -44,6 +44,7 @@ struct preferences default_prefs = {
 	.display_default_tank_infos = true,
 	.show_average_depth = true,
 	.show_icd = false,
+	.allowOcGasAsDiluent = false,
 	.ascrate75 = 9000 / 60,
 	.ascrate50 = 9000 / 60,
 	.ascratestops = 9000 / 60,

@@ -11,7 +11,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QSettings>
 
-DiveHandler::DiveHandler(const struct dive *d) : dive(d)
+DiveHandler::DiveHandler(const struct dive *d, int currentDcNr) : dive(d), dcNr(currentDcNr)
 {
 	setRect(-5, -5, 10, 10);
 	setFlags(ItemIgnoresTransformations | ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
@@ -31,14 +31,15 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 	QMenu m;
 	// Don't have a gas selection for the last point
 	emit released();
+
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
 	if (index.sibling(index.row() + 1, index.column()).isValid()) {
-		QStringList gases = get_dive_gas_list(dive);
-		for (int i = 0; i < gases.size(); i++) {
+		std::vector<std::pair<int, QString>> gases = get_dive_gas_list(dive, dcNr, true);
+		for (unsigned i = 0; i < gases.size(); i++) {
 			QAction *action = new QAction(&m);
-			action->setText(gases[i]);
-			action->setData(i);
+			action->setText(gases[i].second);
+			action->setData(gases[i].first);
 			connect(action, &QAction::triggered, this, &DiveHandler::changeGas);
 			m.addAction(action);
 		}
