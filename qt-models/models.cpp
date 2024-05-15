@@ -13,44 +13,84 @@
 #include <QDir>
 #include <QLocale>
 
-Qt::ItemFlags GasSelectionModel::flags(const QModelIndex&) const
+GasSelectionModel::GasSelectionModel(const dive &d, int dcNr, QObject *parent)
+	: QAbstractListModel(parent)
 {
-	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-}
-
-GasSelectionModel::GasSelectionModel(const dive &d, QObject *parent)
-	: QStringListModel(parent)
-{
-	setStringList(get_dive_gas_list(&d));
+	gasNames = get_dive_gas_list(&d, dcNr, true);
 }
 
 QVariant GasSelectionModel::data(const QModelIndex &index, int role) const
 {
-	if (role == Qt::FontRole)
+	if (!index.isValid())
+		return QVariant();
+
+	switch (role) {
+	case Qt::FontRole:
 		return defaultModelFont();
-	return QStringListModel::data(index, role);
+	case Qt::DisplayRole:
+		return gasNames.at(index.row()).second;
+	case Qt::UserRole:
+		return gasNames.at(index.row()).first;
+	}
+
+	return QVariant();
+}
+
+int GasSelectionModel::rowCount(const QModelIndex&) const
+{
+	return gasNames.size();
 }
 
 // Dive Type Model for the divetype combo box
 
-Qt::ItemFlags DiveTypeSelectionModel::flags(const QModelIndex&) const
+DiveTypeSelectionModel::DiveTypeSelectionModel(const dive &d, int dcNr, QObject *parent) : QAbstractListModel(parent)
 {
-	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-}
+	divemode_t mode = d.get_dc(dcNr)->divemode;
+	for (int i = 0; i < FREEDIVE; i++) {
+		switch (mode) {
+		case OC:
+		default:
+			if (i != OC)
+				continue;
 
-DiveTypeSelectionModel::DiveTypeSelectionModel(QObject *parent) : QStringListModel(parent)
-{
-	QStringList modes;
-	for (int i = 0; i < FREEDIVE; i++)
-		modes.append(gettextFromC::tr(divemode_text_ui[i]));
-	setStringList(modes);
+			break;
+		case CCR:
+			if (i != OC && i != CCR)
+				continue;
+
+			break;
+		case PSCR:
+			if (i != OC && i != PSCR)
+				continue;
+
+			break;
+		}
+
+
+		diveTypes.push_back(std::pair(i, gettextFromC::tr(divemode_text_ui[i])));
+	}
 }
 
 QVariant DiveTypeSelectionModel::data(const QModelIndex &index, int role) const
 {
-	if (role == Qt::FontRole)
+	if (!index.isValid())
+		return QVariant();
+
+	switch (role) {
+	case Qt::FontRole:
 		return defaultModelFont();
-	return QStringListModel::data(index, role);
+	case Qt::DisplayRole:
+		return diveTypes.at(index.row()).second;
+	case Qt::UserRole:
+		return diveTypes.at(index.row()).first;
+	}
+
+	return QVariant();
+}
+
+int DiveTypeSelectionModel::rowCount(const QModelIndex&) const
+{
+	return diveTypes.size();
 }
 
 // Language Model, The Model to populate the list of possible Languages.

@@ -104,6 +104,7 @@ private:
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void keyPressEvent(QKeyEvent *e) override;
+	void addGasChangeMenu(QMenu &m, QString menuTitle, const struct dive &d, int dcNr, int changeTime);
 #endif
 	void dropEvent(QDropEvent *event) override;
 	void dragEnterEvent(QDragEnterEvent *event) override;

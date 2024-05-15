@@ -306,7 +306,6 @@ void ProfileWidget::cylindersChanged(struct dive *changed, int pos)
 
 void ProfileWidget::setPlanState(const struct dive *d, int dcNr)
 {
-	exitEditMode();
 	dc = dcNr;
 	view->setPlanState(d, dcNr);
 	setDive(d, dcNr);

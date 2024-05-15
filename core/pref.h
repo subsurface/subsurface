@@ -201,6 +201,7 @@ struct preferences {
 	int                         vpmb_conservatism;
 	bool                        zoomed_plot;
 	bool                        infobox;
+	bool                        allowOcGasAsDiluent;
 
 	// ********** Units **********
 	bool                    coordinates_traditional;

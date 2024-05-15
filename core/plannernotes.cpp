@@ -96,7 +96,7 @@ extern std::string get_planner_disclaimer_formatted()
 	return format_string_std(get_planner_disclaimer(), deco);
 }
 
-void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, bool error)
+void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, planner_error_t error)
 {
 	std::string buf;
 	std::string icdbuf;
@@ -122,12 +122,31 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	if (!dp)
 		return;
 
-	if (error) {
+	if (error != PLAN_OK) {
+		const char *message;
+		switch (error) {
+		case PLAN_ERROR_TIMEOUT:
+			message = translate("gettextFromC", "Decompression calculation aborted due to excessive time");
+
+			break;
+		case PLAN_ERROR_INAPPROPRIATE_GAS:
+			message = translate("gettextFromC", "One or more tanks with a tank use type inappropriate for the selected dive mode are included in the dive plan. "
+				"Please change them to appropriate tanks to enable the generation of a dive plan.");
+
+			break;
+		default:
+			message = translate("gettextFromC", "An error occurred during dive plan generation");
+
+			break;
+		}
+
 		buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>",
-				translate("gettextFromC", "Warning:"),
-				translate("gettextFromC", "Decompression calculation aborted due to excessive time"));
+			translate("gettextFromC", "Warning:"), message);
+
 		// TODO: avoid copy
 		dive->notes = buf;
+		dive->notes = strdup(buf.c_str());
+
 		return;
 	}
 

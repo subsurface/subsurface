@@ -3825,24 +3825,18 @@ user interface. It is explicitly used under the following conditions:
 
 === The _Subsurface_ dive planner screen
 
-Like the _Subsurface_ dive log, the planner screen is divided into several sections (see image below). The *setup*
-parameters for a dive are entered into the sections on the left hand and bottom side of the screen.
-They are: Available Gases, Rates, Planning, Gas Options and Notes.
+Like the _Subsurface_ dive log, the planner screen is divided into several sections (see image below):
+- At the top left of the screen are the *dive parameters* that will be stored with the planned dive, like dive time, dive mode, and water type.
+- Below this are tables that allow the user to configure the *cylinders* used on the dive, and the *depth / time and breathing gas* used for the individual parts of the planned dive.
+- At the bottom of the screen are the *parameters used by the planner* to plan the dive, like ascent / descent rates, planning parameters, and gas options.
+- At the top right hand is a green *design panel* on which the profile of the dive can be manipulated directly by dragging and clicking as explained below. This feature makes the _Subsurface_ dive planner unique in ease of use.
+- On the bottom right is a field for the *dive plan details* - this is where the planner will show the dive plan in text form, which will also persisted to the dive notes when the planned dive is saved. This field is designe to be easily copied to other software. It also shows any warning messages about the dive plan.
 
-At the top right hand is a green *design panel* on which the profile of the dive can be
-manipulated directly by dragging and clicking as explained below. This feature makes the
-_Subsurface_ dive planner unique in ease of use.
-
-At the bottom right is a text panel with a heading of _Dive Plan Details_. This is where the details of
-the dive plan are provided in a way that can easily be copied to other software. This is also where
-any warning messages about the dive plan are printed.
-
-image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="center"]
-
+image::images/PlannerWindow1.png["FIGURE: Dive planner startup window",align="center"]
 
 === Open circuit dives
 
--  Towards the center bottom of the planner (circled in blue in the image above) is a dropdown list with three options. Select the appropriate one of these:
+- In the top left of the planner (circled in blue in the image above) is a dropdown list with three options. Select the appropriate one of these:
  ** Open Circuit (the default)
  ** CCR
  ** pSCR
@@ -3870,7 +3864,7 @@ image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="ce
     O~2~% according to the depth set. Set to ''*'' to calculate the best O~2~% for the dive maximum depth.
  ** MND: the gas Maximum Narcotic Depth (MND). Automatically calculated based on the Best Mix END
     preference (default 30m / 98 ft). Editing this field will modify the He% according to the depth set.
-    Set to ''*'' to calculate the best He% for the dive maximum depth. Depending on the checkbox, oxygen 
+    Set to ''*'' to calculate the best He% for the dive maximum depth. Depending on the checkbox, oxygen
     is considered narcotic (the END is used) or not (the EAD is used).
 
 - The profile of the planned dive can be created in two ways:
@@ -3882,11 +3876,14 @@ image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="ce
  *  The most efficient way to create a dive profile is to enter the appropriate values into the table
     marked _Dive planner points_. The first line of the table represents the duration and the final
     depth of the descent from the surface. Subsequent segments describe the bottom phase of the dive.
-    The _CC setpoint_ column is only relevant for closed circuit divers.
     The ascent is usually not specified because this is what the planner is supposed to calculate.
     Add additional segments to the profile by selecting the "+" icon at the top right hand of the
     table. Segments entered into the _Dive planner points_ table automatically appear in the *Dive
     Profile* diagram.
+*  If the _Dive mode_ of the planned dive is changed after gases and segments have been added, it can happen that the _Use_ of a gasmix or the _Used gas_ selected for a segment are not appropriate for the selected _Dive mode_. In this case _Subsurface_ will highlight the problematic selection with a red background to help the user identify and correct the issue. The dive plan will not be calculated until all issues are resolved.
+
+image::images/Planner_issues.png["FIGURE: Dive planner: Issue display",align="center"]
+
 
 ==== Recreational dives
 
@@ -3963,7 +3960,7 @@ the nitrogen load incurred during previous dives.
 Below is an image of a dive plan for a recreational dive at 30 meters with gradient factors of 100. Because the no-deco limit (NDL) is 22
 minutes, there remains a significant amount of air in the cylinder at the end of the dive.
 
-image::images/Planner_OC_rec1.jpg["FIGURE: A recreational dive plan: setup",align="center"]
+image::images/Planner_OC_rec1.png["FIGURE: A recreational dive plan: setup",align="center"]
 
 The dive profile in the planner shows the maximum dive time within no-deco limits using the
 Bühlmann ZH-L16 algorithm and the gas and depth settings specified as described above. The _Subsurface_ planner
@@ -3976,7 +3973,7 @@ it means that recreational dive limits are exceeded and either the dive duration
 Below is the same dive plan as above, but with a safety stop and reduced gradient factors for
 a larger safety margin.
 
-image::images/Planner_OC_rec2.jpg["FIGURE: A recreational dive plan: gradient factors setup",align="center"]
+image::images/Planner_OC_rec2.png["FIGURE: A recreational dive plan: gradient factors setup",align="center"]
 
 ==== Non-recreational open circuit dives, including decompression
 
@@ -4093,12 +4090,16 @@ _Type_ select the appropriate cylinder size by using the dropdown list that appe
 double-clicking a cell in this column. By default, a large number of sizes are listed,
 and a new cylinder size can be created by typing this into the text box. The cylinder size, start pressure
 and default switch depths are initialized automatically. Specify the gas composition
-(e.g. helium and oxygen content). A non-zero value in the "CC setpoint" column of the table of dive planner points
-indicates a valid setpoint for oxygen partial pressure and that the segment
-is dived using a closed circuit rebreather (CCR). If the last manually entered
-segment is a CCR segment, the decompression phase is computed assuming the diver
+(e.g. helium and oxygen content) and - in the case of planning a CCR dive, the intended use as diluent or OC bailout gas.
+When planning CCR dives, a segment is calculated as a closed circuit segment if the gas that is used is a _diluent_, and as an open circuit segment if the gas is an _OC-gas_. If the user enables the _Allow open circuit gas to be used as bailout_ option in the _Tech setup_ preferences, then an additional column will be shown allowing the user to select the _Dive mode_ for each segment dived on an _OC-gas_.
+
+image::images/Planner_OC_gas_for_CCR.png["FIGURE: Planning a dive: OC as CCR",align="center"]
+
+For CCR dives, an additional column is shown in the _Dive planner points_ table, allowing the user to specify the _Setpoint_ for each closed circuit segment.
+If the last manually entered
+segment is a closed circuit segment, the decompression phase is computed assuming the diver
 uses a CCR with the specified set-point. If the last segment (however
-short) is on open circuit (OC, indicated by a zero set-point) the
+short) is on open circuit the
 decompression is computed in OC mode and the planner only considers gas
 changes in OC mode.
 
@@ -4112,16 +4113,19 @@ you wish to use this gas during the very start of the dive (the other gas is not
 Upon pressing Enter on the keyboard, that segment is moved to the top of that table and the plan is adjusted
 automatically to take into account this new segment of the dive plan (image B below).
 
-image::images/planner1.jpg["FIGURE: Planning a dive: segments",align="center"]
+*A:*
+image::images/planner1.png["FIGURE: Planning a dive: segments 1/2",align="center"]
+*B:*
+image::images/planner2.png["FIGURE: Planning a dive: segments 2/2",align="center"]
 
 Below is an example of a dive plan to 55m using Tx20/30 and the Bühlmann algorithm,
 followed by an ascent using EAN50 and using the settings as described above.
 
-image::images/Planner_OC_deco.jpg["FIGURE: Planning a dive: setup",align="center"]
+image::images/Planner_OC_deco.png["FIGURE: Planning a dive: setup",align="center"]
 
 Once the above steps have been completed, save by clicking the _Save_ button
 towards the top middle of the planner. The saved dive plan will appear
-in the *Dive List* panel of _Subsurface_.
+in the _Dive List_ panel of _Subsurface_.
 
 *The dive plan details*
 
@@ -4238,7 +4242,7 @@ are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is 
 to that of the CCR dive below, but note the longer ascent duration due to the lower oxygen
 in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.
 
-image::images/Planner_pSCR.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+image::images/Planner_pSCR.png["FIGURE: Planning a pSCR dive: setup",align="center"]
 
 ==== Planning for pSCR bailout
 
@@ -4283,7 +4287,7 @@ columns, as in the cave example, above. See the example of bailout for a CCR div
 === Planning CCR dives
 
 To plan a dive using a closed circuit rebreather, select the _CCR_ option in the dropdown
-list, circled in blue in the image below.
+list.
 
 *Available gases*: In the _Available gases_ table, enter the cylinder information for the
 diluent cylinder and for any bail-out cylinders. Do NOT enter the information for the oxygen
@@ -4292,14 +4296,9 @@ cylinder since it is implied when the _CCR_ dropdown selection is made.
 *Entering setpoints*: Specify a default setpoint in the Preferences tab, by selecting _File ->  Preferences ->  Tech setup_ from
 the main menu. All user-entered segments in the _Dive planner points_ table
 use the default setpoint value. Then, different setpoints can be specified for dive segments
-in the _Dive planner points_ table. A zero setpoint
-means the diver bails out to open circuit mode for that segment. Decompression is always calculated
-using the setpoint of the last manually entered segment. So, to plan a bail out ascent for a
-CCR dive, add a one-minute dive segment to the end with a setpoint value of 0. The decompression
-algorithm does not switch deco-gases automatically while in CCR mode (i.e. when a positive setpoint is specified) but
-this is calculated for bail out ascents.
+in the _Dive planner points_ table.
 
-If you want the setpoint to change during the planned ascent at a specified depth, you can do this 
+If you want the setpoint to change during the planned ascent at a specified depth, you can do this
 using a "fake" cylinder that you add to the gas list: Give that cylinder a name of "SP 1.4" (or use
 a different number) and set the "Deco switch value" to the depth at which you want to set the new
 setpoint. This will make the planner stop at the specified depth and use the new setpoint from
@@ -4307,36 +4306,30 @@ there on.
 
 The dive profile for a CCR dive may look something like the image below.
 
-image::images/Planner_CCR.jpg["FIGURE: Planning a CCR dive: setup",align="center"]
+image::images/Planner_CCR.png["FIGURE: Planning a CCR dive: setup",align="center"]
 
 Note that, in the _Dive plan details_, the gas consumption for a CCR segment is not calculated,
 so gas consumptions of 0 liters are the norm.
 
 ==== Planning for CCR bailout
 
-[icon="images/CCR_b1.jpg"]
-[NOTE]
+image::images/CCR_b1.png["FIGURE: Planning a CCR dive: closed circuit deco",align="center"]
+
 It is often necessary to plan for a worst-case bailout event in order to ensure sufficient bailout gas to reach the
-surface, taking into account decompression. This is done by 1) checking the _Bailout_ checkbox of the dive planner
-(bailout will be calculated starting at the last segment of the dive specified in the _Dive planner points_ table);
-2) defining a 1-minute segment at the end of the bottom part
-of the dive, as in the image on the left where a CCR dive to 40m for 21 minutes is planned;
-3) changing to an OC-gas during any segment in the _Dive planner points_ table.
+surface, taking into account decompression. This is done by checking the _Rebreather: Bailout / Deco on OC_ checkbox of the dive planner
+(bailout will be calculated starting at the last segment of the dive specified in the _Dive planner points_ table):
 
+image::images/CCR_b2.png["FIGURE: Planning a CCR dive: open circuit bailout",align="center"]
 
-[icon="images/CCR_b2.jpg"]
-[NOTE]
-In the _Dive planner points
-table_, change the _Dive mode_ of this 1-minute segment to _OC_. This signifies bailout. In this case there is bailout to
-the existing diluent cylinder (assuming this cylinder has sufficient gas). The appropriate pO~2~ and cylinder pressure
-graphs are shown in the dive profile, as in the image on the left. Note that the setpoint drops to zero after bailout, since
-this value does not apply to breathed bailout gas.
+In the _Available gases_
+table, change the _Use_ of the gas used for the last segment to _OC-gas_. This signifies bailout.
+The appropriate pO~2~ and cylinder pressure
+graphs are shown in the dive profile:
 
+image::images/CCR_b3.png["FIGURE: Planning a CCR dive: open circuit bailout by cylinder selection",align="center"]
 
-[icon="images/CCR_b3.jpg"]
-[NOTE]
 In order to plan for bailout to an external bailout cylinder, change  the _Used gas_ for the 1-minute segment to the
-appropriate cylinder, as in the example on the left. Note that the cylinder change as well as the bailout are indicated with
+appropriate cylinder, as in the example above. Note that the cylinder change as well as the bailout are indicated with
 overlapping icons.
 
 The volumes of gases required for bailout can be found at the bottom of the *Dive plan details* panel.

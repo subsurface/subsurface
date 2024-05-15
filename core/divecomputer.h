@@ -35,7 +35,7 @@ struct divecomputer {
 	pressure_t surface_pressure;
 	enum divemode_t divemode = OC;	// dive computer type: OC(default) or CCR
 	uint8_t no_o2sensors = 0;	// rebreathers: number of O2 sensors used
-	int salinity = 0; 		// kg per 10000 l
+	int salinity = 0;		// kg per 10000 l
 	std::string model, serial, fw_version;
 	uint32_t deviceid = 0, diveid = 0;
 	// Note: ve store samples, events and extra_data in std::vector<>s.

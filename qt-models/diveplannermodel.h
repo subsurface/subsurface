@@ -66,6 +66,7 @@ public:
 
 	void loadFromDive(dive *d, int dcNr);
 	void addStop(int millimeters, int seconds);
+	void setDiveMode(int mode);
 public
 slots:
 	void addDefaultStop();
@@ -96,7 +97,6 @@ slots:
 	void removeDeco();
 	void deleteTemporaryPlan();
 	void emitDataChanged();
-	void setRebreatherMode(int mode);
 	void setReserveGas(int reserve);
 	void setSwitchAtReqStop(bool value);
 	void setMinSwitchDuration(int duration);

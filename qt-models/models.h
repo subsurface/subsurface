@@ -21,20 +21,24 @@
 
 struct dive;
 
-class GasSelectionModel : public QStringListModel {
+class GasSelectionModel : public QAbstractListModel {
 	Q_OBJECT
 public:
-	GasSelectionModel(const dive &d, QObject *parent);
-	Qt::ItemFlags flags(const QModelIndex &index) const;
+	GasSelectionModel(const dive &d, int dcNr, QObject *parent);
 	QVariant data(const QModelIndex &index, int role) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+private:
+	std::vector<std::pair<int, QString>> gasNames;
 };
 
-class DiveTypeSelectionModel : public QStringListModel {
+class DiveTypeSelectionModel : public QAbstractListModel {
 	Q_OBJECT
 public:
-	DiveTypeSelectionModel(QObject *parent);
-	Qt::ItemFlags flags(const QModelIndex &index) const;
+	DiveTypeSelectionModel(const dive &d, int dcNr, QObject *parent);
 	QVariant data(const QModelIndex &index, int role) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+private:
+	std::vector<std::pair<int, QString>> diveTypes;
 };
 
 class LanguageModel : public QAbstractListModel {

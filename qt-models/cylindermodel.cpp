@@ -156,25 +156,34 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 	const cylinder_t *cyl = index.row() == tempRow ? &tempCyl : d->get_cylinder(index.row());
 
+	bool isInappropriateUse = !is_cylinder_use_appropriate(*d->get_dc(dcNr), *cyl, true);
 	switch (role) {
-	case Qt::BackgroundRole: {
+	case Qt::BackgroundRole:
 		switch (index.column()) {
 		// mark the cylinder start / end pressure in red if the values
 		// seem implausible
 		case START:
 		case END:
-			pressure_t startp, endp;
-			startp = cyl->start.mbar ? cyl->start : cyl->sample_start;
-			endp = cyl->end.mbar ? cyl->end : cyl->sample_end;
-			if ((startp.mbar && !endp.mbar) ||
-					(endp.mbar && startp.mbar <= endp.mbar))
+			{
+				pressure_t startp = cyl->start.mbar ? cyl->start : cyl->sample_start;
+				pressure_t endp = cyl->end.mbar ? cyl->end : cyl->sample_end;
+				if ((startp.mbar && !endp.mbar) ||
+						(endp.mbar && startp.mbar <= endp.mbar))
+					return REDORANGE1_HIGH_TRANS;
+			}
+
+			break;
+		case USE:
+			if (isInappropriateUse)
 				return REDORANGE1_HIGH_TRANS;
+
 			break;
 		}
+
 		break;
-	}
 	case Qt::FontRole: {
 		QFont font = defaultModelFont();
+
 		switch (index.column()) {
 		// if we don't have manually set pressure data use italic font
 		case START:
@@ -184,6 +193,9 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			font.setItalic(!cyl->end.mbar);
 			break;
 		}
+
+		font.setItalic(isInappropriateUse);
+
 		return font;
 	}
 	case Qt::TextAlignmentRole:

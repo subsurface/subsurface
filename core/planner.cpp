@@ -380,14 +380,17 @@ static int setpoint_change(struct dive *dive, int cylinderid)
 	}
 }
 
-static std::vector<gaschanges> analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int depth, int *asc_cylinder, bool ccr)
+static std::vector<gaschanges> analyze_gaslist(struct diveplan *diveplan, struct dive *dive, int  dcNr, int depth, int *asc_cylinder, bool ccr, bool &inappropriate_cylinder_use)
 {
 	size_t nr = 0;
 	std::vector<gaschanges> gaschanges;
 	struct divedatapoint *dp = diveplan->dp;
 	struct divedatapoint *best_ascent_dp = NULL;
 	bool total_time_zero = true;
+	const divecomputer *dc = dive->get_dc(dcNr);
 	while (dp) {
+		inappropriate_cylinder_use = inappropriate_cylinder_use || !is_cylinder_use_appropriate(*dc, *dive->get_cylinder(dp->cylinderid), false);
+
 		if (dp->time == 0 && total_time_zero && (ccr == (bool) setpoint_change(dive, dp->cylinderid))) {
 			if (dp->depth.mm <= depth) {
 				int i = 0;
@@ -661,7 +664,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	bool o2break_next = false;
 	int break_cylinder = -1, breakfrom_cylinder = 0;
 	bool last_segment_min_switch = false;
-	bool error = false;
+	planner_error_t error = PLAN_OK;
 	bool decodive = false;
 	int first_stop_depth = 0;
 	int laststoptime = timestep;
@@ -744,7 +747,11 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	/* Find the gases available for deco */
 
-	std::vector<gaschanges> gaschanges = analyze_gaslist(diveplan, dive, depth, &best_first_ascend_cylinder, divemode == CCR && !prefs.dobailout);
+	bool inappropriate_cylinder_use = false;
+	std::vector<gaschanges> gaschanges = analyze_gaslist(diveplan, dive, dcNr, depth, &best_first_ascend_cylinder, divemode == CCR && !prefs.dobailout, inappropriate_cylinder_use);
+	if (inappropriate_cylinder_use) {
+		error = PLAN_ERROR_INAPPROPRIATE_GAS;
+	}
 
 	/* Find the first potential decostopdepth above current depth */
 	for (stopidx = 0; stopidx < decostoplevelcount; stopidx++)
@@ -880,7 +887,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			current_cylinder = 0;
 		}
 		reset_regression(ds);
-		while (1) {
+		while (error == PLAN_OK) {
 			/* We will break out when we hit the surface */
 			do {
 				/* Ascend to next stop depth */
@@ -1005,7 +1012,8 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				laststoptime = new_clock - clock;
 				/* Finish infinite deco */
 				if (laststoptime >= 48 * 3600 && depth >= 6000) {
-					error = true;
+					error = PLAN_ERROR_TIMEOUT;
+
 					break;
 				}
 
@@ -1070,7 +1078,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		 * if the ascent rate is slower, which is completely nonsensical.
 		 * Assume final ascent takes 20s, which is the time taken to ascend at 9m/min from 3m */
 		ds->deco_time = clock - bottom_time - (M_OR_FT(3,10) * ( prefs.last_stop ? 2 : 1)) / last_ascend_rate + 20;
-	} while (!is_final_plan);
+	} while (!is_final_plan && error == PLAN_OK);
 	decostoptable[decostopcounter].depth = 0;
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
@@ -1112,24 +1120,31 @@ static int get_decimals(const char *begin, const char **endp, const unsigned dec
 		return -1;
 
 	/* Fraction? We only look at the first digit */
-	if (*end == '.') {
-		unsigned fraction = 0;
-		for (unsigned i = 0; i < decimals; i++) {
-			value *= 10;
+	if (*end == '.')
+		end++;
+
+	unsigned fraction = 0;
+	for (unsigned i = 0; i < decimals; i++) {
+		value *= 10;
+
+		unsigned digit = 0;
+		if (isdigit(*end)) {
+			digit = *end - '0';
 
 			end++;
-
-			if (!isdigit(*end))
-				return -1;
-
-			fraction = 10 * fraction + (*end - '0');
+		} else if (*end != '\0') {
+			return -1;
 		}
-		value += fraction;
 
-		do {
-			end++;
-		} while (isdigit(*end));
+		fraction = 10 * fraction + digit;
+
 	}
+	value += fraction;
+
+	do {
+		end++;
+	} while (isdigit(*end));
+
 	*endp = end;
 	return value;
 }
@@ -1209,5 +1224,9 @@ int validate_po2(const char *text, int *mbar_po2)
 		return 0;
 
 	*mbar_po2 = po2 * 10;
+
+	if (*mbar_po2 < 160)
+		*mbar_po2 = 160;
+
 	return 1;
 }

@@ -18,9 +18,11 @@ struct dive;
 class DivePlannerWidget : public QWidget {
 	Q_OBJECT
 public:
-	explicit DivePlannerWidget(dive &planned_dive, int dcNr, PlannerWidgets *parent);
+	explicit DivePlannerWidget(const dive &planned_dive, int &dcNr, PlannerWidgets *parent);
 	~DivePlannerWidget();
 	void setReplanButton(bool replan);
+	void setColumnVisibility(int mode);
+	void setDiveMode(int mode);
 public
 slots:
 	void setupStartTime(QDateTime startTime);
@@ -48,9 +50,8 @@ public
 slots:
 	void settingsChanged();
 	void setBackgasBreaks(bool dobreaks);
-	void disableDecoElements(int mode, divemode_t rebreathermode);
+	void disableDecoElements(int mode, divemode_t divemode);
 	void disableBackgasBreaks(bool enabled);
-	void setDiveMode(int mode);
 	void setBailoutVisibility(int mode);
 
 private:
@@ -86,10 +87,12 @@ public:
 	void replanDive();
 	struct dive *getDive() const;
 	int getDcNr();
-	divemode_t getRebreatherMode() const;
+	divemode_t getDiveMode() const;
+	void settingsChanged();
 public
 slots:
 	void printDecoPlan();
+	void setDiveMode(int mode);
 private:
 	std::unique_ptr<dive> planned_dive;
 	int dcNr;

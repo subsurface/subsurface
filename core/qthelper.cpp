@@ -1151,19 +1151,51 @@ QString get_gas_string(struct gasmix gas)
 	return result;
 }
 
-QStringList get_dive_gas_list(const struct dive *d)
+QString get_dive_gas(const struct dive *d, int dcNr, int cylinderId)
 {
-	QStringList list;
-	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
-		/* Check if we have the same gasmix two or more times
-		 * If yes return more verbose string */
-		int same_gas = same_gasmix_cylinder(cyl, i, d, true);
-		if (same_gas == -1)
-			list.push_back(get_gas_string(cyl.gasmix));
-		else
-			list.push_back(get_gas_string(cyl.gasmix) + QStringLiteral(" (%1 %2 ").arg(gettextFromC::tr("cyl.")).arg(i + 1) +
-				QString::fromStdString(cyl.type.description) + ")");
+	const cylinder_t *cyl = d->get_cylinder(cylinderId);
+	const divecomputer *dc = d->get_dc(dcNr);
+
+	bool showUse = (dc->divemode == CCR) | !is_cylinder_use_appropriate(*dc, *cyl, false);
+
+	QString gasType = get_gas_string(cyl->gasmix);
+	QString gasName;
+	/* Check if we have the same gasmix two or more times
+	 * If yes return more verbose string */
+	int same_gas = same_gasmix_cylinder(*cyl, cylinderId, d, true);
+	if (same_gas != -1) {
+		gasType += QString(" (%1 %2").arg(gettextFromC::tr("cyl.")).arg(cylinderId + 1);
+		gasName = QString::fromStdString(d->get_cylinder(cylinderId)->type.description);
 	}
+
+	if (showUse) {
+		if (gasName.isNull())
+			gasType += " (";
+		else
+			gasType += ", ";
+		gasType += gettextFromC::tr(cylinderuse_text[d->get_cylinder(cylinderId)->cylinder_use]);
+	}
+
+	if (!gasName.isNull())
+		gasType += QString(", %1").arg(gasName);
+
+	if (!gasName.isNull() || showUse)
+		gasType += ")";
+
+	return gasType;
+}
+
+std::vector<std::pair<int, QString>> get_dive_gas_list(const struct dive *d, int dcNr, bool showOnlyAppropriate)
+{
+	const divecomputer *dc = d->get_dc(dcNr);
+	std::vector<std::pair<int, QString>> list;
+	for (unsigned int i = 0; i < d->cylinders.size(); i++) {
+		if (showOnlyAppropriate && !is_cylinder_use_appropriate(*dc, *d->get_cylinder(i), false))
+			continue;
+
+		list.push_back(std::pair(i, get_dive_gas(d, dcNr, i)));
+	}
+
 	return list;
 }
 

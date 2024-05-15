@@ -19,7 +19,7 @@
      <property name="title">
       <string>Gas pressure display setup</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_1">
       <item row="0" column="0">
        <widget class="QLabel" name="label_12">
         <property name="enabled">
@@ -125,21 +125,30 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="title">
+      <string>Rebreather setup</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
        <widget class="QLabel" name="label_26">
         <property name="text">
          <string>CCR options:</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="0" column="1">
        <widget class="QLabel" name="label_27">
         <property name="text">
          <string>Dive planner default setpoint</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="2">
+      <item row="0" column="2">
        <widget class="QDoubleSpinBox" name="defaultSetpoint">
         <property name="suffix">
          <string>bar</string>
@@ -155,38 +164,35 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="1" colspan="2">
+      <item row="1" column="1" colspan="2">
        <widget class="QCheckBox" name="show_ccr_sensors">
         <property name="text">
          <string>Show O₂ sensor values when viewing pO₂</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1" colspan="2">
+      <item row="2" column="1" colspan="2">
        <widget class="QCheckBox" name="show_ccr_setpoint">
         <property name="text">
          <string>Show CCR setpoints when viewing pO₂</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="pSCR">
         <property name="text">
          <string>pSCR options:</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="3" column="1">
        <widget class="QLabel" name="MetabolicRate">
         <property name="text">
          <string>pSCR metabolic rate O₂</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
        </widget>
       </item>
-      <item row="7" column="2">
+      <item row="3" column="2">
        <widget class="QDoubleSpinBox" name="psro2rate">
         <property name="suffix">
          <string>ℓ/min</string>
@@ -196,7 +202,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="3">
+      <item row="3" column="3">
        <widget class="QLabel" name="label_28">
         <property name="text">
          <string>Dilution ratio</string>
@@ -206,7 +212,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="4">
+      <item row="3" column="4">
        <widget class="QSpinBox" name="pscrfactor">
         <property name="suffix">
          <string/>
@@ -216,17 +222,10 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
+      <item row="4" column="1">
        <widget class="QCheckBox" name="show_scr_ocpo2">
         <property name="text">
          <string>Show equivalent OC pO₂ with pSCR pO₂</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QCheckBox" name="show_icd">
-        <property name="text">
-         <string>Show warnings for isobaric counterdiffusion</string>
         </property>
        </widget>
       </item>
@@ -234,11 +233,34 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_5">
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="title">
+      <string>Planner setup</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="show_icd">
+        <property name="text">
+         <string>Show warnings for isobaric counterdiffusion</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="allowOcGasAsDiluent">
+        <property name="text">
+         <string>Allow open circuit gas to be used as diluent for CCR</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_7">
      <property name="title">
       <string>Ceiling display setup</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_3">
+     <layout class="QGridLayout" name="gridLayout_4">
       <item row="3" column="3">
        <widget class="QLabel" name="label_GFhigh">
         <property name="text">
