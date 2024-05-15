@@ -21,3 +21,4 @@ jobs:
         suffix: "_**WARNING:** Use at your own risk._"
         format: name
         addTo: pull
+        errorNoArtifacts: false
