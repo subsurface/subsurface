@@ -25,37 +25,40 @@ struct full_text_cache;
 struct event;
 struct trip_table;
 struct dive {
-	struct dive_trip *divetrip;
-	timestamp_t when;
-	struct dive_site *dive_site;
-	char *notes;
-	char *diveguide, *buddy;
-	struct cylinder_table cylinders;
-	struct weightsystem_table weightsystems;
-	char *suit;
-	int number;
-	int rating;
-	int wavesize, current, visibility, surge, chill; /* 0 - 5 star ratings */
-	int sac, otu, cns, maxcns;
+	struct dive_trip *divetrip = nullptr;
+	timestamp_t when = 0;
+	struct dive_site *dive_site = nullptr;
+	char *notes = nullptr;
+	char *diveguide = nullptr, *buddy = nullptr;
+	struct cylinder_table cylinders = { };
+	struct weightsystem_table weightsystems = { };
+	char *suit = nullptr;
+	int number = 0;
+	int rating = 0;
+	int wavesize = 0, current = 0, visibility = 0, surge = 0, chill = 0; /* 0 - 5 star ratings */
+	int sac = 0, otu = 0, cns = 0, maxcns = 0;
 
 	/* Calculated based on dive computer data */
 	temperature_t mintemp, maxtemp, watertemp, airtemp;
 	depth_t maxdepth, meandepth;
 	pressure_t surface_pressure;
 	duration_t duration;
-	int salinity; // kg per 10000 l
-	int user_salinity; // water density reflecting a user-specified type
+	int salinity = 0; // kg per 10000 l
+	int user_salinity = 0; // water density reflecting a user-specified type
 
-	struct tag_entry *tag_list;
+	struct tag_entry *tag_list = nullptr;
 	struct divecomputer dc;
-	int id; // unique ID for this dive
-	struct picture_table pictures;
-	unsigned char git_id[20];
-	bool notrip; /* Don't autogroup this dive to a trip */
-	bool selected;
-	bool hidden_by_filter;
-	struct full_text_cache *full_text; /* word cache for full text search */
-	bool invalid;
+	int id = 0; // unique ID for this dive
+	struct picture_table pictures = { };
+	unsigned char git_id[20] = {};
+	bool notrip = false; /* Don't autogroup this dive to a trip */
+	bool selected = false;
+	bool hidden_by_filter = false;
+	struct full_text_cache *full_text = nullptr; /* word cache for full text search */
+	bool invalid = false;
+
+	dive();
+	~dive();
 };
 
 /* For the top-level list: an entry is either a dive or a trip */
@@ -161,13 +164,11 @@ extern void subsurface_console_init();
 extern void subsurface_console_exit();
 extern bool subsurface_user_is_root();
 
-extern struct dive *alloc_dive();
-extern void free_dive(struct dive *);
 extern void record_dive_to_table(struct dive *dive, struct dive_table *table);
 extern void clear_dive(struct dive *dive);
 extern void copy_dive(const struct dive *s, struct dive *d);
 extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
-extern struct dive *move_dive(struct dive *s);
+extern struct std::unique_ptr<dive> move_dive(struct dive *s);
 
 extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 

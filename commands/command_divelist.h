@@ -15,9 +15,9 @@ namespace Command {
 
 // This helper structure describes a dive that we want to add.
 struct DiveToAdd {
-	OwningDivePtr	 dive;		// Dive to add
-	dive_trip	*trip;		// Trip the dive belongs to, may be null
-	dive_site	*site;		// Site the dive is associated with, may be null
+	std::unique_ptr<struct dive>	 dive;		// Dive to add
+	dive_trip			*trip;		// Trip the dive belongs to, may be null
+	dive_site			*site;		// Site the dive is associated with, may be null
 };
 
 // Multiple trips, dives and dive sites that have to be added for a command

@@ -1185,8 +1185,8 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	if (!original_plan)
 		return;
 
-	struct dive *dive = alloc_dive();
-	copy_dive(d, dive);
+	auto dive = std::make_unique<struct dive>();
+	copy_dive(d, dive.get());
 	struct decostop original[60], deeper[60], shallower[60], shorter[60], longer[60];
 	deco_state_cache cache, save;
 	struct diveplan plan_copy;
@@ -1214,7 +1214,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 		goto finish;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, dcNr, 1, original, cache, true, false);
+	plan(&ds, &plan_copy, dive.get(), dcNr, 1, original, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1223,7 +1223,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	last_segment->next->depth.mm += delta_depth.mm;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, dcNr, 1, deeper, cache, true, false);
+	plan(&ds, &plan_copy, dive.get(), dcNr, 1, deeper, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1232,7 +1232,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	last_segment->next->depth.mm -= delta_depth.mm;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, dcNr, 1, shallower, cache, true, false);
+	plan(&ds, &plan_copy, dive.get(), dcNr, 1, shallower, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1240,7 +1240,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	last_segment->next->time += delta_time.seconds;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, dcNr, 1, longer, cache, true, false);
+	plan(&ds, &plan_copy, dive.get(), dcNr, 1, longer, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1248,7 +1248,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	last_segment->next->time -= delta_time.seconds;
 	if (my_instance != instanceCounter)
 		goto finish;
-	plan(&ds, &plan_copy, dive, dcNr, 1, shorter, cache, true, false);
+	plan(&ds, &plan_copy, dive.get(), dcNr, 1, shorter, cache, true, false);
 	free_dps(&plan_copy);
 	save.restore(&ds, false);
 
@@ -1265,7 +1265,6 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 finish:
 	free_dps(original_plan);
 	free(original_plan);
-	free_dive(dive);
 }
 
 void DivePlannerPointsModel::computeVariationsDone(QString variations)

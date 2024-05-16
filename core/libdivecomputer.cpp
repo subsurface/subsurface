@@ -809,7 +809,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dc_status_t rc;
 	dc_parser_t *parser = NULL;
 	device_data_t *devdata = (device_data_t *)userdata;
-	struct dive *dive = NULL;
 
 	/* reset static data, that is only valid per dive */
 	stoptime = stopdepth = po2 = cns = heartbeat = 0;
@@ -825,14 +824,14 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		return true;
 	}
 
-	dive = alloc_dive();
+	auto dive = std::make_unique<struct dive>();
 
 	// Fill in basic fields
 	dive->dc.model = strdup(devdata->model.c_str());
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
 	// Parse the dive's header data
-	rc = libdc_header_parser (parser, devdata, dive);
+	rc = libdc_header_parser (parser, devdata, dive.get());
 	if (rc != DC_STATUS_SUCCESS) {
 		download_error(translate("getextFromC", "Error parsing the header: %s"), errmsg(rc));
 		goto error_exit;
@@ -867,7 +866,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	if (!devdata->force_download && find_dive(&dive->dc)) {
 		std::string date_string = get_dive_date_c_string(dive->when);
 		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string.c_str());
-		free_dive(dive);
 		return false;
 	}
 
@@ -885,14 +883,12 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	    dive->dc.sample[1].temperature.mkelvin > dive->dc.sample[0].temperature.mkelvin)
 		dive->dc.sample[0].temperature.mkelvin = dive->dc.sample[1].temperature.mkelvin;
 
-	record_dive_to_table(dive, devdata->log->dives.get());
+	record_dive_to_table(dive.release(), devdata->log->dives.get());
 	return true;
 
 error_exit:
 	dc_parser_destroy(parser);
-	free_dive(dive);
 	return true;
-
 }
 
 #ifndef O_BINARY
