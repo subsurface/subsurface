@@ -797,7 +797,6 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	when(0),
 	maxdepth({0}),
 	meandepth({0}),
-	dc({ 0 }),
 	notes(nullptr),
 	surface_pressure({0}),
 	duration({0}),
@@ -885,8 +884,7 @@ EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int
 	maxdepth({0}),
 	meandepth({0}),
 	dcmaxdepth({0}),
-	duration({0}),
-	dc({ 0 })
+	duration({0})
 {
 	const struct divecomputer *sdc = get_dive_dc_const(source, dcNr);
 	if (!sdc)

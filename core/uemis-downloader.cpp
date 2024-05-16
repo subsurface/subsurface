@@ -185,9 +185,9 @@ static void uemis_get_weight(std::string_view buffer, weightsystem_t &weight, in
 	weight.description = translate("gettextFromC", "unknown");
 }
 
-static struct dive *uemis_start_dive(uint32_t deviceid)
+static std::unique_ptr<dive> uemis_start_dive(uint32_t deviceid)
 {
-	struct dive *dive = alloc_dive();
+	auto dive = std::make_unique<struct dive>();
 	dive->dc.model = strdup("Uemis Zurich");
 	dive->dc.deviceid = deviceid;
 	return dive;
@@ -788,7 +788,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
 	}
 	if (dive) {
 		devdata->log->dives->dives[--devdata->log->dives->nr] = NULL;
-		free_dive(dive);
+		delete dive;
 
 		return true;
 	}
@@ -810,9 +810,10 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 {
 	using namespace std::string_literals;
 	bool done = false;
-	bool is_log = false, is_dive = false;
+	bool is_log = false;
 	std::vector<std::string_view> sections;
-	struct dive *dive = NULL;
+	std::unique_ptr<dive> owned_dive;	// in log mode
+	struct dive *non_owned_dive = nullptr;	// in dive (non-log) mode
 	int dive_no = 0;
 
 #if UEMIS_DEBUG & 8
@@ -831,7 +832,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 			return false;
 	} else if (tp == "dive") {
 		/* this is dive detail */
-		is_dive = true;
+		is_log = false;
 		tp = next_token(bp);
 		if (tp != "1.0")
 			return false;
@@ -840,7 +841,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 		return false;
 	}
 	if (is_log) {
-		dive = uemis_start_dive(deviceid);
+		owned_dive = uemis_start_dive(deviceid);
 	} else {
 		/* remember, we don't know if this is the right entry,
 		 * so first test if this is even a valid entry */
@@ -897,57 +898,63 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 										      std::string(type).c_str(),
 										      std::string(val).c_str());
 #endif
-		if (is_log && tag == "object_id") {
-			from_chars(val, max_divenr);
-			dive->dc.diveid = max_divenr;
+		if (is_log) {
+			// Is log
+			if (tag == "object_id") {
+				from_chars(val, max_divenr);
+				owned_dive->dc.diveid = max_divenr;
 #if UEMIS_DEBUG % 2
-			report_info("Adding new dive from log with object_id %d.\n", max_divenr);
+				report_info("Adding new dive from log with object_id %d.\n", max_divenr);
 #endif
-		} else if (is_dive && tag == "logfilenr") {
-			/* this one tells us which dive we are adding data to */
-			int diveid = 0;
-			from_chars(val, diveid);
-			dive = get_dive_by_uemis_diveid(devdata, diveid);
-			if (dive_no != 0)
-				dive->number = dive_no;
-			if (for_dive)
-				*for_dive = diveid;
-		} else if (!is_log && dive && tag == "divespot_id") {
-			int divespot_id;
-			if (from_chars(val, divespot_id).ec != std::errc::invalid_argument) {
-				struct dive_site *ds = devdata->log->sites->create("from Uemis"s);
-				unregister_dive_from_dive_site(dive);
-				ds->add_dive(dive);
-				uemis_obj.mark_divelocation(dive->dc.diveid, divespot_id, ds);
 			}
+			parse_tag(owned_dive.get(), tag, val);
+
+			if (tag == "file_content")
+				done = true;
+			/* done with one dive (got the file_content tag), but there could be more:
+			 * a '{' indicates the end of the record - but we need to see another "{{"
+			 * later in the buffer to know that the next record is complete (it could
+			 * be a short read because of some error */
+			if (done && bp.size() > 3) {
+				bp = bp.substr(1);
+				if (bp[0] != '{' && bp.find("{{") != std::string::npos) {
+					done = false;
+					record_dive_to_table(owned_dive.release(), devdata->log->dives.get());
+					owned_dive = uemis_start_dive(deviceid);
+				}
+			}
+		} else {
+			// Is dive
+			if (tag == "logfilenr") {
+				/* this one tells us which dive we are adding data to */
+				int diveid = 0;
+				from_chars(val, diveid);
+				non_owned_dive = get_dive_by_uemis_diveid(devdata, diveid);
+				if (dive_no != 0)
+					non_owned_dive->number = dive_no;
+				if (for_dive)
+					*for_dive = diveid;
+			} else if (non_owned_dive && tag == "divespot_id") {
+				int divespot_id;
+				if (from_chars(val, divespot_id).ec != std::errc::invalid_argument) {
+					struct dive_site *ds = devdata->log->sites->create("from Uemis"s);
+					unregister_dive_from_dive_site(non_owned_dive);
+					ds->add_dive(non_owned_dive);
+					uemis_obj.mark_divelocation(non_owned_dive->dc.diveid, divespot_id, ds);
+				}
 #if UEMIS_DEBUG & 2
-			report_info("Created divesite %d for diveid : %d\n", dive->dive_site->uuid, dive->dc.diveid);
+				report_info("Created divesite %d for diveid : %d\n", non_owned_dive->dive_site->uuid, non_owned_dive->dc.diveid);
 #endif
-		} else if (dive) {
-			parse_tag(dive, tag, val);
-		}
-		if (is_log && tag == "file_content")
-			done = true;
-		/* done with one dive (got the file_content tag), but there could be more:
-		 * a '{' indicates the end of the record - but we need to see another "{{"
-		 * later in the buffer to know that the next record is complete (it could
-		 * be a short read because of some error */
-		if (done && bp.size() > 3) {
-			bp = bp.substr(1);
-			if (bp[0] != '{' && bp.find("{{") != std::string::npos) {
-				done = false;
-				record_dive_to_table(dive, devdata->log->dives.get());
-				dive = uemis_start_dive(deviceid);
+			} else if (non_owned_dive) {
+				parse_tag(non_owned_dive, tag, val);
 			}
 		}
 	}
 	if (is_log) {
-		if (dive->dc.diveid) {
-			record_dive_to_table(dive, devdata->log->dives.get());
-		} else { /* partial dive */
-			free_dive(dive);
+		if (owned_dive->dc.diveid)
+			record_dive_to_table(owned_dive.release(), devdata->log->dives.get());
+		else /* partial dive */
 			return false;
-		}
 	}
 	return true;
 }

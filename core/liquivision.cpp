@@ -136,20 +136,19 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 	unsigned int ptr = 0;
 	unsigned char model;
 
-	struct dive *dive;
 	struct divecomputer *dc;
 	struct sample *sample;
 
 	while (ptr < buf_size) {
 		int i;
-		dive = alloc_dive();
+		auto dive = std::make_unique<struct dive>();
 		memset(&sensor_ids, 0, sizeof(sensor_ids));
 		dc = &dive->dc;
 
 		/* Just the main cylinder until we can handle the buddy cylinder porperly */
 		for (i = 0; i < 1; i++) {
 			cylinder_t cyl;
-			fill_default_cylinder(dive, &cyl);
+			fill_default_cylinder(dive.get(), &cyl);
 			add_cylinder(&dive->cylinders, i, cyl);
 		}
 
@@ -190,7 +189,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 
 		/* Store the location only if we have one */
 		if (!location.empty())
-			sites.find_or_create(location)->add_dive(dive);
+			sites.find_or_create(location)->add_dive(dive.get());
 
 		ptr += len + 4 + place_len;
 
@@ -414,17 +413,12 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		}
 
 		// End dive
-		record_dive_to_table(dive, table);
+		record_dive_to_table(dive.release(), table);
 		dive = NULL;
 
 		// Advance ptr for next dive
 		ptr += ps_ptr + 4;
 	} // while
-
-	//DEBUG save_dives("/tmp/test.xml");
-
-	// if we bailed out of the loop, the dive hasn't been recorded and dive hasn't been set to NULL
-	free_dive(dive);
 }
 
 int try_to_open_liquivision(const char *, std::string &mem, struct divelog *log)

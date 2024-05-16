@@ -657,10 +657,9 @@ static void uddf_gasswitch(const char *buffer, struct sample *sample, struct par
 {
 	int idx = atoi(buffer);
 	int seconds = sample->time.seconds;
-	struct dive *dive = state->cur_dive;
 	struct divecomputer *dc = get_dc(state);
 
-	add_gas_switch_event(dive, dc, seconds, idx);
+	add_gas_switch_event(state->cur_dive.get(), dc, seconds, idx);
 }
 
 static int uddf_fill_sample(struct sample *sample, const char *name, char *buf, struct parser_state *state)
@@ -696,7 +695,7 @@ static void get_cylinderindex(const char *buffer, int16_t *i, struct parser_stat
 {
 	*i = atoi(buffer);
 	if (state->lastcylinderindex != *i) {
-		add_gas_switch_event(state->cur_dive, get_dc(state), state->cur_sample->time.seconds, *i);
+		add_gas_switch_event(state->cur_dive.get(), get_dc(state), state->cur_sample->time.seconds, *i);
 		state->lastcylinderindex = *i;
 	}
 }
@@ -1526,7 +1525,7 @@ static bool entry(const char *name, char *buf, struct parser_state *state)
 		return true;
 	}
 	if (state->cur_dive) {
-		try_to_fill_dive(state->cur_dive, name, buf, state);
+		try_to_fill_dive(state->cur_dive.get(), name, buf, state);
 		return true;
 	}
 	if (state->cur_trip) {
@@ -1863,7 +1862,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 	state.cur_dc->surface_pressure.mbar = ((ptr[25] << 8) + ptr[24]) / 10;
 
 	// Declare initial mix as first cylinder
-	cyl = get_or_create_cylinder(state.cur_dive, 0);
+	cyl = get_or_create_cylinder(state.cur_dive.get(), 0);
 	cyl->gasmix.o2.permille = ptr[26] * 10;
 	cyl->gasmix.he.permille = ptr[27] * 10;
 
@@ -1974,7 +1973,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 
 				found = false;
 				for (i = 0; i < state.cur_dive->cylinders.nr; ++i) {
-					const cylinder_t *cyl = get_cylinder(state.cur_dive, i);
+					const cylinder_t *cyl = get_cylinder(state.cur_dive.get(), i);
 					if (cyl->gasmix.o2.permille == ptr[6] * 10 && cyl->gasmix.he.permille == ptr[7] * 10) {
 						found = true;
 						break;
@@ -2225,7 +2224,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 				/* Measure GPS */
 				state.cur_location.lat.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
 				state.cur_location.lon.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
-				state.log->sites->create("DLF imported"s, state.cur_location)->add_dive(state.cur_dive);
+				state.log->sites->create("DLF imported"s, state.cur_location)->add_dive(state.cur_dive.get());
 				break;
 			default:
 				break;

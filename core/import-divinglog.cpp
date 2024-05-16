@@ -131,7 +131,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 			state->cur_sample->pressure[0].mbar = pressure * 100;
 			state->cur_sample->rbt.seconds = rbt;
 			if (oldcyl != tank && tank >= 0 && tank < state->cur_dive->cylinders.nr) {
-				struct gasmix mix = get_cylinder(state->cur_dive, tank)->gasmix;
+				struct gasmix mix = get_cylinder(state->cur_dive.get(), tank)->gasmix;
 				int o2 = get_o2(mix);
 				int he = get_he(mix);
 
@@ -276,7 +276,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	state->cur_dive->when = (time_t)(atol(data[1]));
 
 	if (data[2])
-		state->log->sites->find_or_create(std::string(data[2]))->add_dive(state->cur_dive);
+		state->log->sites->find_or_create(std::string(data[2]))->add_dive(state->cur_dive.get());
 
 	if (data[3])
 		utf8_string(data[3], &state->cur_dive->buddy);

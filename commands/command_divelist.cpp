@@ -411,7 +411,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 	currentDive = nullptr;
 
 	// Get an owning pointer to a moved dive.
-	OwningDivePtr divePtr(move_dive(d));
+	std::unique_ptr<dive> divePtr = move_dive(d);
 	divePtr->selected = false; // If we clone a planned dive, it might have been selected.
 				   // We have to clear the flag, as selections will be managed
 				   // on dive-addition.
@@ -494,7 +494,7 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 	// Add dives to the divesToAdd.dives structure
 	divesToAdd.dives.reserve(dives_to_add.nr);
 	for (int i = 0; i < dives_to_add.nr; ++i) {
-		OwningDivePtr divePtr(dives_to_add.dives[i]);
+		std::unique_ptr<dive> divePtr(dives_to_add.dives[i]);
 		divePtr->selected = false; // See above in AddDive::AddDive()
 		dive_trip *trip = divePtr->divetrip;
 		divePtr->divetrip = nullptr; // See above in AddDive::AddDive()
@@ -971,7 +971,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 
 	dive_trip *preferred_trip;
 	dive_site *preferred_site;
-	OwningDivePtr d(merge_dives(dives[0], dives[1], dives[1]->when - dives[0]->when, false, &preferred_trip, &preferred_site));
+	std::unique_ptr<dive> d(merge_dives(dives[0], dives[1], dives[1]->when - dives[0]->when, false, &preferred_trip, &preferred_site));
 
 	// Currently, the core code selects the dive -> this is not what we want, as
 	// we manually manage the selection post-command.

@@ -9,24 +9,16 @@
 #include <memory>
 #include <cstdlib>
 
-struct dive;
 struct dive_trip;
-struct dive_site;
-struct event;
 
-void free_dive(struct dive *);
 void free_trip(struct dive_trip *);
 
 // Classes used to automatically call the appropriate free_*() function for owning pointers that go out of scope.
-struct DiveDeleter {
-	void operator()(dive *d) { free_dive(d); }
-};
 struct TripDeleter {
 	void operator()(dive_trip *t) { free_trip(t); }
 };
 
 // Owning pointers to dive, dive_trip, dive_site and event objects.
-using OwningDivePtr = std::unique_ptr<dive, DiveDeleter>;
 using OwningTripPtr = std::unique_ptr<dive_trip, TripDeleter>;
 
 #endif

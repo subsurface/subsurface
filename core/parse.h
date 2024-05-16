@@ -54,7 +54,7 @@ struct parser_state {
 	enum import_source import_source = UNKNOWN;
 
 	struct divecomputer *cur_dc = nullptr;			/* non-owning */
-	struct dive *cur_dive = nullptr;			/* owning */
+	std::unique_ptr<dive> cur_dive;				/* owning */
 	std::unique_ptr<dive_site> cur_dive_site;		/* owning */
 	location_t cur_location;
 	struct dive_trip *cur_trip = nullptr;			/* owning */

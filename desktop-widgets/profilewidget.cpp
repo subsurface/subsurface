@@ -324,7 +324,7 @@ void ProfileWidget::unsetProfTissues()
 
 void ProfileWidget::editDive()
 {
-	editedDive.reset(alloc_dive());
+	editedDive = std::make_unique<dive>();
 	copy_dive(d, editedDive.get()); // Work on a copy of the dive
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::EDIT);
 	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), dc);

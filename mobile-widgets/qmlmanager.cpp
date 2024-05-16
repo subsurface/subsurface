@@ -1191,7 +1191,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		report_info("state   :'%s'", qPrintable(state));
 	}
 
-	OwningDivePtr d_ptr(alloc_dive()); // Automatically delete dive if we exit early!
+	auto d_ptr = std::make_unique<dive>(); // Automatically delete dive if we exit early!
 	dive *d = d_ptr.get();
 	copy_dive(orig, d);
 
@@ -1728,7 +1728,7 @@ int QMLManager::addDive()
 	// TODO: Duplicate code with desktop-widgets/mainwindow.cpp
 	// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
 	// as a starting point for the user to edit
-	struct dive d = { 0 };
+	struct dive d;
 	int diveId = d.id = dive_getUniqID();
 	d.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
 	d.dc.duration.seconds = 40 * 60;

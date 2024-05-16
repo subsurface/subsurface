@@ -25,7 +25,6 @@ parser_state::parser_state()
 
 parser_state::~parser_state()
 {
-	free_dive(cur_dive);
 	free_trip(cur_trip);
 }
 
@@ -264,7 +263,7 @@ void dive_start(struct parser_state *state)
 {
 	if (state->cur_dive)
 		return;
-	state->cur_dive = alloc_dive();
+	state->cur_dive = std::make_unique<dive>();
 	reset_dc_info(&state->cur_dive->dc, state);
 	memset(&state->cur_tm, 0, sizeof(state->cur_tm));
 	state->o2pressure_sensor = 1;
@@ -274,14 +273,12 @@ void dive_end(struct parser_state *state)
 {
 	if (!state->cur_dive)
 		return;
-	if (!is_dive(state)) {
-		free_dive(state->cur_dive);
-	} else {
-		record_dive_to_table(state->cur_dive, state->log->dives.get());
+	if (is_dive(state)) {
 		if (state->cur_trip)
-			add_dive_to_trip(state->cur_dive, state->cur_trip);
+			add_dive_to_trip(state->cur_dive.get(), state->cur_trip);
+		record_dive_to_table(state->cur_dive.release(), state->log->dives.get());
 	}
-	state->cur_dive = NULL;
+	state->cur_dive.reset();
 	state->cur_dc = NULL;
 	state->cur_location.lat.udeg = 0;
 	state->cur_location.lon.udeg = 0;
@@ -369,8 +366,8 @@ void sample_start(struct parser_state *state)
 		sample->pressure[0].mbar = 0;
 		sample->pressure[1].mbar = 0;
 	} else {
-		sample->sensor[0] = sanitize_sensor_id(state->cur_dive, !state->o2pressure_sensor);
-		sample->sensor[1] = sanitize_sensor_id(state->cur_dive, state->o2pressure_sensor);
+		sample->sensor[0] = sanitize_sensor_id(state->cur_dive.get(), !state->o2pressure_sensor);
+		sample->sensor[1] = sanitize_sensor_id(state->cur_dive.get(), state->o2pressure_sensor);
 	}
 	state->cur_sample = sample;
 	state->next_o2_sensor = 0;
@@ -396,7 +393,7 @@ void divecomputer_start(struct parser_state *state)
 
 	/* Did we already fill that in? */
 	if (dc->samples || dc->model || dc->when) {
-		struct divecomputer *newdc = (divecomputer *)calloc(1, sizeof(*newdc));
+		struct divecomputer *newdc = new divecomputer;
 		if (newdc) {
 			dc->next = newdc;
 			dc = newdc;

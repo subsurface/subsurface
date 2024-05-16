@@ -61,7 +61,7 @@ static int shearwater_changes(void *param, int columns, char **data, char **)
 	int index;
 	bool found = false;
 	for (index = 0; index < state->cur_dive->cylinders.nr; ++index) {
-		const cylinder_t *cyl = get_cylinder(state->cur_dive, index);
+		const cylinder_t *cyl = get_cylinder(state->cur_dive.get(), index);
 		if (cyl->gasmix.o2.permille == o2 && cyl->gasmix.he.permille == he) {
 			found = true;
 			break;
@@ -75,7 +75,7 @@ static int shearwater_changes(void *param, int columns, char **data, char **)
 		cylinder_end(state);
 	}
 
-	add_gas_switch_event(state->cur_dive, get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]), index);
+	add_gas_switch_event(state->cur_dive.get(), get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]), index);
 	return 0;
 }
 
@@ -239,7 +239,7 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	long int dive_id = atol(data[11]);
 
 	if (data[2])
-		add_dive_site(data[2], state->cur_dive, state);
+		add_dive_site(data[2], state->cur_dive.get(), state);
 	if (data[3])
 		utf8_string(data[3], &state->cur_dive->buddy);
 	if (data[4])
@@ -369,7 +369,7 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 		state->sample_rate = 0;
 
 	if (data[2])
-		add_dive_site(data[2], state->cur_dive, state);
+		add_dive_site(data[2], state->cur_dive.get(), state);
 	if (data[3])
 		utf8_string(data[3], &state->cur_dive->buddy);
 	if (data[4])

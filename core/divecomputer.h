@@ -26,25 +26,27 @@ struct sample;
  * A deviceid or diveid of zero is assumed to be "no ID".
  */
 struct divecomputer {
-	timestamp_t when;
+	timestamp_t when = 0;
 	duration_t duration, surfacetime, last_manual_time;
 	depth_t maxdepth, meandepth;
 	temperature_t airtemp, watertemp;
 	pressure_t surface_pressure;
-	enum divemode_t divemode;	// dive computer type: OC(default) or CCR
-	uint8_t no_o2sensors;		// rebreathers: number of O2 sensors used
-	int salinity; 			// kg per 10000 l
-	const char *model, *serial, *fw_version;
-	uint32_t deviceid, diveid;
-	int samples, alloc_samples;
-	struct sample *sample;
-	struct event *events;
-	struct extra_data *extra_data;
-	struct divecomputer *next;
+	enum divemode_t divemode = OC;	// dive computer type: OC(default) or CCR
+	uint8_t no_o2sensors = 0;	// rebreathers: number of O2 sensors used
+	int salinity = 0; 		// kg per 10000 l
+	const char *model = nullptr, *serial = nullptr, *fw_version = nullptr;
+	uint32_t deviceid = 0, diveid = 0;
+	int samples = 0, alloc_samples = 0;
+	struct sample *sample = nullptr;
+	struct event *events = nullptr;
+	struct extra_data *extra_data = nullptr;
+	struct divecomputer *next = nullptr;
+
+	divecomputer();
+	~divecomputer();
 };
 
 extern void fake_dc(struct divecomputer *dc);
-extern void free_dc(struct divecomputer *dc);
 extern void free_dc_contents(struct divecomputer *dc);
 extern enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, const struct event **evp, enum divemode_t *divemode);
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);

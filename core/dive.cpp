@@ -40,6 +40,17 @@ const char *divemode_text[] = {"OC", "CCR", "PSCR", "Freedive"};
 
 static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity);
 
+dive::dive()
+{
+	id = dive_getUniqID();
+}
+
+static void free_dive_structures(struct dive *d);
+dive::~dive()
+{
+	free_dive_structures(this);
+}
+
 /*
  * The legacy format for sample pressures has a single pressure
  * for each sample that can have any sensor, plus a possible
@@ -163,18 +174,6 @@ int dive_getUniqID()
 	return maxId;
 }
 
-struct dive *alloc_dive()
-{
-	struct dive *dive;
-
-	dive = (struct dive *)malloc(sizeof(*dive));
-	if (!dive)
-		exit(1);
-	memset(dive, 0, sizeof(*dive));
-	dive->id = dive_getUniqID();
-	return dive;
-}
-
 /* copy an element in a list of dive computer extra data */
 static void copy_extra_data(struct extra_data *sed, struct extra_data *ded)
 {
@@ -208,7 +207,7 @@ static void copy_dc_renumber(struct dive *d, const struct divecomputer *sdc, str
 		if (!sdc->next)
 			break;
 		sdc = sdc->next;
-		ddc->next = (divecomputer *)calloc(1, sizeof(struct divecomputer));
+		ddc->next = new divecomputer;
 		ddc = ddc->next;
 	}
 	ddc->next = NULL;
@@ -235,12 +234,6 @@ static void free_dive_structures(struct dive *d)
 	free(d->pictures.pictures);
 }
 
-void free_dive(struct dive *d)
-{
-	free_dive_structures(d);
-	free(d);
-}
-
 /* copy_dive makes duplicates of many components of a dive;
  * in order not to leak memory, we need to free those .
  * copy_dive doesn't play with the divetrip and forward/backward pointers
@@ -250,7 +243,7 @@ void clear_dive(struct dive *d)
 	if (!d)
 		return;
 	free_dive_structures(d);
-	memset(d, 0, sizeof(struct dive));
+	*d = dive();
 }
 
 /* make a true copy that is independent of the source dive;
@@ -297,12 +290,11 @@ static void copy_dive_onedc(const struct dive *s, const struct divecomputer *sdc
 /* make a clone of the source dive and clean out the source dive;
  * this allows us to create a dive on the stack and then
  * add it to the divelist. */
-struct dive *move_dive(struct dive *s)
+struct std::unique_ptr<dive> move_dive(struct dive *s)
 {
-	struct dive *dive = alloc_dive();
-	*dive = *s;			   // so all the pointers in dive point to the things s pointed to
-	memset(s, 0, sizeof(struct dive)); // and now the pointers in s are gone
-	return dive;
+	auto d = std::make_unique<dive>();
+	std::swap(*s, *d);
+	return d;
 }
 
 #define CONDITIONAL_COPY_STRING(_component) \
@@ -1300,7 +1292,7 @@ struct dive *fixup_dive(struct dive *dive)
 		const weightsystem_t &ws = dive->weightsystems.weightsystems[i];
 		add_weightsystem_description(ws);
 	}
-	/* we should always have a uniq ID as that gets assigned during alloc_dive(),
+	/* we should always have a uniq ID as that gets assigned during dive creation,
 	 * but we want to make sure... */
 	if (!dive->id)
 		dive->id = dive_getUniqID();
@@ -2432,7 +2424,7 @@ static void remove_redundant_dc(struct divecomputer *dc, int prefer_downloaded)
 			if (same_dc(dc, check) || (prefer_downloaded && might_be_same_device(dc, check))) {
 				*p = check->next;
 				check->next = NULL;
-				free_dc(check);
+				delete check;
 				continue;
 			}
 			p = &check->next;
@@ -2502,7 +2494,7 @@ static void interleave_dive_computers(struct dive *d, struct divecomputer *res,
 		a = a->next;
 		if (!a)
 			break;
-		res->next = (divecomputer *)calloc(1, sizeof(struct divecomputer));
+		res->next = new divecomputer;
 		res = res->next;
 	} while (res);
 }
@@ -2542,7 +2534,7 @@ static void join_dive_computers(struct dive *d, struct divecomputer *res,
 	while (tmp->next)
 		tmp = tmp->next;
 
-	tmp->next = (divecomputer *)calloc(1, sizeof(*tmp));
+	tmp->next = new divecomputer;
 	copy_dc_renumber(d, b, tmp->next, cylinders_map_b);
 
 	remove_redundant_dc(res, prefer_downloaded);
@@ -2602,7 +2594,7 @@ bool is_logged(const struct dive *dive)
  */
 struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip, struct dive_site **site)
 {
-	struct dive *res = alloc_dive();
+	struct dive *res = new dive;
 
 	if (offset) {
 		/*
@@ -2670,12 +2662,11 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 // copy_dive(), but retaining the new ID for the copied dive
 static struct dive *create_new_copy(const struct dive *from)
 {
-	struct dive *to = alloc_dive();
-	int id;
+	struct dive *to = new dive;
 
-	// alloc_dive() gave us a new ID, we just need to
+	// dive creation gave us a new ID, we just need to
 	// make sure it's not overwritten.
-	id = to->id;
+	int id = to->id;
 	copy_dive(from, to);
 	to->id = id;
 	return to;
@@ -3049,11 +3040,10 @@ void set_git_prefs(const char *prefs)
 /* clones a dive and moves given dive computer to front */
 struct dive *make_first_dc(const struct dive *d, int dc_number)
 {
-	struct dive *res;
 	struct divecomputer *dc, *newdc, *old_dc;
 
 	/* copy the dive */
-	res = alloc_dive();
+	dive *res = new dive;
 	copy_dive(d, res);
 
 	/* make a new unique id, since we still can't handle two equal ids */
@@ -3092,12 +3082,12 @@ static void delete_divecomputer(struct dive *d, int num)
 		return;
 
 	if (num == 0) {
-		/* remove the first one, so copy the second one in place of the first and free the second one
-		 * be careful about freeing the no longer needed structures - since we copy things around we can't use free_dc()*/
+		/* During our move to C++, copy the divecomputer instead of moving the internals.
+		 * Yes, this is "inefficient", but I don't care. Will be removed anyways. */
 		struct divecomputer *fdc = d->dc.next;
 		free_dc_contents(&d->dc);
-		memcpy(&d->dc, fdc, sizeof(struct divecomputer));
-		free(fdc);
+		copy_dc(fdc, &d->dc);
+		delete fdc;
 	} else {
 		struct divecomputer *pdc = &d->dc;
 		for (i = 0; i < num - 1 && pdc; i++)
@@ -3105,7 +3095,7 @@ static void delete_divecomputer(struct dive *d, int num)
 		if (pdc && pdc->next) {
 			struct divecomputer *dc = pdc->next;
 			pdc->next = dc->next;
-			free_dc(dc);
+			delete dc;
 		}
 	}
 }
@@ -3113,10 +3103,8 @@ static void delete_divecomputer(struct dive *d, int num)
 /* Clone a dive and delete goven dive computer */
 struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number)
 {
-	struct dive *res;
-
 	/* copy the dive */
-	res = alloc_dive();
+	dive *res = new dive;
 	copy_dive(d, res);
 
 	/* make a new unique id, since we still can't handle two equal ids */
@@ -3140,7 +3128,7 @@ void split_divecomputer(const struct dive *src, int num, struct dive **out1, str
 
 	if (src && srcdc) {
 		// Copy the dive, but only using the selected dive computer
-		*out2 = alloc_dive();
+		*out2 = new dive;
 		copy_dive_onedc(src, srcdc, *out2);
 
 		// This will also make fixup_dive() to allocate a new dive id...

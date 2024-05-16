@@ -209,7 +209,6 @@ MainWindow::MainWindow() :
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
 #endif
-	memset(&copyPasteDive, 0, sizeof(copyPasteDive));
 	memset(&what, 0, sizeof(what));
 
 	updateManager = new UpdateManager(this);
@@ -703,7 +702,7 @@ void MainWindow::on_actionAddDive_triggered()
 
 	// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
 	// as a starting point for the user to edit
-	struct dive d = { 0 };
+	struct dive d;
 	d.id = dive_getUniqID();
 	d.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
 	d.dc.duration.seconds = 40 * 60;

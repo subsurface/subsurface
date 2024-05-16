@@ -48,7 +48,7 @@ private:
 	void editDive();
 	void exitEditMode();
 	void rotateDC(int dir);
-	OwningDivePtr editedDive;
+	std::unique_ptr<dive> editedDive;
 	bool placingCommand;
 };
 
