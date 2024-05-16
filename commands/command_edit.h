@@ -465,7 +465,7 @@ public:
 	EditDive(dive *oldDive, dive *newDive, dive_site *createDs, dive_site *editDs, location_t dsLocation); // Takes ownership of newDive
 private:
 	dive *oldDive; // Dive that is going to be overwritten
-	OwningDivePtr newDive; // New data
+	std::unique_ptr<dive> newDive; // New data
 	dive_site *newDiveSite;
 	int changedFields;
 

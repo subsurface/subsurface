@@ -606,7 +606,6 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			       struct dive_table *table)
 {
 	unsigned char *buf = (unsigned char *)malloc(size);
-	struct dive *dive;
 	struct divecomputer *dc;
 	struct tm tm = {0};
 
@@ -666,7 +665,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	puts("\nSample Data\n");
 #endif
 
-	dive = alloc_dive();
+	auto dive = std::make_unique<struct dive>();
 	dc = &dive->dc;
 
 	unsigned char *log = (buf + 0x4914);
@@ -678,7 +677,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			cylinder_t cyl;
 			dc->model = "Gemini";
 			dc->deviceid = buf[0x18c] * 256 + buf[0x18d];	// serial no
-			fill_default_cylinder(dive, &cyl);
+			fill_default_cylinder(dive.get(), &cyl);
 			cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT] / 256
 				+ log[CMD_O2_PERCENT + 1]) * 10;
 			cyl.gasmix.he.permille = 0;
@@ -688,7 +687,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 			for (g = 0; g < 2; g++) {
 				cylinder_t cyl;
-				fill_default_cylinder(dive, &cyl);
+				fill_default_cylinder(dive.get(), &cyl);
 				cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT + g * 2] / 256
 					+ log[CMD_O2_PERCENT + g * 2 + 1]) * 10;
 				cyl.gasmix.he.permille = 0;
@@ -731,7 +730,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 		for (g = 0; g < 4; g++) {
 			cylinder_t cyl;
-			fill_default_cylinder(dive, &cyl);
+			fill_default_cylinder(dive.get(), &cyl);
 			cyl.gasmix.o2.permille =
 				(log[EMC_O2_PERCENT + g * 2] / 256
 				+ log[EMC_O2_PERCENT + g * 2 + 1]) * 10;
@@ -778,7 +777,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	if (sample_pre_offset < sample_end_offset && sample_end_offset != 0xffffffff)
 		sample_size = sample_end_offset - sample_pre_offset;
 
-	cochran_parse_samples(dive, buf + 0x4914, buf + 0x4914
+	cochran_parse_samples(dive.get(), buf + 0x4914, buf + 0x4914
 		+ config.logbook_size, sample_size,
 		&duration, &max_depth, &avg_depth, &min_temp);
 
@@ -790,7 +789,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->duration.seconds = duration;
 	}
 
-	record_dive_to_table(dive, table);
+	record_dive_to_table(dive.release(), table);
 
 	free(buf);
 }

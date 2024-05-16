@@ -926,7 +926,7 @@ void smartrak_import(const char *file, struct divelog *log)
 		device_data_t devdata;
 		dc_family_t dc_fam = DC_FAMILY_NULL;
 		unsigned char *prf_buffer, *hdr_buffer;
-		struct dive *smtkdive = alloc_dive();
+		auto smtkdive = std::make_unique<dive>();
 		struct tm tm_date;
 		size_t hdr_length, prf_length;
 		dc_status_t rc = DC_STATUS_SUCCESS;
@@ -956,7 +956,7 @@ void smartrak_import(const char *file, struct divelog *log)
 				if (rc != DC_STATUS_SUCCESS) {
 					report_error("[Error][smartrak_import]\t- %s - for dive %d", errmsg(rc), smtkdive->number);
 				} else {
-					rc = libdc_buffer_parser(smtkdive, &devdata, compl_buffer.data(), hdr_length + prf_length);
+					rc = libdc_buffer_parser(smtkdive.get(), &devdata, compl_buffer.data(), hdr_length + prf_length);
 					if (rc != DC_STATUS_SUCCESS)
 						report_error("[Error][libdc]\t\t- %s - for dive %d", errmsg(rc), smtkdive->number);
 				}
@@ -985,7 +985,7 @@ void smartrak_import(const char *file, struct divelog *log)
 		int tankidxcol = coln(TANKIDX);
 
 		for (i = 0; i < tanks; i++) {
-			cylinder_t *tmptank = get_or_create_cylinder(smtkdive, i);
+			cylinder_t *tmptank = get_or_create_cylinder(smtkdive.get(), i);
 			if (!tmptank)
 				break;
 			if (tmptank->start.mbar == 0)
@@ -1008,7 +1008,7 @@ void smartrak_import(const char *file, struct divelog *log)
 			smtk_build_tank_info(mdb_clon, tmptank, (char *)col[i + tankidxcol]->bind_ptr);
 		}
 		/* Check for duplicated cylinders and clean them */
-		smtk_clean_cylinders(smtkdive);
+		smtk_clean_cylinders(smtkdive.get());
 
 		/* Date issues with libdc parser - Take date time from mdb */
 		smtk_date_to_tm((char *)col[coln(_DATE)]->bind_ptr, &tm_date);
@@ -1031,17 +1031,17 @@ void smartrak_import(const char *file, struct divelog *log)
 		smtkdive->suit = strdup(get(suit_list, atoi((char *)col[coln(SUITIDX)]->bind_ptr) - 1).c_str());
 		smtk_build_location(mdb_clon, (char *)col[coln(SITEIDX)]->bind_ptr, &smtkdive->dive_site, log);
 		smtkdive->buddy = strdup(smtk_locate_buddy(mdb_clon, (char *)col[0]->bind_ptr, buddy_list).c_str());
-		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
-		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
-		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Gear", "GearRelation", gear_list, false);
-		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Fish", "FishRelation", fish_list, false);
-		smtk_parse_other(smtkdive, weather_list, "Weather", (char *)col[coln(WEATHERIDX)]->bind_ptr, false);
-		smtk_parse_other(smtkdive, underwater_list, "Underwater", (char *)col[coln(UNDERWATERIDX)]->bind_ptr, false);
-		smtk_parse_other(smtkdive, surface_list, "Surface", (char *)col[coln(SURFACEIDX)]->bind_ptr, false);
-		smtk_parse_bookmarks(mdb_clon, smtkdive, (char *)col[0]->bind_ptr);
+		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
+		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
+		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Gear", "GearRelation", gear_list, false);
+		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Fish", "FishRelation", fish_list, false);
+		smtk_parse_other(smtkdive.get(), weather_list, "Weather", (char *)col[coln(WEATHERIDX)]->bind_ptr, false);
+		smtk_parse_other(smtkdive.get(), underwater_list, "Underwater", (char *)col[coln(UNDERWATERIDX)]->bind_ptr, false);
+		smtk_parse_other(smtkdive.get(), surface_list, "Surface", (char *)col[coln(SURFACEIDX)]->bind_ptr, false);
+		smtk_parse_bookmarks(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr);
 		concat(&smtkdive->notes, "\n", std::string((char *)col[coln(REMARKS)]->bind_ptr));
 
-		record_dive_to_table(smtkdive, log->dives.get());
+		record_dive_to_table(smtkdive.release(), log->dives.get());
 	}
 	mdb_free_catalog(mdb_clon);
 	mdb->catalog = NULL;

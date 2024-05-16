@@ -3,8 +3,8 @@
 #define DIVEPLANNER_H
 
 #include "core/divemode.h"
-#include "core/owning_ptrs.h"
 
+#include <memory>
 #include <QAbstractTableModel>
 #include <QAbstractButton>
 #include <QDateTime>
@@ -91,7 +91,7 @@ public
 slots:
 	void printDecoPlan();
 private:
-	OwningDivePtr planned_dive;
+	std::unique_ptr<dive> planned_dive;
 	int dcNr;
 public:
 	DivePlannerWidget plannerWidget;

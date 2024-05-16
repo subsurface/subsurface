@@ -37,7 +37,7 @@ std::string saved_git_id;
 struct git_parser_state {
 	git_repository *repo = nullptr;
 	struct divecomputer *active_dc = nullptr;
-	struct dive *active_dive = nullptr;
+	std::unique_ptr<dive> active_dive;
 	dive_trip_t *active_trip = nullptr;
 	std::string fulltext_mode;
 	std::string fulltext_query;
@@ -171,14 +171,14 @@ static int get_hex(const char *line)
 static void parse_dive_gps(char *line, struct git_parser_state *state)
 {
 	location_t location;
-	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
+	struct dive_site *ds = get_dive_site_for_dive(state->active_dive.get());
 
 	parse_location(line, &location);
 	if (!ds) {
 		ds = state->log->sites->get_by_gps(&location);
 		if (!ds)
 			ds = state->log->sites->create(std::string(), location);
-		ds->add_dive(state->active_dive);
+		ds->add_dive(state->active_dive.get());
 	} else {
 		if (dive_site_has_gps_location(ds) && ds->location != location) {
 			std::string coords = printGPSCoordsC(&location);
@@ -219,12 +219,12 @@ static char *get_first_converted_string_c(struct git_parser_state *state)
 static void parse_dive_location(char *, struct git_parser_state *state)
 {
 	std::string name = get_first_converted_string(state);
-	struct dive_site *ds = get_dive_site_for_dive(state->active_dive);
+	struct dive_site *ds = get_dive_site_for_dive(state->active_dive.get());
 	if (!ds) {
 		ds = state->log->sites->get_by_name(name);
 		if (!ds)
 			ds = state->log->sites->create(name);
-		ds->add_dive(state->active_dive);
+		ds->add_dive(state->active_dive.get());
 	} else {
 		// we already had a dive site linked to the dive
 		if (ds->name.empty()) {
@@ -252,7 +252,7 @@ static void parse_dive_notes(char *, struct git_parser_state *state)
 { state->active_dive->notes = get_first_converted_string_c(state); }
 
 static void parse_dive_divesiteid(char *line, struct git_parser_state *state)
-{ state->log->sites->get_by_uuid(get_hex(line))->add_dive(state->active_dive); }
+{ state->log->sites->get_by_uuid(get_hex(line))->add_dive(state->active_dive.get()); }
 
 /*
  * We can have multiple tags.
@@ -684,8 +684,8 @@ static struct sample *new_sample(struct git_parser_state *state)
 		sample->pressure[0].mbar = 0;
 		sample->pressure[1].mbar = 0;
 	} else {
-		sample->sensor[0] = sanitize_sensor_id(state->active_dive, !state->o2pressure_sensor);
-		sample->sensor[1] = sanitize_sensor_id(state->active_dive, state->o2pressure_sensor);
+		sample->sensor[0] = sanitize_sensor_id(state->active_dive.get(), !state->o2pressure_sensor);
+		sample->sensor[1] = sanitize_sensor_id(state->active_dive.get(), state->o2pressure_sensor);
 	}
 	return sample;
 }
@@ -1392,23 +1392,19 @@ static void finish_active_trip(struct git_parser_state *state)
 
 static void finish_active_dive(struct git_parser_state *state)
 {
-	struct dive *dive = state->active_dive;
-
-	if (dive) {
-		state->active_dive = NULL;
-		record_dive_to_table(dive, state->log->dives.get());
-	}
+	if (state->active_dive)
+		record_dive_to_table(state->active_dive.release(), state->log->dives.get());
 }
 
 static void create_new_dive(timestamp_t when, struct git_parser_state *state)
 {
-	state->active_dive = alloc_dive();
+	state->active_dive = std::make_unique<dive>();
 
 	/* We'll fill in more data from the dive file */
 	state->active_dive->when = when;
 
 	if (state->active_trip)
-		add_dive_to_trip(state->active_dive, state->active_trip);
+		add_dive_to_trip(state->active_dive.get(), state->active_trip);
 }
 
 static bool validate_date(int yyyy, int mm, int dd)
@@ -1654,9 +1650,7 @@ static struct divecomputer *create_new_dc(struct dive *dive)
 		dc = dc->next;
 	/* Did we already fill that in? */
 	if (dc->samples || dc->model || dc->when) {
-		struct divecomputer *newdc = (divecomputer *)calloc(1, sizeof(*newdc));
-		if (!newdc)
-			return NULL;
+		struct divecomputer *newdc = new divecomputer;
 		dc->next = newdc;
 		dc = newdc;
 	}
@@ -1678,7 +1672,7 @@ static int parse_divecomputer_entry(struct git_parser_state *state, const git_tr
 	if (!blob)
 		return report_error("Unable to read divecomputer file");
 
-	state->active_dc = create_new_dc(state->active_dive);
+	state->active_dc = create_new_dc(state->active_dive.get());
 	for_each_line(blob, divecomputer_parser, state);
 	git_blob_free(blob);
 	state->active_dc = NULL;
@@ -1693,12 +1687,11 @@ static int parse_divecomputer_entry(struct git_parser_state *state, const git_tr
  */
 static int parse_dive_entry(struct git_parser_state *state, const git_tree_entry *entry, const char *suffix)
 {
-	struct dive *dive = state->active_dive;
 	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read dive file");
 	if (*suffix)
-		dive->number = atoi(suffix + 1);
+		state->active_dive->number = atoi(suffix + 1);
 	clear_weightsystem_table(&state->active_dive->weightsystems);
 	state->o2pressure_sensor = 1;
 	for_each_line(blob, dive_parser, state);
@@ -1795,7 +1788,7 @@ static int parse_filter_preset(struct git_parser_state *state, const git_tree_en
 
 static int walk_tree_file(const char *root, const git_tree_entry *entry, struct git_parser_state *state)
 {
-	struct dive *dive = state->active_dive;
+	auto &dive = state->active_dive;
 	dive_trip_t *trip = state->active_trip;
 	const char *name = git_tree_entry_name(entry);
 	if (verbose > 1)
@@ -1826,7 +1819,7 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, struct 
 			return parse_settings_entry(state, entry);
 		break;
 	}
-	report_error("Unknown file %s%s (%p %p)", root, name, dive, trip);
+	report_error("Unknown file %s%s (%p %p)", root, name, dive.get(), trip);
 	return GIT_WALK_SKIP;
 }
 

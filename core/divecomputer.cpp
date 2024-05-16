@@ -11,6 +11,15 @@
 #include <string.h>
 #include <stdlib.h>
 
+divecomputer::divecomputer()
+{
+}
+
+divecomputer::~divecomputer()
+{
+	free_dc_contents(this);
+}
+
 /*
  * Good fake dive profiles are hard.
  *
@@ -234,11 +243,15 @@ int get_depth_at_time(const struct divecomputer *dc, unsigned int time)
 }
 
 
-/* The first divecomputer is embedded in the dive structure. Free its data but not
- * the structure itself. For all remainding dcs in the list, free data *and* structures. */
+static void free_dc(struct divecomputer *dc)
+{
+	delete dc;
+}
+
+/* The first divecomputer is embedded in the dive structure. Ignore it.
+ * For all remainding dcs in the list, free data and structures. */
 void free_dive_dcs(struct divecomputer *dc)
 {
-	free_dc_contents(dc);
 	STRUCTURED_LIST_FREE(struct divecomputer, dc->next, free_dc);
 }
 
@@ -543,12 +556,6 @@ void free_dc_contents(struct divecomputer *dc)
 	free((void *)dc->fw_version);
 	free_events(dc->events);
 	STRUCTURED_LIST_FREE(struct extra_data, dc->extra_data, free_extra_data);
-}
-
-void free_dc(struct divecomputer *dc)
-{
-	free_dc_contents(dc);
-	free(dc);
 }
 
 static const char *planner_dc_name = "planned dive";

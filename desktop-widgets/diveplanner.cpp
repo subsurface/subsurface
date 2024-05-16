@@ -537,7 +537,7 @@ void PlannerDetails::setPlanNotes(QString plan)
 }
 
 PlannerWidgets::PlannerWidgets() :
-	planned_dive(alloc_dive()),
+	planned_dive(std::make_unique<dive>()),
 	dcNr(0),
 	plannerWidget(*planned_dive, dcNr, this),
 	plannerSettingsWidget(this)
