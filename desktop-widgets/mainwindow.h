@@ -178,6 +178,7 @@ private:
 	QString filter_import_dive_sites();
 	static MainWindow *m_Instance;
 	QString displayedFilename(const std::string &fullFilename);
+	int saveChangesConfirmationBox(QString message);
 	bool askSaveChanges();
 	bool okToClose(QString message);
 	void closeCurrentFile();

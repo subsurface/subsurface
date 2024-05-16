@@ -609,7 +609,7 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-	if (!okToClose(tr("Please save or cancel the current dive edit before quiting the application.")))
+	if (!okToClose(tr("Please save or cancel the current dive edit before quitting the application.")))
 		return;
 
 	writeSettings();
@@ -986,13 +986,9 @@ QString MainWindow::filter_import_dive_sites()
 	return f;
 }
 
-bool MainWindow::askSaveChanges()
+int MainWindow::saveChangesConfirmationBox(QString message)
 {
 	QMessageBox response(this);
-
-	QString message = !existing_filename.empty() ?
-		tr("Do you want to save the changes that you made in the file %1?").arg(displayedFilename(existing_filename)) :
-		tr("Do you want to save the changes that you made in the data file?");
 
 	response.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 	response.setDefaultButton(QMessageBox::Save);
@@ -1001,8 +997,17 @@ bool MainWindow::askSaveChanges()
 	response.setInformativeText(tr("Changes will be lost if you don't save them."));
 	response.setIcon(QMessageBox::Warning);
 	response.setWindowModality(Qt::WindowModal);
-	int ret = response.exec();
 
+	return response.exec();
+}
+
+bool MainWindow::askSaveChanges()
+{
+	QString message = !existing_filename.empty() ?
+		tr("Do you want to save the changes that you made in the file %1?").arg(displayedFilename(existing_filename)) :
+		tr("Do you want to save the changes that you made in the data file?");
+
+	int ret = saveChangesConfirmationBox(message);
 	switch (ret) {
 	case QMessageBox::Save:
 		file_save();
@@ -1057,9 +1062,21 @@ void MainWindow::writeSettings()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	if (inPlanner()) {
-		on_actionQuit_triggered();
-		event->ignore();
-		return;
+		int ret = saveChangesConfirmationBox("Do you want to save the changes that you made in the planner into your dive log?");
+		switch (ret) {
+		case QMessageBox::Save:
+			DivePlannerPointsModel::instance()->savePlan();
+
+			break;
+		case QMessageBox::Cancel:
+			event->ignore();
+
+			return;
+		case QMessageBox::Discard:
+			DivePlannerPointsModel::instance()->cancelPlan();
+
+			break;
+		}
 	}
 
 	if (!Command::isClean() && (askSaveChanges() == false)) {
