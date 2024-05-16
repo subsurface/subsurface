@@ -401,7 +401,6 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 	char *header[8];
 	int i, time;
 	timestamp_t date;
-	struct dive *dive;
 	struct divecomputer *dc;
 
 	for (i = 0; i < 8; i++) {
@@ -416,7 +415,7 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 	if (!date)
 		return 0;
 
-	dive = alloc_dive();
+	auto dive = std::make_unique<struct dive>();
 	dive->when = date;
 	dive->number = atoi(header[1]);
 	dc = &dive->dc;
@@ -445,7 +444,7 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 			break;
 		p = end + 1;
 	}
-	record_dive_to_table(dive, log->dives.get());
+	record_dive_to_table(dive.release(), log->dives.get());
 	return 1;
 }
 
@@ -498,7 +497,6 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		int prev_time = 0;
 		cylinder_t cyl;
 
-		struct dive *dive;
 		struct divecomputer *dc;
 		struct tm cur_tm;
 
@@ -512,7 +510,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		cur_tm.tm_min = mm;
 		cur_tm.tm_sec = ss;
 
-		dive = alloc_dive();
+		auto dive = std::make_unique<struct dive>();
 		dive->when = utc_mktime(&cur_tm);;
 		dive->dc.model = strdup("Poseidon MkVI Discovery");
 		value = parse_mkvi_value(memtxt.data(), "Rig Serial number");
@@ -572,10 +570,8 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		 */
 
 		auto [memcsv, err] = readfile(csv);
-		if (err < 0) {
-			free_dive(dive);
+		if (err < 0)
 			return report_error(translate("gettextFromC", "Poseidon import failed: unable to read '%s'"), csv);
-		}
 		lineptr = memcsv.data();
 		for (;;) {
 			struct sample *sample;
@@ -750,7 +746,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 			if (!lineptr || !*lineptr)
 				break;
 		}
-		record_dive_to_table(dive, log->dives.get());
+		record_dive_to_table(dive.release(), log->dives.get());
 		return 1;
 	} else {
 		return 0;

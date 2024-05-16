@@ -12,7 +12,7 @@
 #define DEBUG 1
 
 // testing the dive plan algorithm
-static struct dive dive = { 0 };
+static struct dive dive;
 static struct decostop stoptable[60];
 static struct deco_state test_deco_state;
 extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int dcNr, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);

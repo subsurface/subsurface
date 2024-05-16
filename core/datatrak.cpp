@@ -702,18 +702,17 @@ int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log)
 
 	// Sequential parsing. Abort if received NULL from dt_dive_parser.
 	while ((i < numdives) && (runner < maxbuf)) {
-		struct dive *ptdive = alloc_dive();
+		auto ptdive = std::make_unique<dive>();
 
-		runner = dt_dive_parser((unsigned char *)runner, ptdive, log, maxbuf);
+		runner = dt_dive_parser((unsigned char *)runner, ptdive.get(), log, maxbuf);
 		if (!wl_mem.empty())
-			wlog_compl_parser(wl_mem, ptdive, i);
+			wlog_compl_parser(wl_mem, ptdive.get(), i);
 		if (runner == NULL) {
 			report_error("%s", translate("gettextFromC", "Error: no dive"));
-			free(ptdive);
 			rc = 1;
 			goto out;
 		} else {
-			record_dive_to_table(ptdive, log->dives.get());
+			record_dive_to_table(ptdive.release(), log->dives.get());
 		}
 		i++;
 	}

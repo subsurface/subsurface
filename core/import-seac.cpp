@@ -70,7 +70,7 @@ static int seac_dive(void *param, int, char **data, char **)
 	state->cur_dive->number = atoi(data[0]);
 
 	// Create first cylinder
-	cylinder_t *curcyl = get_or_create_cylinder(state->cur_dive, 0);
+	cylinder_t *curcyl = get_or_create_cylinder(state->cur_dive.get(), 0);
 
 	// Get time and date
 	sscanf(data[2], "%d/%d/%2d", &day, &month, &year);
@@ -241,7 +241,7 @@ static int seac_dive(void *param, int, char **data, char **)
 			seac_gaschange(state, sqlstmt);
 			lastgas = curgas;
 			cylnum ^= 1; // Only need to toggle between two cylinders
-			curcyl = get_or_create_cylinder(state->cur_dive, cylnum);
+			curcyl = get_or_create_cylinder(state->cur_dive.get(), cylnum);
 			curcyl->gasmix.o2.permille = 10 * sqlite3_column_int(sqlstmt, 4);
 		}
 		state->cur_sample->stopdepth.mm = 10 * sqlite3_column_int(sqlstmt, 5);

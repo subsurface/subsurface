@@ -48,7 +48,7 @@ void ostctools_import(const char *file, struct divelog *log)
 	dc_family_t dc_fam;
 	std::vector<unsigned char> buffer(65536, 0);
 	unsigned char uc_tmp[2];
-	OwningDivePtr ostcdive(alloc_dive());
+	auto ostcdive = std::make_unique<dive>();
 	dc_status_t rc = DC_STATUS_SUCCESS;
 	int model, ret, i = 0, c;
 	unsigned int serial;

@@ -687,6 +687,10 @@ int comp_dives(const struct dive *a, const struct dive *b)
 }
 
 /* Dive table functions */
+static void free_dive(dive *d)
+{
+	delete d;
+}
 static MAKE_GROW_TABLE(dive_table, struct dive *, dives)
 MAKE_GET_INSERTION_INDEX(dive_table, struct dive *, dives, dive_less_than)
 MAKE_ADD_TO(dive_table, struct dive *, dives)
@@ -735,7 +739,7 @@ static void autogroup_dives(struct dive_table *table, struct trip_table *trip_ta
  * It simply shrinks the table and frees the trip */
 void delete_dive_from_table(struct dive_table *table, int idx)
 {
-	free_dive(table->dives[idx]);
+	delete table->dives[idx];
 	remove_from_dive_table(table, idx);
 }
 
@@ -818,7 +822,7 @@ static void merge_imported_dives(struct dive_table *table)
 		unregister_dive_from_trip(dive);
 
 		/* Overwrite the first of the two dives and remove the second */
-		free_dive(prev);
+		delete prev;
 		table->dives[i - 1] = merged;
 		delete_dive_from_table(table, i);
 
@@ -909,7 +913,7 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 		    dive_endtime(dives_to->dives[j - 1]) > dive_to_add->when) {
 			if (try_to_merge_into(dive_to_add, j - 1, dives_to, prefer_imported,
 					      dives_to_add, dives_to_remove)) {
-				free_dive(dive_to_add);
+				delete dive_to_add;
 				last_merged_into = j - 1;
 				(*num_merged)++;
 				continue;
@@ -922,7 +926,7 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 		    dive_endtime(dive_to_add) > dives_to->dives[j]->when) {
 			if (try_to_merge_into(dive_to_add, j, dives_to, prefer_imported,
 					      dives_to_add, dives_to_remove)) {
-				free_dive(dive_to_add);
+				delete dive_to_add;
 				last_merged_into = j;
 				(*num_merged)++;
 				continue;
