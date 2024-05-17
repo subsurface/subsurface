@@ -1007,7 +1007,7 @@ bool MainWindow::askSaveChanges()
 		tr("Do you want to save the changes that you made in the file %1?").arg(displayedFilename(existing_filename)) :
 		tr("Do you want to save the changes that you made in the data file?");
 
-	int ret = saveChangesConfirmationBox(message);
+	int ret = saveChangesConfirmationBox(std::move(message));
 	switch (ret) {
 	case QMessageBox::Save:
 		file_save();
