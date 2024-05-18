@@ -34,7 +34,7 @@ struct divecomputer {
 	enum divemode_t divemode = OC;	// dive computer type: OC(default) or CCR
 	uint8_t no_o2sensors = 0;	// rebreathers: number of O2 sensors used
 	int salinity = 0; 		// kg per 10000 l
-	const char *model = nullptr, *serial = nullptr, *fw_version = nullptr;
+	std::string model, serial, fw_version;
 	uint32_t deviceid = 0, diveid = 0;
 	int samples = 0, alloc_samples = 0;
 	struct sample *sample = nullptr;

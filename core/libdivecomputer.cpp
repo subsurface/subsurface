@@ -436,7 +436,7 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 		handle_event(dc, sample, value);
 		break;
 	case DC_SAMPLE_RBT:
-		sample->rbt.seconds = (!strncasecmp(dc->model, "suunto", 6)) ? value.rbt : value.rbt * 60;
+		sample->rbt.seconds = (!strncasecmp(dc->model.c_str(), "suunto", 6)) ? value.rbt : value.rbt * 60;
 		break;
 #ifdef DC_SAMPLE_TTS
 	case DC_SAMPLE_TTS:
@@ -534,9 +534,9 @@ static dc_status_t parse_samples(device_data_t *, struct divecomputer *dc, dc_pa
 
 static int might_be_same_dc(struct divecomputer *a, struct divecomputer *b)
 {
-	if (!a->model || !b->model)
+	if (a->model.empty() || b->model.empty())
 		return 1;
-	if (strcasecmp(a->model, b->model))
+	if (strcasecmp(a->model.c_str(), b->model.c_str()))
 		return 0;
 	if (!a->deviceid || !b->deviceid)
 		return 1;
@@ -827,7 +827,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	auto dive = std::make_unique<struct dive>();
 
 	// Fill in basic fields
-	dive->dc.model = strdup(devdata->model.c_str());
+	dive->dc.model = devdata->model;
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
 	// Parse the dive's header data
@@ -878,7 +878,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	/* special case for bug in Tecdiving DiveComputer.eu
 	 * often the first sample has a water temperature of 0C, followed by the correct
 	 * temperature in the next sample */
-	if (same_string(dive->dc.model, "Tecdiving DiveComputer.eu") &&
+	if (dive->dc.model == "Tecdiving DiveComputer.eu" &&
 	    dive->dc.sample[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
 	    dive->dc.sample[1].temperature.mkelvin > dive->dc.sample[0].temperature.mkelvin)
 		dive->dc.sample[0].temperature.mkelvin = dive->dc.sample[1].temperature.mkelvin;

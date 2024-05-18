@@ -754,7 +754,7 @@ static void parse_dc_meandepth(char *line, struct git_parser_state *state)
 { state->active_dc->meandepth = get_depth(line); }
 
 static void parse_dc_model(char *, struct git_parser_state *state)
-{  state->active_dc->model = get_first_converted_string_c(state); }
+{  state->active_dc->model = get_first_converted_string(state); }
 
 static void parse_dc_numberofoxygensensors(char *line, struct git_parser_state *state)
 { state->active_dc->no_o2sensors = get_index(line); }
@@ -1649,7 +1649,7 @@ static struct divecomputer *create_new_dc(struct dive *dive)
 	while (dc->next)
 		dc = dc->next;
 	/* Did we already fill that in? */
-	if (dc->samples || dc->model || dc->when) {
+	if (dc->samples || !dc->model.empty() || dc->when) {
 		struct divecomputer *newdc = new divecomputer;
 		dc->next = newdc;
 		dc = newdc;

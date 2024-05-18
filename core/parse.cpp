@@ -178,9 +178,9 @@ void dc_settings_start(struct parser_state *state)
 void dc_settings_end(struct parser_state *state)
 {
 	create_device_node(state->log->devices.get(),
-		state->cur_settings.dc.model.c_str(),
-		state->cur_settings.dc.serial_nr.c_str(),
-		state->cur_settings.dc.nickname.c_str());
+		state->cur_settings.dc.model,
+		state->cur_settings.dc.serial_nr,
+		state->cur_settings.dc.nickname);
 	reset_dc_settings(state);
 }
 
@@ -392,7 +392,7 @@ void divecomputer_start(struct parser_state *state)
 		dc = dc->next;
 
 	/* Did we already fill that in? */
-	if (dc->samples || dc->model || dc->when) {
+	if (dc->samples || !dc->model.empty() || dc->when) {
 		struct divecomputer *newdc = new divecomputer;
 		if (newdc) {
 			dc->next = newdc;

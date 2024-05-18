@@ -835,7 +835,7 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf,
 		return;
 	if (MATCH_STATE("time", divetime, &dc->when))
 		return;
-	if (MATCH("model", utf8_string, (char **)&dc->model))
+	if (MATCH("model", utf8_string_std, &dc->model))
 		return;
 	if (MATCH("deviceid", hex_value, &deviceid))
 		return;
@@ -1821,10 +1821,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 	dive_start(&state);
 	divecomputer_start(&state);
 
-	state.cur_dc->model = strdup("DLF import");
+	state.cur_dc->model = "DLF import";
 	// (ptr[7] << 8) + ptr[6] Is "Serial"
 	snprintf(serial, sizeof(serial), "%d", (ptr[7] << 8) + ptr[6]);
-	state.cur_dc->serial = strdup(serial);
+	state.cur_dc->serial = serial;
 	state.cur_dc->when = parse_dlf_timestamp(ptr + 8);
 	state.cur_dive->when = state.cur_dc->when;
 

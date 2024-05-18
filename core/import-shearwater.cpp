@@ -266,13 +266,13 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_settings.dc.model = strdup("Shearwater Petrel/Perdix");
+			state->cur_settings.dc.model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_settings.dc.model = strdup("Shearwater Predator");
+			state->cur_settings.dc.model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_settings.dc.model = strdup("Shearwater import");
+			state->cur_settings.dc.model = "Shearwater import";
 			break;
 		}
 	}
@@ -285,13 +285,13 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_dive->dc.model = strdup("Shearwater Petrel/Perdix");
+			state->cur_dive->dc.model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_dive->dc.model = strdup("Shearwater Predator");
+			state->cur_dive->dc.model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_dive->dc.model = strdup("Shearwater import");
+			state->cur_dive->dc.model = "Shearwater import";
 			break;
 		}
 	}
@@ -396,13 +396,13 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_settings.dc.model = strdup("Shearwater Petrel/Perdix");
+			state->cur_settings.dc.model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_settings.dc.model = strdup("Shearwater Predator");
+			state->cur_settings.dc.model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_settings.dc.model = strdup("Shearwater import");
+			state->cur_settings.dc.model = "Shearwater import";
 			break;
 		}
 	}
@@ -415,13 +415,13 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_dive->dc.model = strdup("Shearwater Petrel/Perdix");
+			state->cur_dive->dc.model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_dive->dc.model = strdup("Shearwater Predator");
+			state->cur_dive->dc.model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_dive->dc.model = strdup("Shearwater import");
+			state->cur_dive->dc.model = "Shearwater import";
 			break;
 		}
 	}

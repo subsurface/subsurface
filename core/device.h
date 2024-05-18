@@ -14,12 +14,12 @@ struct dive_table;
 // global device table
 extern struct fingerprint_table fingerprint_table;
 
-extern int create_device_node(struct device_table *table, const char *model, const char *serial, const char *nickname);
+extern int create_device_node(struct device_table *table, const std::string &model, const std::string &serial, const std::string &nickname);
 extern int nr_devices(const struct device_table *table);
 extern const struct device *get_device(const struct device_table *table, int i);
 extern struct device *get_device_mutable(struct device_table *table, int i);
 extern void clear_device_table(struct device_table *table);
-const char *get_dc_nickname(const struct divecomputer *dc);
+std::string get_dc_nickname(const struct divecomputer *dc);
 extern bool device_used_by_selected_dive(const struct device *dev);
 
 extern const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc);
@@ -30,9 +30,9 @@ extern int remove_device(struct device_table *table, const struct device *dev); 
 extern void remove_from_device_table(struct device_table *table, int idx);
 
 // struct device accessors for C-code. The returned strings are not stable!
-const char *device_get_model(const struct device *dev);
-const char *device_get_serial(const struct device *dev);
-const char *device_get_nickname(const struct device *dev);
+std::string device_get_model(const struct device *dev);
+std::string device_get_serial(const struct device *dev);
+std::string device_get_nickname(const struct device *dev);
 
 // for C code that needs to alloc/free a device table. (Let's try to get rid of those)
 extern struct device_table *alloc_device_table();
