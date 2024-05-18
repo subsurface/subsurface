@@ -945,7 +945,7 @@ void smartrak_import(const char *file, struct divelog *log)
 				dc_fam = DC_FAMILY_UWATEC_ALADIN;
 		}
 		rc = prepare_data(dc_model, (char *)col[coln(DCNUMBER)]->bind_ptr, dc_fam, devdata);
-		smtkdive->dc.model = copy_string(devdata.model.c_str());
+		smtkdive->dc.model = devdata.model;
 		if (rc == DC_STATUS_SUCCESS && mdb_table.get_len(coln(PROFILE))) {
 			prf_buffer = static_cast<unsigned char *>(mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length));
 			if (prf_length > 0) {

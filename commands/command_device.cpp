@@ -13,7 +13,7 @@ EditDeviceNickname::EditDeviceNickname(const struct divecomputer *dc, const QStr
 	if (index == -1)
 		return;
 
-	setText(Command::Base::tr("Set nickname of device %1 (serial %2) to %3").arg(dc->model, dc->serial, nicknameIn));
+	setText(Command::Base::tr("Set nickname of device %1 (serial %2) to %3").arg(dc->model.c_str(), dc->serial.c_str(), nicknameIn));
 }
 
 bool EditDeviceNickname::workToBeDone()

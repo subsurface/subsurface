@@ -29,7 +29,7 @@ bool device::operator<(const device &a) const
 
 const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
 {
-	if (!dc->model || !dc->serial)
+	if (dc->model.empty() || dc->serial.empty())
 		return NULL;
 
 	const std::vector<device> &dcs = table->devices;
@@ -40,14 +40,14 @@ const struct device *get_device_for_dc(const struct device_table *table, const s
 
 int get_or_add_device_for_dc(struct device_table *table, const struct divecomputer *dc)
 {
-	if (!dc->model || !dc->serial)
+	if (dc->model.empty() || dc->serial.empty())
 		return -1;
 	const struct device *dev = get_device_for_dc(table, dc);
 	if (dev) {
 		auto it = std::lower_bound(table->devices.begin(), table->devices.end(), *dev);
 		return it - table->devices.begin();
 	}
-	return create_device_node(table, dc->model, dc->serial, "");
+	return create_device_node(table, dc->model, dc->serial, std::string());
 }
 
 bool device_exists(const struct device_table *device_table, const struct device *dev)
@@ -86,14 +86,14 @@ static int addDC(std::vector<device> &dcs, const std::string &m, const std::stri
 	}
 }
 
-int create_device_node(struct device_table *device_table, const char *model, const char *serial, const char *nickname)
+int create_device_node(struct device_table *device_table, const std::string &model, const std::string &serial, const std::string &nickname)
 {
-	return addDC(device_table->devices, model ?: "", serial ?: "", nickname ?: "");
+	return addDC(device_table->devices, model, serial, nickname);
 }
 
 int add_to_device_table(struct device_table *device_table, const struct device *dev)
 {
-	return create_device_node(device_table, dev->model.c_str(), dev->serialNumber.c_str(), dev->nickName.c_str());
+	return create_device_node(device_table, dev->model, dev->serialNumber, dev->nickName);
 }
 
 int remove_device(struct device_table *device_table, const struct device *dev)
@@ -138,12 +138,12 @@ int is_default_dive_computer_device(const char *name)
 	return qPrefDiveComputer::device() == name;
 }
 
-const char *get_dc_nickname(const struct divecomputer *dc)
+std::string get_dc_nickname(const struct divecomputer *dc)
 {
 	const device *existNode = get_device_for_dc(divelog.devices.get(), dc);
 
 	if (existNode && !existNode->nickName.empty())
-		return existNode->nickName.c_str();
+		return existNode->nickName;
 	else
 		return dc->model;
 }
@@ -167,19 +167,19 @@ struct device *get_device_mutable(struct device_table *table, int i)
 	return &table->devices[i];
 }
 
-const char *device_get_model(const struct device *dev)
+std::string device_get_model(const struct device *dev)
 {
-	return dev ? dev->model.c_str() : NULL;
+	return dev ? dev->model : std::string();
 }
 
-const char *device_get_serial(const struct device *dev)
+std::string device_get_serial(const struct device *dev)
 {
-	return dev ? dev->serialNumber.c_str() : NULL;
+	return dev ? dev->serialNumber : std::string();
 }
 
-const char *device_get_nickname(const struct device *dev)
+std::string device_get_nickname(const struct device *dev)
 {
-	return dev ? dev->nickName.c_str() : NULL;
+	return dev ? dev->nickName : std::string();
 }
 
 struct device_table *alloc_device_table()

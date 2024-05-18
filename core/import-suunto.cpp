@@ -399,10 +399,8 @@ static int dm5_dive(void *param, int, char **data, char **)
 	if (data[4]) {
 		state->cur_dive->dc.deviceid = atoi(data[4]);
 	}
-	// Ugh. dc.model is const char * -> we are not supposed to write into it. This will
-	// change when we convert to std::string.
 	if (data[5])
-		utf8_string(data[5], (char **)&state->cur_dive->dc.model);
+		utf8_string_std(data[5], &state->cur_dive->dc.model);
 
 	if (data[25]) {
 		switch(atoi(data[25])) {

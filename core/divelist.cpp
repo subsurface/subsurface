@@ -631,7 +631,7 @@ static int comp_dc(const struct divecomputer *dc1, const struct divecomputer *dc
 			return -1;
 		if (!dc2)
 			return 1;
-		if ((cmp = safe_strcmp(dc1->model, dc2->model)) != 0)
+		if ((cmp = dc1->model.compare(dc2->model)) != 0)
 			return cmp;
 		dc1 = dc1->next;
 		dc2 = dc2->next;

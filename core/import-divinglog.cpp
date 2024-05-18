@@ -330,9 +330,9 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	dc_settings_start(state);
 
 	if (data[12]) {
-		state->cur_dive->dc.model = strdup(data[12]);
+		state->cur_dive->dc.model = data[12];
 	} else {
-		state->cur_settings.dc.model = strdup("Divinglog import");
+		state->cur_settings.dc.model = "Divinglog import";
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder0_template, diveid);
@@ -367,9 +367,9 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[12]) {
-		state->cur_dive->dc.model = strdup(data[12]);
+		state->cur_dive->dc.model = data[12];
 	} else {
-		state->cur_dive->dc.model = strdup("Divinglog import");
+		state->cur_dive->dc.model = "Divinglog import";
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, diveid);

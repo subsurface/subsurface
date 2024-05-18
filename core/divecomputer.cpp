@@ -489,10 +489,10 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 
 	if (!strcasecmp(key, "Serial")) {
 		dc->deviceid = calculate_string_hash(value);
-		dc->serial = strdup(value);
+		dc->serial = value;
 	}
 	if (!strcmp(key, "FW Version")) {
-		dc->fw_version = strdup(value);
+		dc->fw_version = value;
 	}
 
 	while (*ed)
@@ -505,14 +505,6 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 	}
 }
 
-<<<<<<< HEAD
-=======
-bool is_dc_planner(const struct divecomputer *dc)
-{
-	return same_string(dc->model, "planned dive");
-}
-
->>>>>>> ed6cdf19f (build: remove extern "C" linkage)
 /*
  * Match two dive computer entries against each other, and
  * tell if it's the same dive. Return 0 if "don't know",
@@ -522,9 +514,9 @@ bool is_dc_planner(const struct divecomputer *dc)
 int match_one_dc(const struct divecomputer *a, const struct divecomputer *b)
 {
 	/* Not same model? Don't know if matching.. */
-	if (!a->model || !b->model)
+	if (a->model.empty() || b->model.empty())
 		return 0;
-	if (strcasecmp(a->model, b->model))
+	if (strcasecmp(a->model.c_str(), b->model.c_str()))
 		return 0;
 
 	/* Different device ID's? Don't know */
@@ -551,9 +543,6 @@ static void free_extra_data(struct extra_data *ed)
 void free_dc_contents(struct divecomputer *dc)
 {
 	free(dc->sample);
-	free((void *)dc->model);
-	free((void *)dc->serial);
-	free((void *)dc->fw_version);
 	free_events(dc->events);
 	STRUCTURED_LIST_FREE(struct extra_data, dc->extra_data, free_extra_data);
 }
@@ -562,24 +551,22 @@ static const char *planner_dc_name = "planned dive";
 
 bool is_dc_planner(const struct divecomputer *dc)
 {
-	return same_string(dc->model, planner_dc_name);
+	return dc->model == planner_dc_name;
 }
 
 void make_planner_dc(struct divecomputer *dc)
 {
-	free((void *)dc->model);
-	dc->model = strdup(planner_dc_name);
+	dc->model = planner_dc_name;
 }
 
 const char *manual_dc_name = "manually added dive";
 
 bool is_dc_manually_added_dive(const struct divecomputer *dc)
 {
-	return dc && same_string(dc->model, manual_dc_name);
+	return dc->model == manual_dc_name;
 }
 
 void make_manually_added_dive_dc(struct divecomputer *dc)
 {
-	free((void *)dc->model);
-	dc->model = strdup(manual_dc_name);
+	dc->model = manual_dc_name;
 }
