@@ -18,6 +18,7 @@
 #include "divecomputer.h"
 #include "divesite.h"
 #include "errorhelper.h"
+#include "format.h"
 #include "sample.h"
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
@@ -356,22 +357,20 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		dive->dc.duration.seconds = sample->time.seconds - 1;
 
 	/* get data from the footer */
-	char buffer[24];
-
-	snprintf(buffer, sizeof(buffer), "%1u.%02u", data[18], data[17]);
-	add_extra_data(dc, "FW Version", buffer);
-	snprintf(buffer, sizeof(buffer), "%08x", *(uint32_t *)(data.data() + 9));
-	add_extra_data(dc, "Serial", buffer);
-	snprintf(buffer, sizeof(buffer), "%d", *(uint16_t *)(data.data() + i + 35));
-	add_extra_data(dc, "main battery after dive", buffer);
-	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data.data() + i + 24), 60));
-	add_extra_data(dc, "no fly time", buffer);
-	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data.data() + i + 26), 60));
-	add_extra_data(dc, "no dive time", buffer);
-	snprintf(buffer, sizeof(buffer), "%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data.data() + i + 28), 60));
-	add_extra_data(dc, "desat time", buffer);
-	snprintf(buffer, sizeof(buffer), "%u", *(uint16_t *)(data.data() + i + 30));
-	add_extra_data(dc, "allowed altitude", buffer);
+	add_extra_data(dc, "FW Version",
+		       format_string_std("%1u.%02u", data[18], data[17]));
+	add_extra_data(dc, "Serial",
+		       format_string_std("%08x", *(uint32_t *)(data.data() + 9)));
+	add_extra_data(dc, "main battery after dive",
+		       std::to_string(*(uint16_t *)(data.data() + i + 35)));
+	add_extra_data(dc, "no fly time",
+		       format_string_std("%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data.data() + i + 24), 60)));
+	add_extra_data(dc, "no dive time",
+		       format_string_std("%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data.data() + i + 26), 60)));
+	add_extra_data(dc, "desat time",
+		       format_string_std("%0u:%02u", FRACTION_TUPLE(*(uint16_t *)(data.data() + i + 28), 60)));
+	add_extra_data(dc, "allowed altitude",
+		       std::to_string(*(uint16_t *)(data.data() + i + 30)));
 
 	return;
 }
