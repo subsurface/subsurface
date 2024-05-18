@@ -52,7 +52,6 @@ void ostctools_import(const char *file, struct divelog *log)
 	dc_status_t rc = DC_STATUS_SUCCESS;
 	int model, ret, i = 0, c;
 	unsigned int serial;
-	struct extra_data *ptr;
 	const char *failed_to_read_msg = translate("gettextFromC", "Failed to read '%s'");
 
 	// Open the archive
@@ -161,21 +160,16 @@ void ostctools_import(const char *file, struct divelog *log)
 		report_error(translate("gettextFromC", "Error - %s - parsing dive %d"), errmsg(rc), ostcdive->number);
 
 	// Serial number is not part of the header nor the profile, so libdc won't
-	// catch it. If Serial is part of the extra_data, and set to zero, remove
-	// it from the list and add again.
+	// catch it. If Serial is part of the extra_data, and set to zero, replace it.
 	ostcdive->dc.serial = std::to_string(serial);
 
-	if (ostcdive->dc.extra_data) {
-		ptr = ostcdive->dc.extra_data;
-		while (strcmp(ptr->key, "Serial"))
-			ptr = ptr->next;
-		if (!strcmp(ptr->value, "0")) {
-			add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial.c_str());
-			*ptr = *(ptr)->next;
-		}
-	} else {
-		add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial.c_str());
-	}
+	auto it = find_if(ostcdive->dc.extra_data.begin(), ostcdive->dc.extra_data.end(),
+			 [](auto &ed) { return ed.key == "Serial"; });
+	if (it != ostcdive->dc.extra_data.end() && it->value == "0")
+		it->value = ostcdive->dc.serial.c_str();
+	else if (it == ostcdive->dc.extra_data.end())
+		add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
+
 	record_dive_to_table(ostcdive.release(), log->dives.get());
 	sort_dive_table(log->dives.get());
 }

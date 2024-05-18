@@ -832,7 +832,7 @@ static void parse_dc_keyvalue(char *line, struct git_parser_state *state)
 	if (state->converted_strings.size() != 2)
 		return;
 
-	add_extra_data(state->active_dc, state->converted_strings[0].c_str(), state->converted_strings[1].c_str());
+	add_extra_data(state->active_dc, state->converted_strings[0], state->converted_strings[1]);
 }
 
 static void parse_dc_event(char *line, struct git_parser_state *state)

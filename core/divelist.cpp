@@ -616,12 +616,6 @@ void update_cylinder_related_info(struct dive *dive)
 	}
 }
 
-/* Like strcmp(), but don't crash on null-pointers */
-static int safe_strcmp(const char *s1, const char *s2)
-{
-	return strcmp(s1 ? s1 : "", s2 ? s2 : "");
-}
-
 /* Compare a list of dive computers by model name */
 static int comp_dc(const struct divecomputer *dc1, const struct divecomputer *dc2)
 {

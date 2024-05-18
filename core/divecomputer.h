@@ -5,6 +5,7 @@
 #include "divemode.h"
 #include "units.h"
 #include <string>
+#include <vector>
 
 struct extra_data;
 struct sample;
@@ -39,11 +40,12 @@ struct divecomputer {
 	int samples = 0, alloc_samples = 0;
 	struct sample *sample = nullptr;
 	struct event *events = nullptr;
-	struct extra_data *extra_data = nullptr;
+	std::vector<struct extra_data> extra_data;
 	struct divecomputer *next = nullptr;
 
 	divecomputer();
 	~divecomputer();
+	divecomputer(divecomputer &&);
 };
 
 extern void fake_dc(struct divecomputer *dc);
@@ -65,7 +67,7 @@ extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
 extern void add_event_to_dc(struct divecomputer *dc, struct event *ev);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const std::string &name);
 extern void remove_event_from_dc(struct divecomputer *dc, struct event *event);
-extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
+extern void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value);
 extern uint32_t calculate_string_hash(const char *str);
 extern bool is_dc_planner(const struct divecomputer *dc);
 extern void make_planner_dc(struct divecomputer *dc);
