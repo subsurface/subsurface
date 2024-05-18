@@ -577,7 +577,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		event = event->next;
 	}
 
-	QString dcText = get_dc_nickname(currentdc);
+	QString dcText = QString::fromStdString(get_dc_nickname(currentdc));
 	if (is_dc_planner(currentdc))
 		dcText = tr("Planned dive");
 	else if (is_dc_manually_added_dive(currentdc))

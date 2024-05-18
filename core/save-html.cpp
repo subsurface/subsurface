@@ -58,7 +58,7 @@ static void write_divecomputers(struct membuffer *b, struct dive *dive)
 		put_string(b, separator);
 		separator = ", ";
 		put_format(b, "{");
-		write_attribute(b, "model", dc->model, ", ");
+		write_attribute(b, "model", dc->model.c_str(), ", ");
 		if (dc->deviceid)
 			put_format(b, "\"deviceid\":\"%08x\", ", dc->deviceid);
 		else

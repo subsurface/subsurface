@@ -681,8 +681,9 @@ void ProfileWidget2::renameCurrentDC()
 	if (!currentdc)
 		return;
 	QString newName = QInputDialog::getText(this, tr("Edit nickname"),
-						tr("Set new nickname for %1 (serial %2):").arg(currentdc->model).arg(currentdc->serial),
-						QLineEdit::Normal, get_dc_nickname(currentdc), &ok);
+						tr("Set new nickname for %1 (serial %2):").arg(QString::fromStdString(currentdc->model)).
+						arg(QString::fromStdString(currentdc->serial)),
+						QLineEdit::Normal, QString::fromStdString(get_dc_nickname(currentdc)), &ok);
 	if (ok)
 		Command::editDeviceNickname(currentdc, newName);
 }

@@ -133,7 +133,7 @@ static int cobalt_dive(void *param, int, char **data, char **)
 	if (data[9]) {
 		utf8_string_std(data[9], &state->cur_settings.dc.serial_nr);
 		state->cur_settings.dc.deviceid = atoi(data[9]);
-		state->cur_settings.dc.model = strdup("Cobalt import");
+		state->cur_settings.dc.model = "Cobalt import";
 	}
 
 	dc_settings_end(state);
@@ -141,7 +141,7 @@ static int cobalt_dive(void *param, int, char **data, char **)
 
 	if (data[9]) {
 		state->cur_dive->dc.deviceid = atoi(data[9]);
-		state->cur_dive->dc.model = strdup("Cobalt import");
+		state->cur_dive->dc.model = "Cobalt import";
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, state->cur_dive->number);

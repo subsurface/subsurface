@@ -420,7 +420,7 @@ static void save_events(struct membuffer *b, struct dive *dive, struct event *ev
 
 static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
 {
-	show_utf8(b, "model ", dc->model, "\n");
+	show_utf8(b, "model ", dc->model.c_str(), "\n");
 	if (dc->last_manual_time.seconds)
 		put_duration(b, dc->last_manual_time, "lastmanualtime ", "min\n");
 	if (dc->deviceid)
@@ -862,19 +862,17 @@ static void save_units(void *_b)
 
 static void save_one_device(struct membuffer *b, const struct device *d)
 {
-	const char *model = device_get_model(d);
-	const char *nickname = device_get_nickname(d);
-	const char *serial = device_get_serial(d);
+	std::string model = device_get_model(d);
+	std::string nickname = device_get_nickname(d);
+	std::string serial = device_get_serial(d);
 
-	if (empty_string(serial)) serial = NULL;
-	if (empty_string(nickname)) nickname = NULL;
-	if (!nickname || !serial)
+	if (nickname.empty() || serial.empty())
 		return;
 
-	show_utf8(b, "divecomputerid ", model, "");
-	put_format(b, " deviceid=%08x", calculate_string_hash(serial));
-	show_utf8(b, " serial=", serial, "");
-	show_utf8(b, " nickname=", nickname, "");
+	show_utf8(b, "divecomputerid ", model.c_str(), "");
+	put_format(b, " deviceid=%08x", calculate_string_hash(serial.c_str()));
+	show_utf8(b, " serial=", serial.c_str(), "");
+	show_utf8(b, " nickname=", nickname.c_str(), "");
 	put_string(b, "\n");
 }
 
@@ -1154,8 +1152,8 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 			put_format(msg, " (%s)", trip->location);
 		put_format(msg, "\n");
 		do {
-			if (!empty_string(dc->model)) {
-				put_format(msg, "%s%s", sep, dc->model);
+			if (!dc->model.empty()) {
+				put_format(msg, "%s%s", sep, dc->model.c_str());
 				sep = ", ";
 			}
 		} while ((dc = dc->next) != NULL);

@@ -205,10 +205,8 @@ static int seac_dive(void *param, int, char **data, char **)
 	settings_start(state);
 	dc_settings_start(state);
 
-	// These dc values are const char *, therefore we have to cast.
-	// Will be fixed by converting to std::string
-	utf8_string(data[1], (char **)&state->cur_dive->dc.serial);
-	utf8_string(data[12], (char **)&state->cur_dive->dc.fw_version);
+	utf8_string_std(data[1], &state->cur_dive->dc.serial);
+	utf8_string_std(data[12],&state->cur_dive->dc.fw_version);
 	state->cur_dive->dc.model = strdup("Seac Action");
 
 	state->cur_dive->dc.deviceid = calculate_string_hash(data[1]);
@@ -224,7 +222,6 @@ static int seac_dive(void *param, int, char **data, char **)
 	}
 
 	curcyl->gasmix.o2.permille = 10 * sqlite3_column_int(sqlstmt, 4);
-
 
 	// Track gasses to tell when switch occurs
 	lastgas = curcyl->gasmix;

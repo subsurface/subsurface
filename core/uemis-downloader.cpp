@@ -188,7 +188,7 @@ static void uemis_get_weight(std::string_view buffer, weightsystem_t &weight, in
 static std::unique_ptr<dive> uemis_start_dive(uint32_t deviceid)
 {
 	auto dive = std::make_unique<struct dive>();
-	dive->dc.model = strdup("Uemis Zurich");
+	dive->dc.model = "Uemis Zurich";
 	dive->dc.deviceid = deviceid;
 	return dive;
 }
@@ -985,7 +985,7 @@ static std::pair<uint32_t, uint32_t> uemis_get_divenr(uint32_t deviceid, struct 
 		if (!d)
 			continue;
 		for_each_dc (d, dc) {
-			if (dc->model && !strcmp(dc->model, "Uemis Zurich") &&
+			if (dc->model == "Uemis Zurich" &&
 			    (dc->deviceid == 0 || dc->deviceid == 0x7fffffff || dc->deviceid == deviceid)) {
 				if (dc->diveid > maxdiveid)
 					maxdiveid = dc->diveid;
