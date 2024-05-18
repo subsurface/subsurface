@@ -447,7 +447,7 @@ static void save_samples(struct membuffer *b, struct dive *dive, struct divecomp
 static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
 {
 	put_format(b, "  <divecomputer");
-	show_utf8(b, dc->model, " model='", "'", 1);
+	show_utf8(b, dc->model.c_str(), " model='", "'", 1);
 	if (dc->last_manual_time.seconds)
 		put_duration(b, dc->last_manual_time, " last-manual-time='", " min'");
 	if (dc->deviceid)
@@ -593,27 +593,19 @@ static void save_trip(struct membuffer *b, dive_trip_t *trip, bool anonymize)
 
 static void save_one_device(struct membuffer *b, const struct device *d)
 {
-	const char *model = device_get_model(d);
-	const char *nickname = device_get_nickname(d);
-	const char *serial_nr = device_get_serial(d);
+	std::string model = device_get_model(d);
+	std::string nickname = device_get_nickname(d);
+	std::string serial_nr = device_get_serial(d);
 
 	/* Nicknames that are empty or the same as the device model are not interesting */
-	if (empty_string(nickname) || !strcmp(model, nickname))
-		nickname = NULL;
-
-	/* Serial numbers that are empty are not interesting */
-	if (empty_string(serial_nr))
-		serial_nr = NULL;
-
-	/* Do we have anything interesting about this dive computer to save? */
-	if (!serial_nr || !nickname)
+	if (nickname.empty() || serial_nr.empty() || model == nickname)
 		return;
 
 	put_format(b, "<divecomputerid");
-	show_utf8(b, model, " model='", "'", 1);
-	put_format(b, " deviceid='%08x'", calculate_string_hash(serial_nr));
-	show_utf8(b, serial_nr, " serial='", "'", 1);
-	show_utf8(b, nickname, " nickname='", "'", 1);
+	show_utf8(b, model.c_str(), " model='", "'", 1);
+	put_format(b, " deviceid='%08x'", calculate_string_hash(serial_nr.c_str()));
+	show_utf8(b, serial_nr.c_str(), " serial='", "'", 1);
+	show_utf8(b, nickname.c_str(), " nickname='", "'", 1);
 	put_format(b, "/>\n");
 }
 

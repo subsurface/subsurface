@@ -179,7 +179,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		put_format(&buf, "\\def\\%ssitename{%s}\n", ssrf, site ? site->name.c_str() : "");
 		site ? put_format(&buf, "\\def\\%sgpslat{%f}\n", ssrf, site->location.lat.udeg / 1000000.0) : put_format(&buf, "\\def\\%sgpslat{}\n", ssrf);
 		site ? put_format(&buf, "\\def\\%sgpslon{%f}\n", ssrf, site->location.lon.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
-		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dc.model);
+		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dc.model.c_str());
 		put_format(&buf, "\\def\\%scountry{%s}\n", ssrf, country.c_str());
 		put_format(&buf, "\\def\\%stime{%u:%02u}\n", ssrf, FRACTION_TUPLE(dive->duration.seconds, 60));
 

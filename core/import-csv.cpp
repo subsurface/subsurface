@@ -512,7 +512,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 
 		auto dive = std::make_unique<struct dive>();
 		dive->when = utc_mktime(&cur_tm);;
-		dive->dc.model = strdup("Poseidon MkVI Discovery");
+		dive->dc.model = "Poseidon MkVI Discovery";
 		value = parse_mkvi_value(memtxt.data(), "Rig Serial number");
 		dive->dc.deviceid = atoi(value.c_str());
 		dive->dc.divemode = CCR;

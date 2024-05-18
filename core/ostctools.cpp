@@ -28,8 +28,8 @@ static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t &
 	data_descriptor = get_descriptor(dc_fam, data_model);
 	if (data_descriptor) {
 		dev_data.descriptor = data_descriptor;
-		dev_data.vendor = copy_string(dc_descriptor_get_vendor(data_descriptor));
-		dev_data.model = copy_string(dc_descriptor_get_product(data_descriptor));
+		dev_data.vendor = dc_descriptor_get_vendor(data_descriptor);
+		dev_data.model = dc_descriptor_get_product(data_descriptor);
 	} else {
 		return 0;
 	}
@@ -153,7 +153,7 @@ void ostctools_import(const char *file, struct divelog *log)
 		return;
 	}
 	std::string tmp = devdata.vendor + " " + devdata.model + " (Imported from OSTCTools)";
-	ostcdive->dc.model = copy_string(tmp.c_str());
+	ostcdive->dc.model = tmp.c_str();
 
 	// Parse the dive data
 	rc = libdc_buffer_parser(ostcdive.get(), &devdata, buffer.data(), i + 1);
@@ -163,18 +163,18 @@ void ostctools_import(const char *file, struct divelog *log)
 	// Serial number is not part of the header nor the profile, so libdc won't
 	// catch it. If Serial is part of the extra_data, and set to zero, remove
 	// it from the list and add again.
-	ostcdive->dc.serial = copy_string(std::to_string(serial).c_str());
+	ostcdive->dc.serial = std::to_string(serial);
 
 	if (ostcdive->dc.extra_data) {
 		ptr = ostcdive->dc.extra_data;
 		while (strcmp(ptr->key, "Serial"))
 			ptr = ptr->next;
 		if (!strcmp(ptr->value, "0")) {
-			add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
+			add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial.c_str());
 			*ptr = *(ptr)->next;
 		}
 	} else {
-		add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
+		add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial.c_str());
 	}
 	record_dive_to_table(ostcdive.release(), log->dives.get());
 	sort_dive_table(log->dives.get());

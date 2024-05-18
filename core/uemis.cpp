@@ -295,7 +295,7 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		dive->dc.salinity = FRESHWATER_SALINITY; /* grams per 10l fresh water */
 
 	/* this will allow us to find the last dive read so far from this computer */
-	dc->model = strdup("Uemis Zurich");
+	dc->model = "Uemis Zurich";
 	dc->deviceid = *(uint32_t *)(data.data() + 9);
 	dc->diveid = *(uint16_t *)(data.data() + 7);
 	/* remember the weight units used in this dive - we may need this later when
