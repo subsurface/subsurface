@@ -548,7 +548,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 			std::string value = parse_mkvi_value(lineptr, key.c_str());
 			if (value.empty())
 				break;
-			add_extra_data(&dive->dc, key.c_str(), value.c_str());
+			add_extra_data(&dive->dc, key, value);
 		}
 		dc = &dive->dc;
 
