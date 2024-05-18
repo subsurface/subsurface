@@ -396,16 +396,15 @@ static void save_tags(struct membuffer *b, struct tag_entry *entry)
 	}
 }
 
-static void save_extra_data(struct membuffer *b, struct extra_data *ed)
+static void save_extra_data(struct membuffer *b, const struct divecomputer *dc)
 {
-	while (ed) {
-		if (ed->key && ed->value) {
+	for (const auto &ed: dc->extra_data) {
+		if (!ed.key.empty() && !ed.value.empty()) {
 			put_string(b, "  <extradata");
-			show_utf8(b, ed->key, " key='", "'", 1);
-			show_utf8(b, ed->value, " value='", "'", 1);
+			show_utf8(b, ed.key.c_str(), " key='", "'", 1);
+			show_utf8(b, ed.value.c_str(), " value='", "'", 1);
 			put_string(b, " />\n");
 		}
-		ed = ed->next;
 	}
 }
 
@@ -471,7 +470,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	save_airpressure(b, dc);
 	save_salinity(b, dc);
 	put_duration(b, dc->surfacetime, "  <surfacetime>", " min</surfacetime>\n");
-	save_extra_data(b, dc->extra_data);
+	save_extra_data(b, dc);
 	save_events(b, dive, dc->events);
 	save_samples(b, dive, dc);
 

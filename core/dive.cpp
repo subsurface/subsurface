@@ -21,6 +21,7 @@
 #include "qthelper.h"
 #include "membuffer.h"
 #include "picture.h"
+#include "range.h"
 #include "sample.h"
 #include "tag.h"
 #include "trip.h"
@@ -174,13 +175,6 @@ int dive_getUniqID()
 	return maxId;
 }
 
-/* copy an element in a list of dive computer extra data */
-static void copy_extra_data(struct extra_data *sed, struct extra_data *ded)
-{
-	ded->key = copy_string(sed->key);
-	ded->value = copy_string(sed->value);
-}
-
 /* this is very different from the copy_dive_computer later in this file;
  * this function actually makes full copies of the content */
 static void copy_dc(const struct divecomputer *sdc, struct divecomputer *ddc)
@@ -188,7 +182,6 @@ static void copy_dc(const struct divecomputer *sdc, struct divecomputer *ddc)
 	*ddc = *sdc;
 	copy_samples(sdc, ddc);
 	copy_events(sdc, ddc);
-	STRUCTURED_LIST_COPY(struct extra_data, sdc->extra_data, ddc->extra_data, copy_extra_data);
 }
 
 static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, const int mapping[]);
@@ -1453,26 +1446,9 @@ static void merge_samples(struct divecomputer *res,
 	}
 }
 
-/*
- * Does the extradata key/value pair already exist in the
- * supplied dive computer data?
- *
- * This is not hugely efficient (with the whole "do this for
- * every value you merge" it's O(n**2)) but it's not like we
- * have very many extra_data entries per dive computer anyway.
- */
-static bool extra_data_exists(const struct extra_data *ed, const struct divecomputer *dc)
+static bool operator==(const struct extra_data &e1, const struct extra_data &e2)
 {
-	const struct extra_data *p;
-
-	for (p = dc->extra_data; p; p = p->next) {
-		if (strcmp(p->key, ed->key))
-			continue;
-		if (strcmp(p->value, ed->value))
-			continue;
-		return true;
-	}
-	return false;
+	return std::tie(e1.key, e1.value) == std::tie(e2.key, e2.value);
 }
 
 /*
@@ -1480,29 +1456,20 @@ static bool extra_data_exists(const struct extra_data *ed, const struct divecomp
  *
  * The extra data from 'a' has already been copied into 'res'. So
  * we really should just copy over the data from 'b' too.
+ *
+ * This is not hugely efficient (with the whole "check this for
+ * every value you merge" it's O(n**2)) but it's not like we
+ * have very many extra_data entries per dive computer anyway.
  */
 static void merge_extra_data(struct divecomputer *res,
 			  const struct divecomputer *a, const struct divecomputer *b)
 {
-	struct extra_data **ed, *src;
-
-	// Find the place to add things in the result
-	ed = &res->extra_data;
-	while (*ed)
-		ed = &(*ed)->next;
-
-	for (src = b->extra_data; src; src = src->next) {
-		if (extra_data_exists(src, a))
+	for (auto &ed: b->extra_data) {
+		if (range_contains(a->extra_data, ed))
 			continue;
-		*ed = (extra_data *)malloc(sizeof(struct extra_data));
-		if (!*ed)
-			break;
-		copy_extra_data(src, *ed);
-		ed = &(*ed)->next;
-	}
 
-	// Terminate the result list
-	*ed = NULL;
+		res->extra_data.push_back(ed);
+	}
 }
 
 static char *merge_text(const char *a, const char *b, const char *sep)
@@ -2449,7 +2416,6 @@ static const struct divecomputer *find_matching_computer(const struct divecomput
 static void copy_dive_computer(struct divecomputer *res, const struct divecomputer *a)
 {
 	*res = *a;
-	STRUCTURED_LIST_COPY(struct extra_data, a->extra_data, res->extra_data, copy_extra_data);
 	res->samples = res->alloc_samples = 0;
 	res->sample = NULL;
 	res->events = NULL;
@@ -3415,19 +3381,19 @@ int dive_has_gps_location(const struct dive *dive)
  * or GPS2 extra data fields */
 static location_t dc_get_gps_location(const struct divecomputer *dc)
 {
-	location_t res = { };
+	location_t res;
 
-	for (struct extra_data *data = dc->extra_data; data; data = data->next) {
-		if (!strcmp(data->key, "GPS1")) {
-			parse_location(data->value, &res);
+	for (const auto &data: dc->extra_data) {
+		if (data.key == "GPS1") {
+			parse_location(data.value.c_str(), &res);
 			/* If we found a valid GPS1 field exit early since
 			 * it has priority over GPS2 */
 			if (has_location(&res))
 				break;
-		} else if (!strcmp(data->key, "GPS2")) {
+		} else if (data.key == "GPS2") {
 			/* For GPS2 fields continue searching, as we might
 			 * still find a GPS1 field */
-			parse_location(data->value, &res);
+			parse_location(data.value.c_str(), &res);
 		}
 	}
 	return res;

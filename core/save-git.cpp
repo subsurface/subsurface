@@ -119,12 +119,11 @@ static void save_tags(struct membuffer *b, struct tag_entry *tags)
 	put_string(b, "\n");
 }
 
-static void save_extra_data(struct membuffer *b, struct extra_data *ed)
+static void save_extra_data(struct membuffer *b, const struct divecomputer *dc)
 {
-	while (ed) {
-		if (ed->key && ed->value)
-			put_format(b, "keyvalue \"%s\" \"%s\"\n", ed->key ? : "", ed->value ? : "");
-		ed = ed->next;
+	for (const auto &ed: dc->extra_data) {
+		if (!ed.key.empty() && !ed.value.empty())
+			put_format(b, "keyvalue \"%s\" \"%s\"\n", ed.key.c_str(), ed.value.c_str());
 	}
 }
 
@@ -442,7 +441,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	save_salinity(b, dc);
 	put_duration(b, dc->surfacetime, "surfacetime ", "min\n");
 
-	save_extra_data(b, dc->extra_data);
+	save_extra_data(b, dc);
 	save_events(b, dive, dc->events);
 	save_samples(b, dive, dc);
 }

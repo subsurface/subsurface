@@ -20,6 +20,8 @@ divecomputer::~divecomputer()
 	free_dc_contents(this);
 }
 
+divecomputer::divecomputer(divecomputer &&) = default;
+
 /*
  * Good fake dive profiles are hard.
  *
@@ -483,26 +485,16 @@ void remove_event_from_dc(struct divecomputer *dc, struct event *event)
 	}
 }
 
-void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
+void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value)
 {
-	struct extra_data **ed = &dc->extra_data;
-
-	if (!strcasecmp(key, "Serial")) {
-		dc->deviceid = calculate_string_hash(value);
+	if (key == "Serial") {
+		dc->deviceid = calculate_string_hash(value.c_str());
 		dc->serial = value;
 	}
-	if (!strcmp(key, "FW Version")) {
+	if (key == "FW Version")
 		dc->fw_version = value;
-	}
 
-	while (*ed)
-		ed = &(*ed)->next;
-	*ed = (struct extra_data *)malloc(sizeof(struct extra_data));
-	if (*ed) {
-		(*ed)->key = strdup(key);
-		(*ed)->value = strdup(value);
-		(*ed)->next = NULL;
-	}
+	dc->extra_data.push_back(extra_data { key, value });
 }
 
 /*
@@ -534,17 +526,10 @@ int match_one_dc(const struct divecomputer *a, const struct divecomputer *b)
 	return a->diveid == b->diveid && a->when == b->when ? 1 : -1;
 }
 
-static void free_extra_data(struct extra_data *ed)
-{
-	free((void *)ed->key);
-	free((void *)ed->value);
-}
-
 void free_dc_contents(struct divecomputer *dc)
 {
 	free(dc->sample);
 	free_events(dc->events);
-	STRUCTURED_LIST_FREE(struct extra_data, dc->extra_data, free_extra_data);
 }
 
 static const char *planner_dc_name = "planned dive";

@@ -2,10 +2,11 @@
 #ifndef EXTRADATA_H
 #define EXTRADATA_H
 
+#include <string>
+
 struct extra_data {
-	const char *key;
-	const char *value;
-	struct extra_data *next;
+	std::string key;
+	std::string value;
 };
 
 #endif
