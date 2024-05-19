@@ -32,7 +32,79 @@ void move_in_range(Range &v, int rangeBegin, int rangeEnd, int destination)
 		std::rotate(it + destination, it + rangeBegin, it + rangeEnd);
 }
 
-// A rudimentary adaptor for looping over ranges with an index:
+// Small helper base class for iterator adapters.
+template <typename Base>
+class iterator_adapter {
+protected:
+	Base it;
+public:
+	iterator_adapter(Base it) : it(it)
+	{
+	}
+	bool operator==(const iterator_adapter &it2) const {
+		return it == it2.it;
+	}
+	bool operator!=(const iterator_adapter &it2) const
+	{
+		return it != it2.it;
+	}
+};
+
+// A rudimentary adapter for looping over pairs of elements in ranges:
+//	for (auto [it1, it2]: pairwise_range(v)) ...
+// The pairs are overlapping, i.e. there is one less pair than elements:
+// { 1, 2, 3, 4 } -> (1,2), (2,3), (3,4)
+template <typename Range>
+class pairwise_range
+{
+	Range &base;
+public:
+	using base_iterator = decltype(std::begin(std::declval<Range &>()));
+	using item_type = decltype(*std::begin(base));
+	class iterator : public iterator_adapter<base_iterator> {
+	public:
+		using iterator_adapter<base_iterator>::iterator_adapter;
+		std::pair<item_type &, item_type &> operator*() const
+		{
+			return { *this->it, *std::next(this->it) };
+		}
+		iterator &operator++()
+		{
+			++this->it;
+			return *this;
+		}
+		iterator &operator--()
+		{
+			--this->it;
+			return *this;
+		}
+		iterator operator++(int)
+		{
+			return iterator(this->it++);
+		}
+		iterator operator--(int)
+		{
+			return iterator(this->it--);
+		}
+	};
+
+	iterator begin()
+	{
+		return iterator(std::begin(base));
+	}
+	iterator end()
+	{
+		return std::begin(base) == std::end(base) ?
+			iterator(std::begin(base)) :
+			iterator(std::prev(std::end(base)));
+	}
+
+	pairwise_range(Range &base): base(base)
+	{
+	}
+};
+
+// A rudimentary adapter for looping over ranges with an index:
 //	for (auto [idx, item]: enumerated_range(v)) ...
 // The index is a signed integer, since this is what we use more often.
 template <typename Range>
@@ -41,30 +113,31 @@ class enumerated_range
 	Range &base;
 public:
 	using base_iterator = decltype(std::begin(std::declval<Range &>()));
-	class iterator {
+	class iterator : public iterator_adapter<base_iterator>{
 		int idx;
-		base_iterator it;
 	public:
-		std::pair<int, decltype(*it)> operator*() const
+		using iterator_adapter<base_iterator>::iterator_adapter;
+		using item_type = decltype(*std::begin(base));
+		std::pair<int, item_type &> operator*() const
 		{
-			return { idx, *it };
+			return { idx, *this->it };
 		}
 		iterator &operator++()
 		{
 			++idx;
-			++it;
+			++this->it;
 			return *this;
 		}
-		iterator(int idx, base_iterator it) : idx(idx), it(it)
+		iterator &operator--()
 		{
+			--idx;
+			--this->it;
+			return *this;
 		}
-		bool operator==(const iterator &it2) const
+		iterator &operator++(int) = delete; // Postfix increment/decrement not supported for now
+		iterator &operator--(int) = delete; // Postfix increment/decrement not supported for now
+		iterator(int idx, base_iterator it) : iterator_adapter<base_iterator>(it), idx(idx)
 		{
-			return it == it2.it;
-		}
-		bool operator!=(const iterator &it2) const
-		{
-			return it != it2.it;
 		}
 	};
 
@@ -81,6 +154,7 @@ public:
 	{
 	}
 };
+
 
 // Find the index of an element in a range. Return -1 if not found
 // Range must have a random access iterator.

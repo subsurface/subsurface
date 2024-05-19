@@ -112,11 +112,8 @@ static void interpolate_transition(struct deco_state *ds, struct dive *dive, dur
 /* returns the tissue tolerance at the end of this (partial) dive */
 static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct divecomputer *dc, deco_state_cache &cache)
 {
-	struct sample *sample, *psample;
-	int i;
-	depth_t lastdepth = {};
-	duration_t t0 = {}, t1 = {};
-	struct gasmix gas;
+	depth_t lastdepth;
+	duration_t t0;
 	int surface_interval = 0;
 
 	if (!dive)
@@ -127,24 +124,20 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 		surface_interval = init_decompression(ds, dive, true);
 		cache.cache(ds);
 	}
-	if (!dc->samples)
+	if (dc->samples.empty())
 		return 0;
-	psample = sample = dc->sample;
 
 	const struct event *evdm = NULL;
 	enum divemode_t divemode = UNDEF_COMP_TYPE;
 
-	for (i = 0; i < dc->samples; i++, sample++) {
-		o2pressure_t setpoint;
+	const struct sample *psample = nullptr;
+	for (auto &sample: dc->samples) {
+		o2pressure_t setpoint = psample ? psample->setpoint
+						: sample.setpoint;
 
-		if (i)
-			setpoint = sample[-1].setpoint;
-		else
-			setpoint = sample[0].setpoint;
-
-		t1 = sample->time;
-		gas = get_gasmix_at_time(dive, dc, t0);
-		if (i > 0)
+		duration_t t1 = sample.time;
+		struct gasmix gas = get_gasmix_at_time(dive, dc, t0);
+		if (psample)
 			lastdepth = psample->depth;
 
 		/* The ceiling in the deeper portion of a multilevel dive is sometimes critical for the VPM-B
@@ -156,7 +149,7 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 		 * portion of the dive.
 		 * Remember the value for later.
 		 */
-		if ((decoMode(true) == VPMB) && (lastdepth.mm > sample->depth.mm)) {
+		if ((decoMode(true) == VPMB) && (lastdepth.mm > sample.depth.mm)) {
 			pressure_t ceiling_pressure;
 			nuclear_regeneration(ds, t0.seconds);
 			vpmb_start_gradient(ds);
@@ -171,8 +164,8 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 		}
 
 		divemode = get_current_divemode(&dive->dc, t0.seconds + 1, &evdm, &divemode);
-		interpolate_transition(ds, dive, t0, t1, lastdepth, sample->depth, gas, setpoint, divemode);
-		psample = sample;
+		interpolate_transition(ds, dive, t0, t1, lastdepth, sample.depth, gas, setpoint, divemode);
+		psample = &sample;
 		t0 = t1;
 	}
 	return surface_interval;
@@ -208,7 +201,6 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, struct divecomputer *dc, bool track_gas)
 {
 	struct divedatapoint *dp;
-	struct sample *sample;
 	struct event *ev;
 	cylinder_t *cyl;
 	int oldpo2 = 0;
@@ -230,7 +222,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	dc->when = dive->when = diveplan->when;
 	dc->surface_pressure.mbar = diveplan->surface_pressure;
 	dc->salinity = diveplan->salinity;
-	free_samples(dc);
+	dc->samples.clear();
 	while ((ev = dc->events)) {
 		dc->events = dc->events->next;
 		delete ev;
@@ -240,12 +232,11 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	 * there is no real dp for time = 0, set first cylinder to 0
 	 * O2 setpoint for this sample will be filled later from next dp */
 	cyl = get_or_create_cylinder(dive, 0);
-	sample = prepare_sample(dc);
+	struct sample *sample = prepare_sample(dc);
 	sample->sac.mliter = prefs.bottomsac;
 	if (track_gas && cyl->type.workingpressure.mbar)
 		sample->pressure[0].mbar = cyl->end.mbar;
 	sample->manually_entered = true;
-	finish_sample(dc);
 	lastcylid = 0;
 	while (dp) {
 		int po2 = dp->setpoint;
@@ -286,7 +277,6 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 			sample->depth = lastdepth;
 			sample->manually_entered = dp->entered;
 			sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
-			finish_sample(dc);
 			lastcylid = dp->cylinderid;
 		}
 		if (dp->divemode != type) {
@@ -311,7 +301,6 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 			if (cyl->type.workingpressure.mbar)
 				sample->pressure[0].mbar = cyl->end.mbar;
 		}
-		finish_sample(dc);
 		dp = dp->next;
 	}
 	dc->last_manual_time.seconds = last_manual_point;
@@ -660,7 +649,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	int bottom_time;
 	int previous_deco_time;
 	deco_state_cache bottom_cache;
-	struct sample *sample;
 	int po2;
 	int transitiontime, gi;
 	int current_cylinder, stop_cylinder;
@@ -727,20 +715,20 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		*(decostoplevels + 1) = M_OR_FT(3,10);
 
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
-	sample = &dc->sample[dc->samples - 1];
+	const struct sample &sample = dc->samples.back();
 
 	/* Keep time during the ascend */
-	bottom_time = clock = previous_point_time = dc->sample[dc->samples - 1].time.seconds;
+	bottom_time = clock = previous_point_time = sample.time.seconds;
 
-	current_cylinder = get_cylinderid_at_time(dive, dc, sample->time);
+	current_cylinder = get_cylinderid_at_time(dive, dc, sample.time);
 	// Find the divemode at the end of the dive
 	const struct event *ev = NULL;
 	divemode = UNDEF_COMP_TYPE;
 	divemode = get_current_divemode(dc, bottom_time, &ev, &divemode);
 	gas = get_cylinder(dive, current_cylinder)->gasmix;
 
-	po2 = sample->setpoint.mbar;
-	depth = dc->sample[dc->samples - 1].depth.mm;
+	po2 = sample.setpoint.mbar;
+	depth = sample.depth.mm;
 	average_max_depth(diveplan, &avg_depth, &max_depth);
 	last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 

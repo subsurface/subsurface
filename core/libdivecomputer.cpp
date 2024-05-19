@@ -309,7 +309,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 	return DC_STATUS_SUCCESS;
 }
 
-static void handle_event(struct divecomputer *dc, struct sample *sample, dc_sample_value_t value)
+static void handle_event(struct divecomputer *dc, const struct sample &sample, dc_sample_value_t value)
 {
 	int type, time;
 	struct event *ev;
@@ -360,20 +360,19 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 #endif
 
 	time = value.event.time;
-	if (sample)
-		time += sample->time.seconds;
+	time += sample.time.seconds;
 
 	ev = add_event(dc, time, type, value.event.flags, value.event.value, name);
 	if (event_is_gaschange(ev) && ev->gas.index >= 0)
 		current_gas_index = ev->gas.index;
 }
 
-static void handle_gasmix(struct divecomputer *dc, struct sample *sample, int idx)
+static void handle_gasmix(struct divecomputer *dc, const struct sample &sample, int idx)
 {
 	/* TODO: Verify that index is not higher than the number of cylinders */
 	if (idx < 0)
 		return;
-	add_event(dc, sample->time.seconds, SAMPLE_EVENT_GASCHANGE2, idx+1, 0, "gaschange");
+	add_event(dc, sample.time.seconds, SAMPLE_EVENT_GASCHANGE2, idx+1, 0, "gaschange");
 	current_gas_index = idx;
 }
 
@@ -381,30 +380,19 @@ void
 sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata)
 {
 	static unsigned int nsensor = 0;
-	dc_sample_value_t value = *pvalue;
 	struct divecomputer *dc = (divecomputer *)userdata;
-	struct sample *sample;
+	dc_sample_value_t value = *pvalue;
 
 	/*
-	 * We fill in the "previous" sample - except for DC_SAMPLE_TIME,
-	 * which creates a new one.
+	 * DC_SAMPLE_TIME is special: it creates a new sample.
+	 * Other types fill in an existing sample.
 	 */
-	sample = dc->samples ? dc->sample + dc->samples - 1 : NULL;
-
-	/*
-	 * Ok, sanity check.
-	 * If first sample is not a DC_SAMPLE_TIME, Allocate a sample for us
-	 */
-	if (sample == NULL && type != DC_SAMPLE_TIME)
-		sample = prepare_sample(dc);
-
-	switch (type) {
-	case DC_SAMPLE_TIME:
+	if (type == DC_SAMPLE_TIME) {
 		nsensor = 0;
 
 		// Create a new sample.
 		// Mark depth as negative
-		sample = prepare_sample(dc);
+		struct sample *sample = prepare_sample(dc);
 		sample->time.seconds = value.time / 1000;
 		sample->depth.mm = -1;
 		// The current sample gets some sticky values
@@ -418,40 +406,46 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 		sample->cns = cns;
 		sample->heartbeat = heartbeat;
 		sample->bearing.degrees = bearing;
-		finish_sample(dc);
-		break;
+		return;
+	}
+
+	if (dc->samples.empty())
+		prepare_sample(dc);
+	struct sample &sample = dc->samples.back();
+
+	switch (type) {
 	case DC_SAMPLE_DEPTH:
-		sample->depth.mm = lrint(value.depth * 1000);
+		sample.depth.mm = lrint(value.depth * 1000);
 		break;
 	case DC_SAMPLE_PRESSURE:
-		add_sample_pressure(sample, value.pressure.tank, lrint(value.pressure.value * 1000));
+		add_sample_pressure(&sample, value.pressure.tank, lrint(value.pressure.value * 1000));
 		break;
 	case DC_SAMPLE_GASMIX:
 		handle_gasmix(dc, sample, value.gasmix);
 		break;
 	case DC_SAMPLE_TEMPERATURE:
-		sample->temperature.mkelvin = C_to_mkelvin(value.temperature);
+		sample.temperature.mkelvin = C_to_mkelvin(value.temperature);
 		break;
 	case DC_SAMPLE_EVENT:
 		handle_event(dc, sample, value);
 		break;
 	case DC_SAMPLE_RBT:
-		sample->rbt.seconds = (!strncasecmp(dc->model.c_str(), "suunto", 6)) ? value.rbt : value.rbt * 60;
+		sample.rbt.seconds = (!strncasecmp(dc->model.c_str(), "suunto", 6)) ? value.rbt : value.rbt * 60;
 		break;
 #ifdef DC_SAMPLE_TTS
 	case DC_SAMPLE_TTS:
-		sample->tts.seconds = value.time;
+		sample.tts.seconds = value.time;
 		break;
 #endif
 	case DC_SAMPLE_HEARTBEAT:
-		sample->heartbeat = heartbeat = value.heartbeat;
+		sample.heartbeat = heartbeat = value.heartbeat;
 		break;
 	case DC_SAMPLE_BEARING:
-		sample->bearing.degrees = bearing = value.bearing;
+		sample.bearing.degrees = bearing = value.bearing;
 		break;
 #ifdef DEBUG_DC_VENDOR
 	case DC_SAMPLE_VENDOR:
-		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION_TUPLE(sample->time.seconds, 60),
+		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION_TUPLE(sample.time.seconds, 60),
 		       value.vendor.type, value.vendor.size);
 		for (int i = 0; i < value.vendor.size; ++i)
 			printf("%02X", ((unsigned char *)value.vendor.data)[i]);
@@ -460,11 +454,11 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 #endif
 	case DC_SAMPLE_SETPOINT:
 		/* for us a setpoint means constant pO2 from here */
-		sample->setpoint.mbar = po2 = lrint(value.setpoint * 1000);
+		sample.setpoint.mbar = po2 = lrint(value.setpoint * 1000);
 		break;
 	case DC_SAMPLE_PPO2:
 		if (nsensor < MAX_O2_SENSORS)
-			sample->o2sensor[nsensor].mbar = lrint(value.ppo2.value * 1000);
+			sample.o2sensor[nsensor].mbar = lrint(value.ppo2.value * 1000);
 		else
 			report_error("%d is more o2 sensors than we can handle", nsensor);
 		nsensor++;
@@ -473,25 +467,25 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 			dc->no_o2sensors = nsensor;
 		break;
 	case DC_SAMPLE_CNS:
-		sample->cns = cns = lrint(value.cns * 100);
+		sample.cns = cns = lrint(value.cns * 100);
 		break;
 	case DC_SAMPLE_DECO:
 		if (value.deco.type == DC_DECO_NDL) {
-			sample->ndl.seconds = ndl = value.deco.time;
-			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
-			sample->in_deco = in_deco = false;
+			sample.ndl.seconds = ndl = value.deco.time;
+			sample.stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
+			sample.in_deco = in_deco = false;
 		} else if (value.deco.type == DC_DECO_DECOSTOP ||
 			   value.deco.type == DC_DECO_DEEPSTOP) {
-			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
-			sample->stoptime.seconds = stoptime = value.deco.time;
-			sample->in_deco = in_deco = stopdepth > 0;
+			sample.stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
+			sample.stoptime.seconds = stoptime = value.deco.time;
+			sample.in_deco = in_deco = stopdepth > 0;
 			ndl = 0;
 		} else if (value.deco.type == DC_DECO_SAFETYSTOP) {
-			sample->in_deco = in_deco = false;
-			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
-			sample->stoptime.seconds = stoptime = value.deco.time;
+			sample.in_deco = in_deco = false;
+			sample.stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
+			sample.stoptime.seconds = stoptime = value.deco.time;
 		}
-		sample->tts.seconds = value.deco.tts;
+		sample.tts.seconds = value.deco.tts;
 	default:
 		break;
 	}
@@ -870,18 +864,18 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 
 	/* Various libdivecomputer interface fixups */
-	if (dive->dc.airtemp.mkelvin == 0 && first_temp_is_air && dive->dc.samples) {
-		dive->dc.airtemp = dive->dc.sample[0].temperature;
-		dive->dc.sample[0].temperature.mkelvin = 0;
+	if (dive->dc.airtemp.mkelvin == 0 && first_temp_is_air && !dive->dc.samples.empty()) {
+		dive->dc.airtemp = dive->dc.samples[0].temperature;
+		dive->dc.samples[0].temperature.mkelvin = 0;
 	}
 
 	/* special case for bug in Tecdiving DiveComputer.eu
 	 * often the first sample has a water temperature of 0C, followed by the correct
 	 * temperature in the next sample */
-	if (dive->dc.model == "Tecdiving DiveComputer.eu" &&
-	    dive->dc.sample[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
-	    dive->dc.sample[1].temperature.mkelvin > dive->dc.sample[0].temperature.mkelvin)
-		dive->dc.sample[0].temperature.mkelvin = dive->dc.sample[1].temperature.mkelvin;
+	if (dive->dc.model == "Tecdiving DiveComputer.eu" && !dive->dc.samples.empty() &&
+	    dive->dc.samples[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
+	    dive->dc.samples[1].temperature.mkelvin > dive->dc.samples[0].temperature.mkelvin)
+		dive->dc.samples[0].temperature.mkelvin = dive->dc.samples[1].temperature.mkelvin;
 
 	record_dive_to_table(dive.release(), devdata->log->dives.get());
 	return true;

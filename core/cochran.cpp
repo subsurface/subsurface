@@ -494,16 +494,16 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	while (offset + config.sample_size < size) {
 		s = samples + offset;
 
-		// Start with an empty sample
-		sample = prepare_sample(dc);
-		sample->time.seconds = sample_cnt * profile_period;
-
 		// Check for event
 		if (s[0] & 0x80) {
 			cochran_dive_event(dc, s, sample_cnt * profile_period, &in_deco, &deco_ceiling, &deco_time);
 			offset += cochran_dive_event_bytes(s[0]) + 1;
 			continue;
 		}
+
+		// Start with an empty sample
+		sample = prepare_sample(dc);
+		sample->time.seconds = sample_cnt * profile_period;
 
 		// Depth is in every sample
 		depth_sample = (double)(s[0] & 0x3F) / 4 * (s[0] & 0x40 ? -1 : 1);
@@ -590,8 +590,6 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		sample->temperature.mkelvin = F_to_mkelvin(temp);
 		sample->sensor[0] = 0;
 		sample->pressure[0].mbar = lrint(psi * PSI / 100);
-
-		finish_sample(dc);
 
 		offset += config.sample_size;
 		sample_cnt++;

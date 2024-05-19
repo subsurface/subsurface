@@ -334,7 +334,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 					sample->depth.mm = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
 					sample->temperature.mkelvin = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
 					add_sample_pressure(sample, event.pressure.sensor, event.pressure.mbar);
-					finish_sample(dc);
 
 					break;
 				} else if (event.time > sample_time) {
@@ -342,7 +341,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 					sample->time.seconds = sample_time;
 					sample->depth.mm = depth_mm;
 					sample->temperature.mkelvin = temp_mk;
-					finish_sample(dc);
 					d++;
 
 					continue;
@@ -351,7 +349,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 					sample->depth.mm = depth_mm;
 					sample->temperature.mkelvin = temp_mk;
 					add_sample_pressure(sample, event.pressure.sensor, event.pressure.mbar);
-					finish_sample(dc);
 					d++;
 
 					break;
@@ -370,7 +367,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 						sample->temperature.mkelvin = last_temp + (temp_mk - last_temp)
 							* ((int)event.time - (int)last_time) / sample_interval;
 					}
-					finish_sample(dc);
 
 					break;
 				}
@@ -385,7 +381,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 			sample->depth.mm = array_uint16_le(ds + d * 2) * 10; // cm->mm
 			sample->temperature.mkelvin =
 				C_to_mkelvin((float)array_uint16_le(ts + d * 2) / 10);
-			finish_sample(dc);
 		}
 
 		if (log_version == 3 && model == 4) {

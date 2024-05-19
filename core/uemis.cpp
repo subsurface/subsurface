@@ -349,7 +349,6 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		add_sample_pressure(sample, active, (u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10);
 		sample->cns = u_sample->cns;
 		event(dive, dc, sample, u_sample);
-		finish_sample(dc);
 		i += 0x25;
 		u_sample++;
 	}

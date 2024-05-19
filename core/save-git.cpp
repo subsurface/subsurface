@@ -245,17 +245,17 @@ static void show_index(struct membuffer *b, int value, const char *pre, const ch
  *
  * For parsing, look at the units to figure out what the numbers are.
  */
-static void save_sample(struct membuffer *b, struct sample *sample, struct sample *old, int o2sensor)
+static void save_sample(struct membuffer *b, const struct sample &sample, struct sample &old, int o2sensor)
 {
 	int idx;
 
-	put_format(b, "%3u:%02u", FRACTION_TUPLE(sample->time.seconds, 60));
-	put_milli(b, " ", sample->depth.mm, "m");
-	put_temperature(b, sample->temperature, " ", "°C");
+	put_format(b, "%3u:%02u", FRACTION_TUPLE(sample.time.seconds, 60));
+	put_milli(b, " ", sample.depth.mm, "m");
+	put_temperature(b, sample.temperature, " ", "°C");
 
 	for (idx = 0; idx < MAX_SENSORS; idx++) {
-		pressure_t p = sample->pressure[idx];
-		int sensor = sample->sensor[idx];
+		pressure_t p = sample.pressure[idx];
+		int sensor = sample.sensor[idx];
 
 		if (sensor == NO_SENSOR)
 			continue;
@@ -266,7 +266,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		/* Old-style "o2sensor" syntax for CCR dives? */
 		if (o2sensor >= 0) {
 			if (sensor == o2sensor) {
-				put_pressure(b, sample->pressure[1]," o2pressure=","bar");
+				put_pressure(b, sample.pressure[1]," o2pressure=","bar");
 				continue;
 			}
 
@@ -275,11 +275,11 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 			/*
 			 * Note: regardless of which index we used for the non-O2
 			 * sensor, we know there is only one non-O2 sensor in legacy
-			 * mode, and "old->sensor[0]" contains that index.
+			 * mode, and "old.sensor[0]" contains that index.
 			 */
-			if (sensor != old->sensor[0]) {
+			if (sensor != old.sensor[0]) {
 				put_format(b, " sensor=%d", sensor);
-				old->sensor[0] = sensor;
+				old.sensor[0] = sensor;
 			}
 			continue;
 		}
@@ -290,88 +290,86 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 	}
 
 	/* the deco/ndl values are stored whenever they change */
-	if (sample->ndl.seconds != old->ndl.seconds) {
-		put_format(b, " ndl=%u:%02u", FRACTION_TUPLE(sample->ndl.seconds, 60));
-		old->ndl = sample->ndl;
+	if (sample.ndl.seconds != old.ndl.seconds) {
+		put_format(b, " ndl=%u:%02u", FRACTION_TUPLE(sample.ndl.seconds, 60));
+		old.ndl = sample.ndl;
 	}
-	if (sample->tts.seconds != old->tts.seconds) {
-		put_format(b, " tts=%u:%02u", FRACTION_TUPLE(sample->tts.seconds, 60));
-		old->tts = sample->tts;
+	if (sample.tts.seconds != old.tts.seconds) {
+		put_format(b, " tts=%u:%02u", FRACTION_TUPLE(sample.tts.seconds, 60));
+		old.tts = sample.tts;
 	}
-	if (sample->in_deco != old->in_deco) {
-		put_format(b, " in_deco=%d", sample->in_deco ? 1 : 0);
-		old->in_deco = sample->in_deco;
+	if (sample.in_deco != old.in_deco) {
+		put_format(b, " in_deco=%d", sample.in_deco ? 1 : 0);
+		old.in_deco = sample.in_deco;
 	}
-	if (sample->stoptime.seconds != old->stoptime.seconds) {
-		put_format(b, " stoptime=%u:%02u", FRACTION_TUPLE(sample->stoptime.seconds, 60));
-		old->stoptime = sample->stoptime;
-	}
-
-	if (sample->stopdepth.mm != old->stopdepth.mm) {
-		put_milli(b, " stopdepth=", sample->stopdepth.mm, "m");
-		old->stopdepth = sample->stopdepth;
+	if (sample.stoptime.seconds != old.stoptime.seconds) {
+		put_format(b, " stoptime=%u:%02u", FRACTION_TUPLE(sample.stoptime.seconds, 60));
+		old.stoptime = sample.stoptime;
 	}
 
-	if (sample->cns != old->cns) {
-		put_format(b, " cns=%u%%", sample->cns);
-		old->cns = sample->cns;
+	if (sample.stopdepth.mm != old.stopdepth.mm) {
+		put_milli(b, " stopdepth=", sample.stopdepth.mm, "m");
+		old.stopdepth = sample.stopdepth;
 	}
 
-	if (sample->rbt.seconds != old->rbt.seconds) {
-		put_format(b, " rbt=%u:%02u", FRACTION_TUPLE(sample->rbt.seconds, 60));
-		old->rbt.seconds = sample->rbt.seconds;
+	if (sample.cns != old.cns) {
+		put_format(b, " cns=%u%%", sample.cns);
+		old.cns = sample.cns;
 	}
 
-	if (sample->o2sensor[0].mbar != old->o2sensor[0].mbar) {
-		put_milli(b, " sensor1=", sample->o2sensor[0].mbar, "bar");
-		old->o2sensor[0] = sample->o2sensor[0];
+	if (sample.rbt.seconds != old.rbt.seconds) {
+		put_format(b, " rbt=%u:%02u", FRACTION_TUPLE(sample.rbt.seconds, 60));
+		old.rbt.seconds = sample.rbt.seconds;
 	}
 
-	if ((sample->o2sensor[1].mbar) && (sample->o2sensor[1].mbar != old->o2sensor[1].mbar)) {
-		put_milli(b, " sensor2=", sample->o2sensor[1].mbar, "bar");
-		old->o2sensor[1] = sample->o2sensor[1];
+	if (sample.o2sensor[0].mbar != old.o2sensor[0].mbar) {
+		put_milli(b, " sensor1=", sample.o2sensor[0].mbar, "bar");
+		old.o2sensor[0] = sample.o2sensor[0];
 	}
 
-	if ((sample->o2sensor[2].mbar) && (sample->o2sensor[2].mbar != old->o2sensor[2].mbar)) {
-		put_milli(b, " sensor3=", sample->o2sensor[2].mbar, "bar");
-		old->o2sensor[2] = sample->o2sensor[2];
+	if ((sample.o2sensor[1].mbar) && (sample.o2sensor[1].mbar != old.o2sensor[1].mbar)) {
+		put_milli(b, " sensor2=", sample.o2sensor[1].mbar, "bar");
+		old.o2sensor[1] = sample.o2sensor[1];
 	}
 
-	if ((sample->o2sensor[3].mbar) && (sample->o2sensor[3].mbar != old->o2sensor[3].mbar)) {
-		put_milli(b, " sensor4=", sample->o2sensor[3].mbar, "bar");
-		old->o2sensor[3] = sample->o2sensor[3];
+	if ((sample.o2sensor[2].mbar) && (sample.o2sensor[2].mbar != old.o2sensor[2].mbar)) {
+		put_milli(b, " sensor3=", sample.o2sensor[2].mbar, "bar");
+		old.o2sensor[2] = sample.o2sensor[2];
 	}
 
-	if ((sample->o2sensor[4].mbar) && (sample->o2sensor[4].mbar != old->o2sensor[4].mbar)) {
-		put_milli(b, " sensor5=", sample->o2sensor[4].mbar, "bar");
-		old->o2sensor[4] = sample->o2sensor[4];
+	if ((sample.o2sensor[3].mbar) && (sample.o2sensor[3].mbar != old.o2sensor[3].mbar)) {
+		put_milli(b, " sensor4=", sample.o2sensor[3].mbar, "bar");
+		old.o2sensor[3] = sample.o2sensor[3];
 	}
 
-	if ((sample->o2sensor[5].mbar) && (sample->o2sensor[5].mbar != old->o2sensor[5].mbar)) {
-		put_milli(b, " sensor6=", sample->o2sensor[5].mbar, "bar");
-		old->o2sensor[5] = sample->o2sensor[5];
+	if ((sample.o2sensor[4].mbar) && (sample.o2sensor[4].mbar != old.o2sensor[4].mbar)) {
+		put_milli(b, " sensor5=", sample.o2sensor[4].mbar, "bar");
+		old.o2sensor[4] = sample.o2sensor[4];
 	}
 
-	if (sample->setpoint.mbar != old->setpoint.mbar) {
-		put_milli(b, " po2=", sample->setpoint.mbar, "bar");
-		old->setpoint = sample->setpoint;
+	if ((sample.o2sensor[5].mbar) && (sample.o2sensor[5].mbar != old.o2sensor[5].mbar)) {
+		put_milli(b, " sensor6=", sample.o2sensor[5].mbar, "bar");
+		old.o2sensor[5] = sample.o2sensor[5];
 	}
-	if (sample->heartbeat != old->heartbeat) {
-		show_index(b, sample->heartbeat, "heartbeat=", "");
-		old->heartbeat = sample->heartbeat;
+
+	if (sample.setpoint.mbar != old.setpoint.mbar) {
+		put_milli(b, " po2=", sample.setpoint.mbar, "bar");
+		old.setpoint = sample.setpoint;
 	}
-	if (sample->bearing.degrees != old->bearing.degrees) {
-		show_index(b, sample->bearing.degrees, "bearing=", "°");
-		old->bearing.degrees = sample->bearing.degrees;
+	if (sample.heartbeat != old.heartbeat) {
+		show_index(b, sample.heartbeat, "heartbeat=", "");
+		old.heartbeat = sample.heartbeat;
+	}
+	if (sample.bearing.degrees != old.bearing.degrees) {
+		show_index(b, sample.bearing.degrees, "bearing=", "°");
+		old.bearing.degrees = sample.bearing.degrees;
 	}
 	put_format(b, "\n");
 }
 
 static void save_samples(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
 {
-	int nr;
 	int o2sensor;
-	struct sample *s;
 	struct sample dummy;
 
 	/* Is this a CCR dive with the old-style "o2pressure" sensor? */
@@ -381,12 +379,8 @@ static void save_samples(struct membuffer *b, struct dive *dive, struct divecomp
 		dummy.sensor[1] = o2sensor;
 	}
 
-	s = dc->sample;
-	nr = dc->samples;
-	while (--nr >= 0) {
-		save_sample(b, s, &dummy, o2sensor);
-		s++;
-	}
+	for (const auto &s: dc->samples)
+		save_sample(b, s, dummy, o2sensor);
 }
 
 static void save_one_event(struct membuffer *b, struct dive *dive, struct event *ev)
