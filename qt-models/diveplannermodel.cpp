@@ -138,14 +138,14 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 
 	bool hasMarkedSamples = false;
 
-	if (dc->samples)
-		hasMarkedSamples = dc->sample[0].manually_entered;
+	if (!dc->samples.empty())
+		hasMarkedSamples = dc->samples[0].manually_entered;
 	else
 		fake_dc(dc);
 
 	// if this dive has more than 100 samples (so it is probably a logged dive),
 	// average samples so we end up with a total of 100 samples.
-	int plansamples = dc->samples <= 100 ? dc->samples : 100;
+	int plansamples = std::min(static_cast<int>(dc->samples.size()), 100);
 	int j = 0;
 	int cylinderid = 0;
 
@@ -153,12 +153,12 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	for (int i = 0; i < plansamples - 1; i++) {
 		if (dc->last_manual_time.seconds && dc->last_manual_time.seconds > 120 && lasttime.seconds >= dc->last_manual_time.seconds)
 			break;
-		while (j * plansamples <= i * dc->samples) {
-			const sample &s = dc->sample[j];
+		while (j * plansamples <= i * static_cast<int>(dc->samples.size())) {
+			const sample &s = dc->samples[j];
 			if (s.time.seconds != 0 && (!hasMarkedSamples || s.manually_entered)) {
 				depthsum += s.depth.mm;
 				if (j > 0)
-					last_sp = dc->sample[j-1].setpoint;
+					last_sp = dc->samples[j-1].setpoint;
 				++samplecount;
 				newtime = s.time;
 			}
