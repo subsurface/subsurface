@@ -765,7 +765,7 @@ static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 			const char *tmp = table.get_data(2);
 			ev = find_bookmark(d->dc.events, time);
 			if (ev)
-				update_event_name(d, 0, ev, tmp);
+				ev->name = tmp;
 			else
 				if (!add_event(&d->dc, time, SAMPLE_EVENT_BOOKMARK, 0, 0, tmp))
 					report_error("[smtk-import] Error - Couldn't add bookmark, dive %d, Name = %s",
