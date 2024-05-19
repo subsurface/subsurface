@@ -436,7 +436,6 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 		sample = prepare_sample(dc);
 		sample->time.seconds = time;
 		add_sample_data(sample, type, val);
-		finish_sample(dc);
 
 		time++;
 		dc->duration.seconds = time;
@@ -741,7 +740,6 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 				add_sample_data(sample, POSEIDON_SETPOINT, prev_setpoint);
 			if (!has_ndl && prev_ndl >= 0)
 				add_sample_data(sample, POSEIDON_NDL, prev_ndl);
-			finish_sample(dc);
 
 			if (!lineptr || !*lineptr)
 				break;

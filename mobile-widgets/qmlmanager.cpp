@@ -38,6 +38,7 @@
 #include "core/subsurface-string.h"
 #include "core/string-format.h"
 #include "core/pref.h"
+#include "core/sample.h"
 #include "core/selection.h"
 #include "core/save-profiledata.h"
 #include "core/settings/qPrefLog.h"
@@ -1135,7 +1136,7 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 		}
 		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
 		if (is_dc_manually_added_dive(&d->dc))
-			free_samples(&d->dc);
+			d->dc.samples.clear();
 		else
 			appendTextToLog("Cannot change the duration on a dive that wasn't manually added");
 		return true;
@@ -1154,7 +1155,7 @@ bool QMLManager::checkDepth(dive *d, QString depth)
 			d->maxdepth.mm = depthValue;
 			if (is_dc_manually_added_dive(&d->dc)) {
 				d->dc.maxdepth.mm = d->maxdepth.mm;
-				free_samples(&d->dc);
+				d->dc.samples.clear();
 			}
 			return true;
 		}
@@ -1358,7 +1359,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		if (d->maxdepth.mm == d->dc.maxdepth.mm &&
 		    d->maxdepth.mm > 0 &&
 		    is_dc_manually_added_dive(&d->dc) &&
-		    d->dc.samples == 0) {
+		    d->dc.samples.empty()) {
 			// so we have depth > 0, a manually added dive and no samples
 			// let's create an actual profile so the desktop version can work it
 			// first clear out the mean depth (or the fake_dc() function tries

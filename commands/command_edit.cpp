@@ -308,7 +308,7 @@ void EditDuration::set(struct dive *d, int value) const
 	d->dc.duration.seconds = value;
 	d->duration = d->dc.duration;
 	d->dc.meandepth.mm = 0;
-	d->dc.samples = 0;
+	d->dc.samples.clear();
 	fake_dc(&d->dc);
 }
 
@@ -328,7 +328,7 @@ void EditDepth::set(struct dive *d, int value) const
 	d->dc.maxdepth.mm = value;
 	d->maxdepth = d->dc.maxdepth;
 	d->dc.meandepth.mm = 0;
-	d->dc.samples = 0;
+	d->dc.samples.clear();
 	fake_dc(&d->dc);
 }
 
@@ -897,7 +897,7 @@ EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int
 	meandepth = source->meandepth;
 	duration = source->duration;
 
-	copy_samples(sdc, &dc);
+	dc.samples = sdc->samples;
 	copy_events(sdc, &dc);
 
 	setText(editProfileTypeToString(type, count) + " " + diveNumberOrDate(d));
@@ -919,8 +919,6 @@ void EditProfile::undo()
 	if (!sdc)
 		return;
 	std::swap(sdc->samples, dc.samples);
-	std::swap(sdc->alloc_samples, dc.alloc_samples);
-	std::swap(sdc->sample, dc.sample);
 	std::swap(sdc->events, dc.events);
 	std::swap(sdc->maxdepth, dc.maxdepth);
 	std::swap(d->maxdepth, maxdepth);
@@ -1339,13 +1337,13 @@ EditSensors::EditSensors(int toCylinderIn, int fromCylinderIn, int dcNr)
 
 void EditSensors::mapSensors(int toCyl, int fromCyl)
 {
-	for (int i = 0; i < dc->samples; ++i) {
+	for (auto &sample: dc->samples) {
 		for (int s = 0; s < MAX_SENSORS; ++s) {
-			if (dc->sample[i].pressure[s].mbar && dc->sample[i].sensor[s] == fromCyl)
-				dc->sample[i].sensor[s] = toCyl;
+			if (sample.pressure[s].mbar && sample.sensor[s] == fromCyl)
+				sample.sensor[s] = toCyl;
 			// In case the cylinder we are moving to has a sensor attached, move it to the other cylinder
-			else if (dc->sample[i].pressure[s].mbar && dc->sample[i].sensor[s] == toCyl)
-				dc->sample[i].sensor[s] = fromCyl;
+			else if (sample.pressure[s].mbar && sample.sensor[s] == toCyl)
+				sample.sensor[s] = fromCyl;
 		}
 	}
 	emit diveListNotifier.diveComputerEdited(dc);

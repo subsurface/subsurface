@@ -52,6 +52,9 @@ dive::~dive()
 	free_dive_structures(this);
 }
 
+dive::dive(dive &&) = default;
+dive &dive::operator=(const dive &) = default;
+
 /*
  * The legacy format for sample pressures has a single pressure
  * for each sample that can have any sensor, plus a possible
@@ -65,16 +68,15 @@ dive::~dive()
  */
 int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc)
 {
-	int i, o2sensor;
+	int o2sensor;
 
 	o2sensor = (dc->divemode == CCR) ? get_cylinder_idx_by_use(dive, OXYGEN) : -1;
-	for (i = 0; i < dc->samples; i++) {
-		const struct sample *s = dc->sample + i;
+	for (const auto &s: dc->samples) {
 		int seen_pressure = 0, idx;
 
 		for (idx = 0; idx < MAX_SENSORS; idx++) {
-			int sensor = s->sensor[idx];
-			pressure_t p = s->pressure[idx];
+			int sensor = s.sensor[idx];
+			pressure_t p = s.pressure[idx];
 
 			if (!p.mbar)
 				continue;
@@ -180,7 +182,6 @@ int dive_getUniqID()
 static void copy_dc(const struct divecomputer *sdc, struct divecomputer *ddc)
 {
 	*ddc = *sdc;
-	copy_samples(sdc, ddc);
 	copy_events(sdc, ddc);
 }
 
@@ -515,14 +516,13 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 
 		return;
 	}
-	if (!dc->samples)
+	if (dc->samples.empty())
 		fake_dc(dc);
 	const struct event *ev = get_next_event(dc->events, "gaschange");
 	std::vector<int> depthtime(dive->cylinders.nr, 0);
-	for (i = 0; i < dc->samples; i++) {
-		struct sample *sample = dc->sample + i;
-		int32_t time = sample->time.seconds;
-		int depth = sample->depth.mm;
+	for (auto it = dc->samples.begin(); it != dc->samples.end(); ++it) {
+		int32_t time = it->time.seconds;
+		int depth = it->depth.mm;
 
 		/* Make sure to move the event past 'lasttime' */
 		while (ev && lasttime >= ev->time.seconds) {
@@ -531,13 +531,13 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 		}
 
 		/* Do we need to fake a midway sample at an event? */
-		if (ev && time > ev->time.seconds) {
+		if (ev && it != dc->samples.begin() && time > ev->time.seconds) {
 			int newtime = ev->time.seconds;
 			int newdepth = interpolate(lastdepth, depth, newtime - lasttime, time - lasttime);
 
 			time = newtime;
 			depth = newdepth;
-			i--;
+			--it;
 		}
 		/* We ignore segments at the surface */
 		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
@@ -586,7 +586,7 @@ int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *
 		return -1;
 	if (dc) {
 		const struct event *ev = get_next_event(dc->events, "gaschange");
-		if (ev && ((dc->sample && ev->time.seconds == dc->sample[0].time.seconds) || ev->time.seconds <= 1))
+		if (ev && ((!dc->samples.empty() && ev->time.seconds == dc->samples[0].time.seconds) || ev->time.seconds <= 1))
 			res = get_cylinder_index(dive, ev);
 		else if (dc->divemode == CCR)
 			res = std::max(get_cylinder_idx_by_use(dive, DILUENT), res);
@@ -618,15 +618,15 @@ void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 		struct gasmix gasmix = get_gasmix_from_event(dive, ev);
 		const struct event *next = get_next_event(ev, "gaschange");
 
-		for (int i = 0; i < dc->samples; i++) {
-			if (next && dc->sample[i].time.seconds >= next->time.seconds) {
+		for (auto &sample: dc->samples) {
+			if (next && sample.time.seconds >= next->time.seconds) {
 				ev = next;
 				gasmix = get_gasmix_from_event(dive, ev);
 				next = get_next_event(ev, "gaschange");
 			}
-			gas_pressures pressures = fill_pressures(lrint(calculate_depth_to_mbarf(dc->sample[i].depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
-			if (abs(dc->sample[i].setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
-				dc->sample[i].setpoint.mbar = 0;
+			gas_pressures pressures = fill_pressures(lrint(calculate_depth_to_mbarf(sample.depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
+			if (abs(sample.setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
+				sample.setpoint.mbar = 0;
 		}
 	}
 
@@ -906,16 +906,14 @@ static void fixup_dc_events(struct divecomputer *dc)
 
 static int interpolate_depth(struct divecomputer *dc, int idx, int lastdepth, int lasttime, int now)
 {
-	int i;
 	int nextdepth = lastdepth;
 	int nexttime = now;
 
-	for (i = idx+1; i < dc->samples; i++) {
-		struct sample *sample = dc->sample + i;
-		if (sample->depth.mm < 0)
+	for (auto it = dc->samples.begin() + idx; it != dc->samples.end(); ++it) {
+		if (it->depth.mm < 0)
 			continue;
-		nextdepth = sample->depth.mm;
-		nexttime = sample->time.seconds;
+		nextdepth = it->depth.mm;
+		nexttime = it->time.seconds;
 		break;
 	}
 	return interpolate(lastdepth, nextdepth, now-lasttime, nexttime-lasttime);
@@ -923,18 +921,16 @@ static int interpolate_depth(struct divecomputer *dc, int idx, int lastdepth, in
 
 static void fixup_dc_depths(struct dive *dive, struct divecomputer *dc)
 {
-	int i;
 	int maxdepth = dc->maxdepth.mm;
 	int lasttime = 0, lastdepth = 0;
 
-	for (i = 0; i < dc->samples; i++) {
-		struct sample *sample = dc->sample + i;
-		int time = sample->time.seconds;
-		int depth = sample->depth.mm;
+	for (const auto [idx, sample]: enumerated_range(dc->samples)) {
+		int time = sample.time.seconds;
+		int depth = sample.depth.mm;
 
-		if (depth < 0) {
-			depth = interpolate_depth(dc, i, lastdepth, lasttime, time);
-			sample->depth.mm = depth;
+		if (depth < 0 && idx + 2 < static_cast<int>(dc->samples.size())) {
+			depth = interpolate_depth(dc, idx, lastdepth, lasttime, time);
+			sample.depth.mm = depth;
 		}
 
 		if (depth > SURFACE_THRESHOLD) {
@@ -944,8 +940,8 @@ static void fixup_dc_depths(struct dive *dive, struct divecomputer *dc)
 
 		lastdepth = depth;
 		lasttime = time;
-		if (sample->cns > dive->maxcns)
-			dive->maxcns = sample->cns;
+		if (sample.cns > dive->maxcns)
+			dive->maxcns = sample.cns;
 	}
 
 	update_depth(&dc->maxdepth, maxdepth);
@@ -956,25 +952,20 @@ static void fixup_dc_depths(struct dive *dive, struct divecomputer *dc)
 
 static void fixup_dc_ndl(struct divecomputer *dc)
 {
-	int i;
-
-	for (i = 0; i < dc->samples; i++) {
-		struct sample *sample = dc->sample + i;
-		if (sample->ndl.seconds != 0)
+	for (auto &sample: dc->samples) {
+		if (sample.ndl.seconds != 0)
 			break;
-		if (sample->ndl.seconds == 0)
-			sample->ndl.seconds = -1;
+		if (sample.ndl.seconds == 0)
+			sample.ndl.seconds = -1;
 	}
 }
 
 static void fixup_dc_temp(struct dive *dive, struct divecomputer *dc)
 {
-	int i;
 	int mintemp = 0, lasttemp = 0;
 
-	for (i = 0; i < dc->samples; i++) {
-		struct sample *sample = dc->sample + i;
-		int temp = sample->temperature.mkelvin;
+	for (auto &sample: dc->samples) {
+		int temp = sample.temperature.mkelvin;
 
 		if (temp) {
 			/*
@@ -983,7 +974,7 @@ static void fixup_dc_temp(struct dive *dive, struct divecomputer *dc)
 			 * the redundant ones.
 			 */
 			if (lasttemp == temp)
-				sample->temperature.mkelvin = 0;
+				sample.temperature.mkelvin = 0;
 			else
 				lasttemp = temp;
 
@@ -991,7 +982,7 @@ static void fixup_dc_temp(struct dive *dive, struct divecomputer *dc)
 				mintemp = temp;
 		}
 
-		update_min_max_temperatures(dive, sample->temperature);
+		update_min_max_temperatures(dive, sample.temperature);
 	}
 	update_temperature(&dc->watertemp, mintemp);
 	update_min_max_temperatures(dive, dc->watertemp);
@@ -1000,22 +991,20 @@ static void fixup_dc_temp(struct dive *dive, struct divecomputer *dc)
 /* Remove redundant pressure information */
 static void simplify_dc_pressures(struct divecomputer *dc)
 {
-	int i;
 	int lastindex[2] = { -1, -1 };
 	int lastpressure[2] = { 0 };
 
-	for (i = 0; i < dc->samples; i++) {
+	for (auto &sample: dc->samples) {
 		int j;
-		struct sample *sample = dc->sample + i;
 
 		for (j = 0; j < MAX_SENSORS; j++) {
-			int pressure = sample->pressure[j].mbar;
-			int index = sample->sensor[j];
+			int pressure = sample.pressure[j].mbar;
+			int index = sample.sensor[j];
 
 			if (index == lastindex[j]) {
 				/* Remove duplicate redundant pressure information */
 				if (pressure == lastpressure[j])
-					sample->pressure[j].mbar = 0;
+					sample.pressure[j].mbar = 0;
 			}
 			lastindex[j] = index;
 			lastpressure[j] = pressure;
@@ -1057,30 +1046,22 @@ static void fixup_end_pressure(struct dive *dive, int idx, pressure_t p)
  */
 static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 {
-	int i;
-
 	/* Walk the samples from the beginning to find starting pressures.. */
-	for (i = 0; i < dc->samples; i++) {
-		int idx;
-		struct sample *sample = dc->sample + i;
-
-		if (sample->depth.mm < SURFACE_THRESHOLD)
+	for (auto &sample: dc->samples) {
+		if (sample.depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		for (idx = 0; idx < MAX_SENSORS; idx++)
-			fixup_start_pressure(dive, sample->sensor[idx], sample->pressure[idx]);
+		for (int idx = 0; idx < MAX_SENSORS; idx++)
+			fixup_start_pressure(dive, sample.sensor[idx], sample.pressure[idx]);
 	}
 
 	/* ..and from the end for ending pressures */
-	for (i = dc->samples; --i >= 0; ) {
-		int idx;
-		struct sample *sample = dc->sample + i;
-
-		if (sample->depth.mm < SURFACE_THRESHOLD)
+	for (auto it = dc->samples.rbegin(); it != dc->samples.rend(); ++it) {
+		if (it->depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		for (idx = 0; idx < MAX_SENSORS; idx++)
-			fixup_end_pressure(dive, sample->sensor[idx], sample->pressure[idx]);
+		for (int idx = 0; idx < MAX_SENSORS; idx++)
+			fixup_end_pressure(dive, it->sensor[idx], it->pressure[idx]);
 	}
 
 	simplify_dc_pressures(dc);
@@ -1155,13 +1136,12 @@ static void fixup_no_o2sensors(struct divecomputer *dc)
 	if (dc->no_o2sensors != 0 || !(dc->divemode == CCR || dc->divemode == PSCR))
 		return;
 
-	for (int i = 0; i < dc->samples; i++) {
-		int nsensor = 0, j;
-		struct sample *s = dc->sample + i;
+	for (const auto &sample: dc->samples) {
+		int nsensor = 0;
 
 		// How many o2 sensors can we find in this sample?
-		for (j = 0; j < MAX_O2_SENSORS; j++)
-			if (s->o2sensor[j].mbar)
+		for (int j = 0; j < MAX_O2_SENSORS; j++)
+			if (sample.o2sensor[j].mbar)
 				nsensor++;
 
 		// If we fond more than the previous found max, record it.
@@ -1178,21 +1158,20 @@ static void fixup_dc_sample_sensors(struct dive *dive, struct divecomputer *dc)
 {
 	unsigned long sensor_mask = 0;
 
-	for (int i = 0; i < dc->samples; i++) {
-		struct sample *s = dc->sample + i;
+	for (auto &sample: dc->samples) {
 		for (int j = 0; j < MAX_SENSORS; j++) {
-			int sensor = s->sensor[j];
+			int sensor = sample.sensor[j];
 
 			// No invalid sensor ID's, please
 			if (sensor < 0 || sensor > MAX_SENSORS) {
-				s->sensor[j] = NO_SENSOR;
-				s->pressure[j].mbar = 0;
+				sample.sensor[j] = NO_SENSOR;
+				sample.pressure[j].mbar = 0;
 				continue;
 			}
 
 			// Don't bother tracking sensors with no data
-			if (!s->pressure[j].mbar) {
-				s->sensor[j] = NO_SENSOR;
+			if (!sample.pressure[j].mbar) {
+				sample.sensor[j] = NO_SENSOR;
 				continue;
 			}
 
@@ -1240,7 +1219,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	fixup_no_o2sensors(dc);
 
 	/* If there are no samples, generate a fake profile based on depth and time */
-	if (!dc->samples)
+	if (dc->samples.empty())
 		fake_dc(dc);
 }
 
@@ -1304,13 +1283,12 @@ struct dive *fixup_dive(struct dive *dive)
  * that the time in between the dives is at the surface, not some "last
  * sample that happened to be at a depth of 1.2m".
  */
-static void merge_one_sample(const struct sample *sample, int time, struct divecomputer *dc)
+static void merge_one_sample(const struct sample &sample, int time, struct divecomputer *dc)
 {
-	int last = dc->samples - 1;
-	if (last >= 0) {
-		struct sample *prev = dc->sample + last;
-		int last_time = prev->time.seconds;
-		int last_depth = prev->depth.mm;
+	if (!dc->samples.empty()) {
+		const struct sample &prev = dc->samples.back();
+		int last_time = prev.time.seconds;
+		int last_depth = prev.depth.mm;
 
 		/*
 		 * Only do surface events if the samples are more than
@@ -1320,18 +1298,18 @@ static void merge_one_sample(const struct sample *sample, int time, struct divec
 			struct sample surface;
 
 			/* Init a few values from prev sample to avoid useless info in XML */
-			surface.bearing.degrees = prev->bearing.degrees;
-			surface.ndl.seconds = prev->ndl.seconds;
+			surface.bearing.degrees = prev.bearing.degrees;
+			surface.ndl.seconds = prev.ndl.seconds;
 
 			add_sample(&surface, last_time + 20, dc);
 			add_sample(&surface, time - 20, dc);
 		}
 	}
-	add_sample(sample, time, dc);
+	add_sample(&sample, time, dc);
 }
 
 static void renumber_last_sample(struct divecomputer *dc, const int mapping[]);
-static void sample_renumber(struct sample *s, int i, const int mapping[]);
+static void sample_renumber(struct sample &s, const struct sample *next, const int mapping[]);
 
 /*
  * Merge samples. Dive 'a' is "offset" seconds before Dive 'b'
@@ -1341,10 +1319,10 @@ static void merge_samples(struct divecomputer *res,
 			  const int *cylinders_map_a, const int *cylinders_map_b,
 			  int offset)
 {
-	int asamples = a->samples;
-	int bsamples = b->samples;
-	struct sample *as = a->sample;
-	struct sample *bs = b->sample;
+	auto as = a->samples.begin();
+	auto bs = b->samples.begin();
+	auto a_end = a->samples.end();
+	auto b_end = b->samples.end();
 
 	/*
 	 * We want a positive sample offset, so that sample
@@ -1354,27 +1332,18 @@ static void merge_samples(struct divecomputer *res,
 	 * the reverse offset.
 	 */
 	if (offset < 0) {
-		const int *cylinders_map_tmp;
 		offset = -offset;
-		asamples = bsamples;
-		bsamples = a->samples;
-		as = bs;
-		bs = a->sample;
-		cylinders_map_tmp = cylinders_map_a;
-		cylinders_map_a = cylinders_map_b;
-		cylinders_map_b = cylinders_map_tmp;
+		std::swap(as, bs);
+		std::swap(a_end, b_end);
+		std::swap(cylinders_map_a, cylinders_map_b);
 	}
 
 	for (;;) {
-		int j;
-		int at, bt;
-		struct sample sample;
-
 		if (!res)
 			return;
 
-		at = asamples ? as->time.seconds : -1;
-		bt = bsamples ? bs->time.seconds + offset : -1;
+		int at = as != a_end ? as->time.seconds : -1;
+		int bt = bs != b_end ? bs->time.seconds + offset : -1;
 
 		/* No samples? All done! */
 		if (at < 0 && bt < 0)
@@ -1383,20 +1352,18 @@ static void merge_samples(struct divecomputer *res,
 		/* Only samples from a? */
 		if (bt < 0) {
 		add_sample_a:
-			merge_one_sample(as, at, res);
+			merge_one_sample(*as, at, res);
 			renumber_last_sample(res, cylinders_map_a);
 			as++;
-			asamples--;
 			continue;
 		}
 
 		/* Only samples from b? */
 		if (at < 0) {
 		add_sample_b:
-			merge_one_sample(bs, bt, res);
+			merge_one_sample(*bs, bt, res);
 			renumber_last_sample(res, cylinders_map_b);
 			bs++;
-			bsamples--;
 			continue;
 		}
 
@@ -1406,13 +1373,13 @@ static void merge_samples(struct divecomputer *res,
 			goto add_sample_b;
 
 		/* same-time sample: add a merged sample. Take the non-zero ones */
-		sample = *bs;
-		sample_renumber(&sample, 0, cylinders_map_b);
+		struct sample sample = *bs;
+		sample_renumber(sample, nullptr, cylinders_map_b);
 		if (as->depth.mm)
 			sample.depth = as->depth;
 		if (as->temperature.mkelvin)
 			sample.temperature = as->temperature;
-		for (j = 0; j < MAX_SENSORS; ++j) {
+		for (int j = 0; j < MAX_SENSORS; ++j) {
 			int sensor_id;
 
 			sensor_id = cylinders_map_a[as->sensor[j]];
@@ -1437,12 +1404,10 @@ static void merge_samples(struct divecomputer *res,
 		if (as->in_deco)
 			sample.in_deco = true;
 
-		merge_one_sample(&sample, at, res);
+		merge_one_sample(sample, at, res);
 
 		as++;
 		bs++;
-		asamples--;
-		bsamples--;
 	}
 }
 
@@ -1636,38 +1601,34 @@ static void add_initial_gaschange(struct dive *dive, struct divecomputer *dc, in
 	add_gas_switch_event(dive, dc, offset, idx);
 }
 
-static void sample_renumber(struct sample *s, int i, const int mapping[])
+static void sample_renumber(struct sample &s, const struct sample *prev, const int mapping[])
 {
-	int j;
-
-	for (j = 0; j < MAX_SENSORS; j++) {
+	for (int j = 0; j < MAX_SENSORS; j++) {
 		int sensor = -1;
 
-		if (s->sensor[j] != NO_SENSOR)
-			sensor = mapping[s->sensor[j]];
+		if (s.sensor[j] != NO_SENSOR)
+			sensor = mapping[s.sensor[j]];
 		if (sensor == -1) {
 			// Remove sensor and gas pressure info
-			if (i == 0) {
-				s->sensor[j] = 0;
-				s->pressure[j].mbar = 0;
+			if (!prev) {
+				s.sensor[j] = 0;
+				s.pressure[j].mbar = 0;
 			} else {
-				s->sensor[j] = s[-1].sensor[j];
-				s->pressure[j].mbar = s[-1].pressure[j].mbar;
+				s.sensor[j] = prev->sensor[j];
+				s.pressure[j].mbar = prev->pressure[j].mbar;
 			}
 		} else {
-			s->sensor[j] = sensor;
+			s.sensor[j] = sensor;
 		}
 	}
 }
 
 static void renumber_last_sample(struct divecomputer *dc, const int mapping[])
 {
-	int idx;
-
-	if (dc->samples <= 0)
+	if (dc->samples.empty())
 		return;
-	idx = dc->samples - 1;
-	sample_renumber(dc->sample + idx, idx, mapping);
+	sample *prev = dc->samples.size() > 1 ? &dc->samples[dc->samples.size() - 2] : nullptr;
+	sample_renumber(dc->samples.back(), prev, mapping);
 }
 
 static void event_renumber(struct event *ev, const int mapping[])
@@ -1681,12 +1642,11 @@ static void event_renumber(struct event *ev, const int mapping[])
 
 static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, const int mapping[])
 {
-	int i;
 	struct event *ev;
 
 	/* Remap or delete the sensor indices */
-	for (i = 0; i < dc->samples; i++)
-		sample_renumber(dc->sample + i, i, mapping);
+	for (auto [i, sample]: enumerated_range(dc->samples))
+		sample_renumber(sample, i > 0 ? &dc->samples[i-1] : nullptr, mapping);
 
 	/* Remap the gas change indices */
 	for (ev = dc->events; ev; ev = ev->next)
@@ -2008,17 +1968,17 @@ static struct dive_trip *get_preferred_trip(const struct dive *a, const struct d
 /*
  * Sample 's' is between samples 'a' and 'b'. It is 'offset' seconds before 'b'.
  *
- * If 's' and 'a' are at the same time, offset is 0, and b is NULL.
+ * If 's' and 'a' are at the same time, offset is 0.
  */
-static int compare_sample(struct sample *s, struct sample *a, struct sample *b, int offset)
+static int compare_sample(const struct sample &s, const struct sample &a, const struct sample &b, int offset)
 {
-	unsigned int depth = a->depth.mm;
+	unsigned int depth = a.depth.mm;
 	int diff;
 
 	if (offset) {
-		unsigned int interval = b->time.seconds - a->time.seconds;
-		unsigned int depth_a = a->depth.mm;
-		unsigned int depth_b = b->depth.mm;
+		unsigned int interval = b.time.seconds - a.time.seconds;
+		unsigned int depth_a = a.depth.mm;
+		unsigned int depth_b = b.depth.mm;
 
 		if (offset > interval)
 			return -1;
@@ -2027,7 +1987,7 @@ static int compare_sample(struct sample *s, struct sample *a, struct sample *b, 
 		depth = (depth_a * offset) + (depth_b * (interval - offset));
 		depth /= interval;
 	}
-	diff = s->depth.mm - depth;
+	diff = s.depth.mm - depth;
 	if (diff < 0)
 		diff = -diff;
 	/* cut off at one meter difference */
@@ -2043,10 +2003,9 @@ static int compare_sample(struct sample *s, struct sample *a, struct sample *b, 
  */
 static unsigned long sample_difference(struct divecomputer *a, struct divecomputer *b, int offset)
 {
-	int asamples = a->samples;
-	int bsamples = b->samples;
-	struct sample *as = a->sample;
-	struct sample *bs = b->sample;
+	if (a->samples.empty() || b->samples.empty())
+		return;
+
 	unsigned long error = 0;
 	int start = -1;
 
@@ -2057,45 +2016,36 @@ static unsigned long sample_difference(struct divecomputer *a, struct divecomput
 	 * skip the first sample - this way we know can always look at
 	 * as/bs[-1] to look at the samples around it in the loop.
 	 */
-	as++;
-	bs++;
-	asamples--;
-	bsamples--;
+	auto as = a->samples.begin() + 1;
+	auto bs = a->samples.begin() + 1;
 
 	for (;;) {
-		int at, bt, diff;
-
-
 		/* If we run out of samples, punt */
-		if (!asamples)
+		if (as == a->samples.end())
 			return INT_MAX;
-		if (!bsamples)
+		if (bs == b->samples.end())
 			return INT_MAX;
 
-		at = as->time.seconds;
-		bt = bs->time.seconds + offset;
+		int at = as->time.seconds;
+		int bt = bs->time.seconds + offset;
 
 		/* b hasn't started yet? Ignore it */
 		if (bt < 0) {
-			bs++;
-			bsamples--;
+			++bs;
 			continue;
 		}
 
+		int diff;
 		if (at < bt) {
-			diff = compare_sample(as, bs - 1, bs, bt - at);
-			as++;
-			asamples--;
+			diff = compare_sample(*as, *std::prev(bs), *bs, bt - at);
+			++as;
 		} else if (at > bt) {
-			diff = compare_sample(bs, as - 1, as, at - bt);
-			bs++;
-			bsamples--;
+			diff = compare_sample(*bs, *std::prev(as), *as, at - bt);
+			++bs;
 		} else {
-			diff = compare_sample(as, bs, NULL, 0);
-			as++;
-			bs++;
-			asamples--;
-			bsamples--;
+			diff = compare_sample(*as, *bs, *bs, 0);
+			++as;
+			++bs;
 		}
 
 		/* Invalid comparison point? */
@@ -2130,13 +2080,10 @@ static unsigned long sample_difference(struct divecomputer *a, struct divecomput
  */
 static int find_sample_offset(struct divecomputer *a, struct divecomputer *b)
 {
-	int offset, best;
-	unsigned long max;
-
 	/* No samples? Merge at any time (0 offset) */
-	if (!a->samples)
+	if (a->samples.empty())
 		return 0;
-	if (!b->samples)
+	if (b->samples.empty())
 		return 0;
 
 	/*
@@ -2145,8 +2092,8 @@ static int find_sample_offset(struct divecomputer *a, struct divecomputer *b)
 	 * Check this first, without wasting time trying to find
 	 * some minimal offset case.
 	 */
-	best = 0;
-	max = sample_difference(a, b, 0);
+	int best = 0;
+	unsigned long max = sample_difference(a, b, 0);
 	if (!max)
 		return 0;
 
@@ -2154,10 +2101,10 @@ static int find_sample_offset(struct divecomputer *a, struct divecomputer *b)
 	 * Otherwise, look if we can find anything better within
 	 * a thirty second window..
 	 */
-	for (offset = -30; offset <= 30; offset++) {
+	for (int offset = -30; offset <= 30; offset++) {
 		unsigned long diff;
 
-		diff = sample_difference(a, b, offset);
+		int diff = sample_difference(a, b, offset);
 		if (diff > max)
 			continue;
 		best = offset;
@@ -2320,17 +2267,17 @@ struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded
 	return res;
 }
 
-static int same_sample(struct sample *a, struct sample *b)
+static bool operator==(const sample &a, const sample &b)
 {
-	if (a->time.seconds != b->time.seconds)
-		return 0;
-	if (a->depth.mm != b->depth.mm)
-		return 0;
-	if (a->temperature.mkelvin != b->temperature.mkelvin)
-		return 0;
-	if (a->pressure[0].mbar != b->pressure[0].mbar)
-		return 0;
-	return a->sensor[0] == b->sensor[0];
+	if (a.time.seconds != b.time.seconds)
+		return false;
+	if (a.depth.mm != b.depth.mm)
+		return false;
+	if (a.temperature.mkelvin != b.temperature.mkelvin)
+		return false;
+	if (a.pressure[0].mbar != b.pressure[0].mbar)
+		return false;
+	return a.sensor[0] == b.sensor[0];
 }
 
 static int same_dc(struct divecomputer *a, struct divecomputer *b)
@@ -2346,9 +2293,6 @@ static int same_dc(struct divecomputer *a, struct divecomputer *b)
 		return 0;
 	if (a->samples != b->samples)
 		return 0;
-	for (i = 0; i < a->samples; i++)
-		if (!same_sample(a->sample + i, b->sample + i))
-			return 0;
 	eva = a->events;
 	evb = b->events;
 	while (eva && evb) {
@@ -2416,8 +2360,7 @@ static const struct divecomputer *find_matching_computer(const struct divecomput
 static void copy_dive_computer(struct divecomputer *res, const struct divecomputer *a)
 {
 	*res = *a;
-	res->samples = res->alloc_samples = 0;
-	res->sample = NULL;
+	res->samples.clear();
 	res->events = NULL;
 	res->next = NULL;
 }
@@ -2694,7 +2637,7 @@ static void force_fixup_dive(struct dive *d)
  */
 static int split_dive_at(const struct dive *dive, int a, int b, struct dive **out1, struct dive **out2)
 {
-	int i, nr;
+	int nr;
 	int32_t t;
 	struct dive *d1, *d2;
 	struct divecomputer *dc1, *dc2;
@@ -2705,7 +2648,7 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 		return -1;
 
 	/* Splitting should leave at least 3 samples per dive */
-	if (a < 3 || b > dive->dc.samples - 4)
+	if (a < 3 || static_cast<size_t>(b + 4) > dive->dc.samples.size())
 		return -1;
 
 	/* We're not trying to be efficient here.. */
@@ -2724,26 +2667,22 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 	 * Cut off the samples of d1 at the beginning
 	 * of the interval.
 	 */
-	dc1->samples = a;
+	dc1->samples.resize(a);
 
 	/* And get rid of the 'b' first samples of d2 */
-	dc2->samples -= b;
-	memmove(dc2->sample, dc2->sample+b, dc2->samples * sizeof(struct sample));
+	dc2->samples.erase(dc2->samples.begin(), dc2->samples.begin() + b);
 
 	/* Now the secondary dive computers */
-	t = dc2->sample[0].time.seconds;
-	while ((dc1 = dc1->next))	{
-		i = 0;
-		while (dc1->samples < i && dc1->sample[i].time.seconds <= t)
-			++i;
-		dc1->samples = i;
+	t = dc2->samples[0].time.seconds;
+	while ((dc1 = dc1->next)) {
+		auto it = std::find_if(dc1->samples.begin(), dc1->samples.end(),
+				       [t](auto &sample) { return sample.time.seconds >= t; });
+		dc1->samples.erase(it, dc1->samples.end());
 	}
 	while ((dc2 = dc2->next)) {
-		i = 0;
-		while (dc2->samples < i && dc2->sample[i].time.seconds < t)
-			++i;
-		dc2->samples -= i;
-		memmove(dc2->sample, dc2->sample + i, dc2->samples * sizeof(struct sample));
+		auto it = std::find_if(dc2->samples.begin(), dc2->samples.end(),
+				       [t](auto &sample) { return sample.time.seconds >= t; });
+		dc2->samples.erase(dc2->samples.begin(), it);
 	}
 	dc1 = &d1->dc;
 	dc2 = &d2->dc;
@@ -2754,8 +2693,8 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 	d2->when += t;
 	while (dc1 && dc2) {
 		dc2->when += t;
-		for (i = 0; i < dc2->samples; i++)
-			dc2->sample[i].time.seconds -= t;
+		for (auto &sample: dc2->samples)
+			sample.time.seconds -= t;
 
 		/* Remove the events past 't' from d1 */
 		evp = &dc1->events;
@@ -2823,20 +2762,17 @@ static bool should_split(const struct divecomputer *dc, int t1, int t2)
  */
 int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2)
 {
-	int i;
-	int at_surface, surface_start;
-	const struct divecomputer *dc;
-
 	*new1 = *new2 = NULL;
 	if (!dive)
 		return -1;
 
-	dc = &dive->dc;
-	surface_start = 0;
-	at_surface = 1;
-	for (i = 1; i < dc->samples; i++) {
-		struct sample *sample = dc->sample+i;
-		int surface_sample = sample->depth.mm < SURFACE_THRESHOLD;
+	const struct divecomputer *dc = &dive->dc;
+	bool at_surface = true;
+	if (dc->samples.empty())
+		return -1;
+	auto surface_start = dc->samples.begin();
+	for (auto it = dc->samples.begin() + 1; it != dc->samples.end(); ++it) {
+		bool surface_sample = it->depth.mm < SURFACE_THRESHOLD;
 
 		/*
 		 * We care about the transition from and to depth 0,
@@ -2848,38 +2784,35 @@ int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2)
 
 		// Did it become surface after having been non-surface? We found the start
 		if (at_surface) {
-			surface_start = i;
+			surface_start = it;
 			continue;
 		}
 
 		// Going down again? We want at least a minute from
 		// the surface start.
-		if (!surface_start)
+		if (surface_start == dc->samples.begin())
 			continue;
-		if (!should_split(dc, dc->sample[surface_start].time.seconds, sample[-1].time.seconds))
+		if (!should_split(dc, surface_start->time.seconds, std::prev(it)->time.seconds))
 			continue;
 
-		return split_dive_at(dive, surface_start, i-1, new1, new2);
+		return split_dive_at(dive, surface_start - dc->samples.begin(), it - dc->samples.begin() - 1, new1, new2);
 	}
 	return -1;
 }
 
 int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2)
 {
-	int i = 0;
-
 	if (!dive)
 		return -1;
 
-	struct sample *sample = dive->dc.sample;
-	*new1 = *new2 = NULL;
-	while(sample->time.seconds < time.seconds) {
-		++sample;
-		++i;
-		if (dive->dc.samples == i)
-			return -1;
-	}
-	return split_dive_at(dive, i, i - 1, new1, new2);
+	auto it = std::find_if(dive->dc.samples.begin(), dive->dc.samples.end(),
+			       [time](auto &sample) { return sample.time.seconds >= time.seconds; });
+	if (it == dive->dc.samples.end())
+		return -1;
+	size_t idx = it - dive->dc.samples.begin();
+	if (idx < 1)
+		return -1;
+	return split_dive_at(dive, static_cast<int>(idx), static_cast<int>(idx - 1), new1, new2);
 }
 
 /*
@@ -2893,12 +2826,10 @@ int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **n
 static inline int dc_totaltime(const struct divecomputer *dc)
 {
 	int time = dc->duration.seconds;
-	int nr = dc->samples;
 
-	while (nr--) {
-		struct sample *s = dc->sample + nr;
-		time = s->time.seconds;
-		if (s->depth.mm >= SURFACE_THRESHOLD)
+	for (auto it = dc->samples.rbegin(); it != dc->samples.rend(); ++it) {
+		time = it->time.seconds;
+		if (it->depth.mm >= SURFACE_THRESHOLD)
 			break;
 	}
 	return time;
@@ -3464,12 +3395,11 @@ struct gasmix get_gasmix_at_time(const struct dive *d, const struct divecomputer
 bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id)
 {
 	for (const struct divecomputer *dc = &dive->dc; dc; dc = dc->next) {
-		for (int i = 0; i < dc->samples; ++i) {
-			struct sample *sample = dc->sample + i;
+		for (const auto &sample: dc->samples) {
 			for (int j = 0; j < MAX_SENSORS; ++j) {
-				if (!sample->pressure[j].mbar)
+				if (!sample.pressure[j].mbar)
 					continue;
-				if (sample->sensor[j] == cylinder_id)
+				if (sample.sensor[j] == cylinder_id)
 					return true;
 			}
 		}

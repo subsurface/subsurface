@@ -679,8 +679,9 @@ static int sanitize_sensor_id(const struct dive *d, int nr)
 static struct sample *new_sample(struct git_parser_state *state)
 {
 	struct sample *sample = prepare_sample(state->active_dc);
-	if (sample != state->active_dc->sample) {
-		memcpy(sample, sample - 1, sizeof(struct sample));
+	size_t num_samples = state->active_dc->samples.size();
+	if (num_samples >= 2) {
+		*sample = state->active_dc->samples[num_samples - 2];
 		sample->pressure[0].mbar = 0;
 		sample->pressure[1].mbar = 0;
 	} else {
@@ -721,7 +722,6 @@ static void sample_parser(char *line, struct git_parser_state *state)
 			line = parse_sample_unit(sample, val, line);
 		}
 	}
-	finish_sample(state->active_dc);
 }
 
 static void parse_dc_airtemp(char *line, struct git_parser_state *state)
@@ -1649,7 +1649,7 @@ static struct divecomputer *create_new_dc(struct dive *dive)
 	while (dc->next)
 		dc = dc->next;
 	/* Did we already fill that in? */
-	if (dc->samples || !dc->model.empty() || dc->when) {
+	if (!dc->samples.empty() || !dc->model.empty() || dc->when) {
 		struct divecomputer *newdc = new divecomputer;
 		dc->next = newdc;
 		dc = newdc;

@@ -242,8 +242,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case SENSORS: {
 			std::vector<int16_t> sensors;
 			const struct divecomputer *currentdc = get_dive_dc(d, dcNr);
-			for (int i = 0; i < currentdc->samples; ++i) {
-				auto &sample = currentdc->sample[i];
+			for (const auto &sample: currentdc->samples) {
 				for (int s = 0; s < MAX_SENSORS; ++s) {
 					if (sample.pressure[s].mbar) {
 						if (sample.sensor[s] == index.row())

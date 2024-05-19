@@ -305,9 +305,7 @@ static void calculate_max_limits_new(const struct dive *dive, const struct divec
 	do {
 		if (dc == given_dc)
 			seen = true;
-		int i = dc->samples;
 		int lastdepth = 0;
-		struct sample *s = dc->sample;
 		struct event *ev;
 
 		/* Make sure we can fit all events */
@@ -318,13 +316,13 @@ static void calculate_max_limits_new(const struct dive *dive, const struct divec
 			ev = ev->next;
 		}
 
-		while (--i >= 0) {
-			int depth = s->depth.mm;
-			int temperature = s->temperature.mkelvin;
-			int heartbeat = s->heartbeat;
+		for (auto &s: dc->samples) {
+			int depth = s.depth.mm;
+			int temperature = s.temperature.mkelvin;
+			int heartbeat = s.heartbeat;
 
 			for (int sensor = 0; sensor < MAX_SENSORS; ++sensor) {
-				int pressure = s->pressure[sensor].mbar;
+				int pressure = s.pressure[sensor].mbar;
 				if (pressure && pressure < minpressure)
 					minpressure = pressure;
 				if (pressure > maxpressure)
@@ -342,17 +340,16 @@ static void calculate_max_limits_new(const struct dive *dive, const struct divec
 				minhr = heartbeat;
 
 			if (depth > maxdepth)
-				maxdepth = s->depth.mm;
+				maxdepth = s.depth.mm;
 			/* Make sure that we get the first sample beyond the last event.
 			 * If maxtime is somewhere in the middle of the last segment,
 			 * populate_plot_entries() gets confused leading to display artifacts. */
 			if ((depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD || in_planner || !found_sample_beyond_last_event) &&
-			    s->time.seconds > maxtime) {
+			    s.time.seconds > maxtime) {
 				found_sample_beyond_last_event = true;
-				maxtime = s->time.seconds;
+				maxtime = s.time.seconds;
 			}
 			lastdepth = depth;
-			s++;
 		}
 
 		dc = dc->next;
@@ -416,7 +413,7 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 	 * that has time > maxtime (because there can be surface samples
 	 * past "maxtime" in the original sample data)
 	 */
-	size_t nr = dc->samples + 6 + pi.maxtime / 10 + count_events(dc);
+	size_t nr = dc->samples.size() + 6 + pi.maxtime / 10 + count_events(dc);
 	pi.entry.reserve(nr);
 	pi.pressures.reserve(nr * pi.nr_cylinders);
 
@@ -430,8 +427,7 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 	/* skip events at time = 0 */
 	while (ev && ev->time.seconds == 0)
 		ev = ev->next;
-	for (int i = 0; i < dc->samples; i++) {
-		const struct sample &sample = dc->sample[i];
+	for (const auto &sample: dc->samples) {
 		int time = sample.time.seconds;
 		int offset, delta;
 		int depth = sample.depth.mm;
@@ -708,8 +704,9 @@ static void populate_secondary_sensor_data(const struct divecomputer *dc, struct
 				++seen[c]; // Count instances so we can differentiate a real sensor from just start and end pressure
 	int idx = 0;
 	/* We should try to see if it has interesting pressure data here */
-	for (int i = 0; i < dc->samples && idx < pi.nr; i++) {
-		const struct sample &sample = dc->sample[i];
+	for (const auto &sample: dc->samples) {
+		if (idx >= pi.nr)
+			break;
 		for (; idx < pi.nr; ++idx) {
 			if (idx == pi.nr - 1 || pi.entry[idx].sec >= sample.time.seconds)
 				// We've either found the entry at or just after the sample's time,
