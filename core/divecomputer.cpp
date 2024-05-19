@@ -21,6 +21,7 @@ divecomputer::~divecomputer()
 }
 
 divecomputer::divecomputer(divecomputer &&) = default;
+divecomputer &divecomputer::operator=(const divecomputer &) = default;
 
 /*
  * Good fake dive profiles are hard.
@@ -81,7 +82,7 @@ divecomputer::divecomputer(divecomputer &&) = default;
  * In general, we have more free variables than we have constraints,
  * but we can aim for certain basics, like a good ascent slope.
  */
-static int fill_samples(struct sample *s, int max_d, int avg_d, int max_t, double slope, double d_frac)
+static int fill_samples(std::vector<sample> &s, int max_d, int avg_d, int max_t, double slope, double d_frac)
 {
 	double t_frac = max_t * (1 - avg_d / (double)max_d);
 	int t1 = lrint(max_d / slope);
@@ -108,7 +109,7 @@ static int fill_samples(struct sample *s, int max_d, int avg_d, int max_t, doubl
  * we should assume either a PADI rectangular profile (for short and/or
  * shallow dives) or more reasonably a six point profile with a 3 minute
  * safety stop at 5m */
-static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double slope)
+static void fill_samples_no_avg(std::vector<sample> &s, int max_d, int max_t, double slope)
 {
 	// shallow or short dives are just trapecoids based on the given slope
 	if (max_d < 10000 || max_t < 600) {
@@ -130,26 +131,23 @@ static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double s
 
 void fake_dc(struct divecomputer *dc)
 {
-	alloc_samples(dc, 6);
-	struct sample *fake = dc->sample;
-	int i;
-
-	dc->samples = 6;
-
 	/* The dive has no samples, so create a few fake ones */
 	int max_t = dc->duration.seconds;
 	int max_d = dc->maxdepth.mm;
 	int avg_d = dc->meandepth.mm;
 
-	memset(fake, 0, 6 * sizeof(struct sample));
+	if (!max_t || !max_d) {
+		dc->samples.clear();
+		return;
+	}
+
+	std::vector<struct sample> &fake = dc->samples;
+	fake.resize(6);
+
 	fake[5].time.seconds = max_t;
-	for (i = 0; i < 6; i++) {
+	for (int i = 0; i < 6; i++) {
 		fake[i].bearing.degrees = -1;
 		fake[i].ndl.seconds = -1;
-	}
-	if (!max_t || !max_d) {
-		dc->samples = 0;
-		return;
 	}
 
 	/* Set last manually entered time to the total dive length */
@@ -167,7 +165,7 @@ void fake_dc(struct divecomputer *dc)
 		 * the user supplied data */
 		fill_samples_no_avg(fake, max_d, max_t, std::max(2.0 * max_d / max_t, (double)prefs.ascratelast6m));
 		if (fake[3].time.seconds == 0) { // just a 4 point profile
-			dc->samples = 4;
+			dc->samples.resize(4);
 			fake[3].time.seconds = max_t;
 		}
 		return;
@@ -235,15 +233,15 @@ enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, co
 int get_depth_at_time(const struct divecomputer *dc, unsigned int time)
 {
 	int depth = 0;
-	if (dc && dc->sample)
-		for (int i = 0; i < dc->samples; i++) {
-			if (dc->sample[i].time.seconds > (int)time)
+	if (dc) {
+		for (const auto &sample: dc->samples) {
+			if (sample.time.seconds > (int)time)
 				break;
-			depth = dc->sample[i].depth.mm;
+			depth = sample.depth.mm;
 		}
+	}
 	return depth;
 }
-
 
 static void free_dc(struct divecomputer *dc)
 {
@@ -257,58 +255,26 @@ void free_dive_dcs(struct divecomputer *dc)
 	STRUCTURED_LIST_FREE(struct divecomputer, dc->next, free_dc);
 }
 
-/* make room for num samples; if not enough space is available, the sample
- * array is reallocated and the existing samples are copied. */
-void alloc_samples(struct divecomputer *dc, int num)
-{
-	if (num > dc->alloc_samples) {
-		dc->alloc_samples = (num * 3) / 2 + 10;
-		dc->sample = (struct sample *)realloc(dc->sample, dc->alloc_samples * sizeof(struct sample));
-		if (!dc->sample)
-			dc->samples = dc->alloc_samples = 0;
-	}
-}
-
-void free_samples(struct divecomputer *dc)
-{
-	if (dc) {
-		free(dc->sample);
-		dc->sample = 0;
-		dc->samples = 0;
-		dc->alloc_samples = 0;
-	}
-}
-
 struct sample *prepare_sample(struct divecomputer *dc)
 {
 	if (dc) {
-		int nr = dc->samples;
-		struct sample *sample;
-		alloc_samples(dc, nr + 1);
-		if (!dc->sample)
-			return NULL;
-		sample = dc->sample + nr;
-		memset(sample, 0, sizeof(*sample));
+		dc->samples.emplace_back();
+		auto &sample = dc->samples.back();
 
 		// Copy the sensor numbers - but not the pressure values
 		// from the previous sample if any.
-		if (nr) {
+		if (dc->samples.size() >= 2) {
+			auto &prev = dc->samples[dc->samples.size() - 2];
 			for (int idx = 0; idx < MAX_SENSORS; idx++)
-				sample->sensor[idx] = sample[-1].sensor[idx];
+				sample.sensor[idx] = prev.sensor[idx];
 		}
 		// Init some values with -1
-		sample->bearing.degrees = -1;
-		sample->ndl.seconds = -1;
+		sample.bearing.degrees = -1;
+		sample.ndl.seconds = -1;
 
-		return sample;
+		return &sample;
 	}
 	return NULL;
-}
-
-
-void finish_sample(struct divecomputer *dc)
-{
-	dc->samples++;
 }
 
 struct sample *add_sample(const struct sample *sample, int time, struct divecomputer *dc)
@@ -318,7 +284,6 @@ struct sample *add_sample(const struct sample *sample, int time, struct divecomp
 	if (p) {
 		*p = *sample;
 		p->time.seconds = time;
-		finish_sample(dc);
 	}
 	return p;
 }
@@ -331,17 +296,12 @@ struct sample *add_sample(const struct sample *sample, int time, struct divecomp
  */
 void fixup_dc_duration(struct divecomputer *dc)
 {
-	int duration, i;
-	int lasttime, lastdepth, depthtime;
+	int duration = 0;
+	int lasttime = 0, lastdepth = 0, depthtime = 0;
 
-	duration = 0;
-	lasttime = 0;
-	lastdepth = 0;
-	depthtime = 0;
-	for (i = 0; i < dc->samples; i++) {
-		struct sample *sample = dc->sample + i;
-		int time = sample->time.seconds;
-		int depth = sample->depth.mm;
+	for (const auto &sample: dc->samples) {
+		int time = sample.time.seconds;
+		int depth = sample.depth.mm;
 
 		/* We ignore segments at the surface */
 		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
@@ -356,7 +316,6 @@ void fixup_dc_duration(struct divecomputer *dc)
 		dc->meandepth.mm = (depthtime + duration / 2) / duration;
 	}
 }
-
 
 /*
  * What do the dive computers say the water temperature is?
@@ -411,28 +370,6 @@ void copy_events(const struct divecomputer *s, struct divecomputer *d)
 		ev = ev->next;
 	}
 	*pev = NULL;
-}
-
-void copy_samples(const struct divecomputer *s, struct divecomputer *d)
-{
-	/* instead of carefully copying them one by one and calling add_sample
-	 * over and over again, let's just copy the whole blob */
-	if (!s || !d)
-		return;
-	int nr = s->samples;
-	d->samples = nr;
-	d->alloc_samples = nr;
-	// We expect to be able to read the memory in the other end of the pointer
-	// if its a valid pointer, so don't expect malloc() to return NULL for
-	// zero-sized malloc, do it ourselves.
-	d->sample = NULL;
-
-	if(!nr)
-		return;
-
-	d->sample = (struct sample *)malloc(nr * sizeof(struct sample));
-	if (d->sample)
-		memcpy(d->sample, s->sample, nr * sizeof(struct sample));
 }
 
 void add_event_to_dc(struct divecomputer *dc, struct event *ev)
@@ -528,7 +465,6 @@ int match_one_dc(const struct divecomputer *a, const struct divecomputer *b)
 
 void free_dc_contents(struct divecomputer *dc)
 {
-	free(dc->sample);
 	free_events(dc->events);
 }
 

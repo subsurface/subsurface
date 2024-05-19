@@ -298,8 +298,7 @@ QWidget *SensorDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
 		return comboBox;
 
 	std::vector<int16_t> sensors;
-	for (int i = 0; i < currentdc->samples; ++i) {
-		auto &sample = currentdc->sample[i];
+	for (const auto &sample: currentdc->samples) {
 		for (int s = 0; s < MAX_SENSORS; ++s) {
 			if (sample.pressure[s].mbar) {
 				if (std::find(sensors.begin(), sensors.end(), sample.sensor[s]) == sensors.end())

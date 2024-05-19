@@ -262,8 +262,8 @@ bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc,
 	bool first_gas_explicit = false;
 	const struct event *event = get_next_event(dc->events, "gaschange");
 	while (event) {
-		if (dc->sample && (event->time.seconds == 0 ||
-				   (dc->samples && dc->sample[0].time.seconds == event->time.seconds)))
+		if (!dc->samples.empty() && (event->time.seconds == 0 ||
+				   (dc->samples[0].time.seconds == event->time.seconds)))
 			first_gas_explicit = true;
 		if (get_cylinder_index(dive, event) == idx)
 			return true;

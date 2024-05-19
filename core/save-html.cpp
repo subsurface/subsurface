@@ -178,19 +178,16 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 
 static void put_HTML_samples(struct membuffer *b, struct dive *dive)
 {
-	int i;
 	put_format(b, "\"maxdepth\":%d,", dive->dc.maxdepth.mm);
 	put_format(b, "\"duration\":%d,", dive->dc.duration.seconds);
-	struct sample *s = dive->dc.sample;
 
-	if (!dive->dc.samples)
+	if (dive->dc.samples.empty())
 		return;
 
 	const char *separator = "\"samples\":[";
-	for (i = 0; i < dive->dc.samples; i++) {
-		put_format(b, "%s[%d,%d,%d,%d]", separator, s->time.seconds, s->depth.mm, s->pressure[0].mbar, s->temperature.mkelvin);
+	for (auto &s: dive->dc.samples) {
+		put_format(b, "%s[%d,%d,%d,%d]", separator, s.time.seconds, s.depth.mm, s.pressure[0].mbar, s.temperature.mkelvin);
 		separator = ", ";
-		s++;
 	}
 	put_string(b, "],");
 }

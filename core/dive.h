@@ -59,6 +59,8 @@ struct dive {
 
 	dive();
 	~dive();
+	dive(dive &&);
+	dive &operator=(const dive &);
 };
 
 /* For the top-level list: an entry is either a dive or a trip */

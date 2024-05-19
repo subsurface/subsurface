@@ -276,7 +276,6 @@ void export_depths(const char *filename, bool selected_only)
 {
 	FILE *f;
 	struct dive *dive;
-	depth_t depth;
 	int i;
 	const char *unit = NULL;
 
@@ -287,12 +286,11 @@ void export_depths(const char *filename, bool selected_only)
 			continue;
 
 		FOR_EACH_PICTURE (dive) {
-			int n = dive->dc.samples;
-			struct sample *s = dive->dc.sample;
-			depth.mm = 0;
-			while (--n >= 0 && (int32_t)s->time.seconds <= picture->offset.seconds) {
-				depth.mm = s->depth.mm;
-				s++;
+			depth_t depth;
+			for (auto &s: dive->dc.samples) {
+				if ((int32_t)s.time.seconds > picture->offset.seconds)
+					break;
+				depth = s.depth;
 			}
 			put_format(&buf, "%s\t%.1f", picture->filename, get_depth_units(depth.mm, NULL, &unit));
 			put_format(&buf, "%s\n", unit);

@@ -118,7 +118,7 @@ void event_end(struct parser_state *state)
 bool is_dive(struct parser_state *state)
 {
 	return state->cur_dive &&
-		(state->cur_dive->dive_site || state->cur_dive->when || state->cur_dive->dc.samples);
+		(state->cur_dive->dive_site || state->cur_dive->when || !state->cur_dive->dc.samples.empty());
 }
 
 void reset_dc_info(struct divecomputer *, struct parser_state *state)
@@ -361,8 +361,8 @@ void sample_start(struct parser_state *state)
 	struct divecomputer *dc = get_dc(state);
 	struct sample *sample = prepare_sample(dc);
 
-	if (sample != dc->sample) {
-		memcpy(sample, sample-1, sizeof(struct sample));
+	if (dc->samples.size() > 1) {
+		*sample = dc->samples[dc->samples.size() - 2];
 		sample->pressure[0].mbar = 0;
 		sample->pressure[1].mbar = 0;
 	} else {
@@ -378,7 +378,6 @@ void sample_end(struct parser_state *state)
 	if (!state->cur_dive)
 		return;
 
-	finish_sample(get_dc(state));
 	state->cur_sample = NULL;
 }
 
@@ -392,7 +391,7 @@ void divecomputer_start(struct parser_state *state)
 		dc = dc->next;
 
 	/* Did we already fill that in? */
-	if (dc->samples || !dc->model.empty() || dc->when) {
+	if (!dc->samples.empty() || !dc->model.empty() || dc->when) {
 		struct divecomputer *newdc = new divecomputer;
 		if (newdc) {
 			dc->next = newdc;

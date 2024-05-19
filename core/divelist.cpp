@@ -15,6 +15,7 @@
 #include "interpolate.h"
 #include "planner.h"
 #include "qthelper.h"
+#include "range.h"
 #include "gettext.h"
 #include "git-access.h"
 #include "selection.h"
@@ -80,26 +81,25 @@ static int active_o2(const struct dive *dive, const struct divecomputer *dc, dur
 }
 
 // Do not call on first sample as it acccesses the previous sample
-static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc, const struct sample *sample)
+static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc, const struct sample &sample, const struct sample &psample)
 {
 	int po2i, po2f, po2;
-	const struct sample *psample = sample - 1;
 	// Use sensor[0] if available
-	if ((dc->divemode == CCR || dc->divemode == PSCR) && sample->o2sensor[0].mbar) {
-		po2i = psample->o2sensor[0].mbar;
-		po2f = sample->o2sensor[0].mbar;	// then use data from the first o2 sensor
+	if ((dc->divemode == CCR || dc->divemode == PSCR) && sample.o2sensor[0].mbar) {
+		po2i = psample.o2sensor[0].mbar;
+		po2f = sample.o2sensor[0].mbar;	// then use data from the first o2 sensor
 		po2 = (po2f + po2i) / 2;
-	} else if (sample->setpoint.mbar > 0) {
-		po2 = std::min((int) sample->setpoint.mbar,
-				depth_to_mbar(sample->depth.mm, dive));
+	} else if (sample.setpoint.mbar > 0) {
+		po2 = std::min((int) sample.setpoint.mbar,
+				depth_to_mbar(sample.depth.mm, dive));
 	} else {
-		double amb_presure = depth_to_bar(sample->depth.mm, dive);
-		double pamb_pressure = depth_to_bar(psample->depth.mm , dive);
+		double amb_presure = depth_to_bar(sample.depth.mm, dive);
+		double pamb_pressure = depth_to_bar(psample.depth.mm , dive);
 		if (dc->divemode == PSCR) {
-			po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample->time));
-			po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample->time));
+			po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample.time));
+			po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample.time));
 		} else {
-			int o2 = active_o2(dive, dc, psample->time);	// 	... calculate po2 from depth and FiO2.
+			int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
 			po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
 			po2f = lrint(o2 * amb_presure);	// (final) po2 at end of segment
 		}
@@ -117,37 +117,34 @@ static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc,
       oxygen tolerance curves. Inst. env. Med. Report 1-70, University of Pennsylvania, Philadelphia, USA. */
 static int calculate_otu(const struct dive *dive)
 {
-	int i;
 	double otu = 0.0;
 	const struct divecomputer *dc = &dive->dc;
-	for (i = 1; i < dc->samples; i++) {
+	for (auto [psample, sample]: pairwise_range(dc->samples)) {
 		int t;
 		int po2i, po2f;
 		double pm;
-		struct sample *sample = dc->sample + i;
-		struct sample *psample = sample - 1;
-		t = sample->time.seconds - psample->time.seconds;
+		t = sample.time.seconds - psample.time.seconds;
 		// if there is sensor data use sensor[0]
-		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample->o2sensor[0].mbar) {
-			po2i = psample->o2sensor[0].mbar;
-			po2f = sample->o2sensor[0].mbar;	// ... use data from the first o2 sensor
+		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample.o2sensor[0].mbar) {
+			po2i = psample.o2sensor[0].mbar;
+			po2f = sample.o2sensor[0].mbar;	// ... use data from the first o2 sensor
 		} else {
-			if (sample->setpoint.mbar > 0) {
-				po2f = std::min((int) sample->setpoint.mbar,
-						 depth_to_mbar(sample->depth.mm, dive));
-				if (psample->setpoint.mbar > 0)
-					po2i = std::min((int) psample->setpoint.mbar,
-							 depth_to_mbar(psample->depth.mm, dive));
+			if (sample.setpoint.mbar > 0) {
+				po2f = std::min((int) sample.setpoint.mbar,
+						 depth_to_mbar(sample.depth.mm, dive));
+				if (psample.setpoint.mbar > 0)
+					po2i = std::min((int) psample.setpoint.mbar,
+							 depth_to_mbar(psample.depth.mm, dive));
 				else
 					po2i = po2f;
 			} else {						// For OC and rebreather without o2 sensor/setpoint
-				double amb_presure = depth_to_bar(sample->depth.mm, dive);
-				double pamb_pressure = depth_to_bar(psample->depth.mm , dive);
+				double amb_presure = depth_to_bar(sample.depth.mm, dive);
+				double pamb_pressure = depth_to_bar(psample.depth.mm , dive);
 				if (dc->divemode == PSCR) {
-					po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample->time));
-					po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample->time));
+					po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample.time));
+					po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample.time));
 				} else {
-					int o2 = active_o2(dive, dc, psample->time);	// 	... calculate po2 from depth and FiO2.
+					int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
 					po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
 					po2f = lrint(o2 * amb_presure);	// (final) po2 at end of segment
 				}
@@ -182,18 +179,13 @@ static int calculate_otu(const struct dive *dive)
    to the end of the segment, assuming a constant rate of change in po2 (i.e. depth) with time. */
 static double calculate_cns_dive(const struct dive *dive)
 {
-	int n;
 	const struct divecomputer *dc = &dive->dc;
 	double cns = 0.0;
 	double rate;
 	/* Calculate the CNS for each sample in this dive and sum them */
-	for (n = 1; n < dc->samples; n++) {
-		int t;
-		int po2;
-		struct sample *sample = dc->sample + n;
-		struct sample *psample = sample - 1;
-		t = sample->time.seconds - psample->time.seconds;
-		po2 = get_sample_o2(dive, dc, sample);
+	for (auto [psample, sample]: pairwise_range(dc->samples)) {
+		int t = sample.time.seconds - psample.time.seconds;
+		int po2 = get_sample_o2(dive, dc, sample, psample);
 		/* Don't increase CNS when po2 below 500 matm */
 		if (po2 <= 500)
 			continue;
@@ -340,13 +332,12 @@ static int calculate_cns(struct dive *dive)
 static double calculate_airuse(const struct dive *dive)
 {
 	int airuse = 0;
-	int i;
 
 	// SAC for a CCR dive does not make sense.
 	if (dive->dc.divemode == CCR)
 		return 0.0;
 
-	for (i = 0; i < dive->cylinders.nr; i++) {
+	for (int i = 0; i < dive->cylinders.nr; i++) {
 		pressure_t start, end;
 		const cylinder_t *cyl = get_cylinder(dive, i);
 
@@ -400,24 +391,21 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive, bool in_p
 {
 	struct divecomputer *dc = &dive->dc;
 	struct gasmix gasmix = gasmix_air;
-	int i;
 	const struct event *ev = NULL, *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
 	if (!dc)
 		return;
 
-	for (i = 1; i < dc->samples; i++) {
-		struct sample *psample = dc->sample + i - 1;
-		struct sample *sample = dc->sample + i;
-		int t0 = psample->time.seconds;
-		int t1 = sample->time.seconds;
+	for (auto [psample, sample]: pairwise_range(dc->samples)) {
+		int t0 = psample.time.seconds;
+		int t1 = sample.time.seconds;
 		int j;
 
 		for (j = t0; j < t1; j++) {
-			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
+			int depth = interpolate(psample.depth.mm, sample.depth.mm, j - t0, t1 - t0);
 			gasmix = get_gasmix(dive, dc, j, &ev, gasmix);
-			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample->setpoint.mbar,
+			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample.setpoint.mbar,
 				    get_current_divemode(&dive->dc, j, &evd, &current_divemode), dive->sac,
 				    in_planner);
 		}
@@ -645,10 +633,10 @@ static int comp_dc(const struct divecomputer *dc1, const struct divecomputer *dc
  * trip-time is defined such that dives that do not belong to
  * a trip are sorted *after* dives that do. Thus, in the default
  * chronologically-descending sort order, they are shown *before*.
- * "id" is a stable, strictly increasing unique number, that
- * is handed out when a dive is added to the system.
+ * "id" is a stable, strictly increasing unique number, which
+ * is generated when a dive is added to the system.
  * We might also consider sorting by end-time and other criteria,
- * but see the caveat above (editing means rearrangement of the dives).
+ * but see the caveat above (editing means reordering of the dives).
  */
 int comp_dives(const struct dive *a, const struct dive *b)
 {

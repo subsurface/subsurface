@@ -201,10 +201,9 @@ bool DiveEventItem::isInteresting(const struct dive *d, const struct divecompute
 	 * Some gas change events are special. Some dive computers just tell us the initial gas this way.
 	 * Don't bother showing those
 	 */
-	const struct sample *first_sample = &dc->sample[0];
 	if (ev->name == "gaschange" &&
 	    (ev->time.seconds == 0 ||
-	     (first_sample && ev->time.seconds == first_sample->time.seconds) ||
+	     (!dc->samples.empty() && ev->time.seconds == dc->samples[0].time.seconds) ||
 	     depthAtTime(pi, ev->time) < SURFACE_THRESHOLD))
 		return false;
 
