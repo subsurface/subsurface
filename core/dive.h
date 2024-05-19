@@ -191,7 +191,6 @@ extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
-extern void update_event_name(struct dive *d, int dc_number, struct event *event, const char *name);
 extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern int get_cylinder_index(const struct dive *dive, const struct event *ev);
 extern struct gasmix get_gasmix_from_event(const struct dive *, const struct event *ev);
