@@ -824,7 +824,7 @@ static dc_status_t prepare_data(int data_model, char *serial, dc_family_t dc_fam
 	dev_data->device = NULL;
 	dev_data->context = NULL;
 	if (!data_model) {
-		dev_data->model = copy_string("manually added dive");
+		dev_data->model = copy_string(manual_dc_name);
 		dev_data->descriptor = NULL;
 		return DC_STATUS_NODEVICE;
 	}

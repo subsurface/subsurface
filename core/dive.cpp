@@ -2309,8 +2309,8 @@ static int likely_same_dive(const struct dive *a, const struct dive *b)
 	int match, fuzz = 20 * 60;
 
 	/* don't merge manually added dives with anything */
-	if (is_manually_added_dc(&a->dc) ||
-	    is_manually_added_dc(&b->dc))
+	if (is_dc_manually_added_dive(&a->dc) ||
+	    is_dc_manually_added_dive(&b->dc))
 		return 0;
 
 	/*
@@ -3244,11 +3244,11 @@ extern "C" int depth_to_mbar(int depth, const struct dive *dive)
 
 extern "C" double depth_to_mbarf(int depth, const struct dive *dive)
 {
-	// To downloaded and planned dives, use DC's values
+	// For downloaded and planned dives, use DC's values
 	int salinity = dive->dc.salinity;
 	pressure_t surface_pressure = dive->dc.surface_pressure;
 
-	if (is_manually_added_dc(&dive->dc)) { // To manual dives, salinity and pressure in another place...
+	if (is_dc_manually_added_dive(&dive->dc)) { // For manual dives, salinity and pressure in another place...
 		surface_pressure = dive->surface_pressure;
 		salinity = dive->user_salinity;
 	}
@@ -3271,8 +3271,8 @@ extern "C" double depth_to_atm(int depth, const struct dive *dive)
  * take care of this, but the Uemis we support natively */
 extern "C" int rel_mbar_to_depth(int mbar, const struct dive *dive)
 {
-	// To downloaded and planned dives, use DC's salinity. Manual dives, use user's salinity
-	int salinity = is_manually_added_dc(&dive->dc) ? dive->user_salinity : dive->dc.salinity;
+	// For downloaded and planned dives, use DC's salinity. Manual dives, use user's salinity
+	int salinity = is_dc_manually_added_dive(&dive->dc) ? dive->user_salinity : dive->dc.salinity;
 	if (!salinity)
 		salinity = SEAWATER_SALINITY;
 
@@ -3283,8 +3283,8 @@ extern "C" int rel_mbar_to_depth(int mbar, const struct dive *dive)
 
 extern "C" int mbar_to_depth(int mbar, const struct dive *dive)
 {
-	// To downloaded and planned dives, use DC's pressure. Manual dives, use user's pressure
-	pressure_t surface_pressure = is_manually_added_dc(&dive->dc)
+	// For downloaded and planned dives, use DC's pressure. Manual dives, use user's pressure
+	pressure_t surface_pressure = is_dc_manually_added_dive(&dive->dc)
 		? dive->surface_pressure
 		: dive->dc.surface_pressure;
 

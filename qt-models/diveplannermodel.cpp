@@ -69,7 +69,7 @@ void DivePlannerPointsModel::createSimpleDive(struct dive *dIn)
 	clear_dive(d);
 	d->id = dive_getUniqID();
 	d->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	d->dc.model = strdup("planned dive"); // don't translate! this is stored in the XML file
+	make_planner_dc(&d->dc);
 
 	clear();
 	removeDeco();

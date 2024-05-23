@@ -492,11 +492,6 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 	}
 }
 
-bool is_dc_planner(const struct divecomputer *dc)
-{
-	return same_string(dc->model, "planned dive");
-}
-
 /*
  * Match two dive computer entries against each other, and
  * tell if it's the same dive. Return 0 if "don't know",
@@ -548,14 +543,27 @@ void free_dc(struct divecomputer *dc)
 	free(dc);
 }
 
-static const char *manual_dc_name = "manually added dive";
-bool is_manually_added_dc(const struct divecomputer *dc)
+static const char *planner_dc_name = "planned dive";
+
+bool is_dc_planner(const struct divecomputer *dc)
 {
-	return dc && dc->samples <= 50 &&
-	       same_string(dc->model, manual_dc_name);
+	return dc && same_string(dc->model, planner_dc_name);
 }
 
-void make_manually_added_dc(struct divecomputer *dc)
+void make_planner_dc(struct divecomputer *dc)
+{
+	free((void *)dc->model);
+	dc->model = strdup(planner_dc_name);
+}
+
+const char *manual_dc_name = "manually added dive";
+
+bool is_dc_manually_added_dive(const struct divecomputer *dc)
+{
+	return dc && same_string(dc->model, manual_dc_name);
+}
+
+void make_manually_added_dive_dc(struct divecomputer *dc)
 {
 	free((void *)dc->model);
 	dc->model = strdup(manual_dc_name);

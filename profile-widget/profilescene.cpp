@@ -8,6 +8,7 @@
 #include "divetextitem.h"
 #include "tankitem.h"
 #include "core/device.h"
+#include "core/divecomputer.h"
 #include "core/event.h"
 #include "core/pref.h"
 #include "core/profile.h"
@@ -579,9 +580,9 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	}
 
 	QString dcText = get_dc_nickname(currentdc);
-	if (dcText == "planned dive")
+	if (is_dc_planner(currentdc))
 		dcText = tr("Planned dive");
-	else if (dcText == "manually added dive")
+	else if (is_dc_manually_added_dive(currentdc))
 		dcText = tr("Manually added dive");
 	else if (dcText.isEmpty())
 		dcText = tr("Unknown dive computer");

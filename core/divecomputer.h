@@ -67,10 +67,12 @@ extern void add_event_to_dc(struct divecomputer *dc, struct event *ev);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event_from_dc(struct divecomputer *dc, struct event *event);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
-extern bool is_dc_planner(const struct divecomputer *dc);
 extern uint32_t calculate_string_hash(const char *str);
-extern bool is_manually_added_dc(const struct divecomputer *dc);
-extern void make_manually_added_dc(struct divecomputer *dc);
+extern bool is_dc_planner(const struct divecomputer *dc);
+extern void make_planner_dc(struct divecomputer *dc);
+extern const char *manual_dc_name;
+extern bool is_dc_manually_added_dive(const struct divecomputer *dc);
+extern void make_manually_added_dive_dc(struct divecomputer *dc);
 
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
 extern int match_one_dc(const struct divecomputer *a, const struct divecomputer *b);

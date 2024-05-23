@@ -210,7 +210,7 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 	if (d && !editedDive &&
 	    DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING) {
 		struct divecomputer *comp = get_dive_dc(d, dc);
-		if (comp && is_manually_added_dc(comp) && comp->samples)
+		if (comp && is_dc_manually_added_dive(comp) && comp->samples && comp->samples <= 50)
 			editDive();
 	}
 
