@@ -31,6 +31,8 @@ private slots:
 	void on_airtemp_editingFinished();
 	void on_watertemp_editingFinished();
 	void on_waterTypeCombo_activated(int index);
+	void on_dive_info_2_button_next_clicked();
+	void on_dive_info_2_button_prev_clicked();
 private:
 	Ui::TabDiveInformation *ui;
 	void updateProfile();
@@ -44,6 +46,7 @@ private:
 	void divesEdited(int);
 	void closeWarning();
 	void showCurrentWidget(bool show, int position);
+	void updateDipDetails(int);
 };
 
 #endif

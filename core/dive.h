@@ -21,6 +21,20 @@ extern int last_xml_version;
 extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 
+
+struct dip {
+	struct sample *start, *end;
+	size_t idx, num_samples;
+	duration_t dip_time;
+};
+
+struct dips {
+	struct dip *dips;
+	size_t num, alloc, finished;
+	struct sample *last_zero_depth;
+	int best_dip;
+};
+
 struct dive_site;
 struct dive_site_table;
 struct dive_table;
@@ -49,6 +63,7 @@ struct dive {
 	duration_t duration;
 	int salinity; // kg per 10000 l
 	int user_salinity; // water density reflecting a user-specified type
+	struct dips *dips;
 
 	struct tag_entry *tag_list;
 	struct divecomputer dc;
@@ -172,6 +187,8 @@ extern void clear_dive(struct dive *dive);
 extern void copy_dive(const struct dive *s, struct dive *d);
 extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
 extern struct dive *move_dive(struct dive *s);
+
+extern void free_dips(struct dips *d);
 
 extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 

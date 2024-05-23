@@ -43,6 +43,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModelBase::SAC:
 	case DiveTripModelBase::OTU:
 	case DiveTripModelBase::MAXCNS:
+	case DiveTripModelBase::BESTDIP:
 		// Right align numeric columns
 		return int(Qt::AlignRight | Qt::AlignVCenter);
 	// NR needs to be left aligned because its the indent marker for trips too
@@ -159,12 +160,17 @@ static int countPhotos(const struct dive *d)
 	return icon_index;	// return value: 0=no pictures; 1=pictures during dive;
 }				// 2=pictures before/after; 3=pictures during as well as before/after
 
-static QString displayDuration(const struct dive *d)
+static QString displayDuration(const duration_t &d, bool freedive)
 {
 	if (prefs.units.show_units_table)
-		return get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"), "", ":", d->dc.divemode == FREEDIVE);
+		return get_dive_duration_string(d.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"), "", ":", freedive);
 	else
-		return get_dive_duration_string(d->duration.seconds, "", "", "", ":", d->dc.divemode == FREEDIVE);
+		return get_dive_duration_string(d.seconds, "", "", "", ":", freedive);
+}
+
+static QString displayDuration(const struct dive *d)
+{
+	return displayDuration(d->duration, d->dc.divemode == FREEDIVE);
 }
 
 static QString displayTemperature(const struct dive *d, bool units)
@@ -263,6 +269,8 @@ QString DiveTripModelBase::getDescription(int column)
 		return tr("Notes");
 	case DIVEMODE:
 		return tr("Divemode");
+	case BESTDIP:
+		return tr("Best dip");
 	default:
 		return QString();
 	}
@@ -364,6 +372,11 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			return QString(d->notes);
 		case DIVEMODE:
 			return QString(divemode_text_ui[(int)d->dc.divemode]);
+		case BESTDIP:
+			if (!d->dips || d->dips->best_dip == -1)
+				return displayDuration(((duration_t){0}), true);
+			return displayDuration(d->dips->dips[d->dips->best_dip].dip_time, true);
+
 		}
 		break;
 	case Qt::DecorationRole:
@@ -452,6 +465,8 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 			return tr("Notes");
 		case DIVEMODE:
 			return tr("Divemode");
+		case BESTDIP:
+			return tr("Best dip");
 		}
 		break;
 	case Qt::ToolTipRole:
@@ -1781,5 +1796,10 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 		return lessThanHelper(strCmp(d1->notes, d2->notes), row_diff);
 	case DIVEMODE:
 		return lessThanHelper((int)d1->dc.divemode - (int)d2->dc.divemode, row_diff);
+	case BESTDIP: {
+		struct dip *bd1 = &d1->dips->dips[d1->dips->best_dip];
+		struct dip *bd2 = &d2->dips->dips[d2->dips->best_dip];
+		return lessThanHelper(bd1->dip_time.seconds - bd2->dip_time.seconds, row_diff);
+	}
 	}
 }
