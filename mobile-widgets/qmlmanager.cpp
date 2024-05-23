@@ -1135,7 +1135,7 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 			m = m6.captured(1).toInt();
 		}
 		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
-		if (is_manually_added_dc(&d->dc))
+		if (is_dc_manually_added_dive(&d->dc))
 			free_samples(&d->dc);
 		else
 			appendTextToLog("Cannot change the duration on a dive that wasn't manually added");
@@ -1153,7 +1153,7 @@ bool QMLManager::checkDepth(dive *d, QString depth)
 		// the depth <= 500m
 		if (0 <= depthValue && depthValue <= 500000) {
 			d->maxdepth.mm = depthValue;
-			if (is_manually_added_dc(&d->dc)) {
+			if (is_dc_manually_added_dive(&d->dc)) {
 				d->dc.maxdepth.mm = d->maxdepth.mm;
 				free_samples(&d->dc);
 			}
@@ -1359,7 +1359,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	if (diveChanged) {
 		if (d->maxdepth.mm == d->dc.maxdepth.mm &&
 		    d->maxdepth.mm > 0 &&
-		    is_manually_added_dc(&d->dc) &&
+		    is_dc_manually_added_dive(&d->dc) &&
 		    d->dc.samples == 0) {
 			// so we have depth > 0, a manually added dive and no samples
 			// let's create an actual profile so the desktop version can work it
@@ -1736,7 +1736,7 @@ int QMLManager::addDive()
 	d.dc.duration.seconds = 40 * 60;
 	d.dc.maxdepth.mm = M_OR_FT(15, 45);
 	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	make_manually_added_dc(&d.dc);
+	make_manually_added_dive_dc(&d.dc);
 	fake_dc(&d.dc);
 	fixup_dive(&d);
 

@@ -665,8 +665,10 @@ void MainWindow::on_actionReplanDive_triggered()
 {
 	if (!plannerStateClean() || !current_dive || !userMayChangeAppState())
 		return;
-	else if (!is_dc_planner(get_dive_dc(current_dive, profile->dc))) {
-		if (QMessageBox::warning(this, tr("Warning"), tr("Trying to replan a dive dive profile that is not a dive plan."),
+
+	const struct divecomputer *dc = get_dive_dc(current_dive, profile->dc);
+	if (!(is_dc_planner(dc) || is_dc_manually_added_dive(dc))) {
+		if (QMessageBox::warning(this, tr("Warning"), tr("Trying to replan a dive profile that has not been manually added."),
 					 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel)
 					return;
 	}
@@ -707,7 +709,7 @@ void MainWindow::on_actionAddDive_triggered()
 	d.dc.duration.seconds = 40 * 60;
 	d.dc.maxdepth.mm = M_OR_FT(15, 45);
 	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	make_manually_added_dc(&d.dc);
+	make_manually_added_dive_dc(&d.dc);
 	fake_dc(&d.dc);
 	fixup_dive(&d);
 
