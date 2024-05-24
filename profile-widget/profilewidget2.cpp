@@ -404,7 +404,7 @@ void ProfileWidget2::clear()
 #ifndef SUBSURFACE_MOBILE
 	clearPictures();
 #endif
-	disconnectTemporaryConnections();
+	disconnectPlannerModel();
 	profileScene->clear();
 	handles.clear();
 	gases.clear();
@@ -426,7 +426,7 @@ void ProfileWidget2::setProfileState()
 	if (currentState == PROFILE)
 		return;
 
-	disconnectTemporaryConnections();
+	disconnectPlannerModel();
 
 	currentState = PROFILE;
 	setBackgroundBrush(getColor(::BACKGROUND, profileScene->isGrayscale));
@@ -444,16 +444,6 @@ void ProfileWidget2::setProfileState()
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::connectPlannerModel()
-{
-	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
-	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
-	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
-	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
-	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
-	connect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
-}
-
 void ProfileWidget2::setEditState(const dive *d, int dc)
 {
 	if (currentState == EDIT)
@@ -462,7 +452,6 @@ void ProfileWidget2::setEditState(const dive *d, int dc)
 	setProfileState(d, dc);
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
-	disconnectTemporaryConnections();
 
 	connectPlannerModel();
 
@@ -480,7 +469,6 @@ void ProfileWidget2::setPlanState(const dive *d, int dc)
 	setProfileState(d, dc);
 	mouseFollowerHorizontal->setVisible(true);
 	mouseFollowerVertical->setVisible(true);
-	disconnectTemporaryConnections();
 
 	connectPlannerModel();
 
@@ -800,9 +788,19 @@ void ProfileWidget2::editName(DiveEventItem *item)
 		Command::renameEvent(mutable_dive(), dc, event, qPrintable(newName));
 	}
 }
+
+void ProfileWidget2::connectPlannerModel()
+{
+	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
+	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
+	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
+	connect(plannerModel, &DivePlannerPointsModel::rowsMoved, this, &ProfileWidget2::pointsMoved);
+}
 #endif
 
-void ProfileWidget2::disconnectTemporaryConnections()
+void ProfileWidget2::disconnectPlannerModel()
 {
 #ifndef SUBSURFACE_MOBILE
 	if (plannerModel) {
