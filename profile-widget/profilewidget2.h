@@ -115,7 +115,6 @@ private:
 	void setupSceneAndFlags();
 	void addItemsToScene();
 	void setupItemOnScene();
-	void disconnectTemporaryConnections();
 	struct plot_data *getEntryFromPos(QPointF pos);
 	void clearPictures();
 	void plotPicturesInternal(const struct dive *d, bool synchronous);
@@ -184,6 +183,7 @@ private:
 
 	std::vector<std::unique_ptr<DiveHandler>> handles;
 	int handleIndex(const DiveHandler *h) const;
+	void disconnectPlannerModel();
 #ifndef SUBSURFACE_MOBILE
 	void connectPlannerModel();
 	void repositionDiveHandlers();
