@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "divecomputer.h"
+#include "errorhelper.h"
 #include "event.h"
 #include "extradata.h"
 #include "pref.h"
@@ -11,15 +12,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-divecomputer::divecomputer()
-{
-}
-
-divecomputer::~divecomputer()
-{
-	free_dc_contents(this);
-}
-
+divecomputer::divecomputer() = default;
+divecomputer::~divecomputer() = default;
 divecomputer::divecomputer(divecomputer &&) = default;
 divecomputer &divecomputer::operator=(const divecomputer &) = default;
 
@@ -204,29 +198,21 @@ void fake_dc(struct divecomputer *dc)
 	/* Even that didn't work? Give up, there's something wrong */
 }
 
-/* Find the divemode at time 'time' (in seconds) into the dive. Sequentially step through the divemode-change events,
- * saving the dive mode for each event. When the events occur AFTER 'time' seconds, the last stored divemode
- * is returned. This function is self-tracking, relying on setting the event pointer 'evp' so that, in each iteration
- * that calls this function, the search does not have to begin at the first event of the dive */
-enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, const struct event **evp, enum divemode_t *divemode)
+divemode_loop::divemode_loop(const struct divecomputer &dc) :
+	dc(dc), last(dc.divemode), loop("modechange")
 {
-	const struct event *ev = *evp;
-	if (dc) {
-		if (*divemode == UNDEF_COMP_TYPE) {
-			*divemode = dc->divemode;
-			ev = get_next_event(dc->events, "modechange");
-		}
-	} else {
-		ev = NULL;
-	}
-	while (ev && ev->time.seconds < time) {
-		*divemode = (enum divemode_t) ev->value;
-		ev = get_next_event(ev->next, "modechange");
-	}
-	*evp = ev;
-	return *divemode;
+	/* on first invocation, get first event (if any) */
+	ev = loop.next(dc);
 }
 
+divemode_t divemode_loop::next(int time)
+{
+	while (ev && ev->time.seconds <= time) {
+		last = static_cast<divemode_t>(ev->value);
+		ev = loop.next(dc);
+	}
+	return last;
+}
 
 /* helper function to make it easier to work with our structures
  * we don't interpolate here, just use the value from the last sample up to that time */
@@ -354,72 +340,51 @@ unsigned int dc_airtemp(const struct divecomputer *dc)
 	return (sum + nr / 2) / nr;
 }
 
-/* copies all events in this dive computer */
-void copy_events(const struct divecomputer *s, struct divecomputer *d)
+static bool operator<(const event &ev1, const event &ev2)
 {
-	const struct event *ev;
-	struct event **pev;
-	if (!s || !d)
-		return;
-	ev = s->events;
-	pev = &d->events;
-	while (ev != NULL) {
-		struct event *new_ev = clone_event(ev);
-		*pev = new_ev;
-		pev = &new_ev->next;
-		ev = ev->next;
-	}
-	*pev = NULL;
+	if (ev1.time.seconds < ev2.time.seconds)
+		return -1;
+	if (ev1.time.seconds > ev2.time.seconds)
+		return 1;
+	return ev1.name < ev2.name;
 }
 
-void add_event_to_dc(struct divecomputer *dc, struct event *ev)
+int add_event_to_dc(struct divecomputer *dc, struct event ev)
 {
-	struct event **p;
-
-	p = &dc->events;
-
-	/* insert in the sorted list of events */
-	while (*p && (*p)->time.seconds <= ev->time.seconds)
-		p = &(*p)->next;
-	ev->next = *p;
-	*p = ev;
+	// Do a binary search for insertion point
+	auto it = std::lower_bound(dc->events.begin(), dc->events.end(), ev);
+	int idx = it - dc->events.begin();
+	dc->events.insert(it, ev);
+	return idx;
 }
 
 struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const std::string &name)
 {
-	struct event *ev = create_event(time, type, flags, value, name);
+	struct event ev(time, type, flags, value, name);
+	int idx = add_event_to_dc(dc, std::move(ev));
 
-	if (!ev)
-		return NULL;
-
-	add_event_to_dc(dc, ev);
-
-	return ev;
+	return &dc->events[idx];
 }
 
-/* Substitutes an event in a divecomputer for another. No reordering is performed! */
-void swap_event(struct divecomputer *dc, struct event *from, struct event *to)
+/* Remove given event from dive computer. Returns the removed event. */
+struct event remove_event_from_dc(struct divecomputer *dc, int idx)
 {
-	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
-		if (*ep == from) {
-			to->next = from->next;
-			*ep = to;
-			from->next = NULL; // For good measure.
-			break;
-		}
+	if (idx < 0 || static_cast<size_t>(idx) > dc->events.size()) {
+		report_info("removing invalid event %d", idx);
+		return event();
 	}
+	event res = std::move(dc->events[idx]);
+	dc->events.erase(dc->events.begin() + idx);
+	return res;
 }
 
-/* Remove given event from dive computer. Does *not* free the event. */
-void remove_event_from_dc(struct divecomputer *dc, struct event *event)
+struct event *get_event(struct divecomputer *dc, int idx)
 {
-	for (struct event **ep = &dc->events; *ep; ep = &(*ep)->next) {
-		if (*ep == event) {
-			*ep = event->next;
-			event->next = NULL; // For good measure.
-			break;
-		}
+	if (idx < 0 || static_cast<size_t>(idx) > dc->events.size()) {
+		report_info("accessing invalid event %d", idx);
+		return nullptr;
 	}
+	return &dc->events[idx];
 }
 
 void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value)
@@ -461,11 +426,6 @@ int match_one_dc(const struct divecomputer *a, const struct divecomputer *b)
 	 * dive computer, that's a definite "same or not"
 	 */
 	return a->diveid == b->diveid && a->when == b->when ? 1 : -1;
-}
-
-void free_dc_contents(struct divecomputer *dc)
-{
-	free_events(dc->events);
 }
 
 static const char *planner_dc_name = "planned dive";

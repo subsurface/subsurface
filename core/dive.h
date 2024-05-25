@@ -6,11 +6,9 @@
 
 #include "divemode.h"
 #include "divecomputer.h"
-#include "equipment.h"
-#include "picture.h"
+#include "equipment.h" // TODO: remove
+#include "picture.h" // TODO: remove
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string>
 
 extern int last_xml_version;
@@ -190,10 +188,10 @@ extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_
 extern bool is_cylinder_used(const struct dive *dive, int idx);
 extern bool is_cylinder_prot(const struct dive *dive, int idx);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
-extern struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
+extern struct event create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
 extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
-extern int get_cylinder_index(const struct dive *dive, const struct event *ev);
-extern struct gasmix get_gasmix_from_event(const struct dive *, const struct event *ev);
+extern int get_cylinder_index(const struct dive *dive, const struct event &ev);
+extern struct gasmix get_gasmix_from_event(const struct dive *, const struct event &ev);
 extern int nr_cylinders(const struct dive *dive);
 extern int nr_weightsystems(const struct dive *dive);
 extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
@@ -207,14 +205,8 @@ extern int total_weight(const struct dive *);
 extern bool is_planned(const struct dive *dive);
 extern bool is_logged(const struct dive *dive);
 
-/* Get gasmixes at increasing timestamps.
- * In "evp", pass a pointer to a "struct event *" which is NULL-initialized on first invocation.
- * On subsequent calls, pass the same "evp" and the "gasmix" from previous calls.
- */
-extern struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc, int time, const struct event **evp, struct gasmix gasmix);
-
 /* Get gasmix at a given time */
-extern struct gasmix get_gasmix_at_time(const struct dive *dive, const struct divecomputer *dc, duration_t time);
+extern struct gasmix get_gasmix_at_time(const struct dive &dive, const struct divecomputer &dc, duration_t time);
 
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
 

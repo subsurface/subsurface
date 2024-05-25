@@ -353,32 +353,30 @@ static void save_sample(struct membuffer *b, const struct sample &sample, struct
 	put_format(b, " />\n");
 }
 
-static void save_one_event(struct membuffer *b, struct dive *dive, struct event *ev)
+static void save_one_event(struct membuffer *b, struct dive *dive, const struct event &ev)
 {
-	put_format(b, "  <event time='%d:%02d min'", FRACTION_TUPLE(ev->time.seconds, 60));
-	show_index(b, ev->type, "type='", "'");
-	show_index(b, ev->flags, "flags='", "'");
-	if (ev->name == "modechange")
-		show_utf8(b, divemode_text[ev->value], " divemode='", "'",1);
+	put_format(b, "  <event time='%d:%02d min'", FRACTION_TUPLE(ev.time.seconds, 60));
+	show_index(b, ev.type, "type='", "'");
+	show_index(b, ev.flags, "flags='", "'");
+	if (ev.name == "modechange")
+		show_utf8(b, divemode_text[ev.value], " divemode='", "'",1);
 	else
-		show_index(b, ev->value, "value='", "'");
-	show_utf8(b, ev->name.c_str(), " name='", "'", 1);
+		show_index(b, ev.value, "value='", "'");
+	show_utf8(b, ev.name.c_str(), " name='", "'", 1);
 	if (event_is_gaschange(ev)) {
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
-		if (ev->gas.index >= 0)
-			show_integer(b, ev->gas.index, "cylinder='", "'");
+		if (ev.gas.index >= 0)
+			show_integer(b, ev.gas.index, "cylinder='", "'");
 		put_gasmix(b, mix);
 	}
 	put_format(b, " />\n");
 }
 
 
-static void save_events(struct membuffer *b, struct dive *dive, struct event *ev)
+static void save_events(struct membuffer *b, struct dive *dive, const struct divecomputer *dc)
 {
-	while (ev) {
+	for (auto &ev: dc->events)
 		save_one_event(b, dive, ev);
-		ev = ev->next;
-	}
 }
 
 static void save_tags(struct membuffer *b, struct tag_entry *entry)
@@ -465,7 +463,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	save_salinity(b, dc);
 	put_duration(b, dc->surfacetime, "  <surfacetime>", " min</surfacetime>\n");
 	save_extra_data(b, dc);
-	save_events(b, dive, dc->events);
+	save_events(b, dive, dc);
 	save_samples(b, dive, dc);
 
 	put_format(b, "  </divecomputer>\n");

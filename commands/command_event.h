@@ -6,15 +6,12 @@
 
 #include "command_base.h"
 #include "core/divemode.h"
+#include "core/event.h"
 
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
 
-// Events are a strange thing: they contain there own description which means
-// that on changing the description a new object must be allocated. Moreover,
-// it means that these objects can't be collected in a table.
-// Therefore, the undo commands work on events as they do with dives: using
-// owning pointers. See comments in command_base.h
+// Pointers to events are not stable, so we always store indexes.
 
 class EventBase : public Base {
 protected:
@@ -25,8 +22,7 @@ protected:
 	virtual void undoit() = 0;
 
 	// Note: we store dive and the divecomputer-number instead of a pointer to the divecomputer.
-	// Since one divecomputer is integrated into the dive structure, pointers to divecomputers
-	// are probably not stable.
+	// Pointers to divecomputers are not stable.
 	struct dive *d;
 	int dcNr;
 private:
@@ -35,15 +31,15 @@ private:
 
 class AddEventBase : public EventBase {
 public:
-	AddEventBase(struct dive *d, int dcNr, struct event *ev); // Takes ownership of event!
+	AddEventBase(struct dive *d, int dcNr, struct event ev); // Takes ownership of event!
 protected:
 	void undoit() override;
 	void redoit() override;
 private:
 	bool workToBeDone() override;
 
-	std::unique_ptr<event> eventToAdd;	// for redo
-	event *eventToRemove;			// for undo
+	struct event ev;			// for redo
+	int idx;				// for undo
 };
 
 class AddEventBookmark : public AddEventBase {
@@ -67,28 +63,28 @@ private:
 
 class RenameEvent : public EventBase {
 public:
-	RenameEvent(struct dive *d, int dcNr, struct event *ev, const char *name);
+	RenameEvent(struct dive *d, int dcNr, int idx, const std::string name);
 private:
 	bool workToBeDone() override;
 	void undoit() override;
 	void redoit() override;
 
-	std::unique_ptr<event> eventToAdd;	// for undo and redo
-	event *eventToRemove;			// for undo and redo
+	int idx;		// for undo and redo
+	std::string name;	// for undo and redo
 };
 
 class RemoveEvent : public EventBase {
 public:
-	RemoveEvent(struct dive *d, int dcNr, struct event *ev);
+	RemoveEvent(struct dive *d, int dcNr, int idx);
 private:
 	bool workToBeDone() override;
 	void undoit() override;
 	void redoit() override;
 	void post() const; // Called to fix up dives should a gas-change have happened.
 
-	std::unique_ptr<event> eventToAdd;	// for undo
-	event *eventToRemove;			// for redo
-	int cylinder;				// affected cylinder (if removing gas switch). <0: not a gas switch.
+	event ev;	// for undo
+	int idx;	// for redo
+	int cylinder;	// affected cylinder (if removing gas switch). <0: not a gas switch.
 };
 
 class AddGasSwitch : public EventBase {
@@ -100,8 +96,8 @@ private:
 	void redoit() override;
 
 	std::vector<int> cylinders; // cylinders that are modified
-	std::vector<std::unique_ptr<event>> eventsToAdd;
-	std::vector<event *> eventsToRemove;
+	std::vector<event> eventsToAdd;
+	std::vector<int> eventsToRemove;
 };
 
 } // namespace Command

@@ -8,6 +8,7 @@
 #include <vector>
 
 struct extra_data;
+struct event;
 struct sample;
 
 /* Is this header the correct place? */
@@ -37,8 +38,10 @@ struct divecomputer {
 	int salinity = 0; 		// kg per 10000 l
 	std::string model, serial, fw_version;
 	uint32_t deviceid = 0, diveid = 0;
+	// Note: ve store samples, events and extra_data in std::vector<>s.
+	// This means that pointers to these items are *not* stable.
 	std::vector<struct sample> samples;
-	struct event *events = nullptr;
+	std::vector<struct event> events;
 	std::vector<struct extra_data> extra_data;
 	struct divecomputer *next = nullptr;
 
@@ -50,7 +53,6 @@ struct divecomputer {
 
 extern void fake_dc(struct divecomputer *dc);
 extern void free_dc_contents(struct divecomputer *dc);
-extern enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, const struct event **evp, enum divemode_t *divemode);
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);
 extern void free_dive_dcs(struct divecomputer *dc);
 extern struct sample *prepare_sample(struct divecomputer *dc);
@@ -58,11 +60,10 @@ extern struct sample *add_sample(const struct sample *sample, int time, struct d
 extern void fixup_dc_duration(struct divecomputer *dc);
 extern unsigned int dc_airtemp(const struct divecomputer *dc);
 extern unsigned int dc_watertemp(const struct divecomputer *dc);
-extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
-extern void swap_event(struct divecomputer *dc, struct event *from, struct event *to);
-extern void add_event_to_dc(struct divecomputer *dc, struct event *ev);
+extern int add_event_to_dc(struct divecomputer *dc, struct event ev); // event structure is consumed, returns index of inserted event
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const std::string &name);
-extern void remove_event_from_dc(struct divecomputer *dc, struct event *event);
+extern struct event remove_event_from_dc(struct divecomputer *dc, int idx);
+struct event *get_event(struct divecomputer *dc, int idx);
 extern void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value);
 extern uint32_t calculate_string_hash(const char *str);
 extern bool is_dc_planner(const struct divecomputer *dc);

@@ -559,8 +559,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem);
 
 	// Add or edit Gas Change
-	if (d && item && event_is_gaschange(item->getEvent())) {
-		int eventTime = item->getEvent()->time.seconds;
+	if (d && item && event_is_gaschange(item->ev)) {
+		int eventTime = item->ev.time.seconds;
 		QMenu *gasChange = m.addMenu(tr("Edit Gas Change"));
 		for (int i = 0; i < d->cylinders.nr; i++) {
 			const cylinder_t *cylinder = get_cylinder(d, i);
@@ -579,10 +579,9 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	m.addAction(tr("Add setpoint change"), [this, seconds]() { ProfileWidget2::addSetpointChange(seconds); });
 	m.addAction(tr("Add bookmark"), [this, seconds]() { addBookmark(seconds); });
 	m.addAction(tr("Split dive into two"), [this, seconds]() { splitDive(seconds); });
-	const struct event *ev = NULL;
-	enum divemode_t divemode = UNDEF_COMP_TYPE;
 
-	get_current_divemode(get_dive_dc_const(d, dc), seconds, &ev, &divemode);
+	divemode_loop loop(*get_dive_dc_const(d, dc));
+	divemode_t divemode = loop.next(seconds);
 	QMenu *changeMode = m.addMenu(tr("Change divemode"));
 	if (divemode != OC)
 		changeMode->addAction(gettextFromC::tr(divemode_text_ui[OC]),
@@ -595,23 +594,22 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
-		const struct event *dcEvent = item->getEvent();
 		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
 		m.addAction(tr("Hide event"), [this, item] { hideEvent(item); });
-		m.addAction(tr("Hide events of type '%1'").arg(event_type_name(dcEvent)),
+		m.addAction(tr("Hide events of type '%1'").arg(event_type_name(item->ev)),
 			    [this, item] { hideEventType(item); });
-		if (dcEvent->type == SAMPLE_EVENT_BOOKMARK)
+		if (item->ev.type == SAMPLE_EVENT_BOOKMARK)
 			m.addAction(tr("Edit name"), [this, item] { editName(item); });
 #if 0 // TODO::: FINISH OR DISABLE
 		QPointF scenePos = mapToScene(event->pos());
 		int idx = getEntryFromPos(scenePos);
 		// this shows how to figure out if we should ask the user if they want adjust interpolated pressures
 		// at either side of a gas change
-		if (dcEvent->type == SAMPLE_EVENT_GASCHANGE || dcEvent->type == SAMPLE_EVENT_GASCHANGE2) {
+		if (item->ev->type == SAMPLE_EVENT_GASCHANGE || item->ev->type == SAMPLE_EVENT_GASCHANGE2) {
 			int gasChangeIdx = idx;
 			while (gasChangeIdx > 0) {
 				--gasChangeIdx;
-				if (plotInfo.entry[gasChangeIdx].sec <= dcEvent->time.seconds)
+				if (plotInfo.entry[gasChangeIdx].sec <= item->ev->time.seconds)
 					break;
 			}
 			const struct plot_data &gasChangeEntry = plotInfo.entry[newGasIdx];
@@ -650,8 +648,9 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 		m2->addAction(tr("All event types"), this, &ProfileWidget2::unhideEventTypes);
 	}
-	if (std::any_of(profileScene->eventItems.begin(), profileScene->eventItems.end(),
-	    [] (const DiveEventItem *item) { return item->getEvent()->hidden; }))
+	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
+	if (currentdc && std::any_of(currentdc->events.begin(), currentdc->events.end(),
+	    [] (auto &ev) { return ev.hidden; }))
 		m.addAction(tr("Unhide individually hidden events of this dive"), this, &ProfileWidget2::unhideEvents);
 	m.exec(event->globalPos());
 }
@@ -690,16 +689,18 @@ void ProfileWidget2::renameCurrentDC()
 
 void ProfileWidget2::hideEvent(DiveEventItem *item)
 {
-	item->getEventMutable()->hidden = true;
+	struct divecomputer *currentdc = get_dive_dc(mutable_dive(), dc);
+	int idx = item->idx;
+	if (!currentdc || idx < 0 || static_cast<size_t>(idx) >= currentdc->events.size())
+		return;
+	currentdc->events[idx].hidden = true;
 	item->hide();
 }
 
 void ProfileWidget2::hideEventType(DiveEventItem *item)
 {
-	const struct event *event = item->getEvent();
-
-	if (!event->name.empty()) {
-		hide_event_type(event);
+	if (!item->ev.name.empty()) {
+		hide_event_type(&item->ev);
 
 		replot();
 	}
@@ -707,10 +708,13 @@ void ProfileWidget2::hideEventType(DiveEventItem *item)
 
 void ProfileWidget2::unhideEvents()
 {
-	for (DiveEventItem *item: profileScene->eventItems) {
-		item->getEventMutable()->hidden = false;
+	struct divecomputer *currentdc = get_dive_dc(mutable_dive(), dc);
+	if (!currentdc)
+		return;
+	for (auto &ev: currentdc->events)
+		ev.hidden = false;
+	for (DiveEventItem *item: profileScene->eventItems)
 		item->show();
-	}
 }
 
 void ProfileWidget2::unhideEventTypes()
@@ -722,15 +726,12 @@ void ProfileWidget2::unhideEventTypes()
 
 void ProfileWidget2::removeEvent(DiveEventItem *item)
 {
-	struct event *event = item->getEventMutable();
-	if (!event || !d)
-		return;
-
+	const struct event &ev = item->ev;
 	if (QMessageBox::question(this, TITLE_OR_TEXT(
 					  tr("Remove the selected event?"),
-					  tr("%1 @ %2:%3").arg(QString::fromStdString(event->name)).arg(event->time.seconds / 60).arg(event->time.seconds % 60, 2, 10, QChar('0'))),
+					  tr("%1 @ %2:%3").arg(QString::fromStdString(ev.name)).arg(ev.time.seconds / 60).arg(ev.time.seconds % 60, 2, 10, QChar('0'))),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
-		Command::removeEvent(mutable_dive(), dc, event);
+		Command::removeEvent(mutable_dive(), dc, item->idx);
 }
 
 void ProfileWidget2::addBookmark(int seconds)
@@ -781,13 +782,12 @@ void ProfileWidget2::changeGas(int index, int newCylinderId)
 
 void ProfileWidget2::editName(DiveEventItem *item)
 {
-	struct event *event = item->getEventMutable();
-	if (!event || !d)
+	if (!d)
 		return;
 	bool ok;
 	QString newName = QInputDialog::getText(this, tr("Edit name of bookmark"),
 						tr("Custom name:"), QLineEdit::Normal,
-						event->name.c_str(), &ok);
+						item->ev.name.c_str(), &ok);
 	if (ok && !newName.isEmpty()) {
 		if (newName.length() > 22) { //longer names will display as garbage.
 			QMessageBox lengthWarning;
@@ -795,7 +795,7 @@ void ProfileWidget2::editName(DiveEventItem *item)
 			lengthWarning.exec();
 			return;
 		}
-		Command::renameEvent(mutable_dive(), dc, event, qPrintable(newName));
+		Command::renameEvent(mutable_dive(), dc, item->idx, newName.toStdString());
 	}
 }
 

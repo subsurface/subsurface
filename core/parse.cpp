@@ -75,30 +75,30 @@ void event_end(struct parser_state *state)
 		pic.offset.seconds = state->cur_event.time.seconds;
 		add_picture(&state->cur_dive->pictures, pic); /* Takes ownership. */
 	} else {
-		struct event *ev;
 		/* At some point gas change events did not have any type. Thus we need to add
 		 * one on import, if we encounter the type one missing.
 		 */
 		if (state->cur_event.type == 0 && state->cur_event.name == "gaschange")
 			state->cur_event.type = state->cur_event.value >> 16 > 0 ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE;
-		ev = add_event(dc, state->cur_event.time.seconds,
-			       state->cur_event.type, state->cur_event.flags,
-			       state->cur_event.value, state->cur_event.name);
+
+		struct event ev(state->cur_event.time.seconds, state->cur_event.type, state->cur_event.flags,
+				state->cur_event.value, state->cur_event.name);
 
 		/*
 		 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00. Better
 		 * to mark them being CCR on import so no need for special treatments elsewhere on the code.
 		 */
-		if (ev && state->cur_event.time.seconds == 0 && state->cur_event.type == SAMPLE_EVENT_PO2 && state->cur_event.value && dc->divemode==OC) {
+		if (ev.time.seconds == 0 && ev.type == SAMPLE_EVENT_PO2 && ev.value && dc->divemode==OC)
 			dc->divemode = CCR;
+
+		if (event_is_gaschange(ev)) {
+			/* See try_to_fill_event() on why the filled-in index is one too big */
+			ev.gas.index = state->cur_event.gas.index-1;
+			if (state->cur_event.gas.mix.o2.permille || state->cur_event.gas.mix.he.permille)
+				ev.gas.mix = state->cur_event.gas.mix;
 		}
 
-		if (ev && event_is_gaschange(ev)) {
-			/* See try_to_fill_event() on why the filled-in index is one too big */
-			ev->gas.index = state->cur_event.gas.index-1;
-			if (state->cur_event.gas.mix.o2.permille || state->cur_event.gas.mix.he.permille)
-				ev->gas.mix = state->cur_event.gas.mix;
-		}
+		add_event_to_dc(dc, std::move(ev));
 	}
 	state->event_active = false;	/* No longer active */
 }

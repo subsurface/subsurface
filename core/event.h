@@ -9,6 +9,8 @@
 #include <string>
 #include <libdivecomputer/parser.h>
 
+struct divecomputer;
+
 enum event_severity {
 	EVENT_SEVERITY_NONE = 0,
 	EVENT_SEVERITY_INFO,
@@ -22,7 +24,6 @@ enum event_severity {
  */
 
 struct event {
-	struct event *next;
 	duration_t time;
 	int type;
 	/* This is the annoying libdivecomputer format. */
@@ -40,23 +41,53 @@ struct event {
 			struct gasmix mix;
 		} gas;
 	};
-	bool deleted; // used internally in the parser and in fixup_dive().
 	bool hidden;
 	std::string name;
 	event();
+	event(unsigned int time, int type, int flags, int value, const std::string &name);
 	~event();
+
+	bool operator==(const event &b2) const;
 };
 
-extern int event_is_gaschange(const struct event *ev);
-extern bool event_is_divemodechange(const struct event *ev);
-extern struct event *clone_event(const struct event *src_ev);
-extern void free_events(struct event *ev);
-extern struct event *create_event(unsigned int time, int type, int flags, int value, const std::string &name);
-extern struct event *clone_event_rename(const struct event *ev, const std::string &name);
-extern bool same_event(const struct event *a, const struct event *b);
-extern enum event_severity get_event_severity(const struct event *ev);
+class event_loop
+{
+	std::string name;
+	size_t idx;
+public:
+	event_loop(const char *name);
+	struct event *next(struct divecomputer &dc); // nullptr -> end
+	const struct event *next(const struct divecomputer &dc); // nullptr -> end
+};
 
-extern const struct event *get_next_event(const struct event *event, const std::string &name);
-extern struct event *get_next_event(struct event *event, const std::string &name);
+/* Get gasmixes at increasing timestamps. */
+class gasmix_loop {
+	const struct dive &dive;
+	const struct divecomputer &dc;
+	struct gasmix last;
+	event_loop loop;
+	const struct event *ev;
+public:
+	gasmix_loop(const struct dive &dive, const struct divecomputer &dc);
+	gasmix next(int time);
+};
+
+/* Get divemodes at increasing timestamps. */
+class divemode_loop {
+	const struct divecomputer &dc;
+	divemode_t last;
+	event_loop loop;
+	const struct event *ev;
+public:
+	divemode_loop(const struct divecomputer &dc);
+	divemode_t next(int time);
+};
+
+extern bool event_is_gaschange(const struct event &ev);
+extern bool event_is_divemodechange(const struct event &ev);
+extern enum event_severity get_event_severity(const struct event &ev);
+
+extern const struct event *get_first_event(const struct divecomputer &dc, const std::string &name);
+extern struct event *get_first_event(struct divecomputer &dc, const std::string &name);
 
 #endif

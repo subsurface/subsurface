@@ -14,7 +14,7 @@ extern void show_all_event_types();
 extern void show_event_type(int idx);
 extern bool any_event_types_hidden();
 extern std::vector<int> hidden_event_types();
-extern QString event_type_name(const event *ev);
+extern QString event_type_name(const event &ev);
 extern QString event_type_name(int idx);
 
 #endif
