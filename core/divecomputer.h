@@ -56,7 +56,7 @@ extern void free_dc_contents(struct divecomputer *dc);
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);
 extern void free_dive_dcs(struct divecomputer *dc);
 extern struct sample *prepare_sample(struct divecomputer *dc);
-extern struct sample *add_sample(const struct sample *sample, int time, struct divecomputer *dc);
+extern void append_sample(const struct sample &sample, struct divecomputer *dc);
 extern void fixup_dc_duration(struct divecomputer *dc);
 extern unsigned int dc_airtemp(const struct divecomputer *dc);
 extern unsigned int dc_watertemp(const struct divecomputer *dc);

@@ -1211,14 +1211,14 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
 
 /*
- * This is like add_sample(), but if the distance from the last sample
+ * This is like append_sample(), but if the distance from the last sample
  * is excessive, we add two surface samples in between.
  *
  * This is so that if you merge two non-overlapping dives, we make sure
  * that the time in between the dives is at the surface, not some "last
  * sample that happened to be at a depth of 1.2m".
  */
-static void merge_one_sample(const struct sample &sample, int time, struct divecomputer *dc)
+static void merge_one_sample(const struct sample &sample, struct divecomputer *dc)
 {
 	if (!dc->samples.empty()) {
 		const struct sample &prev = dc->samples.back();
@@ -1229,18 +1229,21 @@ static void merge_one_sample(const struct sample &sample, int time, struct divec
 		 * Only do surface events if the samples are more than
 		 * a minute apart, and shallower than 5m
 		 */
-		if (time > last_time + 60 && last_depth < 5000) {
+		if (sample.time.seconds > last_time + 60 && last_depth < 5000) {
 			struct sample surface;
 
 			/* Init a few values from prev sample to avoid useless info in XML */
 			surface.bearing.degrees = prev.bearing.degrees;
 			surface.ndl.seconds = prev.ndl.seconds;
+			surface.time.seconds = last_time + 20;
 
-			add_sample(&surface, last_time + 20, dc);
-			add_sample(&surface, time - 20, dc);
+			append_sample(surface, dc);
+
+			surface.time.seconds = sample.time.seconds - 20;
+			append_sample(surface, dc);
 		}
 	}
-	add_sample(&sample, time, dc);
+	append_sample(sample, dc);
 }
 
 static void renumber_last_sample(struct divecomputer *dc, const int mapping[]);
@@ -1287,7 +1290,7 @@ static void merge_samples(struct divecomputer *res,
 		/* Only samples from a? */
 		if (bt < 0) {
 		add_sample_a:
-			merge_one_sample(*as, at, res);
+			merge_one_sample(*as, res);
 			renumber_last_sample(res, cylinders_map_a);
 			as++;
 			continue;
@@ -1296,7 +1299,7 @@ static void merge_samples(struct divecomputer *res,
 		/* Only samples from b? */
 		if (at < 0) {
 		add_sample_b:
-			merge_one_sample(*bs, bt, res);
+			merge_one_sample(*bs, res);
 			renumber_last_sample(res, cylinders_map_b);
 			bs++;
 			continue;
@@ -1339,7 +1342,7 @@ static void merge_samples(struct divecomputer *res,
 		if (as->in_deco)
 			sample.in_deco = true;
 
-		merge_one_sample(sample, at, res);
+		merge_one_sample(sample, res);
 
 		as++;
 		bs++;
