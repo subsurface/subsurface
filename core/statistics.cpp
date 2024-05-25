@@ -260,14 +260,13 @@ stats_t calculate_stats_selected()
 bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx)
 {
 	bool first_gas_explicit = false;
-	const struct event *event = get_next_event(dc->events, "gaschange");
-	while (event) {
+	event_loop loop("gaschange");
+	while (auto event = loop.next(*dc)) {
 		if (!dc->samples.empty() && (event->time.seconds == 0 ||
 				   (dc->samples[0].time.seconds == event->time.seconds)))
 			first_gas_explicit = true;
-		if (get_cylinder_index(dive, event) == idx)
+		if (get_cylinder_index(dive, *event) == idx)
 			return true;
-		event = get_next_event(event->next, "gaschange");
 	}
 	return !first_gas_explicit && idx == 0;
 }

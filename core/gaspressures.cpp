@@ -313,9 +313,7 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 	cylinder_t *cylinder = get_cylinder(dive, sensor);
 	std::vector<pr_track_t> track;
 	size_t current = std::string::npos;
-	const struct event *ev, *b_ev;
 	int missing_pr = 0, dense = 1;
-	enum divemode_t dmode = dc->divemode;
 	const double gasfactor[5] = {1.0, 0.0, prefs.pscr_ratio/1000.0, 1.0, 1.0 };
 
 	if (sensor < 0 || sensor >= dive->cylinders.nr)
@@ -351,10 +349,10 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 	 * itself has a gas change event.
 	 */
 	cyl = sensor;
-	ev = NULL;
-	if (has_gaschange_event(dive, dc, sensor))
-		ev = get_next_event(dc->events, "gaschange");
-	b_ev = get_next_event(dc->events, "modechange");
+	event_loop loop_gas("gaschange");
+	const struct event *ev = has_gaschange_event(dive, dc, sensor) ?
+		loop_gas.next(*dc) : nullptr;
+	divemode_loop loop_mode(*dc);
 
 	for (int i = first; i <= last; i++) {
 		struct plot_data &entry = pi.entry[i];
@@ -362,16 +360,13 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 		int time = entry.sec;
 
 		while (ev && ev->time.seconds <= time) {   // Find 1st gaschange event after 
-			cyl = get_cylinder_index(dive, ev); // the current gas change.
+			cyl = get_cylinder_index(dive, *ev); // the current gas change.
 			if (cyl < 0)
 				cyl = sensor;
-			ev = get_next_event(ev->next, "gaschange");
+			ev = loop_gas.next(*dc);
 		}
 
-		while (b_ev && b_ev->time.seconds <= time) { // Keep existing divemode, then
-			dmode = static_cast<divemode_t>(b_ev->value); // find 1st divemode change event after the current 
-			b_ev = get_next_event(b_ev->next, "modechange"); // divemode change.
-		}
+		divemode_t dmode = loop_mode.next(time);
 
 		if (current != std::string::npos) { // calculate pressure-time, taking into account the dive mode for this specific segment.
 			entry.pressure_time = (int)(calc_pressure_time(dive, pi.entry[i - 1], entry) * gasfactor[dmode] + 0.5);

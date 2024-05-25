@@ -14,6 +14,7 @@
 #include "core/pref.h"
 #include "core/profile.h"
 #include "core/qthelper.h"	// for decoMode()
+#include "core/range.h"
 #include "core/subsurface-float.h"
 #include "core/subsurface-string.h"
 #include "core/settings/qPrefDisplay.h"
@@ -550,23 +551,20 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// while all other items are up there on the constructor.
 	qDeleteAll(eventItems);
 	eventItems.clear();
-	struct event *event = currentdc->events;
-	struct gasmix lastgasmix = get_gasmix_at_time(d, currentdc, duration_t{1});
+	struct gasmix lastgasmix = get_gasmix_at_time(*d, *currentdc, duration_t{1});
 
-	while (event) {
+	for (auto [idx, event]: enumerated_range(currentdc->events)) {
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
-			if (event->name.empty() ||
-			    !(event->name == "heading" ||
-			      (event->name == "SP change" && event->time.seconds == 0) ||
+			if (event.name.empty() ||
+			    !(event.name == "heading" ||
+			      (event.name == "SP change" && event.time.seconds == 0) ||
 			      event_is_gaschange(event) ||
-			      event->type == SAMPLE_EVENT_BOOKMARK)) {
-				event = event->next;
+			      event.type == SAMPLE_EVENT_BOOKMARK))
 				continue;
-			}
 		}
 		if (DiveEventItem::isInteresting(d, currentdc, event, plotInfo, firstSecond, lastSecond)) {
-			auto item = new DiveEventItem(d, event, lastgasmix, plotInfo,
+			auto item = new DiveEventItem(d, idx, event, lastgasmix, plotInfo,
 						      timeAxis, profileYAxis, animSpeed, *pixmaps);
 			item->setZValue(2);
 			addItem(item);
@@ -574,7 +572,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		}
 		if (event_is_gaschange(event))
 			lastgasmix = get_gasmix_from_event(d, event);
-		event = event->next;
 	}
 
 	QString dcText = QString::fromStdString(get_dc_nickname(currentdc));

@@ -199,13 +199,13 @@ static void analyze_plot_info(struct plot_info &pi)
  * Some dive computers give cylinder indices, some
  * give just the gas mix.
  */
-int get_cylinder_index(const struct dive *dive, const struct event *ev)
+int get_cylinder_index(const struct dive *dive, const struct event &ev)
 {
 	int best;
 	struct gasmix mix;
 
-	if (ev->gas.index >= 0)
-		return ev->gas.index;
+	if (ev.gas.index >= 0)
+		return ev.gas.index;
 
 	/*
 	 * This should no longer happen!
@@ -218,34 +218,6 @@ int get_cylinder_index(const struct dive *dive, const struct event *ev)
 	mix = get_gasmix_from_event(dive, ev);
 	best = find_best_gasmix_match(mix, &dive->cylinders);
 	return best < 0 ? 0 : best;
-}
-
-struct event *get_next_event(struct event *event, const std::string &name)
-{
-	if (name.empty())
-		return NULL;
-	while (event) {
-		if (event->name == name)
-			return event;
-		event = event->next;
-	}
-	return event;
-}
-
-const struct event *get_next_event(const struct event *event, const std::string &name)
-{
-	return get_next_event((struct event *)event, name);
-}
-
-static int count_events(const struct divecomputer *dc)
-{
-	int result = 0;
-	struct event *ev = dc->events;
-	while (ev != NULL) {
-		result++;
-		ev = ev->next;
-	}
-	return result;
 }
 
 static size_t set_setpoint(struct plot_info &pi, size_t i, int setpoint, int end)
@@ -265,17 +237,16 @@ static void check_setpoint_events(const struct dive *, const struct divecomputer
 	size_t i = 0;
 	pressure_t setpoint;
 	setpoint.mbar = 0;
-	const struct event *ev = get_next_event(dc->events, "SP change");
 
-	if (!ev)
-		return;
-
-	do {
+	event_loop loop("SP change");
+	bool found = false;
+	while (auto ev = loop.next(*dc)) {
 		i = set_setpoint(pi, i, setpoint.mbar, ev->time.seconds);
 		setpoint.mbar = ev->value;
-		ev = get_next_event(ev->next, "SP change");
-	} while (ev);
-	set_setpoint(pi, i, setpoint.mbar, INT_MAX);
+		found = true;
+	}
+	if (found) // Fill the last setpoint until the end of the dive
+		set_setpoint(pi, i, setpoint.mbar, INT_MAX);
 }
 
 static void calculate_max_limits_new(const struct dive *dive, const struct divecomputer *given_dc, struct plot_info &pi, bool in_planner)
@@ -306,15 +277,10 @@ static void calculate_max_limits_new(const struct dive *dive, const struct divec
 		if (dc == given_dc)
 			seen = true;
 		int lastdepth = 0;
-		struct event *ev;
 
 		/* Make sure we can fit all events */
-		ev = dc->events;
-		while (ev) {
-			if (ev->time.seconds > maxtime)
-				maxtime = ev->time.seconds;
-			ev = ev->next;
-		}
+		if (!dc->events.empty())
+			maxtime = std::max(maxtime, dc->events.back().time.seconds);
 
 		for (auto &s: dc->samples) {
 			int depth = s.depth.mm;
@@ -399,8 +365,6 @@ static void insert_entry(struct plot_info &pi, int time, int depth, int sac)
 
 static void populate_plot_entries(const struct dive *dive, const struct divecomputer *dc, struct plot_info &pi)
 {
-	struct event *ev = dc->events;
-
 	pi.nr_cylinders = dive->cylinders.nr;
 
 	/*
@@ -413,7 +377,7 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 	 * that has time > maxtime (because there can be surface samples
 	 * past "maxtime" in the original sample data)
 	 */
-	size_t nr = dc->samples.size() + 6 + pi.maxtime / 10 + count_events(dc);
+	size_t nr = dc->samples.size() + 6 + pi.maxtime / 10 + dc->events.size();
 	pi.entry.reserve(nr);
 	pi.pressures.reserve(nr * pi.nr_cylinders);
 
@@ -425,8 +389,9 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 	int lasttime = 0;
 	int lasttemp = 0;
 	/* skip events at time = 0 */
-	while (ev && ev->time.seconds == 0)
-		ev = ev->next;
+	auto evit = dc->events.begin();
+	while (evit != dc->events.end() && evit->time.seconds == 0)
+		++evit;
 	for (const auto &sample: dc->samples) {
 		int time = sample.time.seconds;
 		int offset, delta;
@@ -444,23 +409,23 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 				break;
 
 			/* Add events if they are between plot entries */
-			while (ev && (int)ev->time.seconds < lasttime + offset) {
-				insert_entry(pi, ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
-				ev = ev->next;
+			while (evit != dc->events.end() && static_cast<int>(evit->time.seconds) < lasttime + offset) {
+				insert_entry(pi, evit->time.seconds, interpolate(lastdepth, depth, evit->time.seconds - lasttime, delta), sac);
+				++evit;
 			}
 
 			/* now insert the time interpolated entry */
 			insert_entry(pi, lasttime + offset, interpolate(lastdepth, depth, offset, delta), sac);
 
 			/* skip events that happened at this time */
-			while (ev && (int)ev->time.seconds == lasttime + offset)
-				ev = ev->next;
+			while (evit != dc->events.end() && static_cast<int>(evit->time.seconds) == lasttime + offset)
+				++evit;
 		}
 
 		/* Add events if they are between plot entries */
-		while (ev && (int)ev->time.seconds < time) {
-			insert_entry(pi, ev->time.seconds, interpolate(lastdepth, depth, ev->time.seconds - lasttime, delta), sac);
-			ev = ev->next;
+		while (evit != dc->events.end() && static_cast<int>(evit->time.seconds) < time) {
+			insert_entry(pi, evit->time.seconds, interpolate(lastdepth, depth, evit->time.seconds - lasttime, delta), sac);
+			++evit;
 		}
 
 		plot_data &entry = add_entry(pi);
@@ -497,8 +462,8 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 		if (sample.rbt.seconds)
 			entry.rbt = sample.rbt.seconds;
 		/* skip events that happened at this time */
-		while (ev && (int)ev->time.seconds == time)
-			ev = ev->next;
+		while (evit != dc->events.end() && static_cast<int>(evit->time.seconds) == time)
+			++evit;
 		lasttime = time;
 		lastdepth = depth;
 
@@ -507,14 +472,14 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 	}
 
 	/* Add any remaining events */
-	while (ev) {
-		int time = ev->time.seconds;
+	while (evit != dc->events.end()) {
+		int time = evit->time.seconds;
 
 		if (time > lasttime) {
-			insert_entry(pi, ev->time.seconds, 0, 0);
+			insert_entry(pi, evit->time.seconds, 0, 0);
 			lasttime = time;
 		}
-		ev = ev->next;
+		++evit;
 	}
 
 	/* Add two final surface events */
@@ -674,18 +639,17 @@ static void matching_gases(const struct dive *dive, struct gasmix gasmix, char g
 
 static void calculate_sac(const struct dive *dive, const struct divecomputer *dc, struct plot_info &pi)
 {
-	struct gasmix gasmix = gasmix_invalid;
-	const struct event *ev = NULL;
-
 	std::vector<char> gases(pi.nr_cylinders, false);
 
 	/* This might be premature optimization, but let's allocate the gas array for
 	 * the fill_sac function only once an not once per sample */
 	std::vector<char> gases_scratch(pi.nr_cylinders);
 
+	struct gasmix gasmix = gasmix_invalid;
+	gasmix_loop loop(*dive, *dc);
 	for (int i = 0; i < pi.nr; i++) {
 		const struct plot_data &entry = pi.entry[i];
-		struct gasmix newmix = get_gasmix(dive, dc, entry.sec, &ev, gasmix);
+		struct gasmix newmix = loop.next(entry.sec);
 		if (!same_gasmix(newmix, gasmix)) {
 			gasmix = newmix;
 			matching_gases(dive, newmix, gases.data());
@@ -736,9 +700,6 @@ static void add_plot_pressure(struct plot_info &pi, int time, int cyl, pressure_
 
 static void setup_gas_sensor_pressure(const struct dive *dive, const struct divecomputer *dc, struct plot_info &pi)
 {
-	int i;
-	const struct event *ev;
-
 	if (pi.nr_cylinders == 0)
 		return;
 
@@ -753,7 +714,8 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	prev = prev >= 0 ? prev : 0;
 	seen[prev] = 1;
 
-	for (ev = get_next_event(dc->events, "gaschange"); ev != NULL; ev = get_next_event(ev->next, "gaschange")) {
+	event_loop loop("gaschange");
+	while (auto ev = loop.next(*dc)) {
 		int cyl = ev->gas.index;
 		int sec = ev->time.seconds;
 
@@ -778,7 +740,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 
 	// Fill in "seen[]" array - mark cylinders we're not interested
 	// in as negative.
-	for (i = 0; i < pi.nr_cylinders; i++) {
+	for (int i = 0; i < pi.nr_cylinders; i++) {
 		const cylinder_t *cyl = get_cylinder(dive, i);
 		int start = cyl->start.mbar;
 		int end = cyl->end.mbar;
@@ -807,7 +769,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 		}
 	}
 
-	for (i = 0; i < pi.nr_cylinders; i++) {
+	for (int i = 0; i < pi.nr_cylinders; i++) {
 		if (seen[i] >= 0) {
 			const cylinder_t *cyl = get_cylinder(dive, i);
 
@@ -940,18 +902,17 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, last_ceiling = 0, final_tts = 0 , time_clear_ceiling = 0;
 		if (decoMode(in_planner) == VPMB)
 			ds->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
-		struct gasmix gasmix = gasmix_invalid;
-		const struct event *ev = NULL, *evd = NULL;
-		enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
+		gasmix_loop loop(*dive, *dc);
+		divemode_loop loop_d(*dc);
 		for (i = 1; i < pi.nr; i++) {
 			struct plot_data &entry = pi.entry[i];
 			struct plot_data &prev = pi.entry[i - 1];
 			int j, t0 = prev.sec, t1 = entry.sec;
 			int time_stepsize = 20, max_ceiling = -1;
 
-			current_divemode = get_current_divemode(dc, entry.sec, &evd, &current_divemode);
-			gasmix = get_gasmix(dive, dc, t1, &ev, gasmix);
+			divemode_t current_divemode = loop_d.next(entry.sec);
+			struct gasmix gasmix = loop.next(t1);
 			entry.ambpressure = depth_to_bar(entry.depth, dive);
 			entry.gfline = get_gf(ds, entry.ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
 			if (t0 > t1) {
@@ -1181,22 +1142,21 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 {
 	int i;
 	double amb_pressure;
-	struct gasmix gasmix = gasmix_invalid;
-	const struct event *evg = NULL, *evd = NULL;
-	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
+	gasmix_loop loop(*dive, *dc);
+	divemode_loop loop_d(*dc);
 	for (i = 1; i < pi.nr; i++) {
 		double fn2, fhe;
 		struct plot_data &entry = pi.entry[i];
 
-		gasmix = get_gasmix(dive, dc, entry.sec, &evg, gasmix);
+		auto gasmix = loop.next(entry.sec);
 		amb_pressure = depth_to_bar(entry.depth, dive);
-		current_divemode = get_current_divemode(dc, entry.sec, &evd, &current_divemode);
+		divemode_t current_divemode = loop_d.next(entry.sec);
 		entry.pressures = fill_pressures(amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry.o2pressure.mbar / 1000.0, current_divemode);
 		fn2 = 1000.0 * entry.pressures.n2 / amb_pressure;
 		fhe = 1000.0 * entry.pressures.he / amb_pressure;
 		if (dc->divemode == PSCR) { // OC pO2 is calulated for PSCR with or without external PO2 monitoring.
-			struct gasmix gasmix2 = get_gasmix(dive, dc, entry.sec, &evg, gasmix);
+			struct gasmix gasmix2 = loop.next(entry.sec);
 			entry.scr_OC_pO2.mbar = (int) depth_to_mbar(entry.depth, dive) * get_o2(gasmix2) / 1000;
 		}
 

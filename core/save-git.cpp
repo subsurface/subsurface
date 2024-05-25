@@ -383,32 +383,30 @@ static void save_samples(struct membuffer *b, struct dive *dive, struct divecomp
 		save_sample(b, s, dummy, o2sensor);
 }
 
-static void save_one_event(struct membuffer *b, struct dive *dive, struct event *ev)
+static void save_one_event(struct membuffer *b, struct dive *dive, const struct event &ev)
 {
-	put_format(b, "event %d:%02d", FRACTION_TUPLE(ev->time.seconds, 60));
-	show_index(b, ev->type, "type=", "");
-	show_index(b, ev->flags, "flags=", "");
+	put_format(b, "event %d:%02d", FRACTION_TUPLE(ev.time.seconds, 60));
+	show_index(b, ev.type, "type=", "");
+	show_index(b, ev.flags, "flags=", "");
 
-	if (ev->name == "modechange")
-		show_utf8(b, " divemode=", divemode_text[ev->value], "");
+	if (ev.name == "modechange")
+		show_utf8(b, " divemode=", divemode_text[ev.value], "");
 	else
-		show_index(b, ev->value, "value=", "");
-	show_utf8(b, " name=", ev->name.c_str(), "");
+		show_index(b, ev.value, "value=", "");
+	show_utf8(b, " name=", ev.name.c_str(), "");
 	if (event_is_gaschange(ev)) {
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
-		if (ev->gas.index >= 0)
-			show_integer(b, ev->gas.index, "cylinder=", "");
+		if (ev.gas.index >= 0)
+			show_integer(b, ev.gas.index, "cylinder=", "");
 		put_gasmix(b, mix);
 	}
 	put_string(b, "\n");
 }
 
-static void save_events(struct membuffer *b, struct dive *dive, struct event *ev)
+static void save_events(struct membuffer *b, struct dive *dive, const struct divecomputer *dc)
 {
-	while (ev) {
+	for (auto &ev: dc->events)
 		save_one_event(b, dive, ev);
-		ev = ev->next;
-	}
 }
 
 static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
@@ -436,7 +434,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	put_duration(b, dc->surfacetime, "surfacetime ", "min\n");
 
 	save_extra_data(b, dc);
-	save_events(b, dive, dc->events);
+	save_events(b, dive, dc);
 	save_samples(b, dive, dc);
 }
 

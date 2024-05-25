@@ -352,14 +352,14 @@ void addEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO
 	execute(new AddEventSetpointChange(d, dcNr, seconds, pO2));
 }
 
-void renameEvent(struct dive *d, int dcNr, struct event *ev, const char *name)
+void renameEvent(struct dive *d, int dcNr, int idx, const std::string name)
 {
-	execute(new RenameEvent(d, dcNr, ev, name));
+	execute(new RenameEvent(d, dcNr, idx, std::move(name)));
 }
 
-void removeEvent(struct dive *d, int dcNr, struct event *ev)
+void removeEvent(struct dive *d, int dcNr, int idx)
 {
-	execute(new RemoveEvent(d, dcNr, ev));
+	execute(new RemoveEvent(d, dcNr, idx));
 }
 
 void addGasSwitch(struct dive *d, int dcNr, int seconds, int tank)

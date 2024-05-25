@@ -80,17 +80,19 @@ void TankItem::setData(const struct dive *d, const struct divecomputer *dc, int 
 		return;
 
 	// start with the first gasmix and at the start of the plotted range
-	const struct event *ev = NULL;
-	struct gasmix gasmix = gasmix_air;
-	gasmix = get_gasmix(d, dc, plotStartTime, &ev, gasmix);
+	event_loop loop("gaschange");
+	struct gasmix gasmix = gasmix_invalid;
+	const struct event *ev;
+	while ((ev = loop.next(*dc)) != nullptr && ev->time.seconds <= plotStartTime)
+		gasmix = get_gasmix_from_event(d, *ev);
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
 	int startTime = plotStartTime;
 	while (ev && (int)ev->time.seconds < plotEndTime) {
 		createBar(startTime, ev->time.seconds, gasmix);
 		startTime = ev->time.seconds;
-		gasmix = get_gasmix_from_event(d, ev);
-		ev = get_next_event(ev->next, "gaschange");
+		gasmix = get_gasmix_from_event(d, *ev);
+		ev = loop.next(*dc);
 	}
 	createBar(startTime, plotEndTime, gasmix);
 }

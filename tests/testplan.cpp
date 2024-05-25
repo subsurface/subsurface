@@ -496,14 +496,14 @@ void TestPlan::testMetric()
 	while (!dp->minimum_gas.mbar && dp->next)
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 148l);
+	QVERIFY(dive.dc.events.size() >= 2);
 	// check first gas change to EAN36 at 33m
-	struct event *ev = dive.dc.events;
-	QVERIFY(ev != NULL);
+	struct event *ev = &dive.dc.events[0];
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 36);
 	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 33000);
 	// check second gas change to Oxygen at 6m
-	ev = ev->next;
+	ev = &dive.dc.events[1];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
@@ -537,14 +537,15 @@ void TestPlan::testImperial()
 	while (!dp->minimum_gas.mbar && dp->next)
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 155l);
+	QVERIFY(dive.dc.events.size() >= 2);
 	// check first gas change to EAN36 at 33m
-	struct event *ev = dive.dc.events;
+	struct event *ev = &dive.dc.events[0];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 36);
 	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 33528);
 	// check second gas change to Oxygen at 6m
-	ev = ev->next;
+	ev = &dive.dc.events[1];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
@@ -669,8 +670,9 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 155l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	QVERIFY(dive.dc.events.size() >= 1);
 	// check first gas change to EAN50 at 21m
-	struct event *ev = dive.dc.events;
+	struct event *ev = &dive.dc.events[0];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
@@ -706,7 +708,8 @@ void TestPlan::testVpmbMetric60m30minTx()
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
 	// check first gas change to EAN50 at 21m
-	struct event *ev = dive.dc.events;
+	QVERIFY(dive.dc.events.size() >= 1);
+	struct event *ev = &dive.dc.events[0];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
@@ -741,14 +744,15 @@ void TestPlan::testVpmbMetric100m60min()
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 157l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	QVERIFY(dive.dc.events.size() >= 2);
 	// check first gas change to EAN50 at 21m
-	struct event *ev = dive.dc.events;
+	struct event *ev = &dive.dc.events[0];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
 	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 21000);
 	// check second gas change to Oxygen at 6m
-	ev = ev->next;
+	ev = &dive.dc.events[1];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
@@ -778,7 +782,7 @@ void TestPlan::testMultipleGases()
 #endif
 
 	gasmix gas;
-	gas = get_gasmix_at_time(&dive, &dive.dc, {20 * 60 + 1});
+	gas = get_gasmix_at_time(dive, dive.dc, {20 * 60 + 1});
 	QCOMPARE(get_o2(gas), 110);
 	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 2480u, 2480u));
 }
@@ -839,14 +843,15 @@ void TestPlan::testVpmbMetric100m10min()
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 175l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	QVERIFY(dive.dc.events.size() >= 2);
 	// check first gas change to EAN50 at 21m
-	struct event *ev = dive.dc.events;
+	struct event *ev = &dive.dc.events[0];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
 	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 21000);
 	// check second gas change to Oxygen at 6m
-	ev = ev->next;
+	ev = &dive.dc.events[1];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
@@ -906,20 +911,21 @@ void TestPlan::testVpmbMetricRepeat()
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 80l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	QVERIFY(dive.dc.events.size() >= 3);
 	// check first gas change to 21/35 at 66m
-	struct event *ev = dive.dc.events;
+	struct event *ev = &dive.dc.events[0];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->gas.mix.o2.permille, 210);
 	QCOMPARE(ev->gas.mix.he.permille, 350);
 	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 66000);
 	// check second gas change to EAN50 at 21m
-	ev = ev->next;
+	ev = &dive.dc.events[1];
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 50);
 	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 21000);
 	// check third gas change to Oxygen at 6m
-	ev = ev->next;
+	ev = &dive.dc.events[2];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 3);
 	QCOMPARE(ev->value, 100);
