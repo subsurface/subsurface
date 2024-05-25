@@ -711,6 +711,7 @@ void MainWindow::on_actionAddDive_triggered()
 	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
 	make_manually_added_dive_dc(&d.dc);
 	fake_dc(&d.dc);
+	add_default_cylinder(&d);
 	fixup_dive(&d);
 
 	Command::addDive(&d, divelog.autogroup, true);

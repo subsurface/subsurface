@@ -510,12 +510,38 @@ cylinder_t create_new_cylinder(const struct dive *d)
 	cylinder_t cyl = empty_cylinder;
 	fill_default_cylinder(d, &cyl);
 	cyl.start = cyl.type.workingpressure;
-	cyl.manually_added = true;
 	cyl.cylinder_use = OC_GAS;
 	return cyl;
 }
 
-static bool show_cylinder(const struct dive *d, int i) 
+cylinder_t create_new_manual_cylinder(const struct dive *d)
+{
+	cylinder_t cyl = create_new_cylinder(d);
+	cyl.manually_added = true;
+	return cyl;
+}
+
+void add_default_cylinder(struct dive *d)
+{
+	// Only add if there are no cylinders yet
+	if (d->cylinders.nr > 0)
+		return;
+
+	cylinder_t cyl;
+	if (!empty_string(prefs.default_cylinder)) {
+		cyl = create_new_cylinder(d);
+	} else {
+		cyl = empty_cylinder;
+		// roughly an AL80
+		cyl.type.description = strdup(translate("gettextFromC", "unknown"));
+		cyl.type.size.mliter = 11100;
+		cyl.type.workingpressure.mbar = 207000;
+	}
+	add_cylinder(&d->cylinders, 0, cyl);
+	reset_cylinders(d, false);
+}
+
+static bool show_cylinder(const struct dive *d, int i)
 {
 	if (is_cylinder_used(d, i))
 		return true;

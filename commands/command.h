@@ -100,6 +100,7 @@ enum class EditProfileType {
 	ADD,
 	REMOVE,
 	MOVE,
+	EDIT,
 };
 void replanDive(dive *d); // dive computer(s) and cylinder(s) of first argument will be consumed!
 void editProfile(const dive *d, int dcNr, EditProfileType type, int count);

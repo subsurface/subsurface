@@ -565,7 +565,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		for (int i = 0; i < d->cylinders.nr; i++) {
 			const cylinder_t *cylinder = get_cylinder(d, i);
 			QString label = printCylinderDescription(i, cylinder);
-			gasChange->addAction(label, [this, i, eventTime] { changeGas(i, eventTime); });
+			gasChange->addAction(label, [this, i, eventTime] { addGasSwitch(i, eventTime); });
 		}
 	} else if (d && d->cylinders.nr > 1) {
 		// if we have more than one gas, offer to switch to another one
@@ -573,7 +573,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		for (int i = 0; i < d->cylinders.nr; i++) {
 			const cylinder_t *cylinder = get_cylinder(d, i);
 			QString label = printCylinderDescription(i, cylinder);
-			gasChange->addAction(label, [this, i, seconds] { changeGas(i, seconds); });
+			gasChange->addAction(label, [this, i, seconds] { addGasSwitch(i, seconds); });
 		}
 	}
 	m.addAction(tr("Add setpoint change"), [this, seconds]() { ProfileWidget2::addSetpointChange(seconds); });
@@ -759,16 +759,25 @@ void ProfileWidget2::splitDive(int seconds)
 	Command::splitDives(mutable_dive(), duration_t{ seconds });
 }
 
-void ProfileWidget2::changeGas(int tank, int seconds)
+void ProfileWidget2::addGasSwitch(int tank, int seconds)
 {
 	if (!d || tank < 0 || tank >= d->cylinders.nr)
 		return;
 
 	Command::addGasSwitch(mutable_dive(), dc, seconds, tank);
 }
-#endif
 
-#ifndef SUBSURFACE_MOBILE
+void ProfileWidget2::changeGas(int index, int newCylinderId)
+{
+	if ((currentState == PLAN || currentState == EDIT) && plannerModel) {
+		QModelIndex modelIndex = plannerModel->index(index, DivePlannerPointsModel::GAS);
+		plannerModel->gasChange(modelIndex.sibling(modelIndex.row() + 1, modelIndex.column()), newCylinderId);
+
+		if (currentState == EDIT)
+			emit stopEdited();
+	}
+}
+
 void ProfileWidget2::editName(DiveEventItem *item)
 {
 	struct event *event = item->getEventMutable();

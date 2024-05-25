@@ -52,7 +52,7 @@ void EmptyView::resizeEvent(QResizeEvent *)
 	update();
 }
 
-ProfileWidget::ProfileWidget() : d(nullptr), dc(0), originalDive(nullptr), placingCommand(false)
+ProfileWidget::ProfileWidget() : d(nullptr), dc(0), placingCommand(false)
 {
 	ui.setupUi(this);
 
@@ -122,9 +122,13 @@ ProfileWidget::ProfileWidget() : d(nullptr), dc(0), originalDive(nullptr), placi
 
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &ProfileWidget::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, view.get(), &ProfileWidget2::settingsChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &ProfileWidget::cylindersChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &ProfileWidget::cylindersChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &ProfileWidget::cylindersChanged);
 	connect(view.get(), &ProfileWidget2::stopAdded, this, &ProfileWidget::stopAdded);
 	connect(view.get(), &ProfileWidget2::stopRemoved, this, &ProfileWidget::stopRemoved);
 	connect(view.get(), &ProfileWidget2::stopMoved, this, &ProfileWidget::stopMoved);
+	connect(view.get(), &ProfileWidget2::stopEdited, this, &ProfileWidget::stopEdited);
 
 	ui.profCalcAllTissues->setChecked(qPrefTechnicalDetails::calcalltissues());
 	ui.profCalcCeiling->setChecked(qPrefTechnicalDetails::calcceiling());
@@ -192,6 +196,10 @@ void ProfileWidget::plotCurrentDive()
 
 void ProfileWidget::plotDive(dive *dIn, int dcIn)
 {
+	bool endEditMode = false;
+	if (editedDive && (dIn != d || dcIn != dc))
+		endEditMode = true;
+
 	d = dIn;
 
 	if (dcIn >= 0)
@@ -202,7 +210,7 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 		dc = std::min(dc, (int)number_of_computers(current_dive) - 1);
 
 	// Exit edit mode if the dive changed
-	if (editedDive && (originalDive != d || editedDc != dc))
+	if (endEditMode)
 		exitEditMode();
 
 	// If this is a manually added dive and we are not in the planner
@@ -216,7 +224,7 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 
 	setEnabledToolbar(d != nullptr);
 	if (editedDive) {
-		view->plotDive(editedDive.get(), editedDc);
+		view->plotDive(editedDive.get(), dc);
 		setDive(editedDive.get(), dc);
 	} else if (d) {
 		view->setProfileState(d, dc);
@@ -256,22 +264,42 @@ void ProfileWidget::rotateDC(int dir)
 void ProfileWidget::divesChanged(const QVector<dive *> &dives, DiveField field)
 {
 	// If the current dive is not in list of changed dives, do nothing.
-	// Only if duration or depth changed, the profile needs to be replotted.
 	// Also, if we are currently placing a command, don't do anything.
 	// Note that we cannot use Command::placingCommand(), because placing
 	// a depth or time change on the maintab requires an update.
 	if (!d || !dives.contains(d) || !(field.duration || field.depth) || placingCommand)
 		return;
 
-	// If were editing the current dive and not currently
+	// If we're editing the current dive and not currently
 	// placing command, we have to update the edited dive.
 	if (editedDive) {
 		copy_dive(d, editedDive.get());
 		// TODO: Holy moly that function sends too many signals. Fix it!
-		DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), editedDc);
+		DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), dc);
 	}
 
-	plotCurrentDive();
+	// Only if duration or depth changed, the profile needs to be replotted.
+	if (field.duration || field.depth)
+		plotCurrentDive();
+}
+
+void ProfileWidget::cylindersChanged(struct dive *changed, int pos)
+{
+	// If the current dive is not in list of changed dives, do nothing.
+	// Only if duration or depth changed, the profile needs to be replotted.
+	// Also, if we are currently placing a command, don't do anything.
+	// Note that we cannot use Command::placingCommand(), because placing
+	// a depth or time change on the maintab requires an update.
+	if (!d || changed != d || !editedDive)
+		return;
+
+	// If we're editing the current dive we have to update the
+	// cylinders of the edited dive.
+	if (editedDive) {
+		copy_cylinders(&d->cylinders, &editedDive.get()->cylinders);
+		// TODO: Holy moly that function sends too many signals. Fix it!
+		DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), dc);
+	}
 }
 
 void ProfileWidget::setPlanState(const struct dive *d, int dcNr)
@@ -297,22 +325,20 @@ void ProfileWidget::unsetProfTissues()
 void ProfileWidget::editDive()
 {
 	editedDive.reset(alloc_dive());
-	editedDc = dc;
 	copy_dive(d, editedDive.get()); // Work on a copy of the dive
-	originalDive = d;
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), editedDc);
-	view->setEditState(editedDive.get(), editedDc);
+	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::EDIT);
+	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), dc);
+	view->setEditState(editedDive.get(), dc);
 }
 
 void ProfileWidget::exitEditMode()
 {
 	if (!editedDive)
 		return;
+
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	view->setProfileState(d, dc); // switch back to original dive before erasing the copy.
 	editedDive.reset();
-	originalDive = nullptr;
 }
 
 // Update depths of edited dive
@@ -338,25 +364,36 @@ void ProfileWidget::stopAdded()
 {
 	if (!editedDive)
 		return;
-	calcDepth(*editedDive, editedDc);
+	calcDepth(*editedDive, dc);
 	Setter s(placingCommand, true);
-	Command::editProfile(editedDive.get(), editedDc, Command::EditProfileType::ADD, 0);
+	Command::editProfile(editedDive.get(), dc, Command::EditProfileType::ADD, 0);
 }
 
 void ProfileWidget::stopRemoved(int count)
 {
 	if (!editedDive)
 		return;
-	calcDepth(*editedDive, editedDc);
+	calcDepth(*editedDive, dc);
 	Setter s(placingCommand, true);
-	Command::editProfile(editedDive.get(), editedDc, Command::EditProfileType::REMOVE, count);
+	Command::editProfile(editedDive.get(), dc, Command::EditProfileType::REMOVE, count);
 }
 
 void ProfileWidget::stopMoved(int count)
 {
 	if (!editedDive)
 		return;
-	calcDepth(*editedDive, editedDc);
+	calcDepth(*editedDive, dc);
 	Setter s(placingCommand, true);
-	Command::editProfile(editedDive.get(), editedDc, Command::EditProfileType::MOVE, count);
+	Command::editProfile(editedDive.get(), dc, Command::EditProfileType::MOVE, count);
+}
+
+void ProfileWidget::stopEdited()
+{
+	if (!editedDive)
+		return;
+
+	copy_events(get_dive_dc(editedDive.get(), dc), get_dive_dc(d, dc));
+
+	Setter s(placingCommand, true);
+	Command::editProfile(editedDive.get(), dc, Command::EditProfileType::EDIT, 0);
 }
