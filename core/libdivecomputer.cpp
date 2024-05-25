@@ -363,7 +363,7 @@ static void handle_event(struct divecomputer *dc, const struct sample &sample, d
 	time += sample.time.seconds;
 
 	ev = add_event(dc, time, type, value.event.flags, value.event.value, name);
-	if (event_is_gaschange(*ev) && ev->gas.index >= 0)
+	if (ev->is_gaschange() && ev->gas.index >= 0)
 		current_gas_index = ev->gas.index;
 }
 

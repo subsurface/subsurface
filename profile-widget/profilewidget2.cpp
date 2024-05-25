@@ -559,7 +559,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem);
 
 	// Add or edit Gas Change
-	if (d && item && event_is_gaschange(item->ev)) {
+	if (d && item && item->ev.is_gaschange()) {
 		int eventTime = item->ev.time.seconds;
 		QMenu *gasChange = m.addMenu(tr("Edit Gas Change"));
 		for (int i = 0; i < d->cylinders.nr; i++) {

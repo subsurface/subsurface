@@ -130,7 +130,7 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 
 struct gasmix get_gasmix_from_event(const struct dive *dive, const struct event &ev)
 {
-	if (event_is_gaschange(ev)) {
+	if (ev.is_gaschange()) {
 		int index = ev.gas.index;
 		// FIXME: The planner uses one past cylinder-count to signify "surface air". Remove in due course.
 		if (index == dive->cylinders.nr)
@@ -311,7 +311,7 @@ void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int tim
 
 	for (const auto &ev: s->events) {
 		// Don't add events the planner knows about
-		if (ev.time.seconds < time && !event_is_gaschange(ev) && !event_is_divemodechange(ev))
+		if (ev.time.seconds < time && !ev.is_gaschange() && !ev.is_divemodechange())
 			add_event(d, ev.time.seconds, ev.type, ev.flags, ev.value, ev.name);
 	}
 }
@@ -1051,7 +1051,7 @@ static bool validate_gaschange(struct dive *dive, struct event &event)
 /* Clean up event, return true if event is ok, false if it should be dropped as bogus */
 static bool validate_event(struct dive *dive, struct event &event)
 {
-	if (event_is_gaschange(event))
+	if (event.is_gaschange())
 		return validate_gaschange(dive, event);
 	return true;
 }
@@ -1483,7 +1483,7 @@ pick_b:
 		 * If that's a gas-change that matches the previous
 		 * gas change, we'll just skip it
 		 */
-		if (event_is_gaschange(*pick)) {
+		if (pick->is_gaschange()) {
 			if (last_gas && same_gas(pick, last_gas))
 				continue;
 			last_gas = pick;
@@ -1567,7 +1567,7 @@ static void renumber_last_sample(struct divecomputer *dc, const int mapping[])
 
 static void event_renumber(struct event &ev, const int mapping[])
 {
-	if (!event_is_gaschange(ev))
+	if (!ev.is_gaschange())
 		return;
 	if (ev.gas.index < 0)
 		return;

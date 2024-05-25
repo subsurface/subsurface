@@ -39,7 +39,7 @@ DiveEventItem::~DiveEventItem()
 
 void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pixmaps)
 {
-	event_severity severity = get_event_severity(ev);
+	event_severity severity = ev.get_severity();
 	if (ev.name.empty()) {
 		setPixmap(pixmaps.warning);
 	} else if (same_string_caseinsensitive(ev.name.c_str(), "modechange")) {
@@ -50,7 +50,7 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 	} else if (ev.type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(pixmaps.bookmark);
 		setOffset(QPointF(0.0, -pixmap().height()));
-	} else if (event_is_gaschange(ev)) {
+	} else if (ev.is_gaschange()) {
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		struct icd_data icd_data;
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
@@ -121,7 +121,7 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 	int value = ev.value;
 	int type = ev.type;
 
-	if (event_is_gaschange(ev)) {
+	if (ev.is_gaschange()) {
 		struct icd_data icd_data;
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		name += ": ";
