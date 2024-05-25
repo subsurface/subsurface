@@ -839,7 +839,6 @@ static void parse_dc_event(char *line, struct git_parser_state *state)
 {
 	int m, s = 0;
 	struct parse_event p;
-	struct event *ev;
 
 	m = strtol(line, &line, 10);
 	if (*line == ':')
@@ -859,17 +858,17 @@ static void parse_dc_event(char *line, struct git_parser_state *state)
 	if (p.has_divemode && p.name !=  "modechange")
 		p.name = "modechange";
 
-	ev = add_event(state->active_dc, p.ev.time.seconds, p.ev.type, p.ev.flags, p.ev.value, p.name.c_str());
+	struct event *ev = add_event(state->active_dc, p.ev.time.seconds, p.ev.type, p.ev.flags, p.ev.value, p.name.c_str());
 
 	/*
 	 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00.
 	 * Better to mark them being CCR on import so no need for special treatments elsewhere on
 	 * the code.
 	 */
-	if (ev && p.ev.time.seconds == 0 && p.ev.type == SAMPLE_EVENT_PO2 && p.ev.value && state->active_dc->divemode==OC)
+	if (p.ev.time.seconds == 0 && p.ev.type == SAMPLE_EVENT_PO2 && p.ev.value && state->active_dc->divemode==OC)
 		state->active_dc->divemode = CCR;
 
-	if (ev && event_is_gaschange(ev)) {
+	if (event_is_gaschange(*ev)) {
 		/*
 		 * We subtract one here because "0" is "no index",
 		 * and the parsing will add one for actual cylinder

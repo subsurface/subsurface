@@ -76,7 +76,7 @@ int total_weight(const struct dive *dive)
 
 static int active_o2(const struct dive *dive, const struct divecomputer *dc, duration_t time)
 {
-	struct gasmix gas = get_gasmix_at_time(dive, dc, time);
+	struct gasmix gas = get_gasmix_at_time(*dive, *dc, time);
 	return get_o2(gas);
 }
 
@@ -96,8 +96,8 @@ static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc,
 		double amb_presure = depth_to_bar(sample.depth.mm, dive);
 		double pamb_pressure = depth_to_bar(psample.depth.mm , dive);
 		if (dc->divemode == PSCR) {
-			po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample.time));
-			po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample.time));
+			po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(*dive, *dc, psample.time));
+			po2f = pscr_o2(amb_presure, get_gasmix_at_time(*dive, *dc, sample.time));
 		} else {
 			int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
 			po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
@@ -141,8 +141,8 @@ static int calculate_otu(const struct dive *dive)
 				double amb_presure = depth_to_bar(sample.depth.mm, dive);
 				double pamb_pressure = depth_to_bar(psample.depth.mm , dive);
 				if (dc->divemode == PSCR) {
-					po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, dc, psample.time));
-					po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, dc, sample.time));
+					po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(*dive, *dc, psample.time));
+					po2f = pscr_o2(amb_presure, get_gasmix_at_time(*dive, *dc, sample.time));
 				} else {
 					int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
 					po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
@@ -390,13 +390,9 @@ static int calculate_sac(const struct dive *dive)
 static void add_dive_to_deco(struct deco_state *ds, struct dive *dive, bool in_planner)
 {
 	struct divecomputer *dc = &dive->dc;
-	struct gasmix gasmix = gasmix_air;
-	const struct event *ev = NULL, *evd = NULL;
-	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
-	if (!dc)
-		return;
-
+	gasmix_loop loop(*dive, dive->dc);
+	divemode_loop loop_d(dive->dc);
 	for (auto [psample, sample]: pairwise_range(dc->samples)) {
 		int t0 = psample.time.seconds;
 		int t1 = sample.time.seconds;
@@ -404,9 +400,9 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive, bool in_p
 
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample.depth.mm, sample.depth.mm, j - t0, t1 - t0);
-			gasmix = get_gasmix(dive, dc, j, &ev, gasmix);
+			auto gasmix = loop.next(j);
 			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample.setpoint.mbar,
-				    get_current_divemode(&dive->dc, j, &evd, &current_divemode), dive->sac,
+				    loop_d.next(j), dive->sac,
 				    in_planner);
 		}
 	}
@@ -417,11 +413,12 @@ int get_divenr(const struct dive *dive)
 	int i;
 	const struct dive *d;
 	// tempting as it may be, don't die when called with dive=NULL
-	if (dive)
+	if (dive) {
 		for_each_dive(i, d) {
 			if (d->id == dive->id) // don't compare pointers, we could be passing in a copy of the dive
 				return i;
 		}
+	}
 	return -1;
 }
 

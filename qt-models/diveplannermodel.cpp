@@ -3,6 +3,7 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
+#include "core/event.h"
 #include "core/subsurface-string.h"
 #include "qt-models/cylindermodel.h"
 #include "qt-models/models.h" // For defaultModelFont().
@@ -119,8 +120,6 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	int samplecount = 0;
 	o2pressure_t last_sp;
 	struct divecomputer *dc = get_dive_dc(d, dcNr);
-	const struct event *evd = NULL;
-	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 	cylinders.updateDive(d, dcNr);
 	duration_t lasttime;
 	duration_t lastrecordedtime;
@@ -150,6 +149,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	int cylinderid = 0;
 
 	last_sp.mbar = 0;
+	divemode_loop loop(*dc);
 	for (int i = 0; i < plansamples - 1; i++) {
 		if (dc->last_manual_time.seconds && dc->last_manual_time.seconds > 120 && lasttime.seconds >= dc->last_manual_time.seconds)
 			break;
@@ -171,7 +171,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 			if (newtime.seconds - lastrecordedtime.seconds > 10 || cylinderid == get_cylinderid_at_time(d, dc, nexttime)) {
 				if (newtime.seconds == lastrecordedtime.seconds)
 					newtime.seconds += 10;
-				current_divemode = get_current_divemode(dc, newtime.seconds - 1, &evd, &current_divemode);
+				divemode_t current_divemode = loop.next(newtime.seconds - 1);
 				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 				lastrecordedtime = newtime;
 			}
@@ -181,7 +181,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 		}
 	}
 	// make sure we get the last point right so the duration is correct
-	current_divemode = get_current_divemode(dc, dc->duration.seconds, &evd, &current_divemode);
+	divemode_t current_divemode = loop.next(dc->duration.seconds);
 	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
 		addStop(0, dc->duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
 	preserved_until = d->duration;

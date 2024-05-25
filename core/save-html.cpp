@@ -31,7 +31,7 @@ static void write_attribute(struct membuffer *b, const char *att_name, const cha
 	put_format(b, "\"%s", separator);
 }
 
-static void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
+static void save_photos(struct membuffer *b, const char *photos_dir, const struct dive *dive)
 {
 	if (dive->pictures.nr <= 0)
 		return;
@@ -49,10 +49,10 @@ static void save_photos(struct membuffer *b, const char *photos_dir, struct dive
 	put_string(b, "],");
 }
 
-static void write_divecomputers(struct membuffer *b, struct dive *dive)
+static void write_divecomputers(struct membuffer *b, const struct dive *dive)
 {
 	put_string(b, "\"divecomputers\":[");
-	struct divecomputer *dc;
+	const struct divecomputer *dc;
 	const char *separator = "";
 	for_each_dc (dive, dc) {
 		put_string(b, separator);
@@ -72,36 +72,30 @@ static void write_divecomputers(struct membuffer *b, struct dive *dive)
 	put_string(b, "],");
 }
 
-static void write_dive_status(struct membuffer *b, struct dive *dive)
+static void write_dive_status(struct membuffer *b, const struct dive *dive)
 {
 	put_format(b, "\"sac\":\"%d\",", dive->sac);
 	put_format(b, "\"otu\":\"%d\",", dive->otu);
 	put_format(b, "\"cns\":\"%d\",", dive->cns);
 }
 
-static void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
+static void put_HTML_bookmarks(struct membuffer *b, const struct dive *dive)
 {
-	struct event *ev = dive->dc.events;
-
-	if (!ev)
-		return;
-
 	const char *separator = "\"events\":[";
-	do {
+	for (const auto &ev: dive->dc.events) {
 		put_string(b, separator);
 		separator = ", ";
 		put_string(b, "{\"name\":\"");
-		put_quoted(b, ev->name.c_str(), 1, 0);
+		put_quoted(b, ev.name.c_str(), 1, 0);
 		put_string(b, "\",");
-		put_format(b, "\"value\":\"%d\",", ev->value);
-		put_format(b, "\"type\":\"%d\",", ev->type);
-		put_format(b, "\"time\":\"%d\"}", ev->time.seconds);
-		ev = ev->next;
-	} while (ev);
+		put_format(b, "\"value\":\"%d\",", ev.value);
+		put_format(b, "\"type\":\"%d\",", ev.type);
+		put_format(b, "\"time\":\"%d\"}", ev.time.seconds);
+	}
 	put_string(b, "],");
 }
 
-static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
+static void put_weightsystem_HTML(struct membuffer *b, const struct dive *dive)
 {
 	int i, nr;
 
@@ -126,7 +120,7 @@ static void put_weightsystem_HTML(struct membuffer *b, struct dive *dive)
 	put_string(b, "],");
 }
 
-static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
+static void put_cylinder_HTML(struct membuffer *b, const struct dive *dive)
 {
 	int i, nr;
 	const char *separator = "\"Cylinders\":[";
@@ -176,7 +170,7 @@ static void put_cylinder_HTML(struct membuffer *b, struct dive *dive)
 }
 
 
-static void put_HTML_samples(struct membuffer *b, struct dive *dive)
+static void put_HTML_samples(struct membuffer *b, const struct dive *dive)
 {
 	put_format(b, "\"maxdepth\":%d,", dive->dc.maxdepth.mm);
 	put_format(b, "\"duration\":%d,", dive->dc.duration.seconds);
@@ -192,7 +186,7 @@ static void put_HTML_samples(struct membuffer *b, struct dive *dive)
 	put_string(b, "],");
 }
 
-static void put_HTML_coordinates(struct membuffer *b, struct dive *dive)
+static void put_HTML_coordinates(struct membuffer *b, const struct dive *dive)
 {
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 	if (!ds)
@@ -210,7 +204,7 @@ static void put_HTML_coordinates(struct membuffer *b, struct dive *dive)
 	put_string(b, "},");
 }
 
-void put_HTML_date(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
+void put_HTML_date(struct membuffer *b, const struct dive *dive, const char *pre, const char *post)
 {
 	struct tm tm;
 	utc_mkdate(dive->when, &tm);
@@ -223,7 +217,7 @@ void put_HTML_quoted(struct membuffer *b, const char *text)
 	put_quoted(b, text, is_attribute, is_html);
 }
 
-void put_HTML_notes(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
+void put_HTML_notes(struct membuffer *b, const struct dive *dive, const char *pre, const char *post)
 {
 	put_string(b, pre);
 	if (dive->notes) {
@@ -268,14 +262,14 @@ void put_HTML_weight_units(struct membuffer *b, unsigned int grams, const char *
 	put_format(b, "%s%.1f %s%s", pre, value, unit, post);
 }
 
-void put_HTML_time(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
+void put_HTML_time(struct membuffer *b, const struct dive *dive, const char *pre, const char *post)
 {
 	struct tm tm;
 	utc_mkdate(dive->when, &tm);
 	put_format(b, "%s%02u:%02u:%02u%s", pre, tm.tm_hour, tm.tm_min, tm.tm_sec, post);
 }
 
-void put_HTML_depth(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
+void put_HTML_depth(struct membuffer *b, const struct dive *dive, const char *pre, const char *post)
 {
 	const char *unit;
 	double value;
@@ -298,7 +292,7 @@ void put_HTML_depth(struct membuffer *b, struct dive *dive, const char *pre, con
 	}
 }
 
-void put_HTML_airtemp(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
+void put_HTML_airtemp(struct membuffer *b, const struct dive *dive, const char *pre, const char *post)
 {
 	const char *unit;
 	double value;
@@ -311,7 +305,7 @@ void put_HTML_airtemp(struct membuffer *b, struct dive *dive, const char *pre, c
 	put_format(b, "%s%.1f %s%s", pre, value, unit, post);
 }
 
-void put_HTML_watertemp(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
+void put_HTML_watertemp(struct membuffer *b, const struct dive *dive, const char *pre, const char *post)
 {
 	const char *unit;
 	double value;
@@ -324,7 +318,7 @@ void put_HTML_watertemp(struct membuffer *b, struct dive *dive, const char *pre,
 	put_format(b, "%s%.1f %s%s", pre, value, unit, post);
 }
 
-static void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pre, const char *post)
+static void put_HTML_tags(struct membuffer *b, const struct dive *dive, const char *pre, const char *post)
 {
 	put_string(b, pre);
 	struct tag_entry *tag = dive->tag_list;
@@ -345,7 +339,7 @@ static void put_HTML_tags(struct membuffer *b, struct dive *dive, const char *pr
 }
 
 /* if exporting list_only mode, we neglect exporting the samples, bookmarks and cylinders */
-static void write_one_dive(struct membuffer *b, struct dive *dive, const char *photos_dir, int *dive_no, bool list_only)
+static void write_one_dive(struct membuffer *b, const struct dive *dive, const char *photos_dir, int *dive_no, bool list_only)
 {
 	put_string(b, "{");
 	put_format(b, "\"number\":%d,", *dive_no);
@@ -388,7 +382,7 @@ static void write_one_dive(struct membuffer *b, struct dive *dive, const char *p
 static void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
 	int i;
-	struct dive *dive;
+	const struct dive *dive;
 	const char *separator = "";
 	bool found_sel_dive = 0;
 
@@ -414,7 +408,7 @@ static void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only,
 
 static void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
-	struct dive *dive;
+	const struct dive *dive;
 	const char *separator = "";
 	bool found_sel_dive = 0;
 
@@ -444,7 +438,7 @@ static void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, boo
 static void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
 {
 	int i, dive_no = 0;
-	struct dive *dive;
+	const struct dive *dive;
 	dive_trip_t *trip;
 	char sep_ = ' ';
 	char *sep = &sep_;

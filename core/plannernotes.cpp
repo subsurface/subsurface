@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include "dive.h"
 #include "deco.h"
+#include "event.h"
 #include "units.h"
 #include "divelist.h"
 #include "planner.h"
@@ -570,18 +571,16 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	{
 		dp = diveplan->dp;
 		bool o2warning_exist = false;
-		enum divemode_t current_divemode;
 		double amb;
-		const struct event *evd = NULL;
-		current_divemode = UNDEF_COMP_TYPE;
 
+		divemode_loop loop(dive->dc);
 		if (dive->dc.divemode != CCR) {
 			while (dp) {
 				if (dp->time != 0) {
 					std::string temp;
 					struct gasmix gasmix = get_cylinder(dive, dp->cylinderid)->gasmix;
 
-					current_divemode = get_current_divemode(&dive->dc, dp->time, &evd, &current_divemode);
+					divemode_t current_divemode = loop.next(dp->time);
 					amb = depth_to_atm(dp->depth.mm, dive);
 					gas_pressures pressures = fill_pressures(amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix.o2.permille / 1000.0, current_divemode);
 

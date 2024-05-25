@@ -2,6 +2,7 @@
 #include "divepercentageitem.h"
 #include "divecartesianaxis.h"
 #include "core/dive.h"
+#include "core/event.h"
 #include "core/profile.h"
 
 #include <array>
@@ -105,7 +106,7 @@ void DivePercentageItem::replot(const dive *d, const struct divecomputer *dc, co
 		int x = 0;
 		QRgb *scanline = (QRgb *)img.scanLine(line);
 		QRgb color = 0;
-		const struct event *ev = NULL;
+		gasmix_loop loop(*d, *dc);
 		for (int i = 0; i < pi.nr; i++) {
 			const plot_data &item = pi.entry[i];
 			int sec = item.sec;
@@ -114,7 +115,7 @@ void DivePercentageItem::replot(const dive *d, const struct divecomputer *dc, co
 				continue;
 
 			double value = item.percentages[tissue];
-			struct gasmix gasmix = get_gasmix(d, dc, sec, &ev, gasmix_air);
+			struct gasmix gasmix = loop.next(sec);
 			int inert = get_n2(gasmix) + get_he(gasmix);
 			color = colorScale(value, inert);
 			if (nextX >= width)
