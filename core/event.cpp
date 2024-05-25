@@ -49,15 +49,14 @@ event::~event()
 {
 }
 
-bool event_is_gaschange(const struct event &ev)
+bool event::is_gaschange() const
 {
-	return ev.type == SAMPLE_EVENT_GASCHANGE ||
-		ev.type == SAMPLE_EVENT_GASCHANGE2;
+	return type == SAMPLE_EVENT_GASCHANGE || type == SAMPLE_EVENT_GASCHANGE2;
 }
 
-bool event_is_divemodechange(const struct event &ev)
+bool event::is_divemodechange() const
 {
-	return ev.name == "modechange";
+	return name == "modechange";
 }
 
 bool event::operator==(const event &b) const
@@ -66,9 +65,9 @@ bool event::operator==(const event &b) const
 	       std::tie(b.time.seconds, b.type, b.flags, b.value, b.name);
 }
 
-extern enum event_severity get_event_severity(const struct event &ev)
+enum event_severity event::get_severity() const
 {
-	switch (ev.flags & SAMPLE_FLAGS_SEVERITY_MASK) {
+	switch (flags & SAMPLE_FLAGS_SEVERITY_MASK) {
 	case SAMPLE_FLAGS_SEVERITY_INFO:
 		return EVENT_SEVERITY_INFO;
 	case SAMPLE_FLAGS_SEVERITY_WARN:
