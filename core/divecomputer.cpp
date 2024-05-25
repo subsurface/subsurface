@@ -263,15 +263,9 @@ struct sample *prepare_sample(struct divecomputer *dc)
 	return NULL;
 }
 
-struct sample *add_sample(const struct sample *sample, int time, struct divecomputer *dc)
+void append_sample(const struct sample &sample, struct divecomputer *dc)
 {
-	struct sample *p = prepare_sample(dc);
-
-	if (p) {
-		*p = *sample;
-		p->time.seconds = time;
-	}
-	return p;
+	dc->samples.push_back(sample);
 }
 
 /*
