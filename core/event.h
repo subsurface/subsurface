@@ -48,6 +48,10 @@ struct event {
 	~event();
 
 	bool operator==(const event &b2) const;
+
+	bool is_gaschange() const;
+	bool is_divemodechange() const;
+	event_severity get_severity() const;
 };
 
 class event_loop
@@ -82,10 +86,6 @@ public:
 	divemode_loop(const struct divecomputer &dc);
 	divemode_t next(int time);
 };
-
-extern bool event_is_gaschange(const struct event &ev);
-extern bool event_is_divemodechange(const struct event &ev);
-extern enum event_severity get_event_severity(const struct event &ev);
 
 extern const struct event *get_first_event(const struct divecomputer &dc, const std::string &name);
 extern struct event *get_first_event(struct divecomputer &dc, const std::string &name);

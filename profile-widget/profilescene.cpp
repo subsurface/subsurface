@@ -559,7 +559,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 			if (event.name.empty() ||
 			    !(event.name == "heading" ||
 			      (event.name == "SP change" && event.time.seconds == 0) ||
-			      event_is_gaschange(event) ||
+			      event.is_gaschange() ||
 			      event.type == SAMPLE_EVENT_BOOKMARK))
 				continue;
 		}
@@ -570,7 +570,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 			addItem(item);
 			eventItems.push_back(item);
 		}
-		if (event_is_gaschange(event))
+		if (event.is_gaschange())
 			lastgasmix = get_gasmix_from_event(d, event);
 	}
 

@@ -363,7 +363,7 @@ static void save_one_event(struct membuffer *b, struct dive *dive, const struct 
 	else
 		show_index(b, ev.value, "value='", "'");
 	show_utf8(b, ev.name.c_str(), " name='", "'", 1);
-	if (event_is_gaschange(ev)) {
+	if (ev.is_gaschange()) {
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		if (ev.gas.index >= 0)
 			show_integer(b, ev.gas.index, "cylinder='", "'");
