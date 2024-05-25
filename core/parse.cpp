@@ -91,7 +91,7 @@ void event_end(struct parser_state *state)
 		if (ev.time.seconds == 0 && ev.type == SAMPLE_EVENT_PO2 && ev.value && dc->divemode==OC)
 			dc->divemode = CCR;
 
-		if (event_is_gaschange(ev)) {
+		if (ev.is_gaschange()) {
 			/* See try_to_fill_event() on why the filled-in index is one too big */
 			ev.gas.index = state->cur_event.gas.index-1;
 			if (state->cur_event.gas.mix.o2.permille || state->cur_event.gas.mix.he.permille)

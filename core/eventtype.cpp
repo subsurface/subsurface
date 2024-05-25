@@ -14,7 +14,7 @@ struct event_type {
 	bool plot;
 	event_type(const struct event *ev) :
 		name(ev->name),
-		severity(get_event_severity(*ev)),
+		severity(ev->get_severity()),
 		plot(true)
 	{
 	}
@@ -108,7 +108,7 @@ QString event_type_name(const event &ev)
 		return QString();
 
 	QString name = QString::fromStdString(ev.name);
-	return event_type_name(std::move(name), get_event_severity(ev));
+	return event_type_name(std::move(name), ev.get_severity());
 }
 
 QString event_type_name(int idx)

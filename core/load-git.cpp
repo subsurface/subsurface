@@ -868,7 +868,7 @@ static void parse_dc_event(char *line, struct git_parser_state *state)
 	if (p.ev.time.seconds == 0 && p.ev.type == SAMPLE_EVENT_PO2 && p.ev.value && state->active_dc->divemode==OC)
 		state->active_dc->divemode = CCR;
 
-	if (event_is_gaschange(*ev)) {
+	if (ev->is_gaschange()) {
 		/*
 		 * We subtract one here because "0" is "no index",
 		 * and the parsing will add one for actual cylinder
