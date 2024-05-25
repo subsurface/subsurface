@@ -2,27 +2,7 @@
 
 #include "sample.h"
 
-sample::sample() :
-	time({ 0 }),
-	stoptime({ 0 }),
-	ndl({ -1 }),
-	tts({ 0 }),
-	rbt({ 0 }),
-	depth({ 0 }),
-	stopdepth({ 0 }),
-	temperature({ 0 }),
-	pressure { { 0 }, { 0 } },
-	setpoint({ 0 }),
-	o2sensor { { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 } },
-	bearing({ -1 }),
-	sensor { 0, 0 },
-	cns(0),
-	heartbeat(0),
-	sac({ 0 }),
-	in_deco(false),
-	manually_entered(false)
-{
-}
+sample::sample() = default;
 
 /*
  * Adding a cylinder pressure sample field is not quite as trivial as it
