@@ -3,6 +3,7 @@
 #include "command_edit.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
+#include "core/event.h"
 #include "core/fulltext.h"
 #include "core/qthelper.h" // for copy_qstring
 #include "core/sample.h"
@@ -898,7 +899,7 @@ EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int
 	duration = source->duration;
 
 	dc.samples = sdc->samples;
-	copy_events(sdc, &dc);
+	dc.events = sdc->events;
 
 	setText(editProfileTypeToString(type, count) + " " + diveNumberOrDate(d));
 }

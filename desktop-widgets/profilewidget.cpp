@@ -4,6 +4,8 @@
 #include "profile-widget/profilewidget2.h"
 #include "commands/command.h"
 #include "core/color.h"
+#include "core/event.h"
+#include "core/sample.h"
 #include "core/selection.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"

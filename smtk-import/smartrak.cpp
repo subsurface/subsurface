@@ -728,16 +728,12 @@ static void smtk_parse_other(struct dive *dive, const std::vector<std::string> &
  * Returns a pointer to a bookmark event in an event list if it exists for
  * a given time. Return NULL otherwise.
  */
-static struct event *find_bookmark(struct event *orig, int t)
+static struct event *find_bookmark(struct divecomputer &dc, int t)
 {
-	struct event *ev = orig;
-
-	while (ev) {
-		if ((ev->time.seconds == t) && (ev->type == SAMPLE_EVENT_BOOKMARK))
-			return ev;
-		ev = ev->next;
-	}
-	return NULL;
+	auto it = std::find_if(dc.events.begin(), dc.events.end(),
+			       [t](auto &ev)
+			       { return ev.time.seconds == t && ev.type == SAMPLE_EVENT_BOOKMARK; });
+	return it != dc.events.end() ? &*it : nullptr;
 }
 
 /*
@@ -763,7 +759,7 @@ static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 		if (same_string(table.get_data(0), dive_idx)) {
 			time = lrint(strtod(table.get_data(4), NULL) * 60);
 			const char *tmp = table.get_data(2);
-			ev = find_bookmark(d->dc.events, time);
+			ev = find_bookmark(d->dc, time);
 			if (ev)
 				ev->name = tmp;
 			else

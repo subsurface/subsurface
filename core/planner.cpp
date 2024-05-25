@@ -83,11 +83,11 @@ int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_
 {
 	// we start with the first cylinder unless an event tells us otherwise
 	int cylinder_idx = 0;
-	struct event *event = dc->events;
-	while (event && event->time.seconds <= time.seconds) {
-		if (event->name == "gaschange")
+	for (const auto &event: dc->events) {
+		if (event.time.seconds > time.seconds)
+			break;
+		if (event.name == "gaschange")
 			cylinder_idx = get_cylinder_index(dive, event);
-		event = event->next;
 	}
 	return cylinder_idx;
 }
@@ -127,16 +127,14 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 	if (dc->samples.empty())
 		return 0;
 
-	const struct event *evdm = NULL;
-	enum divemode_t divemode = UNDEF_COMP_TYPE;
-
 	const struct sample *psample = nullptr;
+	divemode_loop loop(dive->dc);
 	for (auto &sample: dc->samples) {
 		o2pressure_t setpoint = psample ? psample->setpoint
 						: sample.setpoint;
 
 		duration_t t1 = sample.time;
-		struct gasmix gas = get_gasmix_at_time(dive, dc, t0);
+		struct gasmix gas = get_gasmix_at_time(*dive, *dc, t0);
 		if (psample)
 			lastdepth = psample->depth;
 
@@ -163,7 +161,7 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 				ds->max_bottom_ceiling_pressure.mbar = ceiling_pressure.mbar;
 		}
 
-		divemode = get_current_divemode(&dive->dc, t0.seconds + 1, &evdm, &divemode);
+		divemode_t divemode = loop.next(t0.seconds + 1);
 		interpolate_transition(ds, dive, t0, t1, lastdepth, sample.depth, gas, setpoint, divemode);
 		psample = &sample;
 		t0 = t1;
@@ -201,7 +199,6 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, struct divecomputer *dc, bool track_gas)
 {
 	struct divedatapoint *dp;
-	struct event *ev;
 	cylinder_t *cyl;
 	int oldpo2 = 0;
 	int lasttime = 0, last_manual_point = 0;
@@ -223,10 +220,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	dc->surface_pressure.mbar = diveplan->surface_pressure;
 	dc->salinity = diveplan->salinity;
 	dc->samples.clear();
-	while ((ev = dc->events)) {
-		dc->events = dc->events->next;
-		delete ev;
-	}
+	dc->events.clear();
 	dp = diveplan->dp;
 	/* Create first sample at time = 0, not based on dp because
 	 * there is no real dp for time = 0, set first cylinder to 0
@@ -722,9 +716,8 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	current_cylinder = get_cylinderid_at_time(dive, dc, sample.time);
 	// Find the divemode at the end of the dive
-	const struct event *ev = NULL;
-	divemode = UNDEF_COMP_TYPE;
-	divemode = get_current_divemode(dc, bottom_time, &ev, &divemode);
+	divemode_loop loop(*dc);
+	divemode = loop.next(bottom_time);
 	gas = get_cylinder(dive, current_cylinder)->gasmix;
 
 	po2 = sample.setpoint.mbar;
