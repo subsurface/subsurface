@@ -62,10 +62,10 @@ void DiveHandler::selfRemove()
 
 void DiveHandler::changeGas()
 {
+	ProfileWidget2 *view = qobject_cast<ProfileWidget2 *>(scene()->views().first());
 	QAction *action = qobject_cast<QAction *>(sender());
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
-	plannerModel->gasChange(index.sibling(index.row() + 1, index.column()), action->data().toInt());
+
+	view->changeGas(parentIndex(), action->data().toInt());
 }
 
 void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

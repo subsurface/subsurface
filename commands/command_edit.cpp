@@ -879,6 +879,7 @@ QString editProfileTypeToString(EditProfileType type, int count)
 		case EditProfileType::ADD: return Command::Base::tr("Add stop");
 		case EditProfileType::REMOVE: return Command::Base::tr("Remove %n stop(s)", "", count);
 		case EditProfileType::MOVE: return Command::Base::tr("Move %n stop(s)", "", count);
+		case EditProfileType::EDIT: return Command::Base::tr("Edit stop");
 	}
 }
 
@@ -904,7 +905,7 @@ EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int
 	copy_samples(sdc, &dc);
 	copy_events(sdc, &dc);
 
-	setText(editProfileTypeToString(type, count) + diveNumberOrDate(d));
+	setText(editProfileTypeToString(type, count) + " " + diveNumberOrDate(d));
 }
 
 EditProfile::~EditProfile()
@@ -925,6 +926,7 @@ void EditProfile::undo()
 	std::swap(sdc->samples, dc.samples);
 	std::swap(sdc->alloc_samples, dc.alloc_samples);
 	std::swap(sdc->sample, dc.sample);
+	std::swap(sdc->events, dc.events);
 	std::swap(sdc->maxdepth, dc.maxdepth);
 	std::swap(d->maxdepth, maxdepth);
 	std::swap(d->meandepth, meandepth);
@@ -1125,7 +1127,7 @@ AddCylinder::AddCylinder(bool currentDiveOnly) :
 		setText(Command::Base::tr("Add cylinder"));
 	else
 		setText(Command::Base::tr("Add cylinder (%n dive(s))", "", dives.size()));
-	cyl = create_new_cylinder(dives[0]);
+	cyl = create_new_manual_cylinder(dives[0]);
 	indexes.reserve(dives.size());
 }
 
