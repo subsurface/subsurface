@@ -1007,6 +1007,10 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	current_dive = divelog.dives->nr > 0 ? divelog.dives->dives[divelog.dives->nr - 1] : NULL;
 
 	free_device_table(devices_to_add);
+	free(dives_to_add.dives);
+	free(dives_to_remove.dives);
+	free(trips_to_add.trips);
+	free(dive_sites_to_add.dive_sites);
 
 	/* Inform frontend of reset data. This should reset all the models. */
 	emit_reset_signal();

@@ -521,6 +521,11 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 			continue;
 		filterPresetsToAdd.emplace_back(preset.name, preset.data);
 	}
+
+	free(dives_to_add.dives);
+	free(dives_to_remove.dives);
+	free(trips_to_add.trips);
+	free(sites_to_add.dive_sites);
 }
 
 bool ImportDives::workToBeDone()
