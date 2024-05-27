@@ -118,13 +118,13 @@ static int cobalt_dive(void *param, int, char **data, char **)
 
 	/* Cobalt stores the pressures, not the depth */
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = atoi(data[6]);
+		state->cur_dive->dcs[0].maxdepth.mm = atoi(data[6]);
 
 	if (data[7])
-		state->cur_dive->dc.duration.seconds = atoi(data[7]);
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[7]);
 
 	if (data[8])
-		state->cur_dive->dc.surface_pressure.mbar = atoi(data[8]);
+		state->cur_dive->dcs[0].surface_pressure.mbar = atoi(data[8]);
 	/*
 	 * TODO: the deviceid hash should be calculated here.
 	 */
@@ -140,8 +140,8 @@ static int cobalt_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[9]) {
-		state->cur_dive->dc.deviceid = atoi(data[9]);
-		state->cur_dive->dc.model = "Cobalt import";
+		state->cur_dive->dcs[0].deviceid = atoi(data[9]);
+		state->cur_dive->dcs[0].model = "Cobalt import";
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, state->cur_dive->number);

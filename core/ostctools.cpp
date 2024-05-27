@@ -152,7 +152,7 @@ void ostctools_import(const char *file, struct divelog *log)
 		return;
 	}
 	std::string tmp = devdata.vendor + " " + devdata.model + " (Imported from OSTCTools)";
-	ostcdive->dc.model = tmp.c_str();
+	ostcdive->dcs[0].model = tmp;
 
 	// Parse the dive data
 	rc = libdc_buffer_parser(ostcdive.get(), &devdata, buffer.data(), i + 1);
@@ -161,14 +161,14 @@ void ostctools_import(const char *file, struct divelog *log)
 
 	// Serial number is not part of the header nor the profile, so libdc won't
 	// catch it. If Serial is part of the extra_data, and set to zero, replace it.
-	ostcdive->dc.serial = std::to_string(serial);
+	ostcdive->dcs[0].serial = std::to_string(serial);
 
-	auto it = find_if(ostcdive->dc.extra_data.begin(), ostcdive->dc.extra_data.end(),
+	auto it = find_if(ostcdive->dcs[0].extra_data.begin(), ostcdive->dcs[0].extra_data.end(),
 			 [](auto &ed) { return ed.key == "Serial"; });
-	if (it != ostcdive->dc.extra_data.end() && it->value == "0")
-		it->value = ostcdive->dc.serial.c_str();
-	else if (it == ostcdive->dc.extra_data.end())
-		add_extra_data(&ostcdive->dc, "Serial", ostcdive->dc.serial);
+	if (it != ostcdive->dcs[0].extra_data.end() && it->value == "0")
+		it->value = ostcdive->dcs[0].serial.c_str();
+	else if (it == ostcdive->dcs[0].extra_data.end())
+		add_extra_data(&ostcdive->dcs[0], "Serial", ostcdive->dcs[0].serial);
 
 	record_dive_to_table(ostcdive.release(), log->dives.get());
 	sort_dive_table(log->dives.get());

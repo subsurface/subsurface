@@ -212,7 +212,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 
 					break;
 				default:
-					if (dive->dc.divemode == CCR)
+					if (dive->dcs[0].divemode == CCR)
 						cyl.cylinder_use = DILUENT;
 					else
 						cyl.cylinder_use = OC_GAS;
@@ -526,49 +526,43 @@ static dc_status_t parse_samples(device_data_t *, struct divecomputer *dc, dc_pa
 	return dc_parser_samples_foreach(parser, sample_cb, dc);
 }
 
-static int might_be_same_dc(struct divecomputer *a, struct divecomputer *b)
+static int might_be_same_dc(const struct divecomputer &a, const struct divecomputer &b)
 {
-	if (a->model.empty() || b->model.empty())
+	if (a.model.empty() || b.model.empty())
 		return 1;
-	if (strcasecmp(a->model.c_str(), b->model.c_str()))
+	if (strcasecmp(a.model.c_str(), b.model.c_str()))
 		return 0;
-	if (!a->deviceid || !b->deviceid)
+	if (!a.deviceid || !b.deviceid)
 		return 1;
-	return a->deviceid == b->deviceid;
+	return a.deviceid == b.deviceid;
 }
 
-static int match_one_dive(struct divecomputer *a, struct dive *dive)
+static bool match_one_dive(const struct divecomputer &a, struct dive *dive)
 {
-	struct divecomputer *b = &dive->dc;
-
 	/*
 	 * Walk the existing dive computer data,
 	 * see if we have a match (or an anti-match:
 	 * the same dive computer but a different
 	 * dive ID).
 	 */
-	do {
-		int match = match_one_dc(a, b);
-		if (match)
-			return match > 0;
-		b = b->next;
-	} while (b);
+	for (auto &b: dive->dcs) {
+		if (match_one_dc(a, b) > 0)
+			return true;
+	}
 
 	/* Ok, no exact dive computer match. Does the date match? */
-	b = &dive->dc;
-	do {
-		if (a->when == b->when && might_be_same_dc(a, b))
-			return 1;
-		b = b->next;
-	} while (b);
+	for (auto &b: dive->dcs) {
+		if (a.when == b.when && might_be_same_dc(a, b))
+			return true;
+	}
 
-	return 0;
+	return false;
 }
 
 /*
  * Check if this dive already existed before the import
  */
-static int find_dive(struct divecomputer *match)
+static int find_dive(const struct divecomputer &match)
 {
 	int i;
 
@@ -604,13 +598,13 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 {
 	// Our dive ID is the string hash of the "Dive ID" string
 	if (!strcmp(str->desc, "Dive ID")) {
-		if (!dive->dc.diveid)
-			dive->dc.diveid = calculate_string_hash(str->value);
+		if (!dive->dcs[0].diveid)
+			dive->dcs[0].diveid = calculate_string_hash(str->value);
 		return;
 	}
 
 	// This will pick up serial number and firmware data
-	add_extra_data(&dive->dc, str->desc, str->value);
+	add_extra_data(&dive->dcs[0], str->desc, str->value);
 
 	/* GPS data? */
 	if (!strncmp(str->desc, "GPS", 3)) {
@@ -648,7 +642,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	}
 
 	// Our deviceid is the hash of the serial number
-	dive->dc.deviceid = 0;
+	dive->dcs[0].deviceid = 0;
 
 	if (rc == DC_STATUS_SUCCESS) {
 		tm.tm_year = dt.year;
@@ -657,7 +651,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		tm.tm_hour = dt.hour;
 		tm.tm_min = dt.minute;
 		tm.tm_sec = dt.second;
-		dive->when = dive->dc.when = utc_mktime(&tm);
+		dive->when = dive->dcs[0].when = utc_mktime(&tm);
 	}
 
 	// Parse the divetime.
@@ -671,7 +665,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.duration.seconds = divetime;
+		dive->dcs[0].duration.seconds = divetime;
 
 	// Parse the maxdepth.
 	double maxdepth = 0.0;
@@ -681,7 +675,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.maxdepth.mm = lrint(maxdepth * 1000);
+		dive->dcs[0].maxdepth.mm = lrint(maxdepth * 1000);
 
 	// Parse temperatures
 	double temperature;
@@ -697,11 +691,11 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		if (rc == DC_STATUS_SUCCESS)
 			switch(i) {
 			case 0:
-				dive->dc.airtemp.mkelvin = C_to_mkelvin(temperature);
+				dive->dcs[0].airtemp.mkelvin = C_to_mkelvin(temperature);
 				break;
 			case 1: // we don't distinguish min and max water temp here, so take min if given, max otherwise
 			case 2:
-				dive->dc.watertemp.mkelvin = C_to_mkelvin(temperature);
+				dive->dcs[0].watertemp.mkelvin = C_to_mkelvin(temperature);
 				break;
 			}
 	}
@@ -725,16 +719,16 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS) {
-		dive->dc.salinity = lrint(salinity.density * 10.0);
-		if (dive->dc.salinity == 0) {
+		dive->dcs[0].salinity = lrint(salinity.density * 10.0);
+		if (dive->dcs[0].salinity == 0) {
 			// sometimes libdivecomputer gives us density values, sometimes just
 			// a water type and a density of zero; let's make this work as best as we can
 			switch (salinity.type) {
 			case DC_WATER_FRESH:
-				dive->dc.salinity = FRESHWATER_SALINITY;
+				dive->dcs[0].salinity = FRESHWATER_SALINITY;
 				break;
 			default:
-				dive->dc.salinity = SEAWATER_SALINITY;
+				dive->dcs[0].salinity = SEAWATER_SALINITY;
 				break;
 			}
 		}
@@ -747,7 +741,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.surface_pressure.mbar = lrint(surface_pressure * 1000.0);
+		dive->dcs[0].surface_pressure.mbar = lrint(surface_pressure * 1000.0);
 
 	// The dive parsing may give us more device information
 	int idx;
@@ -771,17 +765,17 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	if (rc == DC_STATUS_SUCCESS)
 		switch(divemode) {
 		case DC_DIVEMODE_FREEDIVE:
-			dive->dc.divemode = FREEDIVE;
+			dive->dcs[0].divemode = FREEDIVE;
 			break;
 		case DC_DIVEMODE_GAUGE:
 		case DC_DIVEMODE_OC: /* Open circuit */
-			dive->dc.divemode = OC;
+			dive->dcs[0].divemode = OC;
 			break;
 		case DC_DIVEMODE_CCR:  /* Closed circuit rebreather*/
-			dive->dc.divemode = CCR;
+			dive->dcs[0].divemode = CCR;
 			break;
 		case DC_DIVEMODE_SCR:  /* Semi-closed circuit rebreather */
-			dive->dc.divemode = PSCR;
+			dive->dcs[0].divemode = PSCR;
 			break;
 		}
 
@@ -821,8 +815,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	auto dive = std::make_unique<struct dive>();
 
 	// Fill in basic fields
-	dive->dc.model = devdata->model;
-	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
+	dive->dcs[0].model = devdata->model;
+	dive->dcs[0].diveid = calculate_diveid(fingerprint, fsize);
 
 	// Parse the dive's header data
 	rc = libdc_header_parser (parser, devdata, dive.get());
@@ -832,7 +826,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 
 	// Initialize the sample data.
-	rc = parse_samples(devdata, &dive->dc, parser);
+	rc = parse_samples(devdata, &dive->dcs[0], parser);
 	if (rc != DC_STATUS_SUCCESS) {
 		download_error(translate("gettextFromC", "Error parsing the samples: %s"), errmsg(rc));
 		goto error_exit;
@@ -850,32 +844,32 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		devdata->fingerprint = (unsigned char *)calloc(fsize, 1);
 		if (devdata->fingerprint) {
 			devdata->fsize = fsize;
-			devdata->fdeviceid = dive->dc.deviceid;
-			devdata->fdiveid = dive->dc.diveid;
+			devdata->fdeviceid = dive->dcs[0].deviceid;
+			devdata->fdiveid = dive->dcs[0].diveid;
 			memcpy(devdata->fingerprint, fingerprint, fsize);
 		}
 	}
 
 	/* If we already saw this dive, abort. */
-	if (!devdata->force_download && find_dive(&dive->dc)) {
+	if (!devdata->force_download && find_dive(dive->dcs[0])) {
 		std::string date_string = get_dive_date_c_string(dive->when);
 		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string.c_str());
 		return false;
 	}
 
 	/* Various libdivecomputer interface fixups */
-	if (dive->dc.airtemp.mkelvin == 0 && first_temp_is_air && !dive->dc.samples.empty()) {
-		dive->dc.airtemp = dive->dc.samples[0].temperature;
-		dive->dc.samples[0].temperature.mkelvin = 0;
+	if (dive->dcs[0].airtemp.mkelvin == 0 && first_temp_is_air && !dive->dcs[0].samples.empty()) {
+		dive->dcs[0].airtemp = dive->dcs[0].samples[0].temperature;
+		dive->dcs[0].samples[0].temperature.mkelvin = 0;
 	}
 
 	/* special case for bug in Tecdiving DiveComputer.eu
 	 * often the first sample has a water temperature of 0C, followed by the correct
 	 * temperature in the next sample */
-	if (dive->dc.model == "Tecdiving DiveComputer.eu" && !dive->dc.samples.empty() &&
-	    dive->dc.samples[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
-	    dive->dc.samples[1].temperature.mkelvin > dive->dc.samples[0].temperature.mkelvin)
-		dive->dc.samples[0].temperature.mkelvin = dive->dc.samples[1].temperature.mkelvin;
+	if (dive->dcs[0].model == "Tecdiving DiveComputer.eu" && !dive->dcs[0].samples.empty() &&
+	    dive->dcs[0].samples[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
+	    dive->dcs[0].samples[1].temperature.mkelvin > dive->dcs[0].samples[0].temperature.mkelvin)
+		dive->dcs[0].samples[0].temperature.mkelvin = dive->dcs[0].samples[1].temperature.mkelvin;
 
 	record_dive_to_table(dive.release(), devdata->log->dives.get());
 	return true;
@@ -1593,7 +1587,7 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 			report_error("Error parsing the dive header data. Dive # %d: %s", dive->number, errmsg(rc));
 		}
 	}
-	rc = dc_parser_samples_foreach (parser, sample_cb, &dive->dc);
+	rc = dc_parser_samples_foreach (parser, sample_cb, &dive->dcs[0]);
 	if (rc != DC_STATUS_SUCCESS) {
 		report_error("Error parsing the sample data. Dive # %d: %s", dive->number, errmsg(rc));
 		dc_parser_destroy (parser);

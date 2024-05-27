@@ -151,8 +151,8 @@ stats_summary calculate_stats_summary(bool selected_only)
 		out.stats_by_type[0].selection_size++;
 		process_dive(dp, out.stats_by_type[0]);
 
-		process_dive(dp, out.stats_by_type[dp->dc.divemode + 1]);
-		out.stats_by_type[dp->dc.divemode + 1].selection_size++;
+		process_dive(dp, out.stats_by_type[dp->dcs[0].divemode + 1]);
+		out.stats_by_type[dp->dcs[0].divemode + 1].selection_size++;
 
 		/* stats_by_depth[0] is all the dives combined */
 		out.stats_by_depth[0].selection_size++;
@@ -273,7 +273,6 @@ bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc,
 
 bool is_cylinder_used(const struct dive *dive, int idx)
 {
-	const struct divecomputer *dc;
 	cylinder_t *cyl;
 	if (idx < 0 || idx >= dive->cylinders.nr)
 		return false;
@@ -285,10 +284,10 @@ bool is_cylinder_used(const struct dive *dive, int idx)
 	if ((cyl->sample_start.mbar - cyl->sample_end.mbar) > SOME_GAS)
 		return true;
 
-	for_each_dc(dive, dc) {
-		if (has_gaschange_event(dive, dc, idx))
+	for (auto &dc: dive->dcs) {
+		if (has_gaschange_event(dive, &dc, idx))
 			return true;
-		else if (dc->divemode == CCR && idx == get_cylinder_idx_by_use(dive, OXYGEN))
+		else if (dc.divemode == CCR && idx == get_cylinder_idx_by_use(dive, OXYGEN))
 			return true;
 	}
 	return false;
@@ -296,15 +295,12 @@ bool is_cylinder_used(const struct dive *dive, int idx)
 
 bool is_cylinder_prot(const struct dive *dive, int idx)
 {
-	const struct divecomputer *dc;
 	if (idx < 0 || idx >= dive->cylinders.nr)
 		return false;
 
-	for_each_dc(dive, dc) {
-		if (has_gaschange_event(dive, dc, idx))
-			return true;
-	}
-	return false;
+	return std::any_of(dive->dcs.begin(), dive->dcs.end(),
+			   [dive, idx](auto &dc)
+			   { return has_gaschange_event(dive, &dc, idx); });
 }
 
 /* Returns a vector with dive->cylinders.nr entries */

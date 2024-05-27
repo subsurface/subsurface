@@ -45,7 +45,7 @@ QString formatSac(const dive *d)
 QString formatNotes(const dive *d)
 {
 	QString tmp = d->notes ? QString::fromUtf8(d->notes) : QString();
-	if (is_dc_planner(&d->dc)) {
+	if (is_dc_planner(&d->dcs[0])) {
 		QTextDocument notes;
 	#define _NOTES_BR "&#92n"
 		tmp.replace("<thead>", "<thead>" _NOTES_BR)

@@ -167,7 +167,7 @@ void ProfileWidget::setDive(const struct dive *d, int dcNr)
 {
 	stack->setCurrentIndex(1); // show profile
 
-	bool freeDiveMode = get_dive_dc_const(d, dcNr)->divemode == FREEDIVE;
+	bool freeDiveMode = get_dive_dc(d, dcNr)->divemode == FREEDIVE;
 	ui.profCalcCeiling->setDisabled(freeDiveMode);
 	ui.profCalcCeiling->setDisabled(freeDiveMode);
 	ui.profCalcAllTissues ->setDisabled(freeDiveMode);

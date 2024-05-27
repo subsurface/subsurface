@@ -119,9 +119,9 @@ static void save_tags(struct membuffer *b, struct tag_entry *tags)
 	put_string(b, "\n");
 }
 
-static void save_extra_data(struct membuffer *b, const struct divecomputer *dc)
+static void save_extra_data(struct membuffer *b, const struct divecomputer &dc)
 {
-	for (const auto &ed: dc->extra_data) {
+	for (const auto &ed: dc.extra_data) {
 		if (!ed.key.empty() && !ed.value.empty())
 			put_format(b, "keyvalue \"%s\" \"%s\"\n", ed.key.c_str(), ed.value.c_str());
 	}
@@ -186,34 +186,34 @@ static void save_weightsystem_info(struct membuffer *b, struct dive *dive)
 
 static void save_dive_temperature(struct membuffer *b, struct dive *dive)
 {
-	if (dive->airtemp.mkelvin != dc_airtemp(&dive->dc))
+	if (dive->airtemp.mkelvin != dc_airtemp(dive).mkelvin)
 		put_temperature(b, dive->airtemp, "airtemp ", "°C\n");
-	if (dive->watertemp.mkelvin != dc_watertemp(&dive->dc))
+	if (dive->watertemp.mkelvin != dc_watertemp(dive).mkelvin)
 		put_temperature(b, dive->watertemp, "watertemp ", "°C\n");
 }
 
-static void save_depths(struct membuffer *b, struct divecomputer *dc)
+static void save_depths(struct membuffer *b, const struct divecomputer &dc)
 {
-	put_depth(b, dc->maxdepth, "maxdepth ", "m\n");
-	put_depth(b, dc->meandepth, "meandepth ", "m\n");
+	put_depth(b, dc.maxdepth, "maxdepth ", "m\n");
+	put_depth(b, dc.meandepth, "meandepth ", "m\n");
 }
 
-static void save_temperatures(struct membuffer *b, struct divecomputer *dc)
+static void save_temperatures(struct membuffer *b, const struct divecomputer &dc)
 {
-	put_temperature(b, dc->airtemp, "airtemp ", "°C\n");
-	put_temperature(b, dc->watertemp, "watertemp ", "°C\n");
+	put_temperature(b, dc.airtemp, "airtemp ", "°C\n");
+	put_temperature(b, dc.watertemp, "watertemp ", "°C\n");
 }
 
-static void save_airpressure(struct membuffer *b, struct divecomputer *dc)
+static void save_airpressure(struct membuffer *b, const struct divecomputer &dc)
 {
-	put_pressure(b, dc->surface_pressure, "surfacepressure ", "bar\n");
+	put_pressure(b, dc.surface_pressure, "surfacepressure ", "bar\n");
 }
 
-static void save_salinity(struct membuffer *b, struct divecomputer *dc)
+static void save_salinity(struct membuffer *b, const struct divecomputer &dc)
 {
-	if (!dc->salinity)
+	if (!dc.salinity)
 		return;
-	put_salinity(b, dc->salinity, "salinity ", "g/l\n");
+	put_salinity(b, dc.salinity, "salinity ", "g/l\n");
 }
 
 static void show_date(struct membuffer *b, timestamp_t when)
@@ -367,19 +367,19 @@ static void save_sample(struct membuffer *b, const struct sample &sample, struct
 	put_format(b, "\n");
 }
 
-static void save_samples(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
+static void save_samples(struct membuffer *b, struct dive *dive, const struct divecomputer &dc)
 {
 	int o2sensor;
 	struct sample dummy;
 
 	/* Is this a CCR dive with the old-style "o2pressure" sensor? */
-	o2sensor = legacy_format_o2pressures(dive, dc);
+	o2sensor = legacy_format_o2pressures(dive, &dc);
 	if (o2sensor >= 0) {
 		dummy.sensor[0] = !o2sensor;
 		dummy.sensor[1] = o2sensor;
 	}
 
-	for (const auto &s: dc->samples)
+	for (const auto &s: dc.samples)
 		save_sample(b, s, dummy, o2sensor);
 }
 
@@ -403,35 +403,35 @@ static void save_one_event(struct membuffer *b, struct dive *dive, const struct 
 	put_string(b, "\n");
 }
 
-static void save_events(struct membuffer *b, struct dive *dive, const struct divecomputer *dc)
+static void save_events(struct membuffer *b, struct dive *dive, const struct divecomputer &dc)
 {
-	for (auto &ev: dc->events)
+	for (auto &ev: dc.events)
 		save_one_event(b, dive, ev);
 }
 
-static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
+static void save_dc(struct membuffer *b, struct dive *dive, const struct divecomputer &dc)
 {
-	show_utf8(b, "model ", dc->model.c_str(), "\n");
-	if (dc->last_manual_time.seconds)
-		put_duration(b, dc->last_manual_time, "lastmanualtime ", "min\n");
-	if (dc->deviceid)
-		put_format(b, "deviceid %08x\n", dc->deviceid);
-	if (dc->diveid)
-		put_format(b, "diveid %08x\n", dc->diveid);
-	if (dc->when && dc->when != dive->when)
-		show_date(b, dc->when);
-	if (dc->duration.seconds && dc->duration.seconds != dive->dc.duration.seconds)
-		put_duration(b, dc->duration, "duration ", "min\n");
-	if (dc->divemode != OC) {
-		put_format(b, "dctype %s\n", divemode_text[dc->divemode]);
-	put_format(b, "numberofoxygensensors %d\n",dc->no_o2sensors);
+	show_utf8(b, "model ", dc.model.c_str(), "\n");
+	if (dc.last_manual_time.seconds)
+		put_duration(b, dc.last_manual_time, "lastmanualtime ", "min\n");
+	if (dc.deviceid)
+		put_format(b, "deviceid %08x\n", dc.deviceid);
+	if (dc.diveid)
+		put_format(b, "diveid %08x\n", dc.diveid);
+	if (dc.when && dc.when != dive->when)
+		show_date(b, dc.when);
+	if (dc.duration.seconds && dc.duration.seconds != dive->dcs[0].duration.seconds)
+		put_duration(b, dc.duration, "duration ", "min\n");
+	if (dc.divemode != OC) {
+		put_format(b, "dctype %s\n", divemode_text[dc.divemode]);
+		put_format(b, "numberofoxygensensors %d\n", dc.no_o2sensors);
 	}
 
 	save_depths(b, dc);
 	save_temperatures(b, dc);
 	save_airpressure(b, dc);
 	save_salinity(b, dc);
-	put_duration(b, dc->surfacetime, "surfacetime ", "min\n");
+	put_duration(b, dc.surfacetime, "surfacetime ", "min\n");
 
 	save_extra_data(b, dc);
 	save_events(b, dive, dc);
@@ -445,8 +445,8 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 {
 	pressure_t surface_pressure = un_fixup_surface_pressure(dive);
-	if (dive->dc.duration.seconds > 0)
-		put_format(b, "duration %u:%02u min\n", FRACTION_TUPLE(dive->dc.duration.seconds, 60));
+	if (dive->dcs[0].duration.seconds > 0)
+		put_format(b, "duration %u:%02u min\n", FRACTION_TUPLE(dive->dcs[0].duration.seconds, 60));
 	SAVE("rating", rating);
 	SAVE("visibility", visibility);
 	SAVE("wavesize", wavesize);
@@ -611,7 +611,7 @@ static int blob_insert(git_repository *repo, struct dir *tree, struct membuffer 
 	return ret;
 }
 
-static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct dive *dive, struct divecomputer *dc, int idx)
+static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct dive *dive, const struct divecomputer &dc, int idx)
 {
 	int ret;
 	membuffer buf;
@@ -659,7 +659,6 @@ static int save_pictures(git_repository *repo, struct dir *dir, struct dive *div
 
 static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *dive, struct tm *tm, bool cached_ok)
 {
-	struct divecomputer *dc;
 	membuffer buf, name;
 	struct dir *subdir;
 	int ret, nr;
@@ -696,12 +695,9 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
 	 * computer, use index 0 for that (which disables the index
 	 * generation when naming it).
 	 */
-	dc = &dive->dc;
-	nr = dc->next ? 1 : 0;
-	do {
+	nr = dive->dcs.size() > 1 ? 1 : 0;
+	for (auto &dc: dive->dcs)
 		save_one_divecomputer(repo, subdir, dive, dc, nr++);
-		dc = dc->next;
-	} while (dc);
 
 	/* Save the picture data, if any */
 	save_pictures(repo, subdir, dive);
@@ -1132,7 +1128,6 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 		std::string location = get_dive_location(dive);
 		if (location.empty())
 			location = "no location";
-		struct divecomputer *dc = &dive->dc;
 		const char *sep = "\n";
 
 		if (dive->number)
@@ -1142,12 +1137,12 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 		if (trip && !empty_string(trip->location) && location != trip->location)
 			put_format(msg, " (%s)", trip->location);
 		put_format(msg, "\n");
-		do {
-			if (!dc->model.empty()) {
-				put_format(msg, "%s%s", sep, dc->model.c_str());
+		for (auto &dc: dive->dcs)  {
+			if (!dc.model.empty()) {
+				put_format(msg, "%s%s", sep, dc.model.c_str());
 				sep = ", ";
 			}
-		} while ((dc = dc->next) != NULL);
+		}
 		put_format(msg, "\n");
 	}
 	put_format(msg, "Created by %s\n", subsurface_user_agent().c_str());

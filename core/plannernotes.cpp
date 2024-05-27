@@ -452,7 +452,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 		/* Print the gas consumption next.*/
 		std::string temp;
-		if (dive->dc.divemode == CCR)
+		if (dive->dcs[0].divemode == CCR)
 			temp = translate("gettextFromC", "Gas consumption (CCR legs excluded):");
 		else
 			temp = casprintf_loc("%s %.*f|%.*f%s/min):", translate("gettextFromC", "Gas consumption (based on SAC"),
@@ -497,7 +497,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			/* not for recreational mode and if no other warning was set before. */
 			else
 				if (lastbottomdp && gasidx == lastbottomdp->cylinderid
-					&& dive->dc.divemode == OC && decoMode(true) != RECREATIONAL) {
+					&& dive->dcs[0].divemode == OC && decoMode(true) != RECREATIONAL) {
 					/* Calculate minimum gas volume. */
 					volume_t mingasv;
 					mingasv.mliter = lrint(prefs.sacfactor / 100.0 * prefs.problemsolvingtime * prefs.bottomsac
@@ -573,8 +573,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		bool o2warning_exist = false;
 		double amb;
 
-		divemode_loop loop(dive->dc);
-		if (dive->dc.divemode != CCR) {
+		divemode_loop loop(dive->dcs[0]);
+		if (dive->dcs[0].divemode != CCR) {
 			while (dp) {
 				if (dp->time != 0) {
 					std::string temp;

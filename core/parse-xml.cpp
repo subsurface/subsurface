@@ -1014,9 +1014,9 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, 
 	}
 	return MATCH_STATE("divedate", divedate, &dive->when) ||
 	       MATCH_STATE("entrytime", divetime, &dive->when) ||
-	       MATCH("divetime", duration, &dive->dc.duration) ||
-	       MATCH_STATE("depth", depth, &dive->dc.maxdepth) ||
-	       MATCH_STATE("depthavg", depth, &dive->dc.meandepth) ||
+	       MATCH("divetime", duration, &dive->dcs[0].duration) ||
+	       MATCH_STATE("depth", depth, &dive->dcs[0].maxdepth) ||
+	       MATCH_STATE("depthavg", depth, &dive->dcs[0].meandepth) ||
 	       MATCH("comments", utf8_string, &dive->notes) ||
 	       MATCH("names.buddy", utf8_string, &dive->buddy) ||
 	       MATCH("name.country", utf8_string_std, &state->country) ||
@@ -1082,8 +1082,8 @@ uddf_datedata(min, 0)
 static int uddf_dive_match(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
 	return MATCH_STATE("datetime", uddf_datetime, &dive->when) ||
-	       MATCH("diveduration", duration, &dive->dc.duration) ||
-	       MATCH_STATE("greatestdepth", depth, &dive->dc.maxdepth) ||
+	       MATCH("diveduration", duration, &dive->dcs[0].duration) ||
+	       MATCH_STATE("greatestdepth", depth, &dive->dcs[0].maxdepth) ||
 	       MATCH_STATE("year.date", uddf_year, &dive->when) ||
 	       MATCH_STATE("month.date", uddf_mon, &dive->when) ||
 	       MATCH_STATE("day.date", uddf_mday, &dive->when) ||
@@ -1269,7 +1269,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	 * Legacy format note: per-dive depths and duration get saved
 	 * in the first dive computer entry
 	 */
-	if (match_dc_data_fields(&dive->dc, name, buf, state))
+	if (match_dc_data_fields(&dive->dcs[0], name, buf, state))
 		return;
 
 	if (MATCH("filename.picture", utf8_string, &state->cur_picture.filename))

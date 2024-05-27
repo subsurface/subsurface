@@ -70,7 +70,7 @@ void DivePlannerPointsModel::createSimpleDive(struct dive *dIn)
 	clear_dive(d);
 	d->id = dive_getUniqID();
 	d->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	make_planner_dc(&d->dc);
+	make_planner_dc(&d->dcs[0]);
 
 	clear();
 	removeDeco();
@@ -818,7 +818,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 		}
 	}
 	if (divemode == UNDEF_COMP_TYPE)
-		divemode = get_dive_dc_const(d, dcNr)->divemode;
+		divemode = get_dive_dc(d, dcNr)->divemode;
 
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);

@@ -143,7 +143,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		int i;
 		auto dive = std::make_unique<struct dive>();
 		memset(&sensor_ids, 0, sizeof(sensor_ids));
-		dc = &dive->dc;
+		dc = &dive->dcs[0];
 
 		/* Just the main cylinder until we can handle the buddy cylinder porperly */
 		for (i = 0; i < 1; i++) {

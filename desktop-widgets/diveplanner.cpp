@@ -563,7 +563,7 @@ int PlannerWidgets::getDcNr()
 
 divemode_t PlannerWidgets::getRebreatherMode() const
 {
-	return get_dive_dc_const(planned_dive.get(), dcNr)->divemode;
+	return get_dive_dc(planned_dive.get(), dcNr)->divemode;
 }
 
 void PlannerWidgets::preparePlanDive(const dive *currentDive, int currentDcNr)
@@ -575,8 +575,8 @@ void PlannerWidgets::preparePlanDive(const dive *currentDive, int currentDcNr)
 
 	// plan the dive in the same mode as the currently selected one
 	if (currentDive) {
-		plannerSettingsWidget.setDiveMode(get_dive_dc_const(currentDive, currentDcNr)->divemode);
-		plannerSettingsWidget.setBailoutVisibility(get_dive_dc_const(currentDive, currentDcNr)->divemode);
+		plannerSettingsWidget.setDiveMode(get_dive_dc(currentDive, currentDcNr)->divemode);
+		plannerSettingsWidget.setBailoutVisibility(get_dive_dc(currentDive, currentDcNr)->divemode);
 		if (currentDive->salinity)
 			plannerWidget.setSalinity(currentDive->salinity);
 		else	// No salinity means salt water
