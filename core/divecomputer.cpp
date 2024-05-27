@@ -14,6 +14,7 @@
 
 divecomputer::divecomputer() = default;
 divecomputer::~divecomputer() = default;
+divecomputer::divecomputer(const divecomputer &) = default;
 divecomputer::divecomputer(divecomputer &&) = default;
 divecomputer &divecomputer::operator=(const divecomputer &) = default;
 
@@ -229,18 +230,6 @@ int get_depth_at_time(const struct divecomputer *dc, unsigned int time)
 	return depth;
 }
 
-static void free_dc(struct divecomputer *dc)
-{
-	delete dc;
-}
-
-/* The first divecomputer is embedded in the dive structure. Ignore it.
- * For all remainding dcs in the list, free data and structures. */
-void free_dive_dcs(struct divecomputer *dc)
-{
-	STRUCTURED_LIST_FREE(struct divecomputer, dc->next, free_dc);
-}
-
 struct sample *prepare_sample(struct divecomputer *dc)
 {
 	if (dc) {
@@ -274,12 +263,12 @@ void append_sample(const struct sample &sample, struct divecomputer *dc)
  *
  * This ignores any surface time in the middle of the dive.
  */
-void fixup_dc_duration(struct divecomputer *dc)
+void fixup_dc_duration(struct divecomputer &dc)
 {
 	int duration = 0;
 	int lasttime = 0, lastdepth = 0, depthtime = 0;
 
-	for (const auto &sample: dc->samples) {
+	for (const auto &sample: dc.samples) {
 		int time = sample.time.seconds;
 		int depth = sample.depth.mm;
 
@@ -292,46 +281,9 @@ void fixup_dc_duration(struct divecomputer *dc)
 		lasttime = time;
 	}
 	if (duration) {
-		dc->duration.seconds = duration;
-		dc->meandepth.mm = (depthtime + duration / 2) / duration;
+		dc.duration.seconds = duration;
+		dc.meandepth.mm = (depthtime + duration / 2) / duration;
 	}
-}
-
-/*
- * What do the dive computers say the water temperature is?
- * (not in the samples, but as dc property for dcs that support that)
- */
-unsigned int dc_watertemp(const struct divecomputer *dc)
-{
-	int sum = 0, nr = 0;
-
-	do {
-		if (dc->watertemp.mkelvin) {
-			sum += dc->watertemp.mkelvin;
-			nr++;
-		}
-	} while ((dc = dc->next) != NULL);
-	if (!nr)
-		return 0;
-	return (sum + nr / 2) / nr;
-}
-
-/*
- * What do the dive computers say the air temperature is?
- */
-unsigned int dc_airtemp(const struct divecomputer *dc)
-{
-	int sum = 0, nr = 0;
-
-	do {
-		if (dc->airtemp.mkelvin) {
-			sum += dc->airtemp.mkelvin;
-			nr++;
-		}
-	} while ((dc = dc->next) != NULL);
-	if (!nr)
-		return 0;
-	return (sum + nr / 2) / nr;
 }
 
 static bool operator<(const event &ev1, const event &ev2)
@@ -399,27 +351,27 @@ void add_extra_data(struct divecomputer *dc, const std::string &key, const std::
  * positive for "same dive" and negative for "definitely
  * not the same dive"
  */
-int match_one_dc(const struct divecomputer *a, const struct divecomputer *b)
+int match_one_dc(const struct divecomputer &a, const struct divecomputer &b)
 {
 	/* Not same model? Don't know if matching.. */
-	if (a->model.empty() || b->model.empty())
+	if (a.model.empty() || b.model.empty())
 		return 0;
-	if (strcasecmp(a->model.c_str(), b->model.c_str()))
+	if (strcasecmp(a.model.c_str(), b.model.c_str()))
 		return 0;
 
 	/* Different device ID's? Don't know */
-	if (a->deviceid != b->deviceid)
+	if (a.deviceid != b.deviceid)
 		return 0;
 
 	/* Do we have dive IDs? */
-	if (!a->diveid || !b->diveid)
+	if (!a.diveid || !b.diveid)
 		return 0;
 
 	/*
 	 * If they have different dive ID's on the same
 	 * dive computer, that's a definite "same or not"
 	 */
-	return a->diveid == b->diveid && a->when == b->when ? 1 : -1;
+	return a.diveid == b.diveid && a.when == b.when ? 1 : -1;
 }
 
 static const char *planner_dc_name = "planned dive";

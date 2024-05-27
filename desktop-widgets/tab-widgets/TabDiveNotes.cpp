@@ -254,7 +254,7 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.LocationLabel->setText(tr("Location"));
 		ui.NotesLabel->setText(tr("Notes"));
 		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tag_list)));
-		bool isManual = is_dc_manually_added_dive(&currentDive->dc);
+		bool isManual = is_dc_manually_added_dive(&currentDive->dcs[0]);
 		ui.depth->setVisible(isManual);
 		ui.depthLabel->setVisible(isManual);
 		ui.duration->setVisible(isManual);

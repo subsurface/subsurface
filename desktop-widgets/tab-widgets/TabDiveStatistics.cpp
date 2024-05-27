@@ -108,7 +108,7 @@ void TabDiveStatistics::updateData(const std::vector<dive *> &, dive *currentDiv
 	}
 
 
-	bool is_freedive = currentDive && currentDive->dc.divemode == FREEDIVE;
+	bool is_freedive = currentDive && currentDive->dcs[0].divemode == FREEDIVE;
 	ui->divesAllText->setText(QString::number(stats_selection.selection_size));
 	ui->totalTimeAllText->setText(get_dive_duration_string(stats_selection.total_time.seconds, tr("h"), tr("min"), tr("sec"), " ", is_freedive));
 

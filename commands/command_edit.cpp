@@ -306,11 +306,11 @@ QString EditAtmPress::fieldName() const
 // ***** Duration *****
 void EditDuration::set(struct dive *d, int value) const
 {
-	d->dc.duration.seconds = value;
-	d->duration = d->dc.duration;
-	d->dc.meandepth.mm = 0;
-	d->dc.samples.clear();
-	fake_dc(&d->dc);
+	d->dcs[0].duration.seconds = value;
+	d->duration = d->dcs[0].duration;
+	d->dcs[0].meandepth.mm = 0;
+	d->dcs[0].samples.clear();
+	fake_dc(&d->dcs[0]);
 }
 
 int EditDuration::data(struct dive *d) const
@@ -326,11 +326,11 @@ QString EditDuration::fieldName() const
 // ***** Depth *****
 void EditDepth::set(struct dive *d, int value) const
 {
-	d->dc.maxdepth.mm = value;
-	d->maxdepth = d->dc.maxdepth;
-	d->dc.meandepth.mm = 0;
-	d->dc.samples.clear();
-	fake_dc(&d->dc);
+	d->dcs[0].maxdepth.mm = value;
+	d->maxdepth = d->dcs[0].maxdepth;
+	d->dcs[0].meandepth.mm = 0;
+	d->dcs[0].samples.clear();
+	fake_dc(&d->dcs[0]);
 }
 
 int EditDepth::data(struct dive *d) const
@@ -808,7 +808,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 		return;
 
 	// Fix source. Things might be inconsistent after modifying the profile.
-	source->maxdepth.mm = source->dc.maxdepth.mm = 0;
+	source->maxdepth.mm = source->dcs[0].maxdepth.mm = 0;
 	fixup_dive(source);
 
 	when = source->when;
@@ -821,7 +821,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 
 	// This resets the dive computers and cylinders of the source dive, avoiding deep copies.
 	std::swap(source->cylinders, cylinders);
-	std::swap(source->dc, dc);
+	std::swap(source->dcs[0], dc);
 
 	setText(Command::Base::tr("Replan dive"));
 }
@@ -829,7 +829,6 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 ReplanDive::~ReplanDive()
 {
 	clear_cylinder_table(&cylinders);
-	free_dive_dcs(&dc);
 	free(notes);
 }
 
@@ -844,7 +843,7 @@ void ReplanDive::undo()
 	std::swap(d->maxdepth, maxdepth);
 	std::swap(d->meandepth, meandepth);
 	std::swap(d->cylinders, cylinders);
-	std::swap(d->dc, dc);
+	std::swap(d->dcs[0], dc);
 	std::swap(d->notes, notes);
 	std::swap(d->surface_pressure, surface_pressure);
 	std::swap(d->duration, duration);
@@ -887,7 +886,7 @@ EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int
 	dcmaxdepth({0}),
 	duration({0})
 {
-	const struct divecomputer *sdc = get_dive_dc_const(source, dcNr);
+	const struct divecomputer *sdc = get_dive_dc(source, dcNr);
 	if (!sdc)
 		d = nullptr; // Signal that we refuse to do anything.
 	if (!d)
@@ -906,7 +905,6 @@ EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int
 
 EditProfile::~EditProfile()
 {
-	free_dive_dcs(&dc);
 }
 
 bool EditProfile::workToBeDone()
@@ -1423,7 +1421,7 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 		changedFields |= DiveField::SUIT;
 	if (taglist_get_tagstring(oldDive->tag_list) != taglist_get_tagstring(newDive->tag_list)) // This is cheating. Do we have a taglist comparison function?
 		changedFields |= DiveField::TAGS;
-	if (oldDive->dc.divemode != newDive->dc.divemode)
+	if (oldDive->dcs[0].divemode != newDive->dcs[0].divemode)
 		changedFields |= DiveField::MODE;
 	if (!same_string(oldDive->notes, newDive->notes))
 		changedFields |= DiveField::NOTES;

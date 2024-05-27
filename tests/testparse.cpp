@@ -195,7 +195,7 @@ void TestParse::testParseHUDC()
 	if (divelog.dives->nr > 0) {
 		struct dive *dive = divelog.dives->dives[divelog.dives->nr - 1];
 		dive->when = 1255152761;
-		dive->dc.when = 1255152761;
+		dive->dcs[0].when = 1255152761;
 	}
 
 	sort_dive_table(divelog.dives);

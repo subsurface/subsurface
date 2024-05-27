@@ -444,7 +444,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	unsigned int ndl = 0;
 	unsigned int in_deco = 0, deco_ceiling = 0, deco_time = 0;
 
-	struct divecomputer *dc = &dive->dc;
+	struct divecomputer *dc = &dive->dcs[0];
 	struct sample *sample;
 
 	// Initialize stat variables
@@ -664,7 +664,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 #endif
 
 	auto dive = std::make_unique<struct dive>();
-	dc = &dive->dc;
+	dc = &dive->dcs[0];
 
 	unsigned char *log = (buf + 0x4914);
 

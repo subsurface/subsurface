@@ -534,7 +534,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	// figure out if we are ontop of the dive computer name in the profile
 	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
 	if (isDiveTextItem(sceneItem, profileScene->diveComputerText)) {
-		const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
+		const struct divecomputer *currentdc = get_dive_dc(d, dc);
 		if (!currentdc->deviceid && dc == 0 && number_of_computers(d) == 1)
 			// nothing to do, can't rename, delete or reorder
 			return;
@@ -580,7 +580,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	m.addAction(tr("Add bookmark"), [this, seconds]() { addBookmark(seconds); });
 	m.addAction(tr("Split dive into two"), [this, seconds]() { splitDive(seconds); });
 
-	divemode_loop loop(*get_dive_dc_const(d, dc));
+	divemode_loop loop(*get_dive_dc(d, dc));
 	divemode_t divemode = loop.next(seconds);
 	QMenu *changeMode = m.addMenu(tr("Change divemode"));
 	if (divemode != OC)
@@ -648,7 +648,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 		m2->addAction(tr("All event types"), this, &ProfileWidget2::unhideEventTypes);
 	}
-	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
+	const struct divecomputer *currentdc = get_dive_dc(d, dc);
 	if (currentdc && std::any_of(currentdc->events.begin(), currentdc->events.end(),
 	    [] (auto &ev) { return ev.hidden; }))
 		m.addAction(tr("Unhide individually hidden events of this dive"), this, &ProfileWidget2::unhideEvents);

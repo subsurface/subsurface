@@ -251,7 +251,6 @@ static void check_setpoint_events(const struct dive *, const struct divecomputer
 
 static void calculate_max_limits_new(const struct dive *dive, const struct divecomputer *given_dc, struct plot_info &pi, bool in_planner)
 {
-	const struct divecomputer *dc = &(dive->dc);
 	bool seen = false;
 	bool found_sample_beyond_last_event = false;
 	int maxdepth = dive->maxdepth.mm;
@@ -272,17 +271,14 @@ static void calculate_max_limits_new(const struct dive *dive, const struct divec
 			minpressure = mbar_end;
 	}
 
-	/* Then do all the samples from all the dive computers */
-	do {
-		if (dc == given_dc)
-			seen = true;
+	auto process_dc = [&] (const divecomputer &dc) {
 		int lastdepth = 0;
 
 		/* Make sure we can fit all events */
-		if (!dc->events.empty())
-			maxtime = std::max(maxtime, dc->events.back().time.seconds);
+		if (!dc.events.empty())
+			maxtime = std::max(maxtime, dc.events.back().time.seconds);
 
-		for (auto &s: dc->samples) {
+		for (auto &s: dc.samples) {
 			int depth = s.depth.mm;
 			int temperature = s.temperature.mkelvin;
 			int heartbeat = s.heartbeat;
@@ -317,13 +313,16 @@ static void calculate_max_limits_new(const struct dive *dive, const struct divec
 			}
 			lastdepth = depth;
 		}
+	};
 
-		dc = dc->next;
-		if (dc == NULL && !seen) {
-			dc = given_dc;
+	/* Then do all the samples from all the dive computers */
+	for (auto &dc: dive->dcs) {
+		if (&dc == given_dc)
 			seen = true;
-		}
-	} while (dc != NULL);
+		process_dc(dc);
+	}
+	if (!seen)
+		process_dc(*given_dc);
 
 	if (minpressure > maxpressure)
 		minpressure = 0;
@@ -659,7 +658,7 @@ static void calculate_sac(const struct dive *dive, const struct divecomputer *dc
 	}
 }
 
-static void populate_secondary_sensor_data(const struct divecomputer *dc, struct plot_info &pi)
+static void populate_secondary_sensor_data(const struct divecomputer &dc, struct plot_info &pi)
 {
 	std::vector<int> seen(pi.nr_cylinders, 0);
 	for (int idx = 0; idx < pi.nr; ++idx)
@@ -668,7 +667,7 @@ static void populate_secondary_sensor_data(const struct divecomputer *dc, struct
 				++seen[c]; // Count instances so we can differentiate a real sensor from just start and end pressure
 	int idx = 0;
 	/* We should try to see if it has interesting pressure data here */
-	for (const auto &sample: dc->samples) {
+	for (const auto &sample: dc.samples) {
 		if (idx >= pi.nr)
 			break;
 		for (; idx < pi.nr; ++idx) {
@@ -708,7 +707,6 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	std::vector<int> seen(num_cyl, 0);
 	std::vector<int> first(num_cyl, 0);
 	std::vector<int> last(num_cyl, INT_MAX);
-	const struct divecomputer *secondary;
 
 	int prev = explicit_first_cylinder(dive, dc);
 	prev = prev >= 0 ? prev : 0;
@@ -761,8 +759,8 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 			continue;
 
 		/* If it's only mentioned by other dc's, ignore it */
-		for_each_dc(dive, secondary) {
-			if (has_gaschange_event(dive, secondary, i)) {
+		for (auto &secondary: dive->dcs) {
+			if (has_gaschange_event(dive, &secondary, i)) {
 				seen[i] = -1;
 				break;
 			}
@@ -783,12 +781,11 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	 * and try to see if they have sensor data different from the
 	 * current dive computer (dc).
 	 */
-	secondary = &dive->dc;
-	do {
-		if (secondary == dc)
+	for (auto &secondary: dive->dcs) {
+		if (&secondary == dc)
 			continue;
 		populate_secondary_sensor_data(secondary, pi);
-	} while ((secondary = secondary->next) != NULL);
+	}
 }
 
 /* calculate DECO STOP / TTS / NDL */
@@ -1001,7 +998,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			if (in_planner && !pi.waypoint_above_ceiling &&
 			    entry.depth < max_ceiling - 100 && entry.sec > 0) {
 				struct dive *non_const_dive = (struct dive *)dive; // cast away const!
-				add_event(&non_const_dive->dc, entry.sec, SAMPLE_EVENT_CEILING, -1, max_ceiling / 1000,
+				add_event(&non_const_dive->dcs[0], entry.sec, SAMPLE_EVENT_CEILING, -1, max_ceiling / 1000,
 					  translate("gettextFromC", "planned waypoint above ceiling"));
 				pi.waypoint_above_ceiling = true;
 			}
@@ -1292,7 +1289,7 @@ struct plot_info create_plot_info_new(const struct dive *dive, const struct dive
 	debug_print_profiledata(pi);
 #endif
 
-	pi.meandepth = dive->dc.meandepth.mm;
+	pi.meandepth = dive->dcs[0].meandepth.mm;
 	analyze_plot_info(pi);
 	return pi;
 }

@@ -1056,7 +1056,7 @@ parsed:
 			// add a hundred years.
 			if (newDate.addYears(100) < QDateTime::currentDateTime().addYears(1))
 				newDate = newDate.addYears(100);
-			d->dc.when = d->when = dateTimeToTimestamp(newDate);
+			d->dcs[0].when = d->when = dateTimeToTimestamp(newDate);
 			return true;
 		}
 		appendTextToLog("none of our parsing attempts worked for the date string");
@@ -1134,9 +1134,9 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 		} else if (m6.hasMatch()) {
 			m = m6.captured(1).toInt();
 		}
-		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
-		if (is_dc_manually_added_dive(&d->dc))
-			d->dc.samples.clear();
+		d->dcs[0].duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
+		if (is_dc_manually_added_dive(&d->dcs[0]))
+			d->dcs[0].samples.clear();
 		else
 			appendTextToLog("Cannot change the duration on a dive that wasn't manually added");
 		return true;
@@ -1146,16 +1146,16 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 
 bool QMLManager::checkDepth(dive *d, QString depth)
 {
-	if (get_depth_string(d->dc.maxdepth.mm, true, true) != depth) {
+	if (get_depth_string(d->dcs[0].maxdepth.mm, true, true) != depth) {
 		int depthValue = parseLengthToMm(depth);
 		// the QML code should stop negative depth, but massively huge depth can make
 		// the profile extremely slow or even run out of memory and crash, so keep
 		// the depth <= 500m
 		if (0 <= depthValue && depthValue <= 500000) {
 			d->maxdepth.mm = depthValue;
-			if (is_dc_manually_added_dive(&d->dc)) {
-				d->dc.maxdepth.mm = d->maxdepth.mm;
-				d->dc.samples.clear();
+			if (is_dc_manually_added_dive(&d->dcs[0])) {
+				d->dcs[0].maxdepth.mm = d->maxdepth.mm;
+				d->dcs[0].samples.clear();
 			}
 			return true;
 		}
@@ -1356,16 +1356,16 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	// now that we have it all figured out, let's see what we need
 	// to update
 	if (diveChanged) {
-		if (d->maxdepth.mm == d->dc.maxdepth.mm &&
+		if (d->maxdepth.mm == d->dcs[0].maxdepth.mm &&
 		    d->maxdepth.mm > 0 &&
-		    is_dc_manually_added_dive(&d->dc) &&
-		    d->dc.samples.empty()) {
+		    is_dc_manually_added_dive(&d->dcs[0]) &&
+		    d->dcs[0].samples.empty()) {
 			// so we have depth > 0, a manually added dive and no samples
 			// let's create an actual profile so the desktop version can work it
 			// first clear out the mean depth (or the fake_dc() function tries
 			// to be too clever)
-			d->meandepth.mm = d->dc.meandepth.mm = 0;
-			fake_dc(&d->dc);
+			d->meandepth.mm = d->dcs[0].meandepth.mm = 0;
+			fake_dc(&d->dcs[0]);
 		}
 		fixup_dive(d);
 		Command::editDive(orig, d_ptr.release(), dsChange.createdDs.release(), dsChange.editDs, dsChange.location); // With release() we're giving up ownership
@@ -1732,11 +1732,11 @@ int QMLManager::addDive()
 	struct dive d;
 	int diveId = d.id = dive_getUniqID();
 	d.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	d.dc.duration.seconds = 40 * 60;
-	d.dc.maxdepth.mm = M_OR_FT(15, 45);
-	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	make_manually_added_dive_dc(&d.dc);
-	fake_dc(&d.dc);
+	d.dcs[0].duration.seconds = 40 * 60;
+	d.dcs[0].maxdepth.mm = M_OR_FT(15, 45);
+	d.dcs[0].meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
+	make_manually_added_dive_dc(&d.dcs[0]);
+	fake_dc(&d.dcs[0]);
 	fixup_dive(&d);
 
 	// addDive takes over the dive and clears out the structure passed in

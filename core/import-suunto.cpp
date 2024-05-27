@@ -191,7 +191,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	if (data[3])
 		state->cur_dive->duration.seconds = atoi(data[3]);
 	if (data[15])
-		state->cur_dive->dc.duration.seconds = atoi(data[15]);
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[15]);
 
 	/*
 	 * TODO: the deviceid hash should be calculated here.
@@ -208,11 +208,11 @@ static int dm4_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = lrint(permissive_strtod(data[6], NULL) * 1000);
+		state->cur_dive->dcs[0].maxdepth.mm = lrint(permissive_strtod(data[6], NULL) * 1000);
 	if (data[8])
-		state->cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
+		state->cur_dive->dcs[0].airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
-		state->cur_dive->dc.watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
+		state->cur_dive->dcs[0].watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
 
 	/*
 	 * TODO: handle multiple cylinders
@@ -237,7 +237,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	cylinder_end(state);
 
 	if (data[14])
-		state->cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) * 1000);
+		state->cur_dive->dcs[0].surface_pressure.mbar = (atoi(data[14]) * 1000);
 
 	interval = data[16] ? atoi(data[16]) : 0;
 	profileBlob = (float *)data[17];
@@ -249,7 +249,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 		if (profileBlob)
 			state->cur_sample->depth.mm = lrintf(profileBlob[i] * 1000.0f);
 		else
-			state->cur_sample->depth.mm = state->cur_dive->dc.maxdepth.mm;
+			state->cur_sample->depth.mm = state->cur_dive->dcs[0].maxdepth.mm;
 
 		if (data[18] && data[18][0])
 			state->cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
@@ -372,7 +372,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 	if (data[3])
 		state->cur_dive->duration.seconds = atoi(data[3]);
 	if (data[15])
-		state->cur_dive->dc.duration.seconds = atoi(data[15]);
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[15]);
 
 	/*
 	 * TODO: the deviceid hash should be calculated here.
@@ -390,28 +390,28 @@ static int dm5_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = lrint(permissive_strtod(data[6], NULL) * 1000);
+		state->cur_dive->dcs[0].maxdepth.mm = lrint(permissive_strtod(data[6], NULL) * 1000);
 	if (data[8])
-		state->cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
+		state->cur_dive->dcs[0].airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
-		state->cur_dive->dc.watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
+		state->cur_dive->dcs[0].watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
 
 	if (data[4]) {
-		state->cur_dive->dc.deviceid = atoi(data[4]);
+		state->cur_dive->dcs[0].deviceid = atoi(data[4]);
 	}
 	if (data[5])
-		utf8_string_std(data[5], &state->cur_dive->dc.model);
+		utf8_string_std(data[5], &state->cur_dive->dcs[0].model);
 
 	if (data[25]) {
 		switch(atoi(data[25])) {
 			case 1:
-				state->cur_dive->dc.divemode = OC;
+				state->cur_dive->dcs[0].divemode = OC;
 				break;
 			case 5:
-				state->cur_dive->dc.divemode = CCR;
+				state->cur_dive->dcs[0].divemode = CCR;
 				break;
 			default:
-				state->cur_dive->dc.divemode = OC;
+				state->cur_dive->dcs[0].divemode = OC;
 				break;
 		}
 	}
@@ -424,7 +424,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 	}
 
 	if (data[14])
-		state->cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) / 100);
+		state->cur_dive->dcs[0].surface_pressure.mbar = (atoi(data[14]) / 100);
 
 	interval = data[16] ? atoi(data[16]) : 0;
 
@@ -512,7 +512,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 			if (profileBlob)
 				state->cur_sample->depth.mm = lrintf(profileBlob[i] * 1000.0f);
 			else
-				state->cur_sample->depth.mm = state->cur_dive->dc.maxdepth.mm;
+				state->cur_sample->depth.mm = state->cur_dive->dcs[0].maxdepth.mm;
 
 			if (data[18] && data[18][0])
 				state->cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
