@@ -404,7 +404,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 	setText(Command::Base::tr("add dive"));
 	// By convention, d is a pointer to "displayed dive" or a temporary variable and can be overwritten.
 	d->maxdepth.mm = 0;
-	d->dc.maxdepth.mm = 0;
+	d->dcs[0].maxdepth.mm = 0;
 	fixup_dive(d);
 
 	// this only matters if undoit were called before redoit
@@ -883,7 +883,7 @@ static std::array<dive *, 2> splitDiveComputer(const dive *d, int dc_num)
 {
 	// Refuse to do anything if the dive has only one dive computer.
 	// Yes, this should have been checked by the UI, but let's just make sure.
-	if (!d->dc.next)
+	if (d->dcs.size() <= 1)
 		return { nullptr, nullptr};
 
 	dive *new1, *new2;

@@ -1643,15 +1643,12 @@ static git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry 
 
 static struct divecomputer *create_new_dc(struct dive *dive)
 {
-	struct divecomputer *dc = &dive->dc;
+	struct divecomputer *dc = &dive->dcs.back();
 
-	while (dc->next)
-		dc = dc->next;
 	/* Did we already fill that in? */
 	if (!dc->samples.empty() || !dc->model.empty() || dc->when) {
-		struct divecomputer *newdc = new divecomputer;
-		dc->next = newdc;
-		dc = newdc;
+		dive->dcs.emplace_back();
+		dc = &dive->dcs.back();
 	}
 	dc->when = dive->when;
 	dc->duration = dive->duration;

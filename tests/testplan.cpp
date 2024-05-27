@@ -496,20 +496,20 @@ void TestPlan::testMetric()
 	while (!dp->minimum_gas.mbar && dp->next)
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 148l);
-	QVERIFY(dive.dc.events.size() >= 2);
+	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN36 at 33m
-	struct event *ev = &dive.dc.events[0];
+	struct event *ev = &dive.dcs[0].events[0];
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 36);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 33000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 33000);
 	// check second gas change to Oxygen at 6m
-	ev = &dive.dc.events[1];
+	ev = &dive.dcs[0].events[1];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 6000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 6000);
 	// check expected run time of 109 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 109u * 60u, 109u * 60u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 109u * 60u, 109u * 60u));
 }
 
 void TestPlan::testImperial()
@@ -537,21 +537,20 @@ void TestPlan::testImperial()
 	while (!dp->minimum_gas.mbar && dp->next)
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 155l);
-	QVERIFY(dive.dc.events.size() >= 2);
+	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN36 at 33m
-	struct event *ev = &dive.dc.events[0];
-	QVERIFY(ev != NULL);
+	struct event *ev = &dive.dcs[0].events[0];
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 36);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 33528);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 33528);
 	// check second gas change to Oxygen at 6m
-	ev = &dive.dc.events[1];
+	ev = &dive.dcs[0].events[1];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 6096);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 6096);
 	// check expected run time of 111 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 111u * 60u - 2u, 111u * 60u - 2u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 111u * 60u - 2u, 111u * 60u - 2u));
 }
 
 void TestPlan::testVpmbMetric45m30minTx()
@@ -581,7 +580,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
-	//QVERIFY(compareDecoTime(dive.dc.duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
+	//QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m10minTx()
@@ -611,7 +610,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
-	//QVERIFY(compareDecoTime(dive.dc.duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
+	//QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minAir()
@@ -641,7 +640,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minEan50()
@@ -670,15 +669,14 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 155l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
-	QVERIFY(dive.dc.events.size() >= 1);
+	QVERIFY(dive.dcs[0].events.size() >= 1);
 	// check first gas change to EAN50 at 21m
-	struct event *ev = &dive.dc.events[0];
-	QVERIFY(ev != NULL);
+	struct event *ev = &dive.dcs[0].events[0];
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 21000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 21000);
 	// check benchmark run time of 95 minutes, and known Subsurface runtime of 96 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 95u * 60u + 20u, 96u * 60u + 20u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 95u * 60u + 20u, 96u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric60m30minTx()
@@ -708,14 +706,13 @@ void TestPlan::testVpmbMetric60m30minTx()
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
 	// check first gas change to EAN50 at 21m
-	QVERIFY(dive.dc.events.size() >= 1);
-	struct event *ev = &dive.dc.events[0];
-	QVERIFY(ev != NULL);
+	QVERIFY(dive.dcs[0].events.size() >= 1);
+	struct event *ev = &dive.dcs[0].events[0];
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 21000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 21000);
 	// check benchmark run time of 89 minutes, and known Subsurface runtime of 89 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 89u * 60u + 20u, 89u * 60u + 20u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 89u * 60u + 20u, 89u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric100m60min()
@@ -744,21 +741,20 @@ void TestPlan::testVpmbMetric100m60min()
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 157l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
-	QVERIFY(dive.dc.events.size() >= 2);
+	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN50 at 21m
-	struct event *ev = &dive.dc.events[0];
-	QVERIFY(ev != NULL);
+	struct event *ev = &dive.dcs[0].events[0];
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 21000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 21000);
 	// check second gas change to Oxygen at 6m
-	ev = &dive.dc.events[1];
+	ev = &dive.dcs[0].events[1];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 6000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 6000);
 	// check benchmark run time of 311 minutes, and known Subsurface runtime of 314 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 311u * 60u + 20u, 315u * 60u + 20u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 311u * 60u + 20u, 315u * 60u + 20u));
 }
 
 void TestPlan::testMultipleGases()
@@ -782,9 +778,9 @@ void TestPlan::testMultipleGases()
 #endif
 
 	gasmix gas;
-	gas = get_gasmix_at_time(dive, dive.dc, {20 * 60 + 1});
+	gas = get_gasmix_at_time(dive, dive.dcs[0], {20 * 60 + 1});
 	QCOMPARE(get_o2(gas), 110);
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 2480u, 2480u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 2480u, 2480u));
 }
 
 void TestPlan::testVpmbMetricMultiLevelAir()
@@ -814,7 +810,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
 	// check benchmark run time of 167 minutes, and known Subsurface runtime of 169 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 167u * 60u + 20u, 169u * 60u + 20u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 167u * 60u + 20u, 169u * 60u + 20u));
 }
 
 void TestPlan::testVpmbMetric100m10min()
@@ -843,21 +839,21 @@ void TestPlan::testVpmbMetric100m10min()
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 175l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
-	QVERIFY(dive.dc.events.size() >= 2);
+	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN50 at 21m
-	struct event *ev = &dive.dc.events[0];
+	struct event *ev = &dive.dcs[0].events[0];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->value, 50);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 21000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 21000);
 	// check second gas change to Oxygen at 6m
-	ev = &dive.dc.events[1];
+	ev = &dive.dcs[0].events[1];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 100);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 6000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 6000);
 	// check benchmark run time of 58 minutes, and known Subsurface runtime of 57 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 58u * 60u + 20u, 57u * 60u + 20u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 58u * 60u + 20u, 57u * 60u + 20u));
 }
 
 /* This tests that a previously calculated plan isn't affecting the calculations of the next plan.
@@ -891,9 +887,9 @@ void TestPlan::testVpmbMetricRepeat()
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
 	// check benchmark run time of 27 minutes, and known Subsurface runtime of 28 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 27u * 60u + 20u, 27u * 60u + 20u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 27u * 60u + 20u, 27u * 60u + 20u));
 
-	int firstDiveRunTimeSeconds = dive.dc.duration.seconds;
+	int firstDiveRunTimeSeconds = dive.dcs[0].duration.seconds;
 
 	setupPlanVpmb100mTo70m30min(&testPlan);
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
@@ -911,27 +907,27 @@ void TestPlan::testVpmbMetricRepeat()
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 80l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
-	QVERIFY(dive.dc.events.size() >= 3);
+	QVERIFY(dive.dcs[0].events.size() >= 3);
 	// check first gas change to 21/35 at 66m
-	struct event *ev = &dive.dc.events[0];
+	struct event *ev = &dive.dcs[0].events[0];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->gas.mix.o2.permille, 210);
 	QCOMPARE(ev->gas.mix.he.permille, 350);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 66000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 66000);
 	// check second gas change to EAN50 at 21m
-	ev = &dive.dc.events[1];
+	ev = &dive.dcs[0].events[1];
 	QCOMPARE(ev->gas.index, 2);
 	QCOMPARE(ev->value, 50);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 21000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 21000);
 	// check third gas change to Oxygen at 6m
-	ev = &dive.dc.events[2];
+	ev = &dive.dcs[0].events[2];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 3);
 	QCOMPARE(ev->value, 100);
-	QCOMPARE(get_depth_at_time(&dive.dc, ev->time.seconds), 6000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 6000);
 	// we don't have a benchmark, known Subsurface runtime is 126 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 127u * 60u + 20u, 127u * 60u + 20u));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 127u * 60u + 20u, 127u * 60u + 20u));
 
 	setupPlanVpmb30m20min(&testPlan);
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
@@ -951,7 +947,7 @@ void TestPlan::testVpmbMetricRepeat()
 	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
 
 	// check runtime is exactly the same as the first time
-	int finalDiveRunTimeSeconds = dive.dc.duration.seconds;
+	int finalDiveRunTimeSeconds = dive.dcs[0].duration.seconds;
 	QCOMPARE(finalDiveRunTimeSeconds, firstDiveRunTimeSeconds);
 }
 
@@ -967,7 +963,7 @@ void TestPlan::testCcrBailoutGasSelection()
 	prefs.unit_system = METRIC;
 	prefs.units.length = units::METERS;
 	prefs.planner_deco_mode = BUEHLMANN;
-	dive.dc.divemode = CCR;
+	dive.dcs[0].divemode = CCR;
 	prefs.dobailout = true;
 
 	struct diveplan testPlan = {};
@@ -982,22 +978,22 @@ void TestPlan::testCcrBailoutGasSelection()
 #endif
 
 	// check diluent used
-	cylinder_t *cylinder = get_cylinder(&dive, get_cylinderid_at_time(&dive, &dive.dc, { 20 * 60 - 1 }));
+	cylinder_t *cylinder = get_cylinder(&dive, get_cylinderid_at_time(&dive, &dive.dcs[0], { 20 * 60 - 1 }));
 	QCOMPARE(cylinder->cylinder_use, DILUENT);
 	QCOMPARE(get_o2(cylinder->gasmix), 200);
 
 	// check deep bailout used
-	cylinder = get_cylinder(&dive, get_cylinderid_at_time(&dive, &dive.dc, { 20 * 60 + 1 }));
+	cylinder = get_cylinder(&dive, get_cylinderid_at_time(&dive, &dive.dcs[0], { 20 * 60 + 1 }));
 	QCOMPARE(cylinder->cylinder_use, OC_GAS);
 	QCOMPARE(get_o2(cylinder->gasmix), 190);
 
 	// check shallow bailout used
-	cylinder = get_cylinder(&dive, get_cylinderid_at_time(&dive, &dive.dc, { 30 * 60 }));
+	cylinder = get_cylinder(&dive, get_cylinderid_at_time(&dive, &dive.dcs[0], { 30 * 60 }));
 	QCOMPARE(cylinder->cylinder_use, OC_GAS);
 	QCOMPARE(get_o2(cylinder->gasmix), 530);
 
 	// check expected run time of 51 minutes
-	QVERIFY(compareDecoTime(dive.dc.duration.seconds, 51 * 60, 51 * 60));
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 51 * 60, 51 * 60));
 
 }
 

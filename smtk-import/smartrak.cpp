@@ -696,9 +696,9 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 		else
 			concat(tmp, ", ", str);
 		if (str.find("SCR") != std::string::npos)
-			dive->dc.divemode = PSCR;
+			dive->dcs[0].divemode = PSCR;
 		else if (str.find("CCR") != std::string::npos)
-			dive->dc.divemode = CCR;
+			dive->dcs[0].divemode = CCR;
 	}
 	if (!tmp.empty())
 		concat(&dive->notes, "\n", format_string_std("Smartrak %s: %s", table_name, tmp.c_str()));
@@ -759,11 +759,11 @@ static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 		if (same_string(table.get_data(0), dive_idx)) {
 			time = lrint(strtod(table.get_data(4), NULL) * 60);
 			const char *tmp = table.get_data(2);
-			ev = find_bookmark(d->dc, time);
+			ev = find_bookmark(d->dcs[0], time);
 			if (ev)
 				ev->name = tmp;
 			else
-				if (!add_event(&d->dc, time, SAMPLE_EVENT_BOOKMARK, 0, 0, tmp))
+				if (!add_event(&d->dcs[0], time, SAMPLE_EVENT_BOOKMARK, 0, 0, tmp))
 					report_error("[smtk-import] Error - Couldn't add bookmark, dive %d, Name = %s",
 						     d->number, tmp);
 		}
@@ -941,7 +941,7 @@ void smartrak_import(const char *file, struct divelog *log)
 				dc_fam = DC_FAMILY_UWATEC_ALADIN;
 		}
 		rc = prepare_data(dc_model, (char *)col[coln(DCNUMBER)]->bind_ptr, dc_fam, devdata);
-		smtkdive->dc.model = devdata.model;
+		smtkdive->dcs[0].model = devdata.model;
 		if (rc == DC_STATUS_SUCCESS && mdb_table.get_len(coln(PROFILE))) {
 			prf_buffer = static_cast<unsigned char *>(mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length));
 			if (prf_length > 0) {
@@ -959,16 +959,16 @@ void smartrak_import(const char *file, struct divelog *log)
 			} else {
 				/* Dives without profile samples (usual in older aladin series) */
 				report_error("[Warning][smartrak_import]\t No profile for dive %d", smtkdive->number);
-				smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
-				smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
+				smtkdive->dcs[0].duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
+				smtkdive->dcs[0].maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
 			}
 			free(hdr_buffer);
 			free(prf_buffer);
 		} else {
 			/* Manual dives or unknown DCs */
 			report_error("[Warning][smartrak_import]\t Manual or unknown dive computer for dive %d", smtkdive->number);
-			smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
-			smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
+			smtkdive->dcs[0].duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
+			smtkdive->dcs[0].maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
 		}
 		/*
 		 * Cylinder and gasmixes completion.
@@ -1009,8 +1009,8 @@ void smartrak_import(const char *file, struct divelog *log)
 		/* Date issues with libdc parser - Take date time from mdb */
 		smtk_date_to_tm((char *)col[coln(_DATE)]->bind_ptr, &tm_date);
 		smtk_time_to_tm((char *)col[coln(INTIME)]->bind_ptr, &tm_date);
-		smtkdive->dc.when = smtkdive->when = smtk_timegm(&tm_date);
-		smtkdive->dc.surfacetime.seconds = smtk_time_to_secs((char *)col[coln(INTVAL)]->bind_ptr);
+		smtkdive->dcs[0].when = smtkdive->when = smtk_timegm(&tm_date);
+		smtkdive->dcs[0].surfacetime.seconds = smtk_time_to_secs((char *)col[coln(INTVAL)]->bind_ptr);
 
 		/* Data that user may have registered manually if not supported by DC, or not parsed */
 		if (!smtkdive->airtemp.mkelvin)

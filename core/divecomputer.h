@@ -43,10 +43,10 @@ struct divecomputer {
 	std::vector<struct sample> samples;
 	std::vector<struct event> events;
 	std::vector<struct extra_data> extra_data;
-	struct divecomputer *next = nullptr;
 
 	divecomputer();
 	~divecomputer();
+	divecomputer(const divecomputer &);
 	divecomputer(divecomputer &&);
 	divecomputer &operator=(const divecomputer &);
 };
@@ -54,10 +54,9 @@ struct divecomputer {
 extern void fake_dc(struct divecomputer *dc);
 extern void free_dc_contents(struct divecomputer *dc);
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);
-extern void free_dive_dcs(struct divecomputer *dc);
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void append_sample(const struct sample &sample, struct divecomputer *dc);
-extern void fixup_dc_duration(struct divecomputer *dc);
+extern void fixup_dc_duration(struct divecomputer &dc);
 extern unsigned int dc_airtemp(const struct divecomputer *dc);
 extern unsigned int dc_watertemp(const struct divecomputer *dc);
 extern int add_event_to_dc(struct divecomputer *dc, struct event ev); // event structure is consumed, returns index of inserted event
@@ -73,6 +72,6 @@ extern bool is_dc_manually_added_dive(const struct divecomputer *dc);
 extern void make_manually_added_dive_dc(struct divecomputer *dc);
 
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
-extern int match_one_dc(const struct divecomputer *a, const struct divecomputer *b);
+extern int match_one_dc(const struct divecomputer &a, const struct divecomputer &b);
 
 #endif

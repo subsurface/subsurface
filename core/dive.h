@@ -10,6 +10,7 @@
 #include "picture.h" // TODO: remove
 
 #include <string>
+#include <vector>
 
 extern int last_xml_version;
 
@@ -22,6 +23,7 @@ struct dive_trip;
 struct full_text_cache;
 struct event;
 struct trip_table;
+
 struct dive {
 	struct dive_trip *divetrip = nullptr;
 	timestamp_t when = 0;
@@ -45,7 +47,7 @@ struct dive {
 	int user_salinity = 0; // water density reflecting a user-specified type
 
 	struct tag_entry *tag_list = nullptr;
-	struct divecomputer dc;
+	std::vector<divecomputer> dcs; // Attn: pointers to divecomputers are not stable!
 	int id = 0; // unique ID for this dive
 	struct picture_table pictures = { };
 	unsigned char git_id[20] = {};
@@ -117,8 +119,10 @@ extern std::string get_dive_country(const struct dive *dive);
 extern std::string get_dive_location(const struct dive *dive);
 extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
-extern const struct divecomputer *get_dive_dc_const(const struct dive *dive, int nr);
+extern const struct divecomputer *get_dive_dc(const struct dive *dive, int nr);
 extern timestamp_t dive_endtime(const struct dive *dive);
+extern temperature_t dc_airtemp(const struct dive *dive);
+extern temperature_t dc_watertemp(const struct dive *dive);
 
 extern void set_git_prefs(const char *prefs);
 
@@ -135,12 +139,6 @@ void split_divecomputer(const struct dive *src, int num, struct dive **out1, str
  */
 #define for_each_dive(_i, _x) \
 	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
-
-#define for_each_dc(_dive, _dc) \
-	for (_dc = &_dive->dc; _dc; _dc = _dc->next)
-
-#define for_each_relevant_dc(_dive, _dc) \
-	for (_dc = &_dive->dc; _dc; _dc = _dc->next) if (!is_logged(_dive) || !is_dc_planner(_dc))
 
 extern struct dive *get_dive_by_uniq_id(int id);
 extern int get_idx_by_uniq_id(int id);

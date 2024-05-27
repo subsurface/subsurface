@@ -212,8 +212,8 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		 * Count the number of o2 sensors
 		 */
 
-		if (!state->cur_dive->dc.no_o2sensors && (state->cur_sample->o2sensor[0].mbar || state->cur_sample->o2sensor[1].mbar || state->cur_sample->o2sensor[2].mbar)) {
-			state->cur_dive->dc.no_o2sensors = state->cur_sample->o2sensor[0].mbar ? 1 : 0 +
+		if (!state->cur_dive->dcs[0].no_o2sensors && (state->cur_sample->o2sensor[0].mbar || state->cur_sample->o2sensor[1].mbar || state->cur_sample->o2sensor[2].mbar)) {
+			state->cur_dive->dcs[0].no_o2sensors = state->cur_sample->o2sensor[0].mbar ? 1 : 0 +
 				 state->cur_sample->o2sensor[1].mbar ? 1 : 0 +
 				 state->cur_sample->o2sensor[2].mbar ? 1 : 0;
 		}
@@ -285,10 +285,10 @@ static int divinglog_dive(void *param, int, char **data, char **)
 		utf8_string(data[4], &state->cur_dive->notes);
 
 	if (data[5])
-		state->cur_dive->dc.maxdepth.mm = lrint(permissive_strtod(data[5], NULL) * 1000);
+		state->cur_dive->dcs[0].maxdepth.mm = lrint(permissive_strtod(data[5], NULL) * 1000);
 
 	if (data[6])
-		state->cur_dive->dc.duration.seconds = atoi(data[6]) * 60;
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[6]) * 60;
 
 	if (data[7])
 		utf8_string(data[7], &state->cur_dive->diveguide);
@@ -330,7 +330,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	dc_settings_start(state);
 
 	if (data[12]) {
-		state->cur_dive->dc.model = data[12];
+		state->cur_dive->dcs[0].model = data[12];
 	} else {
 		state->cur_settings.dc.model = "Divinglog import";
 	}
@@ -355,10 +355,10 @@ static int divinglog_dive(void *param, int, char **data, char **)
 		case '0':
 			break;
 		case '1':
-			state->cur_dive->dc.divemode = PSCR;
+			state->cur_dive->dcs[0].divemode = PSCR;
 			break;
 		case '2':
-			state->cur_dive->dc.divemode = CCR;
+			state->cur_dive->dcs[0].divemode = CCR;
 			break;
 		}
 	}
@@ -367,9 +367,9 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[12]) {
-		state->cur_dive->dc.model = data[12];
+		state->cur_dive->dcs[0].model = data[12];
 	} else {
-		state->cur_dive->dc.model = "Divinglog import";
+		state->cur_dive->dcs[0].model = "Divinglog import";
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, diveid);

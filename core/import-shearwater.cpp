@@ -214,7 +214,7 @@ static int shearwater_mode(void *param, int, char **data, char **)
 	struct parser_state *state = (struct parser_state *)param;
 
 	if (data[0])
-		state->cur_dive->dc.divemode = atoi(data[0]) == 0 ? CCR : OC;
+		state->cur_dive->dcs[0].divemode = atoi(data[0]) == 0 ? CCR : OC;
 
 	return 0;
 }
@@ -249,13 +249,13 @@ static int shearwater_dive(void *param, int, char **data, char **)
 
 	/* TODO: verify that metric calculation is correct */
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(permissive_strtod(data[6], NULL) * 1000) : feet_to_mm(permissive_strtod(data[6], NULL));
+		state->cur_dive->dcs[0].maxdepth.mm = state->metric ? lrint(permissive_strtod(data[6], NULL) * 1000) : feet_to_mm(permissive_strtod(data[6], NULL));
 
 	if (data[7])
-		state->cur_dive->dc.duration.seconds = atoi(data[7]) * 60;
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[7]) * 60;
 
 	if (data[8])
-		state->cur_dive->dc.surface_pressure.mbar = atoi(data[8]);
+		state->cur_dive->dcs[0].surface_pressure.mbar = atoi(data[8]);
 	/*
 	 * TODO: the deviceid hash should be calculated here.
 	 */
@@ -285,13 +285,13 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_dive->dc.model = "Shearwater Petrel/Perdix";
+			state->cur_dive->dcs[0].model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_dive->dc.model = "Shearwater Predator";
+			state->cur_dive->dcs[0].model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_dive->dc.model = "Shearwater import";
+			state->cur_dive->dcs[0].model = "Shearwater import";
 			break;
 		}
 	}
@@ -379,13 +379,13 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 
 	/* TODO: verify that metric calculation is correct */
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(permissive_strtod(data[6], NULL) * 1000) : feet_to_mm(permissive_strtod(data[6], NULL));
+		state->cur_dive->dcs[0].maxdepth.mm = state->metric ? lrint(permissive_strtod(data[6], NULL) * 1000) : feet_to_mm(permissive_strtod(data[6], NULL));
 
 	if (data[7])
-		state->cur_dive->dc.duration.seconds = atoi(data[7]);
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[7]);
 
 	if (data[8])
-		state->cur_dive->dc.surface_pressure.mbar = atoi(data[8]);
+		state->cur_dive->dcs[0].surface_pressure.mbar = atoi(data[8]);
 	/*
 	 * TODO: the deviceid hash should be calculated here.
 	 */
@@ -415,13 +415,13 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_dive->dc.model = "Shearwater Petrel/Perdix";
+			state->cur_dive->dcs[0].model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_dive->dc.model = "Shearwater Predator";
+			state->cur_dive->dcs[0].model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_dive->dc.model = "Shearwater import";
+			state->cur_dive->dcs[0].model = "Shearwater import";
 			break;
 		}
 	}

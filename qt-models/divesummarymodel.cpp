@@ -116,7 +116,7 @@ Stats::Stats() :
 
 static void calculateDive(struct dive *dive, Stats &stats)
 {
-	if (is_dc_planner(&dive->dc)) {
+	if (is_dc_planner(&dive->dcs[0])) {
 		stats.diveplans++;
 		return;
 	}

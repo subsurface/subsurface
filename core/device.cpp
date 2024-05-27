@@ -124,9 +124,8 @@ void clear_device_table(struct device_table *device_table)
 bool device_used_by_selected_dive(const struct device *dev)
 {
 	for (dive *d: getDiveSelection()) {
-		struct divecomputer *dc;
-		for_each_dc (d, dc) {
-			if (dc->deviceid == dev->deviceId)
+		for (auto &dc: d->dcs) {
+			if (dc.deviceid == dev->deviceId)
 				return true;
 		}
 	}

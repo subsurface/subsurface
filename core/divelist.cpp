@@ -118,7 +118,7 @@ static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc,
 static int calculate_otu(const struct dive *dive)
 {
 	double otu = 0.0;
-	const struct divecomputer *dc = &dive->dc;
+	const struct divecomputer *dc = &dive->dcs[0];
 	for (auto [psample, sample]: pairwise_range(dc->samples)) {
 		int t;
 		int po2i, po2f;
@@ -179,7 +179,7 @@ static int calculate_otu(const struct dive *dive)
    to the end of the segment, assuming a constant rate of change in po2 (i.e. depth) with time. */
 static double calculate_cns_dive(const struct dive *dive)
 {
-	const struct divecomputer *dc = &dive->dc;
+	const struct divecomputer *dc = &dive->dcs[0];
 	double cns = 0.0;
 	double rate;
 	/* Calculate the CNS for each sample in this dive and sum them */
@@ -334,7 +334,7 @@ static double calculate_airuse(const struct dive *dive)
 	int airuse = 0;
 
 	// SAC for a CCR dive does not make sense.
-	if (dive->dc.divemode == CCR)
+	if (dive->dcs[0].divemode == CCR)
 		return 0.0;
 
 	for (int i = 0; i < dive->cylinders.nr; i++) {
@@ -362,7 +362,7 @@ static double calculate_airuse(const struct dive *dive)
 /* this only uses the first divecomputer to calculate the SAC rate */
 static int calculate_sac(const struct dive *dive)
 {
-	const struct divecomputer *dc = &dive->dc;
+	const struct divecomputer *dc = &dive->dcs[0];
 	double airuse, pressure, sac;
 	int duration, meandepth;
 
@@ -389,10 +389,10 @@ static int calculate_sac(const struct dive *dive)
 /* for now we do this based on the first divecomputer */
 static void add_dive_to_deco(struct deco_state *ds, struct dive *dive, bool in_planner)
 {
-	struct divecomputer *dc = &dive->dc;
+	struct divecomputer *dc = &dive->dcs[0];
 
-	gasmix_loop loop(*dive, dive->dc);
-	divemode_loop loop_d(dive->dc);
+	gasmix_loop loop(*dive, dive->dcs[0]);
+	divemode_loop loop_d(dive->dcs[0]);
 	for (auto [psample, sample]: pairwise_range(dc->samples)) {
 		int t0 = psample.time.seconds;
 		int t1 = sample.time.seconds;
@@ -601,19 +601,21 @@ void update_cylinder_related_info(struct dive *dive)
 	}
 }
 
-/* Compare a list of dive computers by model name */
-static int comp_dc(const struct divecomputer *dc1, const struct divecomputer *dc2)
+/* Compare list of dive computers by model name */
+static int comp_dc(const struct dive *d1, const struct dive *d2)
 {
-	int cmp;
-	while (dc1 || dc2) {
-		if (!dc1)
+	auto it1 = d1->dcs.begin();
+	auto it2 = d2->dcs.begin();
+	while (it1 != d1->dcs.end() || it2 != d2->dcs.end()) {
+		if (it1 == d1->dcs.end())
 			return -1;
-		if (!dc2)
+		if (it2 == d2->dcs.end())
 			return 1;
-		if ((cmp = dc1->model.compare(dc2->model)) != 0)
+		int cmp = it1->model.compare(it2->model);
+		if (cmp != 0)
 			return cmp;
-		dc1 = dc1->next;
-		dc2 = dc2->next;
+		++it1;
+		++it2;
 	}
 	return 0;
 }
@@ -656,7 +658,7 @@ int comp_dives(const struct dive *a, const struct dive *b)
 		return -1;
 	if (a->number > b->number)
 		return 1;
-	if ((cmp = comp_dc(&a->dc, &b->dc)) != 0)
+	if ((cmp = comp_dc(a, b)) != 0)
 		return cmp;
 	if (a->id < b->id)
 		return -1;
@@ -1375,15 +1377,13 @@ bool has_dive(unsigned int deviceid, unsigned int diveid)
        struct dive *dive;
 
        for_each_dive (i, dive) {
-	       struct divecomputer *dc;
-
-	       for_each_dc (dive, dc) {
-		       if (dc->deviceid != deviceid)
-			       continue;
-		       if (dc->diveid != diveid)
-			       continue;
-		       return 1;
-	       }
-       }
-       return 0;
+		for (auto &dc: dive->dcs) {
+			if (dc.deviceid != deviceid)
+				continue;
+			if (dc.diveid != diveid)
+				continue;
+			return 1;
+		}
+	}
+	return 0;
 }

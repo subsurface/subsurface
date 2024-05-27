@@ -188,15 +188,15 @@ static void uemis_get_weight(std::string_view buffer, weightsystem_t &weight, in
 static std::unique_ptr<dive> uemis_start_dive(uint32_t deviceid)
 {
 	auto dive = std::make_unique<struct dive>();
-	dive->dc.model = "Uemis Zurich";
-	dive->dc.deviceid = deviceid;
+	dive->dcs[0].model = "Uemis Zurich";
+	dive->dcs[0].deviceid = deviceid;
 	return dive;
 }
 
 static struct dive *get_dive_by_uemis_diveid(device_data_t *devdata, uint32_t object_id)
 {
 	for (int i = 0; i < devdata->log->dives->nr; i++) {
-		if (object_id == devdata->log->dives->dives[i]->dc.diveid)
+		if (object_id == devdata->log->dives->dives[i]->dcs[0].diveid)
 			return devdata->log->dives->dives[i];
 	}
 	return NULL;
@@ -732,21 +732,21 @@ static void parse_tag(struct dive *dive, std::string_view tag, std::string_view 
 	 * with the binary data and would just get overwritten */
 #if UEMIS_DEBUG & 4
 	if (tag == "file_content")
-		report_info("Adding to dive %d : %s = %s\n", dive->dc.diveid, std::string(tag).c_str(), std::string(val).c_str());
+		report_info("Adding to dive %d : %s = %s\n", dive->dcs[0].diveid, std::string(tag).c_str(), std::string(val).c_str());
 #endif
 	if (tag == "date") {
 		dive->when = uemis_ts(val);
 	} else if (tag == "duration") {
-		uemis_duration(val, dive->dc.duration);
+		uemis_duration(val, dive->dcs[0].duration);
 	} else if (tag == "depth") {
-		uemis_depth(val, dive->dc.maxdepth);
+		uemis_depth(val, dive->dcs[0].maxdepth);
 	} else if (tag == "file_content") {
 		uemis_obj.parse_divelog_binary(val, dive);
 	} else if (tag == "altitude") {
-		uemis_get_index(val, dive->dc.surface_pressure.mbar);
+		uemis_get_index(val, dive->dcs[0].surface_pressure.mbar);
 	} else if (tag == "f32Weight") {
 		weightsystem_t ws = empty_weightsystem;
-		uemis_get_weight(val, ws, dive->dc.diveid);
+		uemis_get_weight(val, ws, dive->dcs[0].diveid);
 		add_cloned_weightsystem(&dive->weightsystems, ws);
 	} else if (tag == "notes") {
 		uemis_add_string(val, &dive->notes, " ");
@@ -774,12 +774,12 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
 {
 	struct dive *dive = NULL;
 
-	if (devdata->log->dives->dives[devdata->log->dives->nr - 1]->dc.diveid == diveid) {
+	if (devdata->log->dives->dives[devdata->log->dives->nr - 1]->dcs[0].diveid == diveid) {
 		/* we hit the last one in the array */
 		dive = devdata->log->dives->dives[devdata->log->dives->nr - 1];
 	} else {
 		for (int i = 0; i < devdata->log->dives->nr - 1; i++) {
-			if (devdata->log->dives->dives[i]->dc.diveid == diveid) {
+			if (devdata->log->dives->dives[i]->dcs[0].diveid == diveid) {
 				dive = devdata->log->dives->dives[i];
 				for (int x = i; x < devdata->log->dives->nr - 1; x++)
 					devdata->log->dives->dives[i] = devdata->log->dives->dives[x + 1];
@@ -902,7 +902,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 			// Is log
 			if (tag == "object_id") {
 				from_chars(val, max_divenr);
-				owned_dive->dc.diveid = max_divenr;
+				owned_dive->dcs[0].diveid = max_divenr;
 #if UEMIS_DEBUG % 2
 				report_info("Adding new dive from log with object_id %d.\n", max_divenr);
 #endif
@@ -940,10 +940,10 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 					struct dive_site *ds = devdata->log->sites->create("from Uemis"s);
 					unregister_dive_from_dive_site(non_owned_dive);
 					ds->add_dive(non_owned_dive);
-					uemis_obj.mark_divelocation(non_owned_dive->dc.diveid, divespot_id, ds);
+					uemis_obj.mark_divelocation(non_owned_dive->dcs[0].diveid, divespot_id, ds);
 				}
 #if UEMIS_DEBUG & 2
-				report_info("Created divesite %d for diveid : %d\n", non_owned_dive->dive_site->uuid, non_owned_dive->dc.diveid);
+				report_info("Created divesite %d for diveid : %d\n", non_owned_dive->dive_site->uuid, non_owned_dive->dcs[0].diveid);
 #endif
 			} else if (non_owned_dive) {
 				parse_tag(non_owned_dive, tag, val);
@@ -951,7 +951,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 		}
 	}
 	if (is_log) {
-		if (owned_dive->dc.diveid)
+		if (owned_dive->dcs[0].diveid)
 			record_dive_to_table(owned_dive.release(), devdata->log->dives.get());
 		else /* partial dive */
 			return false;
@@ -981,16 +981,15 @@ static std::pair<uint32_t, uint32_t> uemis_get_divenr(uint32_t deviceid, struct 
 
 	for (i = 0; i < table->nr; i++) {
 		struct dive *d = table->dives[i];
-		struct divecomputer *dc;
 		if (!d)
 			continue;
-		for_each_dc (d, dc) {
-			if (dc->model == "Uemis Zurich" &&
-			    (dc->deviceid == 0 || dc->deviceid == 0x7fffffff || dc->deviceid == deviceid)) {
-				if (dc->diveid > maxdiveid)
-					maxdiveid = dc->diveid;
-				if (dc->diveid < mindiveid)
-					mindiveid = dc->diveid;
+		for (auto &dc: d->dcs) {
+			if (dc.model == "Uemis Zurich" &&
+			    (dc.deviceid == 0 || dc.deviceid == 0x7fffffff || dc.deviceid == deviceid)) {
+				if (dc.diveid > maxdiveid)
+					maxdiveid = dc.diveid;
+				if (dc.diveid < mindiveid)
+					mindiveid = dc.diveid;
 			}
 		}
 	}
@@ -1144,9 +1143,9 @@ static bool get_matching_dive(int idx, int &newmax, uemis_mem_status &mem_status
 	int deleted_files = 0;
 	int fail_count = 0;
 
-	snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dc.diveid);
+	snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dcs[0].diveid);
 #if UEMIS_DEBUG & 2
-	report_info("Looking for dive details to go with dive log id %d\n", dive->dc.diveid);
+	report_info("Looking for dive details to go with dive log id %d\n", dive->dcs[0].diveid);
 #endif
 	while (!found) {
 		if (import_thread_cancelled)
@@ -1176,9 +1175,9 @@ static bool get_matching_dive(int idx, int &newmax, uemis_mem_status &mem_status
 						 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
 #if UEMIS_DEBUG & 2
 						d_time = get_dive_date_c_string(dive->when);
-						report_info("Matching dive log id %d from %s with dive details %d\n", dive->dc.diveid, d_time.c_str(), dive_to_read);
+						report_info("Matching dive log id %d from %s with dive details %d\n", dive->dcs[0].diveid, d_time.c_str(), dive_to_read);
 #endif
-						int divespot_id = uemis_obj.get_divespot_id_by_diveid(dive->dc.diveid);
+						int divespot_id = uemis_obj.get_divespot_id_by_diveid(dive->dcs[0].diveid);
 						if (divespot_id >= 0)
 							get_uemis_divespot(data, mountpath, divespot_id, dive);
 
@@ -1186,13 +1185,13 @@ static bool get_matching_dive(int idx, int &newmax, uemis_mem_status &mem_status
 						/* in this case we found a deleted file, so let's increment */
 #if UEMIS_DEBUG & 2
 						d_time = get_dive_date_c_string(dive->when);
-						report_info("TRY matching dive log id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time.c_str(), dive_to_read);
+						report_info("TRY matching dive log id %d from %s with dive details %d but details are deleted\n", dive->dcs[0].diveid, d_time.c_str(), dive_to_read);
 #endif
 						deleted_files++;
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
 						dive->hidden_by_filter = true;
 #if UEMIS_DEBUG & 2
-						report_info("Deleted dive from %s, with id %d from table -- newmax is %d\n", d_time.c_str(), dive->dc.diveid, newmax);
+						report_info("Deleted dive from %s, with id %d from table -- newmax is %d\n", d_time.c_str(), dive->dcs[0].diveid, newmax);
 #endif
 					}
 				} else {
@@ -1200,7 +1199,7 @@ static bool get_matching_dive(int idx, int &newmax, uemis_mem_status &mem_status
 					size_t pos = mbuf.find("logfilenr");
 					if (pos != std::string::npos && mbuf.find("act{") != std::string::npos) {
 						sscanf(mbuf.c_str() + pos, "logfilenr{int{%u", &nr_found);
-						if (nr_found >= dive->dc.diveid || nr_found == 0) {
+						if (nr_found >= dive->dcs[0].diveid || nr_found == 0) {
 							found_above = true;
 							dive_to_read = dive_to_read - 2;
 						} else {
@@ -1433,7 +1432,7 @@ std::string do_uemis_import(device_data_t *data)
 	 * to see if we have to clean some dead bodies from our download table */
 	for (int next_table_index = 0; next_table_index < data->log->dives->nr; ) {
 		if (data->log->dives->dives[next_table_index]->hidden_by_filter)
-			uemis_delete_dive(data, data->log->dives->dives[next_table_index]->dc.diveid);
+			uemis_delete_dive(data, data->log->dives->dives[next_table_index]->dcs[0].diveid);
 		else
 			next_table_index++;
 	}

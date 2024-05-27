@@ -1077,7 +1077,7 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 	case FILTER_CONSTRAINT_PLANNED:
 		return is_planned(d) != c.negate;
 	case FILTER_CONSTRAINT_DIVE_MODE:
-		return check_multiple_choice(c, (int)d->dc.divemode); // should we be smarter and check all DCs?
+		return check_multiple_choice(c, (int)d->dcs[0].divemode); // should we be smarter and check all DCs?
 	case FILTER_CONSTRAINT_TAGS:
 		return has_tags(c, d);
 	case FILTER_CONSTRAINT_PEOPLE:

@@ -271,7 +271,7 @@ void uemis::event(struct dive *dive, struct divecomputer *dc, struct sample *sam
 	}
 #if UEMIS_DEBUG & 32
 	printf("%dm:%ds: p_amb_tol:%d surface:%d holdtime:%d holddepth:%d/%d ---> stopdepth:%d stoptime:%d ndl:%d\n",
-	       sample->time.seconds / 60, sample->time.seconds % 60, u_sample->p_amb_tol, dive->dc.surface_pressure.mbar,
+	       sample->time.seconds / 60, sample->time.seconds % 60, u_sample->p_amb_tol, dive->dcs[0].surface_pressure.mbar,
 	       u_sample->hold_time, u_sample->hold_depth, stopdepth, sample->stopdepth.mm, sample->stoptime.seconds, sample->ndl.seconds);
 #endif
 }
@@ -283,17 +283,17 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 {
 	struct sample *sample = NULL;
 	uemis_sample *u_sample;
-	struct divecomputer *dc = &dive->dc;
+	struct divecomputer *dc = &dive->dcs[0];
 	int dive_template, gasoffset;
 	uint8_t active = 0;
 
 	auto data = convert_base64(base64);
-	dive->dc.airtemp.mkelvin = C_to_mkelvin((*(uint16_t *)(data.data() + 45)) / 10.0);
-	dive->dc.surface_pressure.mbar = *(uint16_t *)(data.data() + 43);
+	dive->dcs[0].airtemp.mkelvin = C_to_mkelvin((*(uint16_t *)(data.data() + 45)) / 10.0);
+	dive->dcs[0].surface_pressure.mbar = *(uint16_t *)(data.data() + 43);
 	if (*(uint8_t *)(data.data() + 19))
-		dive->dc.salinity = SEAWATER_SALINITY; /* avg grams per 10l sea water */
+		dive->dcs[0].salinity = SEAWATER_SALINITY; /* avg grams per 10l sea water */
 	else
-		dive->dc.salinity = FRESHWATER_SALINITY; /* grams per 10l fresh water */
+		dive->dcs[0].salinity = FRESHWATER_SALINITY; /* grams per 10l fresh water */
 
 	/* this will allow us to find the last dive read so far from this computer */
 	dc->model = "Uemis Zurich";
@@ -353,7 +353,7 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		u_sample++;
 	}
 	if (sample)
-		dive->dc.duration.seconds = sample->time.seconds - 1;
+		dive->dcs[0].duration.seconds = sample->time.seconds - 1;
 
 	/* get data from the footer */
 	add_extra_data(dc, "FW Version",
