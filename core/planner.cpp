@@ -128,7 +128,7 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 		return 0;
 
 	const struct sample *psample = nullptr;
-	divemode_loop loop(dive->dc);
+	divemode_loop loop(*dc);
 	for (auto &sample: dc->samples) {
 		o2pressure_t setpoint = psample ? psample->setpoint
 						: sample.setpoint;
@@ -809,7 +809,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
 		create_dive_from_plan(diveplan, dive, dc, is_planner);
 		add_plan_to_notes(diveplan, dive, show_disclaimer, error);
-		fixup_dc_duration(dc);
+		fixup_dc_duration(*dc);
 
 		return false;
 	}
@@ -1091,7 +1091,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	}
 	create_dive_from_plan(diveplan, dive, dc, is_planner);
 	add_plan_to_notes(diveplan, dive, show_disclaimer, error);
-	fixup_dc_duration(dc);
+	fixup_dc_duration(*dc);
 
 	return decodive;
 }

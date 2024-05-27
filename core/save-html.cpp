@@ -52,19 +52,18 @@ static void save_photos(struct membuffer *b, const char *photos_dir, const struc
 static void write_divecomputers(struct membuffer *b, const struct dive *dive)
 {
 	put_string(b, "\"divecomputers\":[");
-	const struct divecomputer *dc;
 	const char *separator = "";
-	for_each_dc (dive, dc) {
+	for (auto &dc: dive->dcs) {
 		put_string(b, separator);
 		separator = ", ";
 		put_format(b, "{");
-		write_attribute(b, "model", dc->model.c_str(), ", ");
-		if (dc->deviceid)
-			put_format(b, "\"deviceid\":\"%08x\", ", dc->deviceid);
+		write_attribute(b, "model", dc.model.c_str(), ", ");
+		if (dc.deviceid)
+			put_format(b, "\"deviceid\":\"%08x\", ", dc.deviceid);
 		else
 			put_string(b, "\"deviceid\":\"--\", ");
-		if (dc->diveid)
-			put_format(b, "\"diveid\":\"%08x\" ", dc->diveid);
+		if (dc.diveid)
+			put_format(b, "\"diveid\":\"%08x\" ", dc.diveid);
 		else
 			put_string(b, "\"diveid\":\"--\" ");
 		put_format(b, "}");
@@ -82,7 +81,7 @@ static void write_dive_status(struct membuffer *b, const struct dive *dive)
 static void put_HTML_bookmarks(struct membuffer *b, const struct dive *dive)
 {
 	const char *separator = "\"events\":[";
-	for (const auto &ev: dive->dc.events) {
+	for (const auto &ev: dive->dcs[0].events) {
 		put_string(b, separator);
 		separator = ", ";
 		put_string(b, "{\"name\":\"");
@@ -172,14 +171,14 @@ static void put_cylinder_HTML(struct membuffer *b, const struct dive *dive)
 
 static void put_HTML_samples(struct membuffer *b, const struct dive *dive)
 {
-	put_format(b, "\"maxdepth\":%d,", dive->dc.maxdepth.mm);
-	put_format(b, "\"duration\":%d,", dive->dc.duration.seconds);
+	put_format(b, "\"maxdepth\":%d,", dive->dcs[0].maxdepth.mm);
+	put_format(b, "\"duration\":%d,", dive->dcs[0].duration.seconds);
 
-	if (dive->dc.samples.empty())
+	if (dive->dcs[0].samples.empty())
 		return;
 
 	const char *separator = "\"samples\":[";
-	for (auto &s: dive->dc.samples) {
+	for (auto &s: dive->dcs[0].samples) {
 		put_format(b, "%s[%d,%d,%d,%d]", separator, s.time.seconds, s.depth.mm, s.pressure[0].mbar, s.temperature.mkelvin);
 		separator = ", ";
 	}

@@ -820,7 +820,7 @@ static bool has_tags(const filter_constraint &c, const struct dive *d)
 	QStringList dive_tags;
 	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
 		dive_tags.push_back(QString::fromStdString(tag->tag->name).trimmed());
-	dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]).trimmed());
+	dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dcs[0].divemode]).trimmed());
 	return check(c, dive_tags);
 }
 
@@ -1078,7 +1078,7 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 	case FILTER_CONSTRAINT_PLANNED:
 		return is_planned(d) != c.negate;
 	case FILTER_CONSTRAINT_DIVE_MODE:
-		return check_multiple_choice(c, (int)d->dc.divemode); // should we be smarter and check all DCs?
+		return check_multiple_choice(c, (int)d->dcs[0].divemode); // should we be smarter and check all DCs?
 	case FILTER_CONSTRAINT_TAGS:
 		return has_tags(c, d);
 	case FILTER_CONSTRAINT_PEOPLE:

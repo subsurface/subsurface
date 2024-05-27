@@ -132,14 +132,14 @@ static int seac_dive(void *param, int, char **data, char **)
 	if (data[6]) {
 		switch (atoi(data[6])) {
 		case 1:
-			state->cur_dive->dc.divemode = OC;
+			state->cur_dive->dcs[0].divemode = OC;
 			break;
 		// Gauge Mode
 		case 2:
-			state->cur_dive->dc.divemode = UNDEF_COMP_TYPE;
+			state->cur_dive->dcs[0].divemode = UNDEF_COMP_TYPE;
 			break;
 		case 3:
-			state->cur_dive->dc.divemode = FREEDIVE;
+			state->cur_dive->dcs[0].divemode = FREEDIVE;
 			break;
 		default:
 			if (verbose) {
@@ -155,7 +155,7 @@ static int seac_dive(void *param, int, char **data, char **)
 
 	// 10 = dive duration
 	if (data[10]) {
-		state->cur_dive->dc.duration.seconds = atoi(data[10]);
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[10]);
 	}
 
 	// 8 = water_type
@@ -181,7 +181,7 @@ static int seac_dive(void *param, int, char **data, char **)
 
 
 	if (data[11]) {
-		state->cur_dive->dc.maxdepth.mm = 10 * atoi(data[11]);
+		state->cur_dive->dcs[0].maxdepth.mm = 10 * atoi(data[11]);
 	}
 
 	// Create sql_stmt type to query DB
@@ -205,20 +205,20 @@ static int seac_dive(void *param, int, char **data, char **)
 	settings_start(state);
 	dc_settings_start(state);
 
-	utf8_string_std(data[1], &state->cur_dive->dc.serial);
-	utf8_string_std(data[12],&state->cur_dive->dc.fw_version);
-	state->cur_dive->dc.model = strdup("Seac Action");
+	utf8_string_std(data[1], &state->cur_dive->dcs[0].serial);
+	utf8_string_std(data[12],&state->cur_dive->dcs[0].fw_version);
+	state->cur_dive->dcs[0].model = "Seac Action";
 
-	state->cur_dive->dc.deviceid = calculate_string_hash(data[1]);
+	state->cur_dive->dcs[0].deviceid = calculate_string_hash(data[1]);
 
-	add_extra_data(&state->cur_dive->dc, "GF-Lo", (const char*)sqlite3_column_text(sqlstmt, 9));
-	add_extra_data(&state->cur_dive->dc, "GF-Hi", (const char*)sqlite3_column_text(sqlstmt, 10));
+	add_extra_data(&state->cur_dive->dcs[0], "GF-Lo", (const char*)sqlite3_column_text(sqlstmt, 9));
+	add_extra_data(&state->cur_dive->dcs[0], "GF-Hi", (const char*)sqlite3_column_text(sqlstmt, 10));
 
 	dc_settings_end(state);
 	settings_end(state);
 
 	if (data[11]) {
-		state->cur_dive->dc.maxdepth.mm = 10 * atoi(data[11]);
+		state->cur_dive->dcs[0].maxdepth.mm = 10 * atoi(data[11]);
 	}
 
 	curcyl->gasmix.o2.permille = 10 * sqlite3_column_int(sqlstmt, 4);

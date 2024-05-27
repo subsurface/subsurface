@@ -34,7 +34,7 @@ parser_state::~parser_state()
  */
 struct divecomputer *get_dc(struct parser_state *state)
 {
-	return state->cur_dc ?: &state->cur_dive->dc;
+	return state->cur_dc ?: &state->cur_dive->dcs[0];
 }
 
 /*
@@ -118,7 +118,7 @@ void event_end(struct parser_state *state)
 bool is_dive(struct parser_state *state)
 {
 	return state->cur_dive &&
-		(state->cur_dive->dive_site || state->cur_dive->when || !state->cur_dive->dc.samples.empty());
+		(state->cur_dive->dive_site || state->cur_dive->when || !state->cur_dive->dcs[0].samples.empty());
 }
 
 void reset_dc_info(struct divecomputer *, struct parser_state *state)
@@ -264,7 +264,7 @@ void dive_start(struct parser_state *state)
 	if (state->cur_dive)
 		return;
 	state->cur_dive = std::make_unique<dive>();
-	reset_dc_info(&state->cur_dive->dc, state);
+	reset_dc_info(&state->cur_dive->dcs[0], state);
 	memset(&state->cur_tm, 0, sizeof(state->cur_tm));
 	state->o2pressure_sensor = 1;
 }
@@ -383,20 +383,12 @@ void sample_end(struct parser_state *state)
 
 void divecomputer_start(struct parser_state *state)
 {
-	struct divecomputer *dc;
-
-	/* Start from the previous dive computer */
-	dc = &state->cur_dive->dc;
-	while (dc->next)
-		dc = dc->next;
+	struct divecomputer *dc = &state->cur_dive->dcs.back();
 
 	/* Did we already fill that in? */
 	if (!dc->samples.empty() || !dc->model.empty() || dc->when) {
-		struct divecomputer *newdc = new divecomputer;
-		if (newdc) {
-			dc->next = newdc;
-			dc = newdc;
-		}
+		state->cur_dive->dcs.emplace_back();
+		dc = &state->cur_dive->dcs.back();
 	}
 
 	/* .. this is the one we'll use */

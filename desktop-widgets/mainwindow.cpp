@@ -705,11 +705,11 @@ void MainWindow::on_actionAddDive_triggered()
 	struct dive d;
 	d.id = dive_getUniqID();
 	d.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	d.dc.duration.seconds = 40 * 60;
-	d.dc.maxdepth.mm = M_OR_FT(15, 45);
-	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	make_manually_added_dive_dc(&d.dc);
-	fake_dc(&d.dc);
+	d.dcs[0].duration.seconds = 40 * 60;
+	d.dcs[0].maxdepth.mm = M_OR_FT(15, 45);
+	d.dcs[0].meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
+	make_manually_added_dive_dc(&d.dcs[0]);
+	fake_dc(&d.dcs[0]);
 	add_default_cylinder(&d);
 	fixup_dive(&d);
 

@@ -191,7 +191,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Next, Time in minutes since 00:00
 	 */
 	read_bytes(2);
-	dt_dive->dc.when = dt_dive->when = (timestamp_t)date_time_to_ssrfc(tmp_4bytes, tmp_2bytes);
+	dt_dive->dcs[0].when = dt_dive->when = (timestamp_t)date_time_to_ssrfc(tmp_4bytes, tmp_2bytes);
 
 	/*
 	 * Now, Locality, 1st byte is long of string, rest is string
@@ -239,19 +239,19 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	switch (tmp_1byte) {
 		case 1:
-			dt_dive->dc.surface_pressure.mbar = 1013;
+			dt_dive->dcs[0].surface_pressure.mbar = 1013;
 			break;
 		case 2:
-			dt_dive->dc.surface_pressure.mbar = 932;
+			dt_dive->dcs[0].surface_pressure.mbar = 932;
 			break;
 		case 3:
-			dt_dive->dc.surface_pressure.mbar = 828;
+			dt_dive->dcs[0].surface_pressure.mbar = 828;
 			break;
 		case 4:
-			dt_dive->dc.surface_pressure.mbar = 735;
+			dt_dive->dcs[0].surface_pressure.mbar = 735;
 			break;
 		default:
-			dt_dive->dc.surface_pressure.mbar = 1013;
+			dt_dive->dcs[0].surface_pressure.mbar = 1013;
 	}
 
 	/*
@@ -259,7 +259,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->dc.surfacetime.seconds = (uint32_t) tmp_2bytes * 60;
+		dt_dive->dcs[0].surfacetime.seconds = (uint32_t) tmp_2bytes * 60;
 
 	/*
 	 * Weather, values table, 0 to 6
@@ -296,7 +296,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->dc.airtemp.mkelvin = C_to_mkelvin((double)(tmp_2bytes / 100));
+		dt_dive->dcs[0].airtemp.mkelvin = C_to_mkelvin((double)(tmp_2bytes / 100));
 
 	/*
 	 * Dive suit, values table, 0 to 6
@@ -349,14 +349,14 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->maxdepth.mm = dt_dive->dc.maxdepth.mm = (int32_t)tmp_2bytes * 10;
+		dt_dive->maxdepth.mm = dt_dive->dcs[0].maxdepth.mm = (int32_t)tmp_2bytes * 10;
 
 	/*
 	 * Dive time in minutes.
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->duration.seconds = dt_dive->dc.duration.seconds = (uint32_t)tmp_2bytes * 60;
+		dt_dive->duration.seconds = dt_dive->dcs[0].duration.seconds = (uint32_t)tmp_2bytes * 60;
 
 	/*
 	 * Minimum water temperature in C*100. If unknown, set it to 0K which
@@ -364,7 +364,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7fff)
-		dt_dive->watertemp.mkelvin = dt_dive->dc.watertemp.mkelvin = C_to_mkelvin((double)(tmp_2bytes / 100));
+		dt_dive->watertemp.mkelvin = dt_dive->dcs[0].watertemp.mkelvin = C_to_mkelvin((double)(tmp_2bytes / 100));
 	else
 		dt_dive->watertemp.mkelvin = 0;
 
@@ -404,7 +404,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	if (bit_set(tmp_1byte, 1)) {
 		taglist_add_tag(&dt_dive->tag_list, strdup("rebreather"));
 		is_SCR = 1;
-		dt_dive->dc.divemode = PSCR;
+		dt_dive->dcs[0].divemode = PSCR;
 	}
 
 	/*
@@ -519,7 +519,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	libdc_model = dtrak_prepare_data(tmp_1byte, devdata);
 	if (!libdc_model)
 		report_error(translate("gettextFromC", "[Warning] Manual dive # %d\n"), dt_dive->number);
-	dt_dive->dc.model = copy_string(devdata.model.c_str());
+	dt_dive->dcs[0].model = copy_string(devdata.model.c_str());
 
 	/*
 	 * Air usage, unknown use. Probably allows or deny manually entering gas
@@ -561,10 +561,9 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Initialize some dive data not supported by Datatrak/WLog
 	 */
 	if (!libdc_model)
-		dt_dive->dc.deviceid = 0;
+		dt_dive->dcs[0].deviceid = 0;
 	else
-		dt_dive->dc.deviceid = 0xffffffff;
-	dt_dive->dc.next = NULL;
+		dt_dive->dcs[0].deviceid = 0xffffffff;
 	if (!is_SCR && dt_dive->cylinders.nr > 0) {
 		get_cylinder(dt_dive, 0)->end.mbar = get_cylinder(dt_dive, 0)->start.mbar -
 			((get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000);

@@ -116,13 +116,13 @@ static void save_dive_temperature(struct membuffer *b, struct dive *dive)
 {
 	if (!dive->airtemp.mkelvin && !dive->watertemp.mkelvin)
 		return;
-	if (dive->airtemp.mkelvin == dc_airtemp(&dive->dc) && dive->watertemp.mkelvin == dc_watertemp(&dive->dc))
+	if (dive->airtemp.mkelvin == dc_airtemp(dive).mkelvin && dive->watertemp.mkelvin == dc_watertemp(dive).mkelvin)
 		return;
 
 	put_string(b, "  <divetemperature");
-	if (dive->airtemp.mkelvin != dc_airtemp(&dive->dc))
+	if (dive->airtemp.mkelvin != dc_airtemp(dive).mkelvin)
 		put_temperature(b, dive->airtemp, " air='", " C'");
-	if (dive->watertemp.mkelvin != dc_watertemp(&dive->dc))
+	if (dive->watertemp.mkelvin != dc_watertemp(dive).mkelvin)
 		put_temperature(b, dive->watertemp, " water='", " C'");
 	put_string(b, "/>\n");
 }
@@ -447,7 +447,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 		put_format(b, " diveid='%08x'", dc->diveid);
 	if (dc->when && dc->when != dive->when)
 		show_date(b, dc->when);
-	if (dc->duration.seconds && dc->duration.seconds != dive->dc.duration.seconds)
+	if (dc->duration.seconds && dc->duration.seconds != dive->dcs[0].duration.seconds)
 		put_duration(b, dc->duration, " duration='", " min'");
 	if (dc->divemode != OC) {
 		int i = (int)dc->divemode;
@@ -490,7 +490,6 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 
 void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 {
-	struct divecomputer *dc;
 	pressure_t surface_pressure = un_fixup_surface_pressure(dive);
 
 	put_string(b, "<dive");
@@ -530,9 +529,9 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 	show_date(b, dive->when);
 	if (surface_pressure.mbar)
 		put_pressure(b, surface_pressure, " airpressure='", " bar'");
-	if (dive->dc.duration.seconds > 0)
+	if (dive->dcs[0].duration.seconds > 0)
 		put_format(b, " duration='%u:%02u min'>\n",
-			   FRACTION_TUPLE(dive->dc.duration.seconds, 60));
+			   FRACTION_TUPLE(dive->dcs[0].duration.seconds, 60));
 	else
 		put_format(b, ">\n");
 	save_overview(b, dive, anonymize);
@@ -540,8 +539,8 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 	save_weightsystem_info(b, dive);
 	save_dive_temperature(b, dive);
 	/* Save the dive computer data */
-	for_each_dc(dive, dc)
-		save_dc(b, dive, dc);
+	for (auto &dc: dive->dcs)
+		save_dc(b, dive, &dc);
 	FOR_EACH_PICTURE(dive)
 		save_picture(b, picture);
 	put_format(b, "</dive>\n");

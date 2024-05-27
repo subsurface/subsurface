@@ -418,7 +418,7 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 	auto dive = std::make_unique<struct dive>();
 	dive->when = date;
 	dive->number = atoi(header[1]);
-	dc = &dive->dc;
+	dc = &dive->dcs[0];
 
 	time = 0;
 	for (;;) {
@@ -511,11 +511,11 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 
 		auto dive = std::make_unique<struct dive>();
 		dive->when = utc_mktime(&cur_tm);;
-		dive->dc.model = "Poseidon MkVI Discovery";
+		dive->dcs[0].model = "Poseidon MkVI Discovery";
 		value = parse_mkvi_value(memtxt.data(), "Rig Serial number");
-		dive->dc.deviceid = atoi(value.c_str());
-		dive->dc.divemode = CCR;
-		dive->dc.no_o2sensors = 2;
+		dive->dcs[0].deviceid = atoi(value.c_str());
+		dive->dcs[0].divemode = CCR;
+		dive->dcs[0].no_o2sensors = 2;
 
 		cyl.cylinder_use = OXYGEN;
 		cyl.type.size.mliter = 3000;
@@ -547,9 +547,9 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 			std::string value = parse_mkvi_value(lineptr, key.c_str());
 			if (value.empty())
 				break;
-			add_extra_data(&dive->dc, key, value);
+			add_extra_data(&dive->dcs[0], key, value);
 		}
-		dc = &dive->dc;
+		dc = &dive->dcs[0];
 
 		/*
 		 * Read samples from the CSV file. A sample contains all the lines with same timestamp. The CSV file has

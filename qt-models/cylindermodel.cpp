@@ -401,7 +401,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
 				cyl.gasmix.he.permille = 1000 - get_o2(cyl.gasmix);
 			pressure_t modpO2;
-			if (d->dc.divemode == PSCR)
+			if (d->dcs[0].divemode == PSCR)
 				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(cyl.gasmix)) * SURFACE_PRESSURE *
 						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
 			else

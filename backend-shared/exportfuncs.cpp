@@ -179,7 +179,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		put_format(&buf, "\\def\\%ssitename{%s}\n", ssrf, site ? site->name.c_str() : "");
 		site ? put_format(&buf, "\\def\\%sgpslat{%f}\n", ssrf, site->location.lat.udeg / 1000000.0) : put_format(&buf, "\\def\\%sgpslat{}\n", ssrf);
 		site ? put_format(&buf, "\\def\\%sgpslon{%f}\n", ssrf, site->location.lon.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
-		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dc.model.c_str());
+		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dcs[0].model.c_str());
 		put_format(&buf, "\\def\\%scountry{%s}\n", ssrf, country.c_str());
 		put_format(&buf, "\\def\\%stime{%u:%02u}\n", ssrf, FRACTION_TUPLE(dive->duration.seconds, 60));
 
@@ -287,7 +287,7 @@ void export_depths(const char *filename, bool selected_only)
 
 		FOR_EACH_PICTURE (dive) {
 			depth_t depth;
-			for (auto &s: dive->dc.samples) {
+			for (auto &s: dive->dcs[0].samples) {
 				if ((int32_t)s.time.seconds > picture->offset.seconds)
 					break;
 				depth = s.depth;
