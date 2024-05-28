@@ -195,13 +195,13 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 // setup the cylinder widget accordingly
 void DivePlannerPointsModel::setupCylinders()
 {
-	clear_cylinder_table(&d->cylinders);
+	d->cylinders.clear();
 	if (mode == PLAN && current_dive) {
 		// take the displayed cylinders from the selected dive as starting point
 		copy_used_cylinders(current_dive, d, !prefs.include_unused_tanks);
 		reset_cylinders(d, true);
 
-		if (d->cylinders.nr > 0) {
+		if (!d->cylinders.empty()) {
 			cylinders.updateDive(d, dcNr);
 			return;		// We have at least one cylinder
 		}
@@ -281,13 +281,14 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 		case GAS:
 			/* Check if we have the same gasmix two or more times
 			 * If yes return more verbose string */
-			int same_gas = same_gasmix_cylinder(get_cylinder(d, p.cylinderid), p.cylinderid, d, true);
+			const cylinder_t &cyl = d->cylinders[p.cylinderid];
+			int same_gas = same_gasmix_cylinder(cyl, p.cylinderid, d, true);
 			if (same_gas == -1)
-				return get_gas_string(get_cylinder(d, p.cylinderid)->gasmix);
+				return get_gas_string(cyl.gasmix);
 			else
-				return get_gas_string(get_cylinder(d, p.cylinderid)->gasmix) +
+				return get_gas_string(cyl.gasmix) +
 					QString(" (%1 %2 ").arg(tr("cyl.")).arg(p.cylinderid + 1) +
-						get_cylinder(d, p.cylinderid)->type.description + ")";
+						QString::fromStdString(cyl.type.description) + ")";
 		}
 	} else if (role == Qt::DecorationRole) {
 		switch (index.column()) {
@@ -602,6 +603,7 @@ void DivePlannerPointsModel::setAscratestopsDisplay(int rate)
 	qPrefDivePlanner::set_ascratestops(lrint(rate * unit_factor()));
 	emitDataChanged();
 }
+
 int DivePlannerPointsModel::ascratestopsDisplay() const
 {
 	return lrint((float)prefs.ascratestops / unit_factor());
@@ -1028,11 +1030,9 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	// Get the user-input and calculate the dive info
 	free_dps(&diveplan);
 
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		cylinder_t *cyl = get_cylinder(d, i);
-		if (cyl->depth.mm && cyl->cylinder_use == OC_GAS) {
-			plan_add_segment(&diveplan, 0, cyl->depth.mm, i, 0, false, OC);
-		}
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
+		if (cyl.depth.mm && cyl.cylinder_use == OC_GAS)
+			plan_add_segment(&diveplan, 0, cyl.depth.mm, i, 0, false, OC);
 	}
 
 	int lastIndex = -1;

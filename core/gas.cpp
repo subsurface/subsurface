@@ -40,20 +40,20 @@ int same_gasmix(struct gasmix a, struct gasmix b)
 	return get_o2(a) == get_o2(b) && get_he(a) == get_he(b);
 }
 
-void sanitize_gasmix(struct gasmix *mix)
+void sanitize_gasmix(struct gasmix &mix)
 {
 	unsigned int o2, he;
 
-	o2 = get_o2(*mix);
-	he = get_he(*mix);
+	o2 = get_o2(mix);
+	he = get_he(mix);
 
 	/* Regular air: leave empty */
 	if (!he) {
 		if (!o2)
 			return;
 		/* 20.8% to 21% O2 is just air */
-		if (gasmix_is_air(*mix)) {
-			mix->o2.permille = 0;
+		if (gasmix_is_air(mix)) {
+			mix.o2.permille = 0;
 			return;
 		}
 	}
@@ -62,7 +62,7 @@ void sanitize_gasmix(struct gasmix *mix)
 	if (o2 <= 1000 && he <= 1000 && o2 + he <= 1000)
 		return;
 	report_info("Odd gasmix: %u O2 %u He", o2, he);
-	*mix = gasmix_air;
+	mix = gasmix_air;
 }
 
 int gasmix_distance(struct gasmix a, struct gasmix b)

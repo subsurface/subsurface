@@ -126,14 +126,14 @@ void TabDiveInformation::updateProfile()
 
 	std::vector<volume_t> gases = get_gas_used(currentDive);
 	QString volumes;
-	std::vector<int> mean(currentDive->cylinders.nr), duration(currentDive->cylinders.nr);
+	std::vector<int> mean(currentDive->cylinders.size()), duration(currentDive->cylinders.size());
 	struct divecomputer *currentdc = parent.getCurrentDC();
-	if (currentdc && currentDive->cylinders.nr >= 0)
+	if (currentdc && !currentDive->cylinders.empty())
 		per_cylinder_mean_depth(currentDive, currentdc, mean.data(), duration.data());
 	volume_t sac;
 	QString gaslist, SACs, separator;
 
-	for (int i = 0; i < currentDive->cylinders.nr; i++) {
+	for (size_t i = 0; i < currentDive->cylinders.size(); i++) {
 		if (!is_cylinder_used(currentDive, i))
 			continue;
 		gaslist.append(separator); volumes.append(separator); SACs.append(separator);
@@ -154,7 +154,7 @@ void TabDiveInformation::updateProfile()
 	ui->diveTimeText->setText(get_dive_duration_string(currentDive->duration.seconds, tr("h"), tr("min"), tr("sec"),
 			" ", currentDive->dcs[0].divemode == FREEDIVE));
 
-	ui->sacText->setText(currentDive->cylinders.nr > 0 && mean[0] && currentDive->dcs[0].divemode != CCR ? std::move(SACs) : QString());
+	ui->sacText->setText(!currentDive->cylinders.empty() && mean[0] && currentDive->dcs[0].divemode != CCR ? std::move(SACs) : QString());
 
 	if (currentDive->surface_pressure.mbar == 0) {
 		ui->atmPressVal->clear();			// If no atm pressure for dive then clear text box

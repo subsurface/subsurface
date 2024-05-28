@@ -19,6 +19,7 @@
 #include "event.h"
 #include "interpolate.h"
 #include "planner.h"
+#include "range.h"
 #include "subsurface-time.h"
 #include "gettext.h"
 #include "libdivecomputer/parser.h"
@@ -94,7 +95,7 @@ int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_
 
 static int get_gasidx(struct dive *dive, struct gasmix mix)
 {
-	return find_best_gasmix_match(mix, &dive->cylinders);
+	return find_best_gasmix_match(mix, dive->cylinders);
 }
 
 static void interpolate_transition(struct deco_state *ds, struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, struct gasmix gasmix, o2pressure_t po2, enum divemode_t divemode)
@@ -368,12 +369,12 @@ struct gaschanges {
 static int setpoint_change(struct dive *dive, int cylinderid)
 {
 	cylinder_t *cylinder = get_cylinder(dive, cylinderid);
-	if (!cylinder->type.description)
+	if (cylinder->type.description.empty())
 		return 0;
-	if (!strncmp(cylinder->type.description, "SP ", 3)) {
+	if (starts_with(cylinder->type.description, "SP ")) {
 		float sp;
-		sscanf(cylinder->type.description + 3, "%f", &sp);
-		return (int) (sp * 1000);
+		sscanf(cylinder->type.description.c_str() + 3, "%f", &sp);
+		return (int) (sp * 1000.0);
 	} else {
 		return 0;
 	}
@@ -572,10 +573,9 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, 
  */
 static bool enough_gas(const struct dive *dive, int current_cylinder)
 {
-	cylinder_t *cyl;
-	if (current_cylinder < 0 || current_cylinder >= dive->cylinders.nr)
+	if (current_cylinder < 0 || static_cast<size_t>(current_cylinder) >= dive->cylinders.size())
 		return false;
-	cyl = get_cylinder(dive, current_cylinder);
+	const cylinder_t *cyl = get_cylinder(dive, current_cylinder);
 
 	if (!cyl->start.mbar)
 		return true;
@@ -1086,7 +1086,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		// we had a fixed cylinder table: It uses an extra fake cylinder
 		// past the regular cylinder table, which is not visible to the UI.
 		// Fix this as soon as possible!
-		current_cylinder = dive->cylinders.nr;
+		current_cylinder = static_cast<int>(dive->cylinders.size());
 		plan_add_segment(diveplan, prefs.surface_segment, 0, current_cylinder, 0, false, OC);
 	}
 	create_dive_from_plan(diveplan, dive, dc, is_planner);

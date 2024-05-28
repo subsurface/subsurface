@@ -494,7 +494,6 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		bool has_depth = false, has_setpoint = false, has_ndl = false;
 		char *lineptr;
 		int prev_time = 0;
-		cylinder_t cyl;
 
 		struct divecomputer *dc;
 		struct tm cur_tm;
@@ -517,26 +516,32 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		dive->dcs[0].divemode = CCR;
 		dive->dcs[0].no_o2sensors = 2;
 
-		cyl.cylinder_use = OXYGEN;
-		cyl.type.size.mliter = 3000;
-		cyl.type.workingpressure.mbar = 200000;
-		cyl.type.description = "3l Mk6";
-		cyl.gasmix.o2.permille = 1000;
-		cyl.manually_added = true;
-		cyl.bestmix_o2 = 0;
-		cyl.bestmix_he = 0;
-		add_cloned_cylinder(&dive->cylinders, cyl);
+		{
+			cylinder_t cyl;
+			cyl.cylinder_use = OXYGEN;
+			cyl.type.size.mliter = 3000;
+			cyl.type.workingpressure.mbar = 200000;
+			cyl.type.description = "3l Mk6";
+			cyl.gasmix.o2.permille = 1000;
+			cyl.manually_added = true;
+			cyl.bestmix_o2 = 0;
+			cyl.bestmix_he = 0;
+			dive->cylinders.push_back(std::move(cyl));
+		}
 
-		cyl.cylinder_use = DILUENT;
-		cyl.type.size.mliter = 3000;
-		cyl.type.workingpressure.mbar = 200000;
-		cyl.type.description = "3l Mk6";
-		value = parse_mkvi_value(memtxt.data(), "Helium percentage");
-		he = atoi(value.c_str());
-		value = parse_mkvi_value(memtxt.data(), "Nitrogen percentage");
-		cyl.gasmix.o2.permille = (100 - atoi(value.c_str()) - he) * 10;
-		cyl.gasmix.he.permille = he * 10;
-		add_cloned_cylinder(&dive->cylinders, cyl);
+		{
+			cylinder_t cyl;
+			cyl.cylinder_use = DILUENT;
+			cyl.type.size.mliter = 3000;
+			cyl.type.workingpressure.mbar = 200000;
+			cyl.type.description = "3l Mk6";
+			value = parse_mkvi_value(memtxt.data(), "Helium percentage");
+			he = atoi(value.c_str());
+			value = parse_mkvi_value(memtxt.data(), "Nitrogen percentage");
+			cyl.gasmix.o2.permille = (100 - atoi(value.c_str()) - he) * 10;
+			cyl.gasmix.he.permille = he * 10;
+			dive->cylinders.push_back(std::move(cyl));
+		}
 
 		lineptr = strstr(memtxt.data(), "Dive started at");
 		while (!empty_string(lineptr) && (lineptr = strchr(lineptr, '\n'))) {

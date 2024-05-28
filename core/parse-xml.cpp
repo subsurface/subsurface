@@ -32,6 +32,7 @@
 #include "membuffer.h"
 #include "picture.h"
 #include "qthelper.h"
+#include "range.h"
 #include "sample.h"
 #include "tag.h"
 #include "xmlparams.h"
@@ -233,7 +234,7 @@ static void cylinder_use(const char *buffer, enum cylinderuse *cyl_use, struct p
 		enum cylinderuse use = cylinderuse_from_text(trimmed.c_str());
 		*cyl_use = use;
 		if (use == OXYGEN)
-			state->o2pressure_sensor = state->cur_dive->cylinders.nr - 1;
+			state->o2pressure_sensor = static_cast<int>(state->cur_dive->cylinders.size()) - 1;
 	}
 }
 
@@ -990,10 +991,8 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, 
 {
 	/* For cylinder related fields, we might have to create a cylinder first. */
 	cylinder_t cyl;
-	if (MATCH("tanktype", utf8_string, (char **)&cyl.type.description)) {
-		cylinder_t *cyl0 = get_or_create_cylinder(dive, 0);
-		free((void *)cyl0->type.description);
-		cyl0->type.description = cyl.type.description;
+	if (MATCH("tanktype", utf8_string_std, &cyl.type.description)) {
+		get_or_create_cylinder(dive, 0)->type.description = std::move(cyl.type.description);
 		return 1;
 	}
 	if (MATCH("tanksize", cylindersize, &cyl.type.size)) {
@@ -1230,7 +1229,7 @@ static void gps_picture_location(const char *buffer, struct picture *pic)
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
-	cylinder_t *cyl = dive->cylinders.nr > 0 ? get_cylinder(dive, dive->cylinders.nr - 1) : NULL;
+	cylinder_t *cyl = !dive->cylinders.empty() ? &dive->cylinders.back() : NULL;
 	weightsystem_t *ws = dive->weightsystems.nr > 0 ?
 		&dive->weightsystems.weightsystems[dive->weightsystems.nr - 1] : NULL;
 	pressure_t p;
@@ -1356,7 +1355,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 			return;
 		if (MATCH_STATE("workpressure.cylinder", pressure, &cyl->type.workingpressure))
 			return;
-		if (MATCH("description.cylinder", utf8_string, (char **)&cyl->type.description))
+		if (MATCH("description.cylinder", utf8_string_std, &cyl->type.description))
 			return;
 		if (MATCH_STATE("start.cylinder", pressure, &cyl->start))
 			return;
@@ -1798,7 +1797,6 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 	unsigned char event;
 	bool found;
 	unsigned int time = 0;
-	int i;
 	char serial[6];
 	struct battery_status {
 		uint16_t volt1;
@@ -1971,11 +1969,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 				state.cur_event.type = SAMPLE_EVENT_GASCHANGE2;
 				state.cur_event.value = ptr[7] << 8 ^ ptr[6];
 
-				found = false;
-				for (i = 0; i < state.cur_dive->cylinders.nr; ++i) {
-					const cylinder_t *cyl = get_cylinder(state.cur_dive.get(), i);
-					if (cyl->gasmix.o2.permille == ptr[6] * 10 && cyl->gasmix.he.permille == ptr[7] * 10) {
+				for (const auto [i, cyl]: enumerated_range(state.cur_dive->cylinders)) {
+					if (cyl.gasmix.o2.permille == ptr[6] * 10 && cyl.gasmix.he.permille == ptr[7] * 10) {
 						found = true;
+						state.cur_event.gas.index = i;
 						break;
 					}
 				}
@@ -1984,9 +1981,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 					cyl->gasmix.o2.permille = ptr[6] * 10;
 					cyl->gasmix.he.permille = ptr[7] * 10;
 					cylinder_end(&state);
-					state.cur_event.gas.index = state.cur_dive->cylinders.nr - 1;
-				} else {
-					state.cur_event.gas.index = i;
+					state.cur_event.gas.index = static_cast<int>(state.cur_dive->cylinders.size()) - 1;
 				}
 				break;
 			case 6:

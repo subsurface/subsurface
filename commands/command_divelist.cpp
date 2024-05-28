@@ -962,7 +962,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 {
 	setText(Command::Base::tr("merge dive"));
 
-	// Just a safety check - if there's not two or more dives - do nothing
+	// Just a safety check - if there's not two or more dives - do nothing.
 	// The caller should have made sure that this doesn't happen.
 	if (dives.count() < 2) {
 		qWarning("Merging less than two dives");

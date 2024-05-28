@@ -12,6 +12,7 @@
 #include "version.h"
 #include "errorhelper.h"
 #include "planner.h"
+#include "range.h"
 #include "subsurface-time.h"
 #include "gettextfromc.h"
 #include "metadata.h"
@@ -357,11 +358,10 @@ static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
 
 QVector<QPair<QString, int>> selectedDivesGasUsed()
 {
-	int j;
 	QMap<QString, int> gasUsed;
 	for (dive *d: getDiveSelection()) {
 		std::vector<volume_t> diveGases = get_gas_used(d);
-		for (j = 0; j < d->cylinders.nr; j++) {
+		for (size_t j = 0; j < d->cylinders.size(); j++) {
 			if (diveGases[j].mliter) {
 				QString gasName = gasname(get_cylinder(d, j)->gasmix);
 				gasUsed[gasName] += diveGases[j].mliter;
@@ -1189,16 +1189,15 @@ QString get_gas_string(struct gasmix gas)
 QStringList get_dive_gas_list(const struct dive *d)
 {
 	QStringList list;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		const cylinder_t *cyl = get_cylinder(d, i);
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
 		/* Check if we have the same gasmix two or more times
 		 * If yes return more verbose string */
 		int same_gas = same_gasmix_cylinder(cyl, i, d, true);
 		if (same_gas == -1)
-			list.push_back(get_gas_string(cyl->gasmix));
+			list.push_back(get_gas_string(cyl.gasmix));
 		else
-			list.push_back(get_gas_string(cyl->gasmix) + QString(" (%1 %2 ").arg(gettextFromC::tr("cyl.")).arg(i + 1) +
-				cyl->type.description + ")");
+			list.push_back(get_gas_string(cyl.gasmix) + QStringLiteral(" (%1 %2 ").arg(gettextFromC::tr("cyl.")).arg(i + 1) +
+				QString::fromStdString(cyl.type.description) + ")");
 	}
 	return list;
 }

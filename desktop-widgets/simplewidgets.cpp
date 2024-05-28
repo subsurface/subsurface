@@ -23,6 +23,7 @@
 #include "profile-widget/profilewidget2.h"
 #include "commands/command.h"
 #include "core/metadata.h"
+#include "core/range.h"
 #include "core/tag.h"
 
 void RenumberDialog::buttonClicked(QAbstractButton *button)
@@ -348,11 +349,10 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 			text << "\n";
 		}
 		if (what->cylinders) {
-			int cyl;
 			text << tr("Cylinders:\n");
-			for (cyl = 0; cyl < current_dive->cylinders.nr; cyl++) {
-				if (is_cylinder_used(current_dive, cyl))
-					text << get_cylinder(current_dive, cyl)->type.description << " " << gasname(get_cylinder(current_dive, cyl)->gasmix) << "\n";
+			for (auto [idx, cyl]: enumerated_range(current_dive->cylinders)) {
+				if (is_cylinder_used(current_dive, idx))
+					text << QString::fromStdString(cyl.type.description) << " " << gasname(cyl.gasmix) << "\n";
 			}
 		}
 		if (what->weights) {

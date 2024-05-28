@@ -151,12 +151,9 @@ static void calculateDive(struct dive *dive, Stats &stats)
 	}
 
 	// EAN dive ?
-	for (int j = 0; j < dive->cylinders.nr; ++j) {
-		if (get_cylinder(dive, j)->gasmix.o2.permille > 210) {
-			stats.divesEAN++;
-			break;
-		}
-	}
+	if (std::any_of(dive->cylinders.begin(), dive->cylinders.end(), [] (auto &cyl)
+			{ return cyl.gasmix.o2.permille > 210; }))
+		stats.divesEAN++;
 }
 
 // Returns a (first_dive, last_dive) pair

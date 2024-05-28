@@ -303,9 +303,9 @@ static int findEnd(const QList<token> &tokenList, int from, int to, token_t star
 static std::vector<const cylinder_t *> cylinderList(const dive *d)
 {
 	std::vector<const cylinder_t *> res;
-	res.reserve(d->cylinders.nr);
-	for (int i = 0; i < d->cylinders.nr; ++i)
-		res.push_back(&d->cylinders.cylinders[i]);
+	res.reserve(d->cylinders.size());
+	for (auto &cyl: d->cylinders)
+		res.push_back(&cyl);
 	return res;
 }
 
@@ -481,7 +481,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 			return QVariant();
 		const cylinder_t *cylinder = *state.currentCylinderObject;
 		if (property == "description") {
-			return cylinder->type.description;
+			return QString::fromStdString(cylinder->type.description);
 		} else if (property == "size") {
 			return get_volume_string(cylinder->type.size, true);
 		} else if (property == "workingPressure") {

@@ -310,13 +310,13 @@ static void debug_print_pressures(struct plot_info &pi)
 void populate_pressure_information(const struct dive *dive, const struct divecomputer *dc, struct plot_info &pi, int sensor)
 {
 	int first, last, cyl;
-	cylinder_t *cylinder = get_cylinder(dive, sensor);
+	const cylinder_t *cylinder = get_cylinder(dive, sensor);
 	std::vector<pr_track_t> track;
 	size_t current = std::string::npos;
 	int missing_pr = 0, dense = 1;
 	const double gasfactor[5] = {1.0, 0.0, prefs.pscr_ratio/1000.0, 1.0, 1.0 };
 
-	if (sensor < 0 || sensor >= dive->cylinders.nr)
+	if (sensor < 0 || static_cast<size_t>(sensor) >= dive->cylinders.size())
 		return;
 
 	/* if we have no pressure data whatsoever, this is pointless, so let's just return */
