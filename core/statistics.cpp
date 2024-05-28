@@ -9,6 +9,7 @@
 #include "divelog.h"
 #include "event.h"
 #include "gettext.h"
+#include "range.h"
 #include "sample.h"
 #include "subsurface-time.h"
 #include "trip.h"
@@ -273,15 +274,14 @@ bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc,
 
 bool is_cylinder_used(const struct dive *dive, int idx)
 {
-	cylinder_t *cyl;
-	if (idx < 0 || idx >= dive->cylinders.nr)
+	if (idx < 0 || static_cast<size_t>(idx) >= dive->cylinders.size())
 		return false;
 
-	cyl = get_cylinder(dive, idx);
-	if ((cyl->start.mbar - cyl->end.mbar) > SOME_GAS)
+	const cylinder_t &cyl = dive->cylinders[idx];
+	if ((cyl.start.mbar - cyl.end.mbar) > SOME_GAS)
 		return true;
 
-	if ((cyl->sample_start.mbar - cyl->sample_end.mbar) > SOME_GAS)
+	if ((cyl.sample_start.mbar - cyl.sample_end.mbar) > SOME_GAS)
 		return true;
 
 	for (auto &dc: dive->dcs) {
@@ -295,7 +295,7 @@ bool is_cylinder_used(const struct dive *dive, int idx)
 
 bool is_cylinder_prot(const struct dive *dive, int idx)
 {
-	if (idx < 0 || idx >= dive->cylinders.nr)
+	if (idx < 0 || static_cast<size_t>(idx) >= dive->cylinders.size())
 		return false;
 
 	return std::any_of(dive->dcs.begin(), dive->dcs.end(),
@@ -303,18 +303,17 @@ bool is_cylinder_prot(const struct dive *dive, int idx)
 			   { return has_gaschange_event(dive, &dc, idx); });
 }
 
-/* Returns a vector with dive->cylinders.nr entries */
+/* Returns a vector with dive->cylinders.size() entries */
 std::vector<volume_t> get_gas_used(struct dive *dive)
 {
-	std::vector<volume_t> gases(dive->cylinders.nr);
-	for (int idx = 0; idx < dive->cylinders.nr; idx++) {
-		cylinder_t *cyl = get_cylinder(dive, idx);
+	std::vector<volume_t> gases(dive->cylinders.size());
+	for (auto [idx, cyl]: enumerated_range(dive->cylinders)) {
 		pressure_t start, end;
 
-		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
-		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
+		start = cyl.start.mbar ? cyl.start : cyl.sample_start;
+		end = cyl.end.mbar ? cyl.end : cyl.sample_end;
 		if (end.mbar && start.mbar > end.mbar)
-			gases[idx].mliter = gas_volume(cyl, start) - gas_volume(cyl, end);
+			gases[idx].mliter = gas_volume(&cyl, start) - gas_volume(&cyl, end);
 		else
 			gases[idx].mliter = 0;
 	}
@@ -327,7 +326,7 @@ std::vector<volume_t> get_gas_used(struct dive *dive)
 static std::pair<volume_t, volume_t> get_gas_parts(struct gasmix mix, volume_t vol, int o2_in_topup)
 {
 	if (gasmix_is_air(mix))
-		return { {0}, {0} };
+		return { volume_t() , volume_t() };
 
 	volume_t air = { (int)lrint(((double)vol.mliter * get_n2(mix)) / (1000 - o2_in_topup)) };
 	volume_t he = { (int)lrint(((double)vol.mliter * get_he(mix)) / 1000.0) };

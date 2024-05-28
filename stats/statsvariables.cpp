@@ -1553,9 +1553,9 @@ struct GasTypeBinner : public MultiBinner<GasTypeBinner, GasTypeBin> {
 	}
 	std::vector<gas_bin_t> to_bin_values(const dive *d) const {
 		std::vector<gas_bin_t> res;
-		res.reserve(d->cylinders.nr);
-		for (int i = 0; i < d->cylinders.nr; ++i) {
-			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
+		res.reserve(d->cylinders.size());
+		for (auto &cyl: d->cylinders) {
+			struct gasmix mix = cyl.gasmix;
 			if (gasmix_is_invalid(mix))
 				continue;
 			// Add dive to each bin only once.
@@ -1591,9 +1591,9 @@ struct GasTypeGeneralBinner : public MultiBinner<GasTypeGeneralBinner, IntBin> {
 	}
 	std::vector<int> to_bin_values(const dive *d) const {
 		std::vector<int> res;
-		res.reserve(d->cylinders.nr);
-		for (int i = 0; i < d->cylinders.nr; ++i) {
-			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
+		res.reserve(d->cylinders.size());
+		for (auto &cyl: d->cylinders) {
+			struct gasmix mix = cyl.gasmix;
 			if (gasmix_is_invalid(mix))
 				continue;
 			res.push_back(gasmix_to_type(mix));
@@ -1619,9 +1619,9 @@ struct GasTypeVariable : public StatsVariableTemplate<StatsVariable::Type::Discr
 	QString diveCategories(const dive *d) const override {
 		QString res;
 		std::vector<gasmix> mixes;	// List multiple cylinders only once
-		mixes.reserve(d->cylinders.nr);
-		for (int i = 0; i < d->cylinders.nr; ++i) {
-			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
+		mixes.reserve(d->cylinders.size());
+		for (auto &cyl: d->cylinders) {
+			struct gasmix mix = cyl.gasmix;
 			if (gasmix_is_invalid(mix))
 				continue;
 			if (std::find_if(mixes.begin(), mixes.end(),
@@ -1648,7 +1648,7 @@ struct GasTypeVariable : public StatsVariableTemplate<StatsVariable::Type::Discr
 //  - max_he: get cylinder with maximum he content, otherwise with maximum o2 content
 static int get_gas_content(const struct dive *d, bool he, bool max_he)
 {
-	if (d->cylinders.nr <= 0)
+	if (d->cylinders.empty())
 		return invalid_value<int>();
 	// If sorting be He, the second sort criterion is O2 descending, because
 	// we are interested in the "bottom gas": highest He and lowest O2.
@@ -1657,7 +1657,7 @@ static int get_gas_content(const struct dive *d, bool he, bool max_he)
 					 std::make_tuple(get_he(c2.gasmix), -get_o2(c2.gasmix)); }
 			   : [] (const cylinder_t &c1, const cylinder_t &c2)
 				{ return get_o2(c1.gasmix) < get_o2(c2.gasmix); };
-	auto it = std::max_element(d->cylinders.cylinders, d->cylinders.cylinders + d->cylinders.nr, comp);
+	auto it = std::max_element(d->cylinders.begin(), d->cylinders.end(), comp);
 	return he ? get_he(it->gasmix) : get_o2(it->gasmix);
 }
 
@@ -1798,9 +1798,9 @@ struct WeightsystemVariable : public StatsVariableTemplate<StatsVariable::Type::
 static std::vector<QString> cylinder_types(const dive *d)
 {
 	std::vector<QString> res;
-	res.reserve(d->cylinders.nr);
-	for (int i = 0; i < d->cylinders.nr; ++i)
-		add_to_vector_unique(res, QString(d->cylinders.cylinders[i].type.description).trimmed());
+	res.reserve(d->cylinders.size());
+	for (auto &cyl: d->cylinders)
+		add_to_vector_unique(res, QString::fromStdString(cyl.type.description).trimmed());
 	return res;
 }
 

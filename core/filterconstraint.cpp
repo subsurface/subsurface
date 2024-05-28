@@ -857,8 +857,8 @@ static bool has_weight_type(const filter_constraint &c, const struct dive *d)
 static bool has_cylinder_type(const filter_constraint &c, const struct dive *d)
 {
 	QStringList cylinderTypes;
-	for (int i = 0; i < d->cylinders.nr; ++i)
-		cylinderTypes.push_back(d->cylinders.cylinders[i].type.description);
+	for (const cylinder_t &cyl: d->cylinders)
+		cylinderTypes.push_back(QString::fromStdString(cyl.type.description));
 
 	return check(c, cylinderTypes);
 }
@@ -904,22 +904,15 @@ static bool check_numerical_range_non_zero(const filter_constraint &c, int v)
 
 static bool check_cylinder_size(const filter_constraint &c, const struct dive *d)
 {
-	for (int i = 0; i < d->cylinders.nr; ++i) {
-		const cylinder_t &cyl = d->cylinders.cylinders[i];
-		if (cyl.type.size.mliter && check_numerical_range(c, cyl.type.size.mliter))
-			return true;
-	}
-	return false;
+	return std::any_of(d->cylinders.begin(), d->cylinders.end(), [&c](auto &cyl)
+			   { return cyl.type.size.mliter &&
+				    check_numerical_range(c, cyl.type.size.mliter); });
 }
 
 static bool check_gas_range(const filter_constraint &c, const struct dive *d, gas_component component)
 {
-	for (int i = 0; i < d->cylinders.nr; ++i) {
-		const cylinder_t &cyl = d->cylinders.cylinders[i];
-		if (check_numerical_range(c, get_gas_component_fraction(cyl.gasmix, component).permille))
-			return true;
-	}
-	return false;
+	return std::any_of(d->cylinders.begin(), d->cylinders.end(), [&c, &component](auto &cyl)
+			   { return check_numerical_range(c, get_gas_component_fraction(cyl.gasmix, component).permille); });
 }
 
 static long days_since_epoch(timestamp_t timestamp)

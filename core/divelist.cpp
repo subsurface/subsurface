@@ -32,19 +32,17 @@
  */
 void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 {
-	int i;
 	int maxo2 = -1, maxhe = -1, mino2 = 1000;
 
-	for (i = 0; i < dive->cylinders.nr; i++) {
-		const cylinder_t *cyl = get_cylinder(dive, i);
-		int o2 = get_o2(cyl->gasmix);
-		int he = get_he(cyl->gasmix);
+	for (auto [i, cyl]: enumerated_range(dive->cylinders)) {
+		int o2 = get_o2(cyl.gasmix);
+		int he = get_he(cyl.gasmix);
 
 		if (!is_cylinder_used(dive, i))
 			continue;
-		if (cyl->cylinder_use == OXYGEN)
+		if (cyl.cylinder_use == OXYGEN)
 			continue;
-		if (cyl->cylinder_use == NOT_USED)
+		if (cyl.cylinder_use == NOT_USED)
 			continue;
 		if (o2 > maxo2)
 			maxo2 = o2;
@@ -337,12 +335,11 @@ static double calculate_airuse(const struct dive *dive)
 	if (dive->dcs[0].divemode == CCR)
 		return 0.0;
 
-	for (int i = 0; i < dive->cylinders.nr; i++) {
+	for (auto [i, cyl]: enumerated_range(dive->cylinders)) {
 		pressure_t start, end;
-		const cylinder_t *cyl = get_cylinder(dive, i);
 
-		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
-		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
+		start = cyl.start.mbar ? cyl.start : cyl.sample_start;
+		end = cyl.end.mbar ? cyl.end : cyl.sample_end;
 		if (!end.mbar || start.mbar <= end.mbar) {
 			// If a cylinder is used but we do not have info on amout of gas used
 			// better not pretend we know the total gas use.
@@ -354,7 +351,7 @@ static double calculate_airuse(const struct dive *dive)
 				continue;
 		}
 
-		airuse += gas_volume(cyl, start) - gas_volume(cyl, end);
+		airuse += gas_volume(&cyl, start) - gas_volume(&cyl, end);
 	}
 	return airuse / 1000.0;
 }

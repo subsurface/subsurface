@@ -58,7 +58,7 @@ struct gas_pressures {
 	double o2 = 0.0, n2 = 0.0, he = 0.0;
 };
 
-extern void sanitize_gasmix(struct gasmix *mix);
+extern void sanitize_gasmix(struct gasmix &mix);
 extern int gasmix_distance(struct gasmix a, struct gasmix b);
 extern fraction_t get_gas_component_fraction(struct gasmix mix, enum gas_component component);
 extern gas_pressures fill_pressures(double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);

@@ -502,13 +502,11 @@ struct int ProfileWidget2::getEntryFromPos(QPointF pos)
 #ifndef SUBSURFACE_MOBILE
 /// Prints cylinder information for display.
 /// eg : "Cyl 1 (AL80 EAN32)"
-static QString printCylinderDescription(int i, const cylinder_t *cylinder)
+static QString printCylinderDescription(int i, const cylinder_t &cylinder)
 {
 	QString label = gettextFromC::tr("Cyl") + QString(" %1").arg(i+1);
-	if( cylinder != NULL ) {
-		QString mix = get_gas_string(cylinder->gasmix);
-		label += QString(" (%2 %3)").arg(cylinder->type.description).arg(mix);
-	}
+	QString mix = get_gas_string(cylinder.gasmix);
+	label += QString(" (%2 %3)").arg(QString::fromStdString(cylinder.type.description)).arg(mix);
 	return label;
 }
 
@@ -562,18 +560,16 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (d && item && item->ev.is_gaschange()) {
 		int eventTime = item->ev.time.seconds;
 		QMenu *gasChange = m.addMenu(tr("Edit Gas Change"));
-		for (int i = 0; i < d->cylinders.nr; i++) {
-			const cylinder_t *cylinder = get_cylinder(d, i);
-			QString label = printCylinderDescription(i, cylinder);
-			gasChange->addAction(label, [this, i, eventTime] { addGasSwitch(i, eventTime); });
+		for (auto [i, cyl]: enumerated_range(d->cylinders)) {
+			QString label = printCylinderDescription(i, cyl);
+			gasChange->addAction(label, [this, idx = i, eventTime] { addGasSwitch(idx, eventTime); });
 		}
-	} else if (d && d->cylinders.nr > 1) {
+	} else if (d && d->cylinders.size() > 1) {
 		// if we have more than one gas, offer to switch to another one
 		QMenu *gasChange = m.addMenu(tr("Add gas change"));
-		for (int i = 0; i < d->cylinders.nr; i++) {
-			const cylinder_t *cylinder = get_cylinder(d, i);
-			QString label = printCylinderDescription(i, cylinder);
-			gasChange->addAction(label, [this, i, seconds] { addGasSwitch(i, seconds); });
+		for (auto [i, cyl]: enumerated_range(d->cylinders)) {
+			QString label = printCylinderDescription(i, cyl);
+			gasChange->addAction(label, [this, idx = i, seconds] { addGasSwitch(idx, seconds); });
 		}
 	}
 	m.addAction(tr("Add setpoint change"), [this, seconds]() { ProfileWidget2::addSetpointChange(seconds); });
@@ -763,7 +759,7 @@ void ProfileWidget2::splitDive(int seconds)
 
 void ProfileWidget2::addGasSwitch(int tank, int seconds)
 {
-	if (!d || tank < 0 || tank >= d->cylinders.nr)
+	if (!d || tank < 0 || static_cast<size_t>(tank) >= d->cylinders.size())
 		return;
 
 	Command::addGasSwitch(mutable_dive(), dc, seconds, tank);
@@ -923,7 +919,7 @@ void ProfileWidget2::repositionDiveHandlers()
 		QLineF line(p1, p2);
 		QPointF pos = line.pointAt(0.5);
 		gases[i]->setPos(pos);
-		if (datapoint.cylinderid >= 0 && datapoint.cylinderid < d->cylinders.nr)
+		if (datapoint.cylinderid >= 0 && datapoint.cylinderid < static_cast<int>(d->cylinders.size()))
 			gases[i]->setText(get_gas_string(get_cylinder(d, datapoint.cylinderid)->gasmix));
 		else
 			gases[i]->setText(QString());

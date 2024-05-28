@@ -449,7 +449,7 @@ static void smtk_build_tank_info(MdbHandle *mdb, cylinder_t *tank, char *idx)
 
 	for (i = 1; i <= atoi(idx); i++)
 		table.fetch_row();
-	tank->type.description = copy_string(table.get_data(1));
+	tank->type.description = table.get_data(1);
 	tank->type.size.mliter = lrint(strtod(table.get_data(2), NULL) * 1000);
 	tank->type.workingpressure.mbar = lrint(strtod(table.get_data(4), NULL) * 1000);
 }
@@ -472,9 +472,9 @@ static bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
 	if (!(abs(cyl_a->end.mbar - cyl_b->end.mbar) <= 100))
 		return false;
 	// different names (none of them null)
-	if (!same_string(cyl_a->type.description, "---") &&
-	    !same_string(cyl_b->type.description, "---") &&
-	    !same_string(cyl_a->type.description, cyl_b->type.description))
+	if (cyl_a->type.description != "---" &&
+	    cyl_b->type.description != "---" &&
+	    cyl_a->type.description != cyl_b->type.description)
 		return false;
 	// Cylinders are most probably the same
 	return true;
@@ -495,9 +495,8 @@ static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
 		dst->size.mliter = src->size.mliter;
 	if (!dst->workingpressure.mbar)
 		dst->workingpressure.mbar = src->workingpressure.mbar;
-	if (!dst->description || same_string(dst->description, "---")) {
-		dst->description = src->description;
-		src->description = NULL;
+	if (dst->description.empty() || dst->description == "---") {
+		dst->description = std::move(src->description);
 	}
 }
 
@@ -532,7 +531,7 @@ static void smtk_clean_cylinders(struct dive *d)
 
 	cyl = base + tanks - 1;
 	while (cyl != base) {
-		if (same_string(cyl->type.description, "---") && cyl->start.mbar == 0 && cyl->end.mbar == 0)
+		if (cyl->type.description == "---" && cyl->start.mbar == 0 && cyl->end.mbar == 0)
 			remove_cylinder(d, i);
 		else
 			if (is_same_cylinder(cyl, cyl - 1)) {

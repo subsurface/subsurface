@@ -17,7 +17,7 @@ struct cylinder_type_t
 {
 	volume_t size;
 	pressure_t workingpressure;
-	const char *description = nullptr; /* "LP85", "AL72", "AL80", "HP100+" or whatever */
+	std::string description; /* "LP85", "AL72", "AL80", "HP100+" or whatever */
 };
 
 struct cylinder_t
@@ -32,17 +32,23 @@ struct cylinder_t
 	enum cylinderuse cylinder_use = OC_GAS;
 	bool bestmix_o2 = false;
 	bool bestmix_he = false;
+
+	cylinder_t();
+	~cylinder_t();
 };
 
-/* Table of cylinders. Attention: this stores cylinders,
- * *not* pointers to cylinders. This has two crucial consequences:
- * 1) Pointers to cylinders are not stable. They may be
- *    invalidated if the table is reallocated.
- * 2) add_cylinder(), etc. take ownership of the
- *    cylinder. Notably of the description string. */
-struct cylinder_table {
-	int nr, allocated;
-	cylinder_t *cylinders;
+/* Table of cylinders.
+ * This is a crazy class: it is basically a std::vector<>, but overrides
+ * the [] accessor functions and allows out-of-bound accesses.
+ * This is used in the planner, which uses "max_index + 1" for the
+ * surface air cylinder.
+ * Note: an out-of-bound access returns a reference to an object with
+ * static linkage that MUST NOT be written into.
+ * Yes, this is all very mad, but it grew historically.
+ */
+struct cylinder_table : public std::vector<cylinder_t> {
+	cylinder_t &operator[](size_t i);
+	const cylinder_t &operator[](size_t i) const;
 };
 
 struct weightsystem_t
@@ -68,16 +74,13 @@ struct weightsystem_table {
 
 extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d);
-extern void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d);
 extern weightsystem_t clone_weightsystem(weightsystem_t ws);
 extern void free_weightsystem(weightsystem_t ws);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws);
-extern cylinder_t clone_cylinder(cylinder_t cyl);
-extern void free_cylinder(cylinder_t cyl);
 extern cylinder_t *add_empty_cylinder(struct cylinder_table *t);
-extern void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl);
-extern cylinder_t *get_cylinder(const struct dive *d, int idx);
+extern cylinder_t *get_cylinder(struct dive *d, int idx);
+extern const cylinder_t *get_cylinder(const struct dive *d, int idx);
 extern cylinder_t *get_or_create_cylinder(struct dive *d, int idx);
 extern bool same_weightsystem(weightsystem_t w1, weightsystem_t w2);
 extern void remove_cylinder(struct dive *dive, int idx);
@@ -85,8 +88,9 @@ extern void remove_weightsystem(struct dive *dive, int idx);
 extern void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
 extern int gas_volume(const cylinder_t *cyl, pressure_t p); /* Volume in mliter of a cylinder at pressure 'p' */
-extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylinders);
+extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders);
 extern void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl); /* dive is needed to fill out MOD, which depends on salinity. */
+extern cylinder_t default_cylinder(const struct dive *d);
 extern cylinder_t create_new_manual_cylinder(const struct dive *dive); /* dive is needed to fill out MOD, which depends on salinity. */
 extern void add_default_cylinder(struct dive *dive);
 extern int first_hidden_cylinder(const struct dive *d);
@@ -99,7 +103,6 @@ extern void clear_weightsystem_table(struct weightsystem_table *);
 extern void add_to_weightsystem_table(struct weightsystem_table *, int idx, weightsystem_t ws);
 
 /* Cylinder table functions */
-extern void clear_cylinder_table(struct cylinder_table *);
 extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
 
 void get_gas_string(struct gasmix gasmix, char *text, int len);

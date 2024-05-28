@@ -602,7 +602,10 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 
 	bool showDescriptions = false;
 	for (int cyl = 0; cyl < pInfo.nr_cylinders; cyl++) {
-		showDescriptions = showDescriptions || same_gasmix_cylinder(get_cylinder(d, cyl), cyl, d, true) != -1;
+		const cylinder_t *c = get_cylinder(d, cyl);
+		if (!c)
+			continue;
+		showDescriptions = showDescriptions || (c && same_gasmix_cylinder(*c, cyl, d, true) != -1);
 		if (act_segments[cyl].polygon.empty())
 			continue;
 		act_segments[cyl].cyl = cyl;
@@ -655,7 +658,7 @@ void DiveGasPressureItem::plotGasValue(double mbar, double sec, const cylinder_t
 	QString gas = get_gas_string(cylinder->gasmix);
 	QString label;
 	if (showDescription)
-		label = QStringLiteral("(%1) %2").arg(cylinder->type.description, gas);
+		label = QStringLiteral("(%1) %2").arg(QString::fromStdString(cylinder->type.description), gas);
 	else
 		label = gas;
 	auto text = std::make_unique<DiveTextItem>(dpr, 1.0, align, this);

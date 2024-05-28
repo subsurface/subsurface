@@ -6,6 +6,7 @@
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
+#include "core/range.h"
 #include "core/sample.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
@@ -140,7 +141,7 @@ int CylindersModel::calcNumRows() const
 	if (!d)
 		return 0;
 	if (inPlanner || prefs.include_unused_tanks)
-		return d->cylinders.nr;
+		return static_cast<int>(d->cylinders.size());
 	return first_hidden_cylinder(d);
 }
 
@@ -192,7 +193,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::EditRole:
 		switch (index.column()) {
 		case TYPE:
-			return QString(cyl->type.description);
+			return QString::fromStdString(cyl->type.description);
 		case SIZE:
 			if (cyl->type.size.mliter)
 				return get_cylinder_string(cyl);
@@ -326,10 +327,9 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 
 		switch (index.column()) {
 		case TYPE: {
-			QString type = value.toString();
-			if (!same_string(qPrintable(type), tempCyl.type.description)) {
-				free((void *)tempCyl.type.description);
-				tempCyl.type.description = strdup(qPrintable(type));
+			std::string type = value.toString().toStdString();
+			if (type != tempCyl.type.description) {
+				tempCyl.type.description = type;
 				dataChanged(index, index);
 			}
 			return true;
@@ -361,8 +361,6 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	QString vString = value.toString();
 	bool changed = vString != data(index, role).toString();
 
-	std::string newType; // If we allocate a new type string, this makes sure that it is freed at the end of the function
-
 	// First, we make a shallow copy of the old cylinder. Then we modify the fields inside that copy.
 	// At the end, we either place an EditCylinder undo command (EquipmentTab) or copy the cylinder back (planner).
 	// Yes, this is not ideal, but the pragmatic thing to do for now.
@@ -374,8 +372,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	Command::EditCylinderType type = Command::EditCylinderType::TYPE;
 	switch (index.column()) {
 	case TYPE:
-		newType = qPrintable(vString);
-		cyl.type.description = newType.c_str();
+		cyl.type.description = vString.toStdString();
 		type = Command::EditCylinderType::TYPE;
 		break;
 	case SIZE:
@@ -473,10 +470,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 
 	if (inPlanner) {
 		// In the planner - simply overwrite the cylinder in the dive with the modified cylinder.
-		// We have only made a shallow copy, therefore copy the new cylinder first.
-		cylinder_t copy = clone_cylinder(cyl);
-		std::swap(copy, *get_cylinder(d, row));
-		free_cylinder(copy);
+		*get_cylinder(d, row) = cyl;
 		dataChanged(index, index);
 	} else {
 		// On the EquipmentTab - place an editCylinder command.
@@ -496,10 +490,10 @@ void CylindersModel::add()
 {
 	if (!d)
 		return;
-	int row = d->cylinders.nr;
+	int row = static_cast<int>(d->cylinders.size());
 	cylinder_t cyl = create_new_manual_cylinder(d);
 	beginInsertRows(QModelIndex(), row, row);
-	add_cylinder(&d->cylinders, row, cyl);
+	add_cylinder(&d->cylinders, row, std::move(cyl));
 	++numRows;
 	endInsertRows();
 	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
@@ -552,7 +546,7 @@ void CylindersModel::remove(QModelIndex index)
 	--numRows;
 	endRemoveRows();
 
-	std::vector<int> mapping = get_cylinder_map_for_remove(d->cylinders.nr + 1, index.row());
+	std::vector<int> mapping = get_cylinder_map_for_remove(static_cast<int>(d->cylinders.size() + 1), index.row());
 	cylinder_renumber(d, mapping.data());
 	DivePlannerPointsModel::instance()->cylinderRenumber(mapping.data());
 }
@@ -612,21 +606,18 @@ void CylindersModel::updateNumRows()
 // Only invoked from planner.
 void CylindersModel::moveAtFirst(int cylid)
 {
-	if (!d || cylid <= 0 || cylid >= d->cylinders.nr)
+	if (!d || cylid <= 0 || cylid >= static_cast<int>(d->cylinders.size()))
 		return;
 	cylinder_t temp_cyl;
 
 	beginMoveRows(QModelIndex(), cylid, cylid, QModelIndex(), 0);
-	memmove(&temp_cyl, get_cylinder(d, cylid), sizeof(temp_cyl));
-	for (int i = cylid - 1; i >= 0; i--)
-		memmove(get_cylinder(d, i + 1), get_cylinder(d, i), sizeof(temp_cyl));
-	memmove(get_cylinder(d, 0), &temp_cyl, sizeof(temp_cyl));
+	move_in_range(d->cylinders, cylid, cylid + 1, 0);
 
 	// Create a mapping of cylinder indices:
 	// 1) Fill mapping[0]..mapping[cyl] with 0..index
 	// 2) Set mapping[cyl] to 0
 	// 3) Fill mapping[cyl+1]..mapping[end] with cyl..
-	std::vector<int> mapping(d->cylinders.nr);
+	std::vector<int> mapping(d->cylinders.size());
 	std::iota(mapping.begin(), mapping.begin() + cylid, 1);
 	mapping[cylid] = 0;
 	std::iota(mapping.begin() + (cylid + 1), mapping.end(), cylid);
@@ -644,12 +635,11 @@ void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
 
 	pressure_t decopo2;
 	decopo2.mbar = prefs.decopo2;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		cylinder_t *cyl = get_cylinder(d, i);
+	for (auto &cyl: d->cylinders) {
 		/* If the gas's deco MOD matches the old pO2, it will have been automatically calculated and should be updated.
 		 * If they don't match, we should leave the user entered depth as it is */
-		if (cyl->depth.mm == gas_mod(cyl->gasmix, olddecopo2, d, M_OR_FT(3, 10)).mm) {
-			cyl->depth = gas_mod(cyl->gasmix, decopo2, d, M_OR_FT(3, 10));
+		if (cyl.depth.mm == gas_mod(cyl.gasmix, olddecopo2, d, M_OR_FT(3, 10)).mm) {
+			cyl.depth = gas_mod(cyl.gasmix, decopo2, d, M_OR_FT(3, 10));
 		}
 	}
 	emit dataChanged(createIndex(0, 0), createIndex(numRows - 1, COLUMNS - 1));
@@ -671,23 +661,22 @@ bool CylindersModel::updateBestMixes()
 
 	// Check if any of the cylinders are best mixes, update if needed
 	bool gasUpdated = false;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		cylinder_t *cyl = get_cylinder(d, i);
-		if (cyl->bestmix_o2) {
-			cyl->gasmix.o2 = best_o2(d->maxdepth, d, inPlanner);
+	for (auto &cyl: d->cylinders) {
+		if (cyl.bestmix_o2) {
+			cyl.gasmix.o2 = best_o2(d->maxdepth, d, inPlanner);
 			// fO2 + fHe must not be greater than 1
-			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
-				cyl->gasmix.he.permille = 1000 - get_o2(cyl->gasmix);
+			if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
+				cyl.gasmix.he.permille = 1000 - get_o2(cyl.gasmix);
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(cyl->gasmix, modpO2, d, M_OR_FT(3, 10));
+			cyl.depth = gas_mod(cyl.gasmix, modpO2, d, M_OR_FT(3, 10));
 			gasUpdated = true;
 		}
-		if (cyl->bestmix_he) {
-			cyl->gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl->gasmix.o2);
+		if (cyl.bestmix_he) {
+			cyl.gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl.gasmix.o2);
 			// fO2 + fHe must not be greater than 1
-			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
-				cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
+			if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
+				cyl.gasmix.o2.permille = 1000 - get_he(cyl.gasmix);
 			gasUpdated = true;
 		}
 	}
@@ -727,7 +716,7 @@ void CylindersModel::initTempCyl(int row)
 		return;
 
 	tempRow = row;
-	tempCyl = clone_cylinder(*cyl);
+	tempCyl = *cyl;
 
 	dataChanged(index(row, TYPE), index(row, USE));
 }
@@ -738,7 +727,7 @@ void CylindersModel::clearTempCyl()
 		return;
 	int oldRow = tempRow;
 	tempRow = -1;
-	free_cylinder(tempCyl);
+	tempCyl = cylinder_t();
 	dataChanged(index(oldRow, TYPE), index(oldRow, USE));
 }
 
@@ -752,7 +741,7 @@ void CylindersModel::commitTempCyl(int row)
 	if (!cyl)
 		return;
 	// Only submit a command if the type changed
-	if (!same_string(cyl->type.description, tempCyl.type.description) || gettextFromC::tr(cyl->type.description) != QString(tempCyl.type.description)) {
+	if (cyl->type.description != tempCyl.type.description || gettextFromC::tr(cyl->type.description.c_str()) != QString::fromStdString(tempCyl.type.description)) {
 		if (inPlanner) {
 			std::swap(*cyl, tempCyl);
 		} else {
@@ -760,6 +749,6 @@ void CylindersModel::commitTempCyl(int row)
 			emit divesEdited(count);
 		}
 	}
-	free_cylinder(tempCyl);
+	tempCyl = cylinder_t();
 	tempRow = -1;
 }

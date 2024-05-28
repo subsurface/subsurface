@@ -389,7 +389,7 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const std:
 		return;
 	}
 	if (!strcmp(key, "description")) {
-		cylinder->type.description = strdup(value.c_str());
+		cylinder->type.description = value;
 		return;
 	}
 	if (!strcmp(key, "o2")) {
@@ -444,9 +444,9 @@ static void parse_dive_cylinder(char *line, struct git_parser_state *state)
 		line = parse_keyvalue_entry(parse_cylinder_keyvalue, &cylinder, line, state);
 	}
 	if (cylinder.cylinder_use == OXYGEN)
-		state->o2pressure_sensor = state->active_dive->cylinders.nr;
+		state->o2pressure_sensor = static_cast<int>(state->active_dive->cylinders.size());
 
-	add_cylinder(&state->active_dive->cylinders, state->active_dive->cylinders.nr, cylinder);
+	state->active_dive->cylinders.push_back(std::move(cylinder));
 }
 
 static void parse_weightsystem_keyvalue(void *_ws, const char *key, const std::string &value)
@@ -655,7 +655,7 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
  */
 static int sanitize_sensor_id(const struct dive *d, int nr)
 {
-	return d && nr >= 0 && nr < d->cylinders.nr ? nr : NO_SENSOR;
+	return d && nr >= 0 && static_cast<size_t>(nr) < d->cylinders.size() ? nr : NO_SENSOR;
 }
 
 /*
