@@ -121,43 +121,40 @@ static void put_weightsystem_HTML(struct membuffer *b, const struct dive *dive)
 
 static void put_cylinder_HTML(struct membuffer *b, const struct dive *dive)
 {
-	int i, nr;
 	const char *separator = "\"Cylinders\":[";
-	nr = nr_cylinders(dive);
 
-	if (!nr)
+	if (dive->cylinders.empty())
 		put_string(b, separator);
 
-	for (i = 0; i < nr; i++) {
-		cylinder_t *cylinder = get_cylinder(dive, i);
+	for (auto &cyl: dive->cylinders) {
 		put_format(b, "%s{", separator);
 		separator = ", ";
-		write_attribute(b, "Type", cylinder->type.description, ", ");
-		if (cylinder->type.size.mliter) {
-			int volume = cylinder->type.size.mliter;
-			if (prefs.units.volume == units::CUFT && cylinder->type.workingpressure.mbar)
-				volume = lrint(volume * bar_to_atm(cylinder->type.workingpressure.mbar / 1000.0));
+		write_attribute(b, "Type", cyl.type.description.c_str(), ", ");
+		if (cyl.type.size.mliter) {
+			int volume = cyl.type.size.mliter;
+			if (prefs.units.volume == units::CUFT && cyl.type.workingpressure.mbar)
+				volume = lrint(volume * bar_to_atm(cyl.type.workingpressure.mbar / 1000.0));
 			put_HTML_volume_units(b, volume, "\"Size\":\"", " \", ");
 		} else {
 			write_attribute(b, "Size", "--", ", ");
 		}
-		put_HTML_pressure_units(b, cylinder->type.workingpressure, "\"WPressure\":\"", " \", ");
+		put_HTML_pressure_units(b, cyl.type.workingpressure, "\"WPressure\":\"", " \", ");
 
-		if (cylinder->start.mbar) {
-			put_HTML_pressure_units(b, cylinder->start, "\"SPressure\":\"", " \", ");
+		if (cyl.start.mbar) {
+			put_HTML_pressure_units(b, cyl.start, "\"SPressure\":\"", " \", ");
 		} else {
 			write_attribute(b, "SPressure", "--", ", ");
 		}
 
-		if (cylinder->end.mbar) {
-			put_HTML_pressure_units(b, cylinder->end, "\"EPressure\":\"", " \", ");
+		if (cyl.end.mbar) {
+			put_HTML_pressure_units(b, cyl.end, "\"EPressure\":\"", " \", ");
 		} else {
 			write_attribute(b, "EPressure", "--", ", ");
 		}
 
-		if (cylinder->gasmix.o2.permille) {
-			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION_TUPLE(cylinder->gasmix.o2.permille, 10));
-			put_format(b, "\"He\":\"%u.%u%%\"", FRACTION_TUPLE(cylinder->gasmix.he.permille, 10));
+		if (cyl.gasmix.o2.permille) {
+			put_format(b, "\"O2\":\"%u.%u%%\",", FRACTION_TUPLE(cyl.gasmix.o2.permille, 10));
+			put_format(b, "\"He\":\"%u.%u%%\"", FRACTION_TUPLE(cyl.gasmix.he.permille, 10));
 		} else {
 			write_attribute(b, "O2", "Air", "");
 		}

@@ -4,6 +4,7 @@
 #include "event.h"
 #include "format.h"
 #include "qthelper.h"
+#include "range.h"
 #include "subsurface-string.h"
 #include "trip.h"
 #include <QDateTime>
@@ -13,23 +14,21 @@
 enum returnPressureSelector { START_PRESSURE, END_PRESSURE };
 static QLocale loc;
 
-static QString getPressures(const struct dive *dive, int i, enum returnPressureSelector ret)
+static QString getPressures(const cylinder_t &cyl, enum returnPressureSelector ret)
 {
-	const cylinder_t *cyl = get_cylinder(dive, i);
-	QString fmt;
 	if (ret == START_PRESSURE) {
-		if (cyl->start.mbar)
-			fmt = get_pressure_string(cyl->start, true);
-		else if (cyl->sample_start.mbar)
-			fmt = get_pressure_string(cyl->sample_start, true);
+		if (cyl.start.mbar)
+			return get_pressure_string(cyl.start, true);
+		else if (cyl.sample_start.mbar)
+			return get_pressure_string(cyl.sample_start, true);
 	}
 	if (ret == END_PRESSURE) {
-		if (cyl->end.mbar)
-			fmt = get_pressure_string(cyl->end, true);
-		else if(cyl->sample_end.mbar)
-			fmt = get_pressure_string(cyl->sample_end, true);
+		if (cyl.end.mbar)
+			return get_pressure_string(cyl.end, true);
+		else if (cyl.sample_end.mbar)
+			return get_pressure_string(cyl.sample_end, true);
 	}
-	return fmt;
+	return QString();
 }
 
 QString formatSac(const dive *d)
@@ -77,9 +76,9 @@ QString format_gps_decimal(const dive *d)
 QStringList formatGetCylinder(const dive *d)
 {
 	QStringList getCylinder;
-	for (int i = 0; i < d->cylinders.nr; i++) {
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
 		if (is_cylinder_used(d, i))
-			getCylinder << get_cylinder(d, i)->type.description;
+			getCylinder << QString::fromStdString(cyl.type.description);
 	}
 	return getCylinder;
 }
@@ -87,9 +86,9 @@ QStringList formatGetCylinder(const dive *d)
 QStringList formatStartPressure(const dive *d)
 {
 	QStringList startPressure;
-	for (int i = 0; i < d->cylinders.nr; i++) {
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
 		if (is_cylinder_used(d, i))
-			startPressure << getPressures(d, i, START_PRESSURE);
+			startPressure << getPressures(cyl, START_PRESSURE);
 	}
 	return startPressure;
 }
@@ -97,9 +96,9 @@ QStringList formatStartPressure(const dive *d)
 QStringList formatEndPressure(const dive *d)
 {
 	QStringList endPressure;
-	for (int i = 0; i < d->cylinders.nr; i++) {
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
 		if (is_cylinder_used(d, i))
-			endPressure << getPressures(d, i, END_PRESSURE);
+			endPressure << getPressures(cyl, END_PRESSURE);
 	}
 	return endPressure;
 }
@@ -107,9 +106,9 @@ QStringList formatEndPressure(const dive *d)
 QStringList formatFirstGas(const dive *d)
 {
 	QStringList gas;
-	for (int i = 0; i < d->cylinders.nr; i++) {
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
 		if (is_cylinder_used(d, i))
-			gas << get_gas_string(get_cylinder(d, i)->gasmix);
+			gas << get_gas_string(cyl.gasmix);
 	}
 	return gas;
 }
@@ -133,20 +132,14 @@ static void addStringToSortedList(QStringList &l, const std::string &s)
 	l.insert(it, qs);
 }
 
-// Safely treat null-strings. Remove once everyhting is converted to std::string
-static std::string c_to_std(const char *s)
-{
-	return s ? std::string(s) : std::string();
-}
-
 QStringList formatFullCylinderList()
 {
 	QStringList cylinders;
 	struct dive *d;
 	int i = 0;
 	for_each_dive (i, d) {
-		for (int j = 0; j < d->cylinders.nr; j++)
-			addStringToSortedList(cylinders, c_to_std(get_cylinder(d, j)->type.description));
+		for (const cylinder_t &cyl: d->cylinders)
+			addStringToSortedList(cylinders, cyl.type.description);
 	}
 
 	for (const auto &ti: tank_info_table)
@@ -155,25 +148,22 @@ QStringList formatFullCylinderList()
 	return cylinders;
 }
 
-static QString formattedCylinder(const struct dive *dive, int idx)
+static QString formattedCylinder(const cylinder_t &cyl)
 {
-	const cylinder_t *cyl = get_cylinder(dive, idx);
-	const char *desc = cyl->type.description;
-	QString fmt = desc ? QString(desc) : gettextFromC::tr("unknown");
-	fmt += ", " + get_volume_string(cyl->type.size, true);
-	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
-	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
-	fmt += ", " + get_gas_string(cyl->gasmix);
+	const std::string &desc = cyl.type.description;
+	QString fmt = !desc.empty() ? QString::fromStdString(desc) : gettextFromC::tr("unknown");
+	fmt += ", " + get_volume_string(cyl.type.size, true);
+	fmt += ", " + get_pressure_string(cyl.type.workingpressure, true);
+	fmt += ", " + get_pressure_string(cyl.start, false) + " - " + get_pressure_string(cyl.end, true);
+	fmt += ", " + get_gas_string(cyl.gasmix);
 	return fmt;
 }
 
 QStringList formatCylinders(const dive *d)
 {
 	QStringList cylinders;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		QString cyl = formattedCylinder(d, i);
-		cylinders << cyl;
-	}
+	for (const cylinder_t &cyl: d->cylinders)
+		cylinders << formattedCylinder(cyl);
 	return cylinders;
 }
 
@@ -182,14 +172,14 @@ QString formatGas(const dive *d)
 	/*WARNING: here should be the gastlist, returned
 	 * from the get_gas_string function or this is correct?
 	 */
-	QString gas, gases;
-	for (int i = 0; i < d->cylinders.nr; i++) {
+	QString gases;
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
 		if (!is_cylinder_used(d, i))
 			continue;
-		gas = get_cylinder(d, i)->type.description;
+		QString gas = QString::fromStdString(cyl.type.description);
 		if (!gas.isEmpty())
 			gas += QChar(' ');
-		gas += gasname(get_cylinder(d, i)->gasmix);
+		gas += gasname(cyl.gasmix);
 		// if has a description and if such gas is not already present
 		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
 			if (!gases.isEmpty())

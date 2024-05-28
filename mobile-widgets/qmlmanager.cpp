@@ -1295,7 +1295,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 					break;
 				}
 			}
-			get_or_create_cylinder(d, j)->type.description = copy_qstring(usedCylinder[k]);
+			get_or_create_cylinder(d, j)->type.description = usedCylinder[k].toStdString();
 			get_cylinder(d, j)->type.size.mliter = size;
 			get_cylinder(d, j)->type.workingpressure.mbar = wp;
 			k++;

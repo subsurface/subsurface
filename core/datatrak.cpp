@@ -334,14 +334,13 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF) {
 		cylinder_t cyl;
-		std::string desc = cyl_type_by_size(tmp_2bytes * 10);
 		cyl.type.size.mliter = tmp_2bytes * 10;
-		cyl.type.description = desc.c_str();
+		cyl.type.description = cyl_type_by_size(tmp_2bytes * 10);
 		cyl.start.mbar = 200000;
 		cyl.gasmix.he.permille = 0;
 		cyl.gasmix.o2.permille = 210;
 		cyl.manually_added = true;
-		add_cloned_cylinder(&dt_dive->cylinders, cyl);
+		dt_dive->cylinders.push_back(std::move(cyl));
 	}
 
 	/*
@@ -372,7 +371,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Air used in bar*100.
 	 */
 	read_bytes(2);
-	if (tmp_2bytes != 0x7FFF && dt_dive->cylinders.nr > 0)
+	if (tmp_2bytes != 0x7FFF && dt_dive->cylinders.size() > 0)
 		get_cylinder(dt_dive, 0)->gas_used.mliter = lrint(get_cylinder(dt_dive, 0)->type.size.mliter * (tmp_2bytes / 100.0));
 
 	/*
@@ -548,10 +547,10 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 			free(compl_buffer);
 			goto bail;
 		}
-		if (is_nitrox && dt_dive->cylinders.nr > 0)
+		if (is_nitrox && dt_dive->cylinders.size() > 0)
 			get_cylinder(dt_dive, 0)->gasmix.o2.permille =
 					lrint(membuf[23] & 0x0F ? 20.0 + 2 * (membuf[23] & 0x0F) : 21.0) * 10;
-		if (is_O2 && dt_dive->cylinders.nr > 0)
+		if (is_O2 && dt_dive->cylinders.size() > 0)
 			get_cylinder(dt_dive, 0)->gasmix.o2.permille = membuf[23] * 10;
 		free(compl_buffer);
 	}
@@ -564,7 +563,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 		dt_dive->dcs[0].deviceid = 0;
 	else
 		dt_dive->dcs[0].deviceid = 0xffffffff;
-	if (!is_SCR && dt_dive->cylinders.nr > 0) {
+	if (!is_SCR && dt_dive->cylinders.size() > 0) {
 		get_cylinder(dt_dive, 0)->end.mbar = get_cylinder(dt_dive, 0)->start.mbar -
 			((get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000);
 	}

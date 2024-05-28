@@ -335,7 +335,7 @@ void ws_end(struct parser_state *state)
  */
 static int sanitize_sensor_id(const struct dive *d, int nr)
 {
-	return d && nr >= 0 && nr < d->cylinders.nr ? nr : NO_SENSOR;
+	return d && nr >= 0 && static_cast<size_t>(nr) < d->cylinders.size() ? nr : NO_SENSOR;
 }
 
 /*

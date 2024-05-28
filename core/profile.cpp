@@ -24,6 +24,7 @@
 #include "libdivecomputer/version.h"
 #include "membuffer.h"
 #include "qthelper.h"
+#include "range.h"
 #include "format.h"
 
 //#define DEBUG_GAS 1
@@ -216,7 +217,7 @@ int get_cylinder_index(const struct dive *dive, const struct event &ev)
 	report_info("Still looking up cylinder based on gas mix in get_cylinder_index()!");
 
 	mix = get_gasmix_from_event(dive, ev);
-	best = find_best_gasmix_match(mix, &dive->cylinders);
+	best = find_best_gasmix_match(mix, dive->cylinders);
 	return best < 0 ? 0 : best;
 }
 
@@ -259,12 +260,11 @@ static void calculate_max_limits_new(const struct dive *dive, const struct divec
 	int maxhr = 0, minhr = INT_MAX;
 	int mintemp = dive->mintemp.mkelvin;
 	int maxtemp = dive->maxtemp.mkelvin;
-	int cyl;
 
 	/* Get the per-cylinder maximum pressure if they are manual */
-	for (cyl = 0; cyl < dive->cylinders.nr; cyl++) {
-		int mbar_start = get_cylinder(dive, cyl)->start.mbar;
-		int mbar_end = get_cylinder(dive, cyl)->end.mbar;
+	for (auto &cyl: dive->cylinders) {
+		int mbar_start = cyl.start.mbar;
+		int mbar_end = cyl.end.mbar;
 		if (mbar_start > maxpressure)
 			maxpressure = mbar_start;
 		if (mbar_end && mbar_end < minpressure)
@@ -364,7 +364,7 @@ static void insert_entry(struct plot_info &pi, int time, int depth, int sac)
 
 static void populate_plot_entries(const struct dive *dive, const struct divecomputer *dc, struct plot_info &pi)
 {
-	pi.nr_cylinders = dive->cylinders.nr;
+	pi.nr_cylinders = static_cast<int>(dive->cylinders.size());
 
 	/*
 	 * To avoid continuous reallocation, allocate the expected number of entries.
@@ -494,26 +494,21 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
  */
 static int sac_between(const struct dive *dive, const struct plot_info &pi, int first, int last, const char gases[])
 {
-	int i, airuse;
-	double pressuretime;
-
 	if (first == last)
 		return 0;
 
 	/* Get airuse for the set of cylinders over the range */
-	airuse = 0;
-	for (i = 0; i < pi.nr_cylinders; i++) {
+	int airuse = 0;
+	for (int i = 0; i < pi.nr_cylinders; i++) {
 		pressure_t a, b;
-		cylinder_t *cyl;
-		int cyluse;
 
 		if (!gases[i])
 			continue;
 
 		a.mbar = get_plot_pressure(pi, first, i);
 		b.mbar = get_plot_pressure(pi, last, i);
-		cyl = get_cylinder(dive, i);
-		cyluse = gas_volume(cyl, a) - gas_volume(cyl, b);
+		const cylinder_t *cyl = get_cylinder(dive, i);
+		int cyluse = gas_volume(cyl, a) - gas_volume(cyl, b);
 		if (cyluse > 0)
 			airuse += cyluse;
 	}
@@ -521,7 +516,7 @@ static int sac_between(const struct dive *dive, const struct plot_info &pi, int 
 		return 0;
 
 	/* Calculate depthpressure integrated over time */
-	pressuretime = 0.0;
+	double pressuretime = 0.0;
 	do {
 		const struct plot_data &entry = pi.entry[first];
 		const struct plot_data &next = pi.entry[first + 1];
@@ -632,8 +627,8 @@ static void fill_sac(const struct dive *dive, struct plot_info &pi, int idx, con
  */
 static void matching_gases(const struct dive *dive, struct gasmix gasmix, char gases[])
 {
-	for (int i = 0; i < dive->cylinders.nr; i++)
-		gases[i] = same_gasmix(gasmix, get_cylinder(dive, i)->gasmix);
+	for (auto [i, cyl]: enumerated_range(dive->cylinders))
+		gases[i] = same_gasmix(gasmix, cyl.gasmix);
 }
 
 static void calculate_sac(const struct dive *dive, const struct divecomputer *dc, struct plot_info &pi)
@@ -1536,7 +1531,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 				if (last_pressures[cylinder_index]) {
 					bar_used[cylinder_index] += last_pressures[cylinder_index] - next_pressure;
 
-					cylinder_t *cyl = get_cylinder(d, cylinder_index);
+					const cylinder_t *cyl = get_cylinder(d, cylinder_index);
 
 					volumes_used[cylinder_index] += gas_volume(cyl, (pressure_t){ last_pressures[cylinder_index] }) - gas_volume(cyl, (pressure_t){ next_pressure });
 				}
@@ -1589,7 +1584,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 			total_bar_used += bar_used[cylinder_index];
 			total_volume_used += volumes_used[cylinder_index];
 
-			cylinder_t *cyl = get_cylinder(d, cylinder_index);
+			const cylinder_t *cyl = get_cylinder(d, cylinder_index);
 			if (cyl->type.size.mliter) {
 				if (cylinder_volume.mliter && cylinder_volume.mliter != cyl->type.size.mliter) {
 					cylindersizes_are_identical = false;

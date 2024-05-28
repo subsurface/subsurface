@@ -16,6 +16,7 @@
 #include "units.h"
 #include "divelist.h"
 #include "planner.h"
+#include "range.h"
 #include "gettext.h"
 #include "libdivecomputer/parser.h"
 #include "qthelper.h"
@@ -461,34 +462,33 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 
 	/* Print gas consumption: This loop covers all cylinders */
-	for (int gasidx = 0; gasidx < dive->cylinders.nr; gasidx++) {
+	for (auto [gasidx, cyl]: enumerated_range(dive->cylinders)) {
 		double volume, pressure, deco_volume, deco_pressure, mingas_volume, mingas_pressure, mingas_d_pressure, mingas_depth;
 		const char *unit, *pressure_unit, *depth_unit;
 		std::string temp;
 		std::string warning;
 		std::string mingas;
-		cylinder_t *cyl = get_cylinder(dive, gasidx);
-		if (cyl->cylinder_use == NOT_USED)
+		if (cyl.cylinder_use == NOT_USED)
 			continue;
 
-		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
-		deco_volume = get_volume_units(cyl->deco_gas_used.mliter, NULL, &unit);
-		if (cyl->type.size.mliter) {
-			int remaining_gas = lrint((double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(cyl->gasmix, cyl->end.mbar / 1000.0));
-			double deco_pressure_mbar = isothermal_pressure(cyl->gasmix, 1.0, remaining_gas + cyl->deco_gas_used.mliter,
-				cyl->type.size.mliter) * 1000 - cyl->end.mbar;
+		volume = get_volume_units(cyl.gas_used.mliter, NULL, &unit);
+		deco_volume = get_volume_units(cyl.deco_gas_used.mliter, NULL, &unit);
+		if (cyl.type.size.mliter) {
+			int remaining_gas = lrint((double)cyl.end.mbar * cyl.type.size.mliter / 1000.0 / gas_compressibility_factor(cyl.gasmix, cyl.end.mbar / 1000.0));
+			double deco_pressure_mbar = isothermal_pressure(cyl.gasmix, 1.0, remaining_gas + cyl.deco_gas_used.mliter,
+				cyl.type.size.mliter) * 1000 - cyl.end.mbar;
 			deco_pressure = get_pressure_units(lrint(deco_pressure_mbar), &pressure_unit);
-			pressure = get_pressure_units(cyl->start.mbar - cyl->end.mbar, &pressure_unit);
+			pressure = get_pressure_units(cyl.start.mbar - cyl.end.mbar, &pressure_unit);
 			/* Warn if the plan uses more gas than is available in a cylinder
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
-			if (cyl->end.mbar < 10000)
+			if (cyl.end.mbar < 10000)
 				warning = format_string_std("<br/>\n&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 					translate("gettextFromC", "Warning:"),
 					translate("gettextFromC", "this is more gas than available in the specified cylinder!"));
 			else
-				if (cyl->end.mbar / 1000.0 * cyl->type.size.mliter / gas_compressibility_factor(cyl->gasmix, cyl->end.mbar / 1000.0)
-				    < cyl->deco_gas_used.mliter)
+				if (cyl.end.mbar / 1000.0 * cyl.type.size.mliter / gas_compressibility_factor(cyl.gasmix, cyl.end.mbar / 1000.0)
+				    < cyl.deco_gas_used.mliter)
 					warning = format_string_std("<br/>\n&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
 						translate("gettextFromC", "not enough reserve for gas sharing on ascent!"));
@@ -502,17 +502,17 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					volume_t mingasv;
 					mingasv.mliter = lrint(prefs.sacfactor / 100.0 * prefs.problemsolvingtime * prefs.bottomsac
 						* depth_to_bar(lastbottomdp->depth.mm, dive)
-						+ prefs.sacfactor / 100.0 * cyl->deco_gas_used.mliter);
+						+ prefs.sacfactor / 100.0 * cyl.deco_gas_used.mliter);
 					/* Calculate minimum gas pressure for cyclinder. */
-					lastbottomdp->minimum_gas.mbar = lrint(isothermal_pressure(cyl->gasmix, 1.0,
-						mingasv.mliter, cyl->type.size.mliter) * 1000);
+					lastbottomdp->minimum_gas.mbar = lrint(isothermal_pressure(cyl.gasmix, 1.0,
+						mingasv.mliter, cyl.type.size.mliter) * 1000);
 					/* Translate all results into correct units */
 					mingas_volume = get_volume_units(mingasv.mliter, NULL, &unit);
 					mingas_pressure = get_pressure_units(lastbottomdp->minimum_gas.mbar, &pressure_unit);
-					mingas_d_pressure = get_pressure_units(lrint((double)cyl->end.mbar + deco_pressure_mbar - lastbottomdp->minimum_gas.mbar), &pressure_unit);
+					mingas_d_pressure = get_pressure_units(lrint((double)cyl.end.mbar + deco_pressure_mbar - lastbottomdp->minimum_gas.mbar), &pressure_unit);
 					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
 					/* Print it to results */
-					if (cyl->start.mbar > lastbottomdp->minimum_gas.mbar) {
+					if (cyl.start.mbar > lastbottomdp->minimum_gas.mbar) {
 						mingas = casprintf_loc("<br/>\n&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): "
 							     "%.0f%s/%.0f%s<span style='color: %s;'>/&Delta;:%+.0f%s</span>",
 							     mingas_d_pressure > 0 ? "green" :"red",
@@ -536,18 +536,18 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			/* Print the gas consumption for every cylinder here to temp buffer. */
 			if (lrint(volume) > 0) {
 				temp = casprintf_loc(translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s/%.0f%s in planned ascent)"),
-					     volume, unit, pressure, pressure_unit, gasname(cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
+					     volume, unit, pressure, pressure_unit, gasname(cyl.gasmix), deco_volume, unit, deco_pressure, pressure_unit);
 			} else {
 				temp = casprintf_loc(translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span>"),
-					     volume, unit, pressure, pressure_unit, gasname(cyl->gasmix));
+					     volume, unit, pressure, pressure_unit, gasname(cyl.gasmix));
 			}
 		} else {
 			if (lrint(volume) > 0) {
 				temp = casprintf_loc(translate("gettextFromC", "%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s during planned ascent)"),
-					     volume, unit, gasname(cyl->gasmix), deco_volume, unit);
+					     volume, unit, gasname(cyl.gasmix), deco_volume, unit);
 			} else {
 				temp = casprintf_loc(translate("gettextFromC", "%.0f%s of <span style='color: red;'><b>%s</b></span>"),
-					     volume, unit, gasname(cyl->gasmix));
+					     volume, unit, gasname(cyl.gasmix));
 			}
 		}
 		/* Gas consumption: Now finally print all strings to output */

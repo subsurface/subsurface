@@ -335,7 +335,7 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 	u_sample = (uemis_sample *)(data.data() + i);
 	while ((i <= data.size()) && (data[i] != 0 || data[i + 1] != 0)) {
 		if (u_sample->active_tank != active) {
-			if (u_sample->active_tank >= dive->cylinders.nr) {
+			if (u_sample->active_tank >= static_cast<int>(dive->cylinders.size())) {
 				report_info("got invalid sensor #%d was #%d", u_sample->active_tank, active);
 			} else {
 				active = u_sample->active_tank;

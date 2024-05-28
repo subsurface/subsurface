@@ -30,7 +30,7 @@ struct dive {
 	struct dive_site *dive_site = nullptr;
 	char *notes = nullptr;
 	char *diveguide = nullptr, *buddy = nullptr;
-	struct cylinder_table cylinders = { };
+	struct cylinder_table cylinders;
 	struct weightsystem_table weightsystems = { };
 	char *suit = nullptr;
 	int number = 0;
@@ -74,7 +74,7 @@ extern bool dive_cache_is_valid(const struct dive *dive);
 
 extern int get_cylinder_idx_by_use(const struct dive *dive, enum cylinderuse cylinder_use_type);
 extern void cylinder_renumber(struct dive *dive, int mapping[]);
-extern int same_gasmix_cylinder(const cylinder_t *cyl, int cylid, const struct dive *dive, bool check_unused);
+extern int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct dive *dive, bool check_unused);
 
 /* when selectively copying dive information, which parts should be copied? */
 struct dive_components {
@@ -190,7 +190,6 @@ extern struct event create_gas_switch_event(struct dive *dive, struct divecomput
 extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern int get_cylinder_index(const struct dive *dive, const struct event &ev);
 extern struct gasmix get_gasmix_from_event(const struct dive *, const struct event &ev);
-extern int nr_cylinders(const struct dive *dive);
 extern int nr_weightsystems(const struct dive *dive);
 extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
 
