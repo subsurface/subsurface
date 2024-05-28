@@ -343,60 +343,6 @@ QString vqasprintf_loc(const char *fmt, va_list ap_in)
 	return ret;
 }
 
-// Put a formated string respecting the default locale into a C-style array in UTF-8 encoding.
-// The only complication arises from the fact that we don't want to cut through multi-byte UTF-8 code points.
-extern "C" int snprintf_loc(char *dst, size_t size, const char *cformat, ...)
-{
-	va_list ap;
-	va_start(ap, cformat);
-	int res = vsnprintf_loc(dst, size, cformat, ap);
-	va_end(ap);
-	return res;
-}
-
-extern "C" int vsnprintf_loc(char *dst, size_t size, const char *cformat, va_list ap)
-{
-	QByteArray utf8 = vqasprintf_loc(cformat, ap).toUtf8();
-	const char *data = utf8.constData();
-	size_t utf8_size = utf8.size();
-	if (size == 0)
-		return utf8_size;
-	if (size < utf8_size + 1) {
-		memcpy(dst, data, size - 1);
-		if ((data[size - 1] & 0xC0) == 0x80) {
-			// We truncated a multi-byte UTF-8 encoding.
-			--size;
-			// Jump to last copied byte.
-			if (size > 0)
-				--size;
-			while(size > 0 && (dst[size] & 0xC0) == 0x80)
-				--size;
-			dst[size] = 0;
-		} else {
-			dst[size - 1] = 0;
-		}
-	} else {
-		memcpy(dst, data, utf8_size + 1); // QByteArray guarantees a trailing 0
-	}
-	return utf8_size;
-}
-
-int asprintf_loc(char **dst, const char *cformat, ...)
-{
-	va_list ap;
-	va_start(ap, cformat);
-	int res = vasprintf_loc(dst, cformat, ap);
-	va_end(ap);
-	return res;
-}
-
-int vasprintf_loc(char **dst, const char *cformat, va_list ap)
-{
-	QByteArray utf8 = vqasprintf_loc(cformat, ap).toUtf8();
-	*dst = strdup(utf8.constData());
-	return utf8.size();
-}
-
 extern "C" void put_vformat_loc(struct membuffer *b, const char *fmt, va_list args)
 {
 	QByteArray utf8 = vqasprintf_loc(fmt, args).toUtf8();
