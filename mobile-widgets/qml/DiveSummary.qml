@@ -32,10 +32,10 @@ Kirigami.ScrollablePage {
 	}
 	Connections {
 		target: Backend
-		onLengthChanged: {
+		function onLengthChanged() {
 			reload()
 		}
-		onVolumeChanged: {
+		function onVolumeChanged() {
 			reload()
 		}
 	}

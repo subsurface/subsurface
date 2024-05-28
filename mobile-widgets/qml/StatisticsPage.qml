@@ -110,7 +110,9 @@ Kirigami.Page {
 				model: statsManager.var1List
 				currentIndex: statsManager.var1Index
 				onCurrentIndexChanged: {
-					statsManager.var1Changed(currentIndex)
+					if (currentIndex != statsManager.var1Index) {
+						statsManager.var1Changed(currentIndex)
+					}
 				}
 			}
 		}
@@ -127,7 +129,9 @@ Kirigami.Page {
 				model: statsManager.binner1List
 				currentIndex: statsManager.binner1Index
 				onCurrentIndexChanged: {
-					statsManager.var1BinnerChanged(currentIndex)
+					if (currentIndex != statsManager.binner1Index) {
+						statsManager.var1BinnerChanged(currentIndex)
+					}
 				}
 			}
 		}
@@ -145,7 +149,9 @@ Kirigami.Page {
 				currentIndex: statsManager.var2Index
 				Layout.fillWidth: false
 				onCurrentIndexChanged: {
-					statsManager.var2Changed(currentIndex)
+					if (currentIndex != statsManager.var2Index) {
+						statsManager.var2Changed(currentIndex)
+					}
 				}
 			}
 		}
@@ -163,7 +169,9 @@ Kirigami.Page {
 				currentIndex: statsManager.binner2Index
 				Layout.fillWidth: false
 				onCurrentIndexChanged: {
-					statsManager.var2BinnerChanged(currentIndex)
+					if (currentIndex != statsManager.binner2Index) {
+						statsManager.var2BinnerChanged(currentIndex)
+					}
 				}
 			}
 		}
@@ -181,7 +189,9 @@ Kirigami.Page {
 				currentIndex: statsManager.operation2Index
 				Layout.fillWidth: false
 				onCurrentIndexChanged: {
-					statsManager.var2OperationChanged(currentIndex)
+					if (currentIndex != statsManager.operation2Index) {
+						statsManager.var2OperationChanged(currentIndex)
+					}
 				}
 			}
 		}

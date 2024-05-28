@@ -399,8 +399,6 @@ Kirigami.Page {
 			delegate: Flickable {
 				id: internalScrollView
 				width: diveDetailsListView.width
-				height: diveDetailsListView.height
-				contentHeight: diveDetails.height
 				boundsBehavior: Flickable.StopAtBounds
 				property var modelData: model
 				DiveDetailsView {
@@ -413,7 +411,7 @@ Kirigami.Page {
 			ScrollIndicator.horizontal: ScrollIndicator { }
 			Connections {
 				target: swipeModel
-				onCurrentDiveChanged: {
+				function onCurrentDiveChanged(index) {
 					currentIndex = index.row
 					diveDetailsListView.positionViewAtIndex(currentIndex, ListView.End)
 				}
@@ -425,7 +423,6 @@ Kirigami.Page {
 		anchors.fill: parent
 		leftMargin: Kirigami.Units.smallSpacing
 		rightMargin: Kirigami.Units.smallSpacing
-		contentHeight: detailsEdit.height
 		// start invisible and scaled down, to get the transition
 		// off to the right start
 		visible: false
