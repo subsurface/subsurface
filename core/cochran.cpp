@@ -672,24 +672,22 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	case TYPE_GEMINI:
 	case TYPE_COMMANDER:
 		if (config.type == TYPE_GEMINI) {
-			cylinder_t cyl;
 			dc->model = "Gemini";
 			dc->deviceid = buf[0x18c] * 256 + buf[0x18d];	// serial no
-			fill_default_cylinder(dive.get(), &cyl);
+			cylinder_t cyl = default_cylinder(dive.get());
 			cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT] / 256
 				+ log[CMD_O2_PERCENT + 1]) * 10;
 			cyl.gasmix.he.permille = 0;
-			add_cylinder(&dive->cylinders, 0, cyl);
+			add_cylinder(&dive->cylinders, 0, std::move(cyl));
 		} else {
 			dc->model = "Commander";
 			dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 			for (g = 0; g < 2; g++) {
-				cylinder_t cyl;
-				fill_default_cylinder(dive.get(), &cyl);
+				cylinder_t cyl = default_cylinder(dive.get());
 				cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT + g * 2] / 256
 					+ log[CMD_O2_PERCENT + g * 2 + 1]) * 10;
 				cyl.gasmix.he.permille = 0;
-				add_cylinder(&dive->cylinders, g, cyl);
+				add_cylinder(&dive->cylinders, g, std::move(cyl));
 			}
 		}
 
@@ -727,15 +725,14 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->model = "EMC";
 		dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 		for (g = 0; g < 4; g++) {
-			cylinder_t cyl;
-			fill_default_cylinder(dive.get(), &cyl);
+			cylinder_t cyl = default_cylinder(dive.get());
 			cyl.gasmix.o2.permille =
 				(log[EMC_O2_PERCENT + g * 2] / 256
 				+ log[EMC_O2_PERCENT + g * 2 + 1]) * 10;
 			cyl.gasmix.he.permille =
 				(log[EMC_HE_PERCENT + g * 2] / 256
 				+ log[EMC_HE_PERCENT + g * 2 + 1]) * 10;
-			add_cylinder(&dive->cylinders, g, cyl);
+			add_cylinder(&dive->cylinders, g, std::move(cyl));
 		}
 
 		tm.tm_year = log[EMC_YEAR];

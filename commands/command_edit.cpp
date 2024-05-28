@@ -629,7 +629,6 @@ static void swapCandQString(QString &q, char *&c)
 PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dIn),
 	tags(nullptr)
 {
-	memset(&cylinders, 0, sizeof(cylinders));
 	memset(&weightsystems, 0, sizeof(weightsystems));
 	if (what.notes)
 		notes = data->notes;
@@ -656,14 +655,14 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 	if (what.tags)
 		tags = taglist_copy(data->tag_list);
 	if (what.cylinders) {
-		copy_cylinders(&data->cylinders, &cylinders);
+		cylinders = data->cylinders;
 		// Paste cylinders is "special":
 		// 1) For cylinders that exist in the destination dive we keep the gas-mix and pressures.
 		// 2) For cylinders that do not yet exist in the destination dive, we set the pressures to 0, i.e. unset.
 		//    Moreover, for these we set the manually_added flag, because they weren't downloaded from a DC.
-		for (int i = 0; i < d->cylinders.nr && i < cylinders.nr; ++i) {
-			const cylinder_t &src = *get_cylinder(d, i);
-			cylinder_t &dst = cylinders.cylinders[i];
+		for (size_t i = 0; i < d->cylinders.size() && i < cylinders.size(); ++i) {
+			const cylinder_t &src = d->cylinders[i];
+			cylinder_t &dst = cylinders[i];
 			dst.gasmix = src.gasmix;
 			dst.start = src.start;
 			dst.end = src.end;
@@ -677,8 +676,8 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 			dst.bestmix_o2 = src.bestmix_o2;
 			dst.bestmix_he = src.bestmix_he;
 		}
-		for (int i = d->cylinders.nr; i < cylinders.nr; ++i) {
-			cylinder_t &cyl = cylinders.cylinders[i];
+		for (size_t i = d->cylinders.size(); i < cylinders.size(); ++i) {
+			cylinder_t &cyl = cylinders[i];
 			cyl.start.mbar = 0;
 			cyl.end.mbar = 0;
 			cyl.sample_start.mbar = 0;
@@ -697,7 +696,6 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 PasteState::~PasteState()
 {
 	taglist_free(tags);
-	clear_cylinder_table(&cylinders);
 	clear_weightsystem_table(&weightsystems);
 	free(weightsystems.weightsystems);
 }
@@ -803,7 +801,6 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	duration({0}),
 	salinity(0)
 {
-	memset(&cylinders, 0, sizeof(cylinders));
 	if (!d)
 		return;
 
@@ -828,7 +825,6 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 
 ReplanDive::~ReplanDive()
 {
-	clear_cylinder_table(&cylinders);
 	free(notes);
 }
 
@@ -1124,7 +1120,6 @@ AddCylinder::AddCylinder(bool currentDiveOnly) :
 
 AddCylinder::~AddCylinder()
 {
-	free_cylinder(cyl);
 }
 
 bool AddCylinder::workToBeDone()
@@ -1148,7 +1143,7 @@ void AddCylinder::redo()
 	for (dive *d: dives) {
 		int index = first_hidden_cylinder(d);
 		indexes.push_back(index);
-		add_cylinder(&d->cylinders, index, clone_cylinder(cyl));
+		add_cylinder(&d->cylinders, index, cyl);
 		update_cylinder_related_info(d);
 		emit diveListNotifier.cylinderAdded(d, index);
 		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
@@ -1157,14 +1152,14 @@ void AddCylinder::redo()
 
 static bool same_cylinder_type(const cylinder_t &cyl1, const cylinder_t &cyl2)
 {
-	return same_string(cyl1.type.description, cyl2.type.description) &&
-	       cyl1.cylinder_use == cyl2.cylinder_use;
+	return std::tie(cyl1.cylinder_use, cyl1.type.description) ==
+	       std::tie(cyl2.cylinder_use, cyl2.type.description);
 }
 
 static bool same_cylinder_size(const cylinder_t &cyl1, const cylinder_t &cyl2)
 {
-	return cyl1.type.size.mliter == cyl2.type.size.mliter &&
-	       cyl1.type.workingpressure.mbar == cyl2.type.workingpressure.mbar;
+	return std::tie(cyl1.type.size.mliter, cyl1.type.workingpressure.mbar) ==
+	       std::tie(cyl2.type.size.mliter, cyl2.type.workingpressure.mbar);
 }
 
 // Flags for comparing cylinders
@@ -1177,7 +1172,7 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 	EditDivesBase(currentDiveOnly)
 {
 	// Get the old cylinder, bail if index is invalid
-	if (!current || index < 0 || index >= current->cylinders.nr) {
+	if (!current || index < 0 || index >= static_cast<int>(current->cylinders.size())) {
 		dives.clear();
 		return;
 	}
@@ -1189,12 +1184,12 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 	cyl.reserve(dives.size());
 
 	for (dive *d: dives) {
-		if (index >= d->cylinders.nr)
+		if (index >= static_cast<int>(d->cylinders.size()))
 			continue;
 		if (nonProtectedOnly && is_cylinder_prot(d, index))
 			continue;
 		// We checked that the cylinder exists above.
-		const cylinder_t &cylinder = *get_cylinder(d, index);
+		const cylinder_t &cylinder = d->cylinders[index];
 		if (d != current &&
 		    (!same_cylinder_size(orig, cylinder) || !same_cylinder_type(orig, cylinder))) {
 			// when editing cylinders, we assume that the user wanted to edit the 'n-th' cylinder
@@ -1206,15 +1201,13 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 		// that's silly as it's always the same value - but we need this vector of indices in the case where we add
 		// a cylinder to several dives as the spot will potentially be different in different dives
 		indexes.push_back(index);
-		cyl.push_back(clone_cylinder(cylinder));
+		cyl.push_back(cylinder);
 	}
 	dives = std::move(divesNew);
 }
 
 EditCylinderBase::~EditCylinderBase()
 {
-	for (cylinder_t c: cyl)
-		free_cylinder(c);
 }
 
 bool EditCylinderBase::workToBeDone()
@@ -1235,8 +1228,8 @@ RemoveCylinder::RemoveCylinder(int index, bool currentDiveOnly) :
 void RemoveCylinder::undo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		std::vector<int> mapping = get_cylinder_map_for_add(dives[i]->cylinders.nr, indexes[i]);
-		add_cylinder(&dives[i]->cylinders, indexes[i], clone_cylinder(cyl[i]));
+		std::vector<int> mapping = get_cylinder_map_for_add(dives[i]->cylinders.size(), indexes[i]);
+		add_cylinder(&dives[i]->cylinders, indexes[i], cyl[i]);
 		cylinder_renumber(dives[i], &mapping[0]);
 		update_cylinder_related_info(dives[i]);
 		emit diveListNotifier.cylinderAdded(dives[i], indexes[i]);
@@ -1247,7 +1240,7 @@ void RemoveCylinder::undo()
 void RemoveCylinder::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		std::vector<int> mapping = get_cylinder_map_for_remove(dives[i]->cylinders.nr, indexes[i]);
+		std::vector<int> mapping = get_cylinder_map_for_remove(dives[i]->cylinders.size(), indexes[i]);
 		remove_cylinder(dives[i], indexes[i]);
 		cylinder_renumber(dives[i], &mapping[0]);
 		update_cylinder_related_info(dives[i]);
@@ -1282,15 +1275,12 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 	else
 		setText(Command::Base::tr("Edit cylinder (%n dive(s))", "", dives.size()));
 
-	QString description = cylIn.type.description;
-
 	// The base class copied the cylinders for us, let's edit them
 	for (int i = 0; i < (int)indexes.size(); ++i) {
 		switch (type) {
 		case EditCylinderType::TYPE:
-			free((void *)cyl[i].type.description);
 			cyl[i].type = cylIn.type;
-			cyl[i].type.description = copy_qstring(description);
+			cyl[i].type.description = cylIn.type.description;
 			cyl[i].cylinder_use = cylIn.cylinder_use;
 			break;
 		case EditCylinderType::PRESSURE:
@@ -1301,7 +1291,7 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 			cyl[i].gasmix = cylIn.gasmix;
 			cyl[i].bestmix_o2 = cylIn.bestmix_o2;
 			cyl[i].bestmix_he = cylIn.bestmix_he;
-			sanitize_gasmix(&cyl[i].gasmix);
+			sanitize_gasmix(cyl[i].gasmix);
 			break;
 		}
 	}
@@ -1310,7 +1300,7 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 void EditCylinder::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		std::string name = cyl[i].type.description;
+		const std::string &name = cyl[i].type.description;
 		set_tank_info_data(tank_info_table, name, cyl[i].type.size, cyl[i].type.workingpressure);
 		std::swap(*get_cylinder(dives[i], indexes[i]), cyl[i]);
 		update_cylinder_related_info(dives[i]);

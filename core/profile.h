@@ -95,7 +95,7 @@ struct plot_info {
 	double maxpp = 0.0;
 	bool waypoint_above_ceiling = false;
 	std::vector<plot_data> entry;
-	std::vector<plot_pressure_data> pressures; /* cylinders.nr blocks of nr entries. */
+	std::vector<plot_pressure_data> pressures; /* cylinders.size() blocks of nr entries. */
 
 	plot_info();
 	~plot_info();

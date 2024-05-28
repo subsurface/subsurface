@@ -130,7 +130,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 			state->cur_sample->temperature.mkelvin = C_to_mkelvin(temp / 10.0f);
 			state->cur_sample->pressure[0].mbar = pressure * 100;
 			state->cur_sample->rbt.seconds = rbt;
-			if (oldcyl != tank && tank >= 0 && tank < state->cur_dive->cylinders.nr) {
+			if (oldcyl != tank && tank >= 0 && static_cast<size_t>(tank) < state->cur_dive->cylinders.size()) {
 				struct gasmix mix = get_cylinder(state->cur_dive.get(), tank)->gasmix;
 				int o2 = get_o2(mix);
 				int he = get_he(mix);

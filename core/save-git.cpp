@@ -141,28 +141,23 @@ static void put_gasmix(struct membuffer *b, struct gasmix mix)
 
 static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 {
-	int i, nr;
-
-	nr = nr_cylinders(dive);
-	for (i = 0; i < nr; i++) {
-		cylinder_t *cylinder = get_cylinder(dive, i);
-		int volume = cylinder->type.size.mliter;
-		const char *description = cylinder->type.description;
-		int use = cylinder->cylinder_use;
+	for (auto &cyl: dive->cylinders) {
+		int volume = cyl.type.size.mliter;
+		int use = cyl.cylinder_use;
 
 		put_string(b, "cylinder");
 		if (volume)
 			put_milli(b, " vol=", volume, "l");
-		put_pressure(b, cylinder->type.workingpressure, " workpressure=", "bar");
-		show_utf8(b, " description=", description, "");
+		put_pressure(b, cyl.type.workingpressure, " workpressure=", "bar");
+		show_utf8(b, " description=", cyl.type.description.c_str(), "");
 		strip_mb(b);
-		put_gasmix(b, cylinder->gasmix);
-		put_pressure(b, cylinder->start, " start=", "bar");
-		put_pressure(b, cylinder->end, " end=", "bar");
+		put_gasmix(b, cyl.gasmix);
+		put_pressure(b, cyl.start, " start=", "bar");
+		put_pressure(b, cyl.end, " end=", "bar");
 		if (use > OC_GAS && use < NUM_GAS_USE)
 			show_utf8(b, " use=", cylinderuse_text[use], "");
-		if (cylinder->depth.mm != 0)
-			put_milli(b, " depth=", cylinder->depth.mm, "m");
+		if (cyl.depth.mm != 0)
+			put_milli(b, " depth=", cyl.depth.mm, "m");
 		put_string(b, "\n");
 	}
 }

@@ -18,8 +18,42 @@
 #include "divelog.h"
 #include "errorhelper.h"
 #include "pref.h"
+#include "range.h"
 #include "subsurface-string.h"
 #include "table.h"
+
+cylinder_t::cylinder_t() = default;
+cylinder_t::~cylinder_t() = default;
+
+static cylinder_t make_surface_air_cylinder()
+{
+	cylinder_t res;
+	res.cylinder_use = NOT_USED;
+	return res;
+}
+static const cylinder_t surface_air_cylinder = make_surface_air_cylinder();
+
+static void warn_index(size_t i, size_t max)
+{
+	if (i >= max + 1) {
+		report_info("Warning: accessing invalid cylinder %lu (%lu existing)",
+			static_cast<unsigned long>(i), static_cast<unsigned long>(max));
+	}
+}
+
+cylinder_t &cylinder_table::operator[](size_t i)
+{
+	warn_index(i, size());
+	return i < size() ? std::vector<cylinder_t>::operator[](i)
+			  : const_cast<cylinder_t &>(surface_air_cylinder);
+}
+
+const cylinder_t &cylinder_table::operator[](size_t i) const
+{
+	warn_index(i, size());
+	return i < size() ? std::vector<cylinder_t>::operator[](i)
+			  : surface_air_cylinder;
+}
 
 /* Warning: this has strange semantics for C-code! Not the weightsystem object
  * is freed, but the data it references. The object itself is passed in by value.
@@ -31,25 +65,11 @@ void free_weightsystem(weightsystem_t ws)
 	ws.description = NULL;
 }
 
-void free_cylinder(cylinder_t c)
-{
-	free((void *)c.type.description);
-	c.type.description = NULL;
-}
-
 void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d)
 {
 	clear_weightsystem_table(d);
 	for (int i = 0; i < s->nr; i++)
 		add_cloned_weightsystem(d, s->weightsystems[i]);
-}
-
-void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d)
-{
-	int i;
-	clear_cylinder_table(d);
-	for (i = 0; i < s->nr; i++)
-		add_cloned_cylinder(d, s->cylinders[i]);
 }
 
 /* weightsystem table functions */
@@ -61,16 +81,6 @@ static MAKE_REMOVE_FROM(weightsystem_table, weightsystems)
 //MAKE_SORT(weightsystem_table, weightsystem_t, weightsystems, comp_weightsystems)
 //MAKE_REMOVE(weightsystem_table, weightsystem_t, weightsystem)
 MAKE_CLEAR_TABLE(weightsystem_table, weightsystems, weightsystem)
-
-/* cylinder table functions */
-//static MAKE_GET_IDX(cylinder_table, cylinder_t, cylinders)
-static MAKE_GROW_TABLE(cylinder_table, cylinder_t, cylinders)
-//static MAKE_GET_INSERTION_INDEX(cylinder_table, cylinder_t, cylinders, cylinder_less_than)
-static MAKE_ADD_TO(cylinder_table, cylinder_t, cylinders)
-static MAKE_REMOVE_FROM(cylinder_table, cylinders)
-//MAKE_SORT(cylinder_table, cylinder_t, cylinders, comp_cylinders)
-//MAKE_REMOVE(cylinder_table, cylinder_t, cylinder)
-MAKE_CLEAR_TABLE(cylinder_table, cylinders, cylinder)
 
 const char *cylinderuse_text[NUM_GAS_USE] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
@@ -144,11 +154,11 @@ std::pair<volume_t, pressure_t> get_tank_info_data(const std::vector<tank_info> 
 
 void add_cylinder_description(const cylinder_type_t &type)
 {
-	std::string desc = type.description ? type.description : std::string();
+	const std::string &desc = type.description;
 	if (desc.empty())
 		return;
 	if (std::any_of(tank_info_table.begin(), tank_info_table.end(),
-			[&type](const tank_info &info) { return info.name == type.description; }))
+			[&desc](const tank_info &info) { return info.name == desc; }))
 		return;
 	add_tank_info_metric(tank_info_table, desc, type.size.mliter,
 			     type.workingpressure.mbar / 1000);
@@ -191,30 +201,16 @@ void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws)
 	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
 }
 
-cylinder_t clone_cylinder(cylinder_t cyl)
+/* Add a clone of a weightsystem to the end of a weightsystem table.
+ * Cloned means that the description-string is copied. */
+void add_cloned_weightsystem_at(struct weightsystem_table *t, weightsystem_t ws)
 {
-	cylinder_t res = cyl;
-	res.type.description = copy_string(res.type.description);
-	return res;
+	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
 }
 
 void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
 {
-	add_to_cylinder_table(t, idx, cyl);
-	/* FIXME: This is a horrible hack: we make sure that at the end of
-	 * every single cylinder table there is an empty cylinder that can
-	 * be used by the planner as "surface air" cylinder. Fix this.
-	 */
-	add_to_cylinder_table(t, t->nr, cylinder_t());
-	t->nr--;
-	t->cylinders[t->nr].cylinder_use = NOT_USED;
-}
-
-/* Add a clone of a cylinder to the end of a cylinder table.
- * Cloned means that the description-string is copied. */
-void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl)
-{
-	add_cylinder(t, t->nr, clone_cylinder(cyl));
+	t->insert(t->begin() + idx, std::move(cyl));
 }
 
 bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
@@ -250,17 +246,12 @@ int gas_volume(const cylinder_t *cyl, pressure_t p)
 	return lrint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
 }
 
-int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylinders)
+int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders)
 {
-	int i;
 	int best = -1, score = INT_MAX;
 
-	for (i = 0; i < cylinders->nr; i++) {
-		const cylinder_t *match;
-		int distance;
-
-		match = cylinders->cylinders + i;
-		distance = gasmix_distance(mix, match->gasmix);
+	for (auto [i, match]: enumerated_range(cylinders)) {
+		int distance = gasmix_distance(mix, match.gasmix);
 		if (distance >= score)
 			continue;
 		best = i;
@@ -336,10 +327,8 @@ void reset_tank_info_table(std::vector<tank_info> &table)
 	/* Add cylinders from dive list */
 	for (int i = 0; i < divelog.dives->nr; ++i) {
 		const struct dive *dive = divelog.dives->dives[i];
-		for (int j = 0; j < dive->cylinders.nr; j++) {
-			const cylinder_t *cyl = get_cylinder(dive, j);
-			add_cylinder_description(cyl->type);
-		}
+		for (auto &cyl: dive->cylinders)
+			add_cylinder_description(cyl.type);
 	}
 }
 
@@ -357,7 +346,7 @@ struct std::vector<ws_info> ws_info_table = {
 
 void remove_cylinder(struct dive *dive, int idx)
 {
-	remove_from_cylinder_table(&dive->cylinders, idx);
+	dive->cylinders.erase(dive->cylinders.begin() + idx);
 }
 
 void remove_weightsystem(struct dive *dive, int idx)
@@ -380,68 +369,61 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 {
 	pressure_t decopo2 = {.mbar = prefs.decopo2};
 
-	for (int i = 0; i < dive->cylinders.nr; i++) {
-		cylinder_t *cyl = get_cylinder(dive, i);
-		if (cyl->depth.mm == 0) /* if the gas doesn't give a mod, calculate based on prefs */
-			cyl->depth = gas_mod(cyl->gasmix, decopo2, dive, M_OR_FT(3,10));
+	for (cylinder_t &cyl: dive->cylinders) {
+		if (cyl.depth.mm == 0) /* if the gas doesn't give a mod, calculate based on prefs */
+			cyl.depth = gas_mod(cyl.gasmix, decopo2, dive, M_OR_FT(3,10));
 		if (track_gas)
-			cyl->start.mbar = cyl->end.mbar = cyl->type.workingpressure.mbar;
-		cyl->gas_used.mliter = 0;
-		cyl->deco_gas_used.mliter = 0;
+			cyl.start.mbar = cyl.end.mbar = cyl.type.workingpressure.mbar;
+		cyl.gas_used.mliter = 0;
+		cyl.deco_gas_used.mliter = 0;
 	}
 }
 
-static void copy_cylinder_type(const cylinder_t *s, cylinder_t *d)
+static void copy_cylinder_type(const cylinder_t &s, cylinder_t &d)
 {
-	free_cylinder(*d);
-	d->type = s->type;
-	d->type.description = s->type.description ? strdup(s->type.description) : NULL;
-	d->gasmix = s->gasmix;
-	d->depth = s->depth;
-	d->cylinder_use = s->cylinder_use;
-	d->manually_added = true;
+	d.type = s.type;
+	d.gasmix = s.gasmix;
+	d.depth = s.depth;
+	d.cylinder_use = s.cylinder_use;
+	d.manually_added = true;
 }
 
 /* copy the equipment data part of the cylinders but keep pressures */
 void copy_cylinder_types(const struct dive *s, struct dive *d)
 {
-	int i;
 	if (!s || !d)
 		return;
 
-	for (i = 0; i < s->cylinders.nr && i < d->cylinders.nr; i++)
-		copy_cylinder_type(get_cylinder(s, i), get_cylinder(d, i));
+	for (size_t i = 0; i < s->cylinders.size() && i < d->cylinders.size(); i++)
+		copy_cylinder_type(s->cylinders[i], d->cylinders[i]);
 
-	for ( ; i < s->cylinders.nr; i++)
-		add_cloned_cylinder(&d->cylinders, *get_cylinder(s, i));
+	for (size_t i = d->cylinders.size(); i < s->cylinders.size(); i++)
+		d->cylinders.push_back(s->cylinders[i]);
 }
 
 cylinder_t *add_empty_cylinder(struct cylinder_table *t)
 {
-	cylinder_t cyl;
-	cyl.type.description = strdup("");
-	add_cylinder(t, t->nr, cyl);
-	return &t->cylinders[t->nr - 1];
+	t->emplace_back();
+	return &t->back();
 }
 
 /* access to cylinders is controlled by two functions:
  * - get_cylinder() returns the cylinder of a dive and supposes that
  *   the cylinder with the given index exists. If it doesn't, an error
- *   message is printed and NULL returned.
+ *   message is printed and the "surface air" cylinder returned.
+ *   (NOTE: this MUST not be written into!).
  * - get_or_create_cylinder() creates an empty cylinder if it doesn't exist.
  *   Multiple cylinders might be created if the index is bigger than the
  *   number of existing cylinders
  */
-cylinder_t *get_cylinder(const struct dive *d, int idx)
+cylinder_t *get_cylinder(struct dive *d, int idx)
 {
-	/* FIXME: The planner uses a dummy cylinder one past the official number of cylinders
-	 * in the table to mark no-cylinder surface interavals. This is horrendous. Fix ASAP. */
-	// if (idx < 0 || idx >= d->cylinders.nr) {
-	if (idx < 0 || idx >= d->cylinders.nr + 1 || idx >= d->cylinders.allocated) {
-		report_info("Warning: accessing invalid cylinder %d (%d existing)", idx, d->cylinders.nr);
-		return NULL;
-	}
-	return &d->cylinders.cylinders[idx];
+	return &d->cylinders[idx];
+}
+
+const cylinder_t *get_cylinder(const struct dive *d, int idx)
+{
+	return &d->cylinders[idx];
 }
 
 cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
@@ -450,9 +432,9 @@ cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 		report_info("Warning: accessing invalid cylinder %d", idx);
 		return NULL;
 	}
-	while (idx >= d->cylinders.nr)
+	while (static_cast<size_t>(idx) >= d->cylinders.size())
 		add_empty_cylinder(&d->cylinders);
-	return &d->cylinders.cylinders[idx];
+	return &d->cylinders[idx];
 }
 
 /* if a default cylinder is set, use that */
@@ -465,7 +447,7 @@ void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 		return;
 	for (auto &ti: tank_info_table) {
 		if (ti.name == cyl_name) {
-			cyl->type.description = strdup(ti.name.c_str());
+			cyl->type.description = ti.name;
 			if (ti.ml) {
 				cyl->type.size.mliter = ti.ml;
 				cyl->type.workingpressure.mbar = ti.bar * 1000;
@@ -481,10 +463,16 @@ void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 	}
 }
 
+cylinder_t default_cylinder(const struct dive *d)
+{
+	cylinder_t res;
+	fill_default_cylinder(d, &res);
+	return res;
+}
+
 cylinder_t create_new_cylinder(const struct dive *d)
 {
-	cylinder_t cyl;
-	fill_default_cylinder(d, &cyl);
+	cylinder_t cyl = default_cylinder(d);
 	cyl.start = cyl.type.workingpressure;
 	cyl.cylinder_use = OC_GAS;
 	return cyl;
@@ -500,7 +488,7 @@ cylinder_t create_new_manual_cylinder(const struct dive *d)
 void add_default_cylinder(struct dive *d)
 {
 	// Only add if there are no cylinders yet
-	if (d->cylinders.nr > 0)
+	if (!d->cylinders.empty())
 		return;
 
 	cylinder_t cyl;
@@ -508,7 +496,7 @@ void add_default_cylinder(struct dive *d)
 		cyl = create_new_cylinder(d);
 	} else {
 		// roughly an AL80
-		cyl.type.description = strdup(translate("gettextFromC", "unknown"));
+		cyl.type.description = translate("gettextFromC", "unknown");
 		cyl.type.size.mliter = 11100;
 		cyl.type.workingpressure.mbar = 207000;
 	}
@@ -521,11 +509,11 @@ static bool show_cylinder(const struct dive *d, int i)
 	if (is_cylinder_used(d, i))
 		return true;
 
-	const cylinder_t *cyl = &d->cylinders.cylinders[i];
-	if (cyl->start.mbar || cyl->sample_start.mbar ||
-	    cyl->end.mbar || cyl->sample_end.mbar)
+	const cylinder_t &cyl = d->cylinders[i];
+	if (cyl.start.mbar || cyl.sample_start.mbar ||
+	    cyl.end.mbar || cyl.sample_end.mbar)
 		return true;
-	if (cyl->manually_added)
+	if (cyl.manually_added)
 		return true;
 
 	/*
@@ -538,10 +526,10 @@ static bool show_cylinder(const struct dive *d, int i)
 /* The unused cylinders at the end of the cylinder list are hidden. */
 int first_hidden_cylinder(const struct dive *d)
 {
-	int res = d->cylinders.nr;
+	size_t res = d->cylinders.size();
 	while (res > 0 && !show_cylinder(d, res - 1))
 		--res;
-	return res;
+	return static_cast<int>(res);
 }
 
 #ifdef DEBUG_CYL
@@ -551,7 +539,7 @@ void dump_cylinders(struct dive *dive, bool verbose)
 	for (int i = 0; i < dive->cylinders; i++) {
 		cylinder_t *cyl = get_cylinder(dive, i);
 
-		printf("%02d: Type     %s, %3.1fl, %3.0fbar\n", i, cyl->type.description, cyl->type.size.mliter / 1000.0, cyl->type.workingpressure.mbar / 1000.0);
+		printf("%02d: Type     %s, %3.1fl, %3.0fbar\n", i, cyl->type.description.c_str(), cyl->type.size.mliter / 1000.0, cyl->type.workingpressure.mbar / 1000.0);
 		printf("    Gasmix   O2 %2.0f%% He %2.0f%%\n", cyl->gasmix.o2.permille / 10.0, cyl->gasmix.he.permille / 10.0);
 		printf("    Pressure Start %3.0fbar End %3.0fbar Sample start %3.0fbar Sample end %3.0fbar\n", cyl->start.mbar / 1000.0, cyl->end.mbar / 1000.0, cyl->sample_start.mbar / 1000.0, cyl->sample_end.mbar / 1000.0);
 		if (verbose) {

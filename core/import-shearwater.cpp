@@ -58,24 +58,20 @@ static int shearwater_changes(void *param, int columns, char **data, char **)
 		o2 = 1000;
 
 	// Find the cylinder index
-	int index;
-	bool found = false;
-	for (index = 0; index < state->cur_dive->cylinders.nr; ++index) {
-		const cylinder_t *cyl = get_cylinder(state->cur_dive.get(), index);
-		if (cyl->gasmix.o2.permille == o2 && cyl->gasmix.he.permille == he) {
-			found = true;
-			break;
-		}
-	}
-	if (!found) {
+	auto it = std::find_if(state->cur_dive->cylinders.begin(), state->cur_dive->cylinders.end(),
+			      [o2, he](auto &cyl)
+			      { return cyl.gasmix.o2.permille == o2 && cyl.gasmix.he.permille == he; });
+	if (it == state->cur_dive->cylinders.end()) {
 		// Cylinder not found, creating a new one
 		cyl = cylinder_start(state);
 		cyl->gasmix.o2.permille = o2;
 		cyl->gasmix.he.permille = he;
 		cylinder_end(state);
+		it = std::prev(state->cur_dive->cylinders.end());
 	}
 
-	add_gas_switch_event(state->cur_dive.get(), get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]), index);
+	add_gas_switch_event(state->cur_dive.get(), get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]),
+			     it - state->cur_dive->cylinders.begin());
 	return 0;
 }
 
@@ -103,9 +99,8 @@ static int shearwater_profile_sample(void *param, int, char **data, char **)
 		state->cur_sample->depth.mm = state->metric ? lrint(permissive_strtod(data[1], NULL) * 1000) : feet_to_mm(permissive_strtod(data[1], NULL));
 	if (data[2])
 		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(permissive_strtod(data[2], NULL)) : F_to_mkelvin(permissive_strtod(data[2], NULL));
-	if (data[3]) {
+	if (data[3])
 		state->cur_sample->setpoint.mbar = lrint(permissive_strtod(data[3], NULL) * 1000);
-	}
 	if (data[4])
 		state->cur_sample->ndl.seconds = atoi(data[4]) * 60;
 	if (data[5])

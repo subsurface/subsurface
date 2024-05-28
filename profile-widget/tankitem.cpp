@@ -76,7 +76,7 @@ void TankItem::setData(const struct dive *d, const struct divecomputer *dc, int 
 		return;
 
 	// Bail if there are no cylinders
-	if (d->cylinders.nr <= 0)
+	if (d->cylinders.empty())
 		return;
 
 	// start with the first gasmix and at the start of the plotted range

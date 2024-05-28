@@ -165,7 +165,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 		bottom_gas = gasmix_air;
 	}
 
-	clear_cylinder_table(&dive->cylinders);
+	dive->cylinders.clear();
 	for (i = 0; i < std::max(ngases, ntanks); i++) {
 		cylinder_t cyl;
 		cyl.cylinder_use = NOT_USED;
@@ -266,7 +266,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 							snprintf(name_buffer, sizeof(name_buffer), "%d cuft", rounded_size);
 							break;
 						}
-						cyl.type.description = copy_string(name_buffer);
+						cyl.type.description = name_buffer;
 						cyl.type.size.mliter = lrint(cuft_to_l(rounded_size) * 1000 /
 											mbar_to_atm(cyl.type.workingpressure.mbar));
 					}
@@ -301,10 +301,10 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 			fill_default_cylinder(dive, &cyl);
 		}
 		/* whatever happens, make sure there is a name for the cylinder */
-		if (empty_string(cyl.type.description))
-			cyl.type.description = strdup(translate("gettextFromC", "unknown"));
+		if (cyl.type.description.empty())
+			cyl.type.description = translate("gettextFromC", "unknown");
 
-		add_cylinder(&dive->cylinders, dive->cylinders.nr, cyl);
+		dive->cylinders.push_back(std::move(cyl));
 	}
 	return DC_STATUS_SUCCESS;
 }

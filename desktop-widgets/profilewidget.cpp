@@ -298,7 +298,7 @@ void ProfileWidget::cylindersChanged(struct dive *changed, int pos)
 	// If we're editing the current dive we have to update the
 	// cylinders of the edited dive.
 	if (editedDive) {
-		copy_cylinders(&d->cylinders, &editedDive.get()->cylinders);
+		editedDive.get()->cylinders = d->cylinders;
 		// TODO: Holy moly that function sends too many signals. Fix it!
 		DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), dc);
 	}
