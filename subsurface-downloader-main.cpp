@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 	QStringList arguments = QCoreApplication::arguments();
 
 	// set a default logfile name for libdivecomputer so we always get a logfile
-	logfile_name = strdup("subsurface-downloader.log");
+	logfile_name = "subsurface-downloader.log";
 
 	const char *default_directory = system_default_directory();
 	subsurface_mkdir(default_directory);
