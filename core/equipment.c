@@ -207,13 +207,6 @@ void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws)
 	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
 }
 
-/* Add a clone of a weightsystem to the end of a weightsystem table.
- * Cloned means that the description-string is copied. */
-void add_cloned_weightsystem_at(struct weightsystem_table *t, weightsystem_t ws)
-{
-	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
-}
-
 cylinder_t clone_cylinder(cylinder_t cyl)
 {
 	cylinder_t res = cyl;
