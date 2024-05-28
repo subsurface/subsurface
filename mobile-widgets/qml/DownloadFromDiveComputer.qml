@@ -318,7 +318,7 @@ Kirigami.Page {
 
 			Connections {
 				target: manager
-				onRestartDownloadSignal: {
+				function onRestartDownloadSignal() {
 					buttonBar.doDownload()
 				}
 			}

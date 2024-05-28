@@ -19,7 +19,7 @@ Item {
 
 	Connections {
 		target: rootItem
-		onSettingsChanged: {
+		function onSettingsChanged() {
 			qmlProfile.update()
 		}
 	}

@@ -111,14 +111,14 @@ TemplatePage {
 		}
 		Connections {
 			target: manager
-			onUploadFinish: {
+			function onUploadFinish(success, text) {
 				if (success) {
 					pageStack.pop()
 				}
 				statusText.text = text
 				progress.value = 0
 			}
-			onUploadProgress: {
+			function onUploadProgress(percentage) {
 				progress.value = percentage
 			}
 		}
