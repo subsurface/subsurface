@@ -12,36 +12,36 @@ struct divecomputer;
 struct decostop;
 
 struct deco_state {
-	double tissue_n2_sat[16];
-	double tissue_he_sat[16];
-	double tolerated_by_tissue[16];
-	double tissue_inertgas_saturation[16];
-	double buehlmann_inertgas_a[16];
-	double buehlmann_inertgas_b[16];
+	double tissue_n2_sat[16] = {};
+	double tissue_he_sat[16] = {};
+	double tolerated_by_tissue[16] = {};
+	double tissue_inertgas_saturation[16] = {};
+	double buehlmann_inertgas_a[16] = {};
+	double buehlmann_inertgas_b[16] = {};
 
-	double max_n2_crushing_pressure[16];
-	double max_he_crushing_pressure[16];
+	double max_n2_crushing_pressure[16] = {};
+	double max_he_crushing_pressure[16] = {};
 
-	double crushing_onset_tension[16];            // total inert gas tension in the t* moment
-	double n2_regen_radius[16];                   // rs
-	double he_regen_radius[16];
-	double max_ambient_pressure;                  // last moment we were descending
+	double crushing_onset_tension[16] = {};       // total inert gas tension in the t* moment
+	double n2_regen_radius[16] = {};              // rs
+	double he_regen_radius[16] = {};
+	double max_ambient_pressure = 0.0;           // last moment we were descending
 
-	double bottom_n2_gradient[16];
-	double bottom_he_gradient[16];
+	double bottom_n2_gradient[16] = {};
+	double bottom_he_gradient[16] = {};
 
-	double initial_n2_gradient[16];
-	double initial_he_gradient[16];
+	double initial_n2_gradient[16] = {};
+	double initial_he_gradient[16] = {};
 	pressure_t first_ceiling_pressure;
 	pressure_t max_bottom_ceiling_pressure;
-	int ci_pointing_to_guiding_tissue;
-	double gf_low_pressure_this_dive;
-	int deco_time;
-	bool icd_warning;
-	int  sum1;
-	long sumx, sumxx;
-	double sumy, sumxy;
-	int plot_depth;
+	int ci_pointing_to_guiding_tissue = 0;
+	double gf_low_pressure_this_dive = 0.0;
+	int deco_time = 0;
+	bool icd_warning = false;
+	int  sum1 = 0;
+	long sumx = 0, sumxx = 0;
+	double sumy = 0, sumxy = 0;
+	int plot_depth = 0;
 };
 
 extern const double buehlmann_N2_t_halflife[];
