@@ -43,17 +43,16 @@ T EditDefaultSetter<T, ID, PTR>::data(struct dive *d) const
 	return d->*PTR;
 }
 
-template <DiveField::Flags ID, char *dive::*PTR>
+template <DiveField::Flags ID, std::string dive::*PTR>
 void EditStringSetter<ID, PTR>::set(struct dive *d, QString v) const
 {
-	free(d->*PTR);
-	d->*PTR = copy_qstring(v);
+	d->*PTR = v.toStdString();
 }
 
-template <DiveField::Flags ID, char *dive::*PTR>
+template <DiveField::Flags ID, std::string dive::*PTR>
 QString EditStringSetter<ID, PTR>::data(struct dive *d) const
 {
-	return QString(d->*PTR);
+	return QString::fromStdString(d->*PTR);
 }
 
 static std::vector<dive *> getDives(bool currentDiveOnly)
@@ -585,14 +584,13 @@ QString EditTags::fieldName() const
 // ***** Buddies *****
 QStringList EditBuddies::data(struct dive *d) const
 {
-	return stringToList(d->buddy);
+	return stringToList(QString::fromStdString(d->buddy));
 }
 
 void EditBuddies::set(struct dive *d, const QStringList &v) const
 {
 	QString text = v.join(", ");
-	free(d->buddy);
-	d->buddy = copy_qstring(text);
+	d->buddy = text.toStdString();
 }
 
 QString EditBuddies::fieldName() const
@@ -603,27 +601,18 @@ QString EditBuddies::fieldName() const
 // ***** DiveGuide *****
 QStringList EditDiveGuide::data(struct dive *d) const
 {
-	return stringToList(d->diveguide);
+	return stringToList(QString::fromStdString(d->diveguide));
 }
 
 void EditDiveGuide::set(struct dive *d, const QStringList &v) const
 {
 	QString text = v.join(", ");
-	free(d->diveguide);
-	d->diveguide = copy_qstring(text);
+	d->diveguide = text.toStdString();
 }
 
 QString EditDiveGuide::fieldName() const
 {
 	return Command::Base::tr("dive guide");
-}
-
-static void swapCandQString(QString &q, char *&c)
-{
-	QString tmp(c);
-	free(c);
-	c = copy_qstring(q);
-	q = std::move(tmp);
 }
 
 PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dIn)
@@ -698,13 +687,13 @@ PasteState::~PasteState()
 void PasteState::swap(dive_components what)
 {
 	if (what.notes)
-		swapCandQString(notes, d->notes);
+		std::swap(notes, d->notes);
 	if (what.diveguide)
-		swapCandQString(diveguide, d->diveguide);
+		std::swap(diveguide, d->diveguide);
 	if (what.buddy)
-		swapCandQString(buddy, d->buddy);
+		std::swap(buddy, d->buddy);
 	if (what.suit)
-		swapCandQString(suit, d->suit);
+		std::swap(suit, d->suit);
 	if (what.rating)
 		std::swap(rating, d->rating);
 	if (what.visibility)
@@ -791,7 +780,6 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	when(0),
 	maxdepth({0}),
 	meandepth({0}),
-	notes(nullptr),
 	surface_pressure({0}),
 	duration({0}),
 	salinity(0)
@@ -806,7 +794,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	when = source->when;
 	maxdepth = source->maxdepth;
 	meandepth = source->meandepth;
-	notes = copy_string(source->notes);
+	notes = source->notes;
 	duration = source->duration;
 	salinity = source->salinity;
 	surface_pressure = source->surface_pressure;
@@ -820,7 +808,6 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 
 ReplanDive::~ReplanDive()
 {
-	free(notes);
 }
 
 bool ReplanDive::workToBeDone()
@@ -1376,9 +1363,9 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 		changedFields |= DiveField::ATM_PRESS;
 	if (oldDive->dive_site != newDive->dive_site)
 		changedFields |= DiveField::DIVESITE;
-	if (!same_string(oldDive->diveguide, newDive->diveguide))
+	if (oldDive->diveguide != newDive->diveguide)
 		changedFields |= DiveField::DIVEGUIDE;
-	if (!same_string(oldDive->buddy, newDive->buddy))
+	if (oldDive->buddy != newDive->buddy)
 		changedFields |= DiveField::BUDDY;
 	if (oldDive->rating != newDive->rating)
 		changedFields |= DiveField::RATING;
@@ -1392,13 +1379,13 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 		changedFields |= DiveField::SURGE;
 	if (oldDive->chill != newDive->chill)
 		changedFields |= DiveField::CHILL;
-	if (!same_string(oldDive->suit, newDive->suit))
+	if (oldDive->suit != newDive->suit)
 		changedFields |= DiveField::SUIT;
 	if (taglist_get_tagstring(oldDive->tags) != taglist_get_tagstring(newDive->tags)) // This is cheating. Do we have a taglist comparison function?
 		changedFields |= DiveField::TAGS;
 	if (oldDive->dcs[0].divemode != newDive->dcs[0].divemode)
 		changedFields |= DiveField::MODE;
-	if (!same_string(oldDive->notes, newDive->notes))
+	if (oldDive->notes != newDive->notes)
 		changedFields |= DiveField::NOTES;
 	if (oldDive->salinity != newDive->salinity)
 		changedFields |= DiveField::SALINITY;

@@ -63,7 +63,7 @@ static int cobalt_buddies(void *param, int, char **data, char **)
 	struct parser_state *state = (struct parser_state *)param;
 
 	if (data[0])
-		utf8_string(data[0], &state->cur_dive->buddy);
+		utf8_string_std(data[0], &state->cur_dive->buddy);
 
 	return 0;
 }
@@ -106,7 +106,7 @@ static int cobalt_dive(void *param, int, char **data, char **)
 	state->cur_dive->when = (time_t)(atol(data[1]));
 
 	if (data[4])
-		utf8_string(data[4], &state->cur_dive->notes);
+		utf8_string_std(data[4], &state->cur_dive->notes);
 
 	/* data[5] should have information on Units used, but I cannot
 	 * parse it at all based on the sample log I have received. The

@@ -120,9 +120,9 @@ void TabDiveNotes::divesChanged(const QVector<dive *> &dives, DiveField field)
 	if (field.tags)
 		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tags)));
 	if (field.buddy)
-		ui.buddy->setText(currentDive->buddy);
+		ui.buddy->setText(QString::fromStdString(currentDive->buddy));
 	if (field.diveguide)
-		ui.diveguide->setText(currentDive->diveguide);
+		ui.diveguide->setText(QString::fromStdString(currentDive->diveguide));
 }
 
 void TabDiveNotes::diveSiteEdited(dive_site *ds, int)
@@ -152,7 +152,7 @@ static bool isHtml(const QString &s)
 
 void TabDiveNotes::updateNotes(const struct dive *d)
 {
-	QString tmp(d->notes);
+	QString tmp = QString::fromStdString(d->notes);
 	if (isHtml(tmp)) {
 		ui.notes->setHtml(tmp);
 	} else {
@@ -263,8 +263,8 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		updateNotes(currentDive);
 		updateDiveSite(currentDive);
 		updateDateTime(currentDive);
-		ui.diveguide->setText(currentDive->diveguide);
-		ui.buddy->setText(currentDive->buddy);
+		ui.diveguide->setText(QString::fromStdString(currentDive->diveguide));
+		ui.buddy->setText(QString::fromStdString(currentDive->buddy));
 	}
 	ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
 	ui.depth->setText(get_depth_string(currentDive->maxdepth, true));

@@ -150,7 +150,7 @@ static int seac_dive(void *param, int, char **data, char **)
 
 	// 9 = comments from seac app
 	if (data[9]) {
-		utf8_string(data[9], &state->cur_dive->notes);
+		utf8_string_std(data[9], &state->cur_dive->notes);
 	}
 
 	// 10 = dive duration

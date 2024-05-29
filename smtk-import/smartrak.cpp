@@ -265,26 +265,6 @@ static void concat(std::string &orig, const char *sep, std::string_view s)
 }
 
 /*
- * Temporary funcion as long as core still has C-strings.
- * Equivalent to concat, but takes a C-string as first argument and
- * frees it. Returns a newly allocated copy.
- *
- * Note: taking "const char * const *" is an ugly hack to
- * allow passing pointer to "const char *" as well as
- * "char *". Which in turn is necessary, as this function currently
- * replaces "const char *" strings.
- */
-static void concat(const char * const *orig_in, const char *sep, std::string_view s)
-{
-	char **orig = const_cast<char **>(orig_in);
-	char *to_free = *orig;
-	std::string orig_std(*orig ? *orig : "");
-	concat(orig_std, sep, s);
-	*orig = strdup(orig_std.c_str());
-	free(to_free);
-}
-
-/*
  * A site may be a wreck, which has its own table.
  * Parse this table referred by the site idx. If found, put the different info items in
  * Subsurface's dive_site notes.
@@ -700,7 +680,7 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 			dive->dcs[0].divemode = CCR;
 	}
 	if (!tmp.empty())
-		concat(&dive->notes, "\n", format_string_std("Smartrak %s: %s", table_name, tmp.c_str()));
+		concat(dive->notes, "\n", format_string_std("Smartrak %s: %s", table_name, tmp.c_str()));
 }
 
 /*
@@ -719,7 +699,7 @@ static void smtk_parse_other(struct dive *dive, const std::vector<std::string> &
                if (tag)
                        taglist_add_tag(dive->tags, str);
                else
-                       concat(&dive->notes, "\n", format_string_std("Smartrak %s: %s", data_name, str.c_str()));
+                       concat(dive->notes, "\n", format_string_std("Smartrak %s: %s", data_name, str.c_str()));
        }
 }
 
@@ -1023,9 +1003,9 @@ void smartrak_import(const char *file, struct divelog *log)
 		smtkdive->visibility = strtod((char *)col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : lrint(strtod((char *)col[13]->bind_ptr, NULL) / 5);
 		weightsystem_t ws = { {(int)lrint(strtod((char *)col[coln(WEIGHT)]->bind_ptr, NULL) * 1000)}, std::string(), false };
 		smtkdive->weightsystems.push_back(std::move(ws));
-		smtkdive->suit = strdup(get(suit_list, atoi((char *)col[coln(SUITIDX)]->bind_ptr) - 1).c_str());
+		smtkdive->suit = get(suit_list, atoi((char *)col[coln(SUITIDX)]->bind_ptr) - 1);
 		smtk_build_location(mdb_clon, (char *)col[coln(SITEIDX)]->bind_ptr, &smtkdive->dive_site, log);
-		smtkdive->buddy = strdup(smtk_locate_buddy(mdb_clon, (char *)col[0]->bind_ptr, buddy_list).c_str());
+		smtkdive->buddy = smtk_locate_buddy(mdb_clon, (char *)col[0]->bind_ptr, buddy_list);
 		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
 		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
 		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Gear", "GearRelation", gear_list, false);
@@ -1034,7 +1014,7 @@ void smartrak_import(const char *file, struct divelog *log)
 		smtk_parse_other(smtkdive.get(), underwater_list, "Underwater", (char *)col[coln(UNDERWATERIDX)]->bind_ptr, false);
 		smtk_parse_other(smtkdive.get(), surface_list, "Surface", (char *)col[coln(SURFACEIDX)]->bind_ptr, false);
 		smtk_parse_bookmarks(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr);
-		concat(&smtkdive->notes, "\n", std::string((char *)col[coln(REMARKS)]->bind_ptr));
+		concat(smtkdive->notes, "\n", std::string((char *)col[coln(REMARKS)]->bind_ptr));
 
 		record_dive_to_table(smtkdive.release(), log->dives.get());
 	}
