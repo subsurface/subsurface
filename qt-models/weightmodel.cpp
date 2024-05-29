@@ -12,8 +12,7 @@
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	d(nullptr),
-	tempRow(-1),
-	tempWS(empty_weightsystem)
+	tempRow(-1)
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
 	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
@@ -26,11 +25,11 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 weightsystem_t WeightModel::weightSystemAt(const QModelIndex &index) const
 {
 	int row = index.row();
-	if (row < 0 || row >= d->weightsystems.nr) {
-		qWarning("WeightModel: Accessing invalid weightsystem %d (of %d)", row, d->weightsystems.nr);
-		return empty_weightsystem;
+	if (row < 0 || static_cast<size_t>(row) >= d->weightsystems.size()) {
+		qWarning("WeightModel: Accessing invalid weightsystem %d (of %d)", row, static_cast<int>(d->weightsystems.size()));
+		return weightsystem_t();
 	}
-	return d->weightsystems.weightsystems[index.row()];
+	return d->weightsystems[index.row()];
 }
 
 void WeightModel::clear()
@@ -40,7 +39,7 @@ void WeightModel::clear()
 
 QVariant WeightModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() >= d->weightsystems.nr)
+	if (!index.isValid() || static_cast<size_t>(index.row()) >= d->weightsystems.size())
 		return QVariant();
 
 	weightsystem_t ws = index.row() == tempRow ? tempWS : weightSystemAt(index);
@@ -54,7 +53,7 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 	case Qt::EditRole:
 		switch (index.column()) {
 		case TYPE:
-			return gettextFromC::tr(ws.description);
+			return gettextFromC::tr(ws.description.c_str());
 		case WEIGHT:
 			return get_weight_string(ws.weight, true);
 		}
@@ -78,20 +77,16 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 // Ownership of passed in weight system will be taken. Caller must not use it any longer.
 void WeightModel::setTempWS(int row, weightsystem_t ws)
 {
-	if (!d || row < 0 || row >= d->weightsystems.nr) { // Sanity check: row must exist
-		free_weightsystem(ws);
+	if (!d || row < 0 || static_cast<size_t>(row) >= d->weightsystems.size()) // Sanity check: row must exist
 		return;
-	}
 
 	clearTempWS(); // Shouldn't be necessary, just in case: Reset old temporary row.
 
 	// It is really hard to get the editor-close-hints and setModelData calls under
 	// control. Therefore, if the row is set to the already existing entry, don't
 	// enter temporary mode.
-	const weightsystem_t &oldWS = d->weightsystems.weightsystems[row];
-	if (same_string(oldWS.description, ws.description)) {
-		free_weightsystem(ws);
-	} else {
+	const weightsystem_t &oldWS = d->weightsystems[row];
+	if (oldWS.description != ws.description) {
 		tempRow = row;
 		tempWS = ws;
 
@@ -110,18 +105,18 @@ void WeightModel::clearTempWS()
 		return;
 	int oldRow = tempRow;
 	tempRow = -1;
-	free_weightsystem(tempWS);
+	tempWS = weightsystem_t();
 	dataChanged(index(oldRow, TYPE), index(oldRow, WEIGHT));
 }
 
 void WeightModel::commitTempWS()
 {
 #ifndef SUBSURFACE_MOBILE
-	if (tempRow < 0 || !d || tempRow > d->weightsystems.nr)
+	if (tempRow < 0 || !d || static_cast<size_t>(tempRow) > d->weightsystems.size())
 		return;
 	// Only submit a command if the type changed
-	weightsystem_t ws = d->weightsystems.weightsystems[tempRow];
-	if (!same_string(ws.description, tempWS.description) || gettextFromC::tr(ws.description) != QString(tempWS.description)) {
+	weightsystem_t ws = d->weightsystems[tempRow];
+	if (ws.description != tempWS.description || gettextFromC::tr(ws.description.c_str()) != QString::fromStdString(tempWS.description)) {
 		int count = Command::editWeight(tempRow, tempWS, false);
 		emit divesEdited(count);
 	}
@@ -155,7 +150,7 @@ Qt::ItemFlags WeightModel::flags(const QModelIndex &index) const
 
 int WeightModel::rowCount(const QModelIndex&) const
 {
-	return d ? d->weightsystems.nr : 0;
+	return d ? static_cast<int>(d->weightsystems.size()) : 0;
 }
 
 void WeightModel::updateDive(dive *dIn)

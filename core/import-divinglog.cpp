@@ -301,7 +301,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 
 	if (data[10]) {
 		weightsystem_t ws = { { atoi(data[10]) * 1000 }, translate("gettextFromC", "unknown"), false };
-		add_cloned_weightsystem(&state->cur_dive->weightsystems, ws);
+		state->cur_dive->weightsystems.push_back(std::move(ws));
 	}
 
 	if (data[11])

@@ -197,20 +197,14 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 	}
 }
 
-static void save_weightsystem_info(struct membuffer *b, struct dive *dive)
+static void save_weightsystem_info(struct membuffer *b, const struct dive *dive)
 {
-	int i, nr;
-
-	nr = nr_weightsystems(dive);
-
-	for (i = 0; i < nr; i++) {
-		weightsystem_t ws = dive->weightsystems.weightsystems[i];
+	for (auto &ws:  dive->weightsystems) {
 		int grams = ws.weight.grams;
-		const char *description = ws.description;
 
 		put_format(b, "  <weightsystem");
 		put_milli(b, " weight='", grams, " kg'");
-		show_utf8(b, description, " description='", "'", 1);
+		show_utf8(b, ws.description.c_str(), " description='", "'", 1);
 		put_format(b, " />\n");
 	}
 }

@@ -127,10 +127,8 @@ static std::vector<QString> getWords(const dive *d)
 		tokenize(QString::fromStdString(tag->tag->name), res);
 	for (auto &cyl: d->cylinders)
 		tokenize(QString::fromStdString(cyl.type.description), res);
-	for (int i = 0; i < d->weightsystems.nr; ++i) {
-		const weightsystem_t &ws = d->weightsystems.weightsystems[i];
-		tokenize(QString(ws.description), res);
-	}
+	for (auto &ws: d->weightsystems)
+		tokenize(QString::fromStdString(ws.description), res);
 	// TODO: We should tokenize all dive-sites and trips first and then
 	// take the tokens from a cache.
 	if (d->dive_site) {

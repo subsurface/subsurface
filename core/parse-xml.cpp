@@ -1230,8 +1230,8 @@ static void gps_picture_location(const char *buffer, struct picture *pic)
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
 	cylinder_t *cyl = !dive->cylinders.empty() ? &dive->cylinders.back() : NULL;
-	weightsystem_t *ws = dive->weightsystems.nr > 0 ?
-		&dive->weightsystems.weightsystems[dive->weightsystems.nr - 1] : NULL;
+	weightsystem_t *ws = !dive->weightsystems.empty() > 0 ?
+		&dive->weightsystems.back() : NULL;
 	pressure_t p;
 	weight_t w;
 	start_match("dive", name, buf);
@@ -1339,15 +1339,15 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	if (MATCH_STATE("airpressure.dive", pressure, &dive->surface_pressure))
 		return;
 	if (ws) {
-		if (MATCH("description.weightsystem", utf8_string, (char **)&ws->description))
+		if (MATCH("description.weightsystem", utf8_string_std, &ws->description))
 			return;
 		if (MATCH_STATE("weight.weightsystem", weight, &ws->weight))
 			return;
 	}
 	if (MATCH_STATE("weight", weight, &w)) {
-		weightsystem_t ws = empty_weightsystem;
+		weightsystem_t ws;
 		ws.weight = w;
-		add_cloned_weightsystem(&dive->weightsystems, ws);
+		dive->weightsystems.push_back(std::move(ws));
 		return;
 	}
 	if (cyl) {

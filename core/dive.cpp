@@ -176,8 +176,7 @@ static void free_dive_structures(struct dive *d)
 	/* free tags, additional dive computers, and pictures */
 	taglist_free(d->tag_list);
 	d->cylinders.clear();
-	clear_weightsystem_table(&d->weightsystems);
-	free(d->weightsystems.weightsystems);
+	d->weightsystems.clear();
 	clear_picture_table(&d->pictures);
 	free(d->pictures.pictures);
 }
@@ -204,7 +203,6 @@ void copy_dive(const struct dive *s, struct dive *d)
 	 * relevant components that are referenced through pointers,
 	 * so all the strings and the structured lists */
 	*d = *s;
-	memset(&d->weightsystems, 0, sizeof(d->weightsystems));
 	memset(&d->pictures, 0, sizeof(d->pictures));
 	d->full_text = NULL;
 	invalidate_dive_cache(d);
@@ -212,7 +210,6 @@ void copy_dive(const struct dive *s, struct dive *d)
 	d->diveguide = copy_string(s->diveguide);
 	d->notes = copy_string(s->notes);
 	d->suit = copy_string(s->suit);
-	copy_weights(&s->weightsystems, &d->weightsystems);
 	copy_pictures(&s->pictures, &d->pictures);
 	d->tag_list = taglist_copy(s->tag_list);
 }
@@ -260,7 +257,7 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 	if (what.cylinders)
 		copy_cylinder_types(s, d);
 	if (what.weights)
-		copy_weights(&s->weightsystems, &d->weightsystems);
+		d->weightsystems = s->weightsystems;
 	if (what.number)
 		d->number = s->number;
 	if (what.when)
@@ -287,11 +284,6 @@ void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int tim
 		if (ev.time.seconds < time && !ev.is_gaschange() && !ev.is_divemodechange())
 			add_event(d, ev.time.seconds, ev.type, ev.flags, ev.value, ev.name);
 	}
-}
-
-int nr_weightsystems(const struct dive *dive)
-{
-	return dive->weightsystems.nr;
 }
 
 void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only)
@@ -1116,8 +1108,6 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer &dc)
 
 struct dive *fixup_dive(struct dive *dive)
 {
-	int i;
-
 	sanitize_cylinder_info(dive);
 	dive->maxcns = dive->cns;
 
@@ -1146,10 +1136,8 @@ struct dive *fixup_dive(struct dive *dive)
 			cyl.end.mbar = 0;
 	}
 	update_cylinder_related_info(dive);
-	for (i = 0; i < dive->weightsystems.nr; i++) {
-		const weightsystem_t &ws = dive->weightsystems.weightsystems[i];
+	for (auto &ws: dive->weightsystems)
 		add_weightsystem_description(ws);
-	}
 	/* we should always have a uniq ID as that gets assigned during dive creation,
 	 * but we want to make sure... */
 	if (!dive->id)
@@ -1769,26 +1757,20 @@ static void merge_cylinders(struct dive *res, const struct dive *a, const struct
 }
 
 /* Check whether a weightsystem table contains a given weightsystem */
-static bool has_weightsystem(const struct weightsystem_table *t, const weightsystem_t w)
+static bool has_weightsystem(const weightsystem_table &t, const weightsystem_t &w)
 {
-	int i;
-	for (i = 0; i < t->nr; i++) {
-		if (same_weightsystem(w, t->weightsystems[i]))
-			return true;
-	}
-	return false;
+	return any_of(t.begin(), t.end(), [&w] (auto &w2) { return same_weightsystem(w, w2); });
 }
 
 static void merge_equipment(struct dive *res, const struct dive *a, const struct dive *b)
 {
-	int i;
-	for (i = 0; i < a->weightsystems.nr; i++) {
-		if (!has_weightsystem(&res->weightsystems, a->weightsystems.weightsystems[i]))
-			add_cloned_weightsystem(&res->weightsystems, a->weightsystems.weightsystems[i]);
+	for (auto &ws: a->weightsystems) {
+		if (!has_weightsystem(res->weightsystems, ws))
+			res->weightsystems.push_back(ws);
 	}
-	for (i = 0; i < b->weightsystems.nr; i++) {
-		if (!has_weightsystem(&res->weightsystems, b->weightsystems.weightsystems[i]))
-			add_cloned_weightsystem(&res->weightsystems, b->weightsystems.weightsystems[i]);
+	for (auto &ws: b->weightsystems) {
+		if (!has_weightsystem(res->weightsystems, ws))
+			res->weightsystems.push_back(ws);
 	}
 }
 

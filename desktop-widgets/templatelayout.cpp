@@ -562,7 +562,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "weights") {
 			return formatWeights(d);
 		} else if (property == "singleWeight") {
-			return d->weightsystems.nr <= 1;
+			return d->weightsystems.size() <= 1;
 		} else if (property == "suit") {
 			return d->suit;
 		} else if (property == "cylinderList") {
