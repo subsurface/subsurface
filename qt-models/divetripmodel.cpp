@@ -303,7 +303,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::CylinderRole: return formatGetCylinder(d).join(", ");
 	case MobileListModel::GetCylinderRole: return formatGetCylinder(d);
 	case MobileListModel::CylinderListRole: return formatFullCylinderList();
-	case MobileListModel::SingleWeightRole: return d->weightsystems.nr <= 1;
+	case MobileListModel::SingleWeightRole: return d->weightsystems.size() <= 1;
 	case MobileListModel::StartPressureRole: return formatStartPressure(d);
 	case MobileListModel::EndPressureRole: return formatEndPressure(d);
 	case MobileListModel::FirstGasRole: return formatFirstGas(d);

@@ -96,24 +96,18 @@ static void put_HTML_bookmarks(struct membuffer *b, const struct dive *dive)
 
 static void put_weightsystem_HTML(struct membuffer *b, const struct dive *dive)
 {
-	int i, nr;
-
-	nr = nr_weightsystems(dive);
-
 	put_string(b, "\"Weights\":[");
 
 	const char *separator = "";
 
-	for (i = 0; i < nr; i++) {
-		weightsystem_t ws = dive->weightsystems.weightsystems[i];
+	for (auto &ws: dive->weightsystems) {
 		int grams = ws.weight.grams;
-		const char *description = ws.description;
 
 		put_string(b, separator);
 		separator = ", ";
 		put_string(b, "{");
 		put_HTML_weight_units(b, grams, "\"weight\":\"", "\",");
-		write_attribute(b, "description", description, " ");
+		write_attribute(b, "description", ws.description.c_str(), " ");
 		put_string(b, "}");
 	}
 	put_string(b, "],");

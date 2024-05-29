@@ -6,6 +6,7 @@
 #include "core/event.h"
 #include "core/fulltext.h"
 #include "core/qthelper.h" // for copy_qstring
+#include "core/range.h"
 #include "core/sample.h"
 #include "core/selection.h"
 #include "core/subsurface-string.h"
@@ -629,7 +630,6 @@ static void swapCandQString(QString &q, char *&c)
 PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dIn),
 	tags(nullptr)
 {
-	memset(&weightsystems, 0, sizeof(weightsystems));
 	if (what.notes)
 		notes = data->notes;
 	if (what.diveguide)
@@ -686,7 +686,7 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 		}
 	}
 	if (what.weights)
-		copy_weights(&data->weightsystems, &weightsystems);
+		weightsystems = data->weightsystems;
 	if (what.number)
 		number = data->number;
 	if (what.when)
@@ -696,8 +696,6 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 PasteState::~PasteState()
 {
 	taglist_free(tags);
-	clear_weightsystem_table(&weightsystems);
-	free(weightsystems.weightsystems);
 }
 
 void PasteState::swap(dive_components what)
@@ -952,10 +950,10 @@ bool AddWeight::workToBeDone()
 void AddWeight::undo()
 {
 	for (dive *d: dives) {
-		if (d->weightsystems.nr <= 0)
+		if (d->weightsystems.empty())
 			continue;
-		remove_weightsystem(d, d->weightsystems.nr - 1);
-		emit diveListNotifier.weightRemoved(d, d->weightsystems.nr);
+		d->weightsystems.pop_back();
+		emit diveListNotifier.weightRemoved(d, d->weightsystems.size());
 		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
 }
@@ -963,31 +961,26 @@ void AddWeight::undo()
 void AddWeight::redo()
 {
 	for (dive *d: dives) {
-		add_cloned_weightsystem(&d->weightsystems, empty_weightsystem);
-		emit diveListNotifier.weightAdded(d, d->weightsystems.nr - 1);
+		d->weightsystems.emplace_back();
+		emit diveListNotifier.weightAdded(d, d->weightsystems.size() - 1);
 		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
 }
 
-static int find_weightsystem_index(const struct dive *d, weightsystem_t ws)
+static int find_weightsystem_index(const struct dive *d, const weightsystem_t &ws)
 {
-	for (int idx = 0; idx < d->weightsystems.nr; ++idx) {
-		if (same_weightsystem(d->weightsystems.weightsystems[idx], ws))
-			return idx;
-	}
-	return -1;
+	return index_of_if(d->weightsystems, [&ws](auto &ws2) { return same_weightsystem(ws2, ws); });
 }
 
 EditWeightBase::EditWeightBase(int index, bool currentDiveOnly) :
-	EditDivesBase(currentDiveOnly),
-	ws(empty_weightsystem)
+	EditDivesBase(currentDiveOnly)
 {
 	// Get the old weightsystem, bail if index is invalid
-	if (!current || index < 0 || index >= current->weightsystems.nr) {
+	if (!current || index < 0 || static_cast<size_t>(index) >= current->weightsystems.size()) {
 		dives.clear();
 		return;
 	}
-	ws = clone_weightsystem(current->weightsystems.weightsystems[index]);
+	ws = current->weightsystems[index];
 
 	// Deleting a weightsystem from multiple dives is semantically ill-defined.
 	// What we will do is trying to delete the same weightsystem if it exists.
@@ -1013,7 +1006,6 @@ EditWeightBase::EditWeightBase(int index, bool currentDiveOnly) :
 
 EditWeightBase::~EditWeightBase()
 {
-	free_weightsystem(ws);
 }
 
 bool EditWeightBase::workToBeDone()
@@ -1035,7 +1027,7 @@ RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
 void RemoveWeight::undo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		add_to_weightsystem_table(&dives[i]->weightsystems, indices[i], clone_weightsystem(ws));
+		add_to_weightsystem_table(&dives[i]->weightsystems, indices[i], ws);
 		emit diveListNotifier.weightAdded(dives[i], indices[i]);
 		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
@@ -1052,8 +1044,7 @@ void RemoveWeight::redo()
 
 // ***** Edit Weight *****
 EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
-	EditWeightBase(index, currentDiveOnly),
-	new_ws(empty_weightsystem)
+	EditWeightBase(index, currentDiveOnly)
 {
 	if (dives.empty())
 		return;
@@ -1065,15 +1056,13 @@ EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
 		setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Edit weight (%n dive(s))", "", num_dives)).arg(getListOfDives(dives)));
 
 	// Try to untranslate the weightsystem name
-	new_ws = clone_weightsystem(wsIn);
-	QString vString(new_ws.description);
+	new_ws = std::move(wsIn);
+	QString vString = QString::fromStdString(new_ws.description);
 	auto it = std::find_if(ws_info_table.begin(), ws_info_table.end(),
 			       [&vString](const ws_info &info)
 			       { return gettextFromC::tr(info.name.c_str()) == vString; });
-	if (it != ws_info_table.end()) {
-		free_weightsystem(new_ws);
-		new_ws.description = strdup(it->name.c_str());
-	}
+	if (it != ws_info_table.end())
+		new_ws.description = it->name;
 
 	// If that doesn't change anything, do nothing
 	if (same_weightsystem(ws, new_ws)) {
@@ -1084,7 +1073,6 @@ EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
 
 EditWeight::~EditWeight()
 {
-	free_weightsystem(new_ws);
 }
 
 void EditWeight::redo()

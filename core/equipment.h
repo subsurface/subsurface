@@ -54,30 +54,22 @@ struct cylinder_table : public std::vector<cylinder_t> {
 struct weightsystem_t
 {
 	weight_t weight;
-	const char *description; /* "integrated", "belt", "ankle" */
-	bool auto_filled; /* weight was automatically derived from the type */
-};
+	std::string description; /* "integrated", "belt", "ankle" */
+	bool auto_filled = false; /* weight was automatically derived from the type */
 
-static const weightsystem_t empty_weightsystem = { { 0 }, 0, false };
+	weightsystem_t();
+	weightsystem_t(weight_t w, std::string desc, bool auto_filled);
+	~weightsystem_t();
+};
 
 /* Table of weightsystems. Attention: this stores weightsystems,
- * *not* pointers * to weightsystems. This has two crucial
- * consequences:
- * 1) Pointers to weightsystems are not stable. They may be
- *    invalidated if the table is reallocated.
- * 2) add_to_weightsystem_table(), etc. takes ownership of the
- *    weightsystem. Notably of the description string */
-struct weightsystem_table {
-	int nr, allocated;
-	weightsystem_t *weightsystems;
-};
+ * *not* pointers * to weightsystems. Therefore pointers to
+ * weightsystems are *not* stable.
+ */
+using weightsystem_table = std::vector<weightsystem_t>;
 
 extern enum cylinderuse cylinderuse_from_text(const char *text);
-extern void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d);
-extern weightsystem_t clone_weightsystem(weightsystem_t ws);
-extern void free_weightsystem(weightsystem_t ws);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
-extern void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws);
 extern cylinder_t *add_empty_cylinder(struct cylinder_table *t);
 extern cylinder_t *get_cylinder(struct dive *d, int idx);
 extern const cylinder_t *get_cylinder(const struct dive *d, int idx);
@@ -99,8 +91,7 @@ extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
 
 /* Weightsystem table functions */
-extern void clear_weightsystem_table(struct weightsystem_table *);
-extern void add_to_weightsystem_table(struct weightsystem_table *, int idx, weightsystem_t ws);
+extern void add_to_weightsystem_table(weightsystem_table *, int idx, weightsystem_t ws);
 
 /* Cylinder table functions */
 extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);

@@ -13,6 +13,7 @@
 #include "core/divesite.h"
 #include "core/picture.h"
 #include "core/pref.h"
+#include "core/range.h"
 #include "core/sample.h"
 #include "core/selection.h"
 #include "core/taxonomy.h"
@@ -155,11 +156,6 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		QString viz = star.repeated(dive->visibility);
 		QString rating = star.repeated(dive->rating);
 
-		int i;
-		int qty_cyl;
-		int qty_weight;
-		double total_weight;
-
 		if (need_pagebreak) {
 			if (plain)
 				put_format(&buf, "\\vfill\\eject\n");
@@ -204,7 +200,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 		// Print cylinder data
 		put_format(&buf, "\n%% Gas use information:\n");
-		qty_cyl = 0;
+		int qty_cyl = 0;
 		for (int i = 0; i < static_cast<int>(dive->cylinders.size()); i++){
 			const cylinder_t &cyl = dive->cylinders[i];
 			if (is_cylinder_used(dive, i) || (prefs.include_unused_tanks && !cyl.type.description.empty())){
@@ -235,11 +231,10 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 		//Code block prints all weights listed in dive.
 		put_format(&buf, "\n%% Weighting information:\n");
-		qty_weight = 0;
-		total_weight = 0;
-		for (i = 0; i < dive->weightsystems.nr; i++) {
-			weightsystem_t w = dive->weightsystems.weightsystems[i];
-			put_format(&buf, "\\def\\%sweight%ctype{%s}\n", ssrf, 'a' + i, w.description);
+		int qty_weight = 0;
+		double total_weight = 0;
+		for (auto [i, w]: enumerated_range(dive->weightsystems)) {
+			put_format(&buf, "\\def\\%sweight%ctype{%s}\n", ssrf, 'a' + i, w.description.c_str());
 			put_format(&buf, "\\def\\%sweight%camt{%.3f\\%sweightunit}\n", ssrf, 'a' + i, get_weight_units(w.weight.grams, NULL, &unit), ssrf);
 			qty_weight += 1;
 			total_weight += get_weight_units(w.weight.grams, NULL, &unit);

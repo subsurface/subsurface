@@ -335,10 +335,10 @@ void WSInfoDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint 
 void WSInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const
 {
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
-	QString weightName = currCombo.activeText;
-	weight_t weight = get_weightsystem_weight(qPrintable(weightName));
+	std::string weightName = currCombo.activeText.toStdString();
+	weight_t weight = get_weightsystem_weight(weightName.c_str());
 
-	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ weight, copy_qstring(weightName), false });
+	mymodel->setTempWS(currCombo.currRow, weightsystem_t( weight, std::move(weightName), false ));
 }
 
 static QAbstractItemModel *createWSInfoModel(QWidget *parent)
