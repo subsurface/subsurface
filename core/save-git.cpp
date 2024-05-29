@@ -104,17 +104,16 @@ static void save_overview(struct membuffer *b, struct dive *dive)
 	show_utf8(b, "notes ", dive->notes, "\n");
 }
 
-static void save_tags(struct membuffer *b, struct tag_entry *tags)
+static void save_tags(struct membuffer *b, const tag_list &tags)
 {
 	const char *sep = " ";
 
-	if (!tags)
+	if (tags.empty())
 		return;
 	put_string(b, "tags");
-	while (tags) {
-		show_utf8(b, sep, tags->tag->source.empty() ? tags->tag->name.c_str() : tags->tag->source.c_str(), "");
+	for (const divetag *tag: tags) {
+		show_utf8(b, sep, tag->source.empty() ? tag->name.c_str() : tag->source.c_str(), "");
 		sep = ", ";
-		tags = tags->next;
 	}
 	put_string(b, "\n");
 }
@@ -449,7 +448,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 		SAVE("airpressure", surface_pressure.mbar);
 	cond_put_format(dive->notrip, b, "notrip\n");
 	cond_put_format(dive->invalid, b, "invalid\n");
-	save_tags(b, dive->tag_list);
+	save_tags(b, dive->tags);
 	if (dive->dive_site)
 		put_format(b, "divesiteid %08x\n", dive->dive_site->uuid);
 	if (verbose && dive->dive_site)

@@ -299,7 +299,7 @@ struct PasteState {
 	int current;
 	int surge;
 	int chill;
-	tag_entry *tags;
+	tag_list tags;
 	cylinder_table cylinders;
 	weightsystem_table weightsystems;
 	int number;

@@ -261,7 +261,7 @@ static void parse_dive_tags(char *, struct git_parser_state *state)
 {
 	for  (const std::string &tag: state->converted_strings) {
 		if (!tag.empty())
-			taglist_add_tag(&state->active_dive->tag_list, tag.c_str());
+			taglist_add_tag(state->active_dive->tags, tag.c_str());
 	}
 }
 

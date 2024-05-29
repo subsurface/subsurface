@@ -818,8 +818,8 @@ static bool check(const filter_constraint &c, const QStringList &list)
 static bool has_tags(const filter_constraint &c, const struct dive *d)
 {
 	QStringList dive_tags;
-	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
-		dive_tags.push_back(QString::fromStdString(tag->tag->name).trimmed());
+	for (const divetag *tag: d->tags)
+		dive_tags.push_back(QString::fromStdString(tag->name).trimmed());
 	return check(c, dive_tags);
 }
 

@@ -564,18 +564,17 @@ void EditTagsBase::redo()
 QStringList EditTags::data(struct dive *d) const
 {
 	QStringList res;
-	for (const struct tag_entry *tag = d->tag_list; tag; tag = tag->next)
-		res.push_back(QString::fromStdString(tag->tag->name));
+	for (const divetag *tag: d->tags)
+		res.push_back(QString::fromStdString(tag->name));
 	return res;
 }
 
 void EditTags::set(struct dive *d, const QStringList &v) const
 {
-	taglist_free(d->tag_list);
-	d->tag_list = NULL;
+	d->tags.clear();
 	for (const QString &tag: v)
-		taglist_add_tag(&d->tag_list, qPrintable(tag));
-	taglist_cleanup(&d->tag_list);
+		taglist_add_tag(d->tags, tag.toStdString());
+	taglist_cleanup(d->tags);
 }
 
 QString EditTags::fieldName() const
@@ -627,8 +626,7 @@ static void swapCandQString(QString &q, char *&c)
 	q = std::move(tmp);
 }
 
-PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dIn),
-	tags(nullptr)
+PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dIn)
 {
 	if (what.notes)
 		notes = data->notes;
@@ -653,7 +651,7 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 	if (what.divesite)
 		divesite = data->dive_site;
 	if (what.tags)
-		tags = taglist_copy(data->tag_list);
+		tags = data->tags;
 	if (what.cylinders) {
 		cylinders = data->cylinders;
 		// Paste cylinders is "special":
@@ -695,7 +693,6 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 
 PasteState::~PasteState()
 {
-	taglist_free(tags);
 }
 
 void PasteState::swap(dive_components what)
@@ -723,7 +720,7 @@ void PasteState::swap(dive_components what)
 	if (what.divesite)
 		std::swap(divesite, d->dive_site);
 	if (what.tags)
-		std::swap(tags, d->tag_list);
+		std::swap(tags, d->tags);
 	if (what.cylinders)
 		std::swap(cylinders, d->cylinders);
 	if (what.weights)
@@ -1397,7 +1394,7 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 		changedFields |= DiveField::CHILL;
 	if (!same_string(oldDive->suit, newDive->suit))
 		changedFields |= DiveField::SUIT;
-	if (taglist_get_tagstring(oldDive->tag_list) != taglist_get_tagstring(newDive->tag_list)) // This is cheating. Do we have a taglist comparison function?
+	if (taglist_get_tagstring(oldDive->tags) != taglist_get_tagstring(newDive->tags)) // This is cheating. Do we have a taglist comparison function?
 		changedFields |= DiveField::TAGS;
 	if (oldDive->dcs[0].divemode != newDive->dcs[0].divemode)
 		changedFields |= DiveField::MODE;

@@ -15,6 +15,7 @@ private slots:
 	void testGetTagstringMultipleTags();
 	void testGetTagstringWithAnEmptyTag();
 	void testGetTagstringEmptyTagOnly();
+	void testMergeTags();
 };
 
 #endif

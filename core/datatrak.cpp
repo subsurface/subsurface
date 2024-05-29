@@ -265,26 +265,26 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Weather, values table, 0 to 6
 	 * Subsurface don't have this record but we can use tags
 	 */
-	dt_dive->tag_list = NULL;
+	dt_dive->tags.clear();
 	read_bytes(1);
 	switch (tmp_1byte) {
 		case 1:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "clear")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "clear"));
 			break;
 		case 2:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "misty")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "misty"));
 			break;
 		case 3:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fog")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "fog"));
 			break;
 		case 4:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "rain")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "rain"));
 			break;
 		case 5:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "storm")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "storm"));
 			break;
 		case 6:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "snow")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "snow"));
 			break;
 		default:
 			// unknown, do nothing
@@ -304,22 +304,22 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	switch (tmp_1byte) {
 		case 1:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "No suit"));
+			dt_dive->suit = strdup(translate("gettextFromC", "No suit"));
 			break;
 		case 2:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Shorty"));
+			dt_dive->suit = strdup(translate("gettextFromC", "Shorty"));
 			break;
 		case 3:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Combi"));
+			dt_dive->suit = strdup(translate("gettextFromC", "Combi"));
 			break;
 		case 4:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Wet suit"));
+			dt_dive->suit = strdup(translate("gettextFromC", "Wet suit"));
 			break;
 		case 5:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Semidry suit"));
+			dt_dive->suit = strdup(translate("gettextFromC", "Semidry suit"));
 			break;
 		case 6:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Dry suit"));
+			dt_dive->suit = strdup(translate("gettextFromC", "Dry suit"));
 			break;
 		default:
 			// unknown, do nothing
@@ -380,28 +380,28 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(1);
 	if (bit_set(tmp_1byte, 2))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "no stop")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "no stop"));
 	if (bit_set(tmp_1byte, 3))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "deco")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "deco"));
 	if (bit_set(tmp_1byte, 4))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "single ascent")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "single ascent"));
 	if (bit_set(tmp_1byte, 5))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "multiple ascent")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "multiple ascent"));
 	if (bit_set(tmp_1byte, 6))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fresh water")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "fresh water"));
 	if (bit_set(tmp_1byte, 7))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "salt water")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "salt water"));
 
 	/*
 	 * Dive Type 2 - Bit table, use tags again
 	 */
 	read_bytes(1);
 	if (bit_set(tmp_1byte, 0)) {
-		taglist_add_tag(&dt_dive->tag_list, strdup("nitrox"));
+		taglist_add_tag(dt_dive->tags, "nitrox");
 		is_nitrox = 1;
 	}
 	if (bit_set(tmp_1byte, 1)) {
-		taglist_add_tag(&dt_dive->tag_list, strdup("rebreather"));
+		taglist_add_tag(dt_dive->tags, "rebreather");
 		is_SCR = 1;
 		dt_dive->dcs[0].divemode = PSCR;
 	}
@@ -411,36 +411,36 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(1);
 	if (bit_set(tmp_1byte, 0))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "sight seeing")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "sight seeing"));
 	if (bit_set(tmp_1byte, 1))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "club dive")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "club dive"));
 	if (bit_set(tmp_1byte, 2))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "instructor")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "instructor"));
 	if (bit_set(tmp_1byte, 3))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "instruction")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "instruction"));
 	if (bit_set(tmp_1byte, 4))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "night")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "night"));
 	if (bit_set(tmp_1byte, 5))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "cave")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "cave"));
 	if (bit_set(tmp_1byte, 6))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "ice")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "ice"));
 	if (bit_set(tmp_1byte, 7))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "search")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "search"));
 
 	/*
 	 * Dive Activity 2 - Bit table, use tags again
 	 */
 	read_bytes(1);
 	if (bit_set(tmp_1byte, 0))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "wreck")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "wreck"));
 	if (bit_set(tmp_1byte, 1))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "river")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "river"));
 	if (bit_set(tmp_1byte, 2))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "drift")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "drift"));
 	if (bit_set(tmp_1byte, 3))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "photo")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "photo"));
 	if (bit_set(tmp_1byte, 4))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "other")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "other"));
 
 	/*
 	 * Other activities - String  1st byte = long
@@ -450,7 +450,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
 		snprintf(buffer, sizeof(buffer), "%s: %s\n",
-			 QT_TRANSLATE_NOOP("gettextFromC", "Other activities"),
+			 translate("gettextFromC", "Other activities"),
 			 tmp_string1);
 		tmp_notes_str = strdup(buffer);
 		free(tmp_string1);
@@ -474,7 +474,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 		read_string(tmp_string1);
 		int len = snprintf(buffer, sizeof(buffer), "%s%s:\n%s",
 				   tmp_notes_str ? tmp_notes_str : "",
-				   QT_TRANSLATE_NOOP("gettextFromC", "Datatrak/Wlog notes"),
+				   translate("gettextFromC", "Datatrak/Wlog notes"),
 				   tmp_string1);
 		dt_dive->notes = (char *)calloc((len +1), 1);
 		memcpy(dt_dive->notes, buffer, len);
@@ -630,7 +630,7 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 	 */
 	tmp = (int) two_bytes_to_int(runner[pos_weight + 1], runner[pos_weight]);
 	if (tmp != 0x7fff) {
-		weightsystem_t ws = { {tmp * 10}, QT_TRANSLATE_NOOP("gettextFromC", "unknown"), false };
+		weightsystem_t ws = { {tmp * 10}, translate("gettextFromC", "unknown"), false };
 		dt_dive->weightsystems.push_back(std::move(ws));
 	}
 
