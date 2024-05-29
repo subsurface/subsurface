@@ -240,16 +240,16 @@ static void parse_dive_location(char *, struct git_parser_state *state)
 }
 
 static void parse_dive_diveguide(char *, struct git_parser_state *state)
-{ state->active_dive->diveguide = get_first_converted_string_c(state); }
+{ state->active_dive->diveguide = get_first_converted_string(state); }
 
 static void parse_dive_buddy(char *, struct git_parser_state *state)
-{ state->active_dive->buddy = get_first_converted_string_c(state); }
+{ state->active_dive->buddy = get_first_converted_string(state); }
 
 static void parse_dive_suit(char *, struct git_parser_state *state)
-{ state->active_dive->suit = get_first_converted_string_c(state); }
+{ state->active_dive->suit = get_first_converted_string(state); }
 
 static void parse_dive_notes(char *, struct git_parser_state *state)
-{ state->active_dive->notes = get_first_converted_string_c(state); }
+{ state->active_dive->notes = get_first_converted_string(state); }
 
 static void parse_dive_divesiteid(char *line, struct git_parser_state *state)
 { state->log->sites->get_by_uuid(get_hex(line))->add_dive(state->active_dive.get()); }
@@ -312,10 +312,10 @@ static void parse_site_description(char *, struct git_parser_state *state)
 { state->active_site->description = get_first_converted_string(state); }
 
 static void parse_site_name(char *, struct git_parser_state *state)
-{ state->active_site->name = get_first_converted_string_c(state); }
+{ state->active_site->name = get_first_converted_string(state); }
 
 static void parse_site_notes(char *, struct git_parser_state *state)
-{ state->active_site->notes = get_first_converted_string_c(state); }
+{ state->active_site->notes = get_first_converted_string(state); }
 
 static void parse_site_gps(char *line, struct git_parser_state *state)
 {

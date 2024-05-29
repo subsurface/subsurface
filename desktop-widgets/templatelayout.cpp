@@ -540,11 +540,11 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "meandepth") {
 			return get_depth_string(d->dcs[0].meandepth.mm, true, true);
 		} else if (property == "divemaster") {
-			return d->diveguide;
+			return QString::fromStdString(d->diveguide);
 		} else if (property == "diveguide") {
-			return d->diveguide;
+			return QString::fromStdString(d->diveguide);
 		} else if (property == "buddy") {
-			return d->buddy;
+			return QString::fromStdString(d->buddy);
 		} else if (property == "airTemp") {
 			return get_temperature_string(d->airtemp, true);
 		} else if (property == "waterTemp") {
@@ -564,7 +564,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "singleWeight") {
 			return d->weightsystems.size() <= 1;
 		} else if (property == "suit") {
-			return d->suit;
+			return QString::fromStdString(d->suit);
 		} else if (property == "cylinderList") {
 			return formatFullCylinderList();
 		} else if (property == "cylinders") {

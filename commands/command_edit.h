@@ -88,7 +88,7 @@ private:
 
 // Automatically generate getter and setter in the case for string assignments.
 // The third parameter is a pointer to a C-style string in the dive structure.
-template <DiveField::Flags ID, char *dive::*PTR>
+template <DiveField::Flags ID, std::string dive::*PTR>
 class EditStringSetter : public EditTemplate<QString, ID> {
 private:
 	using EditTemplate<QString, ID>::EditTemplate;
@@ -289,10 +289,10 @@ public:
 struct PasteState {
 	dive *d;
 	dive_site *divesite;
-	QString notes;
-	QString diveguide;
-	QString buddy;
-	QString suit;
+	std::string notes;
+	std::string diveguide;
+	std::string buddy;
+	std::string suit;
 	int rating;
 	int wavesize;
 	int visibility;
@@ -329,7 +329,7 @@ class ReplanDive : public Base {
 	depth_t maxdepth, meandepth;
 	struct cylinder_table cylinders;
 	struct divecomputer dc;
-	char *notes;
+	std::string notes;
 	pressure_t surface_pressure;
 	duration_t duration;
 	int salinity;

@@ -378,8 +378,7 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	process_loaded_dives();
 	dive = get_dive(1);
 	QVERIFY(dive != NULL);
-	free(dive->notes);
-	dive->notes = strdup("These notes have been modified by TestGitStorage");
+	dive->notes = "These notes have been modified by TestGitStorage";
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
@@ -413,14 +412,11 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	process_loaded_dives();
 	struct dive *dive;
 	QVERIFY((dive = get_dive(0)) != 0);
-	free(dive->notes);
-	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
+	dive->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
 	QVERIFY((dive = get_dive(1)) != 0);
-	free(dive->notes);
-	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
+	dive->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
 	QVERIFY((dive = get_dive(2)) != 0);
-	free(dive->notes);
-	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
+	dive->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
@@ -428,14 +424,11 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	QVERIFY((dive = get_dive(0)) != 0);
-	free(dive->notes);
-	dive->notes = strdup("Create multi line dive notes\nDifferent line 2 and removed 3-5\n\nThat should be enough");
+	dive->notes = "Create multi line dive notes\nDifferent line 2 and removed 3-5\n\nThat should be enough";
 	QVERIFY((dive = get_dive(1)) != 0);
-	free(dive->notes);
-	dive->notes = strdup("Line 2\nLine 3\nLine 4\nLine 5"); // keep the middle, remove first and last");
+	dive->notes = "Line 2\nLine 3\nLine 4\nLine 5"; // keep the middle, remove first and last");
 	QVERIFY((dive = get_dive(2)) != 0);
-	free(dive->notes);
-	dive->notes = strdup("single line dive notes");
+	dive->notes = "single line dive notes";
 	git_local_only = true;
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	git_local_only = false;
@@ -447,14 +440,11 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	QVERIFY((dive = get_dive(0)) != 0);
-	free(dive->notes);
-	dive->notes = strdup("Completely different dive notes\nBut also multi line");
+	dive->notes = "Completely different dive notes\nBut also multi line";
 	QVERIFY((dive = get_dive(1)) != 0);
-	free(dive->notes);
-	dive->notes = strdup("single line dive notes");
+	dive->notes = "single line dive notes";
 	QVERIFY((dive = get_dive(2)) != 0);
-	free(dive->notes);
-	dive->notes = strdup("Line 2\nLine 3\nLine 4\nLine 5"); // keep the middle, remove first and last");
+	dive->notes = "Line 2\nLine 3\nLine 4\nLine 5"; // keep the middle, remove first and last");
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 

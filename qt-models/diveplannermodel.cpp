@@ -1093,7 +1093,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 #endif
 		final_deco_state = plan_deco_state;
 	}
-	emit calculatedPlanNotes(QString(d->notes));
+	emit calculatedPlanNotes(QString::fromStdString(d->notes));
 
 
 #if DEBUG_PLAN
@@ -1268,10 +1268,10 @@ finish:
 
 void DivePlannerPointsModel::computeVariationsDone(QString variations)
 {
-	QString notes = QString(d->notes);
-	free(d->notes);
-	d->notes = copy_qstring(notes.replace("VARIATIONS", variations));
-	emit calculatedPlanNotes(QString(d->notes));
+	QString notes = QString::fromStdString(d->notes);
+	notes = notes.replace("VARIATIONS", variations);
+	d->notes = notes.toStdString();
+	emit calculatedPlanNotes(notes);
 }
 
 void DivePlannerPointsModel::createPlan(bool saveAsNew)
@@ -1298,7 +1298,7 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 		// Try to identify old planner output and remove only this part
 		// Treat user provided text as plain text.
 		QTextDocument notesDocument;
-		notesDocument.setHtml(current_dive->notes);
+		notesDocument.setHtml(QString::fromStdString(current_dive->notes));
 		QString oldnotes(notesDocument.toPlainText());
 		QString disclaimer = get_planner_disclaimer();
 		int disclaimerMid = disclaimer.indexOf("%s");
@@ -1320,8 +1320,8 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 		}
 		// Deal with line breaks
 		oldnotes.replace("\n", "<br>");
-		oldnotes.append(d->notes);
-		d->notes = copy_qstring(oldnotes);
+		oldnotes.append(QString::fromStdString(d->notes));
+		d->notes = oldnotes.toStdString();
 		// If we save as new create a copy of the dive here
 	}
 

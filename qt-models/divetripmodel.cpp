@@ -287,13 +287,13 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 										      formatDiveDuration(d));
 	case MobileListModel::RatingRole: return d->rating;
 	case MobileListModel::VizRole: return d->visibility;
-	case MobileListModel::SuitRole: return QString(d->suit);
+	case MobileListModel::SuitRole: return QString::fromStdString(d->suit);
 	case MobileListModel::AirTempRole: return get_temperature_string(d->airtemp, true);
 	case MobileListModel::WaterTempRole: return get_temperature_string(d->watertemp, true);
 	case MobileListModel::SacRole: return formatSac(d);
 	case MobileListModel::SumWeightRole: return formatSumWeight(d);
-	case MobileListModel::DiveGuideRole: return QString(d->diveguide);
-	case MobileListModel::BuddyRole: return QString(d->buddy);
+	case MobileListModel::DiveGuideRole: return QString::fromStdString(d->diveguide);
+	case MobileListModel::BuddyRole: return QString::fromStdString(d->buddy);
 	case MobileListModel::TagsRole: return QString::fromStdString(taglist_get_tagstring(d->tags));
 	case MobileListModel::NotesRole: return formatNotes(d);
 	case MobileListModel::GpsRole: return formatDiveGPS(d);
@@ -334,7 +334,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case TOTALWEIGHT:
 			return displayWeight(d, prefs.units.show_units_table);
 		case SUIT:
-			return QString(d->suit);
+			return QString::fromStdString(d->suit);
 		case CYLINDER:
 			return !d->cylinders.empty() ? QString::fromStdString(d->cylinders[0].type.description) : QString();
 		case SAC:
@@ -353,15 +353,15 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case COUNTRY:
 			return QString::fromStdString(get_dive_country(d));
 		case BUDDIES:
-			return QString(d->buddy);
+			return QString::fromStdString(d->buddy);
 		case DIVEGUIDE:
-			return QString(d->diveguide);
+			return QString::fromStdString(d->diveguide);
 		case LOCATION:
 			return QString::fromStdString(get_dive_location(d));
 		case GAS:
 			return formatDiveGasString(d);
 		case NOTES:
-			return QString(d->notes);
+			return QString::fromStdString(d->notes);
 		case DIVEMODE:
 			return QString(divemode_text_ui[(int)d->dcs[0].divemode]);
 		}
@@ -1710,15 +1710,6 @@ void DiveTripModelList::tripSelected(dive_trip *trip, dive *currentDive)
 static bool lessThanHelper(int diff1, int diff2)
 {
 	return diff1 < 0 || (diff1 == 0 && diff2 < 0);
-}
-
-static int strCmp(const char *s1, const char *s2)
-{
-	if (!s1)
-		return !s2 ? 0 : -1;
-	if (!s2)
-		return 1;
-	return QString::localeAwareCompare(QString(s1), QString(s2)); // TODO: avoid copy
 }
 
 static int strCmp(const std::string &s1, const std::string &s2)
