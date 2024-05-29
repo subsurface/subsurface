@@ -101,7 +101,7 @@ enum ParseState {
 	FINDSTART,
 	FINDEND
 };
-static void divetags(const char *buffer, struct tag_entry **tags)
+static void divetags(const char *buffer, tag_list *tags)
 {
 	int i = 0, start = 0, end = 0;
 	enum ParseState state = FINDEND;
@@ -116,7 +116,7 @@ static void divetags(const char *buffer, struct tag_entry **tags)
 				if (i > 0 && buffer[i - 1] != '\\') {
 					std::string s(buffer + start, i - start);
 					state = FINDSTART;
-					taglist_add_tag(tags, s.c_str());
+					taglist_add_tag(*tags, s.c_str());
 				} else {
 					state = FINDSTART;
 				}
@@ -139,7 +139,7 @@ static void divetags(const char *buffer, struct tag_entry **tags)
 			end = len - 1;
 		if (len > 0) {
 			std::string s(buffer + start, i - start);
-			taglist_add_tag(tags, buffer + start);
+			taglist_add_tag(*tags, buffer + start);
 		}
 	}
 }
@@ -1254,7 +1254,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH("number", get_index, &dive->number))
 		return;
-	if (MATCH("tags", divetags, &dive->tag_list))
+	if (MATCH("tags", divetags, &dive->tags))
 		return;
 	if (MATCH("tripflag", get_notrip, &dive->notrip))
 		return;

@@ -1324,7 +1324,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	}
 	// normalize the tag list we have and the one we get from the UI
 	// try hard to deal with accidental white space issues
-	QStringList existingTagList = QString::fromStdString(taglist_get_tagstring(d->tag_list)).split(",", SKIP_EMPTY);
+	QStringList existingTagList = QString::fromStdString(taglist_get_tagstring(d->tags)).split(",", SKIP_EMPTY);
 	QStringList newTagList = tags.split(",", SKIP_EMPTY);
 	QStringList newCleanTagList;
 	for (QString s: newTagList) {
@@ -1335,10 +1335,9 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	existingTagList.sort();
 	if (newCleanTagList.join(",") != existingTagList.join(",")) {
 		diveChanged = true;
-		taglist_free(d->tag_list);
-		d->tag_list = nullptr;
+		d->tags.clear();
 		for (QString tag: newCleanTagList)
-			taglist_add_tag(&d->tag_list, qPrintable(tag));
+			taglist_add_tag(d->tags, qPrintable(tag));
 	}
 	if (d->rating != rating) {
 		diveChanged = true;

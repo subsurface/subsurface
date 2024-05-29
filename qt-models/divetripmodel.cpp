@@ -294,7 +294,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::SumWeightRole: return formatSumWeight(d);
 	case MobileListModel::DiveGuideRole: return QString(d->diveguide);
 	case MobileListModel::BuddyRole: return QString(d->buddy);
-	case MobileListModel::TagsRole: return QString::fromStdString(taglist_get_tagstring(d->tag_list));
+	case MobileListModel::TagsRole: return QString::fromStdString(taglist_get_tagstring(d->tags));
 	case MobileListModel::NotesRole: return formatNotes(d);
 	case MobileListModel::GpsRole: return formatDiveGPS(d);
 	case MobileListModel::GpsDecimalRole: return format_gps_decimal(d);
@@ -347,7 +347,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			else
 				return d->maxcns;
 		case TAGS:
-			return QString::fromStdString(taglist_get_tagstring(d->tag_list));
+			return QString::fromStdString(taglist_get_tagstring(d->tags));
 		case PHOTOS:
 			break;
 		case COUNTRY:
@@ -1767,8 +1767,8 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 	case MAXCNS:
 		return lessThanHelper(d1->maxcns - d2->maxcns, row_diff);
 	case TAGS: {
-		std::string s1 = taglist_get_tagstring(d1->tag_list);
-		std::string s2 = taglist_get_tagstring(d2->tag_list);
+		std::string s1 = taglist_get_tagstring(d1->tags);
+		std::string s2 = taglist_get_tagstring(d2->tags);
 		int diff = strCmp(s1, s2);
 		return lessThanHelper(diff, row_diff);
 	}

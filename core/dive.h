@@ -8,6 +8,7 @@
 #include "divecomputer.h"
 #include "equipment.h"
 #include "picture.h" // TODO: remove
+#include "tag.h"
 
 #include <string>
 #include <vector>
@@ -46,7 +47,7 @@ struct dive {
 	int salinity = 0; // kg per 10000 l
 	int user_salinity = 0; // water density reflecting a user-specified type
 
-	struct tag_entry *tag_list = nullptr;
+	tag_list tags;
 	std::vector<divecomputer> dcs; // Attn: pointers to divecomputers are not stable!
 	int id = 0; // unique ID for this dive
 	struct picture_table pictures = { };
