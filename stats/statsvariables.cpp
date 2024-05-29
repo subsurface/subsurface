@@ -1768,9 +1768,9 @@ struct SuitVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete
 static std::vector<QString> weightsystems(const dive *d)
 {
 	std::vector<QString> res;
-	res.reserve(d->weightsystems.nr);
-	for (int i = 0; i < d->weightsystems.nr; ++i)
-		add_to_vector_unique(res, QString(d->weightsystems.weightsystems[i].description).trimmed());
+	res.reserve(d->weightsystems.size());
+	for (auto &ws: d->weightsystems)
+		add_to_vector_unique(res, QString::fromStdString(ws.description).trimmed());
 	return res;
 }
 

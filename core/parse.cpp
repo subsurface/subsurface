@@ -323,7 +323,7 @@ void cylinder_end(struct parser_state *state)
 
 void ws_start(struct parser_state *state)
 {
-	add_cloned_weightsystem(&state->cur_dive->weightsystems, empty_weightsystem);
+	state->cur_dive->weightsystems.emplace_back();
 }
 
 void ws_end(struct parser_state *state)

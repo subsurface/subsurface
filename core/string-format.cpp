@@ -195,21 +195,19 @@ QString formatSumWeight(const dive *d)
 	return get_weight_string(weight_t { total_weight(d) }, true);
 }
 
-static QString getFormattedWeight(const struct dive *dive, int idx)
+static QString getFormattedWeight(const weightsystem_t &weight)
 {
-	const weightsystem_t *weight = &dive->weightsystems.weightsystems[idx];
-	if (!weight->description)
+	if (weight.description.empty())
 		return QString();
-	QString fmt = QString(weight->description);
-	fmt += ", " + get_weight_string(weight->weight, true);
-	return fmt;
+	return QString::fromStdString(weight.description) +
+	       ", " + get_weight_string(weight.weight, true);
 }
 
 QString formatWeightList(const dive *d)
 {
 	QString weights;
-	for (int i = 0; i < d->weightsystems.nr; i++) {
-		QString w = getFormattedWeight(d, i);
+	for (auto &ws: d->weightsystems) {
+		QString w = getFormattedWeight(ws);
 		if (w.isEmpty())
 			continue;
 		weights += w + "; ";
@@ -220,8 +218,8 @@ QString formatWeightList(const dive *d)
 QStringList formatWeights(const dive *d)
 {
 	QStringList weights;
-	for (int i = 0; i < d->weightsystems.nr; i++) {
-		QString w = getFormattedWeight(d, i);
+	for (auto &ws: d->weightsystems) {
+		QString w = getFormattedWeight(ws);
 		if (w.isEmpty())
 			continue;
 		weights << w;

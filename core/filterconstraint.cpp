@@ -848,8 +848,8 @@ static bool has_locations(const filter_constraint &c, const struct dive *d)
 static bool has_weight_type(const filter_constraint &c, const struct dive *d)
 {
 	QStringList weightsystemTypes;
-	for (int i = 0; i < d->weightsystems.nr; ++i)
-		weightsystemTypes.push_back(d->weightsystems.weightsystems[i].description);
+	for (auto &ws: d->weightsystems)
+		weightsystemTypes.push_back(QString::fromStdString(ws.description));
 
 	return check(c, weightsystemTypes);
 }
