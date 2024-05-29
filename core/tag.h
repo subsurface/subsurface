@@ -19,25 +19,18 @@ struct divetag {
 	 * This enables us to write a non-localized tag to the xml file.
 	 */
 	std::string source;
-	divetag(const char *n, const char *s) : name(n), source(s)
-	{
-	}
+	divetag(std::string name, std::string source);
 };
 
-struct tag_entry {
-	const struct divetag *tag;
-	struct tag_entry *next;
-};
+using tag_list = std::vector<const divetag *>;
 
-void taglist_add_tag(struct tag_entry **tag_list, const char *tag);
+void taglist_add_tag(tag_list &list, const std::string &tag);
 
 /* cleans up a list: removes empty tags and duplicates */
-void taglist_cleanup(struct tag_entry **tag_list);
+void taglist_cleanup(tag_list &list);
 
 void taglist_init_global();
-void taglist_free(struct tag_entry *tag_list);
-struct tag_entry *taglist_copy(struct tag_entry *s);
-void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct tag_entry *src2);
+tag_list taglist_merge(const tag_list &src1, const tag_list &src2);
 
 /*
  * divetags are only stored once, each dive only contains
@@ -46,14 +39,7 @@ void taglist_merge(struct tag_entry **dst, struct tag_entry *src1, struct tag_en
  */
 extern std::vector<std::unique_ptr<divetag>> g_tag_list;
 
-/*
- * Writes all divetags form tag_list into internally allocated buffer
- * Function returns pointer to allocated buffer
- * Buffer contains comma separated list of tags names or null terminated string
- */
-extern std::string taglist_get_tagstring(struct tag_entry *tag_list);
-
-/* Comma separated list of tags names or null terminated string */
-std::string taglist_get_tagstring(struct tag_entry *tag_list);
+/* Comma separated list of tags names or empty string */
+std::string taglist_get_tagstring(const tag_list &tags);
 
 #endif

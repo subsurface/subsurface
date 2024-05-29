@@ -1501,8 +1501,8 @@ struct DiveGuideVariable : public StatsVariableTemplate<StatsVariable::Type::Dis
 struct TagBinner : public StringBinner<TagBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> tags;
-		for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
-			tags.push_back(QString::fromStdString(tag->tag->name).trimmed());
+		for (const divetag *tag: d->tags)
+			tags.push_back(QString::fromStdString(tag->name).trimmed());
 		return tags;
 	}
 };
@@ -1513,7 +1513,7 @@ struct TagVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete>
 		return StatsTranslations::tr("Tags");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString::fromStdString(taglist_get_tagstring(d->tag_list));
+		return QString::fromStdString(taglist_get_tagstring(d->tags));
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &tag_binner };

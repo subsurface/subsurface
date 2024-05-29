@@ -691,7 +691,7 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 		if (str.empty())
 			continue;
 		if (tag)
-			taglist_add_tag(&dive->tag_list, str.c_str());
+			taglist_add_tag(dive->tags, str);
 		else
 			concat(tmp, ", ", str);
 		if (str.find("SCR") != std::string::npos)
@@ -717,7 +717,7 @@ static void smtk_parse_other(struct dive *dive, const std::vector<std::string> &
        const std::string &str = list[i];
        if (!str.empty()) {
                if (tag)
-                       taglist_add_tag(&dive->tag_list, str.c_str());
+                       taglist_add_tag(dive->tags, str);
                else
                        concat(&dive->notes, "\n", format_string_std("Smartrak %s: %s", data_name, str.c_str()));
        }

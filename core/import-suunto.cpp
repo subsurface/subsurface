@@ -155,7 +155,7 @@ static int dm4_tags(void *param, int, char **data, char **)
 	struct parser_state *state = (struct parser_state *)param;
 
 	if (data[0])
-		taglist_add_tag(&state->cur_dive->tag_list, data[0]);
+		taglist_add_tag(state->cur_dive->tags, data[0]);
 
 	return 0;
 }

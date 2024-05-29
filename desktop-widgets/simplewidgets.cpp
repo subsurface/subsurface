@@ -341,11 +341,8 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 			text << tr("Suit: ") << current_dive->suit << "\n";
 		if (what-> tags) {
 			text << tr("Tags: ");
-			tag_entry *entry = current_dive->tag_list;
-			while (entry) {
-				text << entry->tag->name.c_str() << " ";
-				entry = entry->next;
-			}
+			for (const divetag *tag: current_dive->tags)
+				text << tag->name.c_str() << " ";
 			text << "\n";
 		}
 		if (what->cylinders) {

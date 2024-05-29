@@ -311,18 +311,16 @@ void put_HTML_watertemp(struct membuffer *b, const struct dive *dive, const char
 static void put_HTML_tags(struct membuffer *b, const struct dive *dive, const char *pre, const char *post)
 {
 	put_string(b, pre);
-	struct tag_entry *tag = dive->tag_list;
 
-	if (!tag)
+	if (dive->tags.empty())
 		put_string(b, "[\"--\"");
 
 	const char *separator = "[";
-	while (tag) {
+	for (const divetag *tag: dive->tags) {
 		put_format(b, "%s\"", separator);
 		separator = ", ";
-		put_HTML_quoted(b, tag->tag->name.c_str());
+		put_HTML_quoted(b, tag->name.c_str());
 		put_string(b, "\"");
-		tag = tag->next;
 	}
 	put_string(b, "]");
 	put_string(b, post);

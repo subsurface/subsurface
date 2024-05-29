@@ -123,8 +123,8 @@ static std::vector<QString> getWords(const dive *d)
 	tokenize(QString(d->diveguide), res);
 	tokenize(QString(d->buddy), res);
 	tokenize(QString(d->suit), res);
-	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
-		tokenize(QString::fromStdString(tag->tag->name), res);
+	for (const divetag *tag: d->tags)
+		tokenize(QString::fromStdString(tag->name), res);
 	for (auto &cyl: d->cylinders)
 		tokenize(QString::fromStdString(cyl.type.description), res);
 	for (auto &ws: d->weightsystems)

@@ -118,7 +118,7 @@ void TabDiveNotes::divesChanged(const QVector<dive *> &dives, DiveField field)
 	if (field.divesite)
 		updateDiveSite(currentDive);
 	if (field.tags)
-		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tag_list)));
+		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tags)));
 	if (field.buddy)
 		ui.buddy->setText(currentDive->buddy);
 	if (field.diveguide)
@@ -253,7 +253,7 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		// reset labels in case we last displayed trip notes
 		ui.LocationLabel->setText(tr("Location"));
 		ui.NotesLabel->setText(tr("Notes"));
-		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tag_list)));
+		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tags)));
 		bool isManual = is_dc_manually_added_dive(&currentDive->dcs[0]);
 		ui.depth->setVisible(isManual);
 		ui.depthLabel->setVisible(isManual);
