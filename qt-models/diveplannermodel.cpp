@@ -1071,7 +1071,6 @@ void DivePlannerPointsModel::updateDiveProfile()
 	struct decostop stoptable[60];
 	struct deco_state plan_deco_state;
 
-	memset(&plan_deco_state, 0, sizeof(struct deco_state));
 	plan(&plan_deco_state, &diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), false);
 	updateMaxDepth();
 
