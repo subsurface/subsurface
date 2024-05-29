@@ -71,6 +71,7 @@ int get_picture_idx(const struct picture_table *t, const char *filename)
 	return -1;
 }
 
+#if !defined(SUBSURFACE_MOBILE)
 /* Return distance of timestamp to time of dive. Result is always positive, 0 means during dive. */
 static timestamp_t time_from_dive(const struct dive *d, timestamp_t timestamp)
 {
@@ -118,7 +119,6 @@ static bool dive_check_picture_time(const struct dive *d, timestamp_t timestamp)
 	return time_from_dive(d, timestamp) < D30MIN;
 }
 
-#if !defined(SUBSURFACE_MOBILE)
 /* Creates a picture and indicates the dive to which this picture should be added.
  * The caller is responsible for actually adding the picture to the dive.
  * If no appropriate dive was found, no picture is created and NULL is returned.
