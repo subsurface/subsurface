@@ -179,7 +179,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 
 	state->cur_dive->when = (time_t)(atol(data[1]));
 	if (data[2])
-		utf8_string(data[2], &state->cur_dive->notes);
+		utf8_string_std(data[2], &state->cur_dive->notes);
 
 	/*
 	 * DM4 stores Duration and DiveTime. It looks like DiveTime is
@@ -367,7 +367,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 
 	state->cur_dive->when = (time_t)(atol(data[1]));
 	if (data[2])
-		utf8_string(data[2], &state->cur_dive->notes);
+		utf8_string_std(data[2], &state->cur_dive->notes);
 
 	if (data[3])
 		state->cur_dive->duration.seconds = atoi(data[3]);

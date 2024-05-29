@@ -210,11 +210,10 @@ void put_HTML_quoted(struct membuffer *b, const char *text)
 void put_HTML_notes(struct membuffer *b, const struct dive *dive, const char *pre, const char *post)
 {
 	put_string(b, pre);
-	if (dive->notes) {
-		put_HTML_quoted(b, dive->notes);
-	} else {
+	if (!dive->notes.empty())
+		put_HTML_quoted(b, dive->notes.c_str());
+	else
 		put_string(b, "--");
-	}
 	put_string(b, post);
 }
 
@@ -348,9 +347,9 @@ static void write_one_dive(struct membuffer *b, const struct dive *dive, const c
 	put_HTML_airtemp(b, dive, "\"air\":\"", "\",");
 	put_HTML_watertemp(b, dive, "\"water\":\"", "\"");
 	put_string(b, "	},");
-	write_attribute(b, "buddy", dive->buddy, ", ");
-	write_attribute(b, "diveguide", dive->diveguide, ", ");
-	write_attribute(b, "suit", dive->suit, ", ");
+	write_attribute(b, "buddy", dive->buddy.c_str(), ", ");
+	write_attribute(b, "diveguide", dive->diveguide.c_str(), ", ");
+	write_attribute(b, "suit", dive->suit.c_str(), ", ");
 	put_HTML_tags(b, dive, "\"tags\":", ",");
 	if (!list_only) {
 		put_cylinder_HTML(b, dive);

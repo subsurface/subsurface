@@ -236,9 +236,9 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	if (data[2])
 		add_dive_site(data[2], state->cur_dive.get(), state);
 	if (data[3])
-		utf8_string(data[3], &state->cur_dive->buddy);
+		utf8_string_std(data[3], &state->cur_dive->buddy);
 	if (data[4])
-		utf8_string(data[4], &state->cur_dive->notes);
+		utf8_string_std(data[4], &state->cur_dive->notes);
 
 	state->metric = atoi(data[5]) == 1 ? 0 : 1;
 
@@ -366,9 +366,9 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	if (data[2])
 		add_dive_site(data[2], state->cur_dive.get(), state);
 	if (data[3])
-		utf8_string(data[3], &state->cur_dive->buddy);
+		utf8_string_std(data[3], &state->cur_dive->buddy);
 	if (data[4])
-		utf8_string(data[4], &state->cur_dive->notes);
+		utf8_string_std(data[4], &state->cur_dive->notes);
 
 	state->metric = atoi(data[5]) == 1 ? 0 : 1;
 

@@ -826,9 +826,9 @@ static bool has_tags(const filter_constraint &c, const struct dive *d)
 static bool has_people(const filter_constraint &c, const struct dive *d)
 {
 	QStringList dive_people;
-	for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
+	for (const QString &s: QString::fromStdString(d->buddy).split(",", SKIP_EMPTY))
 		dive_people.push_back(s.trimmed());
-	for (const QString &s: QString(d->diveguide).split(",", SKIP_EMPTY))
+	for (const QString &s: QString::fromStdString(d->diveguide).split(",", SKIP_EMPTY))
 		dive_people.push_back(s.trimmed());
 	return check(c, dive_people);
 }
@@ -866,16 +866,16 @@ static bool has_cylinder_type(const filter_constraint &c, const struct dive *d)
 static bool has_suits(const filter_constraint &c, const struct dive *d)
 {
 	QStringList diveSuits;
-	if (d->suit)
-		diveSuits.push_back(QString(d->suit));
+	if (!d->suit.empty())
+		diveSuits.push_back(QString::fromStdString(d->suit));
 	return check(c, diveSuits);
 }
 
 static bool has_notes(const filter_constraint &c, const struct dive *d)
 {
 	QStringList diveNotes;
-	if (d->notes)
-		diveNotes.push_back(QString(d->notes));
+	if (!d->notes.empty())
+		diveNotes.push_back(QString::fromStdString(d->notes));
 	return check(c, diveNotes);
 }
 

@@ -169,10 +169,10 @@ static void free_dive_structures(struct dive *d)
 		return;
 	fulltext_unregister(d);
 	/* free the strings */
-	free(d->buddy);
-	free(d->diveguide);
-	free(d->notes);
-	free(d->suit);
+	d->buddy.clear();
+	d->diveguide.clear();
+	d->notes.clear();
+	d->suit.clear();
 	/* free tags, additional dive computers, and pictures */
 	d->tags.clear();
 	d->cylinders.clear();
@@ -206,10 +206,6 @@ void copy_dive(const struct dive *s, struct dive *d)
 	memset(&d->pictures, 0, sizeof(d->pictures));
 	d->full_text = NULL;
 	invalidate_dive_cache(d);
-	d->buddy = copy_string(s->buddy);
-	d->diveguide = copy_string(s->diveguide);
-	d->notes = copy_string(s->notes);
-	d->suit = copy_string(s->suit);
 	copy_pictures(&s->pictures, &d->pictures);
 }
 
@@ -232,7 +228,7 @@ struct std::unique_ptr<dive> move_dive(struct dive *s)
 
 #define CONDITIONAL_COPY_STRING(_component) \
 	if (what._component)                \
-		d->_component = copy_string(s->_component)
+		d->_component = s->_component
 
 // copy elements, depending on bits in what that are set
 void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear)
@@ -1316,22 +1312,15 @@ static void merge_extra_data(struct divecomputer *res,
 	}
 }
 
-static char *merge_text(const char *a, const char *b, const char *sep)
+static std::string merge_text(const std::string &a, const std::string &b, const char *sep)
 {
-	char *res;
-	if (!a && !b)
-		return NULL;
-	if (!a || !*a)
-		return copy_string(b);
-	if (!b || !*b)
-		return strdup(a);
-	if (!strcmp(a, b))
-		return copy_string(a);
-	res = (char *)malloc(strlen(a) + strlen(b) + 32);
-	if (!res)
-		return (char *)a;
-	sprintf(res, "%s%s%s", a, sep, b);
-	return res;
+	if (a.empty())
+		return b;
+	if (b.empty())
+		return a;
+	if (a == b)
+		return a;
+	return a + sep + b;
 }
 
 #define SORT(a, b)  \

@@ -119,10 +119,10 @@ static void tokenize(QString s, std::vector<QString> &res)
 static std::vector<QString> getWords(const dive *d)
 {
 	std::vector<QString> res;
-	tokenize(QString(d->notes), res);
-	tokenize(QString(d->diveguide), res);
-	tokenize(QString(d->buddy), res);
-	tokenize(QString(d->suit), res);
+	tokenize(QString::fromStdString(d->notes), res);
+	tokenize(QString::fromStdString(d->diveguide), res);
+	tokenize(QString::fromStdString(d->buddy), res);
+	tokenize(QString::fromStdString(d->suit), res);
 	for (const divetag *tag: d->tags)
 		tokenize(QString::fromStdString(tag->name), res);
 	for (auto &cyl: d->cylinders)

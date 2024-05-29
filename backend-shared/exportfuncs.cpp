@@ -193,10 +193,10 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		put_format(&buf, "\\def\\%srating{%s}\n", ssrf, qPrintable(rating));
 		put_format(&buf, "\\def\\%splot{\\includegraphics[width=9cm,height=4cm]{profile%d}}\n", ssrf, dive->number);
 		put_format(&buf, "\\def\\%sprofilename{profile%d}\n", ssrf, dive->number);
-		put_format(&buf, "\\def\\%scomment{%s}\n", ssrf, dive->notes ? dive->notes : "");
-		put_format(&buf, "\\def\\%sbuddy{%s}\n", ssrf, dive->buddy ? dive->buddy : "");
-		put_format(&buf, "\\def\\%sdivemaster{%s}\n", ssrf, dive->diveguide ? dive->diveguide : "");
-		put_format(&buf, "\\def\\%ssuit{%s}\n", ssrf, dive->suit ? dive->suit : "");
+		put_format(&buf, "\\def\\%scomment{%s}\n", ssrf, dive->notes.c_str());
+		put_format(&buf, "\\def\\%sbuddy{%s}\n", ssrf, dive->buddy.c_str());
+		put_format(&buf, "\\def\\%sdivemaster{%s}\n", ssrf, dive->diveguide.c_str());
+		put_format(&buf, "\\def\\%ssuit{%s}\n", ssrf, dive->suit.c_str());
 
 		// Print cylinder data
 		put_format(&buf, "\n%% Gas use information:\n");

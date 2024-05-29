@@ -158,20 +158,15 @@ static void uemis_get_index(std::string_view buffer, int &idx)
 }
 
 /* space separated */
-static void uemis_add_string(std::string_view buffer, char **text, const char *delimit)
+static void uemis_add_string(std::string_view buffer, std::string &text, const char *delimit)
 {
 	/* do nothing if this is an empty buffer (Uemis sometimes returns a single
 	 * space for empty buffers) */
 	if (buffer.empty() || buffer == " ")
 		return;
-	if (!*text) {
-		*text = strdup(std::string(buffer).c_str());
-	} else {
-		std::string res = std::string(*text) + delimit;
-		res += buffer;
-		free(*text);
-		*text = strdup(res.c_str());
-	}
+	if (!text.empty())
+		text += delimit;
+	text += buffer;
 }
 
 /* still unclear if it ever reports lbs */
@@ -749,24 +744,24 @@ static void parse_tag(struct dive *dive, std::string_view tag, std::string_view 
 		uemis_get_weight(val, ws, dive->dcs[0].diveid);
 		dive->weightsystems.push_back(std::move(ws));
 	} else if (tag == "notes") {
-		uemis_add_string(val, &dive->notes, " ");
+		uemis_add_string(val, dive->notes, " ");
 	} else if (tag == "u8DiveSuit") {
 		int idx = 0;
 		uemis_get_index(val, idx);
 		if (idx > 0 && idx < (int)std::size(suit))
-			uemis_add_string(translate("gettextFromC", suit[idx]), &dive->suit, " ");
+			uemis_add_string(translate("gettextFromC", suit[idx]), dive->suit, " ");
 	} else if (tag == "u8DiveSuitType") {
 		int idx = 0;
 		uemis_get_index(val, idx);
 		if (idx > 0 && idx < (int)std::size(suit_type))
-			uemis_add_string(translate("gettextFromC", suit_type[idx]), &dive->suit, " ");
+			uemis_add_string(translate("gettextFromC", suit_type[idx]), dive->suit, " ");
 	} else if (tag == "u8SuitThickness") {
 		int idx = 0;
 		uemis_get_index(val, idx);
 		if (idx > 0 && idx < (int)std::size(suit_thickness))
-			uemis_add_string(translate("gettextFromC", suit_thickness[idx]), &dive->suit, " ");
+			uemis_add_string(translate("gettextFromC", suit_thickness[idx]), dive->suit, " ");
 	} else if (tag == "nickname") {
-		uemis_add_string(val, &dive->buddy, ",");
+		uemis_add_string(val, dive->buddy, ",");
 	}
 }
 
