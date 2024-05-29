@@ -187,7 +187,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		dive->maxdepth.mm ? put_format(&buf, "\\def\\%smaximumdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smaximumdepth{}\n", ssrf);
 		dive->meandepth.mm ? put_format(&buf, "\\def\\%smeandepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->meandepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smeandepth{}\n", ssrf);
 
-		std::string tags = taglist_get_tagstring(dive->tag_list);
+		std::string tags = taglist_get_tagstring(dive->tags);
 		put_format(&buf, "\\def\\%stype{%s}\n", ssrf, tags.c_str());
 		put_format(&buf, "\\def\\%sviz{%s}\n", ssrf, qPrintable(viz));
 		put_format(&buf, "\\def\\%srating{%s}\n", ssrf, qPrintable(rating));

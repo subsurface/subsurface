@@ -552,7 +552,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "notes") {
 			return formatNotes(d);
 		} else if (property == "tags") {
-			return QString::fromStdString(taglist_get_tagstring(d->tag_list));
+			return QString::fromStdString(taglist_get_tagstring(d->tags));
 		} else if (property == "gas") {
 			return formatGas(d);
 		} else if (property == "sac") {

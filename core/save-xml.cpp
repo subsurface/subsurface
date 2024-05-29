@@ -367,17 +367,16 @@ static void save_events(struct membuffer *b, struct dive *dive, const struct div
 		save_one_event(b, dive, ev);
 }
 
-static void save_tags(struct membuffer *b, struct tag_entry *entry)
+static void save_tags(struct membuffer *b, const tag_list &tags)
 {
-	if (entry) {
+	if (!tags.empty()) {
 		const char *sep = " tags='";
-		do {
-			const struct divetag *tag = entry->tag;
+		for (const divetag *tag: tags) {
 			put_string(b, sep);
 			/* If the tag has been translated, write the source to the xml file */
 			quote(b, tag->source.empty() ? tag->name.c_str() : tag->source.c_str(), 1);
 			sep = ", ";
-		} while ((entry = entry->next) != NULL);
+		}
 		put_string(b, "'");
 	}
 }
@@ -509,7 +508,7 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 	if (dive->maxcns)
 		put_format(b, " cns='%d%%'", dive->maxcns);
 
-	save_tags(b, dive->tag_list);
+	save_tags(b, dive->tags);
 	if (dive->dive_site)
 		put_format(b, " divesiteid='%8x'", dive->dive_site->uuid);
 	if (dive->user_salinity)
