@@ -64,11 +64,12 @@ void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 
 int total_weight(const struct dive *dive)
 {
-	int i, total_grams = 0;
+	int total_grams = 0;
 
-	if (dive)
-		for (i = 0; i < dive->weightsystems.nr; i++)
-			total_grams += dive->weightsystems.weightsystems[i].weight.grams;
+	if (dive) {
+		for (auto &ws: dive->weightsystems)
+			total_grams += ws.weight.grams;
+	}
 	return total_grams;
 }
 

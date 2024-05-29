@@ -300,8 +300,8 @@ struct PasteState {
 	int surge;
 	int chill;
 	tag_entry *tags;
-	struct cylinder_table cylinders;
-	struct weightsystem_table weightsystems;
+	cylinder_table cylinders;
+	weightsystem_table weightsystems;
 	int number;
 	timestamp_t when;
 

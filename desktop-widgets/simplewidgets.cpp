@@ -356,12 +356,9 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 			}
 		}
 		if (what->weights) {
-			int w;
 			text << tr("Weights:\n");
-			for (w = 0; w < current_dive->weightsystems.nr; w++) {
-				weightsystem_t ws = current_dive->weightsystems.weightsystems[w];
-				text << ws.description << ws.weight.grams / 1000 << "kg\n";
-			}
+			for (auto &ws: current_dive->weightsystems)
+				text << QString::fromStdString(ws.description) << ws.weight.grams / 1000 << "kg\n";
 		}
 		if (what->number)
 			text << tr("Dive number: ") << current_dive->number << "\n";

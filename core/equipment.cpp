@@ -20,7 +20,6 @@
 #include "pref.h"
 #include "range.h"
 #include "subsurface-string.h"
-#include "table.h"
 
 cylinder_t::cylinder_t() = default;
 cylinder_t::~cylinder_t() = default;
@@ -55,32 +54,12 @@ const cylinder_t &cylinder_table::operator[](size_t i) const
 			  : surface_air_cylinder;
 }
 
-/* Warning: this has strange semantics for C-code! Not the weightsystem object
- * is freed, but the data it references. The object itself is passed in by value.
- * This is due to the fact how the table macros work.
- */
-void free_weightsystem(weightsystem_t ws)
+weightsystem_t::weightsystem_t() = default;
+weightsystem_t::~weightsystem_t() = default;
+weightsystem_t::weightsystem_t(weight_t w, std::string desc, bool auto_filled)
+	: weight(w), description(std::move(desc)), auto_filled(auto_filled)
 {
-	free((void *)ws.description);
-	ws.description = NULL;
 }
-
-void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d)
-{
-	clear_weightsystem_table(d);
-	for (int i = 0; i < s->nr; i++)
-		add_cloned_weightsystem(d, s->weightsystems[i]);
-}
-
-/* weightsystem table functions */
-//static MAKE_GET_IDX(weightsystem_table, weightsystem_t, weightsystems)
-static MAKE_GROW_TABLE(weightsystem_table, weightsystem_t, weightsystems)
-//static MAKE_GET_INSERTION_INDEX(weightsystem_table, weightsystem_t, weightsystems, weightsystem_less_than)
-MAKE_ADD_TO(weightsystem_table, weightsystem_t, weightsystems)
-static MAKE_REMOVE_FROM(weightsystem_table, weightsystems)
-//MAKE_SORT(weightsystem_table, weightsystem_t, weightsystems, comp_weightsystems)
-//MAKE_REMOVE(weightsystem_table, weightsystem_t, weightsystem)
-MAKE_CLEAR_TABLE(weightsystem_table, weightsystems, weightsystem)
 
 const char *cylinderuse_text[NUM_GAS_USE] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
@@ -166,7 +145,7 @@ void add_cylinder_description(const cylinder_type_t &type)
 
 void add_weightsystem_description(const weightsystem_t &weightsystem)
 {
-	if (empty_string(weightsystem.description))
+	if (weightsystem.description.empty())
 		return;
 
 	auto it = std::find_if(ws_info_table.begin(), ws_info_table.end(),
@@ -188,26 +167,6 @@ weight_t get_weightsystem_weight(const std::string &name)
 	return it != ws_info_table.end() ? it->weight : weight_t();
 }
 
-weightsystem_t clone_weightsystem(weightsystem_t ws)
-{
-	weightsystem_t res = { ws.weight, copy_string(ws.description), ws.auto_filled };
-	return res;
-}
-
-/* Add a clone of a weightsystem to the end of a weightsystem table.
- * Cloned means that the description-string is copied. */
-void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws)
-{
-	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
-}
-
-/* Add a clone of a weightsystem to the end of a weightsystem table.
- * Cloned means that the description-string is copied. */
-void add_cloned_weightsystem_at(struct weightsystem_table *t, weightsystem_t ws)
-{
-	add_to_weightsystem_table(t, t->nr, clone_weightsystem(ws));
-}
-
 void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
 {
 	t->insert(t->begin() + idx, std::move(cyl));
@@ -216,7 +175,7 @@ void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
 bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
 {
 	return w1.weight.grams == w2.weight.grams &&
-	       same_string(w1.description, w2.description);
+	       w1.description == w2.description;
 }
 
 void get_gas_string(struct gasmix gasmix, char *text, int len)
@@ -351,16 +310,20 @@ void remove_cylinder(struct dive *dive, int idx)
 
 void remove_weightsystem(struct dive *dive, int idx)
 {
-	remove_from_weightsystem_table(&dive->weightsystems, idx);
+	dive->weightsystems.erase(dive->weightsystems.begin() + idx);
 }
 
-// ws is cloned.
+void add_to_weightsystem_table(weightsystem_table *table, int idx, weightsystem_t ws)
+{
+	idx = std::clamp(idx, 0, static_cast<int>(table->size()));
+	table->insert(table->begin() + idx, std::move(ws));
+}
+
 void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws)
 {
-	if (idx < 0 || idx >= dive->weightsystems.nr)
+	if (idx < 0 || static_cast<size_t>(idx) >= dive->weightsystems.size())
 		return;
-	free_weightsystem(dive->weightsystems.weightsystems[idx]);
-	dive->weightsystems.weightsystems[idx] = clone_weightsystem(ws);
+	dive->weightsystems[idx] = std::move(ws);
 }
 
 /* when planning a dive we need to make sure that all cylinders have a sane depth assigned

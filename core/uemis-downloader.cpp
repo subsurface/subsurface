@@ -745,9 +745,9 @@ static void parse_tag(struct dive *dive, std::string_view tag, std::string_view 
 	} else if (tag == "altitude") {
 		uemis_get_index(val, dive->dcs[0].surface_pressure.mbar);
 	} else if (tag == "f32Weight") {
-		weightsystem_t ws = empty_weightsystem;
+		weightsystem_t ws;
 		uemis_get_weight(val, ws, dive->dcs[0].diveid);
-		add_cloned_weightsystem(&dive->weightsystems, ws);
+		dive->weightsystems.push_back(std::move(ws));
 	} else if (tag == "notes") {
 		uemis_add_string(val, &dive->notes, " ");
 	} else if (tag == "u8DiveSuit") {

@@ -457,7 +457,7 @@ static void parse_weightsystem_keyvalue(void *_ws, const char *key, const std::s
 		return;
 	}
 	if (!strcmp(key, "description")) {
-		ws->description = strdup(value.c_str());
+		ws->description = value;
 		return;
 	}
 	report_error("Unknown weightsystem key/value pair (%s/%s)", key, value.c_str());
@@ -465,7 +465,7 @@ static void parse_weightsystem_keyvalue(void *_ws, const char *key, const std::s
 
 static void parse_dive_weightsystem(char *line, struct git_parser_state *state)
 {
-	weightsystem_t ws = empty_weightsystem;
+	weightsystem_t ws;
 
 	for (;;) {
 		char c;
@@ -476,7 +476,7 @@ static void parse_dive_weightsystem(char *line, struct git_parser_state *state)
 		line = parse_keyvalue_entry(parse_weightsystem_keyvalue, &ws, line, state);
 	}
 
-	add_to_weightsystem_table(&state->active_dive->weightsystems, state->active_dive->weightsystems.nr, ws);
+	state->active_dive->weightsystems.push_back(std::move(ws));
 }
 
 static int match_action(char *line, void *data,
@@ -1688,7 +1688,7 @@ static int parse_dive_entry(struct git_parser_state *state, const git_tree_entry
 		return report_error("Unable to read dive file");
 	if (*suffix)
 		state->active_dive->number = atoi(suffix + 1);
-	clear_weightsystem_table(&state->active_dive->weightsystems);
+	state->active_dive->weightsystems.clear();
 	state->o2pressure_sensor = 1;
 	for_each_line(blob, dive_parser, state);
 	git_blob_free(blob);
