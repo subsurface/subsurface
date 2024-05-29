@@ -28,13 +28,13 @@ void CompletionModelBase::divesChanged(const QVector<dive *> &, DiveField field)
 		updateModel();
 }
 
-static QStringList getCSVList(char *dive::*item)
+static QStringList getCSVList(const std::string dive::*item)
 {
 	QSet<QString> set;
 	struct dive *dive;
 	int i = 0;
 	for_each_dive (i, dive) {
-		QString str(dive->*item);
+		QString str = QString::fromStdString(dive->*item);
 		for (const QString &value: str.split(",", SKIP_EMPTY))
 			set.insert(value.trimmed());
 	}
@@ -69,7 +69,7 @@ QStringList SuitCompletionModel::getStrings()
 	struct dive *dive;
 	int i = 0;
 	for_each_dive (i, dive) {
-		QString suit(dive->suit);
+		QString suit = QString::fromStdString(dive->suit);
 		if (!list.contains(suit))
 			list.append(suit);
 	}

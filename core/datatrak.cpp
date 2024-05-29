@@ -15,6 +15,7 @@
 #include "units.h"
 #include "device.h"
 #include "file.h"
+#include "format.h"
 #include "divesite.h"
 #include "dive.h"
 #include "divelog.h"
@@ -158,16 +159,15 @@ static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_mo
 static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct divelog *log, char *maxbuf)
 {
 	int  rc, profile_length, libdc_model;
-	char *tmp_notes_str = NULL;
 	unsigned char *tmp_string1 = NULL,
 		      *locality = NULL,
 		      *dive_point = NULL,
 		      *compl_buffer,
 		      *membuf = runner;
-	char buffer[1024];
 	unsigned char tmp_1byte;
 	unsigned int tmp_2bytes;
 	unsigned long tmp_4bytes;
+	std::string tmp_notes_str;
 	char is_nitrox = 0, is_O2 = 0, is_SCR = 0;
 
 	device_data_t devdata;
@@ -304,22 +304,22 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	switch (tmp_1byte) {
 		case 1:
-			dt_dive->suit = strdup(translate("gettextFromC", "No suit"));
+			dt_dive->suit = "No suit";
 			break;
 		case 2:
-			dt_dive->suit = strdup(translate("gettextFromC", "Shorty"));
+			dt_dive->suit = "Shorty";
 			break;
 		case 3:
-			dt_dive->suit = strdup(translate("gettextFromC", "Combi"));
+			dt_dive->suit = "Combi";
 			break;
 		case 4:
-			dt_dive->suit = strdup(translate("gettextFromC", "Wet suit"));
+			dt_dive->suit = "Wet suit";
 			break;
 		case 5:
-			dt_dive->suit = strdup(translate("gettextFromC", "Semidry suit"));
+			dt_dive->suit = "Semidry suit";
 			break;
 		case 6:
-			dt_dive->suit = strdup(translate("gettextFromC", "Dry suit"));
+			dt_dive->suit = "Dry suit";
 			break;
 		default:
 			// unknown, do nothing
@@ -449,10 +449,9 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
-		snprintf(buffer, sizeof(buffer), "%s: %s\n",
+		tmp_notes_str= format_string_std("%s: %s\n",
 			 translate("gettextFromC", "Other activities"),
 			 tmp_string1);
-		tmp_notes_str = strdup(buffer);
 		free(tmp_string1);
 	}
 
@@ -462,7 +461,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
-		dt_dive->buddy = strdup((char *)tmp_string1);
+		dt_dive->buddy = (const char *)tmp_string1;
 		free(tmp_string1);
 	}
 
@@ -472,15 +471,12 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
-		int len = snprintf(buffer, sizeof(buffer), "%s%s:\n%s",
-				   tmp_notes_str ? tmp_notes_str : "",
+		dt_dive->notes = format_string_std("%s%s:\n%s",
+				   tmp_notes_str.c_str(),
 				   translate("gettextFromC", "Datatrak/Wlog notes"),
 				   tmp_string1);
-		dt_dive->notes = (char *)calloc((len +1), 1);
-		memcpy(dt_dive->notes, buffer, len);
 		free(tmp_string1);
 	}
-	free(tmp_notes_str);
 
 	/*
 	 * Alarms 1 and Alarms2 - Bit tables - Not in Subsurface, we use the profile
@@ -518,7 +514,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	libdc_model = dtrak_prepare_data(tmp_1byte, devdata);
 	if (!libdc_model)
 		report_error(translate("gettextFromC", "[Warning] Manual dive # %d\n"), dt_dive->number);
-	dt_dive->dcs[0].model = copy_string(devdata.model.c_str());
+	dt_dive->dcs[0].model = devdata.model;
 
 	/*
 	 * Air usage, unknown use. Probably allows or deny manually entering gas
@@ -602,7 +598,7 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 	    pos_viz = offset + 258,
 	    pos_tank_init = offset + 266,
 	    pos_suit = offset + 268;
-	char *wlog_notes = NULL, *wlog_suit = NULL, *buffer = NULL;
+	char *wlog_notes = NULL, *wlog_suit = NULL;
 	unsigned char *runner = (unsigned char *) wl_mem.data();
 
 	/*
@@ -614,16 +610,8 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 		(void)memcpy(wlog_notes_temp, runner + offset, NOTES_LENGTH);
 		wlog_notes = to_utf8((unsigned char *) wlog_notes_temp);
 	}
-	if (dt_dive->notes && wlog_notes) {
-		buffer = (char *)calloc (strlen(dt_dive->notes) + strlen(wlog_notes) + 1, 1);
-		sprintf(buffer, "%s%s", dt_dive->notes, wlog_notes);
-		free(dt_dive->notes);
-		dt_dive->notes = copy_string(buffer);
-	} else if (wlog_notes) {
-		dt_dive->notes = copy_string(wlog_notes);
-	}
-	free(buffer);
-	free(wlog_notes);
+	if (wlog_notes)
+		dt_dive->notes += wlog_notes;
 
 	/*
 	 * Weight in Kg * 100
@@ -665,7 +653,7 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 		wlog_suit = to_utf8((unsigned char *) wlog_suit_temp);
 	}
 	if (wlog_suit)
-		dt_dive->suit = copy_string(wlog_suit);
+		dt_dive->suit = wlog_suit;
 	free(wlog_suit);
 }
 

@@ -1301,26 +1301,21 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			k++;
 		}
 	}
-	if (d->suit != suit) {
+	if (d->suit != suit.toStdString()) {
 		diveChanged = true;
-		free(d->suit);
-		d->suit = copy_qstring(suit);
+		d->suit = suit.toStdString();
 	}
-	if (d->buddy != buddy) {
-		if (buddy.contains(",")){
+	if (d->buddy != buddy.toStdString()) {
+		if (buddy.contains(","))
 			buddy = buddy.replace(QRegularExpression("\\s*,\\s*"), ", ");
-		}
 		diveChanged = true;
-		free(d->buddy);
-		d->buddy = copy_qstring(buddy);
+		d->buddy = buddy.toStdString();
 	}
-	if (d->diveguide != diveGuide) {
-		if (diveGuide.contains(",")){
+	if (d->diveguide != diveGuide.toStdString()) {
+		if (diveGuide.contains(","))
 			diveGuide = diveGuide.replace(QRegularExpression("\\s*,\\s*"), ", ");
-		}
 		diveChanged = true;
-		free(d->diveguide);
-		d->diveguide = copy_qstring(diveGuide);
+		d->diveguide = diveGuide.toStdString();
 	}
 	// normalize the tag list we have and the one we get from the UI
 	// try hard to deal with accidental white space issues
@@ -1349,8 +1344,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	}
 	if (formatNotes(d) != notes) {
 		diveChanged = true;
-		free(d->notes);
-		d->notes = copy_qstring(notes);
+		d->notes = notes.toStdString();
 	}
 	// now that we have it all figured out, let's see what we need
 	// to update

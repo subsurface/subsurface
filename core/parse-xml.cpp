@@ -1016,8 +1016,8 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, 
 	       MATCH("divetime", duration, &dive->dcs[0].duration) ||
 	       MATCH_STATE("depth", depth, &dive->dcs[0].maxdepth) ||
 	       MATCH_STATE("depthavg", depth, &dive->dcs[0].meandepth) ||
-	       MATCH("comments", utf8_string, &dive->notes) ||
-	       MATCH("names.buddy", utf8_string, &dive->buddy) ||
+	       MATCH("comments", utf8_string_std, &dive->notes) ||
+	       MATCH("names.buddy", utf8_string_std, &dive->buddy) ||
 	       MATCH("name.country", utf8_string_std, &state->country) ||
 	       MATCH("name.city", utf8_string_std, &state->city) ||
 	       MATCH_STATE("name.place", divinglog_place, dive) ||
@@ -1309,18 +1309,18 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH_STATE("name.dive", add_dive_site, dive))
 		return;
-	if (MATCH("suit", utf8_string, &dive->suit))
+	if (MATCH("suit", utf8_string_std, &dive->suit))
 		return;
-	if (MATCH("divesuit", utf8_string, &dive->suit))
+	if (MATCH("divesuit", utf8_string_std, &dive->suit))
 		return;
-	if (MATCH("notes", utf8_string, &dive->notes))
+	if (MATCH("notes", utf8_string_std, &dive->notes))
 		return;
 	// For historic reasons, we accept dive guide as well as dive master
-	if (MATCH("diveguide", utf8_string, &dive->diveguide))
+	if (MATCH("diveguide", utf8_string_std, &dive->diveguide))
 		return;
-	if (MATCH("divemaster", utf8_string, &dive->diveguide))
+	if (MATCH("divemaster", utf8_string_std, &dive->diveguide))
 		return;
-	if (MATCH("buddy", utf8_string, &dive->buddy))
+	if (MATCH("buddy", utf8_string_std, &dive->buddy))
 		return;
 	if (MATCH("watersalinity", salinity, &dive->user_salinity))
 		return;

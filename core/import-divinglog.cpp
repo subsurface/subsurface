@@ -279,10 +279,10 @@ static int divinglog_dive(void *param, int, char **data, char **)
 		state->log->sites->find_or_create(std::string(data[2]))->add_dive(state->cur_dive.get());
 
 	if (data[3])
-		utf8_string(data[3], &state->cur_dive->buddy);
+		utf8_string_std(data[3], &state->cur_dive->buddy);
 
 	if (data[4])
-		utf8_string(data[4], &state->cur_dive->notes);
+		utf8_string_std(data[4], &state->cur_dive->notes);
 
 	if (data[5])
 		state->cur_dive->dcs[0].maxdepth.mm = lrint(permissive_strtod(data[5], NULL) * 1000);
@@ -291,7 +291,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 		state->cur_dive->dcs[0].duration.seconds = atoi(data[6]) * 60;
 
 	if (data[7])
-		utf8_string(data[7], &state->cur_dive->diveguide);
+		utf8_string_std(data[7], &state->cur_dive->diveguide);
 
 	if (data[8])
 		state->cur_dive->airtemp.mkelvin = C_to_mkelvin(atol(data[8]));
@@ -305,7 +305,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	}
 
 	if (data[11])
-		state->cur_dive->suit = strdup(data[11]);
+		state->cur_dive->suit = data[11];
 
 	/* Divinglog has following visibility options: good, medium, bad */
 	if (data[14]) {

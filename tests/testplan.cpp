@@ -486,8 +486,7 @@ void TestPlan::testMetric()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -527,8 +526,7 @@ void TestPlan::testImperial()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -567,8 +565,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -597,8 +594,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -627,8 +623,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -657,8 +652,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -693,8 +687,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -729,8 +722,7 @@ void TestPlan::testVpmbMetric100m60min()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -772,8 +764,7 @@ void TestPlan::testMultipleGases()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -797,8 +788,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -827,8 +817,7 @@ void TestPlan::testVpmbMetric100m10min()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -874,8 +863,7 @@ void TestPlan::testVpmbMetricRepeat()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -895,8 +883,7 @@ void TestPlan::testVpmbMetricRepeat()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -933,8 +920,7 @@ void TestPlan::testVpmbMetricRepeat()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 
@@ -972,8 +958,7 @@ void TestPlan::testCcrBailoutGasSelection()
 	plan(&test_deco_state, &testPlan, &dive, 0, 60, stoptable, cache, true, false);
 
 #if DEBUG
-	free(dive.notes);
-	dive.notes = NULL;
+	dive.notes.clear();
 	save_dive(stdout, &dive, false);
 #endif
 

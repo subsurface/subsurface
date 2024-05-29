@@ -328,17 +328,17 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		if (what->divesite && current_dive->dive_site)
 			text << tr("Dive site: ") << QString::fromStdString(current_dive->dive_site->name) << "\n";
 		if (what->diveguide)
-			text << tr("Dive guide: ") << current_dive->diveguide << "\n";
+			text << tr("Dive guide: ") << QString::fromStdString(current_dive->diveguide) << "\n";
 		if (what->buddy)
-			text << tr("Buddy: ") << current_dive->buddy << "\n";
+			text << tr("Buddy: ") << QString::fromStdString(current_dive->buddy) << "\n";
 		if (what->rating)
 			text << tr("Rating: ") + QString("*").repeated(current_dive->rating) << "\n";
 		if (what->visibility)
 			text << tr("Visibility: ") + QString("*").repeated(current_dive->visibility) << "\n";
 		if (what->notes)
-			text << tr("Notes:\n") << current_dive->notes << "\n";
+			text << tr("Notes:\n") << QString::fromStdString(current_dive->notes) << "\n";
 		if (what->suit)
-			text << tr("Suit: ") << current_dive->suit << "\n";
+			text << tr("Suit: ") << QString::fromStdString(current_dive->suit) << "\n";
 		if (what-> tags) {
 			text << tr("Tags: ");
 			for (const divetag *tag: current_dive->tags)

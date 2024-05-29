@@ -1427,9 +1427,9 @@ struct DiveModeVariable : public StatsVariableTemplate<StatsVariable::Type::Disc
 struct PeopleBinner : public StringBinner<PeopleBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> dive_people;
-		for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
+		for (const QString &s: QString::fromStdString(d->buddy).split(",", SKIP_EMPTY))
 			dive_people.push_back(s.trimmed());
-		for (const QString &s: QString(d->diveguide).split(",", SKIP_EMPTY))
+		for (const QString &s: QString::fromStdString(d->diveguide).split(",", SKIP_EMPTY))
 			dive_people.push_back(s.trimmed());
 		return dive_people;
 	}
@@ -1441,8 +1441,8 @@ struct PeopleVariable : public StatsVariableTemplate<StatsVariable::Type::Discre
 		return StatsTranslations::tr("People");
 	}
 	QString diveCategories(const dive *d) const override {
-		QString buddy = QString(d->buddy).trimmed();
-		QString diveguide = QString(d->diveguide).trimmed();
+		QString buddy = QString::fromStdString(d->buddy).trimmed();
+		QString diveguide = QString::fromStdString(d->diveguide).trimmed();
 		if (!buddy.isEmpty() && !diveguide.isEmpty())
 			buddy += ", ";
 		return buddy + diveguide;
@@ -1455,7 +1455,7 @@ struct PeopleVariable : public StatsVariableTemplate<StatsVariable::Type::Discre
 struct BuddyBinner : public StringBinner<BuddyBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> buddies;
-		for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
+		for (const QString &s: QString::fromStdString(d->buddy).split(",", SKIP_EMPTY))
 			buddies.push_back(s.trimmed());
 		return buddies;
 	}
@@ -1467,7 +1467,7 @@ struct BuddyVariable : public StatsVariableTemplate<StatsVariable::Type::Discret
 		return StatsTranslations::tr("Buddies");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString(d->buddy).trimmed();
+		return QString::fromStdString(d->buddy).trimmed();
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &buddy_binner };
@@ -1477,7 +1477,7 @@ struct BuddyVariable : public StatsVariableTemplate<StatsVariable::Type::Discret
 struct DiveGuideBinner : public StringBinner<DiveGuideBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> dive_guides;
-		for (const QString &s: QString(d->diveguide).split(",", SKIP_EMPTY))
+		for (const QString &s: QString::fromStdString(d->diveguide).split(",", SKIP_EMPTY))
 			dive_guides.push_back(s.trimmed());
 		return dive_guides;
 	}
@@ -1489,7 +1489,7 @@ struct DiveGuideVariable : public StatsVariableTemplate<StatsVariable::Type::Dis
 		return StatsTranslations::tr("Dive guides");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString(d->diveguide).trimmed();
+		return QString::fromStdString(d->diveguide).trimmed();
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &dive_guide_binner };
@@ -1746,7 +1746,7 @@ struct GasContentHeVariable : GasContentVariable {
 
 struct SuitBinner : public StringBinner<SuitBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
-		return { QString(d->suit) };
+		return { QString::fromStdString(d->suit) };
 	}
 };
 
@@ -1756,7 +1756,7 @@ struct SuitVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete
 		return StatsTranslations::tr("Suit type");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString(d->suit);
+		return QString::fromStdString(d->suit);
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &suit_binner };

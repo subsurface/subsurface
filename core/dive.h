@@ -29,11 +29,11 @@ struct dive {
 	struct dive_trip *divetrip = nullptr;
 	timestamp_t when = 0;
 	struct dive_site *dive_site = nullptr;
-	char *notes = nullptr;
-	char *diveguide = nullptr, *buddy = nullptr;
+	std::string notes;
+	std::string diveguide, buddy;
+	std::string suit;
 	cylinder_table cylinders;
 	weightsystem_table weightsystems;
-	char *suit = nullptr;
 	int number = 0;
 	int rating = 0;
 	int wavesize = 0, current = 0, visibility = 0, surge = 0, chill = 0; /* 0 - 5 star ratings */
