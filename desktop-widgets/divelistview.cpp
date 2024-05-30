@@ -835,18 +835,15 @@ void DiveListView::matchImagesToDives(const QStringList &fileNames)
 	// Create the data structure of pictures to be added: a list of pictures per dive.
 	std::vector<Command::PictureListForAddition> pics;
 	for (const QString &fileName: fileNames) {
-		struct dive *d;
-		picture *pic = create_picture(qPrintable(fileName), shiftDialog.amount(), shiftDialog.matchAll(), &d);
+		auto [pic, d] = create_picture(fileName.toStdString(), shiftDialog.amount(), shiftDialog.matchAll());
 		if (!pic)
 			continue;
-		PictureObj pObj(*pic);
-		free(pic);
 
-		auto it = std::find_if(pics.begin(), pics.end(), [d](const Command::PictureListForAddition &l) { return l.d == d; });
+		auto it = std::find_if(pics.begin(), pics.end(), [dive=d](const Command::PictureListForAddition &l) { return l.d == dive; });
 		if (it == pics.end())
-			pics.push_back(Command::PictureListForAddition { d, { std::move(pObj) } });
+			pics.push_back(Command::PictureListForAddition { d, { std::move(*pic) } });
 		else
-			it->pics.push_back(std::move(pObj));
+			it->pics.push_back(std::move(*pic));
 	}
 
 	if (pics.empty())

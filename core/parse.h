@@ -59,7 +59,7 @@ struct parser_state {
 	location_t cur_location;
 	struct dive_trip *cur_trip = nullptr;			/* owning */
 	struct sample *cur_sample = nullptr;			/* non-owning */
-	struct picture cur_picture { 0 };			/* owning */
+	struct picture cur_picture;				/* owning */
 	std::unique_ptr<filter_preset> cur_filter;		/* owning */
 	std::string fulltext;					/* owning */
 	std::string fulltext_string_mode;			/* owning */

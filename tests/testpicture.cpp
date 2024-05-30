@@ -24,45 +24,43 @@ void TestPicture::initTestCase()
 
 void TestPicture::addPicture()
 {
-	struct dive *dive, *dive1, *dive2;
-	struct picture *pic1, *pic2;
 	verbose = 1;
 
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test44.xml", &divelog), 0);
-	dive = get_dive(0);
+	struct dive *dive = get_dive(0);
 	// Pictures will be added to selected dives
 	dive->selected = true;
 	QVERIFY(dive != NULL);
 	// So far no picture in dive
-	QVERIFY(dive->pictures.nr == 0);
+	QVERIFY(dive->pictures.size() == 0);
 
-	pic1 = create_picture(SUBSURFACE_TEST_DATA "/dives/images/wreck.jpg", 0, false, &dive1);
-	pic2 = create_picture(SUBSURFACE_TEST_DATA "/dives/images/data_after_EOI.jpg", 0, false, &dive2);
-	QVERIFY(pic1 != NULL);
-	QVERIFY(pic2 != NULL);
-	QVERIFY(dive1 == dive);
-	QVERIFY(dive2 == dive);
+	{
+		auto [pic1, dive1] = create_picture(SUBSURFACE_TEST_DATA "/dives/images/wreck.jpg", 0, false);
+		auto [pic2, dive2] = create_picture(SUBSURFACE_TEST_DATA "/dives/images/data_after_EOI.jpg", 0, false);
+		QVERIFY(pic1);
+		QVERIFY(pic2);
+		QVERIFY(dive1 == dive);
+		QVERIFY(dive2 == dive);
 
-	add_picture(&dive->pictures, *pic1);
-	add_picture(&dive->pictures, *pic2);
-	free(pic1);
-	free(pic2);
+		add_picture(dive->pictures, std::move(*pic1));
+		add_picture(dive->pictures, std::move(*pic2));
+	}
 
 	// Now there are two pictures
-	QVERIFY(dive->pictures.nr == 2);
-	pic1 = &dive->pictures.pictures[0];
-	pic2 = &dive->pictures.pictures[1];
+	QVERIFY(dive->pictures.size() == 2);
+	const picture &pic1 = dive->pictures[0];
+	const picture &pic2 = dive->pictures[1];
 	// 1st appearing at time 21:01
 	// 2nd appearing at time 22:01
-	QVERIFY(pic1->offset.seconds == 1261);
-	QVERIFY(pic1->location.lat.udeg == 47934500);
-	QVERIFY(pic1->location.lon.udeg == 11334500);
-	QVERIFY(pic2->offset.seconds == 1321);
+	QVERIFY(pic1.offset.seconds == 1261);
+	QVERIFY(pic1.location.lat.udeg == 47934500);
+	QVERIFY(pic1.location.lon.udeg == 11334500);
+	QVERIFY(pic2.offset.seconds == 1321);
 
-	learnPictureFilename(pic1->filename, PIC1_NAME);
-	learnPictureFilename(pic2->filename, PIC2_NAME);
-	QCOMPARE(localFilePath(pic1->filename), QString(PIC1_NAME));
-	QCOMPARE(localFilePath(pic2->filename), QString(PIC2_NAME));
+	learnPictureFilename(QString::fromStdString(pic1.filename), PIC1_NAME);
+	learnPictureFilename(QString::fromStdString(pic2.filename), PIC2_NAME);
+	QCOMPARE(localFilePath(QString::fromStdString(pic1.filename)), QString(PIC1_NAME));
+	QCOMPARE(localFilePath(QString::fromStdString(pic2.filename)), QString(PIC2_NAME));
 }
 
 QTEST_GUILESS_MAIN(TestPicture)
