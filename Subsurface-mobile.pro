@@ -66,7 +66,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/parse-xml.cpp \
 	core/parse.cpp \
 	core/picture.cpp \
-	core/pictureobj.cpp \
 	core/sample.cpp \
 	core/import-suunto.cpp \
 	core/import-shearwater.cpp \
@@ -217,7 +216,6 @@ HEADERS += \
 	core/units.h \
 	core/version.h \
 	core/picture.h \
-	core/pictureobj.h \
 	core/planner.h \
 	core/divesite.h \
 	core/checkcloudconnection.h \

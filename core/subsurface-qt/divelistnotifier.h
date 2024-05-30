@@ -6,7 +6,6 @@
 #define DIVELISTNOTIFIER_H
 
 #include "core/dive.h"
-#include "core/pictureobj.h"
 
 #include <QObject>
 
@@ -133,7 +132,7 @@ signals:
 	// Picture (media) related signals
 	void pictureOffsetChanged(dive *d, QString filename, offset_t offset);
 	void picturesRemoved(dive *d, QVector<QString> filenames);
-	void picturesAdded(dive *d, QVector<PictureObj> pics);
+	void picturesAdded(dive *d, QVector<picture> pics);
 
 	// Devices related signals
 	void deviceEdited();

@@ -17,7 +17,6 @@
 //  * It needs to be dynamic, things should *flow* on it, not just appear / disappear.
 //  */
 #include "profile-widget/divelineitem.h"
-#include "core/pictureobj.h"
 #include "core/units.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
@@ -78,7 +77,7 @@ slots: // Necessary to call from QAction's signals.
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
 	void picturesRemoved(dive *d, QVector<QString> filenames);
-	void picturesAdded(dive *d, QVector<PictureObj> pics);
+	void picturesAdded(dive *d, QVector<picture> pics);
 	void pointsReset();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
@@ -163,11 +162,11 @@ private:
 	struct PictureEntry {
 		offset_t offset;
 		duration_t duration;
-		QString filename;
+		std::string filename;
 		std::unique_ptr<DivePictureItem> thumbnail;
 		// For videos with known duration, we represent the duration of the video by a line
 		std::unique_ptr<QGraphicsRectItem> durationLine;
-		PictureEntry (offset_t offsetIn, const QString &filenameIn, ProfileWidget2 *profile, bool synchronous);
+		PictureEntry (offset_t offsetIn, const std::string &filenameIn, ProfileWidget2 *profile, bool synchronous);
 		bool operator< (const PictureEntry &e) const;
 	};
 	void updateThumbnailXPos(PictureEntry &e);

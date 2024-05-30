@@ -612,15 +612,15 @@ static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct 
 	return ret;
 }
 
-static int save_one_picture(git_repository *repo, struct dir *dir, struct picture *pic)
+static int save_one_picture(git_repository *repo, struct dir *dir, const struct picture &pic)
 {
-	int offset = pic->offset.seconds;
+	int offset = pic.offset.seconds;
 	membuffer buf;
 	char sign = '+';
 	unsigned h;
 
-	show_utf8(&buf, "filename ", pic->filename, "\n");
-	put_location(&buf, &pic->location, "gps ", "\n");
+	show_utf8(&buf, "filename ", pic.filename.c_str(), "\n");
+	put_location(&buf, &pic.location, "gps ", "\n");
 
 	/* Picture loading will load even negative offsets.. */
 	if (offset < 0) {
@@ -637,11 +637,10 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 
 static int save_pictures(git_repository *repo, struct dir *dir, struct dive *dive)
 {
-	if (dive->pictures.nr > 0) {
+	if (!dive->pictures.empty()) {
 		dir = mktree(repo, dir, "Pictures");
-		FOR_EACH_PICTURE(dive) {
+		for (auto &picture: dive->pictures)
 			save_one_picture(repo, dir, picture);
-		}
 	}
 	return 0;
 }

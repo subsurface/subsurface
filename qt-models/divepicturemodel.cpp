@@ -13,13 +13,6 @@
 #include <QFileInfo>
 #include <QPainter>
 
-PictureEntry::PictureEntry(dive *dIn, const PictureObj &p) : d(dIn),
-	filename(p.filename),
-	offsetSeconds(p.offset.seconds),
-	length({ 0 })
-{
-}
-
 PictureEntry::PictureEntry(dive *dIn, const picture &p) : d(dIn),
 	filename(p.filename),
 	offsetSeconds(p.offset.seconds),
@@ -91,8 +84,8 @@ void DivePictureModel::updateDivePictures()
 
 	for (struct dive *dive: getDiveSelection()) {
 		size_t first = pictures.size();
-		FOR_EACH_PICTURE(dive)
-			pictures.push_back(PictureEntry(dive, *picture));
+		for (auto &picture: dive->pictures)
+			pictures.push_back(PictureEntry(dive, picture));
 
 		// Sort pictures of this dive by offset.
 		// Thus, the list will be sorted by (dive, offset).
@@ -197,7 +190,7 @@ void DivePictureModel::picturesRemoved(dive *d, QVector<QString> filenamesIn)
 }
 
 // Assumes that pics is sorted!
-void DivePictureModel::picturesAdded(dive *d, QVector<PictureObj> picsIn)
+void DivePictureModel::picturesAdded(dive *d, QVector<picture> picsIn)
 {
 	// We only display pictures of selected dives
 	if (!d->selected || picsIn.empty())
@@ -206,7 +199,7 @@ void DivePictureModel::picturesAdded(dive *d, QVector<PictureObj> picsIn)
 	// Convert the picture-data into our own format
 	std::vector<PictureEntry> pics;
 	pics.reserve(picsIn.size());
-	for (const PictureObj &pic: picsIn)
+	for (const picture &pic: picsIn)
 		pics.push_back(PictureEntry(d, pic));
 
 	// Insert batch-wise to avoid too many reloads

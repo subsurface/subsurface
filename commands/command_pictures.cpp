@@ -2,15 +2,16 @@
 
 #include "command_pictures.h"
 #include "core/errorhelper.h"
+#include "core/range.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/divelocationmodel.h"
 
 namespace Command {
 
-static picture *dive_get_picture(const dive *d, const QString &fn)
+static picture *dive_get_picture(dive *d, const QString &fn)
 {
-	int idx = get_picture_idx(&d->pictures, qPrintable(fn));
-	return idx < 0 ? nullptr : &d->pictures.pictures[idx];
+	int idx = get_picture_idx(d->pictures, fn.toStdString());
+	return idx < 0 ? nullptr : &d->pictures[idx];
 }
 
 SetPictureOffset::SetPictureOffset(dive *dIn, const QString &filenameIn, offset_t offsetIn) :
@@ -33,7 +34,7 @@ void SetPictureOffset::redo()
 
 	// Instead of trying to be smart, let's simply resort the picture table.
 	// If someone complains about speed, do our usual "smart" thing.
-	sort_picture_table(&d->pictures);
+	std::sort(d->pictures.begin(), d->pictures.end());
 	emit diveListNotifier.pictureOffsetChanged(d, filename, newOffset);
 	invalidate_dive_cache(d);
 }
@@ -55,10 +56,9 @@ static PictureListForDeletion filterPictureListForDeletion(const PictureListForD
 	PictureListForDeletion res;
 	res.d = p.d;
 	res.filenames.reserve(p.filenames.size());
-	for (int i = 0; i < p.d->pictures.nr; ++i) {
-		std::string fn = p.d->pictures.pictures[i].filename;
-		if (std::find(p.filenames.begin(), p.filenames.end(), fn) != p.filenames.end())
-			res.filenames.push_back(fn);
+	for (auto &pic: p.d->pictures) {
+		if (range_contains(p.filenames, pic.filename))
+			res.filenames.push_back(pic.filename);
 	}
 	return res;
 }
@@ -72,14 +72,14 @@ static std::vector<PictureListForAddition> removePictures(std::vector<PictureLis
 		PictureListForAddition toAdd;
 		toAdd.d = list.d;
 		for (const std::string &fn: list.filenames) {
-			int idx = get_picture_idx(&list.d->pictures, fn.c_str());
+			int idx = get_picture_idx(list.d->pictures, fn);
 			if (idx < 0) {
 				report_info("removePictures(): picture disappeared!");
 				continue; // Huh? We made sure that this can't happen by filtering out non-existent pictures.
 			}
 			filenames.push_back(QString::fromStdString(fn));
-			toAdd.pics.emplace_back(list.d->pictures.pictures[idx]);
-			remove_from_picture_table(&list.d->pictures, idx);
+			toAdd.pics.emplace_back(list.d->pictures[idx]);
+			list.d->pictures.erase(list.d->pictures.begin() + idx);
 		}
 		if (!toAdd.pics.empty())
 			res.push_back(toAdd);
@@ -98,17 +98,17 @@ static std::vector<PictureListForDeletion> addPictures(std::vector<PictureListFo
 	// happen, as we checked that before.
 	std::vector<PictureListForDeletion> res;
 	for (const PictureListForAddition &list: picturesToAdd) {
-		QVector<PictureObj> picsForSignal;
+		QVector<picture> picsForSignal;
 		PictureListForDeletion toRemove;
 		toRemove.d = list.d;
-		for (const PictureObj &pic: list.pics) {
-			int idx = get_picture_idx(&list.d->pictures, pic.filename.c_str()); // This should *not* already exist!
+		for (const picture &pic: list.pics) {
+			int idx = get_picture_idx(list.d->pictures, pic.filename); // This should *not* already exist!
 			if (idx >= 0) {
 				report_info("addPictures(): picture disappeared!");
 				continue; // Huh? We made sure that this can't happen by filtering out existing pictures.
 			}
 			picsForSignal.push_back(pic);
-			add_picture(&list.d->pictures, pic.toCore());
+			add_picture(list.d->pictures, pic);
 			toRemove.filenames.push_back(pic.filename);
 		}
 		if (!toRemove.filenames.empty())
@@ -164,7 +164,7 @@ AddPictures::AddPictures(const std::vector<PictureListForAddition> &pictures) : 
 		std::sort(p.pics.begin(), p.pics.end());
 
 		// Find a picture with a location
-		auto it = std::find_if(p.pics.begin(), p.pics.end(), [](const PictureObj &p) { return has_location(&p.location); });
+		auto it = std::find_if(p.pics.begin(), p.pics.end(), [](const picture &p) { return has_location(&p.location); });
 		if (it != p.pics.end()) {
 			// There is a dive with a location, we might want to modify the dive accordingly.
 			struct dive_site *ds = p.d->dive_site;

@@ -49,10 +49,9 @@ dive::dive() : dcs(1)
 	id = dive_getUniqID();
 }
 
-static void free_dive_structures(struct dive *d);
 dive::~dive()
 {
-	free_dive_structures(this);
+	fulltext_unregister(this);	// TODO: this is a layering violation. Remove.
 }
 
 dive::dive(dive &&) = default;
@@ -163,24 +162,6 @@ static void copy_dc_renumber(struct dive *d, const struct dive *s, const int cyl
 	}
 }
 
-static void free_dive_structures(struct dive *d)
-{
-	if (!d)
-		return;
-	fulltext_unregister(d);
-	/* free the strings */
-	d->buddy.clear();
-	d->diveguide.clear();
-	d->notes.clear();
-	d->suit.clear();
-	/* free tags, additional dive computers, and pictures */
-	d->tags.clear();
-	d->cylinders.clear();
-	d->weightsystems.clear();
-	clear_picture_table(&d->pictures);
-	free(d->pictures.pictures);
-}
-
 /* copy_dive makes duplicates of many components of a dive;
  * in order not to leak memory, we need to free those.
  * copy_dive doesn't play with the divetrip and forward/backward pointers
@@ -189,7 +170,7 @@ void clear_dive(struct dive *d)
 {
 	if (!d)
 		return;
-	free_dive_structures(d);
+	fulltext_unregister(d);
 	*d = dive();
 }
 
@@ -198,15 +179,11 @@ void clear_dive(struct dive *d)
  * any impact on the source */
 void copy_dive(const struct dive *s, struct dive *d)
 {
-	clear_dive(d);
-	/* simply copy things over, but then make actual copies of the
-	 * relevant components that are referenced through pointers,
-	 * so all the strings and the structured lists */
+	/* simply copy things over, but then clear fulltext cache and dive cache. */
+	fulltext_unregister(d);
 	*d = *s;
-	memset(&d->pictures, 0, sizeof(d->pictures));
 	d->full_text = NULL;
 	invalidate_dive_cache(d);
-	copy_pictures(&s->pictures, &d->pictures);
 }
 
 static void copy_dive_onedc(const struct dive *s, const struct divecomputer &sdc, struct dive *d)
@@ -2336,7 +2313,7 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	MERGE_NONZERO(res, a, b, current);
 	MERGE_NONZERO(res, a, b, surge);
 	MERGE_NONZERO(res, a, b, chill);
-	copy_pictures(a->pictures.nr ? &a->pictures : &b->pictures, &res->pictures);
+	res->pictures = !a->pictures.empty() ? a->pictures : b->pictures;
 	res->tags = taglist_merge(a->tags, b->tags);
 	/* if we get dives without any gas / cylinder information in an import, make sure
 	 * that there is at leatst one entry in the cylinder map for that dive */
