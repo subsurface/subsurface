@@ -50,7 +50,7 @@ struct dive {
 	tag_list tags;
 	std::vector<divecomputer> dcs; // Attn: pointers to divecomputers are not stable!
 	int id = 0; // unique ID for this dive
-	struct picture_table pictures = { };
+	picture_table pictures;
 	unsigned char git_id[20] = {};
 	bool notrip = false; /* Don't autogroup this dive to a trip */
 	bool selected = false;

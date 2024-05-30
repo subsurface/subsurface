@@ -98,7 +98,7 @@ extern QString (*changesCallback)();
 void uiNotification(const QString &msg);
 std::string get_changes_made();
 std::string subsurface_user_agent();
-std::string get_file_name(const char *fileName);
+std::string get_file_name(const std::string &fileName);
 std::string move_away(const std::string &path);
 
 #if defined __APPLE__
@@ -110,8 +110,7 @@ std::string move_away(const std::string &path);
 bool canReachCloudServer(struct git_info *);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
-void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName);
-const char *local_file_path(struct picture *picture);
+std::string local_file_path(const struct picture &picture);
 char *hashfile_name_string();
 enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);

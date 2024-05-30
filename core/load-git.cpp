@@ -46,7 +46,7 @@ struct git_parser_state {
 	std::string filter_constraint_range_mode;
 	bool filter_constraint_negate = false;
 	std::string filter_constraint_data;
-	struct picture active_pic = { 0 };
+	struct picture active_pic;
 	struct dive_site *active_site = nullptr;
 	std::unique_ptr<filter_preset> active_filter;
 	struct divelog *log = nullptr;
@@ -1048,7 +1048,7 @@ static void parse_settings_fingerprint(char *line, struct git_parser_state *stat
 
 static void parse_picture_filename(char *, struct git_parser_state *state)
 {
-	state->active_pic.filename = get_first_converted_string_c(state);
+	state->active_pic.filename = get_first_converted_string(state);
 }
 
 static void parse_picture_gps(char *line, struct git_parser_state *state)
@@ -1756,7 +1756,7 @@ static int parse_picture_entry(struct git_parser_state *state, const git_tree_en
 	state->active_pic.offset.seconds = offset;
 
 	for_each_line(blob, picture_parser, state);
-	add_picture(&state->active_dive->pictures, state->active_pic);
+	add_picture(state->active_dive->pictures, std::move(state->active_pic));
 	git_blob_free(blob);
 
 	/* add_picture took ownership of the data -

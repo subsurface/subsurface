@@ -188,8 +188,8 @@ void FindMovedImagesDialog::on_scanButton_clicked()
 	struct dive *dive;
 	for_each_dive (i, dive)
 		if (!onlySelected || dive->selected)
-			FOR_EACH_PICTURE(dive)
-				imagePaths.append(QString(picture->filename));
+			for (auto &picture: dive->pictures)
+				imagePaths.append(QString::fromStdString(picture.filename));
 	stopScanning = 0;
 	QFuture<QVector<Match>> future = QtConcurrent::run(
 			// Note that we capture everything but "this" by copy to avoid dangling references.

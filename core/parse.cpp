@@ -70,10 +70,10 @@ void event_end(struct parser_state *state)
 	struct divecomputer *dc = get_dc(state);
 	if (state->cur_event.type == 123) {
 		struct picture pic;
-		pic.filename = strdup(state->cur_event.name.c_str());
+		pic.filename = state->cur_event.name;
 		/* theoretically this could fail - but we didn't support multi year offsets */
 		pic.offset.seconds = state->cur_event.time.seconds;
-		add_picture(&state->cur_dive->pictures, pic); /* Takes ownership. */
+		add_picture(state->cur_dive->pictures, std::move(pic));
 	} else {
 		/* At some point gas change events did not have any type. Thus we need to add
 		 * one on import, if we encounter the type one missing.
@@ -307,7 +307,7 @@ void picture_start(struct parser_state *state)
 
 void picture_end(struct parser_state *state)
 {
-	add_picture(&state->cur_dive->pictures, state->cur_picture);
+	add_picture(state->cur_dive->pictures, std::move(state->cur_picture));
 	/* dive_add_picture took ownership, we can just clear out copy of the data */
 	state->cur_picture = picture();
 }
