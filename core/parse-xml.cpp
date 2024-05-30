@@ -340,9 +340,15 @@ static void temperature(const char *buffer, temperature_t *temperature, struct p
 static void sampletime(const char *buffer, duration_t *time)
 {
 	int i;
-	int hr, min, sec;
+	int hr, min, sec, ms;
 
-	i = sscanf(buffer, "%d:%d:%d", &hr, &min, &sec);
+	i = sscanf(buffer, "%d:%d.%d", &min, &sec, &ms);
+	if (i != 3) {
+		i = sscanf(buffer, "%d:%d:%d", &hr, &min, &sec);
+	} else {
+		hr = 0;
+		i = 4;
+	}
 	switch (i) {
 	case 1:
 		min = hr;
@@ -354,7 +360,11 @@ static void sampletime(const char *buffer, duration_t *time)
 		hr = 0;
 	/* fallthrough */
 	case 3:
+		ms = 0;
+	/* fallthrough */
+	case 4:
 		time->seconds = (hr * 60 + min) * 60 + sec;
+		time->ms = ms;
 		break;
 	default:
 		time->seconds = 0;

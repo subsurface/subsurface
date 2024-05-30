@@ -80,6 +80,7 @@ typedef int64_t timestamp_t;
 typedef struct
 {
 	int32_t seconds; // durations up to 34 yrs
+	int32_t ms; // milliseconds
 } duration_t;
 
 static const duration_t zero_duration = { 0 };

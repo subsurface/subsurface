@@ -396,6 +396,7 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 		// Mark depth as negative
 		sample = prepare_sample(dc);
 		sample->time.seconds = value.time / 1000;
+		sample->time.ms = value.time % 1000;
 		sample->depth.mm = -1;
 		// The current sample gets some sticky values
 		// that may have been around from before, these
