@@ -819,7 +819,7 @@ static dc_descriptor_t *get_data_descriptor(int data_model, dc_family_t data_fam
  * DC.  dc_family_t is certainly known *only* if it is Aladin/Memomouse family
  * otherwise it will be known after get_data_descriptor call.
  */
-static dc_status_t prepare_data(int data_model, char *serial, dc_family_t dc_fam, device_data_t *dev_data)
+static dc_status_t prepare_data(int data_model, const char *serial, dc_family_t dc_fam, device_data_t *dev_data)
 {
 	dev_data->device = NULL;
 	dev_data->context = NULL;
@@ -952,7 +952,7 @@ extern "C" void smartrak_import(const char *file, struct divelog *log)
 			if (hdr_length > 0 && hdr_length < 20)	// We have a profile but it's imported from datatrak
 				dc_fam = DC_FAMILY_UWATEC_ALADIN;
 		}
-		rc = prepare_data(dc_model, copy_string((char *)col[coln(DCNUMBER)]->bind_ptr), dc_fam, devdata);
+		rc = prepare_data(dc_model, (char *)col[coln(DCNUMBER)]->bind_ptr, dc_fam, devdata);
 		smtkdive->dc.model = copy_string(devdata->model);
 		if (rc == DC_STATUS_SUCCESS && mdb_table.get_len(coln(PROFILE))) {
 			prf_buffer = static_cast<unsigned char *>(mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length));
