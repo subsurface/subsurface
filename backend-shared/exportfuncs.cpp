@@ -280,14 +280,14 @@ void export_depths(const char *filename, bool selected_only)
 		if (selected_only && !dive->selected)
 			continue;
 
-		FOR_EACH_PICTURE (dive) {
+		for (auto &picture: dive->pictures) {
 			depth_t depth;
 			for (auto &s: dive->dcs[0].samples) {
-				if ((int32_t)s.time.seconds > picture->offset.seconds)
+				if ((int32_t)s.time.seconds > picture.offset.seconds)
 					break;
 				depth = s.depth;
 			}
-			put_format(&buf, "%s\t%.1f", picture->filename, get_depth_units(depth.mm, NULL, &unit));
+			put_format(&buf, "%s\t%.1f", picture.filename.c_str(), get_depth_units(depth.mm, NULL, &unit));
 			put_format(&buf, "%s\n", unit);
 		}
 	}

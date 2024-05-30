@@ -456,13 +456,13 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	put_format(b, "  </divecomputer>\n");
 }
 
-static void save_picture(struct membuffer *b, struct picture *pic)
+static void save_picture(struct membuffer *b, const struct picture &pic)
 {
 	put_string(b, "  <picture filename='");
-	put_quoted(b, pic->filename, true, false);
+	put_quoted(b, pic.filename.c_str(), true, false);
 	put_string(b, "'");
-	if (pic->offset.seconds) {
-		int offset = pic->offset.seconds;
+	if (pic.offset.seconds) {
+		int offset = pic.offset.seconds;
 		char sign = '+';
 		if (offset < 0) {
 			sign = '-';
@@ -470,7 +470,7 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 		}
 		put_format(b, " offset='%c%u:%02u min'", sign, FRACTION_TUPLE(offset, 60));
 	}
-	put_location(b, &pic->location, " gps='","'");
+	put_location(b, &pic.location, " gps='","'");
 
 	put_string(b, "/>\n");
 }
@@ -528,7 +528,7 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 	/* Save the dive computer data */
 	for (auto &dc: dive->dcs)
 		save_dc(b, dive, &dc);
-	FOR_EACH_PICTURE(dive)
+	for (auto &picture: dive->pictures)
 		save_picture(b, picture);
 	put_format(b, "</dive>\n");
 }

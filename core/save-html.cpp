@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <QFile>
 
 static void write_attribute(struct membuffer *b, const char *att_name, const char *value, const char *separator)
 {
@@ -31,13 +32,24 @@ static void write_attribute(struct membuffer *b, const char *att_name, const cha
 	put_format(b, "\"%s", separator);
 }
 
+static void copy_image_and_overwrite(const std::string &cfileName, const std::string &path, const std::string &cnewName)
+{
+	QString fileName = QString::fromStdString(cfileName);
+	std::string newName = path + cnewName;
+	QFile file(QString::fromStdString(newName));
+	if (file.exists())
+		file.remove();
+	if (!QFile::copy(fileName, QString::fromStdString(newName)))
+		report_info("copy of %s to %s failed", cfileName.c_str(), newName.c_str());
+}
+
 static void save_photos(struct membuffer *b, const char *photos_dir, const struct dive *dive)
 {
-	if (dive->pictures.nr <= 0)
+	if (dive->pictures.empty())
 		return;
 
 	const char *separator = "\"photos\":[";
-	FOR_EACH_PICTURE(dive) {
+	for (auto &picture: dive->pictures) {
 		put_string(b, separator);
 		separator = ", ";
 		std::string fname = get_file_name(local_file_path(picture));

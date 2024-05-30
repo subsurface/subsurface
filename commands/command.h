@@ -4,7 +4,7 @@
 
 #include "core/divelog.h"
 #include "core/equipment.h"
-#include "core/pictureobj.h"
+#include "core/picture.h"
 #include "core/taxonomy.h"
 #include <QVector>
 #include <QAction>
@@ -144,7 +144,7 @@ struct PictureListForDeletion {
 };
 struct PictureListForAddition {
 	dive *d;
-	std::vector<PictureObj> pics;
+	std::vector<picture> pics;
 };
 void setPictureOffset(dive *d, const QString &filename, offset_t offset);
 void removePictures(const std::vector<PictureListForDeletion> &pictures);

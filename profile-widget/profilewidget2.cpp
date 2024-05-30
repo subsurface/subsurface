@@ -1077,8 +1077,10 @@ void ProfileWidget2::updateDurationLine(PictureEntry &e)
 
 // This function is called asynchronously by the thumbnailer if a thumbnail
 // was fetched from disk or freshly calculated.
-void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail, duration_t duration)
+void ProfileWidget2::updateThumbnail(QString filenameIn, QImage thumbnail, duration_t duration)
 {
+	std::string filename = filenameIn.toStdString();
+
 	// Find the picture with the given filename
 	auto it = std::find_if(pictures.begin(), pictures.end(), [&filename](const PictureEntry &e)
 			       { return e.filename == filename; });
@@ -1101,7 +1103,7 @@ void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail, duratio
 }
 
 // Create a PictureEntry object and add its thumbnail to the scene if profile pictures are shown.
-ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const QString &filenameIn, ProfileWidget2 *profile, bool synchronous) : offset(offsetIn),
+ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const std::string &filenameIn, ProfileWidget2 *profile, bool synchronous) : offset(offsetIn),
 	duration(duration_t {0}),
 	filename(filenameIn),
 	thumbnail(new DivePictureItem)
@@ -1110,9 +1112,9 @@ ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const QString &fil
 	int size = Thumbnailer::defaultThumbnailSize();
 	scene->addItem(thumbnail.get());
 	thumbnail->setVisible(prefs.show_pictures_in_profile);
-	QImage img = Thumbnailer::instance()->fetchThumbnail(filename, synchronous).scaled(size, size, Qt::KeepAspectRatio);
+	QImage img = Thumbnailer::instance()->fetchThumbnail(QString::fromStdString(filename), synchronous).scaled(size, size, Qt::KeepAspectRatio);
 	thumbnail->setPixmap(QPixmap::fromImage(img));
-	thumbnail->setFileUrl(filename);
+	thumbnail->setFileUrl(QString::fromStdString(filename));
 	connect(thumbnail.get(), &DivePictureItem::removePicture, profile, &ProfileWidget2::removePicture);
 }
 
@@ -1205,13 +1207,15 @@ void ProfileWidget2::plotPicturesInternal(const struct dive *d, bool synchronous
 	if (currentState == EDIT || currentState == PLAN)
 		return;
 
+	if (!d)
+		return;
+
 	// Fetch all pictures of the dive, but consider only those that are within the dive time.
 	// For each picture, create a PictureEntry object in the pictures-vector.
 	// emplace_back() constructs an object at the end of the vector. The parameters are passed directly to the constructor.
-	// Note that FOR_EACH_PICTURE handles d being null gracefully.
-	FOR_EACH_PICTURE(d) {
-		if (picture->offset.seconds > 0 && picture->offset.seconds <= d->duration.seconds)
-			pictures.emplace_back(picture->offset, QString(picture->filename), this, synchronous);
+	for (auto &picture: d->pictures) {
+		if (picture.offset.seconds > 0 && picture.offset.seconds <= d->duration.seconds)
+			pictures.emplace_back(picture.offset, picture.filename, this, synchronous);
 	}
 	if (pictures.empty())
 		return;
@@ -1240,16 +1244,16 @@ void ProfileWidget2::picturesRemoved(dive *d, QVector<QString> fileUrls)
 	// (c.f. erase-remove idiom: https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom)
 	auto it = std::remove_if(pictures.begin(), pictures.end(), [&fileUrls](const PictureEntry &e)
 			// Check whether filename of entry is in list of provided filenames
-			{ return std::find(fileUrls.begin(), fileUrls.end(), e.filename) != fileUrls.end(); });
+			{ return std::find(fileUrls.begin(), fileUrls.end(), QString::fromStdString(e.filename)) != fileUrls.end(); });
 	pictures.erase(it, pictures.end());
 	calculatePictureYPositions();
 }
 
-void ProfileWidget2::picturesAdded(dive *d, QVector<PictureObj> pics)
+void ProfileWidget2::picturesAdded(dive *d, QVector<picture> pics)
 {
-	for (const PictureObj &pic: pics) {
+	for (const picture &pic: pics) {
 		if (pic.offset.seconds > 0 && pic.offset.seconds <= d->duration.seconds) {
-			pictures.emplace_back(pic.offset, QString::fromStdString(pic.filename), this, false);
+			pictures.emplace_back(pic.offset, pic.filename, this, false);
 			updateThumbnailXPos(pictures.back());
 		}
 	}
@@ -1302,10 +1306,12 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::pictureOffsetChanged(dive *dIn, QString filename, offset_t offset)
+void ProfileWidget2::pictureOffsetChanged(dive *dIn, QString filenameIn, offset_t offset)
 {
 	if (dIn != d)
 		return; // Picture of a different dive than the one shown changed.
+
+	std::string filename = filenameIn.toStdString(); // TODO: can we move std::string through Qt's signal/slot system?
 
 	// Calculate time in dive where picture was dropped and whether the new position is during the dive.
 	bool duringDive = d && offset.seconds > 0 && offset.seconds < d->duration.seconds;

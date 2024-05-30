@@ -1271,7 +1271,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	if (match_dc_data_fields(&dive->dcs[0], name, buf, state))
 		return;
 
-	if (MATCH("filename.picture", utf8_string, &state->cur_picture.filename))
+	if (MATCH("filename.picture", utf8_string_std, &state->cur_picture.filename))
 		return;
 	if (MATCH("offset.picture", offsettime, &state->cur_picture.offset))
 		return;

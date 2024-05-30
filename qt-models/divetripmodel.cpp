@@ -147,8 +147,8 @@ static int countPhotos(const struct dive *d)
 	const int bufperiod = 120; // A 2-min buffer period. Photos within 2 min of dive are assumed as
 	int diveTotaltime = dive_endtime(d) - d->when;	// taken during the dive, not before/after.
 	int pic_offset, icon_index = 0;
-	FOR_EACH_PICTURE (d) {			// Step through each of the pictures for this dive:
-		pic_offset = picture->offset.seconds;
+	for (auto &picture: d->pictures) {	// Step through each of the pictures for this dive:
+		pic_offset = picture.offset.seconds;
 		if  ((pic_offset < -bufperiod) | (pic_offset > diveTotaltime+bufperiod)) {
 			icon_index |= 0x02;	// If picture is before/after the dive
 						//  then set the appropriate bit ...
@@ -378,7 +378,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case PHOTOS:
 			// If there are photos, show one of the three photo icons: fish= photos during dive;
 			// sun=photos before/after dive; sun+fish=photos during dive as well as before/after
-			if (d->pictures.nr > 0)
+			if (!d->pictures.empty())
 				return getPhotoIcon(countPhotos(d));
 			break;
 		}

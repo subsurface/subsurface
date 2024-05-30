@@ -333,22 +333,10 @@ std::string move_away(const std::string &old_path)
 	return newPath;
 }
 
-std::string get_file_name(const char *fileName)
+std::string get_file_name(const std::string &fileName)
 {
-	QFileInfo fileInfo(fileName);
+	QFileInfo fileInfo(fileName.c_str());
 	return fileInfo.fileName().toStdString();
-}
-
-void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName)
-{
-	QString fileName(cfileName);
-	QString newName(path);
-	newName += cnewName;
-	QFile file(newName);
-	if (file.exists())
-		file.remove();
-	if (!QFile::copy(fileName, newName))
-		report_info("copy of %s to %s failed", cfileName, qPrintable(newName));
 }
 
 static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
@@ -1174,9 +1162,9 @@ QStringList videoExtensionFilters()
 	return filters;
 }
 
-const char *local_file_path(struct picture *picture)
+std::string local_file_path(const struct picture &picture)
 {
-	return copy_qstring(localFilePath(picture->filename));
+	return localFilePath(QString::fromStdString(picture.filename)).toStdString();
 }
 
 QString get_gas_string(struct gasmix gas)
