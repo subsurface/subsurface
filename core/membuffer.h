@@ -75,9 +75,7 @@ extern void strip_mb(struct membuffer *);
 /* The pointer obtained by mb_cstring is invalidated by any modifictation to the membuffer! */
 extern const char *mb_cstring(struct membuffer *);
 extern __printf(2, 0) void put_vformat(struct membuffer *, const char *, va_list);
-extern __printf(2, 0) void put_vformat_loc(struct membuffer *, const char *, va_list);
 extern __printf(2, 3) void put_format(struct membuffer *, const char *fmt, ...);
-extern __printf(2, 3) void put_format_loc(struct membuffer *, const char *fmt, ...);
 extern __printf(2, 0) char *add_to_string_va(char *old, const char *fmt, va_list args);
 extern __printf(2, 3) char *add_to_string(char *old, const char *fmt, ...);
 
