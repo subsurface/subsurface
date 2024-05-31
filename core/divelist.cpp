@@ -934,7 +934,7 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	struct dive_table dives_to_remove = empty_dive_table;
 	struct trip_table trips_to_add = empty_trip_table;
 	dive_site_table dive_sites_to_add;
-	struct device_table *devices_to_add = alloc_device_table();
+	device_table devices_to_add;
 
 	/* Process imported dives and generate lists of dives
 	 * to-be-added and to-be-removed */
@@ -978,16 +978,13 @@ void add_imported_dives(struct divelog *import_log, int flags)
 		divelog.sites->register_site(std::move(ds));
 
 	/* Add new devices */
-	for (i = 0; i < nr_devices(devices_to_add); i++) {
-		const struct device *dev = get_device(devices_to_add, i);
-		add_to_device_table(divelog.devices.get(), dev);
-	}
+	for (auto &dev: devices_to_add)
+		add_to_device_table(divelog.devices, dev);
 
 	/* We might have deleted the old selected dive.
 	 * Choose the newest dive as selected (if any) */
 	current_dive = divelog.dives->nr > 0 ? divelog.dives->dives[divelog.dives->nr - 1] : NULL;
 
-	free_device_table(devices_to_add);
 	free(dives_to_add.dives);
 	free(dives_to_remove.dives);
 	free(trips_to_add.trips);
@@ -1066,7 +1063,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 			    /* output parameters: */
 			    struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
 			    struct trip_table *trips_to_add, dive_site_table &sites_to_add,
-			    struct device_table *devices_to_add)
+			    device_table &devices_to_add)
 {
 	int i, j, nr, start_renumbering_at = 0;
 	struct dive_trip *trip_import, *new_trip;
@@ -1079,7 +1076,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 	clear_dive_table(dives_to_remove);
 	clear_trip_table(trips_to_add);
 	sites_to_add.clear();
-	clear_device_table(devices_to_add);
+	devices_to_add.clear();
 
 	/* Check if any of the new dives has a number. This will be
 	 * important later to decide if we want to renumber the added
@@ -1096,9 +1093,8 @@ void process_imported_dives(struct divelog *import_log, int flags,
 		return;
 
 	/* Add only the devices that we don't know about yet. */
-	for (i = 0; i < nr_devices(import_log->devices.get()); i++) {
-		const struct device *dev = get_device(import_log->devices.get(), i);
-		if (!device_exists(divelog.devices.get(), dev))
+	for (auto &dev: import_log->devices) {
+		if (!device_exists(divelog.devices, dev))
 			add_to_device_table(devices_to_add, dev);
 	}
 

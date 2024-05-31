@@ -13,7 +13,6 @@ divelog::divelog() :
 	dives(std::make_unique<dive_table>()),
 	trips(std::make_unique<trip_table>()),
 	sites(std::make_unique<dive_site_table>()),
-	devices(std::make_unique<device_table>()),
 	filter_presets(std::make_unique<filter_preset_table>()),
 	autogroup(false)
 {
@@ -55,6 +54,6 @@ void divelog::clear()
 		report_info("Warning: trip table not empty in divelog::clear()!");
 		trips->nr = 0;
 	}
-	clear_device_table(devices.get());
+	devices.clear();
 	filter_presets->clear();
 }

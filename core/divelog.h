@@ -4,18 +4,19 @@
 #define DIVELOG_H
 
 #include <memory>
+#include <vector>
 
 struct dive_table;
 struct trip_table;
 class dive_site_table;
-struct device_table;
+struct device;
 struct filter_preset_table;
 
 struct divelog {
 	std::unique_ptr<dive_table> dives;
 	std::unique_ptr<trip_table> trips;
 	std::unique_ptr<dive_site_table> sites;
-	std::unique_ptr<device_table> devices;
+	std::vector<device> devices;
 	std::unique_ptr<filter_preset_table> filter_presets;
 	bool autogroup;
 
