@@ -61,7 +61,7 @@ web]. Por favor, comenta los problemas que tengas con este programa enviando un
 mail a mailto:subsurface@subsurface-divelog.org[nuestra lista de correo] e informa de
 fallos en https://github.com/Subsurface/subsurface/issues[nuestro bugtracker].
 Para instrucciones acerca de como compilar el software y (en caso necesario)
-sus dependencias, por favor, consulta el archivo INSTALL incluido con el código
+sus dependencias, por favor, consulta el archivo INSTALL.md incluido con el código
 fuente.
 
 *Audiencia*: Buceadores recreativos, Buceadores en apnea, Buceadores técnicos,

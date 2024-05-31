@@ -59,7 +59,7 @@ het programma kunnen bij de ontwikkelaars gemeld worden via email op
 mailto:subsurface@subsurface-divelog.org[onze mailinglijst]. Fouten kunnen
 ook gemeld worden op https://github.com/Subsurface/subsurface/issues[onze bugtracker].
 Instructies hoe _Subsurface_ zelf te compileren vanuit de broncode staan ook op
-onze website en in het INSTALL bestand in de broncode.
+onze website en in het INSTALL.md bestand in de broncode.
 
 *Doelgroep*: Recreatieve duikers, Tec duikers, Apneu duikers,
 Professionele duikers.

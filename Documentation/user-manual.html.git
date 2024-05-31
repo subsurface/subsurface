@@ -460,7 +460,7 @@ the software, consult the <em>Downloads</em> page on the
 Please discuss issues with this program by sending an email to
 <a href="mailto:subsurface@subsurface-divelog.org">our mailing list</a> and report bugs at
 <a href="https://github.com/Subsurface/subsurface/issues">our bugtracker</a>.  For instructions on how to build the
-software and (if needed) its dependencies please consult the INSTALL file
+software and (if needed) its dependencies please consult the INSTALL.md file
 included with the source code.</p></div>
 <div class="paragraph"><p><strong>Audience</strong>: Recreational Scuba Divers, Free Divers, Tec Divers, Professional
 Divers</p></div>
