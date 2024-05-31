@@ -177,7 +177,7 @@ void dc_settings_start(struct parser_state *state)
 
 void dc_settings_end(struct parser_state *state)
 {
-	create_device_node(state->log->devices.get(),
+	create_device_node(state->log->devices,
 		state->cur_settings.dc.model,
 		state->cur_settings.dc.serial_nr,
 		state->cur_settings.dc.nickname);

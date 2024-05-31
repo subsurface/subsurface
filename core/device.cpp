@@ -18,42 +18,35 @@ static bool same_device(const device &dev1, const device &dev2)
 
 bool device::operator<(const device &a) const
 {
-	int diff;
-
-	diff = model.compare(a.model);
-	if (diff)
-		return diff < 0;
-
-	return serialNumber < a.serialNumber;
+	return std::tie(model, serialNumber) < std::tie(a.model, a.serialNumber);
 }
 
-const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
+const struct device *get_device_for_dc(const device_table &table, const struct divecomputer *dc)
 {
 	if (dc->model.empty() || dc->serial.empty())
 		return NULL;
 
-	const std::vector<device> &dcs = table->devices;
 	device dev { dc->model, dc->serial };
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), dev);
-	return it != dcs.end() && same_device(*it, dev) ? &*it : NULL;
+	auto it = std::lower_bound(table.begin(), table.end(), dev);
+	return it != table.end() && same_device(*it, dev) ? &*it : NULL;
 }
 
-int get_or_add_device_for_dc(struct device_table *table, const struct divecomputer *dc)
+int get_or_add_device_for_dc(device_table &table, const struct divecomputer *dc)
 {
 	if (dc->model.empty() || dc->serial.empty())
 		return -1;
 	const struct device *dev = get_device_for_dc(table, dc);
 	if (dev) {
-		auto it = std::lower_bound(table->devices.begin(), table->devices.end(), *dev);
-		return it - table->devices.begin();
+		auto it = std::lower_bound(table.begin(), table.end(), *dev);
+		return it - table.begin();
 	}
 	return create_device_node(table, dc->model, dc->serial, std::string());
 }
 
-bool device_exists(const struct device_table *device_table, const struct device *dev)
+bool device_exists(const device_table &table, const struct device &dev)
 {
-	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
-	return it != device_table->devices.end() && same_device(*it, *dev);
+	auto it = std::lower_bound(table.begin(), table.end(), dev);
+	return it != table.end() && same_device(*it, dev);
 }
 
 void device::showchanges(const std::string &n) const
@@ -66,7 +59,7 @@ void device::showchanges(const std::string &n) const
 	}
 }
 
-static int addDC(std::vector<device> &dcs, const std::string &m, const std::string &s, const std::string &n)
+int create_device_node(device_table &dcs, const std::string &m, const std::string &s, const std::string &n)
 {
 	if (m.empty() || s.empty())
 		return -1;
@@ -86,46 +79,36 @@ static int addDC(std::vector<device> &dcs, const std::string &m, const std::stri
 	}
 }
 
-int create_device_node(struct device_table *device_table, const std::string &model, const std::string &serial, const std::string &nickname)
+int add_to_device_table(device_table &device_table, const struct device &dev)
 {
-	return addDC(device_table->devices, model, serial, nickname);
+	return create_device_node(device_table, dev.model, dev.serialNumber, dev.nickName);
 }
 
-int add_to_device_table(struct device_table *device_table, const struct device *dev)
+int remove_device(device_table &table, const struct device &dev)
 {
-	return create_device_node(device_table, dev->model, dev->serialNumber, dev->nickName);
-}
-
-int remove_device(struct device_table *device_table, const struct device *dev)
-{
-	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
-	if (it != device_table->devices.end() && same_device(*it, *dev)) {
-		int idx = it - device_table->devices.begin();
-		device_table->devices.erase(it);
+	auto it = std::lower_bound(table.begin(), table.end(), dev);
+	if (it != table.end() && same_device(*it, dev)) {
+		int idx = it - table.begin();
+		table.erase(it);
 		return idx;
 	} else {
 		return -1;
 	}
 }
 
-void remove_from_device_table(struct device_table *device_table, int idx)
+void remove_from_device_table(device_table &table, int idx)
 {
-	if (idx < 0 || idx >= (int)device_table->devices.size())
+	if (idx < 0 || idx >= (int)table.size())
 		return;
-	device_table->devices.erase(device_table->devices.begin() + idx);
-}
-
-void clear_device_table(struct device_table *device_table)
-{
-	device_table->devices.clear();
+	table.erase(table.begin() + idx);
 }
 
 /* Returns whether the given device is used by a selected dive. */
-bool device_used_by_selected_dive(const struct device *dev)
+bool device_used_by_selected_dive(const struct device &dev)
 {
 	for (dive *d: getDiveSelection()) {
 		for (auto &dc: d->dcs) {
-			if (dc.deviceid == dev->deviceId)
+			if (dc.deviceid == dev.deviceId)
 				return true;
 		}
 	}
@@ -139,56 +122,12 @@ int is_default_dive_computer_device(const char *name)
 
 std::string get_dc_nickname(const struct divecomputer *dc)
 {
-	const device *existNode = get_device_for_dc(divelog.devices.get(), dc);
+	const device *existNode = get_device_for_dc(divelog.devices, dc);
 
 	if (existNode && !existNode->nickName.empty())
 		return existNode->nickName;
 	else
 		return dc->model;
-}
-
-int nr_devices(const struct device_table *table)
-{
-	return (int)table->devices.size();
-}
-
-const struct device *get_device(const struct device_table *table, int i)
-{
-	if (i < 0 || i > nr_devices(table))
-		return NULL;
-	return &table->devices[i];
-}
-
-struct device *get_device_mutable(struct device_table *table, int i)
-{
-	if (i < 0 || i > nr_devices(table))
-		return NULL;
-	return &table->devices[i];
-}
-
-std::string device_get_model(const struct device *dev)
-{
-	return dev ? dev->model : std::string();
-}
-
-std::string device_get_serial(const struct device *dev)
-{
-	return dev ? dev->serialNumber : std::string();
-}
-
-std::string device_get_nickname(const struct device *dev)
-{
-	return dev ? dev->nickName : std::string();
-}
-
-struct device_table *alloc_device_table()
-{
-	return new struct device_table;
-}
-
-void free_device_table(struct device_table *devices)
-{
-	delete devices;
 }
 
 // managing fingerprint data

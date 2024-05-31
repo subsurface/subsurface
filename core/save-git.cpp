@@ -835,19 +835,15 @@ static void save_units(void *_b)
 			   prefs.units.vertical_speed_time == units::SECONDS ? "SECONDS" : "MINUTES");
 }
 
-static void save_one_device(struct membuffer *b, const struct device *d)
+static void save_one_device(struct membuffer *b, const struct device &d)
 {
-	std::string model = device_get_model(d);
-	std::string nickname = device_get_nickname(d);
-	std::string serial = device_get_serial(d);
-
-	if (nickname.empty() || serial.empty())
+	if (d.nickName.empty() || d.serialNumber.empty())
 		return;
 
-	show_utf8(b, "divecomputerid ", model.c_str(), "");
-	put_format(b, " deviceid=%08x", calculate_string_hash(serial.c_str()));
-	show_utf8(b, " serial=", serial.c_str(), "");
-	show_utf8(b, " nickname=", nickname.c_str(), "");
+	show_utf8(b, "divecomputerid ", d.model.c_str(), "");
+	put_format(b, " deviceid=%08x", calculate_string_hash(d.serialNumber.c_str()));
+	show_utf8(b, " serial=", d.serialNumber.c_str(), "");
+	show_utf8(b, " nickname=", d.nickName.c_str(), "");
 	put_string(b, "\n");
 }
 
@@ -866,8 +862,8 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	membuffer b;
 
 	put_format(&b, "version %d\n", DATAFORMAT_VERSION);
-	for (int i = 0; i < nr_devices(divelog.devices.get()); i++)
-		save_one_device(&b, get_device(divelog.devices.get(), i));
+	for (auto &dev: divelog.devices)
+		save_one_device(&b, dev);
 	/* save the fingerprint data */
 	for (int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
 		save_one_fingerprint(&b, i);

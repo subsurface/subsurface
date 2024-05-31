@@ -990,7 +990,7 @@ static void parse_settings_divecomputerid(char *line, struct git_parser_state *s
 			break;
 		line = parse_keyvalue_entry(parse_divecomputerid_keyvalue, &id, line, state);
 	}
-	create_device_node(state->log->devices.get(), id.model.c_str(), id.serial.c_str(), id.nickname.c_str());
+	create_device_node(state->log->devices, id.model.c_str(), id.serial.c_str(), id.nickname.c_str());
 }
 
 struct fingerprint_helper {

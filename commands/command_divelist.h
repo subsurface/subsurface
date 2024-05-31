@@ -108,7 +108,7 @@ private:
 	// For redo and undo
 	DivesAndTripsToAdd	divesToAdd;
 	DivesAndSitesToRemove	divesAndSitesToRemove;
-	struct device_table	devicesToAddAndRemove;
+	device_table		devicesToAddAndRemove;
 
 	// For redo
 	std::vector<std::unique_ptr<dive_site>>	sitesToAdd;
