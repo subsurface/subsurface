@@ -407,28 +407,8 @@ void userid_stop(struct parser_state *state)
 }
 
 /*
- * Copy whitespace-trimmed string. Warning: the passed in string will be freed,
- * therefore make sure to only pass in to NULL-initialized pointers or pointers
- * to owned strings
+ * Copy whitespace-trimmed string.
  */
-void utf8_string(const char *buffer, char **res)
-{
-	free(*res);
-	while (isspace(*buffer))
-		++buffer;
-	if (!*buffer) {
-		*res = strdup("");
-		return;
-	}
-	const char *end = buffer + strlen(buffer);
-	while (isspace(end[-1]))
-		--end;
-	size_t len = end - buffer;
-	*res = (char *)malloc(len + 1);
-	memcpy(*res, buffer, len);
-	(*res)[len] = '\0';
-}
-
 void utf8_string_std(const char *buffer, std::string *res)
 {
 	while (isspace(*buffer))
