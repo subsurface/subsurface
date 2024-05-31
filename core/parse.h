@@ -59,7 +59,7 @@ struct parser_state {
 	std::unique_ptr<dive> cur_dive;				/* owning */
 	std::unique_ptr<dive_site> cur_dive_site;		/* owning */
 	location_t cur_location;
-	struct dive_trip *cur_trip = nullptr;			/* owning */
+	std::unique_ptr<dive_trip> cur_trip;			/* owning */
 	struct sample *cur_sample = nullptr;			/* non-owning */
 	struct picture cur_picture;				/* owning */
 	std::unique_ptr<filter_preset> cur_filter;		/* owning */

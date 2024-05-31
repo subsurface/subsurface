@@ -19,14 +19,8 @@
 #include "device.h"
 #include "gettext.h"
 
-parser_state::parser_state()
-{
-}
-
-parser_state::~parser_state()
-{
-	free_trip(cur_trip);
-}
+parser_state::parser_state() = default;
+parser_state::~parser_state() = default;
 
 /*
  * If we don't have an explicit dive computer,
@@ -275,7 +269,7 @@ void dive_end(struct parser_state *state)
 		return;
 	if (is_dive(state)) {
 		if (state->cur_trip)
-			add_dive_to_trip(state->cur_dive.get(), state->cur_trip);
+			add_dive_to_trip(state->cur_dive.get(), state->cur_trip.get());
 		record_dive_to_table(state->cur_dive.release(), state->log->dives.get());
 	}
 	state->cur_dive.reset();
@@ -289,7 +283,7 @@ void trip_start(struct parser_state *state)
 	if (state->cur_trip)
 		return;
 	dive_end(state);
-	state->cur_trip = alloc_trip();
+	state->cur_trip = std::make_unique<dive_trip>();
 	memset(&state->cur_tm, 0, sizeof(state->cur_tm));
 }
 
@@ -297,8 +291,7 @@ void trip_end(struct parser_state *state)
 {
 	if (!state->cur_trip)
 		return;
-	insert_trip(state->cur_trip, state->log->trips.get());
-	state->cur_trip = NULL;
+	insert_trip(state->cur_trip.release(), state->log->trips.get());
 }
 
 void picture_start(struct parser_state *state)

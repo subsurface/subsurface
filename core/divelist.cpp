@@ -693,7 +693,7 @@ void insert_dive(struct dive_table *table, struct dive *d)
 static void autogroup_dives(struct dive_table *table, struct trip_table *trip_table_arg)
 {
 	int from, to;
-	dive_trip_t *trip;
+	dive_trip *trip;
 	int i, j;
 	bool alloc;
 
@@ -1003,10 +1003,10 @@ void add_imported_dives(struct divelog *import_log, int flags)
  * Returns true if trip was merged. In this case, the trip will be
  * freed.
  */
-bool try_to_merge_trip(struct dive_trip *trip_import, struct dive_table *import_table, bool prefer_imported,
-		       /* output parameters: */
-		       struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
-		       bool *sequence_changed, int *start_renumbering_at)
+static bool try_to_merge_trip(dive_trip *trip_import, struct dive_table *import_table, bool prefer_imported,
+			      /* output parameters: */
+			      struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
+			      bool *sequence_changed, int *start_renumbering_at)
 {
 	int i;
 	struct dive_trip *trip_old;
@@ -1066,7 +1066,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 			    device_table &devices_to_add)
 {
 	int i, j, nr, start_renumbering_at = 0;
-	struct dive_trip *trip_import, *new_trip;
+	dive_trip *new_trip;
 	bool sequence_changed = false;
 	bool new_dive_has_number = false;
 	bool last_old_dive_is_numbered;
@@ -1141,7 +1141,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 	 * will be imported so do a simple n*m loop until someone complains.
 	 */
 	for (i = 0; i < import_log->trips->nr; i++) {
-		trip_import = import_log->trips->trips[i];
+		dive_trip *trip_import = import_log->trips->trips[i];
 		if ((flags & IMPORT_MERGE_ALL_TRIPS) || trip_import->autogen) {
 			if (try_to_merge_trip(trip_import, import_log->dives.get(), flags & IMPORT_PREFER_IMPORTED, dives_to_add, dives_to_remove,
 					      &sequence_changed, &start_renumbering_at))

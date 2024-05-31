@@ -7,7 +7,6 @@
 #include "core/divesite.h"
 #include "core/trip.h"
 #include "core/dive.h"
-#include "core/owning_ptrs.h"
 
 #include <QUndoCommand>
 #include <QCoreApplication>	// For Q_DECLARE_TR_FUNCTIONS
@@ -106,9 +105,8 @@
 // 1) Dive 2 was deleted with the "add dive 2" command, because that was the owner.
 // 2) Dive 1 was not deleted, because it is owned by the backend.
 //
-// To take ownership of dives/trips, the OnwingDivePtr and OwningTripPtr types are used. These
-// are simply derived from std::unique_ptr and therefore use well-established semantics.
-// Expressed in C-terms: std::unique_ptr<T> is exactly the same as T* with the following
+// To take ownership of dives/trips, std::unique_ptr<>s are used.
+// Expressed in C-terms: std::unique_ptr<T> is the same as T* with the following
 // twists:
 // 1) default-initialized to NULL.
 // 2) if it goes out of scope (local scope or containing object destroyed), it does:
@@ -122,8 +120,8 @@
 // move-semantics and Qt's containers are incompatible, owing to COW semantics.
 //
 // Usage:
-//	OwningDivePtr dPtr;			// Initialize to null-state: not owning any dive.
-//	OwningDivePtr dPtr(dive);		// Take ownership of dive (which is of type struct dive *).
+//	std::unique_ptr<dive> dPtr;		// Initialize to null-state: not owning any dive.
+//	std::unique_ptr<dive> dPtr(dive);	// Take ownership of dive (which is of type struct dive *).
 //						// If dPtr goes out of scope, the dive will be freed with free_dive().
 //	struct dive *d = dPtr.release();	// Give up ownership of dive. dPtr is reset to null.
 //	struct dive *d = d.get();		// Get pointer dive, but don't release ownership.
@@ -131,10 +129,10 @@
 //	dPtr.reset();				// Delete currently owned dive and reset to null.
 //	dPtr2 = dPtr1;				// Fails to compile.
 //	dPtr2 = std::move(dPtr1);		// dPtr2 takes ownership, dPtr1 is reset to null.
-//	OwningDivePtr fun();
+//	std::unique_ptr<dive> fun();
 //	dPtr1 = fun();				// Compiles. Simply put: the compiler knows that the result of fun() will
 //						// be trashed and therefore can be moved-from.
-//	std::vector<OwningDivePtr> v:		// Define an empty vector of owning pointers.
+//	std::vector<std::unique_ptr<dive>> v:	// Define an empty vector of owning pointers.
 //	v.emplace_back(dive);			// Take ownership of dive and add at end of vector
 //						// If the vector goes out of scope, all dives will be freed with free_dive().
 //	v.clear(v);				// Reset the vector to zero length. If the elements weren't release()d,
