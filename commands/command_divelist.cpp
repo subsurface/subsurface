@@ -481,7 +481,7 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 	dive_site_table sites_to_add;
 	process_imported_dives(log, flags,
 			       &dives_to_add, &dives_to_remove, &trips_to_add,
-			       sites_to_add, &devicesToAddAndRemove);
+			       sites_to_add, devicesToAddAndRemove);
 
 	// Add trips to the divesToAdd.trips structure
 	divesToAdd.trips.reserve(trips_to_add.nr);
@@ -548,8 +548,8 @@ void ImportDives::redoit()
 	divesAndSitesToRemove = std::move(divesAndSitesToRemoveNew);
 
 	// Add devices
-	for (const device &dev: devicesToAddAndRemove.devices)
-		add_to_device_table(divelog.devices.get(), &dev);
+	for (const device &dev: devicesToAddAndRemove)
+		add_to_device_table(divelog.devices, dev);
 
 	// Add new filter presets
 	for (auto &it: filterPresetsToAdd) {
@@ -576,8 +576,8 @@ void ImportDives::undoit()
 	setSelection(selection, currentDive, -1);
 
 	// Remove devices
-	for (const device &dev: devicesToAddAndRemove.devices)
-		remove_device(divelog.devices.get(), &dev);
+	for (const device &dev: devicesToAddAndRemove)
+		remove_device(divelog.devices, dev);
 
 	// Remove filter presets. Do this in reverse order.
 	for (auto it = filterPresetsToRemove.rbegin(); it != filterPresetsToRemove.rend(); ++it) {

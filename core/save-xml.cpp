@@ -568,21 +568,17 @@ static void save_trip(struct membuffer *b, dive_trip_t *trip, bool anonymize)
 	put_format(b, "</trip>\n");
 }
 
-static void save_one_device(struct membuffer *b, const struct device *d)
+static void save_one_device(struct membuffer *b, const struct device &d)
 {
-	std::string model = device_get_model(d);
-	std::string nickname = device_get_nickname(d);
-	std::string serial_nr = device_get_serial(d);
-
 	/* Nicknames that are empty or the same as the device model are not interesting */
-	if (nickname.empty() || serial_nr.empty() || model == nickname)
+	if (d.nickName.empty() || d.serialNumber.empty() || d.model == d.nickName)
 		return;
 
 	put_format(b, "<divecomputerid");
-	show_utf8(b, model.c_str(), " model='", "'", 1);
-	put_format(b, " deviceid='%08x'", calculate_string_hash(serial_nr.c_str()));
-	show_utf8(b, serial_nr.c_str(), " serial='", "'", 1);
-	show_utf8(b, nickname.c_str(), " nickname='", "'", 1);
+	show_utf8(b, d.model.c_str(), " model='", "'", 1);
+	put_format(b, " deviceid='%08x'", calculate_string_hash(d.serialNumber.c_str()));
+	show_utf8(b, d.serialNumber.c_str(), " serial='", "'", 1);
+	show_utf8(b, d.nickName.c_str(), " nickname='", "'", 1);
 	put_format(b, "/>\n");
 }
 
@@ -655,8 +651,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", DATAFORMAT_VERSION);
 
 	/* save the dive computer nicknames, if any */
-	for (int i = 0; i < nr_devices(divelog.devices.get()); i++) {
-		const struct device *d = get_device(divelog.devices.get(), i);
+	for (auto &d: divelog.devices) {
 		if (!select_only || device_used_by_selected_dive(d))
 			save_one_device(b, d);
 	}
