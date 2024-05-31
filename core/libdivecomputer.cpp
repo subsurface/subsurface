@@ -1010,13 +1010,11 @@ static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, cons
  */
 static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 {
-	const unsigned char *raw_data;
-
 	if (devdata->force_download)
 		return;
 
 	/* first try our in memory data - raw_data is owned by the table, the dc_device_set_fingerprint function copies the data */
-	int fsize = get_fingerprint_data(&fingerprint_table, calculate_string_hash(devdata->model.c_str()), devdata->devinfo.serial, &raw_data);
+	auto [fsize, raw_data] = get_fingerprint_data(fingerprints, calculate_string_hash(devdata->model.c_str()), devdata->devinfo.serial);
 	if (fsize) {
 		if (verbose)
 			dev_info(devdata, "... found fingerprint in dive table");
@@ -1538,7 +1536,7 @@ std::string do_libdivecomputer_import(device_data_t *data)
 	 */
 	save_fingerprint(data);
 	if (data->fingerprint && data->fdiveid)
-		create_fingerprint_node(&fingerprint_table, calculate_string_hash(data->model.c_str()), data->devinfo.serial,
+		create_fingerprint_node(fingerprints, calculate_string_hash(data->model.c_str()), data->devinfo.serial,
 					data->fingerprint, data->fsize, data->fdeviceid, data->fdiveid);
 	free(data->fingerprint);
 	data->fingerprint = NULL;
