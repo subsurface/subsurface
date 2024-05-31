@@ -579,7 +579,7 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VE
 		# regardless of whether we do a fat build or not, let's do the 'native' build here
 		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/../qtlocation/build/include/QtLocation/6.3.0" QMAKE_APPLE_DEVICE_ARCHS="$(uname -m)" ../googlemaps.pro
 	else
-		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
+		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" ../googlemaps.pro
 	fi
 	make -j4
 	if [ "$PLATFORM" = Darwin ]  && [[ $QT_VERSION == 6* ]] && [[ $ARCHS == *" "* ]] ; then
