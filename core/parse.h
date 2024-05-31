@@ -12,9 +12,11 @@
 #include <sqlite3.h>
 #include <string>
 #include <time.h>
+#include <vector>
 
 struct xml_params;
 struct divelog;
+struct fingerprint_record;
 
 /*
  * Dive info as it is being built up..
@@ -82,7 +84,8 @@ struct parser_state {
 	struct { std::string key; std::string value; } cur_extra_data;
 	struct units xml_parsing_units;
 	struct divelog *log = nullptr;				/* non-owning */
-	struct fingerprint_table *fingerprints = nullptr;	/* non-owning */
+	std::vector<fingerprint_record> *fingerprints = nullptr;
+								/* non-owning */
 
 	sqlite3 *sql_handle = nullptr;				/* for SQL based parsers */
 	bool event_active = false;
