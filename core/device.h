@@ -3,6 +3,7 @@
 #define DEVICE_H
 
 #include <stdint.h>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -20,9 +21,6 @@ struct device {
 
 using device_table = std::vector<device>;
 
-// global device table
-extern struct fingerprint_table fingerprint_table;
-
 extern int create_device_node(device_table &table, const std::string &model, const std::string &serial, const std::string &nickname);
 std::string get_dc_nickname(const struct divecomputer *dc);
 extern bool device_used_by_selected_dive(const struct device &dev);
@@ -34,20 +32,29 @@ extern int add_to_device_table(device_table &table, const struct device &dev); /
 extern int remove_device(device_table &table, const struct device &dev); // returns index or -1 if not found
 extern void remove_from_device_table(device_table &table, int idx);
 
-// create fingerprint entry - raw data remains owned by caller
-extern void create_fingerprint_node(struct fingerprint_table *table, uint32_t model, uint32_t serial,
-				   const unsigned char *raw_data, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid);
-extern void create_fingerprint_node_from_hex(struct fingerprint_table *table, uint32_t model, uint32_t serial,
-					    const char *hex_data, uint32_t fdeviceid, uint32_t fdiveid);
-// look up the fingerprint for model/serial - returns the number of bytes in the fingerprint; memory owned by the table
-extern unsigned int get_fingerprint_data(const struct fingerprint_table *table, uint32_t model, uint32_t serial, const unsigned char **fp_out);
+struct fingerprint_record {
+	bool operator<(const fingerprint_record &a) const;
+	uint32_t       model;     // model and libdivecomputer serial number to
+	uint32_t       serial;    //    look up the fingerprint
+	std::unique_ptr<unsigned char[]> raw_data;  // fingerprint data as provided by libdivecomputer
+	unsigned int   fsize;     // size of raw fingerprint data
+	unsigned int   fdeviceid; // corresponding deviceid
+	unsigned int   fdiveid;   // corresponding diveid
+	std::string get_data() const;	// As hex-string
+};
 
-// access the fingerprint data from C
-extern int nr_fingerprints(struct fingerprint_table *table);
-extern uint32_t fp_get_model(struct fingerprint_table *table, unsigned int i);
-extern uint32_t fp_get_serial(struct fingerprint_table *table, unsigned int i);
-extern uint32_t fp_get_deviceid(struct fingerprint_table *table, unsigned int i);
-extern uint32_t fp_get_diveid(struct fingerprint_table *table, unsigned int i);
+using fingerprint_table = std::vector<fingerprint_record>;
+
+// global device table
+extern fingerprint_table fingerprints;
+
+// create fingerprint entry - raw data remains owned by caller
+extern void create_fingerprint_node(fingerprint_table &table, uint32_t model, uint32_t serial,
+				   const unsigned char *raw_data, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid);
+extern void create_fingerprint_node_from_hex(fingerprint_table &table, uint32_t model, uint32_t serial,
+					    const std::string &hex_data, uint32_t fdeviceid, uint32_t fdiveid);
+// look up the fingerprint for model/serial - returns the number of bytes in the fingerprint; memory owned by the table
+extern std::pair <int, const unsigned char *> get_fingerprint_data(const fingerprint_table &table, uint32_t model, uint32_t serial);
 
 extern int is_default_dive_computer_device(const char *);
 
@@ -55,21 +62,5 @@ typedef void (*device_callback_t)(const char *name, void *userdata);
 
 extern int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport);
 
-struct fingerprint_record {
-	bool operator<(const fingerprint_record &a) const;
-	uint32_t       model;     // model and libdivecomputer serial number to
-	uint32_t       serial;    //    look up the fingerprint
-	unsigned char *raw_data;  // fingerprint data as provided by libdivecomputer
-	unsigned int   fsize;     // size of raw fingerprint data
-	unsigned int   fdeviceid; // corresponding deviceid
-	unsigned int   fdiveid;   // corresponding diveid
-};
-
-struct fingerprint_table {
-	// Keep the fingerprint records in a vector sorted by (model, serial) - these are uint32_t here
-	std::vector<fingerprint_record> fingerprints;
-};
-
-std::string fp_get_data(struct fingerprint_table *table, unsigned int i);
 
 #endif // DEVICE_H

@@ -847,14 +847,10 @@ static void save_one_device(struct membuffer *b, const struct device &d)
 	put_string(b, "\n");
 }
 
-static void save_one_fingerprint(struct membuffer *b, int i)
+static void save_one_fingerprint(struct membuffer *b, const fingerprint_record &fp)
 {
 	put_format(b, "fingerprint model=%08x serial=%08x deviceid=%08x diveid=%08x data=\"%s\"\n",
-		   fp_get_model(&fingerprint_table, i),
-		   fp_get_serial(&fingerprint_table, i),
-		   fp_get_deviceid(&fingerprint_table, i),
-		   fp_get_diveid(&fingerprint_table, i),
-		   fp_get_data(&fingerprint_table, i).c_str());
+		   fp.model, fp.serial, fp.fdeviceid, fp.fdiveid, fp.get_data().c_str());
 }
 
 static void save_settings(git_repository *repo, struct dir *tree)
@@ -865,8 +861,8 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	for (auto &dev: divelog.devices)
 		save_one_device(&b, dev);
 	/* save the fingerprint data */
-	for (int i = 0; i < nr_fingerprints(&fingerprint_table); i++)
-		save_one_fingerprint(&b, i);
+	for (auto &fp: fingerprints)
+		save_one_fingerprint(&b, fp);
 
 	cond_put_format(divelog.autogroup, &b, "autogroup\n");
 	save_units(&b);

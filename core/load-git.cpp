@@ -1042,8 +1042,8 @@ static void parse_settings_fingerprint(char *line, struct git_parser_state *stat
 	}
 	if (verbose > 1)
 		report_info("fingerprint %08x %08x %08x %08x %s\n", fph.model, fph.serial, fph.fdeviceid, fph.fdiveid, fph.hex_data.c_str());
-	create_fingerprint_node_from_hex(&fingerprint_table, fph.model, fph.serial,
-					 fph.hex_data.c_str(), fph.fdeviceid, fph.fdiveid);
+	create_fingerprint_node_from_hex(fingerprints, fph.model, fph.serial,
+					 fph.hex_data, fph.fdeviceid, fph.fdiveid);
 }
 
 static void parse_picture_filename(char *, struct git_parser_state *state)

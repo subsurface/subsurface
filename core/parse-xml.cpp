@@ -1749,7 +1749,7 @@ int parse_xml_buffer(const char *url, const char *buffer, int, struct divelog *l
 	struct parser_state state;
 
 	state.log = log;
-	state.fingerprints = &fingerprint_table; // simply use the global table for now
+	state.fingerprints = &fingerprints; // simply use the global table for now
 	doc = xmlReadMemory(res, strlen(res), url, NULL, XML_PARSE_HUGE);
 	if (!doc)
 		doc = xmlReadMemory(res, strlen(res), url, "latin1", XML_PARSE_HUGE);

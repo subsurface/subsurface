@@ -8,7 +8,7 @@
 #include "selection.h"
 #include "core/settings/qPrefDiveComputer.h"
 
-struct fingerprint_table fingerprint_table;
+fingerprint_table fingerprints;
 
 static bool same_device(const device &dev1, const device &dev2)
 {
@@ -133,95 +133,55 @@ std::string get_dc_nickname(const struct divecomputer *dc)
 // managing fingerprint data
 bool fingerprint_record::operator<(const fingerprint_record &a) const
 {
-	if (model == a.model)
-		return serial < a.serial;
-	return model < a.model;
+	return std::tie(model, serial) < std::tie(a.model, a.serial);
 }
 
 // annoyingly, the Cressi Edy doesn't support a serial number (it's always 0), but still uses fingerprints
 // so we can't bail on the serial number being 0
-unsigned int get_fingerprint_data(const struct fingerprint_table *table, uint32_t model, uint32_t serial, const unsigned char **fp_out)
+std::pair<int, const unsigned char *> get_fingerprint_data(const fingerprint_table &table, uint32_t model, uint32_t serial)
 {
-	if (model == 0 || fp_out == nullptr)
-		return 0;
+	if (model == 0)
+		return { 0, nullptr };
 	struct fingerprint_record fpr = { model, serial };
-	auto it = std::lower_bound(table->fingerprints.begin(), table->fingerprints.end(), fpr);
-	if (it != table->fingerprints.end() && it->model == model && it->serial == serial) {
+	auto it = std::lower_bound(table.begin(), table.end(), fpr);
+	if (it != table.end() && it->model == model && it->serial == serial) {
 		// std::lower_bound gets us the first element that isn't smaller than what we are looking
 		// for - so if one is found, we still need to check for equality
-		if (has_dive(it->fdeviceid, it->fdiveid)) {
-			*fp_out = it->raw_data;
-			return it->fsize;
-		}
+		if (has_dive(it->fdeviceid, it->fdiveid))
+			return { it->fsize, it->raw_data.get() };
 	}
-	return 0;
+	return { 0, nullptr };
 }
 
-void create_fingerprint_node(struct fingerprint_table *table, uint32_t model, uint32_t serial,
-				       const unsigned char *raw_data_in, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid)
+void create_fingerprint_node(fingerprint_table &table, uint32_t model, uint32_t serial,
+			     const unsigned char *raw_data_in, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid)
 {
 	// since raw data can contain \0 we copy this manually, not as string
-	unsigned char *raw_data = (unsigned char *)malloc(fsize);
-	if (!raw_data)
-		return;
-	memcpy(raw_data, raw_data_in, fsize);
+	auto raw_data = std::make_unique<unsigned char []>(fsize);
+	std::copy(raw_data_in, raw_data_in + fsize, raw_data.get());
 
-	struct fingerprint_record fpr = { model, serial, raw_data, fsize, fdeviceid, fdiveid };
-	auto it = std::lower_bound(table->fingerprints.begin(), table->fingerprints.end(), fpr);
-	if (it != table->fingerprints.end() && it->model == model && it->serial == serial) {
+	struct fingerprint_record fpr = { model, serial, std::move(raw_data), fsize, fdeviceid, fdiveid };
+	auto it = std::lower_bound(table.begin(), table.end(), fpr);
+	if (it != table.end() && it->model == model && it->serial == serial) {
 		// std::lower_bound gets us the first element that isn't smaller than what we are looking
 		// for - so if one is found, we still need to check for equality - and then we
 		// can update the existing entry; first we free the memory for the stored raw data
-		free(it->raw_data);
 		it->fdeviceid = fdeviceid;
 		it->fdiveid = fdiveid;
-		it->raw_data = raw_data;
+		it->raw_data = std::move(fpr.raw_data);
 		it->fsize = fsize;
 	} else {
 		// insert a new one
-		table->fingerprints.insert(it, fpr);
+		table.insert(it, std::move(fpr));
 	}
 }
 
-void create_fingerprint_node_from_hex(struct fingerprint_table *table, uint32_t model, uint32_t serial,
-						const char *hex_data, uint32_t fdeviceid, uint32_t fdiveid)
+void create_fingerprint_node_from_hex(fingerprint_table &table, uint32_t model, uint32_t serial,
+						const std::string &hex_data, uint32_t fdeviceid, uint32_t fdiveid)
 {
-	QByteArray raw = QByteArray::fromHex(hex_data);
+	QByteArray raw = QByteArray::fromHex(hex_data.c_str());
 	create_fingerprint_node(table, model, serial,
 				(const unsigned char *)raw.constData(), raw.size(), fdeviceid, fdiveid);
-}
-
-int nr_fingerprints(struct fingerprint_table *table)
-{
-	return table->fingerprints.size();
-}
-
-uint32_t fp_get_model(struct fingerprint_table *table, unsigned int i)
-{
-	if (!table || i >= table->fingerprints.size())
-		return 0;
-	return table->fingerprints[i].model;
-}
-
-uint32_t fp_get_serial(struct fingerprint_table *table, unsigned int i)
-{
-	if (!table || i >= table->fingerprints.size())
-		return 0;
-	return table->fingerprints[i].serial;
-}
-
-uint32_t fp_get_deviceid(struct fingerprint_table *table, unsigned int i)
-{
-	if (!table || i >= table->fingerprints.size())
-		return 0;
-	return table->fingerprints[i].fdeviceid;
-}
-
-uint32_t fp_get_diveid(struct fingerprint_table *table, unsigned int i)
-{
-	if (!table || i >= table->fingerprints.size())
-		return 0;
-	return table->fingerprints[i].fdiveid;
 }
 
 static char to_hex_digit(unsigned char d)
@@ -229,15 +189,12 @@ static char to_hex_digit(unsigned char d)
 	return d <= 9 ? d + '0' : d - 10 + 'a';
 }
 
-std::string fp_get_data(struct fingerprint_table *table, unsigned int i)
+std::string fingerprint_record::get_data() const
 {
-	if (!table || i >= table->fingerprints.size())
-		return std::string();
-	struct fingerprint_record *fpr = &table->fingerprints[i];
-	std::string res(fpr->fsize * 2, ' ');
-	for (unsigned int i = 0; i < fpr->fsize; ++i) {
-		res[2 * i] = to_hex_digit((fpr->raw_data[i] >> 4) & 0xf);
-		res[2 * i + 1] = to_hex_digit(fpr->raw_data[i] & 0xf);
+	std::string res(fsize * 2, ' ');
+	for (unsigned int i = 0; i < fsize; ++i) {
+		res[2 * i] = to_hex_digit((raw_data[i] >> 4) & 0xf);
+		res[2 * i + 1] = to_hex_digit(raw_data[i] & 0xf);
 	}
 	return res;
 }

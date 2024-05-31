@@ -162,10 +162,10 @@ void fingerprint_settings_start(struct parser_state *state)
 
 void fingerprint_settings_end(struct parser_state *state)
 {
-	create_fingerprint_node_from_hex(state->fingerprints,
+	create_fingerprint_node_from_hex(*state->fingerprints,
 			state->cur_settings.fingerprint.model,
 			state->cur_settings.fingerprint.serial,
-			state->cur_settings.fingerprint.data.c_str(),
+			state->cur_settings.fingerprint.data,
 			state->cur_settings.fingerprint.fdeviceid,
 			state->cur_settings.fingerprint.fdiveid);
 }
