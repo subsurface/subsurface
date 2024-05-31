@@ -1752,7 +1752,7 @@ static void merge_temperatures(struct dive *res, const struct dive *a, const str
  */
 static struct dive_trip *get_preferred_trip(const struct dive *a, const struct dive *b)
 {
-	dive_trip_t *atrip, *btrip;
+	dive_trip *atrip, *btrip;
 
 	/* If only one dive has a trip, choose that */
 	atrip = a->divetrip;
@@ -1769,13 +1769,13 @@ static struct dive_trip *get_preferred_trip(const struct dive *a, const struct d
 		return atrip;
 
 	/* Otherwise, look at the trip data and pick the "better" one */
-	if (!atrip->location)
+	if (atrip->location.empty())
 		return btrip;
-	if (!btrip->location)
+	if (btrip->location.empty())
 		return atrip;
-	if (!atrip->notes)
+	if (atrip->notes.empty())
 		return btrip;
-	if (!btrip->notes)
+	if (btrip->notes.empty())
 		return atrip;
 
 	/*

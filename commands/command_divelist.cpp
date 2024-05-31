@@ -25,7 +25,7 @@ static void remove_trip_from_backend(dive_trip *trip)
 // If the trip the dive belongs to becomes empty, it is removed and added to the tripsToAdd vector.
 // It is crucial that dives are added in reverse order of deletion, so that the indices are correctly
 // set and that the trips are added before they are used!
-DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &tripsToAdd)
+DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<std::unique_ptr<dive_trip>> &tripsToAdd)
 {
 	// If the dive was the current dive, reset the current dive. The calling
 	// command is responsible of finding a new dive.
@@ -124,7 +124,7 @@ void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function 
 DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSitesToDelete)
 {
 	std::vector<DiveToAdd> divesToAdd;
-	std::vector<OwningTripPtr> tripsToAdd;
+	std::vector<std::unique_ptr<dive_trip>> tripsToAdd;
 	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 	divesToAdd.reserve(divesAndSitesToDelete.dives.size());
 	sitesToAdd.reserve(divesAndSitesToDelete.sites.size());
@@ -159,7 +159,7 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
 		// Check if this trip is supposed to be deleted, by checking if it was marked as "add it".
 		bool deleteTrip = trip &&
-				  std::find_if(tripsToAdd.begin(), tripsToAdd.end(), [trip](const OwningTripPtr &ptr)
+				  std::find_if(tripsToAdd.begin(), tripsToAdd.end(), [trip](const std::unique_ptr<dive_trip> &ptr)
 					       { return ptr.get() == trip; }) != tripsToAdd.end();
 		emit diveListNotifier.divesDeleted(trip, deleteTrip, divesInTrip);
 	});
@@ -209,7 +209,7 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	// Remember the pointers so that we can later check if a trip was newly added
 	std::vector<dive_trip *> addedTrips;
 	addedTrips.reserve(toAdd.trips.size());
-	for (OwningTripPtr &trip: toAdd.trips) {
+	for (std::unique_ptr<dive_trip> &trip: toAdd.trips) {
 		addedTrips.push_back(trip.get());
 		insert_trip(trip.release(), divelog.trips.get()); // Return ownership to backend
 	}
@@ -260,14 +260,14 @@ static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 // passed-in structure. This means that calling the function twice on the same
 // object is a no-op concerning the dive. If the old trip was deleted from the
 // core, an owning pointer to the removed trip is returned, otherwise a null pointer.
-static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
+static std::unique_ptr<dive_trip> moveDiveToTrip(DiveToTrip &diveToTrip)
 {
 	// Firstly, check if we move to the same trip and bail if this is a no-op.
 	if (diveToTrip.trip == diveToTrip.dive->divetrip)
 		return {};
 
 	// Remove from old trip
-	OwningTripPtr res;
+	std::unique_ptr<dive_trip> res;
 
 	// Remove dive from trip - if this is the last dive in the trip, remove the whole trip.
 	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive);
@@ -298,7 +298,7 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	createdTrips.reserve(dives.tripsToAdd.size());
 
 	// First, bring back the trip(s)
-	for (OwningTripPtr &trip: dives.tripsToAdd) {
+	for (std::unique_ptr<dive_trip> &trip: dives.tripsToAdd) {
 		dive_trip *t = trip.release();	// Give up ownership
 		createdTrips.push_back(t);
 		insert_trip(t, divelog.trips.get());	// Return ownership to backend
@@ -306,7 +306,7 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	dives.tripsToAdd.clear();
 
 	for (DiveToTrip &dive: dives.divesToMove) {
-		OwningTripPtr tripToAdd = moveDiveToTrip(dive);
+		std::unique_ptr<dive_trip> tripToAdd = moveDiveToTrip(dive);
 		// register trips that we'll have to readd
 		if (tripToAdd)
 			dives.tripsToAdd.push_back(std::move(tripToAdd));
@@ -350,7 +350,7 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 				  std::find_if(divesMoved.begin() + j, divesMoved.end(), // Is this the last occurence of "from"?
 					       [from](const DiveMoved &entry) { return entry.from == from; }) == divesMoved.end() &&
 				  std::find_if(dives.tripsToAdd.begin(), dives.tripsToAdd.end(), // Is "from" in tripsToAdd?
-					       [from](const OwningTripPtr &trip) { return trip.get() == from; }) != dives.tripsToAdd.end();
+					       [from](const std::unique_ptr<dive_trip> &trip) { return trip.get() == from; }) != dives.tripsToAdd.end();
 		// Check if the to-trip has to be created. For this purpose, we saved an array of trips to be created.
 		bool createTo = false;
 		if (to) {
@@ -417,7 +417,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 				   // on dive-addition.
 
 	// If we alloc a new-trip for autogrouping, get an owning pointer to it.
-	OwningTripPtr allocTrip;
+	std::unique_ptr<dive_trip> allocTrip;
 	dive_trip *trip = divePtr->divetrip;
 	dive_site *site = divePtr->dive_site;
 	// We have to delete the pointers to trip and site, because this would prevent the core from adding to the

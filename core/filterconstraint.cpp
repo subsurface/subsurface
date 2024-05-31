@@ -837,7 +837,7 @@ static bool has_locations(const filter_constraint &c, const struct dive *d)
 {
 	QStringList diveLocations;
 	if (d->divetrip)
-		diveLocations.push_back(QString(d->divetrip->location).trimmed());
+		diveLocations.push_back(QString::fromStdString(d->divetrip->location).trimmed());
 
 	if (d->dive_site)
 		diveLocations.push_back(QString::fromStdString(d->dive_site->name).trimmed());

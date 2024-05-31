@@ -139,7 +139,7 @@ static std::vector<QString> getWords(const dive *d)
 	}
 	// TODO: We should index trips separately!
 	if (d->divetrip)
-		tokenize(d->divetrip->location, res);
+		tokenize(QString::fromStdString(d->divetrip->location), res);
 	return res;
 }
 

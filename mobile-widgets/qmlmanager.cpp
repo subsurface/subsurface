@@ -1369,17 +1369,17 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 void QMLManager::updateTripDetails(QString tripIdString, QString tripLocation, QString tripNotes)
 {
 	int tripId = tripIdString.toInt();
-	dive_trip_t *trip = get_trip_by_uniq_id(tripId);
+	dive_trip *trip = get_trip_by_uniq_id(tripId);
 	if (!trip) {
 		report_info("updateTripData: cannot find trip for tripId %s", qPrintable(tripIdString));
 		return;
 	}
 	bool changed = false;
-	if (tripLocation != trip->location) {
+	if (tripLocation != trip->location.c_str()) {
 		changed = true;
 		Command::editTripLocation(trip, tripLocation);
 	}
-	if (tripNotes != trip->notes) {
+	if (tripNotes != trip->notes.c_str()) {
 		changed = true;
 		Command::editTripNotes(trip, tripNotes);
 	}
@@ -1412,7 +1412,7 @@ void QMLManager::addTripForDive(int id)
 		return;
 	}
 	if (d->divetrip) {
-		appendTextToLog(QString("Asked to create trip for dive %1 with id %2 but it's already part of a trip with location %3.").arg(d->number).arg(id).arg(d->divetrip->location));
+		appendTextToLog(QString("Asked to create trip for dive %1 with id %2 but it's already part of a trip with location %3.").arg(d->number).arg(id).arg(d->divetrip->location.c_str()));
 		return;
 	}
 	QVector <dive *> dives;

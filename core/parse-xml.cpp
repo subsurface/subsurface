@@ -1385,13 +1385,13 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 }
 
 /* We're in the top-level trip xml. Try to convert whatever value to a trip value */
-static void try_to_fill_trip(dive_trip_t *dive_trip, const char *name, char *buf, struct parser_state *state)
+static void try_to_fill_trip(dive_trip *dive_trip, const char *name, char *buf, struct parser_state *state)
 {
 	start_match("trip", name, buf);
 
-	if (MATCH("location", utf8_string, &dive_trip->location))
+	if (MATCH("location", utf8_string_std, &dive_trip->location))
 		return;
-	if (MATCH("notes", utf8_string, &dive_trip->notes))
+	if (MATCH("notes", utf8_string_std, &dive_trip->notes))
 		return;
 
 	nonmatch("trip", name, buf);
@@ -1528,7 +1528,7 @@ static bool entry(const char *name, char *buf, struct parser_state *state)
 		return true;
 	}
 	if (state->cur_trip) {
-		try_to_fill_trip(state->cur_trip, name, buf, state);
+		try_to_fill_trip(state->cur_trip.get(), name, buf, state);
 		return true;
 	}
 	return true;

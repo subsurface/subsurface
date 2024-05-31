@@ -543,16 +543,16 @@ int save_dive(FILE *f, struct dive *dive, bool anonymize)
 	return 0;
 }
 
-static void save_trip(struct membuffer *b, dive_trip_t *trip, bool anonymize)
+static void save_trip(struct membuffer *b, dive_trip *trip, bool anonymize)
 {
 	int i;
 	struct dive *dive;
 
 	put_format(b, "<trip");
 	show_date(b, trip_date(trip));
-	show_utf8(b, trip->location, " location=\'", "\'", 1);
+	show_utf8(b, trip->location.c_str(), " location=\'", "\'", 1);
 	put_format(b, ">\n");
-	show_utf8(b, trip->notes, "<notes>", "</notes>\n", 0);
+	show_utf8(b, trip->notes.c_str(), "<notes>", "</notes>\n", 0);
 
 	/*
 	 * Incredibly cheesy: we want to save the dives sorted, and they
@@ -642,7 +642,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 {
 	int i;
 	struct dive *dive;
-	dive_trip_t *trip;
+	dive_trip *trip;
 
 	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", DATAFORMAT_VERSION);
 

@@ -140,9 +140,9 @@ void TabDiveNotes::tripChanged(dive_trip *trip, TripField field)
 		return;
 
 	if (field.notes)
-		ui.notes->setText(currentTrip->notes);
+		ui.notes->setText(QString::fromStdString(currentTrip->notes));
 	if (field.location)
-		ui.diveTripLocation->setText(currentTrip->location);
+		ui.diveTripLocation->setText(QString::fromStdString(currentTrip->location));
 }
 
 static bool isHtml(const QString &s)
@@ -220,13 +220,13 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.editDiveSiteButton->hide();
 		// rename the remaining fields and fill data from selected trip
 		ui.LocationLabel->setText(tr("Trip location"));
-		ui.diveTripLocation->setText(currentTrip->location);
+		ui.diveTripLocation->setText(QString::fromStdString(currentTrip->location));
 		updateTripDate(currentTrip);
 		ui.locationTags->clear();
 		//TODO: Fix this.
-		//ui.location->setText(currentTrip->location);
+		//ui.location->setText(QString::fromStdSTring(currentTrip->location));
 		ui.NotesLabel->setText(tr("Trip notes"));
-		ui.notes->setText(currentTrip->notes);
+		ui.notes->setText(QString::fromStdString(currentTrip->notes));
 		ui.depth->setVisible(false);
 		ui.depthLabel->setVisible(false);
 		ui.duration->setVisible(false);

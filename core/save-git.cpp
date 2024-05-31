@@ -706,11 +706,12 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
  * similar.
  */
 #define MAXTRIPNAME 15
-static void create_trip_name(dive_trip_t *trip, struct membuffer *name, struct tm *tm)
+static void create_trip_name(dive_trip *trip, struct membuffer *name, struct tm *tm)
 {
 	put_format(name, "%02u-", tm->tm_mday);
-	if (trip->location) {
-		char ascii_loc[MAXTRIPNAME+1], *p = trip->location;
+	if (!trip->location.empty()) {
+		char ascii_loc[MAXTRIPNAME+1];
+		const char *p = trip->location.c_str();
 		int i;
 
 		for (i = 0; i < MAXTRIPNAME; ) {
@@ -740,7 +741,7 @@ static void create_trip_name(dive_trip_t *trip, struct membuffer *name, struct t
 	put_string(name, "trip");
 }
 
-static int save_trip_description(git_repository *repo, struct dir *dir, dive_trip_t *trip, struct tm *tm)
+static int save_trip_description(git_repository *repo, struct dir *dir, dive_trip *trip, struct tm *tm)
 {
 	int ret;
 	git_oid blob_id;
@@ -751,8 +752,8 @@ static int save_trip_description(git_repository *repo, struct dir *dir, dive_tri
 	put_format(&desc, "time %02u:%02u:%02u\n",
 		   tm->tm_hour, tm->tm_min, tm->tm_sec);
 
-	show_utf8(&desc, "location ", trip->location, "\n");
-	show_utf8(&desc, "notes ", trip->notes, "\n");
+	show_utf8(&desc, "location ", trip->location.c_str(), "\n");
+	show_utf8(&desc, "notes ", trip->notes.c_str(), "\n");
 
 	ret = git_blob_create_frombuffer(&blob_id, repo, desc.buffer, desc.len);
 	if (ret)
@@ -779,7 +780,7 @@ static void verify_shared_date(timestamp_t when, struct tm *tm)
 #define MIN_TIMESTAMP (0)
 #define MAX_TIMESTAMP (0x7fffffffffffffff)
 
-static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip_t *trip, struct tm *tm, bool cached_ok)
+static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip *trip, struct tm *tm, bool cached_ok)
 {
 	int i;
 	struct dive *dive;
@@ -982,7 +983,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 {
 	int i;
 	struct dive *dive;
-	dive_trip_t *trip;
+	dive_trip *trip;
 
 	git_storage_update_progress(translate("gettextFromC", "Start saving data"));
 	save_settings(repo, root);
@@ -1104,7 +1105,7 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 	} else if (!changes_made.empty()) {
 		put_format(msg, "Changes made: \n\n%s\n", changes_made.c_str());
 	} else if (dive) {
-		dive_trip_t *trip = dive->divetrip;
+		dive_trip *trip = dive->divetrip;
 		std::string location = get_dive_location(dive);
 		if (location.empty())
 			location = "no location";
@@ -1114,8 +1115,8 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 			nr = dive->number;
 
 		put_format(msg, "dive %d: %s", nr, location.c_str());
-		if (trip && !empty_string(trip->location) && location != trip->location)
-			put_format(msg, " (%s)", trip->location);
+		if (trip && !trip->location.empty() && location != trip->location)
+			put_format(msg, " (%s)", trip->location.c_str());
 		put_format(msg, "\n");
 		for (auto &dc: dive->dcs)  {
 			if (!dc.model.empty()) {

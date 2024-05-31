@@ -41,13 +41,12 @@ void EditTripBase::redo()
 // ***** Location *****
 void EditTripLocation::set(dive_trip *t, const QString &s) const
 {
-	free(t->location);
-	t->location = copy_qstring(s);
+	t->location = s.toStdString();
 }
 
 QString EditTripLocation::data(dive_trip *t) const
 {
-	return QString(t->location);
+	return QString::fromStdString(t->location);
 }
 
 QString EditTripLocation::fieldName() const
@@ -63,13 +62,12 @@ TripField EditTripLocation::fieldId() const
 // ***** Notes *****
 void EditTripNotes::set(dive_trip *t, const QString &s) const
 {
-	free(t->notes);
-	t->notes = copy_qstring(s);
+	t->notes = s.toStdString();
 }
 
 QString EditTripNotes::data(dive_trip *t) const
 {
-	return QString(t->notes);
+	return QString::fromStdString(t->notes);
 }
 
 QString EditTripNotes::fieldName() const
