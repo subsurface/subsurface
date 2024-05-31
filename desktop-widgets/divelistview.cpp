@@ -620,8 +620,8 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	int i = a.row() + offset;
 	QModelIndex b = a.sibling(i, 0);
 
-	dive_trip_t *trip_a = a.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
-	dive_trip_t *trip_b = b.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+	dive_trip *trip_a = a.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+	dive_trip *trip_b = b.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
 	if (trip_a == trip_b || !trip_a || !trip_b)
 		return;
 	Command::mergeTrips(trip_a, trip_b);
@@ -666,7 +666,7 @@ void DiveListView::addToTrip(int delta)
 	struct dive *d = contextMenuIndex.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
 	int nr = selectionModel()->selectedRows().count();
 	QModelIndex t;
-	dive_trip_t *trip = NULL;
+	dive_trip *trip = NULL;
 
 	// now look for the trip to add to, for this, loop over the selected dives and
 	// check if its sibling is a trip.
@@ -708,7 +708,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	// let's remember where we are
 	contextMenuIndex = indexAt(event->pos());
 	struct dive *d = contextMenuIndex.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-	dive_trip_t *trip = contextMenuIndex.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+	dive_trip *trip = contextMenuIndex.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
 	QMenu popup(this);
 	if (currentLayout == DiveTripModelBase::TREE) {
 		// verify if there is a node that`s not expanded.

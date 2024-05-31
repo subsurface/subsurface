@@ -81,7 +81,7 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 	QString numDives = tr("(%n dive(s))", "", trip->dives.nr);
 	int shown = trip_shown_dives(trip);
 	QString shownDives = shown != trip->dives.nr ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
-	QString title(trip->location);
+	QString title = QString::fromStdString(trip->location);
 
 	if (title.isEmpty()) {
 		// so use the date range
@@ -110,8 +110,8 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 	case MobileListModel::TripNrDivesRole: return trip->dives.nr;
 	case MobileListModel::TripShortDateRole: return tripShortDate(trip);
 	case MobileListModel::TripTitleRole: return tripTitle(trip);
-	case MobileListModel::TripLocationRole: return QString(trip->location);
-	case MobileListModel::TripNotesRole: return QString(trip->notes);
+	case MobileListModel::TripLocationRole: return QString::fromStdString(trip->location);
+	case MobileListModel::TripNotesRole: return QString::fromStdString(trip->notes);
 	}
 #endif
 	// Set the font for all trips alike
@@ -714,7 +714,7 @@ void DiveTripModelTree::populate()
 		update_cylinder_related_info(d);
 		if (d->hidden_by_filter)
 			continue;
-		dive_trip_t *trip = d->divetrip;
+		dive_trip *trip = d->divetrip;
 
 		// If this dive doesn't have a trip, add as top-level item.
 		if (!trip) {

@@ -38,7 +38,7 @@ struct git_parser_state {
 	git_repository *repo = nullptr;
 	struct divecomputer *active_dc = nullptr;
 	std::unique_ptr<dive> active_dive;
-	dive_trip_t *active_trip = nullptr;
+	std::unique_ptr<dive_trip> active_trip;
 	std::string fulltext_mode;
 	std::string fulltext_query;
 	std::string filter_constraint_type;
@@ -889,10 +889,10 @@ static void parse_trip_time(char *, struct git_parser_state *)
 { }
 
 static void parse_trip_location(char *, struct git_parser_state *state)
-{ state->active_trip->location = get_first_converted_string_c(state); }
+{ state->active_trip->location = get_first_converted_string(state); }
 
 static void parse_trip_notes(char *, struct git_parser_state *state)
-{ state->active_trip->notes = get_first_converted_string_c(state); }
+{ state->active_trip->notes = get_first_converted_string(state); }
 
 static void parse_settings_autogroup(char *, struct git_parser_state *state)
 {
@@ -1381,12 +1381,10 @@ static void for_each_line(git_blob *blob, line_fn_t *fn, struct git_parser_state
 
 static void finish_active_trip(struct git_parser_state *state)
 {
-	dive_trip_t *trip = state->active_trip;
+	auto &trip = state->active_trip;
 
-	if (trip) {
-		state->active_trip = NULL;
-		insert_trip(trip, state->log->trips.get());
-	}
+	if (trip)
+		insert_trip(trip.release(), state->log->trips.get());
 }
 
 static void finish_active_dive(struct git_parser_state *state)
@@ -1403,7 +1401,7 @@ static void create_new_dive(timestamp_t when, struct git_parser_state *state)
 	state->active_dive->when = when;
 
 	if (state->active_trip)
-		add_dive_to_trip(state->active_dive.get(), state->active_trip);
+		add_dive_to_trip(state->active_dive.get(), state->active_trip.get());
 }
 
 static bool validate_date(int yyyy, int mm, int dd)
@@ -1433,7 +1431,7 @@ static int dive_trip_directory(const char *root, const char *name, struct git_pa
 	if (!validate_date(yyyy, mm, dd))
 		return GIT_WALK_SKIP;
 	finish_active_trip(state);
-	state->active_trip = alloc_trip();
+	state->active_trip = std::make_unique<dive_trip>();
 	return GIT_WALK_OK;
 }
 
@@ -1785,7 +1783,7 @@ static int parse_filter_preset(struct git_parser_state *state, const git_tree_en
 static int walk_tree_file(const char *root, const git_tree_entry *entry, struct git_parser_state *state)
 {
 	auto &dive = state->active_dive;
-	dive_trip_t *trip = state->active_trip;
+	auto &trip = state->active_trip;
 	const char *name = git_tree_entry_name(entry);
 	if (verbose > 1)
 		report_info("git load handling file %s\n", name);
@@ -1815,7 +1813,7 @@ static int walk_tree_file(const char *root, const git_tree_entry *entry, struct 
 			return parse_settings_entry(state, entry);
 		break;
 	}
-	report_error("Unknown file %s%s (%p %p)", root, name, dive.get(), trip);
+	report_error("Unknown file %s%s (%p %p)", root, name, dive.get(), trip.get());
 	return GIT_WALK_SKIP;
 }
 

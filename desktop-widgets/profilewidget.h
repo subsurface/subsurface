@@ -5,7 +5,6 @@
 #define PROFILEWIDGET_H
 
 #include "ui_profilewidget.h"
-#include "core/owning_ptrs.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
 #include <vector>

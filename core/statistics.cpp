@@ -97,7 +97,7 @@ stats_summary calculate_stats_summary(bool selected_only)
 	int current_year = -1;
 	int current_month = 0;
 	int prev_month = 0, prev_year = 0;
-	dive_trip_t *trip_ptr = nullptr;
+	dive_trip *trip_ptr = nullptr;
 
 	stats_summary out;
 
