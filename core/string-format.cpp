@@ -309,7 +309,7 @@ QString formatTripTitle(const dive_trip *trip)
 
 	QDateTime localTime = timestampToDateTime(when);
 
-	QString prefix = !empty_string(trip->location) ? QString(trip->location) + ", " : QString();
+	QString prefix = !trip->location.empty() ? QString::fromStdString(trip->location) + ", " : QString();
 	if (getday)
 		return prefix + loc.toString(localTime, prefs.date_format);
 	else

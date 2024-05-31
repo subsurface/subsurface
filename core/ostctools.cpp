@@ -13,7 +13,6 @@
 #include "file.h"
 #include "format.h"
 #include "libdivecomputer.h"
-#include "owning_ptrs.h"
 
 /*
  * Fills a device_data_t structure with known dc data and a descriptor.

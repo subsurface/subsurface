@@ -12,7 +12,7 @@
 #ifdef DEBUG_TRIP
 void dump_trip_list()
 {
-	dive_trip_t *trip;
+	dive_trip *trip;
 	int i = 0;
 	timestamp_t last_time = 0;
 
@@ -24,7 +24,7 @@ void dump_trip_list()
 			printf("\n\ntrip_table OUT OF ORDER!!!\n\n\n");
 		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u (%d dives - %p)\n",
 		       trip->autogen ? "autogen " : "",
-		       i + 1, trip->location,
+		       i + 1, trip->location.c_str(),
 		       tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
 		       trip->dives.nr, trip);
 		last_time = trip_date(trip);
@@ -33,15 +33,19 @@ void dump_trip_list()
 }
 #endif
 
-/* free resources associated with a trip structure */
-void free_trip(dive_trip_t *trip)
+dive_trip::dive_trip() : id(dive_getUniqID())
 {
-	if (trip) {
-		free(trip->location);
-		free(trip->notes);
-		free(trip->dives.dives);
-		free(trip);
-	}
+}
+
+dive_trip::~dive_trip()
+{
+	free(dives.dives);
+}
+
+/* free resources associated with a trip structure */
+void free_trip(dive_trip *trip)
+{
+	delete trip;
 }
 
 /* Trip table functions */
@@ -87,7 +91,7 @@ bool is_trip_before_after(const struct dive *dive, bool before)
 
 /* Add dive to a trip. Caller is responsible for removing dive
  * from trip beforehand. */
-void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
+void add_dive_to_trip(struct dive *dive, dive_trip *trip)
 {
 	if (dive->divetrip == trip)
 		return;
@@ -103,7 +107,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  */
 struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 {
-	dive_trip_t *trip = dive->divetrip;
+	dive_trip *trip = dive->divetrip;
 
 	if (!trip)
 		return NULL;
@@ -113,7 +117,7 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 	return trip;
 }
 
-static void delete_trip(dive_trip_t *trip, struct trip_table *trip_table_arg)
+static void delete_trip(dive_trip *trip, struct trip_table *trip_table_arg)
 {
 	remove_trip(trip, trip_table_arg);
 	free_trip(trip);
@@ -126,15 +130,13 @@ void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table_arg)
 		delete_trip(trip, trip_table_arg);
 }
 
-dive_trip_t *alloc_trip()
+dive_trip *alloc_trip()
 {
-	dive_trip_t *res = (dive_trip_t *)calloc(1, sizeof(dive_trip_t));
-	res->id = dive_getUniqID();
-	return res;
+	return new dive_trip;
 }
 
 /* insert the trip into the trip table */
-void insert_trip(dive_trip_t *dive_trip, struct trip_table *trip_table_arg)
+void insert_trip(struct dive_trip *dive_trip, struct trip_table *trip_table_arg)
 {
 	int idx = trip_table_get_insertion_index(trip_table_arg, dive_trip);
 	add_to_trip_table(trip_table_arg, idx, dive_trip);
@@ -143,12 +145,12 @@ void insert_trip(dive_trip_t *dive_trip, struct trip_table *trip_table_arg)
 #endif
 }
 
-dive_trip_t *create_trip_from_dive(struct dive *dive)
+dive_trip *create_trip_from_dive(struct dive *dive)
 {
-	dive_trip_t *trip;
+	dive_trip *trip;
 
 	trip = alloc_trip();
-	trip->location = copy_string(get_dive_location(dive).c_str());
+	trip->location = get_dive_location(dive);
 
 	return trip;
 }
@@ -163,10 +165,10 @@ dive_trip_t *create_trip_from_dive(struct dive *dive)
  * exist, allocate a new trip. The bool "*allocated" is set to true
  * if a new trip was allocated.
  */
-dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
+dive_trip *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
 {
 	struct dive *d;
-	dive_trip_t *trip;
+	dive_trip *trip;
 	int i;
 
 	/* Find dive that is within TRIP_THRESHOLD of current dive */
@@ -190,7 +192,7 @@ dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
 }
 
 /* lookup of trip in main trip_table based on its id */
-dive_trip_t *get_trip_by_uniq_id(int tripId)
+dive_trip *get_trip_by_uniq_id(int tripId)
 {
 	for (int i = 0; i < divelog.trips->nr; i++) {
 		if (divelog.trips->trips[i]->id == tripId)
@@ -221,7 +223,7 @@ bool trips_overlap(const struct dive_trip *t1, const struct dive_trip *t2)
  * manually injects the new trips. If there are no dives to be autogrouped,
  * return NULL.
  */
-dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *from, int *to, bool *allocated)
+dive_trip *get_dives_to_autogroup(struct dive_table *table, int start, int *from, int *to, bool *allocated)
 {
 	int i;
 	struct dive *lastdive = NULL;
@@ -231,7 +233,7 @@ dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *fr
 	 */
 	for (i = start; i < table->nr; i++) {
 		struct dive *dive = table->dives[i];
-		dive_trip_t *trip;
+		dive_trip *trip;
 
 		if (dive->divetrip) {
 			lastdive = dive;
@@ -265,9 +267,8 @@ dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *fr
 			if (dive->divetrip || dive->notrip ||
 			    dive->when >= lastdive->when + TRIP_THRESHOLD)
 				break;
-			std::string location = get_dive_location(dive);
-			if (!location.empty() && !trip->location)
-				trip->location = copy_string(get_dive_location(dive).c_str());
+			if (trip->location.empty())
+				trip->location = get_dive_location(dive);
 			lastdive = dive;
 		}
 		return trip;
@@ -277,21 +278,21 @@ dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *fr
 	return NULL;
 }
 
-/* Out of two strings, copy the string that is not empty (if any). */
-static char *copy_non_empty_string(const char *a, const char *b)
+/* Out of two strings, get the string that is not empty (if any). */
+static std::string non_empty_string(const std::string &a, const std::string &b)
 {
-	return copy_string(empty_string(b) ? a : b);
+	return b.empty() ? a : b;
 }
 
 /* This combines the information of two trips, generating a
  * new trip. To support undo, we have to preserve the old trips. */
-dive_trip_t *combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
+dive_trip *combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 {
-	dive_trip_t *trip;
+	dive_trip *trip;
 
 	trip = alloc_trip();
-	trip->location = copy_non_empty_string(trip_a->location, trip_b->location);
-	trip->notes = copy_non_empty_string(trip_a->notes, trip_b->notes);
+	trip->location = non_empty_string(trip_a->location, trip_b->location);
+	trip->notes = non_empty_string(trip_a->notes, trip_b->notes);
 
 	return trip;
 }

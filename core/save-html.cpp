@@ -405,7 +405,7 @@ static void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only,
 		put_format(b, "]}\n\n");
 }
 
-static void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
+static void write_trip(struct membuffer *b, dive_trip *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
 	const struct dive *dive;
 	const char *separator = "";
@@ -421,7 +421,7 @@ static void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, boo
 			found_sel_dive = 1;
 			put_format(b, "%c {", *sep);
 			(*sep) = ',';
-			write_attribute(b, "name", trip->location, ", ");
+			write_attribute(b, "name", trip->location.c_str(), ", ");
 			put_format(b, "\"dives\":[");
 		}
 		put_string(b, separator);
@@ -438,7 +438,7 @@ static void write_trips(struct membuffer *b, const char *photos_dir, bool select
 {
 	int i, dive_no = 0;
 	const struct dive *dive;
-	dive_trip_t *trip;
+	dive_trip *trip;
 	char sep_ = ' ';
 	char *sep = &sep_;
 

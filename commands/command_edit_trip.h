@@ -30,7 +30,7 @@ protected:
 	void redo() override;
 
 	// Get and set functions to be overriden by sub-classes.
-	virtual void set(struct dive_trip *t, const QString &) const = 0;
+	virtual void set(dive_trip *t, const QString &) const = 0;
 	virtual QString data(struct dive_trip *t) const = 0;
 	virtual QString fieldName() const = 0;	// Name of the field, used to create the undo menu-entry
 	virtual TripField fieldId() const = 0;

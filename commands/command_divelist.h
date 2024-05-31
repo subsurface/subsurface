@@ -23,7 +23,7 @@ struct DiveToAdd {
 // Multiple trips, dives and dive sites that have to be added for a command
 struct DivesAndTripsToAdd {
 	std::vector<DiveToAdd> dives;
-	std::vector<OwningTripPtr> trips;
+	std::vector<std::unique_ptr<dive_trip>> trips;
 	std::vector<std::unique_ptr<dive_site>> sites;
 };
 
@@ -48,7 +48,7 @@ struct DiveToTrip
 struct DivesToTrip
 {
 	std::vector<DiveToTrip> divesToMove;		// If dive_trip is null, remove from trip
-	std::vector<OwningTripPtr> tripsToAdd;
+	std::vector<std::unique_ptr<dive_trip>> tripsToAdd;
 };
 
 // All divelist commands derive from a common base class. It keeps track
@@ -58,7 +58,7 @@ struct DivesToTrip
 class DiveListBase : public Base {
 protected:
 	// These are helper functions to add / remove dive from the C-core structures.
-	DiveToAdd removeDive(struct dive *d, std::vector<OwningTripPtr> &tripsToAdd);
+	DiveToAdd removeDive(struct dive *d, std::vector<std::unique_ptr<dive_trip>> &tripsToAdd);
 	dive *addDive(DiveToAdd &d);
 	DivesAndTripsToAdd removeDives(DivesAndSitesToRemove &divesAndSitesToDelete);
 	DivesAndSitesToRemove addDives(DivesAndTripsToAdd &toAdd);
@@ -133,7 +133,7 @@ private:
 	// For redo
 	DivesAndSitesToRemove divesToDelete;
 
-	std::vector<OwningTripPtr> tripsToAdd;
+	std::vector<std::unique_ptr<dive_trip>> tripsToAdd;
 	DivesAndTripsToAdd divesToAdd;
 };
 
