@@ -7,6 +7,8 @@
 
 #include "divelineitem.h"
 
+#include "core/equipment.h"
+
 /* This is the Profile Item, it should be used for quite a lot of things
  on the profile view. The usage should be pretty simple:
 
@@ -105,8 +107,8 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 private:
-	void plotPressureValue(double mbar, double sec, QFlags<Qt::AlignmentFlag> align, double offset);
-	void plotGasValue(double mbar, double sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double offset);
+	double plotPressureValue(double mbar, double sec, QFlags<Qt::AlignmentFlag> align, double y_offset);
+	void plotGasValue(double mbar, double sec, const cylinder_t *cylinder, QFlags<Qt::AlignmentFlag> align, double x_offset, double y_offset, bool showDescription);
 	struct PressureEntry {
 		double time = 0.0;
 		double pressure = 0.0;
