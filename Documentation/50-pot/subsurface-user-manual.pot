@@ -135,7 +135,7 @@ msgid ""
 "mailto:subsurface@subsurface-divelog.org[our mailing list] and report bugs "
 "at https://github.com/Subsurface/subsurface/issues[our bugtracker].  "
 "For instructions on how to build the software and (if needed) its "
-"dependencies please consult the INSTALL file included with the source code."
+"dependencies please consult the INSTALL.md file included with the source code."
 msgstr ""
 
 #. type: Plain text

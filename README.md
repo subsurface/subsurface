@@ -21,16 +21,9 @@ Report bugs and issues at https://github.com/Subsurface/subsurface/issues
 
 License: GPLv2
 
-We frequently make new test versions of Subsurface available at
-http://subsurface-divelog.org/downloads/test/ and there you can always get
-the latest builds for Mac, Windows, Linux AppImage and Android (with some
-caveats about installability). Additionally, those same versions are
+We are releasing 'nightly' builds of Subsurface that are built from the latest version of the code. Versions of this build for Windows, macOS, Android (requiring sideloading), and a Linux AppImage can be downloaded from the [Latest Dev Release](https://www.subsurface-divelog.org/latest-release/) page on [our website](https://www.subsurface-divelog.org/). Alternatively, they can be downloaded [directly from GitHub](https://github.com/subsurface/nightly-builds/releases). Additionally, those same versions are
 posted to the Subsurface-daily repos on Ubuntu Launchpad, Fedora COPR, and
-OpenSUSE OBS.
-
-These tend to contain the latest bug fixes and features, but also
-occasionally the latest bugs and issues. Please understand when using them
-that these are primarily intended for testing.
+OpenSUSE OBS, and released to [Snapcraft](https://snapcraft.io/subsurface) into the 'edge' channel of subsurface.
 
 You can get the sources to the latest development version from the git
 repository:
@@ -42,17 +35,11 @@ git clone https://github.com/Subsurface/subsurface.git
 You can also fork the repository and browse the sources at the same site,
 simply using https://github.com/Subsurface/subsurface
 
-If you want the latest release (instead of the bleeding edge
-development version) you can either get this via git or the release tar
-ball. After cloning run the following command:
+Additionally, artifacts for Windows, macOS, Android, Linux AppImage, and iOS (simulator build) are generated for all open pull requests and linked in pull request comments. Use these if you want to test the changes in a specific pull request and provide feedback before it has been merged.
 
-```
-git checkout v5.0.10  (or whatever the last release is)
-```
+If you want a more stable version that is a little bit more tested you can get this from the [Curent Release](https://www.subsurface-divelog.org/current-release/) page on [our website](https://www.subsurface-divelog.org/).
 
-or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-5.0.10.tgz
-
-Detailed build instructions can be found in the INSTALL file.
+Detailed build instructions can be found in the [INSTALL.md](/INSTALL.md) file.
 
 ## System Requirements
 
