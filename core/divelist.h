@@ -3,12 +3,13 @@
 #define DIVELIST_H
 
 #include "units.h"
+#include <vector>
 
 struct dive;
 struct divelog;
 struct trip_table;
 class dive_site_table;
-struct device_table;
+struct device;
 struct deco_state;
 
 struct dive_table {
@@ -35,7 +36,7 @@ extern void add_imported_dives(struct divelog *log, int flags);
 extern void process_imported_dives(struct divelog *import_log, int flags,
 				   struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
 				   struct trip_table *trips_to_add, dive_site_table &sites_to_add,
-				   struct device_table *devices_to_add);
+				   std::vector<device> &devices_to_add);
 
 extern int dive_table_get_insertion_index(struct dive_table *table, struct dive *dive);
 extern void add_to_dive_table(struct dive_table *table, int idx, struct dive *dive);
