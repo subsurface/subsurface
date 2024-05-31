@@ -140,7 +140,6 @@ int trimspace(char *buffer);
 void start_match(const char *type, const char *name, char *buffer);
 void nonmatch(const char *type, const char *name, char *buffer);
 int atoi_n(char *ptr, unsigned int len);
-void utf8_string(const char *buffer, char **res);
 
 void parse_xml_init();
 int parse_xml_buffer(const char *url, const char *buf, int size, struct divelog *log, const struct xml_params *params);
