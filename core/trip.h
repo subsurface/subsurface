@@ -25,6 +25,7 @@ struct dive_trip
 int comp_trips(const dive_trip &t1, const dive_trip &t2);
 
 struct trip_table : public sorted_owning_table<dive_trip, &comp_trips> {
+	dive_trip *get_by_uniq_id(int tripId) const;
 };
 
 extern void add_dive_to_trip(struct dive *, dive_trip *);
@@ -45,7 +46,6 @@ struct dives_to_autogroup_result {
 
 extern std::vector<dives_to_autogroup_result> get_dives_to_autogroup(struct dive_table *table);
 extern std::pair<dive_trip *, std::unique_ptr<dive_trip>> get_trip_for_new_dive(const struct dive *new_dive);
-extern dive_trip *get_trip_by_uniq_id(int tripId);
 extern bool trips_overlap(const struct dive_trip &t1, const struct dive_trip &t2);
 
 extern std::unique_ptr<dive_trip> combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b);

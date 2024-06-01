@@ -138,11 +138,10 @@ std::pair<dive_trip *, std::unique_ptr<dive_trip>> get_trip_for_new_dive(const s
 }
 
 /* lookup of trip in main trip_table based on its id */
-dive_trip *get_trip_by_uniq_id(int tripId)
+dive_trip *trip_table::get_by_uniq_id(int tripId) const
 {
-	auto it = std::find_if(divelog.trips->begin(), divelog.trips->end(),
-			       [tripId](auto &t) { return t->id == tripId; });
-	return it != divelog.trips->end() ? it->get() : nullptr;
+	auto it = std::find_if(begin(), end(), [tripId](auto &t) { return t->id == tripId; });
+	return it != end() ? it->get() : nullptr;
 }
 
 /* Check if two trips overlap time-wise up to trip threshold. */
