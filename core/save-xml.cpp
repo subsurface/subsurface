@@ -543,16 +543,16 @@ int save_dive(FILE *f, struct dive *dive, bool anonymize)
 	return 0;
 }
 
-static void save_trip(struct membuffer *b, dive_trip *trip, bool anonymize)
+static void save_trip(struct membuffer *b, dive_trip &trip, bool anonymize)
 {
 	int i;
 	struct dive *dive;
 
 	put_format(b, "<trip");
 	show_date(b, trip_date(trip));
-	show_utf8(b, trip->location.c_str(), " location=\'", "\'", 1);
+	show_utf8(b, trip.location.c_str(), " location=\'", "\'", 1);
 	put_format(b, ">\n");
-	show_utf8(b, trip->notes.c_str(), "<notes>", "</notes>\n", 0);
+	show_utf8(b, trip.notes.c_str(), "<notes>", "</notes>\n", 0);
 
 	/*
 	 * Incredibly cheesy: we want to save the dives sorted, and they
@@ -561,7 +561,7 @@ static void save_trip(struct membuffer *b, dive_trip *trip, bool anonymize)
 	 * check the divetrip pointer..
 	 */
 	for_each_dive(i, dive) {
-		if (dive->divetrip == trip)
+		if (dive->divetrip == &trip)
 			save_one_dive_to_mb(b, dive, anonymize);
 	}
 
@@ -642,7 +642,6 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 {
 	int i;
 	struct dive *dive;
-	dive_trip *trip;
 
 	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", DATAFORMAT_VERSION);
 
@@ -686,8 +685,8 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 		put_format(b, "</site>\n");
 	}
 	put_format(b, "</divesites>\n<dives>\n");
-	for (i = 0; i < divelog.trips->nr; ++i)
-		divelog.trips->trips[i]->saved = 0;
+	for (auto &trip: *divelog.trips)
+		trip->saved = 0;
 
 	/* save the filter presets */
 	save_filter_presets(b);
@@ -701,7 +700,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 			save_one_dive_to_mb(b, dive, anonymize);
 
 		} else {
-			trip = dive->divetrip;
+			dive_trip *trip = dive->divetrip;
 
 			/* Bare dive without a trip? */
 			if (!trip) {
@@ -715,7 +714,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 
 			/* We haven't seen this trip before - save it and all dives */
 			trip->saved = 1;
-			save_trip(b, trip, anonymize);
+			save_trip(b, *trip, anonymize);
 		}
 	}
 	put_format(b, "</dives>\n</divelog>\n");

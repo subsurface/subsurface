@@ -74,8 +74,8 @@ struct TripWrapper {
 	QString name;
 	timestamp_t date;
 	TripWrapper(const dive_trip *t) : t(t),
-		name(formatTripTitle(t)), // safe to pass null
-		date(trip_date(t)) // safe to pass null
+		name(t ? formatTripTitle(*t) : QString()),
+		date(t ? trip_date(*t) : 0)
 	{
 	}
 	bool operator<(const TripWrapper &t2) const {
@@ -1868,7 +1868,7 @@ struct TripVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete
 		return StatsTranslations::tr("Dive trip");
 	}
 	QString diveCategories(const dive *d) const override {
-		return formatTripTitle(d->divetrip);
+		return d->divetrip ? formatTripTitle(*d->divetrip) : QString();
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &trip_binner };
