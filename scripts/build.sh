@@ -577,7 +577,7 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VE
 		# since we are currently building QtLocation from source, we don't have a way to easily install
 		# the private headers... so this is a bit of a hack to get those for googlemaps...
 		# regardless of whether we do a fat build or not, let's do the 'native' build here
-		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/../qtlocation/build/include/QtLocation/6.3.0" QMAKE_APPLE_DEVICE_ARCHS="$(uname -m)" ../googlemaps.pro
+		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/../qtlocation/build/include/QtLocation/6.3.0" "CONFIG+=release" QMAKE_APPLE_DEVICE_ARCHS="$(uname -m)" ../googlemaps.pro
 	else
 		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" ../googlemaps.pro
 	fi
