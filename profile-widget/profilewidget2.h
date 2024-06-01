@@ -68,6 +68,7 @@ signals:
 	void stopAdded(); // only emitted in edit mode
 	void stopRemoved(int count); // only emitted in edit mode
 	void stopMoved(int count); // only emitted in edit mode
+	void stopEdited(); // only emitted in edit mode
 
 public
 slots: // Necessary to call from QAction's signals.
@@ -111,7 +112,8 @@ private:
 
 	void replot();
 	void setZoom(int level);
-	void changeGas(int tank, int seconds);
+	void addGasSwitch(int tank, int seconds);
+	void changeGas(int index, int newCylinderId);
 	void setupSceneAndFlags();
 	void addItemsToScene();
 	void setupItemOnScene();

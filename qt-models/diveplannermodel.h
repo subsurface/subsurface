@@ -23,12 +23,12 @@ public:
 		GAS,
 		CCSETPOINT,
 		DIVEMODE,
-		COLUMNS
+		COLUMNS,
 	};
 	enum Mode {
 		NOTHING,
 		PLAN,
-		ADD
+		EDIT,
 	};
 	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

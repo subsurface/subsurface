@@ -206,20 +206,8 @@ void DivePlannerPointsModel::setupCylinders()
 			return;		// We have at least one cylinder
 		}
 	}
-	if (!empty_string(prefs.default_cylinder)) {
-		cylinder_t cyl = empty_cylinder;
-		fill_default_cylinder(d, &cyl);
-		cyl.start = cyl.type.workingpressure;
-		add_cylinder(&d->cylinders, 0, cyl);
-	} else {
-		cylinder_t cyl = empty_cylinder;
-		// roughly an AL80
-		cyl.type.description = copy_qstring(tr("unknown"));
-		cyl.type.size.mliter = 11100;
-		cyl.type.workingpressure.mbar = 207000;
-		add_cylinder(&d->cylinders, 0, cyl);
-	}
-	reset_cylinders(d, false);
+
+	add_default_cylinder(d);
 	cylinders.updateDive(d, dcNr);
 }
 
@@ -1288,7 +1276,7 @@ void DivePlannerPointsModel::computeVariationsDone(QString variations)
 	emit calculatedPlanNotes(QString(d->notes));
 }
 
-void DivePlannerPointsModel::createPlan(bool replanCopy)
+void DivePlannerPointsModel::createPlan(bool saveAsNew)
 {
 	// Ok, so, here the diveplan creates a dive
 	deco_state_cache cache;
@@ -1350,7 +1338,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 #endif // !SUBSURFACE_TESTING
 	} else {
 		copy_events_until(current_dive, d, dcNr, preserved_until.seconds);
-		if (replanCopy) {
+		if (saveAsNew) {
 			// we were planning an old dive and save as a new dive
 			d->id = dive_getUniqID(); // Things will break horribly if we create dives with the same id.
 #if !defined(SUBSURFACE_TESTING)

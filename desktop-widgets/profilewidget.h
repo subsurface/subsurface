@@ -34,11 +34,13 @@ public:
 private
 slots:
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
+	void cylindersChanged(struct dive *changed, int pos);
 	void unsetProfHR();
 	void unsetProfTissues();
 	void stopAdded();
 	void stopRemoved(int count);
 	void stopMoved(int count);
+	void stopEdited();
 private:
 	std::unique_ptr<EmptyView> emptyView;
 	std::vector<QAction *> toolbarActions;
@@ -49,8 +51,6 @@ private:
 	void exitEditMode();
 	void rotateDC(int dir);
 	OwningDivePtr editedDive;
-	int editedDc;
-	dive *originalDive;
 	bool placingCommand;
 };
 

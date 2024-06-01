@@ -333,7 +333,7 @@ void DiveHeartrateItem::createTextItem(int sec, int hr, bool last)
 	int flags = last ? Qt::AlignLeft | Qt::AlignBottom :
 			   Qt::AlignRight | Qt::AlignBottom;
 	auto text = std::make_unique<DiveTextItem>(dpr, 0.7, flags, this);
-	text->set(QString("%1").arg(hr), getColor(HR_TEXT));
+	text->set(QStringLiteral("%1").arg(hr), getColor(HR_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(hr)));
 	texts.push_back(std::move(text));
 }
@@ -600,7 +600,9 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 		}
 	}
 
+	bool showDescriptions = false;
 	for (int cyl = 0; cyl < pInfo.nr_cylinders; cyl++) {
+		showDescriptions = showDescriptions || same_gasmix_cylinder(get_cylinder(d, cyl), cyl, d, true) != -1;
 		if (act_segments[cyl].polygon.empty())
 			continue;
 		act_segments[cyl].cyl = cyl;
@@ -618,45 +620,47 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 	// Right now it's just strictly alternating when you have multiple gas
 	// pressures.
 
-	QFlags<Qt::AlignmentFlag> alignVar = Qt::AlignTop;
-	std::vector<QFlags<Qt::AlignmentFlag>> align(pInfo.nr_cylinders);
-
-	double labelHeight = DiveTextItem::fontHeight(dpr, 1.0);
+	QFlags<Qt::AlignmentFlag> startAlignVar = Qt::AlignTop;
 
 	for (const Segment &segment: segments) {
 		// Magic Y offset depending on whether we're aliging
 		// the top of the text or the bottom of the text to
 		// the pressure line.
-		double value_y_offset = -0.5 * dpr;
-		double label_y_offset = alignVar & Qt::AlignTop ? labelHeight : -labelHeight;
-		gasmix gas = get_cylinder(d, segment.cyl)->gasmix;
-		plotPressureValue(segment.first.pressure, segment.first.time, alignVar, value_y_offset);
-		plotGasValue(segment.first.pressure, segment.first.time, gas, alignVar, label_y_offset);
+		double y_offset = -0.5 * dpr;
+		plotPressureValue(segment.first.pressure, segment.first.time, startAlignVar, y_offset);
 
 		// For each cylinder, on right hand side of the curve, write cylinder pressure
-		plotPressureValue(segment.last.pressure, segment.last.time, alignVar | Qt::AlignLeft, value_y_offset);
+		double x_offset = plotPressureValue(segment.last.pressure, segment.last.time, Qt::AlignTop | Qt::AlignLeft, y_offset) + 2;
+		plotGasValue(segment.last.pressure, segment.last.time, get_cylinder(d, segment.cyl), Qt::AlignTop | Qt::AlignLeft, x_offset, y_offset, showDescriptions);
 
 		/* Alternate alignment as we see cylinder use.. */
-		alignVar ^= Qt::AlignTop | Qt::AlignBottom;
+		startAlignVar ^= Qt::AlignTop | Qt::AlignBottom;
 	}
 }
 
-void DiveGasPressureItem::plotPressureValue(double mbar, double sec, QFlags<Qt::AlignmentFlag> align, double pressure_offset)
+double DiveGasPressureItem::plotPressureValue(double mbar, double sec, QFlags<Qt::AlignmentFlag> align, double y_offset)
 {
 	const char *unit;
-	int pressure = get_pressure_units(lrint(mbar), &unit);
+	auto label = QStringLiteral("%1%2").arg(get_pressure_units(lrint(mbar), &unit)).arg(unit);
 	auto text = std::make_unique<DiveTextItem>(dpr, 1.0, align, this);
-	text->set(QString("%1%2").arg(pressure).arg(unit), getColor(PRESSURE_TEXT));
-	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + pressure_offset);
+	text->set(label, getColor(PRESSURE_TEXT));
+	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + y_offset);
 	texts.push_back(std::move(text));
+
+	return DiveTextItem::getLabelSize(dpr, 1.0, label).first;
 }
 
-void DiveGasPressureItem::plotGasValue(double mbar, double sec, struct gasmix gasmix, QFlags<Qt::AlignmentFlag> align, double gasname_offset)
+void DiveGasPressureItem::plotGasValue(double mbar, double sec, const cylinder_t *cylinder, QFlags<Qt::AlignmentFlag> align, double x_offset, double y_offset, bool showDescription)
 {
-	QString gas = get_gas_string(gasmix);
+	QString gas = get_gas_string(cylinder->gasmix);
+	QString label;
+	if (showDescription)
+		label = QStringLiteral("(%1) %2").arg(cylinder->type.description, gas);
+	else
+		label = gas;
 	auto text = std::make_unique<DiveTextItem>(dpr, 1.0, align, this);
-	text->set(gas, getColor(PRESSURE_TEXT));
-	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + gasname_offset);
+	text->set(label, getColor(PRESSURE_TEXT));
+	text->setPos(hAxis.posAtValue(sec) - x_offset, vAxis.posAtValue(mbar) + y_offset);
 	texts.push_back(std::move(text));
 }
 

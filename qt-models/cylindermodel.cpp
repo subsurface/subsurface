@@ -499,7 +499,7 @@ void CylindersModel::add()
 	if (!d)
 		return;
 	int row = d->cylinders.nr;
-	cylinder_t cyl = create_new_cylinder(d);
+	cylinder_t cyl = create_new_manual_cylinder(d);
 	beginInsertRows(QModelIndex(), row, row);
 	add_cylinder(&d->cylinders, row, cyl);
 	++numRows;

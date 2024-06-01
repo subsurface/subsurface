@@ -169,15 +169,6 @@ void put_format(struct membuffer *b, const char *fmt, ...)
 	va_end(args);
 }
 
-void put_format_loc(struct membuffer *b, const char *fmt, ...)
-{
-	va_list args;
-
-	va_start(args, fmt);
-	put_vformat_loc(b, fmt, args);
-	va_end(args);
-}
-
 void put_milli(struct membuffer *b, const char *pre, int value, const char *post)
 {
 	int i;
