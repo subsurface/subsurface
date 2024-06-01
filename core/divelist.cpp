@@ -638,6 +638,8 @@ static int comp_dc(const struct dive *d1, const struct dive *d2)
 int comp_dives(const struct dive *a, const struct dive *b)
 {
 	int cmp;
+	if (a == b)
+		return 0;	/* reflexivity */
 	if (a->when < b->when)
 		return -1;
 	if (a->when > b->when)
@@ -647,9 +649,9 @@ int comp_dives(const struct dive *a, const struct dive *b)
 			return -1;
 		if (!a->divetrip)
 			return 1;
-		if (trip_date(a->divetrip) < trip_date(b->divetrip))
+		if (trip_date(*a->divetrip) < trip_date(*b->divetrip))
 			return -1;
-		if (trip_date(a->divetrip) > trip_date(b->divetrip))
+		if (trip_date(*a->divetrip) > trip_date(*b->divetrip))
 			return 1;
 	}
 	if (a->number < b->number)
@@ -662,7 +664,7 @@ int comp_dives(const struct dive *a, const struct dive *b)
 		return -1;
 	if (a->id > b->id)
 		return 1;
-	return 0; /* this should not happen for a != b */
+	return a < b ? -1 : 1; /* give up. */
 }
 
 /* Dive table functions */
@@ -690,24 +692,19 @@ void insert_dive(struct dive_table *table, struct dive *d)
  * Walk the dives from the oldest dive in the given table, and see if we
  * can autogroup them. But only do this when the user selected autogrouping.
  */
-static void autogroup_dives(struct dive_table *table, struct trip_table *trip_table_arg)
+static void autogroup_dives(struct dive_table *table, struct trip_table &trip_table)
 {
-	int from, to;
-	dive_trip *trip;
-	int i, j;
-	bool alloc;
-
 	if (!divelog.autogroup)
 		return;
 
-	for (i = 0; (trip = get_dives_to_autogroup(table, i, &from, &to, &alloc)) != NULL; i = to) {
-		for (j = from; j < to; ++j)
-			add_dive_to_trip(table->dives[j], trip);
+	for (auto &entry: get_dives_to_autogroup(table)) {
+		for (int i = entry.from; i < entry.to; ++i)
+			add_dive_to_trip(table->dives[i], entry.trip);
 		/* If this was newly allocated, add trip to list */
-		if (alloc)
-			insert_trip(trip, trip_table_arg);
+		if (entry.created_trip)
+			trip_table.put(std::move(entry.created_trip));
 	}
-	sort_trip_table(trip_table_arg);
+	trip_table.sort(); // Necessary?
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
@@ -751,10 +748,10 @@ struct dive *unregister_dive(int idx)
 void process_loaded_dives()
 {
 	sort_dive_table(divelog.dives.get());
-	sort_trip_table(divelog.trips.get());
+	divelog.trips->sort();
 
 	/* Autogroup dives if desired by user. */
-	autogroup_dives(divelog.dives.get(), divelog.trips.get());
+	autogroup_dives(divelog.dives.get(), *divelog.trips);
 
 	fulltext_populate();
 
@@ -932,13 +929,13 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	int i, idx;
 	struct dive_table dives_to_add = empty_dive_table;
 	struct dive_table dives_to_remove = empty_dive_table;
-	struct trip_table trips_to_add = empty_trip_table;
+	struct trip_table trips_to_add;
 	dive_site_table dive_sites_to_add;
 	device_table devices_to_add;
 
 	/* Process imported dives and generate lists of dives
 	 * to-be-added and to-be-removed */
-	process_imported_dives(import_log, flags, &dives_to_add, &dives_to_remove, &trips_to_add,
+	process_imported_dives(import_log, flags, &dives_to_add, &dives_to_remove, trips_to_add,
 			       dive_sites_to_add, devices_to_add);
 
 	/* Start by deselecting all dives, so that we don't end up with an invalid selection */
@@ -969,9 +966,9 @@ void add_imported_dives(struct divelog *import_log, int flags)
 	dives_to_add.nr = 0;
 
 	/* Add new trips */
-	for (i = 0; i < trips_to_add.nr; i++)
-		insert_trip(trips_to_add.trips[i], divelog.trips.get());
-	trips_to_add.nr = 0;
+	for (auto &trip: trips_to_add)
+		divelog.trips->put(std::move(trip));
+	trips_to_add.clear();
 
 	/* Add new dive sites */
 	for (auto &ds: dive_sites_to_add)
@@ -987,7 +984,6 @@ void add_imported_dives(struct divelog *import_log, int flags)
 
 	free(dives_to_add.dives);
 	free(dives_to_remove.dives);
-	free(trips_to_add.trips);
 
 	/* Inform frontend of reset data. This should reset all the models. */
 	emit_reset_signal();
@@ -1003,22 +999,17 @@ void add_imported_dives(struct divelog *import_log, int flags)
  * Returns true if trip was merged. In this case, the trip will be
  * freed.
  */
-static bool try_to_merge_trip(dive_trip *trip_import, struct dive_table *import_table, bool prefer_imported,
+static bool try_to_merge_trip(dive_trip &trip_import, struct dive_table *import_table, bool prefer_imported,
 			      /* output parameters: */
 			      struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
 			      bool *sequence_changed, int *start_renumbering_at)
 {
-	int i;
-	struct dive_trip *trip_old;
-
-	for (i = 0; i < divelog.trips->nr; i++) {
-		trip_old = divelog.trips->trips[i];
-		if (trips_overlap(trip_import, trip_old)) {
-			*sequence_changed |= merge_dive_tables(&trip_import->dives, import_table, &trip_old->dives,
-							       prefer_imported, trip_old,
+	for (auto &trip_old: *divelog.trips) {
+		if (trips_overlap(trip_import, *trip_old)) {
+			*sequence_changed |= merge_dive_tables(&trip_import.dives, import_table, &trip_old->dives,
+							       prefer_imported, trip_old.get(),
 							       dives_to_add, dives_to_remove,
 							       start_renumbering_at);
-			free_trip(trip_import); /* All dives in trip have been consumed -> free */
 			return true;
 		}
 	}
@@ -1062,11 +1053,10 @@ static bool try_to_merge_trip(dive_trip *trip_import, struct dive_table *import_
 void process_imported_dives(struct divelog *import_log, int flags,
 			    /* output parameters: */
 			    struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
-			    struct trip_table *trips_to_add, dive_site_table &sites_to_add,
+			    struct trip_table &trips_to_add, dive_site_table &sites_to_add,
 			    device_table &devices_to_add)
 {
 	int i, j, nr, start_renumbering_at = 0;
-	dive_trip *new_trip;
 	bool sequence_changed = false;
 	bool new_dive_has_number = false;
 	bool last_old_dive_is_numbered;
@@ -1074,7 +1064,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 	/* Make sure that output parameters don't contain garbage */
 	clear_dive_table(dives_to_add);
 	clear_dive_table(dives_to_remove);
-	clear_trip_table(trips_to_add);
+	trips_to_add.clear();
 	sites_to_add.clear();
 	devices_to_add.clear();
 
@@ -1105,7 +1095,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 	/* Autogroup tripless dives if desired by user. But don't autogroup
 	 * if tripless dives should be added to a new trip. */
 	if (!(flags & IMPORT_ADD_TO_NEW_TRIP))
-		autogroup_dives(import_log->dives.get(), import_log->trips.get());
+		autogroup_dives(import_log->dives.get(), *import_log->trips);
 
 	/* If dive sites already exist, use the existing versions. */
 	for (auto &new_ds: *import_log->sites) {
@@ -1140,10 +1130,9 @@ void process_imported_dives(struct divelog *import_log, int flags,
 	 * could be smarter here, but realistically not a whole lot of trips
 	 * will be imported so do a simple n*m loop until someone complains.
 	 */
-	for (i = 0; i < import_log->trips->nr; i++) {
-		dive_trip *trip_import = import_log->trips->trips[i];
+	for (auto &trip_import: *import_log->trips) {
 		if ((flags & IMPORT_MERGE_ALL_TRIPS) || trip_import->autogen) {
-			if (try_to_merge_trip(trip_import, import_log->dives.get(), flags & IMPORT_PREFER_IMPORTED, dives_to_add, dives_to_remove,
+			if (try_to_merge_trip(*trip_import, import_log->dives.get(), flags & IMPORT_PREFER_IMPORTED, dives_to_add, dives_to_remove,
 					      &sequence_changed, &start_renumbering_at))
 				continue;
 		}
@@ -1160,16 +1149,18 @@ void process_imported_dives(struct divelog *import_log, int flags,
 			remove_dive(d, import_log->dives.get());
 		}
 
-		/* Then, add trip to list of trips to add */
-		insert_trip(trip_import, trips_to_add);
 		trip_import->dives.nr = 0; /* Caller is responsible for adding dives to trip */
+
+		/* Finally, add trip to list of trips to add */
+		trips_to_add.put(std::move(trip_import));
 	}
-	import_log->trips->nr = 0; /* All trips were consumed */
+	import_log->trips->clear(); /* All trips were consumed */
 
 	if ((flags & IMPORT_ADD_TO_NEW_TRIP) && import_log->dives->nr > 0) {
 		/* Create a new trip for unassigned dives, if desired. */
-		new_trip = create_trip_from_dive(import_log->dives->dives[0]);
-		insert_trip(new_trip, trips_to_add);
+		auto [new_trip, idx] = trips_to_add.put(
+			create_trip_from_dive(import_log->dives->dives[0])
+		);
 
 		/* Add all remaining dives to this trip */
 		for (i = 0; i < import_log->dives->nr; i++) {
@@ -1296,7 +1287,7 @@ static int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b)
 	if (a.dive && b.dive)
 		return comp_dives(a.dive, b.dive);
 	if (a.trip && b.trip)
-		return comp_trips(a.trip, b.trip);
+		return comp_trips(*a.trip, *b.trip);
 	if (a.dive)
 		return comp_dive_to_trip(a.dive, b.trip);
 	else

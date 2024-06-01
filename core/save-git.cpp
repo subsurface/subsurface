@@ -983,7 +983,6 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 {
 	int i;
 	struct dive *dive;
-	dive_trip *trip;
 
 	git_storage_update_progress(translate("gettextFromC", "Start saving data"));
 	save_settings(repo, root);
@@ -991,8 +990,8 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	save_divesites(repo, root);
 	save_filter_presets(repo, root);
 
-	for (i = 0; i < divelog.trips->nr; ++i)
-		divelog.trips->trips[i]->saved = 0;
+	for (auto &trip: *divelog.trips)
+		trip->saved = false;
 
 	/* save the dives */
 	git_storage_update_progress(translate("gettextFromC", "Start saving dives"));
@@ -1000,7 +999,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 		struct tm tm;
 		struct dir *tree;
 
-		trip = dive->divetrip;
+		dive_trip *trip = dive->divetrip;
 
 		if (select_only) {
 			if (!dive->selected)
@@ -1010,7 +1009,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 		}
 
 		/* Create the date-based hierarchy */
-		utc_mkdate(trip ? trip_date(trip) : dive->when, &tm);
+		utc_mkdate(trip ? trip_date(*trip) : dive->when, &tm);
 		tree = mktree(repo, root, "%04d", tm.tm_year);
 		tree = mktree(repo, tree, "%02d", tm.tm_mon + 1);
 
