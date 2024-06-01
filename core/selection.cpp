@@ -173,8 +173,8 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 static void clear_trip_selection()
 {
 	amount_trips_selected = 0;
-	for (int i = 0; i < divelog.trips->nr; ++i)
-		divelog.trips->trips[i]->selected = false;
+	for (auto &trip: *divelog.trips)
+		trip->selected = false;
 }
 
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
@@ -221,10 +221,8 @@ void setTripSelection(dive_trip *trip, dive *currentDive)
 		dive &d = *divelog.dives->dives[i];
 		d.selected = d.divetrip == trip;
 	}
-	for (int i = 0; i < divelog.trips->nr; ++i) {
-		dive_trip *t = divelog.trips->trips[i];
-		t->selected = t == trip;
-	}
+	for (auto &t: *divelog.trips)
+		t->selected = t.get() == trip;
 
 	amount_selected = trip->dives.nr;
 	amount_trips_selected = 1;
@@ -315,9 +313,9 @@ struct dive_trip *single_selected_trip()
 {
 	if (amount_trips_selected != 1)
 		return NULL;
-	for (int i = 0; i < divelog.trips->nr; ++i) {
-		if (divelog.trips->trips[i]->selected)
-			return divelog.trips->trips[i];
+	for (auto &trip: *divelog.trips) {
+		if (trip->selected)
+			return trip.get();
 	}
 	report_info("warning: found no selected trip even though one should be selected");
 	return NULL; // shouldn't happen

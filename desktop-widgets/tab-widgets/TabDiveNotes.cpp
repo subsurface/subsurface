@@ -169,7 +169,7 @@ void TabDiveNotes::updateDateTime(const struct dive *d)
 
 void TabDiveNotes::updateTripDate(const struct dive_trip *t)
 {
-	QDateTime localTime = timestampToDateTime(trip_date(t));
+	QDateTime localTime = timestampToDateTime(trip_date(*t));
 	ui.dateEdit->setDate(localTime.date());
 }
 

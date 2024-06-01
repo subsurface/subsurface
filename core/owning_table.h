@@ -140,6 +140,10 @@ public:
 		}
 		return it - this->begin();
 	}
+	// Note: this is silly - finding the pointer by a linear search
+	// is probably significantly faster than doing a binary search.
+	// But it helps finding consistency problems for now. Remove in
+	// due course.
 	pull_result pull(const T *item) {
 		size_t idx = get_idx(item);
 		if (idx == std::string::npos) {
@@ -147,6 +151,9 @@ public:
 			return { std::unique_ptr<T>(), std::string::npos };
 		}
 		return { this->pull_at(idx), idx };
+	}
+	void sort() {
+		std::sort(this->begin(), this->end(), [](const auto &a, const auto &b) { return CMP(*a, *b) < 0; });
 	}
 };
 

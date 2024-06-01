@@ -299,26 +299,23 @@ QString formatMinutes(int seconds)
 	return QString::asprintf("%d:%.2d", FRACTION_TUPLE(seconds, 60));
 }
 
-QString formatTripTitle(const dive_trip *trip)
+QString formatTripTitle(const dive_trip &trip)
 {
-	if (!trip)
-		return QString();
-
 	timestamp_t when = trip_date(trip);
 	bool getday = trip_is_single_day(trip);
 
 	QDateTime localTime = timestampToDateTime(when);
 
-	QString prefix = !trip->location.empty() ? QString::fromStdString(trip->location) + ", " : QString();
+	QString prefix = !trip.location.empty() ? QString::fromStdString(trip.location) + ", " : QString();
 	if (getday)
 		return prefix + loc.toString(localTime, prefs.date_format);
 	else
 		return prefix + loc.toString(localTime, "MMM yyyy");
 }
 
-QString formatTripTitleWithDives(const dive_trip *trip)
+QString formatTripTitleWithDives(const dive_trip &trip)
 {
-	int nr = trip->dives.nr;
+	int nr = trip.dives.nr;
 	return formatTripTitle(trip) + " " +
 	       gettextFromC::tr("(%n dive(s))", "", nr);
 }

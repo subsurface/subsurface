@@ -17,15 +17,12 @@ divelog::divelog() :
 	autogroup(false)
 {
 	*dives = empty_dive_table;
-	*trips = empty_trip_table;
 }
 
 divelog::~divelog()
 {
 	if (dives)
 		clear_dive_table(dives.get());
-	if (trips)
-		clear_trip_table(trips.get());
 }
 
 divelog::divelog(divelog &&) = default;
@@ -40,7 +37,14 @@ void divelog::delete_single_dive(int idx)
 		return;
 	}
 	struct dive *dive = dives->dives[idx];
-	remove_dive_from_trip(dive, trips.get());
+	struct dive_trip *trip = unregister_dive_from_trip(dive);
+
+	// Deleting a dive may change the order of trips!
+	if (trip)
+		trips->sort();
+
+	if (trip && trip->dives.nr == 0)
+		trips->pull(trip);
 	unregister_dive_from_dive_site(dive);
 	delete_dive_from_table(dives.get(), idx);
 }
@@ -48,12 +52,9 @@ void divelog::delete_single_dive(int idx)
 void divelog::clear()
 {
 	while (dives->nr > 0)
-		delete_single_dive(dives->nr - 1);
+		delete_dive_from_table(dives.get(), dives->nr - 1);
 	sites->clear();
-	if (trips->nr != 0) {
-		report_info("Warning: trip table not empty in divelog::clear()!");
-		trips->nr = 0;
-	}
+	trips->clear();
 	devices.clear();
 	filter_presets->clear();
 }

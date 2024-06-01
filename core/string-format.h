@@ -30,7 +30,7 @@ QString formatDiveDateTime(const dive *d);
 QString formatDiveGasString(const dive *d);
 QString formatDayOfWeek(int day);
 QString formatMinutes(int seconds);
-QString formatTripTitle(const dive_trip *trip);
-QString formatTripTitleWithDives(const dive_trip *trip);
+QString formatTripTitle(const dive_trip &trip);
+QString formatTripTitleWithDives(const dive_trip &trip);
 
 #endif
