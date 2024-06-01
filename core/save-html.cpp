@@ -438,15 +438,14 @@ static void write_trips(struct membuffer *b, const char *photos_dir, bool select
 {
 	int i, dive_no = 0;
 	const struct dive *dive;
-	dive_trip *trip;
 	char sep_ = ' ';
 	char *sep = &sep_;
 
-	for (i = 0; i < divelog.trips->nr; ++i)
-		divelog.trips->trips[i]->saved = 0;
+	for (auto &trip: *divelog.trips)
+		trip->saved = 0;
 
 	for_each_dive (i, dive) {
-		trip = dive->divetrip;
+		dive_trip *trip = dive->divetrip;
 
 		/*Continue if the dive have no trips or we have seen this trip before*/
 		if (!trip || trip->saved)

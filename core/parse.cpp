@@ -291,7 +291,7 @@ void trip_end(struct parser_state *state)
 {
 	if (!state->cur_trip)
 		return;
-	insert_trip(state->cur_trip.release(), state->log->trips.get());
+	state->log->trips->put(std::move(state->cur_trip));
 }
 
 void picture_start(struct parser_state *state)
