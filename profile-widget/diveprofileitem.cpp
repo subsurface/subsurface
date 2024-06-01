@@ -333,7 +333,7 @@ void DiveHeartrateItem::createTextItem(int sec, int hr, bool last)
 	int flags = last ? Qt::AlignLeft | Qt::AlignBottom :
 			   Qt::AlignRight | Qt::AlignBottom;
 	auto text = std::make_unique<DiveTextItem>(dpr, 0.7, flags, this);
-	text->set(QString("%1").arg(hr), getColor(HR_TEXT));
+	text->set(QStringLiteral("%1").arg(hr), getColor(HR_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(sec), vAxis.posAtValue(hr)));
 	texts.push_back(std::move(text));
 }
@@ -641,7 +641,7 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 double DiveGasPressureItem::plotPressureValue(double mbar, double sec, QFlags<Qt::AlignmentFlag> align, double y_offset)
 {
 	const char *unit;
-	auto label = QString("%1%2").arg(get_pressure_units(lrint(mbar), &unit)).arg(unit);
+	auto label = QStringLiteral("%1%2").arg(get_pressure_units(lrint(mbar), &unit)).arg(unit);
 	auto text = std::make_unique<DiveTextItem>(dpr, 1.0, align, this);
 	text->set(label, getColor(PRESSURE_TEXT));
 	text->setPos(hAxis.posAtValue(sec), vAxis.posAtValue(mbar) + y_offset);
@@ -655,7 +655,7 @@ void DiveGasPressureItem::plotGasValue(double mbar, double sec, const cylinder_t
 	QString gas = get_gas_string(cylinder->gasmix);
 	QString label;
 	if (showDescription)
-		label = QString("(%1) %2").arg(cylinder->type.description).arg(gas);
+		label = QStringLiteral("(%1) %2").arg(cylinder->type.description, gas);
 	else
 		label = gas;
 	auto text = std::make_unique<DiveTextItem>(dpr, 1.0, align, this);
