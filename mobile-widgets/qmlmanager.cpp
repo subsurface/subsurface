@@ -1369,7 +1369,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 void QMLManager::updateTripDetails(QString tripIdString, QString tripLocation, QString tripNotes)
 {
 	int tripId = tripIdString.toInt();
-	dive_trip *trip = get_trip_by_uniq_id(tripId);
+	dive_trip *trip = divelog.trips->get_by_uniq_id(tripId);
 	if (!trip) {
 		report_info("updateTripData: cannot find trip for tripId %s", qPrintable(tripIdString));
 		return;
@@ -1428,7 +1428,7 @@ void QMLManager::addDiveToTrip(int id, int tripId)
 		appendTextToLog(QString("Asked to add non-existing dive with id %1 to trip %2.").arg(id).arg(tripId));
 		return;
 	}
-	struct dive_trip *dt = get_trip_by_uniq_id(tripId);
+	struct dive_trip *dt = divelog.trips->get_by_uniq_id(tripId);
 	if (!dt) {
 		appendTextToLog(QString("Asked to add dive with id %1 to trip with id %2 which cannot be found.").arg(id).arg(tripId));
 		return;
