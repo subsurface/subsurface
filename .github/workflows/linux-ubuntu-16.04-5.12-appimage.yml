@@ -26,8 +26,7 @@ jobs:
 
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
-        software-properties-common=0.96.20.10 \
-        python3-software-properties=0.96.20.10
+        software-properties-common
 
         add-apt-repository -y ppa:savoury1/qt-5-15
         add-apt-repository -y ppa:savoury1/kde-5-80
