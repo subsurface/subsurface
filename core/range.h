@@ -176,7 +176,24 @@ int index_of_if(const Range &range, Func f)
 template<typename Range, typename Element>
 bool range_contains(const Range &v, const Element &item)
 {
-	return std::find(v.begin(), v.end(), item) != v.end();
+	return std::find(std::begin(v), std::end(v), item) != v.end();
+}
+
+// Insert into an already sorted range
+template<typename Range, typename Element, typename Comp>
+void range_insert_sorted(Range &v, Element &item, Comp &comp)
+{
+	auto it = std::lower_bound(std::begin(v), std::end(v), item,
+				   [&comp](auto &a, auto &b) { return comp(a, b) < 0; });
+	v.insert(it, std::move(item));
+}
+
+template<typename Range, typename Element>
+void range_remove(Range &v, const Element &item)
+{
+	auto it = std::find(std::begin(v), std::end(v), item);
+	if (it != std::end(v))
+		v.erase(it);
 }
 
 #endif

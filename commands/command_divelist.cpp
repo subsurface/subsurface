@@ -40,7 +40,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<std::unique_ptr<d
 	if (d->dive_site)
 		diveSiteCountChanged(d->dive_site);
 	res.site = unregister_dive_from_dive_site(d);
-	if (res.trip && res.trip->dives.nr == 0) {
+	if (res.trip && res.trip->dives.empty()) {
 		divelog.trips->sort();				// Removal of dives has changed order of trips! (TODO: remove this)
 		auto trip = remove_trip_from_backend(res.trip);	// Remove trip from backend
 		tripsToAdd.push_back(std::move(trip));		// Take ownership of trip
@@ -273,7 +273,7 @@ static std::unique_ptr<dive_trip> moveDiveToTrip(DiveToTrip &diveToTrip)
 
 	// Remove dive from trip - if this is the last dive in the trip, remove the whole trip.
 	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive);
-	if (trip && trip->dives.nr == 0)
+	if (trip && trip->dives.empty())
 		res = remove_trip_from_backend(trip);	// Remove trip from backend
 
 	// Store old trip and get new trip we should associate this dive with
@@ -644,7 +644,7 @@ void ShiftTime::redoit()
 	sort_dive_table(divelog.dives.get());
 	divelog.trips->sort();
 	for (dive_trip *trip: trips)
-		sort_dive_table(&trip->dives); // Keep the trip-table in order
+		trip->sort_dives();
 
 	// Send signals
 	QVector<dive *> dives = stdToQt<dive *>(diveList);
@@ -794,10 +794,10 @@ MergeTrips::MergeTrips(dive_trip *trip1, dive_trip *trip2)
 	if (trip1 == trip2)
 		return;
 	std::unique_ptr<dive_trip> newTrip = combine_trips(trip1, trip2);
-	for (int i = 0; i < trip1->dives.nr; ++i)
-		divesToMove.divesToMove.push_back( { trip1->dives.dives[i], newTrip.get() } );
-	for (int i = 0; i < trip2->dives.nr; ++i)
-		divesToMove.divesToMove.push_back( { trip2->dives.dives[i], newTrip.get() } );
+	for (dive *d: trip1->dives)
+		divesToMove.divesToMove.push_back( { d, newTrip.get() } );
+	for (dive *d: trip2->dives)
+		divesToMove.divesToMove.push_back( { d, newTrip.get() } );
 	divesToMove.tripsToAdd.push_back(std::move(newTrip));
 }
 

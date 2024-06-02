@@ -814,11 +814,10 @@ static void merge_imported_dives(struct dive_table *table)
  * table. On failure everything stays unchanged.
  * If "prefer_imported" is true, use data of the new dive.
  */
-static bool try_to_merge_into(struct dive *dive_to_add, int idx, struct dive_table *table, bool prefer_imported,
+static bool try_to_merge_into(struct dive *dive_to_add, struct dive *old_dive, bool prefer_imported,
 			      /* output parameters: */
 			      struct dive_table *dives_to_add, struct dive_table *dives_to_remove)
 {
-	struct dive *old_dive = table->dives[idx];
 	struct dive *merged = try_to_merge(old_dive, dive_to_add, prefer_imported);
 	if (!merged)
 		return false;
@@ -848,15 +847,13 @@ static bool dive_is_after_last(struct dive *d)
  * last dive of the global dive list (i.e. the sequence will change).
  * The integer pointed to by "num_merged" will be increased for every
  * merged dive that is added to "dives_to_add" */
-static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *delete_from,
-			      struct dive_table *dives_to,
+static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive_table *delete_from,
+			      const std::vector<dive *> &dives_to,
 			      bool prefer_imported, struct dive_trip *trip,
 			      /* output parameters: */
 			      struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
 			      int *num_merged)
 {
-	int i, j;
-	int last_merged_into = -1;
 	bool sequence_changed = false;
 
 	/* Merge newly imported dives into the dive table.
@@ -868,15 +865,13 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 	 *  - New dive "connects" two old dives (turn three into one).
 	 *  - New dive can not be merged into adjacent but some further dive.
 	 */
-	j = 0; /* Index in dives_to */
-	for (i = 0; i < dives_from->nr; i++) {
-		struct dive *dive_to_add = dives_from->dives[i];
-
-		if (delete_from)
-			remove_dive(dive_to_add, delete_from);
+	size_t j = 0; /* Index in dives_to */
+	size_t last_merged_into = std::string::npos;
+	for (auto dive_to_add: dives_from) {
+		remove_dive(dive_to_add, delete_from);
 
 		/* Find insertion point. */
-		while (j < dives_to->nr && dive_less_than(dives_to->dives[j], dive_to_add))
+		while (j < dives_to.size() && dive_less_than(dives_to[j], dive_to_add))
 			j++;
 
 		/* Try to merge into previous dive.
@@ -885,9 +880,9 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 		 * In principle that shouldn't happen as all dives that compare equal
 		 * by is_same_dive() were already merged, and is_same_dive() should be
 		 * transitive. But let's just go *completely* sure for the odd corner-case. */
-		if (j > 0 && j - 1 > last_merged_into &&
-		    dive_endtime(dives_to->dives[j - 1]) > dive_to_add->when) {
-			if (try_to_merge_into(dive_to_add, j - 1, dives_to, prefer_imported,
+		if (j > 0 && (last_merged_into == std::string::npos || j > last_merged_into + 1) &&
+		    dive_endtime(dives_to[j - 1]) > dive_to_add->when) {
+			if (try_to_merge_into(dive_to_add, dives_to[j - 1], prefer_imported,
 					      dives_to_add, dives_to_remove)) {
 				delete dive_to_add;
 				last_merged_into = j - 1;
@@ -898,9 +893,9 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 
 		/* That didn't merge into the previous dive.
 		 * Try to merge into next dive. */
-		if (j < dives_to->nr && j > last_merged_into &&
-		    dive_endtime(dive_to_add) > dives_to->dives[j]->when) {
-			if (try_to_merge_into(dive_to_add, j, dives_to, prefer_imported,
+		if (j < dives_to.size() && (last_merged_into == std::string::npos || j > last_merged_into) &&
+		    dive_endtime(dive_to_add) > dives_to[j]->when) {
+			if (try_to_merge_into(dive_to_add, dives_to[j], prefer_imported,
 					      dives_to_add, dives_to_remove)) {
 				delete dive_to_add;
 				last_merged_into = j;
@@ -914,9 +909,6 @@ static bool merge_dive_tables(struct dive_table *dives_from, struct dive_table *
 		sequence_changed |= !dive_is_after_last(dive_to_add);
 		dive_to_add->divetrip = trip;
 	}
-
-	/* we took care of all dives, clean up the import table */
-	dives_from->nr = 0;
 
 	return sequence_changed;
 }
@@ -1006,15 +998,28 @@ static bool try_to_merge_trip(dive_trip &trip_import, struct dive_table *import_
 {
 	for (auto &trip_old: *divelog.trips) {
 		if (trips_overlap(trip_import, *trip_old)) {
-			*sequence_changed |= merge_dive_tables(&trip_import.dives, import_table, &trip_old->dives,
+			*sequence_changed |= merge_dive_tables(trip_import.dives, import_table, trip_old->dives,
 							       prefer_imported, trip_old.get(),
 							       dives_to_add, dives_to_remove,
 							       start_renumbering_at);
+			/* we took care of all dives of the trip, clean up the table */
+			trip_import.dives.clear();
 			return true;
 		}
 	}
 
 	return false;
+}
+
+// Helper function to convert a table of owned dives into a table of non-owning pointers.
+// Used to merge *all* dives of a log into a different table.
+static std::vector<dive *> dive_table_to_non_owning(const dive_table &dives)
+{
+	std::vector<dive *> res;
+	res.reserve(dives.nr);
+	for (int i = 0; i < dives.nr; ++i)
+		res.push_back(dives.dives[i]);
+	return res;
 }
 
 /* Process imported dives: take a table of dives to be imported and
@@ -1139,9 +1144,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 
 		/* If no trip to merge-into was found, add trip as-is.
 		 * First, add dives to list of dives to add */
-		for (j = 0; j < trip_import->dives.nr; j++) {
-			struct dive *d = trip_import->dives.dives[j];
-
+		for (struct dive *d: trip_import->dives) {
 			/* Add dive to list of dives to-be-added. */
 			insert_dive(dives_to_add, d);
 			sequence_changed |= !dive_is_after_last(d);
@@ -1149,7 +1152,7 @@ void process_imported_dives(struct divelog *import_log, int flags,
 			remove_dive(d, import_log->dives.get());
 		}
 
-		trip_import->dives.nr = 0; /* Caller is responsible for adding dives to trip */
+		trip_import->dives.clear(); /* Caller is responsible for adding dives to trip */
 
 		/* Finally, add trip to list of trips to add */
 		trips_to_add.put(std::move(trip_import));
@@ -1175,7 +1178,10 @@ void process_imported_dives(struct divelog *import_log, int flags,
 		/* The remaining dives in import_log->dives are those that don't belong to
 		 * a trip and the caller does not want them to be associated to a
 		 * new trip. Merge them into the global table. */
-		sequence_changed |= merge_dive_tables(import_log->dives.get(), NULL, divelog.dives.get(), flags & IMPORT_PREFER_IMPORTED, NULL,
+		sequence_changed |= merge_dive_tables(dive_table_to_non_owning(*import_log->dives),
+						      import_log->dives.get(),
+						      dive_table_to_non_owning(*divelog.dives),
+						      flags & IMPORT_PREFER_IMPORTED, NULL,
 						      dives_to_add, dives_to_remove, &start_renumbering_at);
 	}
 
@@ -1265,9 +1271,9 @@ static int comp_dive_to_trip(struct dive *a, struct dive_trip *b)
 {
 	/* This should never happen, nevertheless don't crash on trips
 	 * with no (or worse a negative number of) dives. */
-	if (!b || b->dives.nr <= 0)
+	if (!b || b->dives.empty())
 		return -1;
-	return comp_dives(a, b->dives.dives[0]);
+	return comp_dives(a, b->dives[0]);
 }
 
 static int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b)

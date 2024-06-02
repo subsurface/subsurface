@@ -11,12 +11,14 @@ struct dive_trip
 {
 	std::string location;
 	std::string notes;
-	struct dive_table dives = {};
+	std::vector<dive *> dives;
 	int id; /* unique ID for this trip: used to pass trips through QML. */
 	/* Used by the io-routines to mark trips that have already been written. */
 	bool saved = false;
 	bool autogen = false;
 	bool selected = false;
+
+	void sort_dives();
 
 	dive_trip();
 	~dive_trip();
