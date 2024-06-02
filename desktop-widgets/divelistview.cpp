@@ -496,8 +496,8 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			removeFromSelection.push_back(dive);
 		} else if (dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>()) {
 			deselect_trip(trip);
-			for (int i = 0; i < trip->dives.nr; ++i)
-				removeFromSelection.push_back(trip->dives.dives[i]);
+			for (auto dive: trip->dives)
+				removeFromSelection.push_back(dive);
 		}
 	}
 	for (const QModelIndex &index: newSelected.indexes()) {
@@ -510,8 +510,8 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			addToSelection.push_back(dive);
 		} else if (dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>()) {
 			select_trip(trip);
-			for (int i = 0; i < trip->dives.nr; ++i)
-				addToSelection.push_back(trip->dives.dives[i]);
+			for (struct dive *d: trip->dives)
+				addToSelection.push_back(d);
 			selectTripItems(index);
 		}
 	}

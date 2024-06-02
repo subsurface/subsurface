@@ -407,12 +407,10 @@ static void write_no_trip(struct membuffer *b, int *dive_no, bool selected_only,
 
 static void write_trip(struct membuffer *b, dive_trip *trip, int *dive_no, bool selected_only, const char *photos_dir, const bool list_only, char *sep)
 {
-	const struct dive *dive;
 	const char *separator = "";
 	bool found_sel_dive = 0;
 
-	for (int i = 0; i < trip->dives.nr; i++) {
-		dive = trip->dives.dives[i];
+	for (auto dive: trip->dives) {
 		if (!dive->selected && selected_only)
 			continue;
 

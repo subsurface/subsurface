@@ -43,7 +43,7 @@ void divelog::delete_single_dive(int idx)
 	if (trip)
 		trips->sort();
 
-	if (trip && trip->dives.nr == 0)
+	if (trip && trip->dives.empty())
 		trips->pull(trip);
 	unregister_dive_from_dive_site(dive);
 	delete_dive_from_table(dives.get(), idx);

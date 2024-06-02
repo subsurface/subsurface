@@ -315,7 +315,7 @@ QString formatTripTitle(const dive_trip &trip)
 
 QString formatTripTitleWithDives(const dive_trip &trip)
 {
-	int nr = trip.dives.nr;
+	int nr = static_cast<int>(trip.dives.size());
 	return formatTripTitle(trip) + " " +
 	       gettextFromC::tr("(%n dive(s))", "", nr);
 }
