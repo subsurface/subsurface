@@ -392,8 +392,6 @@ void ProfileWidget::stopEdited()
 	if (!editedDive)
 		return;
 
-	copy_events(get_dive_dc(editedDive.get(), dc), get_dive_dc(d, dc));
-
 	Setter s(placingCommand, true);
 	Command::editProfile(editedDive.get(), dc, Command::EditProfileType::EDIT, 0);
 }
