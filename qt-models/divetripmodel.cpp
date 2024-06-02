@@ -78,9 +78,9 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 {
 	if (!trip)
 		return QString();
-	QString numDives = tr("(%n dive(s))", "", trip->dives.nr);
+	QString numDives = tr("(%n dive(s))", "", static_cast<int>(trip->dives.size()));
 	int shown = trip_shown_dives(trip);
-	QString shownDives = shown != trip->dives.nr ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
+	QString shownDives = shown != !trip->dives.empty() ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
 	QString title = QString::fromStdString(trip->location);
 
 	if (title.isEmpty()) {
@@ -88,7 +88,7 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 		QDateTime firstTime = timestampToDateTime(trip_date(*trip));
 		QString firstMonth = firstTime.toString("MMM");
 		QString firstYear = firstTime.toString("yyyy");
-		QDateTime lastTime = timestampToDateTime(trip->dives.dives[0]->when);
+		QDateTime lastTime = timestampToDateTime(trip->dives[0]->when);
 		QString lastMonth = lastTime.toString("MMM");
 		QString lastYear = lastTime.toString("yyyy");
 		if (lastMonth == firstMonth && lastYear == firstYear)
@@ -107,7 +107,7 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 	// Special roles for mobile
 	switch(role) {
 	case MobileListModel::TripIdRole: return QString::number(trip->id);
-	case MobileListModel::TripNrDivesRole: return trip->dives.nr;
+	case MobileListModel::TripNrDivesRole: return static_cast<int>(trip->dives.size());
 	case MobileListModel::TripShortDateRole: return tripShortDate(trip);
 	case MobileListModel::TripTitleRole: return tripTitle(trip);
 	case MobileListModel::TripLocationRole: return QString::fromStdString(trip->location);
@@ -126,7 +126,7 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 		case DiveTripModelBase::NR:
 			QString shownText;
 			int countShown = trip_shown_dives(trip);
-			if (countShown < trip->dives.nr)
+			if (countShown < static_cast<int>(trip->dives.size()))
 				shownText = tr("(%1 shown)").arg(countShown);
 			return formatTripTitleWithDives(*trip) + " " + shownText;
 		}
@@ -1696,9 +1696,9 @@ void DiveTripModelList::tripSelected(dive_trip *trip, dive *currentDive)
 	// In the list view, there are no trips, so simply transform this into
 	// a dive selection.
 	QVector<dive *> dives;
-	dives.reserve(trip->dives.nr);
-	for (int i = 0; i < trip->dives.nr; ++i)
-		dives.push_back(trip->dives.dives[i]);
+	dives.reserve(trip->dives.size());
+	for (auto dive: trip->dives)
+		dives.push_back(dive);
 
 	divesSelectedSlot(dives, currentDive, -1);
 }

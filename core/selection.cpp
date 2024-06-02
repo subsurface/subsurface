@@ -224,7 +224,7 @@ void setTripSelection(dive_trip *trip, dive *currentDive)
 	for (auto &t: *divelog.trips)
 		t->selected = t.get() == trip;
 
-	amount_selected = trip->dives.nr;
+	amount_selected = static_cast<int>(trip->dives.size());
 	amount_trips_selected = 1;
 
 	emit diveListNotifier.tripSelected(trip, currentDive);
