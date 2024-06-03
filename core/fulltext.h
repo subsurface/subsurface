@@ -5,11 +5,6 @@
 // issues such as COW semantics and UTF-16 encoding, it provides
 // platform independence and reasonable performance. Therefore,
 // this is based in QString instead of std::string.
-//
-// To make this accessible from C, this does manual memory management:
-// Every dive is associated with a cache of words. Thus, when deleting
-// a dive, a function freeing that data has to be called.
-// TODO: remove this complexity.
 
 #ifndef FULLTEXT_H
 #define FULLTEXT_H
@@ -17,7 +12,6 @@
 #include <QString>
 #include <vector>
 
-struct full_text_cache;
 struct dive;
 void fulltext_register(struct dive *d); // Note: can be called repeatedly
 void fulltext_unregister(struct dive *d); // Note: can be called repeatedly
@@ -28,6 +22,11 @@ enum class StringFilterMode {
 	SUBSTRING = 0,
 	STARTSWITH = 1,
 	EXACT = 2
+};
+
+// This class caches each dives words, so that we can unregister a dive from the full text search
+struct full_text_cache {
+	std::vector<QString> words;
 };
 
 // A fulltext query. Basically a list of normalized words we search for
