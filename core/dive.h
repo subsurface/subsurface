@@ -10,6 +10,7 @@
 #include "picture.h" // TODO: remove
 #include "tag.h"
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -24,6 +25,19 @@ struct dive_trip;
 struct full_text_cache;
 struct event;
 struct trip_table;
+
+/* A unique_ptr that will not be copied if the parent class is copied.
+ * This is used to keep a pointer to the fulltext cache and avoid
+ * having it copied when the dive is copied, since the new dive is
+ * not (yet) registered in the fulltext system. Quite hackish.
+ */
+template<typename T>
+struct non_copying_unique_ptr : public std::unique_ptr<T> {
+	using std::unique_ptr<T>::unique_ptr;
+	using std::unique_ptr<T>::operator=;
+	non_copying_unique_ptr(const non_copying_unique_ptr<T> &) { }
+	void operator=(const non_copying_unique_ptr<T> &) { }
+};
 
 struct dive {
 	struct dive_trip *divetrip = nullptr;
@@ -55,7 +69,7 @@ struct dive {
 	bool notrip = false; /* Don't autogroup this dive to a trip */
 	bool selected = false;
 	bool hidden_by_filter = false;
-	struct full_text_cache *full_text = nullptr; /* word cache for full text search */
+	non_copying_unique_ptr<full_text_cache> full_text; /* word cache for full text search */
 	bool invalid = false;
 
 	dive();

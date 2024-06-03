@@ -10,11 +10,6 @@
 #include <QLocale>
 #include <map>
 
-// This class caches each dives words, so that we can unregister a dive from the full text search
-struct full_text_cache {
-	std::vector<QString> words;
-};
-
 // The FullText-search class
 class FullText {
 	std::map<QString, std::vector<dive *>> words; // Dives that belong to each word
@@ -160,7 +155,7 @@ void FullText::registerDive(struct dive *d)
 	if (d->full_text)
 		unregisterWords(d, d->full_text->words);
 	else
-		d->full_text = new full_text_cache;
+		d->full_text = std::make_unique<full_text_cache>();
 	d->full_text->words = getWords(d);
 	registerWords(d, d->full_text->words);
 }
@@ -170,18 +165,15 @@ void FullText::unregisterDive(struct dive *d)
 	if (!d->full_text)
 		return;
 	unregisterWords(d, d->full_text->words);
-	delete d->full_text;
-	d->full_text = nullptr;
+	d->full_text.reset();
 }
 
 void FullText::unregisterAll()
 {
 	int i;
 	dive *d;
-	for_each_dive(i, d) {
-		delete d->full_text;
-		d->full_text = nullptr;
-	}
+	for_each_dive(i, d)
+		d->full_text.reset();
 	words.clear();
 }
 
