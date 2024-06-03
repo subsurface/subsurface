@@ -50,13 +50,9 @@ dive::dive() : dcs(1)
 	id = dive_getUniqID();
 }
 
-dive::~dive()
-{
-	fulltext_unregister(this);	// TODO: this is a layering violation. Remove.
-}
-
 dive::dive(dive &&) = default;
 dive &dive::operator=(const dive &) = default;
+dive::~dive() = default;
 
 /*
  * The legacy format for sample pressures has a single pressure
@@ -181,9 +177,7 @@ void clear_dive(struct dive *d)
 void copy_dive(const struct dive *s, struct dive *d)
 {
 	/* simply copy things over, but then clear fulltext cache and dive cache. */
-	fulltext_unregister(d);
 	*d = *s;
-	d->full_text = NULL;
 	invalidate_dive_cache(d);
 }
 
