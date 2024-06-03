@@ -23,13 +23,11 @@ logger.setLevel(logging.INFO)
 
 APPLICATION = "subsurface-ci"
 LAUNCHPAD = "production"
-RELEASE = "bionic"
 TEAM = "subsurface"
 SOURCE_NAME = "subsurface"
 SNAPS = {
     "subsurface": {
         "stable": {"recipe": "subsurface-stable"},
-        "candidate": {"recipe": "subsurface-candidate"},
     },
 }
 
