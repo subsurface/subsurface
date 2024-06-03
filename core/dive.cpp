@@ -49,6 +49,7 @@ dive::dive() : dcs(1)
 	id = dive_getUniqID();
 }
 
+dive::dive(const dive &) = default;
 dive::dive(dive &&) = default;
 dive &dive::operator=(const dive &) = default;
 dive::~dive() = default;
@@ -178,13 +179,6 @@ void copy_dive(const struct dive *s, struct dive *d)
 	/* simply copy things over, but then clear fulltext cache and dive cache. */
 	*d = *s;
 	invalidate_dive_cache(d);
-}
-
-static void copy_dive_onedc(const struct dive *s, const struct divecomputer &sdc, struct dive *d)
-{
-	copy_dive(s, d);
-	d->dcs.clear();
-	d->dcs.push_back(sdc);
 }
 
 /* make a clone of the source dive and clean out the source dive;
@@ -2340,19 +2334,6 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	return res;
 }
 
-// copy_dive(), but retaining the new ID for the copied dive
-static struct dive *create_new_copy(const struct dive *from)
-{
-	struct dive *to = new dive;
-
-	// dive creation gave us a new ID, we just need to
-	// make sure it's not overwritten.
-	int id = to->id;
-	copy_dive(from, to);
-	to->id = id;
-	return to;
-}
-
 struct start_end_pressure {
 	pressure_t start;
 	pressure_t end;
@@ -2412,44 +2393,43 @@ static void force_fixup_dive(struct dive *d)
  * Moreover, on failure both output dives are set to NULL.
  * On success, the newly allocated dives are returned in out1 and out2.
  */
-static int split_dive_at(const struct dive *dive, int a, int b, struct dive **out1, struct dive **out2)
+static std::array<std::unique_ptr<dive>, 2> split_dive_at(const struct dive &dive, int a, int b)
 {
-	int nr;
-	int32_t t;
-	struct dive *d1, *d2;
-	struct divecomputer *dc1, *dc2;
+	int nr = get_divenr(&dive);
 
 	/* if we can't find the dive in the dive list, don't bother */
-	if ((nr = get_divenr(dive)) < 0)
-		return -1;
+	if (nr < 0)
+		return {};
 
 	/* Splitting should leave at least 3 samples per dive */
-	if (a < 3 || static_cast<size_t>(b + 4) > dive->dcs[0].samples.size())
-		return -1;
+	if (a < 3 || static_cast<size_t>(b + 4) > dive.dcs[0].samples.size())
+		return {};
 
 	/* We're not trying to be efficient here.. */
-	d1 = create_new_copy(dive);
-	d2 = create_new_copy(dive);
-	d1->divetrip = d2->divetrip = 0;
+	auto d1 = std::make_unique<struct dive>(dive);
+	auto d2 = std::make_unique<struct dive>(dive);
+	d1->id = dive_getUniqID();
+	d2->id = dive_getUniqID();
+	d1->divetrip = d2->divetrip = nullptr;
 
 	/* now unselect the first first segment so we don't keep all
 	 * dives selected by mistake. But do keep the second one selected
 	 * so the algorithm keeps splitting the dive further */
 	d1->selected = false;
 
-	dc1 = &d1->dcs[0];
-	dc2 = &d2->dcs[0];
+	struct divecomputer &dc1 = d1->dcs[0];
+	struct divecomputer &dc2 = d2->dcs[0];
 	/*
 	 * Cut off the samples of d1 at the beginning
 	 * of the interval.
 	 */
-	dc1->samples.resize(a);
+	dc1.samples.resize(a);
 
 	/* And get rid of the 'b' first samples of d2 */
-	dc2->samples.erase(dc2->samples.begin(), dc2->samples.begin() + b);
+	dc2.samples.erase(dc2.samples.begin(), dc2.samples.begin() + b);
 
 	/* Now the secondary dive computers */
-	t = dc2->samples[0].time.seconds;
+	int32_t t = dc2.samples[0].time.seconds;
 	for (auto it1 = d1->dcs.begin() + 1; it1 != d1->dcs.end(); ++it1) {
 		auto it = std::find_if(it1->samples.begin(), it1->samples.end(),
 				       [t](auto &sample) { return sample.time.seconds >= t; });
@@ -2491,8 +2471,8 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 		++it2;
 	}
 
-	force_fixup_dive(d1);
-	force_fixup_dive(d2);
+	force_fixup_dive(d1.get());
+	force_fixup_dive(d2.get());
 
 	/*
 	 * Was the dive numbered? If it was the last dive, then we'll
@@ -2506,9 +2486,7 @@ static int split_dive_at(const struct dive *dive, int a, int b, struct dive **ou
 			d2->number = 0;
 	}
 
-	*out1 = d1;
-	*out2 = d2;
-	return nr;
+	return { std::move(d1), std::move(d2) };
 }
 
 /* in freedive mode we split for as little as 10 seconds on the surface,
@@ -2530,16 +2508,12 @@ static bool should_split(const struct divecomputer *dc, int t1, int t2)
  *
  * In other words, this is a (simplified) reversal of the dive merging.
  */
-int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2)
+std::array<std::unique_ptr<dive>, 2> split_dive(const struct dive &dive)
 {
-	*new1 = *new2 = NULL;
-	if (!dive)
-		return -1;
-
-	const struct divecomputer *dc = &dive->dcs[0];
+	const struct divecomputer *dc = &dive.dcs[0];
 	bool at_surface = true;
 	if (dc->samples.empty())
-		return -1;
+		return {};
 	auto surface_start = dc->samples.begin();
 	for (auto it = dc->samples.begin() + 1; it != dc->samples.end(); ++it) {
 		bool surface_sample = it->depth.mm < SURFACE_THRESHOLD;
@@ -2565,24 +2539,21 @@ int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2)
 		if (!should_split(dc, surface_start->time.seconds, std::prev(it)->time.seconds))
 			continue;
 
-		return split_dive_at(dive, surface_start - dc->samples.begin(), it - dc->samples.begin() - 1, new1, new2);
+		return split_dive_at(dive, surface_start - dc->samples.begin(), it - dc->samples.begin() - 1);
 	}
-	return -1;
+	return {};
 }
 
-int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2)
+std::array<std::unique_ptr<dive>, 2> split_dive_at_time(const struct dive &dive, duration_t time)
 {
-	if (!dive)
-		return -1;
-
-	auto it = std::find_if(dive->dcs[0].samples.begin(), dive->dcs[0].samples.end(),
+	auto it = std::find_if(dive.dcs[0].samples.begin(), dive.dcs[0].samples.end(),
 			       [time](auto &sample) { return sample.time.seconds >= time.seconds; });
-	if (it == dive->dcs[0].samples.end())
-		return -1;
-	size_t idx = it - dive->dcs[0].samples.begin();
+	if (it == dive.dcs[0].samples.end())
+		return {};
+	size_t idx = it - dive.dcs[0].samples.begin();
 	if (idx < 1)
-		return -1;
-	return split_dive_at(dive, static_cast<int>(idx), static_cast<int>(idx - 1), new1, new2);
+		return {};
+	return split_dive_at(dive, static_cast<int>(idx), static_cast<int>(idx - 1));
 }
 
 /*
@@ -2752,29 +2723,37 @@ struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number)
  * The dives will not be associated with a trip.
  * On error, both output parameters are set to NULL.
  */
-void split_divecomputer(const struct dive *src, int num, struct dive **out1, struct dive **out2)
+std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, int num)
 {
-	const struct divecomputer *srcdc = get_dive_dc(src, num);
+	if (num < 0 || src.dcs.size() < 2 || static_cast<size_t>(num) >= src.dcs.size())
+		return {};
 
-	if (src && srcdc) {
-		// Copy the dive, but only using the selected dive computer
-		*out2 = new dive;
-		copy_dive_onedc(src, *srcdc, *out2);
+	// Copy the dive with full divecomputer list
+	auto out1 = std::make_unique<dive>(src);
 
-		// This will also make fixup_dive() to allocate a new dive id...
-		(*out2)->id = 0;
-		fixup_dive(*out2);
+	// Remove all DCs, stash them and copy the dive again.
+	// Then, we have to dives without DCs and a list of DCs.
+	std::vector<divecomputer> dcs;
+	std::swap(out1->dcs, dcs);
+	auto out2 = std::make_unique<dive>(*out1);
 
-		// Copy the dive with all dive computers
-		*out1 = create_new_copy(src);
+	// Give the dives new unique ids and remove them from the trip.
+	out1->id = dive_getUniqID();
+	out2->id = dive_getUniqID();
+	out1->divetrip = out2->divetrip = NULL;
 
-		// .. and then delete the split-out dive computer
-		delete_divecomputer(*out1, num);
-
-		(*out1)->divetrip = (*out2)->divetrip = NULL;
-	} else {
-		*out1 = *out2 = NULL;
+	// Now copy the divecomputers
+	out1->dcs.reserve(src.dcs.size() - 1);
+	for (auto [idx, dc]: enumerated_range(dcs)) {
+		auto &dcs = idx == num ? out2->dcs : out1->dcs;
+		dcs.push_back(std::move(dc));
 	}
+
+	// Recalculate gas data, etc.
+	fixup_dive(out1.get());
+	fixup_dive(out2.get());
+
+	return { std::move(out1), std::move(out2) };
 }
 
 //Calculate O2 in best mix
