@@ -10,6 +10,7 @@
 #include "picture.h" // TODO: remove
 #include "tag.h"
 
+#include <array>
 #include <memory>
 #include <string>
 #include <vector>
@@ -74,6 +75,7 @@ struct dive {
 
 	dive();
 	~dive();
+	dive(const dive &);
 	dive(dive &&);
 	dive &operator=(const dive &);
 };
@@ -143,7 +145,7 @@ extern void set_git_prefs(const char *prefs);
 
 extern struct dive *make_first_dc(const struct dive *d, int dc_number);
 extern struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number);
-void split_divecomputer(const struct dive *src, int num, struct dive **out1, struct dive **out2);
+extern std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, int num);
 
 /*
  * Iterate over each dive, with the first parameter being the index
@@ -192,8 +194,8 @@ extern pressure_t calculate_surface_pressure(const struct dive *dive);
 extern pressure_t un_fixup_surface_pressure(const struct dive *d);
 extern int get_dive_salinity(const struct dive *dive);
 extern int dive_getUniqID();
-extern int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2);
-extern int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2);
+extern std::array<std::unique_ptr<dive>, 2> split_dive(const struct dive &dive);
+extern std::array<std::unique_ptr<dive>, 2> split_dive_at_time(const struct dive &dive, duration_t time);
 extern struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip, struct dive_site **site);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
 extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int time);

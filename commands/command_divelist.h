@@ -196,7 +196,7 @@ struct MergeTrips : public TripBase {
 
 class SplitDivesBase : public DiveListBase {
 protected:
-	SplitDivesBase(dive *old, std::array<dive *, 2> newDives);
+	SplitDivesBase(dive *old, std::array<std::unique_ptr<dive>, 2> newDives);
 private:
 	void undoit() override;
 	void redoit() override;
