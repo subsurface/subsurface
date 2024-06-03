@@ -9,8 +9,6 @@
 #include "qt-models/filtermodels.h"
 #include "core/divefilter.h"
 
-#include <array>
-
 namespace Command {
 
 // Helper function that takes care to unselect trips that are removed from the backend
@@ -801,10 +799,7 @@ MergeTrips::MergeTrips(dive_trip *trip1, dive_trip *trip2)
 	divesToMove.tripsToAdd.push_back(std::move(newTrip));
 }
 
-// std::array<dive *, 2> is the same as struct *dive[2], with the fundamental
-// difference that it can be returned from functions. Thus, this constructor
-// can be chained with the result of a function.
-SplitDivesBase::SplitDivesBase(dive *d, std::array<dive *, 2> newDives)
+SplitDivesBase::SplitDivesBase(dive *d, std::array<std::unique_ptr<dive>, 2> newDives)
 {
 	// If either of the new dives is null, simply return. Empty arrays indicate that nothing is to be done.
 	if (!newDives[0] || !newDives[1])
@@ -824,10 +819,10 @@ SplitDivesBase::SplitDivesBase(dive *d, std::array<dive *, 2> newDives)
 
 	diveToSplit.dives.push_back(d);
 	splitDives.dives.resize(2);
-	splitDives.dives[0].dive.reset(newDives[0]);
+	splitDives.dives[0].dive = std::move(newDives[0]);
 	splitDives.dives[0].trip = d->divetrip;
 	splitDives.dives[0].site = d->dive_site;
-	splitDives.dives[1].dive.reset(newDives[1]);
+	splitDives.dives[1].dive = std::move(newDives[1]);
 	splitDives.dives[1].trip = d->divetrip;
 	splitDives.dives[1].site = d->dive_site;
 }
@@ -856,16 +851,13 @@ void SplitDivesBase::undoit()
 	setSelection(diveToSplit.dives, diveToSplit.dives[0], -1);
 }
 
-static std::array<dive *, 2> doSplitDives(const dive *d, duration_t time)
+static std::array<std::unique_ptr<dive>, 2> doSplitDives(const dive *d, duration_t time)
 {
 	// Split the dive
-	dive *new1, *new2;
 	if (time.seconds < 0)
-		split_dive(d, &new1, &new2);
+		return split_dive(*d);
 	else
-		split_dive_at_time(d, time, &new1, &new2);
-
-	return { new1, new2 };
+		return split_dive_at_time(*d, time);
 }
 
 SplitDives::SplitDives(dive *d, duration_t time) : SplitDivesBase(d, doSplitDives(d, time))
@@ -873,20 +865,8 @@ SplitDives::SplitDives(dive *d, duration_t time) : SplitDivesBase(d, doSplitDive
 	setText(Command::Base::tr("split dive"));
 }
 
-static std::array<dive *, 2> splitDiveComputer(const dive *d, int dc_num)
-{
-	// Refuse to do anything if the dive has only one dive computer.
-	// Yes, this should have been checked by the UI, but let's just make sure.
-	if (d->dcs.size() <= 1)
-		return { nullptr, nullptr};
-
-	dive *new1, *new2;
-	split_divecomputer(d, dc_num, &new1, &new2);
-
-	return { new1, new2 };
-}
-
-SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) : SplitDivesBase(d, splitDiveComputer(d, dc_num))
+SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) :
+	SplitDivesBase(d, split_divecomputer(*d, dc_num))
 {
 	setText(Command::Base::tr("split dive computer"));
 }
