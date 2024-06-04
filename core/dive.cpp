@@ -2672,47 +2672,38 @@ void set_git_prefs(const char *prefs)
 }
 
 /* clones a dive and moves given dive computer to front */
-struct dive *make_first_dc(const struct dive *d, int dc_number)
+std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number)
 {
 	/* copy the dive */
-	dive *res = new dive;
-	copy_dive(d, res);
+	auto res = std::make_unique<dive>(d);
 
 	/* make a new unique id, since we still can't handle two equal ids */
 	res->id = dive_getUniqID();
 
-	if (dc_number == 0)
-		return res;
-
-	move_in_range(res->dcs, dc_number, dc_number + 1, 0);
+	if (dc_number != 0)
+		move_in_range(res->dcs, dc_number, dc_number + 1, 0);
 
 	return res;
 }
 
-static void delete_divecomputer(struct dive *d, int num)
-{
-	/* Refuse to delete the last dive computer */
-	if (d->dcs.size() <= 1)
-		return;
-
-	if (num < 0 || num >= (int)d->dcs.size())
-		return;
-
-	d->dcs.erase(d->dcs.begin() + num);
-}
-
 /* Clone a dive and delete given dive computer */
-struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number)
+std::unique_ptr<dive> clone_delete_divecomputer(const struct dive &d, int dc_number)
 {
 	/* copy the dive */
-	dive *res = new dive;
-	copy_dive(d, res);
+	auto res = std::make_unique<dive>(d);
 
 	/* make a new unique id, since we still can't handle two equal ids */
 	res->id = dive_getUniqID();
 
-	delete_divecomputer(res, dc_number);
-	force_fixup_dive(res);
+	if (res->dcs.size() <= 1)
+		return res;
+
+	if (dc_number < 0 || static_cast<size_t>(dc_number) >= res->dcs.size())
+		return res;
+
+	res->dcs.erase(res->dcs.begin() + dc_number);
+
+	force_fixup_dive(res.get());
 
 	return res;
 }
