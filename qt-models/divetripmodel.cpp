@@ -389,10 +389,6 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		return d->rating;
 	case DIVE_ROLE:
 		return QVariant::fromValue(const_cast<dive *>(d));  // Not nice: casting away a const
-	case DIVE_IDX:
-		return get_divenr(d);
-	case SELECTED_ROLE:
-		return d->selected;
 	case CURRENT_ROLE:
 		return d == current_dive;
 	}
