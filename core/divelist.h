@@ -3,6 +3,7 @@
 #define DIVELIST_H
 
 #include "units.h"
+#include <memory>
 #include <vector>
 
 struct dive;
@@ -56,6 +57,7 @@ void report_datafile_version(int version);
 void clear_dive_file_data();
 void clear_dive_table(struct dive_table *table);
 struct dive *unregister_dive(int idx);
+struct dive *register_dive(std::unique_ptr<dive> d);
 extern bool has_dive(unsigned int deviceid, unsigned int diveid);
 
 #endif // DIVELIST_H

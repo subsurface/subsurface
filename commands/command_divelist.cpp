@@ -72,18 +72,7 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 		d.site->add_dive(d.dive.get());
 		diveSiteCountChanged(d.site);
 	}
-	dive *res = d.dive.release();		// Give up ownership of dive
-
-	// When we add dives, we start in hidden-by-filter status. Once all
-	// dives have been added, their status will be updated.
-	res->hidden_by_filter = true;
-
-	int idx = dive_table_get_insertion_index(divelog.dives.get(), res);
-	fulltext_register(res);					// Register the dive's fulltext cache
-	add_to_dive_table(divelog.dives.get(), idx, res);	// Return ownership to backend
-	invalidate_dive_cache(res);				// Ensure that dive is written in git_save()
-
-	return res;
+	return register_dive(std::move(d.dive));	// Transfer ownership to core and update fulltext index
 }
 
 // Some signals are sent in batches per trip. To avoid writing the same loop
