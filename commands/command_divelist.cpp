@@ -943,9 +943,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 		return;
 	}
 
-	dive_trip *preferred_trip;
-	dive_site *preferred_site;
-	std::unique_ptr<dive> d(merge_dives(dives[0], dives[1], dives[1]->when - dives[0]->when, false, &preferred_trip, &preferred_site));
+	auto [d, trip, site] = merge_dives(*dives[0], *dives[1], dives[1]->when - dives[0]->when, false);
 
 	// Currently, the core code selects the dive -> this is not what we want, as
 	// we manually manage the selection post-command.
@@ -953,17 +951,14 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	d->selected = false;
 
 	// Set the preferred dive trip, so that for subsequent merges the better trip can be selected
-	d->divetrip = preferred_trip;
+	d->divetrip = trip;
 	for (int i = 2; i < dives.count(); ++i) {
-		d.reset(merge_dives(d.get(), dives[i], dives[i]->when - d->when, false, &preferred_trip, &preferred_site));
+		auto [d2, trip, site] = merge_dives(*d, *dives[i], dives[i]->when - d->when, false);
+		d = std::move(d2);
 		// Set the preferred dive trip and site, so that for subsequent merges the better trip and site can be selected
-		d->divetrip = preferred_trip;
-		d->dive_site = preferred_site;
+		d->divetrip = trip;
+		d->dive_site = site;
 	}
-
-	// We got our preferred trip and site, so now the references can be deleted from the newly generated dive
-	d->divetrip = nullptr;
-	d->dive_site = nullptr;
 
 	// The merged dive gets the number of the first dive with a non-zero number
 	for (const dive *dive: dives) {
@@ -1016,10 +1011,15 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	}
 
 	mergedDive.dives.resize(1);
-	mergedDive.dives[0].dive = std::move(d);
-	mergedDive.dives[0].trip = preferred_trip;
-	mergedDive.dives[0].site = preferred_site;
+	mergedDive.dives[0].trip = d->divetrip;
+	mergedDive.dives[0].site = d->dive_site;
 	divesToMerge.dives = std::vector<dive *>(dives.begin(), dives.end());
+
+	// We got our preferred trip and site, so now the references can be deleted from the newly generated dive
+	d->divetrip = nullptr;
+	d->dive_site = nullptr;
+
+	mergedDive.dives[0].dive = std::move(d);
 }
 
 bool MergeDives::workToBeDone()
