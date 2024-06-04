@@ -745,6 +745,24 @@ struct dive *unregister_dive(int idx)
 	return dive;
 }
 
+/* Add a dive to the global dive table.
+ * Index it in the fulltext cache and make sure that it is written
+ * in git_save().
+ */
+struct dive *register_dive(std::unique_ptr<dive> d)
+{
+	// When we add dives, we start in hidden-by-filter status. Once all
+	// dives have been added, their status will be updated.
+	d->hidden_by_filter = true;
+
+	int idx = dive_table_get_insertion_index(divelog.dives.get(), d.get());
+	fulltext_register(d.get());				// Register the dive's fulltext cache
+	invalidate_dive_cache(d.get());				// Ensure that dive is written in git_save()
+	add_to_dive_table(divelog.dives.get(), idx, d.get());
+
+	return d.release();
+}
+
 void process_loaded_dives()
 {
 	sort_dive_table(divelog.dives.get());
