@@ -871,7 +871,7 @@ SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) :
 	setText(Command::Base::tr("split dive computer"));
 }
 
-DiveComputerBase::DiveComputerBase(dive *old_dive, dive *new_dive, int dc_nr_before, int dc_nr_after) :
+DiveComputerBase::DiveComputerBase(dive *old_dive, std::unique_ptr<dive> new_dive, int dc_nr_before, int dc_nr_after) :
 	dc_nr_before(dc_nr_before),
 	dc_nr_after(dc_nr_after)
 {
@@ -891,7 +891,7 @@ DiveComputerBase::DiveComputerBase(dive *old_dive, dive *new_dive, int dc_nr_bef
 	new_dive->dive_site = nullptr;
 
 	diveToAdd.dives.resize(1);
-	diveToAdd.dives[0].dive.reset(new_dive);
+	diveToAdd.dives[0].dive = std::move(new_dive);
 	diveToAdd.dives[0].trip = old_dive->divetrip;
 	diveToAdd.dives[0].site = old_dive->dive_site;
 }
@@ -921,13 +921,13 @@ void DiveComputerBase::undoit()
 }
 
 MoveDiveComputerToFront::MoveDiveComputerToFront(dive *d, int dc_num)
-	: DiveComputerBase(d, make_first_dc(d, dc_num), dc_num, 0)
+	: DiveComputerBase(d, clone_make_first_dc(*d, dc_num), dc_num, 0)
 {
 	setText(Command::Base::tr("move dive computer to front"));
 }
 
 DeleteDiveComputer::DeleteDiveComputer(dive *d, int dc_num)
-	: DiveComputerBase(d, clone_delete_divecomputer(d, dc_num), dc_num, std::min((int)number_of_computers(d) - 1, dc_num))
+	: DiveComputerBase(d, clone_delete_divecomputer(*d, dc_num), dc_num, std::min((int)number_of_computers(d) - 1, dc_num))
 {
 	setText(Command::Base::tr("delete dive computer"));
 }

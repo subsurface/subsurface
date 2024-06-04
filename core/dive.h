@@ -143,8 +143,8 @@ extern temperature_t dc_watertemp(const struct dive *dive);
 
 extern void set_git_prefs(const char *prefs);
 
-extern struct dive *make_first_dc(const struct dive *d, int dc_number);
-extern struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number);
+extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
+extern std::unique_ptr<dive> clone_delete_divecomputer(const struct dive &d, int dc_number);
 extern std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, int num);
 
 /*
