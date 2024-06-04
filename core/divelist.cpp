@@ -773,7 +773,6 @@ static void merge_imported_dives(struct dive_table *table)
 	for (i = 1; i < table->nr; i++) {
 		struct dive *prev = table->dives[i - 1];
 		struct dive *dive = table->dives[i];
-		struct dive *merged;
 		struct dive_site *ds;
 
 		/* only try to merge overlapping dives - or if one of the dives has
@@ -782,7 +781,7 @@ static void merge_imported_dives(struct dive_table *table)
 		    dive_endtime(prev) < dive->when)
 			continue;
 
-		merged = try_to_merge(prev, dive, false);
+		auto merged = try_to_merge(*prev, *dive, false);
 		if (!merged)
 			continue;
 
@@ -790,7 +789,7 @@ static void merge_imported_dives(struct dive_table *table)
 		ds = merged->dive_site;
 		if (ds) {
 			merged->dive_site = NULL;
-			ds->add_dive(merged);
+			ds->add_dive(merged.get());
 		}
 		unregister_dive_from_dive_site(prev);
 		unregister_dive_from_dive_site(dive);
@@ -799,7 +798,7 @@ static void merge_imported_dives(struct dive_table *table)
 
 		/* Overwrite the first of the two dives and remove the second */
 		delete prev;
-		table->dives[i - 1] = merged;
+		table->dives[i - 1] = merged.release();
 		delete_dive_from_table(table, i);
 
 		/* Redo the new 'i'th dive */
@@ -814,17 +813,17 @@ static void merge_imported_dives(struct dive_table *table)
  * table. On failure everything stays unchanged.
  * If "prefer_imported" is true, use data of the new dive.
  */
-static bool try_to_merge_into(struct dive *dive_to_add, struct dive *old_dive, bool prefer_imported,
+static bool try_to_merge_into(struct dive &dive_to_add, struct dive &old_dive, bool prefer_imported,
 			      /* output parameters: */
 			      struct dive_table *dives_to_add, struct dive_table *dives_to_remove)
 {
-	struct dive *merged = try_to_merge(old_dive, dive_to_add, prefer_imported);
+	auto merged = try_to_merge(old_dive, dive_to_add, prefer_imported);
 	if (!merged)
 		return false;
 
-	merged->divetrip = old_dive->divetrip;
-	insert_dive(dives_to_remove, old_dive);
-	insert_dive(dives_to_add, merged);
+	merged->divetrip = old_dive.divetrip;
+	insert_dive(dives_to_remove, &old_dive);
+	insert_dive(dives_to_add, merged.release());
 
 	return true;
 }
@@ -882,7 +881,7 @@ static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive
 		 * transitive. But let's just go *completely* sure for the odd corner-case. */
 		if (j > 0 && (last_merged_into == std::string::npos || j > last_merged_into + 1) &&
 		    dive_endtime(dives_to[j - 1]) > dive_to_add->when) {
-			if (try_to_merge_into(dive_to_add, dives_to[j - 1], prefer_imported,
+			if (try_to_merge_into(*dive_to_add, *dives_to[j - 1], prefer_imported,
 					      dives_to_add, dives_to_remove)) {
 				delete dive_to_add;
 				last_merged_into = j - 1;
@@ -895,7 +894,7 @@ static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive
 		 * Try to merge into next dive. */
 		if (j < dives_to.size() && (last_merged_into == std::string::npos || j > last_merged_into) &&
 		    dive_endtime(dive_to_add) > dives_to[j]->when) {
-			if (try_to_merge_into(dive_to_add, dives_to[j], prefer_imported,
+			if (try_to_merge_into(*dive_to_add, *dives_to[j], prefer_imported,
 					      dives_to_add, dives_to_remove)) {
 				delete dive_to_add;
 				last_merged_into = j;

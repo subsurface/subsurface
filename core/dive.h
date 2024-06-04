@@ -90,7 +90,7 @@ extern void invalidate_dive_cache(struct dive *dive);
 extern bool dive_cache_is_valid(const struct dive *dive);
 
 extern int get_cylinder_idx_by_use(const struct dive *dive, enum cylinderuse cylinder_use_type);
-extern void cylinder_renumber(struct dive *dive, int mapping[]);
+extern void cylinder_renumber(struct dive &dive, int mapping[]);
 extern int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct dive *dive, bool check_unused);
 
 /* when selectively copying dive information, which parts should be copied? */
@@ -196,8 +196,15 @@ extern int get_dive_salinity(const struct dive *dive);
 extern int dive_getUniqID();
 extern std::array<std::unique_ptr<dive>, 2> split_dive(const struct dive &dive);
 extern std::array<std::unique_ptr<dive>, 2> split_dive_at_time(const struct dive &dive, duration_t time);
-extern struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip, struct dive_site **site);
-extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
+
+struct merge_result {
+	std::unique_ptr<struct dive> dive;
+	dive_trip *trip;
+	dive_site *site;
+};
+
+extern merge_result merge_dives(const struct dive &a, const struct dive &b, int offset, bool prefer_downloaded);
+extern std::unique_ptr<dive> try_to_merge(const struct dive &a, const struct dive &b, bool prefer_downloaded);
 extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int time);
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
