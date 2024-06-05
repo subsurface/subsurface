@@ -951,12 +951,12 @@ static bool check_datetime_range(const filter_constraint &c, const struct dive *
 		// where the given timestamp is during that dive.
 		return time_during_dive_with_offset(d, c.data.timestamp_range.from, 0) != c.negate;
 	case FILTER_CONSTRAINT_LESS:
-		return (dive_endtime(d) <= c.data.timestamp_range.to) != c.negate;
+		return (d->endtime() <= c.data.timestamp_range.to) != c.negate;
 	case FILTER_CONSTRAINT_GREATER:
 		return (d->when >= c.data.timestamp_range.from) != c.negate;
 	case FILTER_CONSTRAINT_RANGE:
 		return (d->when >= c.data.timestamp_range.from &&
-			dive_endtime(d) <= c.data.timestamp_range.to) != c.negate;
+			d->endtime() <= c.data.timestamp_range.to) != c.negate;
 	}
 	return false;
 }
@@ -971,14 +971,14 @@ static bool check_time_of_day_internal(const dive *d, enum filter_constraint_ran
 		// where the given timestamp is during that dive. Note: this will fail for dives
 		// that run past midnight. We might want to special case that.
 		return (seconds_since_midnight(d->when) <= from &&
-			seconds_since_midnight(dive_endtime(d)) >= from) != negate;
+			seconds_since_midnight(d->endtime()) >= from) != negate;
 	case FILTER_CONSTRAINT_LESS:
-		return (seconds_since_midnight(dive_endtime(d)) <= to) != negate;
+		return (seconds_since_midnight(d->endtime()) <= to) != negate;
 	case FILTER_CONSTRAINT_GREATER:
 		return (seconds_since_midnight(d->when) >= from) != negate;
 	case FILTER_CONSTRAINT_RANGE:
 		return (seconds_since_midnight(d->when) >= from &&
-			seconds_since_midnight(dive_endtime(d)) <= to) != negate;
+			seconds_since_midnight(d->endtime()) <= to) != negate;
 	}
 	return false;
 }
@@ -1066,9 +1066,9 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 	case FILTER_CONSTRAINT_SAC:
 		return check_numerical_range_non_zero(c, d->sac);
 	case FILTER_CONSTRAINT_LOGGED:
-		return is_logged(d) != c.negate;
+		return d->is_logged() != c.negate;
 	case FILTER_CONSTRAINT_PLANNED:
-		return is_planned(d) != c.negate;
+		return d->is_planned() != c.negate;
 	case FILTER_CONSTRAINT_DIVE_MODE:
 		return check_multiple_choice(c, (int)d->dcs[0].divemode); // should we be smarter and check all DCs?
 	case FILTER_CONSTRAINT_TAGS:

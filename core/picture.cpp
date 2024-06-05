@@ -32,7 +32,7 @@ int get_picture_idx(const picture_table &t, const std::string &filename)
 /* Return distance of timestamp to time of dive. Result is always positive, 0 means during dive. */
 static timestamp_t time_from_dive(const struct dive *d, timestamp_t timestamp)
 {
-	timestamp_t end_time = dive_endtime(d);
+	timestamp_t end_time = d->endtime();
 	if (timestamp < d->when)
 		return d->when - timestamp;
 	else if (timestamp > end_time)

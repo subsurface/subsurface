@@ -78,6 +78,15 @@ struct dive {
 	dive(const dive &);
 	dive(dive &&);
 	dive &operator=(const dive &);
+
+	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
+	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
+	temperature_t dc_airtemp() const;	/* average over divecomputers */
+	temperature_t dc_watertemp() const;	/* average over divecomputers */
+
+	bool is_planned() const;
+	bool is_logged() const;
+
 };
 
 /* For the top-level list: an entry is either a dive or a trip */
@@ -137,9 +146,6 @@ extern std::string get_dive_location(const struct dive *dive);
 extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern const struct divecomputer *get_dive_dc(const struct dive *dive, int nr);
-extern timestamp_t dive_endtime(const struct dive *dive);
-extern temperature_t dc_airtemp(const struct dive *dive);
-extern temperature_t dc_watertemp(const struct dive *dive);
 
 extern void set_git_prefs(const char *prefs);
 
@@ -221,9 +227,6 @@ extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id
 extern void invalidate_dive_cache(struct dive *dc);
 
 extern int total_weight(const struct dive *);
-
-extern bool is_planned(const struct dive *dive);
-extern bool is_logged(const struct dive *dive);
 
 /* Get gasmix at a given time */
 extern struct gasmix get_gasmix_at_time(const struct dive &dive, const struct divecomputer &dc, duration_t time);

@@ -104,7 +104,7 @@ void DivePlannerPointsModel::setupStartTime()
 	startTime = QDateTime::currentDateTimeUtc().addSecs(3600 + gettimezoneoffset());
 	if (divelog.dives->nr > 0) {
 		struct dive *d = get_dive(divelog.dives->nr - 1);
-		time_t ends = dive_endtime(d);
+		time_t ends = d->endtime();
 		time_t diff = ends - dateTimeToTimestamp(startTime);
 		if (diff > 0)
 			startTime = startTime.addSecs(diff + 3600);

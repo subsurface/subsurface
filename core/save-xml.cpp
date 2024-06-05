@@ -116,13 +116,13 @@ static void save_dive_temperature(struct membuffer *b, struct dive *dive)
 {
 	if (!dive->airtemp.mkelvin && !dive->watertemp.mkelvin)
 		return;
-	if (dive->airtemp.mkelvin == dc_airtemp(dive).mkelvin && dive->watertemp.mkelvin == dc_watertemp(dive).mkelvin)
+	if (dive->airtemp.mkelvin == dive->dc_airtemp().mkelvin && dive->watertemp.mkelvin == dive->dc_watertemp().mkelvin)
 		return;
 
 	put_string(b, "  <divetemperature");
-	if (dive->airtemp.mkelvin != dc_airtemp(dive).mkelvin)
+	if (dive->airtemp.mkelvin != dive->dc_airtemp().mkelvin)
 		put_temperature(b, dive->airtemp, " air='", " C'");
-	if (dive->watertemp.mkelvin != dc_watertemp(dive).mkelvin)
+	if (dive->watertemp.mkelvin != dive->dc_watertemp().mkelvin)
 		put_temperature(b, dive->watertemp, " water='", " C'");
 	put_string(b, "/>\n");
 }
