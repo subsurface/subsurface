@@ -47,7 +47,7 @@ static timestamp_t trip_enddate(const struct dive_trip &trip)
 {
 	if (trip.dives.empty())
 		return 0;
-	return dive_endtime(trip.dives.back());
+	return trip.dives.back()->endtime();
 }
 
 /* check if we have a trip right before / after this dive */

@@ -145,7 +145,7 @@ static const QString icon_names[4] = {
 static int countPhotos(const struct dive *d)
 {	// Determine whether dive has pictures, and whether they were taken during or before/after dive.
 	const int bufperiod = 120; // A 2-min buffer period. Photos within 2 min of dive are assumed as
-	int diveTotaltime = dive_endtime(d) - d->when;	// taken during the dive, not before/after.
+	int diveTotaltime = d->totaltime().seconds;	// taken during the dive, not before/after.
 	int pic_offset, icon_index = 0;
 	for (auto &picture: d->pictures) {	// Step through each of the pictures for this dive:
 		pic_offset = picture.offset.seconds;
