@@ -251,7 +251,7 @@ static int calculate_cns(struct dive *dive)
 #endif
 			continue;
 		}
-		if (!pdive || pdive->when >= dive->when || dive_endtime(pdive) + 12 * 60 * 60 < last_starttime) {
+		if (!pdive || pdive->when >= dive->when || pdive->endtime() + 12 * 60 * 60 < last_starttime) {
 #if DECO_CALC_DEBUG & 2
 			printf("No\n");
 #endif
@@ -306,7 +306,7 @@ static int calculate_cns(struct dive *dive)
 #endif
 
 		last_starttime = pdive->when;
-		last_endtime = dive_endtime(pdive);
+		last_endtime = pdive->endtime();
 	}
 
 	/* CNS reduced with 90min halftime during surface interval */
@@ -478,7 +478,7 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 #endif
 			continue;
 		}
-		if (!pdive || pdive->when >= dive->when || dive_endtime(pdive) + 48 * 60 * 60 < last_starttime) {
+		if (!pdive || pdive->when >= dive->when || pdive->endtime() + 48 * 60 * 60 < last_starttime) {
 #if DECO_CALC_DEBUG & 2
 			printf("No\n");
 #endif
@@ -550,7 +550,7 @@ int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_p
 		add_dive_to_deco(ds, pdive, in_planner);
 
 		last_starttime = pdive->when;
-		last_endtime = dive_endtime(pdive);
+		last_endtime = pdive->endtime();
 		clear_vpmb_state(ds);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after added dive #%d:\n", pdive->number);
@@ -796,7 +796,7 @@ static void merge_imported_dives(struct dive_table *table)
 		/* only try to merge overlapping dives - or if one of the dives has
 		 * zero duration (that might be a gps marker from the webservice) */
 		if (prev->duration.seconds && dive->duration.seconds &&
-		    dive_endtime(prev) < dive->when)
+		    prev->endtime() < dive->when)
 			continue;
 
 		auto merged = try_to_merge(*prev, *dive, false);
@@ -898,7 +898,7 @@ static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive
 		 * by is_same_dive() were already merged, and is_same_dive() should be
 		 * transitive. But let's just go *completely* sure for the odd corner-case. */
 		if (j > 0 && (last_merged_into == std::string::npos || j > last_merged_into + 1) &&
-		    dive_endtime(dives_to[j - 1]) > dive_to_add->when) {
+		    dives_to[j - 1]->endtime() > dive_to_add->when) {
 			if (try_to_merge_into(*dive_to_add, *dives_to[j - 1], prefer_imported,
 					      dives_to_add, dives_to_remove)) {
 				delete dive_to_add;
@@ -911,7 +911,7 @@ static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive
 		/* That didn't merge into the previous dive.
 		 * Try to merge into next dive. */
 		if (j < dives_to.size() && (last_merged_into == std::string::npos || j > last_merged_into) &&
-		    dive_endtime(dive_to_add) > dives_to[j]->when) {
+		    dive_to_add->endtime() > dives_to[j]->when) {
 			if (try_to_merge_into(*dive_to_add, *dives_to[j], prefer_imported,
 					      dives_to_add, dives_to_remove)) {
 				delete dive_to_add;
@@ -1345,7 +1345,7 @@ timestamp_t get_surface_interval(timestamp_t when)
 	if (i < 0)
 		return -1;
 
-	prev_end = dive_endtime(divelog.dives->dives[i]);
+	prev_end = divelog.dives->dives[i]->endtime();
 	if (prev_end > when)
 		return 0;
 	return when - prev_end;
