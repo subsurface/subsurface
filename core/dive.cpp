@@ -623,7 +623,7 @@ pressure_t calculate_surface_pressure(const struct dive *dive)
 	pressure_t res;
 	int sum = 0, nr = 0;
 
-	bool logged = is_logged(dive);
+	bool logged = dive->is_logged();
 	for (auto &dc: dive->dcs) {
 		if ((logged || !is_dc_planner(&dc)) && dc.surface_pressure.mbar) {
 			sum += dc.surface_pressure.mbar;
@@ -654,7 +654,7 @@ static void fixup_water_salinity(struct dive *dive)
 {
 	int sum = 0, nr = 0;
 
-	bool logged = is_logged(dive);
+	bool logged = dive->is_logged();
 	for (auto &dc: dive->dcs) {
 		if ((logged || !is_dc_planner(&dc)) && dc.salinity) {
 			if (dc.salinity < 500)
@@ -676,7 +676,7 @@ static void fixup_meandepth(struct dive *dive)
 {
 	int sum = 0, nr = 0;
 
-	bool logged = is_logged(dive);
+	bool logged = dive->is_logged();
 	for (auto &dc: dive->dcs) {
 		if ((logged || !is_dc_planner(&dc)) && dc.meandepth.mm) {
 			sum += dc.meandepth.mm;
@@ -692,7 +692,7 @@ static void fixup_duration(struct dive *dive)
 {
 	duration_t duration = { };
 
-	bool logged = is_logged(dive);
+	bool logged = dive->is_logged();
 	for (auto &dc: dive->dcs) {
 		if (logged || !is_dc_planner(&dc))
 			duration.seconds = std::max(duration.seconds, dc.duration.seconds);
@@ -703,13 +703,13 @@ static void fixup_duration(struct dive *dive)
 static void fixup_watertemp(struct dive *dive)
 {
 	if (!dive->watertemp.mkelvin)
-		dive->watertemp = dc_watertemp(dive);
+		dive->watertemp = dive->dc_watertemp();
 }
 
 static void fixup_airtemp(struct dive *dive)
 {
 	if (!dive->airtemp.mkelvin)
-		dive->airtemp = dc_airtemp(dive);
+		dive->airtemp = dive->dc_airtemp();
 }
 
 /* if the air temperature in the dive data is redundant to the one in its
@@ -717,10 +717,8 @@ static void fixup_airtemp(struct dive *dive)
  * return 0, otherwise return the air temperature given in the dive */
 static temperature_t un_fixup_airtemp(const struct dive &a)
 {
-	temperature_t res = a.airtemp;
-	if (a.airtemp.mkelvin && a.airtemp.mkelvin == dc_airtemp(&a).mkelvin)
-		res.mkelvin = 0;
-	return res;
+	return a.airtemp.mkelvin == a.dc_airtemp().mkelvin ?
+		temperature_t() : a.airtemp;
 }
 
 /*
@@ -796,7 +794,7 @@ static void fixup_dc_depths(struct dive *dive, struct divecomputer &dc)
 	}
 
 	update_depth(&dc.maxdepth, maxdepth);
-	if (!is_logged(dive) || !is_dc_planner(&dc))
+	if (!dive->is_logged() || !is_dc_planner(&dc))
 		if (maxdepth > dive->maxdepth.mm)
 			dive->maxdepth.mm = maxdepth;
 }
@@ -2204,22 +2202,22 @@ static void join_dive_computers(struct dive &d,
 	remove_redundant_dc(d, prefer_downloaded);
 }
 
-static bool has_dc_type(const struct dive *dive, bool dc_is_planner)
+static bool has_dc_type(const struct dive &dive, bool dc_is_planner)
 {
-	return std::any_of(dive->dcs.begin(), dive->dcs.end(),
+	return std::any_of(dive.dcs.begin(), dive.dcs.end(),
 			   [dc_is_planner] (const divecomputer &dc)
 			   { return is_dc_planner(&dc) == dc_is_planner; });
 }
 
 // Does this dive have a dive computer for which is_dc_planner has value planned
-bool is_planned(const struct dive *dive)
+bool dive::is_planned() const
 {
-	return has_dc_type(dive, true);
+	return has_dc_type(*this, true);
 }
 
-bool is_logged(const struct dive *dive)
+bool dive::is_logged() const
 {
-	return has_dc_type(dive, false);
+	return has_dc_type(*this, false);
 }
 
 /*
@@ -2570,30 +2568,30 @@ static inline int dc_totaltime(const struct divecomputer &dc)
  * time in the samples (and just default to the dive duration if
  * there are no samples).
  */
-static inline int dive_totaltime(const struct dive *dive)
+duration_t dive::totaltime() const
 {
-	int time =  dive->duration.seconds;
+	int time =  duration.seconds;
 
-	bool logged = is_logged(dive);
-	for (auto &dc: dive->dcs) {
+	bool logged = is_logged();
+	for (auto &dc: dcs) {
 		if (logged || !is_dc_planner(&dc)) {
 			int dc_time = dc_totaltime(dc);
 			if (dc_time > time)
 				time = dc_time;
 		}
 	}
-	return time;
+	return { time };
 }
 
-timestamp_t dive_endtime(const struct dive *dive)
+timestamp_t dive::endtime() const
 {
-	return dive->when + dive_totaltime(dive);
+	return when + totaltime().seconds;
 }
 
 bool time_during_dive_with_offset(const struct dive *dive, timestamp_t when, timestamp_t offset)
 {
 	timestamp_t start = dive->when;
-	timestamp_t end = dive_endtime(dive);
+	timestamp_t end = dive->endtime();
 	return start - offset <= when && when <= end + offset;
 }
 
@@ -3082,11 +3080,11 @@ bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id)
  * What do the dive computers say the water temperature is?
  * (not in the samples, but as dc property for dcs that support that)
  */
-temperature_t dc_watertemp(const struct dive *d)
+temperature_t dive::dc_watertemp() const
 {
 	int sum = 0, nr = 0;
 
-	for (auto &dc: d->dcs) {
+	for (auto &dc: dcs) {
 		if (dc.watertemp.mkelvin) {
 			sum += dc.watertemp.mkelvin;
 			nr++;
@@ -3100,11 +3098,11 @@ temperature_t dc_watertemp(const struct dive *d)
 /*
  * What do the dive computers say the air temperature is?
  */
-temperature_t dc_airtemp(const struct dive *d)
+temperature_t dive::dc_airtemp() const
 {
 	int sum = 0, nr = 0;
 
-	for (auto &dc: d->dcs) {
+	for (auto &dc: dcs) {
 		if (dc.airtemp.mkelvin) {
 			sum += dc.airtemp.mkelvin;
 			nr++;

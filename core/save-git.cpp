@@ -175,9 +175,9 @@ static void save_weightsystem_info(struct membuffer *b, const struct dive *dive)
 
 static void save_dive_temperature(struct membuffer *b, struct dive *dive)
 {
-	if (dive->airtemp.mkelvin != dc_airtemp(dive).mkelvin)
+	if (dive->airtemp.mkelvin != dive->dc_airtemp().mkelvin)
 		put_temperature(b, dive->airtemp, "airtemp ", "°C\n");
-	if (dive->watertemp.mkelvin != dc_watertemp(dive).mkelvin)
+	if (dive->watertemp.mkelvin != dive->dc_watertemp().mkelvin)
 		put_temperature(b, dive->watertemp, "watertemp ", "°C\n");
 }
 
