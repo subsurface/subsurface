@@ -2264,7 +2264,7 @@ merge_result merge_dives(const struct dive &a_in, const struct dive &b_in, int o
 	}
 
 	const dive *a = &a_in;
-	const dive *b = &a_in;
+	const dive *b = &b_in;
 	if (is_dc_planner(&a->dcs[0]))
 		std::swap(a, b);
 
