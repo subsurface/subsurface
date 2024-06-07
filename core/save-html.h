@@ -6,12 +6,12 @@
 
 struct dive;
 
-void put_HTML_date(struct membuffer *b, const struct dive *dive, const char *pre, const char *post);
-void put_HTML_depth(struct membuffer *b, const struct dive *dive, const char *pre, const char *post);
-void put_HTML_airtemp(struct membuffer *b, const struct dive *dive, const char *pre, const char *post);
-void put_HTML_watertemp(struct membuffer *b, const struct dive *dive, const char *pre, const char *post);
-void put_HTML_time(struct membuffer *b, const struct dive *dive, const char *pre, const char *post);
-void put_HTML_notes(struct membuffer *b, const struct dive *dive, const char *pre, const char *post);
+void put_HTML_date(struct membuffer *b, const struct dive &dive, const char *pre, const char *post);
+void put_HTML_depth(struct membuffer *b, const struct dive &dive, const char *pre, const char *post);
+void put_HTML_airtemp(struct membuffer *b, const struct dive &dive, const char *pre, const char *post);
+void put_HTML_watertemp(struct membuffer *b, const struct dive &dive, const char *pre, const char *post);
+void put_HTML_time(struct membuffer *b, const struct dive &dive, const char *pre, const char *post);
+void put_HTML_notes(struct membuffer *b, const struct dive &dive, const char *pre, const char *post);
 void put_HTML_quoted(struct membuffer *b, const char *text);
 void put_HTML_pressure_units(struct membuffer *b, pressure_t pressure, const char *pre, const char *post);
 void put_HTML_weight_units(struct membuffer *b, unsigned int grams, const char *pre, const char *post);

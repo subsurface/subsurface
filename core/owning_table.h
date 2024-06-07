@@ -124,6 +124,7 @@ public:
 		this->insert(it, std::move(item));
 		return { ptr, idx };
 	}
+
 	// Optimized version of get_idx(), which uses binary search
 	// If not found, fall back to linear search and emit a warning.
 	// Note: this is probaly slower than a linesr search. But for now,
@@ -140,6 +141,15 @@ public:
 		}
 		return it - this->begin();
 	}
+
+	// Get place where insertion would take place
+	size_t get_insertion_index(const T *item) const {
+		auto it = std::lower_bound(this->begin(), this->end(), item,
+				[] (const auto &i1, const auto &i2)
+				{ return CMP(*i1, *i2) < 0; });
+		return it - this->begin();
+	}
+
 	// Note: this is silly - finding the pointer by a linear search
 	// is probably significantly faster than doing a binary search.
 	// But it helps finding consistency problems for now. Remove in
@@ -152,6 +162,7 @@ public:
 		}
 		return { this->pull_at(idx), idx };
 	}
+
 	void sort() {
 		std::sort(this->begin(), this->end(), [](const auto &a, const auto &b) { return CMP(*a, *b) < 0; });
 	}

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/completionmodels.h"
 #include "core/dive.h"
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/tag.h"
 #include <QSet>
 
@@ -31,10 +33,8 @@ void CompletionModelBase::divesChanged(const QVector<dive *> &, DiveField field)
 static QStringList getCSVList(const std::string dive::*item)
 {
 	QSet<QString> set;
-	struct dive *dive;
-	int i = 0;
-	for_each_dive (i, dive) {
-		QString str = QString::fromStdString(dive->*item);
+	for (auto &dive: divelog.dives) {
+		QString str = QString::fromStdString(dive.get()->*item);
 		for (const QString &value: str.split(",", SKIP_EMPTY))
 			set.insert(value.trimmed());
 	}
@@ -66,9 +66,7 @@ bool DiveGuideCompletionModel::relevantDiveField(const DiveField &f)
 QStringList SuitCompletionModel::getStrings()
 {
 	QStringList list;
-	struct dive *dive;
-	int i = 0;
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		QString suit = QString::fromStdString(dive->suit);
 		if (!list.contains(suit))
 			list.append(suit);

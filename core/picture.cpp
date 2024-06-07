@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "picture.h"
 #include "dive.h"
+#include "divelist.h"
+#include "divelog.h"
 #if !defined(SUBSURFACE_MOBILE)
 #include "metadata.h"
 #endif
@@ -30,11 +32,11 @@ int get_picture_idx(const picture_table &t, const std::string &filename)
 
 #if !defined(SUBSURFACE_MOBILE)
 /* Return distance of timestamp to time of dive. Result is always positive, 0 means during dive. */
-static timestamp_t time_from_dive(const struct dive *d, timestamp_t timestamp)
+static timestamp_t time_from_dive(const struct dive &d, timestamp_t timestamp)
 {
-	timestamp_t end_time = d->endtime();
-	if (timestamp < d->when)
-		return d->when - timestamp;
+	timestamp_t end_time = d.endtime();
+	if (timestamp < d.when)
+		return d.when - timestamp;
 	else if (timestamp > end_time)
 		return timestamp - end_time;
 	else
@@ -44,16 +46,15 @@ static timestamp_t time_from_dive(const struct dive *d, timestamp_t timestamp)
 /* Return dive closest selected dive to given timestamp or NULL if no dives are selected. */
 static struct dive *nearest_selected_dive(timestamp_t timestamp)
 {
-	struct dive *d, *res = NULL;
-	int i;
-	timestamp_t offset, min = 0;
+	struct dive *res = NULL;
+	timestamp_t min = 0;
 
-	for_each_dive(i, d) {
+	for (auto &d: divelog.dives) {
 		if (!d->selected)
 			continue;
-		offset = time_from_dive(d, timestamp);
+		timestamp_t offset = time_from_dive(*d, timestamp);
 		if (!res || offset < min) {
-			res = d;
+			res = d.get();
 			min = offset;
 		}
 
@@ -71,7 +72,7 @@ static struct dive *nearest_selected_dive(timestamp_t timestamp)
 // only add pictures that have timestamps between 30 minutes before the dive and
 // 30 minutes after the dive ends
 static constexpr timestamp_t d30min = 30 * 60;
-static bool dive_check_picture_time(const struct dive *d, timestamp_t timestamp)
+static bool dive_check_picture_time(const struct dive &d, timestamp_t timestamp)
 {
 	return time_from_dive(d, timestamp) < d30min;
 }
@@ -93,7 +94,7 @@ std::pair<std::optional<picture>, dive *> create_picture(const std::string &file
 		return { {}, nullptr };
 	if (get_picture_idx(dive->pictures, filename) >= 0)
 		return { {}, nullptr };
-	if (!match_all && !dive_check_picture_time(dive, timestamp))
+	if (!match_all && !dive_check_picture_time(*dive, timestamp))
 		return { {}, nullptr };
 
 	struct picture picture;
@@ -105,12 +106,8 @@ std::pair<std::optional<picture>, dive *> create_picture(const std::string &file
 
 bool picture_check_valid_time(timestamp_t timestamp, timestamp_t shift_time)
 {
-	int i;
-	struct dive *dive;
-
-	for_each_dive (i, dive)
-		if (dive->selected && dive_check_picture_time(dive, timestamp + shift_time))
-			return true;
-	return false;
+	return std::any_of(divelog.dives.begin(), divelog.dives.end(),
+			   [t = timestamp + shift_time] (auto &d)
+			   { return d->selected && dive_check_picture_time(*d, t); });
 }
 #endif

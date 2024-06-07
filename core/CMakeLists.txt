@@ -74,6 +74,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divelogexportlogic.h
 	divesite.cpp
 	divesite.h
+	divesitetable.h
 	divesitehelpers.cpp
 	divesitehelpers.h
 	downloadfromdcthread.cpp
@@ -179,6 +180,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	time.cpp
 	trip.cpp
 	trip.h
+	triptable.h
 	uemis-downloader.cpp
 	uemis.cpp
 	uemis.h

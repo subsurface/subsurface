@@ -465,7 +465,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	qPrefDiveComputer::set_device(data->devName());
 
 	// before we start, remember where the dive_table ended
-	previousLast = divelog.dives->nr;
+	previousLast = static_cast<int>(divelog.dives.size());
 	diveImportedModel->startDownload();
 
 	// FIXME: We should get the _actual_ device info instead of whatever

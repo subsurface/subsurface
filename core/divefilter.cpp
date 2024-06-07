@@ -74,10 +74,8 @@ ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 
 void DiveFilter::reset()
 {
-	int i;
-	dive *d;
-	shown_dives = divelog.dives->nr;
-	for_each_dive(i, d)
+	shown_dives = static_cast<int>(divelog.dives.size());
+	for (auto &d: divelog.dives)
 		d->hidden_by_filter = false;
 	updateAll();
 }
@@ -85,26 +83,24 @@ void DiveFilter::reset()
 ShownChange DiveFilter::updateAll() const
 {
 	ShownChange res;
-	int i;
-	dive *d;
 	std::vector<dive *> selection = getDiveSelection();
 	std::vector<dive *> removeFromSelection;
 	// There are three modes: divesite, fulltext, normal
 	if (diveSiteMode()) {
-		for_each_dive(i, d) {
+		for (auto &d: divelog.dives) {
 			bool newStatus = range_contains(dive_sites, d->dive_site);
-			updateDiveStatus(d, newStatus, res, removeFromSelection);
+			updateDiveStatus(d.get(), newStatus, res, removeFromSelection);
 		}
 	} else if (filterData.fullText.doit()) {
 		FullTextResult ft = fulltext_find_dives(filterData.fullText, filterData.fulltextStringMode);
-		for_each_dive(i, d) {
-			bool newStatus = ft.dive_matches(d) && showDive(d);
-			updateDiveStatus(d, newStatus, res, removeFromSelection);
+		for (auto &d: divelog.dives) {
+			bool newStatus = ft.dive_matches(d.get()) && showDive(d.get());
+			updateDiveStatus(d.get(), newStatus, res, removeFromSelection);
 		}
 	} else {
-		for_each_dive(i, d) {
-			bool newStatus = showDive(d);
-			updateDiveStatus(d, newStatus, res, removeFromSelection);
+		for (auto &d: divelog.dives) {
+			bool newStatus = showDive(d.get());
+			updateDiveStatus(d.get(), newStatus, res, removeFromSelection);
 		}
 	}
 	updateSelection(selection, std::vector<dive *>(), removeFromSelection);
@@ -204,7 +200,7 @@ bool DiveFilter::diveSiteMode() const
 
 QString DiveFilter::shownText() const
 {
-	int num = divelog.dives->nr;
+	size_t num = divelog.dives.size();
 	if (diveSiteMode() || filterData.validFilter())
 		return gettextFromC::tr("%L1/%L2 shown").arg(shown_dives).arg(num);
 	else
@@ -230,11 +226,9 @@ std::vector<dive *> DiveFilter::visibleDives() const
 	std::vector<dive *> res;
 	res.reserve(shown_dives);
 
-	int i;
-	dive *d;
-	for_each_dive(i, d) {
+	for (auto &d: divelog.dives) {
 		if (!d->hidden_by_filter)
-			res.push_back(d);
+			res.push_back(d.get());
 	}
 	return res;
 }

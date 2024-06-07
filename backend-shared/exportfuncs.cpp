@@ -41,12 +41,12 @@ static constexpr int profileScale = 4;
 static constexpr int profileWidth = 800 * profileScale;
 static constexpr int profileHeight = 600 * profileScale;
 
-static void exportProfile(ProfileScene *profile, const struct dive *dive, const QString &filename)
+static void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename)
 {
 	QImage image = QImage(QSize(profileWidth, profileHeight), QImage::Format_RGB32);
 	QPainter paint;
 	paint.begin(&image);
-	profile->draw(&paint, QRect(0, 0, profileWidth, profileHeight), dive, 0, nullptr, false);
+	profile.draw(&paint, QRect(0, 0, profileWidth, profileHeight), &dive, 0, nullptr, false);
 	image.save(filename);
 }
 
@@ -57,17 +57,15 @@ static std::unique_ptr<ProfileScene> getPrintProfile()
 
 void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 {
-	struct dive *dive;
-	int i;
 	int count = 0;
 	if (!filename.endsWith(".png", Qt::CaseInsensitive))
 		filename = filename.append(".png");
 	QFileInfo fi(filename);
 
-	int todo = selected_only ? amount_selected : divelog.dives->nr;
+	int todo = selected_only ? amount_selected : static_cast<int>(divelog.dives.size());
 	int done = 0;
 	auto profile = getPrintProfile();
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (cb.canceled())
 			return;
 		if (selected_only && !dive->selected)
@@ -75,7 +73,7 @@ void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 		cb.setProgress(done++ * 1000 / todo);
 		QString fn = count ? fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix()
 				   : filename;
-		exportProfile(profile.get(), dive, fn);
+		exportProfile(*profile, *dive, fn);
 		++count;
 	}
 }
@@ -84,11 +82,9 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 {
 	FILE *f;
 	QDir texdir = QFileInfo(filename).dir();
-	struct dive *dive;
 	const struct units *units = get_units();
 	const char *unit;
 	const char *ssrf;
-	int i;
 	bool need_pagebreak = false;
 
 	membuffer buf;
@@ -133,16 +129,16 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 	put_format(&buf, "\n%%%%%%%%%% Begin Dive Data: %%%%%%%%%%\n");
 
-	int todo = selected_only ? amount_selected : divelog.dives->nr;
+	int todo = selected_only ? amount_selected : static_cast<int>(divelog.dives.size());
 	int done = 0;
 	auto profile = getPrintProfile();
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (cb.canceled())
 			return;
 		if (selected_only && !dive->selected)
 			continue;
 		cb.setProgress(done++ * 1000 / todo);
-		exportProfile(profile.get(), dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
+		exportProfile(*profile, *dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
@@ -150,7 +146,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		dive_site *site = dive->dive_site;
 		if (site)
 			country = taxonomy_get_country(site->taxonomy);
-		pressure_t delta_p = {.mbar = 0};
+		pressure_t delta_p;
 
 		QString star = "*";
 		QString viz = star.repeated(dive->visibility);
@@ -201,9 +197,8 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		// Print cylinder data
 		put_format(&buf, "\n%% Gas use information:\n");
 		int qty_cyl = 0;
-		for (int i = 0; i < static_cast<int>(dive->cylinders.size()); i++){
-			const cylinder_t &cyl = dive->cylinders[i];
-			if (is_cylinder_used(dive, i) || (prefs.include_unused_tanks && !cyl.type.description.empty())){
+		for (auto [i, cyl]: enumerated_range(dive->cylinders)) {
+			if (is_cylinder_used(dive.get(), i) || (prefs.include_unused_tanks && !cyl.type.description.empty())){
 				put_format(&buf, "\\def\\%scyl%cdescription{%s}\n", ssrf, 'a' + i, cyl.type.description.c_str());
 				put_format(&buf, "\\def\\%scyl%cgasname{%s}\n", ssrf, 'a' + i, gasname(cyl.gasmix));
 				put_format(&buf, "\\def\\%scyl%cmixO2{%.1f\\%%}\n", ssrf, 'a' + i, get_o2(cyl.gasmix)/10.0);
@@ -270,13 +265,11 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 void export_depths(const char *filename, bool selected_only)
 {
 	FILE *f;
-	struct dive *dive;
-	int i;
 	const char *unit = NULL;
 
 	membuffer buf;
 
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (selected_only && !dive->selected)
 			continue;
 

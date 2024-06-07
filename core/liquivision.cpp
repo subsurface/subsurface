@@ -131,7 +131,7 @@ static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_
 	return skip;
 }
 
-static void parse_dives(int log_version, const unsigned char *buf, unsigned int buf_size, struct dive_table *table, dive_site_table &sites)
+static void parse_dives(int log_version, const unsigned char *buf, unsigned int buf_size, struct dive_table &table, dive_site_table &sites)
 {
 	unsigned int ptr = 0;
 	unsigned char model;
@@ -407,8 +407,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		}
 
 		// End dive
-		record_dive_to_table(dive.release(), table);
-		dive = NULL;
+		table.record_dive(std::move(dive));
 
 		// Advance ptr for next dive
 		ptr += ps_ptr + 4;
@@ -438,7 +437,7 @@ int try_to_open_liquivision(const char *, std::string &mem, struct divelog *log)
 	}
 	ptr += 4;
 
-	parse_dives(log_version, buf + ptr, buf_size - ptr, log->dives.get(), *log->sites);
+	parse_dives(log_version, buf + ptr, buf_size - ptr, log->dives, *log->sites);
 
 	return 1;
 }

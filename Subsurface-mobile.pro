@@ -217,6 +217,7 @@ HEADERS += \
 	core/picture.h \
 	core/planner.h \
 	core/divesite.h \
+	core/divesitetable.h \
 	core/checkcloudconnection.h \
 	core/cochran.h \
 	core/color.h \
@@ -246,6 +247,8 @@ HEADERS += \
 	core/subsurfacestartup.h \
 	core/subsurfacesysinfo.h \
 	core/taxonomy.h \
+	core/trip.h \
+	core/triptable.h \
 	core/uemis.h \
 	core/webservice.h \
 	core/windowtitleupdate.h \

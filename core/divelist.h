@@ -2,27 +2,29 @@
 #ifndef DIVELIST_H
 #define DIVELIST_H
 
+#include "triptable.h"
+#include "divesitetable.h"
 #include "units.h"
 #include <memory>
 #include <vector>
 
 struct dive;
 struct divelog;
-struct trip_table;
-class dive_site_table;
 struct device;
 struct deco_state;
 
-struct dive_table {
-	int nr, allocated;
-	struct dive **dives;
+int comp_dives(const struct dive &a, const struct dive &b);
+int comp_dives_ptr(const struct dive *a, const struct dive *b);
+
+struct dive_table : public sorted_owning_table<dive, &comp_dives> {
+	dive *get_by_uniq_id(int id) const;
+	void record_dive(std::unique_ptr<dive> d);	// call fixup_dive() before adding dive to table.
+	std::unique_ptr<dive> unregister_dive(int idx);
 };
-static const struct dive_table empty_dive_table = { 0, 0, (struct dive **)0 };
 
 /* this is used for both git and xml format */
 #define DATAFORMAT_VERSION 3
 
-extern void sort_dive_table(struct dive_table *table);
 extern void update_cylinder_related_info(struct dive *);
 extern int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_planner);
 
@@ -33,30 +35,26 @@ extern void process_loaded_dives();
 #define	IMPORT_IS_DOWNLOADED (1 << 1)
 #define	IMPORT_MERGE_ALL_TRIPS (1 << 2)
 #define	IMPORT_ADD_TO_NEW_TRIP (1 << 3)
-extern void add_imported_dives(struct divelog *log, int flags);
-extern void process_imported_dives(struct divelog *import_log, int flags,
-				   struct dive_table *dives_to_add, struct dive_table *dives_to_remove,
-				   struct trip_table &trips_to_add, dive_site_table &sites_to_add,
-				   std::vector<device> &devices_to_add);
+extern void add_imported_dives(struct divelog &log, int flags);
 
-extern int dive_table_get_insertion_index(struct dive_table *table, struct dive *dive);
-extern void add_to_dive_table(struct dive_table *table, int idx, struct dive *dive);
-extern void insert_dive(struct dive_table *table, struct dive *d);
+struct process_imported_dives_result {
+	dive_table dives_to_add;
+	std::vector<dive *> dives_to_remove;
+	trip_table trips_to_add;
+	dive_site_table sites_to_add;
+	std::vector<device> devices_to_add;
+};
+
+extern process_imported_dives_result process_imported_dives(struct divelog &import_log, int flags);
+
 extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
-extern int get_divenr(const struct dive *dive);
-extern int remove_dive(const struct dive *dive, struct dive_table *table);
 extern int get_dive_nr_at_idx(int idx);
 extern timestamp_t get_surface_interval(timestamp_t when);
-extern void delete_dive_from_table(struct dive_table *table, int idx);
 extern struct dive *find_next_visible_dive(timestamp_t when);
-
-extern int comp_dives(const struct dive *a, const struct dive *b);
 
 int get_min_datafile_version();
 void report_datafile_version(int version);
 void clear_dive_file_data();
-void clear_dive_table(struct dive_table *table);
-struct dive *unregister_dive(int idx);
 struct dive *register_dive(std::unique_ptr<dive> d);
 extern bool has_dive(unsigned int deviceid, unsigned int diveid);
 
