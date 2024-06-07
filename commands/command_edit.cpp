@@ -62,11 +62,9 @@ static std::vector<dive *> getDives(bool currentDiveOnly)
 				    : std::vector<dive *> { };
 
 	std::vector<dive *> res;
-	struct dive *d;
-	int i;
-	for_each_dive (i, d) {
+	for (auto &d: divelog.dives) {
 		if (d->selected)
-			res.push_back(d);
+			res.push_back(d.get());
 	}
 	return res;
 }
@@ -1443,7 +1441,7 @@ void EditDive::exchangeDives()
 	QVector<dive *> dives = { oldDive };
 	timestamp_t delta = oldDive->when - newDive->when;
 	if (delta != 0) {
-		sort_dive_table(divelog.dives.get());
+		divelog.dives.sort();
 		divelog.trips->sort();
 		if (newDive->divetrip != oldDive->divetrip)
 			qWarning("Command::EditDive::redo(): This command does not support moving between trips!");

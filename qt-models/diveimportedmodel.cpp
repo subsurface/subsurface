@@ -16,7 +16,7 @@ int DiveImportedModel::columnCount(const QModelIndex&) const
 
 int DiveImportedModel::rowCount(const QModelIndex&) const
 {
-	return log.dives->nr;
+	return static_cast<int>(log.dives.size());
 }
 
 QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -46,15 +46,10 @@ QVariant DiveImportedModel::headerData(int section, Qt::Orientation orientation,
 
 QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid())
+	if (index.row() < 0 || static_cast<size_t>(index.row()) >= log.dives.size())
 		return QVariant();
 
-	if (index.row() >= log.dives->nr)
-		return QVariant();
-
-	struct dive *d = get_dive_from_table(index.row(), log.dives.get());
-	if (!d)
-		return QVariant();
+	const struct dive &d = *log.dives[index.row()];
 
 	// widgets access the model via index.column(), qml via role.
 	int column = index.column();
@@ -66,11 +61,11 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::DisplayRole) {
 		switch (column) {
 		case 0:
-			return QVariant(get_short_dive_date_string(d->when));
+			return QVariant(get_short_dive_date_string(d.when));
 		case 1:
-			return QVariant(get_dive_duration_string(d->duration.seconds, tr("h"), tr("min")));
+			return QVariant(get_dive_duration_string(d.duration.seconds, tr("h"), tr("min")));
 		case 2:
-			return QVariant(get_depth_string(d->maxdepth.mm, true, false));
+			return QVariant(get_depth_string(d.maxdepth.mm, true, false));
 		case 3:
 			return checkStates[index.row()];
 		}
@@ -90,8 +85,10 @@ void DiveImportedModel::changeSelected(QModelIndex clickedIndex)
 
 void DiveImportedModel::selectAll()
 {
+	if (log.dives.empty())
+		return;
 	std::fill(checkStates.begin(), checkStates.end(), true);
-	dataChanged(index(0, 0), index(log.dives->nr - 1, 0), QVector<int>() << Qt::CheckStateRole << Selected);
+	dataChanged(index(0, 0), index(log.dives.size() - 1, 0), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 void DiveImportedModel::selectRow(int row)
@@ -102,8 +99,10 @@ void DiveImportedModel::selectRow(int row)
 
 void DiveImportedModel::selectNone()
 {
+	if (log.dives.empty())
+		return;
 	std::fill(checkStates.begin(), checkStates.end(), false);
-	dataChanged(index(0, 0), index(log.dives->nr - 1, 0 ), QVector<int>() << Qt::CheckStateRole << Selected);
+	dataChanged(index(0, 0), index(log.dives.size() - 1, 0 ), QVector<int>() << Qt::CheckStateRole << Selected);
 }
 
 Qt::ItemFlags DiveImportedModel::flags(const QModelIndex &index) const
@@ -129,7 +128,7 @@ void DiveImportedModel::downloadThreadFinished()
 	log.clear();
 	std::swap(log, thread.log);
 
-	checkStates.resize(log.dives->nr);
+	checkStates.resize(log.dives.size());
 	std::fill(checkStates.begin(), checkStates.end(), true);
 
 	endResetModel();
@@ -166,24 +165,24 @@ struct divelog DiveImportedModel::consumeTables()
 
 int DiveImportedModel::numDives() const
 {
-	return log.dives->nr;
+	return static_cast<size_t>(log.dives.size());
 }
 
 // Delete non-selected dives
 void DiveImportedModel::deleteDeselected()
 {
-	int total = log.dives->nr;
-	int j = 0;
-	for (int i = 0; i < total; i++) {
+	size_t total = log.dives.size();
+	size_t j = 0;
+	for (size_t i = 0; i < total; i++) {
 		if (checkStates[i]) {
 			j++;
 		} else {
 			beginRemoveRows(QModelIndex(), j, j);
-			delete_dive_from_table(log.dives.get(), j);
+			log.dives.erase(log.dives.begin() + j);
 			endRemoveRows();
 		}
 	}
-	checkStates.resize(log.dives->nr);
+	checkStates.resize(log.dives.size());
 	std::fill(checkStates.begin(), checkStates.end(), true);
 }
 
@@ -194,7 +193,7 @@ void DiveImportedModel::recordDives(int flags)
 	deleteDeselected();
 
 	struct divelog log = consumeTables();
-	if (log.dives->nr > 0) {
+	if (!log.dives.empty()) {
 		auto data = thread.data();
 		Command::importDives(&log, flags, data->devName());
 	}

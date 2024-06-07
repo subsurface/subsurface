@@ -102,9 +102,8 @@ void DivePlannerPointsModel::setupStartTime()
 	// if the latest dive is in the future, then start an hour after it ends
 	// otherwise start an hour from now
 	startTime = QDateTime::currentDateTimeUtc().addSecs(3600 + gettimezoneoffset());
-	if (divelog.dives->nr > 0) {
-		struct dive *d = get_dive(divelog.dives->nr - 1);
-		time_t ends = d->endtime();
+	if (!divelog.dives.empty()) {
+		time_t ends = divelog.dives.back()->endtime();
 		time_t diff = ends - dateTimeToTimestamp(startTime);
 		if (diff > 0)
 			startTime = startTime.addSecs(diff + 3600);
@@ -1097,7 +1096,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 
 
 #if DEBUG_PLAN
-	save_dive(stderr, d);
+	save_dive(stderr, *d);
 	dump_plan(&diveplan);
 #endif
 }

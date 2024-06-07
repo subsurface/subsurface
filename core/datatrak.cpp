@@ -698,12 +698,12 @@ int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log)
 			rc = 1;
 			goto out;
 		} else {
-			record_dive_to_table(ptdive.release(), log->dives.get());
+			log->dives.record_dive(std::move(ptdive));
 		}
 		i++;
 	}
 out:
-	sort_dive_table(log->dives.get());
+	log->dives.sort();
 	return rc;
 bail:
 	return 1;

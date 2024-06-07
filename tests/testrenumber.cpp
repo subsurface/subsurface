@@ -20,16 +20,16 @@ void TestRenumber::testMerge()
 {
 	struct divelog log;
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47b.xml", &log), 0);
-	add_imported_dives(&log, IMPORT_MERGE_ALL_TRIPS);
-	QCOMPARE(divelog.dives->nr, 1);
+	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
+	QCOMPARE(divelog.dives.size(), 1);
 }
 
 void TestRenumber::testMergeAndAppend()
 {
 	struct divelog log;
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47c.xml", &log), 0);
-	add_imported_dives(&log, IMPORT_MERGE_ALL_TRIPS);
-	QCOMPARE(divelog.dives->nr, 2);
+	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
+	QCOMPARE(divelog.dives.size(), 2);
 	struct dive *d = get_dive(1);
 	QVERIFY(d != NULL);
 	if (d)

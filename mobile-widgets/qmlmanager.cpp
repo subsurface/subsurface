@@ -413,9 +413,9 @@ void QMLManager::openLocalThenRemote(QString url)
 		qPrefTechnicalDetails::set_show_ccr_sensors(git_prefs.show_ccr_sensors);
 		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
 		// the following steps can take a long time, so provide updates
-		setNotificationText(tr("Processing %1 dives").arg(divelog.dives->nr));
+		setNotificationText(tr("Processing %1 dives").arg(divelog.dives.size()));
 		process_loaded_dives();
-		setNotificationText(tr("%1 dives loaded from local dive data file").arg(divelog.dives->nr));
+		setNotificationText(tr("%1 dives loaded from local dive data file").arg(divelog.dives.size()));
 	}
 	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but still needs PIN"));
@@ -478,7 +478,7 @@ void QMLManager::mergeLocalRepo()
 {
 	struct divelog log;
 	parse_file(qPrintable(nocloud_localstorage()), &log);
-	add_imported_dives(&log, IMPORT_MERGE_ALL_TRIPS);
+	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
 	mark_divelist_changed(true);
 }
 
@@ -588,7 +588,7 @@ void QMLManager::finishSetup()
 			// successfully opened the local file, now add thigs to the dive list
 			consumeFinishedLoad();
 			updateHaveLocalChanges(true);
-			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(divelog.dives->nr).arg(existing_filename.c_str()));
+			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(divelog.dives.size()).arg(existing_filename.c_str()));
 		}
 	} else {
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
@@ -672,7 +672,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	qPrefCloudStorage::set_cloud_storage_email(email);
 	qPrefCloudStorage::set_cloud_storage_password(newPassword);
 
-	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && divelog.dives->nr) {
+	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && divelog.dives.size()) {
 		// we came from NOCLOUD and are connecting to a cloud account;
 		// since we already have dives in the table, let's remember that so we can keep them
 		noCloudToCloud = true;
@@ -830,7 +830,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (noCloudToCloud) {
 		git_storage_update_progress(qPrintable(tr("Loading dives from local storage ('no cloud' mode)")));
 		mergeLocalRepo();
-		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(divelog.dives->nr));
+		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(divelog.dives.size()));
 		noCloudToCloud = false;
 		mark_divelist_changed(true);
 		emit syncStateChanged();
@@ -894,8 +894,8 @@ void QMLManager::consumeFinishedLoad()
 	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
 	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
 	process_loaded_dives();
-	appendTextToLog(QStringLiteral("%1 dives loaded").arg(divelog.dives->nr));
-	if (divelog.dives->nr == 0)
+	appendTextToLog(QStringLiteral("%1 dives loaded").arg(divelog.dives.size()));
+	if (divelog.dives.empty())
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
 }
 
@@ -1168,7 +1168,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveGuide, QString tags, QString weight, QString notes,
 			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state)
 {
-	struct dive *orig = get_dive_by_uniq_id(diveId.toInt());
+	struct dive *orig = divelog.dives.get_by_uniq_id(diveId.toInt());
 
 	if (!orig) {
 		appendTextToLog("cannot commit changes: no dive");
@@ -1389,7 +1389,7 @@ void QMLManager::updateTripDetails(QString tripIdString, QString tripLocation, Q
 
 void QMLManager::removeDiveFromTrip(int id)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog(QString("Asked to remove non-existing dive with id %1 from its trip.").arg(id));
 		return;
@@ -1406,7 +1406,7 @@ void QMLManager::removeDiveFromTrip(int id)
 
 void QMLManager::addTripForDive(int id)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog(QString("Asked to create trip for non-existing dive with id %1").arg(id));
 		return;
@@ -1423,7 +1423,7 @@ void QMLManager::addTripForDive(int id)
 
 void QMLManager::addDiveToTrip(int id, int tripId)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog(QString("Asked to add non-existing dive with id %1 to trip %2.").arg(id).arg(tripId));
 		return;
@@ -1575,12 +1575,10 @@ void QMLManager::redo()
 
 void QMLManager::selectDive(int id)
 {
-	int i;
 	extern int amount_selected;
-	struct dive *dive = NULL;
 
 	amount_selected = 0;
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		dive->selected = (dive->id == id);
 		if (dive->selected)
 			amount_selected++;
@@ -1591,7 +1589,7 @@ void QMLManager::selectDive(int id)
 
 void QMLManager::deleteDive(int id)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog("trying to delete non-existing dive");
 		return;
@@ -1602,7 +1600,7 @@ void QMLManager::deleteDive(int id)
 
 void QMLManager::toggleDiveInvalid(int id)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog("trying to toggle invalid flag of non-existing dive");
 		return;
@@ -1693,7 +1691,7 @@ bool QMLManager::toggleWeights(bool toggle)
 
 void QMLManager::copyDiveData(int id)
 {
-	m_copyPasteDive = get_dive_by_uniq_id(id);
+	m_copyPasteDive = divelog.dives.get_by_uniq_id(id);
 	if (!m_copyPasteDive) {
 		appendTextToLog("trying to copy non-existing dive");
 		return;
@@ -1781,7 +1779,7 @@ void QMLManager::setStartPageText(const QString& text)
 QString QMLManager::getNumber(const QString& diveId)
 {
 	int dive_id = diveId.toInt();
-	struct dive *d = get_dive_by_uniq_id(dive_id);
+	struct dive *d = divelog.dives.get_by_uniq_id(dive_id);
 	QString number;
 	if (d)
 		number = QString::number(d->number);
@@ -1791,7 +1789,7 @@ QString QMLManager::getNumber(const QString& diveId)
 QString QMLManager::getDate(const QString& diveId)
 {
 	int dive_id = diveId.toInt();
-	struct dive *d = get_dive_by_uniq_id(dive_id);
+	struct dive *d = divelog.dives.get_by_uniq_id(dive_id);
 	QString datestring;
 	if (d)
 		datestring = get_short_dive_date_string(d->when);
@@ -2360,7 +2358,7 @@ void QMLManager::importCacheRepo(QString repo)
 	QString repoPath = QString("%1/cloudstorage/%2").arg(system_default_directory()).arg(repo);
 	appendTextToLog(QString("importing %1").arg(repoPath));
 	parse_file(qPrintable(repoPath), &log);
-	add_imported_dives(&log, IMPORT_MERGE_ALL_TRIPS);
+	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
 	changesNeedSaving();
 }
 

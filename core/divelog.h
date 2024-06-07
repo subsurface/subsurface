@@ -3,17 +3,18 @@
 #ifndef DIVELOG_H
 #define DIVELOG_H
 
+#include "divelist.h"
+
 #include <memory>
 #include <vector>
 
-struct dive_table;
 struct trip_table;
 class dive_site_table;
 struct device;
 struct filter_preset_table;
 
 struct divelog {
-	std::unique_ptr<dive_table> dives;
+	dive_table dives;
 	std::unique_ptr<trip_table> trips;
 	std::unique_ptr<dive_site_table> sites;
 	std::vector<device> devices;
@@ -26,7 +27,9 @@ struct divelog {
 	divelog &operator=(divelog &&); // move assignment (argument is consumed).
 
 	void delete_single_dive(int idx);
+	void delete_multiple_dives(const std::vector<dive *> &dives);
 	void clear();
+	bool is_trip_before_after(const struct dive *dive, bool before) const;
 };
 
 extern struct divelog divelog;

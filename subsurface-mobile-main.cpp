@@ -92,7 +92,6 @@ int main(int argc, char **argv)
 	if (!quit)
 		run_mobile_ui(initial_font_size);
 	exit_ui();
-	divelog.clear();
 	parse_xml_exit();
 	subsurface_console_exit();
 

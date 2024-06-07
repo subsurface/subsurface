@@ -601,7 +601,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 
 static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			       const unsigned char *in, unsigned size,
-			       struct dive_table *table)
+			       struct dive_table &table)
 {
 	unsigned char *buf = (unsigned char *)malloc(size);
 	struct divecomputer *dc;
@@ -784,7 +784,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->duration.seconds = duration;
 	}
 
-	record_dive_to_table(dive.release(), table);
+	table.record_dive(std::move(dive));
 
 	free(buf);
 }
@@ -819,7 +819,7 @@ int try_to_open_cochran(const char *, std::string &mem, struct divelog *log)
 			break;
 
 		cochran_parse_dive(decode, mod, (unsigned char *)mem.data() + dive1,
-						dive2 - dive1, log->dives.get());
+						dive2 - dive1, log->dives);
 	}
 
 	return 1; // no further processing needed

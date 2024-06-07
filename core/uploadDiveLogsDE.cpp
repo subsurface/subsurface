@@ -7,8 +7,11 @@
 #include "core/errorhelper.h"
 #include "core/qthelper.h"
 #include "core/dive.h"
-#include "core/membuffer.h"
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/divesite.h"
+#include "core/membuffer.h"
+#include "core/range.h"
 #include "core/cloudstorage.h"
 #include "core/xmlparams.h"
 #ifndef SUBSURFACE_MOBILE
@@ -87,9 +90,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 	}
 
 	/* walk the dive list in chronological order */
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
+	for (auto [i, dive]: enumerated_range(divelog.dives)) {
 		char filename[PATH_MAX];
 		int streamsize;
 		char *membuf;
@@ -131,7 +132,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 			put_format(&mb, "</site>\n</divesites>\n");
 		}
 
-		save_one_dive_to_mb(&mb, dive, false);
+		save_one_dive_to_mb(&mb, *dive, false);
 
 		if (ds) {
 			put_format(&mb, "</divelog>\n");

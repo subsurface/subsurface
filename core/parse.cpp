@@ -31,14 +31,6 @@ struct divecomputer *get_dc(struct parser_state *state)
 	return state->cur_dc ?: &state->cur_dive->dcs[0];
 }
 
-/*
- * Add a dive into the dive_table array
- */
-void record_dive_to_table(struct dive *dive, struct dive_table *table)
-{
-	add_to_dive_table(table, table->nr, fixup_dive(dive));
-}
-
 void start_match(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 2)
@@ -270,7 +262,12 @@ void dive_end(struct parser_state *state)
 	if (is_dive(state)) {
 		if (state->cur_trip)
 			add_dive_to_trip(state->cur_dive.get(), state->cur_trip.get());
-		record_dive_to_table(state->cur_dive.release(), state->log->dives.get());
+		// Note: we add dives in an unsorted way. The caller of the parsing
+		// function must sort dives.
+		fixup_dive(state->cur_dive.get());
+		state->log->dives.push_back(std::move(state->cur_dive));
+		// This would add dives in a sorted way:
+		// state->log->dives.record_dive(std::move(state->cur_dive));
 	}
 	state->cur_dive.reset();
 	state->cur_dc = NULL;

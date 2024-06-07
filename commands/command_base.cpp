@@ -66,7 +66,7 @@ QString diveNumberOrDate(struct dive *d)
 QString getListOfDives(const std::vector<struct dive*> &dives)
 {
 	QString listOfDives;
-	if ((int)dives.size() == divelog.dives->nr)
+	if (dives.size() == divelog.dives.size())
 		return Base::tr("all dives");
 	int i = 0;
 	for (dive *d: dives) {

@@ -10,10 +10,12 @@
 #include <stdio.h>
 
 #include "dive.h"
-#include "membuffer.h"
+#include "divelist.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "file.h"
+#include "membuffer.h"
 #include "save-html.h"
 #include "format.h"
 #include "worldmap-save.h"
@@ -28,43 +30,39 @@ static const char *getGoogleApi()
 
 static void writeMarkers(struct membuffer *b, bool selected_only)
 {
-	int i, dive_no = 0;
-	struct dive *dive;
-	std::string pre, post;
+	int dive_no = 0;
 
-	for_each_dive (i, dive) {
-		if (selected_only) {
-			if (!dive->selected)
+	for (auto &dive: divelog.dives) {
+		if (selected_only && !dive->selected)
 				continue;
-		}
-		struct dive_site *ds = get_dive_site_for_dive(dive);
+		struct dive_site *ds = get_dive_site_for_dive(dive.get());
 		if (!dive_site_has_gps_location(ds))
 			continue;
 		put_degrees(b, ds->location.lat, "temp = new google.maps.Marker({position: new google.maps.LatLng(", "");
 		put_degrees(b, ds->location.lon, ",", ")});\n");
 		put_string(b, "markers.push(temp);\ntempinfowindow = new google.maps.InfoWindow({content: '<div id=\"content\">'+'<div id=\"siteNotice\">'+'</div>'+'<div id=\"bodyContent\">");
-		pre = format_string_std("<p>%s ", translate("gettextFromC", "Date:"));
-		put_HTML_date(b, dive, pre.c_str(), "</p>");
+		std::string pre = format_string_std("<p>%s ", translate("gettextFromC", "Date:"));
+		put_HTML_date(b, *dive, pre.c_str(), "</p>");
 		pre = format_string_std("<p>%s ", translate("gettextFromC", "Time:"));
-		put_HTML_time(b, dive, pre.c_str(), "</p>");
+		put_HTML_time(b, *dive, pre.c_str(), "</p>");
 		pre = format_string_std("<p>%s ", translate("gettextFromC", "Duration:"));
-		post = format_string_std(" %s</p>", translate("gettextFromC", "min"));
+		std::string post = format_string_std(" %s</p>", translate("gettextFromC", "min"));
 		put_duration(b, dive->duration, pre.c_str(), post.c_str());
 		put_string(b, "<p> ");
 		put_HTML_quoted(b, translate("gettextFromC", "Max. depth:"));
-		put_HTML_depth(b, dive, " ", "</p>");
+		put_HTML_depth(b, *dive, " ", "</p>");
 		put_string(b, "<p> ");
 		put_HTML_quoted(b, translate("gettextFromC", "Air temp.:"));
-		put_HTML_airtemp(b, dive, " ", "</p>");
+		put_HTML_airtemp(b, *dive, " ", "</p>");
 		put_string(b, "<p> ");
 		put_HTML_quoted(b, translate("gettextFromC", "Water temp.:"));
-		put_HTML_watertemp(b, dive, " ", "</p>");
+		put_HTML_watertemp(b, *dive, " ", "</p>");
 		pre = format_string_std("<p>%s <b>", translate("gettextFromC", "Location:"));
 		put_string(b, pre.c_str());
-		put_HTML_quoted(b, get_dive_location(dive).c_str());
+		put_HTML_quoted(b, get_dive_location(dive.get()).c_str());
 		put_string(b, "</b></p>");
 		pre = format_string_std("<p> %s ", translate("gettextFromC", "Notes:"));
-		put_HTML_notes(b, dive, pre.c_str(), " </p>");
+		put_HTML_notes(b, *dive, pre.c_str(), " </p>");
 		put_string(b, "</p>'+'</div>'+'</div>'});\ninfowindows.push(tempinfowindow);\n");
 		put_format(b, "google.maps.event.addListener(markers[%d], 'mouseover', function() {\ninfowindows[%d].open(map,markers[%d]);}", dive_no, dive_no, dive_no);
 		put_format(b, ");google.maps.event.addListener(markers[%d], 'mouseout', function() {\ninfowindows[%d].close();});\n", dive_no, dive_no);
