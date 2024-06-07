@@ -169,6 +169,5 @@ void ostctools_import(const char *file, struct divelog *log)
 	else if (it == ostcdive->dcs[0].extra_data.end())
 		add_extra_data(&ostcdive->dcs[0], "Serial", ostcdive->dcs[0].serial);
 
-	record_dive_to_table(ostcdive.release(), log->dives.get());
-	sort_dive_table(log->dives.get());
+	log->dives.record_dive(std::move(ostcdive));
 }

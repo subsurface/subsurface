@@ -5,9 +5,12 @@
 #include <QVector>
 
 #include "qmlmapwidgethelper.h"
+#include "core/divefilter.h"
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/divesite.h"
 #include "core/qthelper.h"
-#include "core/divefilter.h"
+#include "core/range.h"
 #include "qt-models/maplocationmodel.h"
 #include "qt-models/divelocationmodel.h"
 #ifndef SUBSURFACE_MOBILE
@@ -122,8 +125,6 @@ void MapWidgetHelper::reloadMapLocations()
 
 void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 {
-	int idx;
-	struct dive *dive;
 	QList<int> selectedDiveIds;
 
 	if (!ds_in)
@@ -133,8 +134,8 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 		return;
 	QGeoCoordinate locationCoord = location->coordinate;
 
-	for_each_dive (idx, dive) {
-		struct dive_site *ds = get_dive_site_for_dive(dive);
+	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
+		struct dive_site *ds = get_dive_site_for_dive(dive.get());
 		if (!dive_site_has_gps_location(ds))
 			continue;
 #ifndef SUBSURFACE_MOBILE
@@ -160,11 +161,9 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 
 void MapWidgetHelper::selectVisibleLocations()
 {
-	int idx;
-	struct dive *dive;
 	QList<int> selectedDiveIds;
-	for_each_dive (idx, dive) {
-		struct dive_site *ds = get_dive_site_for_dive(dive);
+	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
+		struct dive_site *ds = get_dive_site_for_dive(dive.get());
 		if (!dive_site_has_gps_location(ds))
 			continue;
 		const qreal latitude = ds->location.lat.udeg * 0.000001;

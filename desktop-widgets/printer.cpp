@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printer.h"
 #include "templatelayout.h"
-#include "core/dive.h" // for get_dive_by_uniq_id()
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/selection.h"
 #include "core/statistics.h"
 #include "core/qthelper.h"
@@ -129,7 +130,7 @@ void Printer::render(int pages)
 			// dive id field should be dive_{{dive_no}} se we remove the first 5 characters
 			QString diveIdString = collection.at(elemNo).attribute("id");
 			int diveId = diveIdString.remove(0, 5).toInt(0, 10);
-			putProfileImage(collection.at(elemNo).geometry(), viewPort, &painter, get_dive_by_uniq_id(diveId), profile.get());
+			putProfileImage(collection.at(elemNo).geometry(), viewPort, &painter, divelog.dives.get_by_uniq_id(diveId), profile.get());
 			elemNo++;
 		}
 
@@ -160,10 +161,8 @@ std::vector<dive *> Printer::getDives() const
 		return getDiveSelection();
 	} else {
 		std::vector<dive *> res;
-		int i;
-		struct dive *dive;
-		for_each_dive (i, dive)
-			res.push_back(dive);
+		for (auto &d: divelog.dives)
+			res.push_back(d.get());
 		return res;
 	}
 }

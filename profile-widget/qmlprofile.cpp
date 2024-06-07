@@ -2,6 +2,7 @@
 #include "qmlprofile.h"
 #include "profilescene.h"
 #include "mobile-widgets/qmlmanager.h"
+#include "core/divelist.h"
 #include "core/errorhelper.h"
 #include "core/subsurface-float.h"
 #include "core/metrics.h"
@@ -60,7 +61,7 @@ void QMLProfile::paint(QPainter *painter)
 	painter->resetTransform();
 	if (m_diveId < 0)
 		return;
-	struct dive *d = get_dive_by_uniq_id(m_diveId);
+	struct dive *d = divelog.dives.get_by_uniq_id(m_diveId);
 	if (!d)
 		return;
 	m_profileWidget->draw(painter, painterRect, d, m_dc, nullptr, false);
@@ -143,7 +144,7 @@ void QMLProfile::prevDC()
 
 void QMLProfile::rotateDC(int dir)
 {
-	struct dive *d = get_dive_by_uniq_id(m_diveId);
+	struct dive *d = divelog.dives.get_by_uniq_id(m_diveId);
 	if (!d)
 		return;
 	int numDC = number_of_computers(d);
@@ -157,6 +158,6 @@ void QMLProfile::rotateDC(int dir)
 
 int QMLProfile::numDC() const
 {
-	struct dive *d = get_dive_by_uniq_id(m_diveId);
+	struct dive *d = divelog.dives.get_by_uniq_id(m_diveId);
 	return d ? number_of_computers(d) : 0;
 }

@@ -430,7 +430,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 // Return whether saving to cloud is OK. If it isn't, show an error return false.
 static bool saveToCloudOK()
 {
-	if (!divelog.dives->nr) {
+	if (divelog.dives.empty()) {
 		report_error("%s", qPrintable(gettextFromC::tr("Don't save an empty log to the cloud")));
 		return false;
 	}

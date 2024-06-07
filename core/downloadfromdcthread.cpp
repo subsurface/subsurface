@@ -112,9 +112,9 @@ void DownloadThread::run()
 					  internalData->vendor.c_str(), internalData->product.c_str());
 		report_info("Finishing download thread: %s", error.c_str());
 	} else {
-		if (!log.dives->nr)
+		if (log.dives.empty())
 			error = tr("No new dives downloaded from dive computer").toStdString();
-		report_info("Finishing download thread: %d dives downloaded", log.dives->nr);
+		report_info("Finishing download thread: %d dives downloaded", static_cast<int>(log.dives.size()));
 	}
 	qPrefDiveComputer::set_vendor(internalData->vendor.c_str());
 	qPrefDiveComputer::set_product(internalData->product.c_str());

@@ -2376,10 +2376,10 @@ static void force_fixup_dive(struct dive *d)
  */
 static std::array<std::unique_ptr<dive>, 2> split_dive_at(const struct dive &dive, int a, int b)
 {
-	int nr = get_divenr(&dive);
+	size_t nr = divelog.dives.get_idx(&dive);
 
 	/* if we can't find the dive in the dive list, don't bother */
-	if (nr < 0)
+	if (nr == std::string::npos)
 		return {};
 
 	/* Splitting should leave at least 3 samples per dive */
@@ -2461,7 +2461,7 @@ static std::array<std::unique_ptr<dive>, 2> split_dive_at(const struct dive &div
 	 * Otherwise the tail is unnumbered.
 	 */
 	if (d2->number) {
-		if (divelog.dives->nr == nr + 1)
+		if (divelog.dives.size() == nr + 1)
 			d2->number++;
 		else
 			d2->number = 0;
@@ -2893,9 +2893,9 @@ depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int rou
 
 struct dive *get_dive(int nr)
 {
-	if (nr >= divelog.dives->nr || nr < 0)
-		return NULL;
-	return divelog.dives->dives[nr];
+	if (nr < 0 || static_cast<size_t>(nr) >= divelog.dives.size())
+		return nullptr;
+	return divelog.dives[nr].get();
 }
 
 struct dive_site *get_dive_site_for_dive(const struct dive *dive)
@@ -2931,42 +2931,6 @@ struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 const struct divecomputer *get_dive_dc(const struct dive *dive, int nr)
 {
 	return get_dive_dc((struct dive *)dive, nr);
-}
-
-struct dive *get_dive_by_uniq_id(int id)
-{
-	int i;
-	struct dive *dive = NULL;
-
-	for_each_dive (i, dive) {
-		if (dive->id == id)
-			break;
-	}
-#ifdef DEBUG
-	if (dive == NULL) {
-		report_info("Invalid id %x passed to get_dive_by_diveid, try to fix the code", id);
-		exit(1);
-	}
-#endif
-	return dive;
-}
-
-int get_idx_by_uniq_id(int id)
-{
-	int i;
-	struct dive *dive = NULL;
-
-	for_each_dive (i, dive) {
-		if (dive->id == id)
-			break;
-	}
-#ifdef DEBUG
-	if (dive == NULL) {
-		report_info("Invalid id %x passed to get_dive_by_diveid, try to fix the code", id);
-		exit(1);
-	}
-#endif
-	return i;
 }
 
 bool dive_site_has_gps_location(const struct dive_site *ds)

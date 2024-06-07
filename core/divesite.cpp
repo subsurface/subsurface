@@ -11,6 +11,13 @@
 
 #include <math.h>
 
+int divesite_comp_uuid(const dive_site &ds1, const dive_site &ds2)
+{
+	if (ds1.uuid == ds2.uuid)
+		return 0;
+	return ds1.uuid < ds2.uuid ? -1 : 1;
+}
+
 template <typename PRED>
 dive_site *get_by_predicate(const dive_site_table &ds_table, PRED pred)
 {

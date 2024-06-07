@@ -443,7 +443,7 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 			break;
 		p = end + 1;
 	}
-	record_dive_to_table(dive.release(), log->dives.get());
+	log->dives.record_dive(std::move(dive));
 	return 1;
 }
 
@@ -749,7 +749,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 			if (!lineptr || !*lineptr)
 				break;
 		}
-		record_dive_to_table(dive.release(), log->dives.get());
+		log->dives.record_dive(std::move(dive));
 		return 1;
 	} else {
 		return 0;

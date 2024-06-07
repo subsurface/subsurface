@@ -25,7 +25,7 @@ PictureEntry::PictureEntry(dive *dIn, const picture &p) : d(dIn),
 // should give the same result].
 bool PictureEntry::operator<(const PictureEntry &p2) const
 {
-	if (int cmp = comp_dives(d, p2.d))
+	if (int cmp = comp_dives_ptr(d, p2.d))
 		return cmp < 0;
 	if (offsetSeconds != p2.offsetSeconds)
 		return offsetSeconds < p2.offsetSeconds;

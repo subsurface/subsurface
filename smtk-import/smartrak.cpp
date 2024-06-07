@@ -1016,11 +1016,11 @@ void smartrak_import(const char *file, struct divelog *log)
 		smtk_parse_bookmarks(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr);
 		concat(smtkdive->notes, "\n", std::string((char *)col[coln(REMARKS)]->bind_ptr));
 
-		record_dive_to_table(smtkdive.release(), log->dives.get());
+		log->dives.record_dive(std::move(smtkdive));
 	}
 	mdb_free_catalog(mdb_clon);
 	mdb->catalog = NULL;
 	mdb_close(mdb_clon);
 	mdb_close(mdb);
-	sort_dive_table(log->dives.get());
+	log->dives.sort();
 }
