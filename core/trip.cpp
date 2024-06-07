@@ -50,22 +50,6 @@ static timestamp_t trip_enddate(const struct dive_trip &trip)
 	return trip.dives.back()->endtime();
 }
 
-/* check if we have a trip right before / after this dive */
-bool is_trip_before_after(const struct dive *dive, bool before)
-{
-	int idx = get_idx_by_uniq_id(dive->id);
-	if (before) {
-		const struct dive *d = get_dive(idx - 1);
-		if (d && d->divetrip)
-			return true;
-	} else {
-		const struct dive *d = get_dive(idx + 1);
-		if (d && d->divetrip)
-			return true;
-	}
-	return false;
-}
-
 /* Add dive to a trip. Caller is responsible for removing dive
  * from trip beforehand. */
 void add_dive_to_trip(struct dive *dive, dive_trip *trip)
@@ -73,8 +57,8 @@ void add_dive_to_trip(struct dive *dive, dive_trip *trip)
 	if (dive->divetrip == trip)
 		return;
 	if (dive->divetrip)
-		report_info("Warning: adding dive to trip that has trip set\n");
-	range_insert_sorted(trip->dives, dive, comp_dives);
+		report_info("Warning: adding dive to trip, which already has a trip set");
+	range_insert_sorted(trip->dives, dive, comp_dives_ptr);
 	dive->divetrip = trip;
 }
 
@@ -112,13 +96,10 @@ std::unique_ptr<dive_trip> create_trip_from_dive(const struct dive *dive)
  * exist, allocate a new trip. A unique_ptr is returned  if a new trip
  * was allocated. The caller has to store it.
  */
-std::pair<dive_trip *, std::unique_ptr<dive_trip>> get_trip_for_new_dive(const struct dive *new_dive)
+std::pair<dive_trip *, std::unique_ptr<dive_trip>> get_trip_for_new_dive(const struct divelog &log, const struct dive *new_dive)
 {
-	dive *d;
-	int i;
-
 	/* Find dive that is within TRIP_THRESHOLD of current dive */
-	for_each_dive(i, d) {
+	for (auto &d: log.dives) {
 		/* Check if we're past the range of possible dives */
 		if (d->when >= new_dive->when + TRIP_THRESHOLD)
 			break;
@@ -164,7 +145,7 @@ bool trips_overlap(const struct dive_trip &t1, const struct dive_trip &t2)
  * manually injects the new trips. If there are no dives to be autogrouped,
  * return NULL.
  */
-std::vector<dives_to_autogroup_result> get_dives_to_autogroup(struct dive_table *table)
+std::vector<dives_to_autogroup_result> get_dives_to_autogroup(const struct dive_table &table)
 {
 	std::vector<dives_to_autogroup_result> res;
 	struct dive *lastdive = NULL;
@@ -172,12 +153,11 @@ std::vector<dives_to_autogroup_result> get_dives_to_autogroup(struct dive_table 
 	/* Find first dive that should be merged and remember any previous
 	 * dive that could be merged into.
 	 */
-	for (int i = 0; i < table->nr; ++i) {
-		struct dive *dive = table->dives[i];
-		dive_trip *trip;
+	for (size_t i = 0; i < table.size(); ++i) {
+		auto &dive = table[i];
 
 		if (dive->divetrip) {
-			lastdive = dive;
+			lastdive = dive.get();
 			continue;
 		}
 
@@ -190,9 +170,10 @@ std::vector<dives_to_autogroup_result> get_dives_to_autogroup(struct dive_table 
 
 		/* We found a dive, let's see if we have to allocate a new trip */
 		std::unique_ptr<dive_trip> allocated;
+		dive_trip *trip;
 		if (!lastdive || dive->when >= lastdive->when + TRIP_THRESHOLD) {
 			/* allocate new trip */
-			allocated = create_trip_from_dive(dive);
+			allocated = create_trip_from_dive(dive.get());
 			allocated->autogen = true;
 			trip = allocated.get();
 		} else {
@@ -201,16 +182,16 @@ std::vector<dives_to_autogroup_result> get_dives_to_autogroup(struct dive_table 
 		}
 
 		// Now, find all dives that will be added to this trip
-		lastdive = dive;
-		int to;
-		for (to = i + 1; to < table->nr; to++) {
-			dive = table->dives[to];
+		lastdive = dive.get();
+		size_t to;
+		for (to = i + 1; to < table.size(); to++) {
+			auto &dive = table[to];
 			if (dive->divetrip || dive->notrip ||
 			    dive->when >= lastdive->when + TRIP_THRESHOLD)
 				break;
 			if (trip->location.empty())
-				trip->location = get_dive_location(dive);
-			lastdive = dive;
+				trip->location = get_dive_location(dive.get());
+			lastdive = dive.get();
 		}
 		res.push_back({ i, to, trip, std::move(allocated) });
 		i = to - 1;
@@ -250,7 +231,7 @@ int comp_trips(const struct dive_trip &a, const struct dive_trip &b)
 		return -1;
 	if (b.dives.empty())
 		return 1;
-	return comp_dives(a.dives[0], b.dives[0]);
+	return comp_dives(*a.dives[0], *b.dives[0]);
 }
 
 static bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)
@@ -285,5 +266,5 @@ int trip_shown_dives(const struct dive_trip *trip)
 
 void dive_trip::sort_dives()
 {
-	std::sort(dives.begin(), dives.end(), [] (dive *d1, dive *d2) { return comp_dives(d1, d2) < 0; });
+	std::sort(dives.begin(), dives.end(), [] (dive *d1, dive *d2) { return comp_dives(*d1, *d2) < 0; });
 }

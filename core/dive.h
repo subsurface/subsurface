@@ -139,7 +139,6 @@ extern depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct div
 extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int roundto);
 
 extern struct dive *get_dive(int nr);
-extern struct dive *get_dive_from_table(int nr, const struct dive_table *dt);
 extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
 extern std::string get_dive_country(const struct dive *dive);
 extern std::string get_dive_location(const struct dive *dive);
@@ -153,18 +152,6 @@ extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_nu
 extern std::unique_ptr<dive> clone_delete_divecomputer(const struct dive &d, int dc_number);
 extern std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, int num);
 
-/*
- * Iterate over each dive, with the first parameter being the index
- * iterator variable, and the second one being the dive one.
- *
- * I don't think anybody really wants the index, and we could make
- * it local to the for-loop, but that would make us requires C99.
- */
-#define for_each_dive(_i, _x) \
-	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
-
-extern struct dive *get_dive_by_uniq_id(int id);
-extern int get_idx_by_uniq_id(int id);
 extern bool dive_site_has_gps_location(const struct dive_site *ds);
 extern int dive_has_gps_location(const struct dive *dive);
 extern location_t dive_get_gps_location(const struct dive *d);
@@ -173,19 +160,18 @@ extern bool time_during_dive_with_offset(const struct dive *dive, timestamp_t wh
 
 extern int save_dives(const char *filename);
 extern int save_dives_logic(const char *filename, bool select_only, bool anonymize);
-extern int save_dive(FILE *f, struct dive *dive, bool anonymize);
+extern int save_dive(FILE *f, const struct dive &dive, bool anonymize);
 extern int export_dives_xslt(const char *filename, bool selected, const int units, const char *export_xslt, bool anonymize);
 
 extern int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize);
 
 struct membuffer;
-extern void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize);
+extern void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anonymize);
 
 extern void subsurface_console_init();
 extern void subsurface_console_exit();
 extern bool subsurface_user_is_root();
 
-extern void record_dive_to_table(struct dive *dive, struct dive_table *table);
 extern void clear_dive(struct dive *dive);
 extern void copy_dive(const struct dive *s, struct dive *d);
 extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
@@ -193,7 +179,8 @@ extern struct std::unique_ptr<dive> move_dive(struct dive *s);
 
 extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 
-extern bool dive_less_than(const struct dive *a, const struct dive *b);
+extern bool dive_less_than(const struct dive &a, const struct dive &b);
+extern bool dive_less_than_ptr(const struct dive *a, const struct dive *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
 extern struct dive *fixup_dive(struct dive *dive);
 extern pressure_t calculate_surface_pressure(const struct dive *dive);

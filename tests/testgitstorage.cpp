@@ -363,7 +363,7 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	process_loaded_dives();
 	struct dive *dive = get_dive(1);
-	divelog.delete_single_dive(1);
+	divelog.delete_multiple_dives(std::vector<struct dive *>{ dive });
 	QCOMPARE(save_dives("./SampleDivesMinus1.ssrf"), 0);
 	git_local_only = true;
 	QCOMPARE(save_dives(localCacheRepo.c_str()), 0);

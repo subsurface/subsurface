@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "findmovedimagesdialog.h"
+#include "core/divelog.h"
+#include "core/divelist.h"
 #include "core/picture.h"
 #include "core/qthelper.h"
 #include "desktop-widgets/divelistview.h"	// TODO: used for lastUsedImageDir()
@@ -184,12 +186,12 @@ void FindMovedImagesDialog::on_scanButton_clicked()
 	// We have to collect the names of the image filenames in the main thread
 	bool onlySelected = ui.onlySelectedDives->isChecked();
 	QVector<QString> imagePaths;
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive)
-		if (!onlySelected || dive->selected)
+	for (auto &dive: divelog.dives) {
+		if (!onlySelected || dive->selected) {
 			for (auto &picture: dive->pictures)
 				imagePaths.append(QString::fromStdString(picture.filename));
+		}
+	}
 	stopScanning = 0;
 	QFuture<QVector<Match>> future = QtConcurrent::run(
 			// Note that we capture everything but "this" by copy to avoid dangling references.

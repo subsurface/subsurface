@@ -1,5 +1,7 @@
 #include "string-format.h"
 #include "dive.h"
+#include "divelist.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "event.h"
 #include "format.h"
@@ -135,9 +137,7 @@ static void addStringToSortedList(QStringList &l, const std::string &s)
 QStringList formatFullCylinderList()
 {
 	QStringList cylinders;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
+	for (auto &d: divelog.dives) {
 		for (const cylinder_t &cyl: d->cylinders)
 			addStringToSortedList(cylinders, cyl.type.description);
 	}

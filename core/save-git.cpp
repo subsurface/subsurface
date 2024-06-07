@@ -46,7 +46,7 @@ static void cond_put_format(int cond, struct membuffer *b, const char *fmt, ...)
 	}
 }
 
-#define SAVE(str, x) cond_put_format(dive->x, b, str " %d\n", dive->x)
+#define SAVE(str, x) cond_put_format(dive.x, b, str " %d\n", dive.x)
 
 static void quote(struct membuffer *b, const char *text)
 {
@@ -96,12 +96,12 @@ static void show_utf8(struct membuffer *b, const char *prefix, const char *value
 	}
 }
 
-static void save_overview(struct membuffer *b, struct dive *dive)
+static void save_overview(struct membuffer *b, const struct dive &dive)
 {
-	show_utf8(b, "divemaster ", dive->diveguide.c_str(), "\n");
-	show_utf8(b, "buddy ", dive->buddy.c_str(), "\n");
-	show_utf8(b, "suit ", dive->suit.c_str(), "\n");
-	show_utf8(b, "notes ", dive->notes.c_str(), "\n");
+	show_utf8(b, "divemaster ", dive.diveguide.c_str(), "\n");
+	show_utf8(b, "buddy ", dive.buddy.c_str(), "\n");
+	show_utf8(b, "suit ", dive.suit.c_str(), "\n");
+	show_utf8(b, "notes ", dive.notes.c_str(), "\n");
 }
 
 static void save_tags(struct membuffer *b, const tag_list &tags)
@@ -138,9 +138,9 @@ static void put_gasmix(struct membuffer *b, struct gasmix mix)
 	}
 }
 
-static void save_cylinder_info(struct membuffer *b, struct dive *dive)
+static void save_cylinder_info(struct membuffer *b, const struct dive &dive)
 {
-	for (auto &cyl: dive->cylinders) {
+	for (auto &cyl: dive.cylinders) {
 		int volume = cyl.type.size.mliter;
 		int use = cyl.cylinder_use;
 
@@ -161,9 +161,9 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 	}
 }
 
-static void save_weightsystem_info(struct membuffer *b, const struct dive *dive)
+static void save_weightsystem_info(struct membuffer *b, const struct dive &dive)
 {
-	for (auto &ws: dive->weightsystems) {
+	for (auto &ws: dive.weightsystems) {
 		int grams = ws.weight.grams;
 
 		put_string(b, "weightsystem");
@@ -173,12 +173,12 @@ static void save_weightsystem_info(struct membuffer *b, const struct dive *dive)
 	}
 }
 
-static void save_dive_temperature(struct membuffer *b, struct dive *dive)
+static void save_dive_temperature(struct membuffer *b, const struct dive &dive)
 {
-	if (dive->airtemp.mkelvin != dive->dc_airtemp().mkelvin)
-		put_temperature(b, dive->airtemp, "airtemp ", "°C\n");
-	if (dive->watertemp.mkelvin != dive->dc_watertemp().mkelvin)
-		put_temperature(b, dive->watertemp, "watertemp ", "°C\n");
+	if (dive.airtemp.mkelvin != dive.dc_airtemp().mkelvin)
+		put_temperature(b, dive.airtemp, "airtemp ", "°C\n");
+	if (dive.watertemp.mkelvin != dive.dc_watertemp().mkelvin)
+		put_temperature(b, dive.watertemp, "watertemp ", "°C\n");
 }
 
 static void save_depths(struct membuffer *b, const struct divecomputer &dc)
@@ -356,13 +356,13 @@ static void save_sample(struct membuffer *b, const struct sample &sample, struct
 	put_format(b, "\n");
 }
 
-static void save_samples(struct membuffer *b, struct dive *dive, const struct divecomputer &dc)
+static void save_samples(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc)
 {
 	int o2sensor;
 	struct sample dummy;
 
 	/* Is this a CCR dive with the old-style "o2pressure" sensor? */
-	o2sensor = legacy_format_o2pressures(dive, &dc);
+	o2sensor = legacy_format_o2pressures(&dive, &dc);
 	if (o2sensor >= 0) {
 		dummy.sensor[0] = !o2sensor;
 		dummy.sensor[1] = o2sensor;
@@ -372,7 +372,7 @@ static void save_samples(struct membuffer *b, struct dive *dive, const struct di
 		save_sample(b, s, dummy, o2sensor);
 }
 
-static void save_one_event(struct membuffer *b, struct dive *dive, const struct event &ev)
+static void save_one_event(struct membuffer *b, const struct dive &dive, const struct event &ev)
 {
 	put_format(b, "event %d:%02d", FRACTION_TUPLE(ev.time.seconds, 60));
 	show_index(b, ev.type, "type=", "");
@@ -384,7 +384,7 @@ static void save_one_event(struct membuffer *b, struct dive *dive, const struct 
 		show_index(b, ev.value, "value=", "");
 	show_utf8(b, " name=", ev.name.c_str(), "");
 	if (ev.is_gaschange()) {
-		struct gasmix mix = get_gasmix_from_event(dive, ev);
+		struct gasmix mix = get_gasmix_from_event(&dive, ev);
 		if (ev.gas.index >= 0)
 			show_integer(b, ev.gas.index, "cylinder=", "");
 		put_gasmix(b, mix);
@@ -392,13 +392,13 @@ static void save_one_event(struct membuffer *b, struct dive *dive, const struct 
 	put_string(b, "\n");
 }
 
-static void save_events(struct membuffer *b, struct dive *dive, const struct divecomputer &dc)
+static void save_events(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc)
 {
 	for (auto &ev: dc.events)
 		save_one_event(b, dive, ev);
 }
 
-static void save_dc(struct membuffer *b, struct dive *dive, const struct divecomputer &dc)
+static void save_dc(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc)
 {
 	show_utf8(b, "model ", dc.model.c_str(), "\n");
 	if (dc.last_manual_time.seconds)
@@ -407,9 +407,9 @@ static void save_dc(struct membuffer *b, struct dive *dive, const struct divecom
 		put_format(b, "deviceid %08x\n", dc.deviceid);
 	if (dc.diveid)
 		put_format(b, "diveid %08x\n", dc.diveid);
-	if (dc.when && dc.when != dive->when)
+	if (dc.when && dc.when != dive.when)
 		show_date(b, dc.when);
-	if (dc.duration.seconds && dc.duration.seconds != dive->dcs[0].duration.seconds)
+	if (dc.duration.seconds && dc.duration.seconds != dive.dcs[0].duration.seconds)
 		put_duration(b, dc.duration, "duration ", "min\n");
 	if (dc.divemode != OC) {
 		put_format(b, "dctype %s\n", divemode_text[dc.divemode]);
@@ -431,28 +431,28 @@ static void save_dc(struct membuffer *b, struct dive *dive, const struct divecom
  * Note that we don't save the date and time or dive
  * number: they are encoded in the filename.
  */
-static void create_dive_buffer(struct dive *dive, struct membuffer *b)
+static void create_dive_buffer(const struct dive &dive, struct membuffer *b)
 {
-	pressure_t surface_pressure = un_fixup_surface_pressure(dive);
-	if (dive->dcs[0].duration.seconds > 0)
-		put_format(b, "duration %u:%02u min\n", FRACTION_TUPLE(dive->dcs[0].duration.seconds, 60));
+	pressure_t surface_pressure = un_fixup_surface_pressure(&dive);
+	if (dive.dcs[0].duration.seconds > 0)
+		put_format(b, "duration %u:%02u min\n", FRACTION_TUPLE(dive.dcs[0].duration.seconds, 60));
 	SAVE("rating", rating);
 	SAVE("visibility", visibility);
 	SAVE("wavesize", wavesize);
 	SAVE("current", current);
 	SAVE("surge", surge);
 	SAVE("chill", chill);
-	if (dive->user_salinity)
-		put_format(b, "watersalinity %d g/l\n", (int)(dive->user_salinity/10));
+	if (dive.user_salinity)
+		put_format(b, "watersalinity %d g/l\n", (int)(dive.user_salinity/10));
 	if (surface_pressure.mbar)
 		SAVE("airpressure", surface_pressure.mbar);
-	cond_put_format(dive->notrip, b, "notrip\n");
-	cond_put_format(dive->invalid, b, "invalid\n");
-	save_tags(b, dive->tags);
-	if (dive->dive_site)
-		put_format(b, "divesiteid %08x\n", dive->dive_site->uuid);
-	if (verbose && dive->dive_site)
-		report_info("removed reference to non-existant dive site with uuid %08x\n", dive->dive_site->uuid);
+	cond_put_format(dive.notrip, b, "notrip\n");
+	cond_put_format(dive.invalid, b, "invalid\n");
+	save_tags(b, dive.tags);
+	if (dive.dive_site)
+		put_format(b, "divesiteid %08x\n", dive.dive_site->uuid);
+	if (verbose && dive.dive_site)
+		report_info("removed reference to non-existant dive site with uuid %08x\n", dive.dive_site->uuid);
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
 	save_weightsystem_info(b, dive);
@@ -565,12 +565,12 @@ static struct dir *mktree(git_repository *repo, struct dir *dir, const char *fmt
  * We do *not* want to use localized weekdays and cause peoples save
  * formats to depend on their locale.
  */
-static void create_dive_name(struct dive *dive, struct membuffer *name, struct tm *dirtm)
+static void create_dive_name(struct dive &dive, struct membuffer *name, struct tm *dirtm)
 {
 	struct tm tm;
 	static const char weekday[7][4] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
-	utc_mkdate(dive->when, &tm);
+	utc_mkdate(dive.when, &tm);
 	if (tm.tm_year != dirtm->tm_year)
 		put_format(name, "%04u-", tm.tm_year);
 	if (tm.tm_mon != dirtm->tm_mon)
@@ -600,7 +600,7 @@ static int blob_insert(git_repository *repo, struct dir *tree, struct membuffer 
 	return ret;
 }
 
-static int save_one_divecomputer(git_repository *repo, struct dir *tree, struct dive *dive, const struct divecomputer &dc, int idx)
+static int save_one_divecomputer(git_repository *repo, struct dir *tree, const struct dive &dive, const struct divecomputer &dc, int idx)
 {
 	int ret;
 	membuffer buf;
@@ -635,17 +635,17 @@ static int save_one_picture(git_repository *repo, struct dir *dir, const struct 
 		sign, h, FRACTION_TUPLE(offset, 60));
 }
 
-static int save_pictures(git_repository *repo, struct dir *dir, struct dive *dive)
+static int save_pictures(git_repository *repo, struct dir *dir, const struct dive &dive)
 {
-	if (!dive->pictures.empty()) {
+	if (!dive.pictures.empty()) {
 		dir = mktree(repo, dir, "Pictures");
-		for (auto &picture: dive->pictures)
+		for (auto &picture: dive.pictures)
 			save_one_picture(repo, dir, picture);
 	}
 	return 0;
 }
 
-static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *dive, struct tm *tm, bool cached_ok)
+static int save_one_dive(git_repository *repo, struct dir *tree, struct dive &dive, struct tm *tm, bool cached_ok)
 {
 	membuffer buf, name;
 	struct dir *subdir;
@@ -658,9 +658,9 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
 	 * If the dive git ID is valid, we just create the whole directory
 	 * with that ID
 	 */
-	if (cached_ok && dive_cache_is_valid(dive)) {
+	if (cached_ok && dive_cache_is_valid(&dive)) {
 		git_oid oid;
-		git_oid_fromraw(&oid, dive->git_id);
+		git_oid_fromraw(&oid, dive.git_id);
 		ret = tree_insert(tree->files, mb_cstring(&name), 1,
 			&oid, GIT_FILEMODE_TREE);
 		if (ret)
@@ -672,7 +672,7 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
 	subdir->unique = true;
 
 	create_dive_buffer(dive, &buf);
-	nr = dive->number;
+	nr = dive.number;
 	ret = blob_insert(repo, subdir, &buf,
 		"Dive%c%d", nr ? '-' : 0, nr);
 	if (ret)
@@ -683,8 +683,8 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive *di
 	 * computer, use index 0 for that (which disables the index
 	 * generation when naming it).
 	 */
-	nr = dive->dcs.size() > 1 ? 1 : 0;
-	for (auto &dc: dive->dcs)
+	nr = dive.dcs.size() > 1 ? 1 : 0;
+	for (auto &dc: dive.dcs)
 		save_one_divecomputer(repo, subdir, dive, dc, nr++);
 
 	/* Save the picture data, if any */
@@ -782,8 +782,6 @@ static void verify_shared_date(timestamp_t when, struct tm *tm)
 
 static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip *trip, struct tm *tm, bool cached_ok)
 {
-	int i;
-	struct dive *dive;
 	struct dir *subdir;
 	membuffer name;
 	timestamp_t first, last;
@@ -799,7 +797,7 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip *trip
 	/* Make sure we write out the dates to the dives consistently */
 	first = MAX_TIMESTAMP;
 	last = MIN_TIMESTAMP;
-	for_each_dive(i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (dive->divetrip != trip)
 			continue;
 		if (dive->when < first)
@@ -811,9 +809,9 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip *trip
 	verify_shared_date(last, tm);
 
 	/* Save each dive in the directory */
-	for_each_dive(i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (dive->divetrip == trip)
-			save_one_dive(repo, subdir, dive, tm, cached_ok);
+			save_one_dive(repo, subdir, *dive, tm, cached_ok);
 	}
 
 	return 0;
@@ -981,9 +979,6 @@ static void save_filter_presets(git_repository *repo, struct dir *tree)
 
 static int create_git_tree(git_repository *repo, struct dir *root, bool select_only, bool cached_ok)
 {
-	int i;
-	struct dive *dive;
-
 	git_storage_update_progress(translate("gettextFromC", "Start saving data"));
 	save_settings(repo, root);
 
@@ -995,7 +990,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 
 	/* save the dives */
 	git_storage_update_progress(translate("gettextFromC", "Start saving dives"));
-	for_each_dive(i, dive) {
+	for (auto &dive: divelog.dives) {
 		struct tm tm;
 		struct dir *tree;
 
@@ -1024,7 +1019,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 			continue;
 		}
 
-		save_one_dive(repo, tree, dive, &tm, cached_ok);
+		save_one_dive(repo, tree, *dive, &tm, cached_ok);
 	}
 	git_storage_update_progress(translate("gettextFromC", "Done creating local cache"));
 	return 0;
@@ -1095,7 +1090,7 @@ int get_authorship(git_repository *repo, git_signature **authorp)
 
 static void create_commit_message(struct membuffer *msg, bool create_empty)
 {
-	int nr = divelog.dives->nr;
+	int nr = static_cast<int>(divelog.dives.size());
 	struct dive *dive = get_dive(nr-1);
 	std::string changes_made = get_changes_made();
 

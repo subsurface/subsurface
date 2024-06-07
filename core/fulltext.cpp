@@ -143,11 +143,9 @@ void FullText::populate()
 	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("Create full text index"));
 	uiNotification(QObject::tr("start processing"));
-	int i;
-	dive *d;
-	for_each_dive(i, d)
-		registerDive(d);
-	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives->nr));
+	for (auto &d: divelog.dives)
+		registerDive(d.get());
+	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives.size()));
 }
 
 void FullText::registerDive(struct dive *d)
@@ -170,9 +168,7 @@ void FullText::unregisterDive(struct dive *d)
 
 void FullText::unregisterAll()
 {
-	int i;
-	dive *d;
-	for_each_dive(i, d)
+	for (auto &d: divelog.dives)
 		d->full_text.reset();
 	words.clear();
 }

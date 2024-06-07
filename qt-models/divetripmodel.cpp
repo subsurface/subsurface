@@ -707,18 +707,15 @@ void DiveTripModelTree::populate()
 	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("populate data model"));
 	uiNotification(QObject::tr("start processing"));
-	for (int i = 0; i < divelog.dives->nr; ++i) {
-		dive *d = get_dive(i);
-		if (!d) // should never happen
-			continue;
-		update_cylinder_related_info(d);
+	for (auto &d: divelog.dives) {
+		update_cylinder_related_info(d.get());
 		if (d->hidden_by_filter)
 			continue;
 		dive_trip *trip = d->divetrip;
 
 		// If this dive doesn't have a trip, add as top-level item.
 		if (!trip) {
-			items.emplace_back(d);
+			items.emplace_back(d.get());
 			continue;
 		}
 
@@ -728,16 +725,16 @@ void DiveTripModelTree::populate()
 				       { return item.d_or_t.trip == trip; });
 		if (it == items.end()) {
 			// We didn't find an entry for this trip -> add one
-			items.emplace_back(trip, d);
+			items.emplace_back(trip, d.get());
 		} else {
 			// We found the trip -> simply add the dive
-			it->dives.push_back(d);
+			it->dives.push_back(d.get());
 		}
 	}
 
 	// Remember the index of the current dive
 	oldCurrent = current_dive;
-	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives->nr));
+	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives.size()));
 }
 
 int DiveTripModelTree::rowCount(const QModelIndex &parent) const
@@ -846,7 +843,7 @@ void processByTrip(QVector<dive *> dives, Function action)
 {
 	// Sort lexicographically by trip then according to the dive_less_than() function.
 	std::sort(dives.begin(), dives.end(), [](const dive *d1, const dive *d2)
-		  { return d1->divetrip == d2->divetrip ? dive_less_than(d1, d2) : d1->divetrip < d2->divetrip; });
+		  { return d1->divetrip == d2->divetrip ? dive_less_than_ptr(d1, d2) : d1->divetrip < d2->divetrip; });
 
 	// Then, process the dives in batches by trip
 	int i, j; // Begin and end of batch
@@ -995,7 +992,7 @@ void DiveTripModelTree::addDivesToTrip(int trip, const QVector<dive *> &dives)
 	QModelIndex parent = createIndex(trip, 0, noParent);
 
 	addInBatches(items[trip].dives, dives,
-		     [](dive *d, dive *d2) { return dive_less_than(d, d2); }, // comp
+		     [](dive *d, dive *d2) { return dive_less_than_ptr(d, d2); }, // comp
 		     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
 			beginInsertRows(parent, idx, idx + to - from - 1);
 			items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
@@ -1485,12 +1482,11 @@ void DiveTripModelList::populate()
 	DiveFilter::instance()->reset(); // The data was reset - update filter status. TODO: should this really be done here?
 
 	// Fill model
-	items.reserve(divelog.dives->nr);
-	for (int i = 0; i < divelog.dives->nr; ++i) {
-		dive *d = get_dive(i);
+	items.reserve(divelog.dives.size());
+	for (auto &d: divelog.dives) {
 		if (!d || d->hidden_by_filter)
 			continue;
-		items.push_back(d);
+		items.push_back(d.get());
 	}
 
 	// Remember the index of the current dive
@@ -1555,9 +1551,9 @@ QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
 
 void DiveTripModelList::addDives(QVector<dive *> &dives)
 {
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 	addInBatches(items, dives,
-		     &dive_less_than, // comp
+		     &dive_less_than_ptr, // comp
 		     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
 			beginInsertRows(QModelIndex(), idx, idx + to - from - 1);
 			items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
@@ -1567,7 +1563,7 @@ void DiveTripModelList::addDives(QVector<dive *> &dives)
 
 void DiveTripModelList::removeDives(QVector<dive *> dives)
 {
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 	processRangesZip(items, dives,
 			 std::equal_to<const dive *>(), // Condition: dive-pointers are equal
 			 [&](std::vector<dive *> &items, const QVector<dive *> &, int from, int to, int) -> int { // Action
@@ -1607,7 +1603,7 @@ void DiveTripModelList::diveSiteChanged(dive_site *ds, int field)
 void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = divesIn;
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 
 	ShownChange shownChange = updateShown(dives);
 	removeDives(shownChange.newHidden);
@@ -1641,7 +1637,7 @@ void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *
 	QVector<dive *> dives = visibleDives(divesIn);
 	if (dives.empty())
 		return;
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 
 	// See comment for DiveTripModelTree::divesTimeChanged above.
 	divesDeletedInternal(dives); // Use internal version to keep current dive

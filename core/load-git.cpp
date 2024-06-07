@@ -1390,7 +1390,7 @@ static void finish_active_trip(struct git_parser_state *state)
 static void finish_active_dive(struct git_parser_state *state)
 {
 	if (state->active_dive)
-		record_dive_to_table(state->active_dive.release(), state->log->dives.get());
+		state->log->dives.record_dive(std::move(state->active_dive));
 }
 
 static void create_new_dive(timestamp_t when, struct git_parser_state *state)

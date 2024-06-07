@@ -537,7 +537,7 @@ static int might_be_same_dc(const struct divecomputer &a, const struct divecompu
 	return a.deviceid == b.deviceid;
 }
 
-static bool match_one_dive(const struct divecomputer &a, struct dive *dive)
+static bool match_one_dive(const struct divecomputer &a, const struct dive &dive)
 {
 	/*
 	 * Walk the existing dive computer data,
@@ -545,13 +545,13 @@ static bool match_one_dive(const struct divecomputer &a, struct dive *dive)
 	 * the same dive computer but a different
 	 * dive ID).
 	 */
-	for (auto &b: dive->dcs) {
+	for (auto &b: dive.dcs) {
 		if (match_one_dc(a, b) > 0)
 			return true;
 	}
 
 	/* Ok, no exact dive computer match. Does the date match? */
-	for (auto &b: dive->dcs) {
+	for (auto &b: dive.dcs) {
 		if (a.when == b.when && might_be_same_dc(a, b))
 			return true;
 	}
@@ -562,17 +562,10 @@ static bool match_one_dive(const struct divecomputer &a, struct dive *dive)
 /*
  * Check if this dive already existed before the import
  */
-static int find_dive(const struct divecomputer &match)
+static bool find_dive(const struct divecomputer &match)
 {
-	int i;
-
-	for (i = divelog.dives->nr - 1; i >= 0; i--) {
-		struct dive *old = divelog.dives->dives[i];
-
-		if (match_one_dive(match, old))
-			return 1;
-	}
-	return 0;
+	return std::any_of(divelog.dives.rbegin(), divelog.dives.rend(),
+			   [&match] (auto &old) { return match_one_dive(match, *old);} );
 }
 
 /*
@@ -871,7 +864,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	    dive->dcs[0].samples[1].temperature.mkelvin > dive->dcs[0].samples[0].temperature.mkelvin)
 		dive->dcs[0].samples[0].temperature.mkelvin = dive->dcs[0].samples[1].temperature.mkelvin;
 
-	record_dive_to_table(dive.release(), devdata->log->dives.get());
+	devdata->log->dives.record_dive(std::move(dive));
 	return true;
 
 error_exit:
@@ -1509,7 +1502,7 @@ std::string do_libdivecomputer_import(device_data_t *data)
 
 			dc_device_close(data->device);
 			data->device = NULL;
-			if (!data->log->dives->nr)
+			if (data->log->dives.empty())
 				dev_info(data, translate("gettextFromC", "No new dives downloaded from dive computer"));
 		}
 		dc_iostream_close(data->iostream);

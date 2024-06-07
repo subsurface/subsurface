@@ -284,8 +284,7 @@ void reset_tank_info_table(std::vector<tank_info> &table)
 		add_default_tank_infos(table);
 
 	/* Add cylinders from dive list */
-	for (int i = 0; i < divelog.dives->nr; ++i) {
-		const struct dive *dive = divelog.dives->dives[i];
+	for (auto &dive: divelog.dives) {
 		for (auto &cyl: dive->cylinders)
 			add_cylinder_description(cyl.type);
 	}

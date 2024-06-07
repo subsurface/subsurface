@@ -1,5 +1,7 @@
 #include "core/save-profiledata.h"
 #include "core/dive.h"
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/profile.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
@@ -203,14 +205,12 @@ static void put_st_event(struct membuffer *b, const plot_data &entry, const plot
 
 static void save_profiles_buffer(struct membuffer *b, bool select_only)
 {
-	int i;
-	struct dive *dive;
 	struct deco_state *planner_deco_state = NULL;
 
-	for_each_dive(i, dive) {
+	for(auto &dive: divelog.dives) {
 		if (select_only && !dive->selected)
 			continue;
-		plot_info pi = create_plot_info_new(dive, &dive->dcs[0], planner_deco_state);
+		plot_info pi = create_plot_info_new(dive.get(), &dive->dcs[0], planner_deco_state);
 		put_headers(b, pi.nr_cylinders);
 
 		for (int i = 0; i < pi.nr; i++)

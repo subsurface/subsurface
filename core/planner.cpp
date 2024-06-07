@@ -301,7 +301,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	dc->last_manual_time.seconds = last_manual_point;
 
 #if DEBUG_PLAN & 32
-	save_dive(stdout, dive);
+	save_dive(stdout, *dive);
 #endif
 	return;
 }

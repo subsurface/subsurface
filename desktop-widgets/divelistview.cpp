@@ -755,9 +755,9 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 						bottom = first_selected_dive();
 					}
 				}
-				if (is_trip_before_after(top, (currentOrder == Qt::AscendingOrder)))
+				if (divelog.is_trip_before_after(top, (currentOrder == Qt::AscendingOrder)))
 					popup.addAction(tr("Add dive(s) to trip immediately above","",amount_selected), this, &DiveListView::addToTripAbove);
-				if (is_trip_before_after(bottom, (currentOrder == Qt::DescendingOrder)))
+				if (divelog.is_trip_before_after(bottom, (currentOrder == Qt::DescendingOrder)))
 					popup.addAction(tr("Add dive(s) to trip immediately below","",amount_selected), this, &DiveListView::addToTripBelow);
 			}
 		}

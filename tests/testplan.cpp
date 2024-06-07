@@ -487,7 +487,7 @@ void TestPlan::testMetric()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -527,7 +527,7 @@ void TestPlan::testImperial()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -566,7 +566,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -595,7 +595,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -624,7 +624,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -653,7 +653,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -688,7 +688,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -723,7 +723,7 @@ void TestPlan::testVpmbMetric100m60min()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -765,7 +765,7 @@ void TestPlan::testMultipleGases()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	gasmix gas;
@@ -789,7 +789,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -818,7 +818,7 @@ void TestPlan::testVpmbMetric100m10min()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -864,7 +864,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -884,7 +884,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -921,7 +921,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check minimum gas result
@@ -959,7 +959,7 @@ void TestPlan::testCcrBailoutGasSelection()
 
 #if DEBUG
 	dive.notes.clear();
-	save_dive(stdout, &dive, false);
+	save_dive(stdout, dive, false);
 #endif
 
 	// check diluent used

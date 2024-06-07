@@ -16,32 +16,20 @@ static int amount_trips_selected;
 
 struct dive *first_selected_dive()
 {
-	int idx;
-	struct dive *d;
-
-	for_each_dive (idx, d) {
-		if (d->selected)
-			return d;
-	}
-	return NULL;
+	auto it = std::find_if(divelog.dives.begin(), divelog.dives.end(),
+			       [](auto &d) { return d->selected; });
+	return it != divelog.dives.end() ? it->get() : nullptr;
 }
 
 struct dive *last_selected_dive()
 {
-	int idx;
-	struct dive *d, *ret = NULL;
-
-	for_each_dive (idx, d) {
-		if (d->selected)
-			ret = d;
-	}
-	return ret;
+	auto it = std::find_if(divelog.dives.rbegin(), divelog.dives.rend(),
+			       [](auto &d) { return d->selected; });
+	return it != divelog.dives.rend() ? it->get() : nullptr;
 }
 
 bool consecutive_selected()
 {
-	struct dive *d;
-	int i;
 	bool consecutive = true;
 	bool firstfound = false;
 	bool lastfound = false;
@@ -49,7 +37,7 @@ bool consecutive_selected()
 	if (amount_selected == 0 || amount_selected == 1)
 		return true;
 
-	for_each_dive(i, d) {
+	for (auto &d: divelog.dives) {
 		if (d->selected) {
 			if (!firstfound)
 				firstfound = true;
@@ -65,11 +53,8 @@ bool consecutive_selected()
 #if DEBUG_SELECTION_TRACKING
 void dump_selection()
 {
-	int i;
-	struct dive *dive;
-
 	printf("currently selected are %u dives:", amount_selected);
-	for_each_dive(i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (dive->selected)
 			printf(" %d", i);
 	}
@@ -137,10 +122,8 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 	divesToSelect.reserve(selection.size());
 
 	// TODO: We might want to keep track of selected dives in a more efficient way!
-	int i;
-	dive *d;
 	amount_selected = 0; // We recalculate amount_selected
-	for_each_dive(i, d) {
+	for (auto &d: divelog.dives) {
 		// We only modify dives that are currently visible.
 		if (d->hidden_by_filter) {
 			d->selected = false; // Note, not necessary, just to be sure
@@ -150,11 +133,11 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 
 		// Search the dive in the list of selected dives.
 		// TODO: By sorting the list in the same way as the backend, this could be made more efficient.
-		bool newState = std::find(selection.begin(), selection.end(), d) != selection.end();
+		bool newState = std::find(selection.begin(), selection.end(), d.get()) != selection.end();
 
 		if (newState) {
 			++amount_selected;
-			divesToSelect.push_back(d);
+			divesToSelect.push_back(d.get());
 		}
 		d->selected = newState;
 	}
@@ -217,10 +200,8 @@ void setTripSelection(dive_trip *trip, dive *currentDive)
 		return;
 
 	current_dive = currentDive;
-	for (int i = 0; i < divelog.dives->nr; ++i) {
-		dive &d = *divelog.dives->dives[i];
-		d.selected = d.divetrip == trip;
-	}
+	for (auto &d: divelog.dives)
+		d->selected = d->divetrip == trip;
 	for (auto &t: *divelog.trips)
 		t->selected = t.get() == trip;
 
@@ -245,11 +226,9 @@ std::vector<dive *> getDiveSelection()
 	std::vector<dive *> res;
 	res.reserve(amount_selected);
 
-	int i;
-	dive *d;
-	for_each_dive(i, d) {
+	for (auto &d: divelog.dives) {
 		if (d->selected)
-			res.push_back(d);
+			res.push_back(d.get());
 	}
 	return res;
 }
@@ -257,7 +236,7 @@ std::vector<dive *> getDiveSelection()
 bool diveInSelection(const std::vector<dive *> &selection, const dive *d)
 {
 	// Do a binary search using the ordering of the dive list.
-	auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than);
+	auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than_ptr);
 	return it != selection.end() && *it == d;
 }
 
@@ -265,7 +244,7 @@ void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &
 {
 	// We could sort the array and merge the vectors as we do in the undo code. But is it necessary?
 	for (dive *d: add) {
-		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than);
+		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than_ptr);
 		if (it != selection.end() && *it == d)
 			continue; // Ooops. Already there?
 		selection.insert(it, d);
@@ -273,7 +252,7 @@ void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &
 
 	// Likewise, we could sort the array and be smarter here. Again, is it necessary?
 	for (dive *d: remove) {
-		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than);
+		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than_ptr);
 		if (it == selection.end() || *it != d)
 			continue; // Ooops. Not there?
 		selection.erase(it);
@@ -283,10 +262,9 @@ void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &
 // Select the first dive that is visible
 void select_newest_visible_dive()
 {
-	for (int i = divelog.dives->nr - 1; i >= 0; --i) {
-		dive *d = divelog.dives->dives[i];
-		if (!d->hidden_by_filter)
-			return select_single_dive(d);
+	for (auto it = divelog.dives.rbegin(); it != divelog.dives.rend(); ++it) {
+		if (!(*it)->hidden_by_filter)
+			return select_single_dive(it->get());
 	}
 
 	// No visible dive -> deselect all
