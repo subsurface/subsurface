@@ -66,10 +66,9 @@ bool noCloudToCloud = false;
 #define RED_FONT QLatin1String("<font color=\"red\">")
 #define END_FONT QLatin1String("</font>")
 
-void showErrorFromC(char *buf)
+static void showError(std::string s)
 {
-	QString error(buf);
-	free(buf);
+	QString error = QString::fromStdString(s);
 	// By using invokeMethod with Qt:AutoConnection, the error string is safely
 	// transported across thread boundaries, if not called from the UI thread.
 	QMetaObject::invokeMethod(QMLManager::instance(), "registerError", Qt::AutoConnection, Q_ARG(QString, error));
@@ -271,7 +270,7 @@ QMLManager::QMLManager() :
 		appendTextToLog("No writeable location found, in-memory log only and no libdivecomputer log");
 	}
 #endif
-	set_error_cb(&showErrorFromC);
+	set_error_cb(&showError);
 	uiNotificationCallback = showProgress;
 	appendTextToLog("Starting " + getUserAgent());
 	appendTextToLog(QStringLiteral("built with libdivecomputer v%1").arg(dc_version(NULL)));
