@@ -1070,7 +1070,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString loca
 	bool changed = false;
 	QString oldLocation = QString::fromStdString(get_dive_location(d));
 	if (oldLocation != location) {
-		ds = divelog.sites->get_by_name(location.toStdString());
+		ds = divelog.sites.get_by_name(location.toStdString());
 		if (!ds && !location.isEmpty()) {
 			res.createdDs = std::make_unique<dive_site>(qPrintable(location));
 			res.changed = true;
@@ -1808,7 +1808,7 @@ QString QMLManager::getVersion() const
 
 QString QMLManager::getGpsFromSiteName(const QString &siteName)
 {
-	struct dive_site *ds = divelog.sites->get_by_name(siteName.toStdString());
+	struct dive_site *ds = divelog.sites.get_by_name(siteName.toStdString());
 	if (!ds)
 		return QString();
 	return printGPSCoords(&ds->location);

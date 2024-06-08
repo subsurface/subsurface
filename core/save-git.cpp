@@ -886,8 +886,8 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	put_format(&dirname, "01-Divesites");
 	subdir = new_directory(repo, tree, &dirname);
 
-	divelog.sites->purge_empty();
-	for (const auto &ds: *divelog.sites) {
+	divelog.sites.purge_empty();
+	for (const auto &ds: divelog.sites) {
 		membuffer b;
 		membuffer site_file_name;
 		put_format(&site_file_name, "Site-%08x", ds->uuid);

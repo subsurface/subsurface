@@ -175,9 +175,9 @@ static void parse_dive_gps(char *line, struct git_parser_state *state)
 
 	parse_location(line, &location);
 	if (!ds) {
-		ds = state->log->sites->get_by_gps(&location);
+		ds = state->log->sites.get_by_gps(&location);
 		if (!ds)
-			ds = state->log->sites->create(std::string(), location);
+			ds = state->log->sites.create(std::string(), location);
 		ds->add_dive(state->active_dive.get());
 	} else {
 		if (dive_site_has_gps_location(ds) && ds->location != location) {
@@ -221,9 +221,9 @@ static void parse_dive_location(char *, struct git_parser_state *state)
 	std::string name = get_first_converted_string(state);
 	struct dive_site *ds = get_dive_site_for_dive(state->active_dive.get());
 	if (!ds) {
-		ds = state->log->sites->get_by_name(name);
+		ds = state->log->sites.get_by_name(name);
 		if (!ds)
-			ds = state->log->sites->create(name);
+			ds = state->log->sites.create(name);
 		ds->add_dive(state->active_dive.get());
 	} else {
 		// we already had a dive site linked to the dive
@@ -252,7 +252,7 @@ static void parse_dive_notes(char *, struct git_parser_state *state)
 { state->active_dive->notes = get_first_converted_string(state); }
 
 static void parse_dive_divesiteid(char *line, struct git_parser_state *state)
-{ state->log->sites->get_by_uuid(get_hex(line))->add_dive(state->active_dive.get()); }
+{ state->log->sites.get_by_uuid(get_hex(line))->add_dive(state->active_dive.get()); }
 
 /*
  * We can have multiple tags.
@@ -1698,7 +1698,7 @@ static int parse_site_entry(struct git_parser_state *state, const git_tree_entry
 	if (*suffix == '\0')
 		return report_error("Dive site without uuid");
 	uint32_t uuid = strtoul(suffix, NULL, 16);
-	state->active_site = state->log->sites->alloc_or_get(uuid);
+	state->active_site = state->log->sites.alloc_or_get(uuid);
 	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read dive site file");
