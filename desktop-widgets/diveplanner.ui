@@ -210,7 +210,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>90</width>
+           <width>100</width>
            <height>16777215</height>
           </size>
          </property>
@@ -231,6 +231,9 @@
          </property>
          <property name="value">
           <double>1.000000000000000</double>
+         </property>
+         <property name="decimals">
+          <double>3</double>
          </property>
         </widget>
        </item>
