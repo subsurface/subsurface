@@ -985,7 +985,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	save_divesites(repo, root);
 	save_filter_presets(repo, root);
 
-	for (auto &trip: *divelog.trips)
+	for (auto &trip: divelog.trips)
 		trip->saved = false;
 
 	/* save the dives */

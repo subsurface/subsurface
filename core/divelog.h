@@ -5,6 +5,7 @@
 
 #include "divelist.h"
 #include "divesitetable.h"
+#include "triptable.h"
 
 #include <memory>
 #include <vector>
@@ -15,7 +16,7 @@ struct filter_preset_table;
 
 struct divelog {
 	dive_table dives;
-	std::unique_ptr<trip_table> trips;
+	trip_table trips;
 	dive_site_table sites;
 	std::vector<device> devices;
 	std::unique_ptr<filter_preset_table> filter_presets;

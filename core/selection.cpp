@@ -156,7 +156,7 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 static void clear_trip_selection()
 {
 	amount_trips_selected = 0;
-	for (auto &trip: *divelog.trips)
+	for (auto &trip: divelog.trips)
 		trip->selected = false;
 }
 
@@ -202,7 +202,7 @@ void setTripSelection(dive_trip *trip, dive *currentDive)
 	current_dive = currentDive;
 	for (auto &d: divelog.dives)
 		d->selected = d->divetrip == trip;
-	for (auto &t: *divelog.trips)
+	for (auto &t: divelog.trips)
 		t->selected = t.get() == trip;
 
 	amount_selected = static_cast<int>(trip->dives.size());
@@ -291,7 +291,7 @@ struct dive_trip *single_selected_trip()
 {
 	if (amount_trips_selected != 1)
 		return NULL;
-	for (auto &trip: *divelog.trips) {
+	for (auto &trip: divelog.trips) {
 		if (trip->selected)
 			return trip.get();
 	}
