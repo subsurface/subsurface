@@ -727,10 +727,10 @@ struct dive *register_dive(std::unique_ptr<dive> d)
 void process_loaded_dives()
 {
 	divelog.dives.sort();
-	divelog.trips->sort();
+	divelog.trips.sort();
 
 	/* Autogroup dives if desired by user. */
-	autogroup_dives(divelog.dives, *divelog.trips);
+	autogroup_dives(divelog.dives, divelog.trips);
 
 	fulltext_populate();
 
@@ -926,7 +926,7 @@ void add_imported_dives(struct divelog &import_log, int flags)
 
 	/* Add new trips */
 	for (auto &trip: trips_to_add)
-		divelog.trips->put(std::move(trip));
+		divelog.trips.put(std::move(trip));
 	trips_to_add.clear();
 
 	/* Add new dive sites */
@@ -960,7 +960,7 @@ static bool try_to_merge_trip(dive_trip &trip_import, struct dive_table &import_
 			      struct dive_table &dives_to_add, std::vector<dive *> &dives_to_remove,
 			      bool &sequence_changed, int &start_renumbering_at)
 {
-	for (auto &trip_old: *divelog.trips) {
+	for (auto &trip_old: divelog.trips) {
 		if (trips_overlap(trip_import, *trip_old)) {
 			sequence_changed |= merge_dive_tables(trip_import.dives, import_table, trip_old->dives,
 							       prefer_imported, trip_old.get(),
@@ -1044,7 +1044,7 @@ process_imported_dives_result process_imported_dives(struct divelog &import_log,
 	/* Autogroup tripless dives if desired by user. But don't autogroup
 	 * if tripless dives should be added to a new trip. */
 	if (!(flags & IMPORT_ADD_TO_NEW_TRIP))
-		autogroup_dives(import_log.dives, *import_log.trips);
+		autogroup_dives(import_log.dives, import_log.trips);
 
 	/* If dive sites already exist, use the existing versions. */
 	for (auto &new_ds: import_log.sites) {
@@ -1072,7 +1072,7 @@ process_imported_dives_result process_imported_dives(struct divelog &import_log,
 	 * could be smarter here, but realistically not a whole lot of trips
 	 * will be imported so do a simple n*m loop until someone complains.
 	 */
-	for (auto &trip_import: *import_log.trips) {
+	for (auto &trip_import: import_log.trips) {
 		if ((flags & IMPORT_MERGE_ALL_TRIPS) || trip_import->autogen) {
 			if (try_to_merge_trip(*trip_import, import_log.dives, flags & IMPORT_PREFER_IMPORTED,
 					      res.dives_to_add, res.dives_to_remove,
@@ -1096,7 +1096,7 @@ process_imported_dives_result process_imported_dives(struct divelog &import_log,
 		/* Finally, add trip to list of trips to add */
 		res.trips_to_add.put(std::move(trip_import));
 	}
-	import_log.trips->clear(); /* All trips were consumed */
+	import_log.trips.clear(); /* All trips were consumed */
 
 	if ((flags & IMPORT_ADD_TO_NEW_TRIP) && !import_log.dives.empty()) {
 		/* Create a new trip for unassigned dives, if desired. */

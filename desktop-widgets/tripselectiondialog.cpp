@@ -18,8 +18,8 @@ TripSelectionDialog::TripSelectionDialog(QWidget *parent) : QDialog(parent)
 
 	// We could use a model, but it seems barely worth the hassle.
 	QStringList list;
-	list.reserve(divelog.trips->size());
-	for (auto &trip: *divelog.trips)
+	list.reserve(divelog.trips.size());
+	for (auto &trip: divelog.trips)
 		list.push_back(formatTripTitleWithDives(*trip));
 	ui.trips->addItems(list);
 }
@@ -37,9 +37,9 @@ dive_trip *TripSelectionDialog::selectedTrip() const
 	if (rows.size() != 1)
 		return nullptr;
 	int idx = rows[0].row();
-	if (idx < 0 || static_cast<size_t>(idx) >= divelog.trips->size())
+	if (idx < 0 || static_cast<size_t>(idx) >= divelog.trips.size())
 		return nullptr;
-	return (*divelog.trips)[idx].get();
+	return divelog.trips[idx].get();
 }
 
 dive_trip *TripSelectionDialog::getTrip()
