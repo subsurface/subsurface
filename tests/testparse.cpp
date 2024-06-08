@@ -92,7 +92,7 @@ int TestParse::parseCSV(int units, std::string file)
 int TestParse::parseDivingLog()
 {
 	// Parsing of DivingLog import from SQLite database
-	struct dive_site *ds = divelog.sites->alloc_or_get(0xdeadbeef);
+	struct dive_site *ds = divelog.sites.alloc_or_get(0xdeadbeef);
 	ds->name = "Suomi -  - Hälvälä";
 
 	int ret = sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDivingLog4.1.1.sql", &_sqlite3_handle);

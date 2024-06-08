@@ -184,7 +184,7 @@ void dive_site_end(struct parser_state *state)
 	if (!state->cur_dive_site)
 		return;
 
-	struct dive_site *ds = state->log->sites->alloc_or_get(state->cur_dive_site->uuid);
+	struct dive_site *ds = state->log->sites.alloc_or_get(state->cur_dive_site->uuid);
 	ds->merge(*state->cur_dive_site);
 
 	if (verbose > 3)
@@ -428,7 +428,7 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 		struct dive_site *ds = dive->dive_site;
 		if (!ds) {
 			// if the dive doesn't have a dive site, check if there's already a dive site by this name
-			ds = state->log->sites->get_by_name(trimmed);
+			ds = state->log->sites.get_by_name(trimmed);
 		}
 		if (ds) {
 			// we have a dive site, let's hope there isn't a different name
@@ -439,12 +439,12 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				struct dive_site *exact_match = state->log->sites->get_by_gps_and_name(trimmed, ds->location);
+				struct dive_site *exact_match = state->log->sites.get_by_gps_and_name(trimmed, ds->location);
 				if (exact_match) {
 					unregister_dive_from_dive_site(dive);
 					exact_match->add_dive(dive);
 				} else {
-					struct dive_site *newds = state->log->sites->create(trimmed.c_str());
+					struct dive_site *newds = state->log->sites.create(trimmed.c_str());
 					unregister_dive_from_dive_site(dive);
 					newds->add_dive(dive);
 					if (has_location(&state->cur_location)) {
@@ -462,7 +462,7 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 				ds->add_dive(dive);
 			}
 		} else {
-			state->log->sites->create(trimmed)->add_dive(dive);
+			state->log->sites.create(trimmed)->add_dive(dive);
 		}
 	}
 }
