@@ -642,9 +642,9 @@ int comp_dives(const struct dive &a, const struct dive &b)
 			return -1;
 		if (!a.divetrip)
 			return 1;
-		if (trip_date(*a.divetrip) < trip_date(*b.divetrip))
+		if (a.divetrip->date() < b.divetrip->date())
 			return -1;
-		if (trip_date(*a.divetrip) > trip_date(*b.divetrip))
+		if (a.divetrip->date() > b.divetrip->date())
 			return 1;
 	}
 	if (a.number < b.number)
@@ -676,7 +676,7 @@ static void autogroup_dives(struct dive_table &table, struct trip_table &trip_ta
 
 	for (auto &entry: get_dives_to_autogroup(table)) {
 		for (auto it = table.begin() + entry.from; it != table.begin() + entry.to; ++it)
-			add_dive_to_trip(it->get(), entry.trip);
+			entry.trip->add_dive(it->get());
 		/* If this was newly allocated, add trip to list */
 		if (entry.created_trip)
 			trip_table.put(std::move(entry.created_trip));
@@ -911,7 +911,7 @@ void add_imported_dives(struct divelog &import_log, int flags)
 		struct dive_site *site = d->dive_site;
 		d->divetrip = NULL;
 		d->dive_site = NULL;
-		add_dive_to_trip(d.get(), trip);
+		trip->add_dive(d.get());
 		if (site)
 			site->add_dive(d.get());
 	}

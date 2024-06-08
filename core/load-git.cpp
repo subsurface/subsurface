@@ -1401,7 +1401,7 @@ static void create_new_dive(timestamp_t when, struct git_parser_state *state)
 	state->active_dive->when = when;
 
 	if (state->active_trip)
-		add_dive_to_trip(state->active_dive.get(), state->active_trip.get());
+		state->active_trip->add_dive(state->active_dive.get());
 }
 
 static bool validate_date(int yyyy, int mm, int dd)

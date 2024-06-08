@@ -545,7 +545,7 @@ int save_dive(FILE *f, const struct dive &dive, bool anonymize)
 static void save_trip(struct membuffer *b, dive_trip &trip, bool anonymize)
 {
 	put_format(b, "<trip");
-	show_date(b, trip_date(trip));
+	show_date(b, trip.date());
 	show_utf8(b, trip.location.c_str(), " location=\'", "\'", 1);
 	put_format(b, ">\n");
 	show_utf8(b, trip.notes.c_str(), "<notes>", "</notes>\n", 0);

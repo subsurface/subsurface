@@ -1004,7 +1004,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 		}
 
 		/* Create the date-based hierarchy */
-		utc_mkdate(trip ? trip_date(*trip) : dive->when, &tm);
+		utc_mkdate(trip ? trip->date() : dive->when, &tm);
 		tree = mktree(repo, root, "%04d", tm.tm_year);
 		tree = mktree(repo, tree, "%02d", tm.tm_mon + 1);
 

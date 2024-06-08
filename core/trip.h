@@ -17,21 +17,21 @@ struct dive_trip
 	bool autogen = false;
 	bool selected = false;
 
-	void sort_dives();
-
 	dive_trip();
 	~dive_trip();
+
+	void sort_dives();
+	void add_dive(struct dive *);
+	timestamp_t date() const;
+	bool is_single_day() const;
+	int shown_dives() const;
 };
 
 int comp_trips(const dive_trip &t1, const dive_trip &t2);
 
-extern void add_dive_to_trip(struct dive *, dive_trip *);
 extern struct dive_trip *unregister_dive_from_trip(struct dive *dive);
 
-extern timestamp_t trip_date(const struct dive_trip &trip);
-
 extern std::unique_ptr<dive_trip> create_trip_from_dive(const struct dive *dive);
-extern dive_trip *create_and_hookup_trip_from_dive(const struct dive *dive, struct trip_table &trip_table_arg);
 
 // Result item of get_dives_to_autogroup()
 struct dives_to_autogroup_result {
@@ -46,12 +46,6 @@ extern std::pair<dive_trip *, std::unique_ptr<dive_trip>> get_trip_for_new_dive(
 extern bool trips_overlap(const struct dive_trip &t1, const struct dive_trip &t2);
 
 extern std::unique_ptr<dive_trip> combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b);
-extern bool trip_is_single_day(const struct dive_trip &trip);
-extern int trip_shown_dives(const struct dive_trip *trip);
-
-#ifdef DEBUG_TRIP
-extern void dump_trip_list();
-#endif
 
 /* Make pointers to dive_trip "Qt metatypes" so that they can be
  * passed through QVariants and through QML. See comment in dive.h. */
