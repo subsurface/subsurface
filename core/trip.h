@@ -43,7 +43,6 @@ extern void sort_trip_table(struct trip_table *table);
 
 extern dive_trip_t *alloc_trip(void);
 extern dive_trip_t *create_trip_from_dive(struct dive *dive);
-extern dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_table *trip_table_arg);
 extern dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *from, int *to, bool *allocated);
 extern dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated);
 extern dive_trip_t *get_trip_by_uniq_id(int tripId);

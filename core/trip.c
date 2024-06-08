@@ -153,17 +153,6 @@ dive_trip_t *create_trip_from_dive(struct dive *dive)
 	return trip;
 }
 
-dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_table *trip_table_arg)
-{
-	dive_trip_t *dive_trip;
-
-	dive_trip = create_trip_from_dive(dive);
-
-	add_dive_to_trip(dive, dive_trip);
-	insert_trip(dive_trip, trip_table_arg);
-	return dive_trip;
-}
-
 /* random threshold: three days without diving -> new trip
  * this works very well for people who usually dive as part of a trip and don't
  * regularly dive at a local facility; this is why trips are an optional feature */
