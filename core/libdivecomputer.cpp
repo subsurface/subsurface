@@ -43,8 +43,8 @@
 
 std::string dumpfile_name;
 std::string logfile_name;
-const char *progress_bar_text = "";
-void (*progress_callback)(const char *text) = NULL;
+std::string progress_bar_text;
+void (*progress_callback)(const std::string &text) = NULL;
 double progress_bar_fraction = 0.0;
 
 static int stoptime, stopdepth, ndl, po2, cns, heartbeat, bearing;
@@ -491,33 +491,30 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 	}
 }
 
-static void dev_info(device_data_t *, const char *fmt, ...)
+static void dev_info(const char *fmt, ...)
 {
-	static char buffer[1024];
 	va_list ap;
 
 	va_start(ap, fmt);
-	vsnprintf(buffer, sizeof(buffer), fmt, ap);
+	progress_bar_text = vformat_string_std(fmt, ap);
 	va_end(ap);
-	progress_bar_text = buffer;
 	if (verbose)
-		INFO("dev_info: %s", buffer);
+		INFO("dev_info: %s", progress_bar_text.c_str());
 
 	if (progress_callback)
-		(*progress_callback)(buffer);
+		(*progress_callback)(progress_bar_text);
 }
 
 static int import_dive_number = 0;
 
 static void download_error(const char *fmt, ...)
 {
-	static char buffer[1024];
 	va_list ap;
 
 	va_start(ap, fmt);
-	vsnprintf(buffer, sizeof(buffer), fmt, ap);
+	std::string buffer = vformat_string_std(fmt, ap);
 	va_end(ap);
-	report_error("Dive %d: %s", import_dive_number, buffer);
+	report_error("Dive %d: %s", import_dive_number, buffer.c_str());
 }
 
 static dc_status_t parse_samples(device_data_t *, struct divecomputer *dc, dc_parser_t *parser)
@@ -649,7 +646,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 
 	// Parse the divetime.
 	std::string date_string = get_dive_date_c_string(dive->when);
-	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string.c_str());
+	dev_info(translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string.c_str());
 
 	unsigned int divetime = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
@@ -846,7 +843,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	/* If we already saw this dive, abort. */
 	if (!devdata->force_download && find_dive(dive->dcs[0])) {
 		std::string date_string = get_dive_date_c_string(dive->when);
-		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string.c_str());
+		dev_info(translate("gettextFromC", "Already downloaded dive at %s"), date_string.c_str());
 		return false;
 	}
 
@@ -884,7 +881,7 @@ static void do_save_fingerprint(device_data_t *devdata, const char *tmp, const c
 		return;
 
 	if (verbose)
-		dev_info(devdata, "Saving fingerprint for %08x:%08x to '%s'",
+		dev_info("Saving fingerprint for %08x:%08x to '%s'",
 			 devdata->fdeviceid, devdata->fdiveid, final);
 
 	/* The fingerprint itself.. */
@@ -984,16 +981,16 @@ static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, cons
 	memcpy(&diveid, buffer + size + 4, 4);
 
 	if (verbose)
-		dev_info(devdata, " ... fingerprinted dive %08x:%08x", deviceid, diveid);
+		dev_info(" ... fingerprinted dive %08x:%08x", deviceid, diveid);
 	/* Only use it if we *have* that dive! */
 	if (!has_dive(deviceid, diveid)) {
 		if (verbose)
-			dev_info(devdata, " ... dive not found");
+			dev_info(" ... dive not found");
 		return;
 	}
 	dc_device_set_fingerprint(device, buffer, size);
 	if (verbose)
-		dev_info(devdata, " ... fingerprint of size %zu", size);
+		dev_info(" ... fingerprint of size %zu", size);
 }
 
 /*
@@ -1010,18 +1007,18 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 	auto [fsize, raw_data] = get_fingerprint_data(fingerprints, calculate_string_hash(devdata->model.c_str()), devdata->devinfo.serial);
 	if (fsize) {
 		if (verbose)
-			dev_info(devdata, "... found fingerprint in dive table");
+			dev_info("... found fingerprint in dive table");
 		dc_device_set_fingerprint(device, raw_data, fsize);
 		return;
 	}
 	/* now check if we have a fingerprint on disk */
 	std::string cachename = fingerprint_file(devdata);
 	if (verbose)
-		dev_info(devdata, "Looking for fingerprint in '%s'", cachename.c_str());
+		dev_info("Looking for fingerprint in '%s'", cachename.c_str());
 	auto [mem, err] = readfile(cachename.c_str());
 	if (err > 0) {
 		if (verbose)
-			dev_info(devdata, " ... got %zu bytes", mem.size());
+			dev_info(" ... got %zu bytes", mem.size());
 		verify_fingerprint(device, devdata, (unsigned char *)mem.data(), mem.size());
 	}
 }
@@ -1037,7 +1034,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 	switch (event) {
 	case DC_EVENT_WAITING:
-		dev_info(devdata, translate("gettextFromC", "Event: waiting for user action"));
+		dev_info(translate("gettextFromC", "Event: waiting for user action"));
 		break;
 	case DC_EVENT_PROGRESS:
 		/* this seems really dumb... but having no idea what is happening on long
@@ -1049,7 +1046,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 			last = progress->current;
 		if (progress->current > last + 10240) {
 			last = progress->current;
-			dev_info(NULL, translate("gettextFromC", "read %dkb"), progress->current / 1024);
+			dev_info(translate("gettextFromC", "read %dkb"), progress->current / 1024);
 		}
 		if (progress->maximum)
 			progress_bar_fraction = (double)progress->current / (double)progress->maximum;
@@ -1069,7 +1066,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 			}
 		}
-		dev_info(devdata, translate("gettextFromC", "model=%s firmware=%u serial=%u"),
+		dev_info(translate("gettextFromC", "model=%s firmware=%u serial=%u"),
 			 devdata->product.c_str(), devinfo->firmware, devinfo->serial);
 		if (devdata->libdc_logfile) {
 			fprintf(devdata->libdc_logfile, "Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
@@ -1083,7 +1080,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 		break;
 	case DC_EVENT_CLOCK:
-		dev_info(devdata, translate("gettextFromC", "Event: systime=%" PRId64 ", devtime=%u\n"),
+		dev_info(translate("gettextFromC", "Event: systime=%" PRId64 ", devtime=%u\n"),
 			 (uint64_t)clock->systime, clock->devtime);
 		if (devdata->libdc_logfile) {
 			fprintf(devdata->libdc_logfile, "Event: systime=%" PRId64 ", devtime=%u\n",
@@ -1121,7 +1118,7 @@ static std::string do_device_import(device_data_t *data)
 	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR;
 	rc = dc_device_set_events(device, events, event_cb, data);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(data, "Import error: %s", errmsg(rc));
+		dev_info("Import error: %s", errmsg(rc));
 
 		return translate("gettextFromC", "Error registering the event handler.");
 	}
@@ -1129,7 +1126,7 @@ static std::string do_device_import(device_data_t *data)
 	// Register the cancellation handler.
 	rc = dc_device_set_cancel(device, cancel_cb, data);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(data, "Import error: %s", errmsg(rc));
+		dev_info("Import error: %s", errmsg(rc));
 
 		return translate("gettextFromC", "Error registering the cancellation handler.");
 	}
@@ -1154,7 +1151,7 @@ static std::string do_device_import(device_data_t *data)
 			if (rc == DC_STATUS_UNSUPPORTED)
 				return translate("gettextFromC", "Dumping not supported on this device");
 
-			dev_info(data, "Import error: %s", errmsg(rc));
+			dev_info("Import error: %s", errmsg(rc));
 
 			return translate("gettextFromC", "Dive data dumping error");
 		}
@@ -1164,7 +1161,7 @@ static std::string do_device_import(device_data_t *data)
 		if (rc != DC_STATUS_SUCCESS) {
 			progress_bar_fraction = 0.0;
 
-			dev_info(data, "Import error: %s", errmsg(rc));
+			dev_info("Import error: %s", errmsg(rc));
 
 			return translate("gettextFromC", "Dive data import error");
 		}
@@ -1254,7 +1251,7 @@ static dc_status_t usbhid_device_open(dc_iostream_t **iostream, dc_context_t *co
 		ERROR("didn't find HID device");
 		return DC_STATUS_NODEVICE;
 	}
-	dev_info(data, "Opening USB HID device for %04x:%04x",
+	dev_info("Opening USB HID device for %04x:%04x",
 		dc_usbhid_device_get_vid(device),
 		dc_usbhid_device_get_pid(device));
 	rc = dc_usbhid_open(iostream, context, device);
@@ -1277,7 +1274,7 @@ static dc_status_t usb_device_open(dc_iostream_t **iostream, dc_context_t *conte
 	if (!device)
 		return DC_STATUS_NODEVICE;
 
-	dev_info(data, "Opening USB device for %04x:%04x",
+	dev_info("Opening USB device for %04x:%04x",
 		dc_usb_device_get_vid(device),
 		dc_usb_device_get_pid(device));
 	rc = dc_usb_open(iostream, context, device);
@@ -1305,7 +1302,7 @@ static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *cont
 	if (!address)
 		std::from_chars(data->devname.c_str(), data->devname.c_str() + data->devname.size(), address);
 
-	dev_info(data, "Opening IRDA address %u", address);
+	dev_info("Opening IRDA address %u", address);
 	return dc_irda_open(&data->iostream, context, address, 1);
 }
 
@@ -1326,11 +1323,11 @@ static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *d
 	dc_iterator_free (iterator);
 
 	if (!address) {
-		dev_info(data, "No rfcomm device found");
+		dev_info("No rfcomm device found");
 		return DC_STATUS_NODEVICE;
 	}
 
-	dev_info(data, "Opening rfcomm address %llu", address);
+	dev_info("Opening rfcomm address %llu", address);
 	return dc_bluetooth_open(&data->iostream, context, address, 0);
 }
 #endif
@@ -1346,13 +1343,13 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 	transports &= supported;
 	if (!transports) {
-		dev_info(data, "Dive computer transport not supported");
+		dev_info("Dive computer transport not supported");
 		return DC_STATUS_UNSUPPORTED;
 	}
 
 #ifdef BT_SUPPORT
 	if (transports & DC_TRANSPORT_BLUETOOTH) {
-		dev_info(data, "Opening rfcomm stream %s", data->devname.c_str());
+		dev_info("Opening rfcomm stream %s", data->devname.c_str());
 #if defined(__ANDROID__) || defined(__APPLE__)
 		// we don't have BT on iOS in the first place, so this is for Android and macOS
 		rc = rfcomm_stream_open(&data->iostream, context, data->devname.c_str());
@@ -1366,7 +1363,7 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 #ifdef BLE_SUPPORT
 	if (transports & DC_TRANSPORT_BLE) {
-		dev_info(data, "Connecting to BLE device %s", data->devname.c_str());
+		dev_info("Connecting to BLE device %s", data->devname.c_str());
 		rc = ble_packet_open(&data->iostream, context, data->devname.c_str(), data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
@@ -1374,21 +1371,21 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 #endif
 
 	if (transports & DC_TRANSPORT_USBHID) {
-		dev_info(data, "Connecting to USB HID device");
+		dev_info("Connecting to USB HID device");
 		rc = usbhid_device_open(&data->iostream, context, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
 
 	if (transports & DC_TRANSPORT_USB) {
-		dev_info(data, "Connecting to native USB device");
+		dev_info("Connecting to native USB device");
 		rc = usb_device_open(&data->iostream, context, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
 
 	if (transports & DC_TRANSPORT_SERIAL) {
-		dev_info(data, "Opening serial device %s", data->devname.c_str());
+		dev_info("Opening serial device %s", data->devname.c_str());
 #ifdef SERIAL_FTDI
 		if (!strcasecmp(data->devname.c_str(), "ftdi"))
 			return ftdi_open(&data->iostream, context);
@@ -1404,14 +1401,14 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	}
 
 	if (transports & DC_TRANSPORT_IRDA) {
-		dev_info(data, "Connecting to IRDA device");
+		dev_info("Connecting to IRDA device");
 		rc = irda_device_open(&data->iostream, context, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
 
 	if (transports & DC_TRANSPORT_USBSTORAGE) {
-		dev_info(data, "Opening USB storage at %s", data->devname.c_str());
+		dev_info("Opening USB storage at %s", data->devname.c_str());
 		rc = dc_usb_storage_open(&data->iostream, context, data->devname.c_str());
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
@@ -1462,9 +1459,9 @@ std::string do_libdivecomputer_import(device_data_t *data)
 	rc = divecomputer_device_open(data);
 
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(data, "Import error: %s", errmsg(rc));
+		dev_info("Import error: %s", errmsg(rc));
 	} else {
-		dev_info(data, "Connecting ...");
+		dev_info("Connecting ...");
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
 		if (rc != DC_STATUS_SUCCESS) {
 			INFO("dc_device_open error value of %d", rc);
@@ -1475,26 +1472,26 @@ std::string do_libdivecomputer_import(device_data_t *data)
 				err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
 #endif
 		} else {
-			dev_info(data, "Starting import ...");
+			dev_info("Starting import ...");
 			err = do_device_import(data);
 			/* TODO: Show the logfile to the user on error. */
-			dev_info(data, "Import complete");
+			dev_info("Import complete");
 
 			if (err.empty() && data->sync_time) {
-				dev_info(data, "Syncing dive computer time ...");
+				dev_info("Syncing dive computer time ...");
 				rc = sync_divecomputer_time(data->device);
 
 				switch (rc) {
 				case DC_STATUS_SUCCESS:
-					dev_info(data, "Time sync complete");
+					dev_info("Time sync complete");
 
 					break;
 				case DC_STATUS_UNSUPPORTED:
-					dev_info(data, "Time sync not supported by dive computer");
+					dev_info("Time sync not supported by dive computer");
 
 					break;
 				default:
-					dev_info(data, "Time sync failed");
+					dev_info("Time sync failed");
 
 					break;
 				}
@@ -1503,7 +1500,7 @@ std::string do_libdivecomputer_import(device_data_t *data)
 			dc_device_close(data->device);
 			data->device = NULL;
 			if (data->log->dives.empty())
-				dev_info(data, translate("gettextFromC", "No new dives downloaded from dive computer"));
+				dev_info(translate("gettextFromC", "No new dives downloaded from dive computer"));
 		}
 		dc_iostream_close(data->iostream);
 		data->iostream = NULL;

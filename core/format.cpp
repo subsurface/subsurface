@@ -353,20 +353,27 @@ std::string casprintf_loc(const char *cformat, ...)
 	return std::string(utf8.constData(), utf8.size());
 }
 
-std::string __printf(1, 2) format_string_std(const char *fmt, ...)
+std::string format_string_std(const char *fmt, ...)
 {
 	va_list ap;
 	va_start(ap, fmt);
-	size_t stringsize = vsnprintf(NULL, 0, fmt, ap);
+	std::string res = vformat_string_std(fmt, ap);
 	va_end(ap);
+	return res;
+}
+
+std::string vformat_string_std(const char *fmt, va_list ap)
+{
+	va_list ap2;
+	va_copy(ap2, ap);
+	size_t stringsize = vsnprintf(NULL, 0, fmt, ap2);
+	va_end(ap2);
 	if (stringsize == 0)
 		return std::string();
 	std::string res;
 	res.resize(stringsize); // Pointless clearing, oh my.
 	// This overwrites the terminal null-byte of std::string.
 	// That's probably "undefined behavior". Oh my.
-	va_start(ap, fmt);
 	vsnprintf(res.data(), stringsize + 1, fmt, ap);
-	va_end(ap);
 	return res;
 }
