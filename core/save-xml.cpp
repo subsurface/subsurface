@@ -678,7 +678,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 		put_format(b, "</site>\n");
 	}
 	put_format(b, "</divesites>\n<dives>\n");
-	for (auto &trip: *divelog.trips)
+	for (auto &trip: divelog.trips)
 		trip->saved = 0;
 
 	/* save the filter presets */

@@ -1384,7 +1384,7 @@ static void finish_active_trip(struct git_parser_state *state)
 	auto &trip = state->active_trip;
 
 	if (trip)
-		state->log->trips->put(std::move(trip));
+		state->log->trips.put(std::move(trip));
 }
 
 static void finish_active_dive(struct git_parser_state *state)
