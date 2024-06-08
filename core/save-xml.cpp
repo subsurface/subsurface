@@ -591,38 +591,34 @@ int save_dives(const char *filename)
 
 static void save_filter_presets(struct membuffer *b)
 {
-	int i;
-
-	if (filter_presets_count() <= 0)
+	if (divelog.filter_presets.empty())
 		return;
 	put_format(b, "<filterpresets>\n");
-	for (i = 0; i < filter_presets_count(); i++) {
-		std::string name = filter_preset_name(i);
+	for (auto &filter_preset: divelog.filter_presets) {
 		put_format(b, " <filterpreset");
-		show_utf8(b, name.c_str(), " name='", "'", 1);
+		show_utf8(b, filter_preset.name.c_str(), " name='", "'", 1);
 		put_format(b, ">\n");
 
-		std::string fulltext = filter_preset_fulltext_query(i);
+		std::string fulltext = filter_preset.fulltext_query();
 		if (!fulltext.empty()) {
-			const char *fulltext_mode = filter_preset_fulltext_mode(i);
+			const char *fulltext_mode = filter_preset.fulltext_mode();
 			show_utf8(b, fulltext_mode, "  <fulltext mode='", "'>", 1);
 			show_utf8(b, fulltext.c_str(), "", "</fulltext>\n", 0);
 		}
 
-		for (int j = 0; j < filter_preset_constraint_count(i); j++) {
-			const struct filter_constraint *constraint = filter_preset_constraint(i, j);
-			const char *type = filter_constraint_type_to_string(constraint->type);
+		for (auto &constraint: filter_preset.data.constraints) {
+			const char *type = filter_constraint_type_to_string(constraint.type);
 			put_format(b, "  <constraint");
 			show_utf8(b, type, " type='", "'", 1);
-			if (filter_constraint_has_string_mode(constraint->type)) {
-				const char *mode = filter_constraint_string_mode_to_string(constraint->string_mode);
+			if (filter_constraint_has_string_mode(constraint.type)) {
+				const char *mode = filter_constraint_string_mode_to_string(constraint.string_mode);
 				show_utf8(b, mode, " string_mode='", "'", 1);
 			}
-			if (filter_constraint_has_range_mode(constraint->type)) {
-				const char *mode = filter_constraint_range_mode_to_string(constraint->range_mode);
+			if (filter_constraint_has_range_mode(constraint.type)) {
+				const char *mode = filter_constraint_range_mode_to_string(constraint.range_mode);
 				show_utf8(b, mode, " range_mode='", "'", 1);
 			}
-			if (constraint->negate)
+			if (constraint.negate)
 				put_format(b, " negate='1'");
 			put_format(b, ">");
 			std::string data = filter_constraint_data_to_string(constraint);

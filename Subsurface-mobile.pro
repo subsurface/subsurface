@@ -55,6 +55,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/eventtype.cpp \
 	core/filterconstraint.cpp \
 	core/filterpreset.cpp \
+	core/filterpresettable.cpp \
 	core/divelist.cpp \
 	core/divelog.cpp \
 	core/gas-model.cpp \
@@ -228,6 +229,7 @@ HEADERS += \
 	core/divefilter.h \
 	core/filterconstraint.h \
 	core/filterpreset.h \
+	core/filterpresettable.h \
 	core/divelist.h \
 	core/divelog.h \
 	core/divelogexportlogic.h \

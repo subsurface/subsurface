@@ -134,33 +134,33 @@ static const range_mode_description *get_range_mode_description(enum filter_cons
 	return nullptr;
 }
 
-static enum filter_constraint_type filter_constraint_type_from_string(const char *s)
+static enum filter_constraint_type filter_constraint_type_from_string(const std::string &s)
 {
 	for (const auto &desc: type_descriptions) {
-		if (same_string(desc.token, s))
+		if (desc.token == s)
 			return desc.type;
 	}
-	report_error("unknown filter constraint type: %s", s);
+	report_error("unknown filter constraint type: %s", s.c_str());
 	return FILTER_CONSTRAINT_DATE;
 }
 
-static enum filter_constraint_string_mode filter_constraint_string_mode_from_string(const char *s)
+static enum filter_constraint_string_mode filter_constraint_string_mode_from_string(const std::string &s)
 {
 	for (const auto &desc: string_mode_descriptions) {
-		if (same_string(desc.token, s))
+		if (desc.token == s)
 			return desc.mode;
 	}
-	report_error("unknown filter constraint string mode: %s", s);
+	report_error("unknown filter constraint string mode: %s", s.c_str());
 	return FILTER_CONSTRAINT_EXACT;
 }
 
-static enum filter_constraint_range_mode filter_constraint_range_mode_from_string(const char *s)
+static enum filter_constraint_range_mode filter_constraint_range_mode_from_string(const std::string &s)
 {
 	for (const auto &desc: range_mode_descriptions) {
-		if (same_string(desc.token, s))
+		if (desc.token == s)
 			return desc.mode;
 	}
-	report_error("unknown filter constraint range mode: %s", s);
+	report_error("unknown filter constraint range mode: %s", s.c_str());
 	return FILTER_CONSTRAINT_EQUAL;
 }
 
@@ -551,14 +551,14 @@ filter_constraint::filter_constraint(const filter_constraint &c) :
 		data.numerical_range = c.data.numerical_range;
 }
 
-filter_constraint::filter_constraint(const char *type_in, const char *string_mode_in,
-				     const char *range_mode_in, bool negate_in, const char *s_in) :
+filter_constraint::filter_constraint(const std::string &type_in, const std::string &string_mode_in,
+				     const std::string &range_mode_in, bool negate_in, const std::string &s_in) :
 	type(filter_constraint_type_from_string(type_in)),
 	string_mode(FILTER_CONSTRAINT_STARTS_WITH),
 	range_mode(FILTER_CONSTRAINT_GREATER),
 	negate(negate_in)
 {
-	QString s(s_in);
+	QString s = QString::fromStdString(s_in);
 	if (filter_constraint_has_string_mode(type))
 		string_mode = filter_constraint_string_mode_from_string(string_mode_in);
 	if (filter_constraint_has_range_mode(type))
@@ -622,22 +622,22 @@ filter_constraint::~filter_constraint()
 		delete data.string_list;
 }
 
-std::string filter_constraint_data_to_string(const filter_constraint *c)
+std::string filter_constraint_data_to_string(const filter_constraint &c)
 {
-	if (filter_constraint_is_timestamp(c->type)) {
-		std::string from_s = format_datetime(c->data.timestamp_range.from);
-		std::string to_s = format_datetime(c->data.timestamp_range.to);
+	if (filter_constraint_is_timestamp(c.type)) {
+		std::string from_s = format_datetime(c.data.timestamp_range.from);
+		std::string to_s = format_datetime(c.data.timestamp_range.to);
 		return from_s + ',' + to_s;
-	} else if (filter_constraint_is_string(c->type)) {
+	} else if (filter_constraint_is_string(c.type)) {
 		// TODO: this obviously breaks if the strings contain ",".
 		// That is currently not supported by the UI, but one day we might
 		// have to escape the strings.
-		return c->data.string_list->join(",").toStdString();
-	} else if (filter_constraint_is_multiple_choice(c->type)) {
-		return std::to_string(c->data.multiple_choice);
+		return c.data.string_list->join(",").toStdString();
+	} else if (filter_constraint_is_multiple_choice(c.type)) {
+		return std::to_string(c.data.multiple_choice);
 	} else {
-		return std::to_string(c->data.numerical_range.from) + ',' +
-		       std::to_string(c->data.numerical_range.to);
+		return std::to_string(c.data.numerical_range.from) + ',' +
+		       std::to_string(c.data.numerical_range.to);
 	}
 }
 

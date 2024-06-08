@@ -97,7 +97,7 @@ void FilterWidget::selectPreset(int i)
 void FilterWidget::loadPreset(int index)
 {
 	ignoreSignal = true; // When reloading the filter UI, we get numerous constraintChanged signals. Ignore them.
-	FilterData filter = filter_preset_get(index);
+	FilterData filter = divelog.filter_presets[index].data;
 	setFilterData(filter);
 	ignoreSignal = false;
 	presetModified = false;
@@ -227,7 +227,8 @@ void FilterWidget::updatePresetLabel()
 	int presetId = selectedPreset();
 	QString text;
 	if (presetId >= 0) {
-		text = QString(filter_preset_name(presetId).c_str());
+		const std::string &name = divelog.filter_presets[presetId].name;
+		text = QString::fromStdString(name);
 		if (presetModified)
 			text += " (" + tr("modified") + ")";
 	}
@@ -240,13 +241,15 @@ void FilterWidget::on_addSetButton_clicked()
 	// Thus, if the user selects an item and modify the filter,
 	// they can simply overwrite the preset.
 	int presetId = selectedPreset();
-	QString selectedPreset = presetId >= 0 ? QString(filter_preset_name(presetId).c_str()) : QString();
+	QString selectedPreset = presetId >= 0 ?
+		QString::fromStdString(divelog.filter_presets[presetId].name) :
+		QString();
 
 	AddFilterPresetDialog dialog(selectedPreset, this);
 	QString name = dialog.doit();
 	if (name.isEmpty())
 		return;
-	int idx = filter_preset_id(name.toStdString());
+	int idx = divelog.filter_presets.preset_id(name.toStdString());
 	if (idx >= 0)
 		Command::editFilterPreset(idx, createFilterData());
 	else

@@ -1183,10 +1183,10 @@ static void parse_filter_preset_constraint(char *line, struct git_parser_state *
 		line = parse_keyvalue_entry(parse_filter_preset_constraint_keyvalue, state, line, state);
 	}
 
-	filter_preset_add_constraint(state->active_filter.get(), state->filter_constraint_type.c_str(),
-				     state->filter_constraint_string_mode.c_str(),
-				     state->filter_constraint_range_mode.c_str(),
-				     state->filter_constraint_negate, state->filter_constraint_data.c_str());
+	state->active_filter->add_constraint(state->filter_constraint_type,
+					     state->filter_constraint_string_mode,
+					     state->filter_constraint_range_mode,
+					     state->filter_constraint_negate, state->filter_constraint_data);
 	state->filter_constraint_type.clear();
 	state->filter_constraint_string_mode.clear();
 	state->filter_constraint_range_mode.clear();
@@ -1220,14 +1220,14 @@ static void parse_filter_preset_fulltext(char *line, struct git_parser_state *st
 		line = parse_keyvalue_entry(parse_filter_preset_fulltext_keyvalue, state, line, state);
 	}
 
-	filter_preset_set_fulltext(state->active_filter.get(), state->fulltext_query.c_str(), state->fulltext_mode.c_str());
+	state->active_filter.get()->set_fulltext(std::move(state->fulltext_query), state->fulltext_mode);
 	state->fulltext_mode.clear();
 	state->fulltext_query.clear();
 }
 
 static void parse_filter_preset_name(char *, struct git_parser_state *state)
 {
-	filter_preset_set_name(state->active_filter.get(), get_first_converted_string_c(state));
+	state->active_filter->name = get_first_converted_string(state);
 }
 
 /* These need to be sorted! */
@@ -1774,7 +1774,7 @@ static int parse_filter_preset(struct git_parser_state *state, const git_tree_en
 
 	git_blob_free(blob);
 
-	add_filter_preset_to_table(state->active_filter.get(), state->log->filter_presets.get());
+	state->log->filter_presets.add(*state->active_filter);
 	state->active_filter.reset();
 
 	return 0;

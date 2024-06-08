@@ -202,7 +202,7 @@ void filter_preset_start(struct parser_state *state)
 
 void filter_preset_end(struct parser_state *state)
 {
-	add_filter_preset_to_table(state->cur_filter.get(), state->log->filter_presets.get());
+	state->log->filter_presets.add(*state->cur_filter);
 	state->cur_filter.reset();
 }
 
@@ -217,7 +217,7 @@ void fulltext_end(struct parser_state *state)
 {
 	if (!state->in_fulltext)
 		return;
-	filter_preset_set_fulltext(state->cur_filter.get(), state->fulltext.c_str(), state->fulltext_string_mode.c_str());
+	state->cur_filter->set_fulltext(std::move(state->fulltext), state->fulltext_string_mode);
 	state->fulltext.clear();
 	state->fulltext_string_mode.clear();
 	state->in_fulltext = false;
@@ -234,8 +234,8 @@ void filter_constraint_end(struct parser_state *state)
 {
 	if (!state->in_filter_constraint)
 		return;
-	filter_preset_add_constraint(state->cur_filter.get(), state->filter_constraint_type.c_str(), state->filter_constraint_string_mode.c_str(),
-				     state->filter_constraint_range_mode.c_str(), state->filter_constraint_negate, state->filter_constraint.c_str());
+	state->cur_filter->add_constraint(state->filter_constraint_type, state->filter_constraint_string_mode,
+					  state->filter_constraint_range_mode, state->filter_constraint_negate, state->filter_constraint);
 
 	state->filter_constraint_type.clear();
 	state->filter_constraint_string_mode.clear();
