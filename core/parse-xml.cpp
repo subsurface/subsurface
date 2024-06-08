@@ -1440,11 +1440,8 @@ static void try_to_fill_filter(struct filter_preset *filter, const char *name, c
 {
 	start_match("filterpreset", name, buf);
 
-	std::string s;
-	if (MATCH("name", utf8_string_std, &s)) {
-		filter_preset_set_name(filter, s.c_str());
+	if (MATCH("name", utf8_string_std, &filter->name))
 		return;
-	}
 
 	nonmatch("filterpreset", name, buf);
 }
