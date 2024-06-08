@@ -107,11 +107,9 @@ int updateProgress(const char *text)
 
 MainWindow *MainWindow::m_Instance = nullptr;
 
-void showErrorFromC(char *buf)
+static void showError(std::string err)
 {
-	QString error(buf);
-	free(buf);
-	emit MainWindow::instance()->showError(error);
+	emit MainWindow::instance()->showError(QString::fromStdString(err));
 }
 
 MainWindow::MainWindow() :
@@ -242,7 +240,7 @@ MainWindow::MainWindow() :
 
 	setupSocialNetworkMenu();
 	set_git_update_cb(&updateProgress);
-	set_error_cb(&showErrorFromC);
+	set_error_cb(&::showError);
 
 // full screen support is buggy on Windows and Ubuntu.
 // require the FULLSCREEN_SUPPORT macro to enable it!

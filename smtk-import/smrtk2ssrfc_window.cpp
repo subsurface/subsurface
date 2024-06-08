@@ -15,11 +15,9 @@ QStringList inputFiles;
 QString outputFile;
 QString error_buf;
 
-void getErrorFromC(char *buf)
+void getErrorFromC(std::string buf)
 {
-	QString error(buf);
-	free(buf);
-	error_buf = error;
+	error_buf = QString::fromStdString(std::move(buf));
 }
 
 Smrtk2ssrfcWindow::Smrtk2ssrfcWindow(QWidget *parent) :
