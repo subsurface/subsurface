@@ -207,15 +207,6 @@ static std::string get_first_converted_string(struct git_parser_state *state)
 	return std::move(state->converted_strings.front());
 }
 
-// This is a dummy function that converts the first
-// converted string to a newly allocated C-string.
-// Will be removed when the core data structures are
-// converted to std::string.
-static char *get_first_converted_string_c(struct git_parser_state *state)
-{
-	return strdup(get_first_converted_string(state).c_str());
-}
-
 static void parse_dive_location(char *, struct git_parser_state *state)
 {
 	std::string name = get_first_converted_string(state);
