@@ -224,11 +224,8 @@ void TabDiveInformation::updateData(const std::vector<dive *> &, dive *currentDi
 	setIndexNoSignal(ui->atmPressType, 0);		     // Set the atmospheric pressure combo box to mbar
 	salinity_value = get_dive_salinity(currentDive);
 	if (salinity_value) {			// Set water type indicator (EN13319 = 1.020 g/l)
-		if (ui->waterTypeCombo->isVisible()) {   // If water salinity is editable then set correct water type in combobox:
-			setIndexNoSignal(ui->waterTypeCombo, updateSalinityComboIndex(salinity_value));
-		} else {         // If water salinity is not editable: show water type as a text label
-			ui->waterTypeText->setText(get_water_type_string(salinity_value));
-		}
+		setIndexNoSignal(ui->waterTypeCombo, updateSalinityComboIndex(salinity_value));
+		ui->waterTypeText->setText(get_water_type_string(salinity_value));
 		ui->salinityText->setText(get_salinity_string(salinity_value));
 	} else {
 		setIndexNoSignal(ui->waterTypeCombo, -1);
@@ -349,6 +346,7 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 	else
 		salinity_value = currentDive->salinity;
 	setIndexNoSignal(ui->waterTypeCombo, updateSalinityComboIndex(salinity_value));
+	ui->waterTypeText->setText(get_water_type_string(salinity_value));
 	ui->salinityText->setText(QString("%L1g/ℓ").arg(salinity_value / 10.0));
 }
 

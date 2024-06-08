@@ -185,13 +185,12 @@ void DivePlannerWidget::heightChanged(const int height)
 
 void DivePlannerWidget::waterTypeUpdateTexts()
 {
-	double density;
 	/* Do not set text in last/custom element */
 	for (int i = 0; i < ui.waterType->count()-1; i++) {
 		if (ui.waterType->itemData(i) != QVariant::Invalid) {
 			QString densityText = ui.waterType->itemText(i).split("(")[0].trimmed();
-			density = ui.waterType->itemData(i).toInt() / 10000.0;
-			densityText.append(QString(" (%L1%2)").arg(density, 0, 'f', 2).arg(tr("kg/ℓ")));
+			double density = ui.waterType->itemData(i).toInt() / 10000.0;
+			densityText.append(QStringLiteral(" (%L1%2)").arg(density, 0, 'f', 3).arg(tr("kg/ℓ")));
 			ui.waterType->setItemText(i, densityText);
 		}
 	}
