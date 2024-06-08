@@ -132,7 +132,7 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	divesAndSitesToDelete.dives.clear();
 
 	for (dive_site *ds: divesAndSitesToDelete.sites) {
-		auto res = divelog.sites->pull(ds);
+		auto res = divelog.sites.pull(ds);
 		sitesToAdd.push_back(std::move(res.ptr));
 		emit diveListNotifier.diveSiteDeleted(ds, res.idx);
 	}
@@ -207,7 +207,7 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 
 	// Finally, add any necessary dive sites
 	for (std::unique_ptr<dive_site> &ds: toAdd.sites) {
-		auto res = divelog.sites->register_site(std::move(ds));
+		auto res = divelog.sites.register_site(std::move(ds));
 		sites.push_back(res.ptr);
 		emit diveListNotifier.diveSiteAdded(sites.back(), res.idx);
 	}

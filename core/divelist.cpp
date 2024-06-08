@@ -931,7 +931,7 @@ void add_imported_dives(struct divelog &import_log, int flags)
 
 	/* Add new dive sites */
 	for (auto &ds: dive_sites_to_add)
-		divelog.sites->register_site(std::move(ds));
+		divelog.sites.register_site(std::move(ds));
 
 	/* Add new devices */
 	for (auto &dev: devices_to_add)
@@ -1047,13 +1047,13 @@ process_imported_dives_result process_imported_dives(struct divelog &import_log,
 		autogroup_dives(import_log.dives, *import_log.trips);
 
 	/* If dive sites already exist, use the existing versions. */
-	for (auto &new_ds: *import_log.sites) {
+	for (auto &new_ds: import_log.sites) {
 		/* Check if it dive site is actually used by new dives. */
 		if (std::none_of(import_log.dives.begin(), import_log.dives.end(), [ds=new_ds.get()]
 				 (auto &d) { return d->dive_site == ds; }))
 			continue;
 
-		struct dive_site *old_ds = divelog.sites->get_same(*new_ds);
+		struct dive_site *old_ds = divelog.sites.get_same(*new_ds);
 		if (!old_ds) {
 			/* Dive site doesn't exist. Add it to list of dive sites to be added. */
 			new_ds->dives.clear(); /* Caller is responsible for adding dives to site */
@@ -1066,7 +1066,7 @@ process_imported_dives_result process_imported_dives(struct divelog &import_log,
 			}
 		}
 	}
-	import_log.sites->clear();
+	import_log.sites.clear();
 
 	/* Merge overlapping trips. Since both trip tables are sorted, we
 	 * could be smarter here, but realistically not a whole lot of trips

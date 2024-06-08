@@ -653,7 +653,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 
 	/* save the dive sites */
 	put_format(b, "<divesites>\n");
-	for (const auto &ds: *divelog.sites) {
+	for (const auto &ds: divelog.sites) {
 		/* Don't export empty dive sites */
 		if (ds->is_empty())
 			continue;

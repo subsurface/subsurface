@@ -403,12 +403,12 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 		concat(str, ", ", table.get_string_view(1)); // Locality
 	concat(str, ", ", site);
 
-	ds = log->sites->get_by_name(str);
+	ds = log->sites.get_by_name(str);
 	if (!ds) {
 		if (!has_location(&loc))
-			ds = log->sites->create(str);
+			ds = log->sites.create(str);
 		else
-			ds = log->sites->create(str, loc);
+			ds = log->sites.create(str, loc);
 	}
 	*location = ds;
 

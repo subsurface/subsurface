@@ -37,7 +37,7 @@ int LocationInformationModel::columnCount(const QModelIndex &) const
 
 int LocationInformationModel::rowCount(const QModelIndex &) const
 {
-	return (int)divelog.sites->size();
+	return (int)divelog.sites.size();
 }
 
 QVariant LocationInformationModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -119,10 +119,10 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site &ds, i
 
 QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() >= (int)divelog.sites->size())
+	if (!index.isValid() || index.row() >= (int)divelog.sites.size())
 		return QVariant();
 
-	const auto &ds = (*divelog.sites)[index.row()].get();
+	const auto &ds = (divelog.sites)[index.row()].get();
 	return getDiveSiteData(*ds, index.column(), role);
 }
 
@@ -134,7 +134,7 @@ void LocationInformationModel::update()
 
 void LocationInformationModel::diveSiteDiveCountChanged(dive_site *ds)
 {
-	size_t idx = divelog.sites->get_idx(ds);
+	size_t idx = divelog.sites.get_idx(ds);
 	if (idx != std::string::npos)
 		dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
 }
@@ -159,7 +159,7 @@ void LocationInformationModel::diveSiteDeleted(struct dive_site *, int idx)
 
 void LocationInformationModel::diveSiteChanged(struct dive_site *ds, int field)
 {
-	size_t idx = divelog.sites->get_idx(ds);
+	size_t idx = divelog.sites.get_idx(ds);
 	if (idx == std::string::npos)
 		return;
 	dataChanged(createIndex(idx, field), createIndex(idx, field));
@@ -167,7 +167,7 @@ void LocationInformationModel::diveSiteChanged(struct dive_site *ds, int field)
 
 void LocationInformationModel::diveSiteDivesChanged(struct dive_site *ds)
 {
-	size_t idx = divelog.sites->get_idx(ds);
+	size_t idx = divelog.sites.get_idx(ds);
 	if (idx == std::string::npos)
 		return;
 	dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
@@ -178,9 +178,9 @@ bool DiveSiteSortedModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 	if (fullText.isEmpty())
 		return true;
 
-	if (sourceRow < 0 || sourceRow > (int)divelog.sites->size())
+	if (sourceRow < 0 || sourceRow > (int)divelog.sites.size())
 		return false;
-	const auto &ds = (*divelog.sites)[sourceRow];
+	const auto &ds = (divelog.sites)[sourceRow];
 	QString text = QString::fromStdString(ds->name + ds->description + ds->notes);
 	return text.contains(fullText, Qt::CaseInsensitive);
 }
@@ -192,13 +192,13 @@ bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2)
 	// Kind of dirty, but less effort.
 
 	// Be careful to respect proper ordering when sites are invalid.
-	bool valid1 = i1.row() >= 0 && i1.row() < (int)divelog.sites->size();
-	bool valid2 = i2.row() >= 0 && i2.row() < (int)divelog.sites->size();
+	bool valid1 = i1.row() >= 0 && i1.row() < (int)divelog.sites.size();
+	bool valid2 = i2.row() >= 0 && i2.row() < (int)divelog.sites.size();
 	if (!valid1 || !valid2)
 		return valid1 < valid2;
 
-	const auto &ds1 = (*divelog.sites)[i1.row()];
-	const auto &ds2 = (*divelog.sites)[i2.row()];
+	const auto &ds1 = (divelog.sites)[i1.row()];
+	const auto &ds2 = (divelog.sites)[i2.row()];
 	switch (i1.column()) {
 	case LocationInformationModel::NAME:
 	default:
@@ -232,11 +232,11 @@ QStringList DiveSiteSortedModel::allSiteNames() const
 		// This shouldn't happen, but if model and core get out of sync,
 		// (more precisely: the core has more sites than the model is aware of),
 		// we might get an invalid index.
-		if (idx < 0 || idx > (int)divelog.sites->size()) {
+		if (idx < 0 || idx > (int)divelog.sites.size()) {
 			report_info("DiveSiteSortedModel::allSiteNames(): invalid index");
 			continue;
 		}
-		locationNames << QString::fromStdString((*divelog.sites)[idx]->name);
+		locationNames << QString::fromStdString((divelog.sites)[idx]->name);
 	}
 	return locationNames;
 }
@@ -244,7 +244,7 @@ QStringList DiveSiteSortedModel::allSiteNames() const
 struct dive_site *DiveSiteSortedModel::getDiveSite(const QModelIndex &idx_source)
 {
 	auto idx = mapToSource(idx_source).row();
-	return idx >= 0 && idx < (int)divelog.sites->size() ? (*divelog.sites)[idx].get() : NULL;
+	return idx >= 0 && idx < (int)divelog.sites.size() ? (divelog.sites)[idx].get() : NULL;
 }
 
 #ifndef SUBSURFACE_MOBILE

@@ -162,7 +162,7 @@ void MapLocationModel::reload(QObject *map)
 	if (diveSiteMode)
 		m_selectedDs = DiveFilter::instance()->filteredDiveSites();
 #endif
-	for (const auto &ds: *divelog.sites) {
+	for (const auto &ds: divelog.sites) {
 		QGeoCoordinate dsCoord;
 
 		// Don't show dive sites of hidden dives, unless we're in dive site edit mode.
