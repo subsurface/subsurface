@@ -78,8 +78,8 @@ struct filter_constraint {
 	} data;
 	// For C++, define constructors, assignment operators and destructor to make our lives easier.
 	filter_constraint(filter_constraint_type type);
-	filter_constraint(const char *type, const char *string_mode,
-			  const char *range_mode, bool negate, const char *data); // from parser data
+	filter_constraint(const std::string &type, const std::string &string_mode,
+			  const std::string &range_mode, bool negate, const std::string &data); // from parser data
 	filter_constraint(const filter_constraint &);
 	filter_constraint &operator=(const filter_constraint &);
 	~filter_constraint();
@@ -137,6 +137,6 @@ void filter_constraint_set_timestamp_from(filter_constraint &c, timestamp_t from
 void filter_constraint_set_timestamp_to(filter_constraint &c, timestamp_t to); // convert according to current units (metric or imperial)
 void filter_constraint_set_multiple_choice(filter_constraint &c, uint64_t);
 bool filter_constraint_match_dive(const filter_constraint &c, const struct dive *d);
-std::string filter_constraint_data_to_string(const struct filter_constraint *constraint); // caller takes ownership of returned string
+std::string filter_constraint_data_to_string(const struct filter_constraint &constraint); // caller takes ownership of returned string
 
 #endif

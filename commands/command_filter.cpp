@@ -1,23 +1,26 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_filter.h"
+#include "core/divelog.h"
 #include "core/filterpreset.h"
+#include "core/filterpresettable.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
 namespace Command {
 
 static int createFilterPreset(const std::string &name, const FilterData &data)
 {
-	int index = filter_preset_add(name, data);
+	int index = divelog.filter_presets.add(name, data);
 	emit diveListNotifier.filterPresetAdded(index);
 	return index;
 }
 
 static std::pair<std::string, FilterData> removeFilterPreset(int index)
 {
-	std::string oldName = filter_preset_name(index);
-	FilterData oldData = filter_preset_get(index);
-	filter_preset_delete(index);
+	const filter_preset &preset = divelog.filter_presets[index];
+	std::string oldName = preset.name;
+	FilterData oldData = preset.data;
+	divelog.filter_presets.remove(index);
 	emit diveListNotifier.filterPresetRemoved(index);
 	return { oldName, oldData };
 }
@@ -46,7 +49,8 @@ void CreateFilterPreset::undo()
 
 RemoveFilterPreset::RemoveFilterPreset(int indexIn) : index(indexIn)
 {
-	setText(Command::Base::tr("Delete filter preset %1").arg(QString(filter_preset_name(index).c_str())));
+	const std::string &name = divelog.filter_presets[index].name;
+	setText(Command::Base::tr("Delete filter preset %1").arg(QString::fromStdString(name)));
 }
 
 bool RemoveFilterPreset::workToBeDone()
@@ -68,7 +72,8 @@ void RemoveFilterPreset::undo()
 EditFilterPreset::EditFilterPreset(int indexIn, const FilterData &dataIn) :
 	index(indexIn), data(dataIn)
 {
-	setText(Command::Base::tr("Edit filter preset %1").arg(QString(filter_preset_name(index).c_str())));
+	const std::string &name = divelog.filter_presets[index].name;
+	setText(Command::Base::tr("Edit filter preset %1").arg(QString::fromStdString(name)));
 }
 
 bool EditFilterPreset::workToBeDone()
@@ -78,9 +83,8 @@ bool EditFilterPreset::workToBeDone()
 
 void EditFilterPreset::redo()
 {
-	FilterData oldData = filter_preset_get(index);
-	filter_preset_set(index, data);
-	data = std::move(oldData);
+	filter_preset &preset = divelog.filter_presets[index];
+	std::swap(data, preset.data);
 }
 
 void EditFilterPreset::undo()
