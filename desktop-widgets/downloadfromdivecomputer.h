@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QAbstractTableModel>
 #include <memory>
+#include <string>
 
 #include "core/libdivecomputer.h"
 #include "desktop-widgets/configuredivecomputerdialog.h"
@@ -77,6 +78,7 @@ private:
 	QStringListModel productModel;
 	Ui::DownloadFromDiveComputer ui;
 	QString filename;
+	std::string last_text;
 	bool downloading;
 
 	int previousLast;

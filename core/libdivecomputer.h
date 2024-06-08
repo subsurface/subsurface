@@ -55,8 +55,8 @@ void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, un
 dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model);
 
 extern int import_thread_cancelled;
-extern const char *progress_bar_text;
-extern void (*progress_callback)(const char *text);
+extern std::string progress_bar_text;
+extern void (*progress_callback)(const std::string &text);
 extern double progress_bar_fraction;
 
 dc_status_t ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr, void *userdata);

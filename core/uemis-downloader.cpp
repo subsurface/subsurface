@@ -200,15 +200,13 @@ static struct dive *get_dive_by_uemis_diveid(device_data_t *devdata, uint32_t ob
 /* send text to the importer progress bar */
 static void uemis_info(const char *fmt, ...)
 {
-	static char buffer[256];
 	va_list ap;
 
 	va_start(ap, fmt);
-	vsnprintf(buffer, sizeof(buffer), fmt, ap);
+	progress_bar_text = vformat_string_std(fmt, ap);
 	va_end(ap);
-	progress_bar_text = buffer;
 	if (verbose)
-		report_info("Uemis downloader: %s", buffer);
+		report_info("Uemis downloader: %s", progress_bar_text.c_str());
 }
 
 static long bytes_available(int file)
