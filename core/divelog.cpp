@@ -6,16 +6,12 @@
 #include "dive.h"
 #include "errorhelper.h"
 #include "filterpreset.h"
+#include "filterpresettable.h"
 #include "trip.h"
 
 struct divelog divelog;
 
-divelog::divelog() :
-	filter_presets(std::make_unique<filter_preset_table>()),
-	autogroup(false)
-{
-}
-
+divelog::divelog() = default;
 divelog::~divelog() = default;
 divelog::divelog(divelog &&) = default;
 struct divelog &divelog::operator=(divelog &&) = default;
@@ -68,7 +64,7 @@ void divelog::clear()
 	sites.clear();
 	trips.clear();
 	devices.clear();
-	filter_presets->clear();
+	filter_presets.clear();
 }
 
 /* check if we have a trip right before / after this dive */

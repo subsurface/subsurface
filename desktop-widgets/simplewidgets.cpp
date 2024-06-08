@@ -374,10 +374,9 @@ AddFilterPresetDialog::AddFilterPresetDialog(const QString &defaultName, QWidget
 
 	// Create a completer so that the user can easily overwrite existing presets.
 	QStringList presets;
-	int count = filter_presets_count();
-	presets.reserve(count);
-	for (int i = 0; i < count; ++i)
-		presets.push_back(QString(filter_preset_name(i).c_str()));
+	presets.reserve(divelog.filter_presets.size());
+	for (auto &filter_preset: divelog.filter_presets)
+		presets.push_back(QString::fromStdString(filter_preset.name));
 	QCompleter *completer = new QCompleter(presets, this);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	ui.name->setCompleter(completer);
@@ -387,7 +386,7 @@ void AddFilterPresetDialog::nameChanged(const QString &text)
 {
 	QString trimmed = text.trimmed();
 	bool isEmpty = trimmed.isEmpty();
-	bool exists = !isEmpty && filter_preset_id(trimmed.toStdString()) >= 0;
+	bool exists = !isEmpty && divelog.filter_presets.preset_id(trimmed.toStdString()) >= 0;
 	ui.duplicateWarning->setVisible(exists);
 	ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!isEmpty);
 }

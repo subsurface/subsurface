@@ -33,6 +33,7 @@
 #include "version.h"
 #include "picture.h"
 #include "qthelper.h"
+#include "range.h"
 #include "gettext.h"
 #include "tag.h"
 #include "subsurface-time.h"
@@ -914,21 +915,20 @@ static void save_divesites(git_repository *repo, struct dir *tree)
  * Whether stringmode or rangemode exist depends on the type of the constraint.
  * Any constraint can be negated.
  */
-static void format_one_filter_constraint(int preset_id, int constraint_id, struct membuffer *b)
+static void format_one_filter_constraint(const filter_constraint &constraint, struct membuffer *b)
 {
-	const struct filter_constraint *constraint = filter_preset_constraint(preset_id, constraint_id);
-	const char *type = filter_constraint_type_to_string(constraint->type);
+	const char *type = filter_constraint_type_to_string(constraint.type);
 
 	show_utf8(b, "constraint type=", type, "");
-	if (filter_constraint_has_string_mode(constraint->type)) {
-		const char *mode = filter_constraint_string_mode_to_string(constraint->string_mode);
+	if (filter_constraint_has_string_mode(constraint.type)) {
+		const char *mode = filter_constraint_string_mode_to_string(constraint.string_mode);
 		show_utf8(b, " stringmode=", mode, "");
 	}
-	if (filter_constraint_has_range_mode(constraint->type)) {
-		const char *mode = filter_constraint_range_mode_to_string(constraint->range_mode);
+	if (filter_constraint_has_range_mode(constraint.type)) {
+		const char *mode = filter_constraint_range_mode_to_string(constraint.range_mode);
 		show_utf8(b, " rangemode=", mode, "");
 	}
-	if (constraint->negate)
+	if (constraint.negate)
 		put_format(b, " negate");
 	std::string data = filter_constraint_data_to_string(constraint);
 	show_utf8(b, " data=", data.c_str(), "\n");
@@ -943,19 +943,18 @@ static void format_one_filter_constraint(int preset_id, int constraint_id, struc
  *	fulltext mode "fulltext mode" query "the query as entered by the user"
  * The format of the "constraint" entry is described in the format_one_filter_constraint() function.
  */
-static void format_one_filter_preset(int preset_id, struct membuffer *b)
+static void format_one_filter_preset(const filter_preset &preset, struct membuffer *b)
 {
-	std::string name = filter_preset_name(preset_id);
-	show_utf8(b, "name ", name.c_str(), "\n");
+	show_utf8(b, "name ", preset.name.c_str(), "\n");
 
-	std::string fulltext = filter_preset_fulltext_query(preset_id);
+	std::string fulltext = preset.fulltext_query();
 	if (!fulltext.empty()) {
-		show_utf8(b, "fulltext mode=", filter_preset_fulltext_mode(preset_id), "");
+		show_utf8(b, "fulltext mode=", preset.fulltext_mode(), "");
 		show_utf8(b, " query=", fulltext.c_str(), "\n");
 	}
 
-	for (int i = 0; i < filter_preset_constraint_count(preset_id); i++)
-		format_one_filter_constraint(preset_id, i, b);
+	for (auto &constraint: preset.data.constraints)
+		format_one_filter_constraint(constraint, b);
 }
 
 static void save_filter_presets(git_repository *repo, struct dir *tree)
@@ -965,13 +964,13 @@ static void save_filter_presets(git_repository *repo, struct dir *tree)
 	put_format(&dirname, "02-Filterpresets");
 	filter_dir = new_directory(repo, tree, &dirname);
 
-	for (int i = 0; i < filter_presets_count(); i++)
+	for (auto [i, filter_preset]: enumerated_range(divelog.filter_presets))
 	{
 		membuffer preset_name;
 		membuffer preset_buffer;
 
 		put_format(&preset_name, "Preset-%03d", i);
-		format_one_filter_preset(i, &preset_buffer);
+		format_one_filter_preset(filter_preset, &preset_buffer);
 
 		blob_insert(repo, filter_dir, &preset_buffer, mb_cstring(&preset_name));
 	}
