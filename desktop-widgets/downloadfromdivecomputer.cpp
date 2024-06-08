@@ -63,7 +63,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(const QString &filename, QWidget *par
 	ui.product->setModel(&productModel);
 	ui.syncDiveComputerTime->setChecked(prefs.sync_dc_time);
 
-	progress_bar_text = "";
+	progress_bar_text.clear();
 
 	timer->setInterval(200);
 
@@ -212,21 +212,19 @@ DELETEDCBUTTON(4)
 
 void DownloadFromDCWidget::updateProgressBar()
 {
-	static char *last_text = NULL;
-
-	if (empty_string(last_text)) {
+	if (last_text.empty()) {
 		// if we get the first actual text after the download is finished
 		// (which happens for example on the OSTC), then don't bother
-		if (!empty_string(progress_bar_text) && nearly_equal(progress_bar_fraction, 1.0))
-			progress_bar_text = "";
+		if (!progress_bar_text.empty() && nearly_equal(progress_bar_fraction, 1.0))
+			progress_bar_text.clear();
 	}
-	if (!empty_string(progress_bar_text)) {
+	if (!progress_bar_text.empty()) {
 		// once the progress bar text is set, setup the maximum so the user sees actual progress
-		ui.progressBar->setFormat(progress_bar_text);
+		ui.progressBar->setFormat(QString::fromStdString(progress_bar_text));
 		ui.progressBar->setMaximum(100);
 #if defined(Q_OS_MAC)
 		// on mac the progress bar doesn't show its text
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	} else {
 		if (nearly_0(progress_bar_fraction)) {
@@ -248,8 +246,7 @@ void DownloadFromDCWidget::updateProgressBar()
 		}
 	}
 	ui.progressBar->setValue(lrint(progress_bar_fraction * 100));
-	free(last_text);
-	last_text = strdup(progress_bar_text);
+	last_text = progress_bar_text;
 }
 
 void DownloadFromDCWidget::updateState(states state)
@@ -262,10 +259,10 @@ void DownloadFromDCWidget::updateState(states state)
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
 		timer->stop();
-		progress_bar_text = "";
+		progress_bar_text.clear();
 #if defined(Q_OS_MAC)
 		// on mac we show the text in a label
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	}
 
@@ -288,10 +285,10 @@ void DownloadFromDCWidget::updateState(states state)
 		ui.progressBar->setValue(0);
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
-		progress_bar_text = "";
+		progress_bar_text.clear();
 #if defined(Q_OS_MAC)
 		// on mac we show the text in a label
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	}
 
@@ -300,19 +297,19 @@ void DownloadFromDCWidget::updateState(states state)
 	// If we find an error, offer to retry, otherwise continue the interaction to pick the dives the user wants
 	else if (currentState == DOWNLOADING && state == DONE) {
 		timer->stop();
-		if (QString(progress_bar_text).contains("error", Qt::CaseInsensitive)) {
+		if (QString::fromStdString(progress_bar_text).contains("error", Qt::CaseInsensitive)) {
 			updateProgressBar();
 			markChildrenAsEnabled();
-			progress_bar_text = "";
+			progress_bar_text.clear();
 		} else {
 			if (diveImportedModel->numDives() != 0)
-				progress_bar_text = "";
+				progress_bar_text.clear();
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
 		}
 #if defined(Q_OS_MAC)
 		// on mac we show the text in a label
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	}
 
@@ -333,11 +330,11 @@ void DownloadFromDCWidget::updateState(states state)
 		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"),
 					QString::fromStdString(diveImportedModel->thread.error)), QMessageBox::Ok);
 		markChildrenAsEnabled();
-		progress_bar_text = "";
+		progress_bar_text.clear();
 		ui.progressBar->hide();
 #if defined(Q_OS_MAC)
 		// on mac we show the text in a label
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	}
 

@@ -11,6 +11,7 @@
 __printf(1, 2) QString qasprintf_loc(const char *cformat, ...);
 __printf(1, 0) QString vqasprintf_loc(const char *cformat, va_list ap);
 __printf(1, 2) std::string casprintf_loc(const char *cformat, ...);
+__printf(1, 0) std::string vformat_string_std(const char *fmt, va_list ap);
 __printf(1, 2) std::string format_string_std(const char *fmt, ...);
 
 #endif

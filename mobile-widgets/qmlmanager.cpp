@@ -76,12 +76,13 @@ void showErrorFromC(char *buf)
 }
 
 // this gets called from libdivecomputer
-static void progressCallback(const char *text)
+static void progressCallback(const std::string &text)
 {
 	QMLManager *self = QMLManager::instance();
 	if (self) {
-		self->appendTextToLog(QString(text));
-		self->setProgressMessage(QString(text));
+		QString s = QString::fromStdString(text);
+		self->appendTextToLog(s);
+		self->setProgressMessage(s);
 	}
 }
 
