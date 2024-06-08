@@ -436,7 +436,7 @@ static void write_trips(struct membuffer *b, const char *photos_dir, bool select
 	char sep_ = ' ';
 	char *sep = &sep_;
 
-	for (auto &trip: *divelog.trips)
+	for (auto &trip: divelog.trips)
 		trip->saved = 0;
 
 	for (auto &dive: divelog.dives) {

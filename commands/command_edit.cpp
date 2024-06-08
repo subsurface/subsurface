@@ -1442,7 +1442,7 @@ void EditDive::exchangeDives()
 	timestamp_t delta = oldDive->when - newDive->when;
 	if (delta != 0) {
 		divelog.dives.sort();
-		divelog.trips->sort();
+		divelog.trips.sort();
 		if (newDive->divetrip != oldDive->divetrip)
 			qWarning("Command::EditDive::redo(): This command does not support moving between trips!");
 		if (oldDive->divetrip)

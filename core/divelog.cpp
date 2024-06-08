@@ -11,7 +11,6 @@
 struct divelog divelog;
 
 divelog::divelog() :
-	trips(std::make_unique<trip_table>()),
 	filter_presets(std::make_unique<filter_preset_table>()),
 	autogroup(false)
 {
@@ -34,10 +33,10 @@ void divelog::delete_single_dive(int idx)
 
 	// Deleting a dive may change the order of trips!
 	if (trip)
-		trips->sort();
+		trips.sort();
 
 	if (trip && trip->dives.empty())
-		trips->pull(trip);
+		trips.pull(trip);
 	unregister_dive_from_dive_site(dive);
 	dives.erase(dives.begin() + idx);
 }
@@ -51,7 +50,7 @@ void divelog::delete_multiple_dives(const std::vector<dive *> &dives_to_delete)
 		struct dive_trip *trip = unregister_dive_from_trip(d);
 		if (trip && trip->dives.empty()) {
 			trips_changed = true;
-			trips->pull(trip);
+			trips.pull(trip);
 		}
 
 		unregister_dive_from_dive_site(d);
@@ -60,14 +59,14 @@ void divelog::delete_multiple_dives(const std::vector<dive *> &dives_to_delete)
 
 	// Deleting a dive may change the order of trips!
 	if (trips_changed)
-		trips->sort();
+		trips.sort();
 }
 
 void divelog::clear()
 {
 	dives.clear();
 	sites.clear();
-	trips->clear();
+	trips.clear();
 	devices.clear();
 	filter_presets->clear();
 }
