@@ -67,7 +67,7 @@ void DiveListBase::diveSiteCountChanged(struct dive_site *ds)
 dive *DiveListBase::addDive(DiveToAdd &d)
 {
 	if (d.trip)
-		add_dive_to_trip(d.dive.get(), d.trip);
+		d.trip->add_dive(d.dive.get());
 	if (d.site) {
 		d.site->add_dive(d.dive.get());
 		diveSiteCountChanged(d.site);
@@ -267,7 +267,7 @@ static std::unique_ptr<dive_trip> moveDiveToTrip(DiveToTrip &diveToTrip)
 	// Store old trip and get new trip we should associate this dive with
 	std::swap(trip, diveToTrip.trip);
 	if (trip)
-		add_dive_to_trip(diveToTrip.dive, trip);
+		trip->add_dive(diveToTrip.dive);
 	invalidate_dive_cache(diveToTrip.dive);		// Ensure that dive is written in git_save()
 	return res;
 }

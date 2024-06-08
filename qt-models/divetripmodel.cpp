@@ -69,7 +69,7 @@ QString DiveTripModelBase::tripShortDate(const dive_trip *trip)
 {
 	if (!trip)
 		return QString();
-	QDateTime firstTime = timestampToDateTime(trip_date(*trip));
+	QDateTime firstTime = timestampToDateTime(trip->date());
 	QString firstMonth = firstTime.toString("MMM");
 	return QStringLiteral("%1\n'%2").arg(firstMonth,firstTime.toString("yy"));
 }
@@ -79,13 +79,13 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 	if (!trip)
 		return QString();
 	QString numDives = tr("(%n dive(s))", "", static_cast<int>(trip->dives.size()));
-	int shown = trip_shown_dives(trip);
+	int shown = trip->shown_dives();
 	QString shownDives = shown != !trip->dives.empty() ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
 	QString title = QString::fromStdString(trip->location);
 
 	if (title.isEmpty()) {
 		// so use the date range
-		QDateTime firstTime = timestampToDateTime(trip_date(*trip));
+		QDateTime firstTime = timestampToDateTime(trip->date());
 		QString firstMonth = firstTime.toString("MMM");
 		QString firstYear = firstTime.toString("yyyy");
 		QDateTime lastTime = timestampToDateTime(trip->dives[0]->when);
@@ -125,7 +125,7 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 		switch (column) {
 		case DiveTripModelBase::NR:
 			QString shownText;
-			int countShown = trip_shown_dives(trip);
+			int countShown = trip->shown_dives();
 			if (countShown < static_cast<int>(trip->dives.size()))
 				shownText = tr("(%1 shown)").arg(countShown);
 			return formatTripTitleWithDives(*trip) + " " + shownText;
@@ -814,7 +814,7 @@ dive *DiveTripModelTree::Item::getDive() const
 
 timestamp_t DiveTripModelTree::Item::when() const
 {
-	return d_or_t.trip ? trip_date(*d_or_t.trip) : d_or_t.dive->when;
+	return d_or_t.trip ? d_or_t.trip->date() : d_or_t.dive->when;
 }
 
 dive_or_trip DiveTripModelTree::tripOrDive(const QModelIndex &index) const
