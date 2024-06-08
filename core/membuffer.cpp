@@ -140,25 +140,6 @@ void put_vformat(struct membuffer *b, const char *fmt, va_list args)
 	}
 }
 
-/* Silly helper using membuffer */
-char *vformat_string(const char *fmt, va_list args)
-{
-	struct membuffer mb;
-	put_vformat(&mb, fmt, args);
-	return detach_cstring(&mb);
-}
-
-char *format_string(const char *fmt, ...)
-{
-	va_list args;
-	char *result;
-
-	va_start(args, fmt);
-	result = vformat_string(fmt, args);
-	va_end(args);
-	return result;
-}
-
 void put_format(struct membuffer *b, const char *fmt, ...)
 {
 	va_list args;
