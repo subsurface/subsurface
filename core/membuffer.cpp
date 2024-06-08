@@ -18,35 +18,17 @@ membuffer::membuffer()
 
 membuffer::~membuffer()
 {
-	free_buffer(this);
-}
-
-/* Only for internal use */
-static char *detach_buffer(struct membuffer *b)
-{
-	char *result = b->buffer;
-	b->buffer = NULL;
-	b->len = 0;
-	b->alloc = 0;
-	return result;
-}
-
-char *detach_cstring(struct membuffer *b)
-{
-	mb_cstring(b);
-	return detach_buffer(b);
-}
-
-void free_buffer(struct membuffer *b)
-{
-	free(detach_buffer(b));
+	free(buffer);
 }
 
 void flush_buffer(struct membuffer *b, FILE *f)
 {
 	if (b->len) {
 		fwrite(b->buffer, 1, b->len, f);
-		free_buffer(b);
+		free(b->buffer);
+		b->buffer = NULL;
+		b->len = 0;
+		b->alloc = 0;
 	}
 }
 

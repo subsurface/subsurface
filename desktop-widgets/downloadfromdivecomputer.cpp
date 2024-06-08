@@ -440,12 +440,11 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 		// this breaks an "else if" across lines... not happy...
 #endif
 	if (data->vendor() == "Uemis") {
-		char *colon;
-		char *devname = copy_qstring(ui.device->currentText());
-
-		if ((colon = strstr(devname, ":\\ (UEMISSDA)")) != NULL) {
-			*(colon + 2) = '\0';
-			report_info("shortened devname to \"%s\"", devname);
+		QString devname = ui.device->currentText();
+		auto colon = devname.indexOf(":\\ (UEMISSDA)");
+		if (colon >= 0) {
+			devname.resize(colon + 2);
+			report_info("shortened devname to \"%s\"", qPrintable(devname));
 		}
 		data->setDevName(devname);
 	} else {

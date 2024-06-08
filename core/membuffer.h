@@ -19,10 +19,6 @@
  *
  *     "something, something else"
  *
- * Unless ownership to the buffer is given away by using "detach_cstring()":
- *
- *	ptr = detach_cstring();
- *
  * where the caller now has a C string and is supposed to free it.
  */
 #ifndef MEMBUFFER_H
@@ -46,8 +42,6 @@ struct membuffer {
 #define __printf(x, y)
 #endif
 
-extern char *detach_cstring(struct membuffer *b);
-extern void free_buffer(struct membuffer *);
 extern void make_room(struct membuffer *b, unsigned int size);
 extern void flush_buffer(struct membuffer *, FILE *);
 extern void put_bytes(struct membuffer *, const char *, int);
