@@ -918,7 +918,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, std::s
 			} else if (non_owned_dive && tag == "divespot_id") {
 				int divespot_id;
 				if (from_chars(val, divespot_id).ec != std::errc::invalid_argument) {
-					struct dive_site *ds = devdata->log->sites->create("from Uemis"s);
+					struct dive_site *ds = devdata->log->sites.create("from Uemis"s);
 					unregister_dive_from_dive_site(non_owned_dive);
 					ds->add_dive(non_owned_dive);
 					uemis_obj.mark_divelocation(non_owned_dive->dcs[0].diveid, divespot_id, ds);
@@ -1094,19 +1094,19 @@ static void get_uemis_divespot(device_data_t *devdata, const std::string &mountp
 			 * we search all existing divesites if we have one with the same name already. The function
 			 * returns the first found which is luckily not the newly created.
 			 */
-			struct dive_site *ods = devdata->log->sites->get_by_name(nds->name);
+			struct dive_site *ods = devdata->log->sites.get_by_name(nds->name);
 			if (ods && nds->uuid != ods->uuid) {
 				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				unregister_dive_from_dive_site(dive);
 				ods->add_dive(dive);
-				devdata->log->sites->pull(nds);
+				devdata->log->sites.pull(nds);
 			}
 			divespot_mapping[divespot_id] = dive->dive_site;
 		} else {
 			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
 			*/
-			devdata->log->sites->pull(dive->dive_site);
+			devdata->log->sites.pull(dive->dive_site);
 			dive->dive_site = nullptr;
 		}
 	}

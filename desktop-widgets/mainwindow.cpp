@@ -1408,12 +1408,12 @@ void MainWindow::on_actionImportDiveSites_triggered()
 		parse_file(fileNamePtr.data(), &log);
 	}
 	// The imported dive sites still have pointers to imported dives - remove them
-	for (const auto &ds: *log.sites)
+	for (const auto &ds: log.sites)
 		ds->dives.clear();
 
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
 
-	DivesiteImportDialog divesiteImport(std::move(*log.sites), source, this);
+	DivesiteImportDialog divesiteImport(std::move(log.sites), source, this);
 	divesiteImport.exec();
 }
 

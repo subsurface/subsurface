@@ -276,7 +276,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	state->cur_dive->when = (time_t)(atol(data[1]));
 
 	if (data[2])
-		state->log->sites->find_or_create(std::string(data[2]))->add_dive(state->cur_dive.get());
+		state->log->sites.find_or_create(std::string(data[2]))->add_dive(state->cur_dive.get());
 
 	if (data[3])
 		utf8_string_std(data[3], &state->cur_dive->buddy);

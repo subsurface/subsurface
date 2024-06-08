@@ -11,7 +11,7 @@ DivesiteImportedModel::DivesiteImportedModel(dive_site_table &table, QObject *o)
 {
 	checkStates.resize(importedSitesTable.size());
 	for (const auto &[row, item]: enumerated_range(importedSitesTable))
-		checkStates[row] = !divelog.sites->get_by_gps(&item->location);
+		checkStates[row] = !divelog.sites.get_by_gps(&item->location);
 }
 
 int DivesiteImportedModel::columnCount(const QModelIndex &) const
@@ -69,7 +69,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 		case NEAREST: {
 			// 40075000 is circumference of the earth in meters
 			struct dive_site *nearest_ds =
-				divelog.sites->get_by_gps_proximity(ds->location, 40075000);
+				divelog.sites.get_by_gps_proximity(ds->location, 40075000);
 			if (nearest_ds)
 				return QString::fromStdString(nearest_ds->name);
 			else
@@ -78,7 +78,7 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 		case DISTANCE: {
 			unsigned int distance = 0;
 			struct dive_site *nearest_ds =
-				divelog.sites->get_by_gps_proximity(ds->location, 40075000);
+				divelog.sites.get_by_gps_proximity(ds->location, 40075000);
 			if (nearest_ds)
 				distance = get_distance(ds->location, nearest_ds->location);
 			return distance_string(distance);

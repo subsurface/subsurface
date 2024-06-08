@@ -400,7 +400,7 @@ EditDiveSiteNew::EditDiveSiteNew(const QString &newName, bool currentDiveOnly) :
 void EditDiveSiteNew::undo()
 {
 	EditDiveSite::undo();
-	auto res = divelog.sites->pull(diveSiteToRemove);
+	auto res = divelog.sites.pull(diveSiteToRemove);
 	diveSiteToAdd = std::move(res.ptr);
 	emit diveListNotifier.diveSiteDeleted(diveSiteToRemove, res.idx); // Inform frontend of removed dive site.
 	diveSiteToRemove = nullptr;
@@ -408,7 +408,7 @@ void EditDiveSiteNew::undo()
 
 void EditDiveSiteNew::redo()
 {
-	auto res = divelog.sites->register_site(std::move(diveSiteToAdd)); // Return ownership to backend.
+	auto res = divelog.sites.register_site(std::move(diveSiteToAdd)); // Return ownership to backend.
 	diveSiteToRemove = res.ptr;
 	emit diveListNotifier.diveSiteAdded(diveSiteToRemove, res.idx); // Inform frontend of new dive site.
 	EditDiveSite::redo();
@@ -1394,7 +1394,7 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 void EditDive::undo()
 {
 	if (siteToRemove) {
-		auto res = divelog.sites->pull(siteToRemove);
+		auto res = divelog.sites.pull(siteToRemove);
 		siteToAdd = std::move(res.ptr);
 		emit diveListNotifier.diveSiteDeleted(siteToRemove, res.idx); // Inform frontend of removed dive site.
 	}
@@ -1406,7 +1406,7 @@ void EditDive::undo()
 void EditDive::redo()
 {
 	if (siteToAdd) {
-		auto res = divelog.sites->register_site(std::move(siteToAdd)); // Return ownership to backend.
+		auto res = divelog.sites.register_site(std::move(siteToAdd)); // Return ownership to backend.
 		siteToRemove = res.ptr;
 		emit diveListNotifier.diveSiteAdded(siteToRemove, res.idx); // Inform frontend of new dive site.
 	}

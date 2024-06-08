@@ -211,9 +211,9 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	{
 		std::string buffer2 = std::string((char *)locality) + " " + (char *)dive_point;
-		struct dive_site *ds = log->sites->get_by_name(buffer2);
+		struct dive_site *ds = log->sites.get_by_name(buffer2);
 		if (!ds)
-			ds = log->sites->create(buffer2);
+			ds = log->sites.create(buffer2);
 		ds->add_dive(dt_dive);
 	}
 	free(locality);

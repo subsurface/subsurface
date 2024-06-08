@@ -12,7 +12,6 @@ struct divelog divelog;
 
 divelog::divelog() :
 	trips(std::make_unique<trip_table>()),
-	sites(std::make_unique<dive_site_table>()),
 	filter_presets(std::make_unique<filter_preset_table>()),
 	autogroup(false)
 {
@@ -67,7 +66,7 @@ void divelog::delete_multiple_dives(const std::vector<dive *> &dives_to_delete)
 void divelog::clear()
 {
 	dives.clear();
-	sites->clear();
+	sites.clear();
 	trips->clear();
 	devices.clear();
 	filter_presets->clear();
