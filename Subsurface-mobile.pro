@@ -97,6 +97,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/taxonomy.cpp \
 	core/time.cpp \
 	core/trip.cpp \
+	core/triptable.cpp \
 	core/units.cpp \
 	core/uemis.cpp \
 	core/btdiscovery.cpp \
