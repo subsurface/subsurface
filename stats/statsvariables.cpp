@@ -75,7 +75,7 @@ struct TripWrapper {
 	timestamp_t date;
 	TripWrapper(const dive_trip *t) : t(t),
 		name(t ? formatTripTitle(*t) : QString()),
-		date(t ? trip_date(*t) : 0)
+		date(t ? t->date() : 0)
 	{
 	}
 	bool operator<(const TripWrapper &t2) const {

@@ -180,6 +180,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	time.cpp
 	trip.cpp
 	trip.h
+	triptable.cpp
 	triptable.h
 	uemis-downloader.cpp
 	uemis.cpp

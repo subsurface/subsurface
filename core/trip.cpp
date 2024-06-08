@@ -9,38 +9,17 @@
 #include "subsurface-string.h"
 #include "selection.h"
 
-#ifdef DEBUG_TRIP
-void dump_trip_list()
-{
-	timestamp_t last_time = 0;
-
-	for (auto &trip: divelog.trips) {
-		struct tm tm;
-		utc_mkdate(trip_date(*trip), &tm);
-		if (trip_date(*trip) < last_time)
-			printf("\n\ntrip_table OUT OF ORDER!!!\n\n\n");
-		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u (%d dives - %p)\n",
-		       trip->autogen ? "autogen " : "",
-		       i + 1, trip->location.c_str(),
-		       tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
-		       static_cast<int>(trip->dives.size()), trip.get());
-		last_time = trip_date(*trip);
-	}
-	printf("-----\n");
-}
-#endif
-
 dive_trip::dive_trip() : id(dive_getUniqID())
 {
 }
 
 dive_trip::~dive_trip() = default;
 
-timestamp_t trip_date(const struct dive_trip &trip)
+timestamp_t dive_trip::date() const
 {
-	if (trip.dives.empty())
+	if (dives.empty())
 		return 0;
-	return trip.dives[0]->when;
+	return dives[0]->when;
 }
 
 static timestamp_t trip_enddate(const struct dive_trip &trip)
@@ -52,14 +31,14 @@ static timestamp_t trip_enddate(const struct dive_trip &trip)
 
 /* Add dive to a trip. Caller is responsible for removing dive
  * from trip beforehand. */
-void add_dive_to_trip(struct dive *dive, dive_trip *trip)
+void dive_trip::add_dive(struct dive *dive)
 {
-	if (dive->divetrip == trip)
+	if (dive->divetrip == this)
 		return;
 	if (dive->divetrip)
 		report_info("Warning: adding dive to trip, which already has a trip set");
-	range_insert_sorted(trip->dives, dive, comp_dives_ptr);
-	dive->divetrip = trip;
+	range_insert_sorted(dives, dive, comp_dives_ptr);
+	dive->divetrip = this;
 }
 
 /* remove a dive from the trip it's associated to, but don't delete the
@@ -115,13 +94,6 @@ std::pair<dive_trip *, std::unique_ptr<dive_trip>> get_trip_for_new_dive(const s
 	return { t, std::move(trip) };
 }
 
-/* lookup of trip in main trip_table based on its id */
-dive_trip *trip_table::get_by_uniq_id(int tripId) const
-{
-	auto it = std::find_if(begin(), end(), [tripId](auto &t) { return t->id == tripId; });
-	return it != end() ? it->get() : nullptr;
-}
-
 /* Check if two trips overlap time-wise up to trip threshold. */
 bool trips_overlap(const struct dive_trip &t1, const struct dive_trip &t2)
 {
@@ -129,10 +101,10 @@ bool trips_overlap(const struct dive_trip &t1, const struct dive_trip &t2)
 	if (t1.dives.empty() || t2.dives.empty())
 		return 0;
 
-	if (trip_date(t1) < trip_date(t2))
-		return trip_enddate(t1) + TRIP_THRESHOLD >= trip_date(t2);
+	if (t1.date() < t2.date())
+		return trip_enddate(t1) + TRIP_THRESHOLD >= t2.date();
 	else
-		return trip_enddate(t2) + TRIP_THRESHOLD >= trip_date(t1);
+		return trip_enddate(t2) + TRIP_THRESHOLD >= t1.date();
 }
 
 /*
@@ -250,17 +222,16 @@ static bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)
 	return (tmd.tm_mday == tmt.tm_mday) && (tmd.tm_mon == tmt.tm_mon) && (tmd.tm_year == tmt.tm_year);
 }
 
-bool trip_is_single_day(const struct dive_trip &trip)
+bool dive_trip::is_single_day() const
 {
-	if (trip.dives.size() <= 1)
+	if (dives.size() <= 1)
 		return true;
-	return is_same_day(trip.dives.front()->when,
-			   trip.dives.back()->when);
+	return is_same_day(dives.front()->when, dives.back()->when);
 }
 
-int trip_shown_dives(const struct dive_trip *trip)
+int dive_trip::shown_dives() const
 {
-	return std::count_if(trip->dives.begin(), trip->dives.end(),
+	return std::count_if(dives.begin(), dives.end(),
 			     [](const dive *d) { return !d->hidden_by_filter; });
 }
 

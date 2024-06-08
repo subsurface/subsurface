@@ -301,8 +301,8 @@ QString formatMinutes(int seconds)
 
 QString formatTripTitle(const dive_trip &trip)
 {
-	timestamp_t when = trip_date(trip);
-	bool getday = trip_is_single_day(trip);
+	timestamp_t when = trip.date();
+	bool getday = trip.is_single_day();
 
 	QDateTime localTime = timestampToDateTime(when);
 
