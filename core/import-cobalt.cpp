@@ -80,8 +80,8 @@ static int cobalt_visibility(void *, int, char **, char **)
 
 static int cobalt_location(void *param, int, char **data, char **)
 {
-	char **location = (char **)param;
-	*location = data[0] ? strdup(data[0]) : NULL;
+	std::string *location = (std::string *)param;
+	*location = data[0] ? data[0] : NULL;
 	return 0;
 }
 
@@ -91,7 +91,7 @@ static int cobalt_dive(void *param, int, char **data, char **)
 	int retval = 0;
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
-	char *location, *location_site;
+	std::string location, location_site;
 	char get_profile_template[] = "select runtime*60,(DepthPressure*10000/SurfacePressure)-10000,p.Temperature from Dive AS d JOIN TrackPoints AS p ON d.Id=p.DiveId where d.Id=%d";
 	char get_cylinder_template[] = "select FO2,FHe,StartingPressure,EndingPressure,TankSize,TankPressure,TotalConsumption from GasMixes where DiveID=%d and StartingPressure>0 and EndingPressure > 0 group by FO2,FHe";
 	char get_buddy_template[] = "select l.Data from Items AS i, List AS l ON i.Value1=l.Id where i.DiveId=%d and l.Type=4";
@@ -179,12 +179,10 @@ static int cobalt_dive(void *param, int, char **data, char **)
 		return 1;
 	}
 
-	if (location && location_site) {
-		std::string tmp = std::string(location) + " / " + location_site;
+	if (!location.empty() && !location_site.empty()) {
+		std::string tmp = location + " / " + location_site;
 		state->log->sites.find_or_create(tmp)->add_dive(state->cur_dive.get());
 	}
-	free(location);
-	free(location_site);
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_profile_sample, state, NULL);
