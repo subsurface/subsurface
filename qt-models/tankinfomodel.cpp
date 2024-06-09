@@ -13,17 +13,15 @@ QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 		return defaultModelFont();
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		const struct tank_info &info = tank_info_table.infos[index.row()];
-		int ml = info.ml;
-		double bar = (info.psi) ? psi_to_bar(info.psi) : info.bar;
-
-		if (info.cuft && info.psi)
-			ml = lrint(cuft_to_l(info.cuft) * 1000 / bar_to_atm(bar));
+		volume_t size = {0};
+		pressure_t pressure = {0};
+		extract_tank_info(&info, &size, &pressure);
 
 		switch (index.column()) {
 		case BAR:
-			return bar * 1000;
+			return pressure.mbar;
 		case ML:
-			return ml;
+			return size.mliter;
 		case DESCRIPTION:
 			return info.name;
 		}

@@ -109,7 +109,7 @@ void add_tank_info_imperial(struct tank_info_table *table, const char *name, int
 	add_to_tank_info_table(table, table->nr, info);
 }
 
-extern struct tank_info *get_tank_info(struct tank_info_table *table, const char *name)
+static struct tank_info *get_tank_info(struct tank_info_table *table, const char *name)
 {
 	for (int i = 0; i < table->nr; ++i) {
 		if (same_string(table->infos[i].name, name))
@@ -118,34 +118,41 @@ extern struct tank_info *get_tank_info(struct tank_info_table *table, const char
 	return NULL;
 }
 
-extern void set_tank_info_size(struct tank_info_table *table, const char *name, volume_t size)
+extern void set_tank_info_data(struct tank_info_table *table, const char *name, volume_t size, pressure_t working_pressure)
 {
 	struct tank_info *info = get_tank_info(table, name);
 	if (info) {
-		// Try to be smart about metric vs. imperial
-		if (info->cuft == 0 && info->psi == 0)
+		if (info->ml != 0 || info->bar != 0) {
+			info->bar = working_pressure.mbar / 1000;
 			info->ml = size.mliter;
-		else
-			info->cuft = lrint(ml_to_cuft(size.mliter));
+		} else {
+			info->psi = lrint(to_PSI(working_pressure));
+			info->cuft = lrint(ml_to_cuft(size.mliter) * mbar_to_atm(working_pressure.mbar));
+		}
 	} else {
-		// By default add metric...?
-		add_tank_info_metric(table, name, size.mliter, 0);
+		// Metric is a better choice as the volume is independent of the working pressure
+		add_tank_info_metric(table, name, size.mliter, working_pressure.mbar / 1000);
 	}
 }
 
-extern void set_tank_info_workingpressure(struct tank_info_table *table, const char *name, pressure_t working_pressure)
+extern void extract_tank_info(const struct tank_info *info, volume_t *size, pressure_t *working_pressure)
+{
+	working_pressure->mbar = info->bar != 0 ? info->bar * 1000 : psi_to_mbar(info->psi);
+	if (info->ml != 0)
+		size->mliter = info->ml;
+	else if (working_pressure->mbar != 0)
+		size->mliter = lrint(cuft_to_l(info->cuft) * 1000 / mbar_to_atm(working_pressure->mbar));
+}
+
+extern bool get_tank_info_data(struct tank_info_table *table, const char *name, volume_t *size, pressure_t *working_pressure)
 {
 	struct tank_info *info = get_tank_info(table, name);
 	if (info) {
-		// Try to be smart about metric vs. imperial
-		if (info->cuft == 0 && info->psi == 0)
-			info->bar = working_pressure.mbar / 1000;
-		else
-			info->psi = lrint(mbar_to_PSI(working_pressure.mbar));
-	} else {
-		// By default add metric...?
-		add_tank_info_metric(table, name, 0, working_pressure.mbar / 1000);
+		extract_tank_info(info, size, working_pressure);
+
+		return true;
 	}
+	return false;
 }
 
 /* placeholders for a few functions that we need to redesign for the Qt UI */

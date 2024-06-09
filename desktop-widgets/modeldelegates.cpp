@@ -218,18 +218,13 @@ void TankInfoDelegate::setModelData(QWidget *, QAbstractItemModel *model, const 
 		mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, CylindersModel::TEMP_ROLE);
 		return;
 	}
-	int tankSize = 0;
-	int tankPressure = 0;
-	tank_info *info = get_tank_info(&tank_info_table, qPrintable(cylinderName));
-	if (info) {
-		// OMG, the units here are a mess.
-		tankSize = info->ml != 0 ? info->ml : lrint(cuft_to_l(info->cuft) * 1000.0);
-		tankPressure = info->bar != 0 ? info->bar * 1000 : psi_to_mbar(info->psi);
-	}
 
+	volume_t tankSize = {0};
+	pressure_t tankPressure = {0};
+	get_tank_info_data(&tank_info_table, qPrintable(cylinderName), &tankSize, &tankPressure);
 	mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, CylindersModel::TEMP_ROLE);
-	mymodel->setData(IDX(CylindersModel::WORKINGPRESS), tankPressure, CylindersModel::TEMP_ROLE);
-	mymodel->setData(IDX(CylindersModel::SIZE), tankSize, CylindersModel::TEMP_ROLE);
+	mymodel->setData(IDX(CylindersModel::WORKINGPRESS), tankPressure.mbar, CylindersModel::TEMP_ROLE);
+	mymodel->setData(IDX(CylindersModel::SIZE), tankSize.mliter, CylindersModel::TEMP_ROLE);
 }
 
 static QAbstractItemModel *createTankInfoModel(QWidget *parent)
