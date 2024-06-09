@@ -12,7 +12,6 @@
 #include <QUrl>
 #include <QMessageBox>
 #include <QFileInfo>
-#include "core/membuffer.h"
 #include "core/save-profiledata.h"
 #include "core/selection.h"
 
@@ -131,11 +130,9 @@ void TabDivePhotos::saveSubtitles()
 				// Only videos have non-zero duration
 				if (!duration)
 					continue;
-				membuffer b;
-				save_subtitles_buffer(&b, parent.currentDive, offset, duration);
-				const char *data = mb_cstring(&b);
+				std::string buffer = save_subtitles_buffer(parent.currentDive, offset, duration);
 				subtitlefile.open(QIODevice::WriteOnly);
-				subtitlefile.write(data, strlen(data));
+				subtitlefile.write(buffer.c_str(), buffer.size());
 				subtitlefile.close();
 			}
 		}
