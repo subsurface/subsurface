@@ -258,30 +258,3 @@ void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_
 		text = p;
 	}
 }
-
-char *add_to_string_va(char *old, const char *fmt, va_list args)
-{
-	char *res;
-	membuffer o, n;
-	put_vformat(&n, fmt, args);
-	put_format(&o, "%s\n%s", old ?: "", mb_cstring(&n));
-	res = strdup(mb_cstring(&o));
-	free((void *)old);
-	return res;
-}
-
-/* this is a convenience function that cleverly adds text to a string, using our membuffer
- * infrastructure.
- * WARNING - this will free(old), the intended pattern is
- * string = add_to_string(string, fmt, ...)
- */
-char *add_to_string(char *old, const char *fmt, ...)
-{
-	char *res;
-	va_list args;
-
-	va_start(args, fmt);
-	res = add_to_string_va(old, fmt, args);
-	va_end(args);
-	return res;
-}
