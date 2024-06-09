@@ -53,8 +53,6 @@ extern void strip_mb(struct membuffer *);
 extern const char *mb_cstring(struct membuffer *);
 extern __printf(2, 0) void put_vformat(struct membuffer *, const char *, va_list);
 extern __printf(2, 3) void put_format(struct membuffer *, const char *fmt, ...);
-extern __printf(2, 0) char *add_to_string_va(char *old, const char *fmt, va_list args);
-extern __printf(2, 3) char *add_to_string(char *old, const char *fmt, ...);
 
 /* Output one of our "milli" values with type and pre/post data */
 extern void put_milli(struct membuffer *, const char *, int, const char *);
