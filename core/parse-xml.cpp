@@ -339,37 +339,7 @@ static void temperature(const char *buffer, temperature_t *temperature, struct p
 
 static void sampletime(const char *buffer, duration_t *time)
 {
-	int i;
-	int hr, min, sec, ms;
-
-	i = sscanf(buffer, "%d:%d.%d", &min, &sec, &ms);
-	if (i != 3) {
-		i = sscanf(buffer, "%d:%d:%d", &hr, &min, &sec);
-	} else {
-		hr = 0;
-		i = 4;
-	}
-	switch (i) {
-	case 1:
-		min = hr;
-		hr = 0;
-	/* fallthrough */
-	case 2:
-		sec = min;
-		min = hr;
-		hr = 0;
-	/* fallthrough */
-	case 3:
-		ms = 0;
-	/* fallthrough */
-	case 4:
-		time->seconds = (hr * 60 + min) * 60 + sec;
-		time->ms = ms;
-		break;
-	default:
-		time->seconds = 0;
-		report_info("Strange sample time reading %s", buffer);
-	}
+	parse_duration(buffer, time, false);
 }
 
 static void offsettime(const char *buffer, offset_t *time)
@@ -388,17 +358,7 @@ static void offsettime(const char *buffer, offset_t *time)
 
 static void duration(const char *buffer, duration_t *time)
 {
-	/* DivingLog 5.08 (and maybe other versions) appear to sometimes
-	 * store the dive time as 44.00 instead of 44:00;
-	 * This attempts to parse this in a fairly robust way */
-	if (!strchr(buffer, ':') && strchr(buffer, '.')) {
-		std::string mybuffer(buffer);
-		char *dot = strchr(mybuffer.data(), '.');
-		*dot = ':';
-		sampletime(mybuffer.data(), time);
-	} else {
-		sampletime(buffer, time);
-	}
+	parse_duration(buffer, time, true);
 }
 
 static void percent(const char *buffer, fraction_t *fraction)

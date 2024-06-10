@@ -347,6 +347,7 @@ extern double get_vertical_speed_units(unsigned int mms, int *frac, const char *
 
 extern depth_t units_to_depth(double depth);
 extern int units_to_sac(double volume);
+extern int parse_duration(const char *buffer, duration_t *time, bool dot_as_seperator);
 #ifdef __cplusplus
 }
 #endif
