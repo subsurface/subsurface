@@ -1011,9 +1011,9 @@ std::string get_current_date()
 static QMutex hashOfMutex;
 static QHash<QString, QString> localFilenameOf;
 
-static const QString hashfile_name()
+std::string hashfile_name()
 {
-	return QString(system_default_directory()).append("/hashes");
+	return std::string(system_default_directory()) + "/hashes";
 }
 
 static QString thumbnailDir()
@@ -1029,11 +1029,6 @@ QString thumbnailFileName(const QString &filename)
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	hash.addData(filename.toUtf8());
 	return thumbnailDir() + hash.result().toHex();
-}
-
-char *hashfile_name_string()
-{
-	return copy_qstring(hashfile_name());
 }
 
 // TODO: This is a temporary helper struct. Remove in due course with convertLocalFilename().
@@ -1078,7 +1073,7 @@ static void convertLocalFilename(const QHash<QString, QByteArray> &hashOf, const
 
 void read_hashes()
 {
-	QFile hashfile(hashfile_name());
+	QFile hashfile(QString::fromStdString(hashfile_name()));
 	if (hashfile.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&hashfile);
 		QHash<QByteArray, QString> localFilenameByHash;
@@ -1102,7 +1097,7 @@ void read_hashes()
 
 void write_hashes()
 {
-	QSaveFile hashfile(hashfile_name());
+	QSaveFile hashfile(QString::fromStdString(hashfile_name()));
 	QMutexLocker locker(&hashOfMutex);
 
 	if (hashfile.open(QIODevice::WriteOnly)) {

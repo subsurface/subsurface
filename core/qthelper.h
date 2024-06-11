@@ -111,7 +111,7 @@ bool canReachCloudServer(struct git_info *);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 std::string local_file_path(const struct picture &picture);
-char *hashfile_name_string();
+std::string hashfile_name();
 enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
 time_t get_dive_datetime_from_isostring(char *when);
