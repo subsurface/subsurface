@@ -27,7 +27,6 @@
 #include "sample.h"
 #include "tag.h"
 #include "trip.h"
-#include "structured_list.h"
 #include "fulltext.h"
 
 // For user visible text but still not translated
