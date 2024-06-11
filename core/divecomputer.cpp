@@ -6,7 +6,6 @@
 #include "extradata.h"
 #include "pref.h"
 #include "sample.h"
-#include "structured_list.h"
 #include "subsurface-string.h"
 
 #include <string.h>
