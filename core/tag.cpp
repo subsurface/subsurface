@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "tag.h"
-#include "structured_list.h"
 #include "subsurface-string.h"
 #include "membuffer.h"
 #include "gettext.h"
