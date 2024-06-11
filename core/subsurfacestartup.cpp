@@ -63,9 +63,7 @@ void print_files()
 		printf("Unable to get local git directory\n");
 	}
 	printf("Cloud URL: %s\n", filename->c_str());
-	char *tmp = hashfile_name_string();
-	printf("Image filename table: %s\n", tmp);
-	free(tmp);
+	printf("Image filename table: %s\n", hashfile_name().c_str());
 }
 
 static void print_help()
