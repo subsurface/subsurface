@@ -4,6 +4,7 @@
 
 #include <QAbstractTableModel>
 #include <QDateTime>
+#include <memory>
 #include <vector>
 
 #include "core/deco.h"
@@ -132,7 +133,7 @@ private:
 	struct divedatapoint *cloneDiveplan(struct diveplan *plan_src, struct diveplan *plan_copy);
 	void computeVariationsDone(QString text);
 	void computeVariations(struct diveplan *diveplan, const struct deco_state *ds);
-	void computeVariationsFreeDeco(struct diveplan *diveplan, struct deco_state *ds);
+	void computeVariationsFreeDeco(struct diveplan *diveplan, std::unique_ptr<struct deco_state> ds);
 	int analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit);
 	struct dive *d;
 	int dcNr;
