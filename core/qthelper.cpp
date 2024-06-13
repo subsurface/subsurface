@@ -402,7 +402,7 @@ std::string subsurface_user_agent()
 
 QString getUiLanguage()
 {
-	return prefs.locale.lang_locale;
+	return QString::fromStdString(prefs.locale.lang_locale);
 }
 
 static std::vector<std::string> get_languages(const QLocale &loc)
@@ -457,10 +457,9 @@ void initUiLanguage()
 #endif
 	}
 
-	free((void*)prefs.locale.lang_locale);
-	prefs.locale.lang_locale = strdup(uiLang.c_str());
+	prefs.locale.lang_locale = uiLang;
 
-	if (!prefs.date_format_override || empty_string(prefs.date_format)) {
+	if (!prefs.date_format_override || prefs.date_format.empty()) {
 		// derive our standard date format from what the locale gives us
 		// the long format uses long weekday and month names, so replace those with the short ones
 		// for time we don't want the time zone designator and don't want leading zeroes on the hours
@@ -469,23 +468,20 @@ void initUiLanguage()
 		// special hack for Swedish as our switching from long weekday names to short weekday names
 		// messes things up there
 		dateFormat.replace("'en' 'den' d:'e'", " d");
-		free((void *)prefs.date_format);
-		prefs.date_format = copy_qstring(dateFormat);
+		prefs.date_format = dateFormat.toStdString();
 	}
 
-	if (!prefs.date_format_override || empty_string(prefs.date_format_short)) {
+	if (!prefs.date_format_override || prefs.date_format_short.empty()) {
 		// derive our standard date format from what the locale gives us
 		shortDateFormat = loc.dateFormat(QLocale::ShortFormat);
-		free((void *)prefs.date_format_short);
-		prefs.date_format_short = copy_qstring(shortDateFormat);
+		prefs.date_format_short = shortDateFormat.toStdString();
 	}
 
-	if (!prefs.time_format_override || empty_string(prefs.time_format)) {
+	if (!prefs.time_format_override || prefs.time_format.empty()) {
 		timeFormat = loc.timeFormat();
 		timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 		timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
-		free((void *)prefs.time_format);
-		prefs.time_format = copy_qstring(timeFormat);
+		prefs.time_format = timeFormat.toStdString();
 	}
 }
 
@@ -683,7 +679,7 @@ static const char *printing_templates = "printing_templates";
 QString getPrintingTemplatePathUser()
 {
 	// Function-local statics are initialized on first invocation
-	static QString path(QString(system_default_directory()) +
+	static QString path(QString::fromStdString(system_default_directory()) +
 			    QDir::separator() +
 			    QString(printing_templates));
 	return path;
@@ -958,7 +954,7 @@ QString get_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
-	return loc.toString(ts.toUTC(), QString(prefs.date_format) + " " + prefs.time_format);
+	return loc.toString(ts.toUTC(), QString::fromStdString(prefs.date_format + " " + prefs.time_format));
 }
 
 // Get local seconds since Epoch from ISO formatted UTC date time + offset string
@@ -971,7 +967,7 @@ QString get_short_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
-	return loc.toString(ts.toUTC(), QString(prefs.date_format_short) + " " + prefs.time_format);
+	return loc.toString(ts.toUTC(), QString::fromStdString(prefs.date_format_short + " " + prefs.time_format));
 }
 
 std::string get_dive_date_c_string(timestamp_t when)
@@ -983,7 +979,7 @@ static QString get_dive_only_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
-	return loc.toString(ts.toUTC(), QString(prefs.date_format));
+	return loc.toString(ts.toUTC(), QString::fromStdString(prefs.date_format));
 }
 
 QString get_first_dive_date_string()
@@ -1003,7 +999,7 @@ std::string get_current_date()
 	QDateTime ts(QDateTime::currentDateTime());;
 	QString current_date;
 
-	current_date = loc.toString(ts, QString(prefs.date_format_short));
+	current_date = loc.toString(ts, QString::fromStdString(prefs.date_format_short));
 
 	return current_date.toStdString();
 }
@@ -1018,7 +1014,7 @@ std::string hashfile_name()
 
 static QString thumbnailDir()
 {
-	return QString(system_default_directory()) + "/thumbnails/";
+	return QString::fromStdString(system_default_directory() + "/thumbnails/");
 }
 
 // Calculate thumbnail filename by hashing name of file.
@@ -1329,14 +1325,11 @@ std::optional<std::string> getCloudURL()
 {
 	std::string email(prefs.cloud_storage_email);
 	sanitize_email(email);
-	if (email.empty() || empty_string(prefs.cloud_storage_password)) {
+	if (email.empty() || prefs.cloud_storage_password.empty()) {
 		report_error("Please configure Cloud storage email and password in the preferences");
 		return {};
 	}
-	if (email != prefs.cloud_storage_email_encoded) {
-		free((void *)prefs.cloud_storage_email_encoded);
-		prefs.cloud_storage_email_encoded = strdup(email.c_str());
-	}
+	prefs.cloud_storage_email_encoded = email;
 	std::string filename = std::string(prefs.cloud_base_url) + "git/" + email + "[" + email + "]";
 	if (verbose)
 		report_info("returning cloud URL %s", filename.c_str());
@@ -1359,11 +1352,11 @@ void init_proxy()
 {
 	QNetworkProxy proxy;
 	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
-	proxy.setHostName(prefs.proxy_host);
+	proxy.setHostName(QString::fromStdString(prefs.proxy_host));
 	proxy.setPort(prefs.proxy_port);
 	if (prefs.proxy_auth) {
-		proxy.setUser(prefs.proxy_user);
-		proxy.setPassword(prefs.proxy_pass);
+		proxy.setUser(QString::fromStdString(prefs.proxy_user));
+		proxy.setPassword(QString::fromStdString(prefs.proxy_pass));
 	}
 	QNetworkProxy::setApplicationProxy(proxy);
 }

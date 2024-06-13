@@ -85,8 +85,8 @@ TabDiveNotes::TabDiveNotes(MainTab *parent) : TabBase(parent),
 
 void TabDiveNotes::updateDateTimeFields()
 {
-	ui.dateEdit->setDisplayFormat(prefs.date_format);
-	ui.timeEdit->setDisplayFormat(prefs.time_format);
+	ui.dateEdit->setDisplayFormat(QString::fromStdString(prefs.date_format));
+	ui.timeEdit->setDisplayFormat(QString::fromStdString(prefs.time_format));
 }
 
 void TabDiveNotes::closeWarning()

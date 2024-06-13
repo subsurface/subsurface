@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 		default_prefs.units = SI_units;
 	else
 		default_prefs.units = IMPERIAL_units;
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 	CheckCloudConnection ccc;
 	ccc.pickServer();
 	fill_computer_list();
@@ -98,7 +98,6 @@ int main(int argc, char **argv)
 	// Sync struct preferences to disk
 	qPref::sync();
 
-	free_prefs();
 	return 0;
 }
 

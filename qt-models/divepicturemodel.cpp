@@ -251,7 +251,7 @@ static void addDurationToThumbnail(QImage &img, duration_t duration)
 		QStringLiteral("%1:%2").arg(seconds / 60, 2, 10, QChar('0'))
 				       .arg(seconds % 60, 2, 10, QChar('0'));
 
-	QFont font(system_divelist_default_font, 30);
+	QFont font(system_divelist_default_font.c_str(), 30);
 	QFontMetrics metrics(font);
 	QSize size = metrics.size(Qt::TextSingleLine, s);
 	QSize imgSize = img.size();

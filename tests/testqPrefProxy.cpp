@@ -22,18 +22,18 @@ void TestQPrefProxy::test_struct_get()
 	auto tst = qPrefProxy::instance();
 
 	prefs.proxy_auth = true;
-	prefs.proxy_host = copy_qstring("t1 host");
-	prefs.proxy_pass = copy_qstring("t1 pass");
+	prefs.proxy_host = "t1 host";
+	prefs.proxy_pass = "t1 pass";
 	prefs.proxy_port = 512;
 	prefs.proxy_type = 3;
-	prefs.proxy_user = copy_qstring("t1 user");
+	prefs.proxy_user = "t1 user";
 
 	QCOMPARE(tst->proxy_auth(), true);
-	QCOMPARE(tst->proxy_host(), QString(prefs.proxy_host));
-	QCOMPARE(tst->proxy_pass(), QString(prefs.proxy_pass));
+	QCOMPARE(tst->proxy_host(), QString::fromStdString(prefs.proxy_host));
+	QCOMPARE(tst->proxy_pass(), QString::fromStdString(prefs.proxy_pass));
 	QCOMPARE(tst->proxy_port(), 512);
 	QCOMPARE(tst->proxy_type(), 3);
-	QCOMPARE(tst->proxy_user(), QString(prefs.proxy_user));
+	QCOMPARE(tst->proxy_user(), QString::fromStdString(prefs.proxy_user));
 }
 
 void TestQPrefProxy::test_set_struct()
@@ -50,11 +50,11 @@ void TestQPrefProxy::test_set_struct()
 	tst->set_proxy_user("t2 user");
 
 	QCOMPARE(prefs.proxy_auth, false);
-	QCOMPARE(QString(prefs.proxy_host), QString("t2 host"));
-	QCOMPARE(QString(prefs.proxy_pass), QString("t2 pass"));
+	QCOMPARE(QString::fromStdString(prefs.proxy_host), QString("t2 host"));
+	QCOMPARE(QString::fromStdString(prefs.proxy_pass), QString("t2 pass"));
 	QCOMPARE(prefs.proxy_port, 524);
 	QCOMPARE(prefs.proxy_type, 2);
-	QCOMPARE(QString(prefs.proxy_user), QString("t2 user"));
+	QCOMPARE(QString::fromStdString(prefs.proxy_user), QString("t2 user"));
 }
 
 void TestQPrefProxy::test_set_load_struct()
@@ -72,19 +72,19 @@ void TestQPrefProxy::test_set_load_struct()
 
 	tst->sync();
 	prefs.proxy_auth = false;
-	prefs.proxy_host = copy_qstring("error1");
-	prefs.proxy_pass = copy_qstring("error1");
+	prefs.proxy_host = "error1";
+	prefs.proxy_pass = "error1";
 	prefs.proxy_port = 128;
 	prefs.proxy_type = 0;
-	prefs.proxy_user = copy_qstring("error1");
+	prefs.proxy_user = "error1";
 
 	tst->load();
 	QCOMPARE(prefs.proxy_auth, true);
-	QCOMPARE(QString(prefs.proxy_host), QString("t3 host"));
-	QCOMPARE(QString(prefs.proxy_pass), QString("t3 pass"));
+	QCOMPARE(QString::fromStdString(prefs.proxy_host), QString("t3 host"));
+	QCOMPARE(QString::fromStdString(prefs.proxy_pass), QString("t3 pass"));
 	QCOMPARE(prefs.proxy_port, 532);
 	QCOMPARE(prefs.proxy_type, 1);
-	QCOMPARE(QString(prefs.proxy_user), QString("t3 user"));
+	QCOMPARE(QString::fromStdString(prefs.proxy_user), QString("t3 user"));
 }
 
 void TestQPrefProxy::test_struct_disk()
@@ -94,27 +94,27 @@ void TestQPrefProxy::test_struct_disk()
 	auto tst = qPrefProxy::instance();
 
 	prefs.proxy_auth = false;
-	prefs.proxy_host = copy_qstring("t4 host");
-	prefs.proxy_pass = copy_qstring("t4 pass");
+	prefs.proxy_host = "t4 host";
+	prefs.proxy_pass = "t4 pass";
 	prefs.proxy_port = 544;
 	prefs.proxy_type = 4;
-	prefs.proxy_user = copy_qstring("t4 user");
+	prefs.proxy_user = "t4 user";
 
 	tst->sync();
 	prefs.proxy_auth = true;
-	prefs.proxy_host = copy_qstring("error1");
-	prefs.proxy_pass = copy_qstring("error1");
+	prefs.proxy_host = "error1";
+	prefs.proxy_pass = "error1";
 	prefs.proxy_port = 128;
 	prefs.proxy_type = 5;
-	prefs.proxy_user = copy_qstring("error1");
+	prefs.proxy_user = "error1";
 
 	tst->load();
 	QCOMPARE(prefs.proxy_auth, false);
-	QCOMPARE(QString(prefs.proxy_host), QString("t4 host"));
-	QCOMPARE(QString(prefs.proxy_pass), QString("t4 pass"));
+	QCOMPARE(QString::fromStdString(prefs.proxy_host), QString("t4 host"));
+	QCOMPARE(QString::fromStdString(prefs.proxy_pass), QString("t4 pass"));
 	QCOMPARE(prefs.proxy_port, 544);
 	QCOMPARE(prefs.proxy_type, 4);
-	QCOMPARE(QString(prefs.proxy_user), QString("t4 user"));
+	QCOMPARE(QString::fromStdString(prefs.proxy_user), QString("t4 user"));
 }
 
 void TestQPrefProxy::test_multiple()

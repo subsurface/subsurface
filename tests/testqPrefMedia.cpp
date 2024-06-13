@@ -26,12 +26,12 @@ void TestQPrefMedia::test_struct_get()
 	prefs.auto_recalculate_thumbnails = true;
 	prefs.extract_video_thumbnails = true;
 	prefs.extract_video_thumbnails_position = 15;
-	prefs.ffmpeg_executable = copy_qstring("new base16");
+	prefs.ffmpeg_executable = "new base16";
 
 	QCOMPARE(tst->auto_recalculate_thumbnails(), prefs.auto_recalculate_thumbnails);
 	QCOMPARE(tst->extract_video_thumbnails(), prefs.extract_video_thumbnails);
 	QCOMPARE(tst->extract_video_thumbnails_position(), prefs.extract_video_thumbnails_position);
-	QCOMPARE(tst->ffmpeg_executable(), QString(prefs.ffmpeg_executable));
+	QCOMPARE(tst->ffmpeg_executable(), QString::fromStdString(prefs.ffmpeg_executable));
 }
 
 void TestQPrefMedia::test_set_struct()
@@ -48,7 +48,7 @@ void TestQPrefMedia::test_set_struct()
 	QCOMPARE(prefs.auto_recalculate_thumbnails, false);
 	QCOMPARE(prefs.extract_video_thumbnails, false);
 	QCOMPARE(prefs.extract_video_thumbnails_position, 25);
-	QCOMPARE(QString(prefs.ffmpeg_executable), QString("new base26"));
+	QCOMPARE(QString::fromStdString(prefs.ffmpeg_executable), QString("new base26"));
 }
 
 void TestQPrefMedia::test_set_load_struct()
@@ -65,13 +65,13 @@ void TestQPrefMedia::test_set_load_struct()
 	prefs.auto_recalculate_thumbnails = false;
 	prefs.extract_video_thumbnails = false;
 	prefs.extract_video_thumbnails_position = 15;
-	prefs.ffmpeg_executable = copy_qstring("error");
+	prefs.ffmpeg_executable = "error";
 
 	tst->load();
 	QCOMPARE(prefs.auto_recalculate_thumbnails, true);
 	QCOMPARE(prefs.extract_video_thumbnails, true);
 	QCOMPARE(prefs.extract_video_thumbnails_position, 35);
-	QCOMPARE(QString(prefs.ffmpeg_executable), QString("new base36"));
+	QCOMPARE(QString::fromStdString(prefs.ffmpeg_executable), QString("new base36"));
 }
 
 void TestQPrefMedia::test_struct_disk()
@@ -83,19 +83,19 @@ void TestQPrefMedia::test_struct_disk()
 	prefs.auto_recalculate_thumbnails = true;
 	prefs.extract_video_thumbnails = true;
 	prefs.extract_video_thumbnails_position = 45;
-	prefs.ffmpeg_executable = copy_qstring("base46");
+	prefs.ffmpeg_executable = "base46";
 
 	tst->sync();
 	prefs.auto_recalculate_thumbnails = false;
 	prefs.extract_video_thumbnails = false;
 	prefs.extract_video_thumbnails_position = 15;
-	prefs.ffmpeg_executable = copy_qstring("error");
+	prefs.ffmpeg_executable = "error";
 
 	tst->load();
 	QCOMPARE(prefs.auto_recalculate_thumbnails, true);
 	QCOMPARE(prefs.extract_video_thumbnails, true);
 	QCOMPARE(prefs.extract_video_thumbnails_position, 45);
-	QCOMPARE(QString(prefs.ffmpeg_executable), QString("base46"));
+	QCOMPARE(QString::fromStdString(prefs.ffmpeg_executable), QString("base46"));
 }
 
 #define TEST(METHOD, VALUE)      \

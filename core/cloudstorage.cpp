@@ -13,24 +13,43 @@ CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) :
 	userAgent = getUserAgent();
 }
 
-#define CLOUDURL QString(prefs.cloud_base_url)
-#define CLOUDBACKENDSTORAGE CLOUDURL + "/storage"
-#define CLOUDBACKENDVERIFY CLOUDURL + "/verify"
-#define CLOUDBACKENDUPDATE CLOUDURL + "/update"
-#define CLOUDBACKENDDELETE CLOUDURL + "/delete-account"
+static QString cloudUrl()
+{
+	return QString::fromStdString(prefs.cloud_base_url);
+}
+
+static QUrl cloudBackendStorage()
+{
+	return QUrl(cloudUrl() + "/storage");
+}
+
+static QUrl cloudBackendVerify()
+{
+	return QUrl(cloudUrl() + "/verify");
+}
+
+static QUrl cloudBackendUpdate()
+{
+	return QUrl(cloudUrl() + "/update");
+}
+
+static QUrl cloudBackendDelete()
+{
+	return QUrl(cloudUrl() + "/delete-account");
+}
 
 QNetworkReply* CloudStorageAuthenticate::backend(const QString& email,const QString& password,const QString& pin,const QString& newpasswd)
 {
 	QString payload(email + QChar(' ') + password);
 	QUrl requestUrl;
 	if (pin.isEmpty() && newpasswd.isEmpty()) {
-		requestUrl = QUrl(CLOUDBACKENDSTORAGE);
+		requestUrl = cloudBackendStorage();
 	} else if (!newpasswd.isEmpty()) {
-		requestUrl = QUrl(CLOUDBACKENDUPDATE);
+		requestUrl = cloudBackendUpdate();
 		payload += QChar(' ') + newpasswd;
 		cloudNewPassword = newpasswd;
 	} else {
-		requestUrl = QUrl(CLOUDBACKENDVERIFY);
+		requestUrl = cloudBackendVerify();
 		payload += QChar(' ') + pin;
 	}
 	QNetworkRequest *request = new QNetworkRequest(requestUrl);
@@ -54,7 +73,7 @@ QNetworkReply* CloudStorageAuthenticate::backend(const QString& email,const QStr
 QNetworkReply* CloudStorageAuthenticate::deleteAccount(const QString& email, const QString& password)
 {
 	QString payload(email + QChar(' ') + password);
-	QNetworkRequest *request = new QNetworkRequest(QUrl(CLOUDBACKENDDELETE));
+	QNetworkRequest *request = new QNetworkRequest(cloudBackendDelete());
 	request->setRawHeader("Accept", "text/xml, text/plain");
 	request->setRawHeader("User-Agent", userAgent.toUtf8());
 	request->setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");

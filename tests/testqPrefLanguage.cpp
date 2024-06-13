@@ -21,21 +21,21 @@ void TestQPrefLanguage::test_struct_get()
 
 	auto tst = qPrefLanguage::instance();
 
-	prefs.date_format = copy_qstring("new date format");
+	prefs.date_format = "new date format";
 	prefs.date_format_override = true;
-	prefs.date_format_short = copy_qstring("new short format");
-	prefs.locale.language = copy_qstring("new lang format");
-	prefs.locale.lang_locale = copy_qstring("new loc lang format");
-	prefs.time_format = copy_qstring("new time format");
+	prefs.date_format_short = "new short format";
+	prefs.locale.language = "new lang format";
+	prefs.locale.lang_locale = "new loc lang format";
+	prefs.time_format = "new time format";
 	prefs.time_format_override = true;
 	prefs.locale.use_system_language = true;
 
-	QCOMPARE(tst->date_format(), QString(prefs.date_format));
+	QCOMPARE(tst->date_format(), QString::fromStdString(prefs.date_format));
 	QCOMPARE(tst->date_format_override(), prefs.date_format_override);
-	QCOMPARE(tst->date_format_short(), QString(prefs.date_format_short));
-	QCOMPARE(tst->language(), QString(prefs.locale.language));
-	QCOMPARE(tst->lang_locale(), QString(prefs.locale.lang_locale));
-	QCOMPARE(tst->time_format(), QString(prefs.time_format));
+	QCOMPARE(tst->date_format_short(), QString::fromStdString(prefs.date_format_short));
+	QCOMPARE(tst->language(), QString::fromStdString(prefs.locale.language));
+	QCOMPARE(tst->lang_locale(), QString::fromStdString(prefs.locale.lang_locale));
+	QCOMPARE(tst->time_format(), QString::fromStdString(prefs.time_format));
 	QCOMPARE(tst->time_format_override(), prefs.time_format_override);
 	QCOMPARE(tst->use_system_language(), prefs.locale.use_system_language);
 }
@@ -80,22 +80,22 @@ void TestQPrefLanguage::test_set_load_struct()
 	tst->set_time_format_override(true);
 	tst->set_use_system_language(true);
 
-	prefs.date_format = copy_qstring("error3");
+	prefs.date_format = "error3";
 	prefs.date_format_override = false;
-	prefs.date_format_short = copy_qstring("error3");
-	prefs.locale.language = copy_qstring("error3");
-	prefs.locale.lang_locale = copy_qstring("error3");
-	prefs.time_format = copy_qstring("error3");
+	prefs.date_format_short = "error3";
+	prefs.locale.language = "error3";
+	prefs.locale.lang_locale = "error3";
+	prefs.time_format = "error3";
 	prefs.time_format_override = false;
 	prefs.locale.use_system_language = false;
 
 	tst->load();
-	QCOMPARE(QString(prefs.date_format), QString("new date3"));
+	QCOMPARE(QString::fromStdString(prefs.date_format), QString("new date3"));
 	QCOMPARE(prefs.date_format_override, true);
-	QCOMPARE(QString(prefs.date_format_short), QString("new short3"));
-	QCOMPARE(QString(prefs.locale.language), QString("new lang format3"));
-	QCOMPARE(QString(prefs.locale.lang_locale), QString("new loc lang3"));
-	QCOMPARE(QString(prefs.time_format), QString("new time3"));
+	QCOMPARE(QString::fromStdString(prefs.date_format_short), QString("new short3"));
+	QCOMPARE(QString::fromStdString(prefs.locale.language), QString("new lang format3"));
+	QCOMPARE(QString::fromStdString(prefs.locale.lang_locale), QString("new loc lang3"));
+	QCOMPARE(QString::fromStdString(prefs.time_format), QString("new time3"));
 	QCOMPARE(prefs.time_format_override, true);
 	QCOMPARE(prefs.locale.use_system_language, true);
 }
@@ -106,32 +106,32 @@ void TestQPrefLanguage::test_struct_disk()
 
 	auto tst = qPrefLanguage::instance();
 
-	prefs.date_format = copy_qstring("new date format");
+	prefs.date_format = "new date format";
 	prefs.date_format_override = true;
-	prefs.date_format_short = copy_qstring("new short format");
-	prefs.locale.language = copy_qstring("new lang format");
-	prefs.locale.lang_locale = copy_qstring("new loc lang format");
-	prefs.time_format = copy_qstring("new time format");
+	prefs.date_format_short = "new short format";
+	prefs.locale.language = "new lang format";
+	prefs.locale.lang_locale = "new loc lang format";
+	prefs.time_format = "new time format";
 	prefs.time_format_override = true;
 	prefs.locale.use_system_language = true;
 
 	tst->sync();
-	prefs.date_format = copy_qstring("error3");
+	prefs.date_format = "error3";
 	prefs.date_format_override = false;
-	prefs.date_format_short = copy_qstring("error3");
-	prefs.locale.language = copy_qstring("error3");
-	prefs.locale.lang_locale = copy_qstring("error3");
-	prefs.time_format = copy_qstring("error3");
+	prefs.date_format_short = "error3";
+	prefs.locale.language = "error3";
+	prefs.locale.lang_locale = "error3";
+	prefs.time_format = "error3";
 	prefs.time_format_override = false;
 	prefs.locale.use_system_language = false;
 
 	tst->load();
-	QCOMPARE(QString(prefs.date_format), QString("new date format"));
+	QCOMPARE(QString::fromStdString(prefs.date_format), QString("new date format"));
 	QCOMPARE(prefs.date_format_override, true);
-	QCOMPARE(QString(prefs.date_format_short), QString("new short format"));
-	QCOMPARE(QString(prefs.locale.language), QString("new lang format"));
-	QCOMPARE(QString(prefs.locale.lang_locale), QString("new loc lang format"));
-	QCOMPARE(QString(prefs.time_format), QString("new time format"));
+	QCOMPARE(QString::fromStdString(prefs.date_format_short), QString("new short format"));
+	QCOMPARE(QString::fromStdString(prefs.locale.language), QString("new lang format"));
+	QCOMPARE(QString::fromStdString(prefs.locale.lang_locale), QString("new loc lang format"));
+	QCOMPARE(QString::fromStdString(prefs.time_format), QString("new time format"));
 	QCOMPARE(prefs.time_format_override, true);
 	QCOMPARE(prefs.locale.use_system_language, true);
 }

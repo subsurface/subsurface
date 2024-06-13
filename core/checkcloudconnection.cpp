@@ -21,7 +21,6 @@ CheckCloudConnection::CheckCloudConnection(QObject *parent) :
 	QObject(parent),
 	reply(0)
 {
-
 }
 
 // two free APIs to figure out where we are
@@ -43,7 +42,7 @@ bool CheckCloudConnection::checkServer()
 		QNetworkRequest request;
 		request.setRawHeader("Accept", "text/plain");
 		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
-		request.setUrl(QString(prefs.cloud_base_url) + TEAPOT);
+		request.setUrl(QString::fromStdString(prefs.cloud_base_url) + TEAPOT);
 		reply = mgr->get(request);
 		QTimer timer;
 		timer.setSingleShot(true);
@@ -73,7 +72,7 @@ bool CheckCloudConnection::checkServer()
 			}
 		}
 		if (verbose)
-			report_info("connection test to cloud server %s failed %d %s %d %s", prefs.cloud_base_url,
+			report_info("connection test to cloud server %s failed %d %s %d %s", prefs.cloud_base_url.c_str(),
 				    static_cast<int>(reply->error()), qPrintable(reply->errorString()),
 				    reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(),
 				    qPrintable(reply->readAll()));
@@ -109,19 +108,16 @@ bool CheckCloudConnection::nextServer()
 	};
 	const char *server = nullptr;
 	for (serverTried &item: cloudServers) {
-		if (strstr(prefs.cloud_base_url, item.server))
+		if (contains(prefs.cloud_base_url, item.server))
 			item.tried = true;
 		else if (item.tried == false)
 			server = item.server;
 	}
 	if (server) {
-		int s = strlen(server);
-		char *baseurl = (char *)malloc(10 + s);
-		strcpy(baseurl, "https://");
-		strncat(baseurl, server, s);
-		strcat(baseurl, "/");
-		report_info("failed to connect to %s next server to try: %s", prefs.cloud_base_url, baseurl);
-		prefs.cloud_base_url = baseurl;
+		using namespace std::string_literals;
+		std::string base_url = "https://"s + server + "/"s;
+		report_info("failed to connect to %s next server to try: %s", prefs.cloud_base_url.c_str(), base_url.c_str());
+		prefs.cloud_base_url = std::move(base_url);
 		git_storage_update_progress(qPrintable(tr("Trying different cloud server...")));
 		return true;
 	}
@@ -192,7 +188,7 @@ void CheckCloudConnection::gotContinent(QNetworkReply *reply)
 		base_url = "https://" CLOUD_HOST_US "/";
 	else
 		base_url = "https://" CLOUD_HOST_EU "/";
-	if (!same_string(base_url, prefs.cloud_base_url)) {
+	if (base_url != prefs.cloud_base_url) {
 		if (verbose)
 			report_info("remember cloud server %s based on IP location in %s", base_url, qPrintable(continentString));
 		qPrefCloudStorage::instance()->store_cloud_base_url(base_url);
@@ -211,7 +207,7 @@ bool canReachCloudServer(struct git_info *info)
 		// the cloud_base_url ends with a '/', so we need the text starting at "git/..."
 		size_t pos = info->url.find("org/git/");
 		if (pos != std::string::npos) {
-			info->url = format_string_std("%s%s", prefs.cloud_base_url, info->url.c_str() + pos + 4);
+			info->url = format_string_std("%s%s", prefs.cloud_base_url.c_str(), info->url.c_str() + pos + 4);
 			if (verbose)
 				report_info("updating remote to: %s", info->url.c_str());
 		}

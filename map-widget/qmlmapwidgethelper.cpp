@@ -250,7 +250,7 @@ bool MapWidgetHelper::editMode() const
 QString MapWidgetHelper::pluginObject()
 {
 	QString lang = getUiLanguage().replace('_', '-');
-	QString cacheFolder = QString(system_default_directory()).append("/googlemaps").replace("\\", "/");
+	QString cacheFolder = QString::fromStdString(system_default_directory() + "/googlemaps").replace("\\", "/");
 	return QStringLiteral("import QtQuick 2.0;"
 			      "import QtLocation 5.3;"
 			      "Plugin {"

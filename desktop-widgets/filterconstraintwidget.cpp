@@ -283,13 +283,13 @@ void FilterConstraintWidget::update()
 {
 	// The user might have changed the date and/or time format. Let's update the widgets.
 	if (dateFrom)
-		dateFrom->setDisplayFormat(prefs.date_format);
+		dateFrom->setDisplayFormat(QString::fromStdString(prefs.date_format));
 	if (dateTo)
-		dateTo->setDisplayFormat(prefs.date_format);
+		dateTo->setDisplayFormat(QString::fromStdString(prefs.date_format));
 	if (timeFrom)
-		timeFrom->setDisplayFormat(prefs.time_format);
+		timeFrom->setDisplayFormat(QString::fromStdString(prefs.time_format));
 	if (timeTo)
-		timeTo->setDisplayFormat(prefs.time_format);
+		timeTo->setDisplayFormat(QString::fromStdString(prefs.time_format));
 
 	QModelIndex idx = model->index(row, 0);
 	setIndex(negate.get(), idx, FilterConstraintModel::NEGATE_INDEX_ROLE);

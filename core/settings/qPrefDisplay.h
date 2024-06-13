@@ -38,7 +38,7 @@ public:
 
 public:
 	static int animation_speed() { return prefs.animation_speed; }
-	static QString divelist_font() { return prefs.divelist_font; }
+	static QString divelist_font() { return QString::fromStdString(prefs.divelist_font); }
 	static double font_size() { return prefs.font_size; }
 	static double mobile_scale() { return prefs.mobile_scale; }
 	static bool display_invalid_dives() { return prefs.display_invalid_dives; }

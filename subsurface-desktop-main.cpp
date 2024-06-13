@@ -45,8 +45,7 @@ int main(int argc, char **argv)
 	std::vector<std::string> importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
 
-	const char *default_directory = system_default_directory();
-	subsurface_mkdir(default_directory);
+	subsurface_mkdir(system_default_directory().c_str());
 
 	for (int i = 1; i < arguments.length(); i++) {
 		std::string a = arguments[i].toStdString();
@@ -75,7 +74,7 @@ int main(int argc, char **argv)
 	git_libgit2_init();
 #endif
 	setup_system_prefs();
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 	CheckCloudConnection ccc;
 	ccc.pickServer();
 	fill_computer_list();
@@ -85,8 +84,8 @@ int main(int argc, char **argv)
 	init_ui();
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
-			if (!empty_string(prefs.default_filename))
-				files.emplace_back(prefs.default_filename ? prefs.default_filename : "");
+			if (!prefs.default_filename.empty())
+				files.push_back(prefs.default_filename);
 		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
 			auto cloudURL = getCloudURL();
 			if (cloudURL)
@@ -112,7 +111,6 @@ int main(int argc, char **argv)
 	// Sync struct preferences to disk
 	qPref::sync();
 
-	free_prefs();
 	return 0;
 }
 

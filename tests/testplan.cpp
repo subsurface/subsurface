@@ -18,7 +18,7 @@ static struct deco_state test_deco_state;
 extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int dcNr, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
 void setupPrefs()
 {
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 	prefs.ascrate50 = feet_to_mm(30) / 60;
 	prefs.ascrate75 = prefs.ascrate50;
 	prefs.ascratestops = prefs.ascrate50;
@@ -28,7 +28,7 @@ void setupPrefs()
 
 void setupPrefsVpmb()
 {
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 	prefs.ascrate50 = 10000 / 60;
 	prefs.ascrate75 = prefs.ascrate50;
 	prefs.ascratestops = prefs.ascrate50;

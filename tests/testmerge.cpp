@@ -13,7 +13,7 @@ void TestMerge::initTestCase()
 {
 	/* we need to manually tell that the resource exists, because we are using it as library. */
 	Q_INIT_RESOURCE(subsurface);
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 }
 
 void TestMerge::cleanup()

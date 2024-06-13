@@ -77,7 +77,7 @@ void TestGitStorage::initTestCase()
 	QTextCodec::setCodecForLocale(QTextCodec::codecForMib(106));
 
 	// first, setup the preferences an proxy information
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");
@@ -108,8 +108,8 @@ void TestGitStorage::initTestCase()
 	if (gitUrl.empty() || gitUrl.back() != '/')
 		gitUrl += "/";
 	gitUrl += "git";
-	prefs.cloud_storage_email_encoded = strdup(email.c_str());
-	prefs.cloud_storage_password = strdup(password.c_str());
+	prefs.cloud_storage_email_encoded = email;
+	prefs.cloud_storage_password = password.c_str();
 	gitUrl += "/" + email;
 	// all user storage for historical reasons always uses the user's email both as
 	// repo name and as branch. To allow us to keep testing and not step on parallel
@@ -138,11 +138,11 @@ void TestGitStorage::initTestCase()
 	// make sure we deal with any proxy settings that are needed
 	QNetworkProxy proxy;
 	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
-	proxy.setHostName(prefs.proxy_host);
+	proxy.setHostName(QString::fromStdString(prefs.proxy_host));
 	proxy.setPort(prefs.proxy_port);
 	if (prefs.proxy_auth) {
-		proxy.setUser(prefs.proxy_user);
-		proxy.setPassword(prefs.proxy_pass);
+		proxy.setUser(QString::fromStdString(prefs.proxy_user));
+		proxy.setPassword(QString::fromStdString(prefs.proxy_pass));
 	}
 	QNetworkProxy::setApplicationProxy(proxy);
 

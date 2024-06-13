@@ -41,31 +41,31 @@ static std::string make_default_filename()
 	return system_default_path() + "/subsurface.xml";
 }
 
-const char android_system_divelist_default_font[] = "Roboto";
-const char *system_divelist_default_font = android_system_divelist_default_font;
-double system_divelist_default_font_size = -1;
+using namespace std::string_literals;
+std::string system_divelist_default_font = "Roboto"s;
+double system_divelist_default_font_size = -1.0;
 
 int get_usb_fd(uint16_t idVendor, uint16_t idProduct);
 void subsurface_OS_pref_setup()
 {
 }
 
-bool subsurface_ignore_font(const char *font)
+bool subsurface_ignore_font(const std::string &font)
 {
 	// there are no old default fonts that we would want to ignore
 	return false;
 }
 
-const char *system_default_directory()
+std::string system_default_directory()
 {
 	static const std::string path = system_default_path();
-	return path.c_str();
+	return path;
 }
 
-const char *system_default_filename()
+std::string system_default_filename()
 {
 	static const std::string fn = make_default_filename();
-	return fn.c_str();
+	return fn;
 }
 
 

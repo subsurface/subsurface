@@ -27,11 +27,6 @@ static inline bool empty_string(const char *s)
 	return !s || !*s;
 }
 
-static inline char *copy_string(const char *s)
-{
-	return (s && *s) ? strdup(s) : NULL;
-}
-
 extern double permissive_strtod(const char *str, const char **ptr);
 extern double ascii_strtod(const char *str, const char **ptr);
 
@@ -45,6 +40,16 @@ inline bool starts_with(std::string_view s, const char *s2)
 inline bool contains(std::string_view s, char c)
 {
 	return s.find(c) != std::string::npos;
+}
+
+inline bool contains(std::string_view haystack, const char *needle)
+{
+	return haystack.find(needle) != std::string::npos;
+}
+
+inline bool contains(std::string_view haystack, const std::string &needle)
+{
+	return haystack.find(needle) != std::string::npos;
 }
 
 std::string join(const std::vector<std::string> &l, const std::string &separator, bool skip_empty = false);

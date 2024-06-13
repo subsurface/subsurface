@@ -27,9 +27,9 @@ extern const char *taxonomy_category_names[TC_NR_CATEGORIES];
 extern const char *taxonomy_api_names[TC_NR_CATEGORIES];
 
 struct taxonomy {
-	taxonomy_category category;	/* the category for this tag: ocean, country, admin_l1, admin_l2, localname, etc */
-	std::string value;		/* the value returned, parsed, or manually entered for that category */
-	taxonomy_origin origin;
+	taxonomy_category category = TC_NONE;	/* the category for this tag: ocean, country, admin_l1, admin_l2, localname, etc */
+	std::string value;			/* the value returned, parsed, or manually entered for that category */
+	taxonomy_origin origin = GEOCODED;
 };
 
 /* the data block contains taxonomy structures - unused ones have a tag value of NONE */

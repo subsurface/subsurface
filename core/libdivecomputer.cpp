@@ -911,7 +911,7 @@ static std::string fingerprint_file(device_data_t *devdata)
 	serial = devdata->devinfo.serial;
 
 	return format_string_std("%s/fingerprints/%04x.%u",
-		system_default_directory(),
+		system_default_directory().c_str(),
 		model, serial);
 }
 
@@ -952,7 +952,7 @@ static void save_fingerprint(device_data_t *devdata)
 		return;
 
 	// Make sure the fingerprints directory exists
-	std::string dir = format_string_std("%s/fingerprints", system_default_directory());
+	std::string dir = system_default_directory() + "/fingerprints";
 	subsurface_mkdir(dir.c_str());
 
 	std::string final = fingerprint_file(devdata);

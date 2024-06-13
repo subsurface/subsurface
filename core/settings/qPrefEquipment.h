@@ -20,7 +20,7 @@ public:
 	static void sync() { loadSync(true); }
 
 public:
-	static QString default_cylinder() { return prefs.default_cylinder; }
+	static QString default_cylinder() { return QString::fromStdString(prefs.default_cylinder); }
 	static bool include_unused_tanks() { return prefs.include_unused_tanks; }
 	static bool display_default_tank_infos() { return prefs.display_default_tank_infos; }
 
