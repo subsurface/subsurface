@@ -1081,12 +1081,9 @@ void DivePlannerPointsModel::updateDiveProfile()
 #ifdef VARIATIONS_IN_BACKGROUND
 		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
 		// on the stack, it must be copied and freed by the worker-thread.
-		struct deco_state *plan_deco_state_copy = new deco_state(plan_deco_state);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-		QtConcurrent::run(&DivePlannerPointsModel::computeVariationsFreeDeco, this, plan_copy, plan_deco_state_copy);
-#else
-		QtConcurrent::run(this, &DivePlannerPointsModel::computeVariationsFreeDeco, plan_copy, plan_deco_state_copy);
-#endif
+		auto plan_deco_state_copy = std::make_unique<deco_state>(plan_deco_state);
+		QtConcurrent::run([this, plan_copy, &plan_deco_state_copy] ()
+				  { this->computeVariationsFreeDeco(plan_copy, std::move(plan_deco_state_copy)); });
 #else
 		computeVariations(plan_copy, &plan_deco_state);
 #endif
@@ -1171,10 +1168,10 @@ int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decos
 	return (leftsum + rightsum) / 2;
 }
 
-void DivePlannerPointsModel::computeVariationsFreeDeco(struct diveplan *original_plan, struct deco_state *previous_ds)
+void DivePlannerPointsModel::computeVariationsFreeDeco(struct diveplan *original_plan, std::unique_ptr<struct deco_state> previous_ds)
 {
-	computeVariations(original_plan, previous_ds);
-	delete previous_ds;
+	computeVariations(original_plan, previous_ds.get());
+	// Note: previous ds automatically free()d by virtue of being a unique_ptr.
 }
 
 void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, const struct deco_state *previous_ds)
