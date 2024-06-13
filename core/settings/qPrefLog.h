@@ -23,7 +23,7 @@ public:
 	static void sync() { return loadSync(true); }
 
 public:
-	static QString default_filename() { return prefs.default_filename; }
+	static QString default_filename() { return QString::fromStdString(prefs.default_filename); }
 	static enum def_file_behavior default_file_behavior() { return prefs.default_file_behavior; }
 	static bool use_default_file() { return prefs.use_default_file; }
 	static bool extraEnvironmentalDefault() { return prefs.extraEnvironmentalDefault; }

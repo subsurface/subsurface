@@ -14,7 +14,7 @@ void TestAirPressure::initTestCase()
 {
 	/* we need to manually tell that the resource exists, because we are using it as library. */
 	Q_INIT_RESOURCE(subsurface);
-	prefs.cloud_base_url = strdup(default_prefs.cloud_base_url);
+	prefs.cloud_base_url = default_prefs.cloud_base_url;
 }
 
 void TestAirPressure::get_dives()

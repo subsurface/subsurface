@@ -25,7 +25,7 @@ void TestProfile::init()
 	QTextCodec::setCodecForLocale(QTextCodec::codecForMib(106));
 
 	// first, setup the preferences
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");

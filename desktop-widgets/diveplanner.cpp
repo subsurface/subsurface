@@ -159,18 +159,18 @@ void DivePlannerWidget::settingsChanged()
 	}
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DEPTH, new SpinBoxDelegate(0, maxDepth, 1, this));
 	ui.atmHeight->blockSignals(true);
-	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(DivePlannerPointsModel::instance()->getSurfacePressure()), NULL,NULL));
+	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(DivePlannerPointsModel::instance()->getSurfacePressure()), NULL, NULL));
 	ui.atmHeight->blockSignals(false);
 
-	ui.dateEdit->setDisplayFormat(prefs.date_format);
-	ui.startTime->setDisplayFormat(prefs.time_format);
+	ui.dateEdit->setDisplayFormat(QString::fromStdString(prefs.date_format));
+	ui.startTime->setDisplayFormat(QString::fromStdString(prefs.time_format));
 }
 
 void DivePlannerWidget::atmPressureChanged(const int pressure)
 {
 	DivePlannerPointsModel::instance()->setSurfacePressure(pressure);
 	ui.atmHeight->blockSignals(true);
-	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(pressure), NULL,NULL));
+	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(pressure), NULL, NULL));
 	ui.atmHeight->blockSignals(false);
 }
 

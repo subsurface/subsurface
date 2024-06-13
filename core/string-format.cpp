@@ -241,20 +241,20 @@ QString formatDiveGPS(const dive *d)
 QString formatDiveDate(const dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
-	return localTime.date().toString(prefs.date_format_short);
+	return localTime.date().toString(QString::fromStdString(prefs.date_format_short));
 }
 
 QString formatDiveTime(const dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
-	return localTime.time().toString(prefs.time_format);
+	return localTime.time().toString(QString::fromStdString(prefs.time_format));
 }
 
 QString formatDiveDateTime(const dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
-	return QStringLiteral("%1 %2").arg(localTime.date().toString(prefs.date_format_short),
-					   localTime.time().toString(prefs.time_format));
+	return QStringLiteral("%1 %2").arg(localTime.date().toString(QString::fromStdString(prefs.date_format_short)),
+					   localTime.time().toString(QString::fromStdString(prefs.time_format)));
 }
 
 QString formatDiveGasString(const dive *d)
@@ -308,7 +308,7 @@ QString formatTripTitle(const dive_trip &trip)
 
 	QString prefix = !trip.location.empty() ? QString::fromStdString(trip.location) + ", " : QString();
 	if (getday)
-		return prefix + loc.toString(localTime, prefs.date_format);
+		return prefix + loc.toString(localTime, QString::fromStdString(prefs.date_format));
 	else
 		return prefix + loc.toString(localTime, "MMM yyyy");
 }

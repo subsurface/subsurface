@@ -21,15 +21,15 @@ void TestQPrefDiveComputer::test_struct_get()
 
 	auto tst = qPrefDiveComputer::instance();
 
-	prefs.dive_computer.device = copy_qstring("my device");
-	prefs.dive_computer.device_name = copy_qstring("my device name");
-	prefs.dive_computer.product = copy_qstring("my product");
-	prefs.dive_computer.vendor = copy_qstring("my vendor");
+	prefs.dive_computer.device = "my device";
+	prefs.dive_computer.device_name = "my device name";
+	prefs.dive_computer.product = "my product";
+	prefs.dive_computer.vendor = "my vendor";
 
-	QCOMPARE(tst->device(), QString(prefs.dive_computer.device));
-	QCOMPARE(tst->device_name(), QString(prefs.dive_computer.device_name));
-	QCOMPARE(tst->product(), QString(prefs.dive_computer.product));
-	QCOMPARE(tst->vendor(), QString(prefs.dive_computer.vendor));
+	QCOMPARE(tst->device(), QString::fromStdString(prefs.dive_computer.device));
+	QCOMPARE(tst->device_name(), QString::fromStdString(prefs.dive_computer.device_name));
+	QCOMPARE(tst->product(), QString::fromStdString(prefs.dive_computer.product));
+	QCOMPARE(tst->vendor(), QString::fromStdString(prefs.dive_computer.vendor));
 }
 
 void TestQPrefDiveComputer::test_set_struct()
@@ -43,10 +43,10 @@ void TestQPrefDiveComputer::test_set_struct()
 	tst->set_product("t2 product");
 	tst->set_vendor("t2 vendor");
 
-	QCOMPARE(QString(prefs.dive_computer.device), QString("t2 device"));
-	QCOMPARE(QString(prefs.dive_computer.device_name), QString("t2 device name"));
-	QCOMPARE(QString(prefs.dive_computer.product), QString("t2 product"));
-	QCOMPARE(QString(prefs.dive_computer.vendor), QString("t2 vendor"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.device), QString("t2 device"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.device_name), QString("t2 device name"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.product), QString("t2 product"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.vendor), QString("t2 vendor"));
 }
 
 void TestQPrefDiveComputer::test_set_load_struct()
@@ -60,16 +60,16 @@ void TestQPrefDiveComputer::test_set_load_struct()
 	tst->set_product("t3 product");
 	tst->set_vendor("t3 vendor");
 
-	prefs.dive_computer.device = copy_qstring("error1");
-	prefs.dive_computer.device_name = copy_qstring("error2");
-	prefs.dive_computer.product = copy_qstring("error3");
-	prefs.dive_computer.vendor = copy_qstring("error4");
+	prefs.dive_computer.device = "error1";
+	prefs.dive_computer.device_name = "error2";
+	prefs.dive_computer.product = "error3";
+	prefs.dive_computer.vendor = "error4";
 
 	tst->load();
-	QCOMPARE(QString(prefs.dive_computer.device), QString("t3 device"));
-	QCOMPARE(QString(prefs.dive_computer.device_name), QString("t3 device name"));
-	QCOMPARE(QString(prefs.dive_computer.product), QString("t3 product"));
-	QCOMPARE(QString(prefs.dive_computer.vendor), QString("t3 vendor"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.device), QString("t3 device"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.device_name), QString("t3 device name"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.product), QString("t3 product"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.vendor), QString("t3 vendor"));
 }
 
 void TestQPrefDiveComputer::test_struct_disk()
@@ -78,24 +78,24 @@ void TestQPrefDiveComputer::test_struct_disk()
 
 	auto tst = qPrefDiveComputer::instance();
 
-	prefs.dive_computer.device = copy_qstring("t4 device");
-	prefs.dive_computer.device_name = copy_qstring("t4 device name");
-	prefs.dive_computer.product = copy_qstring("t4 product");
-	prefs.dive_computer.vendor = copy_qstring("t4 vendor");
+	prefs.dive_computer.device = "t4 device";
+	prefs.dive_computer.device_name = "t4 device name";
+	prefs.dive_computer.product = "t4 product";
+	prefs.dive_computer.vendor = "t4 vendor";
 
 	tst->sync();
 
-	prefs.dive_computer.device = copy_qstring("error");
-	prefs.dive_computer.device_name = copy_qstring("error");
-	prefs.dive_computer.product = copy_qstring("error");
-	prefs.dive_computer.vendor = copy_qstring("error");
+	prefs.dive_computer.device = "error";
+	prefs.dive_computer.device_name = "error";
+	prefs.dive_computer.product = "error";
+	prefs.dive_computer.vendor = "error";
 
 	tst->load();
 
-	QCOMPARE(QString(prefs.dive_computer.device), QString("t4 device"));
-	QCOMPARE(QString(prefs.dive_computer.device_name), QString("t4 device name"));
-	QCOMPARE(QString(prefs.dive_computer.product), QString("t4 product"));
-	QCOMPARE(QString(prefs.dive_computer.vendor), QString("t4 vendor"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.device), QString("t4 device"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.device_name), QString("t4 device name"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.product), QString("t4 product"));
+	QCOMPARE(QString::fromStdString(prefs.dive_computer.vendor), QString("t4 vendor"));
 }
 
 void TestQPrefDiveComputer::test_multiple()
@@ -103,7 +103,7 @@ void TestQPrefDiveComputer::test_multiple()
 	// test multiple instances have the same information
 
 	auto tst = qPrefDiveComputer::instance();
-	prefs.dive_computer.device = copy_qstring("mine");
+	prefs.dive_computer.device = "mine";
 
 	QCOMPARE(tst->device(), qPrefDiveComputer::device());
 	QCOMPARE(tst->device(), QString("mine"));

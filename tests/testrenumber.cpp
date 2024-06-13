@@ -11,7 +11,7 @@
 
 void TestRenumber::setup()
 {
-	prefs.cloud_base_url = strdup(default_prefs.cloud_base_url);
+	prefs.cloud_base_url = default_prefs.cloud_base_url;
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &divelog), 0);
 	process_loaded_dives();
 }

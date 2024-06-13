@@ -146,8 +146,6 @@ extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern const struct divecomputer *get_dive_dc(const struct dive *dive, int nr);
 
-extern void set_git_prefs(const char *prefs);
-
 extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
 extern std::unique_ptr<dive> clone_delete_divecomputer(const struct dive &d, int dc_number);
 extern std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, int num);

@@ -21,7 +21,7 @@
 #include <git2.h>
 
 static void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
-extern void cliDownloader(const char *vendor, const char *product, const char *device);
+extern void cliDownloader(const std::string &vendor, const std::string &product, const std::string &device);
 
 int main(int argc, char **argv)
 {
@@ -45,8 +45,7 @@ int main(int argc, char **argv)
 	// set a default logfile name for libdivecomputer so we always get a logfile
 	logfile_name = "subsurface-downloader.log";
 
-	const char *default_directory = system_default_directory();
-	subsurface_mkdir(default_directory);
+	subsurface_mkdir(system_default_directory().c_str());
 
 	if (subsurface_user_is_root() && !force_root) {
 		printf("You are running Subsurface as root. This is not recommended.\n");
@@ -55,7 +54,7 @@ int main(int argc, char **argv)
 	}
 	git_libgit2_init();
 	setup_system_prefs();
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 
 	// now handle the arguments
 	fill_computer_list();
@@ -79,8 +78,8 @@ int main(int argc, char **argv)
 
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
-			if (!empty_string(prefs.default_filename))
-				files.emplace_back(prefs.default_filename ? prefs.default_filename : "");
+			if (!prefs.default_filename.empty())
+				files.emplace_back(prefs.default_filename.c_str());
 		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
 			auto cloudURL = getCloudURL();
 			if (cloudURL)
@@ -96,9 +95,10 @@ int main(int argc, char **argv)
 	}
 	print_files();
 	if (!quit) {
-		if (!empty_string(prefs.dive_computer.vendor) && !empty_string(prefs.dive_computer.product) && !empty_string(prefs.dive_computer.device)) {
+		if (!prefs.dive_computer.vendor.empty() && !prefs.dive_computer.product.empty() && !prefs.dive_computer.device.empty()) {
 			// download from that dive computer
-			printf("Downloading dives from %s %s (via %s)\n", prefs.dive_computer.vendor, prefs.dive_computer.product, prefs.dive_computer.device);
+			printf("Downloading dives from %s %s (via %s)\n", prefs.dive_computer.vendor.c_str(),
+					prefs.dive_computer.product.c_str(), prefs.dive_computer.device.c_str());
 			cliDownloader(prefs.dive_computer.vendor, prefs.dive_computer.product, prefs.dive_computer.device);
 		}
 	}
@@ -114,7 +114,6 @@ int main(int argc, char **argv)
 	// Sync struct preferences to disk
 	qPref::sync();
 
-	free_prefs();
 	return 0;
 }
 

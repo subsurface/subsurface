@@ -77,9 +77,9 @@ void qPrefDisplay::set_divelist_font(const QString &value)
 	if (value.contains(","))
 		newValue = value.left(value.indexOf(","));
 
-	if (newValue != prefs.divelist_font &&
-	    !subsurface_ignore_font(qPrintable(newValue))) {
-		qPrefPrivate::copy_txt(&prefs.divelist_font, value);
+	if (newValue.toStdString() != prefs.divelist_font &&
+	    !subsurface_ignore_font(newValue.toStdString())) {
+		prefs.divelist_font = value.toStdString();
 		disk_divelist_font(true);
 
 		qApp->setFont(QFont(newValue));
@@ -170,12 +170,10 @@ void qPrefDisplay::setCorrectFont()
 	QString fontName = defaultFont.toString();
 	if (fontName.contains(","))
 		fontName = fontName.left(fontName.indexOf(","));
-	if (subsurface_ignore_font(qPrintable(fontName))) {
-		defaultFont = QFont(prefs.divelist_font);
-	} else {
-		free((void *)prefs.divelist_font);
-		prefs.divelist_font = copy_qstring(fontName);
-	}
+	if (subsurface_ignore_font(fontName.toStdString()))
+		defaultFont = QFont(QString::fromStdString(prefs.divelist_font));
+	else
+		prefs.divelist_font = fontName.toStdString();
 	defaultFont.setPointSizeF(prefs.font_size * prefs.mobile_scale);
 	qApp->setFont(defaultFont);
 

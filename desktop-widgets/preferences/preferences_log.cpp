@@ -24,7 +24,7 @@ PreferencesLog::~PreferencesLog()
 
 void PreferencesLog::on_chooseFile_clicked()
 {
-	QFileInfo fi(system_default_filename());
+	QFileInfo fi(QString::fromStdString(system_default_filename()));
 	QString choosenFileName = QFileDialog::getOpenFileName(this, tr("Open default log file"), fi.absolutePath(), tr("Subsurface files") + " (*.ssrf *.xml)");
 
 	if (!choosenFileName.isEmpty())
@@ -34,7 +34,7 @@ void PreferencesLog::on_chooseFile_clicked()
 void PreferencesLog::on_btnUseDefaultFile_toggled(bool toggle)
 {
 	if (toggle) {
-		ui->defaultfilename->setText(system_default_filename());
+		ui->defaultfilename->setText(QString::fromStdString(system_default_filename()));
 		ui->defaultfilename->setEnabled(false);
 	} else {
 		ui->defaultfilename->setEnabled(true);

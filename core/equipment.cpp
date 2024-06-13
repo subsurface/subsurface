@@ -402,10 +402,10 @@ cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 /* if a default cylinder is set, use that */
 void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 {
-	const char *cyl_name = prefs.default_cylinder;
+	const std::string &cyl_name = prefs.default_cylinder;
 	pressure_t pO2 = {.mbar = static_cast<int>(lrint(prefs.modpO2 * 1000.0))};
 
-	if (!cyl_name)
+	if (cyl_name.empty())
 		return;
 	for (auto &ti: tank_info_table) {
 		if (ti.name == cyl_name) {
@@ -454,7 +454,7 @@ void add_default_cylinder(struct dive *d)
 		return;
 
 	cylinder_t cyl;
-	if (!empty_string(prefs.default_cylinder)) {
+	if (!prefs.default_cylinder.empty()) {
 		cyl = create_new_cylinder(d);
 	} else {
 		// roughly an AL80
