@@ -25,11 +25,11 @@ public:
 
 public:
 	static bool proxy_auth() { return prefs.proxy_auth; }
-	static QString proxy_host() { return prefs.proxy_host; }
-	static QString proxy_pass() { return prefs.proxy_pass; }
+	static QString proxy_host() { return QString::fromStdString(prefs.proxy_host); }
+	static QString proxy_pass() { return QString::fromStdString(prefs.proxy_pass); }
 	static int proxy_port() { return prefs.proxy_port; }
 	static int proxy_type() { return prefs.proxy_type; }
-	static QString proxy_user() { return prefs.proxy_user; }
+	static QString proxy_user() { return QString::fromStdString(prefs.proxy_user); }
 
 public slots:
 	static void set_proxy_auth(bool value);

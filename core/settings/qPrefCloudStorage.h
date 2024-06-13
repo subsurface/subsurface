@@ -41,11 +41,11 @@ public:
 	Q_ENUM(cloud_status);
 
 	static bool cloud_auto_sync() { return prefs.cloud_auto_sync; }
-	static QString cloud_base_url() { return prefs.cloud_base_url; }
-	static QString cloud_storage_email() { return prefs.cloud_storage_email; }
-	static QString cloud_storage_email_encoded() { return prefs.cloud_storage_email_encoded; }
-	static QString cloud_storage_password() { return prefs.cloud_storage_password; }
-	static QString cloud_storage_pin() { return prefs.cloud_storage_pin; }
+	static QString cloud_base_url() { return QString::fromStdString(prefs.cloud_base_url); }
+	static QString cloud_storage_email() { return QString::fromStdString(prefs.cloud_storage_email); }
+	static QString cloud_storage_email_encoded() { return QString::fromStdString(prefs.cloud_storage_email_encoded); }
+	static QString cloud_storage_password() { return QString::fromStdString(prefs.cloud_storage_password); }
+	static QString cloud_storage_pin() { return QString::fromStdString(prefs.cloud_storage_pin); }
 	static int cloud_timeout() { return prefs.cloud_timeout; }
 	static int cloud_verification_status() { return prefs.cloud_verification_status; }
 	static bool save_password_local() { return prefs.save_password_local; }

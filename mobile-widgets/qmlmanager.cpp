@@ -279,7 +279,7 @@ QMLManager::QMLManager() :
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	appendTextToLog(QStringLiteral("built with libgit2 %1.%2.%3").arg(git_maj).arg(git_min).arg(git_rev));
 	appendTextToLog(QStringLiteral("Running on %1").arg(QSysInfo::prettyProductName()));
-	appendTextToLog(QStringLiteral("Locale Languages offered %1, picked %2").arg(QLocale().uiLanguages().join(", ")).arg(prefs.locale.lang_locale));
+	appendTextToLog(QStringLiteral("Locale Languages offered %1, picked %2").arg(QLocale().uiLanguages().join(", ")).arg(prefs.locale.lang_locale.c_str()));
 #if defined(Q_OS_ANDROID)
 	extern QString getAndroidHWInfo();
 	appendTextToLog(getAndroidHWInfo());
@@ -471,7 +471,7 @@ void QMLManager::updateAllGlobalLists()
 
 static QString nocloud_localstorage()
 {
-	return QString(system_default_directory()) + "/cloudstorage/localrepo[master]";
+	return QString::fromStdString(system_default_directory() + "/cloudstorage/localrepo[master]");
 }
 
 void QMLManager::mergeLocalRepo()
@@ -650,11 +650,11 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 			return;
 		}
 	}
-	if (!same_string(prefs.cloud_storage_email, qPrintable(email))) {
+	if (prefs.cloud_storage_email != email.toStdString()) {
 		cloudCredentialsChanged = true;
 	}
 
-	if (!same_string(prefs.cloud_storage_password, qPrintable(newPassword))) {
+	if (prefs.cloud_storage_password != newPassword.toStdString()) {
 		cloudCredentialsChanged = true;
 	}
 
@@ -743,8 +743,8 @@ bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
 
 void QMLManager::deleteAccount()
 {
-	QString email(prefs.cloud_storage_email);
-	QString passwd(prefs.cloud_storage_password);
+	QString email = QString::fromStdString(prefs.cloud_storage_email);
+	QString passwd = QString::fromStdString(prefs.cloud_storage_password);
 	if (email.isEmpty() || passwd.isEmpty())
 		return;
 
@@ -867,10 +867,8 @@ void QMLManager::revertToNoCloudIfNeeded()
 			appendTextToLog(QStringLiteral("taking things back offline since sync with cloud failed"));
 			git_local_only = false;
 		}
-		free((void *)prefs.cloud_storage_email);
-		prefs.cloud_storage_email = NULL;
-		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = NULL;
+		prefs.cloud_storage_email.clear();
+		prefs.cloud_storage_password.clear();
 		qPrefCloudStorage::set_cloud_storage_email("");
 		qPrefCloudStorage::set_cloud_storage_password("");
 		rememberOldStatus();
@@ -938,7 +936,7 @@ bool QMLManager::checkDate(struct dive *d, QString date)
 		// what a pain - Qt will not parse dates if the day of the week is incorrect
 		// so if the user changed the date but didn't update the day of the week (most likely behavior, actually),
 		// we need to make sure we don't try to parse that
-		QString format(QString(prefs.date_format_short) + QChar(' ') + prefs.time_format);
+		QString format = QString::fromStdString(prefs.date_format_short + ' ' + prefs.time_format);
 		if (format.contains(QLatin1String("ddd")) || format.contains(QLatin1String("dddd"))) {
 			QString dateFormatToDrop = format.contains(QLatin1String("ddd")) ? QStringLiteral("ddd") : QStringLiteral("dddd");
 			QDateTime ts;
@@ -1757,14 +1755,14 @@ void QMLManager::setVerboseEnabled(bool verboseMode)
 void QMLManager::syncLoadFromCloud()
 {
 	QSettings s;
-	QString cloudMarker = QLatin1String("loadFromCloud") + QString(prefs.cloud_storage_email);
+	QString cloudMarker = QLatin1String("loadFromCloud") + QString::fromStdString(prefs.cloud_storage_email);
 	m_loadFromCloud = s.contains(cloudMarker) && s.value(cloudMarker).toBool();
 }
 
 void QMLManager::setLoadFromCloud(bool done)
 {
 	QSettings s;
-	QString cloudMarker = QLatin1String("loadFromCloud") + QString(prefs.cloud_storage_email);
+	QString cloudMarker = QLatin1String("loadFromCloud") + QString::fromStdString(prefs.cloud_storage_email);
 	s.setValue(cloudMarker, done);
 	m_loadFromCloud = done;
 	emit loadFromCloudChanged();
@@ -2247,7 +2245,7 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString fileName = appLogFileName;
 #else
-	QString fileName = system_default_directory();
+	QString fileName = QString::fromStdString(system_default_directory());
 #endif
 	QString body;
 	switch (type) {
@@ -2293,7 +2291,7 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 #elif defined(Q_OS_IOS)
 	// call into objC++ code to share on iOS
 	QString subject("Subsurface export");
-	QString emptyString("");
+	QString emptyString;
 	iosshare.shareViaEmail(subject, emptyString, body, fileName, emptyString);
 #else
 	appendTextToLog("on a mobile platform this would send" + fileName + "via email with body" + body);
@@ -2355,7 +2353,7 @@ void QMLManager::setDiveListProcessing(bool value)
 void QMLManager::importCacheRepo(QString repo)
 {
 	struct divelog log;
-	QString repoPath = QString("%1/cloudstorage/%2").arg(system_default_directory()).arg(repo);
+	QString repoPath = QString::fromStdString(system_default_directory() + "/cloudstorage/") + repo;
 	appendTextToLog(QString("importing %1").arg(repoPath));
 	parse_file(qPrintable(repoPath), &log);
 	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
@@ -2364,11 +2362,11 @@ void QMLManager::importCacheRepo(QString repo)
 
 QStringList QMLManager::cloudCacheList() const
 {
-	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory()));
+	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory().c_str()));
 	QStringList dirs = localCacheDir.entryList();
 	QStringList result;
 	for (const QString &dir: dirs) {
-		QString originsDir = QString("%1/cloudstorage/%2/.git/refs/remotes/origin/").arg(system_default_directory()).arg(dir);
+		QString originsDir = QString::fromStdString(system_default_directory() + "/cloudstorage/%1/.git/refs/remotes/origin/").arg(dir);
 		QDir remote(originsDir);
 		if (dir == "localrepo") {
 			result << QString("localrepo[master]");

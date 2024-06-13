@@ -30,8 +30,8 @@ void PreferencesCloud::on_resetPassword_clicked()
 
 void PreferencesCloud::refreshSettings()
 {
-	ui->cloud_storage_email->setText(prefs.cloud_storage_email);
-	ui->cloud_storage_password->setText(prefs.cloud_storage_password);
+	ui->cloud_storage_email->setText(QString::fromStdString(prefs.cloud_storage_email));
+	ui->cloud_storage_password->setText(QString::fromStdString(prefs.cloud_storage_password));
 	ui->save_password_local->setChecked(prefs.save_password_local);
 	updateCloudAuthenticationState();
 }
@@ -57,19 +57,19 @@ void PreferencesCloud::syncSettings()
 			}
 			if (!reg.match(email).hasMatch() || (!newpassword.isEmpty() && !reg.match(newpassword).hasMatch())) {
 				QMessageBox::warning(this, tr("Warning"), emailpasswordformatwarning);
-				ui->cloud_storage_new_passwd->setText("");
+				ui->cloud_storage_new_passwd->setText(QString());
 				return;
 			}
 			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
 			connect(cloudAuth, &CloudStorageAuthenticate::finishedAuthenticate, this, &PreferencesCloud::updateCloudAuthenticationState);
 			connect(cloudAuth, &CloudStorageAuthenticate::passwordChangeSuccessful, this, &PreferencesCloud::passwordUpdateSuccessful);
 			cloudAuth->backend(email, password, "", newpassword);
-			ui->cloud_storage_new_passwd->setText("");
+			ui->cloud_storage_new_passwd->setText(QString());
 		}
 	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_UNKNOWN ||
 		   prefs.cloud_verification_status == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD ||
-		   email != prefs.cloud_storage_email ||
-		   password != prefs.cloud_storage_password) {
+		   email.toStdString() != prefs.cloud_storage_email ||
+		   password.toStdString() != prefs.cloud_storage_password) {
 
 		// different credentials - reset verification status
 		int oldVerificationStatus = cloud->cloud_verification_status();
@@ -104,7 +104,7 @@ void PreferencesCloud::syncSettings()
 	cloud->set_save_password_local(ui->save_password_local->isChecked());
 	cloud->set_cloud_storage_password(password);
 	cloud->set_cloud_verification_status(prefs.cloud_verification_status);
-	cloud->set_cloud_base_url(prefs.cloud_base_url);
+	cloud->set_cloud_base_url(QString::fromStdString(prefs.cloud_base_url));
 }
 
 void PreferencesCloud::updateCloudAuthenticationState()
@@ -131,5 +131,5 @@ void PreferencesCloud::updateCloudAuthenticationState()
 
 void PreferencesCloud::passwordUpdateSuccessful()
 {
-	ui->cloud_storage_password->setText(prefs.cloud_storage_password);
+	ui->cloud_storage_password->setText(QString::fromStdString(prefs.cloud_storage_password));
 }

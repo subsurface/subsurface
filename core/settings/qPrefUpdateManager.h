@@ -23,7 +23,7 @@ public:
 
 public:
 	static bool dont_check_for_updates() { return prefs.update_manager.dont_check_for_updates; }
-	static const QString last_version_used() { return prefs.update_manager.last_version_used; }
+	static const QString last_version_used() { return QString::fromStdString(prefs.update_manager.last_version_used); }
 	static const QDate next_check() { return QDate::fromJulianDay(prefs.update_manager.next_check); }
 	static const QString uuidString() { return st_uuidString; }
 

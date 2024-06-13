@@ -16,10 +16,10 @@ class qPrefPrivate {
 
 public:
 	// Helper functions
-	static void copy_txt(const char **name, const QString &string);
-
 	static void propSetValue(const QString &key, const QVariant &value, const QVariant &defaultValue);
+	static void propSetValue(const QString &key, const std::string &value, const std::string &defaultValue);
 	static QVariant propValue(const QString &key, const QVariant &defaultValue);
+	static QVariant propValue(const QString &key, const std::string &defaultValue);
 
 private:
 	qPrefPrivate() {}
@@ -134,29 +134,29 @@ extern QString keyFromGroupAndName(QString group, QString name);
 #define DISK_LOADSYNC_TXT_EXT(usegroup, name, field, usestruct) \
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
-		static QString current_state; \
+		static std::string current_state; \
 		if (doSync) { \
-			if (current_state != QString(prefs.usestruct field)) { \
-				current_state = QString(prefs.usestruct field); \
-				qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct field, default_prefs.usestruct field); \
+			if (current_state != prefs.usestruct field) { \
+				current_state = prefs.usestruct field; \
+				qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), QString::fromStdString(prefs.usestruct field), QString::fromStdString(default_prefs.usestruct field)); \
 			} \
 		} else { \
-			prefs.usestruct field = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, name), default_prefs.usestruct field).toString()); \
-			current_state = QString(prefs.usestruct field); \
+			prefs.usestruct field = qPrefPrivate::propValue(keyFromGroupAndName(group, name), QString::fromStdString(default_prefs.usestruct field)).toString().toStdString(); \
+			current_state = prefs.usestruct field; \
 		} \
 	}
 #define DISK_LOADSYNC_TXT_EXT_ALT(usegroup, name, field, usestruct, alt) \
 	void qPref##usegroup::disk_##field##alt(bool doSync) \
 	{ \
-		static QString current_state; \
+		static std::string current_state; \
 		if (doSync) { \
-			if (current_state != QString(prefs.usestruct ## alt .field)) { \
-				current_state = QString(prefs.usestruct ## alt .field); \
-				qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct ##alt .field, default_prefs.usestruct ##alt .field); \
+			if (current_state != prefs.usestruct ## alt .field) { \
+				current_state = prefs.usestruct ## alt .field; \
+				qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), QString::fromStdString(prefs.usestruct ##alt .field), QString::fromStdString(default_prefs.usestruct ##alt .field)); \
 			} \
 		} else { \
-			prefs.usestruct ##alt .field = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, name), default_prefs.usestruct ##alt .field).toString()); \
-			current_state = QString(prefs.usestruct ##alt .field); \
+			prefs.usestruct ##alt .field = qPrefPrivate::propValue(keyFromGroupAndName(group, name), QString::fromStdString(default_prefs.usestruct ##alt .field)).toString().toStdString(); \
+			current_state = prefs.usestruct ##alt .field; \
 		} \
 	}
 #define DISK_LOADSYNC_TXT(usegroup, name, field) \
@@ -226,8 +226,8 @@ extern QString keyFromGroupAndName(QString group, QString name);
 #define SET_PREFERENCE_TXT_EXT(usegroup, field, usestruct) \
 	void qPref##usegroup::set_##field(const QString &value) \
 	{ \
-		if (value != prefs.usestruct field) { \
-			qPrefPrivate::copy_txt(&prefs.usestruct field, value); \
+		if (value.toStdString() != prefs.usestruct field) { \
+			prefs.usestruct field = value.toStdString(); \
 			disk_##field(true); \
 			emit instance()->field##Changed(value); \
 		} \
@@ -236,8 +236,8 @@ extern QString keyFromGroupAndName(QString group, QString name);
 #define SET_PREFERENCE_TXT_EXT_ALT(usegroup, field, usestruct, alt) \
 	void qPref##usegroup::set_##field##alt(const QString &value) \
 	{ \
-		if (value != prefs.usestruct ##alt .field) { \
-			qPrefPrivate::copy_txt(&prefs.usestruct ##alt .field, value); \
+		if (value.toStdString() != prefs.usestruct ##alt .field) { \
+			prefs.usestruct ##alt .field = value.toStdString(); \
 			disk_##field##alt(true); \
 			emit instance()->field##alt##Changed(value); \
 		} \

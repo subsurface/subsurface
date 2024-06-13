@@ -2639,18 +2639,6 @@ void set_informational_units(const char *units)
 
 }
 
-void set_git_prefs(const char *prefs)
-{
-	if (strstr(prefs, "TANKBAR"))
-		git_prefs.tankbar = 1;
-	if (strstr(prefs, "SHOW_SETPOINT"))
-		git_prefs.show_ccr_setpoint = 1;
-	if (strstr(prefs, "SHOW_SENSORS"))
-		git_prefs.show_ccr_sensors = 1;
-	if (strstr(prefs, "PO2_GRAPH"))
-		git_prefs.pp_graphs.po2 = 1;
-}
-
 /* clones a dive and moves given dive computer to front */
 std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number)
 {
