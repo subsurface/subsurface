@@ -1520,11 +1520,6 @@ void unlock_planner()
 	planLock.unlock();
 }
 
-char *copy_qstring(const QString &s)
-{
-	return strdup(qPrintable(s));
-}
-
 // function to call to allow the UI to show updates for longer running activities
 void (*uiNotificationCallback)(QString msg) = nullptr;
 
