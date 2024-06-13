@@ -44,7 +44,6 @@ extern const QStringList videoExtensionsList;
 QStringList mediaExtensionFilters();
 QStringList imageExtensionFilters();
 QStringList videoExtensionFilters();
-char *copy_qstring(const QString &);
 QString get_depth_string(depth_t depth, bool showunit = false, bool showdecimal = true);
 QString get_depth_string(int mm, bool showunit = false, bool showdecimal = true);
 QString get_depth_unit(bool metric);
