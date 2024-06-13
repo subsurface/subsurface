@@ -41,7 +41,7 @@ void PreferencesMedia::checkFfmpegExecutable()
 
 void PreferencesMedia::on_ffmpegFile_clicked()
 {
-	QFileInfo fi(system_default_filename());
+	QFileInfo fi(QString::fromStdString(system_default_filename()));
 	QString ffmpegFileName = QFileDialog::getOpenFileName(this, tr("Select ffmpeg executable"));
 
 	if (!ffmpegFileName.isEmpty()) {

@@ -150,7 +150,7 @@ std::string get_local_dir(const std::string &url, const std::string &branch)
 	sha.update(branch);
 	auto hash = sha.hash();
 	return format_string_std("%s/cloudstorage/%02x%02x%02x%02x%02x%02x%02x%02x",
-			system_default_directory(),
+			system_default_directory().c_str(),
 			hash[0], hash[1], hash[2], hash[3],
 			hash[4], hash[5], hash[6], hash[7]);
 }
@@ -246,27 +246,27 @@ int credential_ssh_cb(git_cred **out,
 		  unsigned int allowed_types,
 		  void *)
 {
-	const char *username = prefs.cloud_storage_email_encoded;
-	const char *passphrase = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
+	const std::string &username = prefs.cloud_storage_email_encoded;
+	const std::string &passphrase = prefs.cloud_storage_password;
 
 	// TODO: We need a way to differentiate between password and private key authentication
 	if (allowed_types & GIT_CREDTYPE_SSH_KEY) {
-		std::string priv_key = std::string(system_default_directory()) + "/ssrf_remote.key";
+		std::string priv_key = system_default_directory() + "/ssrf_remote.key";
 		if (!access(priv_key.c_str(), F_OK)) {
 			if (exceeded_auth_attempts())
 				return GIT_EUSER;
-			return git_cred_ssh_key_new(out, username, NULL, priv_key.c_str(), passphrase);
+			return git_cred_ssh_key_new(out, username.c_str(), NULL, priv_key.c_str(), passphrase.c_str());
 		}
 	}
 
 	if (allowed_types & GIT_CREDTYPE_USERPASS_PLAINTEXT) {
 		if (exceeded_auth_attempts())
 			return GIT_EUSER;
-		return git_cred_userpass_plaintext_new(out, username, passphrase);
+		return git_cred_userpass_plaintext_new(out, username.c_str(), passphrase.c_str());
 	}
 
 	if (allowed_types & GIT_CREDTYPE_USERNAME)
-		return git_cred_username_new(out, username);
+		return git_cred_username_new(out, username.c_str());
 
 	report_error("No supported ssh authentication.");
 	return GIT_EUSER;
@@ -281,10 +281,10 @@ int credential_https_cb(git_cred **out,
 	if (exceeded_auth_attempts())
 		return GIT_EUSER;
 
-	const char *username = prefs.cloud_storage_email_encoded;
-	const char *password = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
+	const std::string &username = prefs.cloud_storage_email_encoded;
+	const std::string &password = prefs.cloud_storage_password;
 
-	return git_cred_userpass_plaintext_new(out, username, password);
+	return git_cred_userpass_plaintext_new(out, username.c_str(), password.c_str());
 }
 
 int certificate_check_cb(git_cert *cert, int valid, const char *host, void *)
@@ -609,10 +609,10 @@ static std::string getProxyString()
 {
 	if (prefs.proxy_type == QNetworkProxy::HttpProxy) {
 		if (prefs.proxy_auth)
-			return format_string_std("http://%s:%s@%s:%d", prefs.proxy_user, prefs.proxy_pass,
-					prefs.proxy_host, prefs.proxy_port);
+			return format_string_std("http://%s:%s@%s:%d", prefs.proxy_user.c_str(), prefs.proxy_pass.c_str(),
+					prefs.proxy_host.c_str(), prefs.proxy_port);
 		else
-			return format_string_std("http://%s:%d", prefs.proxy_host, prefs.proxy_port);
+			return format_string_std("http://%s:%d", prefs.proxy_host.c_str(), prefs.proxy_port);
 	}
 	return std::string();
 }
@@ -990,7 +990,7 @@ std::string extract_username(struct git_info *info, const std::string &url)
 	 * Ugly, ugly. Parsing the remote repo user name also sets
 	 * it in the preferences. We should do this somewhere else!
 	 */
-	prefs.cloud_storage_email_encoded = strdup(info->username.c_str());
+	prefs.cloud_storage_email_encoded = info->username;
 
 	return url.substr(at + 1 - url.c_str());
 }
@@ -1107,7 +1107,7 @@ bool is_git_repository(const char *filename, struct git_info *info)
 	 *
 	 * This is used to create more user friendly error message and warnings.
 	 */
-	info->is_subsurface_cloud = (strstr(info->url.c_str(), prefs.cloud_base_url) != NULL);
+	info->is_subsurface_cloud = contains(info->url, prefs.cloud_base_url);
 
 	return true;
 }

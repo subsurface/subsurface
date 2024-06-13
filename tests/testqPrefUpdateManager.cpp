@@ -22,7 +22,7 @@ void TestQPrefUpdateManager::test_struct_get()
 	auto tst = qPrefUpdateManager::instance();
 
 	prefs.update_manager.dont_check_for_updates = true;
-	prefs.update_manager.last_version_used = copy_qstring("last_version");
+	prefs.update_manager.last_version_used = "last_version";
 	prefs.update_manager.next_check = QDate::fromString("11/09/1957", "dd/MM/yyyy").toJulianDay();
 
 	QCOMPARE(tst->dont_check_for_updates(), true);
@@ -42,7 +42,7 @@ void TestQPrefUpdateManager::test_set_struct()
 	tst->set_uuidString("uuid");
 
 	QCOMPARE(prefs.update_manager.dont_check_for_updates, false);
-	QCOMPARE(QString(prefs.update_manager.last_version_used), QString("last_version2"));
+	QCOMPARE(QString::fromStdString(prefs.update_manager.last_version_used), QString("last_version2"));
 	QCOMPARE(QDate::fromJulianDay(prefs.update_manager.next_check), QDate::fromString("11/09/1957", "dd/MM/yyyy"));
 	QCOMPARE(tst->uuidString(), QString("uuid"));
 }
@@ -63,12 +63,12 @@ void TestQPrefUpdateManager::test_set_load_struct()
 	tst->set_uuidString("uuid2");
 
 	prefs.update_manager.dont_check_for_updates = true;
-	prefs.update_manager.last_version_used = copy_qstring("last_version");
+	prefs.update_manager.last_version_used = "last_version";
 	prefs.update_manager.next_check = 1000;
 
 	tst->load();
 	QCOMPARE(prefs.update_manager.dont_check_for_updates, false);
-	QCOMPARE(QString(prefs.update_manager.last_version_used), QString("last_version2"));
+	QCOMPARE(QString::fromStdString(prefs.update_manager.last_version_used), QString("last_version2"));
 	QCOMPARE(QDate::fromJulianDay(prefs.update_manager.next_check), QDate::fromString("11/09/1957", "dd/MM/yyyy"));
 	QCOMPARE(tst->uuidString(), QString("uuid2"));
 }
@@ -80,12 +80,12 @@ void TestQPrefUpdateManager::test_struct_disk()
 	auto tst = qPrefUpdateManager::instance();
 
 	prefs.update_manager.dont_check_for_updates = true;
-	prefs.update_manager.last_version_used = copy_qstring("last_version");
+	prefs.update_manager.last_version_used = "last_version";
 	prefs.update_manager.next_check = QDate::fromString("11/09/1957", "dd/MM/yyyy").toJulianDay();
 
 	tst->sync();
 	prefs.update_manager.dont_check_for_updates = false;
-	prefs.update_manager.last_version_used = copy_qstring("");
+	prefs.update_manager.last_version_used.clear();
 	prefs.update_manager.next_check = 1000;
 
 	tst->load();

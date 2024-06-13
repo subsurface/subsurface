@@ -9,7 +9,7 @@
 #include "errorhelper.h"
 #include "core/settings/qPref.h"
 
-char *settings_suffix = NULL;
+std::string settings_suffix;
 static QTranslator qtTranslator, ssrfTranslator, parentLanguageTranslator;
 
 void init_qt_late()
@@ -29,17 +29,17 @@ void init_qt_late()
 	QGuiApplication::setDesktopFileName("subsurface");
 #endif
 	// enable user specific settings (based on command line argument)
-	if (settings_suffix) {
+	if (!settings_suffix.empty()) {
 		if (verbose)
 #if defined(SUBSURFACE_MOBILE) && ((defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || (defined(Q_OS_DARWIN) && !defined(Q_OS_IOS)))
-			report_info("using custom config for Subsurface-Mobile-%s", settings_suffix);
+			report_info("using custom config for Subsurface-Mobile-%s", settings_suffix.c_str());
 #else
-			report_info("using custom config for Subsurface-%s", settings_suffix);
+			report_info("using custom config for Subsurface-%s", settings_suffix.c_str());
 #endif
 #if defined(SUBSURFACE_MOBILE) && ((defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || (defined(Q_OS_DARWIN) && !defined(Q_OS_IOS)))
-		QCoreApplication::setApplicationName(QString("Subsurface-Mobile-%1").arg(settings_suffix));
+		QCoreApplication::setApplicationName(QString::fromStdString("Subsurface-Mobile-" + settings_suffix));
 #else
-		QCoreApplication::setApplicationName(QString("Subsurface-%1").arg(settings_suffix));
+		QCoreApplication::setApplicationName(QString::fromStdString("Subsurface-" + settings_suffix));
 #endif
 	} else {
 #if defined(SUBSURFACE_MOBILE) && ((defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || (defined(Q_OS_DARWIN) && !defined(Q_OS_IOS)))

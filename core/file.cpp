@@ -289,7 +289,7 @@ int parse_file(const char *filename, struct divelog *log)
 	auto [mem, err] = readfile(filename);
 	if (err < 0) {
 		/* we don't want to display an error if this was the default file  */
-		if (same_string(filename, prefs.default_filename))
+		if (filename == prefs.default_filename)
 			return 0;
 
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);

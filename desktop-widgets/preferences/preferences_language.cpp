@@ -54,11 +54,11 @@ void PreferencesLanguage::refreshSettings()
 	ui->languageSystemDefault->setChecked(prefs.locale.use_system_language);
 	ui->timeFormatSystemDefault->setChecked(!prefs.time_format_override);
 	ui->dateFormatSystemDefault->setChecked(!prefs.date_format_override);
-	ui->timeFormatEntry->setCurrentText(prefs.time_format);
-	ui->dateFormatEntry->setCurrentText(prefs.date_format);
-	ui->shortDateFormatEntry->setText(prefs.date_format_short);
+	ui->timeFormatEntry->setCurrentText(QString::fromStdString(prefs.time_format));
+	ui->dateFormatEntry->setCurrentText(QString::fromStdString(prefs.date_format));
+	ui->shortDateFormatEntry->setText(QString::fromStdString(prefs.date_format_short));
 	QAbstractItemModel *m = ui->languageDropdown->model();
-	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, QString(prefs.locale.lang_locale).replace("-", "_"));
+	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, QString::fromStdString(prefs.locale.lang_locale).replace("-", "_"));
 	if (languages.count())
 		ui->languageDropdown->setCurrentIndex(languages.first().row());
 }
@@ -69,9 +69,9 @@ void PreferencesLanguage::syncSettings()
 	QString currentText = ui->languageDropdown->currentText();
 
 	if (useSystemLang != ui->languageSystemDefault->isChecked() ||
-		(!useSystemLang && currentText != prefs.locale.language)) {
+		(!useSystemLang && currentText.toStdString() != prefs.locale.language)) {
 		// remove the googlemaps cache folder on language change
-		QDir googlecachedir(QString(system_default_directory()).append("/googlemaps"));
+		QDir googlecachedir(QString::fromStdString(system_default_directory() + "/googlemaps"));
 		googlecachedir.removeRecursively();
 
 		QMessageBox::warning(this, tr("Restart required"),

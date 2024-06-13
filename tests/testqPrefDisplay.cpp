@@ -24,13 +24,13 @@ void TestQPrefDisplay::test_struct_get()
 
 	prefs.animation_speed = 17;
 	prefs.display_invalid_dives = true;
-	prefs.divelist_font = copy_qstring("comic");
+	prefs.divelist_font = "comic";
 	prefs.font_size = 12.0;
 	prefs.show_developer = false;
 
 	QCOMPARE(display->animation_speed(), prefs.animation_speed);
 	QCOMPARE(display->display_invalid_dives(), prefs.display_invalid_dives);
-	QCOMPARE(display->divelist_font(), QString(prefs.divelist_font));
+	QCOMPARE(display->divelist_font(), QString::fromStdString(prefs.divelist_font));
 	QCOMPARE(display->font_size(), prefs.font_size);
 	QCOMPARE(display->show_developer(), prefs.show_developer);
 }
@@ -98,7 +98,7 @@ void TestQPrefDisplay::test_set_load_struct()
 
 	prefs.animation_speed = 17;
 	prefs.display_invalid_dives = false;
-	prefs.divelist_font = copy_qstring("doNotCareAtAll");
+	prefs.divelist_font = "doNotCareAtAll";
 	prefs.font_size = 12.0;
 	prefs.show_developer = false;
 
@@ -131,14 +131,14 @@ void TestQPrefDisplay::test_struct_disk()
 
 	prefs.animation_speed = 27;
 	prefs.display_invalid_dives = true;
-	prefs.divelist_font = copy_qstring("doNotCareAtAll");
+	prefs.divelist_font = "doNotCareAtAll";
 	prefs.font_size = 17.0;
 	prefs.show_developer = false;
 
 	display->sync();
 	prefs.animation_speed = 35;
 	prefs.display_invalid_dives = false;
-	prefs.divelist_font = copy_qstring("noString");
+	prefs.divelist_font = "noString";
 	prefs.font_size = 11.0;
 	prefs.show_developer = true;
 
@@ -156,7 +156,7 @@ void TestQPrefDisplay::test_struct_disk()
 void TestQPrefDisplay::test_multiple()
 {
 	// test multiple instances have the same information
-	prefs.divelist_font = copy_qstring("comic");
+	prefs.divelist_font = "comic";
 	auto display = qPrefDisplay::instance();
 	prefs.font_size = 15.0;
 

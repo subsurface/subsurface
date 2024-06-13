@@ -83,7 +83,7 @@ void VideoFrameExtractor::processItem(QString originalFilename, QString filename
 					       .arg(position.seconds % 60, 2, 10, QChar('0'));
 
 	QProcess ffmpeg;
-	ffmpeg.start(prefs.ffmpeg_executable, QStringList {
+	ffmpeg.start(prefs.ffmpeg_executable.c_str(), QStringList {
 		"-ss", posString, "-i", filename, "-vframes", "1", "-q:v", "2", "-f", "image2", "-"
 	});
 	if (!ffmpeg.waitForStarted()) {

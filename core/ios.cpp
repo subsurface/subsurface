@@ -32,8 +32,8 @@ static std::string make_default_filename()
 	return system_default_path() + "/subsurface.xml";
 }
 
-const char mac_system_divelist_default_font[] = "Arial";
-const char *system_divelist_default_font = mac_system_divelist_default_font;
+using namespace std::string_literals;
+std::string system_divelist_default_font = "Arial"s;
 double system_divelist_default_font_size = -1.0;
 
 void subsurface_OS_pref_setup()
@@ -41,22 +41,22 @@ void subsurface_OS_pref_setup()
 	// nothing
 }
 
-bool subsurface_ignore_font(const char*)
+bool subsurface_ignore_font(const std::string &)
 {
 	// there are no old default fonts that we would want to ignore
 	return false;
 }
 
-const char *system_default_directory()
+std::string system_default_directory()
 {
 	static const std::string path = system_default_path();
-	return path.c_str();
+	return path;
 }
 
-const char *system_default_filename()
+std::string system_default_filename()
 {
 	static const std::string fn = make_default_filename();
-	return fn.c_str();
+	return fn;
 }
 
 int enumerate_devices(device_callback_t, void *, unsigned int)

@@ -49,8 +49,8 @@ void print_files()
 	std::optional<std::string> filename;
 
 	printf("\nFile locations:\n\n");
-	printf("Cloud email:%s\n", prefs.cloud_storage_email);
-	if (!empty_string(prefs.cloud_storage_email) && !empty_string(prefs.cloud_storage_password)) {
+	printf("Cloud email:%s\n", prefs.cloud_storage_email.c_str());
+	if (!prefs.cloud_storage_email.empty() && !prefs.cloud_storage_password.empty()) {
 		filename = getCloudURL();
 		if (filename)
 			is_git_repository(filename->c_str(), &info);
@@ -107,7 +107,7 @@ void parse_argument(const char *arg)
 			/* long options with -- */
 			/* first test for --user=bla which allows the use of user specific settings */
 			if (strncmp(arg, "--user=", sizeof("--user=") - 1) == 0) {
-				settings_suffix = strdup(arg + sizeof("--user=") - 1);
+				settings_suffix = arg + sizeof("--user=") - 1;
 				return;
 			}
 			if (strncmp(arg, "--cloud-timeout=", sizeof("--cloud-timeout=") - 1) == 0) {
@@ -144,15 +144,15 @@ void parse_argument(const char *arg)
 			}
 #if SUBSURFACE_DOWNLOADER
 			if (strncmp(arg, "--dc-vendor=", sizeof("--dc-vendor=") - 1) == 0) {
-				prefs.dive_computer.vendor = strdup(arg + sizeof("--dc-vendor=") - 1);
+				prefs.dive_computer.vendor = arg + sizeof("--dc-vendor=") - 1;
 				return;
 			}
 			if (strncmp(arg, "--dc-product=", sizeof("--dc-product=") - 1) == 0) {
-				prefs.dive_computer.product = strdup(arg + sizeof("--dc-product=") - 1);
+				prefs.dive_computer.product = arg + sizeof("--dc-product=") - 1;
 				return;
 			}
 			if (strncmp(arg, "--device=", sizeof("--device=") - 1) == 0) {
-				prefs.dive_computer.device = strdup(arg + sizeof("--device=") - 1);
+				prefs.dive_computer.device = arg + sizeof("--device=") - 1;
 				return;
 			}
 			if (strncmp(arg, "--list-dc", sizeof("--list-dc") - 1) == 0) {
@@ -194,12 +194,12 @@ void setup_system_prefs()
 	const char *env;
 
 	subsurface_OS_pref_setup();
-	default_prefs.divelist_font = strdup(system_divelist_default_font);
+	default_prefs.divelist_font = system_divelist_default_font;
 	default_prefs.font_size = system_divelist_default_font_size;
-	default_prefs.ffmpeg_executable = strdup("ffmpeg");
+	default_prefs.ffmpeg_executable = "ffmpeg";
 
 #if !defined(SUBSURFACE_MOBILE)
-	default_prefs.default_filename = copy_string(system_default_filename());
+	default_prefs.default_filename = system_default_filename();
 #endif
 	env = getenv("LC_MEASUREMENT");
 	if (!env)
