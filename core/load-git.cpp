@@ -357,22 +357,26 @@ static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const std::st
 		line++;
 	}
 
-	if (c == '=')
+	if (c != 0)
 		*line++ = 0;
 
-	char *start_val = line;
-	while ((c = *line) != 0) {
-		if (isspace(c))
-			break;
-		line++;
+	std::string val;
+	if (c == '=') {
+		const char *start_val = line;
+		while ((c = *line) != 0) {
+			if (isspace(c))
+				break;
+			line++;
+		}
+
+		/* Did we get a string? Take it from the list of strings */
+		val = start_val[0] == '"' ? pop_cstring(state, key)
+					  : std::string(start_val, line - start_val);
+
+		if (c)
+			line++;
+
 	}
-
-	/* Did we get a string? Take it from the list of strings */
-	std::string val = start_val[0] == '"' ? pop_cstring(state, key)
-					      : std::string(start_val, line - start_val);
-
-	if (c)
-		line++;
 
 	fn(fndata, key, val);
 	return line;
