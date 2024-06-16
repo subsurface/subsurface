@@ -22,13 +22,9 @@ void TestProfile::init()
 
 	// Set UTF8 text codec as in real applications
 	QTextCodec::setCodecForLocale(QTextCodec::codecForMib(106));
-	// first, setup the preferences
 
-	// normally we should be able to do this - but it makes this test fail because the reference data
-	// assume that the prefs are all 0 / false
-	// copy_prefs(&default_prefs, &prefs);
-	// instead we just set up the cloud_base_url to prevent parse_file() from crashing
-	prefs.cloud_base_url = strdup(default_prefs.cloud_base_url);
+	// first, setup the preferences
+	copy_prefs(&default_prefs, &prefs);
 
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
