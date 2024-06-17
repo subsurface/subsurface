@@ -466,15 +466,3 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 		}
 	}
 }
-
-int atoi_n(char *ptr, unsigned int len)
-{
-	if (len < 10) {
-		char buf[10];
-
-		memcpy(buf, ptr, len);
-		buf[len] = 0;
-		return atoi(buf);
-	}
-	return 0;
-}
