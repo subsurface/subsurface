@@ -132,8 +132,6 @@ void TestParse::testParse()
 	QCOMPARE(parseV3(), 0);
 	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
 
-	divelog.dives.sort();
-
 	QCOMPARE(save_dives("./testout.ssrf"), 0);
 	FILE_COMPARE("./testout.ssrf",
 		     SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
@@ -144,8 +142,6 @@ void TestParse::testParseDM4()
 	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.db", &_sqlite3_handle), 0);
 	QCOMPARE(parse_dm4_buffer(_sqlite3_handle, 0, 0, 0, &divelog), 0);
 
-	divelog.dives.sort();
-
 	QCOMPARE(save_dives("./testdm4out.ssrf"), 0);
 	FILE_COMPARE("./testdm4out.ssrf",
 		     SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.xml");
@@ -155,8 +151,6 @@ void TestParse::testParseDM5()
 {
 	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM5.db", &_sqlite3_handle), 0);
 	QCOMPARE(parse_dm5_buffer(_sqlite3_handle, 0, 0, 0, &divelog), 0);
-
-	divelog.dives.sort();
 
 	QCOMPARE(save_dives("./testdm5out.ssrf"), 0);
 	FILE_COMPARE("./testdm5out.ssrf",
@@ -200,8 +194,6 @@ void TestParse::testParseHUDC()
 		dive.dcs[0].when = 1255152761;
 	}
 
-	divelog.dives.sort();
-
 	QCOMPARE(save_dives("./testhudcout.ssrf"), 0);
 	FILE_COMPARE("./testhudcout.ssrf",
 		     SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.xml");
@@ -237,8 +229,6 @@ void TestParse::testParseNewFormat()
 		QCOMPARE(divelog.dives.size(), i + 1);
 	}
 
-	divelog.dives.sort();
-
 	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
 	QCOMPARE(save_dives("./testsbnewout.ssrf"), 0);
 
@@ -257,8 +247,6 @@ void TestParse::testParseDLD()
 
 	fprintf(stderr, "number of dives from DLD: %d \n", static_cast<int>(divelog.dives.size()));
 
-	divelog.dives.sort();
-
 	// Compare output
 	QCOMPARE(save_dives("./testdldout.ssrf"), 0);
 	FILE_COMPARE("./testdldout.ssrf",
@@ -272,8 +260,6 @@ void TestParse::testParseMerge()
 	 */
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/ostc.xml", &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/vyper.xml", &divelog), 0);
-
-	divelog.dives.sort();
 
 	QCOMPARE(save_dives("./testmerge.ssrf"), 0);
 	FILE_COMPARE("./testmerge.ssrf",
@@ -335,7 +321,6 @@ void TestParse::exportCSVDiveDetails()
 	// We do not currently support reading SAC, thus faking it
 	if (!divelog.dives.empty())
 		divelog.dives.back()->sac = saved_sac;
-	divelog.dives.sort();
 
 	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt", false);
 	FILE_COMPARE("testcsvexportmanual2.csv",
@@ -367,8 +352,6 @@ void TestParse::exportSubsurfaceCSV()
 	// We do not currently support reading SAC, thus faking it
 	if (!divelog.dives.empty())
 		divelog.dives.back()->sac = saved_sac;
-
-	divelog.dives.sort();
 
 	export_dives_xslt("testcsvexportmanual2-cyl.csv", 0, 0, "xml2manualcsv.xslt", false);
 	FILE_COMPARE("testcsvexportmanual2-cyl.csv",
@@ -407,7 +390,6 @@ void TestParse::exportCSVDiveProfile()
 	clear_dive_file_data();
 
 	parseCSVprofile(1, "testcsvexportprofileimperial.csv");
-	divelog.dives.sort();
 
 	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2csv.xslt", false);
 	FILE_COMPARE("testcsvexportprofile2.csv",
@@ -425,7 +407,6 @@ void TestParse::exportUDDF()
 	clear_dive_file_data();
 
 	parse_file("testuddfexport.uddf", &divelog);
-	divelog.dives.sort();
 
 	export_dives_xslt("testuddfexport2.uddf", 0, 1, "uddf-export.xslt", false);
 	FILE_COMPARE("testuddfexport.uddf",
@@ -472,8 +453,6 @@ void TestParse::parseDL7()
 				&params, "DL7", &divelog),
 		 0);
 	QCOMPARE(divelog.dives.size(), 3);
-
-	divelog.dives.sort();
 
 	QCOMPARE(save_dives("./testdl7out.ssrf"), 0);
 	FILE_COMPARE("./testdl7out.ssrf",
