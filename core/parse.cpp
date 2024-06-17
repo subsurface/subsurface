@@ -262,12 +262,8 @@ void dive_end(struct parser_state *state)
 	if (is_dive(state)) {
 		if (state->cur_trip)
 			state->cur_trip->add_dive(state->cur_dive.get());
-		// Note: we add dives in an unsorted way. The caller of the parsing
-		// function must sort dives.
-		fixup_dive(state->cur_dive.get());
-		state->log->dives.push_back(std::move(state->cur_dive));
 		// This would add dives in a sorted way:
-		// state->log->dives.record_dive(std::move(state->cur_dive));
+		state->log->dives.record_dive(std::move(state->cur_dive));
 	}
 	state->cur_dive.reset();
 	state->cur_dc = NULL;
