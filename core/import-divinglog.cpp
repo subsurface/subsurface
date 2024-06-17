@@ -16,6 +16,15 @@
 #include "membuffer.h"
 #include "gettext.h"
 
+#include <charconv>
+
+static int atoi_n(const char *ptr, size_t len)
+{
+	int res = 0;
+	std::from_chars(ptr, ptr + len, res);
+	return res;
+}
+
 static int divinglog_cylinder(void *param, int, char **data, char **)
 {
 	struct parser_state *state = (struct parser_state *)param;

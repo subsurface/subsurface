@@ -139,7 +139,6 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 int trimspace(char *buffer);
 void start_match(const char *type, const char *name, char *buffer);
 void nonmatch(const char *type, const char *name, char *buffer);
-int atoi_n(char *ptr, unsigned int len);
 
 void parse_xml_init();
 int parse_xml_buffer(const char *url, const char *buf, int size, struct divelog *log, const struct xml_params *params);
