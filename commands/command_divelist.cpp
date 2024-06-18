@@ -419,7 +419,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 
 	int idx = divelog.dives.get_insertion_index(divePtr.get());
 	if (newNumber)
-		divePtr->number = get_dive_nr_at_idx(idx);
+		divePtr->number = divelog.dives.get_dive_nr_at_idx(idx);
 
 	divesToAdd.dives.push_back({ std::move(divePtr), trip, site });
 	if (allocTrip)
