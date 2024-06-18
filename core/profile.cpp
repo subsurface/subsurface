@@ -10,6 +10,7 @@
 
 #include "dive.h"
 #include "divelist.h"
+#include "divelog.h"
 #include "errorhelper.h"
 #include "event.h"
 #include "interpolate.h"
@@ -1252,7 +1253,7 @@ struct plot_info create_plot_info_new(const struct dive *dive, const struct dive
 	int o2, he, o2max;
 	struct deco_state plot_deco_state;
 	bool in_planner = planner_ds != NULL;
-	init_decompression(&plot_deco_state, dive, in_planner);
+	divelog.dives.init_decompression(&plot_deco_state, dive, in_planner);
 	plot_info pi;
 	calculate_max_limits_new(dive, dc, pi, in_planner);
 	get_dive_gas(dive, &o2, &he, &o2max);

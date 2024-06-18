@@ -12,6 +12,7 @@
 #include <string.h>
 #include "dive.h"
 #include "divelist.h" // for init_decompression()
+#include "divelog.h"
 #include "sample.h"
 #include "subsurface-string.h"
 #include "deco.h"
@@ -122,7 +123,7 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 	if (cache) {
 		cache.restore(ds, true);
 	} else {
-		surface_interval = init_decompression(ds, dive, true);
+		surface_interval = divelog.dives.init_decompression(ds, dive, true);
 		cache.cache(ds);
 	}
 	if (dc->samples.empty())

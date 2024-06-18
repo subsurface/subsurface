@@ -1092,7 +1092,7 @@ struct dive *fixup_dive(struct dive *dive)
 		if (same_rounded_pressure(cyl.sample_end, cyl.end))
 			cyl.end.mbar = 0;
 	}
-	update_cylinder_related_info(dive);
+	divelog.dives.update_cylinder_related_info(dive);
 	for (auto &ws: dive->weightsystems)
 		add_weightsystem_description(ws);
 	/* we should always have a uniq ID as that gets assigned during dive creation,
