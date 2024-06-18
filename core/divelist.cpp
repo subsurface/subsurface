@@ -690,7 +690,9 @@ static void autogroup_dives(struct dive_table &table, struct trip_table &trip_ta
 /* This removes a dive from the global dive table but doesn't free the
  * resources associated with the dive. The caller must removed the dive
  * from the trip-list. Returns a pointer to the unregistered dive.
- * The unregistered dive has the selection- and hidden-flags cleared. */
+ * The unregistered dive has the selection- and hidden-flags cleared.
+ * TODO: This makes me unhappy, as it touches global state, viz.
+ * selection and fulltext. */
 std::unique_ptr<dive> dive_table::unregister_dive(int idx)
 {
 	if (idx < 0 || static_cast<size_t>(idx) >= size())
@@ -710,8 +712,9 @@ std::unique_ptr<dive> dive_table::unregister_dive(int idx)
 /* Add a dive to the global dive table.
  * Index it in the fulltext cache and make sure that it is written
  * in git_save().
- */
-struct dive *register_dive(std::unique_ptr<dive> d)
+ * TODO: This makes me unhappy, as it touches global state, viz.
+ * selection and fulltext. */
+struct dive *dive_table::register_dive(std::unique_ptr<dive> d)
 {
 	// When we add dives, we start in hidden-by-filter status. Once all
 	// dives have been added, their status will be updated.
@@ -719,7 +722,7 @@ struct dive *register_dive(std::unique_ptr<dive> d)
 
 	fulltext_register(d.get());				// Register the dive's fulltext cache
 	invalidate_dive_cache(d.get());				// Ensure that dive is written in git_save()
-	auto [res, idx] = divelog.dives.put(std::move(d));
+	auto [res, idx] = put(std::move(d));
 
 	return res;
 }

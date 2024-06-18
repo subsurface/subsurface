@@ -72,7 +72,7 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 		d.site->add_dive(d.dive.get());
 		diveSiteCountChanged(d.site);
 	}
-	return register_dive(std::move(d.dive));	// Transfer ownership to core and update fulltext index
+	return divelog.dives.register_dive(std::move(d.dive));	// Transfer ownership to core and update fulltext index
 }
 
 // Some signals are sent in batches per trip. To avoid writing the same loop
