@@ -1288,21 +1288,18 @@ timestamp_t get_surface_interval(timestamp_t when)
 
 /* Find visible dive close to given date. First search towards older,
  * then newer dives. */
-struct dive *find_next_visible_dive(timestamp_t when)
+struct dive *dive_table::find_next_visible_dive(timestamp_t when)
 {
-	if (divelog.dives.empty())
-		return nullptr;
-
 	/* we might want to use binary search here */
-	auto it = std::find_if(divelog.dives.begin(), divelog.dives.end(),
+	auto it = std::find_if(begin(), end(),
 			       [when] (auto &d) { return d->when <= when; });
 
-	for (auto it2 = it; it2 != divelog.dives.begin(); --it2) {
+	for (auto it2 = it; it2 != begin(); --it2) {
 		if (!(*std::prev(it2))->hidden_by_filter)
 			return it2->get();
 	}
 
-	for (auto it2 = it; it2 != divelog.dives.end(); ++it2) {
+	for (auto it2 = it; it2 != end(); ++it2) {
 		if (!(*it2)->hidden_by_filter)
 			return it2->get();
 	}
