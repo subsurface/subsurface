@@ -1270,17 +1270,15 @@ bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
  * that happened inside other dives. The interval will always be calculated
  * with respect to the dive that started previously.
  */
-timestamp_t get_surface_interval(timestamp_t when)
+timestamp_t dive_table::get_surface_interval(timestamp_t when) const
 {
-	timestamp_t prev_end;
-
 	/* find previous dive. might want to use a binary search. */
-	auto it = std::find_if(divelog.dives.rbegin(), divelog.dives.rend(),
+	auto it = std::find_if(rbegin(), rend(),
 			       [when] (auto &d) { return d->when < when; });
-	if (it == divelog.dives.rend())
+	if (it == rend())
 		return -1;
 
-	prev_end = (*it)->endtime();
+	timestamp_t prev_end = (*it)->endtime();
 	if (prev_end > when)
 		return 0;
 	return when - prev_end;
