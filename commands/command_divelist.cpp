@@ -600,7 +600,7 @@ void DeleteDive::redoit()
 	dive *newCurrent = nullptr;
 	if (!divesToAdd.dives.empty()) {
 		timestamp_t when = divesToAdd.dives[0].dive->when;
-		newCurrent = find_next_visible_dive(when);
+		newCurrent = divelog.dives.find_next_visible_dive(when);
 	}
 	select_single_dive(newCurrent);
 }
