@@ -235,10 +235,10 @@ void TestParse::testParseNewFormat()
 		QCOMPARE(divelog.dives->nr, i + 1);
 	}
 
+	sort_dive_table(divelog.dives);
+
 	fprintf(stderr, "number of dives %d \n", divelog.dives->nr);
 	QCOMPARE(save_dives("./testsbnewout.ssrf"), 0);
-
-	sort_dive_table(divelog.dives);
 
 	// Currently the CSV parse fails
 	FILE_COMPARE("./testsbnewout.ssrf",
