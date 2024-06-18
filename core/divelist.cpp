@@ -1142,13 +1142,6 @@ process_imported_dives_result process_imported_dives(struct divelog &import_log,
 	return res;
 }
 
-static struct dive *get_last_valid_dive()
-{
-	auto it = std::find_if(divelog.dives.rbegin(), divelog.dives.rend(),
-			      [](auto &d) { return !d->invalid; });
-	return it != divelog.dives.rend() ? it->get() : nullptr;
-}
-
 /* return the number a dive gets when inserted at the given index.
  * this function is supposed to be called *before* a dive was added.
  * this returns:
@@ -1156,14 +1149,14 @@ static struct dive *get_last_valid_dive()
  * 	- last_nr+1 for addition at end of log (if last dive had a number)
  * 	- 0 for all other cases
  */
-int get_dive_nr_at_idx(int idx)
+int dive_table::get_dive_nr_at_idx(int idx) const
 {
-	if (static_cast<size_t>(idx) < divelog.dives.size())
+	if (static_cast<size_t>(idx) < size())
 		return 0;
-	struct dive *last_dive = get_last_valid_dive();
-	if (!last_dive)
+	auto it = std::find_if(rbegin(), rend(), [](auto &d) { return !d->invalid; });
+	if (it == rend())
 		return 1;
-	return last_dive->number ? last_dive->number + 1 : 0;
+	return (*it)->number ? (*it)->number + 1 : 0;
 }
 
 /* lookup of trip in main trip_table based on its id */
