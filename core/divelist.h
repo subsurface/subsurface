@@ -22,16 +22,18 @@ struct dive_table : public sorted_owning_table<dive, &comp_dives> {
 	struct dive *register_dive(std::unique_ptr<dive> d);
 	std::unique_ptr<dive> unregister_dive(int idx);
 
+	int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_planner) const;
+	void update_cylinder_related_info(struct dive *) const;
 	int get_dive_nr_at_idx(int idx) const;
 	timestamp_t get_surface_interval(timestamp_t when) const;
 	struct dive *find_next_visible_dive(timestamp_t when);
+private:
+	int calculate_cns(struct dive *dive) const; // Note: writes into dive->cns
 };
 
 /* this is used for both git and xml format */
 #define DATAFORMAT_VERSION 3
 
-extern void update_cylinder_related_info(struct dive *);
-extern int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_planner);
 
 /* divelist core logic functions */
 extern void process_loaded_dives();
