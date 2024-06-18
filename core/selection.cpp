@@ -101,7 +101,7 @@ static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &s
 	// No selected dive is visible! Take the closest dive. Note, this might
 	// return null, but that just means unsetting the current dive (as no
 	// dive is visible anyway).
-	current_dive = find_next_visible_dive(when);
+	current_dive = divelog.dives.find_next_visible_dive(when);
 	if (current_dive) {
 		current_dive->selected = true;
 		amount_selected++;
