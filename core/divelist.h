@@ -19,6 +19,7 @@ int comp_dives_ptr(const struct dive *a, const struct dive *b);
 struct dive_table : public sorted_owning_table<dive, &comp_dives> {
 	dive *get_by_uniq_id(int id) const;
 	void record_dive(std::unique_ptr<dive> d);	// call fixup_dive() before adding dive to table.
+	struct dive *register_dive(std::unique_ptr<dive> d);
 	std::unique_ptr<dive> unregister_dive(int idx);
 
 	int get_dive_nr_at_idx(int idx) const;
@@ -56,7 +57,6 @@ extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2l
 int get_min_datafile_version();
 void report_datafile_version(int version);
 void clear_dive_file_data();
-struct dive *register_dive(std::unique_ptr<dive> d);
 extern bool has_dive(unsigned int deviceid, unsigned int diveid);
 
 #endif // DIVELIST_H
