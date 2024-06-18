@@ -57,7 +57,6 @@ extern int comp_dives(const struct dive *a, const struct dive *b);
 int get_min_datafile_version();
 void reset_min_datafile_version();
 void report_datafile_version(int version);
-int get_dive_id_closest_to(timestamp_t when);
 void clear_dive_file_data();
 void clear_dive_table(struct dive_table *table);
 void move_dive_table(struct dive_table *src, struct dive_table *dst);
