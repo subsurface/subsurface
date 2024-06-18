@@ -21,6 +21,7 @@ struct dive_table : public sorted_owning_table<dive, &comp_dives> {
 	void record_dive(std::unique_ptr<dive> d);	// call fixup_dive() before adding dive to table.
 	std::unique_ptr<dive> unregister_dive(int idx);
 
+	timestamp_t get_surface_interval(timestamp_t when) const;
 	struct dive *find_next_visible_dive(timestamp_t when);
 };
 
@@ -51,7 +52,6 @@ extern process_imported_dives_result process_imported_dives(struct divelog &impo
 
 extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_dive_nr_at_idx(int idx);
-extern timestamp_t get_surface_interval(timestamp_t when);
 
 int get_min_datafile_version();
 void report_datafile_version(int version);
