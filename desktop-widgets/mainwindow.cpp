@@ -419,7 +419,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	std::string encoded = encodeFileName(*filename);
 	if (!parse_file(encoded.c_str(), &divelog))
 		setCurrentFile(encoded);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	hideProgressBar();
 	refreshDisplay();
 	updateAutogroup();
@@ -1313,7 +1313,7 @@ void MainWindow::importFiles(const std::vector<std::string> &fileNames)
 		parse_file(encoded.c_str(), &log);
 	}
 	QString source = fileNames.size() == 1 ? QString::fromStdString(fileNames[0]) : tr("multiple files");
-	Command::importDives(&log, IMPORT_MERGE_ALL_TRIPS, source);
+	Command::importDives(&log, import_flags::merge_all_trips, source);
 }
 
 void MainWindow::loadFiles(const std::vector<std::string> &fileNames)
@@ -1334,7 +1334,7 @@ void MainWindow::loadFiles(const std::vector<std::string> &fileNames)
 	}
 	hideProgressBar();
 	updateRecentFiles();
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 
 	refreshDisplay();
 	updateAutogroup();
