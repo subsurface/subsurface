@@ -34,26 +34,6 @@ private:
 /* this is used for both git and xml format */
 #define DATAFORMAT_VERSION 3
 
-
-/* divelist core logic functions */
-extern void process_loaded_dives();
-/* flags for process_imported_dives() */
-#define IMPORT_PREFER_IMPORTED (1 << 0)
-#define	IMPORT_IS_DOWNLOADED (1 << 1)
-#define	IMPORT_MERGE_ALL_TRIPS (1 << 2)
-#define	IMPORT_ADD_TO_NEW_TRIP (1 << 3)
-extern void add_imported_dives(struct divelog &log, int flags);
-
-struct process_imported_dives_result {
-	dive_table dives_to_add;
-	std::vector<dive *> dives_to_remove;
-	trip_table trips_to_add;
-	dive_site_table sites_to_add;
-	std::vector<device> devices_to_add;
-};
-
-extern process_imported_dives_result process_imported_dives(struct divelog &import_log, int flags);
-
 extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 
 int get_min_datafile_version();

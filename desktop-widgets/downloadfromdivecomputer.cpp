@@ -565,11 +565,11 @@ void DownloadFromDCWidget::on_ok_clicked()
 	if (currentState != DONE && currentState != ERRORED)
 		return;
 
-	int flags = IMPORT_IS_DOWNLOADED;
+	int flags = import_flags::is_downloaded;
 	if (preferDownloaded())
-		flags |= IMPORT_PREFER_IMPORTED;
+		flags |= import_flags::prefer_imported;
 	if (ui.createNewTrip->isChecked())
-		flags |= IMPORT_ADD_TO_NEW_TRIP;
+		flags |= import_flags::add_to_new_trip;
 
 	diveImportedModel->recordDives(flags);
 
