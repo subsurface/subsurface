@@ -28,9 +28,9 @@ void TestMerge::testMergeEmpty()
 	 */
 	struct divelog log;
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &log), 0);
-	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
+	divelog.add_imported_dives(log, import_flags::merge_all_trips);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &log), 0);
-	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
+	divelog.add_imported_dives(log, import_flags::merge_all_trips);
 	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test47+48.xml");
 	org.open(QFile::ReadOnly);
@@ -51,9 +51,9 @@ void TestMerge::testMergeBackwards()
 	 */
 	struct divelog log;
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &log), 0);
-	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
+	divelog.add_imported_dives(log, import_flags::merge_all_trips);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &log), 0);
-	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
+	divelog.add_imported_dives(log, import_flags::merge_all_trips);
 	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test48+47.xml");
 	org.open(QFile::ReadOnly);

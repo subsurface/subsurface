@@ -462,7 +462,7 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 	currentDive = nullptr;
 
 	auto [dives_to_add, dives_to_remove, trips_to_add, sites_to_add, devices_to_add] =
-		process_imported_dives(*log, flags);
+		divelog.process_imported_dives(*log, flags);
 
 	// Add devices to devicesToAddAndRemove structure
 	devicesToAddAndRemove = std::move(devices_to_add);

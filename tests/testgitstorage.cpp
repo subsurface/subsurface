@@ -243,7 +243,7 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test10.xml", &divelog), 0);
 	// calling process_loaded_dives() sorts the table, but calling add_imported_dives()
 	// causes it to try to update the window title... let's not do that
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	// now save only to the local cache but not to the remote server
 	git_local_only = true;
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
@@ -297,7 +297,7 @@ void TestGitStorage::testGitStorageCloudMerge()
 	git_local_only = false;
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test11.xml", &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
@@ -309,7 +309,7 @@ void TestGitStorage::testGitStorageCloudMerge()
 	git_local_only = true;
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test12.xml", &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
@@ -323,12 +323,12 @@ void TestGitStorage::testGitStorageCloudMerge()
 	QCOMPARE(parse_file("./SampleDivesV3plus10local.ssrf", &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test11.xml", &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test12.xml", &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	QCOMPARE(save_dives("./SampleDivesV3plus10-11-12.ssrf"), 0);
 	// then load from the cloud
 	clear_dive_file_data();
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	QCOMPARE(save_dives("./SampleDivesV3plus10-11-12-merged.ssrf"), 0);
 	// finally compare what we have
 	QFile org("./SampleDivesV3plus10-11-12-merged.ssrf");
@@ -345,7 +345,7 @@ void TestGitStorage::testGitStorageCloudMerge()
 	// (6) move ourselves back to the first client and compare data there
 	moveDir(localCacheDir + "client1", localCacheDir);
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	QCOMPARE(save_dives("./SampleDivesV3plus10-11-12-merged-client1.ssrf"), 0);
 	QFile client1("./SampleDivesV3plus10-11-12-merged-client1.ssrf");
 	client1.open(QFile::ReadOnly);
@@ -361,7 +361,7 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	// merge
 	// (1) open repo, delete second dive, save offline
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	struct dive *dive = get_dive(1);
 	divelog.delete_multiple_dives(std::vector<struct dive *>{ dive });
 	QCOMPARE(save_dives("./SampleDivesMinus1.ssrf"), 0);
@@ -375,7 +375,7 @@ void TestGitStorage::testGitStorageCloudMerge2()
 
 	// (3) now we open the cloud storage repo and modify that second dive
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	dive = get_dive(1);
 	QVERIFY(dive != NULL);
 	dive->notes = "These notes have been modified by TestGitStorage";
@@ -409,7 +409,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 
 	// (1) open repo, edit notes of first three dives
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	struct dive *dive;
 	QVERIFY((dive = get_dive(0)) != 0);
 	dive->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
@@ -422,7 +422,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 
 	// (2) make different edits offline
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	QVERIFY((dive = get_dive(0)) != 0);
 	dive->notes = "Create multi line dive notes\nDifferent line 2 and removed 3-5\n\nThat should be enough";
 	QVERIFY((dive = get_dive(1)) != 0);
@@ -438,7 +438,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	//     those first dive notes differently while online
 	moveDir(localCacheDir, localCacheDir + "save");
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	QVERIFY((dive = get_dive(0)) != 0);
 	dive->notes = "Completely different dive notes\nBut also multi line";
 	QVERIFY((dive = get_dive(1)) != 0);

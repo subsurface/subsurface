@@ -25,7 +25,7 @@ public:
 	struct divelog consumeTables(); // Returns downloaded tables and resets model.
 
 	int numDives() const;
-	Q_INVOKABLE void recordDives(int flags = IMPORT_PREFER_IMPORTED | IMPORT_IS_DOWNLOADED);
+	Q_INVOKABLE void recordDives(int flags = import_flags::prefer_imported | import_flags::is_downloaded);
 	Q_INVOKABLE void startDownload();
 	Q_INVOKABLE void waitForDownload();
 
