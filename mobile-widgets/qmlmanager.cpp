@@ -414,7 +414,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
 		// the following steps can take a long time, so provide updates
 		setNotificationText(tr("Processing %1 dives").arg(divelog.dives.size()));
-		process_loaded_dives();
+		divelog.process_loaded_dives();
 		setNotificationText(tr("%1 dives loaded from local dive data file").arg(divelog.dives.size()));
 	}
 	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
@@ -478,7 +478,7 @@ void QMLManager::mergeLocalRepo()
 {
 	struct divelog log;
 	parse_file(qPrintable(nocloud_localstorage()), &log);
-	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
+	divelog.add_imported_dives(log, import_flags::merge_all_trips);
 	mark_divelist_changed(true);
 }
 
@@ -891,7 +891,7 @@ void QMLManager::consumeFinishedLoad()
 	prefs.show_ccr_setpoint = git_prefs.show_ccr_setpoint;
 	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
 	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	appendTextToLog(QStringLiteral("%1 dives loaded").arg(divelog.dives.size()));
 	if (divelog.dives.empty())
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
@@ -2356,7 +2356,7 @@ void QMLManager::importCacheRepo(QString repo)
 	QString repoPath = QString::fromStdString(system_default_directory() + "/cloudstorage/") + repo;
 	appendTextToLog(QString("importing %1").arg(repoPath));
 	parse_file(qPrintable(repoPath), &log);
-	add_imported_dives(log, IMPORT_MERGE_ALL_TRIPS);
+	divelog.add_imported_dives(log, import_flags::merge_all_trips);
 	changesNeedSaving();
 }
 
