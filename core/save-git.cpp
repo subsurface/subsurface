@@ -1090,28 +1090,28 @@ int get_authorship(git_repository *repo, git_signature **authorp)
 static void create_commit_message(struct membuffer *msg, bool create_empty)
 {
 	int nr = static_cast<int>(divelog.dives.size());
-	struct dive *dive = get_dive(nr-1);
 	std::string changes_made = get_changes_made();
 
 	if (create_empty) {
 		put_string(msg, "Initial commit to create empty repo.\n\n");
 	} else if (!changes_made.empty()) {
 		put_format(msg, "Changes made: \n\n%s\n", changes_made.c_str());
-	} else if (dive) {
-		dive_trip *trip = dive->divetrip;
-		std::string location = get_dive_location(dive);
+	} else if (!divelog.dives.empty()) {
+		const struct dive &dive = *divelog.dives.back();
+		dive_trip *trip = dive.divetrip;
+		std::string location = get_dive_location(&dive);
 		if (location.empty())
 			location = "no location";
 		const char *sep = "\n";
 
-		if (dive->number)
-			nr = dive->number;
+		if (dive.number)
+			nr = dive.number;
 
 		put_format(msg, "dive %d: %s", nr, location.c_str());
 		if (trip && !trip->location.empty() && location != trip->location)
 			put_format(msg, " (%s)", trip->location.c_str());
 		put_format(msg, "\n");
-		for (auto &dc: dive->dcs)  {
+		for (auto &dc: dive.dcs)  {
 			if (!dc.model.empty()) {
 				put_format(msg, "%s%s", sep, dc.model.c_str());
 				sep = ", ";

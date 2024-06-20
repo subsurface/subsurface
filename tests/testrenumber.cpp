@@ -30,10 +30,7 @@ void TestRenumber::testMergeAndAppend()
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47c.xml", &log), 0);
 	divelog.add_imported_dives(log, import_flags::merge_all_trips);
 	QCOMPARE(divelog.dives.size(), 2);
-	struct dive *d = get_dive(1);
-	QVERIFY(d != NULL);
-	if (d)
-		QCOMPARE(d->number, 2);
+	QCOMPARE(divelog.dives[1]->number, 2);
 }
 
 QTEST_GUILESS_MAIN(TestRenumber)

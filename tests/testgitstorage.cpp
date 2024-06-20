@@ -362,8 +362,8 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	// (1) open repo, delete second dive, save offline
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	divelog.process_loaded_dives();
-	struct dive *dive = get_dive(1);
-	divelog.delete_multiple_dives(std::vector<struct dive *>{ dive });
+	QVERIFY(divelog.dives.size() >= 2);
+	divelog.delete_multiple_dives(std::vector<struct dive *>{ divelog.dives[1].get() });
 	QCOMPARE(save_dives("./SampleDivesMinus1.ssrf"), 0);
 	git_local_only = true;
 	QCOMPARE(save_dives(localCacheRepo.c_str()), 0);
@@ -375,10 +375,9 @@ void TestGitStorage::testGitStorageCloudMerge2()
 
 	// (3) now we open the cloud storage repo and modify that second dive
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
+	QVERIFY(divelog.dives.size() >= 2);
 	divelog.process_loaded_dives();
-	dive = get_dive(1);
-	QVERIFY(dive != NULL);
-	dive->notes = "These notes have been modified by TestGitStorage";
+	divelog.dives[1]->notes = "These notes have been modified by TestGitStorage";
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
@@ -410,25 +409,20 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	// (1) open repo, edit notes of first three dives
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	divelog.process_loaded_dives();
-	struct dive *dive;
-	QVERIFY((dive = get_dive(0)) != 0);
-	dive->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
-	QVERIFY((dive = get_dive(1)) != 0);
-	dive->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
-	QVERIFY((dive = get_dive(2)) != 0);
-	dive->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
+	QVERIFY(divelog.dives.size() >= 3);
+	divelog.dives[0]->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
+	divelog.dives[1]->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
+	divelog.dives[2]->notes = "Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough";
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
 	// (2) make different edits offline
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	divelog.process_loaded_dives();
-	QVERIFY((dive = get_dive(0)) != 0);
-	dive->notes = "Create multi line dive notes\nDifferent line 2 and removed 3-5\n\nThat should be enough";
-	QVERIFY((dive = get_dive(1)) != 0);
-	dive->notes = "Line 2\nLine 3\nLine 4\nLine 5"; // keep the middle, remove first and last");
-	QVERIFY((dive = get_dive(2)) != 0);
-	dive->notes = "single line dive notes";
+	QVERIFY(divelog.dives.size() >= 3);
+	divelog.dives[0]->notes = "Create multi line dive notes\nDifferent line 2 and removed 3-5\n\nThat should be enough";
+	divelog.dives[1]->notes = "Line 2\nLine 3\nLine 4\nLine 5"; // keep the middle, remove first and last");
+	divelog.dives[2]->notes = "single line dive notes";
 	git_local_only = true;
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	git_local_only = false;
@@ -439,12 +433,10 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	moveDir(localCacheDir, localCacheDir + "save");
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	divelog.process_loaded_dives();
-	QVERIFY((dive = get_dive(0)) != 0);
-	dive->notes = "Completely different dive notes\nBut also multi line";
-	QVERIFY((dive = get_dive(1)) != 0);
-	dive->notes = "single line dive notes";
-	QVERIFY((dive = get_dive(2)) != 0);
-	dive->notes = "Line 2\nLine 3\nLine 4\nLine 5"; // keep the middle, remove first and last");
+	QVERIFY(divelog.dives.size() >= 3);
+	divelog.dives[0]->notes = "Completely different dive notes\nBut also multi line";
+	divelog.dives[1]->notes = "single line dive notes";
+	divelog.dives[2]->notes = "Line 2\nLine 3\nLine 4\nLine 5"; // keep the middle, remove first and last");
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
 	clear_dive_file_data();
 
