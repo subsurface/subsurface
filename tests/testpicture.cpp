@@ -27,29 +27,29 @@ void TestPicture::addPicture()
 	verbose = 1;
 
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test44.xml", &divelog), 0);
-	struct dive *dive = get_dive(0);
+	QVERIFY(divelog.dives.size() >= 1);
+	struct dive &dive = *divelog.dives[0];
 	// Pictures will be added to selected dives
-	dive->selected = true;
-	QVERIFY(dive != NULL);
+	dive.selected = true;
 	// So far no picture in dive
-	QVERIFY(dive->pictures.size() == 0);
+	QVERIFY(dive.pictures.size() == 0);
 
 	{
 		auto [pic1, dive1] = create_picture(SUBSURFACE_TEST_DATA "/dives/images/wreck.jpg", 0, false);
 		auto [pic2, dive2] = create_picture(SUBSURFACE_TEST_DATA "/dives/images/data_after_EOI.jpg", 0, false);
 		QVERIFY(pic1);
 		QVERIFY(pic2);
-		QVERIFY(dive1 == dive);
-		QVERIFY(dive2 == dive);
+		QVERIFY(dive1 == &dive);
+		QVERIFY(dive2 == &dive);
 
-		add_picture(dive->pictures, std::move(*pic1));
-		add_picture(dive->pictures, std::move(*pic2));
+		add_picture(dive.pictures, std::move(*pic1));
+		add_picture(dive.pictures, std::move(*pic2));
 	}
 
 	// Now there are two pictures
-	QVERIFY(dive->pictures.size() == 2);
-	const picture &pic1 = dive->pictures[0];
-	const picture &pic2 = dive->pictures[1];
+	QVERIFY(dive.pictures.size() == 2);
+	const picture &pic1 = dive.pictures[0];
+	const picture &pic2 = dive.pictures[1];
 	// 1st appearing at time 21:01
 	// 2nd appearing at time 22:01
 	QVERIFY(pic1.offset.seconds == 1261);

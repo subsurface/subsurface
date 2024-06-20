@@ -2878,13 +2878,6 @@ depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int rou
 	return rounded_depth;
 }
 
-struct dive *get_dive(int nr)
-{
-	if (nr < 0 || static_cast<size_t>(nr) >= divelog.dives.size())
-		return nullptr;
-	return divelog.dives[nr].get();
-}
-
 struct dive_site *get_dive_site_for_dive(const struct dive *dive)
 {
 	return dive->dive_site;
