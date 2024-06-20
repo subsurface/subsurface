@@ -91,6 +91,8 @@ struct dive {
 	double depth_to_mbarf(int depth) const;
 	double depth_to_bar(int depth) const;
 	double depth_to_atm(int depth) const;
+	int rel_mbar_to_depth(int mbar) const;
+	int mbar_to_depth(int mbar) const;
 };
 
 /* For the top-level list: an entry is either a dive or a trip */
@@ -133,8 +135,6 @@ extern fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planne
 extern fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, fraction_t fo2);
 
 extern int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null);
-extern int rel_mbar_to_depth(int mbar, const struct dive *dive);
-extern int mbar_to_depth(int mbar, const struct dive *dive);
 extern depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct dive *dive, int roundto);
 extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int roundto);
 

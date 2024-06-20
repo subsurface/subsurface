@@ -2824,10 +2824,10 @@ double dive::depth_to_atm(int depth) const
  * (that's the one that some dive computers like the Uemis Zurich
  * provide - for the other models that do this libdivecomputer has to
  * take care of this, but the Uemis we support natively */
-int rel_mbar_to_depth(int mbar, const struct dive *dive)
+int dive::rel_mbar_to_depth(int mbar) const
 {
 	// For downloaded and planned dives, use DC's salinity. Manual dives, use user's salinity
-	int salinity = is_dc_manually_added_dive(&dive->dcs[0]) ? dive->user_salinity : dive->dcs[0].salinity;
+	int salinity = is_dc_manually_added_dive(&dcs[0]) ? user_salinity : dcs[0].salinity;
 	if (!salinity)
 		salinity = SEAWATER_SALINITY;
 
@@ -2836,17 +2836,17 @@ int rel_mbar_to_depth(int mbar, const struct dive *dive)
 	return (int)lrint(mbar / specific_weight);
 }
 
-int mbar_to_depth(int mbar, const struct dive *dive)
+int dive::mbar_to_depth(int mbar) const
 {
 	// For downloaded and planned dives, use DC's pressure. Manual dives, use user's pressure
-	pressure_t surface_pressure = is_dc_manually_added_dive(&dive->dcs[0])
-		? dive->surface_pressure
-		: dive->dcs[0].surface_pressure;
+	pressure_t surface_pressure = is_dc_manually_added_dive(&dcs[0])
+		? this->surface_pressure
+		: dcs[0].surface_pressure;
 
 	if (!surface_pressure.mbar)
 		surface_pressure.mbar = SURFACE_PRESSURE;
 		
-	return rel_mbar_to_depth(mbar - surface_pressure.mbar, dive);
+	return rel_mbar_to_depth(mbar - surface_pressure.mbar);
 }
 
 /* MOD rounded to multiples of roundto mm */
@@ -2854,7 +2854,7 @@ depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct dive *dive
 {
 	depth_t rounded_depth;
 
-	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix), dive);
+	double depth = (double) dive->mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix));
 	rounded_depth.mm = (int)lrint(depth / roundto) * roundto;
 	return rounded_depth;
 }
@@ -2874,7 +2874,7 @@ depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int rou
 					:
 						// Actually: Infinity
 						1000000;
-	rounded_depth.mm = (int)lrint(((double)mbar_to_depth(maxambient, dive)) / roundto) * roundto;
+	rounded_depth.mm = (int)lrint(((double)dive->mbar_to_depth(maxambient)) / roundto) * roundto;
 	return rounded_depth;
 }
 
