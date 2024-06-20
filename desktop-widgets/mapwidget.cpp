@@ -94,8 +94,8 @@ void MapWidget::selectedDivesChanged(const QList<int> &list)
 	std::vector<dive *> selection;
 	selection.reserve(list.size());
 	for (int idx: list) {
-		if (dive *d = get_dive(idx))
-			selection.push_back(d);
+		if (idx >= 0 && static_cast<size_t>(idx) < divelog.dives.size())
+			selection.push_back(divelog.dives[idx].get());
 	}
 	setSelection(std::move(selection), current_dive, -1);
 }

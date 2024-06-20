@@ -138,7 +138,6 @@ extern int mbar_to_depth(int mbar, const struct dive *dive);
 extern depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct dive *dive, int roundto);
 extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int roundto);
 
-extern struct dive *get_dive(int nr);
 extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
 extern std::string get_dive_country(const struct dive *dive);
 extern std::string get_dive_location(const struct dive *dive);
