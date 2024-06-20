@@ -39,8 +39,6 @@ const char *divemode_text_ui[] = {
 // For writing/reading files.
 const char *divemode_text[] = {"OC", "CCR", "PSCR", "Freedive"};
 
-static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity);
-
 // It's the "manually added" divecomputer.
 // Even for dives without divecomputer, we allocate a divecomputer structure.
 dive::dive() : dcs(1)
@@ -480,6 +478,8 @@ int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *
 	}
 	return static_cast<size_t>(res) < dive->cylinders.size() ? res : 0;
 }
+
+static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity);
 
 /* this gets called when the dive mode has changed (so OC vs. CC)
  * there are two places we might have setpoints... events or in the samples
@@ -2721,7 +2721,7 @@ fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planner)
 	fraction_t fo2;
 	int po2 = in_planner ? prefs.bottompo2 : (int)(prefs.modpO2 * 1000.0);
 
-	fo2.permille = (po2 * 100 / depth_to_mbar(depth.mm, dive)) * 10;	//use integer arithmetic to round down to nearest percent
+	fo2.permille = (po2 * 100 / dive->depth_to_mbar(depth.mm)) * 10;	//use integer arithmetic to round down to nearest percent
 	// Don't permit >100% O2
 	if (fo2.permille > 1000)
 		fo2.permille = 1000;
@@ -2733,8 +2733,8 @@ fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, frac
 {
 	fraction_t fhe;
 	int pnarcotic, ambient;
-	pnarcotic = depth_to_mbar(prefs.bestmixend.mm, dive);
-	ambient = depth_to_mbar(depth.mm, dive);
+	pnarcotic = dive->depth_to_mbar(prefs.bestmixend.mm);
+	ambient = dive->depth_to_mbar(depth.mm);
 	if (o2narcotic) {
 		fhe.permille = (100 - 100 * pnarcotic / ambient) * 10;	//use integer arithmetic to round up to nearest percent
 	} else {
@@ -2792,32 +2792,32 @@ static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, i
 	return mbar + depth * specific_weight;
 }
 
-int depth_to_mbar(int depth, const struct dive *dive)
+int dive::depth_to_mbar(int depth) const
 {
-	return lrint(depth_to_mbarf(depth, dive));
+	return lrint(depth_to_mbarf(depth));
 }
 
-double depth_to_mbarf(int depth, const struct dive *dive)
+double dive::depth_to_mbarf(int depth) const
 {
 	// For downloaded and planned dives, use DC's values
-	int salinity = dive->dcs[0].salinity;
-	pressure_t surface_pressure = dive->dcs[0].surface_pressure;
+	int salinity = dcs[0].salinity;
+	pressure_t surface_pressure = dcs[0].surface_pressure;
 
-	if (is_dc_manually_added_dive(&dive->dcs[0])) { // For manual dives, salinity and pressure in another place...
-		surface_pressure = dive->surface_pressure;
-		salinity = dive->user_salinity;
+	if (is_dc_manually_added_dive(&dcs[0])) { // For manual dives, salinity and pressure in another place...
+		surface_pressure = this->surface_pressure;
+		salinity = user_salinity;
 	}
 	return calculate_depth_to_mbarf(depth, surface_pressure, salinity);
 }
 
-double depth_to_bar(int depth, const struct dive *dive)
+double dive::depth_to_bar(int depth) const
 {
-	return depth_to_mbar(depth, dive) / 1000.0;
+	return depth_to_mbar(depth) / 1000.0;
 }
 
-double depth_to_atm(int depth, const struct dive *dive)
+double dive::depth_to_atm(int depth) const
 {
-	return mbar_to_atm(depth_to_mbar(depth, dive));
+	return mbar_to_atm(depth_to_mbar(depth));
 }
 
 /* for the inverse calculation we use just the relative pressure
@@ -2864,7 +2864,7 @@ depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int rou
 {
 	depth_t rounded_depth;
 	pressure_t ppo2n2;
-	ppo2n2.mbar = depth_to_mbar(end.mm, dive);
+	ppo2n2.mbar = dive->depth_to_mbar(end.mm);
 
 	int maxambient = prefs.o2narcotic ?
 					(int)lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0))

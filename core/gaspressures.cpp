@@ -285,7 +285,7 @@ static inline int calc_pressure_time(const struct dive *dive, const struct plot_
 	if (depth <= SURFACE_THRESHOLD)
 		return 0;
 
-	return depth_to_mbar(depth, dive) * time;
+	return dive->depth_to_mbar(depth) * time;
 }
 
 #ifdef PRINT_PRESSURES_DEBUG
