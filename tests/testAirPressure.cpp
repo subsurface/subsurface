@@ -19,26 +19,17 @@ void TestAirPressure::initTestCase()
 
 void TestAirPressure::get_dives()
 {
-	struct dive *dive;
 	verbose = 1;
 
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/TestAtmPress.xml", &divelog), 0);
-	dive = get_dive(0);
-	dive->selected = true;
-	QVERIFY(dive != NULL);
+	QVERIFY(divelog.dives.size() >= 1);
 }
 
 void TestAirPressure::testReadAirPressure()
 {
-	struct dive *dive;
-	dive = get_dive(0);
-	QVERIFY(dive != NULL);
-	dive->selected = true;
-	QCOMPARE(1012, dive->surface_pressure.mbar);
-	dive = get_dive(1);
-	QVERIFY(dive != NULL);
-	dive->selected = true;
-	QCOMPARE(991, dive->surface_pressure.mbar);
+	QVERIFY(divelog.dives.size() >= 2);
+	QCOMPARE(1012, divelog.dives[0]->surface_pressure.mbar);
+	QCOMPARE(991, divelog.dives[1]->surface_pressure.mbar);
 }
 
 void TestAirPressure::testConvertAltitudetoAirPressure()
@@ -49,19 +40,14 @@ void TestAirPressure::testConvertAltitudetoAirPressure()
 
 void TestAirPressure::testWriteReadBackAirPressure()
 {
-	struct dive *dive;
 	int32_t ap = 1111;
-	dive = get_dive(0);
-	QVERIFY(dive != NULL);
-	dive->selected = true;
-	dive->surface_pressure.mbar = ap;
+	QVERIFY(divelog.dives.size() >= 1);
+	divelog.dives[0]->surface_pressure.mbar = ap;
 	QCOMPARE(save_dives("./testout.ssrf"), 0);
 	clear_dive_file_data();
 	QCOMPARE(parse_file("./testout.ssrf", &divelog), 0);
-	dive = get_dive(0);
-	QVERIFY(dive != NULL);
-	dive->selected = true;
-	QCOMPARE(ap, dive->surface_pressure.mbar);
+	QVERIFY(divelog.dives.size() >= 1);
+	QCOMPARE(ap, divelog.dives[0]->surface_pressure.mbar);
 }
 
 QTEST_GUILESS_MAIN(TestAirPressure)
