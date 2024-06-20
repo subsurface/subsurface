@@ -575,7 +575,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 108l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
 	//QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
 }
@@ -604,7 +604,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 162l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
 	//QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
 }
@@ -633,7 +633,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 180l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
 	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 141u * 60u + 20u, 139u * 60u + 20u));
 }
@@ -662,7 +662,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 155l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 1);
 	// check first gas change to EAN50 at 21m
 	struct event *ev = &dive.dcs[0].events[0];
@@ -697,7 +697,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 159l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check first gas change to EAN50 at 21m
 	QVERIFY(dive.dcs[0].events.size() >= 1);
 	struct event *ev = &dive.dcs[0].events[0];
@@ -732,7 +732,7 @@ void TestPlan::testVpmbMetric100m60min()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 157l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN50 at 21m
 	struct event *ev = &dive.dcs[0].events[0];
@@ -798,7 +798,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 101l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 167 minutes, and known Subsurface runtime of 169 minutes
 	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 167u * 60u + 20u, 169u * 60u + 20u));
 }
@@ -827,7 +827,7 @@ void TestPlan::testVpmbMetric100m10min()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 175l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN50 at 21m
 	struct event *ev = &dive.dcs[0].events[0];
@@ -873,7 +873,7 @@ void TestPlan::testVpmbMetricRepeat()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 61l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 27 minutes, and known Subsurface runtime of 28 minutes
 	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 27u * 60u + 20u, 27u * 60u + 20u));
 
@@ -893,7 +893,7 @@ void TestPlan::testVpmbMetricRepeat()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 80l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 3);
 	// check first gas change to 21/35 at 66m
 	struct event *ev = &dive.dcs[0].events[0];
@@ -930,7 +930,7 @@ void TestPlan::testVpmbMetricRepeat()
 		dp = dp->next;
 	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 61l);
 	// print first ceiling
-	printf("First ceiling %.1f m\n", (mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar, &dive) * 0.001));
+	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 
 	// check runtime is exactly the same as the first time
 	int finalDiveRunTimeSeconds = dive.dcs[0].duration.seconds;
