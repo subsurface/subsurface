@@ -1159,13 +1159,13 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 		 * EAD just uses N₂ ("Air" for nitrox dives) */
 		pressure_t modpO2 = { .mbar = (int)(prefs.modpO2 * 1000) };
 		entry.mod = gas_mod(gasmix, modpO2, dive, 1).mm;
-		entry.end = mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * (1000 - fhe) / 1000.0), dive);
-		entry.ead = mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * fn2 / (double)N2_IN_AIR), dive);
-		entry.eadd = mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) *
+		entry.end = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * (1000 - fhe) / 1000.0));
+		entry.ead = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * fn2 / (double)N2_IN_AIR));
+		entry.eadd = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) *
 				      (entry.pressures.o2 / amb_pressure * O2_DENSITY +
 				       entry.pressures.n2 / amb_pressure * N2_DENSITY +
 				       entry.pressures.he / amb_pressure * HE_DENSITY) /
-				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000), dive);
+				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000));
 		entry.density = gas_density(entry.pressures);
 		if (entry.mod < 0)
 			entry.mod = 0;

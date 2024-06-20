@@ -551,7 +551,7 @@ int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const 
 	/* Avoid negative depths */
 	pressure_delta = tissues_tolerance > surface_pressure ? tissues_tolerance - surface_pressure : 0.0;
 
-	depth = rel_mbar_to_depth(lrint(pressure_delta * 1000), dive);
+	depth = dive->rel_mbar_to_depth(lrint(pressure_delta * 1000));
 
 	if (!smooth)
 		depth = lrint(ceil(depth / DECO_STOPS_MULTIPLIER_MM) * DECO_STOPS_MULTIPLIER_MM);
