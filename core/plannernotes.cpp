@@ -335,7 +335,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							if (isobaric_counterdiffusion(lastprintgasmix, newgasmix, &icdvalues)) // Do icd calulations
 								icdwarning = true;
 							if (icdvalues.dN2 > 0) { // If the gas change involved helium as well as an increase in nitrogen..
-								icdbuf += icd_entry(&icdvalues, icdtableheader, dp->time, depth_to_mbar(dp->depth.mm, dive), lastprintgasmix, newgasmix); // .. then print calculations to buffer.
+								icdbuf += icd_entry(&icdvalues, icdtableheader, dp->time, dive->depth_to_mbar(dp->depth.mm), lastprintgasmix, newgasmix); // .. then print calculations to buffer.
 								icdtableheader = false;
 							}
 						}
@@ -356,7 +356,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							if (isobaric_counterdiffusion(lastprintgasmix, gasmix, &icdvalues))  // Do icd calculations
 								icdwarning = true;
 							if (icdvalues.dN2 > 0) { // If the gas change involved helium as well as an increase in nitrogen..
-								icdbuf += icd_entry(&icdvalues, icdtableheader, lasttime, depth_to_mbar(dp->depth.mm, dive), lastprintgasmix, gasmix); // .. then print data to buffer.
+								icdbuf += icd_entry(&icdvalues, icdtableheader, lasttime, dive->depth_to_mbar(dp->depth.mm), lastprintgasmix, gasmix); // .. then print data to buffer.
 								icdtableheader = false;
 							}
 						}
@@ -387,7 +387,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							if (isobaric_counterdiffusion(lastprintgasmix, newgasmix, &icdvalues)) // Do icd calculations
 								icdwarning = true;
 							if (icdvalues.dN2 > 0) { // If the gas change involved helium as well as an increase in nitrogen..
-								icdbuf += icd_entry(&icdvalues, icdtableheader, dp->time, depth_to_mbar(dp->depth.mm, dive), lastprintgasmix, newgasmix); // ... then print data to buffer.
+								icdbuf += icd_entry(&icdvalues, icdtableheader, dp->time, dive->depth_to_mbar(dp->depth.mm), lastprintgasmix, newgasmix); // ... then print data to buffer.
 								icdtableheader = false;
 							}
 						}
@@ -500,7 +500,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					/* Calculate minimum gas volume. */
 					volume_t mingasv;
 					mingasv.mliter = lrint(prefs.sacfactor / 100.0 * prefs.problemsolvingtime * prefs.bottomsac
-						* depth_to_bar(lastbottomdp->depth.mm, dive)
+						* dive->depth_to_bar(lastbottomdp->depth.mm)
 						+ prefs.sacfactor / 100.0 * cyl.deco_gas_used.mliter);
 					/* Calculate minimum gas pressure for cyclinder. */
 					lastbottomdp->minimum_gas.mbar = lrint(isothermal_pressure(cyl.gasmix, 1.0,
@@ -580,7 +580,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					struct gasmix gasmix = get_cylinder(dive, dp->cylinderid)->gasmix;
 
 					divemode_t current_divemode = loop.next(dp->time);
-					amb = depth_to_atm(dp->depth.mm, dive);
+					amb = dive->depth_to_atm(dp->depth.mm);
 					gas_pressures pressures = fill_pressures(amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix.o2.permille / 1000.0, current_divemode);
 
 					if (pressures.o2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {

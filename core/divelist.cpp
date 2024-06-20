@@ -95,10 +95,10 @@ static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc,
 		po2 = (po2f + po2i) / 2;
 	} else if (sample.setpoint.mbar > 0) {
 		po2 = std::min((int) sample.setpoint.mbar,
-				depth_to_mbar(sample.depth.mm, dive));
+				dive->depth_to_mbar(sample.depth.mm));
 	} else {
-		double amb_presure = depth_to_bar(sample.depth.mm, dive);
-		double pamb_pressure = depth_to_bar(psample.depth.mm , dive);
+		double amb_presure = dive->depth_to_bar(sample.depth.mm);
+		double pamb_pressure = dive->depth_to_bar(psample.depth.mm );
 		if (dc->divemode == PSCR) {
 			po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(*dive, *dc, psample.time));
 			po2f = pscr_o2(amb_presure, get_gasmix_at_time(*dive, *dc, sample.time));
@@ -135,15 +135,15 @@ static int calculate_otu(const struct dive *dive)
 		} else {
 			if (sample.setpoint.mbar > 0) {
 				po2f = std::min((int) sample.setpoint.mbar,
-						 depth_to_mbar(sample.depth.mm, dive));
+						 dive->depth_to_mbar(sample.depth.mm));
 				if (psample.setpoint.mbar > 0)
 					po2i = std::min((int) psample.setpoint.mbar,
-							 depth_to_mbar(psample.depth.mm, dive));
+							 dive->depth_to_mbar(psample.depth.mm));
 				else
 					po2i = po2f;
 			} else {						// For OC and rebreather without o2 sensor/setpoint
-				double amb_presure = depth_to_bar(sample.depth.mm, dive);
-				double pamb_pressure = depth_to_bar(psample.depth.mm , dive);
+				double amb_presure = dive->depth_to_bar(sample.depth.mm);
+				double pamb_pressure = dive->depth_to_bar(psample.depth.mm);
 				if (dc->divemode == PSCR) {
 					po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(*dive, *dc, psample.time));
 					po2f = pscr_o2(amb_presure, get_gasmix_at_time(*dive, *dc, sample.time));
@@ -381,7 +381,7 @@ static int calculate_sac(const struct dive *dive)
 		return 0;
 
 	/* Mean pressure in ATM (SAC calculations are in atm*l/min) */
-	pressure = depth_to_atm(meandepth, dive);
+	pressure = dive->depth_to_atm(meandepth);
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */
@@ -403,7 +403,7 @@ static void add_dive_to_deco(struct deco_state *ds, const struct dive *dive, boo
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample.depth.mm, sample.depth.mm, j - t0, t1 - t0);
 			auto gasmix = loop.next(j);
-			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample.setpoint.mbar,
+			add_segment(ds, dive->depth_to_bar(depth), gasmix, 1, sample.setpoint.mbar,
 				    loop_d.next(j), dive->sac,
 				    in_planner);
 		}
