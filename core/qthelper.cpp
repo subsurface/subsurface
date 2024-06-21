@@ -692,15 +692,6 @@ QString getPrintingTemplatePathBundle()
 	return path;
 }
 
-int gettimezoneoffset()
-{
-	QDateTime dt1, dt2;
-	dt1 = QDateTime::currentDateTime();
-	dt2 = dt1.toUTC();
-	dt1.setTimeSpec(Qt::UTC);
-	return dt2.secsTo(dt1);
-}
-
 QDateTime timestampToDateTime(timestamp_t when)
 {
 	// Subsurface always uses "local time" as in "whatever was the local time at the location"

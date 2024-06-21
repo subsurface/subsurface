@@ -28,6 +28,8 @@
 #include "trip.h"
 #include "fulltext.h"
 
+#include <time.h>
+
 // For user visible text but still not translated
 const char *divemode_text_ui[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "Open circuit"),
@@ -39,8 +41,8 @@ const char *divemode_text_ui[] = {
 // For writing/reading files.
 const char *divemode_text[] = {"OC", "CCR", "PSCR", "Freedive"};
 
-// It's the "manually added" divecomputer.
 // Even for dives without divecomputer, we allocate a divecomputer structure.
+// It's the "manually added" divecomputer.
 dive::dive() : dcs(1)
 {
 	id = dive_getUniqID();
@@ -50,6 +52,22 @@ dive::dive(const dive &) = default;
 dive::dive(dive &&) = default;
 dive &dive::operator=(const dive &) = default;
 dive::~dive() = default;
+
+// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
+// as a starting point for the user to edit
+std::unique_ptr<dive> dive::default_dive()
+{
+	auto d = std::make_unique<dive>();
+	d->when = time(nullptr) + gettimezoneoffset() + 3600;
+	d->dcs[0].duration.seconds = 40 * 60;
+	d->dcs[0].maxdepth.mm = M_OR_FT(15, 45);
+	d->dcs[0].meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
+	make_manually_added_dive_dc(&d->dcs[0]);
+	fake_dc(&d->dcs[0]);
+	add_default_cylinder(d.get());
+	fixup_dive(d.get());
+	return d;
+}
 
 /*
  * The legacy format for sample pressures has a single pressure
@@ -176,16 +194,6 @@ void copy_dive(const struct dive *s, struct dive *d)
 	/* simply copy things over, but then clear fulltext cache and dive cache. */
 	*d = *s;
 	invalidate_dive_cache(d);
-}
-
-/* make a clone of the source dive and clean out the source dive;
- * this allows us to create a dive on the stack and then
- * add it to the divelist. */
-struct std::unique_ptr<dive> move_dive(struct dive *s)
-{
-	auto d = std::make_unique<dive>();
-	std::swap(*s, *d);
-	return d;
 }
 
 #define CONDITIONAL_COPY_STRING(_component) \
