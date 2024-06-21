@@ -13,6 +13,7 @@
 #include "core/range.h"
 #include "core/sample.h"
 #include "core/selection.h"
+#include "core/subsurface-time.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefUnit.h"
 #if !defined(SUBSURFACE_TESTING)
@@ -1270,6 +1271,16 @@ void DivePlannerPointsModel::computeVariationsDone(QString variations)
 	emit calculatedPlanNotes(notes);
 }
 
+static void addDive(dive *d, bool autogroup, bool newNumber)
+{
+	// Create a new dive and clear out the old one.
+	auto new_d = std::make_unique<dive>();
+	std::swap(*d, *new_d);
+#if !defined(SUBSURFACE_TESTING)
+	Command::addDive(std::move(new_d), autogroup, newNumber);
+#endif // !SUBSURFACE_TESTING
+}
+
 void DivePlannerPointsModel::createPlan(bool saveAsNew)
 {
 	// Ok, so, here the diveplan creates a dive
@@ -1327,17 +1338,13 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	if (!current_dive || d->id != current_dive->id) {
 		// we were planning a new dive, not re-planning an existing one
 		d->divetrip = nullptr; // Should not be necessary, just in case!
-#if !defined(SUBSURFACE_TESTING)
-		Command::addDive(d, divelog.autogroup, true);
-#endif // !SUBSURFACE_TESTING
+		addDive(d, divelog.autogroup, true);
 	} else {
 		copy_events_until(current_dive, d, dcNr, preserved_until.seconds);
 		if (saveAsNew) {
 			// we were planning an old dive and save as a new dive
 			d->id = dive_getUniqID(); // Things will break horribly if we create dives with the same id.
-#if !defined(SUBSURFACE_TESTING)
-			Command::addDive(d, false, false);
-#endif // !SUBSURFACE_TESTING
+			addDive(d, false, false);
 		} else {
 			// we were planning an old dive and rewrite the plan
 #if !defined(SUBSURFACE_TESTING)

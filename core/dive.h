@@ -78,6 +78,7 @@ struct dive {
 	dive(const dive &);
 	dive(dive &&);
 	dive &operator=(const dive &);
+	static std::unique_ptr<dive> default_dive();
 
 	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
@@ -172,7 +173,6 @@ extern bool subsurface_user_is_root();
 extern void clear_dive(struct dive *dive);
 extern void copy_dive(const struct dive *s, struct dive *d);
 extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
-extern struct std::unique_ptr<dive> move_dive(struct dive *s);
 
 extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 

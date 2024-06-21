@@ -698,20 +698,8 @@ void MainWindow::on_actionAddDive_triggered()
 	if (!plannerStateClean())
 		return;
 
-	// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
-	// as a starting point for the user to edit
-	struct dive d;
-	d.id = dive_getUniqID();
-	d.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	d.dcs[0].duration.seconds = 40 * 60;
-	d.dcs[0].maxdepth.mm = M_OR_FT(15, 45);
-	d.dcs[0].meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	make_manually_added_dive_dc(&d.dcs[0]);
-	fake_dc(&d.dcs[0]);
-	add_default_cylinder(&d);
-	fixup_dive(&d);
-
-	Command::addDive(&d, divelog.autogroup, true);
+	auto d = dive::default_dive();
+	Command::addDive(std::move(d), divelog.autogroup, true);
 }
 
 void MainWindow::on_actionRenumber_triggered()
