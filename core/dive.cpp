@@ -233,6 +233,7 @@ static void free_dive_structures(struct dive *d)
 	free(d->weightsystems.weightsystems);
 	clear_picture_table(&d->pictures);
 	free(d->pictures.pictures);
+	free_dips(d->dips);
 }
 
 extern "C" void free_dive(struct dive *d)
@@ -1230,6 +1231,68 @@ static void fixup_dc_sample_sensors(struct dive *dive, struct divecomputer *dc)
 	}
 }
 
+extern "C" void free_dips(struct dips *d)
+{
+	if (!d)
+		return;
+	free(d->dips);
+	free(d);
+}
+
+static void next_dip(struct dive *dive)
+{
+	if (dive->dips == NULL) {
+		dive->dips = (struct dips*)calloc(1, sizeof(*(dive->dips)));
+		if (!dive->dips)
+			exit(1);
+		dive->dips->best_dip = -1;
+	}
+	struct dips *dips = dive->dips;
+	dips->num++;
+	if (dips->num > dips->alloc) {
+		dips->alloc = (dips->num * 3) / 2 + 10;
+		struct dip* new_dips = (struct dip*)realloc(dips->dips, dips->alloc * sizeof(struct dip));
+		if (!new_dips) {
+			exit(1);
+		}
+		dips->dips = new_dips;
+	}
+	struct dip* ret = dips->dips + (dips->num - 1);
+	memset(ret, 0, sizeof(*ret));
+	ret->idx = dips->num - 1;
+	return;
+}
+
+static struct dip* current_dip(struct dive *dive)
+{
+	if (dive->dips == NULL) {
+		next_dip(dive);
+	}
+	return dive->dips->dips + (dive->dips->num - 1);
+}
+
+static void update_dips(struct dive *dive, struct sample *sample)
+{
+	struct dip *dip = current_dip(dive);
+	if (sample->depth.mm == 0) {
+		if (!dive->dips->last_zero_depth && dip->start) {
+			dip->end = sample;
+			dip->dip_time.seconds = dip->end->time.seconds - dip->start->time.seconds;
+			if (dive->dips->best_dip == -1 || dive->dips->dips[dive->dips->best_dip].dip_time.seconds < dip->dip_time.seconds)
+				dive->dips->best_dip = dip->idx;
+			dive->dips->finished++;
+			next_dip(dive);
+		}
+		dive->dips->last_zero_depth = sample;
+	} else {
+		if (dip->start == NULL) {
+			dip->start = dive->dips->last_zero_depth;
+			dive->dips->last_zero_depth = NULL;
+		}
+		dip->num_samples++;
+	}
+}
+
 static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 {
 	/* Fixup duration and mean depth */
@@ -1259,8 +1322,17 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	fixup_no_o2sensors(dc);
 
 	/* If there are no samples, generate a fake profile based on depth and time */
-	if (!dc->samples)
+	if (!dc->samples) {
 		fake_dc(dc);
+	} else if (dc->divemode == FREEDIVE) {
+		/* There are samples and we're freediving, so update the dips */
+		int samples = 0;
+		struct sample *sample = dc->sample;
+		while (samples++ < dc->samples) {
+			update_dips(dive, sample);
+			sample++;
+		}
+	}
 }
 
 extern "C" struct dive *fixup_dive(struct dive *dive)

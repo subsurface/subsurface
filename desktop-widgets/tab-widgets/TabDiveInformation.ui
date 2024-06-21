@@ -207,7 +207,7 @@
        </item>
 
        <item row="2" column="0">
-        <widget class="QLabel" name="gasHeadingLabel">
+        <widget class="QLabel" name="dive_info_label">
          <property name="text">
           <string>GAS</string>
          </property>
@@ -217,8 +217,19 @@
         </widget>
        </item>
 
+       <item row="2" column="2">
+        <widget class="QLabel" name="dip_details_label">
+         <property name="text">
+          <string>DIP DETAILS</string>
+         </property>
+         <property name="isHeader" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+
        <item row="3" column="0">
-        <widget class="QGroupBox" name="groupBox_3">
+        <widget class="QGroupBox" name="dive_info_0_groupbox">
          <property name="title">
           <string>Gas name</string>
          </property>
@@ -233,7 +244,7 @@
          </property>
          <layout class="QHBoxLayout" name="diveInfoGasesUsedLayout">
           <item>
-           <widget class="QLabel" name="oxygenHeliumText">
+           <widget class="QLabel" name="dive_info_0_label">
             <property name="text">
              <string/>
             </property>
@@ -246,7 +257,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QGroupBox" name="groupBox_4">
+        <widget class="QGroupBox" name="dive_info_1_groupbox">
          <property name="title">
           <string>Gas consumed</string>
          </property>
@@ -261,7 +272,7 @@
          </property>
          <layout class="QHBoxLayout" name="diveInfoGasConsumedLayout">
           <item>
-           <widget class="QLabel" name="gasUsedText">
+           <widget class="QLabel" name="dive_info_1_label">
             <property name="text">
              <string/>
             </property>
@@ -274,7 +285,7 @@
         </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="dive_info_2_groupbox">
          <property name="title">
           <string>SAC</string>
          </property>
@@ -287,9 +298,16 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <layout class="QHBoxLayout" name="diveInfoSacLayout">
+         <layout class="QHBoxLayout" name="dive_info_2_layout">
           <item>
-           <widget class="QLabel" name="sacText">
+           <widget class="QToolButton" name="dive_info_2_button_prev">
+            <property name="text">
+             <string>&lt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="dive_info_2_label">
             <property name="text">
              <string/>
             </property>
@@ -298,11 +316,18 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QToolButton" name="dive_info_2_button_next">
+            <property name="text">
+             <string>&gt;</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
        <item row="3" column="3">
-        <widget class="QGroupBox" name="groupBox_15">
+        <widget class="QGroupBox" name="dive_info_3_groupbox">
          <property name="title">
           <string>CNS</string>
          </property>
@@ -317,7 +342,7 @@
          </property>
          <layout class="QHBoxLayout" name="diveInfoCnsLayout">
           <item>
-           <widget class="QLabel" name="maxcnsText">
+           <widget class="QLabel" name="dive_info_3_label">
             <property name="text">
              <string/>
             </property>
@@ -330,7 +355,7 @@
         </widget>
        </item>
        <item row="3" column="4">
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="dive_info_4_groupbox">
          <property name="title">
           <string>OTU</string>
          </property>
@@ -345,7 +370,7 @@
          </property>
          <layout class="QHBoxLayout" name="diveInfoOtuLayout">
           <item>
-           <widget class="QLabel" name="otuText">
+           <widget class="QLabel" name="dive_info_4_label">
             <property name="text">
              <string/>
             </property>

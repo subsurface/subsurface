@@ -376,6 +376,7 @@ struct ws_info_t ws_info[MAX_WS_INFO] = {
 	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "neck"), 0 },
 };
 
 void remove_cylinder(struct dive *dive, int idx)
