@@ -64,7 +64,6 @@ QString get_water_type_string(int salinity);
 QString getSubsurfaceDataPath(QString folderToFind);
 QString getPrintingTemplatePathUser();
 QString getPrintingTemplatePathBundle();
-int gettimezoneoffset();
 QDateTime timestampToDateTime(timestamp_t when);
 timestamp_t dateTimeToTimestamp(const QDateTime &t);
 int parseDurationToSeconds(const QString &text);

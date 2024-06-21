@@ -79,7 +79,7 @@ private:
 
 class AddDive : public DiveListBase {
 public:
-	AddDive(dive *dive, bool autogroup, bool newNumber);
+	AddDive(std::unique_ptr<struct dive> dive, bool autogroup, bool newNumber);
 private:
 	void undoit() override;
 	void redoit() override;

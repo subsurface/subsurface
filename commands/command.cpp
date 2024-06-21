@@ -13,9 +13,9 @@
 namespace Command {
 
 // Dive-list related commands
-void addDive(dive *d, bool autogroup, bool newNumber)
+void addDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber)
 {
-	execute(new AddDive(d, autogroup, newNumber));
+	execute(new AddDive(std::move(d), autogroup, newNumber));
 }
 
 void importDives(struct divelog *log, int flags, const QString &source)
