@@ -386,42 +386,39 @@ void DiveListBase::redo()
 	finishWork();
 }
 
-AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
+AddDive::AddDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber)
 {
 	setText(Command::Base::tr("add dive"));
-	// By convention, d is a pointer to "displayed dive" or a temporary variable and can be overwritten.
 	d->maxdepth.mm = 0;
 	d->dcs[0].maxdepth.mm = 0;
-	fixup_dive(d);
+	fixup_dive(d.get());
 
 	// this only matters if undoit were called before redoit
 	currentDive = nullptr;
 
-	// Get an owning pointer to a moved dive.
-	std::unique_ptr<dive> divePtr = move_dive(d);
-	divePtr->selected = false; // If we clone a planned dive, it might have been selected.
-				   // We have to clear the flag, as selections will be managed
-				   // on dive-addition.
+	d->selected = false; // If we clone a planned dive, it might have been selected.
+			     // We have to clear the flag, as selections will be managed
+			     // on dive-addition.
 
 	// If we alloc a new-trip for autogrouping, get an owning pointer to it.
 	std::unique_ptr<dive_trip> allocTrip;
-	dive_trip *trip = divePtr->divetrip;
-	dive_site *site = divePtr->dive_site;
+	dive_trip *trip = d->divetrip;
+	dive_site *site = d->dive_site;
 	// We have to delete the pointers to trip and site, because this would prevent the core from adding to the
 	// trip or site and we would get the count-of-dives in the trip or site wrong. Yes, that's all horribly subtle!
-	divePtr->divetrip = nullptr;
-	divePtr->dive_site = nullptr;
+	d->divetrip = nullptr;
+	d->dive_site = nullptr;
 	if (!trip && autogroup) {
-		auto [t, allocated] = get_trip_for_new_dive(divelog, divePtr.get());
+		auto [t, allocated] = get_trip_for_new_dive(divelog, d.get());
 		trip = t;
 		allocTrip = std::move(allocated);
 	}
 
-	int idx = divelog.dives.get_insertion_index(divePtr.get());
+	int idx = divelog.dives.get_insertion_index(d.get());
 	if (newNumber)
-		divePtr->number = divelog.dives.get_dive_nr_at_idx(idx);
+		d->number = divelog.dives.get_dive_nr_at_idx(idx);
 
-	divesToAdd.dives.push_back({ std::move(divePtr), trip, site });
+	divesToAdd.dives.push_back({ std::move(d), trip, site });
 	if (allocTrip)
 		divesToAdd.trips.push_back(std::move(allocTrip));
 }
