@@ -624,13 +624,13 @@ static bool is_potentially_redundant(const struct event &event)
 	return true;
 }
 
-pressure_t calculate_surface_pressure(const struct dive *dive)
+pressure_t dive::calculate_surface_pressure() const
 {
 	pressure_t res;
 	int sum = 0, nr = 0;
 
-	bool logged = dive->is_logged();
-	for (auto &dc: dive->dcs) {
+	bool logged = is_logged();
+	for (auto &dc: dcs) {
 		if ((logged || !is_dc_planner(&dc)) && dc.surface_pressure.mbar) {
 			sum += dc.surface_pressure.mbar;
 			nr++;
@@ -642,18 +642,16 @@ pressure_t calculate_surface_pressure(const struct dive *dive)
 
 static void fixup_surface_pressure(struct dive *dive)
 {
-	dive->surface_pressure = calculate_surface_pressure(dive);
+	dive->surface_pressure = dive->calculate_surface_pressure();
 }
 
 /* if the surface pressure in the dive data is redundant to the calculated
  * value (i.e., it was added by running fixup on the dive) return 0,
  * otherwise return the surface pressure given in the dive */
-pressure_t un_fixup_surface_pressure(const struct dive *d)
+pressure_t dive::un_fixup_surface_pressure() const
 {
-	pressure_t res = d->surface_pressure;
-	if (res.mbar && res.mbar == calculate_surface_pressure(d).mbar)
-		res.mbar = 0;
-	return res;
+	return surface_pressure.mbar == calculate_surface_pressure().mbar ?
+		pressure_t() : surface_pressure;
 }
 
 static void fixup_water_salinity(struct dive *dive)
