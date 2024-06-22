@@ -94,6 +94,9 @@ struct dive {
 	double depth_to_atm(int depth) const;
 	int rel_mbar_to_depth(int mbar) const;
 	int mbar_to_depth(int mbar) const;
+
+	pressure_t calculate_surface_pressure() const;
+	pressure_t un_fixup_surface_pressure() const;
 };
 
 /* For the top-level list: an entry is either a dive or a trip */
@@ -180,8 +183,6 @@ extern bool dive_less_than(const struct dive &a, const struct dive &b);
 extern bool dive_less_than_ptr(const struct dive *a, const struct dive *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
 extern struct dive *fixup_dive(struct dive *dive);
-extern pressure_t calculate_surface_pressure(const struct dive *dive);
-extern pressure_t un_fixup_surface_pressure(const struct dive *d);
 extern int get_dive_salinity(const struct dive *dive);
 extern int dive_getUniqID();
 extern std::array<std::unique_ptr<dive>, 2> split_dive(const struct dive &dive);
