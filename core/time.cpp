@@ -228,13 +228,13 @@ const char *monthname(int mon)
 
 int gettimezoneoffset()
 {
-	time_t now = time(nullptr);
 #ifdef WIN32
 	// Somewhat surprisingly, Windows doesn't have localtime_r (I thought this was POSIX?).
 	// Let's use the global timezone variable.
 	// Ultimately, use the portable C++20 API.
 	return static_cast<int>(-timezone);
 #else
+	time_t now = time(nullptr);
 	struct tm local;
 	localtime_r(&now, &local);
 	return local.tm_gmtoff;

@@ -455,7 +455,7 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 			}
 			break;
 		case 2:          // i.e. event = COMBO_CHANGED, that is, the option "Use dc" was selected from combobox
-			atmpress = calculate_surface_pressure(currentDive);	// re-calculate air pressure from dc data
+			atmpress = currentDive->calculate_surface_pressure();	// re-calculate air pressure from dc data
 			ui->atmPressVal->setText(QString::number(atmpress.mbar)); // display it in text box
 			setIndexNoSignal(ui->atmPressType, 0);          // reset combobox to mbar
 			break;

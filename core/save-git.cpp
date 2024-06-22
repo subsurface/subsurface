@@ -434,7 +434,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
  */
 static void create_dive_buffer(const struct dive &dive, struct membuffer *b)
 {
-	pressure_t surface_pressure = un_fixup_surface_pressure(&dive);
+	pressure_t surface_pressure = dive.un_fixup_surface_pressure();
 	if (dive.dcs[0].duration.seconds > 0)
 		put_format(b, "duration %u:%02u min\n", FRACTION_TUPLE(dive.dcs[0].duration.seconds, 60));
 	SAVE("rating", rating);
