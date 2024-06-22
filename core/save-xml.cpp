@@ -476,7 +476,7 @@ static void save_picture(struct membuffer *b, const struct picture &pic)
 
 void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anonymize)
 {
-	pressure_t surface_pressure = un_fixup_surface_pressure(&dive);
+	pressure_t surface_pressure = dive.un_fixup_surface_pressure();
 
 	put_string(b, "<dive");
 	if (dive.number)
