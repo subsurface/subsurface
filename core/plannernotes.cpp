@@ -410,7 +410,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	/* Print the CNS and OTU next.*/
 	dive->cns = 0;
 	dive->maxcns = 0;
-	divelog.dives.update_cylinder_related_info(dive);
+	divelog.dives.update_cylinder_related_info(*dive);
 	buf += casprintf_loc("<div>\n%s: %i%%", translate("gettextFromC", "CNS"), dive->cns);
 	buf += casprintf_loc("<br/>\n%s: %i<br/>\n</div>\n", translate("gettextFromC", "OTU"), dive->otu);
 

@@ -256,7 +256,7 @@ void EditWaterTemp::set(struct dive *d, int value) const
 	d->watertemp.mkelvin = value > 0 ? (uint32_t)value : 0u;
 
 	// re-populate the temperatures - easiest way to do this is by calling fixup_dive
-	fixup_dive(d);
+	divelog.dives.fixup_dive(*d);
 }
 
 int EditWaterTemp::data(struct dive *d) const
@@ -787,7 +787,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 
 	// Fix source. Things might be inconsistent after modifying the profile.
 	source->maxdepth.mm = source->dcs[0].maxdepth.mm = 0;
-	fixup_dive(source);
+	divelog.dives.fixup_dive(*source);
 
 	when = source->when;
 	maxdepth = source->maxdepth;
@@ -824,7 +824,7 @@ void ReplanDive::undo()
 	std::swap(d->surface_pressure, surface_pressure);
 	std::swap(d->duration, duration);
 	std::swap(d->salinity, salinity);
-	fixup_dive(d);
+	divelog.dives.fixup_dive(*d);
 	invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 
 	QVector<dive *> divesToNotify = { d };
@@ -899,7 +899,7 @@ void EditProfile::undo()
 	std::swap(d->maxdepth, maxdepth);
 	std::swap(d->meandepth, meandepth);
 	std::swap(d->duration, duration);
-	fixup_dive(d);
+	divelog.dives.fixup_dive(*d);
 	invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 
 	QVector<dive *> divesToNotify = { d };
@@ -1101,7 +1101,7 @@ void AddCylinder::undo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
 		remove_cylinder(dives[i], indexes[i]);
-		divelog.dives.update_cylinder_related_info(dives[i]);
+		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderRemoved(dives[i], indexes[i]);
 		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
@@ -1114,7 +1114,7 @@ void AddCylinder::redo()
 		int index = first_hidden_cylinder(d);
 		indexes.push_back(index);
 		add_cylinder(&d->cylinders, index, cyl);
-		divelog.dives.update_cylinder_related_info(d);
+		divelog.dives.update_cylinder_related_info(*d);
 		emit diveListNotifier.cylinderAdded(d, index);
 		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
 	}
@@ -1201,7 +1201,7 @@ void RemoveCylinder::undo()
 		std::vector<int> mapping = get_cylinder_map_for_add(dives[i]->cylinders.size(), indexes[i]);
 		add_cylinder(&dives[i]->cylinders, indexes[i], cyl[i]);
 		cylinder_renumber(*dives[i], &mapping[0]);
-		divelog.dives.update_cylinder_related_info(dives[i]);
+		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderAdded(dives[i], indexes[i]);
 		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
@@ -1213,7 +1213,7 @@ void RemoveCylinder::redo()
 		std::vector<int> mapping = get_cylinder_map_for_remove(dives[i]->cylinders.size(), indexes[i]);
 		remove_cylinder(dives[i], indexes[i]);
 		cylinder_renumber(*dives[i], &mapping[0]);
-		divelog.dives.update_cylinder_related_info(dives[i]);
+		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderRemoved(dives[i], indexes[i]);
 		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}
@@ -1273,7 +1273,7 @@ void EditCylinder::redo()
 		const std::string &name = cyl[i].type.description;
 		set_tank_info_data(tank_info_table, name, cyl[i].type.size, cyl[i].type.workingpressure);
 		std::swap(*get_cylinder(dives[i], indexes[i]), cyl[i]);
-		divelog.dives.update_cylinder_related_info(dives[i]);
+		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderEdited(dives[i], indexes[i]);
 		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
 	}

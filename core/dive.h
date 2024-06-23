@@ -78,8 +78,8 @@ struct dive {
 	dive(const dive &);
 	dive(dive &&);
 	dive &operator=(const dive &);
-	static std::unique_ptr<dive> default_dive();
 
+	void fixup_no_cylinder();		/* to fix cylinders, we need the divelist (to calculate cns) */
 	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
 	temperature_t dc_airtemp() const;	/* average over divecomputers */
@@ -182,7 +182,6 @@ extern int legacy_format_o2pressures(const struct dive *dive, const struct divec
 extern bool dive_less_than(const struct dive &a, const struct dive &b);
 extern bool dive_less_than_ptr(const struct dive *a, const struct dive *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
-extern struct dive *fixup_dive(struct dive *dive);
 extern int get_dive_salinity(const struct dive *dive);
 extern int dive_getUniqID();
 extern std::array<std::unique_ptr<dive>, 2> split_dive(const struct dive &dive);
