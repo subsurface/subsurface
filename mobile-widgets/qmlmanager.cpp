@@ -1358,7 +1358,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			d->meandepth.mm = d->dcs[0].meandepth.mm = 0;
 			fake_dc(&d->dcs[0]);
 		}
-		fixup_dive(d);
+		divelog.dives.fixup_dive(*d);
 		Command::editDive(orig, d_ptr.release(), dsChange.createdDs.release(), dsChange.editDs, dsChange.location); // With release() we're giving up ownership
 		changesNeedSaving();
 	}
@@ -1717,7 +1717,7 @@ int QMLManager::addDive()
 {
 	// we do NOT save the modified data at this stage because of the UI flow here... this will
 	// be saved once the user finishes editing the newly added dive
-	auto d = dive::default_dive();
+	auto d = divelog.dives.default_dive();
 	int diveId = d->id;
 	Command::addDive(std::move(d), divelog.autogroup, true);
 

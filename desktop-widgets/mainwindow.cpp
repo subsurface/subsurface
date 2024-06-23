@@ -698,7 +698,7 @@ void MainWindow::on_actionAddDive_triggered()
 	if (!plannerStateClean())
 		return;
 
-	auto d = dive::default_dive();
+	auto d = divelog.dives.default_dive();
 	Command::addDive(std::move(d), divelog.autogroup, true);
 }
 
