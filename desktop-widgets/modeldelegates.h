@@ -75,12 +75,13 @@ class TankUseDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit TankUseDelegate(QObject *parent = 0);
-	void setCurrentDC(divecomputer *dc);
+	void setDiveDc(const dive &d, int &dcNr);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-	divecomputer *currentdc;
+	const dive *currentDive;
+	int *currentDcNr;
 };
 
 class SensorDelegate : public QStyledItemDelegate {
@@ -103,10 +104,10 @@ private:
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
 };
 
-class AirTypesDelegate : public ComboBoxDelegate {
+class GasTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
-	explicit AirTypesDelegate(const dive &d, QObject *parent = 0);
+	explicit GasTypesDelegate(const dive &d, int &dcNr, QObject *parent = 0);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
@@ -115,7 +116,7 @@ private:
 class DiveTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
-	explicit DiveTypesDelegate(QObject *parent = 0);
+	explicit DiveTypesDelegate(const dive &d, int &dcNr, QObject *parent = 0);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;

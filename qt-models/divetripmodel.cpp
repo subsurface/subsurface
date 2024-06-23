@@ -29,7 +29,7 @@
 static int nitrox_sort_value(const struct dive *dive)
 {
 	int o2, he, o2max;
-	get_dive_gas(dive, &o2, &he, &o2max);
+	get_max_dive_gas(dive, &o2, &he, &o2max);
 	return he * 1000 + o2;
 }
 

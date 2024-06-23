@@ -235,7 +235,7 @@ public slots:
 	void set_ascrate75(int value) { DivePlannerPointsModel::instance()->setAscrate75Display(value); }
 	void set_descrate(int value) { DivePlannerPointsModel::instance()->setDescrateDisplay(value); }
 
-	void set_dive_mode(DIVE_MODE value) { DivePlannerPointsModel::instance()->setRebreatherMode((int)value); }
+	void set_dive_mode(DIVE_MODE value) { DivePlannerPointsModel::instance()->setDiveMode((int)value); }
 	void set_planner_deco_mode(DECO_MODE value) { PlannerShared::set_planner_deco_mode((deco_mode)value); }
 	void set_reserve_gas(int value) { PlannerShared::set_reserve_gas(value); }
 	void set_safetystop(bool value) { DivePlannerPointsModel::instance()->setSafetyStop(value); }
