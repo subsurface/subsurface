@@ -2,6 +2,8 @@
 
 #include "command_event.h"
 #include "core/dive.h"
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/libdivecomputer.h"
@@ -145,7 +147,7 @@ void RemoveEvent::post() const
 	if (cylinder < 0)
 		return;
 
-	fixup_dive(d);
+	divelog.dives.fixup_dive(*d);
 	emit diveListNotifier.cylinderEdited(d, cylinder);
 
 	// TODO: This is silly we send a DURATION change event so that the statistics are recalculated.
@@ -199,7 +201,7 @@ void AddGasSwitch::redoit()
 	eventsToRemove = std::move(newEventsToRemove);
 
 	// this means we potentially have a new tank that is being used and needs to be shown
-	fixup_dive(d);
+	divelog.dives.fixup_dive(*d);
 
 	for (int idx: cylinders)
 		emit diveListNotifier.cylinderEdited(d, idx);
