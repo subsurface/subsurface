@@ -28,8 +28,6 @@
 #include "trip.h"
 #include "fulltext.h"
 
-#include <time.h>
-
 // For user visible text but still not translated
 const char *divemode_text_ui[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "Open circuit"),
@@ -52,22 +50,6 @@ dive::dive(const dive &) = default;
 dive::dive(dive &&) = default;
 dive &dive::operator=(const dive &) = default;
 dive::~dive() = default;
-
-// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
-// as a starting point for the user to edit
-std::unique_ptr<dive> dive::default_dive()
-{
-	auto d = std::make_unique<dive>();
-	d->when = time(nullptr) + gettimezoneoffset() + 3600;
-	d->dcs[0].duration.seconds = 40 * 60;
-	d->dcs[0].maxdepth.mm = M_OR_FT(15, 45);
-	d->dcs[0].meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	make_manually_added_dive_dc(&d->dcs[0]);
-	fake_dc(&d->dcs[0]);
-	add_default_cylinder(d.get());
-	fixup_dive(d.get());
-	return d;
-}
 
 /*
  * The legacy format for sample pressures has a single pressure
@@ -446,13 +428,13 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 	}
 }
 
-static void update_min_max_temperatures(struct dive *dive, temperature_t temperature)
+static void update_min_max_temperatures(struct dive &dive, temperature_t temperature)
 {
 	if (temperature.mkelvin) {
-		if (!dive->maxtemp.mkelvin || temperature.mkelvin > dive->maxtemp.mkelvin)
-			dive->maxtemp = temperature;
-		if (!dive->mintemp.mkelvin || temperature.mkelvin < dive->mintemp.mkelvin)
-			dive->mintemp = temperature;
+		if (!dive.maxtemp.mkelvin || temperature.mkelvin > dive.maxtemp.mkelvin)
+			dive.maxtemp = temperature;
+		if (!dive.mintemp.mkelvin || temperature.mkelvin < dive.mintemp.mkelvin)
+			dive.mintemp = temperature;
 	}
 }
 
@@ -604,9 +586,9 @@ static void sanitize_cylinder_type(cylinder_type_t &type)
 	match_standard_cylinder(type);
 }
 
-static void sanitize_cylinder_info(struct dive *dive)
+static void sanitize_cylinder_info(struct dive &dive)
 {
-	for (auto &cyl :dive->cylinders) {
+	for (auto &cyl: dive.cylinders) {
 		sanitize_gasmix(cyl.gasmix);
 		sanitize_cylinder_type(cyl.type);
 	}
@@ -640,9 +622,9 @@ pressure_t dive::calculate_surface_pressure() const
 	return res;
 }
 
-static void fixup_surface_pressure(struct dive *dive)
+static void fixup_surface_pressure(struct dive &dive)
 {
-	dive->surface_pressure = dive->calculate_surface_pressure();
+	dive.surface_pressure = dive.calculate_surface_pressure();
 }
 
 /* if the surface pressure in the dive data is redundant to the calculated
@@ -654,12 +636,12 @@ pressure_t dive::un_fixup_surface_pressure() const
 		pressure_t() : surface_pressure;
 }
 
-static void fixup_water_salinity(struct dive *dive)
+static void fixup_water_salinity(struct dive &dive)
 {
 	int sum = 0, nr = 0;
 
-	bool logged = dive->is_logged();
-	for (auto &dc: dive->dcs) {
+	bool logged = dive.is_logged();
+	for (auto &dc: dive.dcs) {
 		if ((logged || !is_dc_planner(&dc)) && dc.salinity) {
 			if (dc.salinity < 500)
 				dc.salinity += FRESHWATER_SALINITY;
@@ -668,7 +650,7 @@ static void fixup_water_salinity(struct dive *dive)
 		}
 	}
 	if (nr)
-		dive->salinity = (sum + nr / 2) / nr;
+		dive.salinity = (sum + nr / 2) / nr;
 }
 
 int get_dive_salinity(const struct dive *dive)
@@ -676,12 +658,12 @@ int get_dive_salinity(const struct dive *dive)
 	return dive->user_salinity ? dive->user_salinity : dive->salinity;
 }
 
-static void fixup_meandepth(struct dive *dive)
+static void fixup_meandepth(struct dive &dive)
 {
 	int sum = 0, nr = 0;
 
-	bool logged = dive->is_logged();
-	for (auto &dc: dive->dcs) {
+	bool logged = dive.is_logged();
+	for (auto &dc: dive.dcs) {
 		if ((logged || !is_dc_planner(&dc)) && dc.meandepth.mm) {
 			sum += dc.meandepth.mm;
 			nr++;
@@ -689,31 +671,31 @@ static void fixup_meandepth(struct dive *dive)
 	}
 
 	if (nr)
-		dive->meandepth.mm = (sum + nr / 2) / nr;
+		dive.meandepth.mm = (sum + nr / 2) / nr;
 }
 
-static void fixup_duration(struct dive *dive)
+static void fixup_duration(struct dive &dive)
 {
-	duration_t duration = { };
+	duration_t duration;
 
-	bool logged = dive->is_logged();
-	for (auto &dc: dive->dcs) {
+	bool logged = dive.is_logged();
+	for (auto &dc: dive.dcs) {
 		if (logged || !is_dc_planner(&dc))
 			duration.seconds = std::max(duration.seconds, dc.duration.seconds);
 	}
-	dive->duration.seconds = duration.seconds;
+	dive.duration.seconds = duration.seconds;
 }
 
-static void fixup_watertemp(struct dive *dive)
+static void fixup_watertemp(struct dive &dive)
 {
-	if (!dive->watertemp.mkelvin)
-		dive->watertemp = dive->dc_watertemp();
+	if (!dive.watertemp.mkelvin)
+		dive.watertemp = dive.dc_watertemp();
 }
 
-static void fixup_airtemp(struct dive *dive)
+static void fixup_airtemp(struct dive &dive)
 {
-	if (!dive->airtemp.mkelvin)
-		dive->airtemp = dive->dc_airtemp();
+	if (!dive.airtemp.mkelvin)
+		dive.airtemp = dive.dc_airtemp();
 }
 
 /* if the air temperature in the dive data is redundant to the one in its
@@ -772,7 +754,7 @@ static int interpolate_depth(struct divecomputer &dc, int idx, int lastdepth, in
 	return interpolate(lastdepth, nextdepth, now-lasttime, nexttime-lasttime);
 }
 
-static void fixup_dc_depths(struct dive *dive, struct divecomputer &dc)
+static void fixup_dc_depths(struct dive &dive, struct divecomputer &dc)
 {
 	int maxdepth = dc.maxdepth.mm;
 	int lasttime = 0, lastdepth = 0;
@@ -793,14 +775,14 @@ static void fixup_dc_depths(struct dive *dive, struct divecomputer &dc)
 
 		lastdepth = depth;
 		lasttime = time;
-		if (sample.cns > dive->maxcns)
-			dive->maxcns = sample.cns;
+		if (sample.cns > dive.maxcns)
+			dive.maxcns = sample.cns;
 	}
 
 	update_depth(&dc.maxdepth, maxdepth);
-	if (!dive->is_logged() || !is_dc_planner(&dc))
-		if (maxdepth > dive->maxdepth.mm)
-			dive->maxdepth.mm = maxdepth;
+	if (!dive.is_logged() || !is_dc_planner(&dc))
+		if (maxdepth > dive.maxdepth.mm)
+			dive.maxdepth.mm = maxdepth;
 }
 
 static void fixup_dc_ndl(struct divecomputer &dc)
@@ -813,7 +795,7 @@ static void fixup_dc_ndl(struct divecomputer &dc)
 	}
 }
 
-static void fixup_dc_temp(struct dive *dive, struct divecomputer &dc)
+static void fixup_dc_temp(struct dive &dive, struct divecomputer &dc)
 {
 	int mintemp = 0, lasttemp = 0;
 
@@ -866,19 +848,19 @@ static void simplify_dc_pressures(struct divecomputer &dc)
 }
 
 /* Do we need a sensor -> cylinder mapping? */
-static void fixup_start_pressure(struct dive *dive, int idx, pressure_t p)
+static void fixup_start_pressure(struct dive &dive, int idx, pressure_t p)
 {
-	if (idx >= 0 && static_cast<size_t>(idx) < dive->cylinders.size()) {
-		cylinder_t &cyl = dive->cylinders[idx];
+	if (idx >= 0 && static_cast<size_t>(idx) < dive.cylinders.size()) {
+		cylinder_t &cyl = dive.cylinders[idx];
 		if (p.mbar && !cyl.sample_start.mbar)
 			cyl.sample_start = p;
 	}
 }
 
-static void fixup_end_pressure(struct dive *dive, int idx, pressure_t p)
+static void fixup_end_pressure(struct dive &dive, int idx, pressure_t p)
 {
-	if (idx >= 0 && static_cast<size_t>(idx) < dive->cylinders.size()) {
-		cylinder_t &cyl = dive->cylinders[idx];
+	if (idx >= 0 && static_cast<size_t>(idx) < dive.cylinders.size()) {
+		cylinder_t &cyl = dive.cylinders[idx];
 		if (p.mbar && !cyl.sample_end.mbar)
 			cyl.sample_end = p;
 	}
@@ -897,7 +879,7 @@ static void fixup_end_pressure(struct dive *dive, int idx, pressure_t p)
  * for computers like the Uemis Zurich that end up saving
  * quite a bit of samples after the dive has ended).
  */
-static void fixup_dive_pressures(struct dive *dive, struct divecomputer &dc)
+static void fixup_dive_pressures(struct dive &dive, struct divecomputer &dc)
 {
 	/* Walk the samples from the beginning to find starting pressures.. */
 	for (auto &sample: dc.samples) {
@@ -923,7 +905,7 @@ static void fixup_dive_pressures(struct dive *dive, struct divecomputer &dc)
 /*
  * Match a gas change event against the cylinders we have
  */
-static bool validate_gaschange(struct dive *dive, struct event &event)
+static bool validate_gaschange(struct dive &dive, struct event &event)
 {
 	int index;
 	int o2, he, value;
@@ -936,13 +918,13 @@ static bool validate_gaschange(struct dive *dive, struct event &event)
 	if (event.gas.index >= 0)
 		return true;
 
-	index = find_best_gasmix_match(event.gas.mix, dive->cylinders);
-	if (index < 0 || static_cast<size_t>(index) >= dive->cylinders.size())
+	index = find_best_gasmix_match(event.gas.mix, dive.cylinders);
+	if (index < 0 || static_cast<size_t>(index) >= dive.cylinders.size())
 		return false;
 
 	/* Fix up the event to have the right information */
 	event.gas.index = index;
-	event.gas.mix = dive->cylinders[index].gasmix;
+	event.gas.mix = dive.cylinders[index].gasmix;
 
 	/* Convert to odd libdivecomputer format */
 	o2 = get_o2(event.gas.mix);
@@ -960,19 +942,19 @@ static bool validate_gaschange(struct dive *dive, struct event &event)
 }
 
 /* Clean up event, return true if event is ok, false if it should be dropped as bogus */
-static bool validate_event(struct dive *dive, struct event &event)
+static bool validate_event(struct dive &dive, struct event &event)
 {
 	if (event.is_gaschange())
 		return validate_gaschange(dive, event);
 	return true;
 }
 
-static void fixup_dc_gasswitch(struct dive *dive, struct divecomputer &dc)
+static void fixup_dc_gasswitch(struct dive &dive, struct divecomputer &dc)
 {
 	// erase-remove idiom
 	auto &events = dc.events;
 	events.erase(std::remove_if(events.begin(), events.end(),
-				    [dive](auto &ev) { return !validate_event(dive, ev); }),
+				    [&dive](auto &ev) { return !validate_event(dive, ev); }),
 		     events.end());
 }
 
@@ -1000,7 +982,7 @@ static void fixup_no_o2sensors(struct divecomputer &dc)
 	}
 }
 
-static void fixup_dc_sample_sensors(struct dive *dive, struct divecomputer &dc)
+static void fixup_dc_sample_sensors(struct dive &dive, struct divecomputer &dc)
 {
 	unsigned long sensor_mask = 0;
 
@@ -1027,16 +1009,16 @@ static void fixup_dc_sample_sensors(struct dive *dive, struct divecomputer &dc)
 	}
 
 	// Ignore the sensors we have cylinders for
-	sensor_mask >>= dive->cylinders.size();
+	sensor_mask >>= dive.cylinders.size();
 
 	// Do we need to add empty cylinders?
 	while (sensor_mask) {
-		add_empty_cylinder(&dive->cylinders);
+		add_empty_cylinder(&dive.cylinders);
 		sensor_mask >>= 1;
 	}
 }
 
-static void fixup_dive_dc(struct dive *dive, struct divecomputer &dc)
+static void fixup_dive_dc(struct dive &dive, struct divecomputer &dc)
 {
 	/* Fixup duration and mean depth */
 	fixup_dc_duration(dc);
@@ -1069,44 +1051,38 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer &dc)
 		fake_dc(&dc);
 }
 
-struct dive *fixup_dive(struct dive *dive)
+void dive::fixup_no_cylinder()
 {
-	sanitize_cylinder_info(dive);
-	dive->maxcns = dive->cns;
+	sanitize_cylinder_info(*this);
+	maxcns = cns;
 
 	/*
 	 * Use the dive's temperatures for minimum and maximum in case
 	 * we do not have temperatures recorded by DC.
 	 */
 
-	update_min_max_temperatures(dive, dive->watertemp);
+	update_min_max_temperatures(*this, watertemp);
 
-	for (auto &dc: dive->dcs)
-		fixup_dive_dc(dive, dc);
+	for (auto &dc: dcs)
+		fixup_dive_dc(*this, dc);
 
-	fixup_water_salinity(dive);
-	if (!dive->surface_pressure.mbar)
-		fixup_surface_pressure(dive);
-	fixup_meandepth(dive);
-	fixup_duration(dive);
-	fixup_watertemp(dive);
-	fixup_airtemp(dive);
-	for (auto &cyl: dive->cylinders) {
+	fixup_water_salinity(*this);
+	if (!surface_pressure.mbar)
+		fixup_surface_pressure(*this);
+	fixup_meandepth(*this);
+	fixup_duration(*this);
+	fixup_watertemp(*this);
+	fixup_airtemp(*this);
+	for (auto &cyl: cylinders) {
 		add_cylinder_description(cyl.type);
 		if (same_rounded_pressure(cyl.sample_start, cyl.start))
 			cyl.start.mbar = 0;
 		if (same_rounded_pressure(cyl.sample_end, cyl.end))
 			cyl.end.mbar = 0;
 	}
-	divelog.dives.update_cylinder_related_info(dive);
-	for (auto &ws: dive->weightsystems)
-		add_weightsystem_description(ws);
-	/* we should always have a uniq ID as that gets assigned during dive creation,
-	 * but we want to make sure... */
-	if (!dive->id)
-		dive->id = dive_getUniqID();
 
-	return dive;
+	for (auto &ws: weightsystems)
+		add_weightsystem_description(ws);
 }
 
 /* Don't pick a zero for MERGE_MIN() */
@@ -2316,60 +2292,8 @@ merge_result merge_dives(const struct dive &a_in, const struct dive &b_in, int o
 		 * Keep the dive site, but add the GPS data */
 		res.site->location = b->dive_site->location;
 	}
-	fixup_dive(res.dive.get());
+	divelog.dives.fixup_dive(*res.dive);
 	return res;
-}
-
-struct start_end_pressure {
-	pressure_t start;
-	pressure_t end;
-};
-
-static void force_fixup_dive(struct dive *d)
-{
-	struct divecomputer *dc = &d->dcs[0];
-	int old_temp = dc->watertemp.mkelvin;
-	int old_mintemp = d->mintemp.mkelvin;
-	int old_maxtemp = d->maxtemp.mkelvin;
-	duration_t old_duration = d->duration;
-	std::vector<start_end_pressure> old_pressures(d->cylinders.size());
-
-	d->maxdepth.mm = 0;
-	dc->maxdepth.mm = 0;
-	d->watertemp.mkelvin = 0;
-	dc->watertemp.mkelvin = 0;
-	d->duration.seconds = 0;
-	d->maxtemp.mkelvin = 0;
-	d->mintemp.mkelvin = 0;
-	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
-		old_pressures[i].start = cyl.start;
-		old_pressures[i].end = cyl.end;
-		cyl.start.mbar = 0;
-		cyl.end.mbar = 0;
-	}
-
-	fixup_dive(d);
-
-	if (!d->watertemp.mkelvin)
-		d->watertemp.mkelvin = old_temp;
-
-	if (!dc->watertemp.mkelvin)
-		dc->watertemp.mkelvin = old_temp;
-
-	if (!d->maxtemp.mkelvin)
-		d->maxtemp.mkelvin = old_maxtemp;
-
-	if (!d->mintemp.mkelvin)
-		d->mintemp.mkelvin = old_mintemp;
-
-	if (!d->duration.seconds)
-		d->duration = old_duration;
-	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
-		if (!cyl.start.mbar)
-			cyl.start = old_pressures[i].start;
-		if (!cyl.end.mbar)
-			cyl.end = old_pressures[i].end;
-	}
 }
 
 /*
@@ -2457,8 +2381,8 @@ static std::array<std::unique_ptr<dive>, 2> split_dive_at(const struct dive &div
 		++it2;
 	}
 
-	force_fixup_dive(d1.get());
-	force_fixup_dive(d2.get());
+	divelog.dives.force_fixup_dive(*d1);
+	divelog.dives.force_fixup_dive(*d2);
 
 	/*
 	 * Was the dive numbered? If it was the last dive, then we'll
@@ -2677,7 +2601,7 @@ std::unique_ptr<dive> clone_delete_divecomputer(const struct dive &d, int dc_num
 
 	res->dcs.erase(res->dcs.begin() + dc_number);
 
-	force_fixup_dive(res.get());
+	divelog.dives.force_fixup_dive(*res);
 
 	return res;
 }
@@ -2715,8 +2639,8 @@ std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, 
 	}
 
 	// Recalculate gas data, etc.
-	fixup_dive(out1.get());
-	fixup_dive(out2.get());
+	divelog.dives.fixup_dive(*out1);
+	divelog.dives.fixup_dive(*out2);
 
 	return { std::move(out1), std::move(out2) };
 }

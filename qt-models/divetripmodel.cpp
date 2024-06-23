@@ -708,7 +708,7 @@ void DiveTripModelTree::populate()
 	uiNotification(QObject::tr("populate data model"));
 	uiNotification(QObject::tr("start processing"));
 	for (auto &d: divelog.dives) {
-		divelog.dives.update_cylinder_related_info(d.get());
+		divelog.dives.update_cylinder_related_info(*d);
 		if (d->hidden_by_filter)
 			continue;
 		dive_trip *trip = d->divetrip;

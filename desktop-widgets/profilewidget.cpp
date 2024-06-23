@@ -347,7 +347,7 @@ void ProfileWidget::exitEditMode()
 static void calcDepth(dive &d, int dcNr)
 {
 	d.maxdepth.mm = get_dive_dc(&d, dcNr)->maxdepth.mm = 0;
-	fixup_dive(&d);
+	divelog.dives.fixup_dive(d);
 }
 
 // Silly RAII-variable setter class: reset variable when going out of scope.

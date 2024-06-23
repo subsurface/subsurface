@@ -22,10 +22,86 @@
 #include "sample.h"
 #include "trip.h"
 
+#include <time.h>
+
 void dive_table::record_dive(std::unique_ptr<dive> d)
 {
-	fixup_dive(d.get());
+	fixup_dive(*d);
 	put(std::move(d));
+}
+
+void dive_table::fixup_dive(struct dive &dive) const
+{
+	dive.fixup_no_cylinder();
+	update_cylinder_related_info(dive);
+}
+
+struct start_end_pressure {
+	pressure_t start;
+	pressure_t end;
+};
+
+void dive_table::force_fixup_dive(struct dive &d) const
+{
+	struct divecomputer *dc = &d.dcs[0];
+	int old_temp = dc->watertemp.mkelvin;
+	int old_mintemp = d.mintemp.mkelvin;
+	int old_maxtemp = d.maxtemp.mkelvin;
+	duration_t old_duration = d.duration;
+	std::vector<start_end_pressure> old_pressures(d.cylinders.size());
+
+	d.maxdepth.mm = 0;
+	dc->maxdepth.mm = 0;
+	d.watertemp.mkelvin = 0;
+	dc->watertemp.mkelvin = 0;
+	d.duration.seconds = 0;
+	d.maxtemp.mkelvin = 0;
+	d.mintemp.mkelvin = 0;
+	for (auto [i, cyl]: enumerated_range(d.cylinders)) {
+		old_pressures[i].start = cyl.start;
+		old_pressures[i].end = cyl.end;
+		cyl.start.mbar = 0;
+		cyl.end.mbar = 0;
+	}
+
+	fixup_dive(d);
+
+	if (!d.watertemp.mkelvin)
+		d.watertemp.mkelvin = old_temp;
+
+	if (!dc->watertemp.mkelvin)
+		dc->watertemp.mkelvin = old_temp;
+
+	if (!d.maxtemp.mkelvin)
+		d.maxtemp.mkelvin = old_maxtemp;
+
+	if (!d.mintemp.mkelvin)
+		d.mintemp.mkelvin = old_mintemp;
+
+	if (!d.duration.seconds)
+		d.duration = old_duration;
+	for (auto [i, cyl]: enumerated_range(d.cylinders)) {
+		if (!cyl.start.mbar)
+			cyl.start = old_pressures[i].start;
+		if (!cyl.end.mbar)
+			cyl.end = old_pressures[i].end;
+	}
+}
+
+// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
+// as a starting point for the user to edit
+std::unique_ptr<dive> dive_table::default_dive()
+{
+	auto d = std::make_unique<dive>();
+	d->when = time(nullptr) + gettimezoneoffset() + 3600;
+	d->dcs[0].duration.seconds = 40 * 60;
+	d->dcs[0].maxdepth.mm = M_OR_FT(15, 45);
+	d->dcs[0].meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
+	make_manually_added_dive_dc(&d->dcs[0]);
+	fake_dc(&d->dcs[0]);
+	add_default_cylinder(d.get());
+	fixup_dive(*d);
+	return d;
 }
 
 /*
@@ -78,14 +154,14 @@ int total_weight(const struct dive *dive)
 	return total_grams;
 }
 
-static int active_o2(const struct dive *dive, const struct divecomputer *dc, duration_t time)
+static int active_o2(const struct dive &dive, const struct divecomputer *dc, duration_t time)
 {
-	struct gasmix gas = get_gasmix_at_time(*dive, *dc, time);
+	struct gasmix gas = get_gasmix_at_time(dive, *dc, time);
 	return get_o2(gas);
 }
 
 // Do not call on first sample as it acccesses the previous sample
-static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc, const struct sample &sample, const struct sample &psample)
+static int get_sample_o2(const struct dive &dive, const struct divecomputer *dc, const struct sample &sample, const struct sample &psample)
 {
 	int po2i, po2f, po2;
 	// Use sensor[0] if available
@@ -95,13 +171,13 @@ static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc,
 		po2 = (po2f + po2i) / 2;
 	} else if (sample.setpoint.mbar > 0) {
 		po2 = std::min((int) sample.setpoint.mbar,
-				dive->depth_to_mbar(sample.depth.mm));
+				dive.depth_to_mbar(sample.depth.mm));
 	} else {
-		double amb_presure = dive->depth_to_bar(sample.depth.mm);
-		double pamb_pressure = dive->depth_to_bar(psample.depth.mm );
+		double amb_presure = dive.depth_to_bar(sample.depth.mm);
+		double pamb_pressure = dive.depth_to_bar(psample.depth.mm );
 		if (dc->divemode == PSCR) {
-			po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(*dive, *dc, psample.time));
-			po2f = pscr_o2(amb_presure, get_gasmix_at_time(*dive, *dc, sample.time));
+			po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, *dc, psample.time));
+			po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, *dc, sample.time));
 		} else {
 			int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
 			po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
@@ -119,10 +195,10 @@ static int get_sample_o2(const struct dive *dive, const struct divecomputer *dc,
    Comroe Jr. JH et al. (1945)  Oxygen toxicity. J. Am. Med. Assoc. 128,710-717
    Clark JM & CJ Lambertsen (1970) Pulmonary oxygen tolerance in man and derivation of pulmonary
       oxygen tolerance curves. Inst. env. Med. Report 1-70, University of Pennsylvania, Philadelphia, USA. */
-static int calculate_otu(const struct dive *dive)
+static int calculate_otu(const struct dive &dive)
 {
 	double otu = 0.0;
-	const struct divecomputer *dc = &dive->dcs[0];
+	const struct divecomputer *dc = &dive.dcs[0];
 	for (auto [psample, sample]: pairwise_range(dc->samples)) {
 		int t;
 		int po2i, po2f;
@@ -135,18 +211,18 @@ static int calculate_otu(const struct dive *dive)
 		} else {
 			if (sample.setpoint.mbar > 0) {
 				po2f = std::min((int) sample.setpoint.mbar,
-						 dive->depth_to_mbar(sample.depth.mm));
+						 dive.depth_to_mbar(sample.depth.mm));
 				if (psample.setpoint.mbar > 0)
 					po2i = std::min((int) psample.setpoint.mbar,
-							 dive->depth_to_mbar(psample.depth.mm));
+							 dive.depth_to_mbar(psample.depth.mm));
 				else
 					po2i = po2f;
 			} else {						// For OC and rebreather without o2 sensor/setpoint
-				double amb_presure = dive->depth_to_bar(sample.depth.mm);
-				double pamb_pressure = dive->depth_to_bar(psample.depth.mm);
+				double amb_presure = dive.depth_to_bar(sample.depth.mm);
+				double pamb_pressure = dive.depth_to_bar(psample.depth.mm);
 				if (dc->divemode == PSCR) {
-					po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(*dive, *dc, psample.time));
-					po2f = pscr_o2(amb_presure, get_gasmix_at_time(*dive, *dc, sample.time));
+					po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, *dc, psample.time));
+					po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, *dc, sample.time));
 				} else {
 					int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
 					po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
@@ -189,7 +265,7 @@ static double calculate_cns_dive(const struct dive &dive)
 	/* Calculate the CNS for each sample in this dive and sum them */
 	for (auto [psample, sample]: pairwise_range(dc->samples)) {
 		int t = sample.time.seconds - psample.time.seconds;
-		int po2 = get_sample_o2(&dive, dc, sample, psample);
+		int po2 = get_sample_o2(dive, dc, sample, psample);
 		/* Don't increase CNS when po2 below 500 matm */
 		if (po2 <= 500)
 			continue;
@@ -201,19 +277,19 @@ static double calculate_cns_dive(const struct dive &dive)
 	return cns;
 }
 
-/* this only gets called if dive->maxcns == 0 which means we know that
+/* this only gets called if dive.maxcns == 0 which means we know that
  * none of the divecomputers has tracked any CNS for us
  * so we calculated it "by hand" */
-int dive_table::calculate_cns(struct dive *dive) const
+int dive_table::calculate_cns(struct dive &dive) const
 {
 	double cns = 0.0;
 	timestamp_t last_starttime, last_endtime = 0;
 
 	/* shortcut */
-	if (dive->cns)
-		return dive->cns;
+	if (dive.cns)
+		return dive.cns;
 
-	size_t divenr = get_idx(dive);
+	size_t divenr = get_idx(&dive);
 	int nr_dives = static_cast<int>(size());
 	int i = divenr != std::string::npos ? static_cast<int>(divenr)
 					    : nr_dives;
@@ -225,20 +301,20 @@ int dive_table::calculate_cns(struct dive *dive) const
 #endif
 	/* Look at next dive in dive list table and correct i when needed */
 	while (i < nr_dives - 1) {
-		if ((*this)[i]->when > dive->when)
+		if ((*this)[i]->when > dive.when)
 			break;
 		i++;
 	}
 	/* Look at previous dive in dive list table and correct i when needed */
 	while (i > 0) {
-		if ((*this)[i - 1]->when < dive->when)
+		if ((*this)[i - 1]->when < dive.when)
 			break;
 		i--;
 	}
 #if DECO_CALC_DEBUG & 2
 	printf("Dive number corrected to #%d\n", i);
 #endif
-	last_starttime = dive->when;
+	last_starttime = dive.when;
 	/* Walk backwards to check previous dives - how far do we need to go back? */
 	while (i--) {
 		if (static_cast<size_t>(i) == divenr && i > 0)
@@ -249,13 +325,13 @@ int dive_table::calculate_cns(struct dive *dive) const
 		const struct dive &pdive = *(*this)[i];
 		/* we don't want to mix dives from different trips as we keep looking
 		 * for how far back we need to go */
-		if (dive->divetrip && pdive.divetrip != dive->divetrip) {
+		if (dive.divetrip && pdive.divetrip != dive.divetrip) {
 #if DECO_CALC_DEBUG & 2
 			printf("No - other dive trip\n");
 #endif
 			continue;
 		}
-		if (pdive.when >= dive->when || pdive.endtime() + 12 * 60 * 60 < last_starttime) {
+		if (pdive.when >= dive.when || pdive.endtime() + 12 * 60 * 60 < last_starttime) {
 #if DECO_CALC_DEBUG & 2
 			printf("No\n");
 #endif
@@ -273,14 +349,14 @@ int dive_table::calculate_cns(struct dive *dive) const
 #endif
 		const struct dive &pdive = *(*this)[i];
 		/* again skip dives from different trips */
-		if (dive->divetrip && dive->divetrip != pdive.divetrip) {
+		if (dive.divetrip && dive.divetrip != pdive.divetrip) {
 #if DECO_CALC_DEBUG & 2
 			printf("No - other dive trip\n");
 #endif
 			continue;
 		}
 		/* Don't add future dives */
-		if (pdive.when >= dive->when) {
+		if (pdive.when >= dive.when) {
 #if DECO_CALC_DEBUG & 2
 			printf("No - future or same dive\n");
 #endif
@@ -315,32 +391,32 @@ int dive_table::calculate_cns(struct dive *dive) const
 
 	/* CNS reduced with 90min halftime during surface interval */
 	if (last_endtime)
-		cns /= pow(2, (dive->when - last_endtime) / (90.0 * 60.0));
+		cns /= pow(2, (dive.when - last_endtime) / (90.0 * 60.0));
 #if DECO_CALC_DEBUG & 2
 	printf("CNS after last surface interval: %f\n", cns);
 #endif
 
-	cns += calculate_cns_dive(*dive);
+	cns += calculate_cns_dive(dive);
 #if DECO_CALC_DEBUG & 2
 	printf("CNS after dive: %f\n", cns);
 #endif
 
 	/* save calculated cns in dive struct */
-	dive->cns = lrint(cns);
-	return dive->cns;
+	dive.cns = lrint(cns);
+	return dive.cns;
 }
 /*
  * Return air usage (in liters).
  */
-static double calculate_airuse(const struct dive *dive)
+static double calculate_airuse(const struct dive &dive)
 {
 	int airuse = 0;
 
 	// SAC for a CCR dive does not make sense.
-	if (dive->dcs[0].divemode == CCR)
+	if (dive.dcs[0].divemode == CCR)
 		return 0.0;
 
-	for (auto [i, cyl]: enumerated_range(dive->cylinders)) {
+	for (auto [i, cyl]: enumerated_range(dive.cylinders)) {
 		pressure_t start, end;
 
 		start = cyl.start.mbar ? cyl.start : cyl.sample_start;
@@ -350,7 +426,7 @@ static double calculate_airuse(const struct dive *dive)
 			// better not pretend we know the total gas use.
 			// Eventually, logic should be fixed to compute average depth and total time
 			// for those segments where cylinders with known pressure drop are breathed from.
-			if (is_cylinder_used(dive, i))
+			if (is_cylinder_used(&dive, i))
 				return 0.0;
 			else
 				continue;
@@ -362,9 +438,9 @@ static double calculate_airuse(const struct dive *dive)
 }
 
 /* this only uses the first divecomputer to calculate the SAC rate */
-static int calculate_sac(const struct dive *dive)
+static int calculate_sac(const struct dive &dive)
 {
-	const struct divecomputer *dc = &dive->dcs[0];
+	const struct divecomputer *dc = &dive.dcs[0];
 	double airuse, pressure, sac;
 	int duration, meandepth;
 
@@ -381,7 +457,7 @@ static int calculate_sac(const struct dive *dive)
 		return 0;
 
 	/* Mean pressure in ATM (SAC calculations are in atm*l/min) */
-	pressure = dive->depth_to_atm(meandepth);
+	pressure = dive.depth_to_atm(meandepth);
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */
@@ -389,12 +465,12 @@ static int calculate_sac(const struct dive *dive)
 }
 
 /* for now we do this based on the first divecomputer */
-static void add_dive_to_deco(struct deco_state *ds, const struct dive *dive, bool in_planner)
+static void add_dive_to_deco(struct deco_state *ds, const struct dive &dive, bool in_planner)
 {
-	const struct divecomputer *dc = &dive->dcs[0];
+	const struct divecomputer *dc = &dive.dcs[0];
 
-	gasmix_loop loop(*dive, dive->dcs[0]);
-	divemode_loop loop_d(dive->dcs[0]);
+	gasmix_loop loop(dive, dive.dcs[0]);
+	divemode_loop loop_d(dive.dcs[0]);
 	for (auto [psample, sample]: pairwise_range(dc->samples)) {
 		int t0 = psample.time.seconds;
 		int t1 = sample.time.seconds;
@@ -403,8 +479,8 @@ static void add_dive_to_deco(struct deco_state *ds, const struct dive *dive, boo
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample.depth.mm, sample.depth.mm, j - t0, t1 - t0);
 			auto gasmix = loop.next(j);
-			add_segment(ds, dive->depth_to_bar(depth), gasmix, 1, sample.setpoint.mbar,
-				    loop_d.next(j), dive->sac,
+			add_segment(ds, dive.depth_to_bar(depth), gasmix, 1, sample.setpoint.mbar,
+				    loop_d.next(j), dive.sac,
 				    in_planner);
 		}
 	}
@@ -536,7 +612,7 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 #endif
 		}
 
-		add_dive_to_deco(ds, &pdive, in_planner);
+		add_dive_to_deco(ds, pdive, in_planner);
 
 		last_starttime = pdive.when;
 		last_endtime = pdive.endtime();
@@ -578,14 +654,12 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 	return surface_time;
 }
 
-void dive_table::update_cylinder_related_info(struct dive *dive) const
+void dive_table::update_cylinder_related_info(struct dive &dive) const
 {
-	if (dive != NULL) {
-		dive->sac = calculate_sac(dive);
-		dive->otu = calculate_otu(dive);
-		if (dive->maxcns == 0)
-			dive->maxcns = calculate_cns(dive);
-	}
+	dive.sac = calculate_sac(dive);
+	dive.otu = calculate_otu(dive);
+	if (dive.maxcns == 0)
+		dive.maxcns = calculate_cns(dive);
 }
 
 /* Compare list of dive computers by model name */
