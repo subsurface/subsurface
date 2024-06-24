@@ -921,7 +921,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 		return;
 	}
 
-	auto [d, trip, site] = merge_dives(*dives[0], *dives[1], dives[1]->when - dives[0]->when, false);
+	auto [d, trip, site] = divelog.dives.merge_dives(*dives[0], *dives[1], dives[1]->when - dives[0]->when, false);
 
 	// Currently, the core code selects the dive -> this is not what we want, as
 	// we manually manage the selection post-command.
@@ -931,7 +931,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	// Set the preferred dive trip, so that for subsequent merges the better trip can be selected
 	d->divetrip = trip;
 	for (int i = 2; i < dives.count(); ++i) {
-		auto [d2, trip, site] = merge_dives(*d, *dives[i], dives[i]->when - d->when, false);
+		auto [d2, trip, site] = divelog.dives.merge_dives(*d, *dives[i], dives[i]->when - d->when, false);
 		d = std::move(d2);
 		// Set the preferred dive trip and site, so that for subsequent merges the better trip and site can be selected
 		d->divetrip = trip;
