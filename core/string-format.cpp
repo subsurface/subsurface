@@ -259,8 +259,7 @@ QString formatDiveDateTime(const dive *d)
 
 QString formatDiveGasString(const dive *d)
 {
-	int o2, he, o2max;
-	get_dive_gas(d, &o2, &he, &o2max);
+	auto [o2, he, o2max ] = d->get_maximal_gas();
 	o2 = (o2 + 5) / 10;
 	he = (he + 5) / 10;
 	o2max = (o2max + 5) / 10;

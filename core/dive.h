@@ -85,6 +85,9 @@ struct dive {
 	temperature_t dc_airtemp() const;	/* average over divecomputers */
 	temperature_t dc_watertemp() const;	/* average over divecomputers */
 
+	struct get_maximal_gas_result { int o2_p; int he_p; int o2low_p; };
+	get_maximal_gas_result get_maximal_gas() const;
+
 	bool is_planned() const;
 	bool is_logged() const;
 	bool likely_same(const struct dive &b) const;

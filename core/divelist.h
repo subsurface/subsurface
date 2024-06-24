@@ -51,8 +51,6 @@ private:
 /* this is used for both git and xml format */
 #define DATAFORMAT_VERSION 3
 
-extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
-
 int get_min_datafile_version();
 void report_datafile_version(int version);
 void clear_dive_file_data();
