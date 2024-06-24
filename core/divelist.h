@@ -15,6 +15,12 @@ struct deco_state;
 int comp_dives(const struct dive &a, const struct dive &b);
 int comp_dives_ptr(const struct dive *a, const struct dive *b);
 
+struct merge_result {
+	std::unique_ptr<struct dive> dive;
+	dive_trip *trip;
+	dive_site *site;
+};
+
 struct dive_table : public sorted_owning_table<dive, &comp_dives> {
 	dive *get_by_uniq_id(int id) const;
 	void record_dive(std::unique_ptr<dive> d);	// call fixup_dive() before adding dive to table.
@@ -35,6 +41,8 @@ struct dive_table : public sorted_owning_table<dive, &comp_dives> {
 	std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, int num) const;
 	std::array<std::unique_ptr<dive>, 2> split_dive(const struct dive &dive) const;
 	std::array<std::unique_ptr<dive>, 2> split_dive_at_time(const struct dive &dive, duration_t time) const;
+	merge_result merge_dives(const struct dive &a_in, const struct dive &b_in, int offset, bool prefer_downloaded) const;
+	std::unique_ptr<dive> try_to_merge(const struct dive &a, const struct dive &b, bool prefer_downloaded) const;
 private:
 	int calculate_cns(struct dive &dive) const; // Note: writes into dive->cns
 	std::array<std::unique_ptr<dive>, 2> split_dive_at(const struct dive &dive, int a, int b) const;

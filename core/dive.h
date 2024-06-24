@@ -87,6 +87,7 @@ struct dive {
 
 	bool is_planned() const;
 	bool is_logged() const;
+	bool likely_same(const struct dive &b) const;
 
 	int depth_to_mbar(int depth) const;
 	double depth_to_mbarf(int depth) const;
@@ -97,6 +98,9 @@ struct dive {
 
 	pressure_t calculate_surface_pressure() const;
 	pressure_t un_fixup_surface_pressure() const;
+
+	/* Don't call directly, use dive_table::merge_dives()! */
+	static std::unique_ptr<dive> create_merged_dive(const struct dive &a, const struct dive &b, int offset, bool prefer_downloaded);
 };
 
 /* For the top-level list: an entry is either a dive or a trip */
@@ -184,14 +188,6 @@ extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
 extern int get_dive_salinity(const struct dive *dive);
 extern int dive_getUniqID();
 
-struct merge_result {
-	std::unique_ptr<struct dive> dive;
-	dive_trip *trip;
-	dive_site *site;
-};
-
-extern merge_result merge_dives(const struct dive &a, const struct dive &b, int offset, bool prefer_downloaded);
-extern std::unique_ptr<dive> try_to_merge(const struct dive &a, const struct dive &b, bool prefer_downloaded);
 extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int time);
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern bool is_cylinder_used(const struct dive *dive, int idx);
