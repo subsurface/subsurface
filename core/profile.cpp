@@ -1250,13 +1250,12 @@ static void debug_print_profiledata(struct plot_info &pi)
  */
 struct plot_info create_plot_info_new(const struct dive *dive, const struct divecomputer *dc, const struct deco_state *planner_ds)
 {
-	int o2, he, o2max;
 	struct deco_state plot_deco_state;
 	bool in_planner = planner_ds != NULL;
 	divelog.dives.init_decompression(&plot_deco_state, dive, in_planner);
 	plot_info pi;
 	calculate_max_limits_new(dive, dc, pi, in_planner);
-	get_dive_gas(dive, &o2, &he, &o2max);
+	auto [o2, he, o2max ] = dive->get_maximal_gas();
 	if (dc->divemode == FREEDIVE) {
 		pi.dive_type = plot_info::FREEDIVING;
 	} else if (he > 0) {

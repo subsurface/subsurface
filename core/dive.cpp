@@ -2666,3 +2666,40 @@ temperature_t dive::dc_airtemp() const
 		return temperature_t();
 	return temperature_t{ static_cast<uint32_t>((sum + nr / 2) / nr) };
 }
+
+/*
+ * Get "maximal" dive gas for a dive.
+ * Rules:
+ *  - Trimix trumps nitrox (highest He wins, O2 breaks ties)
+ *  - Nitrox trumps air (even if hypoxic)
+ * These are the same rules as the inter-dive sorting rules.
+ */
+dive::get_maximal_gas_result dive::get_maximal_gas() const
+{
+	int maxo2 = -1, maxhe = -1, mino2 = 1000;
+
+	for (auto [i, cyl]: enumerated_range(cylinders)) {
+		int o2 = get_o2(cyl.gasmix);
+		int he = get_he(cyl.gasmix);
+
+		if (!is_cylinder_used(this, i))
+			continue;
+		if (cyl.cylinder_use == OXYGEN)
+			continue;
+		if (cyl.cylinder_use == NOT_USED)
+			continue;
+		if (o2 > maxo2)
+			maxo2 = o2;
+		if (o2 < mino2 && maxhe <= 0)
+			mino2 = o2;
+		if (he > maxhe) {
+			maxhe = he;
+			mino2 = o2;
+		}
+	}
+	/* All air? Show/sort as "air"/zero */
+	if ((!maxhe && maxo2 == O2_IN_AIR && mino2 == maxo2) ||
+			(maxo2 == -1 && maxhe == -1 && mino2 == 1000))
+		maxo2 = mino2 = 0;
+	return { mino2, maxhe, maxo2 };
+}
