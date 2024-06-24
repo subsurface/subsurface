@@ -1,3 +1,4 @@
+bluetooth: fix crash on MacOS when doing first download from a new BLE device
 statistics: show proper dates in January
 desktop: add country to the fields indexed for full text search
 import: update libdivecomputer version, add support for the Scubapro G3 / Luna and Shearwater Tern
