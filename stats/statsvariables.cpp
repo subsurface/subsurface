@@ -216,7 +216,7 @@ bool StatsQuartiles::isValid() const
 // Define an ordering for gas types
 // invalid < air < ean (including oxygen) < trimix
 // The latter two are sorted by (helium, oxygen)
-// This is in analogy to the global get_dive_gas() function.
+// This is in analogy to the dive::get_maximal_gas() function.
 static bool operator<(const gas_bin_t &t1, const gas_bin_t &t2)
 {
 	if (t1.type != t2.type)

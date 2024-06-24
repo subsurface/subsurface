@@ -104,45 +104,6 @@ std::unique_ptr<dive> dive_table::default_dive()
 	return d;
 }
 
-/*
- * Get "maximal" dive gas for a dive.
- * Rules:
- *  - Trimix trumps nitrox (highest He wins, O2 breaks ties)
- *  - Nitrox trumps air (even if hypoxic)
- * These are the same rules as the inter-dive sorting rules.
- */
-void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
-{
-	int maxo2 = -1, maxhe = -1, mino2 = 1000;
-
-	for (auto [i, cyl]: enumerated_range(dive->cylinders)) {
-		int o2 = get_o2(cyl.gasmix);
-		int he = get_he(cyl.gasmix);
-
-		if (!is_cylinder_used(dive, i))
-			continue;
-		if (cyl.cylinder_use == OXYGEN)
-			continue;
-		if (cyl.cylinder_use == NOT_USED)
-			continue;
-		if (o2 > maxo2)
-			maxo2 = o2;
-		if (o2 < mino2 && maxhe <= 0)
-			mino2 = o2;
-		if (he > maxhe) {
-			maxhe = he;
-			mino2 = o2;
-		}
-	}
-	/* All air? Show/sort as "air"/zero */
-	if ((!maxhe && maxo2 == O2_IN_AIR && mino2 == maxo2) ||
-			(maxo2 == -1 && maxhe == -1 && mino2 == 1000))
-		maxo2 = mino2 = 0;
-	*o2_p = mino2;
-	*he_p = maxhe;
-	*o2max_p = maxo2;
-}
-
 int total_weight(const struct dive *dive)
 {
 	int total_grams = 0;
