@@ -151,7 +151,6 @@ extern const struct divecomputer *get_dive_dc(const struct dive *dive, int nr);
 
 extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
 extern std::unique_ptr<dive> clone_delete_divecomputer(const struct dive &d, int dc_number);
-extern std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, int num);
 
 extern bool dive_site_has_gps_location(const struct dive_site *ds);
 extern int dive_has_gps_location(const struct dive *dive);
@@ -184,8 +183,6 @@ extern bool dive_less_than_ptr(const struct dive *a, const struct dive *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
 extern int get_dive_salinity(const struct dive *dive);
 extern int dive_getUniqID();
-extern std::array<std::unique_ptr<dive>, 2> split_dive(const struct dive &dive);
-extern std::array<std::unique_ptr<dive>, 2> split_dive_at_time(const struct dive &dive, duration_t time);
 
 struct merge_result {
 	std::unique_ptr<struct dive> dive;
