@@ -6,7 +6,6 @@
 #include "divesitetable.h"
 #include "units.h"
 #include <memory>
-#include <vector>
 
 struct dive;
 struct divelog;
@@ -33,8 +32,12 @@ struct dive_table : public sorted_owning_table<dive, &comp_dives> {
 	int get_dive_nr_at_idx(int idx) const;
 	timestamp_t get_surface_interval(timestamp_t when) const;
 	struct dive *find_next_visible_dive(timestamp_t when);
+	std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, int num) const;
+	std::array<std::unique_ptr<dive>, 2> split_dive(const struct dive &dive) const;
+	std::array<std::unique_ptr<dive>, 2> split_dive_at_time(const struct dive &dive, duration_t time) const;
 private:
 	int calculate_cns(struct dive &dive) const; // Note: writes into dive->cns
+	std::array<std::unique_ptr<dive>, 2> split_dive_at(const struct dive &dive, int a, int b) const;
 };
 
 /* this is used for both git and xml format */
