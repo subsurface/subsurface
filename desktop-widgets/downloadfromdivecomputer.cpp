@@ -365,7 +365,7 @@ void DownloadFromDCWidget::on_product_currentTextChanged(const QString &)
 
 void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
 {
-#if defined(Q_OS_MACOS)
+#if defined(BT_SUPPORT) && defined(Q_OS_MACOS)
 	if (isBluetoothAddress(device)) {
 		// ensure we have a discovery running
 		if (btd == nullptr)
@@ -429,6 +429,16 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 			address = extractBluetoothNameAddress(ui.device->currentText(), name);
 			data->setDevName(address);
 			data->setDevBluetoothName(name);
+		}
+		if (btd) {
+			// btd should only be active for mac os.
+			// Need to ensure that any scan is shut down BEFORE starting the download
+			// because internally (as of 5.15.13) the QT discovery agent uses a QTimer
+			// that can only be shut off from the same thread it was started from.
+			QString devAddr = data->devName().startsWith("LE:")
+							 ? data->devName().right(data->devName().size()-3)
+							 : data->devName();
+			getBtDeviceInfo(devAddr);
 		}
 	} else
 		// this breaks an "else if" across lines... not happy...
