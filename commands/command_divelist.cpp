@@ -833,9 +833,9 @@ static std::array<std::unique_ptr<dive>, 2> doSplitDives(const dive *d, duration
 {
 	// Split the dive
 	if (time.seconds < 0)
-		return split_dive(*d);
+		return divelog.dives.split_dive(*d);
 	else
-		return split_dive_at_time(*d, time);
+		return divelog.dives.split_dive_at_time(*d, time);
 }
 
 SplitDives::SplitDives(dive *d, duration_t time) : SplitDivesBase(d, doSplitDives(d, time))
@@ -844,7 +844,7 @@ SplitDives::SplitDives(dive *d, duration_t time) : SplitDivesBase(d, doSplitDive
 }
 
 SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) :
-	SplitDivesBase(d, split_divecomputer(*d, dc_num))
+	SplitDivesBase(d, divelog.dives.split_divecomputer(*d, dc_num))
 {
 	setText(Command::Base::tr("split dive computer"));
 }
