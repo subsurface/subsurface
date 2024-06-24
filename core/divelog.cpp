@@ -110,7 +110,7 @@ static void merge_imported_dives(struct dive_table &table)
 		    prev->endtime() < dive->when)
 			continue;
 
-		auto merged = try_to_merge(*prev, *dive, false);
+		auto merged = table.try_to_merge(*prev, *dive, false);
 		if (!merged)
 			continue;
 
@@ -175,7 +175,7 @@ static bool try_to_merge_into(struct dive &dive_to_add, struct dive *old_dive, b
 			      /* output parameters: */
 			      struct dive_table &dives_to_add, struct std::vector<dive *> &dives_to_remove)
 {
-	auto merged = try_to_merge(*old_dive, dive_to_add, prefer_imported);
+	auto merged = dives_to_add.try_to_merge(*old_dive, dive_to_add, prefer_imported);
 	if (!merged)
 		return false;
 
