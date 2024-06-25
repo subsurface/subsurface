@@ -239,7 +239,7 @@ static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 			continue;
 		std::swap(d->number, pair.second);
 		dives.push_back(d);
-		invalidate_dive_cache(d);
+		d->invalidate_cache();
 	}
 
 	// Send signals.
@@ -268,7 +268,7 @@ static std::unique_ptr<dive_trip> moveDiveToTrip(DiveToTrip &diveToTrip)
 	std::swap(trip, diveToTrip.trip);
 	if (trip)
 		trip->add_dive(diveToTrip.dive);
-	invalidate_dive_cache(diveToTrip.dive);		// Ensure that dive is written in git_save()
+	diveToTrip.dive->invalidate_cache();		// Ensure that dive is written in git_save()
 	return res;
 }
 

@@ -149,7 +149,7 @@ void EditBase<T>::undo()
 	for (dive *d: dives) {
 		set(d, value);
 		fulltext_register(d); // Update the fulltext cache
-		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+		d->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 
 	std::swap(old, value);
@@ -540,7 +540,7 @@ void EditTagsBase::undo()
 		}
 		set(d, tags);
 		fulltext_register(d); // Update the fulltext cache
-		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+		d->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 
 	std::swap(tagsToAdd, tagsToRemove);
@@ -741,7 +741,7 @@ void PasteDives::undo()
 	for (PasteState &state: dives) {
 		divesToNotify.push_back(state.d);
 		state.swap(what);
-		invalidate_dive_cache(state.d); // Ensure that dive is written in git_save()
+		state.d->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 
 	// Send signals.
@@ -825,7 +825,7 @@ void ReplanDive::undo()
 	std::swap(d->duration, duration);
 	std::swap(d->salinity, salinity);
 	divelog.dives.fixup_dive(*d);
-	invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+	d->invalidate_cache(); // Ensure that dive is written in git_save()
 
 	QVector<dive *> divesToNotify = { d };
 	// Note that we have to emit cylindersReset before divesChanged, because the divesChanged
@@ -900,7 +900,7 @@ void EditProfile::undo()
 	std::swap(d->meandepth, meandepth);
 	std::swap(d->duration, duration);
 	divelog.dives.fixup_dive(*d);
-	invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+	d->invalidate_cache(); // Ensure that dive is written in git_save()
 
 	QVector<dive *> divesToNotify = { d };
 	emit diveListNotifier.divesChanged(divesToNotify, DiveField::DURATION | DiveField::DEPTH);
@@ -936,7 +936,7 @@ void AddWeight::undo()
 			continue;
 		d->weightsystems.pop_back();
 		emit diveListNotifier.weightRemoved(d, d->weightsystems.size());
-		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+		d->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -945,7 +945,7 @@ void AddWeight::redo()
 	for (dive *d: dives) {
 		d->weightsystems.emplace_back();
 		emit diveListNotifier.weightAdded(d, d->weightsystems.size() - 1);
-		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+		d->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1011,7 +1011,7 @@ void RemoveWeight::undo()
 	for (size_t i = 0; i < dives.size(); ++i) {
 		add_to_weightsystem_table(&dives[i]->weightsystems, indices[i], ws);
 		emit diveListNotifier.weightAdded(dives[i], indices[i]);
-		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
+		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1020,7 +1020,7 @@ void RemoveWeight::redo()
 	for (size_t i = 0; i < dives.size(); ++i) {
 		remove_weightsystem(dives[i], indices[i]);
 		emit diveListNotifier.weightRemoved(dives[i], indices[i]);
-		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
+		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1063,7 +1063,7 @@ void EditWeight::redo()
 		add_weightsystem_description(new_ws); // This updates the weightsystem info table
 		set_weightsystem(dives[i], indices[i], new_ws);
 		emit diveListNotifier.weightEdited(dives[i], indices[i]);
-		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
+		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 	std::swap(ws, new_ws);
 }
@@ -1103,7 +1103,7 @@ void AddCylinder::undo()
 		remove_cylinder(dives[i], indexes[i]);
 		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderRemoved(dives[i], indexes[i]);
-		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
+		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1116,7 +1116,7 @@ void AddCylinder::redo()
 		add_cylinder(&d->cylinders, index, cyl);
 		divelog.dives.update_cylinder_related_info(*d);
 		emit diveListNotifier.cylinderAdded(d, index);
-		invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+		d->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1203,7 +1203,7 @@ void RemoveCylinder::undo()
 		cylinder_renumber(*dives[i], &mapping[0]);
 		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderAdded(dives[i], indexes[i]);
-		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
+		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1215,7 +1215,7 @@ void RemoveCylinder::redo()
 		cylinder_renumber(*dives[i], &mapping[0]);
 		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderRemoved(dives[i], indexes[i]);
-		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
+		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1275,7 +1275,7 @@ void EditCylinder::redo()
 		std::swap(*dives[i]->get_cylinder(indexes[i]), cyl[i]);
 		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderEdited(dives[i], indexes[i]);
-		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()
+		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 }
 
@@ -1306,7 +1306,7 @@ void EditSensors::mapSensors(int toCyl, int fromCyl)
 		}
 	}
 	emit diveListNotifier.diveComputerEdited(dc);
-	invalidate_dive_cache(d); // Ensure that dive is written in git_save()
+	d->invalidate_cache(); // Ensure that dive is written in git_save()
 }
 
 void EditSensors::undo()
@@ -1435,7 +1435,7 @@ void EditDive::exchangeDives()
 	if (newDiveSite)
 		newDiveSite->add_dive(oldDive);
 	newDiveSite = oldDiveSite; // remember the previous dive site
-	invalidate_dive_cache(oldDive);
+	oldDive->invalidate_cache();
 
 	// Changing times may have unsorted the dive and trip tables
 	QVector<dive *> dives = { oldDive };

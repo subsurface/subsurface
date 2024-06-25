@@ -1571,8 +1571,8 @@ void MainWindow::hideProgressBar()
 void MainWindow::divesChanged(const QVector<dive *> &dives, DiveField)
 {
 	for (struct dive *d: dives) {
-		report_info("dive #%d changed, cache is %s", d->number, dive_cache_is_valid(d) ? "valid" : "invalidated");
+		report_info("dive #%d changed, cache is %s", d->number, d->cache_is_valid() ? "valid" : "invalidated");
 		// a brute force way to deal with that would of course be to call
-		// invalidate_dive_cache(d);
+		// d->invalidate_cache();
 	}
 }

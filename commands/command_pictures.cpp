@@ -36,7 +36,7 @@ void SetPictureOffset::redo()
 	// If someone complains about speed, do our usual "smart" thing.
 	std::sort(d->pictures.begin(), d->pictures.end());
 	emit diveListNotifier.pictureOffsetChanged(d, filename, newOffset);
-	invalidate_dive_cache(d);
+	d->invalidate_cache();
 }
 
 // Undo and redo do the same thing
@@ -83,7 +83,7 @@ static std::vector<PictureListForAddition> removePictures(std::vector<PictureLis
 		}
 		if (!toAdd.pics.empty())
 			res.push_back(toAdd);
-		invalidate_dive_cache(list.d);
+		list.d->invalidate_cache();
 		emit diveListNotifier.picturesRemoved(list.d, std::move(filenames));
 	}
 	picturesToRemove.clear();
@@ -113,7 +113,7 @@ static std::vector<PictureListForDeletion> addPictures(std::vector<PictureListFo
 		}
 		if (!toRemove.filenames.empty())
 			res.push_back(toRemove);
-		invalidate_dive_cache(list.d);
+		list.d->invalidate_cache();
 		emit diveListNotifier.picturesAdded(list.d, std::move(picsForSignal));
 	}
 	picturesToAdd.clear();

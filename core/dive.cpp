@@ -208,7 +208,7 @@ void copy_dive(const struct dive *s, struct dive *d)
 {
 	/* simply copy things over, but then clear fulltext cache and dive cache. */
 	*d = *s;
-	invalidate_dive_cache(d);
+	d->invalidate_cache();
 }
 
 #define CONDITIONAL_COPY_STRING(_component) \
@@ -2402,15 +2402,15 @@ fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, frac
 	return fhe;
 }
 
-void invalidate_dive_cache(struct dive *dive)
+static constexpr std::array<unsigned char, 20> null_id = {};
+void dive::invalidate_cache()
 {
-	memset(dive->git_id, 0, 20);
+	git_id = null_id;
 }
 
-bool dive_cache_is_valid(const struct dive *dive)
+bool dive::cache_is_valid() const
 {
-	static const unsigned char null_id[20] = { 0, };
-	return !!memcmp(dive->git_id, null_id, 20);
+	return git_id != null_id;
 }
 
 int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null)
