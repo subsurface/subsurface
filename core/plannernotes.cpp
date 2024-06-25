@@ -191,13 +191,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		nextdp = dp->next;
 		if (dp->time == 0)
 			continue;
-		gasmix = get_cylinder(dive, dp->cylinderid)->gasmix;
+		gasmix = dive->get_cylinder(dp->cylinderid)->gasmix;
 		depthvalue = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
 		while (nextdp && nextdp->time == 0)
 			nextdp = nextdp->next;
 		if (nextdp)
-			newgasmix = get_cylinder(dive, nextdp->cylinderid)->gasmix;
+			newgasmix = dive->get_cylinder(nextdp->cylinderid)->gasmix;
 		gaschange_after = (nextdp && (gasmix_distance(gasmix, newgasmix)));
 		gaschange_before =  (gasmix_distance(lastprintgasmix, gasmix));
 		rebreatherchange_after = (nextdp && (dp->setpoint != nextdp->setpoint || dp->divemode != nextdp->divemode));
@@ -577,7 +577,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			while (dp) {
 				if (dp->time != 0) {
 					std::string temp;
-					struct gasmix gasmix = get_cylinder(dive, dp->cylinderid)->gasmix;
+					struct gasmix gasmix = dive->get_cylinder(dp->cylinderid)->gasmix;
 
 					divemode_t current_divemode = loop.next(dp->time);
 					amb = dive->depth_to_atm(dp->depth.mm);

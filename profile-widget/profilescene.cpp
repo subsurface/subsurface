@@ -551,7 +551,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// while all other items are up there on the constructor.
 	qDeleteAll(eventItems);
 	eventItems.clear();
-	struct gasmix lastgasmix = get_gasmix_at_time(*d, *currentdc, duration_t{1});
+	struct gasmix lastgasmix = d->get_gasmix_at_time(*currentdc, duration_t{1});
 
 	for (auto [idx, event]: enumerated_range(currentdc->events)) {
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
@@ -571,7 +571,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 			eventItems.push_back(item);
 		}
 		if (event.is_gaschange())
-			lastgasmix = get_gasmix_from_event(d, event);
+			lastgasmix = d->get_gasmix_from_event(event);
 	}
 
 	QString dcText = QString::fromStdString(get_dc_nickname(currentdc));
