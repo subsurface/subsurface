@@ -18,6 +18,7 @@
 #include "event.h"
 #include "extradata.h"
 #include "format.h"
+#include "fulltext.h"
 #include "interpolate.h"
 #include "qthelper.h"
 #include "membuffer.h"
@@ -26,7 +27,6 @@
 #include "sample.h"
 #include "tag.h"
 #include "trip.h"
-#include "fulltext.h"
 
 // For user visible text but still not translated
 const char *divemode_text_ui[] = {
@@ -188,16 +188,9 @@ static void copy_dc_renumber(struct dive &d, const struct dive &s, const int cyl
 	}
 }
 
-/* copy_dive makes duplicates of many components of a dive;
- * in order not to leak memory, we need to free those.
- * copy_dive doesn't play with the divetrip and forward/backward pointers
- * so we can ignore those */
-void clear_dive(struct dive *d)
+void dive::clear()
 {
-	if (!d)
-		return;
-	fulltext_unregister(d);
-	*d = dive();
+	*this = dive();
 }
 
 /* make a true copy that is independent of the source dive;
@@ -205,7 +198,7 @@ void clear_dive(struct dive *d)
  * any impact on the source */
 void copy_dive(const struct dive *s, struct dive *d)
 {
-	/* simply copy things over, but then clear fulltext cache and dive cache. */
+	/* simply copy things over, but then the dive cache. */
 	*d = *s;
 	d->invalidate_cache();
 }
@@ -218,7 +211,7 @@ void copy_dive(const struct dive *s, struct dive *d)
 void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear)
 {
 	if (clear)
-		clear_dive(d);
+		d->clear();
 	CONDITIONAL_COPY_STRING(notes);
 	CONDITIONAL_COPY_STRING(diveguide);
 	CONDITIONAL_COPY_STRING(buddy);
