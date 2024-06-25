@@ -881,9 +881,9 @@ struct dive *dive_table::find_next_visible_dive(timestamp_t when)
 	return nullptr;
 }
 
-bool has_dive(unsigned int deviceid, unsigned int diveid)
+bool dive_table::has_dive(unsigned int deviceid, unsigned int diveid) const
 {
-	return std::any_of(divelog.dives.begin(), divelog.dives.end(), [deviceid,diveid] (auto &d) {
+	return std::any_of(begin(), end(), [deviceid,diveid] (auto &d) {
 			return std::any_of(d->dcs.begin(), d->dcs.end(), [deviceid,diveid] (auto &dc) {
 				return dc.deviceid == deviceid && dc.diveid == diveid;
 			});

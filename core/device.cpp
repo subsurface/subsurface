@@ -147,7 +147,7 @@ std::pair<int, const unsigned char *> get_fingerprint_data(const fingerprint_tab
 	if (it != table.end() && it->model == model && it->serial == serial) {
 		// std::lower_bound gets us the first element that isn't smaller than what we are looking
 		// for - so if one is found, we still need to check for equality
-		if (has_dive(it->fdeviceid, it->fdiveid))
+		if (divelog.dives.has_dive(it->fdeviceid, it->fdiveid))
 			return { it->fsize, it->raw_data.get() };
 	}
 	return { 0, nullptr };
