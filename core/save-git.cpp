@@ -857,7 +857,7 @@ static void save_settings(git_repository *repo, struct dir *tree)
 {
 	membuffer b;
 
-	put_format(&b, "version %d\n", DATAFORMAT_VERSION);
+	put_format(&b, "version %d\n", dataformat_version);
 	for (auto &dev: divelog.devices)
 		save_one_device(&b, dev);
 	/* save the fingerprint data */

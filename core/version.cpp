@@ -11,3 +11,21 @@ const char *subsurface_canonical_version()
 {
 	return CANONICAL_VERSION_STRING;
 }
+
+static int min_datafile_version = 0;
+
+int get_min_datafile_version()
+{
+	return min_datafile_version;
+}
+
+void report_datafile_version(int version)
+{
+	if (min_datafile_version == 0 || min_datafile_version > version)
+		min_datafile_version = version;
+}
+
+int clear_min_datafile_version()
+{
+	return min_datafile_version;
+}

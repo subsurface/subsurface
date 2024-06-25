@@ -15,21 +15,22 @@
 
 #include "gettext.h"
 
+#include "device.h"
 #include "dive.h"
 #include "divelog.h"
 #include "divesite.h"
-#include "event.h"
 #include "errorhelper.h"
-#include "sample.h"
-#include "subsurface-string.h"
+#include "event.h"
 #include "format.h"
-#include "trip.h"
-#include "device.h"
 #include "git-access.h"
 #include "picture.h"
 #include "qthelper.h"
-#include "tag.h"
+#include "sample.h"
+#include "subsurface-string.h"
 #include "subsurface-time.h"
+#include "tag.h"
+#include "trip.h"
+#include "version.h"
 
 // TODO: Should probably be moved to struct divelog to allow for multi-document
 std::string saved_git_id;
@@ -920,8 +921,8 @@ static void parse_settings_version(char *line, struct git_parser_state *)
 {
 	int version = atoi(line);
 	report_datafile_version(version);
-	if (version > DATAFORMAT_VERSION)
-		report_error("Git save file version %d is newer than version %d I know about", version, DATAFORMAT_VERSION);
+	if (version > dataformat_version)
+		report_error("Git save file version %d is newer than version %d I know about", version, dataformat_version);
 }
 
 /* The argument string is the version string of subsurface that saved things, just FYI */
