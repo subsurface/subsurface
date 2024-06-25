@@ -68,7 +68,7 @@ void DivePlannerPointsModel::createSimpleDive(struct dive *dIn)
 	// clean out the dive and give it an id and the correct dc model
 	d = dIn;
 	dcNr = 0;
-	clear_dive(d);
+	d->clear();
 	d->id = dive_getUniqID();
 	d->when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
 	make_planner_dc(&d->dcs[0]);
