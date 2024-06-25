@@ -372,7 +372,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF && dt_dive->cylinders.size() > 0)
-		get_cylinder(dt_dive, 0)->gas_used.mliter = lrint(get_cylinder(dt_dive, 0)->type.size.mliter * (tmp_2bytes / 100.0));
+		dt_dive->get_cylinder(0)->gas_used.mliter = lrint(dt_dive->get_cylinder(0)->type.size.mliter * (tmp_2bytes / 100.0));
 
 	/*
 	 * Dive Type 1 -  Bit table. Subsurface don't have this record, but
@@ -544,10 +544,10 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 			goto bail;
 		}
 		if (is_nitrox && dt_dive->cylinders.size() > 0)
-			get_cylinder(dt_dive, 0)->gasmix.o2.permille =
+			dt_dive->get_cylinder(0)->gasmix.o2.permille =
 					lrint(membuf[23] & 0x0F ? 20.0 + 2 * (membuf[23] & 0x0F) : 21.0) * 10;
 		if (is_O2 && dt_dive->cylinders.size() > 0)
-			get_cylinder(dt_dive, 0)->gasmix.o2.permille = membuf[23] * 10;
+			dt_dive->get_cylinder(0)->gasmix.o2.permille = membuf[23] * 10;
 		free(compl_buffer);
 	}
 	JUMP(membuf, profile_length);
@@ -560,8 +560,8 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	else
 		dt_dive->dcs[0].deviceid = 0xffffffff;
 	if (!is_SCR && dt_dive->cylinders.size() > 0) {
-		get_cylinder(dt_dive, 0)->end.mbar = get_cylinder(dt_dive, 0)->start.mbar -
-			((get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000);
+		dt_dive->get_cylinder(0)->end.mbar = dt_dive->get_cylinder(0)->start.mbar -
+			((dt_dive->get_cylinder(0)->gas_used.mliter / dt_dive->get_cylinder(0)->type.size.mliter) * 1000);
 	}
 	return (char *)membuf;
 bail:
@@ -638,8 +638,8 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 	 */
 	tmp = (int) two_bytes_to_int(runner[pos_tank_init + 1], runner[pos_tank_init]);
 	if (tmp != 0x7fff) {
-		get_cylinder(dt_dive, 0)->start.mbar = tmp * 10;
-		get_cylinder(dt_dive, 0)->end.mbar =  get_cylinder(dt_dive, 0)->start.mbar - lrint(get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000;
+		dt_dive->get_cylinder(0)->start.mbar = tmp * 10;
+		dt_dive->get_cylinder(0)->end.mbar =  dt_dive->get_cylinder(0)->start.mbar - lrint(dt_dive->get_cylinder(0)->gas_used.mliter / dt_dive->get_cylinder(0)->type.size.mliter) * 1000;
 	}
 
 	/*

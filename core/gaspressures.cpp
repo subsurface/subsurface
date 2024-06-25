@@ -187,7 +187,7 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 	if (track_pr.empty())
 		return;
 
-	if (get_cylinder(dive, cyl)->cylinder_use == OC_GAS)
+	if (dive->get_cylinder(cyl)->cylinder_use == OC_GAS)
 		strategy = SAC;
 	else
 		strategy = TIME;
@@ -248,7 +248,7 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 			last_segment = it;
 		}
 
-		if(get_cylinder(dive, cyl)->cylinder_use == OC_GAS) {
+		if(dive->get_cylinder(cyl)->cylinder_use == OC_GAS) {
 
 			/* if this segment has pressure_time, then calculate a new interpolated pressure */
 			if (interpolate.pressure_time) {
@@ -310,7 +310,7 @@ static void debug_print_pressures(struct plot_info &pi)
 void populate_pressure_information(const struct dive *dive, const struct divecomputer *dc, struct plot_info &pi, int sensor)
 {
 	int first, last, cyl;
-	const cylinder_t *cylinder = get_cylinder(dive, sensor);
+	const cylinder_t *cylinder = dive->get_cylinder(sensor);
 	std::vector<pr_track_t> track;
 	size_t current = std::string::npos;
 	int missing_pr = 0, dense = 1;
@@ -350,7 +350,7 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 	 */
 	cyl = sensor;
 	event_loop loop_gas("gaschange");
-	const struct event *ev = has_gaschange_event(dive, dc, sensor) ?
+	const struct event *ev = dive->has_gaschange_event(dc, sensor) ?
 		loop_gas.next(*dc) : nullptr;
 	divemode_loop loop_mode(*dc);
 
@@ -360,7 +360,7 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 		int time = entry.sec;
 
 		while (ev && ev->time.seconds <= time) {   // Find 1st gaschange event after 
-			cyl = get_cylinder_index(dive, *ev); // the current gas change.
+			cyl = dive->get_cylinder_index(*ev); // the current gas change.
 			if (cyl < 0)
 				cyl = sensor;
 			ev = loop_gas.next(*dc);

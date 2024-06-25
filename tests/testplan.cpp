@@ -768,8 +768,7 @@ void TestPlan::testMultipleGases()
 	save_dive(stdout, dive, false);
 #endif
 
-	gasmix gas;
-	gas = get_gasmix_at_time(dive, dive.dcs[0], {20 * 60 + 1});
+	gasmix gas = dive.get_gasmix_at_time(dive.dcs[0], {20 * 60 + 1});
 	QCOMPARE(get_o2(gas), 110);
 	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 2480u, 2480u));
 }
@@ -963,17 +962,17 @@ void TestPlan::testCcrBailoutGasSelection()
 #endif
 
 	// check diluent used
-	cylinder_t *cylinder = get_cylinder(&dive, get_cylinderid_at_time(&dive, &dive.dcs[0], { 20 * 60 - 1 }));
+	cylinder_t *cylinder = dive.get_cylinder(get_cylinderid_at_time(&dive, &dive.dcs[0], { 20 * 60 - 1 }));
 	QCOMPARE(cylinder->cylinder_use, DILUENT);
 	QCOMPARE(get_o2(cylinder->gasmix), 200);
 
 	// check deep bailout used
-	cylinder = get_cylinder(&dive, get_cylinderid_at_time(&dive, &dive.dcs[0], { 20 * 60 + 1 }));
+	cylinder = dive.get_cylinder(get_cylinderid_at_time(&dive, &dive.dcs[0], { 20 * 60 + 1 }));
 	QCOMPARE(cylinder->cylinder_use, OC_GAS);
 	QCOMPARE(get_o2(cylinder->gasmix), 190);
 
 	// check shallow bailout used
-	cylinder = get_cylinder(&dive, get_cylinderid_at_time(&dive, &dive.dcs[0], { 30 * 60 }));
+	cylinder = dive.get_cylinder(get_cylinderid_at_time(&dive, &dive.dcs[0], { 30 * 60 }));
 	QCOMPARE(cylinder->cylinder_use, OC_GAS);
 	QCOMPARE(get_o2(cylinder->gasmix), 530);
 
