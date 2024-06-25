@@ -12,19 +12,19 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include "device.h"
 #include "dive.h"
 #include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
 #include "extradata.h"
+#include "event.h"
 #include "filterconstraint.h"
 #include "filterpreset.h"
 #include "sample.h"
 #include "subsurface-string.h"
 #include "subsurface-time.h"
 #include "trip.h"
-#include "device.h"
-#include "event.h"
 #include "file.h"
 #include "membuffer.h"
 #include "picture.h"
@@ -32,6 +32,7 @@
 #include "qthelper.h"
 #include "gettext.h"
 #include "tag.h"
+#include "version.h"
 #include "xmlparams.h"
 
 /*
@@ -632,7 +633,7 @@ static void save_filter_presets(struct membuffer *b)
 
 static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonymize)
 {
-	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", DATAFORMAT_VERSION);
+	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", dataformat_version);
 
 	/* save the dive computer nicknames, if any */
 	for (auto &d: divelog.devices) {
@@ -743,7 +744,7 @@ static void try_to_backup(const char *filename)
 	while (extension[i][0] != '\0') {
 		int elen = strlen(extension[i]);
 		if (strcasecmp(filename + flen - elen, extension[i]) == 0) {
-			if (last_xml_version < DATAFORMAT_VERSION) {
+			if (last_xml_version < dataformat_version) {
 				std::string special_ext = std::string(extension[i]) + ".v" + std::to_string(last_xml_version);
 				save_backup(filename, extension[i], special_ext.c_str());
 			} else {
@@ -851,7 +852,7 @@ static int export_dives_xslt_doit(const char *filename, struct xml_params *param
 static void save_dive_sites_buffer(struct membuffer *b, const struct dive_site *sites[], int nr_sites, bool anonymize)
 {
 	int i;
-	put_format(b, "<divesites program='subsurface' version='%d'>\n", DATAFORMAT_VERSION);
+	put_format(b, "<divesites program='subsurface' version='%d'>\n", dataformat_version);
 
 	/* save the dive sites */
 	for (i = 0; i < nr_sites; i++) {

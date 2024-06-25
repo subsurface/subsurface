@@ -1328,7 +1328,7 @@ void MainWindow::loadFiles(const std::vector<std::string> &fileNames)
 	updateAutogroup();
 
 	int min_datafile_version = get_min_datafile_version();
-	if (min_datafile_version >0 && min_datafile_version < DATAFORMAT_VERSION) {
+	if (min_datafile_version >0 && min_datafile_version < dataformat_version) {
 		QMessageBox::warning(this, tr("Opening datafile from older version"),
 				     tr("You opened a data file from an older version of Subsurface. We recommend "
 					"you read the manual to learn about the changes in the new version, especially "
