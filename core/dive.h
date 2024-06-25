@@ -82,6 +82,7 @@ struct dive {
 	void invalidate_cache();
 	bool cache_is_valid() const;
 
+	void clear();
 	void fixup_no_cylinder();		/* to fix cylinders, we need the divelist (to calculate cns) */
 	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
@@ -183,7 +184,6 @@ extern void subsurface_console_init();
 extern void subsurface_console_exit();
 extern bool subsurface_user_is_root();
 
-extern void clear_dive(struct dive *dive);
 extern void copy_dive(const struct dive *s, struct dive *d);
 extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
 
