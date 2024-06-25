@@ -44,6 +44,7 @@ struct dive_table : public sorted_owning_table<dive, &comp_dives> {
 	merge_result merge_dives(const struct dive &a_in, const struct dive &b_in, int offset, bool prefer_downloaded) const;
 	std::unique_ptr<dive> try_to_merge(const struct dive &a, const struct dive &b, bool prefer_downloaded) const;
 	bool has_dive(unsigned int deviceid, unsigned int diveid) const;
+	std::unique_ptr<dive> clone_delete_divecomputer(const struct dive &d, int dc_number);
 private:
 	int calculate_cns(struct dive &dive) const; // Note: writes into dive->cns
 	std::array<std::unique_ptr<dive>, 2> split_dive_at(const struct dive &dive, int a, int b) const;

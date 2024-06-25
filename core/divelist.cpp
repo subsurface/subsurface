@@ -1219,3 +1219,25 @@ struct std::unique_ptr<dive> dive_table::try_to_merge(const struct dive &a, cons
 	res->dive_site = site; /* Caller has to call site->add_dive()! */
 	return std::move(res);
 }
+
+/* Clone a dive and delete given dive computer */
+std::unique_ptr<dive> dive_table::clone_delete_divecomputer(const struct dive &d, int dc_number)
+{
+	/* copy the dive */
+	auto res = std::make_unique<dive>(d);
+
+	/* make a new unique id, since we still can't handle two equal ids */
+	res->id = dive_getUniqID();
+
+	if (res->dcs.size() <= 1)
+		return res;
+
+	if (dc_number < 0 || static_cast<size_t>(dc_number) >= res->dcs.size())
+		return res;
+
+	res->dcs.erase(res->dcs.begin() + dc_number);
+
+	force_fixup_dive(*res);
+
+	return res;
+}
