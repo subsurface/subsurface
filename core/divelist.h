@@ -48,11 +48,6 @@ private:
 	std::array<std::unique_ptr<dive>, 2> split_dive_at(const struct dive &dive, int a, int b) const;
 };
 
-/* this is used for both git and xml format */
-#define DATAFORMAT_VERSION 3
-
-int get_min_datafile_version();
-void report_datafile_version(int version);
 void clear_dive_file_data();
 extern bool has_dive(unsigned int deviceid, unsigned int diveid);
 
