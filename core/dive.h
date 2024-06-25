@@ -162,7 +162,6 @@ extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern const struct divecomputer *get_dive_dc(const struct dive *dive, int nr);
 
 extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
-extern std::unique_ptr<dive> clone_delete_divecomputer(const struct dive &d, int dc_number);
 
 extern bool dive_site_has_gps_location(const struct dive_site *ds);
 extern int dive_has_gps_location(const struct dive *dive);

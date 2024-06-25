@@ -12,7 +12,6 @@
 #include "libdivecomputer.h"
 #include "device.h"
 #include "divelist.h"
-#include "divelog.h"
 #include "divesite.h"
 #include "equipment.h"
 #include "errorhelper.h"
@@ -2332,7 +2331,6 @@ void set_informational_units(const char *units)
 		if (strstr(units, "MINUTES"))
 			git_prefs.units.vertical_speed_time = units::MINUTES;
 	}
-
 }
 
 /* clones a dive and moves given dive computer to front */
@@ -2346,28 +2344,6 @@ std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number)
 
 	if (dc_number != 0)
 		move_in_range(res->dcs, dc_number, dc_number + 1, 0);
-
-	return res;
-}
-
-/* Clone a dive and delete given dive computer */
-std::unique_ptr<dive> clone_delete_divecomputer(const struct dive &d, int dc_number)
-{
-	/* copy the dive */
-	auto res = std::make_unique<dive>(d);
-
-	/* make a new unique id, since we still can't handle two equal ids */
-	res->id = dive_getUniqID();
-
-	if (res->dcs.size() <= 1)
-		return res;
-
-	if (dc_number < 0 || static_cast<size_t>(dc_number) >= res->dcs.size())
-		return res;
-
-	res->dcs.erase(res->dcs.begin() + dc_number);
-
-	divelog.dives.force_fixup_dive(*res);
 
 	return res;
 }
