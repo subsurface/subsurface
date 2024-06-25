@@ -249,51 +249,6 @@ stats_t calculate_stats_selected()
 
 #define SOME_GAS 5000 // 5bar drop in cylinder pressure makes cylinder used
 
-bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx)
-{
-	bool first_gas_explicit = false;
-	event_loop loop("gaschange");
-	while (auto event = loop.next(*dc)) {
-		if (!dc->samples.empty() && (event->time.seconds == 0 ||
-				   (dc->samples[0].time.seconds == event->time.seconds)))
-			first_gas_explicit = true;
-		if (get_cylinder_index(dive, *event) == idx)
-			return true;
-	}
-	return !first_gas_explicit && idx == 0;
-}
-
-bool is_cylinder_used(const struct dive *dive, int idx)
-{
-	if (idx < 0 || static_cast<size_t>(idx) >= dive->cylinders.size())
-		return false;
-
-	const cylinder_t &cyl = dive->cylinders[idx];
-	if ((cyl.start.mbar - cyl.end.mbar) > SOME_GAS)
-		return true;
-
-	if ((cyl.sample_start.mbar - cyl.sample_end.mbar) > SOME_GAS)
-		return true;
-
-	for (auto &dc: dive->dcs) {
-		if (has_gaschange_event(dive, &dc, idx))
-			return true;
-		else if (dc.divemode == CCR && idx == get_cylinder_idx_by_use(dive, OXYGEN))
-			return true;
-	}
-	return false;
-}
-
-bool is_cylinder_prot(const struct dive *dive, int idx)
-{
-	if (idx < 0 || static_cast<size_t>(idx) >= dive->cylinders.size())
-		return false;
-
-	return std::any_of(dive->dcs.begin(), dive->dcs.end(),
-			   [dive, idx](auto &dc)
-			   { return has_gaschange_event(dive, &dc, idx); });
-}
-
 /* Returns a vector with dive->cylinders.size() entries */
 std::vector<volume_t> get_gas_used(struct dive *dive)
 {
@@ -334,7 +289,7 @@ std::pair<volume_t, volume_t> selected_dives_gas_parts()
 		int j = 0;
 		for (auto &gas: get_gas_used(d.get())) {
 			if (gas.mliter) {
-				auto [o2, he] = get_gas_parts(get_cylinder(d.get(), j)->gasmix, gas, O2_IN_AIR);
+				auto [o2, he] = get_gas_parts(d->get_cylinder(j)->gasmix, gas, O2_IN_AIR);
 				o2_tot.mliter += o2.mliter;
 				he_tot.mliter += he.mliter;
 			}

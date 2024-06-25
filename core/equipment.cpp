@@ -369,25 +369,6 @@ cylinder_t *add_empty_cylinder(struct cylinder_table *t)
 	return &t->back();
 }
 
-/* access to cylinders is controlled by two functions:
- * - get_cylinder() returns the cylinder of a dive and supposes that
- *   the cylinder with the given index exists. If it doesn't, an error
- *   message is printed and the "surface air" cylinder returned.
- *   (NOTE: this MUST not be written into!).
- * - get_or_create_cylinder() creates an empty cylinder if it doesn't exist.
- *   Multiple cylinders might be created if the index is bigger than the
- *   number of existing cylinders
- */
-cylinder_t *get_cylinder(struct dive *d, int idx)
-{
-	return &d->cylinders[idx];
-}
-
-const cylinder_t *get_cylinder(const struct dive *d, int idx)
-{
-	return &d->cylinders[idx];
-}
-
 cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
 {
 	if (idx < 0) {
@@ -468,7 +449,7 @@ void add_default_cylinder(struct dive *d)
 
 static bool show_cylinder(const struct dive *d, int i)
 {
-	if (is_cylinder_used(d, i))
+	if (d->is_cylinder_used(i))
 		return true;
 
 	const cylinder_t &cyl = d->cylinders[i];
@@ -499,7 +480,7 @@ void dump_cylinders(struct dive *dive, bool verbose)
 {
 	printf("Cylinder list:\n");
 	for (int i = 0; i < dive->cylinders; i++) {
-		cylinder_t *cyl = get_cylinder(dive, i);
+		cylinder_t *cyl = dive->get_cylinder(i);
 
 		printf("%02d: Type     %s, %3.1fl, %3.0fbar\n", i, cyl->type.description.c_str(), cyl->type.size.mliter / 1000.0, cyl->type.workingpressure.mbar / 1000.0);
 		printf("    Gasmix   O2 %2.0f%% He %2.0f%%\n", cyl->gasmix.o2.permille / 10.0, cyl->gasmix.he.permille / 10.0);

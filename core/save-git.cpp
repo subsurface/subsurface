@@ -385,7 +385,7 @@ static void save_one_event(struct membuffer *b, const struct dive &dive, const s
 		show_index(b, ev.value, "value=", "");
 	show_utf8(b, " name=", ev.name.c_str(), "");
 	if (ev.is_gaschange()) {
-		struct gasmix mix = get_gasmix_from_event(&dive, ev);
+		struct gasmix mix = dive.get_gasmix_from_event(ev);
 		if (ev.gas.index >= 0)
 			show_integer(b, ev.gas.index, "cylinder=", "");
 		put_gasmix(b, mix);

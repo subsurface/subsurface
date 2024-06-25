@@ -79,7 +79,7 @@ QStringList formatGetCylinder(const dive *d)
 {
 	QStringList getCylinder;
 	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
-		if (is_cylinder_used(d, i))
+		if (d->is_cylinder_used(i))
 			getCylinder << QString::fromStdString(cyl.type.description);
 	}
 	return getCylinder;
@@ -89,7 +89,7 @@ QStringList formatStartPressure(const dive *d)
 {
 	QStringList startPressure;
 	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
-		if (is_cylinder_used(d, i))
+		if (d->is_cylinder_used(i))
 			startPressure << getPressures(cyl, START_PRESSURE);
 	}
 	return startPressure;
@@ -99,7 +99,7 @@ QStringList formatEndPressure(const dive *d)
 {
 	QStringList endPressure;
 	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
-		if (is_cylinder_used(d, i))
+		if (d->is_cylinder_used(i))
 			endPressure << getPressures(cyl, END_PRESSURE);
 	}
 	return endPressure;
@@ -109,7 +109,7 @@ QStringList formatFirstGas(const dive *d)
 {
 	QStringList gas;
 	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
-		if (is_cylinder_used(d, i))
+		if (d->is_cylinder_used(i))
 			gas << get_gas_string(cyl.gasmix);
 	}
 	return gas;
@@ -174,7 +174,7 @@ QString formatGas(const dive *d)
 	 */
 	QString gases;
 	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
-		if (!is_cylinder_used(d, i))
+		if (!d->is_cylinder_used(i))
 			continue;
 		QString gas = QString::fromStdString(cyl.type.description);
 		if (!gas.isEmpty())

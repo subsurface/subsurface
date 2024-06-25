@@ -134,12 +134,12 @@ void TabDiveInformation::updateProfile()
 	QString gaslist, SACs, separator;
 
 	for (size_t i = 0; i < currentDive->cylinders.size(); i++) {
-		if (!is_cylinder_used(currentDive, i))
+		if (!currentDive->is_cylinder_used(i))
 			continue;
 		gaslist.append(separator); volumes.append(separator); SACs.append(separator);
 		separator = "\n";
 
-		gaslist.append(gasname(get_cylinder(currentDive, i)->gasmix));
+		gaslist.append(gasname(currentDive->get_cylinder(i)->gasmix));
 		if (!gases[i].mliter)
 			continue;
 		volumes.append(get_volume_string(gases[i], true));

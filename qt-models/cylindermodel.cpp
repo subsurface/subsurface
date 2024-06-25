@@ -155,7 +155,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
-	const cylinder_t *cyl = index.row() == tempRow ? &tempCyl : get_cylinder(d, index.row());
+	const cylinder_t *cyl = index.row() == tempRow ? &tempCyl : d->get_cylinder(index.row());
 
 	switch (role) {
 	case Qt::BackgroundRole: {
@@ -259,7 +259,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::SizeHintRole:
 		if (index.column() == REMOVE) {
 			if ((inPlanner && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(!inPlanner && is_cylinder_prot(d, index.row()))) {
+				(!inPlanner && d->is_cylinder_prot(index.row()))) {
 					return trashForbiddenIcon();
 			}
 			return trashIcon();
@@ -269,7 +269,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		switch (index.column()) {
 		case REMOVE:
 			if ((inPlanner && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(!inPlanner && is_cylinder_prot(d, index.row()))) {
+				(!inPlanner && d->is_cylinder_prot(index.row()))) {
 					return tr("This gas is in use. Only cylinders that are not used in the dive can be removed.");
 			}
 			return tr("Clicking here will remove this cylinder.");
@@ -301,7 +301,7 @@ cylinder_t *CylindersModel::cylinderAt(const QModelIndex &index)
 {
 	if (!d)
 		return nullptr;
-	return get_cylinder(d, index.row());
+	return d->get_cylinder(index.row());
 }
 
 bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -364,7 +364,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	// First, we make a shallow copy of the old cylinder. Then we modify the fields inside that copy.
 	// At the end, we either place an EditCylinder undo command (EquipmentTab) or copy the cylinder back (planner).
 	// Yes, this is not ideal, but the pragmatic thing to do for now.
-	cylinder_t cyl = *get_cylinder(d, row);
+	cylinder_t cyl = *d->get_cylinder(row);
 
 	if (index.column() != TYPE && !changed)
 		return false;
@@ -470,7 +470,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 
 	if (inPlanner) {
 		// In the planner - simply overwrite the cylinder in the dive with the modified cylinder.
-		*get_cylinder(d, row) = cyl;
+		*d->get_cylinder(row) = cyl;
 		dataChanged(index, index);
 	} else {
 		// On the EquipmentTab - place an editCylinder command.
@@ -711,7 +711,7 @@ void CylindersModel::initTempCyl(int row)
 	if (!d || tempRow == row)
 		return;
 	clearTempCyl();
-	const cylinder_t *cyl = get_cylinder(d, row);
+	const cylinder_t *cyl = d->get_cylinder(row);
 	if (!cyl)
 		return;
 
@@ -737,7 +737,7 @@ void CylindersModel::commitTempCyl(int row)
 		return;
 	if (row != tempRow)
 		return clearTempCyl(); // Huh? We are supposed to commit a different row than the one we stored?
-	cylinder_t *cyl = get_cylinder(d, tempRow);
+	cylinder_t *cyl = d->get_cylinder(tempRow);
 	if (!cyl)
 		return;
 	// Only submit a command if the type changed
