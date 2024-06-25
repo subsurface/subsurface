@@ -31,7 +31,7 @@ void EventBase::undo()
 
 void EventBase::updateDive()
 {
-	invalidate_dive_cache(d);
+	d->invalidate_cache();
 	emit diveListNotifier.eventsChanged(d);
 	setSelection({ d }, d, dcNr);
 }

@@ -730,8 +730,8 @@ struct dive *dive_table::register_dive(std::unique_ptr<dive> d)
 	// dives have been added, their status will be updated.
 	d->hidden_by_filter = true;
 
-	fulltext_register(d.get());				// Register the dive's fulltext cache
-	invalidate_dive_cache(d.get());				// Ensure that dive is written in git_save()
+	fulltext_register(d.get());			// Register the dive's fulltext cache
+	d->invalidate_cache();				// Ensure that dive is written in git_save()
 	auto [res, idx] = put(std::move(d));
 
 	return res;
