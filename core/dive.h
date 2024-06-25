@@ -66,7 +66,7 @@ struct dive {
 	std::vector<divecomputer> dcs; // Attn: pointers to divecomputers are not stable!
 	int id = 0; // unique ID for this dive
 	picture_table pictures;
-	unsigned char git_id[20] = {};
+	std::array<unsigned char, 20> git_id = {};
 	bool notrip = false; /* Don't autogroup this dive to a trip */
 	bool selected = false;
 	bool hidden_by_filter = false;
@@ -78,6 +78,9 @@ struct dive {
 	dive(const dive &);
 	dive(dive &&);
 	dive &operator=(const dive &);
+
+	void invalidate_cache();
+	bool cache_is_valid() const;
 
 	void fixup_no_cylinder();		/* to fix cylinders, we need the divelist (to calculate cns) */
 	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
@@ -120,9 +123,6 @@ struct dive_or_trip {
 	struct dive *dive;
 	struct dive_trip *trip;
 };
-
-extern void invalidate_dive_cache(struct dive *dive);
-extern bool dive_cache_is_valid(const struct dive *dive);
 
 extern void cylinder_renumber(struct dive &dive, int mapping[]);
 extern int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct dive *dive, bool check_unused);
@@ -204,8 +204,6 @@ extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer
 extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
 
 /* UI related protopypes */
-
-extern void invalidate_dive_cache(struct dive *dc);
 
 extern int total_weight(const struct dive *);
 

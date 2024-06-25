@@ -1512,7 +1512,7 @@ static int dive_directory(const char *root, const git_tree_entry *entry, const c
 
 	finish_active_dive(state);
 	create_new_dive(utc_mktime(&tm), state);
-	memcpy(state->active_dive->git_id, git_tree_entry_id(entry)->id, 20);
+	memcpy(state->active_dive->git_id.data(), git_tree_entry_id(entry)->id, 20);
 	return GIT_WALK_OK;
 }
 
