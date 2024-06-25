@@ -659,9 +659,9 @@ static int save_one_dive(git_repository *repo, struct dir *tree, struct dive &di
 	 * If the dive git ID is valid, we just create the whole directory
 	 * with that ID
 	 */
-	if (cached_ok && dive_cache_is_valid(&dive)) {
+	if (cached_ok && dive.cache_is_valid()) {
 		git_oid oid;
-		git_oid_fromraw(&oid, dive.git_id);
+		git_oid_fromraw(&oid, dive.git_id.data());
 		ret = tree_insert(tree->files, mb_cstring(&name), 1,
 			&oid, GIT_FILEMODE_TREE);
 		if (ret)
