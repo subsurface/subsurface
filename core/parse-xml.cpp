@@ -35,6 +35,7 @@
 #include "range.h"
 #include "sample.h"
 #include "tag.h"
+#include "version.h"
 #include "xmlparams.h"
 
 int last_xml_version = -1;

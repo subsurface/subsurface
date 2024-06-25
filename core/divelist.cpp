@@ -21,6 +21,7 @@
 #include "selection.h"
 #include "sample.h"
 #include "trip.h"
+#include "version.h"
 
 #include <time.h>
 
@@ -767,19 +768,6 @@ dive *dive_table::get_by_uniq_id(int id) const
 	return it != end() ? it->get() : nullptr;
 }
 
-static int min_datafile_version;
-
-int get_min_datafile_version()
-{
-	return min_datafile_version;
-}
-
-void report_datafile_version(int version)
-{
-	if (min_datafile_version == 0 || min_datafile_version > version)
-		min_datafile_version = version;
-}
-
 void clear_dive_file_data()
 {
 	fulltext_unregister_all();
@@ -790,7 +778,7 @@ void clear_dive_file_data()
 
 	clear_event_types();
 
-	min_datafile_version = 0;
+	clear_min_datafile_version();
 	clear_git_id();
 
 	reset_tank_info_table(tank_info_table);
