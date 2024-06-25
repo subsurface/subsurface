@@ -14,6 +14,7 @@
 #include "divelist.h"
 #include "divelog.h"
 #include "divesite.h"
+#include "equipment.h"
 #include "errorhelper.h"
 #include "event.h"
 #include "extradata.h"
@@ -51,6 +52,19 @@ dive::dive(dive &&) = default;
 dive &dive::operator=(const dive &) = default;
 dive::~dive() = default;
 
+/* get_cylinder_idx_by_use(): Find the index of the first cylinder with a particular CCR use type.
+ * The index returned corresponds to that of the first cylinder with a cylinder_use that
+ * equals the appropriate enum value [oxygen, diluent, bailout] given by cylinder_use_type.
+ * A negative number returned indicates that a match could not be found.
+ * Call parameters: dive = the dive being processed
+ *                  cylinder_use_type = an enum, one of {oxygen, diluent, bailout} */
+static int get_cylinder_idx_by_use(const struct dive &dive, enum cylinderuse cylinder_use_type)
+{
+	auto it = std::find_if(dive.cylinders.begin(), dive.cylinders.end(), [cylinder_use_type]
+			       (auto &cyl) { return cyl.cylinder_use == cylinder_use_type; });
+	return it != dive.cylinders.end() ? it - dive.cylinders.begin() : -1;
+}
+
 /*
  * The legacy format for sample pressures has a single pressure
  * for each sample that can have any sensor, plus a possible
@@ -66,7 +80,7 @@ int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer
 {
 	int o2sensor;
 
-	o2sensor = (dc->divemode == CCR) ? get_cylinder_idx_by_use(dive, OXYGEN) : -1;
+	o2sensor = (dc->divemode == CCR) ? get_cylinder_idx_by_use(*dive, OXYGEN) : -1;
 	for (const auto &s: dc->samples) {
 		int seen_pressure = 0, idx;
 
@@ -92,11 +106,30 @@ int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer
 	return o2sensor < 0 ? 256 : o2sensor;
 }
 
+/* access to cylinders is controlled by two functions:
+ * - get_cylinder() returns the cylinder of a dive and supposes that
+ *   the cylinder with the given index exists. If it doesn't, an error
+ *   message is printed and the "surface air" cylinder returned.
+ *   (NOTE: this MUST not be written into!).
+ * - get_or_create_cylinder() creates an empty cylinder if it doesn't exist.
+ *   Multiple cylinders might be created if the index is bigger than the
+ *   number of existing cylinders
+ */
+cylinder_t *dive::get_cylinder(int idx)
+{
+	return &cylinders[idx];
+}
+
+const cylinder_t *dive::get_cylinder(int idx) const
+{
+	return &cylinders[idx];
+}
+
 /* warning: does not test idx for validity */
 struct event create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
 {
 	/* The gas switch event format is insane for historical reasons */
-	struct gasmix mix = get_cylinder(dive, idx)->gasmix;
+	struct gasmix mix = dive->get_cylinder(idx)->gasmix;
 	int o2 = get_o2(mix);
 	int he = get_he(mix);
 
@@ -124,13 +157,13 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	add_event_to_dc(dc, std::move(ev));
 }
 
-struct gasmix get_gasmix_from_event(const struct dive *dive, const struct event &ev)
+struct gasmix dive::get_gasmix_from_event(const struct event &ev) const
 {
 	if (ev.is_gaschange()) {
 		int index = ev.gas.index;
 		// FIXME: The planner uses one past cylinder-count to signify "surface air". Remove in due course.
-		if (index >= 0 && static_cast<size_t>(index) < dive->cylinders.size() + 1)
-			return get_cylinder(dive, index)->gasmix;
+		if (index >= 0 && static_cast<size_t>(index) < cylinders.size() + 1)
+			return get_cylinder(index)->gasmix;
 		return ev.gas.mix;
 	}
 	return gasmix_air;
@@ -240,7 +273,7 @@ void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only)
 
 	d->cylinders.clear();
 	for (auto [i, cyl]: enumerated_range(s->cylinders)) {
-		if (!used_only || is_cylinder_used(s, i) || get_cylinder(s, i)->cylinder_use == NOT_USED)
+		if (!used_only || s->is_cylinder_used(i) || s->get_cylinder(i)->cylinder_use == NOT_USED)
 			d->cylinders.push_back(cyl);
 	}
 }
@@ -308,13 +341,39 @@ static int get_cylinder_used(const struct dive *dive, bool used[])
 	return num;
 }
 
+/*
+ * If the event has an explicit cylinder index,
+ * we return that. If it doesn't, we return the best
+ * match based on the gasmix.
+ *
+ * Some dive computers give cylinder indices, some
+ * give just the gas mix.
+ */
+int dive::get_cylinder_index(const struct event &ev) const
+{
+	if (ev.gas.index >= 0)
+		return ev.gas.index;
+
+	/*
+	 * This should no longer happen!
+	 *
+	 * We now match up gas change events with their cylinders at dive
+	 * event fixup time.
+	 */
+	report_info("Still looking up cylinder based on gas mix in get_cylinder_index()!");
+
+	gasmix mix = get_gasmix_from_event(ev);
+	int best = find_best_gasmix_match(mix, cylinders);
+	return best < 0 ? 0 : best;
+}
+
 /* Are there any used cylinders which we do not know usage about? */
-static bool has_unknown_used_cylinders(const struct dive *dive, const struct divecomputer *dc,
+static bool has_unknown_used_cylinders(const struct dive &dive, const struct divecomputer *dc,
 				       const bool used_cylinders[], int num)
 {
 	int idx;
-	auto used_and_unknown = std::make_unique<bool[]>(dive->cylinders.size());
-	std::copy(used_cylinders, used_cylinders + dive->cylinders.size(), used_and_unknown.get());
+	auto used_and_unknown = std::make_unique<bool[]>(dive.cylinders.size());
+	std::copy(used_cylinders, used_cylinders + dive.cylinders.size(), used_and_unknown.get());
 
 	/* We know about using the O2 cylinder in a CCR dive */
 	if (dc->divemode == CCR) {
@@ -326,7 +385,7 @@ static bool has_unknown_used_cylinders(const struct dive *dive, const struct div
 	}
 
 	/* We know about the explicit first cylinder (or first) */
-	idx = explicit_first_cylinder(dive, dc);
+	idx = dive.explicit_first_cylinder(dc);
 	if (idx >= 0 && used_and_unknown[idx]) {
 		used_and_unknown[idx] = false;
 		num--;
@@ -336,7 +395,7 @@ static bool has_unknown_used_cylinders(const struct dive *dive, const struct div
 	event_loop loop("gaschange");
 	const struct event *ev;
 	while ((ev = loop.next(*dc)) != nullptr && num > 0) {
-		idx = get_cylinder_index(dive, *ev);
+		idx = dive.get_cylinder_index(*ev);
 		if (idx >= 0 && used_and_unknown[idx]) {
 			used_and_unknown[idx] = false;
 			num--;
@@ -368,7 +427,7 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 	 */
 	auto used_cylinders = std::make_unique<bool[]>(dive->cylinders.size());
 	num_used_cylinders = get_cylinder_used(dive, used_cylinders.get());
-	if (has_unknown_used_cylinders(dive, dc, used_cylinders.get(), num_used_cylinders)) {
+	if (has_unknown_used_cylinders(*dive, dc, used_cylinders.get(), num_used_cylinders)) {
 		/*
 		 * If we had more than one used cylinder, but
 		 * do not know usage of them, we simply cannot
@@ -401,7 +460,7 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 
 		/* Make sure to move the event past 'lasttime' */
 		while (ev && lasttime >= ev->time.seconds) {
-			idx = get_cylinder_index(dive, *ev);
+			idx = dive->get_cylinder_index(*ev);
 			ev = loop.next(*dc);
 		}
 
@@ -454,19 +513,19 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
  * first cylinder - in which case cylinder 0 is indeed the first cylinder.
  * We likewise return 0 if the event concerns a cylinder that doesn't exist.
  * If the dive has no cylinders, -1 is returned. */
-int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc)
+int dive::explicit_first_cylinder(const struct divecomputer *dc) const
 {
 	int res = 0;
-	if (dive->cylinders.empty())
+	if (cylinders.empty())
 		return -1;
 	if (dc) {
 		const struct event *ev = get_first_event(*dc, "gaschange");
 		if (ev && ((!dc->samples.empty() && ev->time.seconds == dc->samples[0].time.seconds) || ev->time.seconds <= 1))
-			res = get_cylinder_index(dive, *ev);
+			res = get_cylinder_index(*ev);
 		else if (dc->divemode == CCR)
-			res = std::max(get_cylinder_idx_by_use(dive, DILUENT), res);
+			res = std::max(get_cylinder_idx_by_use(*this, DILUENT), res);
 	}
-	return static_cast<size_t>(res) < dive->cylinders.size() ? res : 0;
+	return static_cast<size_t>(res) < cylinders.size() ? res : 0;
 }
 
 static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity);
@@ -492,13 +551,13 @@ void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 		// pO2 values we would have computed anyway.
 		event_loop loop("gaschange");
 		const struct event *ev = loop.next(*dc);
-		struct gasmix gasmix = get_gasmix_from_event(dive, *ev);
+		struct gasmix gasmix = dive->get_gasmix_from_event(*ev);
 		const struct event *next = loop.next(*dc);
 
 		for (auto &sample: dc->samples) {
 			if (next && sample.time.seconds >= next->time.seconds) {
 				ev = next;
-				gasmix = get_gasmix_from_event(dive, *ev);
+				gasmix = dive->get_gasmix_from_event(*ev);
 				next = loop.next(*dc);
 			}
 			gas_pressures pressures = fill_pressures(lrint(calculate_depth_to_mbarf(sample.depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
@@ -1367,19 +1426,6 @@ pick_b:
 		add_initial_gaschange(d, res, offset, cylinders_map2[0]);
 }
 
-/* get_cylinder_idx_by_use(): Find the index of the first cylinder with a particular CCR use type.
- * The index returned corresponds to that of the first cylinder with a cylinder_use that
- * equals the appropriate enum value [oxygen, diluent, bailout] given by cylinder_use_type.
- * A negative number returned indicates that a match could not be found.
- * Call parameters: dive = the dive being processed
- *                  cylinder_use_type = an enum, one of {oxygen, diluent, bailout} */
-int get_cylinder_idx_by_use(const struct dive *dive, enum cylinderuse cylinder_use_type)
-{
-	auto it = std::find_if(dive->cylinders.begin(), dive->cylinders.end(), [cylinder_use_type]
-			       (auto &cyl) { return cyl.cylinder_use == cylinder_use_type; });
-	return it != dive->cylinders.end() ? it - dive->cylinders.begin() : -1;
-}
-
 /* Force an initial gaschange event to the (old) gas #0 */
 static void add_initial_gaschange(struct dive &dive, struct divecomputer &dc, int offset, int idx)
 {
@@ -1472,7 +1518,7 @@ int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct dive *di
 		if (i == cylid)
 			continue;
 		struct gasmix gas2 = cyl.gasmix;
-		if (gasmix_distance(mygas, gas2) == 0 && (is_cylinder_used(dive, i) || check_unused))
+		if (gasmix_distance(mygas, gas2) == 0 && (dive->is_cylinder_used(i) || check_unused))
 			return i;
 	}
 	return -1;
@@ -1598,7 +1644,7 @@ static bool cylinder_in_use(const struct dive *dive, int idx)
 		return false;
 
 	/* This tests for gaschange events or pressure changes */
-	if (is_cylinder_used(dive, idx) || prefs.include_unused_tanks)
+	if (dive->is_cylinder_used(idx) || prefs.include_unused_tanks)
 		return true;
 
 	/* This tests for typenames or gas contents */
@@ -1660,7 +1706,7 @@ static void merge_cylinders(struct dive &res, const struct dive &a, const struct
 		if (!used_in_b[i])
 			continue;
 
-		j = match_cylinder(get_cylinder(&b, i), res, try_to_match.get());
+		j = match_cylinder(b.get_cylinder(i), res, try_to_match.get());
 
 		/* No match? Add it to the result */
 		if (j < 0) {
@@ -1672,7 +1718,7 @@ static void merge_cylinders(struct dive &res, const struct dive &a, const struct
 
 		/* Otherwise, merge the result to the one we found */
 		mapping_b[i] = j;
-		merge_one_cylinder(get_cylinder(&res, j), get_cylinder(&b, i));
+		merge_one_cylinder(res.get_cylinder(j), b.get_cylinder(i));
 
 		/* Don't match the same target more than once */
 		try_to_match[j] = false;
@@ -2589,8 +2635,8 @@ gasmix_loop::gasmix_loop(const struct dive &d, const struct divecomputer &dc) :
 		return;
 
 	/* on first invocation, get initial gas mix and first event (if any) */
-	int cyl = explicit_first_cylinder(&dive, &dc);
-	last = get_cylinder(&dive, cyl)->gasmix;
+	int cyl = dive.explicit_first_cylinder(&dc);
+	last = dive.get_cylinder(cyl)->gasmix;
 	ev = loop.next(dc);
 }
 
@@ -2601,7 +2647,7 @@ gasmix gasmix_loop::next(int time)
 		return last;
 
 	while (ev && ev->time.seconds <= time) {
-		last = get_gasmix_from_event(&dive, *ev);
+		last = dive.get_gasmix_from_event(*ev);
 		ev = loop.next(dc);
 	}
 	return last;
@@ -2609,9 +2655,9 @@ gasmix gasmix_loop::next(int time)
 
 /* get the gas at a certain time during the dive */
 /* If there is a gasswitch at that time, it returns the new gasmix */
-struct gasmix get_gasmix_at_time(const struct dive &d, const struct divecomputer &dc, duration_t time)
+struct gasmix dive::get_gasmix_at_time(const struct divecomputer &dc, duration_t time) const
 {
-	return gasmix_loop(d, dc).next(time.seconds);
+	return gasmix_loop(*this, dc).next(time.seconds);
 }
 
 /* Does that cylinder have any pressure readings? */
@@ -2682,7 +2728,7 @@ dive::get_maximal_gas_result dive::get_maximal_gas() const
 		int o2 = get_o2(cyl.gasmix);
 		int he = get_he(cyl.gasmix);
 
-		if (!is_cylinder_used(this, i))
+		if (!is_cylinder_used(i))
 			continue;
 		if (cyl.cylinder_use == OXYGEN)
 			continue;
@@ -2702,4 +2748,49 @@ dive::get_maximal_gas_result dive::get_maximal_gas() const
 			(maxo2 == -1 && maxhe == -1 && mino2 == 1000))
 		maxo2 = mino2 = 0;
 	return { mino2, maxhe, maxo2 };
+}
+
+bool dive::has_gaschange_event(const struct divecomputer *dc, int idx) const
+{
+	bool first_gas_explicit = false;
+	event_loop loop("gaschange");
+	while (auto event = loop.next(*dc)) {
+		if (!dc->samples.empty() && (event->time.seconds == 0 ||
+				   (dc->samples[0].time.seconds == event->time.seconds)))
+			first_gas_explicit = true;
+		if (get_cylinder_index(*event) == idx)
+			return true;
+	}
+	return !first_gas_explicit && idx == 0;
+}
+
+bool dive::is_cylinder_used(int idx) const
+{
+	if (idx < 0 || static_cast<size_t>(idx) >= cylinders.size())
+		return false;
+
+	const cylinder_t &cyl = cylinders[idx];
+	if ((cyl.start.mbar - cyl.end.mbar) > SOME_GAS)
+		return true;
+
+	if ((cyl.sample_start.mbar - cyl.sample_end.mbar) > SOME_GAS)
+		return true;
+
+	for (auto &dc: dcs) {
+		if (has_gaschange_event(&dc, idx))
+			return true;
+		else if (dc.divemode == CCR && idx == get_cylinder_idx_by_use(*this, OXYGEN))
+			return true;
+	}
+	return false;
+}
+
+bool dive::is_cylinder_prot(int idx) const
+{
+	if (idx < 0 || static_cast<size_t>(idx) >= cylinders.size())
+		return false;
+
+	return std::any_of(dcs.begin(), dcs.end(),
+			   [this, idx](auto &dc)
+			   { return has_gaschange_event(&dc, idx); });
 }

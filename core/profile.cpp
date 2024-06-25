@@ -126,7 +126,7 @@ static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *
 	depth = (entry1.depth + entry2.depth) / 2;
 	atm = dive->depth_to_atm(depth);
 
-	cyl = get_cylinder(dive, index);
+	cyl = dive->get_cylinder(index);
 
 	airuse = gas_volume(cyl, a) - gas_volume(cyl, b);
 
@@ -191,35 +191,6 @@ static void analyze_plot_info(struct plot_info &pi)
 			entry.speed = 0;
 		}
 	}
-}
-
-/*
- * If the event has an explicit cylinder index,
- * we return that. If it doesn't, we return the best
- * match based on the gasmix.
- *
- * Some dive computers give cylinder indices, some
- * give just the gas mix.
- */
-int get_cylinder_index(const struct dive *dive, const struct event &ev)
-{
-	int best;
-	struct gasmix mix;
-
-	if (ev.gas.index >= 0)
-		return ev.gas.index;
-
-	/*
-	 * This should no longer happen!
-	 *
-	 * We now match up gas change events with their cylinders at dive
-	 * event fixup time.
-	 */
-	report_info("Still looking up cylinder based on gas mix in get_cylinder_index()!");
-
-	mix = get_gasmix_from_event(dive, ev);
-	best = find_best_gasmix_match(mix, dive->cylinders);
-	return best < 0 ? 0 : best;
 }
 
 static size_t set_setpoint(struct plot_info &pi, size_t i, int setpoint, int end)
@@ -508,7 +479,7 @@ static int sac_between(const struct dive *dive, const struct plot_info &pi, int 
 
 		a.mbar = get_plot_pressure(pi, first, i);
 		b.mbar = get_plot_pressure(pi, last, i);
-		const cylinder_t *cyl = get_cylinder(dive, i);
+		const cylinder_t *cyl = dive->get_cylinder(i);
 		int cyluse = gas_volume(cyl, a) - gas_volume(cyl, b);
 		if (cyluse > 0)
 			airuse += cyluse;
@@ -704,7 +675,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	std::vector<int> first(num_cyl, 0);
 	std::vector<int> last(num_cyl, INT_MAX);
 
-	int prev = explicit_first_cylinder(dive, dc);
+	int prev = dive->explicit_first_cylinder(dc);
 	prev = prev >= 0 ? prev : 0;
 	seen[prev] = 1;
 
@@ -735,7 +706,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	// Fill in "seen[]" array - mark cylinders we're not interested
 	// in as negative.
 	for (int i = 0; i < pi.nr_cylinders; i++) {
-		const cylinder_t *cyl = get_cylinder(dive, i);
+		const cylinder_t *cyl = dive->get_cylinder(i);
 		int start = cyl->start.mbar;
 		int end = cyl->end.mbar;
 
@@ -756,7 +727,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 
 		/* If it's only mentioned by other dc's, ignore it */
 		for (auto &secondary: dive->dcs) {
-			if (has_gaschange_event(dive, &secondary, i)) {
+			if (dive->has_gaschange_event(&secondary, i)) {
 				seen[i] = -1;
 				break;
 			}
@@ -765,7 +736,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 
 	for (int i = 0; i < pi.nr_cylinders; i++) {
 		if (seen[i] >= 0) {
-			const cylinder_t *cyl = get_cylinder(dive, i);
+			const cylinder_t *cyl = dive->get_cylinder(i);
 
 			add_plot_pressure(pi, first[i], i, cyl->start);
 			add_plot_pressure(pi, last[i], i, cyl->end);
@@ -1306,7 +1277,7 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 		int mbar = get_plot_pressure(pi, idx, cyl);
 		if (!mbar)
 			continue;
-		struct gasmix mix = get_cylinder(d, cyl)->gasmix;
+		struct gasmix mix = d->get_cylinder(cyl)->gasmix;
 		pressurevalue = get_pressure_units(mbar, &pressure_unit);
 		res.push_back(casprintf_loc(translate("gettextFromC", "P: %d%s (%s)"), pressurevalue, pressure_unit, gasname(mix)));
 	}
@@ -1531,7 +1502,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 				if (last_pressures[cylinder_index]) {
 					bar_used[cylinder_index] += last_pressures[cylinder_index] - next_pressure;
 
-					const cylinder_t *cyl = get_cylinder(d, cylinder_index);
+					const cylinder_t *cyl = d->get_cylinder(cylinder_index);
 
 					volumes_used[cylinder_index] += gas_volume(cyl, (pressure_t){ last_pressures[cylinder_index] }) - gas_volume(cyl, (pressure_t){ next_pressure });
 				}
@@ -1584,7 +1555,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 			total_bar_used += bar_used[cylinder_index];
 			total_volume_used += volumes_used[cylinder_index];
 
-			const cylinder_t *cyl = get_cylinder(d, cylinder_index);
+			const cylinder_t *cyl = d->get_cylinder(cylinder_index);
 			if (cyl->type.size.mliter) {
 				if (cylinder_volume.mliter && cylinder_volume.mliter != cyl->type.size.mliter) {
 					cylindersizes_are_identical = false;

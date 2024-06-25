@@ -1146,7 +1146,7 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 		dives.clear();
 		return;
 	}
-	const cylinder_t &orig = *get_cylinder(current, index);
+	const cylinder_t &orig = *current->get_cylinder(index);
 
 	std::vector<dive *> divesNew;
 	divesNew.reserve(dives.size());
@@ -1156,7 +1156,7 @@ EditCylinderBase::EditCylinderBase(int index, bool currentDiveOnly, bool nonProt
 	for (dive *d: dives) {
 		if (index >= static_cast<int>(d->cylinders.size()))
 			continue;
-		if (nonProtectedOnly && is_cylinder_prot(d, index))
+		if (nonProtectedOnly && d->is_cylinder_prot(index))
 			continue;
 		// We checked that the cylinder exists above.
 		const cylinder_t &cylinder = d->cylinders[index];
@@ -1272,7 +1272,7 @@ void EditCylinder::redo()
 	for (size_t i = 0; i < dives.size(); ++i) {
 		const std::string &name = cyl[i].type.description;
 		set_tank_info_data(tank_info_table, name, cyl[i].type.size, cyl[i].type.workingpressure);
-		std::swap(*get_cylinder(dives[i], indexes[i]), cyl[i]);
+		std::swap(*dives[i]->get_cylinder(indexes[i]), cyl[i]);
 		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderEdited(dives[i], indexes[i]);
 		invalidate_dive_cache(dives[i]); // Ensure that dive is written in git_save()

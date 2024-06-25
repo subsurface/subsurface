@@ -51,7 +51,7 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 		setPixmap(pixmaps.bookmark);
 		setOffset(QPointF(0.0, -pixmap().height()));
 	} else if (ev.is_gaschange()) {
-		struct gasmix mix = get_gasmix_from_event(dive, ev);
+		struct gasmix mix = dive->get_gasmix_from_event(ev);
 		struct icd_data icd_data;
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (mix.he.permille) {
@@ -123,7 +123,7 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 
 	if (ev.is_gaschange()) {
 		struct icd_data icd_data;
-		struct gasmix mix = get_gasmix_from_event(dive, ev);
+		struct gasmix mix = dive->get_gasmix_from_event(ev);
 		name += ": ";
 		name += gasname(mix);
 

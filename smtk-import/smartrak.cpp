@@ -507,7 +507,7 @@ static void merge_cylinder_info(cylinder_t *src, cylinder_t *dst)
 static void smtk_clean_cylinders(struct dive *d)
 {
 	int i = tanks - 1;
-	cylinder_t  *cyl, *base = get_cylinder(d, 0);
+	cylinder_t  *cyl, *base = d->get_cylinder(0);
 
 	cyl = base + tanks - 1;
 	while (cyl != base) {

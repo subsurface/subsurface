@@ -602,9 +602,7 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 
 	bool showDescriptions = false;
 	for (int cyl = 0; cyl < pInfo.nr_cylinders; cyl++) {
-		const cylinder_t *c = get_cylinder(d, cyl);
-		if (!c)
-			continue;
+		const cylinder_t *c = d->get_cylinder(cyl);
 		showDescriptions = showDescriptions || (c && same_gasmix_cylinder(*c, cyl, d, true) != -1);
 		if (act_segments[cyl].polygon.empty())
 			continue;
@@ -634,7 +632,7 @@ void DiveGasPressureItem::replot(const dive *d, int fromIn, int toIn, bool in_pl
 
 		// For each cylinder, on right hand side of the curve, write cylinder pressure
 		double x_offset = plotPressureValue(segment.last.pressure, segment.last.time, Qt::AlignTop | Qt::AlignLeft, y_offset) + 2;
-		plotGasValue(segment.last.pressure, segment.last.time, get_cylinder(d, segment.cyl), Qt::AlignTop | Qt::AlignLeft, x_offset, y_offset, showDescriptions);
+		plotGasValue(segment.last.pressure, segment.last.time, d->get_cylinder(segment.cyl), Qt::AlignTop | Qt::AlignLeft, x_offset, y_offset, showDescriptions);
 
 		/* Alternate alignment as we see cylinder use.. */
 		startAlignVar ^= Qt::AlignTop | Qt::AlignBottom;

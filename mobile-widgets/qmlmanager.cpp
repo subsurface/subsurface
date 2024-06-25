@@ -1242,7 +1242,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	if (formatStartPressure(d) != startpressure || formatEndPressure(d) != endpressure) {
 		diveChanged = true;
 		for ( int i = 0, j = 0 ; j < startpressure.length() && j < endpressure.length() ; i++ ) {
-			if (state != "add" && !is_cylinder_used(d, i))
+			if (state != "add" && !d->is_cylinder_used(i))
 				continue;
 
 			cylinder_t *cyl = get_or_create_cylinder(d, i);
@@ -1257,7 +1257,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	// gasmix for first cylinder
 	if (formatFirstGas(d) != gasmix) {
 		for ( int i = 0, j = 0 ; j < gasmix.length() ; i++ ) {
-			if (state != "add" && !is_cylinder_used(d, i))
+			if (state != "add" && !d->is_cylinder_used(i))
 				continue;
 
 			int o2 = parseGasMixO2(gasmix[j]);
@@ -1268,7 +1268,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				o2 + he <= 1000) {
 				diveChanged = true;
 				get_or_create_cylinder(d, i)->gasmix.o2.permille = o2;
-				get_cylinder(d, i)->gasmix.he.permille = he;
+				d->get_cylinder(i)->gasmix.he.permille = he;
 			}
 			j++;
 		}
@@ -1278,7 +1278,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		diveChanged = true;
 		int size = 0, wp = 0, j = 0, k = 0;
 		for (j = 0; k < usedCylinder.length(); j++) {
-			if (state != "add" && !is_cylinder_used(d, j))
+			if (state != "add" && !d->is_cylinder_used(j))
 				continue;
 
 			for (const tank_info &ti: tank_info_table) {
@@ -1294,8 +1294,8 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				}
 			}
 			get_or_create_cylinder(d, j)->type.description = usedCylinder[k].toStdString();
-			get_cylinder(d, j)->type.size.mliter = size;
-			get_cylinder(d, j)->type.workingpressure.mbar = wp;
+			d->get_cylinder(j)->type.size.mliter = size;
+			d->get_cylinder(j)->type.workingpressure.mbar = wp;
 			k++;
 		}
 	}

@@ -91,6 +91,15 @@ struct dive {
 	bool is_planned() const;
 	bool is_logged() const;
 	bool likely_same(const struct dive &b) const;
+	bool is_cylinder_used(int idx) const;
+	bool is_cylinder_prot(int idx) const;
+	int explicit_first_cylinder(const struct divecomputer *dc) const;
+	int get_cylinder_index(const struct event &ev) const;
+	bool has_gaschange_event(const struct divecomputer *dc, int idx) const;
+	struct gasmix get_gasmix_from_event(const struct event &ev) const;
+	struct gasmix get_gasmix_at_time(const struct divecomputer &dc, duration_t time) const;
+	cylinder_t *get_cylinder(int idx);
+	const cylinder_t *get_cylinder(int idx) const;
 
 	int depth_to_mbar(int depth) const;
 	double depth_to_mbarf(int depth) const;
@@ -115,7 +124,6 @@ struct dive_or_trip {
 extern void invalidate_dive_cache(struct dive *dive);
 extern bool dive_cache_is_valid(const struct dive *dive);
 
-extern int get_cylinder_idx_by_use(const struct dive *dive, enum cylinderuse cylinder_use_type);
 extern void cylinder_renumber(struct dive &dive, int mapping[]);
 extern int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct dive *dive, bool check_unused);
 
@@ -138,9 +146,6 @@ struct dive_components {
 	unsigned int number : 1;
 	unsigned int when : 1;
 };
-
-extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);
-extern int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc);
 
 extern fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planner);
 extern fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, fraction_t fo2);
@@ -193,13 +198,9 @@ extern int dive_getUniqID();
 
 extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int time);
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
-extern bool is_cylinder_used(const struct dive *dive, int idx);
-extern bool is_cylinder_prot(const struct dive *dive, int idx);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
 extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
-extern int get_cylinder_index(const struct dive *dive, const struct event &ev);
-extern struct gasmix get_gasmix_from_event(const struct dive *, const struct event &ev);
 extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
 
 /* UI related protopypes */
@@ -207,9 +208,6 @@ extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id
 extern void invalidate_dive_cache(struct dive *dc);
 
 extern int total_weight(const struct dive *);
-
-/* Get gasmix at a given time */
-extern struct gasmix get_gasmix_at_time(const struct dive &dive, const struct divecomputer &dc, duration_t time);
 
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
 

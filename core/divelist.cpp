@@ -117,7 +117,7 @@ int total_weight(const struct dive *dive)
 
 static int active_o2(const struct dive &dive, const struct divecomputer *dc, duration_t time)
 {
-	struct gasmix gas = get_gasmix_at_time(dive, *dc, time);
+	struct gasmix gas = dive.get_gasmix_at_time(*dc, time);
 	return get_o2(gas);
 }
 
@@ -137,8 +137,8 @@ static int get_sample_o2(const struct dive &dive, const struct divecomputer *dc,
 		double amb_presure = dive.depth_to_bar(sample.depth.mm);
 		double pamb_pressure = dive.depth_to_bar(psample.depth.mm );
 		if (dc->divemode == PSCR) {
-			po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, *dc, psample.time));
-			po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, *dc, sample.time));
+			po2i = pscr_o2(pamb_pressure, dive.get_gasmix_at_time(*dc, psample.time));
+			po2f = pscr_o2(amb_presure, dive.get_gasmix_at_time(*dc, sample.time));
 		} else {
 			int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
 			po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
@@ -182,8 +182,8 @@ static int calculate_otu(const struct dive &dive)
 				double amb_presure = dive.depth_to_bar(sample.depth.mm);
 				double pamb_pressure = dive.depth_to_bar(psample.depth.mm);
 				if (dc->divemode == PSCR) {
-					po2i = pscr_o2(pamb_pressure, get_gasmix_at_time(dive, *dc, psample.time));
-					po2f = pscr_o2(amb_presure, get_gasmix_at_time(dive, *dc, sample.time));
+					po2i = pscr_o2(pamb_pressure, dive.get_gasmix_at_time(*dc, psample.time));
+					po2f = pscr_o2(amb_presure, dive.get_gasmix_at_time(*dc, sample.time));
 				} else {
 					int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
 					po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
@@ -388,7 +388,7 @@ static double calculate_airuse(const struct dive &dive)
 			// better not pretend we know the total gas use.
 			// Eventually, logic should be fixed to compute average depth and total time
 			// for those segments where cylinders with known pressure drop are breathed from.
-			if (is_cylinder_used(&dive, i))
+			if (dive.is_cylinder_used(i))
 				return 0.0;
 			else
 				continue;

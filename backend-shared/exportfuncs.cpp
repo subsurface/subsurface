@@ -198,7 +198,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		put_format(&buf, "\n%% Gas use information:\n");
 		int qty_cyl = 0;
 		for (auto [i, cyl]: enumerated_range(dive->cylinders)) {
-			if (is_cylinder_used(dive.get(), i) || (prefs.include_unused_tanks && !cyl.type.description.empty())){
+			if (dive->is_cylinder_used(i) || (prefs.include_unused_tanks && !cyl.type.description.empty())){
 				put_format(&buf, "\\def\\%scyl%cdescription{%s}\n", ssrf, 'a' + i, cyl.type.description.c_str());
 				put_format(&buf, "\\def\\%scyl%cgasname{%s}\n", ssrf, 'a' + i, gasname(cyl.gasmix));
 				put_format(&buf, "\\def\\%scyl%cmixO2{%.1f\\%%}\n", ssrf, 'a' + i, get_o2(cyl.gasmix)/10.0);
