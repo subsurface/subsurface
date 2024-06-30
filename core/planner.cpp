@@ -226,7 +226,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	/* Create first sample at time = 0, not based on dp because
 	 * there is no real dp for time = 0, set first cylinder to 0
 	 * O2 setpoint for this sample will be filled later from next dp */
-	cyl = get_or_create_cylinder(dive, 0);
+	cyl = dive->get_or_create_cylinder(0);
 	struct sample *sample = prepare_sample(dc);
 	sample->sac.mliter = prefs.bottomsac;
 	if (track_gas && cyl->type.workingpressure.mbar)

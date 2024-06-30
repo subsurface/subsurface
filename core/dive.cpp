@@ -359,6 +359,17 @@ int dive::get_cylinder_index(const struct event &ev) const
 	return best < 0 ? 0 : best;
 }
 
+cylinder_t *dive::get_or_create_cylinder(int idx)
+{
+	if (idx < 0) {
+		report_info("Warning: accessing invalid cylinder %d", idx);
+		return NULL;
+	}
+	while (static_cast<size_t>(idx) >= cylinders.size())
+		add_empty_cylinder(&cylinders);
+	return &cylinders[idx];
+}
+
 /* Are there any used cylinders which we do not know usage about? */
 static bool has_unknown_used_cylinders(const struct dive &dive, const struct divecomputer *dc,
 				       const bool used_cylinders[], int num)
