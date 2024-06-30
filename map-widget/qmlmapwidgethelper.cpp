@@ -135,7 +135,7 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 	QGeoCoordinate locationCoord = location->coordinate;
 
 	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
-		struct dive_site *ds = get_dive_site_for_dive(dive.get());
+		struct dive_site *ds = dive->dive_site;
 		if (!ds || !ds->has_gps_location())
 			continue;
 #ifndef SUBSURFACE_MOBILE
@@ -163,7 +163,7 @@ void MapWidgetHelper::selectVisibleLocations()
 {
 	QList<int> selectedDiveIds;
 	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
-		struct dive_site *ds = get_dive_site_for_dive(dive.get());
+		struct dive_site *ds = dive->dive_site;
 		if (!ds || ds->has_gps_location())
 			continue;
 		const qreal latitude = ds->location.lat.udeg * 0.000001;
