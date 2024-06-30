@@ -581,7 +581,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		dcText = tr("Manually added dive");
 	else if (dcText.isEmpty())
 		dcText = tr("Unknown dive computer");
-	int nr = number_of_computers(d);
+	int nr = d->number_of_computers();
 	if (nr > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc + 1).arg(nr);
 	diveComputerText->set(dcText, getColor(TIME_TEXT, isGrayscale));
