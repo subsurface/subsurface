@@ -697,13 +697,9 @@ static struct sample *new_sample(struct git_parser_state *state)
 
 static void sample_parser(char *line, struct git_parser_state *state)
 {
-	int m, s = 0;
 	struct sample *sample = new_sample(state);
 
-	m = strtol(line, &line, 10);
-	if (*line == ':')
-		s = strtol(line + 1, &line, 10);
-	sample->time.seconds = m * 60 + s;
+	line += parse_duration(line, &sample->time, false);
 
 	for (;;) {
 		char c;

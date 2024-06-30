@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "units.h"
+#include "core/errorhelper.h"
 #include "gettext.h"
 #include "pref.h"
+#include <stddef.h>
+#include <stdlib.h>
 
 #define IMPERIAL_UNITS                                                                                     \
         {                                                                                                  \
@@ -182,4 +185,50 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 const struct units *get_units()
 {
 	return &prefs.units;
+}
+
+int parse_duration(const char *buffer, duration_t *time, bool dot_as_seperator)
+{
+	char *line = (char*)buffer;
+	size_t n = 0;
+	long values[3];
+	char separator;
+	while (n < sizeof(values)/sizeof(values[0])) {
+		values[n++] = strtol(line, &line, 10);
+		separator = *line;
+		line++;
+		/* special case of `mm.ss`
+		 * DivingLog 5.08 (and maybe other versions) appear to sometimes
+		 * store the dive time as 44.00 instead of 44:00 */
+		if (dot_as_seperator && n == 1 && separator == '.')
+			continue;
+		if (separator != ':')
+			break;
+	}
+	switch (n) {
+	case 1:
+		/* mm */
+		time->seconds = values[0] * 60;
+		time->ms = 0;
+		goto exit_out;
+	case 2:
+		/* mm:ss */
+		time->seconds = values[0] * 60 + values[1];
+		break;
+	case 3:
+		/* hh:mm:ss */
+		time->seconds = values[0] * 360 + values[1] * 60 + values[2];
+		break;
+	default:
+		time->seconds = 0;
+		time->ms = 0;
+		report_info("Strange sample time reading %s", buffer);
+		return 0;
+	}
+	long ms = 0;
+	if (separator == '.')
+		ms = strtol(line, &line, 10);
+	time->ms = ms;
+exit_out:
+	return line - buffer;
 }
