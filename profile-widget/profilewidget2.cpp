@@ -532,7 +532,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	// figure out if we are ontop of the dive computer name in the profile
 	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
 	if (isDiveTextItem(sceneItem, profileScene->diveComputerText)) {
-		const struct divecomputer *currentdc = get_dive_dc(d, dc);
+		const struct divecomputer *currentdc = d->get_dc(dc);
 		if (!currentdc->deviceid && dc == 0 && d->number_of_computers() == 1)
 			// nothing to do, can't rename, delete or reorder
 			return;
@@ -576,7 +576,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	m.addAction(tr("Add bookmark"), [this, seconds]() { addBookmark(seconds); });
 	m.addAction(tr("Split dive into two"), [this, seconds]() { splitDive(seconds); });
 
-	divemode_loop loop(*get_dive_dc(d, dc));
+	divemode_loop loop(*d->get_dc(dc));
 	divemode_t divemode = loop.next(seconds);
 	QMenu *changeMode = m.addMenu(tr("Change divemode"));
 	if (divemode != OC)
@@ -644,7 +644,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 		m2->addAction(tr("All event types"), this, &ProfileWidget2::unhideEventTypes);
 	}
-	const struct divecomputer *currentdc = get_dive_dc(d, dc);
+	const struct divecomputer *currentdc = d->get_dc(dc);
 	if (currentdc && std::any_of(currentdc->events.begin(), currentdc->events.end(),
 	    [] (auto &ev) { return ev.hidden; }))
 		m.addAction(tr("Unhide individually hidden events of this dive"), this, &ProfileWidget2::unhideEvents);
@@ -671,10 +671,10 @@ void ProfileWidget2::makeFirstDC()
 
 void ProfileWidget2::renameCurrentDC()
 {
-	bool ok;
-	struct divecomputer *currentdc = get_dive_dc(mutable_dive(), dc);
-	if (!currentdc)
+	if (!d)
 		return;
+	bool ok;
+	struct divecomputer *currentdc = mutable_dive()->get_dc(dc);
 	QString newName = QInputDialog::getText(this, tr("Edit nickname"),
 						tr("Set new nickname for %1 (serial %2):").arg(QString::fromStdString(currentdc->model)).
 						arg(QString::fromStdString(currentdc->serial)),
@@ -685,7 +685,9 @@ void ProfileWidget2::renameCurrentDC()
 
 void ProfileWidget2::hideEvent(DiveEventItem *item)
 {
-	struct divecomputer *currentdc = get_dive_dc(mutable_dive(), dc);
+	if (!d)
+		return;
+	struct divecomputer *currentdc = mutable_dive()->get_dc(dc);
 	int idx = item->idx;
 	if (!currentdc || idx < 0 || static_cast<size_t>(idx) >= currentdc->events.size())
 		return;
@@ -704,7 +706,9 @@ void ProfileWidget2::hideEventType(DiveEventItem *item)
 
 void ProfileWidget2::unhideEvents()
 {
-	struct divecomputer *currentdc = get_dive_dc(mutable_dive(), dc);
+	if (!d)
+		return;
+	struct divecomputer *currentdc = mutable_dive()->get_dc(dc);
 	if (!currentdc)
 		return;
 	for (auto &ev: currentdc->events)

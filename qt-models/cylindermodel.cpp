@@ -242,7 +242,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			return static_cast<int>(cyl->type.size.mliter);
 		case SENSORS: {
 			std::vector<int16_t> sensors;
-			const struct divecomputer *currentdc = get_dive_dc(d, dcNr);
+			const struct divecomputer *currentdc = d->get_dc(dcNr);
 			for (const auto &sample: currentdc->samples) {
 				for (int s = 0; s < MAX_SENSORS; ++s) {
 					if (sample.pressure[s].mbar) {

@@ -434,13 +434,13 @@ EditMode::EditMode(int indexIn, int newValue, bool currentDiveOnly)
 
 void EditMode::set(struct dive *d, int i) const
 {
-	get_dive_dc(d, index)->divemode = (enum divemode_t)i;
-	update_setpoint_events(d, get_dive_dc(d, index));
+	d->get_dc(index)->divemode = (enum divemode_t)i;
+	update_setpoint_events(d, d->get_dc(index));
 }
 
 int EditMode::data(struct dive *d) const
 {
-	return get_dive_dc(d, index)->divemode;
+	return d->get_dc(index)->divemode;
 }
 
 QString EditMode::fieldName() const
@@ -862,7 +862,7 @@ EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int
 	dcmaxdepth({0}),
 	duration({0})
 {
-	const struct divecomputer *sdc = get_dive_dc(source, dcNr);
+	const struct divecomputer *sdc = source->get_dc(dcNr);
 	if (!sdc)
 		d = nullptr; // Signal that we refuse to do anything.
 	if (!d)
@@ -890,7 +890,7 @@ bool EditProfile::workToBeDone()
 
 void EditProfile::undo()
 {
-	struct divecomputer *sdc = get_dive_dc(d, dcNr);
+	struct divecomputer *sdc = d->get_dc(dcNr);
 	if (!sdc)
 		return;
 	std::swap(sdc->samples, dc.samples);
@@ -1286,7 +1286,7 @@ void EditCylinder::undo()
 }
 
 EditSensors::EditSensors(int toCylinderIn, int fromCylinderIn, int dcNr)
-	: d(current_dive), dc(get_dive_dc(d, dcNr)), toCylinder(toCylinderIn), fromCylinder(fromCylinderIn)
+	: d(current_dive), dc(d->get_dc(dcNr)), toCylinder(toCylinderIn), fromCylinder(fromCylinderIn)
 {
 	if (!d || !dc)
 		return;

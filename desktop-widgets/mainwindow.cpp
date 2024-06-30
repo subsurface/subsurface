@@ -663,7 +663,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	if (!plannerStateClean() || !current_dive || !userMayChangeAppState())
 		return;
 
-	const struct divecomputer *dc = get_dive_dc(current_dive, profile->dc);
+	const struct divecomputer *dc = current_dive->get_dc(profile->dc);
 	if (!(is_dc_planner(dc) || is_dc_manually_added_dive(dc))) {
 		if (QMessageBox::warning(this, tr("Warning"), tr("Trying to replan a dive profile that has not been manually added."),
 					 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel)

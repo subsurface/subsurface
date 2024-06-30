@@ -213,9 +213,9 @@ static bool ppGraphsEnabled(const struct divecomputer *dc, bool simplified)
 // Update visibility of non-interactive chart features according to preferences
 void ProfileScene::updateVisibility(bool diveHasHeartBeat, bool simplified)
 {
-	const struct divecomputer *currentdc = get_dive_dc(d, dc);
-	if (!currentdc)
+	if (!d)
 		return;
+	const struct divecomputer *currentdc = d->get_dc(dc);
 	bool ppGraphs = ppGraphsEnabled(currentdc, simplified);
 
 	diveCeiling->setVisible(prefs.calcceiling);
@@ -291,9 +291,9 @@ struct VerticalAxisLayout {
 
 void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 {
-	const struct divecomputer *currentdc = get_dive_dc(d, dc);
-	if (!currentdc)
+	if (!d)
 		return;
+	const struct divecomputer *currentdc = d->get_dc(dc);
 
 	// Calculate left and right border needed for the axes and other chart items.
 	double leftBorder = profileYAxis->width();
@@ -428,7 +428,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 			decoModelParameters->set(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh), getColor(PRESSURE_TEXT));
 	}
 
-	const struct divecomputer *currentdc = get_dive_dc(d, dc);
+	const struct divecomputer *currentdc = d->get_dc(dc);
 	if (!currentdc || currentdc->samples.empty()) {
 		clear();
 		return;
