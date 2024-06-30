@@ -666,7 +666,7 @@ void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 {
 	location_t currentLocation;
 	if (d) {
-		currDs = get_dive_site_for_dive(d);
+		currDs = d->dive_site;
 		currentLocation = d->get_gps_location();
 	} else {
 		currDs = nullptr;

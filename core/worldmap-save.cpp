@@ -35,7 +35,7 @@ static void writeMarkers(struct membuffer *b, bool selected_only)
 	for (auto &dive: divelog.dives) {
 		if (selected_only && !dive->selected)
 				continue;
-		struct dive_site *ds = get_dive_site_for_dive(dive.get());
+		struct dive_site *ds = dive->dive_site;
 		if (!ds || !ds->has_gps_location())
 			continue;
 		put_degrees(b, ds->location.lat, "temp = new google.maps.Marker({position: new google.maps.LatLng(", "");

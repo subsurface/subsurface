@@ -1144,7 +1144,7 @@ static void gps_lat(const char *buffer, struct dive *dive, struct parser_state *
 {
 	const char *end;
 	location_t location = { };
-	struct dive_site *ds = get_dive_site_for_dive(dive);
+	struct dive_site *ds = dive->dive_site;
 
 	location.lat = parse_degrees(buffer, &end);
 	if (!ds) {
@@ -1161,7 +1161,7 @@ static void gps_long(const char *buffer, struct dive *dive, struct parser_state 
 {
 	const char *end;
 	location_t location = { };
-	struct dive_site *ds = get_dive_site_for_dive(dive);
+	struct dive_site *ds = dive->dive_site;
 
 	location.lon = parse_degrees(buffer, &end);
 	if (!ds) {
