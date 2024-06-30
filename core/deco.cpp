@@ -221,7 +221,7 @@ double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, dou
 	double ret_tolerance_limit_ambient_pressure = 0.0;
 	double gf_high = buehlmann_config.gf_high;
 	double gf_low = buehlmann_config.gf_low;
-	double surface = get_surface_pressure_in_mbar(dive, true) / 1000.0;
+	double surface = dive->get_surface_pressure().mbar / 1000.0;
 	double lowest_ceiling = 0.0;
 	double tissue_lowest_ceiling[16];
 
@@ -582,7 +582,7 @@ void set_vpmb_conservatism(short conservatism)
 
 double get_gf(struct deco_state *ds, double ambpressure_bar, const struct dive *dive)
 {
-	double surface_pressure_bar = get_surface_pressure_in_mbar(dive, true) / 1000.0;
+	double surface_pressure_bar = dive->get_surface_pressure().mbar / 1000.0;
 	double gf_low = buehlmann_config.gf_low;
 	double gf_high = buehlmann_config.gf_high;
 	double gf;
