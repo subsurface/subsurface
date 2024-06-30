@@ -1056,7 +1056,7 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 	case FILTER_CONSTRAINT_DURATION:
 		return check_numerical_range(c, d->duration.seconds);
 	case FILTER_CONSTRAINT_WEIGHT:
-		return check_numerical_range(c, total_weight(d));
+		return check_numerical_range(c, d->total_weight().grams);
 	case FILTER_CONSTRAINT_WATER_TEMP:
 		return check_numerical_range(c, d->watertemp.mkelvin);
 	case FILTER_CONSTRAINT_AIR_TEMP:

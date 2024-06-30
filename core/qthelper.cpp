@@ -51,14 +51,14 @@ static inline QString degreeSigns()
 	return QStringLiteral("dD\u00b0");
 }
 
-QString weight_string(int weight_in_grams)
+static QString weight_string(weight_t weight)
 {
 	QString str;
 	if (get_units()->weight == units::KG) {
-		double kg = (double) weight_in_grams / 1000.0;
+		double kg = (double) weight.grams / 1000.0;
 		str = QString("%L1").arg(kg, 0, 'f', kg >= 20.0 ? 0 : 1);
 	} else {
-		double lbs = grams_to_lbs(weight_in_grams);
+		double lbs = grams_to_lbs(weight.grams);
 		str = QString("%L1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1);
 	}
 	return str;
@@ -521,13 +521,8 @@ QString get_depth_unit()
 
 QString get_weight_string(weight_t weight, bool showunit)
 {
-	QString str = weight_string(weight.grams);
-	if (get_units()->weight == units::KG) {
-		str = QString("%1%2").arg(str, showunit ? gettextFromC::tr("kg") : QString());
-	} else {
-		str = QString("%1%2").arg(str, showunit ? gettextFromC::tr("lbs") : QString());
-	}
-	return str;
+	QString str = weight_string(weight);
+	return showunit ? str + get_weight_unit() : str;
 }
 
 QString get_weight_unit(bool metric)
