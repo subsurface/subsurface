@@ -221,7 +221,7 @@ void TabDiveInformation::updateData(const std::vector<dive *> &, dive *currentDi
 	ui->airtemp->setText(get_temperature_string(currentDive->airtemp, true));
 	ui->atmPressType->setItemText(1, get_depth_unit());  // Check for changes in depth unit (imperial/metric)
 	setIndexNoSignal(ui->atmPressType, 0);		     // Set the atmospheric pressure combo box to mbar
-	salinity_value = get_dive_salinity(currentDive);
+	salinity_value = currentDive->get_salinity();
 	if (salinity_value) {			// Set water type indicator (EN13319 = 1.020 g/l)
 		setIndexNoSignal(ui->waterTypeCombo, updateSalinityComboIndex(salinity_value));
 		ui->waterTypeText->setText(get_water_type_string(salinity_value));
