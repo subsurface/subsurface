@@ -89,6 +89,7 @@ struct dive {
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
 	temperature_t dc_airtemp() const;	/* average over divecomputers */
 	temperature_t dc_watertemp() const;	/* average over divecomputers */
+	pressure_t get_surface_pressure() const;
 
 	struct get_maximal_gas_result { int o2_p; int he_p; int o2low_p; };
 	get_maximal_gas_result get_maximal_gas() const;
@@ -157,8 +158,6 @@ struct dive_components {
 
 extern fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planner);
 extern fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, fraction_t fo2);
-
-extern int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null);
 
 extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
 extern std::string get_dive_country(const struct dive *dive);
