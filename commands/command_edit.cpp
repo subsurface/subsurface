@@ -951,7 +951,7 @@ void AddWeight::redo()
 
 static int find_weightsystem_index(const struct dive *d, const weightsystem_t &ws)
 {
-	return index_of_if(d->weightsystems, [&ws](auto &ws2) { return same_weightsystem(ws2, ws); });
+	return index_of_if(d->weightsystems, [&ws](auto &ws2) { return ws == ws2; });
 }
 
 EditWeightBase::EditWeightBase(int index, bool currentDiveOnly) :
@@ -1047,7 +1047,7 @@ EditWeight::EditWeight(int index, weightsystem_t wsIn, bool currentDiveOnly) :
 		new_ws.description = it->name;
 
 	// If that doesn't change anything, do nothing
-	if (same_weightsystem(ws, new_ws)) {
+	if (ws == new_ws) {
 		dives.clear();
 		return;
 	}
