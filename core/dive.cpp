@@ -2274,10 +2274,10 @@ timestamp_t dive::endtime() const
 	return when + totaltime().seconds;
 }
 
-bool time_during_dive_with_offset(const struct dive *dive, timestamp_t when, timestamp_t offset)
+bool dive::time_during_dive_with_offset(timestamp_t when, timestamp_t offset) const
 {
-	timestamp_t start = dive->when;
-	timestamp_t end = dive->endtime();
+	timestamp_t start = when;
+	timestamp_t end = endtime();
 	return start - offset <= when && when <= end + offset;
 }
 
