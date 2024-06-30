@@ -64,11 +64,11 @@ static struct type_description {
 
 	{ FILTER_CONSTRAINT_DIVE_MODE, "dive_mode", QT_TRANSLATE_NOOP("gettextFromC", "dive mode"), false, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 
-	{ FILTER_CONSTRAINT_TAGS, "tags", QT_TRANSLATE_NOOP("gettextFromC", "tags"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_PEOPLE, "people", QT_TRANSLATE_NOOP("gettextFromC", "people"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_LOCATION, "location", QT_TRANSLATE_NOOP("gettextFromC", "location"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_WEIGHT_TYPE, "weight_type", QT_TRANSLATE_NOOP("gettextFromC", "weight type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_CYLINDER_TYPE, "cylinder_type", QT_TRANSLATE_NOOP("gettextFromC", "cylinder type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_TAGS, "tags", QT_TRANSLATE_NOOP("gettextFromC", "any tag"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_PEOPLE, "people", QT_TRANSLATE_NOOP("gettextFromC", "any person"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_LOCATION, "location", QT_TRANSLATE_NOOP("gettextFromC", "any location"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_WEIGHT_TYPE, "weight_type", QT_TRANSLATE_NOOP("gettextFromC", "any weight type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_CYLINDER_TYPE, "cylinder_type", QT_TRANSLATE_NOOP("gettextFromC", "any cylinder type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_SIZE, "cylinder_size", QT_TRANSLATE_NOOP("gettextFromC", "cylinder size"), false, true, false, FILTER_CONSTRAINT_VOLUME_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_N2, "cylinder_n2", QT_TRANSLATE_NOOP("gettextFromC", "gas N₂ content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_O2, "cylinder_o2", QT_TRANSLATE_NOOP("gettextFromC", "gas O₂ content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
@@ -820,7 +820,6 @@ static bool has_tags(const filter_constraint &c, const struct dive *d)
 	QStringList dive_tags;
 	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
 		dive_tags.push_back(QString::fromStdString(tag->tag->name).trimmed());
-	dive_tags.append(gettextFromC::tr(divemode_text_ui[d->dc.divemode]).trimmed());
 	return check(c, dive_tags);
 }
 
