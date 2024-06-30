@@ -2531,14 +2531,9 @@ const struct divecomputer *get_dive_dc(const struct dive *dive, int nr)
 	return get_dive_dc((struct dive *)dive, nr);
 }
 
-bool dive_site_has_gps_location(const struct dive_site *ds)
-{
-	return ds && has_location(&ds->location);
-}
-
 bool dive::dive_has_gps_location() const
 {
-	return dive_site && dive_site_has_gps_location(dive_site);
+	return dive_site && dive_site->has_gps_location();
 }
 
 /* Extract GPS location of a dive computer stored in the GPS1

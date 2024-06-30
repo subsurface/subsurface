@@ -168,7 +168,7 @@ void MapLocationModel::reload(QObject *map)
 		// Don't show dive sites of hidden dives, unless we're in dive site edit mode.
 		if (!diveSiteMode && !hasVisibleDive(*ds))
 			continue;
-		if (!dive_site_has_gps_location(ds.get())) {
+		if (!ds->has_gps_location()) {
 			// Dive sites that do not have a gps location are not shown in normal mode.
 			// In dive-edit mode, selected sites are placed at the center of the map,
 			// so that the user can drag them somewhere without having to enter coordinates.
