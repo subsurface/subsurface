@@ -107,6 +107,7 @@ struct dive {
 	cylinder_t *get_cylinder(int idx);
 	const cylinder_t *get_cylinder(int idx) const;
 	weight_t total_weight() const;
+	int get_salinity() const;
 
 	int depth_to_mbar(int depth) const;
 	double depth_to_mbarf(int depth) const;
@@ -191,7 +192,6 @@ extern int legacy_format_o2pressures(const struct dive *dive, const struct divec
 extern bool dive_less_than(const struct dive &a, const struct dive &b);
 extern bool dive_less_than_ptr(const struct dive *a, const struct dive *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
-extern int get_dive_salinity(const struct dive *dive);
 extern int dive_getUniqID();
 
 extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int time);

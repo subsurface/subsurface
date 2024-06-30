@@ -704,9 +704,9 @@ static void fixup_water_salinity(struct dive &dive)
 		dive.salinity = (sum + nr / 2) / nr;
 }
 
-int get_dive_salinity(const struct dive *dive)
+int dive::get_salinity() const
 {
-	return dive->user_salinity ? dive->user_salinity : dive->salinity;
+	return user_salinity ? user_salinity : salinity;
 }
 
 static void fixup_meandepth(struct dive &dive)
