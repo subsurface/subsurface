@@ -52,7 +52,7 @@ DivePlannerWidget::DivePlannerWidget(dive &planned_dive, int dcNr, PlannerWidget
 	view->setColumnHidden(CylindersModel::SENSORS, true);
 	view->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	auto tankUseDelegate = new TankUseDelegate(this);
-	tankUseDelegate->setCurrentDC(get_dive_dc(&planned_dive, dcNr));
+	tankUseDelegate->setCurrentDC(planned_dive.get_dc(dcNr));
 	view->setItemDelegateForColumn(CylindersModel::USE, tankUseDelegate);
 	connect(ui.cylinderTableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addCylinder_clicked);
 	connect(ui.tableWidget, &TableView::addButtonClicked, plannerModel, &DivePlannerPointsModel::addDefaultStop);
@@ -563,7 +563,7 @@ int PlannerWidgets::getDcNr()
 
 divemode_t PlannerWidgets::getRebreatherMode() const
 {
-	return get_dive_dc(planned_dive.get(), dcNr)->divemode;
+	return planned_dive->get_dc(dcNr)->divemode;
 }
 
 void PlannerWidgets::preparePlanDive(const dive *currentDive, int currentDcNr)
@@ -575,8 +575,8 @@ void PlannerWidgets::preparePlanDive(const dive *currentDive, int currentDcNr)
 
 	// plan the dive in the same mode as the currently selected one
 	if (currentDive) {
-		plannerSettingsWidget.setDiveMode(get_dive_dc(currentDive, currentDcNr)->divemode);
-		plannerSettingsWidget.setBailoutVisibility(get_dive_dc(currentDive, currentDcNr)->divemode);
+		plannerSettingsWidget.setDiveMode(currentDive->get_dc(currentDcNr)->divemode);
+		plannerSettingsWidget.setBailoutVisibility(currentDive->get_dc(currentDcNr)->divemode);
 		if (currentDive->salinity)
 			plannerWidget.setSalinity(currentDive->salinity);
 		else	// No salinity means salt water

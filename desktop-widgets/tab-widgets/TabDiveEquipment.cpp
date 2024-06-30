@@ -138,7 +138,7 @@ void TabDiveEquipment::toggleTriggeredColumn()
 
 void TabDiveEquipment::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
 {
-	divecomputer *dc = get_dive_dc(currentDive, currentDC);
+	divecomputer *dc = currentDive->get_dc(currentDC);
 
 	cylindersModel->updateDive(currentDive, currentDC);
 	weightModel->updateDive(currentDive);

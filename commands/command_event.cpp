@@ -48,13 +48,13 @@ bool AddEventBase::workToBeDone()
 
 void AddEventBase::redoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 	idx = add_event_to_dc(dc, ev); // return ownership to backend
 }
 
 void AddEventBase::undoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 	ev = remove_event_from_dc(dc, idx);
 }
 
@@ -80,13 +80,13 @@ AddEventSetpointChange::AddEventSetpointChange(struct dive *d, int dcNr, int sec
 void AddEventSetpointChange::undoit()
 {
 	AddEventBase::undoit();
-	std::swap(get_dive_dc(d, dcNr)->divemode, divemode);
+	std::swap(d->get_dc(dcNr)->divemode, divemode);
 }
 
 void AddEventSetpointChange::redoit()
 {
 	AddEventBase::redoit();
-	std::swap(get_dive_dc(d, dcNr)->divemode, divemode);
+	std::swap(d->get_dc(dcNr)->divemode, divemode);
 }
 
 RenameEvent::RenameEvent(struct dive *d, int dcNr, int idx, const std::string name) : EventBase(d, dcNr),
@@ -103,7 +103,7 @@ bool RenameEvent::workToBeDone()
 
 void RenameEvent::redoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 	event *ev = get_event(dc, idx);
 	if (ev)
 		std::swap(ev->name, name);
@@ -118,7 +118,7 @@ void RenameEvent::undoit()
 RemoveEvent::RemoveEvent(struct dive *d, int dcNr, int idx) : EventBase(d, dcNr),
 	idx(idx), cylinder(-1)
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 	event *ev = get_event(dc, idx);
 	if (ev && (ev->type == SAMPLE_EVENT_GASCHANGE2 || ev->type == SAMPLE_EVENT_GASCHANGE))
 		cylinder = ev->gas.index;
@@ -132,13 +132,13 @@ bool RemoveEvent::workToBeDone()
 
 void RemoveEvent::redoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 	ev = remove_event_from_dc(dc, idx);
 }
 
 void RemoveEvent::undoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 	idx = add_event_to_dc(dc, std::move(ev));
 }
 
@@ -160,7 +160,7 @@ AddGasSwitch::AddGasSwitch(struct dive *d, int dcNr, int seconds, int tank) : Ev
 	// If there is a gas change at this time stamp, remove it before adding the new one.
 	// There shouldn't be more than one gas change per time stamp. Just in case we'll
 	// support that anyway.
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 
 	// Note that we remove events in reverse order so that the indexes don't change
 	// meaning while removing. This should be an extremely rare case anyway.
@@ -186,7 +186,7 @@ void AddGasSwitch::redoit()
 	std::vector<int> newEventsToRemove;
 	newEventsToAdd.reserve(eventsToRemove.size());
 	newEventsToRemove.reserve(eventsToAdd.size());
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 
 	for (int idx: eventsToRemove)
 		newEventsToAdd.push_back(remove_event_from_dc(dc, idx));
