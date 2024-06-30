@@ -1720,7 +1720,7 @@ static void merge_cylinders(struct dive &res, const struct dive &a, const struct
 /* Check whether a weightsystem table contains a given weightsystem */
 static bool has_weightsystem(const weightsystem_table &t, const weightsystem_t &w)
 {
-	return any_of(t.begin(), t.end(), [&w] (auto &w2) { return same_weightsystem(w, w2); });
+	return any_of(t.begin(), t.end(), [&w] (auto &w2) { return w == w2; });
 }
 
 static void merge_equipment(struct dive &res, const struct dive &a, const struct dive &b)
