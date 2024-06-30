@@ -2515,9 +2515,9 @@ std::string get_dive_location(const struct dive *dive)
 	return ds ? ds->name : std::string();
 }
 
-unsigned int number_of_computers(const struct dive *dive)
+int dive::number_of_computers() const
 {
-	return dive ? static_cast<int>(dive->dcs.size()) : 1;
+	return static_cast<int>(dcs.size());
 }
 
 struct divecomputer *get_dive_dc(struct dive *dive, int nr)

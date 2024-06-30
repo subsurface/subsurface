@@ -83,6 +83,7 @@ struct dive {
 	bool cache_is_valid() const;
 
 	void clear();
+	int number_of_computers() const;
 	void fixup_no_cylinder();		/* to fix cylinders, we need the divelist (to calculate cns) */
 	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
@@ -162,7 +163,6 @@ extern int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null);
 extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
 extern std::string get_dive_country(const struct dive *dive);
 extern std::string get_dive_location(const struct dive *dive);
-extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern const struct divecomputer *get_dive_dc(const struct dive *dive, int nr);
 
