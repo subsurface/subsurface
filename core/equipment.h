@@ -60,6 +60,8 @@ struct weightsystem_t
 	weightsystem_t();
 	weightsystem_t(weight_t w, std::string desc, bool auto_filled);
 	~weightsystem_t();
+
+	bool operator==(const weightsystem_t &w2) const;
 };
 
 /* Table of weightsystems. Attention: this stores weightsystems,
@@ -72,7 +74,6 @@ extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern cylinder_t *add_empty_cylinder(struct cylinder_table *t);
 extern cylinder_t *get_or_create_cylinder(struct dive *d, int idx);
-extern bool same_weightsystem(weightsystem_t w1, weightsystem_t w2);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
 extern void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws);
