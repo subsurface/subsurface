@@ -533,13 +533,13 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
 	if (isDiveTextItem(sceneItem, profileScene->diveComputerText)) {
 		const struct divecomputer *currentdc = get_dive_dc(d, dc);
-		if (!currentdc->deviceid && dc == 0 && number_of_computers(d) == 1)
+		if (!currentdc->deviceid && dc == 0 && d->number_of_computers() == 1)
 			// nothing to do, can't rename, delete or reorder
 			return;
 		// create menu to show when right clicking on dive computer name
 		if (dc > 0)
 			m.addAction(tr("Make first dive computer"), this, &ProfileWidget2::makeFirstDC);
-		if (number_of_computers(d) > 1) {
+		if (d->number_of_computers() > 1) {
 			m.addAction(tr("Delete this dive computer"), this, &ProfileWidget2::deleteCurrentDC);
 			m.addAction(tr("Split this dive computer into own dive"), this, &ProfileWidget2::splitCurrentDC);
 		}

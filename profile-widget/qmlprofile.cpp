@@ -147,7 +147,7 @@ void QMLProfile::rotateDC(int dir)
 	struct dive *d = divelog.dives.get_by_uniq_id(m_diveId);
 	if (!d)
 		return;
-	int numDC = number_of_computers(d);
+	int numDC = d->number_of_computers();
 	if (numDC == 1)
 		return;
 	m_dc = (m_dc + dir) % numDC;
@@ -159,5 +159,5 @@ void QMLProfile::rotateDC(int dir)
 int QMLProfile::numDC() const
 {
 	struct dive *d = divelog.dives.get_by_uniq_id(m_diveId);
-	return d ? number_of_computers(d) : 0;
+	return d ? d->number_of_computers() : 0;
 }
