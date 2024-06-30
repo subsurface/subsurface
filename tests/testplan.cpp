@@ -67,8 +67,8 @@ void setupPlan(struct diveplan *dp)
 	free_dps(dp);
 
 	int droptime = M_OR_FT(79, 260) * 60 / M_OR_FT(23, 75);
-	plan_add_segment(dp, 0, gas_mod(ean36, po2, &dive, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, gas_mod(oxygen, po2, &dive, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(ean36, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
 	plan_add_segment(dp, droptime, M_OR_FT(79, 260), 0, 0, 1, OC);
 	plan_add_segment(dp, 30 * 60 - droptime, M_OR_FT(79, 260), 0, 0, 1, OC);
 }
@@ -101,8 +101,8 @@ void setupPlanVpmb45m30mTx(struct diveplan *dp)
 	free_dps(dp);
 
 	int droptime = M_OR_FT(45, 150) * 60 / M_OR_FT(23, 75);
-	plan_add_segment(dp, 0, gas_mod(ean50, po2, &dive, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, gas_mod(oxygen, po2, &dive, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
 	plan_add_segment(dp, droptime, M_OR_FT(45, 150), 0, 0, 1, OC);
 	plan_add_segment(dp, 30 * 60 - droptime, M_OR_FT(45, 150), 0, 0, 1, OC);
 }
@@ -135,8 +135,8 @@ void setupPlanVpmb60m10mTx(struct diveplan *dp)
 	free_dps(dp);
 
 	int droptime = M_OR_FT(60, 200) * 60 / M_OR_FT(23, 75);
-	plan_add_segment(dp, 0, gas_mod(tx50_15, po2, &dive, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, gas_mod(oxygen, po2, &dive, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(tx50_15, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
 	plan_add_segment(dp, droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
 	plan_add_segment(dp, 10 * 60 - droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
 }
@@ -186,7 +186,7 @@ void setupPlanVpmb60m30minEan50(struct diveplan *dp)
 	free_dps(dp);
 
 	int droptime = M_OR_FT(60, 200) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, 0, gas_mod(ean50, po2, &dive, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
 	plan_add_segment(dp, droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
 	plan_add_segment(dp, 30 * 60 - droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
 }
@@ -215,7 +215,7 @@ void setupPlanVpmb60m30minTx(struct diveplan *dp)
 	free_dps(dp);
 
 	int droptime = M_OR_FT(60, 200) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, 0, gas_mod(ean50, po2, &dive, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
 	plan_add_segment(dp, droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
 	plan_add_segment(dp, 30 * 60 - droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
 }
@@ -270,8 +270,8 @@ void setupPlanVpmb100m60min(struct diveplan *dp)
 	free_dps(dp);
 
 	int droptime = M_OR_FT(100, 330) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, 0, gas_mod(ean50, po2, &dive, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, gas_mod(oxygen, po2, &dive, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
 	plan_add_segment(dp, droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
 	plan_add_segment(dp, 60 * 60 - droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
 }
@@ -303,8 +303,8 @@ void setupPlanVpmb100m10min(struct diveplan *dp)
 	free_dps(dp);
 
 	int droptime = M_OR_FT(100, 330) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, 0, gas_mod(ean50, po2, &dive, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, gas_mod(oxygen, po2, &dive, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
 	plan_add_segment(dp, droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
 	plan_add_segment(dp, 10 * 60 - droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
 }
@@ -360,9 +360,9 @@ void setupPlanVpmb100mTo70m30min(struct diveplan *dp)
 	free_dps(dp);
 
 	int droptime = M_OR_FT(100, 330) * 60 / M_OR_FT(18, 60);
-	plan_add_segment(dp, 0, gas_mod(tx21_35, po2, &dive, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, gas_mod(ean50, po2, &dive, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
-	plan_add_segment(dp, 0, gas_mod(oxygen, po2, &dive, M_OR_FT(3, 10)).mm, 3, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(tx21_35, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 3, 0, 1, OC);
 	plan_add_segment(dp, droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
 	plan_add_segment(dp, 20 * 60 - droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
 	plan_add_segment(dp, 3 * 60, M_OR_FT(70, 230), 0, 0, 1, OC);
@@ -420,14 +420,14 @@ void setupPlanCcr(struct diveplan *dp)
 	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
 	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
 	cyl0->gasmix = diluent;
-	cyl0->depth = gas_mod(diluent, po2, &dive, M_OR_FT(3, 10));
+	cyl0->depth = dive.gas_mod(diluent, po2, M_OR_FT(3, 10));
 	cyl0->type.size.mliter = 3000;
 	cyl0->type.workingpressure.mbar = 200000;
 	cyl0->cylinder_use = DILUENT;
 	cyl1->gasmix = ean53;
-	cyl1->depth = gas_mod(ean53, po2, &dive, M_OR_FT(3, 10));
+	cyl1->depth = dive.gas_mod(ean53, po2, M_OR_FT(3, 10));
 	cyl2->gasmix = tx19_33;
-	cyl2->depth = gas_mod(tx19_33, po2, &dive, M_OR_FT(3, 10));
+	cyl2->depth = dive.gas_mod(tx19_33, po2, M_OR_FT(3, 10));
 	reset_cylinders(&dive, true);
 	free_dps(dp);
 

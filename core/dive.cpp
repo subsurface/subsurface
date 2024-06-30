@@ -2476,21 +2476,16 @@ int dive::mbar_to_depth(int mbar) const
 }
 
 /* MOD rounded to multiples of roundto mm */
-depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct dive *dive, int roundto)
+depth_t dive::gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const
 {
-	depth_t rounded_depth;
-
-	double depth = (double) dive->mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix));
-	rounded_depth.mm = (int)lrint(depth / roundto) * roundto;
-	return rounded_depth;
+	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix));
+	return depth_t { (int)lrint(depth / roundto) * roundto };
 }
 
 /* Maximum narcotic depth rounded to multiples of roundto mm */
-depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int roundto)
+depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 {
-	depth_t rounded_depth;
-	pressure_t ppo2n2;
-	ppo2n2.mbar = dive->depth_to_mbar(end.mm);
+	pressure_t ppo2n2 { depth_to_mbar(end.mm) };
 
 	int maxambient = prefs.o2narcotic ?
 					(int)lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0))
@@ -2500,8 +2495,7 @@ depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int rou
 					:
 						// Actually: Infinity
 						1000000;
-	rounded_depth.mm = (int)lrint(((double)dive->mbar_to_depth(maxambient)) / roundto) * roundto;
-	return rounded_depth;
+	return depth_t { (int)lrint(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
 }
 
 struct dive_site *get_dive_site_for_dive(const struct dive *dive)
