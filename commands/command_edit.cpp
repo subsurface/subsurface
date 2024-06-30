@@ -381,7 +381,7 @@ static struct dive_site *createDiveSite(const std::string &name)
 
 	// If the current dive has a location, use that as location for the new dive site
 	if (current_dive) {
-		location_t loc = dive_get_gps_location(current_dive);
+		location_t loc = current_dive->get_gps_location();
 		if (has_location(&loc))
 			ds->location = loc;
 	}
