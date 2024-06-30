@@ -190,7 +190,7 @@ static void put_HTML_samples(struct membuffer *b, const struct dive &dive)
 
 static void put_HTML_coordinates(struct membuffer *b, const struct dive &dive)
 {
-	struct dive_site *ds = get_dive_site_for_dive(&dive);
+	struct dive_site *ds = dive.dive_site;
 	if (!ds)
 		return;
 	degrees_t latitude = ds->location.lat;

@@ -1064,7 +1064,7 @@ parsed:
 
 bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString location, QString gps)
 {
-	struct dive_site *ds = get_dive_site_for_dive(d);
+	struct dive_site *ds = d->dive_site;
 	bool changed = false;
 	QString oldLocation = QString::fromStdString(get_dive_location(d));
 	if (oldLocation != location) {
