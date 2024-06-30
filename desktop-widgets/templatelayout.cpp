@@ -526,7 +526,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "timestamp") {
 			return QVariant::fromValue(d->when);
 		} else if (property == "location") {
-			return QString::fromStdString(get_dive_location(d));
+			return QString::fromStdString(d->get_location());
 		} else if (property == "gps") {
 			return formatDiveGPS(d);
 		} else if (property == "gps_decimal") {

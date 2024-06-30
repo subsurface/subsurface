@@ -279,7 +279,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::DateTimeRole: return formatDiveDateTime(d);
 	case MobileListModel::IdRole: return d->id;
 	case MobileListModel::NumberRole: return d->number;
-	case MobileListModel::LocationRole: return QString::fromStdString(get_dive_location(d));
+	case MobileListModel::LocationRole: return QString::fromStdString(d->get_location());
 	case MobileListModel::DepthRole: return get_depth_string(d->dcs[0].maxdepth.mm, true, true);
 	case MobileListModel::DurationRole: return formatDiveDuration(d);
 	case MobileListModel::DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dcs[0].maxdepth.mm, true, true),
@@ -350,13 +350,13 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case PHOTOS:
 			break;
 		case COUNTRY:
-			return QString::fromStdString(get_dive_country(d));
+			return QString::fromStdString(d->get_country());
 		case BUDDIES:
 			return QString::fromStdString(d->buddy);
 		case DIVEGUIDE:
 			return QString::fromStdString(d->diveguide);
 		case LOCATION:
-			return QString::fromStdString(get_dive_location(d));
+			return QString::fromStdString(d->get_location());
 		case GAS:
 			return formatDiveGasString(d);
 		case NOTES:
@@ -1761,13 +1761,13 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 	case PHOTOS:
 		return lessThanHelper(countPhotos(d1) - countPhotos(d2), row_diff);
 	case COUNTRY:
-		return lessThanHelper(strCmp(get_dive_country(d1), get_dive_country(d2)), row_diff);
+		return lessThanHelper(strCmp(d1->get_country(), d2->get_country()), row_diff);
 	case BUDDIES:
 		return lessThanHelper(strCmp(d1->buddy, d2->buddy), row_diff);
 	case DIVEGUIDE:
 		return lessThanHelper(strCmp(d1->diveguide, d2->diveguide), row_diff);
 	case LOCATION:
-		return lessThanHelper(strCmp(get_dive_location(d1), get_dive_location(d2)), row_diff);
+		return lessThanHelper(strCmp(d1->get_location(), d2->get_location()), row_diff);
 	case NOTES:
 		return lessThanHelper(strCmp(d1->notes, d2->notes), row_diff);
 	case DIVEMODE:
