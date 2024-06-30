@@ -949,7 +949,7 @@ static bool check_datetime_range(const filter_constraint &c, const struct dive *
 	case FILTER_CONSTRAINT_EQUAL:
 		// Exact mode is a bit strange for timestamps. Therefore we return any dive
 		// where the given timestamp is during that dive.
-		return time_during_dive_with_offset(d, c.data.timestamp_range.from, 0) != c.negate;
+		return d->time_during_dive_with_offset(c.data.timestamp_range.from, 0) != c.negate;
 	case FILTER_CONSTRAINT_LESS:
 		return (d->endtime() <= c.data.timestamp_range.to) != c.negate;
 	case FILTER_CONSTRAINT_GREATER:
