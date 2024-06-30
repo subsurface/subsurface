@@ -118,6 +118,9 @@ struct dive {
 	depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const;
 	depth_t gas_mnd(struct gasmix mix, depth_t end, int roundto) const;
 
+	bool dive_has_gps_location() const;
+	location_t get_gps_location() const;
+
 	/* Don't call directly, use dive_table::merge_dives()! */
 	static std::unique_ptr<dive> create_merged_dive(const struct dive &a, const struct dive &b, int offset, bool prefer_downloaded);
 };
@@ -166,8 +169,6 @@ extern const struct divecomputer *get_dive_dc(const struct dive *dive, int nr);
 extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
 
 extern bool dive_site_has_gps_location(const struct dive_site *ds);
-extern int dive_has_gps_location(const struct dive *dive);
-extern location_t dive_get_gps_location(const struct dive *d);
 
 extern bool time_during_dive_with_offset(const struct dive *dive, timestamp_t when, timestamp_t offset);
 

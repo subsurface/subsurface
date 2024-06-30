@@ -60,7 +60,7 @@ dive_site *dive_site_table::get_by_gps_proximity(location_t loc, int distance) c
 	struct dive_site *res = nullptr;
 	unsigned int cur_distance, min_distance = distance;
 	for (const auto &ds: *this) {
-		if (dive_site_has_gps_location(ds.get()) &&
+		if (ds->has_gps_location() &&
 		    (cur_distance = get_distance(ds->location, loc)) < min_distance) {
 			min_distance = cur_distance;
 			res = ds.get();
