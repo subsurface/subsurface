@@ -111,6 +111,7 @@ struct dive {
 	const cylinder_t *get_cylinder(int idx) const;
 	weight_t total_weight() const;
 	int get_salinity() const;
+	bool time_during_dive_with_offset(timestamp_t when, timestamp_t offset) const;
 	std::string get_country() const;
 	std::string get_location() const;
 
@@ -165,8 +166,6 @@ struct dive_components {
 };
 
 extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
-
-extern bool time_during_dive_with_offset(const struct dive *dive, timestamp_t when, timestamp_t offset);
 
 extern int save_dives(const char *filename);
 extern int save_dives_logic(const char *filename, bool select_only, bool anonymize);
