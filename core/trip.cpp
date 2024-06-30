@@ -60,7 +60,7 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 std::unique_ptr<dive_trip> create_trip_from_dive(const struct dive *dive)
 {
 	auto trip = std::make_unique<dive_trip>();
-	trip->location = get_dive_location(dive);
+	trip->location = dive->get_location();
 
 	return trip;
 }
@@ -162,7 +162,7 @@ std::vector<dives_to_autogroup_result> get_dives_to_autogroup(const struct dive_
 			    dive->when >= lastdive->when + TRIP_THRESHOLD)
 				break;
 			if (trip->location.empty())
-				trip->location = get_dive_location(dive.get());
+				trip->location = dive->get_location();
 			lastdive = dive.get();
 		}
 		res.push_back({ i, to, trip, std::move(allocated) });

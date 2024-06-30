@@ -2496,16 +2496,14 @@ depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 	return depth_t { (int)lrint(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
 }
 
-std::string get_dive_country(const struct dive *dive)
+std::string dive::get_country() const
 {
-	struct dive_site *ds = dive->dive_site;
-	return ds ? taxonomy_get_country(ds->taxonomy) : std::string();
+	return dive_site ? taxonomy_get_country(dive_site->taxonomy) : std::string();
 }
 
-std::string get_dive_location(const struct dive *dive)
+std::string dive::get_location() const
 {
-	const struct dive_site *ds = dive->dive_site;
-	return ds ? ds->name : std::string();
+	return dive_site ? dive_site->name : std::string();
 }
 
 int dive::number_of_computers() const
