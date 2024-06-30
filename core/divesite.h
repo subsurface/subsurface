@@ -26,6 +26,7 @@ struct dive_site
 	size_t nr_of_dives() const;
 	bool is_selected() const;
 	bool is_empty() const;
+	bool has_gps_location() const;
 	void merge(struct dive_site &b); // Note: b is consumed
 	void add_dive(struct dive *d);
 };

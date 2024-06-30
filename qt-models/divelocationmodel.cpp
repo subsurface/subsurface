@@ -108,7 +108,7 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site &ds, i
 		case EDIT: return editIcon();
 		case REMOVE: return trashIcon();
 #endif
-		case NAME: return dive_site_has_gps_location(&ds) ? QIcon(":geotag-icon") : QVariant();
+		case NAME: return ds.has_gps_location() ? QIcon(":geotag-icon") : QVariant();
 		}
 	break;
 	case DIVESITE_ROLE:
