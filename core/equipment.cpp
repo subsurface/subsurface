@@ -172,10 +172,10 @@ void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
 	t->insert(t->begin() + idx, std::move(cyl));
 }
 
-bool same_weightsystem(weightsystem_t w1, weightsystem_t w2)
+bool weightsystem_t::operator==(const weightsystem_t &w2) const
 {
-	return w1.weight.grams == w2.weight.grams &&
-	       w1.description == w2.description;
+	return std::tie(weight.grams, description) ==
+	       std::tie(w2.weight.grams, w2.description);
 }
 
 void get_gas_string(struct gasmix gasmix, char *text, int len)
