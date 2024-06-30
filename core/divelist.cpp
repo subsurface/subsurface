@@ -1175,7 +1175,7 @@ merge_result dive_table::merge_dives(const struct dive &a_in, const struct dive 
 
 	/* we take the first dive site, unless it's empty */
 	res.site = a->dive_site && !a->dive_site->is_empty() ? a->dive_site : b->dive_site;
-	if (!dive_site_has_gps_location(res.site) && dive_site_has_gps_location(b->dive_site)) {
+	if (res.site && !res.site->has_gps_location() && b->dive_site && b->dive_site->has_gps_location()) {
 		/* we picked the first dive site and that didn't have GPS data, but the new dive has
 		 * GPS data (that could be a download from a GPS enabled dive computer).
 		 * Keep the dive site, but add the GPS data */

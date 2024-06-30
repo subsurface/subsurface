@@ -173,7 +173,7 @@ AddPictures::AddPictures(const std::vector<PictureListForAddition> &pictures) : 
 				QString name = Command::Base::tr("unnamed dive site");
 				sitesToAdd.push_back(std::make_unique<dive_site>(qPrintable(name), it->location));
 				sitesToSet.push_back({ p.d, sitesToAdd.back().get() });
-			} else if (!dive_site_has_gps_location(ds)) {
+			} else if (!ds->has_gps_location()) {
 				// This dive has a dive site, but without coordinates. Let's add them.
 				sitesToEdit.push_back({ ds, it->location });
 			}

@@ -61,7 +61,7 @@ void MapWidget::centerOnIndex(const QModelIndex& idx)
 {
 	CHECK_IS_READY_RETURN_VOID();
 	dive_site *ds = idx.model()->index(idx.row(), LocationInformationModel::DIVESITE).data().value<dive_site *>();
-	if (!ds || ds == RECENTLY_ADDED_DIVESITE || !dive_site_has_gps_location(ds))
+	if (!ds || ds == RECENTLY_ADDED_DIVESITE || !ds->has_gps_location())
 		m_mapHelper->centerOnSelectedDiveSite();
 	else
 		centerOnDiveSite(ds);
