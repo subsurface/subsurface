@@ -371,7 +371,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case COUNTRY:
 			return QVariant();
 		case LOCATION:
-			if (dive_has_gps_location(d))
+			if (d->dive_has_gps_location())
 				return getGlobeIcon();
 			break;
 		case PHOTOS:

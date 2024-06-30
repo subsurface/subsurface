@@ -2538,20 +2538,18 @@ bool dive_site_has_gps_location(const struct dive_site *ds)
 	return ds && has_location(&ds->location);
 }
 
-int dive_has_gps_location(const struct dive *dive)
+bool dive::dive_has_gps_location() const
 {
-	if (!dive)
-		return false;
-	return dive_site_has_gps_location(dive->dive_site);
+	return dive_site && dive_site_has_gps_location(dive_site);
 }
 
 /* Extract GPS location of a dive computer stored in the GPS1
  * or GPS2 extra data fields */
-static location_t dc_get_gps_location(const struct divecomputer *dc)
+static location_t dc_get_gps_location(const struct divecomputer &dc)
 {
 	location_t res;
 
-	for (const auto &data: dc->extra_data) {
+	for (const auto &data: dc.extra_data) {
 		if (data.key == "GPS1") {
 			parse_location(data.value.c_str(), &res);
 			/* If we found a valid GPS1 field exit early since
@@ -2573,10 +2571,10 @@ static location_t dc_get_gps_location(const struct divecomputer *dc)
  * This function is potentially slow, therefore only call sparingly
  * and remember the result.
  */
-location_t dive_get_gps_location(const struct dive *d)
+location_t dive::get_gps_location() const
 {
-	for (const struct divecomputer &dc: d->dcs) {
-		location_t res = dc_get_gps_location(&dc);
+	for (const struct divecomputer &dc: dcs) {
+		location_t res = dc_get_gps_location(dc);
 		if (has_location(&res))
 			return res;
 	}
@@ -2584,10 +2582,7 @@ location_t dive_get_gps_location(const struct dive *d)
 	/* No libdivecomputer generated GPS data found.
 	 * Let's use the location of the current dive site.
 	 */
-	if (d->dive_site)
-		return d->dive_site->location;
-
-	return location_t();
+	return dive_site ? dive_site->location : location_t();
 }
 
 gasmix_loop::gasmix_loop(const struct dive &d, const struct divecomputer &dc) :
