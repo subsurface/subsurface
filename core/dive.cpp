@@ -2496,11 +2496,6 @@ depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 	return depth_t { (int)lrint(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
 }
 
-struct dive_site *get_dive_site_for_dive(const struct dive *dive)
-{
-	return dive->dive_site;
-}
-
 std::string get_dive_country(const struct dive *dive)
 {
 	struct dive_site *ds = dive->dive_site;

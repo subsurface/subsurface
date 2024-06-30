@@ -286,7 +286,7 @@ void MainWindow::editDiveSite(dive_site *ds)
 void MainWindow::startDiveSiteEdit()
 {
 	if (current_dive)
-		editDiveSite(get_dive_site_for_dive(current_dive));
+		editDiveSite(current_dive->dive_site);
 }
 
 void MainWindow::enableDisableCloudActions()

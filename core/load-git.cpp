@@ -172,7 +172,7 @@ static int get_hex(const char *line)
 static void parse_dive_gps(char *line, struct git_parser_state *state)
 {
 	location_t location;
-	struct dive_site *ds = get_dive_site_for_dive(state->active_dive.get());
+	struct dive_site *ds = state->active_dive->dive_site;
 
 	parse_location(line, &location);
 	if (!ds) {
@@ -211,7 +211,7 @@ static std::string get_first_converted_string(struct git_parser_state *state)
 static void parse_dive_location(char *, struct git_parser_state *state)
 {
 	std::string name = get_first_converted_string(state);
-	struct dive_site *ds = get_dive_site_for_dive(state->active_dive.get());
+	struct dive_site *ds = state->active_dive->dive_site;
 	if (!ds) {
 		ds = state->log->sites.get_by_name(name);
 		if (!ds)
