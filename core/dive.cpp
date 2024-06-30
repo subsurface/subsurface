@@ -2382,12 +2382,10 @@ bool dive::cache_is_valid() const
 	return git_id != null_id;
 }
 
-int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null)
+pressure_t dive::get_surface_pressure() const
 {
-	int mbar = dive->surface_pressure.mbar;
-	if (!mbar && non_null)
-		mbar = SURFACE_PRESSURE;
-	return mbar;
+	return surface_pressure.mbar > 0 ? surface_pressure
+					 : pressure_t { SURFACE_PRESSURE };
 }
 
 /* This returns the conversion factor that you need to multiply

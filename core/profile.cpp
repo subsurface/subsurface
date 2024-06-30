@@ -841,7 +841,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				       const struct divecomputer *dc, struct plot_info &pi)
 {
 	int i, count_iteration = 0;
-	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
+	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : dive->get_surface_pressure().mbar) / 1000.0;
 	bool first_iteration = true;
 	int prev_deco_time = 10000000, time_deep_ceiling = 0;
 	bool in_planner = planner_ds != NULL;
