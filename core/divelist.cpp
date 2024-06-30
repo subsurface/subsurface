@@ -537,7 +537,7 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 		printf("Yes\n");
 #endif
 
-		surface_pressure = get_surface_pressure_in_mbar(&pdive, true) / 1000.0;
+		surface_pressure = pdive.get_surface_pressure().mbar / 1000.0;
 		/* Is it the first dive we add? */
 		if (!deco_init) {
 #if DECO_CALC_DEBUG & 2
@@ -575,7 +575,7 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 #endif
 	}
 
-	surface_pressure = get_surface_pressure_in_mbar(dive, true) / 1000.0;
+	surface_pressure = dive->get_surface_pressure().mbar / 1000.0;
 	/* We don't have had a previous dive at all? */
 	if (!deco_init) {
 #if DECO_CALC_DEBUG & 2
