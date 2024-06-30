@@ -1066,7 +1066,7 @@ bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString loca
 {
 	struct dive_site *ds = d->dive_site;
 	bool changed = false;
-	QString oldLocation = QString::fromStdString(get_dive_location(d));
+	QString oldLocation = QString::fromStdString(d->get_location());
 	if (oldLocation != location) {
 		ds = divelog.sites.get_by_name(location.toStdString());
 		if (!ds && !location.isEmpty()) {
