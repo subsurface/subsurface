@@ -82,6 +82,9 @@ struct dive {
 	void invalidate_cache();
 	bool cache_is_valid() const;
 
+	struct divecomputer *get_dc(int nr);
+	const struct divecomputer *get_dc(int nr) const;
+
 	void clear();
 	int number_of_computers() const;
 	void fixup_no_cylinder();		/* to fix cylinders, we need the divelist (to calculate cns) */
@@ -162,8 +165,6 @@ extern fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcoti
 
 extern std::string get_dive_country(const struct dive *dive);
 extern std::string get_dive_location(const struct dive *dive);
-extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
-extern const struct divecomputer *get_dive_dc(const struct dive *dive, int nr);
 
 extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
 

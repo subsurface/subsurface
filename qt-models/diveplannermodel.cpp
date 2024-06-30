@@ -119,7 +119,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	int depthsum = 0;
 	int samplecount = 0;
 	o2pressure_t last_sp;
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 	cylinders.updateDive(d, dcNr);
 	duration_t lasttime;
 	duration_t lastrecordedtime;
@@ -539,7 +539,7 @@ int DivePlannerPointsModel::gfLow() const
 
 void DivePlannerPointsModel::setRebreatherMode(int mode)
 {
-	get_dive_dc(d, dcNr)->divemode = (divemode_t) mode;
+	d->get_dc(dcNr)->divemode = (divemode_t) mode;
 	for (int i = 0; i < rowCount(); i++) {
 		divepoints[i].setpoint = mode == CCR ? prefs.defaultsetpoint : 0;
 		divepoints[i].divemode = (enum divemode_t) mode;
@@ -820,7 +820,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 		}
 	}
 	if (divemode == UNDEF_COMP_TYPE)
-		divemode = get_dive_dc(d, dcNr)->divemode;
+		divemode = d->get_dc(dcNr)->divemode;
 
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);

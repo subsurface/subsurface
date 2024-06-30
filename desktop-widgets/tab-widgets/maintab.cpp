@@ -188,5 +188,5 @@ bool MainTab::includesCurrentDive(const QVector<dive *> &dives) const
 
 divecomputer *MainTab::getCurrentDC() const
 {
-	return get_dive_dc(currentDive, currentDC);
+	return currentDive ? currentDive->get_dc(currentDC) : nullptr;
 }
