@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <fnmatch.h>
-#include "dive.h"
 #include "file.h"
 #include "device.h"
-#include "core/qthelper.h"
+#include "qthelper.h"
+#include "subsurfacestartup.h"
 #include <CoreFoundation/CoreFoundation.h>
 #if !defined(__IPHONE_5_0)
 #include <CoreServices/CoreServices.h>

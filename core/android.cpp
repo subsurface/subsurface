@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 /* implements Android specific functions */
-#include "dive.h"
 #include "device.h"
 #include "libdivecomputer.h"
 #include "file.h"
 #include "qthelper.h"
+#include "subsurfacestartup.h"
 #include <string.h>
 #include <sys/types.h>
 #include <dirent.h>

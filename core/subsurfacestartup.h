@@ -12,6 +12,10 @@ void parse_argument(const char *arg);
 void print_files();
 void print_version();
 
+void subsurface_console_init();
+void subsurface_console_exit();
+bool subsurface_user_is_root();
+
 extern std::string settings_suffix;
 
 #ifdef SUBSURFACE_MOBILE_DESKTOP

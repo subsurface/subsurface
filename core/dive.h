@@ -179,10 +179,6 @@ extern int save_dive_sites_logic(const char *filename, const struct dive_site *s
 struct membuffer;
 extern void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anonymize);
 
-extern void subsurface_console_init();
-extern void subsurface_console_exit();
-extern bool subsurface_user_is_root();
-
 extern void copy_dive(const struct dive *s, struct dive *d);
 extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
 

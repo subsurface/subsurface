@@ -2,11 +2,11 @@
 /* windows.c */
 /* implements Windows specific functions */
 #include <io.h>
-#include "dive.h"
 #include "device.h"
 #include "libdivecomputer.h"
 #include "file.h"
 #include "errorhelper.h"
+#include "subsurfacestartup.h"
 #include "subsurfacesysinfo.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x500

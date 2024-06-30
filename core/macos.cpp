@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <fnmatch.h>
-#include "dive.h"
-#include "subsurface-string.h"
 #include "device.h"
+#include "subsurfacestartup.h"
+#include "subsurface-string.h"
 #include "libdivecomputer.h"
 #include <CoreFoundation/CoreFoundation.h>
 #if !defined(__IPHONE_5_0)

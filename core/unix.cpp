@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 /* unix.c */
 /* implements UNIX specific functions */
-#include "dive.h"
 #include "file.h"
+#include "subsurfacestartup.h"
 #include "subsurface-string.h"
 #include "device.h"
 #include "libdivecomputer.h"
