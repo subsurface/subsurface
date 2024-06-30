@@ -183,7 +183,7 @@ static QString displaySac(const struct dive *d, bool units)
 
 static QString displayWeight(const struct dive *d, bool units)
 {
-	QString s = weight_string(total_weight(d));
+	QString s = get_weight_string(d->total_weight(), false);
 	if (!units)
 		return s;
 	else if (get_units()->weight == units::KG)
@@ -1737,7 +1737,7 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 	case TEMPERATURE:
 		return lessThanHelper(d1->watertemp.mkelvin - d2->watertemp.mkelvin, row_diff);
 	case TOTALWEIGHT:
-		return lessThanHelper(total_weight(d1) - total_weight(d2), row_diff);
+		return lessThanHelper(d1->total_weight().grams - d2->total_weight().grams, row_diff);
 	case SUIT:
 		return lessThanHelper(strCmp(d1->suit, d2->suit), row_diff);
 	case CYLINDER:

@@ -192,7 +192,7 @@ QString formatGas(const dive *d)
 
 QString formatSumWeight(const dive *d)
 {
-	return get_weight_string(weight_t { total_weight(d) }, true);
+	return get_weight_string(d->total_weight(), true);
 }
 
 static QString getFormattedWeight(const weightsystem_t &weight)

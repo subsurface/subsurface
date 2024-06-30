@@ -1297,8 +1297,8 @@ struct WeightBinner : public IntRangeBinner<WeightBinner, IntBin> {
 		return get_weight_unit(metric);
 	}
 	int to_bin_value(const dive *d) const {
-		return metric ? total_weight(d) / 1000 / bin_size
-			      : lrint(grams_to_lbs(total_weight(d))) / bin_size;
+		return metric ? d->total_weight().grams / 1000 / bin_size
+			      : lrint(grams_to_lbs(d->total_weight().grams)) / bin_size;
 	}
 };
 
@@ -1328,8 +1328,8 @@ struct WeightVariable : public StatsVariableTemplate<StatsVariable::Type::Numeri
 			return { &weight_binner_2lbs, &weight_binner_5lbs, &weight_binner_10lbs, &weight_binner_20lbs };
 	}
 	double toFloat(const dive *d) const override {
-		return prefs.units.weight == units::KG ? total_weight(d) / 1000.0
-						       : grams_to_lbs(total_weight(d));
+		return prefs.units.weight == units::KG ? d->total_weight().grams / 1000.0
+						       : grams_to_lbs(d->total_weight().grams);
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
 		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum, StatsOperation::Min, StatsOperation::Max };
