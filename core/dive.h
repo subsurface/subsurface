@@ -104,6 +104,7 @@ struct dive {
 	struct gasmix get_gasmix_at_time(const struct divecomputer &dc, duration_t time) const;
 	cylinder_t *get_cylinder(int idx);
 	const cylinder_t *get_cylinder(int idx) const;
+	weight_t total_weight() const;
 
 	int depth_to_mbar(int depth) const;
 	double depth_to_mbarf(int depth) const;
@@ -201,10 +202,6 @@ extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int
 extern struct event create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
 extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
-
-/* UI related protopypes */
-
-extern int total_weight(const struct dive *);
 
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
 

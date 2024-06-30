@@ -105,17 +105,6 @@ std::unique_ptr<dive> dive_table::default_dive()
 	return d;
 }
 
-int total_weight(const struct dive *dive)
-{
-	int total_grams = 0;
-
-	if (dive) {
-		for (auto &ws: dive->weightsystems)
-			total_grams += ws.weight.grams;
-	}
-	return total_grams;
-}
-
 static int active_o2(const struct dive &dive, const struct divecomputer *dc, duration_t time)
 {
 	struct gasmix gas = dive.get_gasmix_at_time(*dc, time);
