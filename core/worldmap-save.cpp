@@ -59,7 +59,7 @@ static void writeMarkers(struct membuffer *b, bool selected_only)
 		put_HTML_watertemp(b, *dive, " ", "</p>");
 		pre = format_string_std("<p>%s <b>", translate("gettextFromC", "Location:"));
 		put_string(b, pre.c_str());
-		put_HTML_quoted(b, get_dive_location(dive.get()).c_str());
+		put_HTML_quoted(b, dive->get_location().c_str());
 		put_string(b, "</b></p>");
 		pre = format_string_std("<p> %s ", translate("gettextFromC", "Notes:"));
 		put_HTML_notes(b, *dive, pre.c_str(), " </p>");

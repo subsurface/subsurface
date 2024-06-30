@@ -1099,7 +1099,7 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 	} else if (!divelog.dives.empty()) {
 		const struct dive &dive = *divelog.dives.back();
 		dive_trip *trip = dive.divetrip;
-		std::string location = get_dive_location(&dive);
+		std::string location = dive.get_location();
 		if (location.empty())
 			location = "no location";
 		const char *sep = "\n";
