@@ -30,14 +30,14 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 
 QGeoCoordinate MapWidgetHelper::getCoordinates(struct dive_site *ds)
 {
-	if (!dive_site_has_gps_location(ds))
+	if (!ds || !ds->has_gps_location())
 		return QGeoCoordinate(0.0, 0.0);
 	return QGeoCoordinate(ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 }
 
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
-	if (!dive_site_has_gps_location(ds)) {
+	if (!ds || !ds->has_gps_location()) {
 		// dive site with no GPS
 		m_mapLocationModel->setSelected(ds);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
@@ -136,7 +136,7 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 
 	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
 		struct dive_site *ds = get_dive_site_for_dive(dive.get());
-		if (!dive_site_has_gps_location(ds))
+		if (!ds || !ds->has_gps_location())
 			continue;
 #ifndef SUBSURFACE_MOBILE
 		const qreal latitude = ds->location.lat.udeg * 0.000001;
@@ -164,7 +164,7 @@ void MapWidgetHelper::selectVisibleLocations()
 	QList<int> selectedDiveIds;
 	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
 		struct dive_site *ds = get_dive_site_for_dive(dive.get());
-		if (!dive_site_has_gps_location(ds))
+		if (!ds || ds->has_gps_location())
 			continue;
 		const qreal latitude = ds->location.lat.udeg * 0.000001;
 		const qreal longitude = ds->location.lon.udeg * 0.000001;

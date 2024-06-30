@@ -134,6 +134,11 @@ bool dive_site::is_selected() const
 		      [](dive *dive) { return dive->selected; });
 }
 
+bool dive_site::has_gps_location() const
+{
+	return has_location(&location);
+}
+
 /* allocate a new site and add it to the table */
 dive_site *dive_site_table::create(const std::string &name)
 {
