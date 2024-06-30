@@ -424,11 +424,11 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			if (QString::compare(qPrintable(vString), "*") == 0) {
 				cyl.bestmix_o2 = true;
 				// Calculate fO2 for max. depth
-				cyl.gasmix.o2 = best_o2(d->maxdepth, d, inPlanner);
+				cyl.gasmix.o2 = d->best_o2(d->maxdepth, inPlanner);
 			} else {
 				cyl.bestmix_o2 = false;
 				// Calculate fO2 for input depth
-				cyl.gasmix.o2 = best_o2(string_to_depth(qPrintable(vString)), d, inPlanner);
+				cyl.gasmix.o2 = d->best_o2(string_to_depth(qPrintable(vString)), inPlanner);
 			}
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
@@ -440,11 +440,11 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		if (QString::compare(qPrintable(vString), "*") == 0) {
 			cyl.bestmix_he = true;
 			// Calculate fO2 for max. depth
-			cyl.gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, make_fraction(get_o2(cyl.gasmix)));
+			cyl.gasmix.he = d->best_he(d->maxdepth, prefs.o2narcotic, make_fraction(get_o2(cyl.gasmix)));
 		} else {
 			cyl.bestmix_he = false;
 			// Calculate fHe for input depth
-			cyl.gasmix.he = best_he(string_to_depth(qPrintable(vString)), d, prefs.o2narcotic, make_fraction(get_o2(cyl.gasmix)));
+			cyl.gasmix.he = d->best_he(string_to_depth(qPrintable(vString)), prefs.o2narcotic, make_fraction(get_o2(cyl.gasmix)));
 		}
 		type = Command::EditCylinderType::GASMIX;
 		break;
@@ -663,7 +663,7 @@ bool CylindersModel::updateBestMixes()
 	bool gasUpdated = false;
 	for (auto &cyl: d->cylinders) {
 		if (cyl.bestmix_o2) {
-			cyl.gasmix.o2 = best_o2(d->maxdepth, d, inPlanner);
+			cyl.gasmix.o2 = d->best_o2(d->maxdepth, inPlanner);
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
 				cyl.gasmix.he.permille = 1000 - get_o2(cyl.gasmix);
@@ -673,7 +673,7 @@ bool CylindersModel::updateBestMixes()
 			gasUpdated = true;
 		}
 		if (cyl.bestmix_he) {
-			cyl.gasmix.he = best_he(d->maxdepth, d, prefs.o2narcotic, cyl.gasmix.o2);
+			cyl.gasmix.he = d->best_he(d->maxdepth, prefs.o2narcotic, cyl.gasmix.o2);
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(cyl.gasmix) + get_he(cyl.gasmix) > 1000)
 				cyl.gasmix.o2.permille = 1000 - get_he(cyl.gasmix);
