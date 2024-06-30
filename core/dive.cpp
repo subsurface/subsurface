@@ -2763,3 +2763,11 @@ bool dive::is_cylinder_prot(int idx) const
 			   [this, idx](auto &dc)
 			   { return has_gaschange_event(&dc, idx); });
 }
+
+weight_t dive::total_weight() const
+{
+	// TODO: implement addition for units.h types
+	return std::accumulate(weightsystems.begin(), weightsystems.end(), weight_t(),
+			       [] (weight_t w, const weightsystem_t &ws)
+			       { return weight_t{ w.grams + ws.weight.grams }; });
+}
