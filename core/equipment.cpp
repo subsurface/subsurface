@@ -333,7 +333,7 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 
 	for (cylinder_t &cyl: dive->cylinders) {
 		if (cyl.depth.mm == 0) /* if the gas doesn't give a mod, calculate based on prefs */
-			cyl.depth = gas_mod(cyl.gasmix, decopo2, dive, M_OR_FT(3,10));
+			cyl.depth = dive->gas_mod(cyl.gasmix, decopo2, M_OR_FT(3,10));
 		if (track_gas)
 			cyl.start.mbar = cyl.end.mbar = cyl.type.workingpressure.mbar;
 		cyl.gas_used.mliter = 0;
@@ -400,7 +400,7 @@ void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 					cyl->type.size.mliter = lrint(cuft_to_l(ti.cuft) * 1000 / bar_to_atm(psi_to_bar(ti.psi)));
 			}
 			// MOD of air
-			cyl->depth = gas_mod(cyl->gasmix, pO2, dive, 1);
+			cyl->depth = dive->gas_mod(cyl->gasmix, pO2, 1);
 			return;
 		}
 	}
