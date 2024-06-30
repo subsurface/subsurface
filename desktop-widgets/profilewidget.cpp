@@ -167,7 +167,7 @@ void ProfileWidget::setDive(const struct dive *d, int dcNr)
 {
 	stack->setCurrentIndex(1); // show profile
 
-	bool freeDiveMode = get_dive_dc(d, dcNr)->divemode == FREEDIVE;
+	bool freeDiveMode = d->get_dc(dcNr)->divemode == FREEDIVE;
 	ui.profCalcCeiling->setDisabled(freeDiveMode);
 	ui.profCalcCeiling->setDisabled(freeDiveMode);
 	ui.profCalcAllTissues ->setDisabled(freeDiveMode);
@@ -219,7 +219,7 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 	// or already editing the dive, switch to edit mode.
 	if (d && !editedDive &&
 	    DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING) {
-		struct divecomputer *comp = get_dive_dc(d, dc);
+		struct divecomputer *comp = d->get_dc(dc);
 		if (comp && is_dc_manually_added_dive(comp) && !comp->samples.empty() && comp->samples.size() <= 50)
 			editDive();
 	}
@@ -346,7 +346,7 @@ void ProfileWidget::exitEditMode()
 // Update depths of edited dive
 static void calcDepth(dive &d, int dcNr)
 {
-	d.maxdepth.mm = get_dive_dc(&d, dcNr)->maxdepth.mm = 0;
+	d.maxdepth.mm = d.get_dc(dcNr)->maxdepth.mm = 0;
 	divelog.dives.fixup_dive(d);
 }
 

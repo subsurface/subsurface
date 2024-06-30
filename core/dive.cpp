@@ -246,7 +246,7 @@ void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int tim
 		return;
 
 	const struct divecomputer *s = &sd->dcs[0];
-	struct divecomputer *d = get_dive_dc(dd, dcNr);
+	struct divecomputer *d = dd->get_dc(dcNr);
 
 	if (!s || !d)
 		return;
@@ -2513,17 +2513,17 @@ int dive::number_of_computers() const
 	return static_cast<int>(dcs.size());
 }
 
-struct divecomputer *get_dive_dc(struct dive *dive, int nr)
+struct divecomputer *dive::get_dc(int nr)
 {
-	if (!dive || dive->dcs.empty())
+	if (dcs.empty()) // Can't happen!
 		return NULL;
 	nr = std::max(0, nr);
-	return &dive->dcs[static_cast<size_t>(nr) % dive->dcs.size()];
+	return &dcs[static_cast<size_t>(nr) % dcs.size()];
 }
 
-const struct divecomputer *get_dive_dc(const struct dive *dive, int nr)
+const struct divecomputer *dive::get_dc(int nr) const
 {
-	return get_dive_dc((struct dive *)dive, nr);
+	return const_cast<dive &>(*this).get_dc(nr);
 }
 
 bool dive::dive_has_gps_location() const

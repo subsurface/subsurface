@@ -667,7 +667,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	int laststoptime = timestep;
 	bool o2breaking = false;
 	int decostopcounter = 0;
-	struct divecomputer *dc = get_dive_dc(dive, dcNr);
+	struct divecomputer *dc = dive->get_dc(dcNr);
 	enum divemode_t divemode = dc->divemode;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh);
