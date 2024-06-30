@@ -73,7 +73,6 @@ using weightsystem_table = std::vector<weightsystem_t>;
 extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern cylinder_t *add_empty_cylinder(struct cylinder_table *t);
-extern cylinder_t *get_or_create_cylinder(struct dive *d, int idx);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
 extern void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws);

@@ -960,7 +960,7 @@ void smartrak_import(const char *file, struct divelog *log)
 		int tankidxcol = coln(TANKIDX);
 
 		for (i = 0; i < tanks; i++) {
-			cylinder_t *tmptank = get_or_create_cylinder(smtkdive.get(), i);
+			cylinder_t *tmptank = smtkdive->get_or_create_cylinder(i);
 			if (!tmptank)
 				break;
 			if (tmptank->start.mbar == 0)

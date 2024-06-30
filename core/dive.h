@@ -108,6 +108,7 @@ struct dive {
 	struct gasmix get_gasmix_from_event(const struct event &ev) const;
 	struct gasmix get_gasmix_at_time(const struct divecomputer &dc, duration_t time) const;
 	cylinder_t *get_cylinder(int idx);
+	cylinder_t *get_or_create_cylinder(int idx);
 	const cylinder_t *get_cylinder(int idx) const;
 	weight_t total_weight() const;
 	int get_salinity() const;

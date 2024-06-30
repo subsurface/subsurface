@@ -55,9 +55,9 @@ void setupPlan(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl2 = get_or_create_cylinder(&dive, 2);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
+	cylinder_t *cyl2 = dive.get_or_create_cylinder(2);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 36000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -89,9 +89,9 @@ void setupPlanVpmb45m30mTx(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl2 = get_or_create_cylinder(&dive, 2);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
+	cylinder_t *cyl2 = dive.get_or_create_cylinder(2);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 24000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -123,9 +123,9 @@ void setupPlanVpmb60m10mTx(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl2 = get_or_create_cylinder(&dive, 2);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
+	cylinder_t *cyl2 = dive.get_or_create_cylinder(2);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 24000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -149,7 +149,7 @@ void setupPlanVpmb60m30minAir(struct diveplan *dp)
 	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = {{210}, {0}};
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 100000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -175,8 +175,8 @@ void setupPlanVpmb60m30minEan50(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 36000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -204,8 +204,8 @@ void setupPlanVpmb60m30minTx(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 36000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -228,7 +228,7 @@ void setupPlanVpmbMultiLevelAir(struct diveplan *dp)
 	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = {{210}, {0}};
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 200000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -257,9 +257,9 @@ void setupPlanVpmb100m60min(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl2 = get_or_create_cylinder(&dive, 2);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
+	cylinder_t *cyl2 = dive.get_or_create_cylinder(2);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 200000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -290,9 +290,9 @@ void setupPlanVpmb100m10min(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl2 = get_or_create_cylinder(&dive, 2);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
+	cylinder_t *cyl2 = dive.get_or_create_cylinder(2);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 60000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -317,7 +317,7 @@ void setupPlanVpmb30m20min(struct diveplan *dp)
 	dp->decosac = prefs.decosac;
 
 	struct gasmix bottomgas = {{210}, {0}};
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 36000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -345,10 +345,10 @@ void setupPlanVpmb100mTo70m30min(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl3 = get_or_create_cylinder(&dive, 3);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
-	cylinder_t *cyl2 = get_or_create_cylinder(&dive, 2);
+	cylinder_t *cyl3 = dive.get_or_create_cylinder(3);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
+	cylinder_t *cyl2 = dive.get_or_create_cylinder(2);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 36000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -384,8 +384,8 @@ void setupPlanSeveralGases(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cyl0->gasmix = ean36;
 	cyl0->type.size.mliter = 36000;
 	cyl0->type.workingpressure.mbar = 232000;
@@ -416,9 +416,9 @@ void setupPlanCcr(struct diveplan *dp)
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
-	cylinder_t *cyl2 = get_or_create_cylinder(&dive, 2);
-	cylinder_t *cyl0 = get_or_create_cylinder(&dive, 0);
-	cylinder_t *cyl1 = get_or_create_cylinder(&dive, 1);
+	cylinder_t *cyl2 = dive.get_or_create_cylinder(2);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
 	cyl0->gasmix = diluent;
 	cyl0->depth = dive.gas_mod(diluent, po2, M_OR_FT(3, 10));
 	cyl0->type.size.mliter = 3000;
