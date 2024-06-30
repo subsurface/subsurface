@@ -125,6 +125,8 @@ struct dive {
 	pressure_t un_fixup_surface_pressure() const;
 	depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const;
 	depth_t gas_mnd(struct gasmix mix, depth_t end, int roundto) const;
+	fraction_t best_o2(depth_t depth, bool in_planner) const;
+	fraction_t best_he(depth_t depth, bool o2narcotic, fraction_t fo2) const;
 
 	bool dive_has_gps_location() const;
 	location_t get_gps_location() const;
@@ -161,9 +163,6 @@ struct dive_components {
 	unsigned int number : 1;
 	unsigned int when : 1;
 };
-
-extern fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planner);
-extern fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, fraction_t fo2);
 
 extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
 

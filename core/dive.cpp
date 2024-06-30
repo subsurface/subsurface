@@ -2342,12 +2342,12 @@ std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number)
 }
 
 //Calculate O2 in best mix
-fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planner)
+fraction_t dive::best_o2(depth_t depth, bool in_planner) const
 {
 	fraction_t fo2;
 	int po2 = in_planner ? prefs.bottompo2 : (int)(prefs.modpO2 * 1000.0);
 
-	fo2.permille = (po2 * 100 / dive->depth_to_mbar(depth.mm)) * 10;	//use integer arithmetic to round down to nearest percent
+	fo2.permille = (po2 * 100 / depth_to_mbar(depth.mm)) * 10;	//use integer arithmetic to round down to nearest percent
 	// Don't permit >100% O2
 	if (fo2.permille > 1000)
 		fo2.permille = 1000;
@@ -2355,12 +2355,12 @@ fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planner)
 }
 
 //Calculate He in best mix. O2 is considered narcopic
-fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, fraction_t fo2)
+fraction_t dive::best_he(depth_t depth, bool o2narcotic, fraction_t fo2) const
 {
 	fraction_t fhe;
 	int pnarcotic, ambient;
-	pnarcotic = dive->depth_to_mbar(prefs.bestmixend.mm);
-	ambient = dive->depth_to_mbar(depth.mm);
+	pnarcotic = depth_to_mbar(prefs.bestmixend.mm);
+	ambient = depth_to_mbar(depth.mm);
 	if (o2narcotic) {
 		fhe.permille = (100 - 100 * pnarcotic / ambient) * 10;	//use integer arithmetic to round up to nearest percent
 	} else {
