@@ -993,23 +993,23 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, 
 	/* For cylinder related fields, we might have to create a cylinder first. */
 	cylinder_t cyl;
 	if (MATCH("tanktype", utf8_string_std, &cyl.type.description)) {
-		get_or_create_cylinder(dive, 0)->type.description = std::move(cyl.type.description);
+		dive->get_or_create_cylinder(0)->type.description = std::move(cyl.type.description);
 		return 1;
 	}
 	if (MATCH("tanksize", cylindersize, &cyl.type.size)) {
-		get_or_create_cylinder(dive, 0)->type.size = cyl.type.size;
+		dive->get_or_create_cylinder(0)->type.size = cyl.type.size;
 		return 1;
 	}
 	if (MATCH_STATE("presw", pressure, &cyl.type.workingpressure)) {
-		get_or_create_cylinder(dive, 0)->type.workingpressure = cyl.type.workingpressure;
+		dive->get_or_create_cylinder(0)->type.workingpressure = cyl.type.workingpressure;
 		return 1;
 	}
 	if (MATCH_STATE("press", pressure, &cyl.start)) {
-		get_or_create_cylinder(dive, 0)->start = cyl.start;
+		dive->get_or_create_cylinder(0)->start = cyl.start;
 		return 1;
 	}
 	if (MATCH_STATE("prese", pressure, &cyl.end)) {
-		get_or_create_cylinder(dive, 0)->end = cyl.end;
+		dive->get_or_create_cylinder(0)->end = cyl.end;
 		return 1;
 	}
 	return MATCH_STATE("divedate", divedate, &dive->when) ||
@@ -1283,11 +1283,11 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	}
 	if (MATCH_STATE("cylinderstartpressure", pressure, &p)) {
-		get_or_create_cylinder(dive, 0)->start = p;
+		dive->get_or_create_cylinder(0)->start = p;
 		return;
 	}
 	if (MATCH_STATE("cylinderendpressure", pressure, &p)) {
-		get_or_create_cylinder(dive, 0)->end = p;
+		dive->get_or_create_cylinder(0)->end = p;
 		return;
 	}
 	if (MATCH_STATE("gps", gps_in_dive, dive))
@@ -1858,7 +1858,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log)
 	state.cur_dc->surface_pressure.mbar = ((ptr[25] << 8) + ptr[24]) / 10;
 
 	// Declare initial mix as first cylinder
-	cyl = get_or_create_cylinder(state.cur_dive.get(), 0);
+	cyl = state.cur_dive->get_or_create_cylinder(0);
 	cyl->gasmix.o2.permille = ptr[26] * 10;
 	cyl->gasmix.he.permille = ptr[27] * 10;
 

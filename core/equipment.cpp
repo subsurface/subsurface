@@ -369,17 +369,6 @@ cylinder_t *add_empty_cylinder(struct cylinder_table *t)
 	return &t->back();
 }
 
-cylinder_t *get_or_create_cylinder(struct dive *d, int idx)
-{
-	if (idx < 0) {
-		report_info("Warning: accessing invalid cylinder %d", idx);
-		return NULL;
-	}
-	while (static_cast<size_t>(idx) >= d->cylinders.size())
-		add_empty_cylinder(&d->cylinders);
-	return &d->cylinders[idx];
-}
-
 /* if a default cylinder is set, use that */
 void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 {
