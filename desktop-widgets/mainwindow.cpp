@@ -328,7 +328,7 @@ void MainWindow::divesSelected(const std::vector<dive *> &selection, dive *curre
 
 	// Activate cursor keys to switch through DCs if there are more than one DC.
 	if (currentDive) {
-		bool nr = number_of_computers(current_dive) > 1;
+		bool nr = currentDive->number_of_computers() > 1;
 		enableShortcuts();
 		ui.actionNextDC->setEnabled(nr);
 		ui.actionPreviousDC->setEnabled(nr);

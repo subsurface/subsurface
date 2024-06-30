@@ -906,7 +906,7 @@ MoveDiveComputerToFront::MoveDiveComputerToFront(dive *d, int dc_num)
 
 DeleteDiveComputer::DeleteDiveComputer(dive *d, int dc_num)
 	: DiveComputerBase(d, divelog.dives.clone_delete_divecomputer(*d, dc_num),
-			   dc_num, std::min((int)number_of_computers(d) - 1, dc_num))
+			   dc_num, std::min(d->number_of_computers() - 1, dc_num))
 {
 	setText(Command::Base::tr("delete dive computer"));
 }

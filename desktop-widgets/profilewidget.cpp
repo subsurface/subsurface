@@ -209,7 +209,7 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 
 	// The following is valid because number_of_computers is always at least 1.
 	if (d)
-		dc = std::min(dc, (int)number_of_computers(current_dive) - 1);
+		dc = std::min(dc, d->number_of_computers() - 1);
 
 	// Exit edit mode if the dive changed
 	if (endEditMode)
@@ -253,7 +253,7 @@ void ProfileWidget::rotateDC(int dir)
 {
 	if (!d)
 		return;
-	int numDC = number_of_computers(d);
+	int numDC = d->number_of_computers();
 	int newDC = (dc + dir) % numDC;
 	if (newDC < 0)
 		newDC += numDC;
