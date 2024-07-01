@@ -1228,7 +1228,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		// defined - for now just ignore that case
 		if (d->weightsystems.size() == 0) {
 			weightsystem_t ws = { { parseWeightToGrams(weight) } , tr("weight").toStdString(), false };
-			add_to_weightsystem_table(&d->weightsystems, 0, std::move(ws));
+			d->weightsystems.add(0, std::move(ws));
 		} else if (d->weightsystems.size() == 1) {
 			d->weightsystems[0].weight.grams = parseWeightToGrams(weight);
 		}

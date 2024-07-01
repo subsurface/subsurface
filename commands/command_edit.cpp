@@ -1009,7 +1009,7 @@ RemoveWeight::RemoveWeight(int index, bool currentDiveOnly) :
 void RemoveWeight::undo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		add_to_weightsystem_table(&dives[i]->weightsystems, indices[i], ws);
+		dives[i]->weightsystems.add(indices[i], ws);
 		emit diveListNotifier.weightAdded(dives[i], indices[i]);
 		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
