@@ -70,13 +70,13 @@ struct weightsystem_t
  */
 struct weightsystem_table : public std::vector<weightsystem_t> {
 	void add(int idx, weightsystem_t ws);
+	void set(int idx, weightsystem_t ws);
 };
 
 extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
-extern void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
 extern int gas_volume(const cylinder_t *cyl, pressure_t p); /* Volume in mliter of a cylinder at pressure 'p' */
 extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders);
@@ -88,8 +88,6 @@ extern int first_hidden_cylinder(const struct dive *d);
 #ifdef DEBUG_CYL
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
-
-/* Weightsystem table functions */
 
 /* Cylinder table functions */
 extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
