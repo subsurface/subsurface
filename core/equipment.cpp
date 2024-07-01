@@ -318,11 +318,11 @@ void weightsystem_table::add(int idx, weightsystem_t ws)
 	insert(begin() + idx, std::move(ws));
 }
 
-void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws)
+void weightsystem_table::set(int idx, weightsystem_t ws)
 {
-	if (idx < 0 || static_cast<size_t>(idx) >= dive->weightsystems.size())
+	if (idx < 0 || static_cast<size_t>(idx) >= size())
 		return;
-	dive->weightsystems[idx] = std::move(ws);
+	(*this)[idx] = std::move(ws);
 }
 
 /* when planning a dive we need to make sure that all cylinders have a sane depth assigned
