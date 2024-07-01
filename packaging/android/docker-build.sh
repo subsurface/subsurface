@@ -41,7 +41,6 @@ fi
 # Start the container
 docker start ${CONTAINER_NAME}
 
-BUILD_PARAMETERS=""
 if [[ -z "${CONTAINER_ID}" ]]; then
 	# Prepare the image for first use
 	docker exec -t ${CONTAINER_NAME} groupadd $(id -g -n) -o -g ${LOGIN_GROUP}
@@ -51,12 +50,12 @@ if [[ -z "${CONTAINER_ID}" ]]; then
 	docker exec -u ${FULL_USER} -t ${CONTAINER_NAME} git config --global user.name "${GIT_AUTHOR_NAME}"
 	docker exec -u ${FULL_USER} -t ${CONTAINER_NAME} git config --global user.email "${GIT_AUTHOR_EMAIL}"
 else
-	BUILD_PARAMETERS="-quick"
+	BUILD_PARAMETERS="${BULID_PARAMETERS} -quick"
 fi
 
 # Build
 mkdir -p "${SUBSURFACE_ROOT}/${OUTPUT_DIR}"
-docker exec -u ${FULL_USER} -e OUTPUT_DIR=${CONTAINER_SUBSURFACE_DIR}/${OUTPUT_DIR} -t ${CONTAINER_NAME} bash -x subsurface/packaging/android/qmake-build.sh ${BUILD_PARAMETERS}
+docker exec -u ${FULL_USER} -e OUTPUT_DIR=${CONTAINER_SUBSURFACE_DIR}/${OUTPUT_DIR} ${DOCKER_OPTIONS} -t ${CONTAINER_NAME} bash -x subsurface/packaging/android/qmake-build.sh ${BUILD_PARAMETERS}
 
 # Stop the container
 docker stop ${CONTAINER_NAME}
