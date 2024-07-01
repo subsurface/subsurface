@@ -363,12 +363,6 @@ void copy_cylinder_types(const struct dive *s, struct dive *d)
 		d->cylinders.push_back(s->cylinders[i]);
 }
 
-cylinder_t *add_empty_cylinder(struct cylinder_table *t)
-{
-	t->emplace_back();
-	return &t->back();
-}
-
 /* if a default cylinder is set, use that */
 void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 {
