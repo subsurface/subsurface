@@ -1061,7 +1061,7 @@ void EditWeight::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
 		add_weightsystem_description(new_ws); // This updates the weightsystem info table
-		set_weightsystem(dives[i], indices[i], new_ws);
+		dives[i]->weightsystems.set(indices[i], new_ws);
 		emit diveListNotifier.weightEdited(dives[i], indices[i]);
 		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}
