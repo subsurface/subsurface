@@ -68,7 +68,9 @@ struct weightsystem_t
  * *not* pointers * to weightsystems. Therefore pointers to
  * weightsystems are *not* stable.
  */
-using weightsystem_table = std::vector<weightsystem_t>;
+struct weightsystem_table : public std::vector<weightsystem_t> {
+	void add(int idx, weightsystem_t ws);
+};
 
 extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
@@ -88,7 +90,6 @@ extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
 
 /* Weightsystem table functions */
-extern void add_to_weightsystem_table(weightsystem_table *, int idx, weightsystem_t ws);
 
 /* Cylinder table functions */
 extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);

@@ -312,10 +312,10 @@ void remove_weightsystem(struct dive *dive, int idx)
 	dive->weightsystems.erase(dive->weightsystems.begin() + idx);
 }
 
-void add_to_weightsystem_table(weightsystem_table *table, int idx, weightsystem_t ws)
+void weightsystem_table::add(int idx, weightsystem_t ws)
 {
-	idx = std::clamp(idx, 0, static_cast<int>(table->size()));
-	table->insert(table->begin() + idx, std::move(ws));
+	idx = std::clamp(idx, 0, static_cast<int>(size()));
+	insert(begin() + idx, std::move(ws));
 }
 
 void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws)
