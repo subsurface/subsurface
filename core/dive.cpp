@@ -366,7 +366,7 @@ cylinder_t *dive::get_or_create_cylinder(int idx)
 		return NULL;
 	}
 	while (static_cast<size_t>(idx) >= cylinders.size())
-		add_empty_cylinder(&cylinders);
+		cylinders.emplace_back();
 	return &cylinders[idx];
 }
 
@@ -1075,7 +1075,7 @@ static void fixup_dc_sample_sensors(struct dive &dive, struct divecomputer &dc)
 
 	// Do we need to add empty cylinders?
 	while (sensor_mask) {
-		add_empty_cylinder(&dive.cylinders);
+		dive.cylinders.emplace_back();
 		sensor_mask >>= 1;
 	}
 }
