@@ -64,13 +64,13 @@ static QString get_cylinder_string(const cylinder_t *cyl)
 	return QString("%L1").arg(value, 0, 'f', decimals) + unit;
 }
 
-static QString gas_volume_string(int ml, const char *tail)
+static QString gas_volume_string(volume_t volume, const char *tail)
 {
 	double vol;
 	const char *unit;
 	int decimals;
 
-	vol = get_volume_units(ml, NULL, &unit);
+	vol = get_volume_units(volume.mliter, NULL, &unit);
 	decimals = (vol > 20.0) ? 0 : (vol > 2.0) ? 1 : 2;
 
 	return QString("%L1 %2 %3").arg(vol, 0, 'f', decimals).arg(unit).arg(tail);
@@ -83,13 +83,12 @@ static QVariant gas_usage_tooltip(const cylinder_t *cyl)
 	pressure_t startp = cyl->start.mbar ? cyl->start : cyl->sample_start;
 	pressure_t endp = cyl->end.mbar ? cyl->end : cyl->sample_end;
 
-	int start, end, used;
+	volume_t start = cyl->gas_volume(startp);
+	volume_t end = cyl->gas_volume(endp);
+	// TOOO: implement comparison and subtraction on units.h types.
+	volume_t used = (end.mliter && start.mliter > end.mliter) ? volume_t { start.mliter - end.mliter } : volume_t();
 
-	start = gas_volume(cyl, startp);
-	end = gas_volume(cyl, endp);
-	used = (end && start > end) ? start - end : 0;
-
-	if (!used)
+	if (!used.mliter)
 		return gas_wp_tooltip(cyl);
 
 	return gas_volume_string(used, "(") +
@@ -99,10 +98,10 @@ static QVariant gas_usage_tooltip(const cylinder_t *cyl)
 
 static QVariant gas_volume_tooltip(const cylinder_t *cyl, pressure_t p)
 {
-	int vol = gas_volume(cyl, p);
+	volume_t vol = cyl->gas_volume(p);
 	double Z;
 
-	if (!vol)
+	if (!vol.mliter)
 		return QVariant();
 
 	Z = gas_compressibility_factor(cyl->gasmix, p.mbar / 1000.0);

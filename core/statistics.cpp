@@ -258,8 +258,9 @@ std::vector<volume_t> get_gas_used(struct dive *dive)
 
 		start = cyl.start.mbar ? cyl.start : cyl.sample_start;
 		end = cyl.end.mbar ? cyl.end : cyl.sample_end;
+		// TODO: Implement addition/subtraction on units.h types
 		if (end.mbar && start.mbar > end.mbar)
-			gases[idx].mliter = gas_volume(&cyl, start) - gas_volume(&cyl, end);
+			gases[idx].mliter = cyl.gas_volume(start).mliter - cyl.gas_volume(end).mliter;
 		else
 			gases[idx].mliter = 0;
 	}
