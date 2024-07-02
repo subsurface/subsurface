@@ -1018,7 +1018,7 @@ void RemoveWeight::undo()
 void RemoveWeight::redo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
-		remove_weightsystem(dives[i], indices[i]);
+		dives[i]->weightsystems.remove(indices[i]);
 		emit diveListNotifier.weightRemoved(dives[i], indices[i]);
 		dives[i]->invalidate_cache(); // Ensure that dive is written in git_save()
 	}

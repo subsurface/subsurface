@@ -307,9 +307,9 @@ void remove_cylinder(struct dive *dive, int idx)
 	dive->cylinders.erase(dive->cylinders.begin() + idx);
 }
 
-void remove_weightsystem(struct dive *dive, int idx)
+void weightsystem_table::remove(int idx)
 {
-	dive->weightsystems.erase(dive->weightsystems.begin() + idx);
+	erase(begin() + idx);
 }
 
 void weightsystem_table::add(int idx, weightsystem_t ws)
