@@ -198,11 +198,11 @@ const char *gasname(struct gasmix gasmix)
 	return gas;
 }
 
-int gas_volume(const cylinder_t *cyl, pressure_t p)
+volume_t cylinder_t::gas_volume(pressure_t p) const
 {
 	double bar = p.mbar / 1000.0;
-	double z_factor = gas_compressibility_factor(cyl->gasmix, bar);
-	return lrint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
+	double z_factor = gas_compressibility_factor(gasmix, bar);
+	return volume_t { static_cast<int>(lrint(type.size.mliter * bar_to_atm(bar) / z_factor)) };
 }
 
 int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders)

@@ -128,7 +128,8 @@ static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *
 
 	cyl = dive->get_cylinder(index);
 
-	airuse = gas_volume(cyl, a) - gas_volume(cyl, b);
+	// TODO: Implement addition/subtraction on units.h types
+	airuse = cyl->gas_volume(a).mliter - cyl->gas_volume(b).mliter;
 
 	/* milliliters per minute */
 	return lrint(airuse / atm * 60 / duration);
@@ -480,7 +481,8 @@ static int sac_between(const struct dive *dive, const struct plot_info &pi, int 
 		a.mbar = get_plot_pressure(pi, first, i);
 		b.mbar = get_plot_pressure(pi, last, i);
 		const cylinder_t *cyl = dive->get_cylinder(i);
-		int cyluse = gas_volume(cyl, a) - gas_volume(cyl, b);
+		// TODO: Implement addition/subtraction on units.h types
+		int cyluse = cyl->gas_volume(a).mliter - cyl->gas_volume(b).mliter;
 		if (cyluse > 0)
 			airuse += cyluse;
 	}
@@ -1504,7 +1506,9 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 
 					const cylinder_t *cyl = d->get_cylinder(cylinder_index);
 
-					volumes_used[cylinder_index] += gas_volume(cyl, (pressure_t){ last_pressures[cylinder_index] }) - gas_volume(cyl, (pressure_t){ next_pressure });
+					// TODO: Implement addition/subtraction on units.h types
+					volumes_used[cylinder_index] += cyl->gas_volume((pressure_t){ last_pressures[cylinder_index] }).mliter -
+									cyl->gas_volume((pressure_t){ next_pressure }).mliter;
 				}
 
 				// check if the gas in this cylinder is being used

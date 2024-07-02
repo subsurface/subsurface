@@ -246,8 +246,8 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 						cyl.type.workingpressure.mbar = lrint(
 							cyl.type.workingpressure.mbar * 206.843 / 206.7 );
 						char name_buffer[17];
-						int rounded_size = lrint(ml_to_cuft(gas_volume(&cyl,
-							cyl.type.workingpressure)));
+						int rounded_size = lrint(ml_to_cuft(cyl.gas_volume(
+							cyl.type.workingpressure).mliter));
 						rounded_size = (int)((rounded_size + 5) / 10) * 10;
 						switch (cyl.type.workingpressure.mbar) {
 						case 206843:
