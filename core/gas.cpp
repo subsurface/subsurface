@@ -2,6 +2,7 @@
 #include "gas.h"
 #include "pref.h"
 #include "errorhelper.h"
+#include "format.h"
 #include "gettext.h"
 #include <stdio.h>
 #include <string.h>
@@ -182,4 +183,16 @@ const char *gastype_name(enum gastype type)
 	if (type < 0 || type >= GASTYPE_COUNT)
 		return "";
 	return translate("gettextFromC", gastype_names[type]);
+}
+
+std::string gasmix::name() const
+{
+	if (gasmix_is_air(*this))
+		return translate("gettextFromC", "air");
+	else if (get_he(*this) == 0 && get_o2(*this) < 1000)
+		return format_string_std(translate("gettextFromC", "EAN%d"), (get_o2(*this) + 5) / 10);
+	else if (get_he(*this) == 0 && get_o2(*this) == 1000)
+		return translate("gettextFromC", "oxygen");
+	else
+		return format_string_std("(%d/%d)", (get_o2(*this) + 5) / 10, (get_he(*this) + 5) / 10);
 }

@@ -200,7 +200,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		for (auto [i, cyl]: enumerated_range(dive->cylinders)) {
 			if (dive->is_cylinder_used(i) || (prefs.include_unused_tanks && !cyl.type.description.empty())){
 				put_format(&buf, "\\def\\%scyl%cdescription{%s}\n", ssrf, 'a' + i, cyl.type.description.c_str());
-				put_format(&buf, "\\def\\%scyl%cgasname{%s}\n", ssrf, 'a' + i, gasname(cyl.gasmix));
+				put_format(&buf, "\\def\\%scyl%cgasname{%s}\n", ssrf, 'a' + i, cyl.gasmix.name().c_str());
 				put_format(&buf, "\\def\\%scyl%cmixO2{%.1f\\%%}\n", ssrf, 'a' + i, get_o2(cyl.gasmix)/10.0);
 				put_format(&buf, "\\def\\%scyl%cmixHe{%.1f\\%%}\n", ssrf, 'a' + i, get_he(cyl.gasmix)/10.0);
 				put_format(&buf, "\\def\\%scyl%cmixN2{%.1f\\%%}\n", ssrf, 'a' + i, (100.0 - (get_o2(cyl.gasmix)/10.0) - (get_he(cyl.gasmix)/10.0)));

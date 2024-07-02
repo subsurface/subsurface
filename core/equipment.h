@@ -93,9 +93,6 @@ extern void dump_cylinders(struct dive *dive, bool verbose);
 /* Cylinder table functions */
 extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
 
-void get_gas_string(struct gasmix gasmix, char *text, int len);
-const char *gasname(struct gasmix gasmix);
-
 struct ws_info {
 	std::string name;
 	weight_t weight;

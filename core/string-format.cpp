@@ -179,7 +179,7 @@ QString formatGas(const dive *d)
 		QString gas = QString::fromStdString(cyl.type.description);
 		if (!gas.isEmpty())
 			gas += QChar(' ');
-		gas += gasname(cyl.gasmix);
+		gas += QString::fromStdString(cyl.gasmix.name());
 		// if has a description and if such gas is not already present
 		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
 			if (!gases.isEmpty())
