@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 /* implements Android specific functions */
-#include "dive.h"
 #include "device.h"
 #include "libdivecomputer.h"
 #include "file.h"
 #include "qthelper.h"
+#include "subsurfacestartup.h"
 #include <string.h>
 #include <sys/types.h>
 #include <dirent.h>
@@ -41,33 +41,31 @@ static std::string make_default_filename()
 	return system_default_path() + "/subsurface.xml";
 }
 
-extern "C" {
-
-const char android_system_divelist_default_font[] = "Roboto";
-const char *system_divelist_default_font = android_system_divelist_default_font;
-double system_divelist_default_font_size = -1;
+using namespace std::string_literals;
+std::string system_divelist_default_font = "Roboto"s;
+double system_divelist_default_font_size = -1.0;
 
 int get_usb_fd(uint16_t idVendor, uint16_t idProduct);
-void subsurface_OS_pref_setup(void)
+void subsurface_OS_pref_setup()
 {
 }
 
-bool subsurface_ignore_font(const char *font)
+bool subsurface_ignore_font(const std::string &font)
 {
 	// there are no old default fonts that we would want to ignore
 	return false;
 }
 
-const char *system_default_directory(void)
+std::string system_default_directory()
 {
 	static const std::string path = system_default_path();
-	return path.c_str();
+	return path;
 }
 
-const char *system_default_filename(void)
+std::string system_default_filename()
 {
 	static const std::string fn = make_default_filename();
-	return fn.c_str();
+	return fn;
 }
 
 
@@ -158,12 +156,10 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 }
 
 JNIEXPORT void JNICALL
-Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setUsbDevice(JNIEnv *env,
-	jobject obj,
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setUsbDevice(JNIEnv *,
+	jobject,
 	jobject javaUsbDevice)
 {
-	Q_UNUSED (obj)
-	Q_UNUSED (env)
 	QAndroidJniObject usbDevice(javaUsbDevice);
 	if (usbDevice.isValid()) {
 		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
@@ -177,12 +173,10 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setUsbDevice(JNIEnv *
 }
 
 JNIEXPORT void JNICALL
-Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_restartDownload(JNIEnv *env,
-	jobject obj,
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_restartDownload(JNIEnv *,
+	jobject,
 	jobject javaUsbDevice)
 {
-	Q_UNUSED (obj)
-	Q_UNUSED (env)
 	QAndroidJniObject usbDevice(javaUsbDevice);
 	if (usbDevice.isValid()) {
 		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
@@ -237,12 +231,12 @@ int subsurface_zip_close(struct zip *zip)
 }
 
 /* win32 console */
-void subsurface_console_init(void)
+void subsurface_console_init()
 {
 	/* NOP */
 }
 
-void subsurface_console_exit(void)
+void subsurface_console_exit()
 {
 	/* NOP */
 }
@@ -250,7 +244,6 @@ void subsurface_console_exit(void)
 bool subsurface_user_is_root()
 {
 	return false;
-}
 }
 
 /* called from QML manager */

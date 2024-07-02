@@ -21,7 +21,6 @@
 #include <assert.h>
 
 #include "deco.h"
-#include "ssrf.h"
 #include "dive.h"
 #include "gas.h"
 #include "subsurface-string.h"
@@ -216,13 +215,13 @@ static double vpmb_tolerated_ambient_pressure(struct deco_state *ds, double refe
 	return ds->tissue_n2_sat[ci] + ds->tissue_he_sat[ci] + vpmb_config.other_gases_pressure - total_gradient;
 }
 
-extern "C" double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, double pressure, bool in_planner)
+double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, double pressure, bool in_planner)
 {
 	int ci = -1;
 	double ret_tolerance_limit_ambient_pressure = 0.0;
 	double gf_high = buehlmann_config.gf_high;
 	double gf_low = buehlmann_config.gf_low;
-	double surface = get_surface_pressure_in_mbar(dive, true) / 1000.0;
+	double surface = dive->get_surface_pressure().mbar / 1000.0;
 	double lowest_ceiling = 0.0;
 	double tissue_lowest_ceiling[16];
 
@@ -323,7 +322,7 @@ static double calc_surface_phase(double surface_pressure, double he_pressure, do
 	return 0;
 }
 
-extern "C" void vpmb_start_gradient(struct deco_state *ds)
+void vpmb_start_gradient(struct deco_state *ds)
 {
 	int ci;
 
@@ -333,7 +332,7 @@ extern "C" void vpmb_start_gradient(struct deco_state *ds)
 	}
 }
 
-extern "C" void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure, bool in_planner)
+void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure, bool in_planner)
 {
 	int ci;
 	double n2_b, n2_c;
@@ -379,7 +378,7 @@ static double solve_cubic(double A, double B, double C)
 }
 
 
-extern "C" void nuclear_regeneration(struct deco_state *ds, double time)
+void nuclear_regeneration(struct deco_state *ds, double time)
 {
 	time /= 60.0;
 	int ci;
@@ -411,7 +410,7 @@ static double calc_inner_pressure(double crit_radius, double onset_tension, doub
 }
 
 // Calculates the crushing pressure in the given moment. Updates crushing_onset_tension and critical radius if needed
-extern "C" void calc_crushing_pressure(struct deco_state *ds, double pressure)
+void calc_crushing_pressure(struct deco_state *ds, double pressure)
 {
 	int ci;
 	double gradient;
@@ -443,12 +442,11 @@ extern "C" void calc_crushing_pressure(struct deco_state *ds, double pressure)
 }
 
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
-extern "C" void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int ccpo2, enum divemode_t divemode, int, bool in_planner)
+void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int ccpo2, enum divemode_t divemode, int, bool in_planner)
 {
 	int ci;
-	struct gas_pressures pressures;
 	bool icd = false;
-	fill_pressures(&pressures, pressure - ((in_planner && (decoMode(true) == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
+	gas_pressures pressures = fill_pressures(pressure - ((in_planner && (decoMode(true) == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
 		       gasmix, (double) ccpo2 / 1000.0, divemode);
 
 	for (ci = 0; ci < 16; ci++) {
@@ -476,7 +474,7 @@ extern "C" void add_segment(struct deco_state *ds, double pressure, struct gasmi
 }
 
 #if DECO_CALC_DEBUG
-extern "C" void dump_tissues(struct deco_state *ds)
+void dump_tissues(struct deco_state *ds)
 {
 	int ci;
 	printf("N2 tissues:");
@@ -489,7 +487,7 @@ extern "C" void dump_tissues(struct deco_state *ds)
 }
 #endif
 
-extern "C" void clear_vpmb_state(struct deco_state *ds)
+void clear_vpmb_state(struct deco_state *ds)
 {
 	int ci;
 	for (ci = 0; ci < 16; ci++) {
@@ -501,11 +499,11 @@ extern "C" void clear_vpmb_state(struct deco_state *ds)
 	ds->max_bottom_ceiling_pressure.mbar = 0;
 }
 
-extern "C" void clear_deco(struct deco_state *ds, double surface_pressure, bool in_planner)
+void clear_deco(struct deco_state *ds, double surface_pressure, bool in_planner)
 {
 	int ci;
 
-	memset(ds, 0, sizeof(*ds));
+	*ds = deco_state();
 	clear_vpmb_state(ds);
 	for (ci = 0; ci < 16; ci++) {
 		ds->tissue_n2_sat[ci] = (surface_pressure - ((in_planner && (decoMode(true) == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE)) * N2_IN_AIR / 1000;
@@ -545,7 +543,7 @@ void deco_state_cache::restore(struct deco_state *target, bool keep_vpmb_state) 
 	*target = *data;
 }
 
-extern "C" int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth)
+int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth)
 {
 	int depth;
 	double pressure_delta;
@@ -553,7 +551,7 @@ extern "C" int deco_allowed_depth(double tissues_tolerance, double surface_press
 	/* Avoid negative depths */
 	pressure_delta = tissues_tolerance > surface_pressure ? tissues_tolerance - surface_pressure : 0.0;
 
-	depth = rel_mbar_to_depth(lrint(pressure_delta * 1000), dive);
+	depth = dive->rel_mbar_to_depth(lrint(pressure_delta * 1000));
 
 	if (!smooth)
 		depth = lrint(ceil(depth / DECO_STOPS_MULTIPLIER_MM) * DECO_STOPS_MULTIPLIER_MM);
@@ -564,7 +562,7 @@ extern "C" int deco_allowed_depth(double tissues_tolerance, double surface_press
 	return depth;
 }
 
-extern "C" void set_gf(short gflow, short gfhigh)
+void set_gf(short gflow, short gfhigh)
 {
 	if (gflow != -1)
 		buehlmann_config.gf_low = (double)gflow / 100.0;
@@ -572,7 +570,7 @@ extern "C" void set_gf(short gflow, short gfhigh)
 		buehlmann_config.gf_high = (double)gfhigh / 100.0;
 }
 
-extern "C" void set_vpmb_conservatism(short conservatism)
+void set_vpmb_conservatism(short conservatism)
 {
 	if (conservatism < 0)
 		vpmb_config.conservatism = 0;
@@ -582,9 +580,9 @@ extern "C" void set_vpmb_conservatism(short conservatism)
 		vpmb_config.conservatism = conservatism;
 }
 
-extern "C" double get_gf(struct deco_state *ds, double ambpressure_bar, const struct dive *dive)
+double get_gf(struct deco_state *ds, double ambpressure_bar, const struct dive *dive)
 {
-	double surface_pressure_bar = get_surface_pressure_in_mbar(dive, true) / 1000.0;
+	double surface_pressure_bar = dive->get_surface_pressure().mbar / 1000.0;
 	double gf_low = buehlmann_config.gf_low;
 	double gf_high = buehlmann_config.gf_high;
 	double gf;
@@ -596,7 +594,7 @@ extern "C" double get_gf(struct deco_state *ds, double ambpressure_bar, const st
 	return gf;
 }
 
-extern "C" double regressiona(const struct deco_state *ds)
+double regressiona(const struct deco_state *ds)
 {
 	if (ds->sum1 > 1) {
 		double avxy = ds->sumxy / ds->sum1;
@@ -609,7 +607,7 @@ extern "C" double regressiona(const struct deco_state *ds)
 		return 0.0;
 }
 
-extern "C" double regressionb(const struct deco_state *ds)
+double regressionb(const struct deco_state *ds)
 {
 	if (ds->sum1)
 		return ds->sumy / ds->sum1 - ds->sumx * regressiona(ds) / ds->sum1;
@@ -617,14 +615,14 @@ extern "C" double regressionb(const struct deco_state *ds)
 		return 0.0;
 }
 
-extern "C" void reset_regression(struct deco_state *ds)
+void reset_regression(struct deco_state *ds)
 {
 	ds->sum1 = 0;
 	ds->sumxx = ds->sumx = 0L;
 	ds->sumy = ds->sumxy = 0.0;
 }
 
-extern "C" void update_regression(struct deco_state *ds, const struct dive *dive)
+void update_regression(struct deco_state *ds, const struct dive *dive)
 {
 	if (!ds->plot_depth)
 		return;
@@ -632,12 +630,12 @@ extern "C" void update_regression(struct deco_state *ds, const struct dive *dive
 	ds->sumx += ds->plot_depth;
 	ds->sumxx += (long)ds->plot_depth * ds->plot_depth;
 	double n2_gradient, he_gradient, total_gradient;
-	n2_gradient = update_gradient(ds, depth_to_bar(ds->plot_depth, dive), ds->bottom_n2_gradient[ds->ci_pointing_to_guiding_tissue]);
-	he_gradient = update_gradient(ds, depth_to_bar(ds->plot_depth, dive), ds->bottom_he_gradient[ds->ci_pointing_to_guiding_tissue]);
+	n2_gradient = update_gradient(ds, dive->depth_to_bar(ds->plot_depth), ds->bottom_n2_gradient[ds->ci_pointing_to_guiding_tissue]);
+	he_gradient = update_gradient(ds, dive->depth_to_bar(ds->plot_depth), ds->bottom_he_gradient[ds->ci_pointing_to_guiding_tissue]);
 	total_gradient = ((n2_gradient * ds->tissue_n2_sat[ds->ci_pointing_to_guiding_tissue]) + (he_gradient * ds->tissue_he_sat[ds->ci_pointing_to_guiding_tissue]))
 			/ (ds->tissue_n2_sat[ds->ci_pointing_to_guiding_tissue] + ds->tissue_he_sat[ds->ci_pointing_to_guiding_tissue]);
 
-	double buehlmann_gradient = (1.0 / ds->buehlmann_inertgas_b[ds->ci_pointing_to_guiding_tissue] - 1.0) * depth_to_bar(ds->plot_depth, dive) + ds->buehlmann_inertgas_a[ds->ci_pointing_to_guiding_tissue];
+	double buehlmann_gradient = (1.0 / ds->buehlmann_inertgas_b[ds->ci_pointing_to_guiding_tissue] - 1.0) * dive->depth_to_bar(ds->plot_depth) + ds->buehlmann_inertgas_a[ds->ci_pointing_to_guiding_tissue];
 	double gf = (total_gradient - vpmb_config.other_gases_pressure) / buehlmann_gradient;
 	ds->sumxy += gf * ds->plot_depth;
 	ds->sumy += gf;

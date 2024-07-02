@@ -2,7 +2,8 @@
 
 #include "command_event.h"
 #include "core/dive.h"
-#include "core/event.h"
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/libdivecomputer.h"
@@ -30,13 +31,13 @@ void EventBase::undo()
 
 void EventBase::updateDive()
 {
-	invalidate_dive_cache(d);
+	d->invalidate_cache();
 	emit diveListNotifier.eventsChanged(d);
 	setSelection({ d }, d, dcNr);
 }
 
-AddEventBase::AddEventBase(struct dive *d, int dcNr, struct event *ev) : EventBase(d, dcNr),
-	eventToAdd(ev)
+AddEventBase::AddEventBase(struct dive *d, int dcNr, struct event ev) : EventBase(d, dcNr),
+	ev(std::move(ev))
 {
 }
 
@@ -47,33 +48,30 @@ bool AddEventBase::workToBeDone()
 
 void AddEventBase::redoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
-	eventToRemove = eventToAdd.get();
-	add_event_to_dc(dc, eventToAdd.release()); // return ownership to backend
+	struct divecomputer *dc = d->get_dc(dcNr);
+	idx = add_event_to_dc(dc, ev); // return ownership to backend
 }
 
 void AddEventBase::undoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
-	remove_event_from_dc(dc, eventToRemove);
-	eventToAdd.reset(eventToRemove); // take ownership of event
-	eventToRemove = nullptr;
+	struct divecomputer *dc = d->get_dc(dcNr);
+	ev = remove_event_from_dc(dc, idx);
 }
 
 AddEventBookmark::AddEventBookmark(struct dive *d, int dcNr, int seconds) :
-	AddEventBase(d, dcNr, create_event(seconds, SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark"))
+	AddEventBase(d, dcNr, event(seconds, SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark"))
 {
 	setText(Command::Base::tr("Add bookmark"));
 }
 
 AddEventDivemodeSwitch::AddEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode) :
-	AddEventBase(d, dcNr, create_event(seconds, SAMPLE_EVENT_BOOKMARK, 0, divemode, QT_TRANSLATE_NOOP("gettextFromC", "modechange")))
+	AddEventBase(d, dcNr, event(seconds, SAMPLE_EVENT_BOOKMARK, 0, divemode, QT_TRANSLATE_NOOP("gettextFromC", "modechange")))
 {
 	setText(Command::Base::tr("Add dive mode switch to %1").arg(gettextFromC::tr(divemode_text_ui[divemode])));
 }
 
 AddEventSetpointChange::AddEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2) :
-	AddEventBase(d, dcNr, create_event(seconds, SAMPLE_EVENT_PO2, 0, pO2.mbar, QT_TRANSLATE_NOOP("gettextFromC", "SP change"))),
+	AddEventBase(d, dcNr, event(seconds, SAMPLE_EVENT_PO2, 0, pO2.mbar, QT_TRANSLATE_NOOP("gettextFromC", "SP change"))),
 	divemode(CCR)
 {
 	setText(Command::Base::tr("Add set point change")); // TODO: format pO2 value in bar or psi.
@@ -82,20 +80,20 @@ AddEventSetpointChange::AddEventSetpointChange(struct dive *d, int dcNr, int sec
 void AddEventSetpointChange::undoit()
 {
 	AddEventBase::undoit();
-	std::swap(get_dive_dc(d, dcNr)->divemode, divemode);
+	std::swap(d->get_dc(dcNr)->divemode, divemode);
 }
 
 void AddEventSetpointChange::redoit()
 {
 	AddEventBase::redoit();
-	std::swap(get_dive_dc(d, dcNr)->divemode, divemode);
+	std::swap(d->get_dc(dcNr)->divemode, divemode);
 }
 
-RenameEvent::RenameEvent(struct dive *d, int dcNr, struct event *ev, const char *name) : EventBase(d, dcNr),
-	eventToAdd(clone_event_rename(ev, name)),
-	eventToRemove(ev)
+RenameEvent::RenameEvent(struct dive *d, int dcNr, int idx, const std::string name) : EventBase(d, dcNr),
+	idx(idx),
+	name(std::move(name))
 {
-	setText(Command::Base::tr("Rename bookmark to %1").arg(name));
+	setText(Command::Base::tr("Rename bookmark to %1").arg(name.c_str()));
 }
 
 bool RenameEvent::workToBeDone()
@@ -105,25 +103,26 @@ bool RenameEvent::workToBeDone()
 
 void RenameEvent::redoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
-	swap_event(dc, eventToRemove, eventToAdd.get());
-	event *tmp = eventToRemove;
-	eventToRemove = eventToAdd.release();
-	eventToAdd.reset(tmp);
+	struct divecomputer *dc = d->get_dc(dcNr);
+	event *ev = get_event(dc, idx);
+	if (ev)
+		std::swap(ev->name, name);
 }
 
 void RenameEvent::undoit()
 {
-	// Undo and redo do the same thing - they simply swap events
+	// Undo and redo do the same thing - they simply swap names
 	redoit();
 }
 
-RemoveEvent::RemoveEvent(struct dive *d, int dcNr, struct event *ev) : EventBase(d, dcNr),
-	eventToRemove(ev),
-	cylinder(ev->type == SAMPLE_EVENT_GASCHANGE2 || ev->type == SAMPLE_EVENT_GASCHANGE ?
-		 ev->gas.index : -1)
+RemoveEvent::RemoveEvent(struct dive *d, int dcNr, int idx) : EventBase(d, dcNr),
+	idx(idx), cylinder(-1)
 {
-	setText(Command::Base::tr("Remove %1 event").arg(ev->name));
+	struct divecomputer *dc = d->get_dc(dcNr);
+	event *ev = get_event(dc, idx);
+	if (ev && (ev->type == SAMPLE_EVENT_GASCHANGE2 || ev->type == SAMPLE_EVENT_GASCHANGE))
+		cylinder = ev->gas.index;
+	setText(Command::Base::tr("Remove %1 event").arg(ev->name.c_str()));
 }
 
 bool RemoveEvent::workToBeDone()
@@ -133,17 +132,14 @@ bool RemoveEvent::workToBeDone()
 
 void RemoveEvent::redoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
-	remove_event_from_dc(dc, eventToRemove);
-	eventToAdd.reset(eventToRemove); // take ownership of event
-	eventToRemove = nullptr;
+	struct divecomputer *dc = d->get_dc(dcNr);
+	ev = remove_event_from_dc(dc, idx);
 }
 
 void RemoveEvent::undoit()
 {
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
-	eventToRemove = eventToAdd.get();
-	add_event_to_dc(dc, eventToAdd.release()); // return ownership to backend
+	struct divecomputer *dc = d->get_dc(dcNr);
+	idx = add_event_to_dc(dc, std::move(ev));
 }
 
 void RemoveEvent::post() const
@@ -151,7 +147,7 @@ void RemoveEvent::post() const
 	if (cylinder < 0)
 		return;
 
-	fixup_dive(d);
+	divelog.dives.fixup_dive(*d);
 	emit diveListNotifier.cylinderEdited(d, cylinder);
 
 	// TODO: This is silly we send a DURATION change event so that the statistics are recalculated.
@@ -164,19 +160,19 @@ AddGasSwitch::AddGasSwitch(struct dive *d, int dcNr, int seconds, int tank) : Ev
 	// If there is a gas change at this time stamp, remove it before adding the new one.
 	// There shouldn't be more than one gas change per time stamp. Just in case we'll
 	// support that anyway.
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
-	struct event *gasChangeEvent = dc->events;
-	while ((gasChangeEvent = get_next_event_mutable(gasChangeEvent, "gaschange")) != NULL) {
-		if (gasChangeEvent->time.seconds == seconds) {
-			eventsToRemove.push_back(gasChangeEvent);
-			int idx = gasChangeEvent->gas.index;
-			if (std::find(cylinders.begin(), cylinders.end(), idx) == cylinders.end())
-				cylinders.push_back(idx); // cylinders might have changed their status
-		}
-		gasChangeEvent = gasChangeEvent->next;
+	struct divecomputer *dc = d->get_dc(dcNr);
+
+	// Note that we remove events in reverse order so that the indexes don't change
+	// meaning while removing. This should be an extremely rare case anyway.
+	for (int idx = static_cast<int>(dc->events.size()) - 1; idx > 0; --idx) {
+		const event &ev = dc->events[idx];
+		if (ev.time.seconds == seconds && ev.name == "gaschange")
+			eventsToRemove.push_back(idx);
+		if (std::find(cylinders.begin(), cylinders.end(), ev.gas.index) == cylinders.end())
+			cylinders.push_back(ev.gas.index); // cylinders might have changed their status
 	}
 
-	eventsToAdd.emplace_back(create_gas_switch_event(d, dc, seconds, tank));
+	eventsToAdd.push_back(create_gas_switch_event(d, dc, seconds, tank));
 }
 
 bool AddGasSwitch::workToBeDone()
@@ -186,25 +182,26 @@ bool AddGasSwitch::workToBeDone()
 
 void AddGasSwitch::redoit()
 {
-	std::vector<OwningEventPtr> newEventsToAdd;
-	std::vector<event *> newEventsToRemove;
+	std::vector<event> newEventsToAdd;
+	std::vector<int> newEventsToRemove;
 	newEventsToAdd.reserve(eventsToRemove.size());
 	newEventsToRemove.reserve(eventsToAdd.size());
-	struct divecomputer *dc = get_dive_dc(d, dcNr);
+	struct divecomputer *dc = d->get_dc(dcNr);
 
-	for (event *ev: eventsToRemove) {
-		remove_event_from_dc(dc, ev);
-		newEventsToAdd.emplace_back(ev); // take ownership of event
-	}
-	for (OwningEventPtr &ev: eventsToAdd) {
-		newEventsToRemove.push_back(ev.get());
-		add_event_to_dc(dc, ev.release()); // return ownership to backend
-	}
+	for (int idx: eventsToRemove)
+		newEventsToAdd.push_back(remove_event_from_dc(dc, idx));
+
+	for (auto &ev: eventsToAdd)
+		newEventsToRemove.push_back(add_event_to_dc(dc, std::move(ev)));
+
+	// Make sure that events are removed in reverse order
+	std::sort(newEventsToRemove.begin(), newEventsToRemove.end(), std::greater<int>());
+
 	eventsToAdd = std::move(newEventsToAdd);
 	eventsToRemove = std::move(newEventsToRemove);
 
 	// this means we potentially have a new tank that is being used and needs to be shown
-	fixup_dive(d);
+	divelog.dives.fixup_dive(*d);
 
 	for (int idx: cylinders)
 		emit diveListNotifier.cylinderEdited(d, idx);

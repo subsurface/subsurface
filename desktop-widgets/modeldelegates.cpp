@@ -219,9 +219,7 @@ void TankInfoDelegate::setModelData(QWidget *, QAbstractItemModel *model, const 
 		return;
 	}
 
-	volume_t tankSize = {0};
-	pressure_t tankPressure = {0};
-	get_tank_info_data(&tank_info_table, qPrintable(cylinderName), &tankSize, &tankPressure);
+	auto [tankSize, tankPressure] = get_tank_info_data(tank_info_table, cylinderName.toStdString());
 	mymodel->setData(IDX(CylindersModel::TYPE), cylinderName, CylindersModel::TEMP_ROLE);
 	mymodel->setData(IDX(CylindersModel::WORKINGPRESS), tankPressure.mbar, CylindersModel::TEMP_ROLE);
 	mymodel->setData(IDX(CylindersModel::SIZE), tankSize.mliter, CylindersModel::TEMP_ROLE);
@@ -300,8 +298,7 @@ QWidget *SensorDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
 		return comboBox;
 
 	std::vector<int16_t> sensors;
-	for (int i = 0; i < currentdc->samples; ++i) {
-		auto &sample = currentdc->sample[i];
+	for (const auto &sample: currentdc->samples) {
 		for (int s = 0; s < MAX_SENSORS; ++s) {
 			if (sample.pressure[s].mbar) {
 				if (std::find(sensors.begin(), sensors.end(), sample.sensor[s]) == sensors.end())
@@ -338,11 +335,10 @@ void WSInfoDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint 
 void WSInfoDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const
 {
 	WeightModel *mymodel = qobject_cast<WeightModel *>(currCombo.model);
-	QString weightName = currCombo.activeText;
-	ws_info_t *info = get_weightsystem_description(qPrintable(weightName));
-	int grams = info ? info->grams : 0;
+	std::string weightName = currCombo.activeText.toStdString();
+	weight_t weight = get_weightsystem_weight(weightName.c_str());
 
-	mymodel->setTempWS(currCombo.currRow, weightsystem_t{ { grams }, copy_qstring(weightName), false });
+	mymodel->setTempWS(currCombo.currRow, weightsystem_t( weight, std::move(weightName), false ));
 }
 
 static QAbstractItemModel *createWSInfoModel(QWidget *parent)
@@ -425,7 +421,7 @@ QWidget *DoubleSpinBoxDelegate::createEditor(QWidget *parent, const QStyleOption
 	return w;
 }
 
-LocationFilterDelegate::LocationFilterDelegate(QObject *) : currentLocation(zero_location)
+LocationFilterDelegate::LocationFilterDelegate(QObject *)
 {
 }
 
@@ -464,26 +460,26 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	for (int i = 0; i < 3; i++) {
 		if (prefs.geocoding.category[i] == TC_NONE)
 			continue;
-		const char *value = taxonomy_get_value(&ds->taxonomy, prefs.geocoding.category[i]);
-		if (empty_string(value))
+		std::string value = taxonomy_get_value(ds->taxonomy, prefs.geocoding.category[i]);
+		if (!value.empty())
 			continue;
 		if(!bottomText.isEmpty())
 			bottomText += " / ";
-		bottomText += QString(value);
+		bottomText += QString::fromStdString(value);
 	}
 
 	if (bottomText.isEmpty())
 		bottomText = printGPSCoords(&ds->location);
 
-	if (dive_site_has_gps_location(ds) && currentDiveHasGPS) {
+	if (ds->has_gps_location() && currentDiveHasGPS) {
 		// so we are showing a completion and both the current dive site and the completion
 		// have a GPS fix... so let's show the distance
-		if (same_location(&ds->location, &currentLocation)) {
+		if (ds->location == currentLocation) {
 			bottomText += tr(" (same GPS fix)");
 		} else {
-			int distanceMeters = get_distance(&ds->location, &currentLocation);
+			int distanceMeters = get_distance(ds->location, currentLocation);
 			QString distance = distance_string(distanceMeters);
-			int nr = nr_of_dives_at_dive_site(ds);
+			size_t nr = ds->nr_of_dives();
 			bottomText += tr(" (~%1 away").arg(distance);
 			bottomText += tr(", %n dive(s) here)", "", nr);
 		}

@@ -4,6 +4,8 @@
 #include "profile-widget/profilewidget2.h"
 #include "commands/command.h"
 #include "core/color.h"
+#include "core/event.h"
+#include "core/sample.h"
 #include "core/selection.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
@@ -165,7 +167,7 @@ void ProfileWidget::setDive(const struct dive *d, int dcNr)
 {
 	stack->setCurrentIndex(1); // show profile
 
-	bool freeDiveMode = get_dive_dc_const(d, dcNr)->divemode == FREEDIVE;
+	bool freeDiveMode = d->get_dc(dcNr)->divemode == FREEDIVE;
 	ui.profCalcCeiling->setDisabled(freeDiveMode);
 	ui.profCalcCeiling->setDisabled(freeDiveMode);
 	ui.profCalcAllTissues ->setDisabled(freeDiveMode);
@@ -207,7 +209,7 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 
 	// The following is valid because number_of_computers is always at least 1.
 	if (d)
-		dc = std::min(dc, (int)number_of_computers(current_dive) - 1);
+		dc = std::min(dc, d->number_of_computers() - 1);
 
 	// Exit edit mode if the dive changed
 	if (endEditMode)
@@ -217,8 +219,8 @@ void ProfileWidget::plotDive(dive *dIn, int dcIn)
 	// or already editing the dive, switch to edit mode.
 	if (d && !editedDive &&
 	    DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING) {
-		struct divecomputer *comp = get_dive_dc(d, dc);
-		if (comp && is_dc_manually_added_dive(comp) && comp->samples && comp->samples <= 50)
+		struct divecomputer *comp = d->get_dc(dc);
+		if (comp && is_dc_manually_added_dive(comp) && !comp->samples.empty() && comp->samples.size() <= 50)
 			editDive();
 	}
 
@@ -251,7 +253,7 @@ void ProfileWidget::rotateDC(int dir)
 {
 	if (!d)
 		return;
-	int numDC = number_of_computers(d);
+	int numDC = d->number_of_computers();
 	int newDC = (dc + dir) % numDC;
 	if (newDC < 0)
 		newDC += numDC;
@@ -296,7 +298,7 @@ void ProfileWidget::cylindersChanged(struct dive *changed, int pos)
 	// If we're editing the current dive we have to update the
 	// cylinders of the edited dive.
 	if (editedDive) {
-		copy_cylinders(&d->cylinders, &editedDive.get()->cylinders);
+		editedDive.get()->cylinders = d->cylinders;
 		// TODO: Holy moly that function sends too many signals. Fix it!
 		DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), dc);
 	}
@@ -324,7 +326,7 @@ void ProfileWidget::unsetProfTissues()
 
 void ProfileWidget::editDive()
 {
-	editedDive.reset(alloc_dive());
+	editedDive = std::make_unique<dive>();
 	copy_dive(d, editedDive.get()); // Work on a copy of the dive
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::EDIT);
 	DivePlannerPointsModel::instance()->loadFromDive(editedDive.get(), dc);
@@ -344,8 +346,8 @@ void ProfileWidget::exitEditMode()
 // Update depths of edited dive
 static void calcDepth(dive &d, int dcNr)
 {
-	d.maxdepth.mm = get_dive_dc(&d, dcNr)->maxdepth.mm = 0;
-	fixup_dive(&d);
+	d.maxdepth.mm = d.get_dc(dcNr)->maxdepth.mm = 0;
+	divelog.dives.fixup_dive(d);
 }
 
 // Silly RAII-variable setter class: reset variable when going out of scope.

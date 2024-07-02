@@ -572,7 +572,7 @@ static void inc(std::array<int, 3> &ymd)
 // the separator character. Returns a (day_first, separator) pair.
 static std::pair<bool, char> day_format()
 {
-	const char *fmt = prefs.date_format;
+	const char *fmt = prefs.date_format.c_str();
 	const char *d, *m, *sep;
 	for (d = fmt; *d && *d != 'd' && *d != 'D'; ++d)
 		;

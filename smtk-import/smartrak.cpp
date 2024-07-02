@@ -265,26 +265,6 @@ static void concat(std::string &orig, const char *sep, std::string_view s)
 }
 
 /*
- * Temporary funcion as long as core still has C-strings.
- * Equivalent to concat, but takes a C-string as first argument and
- * frees it. Returns a newly allocated copy.
- *
- * Note: taking "const char * const *" is an ugly hack to
- * allow passing pointer to "const char *" as well as
- * "char *". Which in turn is necessary, as this function currently
- * replaces "const char *" strings.
- */
-static void concat(const char * const *orig_in, const char *sep, std::string_view s)
-{
-	char **orig = const_cast<char **>(orig_in);
-	char *to_free = *orig;
-	std::string orig_std(*orig ? *orig : "");
-	concat(orig_std, sep, s);
-	*orig = strdup(orig_std.c_str());
-	free(to_free);
-}
-
-/*
  * A site may be a wreck, which has its own table.
  * Parse this table referred by the site idx. If found, put the different info items in
  * Subsurface's dive_site notes.
@@ -347,7 +327,7 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 					break;
 				}
 			}
-			concat(&ds->notes, "\n", notes);
+			concat(ds->notes, "\n", notes);
 			break;
 		}
 	}
@@ -423,18 +403,17 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, struct dive_site **lo
 		concat(str, ", ", table.get_string_view(1)); // Locality
 	concat(str, ", ", site);
 
-	ds = get_dive_site_by_name(str.c_str(), log->sites);
+	ds = log->sites.get_by_name(str);
 	if (!ds) {
 		if (!has_location(&loc))
-			ds = create_dive_site(str.c_str(), log->sites);
+			ds = log->sites.create(str);
 		else
-			ds = create_dive_site_with_gps(str.c_str(), &loc, log->sites);
+			ds = log->sites.create(str, loc);
 	}
 	*location = ds;
 
 	/* Insert site notes */
-	free(ds->notes);
-	ds->notes = strdup(notes.c_str());
+	ds->notes = notes.c_str();
 
 	/* Check if we have a wreck */
 	smtk_wreck_site(mdb, idx, ds);
@@ -450,7 +429,7 @@ static void smtk_build_tank_info(MdbHandle *mdb, cylinder_t *tank, char *idx)
 
 	for (i = 1; i <= atoi(idx); i++)
 		table.fetch_row();
-	tank->type.description = copy_string(table.get_data(1));
+	tank->type.description = table.get_data(1);
 	tank->type.size.mliter = lrint(strtod(table.get_data(2), NULL) * 1000);
 	tank->type.workingpressure.mbar = lrint(strtod(table.get_data(4), NULL) * 1000);
 }
@@ -473,9 +452,9 @@ static bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
 	if (!(abs(cyl_a->end.mbar - cyl_b->end.mbar) <= 100))
 		return false;
 	// different names (none of them null)
-	if (!same_string(cyl_a->type.description, "---") &&
-	    !same_string(cyl_b->type.description, "---") &&
-	    !same_string(cyl_a->type.description, cyl_b->type.description))
+	if (cyl_a->type.description != "---" &&
+	    cyl_b->type.description != "---" &&
+	    cyl_a->type.description != cyl_b->type.description)
 		return false;
 	// Cylinders are most probably the same
 	return true;
@@ -496,9 +475,8 @@ static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
 		dst->size.mliter = src->size.mliter;
 	if (!dst->workingpressure.mbar)
 		dst->workingpressure.mbar = src->workingpressure.mbar;
-	if (!dst->description || same_string(dst->description, "---")) {
-		dst->description = src->description;
-		src->description = NULL;
+	if (dst->description.empty() || dst->description == "---") {
+		dst->description = std::move(src->description);
 	}
 }
 
@@ -529,11 +507,11 @@ static void merge_cylinder_info(cylinder_t *src, cylinder_t *dst)
 static void smtk_clean_cylinders(struct dive *d)
 {
 	int i = tanks - 1;
-	cylinder_t  *cyl, *base = get_cylinder(d, 0);
+	cylinder_t  *cyl, *base = d->get_cylinder(0);
 
 	cyl = base + tanks - 1;
 	while (cyl != base) {
-		if (same_string(cyl->type.description, "---") && cyl->start.mbar == 0 && cyl->end.mbar == 0)
+		if (cyl->type.description == "---" && cyl->start.mbar == 0 && cyl->end.mbar == 0)
 			remove_cylinder(d, i);
 		else
 			if (is_same_cylinder(cyl, cyl - 1)) {
@@ -693,16 +671,16 @@ static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_i
 		if (str.empty())
 			continue;
 		if (tag)
-			taglist_add_tag(&dive->tag_list, str.c_str());
+			taglist_add_tag(dive->tags, str);
 		else
 			concat(tmp, ", ", str);
 		if (str.find("SCR") != std::string::npos)
-			dive->dc.divemode = PSCR;
+			dive->dcs[0].divemode = PSCR;
 		else if (str.find("CCR") != std::string::npos)
-			dive->dc.divemode = CCR;
+			dive->dcs[0].divemode = CCR;
 	}
 	if (!tmp.empty())
-		concat(&dive->notes, "\n", format_string_std("Smartrak %s: %s", table_name, tmp.c_str()));
+		concat(dive->notes, "\n", format_string_std("Smartrak %s: %s", table_name, tmp.c_str()));
 }
 
 /*
@@ -719,9 +697,9 @@ static void smtk_parse_other(struct dive *dive, const std::vector<std::string> &
        const std::string &str = list[i];
        if (!str.empty()) {
                if (tag)
-                       taglist_add_tag(&dive->tag_list, str.c_str());
+                       taglist_add_tag(dive->tags, str);
                else
-                       concat(&dive->notes, "\n", format_string_std("Smartrak %s: %s", data_name, str.c_str()));
+                       concat(dive->notes, "\n", format_string_std("Smartrak %s: %s", data_name, str.c_str()));
        }
 }
 
@@ -729,16 +707,12 @@ static void smtk_parse_other(struct dive *dive, const std::vector<std::string> &
  * Returns a pointer to a bookmark event in an event list if it exists for
  * a given time. Return NULL otherwise.
  */
-static struct event *find_bookmark(struct event *orig, int t)
+static struct event *find_bookmark(struct divecomputer &dc, int t)
 {
-	struct event *ev = orig;
-
-	while (ev) {
-		if ((ev->time.seconds == t) && (ev->type == SAMPLE_EVENT_BOOKMARK))
-			return ev;
-		ev = ev->next;
-	}
-	return NULL;
+	auto it = std::find_if(dc.events.begin(), dc.events.end(),
+			       [t](auto &ev)
+			       { return ev.time.seconds == t && ev.type == SAMPLE_EVENT_BOOKMARK; });
+	return it != dc.events.end() ? &*it : nullptr;
 }
 
 /*
@@ -764,11 +738,11 @@ static void smtk_parse_bookmarks(MdbHandle *mdb, struct dive *d, char *dive_idx)
 		if (same_string(table.get_data(0), dive_idx)) {
 			time = lrint(strtod(table.get_data(4), NULL) * 60);
 			const char *tmp = table.get_data(2);
-			ev = find_bookmark(d->dc.events, time);
+			ev = find_bookmark(d->dcs[0], time);
 			if (ev)
-				update_event_name(d, 0, ev, tmp);
+				ev->name = tmp;
 			else
-				if (!add_event(&d->dc, time, SAMPLE_EVENT_BOOKMARK, 0, 0, tmp))
+				if (!add_event(&d->dcs[0], time, SAMPLE_EVENT_BOOKMARK, 0, 0, tmp))
 					report_error("[smtk-import] Error - Couldn't add bookmark, dive %d, Name = %s",
 						     d->number, tmp);
 		}
@@ -819,34 +793,27 @@ static dc_descriptor_t *get_data_descriptor(int data_model, dc_family_t data_fam
  * DC.  dc_family_t is certainly known *only* if it is Aladin/Memomouse family
  * otherwise it will be known after get_data_descriptor call.
  */
-static dc_status_t prepare_data(int data_model, const char *serial, dc_family_t dc_fam, device_data_t *dev_data)
+static dc_status_t prepare_data(int data_model, const char *serial, dc_family_t dc_fam, device_data_t &dev_data)
 {
-	dev_data->device = NULL;
-	dev_data->context = NULL;
+	dev_data.device = NULL;
+	dev_data.context = NULL;
 	if (!data_model) {
-		dev_data->model = copy_string(manual_dc_name);
-		dev_data->descriptor = NULL;
+		dev_data.model = manual_dc_name;
+		dev_data.descriptor = NULL;
 		return DC_STATUS_NODEVICE;
 	}
-	dev_data->descriptor = get_data_descriptor(data_model, dc_fam);
-	if (dev_data->descriptor) {
-		dev_data->vendor = dc_descriptor_get_vendor(dev_data->descriptor);
-		dev_data->product = dc_descriptor_get_product(dev_data->descriptor);
-		concat(&dev_data->model, "", format_string_std("%s %s", dev_data->vendor, dev_data->product));
-		dev_data->devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
+	dev_data.descriptor = get_data_descriptor(data_model, dc_fam);
+	if (dev_data.descriptor) {
+		dev_data.vendor = dc_descriptor_get_vendor(dev_data.descriptor);
+		dev_data.product = dc_descriptor_get_product(dev_data.descriptor);
+		dev_data.model += dev_data.vendor + " " + dev_data.product;
+		dev_data.devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
 		return DC_STATUS_SUCCESS;
 	} else {
-		dev_data->model = copy_string("unsupported dive computer");
-		dev_data->devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
+		dev_data.model = "unsupported dive computer";
+		dev_data.devinfo.serial = (uint32_t) lrint(strtod(serial, NULL));
 		return DC_STATUS_UNSUPPORTED;
 	}
-}
-
-static void device_data_free(device_data_t *dev_data)
-{
-	free((void *) dev_data->model);
-	dc_descriptor_free(dev_data->descriptor);
-	free(dev_data);
 }
 
 /*
@@ -882,7 +849,7 @@ static dc_status_t libdc_buffer_complete(device_data_t *dev_data, unsigned char 
  * a DB clone is necessary as calling mdb_fetch_row() over different tables in
  * a single DB breaks binded row data, and so would break the top loop.
  */
-extern "C" void smartrak_import(const char *file, struct divelog *log)
+void smartrak_import(const char *file, struct divelog *log)
 {
 	MdbHandle *mdb, *mdb_clon;
 	MdbColumn *col[MDB_MAX_COLS];
@@ -931,10 +898,10 @@ extern "C" void smartrak_import(const char *file, struct divelog *log)
 		return;
 	}
 	while (mdb_table.fetch_row()) {
-		device_data_t *devdata = (device_data_t *)calloc(1, sizeof(device_data_t));
+		device_data_t devdata;
 		dc_family_t dc_fam = DC_FAMILY_NULL;
 		unsigned char *prf_buffer, *hdr_buffer;
-		struct dive *smtkdive = alloc_dive();
+		auto smtkdive = std::make_unique<dive>();
 		struct tm tm_date;
 		size_t hdr_length, prf_length;
 		dc_status_t rc = DC_STATUS_SUCCESS;
@@ -953,34 +920,34 @@ extern "C" void smartrak_import(const char *file, struct divelog *log)
 				dc_fam = DC_FAMILY_UWATEC_ALADIN;
 		}
 		rc = prepare_data(dc_model, (char *)col[coln(DCNUMBER)]->bind_ptr, dc_fam, devdata);
-		smtkdive->dc.model = copy_string(devdata->model);
+		smtkdive->dcs[0].model = devdata.model;
 		if (rc == DC_STATUS_SUCCESS && mdb_table.get_len(coln(PROFILE))) {
 			prf_buffer = static_cast<unsigned char *>(mdb_ole_read_full(mdb, col[coln(PROFILE)], &prf_length));
 			if (prf_length > 0) {
-				if (dc_descriptor_get_type(devdata->descriptor) == DC_FAMILY_UWATEC_ALADIN || dc_descriptor_get_type(devdata->descriptor) == DC_FAMILY_UWATEC_MEMOMOUSE)
+				if (dc_descriptor_get_type(devdata.descriptor) == DC_FAMILY_UWATEC_ALADIN || dc_descriptor_get_type(devdata.descriptor) == DC_FAMILY_UWATEC_MEMOMOUSE)
 					hdr_length = 18;
 				std::vector<unsigned char> compl_buffer(hdr_length+prf_length);
-				rc = libdc_buffer_complete(devdata, hdr_buffer, hdr_length, prf_buffer, prf_length, compl_buffer.data());
+				rc = libdc_buffer_complete(&devdata, hdr_buffer, hdr_length, prf_buffer, prf_length, compl_buffer.data());
 				if (rc != DC_STATUS_SUCCESS) {
 					report_error("[Error][smartrak_import]\t- %s - for dive %d", errmsg(rc), smtkdive->number);
 				} else {
-					rc = libdc_buffer_parser(smtkdive, devdata, compl_buffer.data(), hdr_length + prf_length);
+					rc = libdc_buffer_parser(smtkdive.get(), &devdata, compl_buffer.data(), hdr_length + prf_length);
 					if (rc != DC_STATUS_SUCCESS)
 						report_error("[Error][libdc]\t\t- %s - for dive %d", errmsg(rc), smtkdive->number);
 				}
 			} else {
 				/* Dives without profile samples (usual in older aladin series) */
 				report_error("[Warning][smartrak_import]\t No profile for dive %d", smtkdive->number);
-				smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
-				smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
+				smtkdive->dcs[0].duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
+				smtkdive->dcs[0].maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
 			}
 			free(hdr_buffer);
 			free(prf_buffer);
 		} else {
 			/* Manual dives or unknown DCs */
 			report_error("[Warning][smartrak_import]\t Manual or unknown dive computer for dive %d", smtkdive->number);
-			smtkdive->dc.duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
-			smtkdive->dc.maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
+			smtkdive->dcs[0].duration.seconds = smtkdive->duration.seconds = smtk_time_to_secs((char *)col[coln(DURATION)]->bind_ptr);
+			smtkdive->dcs[0].maxdepth.mm = smtkdive->maxdepth.mm = lrint(strtod((char *)col[coln(MAXDEPTH)]->bind_ptr, NULL) * 1000);
 		}
 		/*
 		 * Cylinder and gasmixes completion.
@@ -993,7 +960,7 @@ extern "C" void smartrak_import(const char *file, struct divelog *log)
 		int tankidxcol = coln(TANKIDX);
 
 		for (i = 0; i < tanks; i++) {
-			cylinder_t *tmptank = get_or_create_cylinder(smtkdive, i);
+			cylinder_t *tmptank = smtkdive->get_or_create_cylinder(i);
 			if (!tmptank)
 				break;
 			if (tmptank->start.mbar == 0)
@@ -1016,13 +983,13 @@ extern "C" void smartrak_import(const char *file, struct divelog *log)
 			smtk_build_tank_info(mdb_clon, tmptank, (char *)col[i + tankidxcol]->bind_ptr);
 		}
 		/* Check for duplicated cylinders and clean them */
-		smtk_clean_cylinders(smtkdive);
+		smtk_clean_cylinders(smtkdive.get());
 
 		/* Date issues with libdc parser - Take date time from mdb */
 		smtk_date_to_tm((char *)col[coln(_DATE)]->bind_ptr, &tm_date);
 		smtk_time_to_tm((char *)col[coln(INTIME)]->bind_ptr, &tm_date);
-		smtkdive->dc.when = smtkdive->when = smtk_timegm(&tm_date);
-		smtkdive->dc.surfacetime.seconds = smtk_time_to_secs((char *)col[coln(INTVAL)]->bind_ptr);
+		smtkdive->dcs[0].when = smtkdive->when = smtk_timegm(&tm_date);
+		smtkdive->dcs[0].surfacetime.seconds = smtk_time_to_secs((char *)col[coln(INTVAL)]->bind_ptr);
 
 		/* Data that user may have registered manually if not supported by DC, or not parsed */
 		if (!smtkdive->airtemp.mkelvin)
@@ -1034,27 +1001,26 @@ extern "C" void smartrak_import(const char *file, struct divelog *log)
 
 		/* No DC related data */
 		smtkdive->visibility = strtod((char *)col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : lrint(strtod((char *)col[13]->bind_ptr, NULL) / 5);
-		weightsystem_t ws = { {(int)lrint(strtod((char *)col[coln(WEIGHT)]->bind_ptr, NULL) * 1000)}, "", false };
-		add_cloned_weightsystem(&smtkdive->weightsystems, ws);
-		smtkdive->suit = strdup(get(suit_list, atoi((char *)col[coln(SUITIDX)]->bind_ptr) - 1).c_str());
+		weightsystem_t ws = { {(int)lrint(strtod((char *)col[coln(WEIGHT)]->bind_ptr, NULL) * 1000)}, std::string(), false };
+		smtkdive->weightsystems.push_back(std::move(ws));
+		smtkdive->suit = get(suit_list, atoi((char *)col[coln(SUITIDX)]->bind_ptr) - 1);
 		smtk_build_location(mdb_clon, (char *)col[coln(SITEIDX)]->bind_ptr, &smtkdive->dive_site, log);
-		smtkdive->buddy = strdup(smtk_locate_buddy(mdb_clon, (char *)col[0]->bind_ptr, buddy_list).c_str());
-		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
-		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
-		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Gear", "GearRelation", gear_list, false);
-		smtk_parse_relations(mdb_clon, smtkdive, (char *)col[0]->bind_ptr, "Fish", "FishRelation", fish_list, false);
-		smtk_parse_other(smtkdive, weather_list, "Weather", (char *)col[coln(WEATHERIDX)]->bind_ptr, false);
-		smtk_parse_other(smtkdive, underwater_list, "Underwater", (char *)col[coln(UNDERWATERIDX)]->bind_ptr, false);
-		smtk_parse_other(smtkdive, surface_list, "Surface", (char *)col[coln(SURFACEIDX)]->bind_ptr, false);
-		smtk_parse_bookmarks(mdb_clon, smtkdive, (char *)col[0]->bind_ptr);
-		concat(&smtkdive->notes, "\n", std::string((char *)col[coln(REMARKS)]->bind_ptr));
+		smtkdive->buddy = smtk_locate_buddy(mdb_clon, (char *)col[0]->bind_ptr, buddy_list);
+		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
+		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
+		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Gear", "GearRelation", gear_list, false);
+		smtk_parse_relations(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr, "Fish", "FishRelation", fish_list, false);
+		smtk_parse_other(smtkdive.get(), weather_list, "Weather", (char *)col[coln(WEATHERIDX)]->bind_ptr, false);
+		smtk_parse_other(smtkdive.get(), underwater_list, "Underwater", (char *)col[coln(UNDERWATERIDX)]->bind_ptr, false);
+		smtk_parse_other(smtkdive.get(), surface_list, "Surface", (char *)col[coln(SURFACEIDX)]->bind_ptr, false);
+		smtk_parse_bookmarks(mdb_clon, smtkdive.get(), (char *)col[0]->bind_ptr);
+		concat(smtkdive->notes, "\n", std::string((char *)col[coln(REMARKS)]->bind_ptr));
 
-		record_dive_to_table(smtkdive, log->dives);
-		device_data_free(devdata);
+		log->dives.record_dive(std::move(smtkdive));
 	}
 	mdb_free_catalog(mdb_clon);
 	mdb->catalog = NULL;
 	mdb_close(mdb_clon);
 	mdb_close(mdb);
-	sort_dive_table(log->dives);
+	log->dives.sort();
 }

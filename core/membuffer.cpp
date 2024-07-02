@@ -12,42 +12,23 @@
 #include "units.h"
 #include "membuffer.h"
 
-membufferpp::membufferpp()
-	: membuffer{0, 0, nullptr}
+membuffer::membuffer()
 {
 }
 
-membufferpp::~membufferpp()
+membuffer::~membuffer()
 {
-	free_buffer(this);
-}
-
-/* Only for internal use */
-static char *detach_buffer(struct membuffer *b)
-{
-	char *result = b->buffer;
-	b->buffer = NULL;
-	b->len = 0;
-	b->alloc = 0;
-	return result;
-}
-
-char *detach_cstring(struct membuffer *b)
-{
-	mb_cstring(b);
-	return detach_buffer(b);
-}
-
-void free_buffer(struct membuffer *b)
-{
-	free(detach_buffer(b));
+	free(buffer);
 }
 
 void flush_buffer(struct membuffer *b, FILE *f)
 {
 	if (b->len) {
 		fwrite(b->buffer, 1, b->len, f);
-		free_buffer(b);
+		free(b->buffer);
+		b->buffer = NULL;
+		b->len = 0;
+		b->alloc = 0;
 	}
 }
 
@@ -63,7 +44,7 @@ void strip_mb(struct membuffer *b)
  * interface very complex, we'll just die. It won't happen
  * unless you're running on a potato.
  */
-static void oom(void)
+static void oom()
 {
 	fprintf(stderr, "Out of memory\n");
 	exit(1);
@@ -139,25 +120,6 @@ void put_vformat(struct membuffer *b, const char *fmt, va_list args)
 
 		room = len + 1;
 	}
-}
-
-/* Silly helper using membuffer */
-char *vformat_string(const char *fmt, va_list args)
-{
-	struct membuffer mb = { 0 };
-	put_vformat(&mb, fmt, args);
-	return detach_cstring(&mb);
-}
-
-char *format_string(const char *fmt, ...)
-{
-	va_list args;
-	char *result;
-
-	va_start(args, fmt);
-	result = vformat_string(fmt, args);
-	va_end(args);
-	return result;
 }
 
 void put_format(struct membuffer *b, const char *fmt, ...)
@@ -295,31 +257,4 @@ void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_
 		put_string(b, escape);
 		text = p;
 	}
-}
-
-char *add_to_string_va(char *old, const char *fmt, va_list args)
-{
-	char *res;
-	struct membufferpp o, n;
-	put_vformat(&n, fmt, args);
-	put_format(&o, "%s\n%s", old ?: "", mb_cstring(&n));
-	res = strdup(mb_cstring(&o));
-	free((void *)old);
-	return res;
-}
-
-/* this is a convenience function that cleverly adds text to a string, using our membuffer
- * infrastructure.
- * WARNING - this will free(old), the intended pattern is
- * string = add_to_string(string, fmt, ...)
- */
-char *add_to_string(char *old, const char *fmt, ...)
-{
-	char *res;
-	va_list args;
-
-	va_start(args, fmt);
-	res = add_to_string_va(old, fmt, args);
-	va_end(args);
-	return res;
 }

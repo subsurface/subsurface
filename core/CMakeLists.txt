@@ -17,7 +17,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
 endif()
 
 if(FTDISUPPORT)
-	set(SERIAL_FTDI serial_ftdi.c)
+	set(SERIAL_FTDI serial_ftdi.cpp)
 endif()
 
 if(BTSUPPORT)
@@ -61,29 +61,29 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	devicedetails.h
 	dive.cpp
 	dive.h
-	divecomputer.c
+	divecomputer.cpp
 	divecomputer.h
 	dive.h
 	divefilter.cpp
 	divefilter.h
-	divelist.c
+	divelist.cpp
 	divelist.h
 	divelog.cpp
 	divelog.h
 	divelogexportlogic.cpp
 	divelogexportlogic.h
-	divesite-helper.cpp
-	divesite.c
+	divesite.cpp
 	divesite.h
+	divesitetable.h
 	divesitehelpers.cpp
 	divesitehelpers.h
 	downloadfromdcthread.cpp
 	downloadfromdcthread.h
-	event.c
+	event.cpp
 	event.h
 	eventtype.cpp
 	eventtype.h
-	equipment.c
+	equipment.cpp
 	equipment.h
 	errorhelper.cpp
 	exif.cpp
@@ -95,14 +95,16 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	filterconstraint.h
 	filterpreset.cpp
 	filterpreset.h
+	filterpresettable.cpp
+	filterpresettable.h
 	format.cpp
 	format.h
 	fulltext.cpp
 	fulltext.h
-	gas.c
+	gas.cpp
 	gas.h
-	gas-model.c
-	gaspressures.c
+	gas-model.cpp
+	gaspressures.cpp
 	gaspressures.h
 	gettext.h
 	gettextfromc.cpp
@@ -131,21 +133,18 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	metadata.h
 	metrics.cpp
 	metrics.h
-	ostctools.c
-	owning_ptrs.h
+	ostctools.cpp
 	parse-gpx.cpp
 	parse-xml.cpp
 	parse.cpp
 	parse.h
-	picture.c
+	picture.cpp
 	picture.h
-	pictureobj.cpp
-	pictureobj.h
 	planner.cpp
 	planner.h
 	plannernotes.cpp
 	pref.h
-	pref.c
+	pref.cpp
 	profile.cpp
 	profile.h
 	qt-gui.h
@@ -158,18 +157,17 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	save-git.cpp
 	save-html.cpp
 	save-html.h
-	save-profiledata.c
+	save-profiledata.cpp
 	save-xml.cpp
 	selection.cpp
 	selection.h
-	sha1.c
+	sha1.cpp
 	sha1.h
-	ssrf.h
-	statistics.c
+	statistics.cpp
 	statistics.h
 	string-format.h
 	string-format.cpp
-	strtod.c
+	strtod.cpp
 	subsurface-float.h
 	subsurface-string.cpp
 	subsurface-string.h
@@ -179,23 +177,23 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	subsurfacesysinfo.h
 	tag.cpp
 	tag.h
-	taxonomy.c
+	taxonomy.cpp
 	taxonomy.h
 	time.cpp
-	timer.c
-	timer.h
-	trip.c
+	trip.cpp
 	trip.h
+	triptable.cpp
+	triptable.h
 	uemis-downloader.cpp
-	uemis.c
+	uemis.cpp
 	uemis.h
 	units.h
-	units.c
+	units.cpp
 	uploadDiveShare.cpp
 	uploadDiveShare.h
 	uploadDiveLogsDE.cpp
 	uploadDiveLogsDE.h
-	version.c
+	version.cpp
 	version.h
 	videoframeextractor.cpp
 	videoframeextractor.h

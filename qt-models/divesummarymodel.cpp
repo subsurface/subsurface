@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divesummarymodel.h"
 #include "core/dive.h"
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/qthelper.h"
 
 #include <QLocale>
@@ -116,7 +118,7 @@ Stats::Stats() :
 
 static void calculateDive(struct dive *dive, Stats &stats)
 {
-	if (is_dc_planner(&dive->dc)) {
+	if (is_dc_planner(&dive->dcs[0])) {
 		stats.diveplans++;
 		return;
 	}
@@ -151,25 +153,19 @@ static void calculateDive(struct dive *dive, Stats &stats)
 	}
 
 	// EAN dive ?
-	for (int j = 0; j < dive->cylinders.nr; ++j) {
-		if (get_cylinder(dive, j)->gasmix.o2.permille > 210) {
-			stats.divesEAN++;
-			break;
-		}
-	}
+	if (std::any_of(dive->cylinders.begin(), dive->cylinders.end(), [] (auto &cyl)
+			{ return cyl.gasmix.o2.permille > 210; }))
+		stats.divesEAN++;
 }
 
 // Returns a (first_dive, last_dive) pair
 static Stats loopDives(timestamp_t start)
 {
 	Stats stats;
-	struct dive *dive;
-	int i;
-
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		// check if dive is newer than primaryStart (add to first column)
 		if (dive->when > start)
-			calculateDive(dive, stats);
+			calculateDive(dive.get(), stats);
 	}
 	return stats;
 }

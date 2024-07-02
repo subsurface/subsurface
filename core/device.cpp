@@ -8,7 +8,7 @@
 #include "selection.h"
 #include "core/settings/qPrefDiveComputer.h"
 
-struct fingerprint_table fingerprint_table;
+fingerprint_table fingerprints;
 
 static bool same_device(const device &dev1, const device &dev2)
 {
@@ -18,42 +18,35 @@ static bool same_device(const device &dev1, const device &dev2)
 
 bool device::operator<(const device &a) const
 {
-	int diff;
-
-	diff = model.compare(a.model);
-	if (diff)
-		return diff < 0;
-
-	return serialNumber < a.serialNumber;
+	return std::tie(model, serialNumber) < std::tie(a.model, a.serialNumber);
 }
 
-extern "C" const struct device *get_device_for_dc(const struct device_table *table, const struct divecomputer *dc)
+const struct device *get_device_for_dc(const device_table &table, const struct divecomputer *dc)
 {
-	if (!dc->model || !dc->serial)
+	if (dc->model.empty() || dc->serial.empty())
 		return NULL;
 
-	const std::vector<device> &dcs = table->devices;
 	device dev { dc->model, dc->serial };
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), dev);
-	return it != dcs.end() && same_device(*it, dev) ? &*it : NULL;
+	auto it = std::lower_bound(table.begin(), table.end(), dev);
+	return it != table.end() && same_device(*it, dev) ? &*it : NULL;
 }
 
-extern "C" int get_or_add_device_for_dc(struct device_table *table, const struct divecomputer *dc)
+int get_or_add_device_for_dc(device_table &table, const struct divecomputer *dc)
 {
-	if (!dc->model || !dc->serial)
+	if (dc->model.empty() || dc->serial.empty())
 		return -1;
 	const struct device *dev = get_device_for_dc(table, dc);
 	if (dev) {
-		auto it = std::lower_bound(table->devices.begin(), table->devices.end(), *dev);
-		return it - table->devices.begin();
+		auto it = std::lower_bound(table.begin(), table.end(), *dev);
+		return it - table.begin();
 	}
-	return create_device_node(table, dc->model, dc->serial, "");
+	return create_device_node(table, dc->model, dc->serial, std::string());
 }
 
-extern "C" bool device_exists(const struct device_table *device_table, const struct device *dev)
+bool device_exists(const device_table &table, const struct device &dev)
 {
-	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
-	return it != device_table->devices.end() && same_device(*it, *dev);
+	auto it = std::lower_bound(table.begin(), table.end(), dev);
+	return it != table.end() && same_device(*it, dev);
 }
 
 void device::showchanges(const std::string &n) const
@@ -66,7 +59,7 @@ void device::showchanges(const std::string &n) const
 	}
 }
 
-static int addDC(std::vector<device> &dcs, const std::string &m, const std::string &s, const std::string &n)
+int create_device_node(device_table &dcs, const std::string &m, const std::string &s, const std::string &n)
 {
 	if (m.empty() || s.empty())
 		return -1;
@@ -86,204 +79,109 @@ static int addDC(std::vector<device> &dcs, const std::string &m, const std::stri
 	}
 }
 
-extern "C" int create_device_node(struct device_table *device_table, const char *model, const char *serial, const char *nickname)
+int add_to_device_table(device_table &device_table, const struct device &dev)
 {
-	return addDC(device_table->devices, model ?: "", serial ?: "", nickname ?: "");
+	return create_device_node(device_table, dev.model, dev.serialNumber, dev.nickName);
 }
 
-extern "C" int add_to_device_table(struct device_table *device_table, const struct device *dev)
+int remove_device(device_table &table, const struct device &dev)
 {
-	return create_device_node(device_table, dev->model.c_str(), dev->serialNumber.c_str(), dev->nickName.c_str());
-}
-
-extern "C" int remove_device(struct device_table *device_table, const struct device *dev)
-{
-	auto it = std::lower_bound(device_table->devices.begin(), device_table->devices.end(), *dev);
-	if (it != device_table->devices.end() && same_device(*it, *dev)) {
-		int idx = it - device_table->devices.begin();
-		device_table->devices.erase(it);
+	auto it = std::lower_bound(table.begin(), table.end(), dev);
+	if (it != table.end() && same_device(*it, dev)) {
+		int idx = it - table.begin();
+		table.erase(it);
 		return idx;
 	} else {
 		return -1;
 	}
 }
 
-extern "C" void remove_from_device_table(struct device_table *device_table, int idx)
+void remove_from_device_table(device_table &table, int idx)
 {
-	if (idx < 0 || idx >= (int)device_table->devices.size())
+	if (idx < 0 || idx >= (int)table.size())
 		return;
-	device_table->devices.erase(device_table->devices.begin() + idx);
-}
-
-extern "C" void clear_device_table(struct device_table *device_table)
-{
-	device_table->devices.clear();
+	table.erase(table.begin() + idx);
 }
 
 /* Returns whether the given device is used by a selected dive. */
-extern "C" bool device_used_by_selected_dive(const struct device *dev)
+bool device_used_by_selected_dive(const struct device &dev)
 {
 	for (dive *d: getDiveSelection()) {
-		struct divecomputer *dc;
-		for_each_dc (d, dc) {
-			if (dc->deviceid == dev->deviceId)
+		for (auto &dc: d->dcs) {
+			if (dc.deviceid == dev.deviceId)
 				return true;
 		}
 	}
 	return false;
 }
 
-extern "C" int is_default_dive_computer_device(const char *name)
+int is_default_dive_computer_device(const char *name)
 {
 	return qPrefDiveComputer::device() == name;
 }
 
-const char *get_dc_nickname(const struct divecomputer *dc)
+std::string get_dc_nickname(const struct divecomputer *dc)
 {
 	const device *existNode = get_device_for_dc(divelog.devices, dc);
 
 	if (existNode && !existNode->nickName.empty())
-		return existNode->nickName.c_str();
+		return existNode->nickName;
 	else
 		return dc->model;
-}
-
-extern "C" int nr_devices(const struct device_table *table)
-{
-	return (int)table->devices.size();
-}
-
-extern "C" const struct device *get_device(const struct device_table *table, int i)
-{
-	if (i < 0 || i > nr_devices(table))
-		return NULL;
-	return &table->devices[i];
-}
-
-extern "C" struct device *get_device_mutable(struct device_table *table, int i)
-{
-	if (i < 0 || i > nr_devices(table))
-		return NULL;
-	return &table->devices[i];
-}
-
-extern "C" const char *device_get_model(const struct device *dev)
-{
-	return dev ? dev->model.c_str() : NULL;
-}
-
-extern "C" const char *device_get_serial(const struct device *dev)
-{
-	return dev ? dev->serialNumber.c_str() : NULL;
-}
-
-extern "C" const char *device_get_nickname(const struct device *dev)
-{
-	return dev ? dev->nickName.c_str() : NULL;
-}
-
-extern "C" struct device_table *alloc_device_table()
-{
-	return new struct device_table;
-}
-
-extern "C" void free_device_table(struct device_table *devices)
-{
-	delete devices;
 }
 
 // managing fingerprint data
 bool fingerprint_record::operator<(const fingerprint_record &a) const
 {
-	if (model == a.model)
-		return serial < a.serial;
-	return model < a.model;
+	return std::tie(model, serial) < std::tie(a.model, a.serial);
 }
 
 // annoyingly, the Cressi Edy doesn't support a serial number (it's always 0), but still uses fingerprints
 // so we can't bail on the serial number being 0
-extern "C" unsigned int get_fingerprint_data(const struct fingerprint_table *table, uint32_t model, uint32_t serial, const unsigned char **fp_out)
+std::pair<int, const unsigned char *> get_fingerprint_data(const fingerprint_table &table, uint32_t model, uint32_t serial)
 {
-	if (model == 0 || fp_out == nullptr)
-		return 0;
+	if (model == 0)
+		return { 0, nullptr };
 	struct fingerprint_record fpr = { model, serial };
-	auto it = std::lower_bound(table->fingerprints.begin(), table->fingerprints.end(), fpr);
-	if (it != table->fingerprints.end() && it->model == model && it->serial == serial) {
+	auto it = std::lower_bound(table.begin(), table.end(), fpr);
+	if (it != table.end() && it->model == model && it->serial == serial) {
 		// std::lower_bound gets us the first element that isn't smaller than what we are looking
 		// for - so if one is found, we still need to check for equality
-		if (has_dive(it->fdeviceid, it->fdiveid)) {
-			*fp_out = it->raw_data;
-			return it->fsize;
-		}
+		if (divelog.dives.has_dive(it->fdeviceid, it->fdiveid))
+			return { it->fsize, it->raw_data.get() };
 	}
-	return 0;
+	return { 0, nullptr };
 }
 
-extern "C" void create_fingerprint_node(struct fingerprint_table *table, uint32_t model, uint32_t serial,
-				       const unsigned char *raw_data_in, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid)
+void create_fingerprint_node(fingerprint_table &table, uint32_t model, uint32_t serial,
+			     const unsigned char *raw_data_in, unsigned int fsize, uint32_t fdeviceid, uint32_t fdiveid)
 {
 	// since raw data can contain \0 we copy this manually, not as string
-	unsigned char *raw_data = (unsigned char *)malloc(fsize);
-	if (!raw_data)
-		return;
-	memcpy(raw_data, raw_data_in, fsize);
+	auto raw_data = std::make_unique<unsigned char []>(fsize);
+	std::copy(raw_data_in, raw_data_in + fsize, raw_data.get());
 
-	struct fingerprint_record fpr = { model, serial, raw_data, fsize, fdeviceid, fdiveid };
-	auto it = std::lower_bound(table->fingerprints.begin(), table->fingerprints.end(), fpr);
-	if (it != table->fingerprints.end() && it->model == model && it->serial == serial) {
+	struct fingerprint_record fpr = { model, serial, std::move(raw_data), fsize, fdeviceid, fdiveid };
+	auto it = std::lower_bound(table.begin(), table.end(), fpr);
+	if (it != table.end() && it->model == model && it->serial == serial) {
 		// std::lower_bound gets us the first element that isn't smaller than what we are looking
 		// for - so if one is found, we still need to check for equality - and then we
 		// can update the existing entry; first we free the memory for the stored raw data
-		free(it->raw_data);
 		it->fdeviceid = fdeviceid;
 		it->fdiveid = fdiveid;
-		it->raw_data = raw_data;
+		it->raw_data = std::move(fpr.raw_data);
 		it->fsize = fsize;
 	} else {
 		// insert a new one
-		table->fingerprints.insert(it, fpr);
+		table.insert(it, std::move(fpr));
 	}
 }
 
-extern "C" void create_fingerprint_node_from_hex(struct fingerprint_table *table, uint32_t model, uint32_t serial,
-						const char *hex_data, uint32_t fdeviceid, uint32_t fdiveid)
+void create_fingerprint_node_from_hex(fingerprint_table &table, uint32_t model, uint32_t serial,
+						const std::string &hex_data, uint32_t fdeviceid, uint32_t fdiveid)
 {
-	QByteArray raw = QByteArray::fromHex(hex_data);
+	QByteArray raw = QByteArray::fromHex(hex_data.c_str());
 	create_fingerprint_node(table, model, serial,
 				(const unsigned char *)raw.constData(), raw.size(), fdeviceid, fdiveid);
-}
-
-extern "C" int nr_fingerprints(struct fingerprint_table *table)
-{
-	return table->fingerprints.size();
-}
-
-extern "C" uint32_t fp_get_model(struct fingerprint_table *table, unsigned int i)
-{
-	if (!table || i >= table->fingerprints.size())
-		return 0;
-	return table->fingerprints[i].model;
-}
-
-extern "C" uint32_t fp_get_serial(struct fingerprint_table *table, unsigned int i)
-{
-	if (!table || i >= table->fingerprints.size())
-		return 0;
-	return table->fingerprints[i].serial;
-}
-
-extern "C" uint32_t fp_get_deviceid(struct fingerprint_table *table, unsigned int i)
-{
-	if (!table || i >= table->fingerprints.size())
-		return 0;
-	return table->fingerprints[i].fdeviceid;
-}
-
-extern "C" uint32_t fp_get_diveid(struct fingerprint_table *table, unsigned int i)
-{
-	if (!table || i >= table->fingerprints.size())
-		return 0;
-	return table->fingerprints[i].fdiveid;
 }
 
 static char to_hex_digit(unsigned char d)
@@ -291,15 +189,12 @@ static char to_hex_digit(unsigned char d)
 	return d <= 9 ? d + '0' : d - 10 + 'a';
 }
 
-std::string fp_get_data(struct fingerprint_table *table, unsigned int i)
+std::string fingerprint_record::get_data() const
 {
-	if (!table || i >= table->fingerprints.size())
-		return std::string();
-	struct fingerprint_record *fpr = &table->fingerprints[i];
-	std::string res(fpr->fsize * 2, ' ');
-	for (unsigned int i = 0; i < fpr->fsize; ++i) {
-		res[2 * i] = to_hex_digit((fpr->raw_data[i] >> 4) & 0xf);
-		res[2 * i + 1] = to_hex_digit(fpr->raw_data[i] & 0xf);
+	std::string res(fsize * 2, ' ');
+	for (unsigned int i = 0; i < fsize; ++i) {
+		res[2 * i] = to_hex_digit((raw_data[i] >> 4) & 0xf);
+		res[2 * i + 1] = to_hex_digit(raw_data[i] & 0xf);
 	}
 	return res;
 }

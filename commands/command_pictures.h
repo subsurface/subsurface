@@ -48,7 +48,7 @@ private:
 		location_t location;
 	};
 	std::vector<PictureListForAddition> picturesToAdd; // for redo
-	std::vector<OwningDiveSitePtr> sitesToAdd; //for redo
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd; //for redo
 	std::vector<PictureListForDeletion> picturesToRemove; // for undo
 	std::vector<dive_site *> sitesToRemove; // for undo
 	std::vector<DiveSiteEntry> sitesToSet; // for redo and undo

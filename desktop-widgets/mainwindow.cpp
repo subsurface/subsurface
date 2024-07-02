@@ -82,7 +82,7 @@ namespace {
 	int progressCounter = 0;
 }
 
-extern "C" int updateProgress(const char *text)
+int updateProgress(const char *text)
 {
 	if (verbose)
 		report_info("git storage: %s", text);
@@ -107,11 +107,9 @@ extern "C" int updateProgress(const char *text)
 
 MainWindow *MainWindow::m_Instance = nullptr;
 
-extern "C" void showErrorFromC(char *buf)
+static void showError(std::string err)
 {
-	QString error(buf);
-	free(buf);
-	emit MainWindow::instance()->showError(error);
+	emit MainWindow::instance()->showError(QString::fromStdString(err));
 }
 
 MainWindow::MainWindow() :
@@ -209,7 +207,6 @@ MainWindow::MainWindow() :
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
 #endif
-	memset(&copyPasteDive, 0, sizeof(copyPasteDive));
 	memset(&what, 0, sizeof(what));
 
 	updateManager = new UpdateManager(this);
@@ -243,7 +240,7 @@ MainWindow::MainWindow() :
 
 	setupSocialNetworkMenu();
 	set_git_update_cb(&updateProgress);
-	set_error_cb(&showErrorFromC);
+	set_error_cb(&::showError);
 
 // full screen support is buggy on Windows and Ubuntu.
 // require the FULLSCREEN_SUPPORT macro to enable it!
@@ -289,7 +286,7 @@ void MainWindow::editDiveSite(dive_site *ds)
 void MainWindow::startDiveSiteEdit()
 {
 	if (current_dive)
-		editDiveSite(get_dive_site_for_dive(current_dive));
+		editDiveSite(current_dive->dive_site);
 }
 
 void MainWindow::enableDisableCloudActions()
@@ -331,7 +328,7 @@ void MainWindow::divesSelected(const std::vector<dive *> &selection, dive *curre
 
 	// Activate cursor keys to switch through DCs if there are more than one DC.
 	if (currentDive) {
-		bool nr = number_of_computers(current_dive) > 1;
+		bool nr = currentDive->number_of_computers() > 1;
 		enableShortcuts();
 		ui.actionNextDC->setEnabled(nr);
 		ui.actionPreviousDC->setEnabled(nr);
@@ -422,7 +419,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	std::string encoded = encodeFileName(*filename);
 	if (!parse_file(encoded.c_str(), &divelog))
 		setCurrentFile(encoded);
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 	hideProgressBar();
 	refreshDisplay();
 	updateAutogroup();
@@ -431,7 +428,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 // Return whether saving to cloud is OK. If it isn't, show an error return false.
 static bool saveToCloudOK()
 {
-	if (!divelog.dives->nr) {
+	if (divelog.dives.empty()) {
 		report_error("%s", qPrintable(gettextFromC::tr("Don't save an empty log to the cloud")));
 		return false;
 	}
@@ -552,8 +549,8 @@ void MainWindow::updateLastUsedDir(const QString &dir)
 
 static QString get_current_filename()
 {
-	return existing_filename.empty() ? QString(prefs.default_filename)
-					 : QString::fromStdString(existing_filename);
+	return QString::fromStdString(existing_filename.empty() ? prefs.default_filename
+								: existing_filename);
 }
 void MainWindow::on_actionPrint_triggered()
 {
@@ -666,7 +663,7 @@ void MainWindow::on_actionReplanDive_triggered()
 	if (!plannerStateClean() || !current_dive || !userMayChangeAppState())
 		return;
 
-	const struct divecomputer *dc = get_dive_dc(current_dive, profile->dc);
+	const struct divecomputer *dc = current_dive->get_dc(profile->dc);
 	if (!(is_dc_planner(dc) || is_dc_manually_added_dive(dc))) {
 		if (QMessageBox::warning(this, tr("Warning"), tr("Trying to replan a dive profile that has not been manually added."),
 					 QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel)
@@ -701,20 +698,8 @@ void MainWindow::on_actionAddDive_triggered()
 	if (!plannerStateClean())
 		return;
 
-	// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
-	// as a starting point for the user to edit
-	struct dive d = { 0 };
-	d.id = dive_getUniqID();
-	d.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	d.dc.duration.seconds = 40 * 60;
-	d.dc.maxdepth.mm = M_OR_FT(15, 45);
-	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	make_manually_added_dive_dc(&d.dc);
-	fake_dc(&d.dc);
-	add_default_cylinder(&d);
-	fixup_dive(&d);
-
-	Command::addDive(&d, divelog.autogroup, true);
+	auto d = divelog.dives.default_dive();
+	Command::addDive(std::move(d), divelog.autogroup, true);
 }
 
 void MainWindow::on_actionRenumber_triggered()
@@ -1103,7 +1088,7 @@ void MainWindow::loadRecentFiles()
 		QString file = s.value(key).toString();
 
 		// never add our cloud URL to the recent files
-		if (file.startsWith(prefs.cloud_base_url))
+		if (file.startsWith(QString::fromStdString(prefs.cloud_base_url)))
 			continue;
 		// but allow local git repos
 		QRegularExpression gitrepo("(.*)\\[[^]]+]");
@@ -1141,7 +1126,7 @@ void MainWindow::updateRecentFilesMenu()
 void MainWindow::addRecentFile(const QString &file, bool update)
 {
 	// never add Subsurface cloud file to the recent files - it has its own menu entry
-	if (file.startsWith(prefs.cloud_base_url))
+	if (file.startsWith(QString::fromStdString(prefs.cloud_base_url)))
 		return;
 	QString localFile = QDir::toNativeSeparators(file);
 	int index = recentFiles.indexOf(localFile);
@@ -1184,7 +1169,7 @@ void MainWindow::recentFileTriggered(bool)
 	loadFiles(std::vector<std::string> { filename.toStdString() });
 }
 
-int MainWindow::file_save_as(void)
+int MainWindow::file_save_as()
 {
 	QString filename;
 	std::string default_filename = existing_filename;
@@ -1204,7 +1189,7 @@ int MainWindow::file_save_as(void)
 	selection_dialog.setFileMode(QFileDialog::AnyFile);
 	selection_dialog.setDefaultSuffix("");
 	if (default_filename.empty()) {
-		QFileInfo defaultFile(system_default_filename());
+		QFileInfo defaultFile(QString::fromStdString(system_default_filename()));
 		selection_dialog.setDirectory(qPrintable(defaultFile.absolutePath()));
 	}
 	/* if the exit/cancel button is pressed return */
@@ -1232,9 +1217,8 @@ int MainWindow::file_save_as(void)
 	return 0;
 }
 
-int MainWindow::file_save(void)
+int MainWindow::file_save()
 {
-	const char *current_default;
 	bool is_cloud = false;
 
 	if (existing_filename.empty())
@@ -1244,11 +1228,11 @@ int MainWindow::file_save(void)
 	if (is_cloud && !saveToCloudOK())
 		return -1;
 
-	current_default = prefs.default_filename;
+	const std::string &current_default = prefs.default_filename;
 	if (existing_filename == current_default) {
 		/* if we are using the default filename the directory
 		 * that we are creating the file in may not exist */
-		QDir current_def_dir = QFileInfo(current_default).absoluteDir();
+		QDir current_def_dir = QFileInfo(QString::fromStdString(current_default)).absoluteDir();
 		if (!current_def_dir.exists())
 			current_def_dir.mkpath(current_def_dir.absolutePath());
 	}
@@ -1317,7 +1301,7 @@ void MainWindow::importFiles(const std::vector<std::string> &fileNames)
 		parse_file(encoded.c_str(), &log);
 	}
 	QString source = fileNames.size() == 1 ? QString::fromStdString(fileNames[0]) : tr("multiple files");
-	Command::importDives(&log, IMPORT_MERGE_ALL_TRIPS, source);
+	Command::importDives(&log, import_flags::merge_all_trips, source);
 }
 
 void MainWindow::loadFiles(const std::vector<std::string> &fileNames)
@@ -1338,13 +1322,13 @@ void MainWindow::loadFiles(const std::vector<std::string> &fileNames)
 	}
 	hideProgressBar();
 	updateRecentFiles();
-	process_loaded_dives();
+	divelog.process_loaded_dives();
 
 	refreshDisplay();
 	updateAutogroup();
 
 	int min_datafile_version = get_min_datafile_version();
-	if (min_datafile_version >0 && min_datafile_version < DATAFORMAT_VERSION) {
+	if (min_datafile_version >0 && min_datafile_version < dataformat_version) {
 		QMessageBox::warning(this, tr("Opening datafile from older version"),
 				     tr("You opened a data file from an older version of Subsurface. We recommend "
 					"you read the manual to learn about the changes in the new version, especially "
@@ -1409,12 +1393,12 @@ void MainWindow::on_actionImportDiveSites_triggered()
 		parse_file(fileNamePtr.data(), &log);
 	}
 	// The imported dive sites still have pointers to imported dives - remove them
-	for (int i = 0; i < log.sites->nr; ++i)
-		log.sites->dive_sites[i]->dives.nr = 0;
+	for (const auto &ds: log.sites)
+		ds->dives.clear();
 
 	QString source = fileNames.size() == 1 ? fileNames[0] : tr("multiple files");
 
-	DivesiteImportDialog divesiteImport(*log.sites, source, this);
+	DivesiteImportDialog divesiteImport(std::move(log.sites), source, this);
 	divesiteImport.exec();
 }
 
@@ -1587,8 +1571,8 @@ void MainWindow::hideProgressBar()
 void MainWindow::divesChanged(const QVector<dive *> &dives, DiveField)
 {
 	for (struct dive *d: dives) {
-		report_info("dive #%d changed, cache is %s", d->number, dive_cache_is_valid(d) ? "valid" : "invalidated");
+		report_info("dive #%d changed, cache is %s", d->number, d->cache_is_valid() ? "valid" : "invalidated");
 		// a brute force way to deal with that would of course be to call
-		// invalidate_dive_cache(d);
+		// d->invalidate_cache();
 	}
 }

@@ -15,11 +15,11 @@
 #include "units.h"
 #include "device.h"
 #include "file.h"
+#include "format.h"
 #include "divesite.h"
 #include "dive.h"
 #include "divelog.h"
 #include "errorhelper.h"
-#include "ssrf.h"
 #include "tag.h"
 
 static unsigned int two_bytes_to_int(unsigned char x, unsigned char y)
@@ -104,21 +104,22 @@ static int read_file_header(unsigned char *buffer)
  * Returns libdc's equivalent model number (also from g_models) or zero if
  * this a manual dive.
  */
-static int dtrak_prepare_data(int model, device_data_t *dev_data)
+static int dtrak_prepare_data(int model, device_data_t &dev_data)
 {
 	dc_descriptor_t *d = NULL;
 	int i = 0;
 
 	while (model != g_models[i].model_num && g_models[i].model_num != 0xEE)
 		i++;
-	dev_data->model = copy_string(g_models[i].name);
-	dev_data->vendor = (const char *)malloc(strlen(g_models[i].name) + 1);
-	sscanf(g_models[i].name, "%[A-Za-z] ", (char *)dev_data->vendor);
-	dev_data->product = copy_string(strchr(g_models[i].name, ' ') + 1);
+	dev_data.model = g_models[i].name;
+	dev_data.vendor.clear();
+	for (const char *s = g_models[i].name; isalpha(*s); ++s)
+		dev_data.vendor += *s;
+	dev_data.product = strchr(g_models[i].name, ' ') + 1;
 
 	d = get_descriptor(g_models[i].type, g_models[i].libdc_num);
 	if (d)
-		dev_data->descriptor = d;
+		dev_data.descriptor = d;
 	else
 		return 0;
 	return g_models[i].libdc_num;
@@ -129,14 +130,11 @@ static int dtrak_prepare_data(int model, device_data_t *dev_data)
  * Just get the first in the user's list for given size.
  * Reaching the end of the list means there is no tank of this size.
  */
-static const char *cyl_type_by_size(int size)
+static std::string cyl_type_by_size(int size)
 {
-	for (int i = 0; i < tank_info_table.nr; ++i) {
-		const struct tank_info *ti = &tank_info_table.infos[i];
-		if (ti->ml == size)
-			return ti->name;
-	}
-	return "";
+	auto it = std::find_if(tank_info_table.begin(), tank_info_table.end(),
+			       [size] (const tank_info &info) { return info.ml == size; });
+	return it != tank_info_table.end() ? it->name : std::string();
 }
 
 /*
@@ -161,21 +159,19 @@ static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_mo
 static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct divelog *log, char *maxbuf)
 {
 	int  rc, profile_length, libdc_model;
-	char *tmp_notes_str = NULL;
 	unsigned char *tmp_string1 = NULL,
 		      *locality = NULL,
 		      *dive_point = NULL,
 		      *compl_buffer,
 		      *membuf = runner;
-	char buffer[1024];
 	unsigned char tmp_1byte;
 	unsigned int tmp_2bytes;
 	unsigned long tmp_4bytes;
-	struct dive_site *ds;
+	std::string tmp_notes_str;
 	char is_nitrox = 0, is_O2 = 0, is_SCR = 0;
 
-	device_data_t *devdata = (device_data_t *)calloc(1, sizeof(device_data_t));
-	devdata->log = log;
+	device_data_t devdata;
+	devdata.log = log;
 
 	/*
 	 * Parse byte to byte till next dive entry
@@ -195,7 +191,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Next, Time in minutes since 00:00
 	 */
 	read_bytes(2);
-	dt_dive->dc.when = dt_dive->when = (timestamp_t)date_time_to_ssrfc(tmp_4bytes, tmp_2bytes);
+	dt_dive->dcs[0].when = dt_dive->when = (timestamp_t)date_time_to_ssrfc(tmp_4bytes, tmp_2bytes);
 
 	/*
 	 * Now, Locality, 1st byte is long of string, rest is string
@@ -213,11 +209,13 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Subsurface only have a location variable, so we have to merge DTrak's
 	 * Locality and Dive points.
 	 */
-	snprintf(buffer, sizeof(buffer), "%s, %s", locality, dive_point);
-	ds = get_dive_site_by_name(buffer, log->sites);
-	if (!ds)
-		ds = create_dive_site(buffer, log->sites);
-	add_dive_to_dive_site(dt_dive, ds);
+	{
+		std::string buffer2 = std::string((char *)locality) + " " + (char *)dive_point;
+		struct dive_site *ds = log->sites.get_by_name(buffer2);
+		if (!ds)
+			ds = log->sites.create(buffer2);
+		ds->add_dive(dt_dive);
+	}
 	free(locality);
 	locality = NULL;
 	free(dive_point);
@@ -241,19 +239,19 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	switch (tmp_1byte) {
 		case 1:
-			dt_dive->dc.surface_pressure.mbar = 1013;
+			dt_dive->dcs[0].surface_pressure.mbar = 1013;
 			break;
 		case 2:
-			dt_dive->dc.surface_pressure.mbar = 932;
+			dt_dive->dcs[0].surface_pressure.mbar = 932;
 			break;
 		case 3:
-			dt_dive->dc.surface_pressure.mbar = 828;
+			dt_dive->dcs[0].surface_pressure.mbar = 828;
 			break;
 		case 4:
-			dt_dive->dc.surface_pressure.mbar = 735;
+			dt_dive->dcs[0].surface_pressure.mbar = 735;
 			break;
 		default:
-			dt_dive->dc.surface_pressure.mbar = 1013;
+			dt_dive->dcs[0].surface_pressure.mbar = 1013;
 	}
 
 	/*
@@ -261,32 +259,32 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->dc.surfacetime.seconds = (uint32_t) tmp_2bytes * 60;
+		dt_dive->dcs[0].surfacetime.seconds = (uint32_t) tmp_2bytes * 60;
 
 	/*
 	 * Weather, values table, 0 to 6
 	 * Subsurface don't have this record but we can use tags
 	 */
-	dt_dive->tag_list = NULL;
+	dt_dive->tags.clear();
 	read_bytes(1);
 	switch (tmp_1byte) {
 		case 1:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "clear")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "clear"));
 			break;
 		case 2:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "misty")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "misty"));
 			break;
 		case 3:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fog")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "fog"));
 			break;
 		case 4:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "rain")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "rain"));
 			break;
 		case 5:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "storm")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "storm"));
 			break;
 		case 6:
-			taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "snow")));
+			taglist_add_tag(dt_dive->tags, translate("gettextFromC", "snow"));
 			break;
 		default:
 			// unknown, do nothing
@@ -298,7 +296,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->dc.airtemp.mkelvin = C_to_mkelvin((double)(tmp_2bytes / 100));
+		dt_dive->dcs[0].airtemp.mkelvin = C_to_mkelvin((double)(tmp_2bytes / 100));
 
 	/*
 	 * Dive suit, values table, 0 to 6
@@ -306,22 +304,22 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	switch (tmp_1byte) {
 		case 1:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "No suit"));
+			dt_dive->suit = "No suit";
 			break;
 		case 2:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Shorty"));
+			dt_dive->suit = "Shorty";
 			break;
 		case 3:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Combi"));
+			dt_dive->suit = "Combi";
 			break;
 		case 4:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Wet suit"));
+			dt_dive->suit = "Wet suit";
 			break;
 		case 5:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Semidry suit"));
+			dt_dive->suit = "Semidry suit";
 			break;
 		case 6:
-			dt_dive->suit = strdup(QT_TRANSLATE_NOOP("gettextFromC", "Dry suit"));
+			dt_dive->suit = "Dry suit";
 			break;
 		default:
 			// unknown, do nothing
@@ -335,14 +333,14 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF) {
-		cylinder_t cyl = empty_cylinder;
+		cylinder_t cyl;
 		cyl.type.size.mliter = tmp_2bytes * 10;
 		cyl.type.description = cyl_type_by_size(tmp_2bytes * 10);
 		cyl.start.mbar = 200000;
 		cyl.gasmix.he.permille = 0;
 		cyl.gasmix.o2.permille = 210;
 		cyl.manually_added = true;
-		add_cloned_cylinder(&dt_dive->cylinders, cyl);
+		dt_dive->cylinders.push_back(std::move(cyl));
 	}
 
 	/*
@@ -350,14 +348,14 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->maxdepth.mm = dt_dive->dc.maxdepth.mm = (int32_t)tmp_2bytes * 10;
+		dt_dive->maxdepth.mm = dt_dive->dcs[0].maxdepth.mm = (int32_t)tmp_2bytes * 10;
 
 	/*
 	 * Dive time in minutes.
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7FFF)
-		dt_dive->duration.seconds = dt_dive->dc.duration.seconds = (uint32_t)tmp_2bytes * 60;
+		dt_dive->duration.seconds = dt_dive->dcs[0].duration.seconds = (uint32_t)tmp_2bytes * 60;
 
 	/*
 	 * Minimum water temperature in C*100. If unknown, set it to 0K which
@@ -365,7 +363,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(2);
 	if (tmp_2bytes != 0x7fff)
-		dt_dive->watertemp.mkelvin = dt_dive->dc.watertemp.mkelvin = C_to_mkelvin((double)(tmp_2bytes / 100));
+		dt_dive->watertemp.mkelvin = dt_dive->dcs[0].watertemp.mkelvin = C_to_mkelvin((double)(tmp_2bytes / 100));
 	else
 		dt_dive->watertemp.mkelvin = 0;
 
@@ -373,8 +371,8 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Air used in bar*100.
 	 */
 	read_bytes(2);
-	if (tmp_2bytes != 0x7FFF && dt_dive->cylinders.nr > 0)
-		get_cylinder(dt_dive, 0)->gas_used.mliter = lrint(get_cylinder(dt_dive, 0)->type.size.mliter * (tmp_2bytes / 100.0));
+	if (tmp_2bytes != 0x7FFF && dt_dive->cylinders.size() > 0)
+		dt_dive->get_cylinder(0)->gas_used.mliter = lrint(dt_dive->get_cylinder(0)->type.size.mliter * (tmp_2bytes / 100.0));
 
 	/*
 	 * Dive Type 1 -  Bit table. Subsurface don't have this record, but
@@ -382,30 +380,30 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(1);
 	if (bit_set(tmp_1byte, 2))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "no stop")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "no stop"));
 	if (bit_set(tmp_1byte, 3))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "deco")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "deco"));
 	if (bit_set(tmp_1byte, 4))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "single ascent")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "single ascent"));
 	if (bit_set(tmp_1byte, 5))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "multiple ascent")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "multiple ascent"));
 	if (bit_set(tmp_1byte, 6))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "fresh water")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "fresh water"));
 	if (bit_set(tmp_1byte, 7))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "salt water")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "salt water"));
 
 	/*
 	 * Dive Type 2 - Bit table, use tags again
 	 */
 	read_bytes(1);
 	if (bit_set(tmp_1byte, 0)) {
-		taglist_add_tag(&dt_dive->tag_list, strdup("nitrox"));
+		taglist_add_tag(dt_dive->tags, "nitrox");
 		is_nitrox = 1;
 	}
 	if (bit_set(tmp_1byte, 1)) {
-		taglist_add_tag(&dt_dive->tag_list, strdup("rebreather"));
+		taglist_add_tag(dt_dive->tags, "rebreather");
 		is_SCR = 1;
-		dt_dive->dc.divemode = PSCR;
+		dt_dive->dcs[0].divemode = PSCR;
 	}
 
 	/*
@@ -413,36 +411,36 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 */
 	read_bytes(1);
 	if (bit_set(tmp_1byte, 0))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "sight seeing")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "sight seeing"));
 	if (bit_set(tmp_1byte, 1))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "club dive")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "club dive"));
 	if (bit_set(tmp_1byte, 2))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "instructor")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "instructor"));
 	if (bit_set(tmp_1byte, 3))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "instruction")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "instruction"));
 	if (bit_set(tmp_1byte, 4))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "night")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "night"));
 	if (bit_set(tmp_1byte, 5))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "cave")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "cave"));
 	if (bit_set(tmp_1byte, 6))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "ice")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "ice"));
 	if (bit_set(tmp_1byte, 7))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "search")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "search"));
 
 	/*
 	 * Dive Activity 2 - Bit table, use tags again
 	 */
 	read_bytes(1);
 	if (bit_set(tmp_1byte, 0))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "wreck")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "wreck"));
 	if (bit_set(tmp_1byte, 1))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "river")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "river"));
 	if (bit_set(tmp_1byte, 2))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "drift")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "drift"));
 	if (bit_set(tmp_1byte, 3))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "photo")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "photo"));
 	if (bit_set(tmp_1byte, 4))
-		taglist_add_tag(&dt_dive->tag_list, strdup(QT_TRANSLATE_NOOP("gettextFromC", "other")));
+		taglist_add_tag(dt_dive->tags, translate("gettextFromC", "other"));
 
 	/*
 	 * Other activities - String  1st byte = long
@@ -451,10 +449,9 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
-		snprintf(buffer, sizeof(buffer), "%s: %s\n",
-			 QT_TRANSLATE_NOOP("gettextFromC", "Other activities"),
+		tmp_notes_str= format_string_std("%s: %s\n",
+			 translate("gettextFromC", "Other activities"),
 			 tmp_string1);
-		tmp_notes_str = strdup(buffer);
 		free(tmp_string1);
 	}
 
@@ -464,7 +461,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
-		dt_dive->buddy = strdup((char *)tmp_string1);
+		dt_dive->buddy = (const char *)tmp_string1;
 		free(tmp_string1);
 	}
 
@@ -474,15 +471,12 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	if (tmp_1byte != 0) {
 		read_string(tmp_string1);
-		int len = snprintf(buffer, sizeof(buffer), "%s%s:\n%s",
-				   tmp_notes_str ? tmp_notes_str : "",
-				   QT_TRANSLATE_NOOP("gettextFromC", "Datatrak/Wlog notes"),
+		dt_dive->notes = format_string_std("%s%s:\n%s",
+				   tmp_notes_str.c_str(),
+				   translate("gettextFromC", "Datatrak/Wlog notes"),
 				   tmp_string1);
-		dt_dive->notes = (char *)calloc((len +1), 1);
-		memcpy(dt_dive->notes, buffer, len);
 		free(tmp_string1);
 	}
-	free(tmp_notes_str);
 
 	/*
 	 * Alarms 1 and Alarms2 - Bit tables - Not in Subsurface, we use the profile
@@ -520,7 +514,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	libdc_model = dtrak_prepare_data(tmp_1byte, devdata);
 	if (!libdc_model)
 		report_error(translate("gettextFromC", "[Warning] Manual dive # %d\n"), dt_dive->number);
-	dt_dive->dc.model = copy_string(devdata->model);
+	dt_dive->dcs[0].model = devdata.model;
 
 	/*
 	 * Air usage, unknown use. Probably allows or deny manually entering gas
@@ -543,17 +537,17 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 		compl_buffer = (unsigned char *) calloc(18 + profile_length, 1);
 		rc = dt_libdc_buffer(membuf, profile_length, libdc_model, compl_buffer);
 		if (rc == DC_STATUS_SUCCESS) {
-			libdc_buffer_parser(dt_dive, devdata, compl_buffer, profile_length + 18);
+			libdc_buffer_parser(dt_dive, &devdata, compl_buffer, profile_length + 18);
 		} else {
 			report_error(translate("gettextFromC", "[Error] Out of memory for dive %d. Abort parsing."), dt_dive->number);
 			free(compl_buffer);
 			goto bail;
 		}
-		if (is_nitrox && dt_dive->cylinders.nr > 0)
-			get_cylinder(dt_dive, 0)->gasmix.o2.permille =
+		if (is_nitrox && dt_dive->cylinders.size() > 0)
+			dt_dive->get_cylinder(0)->gasmix.o2.permille =
 					lrint(membuf[23] & 0x0F ? 20.0 + 2 * (membuf[23] & 0x0F) : 21.0) * 10;
-		if (is_O2 && dt_dive->cylinders.nr > 0)
-			get_cylinder(dt_dive, 0)->gasmix.o2.permille = membuf[23] * 10;
+		if (is_O2 && dt_dive->cylinders.size() > 0)
+			dt_dive->get_cylinder(0)->gasmix.o2.permille = membuf[23] * 10;
 		free(compl_buffer);
 	}
 	JUMP(membuf, profile_length);
@@ -562,19 +556,16 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Initialize some dive data not supported by Datatrak/WLog
 	 */
 	if (!libdc_model)
-		dt_dive->dc.deviceid = 0;
+		dt_dive->dcs[0].deviceid = 0;
 	else
-		dt_dive->dc.deviceid = 0xffffffff;
-	dt_dive->dc.next = NULL;
-	if (!is_SCR && dt_dive->cylinders.nr > 0) {
-		get_cylinder(dt_dive, 0)->end.mbar = get_cylinder(dt_dive, 0)->start.mbar -
-			((get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000);
+		dt_dive->dcs[0].deviceid = 0xffffffff;
+	if (!is_SCR && dt_dive->cylinders.size() > 0) {
+		dt_dive->get_cylinder(0)->end.mbar = dt_dive->get_cylinder(0)->start.mbar -
+			((dt_dive->get_cylinder(0)->gas_used.mliter / dt_dive->get_cylinder(0)->type.size.mliter) * 1000);
 	}
-	free(devdata);
 	return (char *)membuf;
 bail:
 	free(locality);
-	free(devdata);
 	return NULL;
 }
 
@@ -607,7 +598,7 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 	    pos_viz = offset + 258,
 	    pos_tank_init = offset + 266,
 	    pos_suit = offset + 268;
-	char *wlog_notes = NULL, *wlog_suit = NULL, *buffer = NULL;
+	char *wlog_notes = NULL, *wlog_suit = NULL;
 	unsigned char *runner = (unsigned char *) wl_mem.data();
 
 	/*
@@ -619,24 +610,16 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 		(void)memcpy(wlog_notes_temp, runner + offset, NOTES_LENGTH);
 		wlog_notes = to_utf8((unsigned char *) wlog_notes_temp);
 	}
-	if (dt_dive->notes && wlog_notes) {
-		buffer = (char *)calloc (strlen(dt_dive->notes) + strlen(wlog_notes) + 1, 1);
-		sprintf(buffer, "%s%s", dt_dive->notes, wlog_notes);
-		free(dt_dive->notes);
-		dt_dive->notes = copy_string(buffer);
-	} else if (wlog_notes) {
-		dt_dive->notes = copy_string(wlog_notes);
-	}
-	free(buffer);
-	free(wlog_notes);
+	if (wlog_notes)
+		dt_dive->notes += wlog_notes;
 
 	/*
 	 * Weight in Kg * 100
 	 */
 	tmp = (int) two_bytes_to_int(runner[pos_weight + 1], runner[pos_weight]);
 	if (tmp != 0x7fff) {
-		weightsystem_t ws = { {tmp * 10}, QT_TRANSLATE_NOOP("gettextFromC", "unknown"), false };
-		add_cloned_weightsystem(&dt_dive->weightsystems, ws);
+		weightsystem_t ws = { {tmp * 10}, translate("gettextFromC", "unknown"), false };
+		dt_dive->weightsystems.push_back(std::move(ws));
 	}
 
 	/*
@@ -655,8 +638,8 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 	 */
 	tmp = (int) two_bytes_to_int(runner[pos_tank_init + 1], runner[pos_tank_init]);
 	if (tmp != 0x7fff) {
-		get_cylinder(dt_dive, 0)->start.mbar = tmp * 10;
-		get_cylinder(dt_dive, 0)->end.mbar =  get_cylinder(dt_dive, 0)->start.mbar - lrint(get_cylinder(dt_dive, 0)->gas_used.mliter / get_cylinder(dt_dive, 0)->type.size.mliter) * 1000;
+		dt_dive->get_cylinder(0)->start.mbar = tmp * 10;
+		dt_dive->get_cylinder(0)->end.mbar =  dt_dive->get_cylinder(0)->start.mbar - lrint(dt_dive->get_cylinder(0)->gas_used.mliter / dt_dive->get_cylinder(0)->type.size.mliter) * 1000;
 	}
 
 	/*
@@ -670,7 +653,7 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 		wlog_suit = to_utf8((unsigned char *) wlog_suit_temp);
 	}
 	if (wlog_suit)
-		dt_dive->suit = copy_string(wlog_suit);
+		dt_dive->suit = wlog_suit;
 	free(wlog_suit);
 }
 
@@ -703,25 +686,24 @@ int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log)
 	runner = mem.data();
 	JUMP(runner, 12);
 
-	// Secuential parsing. Abort if received NULL from dt_dive_parser.
+	// Sequential parsing. Abort if received NULL from dt_dive_parser.
 	while ((i < numdives) && (runner < maxbuf)) {
-		struct dive *ptdive = alloc_dive();
+		auto ptdive = std::make_unique<dive>();
 
-		runner = dt_dive_parser((unsigned char *)runner, ptdive, log, maxbuf);
+		runner = dt_dive_parser((unsigned char *)runner, ptdive.get(), log, maxbuf);
 		if (!wl_mem.empty())
-			wlog_compl_parser(wl_mem, ptdive, i);
+			wlog_compl_parser(wl_mem, ptdive.get(), i);
 		if (runner == NULL) {
 			report_error("%s", translate("gettextFromC", "Error: no dive"));
-			free(ptdive);
 			rc = 1;
 			goto out;
 		} else {
-			record_dive_to_table(ptdive, log->dives);
+			log->dives.record_dive(std::move(ptdive));
 		}
 		i++;
 	}
 out:
-	sort_dive_table(log->dives);
+	log->dives.sort();
 	return rc;
 bail:
 	return 1;

@@ -5,7 +5,6 @@
 #define PROFILEWIDGET_H
 
 #include "ui_profilewidget.h"
-#include "core/owning_ptrs.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
 #include <vector>
@@ -14,8 +13,6 @@ struct dive;
 class ProfileWidget2;
 class EmptyView;
 class QStackedWidget;
-
-extern "C" void free_dive(struct dive *);
 
 class ProfileWidget : public QWidget {
 	Q_OBJECT
@@ -50,7 +47,7 @@ private:
 	void editDive();
 	void exitEditMode();
 	void rotateDC(int dir);
-	OwningDivePtr editedDive;
+	std::unique_ptr<dive> editedDive;
 	bool placingCommand;
 };
 

@@ -5,9 +5,12 @@
 #include <QVector>
 
 #include "qmlmapwidgethelper.h"
+#include "core/divefilter.h"
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/divesite.h"
 #include "core/qthelper.h"
-#include "core/divefilter.h"
+#include "core/range.h"
 #include "qt-models/maplocationmodel.h"
 #include "qt-models/divelocationmodel.h"
 #ifndef SUBSURFACE_MOBILE
@@ -27,14 +30,14 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 
 QGeoCoordinate MapWidgetHelper::getCoordinates(struct dive_site *ds)
 {
-	if (!dive_site_has_gps_location(ds))
+	if (!ds || !ds->has_gps_location())
 		return QGeoCoordinate(0.0, 0.0);
 	return QGeoCoordinate(ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 }
 
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
-	if (!dive_site_has_gps_location(ds)) {
+	if (!ds || !ds->has_gps_location()) {
 		// dive site with no GPS
 		m_mapLocationModel->setSelected(ds);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
@@ -46,18 +49,18 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 	}
 }
 
-void MapWidgetHelper::setSelected(const QVector<dive_site *> &divesites)
+void MapWidgetHelper::setSelected(const std::vector<dive_site *> divesites)
 {
-	m_mapLocationModel->setSelected(divesites);
+	m_mapLocationModel->setSelected(std::move(divesites));
 	m_mapLocationModel->selectionChanged();
 	updateEditMode();
 }
 
 void MapWidgetHelper::centerOnSelectedDiveSite()
 {
-	QVector<struct dive_site *> selDS = m_mapLocationModel->selectedDs();
+	std::vector<struct dive_site *> selDS = m_mapLocationModel->selectedDs();
 
-	if (selDS.isEmpty()) {
+	if (selDS.empty()) {
 		// no selected dives with GPS coordinates
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
 		return;
@@ -122,20 +125,18 @@ void MapWidgetHelper::reloadMapLocations()
 
 void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 {
-	int idx;
-	struct dive *dive;
 	QList<int> selectedDiveIds;
 
 	if (!ds_in)
 		return;
-	MapLocation *location = m_mapLocationModel->getMapLocation(ds_in);
+	const MapLocation *location = m_mapLocationModel->getMapLocation(ds_in);
 	if (!location)
 		return;
 	QGeoCoordinate locationCoord = location->coordinate;
 
-	for_each_dive (idx, dive) {
-		struct dive_site *ds = get_dive_site_for_dive(dive);
-		if (!dive_site_has_gps_location(ds))
+	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
+		struct dive_site *ds = dive->dive_site;
+		if (!ds || !ds->has_gps_location())
 			continue;
 #ifndef SUBSURFACE_MOBILE
 		const qreal latitude = ds->location.lat.udeg * 0.000001;
@@ -160,12 +161,10 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 
 void MapWidgetHelper::selectVisibleLocations()
 {
-	int idx;
-	struct dive *dive;
 	QList<int> selectedDiveIds;
-	for_each_dive (idx, dive) {
-		struct dive_site *ds = get_dive_site_for_dive(dive);
-		if (!dive_site_has_gps_location(ds))
+	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
+		struct dive_site *ds = dive->dive_site;
+		if (!ds || ds->has_gps_location())
 			continue;
 		const qreal latitude = ds->location.lat.udeg * 0.000001;
 		const qreal longitude = ds->location.lon.udeg * 0.000001;
@@ -251,7 +250,7 @@ bool MapWidgetHelper::editMode() const
 QString MapWidgetHelper::pluginObject()
 {
 	QString lang = getUiLanguage().replace('_', '-');
-	QString cacheFolder = QString(system_default_directory()).append("/googlemaps").replace("\\", "/");
+	QString cacheFolder = QString::fromStdString(system_default_directory() + "/googlemaps").replace("\\", "/");
 	return QStringLiteral("import QtQuick 2.0;"
 			      "import QtLocation 5.3;"
 			      "Plugin {"

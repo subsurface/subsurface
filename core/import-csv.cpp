@@ -5,7 +5,6 @@
 
 #include "dive.h"
 #include "errorhelper.h"
-#include "ssrf.h"
 #include "subsurface-string.h"
 #include "divelist.h"
 #include "divelog.h"
@@ -270,7 +269,7 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 	return ret;
 }
 
-extern "C" int parse_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log)
+int parse_csv_file(const char *filename, struct xml_params *params, const char *csvtemplate, struct divelog *log)
 {
 	int ret;
 	std::string mem;
@@ -402,7 +401,6 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 	char *header[8];
 	int i, time;
 	timestamp_t date;
-	struct dive *dive;
 	struct divecomputer *dc;
 
 	for (i = 0; i < 8; i++) {
@@ -417,10 +415,10 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 	if (!date)
 		return 0;
 
-	dive = alloc_dive();
+	auto dive = std::make_unique<struct dive>();
 	dive->when = date;
 	dive->number = atoi(header[1]);
-	dc = &dive->dc;
+	dc = &dive->dcs[0];
 
 	time = 0;
 	for (;;) {
@@ -438,7 +436,6 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 		sample = prepare_sample(dc);
 		sample->time.seconds = time;
 		add_sample_data(sample, type, val);
-		finish_sample(dc);
 
 		time++;
 		dc->duration.seconds = time;
@@ -446,7 +443,7 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 			break;
 		p = end + 1;
 	}
-	record_dive_to_table(dive, log->dives);
+	log->dives.record_dive(std::move(dive));
 	return 1;
 }
 
@@ -497,9 +494,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		bool has_depth = false, has_setpoint = false, has_ndl = false;
 		char *lineptr;
 		int prev_time = 0;
-		cylinder_t cyl = empty_cylinder;
 
-		struct dive *dive;
 		struct divecomputer *dc;
 		struct tm cur_tm;
 
@@ -513,34 +508,40 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		cur_tm.tm_min = mm;
 		cur_tm.tm_sec = ss;
 
-		dive = alloc_dive();
+		auto dive = std::make_unique<struct dive>();
 		dive->when = utc_mktime(&cur_tm);;
-		dive->dc.model = strdup("Poseidon MkVI Discovery");
+		dive->dcs[0].model = "Poseidon MkVI Discovery";
 		value = parse_mkvi_value(memtxt.data(), "Rig Serial number");
-		dive->dc.deviceid = atoi(value.c_str());
-		dive->dc.divemode = CCR;
-		dive->dc.no_o2sensors = 2;
+		dive->dcs[0].deviceid = atoi(value.c_str());
+		dive->dcs[0].divemode = CCR;
+		dive->dcs[0].no_o2sensors = 2;
 
-		cyl.cylinder_use = OXYGEN;
-		cyl.type.size.mliter = 3000;
-		cyl.type.workingpressure.mbar = 200000;
-		cyl.type.description = "3l Mk6";
-		cyl.gasmix.o2.permille = 1000;
-		cyl.manually_added = true;
-		cyl.bestmix_o2 = 0;
-		cyl.bestmix_he = 0;
-		add_cloned_cylinder(&dive->cylinders, cyl);
+		{
+			cylinder_t cyl;
+			cyl.cylinder_use = OXYGEN;
+			cyl.type.size.mliter = 3000;
+			cyl.type.workingpressure.mbar = 200000;
+			cyl.type.description = "3l Mk6";
+			cyl.gasmix.o2.permille = 1000;
+			cyl.manually_added = true;
+			cyl.bestmix_o2 = 0;
+			cyl.bestmix_he = 0;
+			dive->cylinders.push_back(std::move(cyl));
+		}
 
-		cyl.cylinder_use = DILUENT;
-		cyl.type.size.mliter = 3000;
-		cyl.type.workingpressure.mbar = 200000;
-		cyl.type.description = "3l Mk6";
-		value = parse_mkvi_value(memtxt.data(), "Helium percentage");
-		he = atoi(value.c_str());
-		value = parse_mkvi_value(memtxt.data(), "Nitrogen percentage");
-		cyl.gasmix.o2.permille = (100 - atoi(value.c_str()) - he) * 10;
-		cyl.gasmix.he.permille = he * 10;
-		add_cloned_cylinder(&dive->cylinders, cyl);
+		{
+			cylinder_t cyl;
+			cyl.cylinder_use = DILUENT;
+			cyl.type.size.mliter = 3000;
+			cyl.type.workingpressure.mbar = 200000;
+			cyl.type.description = "3l Mk6";
+			value = parse_mkvi_value(memtxt.data(), "Helium percentage");
+			he = atoi(value.c_str());
+			value = parse_mkvi_value(memtxt.data(), "Nitrogen percentage");
+			cyl.gasmix.o2.permille = (100 - atoi(value.c_str()) - he) * 10;
+			cyl.gasmix.he.permille = he * 10;
+			dive->cylinders.push_back(std::move(cyl));
+		}
 
 		lineptr = strstr(memtxt.data(), "Dive started at");
 		while (!empty_string(lineptr) && (lineptr = strchr(lineptr, '\n'))) {
@@ -551,9 +552,9 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 			std::string value = parse_mkvi_value(lineptr, key.c_str());
 			if (value.empty())
 				break;
-			add_extra_data(&dive->dc, key.c_str(), value.c_str());
+			add_extra_data(&dive->dcs[0], key, value);
 		}
-		dc = &dive->dc;
+		dc = &dive->dcs[0];
 
 		/*
 		 * Read samples from the CSV file. A sample contains all the lines with same timestamp. The CSV file has
@@ -573,10 +574,8 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		 */
 
 		auto [memcsv, err] = readfile(csv);
-		if (err < 0) {
-			free_dive(dive);
+		if (err < 0)
 			return report_error(translate("gettextFromC", "Poseidon import failed: unable to read '%s'"), csv);
-		}
 		lineptr = memcsv.data();
 		for (;;) {
 			struct sample *sample;
@@ -746,12 +745,11 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 				add_sample_data(sample, POSEIDON_SETPOINT, prev_setpoint);
 			if (!has_ndl && prev_ndl >= 0)
 				add_sample_data(sample, POSEIDON_NDL, prev_ndl);
-			finish_sample(dc);
 
 			if (!lineptr || !*lineptr)
 				break;
 		}
-		record_dive_to_table(dive, log->dives);
+		log->dives.record_dive(std::move(dive));
 		return 1;
 	} else {
 		return 0;

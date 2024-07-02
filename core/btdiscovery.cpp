@@ -476,23 +476,22 @@ QString extractBluetoothAddress(const QString &address)
 	return m.captured(0);
 }
 
-QString extractBluetoothNameAddress(const QString &address, QString &name)
+std::pair<QString, QString> extractBluetoothNameAddress(const QString &address)
 {
 	// sometimes our device text is of the form "name (address)", sometimes it's just "address"
 	// let's simply return the address
-	name = QString();
 	QString extractedAddress = extractBluetoothAddress(address);
 	if (extractedAddress == address.trimmed())
-		return address;
+		return { address, QString() };
 
 	QRegularExpression re("^([^()]+)\\(([^)]*\\))$");
 	QRegularExpressionMatch m = re.match(address);
 	if (m.hasMatch()) {
-		name = m.captured(1).trimmed();
-		return extractedAddress;
+		QString name = m.captured(1).trimmed();
+		return { extractedAddress, name };
 	}
 	report_info("can't parse address %s", qPrintable(address));
-	return QString();
+	return { QString(), QString() };
 }
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo)

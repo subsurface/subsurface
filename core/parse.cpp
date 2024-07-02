@@ -1,4 +1,3 @@
-#include "ssrf.h"
 #include <stdio.h>
 #include <assert.h>
 #include <stdarg.h>
@@ -12,6 +11,7 @@
 #include "divelog.h"
 #include "divesite.h"
 #include "errorhelper.h"
+#include "format.h"
 #include "sample.h"
 #include "subsurface-string.h"
 #include "picture.h"
@@ -19,12 +19,8 @@
 #include "device.h"
 #include "gettext.h"
 
-parser_state::~parser_state()
-{
-	free_dive(cur_dive);
-	free_trip(cur_trip);
-	free_dive_site(cur_dive_site);
-}
+parser_state::parser_state() = default;
+parser_state::~parser_state() = default;
 
 /*
  * If we don't have an explicit dive computer,
@@ -32,25 +28,17 @@ parser_state::~parser_state()
  */
 struct divecomputer *get_dc(struct parser_state *state)
 {
-	return state->cur_dc ?: &state->cur_dive->dc;
+	return state->cur_dc ?: &state->cur_dive->dcs[0];
 }
 
-/*
- * Add a dive into the dive_table array
- */
-extern "C" void record_dive_to_table(struct dive *dive, struct dive_table *table)
-{
-	add_to_dive_table(table, table->nr, fixup_dive(dive));
-}
-
-extern "C" void start_match(const char *type, const char *name, char *buffer)
+void start_match(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 2)
 		printf("Matching %s '%s' (%s)\n",
 		       type, name, buffer);
 }
 
-extern "C" void nonmatch(const char *type, const char *name, char *buffer)
+void nonmatch(const char *type, const char *name, char *buffer)
 {
 	if (verbose > 1)
 		printf("Unable to match %s '%s' (%s)\n",
@@ -59,7 +47,7 @@ extern "C" void nonmatch(const char *type, const char *name, char *buffer)
 
 void event_start(struct parser_state *state)
 {
-	memset(&state->cur_event, 0, sizeof(state->cur_event));
+	state->cur_event = event();
 	state->event_active = true;	/* Active */
 }
 
@@ -67,36 +55,36 @@ void event_end(struct parser_state *state)
 {
 	struct divecomputer *dc = get_dc(state);
 	if (state->cur_event.type == 123) {
-		struct picture pic = empty_picture;
-		pic.filename = strdup(state->cur_event.name);
+		struct picture pic;
+		pic.filename = state->cur_event.name;
 		/* theoretically this could fail - but we didn't support multi year offsets */
 		pic.offset.seconds = state->cur_event.time.seconds;
-		add_picture(&state->cur_dive->pictures, pic); /* Takes ownership. */
+		add_picture(state->cur_dive->pictures, std::move(pic));
 	} else {
-		struct event *ev;
 		/* At some point gas change events did not have any type. Thus we need to add
 		 * one on import, if we encounter the type one missing.
 		 */
-		if (state->cur_event.type == 0 && strcmp(state->cur_event.name, "gaschange") == 0)
+		if (state->cur_event.type == 0 && state->cur_event.name == "gaschange")
 			state->cur_event.type = state->cur_event.value >> 16 > 0 ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE;
-		ev = add_event(dc, state->cur_event.time.seconds,
-			       state->cur_event.type, state->cur_event.flags,
-			       state->cur_event.value, state->cur_event.name);
+
+		struct event ev(state->cur_event.time.seconds, state->cur_event.type, state->cur_event.flags,
+				state->cur_event.value, state->cur_event.name);
 
 		/*
 		 * Older logs might mark the dive to be CCR by having an "SP change" event at time 0:00. Better
 		 * to mark them being CCR on import so no need for special treatments elsewhere on the code.
 		 */
-		if (ev && state->cur_event.time.seconds == 0 && state->cur_event.type == SAMPLE_EVENT_PO2 && state->cur_event.value && dc->divemode==OC) {
+		if (ev.time.seconds == 0 && ev.type == SAMPLE_EVENT_PO2 && ev.value && dc->divemode==OC)
 			dc->divemode = CCR;
+
+		if (ev.is_gaschange()) {
+			/* See try_to_fill_event() on why the filled-in index is one too big */
+			ev.gas.index = state->cur_event.gas.index-1;
+			if (state->cur_event.gas.mix.o2.permille || state->cur_event.gas.mix.he.permille)
+				ev.gas.mix = state->cur_event.gas.mix;
 		}
 
-		if (ev && event_is_gaschange(ev)) {
-			/* See try_to_fill_event() on why the filled-in index is one too big */
-			ev->gas.index = state->cur_event.gas.index-1;
-			if (state->cur_event.gas.mix.o2.permille || state->cur_event.gas.mix.he.permille)
-				ev->gas.mix = state->cur_event.gas.mix;
-		}
+		add_event_to_dc(dc, std::move(ev));
 	}
 	state->event_active = false;	/* No longer active */
 }
@@ -116,7 +104,7 @@ void event_end(struct parser_state *state)
 bool is_dive(struct parser_state *state)
 {
 	return state->cur_dive &&
-		(state->cur_dive->dive_site || state->cur_dive->when || state->cur_dive->dc.samples);
+		(state->cur_dive->dive_site || state->cur_dive->when || !state->cur_dive->dcs[0].samples.empty());
 }
 
 void reset_dc_info(struct divecomputer *, struct parser_state *state)
@@ -160,10 +148,10 @@ void fingerprint_settings_start(struct parser_state *state)
 
 void fingerprint_settings_end(struct parser_state *state)
 {
-	create_fingerprint_node_from_hex(state->fingerprints,
+	create_fingerprint_node_from_hex(*state->fingerprints,
 			state->cur_settings.fingerprint.model,
 			state->cur_settings.fingerprint.serial,
-			state->cur_settings.fingerprint.data.c_str(),
+			state->cur_settings.fingerprint.data,
 			state->cur_settings.fingerprint.fdeviceid,
 			state->cur_settings.fingerprint.fdiveid);
 }
@@ -176,9 +164,9 @@ void dc_settings_start(struct parser_state *state)
 void dc_settings_end(struct parser_state *state)
 {
 	create_device_node(state->log->devices,
-		state->cur_settings.dc.model.c_str(),
-		state->cur_settings.dc.serial_nr.c_str(),
-		state->cur_settings.dc.nickname.c_str());
+		state->cur_settings.dc.model,
+		state->cur_settings.dc.serial_nr,
+		state->cur_settings.dc.nickname);
 	reset_dc_settings(state);
 }
 
@@ -188,7 +176,7 @@ void dive_site_start(struct parser_state *state)
 		return;
 	state->taxonomy_category = -1;
 	state->taxonomy_origin = -1;
-	state->cur_dive_site = (dive_site *)calloc(1, sizeof(struct dive_site));
+	state->cur_dive_site = std::make_unique<dive_site>();
 }
 
 void dive_site_end(struct parser_state *state)
@@ -196,14 +184,13 @@ void dive_site_end(struct parser_state *state)
 	if (!state->cur_dive_site)
 		return;
 
-	struct dive_site *ds = alloc_or_get_dive_site(state->cur_dive_site->uuid, state->log->sites);
-	merge_dive_site(ds, state->cur_dive_site);
+	struct dive_site *ds = state->log->sites.alloc_or_get(state->cur_dive_site->uuid);
+	ds->merge(*state->cur_dive_site);
 
 	if (verbose > 3)
-		printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
+		printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name.c_str());
 
-	free_dive_site(state->cur_dive_site);
-	state->cur_dive_site = NULL;
+	state->cur_dive_site.reset();
 }
 
 void filter_preset_start(struct parser_state *state)
@@ -215,7 +202,7 @@ void filter_preset_start(struct parser_state *state)
 
 void filter_preset_end(struct parser_state *state)
 {
-	add_filter_preset_to_table(state->cur_filter.get(), state->log->filter_presets);
+	state->log->filter_presets.add(*state->cur_filter);
 	state->cur_filter.reset();
 }
 
@@ -230,7 +217,7 @@ void fulltext_end(struct parser_state *state)
 {
 	if (!state->in_fulltext)
 		return;
-	filter_preset_set_fulltext(state->cur_filter.get(), state->fulltext.c_str(), state->fulltext_string_mode.c_str());
+	state->cur_filter->set_fulltext(std::move(state->fulltext), state->fulltext_string_mode);
 	state->fulltext.clear();
 	state->fulltext_string_mode.clear();
 	state->in_fulltext = false;
@@ -247,8 +234,8 @@ void filter_constraint_end(struct parser_state *state)
 {
 	if (!state->in_filter_constraint)
 		return;
-	filter_preset_add_constraint(state->cur_filter.get(), state->filter_constraint_type.c_str(), state->filter_constraint_string_mode.c_str(),
-				     state->filter_constraint_range_mode.c_str(), state->filter_constraint_negate, state->filter_constraint.c_str());
+	state->cur_filter->add_constraint(state->filter_constraint_type, state->filter_constraint_string_mode,
+					  state->filter_constraint_range_mode, state->filter_constraint_negate, state->filter_constraint);
 
 	state->filter_constraint_type.clear();
 	state->filter_constraint_string_mode.clear();
@@ -262,8 +249,8 @@ void dive_start(struct parser_state *state)
 {
 	if (state->cur_dive)
 		return;
-	state->cur_dive = alloc_dive();
-	reset_dc_info(&state->cur_dive->dc, state);
+	state->cur_dive = std::make_unique<dive>();
+	reset_dc_info(&state->cur_dive->dcs[0], state);
 	memset(&state->cur_tm, 0, sizeof(state->cur_tm));
 	state->o2pressure_sensor = 1;
 }
@@ -272,14 +259,13 @@ void dive_end(struct parser_state *state)
 {
 	if (!state->cur_dive)
 		return;
-	if (!is_dive(state)) {
-		free_dive(state->cur_dive);
-	} else {
-		record_dive_to_table(state->cur_dive, state->log->dives);
+	if (is_dive(state)) {
 		if (state->cur_trip)
-			add_dive_to_trip(state->cur_dive, state->cur_trip);
+			state->cur_trip->add_dive(state->cur_dive.get());
+		// This would add dives in a sorted way:
+		state->log->dives.record_dive(std::move(state->cur_dive));
 	}
-	state->cur_dive = NULL;
+	state->cur_dive.reset();
 	state->cur_dc = NULL;
 	state->cur_location.lat.udeg = 0;
 	state->cur_location.lon.udeg = 0;
@@ -290,7 +276,7 @@ void trip_start(struct parser_state *state)
 	if (state->cur_trip)
 		return;
 	dive_end(state);
-	state->cur_trip = alloc_trip();
+	state->cur_trip = std::make_unique<dive_trip>();
 	memset(&state->cur_tm, 0, sizeof(state->cur_tm));
 }
 
@@ -298,8 +284,7 @@ void trip_end(struct parser_state *state)
 {
 	if (!state->cur_trip)
 		return;
-	insert_trip(state->cur_trip, state->log->trips);
-	state->cur_trip = NULL;
+	state->log->trips.put(std::move(state->cur_trip));
 }
 
 void picture_start(struct parser_state *state)
@@ -308,14 +293,15 @@ void picture_start(struct parser_state *state)
 
 void picture_end(struct parser_state *state)
 {
-	add_picture(&state->cur_dive->pictures, state->cur_picture);
+	add_picture(state->cur_dive->pictures, std::move(state->cur_picture));
 	/* dive_add_picture took ownership, we can just clear out copy of the data */
-	state->cur_picture = empty_picture;
+	state->cur_picture = picture();
 }
 
 cylinder_t *cylinder_start(struct parser_state *state)
 {
-	return add_empty_cylinder(&state->cur_dive->cylinders);
+	state->cur_dive->cylinders.emplace_back();
+	return &state->cur_dive->cylinders.back();
 }
 
 void cylinder_end(struct parser_state *state)
@@ -324,7 +310,7 @@ void cylinder_end(struct parser_state *state)
 
 void ws_start(struct parser_state *state)
 {
-	add_cloned_weightsystem(&state->cur_dive->weightsystems, empty_weightsystem);
+	state->cur_dive->weightsystems.emplace_back();
 }
 
 void ws_end(struct parser_state *state)
@@ -336,7 +322,7 @@ void ws_end(struct parser_state *state)
  */
 static int sanitize_sensor_id(const struct dive *d, int nr)
 {
-	return d && nr >= 0 && nr < d->cylinders.nr ? nr : NO_SENSOR;
+	return d && nr >= 0 && static_cast<size_t>(nr) < d->cylinders.size() ? nr : NO_SENSOR;
 }
 
 /*
@@ -362,13 +348,13 @@ void sample_start(struct parser_state *state)
 	struct divecomputer *dc = get_dc(state);
 	struct sample *sample = prepare_sample(dc);
 
-	if (sample != dc->sample) {
-		memcpy(sample, sample-1, sizeof(struct sample));
+	if (dc->samples.size() > 1) {
+		*sample = dc->samples[dc->samples.size() - 2];
 		sample->pressure[0].mbar = 0;
 		sample->pressure[1].mbar = 0;
 	} else {
-		sample->sensor[0] = sanitize_sensor_id(state->cur_dive, !state->o2pressure_sensor);
-		sample->sensor[1] = sanitize_sensor_id(state->cur_dive, state->o2pressure_sensor);
+		sample->sensor[0] = sanitize_sensor_id(state->cur_dive.get(), !state->o2pressure_sensor);
+		sample->sensor[1] = sanitize_sensor_id(state->cur_dive.get(), state->o2pressure_sensor);
 	}
 	state->cur_sample = sample;
 	state->next_o2_sensor = 0;
@@ -379,26 +365,17 @@ void sample_end(struct parser_state *state)
 	if (!state->cur_dive)
 		return;
 
-	finish_sample(get_dc(state));
 	state->cur_sample = NULL;
 }
 
 void divecomputer_start(struct parser_state *state)
 {
-	struct divecomputer *dc;
-
-	/* Start from the previous dive computer */
-	dc = &state->cur_dive->dc;
-	while (dc->next)
-		dc = dc->next;
+	struct divecomputer *dc = &state->cur_dive->dcs.back();
 
 	/* Did we already fill that in? */
-	if (dc->samples || dc->model || dc->when) {
-		struct divecomputer *newdc = (divecomputer *)calloc(1, sizeof(*newdc));
-		if (newdc) {
-			dc->next = newdc;
-			dc = newdc;
-		}
+	if (!dc->samples.empty() || !dc->model.empty() || dc->when) {
+		state->cur_dive->dcs.emplace_back();
+		dc = &state->cur_dive->dcs.back();
 	}
 
 	/* .. this is the one we'll use */
@@ -424,28 +401,8 @@ void userid_stop(struct parser_state *state)
 }
 
 /*
- * Copy whitespace-trimmed string. Warning: the passed in string will be freed,
- * therefore make sure to only pass in to NULL-initialized pointers or pointers
- * to owned strings
+ * Copy whitespace-trimmed string.
  */
-extern "C" void utf8_string(const char *buffer, char **res)
-{
-	free(*res);
-	while (isspace(*buffer))
-		++buffer;
-	if (!*buffer) {
-		*res = strdup("");
-		return;
-	}
-	const char *end = buffer + strlen(buffer);
-	while (isspace(end[-1]))
-		--end;
-	size_t len = end - buffer;
-	*res = (char *)malloc(len + 1);
-	memcpy(*res, buffer, len);
-	(*res)[len] = '\0';
-}
-
 void utf8_string_std(const char *buffer, std::string *res)
 {
 	while (isspace(*buffer))
@@ -468,52 +425,41 @@ void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *
 		struct dive_site *ds = dive->dive_site;
 		if (!ds) {
 			// if the dive doesn't have a dive site, check if there's already a dive site by this name
-			ds = get_dive_site_by_name(trimmed.c_str(), state->log->sites);
+			ds = state->log->sites.get_by_name(trimmed);
 		}
 		if (ds) {
 			// we have a dive site, let's hope there isn't a different name
-			if (empty_string(ds->name)) {
-				ds->name = copy_string(trimmed.c_str());
+			if (ds->name.empty()) {
+				ds->name = trimmed;
 			} else if (trimmed != ds->name) {
 				// if it's not the same name, it's not the same dive site
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				struct dive_site *exact_match = get_dive_site_by_gps_and_name(trimmed.c_str(), &ds->location, state->log->sites);
+				struct dive_site *exact_match = state->log->sites.get_by_gps_and_name(trimmed, ds->location);
 				if (exact_match) {
 					unregister_dive_from_dive_site(dive);
-					add_dive_to_dive_site(dive, exact_match);
+					exact_match->add_dive(dive);
 				} else {
-					struct dive_site *newds = create_dive_site(trimmed.c_str(), state->log->sites);
+					struct dive_site *newds = state->log->sites.create(trimmed.c_str());
 					unregister_dive_from_dive_site(dive);
-					add_dive_to_dive_site(dive, newds);
+					newds->add_dive(dive);
 					if (has_location(&state->cur_location)) {
 						// we started this uuid with GPS data, so lets use those
 						newds->location = state->cur_location;
 					} else {
 						newds->location = ds->location;
 					}
-					newds->notes = add_to_string(newds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
+					newds->notes += '\n';
+					newds->notes += format_string_std(translate("gettextFromC", "additional name for site: %s\n"), ds->name.c_str());
 				}
 			} else if (dive->dive_site != ds) {
 				// add the existing dive site to the current dive
 				unregister_dive_from_dive_site(dive);
-				add_dive_to_dive_site(dive, ds);
+				ds->add_dive(dive);
 			}
 		} else {
-			add_dive_to_dive_site(dive, create_dive_site(trimmed.c_str(), state->log->sites));
+			state->log->sites.create(trimmed)->add_dive(dive);
 		}
 	}
-}
-
-extern "C" int atoi_n(char *ptr, unsigned int len)
-{
-	if (len < 10) {
-		char buf[10];
-
-		memcpy(buf, ptr, len);
-		buf[len] = 0;
-		return atoi(buf);
-	}
-	return 0;
 }

@@ -37,7 +37,7 @@ int LocationInformationModel::columnCount(const QModelIndex &) const
 
 int LocationInformationModel::rowCount(const QModelIndex &) const
 {
-	return divelog.sites->nr;
+	return (int)divelog.sites.size();
 }
 
 QVariant LocationInformationModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -81,21 +81,18 @@ Qt::ItemFlags LocationInformationModel::flags(const QModelIndex &index) const
 	return QAbstractItemModel::flags(index);
 }
 
-QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, int column, int role)
+QVariant LocationInformationModel::getDiveSiteData(const struct dive_site &ds, int column, int role)
 {
-	if (!ds)
-		return QVariant();
-
 	switch(role) {
 	case Qt::EditRole:
 	case Qt::DisplayRole:
 		switch(column) {
-		case DIVESITE: return QVariant::fromValue<dive_site *>((dive_site *)ds); // Not nice: casting away const
-		case NAME: return QString(ds->name);
-		case NUM_DIVES: return ds->dives.nr;
+		case DIVESITE: return QVariant::fromValue<dive_site *>((dive_site *)&ds); // Not nice: casting away const
+		case NAME: return QString::fromStdString(ds.name);
+		case NUM_DIVES: return static_cast<int>(ds.dives.size());
 		case LOCATION: return "TODO";
-		case DESCRIPTION: return QString(ds->description);
-		case NOTES: return QString(ds->name);
+		case DESCRIPTION: return QString::fromStdString(ds.description);
+		case NOTES: return QString::fromStdString(ds.notes);
 		case TAXONOMY: return "TODO";
 		}
 	break;
@@ -111,22 +108,22 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 		case EDIT: return editIcon();
 		case REMOVE: return trashIcon();
 #endif
-		case NAME: return dive_site_has_gps_location(ds) ? QIcon(":geotag-icon") : QVariant();
+		case NAME: return ds.has_gps_location() ? QIcon(":geotag-icon") : QVariant();
 		}
 	break;
 	case DIVESITE_ROLE:
-		return QVariant::fromValue<dive_site *>((dive_site *)ds); // Not nice: casting away const
+		return QVariant::fromValue<dive_site *>((dive_site *)&ds); // Not nice: casting away const
 	}
 	return QVariant();
 }
 
 QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid())
+	if (!index.isValid() || index.row() >= (int)divelog.sites.size())
 		return QVariant();
 
-	struct dive_site *ds = get_dive_site(index.row(), divelog.sites);
-	return getDiveSiteData(ds, index.column(), role);
+	const auto &ds = (divelog.sites)[index.row()].get();
+	return getDiveSiteData(*ds, index.column(), role);
 }
 
 void LocationInformationModel::update()
@@ -137,8 +134,8 @@ void LocationInformationModel::update()
 
 void LocationInformationModel::diveSiteDiveCountChanged(dive_site *ds)
 {
-	int idx = get_divesite_idx(ds, divelog.sites);
-	if (idx >= 0)
+	size_t idx = divelog.sites.get_idx(ds);
+	if (idx != std::string::npos)
 		dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
 }
 
@@ -162,16 +159,16 @@ void LocationInformationModel::diveSiteDeleted(struct dive_site *, int idx)
 
 void LocationInformationModel::diveSiteChanged(struct dive_site *ds, int field)
 {
-	int idx = get_divesite_idx(ds, divelog.sites);
-	if (idx < 0)
+	size_t idx = divelog.sites.get_idx(ds);
+	if (idx == std::string::npos)
 		return;
 	dataChanged(createIndex(idx, field), createIndex(idx, field));
 }
 
 void LocationInformationModel::diveSiteDivesChanged(struct dive_site *ds)
 {
-	int idx = get_divesite_idx(ds, divelog.sites);
-	if (idx < 0)
+	size_t idx = divelog.sites.get_idx(ds);
+	if (idx == std::string::npos)
 		return;
 	dataChanged(createIndex(idx, NUM_DIVES), createIndex(idx, NUM_DIVES));
 }
@@ -181,10 +178,10 @@ bool DiveSiteSortedModel::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 	if (fullText.isEmpty())
 		return true;
 
-	if (sourceRow < 0 || sourceRow > divelog.sites->nr)
+	if (sourceRow < 0 || sourceRow > (int)divelog.sites.size())
 		return false;
-	struct dive_site *ds = divelog.sites->dive_sites[sourceRow];
-	QString text = QString(ds->name) + QString(ds->description) + QString(ds->notes);
+	const auto &ds = (divelog.sites)[sourceRow];
+	QString text = QString::fromStdString(ds->name + ds->description + ds->notes);
 	return text.contains(fullText, Qt::CaseInsensitive);
 }
 
@@ -193,25 +190,30 @@ bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2)
 	// The source indices correspond to indices in the global dive site table.
 	// Let's access them directly without going via the source model.
 	// Kind of dirty, but less effort.
-	struct dive_site *ds1 = get_dive_site(i1.row(), divelog.sites);
-	struct dive_site *ds2 = get_dive_site(i2.row(), divelog.sites);
-	if (!ds1 || !ds2) // Invalid dive sites compare as different
-		return false;
+
+	// Be careful to respect proper ordering when sites are invalid.
+	bool valid1 = i1.row() >= 0 && i1.row() < (int)divelog.sites.size();
+	bool valid2 = i2.row() >= 0 && i2.row() < (int)divelog.sites.size();
+	if (!valid1 || !valid2)
+		return valid1 < valid2;
+
+	const auto &ds1 = (divelog.sites)[i1.row()];
+	const auto &ds2 = (divelog.sites)[i2.row()];
 	switch (i1.column()) {
 	case LocationInformationModel::NAME:
 	default:
-		return QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+		return QString::localeAwareCompare(QString::fromStdString(ds1->name), QString::fromStdString(ds2->name)) < 0; // TODO: avoid copy
 	case LocationInformationModel::DESCRIPTION: {
-		int cmp = QString::localeAwareCompare(QString(ds1->description), QString(ds2->description)); // TODO: avoid copy
+		int cmp = QString::localeAwareCompare(QString::fromStdString(ds1->description), QString::fromStdString(ds2->description)); // TODO: avoid copy
 		return cmp != 0 ? cmp < 0 :
-		       QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+		       QString::localeAwareCompare(QString::fromStdString(ds1->name), QString::fromStdString(ds2->name)) < 0; // TODO: avoid copy
 	}
 	case LocationInformationModel::NUM_DIVES: {
-		int cmp = ds1->dives.nr - ds2->dives.nr;
+		int cmp = static_cast<int>(ds1->dives.size()) - static_cast<int>(ds2->dives.size());
 		// Since by default nr dives is descending, invert sort direction of names, such that
 		// the names are listed as ascending.
 		return cmp != 0 ? cmp < 0 :
-		       QString::localeAwareCompare(QString(ds1->name), QString(ds2->name)) < 0; // TODO: avoid copy
+		       QString::localeAwareCompare(QString::fromStdString(ds1->name), QString::fromStdString(ds2->name)) < 0; // TODO: avoid copy
 	}
 	}
 }
@@ -230,18 +232,19 @@ QStringList DiveSiteSortedModel::allSiteNames() const
 		// This shouldn't happen, but if model and core get out of sync,
 		// (more precisely: the core has more sites than the model is aware of),
 		// we might get an invalid index.
-		if (idx < 0 || idx > divelog.sites->nr) {
+		if (idx < 0 || idx > (int)divelog.sites.size()) {
 			report_info("DiveSiteSortedModel::allSiteNames(): invalid index");
 			continue;
 		}
-		locationNames << QString(divelog.sites->dive_sites[idx]->name);
+		locationNames << QString::fromStdString((divelog.sites)[idx]->name);
 	}
 	return locationNames;
 }
 
-struct dive_site *DiveSiteSortedModel::getDiveSite(const QModelIndex &idx)
+struct dive_site *DiveSiteSortedModel::getDiveSite(const QModelIndex &idx_source)
 {
-	return get_dive_site(mapToSource(idx).row(), divelog.sites);
+	auto idx = mapToSource(idx_source).row();
+	return idx >= 0 && idx < (int)divelog.sites.size() ? (divelog.sites)[idx].get() : NULL;
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -294,8 +297,8 @@ bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIn
 	if (!ds || ds == ignoreDs || ds == RECENTLY_ADDED_DIVESITE || !has_location(&ds->location))
 		return false;
 
-	return distance <= 0 ? same_location(&ds->location, &location)
-			     : (int64_t)get_distance(&ds->location, &location) * 1000 <= distance; // We need 64 bit to represent distances in mm
+	return distance <= 0 ? ds->location == location
+			     : (int64_t)get_distance(ds->location, location) * 1000 <= distance; // We need 64 bit to represent distances in mm
 }
 
 GPSLocationInformationModel::GPSLocationInformationModel(QObject *parent) : QSortFilterProxyModel(parent),

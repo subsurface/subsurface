@@ -6,11 +6,11 @@
 #include <QObject>
 
 #define IMPLEMENT5GETTERS(name) \
-	static QString name() { return prefs.dive_computer.name; } \
-	static QString name##1() { return prefs.dive_computer##1 .name; } \
-	static QString name##2() { return prefs.dive_computer##2 .name; } \
-	static QString name##3() { return prefs.dive_computer##3 .name; } \
-	static QString name##4() { return prefs.dive_computer##4 .name; }
+	static QString name() { return QString::fromStdString(prefs.dive_computer.name); } \
+	static QString name##1() { return QString::fromStdString(prefs.dive_computer##1 .name); } \
+	static QString name##2() { return QString::fromStdString(prefs.dive_computer##2 .name); } \
+	static QString name##3() { return QString::fromStdString(prefs.dive_computer##3 .name); } \
+	static QString name##4() { return QString::fromStdString(prefs.dive_computer##4 .name); }
 
 class qPrefDiveComputer : public QObject {
 	Q_OBJECT

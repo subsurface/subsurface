@@ -24,7 +24,7 @@ public:
 	static bool auto_recalculate_thumbnails() { return prefs.auto_recalculate_thumbnails; }
 	static bool extract_video_thumbnails() { return prefs.extract_video_thumbnails; }
 	static int extract_video_thumbnails_position() { return prefs.extract_video_thumbnails_position; }
-	static QString ffmpeg_executable() { return prefs.ffmpeg_executable; }
+	static QString ffmpeg_executable() { return QString::fromStdString(prefs.ffmpeg_executable); }
 
 public slots:
 	static void set_auto_recalculate_thumbnails(bool value);

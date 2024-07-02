@@ -3,6 +3,7 @@
 #define DIVECOMPUTEREXTRADATAMODEL_H
 
 #include "cleanertablemodel.h"
+#include "core/extradata.h"
 
 struct divecomputer;
 
@@ -22,11 +23,7 @@ public:
 	void updateDiveComputer(const struct divecomputer *dc);
 
 private:
-	struct Item {
-		QString key;
-		QString value;
-	};
-	std::vector<Item> items;
+	std::vector<extra_data> items;
 };
 
 #endif

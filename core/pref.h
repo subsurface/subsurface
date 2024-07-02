@@ -2,35 +2,31 @@
 #ifndef PREF_H
 #define PREF_H
 
-#ifdef __cplusplus
-extern "C" {
-#else
-#include <stdbool.h>
-#endif
-
 #include "units.h"
 #include "taxonomy.h"
 
-typedef struct
-{
-	bool po2;
-	bool pn2;
-	bool phe;
-	double po2_threshold_min;
-	double po2_threshold_max;
-	double pn2_threshold;
-	double phe_threshold;
-} partial_pressure_graphs_t;
+#include <string>
+#include <string_view>
 
-typedef struct {
-	enum taxonomy_category category[3];
-} geocoding_prefs_t;
+struct partial_pressure_graphs_t {
+	bool po2 = false;
+	bool pn2 = false;
+	bool phe = false;
+	double po2_threshold_min = 0.16;
+	double po2_threshold_max = 1.6;
+	double pn2_threshold = 4.0;
+	double phe_threshold = 13.0;
+};
 
-typedef struct {
-	const char *language;
-	const char *lang_locale;
-	bool use_system_language;
-} locale_prefs_t;
+struct geocoding_prefs_t {
+	enum taxonomy_category category[3] = { TC_NONE, TC_NONE, TC_NONE };
+};
+
+struct locale_prefs_t {
+	std::string language;
+	std::string lang_locale;
+	bool use_system_language = true;
+};
 
 enum deco_mode {
 	BUEHLMANN,
@@ -45,18 +41,18 @@ enum def_file_behavior {
 	CLOUD_DEFAULT_FILE
 };
 
-typedef struct {
-	bool dont_check_for_updates;
-	const char *last_version_used;
-	int next_check;
-} update_manager_prefs_t;
+struct update_manager_prefs_t {
+	bool dont_check_for_updates = false;
+	std::string last_version_used;
+	int next_check = 0;
+};
 
-typedef struct {
-	const char *vendor;
-	const char *product;
-	const char *device;
-	const char *device_name;
-} dive_computer_prefs_t;
+struct dive_computer_prefs_t {
+	std::string vendor;
+	std::string product;
+	std::string device;
+	std::string device_name;
+};
 
 // NOTE: these enums are duplicated in mobile-widgets/qmlinterface.h
 enum unit_system_values {
@@ -81,11 +77,11 @@ struct preferences {
 
 	// ********** CloudStorage **********
 	bool        cloud_auto_sync;
-	const char *cloud_base_url;
-	const char *cloud_storage_email;
-	const char *cloud_storage_email_encoded;
-	const char *cloud_storage_password;
-	const char *cloud_storage_pin;
+	std::string cloud_base_url;
+	std::string cloud_storage_email;
+	std::string cloud_storage_email_encoded;
+	std::string cloud_storage_password;
+	std::string cloud_storage_pin;
 	int         cloud_timeout;
 	int         cloud_verification_status;
 	bool        save_password_local;
@@ -100,7 +96,7 @@ struct preferences {
 
 	// ********** Display *************
 	bool        display_invalid_dives;
-	const char *divelist_font;
+	std::string divelist_font;
 	double      font_size;
 	double      mobile_scale;
 	bool        show_developer;
@@ -108,7 +104,7 @@ struct preferences {
 	bool        map_short_names;
 
 	// ********** Equipment tab *******
-	const char *default_cylinder;
+	std::string default_cylinder;
 	bool        include_unused_tanks;
 	bool        display_default_tank_infos;
 
@@ -116,9 +112,9 @@ struct preferences {
 	bool        auto_recalculate_thumbnails;
 	bool	    extract_video_thumbnails;
 	int	    extract_video_thumbnails_position; // position in stream: 0=first 100=last second
-	const char *ffmpeg_executable; // path of ffmpeg binary
+	std::string ffmpeg_executable; // path of ffmpeg binary
 	int         defaultsetpoint; // default setpoint in mbar
-	const char *default_filename;
+	std::string default_filename;
 	enum def_file_behavior default_file_behavior;
 	int         o2consumption; // ml per min
 	int         pscr_ratio; // dump ratio times 1000
@@ -130,20 +126,20 @@ struct preferences {
 	geocoding_prefs_t geocoding;
 
 	// ********** Language **********
-	const char     *date_format;
+	std::string     date_format;
 	bool            date_format_override;
-	const char     *date_format_short;
+	std::string     date_format_short;
 	locale_prefs_t  locale; //: TODO: move the rest of locale based info here.
-	const char     *time_format;
+	std::string     time_format;
 	bool            time_format_override;
 
 	// ********** Network **********
 	bool        proxy_auth;
-	const char *proxy_host;
+	std::string proxy_host;
 	int         proxy_port;
 	int         proxy_type;
-	const char *proxy_user;
-	const char *proxy_pass;
+	std::string proxy_user;
+	std::string proxy_pass;
 
 	// ********** Planner **********
 	int             ascratelast6m;
@@ -213,23 +209,22 @@ struct preferences {
 
 	// ********** UpdateManager **********
 	update_manager_prefs_t update_manager;
+
+	preferences();		// Initialize to default
+	~preferences();
 };
 
 extern struct preferences prefs, default_prefs, git_prefs;
 
-extern const char *system_divelist_default_font;
+extern std::string system_divelist_default_font;
 extern double system_divelist_default_font_size;
 
-extern const char *system_default_directory(void);
-extern const char *system_default_filename();
-extern bool subsurface_ignore_font(const char *font);
+extern std::string system_default_directory();
+extern std::string system_default_filename();
+extern bool subsurface_ignore_font(const std::string &font);
 extern void subsurface_OS_pref_setup();
-extern void copy_prefs(struct preferences *src, struct preferences *dest);
 
 extern void set_informational_units(const char *units);
-
-#ifdef __cplusplus
-}
-#endif
+extern void set_git_prefs(std::string_view prefs);
 
 #endif // PREF_H

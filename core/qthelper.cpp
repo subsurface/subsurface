@@ -12,6 +12,7 @@
 #include "version.h"
 #include "errorhelper.h"
 #include "planner.h"
+#include "range.h"
 #include "subsurface-time.h"
 #include "gettextfromc.h"
 #include "metadata.h"
@@ -50,14 +51,14 @@ static inline QString degreeSigns()
 	return QStringLiteral("dD\u00b0");
 }
 
-QString weight_string(int weight_in_grams)
+static QString weight_string(weight_t weight)
 {
 	QString str;
 	if (get_units()->weight == units::KG) {
-		double kg = (double) weight_in_grams / 1000.0;
+		double kg = (double) weight.grams / 1000.0;
 		str = QString("%L1").arg(kg, 0, 'f', kg >= 20.0 ? 0 : 1);
 	} else {
-		double lbs = grams_to_lbs(weight_in_grams);
+		double lbs = grams_to_lbs(weight.grams);
 		str = QString("%L1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1);
 	}
 	return str;
@@ -268,31 +269,6 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 		pos == normalized.size();
 }
 
-#if 0 // we'll need something like this for the dive site management, eventually
-bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out)
-{
-	location_t location;
-	bool ignore;
-	bool *parsed = parsed_out ?: &ignore;
-	*parsed = true;
-
-	/* if we have a master and the dive's gps address is different from it,
-	 * don't change the dive */
-	if (master && !same_location(&master->location, &dive->location))
-		return false;
-
-	if (!(*parsed = parseGpsText(gps_text, location)))
-		return false;
-
-	/* if dive gps didn't change, nothing changed */
-	if (same_location(&dive->location, location))
-		return false;
-	/* ok, update the dive and mark things changed */
-	dive->location = location;
-	return true;
-}
-#endif
-
 static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
 {
 	std::string filename = std::string(":/xslt/") + (const char *)uri;
@@ -310,7 +286,7 @@ static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *,
 	return doc;
 }
 
-extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
+xsltStylesheetPtr get_stylesheet(const char *name)
 {
 	// this needs to be done only once, but doesn't hurt to run every time
 	xsltSetLoaderFunc(get_stylesheet_doc);
@@ -357,22 +333,10 @@ std::string move_away(const std::string &old_path)
 	return newPath;
 }
 
-std::string get_file_name(const char *fileName)
+std::string get_file_name(const std::string &fileName)
 {
-	QFileInfo fileInfo(fileName);
+	QFileInfo fileInfo(fileName.c_str());
 	return fileInfo.fileName().toStdString();
-}
-
-extern "C" void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName)
-{
-	QString fileName(cfileName);
-	QString newName(path);
-	newName += cnewName;
-	QFile file(newName);
-	if (file.exists())
-		file.remove();
-	if (!QFile::copy(fileName, newName))
-		report_info("copy of %s to %s failed", cfileName, qPrintable(newName));
 }
 
 static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
@@ -382,17 +346,15 @@ static bool lessThan(const QPair<QString, int> &a, const QPair<QString, int> &b)
 
 QVector<QPair<QString, int>> selectedDivesGasUsed()
 {
-	int j;
 	QMap<QString, int> gasUsed;
 	for (dive *d: getDiveSelection()) {
-		volume_t *diveGases = get_gas_used(d);
-		for (j = 0; j < d->cylinders.nr; j++) {
+		std::vector<volume_t> diveGases = get_gas_used(d);
+		for (size_t j = 0; j < d->cylinders.size(); j++) {
 			if (diveGases[j].mliter) {
-				QString gasName = gasname(get_cylinder(d, j)->gasmix);
+				QString gasName = QString::fromStdString(d->get_cylinder(j)->gasmix.name());
 				gasUsed[gasName] += diveGases[j].mliter;
 			}
 		}
-		free(diveGases);
 	}
 	QVector<QPair<QString, int>> gasUsedOrdered;
 	gasUsedOrdered.reserve(gasUsed.size());
@@ -440,7 +402,7 @@ std::string subsurface_user_agent()
 
 QString getUiLanguage()
 {
-	return prefs.locale.lang_locale;
+	return QString::fromStdString(prefs.locale.lang_locale);
 }
 
 static std::vector<std::string> get_languages(const QLocale &loc)
@@ -495,10 +457,9 @@ void initUiLanguage()
 #endif
 	}
 
-	free((void*)prefs.locale.lang_locale);
-	prefs.locale.lang_locale = strdup(uiLang.c_str());
+	prefs.locale.lang_locale = uiLang;
 
-	if (!prefs.date_format_override || empty_string(prefs.date_format)) {
+	if (!prefs.date_format_override || prefs.date_format.empty()) {
 		// derive our standard date format from what the locale gives us
 		// the long format uses long weekday and month names, so replace those with the short ones
 		// for time we don't want the time zone designator and don't want leading zeroes on the hours
@@ -507,23 +468,20 @@ void initUiLanguage()
 		// special hack for Swedish as our switching from long weekday names to short weekday names
 		// messes things up there
 		dateFormat.replace("'en' 'den' d:'e'", " d");
-		free((void *)prefs.date_format);
-		prefs.date_format = copy_qstring(dateFormat);
+		prefs.date_format = dateFormat.toStdString();
 	}
 
-	if (!prefs.date_format_override || empty_string(prefs.date_format_short)) {
+	if (!prefs.date_format_override || prefs.date_format_short.empty()) {
 		// derive our standard date format from what the locale gives us
 		shortDateFormat = loc.dateFormat(QLocale::ShortFormat);
-		free((void *)prefs.date_format_short);
-		prefs.date_format_short = copy_qstring(shortDateFormat);
+		prefs.date_format_short = shortDateFormat.toStdString();
 	}
 
-	if (!prefs.time_format_override || empty_string(prefs.time_format)) {
+	if (!prefs.time_format_override || prefs.time_format.empty()) {
 		timeFormat = loc.timeFormat();
 		timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 		timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
-		free((void *)prefs.time_format);
-		prefs.time_format = copy_qstring(timeFormat);
+		prefs.time_format = timeFormat.toStdString();
 	}
 }
 
@@ -563,13 +521,8 @@ QString get_depth_unit()
 
 QString get_weight_string(weight_t weight, bool showunit)
 {
-	QString str = weight_string(weight.grams);
-	if (get_units()->weight == units::KG) {
-		str = QString("%1%2").arg(str, showunit ? gettextFromC::tr("kg") : QString());
-	} else {
-		str = QString("%1%2").arg(str, showunit ? gettextFromC::tr("lbs") : QString());
-	}
-	return str;
+	QString str = weight_string(weight);
+	return showunit ? str + get_weight_unit() : str;
 }
 
 QString get_weight_unit(bool metric)
@@ -721,7 +674,7 @@ static const char *printing_templates = "printing_templates";
 QString getPrintingTemplatePathUser()
 {
 	// Function-local statics are initialized on first invocation
-	static QString path(QString(system_default_directory()) +
+	static QString path(QString::fromStdString(system_default_directory()) +
 			    QDir::separator() +
 			    QString(printing_templates));
 	return path;
@@ -732,15 +685,6 @@ QString getPrintingTemplatePathBundle()
 	// Function-local statics are initialized on first invocation
 	static QString path(getSubsurfaceDataPath(printing_templates));
 	return path;
-}
-
-int gettimezoneoffset()
-{
-	QDateTime dt1, dt2;
-	dt1 = QDateTime::currentDateTime();
-	dt2 = dt1.toUTC();
-	dt1.setTimeSpec(Qt::UTC);
-	return dt2.secsTo(dt1);
 }
 
 QDateTime timestampToDateTime(timestamp_t when)
@@ -996,11 +940,11 @@ QString get_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
-	return loc.toString(ts.toUTC(), QString(prefs.date_format) + " " + prefs.time_format);
+	return loc.toString(ts.toUTC(), QString::fromStdString(prefs.date_format + " " + prefs.time_format));
 }
 
 // Get local seconds since Epoch from ISO formatted UTC date time + offset string
-extern "C" time_t get_dive_datetime_from_isostring(char *when) {
+time_t get_dive_datetime_from_isostring(char *when) {
 	QDateTime divetime = QDateTime::fromString(when, Qt::ISODate);
 	return (time_t)(divetime.toSecsSinceEpoch());
 }
@@ -1009,7 +953,7 @@ QString get_short_dive_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
-	return loc.toString(ts.toUTC(), QString(prefs.date_format_short) + " " + prefs.time_format);
+	return loc.toString(ts.toUTC(), QString::fromStdString(prefs.date_format_short + " " + prefs.time_format));
 }
 
 std::string get_dive_date_c_string(timestamp_t when)
@@ -1021,19 +965,19 @@ static QString get_dive_only_date_string(timestamp_t when)
 {
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
-	return loc.toString(ts.toUTC(), QString(prefs.date_format));
+	return loc.toString(ts.toUTC(), QString::fromStdString(prefs.date_format));
 }
 
 QString get_first_dive_date_string()
 {
-	const dive_table *dives = divelog.dives;
-	return dives->nr > 0 ? get_dive_only_date_string(dives->dives[0]->when) : gettextFromC::tr("no dives");
+	const dive_table &dives = divelog.dives;
+	return !dives.empty() ? get_dive_only_date_string(dives[0]->when) : gettextFromC::tr("no dives");
 }
 
 QString get_last_dive_date_string()
 {
-	const dive_table *dives = divelog.dives;
-	return dives->nr > 0 ? get_dive_only_date_string(dives->dives[dives->nr - 1]->when) : gettextFromC::tr("no dives");
+	const dive_table &dives = divelog.dives;
+	return !dives.empty() ? get_dive_only_date_string(dives.back()->when) : gettextFromC::tr("no dives");
 }
 
 std::string get_current_date()
@@ -1041,7 +985,7 @@ std::string get_current_date()
 	QDateTime ts(QDateTime::currentDateTime());;
 	QString current_date;
 
-	current_date = loc.toString(ts, QString(prefs.date_format_short));
+	current_date = loc.toString(ts, QString::fromStdString(prefs.date_format_short));
 
 	return current_date.toStdString();
 }
@@ -1049,14 +993,14 @@ std::string get_current_date()
 static QMutex hashOfMutex;
 static QHash<QString, QString> localFilenameOf;
 
-static const QString hashfile_name()
+std::string hashfile_name()
 {
-	return QString(system_default_directory()).append("/hashes");
+	return std::string(system_default_directory()) + "/hashes";
 }
 
 static QString thumbnailDir()
 {
-	return QString(system_default_directory()) + "/thumbnails/";
+	return QString::fromStdString(system_default_directory() + "/thumbnails/");
 }
 
 // Calculate thumbnail filename by hashing name of file.
@@ -1067,11 +1011,6 @@ QString thumbnailFileName(const QString &filename)
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	hash.addData(filename.toUtf8());
 	return thumbnailDir() + hash.result().toHex();
-}
-
-extern "C" char *hashfile_name_string()
-{
-	return copy_qstring(hashfile_name());
 }
 
 // TODO: This is a temporary helper struct. Remove in due course with convertLocalFilename().
@@ -1116,7 +1055,7 @@ static void convertLocalFilename(const QHash<QString, QByteArray> &hashOf, const
 
 void read_hashes()
 {
-	QFile hashfile(hashfile_name());
+	QFile hashfile(QString::fromStdString(hashfile_name()));
 	if (hashfile.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&hashfile);
 		QHash<QByteArray, QString> localFilenameByHash;
@@ -1140,7 +1079,7 @@ void read_hashes()
 
 void write_hashes()
 {
-	QSaveFile hashfile(hashfile_name());
+	QSaveFile hashfile(QString::fromStdString(hashfile_name()));
 	QMutexLocker locker(&hashOfMutex);
 
 	if (hashfile.open(QIODevice::WriteOnly)) {
@@ -1200,9 +1139,9 @@ QStringList videoExtensionFilters()
 	return filters;
 }
 
-extern "C" const char *local_file_path(struct picture *picture)
+std::string local_file_path(const struct picture &picture)
 {
-	return copy_qstring(localFilePath(picture->filename));
+	return localFilePath(QString::fromStdString(picture.filename)).toStdString();
 }
 
 QString get_gas_string(struct gasmix gas)
@@ -1215,16 +1154,15 @@ QString get_gas_string(struct gasmix gas)
 QStringList get_dive_gas_list(const struct dive *d)
 {
 	QStringList list;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		const cylinder_t *cyl = get_cylinder(d, i);
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
 		/* Check if we have the same gasmix two or more times
 		 * If yes return more verbose string */
 		int same_gas = same_gasmix_cylinder(cyl, i, d, true);
 		if (same_gas == -1)
-			list.push_back(get_gas_string(cyl->gasmix));
+			list.push_back(get_gas_string(cyl.gasmix));
 		else
-			list.push_back(get_gas_string(cyl->gasmix) + QString(" (%1 %2 ").arg(gettextFromC::tr("cyl.")).arg(i + 1) +
-				cyl->type.description + ")");
+			list.push_back(get_gas_string(cyl.gasmix) + QStringLiteral(" (%1 %2 ").arg(gettextFromC::tr("cyl.")).arg(i + 1) +
+				QString::fromStdString(cyl.type.description) + ")");
 	}
 	return list;
 }
@@ -1240,7 +1178,7 @@ QStringList stringToList(const QString &s)
 weight_t string_to_weight(const char *str)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	QString rest = QString(end).trimmed();
 	QString local_kg = gettextFromC::tr("kg");
 	QString local_lbs = gettextFromC::tr("lbs");
@@ -1264,7 +1202,7 @@ lbs:
 depth_t string_to_depth(const char *str)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	QString rest = QString(end).trimmed();
 	QString local_ft = gettextFromC::tr("ft");
 	QString local_m = gettextFromC::tr("m");
@@ -1289,7 +1227,7 @@ ft:
 pressure_t string_to_pressure(const char *str)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	QString rest = QString(end).trimmed();
 	QString local_psi = gettextFromC::tr("psi");
 	QString local_bar = gettextFromC::tr("bar");
@@ -1312,7 +1250,7 @@ psi:
 volume_t string_to_volume(const char *str, pressure_t workp)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	QString rest = QString(end).trimmed();
 	QString local_l = gettextFromC::tr("l");
 	QString local_cuft = gettextFromC::tr("cuft");
@@ -1343,7 +1281,7 @@ l:
 fraction_t string_to_fraction(const char *str)
 {
 	const char *end;
-	double value = strtod_flags(str, &end, 0);
+	double value = permissive_strtod(str, &end);
 	fraction_t fraction;
 
 	fraction.permille = lrint(value * 10);
@@ -1373,28 +1311,25 @@ std::optional<std::string> getCloudURL()
 {
 	std::string email(prefs.cloud_storage_email);
 	sanitize_email(email);
-	if (email.empty() || empty_string(prefs.cloud_storage_password)) {
+	if (email.empty() || prefs.cloud_storage_password.empty()) {
 		report_error("Please configure Cloud storage email and password in the preferences");
 		return {};
 	}
-	if (email != prefs.cloud_storage_email_encoded) {
-		free((void *)prefs.cloud_storage_email_encoded);
-		prefs.cloud_storage_email_encoded = strdup(email.c_str());
-	}
+	prefs.cloud_storage_email_encoded = email;
 	std::string filename = std::string(prefs.cloud_base_url) + "git/" + email + "[" + email + "]";
 	if (verbose)
 		report_info("returning cloud URL %s", filename.c_str());
 	return filename;
 }
 
-extern "C" void subsurface_mkdir(const char *dir)
+void subsurface_mkdir(const char *dir)
 {
 	QDir directory;
 	if (!directory.mkpath(QString(dir)))
 		report_info("failed to create path %s", dir);
 }
 
-extern "C" enum deco_mode decoMode(bool in_planner)
+enum deco_mode decoMode(bool in_planner)
 {
 	return in_planner ? prefs.planner_deco_mode : prefs.display_deco_mode;
 }
@@ -1403,11 +1338,11 @@ void init_proxy()
 {
 	QNetworkProxy proxy;
 	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
-	proxy.setHostName(prefs.proxy_host);
+	proxy.setHostName(QString::fromStdString(prefs.proxy_host));
 	proxy.setPort(prefs.proxy_port);
 	if (prefs.proxy_auth) {
-		proxy.setUser(prefs.proxy_user);
-		proxy.setPassword(prefs.proxy_pass);
+		proxy.setUser(QString::fromStdString(prefs.proxy_user));
+		proxy.setPassword(QString::fromStdString(prefs.proxy_pass));
 	}
 	QNetworkProxy::setApplicationProxy(proxy);
 }
@@ -1554,26 +1489,21 @@ void parse_seabear_header(const char *filename, struct xml_params *params)
 	f.close();
 }
 
-extern "C" void print_qt_versions()
+void print_qt_versions()
 {
 	printf("%s\n", qPrintable(QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion())));
 }
 
 QMutex planLock;
 
-extern "C" void lock_planner()
+void lock_planner()
 {
 	planLock.lock();
 }
 
-extern "C" void unlock_planner()
+void unlock_planner()
 {
 	planLock.unlock();
-}
-
-char *copy_qstring(const QString &s)
-{
-	return strdup(qPrintable(s));
 }
 
 // function to call to allow the UI to show updates for longer running activities
@@ -1627,7 +1557,7 @@ std::vector<int> get_cylinder_map_for_add(int count, int n)
 	return mapping;
 }
 
-extern "C" void emit_reset_signal()
+void emit_reset_signal()
 {
 	emit diveListNotifier.dataReset();
 }

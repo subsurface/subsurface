@@ -15,16 +15,16 @@ namespace Command {
 
 // This helper structure describes a dive that we want to add.
 struct DiveToAdd {
-	OwningDivePtr	 dive;		// Dive to add
-	dive_trip	*trip;		// Trip the dive belongs to, may be null
-	dive_site	*site;		// Site the dive is associated with, may be null
+	std::unique_ptr<struct dive>	 dive;		// Dive to add
+	dive_trip			*trip;		// Trip the dive belongs to, may be null
+	dive_site			*site;		// Site the dive is associated with, may be null
 };
 
 // Multiple trips, dives and dive sites that have to be added for a command
 struct DivesAndTripsToAdd {
 	std::vector<DiveToAdd> dives;
-	std::vector<OwningTripPtr> trips;
-	std::vector<OwningDiveSitePtr> sites;
+	std::vector<std::unique_ptr<dive_trip>> trips;
+	std::vector<std::unique_ptr<dive_site>> sites;
 };
 
 // Dives and sites that have to be removed for a command
@@ -48,7 +48,7 @@ struct DiveToTrip
 struct DivesToTrip
 {
 	std::vector<DiveToTrip> divesToMove;		// If dive_trip is null, remove from trip
-	std::vector<OwningTripPtr> tripsToAdd;
+	std::vector<std::unique_ptr<dive_trip>> tripsToAdd;
 };
 
 // All divelist commands derive from a common base class. It keeps track
@@ -58,7 +58,7 @@ struct DivesToTrip
 class DiveListBase : public Base {
 protected:
 	// These are helper functions to add / remove dive from the C-core structures.
-	DiveToAdd removeDive(struct dive *d, std::vector<OwningTripPtr> &tripsToAdd);
+	DiveToAdd removeDive(struct dive *d, std::vector<std::unique_ptr<dive_trip>> &tripsToAdd);
 	dive *addDive(DiveToAdd &d);
 	DivesAndTripsToAdd removeDives(DivesAndSitesToRemove &divesAndSitesToDelete);
 	DivesAndSitesToRemove addDives(DivesAndTripsToAdd &toAdd);
@@ -79,7 +79,7 @@ private:
 
 class AddDive : public DiveListBase {
 public:
-	AddDive(dive *dive, bool autogroup, bool newNumber);
+	AddDive(std::unique_ptr<struct dive> dive, bool autogroup, bool newNumber);
 private:
 	void undoit() override;
 	void redoit() override;
@@ -108,10 +108,10 @@ private:
 	// For redo and undo
 	DivesAndTripsToAdd	divesToAdd;
 	DivesAndSitesToRemove	divesAndSitesToRemove;
-	struct device_table	devicesToAddAndRemove;
+	device_table		devicesToAddAndRemove;
 
 	// For redo
-	std::vector<OwningDiveSitePtr>	sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>>	sitesToAdd;
 	std::vector<std::pair<std::string,FilterData>>
 					filterPresetsToAdd;
 
@@ -133,7 +133,7 @@ private:
 	// For redo
 	DivesAndSitesToRemove divesToDelete;
 
-	std::vector<OwningTripPtr> tripsToAdd;
+	std::vector<std::unique_ptr<dive_trip>> tripsToAdd;
 	DivesAndTripsToAdd divesToAdd;
 };
 
@@ -196,7 +196,7 @@ struct MergeTrips : public TripBase {
 
 class SplitDivesBase : public DiveListBase {
 protected:
-	SplitDivesBase(dive *old, std::array<dive *, 2> newDives);
+	SplitDivesBase(dive *old, std::array<std::unique_ptr<dive>, 2> newDives);
 private:
 	void undoit() override;
 	void redoit() override;
@@ -237,7 +237,7 @@ class DiveComputerBase : public DiveListBase {
 protected:
 	// old_dive must be a dive known to the core.
 	// new_dive must be new dive whose ownership is taken.
-	DiveComputerBase(dive *old_dive, dive *new_dive, int dc_nr_before, int dc_nr_after);
+	DiveComputerBase(dive *old_dive, std::unique_ptr<dive> new_dive, int dc_nr_before, int dc_nr_after);
 private:
 	void undoit() override;
 	void redoit() override;

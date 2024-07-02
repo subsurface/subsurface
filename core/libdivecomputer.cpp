@@ -4,7 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#include "ssrf.h"
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -12,7 +12,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
+#include <chrono>
 #include "gettext.h"
 #include "divelog.h"
 #include "divesite.h"
@@ -26,7 +26,6 @@
 #include "event.h"
 #include "sha1.h"
 #include "subsurface-time.h"
-#include "timer.h"
 
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/usbhid.h>
@@ -40,11 +39,12 @@
 #include "core/qthelper.h"
 #include "core/file.h"
 #include <array>
+#include <charconv>
 
 std::string dumpfile_name;
 std::string logfile_name;
-const char *progress_bar_text = "";
-void (*progress_callback)(const char *text) = NULL;
+std::string progress_bar_text;
+void (*progress_callback)(const std::string &text) = NULL;
 double progress_bar_fraction = 0.0;
 
 static int stoptime, stopdepth, ndl, po2, cns, heartbeat, bearing;
@@ -53,6 +53,16 @@ static int current_gas_index;
 
 #define INFO(fmt, ...) report_info("INFO: " fmt, ##__VA_ARGS__)
 #define ERROR(fmt, ...)	report_info("ERROR: " fmt, ##__VA_ARGS__)
+
+device_data_t::device_data_t()
+{
+}
+
+device_data_t::~device_data_t()
+{
+	if (descriptor)
+		dc_descriptor_free(descriptor);
+}
 
 /*
  * Directly taken from libdivecomputer's examples/common.c to improve
@@ -155,9 +165,9 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 		bottom_gas = gasmix_air;
 	}
 
-	clear_cylinder_table(&dive->cylinders);
+	dive->cylinders.clear();
 	for (i = 0; i < std::max(ngases, ntanks); i++) {
-		cylinder_t cyl = empty_cylinder;
+		cylinder_t cyl;
 		cyl.cylinder_use = NOT_USED;
 
 		if (i < ngases) {
@@ -202,7 +212,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 
 					break;
 				default:
-					if (dive->dc.divemode == CCR)
+					if (dive->dcs[0].divemode == CCR)
 						cyl.cylinder_use = DILUENT;
 					else
 						cyl.cylinder_use = OC_GAS;
@@ -226,7 +236,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 				cyl.type.workingpressure.mbar = lrint(tank.workpressure * 1000);
 
 				if (tank.type & DC_TANKVOLUME_IMPERIAL) {
-					if (same_string(devdata->model, "Suunto EON Steel")) {
+					if (devdata->model == "Suunto EON Steel") {
 						/* Suunto EON Steele gets this wrong. Badly.
 						 * but on the plus side it only supports a few imperial sizes,
 						 * so let's try and guess at least the most common ones.
@@ -236,8 +246,8 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 						cyl.type.workingpressure.mbar = lrint(
 							cyl.type.workingpressure.mbar * 206.843 / 206.7 );
 						char name_buffer[17];
-						int rounded_size = lrint(ml_to_cuft(gas_volume(&cyl,
-							cyl.type.workingpressure)));
+						int rounded_size = lrint(ml_to_cuft(cyl.gas_volume(
+							cyl.type.workingpressure).mliter));
 						rounded_size = (int)((rounded_size + 5) / 10) * 10;
 						switch (cyl.type.workingpressure.mbar) {
 						case 206843:
@@ -256,7 +266,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 							snprintf(name_buffer, sizeof(name_buffer), "%d cuft", rounded_size);
 							break;
 						}
-						cyl.type.description = copy_string(name_buffer);
+						cyl.type.description = name_buffer;
 						cyl.type.size.mliter = lrint(cuft_to_l(rounded_size) * 1000 /
 											mbar_to_atm(cyl.type.workingpressure.mbar));
 					}
@@ -279,7 +289,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 				if (!nearly_0(tank.endpressure)) {
 					cyl.start.mbar = lrint(tank.beginpressure * 1000);
 					cyl.end.mbar = lrint(tank.endpressure * 1000);
-				} else if (same_string(devdata->vendor, "Uwatec")) {
+				} else if (devdata->vendor == "Uwatec") {
 					cyl.start.mbar = lrint(tank.beginpressure * 1000 + 30000);
 					cyl.end.mbar = 30000;
 				}
@@ -291,15 +301,15 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 			fill_default_cylinder(dive, &cyl);
 		}
 		/* whatever happens, make sure there is a name for the cylinder */
-		if (empty_string(cyl.type.description))
-			cyl.type.description = strdup(translate("gettextFromC", "unknown"));
+		if (cyl.type.description.empty())
+			cyl.type.description = translate("gettextFromC", "unknown");
 
-		add_cylinder(&dive->cylinders, dive->cylinders.nr, cyl);
+		dive->cylinders.push_back(std::move(cyl));
 	}
 	return DC_STATUS_SUCCESS;
 }
 
-static void handle_event(struct divecomputer *dc, struct sample *sample, dc_sample_value_t value)
+static void handle_event(struct divecomputer *dc, const struct sample &sample, dc_sample_value_t value)
 {
 	int type, time;
 	struct event *ev;
@@ -350,20 +360,19 @@ static void handle_event(struct divecomputer *dc, struct sample *sample, dc_samp
 #endif
 
 	time = value.event.time;
-	if (sample)
-		time += sample->time.seconds;
+	time += sample.time.seconds;
 
 	ev = add_event(dc, time, type, value.event.flags, value.event.value, name);
-	if (event_is_gaschange(ev) && ev->gas.index >= 0)
+	if (ev->is_gaschange() && ev->gas.index >= 0)
 		current_gas_index = ev->gas.index;
 }
 
-static void handle_gasmix(struct divecomputer *dc, struct sample *sample, int idx)
+static void handle_gasmix(struct divecomputer *dc, const struct sample &sample, int idx)
 {
 	/* TODO: Verify that index is not higher than the number of cylinders */
 	if (idx < 0)
 		return;
-	add_event(dc, sample->time.seconds, SAMPLE_EVENT_GASCHANGE2, idx+1, 0, "gaschange");
+	add_event(dc, sample.time.seconds, SAMPLE_EVENT_GASCHANGE2, idx+1, 0, "gaschange");
 	current_gas_index = idx;
 }
 
@@ -371,30 +380,19 @@ void
 sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata)
 {
 	static unsigned int nsensor = 0;
-	dc_sample_value_t value = *pvalue;
 	struct divecomputer *dc = (divecomputer *)userdata;
-	struct sample *sample;
+	dc_sample_value_t value = *pvalue;
 
 	/*
-	 * We fill in the "previous" sample - except for DC_SAMPLE_TIME,
-	 * which creates a new one.
+	 * DC_SAMPLE_TIME is special: it creates a new sample.
+	 * Other types fill in an existing sample.
 	 */
-	sample = dc->samples ? dc->sample + dc->samples - 1 : NULL;
-
-	/*
-	 * Ok, sanity check.
-	 * If first sample is not a DC_SAMPLE_TIME, Allocate a sample for us
-	 */
-	if (sample == NULL && type != DC_SAMPLE_TIME)
-		sample = prepare_sample(dc);
-
-	switch (type) {
-	case DC_SAMPLE_TIME:
+	if (type == DC_SAMPLE_TIME) {
 		nsensor = 0;
 
 		// Create a new sample.
 		// Mark depth as negative
-		sample = prepare_sample(dc);
+		struct sample *sample = prepare_sample(dc);
 		sample->time.seconds = value.time / 1000;
 		sample->depth.mm = -1;
 		// The current sample gets some sticky values
@@ -408,40 +406,46 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 		sample->cns = cns;
 		sample->heartbeat = heartbeat;
 		sample->bearing.degrees = bearing;
-		finish_sample(dc);
-		break;
+		return;
+	}
+
+	if (dc->samples.empty())
+		prepare_sample(dc);
+	struct sample &sample = dc->samples.back();
+
+	switch (type) {
 	case DC_SAMPLE_DEPTH:
-		sample->depth.mm = lrint(value.depth * 1000);
+		sample.depth.mm = lrint(value.depth * 1000);
 		break;
 	case DC_SAMPLE_PRESSURE:
-		add_sample_pressure(sample, value.pressure.tank, lrint(value.pressure.value * 1000));
+		add_sample_pressure(&sample, value.pressure.tank, lrint(value.pressure.value * 1000));
 		break;
 	case DC_SAMPLE_GASMIX:
 		handle_gasmix(dc, sample, value.gasmix);
 		break;
 	case DC_SAMPLE_TEMPERATURE:
-		sample->temperature.mkelvin = C_to_mkelvin(value.temperature);
+		sample.temperature.mkelvin = C_to_mkelvin(value.temperature);
 		break;
 	case DC_SAMPLE_EVENT:
 		handle_event(dc, sample, value);
 		break;
 	case DC_SAMPLE_RBT:
-		sample->rbt.seconds = (!strncasecmp(dc->model, "suunto", 6)) ? value.rbt : value.rbt * 60;
+		sample.rbt.seconds = (!strncasecmp(dc->model.c_str(), "suunto", 6)) ? value.rbt : value.rbt * 60;
 		break;
 #ifdef DC_SAMPLE_TTS
 	case DC_SAMPLE_TTS:
-		sample->tts.seconds = value.time;
+		sample.tts.seconds = value.time;
 		break;
 #endif
 	case DC_SAMPLE_HEARTBEAT:
-		sample->heartbeat = heartbeat = value.heartbeat;
+		sample.heartbeat = heartbeat = value.heartbeat;
 		break;
 	case DC_SAMPLE_BEARING:
-		sample->bearing.degrees = bearing = value.bearing;
+		sample.bearing.degrees = bearing = value.bearing;
 		break;
 #ifdef DEBUG_DC_VENDOR
 	case DC_SAMPLE_VENDOR:
-		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION_TUPLE(sample->time.seconds, 60),
+		printf("   <vendor time='%u:%02u' type=\"%u\" size=\"%u\">", FRACTION_TUPLE(sample.time.seconds, 60),
 		       value.vendor.type, value.vendor.size);
 		for (int i = 0; i < value.vendor.size; ++i)
 			printf("%02X", ((unsigned char *)value.vendor.data)[i]);
@@ -450,11 +454,11 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 #endif
 	case DC_SAMPLE_SETPOINT:
 		/* for us a setpoint means constant pO2 from here */
-		sample->setpoint.mbar = po2 = lrint(value.setpoint * 1000);
+		sample.setpoint.mbar = po2 = lrint(value.setpoint * 1000);
 		break;
 	case DC_SAMPLE_PPO2:
 		if (nsensor < MAX_O2_SENSORS)
-			sample->o2sensor[nsensor].mbar = lrint(value.ppo2.value * 1000);
+			sample.o2sensor[nsensor].mbar = lrint(value.ppo2.value * 1000);
 		else
 			report_error("%d is more o2 sensors than we can handle", nsensor);
 		nsensor++;
@@ -463,57 +467,54 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 			dc->no_o2sensors = nsensor;
 		break;
 	case DC_SAMPLE_CNS:
-		sample->cns = cns = lrint(value.cns * 100);
+		sample.cns = cns = lrint(value.cns * 100);
 		break;
 	case DC_SAMPLE_DECO:
 		if (value.deco.type == DC_DECO_NDL) {
-			sample->ndl.seconds = ndl = value.deco.time;
-			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
-			sample->in_deco = in_deco = false;
+			sample.ndl.seconds = ndl = value.deco.time;
+			sample.stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
+			sample.in_deco = in_deco = false;
 		} else if (value.deco.type == DC_DECO_DECOSTOP ||
 			   value.deco.type == DC_DECO_DEEPSTOP) {
-			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
-			sample->stoptime.seconds = stoptime = value.deco.time;
-			sample->in_deco = in_deco = stopdepth > 0;
+			sample.stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
+			sample.stoptime.seconds = stoptime = value.deco.time;
+			sample.in_deco = in_deco = stopdepth > 0;
 			ndl = 0;
 		} else if (value.deco.type == DC_DECO_SAFETYSTOP) {
-			sample->in_deco = in_deco = false;
-			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
-			sample->stoptime.seconds = stoptime = value.deco.time;
+			sample.in_deco = in_deco = false;
+			sample.stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
+			sample.stoptime.seconds = stoptime = value.deco.time;
 		}
-		sample->tts.seconds = value.deco.tts;
+		sample.tts.seconds = value.deco.tts;
 	default:
 		break;
 	}
 }
 
-static void dev_info(device_data_t *, const char *fmt, ...)
+static void dev_info(const char *fmt, ...)
 {
-	static char buffer[1024];
 	va_list ap;
 
 	va_start(ap, fmt);
-	vsnprintf(buffer, sizeof(buffer), fmt, ap);
+	progress_bar_text = vformat_string_std(fmt, ap);
 	va_end(ap);
-	progress_bar_text = buffer;
 	if (verbose)
-		INFO("dev_info: %s", buffer);
+		INFO("dev_info: %s", progress_bar_text.c_str());
 
 	if (progress_callback)
-		(*progress_callback)(buffer);
+		(*progress_callback)(progress_bar_text);
 }
 
 static int import_dive_number = 0;
 
 static void download_error(const char *fmt, ...)
 {
-	static char buffer[1024];
 	va_list ap;
 
 	va_start(ap, fmt);
-	vsnprintf(buffer, sizeof(buffer), fmt, ap);
+	std::string buffer = vformat_string_std(fmt, ap);
 	va_end(ap);
-	report_error("Dive %d: %s", import_dive_number, buffer);
+	report_error("Dive %d: %s", import_dive_number, buffer.c_str());
 }
 
 static dc_status_t parse_samples(device_data_t *, struct divecomputer *dc, dc_parser_t *parser)
@@ -522,75 +523,46 @@ static dc_status_t parse_samples(device_data_t *, struct divecomputer *dc, dc_pa
 	return dc_parser_samples_foreach(parser, sample_cb, dc);
 }
 
-static int might_be_same_dc(struct divecomputer *a, struct divecomputer *b)
+static int might_be_same_dc(const struct divecomputer &a, const struct divecomputer &b)
 {
-	if (!a->model || !b->model)
+	if (a.model.empty() || b.model.empty())
 		return 1;
-	if (strcasecmp(a->model, b->model))
+	if (strcasecmp(a.model.c_str(), b.model.c_str()))
 		return 0;
-	if (!a->deviceid || !b->deviceid)
+	if (!a.deviceid || !b.deviceid)
 		return 1;
-	return a->deviceid == b->deviceid;
+	return a.deviceid == b.deviceid;
 }
 
-static int match_one_dive(struct divecomputer *a, struct dive *dive)
+static bool match_one_dive(const struct divecomputer &a, const struct dive &dive)
 {
-	struct divecomputer *b = &dive->dc;
-
 	/*
 	 * Walk the existing dive computer data,
 	 * see if we have a match (or an anti-match:
 	 * the same dive computer but a different
 	 * dive ID).
 	 */
-	do {
-		int match = match_one_dc(a, b);
-		if (match)
-			return match > 0;
-		b = b->next;
-	} while (b);
+	for (auto &b: dive.dcs) {
+		if (match_one_dc(a, b) > 0)
+			return true;
+	}
 
 	/* Ok, no exact dive computer match. Does the date match? */
-	b = &dive->dc;
-	do {
-		if (a->when == b->when && might_be_same_dc(a, b))
-			return 1;
-		b = b->next;
-	} while (b);
+	for (auto &b: dive.dcs) {
+		if (a.when == b.when && might_be_same_dc(a, b))
+			return true;
+	}
 
-	return 0;
+	return false;
 }
 
 /*
  * Check if this dive already existed before the import
  */
-static int find_dive(struct divecomputer *match)
+static bool find_dive(const struct divecomputer &match)
 {
-	int i;
-
-	for (i = divelog.dives->nr - 1; i >= 0; i--) {
-		struct dive *old = divelog.dives->dives[i];
-
-		if (match_one_dive(match, old))
-			return 1;
-	}
-	return 0;
-}
-
-/*
- * Like g_strdup_printf(), but without the stupid g_malloc/g_free confusion.
- * And we limit the string to some arbitrary size.
- */
-static char *str_printf(const char *fmt, ...)
-{
-	va_list args;
-	char buf[1024];
-
-	va_start(args, fmt);
-	vsnprintf(buf, sizeof(buf) - 1, fmt, args);
-	va_end(args);
-	buf[sizeof(buf) - 1] = 0;
-	return strdup(buf);
+	return std::any_of(divelog.dives.rbegin(), divelog.dives.rend(),
+			   [&match] (auto &old) { return match_one_dive(match, *old);} );
 }
 
 /*
@@ -601,13 +573,10 @@ static char *str_printf(const char *fmt, ...)
  */
 static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int fsize)
 {
-	uint32_t csum[5];
-
 	if (!fingerprint || !fsize)
 		return 0;
 
-	SHA1(fingerprint, fsize, (unsigned char *)csum);
-	return csum[0];
+	return SHA1_uint32(fingerprint, fsize);
 }
 
 uint32_t calculate_string_hash(const char *str)
@@ -619,13 +588,13 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 {
 	// Our dive ID is the string hash of the "Dive ID" string
 	if (!strcmp(str->desc, "Dive ID")) {
-		if (!dive->dc.diveid)
-			dive->dc.diveid = calculate_string_hash(str->value);
+		if (!dive->dcs[0].diveid)
+			dive->dcs[0].diveid = calculate_string_hash(str->value);
 		return;
 	}
 
 	// This will pick up serial number and firmware data
-	add_extra_data(&dive->dc, str->desc, str->value);
+	add_extra_data(&dive->dcs[0], str->desc, str->value);
 
 	/* GPS data? */
 	if (!strncmp(str->desc, "GPS", 3)) {
@@ -645,7 +614,7 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 
 		if (location.lat.udeg && location.lon.udeg) {
 			unregister_dive_from_dive_site(dive);
-			add_dive_to_dive_site(dive, create_dive_site_with_gps(str->value, &location, devdata->log->sites));
+			devdata->log->sites.create(std::string(str->value), location)->add_dive(dive);
 		}
 	}
 }
@@ -663,7 +632,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	}
 
 	// Our deviceid is the hash of the serial number
-	dive->dc.deviceid = 0;
+	dive->dcs[0].deviceid = 0;
 
 	if (rc == DC_STATUS_SUCCESS) {
 		tm.tm_year = dt.year;
@@ -672,12 +641,12 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		tm.tm_hour = dt.hour;
 		tm.tm_min = dt.minute;
 		tm.tm_sec = dt.second;
-		dive->when = dive->dc.when = utc_mktime(&tm);
+		dive->when = dive->dcs[0].when = utc_mktime(&tm);
 	}
 
 	// Parse the divetime.
 	std::string date_string = get_dive_date_c_string(dive->when);
-	dev_info(devdata, translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string.c_str());
+	dev_info(translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string.c_str());
 
 	unsigned int divetime = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVETIME, 0, &divetime);
@@ -686,7 +655,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.duration.seconds = divetime;
+		dive->dcs[0].duration.seconds = divetime;
 
 	// Parse the maxdepth.
 	double maxdepth = 0.0;
@@ -696,7 +665,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.maxdepth.mm = lrint(maxdepth * 1000);
+		dive->dcs[0].maxdepth.mm = lrint(maxdepth * 1000);
 
 	// Parse temperatures
 	double temperature;
@@ -712,11 +681,11 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		if (rc == DC_STATUS_SUCCESS)
 			switch(i) {
 			case 0:
-				dive->dc.airtemp.mkelvin = C_to_mkelvin(temperature);
+				dive->dcs[0].airtemp.mkelvin = C_to_mkelvin(temperature);
 				break;
 			case 1: // we don't distinguish min and max water temp here, so take min if given, max otherwise
 			case 2:
-				dive->dc.watertemp.mkelvin = C_to_mkelvin(temperature);
+				dive->dcs[0].watertemp.mkelvin = C_to_mkelvin(temperature);
 				break;
 			}
 	}
@@ -740,16 +709,16 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS) {
-		dive->dc.salinity = lrint(salinity.density * 10.0);
-		if (dive->dc.salinity == 0) {
+		dive->dcs[0].salinity = lrint(salinity.density * 10.0);
+		if (dive->dcs[0].salinity == 0) {
 			// sometimes libdivecomputer gives us density values, sometimes just
 			// a water type and a density of zero; let's make this work as best as we can
 			switch (salinity.type) {
 			case DC_WATER_FRESH:
-				dive->dc.salinity = FRESHWATER_SALINITY;
+				dive->dcs[0].salinity = FRESHWATER_SALINITY;
 				break;
 			default:
-				dive->dc.salinity = SEAWATER_SALINITY;
+				dive->dcs[0].salinity = SEAWATER_SALINITY;
 				break;
 			}
 		}
@@ -762,7 +731,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 	if (rc == DC_STATUS_SUCCESS)
-		dive->dc.surface_pressure.mbar = lrint(surface_pressure * 1000.0);
+		dive->dcs[0].surface_pressure.mbar = lrint(surface_pressure * 1000.0);
 
 	// The dive parsing may give us more device information
 	int idx;
@@ -786,17 +755,17 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	if (rc == DC_STATUS_SUCCESS)
 		switch(divemode) {
 		case DC_DIVEMODE_FREEDIVE:
-			dive->dc.divemode = FREEDIVE;
+			dive->dcs[0].divemode = FREEDIVE;
 			break;
 		case DC_DIVEMODE_GAUGE:
 		case DC_DIVEMODE_OC: /* Open circuit */
-			dive->dc.divemode = OC;
+			dive->dcs[0].divemode = OC;
 			break;
 		case DC_DIVEMODE_CCR:  /* Closed circuit rebreather*/
-			dive->dc.divemode = CCR;
+			dive->dcs[0].divemode = CCR;
 			break;
 		case DC_DIVEMODE_SCR:  /* Semi-closed circuit rebreather */
-			dive->dc.divemode = PSCR;
+			dive->dcs[0].divemode = PSCR;
 			break;
 		}
 
@@ -818,7 +787,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dc_status_t rc;
 	dc_parser_t *parser = NULL;
 	device_data_t *devdata = (device_data_t *)userdata;
-	struct dive *dive = NULL;
 
 	/* reset static data, that is only valid per dive */
 	stoptime = stopdepth = po2 = cns = heartbeat = 0;
@@ -830,25 +798,25 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	rc = dc_parser_new(&parser, devdata->device, data, size);
 	if (rc != DC_STATUS_SUCCESS) {
-		download_error(translate("gettextFromC", "Unable to create parser for %s %s: %d"), devdata->vendor, devdata->product, errmsg(rc));
+		download_error(translate("gettextFromC", "Unable to create parser for %s %s: %d"), devdata->vendor.c_str(), devdata->product.c_str(), errmsg(rc));
 		return true;
 	}
 
-	dive = alloc_dive();
+	auto dive = std::make_unique<struct dive>();
 
 	// Fill in basic fields
-	dive->dc.model = strdup(devdata->model);
-	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
+	dive->dcs[0].model = devdata->model;
+	dive->dcs[0].diveid = calculate_diveid(fingerprint, fsize);
 
 	// Parse the dive's header data
-	rc = libdc_header_parser (parser, devdata, dive);
+	rc = libdc_header_parser (parser, devdata, dive.get());
 	if (rc != DC_STATUS_SUCCESS) {
 		download_error(translate("getextFromC", "Error parsing the header: %s"), errmsg(rc));
 		goto error_exit;
 	}
 
 	// Initialize the sample data.
-	rc = parse_samples(devdata, &dive->dc, parser);
+	rc = parse_samples(devdata, &dive->dcs[0], parser);
 	if (rc != DC_STATUS_SUCCESS) {
 		download_error(translate("gettextFromC", "Error parsing the samples: %s"), errmsg(rc));
 		goto error_exit;
@@ -866,42 +834,39 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		devdata->fingerprint = (unsigned char *)calloc(fsize, 1);
 		if (devdata->fingerprint) {
 			devdata->fsize = fsize;
-			devdata->fdeviceid = dive->dc.deviceid;
-			devdata->fdiveid = dive->dc.diveid;
+			devdata->fdeviceid = dive->dcs[0].deviceid;
+			devdata->fdiveid = dive->dcs[0].diveid;
 			memcpy(devdata->fingerprint, fingerprint, fsize);
 		}
 	}
 
 	/* If we already saw this dive, abort. */
-	if (!devdata->force_download && find_dive(&dive->dc)) {
+	if (!devdata->force_download && find_dive(dive->dcs[0])) {
 		std::string date_string = get_dive_date_c_string(dive->when);
-		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string.c_str());
-		free_dive(dive);
+		dev_info(translate("gettextFromC", "Already downloaded dive at %s"), date_string.c_str());
 		return false;
 	}
 
 	/* Various libdivecomputer interface fixups */
-	if (dive->dc.airtemp.mkelvin == 0 && first_temp_is_air && dive->dc.samples) {
-		dive->dc.airtemp = dive->dc.sample[0].temperature;
-		dive->dc.sample[0].temperature.mkelvin = 0;
+	if (dive->dcs[0].airtemp.mkelvin == 0 && first_temp_is_air && !dive->dcs[0].samples.empty()) {
+		dive->dcs[0].airtemp = dive->dcs[0].samples[0].temperature;
+		dive->dcs[0].samples[0].temperature.mkelvin = 0;
 	}
 
 	/* special case for bug in Tecdiving DiveComputer.eu
 	 * often the first sample has a water temperature of 0C, followed by the correct
 	 * temperature in the next sample */
-	if (same_string(dive->dc.model, "Tecdiving DiveComputer.eu") &&
-	    dive->dc.sample[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
-	    dive->dc.sample[1].temperature.mkelvin > dive->dc.sample[0].temperature.mkelvin)
-		dive->dc.sample[0].temperature.mkelvin = dive->dc.sample[1].temperature.mkelvin;
+	if (dive->dcs[0].model == "Tecdiving DiveComputer.eu" && !dive->dcs[0].samples.empty() &&
+	    dive->dcs[0].samples[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
+	    dive->dcs[0].samples[1].temperature.mkelvin > dive->dcs[0].samples[0].temperature.mkelvin)
+		dive->dcs[0].samples[0].temperature.mkelvin = dive->dcs[0].samples[1].temperature.mkelvin;
 
-	record_dive_to_table(dive, devdata->log->dives);
+	devdata->log->dives.record_dive(std::move(dive));
 	return true;
 
 error_exit:
 	dc_parser_destroy(parser);
-	free_dive(dive);
 	return true;
-
 }
 
 #ifndef O_BINARY
@@ -916,7 +881,7 @@ static void do_save_fingerprint(device_data_t *devdata, const char *tmp, const c
 		return;
 
 	if (verbose)
-		dev_info(devdata, "Saving fingerprint for %08x:%08x to '%s'",
+		dev_info("Saving fingerprint for %08x:%08x to '%s'",
 			 devdata->fdeviceid, devdata->fdiveid, final);
 
 	/* The fingerprint itself.. */
@@ -942,11 +907,11 @@ static std::string fingerprint_file(device_data_t *devdata)
 	uint32_t model, serial;
 
 	// Model hash and libdivecomputer 32-bit 'serial number' for the file name
-	model = calculate_string_hash(devdata->model);
+	model = calculate_string_hash(devdata->model.c_str());
 	serial = devdata->devinfo.serial;
 
 	return format_string_std("%s/fingerprints/%04x.%u",
-		system_default_directory(),
+		system_default_directory().c_str(),
 		model, serial);
 }
 
@@ -987,7 +952,7 @@ static void save_fingerprint(device_data_t *devdata)
 		return;
 
 	// Make sure the fingerprints directory exists
-	std::string dir = format_string_std("%s/fingerprints", system_default_directory());
+	std::string dir = system_default_directory() + "/fingerprints";
 	subsurface_mkdir(dir.c_str());
 
 	std::string final = fingerprint_file(devdata);
@@ -1016,16 +981,16 @@ static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, cons
 	memcpy(&diveid, buffer + size + 4, 4);
 
 	if (verbose)
-		dev_info(devdata, " ... fingerprinted dive %08x:%08x", deviceid, diveid);
+		dev_info(" ... fingerprinted dive %08x:%08x", deviceid, diveid);
 	/* Only use it if we *have* that dive! */
-	if (!has_dive(deviceid, diveid)) {
+	if (!divelog.dives.has_dive(deviceid, diveid)) {
 		if (verbose)
-			dev_info(devdata, " ... dive not found");
+			dev_info(" ... dive not found");
 		return;
 	}
 	dc_device_set_fingerprint(device, buffer, size);
 	if (verbose)
-		dev_info(devdata, " ... fingerprint of size %zu", size);
+		dev_info(" ... fingerprint of size %zu", size);
 }
 
 /*
@@ -1035,27 +1000,25 @@ static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, cons
  */
 static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 {
-	const unsigned char *raw_data;
-
 	if (devdata->force_download)
 		return;
 
 	/* first try our in memory data - raw_data is owned by the table, the dc_device_set_fingerprint function copies the data */
-	int fsize = get_fingerprint_data(&fingerprint_table, calculate_string_hash(devdata->model), devdata->devinfo.serial, &raw_data);
+	auto [fsize, raw_data] = get_fingerprint_data(fingerprints, calculate_string_hash(devdata->model.c_str()), devdata->devinfo.serial);
 	if (fsize) {
 		if (verbose)
-			dev_info(devdata, "... found fingerprint in dive table");
+			dev_info("... found fingerprint in dive table");
 		dc_device_set_fingerprint(device, raw_data, fsize);
 		return;
 	}
 	/* now check if we have a fingerprint on disk */
 	std::string cachename = fingerprint_file(devdata);
 	if (verbose)
-		dev_info(devdata, "Looking for fingerprint in '%s'", cachename.c_str());
+		dev_info("Looking for fingerprint in '%s'", cachename.c_str());
 	auto [mem, err] = readfile(cachename.c_str());
 	if (err > 0) {
 		if (verbose)
-			dev_info(devdata, " ... got %zu bytes", mem.size());
+			dev_info(" ... got %zu bytes", mem.size());
 		verify_fingerprint(device, devdata, (unsigned char *)mem.data(), mem.size());
 	}
 }
@@ -1071,7 +1034,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 	switch (event) {
 	case DC_EVENT_WAITING:
-		dev_info(devdata, translate("gettextFromC", "Event: waiting for user action"));
+		dev_info(translate("gettextFromC", "Event: waiting for user action"));
 		break;
 	case DC_EVENT_PROGRESS:
 		/* this seems really dumb... but having no idea what is happening on long
@@ -1083,7 +1046,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 			last = progress->current;
 		if (progress->current > last + 10240) {
 			last = progress->current;
-			dev_info(NULL, translate("gettextFromC", "read %dkb"), progress->current / 1024);
+			dev_info(translate("gettextFromC", "read %dkb"), progress->current / 1024);
 		}
 		if (progress->maximum)
 			progress_bar_fraction = (double)progress->current / (double)progress->maximum;
@@ -1097,14 +1060,14 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				devdata->descriptor = better_descriptor;
 				devdata->product = dc_descriptor_get_product(better_descriptor);
 				devdata->vendor = dc_descriptor_get_vendor(better_descriptor);
-				devdata->model = str_printf("%s %s", devdata->vendor, devdata->product);
+				devdata->model = devdata->vendor + " " + devdata->product;
 			} else {
 				report_info("EVENT_DEVINFO gave us a different detected product (model %d instead of %d), but that one is unknown.",
 					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 			}
 		}
-		dev_info(devdata, translate("gettextFromC", "model=%s firmware=%u serial=%u"),
-			 devdata->product, devinfo->firmware, devinfo->serial);
+		dev_info(translate("gettextFromC", "model=%s firmware=%u serial=%u"),
+			 devdata->product.c_str(), devinfo->firmware, devinfo->serial);
 		if (devdata->libdc_logfile) {
 			fprintf(devdata->libdc_logfile, "Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
 				devinfo->model, devinfo->model,
@@ -1117,7 +1080,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 
 		break;
 	case DC_EVENT_CLOCK:
-		dev_info(devdata, translate("gettextFromC", "Event: systime=%" PRId64 ", devtime=%u\n"),
+		dev_info(translate("gettextFromC", "Event: systime=%" PRId64 ", devtime=%u\n"),
 			 (uint64_t)clock->systime, clock->devtime);
 		if (devdata->libdc_logfile) {
 			fprintf(devdata->libdc_logfile, "Event: systime=%" PRId64 ", devtime=%u\n",
@@ -1144,18 +1107,18 @@ static int cancel_cb(void *)
 	return import_thread_cancelled;
 }
 
-static const char *do_device_import(device_data_t *data)
+static std::string do_device_import(device_data_t *data)
 {
 	dc_status_t rc;
 	dc_device_t *device = data->device;
 
-	data->model = str_printf("%s %s", data->vendor, data->product);
+	data->model = data->vendor + " " + data->product;
 
 	// Register the event handler.
 	int events = DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR;
 	rc = dc_device_set_events(device, events, event_cb, data);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(data, "Import error: %s", errmsg(rc));
+		dev_info("Import error: %s", errmsg(rc));
 
 		return translate("gettextFromC", "Error registering the event handler.");
 	}
@@ -1163,7 +1126,7 @@ static const char *do_device_import(device_data_t *data)
 	// Register the cancellation handler.
 	rc = dc_device_set_cancel(device, cancel_cb, data);
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(data, "Import error: %s", errmsg(rc));
+		dev_info("Import error: %s", errmsg(rc));
 
 		return translate("gettextFromC", "Error registering the cancellation handler.");
 	}
@@ -1188,7 +1151,7 @@ static const char *do_device_import(device_data_t *data)
 			if (rc == DC_STATUS_UNSUPPORTED)
 				return translate("gettextFromC", "Dumping not supported on this device");
 
-			dev_info(data, "Import error: %s", errmsg(rc));
+			dev_info("Import error: %s", errmsg(rc));
 
 			return translate("gettextFromC", "Dive data dumping error");
 		}
@@ -1198,38 +1161,32 @@ static const char *do_device_import(device_data_t *data)
 		if (rc != DC_STATUS_SUCCESS) {
 			progress_bar_fraction = 0.0;
 
-			dev_info(data, "Import error: %s", errmsg(rc));
+			dev_info("Import error: %s", errmsg(rc));
 
 			return translate("gettextFromC", "Dive data import error");
 		}
 	}
 
 	/* All good */
-	return NULL;
+	return std::string();
 }
 
-static dc_timer_t *logfunc_timer = NULL;
 void logfunc(dc_context_t *, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
 {
 	const char *loglevels[] = { "NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL" };
 
-	if (logfunc_timer == NULL)
-		dc_timer_new(&logfunc_timer);
+	static const auto start(std::chrono::steady_clock::now());
+	auto now(std::chrono::steady_clock::now());
+	double elapsed_seconds = std::chrono::duration<double>(now - start).count();
 
 	FILE *fp = (FILE *)userdata;
 
-	dc_usecs_t now = 0;
-	dc_timer_now(logfunc_timer, &now);
-
-	unsigned long seconds = now / 1000000;
-	unsigned long microseconds = now % 1000000;
-
 	if (loglevel == DC_LOGLEVEL_ERROR || loglevel == DC_LOGLEVEL_WARNING) {
-		fprintf(fp, "[%li.%06li] %s: %s [in %s:%d (%s)]\n",
-			seconds, microseconds,
+		fprintf(fp, "[%.6f] %s: %s [in %s:%d (%s)]\n",
+			elapsed_seconds,
 			loglevels[loglevel], msg, file, line, function);
 	} else {
-		fprintf(fp, "[%li.%06li] %s: %s\n", seconds, microseconds, loglevels[loglevel], msg);
+		fprintf(fp, "[%6f] %s: %s\n", elapsed_seconds, loglevels[loglevel], msg);
 	}
 }
 
@@ -1269,7 +1226,7 @@ unsigned int get_supported_transports(device_data_t *data)
 		 */
 		if (data->bluetooth_mode) {
 			supported &= (DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
-			if (!strncmp(data->devname, "LE:", 3))
+			if (starts_with(data->devname, "LE:"))
 				supported &= DC_TRANSPORT_BLE;
 		} else {
 			supported &= ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
@@ -1294,7 +1251,7 @@ static dc_status_t usbhid_device_open(dc_iostream_t **iostream, dc_context_t *co
 		ERROR("didn't find HID device");
 		return DC_STATUS_NODEVICE;
 	}
-	dev_info(data, "Opening USB HID device for %04x:%04x",
+	dev_info("Opening USB HID device for %04x:%04x",
 		dc_usbhid_device_get_vid(device),
 		dc_usbhid_device_get_pid(device));
 	rc = dc_usbhid_open(iostream, context, device);
@@ -1317,7 +1274,7 @@ static dc_status_t usb_device_open(dc_iostream_t **iostream, dc_context_t *conte
 	if (!device)
 		return DC_STATUS_NODEVICE;
 
-	dev_info(data, "Opening USB device for %04x:%04x",
+	dev_info("Opening USB device for %04x:%04x",
 		dc_usb_device_get_vid(device),
 		dc_usb_device_get_pid(device));
 	rc = dc_usb_open(iostream, context, device);
@@ -1343,9 +1300,9 @@ static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *cont
 	// If that fails, use the device name. This will
 	// use address 0 if it's not a number.
 	if (!address)
-		address = strtoul(data->devname, NULL, 0);
+		std::from_chars(data->devname.c_str(), data->devname.c_str() + data->devname.size(), address);
 
-	dev_info(data, "Opening IRDA address %u", address);
+	dev_info("Opening IRDA address %u", address);
 	return dc_irda_open(&data->iostream, context, address, 1);
 }
 
@@ -1366,11 +1323,11 @@ static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *d
 	dc_iterator_free (iterator);
 
 	if (!address) {
-		dev_info(data, "No rfcomm device found");
+		dev_info("No rfcomm device found");
 		return DC_STATUS_NODEVICE;
 	}
 
-	dev_info(data, "Opening rfcomm address %llu", address);
+	dev_info("Opening rfcomm address %llu", address);
 	return dc_bluetooth_open(&data->iostream, context, address, 0);
 }
 #endif
@@ -1386,16 +1343,16 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 	transports &= supported;
 	if (!transports) {
-		dev_info(data, "Dive computer transport not supported");
+		dev_info("Dive computer transport not supported");
 		return DC_STATUS_UNSUPPORTED;
 	}
 
 #ifdef BT_SUPPORT
 	if (transports & DC_TRANSPORT_BLUETOOTH) {
-		dev_info(data, "Opening rfcomm stream %s", data->devname);
+		dev_info("Opening rfcomm stream %s", data->devname.c_str());
 #if defined(__ANDROID__) || defined(__APPLE__)
 		// we don't have BT on iOS in the first place, so this is for Android and macOS
-		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
+		rc = rfcomm_stream_open(&data->iostream, context, data->devname.c_str());
 #else
 		rc = bluetooth_device_open(context, data);
 #endif
@@ -1406,53 +1363,53 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 #ifdef BLE_SUPPORT
 	if (transports & DC_TRANSPORT_BLE) {
-		dev_info(data, "Connecting to BLE device %s", data->devname);
-		rc = ble_packet_open(&data->iostream, context, data->devname, data);
+		dev_info("Connecting to BLE device %s", data->devname.c_str());
+		rc = ble_packet_open(&data->iostream, context, data->devname.c_str(), data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
 #endif
 
 	if (transports & DC_TRANSPORT_USBHID) {
-		dev_info(data, "Connecting to USB HID device");
+		dev_info("Connecting to USB HID device");
 		rc = usbhid_device_open(&data->iostream, context, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
 
 	if (transports & DC_TRANSPORT_USB) {
-		dev_info(data, "Connecting to native USB device");
+		dev_info("Connecting to native USB device");
 		rc = usb_device_open(&data->iostream, context, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
 
 	if (transports & DC_TRANSPORT_SERIAL) {
-		dev_info(data, "Opening serial device %s", data->devname);
+		dev_info("Opening serial device %s", data->devname.c_str());
 #ifdef SERIAL_FTDI
-		if (!strcasecmp(data->devname, "ftdi"))
+		if (!strcasecmp(data->devname.c_str(), "ftdi"))
 			return ftdi_open(&data->iostream, context);
 #endif
 #ifdef __ANDROID__
 		if (data->androidUsbDeviceDescriptor)
 			return serial_usb_android_open(&data->iostream, context, data->androidUsbDeviceDescriptor);
 #endif
-		rc = dc_serial_open(&data->iostream, context, data->devname);
+		rc = dc_serial_open(&data->iostream, context, data->devname.c_str());
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 
 	}
 
 	if (transports & DC_TRANSPORT_IRDA) {
-		dev_info(data, "Connecting to IRDA device");
+		dev_info("Connecting to IRDA device");
 		rc = irda_device_open(&data->iostream, context, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
 
 	if (transports & DC_TRANSPORT_USBSTORAGE) {
-		dev_info(data, "Opening USB storage at %s", data->devname);
-		rc = dc_usb_storage_open(&data->iostream, context, data->devname);
+		dev_info("Opening USB storage at %s", data->devname.c_str());
+		rc = dc_usb_storage_open(&data->iostream, context, data->devname.c_str());
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
@@ -1468,10 +1425,9 @@ static dc_status_t sync_divecomputer_time(dc_device_t *device)
 	return dc_device_timesync(device, &now);
 }
 
-const char *do_libdivecomputer_import(device_data_t *data)
+std::string do_libdivecomputer_import(device_data_t *data)
 {
 	dc_status_t rc;
-	const char *err;
 	FILE *fp = NULL;
 
 	import_dive_number = 0;
@@ -1498,44 +1454,44 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		fprintf(data->libdc_logfile, "built with libdivecomputer v%s\n", dc_version(NULL));
 	}
 
-	err = translate("gettextFromC", "Unable to open %s %s (%s)");
+	std::string err = translate("gettextFromC", "Unable to open %s %s (%s)");
 
 	rc = divecomputer_device_open(data);
 
 	if (rc != DC_STATUS_SUCCESS) {
-		dev_info(data, "Import error: %s", errmsg(rc));
+		dev_info("Import error: %s", errmsg(rc));
 	} else {
-		dev_info(data, "Connecting ...");
+		dev_info("Connecting ...");
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
 		if (rc != DC_STATUS_SUCCESS) {
 			INFO("dc_device_open error value of %d", rc);
-			if (subsurface_access(data->devname, R_OK | W_OK) != 0)
+			if (subsurface_access(data->devname.c_str(), R_OK | W_OK) != 0)
 #if defined(SUBSURFACE_MOBILE)
 				err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.");
 #else
 				err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
 #endif
 		} else {
-			dev_info(data, "Starting import ...");
+			dev_info("Starting import ...");
 			err = do_device_import(data);
 			/* TODO: Show the logfile to the user on error. */
-			dev_info(data, "Import complete");
+			dev_info("Import complete");
 
-			if (!err && data->sync_time) {
-				dev_info(data, "Syncing dive computer time ...");
+			if (err.empty() && data->sync_time) {
+				dev_info("Syncing dive computer time ...");
 				rc = sync_divecomputer_time(data->device);
 
 				switch (rc) {
 				case DC_STATUS_SUCCESS:
-					dev_info(data, "Time sync complete");
+					dev_info("Time sync complete");
 
 					break;
 				case DC_STATUS_UNSUPPORTED:
-					dev_info(data, "Time sync not supported by dive computer");
+					dev_info("Time sync not supported by dive computer");
 
 					break;
 				default:
-					dev_info(data, "Time sync failed");
+					dev_info("Time sync failed");
 
 					break;
 				}
@@ -1543,8 +1499,8 @@ const char *do_libdivecomputer_import(device_data_t *data)
 
 			dc_device_close(data->device);
 			data->device = NULL;
-			if (!data->log->dives->nr)
-				dev_info(data, translate("gettextFromC", "No new dives downloaded from dive computer"));
+			if (data->log->dives.empty())
+				dev_info(translate("gettextFromC", "No new dives downloaded from dive computer"));
 		}
 		dc_iostream_close(data->iostream);
 		data->iostream = NULL;
@@ -1570,7 +1526,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	 */
 	save_fingerprint(data);
 	if (data->fingerprint && data->fdiveid)
-		create_fingerprint_node(&fingerprint_table, calculate_string_hash(data->model), data->devinfo.serial,
+		create_fingerprint_node(fingerprints, calculate_string_hash(data->model.c_str()), data->devinfo.serial,
 					data->fingerprint, data->fsize, data->fdeviceid, data->fdiveid);
 	free(data->fingerprint);
 	data->fingerprint = NULL;
@@ -1619,7 +1575,7 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 			report_error("Error parsing the dive header data. Dive # %d: %s", dive->number, errmsg(rc));
 		}
 	}
-	rc = dc_parser_samples_foreach (parser, sample_cb, &dive->dc);
+	rc = dc_parser_samples_foreach (parser, sample_cb, &dive->dcs[0]);
 	if (rc != DC_STATUS_SUCCESS) {
 		report_error("Error parsing the sample data. Dive # %d: %s", dive->number, errmsg(rc));
 		dc_parser_destroy (parser);

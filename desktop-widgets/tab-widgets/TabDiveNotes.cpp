@@ -85,8 +85,8 @@ TabDiveNotes::TabDiveNotes(MainTab *parent) : TabBase(parent),
 
 void TabDiveNotes::updateDateTimeFields()
 {
-	ui.dateEdit->setDisplayFormat(prefs.date_format);
-	ui.timeEdit->setDisplayFormat(prefs.time_format);
+	ui.dateEdit->setDisplayFormat(QString::fromStdString(prefs.date_format));
+	ui.timeEdit->setDisplayFormat(QString::fromStdString(prefs.time_format));
 }
 
 void TabDiveNotes::closeWarning()
@@ -118,11 +118,11 @@ void TabDiveNotes::divesChanged(const QVector<dive *> &dives, DiveField field)
 	if (field.divesite)
 		updateDiveSite(currentDive);
 	if (field.tags)
-		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tag_list)));
+		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tags)));
 	if (field.buddy)
-		ui.buddy->setText(currentDive->buddy);
+		ui.buddy->setText(QString::fromStdString(currentDive->buddy));
 	if (field.diveguide)
-		ui.diveguide->setText(currentDive->diveguide);
+		ui.diveguide->setText(QString::fromStdString(currentDive->diveguide));
 }
 
 void TabDiveNotes::diveSiteEdited(dive_site *ds, int)
@@ -140,9 +140,9 @@ void TabDiveNotes::tripChanged(dive_trip *trip, TripField field)
 		return;
 
 	if (field.notes)
-		ui.notes->setText(currentTrip->notes);
+		ui.notes->setText(QString::fromStdString(currentTrip->notes));
 	if (field.location)
-		ui.diveTripLocation->setText(currentTrip->location);
+		ui.diveTripLocation->setText(QString::fromStdString(currentTrip->location));
 }
 
 static bool isHtml(const QString &s)
@@ -152,7 +152,7 @@ static bool isHtml(const QString &s)
 
 void TabDiveNotes::updateNotes(const struct dive *d)
 {
-	QString tmp(d->notes);
+	QString tmp = QString::fromStdString(d->notes);
 	if (isHtml(tmp)) {
 		ui.notes->setHtml(tmp);
 	} else {
@@ -169,7 +169,7 @@ void TabDiveNotes::updateDateTime(const struct dive *d)
 
 void TabDiveNotes::updateTripDate(const struct dive_trip *t)
 {
-	QDateTime localTime = timestampToDateTime(trip_date(t));
+	QDateTime localTime = timestampToDateTime(t->date());
 	ui.dateEdit->setDate(localTime.date());
 }
 
@@ -178,7 +178,7 @@ void TabDiveNotes::updateDiveSite(struct dive *d)
 	struct dive_site *ds = d->dive_site;
 	ui.location->setCurrentDiveSite(d);
 	if (ds) {
-		ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
+		ui.locationTags->setText(QString::fromStdString(taxonomy_get_location_tags(ds->taxonomy, true)));
 
 		if (ui.locationTags->text().isEmpty() && has_location(&ds->location))
 			ui.locationTags->setText(printGPSCoords(&ds->location));
@@ -220,13 +220,13 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.editDiveSiteButton->hide();
 		// rename the remaining fields and fill data from selected trip
 		ui.LocationLabel->setText(tr("Trip location"));
-		ui.diveTripLocation->setText(currentTrip->location);
+		ui.diveTripLocation->setText(QString::fromStdString(currentTrip->location));
 		updateTripDate(currentTrip);
 		ui.locationTags->clear();
 		//TODO: Fix this.
-		//ui.location->setText(currentTrip->location);
+		//ui.location->setText(QString::fromStdSTring(currentTrip->location));
 		ui.NotesLabel->setText(tr("Trip notes"));
-		ui.notes->setText(currentTrip->notes);
+		ui.notes->setText(QString::fromStdString(currentTrip->notes));
 		ui.depth->setVisible(false);
 		ui.depthLabel->setVisible(false);
 		ui.duration->setVisible(false);
@@ -253,8 +253,8 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		// reset labels in case we last displayed trip notes
 		ui.LocationLabel->setText(tr("Location"));
 		ui.NotesLabel->setText(tr("Notes"));
-		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tag_list)));
-		bool isManual = is_dc_manually_added_dive(&currentDive->dc);
+		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tags)));
+		bool isManual = is_dc_manually_added_dive(&currentDive->dcs[0]);
 		ui.depth->setVisible(isManual);
 		ui.depthLabel->setVisible(isManual);
 		ui.duration->setVisible(isManual);
@@ -263,8 +263,8 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		updateNotes(currentDive);
 		updateDiveSite(currentDive);
 		updateDateTime(currentDive);
-		ui.diveguide->setText(currentDive->diveguide);
-		ui.buddy->setText(currentDive->buddy);
+		ui.diveguide->setText(QString::fromStdString(currentDive->diveguide));
+		ui.buddy->setText(QString::fromStdString(currentDive->buddy));
 	}
 	ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
 	ui.depth->setText(get_depth_string(currentDive->maxdepth, true));

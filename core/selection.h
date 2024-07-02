@@ -4,40 +4,27 @@
 #ifndef SELECTION_H
 #define SELECTION_H
 
+#include <vector>
+#include <QVector>
+
 struct dive;
 
 extern int amount_selected;
 extern struct dive *current_dive;
 
-/*** C and C++ functions ***/
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern struct dive *first_selected_dive(void);
-extern struct dive *last_selected_dive(void);
-extern bool consecutive_selected(void);
+extern struct dive *first_selected_dive();
+extern struct dive *last_selected_dive();
+extern bool consecutive_selected();
 extern void select_newest_visible_dive();
 extern void select_single_dive(struct dive *d); // wrapper for setSelection() with a single dive. NULL clears the selection.
 extern void select_trip(struct dive_trip *trip);
 extern void deselect_trip(struct dive_trip *trip);
 extern struct dive_trip *single_selected_trip(); // returns trip if exactly one trip is selected, NULL otherwise.
-extern void clear_selection(void);
+extern void clear_selection();
 
 #if DEBUG_SELECTION_TRACKING
-extern void dump_selection(void);
+extern void dump_selection();
 #endif
-
-#ifdef __cplusplus
-}
-#endif
-
-/*** C++-only functions ***/
-
-#ifdef __cplusplus
-#include <vector>
-#include <QVector>
 
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
 // Set the current dive to "currentDive" and the current dive computer to "currentDc".
@@ -63,7 +50,5 @@ void setTripSelection(dive_trip *trip, dive *currentDive);
 std::vector<dive *> getDiveSelection();
 bool diveInSelection(const std::vector<dive *> &selection, const dive *d);
 void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &add, const std::vector<dive *> &remove);
-
-#endif // __cplusplus
 
 #endif // SELECTION_H

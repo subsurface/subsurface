@@ -2,9 +2,11 @@
 #include "gas.h"
 #include "pref.h"
 #include "errorhelper.h"
+#include "format.h"
 #include "gettext.h"
 #include <stdio.h>
 #include <string.h>
+#include <QtGlobal> // for QT_TRANSLATE_NOOP
 
 /* Perform isobaric counterdiffusion calculations for gas changes in trimix dives.
  * Here we use the rule-of-fifths where, during a change involving trimix gas, the increase in nitrogen
@@ -39,20 +41,20 @@ int same_gasmix(struct gasmix a, struct gasmix b)
 	return get_o2(a) == get_o2(b) && get_he(a) == get_he(b);
 }
 
-void sanitize_gasmix(struct gasmix *mix)
+void sanitize_gasmix(struct gasmix &mix)
 {
 	unsigned int o2, he;
 
-	o2 = get_o2(*mix);
-	he = get_he(*mix);
+	o2 = get_o2(mix);
+	he = get_he(mix);
 
 	/* Regular air: leave empty */
 	if (!he) {
 		if (!o2)
 			return;
 		/* 20.8% to 21% O2 is just air */
-		if (gasmix_is_air(*mix)) {
-			mix->o2.permille = 0;
+		if (gasmix_is_air(mix)) {
+			mix.o2.permille = 0;
 			return;
 		}
 	}
@@ -61,7 +63,7 @@ void sanitize_gasmix(struct gasmix *mix)
 	if (o2 <= 1000 && he <= 1000 && o2 + he <= 1000)
 		return;
 	report_info("Odd gasmix: %u O2 %u He", o2, he);
-	memset(mix, 0, sizeof(*mix));
+	mix = gasmix_air;
 }
 
 int gasmix_distance(struct gasmix a, struct gasmix b)
@@ -115,42 +117,43 @@ int pscr_o2(const double amb_pressure, struct gasmix mix)
  * The structure "pressures" is used to return calculated gas pressures to the calling software.
  * Call parameters:	po2 = po2 value applicable to the record in calling function
  *			amb_pressure = ambient pressure applicable to the record in calling function
- *			*pressures = structure for communicating o2 sensor values from and gas pressures to the calling function.
  *			*mix = structure containing cylinder gas mixture information.
  *			divemode = the dive mode pertaining to this point in the dive profile.
  * This function called by: calculate_gas_information_new() in profile.cpp; add_segment() in deco.cpp.
  */
-void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, struct gasmix mix, double po2, enum divemode_t divemode)
+gas_pressures fill_pressures(const double amb_pressure, struct gasmix mix, double po2, enum divemode_t divemode)
 {
-	if ((divemode != OC) && po2) {	// This is a rebreather dive where pressures->o2 is defined
+	struct gas_pressures pressures;
+	if ((divemode != OC) && po2) {	// This is a rebreather dive where pressures.o2 is defined
 		if (po2 >= amb_pressure) {
-			pressures->o2 = amb_pressure;
-			pressures->n2 = pressures->he = 0.0;
+			pressures.o2 = amb_pressure;
+			pressures.n2 = pressures.he = 0.0;
 		} else {
-			pressures->o2 = po2;
+			pressures.o2 = po2;
 			if (get_o2(mix) == 1000) {
-				pressures->he = pressures->n2 = 0;
+				pressures.he = pressures.n2 = 0;
 			} else {
-				pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
-				pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
+				pressures.he = (amb_pressure - pressures.o2) * (double)get_he(mix) / (1000 - get_o2(mix));
+				pressures.n2 = amb_pressure - pressures.o2 - pressures.he;
 			}
 		}
 	} else {
 		if (divemode == PSCR) { /* The steady state approximation should be good enough */
-			pressures->o2 = pscr_o2(amb_pressure, mix) / 1000.0;
+			pressures.o2 = pscr_o2(amb_pressure, mix) / 1000.0;
 			if (get_o2(mix) != 1000) {
-				pressures->he = (amb_pressure - pressures->o2) * get_he(mix) / (1000.0 - get_o2(mix));
-				pressures->n2 = (amb_pressure - pressures->o2) * get_n2(mix) / (1000.0 - get_o2(mix));
+				pressures.he = (amb_pressure - pressures.o2) * get_he(mix) / (1000.0 - get_o2(mix));
+				pressures.n2 = (amb_pressure - pressures.o2) * get_n2(mix) / (1000.0 - get_o2(mix));
 			} else {
-				pressures->he = pressures->n2 = 0;
+				pressures.he = pressures.n2 = 0;
 			}
 		} else {
 			// Open circuit dives: no gas pressure values available, they need to be calculated
-			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure; // These calculations are also used if the CCR calculation above..
-			pressures->he = get_he(mix) / 1000.0 * amb_pressure; // ..returned a po2 of zero (i.e. o2 sensor data not resolvable)
-			pressures->n2 = get_n2(mix) / 1000.0 * amb_pressure;
+			pressures.o2 = get_o2(mix) / 1000.0 * amb_pressure; // These calculations are also used if the CCR calculation above..
+			pressures.he = get_he(mix) / 1000.0 * amb_pressure; // ..returned a po2 of zero (i.e. o2 sensor data not resolvable)
+			pressures.n2 = get_n2(mix) / 1000.0 * amb_pressure;
 		}
 	}
+	return pressures;
 }
 
 enum gastype gasmix_to_type(struct gasmix mix)
@@ -180,4 +183,16 @@ const char *gastype_name(enum gastype type)
 	if (type < 0 || type >= GASTYPE_COUNT)
 		return "";
 	return translate("gettextFromC", gastype_names[type]);
+}
+
+std::string gasmix::name() const
+{
+	if (gasmix_is_air(*this))
+		return translate("gettextFromC", "air");
+	else if (get_he(*this) == 0 && get_o2(*this) < 1000)
+		return format_string_std(translate("gettextFromC", "EAN%d"), (get_o2(*this) + 5) / 10);
+	else if (get_he(*this) == 0 && get_o2(*this) == 1000)
+		return translate("gettextFromC", "oxygen");
+	else
+		return format_string_std("(%d/%d)", (get_o2(*this) + 5) / 10, (get_he(*this) + 5) / 10);
 }

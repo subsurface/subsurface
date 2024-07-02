@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "filterpresetmodel.h"
+#include "core/divelog.h"
 #include "core/filterconstraint.h"
 #include "core/filterpreset.h"
+#include "core/filterpresettable.h"
 #include "core/qthelper.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
@@ -26,13 +28,14 @@ FilterPresetModel *FilterPresetModel::instance()
 
 QVariant FilterPresetModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() >= filter_presets_count())
+	if (index.row() < 0 || static_cast<size_t>(index.row()) >= divelog.filter_presets.size())
 		return QVariant();
 
+	const auto &filter_preset = divelog.filter_presets[index.row()];
 	switch (role) {
 	case Qt::DisplayRole:
 		if (index.column() == NAME)
-			return QString(filter_preset_name(index.row()).c_str());
+			return QString::fromStdString(filter_preset.name);
 		break;
 	case Qt::DecorationRole:
 		if (index.column() == REMOVE)
@@ -52,7 +55,7 @@ QVariant FilterPresetModel::data(const QModelIndex &index, int role) const
 
 int FilterPresetModel::rowCount(const QModelIndex &parent) const
 {
-	return filter_presets_count();
+	return static_cast<int>(divelog.filter_presets.size());
 }
 
 void FilterPresetModel::reset()

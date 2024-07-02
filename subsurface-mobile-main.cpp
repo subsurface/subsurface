@@ -29,7 +29,6 @@
 #include <git2.h>
 
 // Implementation of STP logging
-#include "core/ssrf.h"
 
 int main(int argc, char **argv)
 {
@@ -57,11 +56,11 @@ int main(int argc, char **argv)
 		default_prefs.units = SI_units;
 	else
 		default_prefs.units = IMPERIAL_units;
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 	CheckCloudConnection ccc;
 	ccc.pickServer();
 	fill_computer_list();
-	reset_tank_info_table(&tank_info_table);
+	reset_tank_info_table(tank_info_table);
 
 	parse_xml_init();
 	taglist_init_global();
@@ -93,15 +92,12 @@ int main(int argc, char **argv)
 	if (!quit)
 		run_mobile_ui(initial_font_size);
 	exit_ui();
-	clear_divelog(&divelog);
 	parse_xml_exit();
 	subsurface_console_exit();
 
 	// Sync struct preferences to disk
 	qPref::sync();
 
-	free_prefs();
-	clear_tank_info_table(&tank_info_table);
 	return 0;
 }
 

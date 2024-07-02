@@ -24,7 +24,7 @@ void TestParsePerformance::initTestCase()
 	QTextCodec::setCodecForLocale(QTextCodec::codecForMib(106));
 
 	// first, setup the preferences an proxy information
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");
@@ -33,11 +33,11 @@ void TestParsePerformance::initTestCase()
 
 	QNetworkProxy proxy;
 	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
-	proxy.setHostName(prefs.proxy_host);
+	proxy.setHostName(QString::fromStdString(prefs.proxy_host));
 	proxy.setPort(prefs.proxy_port);
 	if (prefs.proxy_auth) {
-		proxy.setUser(prefs.proxy_user);
-		proxy.setPassword(prefs.proxy_pass);
+		proxy.setUser(QString::fromStdString(prefs.proxy_user));
+		proxy.setPassword(QString::fromStdString(prefs.proxy_pass));
 	}
 	QNetworkProxy::setApplicationProxy(proxy);
 

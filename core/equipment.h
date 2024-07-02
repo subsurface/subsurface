@@ -4,95 +4,87 @@
 
 #include "gas.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <memory>
+#include <string>
+#include <vector>
 
 struct dive;
 
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
 extern const char *cylinderuse_text[NUM_GAS_USE];
 
-typedef struct
+struct cylinder_type_t
 {
 	volume_t size;
 	pressure_t workingpressure;
-	const char *description; /* "LP85", "AL72", "AL80", "HP100+" or whatever */
-} cylinder_type_t;
+	std::string description; /* "LP85", "AL72", "AL80", "HP100+" or whatever */
+};
 
-typedef struct
+struct cylinder_t
 {
 	cylinder_type_t type;
-	struct gasmix gasmix;
+	struct gasmix gasmix = gasmix_air;
 	pressure_t start, end, sample_start, sample_end;
 	depth_t depth;
-	bool manually_added;
+	bool manually_added = false;
 	volume_t gas_used;
 	volume_t deco_gas_used;
-	enum cylinderuse cylinder_use;
-	bool bestmix_o2;
-	bool bestmix_he;
-} cylinder_t;
+	enum cylinderuse cylinder_use = OC_GAS;
+	bool bestmix_o2 = false;
+	bool bestmix_he = false;
 
-static const cylinder_t empty_cylinder = { { { 0 }, { 0 }, (const char *)0}, { { 0 }, { 0 } } , { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, false, { 0 }, { 0 }, OC_GAS, false, false };
+	cylinder_t();
+	~cylinder_t();
 
-/* Table of cylinders. Attention: this stores cylinders,
- * *not* pointers to cylinders. This has two crucial consequences:
- * 1) Pointers to cylinders are not stable. They may be
- *    invalidated if the table is reallocated.
- * 2) add_cylinder(), etc. take ownership of the
- *    cylinder. Notably of the description string. */
-struct cylinder_table {
-	int nr, allocated;
-	cylinder_t *cylinders;
+	volume_t gas_volume(pressure_t p) const; /* Volume of a cylinder at pressure 'p' */
 };
 
-typedef struct
+/* Table of cylinders.
+ * This is a crazy class: it is basically a std::vector<>, but overrides
+ * the [] accessor functions and allows out-of-bound accesses.
+ * This is used in the planner, which uses "max_index + 1" for the
+ * surface air cylinder.
+ * Note: an out-of-bound access returns a reference to an object with
+ * static linkage that MUST NOT be written into.
+ * Yes, this is all very mad, but it grew historically.
+ */
+struct cylinder_table : public std::vector<cylinder_t> {
+	cylinder_t &operator[](size_t i);
+	const cylinder_t &operator[](size_t i) const;
+
+	void add(int idx, cylinder_t cyl);
+};
+
+struct weightsystem_t
 {
 	weight_t weight;
-	const char *description; /* "integrated", "belt", "ankle" */
-	bool auto_filled; /* weight was automatically derived from the type */
-} weightsystem_t;
+	std::string description; /* "integrated", "belt", "ankle" */
+	bool auto_filled = false; /* weight was automatically derived from the type */
 
-static const weightsystem_t empty_weightsystem = { { 0 }, 0, false };
+	weightsystem_t();
+	weightsystem_t(weight_t w, std::string desc, bool auto_filled);
+	~weightsystem_t();
 
-/* Table of weightsystems. Attention: this stores weightsystems,
- * *not* pointers * to weightsystems. This has two crucial
- * consequences:
- * 1) Pointers to weightsystems are not stable. They may be
- *    invalidated if the table is reallocated.
- * 2) add_to_weightsystem_table(), etc. takes ownership of the
- *    weightsystem. Notably of the description string */
-struct weightsystem_table {
-	int nr, allocated;
-	weightsystem_t *weightsystems;
+	bool operator==(const weightsystem_t &w2) const;
 };
 
-#define MAX_WS_INFO (100)
+/* Table of weightsystems. Attention: this stores weightsystems,
+ * *not* pointers * to weightsystems. Therefore pointers to
+ * weightsystems are *not* stable.
+ */
+struct weightsystem_table : public std::vector<weightsystem_t> {
+	void add(int idx, weightsystem_t ws);
+	void set(int idx, weightsystem_t ws);
+	void remove(int idx);
+};
 
 extern enum cylinderuse cylinderuse_from_text(const char *text);
-extern void copy_weights(const struct weightsystem_table *s, struct weightsystem_table *d);
-extern void copy_cylinders(const struct cylinder_table *s, struct cylinder_table *d);
-extern weightsystem_t clone_weightsystem(weightsystem_t ws);
-extern void free_weightsystem(weightsystem_t ws);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
-extern void add_cloned_weightsystem(struct weightsystem_table *t, weightsystem_t ws);
-extern cylinder_t clone_cylinder(cylinder_t cyl);
-extern void free_cylinder(cylinder_t cyl);
-extern cylinder_t *add_empty_cylinder(struct cylinder_table *t);
-extern void add_cloned_cylinder(struct cylinder_table *t, cylinder_t cyl);
-extern cylinder_t *get_cylinder(const struct dive *d, int idx);
-extern cylinder_t *get_or_create_cylinder(struct dive *d, int idx);
-extern void add_cylinder_description(const cylinder_type_t *);
-extern void add_weightsystem_description(const weightsystem_t *);
-extern bool same_weightsystem(weightsystem_t w1, weightsystem_t w2);
 extern void remove_cylinder(struct dive *dive, int idx);
-extern void remove_weightsystem(struct dive *dive, int idx);
-extern void set_weightsystem(struct dive *dive, int idx, weightsystem_t ws);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
-extern int gas_volume(const cylinder_t *cyl, pressure_t p); /* Volume in mliter of a cylinder at pressure 'p' */
-extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table *cylinders);
+extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders);
 extern void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl); /* dive is needed to fill out MOD, which depends on salinity. */
+extern cylinder_t default_cylinder(const struct dive *d);
 extern cylinder_t create_new_manual_cylinder(const struct dive *dive); /* dive is needed to fill out MOD, which depends on salinity. */
 extern void add_default_cylinder(struct dive *dive);
 extern int first_hidden_cylinder(const struct dive *d);
@@ -100,45 +92,25 @@ extern int first_hidden_cylinder(const struct dive *d);
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
 
-/* Weightsystem table functions */
-extern void clear_weightsystem_table(struct weightsystem_table *);
-extern void add_to_weightsystem_table(struct weightsystem_table *, int idx, weightsystem_t ws);
+struct ws_info {
+	std::string name;
+	weight_t weight;
+};
+extern std::vector<ws_info> ws_info_table;
+extern weight_t get_weightsystem_weight(const std::string &name); // returns 0 if not found
+extern void add_weightsystem_description(const weightsystem_t &);
 
-/* Cylinder table functions */
-extern void clear_cylinder_table(struct cylinder_table *);
-extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
-
-void get_gas_string(struct gasmix gasmix, char *text, int len);
-const char *gasname(struct gasmix gasmix);
-
-typedef struct tank_info {
-	const char *name;
+struct tank_info {
+	std::string name;
 	int cuft, ml, psi, bar;
-} tank_info_t;
-
-struct tank_info_table {
-	int nr, allocated;
-	struct tank_info *infos;
 };
 
-extern struct tank_info_table tank_info_table;
-extern void reset_tank_info_table(struct tank_info_table *table);
-extern void clear_tank_info_table(struct tank_info_table *table);
-extern void add_tank_info_metric(struct tank_info_table *table, const char *name, int ml, int bar);
-extern void add_tank_info_imperial(struct tank_info_table *table, const char *name, int cuft, int psi);
-extern void extract_tank_info(const struct tank_info *info, volume_t *size, pressure_t *working_pressure);
-extern bool get_tank_info_data(struct tank_info_table *table, const char *name, volume_t *size, pressure_t *pressure);
-extern void set_tank_info_data(struct tank_info_table *table, const char *name, volume_t size, pressure_t working_pressure);
-
-struct ws_info_t {
-	const char *name;
-	int grams;
-};
-extern struct ws_info_t ws_info[MAX_WS_INFO];
-extern struct ws_info_t *get_weightsystem_description(const char *name);
-
-#ifdef __cplusplus
-}
-#endif
+extern std::vector<tank_info> tank_info_table;
+extern struct tank_info *get_tank_info(std::vector<tank_info> &table, const std::string &name);
+extern void set_tank_info_data(std::vector<tank_info> &table, const std::string &name, volume_t size, pressure_t working_pressure);
+extern std::pair<volume_t, pressure_t> extract_tank_info(const struct tank_info &info);
+extern std::pair<volume_t, pressure_t> get_tank_info_data(const std::vector<tank_info> &table, const std::string &name);
+extern void add_cylinder_description(const cylinder_type_t &);
+extern void reset_tank_info_table(std::vector<tank_info> &table);
 
 #endif // EQUIPMENT_H

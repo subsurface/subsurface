@@ -31,13 +31,13 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For redo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class ImportDiveSites : public Base {
 public:
-	// Note: the dive site table is consumed after the call it will be empty.
-	ImportDiveSites(struct dive_site_table *sites, const QString &source);
+	// Note: Takes ownership of dive site table
+	ImportDiveSites(dive_site_table sites, const QString &source);
 private:
 	bool workToBeDone() override;
 	void undo() override;
@@ -47,7 +47,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For redo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class DeleteDiveSites : public Base {
@@ -62,7 +62,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For undo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class PurgeUnusedDiveSites : public Base {
@@ -77,7 +77,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For undo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class EditDiveSiteName : public Base {
@@ -89,7 +89,7 @@ private:
 	void redo() override;
 
 	dive_site *ds;
-	QString value; // Value to be set
+	std::string value; // Value to be set
 };
 
 class EditDiveSiteDescription : public Base {
@@ -101,7 +101,7 @@ private:
 	void redo() override;
 
 	dive_site *ds;
-	QString value; // Value to be set
+	std::string value; // Value to be set
 };
 
 class EditDiveSiteNotes : public Base {
@@ -113,7 +113,7 @@ private:
 	void redo() override;
 
 	dive_site *ds;
-	QString value; // Value to be set
+	std::string value; // Value to be set
 };
 
 class EditDiveSiteCountry : public Base {
@@ -125,7 +125,7 @@ private:
 	void redo() override;
 
 	dive_site *ds;
-	QString value; // Value to be set
+	std::string value; // Value to be set
 };
 
 class EditDiveSiteLocation : public Base {
@@ -167,7 +167,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For undo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 };
 
 class ApplyGPSFixes : public Base {
@@ -183,7 +183,7 @@ private:
 	std::vector<dive_site *> sitesToRemove;
 
 	// For redo
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 
 	// For redo and undo
 	struct SiteAndLocation {

@@ -135,7 +135,7 @@ static bool parseMP4(QFile &f, metadata *metadata)
 	std::vector<uint64_t> atom_stack;
 	atom_stack.reserve(10);
 
-	// For the outmost level, set the atom-size the the maximum value representable in
+	// For the outmost level, set the atom-size to the maximum value representable in
 	// 64-bits, which effectively means parse to the end of file.
 	atom_stack.push_back(UINT64_MAX);
 
@@ -528,7 +528,7 @@ static bool parseASF(QFile &f, metadata *metadata)
 	return false;
 }
 
-extern "C" mediatype_t get_metadata(const char *filename_in, metadata *data)
+mediatype_t get_metadata(const char *filename_in, metadata *data)
 {
 	data->timestamp = 0;
 	data->duration.seconds = 0;
@@ -561,7 +561,7 @@ extern "C" mediatype_t get_metadata(const char *filename_in, metadata *data)
 	return res;
 }
 
-extern "C" timestamp_t picture_get_timestamp(const char *filename)
+timestamp_t picture_get_timestamp(const char *filename)
 {
 	struct metadata data;
 	get_metadata(filename, &data);

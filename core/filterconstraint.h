@@ -5,15 +5,9 @@
 #define FILTER_CONSTRAINT_H
 
 #include "units.h"
+#include <QStringList>
 
 struct dive;
-
-#ifdef __cplusplus
-#include <QStringList>
-extern "C" {
-#else
-typedef void QStringList;
-#endif
 
 enum filter_constraint_type {
 	FILTER_CONSTRAINT_DATE,
@@ -82,16 +76,14 @@ struct filter_constraint {
 		QStringList *string_list;
 		uint64_t multiple_choice; // bit-field for multiple choice lists. currently, we support 64 items, extend if needed.
 	} data;
-#ifdef __cplusplus
 	// For C++, define constructors, assignment operators and destructor to make our lives easier.
 	filter_constraint(filter_constraint_type type);
-	filter_constraint(const char *type, const char *string_mode,
-			  const char *range_mode, bool negate, const char *data); // from parser data
+	filter_constraint(const std::string &type, const std::string &string_mode,
+			  const std::string &range_mode, bool negate, const std::string &data); // from parser data
 	filter_constraint(const filter_constraint &);
 	filter_constraint &operator=(const filter_constraint &);
 	~filter_constraint();
 	bool operator==(const filter_constraint &f2) const;
-#endif
 };
 
 extern const char *filter_constraint_type_to_string(enum filter_constraint_type);
@@ -117,12 +109,6 @@ extern bool filter_constraint_has_time_widget(enum filter_constraint_type);
 extern int filter_constraint_num_decimals(enum filter_constraint_type);
 extern bool filter_constraint_is_valid(const struct filter_constraint *constraint);
 
-#ifdef __cplusplus
-}
-#endif
-
-// C++ only functions
-#ifdef __cplusplus
 QString filter_constraint_type_to_string_translated(enum filter_constraint_type);
 QString filter_constraint_negate_to_string_translated(bool negate);
 QString filter_constraint_string_mode_to_string_translated(enum filter_constraint_string_mode);
@@ -151,8 +137,6 @@ void filter_constraint_set_timestamp_from(filter_constraint &c, timestamp_t from
 void filter_constraint_set_timestamp_to(filter_constraint &c, timestamp_t to); // convert according to current units (metric or imperial)
 void filter_constraint_set_multiple_choice(filter_constraint &c, uint64_t);
 bool filter_constraint_match_dive(const filter_constraint &c, const struct dive *d);
-std::string filter_constraint_data_to_string(const struct filter_constraint *constraint); // caller takes ownership of returned string
-
-#endif
+std::string filter_constraint_data_to_string(const struct filter_constraint &constraint); // caller takes ownership of returned string
 
 #endif

@@ -15,25 +15,24 @@ namespace Command {
 
 // Add a set of dive sites to the core. The dives that were associated with
 // that dive site will be restored to that dive site.
-static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sites)
+static std::vector<dive_site *> addDiveSites(std::vector<std::unique_ptr<dive_site>> &sites)
 {
 	std::vector<dive_site *> res;
 	QVector<dive *> changedDives;
 	res.reserve(sites.size());
 
-	for (OwningDiveSitePtr &ds: sites) {
+	for (std::unique_ptr<dive_site> &ds: sites) {
 		// Readd the dives that belonged to this site
-		for (int i = 0; i < ds->dives.nr; ++i) {
+		for (dive *d: ds->dives) {
 			// TODO: send dive site changed signal
-			struct dive *d = ds->dives.dives[i];
 			d->dive_site = ds.get();
 			changedDives.push_back(d);
 		}
 
 		// Add dive site to core, but remember a non-owning pointer first.
-		res.push_back(ds.get());
-		int idx = register_dive_site(ds.release()); // Return ownership to backend.
-		emit diveListNotifier.diveSiteAdded(res.back(), idx); // Inform frontend of new dive site.
+		auto add_res = divelog.sites.put(std::move(ds)); // Return ownership to backend.
+		res.push_back(add_res.ptr);
+		emit diveListNotifier.diveSiteAdded(res.back(), add_res.idx); // Inform frontend of new dive site.
 	}
 
 	emit diveListNotifier.divesChanged(changedDives, DiveField::DIVESITE);
@@ -47,24 +46,23 @@ static std::vector<dive_site *> addDiveSites(std::vector<OwningDiveSitePtr> &sit
 // Remove a set of dive sites. Get owning pointers to them. The dives are set to
 // being at no dive site, but the dive site will retain a list of dives, so
 // that the dives can be readded to the site on undo.
-static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &sites)
+static std::vector<std::unique_ptr<dive_site>> removeDiveSites(std::vector<dive_site *> &sites)
 {
-	std::vector<OwningDiveSitePtr> res;
+	std::vector<std::unique_ptr<dive_site>> res;
 	QVector<dive *> changedDives;
 	res.reserve(sites.size());
 
 	for (dive_site *ds: sites) {
 		// Reset the dive_site field of the affected dives
-		for (int i = 0; i < ds->dives.nr; ++i) {
-			struct dive *d = ds->dives.dives[i];
+		for (dive *d: ds->dives) {
 			d->dive_site = nullptr;
 			changedDives.push_back(d);
 		}
 
 		// Remove dive site from core and take ownership.
-		int idx = unregister_dive_site(ds);
-		res.emplace_back(ds);
-		emit diveListNotifier.diveSiteDeleted(ds, idx); // Inform frontend of removed dive site.
+		auto pull_res = divelog.sites.pull(ds);
+		res.push_back(std::move(pull_res.ptr));
+		emit diveListNotifier.diveSiteDeleted(ds, pull_res.idx); // Inform frontend of removed dive site.
 	}
 
 	emit diveListNotifier.divesChanged(changedDives, DiveField::DIVESITE);
@@ -77,8 +75,8 @@ static std::vector<OwningDiveSitePtr> removeDiveSites(std::vector<dive_site *> &
 AddDiveSite::AddDiveSite(const QString &name)
 {
 	setText(Command::Base::tr("add dive site"));
-	sitesToAdd.emplace_back(alloc_dive_site());
-	sitesToAdd.back()->name = copy_qstring(name);
+	sitesToAdd.push_back(std::make_unique<dive_site>());
+	sitesToAdd.back()->name = name.toStdString();
 }
 
 bool AddDiveSite::workToBeDone()
@@ -96,25 +94,17 @@ void AddDiveSite::undo()
 	sitesToAdd = removeDiveSites(sitesToRemove);
 }
 
-ImportDiveSites::ImportDiveSites(struct dive_site_table *sites, const QString &source)
+ImportDiveSites::ImportDiveSites(dive_site_table sites, const QString &source)
 {
 	setText(Command::Base::tr("import dive sites from %1").arg(source));
 
-	for (int i = 0; i < sites->nr; ++i) {
-		struct dive_site *new_ds = sites->dive_sites[i];
-
-		// Don't import dive sites that already exist. Currently we only check for
-		// the same name. We might want to be smarter here and merge dive site data, etc.
-		struct dive_site *old_ds = get_same_dive_site(new_ds);
-		if (old_ds) {
-			free_dive_site(new_ds);
+	for (auto &new_ds: sites) {
+		// Don't import dive sites that already exist.
+		// We might want to be smarter here and merge dive site data, etc.
+		if (divelog.sites.get_same(*new_ds))
 			continue;
-		}
-		sitesToAdd.emplace_back(new_ds);
+		sitesToAdd.push_back(std::move(new_ds));
 	}
-
-	// All site have been consumed
-	sites->nr = 0;
 }
 
 bool ImportDiveSites::workToBeDone()
@@ -155,10 +145,9 @@ void DeleteDiveSites::undo()
 PurgeUnusedDiveSites::PurgeUnusedDiveSites()
 {
 	setText(Command::Base::tr("purge unused dive sites"));
-	for (int i = 0; i < divelog.sites->nr; ++i) {
-		dive_site *ds = divelog.sites->dive_sites[i];
-		if (ds->dives.nr == 0)
-			sitesToRemove.push_back(ds);
+	for (const auto &ds: divelog.sites) {
+		if (ds->dives.empty())
+			sitesToRemove.push_back(ds.get());
 	}
 }
 
@@ -177,24 +166,15 @@ void PurgeUnusedDiveSites::undo()
 	sitesToRemove = addDiveSites(sitesToAdd);
 }
 
-// Helper function: swap C and Qt string
-static void swap(char *&c, QString &q)
-{
-	QString s = c;
-	free(c);
-	c = copy_qstring(q);
-	q = s;
-}
-
 EditDiveSiteName::EditDiveSiteName(dive_site *dsIn, const QString &name) : ds(dsIn),
-	value(name)
+	value(name.toStdString())
 {
 	setText(Command::Base::tr("Edit dive site name"));
 }
 
 bool EditDiveSiteName::workToBeDone()
 {
-	return value != QString(ds->name);
+	return value != ds->name;
 }
 
 void EditDiveSiteName::redo()
@@ -210,14 +190,14 @@ void EditDiveSiteName::undo()
 }
 
 EditDiveSiteDescription::EditDiveSiteDescription(dive_site *dsIn, const QString &description) : ds(dsIn),
-	value(description)
+	value(description.toStdString())
 {
 	setText(Command::Base::tr("Edit dive site description"));
 }
 
 bool EditDiveSiteDescription::workToBeDone()
 {
-	return value != QString(ds->description);
+	return value != ds->description;
 }
 
 void EditDiveSiteDescription::redo()
@@ -233,14 +213,14 @@ void EditDiveSiteDescription::undo()
 }
 
 EditDiveSiteNotes::EditDiveSiteNotes(dive_site *dsIn, const QString &notes) : ds(dsIn),
-	value(notes)
+	value(notes.toStdString())
 {
 	setText(Command::Base::tr("Edit dive site notes"));
 }
 
 bool EditDiveSiteNotes::workToBeDone()
 {
-	return value != QString(ds->notes);
+	return value != ds->notes;
 }
 
 void EditDiveSiteNotes::redo()
@@ -256,20 +236,20 @@ void EditDiveSiteNotes::undo()
 }
 
 EditDiveSiteCountry::EditDiveSiteCountry(dive_site *dsIn, const QString &country) : ds(dsIn),
-	value(country)
+	value(country.toStdString())
 {
 	setText(Command::Base::tr("Edit dive site country"));
 }
 
 bool EditDiveSiteCountry::workToBeDone()
 {
-	return !same_string(qPrintable(value), taxonomy_get_country(&ds->taxonomy));
+	return value == taxonomy_get_country(ds->taxonomy);
 }
 
 void EditDiveSiteCountry::redo()
 {
-	QString old = taxonomy_get_country(&ds->taxonomy);
-	taxonomy_set_country(&ds->taxonomy, qPrintable(value), taxonomy_origin::GEOMANUAL);
+	std::string old = taxonomy_get_country(ds->taxonomy);
+	taxonomy_set_country(ds->taxonomy, value, taxonomy_origin::GEOMANUAL);
 	value = old;
 	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::TAXONOMY); // Inform frontend of changed dive site.
 }
@@ -292,7 +272,7 @@ bool EditDiveSiteLocation::workToBeDone()
 	bool old_ok = has_location(&ds->location);
 	if (ok != old_ok)
 		return true;
-	return ok && !same_location(&value, &ds->location);
+	return ok && value != ds->location;
 }
 
 void EditDiveSiteLocation::redo()
@@ -310,14 +290,11 @@ void EditDiveSiteLocation::undo()
 EditDiveSiteTaxonomy::EditDiveSiteTaxonomy(dive_site *dsIn, taxonomy_data &taxonomy) : ds(dsIn),
 	value(taxonomy)
 {
-	// We did a dumb copy. Erase the source to remove double references to strings.
-	memset(&taxonomy, 0, sizeof(taxonomy));
 	setText(Command::Base::tr("Edit dive site taxonomy"));
 }
 
 EditDiveSiteTaxonomy::~EditDiveSiteTaxonomy()
 {
-	free_taxonomy(&value);
 }
 
 bool EditDiveSiteTaxonomy::workToBeDone()
@@ -364,10 +341,10 @@ void MergeDiveSites::redo()
 	// The dives of the above dive sites were reset to no dive sites.
 	// Add them to the merged-into dive site. Thankfully, we remember
 	// the dives in the sitesToAdd vector.
-	for (const OwningDiveSitePtr &site: sitesToAdd) {
-		for (int i = 0; i < site->dives.nr; ++i) {
-			add_dive_to_dive_site(site->dives.dives[i], ds);
-			divesChanged.push_back(site->dives.dives[i]);
+	for (const std::unique_ptr<dive_site> &site: sitesToAdd) {
+		for (dive *d: site->dives) {
+			ds->add_dive(d);
+			divesChanged.push_back(d);
 		}
 	}
 	emit diveListNotifier.divesChanged(divesChanged, DiveField::DIVESITE);
@@ -380,10 +357,10 @@ void MergeDiveSites::undo()
 
 	// Before readding the dive sites, unregister the corresponding dives so that they can be
 	// readded to their old dive sites.
-	for (const OwningDiveSitePtr &site: sitesToAdd) {
-		for (int i = 0; i < site->dives.nr; ++i) {
-			unregister_dive_from_dive_site(site->dives.dives[i]);
-			divesChanged.push_back(site->dives.dives[i]);
+	for (const std::unique_ptr<dive_site> &site: sitesToAdd) {
+		for (dive *d: site->dives) {
+			unregister_dive_from_dive_site(d);
+			divesChanged.push_back(d);
 		}
 	}
 
@@ -405,9 +382,9 @@ ApplyGPSFixes::ApplyGPSFixes(const std::vector<DiveAndLocation> &fixes)
 				siteLocations.push_back({ ds, dl.location });
 			}
 		} else {
-			ds = create_dive_site(qPrintable(dl.name), divelog.sites);
+			ds = divelog.sites.create(dl.name.toStdString());
 			ds->location = dl.location;
-			add_dive_to_dive_site(dl.d, ds);
+			ds->add_dive(dl.d);
 			dl.d->dive_site = nullptr; // This will be set on redo()
 			sitesToAdd.emplace_back(ds);
 		}

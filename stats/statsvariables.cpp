@@ -47,7 +47,7 @@ struct DiveSiteWrapper {
 	const dive_site *ds;
 	QString name;
 	DiveSiteWrapper(const dive_site *ds) : ds(ds),
-		name(ds ? ds->name : "")
+		name(ds ? QString::fromStdString(ds->name) : QString())
 	{
 	}
 	bool operator<(const DiveSiteWrapper &d2) const {
@@ -74,8 +74,8 @@ struct TripWrapper {
 	QString name;
 	timestamp_t date;
 	TripWrapper(const dive_trip *t) : t(t),
-		name(formatTripTitle(t)), // safe to pass null
-		date(trip_date(t)) // safe to pass null
+		name(t ? formatTripTitle(*t) : QString()),
+		date(t ? t->date() : 0)
 	{
 	}
 	bool operator<(const TripWrapper &t2) const {
@@ -216,7 +216,7 @@ bool StatsQuartiles::isValid() const
 // Define an ordering for gas types
 // invalid < air < ean (including oxygen) < trimix
 // The latter two are sorted by (helium, oxygen)
-// This is in analogy to the global get_dive_gas() function.
+// This is in analogy to the dive::get_maximal_gas() function.
 static bool operator<(const gas_bin_t &t1, const gas_bin_t &t2)
 {
 	if (t1.type != t2.type)
@@ -1297,8 +1297,8 @@ struct WeightBinner : public IntRangeBinner<WeightBinner, IntBin> {
 		return get_weight_unit(metric);
 	}
 	int to_bin_value(const dive *d) const {
-		return metric ? total_weight(d) / 1000 / bin_size
-			      : lrint(grams_to_lbs(total_weight(d))) / bin_size;
+		return metric ? d->total_weight().grams / 1000 / bin_size
+			      : lrint(grams_to_lbs(d->total_weight().grams)) / bin_size;
 	}
 };
 
@@ -1328,8 +1328,8 @@ struct WeightVariable : public StatsVariableTemplate<StatsVariable::Type::Numeri
 			return { &weight_binner_2lbs, &weight_binner_5lbs, &weight_binner_10lbs, &weight_binner_20lbs };
 	}
 	double toFloat(const dive *d) const override {
-		return prefs.units.weight == units::KG ? total_weight(d) / 1000.0
-						       : grams_to_lbs(total_weight(d));
+		return prefs.units.weight == units::KG ? d->total_weight().grams / 1000.0
+						       : grams_to_lbs(d->total_weight().grams);
 	}
 	std::vector<StatsOperation> supportedOperations() const override {
 		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Sum, StatsOperation::Min, StatsOperation::Max };
@@ -1381,7 +1381,7 @@ struct DiveNrVariable : public StatsVariableTemplate<StatsVariable::Type::Numeri
 		return StatsTranslations::tr("Dive #");
 	}
 	std::vector<const StatsBinner *> binners() const override {
-		if (divelog.dives->nr > 1000)
+		if (divelog.dives.size() > 1000)
 			return { &dive_nr_binner_20, &dive_nr_binner_50, &dive_nr_binner_100, &dive_nr_binner_200 };
 		else
 			return { &dive_nr_binner_5, &dive_nr_binner_10, &dive_nr_binner_20, &dive_nr_binner_50 };
@@ -1402,7 +1402,7 @@ struct DiveModeBinner : public SimpleBinner<DiveModeBinner, IntBin> {
 		return QString(divemode_text_ui[derived_bin(bin).value]);
 	}
 	int to_bin_value(const dive *d) const {
-		int res = (int)d->dc.divemode;
+		int res = (int)d->dcs[0].divemode;
 		return res >= 0 && res < NUM_DIVEMODE ? res : OC;
 	}
 };
@@ -1413,7 +1413,7 @@ struct DiveModeVariable : public StatsVariableTemplate<StatsVariable::Type::Disc
 		return StatsTranslations::tr("Dive mode");
 	}
 	QString diveCategories(const dive *d) const override {
-		int mode = (int)d->dc.divemode;
+		int mode = (int)d->dcs[0].divemode;
 		return mode >= 0 && mode < NUM_DIVEMODE ?
 			QString(divemode_text_ui[mode]) : QString();
 	}
@@ -1427,9 +1427,9 @@ struct DiveModeVariable : public StatsVariableTemplate<StatsVariable::Type::Disc
 struct PeopleBinner : public StringBinner<PeopleBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> dive_people;
-		for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
+		for (const QString &s: QString::fromStdString(d->buddy).split(",", SKIP_EMPTY))
 			dive_people.push_back(s.trimmed());
-		for (const QString &s: QString(d->diveguide).split(",", SKIP_EMPTY))
+		for (const QString &s: QString::fromStdString(d->diveguide).split(",", SKIP_EMPTY))
 			dive_people.push_back(s.trimmed());
 		return dive_people;
 	}
@@ -1441,8 +1441,8 @@ struct PeopleVariable : public StatsVariableTemplate<StatsVariable::Type::Discre
 		return StatsTranslations::tr("People");
 	}
 	QString diveCategories(const dive *d) const override {
-		QString buddy = QString(d->buddy).trimmed();
-		QString diveguide = QString(d->diveguide).trimmed();
+		QString buddy = QString::fromStdString(d->buddy).trimmed();
+		QString diveguide = QString::fromStdString(d->diveguide).trimmed();
 		if (!buddy.isEmpty() && !diveguide.isEmpty())
 			buddy += ", ";
 		return buddy + diveguide;
@@ -1455,7 +1455,7 @@ struct PeopleVariable : public StatsVariableTemplate<StatsVariable::Type::Discre
 struct BuddyBinner : public StringBinner<BuddyBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> buddies;
-		for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
+		for (const QString &s: QString::fromStdString(d->buddy).split(",", SKIP_EMPTY))
 			buddies.push_back(s.trimmed());
 		return buddies;
 	}
@@ -1467,7 +1467,7 @@ struct BuddyVariable : public StatsVariableTemplate<StatsVariable::Type::Discret
 		return StatsTranslations::tr("Buddies");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString(d->buddy).trimmed();
+		return QString::fromStdString(d->buddy).trimmed();
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &buddy_binner };
@@ -1477,7 +1477,7 @@ struct BuddyVariable : public StatsVariableTemplate<StatsVariable::Type::Discret
 struct DiveGuideBinner : public StringBinner<DiveGuideBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> dive_guides;
-		for (const QString &s: QString(d->diveguide).split(",", SKIP_EMPTY))
+		for (const QString &s: QString::fromStdString(d->diveguide).split(",", SKIP_EMPTY))
 			dive_guides.push_back(s.trimmed());
 		return dive_guides;
 	}
@@ -1489,7 +1489,7 @@ struct DiveGuideVariable : public StatsVariableTemplate<StatsVariable::Type::Dis
 		return StatsTranslations::tr("Dive guides");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString(d->diveguide).trimmed();
+		return QString::fromStdString(d->diveguide).trimmed();
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &dive_guide_binner };
@@ -1501,8 +1501,8 @@ struct DiveGuideVariable : public StatsVariableTemplate<StatsVariable::Type::Dis
 struct TagBinner : public StringBinner<TagBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
 		std::vector<QString> tags;
-		for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
-			tags.push_back(QString::fromStdString(tag->tag->name).trimmed());
+		for (const divetag *tag: d->tags)
+			tags.push_back(QString::fromStdString(tag->name).trimmed());
 		return tags;
 	}
 };
@@ -1513,7 +1513,7 @@ struct TagVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete>
 		return StatsTranslations::tr("Tags");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString::fromStdString(taglist_get_tagstring(d->tag_list));
+		return QString::fromStdString(taglist_get_tagstring(d->tags));
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &tag_binner };
@@ -1553,9 +1553,9 @@ struct GasTypeBinner : public MultiBinner<GasTypeBinner, GasTypeBin> {
 	}
 	std::vector<gas_bin_t> to_bin_values(const dive *d) const {
 		std::vector<gas_bin_t> res;
-		res.reserve(d->cylinders.nr);
-		for (int i = 0; i < d->cylinders.nr; ++i) {
-			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
+		res.reserve(d->cylinders.size());
+		for (auto &cyl: d->cylinders) {
+			struct gasmix mix = cyl.gasmix;
 			if (gasmix_is_invalid(mix))
 				continue;
 			// Add dive to each bin only once.
@@ -1591,9 +1591,9 @@ struct GasTypeGeneralBinner : public MultiBinner<GasTypeGeneralBinner, IntBin> {
 	}
 	std::vector<int> to_bin_values(const dive *d) const {
 		std::vector<int> res;
-		res.reserve(d->cylinders.nr);
-		for (int i = 0; i < d->cylinders.nr; ++i) {
-			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
+		res.reserve(d->cylinders.size());
+		for (auto &cyl: d->cylinders) {
+			struct gasmix mix = cyl.gasmix;
 			if (gasmix_is_invalid(mix))
 				continue;
 			res.push_back(gasmix_to_type(mix));
@@ -1619,9 +1619,9 @@ struct GasTypeVariable : public StatsVariableTemplate<StatsVariable::Type::Discr
 	QString diveCategories(const dive *d) const override {
 		QString res;
 		std::vector<gasmix> mixes;	// List multiple cylinders only once
-		mixes.reserve(d->cylinders.nr);
-		for (int i = 0; i < d->cylinders.nr; ++i) {
-			struct gasmix mix = d->cylinders.cylinders[i].gasmix;
+		mixes.reserve(d->cylinders.size());
+		for (auto &cyl: d->cylinders) {
+			struct gasmix mix = cyl.gasmix;
 			if (gasmix_is_invalid(mix))
 				continue;
 			if (std::find_if(mixes.begin(), mixes.end(),
@@ -1648,7 +1648,7 @@ struct GasTypeVariable : public StatsVariableTemplate<StatsVariable::Type::Discr
 //  - max_he: get cylinder with maximum he content, otherwise with maximum o2 content
 static int get_gas_content(const struct dive *d, bool he, bool max_he)
 {
-	if (d->cylinders.nr <= 0)
+	if (d->cylinders.empty())
 		return invalid_value<int>();
 	// If sorting be He, the second sort criterion is O2 descending, because
 	// we are interested in the "bottom gas": highest He and lowest O2.
@@ -1657,7 +1657,7 @@ static int get_gas_content(const struct dive *d, bool he, bool max_he)
 					 std::make_tuple(get_he(c2.gasmix), -get_o2(c2.gasmix)); }
 			   : [] (const cylinder_t &c1, const cylinder_t &c2)
 				{ return get_o2(c1.gasmix) < get_o2(c2.gasmix); };
-	auto it = std::max_element(d->cylinders.cylinders, d->cylinders.cylinders + d->cylinders.nr, comp);
+	auto it = std::max_element(d->cylinders.begin(), d->cylinders.end(), comp);
 	return he ? get_he(it->gasmix) : get_o2(it->gasmix);
 }
 
@@ -1746,7 +1746,7 @@ struct GasContentHeVariable : GasContentVariable {
 
 struct SuitBinner : public StringBinner<SuitBinner, StringBin> {
 	std::vector<QString> to_bin_values(const dive *d) const {
-		return { QString(d->suit) };
+		return { QString::fromStdString(d->suit) };
 	}
 };
 
@@ -1756,7 +1756,7 @@ struct SuitVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete
 		return StatsTranslations::tr("Suit type");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString(d->suit);
+		return QString::fromStdString(d->suit);
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &suit_binner };
@@ -1768,9 +1768,9 @@ struct SuitVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete
 static std::vector<QString> weightsystems(const dive *d)
 {
 	std::vector<QString> res;
-	res.reserve(d->weightsystems.nr);
-	for (int i = 0; i < d->weightsystems.nr; ++i)
-		add_to_vector_unique(res, QString(d->weightsystems.weightsystems[i].description).trimmed());
+	res.reserve(d->weightsystems.size());
+	for (auto &ws: d->weightsystems)
+		add_to_vector_unique(res, QString::fromStdString(ws.description).trimmed());
 	return res;
 }
 
@@ -1798,9 +1798,9 @@ struct WeightsystemVariable : public StatsVariableTemplate<StatsVariable::Type::
 static std::vector<QString> cylinder_types(const dive *d)
 {
 	std::vector<QString> res;
-	res.reserve(d->cylinders.nr);
-	for (int i = 0; i < d->cylinders.nr; ++i)
-		add_to_vector_unique(res, QString(d->cylinders.cylinders[i].type.description).trimmed());
+	res.reserve(d->cylinders.size());
+	for (auto &cyl: d->cylinders)
+		add_to_vector_unique(res, QString::fromStdString(cyl.type.description).trimmed());
 	return res;
 }
 
@@ -1868,7 +1868,7 @@ struct TripVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete
 		return StatsTranslations::tr("Dive trip");
 	}
 	QString diveCategories(const dive *d) const override {
-		return formatTripTitle(d->divetrip);
+		return d->divetrip ? formatTripTitle(*d->divetrip) : QString();
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &trip_binner };

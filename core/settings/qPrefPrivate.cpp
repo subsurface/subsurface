@@ -4,12 +4,6 @@
 
 #include <QSettings>
 
-void qPrefPrivate::copy_txt(const char **name, const QString &string)
-{
-	free((void *)*name);
-	*name = copy_qstring(string);
-}
-
 QString keyFromGroupAndName(QString group, QString name)
 {
 	QString slash = (group.endsWith('/') || name.startsWith('/')) ? "" : "/";
@@ -35,8 +29,19 @@ void qPrefPrivate::propSetValue(const QString &key, const QVariant &value, const
 		s.remove(key);
 }
 
+void qPrefPrivate::propSetValue(const QString &key, const std::string &value, const std::string &defaultValue)
+{
+	propSetValue(key, QString::fromStdString(value), QString::fromStdString(defaultValue));
+}
+
 QVariant qPrefPrivate::propValue(const QString &key, const QVariant &defaultValue)
 {
 	QSettings s;
 	return  s.value(key, defaultValue);
+}
+
+QVariant qPrefPrivate::propValue(const QString &key, const std::string &defaultValue)
+{
+	QSettings s;
+	return  s.value(key, QString::fromStdString(defaultValue));
 }

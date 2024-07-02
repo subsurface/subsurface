@@ -4,7 +4,6 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#include "ssrf.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -58,7 +57,7 @@ static bool includes_string_caseinsensitive(const char *haystack, const char *ne
 	return 0;
 }
 
-extern "C" void set_git_update_cb(int(*cb)(const char *))
+void set_git_update_cb(int(*cb)(const char *))
 {
 	update_progress_cb = cb;
 }
@@ -69,7 +68,7 @@ extern "C" void set_git_update_cb(int(*cb)(const char *))
 // proportional - some parts are based on compute performance, some on network speed)
 // they also provide information where in the process we are so we can analyze the log
 // to understand which parts of the process take how much time.
-extern "C" int git_storage_update_progress(const char *text)
+int git_storage_update_progress(const char *text)
 {
 	int ret = 0;
 	if (update_progress_cb)
@@ -135,9 +134,6 @@ std::string normalize_cloud_name(const std::string &remote_in)
 
 std::string get_local_dir(const std::string &url, const std::string &branch)
 {
-	SHA_CTX ctx;
-	unsigned char hash[20];
-
 	// this optimization could in theory lead to odd things happening if the
 	// cloud backend servers ever get out of sync - but when a user switches
 	// between those servers (either because one is down, or because the algorithm
@@ -148,13 +144,13 @@ std::string get_local_dir(const std::string &url, const std::string &branch)
 
 	// That zero-byte update is so that we don't get hash
 	// collisions for "repo1 branch" vs "repo 1branch".
-	SHA1_Init(&ctx);
-	SHA1_Update(&ctx, remote.c_str(), remote.size());
-	SHA1_Update(&ctx, "", 1);
-	SHA1_Update(&ctx, branch.c_str(), branch.size());
-	SHA1_Final(hash, &ctx);
+	SHA1 sha;
+	sha.update(remote);
+	sha.update("", 1);
+	sha.update(branch);
+	auto hash = sha.hash();
 	return format_string_std("%s/cloudstorage/%02x%02x%02x%02x%02x%02x%02x%02x",
-			system_default_directory(),
+			system_default_directory().c_str(),
 			hash[0], hash[1], hash[2], hash[3],
 			hash[4], hash[5], hash[6], hash[7]);
 }
@@ -244,39 +240,39 @@ static bool exceeded_auth_attempts()
 	return false;
 }
 
-extern "C" int credential_ssh_cb(git_cred **out,
+int credential_ssh_cb(git_cred **out,
 		  const char *,
 		  const char *,
 		  unsigned int allowed_types,
 		  void *)
 {
-	const char *username = prefs.cloud_storage_email_encoded;
-	const char *passphrase = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
+	const std::string &username = prefs.cloud_storage_email_encoded;
+	const std::string &passphrase = prefs.cloud_storage_password;
 
 	// TODO: We need a way to differentiate between password and private key authentication
 	if (allowed_types & GIT_CREDTYPE_SSH_KEY) {
-		std::string priv_key = std::string(system_default_directory()) + "/ssrf_remote.key";
+		std::string priv_key = system_default_directory() + "/ssrf_remote.key";
 		if (!access(priv_key.c_str(), F_OK)) {
 			if (exceeded_auth_attempts())
 				return GIT_EUSER;
-			return git_cred_ssh_key_new(out, username, NULL, priv_key.c_str(), passphrase);
+			return git_cred_ssh_key_new(out, username.c_str(), NULL, priv_key.c_str(), passphrase.c_str());
 		}
 	}
 
 	if (allowed_types & GIT_CREDTYPE_USERPASS_PLAINTEXT) {
 		if (exceeded_auth_attempts())
 			return GIT_EUSER;
-		return git_cred_userpass_plaintext_new(out, username, passphrase);
+		return git_cred_userpass_plaintext_new(out, username.c_str(), passphrase.c_str());
 	}
 
 	if (allowed_types & GIT_CREDTYPE_USERNAME)
-		return git_cred_username_new(out, username);
+		return git_cred_username_new(out, username.c_str());
 
 	report_error("No supported ssh authentication.");
 	return GIT_EUSER;
 }
 
-extern "C" int credential_https_cb(git_cred **out,
+int credential_https_cb(git_cred **out,
 			const char *,
 			const char *,
 			unsigned int,
@@ -285,13 +281,13 @@ extern "C" int credential_https_cb(git_cred **out,
 	if (exceeded_auth_attempts())
 		return GIT_EUSER;
 
-	const char *username = prefs.cloud_storage_email_encoded;
-	const char *password = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
+	const std::string &username = prefs.cloud_storage_email_encoded;
+	const std::string &password = prefs.cloud_storage_password;
 
-	return git_cred_userpass_plaintext_new(out, username, password);
+	return git_cred_userpass_plaintext_new(out, username.c_str(), password.c_str());
 }
 
-extern "C" int certificate_check_cb(git_cert *cert, int valid, const char *host, void *)
+int certificate_check_cb(git_cert *cert, int valid, const char *host, void *)
 {
 	if (verbose)
 		report_info("git storage: certificate callback for host %s with validity %d\n", host, valid);
@@ -342,7 +338,7 @@ static int update_remote(struct git_info *info, git_remote *origin, git_referenc
 	return 0;
 }
 
-extern "C" int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree);
+int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree);
 
 static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_reference *, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
 {
@@ -350,7 +346,7 @@ static int try_to_git_merge(struct git_info *info, git_reference **local_p, git_
 	git_commit *local_commit, *remote_commit, *base_commit;
 	git_index *merged_index;
 	git_merge_options merge_options;
-	struct membufferpp msg;
+	membuffer msg;
 
 	if (verbose) {
 		char outlocal[41], outremote[41];
@@ -613,10 +609,10 @@ static std::string getProxyString()
 {
 	if (prefs.proxy_type == QNetworkProxy::HttpProxy) {
 		if (prefs.proxy_auth)
-			return format_string_std("http://%s:%s@%s:%d", prefs.proxy_user, prefs.proxy_pass,
-					prefs.proxy_host, prefs.proxy_port);
+			return format_string_std("http://%s:%s@%s:%d", prefs.proxy_user.c_str(), prefs.proxy_pass.c_str(),
+					prefs.proxy_host.c_str(), prefs.proxy_port);
 		else
-			return format_string_std("http://%s:%d", prefs.proxy_host, prefs.proxy_port);
+			return format_string_std("http://%s:%d", prefs.proxy_host.c_str(), prefs.proxy_port);
 	}
 	return std::string();
 }
@@ -994,7 +990,7 @@ std::string extract_username(struct git_info *info, const std::string &url)
 	 * Ugly, ugly. Parsing the remote repo user name also sets
 	 * it in the preferences. We should do this somewhere else!
 	 */
-	prefs.cloud_storage_email_encoded = strdup(info->username.c_str());
+	prefs.cloud_storage_email_encoded = info->username;
 
 	return url.substr(at + 1 - url.c_str());
 }
@@ -1111,7 +1107,7 @@ bool is_git_repository(const char *filename, struct git_info *info)
 	 *
 	 * This is used to create more user friendly error message and warnings.
 	 */
-	info->is_subsurface_cloud = (strstr(info->url.c_str(), prefs.cloud_base_url) != NULL);
+	info->is_subsurface_cloud = contains(info->url, prefs.cloud_base_url);
 
 	return true;
 }

@@ -4,10 +4,6 @@
  * 'membuffer' functions will manage memory allocation avoiding performance
  * issues related to superfluous re-allocation. See 'make_room' function
  *
- * Before using it membuffer struct should be properly initialized
- *
- *     struct membuffer mb = { 0 };
- *
  * Internal membuffer buffer will not by default contain null terminator,
  * adding it should be done using 'mb_cstring' function
  *
@@ -23,15 +19,7 @@
  *
  *     "something, something else"
  *
- * Unless ownership to the buffer is given away by using "detach_cstring()":
- *
- *	ptr = detach_cstring();
- *
  * where the caller now has a C string and is supposed to free it.
- *
- * Otherwise allocated memory should be freed
- *
- *     free_buffer(&mb);
  */
 #ifndef MEMBUFFER_H
 #define MEMBUFFER_H
@@ -42,20 +30,11 @@
 #include "units.h"
 
 struct membuffer {
-	unsigned int len, alloc;
-	char *buffer;
+	unsigned int len = 0, alloc = 0;
+	char *buffer = nullptr;
+	membuffer();
+	~membuffer();
 };
-
-#ifdef __cplusplus
-
-// In C++ code use this - it automatically frees the buffer, when going out of scope.
-struct membufferpp : public membuffer {
-	membufferpp();
-	~membufferpp();
-};
-
-extern "C" {
-#endif
 
 #ifdef __GNUC__
 #define __printf(x, y) __attribute__((__format__(__printf__, x, y)))
@@ -63,8 +42,6 @@ extern "C" {
 #define __printf(x, y)
 #endif
 
-extern char *detach_cstring(struct membuffer *b);
-extern void free_buffer(struct membuffer *);
 extern void make_room(struct membuffer *b, unsigned int size);
 extern void flush_buffer(struct membuffer *, FILE *);
 extern void put_bytes(struct membuffer *, const char *, int);
@@ -76,13 +53,6 @@ extern void strip_mb(struct membuffer *);
 extern const char *mb_cstring(struct membuffer *);
 extern __printf(2, 0) void put_vformat(struct membuffer *, const char *, va_list);
 extern __printf(2, 3) void put_format(struct membuffer *, const char *fmt, ...);
-extern __printf(2, 0) char *add_to_string_va(char *old, const char *fmt, va_list args);
-extern __printf(2, 3) char *add_to_string(char *old, const char *fmt, ...);
-
-/* Helpers that use membuffers internally */
-extern __printf(1, 0) char *vformat_string(const char *, va_list);
-extern __printf(1, 2) char *format_string(const char *, ...);
-
 
 /* Output one of our "milli" values with type and pre/post data */
 extern void put_milli(struct membuffer *, const char *, int, const char *);
@@ -115,9 +85,5 @@ extern void put_pressure(struct membuffer *, pressure_t, const char *, const cha
 extern void put_salinity(struct membuffer *, int, const char *, const char *);
 extern void put_degrees(struct membuffer *b, degrees_t value, const char *, const char *);
 extern void put_location(struct membuffer *b, const location_t *, const char *, const char *);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

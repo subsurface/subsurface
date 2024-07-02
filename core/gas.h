@@ -5,11 +5,7 @@
 #include "divemode.h"
 #include "units.h"
 
-#ifdef __cplusplus
-extern "C" {
-#else
-#include <stdbool.h>
-#endif
+#include <string>
 
 enum gas_component { N2, HE, O2 };
 
@@ -18,6 +14,7 @@ enum gas_component { N2, HE, O2 };
 struct gasmix {
 	fraction_t o2;
 	fraction_t he;
+	std::string name() const;
 };
 static const struct gasmix gasmix_invalid = { { -1 }, { -1 } };
 static const struct gasmix gasmix_air = { { 0 }, { 0 } };
@@ -61,22 +58,18 @@ static inline int get_n2(struct gasmix mix)
 int pscr_o2(const double amb_pressure, struct gasmix mix);
 
 struct gas_pressures {
-	double o2, n2, he;
+	double o2 = 0.0, n2 = 0.0, he = 0.0;
 };
 
-extern void sanitize_gasmix(struct gasmix *mix);
+extern void sanitize_gasmix(struct gasmix &mix);
 extern int gasmix_distance(struct gasmix a, struct gasmix b);
 extern fraction_t get_gas_component_fraction(struct gasmix mix, enum gas_component component);
-extern void fill_pressures(struct gas_pressures *pressures, double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);
+extern gas_pressures fill_pressures(double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);
 
 extern bool gasmix_is_air(struct gasmix gasmix);
 extern bool gasmix_is_invalid(struct gasmix mix);
 extern enum gastype gasmix_to_type(struct gasmix mix);
 extern const char *gastype_name(enum gastype type);
 extern fraction_t make_fraction(int f);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

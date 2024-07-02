@@ -6,7 +6,6 @@
 
 #include <stdlib.h>
 #include "qthelper.h"
-#include "ssrf.h"
 #include "dive.h"
 #include "sample.h"
 #include "subsurface-string.h"
@@ -27,11 +26,12 @@
  */
 static int seac_gaschange(void *param, sqlite3_stmt *sqlstmt)
 {
+	using namespace std::string_literals;
 	struct parser_state *state = (struct parser_state *)param;
 
 	event_start(state);
 	state->cur_event.time.seconds = sqlite3_column_int(sqlstmt, 1);
-	strcpy(state->cur_event.name, "gaschange");
+	state->cur_event.name = "gaschange"s;
 	state->cur_event.gas.mix.o2.permille = 10 * sqlite3_column_int(sqlstmt, 4);
 	event_end(state);
 
@@ -70,7 +70,7 @@ static int seac_dive(void *param, int, char **data, char **)
 	state->cur_dive->number = atoi(data[0]);
 
 	// Create first cylinder
-	cylinder_t *curcyl = get_or_create_cylinder(state->cur_dive, 0);
+	cylinder_t *curcyl = state->cur_dive->get_or_create_cylinder(0);
 
 	// Get time and date
 	sscanf(data[2], "%d/%d/%2d", &day, &month, &year);
@@ -132,14 +132,14 @@ static int seac_dive(void *param, int, char **data, char **)
 	if (data[6]) {
 		switch (atoi(data[6])) {
 		case 1:
-			state->cur_dive->dc.divemode = OC;
+			state->cur_dive->dcs[0].divemode = OC;
 			break;
 		// Gauge Mode
 		case 2:
-			state->cur_dive->dc.divemode = UNDEF_COMP_TYPE;
+			state->cur_dive->dcs[0].divemode = UNDEF_COMP_TYPE;
 			break;
 		case 3:
-			state->cur_dive->dc.divemode = FREEDIVE;
+			state->cur_dive->dcs[0].divemode = FREEDIVE;
 			break;
 		default:
 			if (verbose) {
@@ -150,12 +150,12 @@ static int seac_dive(void *param, int, char **data, char **)
 
 	// 9 = comments from seac app
 	if (data[9]) {
-		utf8_string(data[9], &state->cur_dive->notes);
+		utf8_string_std(data[9], &state->cur_dive->notes);
 	}
 
 	// 10 = dive duration
 	if (data[10]) {
-		state->cur_dive->dc.duration.seconds = atoi(data[10]);
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[10]);
 	}
 
 	// 8 = water_type
@@ -181,7 +181,7 @@ static int seac_dive(void *param, int, char **data, char **)
 
 
 	if (data[11]) {
-		state->cur_dive->dc.maxdepth.mm = 10 * atoi(data[11]);
+		state->cur_dive->dcs[0].maxdepth.mm = 10 * atoi(data[11]);
 	}
 
 	// Create sql_stmt type to query DB
@@ -205,26 +205,23 @@ static int seac_dive(void *param, int, char **data, char **)
 	settings_start(state);
 	dc_settings_start(state);
 
-	// These dc values are const char *, therefore we have to cast.
-	// Will be fixed by converting to std::string
-	utf8_string(data[1], (char **)&state->cur_dive->dc.serial);
-	utf8_string(data[12], (char **)&state->cur_dive->dc.fw_version);
-	state->cur_dive->dc.model = strdup("Seac Action");
+	utf8_string_std(data[1], &state->cur_dive->dcs[0].serial);
+	utf8_string_std(data[12],&state->cur_dive->dcs[0].fw_version);
+	state->cur_dive->dcs[0].model = "Seac Action";
 
-	state->cur_dive->dc.deviceid = calculate_string_hash(data[1]);
+	state->cur_dive->dcs[0].deviceid = calculate_string_hash(data[1]);
 
-	add_extra_data(&state->cur_dive->dc, "GF-Lo", (const char*)sqlite3_column_text(sqlstmt, 9));
-	add_extra_data(&state->cur_dive->dc, "GF-Hi", (const char*)sqlite3_column_text(sqlstmt, 10));
+	add_extra_data(&state->cur_dive->dcs[0], "GF-Lo", (const char*)sqlite3_column_text(sqlstmt, 9));
+	add_extra_data(&state->cur_dive->dcs[0], "GF-Hi", (const char*)sqlite3_column_text(sqlstmt, 10));
 
 	dc_settings_end(state);
 	settings_end(state);
 
 	if (data[11]) {
-		state->cur_dive->dc.maxdepth.mm = 10 * atoi(data[11]);
+		state->cur_dive->dcs[0].maxdepth.mm = 10 * atoi(data[11]);
 	}
 
 	curcyl->gasmix.o2.permille = 10 * sqlite3_column_int(sqlstmt, 4);
-
 
 	// Track gasses to tell when switch occurs
 	lastgas = curcyl->gasmix;
@@ -241,7 +238,7 @@ static int seac_dive(void *param, int, char **data, char **)
 			seac_gaschange(state, sqlstmt);
 			lastgas = curgas;
 			cylnum ^= 1; // Only need to toggle between two cylinders
-			curcyl = get_or_create_cylinder(state->cur_dive, cylnum);
+			curcyl = state->cur_dive->get_or_create_cylinder(cylnum);
 			curcyl->gasmix.o2.permille = 10 * sqlite3_column_int(sqlstmt, 4);
 		}
 		state->cur_sample->stopdepth.mm = 10 * sqlite3_column_int(sqlstmt, 5);
@@ -264,7 +261,7 @@ static int seac_dive(void *param, int, char **data, char **)
  * The callback function performs another SQL query on the other
  * table, to read in the sample values.
  */
-extern "C" int parse_seac_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_seac_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	char *err = NULL;

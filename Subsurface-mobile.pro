@@ -45,28 +45,28 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/fulltext.cpp \
 	core/subsurfacestartup.cpp \
 	core/subsurface-string.cpp \
-	core/pref.c \
+	core/pref.cpp \
 	core/profile.cpp \
 	core/device.cpp \
 	core/dive.cpp \
-	core/divecomputer.c \
+	core/divecomputer.cpp \
 	core/divefilter.cpp \
-	core/event.c \
+	core/event.cpp \
 	core/eventtype.cpp \
 	core/filterconstraint.cpp \
 	core/filterpreset.cpp \
-	core/divelist.c \
+	core/filterpresettable.cpp \
+	core/divelist.cpp \
 	core/divelog.cpp \
-	core/gas-model.c \
-	core/gaspressures.c \
+	core/gas-model.cpp \
+	core/gaspressures.cpp \
 	core/git-access.cpp \
 	core/globals.cpp \
 	core/liquivision.cpp \
 	core/load-git.cpp \
 	core/parse-xml.cpp \
 	core/parse.cpp \
-	core/picture.c \
-	core/pictureobj.cpp \
+	core/picture.cpp \
 	core/sample.cpp \
 	core/import-suunto.cpp \
 	core/import-shearwater.cpp \
@@ -75,37 +75,38 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/import-divinglog.cpp \
 	core/import-csv.cpp \
 	core/save-html.cpp \
-	core/statistics.c \
+	core/statistics.cpp \
 	core/worldmap-save.cpp \
 	core/libdivecomputer.cpp \
-	core/version.c \
+	core/version.cpp \
 	core/save-git.cpp \
 	core/datatrak.cpp \
-	core/ostctools.c \
+	core/ostctools.cpp \
 	core/planner.cpp \
 	core/save-xml.cpp \
 	core/cochran.cpp \
 	core/deco.cpp \
-	core/divesite.c \
-	core/equipment.c \
-	core/gas.c \
+	core/divesite.cpp \
+	core/equipment.cpp \
+	core/gas.cpp \
 	core/membuffer.cpp \
 	core/selection.cpp \
-	core/sha1.c \
+	core/sha1.cpp \
 	core/string-format.cpp \
-	core/strtod.c \
+	core/strtod.cpp \
 	core/tag.cpp \
-	core/taxonomy.c \
+	core/taxonomy.cpp \
 	core/time.cpp \
-	core/trip.c \
-	core/units.c \
-	core/uemis.c \
+	core/trip.cpp \
+	core/triptable.cpp \
+	core/units.cpp \
+	core/uemis.cpp \
 	core/btdiscovery.cpp \
 	core/connectionlistmodel.cpp \
 	core/qt-ble.cpp \
 	core/uploadDiveShare.cpp \
 	core/uploadDiveLogsDE.cpp \
-	core/save-profiledata.c \
+	core/save-profiledata.cpp \
 	core/xmlparams.cpp \
 	core/settings/qPref.cpp \
 	core/settings/qPrefCloudStorage.cpp \
@@ -207,7 +208,6 @@ HEADERS += \
 	core/extradata.h \
 	core/git-access.h \
 	core/globals.h \
-	core/owning_ptrs.h \
 	core/pref.h \
 	core/profile.h \
 	core/qthelper.h \
@@ -217,9 +217,9 @@ HEADERS += \
 	core/units.h \
 	core/version.h \
 	core/picture.h \
-	core/pictureobj.h \
 	core/planner.h \
 	core/divesite.h \
+	core/divesitetable.h \
 	core/checkcloudconnection.h \
 	core/cochran.h \
 	core/color.h \
@@ -229,6 +229,7 @@ HEADERS += \
 	core/divefilter.h \
 	core/filterconstraint.h \
 	core/filterpreset.h \
+	core/filterpresettable.h \
 	core/divelist.h \
 	core/divelog.h \
 	core/divelogexportlogic.h \
@@ -249,6 +250,8 @@ HEADERS += \
 	core/subsurfacestartup.h \
 	core/subsurfacesysinfo.h \
 	core/taxonomy.h \
+	core/trip.h \
+	core/triptable.h \
 	core/uemis.h \
 	core/webservice.h \
 	core/windowtitleupdate.h \

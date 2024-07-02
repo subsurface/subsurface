@@ -27,11 +27,11 @@ PreferencesNetwork::~PreferencesNetwork()
 
 void PreferencesNetwork::refreshSettings()
 {
-	ui->proxyHost->setText(prefs.proxy_host);
+	ui->proxyHost->setText(QString::fromStdString(prefs.proxy_host));
 	ui->proxyPort->setValue(prefs.proxy_port);
 	ui->proxyAuthRequired->setChecked(prefs.proxy_auth);
-	ui->proxyUsername->setText(prefs.proxy_user);
-	ui->proxyPassword->setText(prefs.proxy_pass);
+	ui->proxyUsername->setText(QString::fromStdString(prefs.proxy_user));
+	ui->proxyPassword->setText(QString::fromStdString(prefs.proxy_pass));
 	ui->proxyType->setCurrentIndex(ui->proxyType->findData(prefs.proxy_type));
 }
 
@@ -49,9 +49,8 @@ void PreferencesNetwork::syncSettings()
 
 void PreferencesNetwork::proxyType_changed(int idx)
 {
-	if (idx == -1) {
+	if (idx < 0)
 		return;
-	}
 
 	int proxyType = ui->proxyType->itemData(idx).toInt();
 	bool hpEnabled = (proxyType == QNetworkProxy::Socks5Proxy || proxyType == QNetworkProxy::HttpProxy);

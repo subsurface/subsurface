@@ -2,15 +2,16 @@
 
 #include "command_pictures.h"
 #include "core/errorhelper.h"
+#include "core/range.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/divelocationmodel.h"
 
 namespace Command {
 
-static picture *dive_get_picture(const dive *d, const QString &fn)
+static picture *dive_get_picture(dive *d, const QString &fn)
 {
-	int idx = get_picture_idx(&d->pictures, qPrintable(fn));
-	return idx < 0 ? nullptr : &d->pictures.pictures[idx];
+	int idx = get_picture_idx(d->pictures, fn.toStdString());
+	return idx < 0 ? nullptr : &d->pictures[idx];
 }
 
 SetPictureOffset::SetPictureOffset(dive *dIn, const QString &filenameIn, offset_t offsetIn) :
@@ -33,9 +34,9 @@ void SetPictureOffset::redo()
 
 	// Instead of trying to be smart, let's simply resort the picture table.
 	// If someone complains about speed, do our usual "smart" thing.
-	sort_picture_table(&d->pictures);
+	std::sort(d->pictures.begin(), d->pictures.end());
 	emit diveListNotifier.pictureOffsetChanged(d, filename, newOffset);
-	invalidate_dive_cache(d);
+	d->invalidate_cache();
 }
 
 // Undo and redo do the same thing
@@ -55,10 +56,9 @@ static PictureListForDeletion filterPictureListForDeletion(const PictureListForD
 	PictureListForDeletion res;
 	res.d = p.d;
 	res.filenames.reserve(p.filenames.size());
-	for (int i = 0; i < p.d->pictures.nr; ++i) {
-		std::string fn = p.d->pictures.pictures[i].filename;
-		if (std::find(p.filenames.begin(), p.filenames.end(), fn) != p.filenames.end())
-			res.filenames.push_back(fn);
+	for (auto &pic: p.d->pictures) {
+		if (range_contains(p.filenames, pic.filename))
+			res.filenames.push_back(pic.filename);
 	}
 	return res;
 }
@@ -72,18 +72,18 @@ static std::vector<PictureListForAddition> removePictures(std::vector<PictureLis
 		PictureListForAddition toAdd;
 		toAdd.d = list.d;
 		for (const std::string &fn: list.filenames) {
-			int idx = get_picture_idx(&list.d->pictures, fn.c_str());
+			int idx = get_picture_idx(list.d->pictures, fn);
 			if (idx < 0) {
 				report_info("removePictures(): picture disappeared!");
 				continue; // Huh? We made sure that this can't happen by filtering out non-existent pictures.
 			}
 			filenames.push_back(QString::fromStdString(fn));
-			toAdd.pics.emplace_back(list.d->pictures.pictures[idx]);
-			remove_from_picture_table(&list.d->pictures, idx);
+			toAdd.pics.emplace_back(list.d->pictures[idx]);
+			list.d->pictures.erase(list.d->pictures.begin() + idx);
 		}
 		if (!toAdd.pics.empty())
 			res.push_back(toAdd);
-		invalidate_dive_cache(list.d);
+		list.d->invalidate_cache();
 		emit diveListNotifier.picturesRemoved(list.d, std::move(filenames));
 	}
 	picturesToRemove.clear();
@@ -98,22 +98,22 @@ static std::vector<PictureListForDeletion> addPictures(std::vector<PictureListFo
 	// happen, as we checked that before.
 	std::vector<PictureListForDeletion> res;
 	for (const PictureListForAddition &list: picturesToAdd) {
-		QVector<PictureObj> picsForSignal;
+		QVector<picture> picsForSignal;
 		PictureListForDeletion toRemove;
 		toRemove.d = list.d;
-		for (const PictureObj &pic: list.pics) {
-			int idx = get_picture_idx(&list.d->pictures, pic.filename.c_str()); // This should *not* already exist!
+		for (const picture &pic: list.pics) {
+			int idx = get_picture_idx(list.d->pictures, pic.filename); // This should *not* already exist!
 			if (idx >= 0) {
 				report_info("addPictures(): picture disappeared!");
 				continue; // Huh? We made sure that this can't happen by filtering out existing pictures.
 			}
 			picsForSignal.push_back(pic);
-			add_picture(&list.d->pictures, pic.toCore());
+			add_picture(list.d->pictures, pic);
 			toRemove.filenames.push_back(pic.filename);
 		}
 		if (!toRemove.filenames.empty())
 			res.push_back(toRemove);
-		invalidate_dive_cache(list.d);
+		list.d->invalidate_cache();
 		emit diveListNotifier.picturesAdded(list.d, std::move(picsForSignal));
 	}
 	picturesToAdd.clear();
@@ -164,17 +164,16 @@ AddPictures::AddPictures(const std::vector<PictureListForAddition> &pictures) : 
 		std::sort(p.pics.begin(), p.pics.end());
 
 		// Find a picture with a location
-		auto it = std::find_if(p.pics.begin(), p.pics.end(), [](const PictureObj &p) { return has_location(&p.location); });
+		auto it = std::find_if(p.pics.begin(), p.pics.end(), [](const picture &p) { return has_location(&p.location); });
 		if (it != p.pics.end()) {
 			// There is a dive with a location, we might want to modify the dive accordingly.
 			struct dive_site *ds = p.d->dive_site;
 			if (!ds) {
 				// This dive doesn't yet have a dive site -> add a new dive site.
 				QString name = Command::Base::tr("unnamed dive site");
-				dive_site *ds = alloc_dive_site_with_gps(qPrintable(name), &it->location);
-				sitesToAdd.emplace_back(ds);
-				sitesToSet.push_back({ p.d, ds });
-			} else if (!dive_site_has_gps_location(ds)) {
+				sitesToAdd.push_back(std::make_unique<dive_site>(qPrintable(name), it->location));
+				sitesToSet.push_back({ p.d, sitesToAdd.back().get() });
+			} else if (!ds->has_gps_location()) {
 				// This dive has a dive site, but without coordinates. Let's add them.
 				sitesToEdit.push_back({ ds, it->location });
 			}
@@ -201,7 +200,7 @@ void AddPictures::swapDiveSites()
 			unregister_dive_from_dive_site(entry.d); // the dive-site pointer in the dive is now NULL
 		std::swap(ds, entry.ds);
 		if (ds)
-			add_dive_to_dive_site(entry.d, ds);
+			ds->add_dive(entry.d);
 		emit diveListNotifier.divesChanged(QVector<dive *>{ entry.d }, DiveField::DIVESITE);
 	}
 
@@ -218,9 +217,9 @@ void AddPictures::undo()
 
 	// Remove dive sites
 	for (dive_site *siteToRemove: sitesToRemove) {
-		int idx = unregister_dive_site(siteToRemove);
-		sitesToAdd.emplace_back(siteToRemove);
-		emit diveListNotifier.diveSiteDeleted(siteToRemove, idx); // Inform frontend of removed dive site.
+		auto res = divelog.sites.pull(siteToRemove);
+		sitesToAdd.push_back(std::move(res.ptr));
+		emit diveListNotifier.diveSiteDeleted(siteToRemove, res.idx); // Inform frontend of removed dive site.
 	}
 	sitesToRemove.clear();
 }
@@ -228,10 +227,10 @@ void AddPictures::undo()
 void AddPictures::redo()
 {
 	// Add dive sites
-	for (OwningDiveSitePtr &siteToAdd: sitesToAdd) {
-		sitesToRemove.push_back(siteToAdd.get());
-		int idx = register_dive_site(siteToAdd.release()); // Return ownership to backend.
-		emit diveListNotifier.diveSiteAdded(sitesToRemove.back(), idx); // Inform frontend of new dive site.
+	for (std::unique_ptr<dive_site> &siteToAdd: sitesToAdd) {
+		auto res = divelog.sites.register_site(std::move(siteToAdd)); // Return ownership to backend.
+		sitesToRemove.push_back(res.ptr);
+		emit diveListNotifier.diveSiteAdded(sitesToRemove.back(), res.idx); // Inform frontend of new dive site.
 	}
 	sitesToAdd.clear();
 
