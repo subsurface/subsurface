@@ -384,7 +384,8 @@ static double calculate_airuse(const struct dive &dive)
 				continue;
 		}
 
-		airuse += gas_volume(&cyl, start) - gas_volume(&cyl, end);
+		// TODO: implement subtraction for units.h types
+		airuse += cyl.gas_volume(start).mliter - cyl.gas_volume(end).mliter;
 	}
 	return airuse / 1000.0;
 }
