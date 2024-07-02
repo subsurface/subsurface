@@ -1113,7 +1113,7 @@ void AddCylinder::redo()
 	for (dive *d: dives) {
 		int index = first_hidden_cylinder(d);
 		indexes.push_back(index);
-		add_cylinder(&d->cylinders, index, cyl);
+		d->cylinders.add(index, cyl);
 		divelog.dives.update_cylinder_related_info(*d);
 		emit diveListNotifier.cylinderAdded(d, index);
 		d->invalidate_cache(); // Ensure that dive is written in git_save()
@@ -1199,7 +1199,7 @@ void RemoveCylinder::undo()
 {
 	for (size_t i = 0; i < dives.size(); ++i) {
 		std::vector<int> mapping = get_cylinder_map_for_add(dives[i]->cylinders.size(), indexes[i]);
-		add_cylinder(&dives[i]->cylinders, indexes[i], cyl[i]);
+		dives[i]->cylinders.add(indexes[i], cyl[i]);
 		cylinder_renumber(*dives[i], &mapping[0]);
 		divelog.dives.update_cylinder_related_info(*dives[i]);
 		emit diveListNotifier.cylinderAdded(dives[i], indexes[i]);

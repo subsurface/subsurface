@@ -492,7 +492,7 @@ void CylindersModel::add()
 	int row = static_cast<int>(d->cylinders.size());
 	cylinder_t cyl = create_new_manual_cylinder(d);
 	beginInsertRows(QModelIndex(), row, row);
-	add_cylinder(&d->cylinders, row, std::move(cyl));
+	d->cylinders.add(row, std::move(cyl));
 	++numRows;
 	endInsertRows();
 	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));

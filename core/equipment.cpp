@@ -167,9 +167,9 @@ weight_t get_weightsystem_weight(const std::string &name)
 	return it != ws_info_table.end() ? it->weight : weight_t();
 }
 
-void add_cylinder(struct cylinder_table *t, int idx, cylinder_t cyl)
+void cylinder_table::add(int idx, cylinder_t cyl)
 {
-	t->insert(t->begin() + idx, std::move(cyl));
+	insert(begin() + idx, std::move(cyl));
 }
 
 bool weightsystem_t::operator==(const weightsystem_t &w2) const
@@ -406,7 +406,7 @@ void add_default_cylinder(struct dive *d)
 		cyl.type.size.mliter = 11100;
 		cyl.type.workingpressure.mbar = 207000;
 	}
-	add_cylinder(&d->cylinders, 0, cyl);
+	d->cylinders.add(0, cyl);
 	reset_cylinders(d, false);
 }
 
