@@ -422,7 +422,7 @@ static std::vector<gaschanges> analyze_gaslist(struct diveplan *diveplan, struct
 	for (size_t nr = 0; nr < gaschanges.size(); nr++) {
 		int idx = gaschanges[nr].gasidx;
 		printf("gaschange nr %d: @ %5.2lfm gasidx %d (%s)\n", nr, gaschanges[nr].depth / 1000.0,
-		       idx, gasname(&dive.get_cylinder(idx)->gasmix));
+		       idx, dive.get_cylinder(idx)->gasmix.name().c_str());
 	}
 #endif
 	return gaschanges;
@@ -737,7 +737,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	}
 
 #if DEBUG_PLAN & 4
-	printf("gas %s\n", gasname(&gas));
+	printf("gas %s\n", gas.name().c_str());
 	printf("depth %5.2lfm \n", depth / 1000.0);
 	printf("current_cylinder %i\n", current_cylinder);
 #endif
@@ -876,7 +876,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		else
 			current_cylinder = get_gasidx(dive, gas);
 		if (current_cylinder == -1) {
-			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(gas));
+			report_error(translate("gettextFromC", "Can't find gas %s"), gas.name().c_str());
 			current_cylinder = 0;
 		}
 		reset_regression(ds);

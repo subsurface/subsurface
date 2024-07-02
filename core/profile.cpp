@@ -1281,7 +1281,7 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 			continue;
 		struct gasmix mix = d->get_cylinder(cyl)->gasmix;
 		pressurevalue = get_pressure_units(mbar, &pressure_unit);
-		res.push_back(casprintf_loc(translate("gettextFromC", "P: %d%s (%s)"), pressurevalue, pressure_unit, gasname(mix)));
+		res.push_back(casprintf_loc(translate("gettextFromC", "P: %d%s (%s)"), pressurevalue, pressure_unit, mix.name().c_str()));
 	}
 	if (entry.temperature) {
 		tempvalue = get_temp_units(entry.temperature, &temp_unit);

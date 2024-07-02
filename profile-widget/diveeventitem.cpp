@@ -125,7 +125,7 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 		struct icd_data icd_data;
 		struct gasmix mix = dive->get_gasmix_from_event(ev);
 		name += ": ";
-		name += gasname(mix);
+		name += QString::fromStdString(mix.name());
 
 		/* Do we have an explicit cylinder index?  Show it. */
 		if (ev.gas.index >= 0)

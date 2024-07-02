@@ -57,7 +57,7 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 	rect->setPen(QPen(QBrush(), 0.0)); // get rid of the thick line around the rectangle
 	rects.push_back(rect);
 	DiveTextItem *label = new DiveTextItem(dpr, 1.0, Qt::AlignVCenter | Qt::AlignRight, rect);
-	label->set(gasname(gas), Qt::black);
+	label->set(QString::fromStdString(gas.name()), Qt::black);
 	label->setPos(x + 2.0 * dpr, height() / 2.0);
 	label->setZValue(101);
 }

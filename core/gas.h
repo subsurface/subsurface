@@ -5,6 +5,8 @@
 #include "divemode.h"
 #include "units.h"
 
+#include <string>
+
 enum gas_component { N2, HE, O2 };
 
 // o2 == 0 && he == 0 -> air
@@ -12,6 +14,7 @@ enum gas_component { N2, HE, O2 };
 struct gasmix {
 	fraction_t o2;
 	fraction_t he;
+	std::string name() const;
 };
 static const struct gasmix gasmix_invalid = { { -1 }, { -1 } };
 static const struct gasmix gasmix_air = { { 0 }, { 0 } };
