@@ -178,26 +178,6 @@ bool weightsystem_t::operator==(const weightsystem_t &w2) const
 	       std::tie(w2.weight.grams, w2.description);
 }
 
-void get_gas_string(struct gasmix gasmix, char *text, int len)
-{
-	if (gasmix_is_air(gasmix))
-		snprintf(text, len, "%s", translate("gettextFromC", "air"));
-	else if (get_he(gasmix) == 0 && get_o2(gasmix) < 1000)
-		snprintf(text, len, translate("gettextFromC", "EAN%d"), (get_o2(gasmix) + 5) / 10);
-	else if (get_he(gasmix) == 0 && get_o2(gasmix) == 1000)
-		snprintf(text, len, "%s", translate("gettextFromC", "oxygen"));
-	else
-		snprintf(text, len, "(%d/%d)", (get_o2(gasmix) + 5) / 10, (get_he(gasmix) + 5) / 10);
-}
-
-/* Returns a static char buffer - only good for immediate use by printf etc */
-const char *gasname(struct gasmix gasmix)
-{
-	static char gas[64];
-	get_gas_string(gasmix, gas, sizeof(gas));
-	return gas;
-}
-
 volume_t cylinder_t::gas_volume(pressure_t p) const
 {
 	double bar = p.mbar / 1000.0;

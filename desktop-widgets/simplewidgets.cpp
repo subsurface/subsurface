@@ -347,7 +347,8 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 			text << tr("Cylinders:\n");
 			for (auto [idx, cyl]: enumerated_range(current_dive->cylinders)) {
 				if (current_dive->is_cylinder_used(idx))
-					text << QString::fromStdString(cyl.type.description) << " " << gasname(cyl.gasmix) << "\n";
+					text << QString::fromStdString(cyl.type.description) << " "
+					     << QString::fromStdString(cyl.gasmix.name()) << "\n";
 			}
 		}
 		if (what->weights) {

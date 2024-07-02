@@ -351,7 +351,7 @@ QVector<QPair<QString, int>> selectedDivesGasUsed()
 		std::vector<volume_t> diveGases = get_gas_used(d);
 		for (size_t j = 0; j < d->cylinders.size(); j++) {
 			if (diveGases[j].mliter) {
-				QString gasName = gasname(d->get_cylinder(j)->gasmix);
+				QString gasName = QString::fromStdString(d->get_cylinder(j)->gasmix.name());
 				gasUsed[gasName] += diveGases[j].mliter;
 			}
 		}
