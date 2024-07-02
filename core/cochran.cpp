@@ -678,7 +678,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT] / 256
 				+ log[CMD_O2_PERCENT + 1]) * 10;
 			cyl.gasmix.he.permille = 0;
-			add_cylinder(&dive->cylinders, 0, std::move(cyl));
+			dive->cylinders.add(0, std::move(cyl));
 		} else {
 			dc->model = "Commander";
 			dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
@@ -687,7 +687,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 				cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT + g * 2] / 256
 					+ log[CMD_O2_PERCENT + g * 2 + 1]) * 10;
 				cyl.gasmix.he.permille = 0;
-				add_cylinder(&dive->cylinders, g, std::move(cyl));
+				dive->cylinders.add(g, std::move(cyl));
 			}
 		}
 
@@ -732,7 +732,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			cyl.gasmix.he.permille =
 				(log[EMC_HE_PERCENT + g * 2] / 256
 				+ log[EMC_HE_PERCENT + g * 2 + 1]) * 10;
-			add_cylinder(&dive->cylinders, g, std::move(cyl));
+			dive->cylinders.add(g, std::move(cyl));
 		}
 
 		tm.tm_year = log[EMC_YEAR];
