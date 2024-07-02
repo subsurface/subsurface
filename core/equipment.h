@@ -35,6 +35,8 @@ struct cylinder_t
 
 	cylinder_t();
 	~cylinder_t();
+
+	volume_t gas_volume(pressure_t p) const; /* Volume of a cylinder at pressure 'p' */
 };
 
 /* Table of cylinders.
@@ -78,7 +80,6 @@ extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
-extern int gas_volume(const cylinder_t *cyl, pressure_t p); /* Volume in mliter of a cylinder at pressure 'p' */
 extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders);
 extern void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl); /* dive is needed to fill out MOD, which depends on salinity. */
 extern cylinder_t default_cylinder(const struct dive *d);
