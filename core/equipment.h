@@ -51,6 +51,8 @@ struct cylinder_t
 struct cylinder_table : public std::vector<cylinder_t> {
 	cylinder_t &operator[](size_t i);
 	const cylinder_t &operator[](size_t i) const;
+
+	void add(int idx, cylinder_t cyl);
 };
 
 struct weightsystem_t
@@ -89,9 +91,6 @@ extern int first_hidden_cylinder(const struct dive *d);
 #ifdef DEBUG_CYL
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
-
-/* Cylinder table functions */
-extern void add_cylinder(struct cylinder_table *, int idx, cylinder_t cyl);
 
 struct ws_info {
 	std::string name;
