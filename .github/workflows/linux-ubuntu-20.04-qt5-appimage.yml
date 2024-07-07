@@ -1,4 +1,4 @@
-name: Ubuntu 16.04 / Qt 5.15-- for AppImage
+name: Ubuntu 20.04 / Qt 5 for AppImage
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:16.04
+      image: ubuntu:20.04
 
     steps:
     - name: get container ready for build
@@ -25,26 +25,9 @@ jobs:
         echo "update distro and install dependencies"
 
         apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
-        software-properties-common
-
-        add-apt-repository -y ppa:savoury1/qt-5-15
-        add-apt-repository -y ppa:savoury1/kde-5-80
-        add-apt-repository -y ppa:savoury1/gpg
-        add-apt-repository -y ppa:savoury1/ffmpeg4
-        add-apt-repository -y ppa:savoury1/vlc3
-        add-apt-repository -y ppa:savoury1/gcc-9
-        add-apt-repository -y ppa:savoury1/display
-        add-apt-repository -y ppa:savoury1/apt-xenial
-        add-apt-repository -y ppa:savoury1/gtk-xenial
-        add-apt-repository -y ppa:savoury1/qt-xenial
-        add-apt-repository -y ppa:savoury1/kde-xenial
-        add-apt-repository -y ppa:savoury1/backports
-        add-apt-repository -y ppa:savoury1/build-tools
-        apt-get update
         apt-get dist-upgrade -y
         DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
-        autoconf automake cmake g++ g++-9 git libcrypto++-dev libcurl4-gnutls-dev \
+        autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
         libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
         libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
         libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
@@ -52,15 +35,16 @@ jobs:
         qml-module-qtquick2 qt5-qmake qtchooser qtconnectivity5-dev \
         qtdeclarative5-dev qtdeclarative5-private-dev qtlocation5-dev \
         qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
-        qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev liblzma-dev \
-        curl
+        qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev \
+        mdbtools-dev curl
 
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 \
-        --slave /usr/bin/g++ g++ /usr/bin/g++-9
-
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
+    # needs git from the previous step
     - name: checkout sources
-      # We cannot update this as glibc on 16.04 is too old for node 20.
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
@@ -129,7 +113,7 @@ jobs:
     - name: PR artifacts
       if: github.event_name == 'pull_request'
       # We cannot update this as glibc on 16.04 is too old for node 20.
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Subsurface-Linux-AppImage-${{ steps.version_number.outputs.version }}
         path: Subsurface-*.AppImage
@@ -138,7 +122,7 @@ jobs:
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
       if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds

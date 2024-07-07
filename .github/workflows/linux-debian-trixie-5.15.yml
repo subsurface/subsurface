@@ -1,4 +1,4 @@
-name: Debian trixie / Qt 5.15--
+name: Debian trixie / Qt 5
 
 on:
   push:
