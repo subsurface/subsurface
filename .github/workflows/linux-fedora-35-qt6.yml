@@ -1,4 +1,4 @@
-name: Fedora 35 / Qt 6--
+name: Fedora 35 / Qt 6
 
 on:
   push:

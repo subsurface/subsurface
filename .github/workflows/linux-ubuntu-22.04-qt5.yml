@@ -1,4 +1,4 @@
-name: Ubuntu 24.04 / Qt 5.15--
+name: Ubuntu 22.04 / Qt 5
 
 on:
   push:
@@ -16,4 +16,4 @@ jobs:
   do-build-test:
     uses: ./.github/workflows/linux-debian-generic.yml
     with:
-      container-image: ubuntu:24.04
+      container-image: ubuntu:22.04

@@ -1,4 +1,4 @@
-name: Ubuntu 20.04 / Qt 5.12--
+name: Ubuntu 20.04 / Qt 5
 
 on:
   push:
