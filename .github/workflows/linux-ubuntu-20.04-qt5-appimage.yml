@@ -96,7 +96,10 @@ jobs:
         cp /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1 appdir/usr/lib/
 
         # get the linuxdeployqt tool and run it to collect the libraries
-        curl -L -O "https://github.com/probonopd/linuxdeployqt/releases/download/7/linuxdeployqt-7-x86_64.AppImage"
+        #
+        # ideally we should switch to using an actually released version of
+        # the tool, or alternatively cache a fixed version on our side
+        curl -L -O "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
         chmod a+x linuxdeployqt*.AppImage
         unset QTDIR
         unset QT_PLUGIN_PATH
