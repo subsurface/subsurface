@@ -14,10 +14,10 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-11
+    runs-on: macOS-12
     steps:
-    - name: switch to Xcode 11
-      run: sudo xcode-select -s "/Applications/Xcode_11.7.app"
+    - name: switch to Xcode 13
+      run: sudo xcode-select -s "/Applications/Xcode_13.1.app"
 
     - name: checkout sources
       uses: actions/checkout@v4
@@ -26,7 +26,7 @@ jobs:
         submodules: recursive
 
     - name: setup Homebrew
-      run: brew install autoconf automake libtool pkg-config
+      run: brew install automake
 
     - name: checkout Qt resources
       uses: actions/checkout@v4
