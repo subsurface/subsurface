@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-11
+    runs-on: macOS-12
     steps:
     - name: checkout sources
       uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
         submodules: recursive
 
     - name: setup Homebrew
-      run: brew install hidapi libxslt libjpg libmtp create-dmg confuse
+      run: brew install hidapi libxslt libjpg libmtp create-dmg confuse automake
 
     - name: checkout Qt resources
       uses: actions/checkout@v4
