@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DepthMapWidget</class>
+ <widget class="QWidget" name="DepthMapWidget">
+  <action name="profTissues">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:heatmap-icon</normaloff>:heatmap-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle tissue heat-map</string>
+   </property>
+  </action>
+  <action name="profPO2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:pp-o2-icon</normaloff>:pp-o2-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle pO₂ graph</string>
+   </property>
+  </action>
+  <action name="profPn2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:pp-n2-icon</normaloff>:pp-n2-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle pN₂ graph</string>
+   </property>
+  </action>
+  <action name="profPhe">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:pp-he-icon</normaloff>:pp-he-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle pHe graph</string>
+   </property>
+  </action>
+  <action name="profDcCeiling">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:ceiling-dc-icon</normaloff>:ceiling-dc-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle DC reported ceiling</string>
+   </property>
+  </action>
+  <action name="profCalcCeiling">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:ceiling-calculated-icon</normaloff>:ceiling-calculated-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle calculated ceiling</string>
+   </property>
+  </action>
+  <action name="profCalcAllTissues">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:ceiling-tissues-icon</normaloff>:ceiling-tissues-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle calculating all tissues</string>
+   </property>
+  </action>
+  <action name="profIncrement3m">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:ceiling-increments-icon</normaloff>:ceiling-increments-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle calculated ceiling with 3m increments</string>
+   </property>
+  </action>
+  <action name="profHR">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:rate-heart-icon</normaloff>:rate-heart-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle heart rate</string>
+   </property>
+  </action>
+  <action name="profMod">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:depth-mod-icon</normaloff>:depth-mod-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle MOD</string>
+   </property>
+  </action>
+  <action name="profEad">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:depth-ead-icon</normaloff>:depth-ead-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle EAD, END, EADD</string>
+   </property>
+  </action>
+  <action name="profNdl_tts">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:depth-ndl-icon</normaloff>:depth-ndl-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle NDL, TTS</string>
+   </property>
+  </action>
+  <action name="profSAC">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:rate-sac-icon</normaloff>:rate-sac-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle SAC rate</string>
+   </property>
+  </action>
+  <action name="profRuler">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:ruler-icon</normaloff>:ruler-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle ruler</string>
+   </property>
+  </action>
+  <action name="profScaled">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:scale-graph-icon</normaloff>:scale-graph-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Scale graph</string>
+   </property>
+  </action>
+  <action name="profTogglePicture">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:photo-icon</normaloff>:photo-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle media</string>
+   </property>
+  </action>
+  <action name="profTankbar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:gaschange-icon</normaloff>:gaschange-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle gas bar</string>
+   </property>
+  </action>
+  <action name="profDeco">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../subsurface.qrc">
+     <normaloff>:/tissue-icon</normaloff>:/tissue-icon</iconset>
+   </property>
+   <property name="text">
+    <string>Toggle deco information</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle deco information</string>
+   </property>
+  </action>
+ </widget>
+</ui>

@@ -16,6 +16,7 @@ add_subdirectory(preferences)
 
 set (SUBSURFACE_UI
 	about.ui
+    depthmapwidget.ui
 	addfilterpreset.ui
 	btdeviceselectiondialog.ui
 	configuredivecomputerdialog.ui
@@ -102,6 +103,8 @@ set(SUBSURFACE_INTERFACE
 	notificationwidget.h
 	profilewidget.cpp
 	profilewidget.h
+	depthmapwidget.cpp
+	depthmapwidget.h
 	qtwaitingspinner.cpp
 	qtwaitingspinner.h
 	simplewidgets.cpp
