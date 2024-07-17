@@ -94,9 +94,8 @@ http://subsurface-divelog.org/documentation/
 
 ## Contributing
 
-There is a mailing list for developers: subsurface@subsurface-divelog.org
-Go to http://lists.subsurface-divelog.org/cgi-bin/mailman/listinfo/subsurface
-to subscribe.
+There is a user forum for questions, bug reports, and feature requests:
+https://groups.google.com/g/subsurface-divelog
 
 If you want to contribute code, please open a pull request with signed-off
 commits at https://github.com/Subsurface/subsurface/pulls
