@@ -367,7 +367,8 @@ preferred over Qt6.
 If you plan to deploy your build to an Apple Silicon Mac, you may have better results with
 Bluetooth connections if you install Qt5.15.13. If Qt5.15.13 is not available via the
 installer, you can download from https://download.qt.io/official_releases/qt/5.15/5.15.13
-and build using the usual configure, make, and make install.
+and build using the usual configure, make, and make install. Qt is also available as Homebrew package
+
 
 3. now build Subsurface
 
@@ -379,6 +380,11 @@ if you are building against Qt6 (still experimental) you can create a universal 
 
 ```
 cd ~/src; bash subsurface/scripts/build.sh -build-with-qt6 -build-deps -fat-build
+```
+
+4. Sign the package
+```
+codesign --options runtime --keychain $HOME/Library/Keychains/login.keychain --sign - --deep --force --entitlements subsurface/build/entitlements-mac-dev.plist subsurface/build/Subsurface.app
 ```
 
 After the above is done, Subsurface.app will be available in the

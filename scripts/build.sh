@@ -197,9 +197,9 @@ if [ "$PLATFORM" = Darwin ] ; then
 		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/ -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64'"
 		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk -arch arm64 -arch x86_64"
 	else
-		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
-		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
 		ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
+		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/  -DCMAKE_OSX_ARCHITECTURES=$ARCHS"
+		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
 	fi
 	# OpenSSL can't deal with multi arch build
 	MAC_OPTS_OPENSSL="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
@@ -381,7 +381,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	bash ./buildconf
 	mkdir -p build
 	cd build
-	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --with-darwinssl \
+	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --with-openssl \
 		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
 	make -j4
 	make install
@@ -648,6 +648,10 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	if [ "$PLATFORM" = Darwin ] ; then
 		rm -rf Subsurface.app
 		rm -rf Subsurface-mobile.app
+
+		if [ "$DEBUGRELEASE" = Debug ] ; then
+			cp "$SRC"/${SRC_DIR}/entitlements-mac-dev.plist .
+		fi
 	fi
 
 	if [ ! "$PREP_ONLY" = "1" ] ; then
