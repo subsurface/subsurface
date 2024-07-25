@@ -334,6 +334,10 @@ for ARCH in $ARCHITECTURES ; do
 				-D_OPENSSL_VERSION="${OPENSSL_VERSION}" \
 				-DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
 				../libgit2/
+			
+			# This is a dirty fix for https://github.com/libgit2/libgit2/issues/6574
+			find ../libgit2 -name 'CMakeLists.txt' -exec sed -i 's|C_STANDARD 90|C_STANDARD 99|' {} \;
+			
 			make
 			make install
 			# Patch away pkg-config dependency to zlib, its there, i promise
