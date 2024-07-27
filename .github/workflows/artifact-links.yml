@@ -10,10 +10,15 @@ jobs:
     name: Add artifact links to PR and issues
     runs-on: ubuntu-22.04
 
+    permissions:
+      issues: write
+      pull-requests: write
+      actions: read
+
     steps:
     - name: Add artifact links to PR and issues
       if: github.event.workflow_run.event == 'pull_request'
-      uses: tonyhallett/artifacts-url-comments@v1.1.0
+      uses: tonyhallett/artifacts-url-comments@0965ff1a7ae03c5c1644d3c30f956effea4e05ef # v1.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
