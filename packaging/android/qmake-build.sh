@@ -408,6 +408,9 @@ fi
 # now build the Subsurface aab
 make apk
 
+# Clean up the generated ssrf-version.h file
+rm -f ssrf-version.h
+
 popd
 
 APK=$(find . -name Subsurface-mobile.apk)

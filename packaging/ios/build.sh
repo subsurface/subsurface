@@ -352,5 +352,9 @@ for BUILD_NOW in $BUILD_LOOP; do
 	# it appears that a first make fails with a missing generated file, which a second
 	# invocation of make will happily build
 	make || make
+
+	# Clean up the generated ssrf-version.h file
+	rm -f "$SUBSURFACE_SOURCE"/ssrf-version.h .
+
 	popd
 done

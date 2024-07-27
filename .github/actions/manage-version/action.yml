@@ -37,7 +37,7 @@ runs:
         PULL_REQUEST_BRANCH: ${{ github.event.pull_request.head.ref }}
       shell: bash
       run: |
-        echo "pull-request-$PULL_REQUEST_BRANCH" > latest-subsurface-buildnumber-extension
+        echo "pull-request.$PULL_REQUEST_BRANCH" > latest-subsurface-buildnumber-extension
 
     - name: store version number for the build
       id: version_number
