@@ -523,6 +523,9 @@ cd "$SRC"
 
 cd ${SRC_DIR}
 
+# Remove a stale generated ssrf-version.h file (if any)
+rm -f ssrf-version.h
+
 if [ ! -d libdivecomputer/src ] ; then
 	git submodule init
 	git submodule update --recursive

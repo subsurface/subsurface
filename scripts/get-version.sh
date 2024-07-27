@@ -29,7 +29,7 @@ fi
 pushd "$(dirname "$0")/../" &> /dev/null
 export SUBSURFACE_SOURCE=$PWD
 
-VERSION_EXTENSION="-"
+COMMITS_SINCE="0"
 
 # add the build number to this as 'patch' component
 # if we run in an environment where we are given a build number (e.g. CICD builds)
@@ -54,21 +54,25 @@ if [ ! -f latest-subsurface-buildnumber ] ; then
 	git checkout "$LAST_BUILD_BRANCH" &> /dev/null || croak "failed to check out $LAST_BUILD_BRANCH in nightly-builds"
 	BUILDNR=$(<./latest-subsurface-buildnumber)
 	popd &> /dev/null
-	VERSION_EXTENSION+=$(git log --pretty="oneline" "${LAST_BUILD_SHA}...HEAD" | wc -l | tr -d '[:space:]')
-	VERSION_EXTENSION+="-"
-	[ "$VERSION_EXTENSION" = "-0-" ] && VERSION_EXTENSION="-"
+	COMMITS_SINCE=$(git log --pretty="oneline" "${LAST_BUILD_SHA}...HEAD" | wc -l | tr -d '[:space:]')
+	if [[ -z $COMMITS_SINCE ]]; then
+		COMMITS_SINCE="0"
+	fi
 else
 	BUILDNR=$(<"latest-subsurface-buildnumber")
 fi
 
+VERSION_EXTENSION="-"
+if [ $COMMITS_SINCE -ne 0 ]; then
+	VERSION_EXTENSION+="patch.${COMMITS_SINCE}."
+fi
+
 if [ -f "latest-subsurface-buildnumber-extension" ] ; then
-	VERSION_EXTENSION+=$(<"latest-subsurface-buildnumber-extension")
+	SUFFIX=$(<"latest-subsurface-buildnumber-extension")
+	VERSION_EXTENSION+=$(sed 's/_/-/g;s/[^.a-zA-Z0-9-]//g' <<< "$SUFFIX")
 else
 	VERSION_EXTENSION+="local"
 fi
-
-COMMITS_SINCE=$(tr -cd "[:digit:]" <<<"$VERSION_EXTENSION")
-[[ -z $COMMITS_SINCE ]] && COMMITS_SINCE="0"
 
 if [[ $DIGITS == "1" ]] ; then
 	VERSION="${BUILDNR}"
