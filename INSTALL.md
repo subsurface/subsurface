@@ -355,7 +355,7 @@ xcode-select --install
 1. install Homebrew (see https://brew.sh) and then the required build infrastructure:
 
 ```
-brew install autoconf automake libtool pkg-config gettext
+brew install autoconf automake libtool pkg-config gettext confuse
 ```
 
 2. install Qt
