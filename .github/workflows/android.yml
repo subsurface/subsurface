@@ -46,6 +46,8 @@ jobs:
         KEYSTORE_PASSWORD: pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
         BUILDNR: ${{ steps.version_number.outputs.buildnr }}
+        VERSION: ${{ steps.version_number.outputs.version }}
+        VERSION_4: ${{ steps.version_number.outputs.version_4 }}
       run: |
         # this is rather awkward, but it allows us to use the preinstalled
         # Android and Qt versions with relative paths
@@ -63,7 +65,7 @@ jobs:
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
         # get the build number via curl so this works both for a pull request as well as a push
         export OUTPUT_DIR="$GITHUB_WORKSPACE"
-        bash -x ./subsurface/packaging/android/qmake-build.sh -buildnr $BUILDNR
+        bash -x ./subsurface/packaging/android/qmake-build.sh -buildnr $BUILDNR -canonicalversion $VERSION -canonicalversion_4 $VERSION_4
 
     - name: delete the keystore
       if: github.event_name == 'push'
