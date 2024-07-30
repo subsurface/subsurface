@@ -43,6 +43,9 @@ jobs:
         bash -x subsurface/packaging/windows/container-prep.sh 2>&1 | tee pre-build.log
 
     - name: run build
+      env:
+        CANONICALVERSION: ${{ steps.version_number.outputs.version }}
+        CANONICALVERSION_4: ${{ steps.version_number.outputs.version_4 }}
       run: |
         export OUTPUT_DIR="$GITHUB_WORKSPACE"
         cd /win

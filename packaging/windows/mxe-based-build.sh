@@ -137,12 +137,11 @@ else
 	touch Release
 fi
 
-
+cd "$BASEDIR"/subsurface
 
 # libdivecomputer
 # ensure the git submodule is present and the autotools are set up
 
-cd "$BASEDIR"/subsurface
 if [ ! -d libdivecomputer/src ] ; then
 	git submodule init
 	git submodule update --recursive

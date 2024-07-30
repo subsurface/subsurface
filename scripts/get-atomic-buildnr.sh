@@ -6,7 +6,6 @@
 #
 # Usage: get-atomic-buildnr.sh SHA secrets.NIGHTLY_BUILDS [extra-name-component]
 #
-# the resulting release version is stored in the file ./release-version
 
 # checkout the nightly-builds repo in parallel to the main repo
 # the clone followed by the pointless push should verify that the password is stored in the config
@@ -25,4 +24,3 @@ bash subsurface/scripts/get-or-create-build-nr.sh "$1"
 echo "build number after get-or-create is $(<nightly-builds/latest-subsurface-buildnumber)"
 cp nightly-builds/latest-subsurface-buildnumber subsurface/
 [[ -n $3 ]] && echo "$3" > subsurface/latest-subsurface-buildnumber-extension
-bash subsurface/scripts/get-version.sh > subsurface/release-version
