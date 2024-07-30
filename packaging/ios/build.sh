@@ -77,12 +77,15 @@ if [[ $QT_VERSION = 5.15* ]] ; then
 fi
 
 # set up the Subsurface versions by hand
-CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh)
+if [ -z "${CANONICALVERSION+X}" ] ; then
+        CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh)
+fi
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" > "$SUBSURFACE_SOURCE"/ssrf-version.h
-CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 4)
+if [ -z "${CANONICALVERSION_4+X}" ] ; then
+        CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 4)
+fi
 echo "#define CANONICAL_VERSION_STRING_4 \"$CANONICALVERSION_4\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
-CANONICALVERSION_3=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 3)
-echo "#define CANONICAL_VERSION_STRING_3 \"$CANONICALVERSION_3\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
+CANONICALVERSION_3=${CANONICALVERSION_4%.*}
 
 BUNDLE=org.subsurface-divelog.subsurface-mobile
 if [ "${IOS_BUNDLE_PRODUCT_IDENTIFIER}" != "" ] ; then
