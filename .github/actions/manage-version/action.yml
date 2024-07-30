@@ -12,6 +12,9 @@ outputs:
   version:
     description: The long form version number
     value: ${{ steps.version_number.outputs.version }}
+  version_4:
+    description: The 4 part version number
+    value: ${{ steps.version_number.outputs.version_4 }}
   buildnr:
     description: The build number
     value: ${{ steps.version_number.outputs.buildnr }}
@@ -51,6 +54,8 @@ runs:
         git checkout $PULL_REQUEST_HEAD_SHA
         version=$(scripts/get-version.sh)
         echo "version=$version" >> $GITHUB_OUTPUT
+        version_4=$(scripts/get-version.sh 4)
+        echo "version_4=$version_4" >> $GITHUB_OUTPUT
         buildnr=$(scripts/get-version.sh 1)
         echo "buildnr=$buildnr" >> $GITHUB_OUTPUT
         git checkout $GITHUB_SHA

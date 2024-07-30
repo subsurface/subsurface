@@ -51,6 +51,16 @@ while [ "$#" -gt 0 ] ; do
 			BUILDNR=$1
 			shift
 			;;
+		-canonicalversion)
+			shift
+			CANONICALVERSION=$1
+			shift
+			;;
+		-canonicalversion_4)
+			shift
+			CANONICALVERSION_4=$1
+			shift
+			;;
 		-version)
 			# only update the version info without rebuilding
 			# this is useful when working with Xcode
@@ -86,9 +96,13 @@ mkdir -p "$BUILDROOT"/subsurface-mobile-build
 pushd "$BUILDROOT"/subsurface-mobile-build
 
 # set up the Subsurface versions by hand
-CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh)
+if [ -z "${CANONICALVERSION+X}" ] ; then
+	CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh)
+fi
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" > ssrf-version.h
-CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 4)
+if [ -z "${CANONICALVERSION_4+X}" ] ; then
+	CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 4)
+fi
 echo "#define CANONICAL_VERSION_STRING_4 \"$CANONICALVERSION_4\"" >> ssrf-version.h
 popd
 
