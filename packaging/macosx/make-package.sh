@@ -11,7 +11,9 @@ DMGCREATE=create-dmg
 
 # same git version magic as in the Makefile
 # for the naming of volume and dmg we want the 3 digits of the full version number
-VERSION=$(cd ${DIR}/subsurface; ./scripts/get-version.sh)
+if [ -z "${CANONICALVERSION+X}" ] ; then
+        CANONICALVERSION=$(cd ${DIR}/subsurface; ./scripts/get-version.sh)
+fi
 
 # first build and install Subsurface and then clean up the staging area
 # make sure we didn't lose the minimum OS version
@@ -104,13 +106,13 @@ if [ "$SIGN" = "1" ] ; then
 	sh ${DIR}/subsurface/packaging/macosx/sign
 fi
 
-if [ -f ./Subsurface-$VERSION.dmg ]; then
-	rm ./Subsurface-$VERSION.dmg.bak
-	mv ./Subsurface-$VERSION.dmg ./Subsurface-$VERSION.dmg.bak
+if [ -f ./Subsurface-$CANONICALVERSION.dmg ]; then
+	rm ./Subsurface-$CANONICALVERSION.dmg.bak
+	mv ./Subsurface-$CANONICALVERSION.dmg ./Subsurface-$CANONICALVERSION.dmg.bak
 fi
 
 $DMGCREATE --background ${DIR}/subsurface/packaging/macosx/DMG-Background.png \
-	--window-size 500 300 --icon-size 96 --volname Subsurface-$VERSION \
+	--window-size 500 300 --icon-size 96 --volname Subsurface-$CANONICALVERSION \
 	--app-drop-link 380 205 \
 	--volicon ${DIR}/subsurface/packaging/macosx/Subsurface.icns \
-	--icon "Subsurface" 110 205 ./Subsurface-$VERSION.dmg ./staging
+	--icon "Subsurface" 110 205 ./Subsurface-$CANONICALVERSION.dmg ./staging

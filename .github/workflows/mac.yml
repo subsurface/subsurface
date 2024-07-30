@@ -41,6 +41,8 @@ jobs:
 
     - name: build Subsurface
       id: build
+      env:
+        CANONICALVERSION: ${{ steps.version_number.outputs.version }}
       run: |
         cd ${GITHUB_WORKSPACE}/..
         export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.13
