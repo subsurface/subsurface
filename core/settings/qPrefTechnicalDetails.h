@@ -7,6 +7,7 @@
 
 class qPrefTechnicalDetails : public QObject {
 	Q_OBJECT
+	Q_PROPERTY(bool allowOcGasAsDiluent READ allowOcGasAsDiluent WRITE set_allowOcGasAsDiluent NOTIFY allowOcGasAsDiluentChanged)
 	Q_PROPERTY(bool calcalltissues READ calcalltissues WRITE set_calcalltissues NOTIFY calcalltissuesChanged)
 	Q_PROPERTY(bool calcceiling READ calcceiling WRITE set_calcceiling NOTIFY calcceilingChanged)
 	Q_PROPERTY(bool calcceiling3m READ calcceiling3m WRITE set_calcceiling3m NOTIFY calcceiling3mChanged)
@@ -44,6 +45,7 @@ public:
 	static void sync() { loadSync(true); }
 
 public:
+	static bool allowOcGasAsDiluent() { return prefs.allowOcGasAsDiluent; }
 	static bool calcalltissues() { return prefs.calcalltissues; }
 	static bool calcceiling() { return prefs.calcceiling; }
 	static bool calcceiling3m() { return prefs.calcceiling3m; }
@@ -73,6 +75,7 @@ public:
 	static bool infobox() { return prefs.infobox; }
 
 public slots:
+	static void set_allowOcGasAsDiluent(bool value);
 	static void set_calcalltissues(bool value);
 	static void set_calcceiling(bool value);
 	static void set_calcceiling3m(bool value);
@@ -102,6 +105,7 @@ public slots:
 	static void set_infobox(bool value);
 
 signals:
+	void allowOcGasAsDiluentChanged(bool value);
 	void calcalltissuesChanged(bool value);
 	void calcceilingChanged(bool value);
 	void calcceiling3mChanged(bool value);
@@ -133,6 +137,7 @@ signals:
 private:
 	qPrefTechnicalDetails() {}
 
+	static void disk_allowOcGasAsDiluent(bool doSync);
 	static void disk_calcalltissues(bool doSync);
 	static void disk_calcceiling(bool doSync);
 	static void disk_calcceiling3m(bool doSync);

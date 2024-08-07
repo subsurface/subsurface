@@ -1324,7 +1324,7 @@ extern "C" void create_plot_info_new(const struct dive *dive, const struct divec
 	init_decompression(&plot_deco_state, dive, in_planner);
 	free_plot_info_data(pi);
 	calculate_max_limits_new(dive, dc, pi, in_planner);
-	get_dive_gas(dive, &o2, &he, &o2max);
+	get_max_dive_gas(dive, &o2, &he, &o2max);
 	if (dc->divemode == FREEDIVE) {
 		pi->dive_type = plot_info::FREEDIVING;
 	} else if (he > 0) {

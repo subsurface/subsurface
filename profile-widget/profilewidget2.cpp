@@ -500,18 +500,6 @@ struct int ProfileWidget2::getEntryFromPos(QPointF pos)
 #endif
 
 #ifndef SUBSURFACE_MOBILE
-/// Prints cylinder information for display.
-/// eg : "Cyl 1 (AL80 EAN32)"
-static QString printCylinderDescription(int i, const cylinder_t *cylinder)
-{
-	QString label = gettextFromC::tr("Cyl") + QString(" %1").arg(i+1);
-	if( cylinder != NULL ) {
-		QString mix = get_gas_string(cylinder->gasmix);
-		label += QString(" (%2 %3)").arg(cylinder->type.description).arg(mix);
-	}
-	return label;
-}
-
 static bool isDiveTextItem(const QGraphicsItem *item, const DiveTextItem *textItem)
 {
 	while (item) {
@@ -520,6 +508,16 @@ static bool isDiveTextItem(const QGraphicsItem *item, const DiveTextItem *textIt
 		item = item->parentItem();
 	}
 	return false;
+}
+
+void ProfileWidget2::addGasChangeMenu(QMenu &m, QString menuTitle, const struct dive &d, int dcNr, int changeTime)
+{
+	QMenu *gasChange = m.addMenu(menuTitle);
+	std::vector<std::pair<int, QString>> gases = get_dive_gas_list(&d, dcNr, true);
+	for (unsigned i = 0; i < gases.size(); i++) {
+		int cylinderIndex = gases[i].first;
+		gasChange->addAction(gases[i].second, [this, cylinderIndex, changeTime] { addGasSwitch(cylinderIndex, changeTime); });
+	}
 }
 
 void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
@@ -560,21 +558,10 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 
 	// Add or edit Gas Change
 	if (d && item && event_is_gaschange(item->getEvent())) {
-		int eventTime = item->getEvent()->time.seconds;
-		QMenu *gasChange = m.addMenu(tr("Edit Gas Change"));
-		for (int i = 0; i < d->cylinders.nr; i++) {
-			const cylinder_t *cylinder = get_cylinder(d, i);
-			QString label = printCylinderDescription(i, cylinder);
-			gasChange->addAction(label, [this, i, eventTime] { addGasSwitch(i, eventTime); });
-		}
+		addGasChangeMenu(m, tr("Edit Gas Change"), *d, dc, item->getEvent()->time.seconds);
 	} else if (d && d->cylinders.nr > 1) {
 		// if we have more than one gas, offer to switch to another one
-		QMenu *gasChange = m.addMenu(tr("Add gas change"));
-		for (int i = 0; i < d->cylinders.nr; i++) {
-			const cylinder_t *cylinder = get_cylinder(d, i);
-			QString label = printCylinderDescription(i, cylinder);
-			gasChange->addAction(label, [this, i, seconds] { addGasSwitch(i, seconds); });
-		}
+		addGasChangeMenu(m, tr("Add gas change"), *d, dc, seconds);
 	}
 	m.addAction(tr("Add setpoint change"), [this, seconds]() { ProfileWidget2::addSetpointChange(seconds); });
 	m.addAction(tr("Add bookmark"), [this, seconds]() { addBookmark(seconds); });
@@ -836,7 +823,7 @@ int ProfileWidget2::handleIndex(const DiveHandler *h) const
 
 DiveHandler *ProfileWidget2::createHandle()
 {
-	DiveHandler *item = new DiveHandler(d);
+	DiveHandler *item = new DiveHandler(d, dc);
 	scene()->addItem(item);
 	connect(item, &DiveHandler::moved, this, &ProfileWidget2::divePlannerHandlerMoved);
 	connect(item, &DiveHandler::clicked, this, &ProfileWidget2::divePlannerHandlerClicked);
