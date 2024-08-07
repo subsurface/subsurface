@@ -21,24 +21,18 @@
 class BLEObject : public QObject
 {
 	Q_OBJECT
-
 public:
-	BLEObject(QLowEnergyController *c, device_data_t *);
+	BLEObject(QLowEnergyController *c, device_data_t &);
 	~BLEObject();
 	inline void set_timeout(int value) { timeout = value; }
 	dc_status_t write(const void* data, size_t size, size_t *actual);
 	dc_status_t read(void* data, size_t size, size_t *actual);
-	inline dc_status_t get_name(char *res, size_t size)
-	{
-		if (!device->btname) return DC_STATUS_UNSUPPORTED;
-		strncpy(res, device->btname, size);
-		return DC_STATUS_SUCCESS;
-	}
+	dc_status_t get_name(char *res, size_t size);
 	dc_status_t poll(int timeout);
 
 	inline QLowEnergyService *preferredService() { return preferred; }
 	inline int descriptorWritten() { return desc_written; }
-	dc_status_t select_preferred_service(void);
+	dc_status_t select_preferred_service();
 
 public slots:
 	void addService(const QBluetoothUuid &newService);
@@ -51,11 +45,11 @@ public slots:
 private:
 	QVector<QLowEnergyService *> services;
 
-	QLowEnergyController *controller = nullptr;
+	QLowEnergyController *controller;
 	QLowEnergyService *preferred = nullptr;
 	QList<QByteArray> receivedPackets;
 	bool isCharacteristicWritten;
-	device_data_t *device;
+	device_data_t &device;
 	unsigned int hw_credit = 0;
 	unsigned int desc_written = 0;
 	int timeout;
@@ -73,8 +67,6 @@ private:
 	};
 };
 
-
-extern "C" {
 dc_status_t qt_ble_open(void **io, dc_context_t *context, const char *devaddr, device_data_t *user_device);
 dc_status_t qt_ble_set_timeout(void *io, int timeout);
 dc_status_t qt_ble_poll(void *io, int timeout);
@@ -82,6 +74,5 @@ dc_status_t qt_ble_read(void *io, void* data, size_t size, size_t *actual);
 dc_status_t qt_ble_write(void *io, const void* data, size_t size, size_t *actual);
 dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size);
 dc_status_t qt_ble_close(void *io);
-}
 
 #endif

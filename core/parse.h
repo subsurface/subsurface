@@ -2,8 +2,6 @@
 #ifndef PARSE_H
 #define PARSE_H
 
-#define MAX_EVENT_NAME 128
-
 #include "event.h"
 #include "equipment.h" // for cylinder_t
 #include "extradata.h"
@@ -12,21 +10,16 @@
 
 #include <memory>
 #include <sqlite3.h>
+#include <string>
 #include <time.h>
+#include <vector>
 
 struct xml_params;
 struct divelog;
-
-typedef union {
-	struct event event;
-	char allocation[sizeof(struct event) + MAX_EVENT_NAME];
-} event_allocation_t;
-
-#ifdef __cplusplus
+struct fingerprint_record;
 
 /*
  * Dive info as it is being built up..
- * C++-only so we can use std::string
  */
 
 struct parser_settings {
@@ -63,12 +56,12 @@ struct parser_state {
 	enum import_source import_source = UNKNOWN;
 
 	struct divecomputer *cur_dc = nullptr;			/* non-owning */
-	struct dive *cur_dive = nullptr;			/* owning */
-	struct dive_site *cur_dive_site = nullptr;		/* owning */
-	location_t cur_location { 0 };
-	struct dive_trip *cur_trip = nullptr;			/* owning */
+	std::unique_ptr<dive> cur_dive;				/* owning */
+	std::unique_ptr<dive_site> cur_dive_site;		/* owning */
+	location_t cur_location;
+	std::unique_ptr<dive_trip> cur_trip;			/* owning */
 	struct sample *cur_sample = nullptr;			/* non-owning */
-	struct picture cur_picture { 0 };			/* owning */
+	struct picture cur_picture;				/* owning */
 	std::unique_ptr<filter_preset> cur_filter;		/* owning */
 	std::string fulltext;					/* owning */
 	std::string fulltext_string_mode;			/* owning */
@@ -91,15 +84,15 @@ struct parser_state {
 	struct { std::string key; std::string value; } cur_extra_data;
 	struct units xml_parsing_units;
 	struct divelog *log = nullptr;				/* non-owning */
-	struct fingerprint_table *fingerprints = nullptr;	/* non-owning */
+	std::vector<fingerprint_record> *fingerprints = nullptr;
+								/* non-owning */
 
 	sqlite3 *sql_handle = nullptr;				/* for SQL based parsers */
 	bool event_active = false;
-	event_allocation_t event_allocation;
+	event cur_event;
+	parser_state();
 	~parser_state();
 };
-
-#define cur_event event_allocation.event
 
 void event_start(struct parser_state *state);
 void event_end(struct parser_state *state);
@@ -143,18 +136,13 @@ void utf8_string_std(const char *buffer, std::string *res);
 
 void add_dive_site(const char *ds_name, struct dive *dive, struct parser_state *state);
 
-extern "C" {
-#endif
-
 int trimspace(char *buffer);
 void start_match(const char *type, const char *name, char *buffer);
 void nonmatch(const char *type, const char *name, char *buffer);
-int atoi_n(char *ptr, unsigned int len);
-void utf8_string(const char *buffer, char **res);
 
-void parse_xml_init(void);
+void parse_xml_init();
 int parse_xml_buffer(const char *url, const char *buf, int size, struct divelog *log, const struct xml_params *params);
-void parse_xml_exit(void);
+void parse_xml_exit();
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
@@ -163,10 +151,6 @@ int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *
 int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log);
-#ifdef __cplusplus
-}
-#include <string>
 std::string trimspace(const char *buffer);
-#endif
 
 #endif

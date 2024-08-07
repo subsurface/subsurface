@@ -7,8 +7,11 @@
 #include "core/errorhelper.h"
 #include "core/qthelper.h"
 #include "core/dive.h"
-#include "core/membuffer.h"
+#include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/divesite.h"
+#include "core/membuffer.h"
+#include "core/range.h"
 #include "core/cloudstorage.h"
 #include "core/xmlparams.h"
 #ifndef SUBSURFACE_MOBILE
@@ -87,15 +90,13 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 	}
 
 	/* walk the dive list in chronological order */
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive) {
+	for (auto [i, dive]: enumerated_range(divelog.dives)) {
 		char filename[PATH_MAX];
 		int streamsize;
 		char *membuf;
 		xmlDoc *transformed;
 		struct zip_source *s;
-		struct membufferpp mb;
+		membuffer mb;
 		struct xml_params *params = alloc_xml_params();
 
 		/*
@@ -112,17 +113,18 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 
 		if (ds) {
 			put_format(&mb, "<divelog><divesites><site uuid='%8x' name='", ds->uuid);
-			put_quoted(&mb, ds->name, 1, 0);
+			put_quoted(&mb, ds->name.c_str(), 1, 0);
 			put_format(&mb, "'");
 			put_location(&mb, &ds->location, " gps='", "'");
 			put_format(&mb, ">\n");
-			if (ds->taxonomy.nr) {
-				for (int j = 0; j < ds->taxonomy.nr; j++) {
-					struct taxonomy *t = &ds->taxonomy.category[j];
-					if (t->category != TC_NONE && t->category == prefs.geocoding.category[j] && t->value) {
-						put_format(&mb, "  <geo cat='%d'", t->category);
-						put_format(&mb, " origin='%d' value='", t->origin);
-						put_quoted(&mb, t->value, 1, 0);
+			for (int i = 0; i < 3; i++) {
+				if (prefs.geocoding.category[i] == TC_NONE)
+					continue;
+				for (auto const &t: ds->taxonomy) {
+					if (t.category == prefs.geocoding.category[i] && !t.value.empty()) {
+						put_format(&mb, "  <geo cat='%d'", t.category);
+						put_format(&mb, " origin='%d' value='", t.origin);
+						put_quoted(&mb, t.value.c_str(), 1, 0);
 						put_format(&mb, "'/>\n");
 					}
 				}
@@ -130,7 +132,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 			put_format(&mb, "</site>\n</divesites>\n");
 		}
 
-		save_one_dive_to_mb(&mb, dive, false);
+		save_one_dive_to_mb(&mb, *dive, false);
 
 		if (ds) {
 			put_format(&mb, "</divelog>\n");

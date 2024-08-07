@@ -10,11 +10,6 @@
 #include <QLocale>
 #include <map>
 
-// This class caches each dives words, so that we can unregister a dive from the full text search
-struct full_text_cache {
-	std::vector<QString> words;
-};
-
 // The FullText-search class
 class FullText {
 	std::map<QString, std::vector<dive *>> words; // Dives that belong to each word
@@ -35,8 +30,6 @@ static FullText self;
 
 // C-interface functions
 
-extern "C" {
-
 void fulltext_register(struct dive *d)
 {
 	self.registerDive(d);
@@ -56,8 +49,6 @@ void fulltext_populate()
 {
 	self.populate();
 }
-
-} // extern "C"
 
 // C++-only interface functions
 FullTextResult fulltext_find_dives(const FullTextQuery &q, StringFilterMode mode)
@@ -123,31 +114,27 @@ static void tokenize(QString s, std::vector<QString> &res)
 static std::vector<QString> getWords(const dive *d)
 {
 	std::vector<QString> res;
-	tokenize(QString(d->notes), res);
-	tokenize(QString(d->diveguide), res);
-	tokenize(QString(d->buddy), res);
-	tokenize(QString(d->suit), res);
-	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
-		tokenize(QString::fromStdString(tag->tag->name), res);
-	for (int i = 0; i < d->cylinders.nr; ++i) {
-		const cylinder_t &cyl = *get_cylinder(d, i);
-		tokenize(QString(cyl.type.description), res);
-	}
-	for (int i = 0; i < d->weightsystems.nr; ++i) {
-		const weightsystem_t &ws = d->weightsystems.weightsystems[i];
-		tokenize(QString(ws.description), res);
-	}
+	tokenize(QString::fromStdString(d->notes), res);
+	tokenize(QString::fromStdString(d->diveguide), res);
+	tokenize(QString::fromStdString(d->buddy), res);
+	tokenize(QString::fromStdString(d->suit), res);
+	for (const divetag *tag: d->tags)
+		tokenize(QString::fromStdString(tag->name), res);
+	for (auto &cyl: d->cylinders)
+		tokenize(QString::fromStdString(cyl.type.description), res);
+	for (auto &ws: d->weightsystems)
+		tokenize(QString::fromStdString(ws.description), res);
 	// TODO: We should tokenize all dive-sites and trips first and then
 	// take the tokens from a cache.
 	if (d->dive_site) {
-		tokenize(d->dive_site->name, res);
-		const char *country = taxonomy_get_country(&d->dive_site->taxonomy);
-		if (country)
-			tokenize(country, res);
+		tokenize(QString::fromStdString(d->dive_site->name), res);
+		std::string country = taxonomy_get_country(d->dive_site->taxonomy);
+		if (!country.empty())
+			tokenize(country.c_str(), res);
 	}
 	// TODO: We should index trips separately!
 	if (d->divetrip)
-		tokenize(d->divetrip->location, res);
+		tokenize(QString::fromStdString(d->divetrip->location), res);
 	return res;
 }
 
@@ -156,11 +143,9 @@ void FullText::populate()
 	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("Create full text index"));
 	uiNotification(QObject::tr("start processing"));
-	int i;
-	dive *d;
-	for_each_dive(i, d)
-		registerDive(d);
-	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives->nr));
+	for (auto &d: divelog.dives)
+		registerDive(d.get());
+	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives.size()));
 }
 
 void FullText::registerDive(struct dive *d)
@@ -168,7 +153,7 @@ void FullText::registerDive(struct dive *d)
 	if (d->full_text)
 		unregisterWords(d, d->full_text->words);
 	else
-		d->full_text = new full_text_cache;
+		d->full_text = std::make_unique<full_text_cache>();
 	d->full_text->words = getWords(d);
 	registerWords(d, d->full_text->words);
 }
@@ -178,18 +163,13 @@ void FullText::unregisterDive(struct dive *d)
 	if (!d->full_text)
 		return;
 	unregisterWords(d, d->full_text->words);
-	delete d->full_text;
-	d->full_text = nullptr;
+	d->full_text.reset();
 }
 
 void FullText::unregisterAll()
 {
-	int i;
-	dive *d;
-	for_each_dive(i, d) {
-		delete d->full_text;
-		d->full_text = nullptr;
-	}
+	for (auto &d: divelog.dives)
+		d->full_text.reset();
 	words.clear();
 }
 

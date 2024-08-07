@@ -13,13 +13,6 @@
 #include <QFileInfo>
 #include <QPainter>
 
-PictureEntry::PictureEntry(dive *dIn, const PictureObj &p) : d(dIn),
-	filename(p.filename),
-	offsetSeconds(p.offset.seconds),
-	length({ 0 })
-{
-}
-
 PictureEntry::PictureEntry(dive *dIn, const picture &p) : d(dIn),
 	filename(p.filename),
 	offsetSeconds(p.offset.seconds),
@@ -32,7 +25,7 @@ PictureEntry::PictureEntry(dive *dIn, const picture &p) : d(dIn),
 // should give the same result].
 bool PictureEntry::operator<(const PictureEntry &p2) const
 {
-	if (int cmp = comp_dives(d, p2.d))
+	if (int cmp = comp_dives_ptr(d, p2.d))
 		return cmp < 0;
 	if (offsetSeconds != p2.offsetSeconds)
 		return offsetSeconds < p2.offsetSeconds;
@@ -91,8 +84,8 @@ void DivePictureModel::updateDivePictures()
 
 	for (struct dive *dive: getDiveSelection()) {
 		size_t first = pictures.size();
-		FOR_EACH_PICTURE(dive)
-			pictures.push_back(PictureEntry(dive, *picture));
+		for (auto &picture: dive->pictures)
+			pictures.push_back(PictureEntry(dive, picture));
 
 		// Sort pictures of this dive by offset.
 		// Thus, the list will be sorted by (dive, offset).
@@ -197,7 +190,7 @@ void DivePictureModel::picturesRemoved(dive *d, QVector<QString> filenamesIn)
 }
 
 // Assumes that pics is sorted!
-void DivePictureModel::picturesAdded(dive *d, QVector<PictureObj> picsIn)
+void DivePictureModel::picturesAdded(dive *d, QVector<picture> picsIn)
 {
 	// We only display pictures of selected dives
 	if (!d->selected || picsIn.empty())
@@ -206,7 +199,7 @@ void DivePictureModel::picturesAdded(dive *d, QVector<PictureObj> picsIn)
 	// Convert the picture-data into our own format
 	std::vector<PictureEntry> pics;
 	pics.reserve(picsIn.size());
-	for (const PictureObj &pic: picsIn)
+	for (const picture &pic: picsIn)
 		pics.push_back(PictureEntry(d, pic));
 
 	// Insert batch-wise to avoid too many reloads
@@ -258,7 +251,7 @@ static void addDurationToThumbnail(QImage &img, duration_t duration)
 		QStringLiteral("%1:%2").arg(seconds / 60, 2, 10, QChar('0'))
 				       .arg(seconds % 60, 2, 10, QChar('0'));
 
-	QFont font(system_divelist_default_font, 30);
+	QFont font(system_divelist_default_font.c_str(), 30);
 	QFontMetrics metrics(font);
 	QSize size = metrics.size(Qt::TextSingleLine, s);
 	QSize imgSize = img.size();

@@ -9,7 +9,6 @@
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/subsurface-float.h"
 #include "core/subsurface-string.h"
-#include "core/uemis.h"
 #include "core/downloadfromdcthread.h"
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/mainwindow.h"
@@ -64,7 +63,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(const QString &filename, QWidget *par
 	ui.product->setModel(&productModel);
 	ui.syncDiveComputerTime->setChecked(prefs.sync_dc_time);
 
-	progress_bar_text = "";
+	progress_bar_text.clear();
 
 	timer->setInterval(200);
 
@@ -213,21 +212,19 @@ DELETEDCBUTTON(4)
 
 void DownloadFromDCWidget::updateProgressBar()
 {
-	static char *last_text = NULL;
-
-	if (empty_string(last_text)) {
+	if (last_text.empty()) {
 		// if we get the first actual text after the download is finished
 		// (which happens for example on the OSTC), then don't bother
-		if (!empty_string(progress_bar_text) && nearly_equal(progress_bar_fraction, 1.0))
-			progress_bar_text = "";
+		if (!progress_bar_text.empty() && nearly_equal(progress_bar_fraction, 1.0))
+			progress_bar_text.clear();
 	}
-	if (!empty_string(progress_bar_text)) {
+	if (!progress_bar_text.empty()) {
 		// once the progress bar text is set, setup the maximum so the user sees actual progress
-		ui.progressBar->setFormat(progress_bar_text);
+		ui.progressBar->setFormat(QString::fromStdString(progress_bar_text));
 		ui.progressBar->setMaximum(100);
 #if defined(Q_OS_MAC)
 		// on mac the progress bar doesn't show its text
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	} else {
 		if (nearly_0(progress_bar_fraction)) {
@@ -249,8 +246,7 @@ void DownloadFromDCWidget::updateProgressBar()
 		}
 	}
 	ui.progressBar->setValue(lrint(progress_bar_fraction * 100));
-	free(last_text);
-	last_text = strdup(progress_bar_text);
+	last_text = progress_bar_text;
 }
 
 void DownloadFromDCWidget::updateState(states state)
@@ -263,10 +259,10 @@ void DownloadFromDCWidget::updateState(states state)
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
 		timer->stop();
-		progress_bar_text = "";
+		progress_bar_text.clear();
 #if defined(Q_OS_MAC)
 		// on mac we show the text in a label
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	}
 
@@ -289,10 +285,10 @@ void DownloadFromDCWidget::updateState(states state)
 		ui.progressBar->setValue(0);
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
-		progress_bar_text = "";
+		progress_bar_text.clear();
 #if defined(Q_OS_MAC)
 		// on mac we show the text in a label
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	}
 
@@ -301,19 +297,19 @@ void DownloadFromDCWidget::updateState(states state)
 	// If we find an error, offer to retry, otherwise continue the interaction to pick the dives the user wants
 	else if (currentState == DOWNLOADING && state == DONE) {
 		timer->stop();
-		if (QString(progress_bar_text).contains("error", Qt::CaseInsensitive)) {
+		if (QString::fromStdString(progress_bar_text).contains("error", Qt::CaseInsensitive)) {
 			updateProgressBar();
 			markChildrenAsEnabled();
-			progress_bar_text = "";
+			progress_bar_text.clear();
 		} else {
 			if (diveImportedModel->numDives() != 0)
-				progress_bar_text = "";
+				progress_bar_text.clear();
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
 		}
 #if defined(Q_OS_MAC)
 		// on mac we show the text in a label
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	}
 
@@ -331,13 +327,14 @@ void DownloadFromDCWidget::updateState(states state)
 	else if (state == ERRORED) {
 		timer->stop();
 
-		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), diveImportedModel->thread.error), QMessageBox::Ok);
+		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"),
+					QString::fromStdString(diveImportedModel->thread.error)), QMessageBox::Ok);
 		markChildrenAsEnabled();
-		progress_bar_text = "";
+		progress_bar_text.clear();
 		ui.progressBar->hide();
 #if defined(Q_OS_MAC)
 		// on mac we show the text in a label
-		ui.progressText->setText(progress_bar_text);
+		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
 	}
 
@@ -425,8 +422,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 			data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
 			data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
 		} else {
-			QString name, address;
-			address = extractBluetoothNameAddress(ui.device->currentText(), name);
+			auto [address, name] = extractBluetoothNameAddress(ui.device->currentText());
 			data->setDevName(address);
 			data->setDevBluetoothName(name);
 		}
@@ -444,12 +440,11 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 		// this breaks an "else if" across lines... not happy...
 #endif
 	if (data->vendor() == "Uemis") {
-		char *colon;
-		char *devname = copy_qstring(ui.device->currentText());
-
-		if ((colon = strstr(devname, ":\\ (UEMISSDA)")) != NULL) {
-			*(colon + 2) = '\0';
-			report_info("shortened devname to \"%s\"", devname);
+		QString devname = ui.device->currentText();
+		auto colon = devname.indexOf(":\\ (UEMISSDA)");
+		if (colon >= 0) {
+			devname.resize(colon + 2);
+			report_info("shortened devname to \"%s\"", qPrintable(devname));
 		}
 		data->setDevName(devname);
 	} else {
@@ -466,7 +461,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	qPrefDiveComputer::set_device(data->devName());
 
 	// before we start, remember where the dive_table ended
-	previousLast = divelog.dives->nr;
+	previousLast = static_cast<int>(divelog.dives.size());
 	diveImportedModel->startDownload();
 
 	// FIXME: We should get the _actual_ device info instead of whatever
@@ -544,7 +539,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	showRememberedDCs();
 
 	if (currentState == DOWNLOADING) {
-		if (diveImportedModel->thread.error.isEmpty())
+		if (diveImportedModel->thread.error.empty())
 			updateState(DONE);
 		else
 			updateState(ERRORED);
@@ -570,11 +565,11 @@ void DownloadFromDCWidget::on_ok_clicked()
 	if (currentState != DONE && currentState != ERRORED)
 		return;
 
-	int flags = IMPORT_IS_DOWNLOADED;
+	int flags = import_flags::is_downloaded;
 	if (preferDownloaded())
-		flags |= IMPORT_PREFER_IMPORTED;
+		flags |= import_flags::prefer_imported;
 	if (ui.createNewTrip->isChecked())
-		flags |= IMPORT_ADD_TO_NEW_TRIP;
+		flags |= import_flags::add_to_new_trip;
 
 	diveImportedModel->recordDives(flags);
 

@@ -1,13 +1,17 @@
 #include "divesiteimportmodel.h"
 #include "core/divelog.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/taxonomy.h"
 
-DivesiteImportedModel::DivesiteImportedModel(QObject *o) : QAbstractTableModel(o),
+DivesiteImportedModel::DivesiteImportedModel(dive_site_table &table, QObject *o) : QAbstractTableModel(o),
 	firstIndex(0),
 	lastIndex(-1),
-	importedSitesTable(nullptr)
+	importedSitesTable(table)
 {
+	checkStates.resize(importedSitesTable.size());
+	for (const auto &[row, item]: enumerated_range(importedSitesTable))
+		checkStates[row] = !divelog.sites.get_by_gps(&item->location);
 }
 
 int DivesiteImportedModel::columnCount(const QModelIndex &) const
@@ -17,7 +21,7 @@ int DivesiteImportedModel::columnCount(const QModelIndex &) const
 
 int DivesiteImportedModel::rowCount(const QModelIndex &) const
 {
-	return lastIndex - firstIndex + 1;
+	return static_cast<int>(importedSitesTable.size());
 }
 
 QVariant DivesiteImportedModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -47,41 +51,36 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
-	if (index.row() + firstIndex > lastIndex)
+	if (index.row() < 0 || index.row() >= (int)importedSitesTable.size())
 		return QVariant();
 
-	struct dive_site *ds = get_dive_site(index.row() + firstIndex, importedSitesTable);
-	if (!ds)
-		return QVariant();
+	struct dive_site *ds = importedSitesTable[index.row()].get();
 
 	// widgets access the model via index.column()
 	// Not supporting QML access via roles
 	if (role == Qt::DisplayRole) {
 		switch (index.column()) {
 		case NAME:
-			return QString(ds->name);
+			return QString::fromStdString(ds->name);
 		case LOCATION:
 			return printGPSCoords(&ds->location);
 		case COUNTRY:
-			return taxonomy_get_country(&ds->taxonomy);
+			return QString::fromStdString(taxonomy_get_country(ds->taxonomy));
 		case NEAREST: {
 			// 40075000 is circumference of the earth in meters
 			struct dive_site *nearest_ds =
-				get_dive_site_by_gps_proximity(&ds->location,
-				40075000, divelog.sites);
+				divelog.sites.get_by_gps_proximity(ds->location, 40075000);
 			if (nearest_ds)
-				return QString(nearest_ds->name);
+				return QString::fromStdString(nearest_ds->name);
 			else
 				return QString();
 		}
 		case DISTANCE: {
 			unsigned int distance = 0;
 			struct dive_site *nearest_ds =
-				get_dive_site_by_gps_proximity(&ds->location,
-				40075000, divelog.sites);
+				divelog.sites.get_by_gps_proximity(ds->location, 40075000);
 			if (nearest_ds)
-				distance = get_distance(&ds->location,
-					&nearest_ds->location);
+				distance = get_distance(ds->location, nearest_ds->location);
 			return distance_string(distance);
 		}
 		case SELECTED:
@@ -98,25 +97,27 @@ QVariant DivesiteImportedModel::data(const QModelIndex &index, int role) const
 void DivesiteImportedModel::changeSelected(QModelIndex clickedIndex)
 {
 	checkStates[clickedIndex.row()] = !checkStates[clickedIndex.row()];
-	dataChanged(index(clickedIndex.row(), 0), index(clickedIndex.row(), 0), QVector<int>() << Qt::CheckStateRole << SELECTED);
+	dataChanged(index(clickedIndex.row(), 0), index(clickedIndex.row(), 0), QVector<int> { Qt::CheckStateRole, SELECTED });
 }
 
 void DivesiteImportedModel::selectAll()
 {
 	std::fill(checkStates.begin(), checkStates.end(), true);
-	dataChanged(index(0, 0), index(lastIndex - firstIndex, 0), QVector<int>() << Qt::CheckStateRole << SELECTED);
+	// Qt is mad: for empty lists, last index would be -1, but that makes it crash.
+	dataChanged(index(0, 0), index(rowCount() - 1, 0), QVector<int> { Qt::CheckStateRole, SELECTED });
 }
 
 void DivesiteImportedModel::selectRow(int row)
 {
 	checkStates[row] = !checkStates[row];
-	dataChanged(index(row, 0), index(row, 0), QVector<int>() << Qt::CheckStateRole << SELECTED);
+	dataChanged(index(row, 0), index(row, 0), QVector<int> { Qt::CheckStateRole, SELECTED });
 }
 
 void DivesiteImportedModel::selectNone()
 {
 	std::fill(checkStates.begin(), checkStates.end(), false);
-	dataChanged(index(0, 0), index(lastIndex - firstIndex,0 ), QVector<int>() << Qt::CheckStateRole << SELECTED);
+	// Qt is mad: for empty lists, last index would be -1, but that makes it crash.
+	dataChanged(index(0, 0), index(rowCount() - 1, 0), QVector<int> { Qt::CheckStateRole, SELECTED });
 }
 
 Qt::ItemFlags DivesiteImportedModel::flags(const QModelIndex &index) const
@@ -124,20 +125,4 @@ Qt::ItemFlags DivesiteImportedModel::flags(const QModelIndex &index) const
 	if (index.column() != 0)
 		return QAbstractTableModel::flags(index);
 	return QAbstractTableModel::flags(index) | Qt::ItemIsUserCheckable;
-}
-
-void DivesiteImportedModel::repopulate(struct dive_site_table *sites)
-{
-	beginResetModel();
-
-	importedSitesTable = sites;
-	firstIndex = 0;
-	lastIndex = importedSitesTable->nr - 1;
-	checkStates.resize(importedSitesTable->nr);
-	for (int row = 0; row < importedSitesTable->nr; row++)
-		if (get_dive_site_by_gps(&importedSitesTable->dive_sites[row]->location, divelog.sites))
-			checkStates[row] = false;
-		else
-			checkStates[row] = true;
-	endResetModel();
 }

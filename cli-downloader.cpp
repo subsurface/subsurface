@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/diveimportedmodel.h"
 
-void cliDownloader(const char *vendor, const char *product, const char *device)
+void cliDownloader(const std::string &vendor, const std::string &product, const std::string &device)
 {
 	DiveImportedModel diveImportedModel;
 	DiveImportedModel::connect(&diveImportedModel, &DiveImportedModel::downloadFinished, [] {
@@ -10,11 +10,11 @@ void cliDownloader(const char *vendor, const char *product, const char *device)
 	});
 
 	auto data = diveImportedModel.thread.data();
-	data->setVendor(vendor);
-	data->setProduct(product);
+	data->setVendor(QString::fromStdString(vendor));
+	data->setProduct(QString::fromStdString(product));
 	data->setBluetoothMode(false);
 	if (data->vendor() == "Uemis") {
-		QString devname(device);
+		QString devname = QString::fromStdString(device);
 		int colon = devname.indexOf(QStringLiteral(":\\ (UEMISSDA)"));
 		if (colon >= 0) {
 			devname.truncate(colon + 2);
@@ -22,7 +22,7 @@ void cliDownloader(const char *vendor, const char *product, const char *device)
 		}
 		data->setDevName(devname);
 	} else {
-		data->setDevName(device);
+		data->setDevName(QString::fromStdString(device));
 	}
 
 	// some assumptions - should all be configurable

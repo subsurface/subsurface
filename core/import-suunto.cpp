@@ -4,7 +4,6 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#include "ssrf.h"
 #include "dive.h"
 #include "parse.h"
 #include "sample.h"
@@ -21,6 +20,7 @@
 
 static int dm4_events(void *param, int, char **data, char **)
 {
+	using namespace std::string_literals;
 	struct parser_state *state = (struct parser_state *)param;
 
 	event_start(state);
@@ -31,108 +31,108 @@ static int dm4_events(void *param, int, char **data, char **)
 		switch (atoi(data[2])) {
 		case 1:
 			/* 1 Mandatory Safety Stop */
-			strcpy(state->cur_event.name, "safety stop (mandatory)");
+			state->cur_event.name = "safety stop (mandatory)"s;
 			break;
 		case 3:
 			/* 3 Deco */
 			/* What is Subsurface's term for going to
 				 * deco? */
-			strcpy(state->cur_event.name, "deco");
+			state->cur_event.name = "deco"s;
 			break;
 		case 4:
 			/* 4 Ascent warning */
-			strcpy(state->cur_event.name, "ascent");
+			state->cur_event.name = "ascent"s;
 			break;
 		case 5:
 			/* 5 Ceiling broken */
-			strcpy(state->cur_event.name, "violation");
+			state->cur_event.name = "violation"s;
 			break;
 		case 6:
 			/* 6 Mandatory safety stop ceiling error */
-			strcpy(state->cur_event.name, "violation");
+			state->cur_event.name = "violation"s;
 			break;
 		case 7:
 			/* 7 Below deco floor */
-			strcpy(state->cur_event.name, "below floor");
+			state->cur_event.name = "below floor"s;
 			break;
 		case 8:
 			/* 8 Dive time alarm */
-			strcpy(state->cur_event.name, "divetime");
+			state->cur_event.name = "divetime"s;
 			break;
 		case 9:
 			/* 9 Depth alarm */
-			strcpy(state->cur_event.name, "maxdepth");
+			state->cur_event.name = "maxdepth"s;
 			break;
 		case 10:
 		/* 10 OLF 80% */
 		case 11:
 			/* 11 OLF 100% */
-			strcpy(state->cur_event.name, "OLF");
+			state->cur_event.name = "OLF"s;
 			break;
 		case 12:
 			/* 12 High pO₂ */
-			strcpy(state->cur_event.name, "PO2");
+			state->cur_event.name = "PO2"s;
 			break;
 		case 13:
 			/* 13 Air time */
-			strcpy(state->cur_event.name, "airtime");
+			state->cur_event.name = "airtime"s;
 			break;
 		case 17:
 			/* 17 Ascent warning */
-			strcpy(state->cur_event.name, "ascent");
+			state->cur_event.name = "ascent"s;
 			break;
 		case 18:
 			/* 18 Ceiling error */
-			strcpy(state->cur_event.name, "ceiling");
+			state->cur_event.name = "ceiling"s;
 			break;
 		case 19:
 			/* 19 Surfaced */
-			strcpy(state->cur_event.name, "surface");
+			state->cur_event.name = "surface"s;
 			break;
 		case 20:
 			/* 20 Deco */
-			strcpy(state->cur_event.name, "deco");
+			state->cur_event.name = "deco"s;
 			break;
 		case 22:
 		case 32:
 			/* 22 Mandatory safety stop violation */
 			/* 32 Deep stop violation */
-			strcpy(state->cur_event.name, "violation");
+			state->cur_event.name = "violation"s;
 			break;
 		case 30:
 			/* Tissue level warning */
-			strcpy(state->cur_event.name, "tissue warning");
+			state->cur_event.name = "tissue warning"s;
 			break;
 		case 37:
 			/* Tank pressure alarm */
-			strcpy(state->cur_event.name, "tank pressure");
+			state->cur_event.name = "tank pressure"s;
 			break;
 		case 257:
 			/* 257 Dive active */
 			/* This seems to be given after surface when
 			 * descending again. */
-			strcpy(state->cur_event.name, "surface");
+			state->cur_event.name = "surface"s;
 			break;
 		case 258:
 			/* 258 Bookmark */
 			if (data[3]) {
-				strcpy(state->cur_event.name, "heading");
+				state->cur_event.name = "heading"s;
 				state->cur_event.value = atoi(data[3]);
 			} else {
-				strcpy(state->cur_event.name, "bookmark");
+				state->cur_event.name = "bookmark"s;
 			}
 			break;
 		case 259:
 			/* Deep stop */
-			strcpy(state->cur_event.name, "Deep stop");
+			state->cur_event.name = "Deep stop"s;
 			break;
 		case 260:
 			/* Deep stop */
-			strcpy(state->cur_event.name, "Deep stop cleared");
+			state->cur_event.name = "Deep stop cleared"s;
 			break;
 		case 266:
 			/* Mandatory safety stop activated */
-			strcpy(state->cur_event.name, "safety stop (mandatory)");
+			state->cur_event.name = "safety stop (mandatory)"s;
 			break;
 		case 267:
 			/* Mandatory safety stop deactivated */
@@ -140,7 +140,7 @@ static int dm4_events(void *param, int, char **data, char **)
 			 * profile so skipping as well for now */
 			break;
 		default:
-			strcpy(state->cur_event.name, "unknown");
+			state->cur_event.name = "unknown"s;
 			state->cur_event.value = atoi(data[2]);
 			break;
 		}
@@ -155,7 +155,7 @@ static int dm4_tags(void *param, int, char **data, char **)
 	struct parser_state *state = (struct parser_state *)param;
 
 	if (data[0])
-		taglist_add_tag(&state->cur_dive->tag_list, data[0]);
+		taglist_add_tag(state->cur_dive->tags, data[0]);
 
 	return 0;
 }
@@ -179,7 +179,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 
 	state->cur_dive->when = (time_t)(atol(data[1]));
 	if (data[2])
-		utf8_string(data[2], &state->cur_dive->notes);
+		utf8_string_std(data[2], &state->cur_dive->notes);
 
 	/*
 	 * DM4 stores Duration and DiveTime. It looks like DiveTime is
@@ -191,7 +191,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	if (data[3])
 		state->cur_dive->duration.seconds = atoi(data[3]);
 	if (data[15])
-		state->cur_dive->dc.duration.seconds = atoi(data[15]);
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[15]);
 
 	/*
 	 * TODO: the deviceid hash should be calculated here.
@@ -208,11 +208,11 @@ static int dm4_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[6], NULL, 0) * 1000);
+		state->cur_dive->dcs[0].maxdepth.mm = lrint(permissive_strtod(data[6], NULL) * 1000);
 	if (data[8])
-		state->cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
+		state->cur_dive->dcs[0].airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
-		state->cur_dive->dc.watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
+		state->cur_dive->dcs[0].watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
 
 	/*
 	 * TODO: handle multiple cylinders
@@ -227,7 +227,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	if (data[11] && atoi(data[11]) > 0)
 		cyl->end.mbar = (atoi(data[11]));
 	if (data[12])
-		cyl->type.size.mliter = lrint((strtod_flags(data[12], NULL, 0)) * 1000);
+		cyl->type.size.mliter = lrint((permissive_strtod(data[12], NULL)) * 1000);
 	if (data[13])
 		cyl->type.workingpressure.mbar = (atoi(data[13]));
 	if (data[20])
@@ -237,7 +237,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	cylinder_end(state);
 
 	if (data[14])
-		state->cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) * 1000);
+		state->cur_dive->dcs[0].surface_pressure.mbar = (atoi(data[14]) * 1000);
 
 	interval = data[16] ? atoi(data[16]) : 0;
 	profileBlob = (float *)data[17];
@@ -249,7 +249,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 		if (profileBlob)
 			state->cur_sample->depth.mm = lrintf(profileBlob[i] * 1000.0f);
 		else
-			state->cur_sample->depth.mm = state->cur_dive->dc.maxdepth.mm;
+			state->cur_sample->depth.mm = state->cur_dive->dcs[0].maxdepth.mm;
 
 		if (data[18] && data[18][0])
 			state->cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
@@ -277,7 +277,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	return SQLITE_OK;
 }
 
-extern "C" int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	char *err = NULL;
@@ -314,10 +314,10 @@ static int dm5_cylinders(void *param, int, char **data, char **)
 		/* DM5 shows tank size of 12 liters when the actual
 		 * value is 0 (and using metric units). So we just use
 		 * the same 12 liters when size is not available */
-		if (strtod_flags(data[6], NULL, 0) == 0.0 && cyl->start.mbar)
+		if (permissive_strtod(data[6], NULL) == 0.0 && cyl->start.mbar)
 			cyl->type.size.mliter = 12000;
 		else
-			cyl->type.size.mliter = lrint((strtod_flags(data[6], NULL, 0)) * 1000);
+			cyl->type.size.mliter = lrint((permissive_strtod(data[6], NULL)) * 1000);
 	}
 	if (data[2])
 		cyl->gasmix.o2.permille = atoi(data[2]) * 10;
@@ -329,19 +329,20 @@ static int dm5_cylinders(void *param, int, char **data, char **)
 
 static int dm5_gaschange(void *param, int, char **data, char **)
 {
+	using namespace std::string_literals;
 	struct parser_state *state = (struct parser_state *)param;
 
 	event_start(state);
 	if (data[0])
 		state->cur_event.time.seconds = atoi(data[0]);
 	if (data[1]) {
-		strcpy(state->cur_event.name, "gaschange");
-		state->cur_event.value = lrint(strtod_flags(data[1], NULL, 0));
+		state->cur_event.name = "gaschange"s;
+		state->cur_event.value = lrint(permissive_strtod(data[1], NULL));
 	}
 
 	/* He part of the mix */
 	if (data[2])
-		state->cur_event.value += lrint(strtod_flags(data[2], NULL, 0)) << 16;
+		state->cur_event.value += lrint(permissive_strtod(data[2], NULL)) << 16;
 	event_end(state);
 
 	return 0;
@@ -366,12 +367,12 @@ static int dm5_dive(void *param, int, char **data, char **)
 
 	state->cur_dive->when = (time_t)(atol(data[1]));
 	if (data[2])
-		utf8_string(data[2], &state->cur_dive->notes);
+		utf8_string_std(data[2], &state->cur_dive->notes);
 
 	if (data[3])
 		state->cur_dive->duration.seconds = atoi(data[3]);
 	if (data[15])
-		state->cur_dive->dc.duration.seconds = atoi(data[15]);
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[15]);
 
 	/*
 	 * TODO: the deviceid hash should be calculated here.
@@ -389,30 +390,28 @@ static int dm5_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[6], NULL, 0) * 1000);
+		state->cur_dive->dcs[0].maxdepth.mm = lrint(permissive_strtod(data[6], NULL) * 1000);
 	if (data[8])
-		state->cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
+		state->cur_dive->dcs[0].airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
-		state->cur_dive->dc.watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
+		state->cur_dive->dcs[0].watertemp.mkelvin = C_to_mkelvin(atoi(data[9]));
 
 	if (data[4]) {
-		state->cur_dive->dc.deviceid = atoi(data[4]);
+		state->cur_dive->dcs[0].deviceid = atoi(data[4]);
 	}
-	// Ugh. dc.model is const char * -> we are not supposed to write into it. This will
-	// change when we convert to std::string.
 	if (data[5])
-		utf8_string(data[5], (char **)&state->cur_dive->dc.model);
+		utf8_string_std(data[5], &state->cur_dive->dcs[0].model);
 
 	if (data[25]) {
 		switch(atoi(data[25])) {
 			case 1:
-				state->cur_dive->dc.divemode = OC;
+				state->cur_dive->dcs[0].divemode = OC;
 				break;
 			case 5:
-				state->cur_dive->dc.divemode = CCR;
+				state->cur_dive->dcs[0].divemode = CCR;
 				break;
 			default:
-				state->cur_dive->dc.divemode = OC;
+				state->cur_dive->dcs[0].divemode = OC;
 				break;
 		}
 	}
@@ -425,7 +424,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 	}
 
 	if (data[14])
-		state->cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) / 100);
+		state->cur_dive->dcs[0].surface_pressure.mbar = (atoi(data[14]) / 100);
 
 	interval = data[16] ? atoi(data[16]) : 0;
 
@@ -513,7 +512,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 			if (profileBlob)
 				state->cur_sample->depth.mm = lrintf(profileBlob[i] * 1000.0f);
 			else
-				state->cur_sample->depth.mm = state->cur_dive->dc.maxdepth.mm;
+				state->cur_sample->depth.mm = state->cur_dive->dcs[0].maxdepth.mm;
 
 			if (data[18] && data[18][0])
 				state->cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
@@ -549,7 +548,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 	return SQLITE_OK;
 }
 
-extern "C" int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	char *err = NULL;

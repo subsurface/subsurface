@@ -4,7 +4,6 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#include "ssrf.h"
 #include "dive.h"
 #include "sample.h"
 #include "subsurface-string.h"
@@ -23,8 +22,8 @@ static int shearwater_cylinders(void *param, int, char **data, char **)
 	struct parser_state *state = (struct parser_state *)param;
 	cylinder_t *cyl;
 
-	int o2 = lrint(strtod_flags(data[0], NULL, 0) * 1000);
-	int he = lrint(strtod_flags(data[1], NULL, 0) * 1000);
+	int o2 = lrint(permissive_strtod(data[0], NULL) * 1000);
+	int he = lrint(permissive_strtod(data[1], NULL) * 1000);
 
 	/* Shearwater allows entering only 99%, not 100%
 	 * so assume 99% to be pure oxygen */
@@ -50,8 +49,8 @@ static int shearwater_changes(void *param, int columns, char **data, char **)
 	if (!data[0] || !data[1] || !data[2]) {
 		return 2;
 	}
-	int o2 = lrint(strtod_flags(data[1], NULL, 0) * 1000);
-	int he = lrint(strtod_flags(data[2], NULL, 0) * 1000);
+	int o2 = lrint(permissive_strtod(data[1], NULL) * 1000);
+	int he = lrint(permissive_strtod(data[2], NULL) * 1000);
 
 	/* Shearwater allows entering only 99%, not 100%
 	 * so assume 99% to be pure oxygen */
@@ -59,24 +58,20 @@ static int shearwater_changes(void *param, int columns, char **data, char **)
 		o2 = 1000;
 
 	// Find the cylinder index
-	int index;
-	bool found = false;
-	for (index = 0; index < state->cur_dive->cylinders.nr; ++index) {
-		const cylinder_t *cyl = get_cylinder(state->cur_dive, index);
-		if (cyl->gasmix.o2.permille == o2 && cyl->gasmix.he.permille == he) {
-			found = true;
-			break;
-		}
-	}
-	if (!found) {
+	auto it = std::find_if(state->cur_dive->cylinders.begin(), state->cur_dive->cylinders.end(),
+			      [o2, he](auto &cyl)
+			      { return cyl.gasmix.o2.permille == o2 && cyl.gasmix.he.permille == he; });
+	if (it == state->cur_dive->cylinders.end()) {
 		// Cylinder not found, creating a new one
 		cyl = cylinder_start(state);
 		cyl->gasmix.o2.permille = o2;
 		cyl->gasmix.he.permille = he;
 		cylinder_end(state);
+		it = std::prev(state->cur_dive->cylinders.end());
 	}
 
-	add_gas_switch_event(state->cur_dive, get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]), index);
+	add_gas_switch_event(state->cur_dive.get(), get_dc(state), state->sample_rate ? atoi(data[0]) / state->sample_rate * 10 : atoi(data[0]),
+			     it - state->cur_dive->cylinders.begin());
 	return 0;
 }
 
@@ -101,12 +96,11 @@ static int shearwater_profile_sample(void *param, int, char **data, char **)
 
 
 	if (data[1])
-		state->cur_sample->depth.mm = state->metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
+		state->cur_sample->depth.mm = state->metric ? lrint(permissive_strtod(data[1], NULL) * 1000) : feet_to_mm(permissive_strtod(data[1], NULL));
 	if (data[2])
-		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(strtod_flags(data[2], NULL, 0)) : F_to_mkelvin(strtod_flags(data[2], NULL, 0));
-	if (data[3]) {
-		state->cur_sample->setpoint.mbar = lrint(strtod_flags(data[3], NULL, 0) * 1000);
-	}
+		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(permissive_strtod(data[2], NULL)) : F_to_mkelvin(permissive_strtod(data[2], NULL));
+	if (data[3])
+		state->cur_sample->setpoint.mbar = lrint(permissive_strtod(data[3], NULL) * 1000);
 	if (data[4])
 		state->cur_sample->ndl.seconds = atoi(data[4]) * 60;
 	if (data[5])
@@ -161,11 +155,11 @@ static int shearwater_ai_profile_sample(void *param, int, char **data, char **)
 		state->cur_sample->time.seconds = atoi(data[0]);
 
 	if (data[1])
-		state->cur_sample->depth.mm = state->metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
+		state->cur_sample->depth.mm = state->metric ? lrint(permissive_strtod(data[1], NULL) * 1000) : feet_to_mm(permissive_strtod(data[1], NULL));
 	if (data[2])
-		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(strtod_flags(data[2], NULL, 0)) : F_to_mkelvin(strtod_flags(data[2], NULL, 0));
+		state->cur_sample->temperature.mkelvin = state->metric ? C_to_mkelvin(permissive_strtod(data[2], NULL)) : F_to_mkelvin(permissive_strtod(data[2], NULL));
 	if (data[3]) {
-		state->cur_sample->setpoint.mbar = lrint(strtod_flags(data[3], NULL, 0) * 1000);
+		state->cur_sample->setpoint.mbar = lrint(permissive_strtod(data[3], NULL) * 1000);
 	}
 	if (data[4])
 		state->cur_sample->ndl.seconds = atoi(data[4]) * 60;
@@ -215,7 +209,7 @@ static int shearwater_mode(void *param, int, char **data, char **)
 	struct parser_state *state = (struct parser_state *)param;
 
 	if (data[0])
-		state->cur_dive->dc.divemode = atoi(data[0]) == 0 ? CCR : OC;
+		state->cur_dive->dcs[0].divemode = atoi(data[0]) == 0 ? CCR : OC;
 
 	return 0;
 }
@@ -240,23 +234,23 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	long int dive_id = atol(data[11]);
 
 	if (data[2])
-		add_dive_site(data[2], state->cur_dive, state);
+		add_dive_site(data[2], state->cur_dive.get(), state);
 	if (data[3])
-		utf8_string(data[3], &state->cur_dive->buddy);
+		utf8_string_std(data[3], &state->cur_dive->buddy);
 	if (data[4])
-		utf8_string(data[4], &state->cur_dive->notes);
+		utf8_string_std(data[4], &state->cur_dive->notes);
 
 	state->metric = atoi(data[5]) == 1 ? 0 : 1;
 
 	/* TODO: verify that metric calculation is correct */
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(strtod_flags(data[6], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[6], NULL, 0));
+		state->cur_dive->dcs[0].maxdepth.mm = state->metric ? lrint(permissive_strtod(data[6], NULL) * 1000) : feet_to_mm(permissive_strtod(data[6], NULL));
 
 	if (data[7])
-		state->cur_dive->dc.duration.seconds = atoi(data[7]) * 60;
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[7]) * 60;
 
 	if (data[8])
-		state->cur_dive->dc.surface_pressure.mbar = atoi(data[8]);
+		state->cur_dive->dcs[0].surface_pressure.mbar = atoi(data[8]);
 	/*
 	 * TODO: the deviceid hash should be calculated here.
 	 */
@@ -267,13 +261,13 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_settings.dc.model = strdup("Shearwater Petrel/Perdix");
+			state->cur_settings.dc.model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_settings.dc.model = strdup("Shearwater Predator");
+			state->cur_settings.dc.model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_settings.dc.model = strdup("Shearwater import");
+			state->cur_settings.dc.model = "Shearwater import";
 			break;
 		}
 	}
@@ -286,13 +280,13 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_dive->dc.model = strdup("Shearwater Petrel/Perdix");
+			state->cur_dive->dcs[0].model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_dive->dc.model = strdup("Shearwater Predator");
+			state->cur_dive->dcs[0].model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_dive->dc.model = strdup("Shearwater import");
+			state->cur_dive->dcs[0].model = "Shearwater import";
 			break;
 		}
 	}
@@ -370,23 +364,23 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 		state->sample_rate = 0;
 
 	if (data[2])
-		add_dive_site(data[2], state->cur_dive, state);
+		add_dive_site(data[2], state->cur_dive.get(), state);
 	if (data[3])
-		utf8_string(data[3], &state->cur_dive->buddy);
+		utf8_string_std(data[3], &state->cur_dive->buddy);
 	if (data[4])
-		utf8_string(data[4], &state->cur_dive->notes);
+		utf8_string_std(data[4], &state->cur_dive->notes);
 
 	state->metric = atoi(data[5]) == 1 ? 0 : 1;
 
 	/* TODO: verify that metric calculation is correct */
 	if (data[6])
-		state->cur_dive->dc.maxdepth.mm = state->metric ? lrint(strtod_flags(data[6], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[6], NULL, 0));
+		state->cur_dive->dcs[0].maxdepth.mm = state->metric ? lrint(permissive_strtod(data[6], NULL) * 1000) : feet_to_mm(permissive_strtod(data[6], NULL));
 
 	if (data[7])
-		state->cur_dive->dc.duration.seconds = atoi(data[7]);
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[7]);
 
 	if (data[8])
-		state->cur_dive->dc.surface_pressure.mbar = atoi(data[8]);
+		state->cur_dive->dcs[0].surface_pressure.mbar = atoi(data[8]);
 	/*
 	 * TODO: the deviceid hash should be calculated here.
 	 */
@@ -397,13 +391,13 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_settings.dc.model = strdup("Shearwater Petrel/Perdix");
+			state->cur_settings.dc.model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_settings.dc.model = strdup("Shearwater Predator");
+			state->cur_settings.dc.model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_settings.dc.model = strdup("Shearwater import");
+			state->cur_settings.dc.model = "Shearwater import";
 			break;
 		}
 	}
@@ -416,13 +410,13 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			state->cur_dive->dc.model = strdup("Shearwater Petrel/Perdix");
+			state->cur_dive->dcs[0].model = "Shearwater Petrel/Perdix";
 			break;
 		case 4:
-			state->cur_dive->dc.model = strdup("Shearwater Predator");
+			state->cur_dive->dcs[0].model = "Shearwater Predator";
 			break;
 		default:
-			state->cur_dive->dc.model = strdup("Shearwater import");
+			state->cur_dive->dcs[0].model = "Shearwater import";
 			break;
 		}
 	}
@@ -473,7 +467,7 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	return SQLITE_OK;
 }
 
-extern "C" int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	struct parser_state state;
@@ -496,7 +490,7 @@ extern "C" int parse_shearwater_buffer(sqlite3 *handle, const char *url, const c
 	return 0;
 }
 
-extern "C" int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	struct parser_state state;

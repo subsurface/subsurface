@@ -1,9 +1,12 @@
 #include "string-format.h"
 #include "dive.h"
+#include "divelist.h"
+#include "divelog.h"
 #include "divesite.h"
 #include "event.h"
 #include "format.h"
 #include "qthelper.h"
+#include "range.h"
 #include "subsurface-string.h"
 #include "trip.h"
 #include <QDateTime>
@@ -13,23 +16,21 @@
 enum returnPressureSelector { START_PRESSURE, END_PRESSURE };
 static QLocale loc;
 
-static QString getPressures(const struct dive *dive, int i, enum returnPressureSelector ret)
+static QString getPressures(const cylinder_t &cyl, enum returnPressureSelector ret)
 {
-	const cylinder_t *cyl = get_cylinder(dive, i);
-	QString fmt;
 	if (ret == START_PRESSURE) {
-		if (cyl->start.mbar)
-			fmt = get_pressure_string(cyl->start, true);
-		else if (cyl->sample_start.mbar)
-			fmt = get_pressure_string(cyl->sample_start, true);
+		if (cyl.start.mbar)
+			return get_pressure_string(cyl.start, true);
+		else if (cyl.sample_start.mbar)
+			return get_pressure_string(cyl.sample_start, true);
 	}
 	if (ret == END_PRESSURE) {
-		if (cyl->end.mbar)
-			fmt = get_pressure_string(cyl->end, true);
-		else if(cyl->sample_end.mbar)
-			fmt = get_pressure_string(cyl->sample_end, true);
+		if (cyl.end.mbar)
+			return get_pressure_string(cyl.end, true);
+		else if (cyl.sample_end.mbar)
+			return get_pressure_string(cyl.sample_end, true);
 	}
-	return fmt;
+	return QString();
 }
 
 QString formatSac(const dive *d)
@@ -44,8 +45,8 @@ QString formatSac(const dive *d)
 
 QString formatNotes(const dive *d)
 {
-	QString tmp = d->notes ? QString::fromUtf8(d->notes) : QString();
-	if (is_dc_planner(&d->dc)) {
+	QString tmp = QString::fromStdString(d->notes);
+	if (is_dc_planner(&d->dcs[0])) {
 		QTextDocument notes;
 	#define _NOTES_BR "&#92n"
 		tmp.replace("<thead>", "<thead>" _NOTES_BR)
@@ -77,9 +78,9 @@ QString format_gps_decimal(const dive *d)
 QStringList formatGetCylinder(const dive *d)
 {
 	QStringList getCylinder;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		if (is_cylinder_used(d, i))
-			getCylinder << get_cylinder(d, i)->type.description;
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
+		if (d->is_cylinder_used(i))
+			getCylinder << QString::fromStdString(cyl.type.description);
 	}
 	return getCylinder;
 }
@@ -87,9 +88,9 @@ QStringList formatGetCylinder(const dive *d)
 QStringList formatStartPressure(const dive *d)
 {
 	QStringList startPressure;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		if (is_cylinder_used(d, i))
-			startPressure << getPressures(d, i, START_PRESSURE);
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
+		if (d->is_cylinder_used(i))
+			startPressure << getPressures(cyl, START_PRESSURE);
 	}
 	return startPressure;
 }
@@ -97,9 +98,9 @@ QStringList formatStartPressure(const dive *d)
 QStringList formatEndPressure(const dive *d)
 {
 	QStringList endPressure;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		if (is_cylinder_used(d, i))
-			endPressure << getPressures(d, i, END_PRESSURE);
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
+		if (d->is_cylinder_used(i))
+			endPressure << getPressures(cyl, END_PRESSURE);
 	}
 	return endPressure;
 }
@@ -107,67 +108,62 @@ QStringList formatEndPressure(const dive *d)
 QStringList formatFirstGas(const dive *d)
 {
 	QStringList gas;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		if (is_cylinder_used(d, i))
-			gas << get_gas_string(get_cylinder(d, i)->gasmix);
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
+		if (d->is_cylinder_used(i))
+			gas << get_gas_string(cyl.gasmix);
 	}
 	return gas;
 }
 
 // Add string to sorted QStringList, if it doesn't already exist and
 // it isn't the empty string.
-static void addStringToSortedList(QStringList &l, const char *s)
+static void addStringToSortedList(QStringList &l, const std::string &s)
 {
-	if (empty_string(s))
+	if (s.empty())
 		return;
 
 	// Do a binary search for the string. lower_bound() returns an iterator
 	// to either the searched-for element or the next higher element if it
 	// doesn't exist.
-	QString qs(s);
+	QString qs = QString::fromStdString(s);
 	auto it = std::lower_bound(l.begin(), l.end(), qs); // TODO: use locale-aware sorting
-	if (it != l.end() && *it == s)
+	if (it != l.end() && *it == qs)
 		return;
 
 	// Add new string at sorted position
-	l.insert(it, s);
+	l.insert(it, qs);
 }
 
 QStringList formatFullCylinderList()
 {
 	QStringList cylinders;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
-		for (int j = 0; j < d->cylinders.nr; j++)
-			addStringToSortedList(cylinders, get_cylinder(d, j)->type.description);
+	for (auto &d: divelog.dives) {
+		for (const cylinder_t &cyl: d->cylinders)
+			addStringToSortedList(cylinders, cyl.type.description);
 	}
 
-	for (int ti = 0; ti < tank_info_table.nr; ti++)
-		addStringToSortedList(cylinders, tank_info_table.infos[ti].name);
+	for (const auto &ti: tank_info_table)
+		addStringToSortedList(cylinders, ti.name);
 
 	return cylinders;
 }
 
-static QString formattedCylinder(const struct dive *dive, int idx)
+static QString formattedCylinder(const cylinder_t &cyl)
 {
-	const cylinder_t *cyl = get_cylinder(dive, idx);
-	const char *desc = cyl->type.description;
-	QString fmt = desc ? QString(desc) : gettextFromC::tr("unknown");
-	fmt += ", " + get_volume_string(cyl->type.size, true);
-	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
-	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
-	fmt += ", " + get_gas_string(cyl->gasmix);
+	const std::string &desc = cyl.type.description;
+	QString fmt = !desc.empty() ? QString::fromStdString(desc) : gettextFromC::tr("unknown");
+	fmt += ", " + get_volume_string(cyl.type.size, true);
+	fmt += ", " + get_pressure_string(cyl.type.workingpressure, true);
+	fmt += ", " + get_pressure_string(cyl.start, false) + " - " + get_pressure_string(cyl.end, true);
+	fmt += ", " + get_gas_string(cyl.gasmix);
 	return fmt;
 }
 
 QStringList formatCylinders(const dive *d)
 {
 	QStringList cylinders;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		QString cyl = formattedCylinder(d, i);
-		cylinders << cyl;
-	}
+	for (const cylinder_t &cyl: d->cylinders)
+		cylinders << formattedCylinder(cyl);
 	return cylinders;
 }
 
@@ -176,14 +172,14 @@ QString formatGas(const dive *d)
 	/*WARNING: here should be the gastlist, returned
 	 * from the get_gas_string function or this is correct?
 	 */
-	QString gas, gases;
-	for (int i = 0; i < d->cylinders.nr; i++) {
-		if (!is_cylinder_used(d, i))
+	QString gases;
+	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
+		if (!d->is_cylinder_used(i))
 			continue;
-		gas = get_cylinder(d, i)->type.description;
+		QString gas = QString::fromStdString(cyl.type.description);
 		if (!gas.isEmpty())
 			gas += QChar(' ');
-		gas += gasname(get_cylinder(d, i)->gasmix);
+		gas += QString::fromStdString(cyl.gasmix.name());
 		// if has a description and if such gas is not already present
 		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
 			if (!gases.isEmpty())
@@ -196,24 +192,22 @@ QString formatGas(const dive *d)
 
 QString formatSumWeight(const dive *d)
 {
-	return get_weight_string(weight_t { total_weight(d) }, true);
+	return get_weight_string(d->total_weight(), true);
 }
 
-static QString getFormattedWeight(const struct dive *dive, int idx)
+static QString getFormattedWeight(const weightsystem_t &weight)
 {
-	const weightsystem_t *weight = &dive->weightsystems.weightsystems[idx];
-	if (!weight->description)
+	if (weight.description.empty())
 		return QString();
-	QString fmt = QString(weight->description);
-	fmt += ", " + get_weight_string(weight->weight, true);
-	return fmt;
+	return QString::fromStdString(weight.description) +
+	       ", " + get_weight_string(weight.weight, true);
 }
 
 QString formatWeightList(const dive *d)
 {
 	QString weights;
-	for (int i = 0; i < d->weightsystems.nr; i++) {
-		QString w = getFormattedWeight(d, i);
+	for (auto &ws: d->weightsystems) {
+		QString w = getFormattedWeight(ws);
 		if (w.isEmpty())
 			continue;
 		weights += w + "; ";
@@ -224,8 +218,8 @@ QString formatWeightList(const dive *d)
 QStringList formatWeights(const dive *d)
 {
 	QStringList weights;
-	for (int i = 0; i < d->weightsystems.nr; i++) {
-		QString w = getFormattedWeight(d, i);
+	for (auto &ws: d->weightsystems) {
+		QString w = getFormattedWeight(ws);
 		if (w.isEmpty())
 			continue;
 		weights << w;
@@ -247,26 +241,25 @@ QString formatDiveGPS(const dive *d)
 QString formatDiveDate(const dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
-	return localTime.date().toString(prefs.date_format_short);
+	return localTime.date().toString(QString::fromStdString(prefs.date_format_short));
 }
 
 QString formatDiveTime(const dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
-	return localTime.time().toString(prefs.time_format);
+	return localTime.time().toString(QString::fromStdString(prefs.time_format));
 }
 
 QString formatDiveDateTime(const dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
-	return QStringLiteral("%1 %2").arg(localTime.date().toString(prefs.date_format_short),
-					   localTime.time().toString(prefs.time_format));
+	return QStringLiteral("%1 %2").arg(localTime.date().toString(QString::fromStdString(prefs.date_format_short)),
+					   localTime.time().toString(QString::fromStdString(prefs.time_format)));
 }
 
 QString formatDiveGasString(const dive *d)
 {
-	int o2, he, o2max;
-	get_dive_gas(d, &o2, &he, &o2max);
+	auto [o2, he, o2max ] = d->get_maximal_gas();
 	o2 = (o2 + 5) / 10;
 	he = (he + 5) / 10;
 	o2max = (o2max + 5) / 10;
@@ -305,26 +298,23 @@ QString formatMinutes(int seconds)
 	return QString::asprintf("%d:%.2d", FRACTION_TUPLE(seconds, 60));
 }
 
-QString formatTripTitle(const dive_trip *trip)
+QString formatTripTitle(const dive_trip &trip)
 {
-	if (!trip)
-		return QString();
-
-	timestamp_t when = trip_date(trip);
-	bool getday = trip_is_single_day(trip);
+	timestamp_t when = trip.date();
+	bool getday = trip.is_single_day();
 
 	QDateTime localTime = timestampToDateTime(when);
 
-	QString prefix = !empty_string(trip->location) ? QString(trip->location) + ", " : QString();
+	QString prefix = !trip.location.empty() ? QString::fromStdString(trip.location) + ", " : QString();
 	if (getday)
-		return prefix + loc.toString(localTime, prefs.date_format);
+		return prefix + loc.toString(localTime, QString::fromStdString(prefs.date_format));
 	else
 		return prefix + loc.toString(localTime, "MMM yyyy");
 }
 
-QString formatTripTitleWithDives(const dive_trip *trip)
+QString formatTripTitleWithDives(const dive_trip &trip)
 {
-	int nr = trip->dives.nr;
+	int nr = static_cast<int>(trip.dives.size());
 	return formatTripTitle(trip) + " " +
 	       gettextFromC::tr("(%n dive(s))", "", nr);
 }

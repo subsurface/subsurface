@@ -61,7 +61,7 @@ void MapWidget::centerOnIndex(const QModelIndex& idx)
 {
 	CHECK_IS_READY_RETURN_VOID();
 	dive_site *ds = idx.model()->index(idx.row(), LocationInformationModel::DIVESITE).data().value<dive_site *>();
-	if (!ds || ds == RECENTLY_ADDED_DIVESITE || !dive_site_has_gps_location(ds))
+	if (!ds || ds == RECENTLY_ADDED_DIVESITE || !ds->has_gps_location())
 		m_mapHelper->centerOnSelectedDiveSite();
 	else
 		centerOnDiveSite(ds);
@@ -79,10 +79,10 @@ bool MapWidget::editMode() const
 	return isReady && m_mapHelper->editMode();
 }
 
-void MapWidget::setSelected(const QVector<dive_site *> &divesites)
+void MapWidget::setSelected(std::vector<dive_site *> divesites)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->setSelected(divesites);
+	m_mapHelper->setSelected(std::move(divesites));
 	m_mapHelper->centerOnSelectedDiveSite();
 }
 
@@ -94,10 +94,10 @@ void MapWidget::selectedDivesChanged(const QList<int> &list)
 	std::vector<dive *> selection;
 	selection.reserve(list.size());
 	for (int idx: list) {
-		if (dive *d = get_dive(idx))
-			selection.push_back(d);
+		if (idx >= 0 && static_cast<size_t>(idx) < divelog.dives.size())
+			selection.push_back(divelog.dives[idx].get());
 	}
-	setSelection(selection, current_dive, -1);
+	setSelection(std::move(selection), current_dive, -1);
 }
 
 void MapWidget::coordinatesChanged(struct dive_site *ds, const location_t &location)

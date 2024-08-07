@@ -4,7 +4,7 @@
 
 #include "core/divelog.h"
 #include "core/equipment.h"
-#include "core/pictureobj.h"
+#include "core/picture.h"
 #include "core/taxonomy.h"
 #include <QVector>
 #include <QAction>
@@ -40,7 +40,7 @@ bool placingCommand();			// Currently executing a new command -> might not have 
 // distance are added to a trip. dive d is consumed (the structure is reset)!
 // If newNumber is true, the dive is assigned a new number, depending on the
 // insertion position.
-void addDive(dive *d, bool autogroup, bool newNumber);
+void addDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber);
 void importDives(struct divelog *log, int flags, const QString &source); // The tables are consumed!
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const std::vector<dive *> &changedDives, int amount);
@@ -68,7 +68,7 @@ void editDiveSiteCountry(dive_site *ds, const QString &value);
 void editDiveSiteLocation(dive_site *ds, location_t value);
 void editDiveSiteTaxonomy(dive_site *ds, taxonomy_data &value); // value is consumed (i.e. will be erased after call)!
 void addDiveSite(const QString &name);
-void importDiveSites(struct dive_site_table *sites, const QString &source);
+void importDiveSites(dive_site_table sites, const QString &source); // takes ownership of dive site table
 void mergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites);
 void purgeUnusedDiveSites();
 
@@ -132,8 +132,8 @@ void editTripNotes(dive_trip *trip, const QString &s);
 void addEventBookmark(struct dive *d, int dcNr, int seconds);
 void addEventDivemodeSwitch(struct dive *d, int dcNr, int seconds, int divemode);
 void addEventSetpointChange(struct dive *d, int dcNr, int seconds, pressure_t pO2);
-void renameEvent(struct dive *d, int dcNr, struct event *ev, const char *name);
-void removeEvent(struct dive *d, int dcNr, struct event *ev);
+void renameEvent(struct dive *d, int dcNr, int idx, std::string name);
+void removeEvent(struct dive *d, int dcNr, int idx);
 void addGasSwitch(struct dive *d, int dcNr, int seconds, int tank);
 
 // 7) Picture (media) commands
@@ -144,7 +144,7 @@ struct PictureListForDeletion {
 };
 struct PictureListForAddition {
 	dive *d;
-	std::vector<PictureObj> pics;
+	std::vector<picture> pics;
 };
 void setPictureOffset(dive *d, const QString &filename, offset_t offset);
 void removePictures(const std::vector<PictureListForDeletion> &pictures);

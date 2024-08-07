@@ -4,7 +4,6 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#include "ssrf.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -445,7 +444,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	unsigned int ndl = 0;
 	unsigned int in_deco = 0, deco_ceiling = 0, deco_time = 0;
 
-	struct divecomputer *dc = &dive->dc;
+	struct divecomputer *dc = &dive->dcs[0];
 	struct sample *sample;
 
 	// Initialize stat variables
@@ -495,16 +494,16 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 	while (offset + config.sample_size < size) {
 		s = samples + offset;
 
-		// Start with an empty sample
-		sample = prepare_sample(dc);
-		sample->time.seconds = sample_cnt * profile_period;
-
 		// Check for event
 		if (s[0] & 0x80) {
 			cochran_dive_event(dc, s, sample_cnt * profile_period, &in_deco, &deco_ceiling, &deco_time);
 			offset += cochran_dive_event_bytes(s[0]) + 1;
 			continue;
 		}
+
+		// Start with an empty sample
+		sample = prepare_sample(dc);
+		sample->time.seconds = sample_cnt * profile_period;
 
 		// Depth is in every sample
 		depth_sample = (double)(s[0] & 0x3F) / 4 * (s[0] & 0x40 ? -1 : 1);
@@ -592,8 +591,6 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		sample->sensor[0] = 0;
 		sample->pressure[0].mbar = lrint(psi * PSI / 100);
 
-		finish_sample(dc);
-
 		offset += config.sample_size;
 		sample_cnt++;
 	}
@@ -604,13 +601,11 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 
 static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			       const unsigned char *in, unsigned size,
-			       struct dive_table *table)
+			       struct dive_table &table)
 {
 	unsigned char *buf = (unsigned char *)malloc(size);
-	struct dive *dive;
 	struct divecomputer *dc;
 	struct tm tm = {0};
-	uint32_t csum[5];
 
 	double max_depth, avg_depth, min_temp;
 	unsigned int duration = 0, corrupt_dive = 0;
@@ -668,8 +663,8 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	puts("\nSample Data\n");
 #endif
 
-	dive = alloc_dive();
-	dc = &dive->dc;
+	auto dive = std::make_unique<struct dive>();
+	dc = &dive->dcs[0];
 
 	unsigned char *log = (buf + 0x4914);
 
@@ -677,24 +672,22 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	case TYPE_GEMINI:
 	case TYPE_COMMANDER:
 		if (config.type == TYPE_GEMINI) {
-			cylinder_t cyl = empty_cylinder;
 			dc->model = "Gemini";
 			dc->deviceid = buf[0x18c] * 256 + buf[0x18d];	// serial no
-			fill_default_cylinder(dive, &cyl);
+			cylinder_t cyl = default_cylinder(dive.get());
 			cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT] / 256
 				+ log[CMD_O2_PERCENT + 1]) * 10;
 			cyl.gasmix.he.permille = 0;
-			add_cylinder(&dive->cylinders, 0, cyl);
+			dive->cylinders.add(0, std::move(cyl));
 		} else {
 			dc->model = "Commander";
 			dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 			for (g = 0; g < 2; g++) {
-				cylinder_t cyl = empty_cylinder;
-				fill_default_cylinder(dive, &cyl);
+				cylinder_t cyl = default_cylinder(dive.get());
 				cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT + g * 2] / 256
 					+ log[CMD_O2_PERCENT + g * 2 + 1]) * 10;
 				cyl.gasmix.he.permille = 0;
-				add_cylinder(&dive->cylinders, g, cyl);
+				dive->cylinders.add(g, std::move(cyl));
 			}
 		}
 
@@ -719,8 +712,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			* (double) log[CMD_ALTITUDE] * 250 * FEET, 5.25588) * 1000);
 		dc->salinity = 10000 + 150 * log[CMD_WATER_CONDUCTIVITY];
 
-		SHA1(log + CMD_NUMBER, 2, (unsigned char *)csum);
-		dc->diveid = csum[0];
+		dc->diveid = SHA1_uint32(log + CMD_NUMBER, 2);
 
 		if (log[CMD_MAX_DEPTH] == 0xff && log[CMD_MAX_DEPTH + 1] == 0xff)
 			corrupt_dive = 1;
@@ -733,15 +725,14 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->model = "EMC";
 		dc->deviceid = array_uint32_le(buf + 0x31e);	// serial no
 		for (g = 0; g < 4; g++) {
-			cylinder_t cyl = empty_cylinder;
-			fill_default_cylinder(dive, &cyl);
+			cylinder_t cyl = default_cylinder(dive.get());
 			cyl.gasmix.o2.permille =
 				(log[EMC_O2_PERCENT + g * 2] / 256
 				+ log[EMC_O2_PERCENT + g * 2 + 1]) * 10;
 			cyl.gasmix.he.permille =
 				(log[EMC_HE_PERCENT + g * 2] / 256
 				+ log[EMC_HE_PERCENT + g * 2 + 1]) * 10;
-			add_cylinder(&dive->cylinders, g, cyl);
+			dive->cylinders.add(g, std::move(cyl));
 		}
 
 		tm.tm_year = log[EMC_YEAR];
@@ -765,8 +756,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			* (double) log[EMC_ALTITUDE] * 250 * FEET, 5.25588) * 1000);
 		dc->salinity = 10000 + 150 * (log[EMC_WATER_CONDUCTIVITY] & 0x3);
 
-		SHA1(log + EMC_NUMBER, 2, (unsigned char *)csum);
-		dc->diveid = csum[0];
+		dc->diveid = SHA1_uint32(log + EMC_NUMBER, 2);
 
 		if (log[EMC_MAX_DEPTH] == 0xff && log[EMC_MAX_DEPTH + 1] == 0xff)
 			corrupt_dive = 1;
@@ -782,7 +772,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	if (sample_pre_offset < sample_end_offset && sample_end_offset != 0xffffffff)
 		sample_size = sample_end_offset - sample_pre_offset;
 
-	cochran_parse_samples(dive, buf + 0x4914, buf + 0x4914
+	cochran_parse_samples(dive.get(), buf + 0x4914, buf + 0x4914
 		+ config.logbook_size, sample_size,
 		&duration, &max_depth, &avg_depth, &min_temp);
 
@@ -794,7 +784,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->duration.seconds = duration;
 	}
 
-	record_dive_to_table(dive, table);
+	table.record_dive(std::move(dive));
 
 	free(buf);
 }

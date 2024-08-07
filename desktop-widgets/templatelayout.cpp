@@ -123,10 +123,9 @@ QString TemplateLayout::generateStatistics()
 	State state;
 
 	int i = 0;
-	stats_summary_auto_free stats;
-	calculate_stats_summary(&stats, false);
-	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period) {
-		state.years.append(&stats.stats_yearly[i]);
+	stats_summary stats = calculate_stats_summary(false);
+	for (auto &s: stats.stats_yearly) {
+		state.years.append(&s);
 		i++;
 	}
 
@@ -304,9 +303,9 @@ static int findEnd(const QList<token> &tokenList, int from, int to, token_t star
 static std::vector<const cylinder_t *> cylinderList(const dive *d)
 {
 	std::vector<const cylinder_t *> res;
-	res.reserve(d->cylinders.nr);
-	for (int i = 0; i < d->cylinders.nr; ++i)
-		res.push_back(&d->cylinders.cylinders[i]);
+	res.reserve(d->cylinders.size());
+	for (auto &cyl: d->cylinders)
+		res.push_back(&cyl);
 	return res;
 }
 
@@ -482,7 +481,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 			return QVariant();
 		const cylinder_t *cylinder = *state.currentCylinderObject;
 		if (property == "description") {
-			return cylinder->type.description;
+			return QString::fromStdString(cylinder->type.description);
 		} else if (property == "size") {
 			return get_volume_string(cylinder->type.size, true);
 		} else if (property == "workingPressure") {
@@ -527,7 +526,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "timestamp") {
 			return QVariant::fromValue(d->when);
 		} else if (property == "location") {
-			return get_dive_location(d);
+			return QString::fromStdString(d->get_location());
 		} else if (property == "gps") {
 			return formatDiveGPS(d);
 		} else if (property == "gps_decimal") {
@@ -535,17 +534,17 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "duration") {
 			return formatDiveDuration(d);
 		} else if (property == "noDive") {
-			return d->duration.seconds == 0 && d->dc.duration.seconds == 0;
+			return d->duration.seconds == 0 && d->dcs[0].duration.seconds == 0;
 		} else if (property == "depth") {
-			return get_depth_string(d->dc.maxdepth.mm, true, true);
+			return get_depth_string(d->dcs[0].maxdepth.mm, true, true);
 		} else if (property == "meandepth") {
-			return get_depth_string(d->dc.meandepth.mm, true, true);
+			return get_depth_string(d->dcs[0].meandepth.mm, true, true);
 		} else if (property == "divemaster") {
-			return d->diveguide;
+			return QString::fromStdString(d->diveguide);
 		} else if (property == "diveguide") {
-			return d->diveguide;
+			return QString::fromStdString(d->diveguide);
 		} else if (property == "buddy") {
-			return d->buddy;
+			return QString::fromStdString(d->buddy);
 		} else if (property == "airTemp") {
 			return get_temperature_string(d->airtemp, true);
 		} else if (property == "waterTemp") {
@@ -553,7 +552,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "notes") {
 			return formatNotes(d);
 		} else if (property == "tags") {
-			return QString::fromStdString(taglist_get_tagstring(d->tag_list));
+			return QString::fromStdString(taglist_get_tagstring(d->tags));
 		} else if (property == "gas") {
 			return formatGas(d);
 		} else if (property == "sac") {
@@ -563,9 +562,9 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "weights") {
 			return formatWeights(d);
 		} else if (property == "singleWeight") {
-			return d->weightsystems.nr <= 1;
+			return d->weightsystems.size() <= 1;
 		} else if (property == "suit") {
-			return d->suit;
+			return QString::fromStdString(d->suit);
 		} else if (property == "cylinderList") {
 			return formatFullCylinderList();
 		} else if (property == "cylinders") {

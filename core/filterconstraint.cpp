@@ -134,87 +134,87 @@ static const range_mode_description *get_range_mode_description(enum filter_cons
 	return nullptr;
 }
 
-static enum filter_constraint_type filter_constraint_type_from_string(const char *s)
+static enum filter_constraint_type filter_constraint_type_from_string(const std::string &s)
 {
 	for (const auto &desc: type_descriptions) {
-		if (same_string(desc.token, s))
+		if (desc.token == s)
 			return desc.type;
 	}
-	report_error("unknown filter constraint type: %s", s);
+	report_error("unknown filter constraint type: %s", s.c_str());
 	return FILTER_CONSTRAINT_DATE;
 }
 
-static enum filter_constraint_string_mode filter_constraint_string_mode_from_string(const char *s)
+static enum filter_constraint_string_mode filter_constraint_string_mode_from_string(const std::string &s)
 {
 	for (const auto &desc: string_mode_descriptions) {
-		if (same_string(desc.token, s))
+		if (desc.token == s)
 			return desc.mode;
 	}
-	report_error("unknown filter constraint string mode: %s", s);
+	report_error("unknown filter constraint string mode: %s", s.c_str());
 	return FILTER_CONSTRAINT_EXACT;
 }
 
-static enum filter_constraint_range_mode filter_constraint_range_mode_from_string(const char *s)
+static enum filter_constraint_range_mode filter_constraint_range_mode_from_string(const std::string &s)
 {
 	for (const auto &desc: range_mode_descriptions) {
-		if (same_string(desc.token, s))
+		if (desc.token == s)
 			return desc.mode;
 	}
-	report_error("unknown filter constraint range mode: %s", s);
+	report_error("unknown filter constraint range mode: %s", s.c_str());
 	return FILTER_CONSTRAINT_EQUAL;
 }
 
-extern "C" const char *filter_constraint_type_to_string(enum filter_constraint_type type)
+const char *filter_constraint_type_to_string(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc ? desc->token : "unknown";
 }
 
-extern "C" const char *filter_constraint_string_mode_to_string(enum filter_constraint_string_mode mode)
+const char *filter_constraint_string_mode_to_string(enum filter_constraint_string_mode mode)
 {
 	const string_mode_description *desc = get_string_mode_description(mode);
 	return desc ? desc->token : "unknown";
 }
 
-extern "C" const char *filter_constraint_range_mode_to_string(enum filter_constraint_range_mode mode)
+const char *filter_constraint_range_mode_to_string(enum filter_constraint_range_mode mode)
 {
 	const range_mode_description *desc = get_range_mode_description(mode);
 	return desc ? desc->token : "unknown";
 }
 
-extern "C" int filter_constraint_type_to_index(enum filter_constraint_type type)
+int filter_constraint_type_to_index(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc ? desc - type_descriptions : -1;
 }
 
-extern "C" int filter_constraint_string_mode_to_index(enum filter_constraint_string_mode mode)
+int filter_constraint_string_mode_to_index(enum filter_constraint_string_mode mode)
 {
 	const string_mode_description *desc = get_string_mode_description(mode);
 	return desc ? desc - string_mode_descriptions : -1;
 }
 
-extern "C" int filter_constraint_range_mode_to_index(enum filter_constraint_range_mode mode)
+int filter_constraint_range_mode_to_index(enum filter_constraint_range_mode mode)
 {
 	const range_mode_description *desc = get_range_mode_description(mode);
 	return desc ? desc - range_mode_descriptions : -1;
 }
 
-extern "C" enum filter_constraint_type filter_constraint_type_from_index(int index)
+enum filter_constraint_type filter_constraint_type_from_index(int index)
 {
 	if (index >= 0 && index < (int)std::size(type_descriptions))
 		return type_descriptions[index].type;
 	return (enum filter_constraint_type)-1;
 }
 
-extern "C" enum filter_constraint_string_mode filter_constraint_string_mode_from_index(int index)
+enum filter_constraint_string_mode filter_constraint_string_mode_from_index(int index)
 {
 	if (index >= 0 && index < (int)std::size(string_mode_descriptions))
 		return string_mode_descriptions[index].mode;
 	return (enum filter_constraint_string_mode)-1;
 }
 
-extern "C" enum filter_constraint_range_mode filter_constraint_range_mode_from_index(int index)
+enum filter_constraint_range_mode filter_constraint_range_mode_from_index(int index)
 {
 	if (index >= 0 && index < (int)std::size(range_mode_descriptions))
 		return range_mode_descriptions[index].mode;
@@ -390,7 +390,7 @@ QStringList filter_contraint_multiple_choice_translated(enum filter_constraint_t
 	return QStringList();
 }
 
-extern "C" bool filter_constraint_is_string(filter_constraint_type type)
+bool filter_constraint_is_string(filter_constraint_type type)
 {
 	// Currently a constraint is filter based if and only if it has a string
 	// mode (i.e. starts with, substring, exact). In the future we might also
@@ -398,7 +398,7 @@ extern "C" bool filter_constraint_is_string(filter_constraint_type type)
 	return filter_constraint_has_string_mode(type);
 }
 
-extern "C" bool filter_constraint_is_timestamp(filter_constraint_type type)
+bool filter_constraint_is_timestamp(filter_constraint_type type)
 {
 	return type == FILTER_CONSTRAINT_DATE || type == FILTER_CONSTRAINT_DATE_TIME;
 }
@@ -408,37 +408,37 @@ static bool is_numerical_constraint(filter_constraint_type type)
 	return !filter_constraint_is_string(type) && !filter_constraint_is_timestamp(type);
 }
 
-extern "C" bool filter_constraint_has_string_mode(enum filter_constraint_type type)
+bool filter_constraint_has_string_mode(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->has_string_mode;
 }
 
-extern "C" bool filter_constraint_has_range_mode(enum filter_constraint_type type)
+bool filter_constraint_has_range_mode(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->has_range_mode;
 }
 
-extern "C" bool filter_constraint_is_star(filter_constraint_type type)
+bool filter_constraint_is_star(filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->is_star_widget;
 }
 
-extern "C" bool filter_constraint_has_date_widget(filter_constraint_type type)
+bool filter_constraint_has_date_widget(filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->has_date;
 }
 
-extern "C" bool filter_constraint_has_time_widget(filter_constraint_type type)
+bool filter_constraint_has_time_widget(filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc && desc->has_time;
 }
 
-extern "C" int filter_constraint_num_decimals(enum filter_constraint_type type)
+int filter_constraint_num_decimals(enum filter_constraint_type type)
 {
 	const type_description *desc = get_type_description(type);
 	return desc ? desc->decimal_places : 1;
@@ -446,7 +446,7 @@ extern "C" int filter_constraint_num_decimals(enum filter_constraint_type type)
 
 // String constraints are valid if there is at least one term.
 // Other constraints are always valid.
-extern "C" bool filter_constraint_is_valid(const struct filter_constraint *constraint)
+bool filter_constraint_is_valid(const struct filter_constraint *constraint)
 {
 	if (!filter_constraint_is_string(constraint->type))
 		return true;
@@ -551,14 +551,14 @@ filter_constraint::filter_constraint(const filter_constraint &c) :
 		data.numerical_range = c.data.numerical_range;
 }
 
-filter_constraint::filter_constraint(const char *type_in, const char *string_mode_in,
-				     const char *range_mode_in, bool negate_in, const char *s_in) :
+filter_constraint::filter_constraint(const std::string &type_in, const std::string &string_mode_in,
+				     const std::string &range_mode_in, bool negate_in, const std::string &s_in) :
 	type(filter_constraint_type_from_string(type_in)),
 	string_mode(FILTER_CONSTRAINT_STARTS_WITH),
 	range_mode(FILTER_CONSTRAINT_GREATER),
 	negate(negate_in)
 {
-	QString s(s_in);
+	QString s = QString::fromStdString(s_in);
 	if (filter_constraint_has_string_mode(type))
 		string_mode = filter_constraint_string_mode_from_string(string_mode_in);
 	if (filter_constraint_has_range_mode(type))
@@ -622,22 +622,22 @@ filter_constraint::~filter_constraint()
 		delete data.string_list;
 }
 
-std::string filter_constraint_data_to_string(const filter_constraint *c)
+std::string filter_constraint_data_to_string(const filter_constraint &c)
 {
-	if (filter_constraint_is_timestamp(c->type)) {
-		std::string from_s = format_datetime(c->data.timestamp_range.from);
-		std::string to_s = format_datetime(c->data.timestamp_range.to);
+	if (filter_constraint_is_timestamp(c.type)) {
+		std::string from_s = format_datetime(c.data.timestamp_range.from);
+		std::string to_s = format_datetime(c.data.timestamp_range.to);
 		return from_s + ',' + to_s;
-	} else if (filter_constraint_is_string(c->type)) {
+	} else if (filter_constraint_is_string(c.type)) {
 		// TODO: this obviously breaks if the strings contain ",".
 		// That is currently not supported by the UI, but one day we might
 		// have to escape the strings.
-		return c->data.string_list->join(",").toStdString();
-	} else if (filter_constraint_is_multiple_choice(c->type)) {
-		return std::to_string(c->data.multiple_choice);
+		return c.data.string_list->join(",").toStdString();
+	} else if (filter_constraint_is_multiple_choice(c.type)) {
+		return std::to_string(c.data.multiple_choice);
 	} else {
-		return std::to_string(c->data.numerical_range.from) + ',' +
-		       std::to_string(c->data.numerical_range.to);
+		return std::to_string(c.data.numerical_range.from) + ',' +
+		       std::to_string(c.data.numerical_range.to);
 	}
 }
 
@@ -818,17 +818,17 @@ static bool check(const filter_constraint &c, const QStringList &list)
 static bool has_tags(const filter_constraint &c, const struct dive *d)
 {
 	QStringList dive_tags;
-	for (const tag_entry *tag = d->tag_list; tag; tag = tag->next)
-		dive_tags.push_back(QString::fromStdString(tag->tag->name).trimmed());
+	for (const divetag *tag: d->tags)
+		dive_tags.push_back(QString::fromStdString(tag->name).trimmed());
 	return check(c, dive_tags);
 }
 
 static bool has_people(const filter_constraint &c, const struct dive *d)
 {
 	QStringList dive_people;
-	for (const QString &s: QString(d->buddy).split(",", SKIP_EMPTY))
+	for (const QString &s: QString::fromStdString(d->buddy).split(",", SKIP_EMPTY))
 		dive_people.push_back(s.trimmed());
-	for (const QString &s: QString(d->diveguide).split(",", SKIP_EMPTY))
+	for (const QString &s: QString::fromStdString(d->diveguide).split(",", SKIP_EMPTY))
 		dive_people.push_back(s.trimmed());
 	return check(c, dive_people);
 }
@@ -837,10 +837,10 @@ static bool has_locations(const filter_constraint &c, const struct dive *d)
 {
 	QStringList diveLocations;
 	if (d->divetrip)
-		diveLocations.push_back(QString(d->divetrip->location).trimmed());
+		diveLocations.push_back(QString::fromStdString(d->divetrip->location).trimmed());
 
 	if (d->dive_site)
-		diveLocations.push_back(QString(d->dive_site->name).trimmed());
+		diveLocations.push_back(QString::fromStdString(d->dive_site->name).trimmed());
 
 	return check(c, diveLocations);
 }
@@ -848,8 +848,8 @@ static bool has_locations(const filter_constraint &c, const struct dive *d)
 static bool has_weight_type(const filter_constraint &c, const struct dive *d)
 {
 	QStringList weightsystemTypes;
-	for (int i = 0; i < d->weightsystems.nr; ++i)
-		weightsystemTypes.push_back(d->weightsystems.weightsystems[i].description);
+	for (auto &ws: d->weightsystems)
+		weightsystemTypes.push_back(QString::fromStdString(ws.description));
 
 	return check(c, weightsystemTypes);
 }
@@ -857,8 +857,8 @@ static bool has_weight_type(const filter_constraint &c, const struct dive *d)
 static bool has_cylinder_type(const filter_constraint &c, const struct dive *d)
 {
 	QStringList cylinderTypes;
-	for (int i = 0; i < d->cylinders.nr; ++i)
-		cylinderTypes.push_back(d->cylinders.cylinders[i].type.description);
+	for (const cylinder_t &cyl: d->cylinders)
+		cylinderTypes.push_back(QString::fromStdString(cyl.type.description));
 
 	return check(c, cylinderTypes);
 }
@@ -866,16 +866,16 @@ static bool has_cylinder_type(const filter_constraint &c, const struct dive *d)
 static bool has_suits(const filter_constraint &c, const struct dive *d)
 {
 	QStringList diveSuits;
-	if (d->suit)
-		diveSuits.push_back(QString(d->suit));
+	if (!d->suit.empty())
+		diveSuits.push_back(QString::fromStdString(d->suit));
 	return check(c, diveSuits);
 }
 
 static bool has_notes(const filter_constraint &c, const struct dive *d)
 {
 	QStringList diveNotes;
-	if (d->notes)
-		diveNotes.push_back(QString(d->notes));
+	if (!d->notes.empty())
+		diveNotes.push_back(QString::fromStdString(d->notes));
 	return check(c, diveNotes);
 }
 
@@ -904,22 +904,15 @@ static bool check_numerical_range_non_zero(const filter_constraint &c, int v)
 
 static bool check_cylinder_size(const filter_constraint &c, const struct dive *d)
 {
-	for (int i = 0; i < d->cylinders.nr; ++i) {
-		const cylinder_t &cyl = d->cylinders.cylinders[i];
-		if (cyl.type.size.mliter && check_numerical_range(c, cyl.type.size.mliter))
-			return true;
-	}
-	return false;
+	return std::any_of(d->cylinders.begin(), d->cylinders.end(), [&c](auto &cyl)
+			   { return cyl.type.size.mliter &&
+				    check_numerical_range(c, cyl.type.size.mliter); });
 }
 
 static bool check_gas_range(const filter_constraint &c, const struct dive *d, gas_component component)
 {
-	for (int i = 0; i < d->cylinders.nr; ++i) {
-		const cylinder_t &cyl = d->cylinders.cylinders[i];
-		if (check_numerical_range(c, get_gas_component_fraction(cyl.gasmix, component).permille))
-			return true;
-	}
-	return false;
+	return std::any_of(d->cylinders.begin(), d->cylinders.end(), [&c, &component](auto &cyl)
+			   { return check_numerical_range(c, get_gas_component_fraction(cyl.gasmix, component).permille); });
 }
 
 static long days_since_epoch(timestamp_t timestamp)
@@ -956,14 +949,14 @@ static bool check_datetime_range(const filter_constraint &c, const struct dive *
 	case FILTER_CONSTRAINT_EQUAL:
 		// Exact mode is a bit strange for timestamps. Therefore we return any dive
 		// where the given timestamp is during that dive.
-		return time_during_dive_with_offset(d, c.data.timestamp_range.from, 0) != c.negate;
+		return d->time_during_dive_with_offset(c.data.timestamp_range.from, 0) != c.negate;
 	case FILTER_CONSTRAINT_LESS:
-		return (dive_endtime(d) <= c.data.timestamp_range.to) != c.negate;
+		return (d->endtime() <= c.data.timestamp_range.to) != c.negate;
 	case FILTER_CONSTRAINT_GREATER:
 		return (d->when >= c.data.timestamp_range.from) != c.negate;
 	case FILTER_CONSTRAINT_RANGE:
 		return (d->when >= c.data.timestamp_range.from &&
-			dive_endtime(d) <= c.data.timestamp_range.to) != c.negate;
+			d->endtime() <= c.data.timestamp_range.to) != c.negate;
 	}
 	return false;
 }
@@ -978,14 +971,14 @@ static bool check_time_of_day_internal(const dive *d, enum filter_constraint_ran
 		// where the given timestamp is during that dive. Note: this will fail for dives
 		// that run past midnight. We might want to special case that.
 		return (seconds_since_midnight(d->when) <= from &&
-			seconds_since_midnight(dive_endtime(d)) >= from) != negate;
+			seconds_since_midnight(d->endtime()) >= from) != negate;
 	case FILTER_CONSTRAINT_LESS:
-		return (seconds_since_midnight(dive_endtime(d)) <= to) != negate;
+		return (seconds_since_midnight(d->endtime()) <= to) != negate;
 	case FILTER_CONSTRAINT_GREATER:
 		return (seconds_since_midnight(d->when) >= from) != negate;
 	case FILTER_CONSTRAINT_RANGE:
 		return (seconds_since_midnight(d->when) >= from &&
-			seconds_since_midnight(dive_endtime(d)) <= to) != negate;
+			seconds_since_midnight(d->endtime()) <= to) != negate;
 	}
 	return false;
 }
@@ -1063,7 +1056,7 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 	case FILTER_CONSTRAINT_DURATION:
 		return check_numerical_range(c, d->duration.seconds);
 	case FILTER_CONSTRAINT_WEIGHT:
-		return check_numerical_range(c, total_weight(d));
+		return check_numerical_range(c, d->total_weight().grams);
 	case FILTER_CONSTRAINT_WATER_TEMP:
 		return check_numerical_range(c, d->watertemp.mkelvin);
 	case FILTER_CONSTRAINT_AIR_TEMP:
@@ -1073,11 +1066,11 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 	case FILTER_CONSTRAINT_SAC:
 		return check_numerical_range_non_zero(c, d->sac);
 	case FILTER_CONSTRAINT_LOGGED:
-		return is_logged(d) != c.negate;
+		return d->is_logged() != c.negate;
 	case FILTER_CONSTRAINT_PLANNED:
-		return is_planned(d) != c.negate;
+		return d->is_planned() != c.negate;
 	case FILTER_CONSTRAINT_DIVE_MODE:
-		return check_multiple_choice(c, (int)d->dc.divemode); // should we be smarter and check all DCs?
+		return check_multiple_choice(c, (int)d->dcs[0].divemode); // should we be smarter and check all DCs?
 	case FILTER_CONSTRAINT_TAGS:
 		return has_tags(c, d);
 	case FILTER_CONSTRAINT_PEOPLE:

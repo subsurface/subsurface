@@ -7,12 +7,6 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#else
-#include <stdbool.h>
-#endif
-
 #define FRACTION_TUPLE(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
 #define SIGNED_FRAC_TRIPLET(n, x) ((n) >= 0 ? '+': '-'), ((n) >= 0 ? (unsigned)(n) / (x) : (-(n) / (x))), ((unsigned)((n) >= 0 ? (n) : -(n)) % (x))
 
@@ -24,11 +18,7 @@ extern "C" {
 #define SURFACE_PRESSURE 1013 // mbar
 #define ZERO_C_IN_MKELVIN 273150 // mKelvin
 
-#ifdef __cplusplus
 #define M_OR_FT(_m, _f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
-#else
-#define M_OR_FT(_m, _f) ((prefs.units.length == METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
-#endif
 
 /* Salinity is expressed in weight in grams per 10l */
 #define SEAWATER_SALINITY 10300
@@ -38,7 +28,7 @@ extern "C" {
 
 #include <stdint.h>
 /*
- * Some silly typedefs to make our units very explicit.
+ * Some silly structs to make our units very explicit.
  *
  * Also, the units are chosen so that values can be expressible as
  * integers, so that we never have FP rounding issues. And they
@@ -75,86 +65,88 @@ extern "C" {
  * We don't actually use these all yet, so maybe they'll change, but
  * I made a number of types as guidelines.
  */
-typedef int64_t timestamp_t;
+using timestamp_t = int64_t;
 
-typedef struct
+struct duration_t
 {
-	int32_t seconds; // durations up to 34 yrs
-} duration_t;
+	int32_t seconds = 0; // durations up to 34 yrs
+};
 
-static const duration_t zero_duration = { 0 };
-
-typedef struct
+struct offset_t
 {
-	int32_t seconds; // offsets up to +/- 34 yrs
-} offset_t;
+	int32_t seconds = 0; // offsets up to +/- 34 yrs
+};
 
-typedef struct
+struct depth_t // depth to 2000 km
 {
-	int32_t mm;
-} depth_t; // depth to 2000 km
+	int32_t mm = 0;
+};
 
-typedef struct
+struct pressure_t
 {
-	int32_t mbar; // pressure up to 2000 bar
-} pressure_t;
+	int32_t mbar = 0; // pressure up to 2000 bar
+};
 
-typedef struct
+struct o2pressure_t
 {
-	uint16_t mbar;
-} o2pressure_t; // pressure up to 65 bar
+	uint16_t mbar = 0;
+};
 
-typedef struct
+struct bearing_t
 {
-	int16_t degrees;
-} bearing_t; // compass bearing
+	int16_t degrees = 0;
+};
 
-typedef struct
+struct temperature_t
 {
-	uint32_t mkelvin; // up to 4 MK (temperatures in K are always positive)
-} temperature_t;
+	uint32_t mkelvin = 0; // up to 4 MK (temperatures in K are always positive)
+};
 
-typedef struct
+struct  temperature_sum_t
 {
-	uint64_t mkelvin; // up to 18446744073 MK (temperatures in K are always positive)
-} temperature_sum_t;
+	uint64_t mkelvin = 0; // up to 18446744073 MK (temperatures in K are always positive)
+};
 
-typedef struct
+struct volume_t
 {
-	int mliter;
-} volume_t;
+	int mliter = 0;
+};
 
-typedef struct
+struct fraction_t
 {
-	int permille;
-} fraction_t;
+	int permille = 0;
+};
 
-typedef struct
+struct weight_t
 {
-	int grams;
-} weight_t;
+	int grams = 0;
+};
 
-typedef struct
+struct degrees_t
 {
-	int udeg;
-} degrees_t;
+	int udeg = 0;
+};
 
-typedef struct pos {
+struct location_t {
 	degrees_t lat, lon;
-} location_t;
-
-static const location_t zero_location = { { 0 }, { 0 }};
+};
 
 extern void parse_location(const char *, location_t *);
+extern unsigned int get_distance(location_t loc1, location_t loc2);
 
 static inline bool has_location(const location_t *loc)
 {
 	return loc->lat.udeg || loc->lon.udeg;
 }
 
-static inline bool same_location(const location_t *a, const location_t *b)
+static inline bool operator==(const location_t &a, const location_t &b)
 {
-	return (a->lat.udeg == b->lat.udeg) && (a->lon.udeg == b->lon.udeg);
+	return (a.lat.udeg == b.lat.udeg) && (a.lon.udeg == b.lon.udeg);
+}
+
+static inline bool operator!=(const location_t &a, const location_t &b)
+{
+	return !(a == b);
 }
 
 static inline location_t create_location(double lat, double lon)
@@ -327,15 +319,15 @@ struct units {
  * actually use. Similarly, C instead of Kelvin.
  * And kg instead of g.
  */
-#define SI_UNITS                                                                                           \
-        {                                                                                                  \
-	        .length = METERS, .volume = LITER, .pressure = BAR, .temperature = CELSIUS, .weight = KG,  \
-		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false         \
+#define SI_UNITS 																\
+        {																	\
+	        .length = units::METERS, .volume = units::LITER, .pressure = units::BAR, .temperature = units::CELSIUS, .weight = units::KG,	\
+		.vertical_speed_time = units::MINUTES, .duration_units = units::MIXED, .show_units_table = false				\
         }
 
 extern const struct units SI_units, IMPERIAL_units;
 
-extern const struct units *get_units(void);
+extern const struct units *get_units();
 
 extern int get_pressure_units(int mb, const char **units);
 extern double get_depth_units(int mm, int *frac, const char **units);
@@ -346,8 +338,5 @@ extern double get_vertical_speed_units(unsigned int mms, int *frac, const char *
 
 extern depth_t units_to_depth(double depth);
 extern int units_to_sac(double volume);
-#ifdef __cplusplus
-}
-#endif
 
 #endif

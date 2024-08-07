@@ -124,38 +124,37 @@ void TabDiveInformation::updateProfile()
 	ui->maximumDepthText->setText(get_depth_string(currentDive->maxdepth, true));
 	ui->averageDepthText->setText(get_depth_string(currentDive->meandepth, true));
 
-	volume_t *gases = get_gas_used(currentDive);
+	std::vector<volume_t> gases = get_gas_used(currentDive);
 	QString volumes;
-	std::vector<int> mean(currentDive->cylinders.nr), duration(currentDive->cylinders.nr);
+	std::vector<int> mean(currentDive->cylinders.size()), duration(currentDive->cylinders.size());
 	struct divecomputer *currentdc = parent.getCurrentDC();
-	if (currentdc && currentDive->cylinders.nr >= 0)
+	if (currentdc && !currentDive->cylinders.empty())
 		per_cylinder_mean_depth(currentDive, currentdc, mean.data(), duration.data());
 	volume_t sac;
 	QString gaslist, SACs, separator;
 
-	for (int i = 0; i < currentDive->cylinders.nr; i++) {
-		if (!is_cylinder_used(currentDive, i))
+	for (size_t i = 0; i < currentDive->cylinders.size(); i++) {
+		if (!currentDive->is_cylinder_used(i))
 			continue;
 		gaslist.append(separator); volumes.append(separator); SACs.append(separator);
 		separator = "\n";
 
-		gaslist.append(gasname(get_cylinder(currentDive, i)->gasmix));
+		gaslist.append(QString::fromStdString(currentDive->get_cylinder(i)->gasmix.name()));
 		if (!gases[i].mliter)
 			continue;
 		volumes.append(get_volume_string(gases[i], true));
 		if (duration[i]) {
-			sac.mliter = lrint(gases[i].mliter / (depth_to_atm(mean[i], currentDive) * duration[i] / 60));
+			sac.mliter = lrint(gases[i].mliter / (currentDive->depth_to_atm(mean[i]) * duration[i] / 60));
 			SACs.append(get_volume_string(sac, true).append(tr("/min")));
 		}
 	}
-	free(gases);
 	ui->gasUsedText->setText(volumes);
 	ui->oxygenHeliumText->setText(gaslist);
 
 	ui->diveTimeText->setText(get_dive_duration_string(currentDive->duration.seconds, tr("h"), tr("min"), tr("sec"),
-			" ", currentDive->dc.divemode == FREEDIVE));
+			" ", currentDive->dcs[0].divemode == FREEDIVE));
 
-	ui->sacText->setText(currentDive->cylinders.nr > 0 && mean[0] && currentDive->dc.divemode != CCR ? std::move(SACs) : QString());
+	ui->sacText->setText(!currentDive->cylinders.empty() && mean[0] && currentDive->dcs[0].divemode != CCR ? std::move(SACs) : QString());
 
 	if (currentDive->surface_pressure.mbar == 0) {
 		ui->atmPressVal->clear();			// If no atm pressure for dive then clear text box
@@ -168,7 +167,7 @@ void TabDiveInformation::updateProfile()
 // Update fields that depend on start of dive
 void TabDiveInformation::updateWhen()
 {
-	timestamp_t surface_interval = get_surface_interval(parent.currentDive->when);
+	timestamp_t surface_interval = divelog.dives.get_surface_interval(parent.currentDive->when);
 	if (surface_interval >= 0)
 		ui->surfaceIntervalText->setText(get_dive_surfint_string(surface_interval, tr("d"), tr("h"), tr("min")));
 	else
@@ -222,7 +221,7 @@ void TabDiveInformation::updateData(const std::vector<dive *> &, dive *currentDi
 	ui->airtemp->setText(get_temperature_string(currentDive->airtemp, true));
 	ui->atmPressType->setItemText(1, get_depth_unit());  // Check for changes in depth unit (imperial/metric)
 	setIndexNoSignal(ui->atmPressType, 0);		     // Set the atmospheric pressure combo box to mbar
-	salinity_value = get_dive_salinity(currentDive);
+	salinity_value = currentDive->get_salinity();
 	if (salinity_value) {			// Set water type indicator (EN13319 = 1.020 g/l)
 		setIndexNoSignal(ui->waterTypeCombo, updateSalinityComboIndex(salinity_value));
 		ui->waterTypeText->setText(get_water_type_string(salinity_value));
@@ -260,9 +259,8 @@ void TabDiveInformation::updateUi(QString titleColor)
 }
 
 // From the index of the water type combo box, set the dive->salinity to an appropriate value
-void TabDiveInformation::on_waterTypeCombo_activated(int index)
+void TabDiveInformation::on_waterTypeCombo_activated(int)
 {
-	Q_UNUSED(index)
 	int combobox_salinity = 0;
 	int dc_salinity = parent.currentDive->salinity;
 	switch(ui->waterTypeCombo->currentIndex()) {
@@ -411,9 +409,8 @@ void TabDiveInformation::on_watertemp_editingFinished()
 		divesEdited(Command::editWaterTemp(parseTemperatureToMkelvin(ui->watertemp->text()), false));
 }
 
-void TabDiveInformation::on_atmPressType_currentIndexChanged(int index)
+void TabDiveInformation::on_atmPressType_currentIndexChanged(int)
 {
-	Q_UNUSED(index)
 	updateTextBox(COMBO_CHANGED);
 }
 
@@ -424,7 +421,7 @@ void TabDiveInformation::on_atmPressVal_editingFinished()
 
 void TabDiveInformation::updateTextBox(int event) // Either the text box has been edited or the pressure type has changed.
 {                                       // Either way this gets a numeric value and puts it on the text box atmPressVal,
-	pressure_t atmpress = { 0 };    // then stores it in dive->surface_pressure.The undo stack for the text box content is
+	pressure_t atmpress;            // then stores it in dive->surface_pressure.The undo stack for the text box content is
 	double altitudeVal;             // maintained even though two independent events trigger saving the text box contents.
 	dive *currentDive = parent.currentDive;
 	if (currentDive) {
@@ -458,7 +455,7 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 			}
 			break;
 		case 2:          // i.e. event = COMBO_CHANGED, that is, the option "Use dc" was selected from combobox
-			atmpress = calculate_surface_pressure(currentDive);	// re-calculate air pressure from dc data
+			atmpress = currentDive->calculate_surface_pressure();	// re-calculate air pressure from dc data
 			ui->atmPressVal->setText(QString::number(atmpress.mbar)); // display it in text box
 			setIndexNoSignal(ui->atmPressType, 0);          // reset combobox to mbar
 			break;

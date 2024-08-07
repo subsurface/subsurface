@@ -26,11 +26,12 @@ void PreferencesEquipment::refreshSettings()
 	ui->include_unused_tanks->setChecked(prefs.include_unused_tanks);
 	ui->display_default_tank_infos->setChecked(prefs.display_default_tank_infos);
 	ui->default_cylinder->clear();
-	for (int i = 0; i < tank_info_table.nr; i++) {
-		const tank_info &ti = tank_info_table.infos[i];
-		ui->default_cylinder->addItem(ti.name);
-		if (qPrefEquipment::default_cylinder() == ti.name)
+	int i = 0;
+	for (const tank_info &ti: tank_info_table) {
+		ui->default_cylinder->addItem(QString::fromStdString(ti.name));
+		if (qPrefEquipment::default_cylinder() == QString::fromStdString(ti.name))
 			ui->default_cylinder->setCurrentIndex(i);
+		++i;
 	}
 }
 
@@ -45,5 +46,5 @@ void PreferencesEquipment::syncSettings()
 	// reset the tank_info_table. It is somewhat questionable
 	// to do this here. Moreover, it is a bit crude, as this
 	// will be called for *any* preferences change.
-	reset_tank_info_table(&tank_info_table);
+	reset_tank_info_table(tank_info_table);
 }

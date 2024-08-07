@@ -25,12 +25,12 @@ public:
 	static void sync() { loadSync(true); }
 
 public:
-	static const QString date_format() { return prefs.date_format; }
+	static const QString date_format() { return QString::fromStdString(prefs.date_format); }
 	static bool date_format_override() { return prefs.date_format_override; }
-	static const QString date_format_short() { return prefs.date_format_short; }
-	static const QString language() { return prefs.locale.language; }
-	static const QString lang_locale() { return prefs.locale.lang_locale; }
-	static const QString time_format() { return prefs.time_format; }
+	static const QString date_format_short() { return QString::fromStdString(prefs.date_format_short); }
+	static const QString language() { return QString::fromStdString(prefs.locale.language); }
+	static const QString lang_locale() { return QString::fromStdString(prefs.locale.lang_locale); }
+	static const QString time_format() { return QString::fromStdString(prefs.time_format); }
 	static bool time_format_override() { return prefs.time_format_override; }
 	static bool use_system_language() { return prefs.locale.use_system_language; }
 

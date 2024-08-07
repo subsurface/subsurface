@@ -38,8 +38,8 @@
 #include "core/subsurface-string.h"
 #include "core/string-format.h"
 #include "core/pref.h"
+#include "core/sample.h"
 #include "core/selection.h"
-#include "core/ssrf.h"
 #include "core/save-profiledata.h"
 #include "core/settings/qPrefLog.h"
 #include "core/settings/qPrefTechnicalDetails.h"
@@ -66,22 +66,22 @@ bool noCloudToCloud = false;
 #define RED_FONT QLatin1String("<font color=\"red\">")
 #define END_FONT QLatin1String("</font>")
 
-extern "C" void showErrorFromC(char *buf)
+static void showError(std::string s)
 {
-	QString error(buf);
-	free(buf);
+	QString error = QString::fromStdString(s);
 	// By using invokeMethod with Qt:AutoConnection, the error string is safely
 	// transported across thread boundaries, if not called from the UI thread.
 	QMetaObject::invokeMethod(QMLManager::instance(), "registerError", Qt::AutoConnection, Q_ARG(QString, error));
 }
 
 // this gets called from libdivecomputer
-static void progressCallback(const char *text)
+static void progressCallback(const std::string &text)
 {
 	QMLManager *self = QMLManager::instance();
 	if (self) {
-		self->appendTextToLog(QString(text));
-		self->setProgressMessage(QString(text));
+		QString s = QString::fromStdString(text);
+		self->appendTextToLog(s);
+		self->setProgressMessage(s);
 	}
 }
 
@@ -124,7 +124,7 @@ static void showProgress(QString msg)
 }
 
 // show the git progress in the passive notification area
-extern "C" int gitProgressCB(const char *text)
+int gitProgressCB(const char *text)
 {
 	// regular users, during regular operation, likely really don't
 	// care at all about the git progress
@@ -270,7 +270,7 @@ QMLManager::QMLManager() :
 		appendTextToLog("No writeable location found, in-memory log only and no libdivecomputer log");
 	}
 #endif
-	set_error_cb(&showErrorFromC);
+	set_error_cb(&showError);
 	uiNotificationCallback = showProgress;
 	appendTextToLog("Starting " + getUserAgent());
 	appendTextToLog(QStringLiteral("built with libdivecomputer v%1").arg(dc_version(NULL)));
@@ -279,7 +279,7 @@ QMLManager::QMLManager() :
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	appendTextToLog(QStringLiteral("built with libgit2 %1.%2.%3").arg(git_maj).arg(git_min).arg(git_rev));
 	appendTextToLog(QStringLiteral("Running on %1").arg(QSysInfo::prettyProductName()));
-	appendTextToLog(QStringLiteral("Locale Languages offered %1, picked %2").arg(QLocale().uiLanguages().join(", ")).arg(prefs.locale.lang_locale));
+	appendTextToLog(QStringLiteral("Locale Languages offered %1, picked %2").arg(QLocale().uiLanguages().join(", ")).arg(prefs.locale.lang_locale.c_str()));
 #if defined(Q_OS_ANDROID)
 	extern QString getAndroidHWInfo();
 	appendTextToLog(getAndroidHWInfo());
@@ -413,9 +413,9 @@ void QMLManager::openLocalThenRemote(QString url)
 		qPrefTechnicalDetails::set_show_ccr_sensors(git_prefs.show_ccr_sensors);
 		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
 		// the following steps can take a long time, so provide updates
-		setNotificationText(tr("Processing %1 dives").arg(divelog.dives->nr));
-		process_loaded_dives();
-		setNotificationText(tr("%1 dives loaded from local dive data file").arg(divelog.dives->nr));
+		setNotificationText(tr("Processing %1 dives").arg(divelog.dives.size()));
+		divelog.process_loaded_dives();
+		setNotificationText(tr("%1 dives loaded from local dive data file").arg(divelog.dives.size()));
 	}
 	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but still needs PIN"));
@@ -471,14 +471,14 @@ void QMLManager::updateAllGlobalLists()
 
 static QString nocloud_localstorage()
 {
-	return QString(system_default_directory()) + "/cloudstorage/localrepo[master]";
+	return QString::fromStdString(system_default_directory() + "/cloudstorage/localrepo[master]");
 }
 
 void QMLManager::mergeLocalRepo()
 {
 	struct divelog log;
 	parse_file(qPrintable(nocloud_localstorage()), &log);
-	add_imported_dives(&log, IMPORT_MERGE_ALL_TRIPS);
+	divelog.add_imported_dives(log, import_flags::merge_all_trips);
 	mark_divelist_changed(true);
 }
 
@@ -588,7 +588,7 @@ void QMLManager::finishSetup()
 			// successfully opened the local file, now add thigs to the dive list
 			consumeFinishedLoad();
 			updateHaveLocalChanges(true);
-			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(divelog.dives->nr).arg(existing_filename.c_str()));
+			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(divelog.dives.size()).arg(existing_filename.c_str()));
 		}
 	} else {
 		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
@@ -650,11 +650,11 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 			return;
 		}
 	}
-	if (!same_string(prefs.cloud_storage_email, qPrintable(email))) {
+	if (prefs.cloud_storage_email != email.toStdString()) {
 		cloudCredentialsChanged = true;
 	}
 
-	if (!same_string(prefs.cloud_storage_password, qPrintable(newPassword))) {
+	if (prefs.cloud_storage_password != newPassword.toStdString()) {
 		cloudCredentialsChanged = true;
 	}
 
@@ -672,7 +672,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	qPrefCloudStorage::set_cloud_storage_email(email);
 	qPrefCloudStorage::set_cloud_storage_password(newPassword);
 
-	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && divelog.dives->nr) {
+	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && divelog.dives.size()) {
 		// we came from NOCLOUD and are connecting to a cloud account;
 		// since we already have dives in the table, let's remember that so we can keep them
 		noCloudToCloud = true;
@@ -743,8 +743,8 @@ bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
 
 void QMLManager::deleteAccount()
 {
-	QString email(prefs.cloud_storage_email);
-	QString passwd(prefs.cloud_storage_password);
+	QString email = QString::fromStdString(prefs.cloud_storage_email);
+	QString passwd = QString::fromStdString(prefs.cloud_storage_password);
 	if (email.isEmpty() || passwd.isEmpty())
 		return;
 
@@ -830,7 +830,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	if (noCloudToCloud) {
 		git_storage_update_progress(qPrintable(tr("Loading dives from local storage ('no cloud' mode)")));
 		mergeLocalRepo();
-		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(divelog.dives->nr));
+		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(divelog.dives.size()));
 		noCloudToCloud = false;
 		mark_divelist_changed(true);
 		emit syncStateChanged();
@@ -867,10 +867,8 @@ void QMLManager::revertToNoCloudIfNeeded()
 			appendTextToLog(QStringLiteral("taking things back offline since sync with cloud failed"));
 			git_local_only = false;
 		}
-		free((void *)prefs.cloud_storage_email);
-		prefs.cloud_storage_email = NULL;
-		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = NULL;
+		prefs.cloud_storage_email.clear();
+		prefs.cloud_storage_password.clear();
 		qPrefCloudStorage::set_cloud_storage_email("");
 		qPrefCloudStorage::set_cloud_storage_password("");
 		rememberOldStatus();
@@ -893,9 +891,9 @@ void QMLManager::consumeFinishedLoad()
 	prefs.show_ccr_setpoint = git_prefs.show_ccr_setpoint;
 	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
 	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
-	process_loaded_dives();
-	appendTextToLog(QStringLiteral("%1 dives loaded").arg(divelog.dives->nr));
-	if (divelog.dives->nr == 0)
+	divelog.process_loaded_dives();
+	appendTextToLog(QStringLiteral("%1 dives loaded").arg(divelog.dives.size()));
+	if (divelog.dives.empty())
 		setStartPageText(tr("Cloud storage open successfully. No dives in dive list."));
 }
 
@@ -908,10 +906,10 @@ void QMLManager::refreshDiveList()
 // The following structure describes such a change caused by a dive edit.
 // Hopefully, we can remove this in due course by using finer-grained undo-commands.
 struct DiveSiteChange {
-	OwningDiveSitePtr createdDs; // not-null if we created a dive site.
+	std::unique_ptr<dive_site> createdDs; // not-null if we created a dive site.
 
 	dive_site *editDs = nullptr; // not-null if we are supposed to edit an existing dive site.
-	location_t location = zero_location; // new value of the location if we edit an existing dive site.
+	location_t location; // new value of the location if we edit an existing dive site.
 
 	bool changed = false; // true if either a dive site or the dive was changed.
 };
@@ -923,7 +921,7 @@ static void setupDivesite(DiveSiteChange &res, struct dive *d, struct dive_site 
 		res.editDs = ds;
 		res.location = location;
 	} else {
-		res.createdDs.reset(alloc_dive_site_with_name(locationtext));
+		res.createdDs = std::make_unique<dive_site>(locationtext);
 		res.createdDs->location = location;
 		d->dive_site = res.createdDs.get();
 	}
@@ -938,7 +936,7 @@ bool QMLManager::checkDate(struct dive *d, QString date)
 		// what a pain - Qt will not parse dates if the day of the week is incorrect
 		// so if the user changed the date but didn't update the day of the week (most likely behavior, actually),
 		// we need to make sure we don't try to parse that
-		QString format(QString(prefs.date_format_short) + QChar(' ') + prefs.time_format);
+		QString format = QString::fromStdString(prefs.date_format_short + ' ' + prefs.time_format);
 		if (format.contains(QLatin1String("ddd")) || format.contains(QLatin1String("dddd"))) {
 			QString dateFormatToDrop = format.contains(QLatin1String("ddd")) ? QStringLiteral("ddd") : QStringLiteral("dddd");
 			QDateTime ts;
@@ -1056,7 +1054,7 @@ parsed:
 			// add a hundred years.
 			if (newDate.addYears(100) < QDateTime::currentDateTime().addYears(1))
 				newDate = newDate.addYears(100);
-			d->dc.when = d->when = dateTimeToTimestamp(newDate);
+			d->dcs[0].when = d->when = dateTimeToTimestamp(newDate);
 			return true;
 		}
 		appendTextToLog("none of our parsing attempts worked for the date string");
@@ -1066,13 +1064,13 @@ parsed:
 
 bool QMLManager::checkLocation(DiveSiteChange &res, struct dive *d, QString location, QString gps)
 {
-	struct dive_site *ds = get_dive_site_for_dive(d);
+	struct dive_site *ds = d->dive_site;
 	bool changed = false;
-	QString oldLocation = get_dive_location(d);
+	QString oldLocation = QString::fromStdString(d->get_location());
 	if (oldLocation != location) {
-		ds = get_dive_site_by_name(qPrintable(location), divelog.sites);
+		ds = divelog.sites.get_by_name(location.toStdString());
 		if (!ds && !location.isEmpty()) {
-			res.createdDs.reset(alloc_dive_site_with_name(qPrintable(location)));
+			res.createdDs = std::make_unique<dive_site>(qPrintable(location));
 			res.changed = true;
 			ds = res.createdDs.get();
 		}
@@ -1134,9 +1132,9 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 		} else if (m6.hasMatch()) {
 			m = m6.captured(1).toInt();
 		}
-		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
-		if (is_dc_manually_added_dive(&d->dc))
-			free_samples(&d->dc);
+		d->dcs[0].duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
+		if (is_dc_manually_added_dive(&d->dcs[0]))
+			d->dcs[0].samples.clear();
 		else
 			appendTextToLog("Cannot change the duration on a dive that wasn't manually added");
 		return true;
@@ -1146,16 +1144,16 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 
 bool QMLManager::checkDepth(dive *d, QString depth)
 {
-	if (get_depth_string(d->dc.maxdepth.mm, true, true) != depth) {
+	if (get_depth_string(d->dcs[0].maxdepth.mm, true, true) != depth) {
 		int depthValue = parseLengthToMm(depth);
 		// the QML code should stop negative depth, but massively huge depth can make
 		// the profile extremely slow or even run out of memory and crash, so keep
 		// the depth <= 500m
 		if (0 <= depthValue && depthValue <= 500000) {
 			d->maxdepth.mm = depthValue;
-			if (is_dc_manually_added_dive(&d->dc)) {
-				d->dc.maxdepth.mm = d->maxdepth.mm;
-				free_samples(&d->dc);
+			if (is_dc_manually_added_dive(&d->dcs[0])) {
+				d->dcs[0].maxdepth.mm = d->maxdepth.mm;
+				d->dcs[0].samples.clear();
 			}
 			return true;
 		}
@@ -1168,7 +1166,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveGuide, QString tags, QString weight, QString notes,
 			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state)
 {
-	struct dive *orig = get_dive_by_uniq_id(diveId.toInt());
+	struct dive *orig = divelog.dives.get_by_uniq_id(diveId.toInt());
 
 	if (!orig) {
 		appendTextToLog("cannot commit changes: no dive");
@@ -1192,7 +1190,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		report_info("state   :'%s'", qPrintable(state));
 	}
 
-	OwningDivePtr d_ptr(alloc_dive()); // Automatically delete dive if we exit early!
+	auto d_ptr = std::make_unique<dive>(); // Automatically delete dive if we exit early!
 	dive *d = d_ptr.get();
 	copy_dive(orig, d);
 
@@ -1228,11 +1226,11 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		diveChanged = true;
 		// not sure what we'd do if there was more than one weight system
 		// defined - for now just ignore that case
-		if (d->weightsystems.nr == 0) {
-			weightsystem_t ws = { { parseWeightToGrams(weight) } , strdup(qPrintable(tr("weight"))), false };
-			add_to_weightsystem_table(&d->weightsystems, 0, ws); // takes ownership of the string
-		} else if (d->weightsystems.nr == 1) {
-			d->weightsystems.weightsystems[0].weight.grams = parseWeightToGrams(weight);
+		if (d->weightsystems.size() == 0) {
+			weightsystem_t ws = { { parseWeightToGrams(weight) } , tr("weight").toStdString(), false };
+			d->weightsystems.add(0, std::move(ws));
+		} else if (d->weightsystems.size() == 1) {
+			d->weightsystems[0].weight.grams = parseWeightToGrams(weight);
 		}
 	}
 	// start and end pressures
@@ -1244,10 +1242,10 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	if (formatStartPressure(d) != startpressure || formatEndPressure(d) != endpressure) {
 		diveChanged = true;
 		for ( int i = 0, j = 0 ; j < startpressure.length() && j < endpressure.length() ; i++ ) {
-			if (state != "add" && !is_cylinder_used(d, i))
+			if (state != "add" && !d->is_cylinder_used(i))
 				continue;
 
-			cylinder_t *cyl = get_or_create_cylinder(d, i);
+			cylinder_t *cyl = d->get_or_create_cylinder(i);
 			cyl->start.mbar = parsePressureToMbar(startpressure[j]);
 			cyl->end.mbar = parsePressureToMbar(endpressure[j]);
 			if (cyl->end.mbar > cyl->start.mbar)
@@ -1259,7 +1257,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	// gasmix for first cylinder
 	if (formatFirstGas(d) != gasmix) {
 		for ( int i = 0, j = 0 ; j < gasmix.length() ; i++ ) {
-			if (state != "add" && !is_cylinder_used(d, i))
+			if (state != "add" && !d->is_cylinder_used(i))
 				continue;
 
 			int o2 = parseGasMixO2(gasmix[j]);
@@ -1269,8 +1267,8 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				he >= 0 && he <= 1000 &&
 				o2 + he <= 1000) {
 				diveChanged = true;
-				get_or_create_cylinder(d, i)->gasmix.o2.permille = o2;
-				get_cylinder(d, i)->gasmix.he.permille = he;
+				d->get_or_create_cylinder(i)->gasmix.o2.permille = o2;
+				d->get_cylinder(i)->gasmix.he.permille = he;
 			}
 			j++;
 		}
@@ -1280,12 +1278,11 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		diveChanged = true;
 		int size = 0, wp = 0, j = 0, k = 0;
 		for (j = 0; k < usedCylinder.length(); j++) {
-			if (state != "add" && !is_cylinder_used(d, j))
+			if (state != "add" && !d->is_cylinder_used(j))
 				continue;
 
-			for (int i = 0; i < tank_info_table.nr; i++) {
-				const tank_info &ti = tank_info_table.infos[i];
-				if (ti.name == usedCylinder[k] ) {
+			for (const tank_info &ti: tank_info_table) {
+				if (ti.name == usedCylinder[k].toStdString()) {
 					if (ti.ml > 0){
 						size = ti.ml;
 						wp = ti.bar * 1000;
@@ -1296,36 +1293,31 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 					break;
 				}
 			}
-			get_or_create_cylinder(d, j)->type.description = copy_qstring(usedCylinder[k]);
-			get_cylinder(d, j)->type.size.mliter = size;
-			get_cylinder(d, j)->type.workingpressure.mbar = wp;
+			d->get_or_create_cylinder(j)->type.description = usedCylinder[k].toStdString();
+			d->get_cylinder(j)->type.size.mliter = size;
+			d->get_cylinder(j)->type.workingpressure.mbar = wp;
 			k++;
 		}
 	}
-	if (d->suit != suit) {
+	if (d->suit != suit.toStdString()) {
 		diveChanged = true;
-		free(d->suit);
-		d->suit = copy_qstring(suit);
+		d->suit = suit.toStdString();
 	}
-	if (d->buddy != buddy) {
-		if (buddy.contains(",")){
+	if (d->buddy != buddy.toStdString()) {
+		if (buddy.contains(","))
 			buddy = buddy.replace(QRegularExpression("\\s*,\\s*"), ", ");
-		}
 		diveChanged = true;
-		free(d->buddy);
-		d->buddy = copy_qstring(buddy);
+		d->buddy = buddy.toStdString();
 	}
-	if (d->diveguide != diveGuide) {
-		if (diveGuide.contains(",")){
+	if (d->diveguide != diveGuide.toStdString()) {
+		if (diveGuide.contains(","))
 			diveGuide = diveGuide.replace(QRegularExpression("\\s*,\\s*"), ", ");
-		}
 		diveChanged = true;
-		free(d->diveguide);
-		d->diveguide = copy_qstring(diveGuide);
+		d->diveguide = diveGuide.toStdString();
 	}
 	// normalize the tag list we have and the one we get from the UI
 	// try hard to deal with accidental white space issues
-	QStringList existingTagList = QString::fromStdString(taglist_get_tagstring(d->tag_list)).split(",", SKIP_EMPTY);
+	QStringList existingTagList = QString::fromStdString(taglist_get_tagstring(d->tags)).split(",", SKIP_EMPTY);
 	QStringList newTagList = tags.split(",", SKIP_EMPTY);
 	QStringList newCleanTagList;
 	for (QString s: newTagList) {
@@ -1336,10 +1328,9 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	existingTagList.sort();
 	if (newCleanTagList.join(",") != existingTagList.join(",")) {
 		diveChanged = true;
-		taglist_free(d->tag_list);
-		d->tag_list = nullptr;
+		d->tags.clear();
 		for (QString tag: newCleanTagList)
-			taglist_add_tag(&d->tag_list, qPrintable(tag));
+			taglist_add_tag(d->tags, qPrintable(tag));
 	}
 	if (d->rating != rating) {
 		diveChanged = true;
@@ -1351,24 +1342,23 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	}
 	if (formatNotes(d) != notes) {
 		diveChanged = true;
-		free(d->notes);
-		d->notes = copy_qstring(notes);
+		d->notes = notes.toStdString();
 	}
 	// now that we have it all figured out, let's see what we need
 	// to update
 	if (diveChanged) {
-		if (d->maxdepth.mm == d->dc.maxdepth.mm &&
+		if (d->maxdepth.mm == d->dcs[0].maxdepth.mm &&
 		    d->maxdepth.mm > 0 &&
-		    is_dc_manually_added_dive(&d->dc) &&
-		    d->dc.samples == 0) {
+		    is_dc_manually_added_dive(&d->dcs[0]) &&
+		    d->dcs[0].samples.empty()) {
 			// so we have depth > 0, a manually added dive and no samples
 			// let's create an actual profile so the desktop version can work it
 			// first clear out the mean depth (or the fake_dc() function tries
 			// to be too clever)
-			d->meandepth.mm = d->dc.meandepth.mm = 0;
-			fake_dc(&d->dc);
+			d->meandepth.mm = d->dcs[0].meandepth.mm = 0;
+			fake_dc(&d->dcs[0]);
 		}
-		fixup_dive(d);
+		divelog.dives.fixup_dive(*d);
 		Command::editDive(orig, d_ptr.release(), dsChange.createdDs.release(), dsChange.editDs, dsChange.location); // With release() we're giving up ownership
 		changesNeedSaving();
 	}
@@ -1377,17 +1367,17 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 void QMLManager::updateTripDetails(QString tripIdString, QString tripLocation, QString tripNotes)
 {
 	int tripId = tripIdString.toInt();
-	dive_trip_t *trip = get_trip_by_uniq_id(tripId);
+	dive_trip *trip = divelog.trips.get_by_uniq_id(tripId);
 	if (!trip) {
 		report_info("updateTripData: cannot find trip for tripId %s", qPrintable(tripIdString));
 		return;
 	}
 	bool changed = false;
-	if (tripLocation != trip->location) {
+	if (tripLocation != trip->location.c_str()) {
 		changed = true;
 		Command::editTripLocation(trip, tripLocation);
 	}
-	if (tripNotes != trip->notes) {
+	if (tripNotes != trip->notes.c_str()) {
 		changed = true;
 		Command::editTripNotes(trip, tripNotes);
 	}
@@ -1397,7 +1387,7 @@ void QMLManager::updateTripDetails(QString tripIdString, QString tripLocation, Q
 
 void QMLManager::removeDiveFromTrip(int id)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog(QString("Asked to remove non-existing dive with id %1 from its trip.").arg(id));
 		return;
@@ -1414,13 +1404,13 @@ void QMLManager::removeDiveFromTrip(int id)
 
 void QMLManager::addTripForDive(int id)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog(QString("Asked to create trip for non-existing dive with id %1").arg(id));
 		return;
 	}
 	if (d->divetrip) {
-		appendTextToLog(QString("Asked to create trip for dive %1 with id %2 but it's already part of a trip with location %3.").arg(d->number).arg(id).arg(d->divetrip->location));
+		appendTextToLog(QString("Asked to create trip for dive %1 with id %2 but it's already part of a trip with location %3.").arg(d->number).arg(id).arg(d->divetrip->location.c_str()));
 		return;
 	}
 	QVector <dive *> dives;
@@ -1431,12 +1421,12 @@ void QMLManager::addTripForDive(int id)
 
 void QMLManager::addDiveToTrip(int id, int tripId)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog(QString("Asked to add non-existing dive with id %1 to trip %2.").arg(id).arg(tripId));
 		return;
 	}
-	struct dive_trip *dt = get_trip_by_uniq_id(tripId);
+	struct dive_trip *dt = divelog.trips.get_by_uniq_id(tripId);
 	if (!dt) {
 		appendTextToLog(QString("Asked to add dive with id %1 to trip with id %2 which cannot be found.").arg(id).arg(tripId));
 		return;
@@ -1583,12 +1573,10 @@ void QMLManager::redo()
 
 void QMLManager::selectDive(int id)
 {
-	int i;
 	extern int amount_selected;
-	struct dive *dive = NULL;
 
 	amount_selected = 0;
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		dive->selected = (dive->id == id);
 		if (dive->selected)
 			amount_selected++;
@@ -1599,7 +1587,7 @@ void QMLManager::selectDive(int id)
 
 void QMLManager::deleteDive(int id)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog("trying to delete non-existing dive");
 		return;
@@ -1610,7 +1598,7 @@ void QMLManager::deleteDive(int id)
 
 void QMLManager::toggleDiveInvalid(int id)
 {
-	struct dive *d = get_dive_by_uniq_id(id);
+	struct dive *d = divelog.dives.get_by_uniq_id(id);
 	if (!d) {
 		appendTextToLog("trying to toggle invalid flag of non-existing dive");
 		return;
@@ -1701,7 +1689,7 @@ bool QMLManager::toggleWeights(bool toggle)
 
 void QMLManager::copyDiveData(int id)
 {
-	m_copyPasteDive = get_dive_by_uniq_id(id);
+	m_copyPasteDive = divelog.dives.get_by_uniq_id(id);
 	if (!m_copyPasteDive) {
 		appendTextToLog("trying to copy non-existing dive");
 		return;
@@ -1727,23 +1715,11 @@ void QMLManager::cancelDownloadDC()
 
 int QMLManager::addDive()
 {
-	// TODO: Duplicate code with desktop-widgets/mainwindow.cpp
-	// create a dive an hour from now with a default depth (15m/45ft) and duration (40 minutes)
-	// as a starting point for the user to edit
-	struct dive d = { 0 };
-	int diveId = d.id = dive_getUniqID();
-	d.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
-	d.dc.duration.seconds = 40 * 60;
-	d.dc.maxdepth.mm = M_OR_FT(15, 45);
-	d.dc.meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
-	make_manually_added_dive_dc(&d.dc);
-	fake_dc(&d.dc);
-	fixup_dive(&d);
-
-	// addDive takes over the dive and clears out the structure passed in
 	// we do NOT save the modified data at this stage because of the UI flow here... this will
 	// be saved once the user finishes editing the newly added dive
-	Command::addDive(&d, divelog.autogroup, true);
+	auto d = divelog.dives.default_dive();
+	int diveId = d->id;
+	Command::addDive(std::move(d), divelog.autogroup, true);
 
 	if (verbose)
 		appendTextToLog(QString("Adding new dive with id '%1'").arg(diveId));
@@ -1767,14 +1743,14 @@ void QMLManager::setVerboseEnabled(bool verboseMode)
 void QMLManager::syncLoadFromCloud()
 {
 	QSettings s;
-	QString cloudMarker = QLatin1String("loadFromCloud") + QString(prefs.cloud_storage_email);
+	QString cloudMarker = QLatin1String("loadFromCloud") + QString::fromStdString(prefs.cloud_storage_email);
 	m_loadFromCloud = s.contains(cloudMarker) && s.value(cloudMarker).toBool();
 }
 
 void QMLManager::setLoadFromCloud(bool done)
 {
 	QSettings s;
-	QString cloudMarker = QLatin1String("loadFromCloud") + QString(prefs.cloud_storage_email);
+	QString cloudMarker = QLatin1String("loadFromCloud") + QString::fromStdString(prefs.cloud_storage_email);
 	s.setValue(cloudMarker, done);
 	m_loadFromCloud = done;
 	emit loadFromCloudChanged();
@@ -1789,7 +1765,7 @@ void QMLManager::setStartPageText(const QString& text)
 QString QMLManager::getNumber(const QString& diveId)
 {
 	int dive_id = diveId.toInt();
-	struct dive *d = get_dive_by_uniq_id(dive_id);
+	struct dive *d = divelog.dives.get_by_uniq_id(dive_id);
 	QString number;
 	if (d)
 		number = QString::number(d->number);
@@ -1799,7 +1775,7 @@ QString QMLManager::getNumber(const QString& diveId)
 QString QMLManager::getDate(const QString& diveId)
 {
 	int dive_id = diveId.toInt();
-	struct dive *d = get_dive_by_uniq_id(dive_id);
+	struct dive *d = divelog.dives.get_by_uniq_id(dive_id);
 	QString datestring;
 	if (d)
 		datestring = get_short_dive_date_string(d->when);
@@ -1818,9 +1794,7 @@ QString QMLManager::getVersion() const
 
 QString QMLManager::getGpsFromSiteName(const QString &siteName)
 {
-	struct dive_site *ds;
-
-	ds = get_dive_site_by_name(qPrintable(siteName), divelog.sites);
+	struct dive_site *ds = divelog.sites.get_by_name(siteName.toStdString());
 	if (!ds)
 		return QString();
 	return printGPSCoords(&ds->location);
@@ -2227,7 +2201,7 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 			break;
 		case EX_DIVE_SITES_XML:
 			{
-				std::vector<const dive_site *> sites = getDiveSitesToExport(false);
+				auto sites = getDiveSitesToExport(false);
 				save_dive_sites_logic(qPrintable(fileName + ".xml"), sites.data(), (int)sites.size(), anonymize);
 				break;
 			}
@@ -2259,7 +2233,7 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString fileName = appLogFileName;
 #else
-	QString fileName = system_default_directory();
+	QString fileName = QString::fromStdString(system_default_directory());
 #endif
 	QString body;
 	switch (type) {
@@ -2275,7 +2249,7 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 	case EX_DIVE_SITES_XML:
 		fileName.replace("subsurface.log", "subsurface_divesites.xml");
 		{ // need a block so the compiler doesn't complain about creating the sites variable here
-			std::vector<const dive_site *> sites = getDiveSitesToExport(false);
+			auto sites = getDiveSitesToExport(false);
 			if (save_dive_sites_logic(qPrintable(fileName), sites.data(), (int)sites.size(), anonymize) == 0) {
 				// ok, we have a file, let's send it
 				body = "Subsurface dive site data";
@@ -2305,7 +2279,7 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 #elif defined(Q_OS_IOS)
 	// call into objC++ code to share on iOS
 	QString subject("Subsurface export");
-	QString emptyString("");
+	QString emptyString;
 	iosshare.shareViaEmail(subject, emptyString, body, fileName, emptyString);
 #else
 	appendTextToLog("on a mobile platform this would send" + fileName + "via email with body" + body);
@@ -2334,13 +2308,12 @@ void QMLManager::rememberOldStatus()
 	setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
 }
 
-void QMLManager::divesChanged(const QVector<dive *> &dives, DiveField field)
+void QMLManager::divesChanged(const QVector<dive *> &dives, DiveField)
 {
-	Q_UNUSED(field)
 	for (struct dive *d: dives) {
-		report_info("dive #%d changed, cache is %s", d->number, dive_cache_is_valid(d) ? "valid" : "invalidated");
+		report_info("dive #%d changed, cache is %s", d->number, d->cache_is_valid() ? "valid" : "invalidated");
 		// a brute force way to deal with that would of course be to call
-		// invalidate_dive_cache(d);
+		// d->invalidate_cache();
 	}
 }
 
@@ -2368,20 +2341,20 @@ void QMLManager::setDiveListProcessing(bool value)
 void QMLManager::importCacheRepo(QString repo)
 {
 	struct divelog log;
-	QString repoPath = QString("%1/cloudstorage/%2").arg(system_default_directory()).arg(repo);
+	QString repoPath = QString::fromStdString(system_default_directory() + "/cloudstorage/") + repo;
 	appendTextToLog(QString("importing %1").arg(repoPath));
 	parse_file(qPrintable(repoPath), &log);
-	add_imported_dives(&log, IMPORT_MERGE_ALL_TRIPS);
+	divelog.add_imported_dives(log, import_flags::merge_all_trips);
 	changesNeedSaving();
 }
 
 QStringList QMLManager::cloudCacheList() const
 {
-	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory()));
+	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory().c_str()));
 	QStringList dirs = localCacheDir.entryList();
 	QStringList result;
 	for (const QString &dir: dirs) {
-		QString originsDir = QString("%1/cloudstorage/%2/.git/refs/remotes/origin/").arg(system_default_directory()).arg(dir);
+		QString originsDir = QString::fromStdString(system_default_directory() + "/cloudstorage/%1/.git/refs/remotes/origin/").arg(dir);
 		QDir remote(originsDir);
 		if (dir == "localrepo") {
 			result << QString("localrepo[master]");

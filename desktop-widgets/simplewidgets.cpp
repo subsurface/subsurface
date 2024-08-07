@@ -23,6 +23,7 @@
 #include "profile-widget/profilewidget2.h"
 #include "commands/command.h"
 #include "core/metadata.h"
+#include "core/range.h"
 #include "core/tag.h"
 
 void RenumberDialog::buttonClicked(QAbstractButton *button)
@@ -30,12 +31,10 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		// we remember a list from dive uuid to a new number
 		QVector<QPair<dive *, int>> renumberedDives;
-		int i;
 		int newNr = ui.spinBox->value();
-		struct dive *d;
-		for_each_dive (i, d) {
+		for (auto &d: divelog.dives) {
 			if (!selectedOnly || d->selected)
-				renumberedDives.append({ d, newNr++ });
+				renumberedDives.append({ d.get(), newNr++ });
 		}
 		Command::renumberDives(renumberedDives);
 	}
@@ -325,43 +324,37 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		QString cliptext;
 		text.setString(&cliptext);
 		if (what->divesite && current_dive->dive_site)
-			text << tr("Dive site: ") << current_dive->dive_site->name << "\n";
+			text << tr("Dive site: ") << QString::fromStdString(current_dive->dive_site->name) << "\n";
 		if (what->diveguide)
-			text << tr("Dive guide: ") << current_dive->diveguide << "\n";
+			text << tr("Dive guide: ") << QString::fromStdString(current_dive->diveguide) << "\n";
 		if (what->buddy)
-			text << tr("Buddy: ") << current_dive->buddy << "\n";
+			text << tr("Buddy: ") << QString::fromStdString(current_dive->buddy) << "\n";
 		if (what->rating)
 			text << tr("Rating: ") + QString("*").repeated(current_dive->rating) << "\n";
 		if (what->visibility)
 			text << tr("Visibility: ") + QString("*").repeated(current_dive->visibility) << "\n";
 		if (what->notes)
-			text << tr("Notes:\n") << current_dive->notes << "\n";
+			text << tr("Notes:\n") << QString::fromStdString(current_dive->notes) << "\n";
 		if (what->suit)
-			text << tr("Suit: ") << current_dive->suit << "\n";
+			text << tr("Suit: ") << QString::fromStdString(current_dive->suit) << "\n";
 		if (what-> tags) {
 			text << tr("Tags: ");
-			tag_entry *entry = current_dive->tag_list;
-			while (entry) {
-				text << entry->tag->name.c_str() << " ";
-				entry = entry->next;
-			}
+			for (const divetag *tag: current_dive->tags)
+				text << tag->name.c_str() << " ";
 			text << "\n";
 		}
 		if (what->cylinders) {
-			int cyl;
 			text << tr("Cylinders:\n");
-			for (cyl = 0; cyl < current_dive->cylinders.nr; cyl++) {
-				if (is_cylinder_used(current_dive, cyl))
-					text << get_cylinder(current_dive, cyl)->type.description << " " << gasname(get_cylinder(current_dive, cyl)->gasmix) << "\n";
+			for (auto [idx, cyl]: enumerated_range(current_dive->cylinders)) {
+				if (current_dive->is_cylinder_used(idx))
+					text << QString::fromStdString(cyl.type.description) << " "
+					     << QString::fromStdString(cyl.gasmix.name()) << "\n";
 			}
 		}
 		if (what->weights) {
-			int w;
 			text << tr("Weights:\n");
-			for (w = 0; w < current_dive->weightsystems.nr; w++) {
-				weightsystem_t ws = current_dive->weightsystems.weightsystems[w];
-				text << ws.description << ws.weight.grams / 1000 << "kg\n";
-			}
+			for (auto &ws: current_dive->weightsystems)
+				text << QString::fromStdString(ws.description) << ws.weight.grams / 1000 << "kg\n";
 		}
 		if (what->number)
 			text << tr("Dive number: ") << current_dive->number << "\n";
@@ -382,10 +375,9 @@ AddFilterPresetDialog::AddFilterPresetDialog(const QString &defaultName, QWidget
 
 	// Create a completer so that the user can easily overwrite existing presets.
 	QStringList presets;
-	int count = filter_presets_count();
-	presets.reserve(count);
-	for (int i = 0; i < count; ++i)
-		presets.push_back(QString(filter_preset_name(i).c_str()));
+	presets.reserve(divelog.filter_presets.size());
+	for (auto &filter_preset: divelog.filter_presets)
+		presets.push_back(QString::fromStdString(filter_preset.name));
 	QCompleter *completer = new QCompleter(presets, this);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	ui.name->setCompleter(completer);
@@ -395,7 +387,7 @@ void AddFilterPresetDialog::nameChanged(const QString &text)
 {
 	QString trimmed = text.trimmed();
 	bool isEmpty = trimmed.isEmpty();
-	bool exists = !isEmpty && filter_preset_id(trimmed.toStdString()) >= 0;
+	bool exists = !isEmpty && divelog.filter_presets.preset_id(trimmed.toStdString()) >= 0;
 	ui.duplicateWarning->setVisible(exists);
 	ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!isEmpty);
 }

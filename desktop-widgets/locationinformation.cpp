@@ -129,21 +129,21 @@ void LocationInformationWidget::updateLabels()
 		clearLabels();
 		return;
 	}
-	if (diveSite->name)
-		ui.diveSiteName->setText(diveSite->name);
+	if (!diveSite->name.empty())
+		ui.diveSiteName->setText(QString::fromStdString(diveSite->name));
 	else
 		ui.diveSiteName->clear();
-	const char *country = taxonomy_get_country(&diveSite->taxonomy);
-	if (country)
-		ui.diveSiteCountry->setText(country);
+	std::string country = taxonomy_get_country(diveSite->taxonomy);
+	if (!country.empty())
+		ui.diveSiteCountry->setText(QString::fromStdString(country));
 	else
 		ui.diveSiteCountry->clear();
-	if (diveSite->description)
-		ui.diveSiteDescription->setText(diveSite->description);
+	if (!diveSite->description.empty())
+		ui.diveSiteDescription->setText(QString::fromStdString(diveSite->description));
 	else
 		ui.diveSiteDescription->clear();
-	if (diveSite->notes)
-		ui.diveSiteNotes->setPlainText(diveSite->notes);
+	if (!diveSite->notes.empty())
+		ui.diveSiteNotes->setPlainText(QString::fromStdString(diveSite->notes));
 	else
 		ui.diveSiteNotes->clear();
 	if (has_location(&diveSite->location))
@@ -152,7 +152,7 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteCoordinates->clear();
 	coordinatesSetWarning(false);
 
-	ui.locationTags->setText(constructLocationTags(&diveSite->taxonomy, false));
+	ui.locationTags->setText(QString::fromStdString(taxonomy_get_location_tags(diveSite->taxonomy, false)));
 }
 
 void LocationInformationWidget::unitsChanged()
@@ -172,17 +172,17 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 		return; // A different dive site was changed -> do nothing.
 	switch (field) {
 	case LocationInformationModel::NAME:
-		ui.diveSiteName->setText(diveSite->name);
+		ui.diveSiteName->setText(QString::fromStdString(diveSite->name));
 		return;
 	case LocationInformationModel::DESCRIPTION:
-		ui.diveSiteDescription->setText(diveSite->description);
+		ui.diveSiteDescription->setText(QString::fromStdString(diveSite->description));
 		return;
 	case LocationInformationModel::NOTES:
-		ui.diveSiteNotes->setText(diveSite->notes);
+		ui.diveSiteNotes->setText(QString::fromStdString(diveSite->notes));
 		return;
 	case LocationInformationModel::TAXONOMY:
-		ui.diveSiteCountry->setText(taxonomy_get_country(&diveSite->taxonomy));
-		ui.locationTags->setText(constructLocationTags(&diveSite->taxonomy, false));
+		ui.diveSiteCountry->setText(QString::fromStdString(taxonomy_get_country(diveSite->taxonomy)));
+		ui.locationTags->setText(QString::fromStdString(taxonomy_get_location_tags(diveSite->taxonomy, false)));
 		return;
 	case LocationInformationModel::LOCATION:
 		filter_model.setCoordinates(diveSite->location);
@@ -217,7 +217,7 @@ static location_t parseGpsText(const QString &text)
 	double lat, lon;
 	if (parseGpsText(text.trimmed(), &lat, &lon))
 		return create_location(lat, lon);
-	return zero_location;
+	return location_t();
 }
 
 // Check if GPS text is parseable
@@ -259,11 +259,11 @@ void LocationInformationWidget::initFields(dive_site *ds)
 	if (ds) {
 		filter_model.set(ds, ds->location);
 		updateLabels();
-		enableLocationButtons(dive_site_has_gps_location(ds));
-		DiveFilter::instance()->startFilterDiveSites(QVector<dive_site *>{ ds });
+		enableLocationButtons(ds->has_gps_location());
+		DiveFilter::instance()->startFilterDiveSites(std::vector<dive_site *>{ ds });
 		filter_model.invalidate();
 	} else {
-		filter_model.set(0, zero_location);
+		filter_model.set(0, location_t());
 		clearLabels();
 	}
 
@@ -272,7 +272,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 
 void LocationInformationWidget::on_GPSbutton_clicked()
 {
-	QFileInfo finfo(system_default_directory());
+	QFileInfo finfo(QString::fromStdString(system_default_directory()));
 	QString fileName = QFileDialog::getOpenFileName(this,
 							tr("Select GPS file to open"),
 							finfo.absolutePath(),
@@ -282,7 +282,7 @@ void LocationInformationWidget::on_GPSbutton_clicked()
 
 	ImportGPS GPSDialog(this, fileName, &ui); // Create a GPS import QDialog
 	GPSDialog.coords.start_dive = current_dive->when; // initialise
-	GPSDialog.coords.end_dive = dive_endtime(current_dive);
+	GPSDialog.coords.end_dive = current_dive->endtime();
 	if (getCoordsFromGPXFile(&GPSDialog.coords, fileName) == 0) { // Get coordinates from GPS file
 		GPSDialog.updateUI();         // If successful, put results in Dialog
 		if (!GPSDialog.exec())        // and show QDialog
@@ -342,15 +342,13 @@ void LocationInformationWidget::reverseGeocode()
 	if (!ds || !has_location(&location))
 		return;
 	taxonomy_data taxonomy = reverseGeoLookup(location.lat, location.lon);
-	if (ds != diveSite) {
-		free_taxonomy(&taxonomy);
+	if (ds != diveSite)
 		return;
-	}
 	// This call transfers ownership of the taxonomy memory into an EditDiveSiteTaxonomy object
 	Command::editDiveSiteTaxonomy(ds, taxonomy);
 }
 
-DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *) : currentLocation(zero_location)
+DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *)
 {
 }
 
@@ -390,9 +388,9 @@ bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, cons
 	// If there is a current location, sort by that - otherwise use the provided column
 	if (has_location(&currentLocation)) {
 		// The dive sites are -2 because of the first two items.
-		struct dive_site *ds1 = get_dive_site(source_left.row() - 2, divelog.sites);
-		struct dive_site *ds2 = get_dive_site(source_right.row() - 2, divelog.sites);
-		return get_distance(&ds1->location, &currentLocation) < get_distance(&ds2->location, &currentLocation);
+		auto loc1 = (divelog.sites)[source_left.row() - 2]->location;
+		auto loc2 = (divelog.sites)[source_right.row() - 2]->location;
+		return get_distance(loc1, currentLocation) < get_distance(loc2, currentLocation);
 	}
 	return source_left.data().toString().compare(source_right.data().toString(), Qt::CaseInsensitive) < 0;
 }
@@ -413,6 +411,9 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 	static const QIcon plusIcon(":list-add-icon");
 	static const QIcon geoCode(":geotag-icon");
 
+	if (index.row() < 0 || index.row() >= (int)divelog.sites.size() + 2)
+		return QVariant();
+
 	if (index.row() <= 1) { // two special cases.
 		if (index.column() == LocationInformationModel::DIVESITE)
 			return QVariant::fromValue<dive_site *>(RECENTLY_ADDED_DIVESITE);
@@ -430,8 +431,8 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 	}
 
 	// The dive sites are -2 because of the first two items.
-	struct dive_site *ds = get_dive_site(index.row() - 2, divelog.sites);
-	return LocationInformationModel::getDiveSiteData(ds, index.column(), role);
+	const auto &ds = (divelog.sites)[index.row() - 2];
+	return LocationInformationModel::getDiveSiteData(*ds, index.column(), role);
 }
 
 int DiveLocationModel::columnCount(const QModelIndex&) const
@@ -441,7 +442,7 @@ int DiveLocationModel::columnCount(const QModelIndex&) const
 
 int DiveLocationModel::rowCount(const QModelIndex&) const
 {
-	return divelog.sites->nr + 2;
+	return (int)divelog.sites.size() + 2;
 }
 
 Qt::ItemFlags DiveLocationModel::flags(const QModelIndex &index) const
@@ -562,12 +563,10 @@ void DiveLocationLineEdit::refreshDiveSiteCache()
 
 static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 {
-	struct dive_site *ds;
-	int i;
-	for_each_dive_site (i, ds, divelog.sites) {
-		QString dsName(ds->name);
+	for (const auto &ds: divelog.sites) {
+		QString dsName = QString::fromStdString(ds->name);
 		if (dsName.toLower().startsWith(str.toLower()))
-			return ds;
+			return ds.get();
 	}
 	return NULL;
 }
@@ -587,10 +586,10 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &name)
 	// the user entered text.
 	QString i1_name;
 	if (struct dive_site *ds = get_dive_site_name_start_which_str(name)) {
-		const QString orig_name = QString(ds->name).toLower();
+		const QString orig_name = QString::fromStdString(ds->name).toLower();
 		const QString new_name = name.toLower();
 		if (new_name != orig_name)
-			i1_name = QString(ds->name);
+			i1_name = QString::fromStdString(ds->name);
 	}
 
 	model->setData(i1, i1_name);
@@ -667,16 +666,15 @@ void DiveLocationLineEdit::setCurrentDiveSite(struct dive *d)
 {
 	location_t currentLocation;
 	if (d) {
-		currDs = get_dive_site_for_dive(d);
-		currentLocation = dive_get_gps_location(d);
+		currDs = d->dive_site;
+		currentLocation = d->get_gps_location();
 	} else {
 		currDs = nullptr;
-		currentLocation = zero_location;
 	}
 	if (!currDs)
 		clear();
 	else
-		setText(currDs->name);
+		setText(QString::fromStdString(currDs->name));
 	proxy->setCurrentLocation(currentLocation);
 	delegate.setCurrentLocation(currentLocation);
 }

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "ssrf.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -78,7 +77,7 @@ static void zip_read(struct zip_file *file, const char *filename, struct divelog
 	(void) parse_xml_buffer(filename, mem.data(), read, log, NULL);
 }
 
-extern "C" int try_to_open_zip(const char *filename, struct divelog *log)
+int try_to_open_zip(const char *filename, struct divelog *log)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
@@ -268,7 +267,7 @@ bool remote_repo_uptodate(const char *filename, struct git_info *info)
 	return false;
 }
 
-extern "C" int parse_file(const char *filename, struct divelog *log)
+int parse_file(const char *filename, struct divelog *log)
 {
 	struct git_info info;
 	const char *fmt;
@@ -290,7 +289,7 @@ extern "C" int parse_file(const char *filename, struct divelog *log)
 	auto [mem, err] = readfile(filename);
 	if (err < 0) {
 		/* we don't want to display an error if this was the default file  */
-		if (same_string(filename, prefs.default_filename))
+		if (filename == prefs.default_filename)
 			return 0;
 
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);

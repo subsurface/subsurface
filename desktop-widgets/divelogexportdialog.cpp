@@ -207,7 +207,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 				if (!filename.contains('.'))
 					filename.append(".xml");
 				QByteArray bt = QFile::encodeName(filename);
-				std::vector<const dive_site *> sites = getDiveSitesToExport(ui->exportSelected->isChecked());
+				auto sites = getDiveSitesToExport(ui->exportSelected->isChecked());
 				save_dive_sites_logic(bt.data(), sites.data(), (int)sites.size(), ui->anonymize->isChecked());
 			}
 		} else if (ui->exportImageDepths->isChecked()) {

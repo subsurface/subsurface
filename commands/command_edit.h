@@ -88,7 +88,7 @@ private:
 
 // Automatically generate getter and setter in the case for string assignments.
 // The third parameter is a pointer to a C-style string in the dive structure.
-template <DiveField::Flags ID, char *dive::*PTR>
+template <DiveField::Flags ID, std::string dive::*PTR>
 class EditStringSetter : public EditTemplate<QString, ID> {
 private:
 	using EditTemplate<QString, ID>::EditTemplate;
@@ -208,7 +208,7 @@ public:
 // deriving from it and hooks into undo() and redo() to add / remove the dive site.
 class EditDiveSiteNew : public EditDiveSite {
 public:
-	OwningDiveSitePtr diveSiteToAdd;
+	std::unique_ptr<dive_site> diveSiteToAdd;
 	struct dive_site *diveSiteToRemove;
 	EditDiveSiteNew(const QString &newName, bool currentDiveOnly);
 	void undo() override;
@@ -289,19 +289,19 @@ public:
 struct PasteState {
 	dive *d;
 	dive_site *divesite;
-	QString notes;
-	QString diveguide;
-	QString buddy;
-	QString suit;
+	std::string notes;
+	std::string diveguide;
+	std::string buddy;
+	std::string suit;
 	int rating;
 	int wavesize;
 	int visibility;
 	int current;
 	int surge;
 	int chill;
-	tag_entry *tags;
-	struct cylinder_table cylinders;
-	struct weightsystem_table weightsystems;
+	tag_list tags;
+	cylinder_table cylinders;
+	weightsystem_table weightsystems;
 	int number;
 	timestamp_t when;
 
@@ -329,7 +329,7 @@ class ReplanDive : public Base {
 	depth_t maxdepth, meandepth;
 	struct cylinder_table cylinders;
 	struct divecomputer dc;
-	char *notes;
+	std::string notes;
 	pressure_t surface_pressure;
 	duration_t duration;
 	int salinity;
@@ -465,12 +465,12 @@ public:
 	EditDive(dive *oldDive, dive *newDive, dive_site *createDs, dive_site *editDs, location_t dsLocation); // Takes ownership of newDive
 private:
 	dive *oldDive; // Dive that is going to be overwritten
-	OwningDivePtr newDive; // New data
+	std::unique_ptr<dive> newDive; // New data
 	dive_site *newDiveSite;
 	int changedFields;
 
 	dive_site *siteToRemove;
-	OwningDiveSitePtr siteToAdd;
+	std::unique_ptr<dive_site> siteToAdd;
 
 	dive_site *siteToEdit;
 	location_t dsLocation;

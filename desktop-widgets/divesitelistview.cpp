@@ -62,9 +62,9 @@ void DiveSiteListView::diveSiteClicked(const QModelIndex &index)
 		MainWindow::instance()->editDiveSite(ds);
 		break;
 	case LocationInformationModel::REMOVE:
-		if (ds->dives.nr > 0 &&
+		if (!ds->dives.empty() &&
 		    QMessageBox::warning(this, tr("Delete dive site?"),
-					 tr("This dive site has %n dive(s). Do you really want to delete it?\n", "", ds->dives.nr),
+					 tr("This dive site has %n dive(s). Do you really want to delete it?\n", "", ds->dives.size()),
 					 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
 				return;
 		Command::deleteDiveSites(QVector<dive_site *>{ds});
@@ -97,10 +97,10 @@ void DiveSiteListView::diveSiteAdded(struct dive_site *, int idx)
 
 void DiveSiteListView::diveSiteChanged(struct dive_site *ds, int field)
 {
-	int idx = get_divesite_idx(ds, divelog.sites);
-	if (idx < 0)
+	size_t idx = divelog.sites.get_idx(ds);
+	if (idx == std::string::npos)
 		return;
-	QModelIndex globalIdx = LocationInformationModel::instance()->index(idx, field);
+	QModelIndex globalIdx = LocationInformationModel::instance()->index(static_cast<int>(idx), field);
 	QModelIndex localIdx = model->mapFromSource(globalIdx);
 	ui.diveSites->view()->scrollTo(localIdx);
 }
@@ -115,14 +115,14 @@ void DiveSiteListView::on_filterText_textChanged(const QString &text)
 	model->setFilter(text);
 }
 
-QVector<dive_site *> DiveSiteListView::selectedDiveSites()
+std::vector<dive_site *> DiveSiteListView::selectedDiveSites()
 {
 	const QModelIndexList indices = ui.diveSites->view()->selectionModel()->selectedRows();
-	QVector<dive_site *> sites;
+	std::vector<dive_site *> sites;
 	sites.reserve(indices.size());
 	for (const QModelIndex &idx: indices) {
 		struct dive_site *ds = model->getDiveSite(idx);
-		sites.append(ds);
+		sites.push_back(ds);
 	}
 	return sites;
 }

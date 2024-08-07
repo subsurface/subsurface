@@ -14,34 +14,22 @@ struct dive *current_dive = NULL;
 int amount_selected;
 static int amount_trips_selected;
 
-extern "C" struct dive *first_selected_dive()
+struct dive *first_selected_dive()
 {
-	int idx;
-	struct dive *d;
-
-	for_each_dive (idx, d) {
-		if (d->selected)
-			return d;
-	}
-	return NULL;
+	auto it = std::find_if(divelog.dives.begin(), divelog.dives.end(),
+			       [](auto &d) { return d->selected; });
+	return it != divelog.dives.end() ? it->get() : nullptr;
 }
 
-extern "C" struct dive *last_selected_dive()
+struct dive *last_selected_dive()
 {
-	int idx;
-	struct dive *d, *ret = NULL;
-
-	for_each_dive (idx, d) {
-		if (d->selected)
-			ret = d;
-	}
-	return ret;
+	auto it = std::find_if(divelog.dives.rbegin(), divelog.dives.rend(),
+			       [](auto &d) { return d->selected; });
+	return it != divelog.dives.rend() ? it->get() : nullptr;
 }
 
-extern "C" bool consecutive_selected()
+bool consecutive_selected()
 {
-	struct dive *d;
-	int i;
 	bool consecutive = true;
 	bool firstfound = false;
 	bool lastfound = false;
@@ -49,7 +37,7 @@ extern "C" bool consecutive_selected()
 	if (amount_selected == 0 || amount_selected == 1)
 		return true;
 
-	for_each_dive(i, d) {
+	for (auto &d: divelog.dives) {
 		if (d->selected) {
 			if (!firstfound)
 				firstfound = true;
@@ -63,13 +51,10 @@ extern "C" bool consecutive_selected()
 }
 
 #if DEBUG_SELECTION_TRACKING
-extern "C" void dump_selection(void)
+void dump_selection()
 {
-	int i;
-	struct dive *dive;
-
 	printf("currently selected are %u dives:", amount_selected);
-	for_each_dive(i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (dive->selected)
 			printf(" %d", i);
 	}
@@ -116,7 +101,7 @@ static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &s
 	// No selected dive is visible! Take the closest dive. Note, this might
 	// return null, but that just means unsetting the current dive (as no
 	// dive is visible anyway).
-	current_dive = find_next_visible_dive(when);
+	current_dive = divelog.dives.find_next_visible_dive(when);
 	if (current_dive) {
 		current_dive->selected = true;
 		amount_selected++;
@@ -137,10 +122,8 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 	divesToSelect.reserve(selection.size());
 
 	// TODO: We might want to keep track of selected dives in a more efficient way!
-	int i;
-	dive *d;
 	amount_selected = 0; // We recalculate amount_selected
-	for_each_dive(i, d) {
+	for (auto &d: divelog.dives) {
 		// We only modify dives that are currently visible.
 		if (d->hidden_by_filter) {
 			d->selected = false; // Note, not necessary, just to be sure
@@ -150,11 +133,11 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 
 		// Search the dive in the list of selected dives.
 		// TODO: By sorting the list in the same way as the backend, this could be made more efficient.
-		bool newState = std::find(selection.begin(), selection.end(), d) != selection.end();
+		bool newState = std::find(selection.begin(), selection.end(), d.get()) != selection.end();
 
 		if (newState) {
 			++amount_selected;
-			divesToSelect.push_back(d);
+			divesToSelect.push_back(d.get());
 		}
 		d->selected = newState;
 	}
@@ -173,8 +156,8 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 static void clear_trip_selection()
 {
 	amount_trips_selected = 0;
-	for (int i = 0; i < divelog.trips->nr; ++i)
-		divelog.trips->trips[i]->selected = false;
+	for (auto &trip: divelog.trips)
+		trip->selected = false;
 }
 
 // Reset the selection to the dives of the "selection" vector and send the appropriate signals.
@@ -217,22 +200,18 @@ void setTripSelection(dive_trip *trip, dive *currentDive)
 		return;
 
 	current_dive = currentDive;
-	for (int i = 0; i < divelog.dives->nr; ++i) {
-		dive &d = *divelog.dives->dives[i];
-		d.selected = d.divetrip == trip;
-	}
-	for (int i = 0; i < divelog.trips->nr; ++i) {
-		dive_trip *t = divelog.trips->trips[i];
-		t->selected = t == trip;
-	}
+	for (auto &d: divelog.dives)
+		d->selected = d->divetrip == trip;
+	for (auto &t: divelog.trips)
+		t->selected = t.get() == trip;
 
-	amount_selected = trip->dives.nr;
+	amount_selected = static_cast<int>(trip->dives.size());
 	amount_trips_selected = 1;
 
 	emit diveListNotifier.tripSelected(trip, currentDive);
 }
 
-extern "C" void select_single_dive(dive *d)
+void select_single_dive(dive *d)
 {
 	if (d)
 		setSelection(std::vector<dive *>{ d }, d, -1);
@@ -247,11 +226,9 @@ std::vector<dive *> getDiveSelection()
 	std::vector<dive *> res;
 	res.reserve(amount_selected);
 
-	int i;
-	dive *d;
-	for_each_dive(i, d) {
+	for (auto &d: divelog.dives) {
 		if (d->selected)
-			res.push_back(d);
+			res.push_back(d.get());
 	}
 	return res;
 }
@@ -259,7 +236,7 @@ std::vector<dive *> getDiveSelection()
 bool diveInSelection(const std::vector<dive *> &selection, const dive *d)
 {
 	// Do a binary search using the ordering of the dive list.
-	auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than);
+	auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than_ptr);
 	return it != selection.end() && *it == d;
 }
 
@@ -267,7 +244,7 @@ void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &
 {
 	// We could sort the array and merge the vectors as we do in the undo code. But is it necessary?
 	for (dive *d: add) {
-		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than);
+		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than_ptr);
 		if (it != selection.end() && *it == d)
 			continue; // Ooops. Already there?
 		selection.insert(it, d);
@@ -275,7 +252,7 @@ void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &
 
 	// Likewise, we could sort the array and be smarter here. Again, is it necessary?
 	for (dive *d: remove) {
-		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than);
+		auto it = std::lower_bound(selection.begin(), selection.end(), d, dive_less_than_ptr);
 		if (it == selection.end() || *it != d)
 			continue; // Ooops. Not there?
 		selection.erase(it);
@@ -283,19 +260,18 @@ void updateSelection(std::vector<dive *> &selection, const std::vector<dive *> &
 }
 
 // Select the first dive that is visible
-extern "C" void select_newest_visible_dive()
+void select_newest_visible_dive()
 {
-	for (int i = divelog.dives->nr - 1; i >= 0; --i) {
-		dive *d = divelog.dives->dives[i];
-		if (!d->hidden_by_filter)
-			return select_single_dive(d);
+	for (auto it = divelog.dives.rbegin(); it != divelog.dives.rend(); ++it) {
+		if (!(*it)->hidden_by_filter)
+			return select_single_dive(it->get());
 	}
 
 	// No visible dive -> deselect all
 	select_single_dive(nullptr);
 }
 
-extern "C" void select_trip(struct dive_trip *trip)
+void select_trip(struct dive_trip *trip)
 {
 	if (trip && !trip->selected) {
 		trip->selected = true;
@@ -303,7 +279,7 @@ extern "C" void select_trip(struct dive_trip *trip)
 	}
 }
 
-extern "C" void deselect_trip(struct dive_trip *trip)
+void deselect_trip(struct dive_trip *trip)
 {
 	if (trip && trip->selected) {
 		trip->selected = false;
@@ -311,13 +287,13 @@ extern "C" void deselect_trip(struct dive_trip *trip)
 	}
 }
 
-extern "C" struct dive_trip *single_selected_trip()
+struct dive_trip *single_selected_trip()
 {
 	if (amount_trips_selected != 1)
 		return NULL;
-	for (int i = 0; i < divelog.trips->nr; ++i) {
-		if (divelog.trips->trips[i]->selected)
-			return divelog.trips->trips[i];
+	for (auto &trip: divelog.trips) {
+		if (trip->selected)
+			return trip.get();
 	}
 	report_info("warning: found no selected trip even though one should be selected");
 	return NULL; // shouldn't happen

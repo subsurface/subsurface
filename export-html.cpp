@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 {
 	QApplication *application = new QApplication(argc, argv);
 	git_libgit2_init();
-	copy_prefs(&default_prefs, &prefs);
+	prefs = default_prefs;
 	init_qt_late();
 
 	QCommandLineParser parser;

@@ -23,13 +23,13 @@ void TestQPrefLog::test_struct_get()
 
 	auto tst = qPrefLog::instance();
 
-	prefs.default_filename = copy_qstring("new base12");
+	prefs.default_filename = "new base12";
 	prefs.default_file_behavior = UNDEFINED_DEFAULT_FILE;
 	prefs.use_default_file = true;
 	prefs.show_average_depth = true;
 	prefs.extraEnvironmentalDefault = true;
 
-	QCOMPARE(tst->default_filename(), QString(prefs.default_filename));
+	QCOMPARE(tst->default_filename(), QString::fromStdString(prefs.default_filename));
 	QCOMPARE(tst->default_file_behavior(), prefs.default_file_behavior);
 	QCOMPARE(tst->use_default_file(), prefs.use_default_file);
 	QCOMPARE(tst->show_average_depth(), prefs.show_average_depth);
@@ -48,7 +48,7 @@ void TestQPrefLog::test_set_struct()
 	tst->set_show_average_depth(false);
 	tst->set_extraEnvironmentalDefault(false);
 
-	QCOMPARE(QString(prefs.default_filename), QString("new base22"));
+	QCOMPARE(QString::fromStdString(prefs.default_filename), QString("new base22"));
 	QCOMPARE(prefs.default_file_behavior, LOCAL_DEFAULT_FILE);
 	QCOMPARE(prefs.use_default_file, false);
 	QCOMPARE(prefs.show_average_depth, false);
@@ -67,14 +67,14 @@ void TestQPrefLog::test_set_load_struct()
 	tst->set_show_average_depth(true);
 	tst->set_extraEnvironmentalDefault(true);
 
-	prefs.default_filename = copy_qstring("error");
+	prefs.default_filename = "error";
 	prefs.default_file_behavior = UNDEFINED_DEFAULT_FILE;
 	prefs.use_default_file = false;
 	prefs.show_average_depth = false;
 	prefs.extraEnvironmentalDefault = false;
 
 	tst->load();
-	QCOMPARE(QString(prefs.default_filename), QString("new base32"));
+	QCOMPARE(QString::fromStdString(prefs.default_filename), QString("new base32"));
 	QCOMPARE(prefs.default_file_behavior, NO_DEFAULT_FILE);
 	QCOMPARE(prefs.use_default_file, true);
 	QCOMPARE(prefs.show_average_depth, true);
@@ -87,21 +87,21 @@ void TestQPrefLog::test_struct_disk()
 
 	auto tst = qPrefLog::instance();
 
-	prefs.default_filename = copy_qstring("base42");
+	prefs.default_filename = "base42";
 	prefs.default_file_behavior = CLOUD_DEFAULT_FILE;
 	prefs.use_default_file = true;
 	prefs.show_average_depth = true;
 	prefs.extraEnvironmentalDefault = true;
 
 	tst->sync();
-	prefs.default_filename = copy_qstring("error");
+	prefs.default_filename = "error";
 	prefs.default_file_behavior = UNDEFINED_DEFAULT_FILE;
 	prefs.use_default_file = false;
 	prefs.show_average_depth = false;
 	prefs.extraEnvironmentalDefault = false;
 
 	tst->load();
-	QCOMPARE(QString(prefs.default_filename), QString("base42"));
+	QCOMPARE(QString::fromStdString(prefs.default_filename), QString("base42"));
 	QCOMPARE(prefs.default_file_behavior, CLOUD_DEFAULT_FILE);
 	QCOMPARE(prefs.use_default_file, true);
 	QCOMPARE(prefs.show_average_depth, true);

@@ -4,7 +4,7 @@
 
 #include <QCoreApplication>
 
-extern "C" const char *trGettext(const char *text);
+const char *trGettext(const char *text);
 
 class gettextFromC {
 	Q_DECLARE_TR_FUNCTIONS(gettextFromC)

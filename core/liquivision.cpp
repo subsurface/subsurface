@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "ssrf.h"
 #include "divesite.h"
 #include "dive.h"
 #include "divelog.h"
@@ -132,43 +131,41 @@ static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_
 	return skip;
 }
 
-static void parse_dives(int log_version, const unsigned char *buf, unsigned int buf_size, struct dive_table *table, struct dive_site_table *sites)
+static void parse_dives(int log_version, const unsigned char *buf, unsigned int buf_size, struct dive_table &table, dive_site_table &sites)
 {
 	unsigned int ptr = 0;
 	unsigned char model;
 
-	struct dive *dive;
 	struct divecomputer *dc;
 	struct sample *sample;
 
 	while (ptr < buf_size) {
 		int i;
-		dive = alloc_dive();
+		auto dive = std::make_unique<struct dive>();
 		memset(&sensor_ids, 0, sizeof(sensor_ids));
-		dc = &dive->dc;
+		dc = &dive->dcs[0];
 
 		/* Just the main cylinder until we can handle the buddy cylinder porperly */
 		for (i = 0; i < 1; i++) {
-			cylinder_t cyl = empty_cylinder;
-			fill_default_cylinder(dive, &cyl);
-			add_cylinder(&dive->cylinders, i, cyl);
+			cylinder_t cyl = default_cylinder(dive.get());
+			dive->cylinders.add(i, cyl);
 		}
 
 		// Model 0=Xen, 1,2=Xeo, 4=Lynx, other=Liquivision
 		model = *(buf + ptr);
 		switch (model) {
 		case 0:
-			dc->model = strdup("Xen");
+			dc->model = "Xen";
 			break;
 		case 1:
 		case 2:
-			dc->model = strdup("Xeo");
+			dc->model = "Xeo";
 			break;
 		case 4:
-			dc->model = strdup("Lynx");
+			dc->model = "Lynx";
 			break;
 		default:
-			dc->model = strdup("Liquivision");
+			dc->model = "Liquivision";
 			break;
 		}
 		ptr++;
@@ -191,7 +188,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 
 		/* Store the location only if we have one */
 		if (!location.empty())
-			add_dive_to_dive_site(dive, find_or_create_dive_site_with_name(location.c_str(), sites));
+			sites.find_or_create(location)->add_dive(dive.get());
 
 		ptr += len + 4 + place_len;
 
@@ -202,7 +199,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		// Blank notes are better than the default text
 		std::string notes((char *)buf + ptr, len);
 		if (!starts_with(notes, "Comment ..."))
-			dive->notes = strdup(notes.c_str());
+			dive->notes = notes;
 		ptr += len;
 
 		dive->id = array_uint32_le(buf + ptr);
@@ -336,7 +333,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 					sample->depth.mm = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
 					sample->temperature.mkelvin = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
 					add_sample_pressure(sample, event.pressure.sensor, event.pressure.mbar);
-					finish_sample(dc);
 
 					break;
 				} else if (event.time > sample_time) {
@@ -344,7 +340,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 					sample->time.seconds = sample_time;
 					sample->depth.mm = depth_mm;
 					sample->temperature.mkelvin = temp_mk;
-					finish_sample(dc);
 					d++;
 
 					continue;
@@ -353,7 +348,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 					sample->depth.mm = depth_mm;
 					sample->temperature.mkelvin = temp_mk;
 					add_sample_pressure(sample, event.pressure.sensor, event.pressure.mbar);
-					finish_sample(dc);
 					d++;
 
 					break;
@@ -372,7 +366,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 						sample->temperature.mkelvin = last_temp + (temp_mk - last_temp)
 							* ((int)event.time - (int)last_time) / sample_interval;
 					}
-					finish_sample(dc);
 
 					break;
 				}
@@ -387,7 +380,6 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 			sample->depth.mm = array_uint16_le(ds + d * 2) * 10; // cm->mm
 			sample->temperature.mkelvin =
 				C_to_mkelvin((float)array_uint16_le(ts + d * 2) / 10);
-			finish_sample(dc);
 		}
 
 		if (log_version == 3 && model == 4) {
@@ -415,17 +407,11 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		}
 
 		// End dive
-		record_dive_to_table(dive, table);
-		dive = NULL;
+		table.record_dive(std::move(dive));
 
 		// Advance ptr for next dive
 		ptr += ps_ptr + 4;
 	} // while
-
-	//DEBUG save_dives("/tmp/test.xml");
-
-	// if we bailed out of the loop, the dive hasn't been recorded and dive hasn't been set to NULL
-	free_dive(dive);
 }
 
 int try_to_open_liquivision(const char *, std::string &mem, struct divelog *log)

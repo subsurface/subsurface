@@ -2,8 +2,7 @@
 #ifndef DIVEPICTUREMODEL_H
 #define DIVEPICTUREMODEL_H
 
-#include "core/units.h"
-#include "core/pictureobj.h"
+#include "core/picture.h"
 
 #include <QAbstractTableModel>
 #include <QImage>
@@ -17,7 +16,6 @@ struct PictureEntry {
 	QImage image;
 	int offsetSeconds;
 	duration_t length;
-	PictureEntry(dive *, const PictureObj &);
 	PictureEntry(dive *, const picture &);
 	bool operator<(const PictureEntry &) const;
 };
@@ -36,7 +34,7 @@ public slots:
 	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
 	void pictureOffsetChanged(dive *d, const QString filename, offset_t offset);
 	void picturesRemoved(dive *d, QVector<QString> filenames);
-	void picturesAdded(dive *d, QVector<PictureObj> pics);
+	void picturesAdded(dive *d, QVector<picture> pics);
 private:
 	DivePictureModel();
 	std::vector<PictureEntry> pictures;

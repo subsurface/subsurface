@@ -9,23 +9,22 @@
 #include "qt-models/filtermodels.h"
 #include "core/divefilter.h"
 
-#include <array>
-
 namespace Command {
 
 // Helper function that takes care to unselect trips that are removed from the backend
-static void remove_trip_from_backend(dive_trip *trip)
+static std::unique_ptr<dive_trip> remove_trip_from_backend(dive_trip *trip)
 {
 	if (trip->selected)
 		deselect_trip(trip);
-	remove_trip(trip, divelog.trips);	// Remove trip from backend
+	auto [t, idx] = divelog.trips.pull(trip);
+	return std::move(t);
 }
 
 // This helper function removes a dive, takes ownership of the dive and adds it to a DiveToAdd structure.
 // If the trip the dive belongs to becomes empty, it is removed and added to the tripsToAdd vector.
 // It is crucial that dives are added in reverse order of deletion, so that the indices are correctly
 // set and that the trips are added before they are used!
-DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &tripsToAdd)
+DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<std::unique_ptr<dive_trip>> &tripsToAdd)
 {
 	// If the dive was the current dive, reset the current dive. The calling
 	// command is responsible of finding a new dive.
@@ -39,18 +38,19 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 	if (d->dive_site)
 		diveSiteCountChanged(d->dive_site);
 	res.site = unregister_dive_from_dive_site(d);
-	if (res.trip && res.trip->dives.nr == 0) {
-		remove_trip_from_backend(res.trip);	// Remove trip from backend
-		tripsToAdd.emplace_back(res.trip);	// Take ownership of trip
+	if (res.trip && res.trip->dives.empty()) {
+		divelog.trips.sort();				// Removal of dives has changed order of trips! (TODO: remove this)
+		auto trip = remove_trip_from_backend(res.trip);	// Remove trip from backend
+		tripsToAdd.push_back(std::move(trip));		// Take ownership of trip
 	}
 
-	int idx = get_divenr(d);
-	if (idx < 0)
+	size_t idx = divelog.dives.get_idx(d);
+	if (idx == std::string::npos)
 		qWarning("Deletion of unknown dive!");
 
 	DiveFilter::instance()->diveRemoved(d);
 
-	res.dive.reset(unregister_dive(idx));		// Remove dive from backend
+	res.dive = divelog.dives.unregister_dive(idx);		// Remove dive from backend
 
 	return res;
 }
@@ -67,23 +67,12 @@ void DiveListBase::diveSiteCountChanged(struct dive_site *ds)
 dive *DiveListBase::addDive(DiveToAdd &d)
 {
 	if (d.trip)
-		add_dive_to_trip(d.dive.get(), d.trip);
+		d.trip->add_dive(d.dive.get());
 	if (d.site) {
-		add_dive_to_dive_site(d.dive.get(), d.site);
+		d.site->add_dive(d.dive.get());
 		diveSiteCountChanged(d.site);
 	}
-	dive *res = d.dive.release();		// Give up ownership of dive
-
-	// When we add dives, we start in hidden-by-filter status. Once all
-	// dives have been added, their status will be updated.
-	res->hidden_by_filter = true;
-
-	int idx = dive_table_get_insertion_index(divelog.dives, res);
-	fulltext_register(res);				// Register the dive's fulltext cache
-	add_to_dive_table(divelog.dives, idx, res);	// Return ownership to backend
-	invalidate_dive_cache(res);		// Ensure that dive is written in git_save()
-
-	return res;
+	return divelog.dives.register_dive(std::move(d.dive));	// Transfer ownership to core and update fulltext index
 }
 
 // Some signals are sent in batches per trip. To avoid writing the same loop
@@ -99,7 +88,7 @@ void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function 
 	// Sort lexicographically by trip then according to the dive_less_than() function.
 	std::sort(dives.begin(), dives.end(),
 		  [](const std::pair<dive_trip *, dive *> &e1, const std::pair<dive_trip *, dive *> &e2)
-		  { return e1.first == e2.first ? dive_less_than(e1.second, e2.second) : e1.first < e2.first; });
+		  { return e1.first == e2.first ? dive_less_than(*e1.second, *e2.second) : e1.first < e2.first; });
 
 	// Then, process the dives in batches by trip
 	size_t i, j; // Begin and end of batch
@@ -124,8 +113,8 @@ void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function 
 DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSitesToDelete)
 {
 	std::vector<DiveToAdd> divesToAdd;
-	std::vector<OwningTripPtr> tripsToAdd;
-	std::vector<OwningDiveSitePtr> sitesToAdd;
+	std::vector<std::unique_ptr<dive_trip>> tripsToAdd;
+	std::vector<std::unique_ptr<dive_site>> sitesToAdd;
 	divesToAdd.reserve(divesAndSitesToDelete.dives.size());
 	sitesToAdd.reserve(divesAndSitesToDelete.sites.size());
 
@@ -135,16 +124,17 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	// Make sure that the dive list is sorted. The added dives will be sent in a signal
 	// and the recipients assume that the dives are sorted the same way as they are
 	// in the core list.
-	std::sort(divesAndSitesToDelete.dives.begin(), divesAndSitesToDelete.dives.end(), dive_less_than);
+	std::sort(divesAndSitesToDelete.dives.begin(), divesAndSitesToDelete.dives.end(),
+		  [](const dive *d1, const dive *d2) { return dive_less_than(*d1, *d2); });
 
 	for (dive *d: divesAndSitesToDelete.dives)
 		divesToAdd.push_back(removeDive(d, tripsToAdd));
 	divesAndSitesToDelete.dives.clear();
 
 	for (dive_site *ds: divesAndSitesToDelete.sites) {
-		int idx = unregister_dive_site(ds);
-		sitesToAdd.emplace_back(ds);
-		emit diveListNotifier.diveSiteDeleted(ds, idx);
+		auto res = divelog.sites.pull(ds);
+		sitesToAdd.push_back(std::move(res.ptr));
+		emit diveListNotifier.diveSiteDeleted(ds, res.idx);
 	}
 	divesAndSitesToDelete.sites.clear();
 
@@ -159,7 +149,7 @@ DivesAndTripsToAdd DiveListBase::removeDives(DivesAndSitesToRemove &divesAndSite
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
 		// Check if this trip is supposed to be deleted, by checking if it was marked as "add it".
 		bool deleteTrip = trip &&
-				  std::find_if(tripsToAdd.begin(), tripsToAdd.end(), [trip](const OwningTripPtr &ptr)
+				  std::find_if(tripsToAdd.begin(), tripsToAdd.end(), [trip](const std::unique_ptr<dive_trip> &ptr)
 					       { return ptr.get() == trip; }) != tripsToAdd.end();
 		emit diveListNotifier.divesDeleted(trip, deleteTrip, divesInTrip);
 	});
@@ -188,7 +178,7 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	// in the core list.
 	std::sort(toAdd.dives.begin(), toAdd.dives.end(),
 		  [](const DiveToAdd &d, const DiveToAdd &d2)
-		  { return dive_less_than(d.dive.get(), d2.dive.get()); });
+		  { return dive_less_than(*d.dive, *d2.dive); });
 
 	// Now, add the dives
 	// Note: the idiomatic STL-way would be std::transform, but let's use a loop since
@@ -209,17 +199,17 @@ DivesAndSitesToRemove DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	// Remember the pointers so that we can later check if a trip was newly added
 	std::vector<dive_trip *> addedTrips;
 	addedTrips.reserve(toAdd.trips.size());
-	for (OwningTripPtr &trip: toAdd.trips) {
-		addedTrips.push_back(trip.get());
-		insert_trip(trip.release(), divelog.trips); // Return ownership to backend
+	for (std::unique_ptr<dive_trip> &trip: toAdd.trips) {
+		auto [t, idx] = divelog.trips.put(std::move(trip)); // Return ownership to backend
+		addedTrips.push_back(t);
 	}
 	toAdd.trips.clear();
 
 	// Finally, add any necessary dive sites
-	for (OwningDiveSitePtr &ds: toAdd.sites) {
-		sites.push_back(ds.get());
-		int idx = register_dive_site(ds.release()); // Return ownership to backend
-		emit diveListNotifier.diveSiteAdded(sites.back(), idx);
+	for (std::unique_ptr<dive_site> &ds: toAdd.sites) {
+		auto res = divelog.sites.register_site(std::move(ds));
+		sites.push_back(res.ptr);
+		emit diveListNotifier.diveSiteAdded(sites.back(), res.idx);
 	}
 	toAdd.sites.clear();
 
@@ -249,7 +239,7 @@ static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 			continue;
 		std::swap(d->number, pair.second);
 		dives.push_back(d);
-		invalidate_dive_cache(d);
+		d->invalidate_cache();
 	}
 
 	// Send signals.
@@ -260,27 +250,25 @@ static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 // passed-in structure. This means that calling the function twice on the same
 // object is a no-op concerning the dive. If the old trip was deleted from the
 // core, an owning pointer to the removed trip is returned, otherwise a null pointer.
-static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
+static std::unique_ptr<dive_trip> moveDiveToTrip(DiveToTrip &diveToTrip)
 {
 	// Firstly, check if we move to the same trip and bail if this is a no-op.
 	if (diveToTrip.trip == diveToTrip.dive->divetrip)
 		return {};
 
 	// Remove from old trip
-	OwningTripPtr res;
+	std::unique_ptr<dive_trip> res;
 
 	// Remove dive from trip - if this is the last dive in the trip, remove the whole trip.
 	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive);
-	if (trip && trip->dives.nr == 0) {
-		remove_trip_from_backend(trip);	// Remove trip from backend
-		res.reset(trip);
-	}
+	if (trip && trip->dives.empty())
+		res = remove_trip_from_backend(trip);	// Remove trip from backend
 
 	// Store old trip and get new trip we should associate this dive with
 	std::swap(trip, diveToTrip.trip);
 	if (trip)
-		add_dive_to_trip(diveToTrip.dive, trip);
-	invalidate_dive_cache(diveToTrip.dive);		// Ensure that dive is written in git_save()
+		trip->add_dive(diveToTrip.dive);
+	diveToTrip.dive->invalidate_cache();		// Ensure that dive is written in git_save()
 	return res;
 }
 
@@ -298,15 +286,14 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	createdTrips.reserve(dives.tripsToAdd.size());
 
 	// First, bring back the trip(s)
-	for (OwningTripPtr &trip: dives.tripsToAdd) {
-		dive_trip *t = trip.release();	// Give up ownership
+	for (std::unique_ptr<dive_trip> &trip: dives.tripsToAdd) {
+		auto [t, idx] = divelog.trips.put(std::move(trip)); // Return ownership to backend
 		createdTrips.push_back(t);
-		insert_trip(t, divelog.trips);	// Return ownership to backend
 	}
 	dives.tripsToAdd.clear();
 
 	for (DiveToTrip &dive: dives.divesToMove) {
-		OwningTripPtr tripToAdd = moveDiveToTrip(dive);
+		std::unique_ptr<dive_trip> tripToAdd = moveDiveToTrip(dive);
 		// register trips that we'll have to readd
 		if (tripToAdd)
 			dives.tripsToAdd.push_back(std::move(tripToAdd));
@@ -350,7 +337,7 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 				  std::find_if(divesMoved.begin() + j, divesMoved.end(), // Is this the last occurence of "from"?
 					       [from](const DiveMoved &entry) { return entry.from == from; }) == divesMoved.end() &&
 				  std::find_if(dives.tripsToAdd.begin(), dives.tripsToAdd.end(), // Is "from" in tripsToAdd?
-					       [from](const OwningTripPtr &trip) { return trip.get() == from; }) != dives.tripsToAdd.end();
+					       [from](const std::unique_ptr<dive_trip> &trip) { return trip.get() == from; }) != dives.tripsToAdd.end();
 		// Check if the to-trip has to be created. For this purpose, we saved an array of trips to be created.
 		bool createTo = false;
 		if (to) {
@@ -399,43 +386,39 @@ void DiveListBase::redo()
 	finishWork();
 }
 
-AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
+AddDive::AddDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber)
 {
 	setText(Command::Base::tr("add dive"));
-	// By convention, d is a pointer to "displayed dive" or a temporary variable and can be overwritten.
 	d->maxdepth.mm = 0;
-	d->dc.maxdepth.mm = 0;
-	fixup_dive(d);
+	d->dcs[0].maxdepth.mm = 0;
+	divelog.dives.fixup_dive(*d);
 
 	// this only matters if undoit were called before redoit
 	currentDive = nullptr;
 
-	// Get an owning pointer to a moved dive.
-	OwningDivePtr divePtr(move_dive(d));
-	divePtr->selected = false; // If we clone a planned dive, it might have been selected.
-				   // We have to clear the flag, as selections will be managed
-				   // on dive-addition.
+	d->selected = false; // If we clone a planned dive, it might have been selected.
+			     // We have to clear the flag, as selections will be managed
+			     // on dive-addition.
 
 	// If we alloc a new-trip for autogrouping, get an owning pointer to it.
-	OwningTripPtr allocTrip;
-	dive_trip *trip = divePtr->divetrip;
-	dive_site *site = divePtr->dive_site;
+	std::unique_ptr<dive_trip> allocTrip;
+	dive_trip *trip = d->divetrip;
+	dive_site *site = d->dive_site;
 	// We have to delete the pointers to trip and site, because this would prevent the core from adding to the
 	// trip or site and we would get the count-of-dives in the trip or site wrong. Yes, that's all horribly subtle!
-	divePtr->divetrip = nullptr;
-	divePtr->dive_site = nullptr;
+	d->divetrip = nullptr;
+	d->dive_site = nullptr;
 	if (!trip && autogroup) {
-		bool alloc;
-		trip = get_trip_for_new_dive(divePtr.get(), &alloc);
-		if (alloc)
-			allocTrip.reset(trip);
+		auto [t, allocated] = get_trip_for_new_dive(divelog, d.get());
+		trip = t;
+		allocTrip = std::move(allocated);
 	}
 
-	int idx = dive_table_get_insertion_index(divelog.dives, divePtr.get());
+	int idx = divelog.dives.get_insertion_index(d.get());
 	if (newNumber)
-		divePtr->number = get_dive_nr_at_idx(idx);
+		d->number = divelog.dives.get_dive_nr_at_idx(idx);
 
-	divesToAdd.dives.push_back({ std::move(divePtr), trip, site });
+	divesToAdd.dives.push_back({ std::move(d), trip, site });
 	if (allocTrip)
 		divesToAdd.trips.push_back(std::move(allocTrip));
 }
@@ -452,7 +435,7 @@ void AddDive::redoit()
 	currentDive = current_dive;
 
 	divesAndSitesToRemove = addDives(divesToAdd);
-	sort_trip_table(divelog.trips); // Though unlikely, adding a dive may reorder trips
+	divelog.trips.sort(); // Though unlikely, adding a dive may reorder trips
 
 	// Select the newly added dive
 	setSelection(divesAndSitesToRemove.dives, divesAndSitesToRemove.dives[0], -1);
@@ -462,7 +445,7 @@ void AddDive::undoit()
 {
 	// Simply remove the dive that was previously added...
 	divesToAdd = removeDives(divesAndSitesToRemove);
-	sort_trip_table(divelog.trips); // Though unlikely, removing a dive may reorder trips
+	divelog.trips.sort(); // Though unlikely, removing a dive may reorder trips
 
 	// ...and restore the selection
 	setSelection(selection, currentDive, -1);
@@ -470,33 +453,28 @@ void AddDive::undoit()
 
 ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 {
-	setText(Command::Base::tr("import %n dive(s) from %1", "", log->dives->nr).arg(source));
+	setText(Command::Base::tr("import %n dive(s) from %1", "", log->dives.size()).arg(source));
 
 	// this only matters if undoit were called before redoit
 	currentDive = nullptr;
 
-	struct dive_table dives_to_add = empty_dive_table;
-	struct dive_table dives_to_remove = empty_dive_table;
-	struct trip_table trips_to_add = empty_trip_table;
-	struct dive_site_table sites_to_add = empty_dive_site_table;
-	process_imported_dives(log, flags,
-			       &dives_to_add, &dives_to_remove, &trips_to_add,
-			       &sites_to_add, &devicesToAddAndRemove);
+	auto [dives_to_add, dives_to_remove, trips_to_add, sites_to_add, devices_to_add] =
+		divelog.process_imported_dives(*log, flags);
+
+	// Add devices to devicesToAddAndRemove structure
+	devicesToAddAndRemove = std::move(devices_to_add);
 
 	// Add trips to the divesToAdd.trips structure
-	divesToAdd.trips.reserve(trips_to_add.nr);
-	for (int i = 0; i < trips_to_add.nr; ++i)
-		divesToAdd.trips.emplace_back(trips_to_add.trips[i]);
+	divesToAdd.trips.reserve(trips_to_add.size());
+	for (auto &trip: trips_to_add)
+		divesToAdd.trips.push_back(std::move(trip));
 
 	// Add sites to the divesToAdd.sites structure
-	divesToAdd.sites.reserve(sites_to_add.nr);
-	for (int i = 0; i < sites_to_add.nr; ++i)
-		divesToAdd.sites.emplace_back(sites_to_add.dive_sites[i]);
+	divesToAdd.sites = std::move(sites_to_add);
 
 	// Add dives to the divesToAdd.dives structure
-	divesToAdd.dives.reserve(dives_to_add.nr);
-	for (int i = 0; i < dives_to_add.nr; ++i) {
-		OwningDivePtr divePtr(dives_to_add.dives[i]);
+	divesToAdd.dives.reserve(dives_to_add.size());
+	for (auto &divePtr: dives_to_add) {
 		divePtr->selected = false; // See above in AddDive::AddDive()
 		dive_trip *trip = divePtr->divetrip;
 		divePtr->divetrip = nullptr; // See above in AddDive::AddDive()
@@ -507,25 +485,18 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 	}
 
 	// Add dive to be deleted to the divesToRemove structure
-	divesAndSitesToRemove.dives.reserve(dives_to_remove.nr);
-	for (int i = 0; i < dives_to_remove.nr; ++i)
-		divesAndSitesToRemove.dives.push_back(dives_to_remove.dives[i]);
+	divesAndSitesToRemove.dives = std::move(dives_to_remove);
 
 	// When encountering filter presets with equal names, check whether they are
 	// the same. If they are, ignore them.
-	for (const filter_preset &preset: *log->filter_presets) {
+	for (const filter_preset &preset: log->filter_presets) {
 		std::string name = preset.name;
-		auto it = std::find_if(divelog.filter_presets->begin(), divelog.filter_presets->end(),
+		auto it = std::find_if(divelog.filter_presets.begin(), divelog.filter_presets.end(),
 				       [&name](const filter_preset &preset) { return preset.name == name; });
-		if (it != divelog.filter_presets->end() && it->data == preset.data)
+		if (it != divelog.filter_presets.end() && it->data == preset.data)
 			continue;
 		filterPresetsToAdd.emplace_back(preset.name, preset.data);
 	}
-
-	free(dives_to_add.dives);
-	free(dives_to_remove.dives);
-	free(trips_to_add.trips);
-	free(sites_to_add.dive_sites);
 }
 
 bool ImportDives::workToBeDone()
@@ -551,12 +522,12 @@ void ImportDives::redoit()
 	divesAndSitesToRemove = std::move(divesAndSitesToRemoveNew);
 
 	// Add devices
-	for (const device &dev: devicesToAddAndRemove.devices)
-		add_to_device_table(divelog.devices, &dev);
+	for (const device &dev: devicesToAddAndRemove)
+		add_to_device_table(divelog.devices, dev);
 
 	// Add new filter presets
 	for (auto &it: filterPresetsToAdd) {
-		filterPresetsToRemove.push_back(filter_preset_add(it.first, it.second));
+		filterPresetsToRemove.push_back(divelog.filter_presets.add(it.first, it.second));
 		emit diveListNotifier.filterPresetAdded(filterPresetsToRemove.back());
 	}
 	filterPresetsToAdd.clear();
@@ -579,15 +550,16 @@ void ImportDives::undoit()
 	setSelection(selection, currentDive, -1);
 
 	// Remove devices
-	for (const device &dev: devicesToAddAndRemove.devices)
-		remove_device(divelog.devices, &dev);
+	for (const device &dev: devicesToAddAndRemove)
+		remove_device(divelog.devices, dev);
 
 	// Remove filter presets. Do this in reverse order.
 	for (auto it = filterPresetsToRemove.rbegin(); it != filterPresetsToRemove.rend(); ++it) {
 		int index = *it;
-		std::string oldName = filter_preset_name(index);
-		FilterData oldData = filter_preset_get(index);
-		filter_preset_delete(index);
+		const filter_preset &preset = divelog.filter_presets[index];
+		std::string oldName = preset.name;
+		FilterData oldData = preset.data;
+		divelog.filter_presets.remove(index);
 		emit diveListNotifier.filterPresetRemoved(index);
 		filterPresetsToAdd.emplace_back(oldName, oldData);
 	}
@@ -609,7 +581,7 @@ bool DeleteDive::workToBeDone()
 void DeleteDive::undoit()
 {
 	divesToDelete = addDives(divesToAdd);
-	sort_trip_table(divelog.trips); // Though unlikely, removing a dive may reorder trips
+	divelog.trips.sort(); // Though unlikely, removing a dive may reorder trips
 
 	// Select all re-added dives and make the first one current
 	dive *currentDive = !divesToDelete.dives.empty() ? divesToDelete.dives[0] : nullptr;
@@ -619,13 +591,13 @@ void DeleteDive::undoit()
 void DeleteDive::redoit()
 {
 	divesToAdd = removeDives(divesToDelete);
-	sort_trip_table(divelog.trips); // Though unlikely, adding a dive may reorder trips
+	divelog.trips.sort(); // Though unlikely, adding a dive may reorder trips
 
 	// Deselect all dives and select dive that was close to the first deleted dive
 	dive *newCurrent = nullptr;
 	if (!divesToAdd.dives.empty()) {
 		timestamp_t when = divesToAdd.dives[0].dive->when;
-		newCurrent = find_next_visible_dive(when);
+		newCurrent = divelog.dives.find_next_visible_dive(when);
 	}
 	select_single_dive(newCurrent);
 }
@@ -647,10 +619,10 @@ void ShiftTime::redoit()
 	}
 
 	// Changing times may have unsorted the dive and trip tables
-	sort_dive_table(divelog.dives);
-	sort_trip_table(divelog.trips);
+	divelog.dives.sort();
+	divelog.trips.sort();
 	for (dive_trip *trip: trips)
-		sort_dive_table(&trip->dives); // Keep the trip-table in order
+		trip->sort_dives();
 
 	// Send signals
 	QVector<dive *> dives = stdToQt<dive *>(diveList);
@@ -716,7 +688,7 @@ bool TripBase::workToBeDone()
 void TripBase::redoit()
 {
 	moveDivesBetweenTrips(divesToMove);
-	sort_trip_table(divelog.trips); // Though unlikely, moving dives may reorder trips
+	divelog.trips.sort(); // Though unlikely, moving dives may reorder trips
 
 	// Select the moved dives
 	std::vector<dive *> dives;
@@ -754,11 +726,9 @@ RemoveAutogenTrips::RemoveAutogenTrips()
 {
 	setText(Command::Base::tr("remove autogenerated trips"));
 	// TODO: don't touch core-innards directly
-	int i;
-	struct dive *dive;
-	for_each_dive(i, dive) {
-		if (dive->divetrip && dive->divetrip->autogen)
-			divesToMove.divesToMove.push_back( {dive, nullptr} );
+	for (auto &d: divelog.dives) {
+		if (d->divetrip && d->divetrip->autogen)
+			divesToMove.divesToMove.push_back( {d.get(), nullptr} );
 	}
 }
 
@@ -776,25 +746,22 @@ CreateTrip::CreateTrip(const QVector<dive *> &divesToAddIn)
 	if (divesToAddIn.isEmpty())
 		return;
 
-	dive_trip *trip = create_trip_from_dive(divesToAddIn[0]);
-	divesToMove.tripsToAdd.emplace_back(trip);
+	auto trip = create_trip_from_dive(divesToAddIn[0]);
 	for (dive *d: divesToAddIn)
-		divesToMove.divesToMove.push_back( {d, trip} );
+		divesToMove.divesToMove.push_back( { d, trip.get() });
+	divesToMove.tripsToAdd.push_back(std::move(trip));
 }
 
 AutogroupDives::AutogroupDives()
 {
 	setText(Command::Base::tr("autogroup dives"));
 
-	dive_trip *trip;
-	bool alloc;
-	int from, to;
-	for(int i = 0; (trip = get_dives_to_autogroup(divelog.dives, i, &from, &to, &alloc)) != NULL; i = to) {
+	for (auto &entry: get_dives_to_autogroup(divelog.dives)) {
 		// If this is an allocated trip, take ownership
-		if (alloc)
-			divesToMove.tripsToAdd.emplace_back(trip);
-		for (int j = from; j < to; ++j)
-			divesToMove.divesToMove.push_back( { get_dive(j), trip } );
+		if (entry.created_trip)
+			divesToMove.tripsToAdd.push_back(std::move(entry.created_trip));
+		for (auto it = divelog.dives.begin() + entry.from; it != divelog.dives.begin() + entry.to; ++it)
+			divesToMove.divesToMove.push_back( { it->get(), entry.trip } );
 	}
 }
 
@@ -802,18 +769,15 @@ MergeTrips::MergeTrips(dive_trip *trip1, dive_trip *trip2)
 {
 	if (trip1 == trip2)
 		return;
-	dive_trip *newTrip = combine_trips(trip1, trip2);
-	divesToMove.tripsToAdd.emplace_back(newTrip);
-	for (int i = 0; i < trip1->dives.nr; ++i)
-		divesToMove.divesToMove.push_back( { trip1->dives.dives[i], newTrip } );
-	for (int i = 0; i < trip2->dives.nr; ++i)
-		divesToMove.divesToMove.push_back( { trip2->dives.dives[i], newTrip } );
+	std::unique_ptr<dive_trip> newTrip = combine_trips(trip1, trip2);
+	for (dive *d: trip1->dives)
+		divesToMove.divesToMove.push_back( { d, newTrip.get() } );
+	for (dive *d: trip2->dives)
+		divesToMove.divesToMove.push_back( { d, newTrip.get() } );
+	divesToMove.tripsToAdd.push_back(std::move(newTrip));
 }
 
-// std::array<dive *, 2> is the same as struct *dive[2], with the fundamental
-// difference that it can be returned from functions. Thus, this constructor
-// can be chained with the result of a function.
-SplitDivesBase::SplitDivesBase(dive *d, std::array<dive *, 2> newDives)
+SplitDivesBase::SplitDivesBase(dive *d, std::array<std::unique_ptr<dive>, 2> newDives)
 {
 	// If either of the new dives is null, simply return. Empty arrays indicate that nothing is to be done.
 	if (!newDives[0] || !newDives[1])
@@ -833,10 +797,10 @@ SplitDivesBase::SplitDivesBase(dive *d, std::array<dive *, 2> newDives)
 
 	diveToSplit.dives.push_back(d);
 	splitDives.dives.resize(2);
-	splitDives.dives[0].dive.reset(newDives[0]);
+	splitDives.dives[0].dive = std::move(newDives[0]);
 	splitDives.dives[0].trip = d->divetrip;
 	splitDives.dives[0].site = d->dive_site;
-	splitDives.dives[1].dive.reset(newDives[1]);
+	splitDives.dives[1].dive = std::move(newDives[1]);
 	splitDives.dives[1].trip = d->divetrip;
 	splitDives.dives[1].site = d->dive_site;
 }
@@ -865,16 +829,13 @@ void SplitDivesBase::undoit()
 	setSelection(diveToSplit.dives, diveToSplit.dives[0], -1);
 }
 
-static std::array<dive *, 2> doSplitDives(const dive *d, duration_t time)
+static std::array<std::unique_ptr<dive>, 2> doSplitDives(const dive *d, duration_t time)
 {
 	// Split the dive
-	dive *new1, *new2;
 	if (time.seconds < 0)
-		split_dive(d, &new1, &new2);
+		return divelog.dives.split_dive(*d);
 	else
-		split_dive_at_time(d, time, &new1, &new2);
-
-	return { new1, new2 };
+		return divelog.dives.split_dive_at_time(*d, time);
 }
 
 SplitDives::SplitDives(dive *d, duration_t time) : SplitDivesBase(d, doSplitDives(d, time))
@@ -882,25 +843,13 @@ SplitDives::SplitDives(dive *d, duration_t time) : SplitDivesBase(d, doSplitDive
 	setText(Command::Base::tr("split dive"));
 }
 
-static std::array<dive *, 2> splitDiveComputer(const dive *d, int dc_num)
-{
-	// Refuse to do anything if the dive has only one dive computer.
-	// Yes, this should have been checked by the UI, but let's just make sure.
-	if (!d->dc.next)
-		return { nullptr, nullptr};
-
-	dive *new1, *new2;
-	split_divecomputer(d, dc_num, &new1, &new2);
-
-	return { new1, new2 };
-}
-
-SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) : SplitDivesBase(d, splitDiveComputer(d, dc_num))
+SplitDiveComputer::SplitDiveComputer(dive *d, int dc_num) :
+	SplitDivesBase(d, divelog.dives.split_divecomputer(*d, dc_num))
 {
 	setText(Command::Base::tr("split dive computer"));
 }
 
-DiveComputerBase::DiveComputerBase(dive *old_dive, dive *new_dive, int dc_nr_before, int dc_nr_after) :
+DiveComputerBase::DiveComputerBase(dive *old_dive, std::unique_ptr<dive> new_dive, int dc_nr_before, int dc_nr_after) :
 	dc_nr_before(dc_nr_before),
 	dc_nr_after(dc_nr_after)
 {
@@ -920,7 +869,7 @@ DiveComputerBase::DiveComputerBase(dive *old_dive, dive *new_dive, int dc_nr_bef
 	new_dive->dive_site = nullptr;
 
 	diveToAdd.dives.resize(1);
-	diveToAdd.dives[0].dive.reset(new_dive);
+	diveToAdd.dives[0].dive = std::move(new_dive);
 	diveToAdd.dives[0].trip = old_dive->divetrip;
 	diveToAdd.dives[0].site = old_dive->dive_site;
 }
@@ -950,13 +899,14 @@ void DiveComputerBase::undoit()
 }
 
 MoveDiveComputerToFront::MoveDiveComputerToFront(dive *d, int dc_num)
-	: DiveComputerBase(d, make_first_dc(d, dc_num), dc_num, 0)
+	: DiveComputerBase(d, clone_make_first_dc(*d, dc_num), dc_num, 0)
 {
 	setText(Command::Base::tr("move dive computer to front"));
 }
 
 DeleteDiveComputer::DeleteDiveComputer(dive *d, int dc_num)
-	: DiveComputerBase(d, clone_delete_divecomputer(d, dc_num), dc_num, std::min((int)number_of_computers(d) - 1, dc_num))
+	: DiveComputerBase(d, divelog.dives.clone_delete_divecomputer(*d, dc_num),
+			   dc_num, std::min(d->number_of_computers() - 1, dc_num))
 {
 	setText(Command::Base::tr("delete dive computer"));
 }
@@ -965,16 +915,14 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 {
 	setText(Command::Base::tr("merge dive"));
 
-	// Just a safety check - if there's not two or more dives - do nothing
+	// Just a safety check - if there's not two or more dives - do nothing.
 	// The caller should have made sure that this doesn't happen.
 	if (dives.count() < 2) {
 		qWarning("Merging less than two dives");
 		return;
 	}
 
-	dive_trip *preferred_trip;
-	dive_site *preferred_site;
-	OwningDivePtr d(merge_dives(dives[0], dives[1], dives[1]->when - dives[0]->when, false, &preferred_trip, &preferred_site));
+	auto [d, trip, site] = divelog.dives.merge_dives(*dives[0], *dives[1], dives[1]->when - dives[0]->when, false);
 
 	// Currently, the core code selects the dive -> this is not what we want, as
 	// we manually manage the selection post-command.
@@ -982,17 +930,14 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	d->selected = false;
 
 	// Set the preferred dive trip, so that for subsequent merges the better trip can be selected
-	d->divetrip = preferred_trip;
+	d->divetrip = trip;
 	for (int i = 2; i < dives.count(); ++i) {
-		d.reset(merge_dives(d.get(), dives[i], dives[i]->when - d->when, false, &preferred_trip, &preferred_site));
+		auto [d2, trip, site] = divelog.dives.merge_dives(*d, *dives[i], dives[i]->when - d->when, false);
+		d = std::move(d2);
 		// Set the preferred dive trip and site, so that for subsequent merges the better trip and site can be selected
-		d->divetrip = preferred_trip;
-		d->dive_site = preferred_site;
+		d->divetrip = trip;
+		d->dive_site = site;
 	}
-
-	// We got our preferred trip and site, so now the references can be deleted from the newly generated dive
-	d->divetrip = nullptr;
-	d->dive_site = nullptr;
 
 	// The merged dive gets the number of the first dive with a non-zero number
 	for (const dive *dive: dives) {
@@ -1005,9 +950,9 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	// We will only renumber the remaining dives if the joined dives are consecutive.
 	// Otherwise all bets are off concerning what the user wanted and doing nothing seems
 	// like the best option.
-	int idx = get_divenr(dives[0]);
-	int num = dives.count();
-	if (idx < 0 || idx + num > divelog.dives->nr) {
+	size_t idx = divelog.dives.get_idx(dives[0]);
+	size_t num = dives.count();
+	if (idx == std::string::npos) {
 		// It was the callers responsibility to pass only known dives.
 		// Something is seriously wrong - give up.
 		qWarning("Merging unknown dives");
@@ -1015,7 +960,8 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	}
 	// std::equal compares two ranges. The parameters are (begin_range1, end_range1, begin_range2).
 	// Here, we can compare C-arrays, because QVector guarantees contiguous storage.
-	if (std::equal(&dives[0], &dives[0] + num, &divelog.dives->dives[idx]) &&
+	if (std::equal(&dives[0], &dives[0] + num, divelog.dives.begin() + idx, [](dive *d1,
+		       const std::unique_ptr<dive> &d2) { return d1 == d2.get(); }) &&
 	    dives[0]->number && dives.last()->number && dives[0]->number < dives.last()->number) {
 		// We have a consecutive set of dives. Rename all following dives according to the
 		// number of erased dives. This considers that there might be missing numbers.
@@ -1031,24 +977,28 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 		// consecutive, and the difference will be 1, so the
 		// above example is not supposed to be normal.
 		int diff = dives.last()->number - dives[0]->number;
-		divesToRenumber.reserve(divelog.dives->nr - idx - num);
 		int previousnr = dives[0]->number;
-		for (int i = idx + num; i < divelog.dives->nr; ++i) {
-			int newnr = divelog.dives->dives[i]->number - diff;
+		for (size_t i = idx + num; i < divelog.dives.size(); ++i) {
+			int newnr = divelog.dives[i]->number - diff;
 
 			// Stop renumbering if stuff isn't in order (see also core/divelist.c)
 			if (newnr <= previousnr)
 				break;
-			divesToRenumber.append(QPair<dive *,int>(divelog.dives->dives[i], newnr));
+			divesToRenumber.append(QPair<dive *,int>(divelog.dives[i].get(), newnr));
 			previousnr = newnr;
 		}
 	}
 
 	mergedDive.dives.resize(1);
-	mergedDive.dives[0].dive = std::move(d);
-	mergedDive.dives[0].trip = preferred_trip;
-	mergedDive.dives[0].site = preferred_site;
+	mergedDive.dives[0].trip = d->divetrip;
+	mergedDive.dives[0].site = d->dive_site;
 	divesToMerge.dives = std::vector<dive *>(dives.begin(), dives.end());
+
+	// We got our preferred trip and site, so now the references can be deleted from the newly generated dive
+	d->divetrip = nullptr;
+	d->dive_site = nullptr;
+
+	mergedDive.dives[0].dive = std::move(d);
 }
 
 bool MergeDives::workToBeDone()

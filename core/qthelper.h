@@ -2,28 +2,22 @@
 #ifndef QTHELPER_H
 #define QTHELPER_H
 
+#include "core/pref.h"
+#include "core/gettextfromc.h"
+#include "subsurface-time.h"
+#include <QString>
+#include <optional>
+#include <string>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
-#include "core/pref.h"
-#include "subsurface-time.h"
 
 struct picture;
 struct dive_trip;
 struct xml_params;
-
-// 1) Types
+struct git_info;
+class QImage;
 
 enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYPE};
-
-// 2) Functions visible only to C++ parts
-
-#ifdef __cplusplus
-
-#include <QString>
-#include <optional>
-#include <string>
-#include "core/gettextfromc.h"
-class QImage;
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 #define SKIP_EMPTY Qt::SkipEmptyParts
@@ -31,7 +25,6 @@ class QImage;
 #define SKIP_EMPTY QString::SkipEmptyParts
 #endif
 
-QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
 QString get_gas_string(struct gasmix gas);
@@ -50,7 +43,6 @@ extern const QStringList videoExtensionsList;
 QStringList mediaExtensionFilters();
 QStringList imageExtensionFilters();
 QStringList videoExtensionFilters();
-char *copy_qstring(const QString &);
 QString get_depth_string(depth_t depth, bool showunit = false, bool showdecimal = true);
 QString get_depth_string(int mm, bool showunit = false, bool showdecimal = true);
 QString get_depth_unit(bool metric);
@@ -71,7 +63,6 @@ QString get_water_type_string(int salinity);
 QString getSubsurfaceDataPath(QString folderToFind);
 QString getPrintingTemplatePathUser();
 QString getPrintingTemplatePathBundle();
-int gettimezoneoffset();
 QDateTime timestampToDateTime(timestamp_t when);
 timestamp_t dateTimeToTimestamp(const QDateTime &t);
 int parseDurationToSeconds(const QString &text);
@@ -104,7 +95,7 @@ extern QString (*changesCallback)();
 void uiNotification(const QString &msg);
 std::string get_changes_made();
 std::string subsurface_user_agent();
-std::string get_file_name(const char *fileName);
+std::string get_file_name(const std::string &fileName);
 std::string move_away(const std::string &path);
 
 #if defined __APPLE__
@@ -113,22 +104,11 @@ std::string move_away(const std::string &path);
 #define TITLE_OR_TEXT(_t, _m) _t, _m
 #endif
 
-#endif
-
-// 3) Functions visible to C and C++
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-struct git_info;
-
 bool canReachCloudServer(struct git_info *);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
-void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName);
-const char *local_file_path(struct picture *picture);
-char *hashfile_name_string();
+std::string local_file_path(const struct picture &picture);
+std::string hashfile_name();
 enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
 time_t get_dive_datetime_from_isostring(char *when);
@@ -142,9 +122,5 @@ pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
 void emit_reset_signal();
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif // QTHELPER_H

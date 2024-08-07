@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <string>
 
 /* libdivecomputer */
 
@@ -20,47 +21,42 @@
 #define dc_usb_storage_open(stream, context, devname) (DC_STATUS_UNSUPPORTED)
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#else
-#include <stdbool.h>
-#endif
-
 struct dive;
 struct divelog;
 struct devices;
 
-typedef struct {
-	dc_descriptor_t *descriptor;
-	const char *vendor, *product, *devname;
-	const char *model, *btname;
-	unsigned char *fingerprint;
-	unsigned int fsize, fdeviceid, fdiveid;
-	struct dc_event_devinfo_t devinfo;
-	uint32_t diveid;
-	dc_device_t *device;
-	dc_context_t *context;
-	dc_iostream_t *iostream;
-	bool force_download;
-	bool libdc_log;
-	bool libdc_dump;
-	bool bluetooth_mode;
-	bool sync_time;
-	FILE *libdc_logfile;
-	struct divelog *log;
-	void *androidUsbDeviceDescriptor;
-} device_data_t;
+struct device_data_t {
+	dc_descriptor_t *descriptor = nullptr;
+	std::string vendor, product, devname;
+	std::string model, btname;
+	unsigned char *fingerprint = nullptr;
+	unsigned int fsize = 0, fdeviceid = 0, fdiveid = 0;
+	struct dc_event_devinfo_t devinfo = { };
+	uint32_t diveid = 0;
+	dc_device_t *device = nullptr;
+	dc_context_t *context = nullptr;
+	dc_iostream_t *iostream = nullptr;
+	bool force_download = false;
+	bool libdc_log = false;
+	bool libdc_dump = false;
+	bool bluetooth_mode = false;
+	bool sync_time = false;
+	FILE *libdc_logfile = nullptr;
+	struct divelog *log = nullptr;
+	void *androidUsbDeviceDescriptor = nullptr;
+	device_data_t();
+	~device_data_t();
+};
 
 const char *errmsg (dc_status_t rc);
-const char *do_libdivecomputer_import(device_data_t *data);
-const char *do_uemis_import(device_data_t *data);
+std::string do_libdivecomputer_import(device_data_t *data);
 dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned char *buffer, int size);
 void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata);
 dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model);
 
 extern int import_thread_cancelled;
-extern const char *progress_bar_text;
-extern void (*progress_callback)(const char *text);
+extern std::string progress_bar_text;
+extern void (*progress_callback)(const std::string &text);
 extern double progress_bar_fraction;
 
 dc_status_t ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr, void *userdata);
@@ -72,13 +68,7 @@ dc_status_t divecomputer_device_open(device_data_t *data);
 
 unsigned int get_supported_transports(device_data_t *data);
 
-#ifdef __cplusplus
-}
-
-#include <string>
 extern std::string logfile_name;
 extern std::string dumpfile_name;
-
-#endif
 
 #endif // LIBDIVECOMPUTER_H

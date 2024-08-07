@@ -13,6 +13,7 @@
 #include "core/divesite.h"
 #include "core/picture.h"
 #include "core/pref.h"
+#include "core/range.h"
 #include "core/sample.h"
 #include "core/selection.h"
 #include "core/taxonomy.h"
@@ -40,12 +41,12 @@ static constexpr int profileScale = 4;
 static constexpr int profileWidth = 800 * profileScale;
 static constexpr int profileHeight = 600 * profileScale;
 
-static void exportProfile(ProfileScene *profile, const struct dive *dive, const QString &filename)
+static void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename)
 {
 	QImage image = QImage(QSize(profileWidth, profileHeight), QImage::Format_RGB32);
 	QPainter paint;
 	paint.begin(&image);
-	profile->draw(&paint, QRect(0, 0, profileWidth, profileHeight), dive, 0, nullptr, false);
+	profile.draw(&paint, QRect(0, 0, profileWidth, profileHeight), &dive, 0, nullptr, false);
 	image.save(filename);
 }
 
@@ -56,17 +57,15 @@ static std::unique_ptr<ProfileScene> getPrintProfile()
 
 void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 {
-	struct dive *dive;
-	int i;
 	int count = 0;
 	if (!filename.endsWith(".png", Qt::CaseInsensitive))
 		filename = filename.append(".png");
 	QFileInfo fi(filename);
 
-	int todo = selected_only ? amount_selected : divelog.dives->nr;
+	int todo = selected_only ? amount_selected : static_cast<int>(divelog.dives.size());
 	int done = 0;
 	auto profile = getPrintProfile();
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (cb.canceled())
 			return;
 		if (selected_only && !dive->selected)
@@ -74,7 +73,7 @@ void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 		cb.setProgress(done++ * 1000 / todo);
 		QString fn = count ? fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix()
 				   : filename;
-		exportProfile(profile.get(), dive, fn);
+		exportProfile(*profile, *dive, fn);
 		++count;
 	}
 }
@@ -83,14 +82,12 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 {
 	FILE *f;
 	QDir texdir = QFileInfo(filename).dir();
-	struct dive *dive;
 	const struct units *units = get_units();
 	const char *unit;
 	const char *ssrf;
-	int i;
 	bool need_pagebreak = false;
 
-	struct membufferpp buf;
+	membuffer buf;
 
 	if (plain) {
 		ssrf = "";
@@ -132,33 +129,28 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 	put_format(&buf, "\n%%%%%%%%%% Begin Dive Data: %%%%%%%%%%\n");
 
-	int todo = selected_only ? amount_selected : divelog.dives->nr;
+	int todo = selected_only ? amount_selected : static_cast<int>(divelog.dives.size());
 	int done = 0;
 	auto profile = getPrintProfile();
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (cb.canceled())
 			return;
 		if (selected_only && !dive->selected)
 			continue;
 		cb.setProgress(done++ * 1000 / todo);
-		exportProfile(profile.get(), dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
+		exportProfile(*profile, *dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
-		const char *country = NULL;
+		std::string country;
 		dive_site *site = dive->dive_site;
 		if (site)
-			country = taxonomy_get_country(&site->taxonomy);
-		pressure_t delta_p = {.mbar = 0};
+			country = taxonomy_get_country(site->taxonomy);
+		pressure_t delta_p;
 
 		QString star = "*";
 		QString viz = star.repeated(dive->visibility);
 		QString rating = star.repeated(dive->rating);
-
-		int i;
-		int qty_cyl;
-		int qty_weight;
-		double total_weight;
 
 		if (need_pagebreak) {
 			if (plain)
@@ -174,13 +166,13 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		put_format(&buf, "\\def\\%shour{%02u}\n", ssrf, tm.tm_hour);
 		put_format(&buf, "\\def\\%sminute{%02u}\n", ssrf, tm.tm_min);
 		put_format(&buf, "\\def\\%snumber{%d}\n", ssrf, dive->number);
-		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name : "");
+		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name.c_str() : "");
 		put_format(&buf, "\\def\\%sspot{}\n", ssrf);
-		put_format(&buf, "\\def\\%ssitename{%s}\n", ssrf, site ? site->name : "");
+		put_format(&buf, "\\def\\%ssitename{%s}\n", ssrf, site ? site->name.c_str() : "");
 		site ? put_format(&buf, "\\def\\%sgpslat{%f}\n", ssrf, site->location.lat.udeg / 1000000.0) : put_format(&buf, "\\def\\%sgpslat{}\n", ssrf);
 		site ? put_format(&buf, "\\def\\%sgpslon{%f}\n", ssrf, site->location.lon.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
-		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dc.model);
-		put_format(&buf, "\\def\\%scountry{%s}\n", ssrf, country ?: "");
+		put_format(&buf, "\\def\\%scomputer{%s}\n", ssrf, dive->dcs[0].model.c_str());
+		put_format(&buf, "\\def\\%scountry{%s}\n", ssrf, country.c_str());
 		put_format(&buf, "\\def\\%stime{%u:%02u}\n", ssrf, FRACTION_TUPLE(dive->duration.seconds, 60));
 
 		put_format(&buf, "\n%% Dive Profile Details:\n");
@@ -191,25 +183,24 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		dive->maxdepth.mm ? put_format(&buf, "\\def\\%smaximumdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smaximumdepth{}\n", ssrf);
 		dive->meandepth.mm ? put_format(&buf, "\\def\\%smeandepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->meandepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smeandepth{}\n", ssrf);
 
-		std::string tags = taglist_get_tagstring(dive->tag_list);
+		std::string tags = taglist_get_tagstring(dive->tags);
 		put_format(&buf, "\\def\\%stype{%s}\n", ssrf, tags.c_str());
 		put_format(&buf, "\\def\\%sviz{%s}\n", ssrf, qPrintable(viz));
 		put_format(&buf, "\\def\\%srating{%s}\n", ssrf, qPrintable(rating));
 		put_format(&buf, "\\def\\%splot{\\includegraphics[width=9cm,height=4cm]{profile%d}}\n", ssrf, dive->number);
 		put_format(&buf, "\\def\\%sprofilename{profile%d}\n", ssrf, dive->number);
-		put_format(&buf, "\\def\\%scomment{%s}\n", ssrf, dive->notes ? dive->notes : "");
-		put_format(&buf, "\\def\\%sbuddy{%s}\n", ssrf, dive->buddy ? dive->buddy : "");
-		put_format(&buf, "\\def\\%sdivemaster{%s}\n", ssrf, dive->diveguide ? dive->diveguide : "");
-		put_format(&buf, "\\def\\%ssuit{%s}\n", ssrf, dive->suit ? dive->suit : "");
+		put_format(&buf, "\\def\\%scomment{%s}\n", ssrf, dive->notes.c_str());
+		put_format(&buf, "\\def\\%sbuddy{%s}\n", ssrf, dive->buddy.c_str());
+		put_format(&buf, "\\def\\%sdivemaster{%s}\n", ssrf, dive->diveguide.c_str());
+		put_format(&buf, "\\def\\%ssuit{%s}\n", ssrf, dive->suit.c_str());
 
 		// Print cylinder data
 		put_format(&buf, "\n%% Gas use information:\n");
-		qty_cyl = 0;
-		for (i = 0; i < dive->cylinders.nr; i++){
-			const cylinder_t &cyl = *get_cylinder(dive, i);
-			if (is_cylinder_used(dive, i) || (prefs.include_unused_tanks && cyl.type.description)){
-				put_format(&buf, "\\def\\%scyl%cdescription{%s}\n", ssrf, 'a' + i, cyl.type.description);
-				put_format(&buf, "\\def\\%scyl%cgasname{%s}\n", ssrf, 'a' + i, gasname(cyl.gasmix));
+		int qty_cyl = 0;
+		for (auto [i, cyl]: enumerated_range(dive->cylinders)) {
+			if (dive->is_cylinder_used(i) || (prefs.include_unused_tanks && !cyl.type.description.empty())){
+				put_format(&buf, "\\def\\%scyl%cdescription{%s}\n", ssrf, 'a' + i, cyl.type.description.c_str());
+				put_format(&buf, "\\def\\%scyl%cgasname{%s}\n", ssrf, 'a' + i, cyl.gasmix.name().c_str());
 				put_format(&buf, "\\def\\%scyl%cmixO2{%.1f\\%%}\n", ssrf, 'a' + i, get_o2(cyl.gasmix)/10.0);
 				put_format(&buf, "\\def\\%scyl%cmixHe{%.1f\\%%}\n", ssrf, 'a' + i, get_he(cyl.gasmix)/10.0);
 				put_format(&buf, "\\def\\%scyl%cmixN2{%.1f\\%%}\n", ssrf, 'a' + i, (100.0 - (get_o2(cyl.gasmix)/10.0) - (get_he(cyl.gasmix)/10.0)));
@@ -235,11 +226,10 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 
 		//Code block prints all weights listed in dive.
 		put_format(&buf, "\n%% Weighting information:\n");
-		qty_weight = 0;
-		total_weight = 0;
-		for (i = 0; i < dive->weightsystems.nr; i++) {
-			weightsystem_t w = dive->weightsystems.weightsystems[i];
-			put_format(&buf, "\\def\\%sweight%ctype{%s}\n", ssrf, 'a' + i, w.description);
+		int qty_weight = 0;
+		double total_weight = 0;
+		for (auto [i, w]: enumerated_range(dive->weightsystems)) {
+			put_format(&buf, "\\def\\%sweight%ctype{%s}\n", ssrf, 'a' + i, w.description.c_str());
 			put_format(&buf, "\\def\\%sweight%camt{%.3f\\%sweightunit}\n", ssrf, 'a' + i, get_weight_units(w.weight.grams, NULL, &unit), ssrf);
 			qty_weight += 1;
 			total_weight += get_weight_units(w.weight.grams, NULL, &unit);
@@ -251,7 +241,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		// Legacy fields
 		put_format(&buf, "\\def\\%sspot{}\n", ssrf);
 		put_format(&buf, "\\def\\%sentrance{}\n", ssrf);
-		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name : "");
+		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name.c_str() : "");
 		dive->maxdepth.mm ? put_format(&buf, "\\def\\%sdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%sdepth{}\n", ssrf);
 
 		put_format(&buf, "\\%spage\n", ssrf);
@@ -275,26 +265,22 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 void export_depths(const char *filename, bool selected_only)
 {
 	FILE *f;
-	struct dive *dive;
-	depth_t depth;
-	int i;
 	const char *unit = NULL;
 
-	struct membufferpp buf;
+	membuffer buf;
 
-	for_each_dive (i, dive) {
+	for (auto &dive: divelog.dives) {
 		if (selected_only && !dive->selected)
 			continue;
 
-		FOR_EACH_PICTURE (dive) {
-			int n = dive->dc.samples;
-			struct sample *s = dive->dc.sample;
-			depth.mm = 0;
-			while (--n >= 0 && (int32_t)s->time.seconds <= picture->offset.seconds) {
-				depth.mm = s->depth.mm;
-				s++;
+		for (auto &picture: dive->pictures) {
+			depth_t depth;
+			for (auto &s: dive->dcs[0].samples) {
+				if ((int32_t)s.time.seconds > picture.offset.seconds)
+					break;
+				depth = s.depth;
 			}
-			put_format(&buf, "%s\t%.1f", picture->filename, get_depth_units(depth.mm, NULL, &unit));
+			put_format(&buf, "%s\t%.1f", picture.filename.c_str(), get_depth_units(depth.mm, NULL, &unit));
 			put_format(&buf, "%s\n", unit);
 		}
 	}
@@ -318,28 +304,23 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 	if (selectedOnly && DiveFilter::instance()->diveSiteMode()) {
 		// Special case in dive site mode: export all selected dive sites,
 		// not the dive sites of selected dives.
-		QVector<dive_site *> sites = DiveFilter::instance()->filteredDiveSites();
-		res.reserve(sites.size());
-		for (const dive_site *ds: sites)
+		for (auto ds: DiveFilter::instance()->filteredDiveSites())
 			res.push_back(ds);
 		return res;
 	}
 
-	res.reserve(divelog.sites->nr);
-	for (int i = 0; i < divelog.sites->nr; i++) {
-		struct dive_site *ds = get_dive_site(i, divelog.sites);
-		if (dive_site_is_empty(ds))
+	res.reserve(divelog.sites.size());
+	for (const auto &ds: divelog.sites) {
+		if (ds->is_empty())
 			continue;
-		if (selectedOnly && !is_dive_site_selected(ds))
+		if (selectedOnly && !ds->is_selected())
 			continue;
-		res.push_back(ds);
+		res.push_back(ds.get());
 	}
 #else
 	/* walk the dive site list */
-	int i;
-	const struct dive_site *ds;
-	for_each_dive_site (i, ds, divelog.sites)
-		res.push_back(get_dive_site(i, divelog.sites));
+	for (const auto &ds: divelog.sites)
+		res.push_back(ds.get());
 #endif
 	return res;
 }

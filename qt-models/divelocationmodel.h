@@ -19,7 +19,7 @@ public:
 	// Thus, different views can connect to different models.
 	enum Columns { EDIT, REMOVE, NAME, DESCRIPTION, NUM_DIVES, LOCATION, NOTES, DIVESITE, TAXONOMY, COLUMNS };
 	enum Roles { DIVESITE_ROLE = Qt::UserRole + 1 };
-	static QVariant getDiveSiteData(const struct dive_site *ds, int column, int role);
+	static QVariant getDiveSiteData(const struct dive_site &ds, int column, int role);
 
 	LocationInformationModel(QObject *obj = 0);
 	static LocationInformationModel *instance();

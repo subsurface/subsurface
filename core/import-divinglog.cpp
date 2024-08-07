@@ -4,7 +4,6 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#include "ssrf.h"
 #include "dive.h"
 #include "divesite.h"
 #include "sample.h"
@@ -16,6 +15,15 @@
 #include "errorhelper.h"
 #include "membuffer.h"
 #include "gettext.h"
+
+#include <charconv>
+
+static int atoi_n(const char *ptr, size_t len)
+{
+	int res = 0;
+	std::from_chars(ptr, ptr + len, res);
+	return res;
+}
 
 static int divinglog_cylinder(void *param, int, char **data, char **)
 {
@@ -56,6 +64,8 @@ static int divinglog_cylinder(void *param, int, char **data, char **)
 
 static int divinglog_profile(void *param, int, char **data, char **)
 {
+	using namespace std::string_literals;
+
 	struct parser_state *state = (struct parser_state *)param;
 
 	int sinterval = 0;
@@ -129,14 +139,14 @@ static int divinglog_profile(void *param, int, char **data, char **)
 			state->cur_sample->temperature.mkelvin = C_to_mkelvin(temp / 10.0f);
 			state->cur_sample->pressure[0].mbar = pressure * 100;
 			state->cur_sample->rbt.seconds = rbt;
-			if (oldcyl != tank && tank >= 0 && tank < state->cur_dive->cylinders.nr) {
-				struct gasmix mix = get_cylinder(state->cur_dive, tank)->gasmix;
+			if (oldcyl != tank && tank >= 0 && static_cast<size_t>(tank) < state->cur_dive->cylinders.size()) {
+				struct gasmix mix = state->cur_dive.get()->get_cylinder(tank)->gasmix;
 				int o2 = get_o2(mix);
 				int he = get_he(mix);
 
 				event_start(state);
 				state->cur_event.time.seconds = time;
-				strcpy(state->cur_event.name, "gaschange");
+				state->cur_event.name = "gaschange"s;
 
 				o2 = (o2 + 5) / 10;
 				he = (he + 5) / 10;
@@ -211,8 +221,8 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		 * Count the number of o2 sensors
 		 */
 
-		if (!state->cur_dive->dc.no_o2sensors && (state->cur_sample->o2sensor[0].mbar || state->cur_sample->o2sensor[1].mbar || state->cur_sample->o2sensor[2].mbar)) {
-			state->cur_dive->dc.no_o2sensors = state->cur_sample->o2sensor[0].mbar ? 1 : 0 +
+		if (!state->cur_dive->dcs[0].no_o2sensors && (state->cur_sample->o2sensor[0].mbar || state->cur_sample->o2sensor[1].mbar || state->cur_sample->o2sensor[2].mbar)) {
+			state->cur_dive->dcs[0].no_o2sensors = state->cur_sample->o2sensor[0].mbar ? 1 : 0 +
 				 state->cur_sample->o2sensor[1].mbar ? 1 : 0 +
 				 state->cur_sample->o2sensor[2].mbar ? 1 : 0;
 		}
@@ -223,7 +233,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		if (ptr1[6] - '0') {
 			event_start(state);
 			state->cur_event.time.seconds = time;
-			strcpy(state->cur_event.name, "rbt");
+			state->cur_event.name = "rbt"s;
 			event_end(state);
 		}
 
@@ -231,7 +241,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		if (ptr1[7] - '0') {
 			event_start(state);
 			state->cur_event.time.seconds = time;
-			strcpy(state->cur_event.name, "ascent");
+			state->cur_event.name = "ascent"s;
 			event_end(state);
 		}
 
@@ -239,7 +249,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		if (ptr1[8] - '0') {
 			event_start(state);
 			state->cur_event.time.seconds = time;
-			strcpy(state->cur_event.name, "violation");
+			state->cur_event.name = "violation"s;
 			event_end(state);
 		}
 
@@ -247,7 +257,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 		if (ptr1[9] - '0') {
 			event_start(state);
 			state->cur_event.time.seconds = time;
-			strcpy(state->cur_event.name, "workload");
+			state->cur_event.name = "workload"s;
 			event_end(state);
 		}
 
@@ -275,22 +285,22 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	state->cur_dive->when = (time_t)(atol(data[1]));
 
 	if (data[2])
-		add_dive_to_dive_site(state->cur_dive, find_or_create_dive_site_with_name(data[2], state->log->sites));
+		state->log->sites.find_or_create(std::string(data[2]))->add_dive(state->cur_dive.get());
 
 	if (data[3])
-		utf8_string(data[3], &state->cur_dive->buddy);
+		utf8_string_std(data[3], &state->cur_dive->buddy);
 
 	if (data[4])
-		utf8_string(data[4], &state->cur_dive->notes);
+		utf8_string_std(data[4], &state->cur_dive->notes);
 
 	if (data[5])
-		state->cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[5], NULL, 0) * 1000);
+		state->cur_dive->dcs[0].maxdepth.mm = lrint(permissive_strtod(data[5], NULL) * 1000);
 
 	if (data[6])
-		state->cur_dive->dc.duration.seconds = atoi(data[6]) * 60;
+		state->cur_dive->dcs[0].duration.seconds = atoi(data[6]) * 60;
 
 	if (data[7])
-		utf8_string(data[7], &state->cur_dive->diveguide);
+		utf8_string_std(data[7], &state->cur_dive->diveguide);
 
 	if (data[8])
 		state->cur_dive->airtemp.mkelvin = C_to_mkelvin(atol(data[8]));
@@ -300,11 +310,11 @@ static int divinglog_dive(void *param, int, char **data, char **)
 
 	if (data[10]) {
 		weightsystem_t ws = { { atoi(data[10]) * 1000 }, translate("gettextFromC", "unknown"), false };
-		add_cloned_weightsystem(&state->cur_dive->weightsystems, ws);
+		state->cur_dive->weightsystems.push_back(std::move(ws));
 	}
 
 	if (data[11])
-		state->cur_dive->suit = strdup(data[11]);
+		state->cur_dive->suit = data[11];
 
 	/* Divinglog has following visibility options: good, medium, bad */
 	if (data[14]) {
@@ -329,9 +339,9 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	dc_settings_start(state);
 
 	if (data[12]) {
-		state->cur_dive->dc.model = strdup(data[12]);
+		state->cur_dive->dcs[0].model = data[12];
 	} else {
-		state->cur_settings.dc.model = strdup("Divinglog import");
+		state->cur_settings.dc.model = "Divinglog import";
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder0_template, diveid);
@@ -354,10 +364,10 @@ static int divinglog_dive(void *param, int, char **data, char **)
 		case '0':
 			break;
 		case '1':
-			state->cur_dive->dc.divemode = PSCR;
+			state->cur_dive->dcs[0].divemode = PSCR;
 			break;
 		case '2':
-			state->cur_dive->dc.divemode = CCR;
+			state->cur_dive->dcs[0].divemode = CCR;
 			break;
 		}
 	}
@@ -366,9 +376,9 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	settings_end(state);
 
 	if (data[12]) {
-		state->cur_dive->dc.model = strdup(data[12]);
+		state->cur_dive->dcs[0].model = data[12];
 	} else {
-		state->cur_dive->dc.model = strdup("Divinglog import");
+		state->cur_dive->dcs[0].model = "Divinglog import";
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, diveid);
@@ -384,7 +394,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 }
 
 
-extern "C" int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
+int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
 	struct parser_state state;

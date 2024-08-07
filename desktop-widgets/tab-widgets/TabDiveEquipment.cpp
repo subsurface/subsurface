@@ -118,7 +118,7 @@ void TabDiveEquipment::divesChanged(const QVector<dive *> &dives, DiveField fiel
 		return;
 
 	if (field.suit)
-		ui.suit->setText(QString(parent.currentDive->suit));
+		ui.suit->setText(QString::fromStdString(parent.currentDive->suit));
 }
 
 void TabDiveEquipment::toggleTriggeredColumn()
@@ -138,15 +138,15 @@ void TabDiveEquipment::toggleTriggeredColumn()
 
 void TabDiveEquipment::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
 {
-	divecomputer *dc = get_dive_dc(currentDive, currentDC);
+	divecomputer *dc = currentDive->get_dc(currentDC);
 
 	cylindersModel->updateDive(currentDive, currentDC);
 	weightModel->updateDive(currentDive);
 	sensorDelegate.setCurrentDC(dc);
 	tankUseDelegate.setCurrentDC(dc);
 
-	if (currentDive && currentDive->suit)
-		ui.suit->setText(QString(currentDive->suit));
+	if (currentDive && !currentDive->suit.empty())
+		ui.suit->setText(QString::fromStdString(currentDive->suit));
 	else
 		ui.suit->clear();
 }

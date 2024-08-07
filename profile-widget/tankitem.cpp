@@ -57,7 +57,7 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 	rect->setPen(QPen(QBrush(), 0.0)); // get rid of the thick line around the rectangle
 	rects.push_back(rect);
 	DiveTextItem *label = new DiveTextItem(dpr, 1.0, Qt::AlignVCenter | Qt::AlignRight, rect);
-	label->set(gasname(gas), Qt::black);
+	label->set(QString::fromStdString(gas.name()), Qt::black);
 	label->setPos(x + 2.0 * dpr, height() / 2.0);
 	label->setZValue(101);
 }
@@ -76,21 +76,23 @@ void TankItem::setData(const struct dive *d, const struct divecomputer *dc, int 
 		return;
 
 	// Bail if there are no cylinders
-	if (d->cylinders.nr <= 0)
+	if (d->cylinders.empty())
 		return;
 
 	// start with the first gasmix and at the start of the plotted range
-	const struct event *ev = NULL;
-	struct gasmix gasmix = gasmix_air;
-	gasmix = get_gasmix(d, dc, plotStartTime, &ev, gasmix);
+	event_loop loop("gaschange");
+	struct gasmix gasmix = gasmix_invalid;
+	const struct event *ev;
+	while ((ev = loop.next(*dc)) != nullptr && ev->time.seconds <= plotStartTime)
+		gasmix = d->get_gasmix_from_event(*ev);
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
 	int startTime = plotStartTime;
 	while (ev && (int)ev->time.seconds < plotEndTime) {
 		createBar(startTime, ev->time.seconds, gasmix);
 		startTime = ev->time.seconds;
-		gasmix = get_gasmix_from_event(d, ev);
-		ev = get_next_event(ev->next, "gaschange");
+		gasmix = d->get_gasmix_from_event(*ev);
+		ev = loop.next(*dc);
 	}
 	createBar(startTime, plotEndTime, gasmix);
 }

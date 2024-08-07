@@ -3,8 +3,8 @@
 #define MAPLOCATIONMODEL_H
 
 #include "core/subsurface-qt/divelistnotifier.h"
+#include <vector>
 #include <QObject>
-#include <QVector>
 #include <QHash>
 #include <QByteArray>
 #include <QAbstractListModel>
@@ -13,7 +13,7 @@
 class MapLocation
 {
 public:
-	explicit MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected);
+	MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name, bool selected);
 
 	QVariant getRole(int role) const;
 
@@ -46,9 +46,9 @@ public:
 	// If map is not null, it will be used to place new dive sites without GPS location at the center of the map
 	void reload(QObject *map);
 	void selectionChanged();
-	void setSelected(const QVector<dive_site *> &divesites);
-	MapLocation *getMapLocation(const struct dive_site *ds);
-	const QVector<dive_site *> &selectedDs() const;
+	void setSelected(const std::vector<dive_site *> &divesites);
+	MapLocation *getMapLocation(const struct dive_site *ds); // Attention: not stable!
+	const std::vector<dive_site *> &selectedDs() const;
 	void setSelected(struct dive_site *ds);
 
 protected:
@@ -58,8 +58,8 @@ private slots:
 	void diveSiteChanged(struct dive_site *ds, int field);
 
 private:
-	QVector<MapLocation *> m_mapLocations;
-	QVector<dive_site *> m_selectedDs;
+	std::vector<MapLocation> m_mapLocations;
+	std::vector<dive_site *> m_selectedDs;
 };
 
 #endif

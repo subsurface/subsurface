@@ -22,6 +22,7 @@
 #include "commands/command_base.h"
 #include "core/errorhelper.h"
 #include "core/qthelper.h"
+#include "core/range.h"
 #include "core/trip.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/metrics.h"
@@ -439,13 +440,13 @@ void DiveListView::selectDiveSitesOnMap(const std::vector<dive *> &dives)
 	// the dive-site selection is controlled by the filter not
 	// by the selected dives.
 	if (!DiveFilter::instance()->diveSiteMode()) {
-		QVector<dive_site *> selectedSites;
+		std::vector<dive_site *> selectedSites;
 		selectedSites.reserve(dives.size());
 		for (dive *d: dives) {
-			if (!d->hidden_by_filter && d->dive_site && !selectedSites.contains(d->dive_site))
+			if (!d->hidden_by_filter && d->dive_site && !range_contains(selectedSites, d->dive_site))
 				selectedSites.push_back(d->dive_site);
 		}
-		MapWidget::instance()->setSelected(selectedSites);
+		MapWidget::instance()->setSelected(std::move(selectedSites));
 	}
 #endif
 }
@@ -495,8 +496,8 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			removeFromSelection.push_back(dive);
 		} else if (dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>()) {
 			deselect_trip(trip);
-			for (int i = 0; i < trip->dives.nr; ++i)
-				removeFromSelection.push_back(trip->dives.dives[i]);
+			for (auto dive: trip->dives)
+				removeFromSelection.push_back(dive);
 		}
 	}
 	for (const QModelIndex &index: newSelected.indexes()) {
@@ -509,8 +510,8 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			addToSelection.push_back(dive);
 		} else if (dive_trip *trip = model->data(index, DiveTripModelBase::TRIP_ROLE).value<dive_trip *>()) {
 			select_trip(trip);
-			for (int i = 0; i < trip->dives.nr; ++i)
-				addToSelection.push_back(trip->dives.dives[i]);
+			for (struct dive *d: trip->dives)
+				addToSelection.push_back(d);
 			selectTripItems(index);
 		}
 	}
@@ -547,12 +548,12 @@ static bool can_merge(const struct dive *a, const struct dive *b, enum asked_use
 	if (a->when > b->when)
 		return false;
 	/* Don't merge dives if there's more than half an hour between them */
-	if (dive_endtime(a) + 30 * 60 < b->when) {
+	if (a->endtime() + 30 * 60 < b->when) {
 		if (*have_asked == NOTYET) {
 			if (QMessageBox::warning(MainWindow::instance(),
 						 MainWindow::tr("Warning"),
 						 MainWindow::tr("Trying to merge dives with %1min interval in between").arg(
-							 (b->when - dive_endtime(a)) / 60),
+							 (b->when - a->endtime()) / 60),
 					     QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel) {
 				*have_asked = DONTMERGE;
 				return false;
@@ -619,8 +620,8 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	int i = a.row() + offset;
 	QModelIndex b = a.sibling(i, 0);
 
-	dive_trip_t *trip_a = a.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
-	dive_trip_t *trip_b = b.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+	dive_trip *trip_a = a.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+	dive_trip *trip_b = b.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
 	if (trip_a == trip_b || !trip_a || !trip_b)
 		return;
 	Command::mergeTrips(trip_a, trip_b);
@@ -665,7 +666,7 @@ void DiveListView::addToTrip(int delta)
 	struct dive *d = contextMenuIndex.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
 	int nr = selectionModel()->selectedRows().count();
 	QModelIndex t;
-	dive_trip_t *trip = NULL;
+	dive_trip *trip = NULL;
 
 	// now look for the trip to add to, for this, loop over the selected dives and
 	// check if its sibling is a trip.
@@ -707,7 +708,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	// let's remember where we are
 	contextMenuIndex = indexAt(event->pos());
 	struct dive *d = contextMenuIndex.data(DiveTripModelBase::DIVE_ROLE).value<struct dive *>();
-	dive_trip_t *trip = contextMenuIndex.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
+	dive_trip *trip = contextMenuIndex.data(DiveTripModelBase::TRIP_ROLE).value<dive_trip *>();
 	QMenu popup(this);
 	if (currentLayout == DiveTripModelBase::TREE) {
 		// verify if there is a node that`s not expanded.
@@ -754,9 +755,9 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 						bottom = first_selected_dive();
 					}
 				}
-				if (is_trip_before_after(top, (currentOrder == Qt::AscendingOrder)))
+				if (divelog.is_trip_before_after(top, (currentOrder == Qt::AscendingOrder)))
 					popup.addAction(tr("Add dive(s) to trip immediately above","",amount_selected), this, &DiveListView::addToTripAbove);
-				if (is_trip_before_after(bottom, (currentOrder == Qt::DescendingOrder)))
+				if (divelog.is_trip_before_after(bottom, (currentOrder == Qt::DescendingOrder)))
 					popup.addAction(tr("Add dive(s) to trip immediately below","",amount_selected), this, &DiveListView::addToTripBelow);
 			}
 		}
@@ -834,18 +835,15 @@ void DiveListView::matchImagesToDives(const QStringList &fileNames)
 	// Create the data structure of pictures to be added: a list of pictures per dive.
 	std::vector<Command::PictureListForAddition> pics;
 	for (const QString &fileName: fileNames) {
-		struct dive *d;
-		picture *pic = create_picture(qPrintable(fileName), shiftDialog.amount(), shiftDialog.matchAll(), &d);
+		auto [pic, d] = create_picture(fileName.toStdString(), shiftDialog.amount(), shiftDialog.matchAll());
 		if (!pic)
 			continue;
-		PictureObj pObj(*pic);
-		free(pic);
 
-		auto it = std::find_if(pics.begin(), pics.end(), [d](const Command::PictureListForAddition &l) { return l.d == d; });
+		auto it = std::find_if(pics.begin(), pics.end(), [dive=d](const Command::PictureListForAddition &l) { return l.d == dive; });
 		if (it == pics.end())
-			pics.push_back(Command::PictureListForAddition { d, { std::move(pObj) } });
+			pics.push_back(Command::PictureListForAddition { d, { std::move(*pic) } });
 		else
-			it->pics.push_back(std::move(pObj));
+			it->pics.push_back(std::move(*pic));
 	}
 
 	if (pics.empty())

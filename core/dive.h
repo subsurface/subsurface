@@ -7,14 +7,13 @@
 #include "divemode.h"
 #include "divecomputer.h"
 #include "equipment.h"
-#include "picture.h"
+#include "picture.h" // TODO: remove
+#include "tag.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <array>
+#include <memory>
+#include <string>
+#include <vector>
 
 extern int last_xml_version;
 
@@ -22,44 +21,120 @@ extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 
 struct dive_site;
-struct dive_site_table;
 struct dive_table;
 struct dive_trip;
 struct full_text_cache;
 struct event;
 struct trip_table;
+
+/* A unique_ptr that will not be copied if the parent class is copied.
+ * This is used to keep a pointer to the fulltext cache and avoid
+ * having it copied when the dive is copied, since the new dive is
+ * not (yet) registered in the fulltext system. Quite hackish.
+ */
+template<typename T>
+struct non_copying_unique_ptr : public std::unique_ptr<T> {
+	using std::unique_ptr<T>::unique_ptr;
+	using std::unique_ptr<T>::operator=;
+	non_copying_unique_ptr(const non_copying_unique_ptr<T> &) { }
+	void operator=(const non_copying_unique_ptr<T> &) { }
+};
+
 struct dive {
-	struct dive_trip *divetrip;
-	timestamp_t when;
-	struct dive_site *dive_site;
-	char *notes;
-	char *diveguide, *buddy;
-	struct cylinder_table cylinders;
-	struct weightsystem_table weightsystems;
-	char *suit;
-	int number;
-	int rating;
-	int wavesize, current, visibility, surge, chill; /* 0 - 5 star ratings */
-	int sac, otu, cns, maxcns;
+	struct dive_trip *divetrip = nullptr;
+	timestamp_t when = 0;
+	struct dive_site *dive_site = nullptr;
+	std::string notes;
+	std::string diveguide, buddy;
+	std::string suit;
+	cylinder_table cylinders;
+	weightsystem_table weightsystems;
+	int number = 0;
+	int rating = 0;
+	int wavesize = 0, current = 0, visibility = 0, surge = 0, chill = 0; /* 0 - 5 star ratings */
+	int sac = 0, otu = 0, cns = 0, maxcns = 0;
 
 	/* Calculated based on dive computer data */
 	temperature_t mintemp, maxtemp, watertemp, airtemp;
 	depth_t maxdepth, meandepth;
 	pressure_t surface_pressure;
 	duration_t duration;
-	int salinity; // kg per 10000 l
-	int user_salinity; // water density reflecting a user-specified type
+	int salinity = 0; // kg per 10000 l
+	int user_salinity = 0; // water density reflecting a user-specified type
 
-	struct tag_entry *tag_list;
-	struct divecomputer dc;
-	int id; // unique ID for this dive
-	struct picture_table pictures;
-	unsigned char git_id[20];
-	bool notrip; /* Don't autogroup this dive to a trip */
-	bool selected;
-	bool hidden_by_filter;
-	struct full_text_cache *full_text; /* word cache for full text search */
-	bool invalid;
+	tag_list tags;
+	std::vector<divecomputer> dcs; // Attn: pointers to divecomputers are not stable!
+	int id = 0; // unique ID for this dive
+	picture_table pictures;
+	std::array<unsigned char, 20> git_id = {};
+	bool notrip = false; /* Don't autogroup this dive to a trip */
+	bool selected = false;
+	bool hidden_by_filter = false;
+	non_copying_unique_ptr<full_text_cache> full_text; /* word cache for full text search */
+	bool invalid = false;
+
+	dive();
+	~dive();
+	dive(const dive &);
+	dive(dive &&);
+	dive &operator=(const dive &);
+
+	void invalidate_cache();
+	bool cache_is_valid() const;
+
+	struct divecomputer *get_dc(int nr);
+	const struct divecomputer *get_dc(int nr) const;
+
+	void clear();
+	int number_of_computers() const;
+	void fixup_no_cylinder();		/* to fix cylinders, we need the divelist (to calculate cns) */
+	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
+	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
+	temperature_t dc_airtemp() const;	/* average over divecomputers */
+	temperature_t dc_watertemp() const;	/* average over divecomputers */
+	pressure_t get_surface_pressure() const;
+
+	struct get_maximal_gas_result { int o2_p; int he_p; int o2low_p; };
+	get_maximal_gas_result get_maximal_gas() const;
+
+	bool is_planned() const;
+	bool is_logged() const;
+	bool likely_same(const struct dive &b) const;
+	bool is_cylinder_used(int idx) const;
+	bool is_cylinder_prot(int idx) const;
+	int explicit_first_cylinder(const struct divecomputer *dc) const;
+	int get_cylinder_index(const struct event &ev) const;
+	bool has_gaschange_event(const struct divecomputer *dc, int idx) const;
+	struct gasmix get_gasmix_from_event(const struct event &ev) const;
+	struct gasmix get_gasmix_at_time(const struct divecomputer &dc, duration_t time) const;
+	cylinder_t *get_cylinder(int idx);
+	cylinder_t *get_or_create_cylinder(int idx);
+	const cylinder_t *get_cylinder(int idx) const;
+	weight_t total_weight() const;
+	int get_salinity() const;
+	bool time_during_dive_with_offset(timestamp_t when, timestamp_t offset) const;
+	std::string get_country() const;
+	std::string get_location() const;
+
+	int depth_to_mbar(int depth) const;
+	double depth_to_mbarf(int depth) const;
+	double depth_to_bar(int depth) const;
+	double depth_to_atm(int depth) const;
+	int rel_mbar_to_depth(int mbar) const;
+	int mbar_to_depth(int mbar) const;
+
+	pressure_t calculate_surface_pressure() const;
+	pressure_t un_fixup_surface_pressure() const;
+	depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const;
+	depth_t gas_mnd(struct gasmix mix, depth_t end, int roundto) const;
+	fraction_t best_o2(depth_t depth, bool in_planner) const;
+	fraction_t best_he(depth_t depth, bool o2narcotic, fraction_t fo2) const;
+
+	bool dive_has_gps_location() const;
+	location_t get_gps_location() const;
+
+	/* Don't call directly, use dive_table::merge_dives()! */
+	static std::unique_ptr<dive> create_merged_dive(const struct dive &a, const struct dive &b, int offset, bool prefer_downloaded);
 };
 
 /* For the top-level list: an entry is either a dive or a trip */
@@ -68,12 +143,8 @@ struct dive_or_trip {
 	struct dive_trip *trip;
 };
 
-extern void invalidate_dive_cache(struct dive *dive);
-extern bool dive_cache_is_valid(const struct dive *dive);
-
-extern int get_cylinder_idx_by_use(const struct dive *dive, enum cylinderuse cylinder_use_type);
-extern void cylinder_renumber(struct dive *dive, int mapping[]);
-extern int same_gasmix_cylinder(const cylinder_t *cyl, int cylid, const struct dive *dive, bool check_unused);
+extern void cylinder_renumber(struct dive &dive, int mapping[]);
+extern int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct dive *dive, bool check_unused);
 
 /* when selectively copying dive information, which parts should be copied? */
 struct dive_components {
@@ -95,143 +166,43 @@ struct dive_components {
 	unsigned int when : 1;
 };
 
-extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);
-extern int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc);
-
-extern fraction_t best_o2(depth_t depth, const struct dive *dive, bool in_planner);
-extern fraction_t best_he(depth_t depth, const struct dive *dive, bool o2narcotic, fraction_t fo2);
-
-extern int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null);
-extern int depth_to_mbar(int depth, const struct dive *dive);
-extern double depth_to_mbarf(int depth, const struct dive *dive);
-extern double depth_to_bar(int depth, const struct dive *dive);
-extern double depth_to_atm(int depth, const struct dive *dive);
-extern int rel_mbar_to_depth(int mbar, const struct dive *dive);
-extern int mbar_to_depth(int mbar, const struct dive *dive);
-extern depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct dive *dive, int roundto);
-extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int roundto);
-
-extern struct dive *get_dive(int nr);
-extern struct dive *get_dive_from_table(int nr, const struct dive_table *dt);
-extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
-extern const char *get_dive_country(const struct dive *dive);
-extern const char *get_dive_location(const struct dive *dive);
-extern unsigned int number_of_computers(const struct dive *dive);
-extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
-extern const struct divecomputer *get_dive_dc_const(const struct dive *dive, int nr);
-extern timestamp_t dive_endtime(const struct dive *dive);
-
-extern void set_git_prefs(const char *prefs);
-
-extern struct dive *make_first_dc(const struct dive *d, int dc_number);
-extern struct dive *clone_delete_divecomputer(const struct dive *d, int dc_number);
-void split_divecomputer(const struct dive *src, int num, struct dive **out1, struct dive **out2);
-
-/*
- * Iterate over each dive, with the first parameter being the index
- * iterator variable, and the second one being the dive one.
- *
- * I don't think anybody really wants the index, and we could make
- * it local to the for-loop, but that would make us requires C99.
- */
-#define for_each_dive(_i, _x) \
-	for ((_i) = 0; ((_x) = get_dive(_i)) != NULL; (_i)++)
-
-#define for_each_dc(_dive, _dc) \
-	for (_dc = &_dive->dc; _dc; _dc = _dc->next)
-
-#define for_each_relevant_dc(_dive, _dc) \
-	for (_dc = &_dive->dc; _dc; _dc = _dc->next) if (!is_logged(_dive) || !is_dc_planner(_dc))
-
-extern struct dive *get_dive_by_uniq_id(int id);
-extern int get_idx_by_uniq_id(int id);
-extern bool dive_site_has_gps_location(const struct dive_site *ds);
-extern int dive_has_gps_location(const struct dive *dive);
-extern location_t dive_get_gps_location(const struct dive *d);
-
-extern bool time_during_dive_with_offset(const struct dive *dive, timestamp_t when, timestamp_t offset);
+extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
 
 extern int save_dives(const char *filename);
 extern int save_dives_logic(const char *filename, bool select_only, bool anonymize);
-extern int save_dive(FILE *f, struct dive *dive, bool anonymize);
+extern int save_dive(FILE *f, const struct dive &dive, bool anonymize);
 extern int export_dives_xslt(const char *filename, bool selected, const int units, const char *export_xslt, bool anonymize);
 
 extern int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize);
 
 struct membuffer;
-extern void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize);
+extern void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anonymize);
 
-extern void subsurface_console_init(void);
-extern void subsurface_console_exit(void);
-extern bool subsurface_user_is_root(void);
-
-extern struct dive *alloc_dive(void);
-extern void free_dive(struct dive *);
-extern void record_dive_to_table(struct dive *dive, struct dive_table *table);
-extern void clear_dive(struct dive *dive);
 extern void copy_dive(const struct dive *s, struct dive *d);
 extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
-extern struct dive *move_dive(struct dive *s);
 
 extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 
-extern bool dive_less_than(const struct dive *a, const struct dive *b);
+extern bool dive_less_than(const struct dive &a, const struct dive &b);
+extern bool dive_less_than_ptr(const struct dive *a, const struct dive *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
-extern struct dive *fixup_dive(struct dive *dive);
-extern pressure_t calculate_surface_pressure(const struct dive *dive);
-extern pressure_t un_fixup_surface_pressure(const struct dive *d);
-extern int get_dive_salinity(const struct dive *dive);
 extern int dive_getUniqID();
-extern int split_dive(const struct dive *dive, struct dive **new1, struct dive **new2);
-extern int split_dive_at_time(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2);
-extern struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip, struct dive_site **site);
-extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
+
 extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, int time);
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
-extern bool is_cylinder_used(const struct dive *dive, int idx);
-extern bool is_cylinder_prot(const struct dive *dive, int idx);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
-extern struct event *create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
-extern void update_event_name(struct dive *d, int dc_number, struct event *event, const char *name);
+extern struct event create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
 extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
-extern int get_cylinder_index(const struct dive *dive, const struct event *ev);
-extern struct gasmix get_gasmix_from_event(const struct dive *, const struct event *ev);
-extern int nr_cylinders(const struct dive *dive);
-extern int nr_weightsystems(const struct dive *dive);
 extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
 
-/* UI related protopypes */
-
-extern void invalidate_dive_cache(struct dive *dc);
-
-extern int total_weight(const struct dive *);
-
-extern bool is_planned(const struct dive *dive);
-extern bool is_logged(const struct dive *dive);
-
-/* Get gasmixes at increasing timestamps.
- * In "evp", pass a pointer to a "struct event *" which is NULL-initialized on first invocation.
- * On subsequent calls, pass the same "evp" and the "gasmix" from previous calls.
- */
-extern struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc, int time, const struct event **evp, struct gasmix gasmix);
-
-/* Get gasmix at a given time */
-extern struct gasmix get_gasmix_at_time(const struct dive *dive, const struct divecomputer *dc, duration_t time);
-
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
-
-#ifdef __cplusplus
-}
 
 /* Make pointers to dive and dive_trip "Qt metatypes" so that they can be passed through
  * QVariants and through QML.
  */
 #include <QObject>
-#include <string>
 Q_DECLARE_METATYPE(struct dive *);
 
 extern std::string existing_filename;
-
-#endif
 
 #endif // DIVE_H

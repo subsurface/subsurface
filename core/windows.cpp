@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 /* windows.c */
 /* implements Windows specific functions */
-#include "ssrf.h"
 #include <io.h>
-#include "dive.h"
 #include "device.h"
 #include "libdivecomputer.h"
 #include "file.h"
 #include "errorhelper.h"
+#include "subsurfacestartup.h"
 #include "subsurfacesysinfo.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x500
@@ -100,42 +99,39 @@ static std::wstring make_default_filename()
 	return path + L"\\" + filename;
 }
 
-extern "C" {
-
-const char non_standard_system_divelist_default_font[] = "Calibri";
-const char current_system_divelist_default_font[] = "Segoe UI";
-const char *system_divelist_default_font = non_standard_system_divelist_default_font;
+using namespace std::string_literals;
+static std::string non_standard_system_divelist_default_font = "Calibri"s;
+static std::string current_system_divelist_default_font = "Segoe UI"s;
+std::string system_divelist_default_font;
 double system_divelist_default_font_size = -1;
 
-void subsurface_OS_pref_setup(void)
+void subsurface_OS_pref_setup()
 {
-	if (isWin7Or8())
-		system_divelist_default_font = current_system_divelist_default_font;
+	system_divelist_default_font = isWin7Or8() ? current_system_divelist_default_font
+						   : non_standard_system_divelist_default_font;
 }
 
-bool subsurface_ignore_font(const char *font)
+bool subsurface_ignore_font(const std::string &font)
 {
 	// if this is running on a recent enough version of Windows and the font
 	// passed in is the pre 4.3 default font, ignore it
-	if (isWin7Or8() && strcmp(font, non_standard_system_divelist_default_font) == 0)
-		return true;
-	return false;
+	return isWin7Or8() && font == non_standard_system_divelist_default_font;
 }
 
 #define utf8_to_utf16(s) utf8_to_utf16_fl(s, __FILE__, __LINE__)
 
 /* '\' not included at the end.
  */
-const char *system_default_directory(void)
+std::string system_default_directory()
 {
 	static std::string path = utf16_to_utf8(system_default_path());
-	return path.c_str();
+	return path;
 }
 
-const char *system_default_filename(void)
+std::string system_default_filename()
 {
 	static std::string path = utf16_to_utf8(make_default_filename());
-	return path.c_str();
+	return path;
 }
 
 int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport)
@@ -375,7 +371,7 @@ static struct {
 } console_desc;
 #endif
 
-void subsurface_console_init(void)
+void subsurface_console_init()
 {
 	/* if this is a console app already, do nothing */
 #ifndef WIN32_CONSOLE_APP
@@ -406,7 +402,7 @@ void subsurface_console_init(void)
 #endif
 }
 
-void subsurface_console_exit(void)
+void subsurface_console_exit()
 {
 #ifndef WIN32_CONSOLE_APP
 	/* close handles */
@@ -426,6 +422,4 @@ bool subsurface_user_is_root()
 {
 	/* FIXME: Detect admin rights */
 	return false;
-}
-
 }

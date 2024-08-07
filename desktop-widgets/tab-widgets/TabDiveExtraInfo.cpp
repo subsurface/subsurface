@@ -21,9 +21,8 @@ TabDiveExtraInfo::~TabDiveExtraInfo()
 
 void TabDiveExtraInfo::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
 {
-	const struct divecomputer *currentdc = get_dive_dc(currentDive, currentDC);
-	if (currentdc)
-		extraDataModel->updateDiveComputer(currentdc);
+	if (currentDive)
+		extraDataModel->updateDiveComputer(currentDive->get_dc(currentDC));
 
 	ui->extraData->setVisible(false); // This will cause the resize to include rows outside the current viewport
 	ui->extraData->resizeColumnsToContents();

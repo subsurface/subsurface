@@ -7,12 +7,14 @@
 #include "diveprofileitem.h"
 #include "divetextitem.h"
 #include "tankitem.h"
+#include "core/dive.h"
 #include "core/device.h"
 #include "core/divecomputer.h"
 #include "core/event.h"
 #include "core/pref.h"
 #include "core/profile.h"
 #include "core/qthelper.h"	// for decoMode()
+#include "core/range.h"
 #include "core/subsurface-float.h"
 #include "core/subsurface-string.h"
 #include "core/settings/qPrefDisplay.h"
@@ -151,8 +153,6 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	tankItem(new TankItem(*timeAxis, dpr)),
 	pixmaps(getDivePixmaps(dpr))
 {
-	init_plot_info(&plotInfo);
-
 	setSceneRect(0, 0, 100, 100);
 	setItemIndexMethod(QGraphicsScene::NoIndex);
 
@@ -188,7 +188,6 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 ProfileScene::~ProfileScene()
 {
-	free_plot_info_data(&plotInfo);
 }
 
 void ProfileScene::clear()
@@ -201,7 +200,7 @@ void ProfileScene::clear()
 	// the DiveEventItems
 	qDeleteAll(eventItems);
 	eventItems.clear();
-	free_plot_info_data(&plotInfo);
+	plotInfo = plot_info();
 	empty = true;
 }
 
@@ -214,9 +213,9 @@ static bool ppGraphsEnabled(const struct divecomputer *dc, bool simplified)
 // Update visibility of non-interactive chart features according to preferences
 void ProfileScene::updateVisibility(bool diveHasHeartBeat, bool simplified)
 {
-	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
-	if (!currentdc)
+	if (!d)
 		return;
+	const struct divecomputer *currentdc = d->get_dc(dc);
 	bool ppGraphs = ppGraphsEnabled(currentdc, simplified);
 
 	diveCeiling->setVisible(prefs.calcceiling);
@@ -292,9 +291,9 @@ struct VerticalAxisLayout {
 
 void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 {
-	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
-	if (!currentdc)
+	if (!d)
 		return;
+	const struct divecomputer *currentdc = d->get_dc(dc);
 
 	// Calculate left and right border needed for the axes and other chart items.
 	double leftBorder = profileYAxis->width();
@@ -429,8 +428,8 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 			decoModelParameters->set(QString("GF %1/%2").arg(diveplan.gflow).arg(diveplan.gfhigh), getColor(PRESSURE_TEXT));
 	}
 
-	const struct divecomputer *currentdc = get_dive_dc_const(d, dc);
-	if (!currentdc || !currentdc->samples) {
+	const struct divecomputer *currentdc = d->get_dc(dc);
+	if (!currentdc || currentdc->samples.empty()) {
 		clear();
 		return;
 	}
@@ -454,7 +453,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	 * create_plot_info_new() automatically frees old plot data.
 	 */
 	if (!keepPlotInfo)
-		create_plot_info_new(d, currentdc, &plotInfo, planner_ds);
+		plotInfo = create_plot_info_new(d, currentdc, planner_ds);
 
 	bool hasHeartBeat = plotInfo.maxhr;
 	// For mobile we might want to turn of some features that are normally shown.
@@ -466,7 +465,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	updateVisibility(hasHeartBeat, simplified);
 	updateAxes(hasHeartBeat, simplified);
 
-	int newMaxtime = get_maxtime(&plotInfo);
+	int newMaxtime = get_maxtime(plotInfo);
 	if (calcMax || newMaxtime > maxtime)
 		maxtime = newMaxtime;
 
@@ -474,7 +473,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	 * when we are dragging the handler to plan / add dive.
 	 * otherwhise, update normally.
 	 */
-	int newMaxDepth = get_maxdepth(&plotInfo);
+	int newMaxDepth = get_maxdepth(plotInfo);
 	if (!calcMax) {
 		if (maxdepth < newMaxDepth)
 			maxdepth = newMaxDepth;
@@ -509,18 +508,18 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// Find first and last plotInfo entry
 	int firstSecond = lrint(timeAxis->minimum());
 	int lastSecond = lrint(timeAxis->maximum());
-	auto it1 = std::lower_bound(plotInfo.entry, plotInfo.entry + plotInfo.nr, firstSecond,
+	auto it1 = std::lower_bound(plotInfo.entry.begin(), plotInfo.entry.end(), firstSecond,
 				   [](const plot_data &d, int s)
 				   { return d.sec < s; });
-	auto it2 = std::lower_bound(it1, plotInfo.entry + plotInfo.nr, lastSecond,
+	auto it2 = std::lower_bound(it1, plotInfo.entry.end(), lastSecond,
 				    [](const plot_data &d, int s)
 				    { return d.sec < s; });
-	if (it1 > plotInfo.entry && it1->sec > firstSecond)
+	if (it1 > plotInfo.entry.begin() && it1->sec > firstSecond)
 		--it1;
-	if (it2 < plotInfo.entry + plotInfo.nr)
+	if (it2 < plotInfo.entry.end())
 		++it2;
-	int from = it1 - plotInfo.entry;
-	int to = it2 - plotInfo.entry;
+	int from = it1 - plotInfo.entry.begin();
+	int to = it2 - plotInfo.entry.begin();
 
 	timeAxis->updateTicks(animSpeed);
 	animatedAxes.push_back(timeAxis);
@@ -552,41 +551,37 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// while all other items are up there on the constructor.
 	qDeleteAll(eventItems);
 	eventItems.clear();
-	struct event *event = currentdc->events;
-	struct gasmix lastgasmix = get_gasmix_at_time(d, currentdc, duration_t{1});
+	struct gasmix lastgasmix = d->get_gasmix_at_time(*currentdc, duration_t{1});
 
-	while (event) {
+	for (auto [idx, event]: enumerated_range(currentdc->events)) {
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
-			if (empty_string(event->name) ||
-			    !(strcmp(event->name, "heading") == 0 ||
-			      (same_string(event->name, "SP change") && event->time.seconds == 0) ||
-			      event_is_gaschange(event) ||
-			      event->type == SAMPLE_EVENT_BOOKMARK)) {
-				event = event->next;
+			if (event.name.empty() ||
+			    !(event.name == "heading" ||
+			      (event.name == "SP change" && event.time.seconds == 0) ||
+			      event.is_gaschange() ||
+			      event.type == SAMPLE_EVENT_BOOKMARK))
 				continue;
-			}
 		}
 		if (DiveEventItem::isInteresting(d, currentdc, event, plotInfo, firstSecond, lastSecond)) {
-			auto item = new DiveEventItem(d, event, lastgasmix, plotInfo,
+			auto item = new DiveEventItem(d, idx, event, lastgasmix, plotInfo,
 						      timeAxis, profileYAxis, animSpeed, *pixmaps);
 			item->setZValue(2);
 			addItem(item);
 			eventItems.push_back(item);
 		}
-		if (event_is_gaschange(event))
-			lastgasmix = get_gasmix_from_event(d, event);
-		event = event->next;
+		if (event.is_gaschange())
+			lastgasmix = d->get_gasmix_from_event(event);
 	}
 
-	QString dcText = get_dc_nickname(currentdc);
+	QString dcText = QString::fromStdString(get_dc_nickname(currentdc));
 	if (is_dc_planner(currentdc))
 		dcText = tr("Planned dive");
 	else if (is_dc_manually_added_dive(currentdc))
 		dcText = tr("Manually added dive");
 	else if (dcText.isEmpty())
 		dcText = tr("Unknown dive computer");
-	int nr = number_of_computers(d);
+	int nr = d->number_of_computers();
 	if (nr > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc + 1).arg(nr);
 	diveComputerText->set(dcText, getColor(TIME_TEXT, isGrayscale));

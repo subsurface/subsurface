@@ -75,45 +75,42 @@ static void exportHTMLstatistics(const QString filename, struct htmlExportSettin
 	QFile file(filename);
 	file.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream out(&file);
-	stats_summary_auto_free stats;
 
 	stats_t total_stats;
 
-	calculate_stats_summary(&stats, hes.selectedOnly);
+	stats_summary stats = calculate_stats_summary(hes.selectedOnly);
 	total_stats.selection_size = 0;
 	total_stats.total_time.seconds = 0;
 
-	int i = 0;
 	out << "divestat=[";
 	if (hes.yearlyStatistics) {
-		while (stats.stats_yearly != NULL && stats.stats_yearly[i].period) {
+		for (const auto &s: stats.stats_yearly) {
 			out << "{";
-			out << "\"YEAR\":\"" << stats.stats_yearly[i].period << "\",";
-			out << "\"DIVES\":\"" << stats.stats_yearly[i].selection_size << "\",";
-			out << "\"TOTAL_TIME\":\"" << get_dive_duration_string(stats.stats_yearly[i].total_time.seconds,
+			out << "\"YEAR\":\"" << s.period << "\",";
+			out << "\"DIVES\":\"" << s.selection_size << "\",";
+			out << "\"TOTAL_TIME\":\"" << get_dive_duration_string(s.total_time.seconds,
 											gettextFromC::tr("h"), gettextFromC::tr("min"), gettextFromC::tr("sec"), " ") << "\",";
-			out << "\"AVERAGE_TIME\":\"" << formatMinutes(stats.stats_yearly[i].total_time.seconds / stats.stats_yearly[i].selection_size) << "\",";
-			out << "\"SHORTEST_TIME\":\"" << formatMinutes(stats.stats_yearly[i].shortest_time.seconds) << "\",";
-			out << "\"LONGEST_TIME\":\"" << formatMinutes(stats.stats_yearly[i].longest_time.seconds) << "\",";
-			out << "\"AVG_DEPTH\":\"" << get_depth_string(stats.stats_yearly[i].avg_depth) << "\",";
-			out << "\"MIN_DEPTH\":\"" << get_depth_string(stats.stats_yearly[i].min_depth) << "\",";
-			out << "\"MAX_DEPTH\":\"" << get_depth_string(stats.stats_yearly[i].max_depth) << "\",";
-			out << "\"AVG_SAC\":\"" << get_volume_string(stats.stats_yearly[i].avg_sac) << "\",";
-			out << "\"MIN_SAC\":\"" << get_volume_string(stats.stats_yearly[i].min_sac) << "\",";
-			out << "\"MAX_SAC\":\"" << get_volume_string(stats.stats_yearly[i].max_sac) << "\",";
-			if (stats.stats_yearly[i].combined_count) {
+			out << "\"AVERAGE_TIME\":\"" << formatMinutes(s.total_time.seconds / s.selection_size) << "\",";
+			out << "\"SHORTEST_TIME\":\"" << formatMinutes(s.shortest_time.seconds) << "\",";
+			out << "\"LONGEST_TIME\":\"" << formatMinutes(s.longest_time.seconds) << "\",";
+			out << "\"AVG_DEPTH\":\"" << get_depth_string(s.avg_depth) << "\",";
+			out << "\"MIN_DEPTH\":\"" << get_depth_string(s.min_depth) << "\",";
+			out << "\"MAX_DEPTH\":\"" << get_depth_string(s.max_depth) << "\",";
+			out << "\"AVG_SAC\":\"" << get_volume_string(s.avg_sac) << "\",";
+			out << "\"MIN_SAC\":\"" << get_volume_string(s.min_sac) << "\",";
+			out << "\"MAX_SAC\":\"" << get_volume_string(s.max_sac) << "\",";
+			if (s.combined_count) {
 				temperature_t avg_temp;
-				avg_temp.mkelvin = stats.stats_yearly[i].combined_temp.mkelvin / stats.stats_yearly[i].combined_count;
+				avg_temp.mkelvin = s.combined_temp.mkelvin / s.combined_count;
 				out << "\"AVG_TEMP\":\"" << get_temperature_string(avg_temp) << "\",";
 			} else {
 				out << "\"AVG_TEMP\":\"0.0\",";
 			}
-			out << "\"MIN_TEMP\":\"" << (stats.stats_yearly[i].min_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].min_temp)) << "\",";
-			out << "\"MAX_TEMP\":\"" << (stats.stats_yearly[i].max_temp.mkelvin == 0 ? 0 : get_temperature_string(stats.stats_yearly[i].max_temp)) << "\",";
+			out << "\"MIN_TEMP\":\"" << (s.min_temp.mkelvin == 0 ? 0 : get_temperature_string(s.min_temp)) << "\",";
+			out << "\"MAX_TEMP\":\"" << (s.max_temp.mkelvin == 0 ? 0 : get_temperature_string(s.max_temp)) << "\",";
 			out << "},";
-			total_stats.selection_size += stats.stats_yearly[i].selection_size;
-			total_stats.total_time.seconds += stats.stats_yearly[i].total_time.seconds;
-			i++;
+			total_stats.selection_size += s.selection_size;
+			total_stats.total_time.seconds += s.total_time.seconds;
 		}
 		exportHTMLstatisticsTotal(out, &total_stats);
 	}

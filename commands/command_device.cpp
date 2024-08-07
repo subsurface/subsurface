@@ -13,20 +13,19 @@ EditDeviceNickname::EditDeviceNickname(const struct divecomputer *dc, const QStr
 	if (index == -1)
 		return;
 
-	setText(Command::Base::tr("Set nickname of device %1 (serial %2) to %3").arg(dc->model, dc->serial, nicknameIn));
+	setText(Command::Base::tr("Set nickname of device %1 (serial %2) to %3").arg(dc->model.c_str(), dc->serial.c_str(), nicknameIn));
 }
 
 bool EditDeviceNickname::workToBeDone()
 {
-	return get_device(divelog.devices, index) != nullptr;
+	return index >= 0;
 }
 
 void EditDeviceNickname::redo()
 {
-	device *dev = get_device_mutable(divelog.devices, index);
-	if (!dev)
+	if (index < 0 || static_cast<size_t>(index) >= divelog.devices.size())
 		return;
-	std::swap(dev->nickName, nickname);
+	std::swap(divelog.devices[index].nickName, nickname);
 	emit diveListNotifier.deviceEdited();
 }
 

@@ -28,8 +28,7 @@
 
 static int nitrox_sort_value(const struct dive *dive)
 {
-	int o2, he, o2max;
-	get_dive_gas(dive, &o2, &he, &o2max);
+	auto [o2, he, o2max ] = dive->get_maximal_gas();
 	return he * 1000 + o2;
 }
 
@@ -69,7 +68,7 @@ QString DiveTripModelBase::tripShortDate(const dive_trip *trip)
 {
 	if (!trip)
 		return QString();
-	QDateTime firstTime = timestampToDateTime(trip_date(trip));
+	QDateTime firstTime = timestampToDateTime(trip->date());
 	QString firstMonth = firstTime.toString("MMM");
 	return QStringLiteral("%1\n'%2").arg(firstMonth,firstTime.toString("yy"));
 }
@@ -78,17 +77,17 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 {
 	if (!trip)
 		return QString();
-	QString numDives = tr("(%n dive(s))", "", trip->dives.nr);
-	int shown = trip_shown_dives(trip);
-	QString shownDives = shown != trip->dives.nr ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
-	QString title(trip->location);
+	QString numDives = tr("(%n dive(s))", "", static_cast<int>(trip->dives.size()));
+	int shown = trip->shown_dives();
+	QString shownDives = shown != !trip->dives.empty() ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
+	QString title = QString::fromStdString(trip->location);
 
 	if (title.isEmpty()) {
 		// so use the date range
-		QDateTime firstTime = timestampToDateTime(trip_date(trip));
+		QDateTime firstTime = timestampToDateTime(trip->date());
 		QString firstMonth = firstTime.toString("MMM");
 		QString firstYear = firstTime.toString("yyyy");
-		QDateTime lastTime = timestampToDateTime(trip->dives.dives[0]->when);
+		QDateTime lastTime = timestampToDateTime(trip->dives[0]->when);
 		QString lastMonth = lastTime.toString("MMM");
 		QString lastYear = lastTime.toString("yyyy");
 		if (lastMonth == firstMonth && lastYear == firstYear)
@@ -107,11 +106,11 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 	// Special roles for mobile
 	switch(role) {
 	case MobileListModel::TripIdRole: return QString::number(trip->id);
-	case MobileListModel::TripNrDivesRole: return trip->dives.nr;
+	case MobileListModel::TripNrDivesRole: return static_cast<int>(trip->dives.size());
 	case MobileListModel::TripShortDateRole: return tripShortDate(trip);
 	case MobileListModel::TripTitleRole: return tripTitle(trip);
-	case MobileListModel::TripLocationRole: return QString(trip->location);
-	case MobileListModel::TripNotesRole: return QString(trip->notes);
+	case MobileListModel::TripLocationRole: return QString::fromStdString(trip->location);
+	case MobileListModel::TripNotesRole: return QString::fromStdString(trip->notes);
 	}
 #endif
 	// Set the font for all trips alike
@@ -125,10 +124,10 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 		switch (column) {
 		case DiveTripModelBase::NR:
 			QString shownText;
-			int countShown = trip_shown_dives(trip);
-			if (countShown < trip->dives.nr)
+			int countShown = trip->shown_dives();
+			if (countShown < static_cast<int>(trip->dives.size()))
 				shownText = tr("(%1 shown)").arg(countShown);
-			return formatTripTitleWithDives(trip) + " " + shownText;
+			return formatTripTitleWithDives(*trip) + " " + shownText;
 		}
 	}
 
@@ -145,10 +144,10 @@ static const QString icon_names[4] = {
 static int countPhotos(const struct dive *d)
 {	// Determine whether dive has pictures, and whether they were taken during or before/after dive.
 	const int bufperiod = 120; // A 2-min buffer period. Photos within 2 min of dive are assumed as
-	int diveTotaltime = dive_endtime(d) - d->when;	// taken during the dive, not before/after.
+	int diveTotaltime = d->totaltime().seconds;	// taken during the dive, not before/after.
 	int pic_offset, icon_index = 0;
-	FOR_EACH_PICTURE (d) {			// Step through each of the pictures for this dive:
-		pic_offset = picture->offset.seconds;
+	for (auto &picture: d->pictures) {	// Step through each of the pictures for this dive:
+		pic_offset = picture.offset.seconds;
 		if  ((pic_offset < -bufperiod) | (pic_offset > diveTotaltime+bufperiod)) {
 			icon_index |= 0x02;	// If picture is before/after the dive
 						//  then set the appropriate bit ...
@@ -162,9 +161,9 @@ static int countPhotos(const struct dive *d)
 static QString displayDuration(const struct dive *d)
 {
 	if (prefs.units.show_units_table)
-		return get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"), "", ":", d->dc.divemode == FREEDIVE);
+		return get_dive_duration_string(d->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"), "", ":", d->dcs[0].divemode == FREEDIVE);
 	else
-		return get_dive_duration_string(d->duration.seconds, "", "", "", ":", d->dc.divemode == FREEDIVE);
+		return get_dive_duration_string(d->duration.seconds, "", "", "", ":", d->dcs[0].divemode == FREEDIVE);
 }
 
 static QString displayTemperature(const struct dive *d, bool units)
@@ -184,7 +183,7 @@ static QString displaySac(const struct dive *d, bool units)
 
 static QString displayWeight(const struct dive *d, bool units)
 {
-	QString s = weight_string(total_weight(d));
+	QString s = get_weight_string(d->total_weight(), false);
 	if (!units)
 		return s;
 	else if (get_units()->weight == units::KG)
@@ -280,30 +279,30 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::DateTimeRole: return formatDiveDateTime(d);
 	case MobileListModel::IdRole: return d->id;
 	case MobileListModel::NumberRole: return d->number;
-	case MobileListModel::LocationRole: return get_dive_location(d);
-	case MobileListModel::DepthRole: return get_depth_string(d->dc.maxdepth.mm, true, true);
+	case MobileListModel::LocationRole: return QString::fromStdString(d->get_location());
+	case MobileListModel::DepthRole: return get_depth_string(d->dcs[0].maxdepth.mm, true, true);
 	case MobileListModel::DurationRole: return formatDiveDuration(d);
-	case MobileListModel::DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dc.maxdepth.mm, true, true),
+	case MobileListModel::DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dcs[0].maxdepth.mm, true, true),
 										      formatDiveDuration(d));
 	case MobileListModel::RatingRole: return d->rating;
 	case MobileListModel::VizRole: return d->visibility;
-	case MobileListModel::SuitRole: return QString(d->suit);
+	case MobileListModel::SuitRole: return QString::fromStdString(d->suit);
 	case MobileListModel::AirTempRole: return get_temperature_string(d->airtemp, true);
 	case MobileListModel::WaterTempRole: return get_temperature_string(d->watertemp, true);
 	case MobileListModel::SacRole: return formatSac(d);
 	case MobileListModel::SumWeightRole: return formatSumWeight(d);
-	case MobileListModel::DiveGuideRole: return QString(d->diveguide);
-	case MobileListModel::BuddyRole: return QString(d->buddy);
-	case MobileListModel::TagsRole: return QString::fromStdString(taglist_get_tagstring(d->tag_list));
+	case MobileListModel::DiveGuideRole: return QString::fromStdString(d->diveguide);
+	case MobileListModel::BuddyRole: return QString::fromStdString(d->buddy);
+	case MobileListModel::TagsRole: return QString::fromStdString(taglist_get_tagstring(d->tags));
 	case MobileListModel::NotesRole: return formatNotes(d);
 	case MobileListModel::GpsRole: return formatDiveGPS(d);
 	case MobileListModel::GpsDecimalRole: return format_gps_decimal(d);
-	case MobileListModel::NoDiveRole: return d->duration.seconds == 0 && d->dc.duration.seconds == 0;
+	case MobileListModel::NoDiveRole: return d->duration.seconds == 0 && d->dcs[0].duration.seconds == 0;
 	case MobileListModel::DiveSiteRole: return QVariant::fromValue(d->dive_site);
 	case MobileListModel::CylinderRole: return formatGetCylinder(d).join(", ");
 	case MobileListModel::GetCylinderRole: return formatGetCylinder(d);
 	case MobileListModel::CylinderListRole: return formatFullCylinderList();
-	case MobileListModel::SingleWeightRole: return d->weightsystems.nr <= 1;
+	case MobileListModel::SingleWeightRole: return d->weightsystems.size() <= 1;
 	case MobileListModel::StartPressureRole: return formatStartPressure(d);
 	case MobileListModel::EndPressureRole: return formatEndPressure(d);
 	case MobileListModel::FirstGasRole: return formatFirstGas(d);
@@ -334,9 +333,9 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case TOTALWEIGHT:
 			return displayWeight(d, prefs.units.show_units_table);
 		case SUIT:
-			return QString(d->suit);
+			return QString::fromStdString(d->suit);
 		case CYLINDER:
-			return d->cylinders.nr > 0 ? QString(get_cylinder(d, 0)->type.description) : QString();
+			return !d->cylinders.empty() ? QString::fromStdString(d->cylinders[0].type.description) : QString();
 		case SAC:
 			return displaySac(d, prefs.units.show_units_table);
 		case OTU:
@@ -347,23 +346,23 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			else
 				return d->maxcns;
 		case TAGS:
-			return QString::fromStdString(taglist_get_tagstring(d->tag_list));
+			return QString::fromStdString(taglist_get_tagstring(d->tags));
 		case PHOTOS:
 			break;
 		case COUNTRY:
-			return QString(get_dive_country(d));
+			return QString::fromStdString(d->get_country());
 		case BUDDIES:
-			return QString(d->buddy);
+			return QString::fromStdString(d->buddy);
 		case DIVEGUIDE:
-			return QString(d->diveguide);
+			return QString::fromStdString(d->diveguide);
 		case LOCATION:
-			return QString(get_dive_location(d));
+			return QString::fromStdString(d->get_location());
 		case GAS:
 			return formatDiveGasString(d);
 		case NOTES:
-			return QString(d->notes);
+			return QString::fromStdString(d->notes);
 		case DIVEMODE:
-			return QString(divemode_text_ui[(int)d->dc.divemode]);
+			return QString(divemode_text_ui[(int)d->dcs[0].divemode]);
 		}
 		break;
 	case Qt::DecorationRole:
@@ -372,13 +371,13 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case COUNTRY:
 			return QVariant();
 		case LOCATION:
-			if (dive_has_gps_location(d))
+			if (d->dive_has_gps_location())
 				return getGlobeIcon();
 			break;
 		case PHOTOS:
 			// If there are photos, show one of the three photo icons: fish= photos during dive;
 			// sun=photos before/after dive; sun+fish=photos during dive as well as before/after
-			if (d->pictures.nr > 0)
+			if (!d->pictures.empty())
 				return getPhotoIcon(countPhotos(d));
 			break;
 		}
@@ -707,18 +706,15 @@ void DiveTripModelTree::populate()
 	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("populate data model"));
 	uiNotification(QObject::tr("start processing"));
-	for (int i = 0; i < divelog.dives->nr; ++i) {
-		dive *d = get_dive(i);
-		if (!d) // should never happen
-			continue;
-		update_cylinder_related_info(d);
+	for (auto &d: divelog.dives) {
+		divelog.dives.update_cylinder_related_info(*d);
 		if (d->hidden_by_filter)
 			continue;
-		dive_trip_t *trip = d->divetrip;
+		dive_trip *trip = d->divetrip;
 
 		// If this dive doesn't have a trip, add as top-level item.
 		if (!trip) {
-			items.emplace_back(d);
+			items.emplace_back(d.get());
 			continue;
 		}
 
@@ -728,16 +724,16 @@ void DiveTripModelTree::populate()
 				       { return item.d_or_t.trip == trip; });
 		if (it == items.end()) {
 			// We didn't find an entry for this trip -> add one
-			items.emplace_back(trip, d);
+			items.emplace_back(trip, d.get());
 		} else {
 			// We found the trip -> simply add the dive
-			it->dives.push_back(d);
+			it->dives.push_back(d.get());
 		}
 	}
 
 	// Remember the index of the current dive
 	oldCurrent = current_dive;
-	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives->nr));
+	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives.size()));
 }
 
 int DiveTripModelTree::rowCount(const QModelIndex &parent) const
@@ -817,7 +813,7 @@ dive *DiveTripModelTree::Item::getDive() const
 
 timestamp_t DiveTripModelTree::Item::when() const
 {
-	return d_or_t.trip ? trip_date(d_or_t.trip) : d_or_t.dive->when;
+	return d_or_t.trip ? d_or_t.trip->date() : d_or_t.dive->when;
 }
 
 dive_or_trip DiveTripModelTree::tripOrDive(const QModelIndex &index) const
@@ -846,7 +842,7 @@ void processByTrip(QVector<dive *> dives, Function action)
 {
 	// Sort lexicographically by trip then according to the dive_less_than() function.
 	std::sort(dives.begin(), dives.end(), [](const dive *d1, const dive *d2)
-		  { return d1->divetrip == d2->divetrip ? dive_less_than(d1, d2) : d1->divetrip < d2->divetrip; });
+		  { return d1->divetrip == d2->divetrip ? dive_less_than_ptr(d1, d2) : d1->divetrip < d2->divetrip; });
 
 	// Then, process the dives in batches by trip
 	int i, j; // Begin and end of batch
@@ -995,7 +991,7 @@ void DiveTripModelTree::addDivesToTrip(int trip, const QVector<dive *> &dives)
 	QModelIndex parent = createIndex(trip, 0, noParent);
 
 	addInBatches(items[trip].dives, dives,
-		     [](dive *d, dive *d2) { return dive_less_than(d, d2); }, // comp
+		     [](dive *d, dive *d2) { return dive_less_than_ptr(d, d2); }, // comp
 		     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
 			beginInsertRows(parent, idx, idx + to - from - 1);
 			items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
@@ -1199,10 +1195,10 @@ void DiveTripModelTree::divesDeletedInternal(dive_trip *trip, bool deleteTrip, c
 static QVector<dive *> getDivesForSite(struct dive_site *ds)
 {
 	QVector<dive *> diveSiteDives;
-	diveSiteDives.reserve(ds->dives.nr);
+	diveSiteDives.reserve(ds->dives.size());
 
-	for (int i = 0; i < ds->dives.nr; ++i)
-		diveSiteDives.push_back(ds->dives.dives[i]);
+	for (dive *d: ds->dives)
+		diveSiteDives.push_back(d);
 
 	return diveSiteDives;
 }
@@ -1485,12 +1481,11 @@ void DiveTripModelList::populate()
 	DiveFilter::instance()->reset(); // The data was reset - update filter status. TODO: should this really be done here?
 
 	// Fill model
-	items.reserve(divelog.dives->nr);
-	for (int i = 0; i < divelog.dives->nr; ++i) {
-		dive *d = get_dive(i);
+	items.reserve(divelog.dives.size());
+	for (auto &d: divelog.dives) {
 		if (!d || d->hidden_by_filter)
 			continue;
-		items.push_back(d);
+		items.push_back(d.get());
 	}
 
 	// Remember the index of the current dive
@@ -1555,9 +1550,9 @@ QVariant DiveTripModelList::data(const QModelIndex &index, int role) const
 
 void DiveTripModelList::addDives(QVector<dive *> &dives)
 {
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 	addInBatches(items, dives,
-		     &dive_less_than, // comp
+		     &dive_less_than_ptr, // comp
 		     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
 			beginInsertRows(QModelIndex(), idx, idx + to - from - 1);
 			items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
@@ -1567,7 +1562,7 @@ void DiveTripModelList::addDives(QVector<dive *> &dives)
 
 void DiveTripModelList::removeDives(QVector<dive *> dives)
 {
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 	processRangesZip(items, dives,
 			 std::equal_to<const dive *>(), // Condition: dive-pointers are equal
 			 [&](std::vector<dive *> &items, const QVector<dive *> &, int from, int to, int) -> int { // Action
@@ -1607,7 +1602,7 @@ void DiveTripModelList::diveSiteChanged(dive_site *ds, int field)
 void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = divesIn;
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 
 	ShownChange shownChange = updateShown(dives);
 	removeDives(shownChange.newHidden);
@@ -1641,7 +1636,7 @@ void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *
 	QVector<dive *> dives = visibleDives(divesIn);
 	if (dives.empty())
 		return;
-	std::sort(dives.begin(), dives.end(), dive_less_than);
+	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 
 	// See comment for DiveTripModelTree::divesTimeChanged above.
 	divesDeletedInternal(dives); // Use internal version to keep current dive
@@ -1696,9 +1691,9 @@ void DiveTripModelList::tripSelected(dive_trip *trip, dive *currentDive)
 	// In the list view, there are no trips, so simply transform this into
 	// a dive selection.
 	QVector<dive *> dives;
-	dives.reserve(trip->dives.nr);
-	for (int i = 0; i < trip->dives.nr; ++i)
-		dives.push_back(trip->dives.dives[i]);
+	dives.reserve(trip->dives.size());
+	for (auto dive: trip->dives)
+		dives.push_back(dive);
 
 	divesSelectedSlot(dives, currentDive, -1);
 }
@@ -1712,13 +1707,9 @@ static bool lessThanHelper(int diff1, int diff2)
 	return diff1 < 0 || (diff1 == 0 && diff2 < 0);
 }
 
-static int strCmp(const char *s1, const char *s2)
+static int strCmp(const std::string &s1, const std::string &s2)
 {
-	if (!s1)
-		return !s2 ? 0 : -1;
-	if (!s2)
-		return 1;
-	return QString::localeAwareCompare(QString(s1), QString(s2)); // TODO: avoid copy
+	return QString::localeAwareCompare(QString::fromStdString(s1), QString::fromStdString(s2)); // TODO: avoid copy
 }
 
 bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
@@ -1746,13 +1737,13 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 	case TEMPERATURE:
 		return lessThanHelper(d1->watertemp.mkelvin - d2->watertemp.mkelvin, row_diff);
 	case TOTALWEIGHT:
-		return lessThanHelper(total_weight(d1) - total_weight(d2), row_diff);
+		return lessThanHelper(d1->total_weight().grams - d2->total_weight().grams, row_diff);
 	case SUIT:
 		return lessThanHelper(strCmp(d1->suit, d2->suit), row_diff);
 	case CYLINDER:
-		if (d1->cylinders.nr > 0 && d2->cylinders.nr > 0)
-			return lessThanHelper(strCmp(get_cylinder(d1, 0)->type.description, get_cylinder(d2, 0)->type.description), row_diff);
-		return d1->cylinders.nr - d2->cylinders.nr < 0;
+		if (!d1->cylinders.empty() && !d2->cylinders.empty())
+			return lessThanHelper(strCmp(d1->cylinders[0].type.description, d2->cylinders[0].type.description), row_diff);
+		return d1->cylinders.size() < d2->cylinders.size();
 	case GAS:
 		return lessThanHelper(nitrox_sort_value(d1) - nitrox_sort_value(d2), row_diff);
 	case SAC:
@@ -1762,24 +1753,24 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 	case MAXCNS:
 		return lessThanHelper(d1->maxcns - d2->maxcns, row_diff);
 	case TAGS: {
-		std::string s1 = taglist_get_tagstring(d1->tag_list);
-		std::string s2 = taglist_get_tagstring(d2->tag_list);
-		int diff = strCmp(s1.c_str(), s2.c_str());
+		std::string s1 = taglist_get_tagstring(d1->tags);
+		std::string s2 = taglist_get_tagstring(d2->tags);
+		int diff = strCmp(s1, s2);
 		return lessThanHelper(diff, row_diff);
 	}
 	case PHOTOS:
 		return lessThanHelper(countPhotos(d1) - countPhotos(d2), row_diff);
 	case COUNTRY:
-		return lessThanHelper(strCmp(get_dive_country(d1), get_dive_country(d2)), row_diff);
+		return lessThanHelper(strCmp(d1->get_country(), d2->get_country()), row_diff);
 	case BUDDIES:
 		return lessThanHelper(strCmp(d1->buddy, d2->buddy), row_diff);
 	case DIVEGUIDE:
 		return lessThanHelper(strCmp(d1->diveguide, d2->diveguide), row_diff);
 	case LOCATION:
-		return lessThanHelper(strCmp(get_dive_location(d1), get_dive_location(d2)), row_diff);
+		return lessThanHelper(strCmp(d1->get_location(), d2->get_location()), row_diff);
 	case NOTES:
 		return lessThanHelper(strCmp(d1->notes, d2->notes), row_diff);
 	case DIVEMODE:
-		return lessThanHelper((int)d1->dc.divemode - (int)d2->dc.divemode, row_diff);
+		return lessThanHelper((int)d1->dcs[0].divemode - (int)d2->dcs[0].divemode, row_diff);
 	}
 }
