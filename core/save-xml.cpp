@@ -236,7 +236,10 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 {
 	int idx;
 
-	put_format(b, "  <sample time='%u:%02u min'", FRACTION_TUPLE(sample->time.seconds, 60));
+	if (sample->time.ms == 0)
+		put_format(b, "  <sample time='%u:%02u min'", FRACTION_TUPLE(sample->time.seconds, 60));
+	else
+		put_format(b, "  <sample time='%u:%02u.%03u min'", FRACTION_TUPLE(sample->time.seconds, 60), sample->time.ms);
 	put_milli(b, " depth='", sample->depth.mm, " m'");
 	if (sample->temperature.mkelvin && sample->temperature.mkelvin != old->temperature.mkelvin) {
 		put_temperature(b, sample->temperature, " temp='", " C'");

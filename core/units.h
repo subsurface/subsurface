@@ -80,6 +80,7 @@ typedef int64_t timestamp_t;
 typedef struct
 {
 	int32_t seconds; // durations up to 34 yrs
+	int32_t ms; // milliseconds
 } duration_t;
 
 static const duration_t zero_duration = { 0 };
@@ -346,6 +347,7 @@ extern double get_vertical_speed_units(unsigned int mms, int *frac, const char *
 
 extern depth_t units_to_depth(double depth);
 extern int units_to_sac(double volume);
+extern int parse_duration(const char *buffer, duration_t *time, bool dot_as_seperator);
 #ifdef __cplusplus
 }
 #endif
