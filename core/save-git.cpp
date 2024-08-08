@@ -968,7 +968,7 @@ static void format_one_filter_constraint(int preset_id, int constraint_id, struc
 		show_utf8(b, " rangemode=", mode, "");
 	}
 	if (constraint->negate)
-		put_format(b, " negate");
+		put_format(b, " negate=\"1\"");
 	std::string data = filter_constraint_data_to_string(constraint);
 	show_utf8(b, " data=", data.c_str(), "\n");
 }
