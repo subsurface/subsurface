@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "TabDiveInformation.h"
+#include "core/sample.h"
 #include "maintab.h"
 #include "ui_TabDiveInformation.h"
 #include "profile-widget/profilewidget2.h"
@@ -70,11 +71,11 @@ TabDiveInformation::~TabDiveInformation()
 
 void TabDiveInformation::clear()
 {
-	ui->sacText->clear();
-	ui->otuText->clear();
-	ui->maxcnsText->clear();
-	ui->oxygenHeliumText->clear();
-	ui->gasUsedText->clear();
+	ui->dive_info_0_label->clear();
+	ui->dive_info_1_label->clear();
+	ui->dive_info_2_label->clear();
+	ui->dive_info_3_label->clear();
+	ui->dive_info_4_label->clear();
 	ui->diveTimeText->clear();
 	ui->surfaceIntervalText->clear();
 	ui->maximumDepthText->clear();
@@ -119,8 +120,8 @@ void TabDiveInformation::updateWaterTypeWidget()
 void TabDiveInformation::updateProfile()
 {
 	dive *currentDive = parent.currentDive;
-	ui->maxcnsText->setText(QString("%L1\%").arg(currentDive->maxcns));
-	ui->otuText->setText(QString("%L1").arg(currentDive->otu));
+	ui->dive_info_3_label->setText(QString("%L1\%").arg(currentDive->maxcns));
+	ui->dive_info_4_label->setText(QString("%L1").arg(currentDive->otu));
 	ui->maximumDepthText->setText(get_depth_string(currentDive->maxdepth, true));
 	ui->averageDepthText->setText(get_depth_string(currentDive->meandepth, true));
 
@@ -149,13 +150,13 @@ void TabDiveInformation::updateProfile()
 		}
 	}
 	free(gases);
-	ui->gasUsedText->setText(volumes);
-	ui->oxygenHeliumText->setText(gaslist);
+	ui->dive_info_0_label->setText(gaslist);
+	ui->dive_info_1_label->setText(volumes);
 
 	ui->diveTimeText->setText(get_dive_duration_string(currentDive->duration.seconds, tr("h"), tr("min"), tr("sec"),
 			" ", currentDive->dc.divemode == FREEDIVE));
 
-	ui->sacText->setText(currentDive->cylinders.nr > 0 && mean[0] && currentDive->dc.divemode != CCR ? std::move(SACs) : QString());
+	ui->dive_info_2_label->setText(currentDive->cylinders.nr > 0 && mean[0] && currentDive->dc.divemode != CCR ? std::move(SACs) : QString());
 
 	if (currentDive->surface_pressure.mbar == 0) {
 		ui->atmPressVal->clear();			// If no atm pressure for dive then clear text box
@@ -210,6 +211,8 @@ void TabDiveInformation::showCurrentWidget(bool show, int position)
 	int layoutPosition = ui->diveInfoScrollAreaLayout->indexOf(ui->groupBox_current);
 	ui->diveInfoScrollAreaLayout->takeAt(layoutPosition);
 	ui->diveInfoScrollAreaLayout->addWidget(ui->groupBox_current, 6, position, 1, 1);
+	if (show)
+		updateDipDetails(ui->dive_info_2_label->text().toInt());
 }
 
 void TabDiveInformation::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
@@ -244,6 +247,40 @@ void TabDiveInformation::updateData(const std::vector<dive *> &, dive *currentDi
 		showCurrentWidget(true, 2);   // Show current star widget at 3rd position
 	else
 		showCurrentWidget(false, 0);  // Show current star widget at lefthand side
+
+	bool freedive = ui->diveType->currentIndex() == FREEDIVE;
+	if (freedive) {
+		ui->dive_info_label->setText("FREEDIVE");
+		ui->dive_info_0_groupbox->setTitle("Dips");
+		ui->dive_info_1_groupbox->setTitle("Best Dip");
+		ui->dive_info_2_groupbox->setTitle("Dip Selection");
+		ui->dive_info_3_groupbox->setTitle("Dip Time");
+		ui->dive_info_4_groupbox->setTitle("Surf Time");
+
+		ui->dip_details_label->setVisible(true);
+		ui->dive_info_2_button_prev->setVisible(true);
+		ui->dive_info_2_button_next->setVisible(true);
+
+		ui->dive_info_0_label->setText(QString("%1").arg(currentDive->dips->finished));
+		if (currentDive->dips->best_dip != -1)
+			ui->dive_info_1_label->setText(
+				get_dive_duration_string(currentDive->dips->dips[currentDive->dips->best_dip].dip_time.seconds,
+							 tr("h"), tr("min"), tr("sec"), " ", true));
+		else
+			ui->dive_info_1_label->setText(QString("-"));
+		updateDipDetails(1);
+	} else {
+		ui->dive_info_label->setText("GAS");
+		ui->dive_info_0_groupbox->setTitle("Gas name");
+		ui->dive_info_1_groupbox->setTitle("Gas consumed");
+		ui->dive_info_2_groupbox->setTitle("SAC");
+		ui->dive_info_3_groupbox->setTitle("CNS");
+		ui->dive_info_4_groupbox->setTitle("OTU");
+
+		ui->dip_details_label->setVisible(false);
+		ui->dive_info_2_button_prev->setVisible(false);
+		ui->dive_info_2_button_next->setVisible(false);
+	}
 }
 
 void TabDiveInformation::updateUi(QString titleColor)
@@ -469,4 +506,39 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 		if (atmpress.mbar)
 			divesEdited(Command::editAtmPress(atmpress.mbar, false));      // and save the pressure for undo
 	}
+}
+
+void TabDiveInformation::on_dive_info_2_button_next_clicked()
+{
+	int cur = ui->dive_info_2_label->text().toInt();
+	cur++;
+	updateDipDetails(cur);
+}
+
+void TabDiveInformation::on_dive_info_2_button_prev_clicked()
+{
+	int cur = ui->dive_info_2_label->text().toInt();
+	cur--;
+	updateDipDetails(cur);
+}
+
+void TabDiveInformation::updateDipDetails(int current_dip)
+{
+	dive *currentDive = parent.currentDive;
+	// allow wrapping around
+	if (current_dip > (int)currentDive->dips->finished)
+		current_dip = 1;
+	else if (current_dip < 1)
+		current_dip = currentDive->dips->finished;
+	ui->dive_info_2_label->setText(QString("%1").arg(current_dip));
+	// all our arrays are zero-based
+	current_dip--;
+	struct dip *dip = &currentDive->dips->dips[current_dip];
+	int diptime = dip->dip_time.seconds;
+	int surftime = dip->start->time.seconds;
+	if (current_dip > 0) {
+		surftime -= dip[-1].end->time.seconds;
+	}
+	ui->dive_info_3_label->setText(get_dive_duration_string(diptime, tr("h"), tr("min"), tr("sec"), " ", true));
+	ui->dive_info_4_label->setText(get_dive_duration_string(surftime, tr("h"), tr("min"), tr("sec"), " ", true));
 }

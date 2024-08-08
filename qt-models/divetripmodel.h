@@ -45,6 +45,7 @@ public:
 		LOCATION,
 		NOTES,
 		DIVEMODE,
+		BESTDIP,
 		COLUMNS
 	};
 
