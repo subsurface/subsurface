@@ -19,6 +19,8 @@
     </xsl:for-each>
   </xsl:variable>
 
+  <xsl:variable name="test" select="''" />
+
   <xsl:variable name="eventmap">
     <!--entry key="safety stop (mandatory)"></entry-->
     <!--entry key="deco"></entry-->
@@ -199,7 +201,7 @@
           <repetitiongroup>
             <xsl:attribute name="id">
               <xsl:choose>
-                <xsl:when test="$test != ''">
+                <xsl:when test="$test = ''">
                   <xsl:value-of select="generate-id(.)" />
                 </xsl:when>
                 <xsl:otherwise>
