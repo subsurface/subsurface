@@ -320,7 +320,7 @@ struct units {
  * And kg instead of g.
  */
 #define SI_UNITS 																\
-        {																	\
+        { \
 	        .length = units::METERS, .volume = units::LITER, .pressure = units::BAR, .temperature = units::CELSIUS, .weight = units::KG,	\
 		.vertical_speed_time = units::MINUTES, .duration_units = units::MIXED, .show_units_table = false				\
         }
