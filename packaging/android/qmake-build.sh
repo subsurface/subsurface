@@ -2,7 +2,7 @@
 #
 # build a multi architecture package for Android
 #
-# this requires Qt5.14 or newer with matching NDK
+# this requires Qt6.7 or newer with matching NDK
 #
 # the scripts/docker/android-build-container/android-build-setup.sh sets up an environment that works for this
 
@@ -111,16 +111,16 @@ if [ "$versionOnly" = "1" ] ; then
 fi
 
 # pick the Qt setup and show the configuration info
-if [ -n "${QT5_ANDROID+X}" ] ; then
-	echo "Using Qt5 in $QT5_ANDROID"
+if [ -n "${QT6_ANDROID+X}" ] ; then
+	echo "Using Qt6 in $QT6_ANDROID"
 elif [ -d "$SUBSURFACE_SOURCE/../${LATEST_QT}" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../${LATEST_QT}
+	export QT6_ANDROID=$SUBSURFACE_SOURCE/../${LATEST_QT}
 else
-	echo "Cannot find Qt 5.12 or newer under $SUBSURFACE_SOURCE/.."
+	echo "Cannot find Qt 6.7 or newer under $SUBSURFACE_SOURCE/.."
 	exit 1
 fi
 
-QMAKE=$QT5_ANDROID/android/bin/qmake
+QMAKE=$QT6_ANDROID/android_arm64_v8a/bin/qmake
 echo $QMAKE
 $QMAKE -query
 
@@ -148,7 +148,7 @@ popd
 
 # build default architectures, or the given one?
 if [ "$ARCHITECTURES" = "" ] ; then
-	ARCHITECTURES="armv7a aarch64"
+	ARCHITECTURES="aarch64"
 fi
 
 # it would of course be too easy to use these terms consistently, so let's not
@@ -161,6 +161,7 @@ for ARCH in $ARCHITECTURES ; do
 	fi
 	BUILD_ABIS="$BUILD_ABIS $ANDROID_ABI"
 done
+BUILD_ABIS="arm64-v8a"
 
 # if this isn't just a quick rebuild, pull kirigami, icons, etc, and finally build the Googlemaps plugin
 if [ "$QUICK" = "" ] ; then
@@ -170,22 +171,22 @@ if [ "$QUICK" = "" ] ; then
 
 	# build google maps plugin
 	# this is the easy one as it uses qmake which ensures things get built for all platforms, etc
-	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
+	#"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
 	# but unfortunately, on Android (and apparently only on Android) the naming pattern for geoservice
 	# plugins has changed
-	pushd googlemaps
-	sed -i 's/TARGET = qtgeoservices_googlemaps/TARGET = plugins_geoservices_qtgeoservices_googlemaps/' googlemaps.pro
-	popd
-	QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
-	GOOGLEMAPS_BIN=libplugins_geoservices_qtgeoservices_googlemaps_arm64-v8a.so
-	if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
-	    mkdir -p googlemaps-build
-	    pushd googlemaps-build
-	    $QMAKE ANDROID_ABIS="$BUILD_ABIS" ../googlemaps/googlemaps.pro
-	    make -j4
-            make install
-	    popd
-	fi
+	#pushd googlemaps
+	#sed -i 's/TARGET = qtgeoservices_googlemaps/TARGET = plugins_geoservices_qtgeoservices_googlemaps/' googlemaps.pro
+	#popd
+	#QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
+	#GOOGLEMAPS_BIN=libplugins_geoservices_qtgeoservices_googlemaps_arm64-v8a.so
+	#if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
+	#    mkdir -p googlemaps-build
+	#    pushd googlemaps-build
+	#    $QMAKE ANDROID_ABIS="$BUILD_ABIS" ../googlemaps/googlemaps.pro
+	#    make -j4
+        #    make install
+	#    popd
+	#fi
 fi
 
 # autoconf based libraries are harder
@@ -222,37 +223,37 @@ for ARCH in $ARCHITECTURES ; do
 	mkdir -p "$PREFIX"/lib/pkgconfig
 	export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
 
-	if [ "$QUICK" = "" ] ; then
-		"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . openssl
-		if [ ! -e "$PKG_CONFIG_PATH/libssl.pc" ] ; then
+	#if [ "$QUICK" = "" ] ; then
+		#"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . openssl
+		#if [ ! -e "$PKG_CONFIG_PATH/libssl.pc" ] ; then
 			# openssl build fails with these set
-			export SYSROOT=""
-			export CFLAGS=""
-			export CPPFLAGS=""
-			export CXXFLAGS=""
+		#	export SYSROOT=""
+		#	export CFLAGS=""
+		#	export CPPFLAGS=""
+		#	export CXXFLAGS=""
 
-			mkdir -p openssl-build-"$ARCH"
-			cp -r openssl/* openssl-build-"$ARCH"
-			pushd openssl-build-"$ARCH"
-			perl -pi -e 's/-mandroid//g' Configure
-			./Configure shared android-"$OPENSSL_ARCH" no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm \
-			--prefix="$PREFIX" -DOPENSSL_NO_UI_CONSOLE -DOPENSSL_NO_STDIO \
-			-D__ANDROID_API__=$ANDROID_PLATFORM_LEVEL
-			make depend
-			# follow the suggestions here: https://doc.qt.io/qt-5/android-openssl-support.html
-			make SHLIB_VERSION_NUMBER= SHLIB_EXT=_1_1.so build_libs
+		#	mkdir -p openssl-build-"$ARCH"
+		#	cp -r openssl/* openssl-build-"$ARCH"
+		#	pushd openssl-build-"$ARCH"
+		#	perl -pi -e 's/-mandroid//g' Configure
+		#	./Configure shared android-"$OPENSSL_ARCH" no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm \
+		#	--prefix="$PREFIX" -DOPENSSL_NO_UI_CONSOLE -DOPENSSL_NO_STDIO \
+		#	-D__ANDROID_API__=$ANDROID_PLATFORM_LEVEL
+		#	make depend
+		#	# follow the suggestions here: https://doc.qt.io/qt-5/android-openssl-support.html
+		#	make SHLIB_VERSION_NUMBER= SHLIB_EXT=_1_1.so build_libs
 
-			cp -RL include/openssl $PREFIX/include/openssl
-			cp libcrypto.a $PREFIX/lib
-			cp libcrypto_1_1.so* $PREFIX/lib
-			cp libssl.a $PREFIX/lib
-			cp libssl_1_1.so* $PREFIX/lib
-			cp *.pc $PKG_CONFIG_PATH
+		#	cp -RL include/openssl $PREFIX/include/openssl
+		#	cp libcrypto.a $PREFIX/lib
+		#	cp libcrypto_1_1.so* $PREFIX/lib
+		#	cp libssl.a $PREFIX/lib
+		#	cp libssl_1_1.so* $PREFIX/lib
+		#	cp *.pc $PKG_CONFIG_PATH
 
-			popd
-		fi
+		#	popd
+		#fi
 
-	fi
+	#fi
 
 	# autoconf seems to get lost without this -- but openssl fails if these are set
 	SYSROOT="$ANDROID_NDK_ROOT"/toolchains/llvm/prebuilt/linux-x86_64/sysroot
@@ -261,15 +262,15 @@ for ARCH in $ARCHITECTURES ; do
 	CXXFLAGS="--sysroot=${SYSROOT} -fPIC"
 
 	if [ "$QUICK" = "" ] ; then
-		"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . sqlite
-		if [ ! -e "$PKG_CONFIG_PATH/sqlite3.pc" ] ; then
-			mkdir -p sqlite-build-"$ARCH"
-			pushd sqlite-build-"$ARCH"
-			../sqlite/configure --host="$TARGET" --prefix="$PREFIX" --enable-static --disable-shared
-			make
-			make install
-			popd
-		fi
+		#"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . sqlite
+		#if [ ! -e "$PKG_CONFIG_PATH/sqlite3.pc" ] ; then
+		#	mkdir -p sqlite-build-"$ARCH"
+		#	pushd sqlite-build-"$ARCH"
+		#	../sqlite/configure --host="$TARGET" --prefix="$PREFIX" --enable-static --disable-shared
+		#	make
+		#	make install
+		#	popd
+		#fi
 
 		"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxml2
 		if [ ! -e libxml2/configure ] ; then
@@ -342,8 +343,8 @@ for ARCH in $ARCHITECTURES ; do
 				-DCMAKE_INSTALL_PREFIX="$PREFIX" \
 				-DCURL=OFF \
 				-DUSE_SSH=OFF \
-				-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl_1_1.so \
-				-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto_1_1.so \
+				-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl_3.so \
+				-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto_3.so \
 				-DOPENSSL_INCLUDE_DIR="$PREFIX"/include \
 				-D_OPENSSL_VERSION="${OPENSSL_VERSION}" \
 				-DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
@@ -414,7 +415,7 @@ if [ "$QUICK" = "" ] ; then
 	pushd "$SUBSURFACE_SOURCE"/packaging/android
 	mkdir -p translation-assets
 	for src in $SRCS; do
-		"$QT5_ANDROID"/android/bin/lrelease "$SUBSURFACE_SOURCE"/translations/"$src" -qm translation-assets/"${src/.ts/.qm}"
+		"$QT6_ANDROID"/android/bin/lrelease "$SUBSURFACE_SOURCE"/translations/"$src" -qm translation-assets/"${src/.ts/.qm}"
 	done
 	popd
 fi

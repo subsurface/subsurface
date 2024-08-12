@@ -27,6 +27,7 @@ cd "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
 cmake -DSHARE_INSTALL_DIR=.. ../extra-cmake-modules
 make install
 
+exit
 # finally, add our patches to Kirigami
 cd "$SRC"/subsurface/mobile-widgets/3rdparty
 PATCHES=$(echo 00*.patch)
