@@ -246,6 +246,7 @@ static void add_default_tank_infos(std::vector<tank_info> &table)
 	add_tank_info_metric(table, "12ℓ 300 bar", 12000, 300);
 	add_tank_info_metric(table, "15ℓ 200 bar", 15000, 200);
 	add_tank_info_metric(table, "15ℓ 232 bar", 15000, 232);
+	add_tank_info_metric(table, "D7 232 bar", 14000, 232);
 	add_tank_info_metric(table, "D7 300 bar", 14000, 300);
 	add_tank_info_metric(table, "D8.5 232 bar", 17000, 232);
 	add_tank_info_metric(table, "D12 232 bar", 24000, 232);
