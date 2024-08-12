@@ -3,12 +3,11 @@ import QtQuick 2.6
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.1
 import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
-import QtGraphicalEffects 1.0
+import org.kde.kirigami as Kirigami
+import Qt5Compat.GraphicalEffects
 import QtQuick.Templates 2.0 as QtQuickTemplates
 
 Kirigami.ApplicationWindow {

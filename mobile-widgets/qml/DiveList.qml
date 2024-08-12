@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
-import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
-import org.kde.kirigami 2.5 as Kirigami
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
+import QtQuick.Window
+import QtQuick.Dialogs
+import org.kde.kirigami as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.ScrollablePage {
