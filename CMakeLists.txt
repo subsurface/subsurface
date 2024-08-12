@@ -204,7 +204,7 @@ if(QT_VERSION_MAJOR STREQUAL "6")
 	# as of Qt 6.3 by default QtLocation isn't included, but one can
 	# build the module from source; so let's look if the user has installed
 	# it (or if a newer version is out that includes it, anyway)
-	find_package(Qt6 COMPONENTS Location)
+	find_package(Qt6 COMPONENTS Location Core Widgets)
 	if(Qt6Location_FOUND)
 		message(STATUS "Found Qt6Location")
 		LIST(APPEND QT_EXTRA_COMPONENTS Location)
@@ -440,7 +440,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	SET(QML_IMPORT_PATH ${QML_IMPORT_PATH} ${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src ${CMAKE_SOURCE_DIR}/mobile-widgets/qml)
 	add_subdirectory(mobile-widgets/3rdparty)
 	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src)
-	include(${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/KF5Kirigami2Macros.cmake)
+	include(${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/KF6KirigamiMacros.cmake)
 
 	set(MOBILE_SRC
 		subsurface-mobile-main.cpp
@@ -450,7 +450,8 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		qt_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
 		qt_add_resources(MOBILE_RESOURCES profile.qrc)
 		qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
-		qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
+		# that seems to no longer be the case for Kirigami 6.5
+		# qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
 	else()
 		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
 		qt5_add_resources(MOBILE_RESOURCES profile.qrc)
@@ -473,7 +474,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_commands
 		subsurface_corelib
 		subsurface_stats
-		kirigamiplugin
+		Kirigamiplugin
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
