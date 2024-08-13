@@ -259,7 +259,7 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 				cur_pr = lrint(interpolate.start + magic * interpolate.acc_pressure_time);
 			}
 		} else {
-			double magic = (interpolate.end - interpolate.start) /  (it->t_end - it->t_start);
+			double magic = (interpolate.end - interpolate.start) /  static_cast<double>(it->t_end - it->t_start);
 			cur_pr = lrint(it->start + magic * (entry.sec - it->t_start));
 		}
 		set_plot_pressure_data(pi, i, INTERPOLATED_PR, cyl, cur_pr); // and store the interpolated data in plot_info
