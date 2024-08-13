@@ -46,6 +46,10 @@ struct device_data_t {
 	void *androidUsbDeviceDescriptor = nullptr;
 	device_data_t();
 	~device_data_t();
+	device_data_t(const device_data_t &) = default;
+	device_data_t(device_data_t &&) = default;
+	device_data_t &operator=(const device_data_t &) = default;
+	device_data_t &operator=(device_data_t &&) = default;
 };
 
 const char *errmsg (dc_status_t rc);
