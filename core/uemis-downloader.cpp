@@ -1293,8 +1293,10 @@ std::string do_uemis_import(device_data_t *data)
 			/* process the buffer we have assembled */
 			if (!process_raw_buffer(data, deviceidnr, realmbuf, newmax, NULL)) {
 				/* if no dives were downloaded, mark end appropriately */
-				if (end == -2)
-					end = start - 1;
+				/* Might be related to the "clean up mbuf" below.
+				 * Disable for now, since end will be overwritten anyway */
+				//if (end == -2)
+					//end = start - 1;
 				success = false;
 			}
 			if (once) {
