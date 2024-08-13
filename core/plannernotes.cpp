@@ -219,7 +219,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			continue;
 
 		/* Store pointer to last entered datapoint for minimum gas calculation */
-		if (dp->entered && !nextdp->entered)
+		if (dp->entered && nextdp && !nextdp->entered)
 			lastbottomdp = dp;
 
 		if (plan_verbatim) {
