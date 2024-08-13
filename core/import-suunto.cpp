@@ -293,7 +293,8 @@ int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *, int, struct
 	retval = sqlite3_exec(handle, get_dives, &dm4_dive, &state, &err);
 
 	if (retval != SQLITE_OK) {
-		report_info("Database query failed '%s'.", url);
+		report_info("Database query failed '%s': %s.", url, err);
+		sqlite3_free(err);
 		return 1;
 	}
 
@@ -564,7 +565,8 @@ int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *, int, struct
 	retval = sqlite3_exec(handle, get_dives, &dm5_dive, &state, &err);
 
 	if (retval != SQLITE_OK) {
-		report_info("Database query failed '%s'.", url);
+		report_info("Database query failed '%s': %s.", url, err);
+		sqlite3_free(err);
 		return 1;
 	}
 
