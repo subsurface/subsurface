@@ -303,17 +303,18 @@ QMLManager::QMLManager() :
 	// make sure we know if the current cloud repo has been successfully synced
 	syncLoadFromCloud();
 
-	memset(&m_copyPasteDive, 0, sizeof(m_copyPasteDive));
-	memset(&what, 0, sizeof(what));
-
 	// Let's set some defaults to be copied so users don't necessarily need
 	// to know how to configure this
-	what.diveguide = true;
-	what.buddy = true;
-	what.suit = true;
-	what.tags = true;
-	what.cylinders = true;
-	what.weights = true;
+	m_pasteDiveSite = false;
+	m_pasteNotes = false;
+	m_pasteDiveGuide = true;
+	m_pasteBuddy = true;
+	m_pasteSuit = true;
+	m_pasteRating = false;
+	m_pasteVisibility = false;
+	m_pasteTags = true;
+	m_pasteCylinders = true;
+	m_pasteWeights = true;
 
 	// monitor when dives changed - but only in verbose mode
 	// careful - changing verbose at runtime isn't enough (of course that could be added if we want it)
@@ -1607,104 +1608,40 @@ void QMLManager::toggleDiveInvalid(int id)
 	changesNeedSaving();
 }
 
-bool QMLManager::toggleDiveSite(bool toggle)
+template <typename T>
+static void assign_paste_data(bool copy, const T &src, std::optional<T> &dest)
 {
-	if (toggle)
-		what.divesite = what.divesite ? false : true;
-
-	return what.divesite;
-}
-
-bool QMLManager::toggleNotes(bool toggle)
-{
-	if (toggle)
-		what.notes = what.notes ? false : true;
-
-	return what.notes;
-}
-
-bool QMLManager::toggleDiveGuide(bool toggle)
-{
-	if (toggle)
-		what.diveguide = what.diveguide ? false : true;
-
-	return what.diveguide;
-}
-
-bool QMLManager::toggleBuddy(bool toggle)
-{
-	if (toggle)
-		what.buddy = what.buddy ? false : true;
-
-	return what.buddy;
-}
-
-bool QMLManager::toggleSuit(bool toggle)
-{
-	if (toggle)
-		what.suit = what.suit ? false : true;
-
-	return what.suit;
-}
-
-bool QMLManager::toggleRating(bool toggle)
-{
-	if (toggle)
-		what.rating = what.rating ? false : true;
-
-	return what.rating;
-}
-
-bool QMLManager::toggleVisibility(bool toggle)
-{
-	if (toggle)
-		what.visibility = what.visibility ? false : true;
-
-	return what.visibility;
-}
-
-bool QMLManager::toggleTags(bool toggle)
-{
-	if (toggle)
-		what.tags = what.tags ? false : true;
-
-	return what.tags;
-}
-
-bool QMLManager::toggleCylinders(bool toggle)
-{
-	if (toggle)
-		what.cylinders = what.cylinders ? false : true;
-
-	return what.cylinders;
-}
-
-bool QMLManager::toggleWeights(bool toggle)
-{
-	if (toggle)
-		what.weights = what.weights ? false : true;
-
-	return what.weights;
+	if (copy)
+		dest = src;
+	else
+		dest = {};
 }
 
 void QMLManager::copyDiveData(int id)
 {
-	m_copyPasteDive = divelog.dives.get_by_uniq_id(id);
-	if (!m_copyPasteDive) {
+	const dive *d = divelog.dives.get_by_uniq_id(id);
+	if (!d) {
 		appendTextToLog("trying to copy non-existing dive");
 		return;
 	}
+
+	assign_paste_data(m_pasteDiveSite, d->dive_site ? d->dive_site->uuid : uint32_t(), paste_data.divesite);
+	assign_paste_data(m_pasteNotes, d->notes, paste_data.notes);
+	assign_paste_data(m_pasteDiveGuide, d->diveguide, paste_data.diveguide);
+	assign_paste_data(m_pasteBuddy, d->buddy, paste_data.buddy);
+	assign_paste_data(m_pasteSuit, d->suit, paste_data.suit);
+	assign_paste_data(m_pasteRating, d->rating, paste_data.rating);
+	assign_paste_data(m_pasteVisibility, d->visibility, paste_data.visibility);
+	assign_paste_data(m_pasteTags, d->tags, paste_data.tags);
+	assign_paste_data(m_pasteCylinders, d->cylinders, paste_data.cylinders);
+	assign_paste_data(m_pasteWeights, d->weightsystems, paste_data.weights);
 
 	setNotificationText("Copy");
 }
 
 void QMLManager::pasteDiveData(int id)
 {
-	if (!m_copyPasteDive) {
-		appendTextToLog("dive to paste is not selected");
-		return;
-	}
-	Command::pasteDives(m_copyPasteDive, what);
+	Command::pasteDives(paste_data);
 	changesNeedSaving();
 }
 

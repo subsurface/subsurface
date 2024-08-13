@@ -43,6 +43,17 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString progressMessage MEMBER m_progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
 	Q_PROPERTY(bool btEnabled MEMBER m_btEnabled WRITE setBtEnabled NOTIFY btEnabledChanged)
 
+	Q_PROPERTY(bool pasteDiveSite MEMBER m_pasteDiveSite)
+	Q_PROPERTY(bool pasteNotes MEMBER m_pasteNotes)
+	Q_PROPERTY(bool pasteDiveGuide MEMBER m_pasteDiveGuide)
+	Q_PROPERTY(bool pasteBuddy MEMBER m_pasteBuddy)
+	Q_PROPERTY(bool pasteSuit MEMBER m_pasteSuit)
+	Q_PROPERTY(bool pasteRating MEMBER m_pasteRating)
+	Q_PROPERTY(bool pasteVisibility MEMBER m_pasteVisibility)
+	Q_PROPERTY(bool pasteTags MEMBER m_pasteTags)
+	Q_PROPERTY(bool pasteCylinders MEMBER m_pasteCylinders)
+	Q_PROPERTY(bool pasteWeights MEMBER m_pasteWeights)
+
 	Q_PROPERTY(QString DC_vendor READ DC_vendor WRITE DC_setVendor)
 	Q_PROPERTY(QString DC_product READ DC_product WRITE DC_setProduct)
 	Q_PROPERTY(QString DC_devName READ DC_devName WRITE DC_setDevName)
@@ -187,16 +198,6 @@ public slots:
 	void toggleDiveInvalid(int id);
 	void copyDiveData(int id);
 	void pasteDiveData(int id);
-	bool toggleDiveSite(bool toggle);
-	bool toggleNotes(bool toggle);
-	bool toggleDiveGuide(bool toggle);
-	bool toggleBuddy(bool toggle);
-	bool toggleSuit(bool toggle);
-	bool toggleRating(bool toggle);
-	bool toggleVisibility(bool toggle);
-	bool toggleTags(bool toggle);
-	bool toggleCylinders(bool toggle);
-	bool toggleWeights(bool toggle);
 	void undo();
 	void redo();
 	int addDive();
@@ -250,11 +251,21 @@ private:
 	void updateAllGlobalLists();
 	void updateHaveLocalChanges(bool status);
 
+	bool m_pasteDiveSite;
+	bool m_pasteNotes;
+	bool m_pasteDiveGuide;
+	bool m_pasteBuddy;
+	bool m_pasteSuit;
+	bool m_pasteRating;
+	bool m_pasteVisibility;
+	bool m_pasteTags;
+	bool m_pasteCylinders;
+	bool m_pasteWeights;
+
 	location_t getGps(QString &gps);
 	QString m_pluggedInDeviceName;
 	bool m_showNonDiveComputers;
-	struct dive *m_copyPasteDive = NULL;
-	struct dive_components what;
+	struct dive_paste_data paste_data;
 	QAction *undoAction;
 
 	bool verifyCredentials(QString email, QString password, QString pin);

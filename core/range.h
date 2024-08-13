@@ -181,11 +181,21 @@ bool range_contains(const Range &v, const Element &item)
 
 // Insert into an already sorted range
 template<typename Range, typename Element, typename Comp>
-void range_insert_sorted(Range &v, Element &item, Comp &comp)
+void range_insert_sorted(Range &v, Element &item, Comp comp)
 {
 	auto it = std::lower_bound(std::begin(v), std::end(v), item,
 				   [&comp](auto &a, auto &b) { return comp(a, b) < 0; });
 	v.insert(it, std::move(item));
+}
+
+// Insert into an already sorted range, but don't add an item twice
+template<typename Range, typename Element, typename Comp>
+void range_insert_sorted_unique(Range &v, Element &item, Comp comp)
+{
+	auto it = std::lower_bound(std::begin(v), std::end(v), item,
+				   [&comp](auto &a, auto &b) { return comp(a, b) < 0; });
+	if (it == std::end(v) || comp(item, *it) != 0)
+		v.insert(it, std::move(item));
 }
 
 template<typename Range, typename Element>

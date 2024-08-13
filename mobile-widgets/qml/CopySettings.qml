@@ -38,11 +38,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleDiveSite(false)
+				checked: manager.pasteDiveSite
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleDiveSite(true)
-				}
 			}
 			Controls.Label {
 				text: qsTr("Notes")
@@ -50,11 +47,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleNotes(false)
+				checked: manager.pasteNotes
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleNotes(true)
-				}
 			}
 			Controls.Label {
 				text: qsTr("Dive guide")
@@ -62,11 +56,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleDiveGuide(false)
+				checked: manager.pasteDiveGuide
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleDiveGuide(true)
-				}
 			}
 			Controls.Label {
 				text: qsTr("Buddy")
@@ -74,11 +65,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleBuddy(false)
+				checked: manager.pasteBuddy
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleBuddy(true)
-				}
 			}
 			Controls.Label {
 				text: qsTr("Suit")
@@ -86,11 +74,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleSuit(false)
+				checked: manager.pasteSuit
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleSuit(true)
-				}
 			}
 			Controls.Label {
 				text: qsTr("Rating")
@@ -98,11 +83,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleRating(false)
+				checked: manager.pasteRating
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleRating(true)
-				}
 			}
 			Controls.Label {
 				text: qsTr("Visibility")
@@ -110,11 +92,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleVisibility(false)
+				checked: manager.pasteVisibility
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleVisibility(true)
-				}
 			}
 			Controls.Label {
 				text: qsTr("Tags")
@@ -122,11 +101,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleTags(false)
+				checked: manager.pasteTags
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleTags(true)
-				}
 			}
 			Controls.Label {
 				text: qsTr("Cylinders")
@@ -134,11 +110,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleCylinders(false)
+				checked: manager.pasteCylinders
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleCylinders(true)
-				}
 			}
 			Controls.Label {
 				text: qsTr("Weights")
@@ -146,11 +119,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.toggleWeights(false)
+				checked: manager.pasteWeights
 				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.toggleWeights(true)
-				}
 			}
 		}
 

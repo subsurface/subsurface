@@ -7,7 +7,6 @@ class QAbstractButton;
 class QNetworkReply;
 class FilterModelBase;
 struct dive;
-struct dive_components;
 
 #include "core/units.h"
 #include <QWidget>
@@ -20,7 +19,6 @@ struct dive_components;
 #include "ui_shifttimes.h"
 #include "ui_shiftimagetimes.h"
 #include "ui_urldialog.h"
-#include "ui_divecomponentselection.h"
 #include "ui_listfilter.h"
 #include "ui_addfilterpreset.h"
 
@@ -100,20 +98,6 @@ public:
 	QString url() const;
 private:
 	Ui::URLDialog ui;
-};
-
-class DiveComponentSelection : public QDialog {
-	Q_OBJECT
-public:
-	explicit DiveComponentSelection(QWidget *parent, struct dive *target, struct dive_components *_what);
-private
-slots:
-	void buttonClicked(QAbstractButton *button);
-
-private:
-	Ui::DiveComponentSelectionDialog ui;
-	struct dive *targetDive;
-	struct dive_components *what;
 };
 
 class AddFilterPresetDialog : public QDialog {

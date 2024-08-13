@@ -613,41 +613,51 @@ QString EditDiveGuide::fieldName() const
 	return Command::Base::tr("dive guide");
 }
 
-PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dIn)
+template <typename T>
+ptrdiff_t comp_ptr(T *v1, T *v2)
 {
-	if (what.notes)
-		notes = data->notes;
-	if (what.diveguide)
-		diveguide = data->diveguide;
-	if (what.buddy)
-		buddy = data->buddy;
-	if (what.suit)
-		suit = data->suit;
-	if (what.rating)
-		rating = data->rating;
-	if (what.visibility)
-		visibility = data->visibility;
-	if (what.wavesize)
-		wavesize = data->wavesize;
-	if (what.current)
-		current = data->current;
-	if (what.surge)
-		surge = data->surge;
-	if (what.chill)
-		chill = data->chill;
-	if (what.divesite)
-		divesite = data->dive_site;
-	if (what.tags)
-		tags = data->tags;
-	if (what.cylinders) {
-		cylinders = data->cylinders;
+	return v1 - v2;
+}
+
+PasteState::PasteState(dive &d, const dive_paste_data &data, std::vector<dive_site *> &dive_sites_changed) : d(d)
+{
+	notes = data.notes;
+	diveguide = data.diveguide;
+	buddy = data.buddy;
+	suit = data.suit;
+	rating = data.rating;
+	visibility = data.visibility;
+	wavesize = data.wavesize;
+	current = data.current;
+	surge = data.surge;
+	chill = data.chill;
+	if (data.divesite.has_value()) {
+		if (data.divesite) {
+			// In the undo system, we can turn the uuid into a pointer,
+			// because everything is serialized.
+			dive_site *ds = divelog.sites.get_by_uuid(*data.divesite);
+			if (ds)
+				divesite = ds;
+		} else {
+			divesite = nullptr;
+		}
+	}
+	if (divesite.has_value() && *divesite != d.dive_site) {
+		if (d.dive_site)
+			range_insert_sorted_unique(dive_sites_changed, d.dive_site, comp_ptr<dive_site>); // Use <=> once on C++20
+		if (*divesite)
+			range_insert_sorted_unique(dive_sites_changed, *divesite, comp_ptr<dive_site>); // Use <=> once on C++20
+	}
+	tags = data.tags;
+	if (data.cylinders.has_value()) {
+		cylinders = data.cylinders;
 		// Paste cylinders is "special":
 		// 1) For cylinders that exist in the destination dive we keep the gas-mix and pressures.
 		// 2) For cylinders that do not yet exist in the destination dive, we set the pressures to 0, i.e. unset.
 		//    Moreover, for these we set the manually_added flag, because they weren't downloaded from a DC.
-		for (size_t i = 0; i < d->cylinders.size() && i < cylinders.size(); ++i) {
-			const cylinder_t &src = d->cylinders[i];
-			cylinder_t &dst = cylinders[i];
+		for (size_t i = 0; i < data.cylinders->size() && i < cylinders->size(); ++i) {
+			const cylinder_t &src = (*data.cylinders)[i];
+			cylinder_t &dst = (*cylinders)[i];
 			dst.gasmix = src.gasmix;
 			dst.start = src.start;
 			dst.end = src.end;
@@ -661,8 +671,8 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 			dst.bestmix_o2 = src.bestmix_o2;
 			dst.bestmix_he = src.bestmix_he;
 		}
-		for (size_t i = d->cylinders.size(); i < cylinders.size(); ++i) {
-			cylinder_t &cyl = cylinders[i];
+		for (size_t i = data.cylinders->size(); i < cylinders->size(); ++i) {
+			cylinder_t &cyl = (*cylinders)[i];
 			cyl.start.mbar = 0;
 			cyl.end.mbar = 0;
 			cyl.sample_start.mbar = 0;
@@ -670,61 +680,62 @@ PasteState::PasteState(dive *dIn, const dive *data, dive_components what) : d(dI
 			cyl.manually_added = true;
 		}
 	}
-	if (what.weights)
-		weightsystems = data->weightsystems;
-	if (what.number)
-		number = data->number;
-	if (what.when)
-		when = data->when;
+	weightsystems = data.weights;
+	number = data.number;
+	when = data.when;
 }
 
 PasteState::~PasteState()
 {
 }
 
-void PasteState::swap(dive_components what)
+void PasteState::swap()
 {
-	if (what.notes)
-		std::swap(notes, d->notes);
-	if (what.diveguide)
-		std::swap(diveguide, d->diveguide);
-	if (what.buddy)
-		std::swap(buddy, d->buddy);
-	if (what.suit)
-		std::swap(suit, d->suit);
-	if (what.rating)
-		std::swap(rating, d->rating);
-	if (what.visibility)
-		std::swap(visibility, d->visibility);
-	if (what.wavesize)
-		std::swap(wavesize, d->wavesize);
-	if (what.current)
-		std::swap(current, d->current);
-	if (what.surge)
-		std::swap(surge, d->surge);
-	if (what.chill)
-		std::swap(chill, d->chill);
-	if (what.divesite)
-		std::swap(divesite, d->dive_site);
-	if (what.tags)
-		std::swap(tags, d->tags);
-	if (what.cylinders)
-		std::swap(cylinders, d->cylinders);
-	if (what.weights)
-		std::swap(weightsystems, d->weightsystems);
-	if (what.number)
-		std::swap(number, d->number);
-	if (what.when)
-		std::swap(when, d->when);
+	if (notes.has_value())
+		std::swap(*notes, d.notes);
+	if (diveguide.has_value())
+		std::swap(*diveguide, d.diveguide);
+	if (buddy.has_value())
+		std::swap(*buddy, d.buddy);
+	if (suit.has_value())
+		std::swap(*suit, d.suit);
+	if (rating.has_value())
+		std::swap(*rating, d.rating);
+	if (visibility.has_value())
+		std::swap(*visibility, d.visibility);
+	if (wavesize.has_value())
+		std::swap(*wavesize, d.wavesize);
+	if (current.has_value())
+		std::swap(*current, d.current);
+	if (surge.has_value())
+		std::swap(*surge, d.surge);
+	if (chill.has_value())
+		std::swap(*chill, d.chill);
+	if (divesite.has_value() && *divesite != d.dive_site) {
+		auto old_ds = unregister_dive_from_dive_site(&d);
+		if (*divesite)
+			(*divesite)->add_dive(&d);
+		divesite = old_ds;
+	}
+	if (tags.has_value())
+		std::swap(*tags, d.tags);
+	if (cylinders.has_value())
+		std::swap(*cylinders, d.cylinders);
+	if (weightsystems.has_value())
+		std::swap(*weightsystems, d.weightsystems);
+	if (number.has_value())
+		std::swap(*number, d.number);
+	if (when.has_value())
+		std::swap(*when, d.when);
 }
 
 // ***** Paste *****
-PasteDives::PasteDives(const dive *data, dive_components whatIn) : what(whatIn)
+PasteDives::PasteDives(const dive_paste_data &data)
 {
 	std::vector<dive *> selection = getDiveSelection();
 	dives.reserve(selection.size());
 	for (dive *d: selection)
-		dives.emplace_back(d, data, what);
+		dives.emplace_back(*d, data, dive_sites_changed);
 
 	setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("Paste onto %n dive(s)", "", dives.size())).arg(getListOfDives(selection)));
 }
@@ -739,32 +750,35 @@ void PasteDives::undo()
 	QVector<dive *> divesToNotify; // Remember dives so that we can send signals later
 	divesToNotify.reserve(dives.size());
 	for (PasteState &state: dives) {
-		divesToNotify.push_back(state.d);
-		state.swap(what);
-		state.d->invalidate_cache(); // Ensure that dive is written in git_save()
+		divesToNotify.push_back(&state.d);
+		state.swap();
+		state.d.invalidate_cache(); // Ensure that dive is written in git_save()
 	}
 
-	// Send signals.
+	// Send signals. We use the first data item to determine what changed
 	DiveField fields(DiveField::NONE);
-	fields.notes = what.notes;
-	fields.diveguide = what.diveguide;
-	fields.buddy = what.buddy;
-	fields.suit = what.suit;
-	fields.rating = what.rating;
-	fields.visibility = what.visibility;
-	fields.wavesize = what.wavesize;
-	fields.current = what.current;
-	fields.surge = what.surge;
-	fields.chill = what.chill;
-	fields.divesite = what.divesite;
-	fields.tags = what.tags;
-	fields.datetime = what.when;
-	fields.nr = what.number;
+	const PasteState &state = dives[0];
+	fields.notes = state.notes.has_value();
+	fields.diveguide = state.diveguide.has_value();
+	fields.buddy = state.buddy.has_value();
+	fields.suit = state.suit.has_value();
+	fields.rating = state.rating.has_value();
+	fields.visibility = state.visibility.has_value();
+	fields.wavesize = state.wavesize.has_value();
+	fields.current = state.current.has_value();
+	fields.surge = state.surge.has_value();
+	fields.chill = state.chill.has_value();
+	fields.divesite = !dive_sites_changed.empty();
+	fields.tags = state.tags.has_value();
+	fields.datetime = state.when.has_value();
+	fields.nr = state.number.has_value();
 	emit diveListNotifier.divesChanged(divesToNotify, fields);
-	if (what.cylinders)
+	if (state.cylinders.has_value())
 		emit diveListNotifier.cylindersReset(divesToNotify);
-	if (what.weights)
+	if (state.weightsystems.has_value())
 		emit diveListNotifier.weightsystemsReset(divesToNotify);
+	for (dive_site *ds: dive_sites_changed)
+		emit diveListNotifier.diveSiteDivesChanged(ds);
 }
 
 // Redo and undo do the same

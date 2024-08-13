@@ -9,7 +9,6 @@
 #include <QAction>
 #include <QDesktopServices>
 #include <QToolTip>
-#include <QClipboard>
 #include <QCompleter>
 
 #include "core/file.h"
@@ -275,93 +274,6 @@ URLDialog::URLDialog(QWidget *parent) : QDialog(parent)
 QString URLDialog::url() const
 {
 	return ui.urlField->toPlainText();
-}
-
-#define COMPONENT_FROM_UI(_component) what->_component = ui._component->isChecked()
-#define UI_FROM_COMPONENT(_component) ui._component->setChecked(what->_component)
-
-DiveComponentSelection::DiveComponentSelection(QWidget *parent, struct dive *target, struct dive_components *_what) : targetDive(target)
-{
-	ui.setupUi(this);
-	what = _what;
-	UI_FROM_COMPONENT(divesite);
-	UI_FROM_COMPONENT(diveguide);
-	UI_FROM_COMPONENT(buddy);
-	UI_FROM_COMPONENT(rating);
-	UI_FROM_COMPONENT(visibility);
-	UI_FROM_COMPONENT(notes);
-	UI_FROM_COMPONENT(suit);
-	UI_FROM_COMPONENT(tags);
-	UI_FROM_COMPONENT(cylinders);
-	UI_FROM_COMPONENT(weights);
-	UI_FROM_COMPONENT(number);
-	UI_FROM_COMPONENT(when);
-	connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &DiveComponentSelection::buttonClicked);
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
-	connect(close, &QShortcut::activated, this, &DiveComponentSelection::close);
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
-	connect(quit, &QShortcut::activated, parent, &QWidget::close);
-}
-
-void DiveComponentSelection::buttonClicked(QAbstractButton *button)
-{
-	if (current_dive && ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-		COMPONENT_FROM_UI(divesite);
-		COMPONENT_FROM_UI(diveguide);
-		COMPONENT_FROM_UI(buddy);
-		COMPONENT_FROM_UI(rating);
-		COMPONENT_FROM_UI(visibility);
-		COMPONENT_FROM_UI(notes);
-		COMPONENT_FROM_UI(suit);
-		COMPONENT_FROM_UI(tags);
-		COMPONENT_FROM_UI(cylinders);
-		COMPONENT_FROM_UI(weights);
-		COMPONENT_FROM_UI(number);
-		COMPONENT_FROM_UI(when);
-		selective_copy_dive(current_dive, targetDive, *what, true);
-		QClipboard *clipboard = QApplication::clipboard();
-		QTextStream text;
-		QString cliptext;
-		text.setString(&cliptext);
-		if (what->divesite && current_dive->dive_site)
-			text << tr("Dive site: ") << QString::fromStdString(current_dive->dive_site->name) << "\n";
-		if (what->diveguide)
-			text << tr("Dive guide: ") << QString::fromStdString(current_dive->diveguide) << "\n";
-		if (what->buddy)
-			text << tr("Buddy: ") << QString::fromStdString(current_dive->buddy) << "\n";
-		if (what->rating)
-			text << tr("Rating: ") + QString("*").repeated(current_dive->rating) << "\n";
-		if (what->visibility)
-			text << tr("Visibility: ") + QString("*").repeated(current_dive->visibility) << "\n";
-		if (what->notes)
-			text << tr("Notes:\n") << QString::fromStdString(current_dive->notes) << "\n";
-		if (what->suit)
-			text << tr("Suit: ") << QString::fromStdString(current_dive->suit) << "\n";
-		if (what-> tags) {
-			text << tr("Tags: ");
-			for (const divetag *tag: current_dive->tags)
-				text << tag->name.c_str() << " ";
-			text << "\n";
-		}
-		if (what->cylinders) {
-			text << tr("Cylinders:\n");
-			for (auto [idx, cyl]: enumerated_range(current_dive->cylinders)) {
-				if (current_dive->is_cylinder_used(idx))
-					text << QString::fromStdString(cyl.type.description) << " "
-					     << QString::fromStdString(cyl.gasmix.name()) << "\n";
-			}
-		}
-		if (what->weights) {
-			text << tr("Weights:\n");
-			for (auto &ws: current_dive->weightsystems)
-				text << QString::fromStdString(ws.description) << ws.weight.grams / 1000 << "kg\n";
-		}
-		if (what->number)
-			text << tr("Dive number: ") << current_dive->number << "\n";
-		if (what->when)
-			text << tr("Date / time: ") << get_dive_date_string(current_dive->when) << "\n";
-		clipboard->setText(cliptext);
-	}
 }
 
 AddFilterPresetDialog::AddFilterPresetDialog(const QString &defaultName, QWidget *parent)

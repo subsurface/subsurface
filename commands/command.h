@@ -13,6 +13,7 @@
 struct divecomputer;
 struct divelog;
 struct dive_components;
+struct dive_paste_data;
 struct dive_site;
 struct dive_trip;
 struct event;
@@ -95,7 +96,7 @@ int editDiveSiteNew(const QString &newName, bool currentDiveOnly);
 int editTags(const QStringList &newList, bool currentDiveOnly);
 int editBuddies(const QStringList &newList, bool currentDiveOnly);
 int editDiveGuide(const QStringList &newList, bool currentDiveOnly);
-void pasteDives(const dive *d, dive_components what);
+void pasteDives(const dive_paste_data &data);
 enum class EditProfileType {
 	ADD,
 	REMOVE,
