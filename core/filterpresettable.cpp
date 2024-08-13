@@ -38,13 +38,13 @@ static int filter_preset_add_to_table(const std::string name, const FilterData &
 void filter_preset_table::add(const filter_preset &preset)
 {
 	std::string name = get_unique_preset_name(preset.name, *this);
-	filter_preset_add_to_table(name, preset.data, *this);
+	filter_preset_add_to_table(std::move(name), preset.data, *this);
 }
 
 int filter_preset_table::add(const std::string &nameIn, const FilterData &d)
 {
 	std::string name = get_unique_preset_name(nameIn, *this);
-	return filter_preset_add_to_table(name, d, *this);
+	return filter_preset_add_to_table(std::move(name), d, *this);
 }
 
 void filter_preset_table::remove(int preset)
