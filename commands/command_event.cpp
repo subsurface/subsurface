@@ -89,9 +89,9 @@ void AddEventSetpointChange::redoit()
 	std::swap(d->get_dc(dcNr)->divemode, divemode);
 }
 
-RenameEvent::RenameEvent(struct dive *d, int dcNr, int idx, const std::string name) : EventBase(d, dcNr),
+RenameEvent::RenameEvent(struct dive *d, int dcNr, int idx, const std::string nameIn) : EventBase(d, dcNr),
 	idx(idx),
-	name(std::move(name))
+	name(std::move(nameIn))
 {
 	setText(Command::Base::tr("Rename bookmark to %1").arg(name.c_str()));
 }
