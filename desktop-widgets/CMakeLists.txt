@@ -68,6 +68,8 @@ set(SUBSURFACE_INTERFACE
 	about.h
 	configuredivecomputerdialog.cpp
 	configuredivecomputerdialog.h
+	divecomponentselection.cpp
+	divecomponentselection.h
 	divelistview.cpp
 	divelistview.h
 	divelogexportdialog.cpp

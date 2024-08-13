@@ -267,9 +267,9 @@ int editDiveGuide(const QStringList &newList, bool currentDiveOnly)
 	return execute_edit(new EditDiveGuide(newList, currentDiveOnly));
 }
 
-void pasteDives(const dive *d, dive_components what)
+void pasteDives(const dive_paste_data &data)
 {
-	execute(new PasteDives(d, what));
+	execute(new PasteDives(data));
 }
 
 void replanDive(dive *d)

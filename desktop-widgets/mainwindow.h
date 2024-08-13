@@ -203,8 +203,7 @@ private:
 	bool plannerStateClean();
 	void setupSocialNetworkMenu();
 	QDialog *findMovedImagesDialog;
-	struct dive copyPasteDive;
-	struct dive_components what;
+	dive_paste_data paste_data;
 	QStringList recentFiles;
 	QAction *actionsRecent[NUM_RECENT_FILES];
 

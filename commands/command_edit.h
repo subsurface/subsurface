@@ -287,34 +287,35 @@ public:
 
 // Fields we have to remember to undo paste
 struct PasteState {
-	dive *d;
-	dive_site *divesite;
-	std::string notes;
-	std::string diveguide;
-	std::string buddy;
-	std::string suit;
-	int rating;
-	int wavesize;
-	int visibility;
-	int current;
-	int surge;
-	int chill;
-	tag_list tags;
-	cylinder_table cylinders;
-	weightsystem_table weightsystems;
-	int number;
-	timestamp_t when;
+	dive &d;
+	std::optional<dive_site *> divesite;
+	std::optional<std::string> notes;
+	std::optional<std::string> diveguide;
+	std::optional<std::string> buddy;
+	std::optional<std::string> suit;
+	std::optional<int> rating;
+	std::optional<int> wavesize;
+	std::optional<int> visibility;
+	std::optional<int> current;
+	std::optional<int> surge;
+	std::optional<int> chill;
+	std::optional<tag_list> tags;
+	std::optional<cylinder_table> cylinders;
+	std::optional<weightsystem_table> weightsystems;
+	std::optional<int> number;
+	std::optional<timestamp_t> when;
 
-	PasteState(dive *d, const dive *data, dive_components what); // Read data from dive data for dive d
+	PasteState(dive &d, const dive_paste_data &data, std::vector<dive_site *> &changed_dive_sites);
 	~PasteState();
-	void swap(dive_components what); // Exchange values here and in dive
+	void swap(); // Exchange values here and in dive
 };
 
 class PasteDives : public Base {
-	dive_components what;
+	dive_paste_data data;
 	std::vector<PasteState> dives;
+	std::vector<dive_site *> dive_sites_changed;
 public:
-	PasteDives(const dive *d, dive_components what);
+	PasteDives(const dive_paste_data &data);
 private:
 	void undo() override;
 	void redo() override;

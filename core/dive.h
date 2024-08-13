@@ -12,6 +12,7 @@
 
 #include <array>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -146,24 +147,25 @@ struct dive_or_trip {
 extern void cylinder_renumber(struct dive &dive, int mapping[]);
 extern int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct dive *dive, bool check_unused);
 
-/* when selectively copying dive information, which parts should be copied? */
-struct dive_components {
-	unsigned int divesite : 1;
-	unsigned int notes : 1;
-	unsigned int diveguide : 1;
-	unsigned int buddy : 1;
-	unsigned int suit : 1;
-	unsigned int rating : 1;
-	unsigned int visibility : 1;
-	unsigned int wavesize : 1;
-	unsigned int current : 1;
-	unsigned int surge : 1;
-	unsigned int chill : 1;
-	unsigned int tags : 1;
-	unsigned int cylinders : 1;
-	unsigned int weights : 1;
-	unsigned int number : 1;
-	unsigned int when : 1;
+/* Data stored when copying a dive */
+struct dive_paste_data {
+	std::optional<uint32_t> divesite; // We save the uuid not a pointer, because the
+					  // user might copy and then delete the dive site.
+	std::optional<std::string> notes;
+	std::optional<std::string> diveguide;
+	std::optional<std::string> buddy;
+	std::optional<std::string> suit;
+	std::optional<int> rating;
+	std::optional<int> visibility;
+	std::optional<int> wavesize;
+	std::optional<int> current;
+	std::optional<int> surge;
+	std::optional<int> chill;
+	std::optional<tag_list> tags;
+	std::optional<cylinder_table> cylinders;
+	std::optional<weightsystem_table> weights;
+	std::optional<int> number;
+	std::optional<timestamp_t> when;
 };
 
 extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
@@ -179,7 +181,6 @@ struct membuffer;
 extern void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anonymize);
 
 extern void copy_dive(const struct dive *s, struct dive *d);
-extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
 
 extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 

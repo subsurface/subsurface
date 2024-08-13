@@ -38,6 +38,7 @@
 #include "core/settings/qPrefDisplay.h"
 
 #include "desktop-widgets/about.h"
+#include "desktop-widgets/divecomponentselection.h"
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/divelogexportdialog.h"
 #include "desktop-widgets/divelogimportdialog.h"
@@ -207,7 +208,6 @@ MainWindow::MainWindow() :
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
 #endif
-	memset(&what, 0, sizeof(what));
 
 	updateManager = new UpdateManager(this);
 	undoAction = Command::undoAction(this);
@@ -1424,13 +1424,13 @@ void MainWindow::on_copy_triggered()
 {
 	// open dialog to select what gets copied
 	// copy the displayed dive
-	DiveComponentSelection dialog(this, &copyPasteDive, &what);
+	DiveComponentSelection dialog(paste_data, this);
 	dialog.exec();
 }
 
 void MainWindow::on_paste_triggered()
 {
-	Command::pasteDives(&copyPasteDive, what);
+	Command::pasteDives(paste_data);
 }
 
 void MainWindow::on_actionFilterTags_triggered()

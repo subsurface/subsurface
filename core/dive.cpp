@@ -203,40 +203,6 @@ void copy_dive(const struct dive *s, struct dive *d)
 	d->invalidate_cache();
 }
 
-#define CONDITIONAL_COPY_STRING(_component) \
-	if (what._component)                \
-		d->_component = s->_component
-
-// copy elements, depending on bits in what that are set
-void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear)
-{
-	if (clear)
-		d->clear();
-	CONDITIONAL_COPY_STRING(notes);
-	CONDITIONAL_COPY_STRING(diveguide);
-	CONDITIONAL_COPY_STRING(buddy);
-	CONDITIONAL_COPY_STRING(suit);
-	if (what.rating)
-		d->rating = s->rating;
-	if (what.visibility)
-		d->visibility = s->visibility;
-	if (what.divesite) {
-		unregister_dive_from_dive_site(d);
-		s->dive_site->add_dive(d);
-	}
-	if (what.tags)
-		d->tags = s->tags;
-	if (what.cylinders)
-		copy_cylinder_types(s, d);
-	if (what.weights)
-		d->weightsystems = s->weightsystems;
-	if (what.number)
-		d->number = s->number;
-	if (what.when)
-		d->when = s->when;
-}
-#undef CONDITIONAL_COPY_STRING
-
 /* copies all events from the given dive computer before a given time
    this is used when editing a dive in the planner to preserve the events
    of the old dive */
