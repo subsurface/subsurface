@@ -515,6 +515,7 @@ static std::string uemis_get_answer(const std::string &path, const std::string &
 	int written = write(reqtxt_file, sb.c_str(), sb.size());
 	if (written == -1 || (size_t)written != sb.size()) {
 		error_text = translate("gettextFromC", ERR_FS_SHORT_WRITE);
+		close(reqtxt_file);
 		return std::string();
 	}
 	if (!next_file(number_of_files)) {
