@@ -35,6 +35,10 @@ struct cylinder_t
 
 	cylinder_t();
 	~cylinder_t();
+	cylinder_t(const cylinder_t &) = default;
+	cylinder_t(cylinder_t &&) = default;
+	cylinder_t &operator=(const cylinder_t &) = default;
+	cylinder_t &operator=(cylinder_t &&) = default;
 
 	volume_t gas_volume(pressure_t p) const; /* Volume of a cylinder at pressure 'p' */
 };
@@ -64,6 +68,10 @@ struct weightsystem_t
 	weightsystem_t();
 	weightsystem_t(weight_t w, std::string desc, bool auto_filled);
 	~weightsystem_t();
+	weightsystem_t(const weightsystem_t &) = default;
+	weightsystem_t(weightsystem_t &&) = default;
+	weightsystem_t &operator=(const weightsystem_t &) = default;
+	weightsystem_t &operator=(weightsystem_t &&) = default;
 
 	bool operator==(const weightsystem_t &w2) const;
 };
