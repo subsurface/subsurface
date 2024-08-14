@@ -290,7 +290,8 @@ int parse_seac_buffer(sqlite3 *handle, const char *url, const char *, int, struc
 	retval = sqlite3_exec(handle, get_dives, &seac_dive, &state, &err);
 
 	if (retval != SQLITE_OK) {
-		report_info("Database query failed '%s'.", url);
+		report_info("Database query failed '%s': %s.", url, err);
+		sqlite3_free(err);
 		return 1;
 	}
 
