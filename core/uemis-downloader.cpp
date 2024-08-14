@@ -670,7 +670,7 @@ static std::string uemis_get_answer(const std::string &path, const std::string &
 	for (i = 0; i < n_param_out; i++)
 		report_info("::: %d: %s\n", i, param_buff[i].c_str());
 #endif
-	return found_answer ? mbuf : std::string();
+	return found_answer ? std::move(mbuf) : std::string();
 fs_error:
 	close(ans_file);
 	return std::string();
