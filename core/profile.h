@@ -99,6 +99,10 @@ struct plot_info {
 
 	plot_info();
 	~plot_info();
+	plot_info(const plot_info &) = default;
+	plot_info(plot_info &&) = default;
+	plot_info &operator=(const plot_info &) = default;
+	plot_info &operator=(plot_info &&) = default;
 };
 
 #define AMB_PERCENTAGE 50.0
