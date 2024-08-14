@@ -150,8 +150,7 @@ void ostctools_import(const char *file, struct divelog *log)
 		report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
 		return;
 	}
-	std::string tmp = devdata.vendor + " " + devdata.model + " (Imported from OSTCTools)";
-	ostcdive->dcs[0].model = tmp;
+	ostcdive->dcs[0].model = devdata.vendor + " " + devdata.model + " (Imported from OSTCTools)";
 
 	// Parse the dive data
 	rc = libdc_buffer_parser(ostcdive.get(), &devdata, buffer.data(), i + 1);
