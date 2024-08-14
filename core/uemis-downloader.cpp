@@ -285,14 +285,18 @@ static bool uemis_init(const std::string &path)
 	}
 	if (bytes_available(reqtxt_file) > 5) {
 		char tmp[6];
-		if (read(reqtxt_file, tmp, 5) != 5)
+		if (read(reqtxt_file, tmp, 5) != 5) {
+			close(reqtxt_file);
 			return false;
+		}
 		tmp[5] = '\0';
 #if UEMIS_DEBUG & 2
 		report_info("::r req.txt \"%s\"\n", tmp);
 #endif
-		if (sscanf(tmp + 1, "%d", &filenr) != 1)
+		if (sscanf(tmp + 1, "%d", &filenr) != 1) {
+			close(reqtxt_file);
 			return false;
+		}
 	} else {
 		filenr = 0;
 #if UEMIS_DEBUG & 2
