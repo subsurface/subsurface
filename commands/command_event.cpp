@@ -115,19 +115,21 @@ void RenameEvent::undoit()
 	redoit();
 }
 
-RemoveEvent::RemoveEvent(struct dive *d, int dcNr, int idx) : EventBase(d, dcNr),
-	idx(idx), cylinder(-1)
+RemoveEvent::RemoveEvent(struct dive *d, int dcNr, int idxIn) : EventBase(d, dcNr),
+	idx(idxIn), cylinder(-1)
 {
 	struct divecomputer *dc = d->get_dc(dcNr);
 	event *ev = get_event(dc, idx);
-	if (ev && (ev->type == SAMPLE_EVENT_GASCHANGE2 || ev->type == SAMPLE_EVENT_GASCHANGE))
+	if (!ev)
+		idx = -1;
+	if (ev->type == SAMPLE_EVENT_GASCHANGE2 || ev->type == SAMPLE_EVENT_GASCHANGE)
 		cylinder = ev->gas.index;
 	setText(Command::Base::tr("Remove %1 event").arg(ev->name.c_str()));
 }
 
 bool RemoveEvent::workToBeDone()
 {
-	return true;
+	return idx >= 0;
 }
 
 void RemoveEvent::redoit()
