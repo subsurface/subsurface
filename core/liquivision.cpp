@@ -199,7 +199,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		// Blank notes are better than the default text
 		std::string notes((char *)buf + ptr, len);
 		if (!starts_with(notes, "Comment ..."))
-			dive->notes = notes;
+			dive->notes = std::move(notes);
 		ptr += len;
 
 		dive->id = array_uint32_le(buf + ptr);
