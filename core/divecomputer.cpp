@@ -287,11 +287,8 @@ void fixup_dc_duration(struct divecomputer &dc)
 
 static bool operator<(const event &ev1, const event &ev2)
 {
-	if (ev1.time.seconds < ev2.time.seconds)
-		return -1;
-	if (ev1.time.seconds > ev2.time.seconds)
-		return 1;
-	return ev1.name < ev2.name;
+	return std::tie(ev1.time.seconds, ev1.name) <
+	       std::tie(ev2.time.seconds, ev2.name);
 }
 
 int add_event_to_dc(struct divecomputer *dc, struct event ev)
