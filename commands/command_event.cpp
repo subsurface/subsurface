@@ -120,8 +120,10 @@ RemoveEvent::RemoveEvent(struct dive *d, int dcNr, int idxIn) : EventBase(d, dcN
 {
 	struct divecomputer *dc = d->get_dc(dcNr);
 	event *ev = get_event(dc, idx);
-	if (!ev)
+	if (!ev) {
 		idx = -1;
+		return;
+	}
 	if (ev->type == SAMPLE_EVENT_GASCHANGE2 || ev->type == SAMPLE_EVENT_GASCHANGE)
 		cylinder = ev->gas.index;
 	setText(Command::Base::tr("Remove %1 event").arg(ev->name.c_str()));
