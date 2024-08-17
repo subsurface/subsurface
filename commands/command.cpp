@@ -294,7 +294,7 @@ int removeWeight(int index, bool currentDiveOnly)
 
 int editWeight(int index, weightsystem_t ws, bool currentDiveOnly)
 {
-	return execute_edit(new EditWeight(index, ws, currentDiveOnly));
+	return execute_edit(new EditWeight(index, std::move(ws), currentDiveOnly));
 }
 
 int addCylinder(bool currentDiveOnly)
@@ -309,7 +309,7 @@ int removeCylinder(int index, bool currentDiveOnly)
 
 int editCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentDiveOnly)
 {
-	return execute_edit(new EditCylinder(index, cyl, type, currentDiveOnly));
+	return execute_edit(new EditCylinder(index, std::move(cyl), type, currentDiveOnly));
 }
 
 void editSensors(int toCylinder, int fromCylinder, int dcNr)

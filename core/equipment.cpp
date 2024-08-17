@@ -407,7 +407,7 @@ void add_default_cylinder(struct dive *d)
 		cyl.type.size.mliter = 11100;
 		cyl.type.workingpressure.mbar = 207000;
 	}
-	d->cylinders.add(0, cyl);
+	d->cylinders.add(0, std::move(cyl));
 	reset_cylinders(d, false);
 }
 

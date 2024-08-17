@@ -88,7 +88,7 @@ void WeightModel::setTempWS(int row, weightsystem_t ws)
 	const weightsystem_t &oldWS = d->weightsystems[row];
 	if (oldWS.description != ws.description) {
 		tempRow = row;
-		tempWS = ws;
+		tempWS = std::move(ws);
 
 		// If the user had already set a weight, don't overwrite that
 		if (oldWS.weight.grams && !oldWS.auto_filled)
@@ -133,7 +133,7 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 	case WEIGHT:
 		ws.weight = string_to_weight(qPrintable(vString));
 		ws.auto_filled = false;
-		int count = Command::editWeight(index.row(), ws, false);
+		int count = Command::editWeight(index.row(), std::move(ws), false);
 		emit divesEdited(count);
 		return true;
 	}
