@@ -883,9 +883,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			entry.gfline = get_gf(ds, entry.ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
 			if (t0 > t1) {
 				report_info("non-monotonous dive stamps %d %d", t0, t1);
-				int xchg = t1;
-				t1 = t0;
-				t0 = xchg;
+				std::swap(t0, t1);
 			}
 			if (t0 != t1 && t1 - t0 < time_stepsize)
 				time_stepsize = t1 - t0;
