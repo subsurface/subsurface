@@ -469,11 +469,11 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 
 	if (inPlanner) {
 		// In the planner - simply overwrite the cylinder in the dive with the modified cylinder.
-		*d->get_cylinder(row) = cyl;
+		*d->get_cylinder(row) = std::move(cyl);
 		dataChanged(index, index);
 	} else {
 		// On the EquipmentTab - place an editCylinder command.
-		int count = Command::editCylinder(index.row(), cyl, type, false);
+		int count = Command::editCylinder(index.row(), std::move(cyl), type, false);
 		emit divesEdited(count);
 	}
 	return true;
