@@ -757,9 +757,14 @@ static void fixup_dc_events(struct divecomputer &dc)
 			continue;
 		for (int idx2 = idx - 1; idx2 > 0; --idx2) {
 			const auto &prev = dc.events[idx2];
-			if (prev.name == event.name && prev.flags == event.flags &&
-			    event.time.seconds - prev.time.seconds < 61)
+			if (event.time.seconds - prev.time.seconds > 60)
+				break;
+			if (range_contains(to_delete, idx2))
+				continue;
+			if (prev.name == event.name && prev.flags == event.flags) {
 				to_delete.push_back(idx);
+				break;
+			}
 		}
 	}
 	// Delete from back to not invalidate indexes
