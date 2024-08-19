@@ -4,6 +4,8 @@
 #include "eventtype.h"
 #include "subsurface-string.h"
 
+#include <tuple>
+
 event::event() : type(SAMPLE_EVENT_NONE), flags(0), value(0),
 	divemode(OC), hidden(false)
 {
