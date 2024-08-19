@@ -12,6 +12,10 @@ confinement: strict
 base: core22
 adopt-info: subsurface
 
+layout:
+  /etc/gitconfig:
+    bind-file: $SNAP_DATA/gitconfig
+
 apps:
   subsurface:
     environment:
