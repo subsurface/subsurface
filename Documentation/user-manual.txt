@@ -4347,7 +4347,7 @@ The volumes of gases required for bailout can be found at the bottom of the *Div
 Normally, when a dive plan has been saved, it is accessible from the *Dive List*, like any
 other dive log. Within the *Dive List* there is no way to change a saved dive plan.
 To change a dive plan, select it on the *Dive List*. Then, in the main menu,
-select _Log ->  Re-plan dive_. This will open the selected dive plan within the dive planner,
+select _Log ->  Edit dive in planner_. This will open the selected dive plan within the dive planner,
 allowing changes to be made and saved as usual.
 
 In addition, there is the option "Save new". This keeps the original
