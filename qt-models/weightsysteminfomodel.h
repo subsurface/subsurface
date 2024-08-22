@@ -12,7 +12,7 @@ public:
 		DESCRIPTION,
 		GR
 	};
-	using CleanerTableModel::CleanerTableModel;
+	WSInfoModel(QObject *parent);
 
 	QVariant data(const QModelIndex &index, int role) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
