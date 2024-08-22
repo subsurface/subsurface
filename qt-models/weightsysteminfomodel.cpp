@@ -31,3 +31,8 @@ int WSInfoModel::rowCount(const QModelIndex&) const
 {
 	return static_cast<int>(ws_info_table.size());
 }
+
+WSInfoModel::WSInfoModel(QObject *parent) : CleanerTableModel(parent)
+{
+	setHeaderDataStrings(QStringList() << tr("Description") << tr("kg"));
+}
