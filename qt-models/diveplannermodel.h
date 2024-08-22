@@ -66,7 +66,7 @@ public:
 
 	void loadFromDive(dive *d, int dcNr);
 	void addStop(int millimeters, int seconds);
-	void setDiveMode(int mode);
+	void cylindersChanged();
 public
 slots:
 	void addDefaultStop();
