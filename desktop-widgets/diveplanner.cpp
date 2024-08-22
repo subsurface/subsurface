@@ -677,7 +677,9 @@ void PlannerWidgets::printDecoPlan()
 
 void PlannerWidgets::setDiveMode(int mode)
 {
-	DivePlannerPointsModel::instance()->setDiveMode(mode);
+	planned_dive->get_dc(dcNr)->divemode = (divemode_t)mode;
+	DivePlannerPointsModel::instance()->cylindersChanged();
+
 	plannerWidget.setColumnVisibility(mode);
 	plannerSettingsWidget.setBailoutVisibility(mode);
 }

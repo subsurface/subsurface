@@ -588,11 +588,10 @@ int DivePlannerPointsModel::gfLow() const
 	return diveplan.gflow;
 }
 
-void DivePlannerPointsModel::setDiveMode(int mode)
+void DivePlannerPointsModel::cylindersChanged()
 {
-	struct divecomputer *dc = d->get_dc(dcNr);
-	if (dc)
-		dc->divemode = (divemode_t) mode;
+	if (!d)
+		return;
 
 	cylinders.updateDive(d, dcNr);
 
