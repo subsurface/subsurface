@@ -10,6 +10,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <tuple>
 
 divecomputer::divecomputer() = default;
 divecomputer::~divecomputer() = default;
