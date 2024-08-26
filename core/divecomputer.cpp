@@ -272,6 +272,10 @@ void fixup_dc_duration(struct divecomputer &dc)
 		int time = sample.time.seconds;
 		int depth = sample.depth.mm;
 
+		/* Do we *have* a depth? */
+		if (depth < 0)
+			continue;
+
 		/* We ignore segments at the surface */
 		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
 			duration += time - lasttime;
