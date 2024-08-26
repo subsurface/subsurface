@@ -617,7 +617,7 @@ static void calculate_sac(const struct dive *dive, const struct divecomputer *dc
 	gasmix_loop loop(*dive, *dc);
 	for (int i = 0; i < pi.nr; i++) {
 		const struct plot_data &entry = pi.entry[i];
-		struct gasmix newmix = loop.next(entry.sec);
+		struct gasmix newmix = loop.at(entry.sec).first;
 		if (!same_gasmix(newmix, gasmix)) {
 			gasmix = newmix;
 			matching_gases(dive, newmix, gases.data());
@@ -677,31 +677,28 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 	std::vector<int> first(num_cyl, 0);
 	std::vector<int> last(num_cyl, INT_MAX);
 
-	int prev = dive->explicit_first_cylinder(dc);
-	prev = prev >= 0 ? prev : 0;
-	seen[prev] = 1;
+	int prev = -1;
+	gasmix_loop loop(*dive, *dc);
+	while (loop.has_next()) {
+		auto [cylinder_index, time] = loop.next_cylinder_index();
 
-	event_loop loop("gaschange");
-	while (auto ev = loop.next(*dc)) {
-		int cyl = ev->gas.index;
-		int sec = ev->time.seconds;
-
-		if (cyl < 0)
+		if (cylinder_index < 0)
 			continue; // unknown cylinder
-		if (cyl >= num_cyl) {
-			report_info("setup_gas_sensor_pressure(): invalid cylinder idx %d", cyl);
+		if (cylinder_index >= num_cyl) {
+			report_info("setup_gas_sensor_pressure(): invalid cylinder idx %d", cylinder_index);
 			continue;
 		}
 
-		last[prev] = sec;
-		prev = cyl;
+		if (prev >= 0) {
+			last[prev] = time;
 
-		last[cyl] = sec;
-		if (!seen[cyl]) {
-			// The end time may be updated by a subsequent cylinder change
-			first[cyl] = sec;
-			seen[cyl] = 1;
+			if (!seen[cylinder_index])
+				first[cylinder_index] = time;
 		}
+
+		seen[cylinder_index] = 1;
+
+		prev = cylinder_index;
 	}
 	last[prev] = INT_MAX;
 
@@ -878,7 +875,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			int time_stepsize = 20, max_ceiling = -1;
 
 			divemode_t current_divemode = loop_d.next(entry.sec);
-			struct gasmix gasmix = loop.next(t1);
+			struct gasmix gasmix = loop.at(t1).first;
 			entry.ambpressure = dive->depth_to_bar(entry.depth);
 			entry.gfline = get_gf(ds, entry.ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
 			if (t0 > t1) {
@@ -1113,14 +1110,14 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 		double fn2, fhe;
 		struct plot_data &entry = pi.entry[i];
 
-		auto gasmix = loop.next(entry.sec);
+		auto gasmix = loop.at(entry.sec).first;
 		amb_pressure = dive->depth_to_bar(entry.depth);
 		divemode_t current_divemode = loop_d.next(entry.sec);
 		entry.pressures = fill_pressures(amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry.o2pressure.mbar / 1000.0, current_divemode);
 		fn2 = 1000.0 * entry.pressures.n2 / amb_pressure;
 		fhe = 1000.0 * entry.pressures.he / amb_pressure;
 		if (dc->divemode == PSCR) { // OC pO2 is calulated for PSCR with or without external PO2 monitoring.
-			struct gasmix gasmix2 = loop.next(entry.sec);
+			struct gasmix gasmix2 = loop.at(entry.sec).first;
 			entry.scr_OC_pO2.mbar = (int) dive->depth_to_mbar(entry.depth) * get_o2(gasmix2) / 1000;
 		}
 

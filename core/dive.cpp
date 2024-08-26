@@ -354,17 +354,10 @@ static bool has_unknown_used_cylinders(const struct dive &dive, const struct div
 	}
 
 	/* We know about the explicit first cylinder (or first) */
-	idx = dive.explicit_first_cylinder(dc);
-	if (idx >= 0 && used_and_unknown[idx]) {
-		used_and_unknown[idx] = false;
-		num--;
-	}
-
 	/* And we have possible switches to other gases */
-	event_loop loop("gaschange");
-	const struct event *ev;
-	while ((ev = loop.next(*dc)) != nullptr && num > 0) {
-		idx = dive.get_cylinder_index(*ev);
+	gasmix_loop loop(dive, *dc);
+	while (loop.has_next() && num > 0) {
+		idx = loop.next_cylinder_index().first;
 		if (idx >= 0 && used_and_unknown[idx]) {
 			used_and_unknown[idx] = false;
 			num--;
@@ -376,9 +369,6 @@ static bool has_unknown_used_cylinders(const struct dive &dive, const struct div
 
 void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
 {
-	int32_t lasttime = 0;
-	int lastdepth = 0;
-	int idx = 0;
 	int num_used_cylinders;
 
 	if (dive->cylinders.empty())
@@ -420,35 +410,41 @@ void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, i
 	}
 	if (dc->samples.empty())
 		fake_dc(dc);
-	event_loop loop("gaschange");
-	const struct event *ev = loop.next(*dc);
+
+	gasmix_loop loop(*dive, *dc);
 	std::vector<int> depthtime(dive->cylinders.size(), 0);
+	int lasttime = 0;
+	int lastdepth = 0;
+	int last_cylinder_index = -1;
+	std::pair<int, int> gaschange_event;
 	for (auto it = dc->samples.begin(); it != dc->samples.end(); ++it) {
 		int32_t time = it->time.seconds;
 		int depth = it->depth.mm;
 
 		/* Make sure to move the event past 'lasttime' */
-		while (ev && lasttime >= ev->time.seconds) {
-			idx = dive->get_cylinder_index(*ev);
-			ev = loop.next(*dc);
+		gaschange_event = loop.cylinder_index_at(lasttime);
+
+		/* Do we need to fake a midway sample? */
+		if (last_cylinder_index >= 0 && last_cylinder_index != gaschange_event.first) {
+			int newdepth = interpolate(lastdepth, depth, gaschange_event.second - lasttime, time - lasttime);
+			if (newdepth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
+				duration[gaschange_event.first] += gaschange_event.second - lasttime;
+				depthtime[gaschange_event.first] += (gaschange_event.second - lasttime) * (newdepth + lastdepth) / 2;
+			}
+
+			lasttime = gaschange_event.second;
+			lastdepth = newdepth;
 		}
 
-		/* Do we need to fake a midway sample at an event? */
-		if (ev && it != dc->samples.begin() && time > ev->time.seconds) {
-			int newtime = ev->time.seconds;
-			int newdepth = interpolate(lastdepth, depth, newtime - lasttime, time - lasttime);
-
-			time = newtime;
-			depth = newdepth;
-			--it;
-		}
 		/* We ignore segments at the surface */
 		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
-			duration[idx] += time - lasttime;
-			depthtime[idx] += (time - lasttime) * (depth + lastdepth) / 2;
+			duration[gaschange_event.first] += time - lasttime;
+			depthtime[gaschange_event.first] += (time - lasttime) * (depth + lastdepth) / 2;
 		}
+
 		lastdepth = depth;
 		lasttime = time;
+		last_cylinder_index = gaschange_event.first;
 	}
 	for (size_t i = 0; i < dive->cylinders.size(); i++) {
 		if (duration[i])
@@ -476,27 +472,6 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
 	return abs(a.mbar - b.mbar) <= 500;
 }
 
-/* Some dive computers (Cobalt) don't start the dive with cylinder 0 but explicitly
- * tell us what the first gas is with a gas change event in the first sample.
- * Sneakily we'll use a return value of 0 (or FALSE) when there is no explicit
- * first cylinder - in which case cylinder 0 is indeed the first cylinder.
- * We likewise return 0 if the event concerns a cylinder that doesn't exist.
- * If the dive has no cylinders, -1 is returned. */
-int dive::explicit_first_cylinder(const struct divecomputer *dc) const
-{
-	int res = 0;
-	if (cylinders.empty())
-		return -1;
-	if (dc) {
-		const struct event *ev = get_first_event(*dc, "gaschange");
-		if (ev && ((!dc->samples.empty() && ev->time.seconds == dc->samples[0].time.seconds) || ev->time.seconds <= 1))
-			res = get_cylinder_index(*ev);
-		else if (dc->divemode == CCR)
-			res = std::max(get_cylinder_idx_by_use(*this, DILUENT), res);
-	}
-	return static_cast<size_t>(res) < cylinders.size() ? res : 0;
-}
-
 static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity);
 
 /* this gets called when the dive mode has changed (so OC vs. CC)
@@ -518,17 +493,9 @@ void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 		// by mistake when it's actually CCR is _bad_
 		// So we make sure, this comes from a Predator or Petrel and we only remove
 		// pO2 values we would have computed anyway.
-		event_loop loop("gaschange");
-		const struct event *ev = loop.next(*dc);
-		struct gasmix gasmix = dive->get_gasmix_from_event(*ev);
-		const struct event *next = loop.next(*dc);
-
+		gasmix_loop loop(*dive, *dc);
 		for (auto &sample: dc->samples) {
-			if (next && sample.time.seconds >= next->time.seconds) {
-				ev = next;
-				gasmix = dive->get_gasmix_from_event(*ev);
-				next = loop.next(*dc);
-			}
+			struct gasmix gasmix = loop.at(sample.time.seconds).first;
 			gas_pressures pressures = fill_pressures(lrint(calculate_depth_to_mbarf(sample.depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
 			if (abs(sample.setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
 				sample.setpoint.mbar = 0;
@@ -1408,11 +1375,12 @@ static void add_initial_gaschange(struct dive &dive, struct divecomputer &dc, in
 {
 	/* if there is a gaschange event up to 30 sec after the initial event,
 	 * refrain from adding the initial event */
-	event_loop loop("gaschange");
-	while(auto ev = loop.next(dc)) {
-		if (ev->time.seconds > offset + 30)
+	gasmix_loop loop(dive, dc);
+	while (loop.has_next()) {
+		int time = loop.next().second;
+		if (time > offset + 30)
 			break;
-		else if (ev->time.seconds > offset)
+		else if (time > offset)
 			return;
 	}
 
@@ -2586,36 +2554,95 @@ location_t dive::get_gps_location() const
 }
 
 gasmix_loop::gasmix_loop(const struct dive &d, const struct divecomputer &dc) :
-	dive(d), dc(dc), last(gasmix_air), loop("gaschange")
+	dive(d), dc(dc), first_run(true), loop("gaschange")
 {
-	/* if there is no cylinder, return air */
-	if (dive.cylinders.empty())
-		return;
-
-	/* on first invocation, get initial gas mix and first event (if any) */
-	int cyl = dive.explicit_first_cylinder(&dc);
-	last = dive.get_cylinder(cyl)->gasmix;
-	ev = loop.next(dc);
 }
 
-gasmix gasmix_loop::next(int time)
-{
-	/* if there is no cylinder, return air */
-	if (dive.cylinders.empty())
-		return last;
+/* Some dive computers (Cobalt) don't start the dive with cylinder 0 but explicitly
+ * tell us what the first gas is with a gas change event in the first sample.
+ * Sneakily we'll use a return value of 0 (or FALSE) when there is no explicit
+ * first cylinder - in which case cylinder 0 is indeed the first cylinder.
+ * We likewise return 0 if the event concerns a cylinder that doesn't exist.
+ * If the dive has no cylinders, -1 is returned. */
 
-	while (ev && ev->time.seconds <= time) {
-		last = dive.get_gasmix_from_event(*ev);
-		ev = loop.next(dc);
+std::pair<int, int> gasmix_loop::next_cylinder_index()
+{
+	if (dive.cylinders.empty())
+		return std::make_pair(-1, INT_MAX);
+
+	if (first_run) {
+		next_event = loop.next(dc);
+		last_cylinder_index = 0; // default to first cylinder
+		last_time = 0;
+		if (next_event && ((!dc.samples.empty() && next_event->time.seconds == dc.samples[0].time.seconds) || next_event->time.seconds <= 1)) {
+			last_cylinder_index = dive.get_cylinder_index(*next_event);
+			last_time = next_event->time.seconds;
+			next_event = loop.next(dc);
+		} else if (dc.divemode == CCR) {
+			last_cylinder_index = std::max(get_cylinder_idx_by_use(dive, DILUENT), last_cylinder_index);
+		}
+
+		first_run = false;
+	} else {
+		if (next_event) {
+			last_cylinder_index = dive.get_cylinder_index(*next_event);
+			last_time = next_event->time.seconds;
+			next_event = loop.next(dc);
+		} else {
+			last_cylinder_index = -1;
+			last_time = INT_MAX;
+		}
 	}
-	return last;
+
+	return std::make_pair(last_cylinder_index, last_time);
+}
+
+std::pair<gasmix, int> gasmix_loop::next()
+{
+	if (first_run && dive.cylinders.empty()) {
+		first_run = false;
+
+		// return one cylinder of air if we don't have any cylinders
+		return std::make_pair(gasmix_air, 0);
+	}
+
+	next_cylinder_index();
+
+	return std::make_pair(last_cylinder_index < 0 ? gasmix_invalid : dive.get_cylinder(last_cylinder_index)->gasmix, last_time);
+}
+
+std::pair<int, int> gasmix_loop::cylinder_index_at(int time)
+{
+	if (first_run)
+		next_cylinder_index();
+
+	while (has_next() && next_event->time.seconds <= time)
+		next_cylinder_index();
+
+	return std::make_pair(last_cylinder_index, last_time);
+}
+
+std::pair<gasmix, int> gasmix_loop::at(int time)
+{
+	if (dive.cylinders.empty())
+		// return air if we don't have any cylinders
+		return std::make_pair(gasmix_air, 0);
+
+	cylinder_index_at(time);
+
+	return std::make_pair(last_cylinder_index < 0 ? gasmix_invalid : dive.get_cylinder(last_cylinder_index)->gasmix, last_time);
+}
+
+bool gasmix_loop::has_next() const
+{
+	return first_run || (!dive.cylinders.empty() && next_event);
 }
 
 /* get the gas at a certain time during the dive */
 /* If there is a gasswitch at that time, it returns the new gasmix */
 struct gasmix dive::get_gasmix_at_time(const struct divecomputer &dc, duration_t time) const
 {
-	return gasmix_loop(*this, dc).next(time.seconds);
+	return gasmix_loop(*this, dc).at(time.seconds).first;
 }
 
 /* Does that cylinder have any pressure readings? */
@@ -2710,16 +2737,13 @@ dive::get_maximal_gas_result dive::get_maximal_gas() const
 
 bool dive::has_gaschange_event(const struct divecomputer *dc, int idx) const
 {
-	bool first_gas_explicit = false;
-	event_loop loop("gaschange");
-	while (auto event = loop.next(*dc)) {
-		if (!dc->samples.empty() && (event->time.seconds == 0 ||
-				   (dc->samples[0].time.seconds == event->time.seconds)))
-			first_gas_explicit = true;
-		if (get_cylinder_index(*event) == idx)
+	gasmix_loop loop(*this, *dc);
+	while (loop.has_next()) {
+		if (loop.next_cylinder_index().first == idx)
 			return true;
 	}
-	return !first_gas_explicit && idx == 0;
+
+	return false;
 }
 
 bool dive::is_cylinder_used(int idx) const
