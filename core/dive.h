@@ -103,7 +103,6 @@ struct dive {
 	bool likely_same(const struct dive &b) const;
 	bool is_cylinder_used(int idx) const;
 	bool is_cylinder_prot(int idx) const;
-	int explicit_first_cylinder(const struct divecomputer *dc) const;
 	int get_cylinder_index(const struct event &ev) const;
 	bool has_gaschange_event(const struct divecomputer *dc, int idx) const;
 	struct gasmix get_gasmix_from_event(const struct event &ev) const;

@@ -115,7 +115,7 @@ void DivePercentageItem::replot(const dive *d, const struct divecomputer *dc, co
 				continue;
 
 			double value = item.percentages[tissue];
-			struct gasmix gasmix = loop.next(sec);
+			struct gasmix gasmix = loop.at(sec).first;
 			int inert = get_n2(gasmix) + get_he(gasmix);
 			color = colorScale(value, inert);
 			if (nextX >= width)

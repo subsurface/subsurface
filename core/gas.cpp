@@ -187,7 +187,9 @@ const char *gastype_name(enum gastype type)
 
 std::string gasmix::name() const
 {
-	if (gasmix_is_air(*this))
+	if (get_he(*this) < 0 || get_o2(*this) < 0)
+		return translate("gettextFromC", "invalid gas");
+	else if (gasmix_is_air(*this))
 		return translate("gettextFromC", "air");
 	else if (get_he(*this) == 0 && get_o2(*this) < 1000)
 		return format_string_std(translate("gettextFromC", "EAN%d"), (get_o2(*this) + 5) / 10);

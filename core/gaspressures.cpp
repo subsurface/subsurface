@@ -349,9 +349,8 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 	 * itself has a gas change event.
 	 */
 	cyl = sensor;
-	event_loop loop_gas("gaschange");
-	const struct event *ev = dive->has_gaschange_event(dc, sensor) ?
-		loop_gas.next(*dc) : nullptr;
+	bool has_gaschange = dive->has_gaschange_event(dc, sensor);
+	gasmix_loop loop_gas(*dive, *dc);
 	divemode_loop loop_mode(*dc);
 
 	for (int i = first; i <= last; i++) {
@@ -359,11 +358,10 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 		int pressure = get_plot_sensor_pressure(pi, i, sensor);
 		int time = entry.sec;
 
-		while (ev && ev->time.seconds <= time) {   // Find 1st gaschange event after 
-			cyl = dive->get_cylinder_index(*ev); // the current gas change.
+		if (has_gaschange) {
+			cyl = loop_gas.cylinder_index_at(time).first;
 			if (cyl < 0)
 				cyl = sensor;
-			ev = loop_gas.next(*dc);
 		}
 
 		divemode_t dmode = loop_mode.next(time);
