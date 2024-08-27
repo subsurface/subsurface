@@ -261,7 +261,6 @@ QString MapWidgetHelper::pluginObject()
 			      "    Component.onCompleted: {"
 			      "        if (availableServiceProviders.indexOf(name) === -1) {"
 			      "            console.warn('MapWidget.qml: cannot find a plugin named: ' + name);"
-			      "            console.warn('Test van Egbert');"
 			      "        }"
 			      "    }"
 			      "}")
