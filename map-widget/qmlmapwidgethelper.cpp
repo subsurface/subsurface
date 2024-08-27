@@ -4,20 +4,20 @@
 #include <QDebug>
 #include <QVector>
 
-#include "qmlmapwidgethelper.h"
 #include "core/divefilter.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
 #include "core/divesite.h"
 #include "core/qthelper.h"
 #include "core/range.h"
-#include "qt-models/maplocationmodel.h"
+#include "qmlmapwidgethelper.h"
 #include "qt-models/divelocationmodel.h"
+#include "qt-models/maplocationmodel.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/mapwidget.h"
 #endif
 
-#define SMALL_CIRCLE_RADIUS_PX            26.0
+#define SMALL_CIRCLE_RADIUS_PX 26.0
 
 MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 {
@@ -44,7 +44,7 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 	} else {
 		// dive site with GPS
 		m_mapLocationModel->setSelected(ds);
-		QGeoCoordinate dsCoord (ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
+		QGeoCoordinate dsCoord(ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
 	}
 }
@@ -69,7 +69,7 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 	// find the most top-left and bottom-right dive sites on the map coordinate system.
 	qreal minLat = 0.0, minLon = 0.0, maxLat = 0.0, maxLon = 0.0;
 	int count = 0;
-	for(struct dive_site *dss: selDS) {
+	for (struct dive_site *dss : selDS) {
 		if (!has_location(&dss->location))
 			continue;
 		qreal lat = dss->location.lat.udeg * 0.000001;
@@ -92,7 +92,7 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 	// Pass coordinates to QML, either as a point or as a rectangle.
 	// If we didn't find any coordinates, do nothing.
 	if (count == 1) {
-		QGeoCoordinate dsCoord (selDS[0]->location.lat.udeg * 0.000001, selDS[0]->location.lon.udeg * 0.000001);
+		QGeoCoordinate dsCoord(selDS[0]->location.lat.udeg * 0.000001, selDS[0]->location.lon.udeg * 0.000001);
 		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
 	} else if (count > 1) {
 		QGeoCoordinate coordTopLeft(minLat, minLon);
@@ -134,7 +134,7 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 		return;
 	QGeoCoordinate locationCoord = location->coordinate;
 
-	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
+	for (auto [idx, dive] : enumerated_range(divelog.dives)) {
 		struct dive_site *ds = dive->dive_site;
 		if (!ds || !ds->has_gps_location())
 			continue;
@@ -151,9 +151,9 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 	}
 	int last; // get latest dive chronologically
 	if (!selectedDiveIds.isEmpty()) {
-		 last = selectedDiveIds.last();
-		 selectedDiveIds.clear();
-		 selectedDiveIds.append(last);
+		last = selectedDiveIds.last();
+		selectedDiveIds.clear();
+		selectedDiveIds.append(last);
 	}
 #endif
 	emit selectedDivesChanged(selectedDiveIds);
@@ -162,7 +162,7 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 void MapWidgetHelper::selectVisibleLocations()
 {
 	QList<int> selectedDiveIds;
-	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
+	for (auto [idx, dive] : enumerated_range(divelog.dives)) {
 		struct dive_site *ds = dive->dive_site;
 		if (!ds || ds->has_gps_location())
 			continue;
@@ -171,7 +171,7 @@ void MapWidgetHelper::selectVisibleLocations()
 		QGeoCoordinate dsCoord(latitude, longitude);
 		QPointF point;
 		QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
-		                          Q_ARG(QGeoCoordinate, dsCoord));
+					  Q_ARG(QGeoCoordinate, dsCoord));
 		if (!qIsNaN(point.x()))
 #ifndef SUBSURFACE_MOBILE // indices on desktop
 			selectedDiveIds.append(idx);
@@ -181,9 +181,9 @@ void MapWidgetHelper::selectVisibleLocations()
 	}
 	int last; // get latest dive chronologically
 	if (!selectedDiveIds.isEmpty()) {
-		 last = selectedDiveIds.last();
-		 selectedDiveIds.clear();
-		 selectedDiveIds.append(last);
+		last = selectedDiveIds.last();
+		selectedDiveIds.clear();
+		selectedDiveIds.append(last);
 	}
 #endif
 	emit selectedDivesChanged(selectedDiveIds);
@@ -205,11 +205,11 @@ void MapWidgetHelper::calculateSmallCircleRadius(QGeoCoordinate coord)
 {
 	QPointF point;
 	QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
-	                          Q_ARG(QGeoCoordinate, coord));
+				  Q_ARG(QGeoCoordinate, coord));
 	QPointF point2(point.x() + SMALL_CIRCLE_RADIUS_PX, point.y());
 	QGeoCoordinate coord2;
 	QMetaObject::invokeMethod(m_map, "toCoordinate", Q_RETURN_ARG(QGeoCoordinate, coord2),
-	                          Q_ARG(QPointF, point2));
+				  Q_ARG(QPointF, point2));
 	m_smallCircleRadius = coord2.distanceTo(coord);
 }
 
@@ -251,8 +251,8 @@ QString MapWidgetHelper::pluginObject()
 {
 	QString lang = getUiLanguage().replace('_', '-');
 	QString cacheFolder = QString::fromStdString(system_default_directory() + "/googlemaps").replace("\\", "/");
-	return QStringLiteral("import QtQuick 2.0;"
-			      "import QtLocation 5.3;"
+	return QStringLiteral("import QtQuick;"
+			      "import QtLocation;"
 			      "Plugin {"
 			      "    id: mapPlugin;"
 			      "    name: 'googlemaps';"
@@ -263,5 +263,6 @@ QString MapWidgetHelper::pluginObject()
 			      "            console.warn('MapWidget.qml: cannot find a plugin named: ' + name);"
 			      "        }"
 			      "    }"
-			      "}").arg(lang, cacheFolder);
+			      "}")
+		.arg(lang, cacheFolder);
 }
