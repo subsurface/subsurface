@@ -1210,7 +1210,9 @@ static void merge_samples(struct divecomputer &res,
 		/* Only samples from b? */
 		if (at < 0) {
 		add_sample_b:
-			merge_one_sample(*bs, res);
+			struct sample sample = *bs;
+			sample.time.seconds += offset;
+			merge_one_sample(sample, res);
 			renumber_last_sample(res, cylinders_map_b);
 			bs++;
 			continue;
@@ -1223,6 +1225,7 @@ static void merge_samples(struct divecomputer &res,
 
 		/* same-time sample: add a merged sample. Take the non-zero ones */
 		struct sample sample = *bs;
+		sample.time.seconds += offset;
 		sample_renumber(sample, nullptr, cylinders_map_b);
 		if (as->depth.mm)
 			sample.depth = as->depth;
@@ -2112,8 +2115,7 @@ static void copy_dive_computer(struct divecomputer &res, const struct divecomput
  */
 static void interleave_dive_computers(struct dive &res,
 				      const struct dive &a, const struct dive &b,
-				      const int cylinders_map_a[], const int cylinders_map_b[],
-				      int offset)
+				      const int cylinders_map_a[], const int cylinders_map_b[])
 {
 	res.dcs.clear();
 	for (const auto &dc1: a.dcs) {
@@ -2122,6 +2124,7 @@ static void interleave_dive_computers(struct dive &res,
 		copy_dive_computer(newdc, dc1);
 		const divecomputer *match = find_matching_computer(dc1, b);
 		if (match) {
+			int offset = match->when - dc1.when;
 			merge_events(res, newdc, dc1, *match, cylinders_map_a, cylinders_map_b, offset);
 			merge_samples(newdc, dc1, *match, cylinders_map_a, cylinders_map_b, offset);
 			merge_extra_data(newdc, dc1, *match);
@@ -2227,7 +2230,7 @@ std::unique_ptr<dive> dive::create_merged_dive(const struct dive &a, const struc
 		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */
 		join_dive_computers(*res, b, a, cylinders_map_b.get(), cylinders_map_a.get(), true);
 	} else if (offset && might_be_same_device(a.dcs[0], b.dcs[0])) {
-		interleave_dive_computers(*res, a, b, cylinders_map_a.get(), cylinders_map_b.get(), offset);
+		interleave_dive_computers(*res, a, b, cylinders_map_a.get(), cylinders_map_b.get());
 	} else {
 		join_dive_computers(*res, a, b, cylinders_map_a.get(), cylinders_map_b.get(), false);
 	}
