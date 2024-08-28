@@ -1182,6 +1182,7 @@ merge_result dive_table::merge_dives(const struct dive &a_in, const struct dive 
 		 * Keep the dive site, but add the GPS data */
 		res.site->location = b->dive_site->location;
 	}
+	res.dive->dive_site = res.site;
 	fixup_dive(*res.dive);
 
 	return res;
