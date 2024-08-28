@@ -571,7 +571,11 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VE
 	# build the googlemaps map plugin
 
 	cd "$SRC"
-	./${SRC_DIR}/scripts/get-dep-lib.sh single . googlemaps
+	if [ "$BUILD_WITH_QT6" = "1" ] ; then
+		./${SRC_DIR}/scripts/get-dep-lib.sh -qt6 single . googlemaps
+	else
+		./${SRC_DIR}/scripts/get-dep-lib.sh single . googlemaps
+	fi
 	pushd googlemaps
 	mkdir -p build
 	mkdir -p J10build

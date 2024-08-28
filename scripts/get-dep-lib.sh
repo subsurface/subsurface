@@ -79,13 +79,17 @@ curl_download_library() {
 	fi
 }
 
-
+QT6="0"
 # deal with all the command line arguments
+if [ "$1" == "-qt6" ] ; then
+	shift
+	QT6="1"
+fi
 if [ $# -ne 2 ] && [ $# -ne 3 ] ; then
 	echo "wrong number of parameters, format:"
-	echo "get-dep-lib.sh <platform> <install dir>"
-	echo "get-dep-lib.sh single <install dir> <lib>"
-	echo "get-dep-lib.sh singleAndroid <install dir> <lib>"
+	echo "get-dep-lib.sh [ -qt6 ] <platform> <install dir>"
+	echo "get-dep-lib.sh [ -qt6 ] single <install dir> <lib>"
+	echo "get-dep-lib.sh [ -qt6 ] singleAndroid <install dir> <lib>"
 	echo "where"
 	echo "<platform> is one of scripts, ios or android"
 	echo "(the name of the directory where build.sh resides)"
@@ -169,9 +173,12 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library breeze-icons $CURRENT_BREEZE_ICONS https://github.com/kde/breeze-icons.git
 			;;
 		googlemaps)
-			#git_checkout_library googlemaps master https://github.com/Subsurface/googlemaps.git
-			git_checkout_library googlemaps master https://github.com/vladest/googlemaps.git
-      ;;
+			if [ "$QT6" = "1" ] ; then
+				git_checkout_library googlemaps master https://github.com/vladest/googlemaps.git
+			else
+				git_checkout_library googlemaps master https://github.com/Subsurface/googlemaps.git
+			fi
+			;;
 		hidapi)
 			git_checkout_library hidapi master https://github.com/libusb/hidapi.git
 			;;
