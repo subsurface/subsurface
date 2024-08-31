@@ -47,7 +47,7 @@ Kirigami.Page {
 
 	Component {
 		id: chartListDelegate
-		Kirigami.AbstractListItem {
+        Controls.ItemDelegate {
 			id: chartListDelegateItem
 			height: isHeader ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing // delegateInnerItem.height
 			onClicked: {

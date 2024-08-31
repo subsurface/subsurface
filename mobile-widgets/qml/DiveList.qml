@@ -38,7 +38,7 @@ Kirigami.ScrollablePage {
 
 	Component {
 		id: diveOrTripDelegate
-		Kirigami.AbstractListItem {
+        Controls.ItemDelegate {
 			// this allows us to access properties of the currentItem from outside
 			property variant myData: model
 			property var view: ListView.view
@@ -46,7 +46,7 @@ Kirigami.ScrollablePage {
 			property bool invalid: isInvalid === true
 			id: diveOrTripDelegateItem
 			padding: 0
-			supportsMouseEvents: true
+            //supportsMouseEvents: true
 			anchors {
 				left: parent ? parent.left : undefined
 				right: parent ? parent.right : undefined
@@ -458,7 +458,7 @@ Kirigami.ScrollablePage {
 		icon {
 			name: ":/icons/list-add"
 		}
-		color: subsurfaceTheme.textColor
+        //color: subsurfaceTheme.textColor
 		text: qsTr("Add dive")
 		onTriggered: {
 			startAddDive()
@@ -469,7 +469,7 @@ Kirigami.ScrollablePage {
 		icon {
 			name: ":icons/ic_filter_list"
 		}
-		color: subsurfaceTheme.textColor
+        //color: subsurfaceTheme.textColor
 		text: qsTr("Filter dives")
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle

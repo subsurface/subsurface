@@ -645,7 +645,7 @@ TemplatePage {
 					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gflow
-					validator: RegExpValidator { regExp: /1?\d{0,2}%?/ }
+                    validator: RegularExpressionValidator { regularExpression: /1?\d{0,2}%?/ }
 					textFromValue: function (value, locale) {
 						return value + "%"
 					}
@@ -679,7 +679,7 @@ TemplatePage {
 					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gfhigh
-					validator: RegExpValidator { regExp: /1?\d{0,2}%?/ }
+                    validator: RegularExpressionValidator { regularExpression: /1?\d{0,2}%?/ }
 					textFromValue: function (value, locale) {
 						return value + "%"
 					}

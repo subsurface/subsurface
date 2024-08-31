@@ -10,6 +10,7 @@
 #include <QColor>
 #include <QFile>
 #include <QTimer>
+#include <qqmlintegration.h>
 
 #include "core/btdiscovery.h"
 #include "core/downloadfromdcthread.h"
@@ -29,6 +30,7 @@ struct DiveSiteChange; // An obscure implementation artifact - remove in due cou
 
 class QMLManager : public QObject {
 	Q_OBJECT
+	QML_ELEMENT
 	Q_PROPERTY(bool loadFromCloud MEMBER m_loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
 	Q_PROPERTY(QString startPageText MEMBER m_startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled MEMBER m_verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)

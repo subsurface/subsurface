@@ -375,7 +375,7 @@ android {
 		../install-root-$${QT_ARCH}/lib/libzip.a \
 		../install-root-$${QT_ARCH}/lib/libxslt.a \
 		../install-root-$${QT_ARCH}/lib/libxml2.a \
-		../install-root-$${QT_ARCH}/lib/libsqlite3.a \
+		../install-root-$${QT_ARCH}/lib/libsqliteX.so \
 		../install-root-$${QT_ARCH}/lib/libssl_1_1.so \
 		../install-root-$${QT_ARCH}/lib/libcrypto_1_1.so \
 		../googlemaps-build/libplugins_geoservices_qtgeoservices_googlemaps_$${QT_ARCH}.so

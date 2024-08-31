@@ -12,10 +12,10 @@ TemplatePage {
 
 	property int selectedExport: ExportType.EX_DIVES_XML
 
-	FileDialog {
+    FolderDialog {
 		id: saveAsDialog
-		folder: shortcuts.documents
-		selectFolder: true
+        currentFolder: shortcuts.documents
+        //selectFolder: true
 		onAccepted: {
 			manager.exportToFile(selectedExport, fileUrls, anonymize.checked)
 			pageStack.pop()

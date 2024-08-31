@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QQmlEngine>
 #include <QQuickItem>
+#include <QDebug>
 
 #ifdef MAP_SUPPORT
 #include "map-widget/qmlmapwidgethelper.h"
@@ -97,6 +98,9 @@ void run_mobile_ui(double initial_font_size)
 #endif
 	QScreen *appScreen = QApplication::screens().at(0);
 	int availableScreenWidth = appScreen->availableSize().width();
+
+	QScopedPointer<QMLManager> qmlmanager(new QMLManager);
+
 	QQmlApplicationEngine engine;
 	QQmlContext *ctxt = engine.rootContext();
 
@@ -121,6 +125,7 @@ void run_mobile_ui(double initial_font_size)
 	ctxt->setContextProperty("vendorList", vendorList);
 	ctxt->setContextProperty("swipeModel", MobileModels::instance()->swipeModel());
 	ctxt->setContextProperty("diveModel", MobileModels::instance()->listModel());
+	ctxt->setContextProperty("manager", qmlmanager->instance());
 	set_non_bt_addresses();
 
 	// we need to setup the initial font size before the QML UI is instantiated
@@ -130,8 +135,6 @@ void run_mobile_ui(double initial_font_size)
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 	ctxt->setContextProperty("subsurfaceTheme", themeInterface);
-
-	qmlRegisterUncreatableType<QMLManager>("org.subsurfacedivelog.mobile",1,0,"ExportType","Enum is not a type");
 
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 	if (!testqml.empty()) {
