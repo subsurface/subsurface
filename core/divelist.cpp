@@ -1175,14 +1175,13 @@ merge_result dive_table::merge_dives(const struct dive &a_in, const struct dive 
 	res.trip = get_preferred_trip(a, b);
 
 	/* we take the first dive site, unless it's empty */
-	res.site = a->dive_site && !a->dive_site->is_empty() ? a->dive_site : b->dive_site;
-	if (res.site && !res.site->has_gps_location() && b->dive_site && b->dive_site->has_gps_location()) {
+	res.dive->dive_site = a->dive_site && !a->dive_site->is_empty() ? a->dive_site : b->dive_site;
+	if (res.dive->dive_site && !res.dive->dive_site->has_gps_location() && b->dive_site && b->dive_site->has_gps_location()) {
 		/* we picked the first dive site and that didn't have GPS data, but the new dive has
 		 * GPS data (that could be a download from a GPS enabled dive computer).
 		 * Keep the dive site, but add the GPS data */
-		res.site->location = b->dive_site->location;
+		res.dive->dive_site->location = b->dive_site->location;
 	}
-	res.dive->dive_site = res.site;
 	fixup_dive(*res.dive);
 
 	return res;
@@ -1206,8 +1205,7 @@ struct std::unique_ptr<dive> dive_table::try_to_merge(const struct dive &a, cons
 	if (!a.likely_same(b))
 		return {};
 
-	auto [res, trip, site] = merge_dives(a, b, 0, prefer_downloaded);
-	res->dive_site = site; /* Caller has to call site->add_dive()! */
+	auto [res, trip] = merge_dives(a, b, 0, prefer_downloaded);
 	return std::move(res);
 }
 
