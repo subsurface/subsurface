@@ -18,7 +18,6 @@ int comp_dives_ptr(const struct dive *a, const struct dive *b);
 struct merge_result {
 	std::unique_ptr<struct dive> dive;
 	dive_trip *trip;
-	dive_site *site;
 };
 
 struct dive_table : public sorted_owning_table<dive, &comp_dives> {
