@@ -86,7 +86,7 @@ static QVariant gas_usage_tooltip(const cylinder_t *cyl)
 	volume_t start = cyl->gas_volume(startp);
 	volume_t end = cyl->gas_volume(endp);
 	// TOOO: implement comparison and subtraction on units.h types.
-	volume_t used = (end.mliter && start.mliter > end.mliter) ? volume_t { start.mliter - end.mliter } : volume_t();
+	volume_t used = (end.mliter && start.mliter > end.mliter) ? volume_t { .mliter = start.mliter - end.mliter } : volume_t();
 
 	if (!used.mliter)
 		return gas_wp_tooltip(cyl);

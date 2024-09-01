@@ -112,9 +112,9 @@ void set_tank_info_data(std::vector<tank_info> &table, const std::string &name, 
 std::pair<volume_t, pressure_t> extract_tank_info(const struct tank_info &info)
 {
 	pressure_t working_pressure {
-		static_cast<int32_t>(info.bar != 0 ? info.bar * 1000 : psi_to_mbar(info.psi))
+		.mbar = static_cast<int32_t>(info.bar != 0 ? info.bar * 1000 : psi_to_mbar(info.psi))
 	};
-	volume_t size { 0 };
+	volume_t size;
 	if (info.ml != 0)
 		size.mliter = info.ml;
 	else if (working_pressure.mbar != 0)
@@ -128,7 +128,7 @@ std::pair<volume_t, pressure_t> get_tank_info_data(const std::vector<tank_info> 
 	auto it = std::find_if(table.begin(), table.end(), [&name](const tank_info &info)
 			       { return info.name == name; });
 	return it != table.end() ? extract_tank_info(*it)
-				 : std::make_pair(volume_t{0}, pressure_t{0});
+				 : std::make_pair(volume_t(), pressure_t());
 }
 
 void add_cylinder_description(const cylinder_type_t &type)
@@ -182,7 +182,7 @@ volume_t cylinder_t::gas_volume(pressure_t p) const
 {
 	double bar = p.mbar / 1000.0;
 	double z_factor = gas_compressibility_factor(gasmix, bar);
-	return volume_t { static_cast<int>(lrint(type.size.mliter * bar_to_atm(bar) / z_factor)) };
+	return volume_t { .mliter = static_cast<int>(lrint(type.size.mliter * bar_to_atm(bar) / z_factor)) };
 }
 
 int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders)

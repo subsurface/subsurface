@@ -596,7 +596,7 @@ void DiveListView::mergeDives()
 void DiveListView::splitDives()
 {
 	for (struct dive *d: getDiveSelection())
-		Command::splitDives(d, duration_t{-1});
+		Command::splitDives(d, duration_t{ .seconds = -1});
 }
 
 void DiveListView::addDivesToTrip()

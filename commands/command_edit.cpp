@@ -790,10 +790,6 @@ void PasteDives::redo()
 // ***** ReplanDive *****
 ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	when(0),
-	maxdepth({0}),
-	meandepth({0}),
-	surface_pressure({0}),
-	duration({0}),
 	salinity(0)
 {
 	if (!d)
@@ -870,11 +866,7 @@ QString editProfileTypeToString(EditProfileType type, int count)
 }
 
 EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int count) : d(current_dive),
-	dcNr(dcNr),
-	maxdepth({0}),
-	meandepth({0}),
-	dcmaxdepth({0}),
-	duration({0})
+	dcNr(dcNr)
 {
 	const struct divecomputer *sdc = source->get_dc(dcNr);
 	if (!sdc)

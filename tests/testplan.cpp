@@ -47,10 +47,10 @@ diveplan setupPlan()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{150}, {450}};
-	struct gasmix ean36 = {{360}, {0}};
-	struct gasmix oxygen = {{1000}, {0}};
-	pressure_t po2 = {1600};
+	struct gasmix bottomgas = {{.permille = 150}, {.permille = 450}};
+	struct gasmix ean36 = {{.permille = 360}, {}};
+	struct gasmix oxygen = {{.permille = 1000}, {}};
+	pressure_t po2 = {.mbar = 1600};
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -82,10 +82,10 @@ diveplan setupPlanVpmb45m30mTx()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{210}, {350}};
-	struct gasmix ean50 = {{500}, {0}};
-	struct gasmix oxygen = {{1000}, {0}};
-	pressure_t po2 = {1600};
+	struct gasmix bottomgas = {{.permille = 210}, {.permille = 350}};
+	struct gasmix ean50 = {{.permille = 500}, {}};
+	struct gasmix oxygen = {{.permille = 1000}, {}};
+	pressure_t po2 = {.mbar = 1600};
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -117,10 +117,10 @@ diveplan setupPlanVpmb60m10mTx()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{180}, {450}};
-	struct gasmix tx50_15 = {{500}, {150}};
-	struct gasmix oxygen = {{1000}, {0}};
-	pressure_t po2 = {1600};
+	struct gasmix bottomgas = {{.permille = 180}, {.permille = 450}};
+	struct gasmix tx50_15 = {{.permille = 500}, {.permille = 150}};
+	struct gasmix oxygen = {{.permille = 1000}, {}};
+	pressure_t po2 = {.mbar = 1600};
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -150,7 +150,7 @@ diveplan setupPlanVpmb60m30minAir()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{210}, {0}};
+	struct gasmix bottomgas = {{.permille = 210}, {}};
 	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 100000;
@@ -172,9 +172,9 @@ diveplan setupPlanVpmb60m30minEan50()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{210}, {0}};
-	struct gasmix ean50 = {{500}, {0}};
-	pressure_t po2 = {1600};
+	struct gasmix bottomgas = {{.permille = 210}, {}};
+	struct gasmix ean50 = {{.permille = 500}, {}};
+	pressure_t po2 = {.mbar = 1600};
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -202,9 +202,9 @@ diveplan setupPlanVpmb60m30minTx()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{180}, {450}};
-	struct gasmix ean50 = {{500}, {0}};
-	pressure_t po2 = {1600};
+	struct gasmix bottomgas = {{.permille = 180}, {.permille = 450}};
+	struct gasmix ean50 = {{.permille = 500}, {}};
+	pressure_t po2 = {.mbar = 1600};
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -232,7 +232,7 @@ diveplan setupPlanVpmbMultiLevelAir()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{210}, {0}};
+	struct gasmix bottomgas = {{.permille = 210}, {}};
 	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 200000;
@@ -256,10 +256,10 @@ diveplan setupPlanVpmb100m60min()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{180}, {450}};
-	struct gasmix ean50 = {{500}, {0}};
-	struct gasmix oxygen = {{1000}, {0}};
-	pressure_t po2 = {1600};
+	struct gasmix bottomgas = {{.permille = 180}, {.permille = 450}};
+	struct gasmix ean50 = {{.permille = 500}, {}};
+	struct gasmix oxygen = {{.permille = 1000}, {}};
+	pressure_t po2 = {.mbar = 1600};
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -290,10 +290,10 @@ diveplan setupPlanVpmb100m10min()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{180}, {450}};
-	struct gasmix ean50 = {{500}, {0}};
-	struct gasmix oxygen = {{1000}, {0}};
-	pressure_t po2 = {1600};
+	struct gasmix bottomgas = {{.permille = 180}, {.permille = 450}};
+	struct gasmix ean50 = {{.permille = 500}, {}};
+	struct gasmix oxygen = {{.permille = 1000}, {}};
+	pressure_t po2 = {.mbar = 1600};
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -324,7 +324,7 @@ diveplan setupPlanVpmb30m20min()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{210}, {0}};
+	struct gasmix bottomgas = {{.permille = 210}, {}};
 	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cyl0->gasmix = bottomgas;
 	cyl0->type.size.mliter = 36000;
@@ -346,11 +346,11 @@ diveplan setupPlanVpmb100mTo70m30min()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix bottomgas = {{120}, {650}};
-	struct gasmix tx21_35 = {{210}, {350}};
-	struct gasmix ean50 = {{500}, {0}};
-	struct gasmix oxygen = {{1000}, {0}};
-	pressure_t po2 = {1600};
+	struct gasmix bottomgas = {{.permille = 120}, {.permille = 650}};
+	struct gasmix tx21_35 = {{.permille = 210}, {.permille = 350}};
+	struct gasmix ean50 = {{.permille = 500}, {}};
+	struct gasmix oxygen = {{.permille = 1000}, {}};
+	pressure_t po2 = {.mbar = 1600};
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -388,8 +388,8 @@ diveplan setupPlanSeveralGases()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	struct gasmix ean36 = {{360}, {0}};
-	struct gasmix tx11_50 = {{110}, {500}};
+	struct gasmix ean36 = {{.permille = 360}, {}};
+	struct gasmix tx11_50 = {{.permille = 110}, {.permille = 500}};
 
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
@@ -420,10 +420,10 @@ diveplan setupPlanCcr()
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
-	pressure_t po2 = {1600};
-	struct gasmix diluent = {{200}, {210}};
-	struct gasmix ean53 = {{530}, {0}};
-	struct gasmix tx19_33 = {{190}, {330}};
+	pressure_t po2 = {.mbar = 1600};
+	struct gasmix diluent = {{.permille = 200}, {.permille = 210}};
+	struct gasmix ean53 = {{.permille = 530}, {}};
+	struct gasmix tx19_33 = {{.permille = 190}, {.permille = 330}};
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -754,7 +754,7 @@ void TestPlan::testMultipleGases()
 	save_dive(stdout, dive, false);
 #endif
 
-	gasmix gas = dive.get_gasmix_at_time(dive.dcs[0], {20 * 60 + 1});
+	gasmix gas = dive.get_gasmix_at_time(dive.dcs[0], {.seconds = 20 * 60 + 1});
 	QCOMPARE(get_o2(gas), 110);
 	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 2480u, 2480u));
 }
@@ -934,17 +934,17 @@ void TestPlan::testCcrBailoutGasSelection()
 #endif
 
 	// check diluent used
-	cylinder_t *cylinder = dive.get_cylinder(get_cylinderid_at_time(&dive, &dive.dcs[0], { 20 * 60 - 1 }));
+	cylinder_t *cylinder = dive.get_cylinder(get_cylinderid_at_time(&dive, &dive.dcs[0], { .seconds = 20 * 60 - 1 }));
 	QCOMPARE(cylinder->cylinder_use, DILUENT);
 	QCOMPARE(get_o2(cylinder->gasmix), 200);
 
 	// check deep bailout used
-	cylinder = dive.get_cylinder(get_cylinderid_at_time(&dive, &dive.dcs[0], { 20 * 60 + 1 }));
+	cylinder = dive.get_cylinder(get_cylinderid_at_time(&dive, &dive.dcs[0], { .seconds = 20 * 60 + 1 }));
 	QCOMPARE(cylinder->cylinder_use, OC_GAS);
 	QCOMPARE(get_o2(cylinder->gasmix), 190);
 
 	// check shallow bailout used
-	cylinder = dive.get_cylinder(get_cylinderid_at_time(&dive, &dive.dcs[0], { 30 * 60 }));
+	cylinder = dive.get_cylinder(get_cylinderid_at_time(&dive, &dive.dcs[0], { .seconds = 30 * 60 }));
 	QCOMPARE(cylinder->cylinder_use, OC_GAS);
 	QCOMPARE(get_o2(cylinder->gasmix), 530);
 

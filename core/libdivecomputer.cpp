@@ -160,7 +160,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 		}
 	}
 	bool no_volume = true;
-	struct gasmix bottom_gas = { {1000}, {0} }; /* Default to pure O2, or air if there are no mixes defined */
+	struct gasmix bottom_gas = { { .permille = 1000}, {} }; /* Default to pure O2, or air if there are no mixes defined */
 	if (ngases == 0) {
 		bottom_gas = gasmix_air;
 	}

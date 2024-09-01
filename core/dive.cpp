@@ -2248,7 +2248,7 @@ duration_t dive::totaltime() const
 				time = dc_time;
 		}
 	}
-	return { time };
+	return { .seconds = time };
 }
 
 timestamp_t dive::endtime() const
@@ -2367,7 +2367,7 @@ bool dive::cache_is_valid() const
 pressure_t dive::get_surface_pressure() const
 {
 	return surface_pressure.mbar > 0 ? surface_pressure
-					 : pressure_t { SURFACE_PRESSURE };
+					 : pressure_t { .mbar = SURFACE_PRESSURE };
 }
 
 /* This returns the conversion factor that you need to multiply
@@ -2459,13 +2459,13 @@ int dive::mbar_to_depth(int mbar) const
 depth_t dive::gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const
 {
 	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix));
-	return depth_t { (int)lrint(depth / roundto) * roundto };
+	return depth_t { .mm = (int)lrint(depth / roundto) * roundto };
 }
 
 /* Maximum narcotic depth rounded to multiples of roundto mm */
 depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 {
-	pressure_t ppo2n2 { depth_to_mbar(end.mm) };
+	pressure_t ppo2n2 { .mbar = depth_to_mbar(end.mm) };
 
 	int maxambient = prefs.o2narcotic ?
 					(int)lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0))
@@ -2475,7 +2475,7 @@ depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 					:
 						// Actually: Infinity
 						1000000;
-	return depth_t { (int)lrint(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
+	return depth_t { .mm = (int)lrint(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
 }
 
 std::string dive::get_country() const
@@ -2677,7 +2677,7 @@ temperature_t dive::dc_watertemp() const
 	}
 	if (!nr)
 		return temperature_t();
-	return temperature_t{ static_cast<uint32_t>((sum + nr / 2) / nr) };
+	return temperature_t{ .mkelvin = static_cast<uint32_t>((sum + nr / 2) / nr) };
 }
 
 /*
@@ -2695,7 +2695,7 @@ temperature_t dive::dc_airtemp() const
 	}
 	if (!nr)
 		return temperature_t();
-	return temperature_t{ static_cast<uint32_t>((sum + nr / 2) / nr) };
+	return temperature_t{ .mkelvin = static_cast<uint32_t>((sum + nr / 2) / nr) };
 }
 
 /*
@@ -2782,5 +2782,5 @@ weight_t dive::total_weight() const
 	// TODO: implement addition for units.h types
 	return std::accumulate(weightsystems.begin(), weightsystems.end(), weight_t(),
 			       [] (weight_t w, const weightsystem_t &ws)
-			       { return weight_t{ w.grams + ws.weight.grams }; });
+			       { return weight_t{ .grams = w.grams + ws.weight.grams }; });
 }

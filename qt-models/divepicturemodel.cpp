@@ -15,8 +15,7 @@
 
 PictureEntry::PictureEntry(dive *dIn, const picture &p) : d(dIn),
 	filename(p.filename),
-	offsetSeconds(p.offset.seconds),
-	length({ 0 })
+	offsetSeconds(p.offset.seconds)
 {
 }
 

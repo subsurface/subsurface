@@ -12,7 +12,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE        
 {                                     // --------- -----  -----    -----               -----------
 	duration_t time;                  // int32_t    4  seconds  (0-34 yrs)             elapsed dive time up to this sample
 	duration_t stoptime;              // int32_t    4  seconds  (0-34 yrs)             time duration of next deco stop
-	duration_t ndl = { -1 };          // int32_t    4  seconds  (-1 no val, 0-34 yrs)  time duration before no-deco limit
+	duration_t ndl = { .seconds = -1 };// int32_t    4  seconds  (-1 no val, 0-34 yrs)  time duration before no-deco limit
 	duration_t tts;                   // int32_t    4  seconds  (0-34 yrs)             time duration to reach the surface
 	duration_t rbt;                   // int32_t    4  seconds  (0-34 yrs)             remaining bottom time
 	depth_t depth;                    // int32_t    4    mm     (0-2000 km)            dive depth of this sample
@@ -21,7 +21,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE        
 	pressure_t pressure[MAX_SENSORS]; // int32_t  2x4    mbar   (0-2 Mbar)             cylinder pressures (main and CCR o2)
 	o2pressure_t setpoint;            // uint16_t   2    mbar   (0-65 bar)             O2 partial pressure (will be setpoint)
 	o2pressure_t o2sensor[MAX_O2_SENSORS];// uint16_t 6x2    mbar   (0-65 bar)             Up to 6 PO2 sensor values (rebreather)
-	bearing_t bearing = { -1 };       // int16_t    2  degrees  (-1 no val, 0-360 deg) compass bearing
+	bearing_t bearing = { .degrees = -1 };// int16_t    2  degrees  (-1 no val, 0-360 deg) compass bearing
 	int16_t sensor[MAX_SENSORS] = {}; // int16_t  2x2  sensorID (0-16k)                ID of cylinder pressure sensor
 	uint16_t cns = 0;                 // uint16_t   2     %     (0-64k %)              cns% accumulated
 	uint8_t heartbeat = 0;            // uint8_t    1  beats/m  (0-255)                heart rate measurement

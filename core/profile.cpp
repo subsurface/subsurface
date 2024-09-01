@@ -1504,8 +1504,8 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 					const cylinder_t *cyl = d->get_cylinder(cylinder_index);
 
 					// TODO: Implement addition/subtraction on units.h types
-					volumes_used[cylinder_index] += cyl->gas_volume((pressure_t){ last_pressures[cylinder_index] }).mliter -
-									cyl->gas_volume((pressure_t){ next_pressure }).mliter;
+					volumes_used[cylinder_index] += cyl->gas_volume((pressure_t){ .mbar = last_pressures[cylinder_index] }).mliter -
+									cyl->gas_volume((pressure_t){ .mbar = next_pressure }).mliter;
 				}
 
 				// check if the gas in this cylinder is being used
