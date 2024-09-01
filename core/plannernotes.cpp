@@ -145,7 +145,6 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 		// TODO: avoid copy
 		dive->notes = buf;
-		dive->notes = strdup(buf.c_str());
 
 		return;
 	}
