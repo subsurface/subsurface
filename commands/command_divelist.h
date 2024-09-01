@@ -267,6 +267,7 @@ private:
 	void undoit() override;
 	void redoit() override;
 	bool workToBeDone() override;
+	void swapDivesite(); // Common code for undo and redo.
 
 	// For redo
 	// Add one and remove a batch of dives
@@ -284,6 +285,8 @@ private:
 
 	// For undo and redo
 	QVector<QPair<dive *, int>> divesToRenumber;
+	dive_site		*site;
+	location_t		location;
 };
 
 } // namespace Command

@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include "command_divelist.h"
+#include "core/divefilter.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
 #include "core/qthelper.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/filtermodels.h"
-#include "core/divefilter.h"
+#include "qt-models/divelocationmodel.h"
 
 namespace Command {
 
@@ -911,7 +912,7 @@ DeleteDiveComputer::DeleteDiveComputer(dive *d, int dc_num)
 	setText(Command::Base::tr("delete dive computer"));
 }
 
-MergeDives::MergeDives(const QVector <dive *> &dives)
+MergeDives::MergeDives(const QVector <dive *> &dives) : site(nullptr)
 {
 	setText(Command::Base::tr("merge dive"));
 
@@ -922,21 +923,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 		return;
 	}
 
-	auto [d, trip] = divelog.dives.merge_dives(*dives[0], *dives[1], dives[1]->when - dives[0]->when, false);
-
-	// Currently, the core code selects the dive -> this is not what we want, as
-	// we manually manage the selection post-command.
-	// TODO: Remove selection code from core.
-	d->selected = false;
-
-	// Set the preferred dive trip, so that for subsequent merges the better trip can be selected
-	d->divetrip = trip;
-	for (int i = 2; i < dives.count(); ++i) {
-		auto [d2, trip] = divelog.dives.merge_dives(*d, *dives[i], dives[i]->when - d->when, false);
-		d = std::move(d2);
-		// Set the preferred dive trip and site, so that for subsequent merges the better trip and site can be selected
-		d->divetrip = trip;
-	}
+	auto [d, set_location] = divelog.dives.merge_dives(qtToStd(dives));
 
 	// The merged dive gets the number of the first dive with a non-zero number
 	for (const dive *dive: dives) {
@@ -993,6 +980,11 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 	mergedDive.dives[0].site = d->dive_site;
 	divesToMerge.dives = std::vector<dive *>(dives.begin(), dives.end());
 
+	if (set_location.has_value() && d->dive_site) {
+		location = *set_location;
+		site = d->dive_site;
+	}
+
 	// We got our preferred trip and site, so now the references can be deleted from the newly generated dive
 	d->divetrip = nullptr;
 	d->dive_site = nullptr;
@@ -1005,11 +997,20 @@ bool MergeDives::workToBeDone()
 	return !mergedDive.dives.empty();
 }
 
+void MergeDives::swapDivesite()
+{
+	if (!site)
+		return;
+	std::swap(location, site->location);
+	emit diveListNotifier.diveSiteChanged(site, LocationInformationModel::LOCATION); // Inform frontend of changed dive site.
+}
+
 void MergeDives::redoit()
 {
 	renumberDives(divesToRenumber);
 	diveToUnmerge = addDives(mergedDive);
 	unmergedDives = removeDives(divesToMerge);
+	swapDivesite();
 
 	// Select merged dive and make it current
 	setSelection(diveToUnmerge.dives, diveToUnmerge.dives[0], -1);
@@ -1020,6 +1021,7 @@ void MergeDives::undoit()
 	divesToMerge = addDives(unmergedDives);
 	mergedDive = removeDives(diveToUnmerge);
 	renumberDives(divesToRenumber);
+	swapDivesite();
 
 	// Select unmerged dives and make first one current
 	setSelection(divesToMerge.dives, divesToMerge.dives[0], -1);

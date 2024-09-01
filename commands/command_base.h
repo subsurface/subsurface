@@ -149,6 +149,12 @@ QVector<T> stdToQt(const std::vector<T> &v)
 #endif
 }
 
+template<typename T>
+std::vector<T> qtToStd(const QVector<T> &v)
+{
+	return std::vector<T>(v.begin(), v.end());
+}
+
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
 

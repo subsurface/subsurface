@@ -198,7 +198,7 @@ void dive::clear()
  * any impact on the source */
 void copy_dive(const struct dive *s, struct dive *d)
 {
-	/* simply copy things over, but then the dive cache. */
+	/* simply copy things over, but then clear the dive cache. */
 	*d = *s;
 	d->invalidate_cache();
 }
