@@ -1092,13 +1092,13 @@ std::array<std::unique_ptr<dive>, 2> dive_table::split_dive_at_time(const struct
 /*
  * Pick a trip for a dive
  */
-static struct dive_trip *get_preferred_trip(const struct dive *a, const struct dive *b)
+static struct dive_trip *get_preferred_trip(const struct dive &a, const struct dive &b)
 {
 	dive_trip *atrip, *btrip;
 
 	/* If only one dive has a trip, choose that */
-	atrip = a->divetrip;
-	btrip = b->divetrip;
+	atrip = a.divetrip;
+	btrip = b.divetrip;
 	if (!atrip)
 		return btrip;
 	if (!btrip)
@@ -1124,7 +1124,7 @@ static struct dive_trip *get_preferred_trip(const struct dive *a, const struct d
 	 * Ok, so both have location and notes.
 	 * Pick the earlier one.
 	 */
-	if (a->when < b->when)
+	if (a.when < b.when)
 		return atrip;
 	return btrip;
 }
@@ -1152,38 +1152,63 @@ static struct dive_trip *get_preferred_trip(const struct dive *a, const struct d
  * dive. If the flag "prefer_downloaded" is set, data of the latter
  * will take priority over the former.
  *
- * The trip the new dive should be associated with (if any) is returned
- * in the "trip" output parameter.
+ * The dive site is set, but the caller still has to add it to the
+ * divelog's dive site manually.
  *
- * The dive site the new dive should be added to (if any) is returned
- * in the "dive_site" output parameter.
  */
-merge_result dive_table::merge_dives(const struct dive &a_in, const struct dive &b_in, int offset, bool prefer_downloaded) const
+std::unique_ptr<dive> dive_table::merge_two_dives(const struct dive &a_in, const struct dive &b_in, int offset, bool prefer_downloaded) const
 {
-	merge_result res = { };
-
 	const dive *a = &a_in;
 	const dive *b = &b_in;
 	if (is_dc_planner(&a->dcs[0]))
 		std::swap(a, b);
 
-	res.dive = dive::create_merged_dive(*a, *b, offset, prefer_downloaded);
+	auto d = dive::create_merged_dive(*a, *b, offset, prefer_downloaded);
 
 	/* The CNS values will be recalculated from the sample in fixup_dive() */
-	res.dive->cns = res.dive->maxcns = 0;
+	d->cns = d->maxcns = 0;
 
-	res.trip = get_preferred_trip(a, b);
+	/* Unselect the new dive if the original dive was selected. */
+	d->selected = false;
 
 	/* we take the first dive site, unless it's empty */
-	res.dive->dive_site = a->dive_site && !a->dive_site->is_empty() ? a->dive_site : b->dive_site;
-	if (res.dive->dive_site && !res.dive->dive_site->has_gps_location() && b->dive_site && b->dive_site->has_gps_location()) {
-		/* we picked the first dive site and that didn't have GPS data, but the new dive has
-		 * GPS data (that could be a download from a GPS enabled dive computer).
-		 * Keep the dive site, but add the GPS data */
-		res.dive->dive_site->location = b->dive_site->location;
-	}
-	fixup_dive(*res.dive);
+	d->dive_site = a->dive_site && !a->dive_site->is_empty() ? a->dive_site : b->dive_site;
 
+	fixup_dive(*d);
+
+	return d;
+}
+
+merge_result dive_table::merge_dives(const std::vector<dive *> &dives) const
+{
+	merge_result res;
+
+	// We don't support merging of less than two dives, but
+	// let's try to treat this gracefully.
+	if (dives.empty())
+		return res;
+	if (dives.size() == 1) {
+		res.dive = std::make_unique<dive>(*dives[0]);
+		return res;
+	}
+
+	auto d = merge_two_dives(*dives[0], *dives[1], dives[1]->when - dives[0]->when, false);
+	d->divetrip = get_preferred_trip(*dives[0], *dives[1]);
+
+	for (size_t i = 2; i < dives.size(); ++i) {
+		auto d2 = divelog.dives.merge_two_dives(*d, *dives[i], dives[i]->when - d->when, false);
+		d2->divetrip = get_preferred_trip(*d, *dives[i]);
+		d = std::move(d2);
+	}
+
+	// If the new dive site has no gps location, try to find the first dive with a gps location
+	if (d->dive_site && !d->dive_site->has_gps_location()) {
+		auto it = std::find_if(dives.begin(), dives.end(), [](const dive *d)
+				       { return d->dive_site && d->dive_site->has_gps_location(); } );
+		if (it != dives.end())
+			res.set_location = (*it)->dive_site->location;
+	}
+	res.dive = std::move(d);
 	return res;
 }
 
@@ -1205,8 +1230,7 @@ struct std::unique_ptr<dive> dive_table::try_to_merge(const struct dive &a, cons
 	if (!a.likely_same(b))
 		return {};
 
-	auto [res, trip] = merge_dives(a, b, 0, prefer_downloaded);
-	return std::move(res);
+	return merge_two_dives(a, b, 0, prefer_downloaded);
 }
 
 /* Clone a dive and delete given dive computer */
