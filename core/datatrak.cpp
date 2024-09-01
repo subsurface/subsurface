@@ -618,7 +618,7 @@ static void wlog_compl_parser(std::string &wl_mem, struct dive *dt_dive, int dco
 	 */
 	tmp = (int) two_bytes_to_int(runner[pos_weight + 1], runner[pos_weight]);
 	if (tmp != 0x7fff) {
-		weightsystem_t ws = { {tmp * 10}, translate("gettextFromC", "unknown"), false };
+		weightsystem_t ws = { {.grams = tmp * 10}, translate("gettextFromC", "unknown"), false };
 		dt_dive->weightsystems.push_back(std::move(ws));
 	}
 

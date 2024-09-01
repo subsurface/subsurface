@@ -67,62 +67,66 @@
  */
 using timestamp_t = int64_t;
 
-struct duration_t
+template <typename T>
+struct unit_base {
+};
+
+struct duration_t : public unit_base<duration_t>
 {
 	int32_t seconds = 0; // durations up to 34 yrs
 };
 
-struct offset_t
+struct offset_t : public unit_base<offset_t>
 {
 	int32_t seconds = 0; // offsets up to +/- 34 yrs
 };
 
-struct depth_t // depth to 2000 km
+struct depth_t : public unit_base<depth_t> // depth to 2000 km
 {
 	int32_t mm = 0;
 };
 
-struct pressure_t
+struct pressure_t : public unit_base<pressure_t>
 {
 	int32_t mbar = 0; // pressure up to 2000 bar
 };
 
-struct o2pressure_t
+struct o2pressure_t : public unit_base<o2pressure_t>
 {
 	uint16_t mbar = 0;
 };
 
-struct bearing_t
+struct bearing_t : public unit_base<bearing_t>
 {
 	int16_t degrees = 0;
 };
 
-struct temperature_t
+struct temperature_t : public unit_base<temperature_t>
 {
 	uint32_t mkelvin = 0; // up to 4 MK (temperatures in K are always positive)
 };
 
-struct  temperature_sum_t
+struct temperature_sum_t : public unit_base<temperature_sum_t>
 {
 	uint64_t mkelvin = 0; // up to 18446744073 MK (temperatures in K are always positive)
 };
 
-struct volume_t
+struct volume_t : public unit_base<volume_t>
 {
 	int mliter = 0;
 };
 
-struct fraction_t
+struct fraction_t : public unit_base<fraction_t>
 {
 	int permille = 0;
 };
 
-struct weight_t
+struct weight_t : public unit_base<weight_t>
 {
 	int grams = 0;
 };
 
-struct degrees_t
+struct degrees_t : public unit_base<degrees_t>
 {
 	int udeg = 0;
 };
@@ -152,8 +156,8 @@ static inline bool operator!=(const location_t &a, const location_t &b)
 static inline location_t create_location(double lat, double lon)
 {
 	location_t location = {
-		{ (int) lrint(lat * 1000000) },
-		{ (int) lrint(lon * 1000000) }
+		{ .udeg = (int) lrint(lat * 1000000) },
+		{ .udeg = (int) lrint(lon * 1000000) }
 	};
 	return location;
 }
@@ -255,7 +259,7 @@ static inline double mbar_to_atm(int mbar)
 
 static inline double mbar_to_PSI(int mbar)
 {
-	pressure_t p = { mbar };
+	pressure_t p = { .mbar = mbar };
 	return to_PSI(p);
 }
 

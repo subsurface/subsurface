@@ -551,7 +551,7 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// while all other items are up there on the constructor.
 	qDeleteAll(eventItems);
 	eventItems.clear();
-	struct gasmix lastgasmix = d->get_gasmix_at_time(*currentdc, duration_t{1});
+	struct gasmix lastgasmix = d->get_gasmix_at_time(*currentdc, duration_t{ .seconds = 1 });
 
 	for (auto [idx, event]: enumerated_range(currentdc->events)) {
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event

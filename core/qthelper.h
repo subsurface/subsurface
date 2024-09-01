@@ -69,7 +69,6 @@ timestamp_t dateTimeToTimestamp(const QDateTime &t);
 int parseDurationToSeconds(const QString &text);
 int parseLengthToMm(const QString &text);
 int parseTemperatureToMkelvin(const QString &text);
-int parseWeightToGrams(const QString &text);
 int parsePressureToMbar(const QString &text);
 int parseGasMixO2(const QString &text);
 int parseGasMixHE(const QString &text);

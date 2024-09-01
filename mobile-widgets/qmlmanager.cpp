@@ -1162,6 +1162,29 @@ bool QMLManager::checkDepth(dive *d, QString depth)
 	return false;
 }
 
+static weight_t parseWeight(const QString &text)
+{
+	QString numOnly = text;
+	numOnly.replace(",", ".").remove(QRegularExpression("[^0-9.]"));
+	if (numOnly.isEmpty())
+		return {};
+	double number = numOnly.toDouble();
+	if (text.contains(gettextFromC::tr("kg"), Qt::CaseInsensitive)) {
+		return { .grams = static_cast<int>(lrint(number * 1000)) };
+	} else if (text.contains(gettextFromC::tr("lbs"), Qt::CaseInsensitive)) {
+		return { .grams = lbs_to_grams(number) };
+	} else {
+		switch (prefs.units.weight) {
+		case units::KG:
+			return { .grams = static_cast<int>(lrint(number * 1000)) };
+		case units::LBS:
+			return { .grams = lbs_to_grams(number) };
+		default:
+			return {};
+		}
+	}
+}
+
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString number, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveGuide, QString tags, QString weight, QString notes,
@@ -1228,10 +1251,10 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		// not sure what we'd do if there was more than one weight system
 		// defined - for now just ignore that case
 		if (d->weightsystems.size() == 0) {
-			weightsystem_t ws = { { parseWeightToGrams(weight) } , tr("weight").toStdString(), false };
+			weightsystem_t ws = { parseWeight(weight), tr("weight").toStdString(), false };
 			d->weightsystems.add(0, std::move(ws));
 		} else if (d->weightsystems.size() == 1) {
-			d->weightsystems[0].weight.grams = parseWeightToGrams(weight);
+			d->weightsystems[0].weight = parseWeight(weight);
 		}
 	}
 	// start and end pressures

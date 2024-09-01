@@ -303,7 +303,6 @@ bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIn
 
 GPSLocationInformationModel::GPSLocationInformationModel(QObject *parent) : QSortFilterProxyModel(parent),
 	ignoreDs(nullptr),
-	location({{0},{0}}),
 	distance(0)
 {
 	setSourceModel(LocationInformationModel::instance());

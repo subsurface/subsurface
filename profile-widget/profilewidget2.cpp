@@ -753,7 +753,7 @@ void ProfileWidget2::splitDive(int seconds)
 {
 	if (!d)
 		return;
-	Command::splitDives(mutable_dive(), duration_t{ seconds });
+	Command::splitDives(mutable_dive(), duration_t{ .seconds = seconds });
 }
 
 void ProfileWidget2::addGasSwitch(int tank, int seconds)
@@ -1103,7 +1103,6 @@ void ProfileWidget2::updateThumbnail(QString filenameIn, QImage thumbnail, durat
 
 // Create a PictureEntry object and add its thumbnail to the scene if profile pictures are shown.
 ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const std::string &filenameIn, ProfileWidget2 *profile, bool synchronous) : offset(offsetIn),
-	duration(duration_t {0}),
 	filename(filenameIn),
 	thumbnail(new DivePictureItem)
 {
@@ -1289,7 +1288,7 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 		QString filename;
 		dataStream >> filename;
 		QPointF mappedPos = mapToScene(event->pos());
-		offset_t offset { (int32_t)lrint(profileScene->timeAxis->valueAt(mappedPos)) };
+		offset_t offset { .seconds = (int32_t)lrint(profileScene->timeAxis->valueAt(mappedPos)) };
 		Command::setPictureOffset(mutable_dive(), filename, offset);
 
 		if (event->source() == this) {
