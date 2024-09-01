@@ -143,9 +143,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>",
 			translate("gettextFromC", "Warning:"), message);
 
-		// TODO: avoid copy
-		dive->notes = buf;
-		dive->notes = strdup(buf.c_str());
+		dive->notes = std::move(buf);
 
 		return;
 	}
@@ -162,8 +160,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			translate("gettextFromC", "Subsurface"),
 			subsurface_canonical_version(),
 			translate("gettextFromC", "dive plan</b> (overlapping dives detected)"));
-		// TODO: avoid copy
-		dive->notes = buf;
+		dive->notes = std::move(buf);
 		return;
 	} else if (diveplan->surface_interval >= 48 * 60 *60) {
 		buf += format_string_std("%s (%s) %s %s",
@@ -630,8 +627,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		if (o2warning_exist)
 			buf += "</div>\n";
 	}
-	// TODO: avoid copy
-	dive->notes = buf;
+	dive->notes = std::move(buf);
 #ifdef DEBUG_PLANNER_NOTES
 	printf("<!DOCTYPE html>\n<html>\n\t<head><title>plannernotes</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/></head>\n\t<body>\n%s\t</body>\n</html>\n", dive->notes);
 #endif
