@@ -40,8 +40,6 @@ typedef enum {
 	PLAN_ERROR_INAPPROPRIATE_GAS,
 } planner_error_t;
 
-extern int validate_gas(const char *text, struct gasmix *gas);
-extern int validate_po2(const char *text, int *mbar_po2);
 extern int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time);
 extern bool diveplan_empty(struct diveplan *diveplan);
 extern void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, planner_error_t error);
