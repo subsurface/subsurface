@@ -469,7 +469,7 @@ static void update_min_max_temperatures(struct dive &dive, temperature_t tempera
  */
 static int same_rounded_pressure(pressure_t a, pressure_t b)
 {
-	return abs(a.mbar - b.mbar) <= 500;
+	return abs((a - b).mbar) <= 500;
 }
 
 static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity);
@@ -678,7 +678,7 @@ static void fixup_duration(struct dive &dive)
 		if (logged || !is_dc_planner(&dc))
 			duration.seconds = std::max(duration.seconds, dc.duration.seconds);
 	}
-	dive.duration.seconds = duration.seconds;
+	dive.duration = duration;
 }
 
 static void fixup_watertemp(struct dive &dive)
@@ -724,7 +724,7 @@ static void fixup_dc_events(struct divecomputer &dc)
 			continue;
 		for (int idx2 = idx - 1; idx2 > 0; --idx2) {
 			const auto &prev = dc.events[idx2];
-			if (event.time.seconds - prev.time.seconds > 60)
+			if ((event.time - prev.time).seconds > 60)
 				break;
 			if (range_contains(to_delete, idx2))
 				continue;
@@ -1115,12 +1115,12 @@ static void merge_one_sample(const struct sample &sample, struct divecomputer &d
 
 			/* Init a few values from prev sample to avoid useless info in XML */
 			surface.bearing.degrees = prev.bearing.degrees;
-			surface.ndl.seconds = prev.ndl.seconds;
+			surface.ndl = prev.ndl;
 			surface.time.seconds = last_time + 20;
 
 			append_sample(surface, &dc);
 
-			surface.time.seconds = sample.time.seconds - 20;
+			surface.time = sample.time - duration_t { .seconds = 20 };
 			append_sample(surface, &dc);
 		}
 	}
@@ -1402,7 +1402,7 @@ static void sample_renumber(struct sample &s, const struct sample *prev, const i
 				s.pressure[j].mbar = 0;
 			} else {
 				s.sensor[j] = prev->sensor[j];
-				s.pressure[j].mbar = prev->pressure[j].mbar;
+				s.pressure[j] = prev->pressure[j];
 			}
 		} else {
 			s.sensor[j] = sensor;
@@ -1547,9 +1547,9 @@ static pressure_t merge_pressures(pressure_t a, pressure_t sample_a, pressure_t 
 static void merge_one_cylinder(cylinder_t *a, const cylinder_t *b)
 {
 	if (!a->type.size.mliter)
-		a->type.size.mliter = b->type.size.mliter;
+		a->type.size = b->type.size;
 	if (!a->type.workingpressure.mbar)
-		a->type.workingpressure.mbar = b->type.workingpressure.mbar;
+		a->type.workingpressure = b->type.workingpressure;
 	if (a->type.description.empty())
 		a->type.description = b->type.description;
 
@@ -1562,8 +1562,8 @@ static void merge_one_cylinder(cylinder_t *a, const cylinder_t *b)
 	a->end = merge_pressures(a->end, a->sample_end, b->end, b->sample_end, true);
 
 	/* Really? */
-	a->gas_used.mliter += b->gas_used.mliter;
-	a->deco_gas_used.mliter += b->deco_gas_used.mliter;
+	a->gas_used += b->gas_used;
+	a->deco_gas_used += b->deco_gas_used;
 	a->bestmix_o2 = a->bestmix_o2 && b->bestmix_o2;
 	a->bestmix_he = a->bestmix_he && b->bestmix_he;
 }
@@ -1737,7 +1737,7 @@ static int compare_sample(const struct sample &s, const struct sample &a, const 
 	int diff;
 
 	if (offset) {
-		unsigned int interval = b.time.seconds - a.time.seconds;
+		unsigned int interval = (b.time - a.time).seconds;
 		unsigned int depth_a = a.depth.mm;
 		unsigned int depth_b = b.depth.mm;
 

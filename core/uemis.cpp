@@ -353,7 +353,7 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		u_sample++;
 	}
 	if (sample)
-		dive->dcs[0].duration.seconds = sample->time.seconds - 1;
+		dive->dcs[0].duration = sample->time - duration_t { .seconds = 1 };
 
 	/* get data from the footer */
 	add_extra_data(dc, "FW Version",

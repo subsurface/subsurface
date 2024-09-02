@@ -151,10 +151,9 @@ static int calculate_otu(const struct dive &dive)
 	double otu = 0.0;
 	const struct divecomputer *dc = &dive.dcs[0];
 	for (auto [psample, sample]: pairwise_range(dc->samples)) {
-		int t;
 		int po2i, po2f;
 		double pm;
-		t = sample.time.seconds - psample.time.seconds;
+		int t = (sample.time - psample.time).seconds;
 		// if there is sensor data use sensor[0]
 		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample.o2sensor[0].mbar) {
 			po2i = psample.o2sensor[0].mbar;
@@ -215,7 +214,7 @@ static double calculate_cns_dive(const struct dive &dive)
 	double rate;
 	/* Calculate the CNS for each sample in this dive and sum them */
 	for (auto [psample, sample]: pairwise_range(dc->samples)) {
-		int t = sample.time.seconds - psample.time.seconds;
+		int t = (sample.time - psample.time).seconds;
 		int po2 = get_sample_o2(dive, dc, sample, psample);
 		/* Don't increase CNS when po2 below 500 matm */
 		if (po2 <= 500)

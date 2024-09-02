@@ -1133,7 +1133,7 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 		} else if (m6.hasMatch()) {
 			m = m6.captured(1).toInt();
 		}
-		d->dcs[0].duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
+		d->dcs[0].duration = d->duration = duration_t { .seconds = h * 3600 + m * 60 + s };
 		if (is_dc_manually_added_dive(&d->dcs[0]))
 			d->dcs[0].samples.clear();
 		else

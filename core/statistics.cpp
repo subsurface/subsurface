@@ -260,7 +260,7 @@ std::vector<volume_t> get_gas_used(struct dive *dive)
 		end = cyl.end.mbar ? cyl.end : cyl.sample_end;
 		// TODO: Implement addition/subtraction on units.h types
 		if (end.mbar && start.mbar > end.mbar)
-			gases[idx].mliter = cyl.gas_volume(start).mliter - cyl.gas_volume(end).mliter;
+			gases[idx] = cyl.gas_volume(start) - cyl.gas_volume(end);
 		else
 			gases[idx].mliter = 0;
 	}
@@ -291,8 +291,8 @@ std::pair<volume_t, volume_t> selected_dives_gas_parts()
 		for (auto &gas: get_gas_used(d.get())) {
 			if (gas.mliter) {
 				auto [o2, he] = get_gas_parts(d->get_cylinder(j)->gasmix, gas, O2_IN_AIR);
-				o2_tot.mliter += o2.mliter;
-				he_tot.mliter += he.mliter;
+				o2_tot += o2;
+				he_tot += he;
 			}
 			j++;
 		}

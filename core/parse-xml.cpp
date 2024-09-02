@@ -678,7 +678,7 @@ static void eventtime(const char *buffer, duration_t *duration, struct parser_st
 {
 	sampletime(buffer, duration);
 	if (state->cur_sample)
-		duration->seconds += state->cur_sample->time.seconds;
+		*duration += state->cur_sample->time;
 }
 
 static void try_to_match_autogroup(const char *name, char *buf, struct parser_state *state)

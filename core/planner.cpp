@@ -185,12 +185,12 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 		return;
 	mean_depth.mm = (old_depth + new_depth) / 2;
 	gas_used.mliter = lrint(d->depth_to_atm(mean_depth.mm) * sac / 60 * duration * factor / 1000);
-	cyl->gas_used.mliter += gas_used.mliter;
+	cyl->gas_used += gas_used;
 	if (in_deco)
-		cyl->deco_gas_used.mliter += gas_used.mliter;
+		cyl->deco_gas_used += gas_used;
 	if (cyl->type.size.mliter) {
 		delta_p.mbar = lrint(gas_used.mliter * 1000.0 / cyl->type.size.mliter * gas_compressibility_factor(cyl->gasmix, cyl->end.mbar / 1000.0));
-		cyl->end.mbar -= delta_p.mbar;
+		cyl->end -= delta_p;
 	}
 }
 

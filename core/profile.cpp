@@ -111,7 +111,7 @@ static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *
 	struct plot_data &entry1 = pi.entry[idx1];
 	struct plot_data &entry2 = pi.entry[idx2];
 	int duration = entry2.sec - entry1.sec;
-	int depth, airuse;
+	int depth;
 	pressure_t a, b;
 	double atm;
 
@@ -128,11 +128,10 @@ static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *
 
 	cyl = dive->get_cylinder(index);
 
-	// TODO: Implement addition/subtraction on units.h types
-	airuse = cyl->gas_volume(a).mliter - cyl->gas_volume(b).mliter;
+	volume_t airuse = cyl->gas_volume(a) - cyl->gas_volume(b);
 
 	/* milliliters per minute */
-	return lrint(airuse / atm * 60 / duration);
+	return lrint(airuse.mliter / atm * 60 / duration);
 }
 
 static velocity_t velocity(int speed)
@@ -471,7 +470,7 @@ static int sac_between(const struct dive *dive, const struct plot_info &pi, int 
 		return 0;
 
 	/* Get airuse for the set of cylinders over the range */
-	int airuse = 0;
+	volume_t airuse;
 	for (int i = 0; i < pi.nr_cylinders; i++) {
 		pressure_t a, b;
 
@@ -482,11 +481,11 @@ static int sac_between(const struct dive *dive, const struct plot_info &pi, int 
 		b.mbar = get_plot_pressure(pi, last, i);
 		const cylinder_t *cyl = dive->get_cylinder(i);
 		// TODO: Implement addition/subtraction on units.h types
-		int cyluse = cyl->gas_volume(a).mliter - cyl->gas_volume(b).mliter;
-		if (cyluse > 0)
+		volume_t cyluse = cyl->gas_volume(a) - cyl->gas_volume(b);
+		if (cyluse.mliter > 0)
 			airuse += cyluse;
 	}
-	if (!airuse)
+	if (!airuse.mliter)
 		return 0;
 
 	/* Calculate depthpressure integrated over time */
@@ -505,7 +504,7 @@ static int sac_between(const struct dive *dive, const struct plot_info &pi, int 
 	pressuretime /= 60;
 
 	/* SAC = mliter per minute */
-	return lrint(airuse / pressuretime);
+	return lrint(airuse.mliter / pressuretime);
 }
 
 /* Is there pressure data for all gases? */
@@ -1168,13 +1167,13 @@ static void fill_o2_values(const struct dive *dive, const struct divecomputer *d
 		if (dc->divemode == CCR || (dc->divemode == PSCR && dc->no_o2sensors)) {
 			if (i == 0) { // For 1st iteration, initialise the last_sensor values
 				for (j = 0; j < dc->no_o2sensors; j++)
-					last_sensor[j].mbar = entry.o2sensor[j].mbar;
+					last_sensor[j] = entry.o2sensor[j];
 			} else { // Now re-insert the missing oxygen pressure values
 				for (j = 0; j < dc->no_o2sensors; j++)
 					if (entry.o2sensor[j].mbar)
-						last_sensor[j].mbar = entry.o2sensor[j].mbar;
+						last_sensor[j] = entry.o2sensor[j];
 					else
-						entry.o2sensor[j].mbar = last_sensor[j].mbar;
+						entry.o2sensor[j] = last_sensor[j];
 			} // having initialised the empty o2 sensor values for this point on the profile,
 			amb_pressure.mbar = dive->depth_to_mbar(entry.depth);
 			o2pressure.mbar = calculate_ccr_po2(entry, dc); // ...calculate the po2 based on the sensor data
@@ -1467,7 +1466,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 
 	int last_sec = start.sec;
 
-	volume_t cylinder_volume = { .mliter = 0, };
+	volume_t cylinder_volume;
 	std::vector<int> start_pressures(pi.nr_cylinders, 0);
 	std::vector<int> last_pressures(pi.nr_cylinders, 0);
 	std::vector<int> bar_used(pi.nr_cylinders, 0);
@@ -1504,8 +1503,8 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 					const cylinder_t *cyl = d->get_cylinder(cylinder_index);
 
 					// TODO: Implement addition/subtraction on units.h types
-					volumes_used[cylinder_index] += cyl->gas_volume((pressure_t){ .mbar = last_pressures[cylinder_index] }).mliter -
-									cyl->gas_volume((pressure_t){ .mbar = next_pressure }).mliter;
+					volumes_used[cylinder_index] += (cyl->gas_volume((pressure_t){ .mbar = last_pressures[cylinder_index] }) -
+									 cyl->gas_volume((pressure_t){ .mbar = next_pressure })).mliter;
 				}
 
 				// check if the gas in this cylinder is being used
@@ -1561,7 +1560,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 				if (cylinder_volume.mliter && cylinder_volume.mliter != cyl->type.size.mliter) {
 					cylindersizes_are_identical = false;
 				} else {
-					cylinder_volume.mliter = cyl->type.size.mliter;
+					cylinder_volume = cyl->type.size;
 				}
 			} else {
 				sac_is_determinable = false;

@@ -1260,8 +1260,8 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 			cyl[i].cylinder_use = cylIn.cylinder_use;
 			break;
 		case EditCylinderType::PRESSURE:
-			cyl[i].start.mbar = cylIn.start.mbar;
-			cyl[i].end.mbar = cylIn.end.mbar;
+			cyl[i].start = cylIn.start;
+			cyl[i].end = cylIn.end;
 			break;
 		case EditCylinderType::GASMIX:
 			cyl[i].gasmix = cylIn.gasmix;
