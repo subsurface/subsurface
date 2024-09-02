@@ -110,7 +110,7 @@ static void exportHTMLstatistics(const QString filename, struct htmlExportSettin
 			out << "\"MAX_TEMP\":\"" << (s.max_temp.mkelvin == 0 ? 0 : get_temperature_string(s.max_temp)) << "\",";
 			out << "},";
 			total_stats.selection_size += s.selection_size;
-			total_stats.total_time.seconds += s.total_time.seconds;
+			total_stats.total_time += s.total_time;
 		}
 		exportHTMLstatisticsTotal(out, &total_stats);
 	}

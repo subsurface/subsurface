@@ -1334,7 +1334,7 @@ void ProfileWidget2::pictureOffsetChanged(dive *dIn, QString filenameIn, offset_
 			auto newPos = std::find_if(pictures.begin(), pictures.end(), [offset, &filename](const PictureEntry &e)
 						   { return std::tie(e.offset.seconds, e.filename) > std::tie(offset.seconds, filename); });
 			// Set new offset
-			oldPos->offset.seconds = offset.seconds;
+			oldPos->offset = offset;
 			updateThumbnailXPos(*oldPos);
 
 			// Move image from old to new position

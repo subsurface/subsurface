@@ -472,9 +472,9 @@ static bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
 static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
 {
 	if (!dst->size.mliter)
-		dst->size.mliter = src->size.mliter;
+		dst->size = src->size;
 	if (!dst->workingpressure.mbar)
-		dst->workingpressure.mbar = src->workingpressure.mbar;
+		dst->workingpressure = src->workingpressure;
 	if (dst->description.empty() || dst->description == "---") {
 		dst->description = std::move(src->description);
 	}
