@@ -357,13 +357,15 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 	if (role == Qt::EditRole) {
 		divedatapoint &p = divepoints[index.row()];
 		switch (index.column()) {
-		case DEPTH:
-			if (value.toInt() >= 0) {
-				p.depth = units_to_depth(value.toInt());
+		case DEPTH: {
+			int depth = value.toInt();
+			if (depth >= 0) {
+				p.depth = units_to_depth(depth);
 				if (updateMaxDepth())
 					cylinders.updateBestMixes();
 			}
 			break;
+		}
 		case RUNTIME: {
 			int secs = value.toInt() * 60;
 			i = index.row();
@@ -380,23 +382,25 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			break;
 		}
 		case DURATION: {
-				int secs = value.toInt() * 60;
-				if (!secs)
-					secs = 10;
-				i = index.row();
-				if (i)
-					shift = divepoints[i].time - divepoints[i - 1].time - secs;
-				else
-					shift = divepoints[i].time - secs;
-				while (i < divepoints.size())
-					divepoints[i++].time -= shift;
-				break;
+			int secs = value.toInt() * 60;
+			if (secs < 0)
+				secs = 10;
+			i = index.row();
+			if (i)
+				shift = divepoints[i].time - divepoints[i - 1].time - secs;
+			else
+				shift = divepoints[i].time - secs;
+			while (i < divepoints.size())
+				divepoints[i++].time -= shift;
+			break;
 		}
 		case CCSETPOINT: {
-			int po2 = 0;
-			QByteArray gasv = value.toByteArray();
-			if (validate_po2(gasv.data(), &po2))
-				p.setpoint = po2;
+			bool ok;
+			int po2 = round(value.toFloat(&ok) * 100) * 10;
+
+			if (ok)
+				p.setpoint = std::max(po2, 160);
+
 			break;
 		}
 		case GAS:
