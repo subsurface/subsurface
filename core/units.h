@@ -67,8 +67,42 @@
  */
 using timestamp_t = int64_t;
 
+// Base class for all unit types using the "Curiously recurring template pattern"
+// (https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern)
+// to implement addition, subtraction and negation.
+// Multiplication and division (which result in a different type)
+// are not implemented. If we want that, we should switch to a proper
+// units libary.
+// Also note that some units may be based on unsigned integers and
+// therefore subtraction may be ill-defined.
 template <typename T>
 struct unit_base {
+	auto &get_base() {
+		auto &[v] = static_cast<T &>(*this);
+		return v;
+	}
+	auto get_base() const {
+		auto [v] = static_cast<const T &>(*this);
+		return v;
+	}
+	template <typename base_type>
+	static T from_base(base_type v) {
+		return { {}, v };
+	}
+	T operator+(const T &v2) const {
+		return from_base(get_base() + v2.get_base());
+	}
+	T &operator+=(const T &v2) {
+		get_base() += v2.get_base();
+		return static_cast<T &>(*this);
+	}
+	T operator-(const T &v2) const {
+		return from_base(get_base() - v2.get_base());
+	}
+	T &operator-=(const T &v2) {
+		get_base() -= v2.get_base();
+		return static_cast<T &>(*this);
+	}
 };
 
 struct duration_t : public unit_base<duration_t>
