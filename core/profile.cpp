@@ -673,7 +673,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 
 	/* FIXME: The planner uses a dummy one-past-end cylinder for surface air! */
 	int num_cyl = pi.nr_cylinders + 1;
-	std::vector<int> seen(num_cyl, 0);
+	std::vector<int> seen(num_cyl, false);
 	std::vector<int> first(num_cyl, 0);
 	std::vector<int> last(num_cyl, INT_MAX);
 
@@ -696,7 +696,7 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 				first[cylinder_index] = time;
 		}
 
-		seen[cylinder_index] = 1;
+		seen[cylinder_index] = true;
 
 		prev = cylinder_index;
 	}
@@ -716,7 +716,8 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 		 * to plot pressures for even if we've seen it..
 		 */
 		if (!start || !end || start == end) {
-			seen[i] = -1;
+			seen[i] = false;
+
 			continue;
 		}
 
@@ -724,17 +725,18 @@ static void setup_gas_sensor_pressure(const struct dive *dive, const struct dive
 		if (seen[i])
 			continue;
 
-		/* If it's only mentioned by other dc's, ignore it */
-		for (auto &secondary: dive->dcs) {
-			if (dive->has_gaschange_event(&secondary, i)) {
-				seen[i] = -1;
-				break;
-			}
-		}
+		/* If it's mentioned by other dcs, ignore it */
+		bool other_divecomputer = false;
+		for (auto &secondary: dive->dcs)
+			if (dive->has_gaschange_event(&secondary, i))
+				other_divecomputer = true;
+
+		if (!other_divecomputer)
+			seen[i] = true;
 	}
 
 	for (int i = 0; i < pi.nr_cylinders; i++) {
-		if (seen[i] >= 0) {
+		if (seen[i]) {
 			const cylinder_t *cyl = dive->get_cylinder(i);
 
 			add_plot_pressure(pi, first[i], i, cyl->start);
