@@ -1170,13 +1170,13 @@ static weight_t parseWeight(const QString &text)
 		return {};
 	double number = numOnly.toDouble();
 	if (text.contains(gettextFromC::tr("kg"), Qt::CaseInsensitive)) {
-		return { .grams = static_cast<int>(lrint(number * 1000)) };
+		return { .grams = int_cast<int>(number * 1000) };
 	} else if (text.contains(gettextFromC::tr("lbs"), Qt::CaseInsensitive)) {
 		return { .grams = lbs_to_grams(number) };
 	} else {
 		switch (prefs.units.weight) {
 		case units::KG:
-			return { .grams = static_cast<int>(lrint(number * 1000)) };
+			return { .grams = int_cast<int>(number * 1000) };
 		case units::LBS:
 			return { .grams = lbs_to_grams(number) };
 		default:

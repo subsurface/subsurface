@@ -93,17 +93,17 @@ static weight_t get_weight(const char *line)
 
 static pressure_t get_airpressure(const char *line)
 {
-	return pressure_t { .mbar = static_cast<int32_t>(lrint(ascii_strtod(line, NULL))) };
+	return pressure_t { .mbar = int_cast<int32_t>(ascii_strtod(line, NULL)) };
 }
 
 static pressure_t get_pressure(const char *line)
 {
-	return pressure_t { .mbar = static_cast<int32_t>(lrint(1000 * ascii_strtod(line, NULL))) };
+	return pressure_t { .mbar = int_cast<int32_t>(1000 * ascii_strtod(line, NULL)) };
 }
 
 static o2pressure_t get_o2pressure(const char *line)
 {
-	return o2pressure_t { .mbar = static_cast<uint16_t>(lrint(1000 * ascii_strtod(line, NULL))) };
+	return o2pressure_t { .mbar = int_cast<uint16_t>(1000 * ascii_strtod(line, NULL)) };
 }
 
 static int get_salinity(const char *line)

@@ -67,6 +67,17 @@
  */
 using timestamp_t = int64_t;
 
+/*
+ * There is a semi-common pattern where lrint() is used to round
+ * doubles to long integers and then cast down to a less wide
+ * int. Since this is unwieldy, encapsulate this in this function
+ */
+template <typename INT>
+INT int_cast(double v)
+{
+	return static_cast<INT>(lrint(v));
+}
+
 // Base class for all unit types using the "Curiously recurring template pattern"
 // (https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern)
 // to implement addition, subtraction and negation.
@@ -190,8 +201,8 @@ static inline bool operator!=(const location_t &a, const location_t &b)
 static inline location_t create_location(double lat, double lon)
 {
 	location_t location = {
-		{ .udeg = (int) lrint(lat * 1000000) },
-		{ .udeg = (int) lrint(lon * 1000000) }
+		{ .udeg = int_cast<int>(lat * 1000000) },
+		{ .udeg = int_cast<int>(lon * 1000000) }
 	};
 	return location;
 }
@@ -208,7 +219,7 @@ static inline double grams_to_lbs(int grams)
 
 static inline int lbs_to_grams(double lbs)
 {
-	return (int)lrint(lbs * 453.6);
+	return int_cast<int>(lbs * 453.6);
 }
 
 static inline double ml_to_cuft(int ml)
@@ -238,7 +249,7 @@ static inline long feet_to_mm(double feet)
 
 static inline int to_feet(depth_t depth)
 {
-	return (int)lrint(mm_to_feet(depth.mm));
+	return int_cast<int>(mm_to_feet(depth.mm));
 }
 
 static inline double mkelvin_to_C(int mkelvin)
