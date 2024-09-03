@@ -275,8 +275,8 @@ static std::pair<volume_t, volume_t> get_gas_parts(struct gasmix mix, volume_t v
 	if (gasmix_is_air(mix))
 		return { volume_t() , volume_t() };
 
-	volume_t air { .mliter = (int)lrint(((double)vol.mliter * get_n2(mix)) / (1000 - o2_in_topup)) };
-	volume_t he { .mliter = (int)lrint(((double)vol.mliter * get_he(mix)) / 1000.0) };
+	volume_t air { .mliter = int_cast<int>(((double)vol.mliter * get_n2(mix)) / (1000 - o2_in_topup)) };
+	volume_t he { .mliter = int_cast<int>(((double)vol.mliter * get_he(mix)) / 1000.0) };
 	volume_t o2 { .mliter = vol.mliter - he.mliter - air.mliter };
 	return std::make_pair(o2, he);
 }

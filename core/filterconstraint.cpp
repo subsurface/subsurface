@@ -283,7 +283,7 @@ static int display_to_base_unit(double f, enum filter_constraint_type type)
 	switch (desc->units) {
 	case FILTER_CONSTRAINT_NO_UNIT:
 	default:
-		return (int)lrint(f);
+		return int_cast<int>(f);
 	case FILTER_CONSTRAINT_LENGTH_UNIT:
 		return prefs.units.length == units::METERS ? lrint(f * 1000.0) : feet_to_mm(f);
 	case FILTER_CONSTRAINT_DURATION_UNIT:

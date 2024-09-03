@@ -182,7 +182,7 @@ volume_t cylinder_t::gas_volume(pressure_t p) const
 {
 	double bar = p.mbar / 1000.0;
 	double z_factor = gas_compressibility_factor(gasmix, bar);
-	return volume_t { .mliter = static_cast<int>(lrint(type.size.mliter * bar_to_atm(bar) / z_factor)) };
+	return volume_t { .mliter = int_cast<int>(type.size.mliter * bar_to_atm(bar) / z_factor) };
 }
 
 int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders)
@@ -348,7 +348,7 @@ void copy_cylinder_types(const struct dive *s, struct dive *d)
 void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl)
 {
 	const std::string &cyl_name = prefs.default_cylinder;
-	pressure_t pO2 = {.mbar = static_cast<int>(lrint(prefs.modpO2 * 1000.0))};
+	pressure_t pO2 = {.mbar = int_cast<int>(prefs.modpO2 * 1000.0)};
 
 	if (cyl_name.empty())
 		return;

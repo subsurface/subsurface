@@ -554,7 +554,7 @@ static void match_standard_cylinder(cylinder_type_t &type)
 	default:
 		return;
 	}
-	type.description = format_string_std(fmt, (int)lrint(cuft));
+	type.description = format_string_std(fmt, int_cast<int>(cuft));
 }
 
 /*
@@ -2439,7 +2439,7 @@ int dive::rel_mbar_to_depth(int mbar) const
 
 	/* whole mbar gives us cm precision */
 	double specific_weight = salinity_to_specific_weight(salinity);
-	return (int)lrint(mbar / specific_weight);
+	return int_cast<int>(mbar / specific_weight);
 }
 
 int dive::mbar_to_depth(int mbar) const
@@ -2459,7 +2459,7 @@ int dive::mbar_to_depth(int mbar) const
 depth_t dive::gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const
 {
 	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix));
-	return depth_t { .mm = (int)lrint(depth / roundto) * roundto };
+	return depth_t { .mm = int_cast<int>(depth / roundto) * roundto };
 }
 
 /* Maximum narcotic depth rounded to multiples of roundto mm */
@@ -2468,14 +2468,14 @@ depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 	pressure_t ppo2n2 { .mbar = depth_to_mbar(end.mm) };
 
 	int maxambient = prefs.o2narcotic ?
-					(int)lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0))
+					int_cast<int>(ppo2n2.mbar / (1 - get_he(mix) / 1000.0))
 			      :
 					get_n2(mix) > 0 ?
-						(int)lrint(ppo2n2.mbar * N2_IN_AIR / get_n2(mix))
+						int_cast<int>(ppo2n2.mbar * N2_IN_AIR / get_n2(mix))
 					:
 						// Actually: Infinity
 						1000000;
-	return depth_t { .mm = (int)lrint(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
+	return depth_t { .mm = int_cast<int>(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
 }
 
 std::string dive::get_country() const

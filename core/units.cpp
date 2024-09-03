@@ -22,7 +22,7 @@ int get_pressure_units(int mb, const char **units)
 		unit = translate("gettextFromC", "bar");
 		break;
 	case units::PSI:
-		pressure = (int)lrint(mbar_to_PSI(mb));
+		pressure = int_cast<int>(mbar_to_PSI(mb));
 		unit = translate("gettextFromC", "psi");
 		break;
 	}
