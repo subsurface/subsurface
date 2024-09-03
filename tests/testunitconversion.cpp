@@ -11,7 +11,6 @@ void TestUnitConversion::testUnitConversions()
 	QCOMPARE(nearly_equal(cuft_to_l(1), 28.316847), true);
 	QCOMPARE(nearly_equal(mm_to_feet(1000), 3.280840), true);
 	QCOMPARE(feet_to_mm(1), 305L);
-	QCOMPARE(to_feet(depth_t{ .mm = 1'000}), 3);
 	QCOMPARE(nearly_equal(mkelvin_to_C(647000), 373.85), true);
 	QCOMPARE(nearly_equal(mkelvin_to_F(647000), 704.93), true);
 	QCOMPARE(F_to_mkelvin(704.93), 647000UL);

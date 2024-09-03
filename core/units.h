@@ -247,11 +247,6 @@ static inline long feet_to_mm(double feet)
 	return lrint(feet * 304.8);
 }
 
-static inline int to_feet(depth_t depth)
-{
-	return int_cast<int>(mm_to_feet(depth.mm));
-}
-
 static inline double mkelvin_to_C(int mkelvin)
 {
 	return (mkelvin - ZERO_C_IN_MKELVIN) / 1000.0;
